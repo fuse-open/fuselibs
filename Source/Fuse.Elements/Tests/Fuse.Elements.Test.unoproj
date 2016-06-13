@@ -24,6 +24,7 @@
     "AspectSizing.Test.uno:Source",
     "BoxSizing.Test.uno:Source",
     "Caching.Test.uno:Source",
+    "ElementBatcher.Test.uno:Source",
     "ElementEventTester.uno:Source",
     "ElementEventTests.uno:Source",
     "ElementPropertiesTests.uno:Source",
