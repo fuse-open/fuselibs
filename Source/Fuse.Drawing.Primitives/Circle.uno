@@ -35,14 +35,14 @@ namespace Fuse.Drawing.Primitives
 			var extend = Math.Max(0,r[0]+r[1]) + smoothness;
 			
 			Draw(dc ,visual, radius, stroke.Brush, sc, _oneLimitCoverage,
-				float2(extend), center, smoothness );
+				extend, center, smoothness );
 		}
 		
 		FillCoverage _fillCoverage = new FillCoverage();
 		public void Fill(DrawContext dc, Element visual, float radius, Brush brush, float2 center,
 			float smoothness)
 		{
-			Draw(dc, visual, radius, brush, _fillCoverage, _oneLimitCoverage, float2(smoothness), 
+			Draw(dc, visual, radius, brush, _fillCoverage, _oneLimitCoverage, smoothness,
 				center, smoothness );
 		}
 		
@@ -76,7 +76,7 @@ namespace Fuse.Drawing.Primitives
 		}
 		
 		internal void Draw(DrawContext dc, Element visual, float radius, Brush brush,
-			Coverage cover, LimitCoverage limit, float2 extend, float2 center, float smoothness )
+			Coverage cover, LimitCoverage limit, float extend, float2 center, float smoothness )
 		{
 			if (_bufferVertex == null)
 				InitBuffers();
