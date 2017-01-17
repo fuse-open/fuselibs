@@ -1,4 +1,6 @@
 #import <Foundation/Foundation.h>
+#import <Jetfire/JFRWebSocket.h>
+#import <Jetfire/JFRSecurity.h>
 
 @interface WebSocketClientObjc: NSObject
 

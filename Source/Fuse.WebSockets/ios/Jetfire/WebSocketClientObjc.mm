@@ -1,6 +1,5 @@
 
 #import "ios/Jetfire/WebSocketClientObjc.h"
-@import Jetfire;
 
 @interface WebSocketClientObjc () <JFRWebSocketDelegate>
 
