@@ -1,6 +1,9 @@
-#import <Foundation/Foundation.h>
-#import <Jetfire/JFRWebSocket.h>
-#import <Jetfire/JFRSecurity.h>
+#if __has_feature(modules)
+    @import Foundation;
+    @import Jetfire;
+#else
+    #import <Foundation/Foundation.h>
+#endif
 
 @interface WebSocketClientObjc: NSObject
 

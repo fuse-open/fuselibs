@@ -46,7 +46,10 @@ namespace Fuse.WebSocket
 		public WebSocketClient(string uri, string[] protocols)
 		{
 			if defined(iOS) {
-				_client = new Jetfire.WebSocketClient();
+				if (Jetfire.XCodeModule.IsSupported())
+					_client = new Jetfire.WebSocketClient();
+				else
+					throw new Exception("WebSocket is not supported on XCode 6");
 			} else if defined(Android) {
 				_client = new Neovisionaries.WebSocketClient();
 			} else if defined(CIL) {

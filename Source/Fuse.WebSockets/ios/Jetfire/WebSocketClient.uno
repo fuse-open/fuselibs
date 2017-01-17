@@ -5,6 +5,19 @@ using Fuse.WebSocket;
 
 namespace Jetfire
 {
+	extern(iOS) public class XCodeModule
+	{
+		[Foreign(Language.ObjC)]
+		public static bool IsSupported()
+		@{
+			#if __has_feature(modules)
+				return true;
+			#else
+				return false;
+			#endif
+		@}
+	}
+
 	[Require("Xcode.FrameworkDirectory", "@('Jetfire-iOS/Carthage/Build/iOS':Path)")]
 	[Require("Xcode.EmbeddedFramework", "@('Jetfire-iOS/Carthage/Build/iOS/Jetfire.framework':Path)")]
 	[Require("Xcode.Framework", "Security.framework")]
