@@ -65,6 +65,12 @@ namespace Fuse.Internal.Bitmaps
 		@}
 
 		[Foreign(Language.Java)]
+		public static void TexImage2D(int level, Java.Object bitmap, int border)
+		@{
+			GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, level, (Bitmap)bitmap, border);
+		@}
+
+		[Foreign(Language.Java)]
 		static int GetWidth(Java.Object bitmap)
 		@{
 			return ((Bitmap)bitmap).getWidth();
@@ -410,6 +416,21 @@ namespace Fuse.Internal.Bitmaps
 				var color = CPlusPlusHelpers.ReadPixel(NativeBitmap, x, y);
 				return Color.FromARGB(color);
 			}
+			else
+				build_error;
+		}
+
+		// TODO: consider making this an extension method somewhere else instead?
+		extern(OPENGL) Texture2D UploadTexture()
+		{
+			if defined(Android)
+			{
+				var textureHandle = GL.CreateTexture();
+				// TODO: bind texture
+				AndroidHelpers.TexImage2D(0, NativeBitmap, 0);
+				return new Texture2D(textureHandle, Size, 1, Format.RGBA8888);
+			}
+			// TODO: other platforms!
 			else
 				build_error;
 		}
