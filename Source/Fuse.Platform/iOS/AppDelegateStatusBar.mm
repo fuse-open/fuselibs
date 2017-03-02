@@ -12,7 +12,7 @@
 
 // On iOS 8 this is only called when Status Bar changes in response to external
 // events
-- (void)application:(UIApplication *)application willChangeStatusBarFrame:(CGRect)frame
+- (void)application:(UIApplication *)application didChangeStatusBarFrame:(CGRect)frame
 {
 	uAutoReleasePool pool;
 	@{Fuse.Platform.SystemUI._statusBarWillChangeFrame(Uno.Platform.iOS.uCGRect, double):Call(frame, 0)};

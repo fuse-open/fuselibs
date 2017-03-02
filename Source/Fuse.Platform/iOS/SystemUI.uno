@@ -184,6 +184,7 @@ namespace Fuse.Platform
 				density);
 		}
 
+		static private float _modifier = 0;
 		static void _statusBarWillChangeFrame(Uno.Platform.iOS.uCGRect _endFrame, double animationDuration)
 		{
 			if (Lifecycle.State == ApplicationState.Uninitialized)
@@ -210,6 +211,23 @@ namespace Fuse.Platform
 				reason = Fuse.Platform.SystemUIResizeReason.WillChangeFrame;
 
 			var args = new SystemUIWillResizeEventArgs(SystemUIID.TopFrame, reason, endFrame, startFrame, animationDuration, 1);
+
+			Rect newFrameRect;
+			// when the endFrame size is > 40, we are streching to fill the space
+			if (endFrame.Size.Y > 40) 
+			{
+				newFrameRect = new Rect(float2(Frame.Left, Frame.Top), float2(Frame.Size.X, Frame.Size.Y - _modifier));
+			} 
+			else 
+			{
+				_modifier = -40;
+				newFrameRect = new Rect(float2(Frame.Left, Frame.Top), float2(Frame.Size.X, Frame.Size.Y + _modifier));
+			}
+
+			Frame = newFrameRect;
+			var frameHandler = FrameChanged;
+			if (frameHandler != null)
+				frameHandler(null, EventArgs.Empty);
 
 			OnWillResize(args);
 		}

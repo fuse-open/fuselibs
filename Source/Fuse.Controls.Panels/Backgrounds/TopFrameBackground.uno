@@ -49,7 +49,13 @@ namespace Fuse.Controls
 
 		protected override float2 GetContentSize(LayoutParams lp)
 		{
-			if defined(iOS || Android)
+			if defined(iOS) {
+				// on iOS, we always treat the bar as though it's 40 points
+				var height = 40 / AppBase.Current.PixelsPerPoint;
+				var x = SystemUI.TopFrame.Size.X / AppBase.Current.PixelsPerPoint;
+				return float2(x, height);
+			}
+			else if defined(Android)
 			{
 				var x = SystemUI.TopFrame.Size / AppBase.Current.PixelsPerPoint;
 				return x;
