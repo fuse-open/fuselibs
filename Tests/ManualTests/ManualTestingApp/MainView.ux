@@ -97,6 +97,7 @@
 
 			<DeviceInfo ux:Name="FirstPage"/>
 			<ScrollViewPage/>
+			<StatusBar/>
 			<MoveAndScale/>
 			<HttpXmlView/>
 			<HttpsView/>
