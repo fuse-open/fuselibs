@@ -1,5 +1,7 @@
 <Page Title="Status bar" ux:Class="StatusBar">
-
+	<InfoStack ux:Key="Info">
+		<p>This page is intended to test the status bar handling when a phone call is recieved with the app open.</p>
+	</InfoStack>
 	<StackPanel Margin="10">
 		<Panel>
 			<Text Margin="5"> Recieve a call
