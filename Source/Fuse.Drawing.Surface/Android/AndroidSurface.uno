@@ -39,6 +39,12 @@ namespace Fuse.Drawing
 		"com.fusetools.drawing.surface.LinearGradientStore",
 		"com.fusetools.drawing.surface.ISurfaceContext"
 	)]
+	[ForeignInclude(Language.Java,
+		"java.nio.ByteBuffer",
+		"java.nio.IntBuffer",
+		"java.nio.ByteOrder",
+		"java.nio.FloatBuffer"
+	)]
 	extern(Android)
 	class GraphicsSurface : AndroidSurface
 	{
@@ -66,6 +72,98 @@ namespace Fuse.Drawing
 
 			return context;
 		@}
+
+		framebuffer _buffer;
+		float2 _size;
+		DrawContext _drawContext;
+
+		public override void Begin(DrawContext dc, framebuffer fb, float pixelsPerPoint)
+		{
+			base.Begin(dc, fb, pixelsPerPoint);
+
+			var impl = SurfaceContext;
+			_drawContext = dc;
+			_buffer = fb;
+			_size = (float2)fb.Size / pixelsPerPoint;
+
+			// return early if framebuffer has no size to prevent runtime crashes
+			if (fb.Size.X == 0 || fb.Size.Y == 0)
+			{
+				return;
+			}
+			LoadBitmap(impl, fb.Size.X, fb.Size.Y);
+			BeginImpl(impl, fb.Size.X, fb.Size.Y, (int)fb.ColorBuffer.GLTextureHandle);
+		}
+
+		/**
+			Load a bitmap of given dimensions into the context and use it for the canvas
+		*/
+		[Foreign(Language.Java)]
+		public static extern(Android) void LoadBitmap(Java.Object context, int width, int height)
+		@{
+			AndroidGraphicsContext impl = (AndroidGraphicsContext) context;
+			Bitmap b = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+
+			impl.canvas.setBitmap(b);
+			impl.bitmap = b;
+
+			impl.canvas.setMatrix(null);
+
+			// invert our bitmap since the Android canvas is inversed when drawing
+			impl.canvas.translate(0.0f, (float)height);
+			impl.canvas.scale(1, -1);
+		@}
+
+		[Foreign(Language.Java)]
+		static void BeginImpl(Java.Object _context, int width, int height, int glTextureId)
+		@{
+			AndroidGraphicsContext context = (AndroidGraphicsContext) _context;
+			context.width = width;
+			context.height = height;
+			context.glTextureId = glTextureId;
+		@}
+
+		/*
+			This approach is really bad now. When Erik refactors ImageSource we shouldn't
+			need to do the round-trip to GL.
+			We might end up not supporting ImageFill until this is fixed, but this is useful
+			here now to complete/test the sizing/tiling support.
+		*/
+		protected sealed override Java.Object PrepareImageFillImpl( ImageFill img )
+		{
+			var src = img.Source;
+			var tex = src.GetTexture();
+			var fb = FramebufferPool.Lock( src.PixelSize, Uno.Graphics.Format.RGBA8888, false );
+
+			_drawContext.PushRenderTarget(fb);
+			AndroidGraphicsDrawHelper.Singleton.DrawImageFill(tex);
+			Java.Object imageRef = LoadImage((int)tex.GLTextureHandle, src.PixelSize.X, src.PixelSize.Y );
+			FramebufferPool.Release(fb);
+			_drawContext.PopRenderTarget();
+
+			return imageRef;
+		}
+
+		[Foreign(Language.Java)]
+		static Java.Object LoadImage(int glTextureId, int width, int height)
+		@{
+			int size = width * height * 4;
+			int[] pixels = new int[size];
+
+			IntBuffer pixelData = IntBuffer.wrap(pixels);
+			GLES20.glReadPixels(0, 0, width,height, GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE, pixelData);
+
+			Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+			bitmap.copyPixelsFromBuffer(pixelData);
+
+			return bitmap;
+		@}
+
+		protected sealed override void VerifyBegun()
+		{
+			if (_buffer == null)
+				throw new Exception( "Canvas.Begin was not called" );
+		}
 
 		public override void Dispose()
 		{
@@ -109,10 +207,7 @@ namespace Fuse.Drawing
 
 		protected abstract Java.Object SurfaceContext { get; }
 
-		framebuffer _buffer;
 		float _pixelsPerPoint;
-		float2 _size;
-		DrawContext _drawContext;
 
 		public override void Dispose()
 		{
@@ -129,11 +224,7 @@ namespace Fuse.Drawing
 				throw new Exception( "Object disposed" );
 		}
 
-		void VerifyBegun()
-		{
-			if (_buffer == null)
-				throw new Exception( "Canvas.Begin was not called" );
-		}
+		protected virtual void VerifyBegun() {}
 
 		public override void PushTransform( float4x4 t )
 		{
@@ -149,36 +240,11 @@ namespace Fuse.Drawing
 			return new AndroidCanvasPath{ Path = path, FillRule = fillRule };
 		}
 
-		/**
-			Load a bitmap of given dimensions into the context and use it for the canvas
-		*/
-		[Foreign(Language.Java)]
-		public static extern(Android) void LoadBitmap(Java.Object context, int width, int height)
-		@{
-			AndroidGraphicsContext impl = (AndroidGraphicsContext) context;
-			Bitmap b = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-
-			impl.canvas.setBitmap(b);
-			impl.bitmap = b;
-
-			impl.canvas.setMatrix(null);
-
-			// invert our bitmap since the Android canvas is inversed when drawing
-			impl.canvas.translate(0.0f, (float)height);
-			impl.canvas.scale(1, -1);
-		@}
-
 		Dictionary<Brush, Java.Object> _imageBrushes = new Dictionary<Brush,Java.Object>();
-		/*
-			This approach is really bad now. When Erik refactors ImageSource we shouldn't
-			need to do the round-trip to GL.
-			We might end up not supporting ImageFill until this is fixed, but this is useful
-			here now to complete/test the sizing/tiling support.
-		*/
-		void PrepareImageFill( ImageFill img )
-		{
-			var src = img.Source;
 
+		void PrepareImageFill( ImageFill fill )
+		{
+			var src = fill.Source;
 			if (src.PixelSize.X == 0 || src.PixelSize.Y == 0)
 			{
 				Fuse.Diagnostics.UserError( "Recieved an image with no width or height", src.PixelSize );
@@ -187,34 +253,13 @@ namespace Fuse.Drawing
 
 			var tex = src.GetTexture();
 			//probably still loading
-			if (tex == null) return;
+			if (tex == null)
+				return;
 
-			var fb = FramebufferPool.Lock( src.PixelSize, Uno.Graphics.Format.RGBA8888, false );
-
-			_drawContext.PushRenderTarget(fb);
-			AndroidGraphicsDrawHelper.Singleton.DrawImageFill(tex);
-			Java.Object imageRef = LoadImage((int)tex.GLTextureHandle, src.PixelSize.X, src.PixelSize.Y );
-			FramebufferPool.Release(fb);
-			_drawContext.PopRenderTarget();
-
-			_imageBrushes[img] = imageRef;
+			_imageBrushes[fill] = PrepareImageFillImpl(fill);
 		}
 
-		[Foreign(Language.Java)]
-		static Java.Object LoadImage(int glTextureId, int width, int height)
-		@{
-			int size = width * height * 4;
-			int[] pixels = new int[size];
-
-			IntBuffer pixelData = IntBuffer.wrap(pixels);
-			GLES20.glReadPixels(0, 0, width,height, GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE, pixelData);
-
-			Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-			bitmap.copyPixelsFromBuffer(pixelData);
-
-			return bitmap;
-		@}
-
+		protected abstract Java.Object PrepareImageFillImpl( ImageFill img );
 
 		public override void FillPath( SurfacePath path, Brush fill )
 		{
@@ -473,29 +518,8 @@ namespace Fuse.Drawing
 
 		public override void Begin(DrawContext dc, framebuffer fb, float pixelsPerPoint)
 		{
-			var impl = SurfaceContext;
-			_drawContext = dc;
-			_buffer = fb;
 			_pixelsPerPoint = pixelsPerPoint;
-			_size = (float2)fb.Size / pixelsPerPoint;
-
-			// return early if framebuffer has no size to prevent runtime crashes
-			if (fb.Size.X == 0 || fb.Size.Y == 0)
-			{
-				return;
-			}
-			LoadBitmap(impl, fb.Size.X, fb.Size.Y);
-			BeginImpl(impl, fb.Size.X, fb.Size.Y, (int)fb.ColorBuffer.GLTextureHandle);
 		}
-
-		[Foreign(Language.Java)]
-		static void BeginImpl(Java.Object _context, int width, int height, int glTextureId)
-		@{
-			AndroidGraphicsContext context = (AndroidGraphicsContext) _context;
-			context.width = width;
-			context.height = height;
-			context.glTextureId = glTextureId;
-		@}
 
 		/**
 			Ends drawing. All drawing called after `Begin` and to now must be completed by now. This copies the resulting image to the desired output setup in `Begin`.
