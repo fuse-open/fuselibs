@@ -39,26 +39,19 @@ namespace Fuse.Drawing
 		"com.fusetools.drawing.surface.LinearGradientStore",
 		"com.fusetools.drawing.surface.ISurfaceContext"
 	)]
-	[ForeignInclude(Language.Java,
-		"java.nio.ByteBuffer",
-		"java.nio.IntBuffer",
-		"java.nio.ByteOrder",
-		"java.nio.FloatBuffer"
-	)]
-	[extern(Android) Require("Source.Include","XliPlatform/GL.h")]
 	extern(Android)
-	class AndroidSurface : Surface
+	class GraphicsSurface : AndroidSurface
 	{
-		Java.Object _context;
-		framebuffer _buffer;
-		float _pixelsPerPoint;
-		float2 _size;
-		DrawContext _drawContext;
+		protected sealed override Java.Object SurfaceContext
+		{
+			get { return _context; }
+		}
 
-		public AndroidSurface()
+		Java.Object _context;
+
+		public GraphicsSurface()
 		{
 			_context = NewContext();
-			var impl = _context;
 		}
 
 		[Foreign(Language.Java)]
@@ -76,18 +69,63 @@ namespace Fuse.Drawing
 
 		public override void Dispose()
 		{
+			base.Dispose();
+			_context = null;
+		}
+	}
+
+	[ForeignInclude(Language.Java,
+		"android.graphics.Canvas",
+		"android.graphics.Bitmap",
+		"android.graphics.Shader",
+		"android.graphics.BitmapShader",
+		"android.graphics.drawable.BitmapDrawable",
+		"android.graphics.Rect",
+		"android.graphics.RectF",
+		"android.graphics.Path",
+		"android.opengl.GLUtils",
+		"android.opengl.GLES20",
+		"android.graphics.Paint",
+		"android.graphics.LinearGradient",
+		"android.graphics.Shader.TileMode",
+		"android.graphics.Color",
+		"android.graphics.PorterDuffXfermode",
+		"android.graphics.Matrix",
+		"android.graphics.PorterDuff.Mode",
+		"com.fusetools.drawing.surface.AndroidGraphicsContext",
+		"com.fusetools.drawing.surface.LinearGradientStore",
+		"com.fusetools.drawing.surface.ISurfaceContext"
+	)]
+	[ForeignInclude(Language.Java,
+		"java.nio.ByteBuffer",
+		"java.nio.IntBuffer",
+		"java.nio.ByteOrder",
+		"java.nio.FloatBuffer"
+	)]
+	[extern(Android) Require("Source.Include","XliPlatform/GL.h")]
+	extern(Android)
+	abstract class AndroidSurface : Surface
+	{
+
+		protected abstract Java.Object SurfaceContext { get; }
+
+		framebuffer _buffer;
+		float _pixelsPerPoint;
+		float2 _size;
+		DrawContext _drawContext;
+
+		public override void Dispose()
+		{
 			_gradientBrushes.Clear();
 
 			foreach (var item in _imageBrushes)
 				recycleBitmap(item.Value);
 			_imageBrushes.Clear();
-
-			_context = null;
 		}
 
 		void VerifyCreated()
 		{
-			if (_context == null)
+			if (SurfaceContext == null)
 				throw new Exception( "Object disposed" );
 		}
 
@@ -100,8 +138,8 @@ namespace Fuse.Drawing
 		public override void PushTransform( float4x4 t )
 		{
 			VerifyBegun();
-			SaveContextState(_context);
-			ConcatTransform(_context, ToMatrix(t, _pixelsPerPoint));
+			SaveContextState(SurfaceContext);
+			ConcatTransform(SurfaceContext, ToMatrix(t, _pixelsPerPoint));
 		}
 
 		public override SurfacePath CreatePath( IList<LineSegment> segments, FillRule fillRule = FillRule.NonZero)
@@ -204,7 +242,7 @@ namespace Fuse.Drawing
 
 			if (solidColor != null)
 			{
-				FillPathSolidColor(_context, path, (int)Uno.Color.ToArgb(solidColor.Color), eoFill, paint);
+				FillPathSolidColor(SurfaceContext, path, (int)Uno.Color.ToArgb(solidColor.Color), eoFill, paint);
 				return;
 			}
 
@@ -220,7 +258,7 @@ namespace Fuse.Drawing
 
 				var ends = linearGradient.GetEffectiveEndPoints(ElementSize) * _pixelsPerPoint;
 
-				FillPathLinearGradient(_context, path, gradient, ends[0], ends[1], ends[2], ends[3], eoFill, paint);
+				FillPathLinearGradient(SurfaceContext, path, gradient, ends[0], ends[1], ends[2], ends[3], eoFill, paint);
 				return;
 			}
 
@@ -243,7 +281,7 @@ namespace Fuse.Drawing
 				var tileSize = imageSize * _pixelsPerPoint * scale;
 				var pixelOrigin = origin * _pixelsPerPoint;
 
-				FillPathImage(_context, path, image,
+				FillPathImage(SurfaceContext, path, image,
 					pixelOrigin.X, pixelOrigin.Y,
 					tileSize.X, tileSize.Y,
 					ElementSize.X * _pixelsPerPoint, ElementSize.Y * _pixelsPerPoint,
@@ -435,7 +473,7 @@ namespace Fuse.Drawing
 
 		public override void Begin(DrawContext dc, framebuffer fb, float pixelsPerPoint)
 		{
-			var impl = _context;
+			var impl = SurfaceContext;
 			_drawContext = dc;
 			_buffer = fb;
 			_pixelsPerPoint = pixelsPerPoint;
@@ -444,7 +482,6 @@ namespace Fuse.Drawing
 			// return early if framebuffer has no size to prevent runtime crashes
 			if (fb.Size.X == 0 || fb.Size.Y == 0)
 			{
-				_context = null;
 				return;
 			}
 			LoadBitmap(impl, fb.Size.X, fb.Size.Y);
@@ -465,7 +502,7 @@ namespace Fuse.Drawing
 		*/
 		public override void End()
 		{
-			var impl = _context;
+			var impl = SurfaceContext;
 
 			if (impl == null) return;
 			EndImpl(impl);
@@ -683,7 +720,7 @@ namespace Fuse.Drawing
 		public override void PopTransform()
 		{
 			VerifyBegun();
-			RestoreContextState(_context);
+			RestoreContextState(SurfaceContext);
 		}
 
 		[Foreign(Language.Java)]
