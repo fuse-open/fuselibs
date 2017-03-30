@@ -23,7 +23,10 @@
   "Includes": [
     "*",
     "CoreGraphicsLib.h:CHeader:iOS||OSX",
-    "AndroidGraphicsContext.java:Java:Android",
+    "Android/AndroidGraphicsContext.java:Java:Android",
+    "Android/ISurfaceContext.java:Java:Android",
+    "Android/LinearGradientStore.java:Java:Android",
+    "Android/GraphicsSurface.java:Java:Android",
   ],
   "Excludes": [
     "Tests/",
