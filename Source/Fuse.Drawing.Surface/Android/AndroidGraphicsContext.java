@@ -5,7 +5,7 @@ import android.graphics.Matrix;
 
 import android.graphics.Bitmap;
 
-public class AndroidGraphicsContext {
+public class AndroidGraphicsContext implements ISurfaceContext {
 	// the actual canvas we use to draw to
 	public Canvas canvas;
 
@@ -27,6 +27,10 @@ public class AndroidGraphicsContext {
 	public void restoreCurrentMatrix()
 	{
 		canvas.restore();
+	}
+
+	public Canvas getCanvas() {
+		return canvas;
 	}
 }
 

@@ -36,7 +36,8 @@ namespace Fuse.Drawing
 		"android.graphics.Matrix",
 		"android.graphics.PorterDuff.Mode",
 		"com.fusetools.drawing.surface.AndroidGraphicsContext",
-		"com.fusetools.drawing.surface.LinearGradientStore"
+		"com.fusetools.drawing.surface.LinearGradientStore",
+		"com.fusetools.drawing.surface.ISurfaceContext"
 	)]
 	[ForeignInclude(Language.Java,
 		"java.nio.ByteBuffer",
@@ -154,7 +155,7 @@ namespace Fuse.Drawing
 
 			_drawContext.PushRenderTarget(fb);
 			AndroidGraphicsDrawHelper.Singleton.DrawImageFill(tex);
-			Java.Object imageRef = LoadImage(_context, (int)tex.GLTextureHandle, src.PixelSize.X, src.PixelSize.Y );
+			Java.Object imageRef = LoadImage((int)tex.GLTextureHandle, src.PixelSize.X, src.PixelSize.Y );
 			FramebufferPool.Release(fb);
 			_drawContext.PopRenderTarget();
 
@@ -162,9 +163,8 @@ namespace Fuse.Drawing
 		}
 
 		[Foreign(Language.Java)]
-		static Java.Object LoadImage(Java.Object cp, int glTextureId, int width, int height)
+		static Java.Object LoadImage(int glTextureId, int width, int height)
 		@{
-			AndroidGraphicsContext ctx = (AndroidGraphicsContext)cp;
 			int size = width * height * 4;
 			int[] pixels = new int[size];
 
@@ -258,7 +258,7 @@ namespace Fuse.Drawing
 
 		static void FillPathSolidColor(Java.Object cp, Java.Object pathAsObject, int color, bool eoFill, Java.Object pretendPaint)
 		@{
-			AndroidGraphicsContext context = (AndroidGraphicsContext) cp;
+			ISurfaceContext context = (ISurfaceContext) cp;
 			Path path = (Path) pathAsObject;
 
 			path.setFillType(eoFill ? Path.FillType.EVEN_ODD : Path.FillType.WINDING);
@@ -270,7 +270,7 @@ namespace Fuse.Drawing
 			}
 
 			paint.setColor(color);
-			context.canvas.drawPath(path, paint);
+			context.getCanvas().drawPath(path, paint);
 		@}
 
 		[Foreign(Language.Java)]
@@ -282,7 +282,7 @@ namespace Fuse.Drawing
 			Java.Object pretendPaint
 		)
 		@{
-			AndroidGraphicsContext context = (AndroidGraphicsContext) cp;
+			ISurfaceContext context = (ISurfaceContext) cp;
 
 			Paint paint = null;
 
@@ -304,9 +304,10 @@ namespace Fuse.Drawing
 			// and therefore needs to clip to the path before drawing
 			// On Android, we can just call `drawPath` which clips
 			// to the right area for us
-			int index = context.canvas.save();
-			context.canvas.drawPath((Path) path, paint);
-			context.canvas.restoreToCount(index);
+			Canvas canvas = context.getCanvas();
+			int index = canvas.save();
+			canvas.drawPath((Path) path, paint);
+			canvas.restoreToCount(index);
 		@}
 
 		[Foreign(Language.Java)]
@@ -323,15 +324,18 @@ namespace Fuse.Drawing
 			if (tileSizeX == 0 || tileSizeY == 0)
 				return;
 
-			AndroidGraphicsContext context = (AndroidGraphicsContext) cp;
+			ISurfaceContext context = (ISurfaceContext) cp;
+			Canvas canvas = context.getCanvas();
 			Bitmap image = (Bitmap) imageAsObject;
 			Path path = (Path) pathAsObject;
 
 			path.setFillType(eoFill ? Path.FillType.EVEN_ODD : Path.FillType.WINDING);
 
-			int index = context.canvas.save();
+			int index = canvas.save();
 
 			image.prepareToDraw();
+			canvas.translate(0.0f, (float)height);
+			canvas.scale(1, -1);
 
 			Paint paint = (Paint)paintAsObject;
 			Bitmap scaledBitmap = Bitmap.createScaledBitmap(
@@ -348,8 +352,6 @@ namespace Fuse.Drawing
 
 			BitmapShader shader = new BitmapShader(scaledBitmap, Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
 			paint.setShader(shader);
-<<<<<<< HEAD
-=======
 			paint.setStyle(Paint.Style.FILL);
 
 			// these measurements aren't actually used - but rect needs placeholder values
@@ -379,11 +381,14 @@ namespace Fuse.Drawing
 			{
 				rect.left -= originX;
 			}
->>>>>>> Surface: Start moving some code around, preparing to spilt into GL and Native implementations
 
-			context.canvas.clipPath(path);
-			context.canvas.drawPath(path, paint);
-			context.canvas.restoreToCount(index);
+			canvas.clipPath(path);
+			// translate our canvas to draw at the right location
+			// the adjustments made above to the rectangle bounds make up for this in terms of space
+			canvas.translate(originX, originY);
+
+			canvas.drawRect(rect, paint);
+			canvas.restoreToCount(index);
 		@}
 
 		/*
@@ -657,21 +662,22 @@ namespace Fuse.Drawing
 		[Foreign(Language.Java)]
 		static void SaveContextState(Java.Object cp)
 		@{
-			AndroidGraphicsContext ctx = (AndroidGraphicsContext) cp;
-			ctx.saveCurrentMatrix();
+			ISurfaceContext ctx = (ISurfaceContext) cp;
+			ctx.getCanvas().save();
 		@}
 
 		[Foreign(Language.Java)]
 		static void ConcatTransform(Java.Object cp, Java.Object m)
 		@{
-			AndroidGraphicsContext ctx = (AndroidGraphicsContext) cp;
+			ISurfaceContext ctx = (ISurfaceContext) cp;
+			Canvas canvas = ctx.getCanvas();
 			Matrix matrix = (Matrix) m;
 
-			Matrix currentMatrix = ctx.canvas.getMatrix();
+			Matrix currentMatrix = canvas.getMatrix();
 
 			boolean something = currentMatrix.preConcat(matrix);
 
-			ctx.canvas.setMatrix(currentMatrix);
+			canvas.setMatrix(currentMatrix);
 		@}
 
 		public override void PopTransform()
@@ -683,8 +689,8 @@ namespace Fuse.Drawing
 		[Foreign(Language.Java)]
 		static void RestoreContextState(Java.Object cp)
 		@{
-			AndroidGraphicsContext ctx = (AndroidGraphicsContext) cp;
-			ctx.restoreCurrentMatrix();
+			ISurfaceContext ctx = (ISurfaceContext) cp;
+			ctx.getCanvas().restore();
 		@}
 
 		[Foreign(Language.Java)]
