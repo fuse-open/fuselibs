@@ -35,5 +35,6 @@
     "Android/Java/HorizontalScrollView.java:Java:Android",
     "Android/Java/VerticalScrollView.java:Java:Android",
     "Android/Java/ViewGroup.java:Java:Android",
+    "Android/Java/CanvasViewGroup.java:Java:Android",
   ]
 }
