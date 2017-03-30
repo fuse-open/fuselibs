@@ -8,6 +8,7 @@
     "Fuse.Controls.Panels",
     "Fuse.Controls.Primitives",
     "Fuse.Drawing.Surface.Test",
+    "Fuse.Controls.Native",
   ],
   "Packages": [
     "Uno.Collections",

@@ -203,6 +203,10 @@ namespace Fuse.Controls
 				}
 				return appearance;
 			}
+			else if (e is ISurfaceDrawable)
+			{
+				return new Fuse.Controls.Native.Android.CanvasViewGroup((ISurfaceDrawable)e);
+			}
 			else
 			{
 				return ViewFactory.InstantiateViewGroup();

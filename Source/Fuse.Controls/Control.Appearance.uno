@@ -25,6 +25,18 @@ namespace Fuse.Controls
 			}
 		}
 
+		protected override void OnInvalidateVisual()
+		{
+			base.OnInvalidateVisual();
+			if defined(Android)
+			{
+				if (ViewHandle != null)
+				{
+					ViewHandle.Invalidate();
+				}
+			}
+		}
+
 		protected virtual void PushPropertiesToNativeView()
 		{
 			// To be overridden in subclasses

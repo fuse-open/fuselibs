@@ -124,6 +124,19 @@ namespace Fuse.Controls.Native
 		@}
 
 		[Foreign(Language.Java)]
+		void InvalidateImpl()
+		@{
+			android.view.View handle = (android.view.View)@{Fuse.Controls.Native.ViewHandle:Of(_this).NativeHandle:Get()};
+			handle.invalidate();
+		@}
+
+		public void Invalidate()
+		{
+			if (IsViewGroup())
+				InvalidateImpl();
+		}
+
+		[Foreign(Language.Java)]
 		public string Format()
 		@{
 			java.lang.Object handle = @{Fuse.Controls.Native.ViewHandle:Of(_this).NativeHandle:Get()};

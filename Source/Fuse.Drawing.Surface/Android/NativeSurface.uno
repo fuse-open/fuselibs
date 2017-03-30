@@ -38,7 +38,7 @@ namespace Fuse.Drawing
 		"java.nio.FloatBuffer"
 	)]
 	extern(Android)
-	class NativeSurface : AndroidSurface
+	internal class NativeSurface : AndroidSurface
 	{
 		protected sealed override Java.Object SurfaceContext
 		{
@@ -46,21 +46,39 @@ namespace Fuse.Drawing
 		}
 
 		Java.Object _context;
+		Java.Object _canvas;
 
-		public NativeSurface(Java.Object canvas)
+		public NativeSurface()
 		{
-			_context = NewContext(canvas);
+			_context = NewContext(GetCanvas);
+			_canvas = NewCanvas();
+		}
+
+		Java.Object GetCanvas()
+		{
+			return _canvas;
 		}
 
 		[Foreign(Language.Java)]
-		static Java.Object NewContext(Java.Object canvas)
+		static Java.Object NewContext(Func<Java.Object> getCanvasFunc)
 		@{
 			return new ISurfaceContext() {
 				public Canvas getCanvas() {
-					return (Canvas)canvas;
+					return (Canvas)getCanvasFunc.run();
 				}
 			};
 		@}
+
+		[Foreign(Language.Java)]
+		static Java.Object NewCanvas()
+		@{
+			return new Canvas();
+		@}
+
+		public void SetCanvas(Java.Object canvas)
+		{
+			_canvas = canvas;
+		}
 
 		public override void Begin(DrawContext dc, framebuffer fb, float pixelsPerPoint)
 		{
@@ -85,6 +103,7 @@ namespace Fuse.Drawing
 		{
 			base.Dispose();
 			_context = null;
+			_canvas = null;
 		}
 	}
 }
