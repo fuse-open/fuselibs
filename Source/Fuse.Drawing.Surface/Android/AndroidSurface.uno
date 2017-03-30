@@ -35,9 +35,9 @@ namespace Fuse.Drawing
 		"android.graphics.PorterDuffXfermode",
 		"android.graphics.Matrix",
 		"android.graphics.PorterDuff.Mode",
-		"com.fusetools.drawing.surface.AndroidGraphicsContext",
 		"com.fusetools.drawing.surface.LinearGradientStore",
-		"com.fusetools.drawing.surface.ISurfaceContext"
+		"com.fusetools.drawing.surface.ISurfaceContext",
+		"com.fusetools.drawing.surface.GraphicsSurfaceContext"
 	)]
 	[ForeignInclude(Language.Java,
 		"java.nio.ByteBuffer",
@@ -63,14 +63,7 @@ namespace Fuse.Drawing
 		[Foreign(Language.Java)]
 		static Java.Object NewContext()
 		@{
-			// create an empty canvas
-			// this gets populated with a bitmap on `Begin`
-			Canvas c = new Canvas();
-
-			AndroidGraphicsContext context = new AndroidGraphicsContext();
-			context.canvas = c;
-
-			return context;
+			return new GraphicsSurfaceContext();
 		@}
 
 		framebuffer _buffer;
@@ -101,26 +94,52 @@ namespace Fuse.Drawing
 		[Foreign(Language.Java)]
 		public static extern(Android) void LoadBitmap(Java.Object context, int width, int height)
 		@{
-			AndroidGraphicsContext impl = (AndroidGraphicsContext) context;
+			GraphicsSurfaceContext impl = (GraphicsSurfaceContext) context;
 			Bitmap b = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
 
-			impl.canvas.setBitmap(b);
+			Canvas canvas = impl.getCanvas();
+			canvas.setBitmap(b);
 			impl.bitmap = b;
 
-			impl.canvas.setMatrix(null);
+			canvas.setMatrix(null);
 
 			// invert our bitmap since the Android canvas is inversed when drawing
-			impl.canvas.translate(0.0f, (float)height);
-			impl.canvas.scale(1, -1);
+			canvas.translate(0.0f, (float)height);
+			canvas.scale(1, -1);
 		@}
 
 		[Foreign(Language.Java)]
 		static void BeginImpl(Java.Object _context, int width, int height, int glTextureId)
 		@{
-			AndroidGraphicsContext context = (AndroidGraphicsContext) _context;
+			GraphicsSurfaceContext context = (GraphicsSurfaceContext) _context;
 			context.width = width;
 			context.height = height;
 			context.glTextureId = glTextureId;
+		@}
+
+		/**
+			Ends drawing. All drawing called after `Begin` and to now must be completed by now. This copies the resulting image to the desired output setup in `Begin`.
+		*/
+		public override void End()
+		{
+			var impl = SurfaceContext;
+
+			if (impl == null) return;
+			EndImpl(impl);
+		}
+
+		[Foreign(Language.Java)]
+		static void EndImpl(Java.Object context)
+		@{
+			GraphicsSurfaceContext realContext = (GraphicsSurfaceContext) context;
+
+			GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, realContext.glTextureId);
+
+			// heat up the caches. not needed but good to have
+			realContext.bitmap.prepareToDraw();
+
+			GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, realContext.bitmap, 0);
+			realContext.bitmap.recycle();
 		@}
 
 		/*
@@ -190,7 +209,6 @@ namespace Fuse.Drawing
 		"android.graphics.PorterDuffXfermode",
 		"android.graphics.Matrix",
 		"android.graphics.PorterDuff.Mode",
-		"com.fusetools.drawing.surface.AndroidGraphicsContext",
 		"com.fusetools.drawing.surface.LinearGradientStore",
 		"com.fusetools.drawing.surface.ISurfaceContext"
 	)]
@@ -224,7 +242,7 @@ namespace Fuse.Drawing
 				throw new Exception( "Object disposed" );
 		}
 
-		protected virtual void VerifyBegun() {}
+		protected abstract void VerifyBegun();
 
 		public override void PushTransform( float4x4 t )
 		{
@@ -520,31 +538,6 @@ namespace Fuse.Drawing
 		{
 			_pixelsPerPoint = pixelsPerPoint;
 		}
-
-		/**
-			Ends drawing. All drawing called after `Begin` and to now must be completed by now. This copies the resulting image to the desired output setup in `Begin`.
-		*/
-		public override void End()
-		{
-			var impl = SurfaceContext;
-
-			if (impl == null) return;
-			EndImpl(impl);
-		}
-
-		[Foreign(Language.Java)]
-		static void EndImpl(Java.Object context)
-		@{
-			AndroidGraphicsContext realContext = (AndroidGraphicsContext) context;
-
-			GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, realContext.glTextureId);
-
-			// heat up the caches. not needed but good to have
-			realContext.bitmap.prepareToDraw();
-
-			GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, realContext.bitmap, 0);
-			realContext.bitmap.recycle();
-		@}
 
 		/**
 			Prepares this brush for drawing. If this is called a second time with the same `Brush` it indicates the properties of that brush have changed.
