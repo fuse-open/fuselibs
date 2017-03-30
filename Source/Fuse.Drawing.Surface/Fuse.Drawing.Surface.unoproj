@@ -26,7 +26,7 @@
     "Android/AndroidGraphicsContext.java:Java:Android",
     "Android/ISurfaceContext.java:Java:Android",
     "Android/LinearGradientStore.java:Java:Android",
-    "Android/GraphicsSurface.java:Java:Android",
+    "Android/GraphicsSurfaceContext.java:Java:Android",
   ],
   "Excludes": [
     "Tests/",
