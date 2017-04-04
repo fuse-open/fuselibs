@@ -11,8 +11,6 @@ namespace Fuse.Controls
 
 		public Visual GraphicsVisual {	get; internal set; }
 
-		public ViewHandle ViewHandle { get; internal set; }
-
 		IView _nativeView;
 		public IView NativeView
 		{

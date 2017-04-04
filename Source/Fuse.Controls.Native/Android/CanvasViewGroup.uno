@@ -6,7 +6,7 @@ using Fuse.Drawing;
 namespace Fuse.Controls.Native.Android
 {
 	extern(Android)
-	public class CanvasViewGroup : ViewHandle
+	public class CanvasViewGroup : ViewHandle, INativeSurfaceOwner
 	{
 
 		ISurfaceDrawable _surfaceDrawable;
@@ -17,12 +17,26 @@ namespace Fuse.Controls.Native.Android
 			InstallDrawlistener(NativeHandle, OnDraw);
 		}
 
-		NativeSurface _nativeSurface = new NativeSurface();
+		NativeSurface _nativeSurface;
+		
+		internal Surface INativeSurfaceOwner.GetSurface()
+		{
+			if (_nativeSurface == null)
+				_nativeSurface = new NativeSurface();
+			return _nativeSurface;
+		}
 
 		void OnDraw(Java.Object canvas)
 		{
-			_nativeSurface.SetCanvas(canvas);
+			if (_nativeSurface == null)
+			{
+				Fuse.Diagnostics.InternalError( "Attempt to draw native canvas without surface", this );
+				return;
+			}
+			
+			_nativeSurface.Begin(canvas);
 			_surfaceDrawable.Draw(_nativeSurface);
+			_nativeSurface.End();
 		}
 
 		[Foreign(Language.Java)]

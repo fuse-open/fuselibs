@@ -75,7 +75,7 @@ namespace Fuse.Drawing
 			return new Canvas();
 		@}
 
-		public void SetCanvas(Java.Object canvas)
+		public void Begin(Java.Object canvas)
 		{
 			_canvas = canvas;
 		}
@@ -87,7 +87,6 @@ namespace Fuse.Drawing
 
 		public override void End()
 		{
-			throw new NotSupportedException();
 		}
 
 		protected sealed override Java.Object PrepareImageFillImpl( ImageFill img )

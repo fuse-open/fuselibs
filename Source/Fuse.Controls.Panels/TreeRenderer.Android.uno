@@ -192,6 +192,11 @@ namespace Fuse.Controls
 
 		ViewHandle InstantiateView(Element e)
 		{
+			if (e is ISurfaceDrawable && !(e is Panel))
+			{
+				return new Fuse.Controls.Native.Android.CanvasViewGroup((ISurfaceDrawable)e);
+			}
+			
 			var appearance = (InstantiateTemplate(e) ?? InstantiateViewOld(e)) as ViewHandle;
 			if (appearance != null)
 			{
@@ -202,10 +207,6 @@ namespace Fuse.Controls
 						((Control)e).NativeView = (IView)appearance;
 				}
 				return appearance;
-			}
-			else if (e is ISurfaceDrawable)
-			{
-				return new Fuse.Controls.Native.Android.CanvasViewGroup((ISurfaceDrawable)e);
 			}
 			else
 			{

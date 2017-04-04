@@ -45,6 +45,7 @@ namespace Fuse
 			}
 		}
 
+		public Fuse.Controls.Native.ViewHandle ViewHandle { get; internal set; }
 
 		// TODO: used by Input.Focus, pack these away somehow
 		internal bool _isFocusable;

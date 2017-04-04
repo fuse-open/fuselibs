@@ -78,6 +78,7 @@ namespace Fuse.Controls
 		
 		void ISurfaceDrawable.Draw(Surface surface)
 		{
+			debug_log "Shape:Draw " + ActualSize + " " + HasFills;
 			Watcher.Reset();
 			//TODO: convert to indexed loop, also other places in Shape
 			if (HasFills)

@@ -3,20 +3,39 @@ using Uno.Collections;
 
 namespace Fuse.Drawing
 {
+	internal interface INativeSurfaceOwner
+	{
+		Surface GetSurface();
+	}
+	
 	static public class SurfaceManager
 	{
 		static public Surface Create(object owner)
 		{
-			Surface c;
+			Surface c = null;
 
-			if defined(iOS||OSX)
-				c = new CoreGraphicsSurface();
-			else if defined(Android)
-				c = new GraphicsSurface();
-			else if defined(DOTNET)
-				c = new DotNetSurface();
-			else
-				throw new Exception( "Unsupported backend for Surface");
+			var v = owner as Visual;
+			if (v != null && v.VisualContext == VisualContext.Native)
+			{
+				if defined(Android||iOS)
+				{
+					var nativeOwner = v.ViewHandle as INativeSurfaceOwner;
+					if (nativeOwner != null)
+						c = nativeOwner.GetSurface();
+				}
+			}
+
+			if (c == null)
+			{
+				if defined(iOS||OSX)
+					c = new CoreGraphicsSurface();
+				else if defined(Android)
+					c = new GraphicsSurface();
+				else if defined(DOTNET)
+					c = new DotNetSurface();
+				else
+					throw new Exception( "Unsupported backend for Surface");
+			}
 
 			c.Owner = owner;
 			return c;
