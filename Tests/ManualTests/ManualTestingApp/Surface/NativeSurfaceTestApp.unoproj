@@ -4,7 +4,7 @@
     "Fuse"
   ],
   "Includes": [
-    "MainView.ux",
+    "NativeMainView.ux",
     "Components/*",
     "Singles/*"
   ]

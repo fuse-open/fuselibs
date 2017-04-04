@@ -11,7 +11,7 @@
 		</Rectangle>
 		
 		<Panel>
-			<FileImageSource File="../Assets/icon_close.png" ux:Name="CloseIcon" ux:AutoBind="false"/>
+			<FileImageSource File="../../Assets/icon_close.png" ux:Name="CloseIcon" ux:AutoBind="false"/>
 			<Panel HitTestMode="LocalBounds" Alignment="TopRight" Width="25" Height="25" Margin="6"
 				 ux:Name="Icon">
 				<IconInfo ux:Name="iconInfo" Color="#000"/>
