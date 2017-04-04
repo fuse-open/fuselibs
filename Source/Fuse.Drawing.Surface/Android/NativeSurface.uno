@@ -51,7 +51,6 @@ namespace Fuse.Drawing
 		public NativeSurface()
 		{
 			_context = NewContext(GetCanvas);
-			_canvas = NewCanvas();
 		}
 
 		Java.Object GetCanvas()
@@ -69,12 +68,6 @@ namespace Fuse.Drawing
 			};
 		@}
 
-		[Foreign(Language.Java)]
-		static Java.Object NewCanvas()
-		@{
-			return new Canvas();
-		@}
-
 		public void Begin(Java.Object canvas)
 		{
 			_canvas = canvas;
@@ -87,6 +80,7 @@ namespace Fuse.Drawing
 
 		public override void End()
 		{
+			_canvas = null;
 		}
 
 		protected sealed override Java.Object PrepareImageFillImpl( ImageFill img )
@@ -96,6 +90,8 @@ namespace Fuse.Drawing
 
 		protected sealed override void VerifyBegun()
 		{
+			if (_canvas == null)
+				throw new Exception( "Canvas.Begin was not called" );
 		}
 
 		public override void Dispose()
