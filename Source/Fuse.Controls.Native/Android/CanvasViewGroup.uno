@@ -34,9 +34,9 @@ namespace Fuse.Controls.Native.Android
 				return;
 			}
 			
-			_nativeSurface.Begin(canvas);
-			_surfaceDrawable.Draw(_nativeSurface);
-			_nativeSurface.End();
+ 			_nativeSurface.Begin(canvas,1);
+ 			_surfaceDrawable.Draw(_nativeSurface);
+ 			_nativeSurface.End();
 		}
 
 		[Foreign(Language.Java)]

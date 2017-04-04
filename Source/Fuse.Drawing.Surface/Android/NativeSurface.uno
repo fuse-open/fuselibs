@@ -68,9 +68,10 @@ namespace Fuse.Drawing
 			};
 		@}
 
-		public void Begin(Java.Object canvas)
+		public void Begin(Java.Object canvas, float pixelsPerPoint)
 		{
 			_canvas = canvas;
+			_pixelsPerPoint = pixelsPerPoint;
 		}
 
 		public override void Begin(DrawContext dc, framebuffer fb, float pixelsPerPoint)
@@ -85,8 +86,15 @@ namespace Fuse.Drawing
 
 		protected sealed override Java.Object PrepareImageFillImpl( ImageFill img )
 		{
-			throw new NotImplementedException();
+			//TODO: must be completed, or least a warning and the empty item cached.
+			return DummyBitmap();
 		}
+		
+		[Foreign(Language.Java)]
+		static Java.Object DummyBitmap()
+		@{
+			return Bitmap.createBitmap(10,10,Bitmap.Config.ARGB_8888);
+		@}
 
 		protected sealed override void VerifyBegun()
 		{

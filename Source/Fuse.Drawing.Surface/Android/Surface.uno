@@ -51,7 +51,7 @@ namespace Fuse.Drawing
 
 		protected abstract Java.Object SurfaceContext { get; }
 
-		float _pixelsPerPoint;
+		protected float _pixelsPerPoint;
 
 		public override void Dispose()
 		{

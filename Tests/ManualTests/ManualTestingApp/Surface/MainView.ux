@@ -1,4 +1,5 @@
 <App Background="#eee" >
+	<NativeViewHost>
 	<ClientPanel Background="1,0,1,1">
 		<TextBlock ux:Class="h2" TextWrapping="Wrap" Margin="-8,10,-8,10" TextColor="0,0,0.2,1"
 			FontSize="22" Padding="5,2,5,0">
@@ -61,5 +62,6 @@
 			<Pages.Resources/>
 		</PageControl>
 	</ClientPanel>
+	</NativeViewHost>
 </App>
 
