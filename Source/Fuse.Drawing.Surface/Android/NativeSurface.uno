@@ -89,7 +89,7 @@ namespace Fuse.Drawing
 			//TODO: must be completed, or least a warning and the empty item cached.
 			return DummyBitmap();
 		}
-		
+
 		[Foreign(Language.Java)]
 		static Java.Object DummyBitmap()
 		@{
