@@ -35,7 +35,6 @@
   "Includes": [
     "AppRoot.uno:SourceFile",
     "iOSApp.uno:SourceFile",
-    "iOSDevice.uno:SourceFile",
     "iOSInterop.uno:SourceFile",
     "StatusBarConfig.uno:SourceFile",
     "Support.uno:SourceFile"
