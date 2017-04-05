@@ -359,7 +359,6 @@ namespace Fuse.Controls
 
 			OnLoadingResourceRooted();
 			
-			//TODO: NeedSurface must consider the TreeRenderer
 			_surface = NeedSurface ? SurfaceManager.FindOrCreate(this) : SurfaceManager.Find(this);
 			if (_surface != null)
 				OnSurfaceRooted();

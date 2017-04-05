@@ -7,6 +7,11 @@ namespace Fuse.Controls
 {
 	public partial class Rectangle
 	{
+		protected override bool NeedSurface 
+		{ 
+			get { return VisualContext != VisualContext.Graphics; }
+		}
+		
 		protected override SurfacePath CreateSurfacePath(Surface surface)
 		{
 			var rs = ActualSize;
