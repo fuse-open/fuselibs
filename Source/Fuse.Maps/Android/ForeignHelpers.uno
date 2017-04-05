@@ -128,10 +128,10 @@ namespace Fuse.Maps.Android
 		@}
 
 		[Foreign(Language.Java)]
-		internal static string AddMarker(Java.Object handle, double lat, double lng, String label, String iconPath, float iconAnchorX, float iconAnchorY)
+		internal static string AddMarker(Java.Object handle, double lat, double lng, String label, String iconPath, float iconAnchorX, float iconAnchorY, int uid)
 		@{
 			FuseMap map = (FuseMap)handle;
-			return map.addMarker(lat, lng, label, iconPath, iconAnchorX, iconAnchorY);
+			return map.addMarker(lat, lng, label, iconPath, iconAnchorX, iconAnchorY, uid);
 		@}
 
 		[Foreign(Language.Java)]
@@ -165,11 +165,11 @@ namespace Fuse.Maps.Android
 			Action onAnimationBegin,
 			Action onAnimationEnd,
 			Action<double, double> handleCameraChange,
-			Action<string, string> handleMarkerPressed,
+			Action<int, string> handleMarkerPressed,
 			Action<int, float, float> handleTouchEvent
 		)
 		@{
-			FuseMap map = (FuseMap)handle;
+			final FuseMap map = (FuseMap)handle;
 			map.SetCallback(new FuseMap.FuseMapCallback() {
 				@Override
 				public void onReady() {
@@ -196,8 +196,8 @@ namespace Fuse.Maps.Android
 					handleCameraChange.run(latitude, longitude);
 				}
 				@Override
-				public boolean onMarkerPress(String title, String id) {
-					handleMarkerPressed.run(title, id);
+				public boolean onMarkerPress(com.google.android.gms.maps.model.Marker m) {
+					handleMarkerPressed.run(map.getIdforMarker(m), m.getTitle());
 					return false;
 				}
 				@Override

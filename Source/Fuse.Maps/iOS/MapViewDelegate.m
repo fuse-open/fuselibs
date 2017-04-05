@@ -51,6 +51,7 @@
 	@property(copy) NSString* icon;
 	@property float iconX;
 	@property float iconY;
+	@property int markerID;
 @end
 
 @implementation FusePinAnnotation
@@ -169,8 +170,10 @@
 
 	-(void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view
 	{
-		if(markerSelectBlock)
-			markerSelectBlock([[view annotation] title]);
+		if(markerSelectBlock){
+			FusePinAnnotation* a = [view annotation];
+			markerSelectBlock(a.markerID, a.title);
+		}
 	}
 
 	-(int)addMarker:(NSString*)label 
@@ -179,6 +182,7 @@
 		icon:(NSString*)iconPath
 		iconX:(float)iconX
 		iconY:(float)iconY
+		markerID:(int)markerID
 	{
 		FusePinAnnotation* a = [[FusePinAnnotation alloc] init];
 		a.coordinate = CLLocationCoordinate2DMake(lat,lng);
@@ -186,6 +190,7 @@
 		a.icon = iconPath;
 		a.iconX = iconX;
 		a.iconY = iconY;
+		a.markerID = markerID;
 		[_mapView addAnnotation:a];
 		[self nextId];
 		[_annotations setObject:a forKey:\@(_idPool)];
@@ -233,7 +238,7 @@
 		}
 	}
 
-	-(void)setMarkerSelectAction:(void(^)(NSString*))action
+	-(void)setMarkerSelectAction:(void(^)(int, NSString*))action
 	{
 		id previous = markerSelectBlock;
 		markerSelectBlock = action;

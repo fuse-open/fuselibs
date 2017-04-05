@@ -42,7 +42,17 @@ namespace Fuse.Controls
 	*/
 	public class MapMarker : Node
 	{
-
+		static int UID_POOL = 0;
+		internal int uid = UID_POOL++;
+		public delegate void MarkerTappedHandler(object sender, EventArgs args);
+		public event MarkerTappedHandler Tapped;
+		
+		internal void HandleTapped()
+		{
+			if (Tapped != null)
+				Tapped(this, new EventArgs());
+		}
+		
 		string _label;
 		public string Label {
 			get

@@ -18,6 +18,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import java.util.Map;
+import java.util.HashMap;
 
 public class FuseMap extends FrameLayout {
 
@@ -31,7 +33,7 @@ public class FuseMap extends FrameLayout {
 		void onAnimationStart();
 		void onAnimationStop();
 		void onCameraChange(double latitude, double longitude, double zoom, double tilt, double bearing);
-		boolean onMarkerPress(String title, String id);
+		boolean onMarkerPress(Marker m);
 		boolean onTouchEvent(int action, float x, float y);
 	}
 
@@ -39,6 +41,7 @@ public class FuseMap extends FrameLayout {
 	private GoogleMap _googleMap;
 	private MapView _mapView;
 	private boolean _isAnimating;
+	private Map<Marker, Integer> _markerIDs;
 
 	public FuseMap()
 	{
@@ -46,6 +49,7 @@ public class FuseMap extends FrameLayout {
 		MapsInitializer.initialize(com.fuse.Activity.getRootActivity());
 		_mapView = new MapView(com.fuse.Activity.getRootActivity());
 		addView(_mapView);
+		_markerIDs = new HashMap<Marker,Integer>();
 
 		_mapView.getMapAsync(new OnMapReadyCallback()
 		{
@@ -55,6 +59,11 @@ public class FuseMap extends FrameLayout {
 				configure(googleMap);
 			}
 		});
+	}
+	
+	public int getIdforMarker(Marker m)
+	{
+		return _markerIDs.get(m);
 	}
 	
 	@Override
@@ -77,6 +86,7 @@ public class FuseMap extends FrameLayout {
 		_callback = null;
 		_googleMap = null;
 		_mapView = null;
+		_markerIDs = null;
 		_isAnimating = false;
 	}
 
@@ -137,7 +147,7 @@ public class FuseMap extends FrameLayout {
 
 	private boolean onMarkerPress(Marker marker)
 	{
-		return _callback.onMarkerPress(marker.getTitle(), marker.getId());
+		return _callback.onMarkerPress(marker);
 	}
 
 	void onMapLongPress(LatLng latLng)
@@ -163,12 +173,7 @@ public class FuseMap extends FrameLayout {
 
 	/* Markers */
 
-	public String addMarker(double lat, double lng)
-	{
-		return addMarker(lat, lng, null, null, 0.5f, 0.5f);
-	}
-
-	public String addMarker(double lat, double lng, String label, String iconPath, float iconAnchorX, float iconAnchorY)
+	public String addMarker(double lat, double lng, String label, String iconPath, float iconAnchorX, float iconAnchorY, int uid)
 	{
 		MarkerOptions opt = new MarkerOptions().position(new LatLng(lat, lng));
 		if(iconPath!=null)
@@ -176,7 +181,9 @@ public class FuseMap extends FrameLayout {
 			opt.icon(BitmapDescriptorFactory.fromPath(iconPath)).anchor(iconAnchorX, iconAnchorY);
 		}
 		if(label!=null) opt.title(label);
-		return _googleMap.addMarker(opt).getId();
+		Marker m =  _googleMap.addMarker(opt);
+		_markerIDs.put(m, uid);
+		return m.getId();
 	}
 
 	/* Camera */
@@ -235,6 +242,7 @@ public class FuseMap extends FrameLayout {
 	}
 
 	public void clear(){
+		_markerIDs.clear();
 		_googleMap.clear();
 	}
 

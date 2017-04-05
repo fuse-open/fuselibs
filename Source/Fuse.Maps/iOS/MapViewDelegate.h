@@ -19,13 +19,14 @@ typedef void (^TouchesEventBlock)(NSSet * touches, UIEvent * event);
 	-(double)getZoomLevel;
 	-(void)setMapMoveAction:(void(^)(bool))action;
 	-(void)setMapTouchAction:(void(^)(int, double, double))action;
-	-(void)setMarkerSelectAction:(void(^)(NSString*))action;
+	-(void)setMarkerSelectAction:(void(^)(int, NSString*))action;
 	-(int)addMarker:(NSString*)label 
 	latitude:(double)lat 
 	longitude:(double)lng
 	icon:(NSString*)iconPath
 	iconX:(float)iconX
 	iconY:(float)iconY;
+	markerID:(int)markerID;
 	-(BOOL)authorized;
 	-(void)removeMarker:(int)identifier;
 	-(void)clearMarkers;
@@ -34,6 +35,6 @@ typedef void (^TouchesEventBlock)(NSSet * touches, UIEvent * event);
 	-(void)moveTo:(double)lat longitude:(double)l zoom:(double)z tilt:(double)t orientation:(double)o;
 	@property (nonatomic, strong) void (^mapMoveBlock)(bool);
 	@property (nonatomic, strong) void (^touchBlock)(int type, double x, double y);
-	@property (nonatomic, strong) void (^markerSelectBlock)(NSString* label);
+	@property (nonatomic, strong) void (^markerSelectBlock)(int id, NSString* label);
 	@property (nonatomic, strong) void (^authChangeBlock)(bool authorized);
 @end
