@@ -195,9 +195,9 @@ namespace Fuse.Controls
 			var sd = e as ISurfaceDrawable;
 			if (sd != null && sd.IsPrimary)
 			{
-				return new Fuse.Controls.Native.Android.CanvasViewGroup(sd);
+				return new Fuse.Controls.Native.Android.CanvasViewGroup(sd, e.Viewport.PixelsPerPoint);
 			}
-			
+
 			var appearance = (InstantiateTemplate(e) ?? InstantiateViewOld(e)) as ViewHandle;
 			if (appearance != null)
 			{

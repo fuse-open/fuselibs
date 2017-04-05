@@ -10,15 +10,17 @@ namespace Fuse.Controls.Native.Android
 	{
 
 		ISurfaceDrawable _surfaceDrawable;
+		float _pixelsPerPoint;
 
-		public CanvasViewGroup(ISurfaceDrawable surfaceDrawable) : base(Instantiate())
+		public CanvasViewGroup(ISurfaceDrawable surfaceDrawable, float pixelsPerPoint) : base(Instantiate())
 		{
 			_surfaceDrawable = surfaceDrawable;
+			_pixelsPerPoint = pixelsPerPoint;
 			InstallDrawlistener(NativeHandle, OnDraw);
 		}
 
 		NativeSurface _nativeSurface;
-		
+
 		internal Surface INativeSurfaceOwner.GetSurface()
 		{
 			if (_nativeSurface == null)
@@ -35,8 +37,8 @@ namespace Fuse.Controls.Native.Android
 				//Fuse.Diagnostics.InternalError( "Attempt to draw native canvas without surface", this );
 				return;
 			}
-			
- 			_nativeSurface.Begin(canvas,1);
+
+ 			_nativeSurface.Begin(canvas, _pixelsPerPoint);
  			_surfaceDrawable.Draw(_nativeSurface);
  			_nativeSurface.End();
 		}
