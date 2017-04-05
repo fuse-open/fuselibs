@@ -11,6 +11,8 @@
 ## Fuse.Box / Fuse.Ray
 - Uno.Geometry.Box and Uno.Geometry.Ray has been replaced with Fuse.Box and Fuse.Ray.
 
+## MapView
+- Added `<MapMarker Tapped="{myHandler}"/>` to retain the data context for each tapped marker.
 
 ## 1.0
 
