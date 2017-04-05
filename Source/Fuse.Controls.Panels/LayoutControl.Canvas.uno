@@ -102,8 +102,12 @@ namespace Fuse.Controls
 		{
 			if (_surface == null)
 			{
-				Fuse.Diagnostics.InternalError( "LayouControl not properly rooted in Surface", this );
+				Fuse.Diagnostics.InternalError( "LayoutControl not properly rooted in Surface", this );
 				return;
+			}
+			if (_surface.Surface != surface)
+			{
+				Fuse.Diagnostics.InternalError( "Mismatched surface", this );
 			}
 
 			_surface.Watcher.Reset();

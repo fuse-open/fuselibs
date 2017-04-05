@@ -87,6 +87,12 @@ namespace Fuse.Drawing
 			SaveContextState(SurfaceContext);
 			ConcatTransform(SurfaceContext, ToMatrix(t, _pixelsPerPoint));
 		}
+		
+		public override void PopTransform()
+		{
+			VerifyBegun();
+			RestoreContextState(SurfaceContext);
+		}
 
 		public override SurfacePath CreatePath( IList<LineSegment> segments, FillRule fillRule = FillRule.NonZero)
 		{
@@ -551,10 +557,10 @@ namespace Fuse.Drawing
 		@}
 
 		[Foreign(Language.Java)]
-		static void SaveContextState(Java.Object cp)
+		static int SaveContextState(Java.Object cp)
 		@{
 			GraphicsSurfaceContext ctx = (GraphicsSurfaceContext) cp;
-			ctx.canvas.save();
+			return ctx.canvas.save();
 		@}
 
 		[Foreign(Language.Java)]
@@ -564,18 +570,8 @@ namespace Fuse.Drawing
 			Canvas canvas = ctx.canvas;
 			Matrix matrix = (Matrix) m;
 
-			Matrix currentMatrix = canvas.getMatrix();
-
-			boolean something = currentMatrix.preConcat(matrix);
-
-			canvas.setMatrix(currentMatrix);
+			canvas.concat(matrix);
 		@}
-
-		public override void PopTransform()
-		{
-			VerifyBegun();
-			RestoreContextState(SurfaceContext);
-		}
 
 		[Foreign(Language.Java)]
 		static void RestoreContextState(Java.Object cp)

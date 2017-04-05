@@ -1,4 +1,5 @@
 {
+  "BuildDirectory": "nativeBuild",
   "RootNamespace": "",
   "Packages": [
     "Fuse"
