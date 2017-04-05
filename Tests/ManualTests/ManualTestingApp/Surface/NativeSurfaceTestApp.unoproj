@@ -1,5 +1,6 @@
 {
   "BuildDirectory": "nativeBuild",
+  "CacheDirectory": "nativeUno",
   "RootNamespace": "",
   "Packages": [
     "Fuse"

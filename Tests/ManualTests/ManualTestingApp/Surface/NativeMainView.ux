@@ -1,4 +1,6 @@
 <App Background="#eee" >
+	<Android.StatusBarConfig Color="#000" IsVisible="True" />
+	<iOS.StatusBarConfig Style="Light"/>
 	<NativeViewHost>
 		<RootPanel/>
 	</NativeViewHost>
