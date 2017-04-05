@@ -83,7 +83,6 @@ namespace Fuse.Drawing
 
 		public override void PushTransform( float4x4 t )
 		{
-			debug_log "Pushing: " +t.M41 +"," + t.M42;
 			VerifyBegun();
 			SaveContextState(SurfaceContext);
 			ConcatTransform(SurfaceContext, ToMatrix(t, _pixelsPerPoint));

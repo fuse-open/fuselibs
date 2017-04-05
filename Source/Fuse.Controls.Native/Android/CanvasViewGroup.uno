@@ -16,7 +16,6 @@ namespace Fuse.Controls.Native.Android
 		{
 			_surfaceDrawable = surfaceDrawable;
 			_pixelsPerPoint = pixelsPerPoint;
-			InstallDrawlistener(NativeHandle, OnDraw);
 		}
 
 		NativeSurface _nativeSurface;
@@ -24,7 +23,10 @@ namespace Fuse.Controls.Native.Android
 		internal Surface INativeSurfaceOwner.GetSurface()
 		{
 			if (_nativeSurface == null)
+			{
+				InstallDrawlistener(NativeHandle, OnDraw);
 				_nativeSurface = new NativeSurface();
+			}
 			return _nativeSurface;
 		}
 
@@ -32,9 +34,7 @@ namespace Fuse.Controls.Native.Android
 		{
 			if (_nativeSurface == null)
 			{
-				//TODO: Unless "GetSurface" is called the draw listener should even be installed. This could
-				//be part of a VectorLayer and drawn at a higher level.
-				//Fuse.Diagnostics.InternalError( "Attempt to draw native canvas without surface", this );
+				Fuse.Diagnostics.InternalError( "Attempt to draw native canvas without surface", this );
 				return;
 			}
 
