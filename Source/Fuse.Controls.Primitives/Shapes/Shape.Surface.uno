@@ -106,6 +106,8 @@ namespace Fuse.Controls
 			}
 		}
 		
+		bool ISurfaceDrawable.IsPrimary { get { return true; } }
+		
 		protected SurfacePath GetSurfacePath(Surface surface)
 		{
 			if (!_surfacePathDirty && _surfacePath != null)

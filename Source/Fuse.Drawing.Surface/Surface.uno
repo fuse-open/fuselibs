@@ -143,6 +143,10 @@ namespace Fuse.Drawing
 		}
 	}
 	
+	/**
+		@advanced
+		@experimental
+	*/
 	public interface ISurfaceDrawable
 	{
 		/**
@@ -151,6 +155,13 @@ namespace Fuse.Drawing
 			The `surface` will either be the one provided by `SurfaceManager` during rooting or a compatible sub-surface. The actual drawing should be done via the surface provided here.
 		*/
 		void Draw(Surface surface);
+		
+		/**
+			Conveys if a surface is the primary method for drawing, or whether it can be drawn without using the surface (such as a Panel's background).
+			
+			@experimental It's not clear what Rectangle/Circle should return, it's false if on GL since they can draw without a surface, but false if in a NativeView. For now they'll ignore the GL aspect and just return true: that drawing path doesn't use this function anyway. This problem is that same as the TODO about `Shape.NeedSurface` in Shape.uno
+		*/
+		bool IsPrimary { get; }
 	}
 	
 }

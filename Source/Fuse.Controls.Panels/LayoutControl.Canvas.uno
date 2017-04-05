@@ -55,7 +55,7 @@ namespace Fuse.Controls
 	}
 	
 	/*
-		`Panel` and `Canvas` are both `ISurfaceDrawable` which share this code. We don't want
+		`Panel` and `VectorLayer` are both `ISurfaceDrawable` which share this code. We don't want
 		`LayoutControl` to expose `ISurfaceDrawable` though, limiting it to only those derived classes.
 		Thus they both have a small mixin component forwarding to these functions.
 	*/
@@ -105,7 +105,7 @@ namespace Fuse.Controls
 				Fuse.Diagnostics.InternalError( "LayouControl not properly rooted in Surface", this );
 				return;
 			}
-			
+
 			_surface.Watcher.Reset();
 			_surface.Watcher.Add(Background);
 			_surface.Watcher.Sync();

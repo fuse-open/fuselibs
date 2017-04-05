@@ -30,7 +30,9 @@ namespace Fuse.Controls.Native.Android
 		{
 			if (_nativeSurface == null)
 			{
-				Fuse.Diagnostics.InternalError( "Attempt to draw native canvas without surface", this );
+				//TODO: Unless "GetSurface" is called the draw listener should even be installed. This could
+				//be part of a VectorLayer and drawn at a higher level.
+				//Fuse.Diagnostics.InternalError( "Attempt to draw native canvas without surface", this );
 				return;
 			}
 			

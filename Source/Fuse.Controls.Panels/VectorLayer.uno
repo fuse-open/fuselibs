@@ -31,6 +31,8 @@ namespace Fuse.Controls
 		}
 		//End-Mixin
 		
+		bool ISurfaceDrawable.IsPrimary { get { return true; } }
+		
 		protected override void OnRooted()
 		{
 			base.OnRooted();
