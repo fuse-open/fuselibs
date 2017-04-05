@@ -3,17 +3,14 @@ package com.fusetools.drawing.surface;
 import android.graphics.Canvas;
 import android.graphics.Bitmap;
 
-public class GraphicsSurfaceContext implements ISurfaceContext {
-
-	private Canvas canvas;
+public class GraphicsSurfaceContext {
 
 	public GraphicsSurfaceContext() {
-		canvas = new Canvas();
+		canvas = new Canvas(); //TODO: wasteful in NativeCase
 	}
 
-	public Canvas getCanvas() {
-		return canvas;
-	}
+	//the current Canvas
+	public Canvas canvas;
 
 	// the underlying bitmap element that gets written to by the canvas
 	public Bitmap bitmap;

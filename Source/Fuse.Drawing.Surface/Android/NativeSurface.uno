@@ -29,7 +29,7 @@ namespace Fuse.Drawing
 		"android.graphics.Matrix",
 		"android.graphics.PorterDuff.Mode",
 		"com.fusetools.drawing.surface.LinearGradientStore",
-		"com.fusetools.drawing.surface.ISurfaceContext",
+		"com.fusetools.drawing.surface.GraphicsSurfaceContext",
 	)]
 	[ForeignInclude(Language.Java,
 		"java.nio.ByteBuffer",
@@ -40,40 +40,22 @@ namespace Fuse.Drawing
 	extern(Android)
 	internal class NativeSurface : AndroidSurface
 	{
-		protected sealed override Java.Object SurfaceContext
-		{
-			get { return _context; }
-		}
-
-		Java.Object _context;
-		Java.Object _canvas;
-
-		public NativeSurface()
-		{
-			_context = NewContext(GetCanvas);
-		}
-
-		Java.Object GetCanvas()
-		{
-			return _canvas;
-		}
-
-		[Foreign(Language.Java)]
-		static Java.Object NewContext(Func<Java.Object> getCanvasFunc)
-		@{
-			return new ISurfaceContext() {
-				public Canvas getCanvas() {
-					return (Canvas)getCanvasFunc.run();
-				}
-			};
-		@}
-
 		public void Begin(Java.Object canvas, float pixelsPerPoint)
 		{
-			_canvas = canvas;
+			SetCanvas(SurfaceContext,canvas);
 			_pixelsPerPoint = pixelsPerPoint;
+			_canvas = canvas;
 		}
 
+		Java.Object _canvas;
+		
+		[Foreign(Language.Java)]
+		static void SetCanvas(Java.Object context, Java.Object canvas)
+		@{
+			GraphicsSurfaceContext impl = (GraphicsSurfaceContext) context;
+			impl.canvas = (Canvas)canvas;
+		@}
+		
 		public override void Begin(DrawContext dc, framebuffer fb, float pixelsPerPoint)
 		{
 			throw new NotSupportedException();
@@ -81,6 +63,7 @@ namespace Fuse.Drawing
 
 		public override void End()
 		{
+			SetCanvas(SurfaceContext, null);
 			_canvas = null;
 		}
 
@@ -100,13 +83,6 @@ namespace Fuse.Drawing
 		{
 			if (_canvas == null)
 				throw new Exception( "Canvas.Begin was not called" );
-		}
-
-		public override void Dispose()
-		{
-			base.Dispose();
-			_context = null;
-			_canvas = null;
 		}
 	}
 }

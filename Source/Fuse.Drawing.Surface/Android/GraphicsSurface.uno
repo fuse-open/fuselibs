@@ -29,7 +29,6 @@ namespace Fuse.Drawing
 		"android.graphics.Matrix",
 		"android.graphics.PorterDuff.Mode",
 		"com.fusetools.drawing.surface.LinearGradientStore",
-		"com.fusetools.drawing.surface.ISurfaceContext",
 		"com.fusetools.drawing.surface.GraphicsSurfaceContext"
 	)]
 	[ForeignInclude(Language.Java,
@@ -41,24 +40,6 @@ namespace Fuse.Drawing
 	extern(Android)
 	class GraphicsSurface : AndroidSurface
 	{
-		protected sealed override Java.Object SurfaceContext
-		{
-			get { return _context; }
-		}
-
-		Java.Object _context;
-
-		public GraphicsSurface()
-		{
-			_context = NewContext();
-		}
-
-		[Foreign(Language.Java)]
-		static Java.Object NewContext()
-		@{
-			return new GraphicsSurfaceContext();
-		@}
-
 		framebuffer _buffer;
 		float2 _size;
 		DrawContext _drawContext;
@@ -90,7 +71,7 @@ namespace Fuse.Drawing
 			GraphicsSurfaceContext impl = (GraphicsSurfaceContext) context;
 			Bitmap b = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
 
-			Canvas canvas = impl.getCanvas();
+			Canvas canvas = impl.canvas;
 			canvas.setBitmap(b);
 			impl.bitmap = b;
 
@@ -175,12 +156,6 @@ namespace Fuse.Drawing
 		{
 			if (_buffer == null)
 				throw new Exception( "Canvas.Begin was not called" );
-		}
-
-		public override void Dispose()
-		{
-			base.Dispose();
-			_context = null;
 		}
 	}
 }

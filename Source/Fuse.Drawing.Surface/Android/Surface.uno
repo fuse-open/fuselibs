@@ -36,7 +36,7 @@ namespace Fuse.Drawing
 		"android.graphics.Matrix",
 		"android.graphics.PorterDuff.Mode",
 		"com.fusetools.drawing.surface.LinearGradientStore",
-		"com.fusetools.drawing.surface.ISurfaceContext"
+		"com.fusetools.drawing.surface.GraphicsSurfaceContext"
 	)]
 	[ForeignInclude(Language.Java,
 		"java.nio.ByteBuffer",
@@ -48,13 +48,24 @@ namespace Fuse.Drawing
 	extern(Android)
 	abstract class AndroidSurface : Surface
 	{
+		protected Java.Object SurfaceContext;
 
-		protected abstract Java.Object SurfaceContext { get; }
+		public AndroidSurface()
+		{
+			SurfaceContext = NewContext();
+		}
 
+		[Foreign(Language.Java)]
+		static Java.Object NewContext()
+		@{
+			return new GraphicsSurfaceContext();
+		@}
+		
 		protected float _pixelsPerPoint;
 
 		public override void Dispose()
 		{
+			SurfaceContext = null;
 			_gradientBrushes.Clear();
 
 			foreach (var item in _imageBrushes)
@@ -185,7 +196,7 @@ namespace Fuse.Drawing
 
 		static void FillPathSolidColor(Java.Object cp, Java.Object pathAsObject, int color, bool eoFill, Java.Object pretendPaint)
 		@{
-			ISurfaceContext context = (ISurfaceContext) cp;
+			GraphicsSurfaceContext context = (GraphicsSurfaceContext) cp;
 			Path path = (Path) pathAsObject;
 
 			path.setFillType(eoFill ? Path.FillType.EVEN_ODD : Path.FillType.WINDING);
@@ -197,7 +208,7 @@ namespace Fuse.Drawing
 			}
 
 			paint.setColor(color);
-			context.getCanvas().drawPath(path, paint);
+			context.canvas.drawPath(path, paint);
 		@}
 
 		[Foreign(Language.Java)]
@@ -209,7 +220,7 @@ namespace Fuse.Drawing
 			Java.Object pretendPaint
 		)
 		@{
-			ISurfaceContext context = (ISurfaceContext) cp;
+			GraphicsSurfaceContext context = (GraphicsSurfaceContext) cp;
 
 			Paint paint = null;
 
@@ -231,7 +242,7 @@ namespace Fuse.Drawing
 			// and therefore needs to clip to the path before drawing
 			// On Android, we can just call `drawPath` which clips
 			// to the right area for us
-			Canvas canvas = context.getCanvas();
+			Canvas canvas = context.canvas;
 			int index = canvas.save();
 			canvas.drawPath((Path) path, paint);
 			canvas.restoreToCount(index);
@@ -251,8 +262,8 @@ namespace Fuse.Drawing
 			if (tileSizeX == 0 || tileSizeY == 0)
 				return;
 
-			ISurfaceContext context = (ISurfaceContext) cp;
-			Canvas canvas = context.getCanvas();
+			GraphicsSurfaceContext context = (GraphicsSurfaceContext) cp;
+			Canvas canvas = context.canvas;
 			Bitmap image = (Bitmap) imageAsObject;
 			Path path = (Path) pathAsObject;
 
@@ -542,15 +553,15 @@ namespace Fuse.Drawing
 		[Foreign(Language.Java)]
 		static void SaveContextState(Java.Object cp)
 		@{
-			ISurfaceContext ctx = (ISurfaceContext) cp;
-			ctx.getCanvas().save();
+			GraphicsSurfaceContext ctx = (GraphicsSurfaceContext) cp;
+			ctx.canvas.save();
 		@}
 
 		[Foreign(Language.Java)]
 		static void ConcatTransform(Java.Object cp, Java.Object m)
 		@{
-			ISurfaceContext ctx = (ISurfaceContext) cp;
-			Canvas canvas = ctx.getCanvas();
+			GraphicsSurfaceContext ctx = (GraphicsSurfaceContext) cp;
+			Canvas canvas = ctx.canvas;
 			Matrix matrix = (Matrix) m;
 
 			Matrix currentMatrix = canvas.getMatrix();
@@ -569,8 +580,8 @@ namespace Fuse.Drawing
 		[Foreign(Language.Java)]
 		static void RestoreContextState(Java.Object cp)
 		@{
-			ISurfaceContext ctx = (ISurfaceContext) cp;
-			ctx.getCanvas().restore();
+			GraphicsSurfaceContext ctx = (GraphicsSurfaceContext) cp;
+			ctx.canvas.restore();
 		@}
 
 		[Foreign(Language.Java)]
