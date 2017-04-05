@@ -15,24 +15,23 @@ namespace Fuse.Controls
 	</NativeViewHost>
 	```
 
-	If you need to generate MapMarkers dynamically from JS, data binding and @(Each) are your friends. While we're scripting we might as well hook into the `MarkerTapped` event to detect when the user has selected a marker.
+	If you need to generate MapMarkers dynamically from JS, data binding and @(Each) are your friends. While we're scripting we might as well hook into the MapMarker's `Tapped` event to detect when the user has selected a marker.
 
 	```HTML
 	<JavaScript>
 		var Observable = require("FuseJS/Observable");
-
-		exports.markers = Observable({latitude:30.282786, longitude:-97.741736, label:"Austin, Texas"});
-
-		exports.onMarkerTapped = function(args)
-		{
-			console.log("Marker press: "+args.label);
+		module.exports = {
+			markers : Observable({latitude:30.282786, longitude:-97.741736, label:"Austin, Texas", hometown:true}),
+			onMarkerTapped : function(args) {
+				console.log("Marker tapped: "+args.data.hometown);
+			}
 		}
 	</JavaScript>
 
 	<NativeViewHost>
-		<MapView MarkerTapped={onMarkerTapped} >
+		<MapView>
 			<Each Items={markers}>
-				<MapMarker Latitude="{latitude}" Longitude="{longitude}" Label="{label}" />
+				<MapMarker Latitude="{latitude}" Longitude="{longitude}" Label="{label}" Tapped={onMarkerTapped} />
 			</Each>
 		</MapView>
 	</NativeViewHost>
