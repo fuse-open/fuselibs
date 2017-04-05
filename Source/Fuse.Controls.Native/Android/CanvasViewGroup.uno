@@ -39,7 +39,7 @@ namespace Fuse.Controls.Native.Android
 			}
 
  			_nativeSurface.Begin(canvas, _pixelsPerPoint);
- 			_surfaceDrawable.Draw(_nativeSurface);
+ 			_nativeSurface.DrawLocal(_surfaceDrawable);
  			_nativeSurface.End();
 		}
 

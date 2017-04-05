@@ -107,6 +107,7 @@ namespace Fuse.Controls
 		}
 		
 		bool ISurfaceDrawable.IsPrimary { get { return true; } }
+		float2 ISurfaceDrawable.ElementSize { get { return ActualSize; } }
 		
 		protected SurfacePath GetSurfacePath(Surface surface)
 		{

@@ -147,9 +147,7 @@ namespace Fuse.Controls
 				}
 				
 				surface.PushTransform(child.LocalTransform);
-				if (child is Element)
-					surface.SetElementSize((child as Element).ActualSize);
-				drawable.Draw(surface);
+				surface.DrawLocal(drawable);
 				surface.PopTransform();
 			}
 		}
