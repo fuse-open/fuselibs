@@ -46,7 +46,10 @@ namespace Fuse.Controls.Native.Android
 		[Foreign(Language.Java)]
 		void InstallDrawlistener(Java.Object handle, Action<Java.Object> callback)
 		@{
-			((com.fuse.android.views.CanvasViewGroup)handle).setDrawListener(new com.fuse.android.views.CanvasViewGroup.DrawListener() {
+			com.fuse.android.views.CanvasViewGroup viewGroup = (com.fuse.android.views.CanvasViewGroup)handle;
+			viewGroup.setWillNotDraw(false);
+			viewGroup.invalidate();
+			viewGroup.setDrawListener(new com.fuse.android.views.CanvasViewGroup.DrawListener() {
 				public void onDraw(android.graphics.Canvas canvas) {
 					callback.run(canvas);
 				}

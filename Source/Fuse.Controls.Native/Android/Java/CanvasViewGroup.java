@@ -6,10 +6,8 @@ public class CanvasViewGroup extends ViewGroup {
 		void onDraw(android.graphics.Canvas canvas);
 	}
 
-	public CanvasViewGroup(android.content.Context context)
-	{
+	public CanvasViewGroup(android.content.Context context) {
 		super(context);
-		setWillNotDraw(false);
 	}
 
 	DrawListener _drawListener;
