@@ -1,0 +1,9 @@
+language: csharp
+mono: latest
+os: osx
+
+install:
+  - mono Stuff/stuff.exe install Stuff
+
+script:
+  - mono Stuff/uno.exe doctor
