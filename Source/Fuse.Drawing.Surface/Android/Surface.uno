@@ -60,7 +60,7 @@ namespace Fuse.Drawing
 		@{
 			return new GraphicsSurfaceContext();
 		@}
-		
+
 		protected float _pixelsPerPoint;
 
 		public override void Dispose()
@@ -87,7 +87,7 @@ namespace Fuse.Drawing
 			SaveContextState(SurfaceContext);
 			ConcatTransform(SurfaceContext, ToMatrix(t, _pixelsPerPoint));
 		}
-		
+
 		public override void PopTransform()
 		{
 			VerifyBegun();
@@ -278,8 +278,6 @@ namespace Fuse.Drawing
 			int index = canvas.save();
 
 			image.prepareToDraw();
-			canvas.translate(0.0f, (float)height);
-			canvas.scale(1, -1);
 
 			Paint paint = (Paint)paintAsObject;
 			Bitmap scaledBitmap = Bitmap.createScaledBitmap(
