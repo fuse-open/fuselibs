@@ -1,8 +1,8 @@
-language: csharp
-mono: latest
 os: osx
 
 install:
+  - brew update
+  - brew install mono
   - mono Stuff/stuff.exe install Stuff
 
 script:
