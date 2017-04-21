@@ -1,0 +1,7 @@
+version: '{build}'
+
+install:
+  - Stuff\stuff install Stuff
+
+build_script:
+  - Stuff\uno doctor Source
