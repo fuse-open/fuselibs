@@ -34,6 +34,9 @@ namespace Fuse.Test
 
 			var list = new MiniList<string>();
 			list.Insert(0, "bar");
+			Assert.AreCollectionsEqual(new string[]{ "bar" }, list);
+			Assert.AreEqual(1, list.Count);
+			
 			list.Insert(0, "foo");
 			list.Insert(2, "baz");
 			Assert.AreCollectionsEqual(new string[]{ "foo", "bar", "baz" }, list);
@@ -90,15 +93,18 @@ namespace Fuse.Test
 		{
 			var list = new MiniList<string>();
 
-			list.Add("one");
-			Assert.AreEqual(1, list.Count);
-			Assert.IsTrue(list.Contains("one"));
-			Assert.IsTrue(list.Contains("stone".Substring(2))); //ensure it's not object equality, but value equality
-			Assert.IsFalse(list.Contains("two"));
-			Assert.AreEqual("one", list[0]);
+			for (int i=0; i < 3; ++i)
+			{
+				list.Add("one");
+				Assert.AreEqual(1, list.Count);
+				Assert.IsTrue(list.Contains("one"));
+				Assert.IsTrue(list.Contains("stone".Substring(2))); //ensure it's not object equality, but value equality
+				Assert.IsFalse(list.Contains("two"));
+				Assert.AreEqual("one", list[0]);
 
-			list.Remove("stone".Substring(2)); // remove should use value equality
-			Assert.AreEqual(0, list.Count);
+				list.Remove("stone".Substring(2)); // remove should use value equality
+				Assert.AreEqual(0, list.Count);
+			}
 		}
 
 		[Test]
@@ -139,5 +145,55 @@ namespace Fuse.Test
 			list.Add(b);
 			Assert.IsTrue(list.Contains(b));
 		}
+		
+		[Test]
+		public void IterateSimple()
+		{
+			var list = new MiniList<string>();
+			list.Add("1");
+			list.Add("2");
+			list.Add("3");
+			
+			var iter = list.GetEnumeratorStruct();
+			Assert.AreEqual("1,2,3", Join(ref iter));
+		}
+		
+		[Test]
+		//the behavior of the ObjectList versioning is more fully tested in the ObjectList code
+		public void IterateVersion()
+		{
+			var list = new MiniList<string>();
+			var it0 = list.GetEnumeratorStruct();
+			
+			list.Add("1");
+			var it1 = list.GetEnumeratorStruct();
+			
+			list.Add("2");
+			list.Add("3");
+			var it2 = list.GetEnumeratorStruct();
+			
+			list.RemoveAt(0);
+			var it3 = list.GetEnumeratorStruct();
+			
+			Assert.AreEqual("", Join(ref it0));
+			Assert.AreEqual("1",Join(ref it1));
+			Assert.AreEqual("1,2,3",Join(ref it2));
+			Assert.AreEqual("2,3",Join(ref it3));
+		}
+		
+		string Join( ref MiniList<string>.Enumerator<string> iter )
+		{
+			string c = "";
+			while (iter.MoveNext())
+			{
+				if (c != "")
+					c += ",";
+				c += iter.Current;
+			}
+			
+			iter.Dispose();
+			return c;
+		}
+		
 	}
 }
