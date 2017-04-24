@@ -25,8 +25,6 @@ Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduc
 
 Please report issues [here](https://github.com/fusetools/fuselibs-public/issues).
 
-See [Working with Issues](https://github.com/fusetools/Intranet/wiki/Working-with-Issues) for details on our issue-tracking process.
-
 ## What's this "Stuff" thing?
 
 Stuff is the tool that downloads and extracts `uno` (which is required to build fuselibs), as well as some other useful utilities. The `Stuff` directory contains `stuff.exe`, a few `.stuff`-files and a few `.packages`-files. `stuff.exe` is a tool that reads the `.stuff`-files, and download and extract them into the source tree. The dependencies specified in the `.package`-files installed lazily by `uno doctor` when needed. This is all automated in `build.bat` and `build.sh`.
