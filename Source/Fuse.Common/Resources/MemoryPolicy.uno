@@ -26,6 +26,17 @@ namespace Fuse.Resources
 			UnusedTimeout = 60,
 			UnpinInvisible = true,
 			};
+
+		[UXGlobalResource("QuickUnload")]
+		/**
+			This policy causes the resource to be loaded as required and then unloads it as soon as possible when no longer required (after a  timeout of 1s).
+			This is useful when you have several images being loaded dynamically one after the other in your app.
+		*/
+		public static MemoryPolicy QuickUnload = new MemoryPolicy{
+			UnloadInBackground = true,
+			UnusedTimeout = 1,
+			UnpinInvisible = true,
+			};
 			
 		[UXGlobalResource("UnloadInBackground")]
 		/**
