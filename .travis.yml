@@ -1,0 +1,9 @@
+os: osx
+
+install:
+  - brew update
+  - brew install mono
+  - mono Stuff/stuff.exe install Stuff
+
+script:
+  - mono Stuff/uno.exe doctor
