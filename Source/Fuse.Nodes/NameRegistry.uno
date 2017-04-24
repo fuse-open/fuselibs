@@ -82,6 +82,17 @@ namespace Fuse
 				_listeners[name].Add(listener);
 		}
 
+		public static void RemoveListener(Selector name, INameListener listener)
+		{
+			List<INameListener> list;
+			if (!_listeners.TryGetValue(name, out list))
+				return;
+				
+			list.Remove(listener);
+		}
+		
+		[Obsolete]
+		/** @deprecated Use RemoveListern(name, listener) 2017-04-24 */
 		public static void RemoveListener(INameListener listener)
 		{
 			foreach (var list in _listeners.Values)

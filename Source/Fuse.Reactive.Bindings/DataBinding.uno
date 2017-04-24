@@ -143,7 +143,7 @@ namespace Fuse.Reactive
 		protected override void OnUnrooted()
 		{
 			ClearFailed();
-			NameRegistry.RemoveListener(this);
+			UnlistenNameRegistry();
 
 			if (Write && Target.SupportsOriginSetter) Target.RemoveListener(this);
 
@@ -235,7 +235,7 @@ namespace Fuse.Reactive
 		{
 			if (Marshal.Is(newValue, Target.PropertyType))
 			{
-				NameRegistry.RemoveListener(this);
+				UnlistenNameRegistry();
 				SetTarget(newValue);
 				return true;
 			}
@@ -243,13 +243,25 @@ namespace Fuse.Reactive
 			return false;
 		}
 
+		string _registryName;
+		void UnlistenNameRegistry()
+		{
+			if (_registryName != null)
+			{
+				NameRegistry.RemoveListener(_registryName, this );
+				_registryName = null;
+			}
+		}
+		
 		bool TryPushAsName(object newValue)
 		{
 			var name = ToSelector(newValue);
 
 			if (!name.IsNull)
 			{
-				NameRegistry.AddListener(name, this);
+				UnlistenNameRegistry();
+				_registryName = name;
+				NameRegistry.AddListener(_registryName, this);
 
 				var k = Parent.FindNodeByName(name, Acceptor);
 				if (k != null)
