@@ -284,7 +284,14 @@
 		NSString* identifier = SFAnnotationIdentifier;
 		
 		FusePinAnnotation* fuseAnnotation = (FusePinAnnotation*)annotation;
-		if(fuseAnnotation!=nil)
+		
+		// make sure the annotation passed in is a fuse pin
+		// if it's not, then we want to use the default identifier
+		if ([annotation isKindOfClass:[FusePinAnnotation class]])
+			fuseAnnotation = nil;
+		
+		// ensure that the annotation actually has an icon selector
+		if(fuseAnnotation!=nil && [fuseAnnotation respondsToSelector:@selector(icon)])
 			identifier = fuseAnnotation.icon;
 			
 		MKPinAnnotationView *pinView = (MKPinAnnotationView *)[theMapView dequeueReusableAnnotationViewWithIdentifier:identifier];
@@ -363,15 +370,15 @@
 		z = MAX(2.0, MIN(z, 21));
 		CLLocationCoordinate2D newCenter = CLLocationCoordinate2DMake(lat, lng);
 		MKCoordinateSpan span = [self coordinateSpanWithMapView:_mapView centerCoordinate:newCenter andZoomLevel:z];
-    [_mapView setRegion:MKCoordinateRegionMake(newCenter, span)];
+	[_mapView setRegion:MKCoordinateRegionMake(newCenter, span)];
 	}
 
 	-(double)getZoomLevel
 	{
 		CLLocationDegrees longitudeDelta = _mapView.region.span.longitudeDelta;
-        double density = [[UIScreen mainScreen] scale];
+		double density = [[UIScreen mainScreen] scale];
 		CGFloat mapWidthInPixels = _mapView.bounds.size.width * density;
-        double zoomScale = longitudeDelta * MERCATOR_RADIUS * M_PI / (180.0 * mapWidthInPixels);
+		double zoomScale = longitudeDelta * MERCATOR_RADIUS * M_PI / (180.0 * mapWidthInPixels);
 		double zoomer = 19.0 - log2(zoomScale);
 		if ( zoomer < 0.0 ) zoomer = 0.0;
 
