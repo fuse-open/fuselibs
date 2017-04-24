@@ -1,0 +1,35 @@
+{
+  "Copyright": "Copyright (c) Fusetools AS 2017",
+  "Description": "Library of common input gesture recognizers",
+  "Publisher": "Fusetools AS",
+  "Version": "1.0.0-rc3",
+  "Package": {
+    "ProjectUrl": "https://fusetools.com"
+  },
+  "InternalsVisibleTo": [
+    "Fuse.BasicTheme",
+    "Fuse.Controls",
+    "Fuse.Controls.Navigation",
+    "Fuse.Controls.Navigation.Test",
+    "Fuse.Controls.Primitives",
+    "Fuse.Controls.ScrollView",
+    "Fuse.Controls.Test",
+    "Fuse.Gestures.Test",
+    "Fuse.Navigation",
+  ],
+  "Packages": [
+    "Uno.Collections"
+  ],
+  "Projects": [
+    "../Fuse.Animations/Fuse.Animations.unoproj",
+    "../Fuse.Nodes/Fuse.Nodes.unoproj",
+    "../Fuse.Common/Fuse.Common.unoproj",
+    "../Fuse.Scripting/Fuse.Scripting.unoproj",
+    "../Fuse.Elements/Fuse.Elements.unoproj",
+    "../Fuse.Motion/Fuse.Motion.unoproj",
+    "../Fuse.Triggers/Fuse.Triggers.unoproj",
+  ],
+  "Includes": [
+	"**.uno:Source",
+  ]
+}

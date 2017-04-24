@@ -1,0 +1,5 @@
+<StackPanel ux:Class="StackPanelScene16">
+  <StackPanel ux:Name="StackPanel1">
+    <Image StretchMode="Fill" ux:Name="Image1" File="Assets/derp.jpg"  />
+  </StackPanel>
+</StackPanel>

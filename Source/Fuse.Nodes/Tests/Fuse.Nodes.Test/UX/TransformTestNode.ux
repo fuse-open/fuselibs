@@ -1,0 +1,23 @@
+<Panel ux:Class="UX.TransformTestNode">
+	<Translation ux:Name="TRoot"/>
+	
+	<Panel ux:Name="PA">
+	</Panel>
+	<Panel ux:Name="PB">
+		<Translation X="1"/>
+		
+		<Panel ux:Name="PC">
+			<Translation X="10"/>
+		</Panel>
+	</Panel>
+	
+	<Panel ux:Name="D1">
+		<Panel ux:Name="D2">
+			<Panel ux:Name="D3">
+				<Translation Y="1"/>
+				<Panel ux:Name="D4">
+				</Panel>
+			</Panel>
+		</Panel>
+	</Panel>
+</Panel>

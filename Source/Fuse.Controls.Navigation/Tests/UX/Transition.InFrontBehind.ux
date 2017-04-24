@@ -1,0 +1,24 @@
+<Panel ux:Class="UX.Transition.InFrontBehind">
+	<Router ux:Name="router"/>
+	<Panel ux:Class="TIFBPage">
+		<Transition Direction="InFront">
+			<FuseTest.CountAction When="Forward" ux:Name="fInFront"/>
+			<FuseTest.CountAction When="Backward" ux:Name="bInFront"/>
+		</Transition>
+		
+		<Transition Direction="Behind">
+			<FuseTest.CountAction When="Forward" ux:Name="fBehind"/>
+			<FuseTest.CountAction When="Backward" ux:Name="bBehind"/>
+		</Transition>
+		
+		<Transition>
+			<FuseTest.CountAction When="Forward" ux:Name="f1"/>
+			<FuseTest.CountAction When="Backward" ux:Name="b1"/>
+		</Transition>
+		
+	</Panel>
+	
+	<Navigator ux:Name="nav" DefaultPath="one">
+		<TIFBPage ux:Template="one"/>
+	</Navigator>
+</Panel>

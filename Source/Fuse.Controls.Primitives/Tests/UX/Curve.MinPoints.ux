@@ -1,0 +1,5 @@
+<Panel ux:Class="UX.Curve.MinPoints">
+	<Curve ux:Name="C" Close="None">
+		<CurvePoint X="0.5" Y="0.5"/>
+	</Curve>
+</Panel>

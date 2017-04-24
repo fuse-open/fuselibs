@@ -1,0 +1,40 @@
+<Page Title="Text Details" ux:Class="TextDetailsPage">
+	<InfoStack ux:Key="Info">
+		<p>This tests several special cases of text-rendering:</p>
+		<ul>
+			<li>Ligatures should join the first 'f' and 'i'</li>
+			<li>Hangul glyphs should use the fall-back font instead of rendering as missing glyphs.</li>
+			<li>The two Devanagari code-points should combine into a single glyph, similar (but probablt not exact) to the image on the right-hand side</li>
+			<li>The first two lines of Bi-directional text should say the same (in Hebrew), except the first should have the exclamation-mark after it, and the second should have it before. The third line is a reference image for roughly how the Hebrew should look</li>
+			<li>Combining characters should be similar 'Å'-characters on each side of the '='-sign</li>
+			<li>Math should be similar to "1/2" on each side of the "almost equal to"-sign</li>
+			<li>LineSpacing should show two times two lines of "Foo" and "Bar". The first version should have a normal line-spacing, while the second should have roughly twice as much.</li>
+		</ul>
+	</InfoStack>
+	<ScrollView>
+		<StackPanel>
+			<Text ux:Class="TextTest" TextColor="0,0,0,1" Font="RobotoRegular" FontSize="50" />
+
+			<Text>Ligature:</Text>
+			<TextTest>fi vs f&#x200B;i</TextTest>
+			<Text>Hangul:</Text>
+			<TextTest>&#xC544;&#xCE68;&#xAE00;</TextTest>
+			<Text>Devanagari:</Text>
+			<StackPanel Orientation="Horizontal" Width="100%">
+				<TextTest>&#x0924;&#x0935;</TextTest>
+				<Image Alignment="Right" File="../Assets/devanagari-ligature.png" Width="50" />
+			</StackPanel>
+			<Text>Bi-directional text:</Text>
+			<TextTest>Foo &#x05D1;&#x05D0;&#x05DE;&#x05EA;! bar</TextTest>
+			<TextTest>Foo &#x05D1;&#x05D0;&#x05DE;&#x05EA;!&#x200F; bar</TextTest>
+			<Image File="../Assets/hebrew.png" Height="50" />
+			<Text>Combining characters:</Text>
+			<TextTest>A&#x030A; = &#xC5;</TextTest>
+			<Text>Math:</Text>
+			<TextTest>&#xBD; &#x2248; &#xB9;&#x2044;&#x2082;</TextTest>
+			<Text>LineSpacing:</Text>
+			<TextTest FontSize="20" LineSpacing="0">Foo&#x0A;Bar</TextTest>
+			<TextTest FontSize="20" LineSpacing="20">Foo&#x0A;Bar</TextTest>
+		</StackPanel>
+	</ScrollView>
+</Page>

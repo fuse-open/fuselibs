@@ -1,0 +1,11 @@
+root = true
+
+[*.{uno,ux,unoproj,unosln}]
+insert_final_newline = true
+
+[*.{uno,ux,js}]
+indent_style = tab
+
+[*.unoproj]
+indent_style = space
+indent_size = 2

@@ -1,0 +1,19 @@
+<Panel ux:Class="UX.GraphicsViewTests">
+
+	<GraphicsView ux:Class="UX.Issue1109.GraphicsView1" />
+
+	<GraphicsView ux:Class="UX.Issue1109.GraphicsView2">
+		<GraphicsView />
+	</GraphicsView>
+
+	<NativeViewHost ux:Class="UX.Issue1109.GraphicsView3">
+		<GraphicsView />
+	</NativeViewHost>
+
+	<GraphicsView ux:Class="UX.Issue1109.GraphicsView4">
+		<NativeViewHost>
+			<GraphicsView />
+		</NativeViewHost>
+	</GraphicsView>
+
+</Panel>

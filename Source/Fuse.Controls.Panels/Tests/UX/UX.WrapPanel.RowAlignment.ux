@@ -1,0 +1,15 @@
+<Panel ux:Class="UX.WrapPanel.RowAlignment">
+	<WrapPanel ItemWidth="100" RowAlignment="Center">
+		<Panel Height="2" ux:Name="P1"/>
+		<Panel Height="10" ux:Name="P2"/>
+		<Panel Height="30" ux:Name="P3"/>
+		<Panel Height="20" ux:Name="P4"/>
+	</WrapPanel>
+	
+	<WrapPanel ItemHeight="100" Orientation="Vertical" RowAlignment="Right" MaxHeight="200">
+		<Panel Width="2" ux:Name="R1"/>
+		<Panel Width="10" ux:Name="R2"/>
+		<Panel Width="30" ux:Name="R3"/>
+		<Panel Width="20" ux:Name="R4"/>
+	</WrapPanel>
+</Panel>

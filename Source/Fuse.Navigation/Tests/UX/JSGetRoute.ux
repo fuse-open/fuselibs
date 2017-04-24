@@ -1,0 +1,42 @@
+<Panel ux:Class="UX.JSGetRoute">
+	<Router ux:Name="rxx" IsMasterRouter="false"/>
+
+	<Page>
+		<Navigator DefaultPath="maa">
+			<Page ux:Template="maa" />
+			<Page ux:Template="foo">
+				<Navigator>
+					<Page ux:Template="bar" />
+				</Navigator>
+			</Page>
+		</Navigator>
+	</Page>
+
+	<JavaScript>
+		rxx.getRoute(function(r) {
+			if (r.length > 2) { throw new Error(); }
+			if (r[0] !== "maa") { throw new Error(); }
+			if (r[1] !== null) { throw new Error(); }
+		});
+
+		rxx.goto("foo", { id: 3 }, "bar", [1,2,3]);
+
+		rxx.getRoute(function(r) {
+			if (r[0] !== "foo") { throw new Error(); }
+			if (r[1].id !== 3) { throw new Error(); }
+			if (r[2] !== "bar") { throw new Error(); }
+			if (r[3][0] !== 1) { throw new Error(); }
+			if (r[3][1] !== 2) { throw new Error(); }
+			if (r[3][2] !== 3) { throw new Error(); }
+		})
+
+		rxx.goto("maa");
+
+		rxx.getRoute(function(r) {
+			if (r[0] !== "maa") { throw new Error(); }
+			if (r.length > 2) { throw new Error(); }
+		})
+
+	</JavaScript>
+
+</Panel>

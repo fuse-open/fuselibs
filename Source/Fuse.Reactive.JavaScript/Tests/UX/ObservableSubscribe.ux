@@ -1,0 +1,21 @@
+<Panel ux:Class="UX.ObservableSubscribe">
+	<JavaScript>
+		var Observable = require("FuseJS/Observable");
+
+		var foo = Observable(10);
+		var bar = foo.map(function(x) { return x*2; })
+
+		if (bar.value) { throw new Error(); }
+
+		bar.subscribe(module);
+
+		if (!bar.value) { throw new Error(); }
+		if (bar.value !== 20) { throw new Error(); }
+
+
+		module.disposed.push(function() {
+			// Make sure it unsubscribed correctly
+			if (foo._subscribers.length !== 0) { throw new Error(); }
+		})
+	</JavaScript>
+</Panel>

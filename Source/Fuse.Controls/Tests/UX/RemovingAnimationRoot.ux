@@ -1,0 +1,16 @@
+<Panel ux:Class="UX.RemovingAnimationRoot">
+	<Panel ux:Name="A">
+		<WhileTrue ux:Name="outerPanel" Value="true">
+			<DockPanel ux:Name="B">
+				<Text Dock="Top" Value="Outer Panel"/>
+				<WhileTrue ux:Name="innerPanel" Value="true">
+					<Text Alignment="TopLeft" Value="The Child in Question" ux:Name="C">
+						<RemovingAnimation>
+							<Move X="100" Duration="1"/>
+						</RemovingAnimation>
+					</Text>
+				</WhileTrue>
+			</DockPanel>
+		</WhileTrue>
+	</Panel>
+</Panel>

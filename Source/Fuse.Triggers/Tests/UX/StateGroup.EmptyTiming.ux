@@ -1,0 +1,15 @@
+<Panel ux:Class="UX.StateGroup.EmptyTiming">
+	<StateGroup ux:Name="SG" Rest="A" Active="A" Transition="Exclusive">
+		<State ux:Name="A"/>
+		<State ux:Name="B">
+			<Nothing Duration="1" DurationBack="0"/>
+			<FuseTest.CountAction ux:Name="C1" When="Start"/>
+			<FuseTest.CountAction ux:Name="C2" When="Stop"/>
+			<FuseTest.CountAction ux:Name="C3" When="Forward"/>
+			<FuseTest.CountAction ux:Name="C4" When="Backward"/>
+		</State>
+		<State ux:Name="C">
+			<Nothing Duration="0.1"/>
+		</State>
+	</StateGroup>
+</Panel>

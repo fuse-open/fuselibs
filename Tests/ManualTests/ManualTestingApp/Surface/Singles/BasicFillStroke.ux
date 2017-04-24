@@ -1,0 +1,45 @@
+<TestPage ux:Class="Pages.BasicFillStroke" Title="Basic Fill &amp; Stroke">
+	<InfoStack ux:Key="Info">
+		<p>Displays a rectangle. Three buttons at the bottom chagne the appearance briefly.</p>
+		<ul>
+			<li>The color button changes the color.</li>
+			<li>The stroke button changes the width of the stroke.</li>
+			<li>The corner button changes the rounding of the corners.</li>
+		</ul>
+	</InfoStack>
+	
+	<DockPanel>
+		<VectorLayer>
+			<Rectangle ux:Name="theRect" Margin="20" Color="#DFD">
+				<Stroke Width="1" Color="#242" Alignment="Center" ux:Name="theStroke"/>
+			</Rectangle>
+		</VectorLayer>
+		
+		<VectorLayer Dock="Bottom" Height="100">
+			<Grid ColumnCount="3" Margin="10" CellSpacing="10">
+				<Rectangle Color="#FAA">
+					<Text Alignment="Center" Value="Color"/>
+					<Clicked>
+						<Change theRect.Color="#FAA" Duration="1"/>
+					</Clicked>
+				</Rectangle>
+				
+				<Rectangle HitTestMode="LocalBounds">
+					<Text Alignment="Center" Value="Stroke Width"/>
+					<Stroke Width="2" Color="#242" Alignment="Center"/>
+					<Clicked>
+						<Change theStroke.Width="10" Duration="1"/>
+					</Clicked>
+				</Rectangle>
+				
+				<Rectangle Color="#DFD" CornerRadius="300">
+					<Text Alignment="Center" Value="Corner Radius"/>
+					<Clicked>
+						<Change theRect.CornerRadius="200" Duration="1"/>
+					</Clicked>
+				</Rectangle>
+				
+			</Grid>
+		</VectorLayer>
+	</DockPanel>
+</TestPage>

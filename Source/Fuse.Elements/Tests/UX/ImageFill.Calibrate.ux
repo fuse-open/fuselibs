@@ -1,0 +1,6 @@
+<Rectangle ux:Class="UX.ImageFill.Calibrate">
+	<WhileLoading ux:Name="W"/>
+	<ImageFill File="Assets/calibrate_9.png" StretchMode="PixelPrecise" MemoryPolicy="UnloadUnused" ux:Name="IF" ContentAlignment="Center"/>
+	
+	<FileImageSource File="Assets/calibrate_50.png" ux:Name="C50" ux:AutoBind="false"/>
+</Rectangle>

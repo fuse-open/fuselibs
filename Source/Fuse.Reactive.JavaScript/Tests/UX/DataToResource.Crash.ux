@@ -1,0 +1,9 @@
+<Panel ux:Class="UX.DataToResource.Crash">
+	<JavaScript>
+		exports.foo = "test";
+	</JavaScript>
+
+	<string ux:Global="test" ux:Value="Bar" />
+
+	<Text ux:Name="Text" Value="{DataToResource foo}" />
+</Panel>

@@ -1,0 +1,6 @@
+<Panel ux:Class="UX.WhileStringCase">
+	<WhileString Value="heLlo" Equals="Hello" CaseSensitive="false" ux:Name="WS">
+		<!-- needs something to trigger in test -->
+		<Nothing Duration="0"/>
+	</WhileString>
+</Panel>

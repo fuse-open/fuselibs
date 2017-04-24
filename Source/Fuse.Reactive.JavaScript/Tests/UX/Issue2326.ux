@@ -1,0 +1,30 @@
+<Panel ux:Class="UX.Issue2326">
+	<JavaScript>
+		var Observable = require("FuseJS/Observable");
+		var foo = Observable(100);
+		var bar = Observable({ baz: 200 });
+		module.exports = {
+			foo: foo,
+			bar: bar,
+			run: function() {
+				foo.value = foo.value + 1;
+
+				var baz = bar.value.baz;
+				bar.clear();
+				bar.value = {
+					baz: baz + 1
+				};
+			}
+		};
+	</JavaScript>
+
+	<FuseTest.Invoke Handler="{run}" ux:Name="run" />
+	<Text ux:Name="FooString" Value="{foo}" />
+	<With Data="{bar}">
+		<Panel>
+			<Text ux:Name="SelectBazString" Value="{baz}" />
+			<Text ux:Name="SelectBarBazString" Value="{bar.baz}" />
+		</Panel>
+	</With>
+	<Text ux:Name="BarBazString" Value="{bar.baz}" />
+</Panel>

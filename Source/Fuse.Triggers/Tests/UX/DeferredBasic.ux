@@ -1,0 +1,5 @@
+<Panel ux:Class="UX.DeferredBasic">
+	<Deferred><Text Value="1"/></Deferred>
+	<Deferred><Text Value="2"/></Deferred>
+	<Deferred><Text Value="3"/></Deferred>
+</Panel>

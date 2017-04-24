@@ -1,0 +1,41 @@
+<ButtonBase ux:Class="Basic.BackButton"
+	MinWidth="88"
+	MinHeight="36"
+	Margin="4,4,4,4"
+	Padding="8,0,8,0"
+	Focus.IsFocusable="true">
+
+	<Text Value="{Property this.Text}" TextColor="{Resource Basic.CFillFore}" TextAlignment="Center" Font="RobotoLight"/>
+	
+	<DockPanel
+	    Alignment="CenterLeft"
+	    DockPanel.Dock="Left">
+	    <Path
+	        Data="m 0 10 l 10 10 m 0 -20 l -10 10"
+	        FillRule="NonZero"
+	        Width="10"
+	        Height="20"
+	        Margin="5, 0, 2, 0"
+	        DockPanel.Dock="Left">
+	        <Stroke Width="1">
+	            <SolidColor Color="{Resource Basic.CFillFore}" />
+	        </Stroke>
+	    </Path>
+
+	    <Text
+	        Value="BACK"
+	        Alignment="CenterLeft"
+	        Margin="5, 0, 5, 0"
+	        FontSize="18"
+	        TextAlignment="Center">
+	    </Text>
+
+	</DockPanel>
+
+	<WhileCanGoBack Invert="true">
+		<Change Target="this.IsEnabled" Value="false"/>
+	</WhileCanGoBack>
+	<Clicked>
+		<GoBack/>
+	</Clicked>
+</ButtonBase>

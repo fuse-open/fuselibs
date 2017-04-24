@@ -1,0 +1,10 @@
+<Panel ux:Class="UX.Error.ReadUndefined">
+	<JavaScript>
+		var q = require("FuseJS/Observable")
+		
+		exports.flub = function() {
+			var x = q.value.x //undefined
+		}
+	</JavaScript>
+	<FuseTest.Invoke Handler="{flub}" ux:Name="CallFlub"/>	
+</Panel>

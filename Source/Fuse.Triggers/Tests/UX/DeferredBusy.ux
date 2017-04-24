@@ -1,0 +1,6 @@
+<Panel ux:Class="UX.DeferredBusy">
+	<WhileBusy>
+		<Text Value="Busy"/>
+	</WhileBusy>
+	<Deferred><Text Value="1"/></Deferred>
+</Panel>

@@ -1,0 +1,13 @@
+<Panel ux:Class="UX.Each.Window">
+	<JavaScript>
+		var Observable = require("FuseJS/Observable")
+		
+		exports.items = Observable()
+		for (var i=0; i < 100; ++i) {
+			exports.items.add( { id: "" + i } )
+		}
+	</JavaScript>
+	<Each Items="{items}" Limit="5" ux:Name="E">
+		<Text Value="{id}"/>
+	</Each>
+</Panel>

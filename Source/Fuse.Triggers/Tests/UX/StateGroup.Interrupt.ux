@@ -1,0 +1,13 @@
+<Panel ux:Class="UX.StateGroup.Interrupt">
+	<StateGroup ux:Name="SG" Transition="Exclusive">
+		<State ux:Name="A">
+			<Nothing Duration="1"/>
+		</State>
+		<State ux:Name="B">
+			<Nothing Duration="1"/>
+		</State>
+		<State ux:Name="C">
+			<Nothing Duration="1"/>
+		</State>
+	</StateGroup>
+</Panel>

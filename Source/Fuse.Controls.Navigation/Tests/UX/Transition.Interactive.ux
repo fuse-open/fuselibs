@@ -1,0 +1,16 @@
+<Panel ux:Class="UX.Transition.Interactive">
+	<Router ux:Name="router"/>
+	<Panel ux:Class="TIPage">
+		<Transition ux:Name="T1" Mode="Prepare">
+			<Nothing Duration="1"/>
+		</Transition>
+		
+		<Transition ux:Name="T2">
+			<Nothing Duration="1"/>
+		</Transition>
+	</Panel>
+	<Navigator ux:Name="nav" DefaultPath="one" SwipeBack="Right">
+		<TIPage ux:Name="one"/>
+		<TIPage ux:Name="two"/>
+	</Navigator>
+</Panel>

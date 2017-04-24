@@ -1,0 +1,7 @@
+<Panel ux:Class="UX.Grid.DefaultRow">
+	<Grid Alignment="Top" RowCount="3" ux:Name="G1">
+		<Panel ux:Name="T1"><Panel Height="10"/></Panel>
+		<Panel ux:Name="T2"><Panel Height="20"/></Panel>
+		<Panel ux:Name="T3"><Panel Height="30"/></Panel>
+	</Grid>
+</Panel>

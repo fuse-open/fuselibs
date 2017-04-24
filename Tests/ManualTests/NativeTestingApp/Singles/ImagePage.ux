@@ -1,0 +1,49 @@
+<Page ux:Class="ImagePage" Title="ImagePage">
+	<InfoStack ux:Key="Info">
+		<p>An image of a football is present with several different modes on this page. Verify the description of each mode matches what you see on the screen.</p>
+		<ul>
+			<li>In no test does the image go outside the bounds of the white area.</li>
+		</ul>
+	</InfoStack>
+	
+	<DockPanel>
+		<Grid Columns="auto,1*" DefaultRow="auto" Background="#aaf" Dock="Bottom">
+			<Button Text="Next" ux:Name="TheButton">
+				<Clicked>
+					<TransitionState Target="States" Type="Next"/>
+				</Clicked>
+			</Button>
+			
+			<Text ux:Name="TheText"/>
+		</Grid>
+
+		<!-- https://pixabay.com/en/football-ball-sport-soccer-round-157931/ -->
+		<Image File="../Assets/football.png" ux:Name="TheImage"/>
+		
+		<StateGroup ux:Name="States">
+			<State>
+				<Change TheImage.StretchMode="Uniform"/>
+				<Change TheImage.StretchDirection="Both"/>
+				<Change TheText.Value="Uniform: Image expands to touch either top/bottom and retains aspect."/>
+			</State>
+			
+			<State>
+				<Change TheImage.StretchMode="UniformToFill"/>
+				<Change TheImage.StretchDirection="Both"/>
+				<Change TheText.Value="UniformToFill: Image expands to completely fill area, being clipped  at the top or bottom, and retains its aspect."/>
+			</State>
+			
+			<State>
+				<Change TheImage.StretchMode="Fill"/>
+				<Change TheImage.StretchDirection="Both"/>
+				<Change TheText.Value="Fill: Image expands to completely fill area ignoring its natural aspect."/>
+			</State>
+			
+			<State>
+				<Change TheText.Value="Done"/>
+				<Change TheButton.Text="Restart"/>
+			</State>
+		</StateGroup>
+	</DockPanel>
+
+</Page>

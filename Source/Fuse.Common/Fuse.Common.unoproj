@@ -1,0 +1,60 @@
+{
+  "Copyright": "Copyright (c) Fusetools AS 2017",
+  "Description": "User experience design and tooling platform (core package)",
+  "Publisher": "Fusetools AS",
+  "Version": "1.0.0-rc3",
+  "Package": {
+    "ProjectUrl": "https://fusetools.com"
+  },
+  "InternalsVisibleTo": [
+    "Fuse.Views",
+    "Fuse.Android",
+    "Fuse.Animations",
+    "Fuse.Common.Test",
+    "Fuse.Controls.Native",
+    "Fuse.Controls.Navigation",
+    "Fuse.Controls.Panels",
+    "Fuse.Controls.Primitives",
+    "Fuse.Controls.ScrollView",
+    "Fuse.Controls.Test",
+    "Fuse.Controls",
+    "Fuse.Desktop",
+    "Fuse.Drawing.Surface",
+    "Fuse.Drawing.Surface.Test",
+    "Fuse.Elements.Shared",
+    "Fuse.Elements.Test",
+    "Fuse.Elements",
+    "Fuse.Nodes",
+    "Fuse.Gestures",
+    "Fuse.Input.Focus.Test",
+    "Fuse.iOS.Bindings",
+    "Fuse.iOS",
+    "Fuse.iOS.TextRenderer",
+    "Fuse.Motion",
+    "Fuse.Reactive.Test",
+    "Fuse.Reactive.JavaScript",
+    "Fuse.Selection",
+    "Fuse.Testing",
+    "Fuse.Text",
+    "Fuse.Triggers.Test",
+    "Fuse.Triggers",
+    "FuseCore.Pointer.Test",
+    "FuseCore.Test",
+    "FuseTest"
+  ],
+  "Packages": [
+    "Uno.Collections",
+    "Uno.Threading",
+    "Uno.Net.Sockets",
+    "Uno.Data.Json",
+    "UnoCore"
+  ],
+  "Projects": [
+    "../Fuse.Platform/Fuse.Platform.unoproj",
+  ],
+  "Includes": [
+    "**.uno:Source",
+    "Internal/DesktopFonts.stuff:Stuff",
+    "Internal/FontListParser.java:Java:Android"
+  ]
+}

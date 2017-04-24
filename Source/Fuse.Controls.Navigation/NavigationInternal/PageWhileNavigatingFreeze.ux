@@ -1,0 +1,4 @@
+<WhileNavigating ux:Class="Fuse.Controls.NavigationInternal.PageWhileNavigatingFreeze">
+	<Page ux:Dependency="page"/>
+	<Change page.IsFrozen="true"/>
+</WhileNavigating>

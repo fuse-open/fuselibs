@@ -1,0 +1,7 @@
+<Panel ux:Class="UX.StateGroup.Root">
+	<StateGroup ux:Name="SG">
+		<State ux:Name="A"/>
+		<State ux:Name="B"/>
+		<State ux:Name="C"/>
+	</StateGroup>
+</Panel>

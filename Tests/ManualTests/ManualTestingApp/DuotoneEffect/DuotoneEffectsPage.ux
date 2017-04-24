@@ -1,0 +1,40 @@
+<Page Title="Duotone Effect" ux:Class="DuotoneEffectsPage">
+	<InfoStack ux:Key="Info">
+		<p>This is a test of the Duotone effect.</p>
+
+		<p>The first image should contain only two colors going from Red to Green. The second image should contain a mix of the original image and the one with only red and green. The last two images are just to try out some variations.</p>
+	</InfoStack>
+	<ScrollView>
+		<StackPanel Margin="40,0">
+			<Image File="../Assets/bird2.jpg" >
+				<Text Value="Original" Alignment="Center" FontSize="25"/>
+			</Image>
+			<Image File="../Assets/bird2.jpg" >
+				<Duotone Light="#f00" Shadow="#0f0" />
+			</Image>
+			<Image File="../Assets/bird2.jpg" >
+				<Duotone Light="#f00" Shadow="#0f0" Amount="0.5"/>
+			</Image>
+
+			<Image File="../Assets/goat.png" >
+				<Duotone Light="#f00" Shadow="#0f0"/>
+			</Image>
+			<Circle Width="100%" Aspect="1" BoxSizing="FillAspect">
+				<LinearGradient>
+					<GradientStop Color="#000" Offset="0"/>
+					<GradientStop Color="#fff" Offset="1"/>
+				</LinearGradient>
+				<Duotone Light="#f00" Shadow="#0f0"/>
+			</Circle>
+
+			<Image File="../Assets/bird3.jpg" >
+				<Duotone Light="#88d3ce" Shadow="#6e45e2" Amount="0.5"/>
+			</Image>
+			<Image File="../Assets/bird4.jpg" >
+				<Duotone Light="#ff0844" Shadow="#ffb199" Amount="0.5"/>
+			</Image>
+		</StackPanel>
+	</ScrollView>
+	<Image StretchMode="Fill" File="../MaskEffects/background.png" Width="100%" Height="100%"/>
+
+</Page>

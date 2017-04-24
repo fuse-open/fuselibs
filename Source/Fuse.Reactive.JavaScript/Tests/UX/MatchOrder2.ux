@@ -1,0 +1,36 @@
+<Panel ux:Class="UX.MatchOrder2">
+	<JavaScript>
+		var Observable = require( "FuseJS/Observable" )
+		exports.yes =Observable(true)
+		exports.no = Observable(false)
+		
+		exports.flip = function() {
+			exports.yes.value = !exports.yes.value
+			exports.no.value = !exports.no.value
+		}
+	</JavaScript>
+	<StackPanel ux:Name="A">
+		<Match Value="{no}">
+			<Case Bool="true">
+				<Text Value="*"/>
+			</Case>
+			<Case Bool="false">
+				<Text Value="0"/>
+			</Case>
+		</Match>
+		<Text Value="1"/>
+		<Match Value="{yes}">
+			<Case Bool="false">
+				<Text Value="!"/>
+			</Case>
+			<Case Bool="true">
+				<Text Value="2"/>
+				<Text Value="3"/>
+			</Case>
+		</Match>
+		<Text Value="4"/>
+	</StackPanel>
+	
+	<FuseTest.Invoke Handler="{flip}" ux:Name="CallFlip"/>
+	
+</Panel>

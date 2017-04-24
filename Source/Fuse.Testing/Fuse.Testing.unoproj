@@ -1,0 +1,30 @@
+{
+  "Copyright": "Copyright (c) Fusetools AS 2017",
+  "Description": "Testing API",
+  "Publisher": "Fusetools AS",
+  "Version": "1.0.0-rc3",
+  "Packages": [
+    "Uno.Testing",
+    "Uno.Threading"
+  ],
+  "Projects": [
+    "../Fuse.Animations/Fuse.Animations.unoproj",
+    "../Fuse.Controls/Fuse.Controls.unoproj",
+    "../Fuse.Controls.Panels/Fuse.Controls.Panels.unoproj",
+    "../Fuse.Drawing/Fuse.Drawing.unoproj",
+    "../Fuse.Drawing.Primitives/Fuse.Drawing.Primitives.unoproj",
+    "../Fuse.Elements/Fuse.Elements.unoproj",
+    "../Fuse.Reactive/Fuse.Reactive.unoproj",
+    "../Fuse.Reactive.JavaScript/Fuse.Reactive.JavaScript.unoproj",
+    "../Fuse.Reactive.Bindings/Fuse.Reactive.Bindings.unoproj",
+    "../Fuse.Reactive.Expressions/Fuse.Reactive.Expressions.unoproj",
+    "../Fuse.Marshal/Fuse.Marshal.unoproj",
+    "../Fuse.Scripting/Fuse.Scripting.unoproj",
+    "../Fuse.Triggers/Fuse.Triggers.unoproj",
+    "../Fuse.Common/Fuse.Common.unoproj",
+    "../Fuse.Nodes/Fuse.Nodes.unoproj"
+  ],
+  "Includes": [
+    "*"
+  ]
+}

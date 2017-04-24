@@ -1,0 +1,31 @@
+<Panel ux:Class="UX.JsSelection">
+	<JavaScript>
+		exports.clear = function() {
+			TS.clear()
+		}
+		exports.add = function() {
+			TS.add("one")
+		}
+		exports.remove = function() {
+			TS.remove("two")
+		}
+		exports.toggle = function() {
+			TS.toggle("three")
+		}
+	</JavaScript>
+	<Selection ux:Name="TS" Value="two"/>
+		
+	<Panel ux:Class="JSOption" Color="#0000">
+		<string ux:Property="Value"/>
+		<Selectable Value="{Property this.Value}" ux:Name="Sel"/>
+	</Panel>
+	
+	<JSOption Value="one" ux:Name="O1"/>
+	<JSOption Value="two" ux:Name="O2"/>
+	<JSOption Value="three" ux:Name="O3"/>
+	
+	<FuseTest.Invoke Handler="{clear}" ux:Name="CallClear"/>
+	<FuseTest.Invoke Handler="{add}" ux:Name="CallAdd"/>
+	<FuseTest.Invoke Handler="{remove}" ux:Name="CallRemove"/>
+	<FuseTest.Invoke Handler="{toggle}" ux:Name="CallToggle"/>
+</Panel>

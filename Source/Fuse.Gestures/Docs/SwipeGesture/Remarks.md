@@ -1,0 +1,1 @@
+An element may have multiple swipe gestures, and will behave correctly as long as they point in different directions.

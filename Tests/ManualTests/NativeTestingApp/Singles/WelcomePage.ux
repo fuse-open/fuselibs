@@ -1,0 +1,16 @@
+<Page ux:Class="WelcomePage" Title="Native Test">
+	<InfoStack ux:Key="Info">
+		<p>Welcome to the Native Manual Testing App.</p>
+	</InfoStack>
+	<Panel Alignment="Center" Padding="10">
+		<StackPanel>
+			<Image File="../Assets/logo_white.png" Alignment="HorizontalCenter"/>
+			<Panel Height="20"/>
+			<Text Alignment="Center" TextColor="#fff">Native Manual Testing Application</Text>
+		</StackPanel>
+		<Rectangle Layer="Background" CornerRadius="10">
+			<SolidColor Color="#444"/>
+			<Stroke Width="2"><SolidColor Color="#004"/></Stroke>
+		</Rectangle>
+	</Panel>
+</Page>

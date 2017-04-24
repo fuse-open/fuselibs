@@ -1,0 +1,11 @@
+<Panel ux:Class='UX.MaxWidthHeight'>
+	<Panel Alignment="Center" Width="200" Height="400">
+		<Panel Width="500" ux:Name="P1"/>
+		<Panel Height="600" ux:Name="P2"/>
+		<Panel Width="500" ux:Name="P3" MaxWidth="100%"/>
+		<Panel Height="600" ux:Name="P4" MaxHeight="100%"/>
+		<Panel Width="500" Height="600" ux:Name="P5"/>
+		<Panel Width="500" Height="600" ux:Name="P6" MaxWidth="100%" MaxHeight="100%"/>
+		<Panel Width="500" Height="600" ux:Name="P7" MaxWidth="50%" MaxHeight="75%"/>
+	</Panel>
+</Panel>

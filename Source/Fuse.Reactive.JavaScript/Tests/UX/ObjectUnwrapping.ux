@@ -1,0 +1,18 @@
+<Panel ux:Class="UX.ObjectUnwrapping">
+	<JavaScript>
+		module.exports = { 'test': { 'foo' : 'bar' } };
+	</JavaScript>
+
+	<Panel ux:Class="SomeItem">
+		<object ux:Property="Test" />
+		<JavaScript>
+			var Observable = require("FuseJS/Observable")
+			var foo = Observable("foo");
+			this.Test.onValueChanged( module, function(val) { foo.value = JSON.stringify(val); });
+			module.exports = { foo: foo };
+		</JavaScript>
+		<Text ux:Name="Text" Value="{foo}" />
+	</Panel>
+
+	<SomeItem ux:Name="SomeItem" Test="{test}" />
+</Panel>

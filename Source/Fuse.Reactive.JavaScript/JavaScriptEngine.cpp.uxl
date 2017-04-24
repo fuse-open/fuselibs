@@ -1,0 +1,4 @@
+<Extensions Backend="CPlusPlus">
+	<Define USE_JAVASCRIPTCORE="iOS && !USE_DUKTAPE" />
+	<Define USE_V8="(Android || (CMake && HOST_OSX) || MSVC12) && !USE_DUKTAPE" />
+</Extensions>

@@ -1,0 +1,22 @@
+<Panel ux:Class="UX.Navigator.SwipeBookmark">
+	<Router ux:Name="R"/> 
+	<JavaScript>
+		R.bookmark({
+			name: "upMark",
+			path: [ "two" ]
+		})
+		R.bookmark({
+			name: "downMark",
+			path: [ "one" ]
+		})
+	</JavaScript>
+	<DockPanel>
+		<Navigator ux:Name="Nav" HitTestMode="LocalBoundsAndChildren">
+			<NavigatorSwipe How="PushBookmark" Bookmark="upMark" Direction="Up"/>
+			<NavigatorSwipe How="GotoBookmark" Bookmark="downMark" Direction="Down"/>
+			
+			<Page ux:Template="one" Title="One"/>
+			<Page ux:Template="two" Title="Two"/>
+		</Navigator>
+	</DockPanel>
+</Panel>

@@ -1,0 +1,4 @@
+<Transition Direction="InFront" ux:Class="Fuse.Controls.NavigationInternal.NavEnterHorizontal">
+	<Move X="1" RelativeTo="ParentSize" Duration="0.3" Easing="QuadraticInOut"/>
+	<ReleasePage AtProgress="1"/>
+</Transition>

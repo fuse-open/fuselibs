@@ -1,0 +1,42 @@
+<TestPage ux:Class="Pages.ImageFill" Title="Image Fill">
+	<InfoStack ux:Key="Info">
+		<p>Fills an ellipse with an image. The bear with the heart should be right-side up.</p>
+		<ul>
+			<li>UniformToFill: A partial image of the bear with heart, sized to fill the region, but clipped on either the top/bottom</li>
+			<li>Uniform: One bear with hear will be centered and then the image repeated on either the sides or top/bottom.</li>
+			<li>PointPrecise: The bear will be repeated to fill, depending on the size of the device.</li>
+		</ul>
+	</InfoStack>
+
+	<DockPanel>
+		<WrapPanel Dock="Top" Orientation="Horizontal" Margin="5">
+			<Button Text="UniformToFill">
+				<Clicked>
+					<Set theFill.StretchMode="UniformToFill"/>
+				</Clicked>
+			</Button>
+			<Panel Width="10"/>
+			
+			<Button Text="Uniform">
+				<Clicked>
+					<Set theFill.StretchMode="Uniform"/>
+				</Clicked>
+			</Button>
+			<Panel Width="10"/>
+			
+			<Button Text="PointPrecise">
+				<Clicked>
+					<Set theFill.StretchMode="PointPrecise"/>
+				</Clicked>
+			</Button>
+			<Panel Width="10"/>
+		</WrapPanel>
+		<VectorLayer>
+			<Ellipse>
+				<!-- https://pixabay.com/en/seamless-repeating-tiling-tileable-1889459/ -->
+				<ImageFill File="../../Assets/tile_bear.png" StretchMode="UniformToFill" ux:Name="theFill"
+					Density="4"/>
+			</Ellipse>
+		</VectorLayer>
+	</DockPanel>
+</TestPage>

@@ -1,0 +1,23 @@
+{
+  "Copyright": "Copyright (c) Fusetools AS 2017",
+  "Description": "Abstract scripting framework",
+  "Publisher": "Fusetools AS",
+  "Version": "1.0.0-rc3",
+  "Package": {
+    "ProjectUrl": "https://fusetools.com"
+  },
+  "InternalsVisibleTo": [
+    "Fuse.Reactive.JavaScript"
+  ],
+  "Packages": [
+    "Uno.Collections",
+    "Uno.Threading"
+  ],
+  "Projects": [
+    "../Fuse.Common/Fuse.Common.unoproj",
+    "../Fuse.Marshal/Fuse.Marshal.unoproj"
+  ],
+  "Includes": [
+    "**.uno:Source"
+  ]
+}

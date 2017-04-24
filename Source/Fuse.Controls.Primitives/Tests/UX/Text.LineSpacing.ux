@@ -1,0 +1,5 @@
+<Text TextWrapping="Wrap" ux:Class="UX.LineSpacingText">
+A line
+Another line
+Yet another line
+</Text>

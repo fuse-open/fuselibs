@@ -1,0 +1,5 @@
+<Panel ux:Class="UX.NoTransform">
+	<WhileTrue ux:Name="W">
+		<Move X="100" Duration="1"/>
+	</WhileTrue>
+</Panel>

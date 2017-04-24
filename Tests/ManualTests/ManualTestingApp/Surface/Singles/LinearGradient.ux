@@ -1,0 +1,41 @@
+<TestPage ux:Class="Pages.LinearGradient" Title="Linear Gradient">
+	<InfoStack ux:Key="Info">
+		<p>Tests linear gradient fills.</p>
+		<p>Each gradient is a rainbow of colors from red to blue.</p>
+		<ul>
+			<li>Top-left: from top-to-bottom</li>
+			<li>Top-right: from left-to-right</li>
+			<li>Bottom-left: from top-left corner to bottom-right corner</li>
+			<li>Bottom-right: diamond shape, filled from top-to-bottom, but with 25% of the ends filled with the same color</li>
+		</ul>
+	</InfoStack>
+	
+	<LinearGradient ux:Class="RainbowBrush">
+		<GradientStop Offset="0" Color="#F00"/>
+		<GradientStop Offset="0.25" Color="#F93"/>
+		<GradientStop Offset="0.5" Color="#AC2"/>
+		<GradientStop Offset="0.75" Color="#1ab"/>
+		<GradientStop Offset="1" Color="#429"/>
+	</LinearGradient>
+	<VectorLayer>
+		<Grid ColumnCount="2" Margin="20" CellSpacing="20">
+			<Panel>
+				<RainbowBrush/>
+			</Panel>
+			
+			<Panel>
+				<RainbowBrush StartPoint="0,0" EndPoint="1,0"/>
+			</Panel>
+			
+			<Panel>
+				<RainbowBrush AngleDegrees="45"/>
+			</Panel>
+			
+			<Panel Width="30%" Height="30%" BoxSizing="FillAspect">
+				<RainbowBrush StartPoint="0.25,0.25" EndPoint="0.75,0.75"/>
+				<Rotation Degrees="45"/>
+				<Scaling Factor="2"/>
+			</Panel>
+		</Grid>
+	</VectorLayer>
+</TestPage>

@@ -1,0 +1,45 @@
+{
+  "Copyright": "Copyright (c) Fusetools AS 2017",
+  "Description": "WebView",
+  "Publisher": "Fusetools AS",
+  "Version": "1.0.0-rc3",
+  "Package": {
+    "ProjectUrl": "https://fusetools.com"
+  },
+  "Projects": [
+    "../Fuse.Platform/Fuse.Platform.unoproj",
+    "../Fuse.Triggers/Fuse.Triggers.unoproj",
+    "../Fuse.Nodes/Fuse.Nodes.unoproj",
+    "../Fuse.Scripting/Fuse.Scripting.unoproj",
+    "../Fuse.Android/Fuse.Android.unoproj",
+    "../Fuse.iOS/Fuse.iOS.unoproj",
+    "../Fuse.Navigation/Fuse.Navigation.unoproj",
+    "../Fuse.Drawing/Fuse.Drawing.unoproj",
+    "../Fuse.Controls/Fuse.Controls.unoproj",
+    "../Fuse.Controls.Native/Fuse.Controls.Native.unoproj",
+    "../Fuse.Controls.Panels/Fuse.Controls.Panels.unoproj",
+    "../Fuse.Controls.Primitives/Fuse.Controls.Primitives.unoproj",
+    "../Fuse.Elements/Fuse.Elements.unoproj",
+    "../Fuse.Common/Fuse.Common.unoproj",
+  ],
+  "Includes": [
+    "WebView.uno:Source",
+    "WebView.ScriptClass.uno:Source",
+    "WebViewNavActions.uno:Source",
+    "URISchemeEventArgs.uno:Source",
+    "WhilePageLoading.uno:Source",
+    "EvaluateJS.uno:Source",
+    "PageBeginLoading.uno:Source",
+    "PageLoaded.uno:Source",
+    "iOS/*",
+    "Android/*",
+    "iOS/WVNavDelegate.h:CHeader:iOS",
+    "iOS/WVNavDelegate.m:CSource:iOS",
+    "iOS/NoZoomDelegate.h:CHeader:iOS",
+    "iOS/NoZoomDelegate.m:CSource:iOS",
+    "Android/FuseWebChromeClient.java:Java:Android",
+    "Android/FuseWebViewClient.java:Java:Android",
+    "Android/JsInterface.java:Java:Android"
+  ]
+}
+

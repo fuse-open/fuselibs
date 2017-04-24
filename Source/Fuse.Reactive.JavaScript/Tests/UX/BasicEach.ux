@@ -1,0 +1,41 @@
+<Panel ux:Class="UX.BasicEach">
+	<JavaScript>
+		var Observable = require("FuseJS/Observable")
+		
+		var count = 0
+		function Item() {
+			this.id = count++
+		}
+		
+		exports.items = Observable()
+		for (var i=0; i < 30; ++i) {
+			exports.items.add( new Item() )
+		}
+
+		exports.add = function() {
+			exports.items.add( new Item() )
+		}
+		
+		exports.remove = function() {
+			exports.items.remove(exports.items.getAt(5))
+		}
+
+		exports.removeAt = function() {
+			exports.items.removeAt(5)
+		}
+		
+		exports.clear = function() {
+			exports.items.clear()
+		}
+	</JavaScript>
+	<StackPanel ux:Name="C1">
+		<Each Items="{items}">
+			<Text Value="{id}"/>
+		</Each>
+	</StackPanel>
+	
+	<FuseTest.Invoke Handler="{add}" ux:Name="CallAdd"/>
+	<FuseTest.Invoke Handler="{remove}" ux:Name="CallRemove"/>
+	<FuseTest.Invoke Handler="{removeAt}" ux:Name="CallRemoveAt"/>
+	<FuseTest.Invoke Handler="{clear}" ux:Name="CallClear"/>
+</Panel>

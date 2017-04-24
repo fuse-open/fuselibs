@@ -1,0 +1,178 @@
+<Page ux:Class="ColumnsReload" Title="Columns &amp; Reload"
+	Background="0.85,0.85,0.85,1">
+	<InfoStack ux:Key="Info">
+		<p>This pages tests `ColumnLayout` panel layout and `PullToReload` gesture.</p>
+		<p>The page is a series of bird images arranged in a staggered two-column layout. It is within a scrolling region.</p>
+		<ul>
+			<li>The eye button does nothing.</li>
+			<li>The close button removes the image with an animation. The other images slide in to fill the space.</li>
+			<li>Pulling down at the top of the scroll region can initiate a reload. You must pull over a threshold distance to reload. The visuals should indicate what is happening.</li>
+			<li>When reload is activated a new assortment of the images will be shown.</li>
+			<li>The names of the birds don't line up with the pictures: they are randomly generated.</li>
+		</ul>
+	</InfoStack>
+	<JavaScript>
+		var Observable = require("FuseJS/Observable")
+		
+		var first = [ "Northern", "Red", "Eastern", "Mountain", "Desert", "Nocturnal", "Southern", 
+			"Western", "Lowland", "Highland", "Snowy" ]
+		var last = [ "Finch", "Swallow", "Crow", "Owl", "Robin", "Pelican", "Stork", "Pidgeon", "Sparrow",
+			"Crane", "Hawk", "Condor", "Ewe" ]
+		
+		var loading = Observable(false)
+		var items = Observable()
+		var loadNew = function() {
+			for (i=0; i < 40; i++) {
+				var a = {
+					height: 80 + Math.floor(Math.random() * 100),
+					name: first[Math.floor(Math.random() * first.length)] + " " +
+						last[Math.floor(Math.random() * last.length)],
+					image: "bird" + Math.floor(Math.random() * 17),
+					color: [ 1,0,0,1],
+				}
+				items.add(a)
+			}
+			
+			loading.value = false
+		}
+		
+		loadNew()
+		
+		var deleteItem = function(arg) {
+			items.tryRemove(arg.data)
+		}
+		
+		var clear = function() {
+			while (items.length > 0)
+				items.removeAt(0)
+		}
+		
+		var startLoading = function(a,b) {
+			loading.value = true
+
+			setTimeout( clear, 700 )
+			setTimeout( loadNew, 1000 )
+		}
+		
+		module.exports = {
+			items: items,
+			deleteItem: deleteItem,
+			startLoading: startLoading,
+			loading: loading,
+		}
+	</JavaScript>
+	
+	<!-- Negative margin so bottom bit overlaps scroller -->
+	<DockPanel>
+		<StackPanel Dock="Top" ux:Name="TheTop" HitTestMode="None" Margin="0,0,0,-40">
+			<SolidColor Color="0,0.5,0.5,0.5"/>
+			<Panel ClipToBounds="true" ux:Name="FillTop" Height="0" MinHeight="0">
+				<WhileTrue ux:Name="RetainSpace">
+					<Change FillTop.MinHeight="48" Duration="0" DurationBack="0.3"/>
+				</WhileTrue>
+				<Panel Alignment="BottomCenter" Width="48" Height="48" LayoutRole="Inert"
+					MaxWidth="100%" MaxHeight="100%">
+					<Image File="../Assets/small_icons_27/arrowdown.png" Alignment="Center" ux:Name="TheArrow"/>
+					<Circle Margin="5">
+						<Stroke Width="3"><SolidColor Color="1,1,1,1"/></Stroke>
+					</Circle>
+				</Panel>
+			</Panel>
+			
+			<Panel Height="40">
+				<Text  TextColor="1,1,1,1" Font="RobotoCondensedBold" Alignment="Center" ux:Name="TheTopText">The birds you're looking for</Text>
+			</Panel>
+		</StackPanel>
+		
+		<!-- SnapMinTransform="false" says that no transform is applied during the minimum snapping
+			region. The snapping still happens, there is just no default visual effect. We do that on our own. -->
+		<ScrollView SnapMinTransform="false">
+			<!-- This implements the speically snapping support and binds a UX `State` to each of the
+				logical states. -->
+			<PullToReload IsLoading="{loading}" ReloadHandler="{startLoading}">
+				<State ux:Binding="Pulling">
+					<Change TheTopText.Value="Pull to reload"/>
+				</State>
+				<State ux:Binding="PulledPastThreshold">
+					<Change TheTopText.Value="Release to reload" DelayBack="0.3"/>
+					<Rotate Target="TheArrow" Degrees="180" Duration="0.3"/>
+				</State>
+				<State ux:Binding="Loading">
+					<Change RetainSpace.Value="true"/>
+					<Change TheTopText.Value="Loading..."/>
+					<Spin Target="TheArrow" Frequency="5"/>
+				</State>
+			</PullToReload>
+			
+			<!-- Controls what happens visually when the scroller is in the snapping region. 150 maps to the
+				internal height of the snap region. I'm not sure how to avoid the magic number. To be clear,
+				you can put whatever number you want here, 150 is just the basis for mapping and how
+				iOS presents it. -->
+			<ScrollingAnimation Range="SnapMin">
+				<Change FillTop.Height="150" Duration="1"/>
+			</ScrollingAnimation>
+			
+			<StackPanel>
+				<!-- empty placeholder for top overlay -->
+				<Panel Height="40" ux:Name="ThePlaceholder"/>
+				
+				<Panel MaxWidth="400" Alignment="Top">
+					<ColumnLayout ColumnCount="2"/>
+					
+					<Each Items="{items}">
+						<DockPanel Margin="5" ux:Name="TheItem">
+							<Text Value="{name}" Alignment="TopLeft" Margin="5" TextColor="1,1,1,1">
+								<DropShadow Color="0,0,0,1"/>
+							</Text>
+							<Rectangle CornerRadius="5,5,0,0">	
+								<ImageFill Source="{DataToResource image}" StretchMode="UniformToFill"/>
+							</Rectangle>
+							<!-- to establish the size only -->
+							<Image Source="{DataToResource image}" StretchMode="UniformToFill"
+								Visibility="Hidden"/>
+							<Grid ColumnCount="2" DefaultRow="auto" Dock="Bottom">
+								<Rectangle Layer="Background" CornerRadius="0,0,5,5">
+									<SolidColor Color="1,1,1,1"/>
+								</Rectangle>
+								
+								<Panel Padding="5" Clicked="{deleteItem}">
+									<Image File="../Assets/small_icons_27/cross.png" StretchMode="PointPrecise"/>
+								</Panel>
+								<Panel Padding="5">
+									<Image File="../Assets/small_icons_27/eye.png" StretchMode="PointPrecise"/>
+								</Panel>
+							</Grid>
+							
+							<LayoutAnimation>
+								<Move RelativeTo="LayoutChange" Vector="1" Duration="0.25"/>
+							</LayoutAnimation>
+							<RemovingAnimation>
+								<Change TheItem.Opacity="0" Duration="0.15"/>
+								<Scale Factor="0.8" Duration="0.15"/>
+							</RemovingAnimation>
+							<DropShadow/>
+						</DockPanel>
+					</Each>
+				</Panel>
+			</StackPanel>
+		</ScrollView>
+	</DockPanel>
+	
+	<FileImageSource File="../Assets/bird0.jpg" ux:Key="bird0" Policy="UnloadUnused"/>
+	<FileImageSource File="../Assets/bird1.jpg" ux:Key="bird1" Policy="UnloadUnused"/>
+	<FileImageSource File="../Assets/bird2.jpg" ux:Key="bird2" Policy="UnloadUnused"/>
+	<FileImageSource File="../Assets/bird3.jpg" ux:Key="bird3" Policy="UnloadUnused"/>
+	<FileImageSource File="../Assets/bird4.jpg" ux:Key="bird4" Policy="UnloadUnused"/>
+	<FileImageSource File="../Assets/bird5.jpg" ux:Key="bird5" Policy="UnloadUnused"/>
+	<FileImageSource File="../Assets/bird6.jpg" ux:Key="bird6" Policy="UnloadUnused"/>
+	<FileImageSource File="../Assets/bird7.jpg" ux:Key="bird7" Policy="UnloadUnused"/>
+	<FileImageSource File="../Assets/bird8.jpg" ux:Key="bird8" Policy="UnloadUnused"/>
+	<FileImageSource File="../Assets/bird9.jpg" ux:Key="bird9" Policy="UnloadUnused"/>
+	<FileImageSource File="../Assets/bird10.jpg" ux:Key="bird10" Policy="UnloadUnused"/>
+	<FileImageSource File="../Assets/bird11.jpg" ux:Key="bird11" Policy="UnloadUnused"/>
+	<FileImageSource File="../Assets/bird12.jpg" ux:Key="bird12" Policy="UnloadUnused"/>
+	<FileImageSource File="../Assets/bird13.jpg" ux:Key="bird13" Policy="UnloadUnused"/>
+	<FileImageSource File="../Assets/bird14.jpg" ux:Key="bird14" Policy="UnloadUnused"/>
+	<FileImageSource File="../Assets/bird15.jpg" ux:Key="bird15" Policy="UnloadUnused"/>
+	<FileImageSource File="../Assets/bird16.jpg" ux:Key="bird16" Policy="UnloadUnused"/>
+</Page>

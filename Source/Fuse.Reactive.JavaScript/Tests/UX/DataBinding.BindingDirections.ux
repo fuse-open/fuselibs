@@ -1,0 +1,38 @@
+<Panel ux:Class="UX.DataBinding.BindingDirections" A="FOO" B="BAR" C="MOO">
+	<string ux:Property="A" />
+	<string ux:Property="B" />
+	<string ux:Property="C" />
+
+	<JavaScript>
+		var Observable = require("FuseJS/Observable");
+
+		var a = Observable("foo");
+		var b = Observable("bar");
+		var c = Observable("moo");
+
+		function changeThingsUp() {
+
+			if (a.value !== "hehe") { throw new Error(a.value); }
+			if (b.value !== "bar") { throw new Error(b.value); }
+			if (c.value !== "hoho") { throw new Error(c.value); }
+
+			a.value = "foo++";
+			b.value = "bar++";
+			c.value = "moo++";
+		}
+
+		module.exports = { a, b, c, changeThingsUp };
+	</JavaScript>
+	<Text ux:Name="ta" Value="{a}" />
+	<Text ux:Name="tb" Value="{Read b}" />
+	<Text ux:Name="tc" Value="{Write c}" />
+	<Text ux:Name="tA" Value="{Property A}" />
+	<Text ux:Name="tB" Value="{ReadProperty B}" />
+	<Text ux:Name="tC" Value="{WriteProperty C}" />
+
+	<Text ux:Name="mirror_a" Value="{a}" />
+	<Text ux:Name="mirror_b" Value="{b}" />
+	<Text ux:Name="mirror_c" Value="{c}" />
+
+	<FuseTest.Invoke Handler="{changeThingsUp}" ux:Name="changeThingsUp"/>
+</Panel>

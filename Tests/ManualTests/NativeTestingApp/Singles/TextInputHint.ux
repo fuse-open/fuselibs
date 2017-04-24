@@ -1,0 +1,34 @@
+<Page ux:Class="TextInputHint" Title="TextInputHint">
+	<InfoStack ux:Key="Info">
+		<p>Each `TextInput` on this page, while being edited, should show a keyboard appropriate for that type of text entry.</p>
+	</InfoStack>
+	
+	<ScrollView>
+		<StackPanel>
+
+			<Text ux:Class="Text__" TextColor="#000" Margin="4,4,4,2" />
+			<TextBox ux:Class="TextBox__" TextColor="#000" Margin="4,2,4,4" Padding="2"/>
+
+			<Text__ Value="Password" />
+			<TextBox__ IsPassword="true" />
+
+			<Text__ Value="Default:" />
+			<TextBox__ InputHint="Default" />
+
+			<Text__ Value="Email:" />
+			<TextBox__ InputHint="Email" />
+
+			<Text__ Value="URL:" />
+			<TextBox__ InputHint="URL" />
+
+			<Text__ Value="Phone:" />
+			<TextBox__ InputHint="Phone" />
+
+			<Text__ Value="Number:" />
+			<TextBox__ InputHint="Number" />
+
+		</StackPanel>
+
+	</ScrollView>
+
+</Page>

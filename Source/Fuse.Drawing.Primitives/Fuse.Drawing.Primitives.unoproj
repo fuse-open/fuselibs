@@ -1,0 +1,22 @@
+{
+  "Copyright": "Copyright (c) Fusetools AS 2017",
+  "Description": "Fuse.Drawing",
+  "Publisher": "Fusetools AS",
+  "Version": "1.0.0-rc3",
+  "Package": {
+    "ProjectUrl": "https://fusetools.com"
+  },
+  "Projects": [
+    "../Fuse.Drawing.Planar/Fuse.Drawing.Planar.unoproj",
+    "../Fuse.Drawing/Fuse.Drawing.unoproj",
+    "../Fuse.Elements/Fuse.Elements.unoproj",
+    "../Fuse.Nodes/Fuse.Nodes.unoproj",
+    "../Fuse.Common/Fuse.Common.unoproj"
+  ],
+  "Includes": [
+    "Circle.uno:Source",
+    "Quad.uno:Source",
+    "Rectangle.uno:Source",
+    "Wedge.uno:Source"
+  ]
+}

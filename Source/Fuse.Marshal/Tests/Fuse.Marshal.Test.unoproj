@@ -1,0 +1,18 @@
+{
+  "Packages": [
+    "Fuse.Marshal",
+    "Uno.Collections",
+    "UnoCore",
+    "Uno.Testing",
+    "Uno.Threading"
+  ],
+  "Projects": [
+    "../../Fuse.Common/Tests/FuseTest/FuseTest.unoproj"
+  ],
+  "Includes": [
+    "*"
+  ],
+  "Excludes": [
+    "Scripting/*"
+  ],
+}

@@ -1,0 +1,3 @@
+<GraphicsView ux:Class="Fuse.Android.RootGraphicsView">
+	<Fuse.Controls.Native.Android.SurfaceView ux:Condition="Android" ux:Template="AndroidAppearance" />
+</GraphicsView>

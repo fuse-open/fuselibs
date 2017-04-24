@@ -1,0 +1,29 @@
+<Panel ux:Class="FpsMeter" Width="40" Height="42"
+	Alignment="BottomRight" Layer="Overlay" Margin="5">
+	<Rectangle Layer="Background" CornerRadius="5">
+		<Stroke Width="2"><SolidColor Color="0,0,0,1" ux:Name="TheStroke"/></Stroke>
+		<SolidColor Color="1,1,1,1" ux:Name="TheFill"/>
+	</Rectangle>
+
+	<Grid ColumnCount="1" RowCount="2">
+		<!-- FastText, used by FastNumber, isn't aligned quite right anymore. Maybe a defect, but
+			nobody uses this interface anyway -->
+		<FastNumber ux:Name="FpsLong" Value="60" Margin="0,-4,0,0">
+			<WhileFloat LessThan="50" GreaterThan="30">
+				<Change TheFill.Color="1,1,0.5,1" DurationBack="1"/>
+			</WhileFloat>
+			<WhileFloat LessThanEqual="30">
+				<Change TheFill.Color="1,0.5,0.5,1" DurationBack="1"/>
+			</WhileFloat>
+		</FastNumber>
+		
+		<FastNumber ux:Name="FpsShort" Value="60" Margin="0,-4,0,0">
+			<WhileFloat LessThan="50" GreaterThan="30">
+				<Change TheStroke.Color="0.5,0.5,0,1" DurationBack="1"/>
+			</WhileFloat>
+			<WhileFloat LessThanEqual="30">
+				<Change TheStroke.Color="0.5,0,0,1" DurationBack="1"/>
+			</WhileFloat>
+		</FastNumber>
+	</Grid>
+</Panel>

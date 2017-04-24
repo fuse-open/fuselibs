@@ -1,0 +1,10 @@
+<Panel ux:Class="UX.RootingParadox">
+	<!-- B2 sets this to false while rooted, meaning B2 won't be rooted, thus revert to true, ad naseum -->
+	<WhileTrue Value="true" ux:Name="B1">
+		<Panel ux:Name="P2">
+			<WhileTrue Value="true" ux:Name="B2">
+				<Change B1.Value="false"/>
+			</WhileTrue>
+		</Panel>
+	</WhileTrue>
+</Panel>

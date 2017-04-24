@@ -1,0 +1,29 @@
+<Page ux:Class="HttpXmlView" Title="Xml/Http">
+	<InfoStack ux:Key="Info">
+	<p>This part is automated. Unless there is a bug, it just displays “All comparisons were successful!”, and you can move to the next part.</p>
+	</InfoStack>
+	<ScrollView ClipToBounds="true">
+		<StackPanel Orientation="Vertical" Margin="5,0,5,0" Alignment="Center">
+			<Text TextWrapping="Wrap" ux:Name="LoadingMessage" Value="Loading...." TextAlignment="Center"/>
+			<Text TextWrapping="Wrap" TextColor="1,0,0,1" ux:Name="ErrorMessage" Visibility="Collapsed"/>
+			<StackPanel ux:Name="XmlSection" Visibility="Collapsed">
+				<Text Value="All comparisons were successful!" TextColor="0,0.5,0,1" ux:Name="SuccessValidation" Visibility="Collapsed" TextAlignment="Center" Margin="0,5,0,5" />
+				<StackPanel ux:Name="FailedValidation" Visibility="Collapsed">
+					<Text TextWrapping="Wrap" Value="Full Xml Content:" />
+					<Panel>
+						<Rectangle Layer="Background">
+							<SolidColor Color="0.95,1,1,1"></SolidColor>
+						</Rectangle>
+						<Text TextWrapping="Wrap" TextAlignment="Left" ux:Name="SourceText" FontSize="10" />
+					</Panel>
+					<Text TextWrapping="Wrap" Value="Auto comparison was failed and the following errors were found:" TextAlignment="Center" Margin="0,5,0,5" TextColor="1,0,0,1" />
+				</StackPanel>
+				<StackPanel ux:Name="InvalidResultContainer" Visibility="Collapsed">
+				</StackPanel>
+			</StackPanel>
+		</StackPanel>
+	</ScrollView>
+	<WhileActive>
+		<Callback Handler="OnActive"/>
+	</WhileActive>
+</Page>

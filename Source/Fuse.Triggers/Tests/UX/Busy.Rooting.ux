@@ -1,0 +1,6 @@
+<Panel ux:Class="UX.Busy.Rooting">
+	<WhileBusy ux:Name="W1">
+		<Nothing/>
+	</WhileBusy>
+	<FuseTest.BusyControl ux:Name="B1" ux:AutoBind="false"/>
+</Panel>

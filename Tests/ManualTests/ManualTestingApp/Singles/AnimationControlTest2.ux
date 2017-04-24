@@ -1,0 +1,69 @@
+<Page Title="Animation 2" ux:Class="AnimationControlTest2">
+	<InfoStack ux:Key="Info">
+		<ul>
+			<li>The animation starts when the switch is toggled.</li>
+			<li>The purple circle will start to descend.</li>
+			<li>As it descends a number, from 1 to 5 in order, is revelead in each region, roughly as it reaches the center.</li>
+			<li>The circle's size pulses while at the bottom.</li>
+			<li>When you toggle the switch off the reverse happens.</li>
+		</ul>
+	</InfoStack>
+	<DockPanel>
+		<Switch DockPanel.Dock="Top">
+			<WhileTrue>
+				<Change AManual.Value="true" />
+			</WhileTrue>
+		</Switch>
+	
+		<Panel>
+			<Rectangle Layer="Background">
+				<Stroke Width="2"><SolidColor Color="0,0,0,1"/></Stroke>
+				<LinearGradient>
+					<GradientStop Offset="0.0" Color="0,1,1,0.2"/>
+					<GradientStop Offset="0.2" Color="0,1,1,0.2"/>
+					
+					<GradientStop Offset="0.2" Color="0,1,1,0.4"/>
+					<GradientStop Offset="0.4" Color="0,1,1,0.4"/>
+					
+					<GradientStop Offset="0.4" Color="0,1,1,0.2"/>
+					<GradientStop Offset="0.6" Color="0,1,1,0.2"/>
+					
+					<GradientStop Offset="0.6" Color="0,1,1,0.4"/>
+					<GradientStop Offset="0.8" Color="0,1,1,0.4"/>
+					
+					<GradientStop Offset="0.8" Color="0,1,1,0.2"/>
+					<GradientStop Offset="1.0" Color="0,1,1,0.2"/>
+					
+				</LinearGradient>
+			</Rectangle>
+			
+			<Grid>
+				<Text Alignment="Center" FontSize="30" Visibility="Hidden" ux:Name="Label1">1</Text>
+				<Text Alignment="Center" FontSize="30" Visibility="Hidden" ux:Name="Label2">2</Text>
+				<Text Alignment="Center" FontSize="30" Visibility="Hidden" ux:Name="Label3">3</Text>
+				<Text Alignment="Center" FontSize="30" Visibility="Hidden" ux:Name="Label4">4</Text>
+				<Text Alignment="Center" FontSize="30" Visibility="Hidden" ux:Name="Label5">5</Text>
+			</Grid>
+			
+			<Panel Margin="0,0,0,50">
+				<Panel Alignment="TopCenter"  ux:Name="Delay3">
+					<Circle Height="50" Width="50">
+						<SolidColor Color="1,0,1,1"/>
+						<Scaling ux:Name="Scale3"/>
+					</Circle>
+				</Panel>
+			</Panel>
+		</Panel>
+		
+		<WhileTrue ux:Name="AManual">
+			<Cycle Target="Scale3.Factor" Low="0.5" High="2.0" Delay="5"/>
+			<Move Target="Delay3" Y="1" RelativeTo="ParentSize" Duration="5"/>
+			<Change Target="Label1.Visibility" Value="Visible" Delay="0.5"/>
+			<Change Target="Label2.Visibility" Value="Visible" Delay="1.5"/>
+			<Change Target="Label3.Visibility" Value="Visible" Delay="2.5"/>
+			<Change Target="Label4.Visibility" Value="Visible" Delay="3.5"/>
+			<Change Target="Label5.Visibility" Value="Visible" Delay="4.5"/>
+		</WhileTrue>
+	</DockPanel>
+    <FpsMeter/>
+</Page>

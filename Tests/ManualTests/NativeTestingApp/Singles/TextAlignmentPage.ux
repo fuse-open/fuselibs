@@ -1,0 +1,76 @@
+<Page ux:Class="TextAlignmentPage" Title="TextAlignment">
+	<InfoStack ux:Key="Info">
+		<p>This tests several variations of aligned text.</p>
+		<ul>
+			<li>The first bit of each region describes what is tested.</li>
+			<li>One emoji or special symbol is included in each description. There should be no "missing character" boxes.</li>
+			<li>The bounding box is just to show where the text should be aligned.</li>
+		</ul>
+	</InfoStack>
+	<ScrollView>
+		<Panel ux:Class="TABox" Margin="1" MaxWidth="400">
+			<Rectangle><Stroke Brush="#f00" Alignment="Outside"/></Rectangle>
+		</Panel>
+		<StackPanel ItemSpacing="2">
+			<TABox>
+				<Text TextWrapping="Wrap" TextAlignment="Left">Alignment 😃 Left</Text>
+			</TABox>
+			<TABox>
+				<Text TextAlignment="Center">Alignment 😞 Center</Text>
+			</TABox>
+			<TABox>
+				<Text TextAlignment="Right">Alignment ♏ Right</Text>
+			</TABox>
+
+			<TABox Width="200">
+				<Text TextAlignment="Left">Alignment 😃 Left</Text>
+			</TABox>
+			<TABox Width="200">
+				<Text TextAlignment="Center">Alignment 😞 Center</Text>
+			</TABox>
+			<TABox Width="200">
+				<Text TextAlignment="Right">Alignment ♏ Right</Text>
+			</TABox>
+			
+			<TABox Width="200">
+				<Text TextAlignment="Left">Multi-line
+Alignment 😃 Left</Text>
+			</TABox>
+			<TABox Width="200">
+				<Text TextAlignment="Center">Multi-line
+Alignment 😞 Center</Text>
+			</TABox>
+			<TABox Width="200">
+				<Text TextAlignment="Right">Multi-line
+Alignment ♏ Right</Text>
+			</TABox>
+
+			<TABox>
+				<Text TextWrapping="Wrap" TextAlignment="Left">Wrap, Alignment 😃 Left.
+Fuse lets designers and developers create native apps that look and feel great. Build native apps for iOS and Android in real time using intuitive UX markup and reactive JavaScript.</Text>
+			</TABox>
+			<TABox>
+				<Text TextWrapping="Wrap" TextAlignment="Center">Wrap, Alignment 😞 Center.
+Fuse lets designers and developers create native apps that look and feel great. Build native apps for iOS and Android in real time using intuitive UX markup and reactive JavaScript.</Text>
+			</TABox>
+			<TABox>
+				<Text TextWrapping="Wrap" TextAlignment="Right">Wrap, Alignment ♏ Right.
+Fuse lets designers and developers create native apps that look and feel great. Build native apps for iOS and Android in real time using intuitive UX markup and reactive JavaScript.</Text>
+			</TABox>
+
+			<!-- NoWrap  -->
+			<TABox>
+				<Text TextWrapping="NoWrap" TextAlignment="Left">NoWrap, Alignment 😃 Left.
+Fuse lets designers and developers create native apps that look and feel great. Build native apps for iOS and Android in real time using intuitive UX markup and reactive JavaScript.</Text>
+			</TABox>
+			<TABox>
+				<Text TextWrapping="NoWrap" TextAlignment="Center">NoWrap, Alignment 😞 Center.
+Fuse lets designers and developers create native apps that look and feel great. Build native apps for iOS and Android in real time using intuitive UX markup and reactive JavaScript.</Text>
+			</TABox>
+			<TABox>
+				<Text TextWrapping="NoWrap" TextAlignment="Right">NoWrap, Alignment ♏ Right.
+Fuse lets designers and developers create native apps that look and feel great. Build native apps for iOS and Android in real time using intuitive UX markup and reactive JavaScript.</Text>
+			</TABox>
+		</StackPanel>
+	</ScrollView>
+</Page> 

@@ -1,0 +1,6 @@
+<UX.ClassConstructorBase ux:Class="UX.ClassConstructor">
+	<Panel ux:Dependency="A" ux:Binding="A" />
+	<Panel ux:Dependency="B" /> <!--  This one is here to force this and UX.ClassConstructorBase to get different constructor signatures -->
+	<Panel ux:Name="_a" Children="A" ux:AutoBind="false" />
+	<Panel ux:Name="_b" Children="B" ux:AutoBind="false" />
+</UX.ClassConstructorBase>

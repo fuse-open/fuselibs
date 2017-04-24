@@ -1,0 +1,66 @@
+<Page Title="Http Image" ux:Class="HttpImagePage">
+	<InfoStack ux:Key="Info">
+		<p>This tests using a Url for Image.</p>
+		<ul>
+			<li>An indicator appears while loading images. You may see this only briefly if the image has been loaded before.</li>
+			<li>Click 'Error' to load a failing image. In which case an error message appears. It starts with "Failed: " followed by a technical (possibly non-human) error reason.</li>
+			<li>Click 'Good' to go back to the non-failing image.</li>
+			<li>While the good image is loading a loading animation will be displayed. This has the text "Loading..." and a small spinning arc.</li>
+		</ul>
+	</InfoStack>
+	<JavaScript>
+		var Observable = require("FuseJS/Observable")
+		
+		exports.errorMessage = Observable("")
+		exports.onError = function(args) {
+			exports.errorMessage.value = "Failed: " + args.reason
+		}
+	</JavaScript>
+	<WhileBusy>
+		<Panel  Alignment="Center" Width="200" Height="200">
+			<Text Alignment="Center" Value="Loading..."/>
+			<Circle StartAngleDegrees="0" LengthAngleDegrees="45">
+				<Stroke Width="20" Color="#000"/>
+				<Stroke Width="4" Color="#AAA" Offset="-8"/>
+				<WhileVisible>
+					<Spin/>
+				</WhileVisible>
+			</Circle>
+		</Panel>
+	</WhileBusy>
+	<Grid Alignment="TopCenter" Rows="auto" Columns="auto,auto">
+		<StdButton Margin="10" Text="Good">
+			<Clicked>
+				<Set TheImage.Url="https://apod.nasa.gov/apod/image/1512/ngc6888_soap_eder_m1024.jpg"/>
+			</Clicked>
+		</StdButton>
+		<StdButton Margin="10" Text="Bad">
+			<Clicked>
+				<Set TheImage.Url="http://unknown.cc.xx.yy/image.png"/>
+			</Clicked>
+		</StdButton>
+	</Grid>
+	<WhileVisible><!-- prevent early loading -->
+		<Image Url="https://apod.nasa.gov/apod/image/1512/ngc6888_soap_eder_m1024.jpg"
+			ux:Name="TheImage" MemoryPolicy="UnloadUnused" Error="{onError}"
+			StretchMode="UniformToFill">
+			<WhileLoading>
+				<Panel Alignment="Center" Padding="10">
+					<Text Value="Loading..." TextColor="0,0,0,1"/>
+					<Rectangle Layer="Background" Fill="0.95,0.95,1,1" CornerRadius="10">
+						<Stroke Width="1"><SolidColor Color="0,0,0,1"/></Stroke>
+					</Rectangle>
+				</Panel>
+			</WhileLoading>
+			<WhileFailed>
+				<Panel Alignment="Center" Padding="10">
+					<Text Value="{errorMessage}" TextColor="0,0,0,1"
+					TextWrapping="Wrap" Margin="10"/>
+					<Rectangle Layer="Background" Fill="1,0.95,0.95,1" CornerRadius="10">
+						<Stroke Width="1"><SolidColor Color="0,0,0,1"/></Stroke>
+					</Rectangle>
+				</Panel>
+			</WhileFailed>
+		</Image>
+	</WhileVisible>
+</Page>

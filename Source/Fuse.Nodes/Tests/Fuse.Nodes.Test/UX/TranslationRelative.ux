@@ -1,0 +1,27 @@
+<Panel ux:Class="UX.TranslationRelative">
+	<Panel X="50" Y="60" Width="20" Height="30">
+		<Panel ux:Name="P1">
+			<Translation RelativeTo="ParentSize" X="-0.5" Y="-1"/>
+		</Panel>
+	</Panel>
+	
+	<!-- forward references, https://github.com/fusetools/fuselibs/issues/1881 -->
+	<Panel ux:Name="P4">
+		<Translation Vector="1" RelativeTo="Size" RelativeNode="P2"/>
+	</Panel>
+	<Panel ux:Name="P6">
+		<Translation Vector="1" RelativeTo="ParentSize" RelativeNode="C1"/>
+	</Panel>
+	
+	<Panel X="10" Y="20" Width="30" Height="40" ux:Name="P2">
+		<Translation RelativeTo="Size" X="0.5" Y="0.25"/>
+		<Panel ux:Name="C1"/>
+	</Panel>
+	
+	<Panel ux:Name="P3">
+		<Translation Vector="1" RelativeTo="Size" RelativeNode="P2"/>
+	</Panel>
+	<Panel ux:Name="P5">
+		<Translation Vector="1" RelativeTo="ParentSize" RelativeNode="C1"/>
+	</Panel>
+</Panel>

@@ -1,0 +1,16 @@
+<Panel ux:Class="UX.Busy.Multiple">
+	<WhileBusy ux:Name="W1">
+		<Nothing/>
+	</WhileBusy>
+	<FuseTest.BusyControl ux:Name="B1"/>
+	<FuseTest.BusyControl ux:Name="B2"/>
+	<Panel>
+		<WhileBusy ux:Name="W2">
+			<Nothing/>
+		</WhileBusy>
+		<FuseTest.BusyControl ux:Name="B3"/>
+		<Panel>
+			<FuseTest.BusyControl ux:Name="B4"/>
+		</Panel>
+	</Panel>
+</Panel>

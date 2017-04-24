@@ -1,0 +1,33 @@
+<Panel ux:Class="UX.Timeline.TimelineAction">
+	<Timeline ux:Name="Pause">
+		<TimelineAction How="Pause" Target="T"/>
+	</Timeline>
+	<Timeline ux:Name="Pulse">
+		<TimelineAction How="Pulse" Target="T"/>
+	</Timeline>
+	<Timeline ux:Name="PulseForward">
+		<TimelineAction How="PulseForward" Target="T"/>
+	</Timeline>
+	<Timeline ux:Name="PulseBackward">
+		<TimelineAction How="PulseBackward" Target="T"/>
+	</Timeline>
+	<Timeline ux:Name="Play">
+		<TimelineAction How="Play" Target="T"/>
+	</Timeline>
+	<Timeline ux:Name="PlayTo5">
+		<TimelineAction How="PlayTo" Progress="0.5" Target="T"/>
+	</Timeline>
+	<Timeline ux:Name="Resume">
+		<TimelineAction How="Resume" Target="T"/>
+	</Timeline>
+	<Timeline ux:Name="Seek5">
+		<TimelineAction How="Seek" Progress="0.5" Target="T"/>
+	</Timeline>
+	<Timeline ux:Name="Stop">
+		<TimelineAction How="Stop" Target="T"/>
+	</Timeline>
+	
+	<Timeline ux:Name="T">
+		<Nothing Duration="5" ux:Name="N"/>
+	</Timeline>
+</Panel>

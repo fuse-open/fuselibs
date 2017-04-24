@@ -1,0 +1,35 @@
+{
+  "Copyright": "Copyright (c) Fusetools AS 2017",
+  "Description": "Support for Push Notifications On Mobile",
+  "Publisher": "Fusetools AS",
+  "Version": "1.0.0-rc3",
+  "Package": {
+    "ProjectUrl": "https://fusetools.com"
+  },
+  "Packages": [
+    "Uno.Collections",
+    "Uno.Threading",
+    "Fuse.Controls",
+    "Fuse.Elements",
+    "Fuse.Reactive",
+    "Fuse.Scripting",
+    "Fuse.Common"
+  ],
+  "Projects": [
+    "../Experimental.TextureLoader/Experimental.TextureLoader.unoproj",
+    "../Fuse.Platform/Fuse.Platform.unoproj"
+  ],
+  "Includes": [
+    "Common.uno:Source",
+    "JS.uno:Source",
+
+    "iOS/Impl.uno:Source",
+    "iOS/AppDelegatePushNotify.h:CHeader:iOS",
+    "iOS/AppDelegatePushNotify.mm:CSource:iOS",
+
+    "Android/Impl.uno:Source",
+    "Android/Impl.cpp.uxl:Extensions",
+    "Android/PushNotificationReceiver.java:File",
+    "Android/Assets/DefaultIcon.png:File"
+  ]
+}

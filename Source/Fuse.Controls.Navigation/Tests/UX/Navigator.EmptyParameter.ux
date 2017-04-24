@@ -1,0 +1,18 @@
+<Panel ux:Class="UX.Navigator.EmptyParameter">
+	<Router ux:Name="router"/> 
+	<JavaScript>
+		module.exports.goA = function() { router.goto('p1',"") }
+		module.exports.goB = function() { router.goto('p1',null) }
+		module.exports.goC = function() { router.goto('p1',{}) } 
+		module.exports.goD = function() { router.goto('p1',{ }) } 
+		module.exports.goE = function() { router.goto('p1',{a:""}) } 
+	</JavaScript>
+	<FuseTest.Invoke Handler="{goA}" ux:Name="GoA"/>
+	<FuseTest.Invoke Handler="{goB}" ux:Name="GoB"/>
+	<FuseTest.Invoke Handler="{goC}" ux:Name="GoC"/>
+	<FuseTest.Invoke Handler="{goD}" ux:Name="GoD"/>
+	<FuseTest.Invoke Handler="{goE}" ux:Name="GoE"/>
+	<Navigator DefaultPath="p1" ux:Name="N">
+		<Page ux:Template="p1"/>
+	</Navigator>
+</Panel>

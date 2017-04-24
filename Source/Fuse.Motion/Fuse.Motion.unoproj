@@ -1,0 +1,37 @@
+{
+  "Copyright": "Copyright (c) Fusetools AS 2017",
+  "Description": "Library for control motion and simulated physics for UI",
+  "Publisher": "Fusetools AS",
+  "Version": "1.0.0-rc3",
+  "Package": {
+    "ProjectUrl": "https://fusetools.com"
+  },
+  "Projects": [
+    "../Fuse.Common/Fuse.Common.unoproj",
+    "../Fuse.Reactive.Expressions/Fuse.Reactive.Expressions.unoproj"
+  ],
+  "InternalsVisibleTo": [
+    "Fuse.Animations",
+    "Fuse.Controls",
+    "Fuse.Controls.Primitives",
+    "Fuse.Controls.Navigation",
+    "Fuse.Controls.ScrollView",
+    "Fuse.Gestures",
+    "Fuse.Navigation",
+  ],
+  "Includes": [
+    "MotionConfig.uno:Source",
+    "DestinationMotion.uno:Source",
+    "SpringFunction.uno:Source",
+    "DelayFunction.uno:Source",
+    "Enums.uno:Source",
+    "Simulation/AngularAdapter.uno:Source",
+    "Simulation/BoundedRegion2D.uno:Source",
+    "Simulation/EasingMotion.uno:Source",
+    "Simulation/ElasticForce.uno:Source",
+    "Simulation/Friction.uno:Source",
+    "Simulation/PointerVelocity.uno:Source",
+    "Simulation/Simulation.uno:Source",
+    "Simulation/SmoothSnap.uno:Source"
+  ]
+}

@@ -1,0 +1,29 @@
+<Panel ux:Class="UX.Grid.PreFill">
+	<Grid Columns="auto,100,1*" Rows="1*,50,2*" Alignment="Left">
+		<Panel BoxSizing="FillAspect" Aspect="0.5" ux:Name="A11"/>
+		<Panel ux:Name="A12"/>
+		<Panel ux:Name="A13"/>
+
+		<Panel BoxSizing="FillAspect" Aspect="2" ux:Name="A21"/>
+		<Panel ux:Name="A22"/>
+		<Panel ux:Name="A23"/>
+
+		<Panel ux:Name="A31"/>
+		<Panel ux:Name="A32"/>
+		<Panel ux:Name="A33"/>
+	</Grid>
+	
+	<Grid Rows="auto,100,1*" Columns="1*,50,2*">
+		<Panel BoxSizing="FillAspect" Aspect="2" ux:Name="B11"/>
+		<Panel BoxSizing="FillAspect" Aspect="0.5" ux:Name="B12"/>
+		<Panel ux:Name="B13"/>
+		
+		<Panel ux:Name="B21"/>
+		<Panel ux:Name="B22"/>
+		<Panel ux:Name="B23"/>
+		
+		<Panel ux:Name="B31"/>
+		<Panel ux:Name="B32"/>
+		<Panel ux:Name="B33"/>
+	</Grid>
+</Panel>

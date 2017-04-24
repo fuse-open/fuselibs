@@ -1,0 +1,40 @@
+{
+  "Copyright": "Copyright (c) Fusetools AS 2017",
+  "Version": "1.0.0-rc3",
+  "Publisher": "Fusetools AS",
+  "Description": "References FuseJS standard features",
+  "Package": {
+    "ProjectUrl": "https://fusetools.com"
+  },
+  "IsTransitive": true,
+  "Packages": [
+    "Uno.Collections",
+    "Uno.Net.Http",
+    "Uno.Threading",
+    "Fuse.Common",
+    "Fuse.Nodes",
+    "Fuse.Platform",
+    "Fuse.Reactive",
+    "Fuse.Scripting",
+    "Fuse.Storage",
+    "Fuse.Android",
+    "Fuse.iOS",
+    "Fuse.UserEvents",
+  ],
+  "Projects": [
+    "../Polyfills.Window/Polyfills.Window.unoproj",
+  ],
+  "Includes": [
+    "Globals.uno:Source",
+    "Lifecycle.uno:Source",
+    "Environment.uno:Source",
+    "Base64.uno:Source",
+    "Latin1Helpers.uno:Source",
+    "Bundle.uno:Source",
+    "FileReader.uno:Source",
+    "UserEvents.uno:Source"
+  ],
+  "InternalsVisibleTo": [
+    "FuseJS.Test"
+  ]
+}

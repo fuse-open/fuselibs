@@ -1,0 +1,11 @@
+<Panel ux:Class="UX.Busy.OnParameterChanged">
+	<JavaScript>
+		exports.done = function() {
+			B.deactivate()
+		}
+	</JavaScript>
+	<Busy On="ParameterChanged" ux:Name="B"/>
+	<WhileBusy ux:Name="W"/>
+	
+	<FuseTest.Invoke Handler="{done}" ux:Name="{CallDone}"/>
+</Panel>

@@ -1,0 +1,14 @@
+<StackPanel ux:Class="UX.MaskPositioning">
+	<Panel Color="0,0,0,0" Width="10" Height="10">
+		<Mask File="MaskRGBA.png" Mode="RGBA"/>
+		<Rectangle Width="50%" Height="10" Color="White" Alignment="Left"/>
+	</Panel>
+	<Panel Color="0,0,0,0" Width="10" Height="10">
+		<Mask File="MaskRGBA.png" Mode="RGBA"/>
+		<Rectangle Width="50%" Height="10" Color="White" Alignment="Right"/>
+	</Panel>
+	<Panel Color="White" Width="10" Height="10">
+		<Mask File="MaskRGBA.png" Mode="RGBA"/>
+		<Rectangle Width="50%" Height="10" Color="White" Alignment="BottomLeft"/>
+	</Panel>
+</StackPanel>

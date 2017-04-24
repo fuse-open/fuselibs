@@ -1,0 +1,11 @@
+<Panel ux:Class="UX.Navigator.RootingCache">
+	<Router ux:Name="R"/>
+	<Navigator ux:Name="N">
+		<Page ux:Class="RCPage">
+			<WhileActive ux:Name="A"><Nothing/></WhileActive>
+		</Page>
+		
+		<RCPage ux:Template="one" Title="one"/>
+		<RCPage ux:Template="two" Title="two"/>
+	</Navigator>
+</Panel>

@@ -1,0 +1,59 @@
+<Panel ux:Class="UX.LinearHistory">
+	<LinearNavigation ux:Name="TheNav">
+		<Fuse.Motion.NavigationMotion GotoDuration="0"/>
+	</LinearNavigation>
+	<Page ux:Name="P1"/>
+	<Page ux:Name="P2"/>
+	<Page ux:Name="P3">
+		<Panel>
+			<!-- embedded to ensure searching works -->
+			<Panel>
+				<Timeline ux:Name="GoBack2">
+					<GoBack/>
+				</Timeline>
+				<Timeline ux:Name="GoForward2">
+					<GoForward/>
+				</Timeline>
+			</Panel>
+			
+			
+			<!-- These don't alter TheNav due to a new Nav -->
+			<Panel>
+				<LinearNavigation/>
+				<Timeline ux:Name="GoBack3">
+					<GoBack/>
+				</Timeline>
+				<Timeline ux:Name="GoForward3">
+					<GoForward/>
+				</Timeline>
+				
+				<!-- these have an explicit context, thus work again -->
+				<Panel Navigation="TheNav">
+					<Timeline ux:Name="GoBack4">
+						<GoBack/>
+					</Timeline>
+					<Timeline ux:Name="GoForward4">
+						<GoForward/>
+					</Timeline>
+				</Panel>
+			</Panel>
+		</Panel>
+	</Page>
+	
+	<!-- need something to modify otherwise trigger has no progress -->
+	<Rectangle ux:Name="Dummy" Layer="Overlay"/>
+	<WhileCanGoBack ux:Name="TheCanGoBack">
+		<Change Dummy.CornerRadius="10"/>
+	</WhileCanGoBack>
+	<WhileCanGoForward ux:Name="TheCanGoForward">
+		<Change Dummy.CornerRadius="10"/>
+	</WhileCanGoForward>
+	
+	<Timeline ux:Name="GoBack1">
+		<GoBack/>
+	</Timeline>
+	<Timeline ux:Name="GoForward1">
+		<GoForward/>
+	</Timeline>
+	
+</Panel>

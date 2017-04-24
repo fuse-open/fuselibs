@@ -1,0 +1,16 @@
+<Panel ux:Class="UX.Pressed.Capture">
+	<Panel ux:Class="PCCell" HitTestMode="LocalBounds">
+		<Released>
+			<FuseTest.CountAction ux:Name="CR"/>
+		</Released>
+		<Pressed>
+			<FuseTest.CountAction ux:Name="CP"/>
+		</Pressed>
+		<WhilePressed ux:Name="WP" Capture="true"/>
+	</Panel>
+		
+	<Grid ColumnCount="2">
+		<PCCell ux:Name="P1"/>
+		<PCCell ux:Name="P2"/>
+	</Grid>
+</Panel>

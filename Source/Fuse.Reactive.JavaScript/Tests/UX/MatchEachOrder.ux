@@ -1,0 +1,19 @@
+<Panel ux:Class="UX.MatchEachOrder">
+    <JavaScript>
+        module.exports = {
+            items: [
+                { value: 1 },
+                { value: 2 },
+                { value: 3 },
+            ]
+        };
+    </JavaScript>
+
+	<Each Items="{items}">
+		<Match Value="{value}">
+			<Case IsDefault="true">
+				<Text Value="{value}" />
+			</Case>
+		</Match>
+	</Each>
+</Panel>

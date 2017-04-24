@@ -1,0 +1,60 @@
+<Page Title="IsEnabled 1" ux:Class="IsEnabledPage">
+	<InfoStack ux:Key="Info">
+		<p>These checks test the IsEnabled flag on nodes. A variety of controls are presented that are either enabled or disabled. Each one should be checked, according to the text on it, for whether it responds or does not respond correctly.</p>
+
+		<p>Other than the text inputs the other controls show a small yellow circle if disabled or a small purple square if enabled. Any control showing both or the wrong one is an error.</p>
+
+		<p>Some of the boxes mention hovering, on mobile devices hovering happens so long as the finger is held down on the control.</p>
+		
+		<p>There is no need to enter text in the TextInput's, it's only relevant whether they gain focus or not (keyboard shows up on Mobile devices).</p>
+	</InfoStack>
+	<DockPanel>
+		<MyCell ux:Class="MyCell2" Margin="5,5,5,5" Padding="5,5,5,5">
+			<Rectangle Layer="Background">
+				<Stroke><SolidColor Color="0,0,0,1"/></Stroke>
+			</Rectangle>
+		</MyCell>
+		<Grid ColumnCount="2">
+			<MyCell2>
+				<!-- workaround to issue in BasicTheme with disabled button and text that can't be read -->
+				<Text TextWrapping="Wrap" TextColor="#000" Alignment="Center">Disabled: Unclickable, nothing happens</Text>
+				<Panel IsEnabled="false" HitTestMode="LocalBounds">
+					<Clicked>
+						<Change Target="Red1.Opacity" Value="1" Duration="2"/>
+					</Clicked>
+					<ReportEnabled/>
+				</Panel>
+			</MyCell2>
+			<MyCell2>
+				<Panel Background="Red" ux:Name="Red1" Opacity="0"/>
+			</MyCell2>
+			
+			<MyCell2 HitTestMode="LocalBounds">
+				<Text TextWrapping="Wrap" TextColor="#000" Alignment="Center" 
+					Value="Enabled: Clickable, get green box"/>
+				<Clicked>
+					<Change Target="Green1.Opacity" Value="1" Duration="2"/>
+				</Clicked>
+				<ReportEnabled/>
+			</MyCell2>
+			<MyCell2>
+				<Panel Background="Green" ux:Name="Green1" Opacity="0"/>
+			</MyCell2>
+			
+			<MyCell2>
+				<Panel IsEnabled="true">
+					<TextInput IsEnabled="false" Value="Cannot get focus, try tapping"
+						TextWrapping="Wrap">
+						<ReportEnabled/>
+					</TextInput>
+				</Panel>
+			</MyCell2>
+			<MyCell2>
+				<TextInput IsEnabled="true" Value="Can get focus, tap to focus"
+					TextWrapping="Wrap">
+					<ReportEnabled/>
+				</TextInput>
+			</MyCell2>
+		</Grid>
+	</DockPanel>
+</Page>

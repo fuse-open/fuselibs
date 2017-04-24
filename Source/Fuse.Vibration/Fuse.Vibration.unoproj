@@ -1,0 +1,24 @@
+{
+  "Copyright": "Copyright (c) Fusetools AS 2017",
+  "Description": "Native Vibration",
+  "Publisher": "Fusetools AS",
+  "Version": "1.0.0-rc3",
+  "Package": {
+    "ProjectUrl": "https://fusetools.com"
+  },
+  "Packages": [
+    "Fuse.Animations",
+    "Fuse.Designer",
+    "Fuse.Triggers",
+    "Fuse.Scripting",
+    "Fuse.Common",
+    "Fuse.Nodes",
+    "Fuse.Marshal",
+    "Uno.Permissions"
+  ],
+  "Includes": [
+    "Vibration.uno:Source",
+    "Vibrate.uno:Source",
+    "VibrationModule.uno:Source"
+  ]
+}

@@ -1,0 +1,31 @@
+<Panel ux:Class="UX.Each.Fail">
+	<JavaScript>
+		var Observable = require("FuseJS/Observable")
+		
+		exports.items = Observable()
+		for (var i=0; i < 2; ++i) {
+			exports.items.add( "" + i )
+		}
+
+		exports.fail = function() {
+			exports.items.failed( "nope" )
+		}
+		
+		exports.restore = function() {
+			for (var i=0; i < 2; ++i) {
+				exports.items.add( "R" + i )
+			}
+		}
+	</JavaScript>
+	<StackPanel ux:Name="C">
+		<WhileFailed ux:Name="WF">
+			<Text Value="fail"/>
+		</WhileFailed>
+		<Each Items="{items}">
+			<Text Value="{}"/>
+		</Each>
+	</StackPanel>
+	
+	<FuseTest.Invoke Handler="{fail}" ux:Name="CallFail"/>
+	<FuseTest.Invoke Handler="{restore}" ux:Name="CallRestore"/>
+</Panel>

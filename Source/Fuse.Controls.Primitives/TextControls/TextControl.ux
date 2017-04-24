@@ -1,0 +1,4 @@
+<LayoutControl ux:Class="Fuse.Controls.TextControl">
+	<Fuse.Controls.Native.Android.TextView ux:Condition="Android" ux:Template="AndroidAppearance" />
+	<Fuse.Controls.Native.iOS.TextView ux:Condition="iOS" ux:Template="iOSAppearance" />
+</LayoutControl>

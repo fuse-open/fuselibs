@@ -1,0 +1,13 @@
+<Panel ux:Class="UX.ActionTimingWhile">
+	<WhileTrue ux:Name="TheTrigger">
+		<Nothing Duration="10"/>
+		
+		<TimingAction ux:Name="TaFore"/>
+		<TimingAction ux:Name="TaBack" When="Backward"/>
+		
+		<TimingAction ux:Name="TaP0" AtProgress="0"/>
+		<TimingAction ux:Name="TaP5" Delay="5"/>
+		<TimingAction ux:Name="TaP10" AtProgress="1"/>
+	
+	</WhileTrue>
+</Panel>

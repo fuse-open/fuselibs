@@ -1,0 +1,5 @@
+<Panel ux:Class="UX.NoChild">
+	<WhileTrue ux:Name="AT1">
+		<Panel ux:Name="A1"/>
+	</WhileTrue>
+</Panel>

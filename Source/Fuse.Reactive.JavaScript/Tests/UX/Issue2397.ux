@@ -1,0 +1,20 @@
+<Panel ux:Class="UX.Issue2397">
+	<JavaScript>
+		module.exports = {
+			'list': [ { 'type' : 'one' }, { 'type' : 'two' } ]
+		};
+	</JavaScript>
+
+	<StackPanel ux:Name="Container">
+		<Each Items="{list}">
+			<Match Value="{type}">
+				<Case String="one">
+					<Text Value="One" />
+				</Case>
+				<Case String="two">
+					<Text Value="Two" />
+				</Case>
+			</Match>
+		</Each>
+	</StackPanel>
+</Panel>

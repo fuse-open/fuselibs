@@ -1,0 +1,14 @@
+<Panel ux:Class="UX.ImageFill.ResourceReplace">
+	<JavaScript>
+		var Observable = require("FuseJS/Observable")
+		exports.file = Observable("UX/Assets/green.png")
+		exports.next = function() {
+			exports.file.value = "UX/Assets/red.png"
+		}
+	</JavaScript>
+	<FuseTest.Invoke Handler="{next}" ux:Name="Next"/>
+	<Rectangle>
+		<WhileLoading ux:Name="W"/>
+		<ImageFill File="{file}" StretchMode="PixelPrecise" MemoryPolicy="UnloadUnused" ux:Name="IF"/>
+	</Rectangle>
+</Panel>

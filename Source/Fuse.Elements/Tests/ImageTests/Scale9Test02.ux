@@ -1,0 +1,13 @@
+<Panel ux:Class="Scale9Test02">
+  <Panel ux:Name="Panel1" Alignment="Center">
+    <Text ux:Name="Contents" TextWrapping="Wrap" Margin="0, 0, 0, 0" Padding="20, 10, 20, 24" TextColor="0, 0, 0, 1">"hey! did you know? this is a message! askdfjksdfjla skdf lkjl j j jlksj j lkj lkj lkjlk jkl jsajfkj j j kljsfjjsadlfj fkj øaf a ' 'æ 'a å å å ' æ'æ æ  ø øsadfkadsf lsajf jasdlfj lasjfl kjasdflk jasdlfkj aslkdf alskdjf alksjd lkjasdflj asldkf alskdj laksjdf lkasjdf lkajsfklajsdkfj jskdjflk ajs lka jlkasjfslkj lkajf lkasdjf lkasjdfkla jflksjfalksjf niiiiiiiiiiiiiiiiiiiiiiiiiiiiice" </Text>
+    <Image ux:Name="Image1" Color="1,0.5,0.70,1"
+      StretchMode="Scale9"
+      ResampleMode="Nearest"
+      StretchDirection="Both"
+      Scale9Margin="11, 9, 37, 25"
+      Margin="0, 0, 0, 0"
+      File="Assets/Chatbubble.png"  />
+
+  </Panel>
+</Panel>

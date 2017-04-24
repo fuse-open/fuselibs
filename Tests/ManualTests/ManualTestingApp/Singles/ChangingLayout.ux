@@ -1,0 +1,103 @@
+<Page ux:Class="ChangingLayout" Title="Changing Layout">
+	<InfoStack ux:Key="Info">
+		<h2>Goal</h2>
+		<p>This page tests MultiLayout with animation transitions between the layouts. It also uses a layout master shadow element to produce the middle box background.</p>
+		<h2>Instructions</h2>
+		<ul>
+			<li>Tap page once and elements change layout from left to center.</li>
+			<li>Tap page again and layout reverts to start.</li>
+			<li>The center box is only visible in the right layout.</li>
+			<li>The bottom-left box moves vertically first then horizontally.</li>
+			<li>All boxes change size during layout (smoothly), except the top-left one which first moves then changes size.</li>
+			<li>The bottom left box changes color smoothly.</li>
+		</ul>
+	</InfoStack>
+	<MultiLayoutPanel ux:Name="ml1" LayoutElement="p1">
+		<SolidColor Color="#555"/>
+		<Text Alignment="Center" TextColor="1,1,1,1">Tap &amp; Tap Again</Text>
+		<Tapped>
+			<Toggle Target="RightLayout"/>
+		</Tapped>
+		<WhileTrue ux:Name="RightLayout">
+			<Change ml1.LayoutElement="p2"/>
+			<Change rect1.Height="100"/>
+			<Change rect2.Width="100"/>
+			<Change rect3.Height="100"/>		
+			
+			<Change rect1ColorSwitch.Value="true"/>
+		</WhileTrue>
+		
+		<Panel ux:Name="p2">
+			<StackPanel Padding="20" Alignment="CenterRight" ux:Name="TheStack">
+				<Placeholder Target="rect2" Alignment="Center"/>
+				<Placeholder Target="rect3"/>
+				<Placeholder Target="rect1" Alignment="Center"/>
+			</StackPanel>
+		</Panel>
+		
+		<Panel ux:Name="p1">
+			<Placeholder>
+				<Rectangle ux:Name="rect1" Height="50" Width="100" Alignment="BottomLeft" Margin="10" BoxSizing="NoImplicitMax" CornerRadius="5">
+					<SolidColor Color="0.9,0.9,1,1" ux:Name="rect1Color"/>
+					<WhileTrue ux:Name="rect1ColorSwitch">
+						<Change rect1.Color="0.9,0,0,0.5" Duration="0.5"/>
+					</WhileTrue>
+					<LayoutAnimation>
+						<Move RelativeTo="LayoutChange">
+							<Keyframe Time="0.25" X="1" Y="0"/>
+							<Keyframe Time="0.5" X="1" Y="1"/>
+						</Move>
+						<Resize RelativeTo="LayoutChange" Duration="0.5" Vector="1"/>
+					</LayoutAnimation>
+				</Rectangle>
+			</Placeholder>
+			
+			<Placeholder Alignment="CenterLeft">
+				<Rectangle ux:Name="rect3" Height="0" CornerRadius="5" Margin="10">
+					<SolidColor Color="0.8,0.5,0.8,1"/>
+					<LayoutAnimation>
+						<Move RelativeTo="LayoutChange" Duration="0.5" Vector="1"/>
+						<Resize RelativeTo="LayoutChange" Duration="0.5" Vector="1"/>
+					</LayoutAnimation>
+				</Rectangle>
+			</Placeholder>
+			
+			<Panel Alignment="TopLeft" Padding="5">
+				<Rectangle Layer="Background" CornerRadius="0,0,20,0">
+					<SolidColor Color="0.4,0.5,0.5,1"/>
+					<LayoutAnimation>
+						<Resize RelativeTo="LayoutChange" Duration="0.5" Vector="1"/>
+						<Move RelativeTo="LayoutChange" Duration="0.5" Vector="1"/>
+					</LayoutAnimation>
+				</Rectangle>
+				
+				<Placeholder>
+					<Rectangle ux:Name="rect2" Height="100" Width="50" Margin="10" BoxSizing="NoImplicitMax"
+						CornerRadius="5">
+						<SolidColor Color="1,0.9,0.9,1"/>
+						<LayoutAnimation>
+							<Move RelativeTo="LayoutChange">	
+								<Keyframe Time="0.5" X="0" Y="0"/>
+								<Keyframe Time="1" X="1" Y="1"/>
+							</Move>
+							<Resize RelativeTo="LayoutChange">
+								<Keyframe Time="0.5" X="1" Y="1"/>
+								<Keyframe Time="1" X="1" Y="1"/>
+							</Resize>
+						</LayoutAnimation>
+					</Rectangle>
+				</Placeholder>
+			</Panel>
+		</Panel>
+		
+		<Rectangle CornerRadius="20" LayoutMaster="TheStack">
+			<SolidColor Color="0.5,0.4,0.5,1"/>
+			<LayoutAnimation>
+				<Resize RelativeTo="LayoutChange" Duration="0.5" Vector="1"/>
+				<Move RelativeTo="LayoutChange" Duration="0.5" Vector="1"/>
+			</LayoutAnimation>
+		</Rectangle>
+	</MultiLayoutPanel>
+	
+	<FpsMeter/>
+</Page>

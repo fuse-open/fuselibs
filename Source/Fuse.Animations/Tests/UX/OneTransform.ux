@@ -1,0 +1,13 @@
+<Panel ux:Class="UX.OneTransform">
+	<WhileTrue ux:Name="W1">
+		<Move X="100" Duration="1"/>
+	</WhileTrue>
+	<WhileTrue ux:Name="W3">
+		<Rotate Degrees="90" Duration="1"/>
+	</WhileTrue>
+	<Panel ux:Name="S">
+		<WhileTrue ux:Name="W2">
+			<Move Target="this" Y="100" Duration="1"/>
+		</WhileTrue>
+	</Panel>
+</Panel>

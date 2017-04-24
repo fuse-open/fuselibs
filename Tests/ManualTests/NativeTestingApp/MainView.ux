@@ -1,0 +1,104 @@
+<App Background="#eee" >
+	<NativeViewHost>
+		<!-- This purple color should not appear anywhere, it's a test of layering/background support -->
+		<ClientPanel Background="1,0,1,1">
+			<iOS.StatusBarConfig Style="Dark" />
+			<Android.StatusBarConfig Color="#000" />
+			
+			<Font ux:Global="RobotoItalic" File="Assets/Roboto-Italic.ttf" />
+			<Font ux:Global="RobotoBold" File="Assets/Roboto-Bold.ttf" />
+
+			<TextBlock ux:Class="h2" TextWrapping="Wrap" Margin="-8,10,-8,10" TextColor="0,0,0.2,1"
+				FontSize="22" Padding="5,2,5,0" Font="RobotoBold">
+				<SolidColor Color="0.9,0.9,0.87,1"/>
+			</TextBlock>
+
+			<TextBlock ux:Class="p" TextWrapping="Wrap" Margin="0,10,0,10" FontSize="18"/>
+			<StackPanel ux:Class="ul" Margin="0,10,0,10"/>
+			<TextBlock ux:Class="li" TextWrapping="Wrap" Margin="24,5,0,5" FontSize="18">
+				<Rectangle Layer="Overlay" Anchor="100%,0%" X="-2" Y="6" Width="5" Height="5">
+					<SolidColor Color="0,0,0,1"/>
+				</Rectangle>
+			</TextBlock>
+
+			<StackPanel ux:Class="InfoStack" Margin="10"/>
+
+			<Grid Navigation="Navi" Dock="Top" ColumnData="auto,1*,auto" RowData="auto">
+				<SolidColor Color="0.9,0.95,0.95,1"/>
+
+				<Button Text="Back" Visibility="Hidden" ux:Name="GoBack">
+					<Clicked>
+						<GoBack/>
+					</Clicked>
+					<WhileCanGoBack>
+						<Change GoBack.Visibility="Visible"/>
+					</WhileCanGoBack>
+				</Button>
+
+				<Text FontSize="20" Value="{Page Title}" TextAlignment="Center"/>
+
+				<Button Text="Fore" Visibility="Hidden" ux:Name="GoFore">
+					<Clicked>
+						<GoForward/>
+					</Clicked>
+					<WhileCanGoForward>
+						<Change GoFore.Visibility="Visible"/>
+					</WhileCanGoForward>
+				</Button>
+
+			</Grid>
+			<Panel Height="1px" Dock="Top" Background="0,0,0,0.5"/>
+
+			<Panel Background="1,1,1,1">
+				<LinearNavigation ux:Name="Navi" Active="FirstPage">
+					<NavigationMotion GotoEasing="QuadraticIn" GotoDuration="0.3"/>
+				</LinearNavigation>
+
+				<InfoPanel Layer="Overlay" Margin="10,6,10,6" Alignment="TopRight"/>
+
+				<Page ux:Class="TestPage" ux:Name="Myself">
+					<EnteringAnimation>
+						<Move X="1" RelativeTo="Size" Duration="1" Easing="Linear" />
+					</EnteringAnimation>
+					<ExitingAnimation>
+						<Move X="-1" RelativeTo="Size" Duration="1" Easing="Linear" />
+					</ExitingAnimation>
+					<WhileInactive>
+						<Change Myself.Visibility="Hidden"/>
+					</WhileInactive>
+				</Page>
+
+				<TestPage>
+					<WelcomePage ux:Name="FirstPage"/>
+				</TestPage>
+				<TestPage>
+					<TextAlignmentPage/>
+				</TestPage>
+				<TestPage>
+					<SwitchPage/>
+				</TestPage>
+				<TestPage>
+					<TransformPage/>
+				</TestPage>
+				<TestPage>
+					<DataBindingPage/>
+				</TestPage>
+				<TestPage>
+					<TextInputHint />
+				</TestPage>
+				<TestPage>
+					<ZOrderPage/>
+				</TestPage>
+				<TestPage>
+					<RectanglePage/>
+				</TestPage>
+				<TestPage>
+					<GraphicsViewPage />
+				</TestPage>
+				<TestPage>
+					<ImagePage />
+				</TestPage>
+			</Panel>
+		</ClientPanel>
+	</NativeViewHost>
+</App>

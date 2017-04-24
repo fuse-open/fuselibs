@@ -1,0 +1,25 @@
+{
+  "Copyright": "Copyright (c) Fusetools AS 2017",
+  "Description": "Library for application messages",
+  "Publisher": "Fusetools AS",
+  "Version": "1.0.0-rc3",
+  "Package": {
+    "ProjectUrl": "https://fusetools.com"
+  },
+  "InternalsVisibleTo": [
+    "FuseJS"
+  ],
+  "Packages": [
+    "Uno.Collections"
+  ],
+  "Projects": [
+    "../Fuse.Common/Fuse.Common.unoproj",
+    "../Fuse.Nodes/Fuse.Nodes.unoproj",
+    "../Fuse.Elements/Fuse.Elements.unoproj",
+    "../Fuse.Scripting/Fuse.Scripting.unoproj",
+    "../Fuse.Triggers/Fuse.Triggers.unoproj",
+  ],
+  "Includes": [
+    "*.uno"
+  ]
+}

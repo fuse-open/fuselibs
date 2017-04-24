@@ -1,0 +1,442 @@
+using Uno;
+using Uno.Collections;
+using Uno.UX;
+
+using OpenGL;
+
+using Fuse;
+using Fuse.Controls;
+using Fuse.Elements;
+using Fuse.Input;
+using Fuse.Internal;
+using Fuse.Scripting;
+using Fuse.Triggers;
+
+namespace FuseTest
+{
+	 /* TODO: Missing bootstrapper */
+	public class TestRootViewport : RootViewport, IRenderViewport
+	{
+		public TestRootViewport(Uno.Platform.Window window, float pixelsPerPoint = 0)
+			: base(window, pixelsPerPoint)
+		{ 
+			OverrideSize( float2(100), pixelsPerPoint, pixelsPerPoint );
+		}
+		
+		public void Resize(float2 size)
+		{
+			OverrideSize(size, PixelsPerPoint, PixelsPerOSPoint);
+			OnResized(null,null);
+		}
+	}
+
+	public class TestRootPanel : Panel, IDisposable
+	{
+		TestRootViewport _rootViewport;
+		
+		public TestRootViewport RootViewport { get { return _rootViewport; } }
+		
+		public TestRootPanel(bool infiniteMax = false, float pixelsPerPoint = 1)
+		{
+			this.InfiniteMax = infiniteMax;
+			this.SnapToPixels = false;
+
+			_rootViewport = new TestRootViewport(Uno.Application.Current.Window, pixelsPerPoint);
+			_rootViewport.Children.Add(this);
+			Time.Init(0);
+		}
+
+		void IDisposable.Dispose()
+		{
+			//force things to clean (LowMemory should do most items)
+			CleanLowMemory();
+			(_rootViewport as IDisposable).Dispose();
+		}
+		
+		public void CleanLowMemory()
+		{
+			Fuse.Resources.DisposalManager.Clean(Fuse.Resources.DisposalRequest.LowMemory);
+		}
+
+		[Flags]
+		public enum CreateFlags
+		{
+			None = 0,
+			NoIncrement = 1 << 0,
+		}
+		
+		/**
+			Call this version if the layout size is important in the test.
+		*/
+		static public TestRootPanel CreateWithChild(Node child, int2 layoutSize,
+			CreateFlags flags = CreateFlags.None)
+		{
+			var root = new TestRootPanel();
+			root.Children.Add(child);
+			root.Layout(layoutSize);
+			if (!flags.HasFlag(CreateFlags.NoIncrement))
+				root.IncrementFrame();
+			return root;
+		}
+
+		/**
+			Call this version if layout size is not important, but don't test anything where it is
+			important then!
+		*/
+		static public TestRootPanel CreateWithChild(Node child,
+			CreateFlags flags = CreateFlags.None)
+		{
+			return CreateWithChild(child, int2(800,600), flags);
+		}
+		
+		public new void Layout( float2 clientSizeInPoint )
+		{
+			_rootViewport.Resize(clientSizeInPoint);
+			PerformLayout( clientSizeInPoint );
+		}
+
+		/**
+			Sets the layout size but does not perform layout. A call to IncrementFrame will invoke
+			the standard layout handling.
+		*/
+		public void SetLayoutSize( float2 clientSizeInPoint )
+		{
+			_rootViewport.Resize(clientSizeInPoint);
+		}
+		
+		public new void Layout( int2 cp ) { Layout( float2(cp.X,cp.Y) ); }
+
+		//usually called in next frame in live app, layout phase
+		public void UpdateLayout()
+		{
+			Layout( _rootViewport.Size );
+		}
+
+		public float2 SnapToPixelsPos(float2 p)
+		{
+			return Math.Round(p * this.AbsoluteZoom) / this.AbsoluteZoom;
+		}
+
+		public float SnapToPixelsPos(float p)
+		{
+			return Math.Round(p * this.AbsoluteZoom) / this.AbsoluteZoom;
+		}
+
+		public float2 SnapToPixelsSize(float2 p)
+		{
+			return Math.Ceil(p * this.AbsoluteZoom) / this.AbsoluteZoom;
+		}
+
+		public float SnapToPixelsSize(float p)
+		{
+			return Math.Ceil(p * this.AbsoluteZoom) / this.AbsoluteZoom;
+		}
+
+		enum StepFlags
+		{
+			None = 0,
+			WaitJS = 1 << 0,
+			IncrementFrame = 1 << 1,
+		}
+		
+		/**
+			Indicates any deferred actions should be pumped. Code that should work without 
+			a new frame should call this instead of `IncrementFrame` to help ensure the 
+			frame updating code is not used inappropriately. This limits itself to just processing
+			the pending deferred messages in the current update stage.
+		*/
+		public void PumpDeferred()
+		{
+			UpdateManager.TestProcessCurrentDeferredActions();
+		}
+		
+		/**
+			Does a single step of the elapsedTime. This is used when you need to tightly control
+			the step time, or simulate a frame drop. Otherwise if you have  large time consider
+			using `StepFrame` instead.
+		*/
+		public void IncrementFrame(float elapsedTime = -1) 
+		{
+			IncrementFrameImpl(elapsedTime, StepFlags.IncrementFrame);
+		}
+			
+		void IncrementFrameImpl(float elapsedTime = -1, 
+			StepFlags flags = StepFlags.IncrementFrame)
+		{
+			if (elapsedTime < 0)
+				elapsedTime = _frameIncrement;
+				
+			if (flags.HasFlag(StepFlags.WaitJS))
+			{
+				var w = Fuse.Reactive.JavaScript.Worker;
+				if (w != null)
+					w.WaitIdle();
+			}
+				
+			Time.Set( Time.FrameTime + elapsedTime );
+			UpdateManager.Update();
+			if (flags.HasFlag(StepFlags.IncrementFrame))
+				UpdateManager.IncreaseFrameIndex();
+		}
+		
+		/**
+			If something being tested uses `PerformNextFrame` then you'll typically need to IncrementFrame
+			twice. The first call completes the current frame (when the posting occurs), and the next 
+			completes the following frame (when the action is posted).
+			This function makes this expectation clearer.
+		*/
+		public void CompleteNextFrame()
+		{
+			IncrementFrame();
+			IncrementFrame();
+		}
+		
+		static float _frameIncrement = 1/60f;
+		public float StepIncrement { get { return _frameIncrement; } }
+		
+		DrawContext _dc;
+		/**
+			Performs a draw call on the root. It's undefined to what GL context this draws and whether it actually
+			does any GL operations.
+		*/
+		public void TestDraw()
+		{
+			if (_dc == null)
+				_dc = new DrawContext(_rootViewport);
+			
+			DrawManager.PrepareDraw(_dc);
+			
+			//at the moment this is the quickest way to fake the context, by creating a real one. Otherwise
+			//we need to make `DrawContext` mockable and replace it in this test -- though something would still
+			//need to make `draw` statements work.
+			var fb = FramebufferPool.Lock( (int2)_rootViewport.PixelSize, Uno.Graphics.Format.RGBA8888, true);
+			_dc.PushRenderTarget(fb);
+			
+			_rootViewport.Draw(_dc);
+			
+			_dc.PopRenderTarget();
+			FramebufferPool.Release(fb);
+			
+			DrawManager.EndDraw(_dc);
+		}
+
+		framebuffer _captureFB;
+		/**
+			Captures the drawing output to be inspected.
+		*/
+		public void CaptureDraw()
+		{
+			if (_dc == null)
+				_dc = new DrawContext(_rootViewport);
+			
+			if (_captureFB != null)
+			{
+				FramebufferPool.Release(_captureFB);
+				_captureFB = null;
+			}
+				
+			_captureFB = FramebufferPool.Lock( (int2)_rootViewport.PixelSize, Uno.Graphics.Format.RGBA8888, true);
+			_dc.PushRenderTarget(_captureFB);
+			_dc.Clear(float4(0),1);
+			_rootViewport.Draw(_dc);
+			_dc.PopRenderTarget();
+			
+			//bind to active to allow ReadDrawPixel
+			GL.BindFramebuffer(GLFramebufferTarget.Framebuffer, _captureFB.RenderTarget.GLFramebufferHandle);
+		}
+		
+		public void ReleaseCapturedDraw()
+		{
+			FramebufferPool.Release(_captureFB);
+		}
+		
+		/**
+			Reads a pixel form the last CaptureDraw.
+		*/
+		public float4 ReadDrawPixel(int2 pos)
+		{
+			var temp = new byte[4];
+			GL.ReadPixels(pos.X, pos.Y, 1, 1, GLPixelFormat.Rgba, GLPixelType.UnsignedByte, temp);
+			return float4(temp[0] / 255.0f,
+				temp[1] / 255.0f,
+				temp[2] / 255.0f,
+				temp[3] / 255.0f);
+		}
+		public float4 ReadDrawPixel(int x, int y) { return ReadDrawPixel( int2(x,y) ); }
+		
+		public float4 ReadDrawPixelInv(int2 pos) { return ReadDrawPixelInv(pos.X,pos.Y); }
+		public float4 ReadDrawPixelInv(int x, int y)
+		{
+			return ReadDrawPixel(x, _captureFB.Size.Y - y - 1);
+		}
+		
+		/**
+			Steps at a reasonable frame rate to reach the `elapsedTime`.
+		*/
+		public void StepFrame(float elapsedTime = -1)
+		{
+			if (elapsedTime < 0)
+				elapsedTime = _frameIncrement;
+				
+			var e = 0f;
+			while (e < (elapsedTime - float.ZeroTolerance))
+			{
+				var s = Math.Min( _frameIncrement, elapsedTime - e );
+				IncrementFrame(s);
+				e += s;
+			}
+		}
+		
+		/**
+			Steps frames until the JS action list in the Dispatch manages to synchronize. Note
+			in IncrementFrame we wait for JS processing to be done via `ThreadWorker.WaitIdle`,
+			that simulates that the JS doesn't take long to execute. Here we intentionally don't
+			force the Dispatcher to lock/process since it will naturally miss a frame -- we'd like
+			the tests to sometimes miss frames as well.
+		*/
+		public void StepFrameJS()
+		{
+			var fence = Fuse.Reactive.JavaScript.Worker.PostFence();
+			var loop = true;
+			while(loop)
+			{
+				loop = !fence.IsSignaled;
+				IncrementFrameImpl(_frameIncrement, StepFlags.WaitJS | StepFlags.IncrementFrame);
+			}
+		}
+		
+		/**
+			Steps frames until the Deferred actions are all cleared. Guaranteed to step at least one frame.
+		*/
+		public void StepFrameDeferred()
+		{
+			while(true)
+			{
+				IncrementFrame();
+				if (!TestDeferredManager.HasPending)
+					break;
+			}
+		}
+
+		public void UpdateAnimators()
+		{
+			UpdateManager.Update();
+		}
+
+		bool InfiniteMax = false;
+
+		float2 _pointerWindowPoint;
+		public void PointerPress(float2 windowPoint, int pointIndex = 0)
+		{
+			_pointerWindowPoint = windowPoint;
+			Fuse.Input.Pointer.RaisePressed(this, CreatePointerEvent(windowPoint, pointIndex));
+			StepFrame();
+		}
+		
+		public void PointerMove(float2 windowPoint, int pointIndex = 0)
+		{
+			_pointerWindowPoint = windowPoint;
+			Fuse.Input.Pointer.RaiseMoved(this, CreatePointerEvent(windowPoint, pointIndex));
+			StepFrame();
+		}
+		
+		public void PointerSlide(float2 from, float2 to, float speed)
+		{
+			var len = Vector.Length(to - from);
+			var unit = Vector.Normalize(to - from);
+			var step = _frameIncrement * speed;
+			int steps = (int)Math.Ceil( len / step );
+			
+			for (int i=0; i <= steps; ++i)
+				PointerMove(from + unit * Math.Min(len, i * step));
+		}
+		
+		public void PointerSlideRel(float2 offset, float speed = 500)
+		{
+			PointerSlide( _pointerWindowPoint, _pointerWindowPoint + offset, speed  );
+		}
+		
+		public void PointerSwipe(float2 from, float2 to, float speed = 500)
+		{
+			var len = Vector.Length(to - from);
+			var unit = Vector.Normalize(to - from);
+			
+			PointerPress(from);
+			var at = _frameIncrement * speed;
+			while( at < len )
+			{
+				PointerMove(from + unit * at);
+				at = Math.Min(len, at + _frameIncrement * speed);
+			}
+			PointerRelease(to);
+		}
+		
+		public void PointerRelease(float2 windowPoint, int pointIndex = 0)
+		{
+			Fuse.Input.Pointer.RaiseReleased(this, CreatePointerEvent(windowPoint, pointIndex));
+			StepFrame();
+		}
+		
+		public void PointerRelease()
+		{
+			PointerRelease(_pointerWindowPoint);
+		}
+		
+		PointerEventData CreatePointerEvent(float2 windowPoint, int pointIndex = 0)
+		{
+			var ped = new PointerEventData
+				{
+					PointIndex = pointIndex,
+					WindowPoint = windowPoint,
+					WheelDelta = float2(0),
+					WheelDeltaMode = Uno.Platform.WheelDeltaMode.DeltaPixel,
+					IsPrimary = pointIndex == 0,
+					PointerType = Uno.Platform.PointerType.Touch,
+					Timestamp = Time.FrameTime,
+				};
+			return ped;
+		}
+		
+		/**
+			The UX compiler genertes instantiations of all UXGlobalModule's in the App InitializeUX.
+			This does not happen for test cases, so you must explicitly say which modules you want.
+			This function abstracts that concept rather than tests just instatiating them directly.
+		*/
+		static public void RequireModule<T>() where T : new()
+		{
+			if (_modules == null)
+				_modules = new List<object>();
+				
+			for (int i=0; i < _modules.Count; ++i)
+			{
+				if (_modules[i] is T)
+					return;
+			}
+			
+			_modules.Add( new T() );
+		}
+		static List<object> _modules;
+	}
+
+	/**	
+		Global singletons are not set by default during testing. This is to help discourage such references from fuselibs itself. This guard sets up those references for tests where it is unavoidable.
+	*/
+	public class TestRootSingletonsGuard : IDisposable
+	{
+		public TestRootSingletonsGuard(TestRootPanel trp)
+		{
+			AppBase.TestSetRootViewport( trp.RootViewport );
+		}
+		
+		void IDisposable.Dispose()
+		{
+			AppBase.TestSetRootViewport( null );
+		}
+	}
+	
+	[Flags]
+	public enum EventFlags
+	{
+		None = 0,
+	}
+}

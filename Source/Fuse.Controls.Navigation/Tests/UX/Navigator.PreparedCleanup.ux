@@ -1,0 +1,6 @@
+<Panel ux:Class="UX.Navigator.PreparedCleanup">
+	<Router ux:Name="R"/> 
+	<Navigator DefaultPath="one" ux:Name="Nav">
+		<Panel ux:Template="one"/>
+	</Navigator>
+</Panel>

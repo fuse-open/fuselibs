@@ -1,0 +1,12 @@
+<Panel ux:Class="UX.OffsetModeTest">
+	<Panel Alignment="TopLeft" Width="200" Height="300" ux:Name="A"
+		TransformOrigin="Center"/>
+	<Panel Alignment="BottomRight" Width="50" Height="50" ux:Name="B"
+		TransformOrigin="Anchor">
+		<Translation RelativeTo="PositionOffset" RelativeNode="A" Vector="1" ux:Name="M1"/>
+		<Translation RelativeTo="PositionOffset" RelativeNode="A" Vector="0.5" ux:Name="M2"/>
+		
+		<Translation RelativeTo="TransformOriginOffset" RelativeNode="A" Vector="1" ux:Name="M3"/>
+		<Translation RelativeTo="TransformOriginOffset" RelativeNode="A" Vector="0.5" ux:Name="M4"/>
+	</Panel>
+</Panel>

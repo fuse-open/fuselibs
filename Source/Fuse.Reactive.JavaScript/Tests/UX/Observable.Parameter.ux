@@ -1,0 +1,25 @@
+<Panel ux:Class="UX.Observable.Parameter">
+	<Router ux:Name="router" />
+
+	<JavaScript>
+		router.goto("one", { "a\t\u00A9" : 1})
+	</JavaScript>
+	
+	<Page ux:Class="UOPPage">
+		<JavaScript>
+			var Observable = require("FuseJS/Observable")
+			var param = this.Parameter
+
+			exports.count = Observable(0)
+			exports.a = param.map(function(x) { 
+				exports.count.value++
+				return x["a\t©"]
+			})
+		</JavaScript>
+		<Text Value="{count}" ux:Name="C"/>
+	</Page>
+	
+	<Navigator ux:Name="Nav">
+		<UOPPage ux:Template="one"/>
+	</Navigator>
+</Panel>

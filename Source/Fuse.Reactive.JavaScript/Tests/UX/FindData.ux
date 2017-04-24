@@ -1,0 +1,36 @@
+<Panel ux:Class="UX.FindData">
+	<JavaScript>
+		module.exports = {
+			foo: "wrong",
+			bar: "correct"
+		}
+	</JavaScript>
+	<Panel ux:Name="p">
+
+		<JavaScript>
+			module.exports = {
+				foo: {koko: "correct"}
+			}
+		</JavaScript>
+
+		<StackPanel ux:Name="js">
+			<JavaScript>
+				module.exports = { 
+					foo: "wrong"
+				}
+			</JavaScript>
+			<JavaScript >
+				module.exports = {
+					r1: js.findData("foo"),
+					r2: p.findData("bar"),
+					r3: js.findData("bar"),
+					foo: "wrong, from self",
+					bar: "wrong, from self"
+				}
+			</JavaScript>
+			<Text Value="{r1.koko}" ux:Name="t1" />
+			<Text Value="{r2}" ux:Name="t2" />
+			<Text Value="{r3}" ux:Name="t3" />
+		</StackPanel>
+	</Panel>
+</Panel>

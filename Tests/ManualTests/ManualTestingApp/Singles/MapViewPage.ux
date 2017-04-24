@@ -1,0 +1,33 @@
+<Page Title="Map View" ux:Class="MapViewPage">
+	<!-- The info will be hidden by the web view -->
+	<InfoStack ux:Key="Info">
+		<p>This page has an embedded `MapView` that should focus on Oslo with a marker on the Fuse office.</p>
+	</InfoStack>
+
+	<JavaScript>
+		var Observable = require("FuseJS/Observable");
+		var lat = exports.lat = 59.9115573;
+		var lng = exports.lng = 10.73888;
+		var m = exports.markers = Observable();
+		m.add(
+			{
+				latitude:lat,
+				longitude:lng, 
+				label:"Fuse"
+			}
+		);
+
+	</JavaScript>
+
+	<NativeViewHost>
+		<DockPanel>
+			<WhileVisible>
+				<MapView Latitude="{lat}" Longitude="{lng}">
+					<Each Items="{markers}">
+						<MapMarker Latitude="{latitude}" Longitude="{longitude}" Label="{label}"/>
+					</Each>
+				</MapView>
+			</WhileVisible>
+		</DockPanel>
+	</NativeViewHost>
+</Page>

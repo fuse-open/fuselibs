@@ -1,0 +1,83 @@
+<Page Title="Action Timing" ux:Class="ActionTiming">
+	<InfoStack ux:Key="Info">
+		<p>This part automates testing of timing in animations. Click “Start”, and verify that all the numbers get a green background. The “Reset” button is there just as an option, you only have to run the part once.</p>
+		<ul>
+			<li>Press 'Start' to start both animations.</li>
+			<li>The green markers go to the right and back to the left edge. (The markers are not synced to each other)</li>
+			<li>At the end all the numeric values in the boxes below should be green. If they remain gray or are red then something went wrong.</li>
+		</ul>
+	</InfoStack>
+	<DockPanel>
+		<StackPanel>
+			<StackPanel Orientation="Horizontal">
+				<StdButton Text="Start" Clicked="Start"/>
+				<StdButton Text="Reset" Clicked="Reset"/>
+			</StackPanel>
+		
+			<Panel Margin="25,0,25,0" Height="45">
+				<Rectangle ux:Name="Box" Width="50" Height="20" Alignment="TopLeft" Margin="-25,0,-25,0">
+					<SolidColor Color="0,1,0,1"/>
+				</Rectangle>
+				<Rectangle ux:Name="BoxB" Width="50" Height="20" Alignment="BottomLeft" Margin="-25,0,-25,0">
+					<SolidColor Color="0,1,0,1"/>
+				</Rectangle>
+			</Panel>
+			
+			<Grid ColumnCount="3" DefaultRow="auto">
+				<Status ux:Name="Status0"/>
+				<Status ux:Name="Status1"/>
+				<Status ux:Name="Status2"/>
+				<Status ux:Name="Status3"/>
+				<Status ux:Name="Status4"/>
+				<Status ux:Name="Status5"/>
+				<Status ux:Name="Status6"/>
+			</Grid>
+			
+			<WhileTrue ux:Name="Trig">
+				<Move Target="Box" X="1" RelativeTo="ParentSize" Duration="2" DurationBack="3"/>
+				
+				<!-- triggers on any forward play change, but that'll just be once here at progress==0 -->
+				<Track Reset="True" Expect="0" Status="Status0"/>
+				
+				<Track Expect="1" Status="Status1" AtProgress="0.5"/>
+				<Track Expect="2" Status="Status2" Delay="2"/>
+
+				<!-- triggers when backward starts -->
+				<Track Expect="2" Status="Status6" Direction="Backward"/>
+				
+				<Track Expect="5" Status="Status5" Direction="Backward" AtProgress="0"/>
+				<Track Expect="3.5" Status="Status4" AtProgress="0.5" Direction="Backward"/>
+				<Track Expect="2" Status="Status3" Delay="3" Direction="Backward"/>
+			</WhileTrue>
+
+			
+			<Grid ColumnCount="3" DefaultRow="auto">
+				<Status ux:Name="StatusB0"/>
+				<Status ux:Name="StatusB1"/>
+				<Status ux:Name="StatusB2"/>
+				<Status ux:Name="StatusB4"/>
+				<Status ux:Name="StatusB5"/>
+				<Status ux:Name="StatusB6"/>
+			</Grid>
+			
+			<!-- tests the TimeMultiplier and StretchDuration -->
+			<WhileTrue ux:Name="TrigB" TimeMultiplier="0.5" StretchDuration="1.5">
+				<Move Target="BoxB" X="1" RelativeTo="ParentSize" Duration="2"/>
+				
+				<!-- triggers on any forward play change, but that'll just be once here at progress==0 -->
+				<Track Reset="True" Expect="0" Status="StatusB0"/>
+				
+				<Track Expect="1.5" Status="StatusB1" AtProgress="0.5"/>
+				<Track Expect="3" Status="StatusB2" Delay="2"/>
+
+				<!-- triggers when backward starts -->
+				
+				<Track Expect="3" Status="StatusB6" Direction="Backward"/>
+				
+				<Track Expect="6" Status="StatusB5" Direction="Backward" AtProgress="0"/>
+				<Track Expect="4.5" Status="StatusB4" AtProgress="0.5" Direction="Backward"/>
+			</WhileTrue>
+			
+		</StackPanel>
+	</DockPanel>
+</Page>

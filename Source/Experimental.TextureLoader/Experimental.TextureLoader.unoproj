@@ -1,0 +1,16 @@
+{
+  "Copyright": "Copyright (c) Fusetools AS 2015",
+  "Description": "Experimental.TextureLoader",
+  "Publisher": "Fuse",
+  "Version": "0.47.4",
+  "Includes": [
+    "TextureLoader.uno:Source",
+    "TextureLoaderImpl.uno:Source",
+    "TextureLoaderImpl.js.uxl:Extensions",
+    "TextureLoaderImpl.cpp.uxl:Extensions",
+    "TextureLoaderImpl.cil.uxl:Extensions",
+    "CIL/CILTextureLoader.uno:Source",
+    "CIL/Uno/BufferAccessor.uno:Source",
+    "CIL/Uno/Texture.uno:Source"
+  ]
+}

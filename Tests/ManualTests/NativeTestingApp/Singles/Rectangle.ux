@@ -1,0 +1,35 @@
+<Page ux:Class="RectanglePage" Title="Rectangle">
+	<InfoStack ux:Key="Info">
+		<p>Tests rectangle and general shape drawing.</p>
+		<p>Each button animates an aspect of the shape.</p>
+		<ul>
+			<li>Stroke thickens the stroke.</li>
+			<li>Color modifies he fill color.</li>
+			<li>Corners rounds the corners.</li>
+		</ul>
+	</InfoStack>
+	<Grid ColumnCount="1" RowCount="2">
+		<Rectangle Margin="20" ux:Name="TheRect">
+			<SolidColor Color="0.5,0.5,0.5,1" ux:Name="TheColor"/>
+			<Stroke Width="1" ux:Name="TheStroke"><SolidColor Color="0,0,0.5,1"/></Stroke>
+		</Rectangle>
+		
+		<WrapPanel Alignment="Center">
+			<Button Text="Stroke">
+				<Clicked>
+					<Change TheStroke.Width="10" Duration="0.5"/>
+				</Clicked>
+			</Button>
+			<Button Text="Color">
+				<Clicked>
+					<Change TheColor.Color="0.5,1,0.5,1" Duration="0.5"/>
+				</Clicked>
+			</Button>
+			<Button Text="Corners">
+				<Clicked>
+					<Change TheRect.CornerRadius="50" Duration="0.5"/>
+				</Clicked>
+			</Button>
+		</WrapPanel>
+	</Grid>
+</Page>

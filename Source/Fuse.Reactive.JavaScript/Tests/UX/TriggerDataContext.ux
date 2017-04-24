@@ -1,0 +1,35 @@
+<Panel ux:Class="UX.TriggerDataContext">
+	<JavaScript>
+		module.exports = { 
+			items: [
+				{ title: "correct title" },
+				{ title: "correct title" },
+				{ title: "correct title" },
+				{ title: "correct title" },
+				{ title: "correct title" }
+			],
+			title: "wrong title",
+			higherUp: "correct title"
+		}
+	</JavaScript>
+	<StackPanel ux:Name="stack">
+		<Each Items="{items}">
+			<WhileTrue Value="true">
+				<Text Value="{title}" />
+				<Text Value="{higherUp}" />
+			</WhileTrue>
+			<Match Value="{title}">
+				<Case String="correct title">
+					<Text Value="{title}" />
+					<Text Value="{higherUp}" />
+				</Case>
+			</Match>
+			<StateGroup Active="state1">
+				<State ux:Name="state1">
+					<Text Value="{title}" />
+					<Text Value="{higherUp}" />
+				</State>
+			</StateGroup>
+		</Each>
+	</StackPanel>
+</Panel>

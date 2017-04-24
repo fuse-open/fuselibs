@@ -1,0 +1,33 @@
+<Panel ux:Class="UX.Observable.TwoWayMapFlatProperty">
+	<Panel ux:Class="TWMEdit">
+		<object ux:Property="Value"/>
+		<JavaScript>
+			var Observable = require("FuseJS/Observable")
+			
+			var self = this
+			exports.ivalue = this.Value.innerTwoWay()
+			exports.ovalue = this.Value.innerTwoWay().mapTwoWay(
+				function( dt ) { 
+					return dt 
+				},
+				function( bit, whole ) { 
+					return bit 
+				} )
+			
+			exports.step1 = function() {
+				exports.ivalue.value += "def"
+			}
+		</JavaScript>
+		<Text Value="{ivalue}" ux:Name="IV"/>
+		<Text Value="{ovalue}" ux:Name="OV"/>
+		
+		<FuseTest.Invoke Handler="{step1}" ux:Name="Step1"/>
+	</Panel>
+	
+	<JavaScript>
+		var Observable = require("FuseJS/Observable")
+		exports.source = Observable("abc")
+	</JavaScript>
+	<TWMEdit Value="{source}" ux:Name="T"/>
+	<Text Value="{source}" ux:Name="SV"/>
+</Panel>

@@ -1,0 +1,5 @@
+<Panel ux:Class="UX.Freeze.DeferBusy">
+	<Panel ux:Name="FP" DeferFreeze="Short" IsFrozen="true">
+		<FuseTest.BusyControl IsBusy="true" Activity="Deferring" ux:Name="B1"/>
+	</Panel>
+</Panel>

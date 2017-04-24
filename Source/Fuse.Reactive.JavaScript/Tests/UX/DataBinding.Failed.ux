@@ -1,0 +1,26 @@
+<Panel ux:Class="UX.DataBinding.Failed">
+	<WhileFailed ux:Name="WF"/>
+	<JavaScript>
+		var Observable = require("FuseJS/Observable")
+		exports.text = Observable("hi")
+		
+		exports.failText = exports.text.failedMap( 	function(err) { 
+			return err
+		})
+		
+		exports.fail = function() {
+			exports.text.failed("nope")
+		}
+
+		exports.restore = function() {
+			exports.text.value = "bye"
+		}
+	</JavaScript>
+	<Panel ux:Name="C">
+		<Text Value="{Clear text}" ux:Name="T"/>
+		<Text Value="{Clear failText}" ux:Name="TF"/>
+	</Panel>
+	
+	<FuseTest.Invoke Handler="{fail}" ux:Name="CallFail"/>
+	<FuseTest.Invoke Handler="{restore}" ux:Name="CallRestore"/>
+</Panel>

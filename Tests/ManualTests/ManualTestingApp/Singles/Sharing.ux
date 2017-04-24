@@ -1,0 +1,35 @@
+<Page Title="Sharing" ux:Class="SharingPage">
+	<!-- The info will be hidden by the web view -->
+	<InfoStack ux:Key="Info">
+		<p>This page has two buttons for testing sharing of content: A text and a captured photo.</p>
+	</InfoStack>
+	<JavaScript>
+		var share = require("FuseJS/Share")
+		var camera = require("FuseJS/Camera")
+		var imageTools = require("FuseJS/ImageTools")
+		module.exports = {
+			textShareTest : function()
+			{
+				share.shareText("Hello World", "Text from Fuse");
+			},
+			photoShareTest : function()
+			{
+				camera.takePicture(320,240) .then(function(image) {
+					var path = image.path;
+					console.log("Got image, sharing time! " + path);
+					share.shareFile(path, "image/*", "Photo from Fuse");
+				});
+			}
+		}
+	</JavaScript>
+	<NativeViewHost>
+		<DockPanel>
+			<WhileVisible>
+				<StackPanel Dock="Bottom">
+					<Button Text="Capture and share photo" Clicked="{photoShareTest}"/>
+					<Button Text="Share text 'Hello world'" Clicked="{textShareTest}"/>
+				</StackPanel>
+			</WhileVisible>
+		</DockPanel>
+	</NativeViewHost>
+</Page>

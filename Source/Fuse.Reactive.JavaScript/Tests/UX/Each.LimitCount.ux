@@ -1,0 +1,5 @@
+<Panel ux:Class="UX.Each.LimitCount">
+	<Each Count="10" Offset="2" Limit="5" ux:Name="E">
+		<Text Value="*"/>
+	</Each>
+</Panel>

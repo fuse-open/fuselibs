@@ -1,0 +1,33 @@
+<MultiLayoutPanel ux:Class="UX.PreserveRootActionDuration" LayoutElement="P1" ux:Name="self">
+	<Panel ux:Name="P1">
+		<Placeholder ux:Name="PL1">
+			<Panel ux:Name="C">
+				<Fuse.Triggers.Test.PulseTestTrigger ux:Name="T1">
+					<FuseTest.CountAction ux:Name="AFore1"/>
+					<FuseTest.CountAction ux:Name="ABack1" When="Backward"/>
+					<Toggle Target="LS" Delay="0.25"/>
+					<Toggle Target="LS" Delay="0.5"/>
+					<Toggle Target="LS" Delay="0.75"/>
+					<FuseTest.CountAction ux:Name="AFore2"/>
+					<FuseTest.CountAction ux:Name="ABack2" When="Backward"/>
+					
+					<FuseTest.CountAction ux:Name="AFore3" Delay="0.5" When="Forward"/>
+					<FuseTest.CountAction ux:Name="ABack3" Delay="0.5" When="Backward"/>
+					
+					<FuseTest.CountAction ux:Name="AFore4" Delay="1" When="Forward"/>
+					<FuseTest.CountAction ux:Name="ABack4" Delay="1" When="Backward"/>
+					<Nothing Duration="1"/>
+				</Fuse.Triggers.Test.PulseTestTrigger>
+			</Panel>
+		</Placeholder>
+	</Panel>
+	
+	<Panel ux:Name="P2">
+		<Placeholder Target="C" ux:Name="PL2">
+		</Placeholder>
+	</Panel>
+	
+	<WhileTrue ux:Name="LS">
+		<Change self.LayoutElement="P2"/>
+	</WhileTrue>
+</MultiLayoutPanel>

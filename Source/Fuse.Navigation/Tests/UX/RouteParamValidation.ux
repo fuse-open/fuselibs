@@ -1,0 +1,74 @@
+<Panel ux:Class="UX.RouteParamValidation">
+	<JavaScript>
+		var Observable = require("FuseJS/Observable");
+
+		module.exports.goto_test1 = function () {
+			router.goto("page1", "param_string");
+		};
+
+		module.exports.goto_test2 = function () {
+			var x = {
+				hello:"world",
+				number:1337,	
+			};
+			router.goto("page2", x);
+		};
+
+		module.exports.goto_test3 = function () {
+			router.goto("page3", function () { });
+		};
+
+		module.exports.goto_test4 = function () {
+			var x = {
+				hello:"world",
+				number:1337,
+				f: function (argument) { },
+			}
+			router.goto("page4", x);
+		};
+
+		module.exports.goto_test5 = function () {
+			var big_object = make_deep_object(51);
+			router.goto("page5", big_object);
+		};
+
+		function make_deep_object(depth) {
+			var o = {};
+			var n = o;
+			for (var i = 0; i < depth; i++) {
+				n.n = { };
+				n = n.n;
+			}
+			return o;
+		};
+
+	</JavaScript>
+
+	<Router ux:Name="router" />
+
+	<FuseTest.Invoke Handler="{goto_test1}" ux:Name="GotoTest1" />
+	<FuseTest.Invoke Handler="{goto_test2}" ux:Name="GotoTest2" />
+	<FuseTest.Invoke Handler="{goto_test3}" ux:Name="GotoTest3" />
+	<FuseTest.Invoke Handler="{goto_test4}" ux:Name="GotoTest4" />
+	<FuseTest.Invoke Handler="{goto_test5}" ux:Name="GotoTest5" />
+
+	<Navigator Dock="Fill" ux:Name="_navigator">
+		<RouterPanel router="router" ux:Template="page1" />
+		<RouterPanel router="router" ux:Template="page2" />
+		<RouterPanel router="router" ux:Template="page3" />
+		<RouterPanel router="router" ux:Template="page4" />
+		<RouterPanel router="router" ux:Template="page5" />
+	</Navigator>
+
+	<Panel ux:Class="RouterPanel" ParamValue="paramValue">
+		<Router ux:Dependency="router" />
+		<string ux:Property="ParamValue" />
+		<JavaScript>
+			var self = this;
+			this.Parameter.addSubscriber(function (arg) {
+				self.ParamValue.value = JSON.stringify(arg.value);
+			});
+		</JavaScript>
+	</Panel>
+	
+</Panel>

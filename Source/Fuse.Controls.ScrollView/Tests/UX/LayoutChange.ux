@@ -1,0 +1,9 @@
+<Panel ux:Class="UX.LayoutChange">
+	<ScrollView ux:Name="S" LayoutMode="PreserveVisual">
+		<StackPanel Alignment="Bottom" ux:Name="T">
+			<Panel Height="100" ux:Name="P1" ux:AutoBind="false"/>
+			<Panel Height="100" ux:Name="P2"/>
+			<Panel Height="100" ux:Name="P3" ux:AutoBind="false"/>
+		</StackPanel>
+	</ScrollView>
+</Panel>

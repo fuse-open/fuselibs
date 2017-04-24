@@ -1,0 +1,19 @@
+<Panel ux:Class="UX.StateGroupTransition">
+	<StateGroup ux:Name="SG1"><!-- default Transition="Parallel" -->
+		<State ux:Name="A1">
+			<Nothing Duration="1"/>
+		</State>
+		<State ux:Name="B1">
+			<Nothing Duration="1"/>
+		</State>
+	</StateGroup>
+
+	<StateGroup ux:Name="SG2" Transition="Exclusive">
+		<State ux:Name="A2">
+			<Nothing Duration="1"/>
+		</State>
+		<State ux:Name="B2">
+			<Nothing Duration="1"/>
+		</State>
+	</StateGroup>
+</Panel>

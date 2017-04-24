@@ -1,0 +1,33 @@
+<Panel ux:Class='UX.Router.Relative'>
+	<Router ux:Name="router"/> 
+	
+	<Panel ux:Class="SubNav">
+		<Router ux:Dependency="Router"/>
+
+		<JavaScript>
+			exports.gotoOne = function(){ 
+				Router.gotoRelative(theNav, "One")
+			}
+			exports.gotoTwo = function(){ 
+				Router.gotoRelative(theNav, "Two")
+			}
+			exports.pushOne = function(){ 
+				Router.pushRelative(theNav, "One")
+			}
+			exports.pushTwo = function(){ 
+				Router.pushRelative(theNav, "Two")
+			}
+		</JavaScript>
+		<FuseTest.Invoke Handler="{gotoOne}" ux:Name="GotoOne"/>
+		<FuseTest.Invoke Handler="{gotoTwo}" ux:Name="GotoTwo"/>
+		<FuseTest.Invoke Handler="{pushOne}" ux:Name="PushOne"/>
+		<FuseTest.Invoke Handler="{pushTwo}" ux:Name="PushTwo"/>
+		
+		<Navigator DefaultPath="One" ux:Name="theNav">
+			<Panel ux:Template="One"/>
+			<SubNav ux:Template="Two" Router="Router"/>
+		</Navigator>
+	</Panel>
+	
+	<SubNav Router="router" ux:Name="N"/>
+</Panel>

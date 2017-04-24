@@ -1,0 +1,52 @@
+<Page Title="IsEnabled 2" ux:Class="IsEnabledPage2">
+	<InfoStack ux:Key="Info">
+		<p>These checks test the IsEnabled flag on nodes. A variety of controls are presented that are either enabled or disabled. Each one should be checked, according to the text on it, for whether it responds or does not respond correctly.</p>
+
+		<p>Other than the text inputs the other controls show a small yellow circle if disabled or a small purple square if enabled. Any control showing both or the wrong one is an error.</p>
+
+		<p>Some of the boxes mention hovering, on mobile devices hovering happens so long as the finger is held down on the control.</p>
+	</InfoStack>
+<DockPanel>
+	<Grid ColumnCount="2" >
+		<Panel IsEnabled="false" Background="Silver"  Padding="20,10,20,10">
+			<Text TextWrapping="Wrap" Value="Disabled: Hovering does nothing, no red box">
+				<WhileHovering>
+					<Change Target="Red2.Opacity" Value="1"/>
+				</WhileHovering>
+			</Text>
+			<ReportEnabled/>
+		</Panel>
+		<Panel Background="Red" ux:Name="Red2" Opacity="0"/>
+		
+		<Panel Background="Aqua" IsEnabled="true"  Padding="20,10,20,10">
+			<Text TextWrapping="Wrap" Value="Enabled: Hover for green box">
+				<WhileHovering>
+					<Change Target="Green2.Opacity" Value="1" Duration="2"/>
+				</WhileHovering>
+			</Text>
+			<ReportEnabled/>
+		</Panel>
+		<Panel Background="Green" ux:Name="Green2" Opacity="0"/>
+		
+		<Panel IsEnabled="false" Background="Silver"  Padding="20,10,20,10">
+			<Text TextWrapping="Wrap" Value="Disabled: Tap should do nothing, no red box">
+				<Tapped>
+					<Change Target="Red3.Opacity" Value="1" Duration="2"/>
+				</Tapped>
+			</Text>
+			<ReportEnabled/>
+		</Panel>
+		<Panel Background="Red" ux:Name="Red3" Opacity="0"/>
+		
+		<Panel Background="Aqua" IsEnabled="true"  Padding="20,10,20,10">
+			<Text TextWrapping="Wrap" Value="Enabled: Tap for green box">
+				<Tapped>
+					<Change Target="Green3.Opacity" Value="1" Duration="2"/>
+				</Tapped>
+			</Text>
+			<ReportEnabled/>
+		</Panel>
+		<Panel Background="Green" ux:Name="Green3" Opacity="0"/>
+	</Grid>
+</DockPanel>
+</Page>

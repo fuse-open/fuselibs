@@ -1,0 +1,63 @@
+<Panel ux:Class="UX.PropertyBindingTest">
+	<object ux:Property="A" />
+	<float ux:Property="B" />
+	<float4 ux:Property="C" />
+	<Brush ux:Property="D" />
+
+	<Rectangle Fill="{Property A}" />
+	<Rectangle Stroke="{Property B}" />
+	<Rectangle Stroke="{Property C}" />
+	<Rectangle Width="{Property A}" />
+	<Rectangle Width="{Property B}" />
+	<Rectangle Width="{Property C}" />
+	<Rectangle Width="{Property D}" />
+	<Rectangle Margin="{Property A}" />
+	<Rectangle Margin="{Property B}" />
+	<Rectangle Margin="{Property C}" />
+	<Rectangle Margin="{Property D}" />
+	<Rectangle Fill="{Property D}" />
+	<Rectangle Stroke="{Property D}" />
+
+
+	<Rectangle Fill="{SnapshotProperty A}" />
+	<Rectangle Stroke="{SnapshotProperty B}" />
+	<Rectangle Stroke="{SnapshotProperty C}" />
+	<Rectangle Width="{SnapshotProperty A}" />
+	<Rectangle Width="{SnapshotProperty B}" />
+	<Rectangle Width="{SnapshotProperty C}" />
+	<Rectangle Width="{SnapshotProperty D}" />
+	<Rectangle Margin="{SnapshotProperty A}" />
+	<Rectangle Margin="{SnapshotProperty B}" />
+	<Rectangle Margin="{SnapshotProperty C}" />
+	<Rectangle Margin="{SnapshotProperty D}" />
+	<Rectangle Fill="{SnapshotProperty D}" />
+	<Rectangle Stroke="{SnapshotProperty D}" />
+
+	<Rectangle Fill="{ReadProperty A}" />
+	<Rectangle Stroke="{ReadProperty B}" />
+	<Rectangle Stroke="{ReadProperty C}" />
+	<Rectangle Width="{ReadProperty A}" />
+	<Rectangle Width="{ReadProperty B}" />
+	<Rectangle Width="{ReadProperty C}" />
+	<Rectangle Width="{ReadProperty D}" />
+	<Rectangle Margin="{ReadProperty A}" />
+	<Rectangle Margin="{ReadProperty B}" />
+	<Rectangle Margin="{ReadProperty C}" />
+	<Rectangle Margin="{ReadProperty D}" />
+	<Rectangle Fill="{ReadProperty D}" />
+	<Rectangle Stroke="{ReadProperty D}" />
+
+	<Rectangle Fill="{WriteProperty A}" />
+	<Rectangle Stroke="{WriteProperty B}" />
+	<Rectangle Stroke="{WriteProperty C}" />
+	<Rectangle Width="{WriteProperty A}" />
+	<Rectangle Width="{WriteProperty B}" />
+	<Rectangle Width="{WriteProperty C}" />
+	<Rectangle Width="{WriteProperty D}" />
+	<Rectangle Margin="{WriteProperty A}" />
+	<Rectangle Margin="{WriteProperty B}" />
+	<Rectangle Margin="{WriteProperty C}" />
+	<Rectangle Margin="{WriteProperty D}" />
+	<Rectangle Fill="{WriteProperty D}" />
+	<Rectangle Stroke="{WriteProperty D}" />
+</Panel>

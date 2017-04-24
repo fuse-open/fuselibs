@@ -1,0 +1,5 @@
+<AnimationTests.Test.AnimationTestPanel ux:Class="RotateAnimatorTest_00" ux:AutoCtor="false" ux:Name="panel1" Width="200" Height="200" Alignment="TopLeft">
+	<WhilePressed>
+		<Rotate Target="panel1" Delay="0.76" Duration="0" Easing="BackInOut" DelayBack="1" DurationBack="0" Degrees="231"></Rotate>
+	</WhilePressed>
+</AnimationTests.Test.AnimationTestPanel>

@@ -1,0 +1,6 @@
+<Panel ux:Class="UX.WhileStringBasic">
+	<WhileString Value="" Test="Equals" ux:Name="WS">
+		<!-- needs something to trigger in test -->
+		<Nothing Duration="0"/>
+	</WhileString>
+</Panel>

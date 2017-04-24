@@ -1,0 +1,55 @@
+<RangeControl ux:Class="Basic.Slider"
+	Focus.IsFocusable="true"
+	MinHeight="36"
+	Margin="22,4,22,4"
+	HitTestMode="LocalBounds">
+
+	<LinearRangeBehavior/>
+	
+	<Panel Width="36" Height="36" Alignment="Left"
+		Anchor="50%,50%" LayoutRole="Inert" HitTestMode="LocalBounds" ux:Name="_sliderThumb">
+		<Circle Alignment="VerticalCenter" Width="32" Height="32"
+			Opacity="0.0" ux:Name="_focusedThumbRing" SnapToPixels="false">
+			<Stroke Width="2">
+				<SolidColor Color="{Resource Basic.C500}" />
+			</Stroke>
+		</Circle>
+		
+		<Circle ux:Name="_thumbDot" Alignment="VerticalCenter"
+			Width="12" Height="12" SnapToPixels="false">
+			<SolidColor Color="{Resource Basic.C500}"/>
+		</Circle>
+
+		<Circle Alignment="VerticalCenter" Width="32" Height="32"
+			Opacity="0.0" ux:Name="_focusedThumbDot" SnapToPixels="false">
+			<SolidColor Color="{Resource Basic.C500}" />
+		</Circle>
+		
+		<Translation RelativeTo="ParentSize" ux:Name="_sliderPos"/>
+	</Panel>
+
+	<Panel Layer="Background" HitTestMode="LocalBounds">
+		<Rectangle Alignment="CenterLeft" Height="2" Width="0%" ux:Name="_progressTrack">
+			<SolidColor Color="{Resource Basic.C500}"/>
+		</Rectangle>
+		<Rectangle Alignment="VerticalCenter" Height="2">
+			<SolidColor Color="{Resource Basic.CLine}"  />
+		</Rectangle>
+	</Panel>
+
+	<ProgressAnimation>
+		<Change Target="_progressTrack.Width" Value="100" />
+		<Change Target="_sliderPos.X" Value="1"/> 
+	</ProgressAnimation>
+
+	<WhileFocused>
+		<Change Target="_focusedThumbDot.Opacity" Value="0.30" Duration="0.25" 
+			Easing="ExponentialOut" EasingBack="ExponentialIn" />
+	</WhileFocused>
+	<WhileInteracting>
+		<Scale Target="_thumbDot" Factor="1.5" Duration="0.25" 
+			Easing="ExponentialOut" EasingBack="ExponentialIn" />
+		<Change Target="_focusedThumbRing.Opacity" Value="0.30" Duration="0.25" 
+			Easing="ExponentialOut" EasingBack="ExponentialIn" />
+	</WhileInteracting>
+</RangeControl>

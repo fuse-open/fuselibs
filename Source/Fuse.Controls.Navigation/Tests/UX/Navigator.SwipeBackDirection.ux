@@ -1,0 +1,10 @@
+<Panel ux:Class="UX.Navigator.SwipeBackDirection">
+	<Router ux:Name="R"/> 
+	<DockPanel>
+		<Navigator ux:Name="Nav" SwipeBack="Right" DefaultPath="one">
+			<Page ux:Template="one" Title="One" PrepareBusy="None"/>
+			<Page ux:Template="two" Title="Two" PrepareBusy="None"/>
+			<Page ux:Template="three" Title="Three" SwipeBack="Left" PrepareBusy="None"/>
+		</Navigator>
+	</DockPanel>
+</Panel>

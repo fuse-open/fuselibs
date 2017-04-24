@@ -1,0 +1,13 @@
+<Panel ux:Class="UX.Shape.LoadingImageFill">
+	<WhileBusy ux:Name="WB">
+		<Nothing/>
+	</WhileBusy>
+	<Rectangle>
+		<WhileLoading ux:Name="WL">
+			<Nothing/>
+		</WhileLoading>
+		<ImageFill>
+			<FuseTest.TestImageSource ux:Name="LI"/>
+		</ImageFill>
+	</Rectangle>
+</Panel>

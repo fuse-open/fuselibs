@@ -1,0 +1,19 @@
+<Panel ux:Class="UX.AnimatorState">
+	<WhileTrue ux:Name="WT1">
+		<Fuse.Triggers.Test.TestAnimator ux:Name="A1"/>
+	</WhileTrue>
+
+	<Fuse.Triggers.Test.TestWhileTrigger ux:Name="WT2" StartAtZero="true">
+		<Fuse.Triggers.Test.TestAnimator ux:Name="A2"/>
+	</Fuse.Triggers.Test.TestWhileTrigger>
+
+	<WhileTrue ux:Name="WT3">
+		<Nothing Duration="1"/>
+		<Fuse.Triggers.Test.TestAnimator HasBack="true" ux:Name="A3"/>
+	</WhileTrue>
+
+	<WhileTrue ux:Name="WT4">
+		<Fuse.Triggers.Test.TestAnimator IsOpen="true" ux:Name="A4"/>
+		<Nothing Duration="1"/>
+	</WhileTrue>
+</Panel>

@@ -1,0 +1,20 @@
+{
+  "Copyright": "Copyright (c) Fusetools AS 2017",
+  "Description": "This package is part of Fuse",
+  "Publisher": "Fusetools AS",
+  "Version": "1.0.0-rc3",
+  "Package": {
+    "ProjectUrl": "https://fusetools.com"
+  },
+  "Packages": [
+    "Uno.Threading",
+  ],
+  "Projects": [
+    "../Fuse.Scripting/Fuse.Scripting.unoproj",
+    "../Fuse.Common/Fuse.Common.unoproj"
+  ],
+  "Includes": [
+    "*",
+    "JSTypedArrayInclude.h:CHeader",
+  ]
+}

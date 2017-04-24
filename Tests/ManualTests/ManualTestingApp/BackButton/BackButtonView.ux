@@ -1,0 +1,16 @@
+<Page Title="Back Button" ux:Class="BackButtonView">
+	<InfoStack ux:Key="Info">
+		<p>(This part is only relevant for Android. On other platforms it should tell you to skip it.) Click the Android back button, and verify that the text changes to “Status: Passed”.</p>
+	</InfoStack>
+	<ScrollView>
+		<StackPanel Padding="10,0,10,0" Alignment="Top">
+			<Text Value="Status should change to 'Passed' when you click the back button. App should not exit." TextWrapping="Wrap" Margin="0,0,0,10"  TextAlignment="Center" />
+			<Text Value="Status: Not passed" TextWrapping="Wrap" ux:Name="StatusLabelNotPassed" TextColor="1,0,0,1"  TextAlignment="Center" />
+			<Text Value="Status: Passed" TextWrapping="Wrap" ux:Name="StatusLabelPassed" TextColor="0,0.5,0,1" Visibility="Collapsed"  TextAlignment="Center" />
+		</StackPanel>
+	</ScrollView>
+	<WhileActive>
+		<Callback Direction="Forward" Handler="EnableBack"/>
+		<Callback Direction="Backward" Handler="DisableBack"/>
+	</WhileActive>
+</Page>

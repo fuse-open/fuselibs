@@ -1,0 +1,19 @@
+<Panel ux:Class="UX.Observable.MapObservableInner">
+	<JavaScript>
+		var Observable = require("FuseJS/Observable")
+		
+		var source = Observable(3)
+		var items = source.map( function(count) {
+			var entries = Observable()
+			for (var i=0; i < count; ++i) {
+				entries.add( "" + i )
+			}
+			return entries
+		}).inner()
+		
+		exports.source = source
+		exports.items = items
+	</JavaScript>
+	<Fuse.Reactive.Test.ObservableCollector ux:Name="OC" Items="{items}"/>
+	<RangeControl Minimum="0" Maximum="100" Value="{source}" ux:Name="R"/>
+</Panel>

@@ -1,0 +1,5 @@
+<Panel ux:Class="UX.Issue2462">
+	<Grid ux:Name="Grid">
+		<Issue2462Text ux:Name="Text" Value="foo" />
+	</Grid>
+</Panel>

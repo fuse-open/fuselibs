@@ -1,0 +1,9 @@
+<Panel ux:Class="UX.Busy.CompletedMatch">
+	<Completed Match="Parent">
+		<FuseTest.CountAction ux:Name="C1"/>
+	</Completed>
+	<FuseTest.BusyControl/>
+	<Panel>
+		<FuseTest.BusyControl IsBusy="true"/>
+	</Panel>
+</Panel>

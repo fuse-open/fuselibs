@@ -1,0 +1,26 @@
+<Panel ux:Class="UX.Navigator.JsInterface">
+	<JavaScript>
+		var count = 0;
+		exports.gotoP1 = function(){ theNav.gotoPath('P1', "" + (++count) );};
+		exports.seekToP2 = function(){ theNav.seekToPath('P2', "" + (++count) );};
+	</JavaScript>
+	<DockPanel>
+		<FuseTest.Invoke Handler="{gotoP1}" ux:Name="GotoP1"/>
+		<FuseTest.Invoke Handler="{seekToP2}" ux:Name="SeekToP2"/>
+		
+		<PageView DefaultPath="P1" ux:Name="theNav">
+			<Page Title="One" ux:Class="JIPageOne" PrepareBusy="None">
+				<Transition ux:Name="T1">
+					<Move Y="1" Duration="1"/>
+				</Transition>
+			</Page>
+			
+			<JIPageOne ux:Template="P1"/>
+			<Page Title="Two" ux:Name="P2" PrepareBusy="None">
+				<Transition ux:Name="T1">
+					<Move Y="1" Duration="1"/>
+				</Transition>
+			</Page>
+		</PageView>
+	</DockPanel>
+</Panel>

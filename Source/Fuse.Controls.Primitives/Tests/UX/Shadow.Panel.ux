@@ -1,0 +1,5 @@
+<Panel ux:Class="UX.Shadow.Panel">
+	<Panel ux:Name="_panel" Width="200" Height="200" Color="Red">
+		<Shadow ux:Name="_shadow" Distance="0" Size="10" Color="Green" Mode="Background" />
+	</Panel>
+</Panel>

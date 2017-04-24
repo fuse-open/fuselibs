@@ -1,0 +1,16 @@
+<Panel ux:Class="UX.Navigation.Scale">
+	<Panel ux:Name="C">
+		<LinearNavigation ux:Name="Nav"/>
+		<Panel ux:Class="NSPage">
+			<EnteringAnimation ux:Name="N" Scale="0.5"/>
+			<ExitingAnimation ux:Name="X" Scale="0.1"/>
+			<ActivatingAnimation ux:Name="A" Scale="0.6"/>
+			<DeactivatingAnimation ux:Name="D" Scale="0.25"/>
+		</Panel>
+		
+		<NSPage ux:Name="P1"/>
+		<NSPage ux:Name="P2"/>
+		<NSPage ux:Name="P3"/>
+		<NSPage ux:Name="P4"/>
+	</Panel>
+</Panel>

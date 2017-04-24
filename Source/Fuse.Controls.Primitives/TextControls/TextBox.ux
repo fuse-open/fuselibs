@@ -1,0 +1,12 @@
+<TextInput ux:Class="Fuse.Controls.TextBox" Padding="6">
+	<Rectangle ux:Name="text_box" CornerRadius="4" Fill="#ffffff00" Layer="Background">
+		<Stroke ux:Name="stroke" Width="1" Color="#CECECE" />
+		<WhileFocusWithin>
+			<Change stroke.Color="#A8A8A8" Duration="0.3" Easing="BackOut" />
+		</WhileFocusWithin>
+		<WhileDisabled>
+			 <Change text_box.Fill="#F6F6F6" />
+			 <Change stroke.Color="#E4E4E4" />
+		</WhileDisabled>
+	</Rectangle>
+</TextInput>

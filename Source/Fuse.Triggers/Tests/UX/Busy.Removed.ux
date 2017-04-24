@@ -1,0 +1,6 @@
+<Panel ux:Class="UX.Busy.Removed">
+	<WhileBusy ux:Name="W1">
+		<Panel ux:Name="P"/>
+	</WhileBusy>
+	<Busy ux:Name="B1"/>
+</Panel>

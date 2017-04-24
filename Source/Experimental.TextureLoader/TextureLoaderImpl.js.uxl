@@ -1,0 +1,126 @@
+<Extensions Backend="JavaScript">
+
+    <Type Name="Experimental.TextureLoader.TextureLoaderImpl">
+
+        <Method Signature="JpegByteArrayToTexture2D(Uno.Buffer,Experimental.TextureLoader.Callback)">
+            <Body><![CDATA[
+                var byteArray = @{HTML5.Uint8Array.Create(Uno.Buffer):Call($0)}, mimeType = 'image/jpeg', callback = $1;
+                var blob = new Blob([byteArray], {'type': mimeType});
+                var url = window.URL || window.webkitURL;
+                var img = new Image();
+                img.crossOrigin='anonymous'
+
+                var CreateTexture2D = function(image) {
+                    var handle = gl.createTexture(),
+                        target = @{OpenGL.GLTextureTarget.Texture2D},
+                        format = @{OpenGL.GLPixelFormat.Rgba},
+                        w = image.width,
+                        h = image.height,
+                        mc = 1,
+                        size = @{int2(int,int):New(w, h)};
+
+                    gl.bindTexture(target, handle);
+
+                    try
+                    {
+                        gl.texImage2D(target, 0, format, format, @{OpenGL.GLPixelType.UnsignedByte}, image);
+                    }
+                    catch (e)
+                    {
+                        document.body.style.background = "#FFF";
+                        document.body.innerHTML = "<p>Uncaught error: " + e.message + "</p><p><strong>This is probably because you are trying to load textures into WebGL while running locally from a file:// URL. Remember to start Chrome with the '--allow-file-access-from-files' command line flag. Make sure Chrome is running before launching Build and Run in Realtime Studio.</strong></p>";
+                    }
+
+                    if ((w == (w & -w)) && (h == (h & -h))) {
+                        gl.generateMipmap(target);
+                        while (w > 1 || h > 1) {
+                            w >>= 1;
+                            h >>= 1;
+                            mc++;
+                        }
+                    }
+                    gl.bindTexture(target, null);
+                    return @{Uno.Graphics.Texture2D(OpenGL.GLTextureHandle,int2,int,Uno.Graphics.Format):New(handle, size, mc, @{Uno.Graphics.Format.Unknown})};
+                };
+
+                var imageLoadHandler = function() {
+                    url.revokeObjectURL(img.src);
+                    @{Experimental.TextureLoader.Callback.Execute(Uno.Graphics.Texture2D):Call($1, CreateTexture2D(img))};
+                };
+
+                var imgLoaded = false;
+                var loadImg = function() {
+                    if (imgLoaded || (img.width === 0 && img.height === 0)) return;
+                    imgLoaded = true;
+                    imageLoadHandler();
+                };
+                img.addEventListener("load", loadImg, false);
+                img.src = url.createObjectURL(blob);
+                img.style.display = 'block';
+
+                if(img.complete) { loadImg(); }
+            ]]></Body>
+        </Method>
+
+<Method Signature="PngByteArrayToTexture2D(Uno.Buffer,Experimental.TextureLoader.Callback)">
+            <Body><![CDATA[
+                var byteArray = @{HTML5.Uint8Array.Create(Uno.Buffer):Call($0)}, mimeType = 'image/png', callback = $1;
+                var blob = new Blob([byteArray], {'type': mimeType});
+                var url = window.URL || window.webkitURL;
+                var img = new Image();
+                img.crossOrigin='anonymous'
+
+                var CreateTexture2D = function(image) {
+                    var handle = gl.createTexture(),
+                        target = @{OpenGL.GLTextureTarget.Texture2D},
+                        format = @{OpenGL.GLPixelFormat.Rgba},
+                        w = image.width,
+                        h = image.height,
+                        mc = 1,
+                        size = @{int2(int,int):New(w, h)};
+
+                    gl.bindTexture(target, handle);
+
+                    try
+                    {
+                        gl.texImage2D(target, 0, format, format, @{OpenGL.GLPixelType.UnsignedByte}, image);
+                    }
+                    catch (e)
+                    {
+                        document.body.style.background = "#FFF";
+                        document.body.innerHTML = "<p>Uncaught error: " + e.message + "</p><p><strong>This is probably because you are trying to load textures into WebGL while running locally from a file:// URL. Remember to start Chrome with the '--allow-file-access-from-files' command line flag. Make sure Chrome is running before launching Build and Run in Realtime Studio.</strong></p>";
+                    }
+
+                    if ((w == (w & -w)) && (h == (h & -h))) {
+                        gl.generateMipmap(target);
+                        while (w > 1 || h > 1) {
+                            w >>= 1;
+                            h >>= 1;
+                            mc++;
+                        }
+                    }
+                    gl.bindTexture(target, null);
+                    return @{Uno.Graphics.Texture2D(OpenGL.GLTextureHandle,int2,int,Uno.Graphics.Format):New(handle, size, mc, @{Uno.Graphics.Format.Unknown})};
+                };
+
+                var imageLoadHandler = function() {
+                    url.revokeObjectURL(img.src);
+                    @{Experimental.TextureLoader.Callback.Execute(Uno.Graphics.Texture2D):Call($1, CreateTexture2D(img))};
+                };
+
+                var imgLoaded = false;
+                var loadImg = function() {
+                    if (imgLoaded || (img.width === 0 && img.height === 0)) return;
+                    imgLoaded = true;
+                    imageLoadHandler();
+                };
+                img.addEventListener("load", loadImg, false);
+                img.src = url.createObjectURL(blob);
+                img.style.display = 'block';
+
+                if(img.complete) { loadImg(); }
+            ]]></Body>
+        </Method>
+    </Type>
+
+</Extensions>

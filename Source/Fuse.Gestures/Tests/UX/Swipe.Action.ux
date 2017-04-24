@@ -1,0 +1,23 @@
+<Panel ux:Class="UX.Swipe.Action" HitTestMode="LocalBounds">
+	<SwipeGesture Direction="Down" Length="500" ux:Name="SG" Type="Active"/>
+
+	<WhileSwipeActive Source="SG" ux:Name="W"/>
+	<SwipingAnimation Source="SG" ux:Name="S"/>
+	
+	<Timeline ux:Name="timeToggle">
+		<ToggleSwipeActive Target="SG"/>
+	</Timeline>
+	<Timeline ux:Name="timeSetOn">
+		<SetSwipeActive Target="SG" Value="true"/>
+	</Timeline>
+	<Timeline ux:Name="timeBypassOff">
+		<SetSwipeActive Target="SG" Value="false" Bypass="true"/>
+	</Timeline>
+	
+	<Swiped Source="SG">
+		<FuseTest.CountAction ux:Name="SwipeActive"/>
+	</Swiped>
+	<Swiped Source="SG" How="ToInactive">
+		<FuseTest.CountAction ux:Name="SwipeInactive"/>
+	</Swiped>
+</Panel>

@@ -1,0 +1,10 @@
+<Panel ux:Class="UX.BaseHistory">
+	<Fuse.Navigation.Test.TestBaseNavigation ux:Name="TheNav">
+		<Timeline ux:Name="GoBack1">
+			<GoBack/>
+		</Timeline>
+		<Timeline ux:Name="GoForward1">
+			<GoForward/>
+		</Timeline>
+	</Fuse.Navigation.Test.TestBaseNavigation>
+</Panel>

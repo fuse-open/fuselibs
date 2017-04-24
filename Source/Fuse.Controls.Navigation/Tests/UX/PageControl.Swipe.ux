@@ -1,0 +1,7 @@
+<PageControl ux:Class="UX.PageControl.Swipe">
+	<Page ux:Name="P1"/>
+	<Page ux:Name="P2"/>
+	<Page ux:Name="P3"/>
+	<Page ux:Name="P4"/>
+	<Page ux:Name="P5"/>
+</PageControl>

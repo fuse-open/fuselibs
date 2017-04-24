@@ -1,0 +1,54 @@
+<Page ux:Class="WebSocket">
+	<Router ux:Dependency="router"/>
+	<JavaScript>
+		var fw = require('/framework.js');
+		fw.testStarted("WebSocket");
+
+		var env = require('FuseJS/Environment');
+		if (env.ios || env.android || env.dotnet) {
+			var ws = new WebSocket("wss://echo.websocket.org/");
+
+			ws.addEventListener('open', function() {
+				fw.assertEqual(1, ws.readyState);
+
+				ws.send("Hello world!");
+
+				var int8 = new Int8Array(100);
+				int8[99] = 42;
+				ws.send(int8);
+			});
+			ws.addEventListener('error', function(message) {
+				fw.testFailed("Error event triggered: " + message);
+				ws.close();
+			});
+
+			var got_arraybuffer = false;
+			var got_hello_world = false;
+			ws.addEventListener('message', function(content) {
+				if (content.type === 'message') {
+					var message = content.data;
+					if (message instanceof ArrayBuffer) {
+						var z = new Int8Array(message, 0, message.byteLength);
+						fw.assertEqual(42, z[99]);
+						got_arraybuffer = true;
+					} else {
+						fw.assertEqual("Hello world!", message.toString());
+						got_hello_world = true;
+					}
+				}
+				if (got_arraybuffer && got_hello_world) {
+					ws.close();
+				}
+			});
+			ws.addEventListener('close', function(message) {
+				clearTimeout(t_id);
+				router.goto("storage");
+			});
+
+			var t_id = setTimeout(ws.close, 2000);
+		} else {
+			router.goto("storage");
+		}
+		</JavaScript>
+	<Text Value="WebSocket"/>
+</Page>

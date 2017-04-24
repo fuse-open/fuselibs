@@ -1,0 +1,29 @@
+{
+  "Copyright": "Copyright (c) Fusetools AS 2017",
+  "Description": "iOS TextRenderer",
+  "Publisher": "Fusetools AS",
+  "Version": "1.0.0-rc3",
+  "Package": {
+    "ProjectUrl": "https://fusetools.com"
+  },
+  "Packages": [
+  ],
+  "InternalsVisibleTo": [
+    "Fuse.Views",
+    "Fuse.iOS"
+  ],
+  "Projects": [
+    "../Fuse.Controls/Fuse.Controls.unoproj",
+    "../Fuse.Controls.Primitives/Fuse.Controls.Primitives.unoproj",
+    "../Fuse.Controls.Panels/Fuse.Controls.Panels.unoproj",
+    "../Fuse.Controls.Native/Fuse.Controls.Native.unoproj",
+    "../Fuse.Drawing/Fuse.Drawing.unoproj",
+    "../Fuse.Drawing.Planar/Fuse.Drawing.Planar.unoproj",
+    "../Fuse.Elements/Fuse.Elements.unoproj",
+    "../Fuse.Nodes/Fuse.Nodes.unoproj",
+    "../Fuse.Common/Fuse.Common.unoproj"
+  ],
+  "Includes": [
+    "*"
+  ]
+}

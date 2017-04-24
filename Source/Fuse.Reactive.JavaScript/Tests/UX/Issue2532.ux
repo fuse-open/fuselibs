@@ -1,0 +1,12 @@
+<Panel ux:Class="UX.Issue2532">
+	<JavaScript>
+		var Observable = require("FuseJS/Observable");
+		var empty = Observable();
+		module.exports = {
+			empty:empty
+		};
+	</JavaScript>
+
+	<TextInput PlaceholderText="{empty}" />
+
+</Panel>

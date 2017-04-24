@@ -1,0 +1,9 @@
+<DockPanel ux:Class="Javascript">
+    <JavaScript File="Assets/items.js" />
+    <ClickControl Clicked="{addItem}" />
+    <StackPanel>
+        <Each Items="{items}">
+            <Text Value="{text}" Alignment="CenterLeft" />
+        </Each>
+    </StackPanel>
+</DockPanel>

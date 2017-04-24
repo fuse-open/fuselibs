@@ -1,0 +1,17 @@
+<Panel ux:Class="UX.ActionBeyondEnd">
+	<Timeline ux:Name="T1">
+		<Nothing Duration="1"/>
+		<DebugAction Delay="2"/>
+	</Timeline>
+	
+	<Timeline ux:Name="T2">
+		<Nothing Duration="1"/>
+		<DebugAction Delay="2" When="Backward"/>
+	</Timeline>
+	
+	<Timeline ux:Name="T3">
+		<Nothing Duration="1"/>
+		<DebugAction Delay="2" When="ForwardAndBackward"/>
+	</Timeline>
+	
+</Panel>

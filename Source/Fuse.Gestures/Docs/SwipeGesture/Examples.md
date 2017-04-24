@@ -1,0 +1,1 @@
+Take a look at [this sample project](https://github.com/fusetools/fuse-samples/tree/master/Samples/Gestures/Swipe) for an in-depth example.

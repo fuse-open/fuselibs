@@ -1,0 +1,29 @@
+<Panel ux:Class="UX.ViewportCache">
+	<!-- create enough children to desire caching -->
+	<Grid ux:Class="Details" ColumnCount="2">
+		<Rectangle Color="#FAA"/>
+		<Circle Color="#AFA"/>
+		<Rectangle Color="#AAF"/>
+	</Grid>
+	
+	<Grid ColumnCount="2">
+		<Fuse.Controls.Test.MockViewport ux:Name="A">
+			<Details/>
+		</Fuse.Controls.Test.MockViewport>
+		
+		<Fuse.Controls.Test.MockViewport ux:Name="B" Mode="Disabled">
+			<Details>
+				<!-- prevents caching if Viewport disabled -->
+				<Rotation DegreesX="10"/>
+			</Details>
+		</Fuse.Controls.Test.MockViewport>
+		
+		<Fuse.Controls.Test.MockViewport ux:Name="C">
+			<Details>
+				<!-- does not prevent caching in Viewport -->
+				<Rotation DegreesX="10"/>
+			</Details>
+		</Fuse.Controls.Test.MockViewport>
+		
+	</Grid>
+</Panel>

@@ -1,0 +1,14 @@
+<Panel ux:Class="UX.ContainerTest">
+	<Container ux:Class="MyContainer" Subtree="innerPanel">
+		<Rectangle ux:Name="bar" ux:Binding="Children" CornerRadius="10" Margin="10">
+			<Stroke Color="Red" Width="2" />
+			<Panel Margin="10" ux:Name="innerPanel" />
+		</Rectangle>
+		<Panel ux:Binding="Children" ux:Name="other" />
+		<Panel ux:Name="foo" />
+	</Container>
+
+	<MyContainer ux:Name="container">
+		<Panel Color="Blue" ux:Name="bluepanel" />
+	</MyContainer>
+</Panel>

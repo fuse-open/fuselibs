@@ -1,0 +1,7 @@
+<Panel ux:Class="UX.Image.Failed">
+	<WhileFailed ux:Name="W1"/>
+	<Image>
+		<WhileFailed ux:Name="W2"/>
+		<FuseTest.TestImageSource ux:Name="L"/>
+	</Image>
+</Panel>

@@ -1,0 +1,29 @@
+{
+  "Copyright": "Copyright (c) Fusetools AS 2017",
+  "Version": "1.0.0-rc3",
+  "Package": {
+    "ProjectUrl": "https://fusetools.com"
+  },
+  "Description": "A client for the WebSocket protocol",
+  "Publisher": "Fusetools AS",
+  "Packages": [
+    "Fuse.Common",
+    "Fuse.Scripting",
+    "Fuse.Reactive"
+  ],
+  "Includes": [
+    "WebSocketClient.uno",
+    "WebSocketModule.uno",
+    "DotNet/WebSocketSharp/WebSocketClient.uno:Source",
+    "DotNet/WebSocketSharp/WebSocket.uno:Source",
+    "DotNet/WebSocketSharp/Dotnet.uxl:Extensions",
+    "DotNet/WebSocketSharp/lib/websocket-sharp.dll:File",
+    "Android/Neovisionaries/WebSocketClient.uno:Source",
+    "Android/Neovisionaries/Android.uxl:Extensions",
+    "Android/Neovisionaries/nv-websocket-client.jar:File",
+    "ios/Jetfire/WebSocketClient.uno:Source",
+    "ios/Jetfire/WebSocketClientObjc.h:ObjCHeader:iOS",
+    "ios/Jetfire/WebSocketClientObjc.m:ObjCSource:iOS",
+    "ios/Jetfire/Jetfire-iOS.stuff"
+  ]
+}

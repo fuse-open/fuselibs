@@ -1,0 +1,20 @@
+<TestPage ux:Class="Pages.OtherShapes" Title="Other Shapes">
+	<InfoStack ux:Key="Info">
+		<p>Displays a variety of shapes. Each shape has a 1:1 aspect ratio.</p>
+		<ul>
+			<li>A 7 pointed star</li>
+			<li>An 8 sided polygon</li>
+			<li>A 5 pointed start with shallow and  rounded tips</li>
+			<li>A "square" with 3 rounded corners are varying radius</li>
+		</ul>
+	</InfoStack>
+	
+	<Grid ColumnCount="2" Margin="10" CellSpacing="10">
+		<Star Points="7" Color="#AAF"/>
+		<RegularPolygon Sides="8" Color="#AAF"/>
+		<Star Points="5" Color="#AAF" Ratio="0.7" RoundRatio="0.1"/>
+		<VectorLayer>
+			<Rectangle CornerRadius="0,10,20,30" Color="#AAF" BoxSizing="FillAspect"/>
+		</VectorLayer>
+	</Grid>
+</TestPage>

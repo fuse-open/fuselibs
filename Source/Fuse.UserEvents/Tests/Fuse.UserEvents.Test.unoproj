@@ -1,0 +1,14 @@
+{
+  "Packages": [
+    "Uno.Testing",
+    "Fuse",
+    "FuseJS"
+  ],
+  "Projects": [
+    "../../Fuse.Common/Tests/FuseTest/FuseTest.unoproj",
+  ],
+  "Includes": [
+    "UX/*",
+    "UserEventTests.uno"
+  ]
+}

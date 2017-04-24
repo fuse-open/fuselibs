@@ -1,0 +1,81 @@
+<Panel ux:Class="UX.ScrollViewAlignment">
+	<!-- Note not padding is tested yet: https://github.com/fusetools/fuselibs/issues/1765 -->
+	<ScrollView ux:Name="SV1">
+		<StackContent Alignment="Bottom" ux:Name="C1"/>
+	</ScrollView>
+	
+	<ScrollView ux:Name="SV2">
+		<StackContent Alignment="Top" ux:Name="C2"/>
+	</ScrollView>
+	
+	<ScrollView ux:Name="SV3">
+		<StackContent Alignment="VerticalCenter" ux:Name="C3"/>
+	</ScrollView>
+
+	<ScrollView AllowedScrollDirections="Both" ux:Name="SV4">
+		<Image File="../Assets/1440x1920.jpg" StretchMode="PointPrecise" Alignment="Center"
+			ux:Name="C4"/>
+	</ScrollView>
+
+	<ScrollView AllowedScrollDirections="Horizontal" ux:Name="SV5">
+		<Image File="../Assets/1811x500.jpg" Alignment="Right" ux:Name="C5"/>
+	</ScrollView>
+
+	<ScrollView ux:Name="SV6">
+		<StackPanel MinHeight="100%" ux:Name="C6">
+			<Rectangle Height="10"/>
+		</StackPanel>
+	</ScrollView>
+
+	<ScrollView AllowedScrollDirections="Horizontal" ux:Name="SV7">
+		<StackPanel Orientation="Horizontal" MinWidth="100%" ux:Name="C7">
+			<Rectangle Width="10"/>
+		</StackPanel>
+	</ScrollView>
+
+	<ScrollView ux:Name="SV8">
+		<StackPanel MinHeight="100" Alignment="Top" ux:Name="C8">
+			<Rectangle Height="10"/>
+		</StackPanel>
+	</ScrollView>
+
+	<ScrollView AllowedScrollDirections="Horizontal" ux:Name="SV9">
+		<StackPanel Orientation="Horizontal" Alignment="Center" 
+			Width="100" Height="100%" ux:Name="C9"> 
+			<Rectangle Width="10"/>
+		</StackPanel>
+	</ScrollView>
+
+	<ScrollView ux:Name="SV10">
+		<StackPanel Alignment="Center" Margin="10" ux:Name="C10">
+			<Rectangle Layer="Background"/>
+			<Rectangle Height="32" Width="80"/>
+			<Rectangle Height="18" Width="100"/>
+		</StackPanel>
+	</ScrollView>
+
+	<ScrollView AllowedScrollDirections="Horizontal" ux:Name="SV11">
+		<StackPanel Padding="10" Alignment="Center" Margin="10" ux:Name="C11">
+			<Rectangle Layer="Background"/>
+			<Rectangle Height="32" Width="80"/>
+			<Rectangle Height="18" Width="100"/>
+		</StackPanel>
+	</ScrollView>
+
+	<ScrollView AllowedScrollDirections="Both" ux:Name="SV12">
+		<StackPanel Padding="20" Alignment="Center" Margin="10" ux:Name="C12">
+			<Rectangle Layer="Background"/>
+			<Rectangle Height="32" Width="80"/>
+			<Rectangle Height="18" Width="100"/>
+		</StackPanel>
+	</ScrollView>
+	
+	<StackPanel ux:Class="StackContent">
+		<Rectangle Height="200"/>
+		<Rectangle Height="200"/>
+		<Rectangle Height="200"/>
+		<Rectangle Height="200"/>
+		<Rectangle Height="200"/>
+	</StackPanel>	
+
+</Panel>

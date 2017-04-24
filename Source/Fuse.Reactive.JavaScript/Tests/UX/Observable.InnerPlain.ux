@@ -1,0 +1,15 @@
+<Panel ux:Class="UX.Observable.InnerPlain">
+	<JavaScript>
+		var Observable = require("FuseJS/Observable")
+		
+		var source = Observable("abc", "def")
+		exports.ovalue = source.inner()
+		
+		exports.step1 = function() {
+			source.replaceAll( ["q","r"] )
+		}
+	</JavaScript>
+	<Text Value="{ovalue}" ux:Name="OV"/>
+	
+	<FuseTest.Invoke Handler="{step1}" ux:Name="Step1"/>
+</Panel>

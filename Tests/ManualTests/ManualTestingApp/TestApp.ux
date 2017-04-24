@@ -1,0 +1,8 @@
+<App ux:Class="TestApp" ux:ClearColor="1, 1, 1, 1">
+	<!-- Leave as 0.0.0.0, the resource is updated by set_version.sh on a  release -->
+	<string ux:Key="ResourceString" ux:Value="0.0.0.0"/>
+	
+	<Panel ux:Name="SoRootTestChecksMultipleChildren"/>
+	<TestAppTheme/>
+	<MainView/>
+</App>

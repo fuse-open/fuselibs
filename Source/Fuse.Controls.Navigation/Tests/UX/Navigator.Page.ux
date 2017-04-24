@@ -1,0 +1,18 @@
+<Panel ux:Class="UX.Navigator.Page">
+	<Router ux:Name="router"/> 
+	<JavaScript>
+		module.exports.goP1 = function(){ router.goto('P1');};
+		module.exports.goP2 = function(){ router.goto('P2');};
+	</JavaScript>
+	<DockPanel>
+		<StackPanel Dock="Left" Navigation="theNav">
+			<FuseTest.Invoke Handler="{goP1}" ux:Name="goP1"/>
+			<FuseTest.Invoke Handler="{goP2}" ux:Name="goP2"/>
+			<Text Value="{Page Title}" ux:Name="theText"/>
+		</StackPanel>
+		<Navigator DefaultPath="P1" ux:Name="theNav">
+			<Page Title="One" ux:Template="P1" Color="#afa"/>
+			<Page Title="Two" ux:Template="P2" Color="#faa"/>
+		</Navigator>
+	</DockPanel>
+</Panel>

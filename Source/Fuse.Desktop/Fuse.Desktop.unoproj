@@ -1,0 +1,20 @@
+{
+  "Copyright": "Copyright (c) Fusetools AS 2017",
+  "Description": "Default bootstrapping for desktop platforms",
+  "Publisher": "Fusetools AS",
+  "Version": "1.0.0-rc3",
+  "Package": {
+    "ProjectUrl": "https://fusetools.com"
+  },
+  "Projects": [
+    "../Fuse.Elements/Fuse.Elements.unoproj",
+    "../Fuse.Controls/Fuse.Controls.unoproj",
+    "../Fuse.Controls.Panels/Fuse.Controls.Panels.unoproj",
+    "../Fuse.Controls.Primitives/Fuse.Controls.Primitives.unoproj",
+    "../Fuse.Common/Fuse.Common.unoproj",
+    "../Fuse.Nodes/Fuse.Nodes.unoproj",
+  ],
+  "Includes": [
+    "*"
+  ]
+}

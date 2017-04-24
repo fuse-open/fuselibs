@@ -1,0 +1,17 @@
+<Panel ux:Class="UX.ScrollIssue1595">
+	<ScrollView ux:Name="SV" AllowedScrollDirections="Horizontal">
+		<StackPanel Orientation="Horizontal">
+			<Panel Width="50"/>
+			<Panel Width="50"/>
+			
+			<Panel Width="50"/>
+			<Panel Width="50"/>
+			
+			<Panel Width="50"/>
+			<Panel Width="50"/>
+			
+			<Panel Width="200" Visibility="Collapsed" ux:Name="P1"/>
+			<Panel Width="100"/>
+		</StackPanel>
+	</ScrollView>
+</Panel>

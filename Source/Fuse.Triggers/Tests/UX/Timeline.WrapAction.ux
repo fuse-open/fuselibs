@@ -1,0 +1,14 @@
+<Panel ux:Class="UX.Timeline.WrapAction">
+	<Timeline ux:Name="T1" PlayMode="Wrap">
+		<FuseTest.CountAction ux:Name="C11" Delay="0.999"/>
+		<FuseTest.CountAction ux:Name="C10" Delay="0.001"/>
+		<FuseTest.CountAction ux:Name="B11" Delay="1"/>
+		<FuseTest.CountAction ux:Name="B10" Delay="0"/>
+	</Timeline>
+	<Timeline ux:Name="T2" PlayMode="Wrap" TargetProgress="0" InitialProgress="1">
+		<FuseTest.CountAction ux:Name="C21" Delay="0.999" When="Backward"/>
+		<FuseTest.CountAction ux:Name="C20" Delay="0.001" When="Backward"/>
+		<FuseTest.CountAction ux:Name="B21" Delay="1" When="Backward"/>
+		<FuseTest.CountAction ux:Name="B20" Delay="0" When="Backward"/>
+	</Timeline>
+</Panel>

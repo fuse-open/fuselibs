@@ -1,0 +1,31 @@
+<Panel ux:Class="UX.WhileNavigation.Deep">
+	<Router ux:Name="router"/>
+	<JavaScript>
+		exports.step1 = function() {
+			router.goto( "B2" )
+		}
+		
+		exports.step2 = function() {
+			router.goto( "B1", {} )
+		}
+	</JavaScript>
+	<Navigator Transition="None" ux:Name="A1" DefaultPath="B1">
+		<Navigator Transition="None" ux:Name="B1" DefaultPath="C1">
+			<PageControl Transition="None" ux:Name="C1" Active="D1">
+				<Panel ux:Name="D1">
+					<WhileActive ux:Name="WA" Path="Full"/>
+					<WhileInactive ux:Name="WI" Path="Full"/>
+				</Panel>
+				
+				<Panel ux:Name="D2"/>
+			</PageControl>
+			
+			<Panel ux:Name="C2"/>
+		</Navigator>
+		
+		<Panel ux:Name="B2"/>
+	</Navigator>
+	
+	<FuseTest.Invoke Handler="{step1}" ux:Name="Step1"/>
+	<FuseTest.Invoke Handler="{step2}" ux:Name="Step2"/>
+</Panel>

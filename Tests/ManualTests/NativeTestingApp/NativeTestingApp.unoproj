@@ -1,0 +1,10 @@
+{
+  "RootNamespace": "",
+  "Packages": [
+    "Fuse"
+  ],
+  "Includes": [
+    "*",
+    "Singles/*"
+  ]
+}

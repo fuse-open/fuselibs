@@ -1,0 +1,64 @@
+using Uno;
+using Uno.Graphics;
+using Uno.Platform;
+using Experimental.TextureLoader;
+
+namespace Experimental.TextureLoader.Tests
+{
+	public class Apps : Uno.Application
+	{
+		public Apps()
+		{
+			var base64 = "iVBORw0KGgoAAAANSUhEUgAAAL0AAAAdCAYAAAD/y23eAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6NzEwMEU1QjE5QjI0MTFFMzgxMDc5RThCODY2OTFCM0IiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6NzEwMEU1QjI5QjI0MTFFMzgxMDc5RThCODY2OTFCM0IiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo3MTAwRTVBRjlCMjQxMUUzODEwNzlFOEI4NjY5MUIzQiIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo3MTAwRTVCMDlCMjQxMUUzODEwNzlFOEI4NjY5MUIzQiIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PqXEh4sAAAiWSURBVHja7FxdbBRV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";
+			var bytes = Uno.Text.Base64.GetBytes(base64);
+
+			TextureLoader.PngByteArrayToTexture2D(new Buffer(bytes), callback);
+		}
+
+		texture2D _texture;
+
+		void callback(texture2D texture)
+		{
+			_texture = texture;
+		}
+
+		public override void Draw()
+		{
+			draw Quad
+			{
+				PixelColor: sample(_texture, TexCoord);
+				apply AlphaCompositing;
+			};
+		}
+
+		block AlphaCompositing
+		{
+			BlendEnabled: true;
+			BlendSrcRgb: BlendOperand.SrcAlpha;
+			BlendDstRgb: BlendOperand.OneMinusSrcAlpha;
+
+			BlendSrcAlpha: BlendOperand.One;
+			BlendDstAlpha: BlendOperand.OneMinusSrcAlpha;
+
+			DepthTestEnabled: false;
+		}
+
+		public block Quad
+		{
+			public float3 Position: float3(-1, -1, 0);
+			public float2 Size: float2(2, 2);
+
+			float2[] Vertices : new [] { float2(0,0), float2( 1,0), float2( 1, 1), float2(0, 1) };
+			ushort[] Indices : new ushort[] { 0, 1, 2, 2, 3, 0 };
+			VertexCount : 6;
+			float2 VertexData : vertex_attrib(Vertices, Indices);
+
+			public float3 VertexPosition: float3(VertexData.XY * Size + Position.XY, 0);
+			public float3 VertexNormal: float3(0, 0, 1);
+
+			ClipPosition : prev, float4(VertexPosition, 1);
+
+			public float2 TexCoord : float2(VertexData.X, 1.0f - VertexData.Y);
+		}
+	}
+}

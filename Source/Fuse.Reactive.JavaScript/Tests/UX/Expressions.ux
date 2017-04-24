@@ -1,0 +1,55 @@
+<Panel ux:Class="UX.Expressions" A="1" B="2" C="30%,40px" N="FooBar">
+	<float ux:Property="A" />
+	<string ux:Property="B" />
+	<Size2 ux:Property="C" />
+	<string ux:Property="N" />
+
+	<JavaScript>
+		var Observable = require("FuseJS/Observable");
+
+		var foo = Observable(100);
+		var img = Observable("test");
+		var empty = Observable();
+
+		module.exports = { foo, username: "John Doe", img, empty };
+	</JavaScript>
+
+	<float4 ux:Global="Lol" ux:Value="#f0f" />
+	<Circle ux:Name="ci" Width="100" Height="100" Color="{Resource Lol} * (0,0,1,1) + (0,0.5,0,0)" />
+
+
+	<Panel ux:Name="p1" Width="{Property A}*10 + 20*{ReadProperty B} + {foo}" />
+	<Panel ux:Name="p2" Width="(25*{Property B})%" Offset="delay({Property C}/2, 0.1) - {SnapshotProperty A} ?? (13, 14)" />
+	<Panel ux:Name="p3" Color="(Red + #0f0) / 2 * 2" />
+	<Text Value="&quot;" />
+	<Panel ux:Name="p4" Visibility="(width(p2) < 600 && (width(p2) < 0))? Hidden : Visible" Height="width(p2)" />
+	<Panel ux:Name="p5" Visibility="width(p2) <= 400 ? Hidden : Visible" Height="width(p2)" IsEnabled="true || false" ClipToBounds="true && false" />
+	<Panel ux:Name="p6" Visibility="width(p2) == 400 ? Hidden : Visible" Height="width(p2)" />
+	<Panel ux:Name="p7" Visibility="width(p2) > 600 ? Hidden : Collapsed" Height="min(100, width(p2))" Offset="-40,{foo}" />
+	<Panel ux:Name="p8" Visibility="width(p2) >= 400 ? Hidden : Collapsed" Height="max(100, width(p2))" Offset="({foo},40)/2" />
+
+	<Image File="Assets/{img}.png" />
+
+	<Text ux:Name="t1" Value="Hello, {= toLower({username})}! You have {foo} new messages!" />
+	<Text ux:Name="t2">Hola, {= toUpper({Property N})}! You have {= '' + {foo} / 50 + '-ish'} new fruits!</Text>
+	<Text ux:Name="t3">Hola, {empty}!</Text>
+
+	<!-- tests for x() and y() -->
+	<Panel ux:Name="p9" Margin="50,60" />
+	<Panel ux:Name="p10" X="x(p9)"/>
+	<Panel ux:Name="p11" Y="y(p9)"/>
+	<Panel ux:Name="p12" X="x(p9)" Y="y(p9)"/>
+	<Panel ux:Name="pan" />
+	
+	<!-- these guys just need to compile -->
+	<WhilePressed>
+		<Change pan.Width="width(p1)" />
+		<Move X="width(p1)" />
+	</WhilePressed>
+
+	<!-- Shouldn't crash -->
+	<Fuse.Reactive.Test.SynchronusDataSource />
+	<Text ux:Name="te1" Value="{sync_data.sync_data}" />
+
+
+</Panel>

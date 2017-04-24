@@ -1,0 +1,4 @@
+<Panel ux:Class="UX.Busy.Busy">
+	<Busy ux:Name="B" IsActive="false"/>
+	<WhileBusy ux:Name="W"/>
+</Panel>

@@ -1,0 +1,9 @@
+<Panel ux:Class="UX.Issue2509">
+	<JavaScript>
+		var Observable = require('FuseJS/Observable');
+		module.exports.imagePath = Observable('');
+	</JavaScript>
+	<StackPanel>
+		<Image File="{imagePath}" />
+	</StackPanel>
+</Panel>

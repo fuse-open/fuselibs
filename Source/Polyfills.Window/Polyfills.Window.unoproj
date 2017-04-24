@@ -1,0 +1,23 @@
+{
+  "Copyright": "Copyright (c) Fusetools AS 2017",
+  "Description": "Browser window polyfill",
+  "Publisher": "Fusetools AS",
+  "Version": "1.0.0-rc3",
+  "Package": {
+    "ProjectUrl": "https://fusetools.com"
+  },
+  "Packages": [
+    "Fuse.Scripting",
+    "Fuse.Common",
+    "Fuse.Nodes",
+    "Fuse.Storage",
+    "Fuse.WebSockets"
+  ],
+  "IsTransitive": true,
+  "Includes": [
+    "js/*:Bundle",
+    "WindowModule.uno:Source"
+  ]
+
+}
+

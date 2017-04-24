@@ -1,0 +1,31 @@
+{
+  "Copyright": "Copyright (c) Fusetools AS 2017",
+  "Description": "Library of vector drawing and surface",
+  "Publisher": "Fusetools AS",
+  "Title": "Fuse.Drawing.Surface",
+  "Version": "1.0.0-rc3",
+  "InternalsVisibleTo": [
+    "Fuse.Controls.Panels",
+    "Fuse.Controls.Primitives",
+    "Fuse.Drawing.Surface.Test",
+  ],
+  "Packages": [
+    "Uno.Collections",
+  ],
+  "Projects": [
+    "../Fuse.Common/Fuse.Common.unoproj",
+    "../Fuse.Nodes/Fuse.Nodes.unoproj",
+    "../Fuse.Drawing.Planar/Fuse.Drawing.Planar.unoproj",
+    "../Fuse.Drawing.Primitives/Fuse.Drawing.Primitives.unoproj",
+    "../Fuse.Drawing/Fuse.Drawing.unoproj",
+    "../Fuse.Elements/Fuse.Elements.unoproj",
+  ],
+  "Includes": [
+    "*",
+    "CoreGraphicsLib.h:CHeader:iOS||OSX",
+    "AndroidGraphicsContext.java:Java:Android",
+  ],
+  "Excludes": [
+    "Tests/",
+  ]
+}

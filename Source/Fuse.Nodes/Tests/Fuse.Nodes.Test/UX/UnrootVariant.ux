@@ -1,0 +1,9 @@
+<Panel ux:Class="UX.UnrootVariant">
+	<WhileTrue Value="true" ux:Name="B1">
+		<Panel ux:Name="P2">
+			<WhileTrue ux:Name="B2">
+				<Set B1.Value="false"/>
+			</WhileTrue>
+		</Panel>
+	</WhileTrue>
+</Panel>

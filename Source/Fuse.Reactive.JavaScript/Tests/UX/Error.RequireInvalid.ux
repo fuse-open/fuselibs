@@ -1,0 +1,5 @@
+<Panel ux:Class="UX.Error.RequireInvalid">
+	<JavaScript>
+		var q = require("FuseJS/Pinecone")
+	</JavaScript>
+</Panel>

@@ -1,0 +1,10 @@
+<Panel ux:Class="Basic.NavigationBar"
+	Height="48">
+
+	<Rectangle Layer="Background">
+		<SolidColor ux:Name="_navigationBarFill" />
+	</Rectangle>
+
+	<ResourceBinding Target="_navigationBarFill.Color" Key="C500" />
+
+</Panel>

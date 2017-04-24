@@ -1,0 +1,22 @@
+<Panel ux:Class="UX.Error.OnValueChanged">
+	<Panel ux:Class="Picker">
+		<float3 ux:Property="Value"/>
+		
+		<JavaScript>
+			var Observable = require("FuseJS/Observable")
+			
+			var day = Observable(0)
+			
+			this.Value.onValueChanged( module, function(newValue) {
+				if (newValue && newValue[0]) {
+					day.value = newValue.value[0] //ERROR .value
+				}
+			})
+		</JavaScript>
+	</Panel>
+	<JavaScript>
+		var Observable = require("FuseJS/Observable")
+		exports.value = Observable([1,2,3])
+	</JavaScript>
+	<Picker Value="{value}"/>
+</Panel>

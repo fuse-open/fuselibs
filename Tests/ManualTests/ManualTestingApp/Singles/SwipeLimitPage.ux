@@ -1,0 +1,107 @@
+<Page ux:Class="SwipeLimitPage" Title="Swipe Limit">
+	<InfoStack ux:Key="Info">
+		<p>This page tests the Swipe gesture, Limit sizing, and some layout details.</p>
+		<p>This top part tests the Active style swipe which reveals a panel. Try opening and closing each panel once.</p>
+		<ul>
+			<li>Swipe from the box in the middle in each direction.</li>
+			<li>Left/right should reveal an image with the arrow pointing to the middle. The image does not slide, simply more is revealed as you swipe.</li>
+			<li>Up/down should slide an image out of the box, with the head going away from it.</li>
+			<li>It's okay if the images don't completely fit on the display of small devices.</li>
+		</ul>
+		<p>The bottom tests a generic swipe gesture.</p>
+		<ul>
+			<li>A left swipe increments the number, and right increments the numbers.</li>
+			<li>Numbers slide/fade in/out to show the change.</li>
+		</ul>
+	</InfoStack>
+	<DockPanel>
+		<Panel Alignment="Center" Width="100" Height="100" Background="0.5,0.7,0.7,1">
+			<Text TextWrapping="Wrap" TextAlignment="Center" Alignment="Center" 
+				Value="Reveal Left/Right&#xA;Slide Up/Down"/>
+			
+			<StackPanel Anchor="100%,0%" X="0" Y="0"
+				MaxWidth="1000%" ClipToBounds="true" Orientation="Horizontal"
+				BoxSizing="Limit" ContentAlignment="Right" LimitWidth="0%" ux:Name="LeftPanel">
+				<Image File="../Assets/exit_arrow.jpg" ux:Name="LeftWidth"/>
+			</StackPanel>
+			<SwipeGesture Direction="Left" Length="200" ux:Name="SwipeLeft" Type="Active"/>
+			<SwipingAnimation Source="SwipeLeft">
+				<Change LeftPanel.LimitWidth="100"/>
+			</SwipingAnimation>
+			
+			<Panel Anchor="0%,0%" X="100%" Y="0" MaxWidth="1000%" 
+				BoxSizing="Limit"  LimitWidth="0%" ux:Name="RightPanel" ClipToBounds="true">
+				<StackPanel Orientation="Horizontal">
+					<Image File="../Assets/exit_arrow.jpg" ux:Name="RightWidth">	
+						<Scaling X="-1" Y="1"/>
+					</Image>
+				</StackPanel>
+			</Panel>
+			<SwipeGesture Direction="Right" LengthNode="RightWidth" ux:Name="SwipeRight" Type="Active"/>
+			<SwipingAnimation Source="SwipeRight">
+				<Change RightPanel.LimitWidth="100"/>
+			</SwipingAnimation>
+		
+			<!-- https://pixabay.com/en/lionsgit -statue-column-india-emblem-167050/ -->
+			<Image File="../Assets/column.png" ContentAlignment="Top"
+				Anchor="0%,100%" X="0%" Y="0%" MaxHeight="1000%"
+				StretchMode="UniformToFill"
+				BoxSizing="Limit" LimitHeight="0%" ux:Name="TopPanel"/>
+			<SwipeGesture Direction="Up" Length="250" ux:Name="SwipeUp" Type="Active"/>
+			<SwipingAnimation Source="SwipeUp">
+				<Change TopPanel.LimitHeight="100"/>
+			</SwipingAnimation>
+			
+			<Image File="../Assets/column.png" ContentAlignment="Top"
+				Anchor="0%,0%" X="0%" Y="100%" MaxHeight="1000%"
+				StretchMode="UniformToFill"
+				BoxSizing="Limit" LimitHeight="0%" ux:Name="BottomPanel">
+				<Rotation Degrees="180"/>
+			</Image>
+			<SwipeGesture Direction="Down" Length="250" ux:Name="SwipeDown" Type="Active"/>
+			<SwipingAnimation Source="SwipeDown">
+				<Change BottomPanel.LimitHeight="100"/>
+			</SwipingAnimation>
+		</Panel>
+		
+		<Panel Dock="Bottom" Background="0.9,1,0.9,1" Height="50" ClipToBounds="true"
+			Padding="5">
+			<Image File="../Assets/small_icons_27/arrowleft.png" Alignment="Left" Color="0,0.3,0.3,1"/>
+			<Image File="../Assets/small_icons_27/arrowright.png" Alignment="Right" Color="0,0.3,0.3,1"/>
+			
+			<Panel ux:Name="Numbers">
+				<Number Alignment="Center" ux:Name="LeftNum" Value="0" Opacity="0">
+					<Translation X="-100"/>
+				</Number>
+				<Number Alignment="Center" ux:Name="MidNum" Value="1" Opacity="1"/>
+				<Number Alignment="Center" ux:Name="RightNum" Value="2" Opacity="0">
+					<Translation X="100"/>
+				</Number>
+			</Panel>
+			
+			<SwipeGesture Direction="Left" ux:Name="NumSwipeLeft"/>
+			<SwipingAnimation Source="NumSwipeLeft">
+				<Move Target="Numbers" X="-100"/>
+				<Change RightNum.Opacity="1"/>
+				<Change MidNum.Opacity="0"/>
+			</SwipingAnimation>
+			<Swiped Source="NumSwipeLeft">
+				<Set Target="LeftNum.Value" Increment="1"/>
+				<Set Target="MidNum.Value" Increment="1"/>
+				<Set Target="RightNum.Value" Increment="1"/>
+			</Swiped>
+			
+			<SwipeGesture Direction="Right" ux:Name="NumSwipeRight"/>
+			<SwipingAnimation Source="NumSwipeRight">
+				<Move Target="Numbers" X="100"/>
+				<Change LeftNum.Opacity="1"/>
+				<Change MidNum.Opacity="0"/>
+			</SwipingAnimation>
+			<Swiped Source="NumSwipeRight">
+				<Set Target="LeftNum.Value" Increment="-1"/>
+				<Set Target="MidNum.Value" Increment="-1"/>
+				<Set Target="RightNum.Value" Increment="-1"/>
+			</Swiped>
+		</Panel>
+	</DockPanel>
+</Page>

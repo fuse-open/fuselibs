@@ -1,0 +1,5 @@
+<Panel ux:Class="UX.Trigger.PlayState">
+	<Fuse.Triggers.Test.PlayStateTrigger ux:Name="PS">
+		<Nothing Duration="1"/>
+	</Fuse.Triggers.Test.PlayStateTrigger>
+</Panel>

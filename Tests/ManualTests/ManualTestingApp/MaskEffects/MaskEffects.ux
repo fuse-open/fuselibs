@@ -1,0 +1,99 @@
+<Page Title="Mask Effect" ux:Class="MaskEffects">
+	<InfoStack ux:Key="Info">
+		<p>This is a test of the Mask effect.</p>
+		
+		<p>Click each of the buttons (it starts on Round) and check the resulting image. The masked image is a flattened earth. It won't have the right proportions but it should be a continuous image with no breaks, in particular in the middle.</p>
+		
+		<ul>
+			<li>Round - A round mask that touches the edges of the black box.</li>
+			<li>Star - A star shape that touchers the edges of the black box.</li>
+			<li>Tree - A tree cutout where the color of the earth is also modified, green inside a bit, black borders, and a brown stem.</li>
+		</ul>
+	</InfoStack>
+	<DockPanel>
+		<StackPanel Orientation="Horizontal" Dock="Top">
+			<StdButton Text="Round">
+				<Clicked>
+					<Set TestAlpha.Visibility="Visible"/>
+					<Set TestRGBA.Visibility="Hidden"/>
+					<Set TestGray.Visibility="Hidden"/>
+				</Clicked>
+			</StdButton>
+			<StdButton Text="Star">
+				<Clicked>
+					<Set TestAlpha.Visibility="Hidden"/>
+					<Set TestRGBA.Visibility="Hidden"/>
+					<Set TestGray.Visibility="Visible"/>
+				</Clicked>
+			</StdButton>
+			<StdButton Text="Tree">
+				<Clicked>
+					<Set TestAlpha.Visibility="Hidden"/>
+					<Set TestRGBA.Visibility="Visible"/>
+					<Set TestGray.Visibility="Hidden"/>
+				</Clicked>
+			</StdButton>
+		</StackPanel>
+		<Panel>
+			<Panel Margin="20">
+				<Rectangle>
+					<Stroke><SolidColor Color="0,0,0,1"/></Stroke>
+				</Rectangle>
+			</Panel>
+			<Panel Margin="20">
+				<Panel ux:Name="TestAlpha">
+					<Mask File="mask.png" Mode="Alpha" />
+					<Panel>
+						<Image StretchMode="Fill" File="world.png"
+							Anchor="100%,100%" Offset="50%,50%" Width="100%" Height="100%"
+							 Alignment="TopLeft"/>
+						<Image StretchMode="Fill" File="world.png"
+							Anchor="0%,100%" Offset="50%,50%" Width="100%" Height="100%"
+							 Alignment="TopLeft"/>
+						<Image StretchMode="Fill" File="world.png"
+							Anchor="100%,0%" Offset="50%,50%" Width="100%" Height="100%"
+							 Alignment="TopLeft"/>
+						<Image StretchMode="Fill" File="world.png"
+							Anchor="0%,0%" Offset="50%,50%" Width="100%" Height="100%"
+							 Alignment="TopLeft"/>
+					</Panel>
+				</Panel>
+				<Panel ux:Name="TestRGBA" Visibility="Hidden">
+					<Mask File="mask_rgba.png" Mode="RGBA"/>
+					<Panel>
+						<Image StretchMode="Fill" File="world.png"
+							Anchor="100%,100%" Offset="50%,50%" Width="100%" Height="100%"
+							 Alignment="TopLeft"/>
+						<Image StretchMode="Fill" File="world.png"
+							Anchor="0%,100%" Offset="50%,50%" Width="100%" Height="100%"
+							 Alignment="TopLeft"/>
+						<Image StretchMode="Fill" File="world.png"
+							Anchor="100%,0%" Offset="50%,50%" Width="100%" Height="100%"
+							 Alignment="TopLeft"/>
+						<Image StretchMode="Fill" File="world.png"
+							Anchor="0%,0%" Offset="50%,50%" Width="100%" Height="100%"
+							 Alignment="TopLeft"/>
+					</Panel>
+				</Panel>
+				<Panel ux:Name="TestGray" Visibility="Hidden">
+					<Mask File="mask_gray.png" Mode="Grayscale"/>
+					<Panel>
+						<Image StretchMode="Fill" File="world.png"
+							Anchor="100%,100%" Offset="50%,50%" Width="100%" Height="100%"
+							 Alignment="TopLeft"/>
+						<Image StretchMode="Fill" File="world.png"
+							Anchor="0%,100%" Offset="50%,50%" Width="100%" Height="100%"
+							 Alignment="TopLeft"/>
+						<Image StretchMode="Fill" File="world.png"
+							Anchor="100%,0%" Offset="50%,50%" Width="100%" Height="100%"
+							 Alignment="TopLeft"/>
+						<Image StretchMode="Fill" File="world.png"
+							Anchor="0%,0%" Offset="50%,50%" Width="100%" Height="100%"
+							 Alignment="TopLeft"/>
+					</Panel>
+				</Panel>
+				<Image StretchMode="Fill" File="background.png" Width="100%" Height="100%"/>
+			</Panel>
+		</Panel>
+	</DockPanel>
+</Page>

@@ -1,0 +1,17 @@
+<Page Title="Web View" ux:Class="WebViewPage">
+	<!-- The info will be hidden by the web view -->
+	<InfoStack ux:Key="Info">
+		<p>This page has an embeded `WebView` that should show the "Astronomy Picture of the Day".</p>
+	</InfoStack>
+
+	<NativeViewHost>
+		<DockPanel>
+			<Text Dock="Top" Background="#EEE">Shows "Astronomy Picture of the Day" web page. (No "Info" box here.)</Text>
+		
+			<WhileVisible>
+				<WebView Url="http://apod.nasa.gov/apod/astropix.html"/>
+				<!--<WebView Url="https://en.wikipedia.org/wiki/Astronomy_Picture_of_the_Day"/>-->
+			</WhileVisible>
+		</DockPanel>
+	</NativeViewHost>
+</Page>

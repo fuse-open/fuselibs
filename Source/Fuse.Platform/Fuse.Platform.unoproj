@@ -1,0 +1,31 @@
+{
+  "Description": "This package is part of Fuse",
+  "Publisher": "Fusetools AS",
+  "Copyright": "Copyright (c) Fusetools AS 2017",
+  "Version": "1.0.0-rc3",
+  "Package": {
+    "ProjectUrl": "https://fusetools.com"
+  },
+  "InternalsVisibleTo": [
+    "Fuse.Controls.WebView",
+    "Fuse.Controls.Panels",
+    "Fuse.Elements",
+    "Fuse.Triggers",
+    "Fuse.iOS",
+    "Fuse.Common",
+    "Fuse.Nodes",
+  ],
+  "Includes": [
+    "AppAlerts.uno:Source",
+    "InterApp.uno:Source",
+    "Lifecycle.uno:Source",
+    "SystemUI.uno:Source",
+    "Android/SystemUI.uno:Source",
+    "iOS/SystemUI.uno:Source",
+    "iOS/SystemUI.iOS.uxl:Extensions",
+    "iOS/AppDelegateSoftKeyboard.h:File",
+    "iOS/AppDelegateSoftKeyboard.mm:File",
+    "iOS/AppDelegateStatusBar.h:File",
+    "iOS/AppDelegateStatusBar.mm:File"
+  ]
+}

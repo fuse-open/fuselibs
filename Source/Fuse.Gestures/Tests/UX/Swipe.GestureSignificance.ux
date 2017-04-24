@@ -1,0 +1,4 @@
+<Panel ux:Class="UX.Swipe.GestureSignificance" HitTestMode="LocalBounds">
+	<SwipeGesture Edge="Bottom" LengthNode="lengthNode" ux:Name="SG" Type="Active"/>
+	<Panel Width="200" ux:Name="lengthNode"/>
+</Panel>

@@ -1,0 +1,10 @@
+<Panel ux:Class="UX.AddingAnimation">
+	<Rectangle>
+		<AddingAnimation ux:Name="A1">
+			<Move X="100" Duration="1"/>
+		</AddingAnimation>
+		<AddingAnimation ux:Name="A2" DelayFrame="false">
+			<Move X="100" Duration="1"/>
+		</AddingAnimation>
+	</Rectangle>
+</Panel>

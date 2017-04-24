@@ -1,0 +1,136 @@
+<Page Title="Camera" ux:Class="CameraPage">
+	<InfoStack ux:Key="Info">
+		<p>This page contains a few labelled buttons triggering camera and cameraroll functionality.</p>
+	</InfoStack>
+	<JavaScript>
+		var Observable = require("FuseJS/Observable");
+		var Camera = require("FuseJS/Camera");
+		var CameraRoll = require("FuseJS/CameraRoll");
+		var ImageTools = require("FuseJS/ImageTools");
+		var imagePath = Observable();
+		var imageName = Observable();
+		var imageSize = Observable();
+		var lastImage = "";
+
+		var displayImage = function(image)
+		{
+			imagePath.clear();
+			imagePath.value = image.path;
+			imageName.value = image.name;
+			imageSize.value = image.width+"x"+image.height;
+			ImageTools.getImageFromBase64(image).then(
+				function(b64)
+				{
+					lastImage = b64;
+				}
+			);
+		}
+
+		exports.takePicture = function()
+		{
+			Camera.takePicture().then(
+				function(image) {
+					var args = { desiredWidth:320, desiredHeight:320, mode:ImageTools.SCALE_AND_CROP, performInPlace:true };
+					ImageTools.resize(image, args).then(
+						function(image) {
+							CameraRoll.publishImage(image);
+							displayImage(image);
+						}
+					).catch(
+						function(reason) {
+							console.log("Couldn't resize image: "+reason);
+						}
+					);
+				}
+			).catch(
+				function(reason){
+					console.log("Couldn't take picture: "+reason);
+				}
+			);
+		};
+
+		exports.takeCroppedPicture = function()
+		{
+			Camera.takePicture().then(
+				function(image)
+				{
+					var options = { x: 20, y:20, width:320, height:320 };
+					ImageTools.crop(image, options).then(
+						function(image)
+						{
+							displayImage(image);
+						}
+					);
+				}
+			);
+		}
+
+		exports.takeSmallPicture = function()
+		{
+			Camera.takePicture(100, 100).then(
+				function(image) {
+					ImageTools.getBufferFromImage(image).then(
+						function(buffer) {
+							ImageTools.getImageFromBuffer(buffer).then(
+								function(image) {
+									displayImage(image);
+								}
+							)
+						}
+					)
+				}
+			).catch(
+				function(reason){
+					console.log("Couldn't take picture: "+reason);
+				}
+			);
+		}
+
+		exports.selectImage = function()
+		{
+			console.log("getImage");
+			CameraRoll.getImage().then(
+				function(image)
+				{
+					console.log("received image: "+image.path+", "+image.width+"/"+image.height);
+					displayImage(image);
+				}
+			).catch(
+				function(reason){
+					console.log("Couldn't get image: "+reason);
+				}
+			);
+		};
+
+		exports.b64Test = function()
+		{
+			ImageTools.getImageFromBase64(lastImage).then(
+				function(image){
+					displayImage(image);
+				}
+			);
+		};
+
+		exports.imagePath = imagePath;
+		exports.imageName = imageName;
+		exports.imageSize = imageSize;
+	</JavaScript>
+	<DockPanel>
+		<WhileNotEmpty Items="{imagePath}">
+			<DockPanel Dock="Fill">
+				<Text Value="{imageName}" Dock="Top"/>
+				<Image File="{imagePath}" StretchMode="Uniform" />
+				<Text Value="{imageSize}" Dock="Bottom"/>
+			</DockPanel>
+		</WhileNotEmpty>
+		<StackPanel Dock="Bottom">
+			<StdButton Text="Take 320x320 square picture" Clicked="{takePicture}"/>
+			<StdButton Text="Take aspect corrected 100x100 picture via buffer" Clicked="{takeSmallPicture}"/>
+			<StdButton Text="Take cropped 320x320 picture" Clicked="{takeCroppedPicture}"/>
+			<StdButton Text="Get picture from cameraroll" Clicked="{selectImage}"/>
+			<WhileNotEmpty Items="{imagePath}">
+				<StdButton Text="Reload last picture via base64" Clicked="{b64Test}"/>
+			</WhileNotEmpty>
+		</StackPanel>
+	</DockPanel>
+</Page>

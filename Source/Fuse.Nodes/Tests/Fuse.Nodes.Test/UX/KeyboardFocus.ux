@@ -1,0 +1,3 @@
+<Panel ux:Class="UX.KeyboardFocus">
+	<Panel ux:Name="B" IsFocusable="true"/>
+</Panel>

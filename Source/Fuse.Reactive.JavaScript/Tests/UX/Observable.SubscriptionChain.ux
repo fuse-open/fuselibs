@@ -1,0 +1,50 @@
+<Panel ux:Class="UX.Observable.SubscriptionChain">
+	<JavaScript>
+		var Observable = require("FuseJS/Observable")
+
+		exports.countB = Observable(0)
+		exports.countC = Observable(0)
+		exports.countD = Observable(0)
+		
+		var a = Observable("one")
+		var b = a.map( function(v) {
+			exports.countB.value++
+			return v
+		})
+		var c = b.map( function(v) {
+			exports.countC.value++
+			return v
+		})
+		var d = a.map( function(v) {
+			exports.countD.value++
+			return v
+		})
+
+		exports.countSA = Observable(0)
+		exports.step1 = function() {
+			a.addSubscriber( function() { 
+				exports.countSA.value++
+			} )
+		}
+		
+		exports.countSC = Observable(0)
+		exports.step2 = function() {
+			c.addSubscriber( function() {
+				exports.countSC.value++
+			})
+		}
+		
+		exports.step3 = function() {
+			a.add("two")
+		}
+	</JavaScript>
+	<Text Value="{countB}" ux:Name="CB"/>
+	<Text Value="{countC}" ux:Name="CC"/>
+	<Text Value="{countD}" ux:Name="CD"/>
+	<Text Value="{countSA}" ux:Name="CSA"/>
+	<Text Value="{countSC}" ux:Name="CSC"/>
+	
+	<FuseTest.Invoke Handler="{step1}" ux:Name="Step1"/>
+	<FuseTest.Invoke Handler="{step2}" ux:Name="Step2"/>
+	<FuseTest.Invoke Handler="{step3}" ux:Name="Step3"/>
+</Panel>

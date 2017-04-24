@@ -1,0 +1,46 @@
+<Page Title="Device Information" ux:AutoCtor="false" ux:Class="DeviceInfo">
+	<InfoStack ux:Key="Info">
+		<p>This page of the test app displays some basic information about the device. You don't need to do anything with this information unless asked.</p>
+		<p>At the top of the information should be a Fuse logo, slightly pink with a black outline.</p>
+	</InfoStack>
+	<ScrollView>
+		<Text ux:Class="ValueText" TextColor="#444" TextWrapping="Wrap" Value="n/a"/>
+		
+		<StackPanel Padding="10" Alignment="Center" Margin="10">
+			<Rectangle CornerRadius="10" Layer="Background">
+				<Stroke Width="1"><SolidColor Color="0,0,0,1"/></Stroke>
+				<SolidColor Color="1,1,1,1"/>
+			</Rectangle>
+			
+			<SdfImage Width="300" Height="150">
+				<FileImageSource File="logo.png"/>
+				<Stroke Width="1.5">
+					<SolidColor Color="0,0,0,1"/>
+				</Stroke>
+				<SolidColor Color="0.82,0.77,0.8,1"/>
+			</SdfImage>
+
+			<h2>Fuselibs</h2>
+			<Grid Alignment="Top" Columns="auto,auto" DefaultRow="auto" CellSpacing="5">
+				<Text>Version Number:</Text><ValueText ux:Name="_fuselibsVersionNumberText"/>
+				<Text>Full Version:</Text><ValueText ux:Name="_fuselibsFullVersionText"/>
+			</Grid>
+
+			<h2>Display</h2>
+			<Grid Alignment="Top" Columns="auto,auto" DefaultRow="auto" CellSpacing="5">
+				<Text>Resolution:</Text><ValueText ux:Name="_resolutionText"/>
+				<Text>Density:</Text><ValueText ux:Name="_densityText"/>
+			</Grid>
+
+			<h2>OpenGL ES Driver</h2>
+			<Grid Alignment="Top" Columns="auto,auto" DefaultRow="auto">
+				<Text>Version:</Text><ValueText ux:Name="_glesVersionText"/>
+				<Text>Vendor:</Text><ValueText ux:Name="_glesVendorText"/>
+				<Text>Renderer:</Text><ValueText ux:Name="_glesRendererText"/>
+			</Grid>
+			<DropShadow/>
+		</StackPanel>
+	</ScrollView>
+	
+	<FpsMeter/>
+</Page>

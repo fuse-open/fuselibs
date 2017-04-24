@@ -1,0 +1,5 @@
+<Panel ux:Class="UX.RenderBoundsPropsTest">
+	<Panel Offset="50,50" Width="100" Height="100" ux:Name="P1" Alignment="TopLeft" Color="#FFF">
+		<Panel Offset="0,0" Width="100" Height="100" ux:Name="P2" Alignment="TopLeft" Color="#FFF"/>
+	</Panel>
+</Panel>

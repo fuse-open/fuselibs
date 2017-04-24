@@ -1,0 +1,11 @@
+<Panel ux:Class="UX.Swipe.Layers" HitTestMode="LocalBoundsAndChildren">
+	<SwipeGesture Edge="Right" Length="200" Type="Active" ux:Name="rightSG"/>
+	<SwipingAnimation Source="rightSG" ux:Name="rightAnim"/>
+	
+	<ScrollView AllowedScrollDirections="Horizontal" ux:Name="SV">
+		<SwipeGesture Direction="Left" Length="200" Type="Active" ux:Name="scrollSG"/>
+		<SwipingAnimation Source="scrollSG"/>
+		
+		<Panel Width="4000" HitTestMode="LocalBounds"/>
+	</ScrollView>
+</Panel>

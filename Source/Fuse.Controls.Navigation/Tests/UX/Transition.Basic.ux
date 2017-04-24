@@ -1,0 +1,31 @@
+<Panel ux:Class="UX.Transition.Basic">
+	<Router ux:Name="router"/>
+	<Panel ux:Class="TBPage">
+		<Transition To="ignore, two">
+			<FuseTest.CountAction When="Forward" ux:Name="f1"/>
+			<FuseTest.CountAction When="Backward" ux:Name="b1"/>
+		</Transition>
+		
+		<Transition From="ignore, one">
+			<FuseTest.CountAction When="Forward" ux:Name="f2"/>
+			<FuseTest.CountAction When="Backward" ux:Name="b2"/>
+		</Transition>
+		
+		<Transition Direction="ToActive">
+			<FuseTest.CountAction When="Forward" ux:Name="f3"/>
+			<FuseTest.CountAction When="Backward" ux:Name="b3"/>
+		</Transition>
+		
+		<Transition Direction="ToInactive">
+			<FuseTest.CountAction When="Forward" ux:Name="f4"/>
+			<FuseTest.CountAction When="Backward" ux:Name="b4"/>
+		</Transition>
+		
+		<Transition/>
+	</Panel>
+	<!-- Reuse="Removed" so we have unique counts per page -->
+	<Navigator ux:Name="nav" DefaultPath="one" Reuse="Removed">
+		<TBPage ux:Template="one"/>
+		<TBPage ux:Template="two"/>
+	</Navigator>
+</Panel>

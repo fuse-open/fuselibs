@@ -1,0 +1,13 @@
+<Panel ux:Class="UX.UserMode">
+	<ScrollView ux:Name="SV" HitTestMode="LocalBoundsAndChildren" Height="1000">
+		<ScrollViewMotion Overflow="Open"  ux:Name="SM"/><!-- to get linear ends for sane testing -->
+		<StackPanel>
+			<Panel Height="0" ux:Name="P"/>
+			<Panel Height="0" ux:Name="SAP"/>
+			<Panel Height="2000"/>
+		</StackPanel>
+		<ScrollingAnimation Range="SnapMin">
+			<Change SAP.Height="100"/>
+		</ScrollingAnimation>
+	</ScrollView>
+</Panel>

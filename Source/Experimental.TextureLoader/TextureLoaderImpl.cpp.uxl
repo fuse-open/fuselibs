@@ -1,0 +1,57 @@
+<Extensions Backend="CPlusPlus">
+    <Type Name="Experimental.TextureLoader.TextureLoaderImpl">
+        <Require Source.Include="@{Uno.Graphics.Texture2D:Include}" />
+        <Require Source.Include="@{Uno.Exception:Include}" />
+        <Require Source.Include="uBase/Buffer.h" />
+        <Require Source.Include="uBase/BufferStream.h" />
+        <Require Source.Include="uBase/Memory.h" />
+        <Require Source.Include="XliPlatform/GL.h" />
+        <Require Source.Include="uImage/Jpeg.h" />
+        <Require Source.Include="uImage/Png.h" />
+        <Require Source.Include="uImage/Texture.h" />
+        <Require Source.Include="Uno/Support.h" />
+
+        <Method Signature="JpegByteArrayToTexture2D(Uno.Buffer,Experimental.TextureLoader.Callback)">
+            <Body>
+                try
+                {
+                    uBase::Auto<uBase::BufferPtr> bp = new uBase::BufferPtr(U_BUFFER_PTR($0), U_BUFFER_SIZE($0), false);
+                    uBase::Auto<uBase::BufferStream> bs = new uBase::BufferStream(bp, true, false);
+                    uBase::Auto<uImage::ImageReader> ir = uImage::Jpeg::CreateReader(bs);
+                    uBase::Auto<uImage::Bitmap> bmp = ir->ReadBitmap();
+                    uBase::Auto<uImage::Texture> tex = uImage::Texture::Create(bmp);
+                    uGLTextureInfo info;
+                    GLuint handle = uCreateGLTexture(tex, false, &info);
+
+                    @{Experimental.TextureLoader.Callback.Execute(Uno.Graphics.Texture2D):Call($1, @{Uno.Graphics.Texture2D(OpenGL.GLTextureHandle,int2,int,Uno.Graphics.Format):New(handle, @{int2(int,int):New(info.Width, info.Height)}, info.MipCount, @{Uno.Graphics.Format.Unknown})})};
+                }
+                catch (const uBase::Exception &e)
+                {
+                    U_THROW(@{Uno.Exception(string):New(uStringFromXliString(e.GetMessage()))});
+                }
+            </Body>
+        </Method>
+
+        <Method Signature="PngByteArrayToTexture2D(Uno.Buffer,Experimental.TextureLoader.Callback)">
+            <Body>
+                try
+                {
+                    uBase::Auto<uBase::BufferPtr> bp = new uBase::BufferPtr(U_BUFFER_PTR($0), U_BUFFER_SIZE($0), false);
+                    uBase::Auto<uBase::BufferStream> bs = new uBase::BufferStream(bp, true, false);
+                    uBase::Auto<uImage::ImageReader> ir = uImage::Png::CreateReader(bs);
+                    uBase::Auto<uImage::Bitmap> bmp = ir->ReadBitmap();
+                    uBase::Auto<uImage::Texture> tex = uImage::Texture::Create(bmp);
+                    uGLTextureInfo info;
+                    GLuint handle = uCreateGLTexture(tex, false, &info);
+
+                    @{Experimental.TextureLoader.Callback.Execute(Uno.Graphics.Texture2D):Call($1, @{Uno.Graphics.Texture2D(OpenGL.GLTextureHandle,int2,int,Uno.Graphics.Format):New(handle, @{int2(int,int):New(info.Width, info.Height)}, info.MipCount, @{Uno.Graphics.Format.Unknown})})};
+                }
+                catch (const uBase::Exception &e)
+                {
+                    U_THROW(@{Uno.Exception(string):New(uStringFromXliString(e.GetMessage()))});
+                }
+            </Body>
+        </Method>
+
+    </Type>
+</Extensions>

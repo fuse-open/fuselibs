@@ -1,0 +1,32 @@
+<Panel ux:Class="UX.Observable.RefreshAll">
+	<JavaScript>
+		var Observable = require("FuseJS/Observable")
+		
+		var items = Observable()
+		exports.items = items
+		
+		items.refreshAll( [1,2,3,4,11,12,13,14] )
+		
+		exports.step1 = function() {
+			items.refreshAll( [1,2,5] )
+		}
+		
+		exports.step2 = function() {
+			items.refreshAll( [2,5,6,7,8] )
+		}
+		
+		exports.step3 = function() {
+			items.refreshAll( [] )
+		}
+		
+		exports.step4 = function() {
+			items.refreshAll( [9] )
+		}
+	</JavaScript>
+	<Fuse.Reactive.Test.ObservableCollector ux:Name="OC" Items="{items}"/>
+	
+	<FuseTest.Invoke Handler="{step1}" ux:Name="Step1"/>
+	<FuseTest.Invoke Handler="{step2}" ux:Name="Step2"/>
+	<FuseTest.Invoke Handler="{step3}" ux:Name="Step3"/>
+	<FuseTest.Invoke Handler="{step4}" ux:Name="Step4"/>
+</Panel>

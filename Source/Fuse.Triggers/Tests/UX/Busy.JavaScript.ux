@@ -1,0 +1,24 @@
+<Panel ux:Class="UX.Busy.JavaScript">
+	<WhileBusy ux:Name="W1">
+		<Nothing/>
+	</WhileBusy>
+	<Panel ux:Name="P1">
+		<Panel ux:Name="P2">
+			<JavaScript>
+				var BusyTask = require("FuseJS/BusyTask")
+				
+				var task = new BusyTask(P2)
+				
+				exports.done = function() {
+					task.done()
+				}
+				
+				exports.busy = function() {
+					task = new BusyTask(P2)
+				}
+			</JavaScript>
+			<FuseTest.Invoke Handler="{done}" ux:Name="CallDone"/>
+			<FuseTest.Invoke Handler="{busy}" ux:Name="CallBusy"/>
+		</Panel>
+	</Panel>
+</Panel>

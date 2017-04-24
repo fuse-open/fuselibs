@@ -1,0 +1,18 @@
+<Panel ux:Class="UX.Grid.SpanAuto">
+	<Grid Columns="50,1*" DefaultRow="auto" Alignment="Top">
+		<Panel ColumnSpan="2" BoxSizing="FillAspect" Aspect="1" ux:Name="P1"/>
+		
+		<Panel BoxSizing="FillAspect" Aspect="1" ux:Name="P2"/>
+		<Panel BoxSizing="FillAspect" Aspect="1" ux:Name="P3"/>
+	</Grid>
+	
+	<Grid DefaultColumn="auto" Rows="100,1*,100,2*" Alignment="Left"
+		ChildOrder="ColumnMajor">
+		<Panel RowSpan="4" BoxSizing="FillAspect" Aspect="1" ux:Name="Q1"/>
+		
+		<Panel BoxSizing="FillAspect" Aspect="1" ux:Name="Q2"/>
+		<Panel BoxSizing="FillAspect" Aspect="1" ux:Name="Q3"/>
+		<Panel BoxSizing="FillAspect" Aspect="1" ux:Name="Q4"/>
+		<Panel BoxSizing="FillAspect" Aspect="1" ux:Name="Q5"/>
+	</Grid>
+</Panel>

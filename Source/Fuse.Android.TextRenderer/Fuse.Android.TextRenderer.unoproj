@@ -1,0 +1,26 @@
+{
+  "Copyright": "Copyright (c) Fusetools AS 2017",
+  "Description": "Android TextRenderer",
+  "Publisher": "Fusetools AS",
+  "Version": "1.0.0-rc3",
+  "Package": {
+    "ProjectUrl": "https://fusetools.com"
+  },
+  "InternalsVisibleTo": [
+    "Fuse.Android",
+    "Fuse.Views",
+  ],
+  "Projects": [
+    "../Fuse.Controls.Native/Fuse.Controls.Native.unoproj",
+    "../Fuse.Controls.Primitives/Fuse.Controls.Primitives.unoproj",
+    "../Fuse.Controls/Fuse.Controls.unoproj",
+    "../Fuse.Common/Fuse.Common.unoproj",
+    "../Fuse.Drawing/Fuse.Drawing.unoproj",
+    "../Fuse.Elements/Fuse.Elements.unoproj",
+    "../Fuse.Nodes/Fuse.Nodes.unoproj",
+  ],
+  "Includes": [
+    "*",
+    "Internal/*"
+  ]
+}

@@ -1,0 +1,90 @@
+<App>
+	<ClientPanel>
+		<Page ux:Class="PageWithTitle" ux:Name="self" HitTestMode="LocalBoundsAndChildren">
+			<DockLayout />
+
+			<float4 ux:Property="HeaderColor" />
+			<float4 ux:Property="HeaderTextColor" />
+			<string ux:Property="Instructions" />
+
+			<StackPanel Dock="Top">
+				<Panel Color="{Property self.HeaderColor}" Height="45">
+					<Text Value="{Property self.Title}" FontSize="22"
+						  Alignment="Center" TextColor="{Property self.HeaderTextColor}"/>
+				</Panel>
+			</StackPanel>
+
+			<Panel Height="10%" Color="#0008" Alignment="Bottom">
+				<WhileActive Invert="true" Threshold="0.4">
+					<Move RelativeTo="Size" Y="1" Duration="0.4" Easing="CircularInOut"/>
+				</WhileActive>
+				<Text Value="{Property self.Instructions}" Margin="20" TextColor="#fff" Alignment="Center" />
+			</Panel>
+		</Page>
+
+		<PageControl>
+			<PageWithTitle Title="Basic animation" HeaderColor="#595FFF" HeaderTextColor="#fff"
+						   Color="#FEFDFC" Instructions="Tap and hold the rectangle">
+				<Panel>
+					<Rectangle ux:Name="myRectangle" Color="#4894E5" Width="80" Height="80" CornerRadius="0">
+						<WhilePressed>
+							<Rotate Degrees="45" Easing="CubicInOut" Duration="0.5" />
+							<Scale  Factor="2"   Easing="CubicInOut" Duration="0.5" />
+							<Change myRectangle.Color="#FC5185"      Duration="0.3" />
+							<Change myRectangle.CornerRadius="15" 	 Duration="0.3" />
+						</WhilePressed>
+					</Rectangle>
+				</Panel>
+			</PageWithTitle>
+
+			<PageWithTitle Title="Logic with JavaScript" HeaderColor="#F68FD7" HeaderTextColor="#FFF" Color="#FFF"
+						   Instructions="Tap the screen to add items" >
+				<JavaScript>
+					var Observable = require('FuseJS/Observable');
+
+					items = Observable();
+
+					function addItem(){
+						items.add({
+							color : [Math.random(), Math.random(), Math.random(), 1],
+							height : (Math.random() + 1.0) * 80
+						});
+					}
+
+					module.exports = {
+						items : items,
+						addItem : addItem
+					};
+				</JavaScript>
+				<Panel Tapped="{addItem}">
+					<ScrollView>
+						<Panel>
+							<ColumnLayout ColumnCount="3"/>
+							<Each Items="{items}">
+								<Rectangle ux:Name="item" Color="{color}" Height="{height}" Margin="5" CornerRadius="5">
+									<AddingAnimation>
+										<Change item.Opacity="0" Duration="0.3" />
+									</AddingAnimation>
+								</Rectangle>
+							</Each>
+						</Panel>
+					</ScrollView>
+				</Panel>
+			</PageWithTitle>
+
+			<PageWithTitle Title="Realtime effects" HeaderColor="#2CAE3F" HeaderTextColor="#fff"
+						   Color="#FFF" Instructions="Use the slider to blur the logo">
+				<Grid RowCount="2">
+					<Image File="Assets/FuseLogo.png" Color="#000">
+						<Blur ux:Name="myBlur" Radius="0"/>
+					</Image>
+					<Slider Margin="40,0" Alignment="VerticalCenter">
+						<ProgressAnimation>
+							<Change myBlur.Radius="10" />
+						</ProgressAnimation>
+					</Slider>
+				</Grid>
+			</PageWithTitle>
+		</PageControl>
+	</ClientPanel>
+</App>

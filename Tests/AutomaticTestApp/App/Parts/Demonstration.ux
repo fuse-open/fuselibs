@@ -1,0 +1,15 @@
+<Page ux:Class="Demonstration">
+    <Router ux:Dependency="router"/>
+    <JavaScript>
+        var fw = require('/framework.js');
+        fw.testStarted("Demonstration");
+        
+        var success = true;
+        if (success) {
+            router.goto("httpJson");
+        } else {
+            fw.testFailed("Battle station was not fully operational");
+        }
+    </JavaScript>
+    <Text Value="Demonstration"/>
+</Page>

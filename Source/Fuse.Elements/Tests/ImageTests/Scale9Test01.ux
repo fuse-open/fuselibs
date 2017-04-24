@@ -1,0 +1,6 @@
+<Panel ux:Class="Scale9Test01">
+  <Image Width="198" Height="67" Alignment="TopLeft" ux:Name="Image1" File="Assets/1399471914_Gauge.png"  />
+  <Image StretchMode="Scale9" Width="224" Height="123" Alignment="TopLeft" ux:Name="Image2" File="Assets/button.png"  />
+  <Image StretchMode="Scale9" Height="132" Alignment="Bottom" ux:Name="Image3" File="Assets/button.png"  />
+  <Image ResampleMode="Linear" StretchMode="Scale9" Scale9Margin="15, 15, 15, 15" Width="49" Height="43" Alignment="TopLeft" ux:Name="Image4" File="Assets/button.png"  />
+</Panel>

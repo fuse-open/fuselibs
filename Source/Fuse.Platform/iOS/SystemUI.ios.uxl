@@ -1,0 +1,14 @@
+<Extensions Backend="CPlusPlus" Condition="IOS">
+	<ProcessFile HeaderFile="AppDelegateStatusBar.h" />
+	<ProcessFile SourceFile="AppDelegateStatusBar.mm" />
+	<ProcessFile HeaderFile="AppDelegateSoftKeyboard.h" />
+	<ProcessFile SourceFile="AppDelegateSoftKeyboard.mm" />
+			
+	<Require Entity="Uno.Platform.TimerEventArgs" />
+	<Require Entity="Fuse.Platform.SystemUIResizeReason" />
+	<Require Entity="Fuse.Platform.SystemUI._statusBarWillChangeFrame(Uno.Platform.iOS.uCGRect, double)" />
+	<Require Entity="Fuse.Platform.SystemUI.uKeyboardWillChangeFrame (Uno.Platform.iOS.uCGRect, Uno.Platform.iOS.uCGRect, double, int, Fuse.Platform.SystemUIResizeReason)" />
+	<Require Entity="Fuse.Platform.SystemUI.uStatusBarAnimation" />
+	<Require Entity="Fuse.Platform.SystemUI.uStatusBarStyle" />
+	<Require Entity="Fuse.Platform.SystemUI.IsTopFrameVisible" />
+</Extensions>	

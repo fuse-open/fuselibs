@@ -1,0 +1,12 @@
+<Panel ux:Class="UX.Swipe.Auto" HitTestMode="LocalBounds">
+	<SwipeGesture Direction="Left" Length="100" ux:Name="SLeft" Type="Auto"/>
+	<Swiped Source="SLeft">
+		<FuseTest.CountAction ux:Name="CLeft"/>
+	</Swiped>
+	
+	<SwipeGesture Direction="Up" Length="100" ux:Name="SUp" Type="Auto"/>
+	<Swiped Source="SUp">
+		<FuseTest.CountAction ux:Name="CUp"/>
+	</Swiped>
+	
+</Panel>

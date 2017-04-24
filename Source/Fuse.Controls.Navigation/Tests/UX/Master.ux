@@ -1,0 +1,13 @@
+<Panel ux:Class="UX.MasterRoute">
+	<Router ux:Name="Master"/>
+	<Navigator>
+		<Page ux:Template="one">
+		</Page>
+		<Page ux:Template="two">
+			<PageControl>
+				<Page ux:Name="a"/>
+				<Page ux:Name="b"/>
+			</PageControl>
+		</Page>
+	</Navigator>
+</Panel>

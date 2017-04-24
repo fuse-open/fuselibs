@@ -1,0 +1,11 @@
+<ScrollView ux:Class="UX.ScrollingAnimation.Relative" AllowedScrollDirections="Horizontal">
+	<StackPanel Orientation="Horizontal">
+		<Rectangle Width="100"/>
+		<Rectangle Width="100"/>
+		<Rectangle Width="100" ux:Name="TheRect"/>
+		<Rectangle Width="100"/>
+		<Rectangle Width="100"/>
+	</StackPanel>
+	
+	<ScrollingAnimation ux:Name="S1"/>
+</ScrollView>

@@ -1,0 +1,39 @@
+<Panel ux:Class="UX.DataBinding.ObjectBindings">
+	<JavaScript>
+		var Observable = require("FuseJS/Observable")
+		
+		function next1() {
+			exports.obj.value = {
+				on: false,
+				label: "goodbye",
+				progress: 100,
+				color: [0,1,0,1],
+				next: next2,
+			}
+		}
+		
+		function next2() {
+			exports.obj.value = {
+				on: true,
+				label: "oop",
+				progress: 50,
+				color: [0,0,1,1],
+			}
+		}
+		
+		exports.obj = Observable({
+			on: true,
+			label: "hello",
+			progress: 200,
+			color: [1,0,0,1],
+			next: next1,
+		})
+	</JavaScript>
+	
+	<WhileTrue Value="{obj.on}" ux:Name="TheWhile"/>
+	<Text Value="{obj.label}" ux:Name="TheText" TextColor="{obj.color}"/>
+	<RangeControl Value="{obj.progress}" Minimum="0" Maximum="1000" ux:Name="TheRange"/>
+	
+	<FuseTest.Invoke Handler="{obj.next}" ux:Name="CallNext"/>
+	
+</Panel>

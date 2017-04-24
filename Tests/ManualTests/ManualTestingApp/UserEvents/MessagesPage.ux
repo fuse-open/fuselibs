@@ -1,0 +1,45 @@
+<Page ux:Class="UserEventsPage" Title="User Events">
+	<InfoStack ux:Key="Info">
+		<p>This tests the user-level application messaging features.</p>
+		<ul>
+			<li>The first view is a list of contacts. When you press one it's background blinks cyan. Tap on one to get the "chat" page.</li>
+			<li>The page shows the name selected and two buttons.</li>
+			<li>"Contacts" returns to the first screen.</li>
+			<li>"Delete" returns to the first screen and removes the contact: a red popup notice displays the deletion, and it is no longer in the list.</li>
+		</ul>
+		<p>Each requirement need only be tested once.</p>
+	</InfoStack>
+	
+	<UserEvent Name="Chatty.GotoChat"/>
+	<UserEvent Name="Chatty.GotoContacts"/>
+	<UserEvent Name="Chatty.DeleteContact"/>
+	<UserEvent Name="Chatty.ContactDeleted"/>
+	
+	<Panel ux:Class="ChattyPage" Margin="10" Padding="10">
+		<Rectangle Layer="Background">
+			<SolidColor Color="0.9,0.9,0.9,1"/>
+			<Stroke Width="1"><SolidColor Color="0,0,0,1"/></Stroke>
+		</Rectangle>
+		<ExitingAnimation>
+			<Move Y="1" RelativeTo="ParentSize" Duration="0.3"/>
+		</ExitingAnimation>
+	</Panel>
+	
+	<Text ux:Class="ChattyLabel" FontSize="30"/>
+	<ClientPanel>
+		<PopupNotices/>
+		<Panel>
+			<DirectNavigation ux:Name="Navi" Active="PageContacts"/>
+			
+			<Chat ux:Name="PageChat"/>
+			<Contacts ux:Name="PageContacts"/>
+		</Panel>
+		
+		<OnUserEvent EventName="Chatty.GotoChat">
+			<Set Navi.Active="PageChat"/>
+		</OnUserEvent>
+		<OnUserEvent EventName="Chatty.GotoContacts">
+			<Set Navi.Active="PageContacts"/>
+		</OnUserEvent>
+	</ClientPanel>
+</Page>

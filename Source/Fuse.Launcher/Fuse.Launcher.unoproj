@@ -1,0 +1,35 @@
+{
+  "Copyright": "Copyright (c) Fusetools AS 2017",
+  "Description": "Native Launcher",
+  "Publisher": "Fusetools AS",
+  "Version": "1.0.0-rc3",
+  "Package": {
+    "ProjectUrl": "https://fusetools.com"
+  },
+  "IsTransitive": true,
+  "Packages": [
+    "Uno.Net.Http",
+    "Uno.Permissions",
+    "UnoCore",
+    "Fuse.Platform",
+    "Fuse.Animations",
+    "Fuse.Designer",
+    "Fuse.Triggers",
+    "Fuse.Common",
+    "Fuse.Nodes",
+    "Fuse.Marshal",
+    "Fuse.Scripting"
+  ],
+  "Projects": [
+    "../Fuse.Launcher.Email/Fuse.Launcher.Email.unoproj",
+    "../Fuse.Launcher.InterApp/Fuse.Launcher.InterApp.unoproj",
+    "../Fuse.Launcher.Maps/Fuse.Launcher.Maps.unoproj",
+    "../Fuse.Launcher.Phone/Fuse.Launcher.Phone.unoproj"
+  ],
+  "Includes": [
+    "Launcher.uno:Source",
+  ],
+  "InternalsVisibleTo": [
+    "Fuse.Launcher.Test"
+  ]
+}

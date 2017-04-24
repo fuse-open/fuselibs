@@ -1,0 +1,12 @@
+<Panel ux:Class="UX.Brush.Binding">
+	<JavaScript>
+		exports.a = [1,0.5,0,1]
+		exports.b = "#8F8F"
+		exports.g = "garbage"
+	</JavaScript>
+	<Rectangle Fill="{a}" ux:Name="A"/>
+	<Rectangle Fill="{b}" ux:Name="B"/>
+	<!-- just ensures it doesn't crash horribly -->
+	<!-- TODO: https://github.com/fusetools/fuselibs/issues/3540 -->
+<!-- 	<Rectangle Fill="{g}" ux:Name="G"/> -->
+</Panel>

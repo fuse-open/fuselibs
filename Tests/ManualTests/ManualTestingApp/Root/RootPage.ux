@@ -1,0 +1,44 @@
+<Page Title="Rooting" ux:Class="RootPage">
+	<InfoStack ux:Key="Info">
+		<p>This page tests some technical features relating to the rooting of the UI.</p>
+		<p>Press the button to switch to a different UI and then press the next button to switch back.</p>
+	</InfoStack>
+	<Panel>
+		<StdButton Alignment="Center" Text="Switch UI" ux:Name="TheButton">
+			<Clicked>
+				<Set TheCenter.Visibility="Visible"/>
+				<Set TheContent1.Content="Text1"/>
+				<Set TheButton.Visibility="Hidden"/>
+				<Callback Handler="SwitchRoot"/>
+			</Clicked>
+		</StdButton>
+		
+		<StackPanel Alignment="Center" Visibility="Collapsed" ux:Name="TheCenter">
+			<SolidColor Color="#ded"/>
+			<ul>
+				<li>This panel should be centered.</li>
+				<li>A text label appear in the bottom right and bottom left.</li>
+			</ul>
+		</StackPanel>
+		
+		<ContentControl Alignment="BottomRight" ux:Name="TheContent1"/>
+		<ContentControl Alignment="BottomLeft" ux:Name="TheContent2"/>
+		
+		<Text ux:Name="Text1" ux:AutoBind="false">Bottom-Right</Text>
+		<Text ux:Name="Text2" ux:AutoBind="false">Bottom-Left</Text>
+	</Panel>
+	
+	<ClientPanel ux:Name="AltRoot" ux:AutoBind="false">
+		<StackPanel Alignment="Center">
+			<SolidColor Color="#edd"/>
+			<StdButton Alignment="Center" Text="Switch Back">
+				<Clicked>
+					<Set TheContent2.Content="Text2"/>
+					<Callback Handler="SwitchRootBack"/>
+				</Clicked>
+			</StdButton>
+			<Text>This panel should be centered.</Text>
+		</StackPanel>
+		
+	</ClientPanel>
+</Page>

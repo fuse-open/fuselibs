@@ -1,0 +1,15 @@
+<Panel ux:Class="UX.Observable.DeprecatedOnValueChanged">
+	<JavaScript>
+		var Observable = require("FuseJS/Observable")
+		
+		var a = Observable()
+		var b = Observable()
+		var c = a.onValueChanged( function(v) {
+			b.value = v
+		})
+		
+		a.value = "2"
+		exports.a = a
+	</JavaScript>
+	<Text Value="{a}" ux:Name="T"/>
+</Panel>

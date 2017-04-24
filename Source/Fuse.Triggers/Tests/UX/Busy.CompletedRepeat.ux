@@ -1,0 +1,10 @@
+<Panel ux:Class="UX.Busy.CompletedRepeat">
+	<Completed Repeat="true" Activation="SameFrame">
+		<FuseTest.CountAction ux:Name="C1"/>
+	</Completed>
+	<Completed Activation="SameFrame">
+		<FuseTest.CountAction ux:Name="C2"/>
+	</Completed>
+	
+	<FuseTest.BusyControl ux:Name="B"/>
+</Panel>

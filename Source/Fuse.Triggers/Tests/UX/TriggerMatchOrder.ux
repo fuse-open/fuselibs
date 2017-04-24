@@ -1,0 +1,14 @@
+<Panel ux:Class="UX.TriggerMatchOrder">
+	<JavaScript>
+		exports.dummy = "*"
+	</JavaScript>
+	<WhileTrue Value="true">
+		<Text Value="1"/>
+		<Match Value="{dummy}">
+			<Case IsDefault="true">
+				<Text Value="2"/>
+			</Case>
+		</Match>
+		<Text Value="3"/>
+	</WhileTrue>
+</Panel>

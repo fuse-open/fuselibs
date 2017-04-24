@@ -1,0 +1,24 @@
+<Panel ux:Class="UX.Observable.MapTwoWay">
+	<JavaScript>
+		var Observable = require("FuseJS/Observable")
+		
+		var source = Observable("a")
+		exports.source = source
+		
+		function mapIn( value ) {
+			return "$" + value
+		}
+		function mapOut( value ) {
+			return value.substring(1)
+		}
+		exports.item = source.mapTwoWay( mapIn, mapOut )
+		
+		exports.step1 = function() {
+			source.value = "b"
+		}
+	</JavaScript>
+	<Text Value="{source}" ux:Name="S"/>
+	<Text Value="{item}" ux:Name="T"/>
+	
+	<FuseTest.Invoke Handler="{step1}" ux:Name="Step1"/>
+</Panel>

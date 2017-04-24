@@ -1,0 +1,17 @@
+<Panel ux:Class="UX.WrapPanel.Max">
+	<WrapPanel ux:Name="W" Alignment="CenterRight" MaxWidth="100" Padding="10">
+		<FuseTest.FlowAreaElement Length="20" CellSize="40,10" ux:Name="F"/>
+		<Rectangle Layer="Background" ux:Name="B"/>
+		<Rectangle Layer="Overlay" ux:Name="O"/>
+	</WrapPanel>
+	
+	<StackPanel MaxWidth="100">
+		<DockPanel>
+			<WrapPanel Dock="Left" ux:Name="W2" Padding="10">
+				<FuseTest.FlowAreaElement Length="20" CellSize="40,10" ux:Name="F2"/>
+				<Rectangle Layer="Background" ux:Name="B2"/>
+				<Rectangle Layer="Overlay" ux:Name="O2"/>
+			</WrapPanel>
+		</DockPanel>
+	</StackPanel>
+</Panel>

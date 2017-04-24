@@ -1,0 +1,9 @@
+<Panel ux:Class="UX.ZOrderTest">
+	<Panel Layer="Background" ux:Name="B1"/>
+	<Panel Layer="Overlay" ux:Name="O1"/>
+	<Panel ux:Name="S1"/>
+	<Panel Layer="Overlay" ux:Name="O2"/>
+	<Panel Layer="Background" ux:Name="B2"/>
+	<Panel ux:Name="S2"/>
+	<Panel ux:Name="S3" ZOffset="1"/>
+</Panel>

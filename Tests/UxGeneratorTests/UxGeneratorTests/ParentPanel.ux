@@ -1,0 +1,3 @@
+<Panel ux:Name="ParentPanel">
+    <ChildUxPanel />
+</Panel>

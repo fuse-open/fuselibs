@@ -1,0 +1,53 @@
+<Panel ux:Class="UX.Observable.InnerNonObservable">
+	<JavaScript>
+		var Observable = require("FuseJS/Observable")
+		
+		var sourceItems = Observable("a")
+		exports.sourceItems = sourceItems
+		var items = sourceItems._forceInner()
+		exports.items = items
+		
+		exports.step1 = function() {
+			sourceItems.add( "b" )
+		}
+		
+		exports.step2 = function() {
+			sourceItems.insertAt(0, "c")
+		}
+		
+		exports.step3 = function() {
+			sourceItems.removeAt(1)
+		}
+		
+		exports.step4 = function() {
+			sourceItems.insertAll(1, ["d","e","f","g"] )
+		}
+		
+		exports.step5 = function() {
+			sourceItems.removeRange(2,3)
+		}
+		
+		exports.step6 = function() {
+			sourceItems.replaceAt(2,"h")
+		}
+		
+		exports.step7 = function() {
+			sourceItems.clear()
+		}
+		
+		exports.step8 = function() {
+			sourceItems.value = "i"
+		}
+	</JavaScript>
+	<Fuse.Reactive.Test.ObservableCollector ux:Name="SC" Items="{sourceItems}"/>
+	<Fuse.Reactive.Test.ObservableCollector ux:Name="OC" Items="{items}"/>
+	
+	<FuseTest.Invoke Handler="{step1}" ux:Name="Step1"/>
+	<FuseTest.Invoke Handler="{step2}" ux:Name="Step2"/>
+	<FuseTest.Invoke Handler="{step3}" ux:Name="Step3"/>
+	<FuseTest.Invoke Handler="{step4}" ux:Name="Step4"/>
+	<FuseTest.Invoke Handler="{step5}" ux:Name="Step5"/>
+	<FuseTest.Invoke Handler="{step6}" ux:Name="Step6"/>
+	<FuseTest.Invoke Handler="{step7}" ux:Name="Step7"/>
+	<FuseTest.Invoke Handler="{step8}" ux:Name="Step8"/>
+</Panel>

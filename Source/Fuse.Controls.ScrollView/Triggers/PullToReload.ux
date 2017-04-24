@@ -1,0 +1,6 @@
+<ScrollingAnimation ux:Class="Fuse.Triggers.PullToReload" Range="SnapMin">
+	<Callback Action="StartPull" When="Forward"/>
+	<Callback Action="ReleasePull" When="Backward"/>
+	<Callback Delay="0.5" Action="ReachThreshold"/>
+	<Nothing Duration="1"/>
+</ScrollingAnimation>

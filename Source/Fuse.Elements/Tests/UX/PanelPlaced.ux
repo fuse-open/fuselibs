@@ -1,0 +1,28 @@
+<Panel ux:Class="UX.PanelPlaced">
+	<JavaScript>
+		var Observable = require("FuseJS/Observable");
+		var placedX = Observable();
+		var placedY = Observable();
+		var placedWidth = Observable();
+		var placedHeight = Observable();
+		function panel_placed(args) {
+			placedX.value = args.x;
+			placedY.value = args.y;
+			placedWidth.value = args.width;
+			placedHeight.value = args.height;
+		}
+		module.exports = {
+			panel_placed: panel_placed,
+			placedX: placedX,
+			placedY: placedY,
+			placedWidth: placedWidth,
+			placedHeight: placedHeight,
+		}
+	</JavaScript>
+
+	<Panel ux:Name="panel" Margin="10,20" Alignment="TopLeft" Placed="{panel_placed}" Width="50" Height="60" />
+	<Text ux:Name="placedX" Value="{placedX}" />
+	<Text ux:Name="placedY" Value="{placedY}" />
+	<Text ux:Name="placedWidth" Value="{placedWidth}" />
+	<Text ux:Name="placedHeight" Value="{placedHeight}" />
+</Panel>

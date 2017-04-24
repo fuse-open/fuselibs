@@ -1,0 +1,14 @@
+<Panel ux:Class="UX.Swipe.ScrollView">
+	<Panel ux:Name="theTop" Height="100"/>
+	
+	<ScrollView ux:Name="sv">
+		<SwipeGesture Direction="Down" LengthNode="theTop" ux:Name="swipeDown" Type="Active"/>
+		<SwipingAnimation Source="swipeDown" ux:Name="swipeDownAnim"/>
+			
+		<StackPanel>
+			<Each Count="20">
+				<Panel Height="100" HitTestMode="LocalBounds"/>
+			</Each>
+		</StackPanel>
+	</ScrollView>
+</Panel>

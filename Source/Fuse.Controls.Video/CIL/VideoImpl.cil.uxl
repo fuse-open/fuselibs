@@ -1,0 +1,10 @@
+<Extensions Backend="CIL">
+
+	<Require Assembly="Lib/Fuse.Video.CILInterface.dll" />
+	<Require Assembly="Lib/Fuse.Video.Mono.dll" />
+	<Require Assembly="Lib/Fuse.Video.WPF.dll" />
+	<Require Assembly="Lib/MonoMac.dll" />
+	<Require Assembly="Lib/DirectShowLib.dll" />
+	<Require Assembly="Lib/Fuse.Video.CIL.dll" />
+
+</Extensions>

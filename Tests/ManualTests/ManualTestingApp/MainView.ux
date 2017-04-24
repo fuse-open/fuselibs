@@ -1,0 +1,153 @@
+<Panel ux:Class="MainView" HitTestMode="LocalBoundsAndChildren" ux:Name="MainPanel">
+	<ResourceObject Key="MainPanel" Value="MainPanel"/>
+	
+	<Panel Alignment="Left" ux:Name="ShortcutsPanel" Padding="0,0,5,0">
+		<Rectangle Layer="Background" CornerRadius="0,10,10,0">
+			<LinearGradient StartPoint="0,0" EndPoint="1,0">
+				<GradientStop Color="0.6,0.7,0.7,1" Offset="0"/>
+				<GradientStop Color="0.6,0.7,0.7,1" Offset="0.95"/>
+				<GradientStop Color="0.1,0.2,0.2,1" Offset="1"/>
+			</LinearGradient>
+		</Rectangle>
+		<Translation X="-1" RelativeTo="Size"/>
+		<DockPanel MaxWidth="100%" Width="400">
+			<ScrollView>
+				<PageIndicator Navigation="AppFrame" Padding="10">
+					<GridLayout ColumnCount="2" DefaultRow="auto" CellSpacing="5"/>
+					<Panel ux:Template="Dot">
+						<StdButton Text="{Page Title}">
+							<Clicked>
+								<NavigateTo Target="{Page Node}"/>
+								<Set ShortcutsTrigger.IsEnabled="false"/>
+							</Clicked>
+						</StdButton>
+					</Panel>
+				</PageIndicator>
+			</ScrollView>
+			
+			<Panel Dock="Bottom" Color="#FFF2" Padding="10">
+				<StdButton Alignment="Right" Text="Dismiss">
+					<Clicked>
+						<Set ShortcutsTrigger.IsEnabled="false"/>
+					</Clicked>
+				</StdButton>
+			</Panel>
+		</DockPanel>
+	</Panel>
+	
+	<EdgeSwipeAnimation Edge="Left" EdgeThreshold="60" ux:Name="ShortcutsTrigger"
+		Target="ShortcutsPanel">
+		<Move X="1" RelativeTo="Size" Target="ShortcutsPanel"/>
+	</EdgeSwipeAnimation>
+
+	<DockPanel Navigation="AppFrame">
+		<ResourceObject Key="TitleBar" Value="TitleBar"/>
+		
+		<TopFrameBackground DockPanel.Dock="Top" Background="0.3,0.5,0.5,1" />
+		<DockPanel  DockPanel.Dock="Top" ClipToBounds="false" Padding="5,2,5,4" Margin="0,0,0,0"
+			ux:Name="TitleBar">
+			<Rectangle Layer="Background">
+				<LinearGradient>
+					<GradientStop Offset="0" Color="0.9,1,1,1"/>
+					<GradientStop Offset="0.8" Color="0.9,1,1,1"/>
+					<GradientStop Offset="1.0" Color="0.3,0.5,0.5,1"/>
+				</LinearGradient>
+			</Rectangle>
+
+
+			<DockPanel DockPanel.Dock="Left" ux:Name="GoBack" Visibility="Hidden"
+				HitTestMode="LocalBounds">
+				<Text Value="Back" Alignment="VerticalCenter" FontSize="18"/>
+				<StackPanel Orientation="Horizontal" Dock="Left">
+					<Path Alignment="Center" Height="16" Margin="0,0,3,0" Color="#333"
+						Data="M 65.27389,108.76037 C 48.798326,93.914604 38.137927,82.225759 34.188157,78.932644 30.238388,75.639528 13.307166,63.296043 0.69461498,53.876627 13.082064,45.528639 30.284923,33.676745 34.216768,30.313693 38.148611,26.950642 49.157253,17.064457 65.315923,0.29413684 68.891626,-3.416916 41.400265,48.089284 41.468799,54.641449 c 0.06854,6.552165 27.676138,57.607031 23.805091,54.118921 z"/>
+				</StackPanel>
+				<WhileCanGoForward>
+					<Change Target="GoBack.Visibility" Value="Visible"/>
+				</WhileCanGoForward>
+				<Clicked>
+					<GoForward/>
+				</Clicked>
+			</DockPanel>
+
+			<DockPanel DockPanel.Dock="Right" ux:Name="GoForward" Visibility="Hidden"
+				HitTestMode="LocalBounds">
+				<Text Value="Next" Alignment="VerticalCenter"/>
+				<StackPanel Orientation="Horizontal" Dock="Right">
+					<Path Alignment="Center" Height="16" Color="#333" Margin="3,0,0,0"
+						Data="M 0.51599411,0.32730403 C 16.991558,15.17307 27.651957,26.861915 31.601727,30.15503 35.551496,33.448146 52.482718,45.791631 65.095269,55.211047 52.70782,63.559035 35.504961,75.410929 31.573116,78.773981 27.641273,82.137032 16.632631,92.023217 0.47396111,108.79354 -3.1017419,112.50459 24.389619,60.99839 24.321085,54.446225 24.252545,47.89406 -3.3550529,-3.160806 0.51599411,0.32730403 z"/>
+				</StackPanel>
+				<WhileCanGoBack>
+					<Change Target="GoForward.Visibility" Value="Visible"/>
+				</WhileCanGoBack>
+				<Clicked>
+					<GoBack/>
+				</Clicked>
+			</DockPanel>
+
+			<Text Font="RobotoCondensedLight" TextColor="0,0,0,1" FontSize="20"
+				Value="{Page Title}" Alignment="Center"/>
+
+		</DockPanel>
+
+		<PageControl Active="FirstPage" ux:Name="AppFrame" Interaction="None">
+			<NavigationMotion GotoEasing="QuadraticIn" GotoDuration="0.3"/>
+
+			<InfoPanel Layer="Overlay" Margin="10,6,10,6" Alignment="TopRight"/>
+
+			<DeviceInfo ux:Name="FirstPage"/>
+			<ScrollViewPage/>
+			<MoveAndScale/>
+			<HttpXmlView/>
+			<HttpsView/>
+			<PointerAndMouse/>
+			<TextInputPage/>
+			<TextInputHints/>
+			<AnimationControlTest/>
+			<RootPage/><!-- somewhere in the middle to ensure everything works after rooting/unrooting -->
+			<AnimationControlTest2/>
+			<ActionTiming/>
+			<PixelAlignment/>
+			<NavigationTriggers/>
+			<IsEnabledPage/>
+			<IsEnabledPage2/>
+			<ClockPage/>
+			<MaskEffects/>
+			<DuotoneEffectsPage />
+			<DropShadowView/>
+			<PlaySoundView/>
+			<StrokeAndFills/>
+			<DataBindingPage/>
+			<TodoListPage/>
+			<IsVisibleTest/>
+			<ChangingLayout/>
+			<TextAlignmentView/>
+			<TextDetailsPage/>
+			<ColumnsReload/>
+			<TextInputActionPage/>
+			<VideoPage/>
+			<CameraPage/>
+			<SharingPage/>
+			<UserEventsPage/>
+			<HttpImagePage/>
+			<ImageResampleModePage/>
+			<SwipeLimitPage/>
+			<HierarchicalNavigationPage/>
+			<TimelineWrapPage/>
+			<TimePickerPage/>
+			<HitTestPage/>
+			<DefaultFonts/>
+			<Pages.SurfaceMisc/>
+			
+			<Android>
+				<WebViewPage/>
+				<BackButtonView/>
+			</Android>
+			<iOS>
+				<MapViewPage/>
+				<WebViewPage/>
+			</iOS>
+		</PageControl>
+		<BottomFrameBackground DockPanel.Dock="Bottom"/>
+	</DockPanel>
+</Panel>

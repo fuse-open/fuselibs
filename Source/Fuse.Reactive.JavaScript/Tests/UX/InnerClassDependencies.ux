@@ -1,0 +1,10 @@
+<Panel ux:Class="UX.InnerClassDependencies">
+	<Panel ux:InnerClass="InnerClass">
+		<string ux:Property="Foo" />
+		<string ux:Property="Bar" />
+		<Text ux:Name="_fooText" Value="{ReadProperty Foo}" />
+		<Text ux:Name="_barText" Value="{ReadProperty Bar}" />
+	</Panel>
+
+	<InnerClass ux:Name="_innerClass" Foo="foo" Bar="bar" />
+</Panel>

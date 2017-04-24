@@ -1,0 +1,118 @@
+<Page Title="Navigation Triggers" ux:Class="NavigationTriggers">
+	<InfoStack ux:Key="Info">
+		<p>This checks zero length animation lengths with navigation triggers. In the center of the screen is a panel saying what else should be visible along with a Next button. Ensure the correct overlay panels are visible then press Next until you reach the final step.</p>
+	</InfoStack>
+
+	<StackPanel ux:Class="OverlayPage" Alignment="Center" Padding="5,5,5,5" Opacity="0" ux:Name="self">
+		<Rectangle Layer="Background" CornerRadius="5">
+			<Stroke><SolidColor Color="0,0,0,1"/></Stroke>
+		</Rectangle>
+		
+		<ActivatingAnimation>
+			<Change Target="self.Opacity" Value="1"/>
+		</ActivatingAnimation>
+		
+		<EnteringAnimation>
+			<Move Y="1" RelativeTo="ParentSize"/>
+		</EnteringAnimation>
+		<ExitingAnimation>
+			<Move Y="-1" RelativeTo="ParentSize"/>
+		</ExitingAnimation>
+	</StackPanel>
+
+	<StackPanel ux:Class="OverlayOverlay" Margin="10,10,10,10" Padding="10,10,10,10">
+		<Rectangle Layer="Background" CornerRadius="5">
+			<Stroke><SolidColor Color="0,0,0,1"/></Stroke>
+		</Rectangle>
+	</StackPanel>	
+
+	<Panel ux:Name="NaviHolder">
+		<OverlayOverlay ux:Name="Overlay1" Alignment="BottomLeft">
+			<Text FontSize="32">#1</Text>
+			
+			<WhileTrue ux:Name="HideOverlay1">
+				<Change Target="Overlay1.Opacity" Value="0"/>
+			</WhileTrue>
+		</OverlayOverlay>
+		
+		<OverlayOverlay ux:Name="Overlay2" Alignment="BottomCenter">
+			<Text FontSize="32">#2</Text>
+			
+			<WhileTrue ux:Name="HideOverlay2">
+				<Change Target="Overlay2.Opacity" Value="0"/>
+			</WhileTrue>
+		</OverlayOverlay>
+		
+		<OverlayOverlay ux:Name="Overlay3" Alignment="BottomRight" Opacity="0">
+			<Text FontSize="32">#3</Text>
+			
+			<WhileTrue ux:Name="ShowOverlay3">
+				<Change Target="Overlay3.Opacity" Value="1"/>
+			</WhileTrue>
+		</OverlayOverlay>
+		
+		<Panel ux:Name="NaviPanel" Alignment="Center">
+			<LinearNavigation Active="Page1"/>
+			
+			<OverlayPage ux:Name="Page5">
+				<Text>Page 5</Text>
+				<Text>No overlays are visible.</Text>
+				<Text>Test done.</Text>
+			</OverlayPage>
+			
+			<OverlayPage ux:Name="Page4">
+				<Text>Page 4</Text>
+				<Text>Overlay panels #2 and #3 are Visible</Text>
+				<ActivatingAnimation>
+					<Change Target="ShowOverlay3.Value" Value="true"/>
+				</ActivatingAnimation>
+				<EnteringAnimation/>
+				<ExitingAnimation>
+					<Change Target="HideOverlay2.Value" Value="true"/>
+				</ExitingAnimation>
+
+				<StdButton Text="Next">
+					<Clicked><NavigateTo Target="Page5"/></Clicked>
+				</StdButton>
+			</OverlayPage>
+			
+			<OverlayPage ux:Name="Page3">
+				<Text>Page 3</Text>
+				<Text>Overlay panel #2 is Visible</Text>
+				<EnteringAnimation>
+					<Change Target="HideOverlay2.Value" Value="true"/>
+				</EnteringAnimation>
+				<ExitingAnimation/>
+				<StdButton Text="Next">
+					<Clicked><NavigateTo Target="Page4"/></Clicked>
+				</StdButton>
+			</OverlayPage>
+			
+			<OverlayPage ux:Name="Page2">
+				<Text>Page 2</Text>
+				<Text>No overlays are visible</Text>
+				
+				<StdButton Text="Next">
+					<Clicked><NavigateTo Target="Page3"/></Clicked>
+				</StdButton>
+			</OverlayPage>
+			
+			<OverlayPage ux:Name="Page1">
+				<Text>Page 1</Text>
+				<Text>Overlay panels #1 and #3 are Visible</Text>
+				<ActivatingAnimation>
+					<Change Target="ShowOverlay3.Value" Value="true"/>
+				</ActivatingAnimation>
+				<EnteringAnimation/>
+				<ExitingAnimation>
+					<Change Target="HideOverlay1.Value" Value="true"/>
+				</ExitingAnimation>
+				
+				<StdButton Text="Next">
+					<Clicked><NavigateTo Target="Page2"/></Clicked>
+				</StdButton>
+			</OverlayPage>
+			
+		</Panel>
+	</Panel>
+</Page>

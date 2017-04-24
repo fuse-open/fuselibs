@@ -1,0 +1,1 @@
+The tests here are valid, and must pass, but don't represent the preferred way of writing such tests anymore. It's easier to keep them in this form for now than to migrate them.

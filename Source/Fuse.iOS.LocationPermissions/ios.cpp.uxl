@@ -1,0 +1,12 @@
+<Extensions Backend="CPlusPlus" Condition="IOS">
+	<Require Xcode.Plist.Element>
+		<![CDATA[
+			<key>NSLocationUsageDescription</key>
+			<string></string>
+			<key>NSLocationWhenInUseUsageDescription</key>
+			<string></string>
+			<key>NSLocationAlwaysUsageDescription</key>
+			<string></string>
+		]]>
+	</Require>
+</Extensions>

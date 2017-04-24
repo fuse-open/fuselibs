@@ -1,0 +1,9 @@
+<Panel ux:Class="UX.Stability">
+	<LinearNavigation ux:Name="TheNav">
+		<Fuse.Motion.NavigationMotion GotoDuration="1" GotoDurationExp="0"/>
+	</LinearNavigation>
+	<Page ux:Name="P1"/>
+	<Page ux:Name="P2"/>
+	<Page ux:Name="P3"/>
+
+</Panel>

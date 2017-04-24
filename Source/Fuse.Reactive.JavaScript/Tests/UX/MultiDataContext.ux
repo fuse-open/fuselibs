@@ -1,0 +1,48 @@
+<Panel ux:Class="UX.MultiDataContext">
+	<JavaScript>
+		module.exports = {
+			items: [
+				{ foo: "incorrect", moo: "incorrect" },
+				{ foo: "incorrect", moo: "incorrect" },
+				{ foo: "incorrect", moo: "incorrect" },
+				{ foo: "incorrect", moo: "incorrect" }
+			],
+			bar: "correct",
+			foo: "incorrect",
+			moo: "incorrect"
+		}
+	</JavaScript>
+	<JavaScript>
+		module.exports = {
+			items: [
+				{ foo: "correct", moo: "correct" },
+				{ foo: "correct", moo: "correct" },
+				{ foo: "correct", moo: "correct" },
+				{ foo: "correct", moo: "correct" }
+			],
+			foo: "incorrect",
+			moo: "incorrect"
+		}
+	</JavaScript>
+	<Panel ux:Name="items">
+		<Each Items="{items}">
+			<Text Value="{foo}" />
+			<Text Value="{bar}" />
+			<Text Value="{moo}">
+				<JavaScript>
+					module.exports = {
+						moo: "incorrect"
+					}
+				</JavaScript>
+			</Text>
+			<Panel>
+				<JavaScript>
+					module.exports = {
+						moo: "incorrect"
+					}
+				</JavaScript>
+				<Text Value="{foo}" />
+			</Panel>
+		</Each>
+	</Panel>
+</Panel>

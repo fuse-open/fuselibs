@@ -1,0 +1,8 @@
+<Panel ux:Class="UX.Issue3217">
+    <JavaScript>
+        module.exports = {color: "#f00"}
+    </JavaScript>
+	<Rectangle Width="200" Height="50">
+		<Stroke Width="5" Color="{color}" />
+	</Rectangle>
+</Panel>

@@ -1,0 +1,31 @@
+<Panel ux:Class="UX.Observable.Function">
+	<JavaScript>
+		var Observable = require("FuseJS/Observable")
+
+		var obsA = Observable("a")
+		var obsB = Observable("b")
+		var obsC = Observable( function() {
+			return obsA.value + obsB.value
+		})
+		var obsD = Observable()
+		var obsE = Observable( function() {
+			return "$" + (obsD.value || "*") + obsC.value
+		})
+		
+		exports.C = obsC
+		exports.F = obsE
+		
+		exports.step1 = function() {
+			obsA.value = "c"
+		}
+		
+		exports.step2 = function() {
+			obsD.add("g")
+		}
+	</JavaScript>
+	<Text Value="{C}" ux:Name="C"/>
+	<Text Value="{F}" ux:Name="F"/>
+	
+	<FuseTest.Invoke Handler="{step1}" ux:Name="Step1"/>
+	<FuseTest.Invoke Handler="{step2}" ux:Name="Step2"/>
+</Panel>

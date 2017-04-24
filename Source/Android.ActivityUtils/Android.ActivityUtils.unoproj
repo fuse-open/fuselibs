@@ -1,0 +1,9 @@
+{
+  "Copyright": "Copyright (c) Fusetools AS 2016",
+  "Description": "Helper Utils for interacting with android Activities",
+  "Publisher": "Fusetools AS",
+  "Version": "1.0.0",
+  "Includes": [
+      "*"
+  ]
+}

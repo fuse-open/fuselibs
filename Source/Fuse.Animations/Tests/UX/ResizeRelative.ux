@@ -1,0 +1,8 @@
+<Panel ux:Class="UX.ResizeRelative">
+	<Panel Width="100" Height="80" ux:Name="A"/>
+	<Panel Width="200" Height="300" ux:Name="B">
+		<WhileTrue Value="true" ux:Name="W">
+			<Resize RelativeNode="A" RelativeTo="Size" Vector="1"/>
+		</WhileTrue>
+	</Panel>
+</Panel>

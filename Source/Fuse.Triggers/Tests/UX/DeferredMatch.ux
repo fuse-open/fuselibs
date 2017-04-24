@@ -1,0 +1,14 @@
+<Panel ux:Class="UX.DeferredMatch">
+	<JavaScript>
+		exports.whatever = "*"
+	</JavaScript>
+	<Deferred>
+		<Text Value="1"/>
+		<Match Value="{whatever}">
+			<Case IsDefault="true">
+				<Text Value="2"/>
+			</Case>
+		</Match>
+		<Text Value="3"/>
+	</Deferred>
+</Panel>

@@ -1,0 +1,14 @@
+<Panel ux:Class="UX.Swipe.Event" HitTestMode="LocalBounds">
+	<SwipeGesture Direction="Up" Length="100" ux:Name="SG"/>
+	<SwipingAnimation Source="SG" ux:Name="Anim"/>
+
+	<Swiped Source="SG">
+		<FuseTest.CountAction ux:Name="SwipeActive"/>
+	</Swiped>
+	<Swiped Source="SG" How="ToInactive">
+		<FuseTest.CountAction ux:Name="SwipeInactive"/>
+	</Swiped>
+	<Swiped Source="SG" How="Cancelled">
+		<FuseTest.CountAction ux:Name="SwipeCancelled"/>
+	</Swiped>
+</Panel>

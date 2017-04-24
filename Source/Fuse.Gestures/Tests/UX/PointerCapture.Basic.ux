@@ -1,0 +1,22 @@
+<Panel ux:Class="UX.PointerCapture.Basic">
+	<Panel Alignment="TopLeft" MinWidth="10" MinHeight="10" HitTestMode="LocalBoundsAndChildren">
+		<PointerCapture On="Pressed" ux:Name="PC"/>
+		<WhilePressed>
+			<Change S.Visibility="Visible"/>
+		</WhilePressed>
+		
+		<StackPanel Visibility="Collapsed" ux:Name="S">
+			<Panel Height="10"/>
+			<Panel ux:Class="PCBItem" Height="50" Width="50" HitTestMode="LocalBounds">
+				<WhileHovering ux:Name="WH"/>
+				<Released>
+					<FuseTest.CountAction ux:Name="C"/>
+				</Released>
+			</Panel>
+				
+			<PCBItem ux:Name="IA"/>
+			<PCBItem ux:Name="IB"/>
+			<PCBItem ux:Name="IC"/>
+		</StackPanel>
+	</Panel>
+</Panel>

@@ -1,0 +1,5 @@
+<Page ux:Class="FileSystem">
+    <Router ux:Dependency="router"/>
+    <JavaScript File="FileSystem.js" />
+    <Text Value="filesystem"/>
+</Page>

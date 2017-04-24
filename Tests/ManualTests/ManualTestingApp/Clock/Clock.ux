@@ -1,0 +1,34 @@
+<Page Title="Clock Layout" ux:Class="ClockPage" ux:AutoCtor="false">
+	<InfoStack ux:Key="Info">
+		<p>This is a test of layout Offset, Anchor and TransformOrigin.</p>
+
+		<p>A windup clock is displayed. It stretches to fill the screen (touching two sides, centered in remaining area to retain aspect ratio). The device time is displayed. The hands on the clock have rings in their center which are aligned within each other, centered on a small dot in the middle. The precise pixel alignment is not relevant (it may be 1-2 pixels off from perfectly centered).  The second hand moves in a step-wise motion.</p>
+	</InfoStack>
+	<DockPanel>
+		<!-- Clock: http://pixabay.com/en/clock-marina-navy-russian-soviet-158251/ -->
+		<Viewbox>
+			<Panel Alignment="Center" MaxWidth="10000" MaxHeight="10000">
+				<Image File="hand_second.png" Layer="Overlay"
+					Anchor="15.5px, 270px"
+					Offset="407px, 436.5px" StretchMode="PixelPrecise" Alignment="TopLeft"
+					TransformOrigin="Anchor">
+					<Rotation ux:Name="RotateSecond"/>
+				</Image>
+				<Image File="hand_hour.png"  Layer="Overlay"
+					Anchor="31.5px,185.5px" 
+					Offset="-62.5px,14.5px" Alignment="Center" StretchMode="PixelPrecise"
+					TransformOrigin="Anchor">
+					<Rotation ux:Name="RotateHour"/>
+				</Image>
+				<Image File="hand_minute.png"  Layer="Overlay"
+					Anchor="21.5px, 284px" 
+					Offset="-62.5px, 14.5px" Alignment="Center" StretchMode="PixelPrecise"
+					TransformOrigin="Anchor">
+					<Rotation ux:Name="RotateMinute"/>
+				</Image>
+				
+				<Image File="face.png" StretchMode="PixelPrecise"/>
+			</Panel>
+		</Viewbox>
+	</DockPanel>
+</Page>

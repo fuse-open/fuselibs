@@ -1,0 +1,10 @@
+<DockPanel Alignment="Center" ux:Class="UX.DockMultiFillTest">
+	<Panel Width="10" Background="Blue" DockPanel.Dock="Left"/>
+	<Panel Width="10" Background="Red" DockPanel.Dock="Right"/>
+	<Circle Width="50" ux:Name="TheStar">
+		<SolidColor Color="1,1,0,1"/>
+	</Circle>
+	<Panel Height="10" Background="Yellow" DockPanel.Dock="Top"/>
+	<Panel Height="10" Background="Green" DockPanel.Dock="Bottom"/>
+	<Panel Height="50" Background="Silver" ux:Name="ThePanel"/>
+</DockPanel>

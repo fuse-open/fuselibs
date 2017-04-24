@@ -1,0 +1,3 @@
+<DockPanel ux:Class="UX.DockAspect">
+	<Panel Aspect="1" BoxSizing="FillAspect" Alignment="Top" Margin="50" ux:Name="P1"/>
+</DockPanel>

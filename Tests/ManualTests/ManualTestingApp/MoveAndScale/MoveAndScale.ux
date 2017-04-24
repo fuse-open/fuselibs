@@ -1,0 +1,37 @@
+<Page ux:Class="MoveAndScale" ux:AutoCtor="false">
+	<InfoStack ux:Key="Info">
+		<h2>Goal</h2>
+		<p>To show that events happen when an element is clicked, and that animations work as expected.</p>
+		<h2>Instructions</h2>
+		<p>Tap the button that says “Tap to move”. See that it moves to the area labeled “Button supposed to be here” in the specified time (roughly one second).</p>
+	</InfoStack>
+    <ScrollView>
+        <StackPanel Alignment="Top" Padding="0,10,0,0">
+            <Panel Height="150">
+                <StdButton Margin="0,0,0,0" Width="160" Height="50" Alignment="Top" Clicked="MoveButton" Text="Tap to move" ux:Name="b1">
+                    <WhileTrue ux:Name="ButtonTrigger">
+                        <Rotate Degrees="38" Duration="1" Easing="Linear"></Rotate>
+                        <Scale Factor="1.3" Duration="1" Easing="Linear"></Scale>
+                        <Move Vector="50, 210, 0" Duration="1" Easing="Linear"></Move>
+                        <Change Target="TargetBoxText.TextColor" Duration="1" Delay="0" Value="0,0,0,0" Easing="Linear"></Change>
+                        <Change Target="TargetBoxBorder.Color" Duration="1" Delay="0" Value="0,0,0,0.1" Easing="Linear"></Change>
+                        <Change Target="TargetBoxColor.Color" Duration="1" Delay="0" Value="0,0,0,0.1" Easing="Linear"></Change>
+                    </WhileTrue>
+                </StdButton>
+            </Panel>
+            <Panel Height="200">
+                <Panel Margin="0,0,0,0" Width="208" Height="65" Alignment="Top">
+                    <Text ux:Name="TargetBoxText" Alignment="Center" TextAlignment="Center" Value="Button supposed to be here" />
+                    <Translation Vector="50, 52.5, 0"></Translation>
+                    <Rotation Degrees="38"></Rotation>
+                    <Rectangle Layer="Background">
+                        <Stroke Width="1">
+                            <SolidColor ux:Name="TargetBoxBorder" Color="0.2, 0.2, 0.2, 0.6"></SolidColor>
+                        </Stroke>
+                        <SolidColor ux:Name="TargetBoxColor" Color="0.2, 0.2, 0.2, 0.2"></SolidColor>
+                   </Rectangle>
+                </Panel>
+            </Panel>
+        </StackPanel>
+    </ScrollView>
+</Page>

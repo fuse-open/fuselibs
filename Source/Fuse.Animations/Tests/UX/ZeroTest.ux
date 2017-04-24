@@ -1,0 +1,10 @@
+<Panel ux:Class="UX.ZeroTest">
+	<Timeline ux:Name="TheTrigger">
+		<TimingAction ux:Name="TaFore" When="Forward"/>
+		<TimingAction ux:Name="TaBack" When="Backward"/>
+		<TimingAction ux:Name="TaF0" AtProgress="0" When="Forward"/>
+		<TimingAction ux:Name="TaB0" AtProgress="0" When="Backward"/>
+		<TimingAction ux:Name="TaF1" AtProgress="1"  When="Forward"/>
+		<TimingAction ux:Name="TaB1" AtProgress="1"  When="Backward"/>
+	</Timeline>
+</Panel>
