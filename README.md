@@ -23,7 +23,7 @@ Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduc
 
 ### Reporting issues
 
-For issues with our built-in JavaScript modules, please report those [here](https://github.com/fusetools/FuseJS/issues), otherwise report [here](https://github.com/fusetools/fuselibs/issues).
+Please report issues [here](https://github.com/fusetools/fuselibs-public/issues).
 
 See [Working with Issues](https://github.com/fusetools/Intranet/wiki/Working-with-Issues) for details on our issue-tracking process.
 
