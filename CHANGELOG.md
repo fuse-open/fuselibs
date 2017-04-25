@@ -81,6 +81,7 @@
 ## ImageTools
 - Changed the algorithm for creating new file names for temporary images. Previously this used a date format that caused problems when several images were created in sub-second intervals, breaking custom map marker icons, for instance.
 - Fixed a memory leak that occured when resizing multiple images one after another.
+- Added supported for encoding/decoding images to/from base64 on DotNet platforms, including Windows and Mac OS X.
 
 ## Vector drawing
 A new vector drawing system has been added to Fuse. This allows drawing of curves, shapes, and simple vector images.
