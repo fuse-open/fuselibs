@@ -1,5 +1,5 @@
 # Fuselibs
-[![TeamCity](https://tc.outracks.com/app/rest/builds/buildType:(id:FuselibsNew_Trigger)/statusIcon)](https://tc.outracks.com/project.html?projectId=FuselibsNew)
+[![TeamCity](https://tc.outracks.com/app/rest/builds/buildType:(id:FuselibsPublic_Trigger)/statusIcon)](https://tc.outracks.com/project.html?projectId=FuselibsPublic)
 
 Fuselibs is the [Uno](https://www.fusetools.com/docs/uno/uno-lang)-libraries that provide
 the UI framework used in [Fuse](https://www.fusetools.com/) apps.
