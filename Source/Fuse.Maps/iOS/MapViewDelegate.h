@@ -25,7 +25,7 @@ typedef void (^TouchesEventBlock)(NSSet * touches, UIEvent * event);
 	longitude:(double)lng
 	icon:(NSString*)iconPath
 	iconX:(float)iconX
-	iconY:(float)iconY;
+	iconY:(float)iconY
 	markerID:(int)markerID;
 	-(BOOL)authorized;
 	-(void)removeMarker:(int)identifier;
