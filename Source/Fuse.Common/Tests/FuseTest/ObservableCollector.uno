@@ -13,13 +13,13 @@ namespace FuseTest
 	*/
 	public class ObservableCollector : Behavior, IObserver
 	{
-		public void OnRooted()
+		protected override void OnRooted()
 		{
 			base.OnRooted();
 			OnItemsChanged();
 		}
 		
-		public void OnUnrooted()
+		protected override void OnUnrooted()
 		{
 			CleanSubscription();
 		}
@@ -33,7 +33,7 @@ namespace FuseTest
 			get { return _items;}
 			set
 			{
-				_items = value as Observable;
+				_items = value as IObservable;
 				OnItemsChanged();
 			}
 		}
