@@ -107,7 +107,7 @@ namespace Fuse.Controls
 		bool AllowScroll { get; set; }
 
 		void UpdateMarkers();
-		void HandleMarkerTapped(string label);
+		void HandleMarkerTapped(int id, string label);
 		void HandleLocationTapped(double latitude, double longitude);
 		void HandleLocationLongPress(double latitude, double longitude);
 		Action OnReady { get; set; }
@@ -291,10 +291,19 @@ namespace Fuse.Controls
 		}
 
 		/* Begin methods that should be internal :( */
-		public void HandleMarkerTapped(string label)
+		public void HandleMarkerTapped(int id, string label)
 		{
 			if (MarkerTapped != null)
 				MarkerTapped(this, new MarkerEventArgs(label));
+				
+			foreach(MapMarker m in Markers)
+			{
+				if(m.uid == id)
+				{
+					m.HandleTapped();
+					return;
+				}
+			}
 		}
 		public void HandleLocationTapped(double latitude, double longitude)
 		{

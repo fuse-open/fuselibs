@@ -45,7 +45,7 @@ namespace Fuse.Maps.Android
 				OnAnimationStart,
 				OnAnimationEnd,
 				SetLocationFromMap,
-				HandleTappedMarker,
+				HandleMarkerTapped,
 				OnTouchEvent
 				);
 			ForeignHelpers.Configure(_mapView);
@@ -108,14 +108,9 @@ namespace Fuse.Maps.Android
 			SemanticControl.HandleLocationLongPress(latitude,longitude);
 		}
 
-		// This kind of nonsense will be gone once we have inline FC :D
-		internal void HandleTappedMarker(string title, string id){
-			HandleMarkerTapped(title);
-		}
-
-		public void HandleMarkerTapped(string title)
+		public void HandleMarkerTapped(int uid, string title)
 		{
-			SemanticControl.HandleMarkerTapped(title);
+			SemanticControl.HandleMarkerTapped(uid, title);
 		}
 
 		internal void OnMapReady()
@@ -181,7 +176,8 @@ namespace Fuse.Maps.Android
 					m.Label,
 					_markerGraphicsCache.Get(m.IconFile),
 					m.IconAnchorX,
-					m.IconAnchorY
+					m.IconAnchorY,
+					m.uid
 				);
 			}
 		}

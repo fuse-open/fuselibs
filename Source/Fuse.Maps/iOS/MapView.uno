@@ -200,7 +200,7 @@ namespace Fuse.Maps.iOS
 
 		[Require("Source.Include", "iOS/MapViewDelegate.h")]
 		[Foreign(Language.ObjC)]
-		ObjC.Object Configure(ObjC.Object mapView, Action<bool> onMapMove, Action<int, double, double> onMapTouch, Action<string> onMarkerTouch)
+		ObjC.Object Configure(ObjC.Object mapView, Action<bool> onMapMove, Action<int, double, double> onMapTouch, Action<int, string> onMarkerTouch)
 		@{
 			MKMapView* mv = mapView;
 			MapViewDelegate* dg = [[MapViewDelegate alloc] init];
@@ -266,10 +266,10 @@ namespace Fuse.Maps.iOS
 		}
 
 		[Foreign(Language.ObjC)]
-		int AddMarker(string label, double lat, double lng, String iconPath, double iconAnchorX, double iconAnchorY)
+		int AddMarker(int uid, string label, double lat, double lng, String iconPath, float iconAnchorX, float iconAnchorY)
 		@{
 			MapViewDelegate* dg = (MapViewDelegate*)@{MapView:Of(_this)._mapViewDelegate:Get()};
-			return [dg addMarker:label latitude:lat longitude:lng icon:iconPath iconX:iconAnchorX iconY:iconAnchorY];
+			return [dg addMarker:label latitude:lat longitude:lng icon:iconPath iconX:iconAnchorX iconY:iconAnchorY markerID:uid];
 		@}
 
 		[Foreign(Language.ObjC)]
@@ -286,9 +286,9 @@ namespace Fuse.Maps.iOS
 			[dg clearMarkers];
 		@}
 
-		public void HandleMarkerTapped(string label)
+		public void HandleMarkerTapped(int id, string label)
 		{
-			_mapViewHost.HandleMarkerTapped(label);
+			_mapViewHost.HandleMarkerTapped(id, label);
 		}
 
 		public void UpdateMarkers()
@@ -297,6 +297,7 @@ namespace Fuse.Maps.iOS
 			foreach(MapMarker m in Markers)
 			{
 				AddMarker(
+					m.uid,
 					m.Label, 
 					m.Latitude, 
 					m.Longitude,
