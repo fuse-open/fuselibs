@@ -9,7 +9,7 @@
 			a.value = [2,3,4]
 		}
 	</JavaScript>
-	<Fuse.Reactive.Test.ObservableCollector ux:Name="OC" Items="{b}"/>
+	<FuseTest.ObservableCollector ux:Name="OC" Items="{b}"/>
 	
 	<FuseTest.Invoke Handler="{step1}" ux:Name="Step1"/>
 </Panel>

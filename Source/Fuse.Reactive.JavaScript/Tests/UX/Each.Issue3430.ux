@@ -21,6 +21,6 @@
 		</Each>
 	</StackPanel>
 
-	<Fuse.Reactive.Test.ObservableCollector ux:Name="OC" Items="{numbers}"/>
+	<FuseTest.ObservableCollector ux:Name="OC" Items="{numbers}"/>
 
 </Panel>

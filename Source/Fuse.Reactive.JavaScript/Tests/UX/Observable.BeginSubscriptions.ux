@@ -31,7 +31,7 @@
 			watch.removeSubscriber(subscriber)
 		}
 	</JavaScript>
-	<Fuse.Reactive.Test.ObservableCollector ux:Name="W" Items="{watchers}"/>
+	<FuseTest.ObservableCollector ux:Name="W" Items="{watchers}"/>
 	
 	<FuseTest.Invoke Handler="{add}" ux:Name="Add"/>
 	<FuseTest.Invoke Handler="{remove}" ux:Name="Remove"/>
