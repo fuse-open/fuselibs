@@ -225,7 +225,7 @@ namespace Fuse.Maps.Android
 		}
 
 		void ConfigGestures(){
-			if(IsReady) ForeignHelpers.ConfigureGestures(_mapView, _allowZoom, _allowRotate, _allowTilt);
+			if(IsReady) ForeignHelpers.ConfigureGestures(_mapView, _allowZoom, _allowRotate, _allowTilt, _allowScroll);
 		}
 
 		class ShowLocationCommand
@@ -324,6 +324,17 @@ namespace Fuse.Maps.Android
 			}
 			set {
 				_allowRotate = value;
+				ConfigGestures();
+			}
+		}
+
+		bool _allowScroll;
+		public bool AllowScroll {
+			get {
+				return _allowScroll;
+			}
+			set {
+				_allowScroll = value;
 				ConfigGestures();
 			}
 		}

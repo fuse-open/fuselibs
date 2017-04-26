@@ -216,11 +216,12 @@ public class FuseMap extends FrameLayout {
 		settings.setMyLocationButtonEnabled(myLocationButton);
 	}
 
-	public void configureGestures(boolean zoom, boolean rotate, boolean tilt){
+	public void configureGestures(boolean zoom, boolean rotate, boolean tilt, boolean scroll){
 		UiSettings settings = _googleMap.getUiSettings();
 		settings.setZoomGesturesEnabled(zoom);
 		settings.setRotateGesturesEnabled(rotate);
 		settings.setTiltGesturesEnabled(tilt);
+		settings.setScrollGesturesEnabled(scroll);
 	}
 
 	public void zoomIn(double duration){

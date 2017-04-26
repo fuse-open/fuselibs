@@ -51,10 +51,10 @@ namespace Fuse.Maps.Android
 		@}
 
 		[Foreign(Language.Java)]
-		internal static void ConfigureGestures(Java.Object handle, bool zoom, bool rotate, bool tilt)
+		internal static void ConfigureGestures(Java.Object handle, bool zoom, bool rotate, bool tilt, bool scroll)
 		@{
 			FuseMap map = (FuseMap)handle;
-			map.configureGestures(zoom,rotate,tilt);
+			map.configureGestures(zoom,rotate,tilt, scroll);
 		@}
 
 		[Foreign(Language.Java)]
