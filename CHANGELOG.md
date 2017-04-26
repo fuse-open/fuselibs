@@ -7,12 +7,12 @@
 
 ## MapView
 - Support MapMarker icon anchor X/Y/File properties when setting MapMarkers via JS
+- Added `<MapMarker Tapped="{myHandler}"/>` to retain the data context for each tapped marker.
+- Added `<MapView AllowScroll="false"/>` to disable the user panning and scrolling around.
 
 ## Fuse.Box / Fuse.Ray
 - Uno.Geometry.Box and Uno.Geometry.Ray has been replaced with Fuse.Box and Fuse.Ray.
 
-## MapView
-- Added `<MapMarker Tapped="{myHandler}"/>` to retain the data context for each tapped marker.
 
 ## 1.0
 
