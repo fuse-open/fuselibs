@@ -49,10 +49,12 @@ namespace Fuse.iOS.Controls
 		@}
 
 		[Foreign(Language.ObjC)]
-		public static ObjC.Object CreateWebView(bool zoomEnabled)
+		public static ObjC.Object CreateWebView(bool zoomEnabled, bool scrollEnabled)
 		@{
 			WKWebView* wv = [[WKWebView alloc] init];
 			wv.scrollView.delegate = zoomEnabled ? NULL : [[NoZoomDelegate alloc] init];
+			wv.scrollView.scrollEnabled = scrollEnabled;
+
 			return wv;
 		@}
 
@@ -162,7 +164,7 @@ namespace Fuse.iOS.Controls
 
 		public static WebView Create(Fuse.Controls.WebView webViewHost, string[] schemes)
 		{
-			var wv = WKWebViewHelpers.CreateWebView(webViewHost.ZoomEnabled);
+			var wv = WKWebViewHelpers.CreateWebView(webViewHost.ZoomEnabled, webViewHost.ScrollEnabled);
 			return new WebView(webViewHost, wv, schemes);
 		}
 
@@ -333,5 +335,6 @@ namespace Fuse.iOS.Controls
 		public event EventHandler UrlChanged;
 		public event EventHandler URISchemeHandler;
 		public bool ZoomEnabled { get; set; }
+		public bool ScrollEnabled { get; set; }
 	}
 }

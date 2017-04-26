@@ -39,7 +39,8 @@
     "iOS/NoZoomDelegate.m:CSource:iOS",
     "Android/FuseWebChromeClient.java:Java:Android",
     "Android/FuseWebViewClient.java:Java:Android",
-    "Android/JsInterface.java:Java:Android"
+    "Android/JsInterface.java:Java:Android",
+    "Android/ScrollableWebView.java:Java:Android"
   ]
 }
 
