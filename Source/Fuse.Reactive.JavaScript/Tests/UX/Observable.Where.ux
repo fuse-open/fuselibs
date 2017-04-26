@@ -55,8 +55,8 @@
 			items.value = 0
 		}
 	</JavaScript>
-	<Fuse.Reactive.Test.ObservableCollector ux:Name="OL" Items="{low}"/>
-	<Fuse.Reactive.Test.ObservableCollector ux:Name="OH" Items="{high}"/>
+	<FuseTest.ObservableCollector ux:Name="OL" Items="{low}"/>
+	<FuseTest.ObservableCollector ux:Name="OH" Items="{high}"/>
 	
 	<FuseTest.Invoke Handler="{step1}" ux:Name="Step1"/>
 	<FuseTest.Invoke Handler="{step2}" ux:Name="Step2"/>

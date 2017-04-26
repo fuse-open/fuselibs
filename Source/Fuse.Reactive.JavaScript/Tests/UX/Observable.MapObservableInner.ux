@@ -14,6 +14,6 @@
 		exports.source = source
 		exports.items = items
 	</JavaScript>
-	<Fuse.Reactive.Test.ObservableCollector ux:Name="OC" Items="{items}"/>
+	<FuseTest.ObservableCollector ux:Name="OC" Items="{items}"/>
 	<RangeControl Minimum="0" Maximum="100" Value="{source}" ux:Name="R"/>
 </Panel>

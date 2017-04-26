@@ -23,7 +23,7 @@
 			items.replaceAll( [9] )
 		}
 	</JavaScript>
-	<Fuse.Reactive.Test.ObservableCollector ux:Name="OC" Items="{items}"/>
+	<FuseTest.ObservableCollector ux:Name="OC" Items="{items}"/>
 	
 	<FuseTest.Invoke Handler="{step1}" ux:Name="Step1"/>
 	<FuseTest.Invoke Handler="{step2}" ux:Name="Step2"/>

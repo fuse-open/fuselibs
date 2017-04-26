@@ -56,8 +56,8 @@
 			items.replaceAt(2, new Item(6,true))
 		}
 	</JavaScript>
-	<Fuse.Reactive.Test.ObservableCollector ux:Name="OC" Items="{items}"/>
-	<Fuse.Reactive.Test.ObservableCollector ux:Name="ON" Items="{notItems}"/>
+	<FuseTest.ObservableCollector ux:Name="OC" Items="{items}"/>
+	<FuseTest.ObservableCollector ux:Name="ON" Items="{notItems}"/>
 	
 	<FuseTest.Invoke Handler="{step1}" ux:Name="Step1"/>
 	<FuseTest.Invoke Handler="{step2}" ux:Name="Step2"/>
