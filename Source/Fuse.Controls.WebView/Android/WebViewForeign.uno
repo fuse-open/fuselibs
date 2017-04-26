@@ -8,19 +8,21 @@ using Uno.Compiler.ExportTargetInterop;
 
 namespace Fuse.Android.Controls.WebViewUtils
 {
-	[ForeignInclude(Language.Java, "com.fusetools.webview.JsInterface", "com.fusetools.webview.FuseWebViewClient", "com.fusetools.webview.FuseWebChromeClient", "android.util.Log", "android.webkit.WebView")]
+	[ForeignInclude(Language.Java, "com.fusetools.webview.JsInterface", "com.fusetools.webview.FuseWebViewClient", "com.fusetools.webview.FuseWebChromeClient", "android.util.Log", "android.webkit.WebView", "com.fusetools.webview.ScrollableWebView")]
 	public static class WebViewForeign
 	{
 		[Foreign(Language.Java)]
-		public extern (Android) static Java.Object CreateWebView(bool zoomEnabled)
+		public extern (Android) static Java.Object CreateWebView(bool zoomEnabled, bool scrollEnabled)
 		@{
-			WebView wv = new WebView(com.fuse.Activity.getRootActivity());
+			ScrollableWebView wv = new ScrollableWebView(com.fuse.Activity.getRootActivity());
 			wv.getSettings().setJavaScriptEnabled(true);
 			wv.getSettings().setUseWideViewPort(true); //enabled viewport meta tag
 			wv.getSettings().setLoadWithOverviewMode(true); //mimic iOS Safari and Android Chrome
 			wv.getSettings().setSupportZoom(zoomEnabled);
 			wv.getSettings().setBuiltInZoomControls(zoomEnabled);
 			wv.getSettings().setDomStorageEnabled(true);
+			wv.setAllowScroll(scrollEnabled);
+
 			return wv;
 		@}
 		

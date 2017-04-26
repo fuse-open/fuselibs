@@ -30,7 +30,7 @@ namespace Fuse.Android.Controls
 
 		public static WebView Create(Fuse.Controls.WebView webViewHost, string[] schemes)
 		{
-			var handle = WebViewForeign.CreateWebView(webViewHost.ZoomEnabled);
+			var handle = WebViewForeign.CreateWebView(webViewHost.ZoomEnabled, webViewHost.ScrollEnabled);
 			return new WebView(webViewHost, handle, schemes);
 		}
 
@@ -200,5 +200,6 @@ namespace Fuse.Android.Controls
 		}
 		
 		public bool ZoomEnabled { get; set; }
+		public bool ScrollEnabled { get; set; }
 	}
 }

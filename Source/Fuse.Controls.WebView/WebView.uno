@@ -35,6 +35,7 @@ namespace Fuse.Controls
 		void Reload();
 		FileSource File { get; set; }
 		bool ZoomEnabled { get; set; }
+		bool ScrollEnabled { get; set; }
 	}
 
 	/**
@@ -215,6 +216,7 @@ namespace Fuse.Controls
 				string source = "";
 				string baseUrl = null;
 				bool zoomEnabled = true;
+				bool scrollEnabled = true;
 				FileSource file = null;
 
 				if (_webViewClient != null)
@@ -230,6 +232,7 @@ namespace Fuse.Controls
 					baseUrl = _webViewClient.BaseUrl;
 					file = _webViewClient.File;
 					zoomEnabled = _webViewClient.ZoomEnabled;
+					scrollEnabled = _webViewClient.ScrollEnabled;
 				}
 
 				_webViewClient = value ?? _fallbackClient;
@@ -245,6 +248,7 @@ namespace Fuse.Controls
 					_webViewClient.BaseUrl = baseUrl;
 					_webViewClient.Source = source;
 					_webViewClient.ZoomEnabled = zoomEnabled;
+					_webViewClient.ScrollEnabled = scrollEnabled;
 
 					if(source == "")
 					{
@@ -270,6 +274,21 @@ namespace Fuse.Controls
 				WebViewClient.ZoomEnabled = value; 
 			} 
 			get { return WebViewClient.ZoomEnabled; } 
+		}
+
+		/**
+			Determines if scrolling gestures are available in the WebView.
+			Defaults to 'true'
+		*/
+		public bool ScrollEnabled { 
+			set { 
+				if(WebViewClient != _fallbackClient){
+					debug_log("ScrollEnabled cannot be changed once rooted");
+					return;
+				} 
+				WebViewClient.ScrollEnabled = value; 
+			} 
+			get { return WebViewClient.ScrollEnabled; } 
 		}
 
 		void applyFallbackCalls(IWebView client)
@@ -478,6 +497,7 @@ namespace Fuse.Controls
 		{
 			_bufferedCalls = new List<BufferedWebViewCall>();
 			ZoomEnabled = true;
+			ScrollEnabled = true;
 		}
 
 		public void ApplyBufferedCalls(IWebView wv)
@@ -525,6 +545,7 @@ namespace Fuse.Controls
 		public event EventHandler URISchemeHandler;
 		public double Progress { get { return 0.0; } }
 		public bool ZoomEnabled { get; set; }
+		public bool ScrollEnabled { get; set; }
 	}
 
 }
