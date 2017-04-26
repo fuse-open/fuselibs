@@ -10,9 +10,14 @@
 - Added `<MapMarker Tapped="{myHandler}"/>` to retain the data context for each tapped marker.
 - Added `<MapView AllowScroll="false"/>` to disable the user panning and scrolling around.
 
+## WebView
+- Added `<WebView ScrollEnabled="false"/>` to disable the user panning and scrolling around.
+
 ## Fuse.Box / Fuse.Ray
 - Uno.Geometry.Box and Uno.Geometry.Ray has been replaced with Fuse.Box and Fuse.Ray.
 
+## MemoryPolicy
+- Added `QuickUnload` memory policy to keep data in memory for as short as possible.
 
 ## 1.0
 
