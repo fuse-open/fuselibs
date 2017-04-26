@@ -439,6 +439,12 @@ namespace Fuse.Maps.iOS
 			set { _mapView.SetBoolValue("rotateEnabled", value); }
 		}
 
+		public bool AllowScroll
+		{
+			get { return _mapView.GetBoolValue("scrollEnabled"); }
+			set { _mapView.SetBoolValue("scrollEnabled", value); }
+		}
+
 		public void SetLocation(double latitude, double longitude)
 		{
 			MoveTo(latitude,longitude, Zoom, Tilt, Bearing);

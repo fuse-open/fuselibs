@@ -50,6 +50,7 @@ namespace Fuse.Controls
 		public bool AllowZoom { get; set; }
 		public bool AllowTilt { get; set; }
 		public bool AllowRotate { get; set; }
+		public bool AllowScroll { get; set; }
 		public MapStyle Style { get; set; }
 
 		public MapConfig()
@@ -57,7 +58,7 @@ namespace Fuse.Controls
 			ShowMyLocation = false;
 			ShowMyLocationButton = false;
 			ShowCompass = false;
-			AllowZoom = AllowTilt = AllowRotate = true;
+			AllowZoom = AllowTilt = AllowRotate = AllowScroll = true;
 		}
 
 		public void CopyFrom(IMapView mv)
@@ -68,6 +69,7 @@ namespace Fuse.Controls
 			AllowZoom = mv.AllowZoom;
 			AllowTilt = mv.AllowTilt;
 			AllowRotate = mv.AllowRotate;
+			AllowScroll = mv.AllowScroll;
 			Style = mv.Style;
 		}
 
@@ -79,6 +81,7 @@ namespace Fuse.Controls
 			mv.AllowZoom = AllowZoom;
 			mv.AllowTilt = AllowTilt;
 			mv.AllowRotate = AllowRotate;
+			mv.AllowScroll = AllowScroll;
 			mv.Style = Style;
 		}
 	}
@@ -101,6 +104,8 @@ namespace Fuse.Controls
 		bool AllowZoom { get; set; }
 		bool AllowTilt { get; set; }
 		bool AllowRotate { get; set; }
+		bool AllowScroll { get; set; }
+
 		void UpdateMarkers();
 		void HandleMarkerTapped(string label);
 		void HandleLocationTapped(double latitude, double longitude);
@@ -400,6 +405,18 @@ namespace Fuse.Controls
 				_mapConfig.AllowRotate = value;
 				if(MapIsReady)
 					MapViewClient.AllowRotate = _mapConfig.AllowRotate;
+			}
+		}
+
+		/** Specifies whether the user is allowed to scroll the map.
+			The position can still be modified by the API.
+		*/
+		public bool AllowScroll {
+			get { return _mapConfig.AllowScroll; }
+			set {
+				_mapConfig.AllowScroll = value;
+				if(MapIsReady)
+					MapViewClient.AllowScroll = _mapConfig.AllowScroll;
 			}
 		}
 
