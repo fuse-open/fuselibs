@@ -9,6 +9,7 @@
 - Support MapMarker icon anchor X/Y/File properties when setting MapMarkers via JS
 - Added `<MapMarker Tapped="{myHandler}"/>` to retain the data context for each tapped marker.
 - Added `<MapView AllowScroll="false"/>` to disable the user panning and scrolling around.
+- Fixed a bug causing crashes on iPhone 5s devices when using `ShowMyLocation="true"`
 
 ## WebView
 - Added `<WebView ScrollEnabled="false"/>` to disable the user panning and scrolling around.
