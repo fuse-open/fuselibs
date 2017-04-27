@@ -204,7 +204,7 @@ namespace Fuse.Controls
 			{
 				if (_parent._isMultiline)
 				{
-					return new Fuse.Controls.Native.iOS.MultiLineTextEdit(_parent);
+					return new Fuse.Controls.Native.iOS.MultiLineTextEdit(_parent, _parent);
 				}
 				else
 				{

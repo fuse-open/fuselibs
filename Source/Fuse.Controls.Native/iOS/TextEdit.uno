@@ -1,4 +1,5 @@
 using Fuse.Internal;
+using Fuse.Input;
 using Fuse.Resources;
 using Uno.Compiler.ExportTargetInterop;
 using Uno;
@@ -408,22 +409,27 @@ namespace Fuse.Controls.Native.iOS
 		ITextEditHost _host;
 		ObjC.Object _delegate;
 		FontFaceDescriptor _descriptor;
+		Visual _visual;
 
 		readonly NSAttributedStringBuilder _builder = new NSAttributedStringBuilder();
 
-		public MultiLineTextEdit(ITextEditHost host) : base(Create())
+		public MultiLineTextEdit(ITextEditHost host, Visual visual) : base(Create())
 		{
 			TextEditSpeedHack.Run();
 			_host = host;
+			_visual = visual;
 			_delegate = CreateDelegate(Handle, OnTextChanged, OnDidBeginEditing);
 			NativeFocus.AddListener(Handle, this);
+			Pointer.AddHandlers(_visual, OnPointerPressed, OnPointerMoved, OnPointerReleased);
 		}
 
 		public override void Dispose()
 		{
 			NativeFocus.RemoveListener(Handle);
+			Pointer.RemoveHandlers(_visual, OnPointerPressed, OnPointerMoved, OnPointerReleased);
 			_host = null;
 			_delegate = null;
+			_visual = null;
 			base.Dispose();
 		}		
 
@@ -462,6 +468,7 @@ namespace Fuse.Controls.Native.iOS
 		void ITextEdit.FocusGained()
 		{
 			FocusHelpers.ScheduleBecomeFirstResponder(Handle);
+			UpdateCaretPosition();
 		}
 
 		void ITextEdit.FocusLost()
@@ -485,6 +492,41 @@ namespace Fuse.Controls.Native.iOS
 			_builder.SetValue(value);
 			_host.OnValueChanged(value);
 		}
+
+		int _inputFrame = -1;
+		float2 _pointerPosition = float2(0.0f);
+		void UpdatePointer(PointerEventArgs args)
+		{
+			if (args.IsPrimary)
+			{
+				_pointerPosition = args.WindowPoint;
+				_inputFrame = UpdateManager.FrameIndex;
+			}
+		}
+
+		void UpdateCaretPosition()
+		{
+			if (_inputFrame == UpdateManager.FrameIndex)
+			{
+				var p = _visual.WindowToLocal(_pointerPosition);
+				SetCaretPosition(Handle, p.X, p.Y);
+			}
+		}
+
+		[Foreign(Language.ObjC)]
+		static void SetCaretPosition(ObjC.Object handle, float x, float y)
+		@{
+			UITextView* textView = (::UITextView*)handle;
+			UITextPosition* textPos = [textView closestPositionToPoint: CGPointMake(x, y)];
+			auto offset = [textView offsetFromPosition:textView.beginningOfDocument toPosition:textPos];
+			[textView setSelectedRange:NSMakeRange(offset, 0)];
+		@}
+
+		void OnPointerPressed(object sender, PointerPressedArgs args) { UpdatePointer(args); }
+
+		void OnPointerMoved(object sender, PointerMovedArgs args) { UpdatePointer(args); }
+
+		void OnPointerReleased(object sender, PointerReleasedArgs args) { UpdatePointer(args); }
 
 		string ITextView.Value
 		{
