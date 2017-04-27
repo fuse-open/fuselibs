@@ -1,12 +1,12 @@
-
 using Uno;
 using Uno.Compiler.ExportTargetInterop;
+using Fuse.Input;
 
 namespace Fuse.Controls.Native.Android
 {
 	extern(Android) public class TextEdit : TextInput
 	{
-		public TextEdit(ITextEditHost host, bool isMultiline) : base(host, isMultiline)
+		public TextEdit(ITextEditHost host, Visual visual, bool isMultiline) : base(host, visual, isMultiline)
 		{
 			MakeItPlain(Handle);
 		}
@@ -27,14 +27,18 @@ namespace Fuse.Controls.Native.Android
 	extern(Android) public class TextInput : TextView, ITextEdit
 	{
 		ITextEditHost _host;
+		Visual _visual;
 
-		public TextInput(ITextEditHost host, bool isMultiline) : base(Create())
+		public TextInput(ITextEditHost host, Visual visual, bool isMultiline) : base(Create())
 		{
 			_host = host;
+			_visual = visual;
 			IsMultiline = isMultiline;
 			AddEditorActionListener(Handle);
 			_focusEvent = FocusChangedListener.AddHandler(Handle, OnNativeFocusChanged);
 			AddTextChangedListener(Handle);
+
+			Pointer.AddHandlers(_visual, OnPointerPressed, OnPointerMoved, OnPointerReleased);
 		}
 
 		void OnNativeFocusChanged(Java.Object view, bool hasFocus)
@@ -64,15 +68,63 @@ namespace Fuse.Controls.Native.Android
 
 		public override void Dispose()
 		{
+			Pointer.RemoveHandlers(_visual, OnPointerPressed, OnPointerMoved, OnPointerReleased);
+			_visual = null;
 			_host = null;
 			_focusEvent.Dispose();
 			_focusEvent = null;
 			base.Dispose();
 		}
 
+		int _inputFrame = -1;
+		float2 _pointerPosition = float2(0.0f);
+		/* This code is reconstructing the case where the pointer input would cause,
+		 * our textinput being focused. Due to lack of information in the Focus event,
+		 * what I really want is to get some metadata on the FocusedArgs telling me
+		 * how the TextEdit was focused (for example by providing the PointerEventArgs).
+		 *
+		 * Dont forget to deal with this :)
+		 */
+		void UpdatePointer(PointerEventArgs args)
+		{
+			if (args.IsPrimary)
+			{
+				_pointerPosition = args.WindowPoint;
+				_inputFrame = UpdateManager.FrameIndex;
+			}
+		}
+
+		/* I am feeling so bad for having to do stuff like this, but android's TextView
+		 * is so full of state that looks out of sync with itself until the View has been
+		 * onscreen... yuck!
+		 */
+		bool _warmedUp = false;
+		void UpdateCaretPosition()
+		{
+			if (_inputFrame == UpdateManager.FrameIndex)
+			{
+				if (!_warmedUp)
+				{
+					_warmedUp = true;
+					return;
+				}
+				var p = _visual.WindowToLocal(_pointerPosition) * _visual.Viewport.PixelsPerPoint;
+				var offset = GetOffsetForPosition(Handle, p.X, p.Y);
+				if (offset != -1)
+					SetCaretPosition(Handle, offset);
+			}
+		}
+
+		void OnPointerPressed(object sender, PointerPressedArgs args) { UpdatePointer(args); }
+
+		void OnPointerMoved(object sender, PointerMovedArgs args) { UpdatePointer(args); }
+
+		void OnPointerReleased(object sender, PointerReleasedArgs args) { UpdatePointer(args); }
+
 		void ITextEdit.FocusGained()
 		{
 			RequestFocus(Handle);
+			UpdateCaretPosition();
 		}
 
 		void ITextEdit.FocusLost()
@@ -277,6 +329,12 @@ namespace Fuse.Controls.Native.Android
 		}
 
 		[Foreign(Language.Java)]
+		static void SetCaretPosition(Java.Object handle, int offset)
+		@{
+			((android.widget.EditText)handle).setSelection(offset);
+		@}
+
+		[Foreign(Language.Java)]
 		static void SetPlaceholderColor(Java.Object handle, int value)
 		@{
 			((android.widget.TextView)handle).setHintTextColor(value);
@@ -286,6 +344,12 @@ namespace Fuse.Controls.Native.Android
 		static void SetPlaceholderText(Java.Object handle, string value)
 		@{
 			((android.widget.TextView)handle).setHint(value);
+		@}
+
+		[Foreign(Language.Java)]
+		static int GetOffsetForPosition(Java.Object handle, float x, float y)
+		@{
+			return ((android.widget.TextView)handle).getOffsetForPosition(x, y);
 		@}
 
 		int ReturnKeyType
