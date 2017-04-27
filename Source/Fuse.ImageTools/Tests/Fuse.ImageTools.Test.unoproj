@@ -2,7 +2,6 @@
   "Packages": [
     "Fuse",
     "FuseJS",
-    "Fuse.ImageTools",
     "Uno.Testing"
   ],
   "Projects": [

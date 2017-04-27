@@ -414,6 +414,7 @@ namespace Fuse.ImageTools
 
 		public static Future<Image> ImageFromBase64(string b64)
 		{
+			debug_log "Making an image..";
 			var p = new Promise<Image>();
 			var closure = new ImagePromiseCallback(p);
 			if defined(Android)
