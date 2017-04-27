@@ -7,3 +7,4 @@ install:
 
 script:
   - Stuff/uno doctor
+  - Stuff/uno test -tnative --timeout=30 Source
