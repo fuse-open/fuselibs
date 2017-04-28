@@ -9,7 +9,7 @@ namespace Fuse.Controls.Native.Android
 	[ForeignInclude(Language.Java, "android.graphics.RectF")]
 	extern(Android) internal class Circle : Shape, ICircleView
 	{
-	
+
 		float _startAngle = 0.0f;
 		float ICircleView.StartAngleDegrees
 		{

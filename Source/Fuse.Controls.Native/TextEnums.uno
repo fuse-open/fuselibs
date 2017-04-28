@@ -6,14 +6,14 @@ namespace Fuse.Controls
 		NoWrap,
 		Wrap
 	}
-	
+
 	public enum TextAlignment
 	{
 		Left,
 		Center,
 		Right
 	}
-	
+
 	public enum TextInputActionType
 	{
 		Primary,
@@ -56,7 +56,7 @@ namespace Fuse.Controls
 	}
 
 	public enum TextTruncation
-	{	
+	{
 		Standard,
 		None
 	}

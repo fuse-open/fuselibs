@@ -39,19 +39,19 @@ namespace Fuse.Controls.Native.iOS
 
 			t = pos + float2(size.X-cr[1],cr[1]);
 			AddArcWithCenter( path, t.X, t.Y, cr[1], -Math.PIf/2, 0f);
-			
+
 			t = pos + float2(size.X,size.Y-cr[2]);
 			AddLineToPoint( path,  t.X, t.Y );
 
 			t = pos + float2(size.X-cr[2],size.Y-cr[2]);
 			AddArcWithCenter( path, t.X, t.Y, cr[2], 0, Math.PIf/2 );
-			
+
 			t = pos + float2(cr[3],size.Y);
 			AddLineToPoint( path, t.X, t.Y );
 
 			t = pos + float2(cr[3],size.Y-cr[3]);
 			AddArcWithCenter( path, t.X, t.Y, cr[3], Math.PIf/2, Math.PIf);
-			
+
 			t = pos + float2(0,cr[0]);
 			AddLineToPoint( path, t.X, t.Y );
 
@@ -89,7 +89,7 @@ namespace Fuse.Controls.Native.iOS
 			UIBezierPath* path = (UIBezierPath*)handle;
 			[path addLineToPoint: { x, y }];
 		@}
-		
+
 		[Foreign(Language.ObjC)]
 		void AddArcWithCenter( ObjC.Object handle, float centerX, float centerY, float radius, float startAngle, float endAngle)
 		@{

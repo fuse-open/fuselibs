@@ -19,9 +19,9 @@ namespace Fuse.Controls.Native.iOS
 				OnShapeChanged();
 			}
 		}
-		
+
 		float ICircleView.EndAngleDegrees { set { } }
-		
+
 		bool _useAngle;
 		bool ICircleView.UseAngle
 		{

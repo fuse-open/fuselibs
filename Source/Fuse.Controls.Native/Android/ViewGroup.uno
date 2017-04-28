@@ -37,9 +37,9 @@ namespace Fuse.Controls.Native.Android
 		@{
 			android.view.ViewGroup viewGroup = (android.view.ViewGroup)parentHandle;
 			android.view.View childView = (android.view.View)childHandle;
-			viewGroup.removeView(childView);	
+			viewGroup.removeView(childView);
 		@}
 
 	}
-	
+
 }

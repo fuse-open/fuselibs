@@ -21,7 +21,7 @@ namespace Fuse.Controls.Native.iOS
 			return Major + "." + Minor + "." + Patch;
 		}
 	}
-	
+
 	[TargetSpecificImplementation]
 	extern(iOS) public static class iOSDevice
 	{
@@ -30,17 +30,17 @@ namespace Fuse.Controls.Native.iOS
 			Portrait,
 			Landscape
 		}
-		
+
 		static OSVersion _osVersion;
 		public static OSVersion OperatingSystemVersion
 		{
 			get{
 				if(_osVersion!=null) return _osVersion;
-				
+
 				int major = extern<int>()"(int)[[NSProcessInfo processInfo] operatingSystemVersion].majorVersion";
 				int minor = extern<int>()"(int)[[NSProcessInfo processInfo] operatingSystemVersion].minorVersion";
 				int patch = extern<int>()"(int)[[NSProcessInfo processInfo] operatingSystemVersion].patchVersion";
-				
+
 				return _osVersion = new OSVersion(major, minor, patch);
 			}
 		}

@@ -310,7 +310,7 @@ namespace Fuse.Controls.Native.iOS
 		@{
 			::UITextField* textField = (::UITextField*)handle;
 			return [textField text];
-		@}		
+		@}
 
 		[Foreign(Language.ObjC)]
 		static void SetTextColor(ObjC.Object handle, float r, float g, float b, float a)
@@ -360,7 +360,7 @@ namespace Fuse.Controls.Native.iOS
 		static void SetActionStyle(ObjC.Object handle, int style)
 		@{
 			::UITextField* textField = (::UITextField*)handle;
-			[textField setReturnKeyType: (UIReturnKeyType)style];	
+			[textField setReturnKeyType: (UIReturnKeyType)style];
 		@}
 
 		[Foreign(Language.ObjC)]
@@ -425,7 +425,7 @@ namespace Fuse.Controls.Native.iOS
 			_host = null;
 			_delegate = null;
 			base.Dispose();
-		}		
+		}
 
 		[Foreign(Language.ObjC)]
 		static ObjC.Object Create()
@@ -665,7 +665,7 @@ namespace Fuse.Controls.Native.iOS
 		static void GiveFocus(ObjC.Object handle)
 		@{
 			::UITextView* textView = (::UITextView*)handle;
-			[textView becomeFirstResponder];	
+			[textView becomeFirstResponder];
 		@}
 
 		[Foreign(Language.ObjC)]
@@ -680,13 +680,13 @@ namespace Fuse.Controls.Native.iOS
 		@{
 			::UITextView* textView = (::UITextView*)handle;
 			return [textView text];
-		@}		
+		@}
 
 		[Foreign(Language.ObjC)]
 		static void SetIsReadOnly(ObjC.Object handle, bool isReadOnly)
 		@{
 			::UITextView* textView = (::UITextView*)handle;
-			[textView setEditable: !isReadOnly];	
+			[textView setEditable: !isReadOnly];
 		@}
 
 		[Foreign(Language.ObjC)]
@@ -714,7 +714,7 @@ namespace Fuse.Controls.Native.iOS
 		static void SetActionStyle(ObjC.Object handle, int style)
 		@{
 			::UITextView* textView = (::UITextView*)handle;
-			[textView setReturnKeyType: (UIReturnKeyType)style];	
+			[textView setReturnKeyType: (UIReturnKeyType)style];
 		@}
 
 		[Foreign(Language.ObjC)]

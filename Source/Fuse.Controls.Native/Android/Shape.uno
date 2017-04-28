@@ -81,7 +81,7 @@ namespace Fuse.Controls.Native.Android
 				var ssc = brush as Fuse.Drawing.StaticSolidColor;
 				if (ssc != null)
 					c = ssc.Color;
-					
+
 				if (sc == null && ssc == null)
 					Fuse.Diagnostics.Unsupported( "", brush );
 

@@ -9,7 +9,7 @@ using Fuse.Elements;
 
 namespace Fuse.Controls.Native.Android
 {
-	[ForeignInclude(Language.Java, 
+	[ForeignInclude(Language.Java,
 		"java.lang.Runnable",
 		"android.graphics.*",
 		"android.app.Activity",

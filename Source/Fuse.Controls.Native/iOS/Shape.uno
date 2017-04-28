@@ -33,7 +33,7 @@ namespace Fuse.Controls.Native.iOS
 
 		protected void OnShapeChanged()
 		{
-			var layerCount = 
+			var layerCount =
 				(_fills != null ? _fills.Length : 0) +
 				(_strokes != null ? _strokes.Length : 0);
 
@@ -74,7 +74,7 @@ namespace Fuse.Controls.Native.iOS
 				var ssc = brush as Fuse.Drawing.StaticSolidColor;
 				if (ssc != null)
 					c = ssc.Color;
-					
+
 				if (sc == null && ssc == null)
 					Fuse.Diagnostics.Unsupported( "", brush );
 
@@ -138,7 +138,7 @@ namespace Fuse.Controls.Native.iOS
 			UIControl* uicontrol = [(ShapeView*)handle shapeView];
 			UIBezierPath* path = (UIBezierPath*)pathHandle;
 			CAShapeLayer* layer = (CAShapeLayer*)([[uicontrol layer] sublayers][layerIndex]);
-			
+
 
 			CAGradientLayer* gradientLayer = [[CAGradientLayer alloc] init];
 
@@ -157,7 +157,7 @@ namespace Fuse.Controls.Native.iOS
 				[mask setFillColor:[UIColor whiteColor].CGColor];
 				[mask setStrokeColor:nil];
 			}
-			
+
 			[mask setPath: path.CGPath];
 			[gradientLayer setMask: mask];
 
@@ -165,7 +165,7 @@ namespace Fuse.Controls.Native.iOS
 
 			auto gradientStops = @{float[]:Of(offsets).Length:Get()};
 
-			NSMutableArray* locations = [[NSMutableArray alloc] initWithCapacity:gradientStops];	
+			NSMutableArray* locations = [[NSMutableArray alloc] initWithCapacity:gradientStops];
 
 			for (int i = 0; i < gradientStops; i++)
 			{

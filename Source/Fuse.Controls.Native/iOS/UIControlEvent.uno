@@ -2,7 +2,7 @@ using Uno;
 using Uno.Compiler.ExportTargetInterop;
 
 namespace Fuse.Controls.Native.iOS
-{	
+{
 	[Require("Source.Include", "UIKit/UIKit.h")]
 	[Require("Source.Include", "iOS/Helpers.h")]
 	extern(iOS) class UIControlEvent : IDisposable

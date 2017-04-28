@@ -34,7 +34,7 @@ namespace Fuse.Controls.Native.Android
 		{
 			set { SetLineSpacing(Handle, value); }
 		}
-		
+
 		public float FontSize
 		{
 			set { SetFontSize(Handle, value); }
@@ -73,7 +73,7 @@ namespace Fuse.Controls.Native.Android
 		{
 			set { /* TODO */ }
 		}
-		
+
 		[Foreign(Language.Java)]
 		static Java.Object Create()
 		@{
