@@ -30,7 +30,7 @@ namespace Fuse.Controls.Native.iOS
 			::UIButton* button = (::UIButton*)handle;
 			[button setTitle:text forState:UIControlStateNormal];
 			[button setTitleColor:[UIColor colorWithRed:0.0 green:122.0/255.0 blue:1.0 alpha:1.0] forState:UIControlStateNormal];
-		@}		
+		@}
 
 	}
 }

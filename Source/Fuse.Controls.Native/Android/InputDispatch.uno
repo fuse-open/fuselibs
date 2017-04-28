@@ -27,7 +27,7 @@ namespace Fuse.Controls.Native.Android
 			{
 				var me = new MotionEvent(motionEvent);
 				var visual = (Visual)ViewVisualMap.Get(view);
-				
+
 				if (visual == null)
 					return false;
 
@@ -109,7 +109,7 @@ namespace Fuse.Controls.Native.Android
 				Fuse.AppBase.OnUnhandledExceptionInternal(e);
 			}
 		}
-		
+
 		static void RaiseMoved(Visual rootVisual, Visual visual, PointerEventData data)
 		{
 			try
@@ -121,7 +121,7 @@ namespace Fuse.Controls.Native.Android
 				Fuse.AppBase.OnUnhandledExceptionInternal(e);
 			}
 		}
-		
+
 		static void RaiseReleased(Visual rootVisual, Visual visual, PointerEventData data)
 		{
 			DeactivatePointer(data.PointIndex);
@@ -146,7 +146,7 @@ namespace Fuse.Controls.Native.Android
 			}
 			catch (Exception e)
 			{
-				Fuse.AppBase.OnUnhandledExceptionInternal(e);	
+				Fuse.AppBase.OnUnhandledExceptionInternal(e);
 			}
 		}
 
@@ -399,7 +399,7 @@ namespace Fuse.Controls.Native.Android
 		int GetPointerCount(Java.Object handle)
 		@{
 			return ((android.view.MotionEvent)handle).getPointerCount();
-		@} 
+		@}
 
 		[Foreign(Language.Java)]
 		float GetX(Java.Object handle, int pointerIndex)

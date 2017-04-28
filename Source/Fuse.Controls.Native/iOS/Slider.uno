@@ -12,7 +12,7 @@ namespace Fuse.Controls.Native.iOS
 		[UXConstructor]
 		public Slider([UXParameter("Host")]IRangeViewHost host) { }
 	}
-	
+
 	[Require("Source.Include", "UIKit/UIKit.h")]
 	extern(iOS) public class Slider : LeafView, IRangeView
 	{

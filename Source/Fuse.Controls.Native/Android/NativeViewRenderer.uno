@@ -9,7 +9,7 @@ namespace Fuse.Controls.Native.Android
 	{
 
 		readonly Java.Object _viewHandle;
-		
+
 		GLTextureHandle _textureHandle;
 		Java.Object _bitmapHandle;
 		bool _visualValid = false;
@@ -75,7 +75,7 @@ namespace Fuse.Controls.Native.Android
 			bitmap.eraseColor((int)0x00000000);
 
 			view.draw(canvas);
-			
+
 			if (reuse)
 			{
 				android.opengl.GLUtils.texSubImage2D(android.opengl.GLES20.GL_TEXTURE_2D, 0, 0, 0, bitmap);
@@ -105,7 +105,7 @@ namespace Fuse.Controls.Native.Android
 
 		void IDisposable.Dispose()
 		{
-			DeleteTexture();	
+			DeleteTexture();
 		}
 
 		void DeleteTexture()

@@ -28,7 +28,7 @@ namespace Fuse.Controls.Native.Android
 			_host = host;
 			AddChangedCallback(Handle);
 		}
-		
+
 		[Foreign(Language.Java)]
 		static Java.Object Create()
 		@{

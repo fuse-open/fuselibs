@@ -6,7 +6,7 @@ using Uno.UX;
 namespace Fuse.Controls.Native.iOS
 {
 	using Fuse.Input;
-	
+
 	[TargetSpecificImplementation]
 	extern(iOS) internal static class InputDispatch
 	{
@@ -123,7 +123,7 @@ namespace Fuse.Controls.Native.iOS
 				Timestamp = touch.Timestamp - Time.FrameTimeBase,
 				PointerType = Uno.Platform.PointerType.Touch,
 				IsPrimary = (pointIndex == 0),
-			};	
+			};
 		}
 
 		static Visual FindRoot(Visual visual)

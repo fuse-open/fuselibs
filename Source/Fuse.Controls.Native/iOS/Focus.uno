@@ -14,7 +14,7 @@ namespace Fuse.Controls.Native.iOS
 	extern(iOS) internal static class NativeFocus
 	{
 
-		static readonly Dictionary<ObjC.Object, INativeFocusListener> _listeners = 
+		static readonly Dictionary<ObjC.Object, INativeFocusListener> _listeners =
 			new Dictionary<ObjC.Object, INativeFocusListener>();
 
 		public static void AddListener(ObjC.Object handle, INativeFocusListener listener)
@@ -84,7 +84,7 @@ namespace Fuse.Controls.Native.iOS
 		[Foreign(Language.ObjC)]
 		public static ObjC.Object GetCurrentFirstResponder()
 		@{
-			id responder = [UIResponder currentFirstResponder];	
+			id responder = [UIResponder currentFirstResponder];
 			if ([responder isKindOfClass: [::UIView class]])
 			{
 				return responder;

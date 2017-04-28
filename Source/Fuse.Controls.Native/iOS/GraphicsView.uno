@@ -31,7 +31,7 @@ namespace Fuse.Controls.Native.iOS
 
 		ObjC.Object _glkViewHandle;
 		ObjC.Object _hitSurface;
-		
+
 		[UXConstructor]
 		public GraphicsView([UXParameter("Host")]Visual visual) : base(CreateContainer())
 		{
@@ -125,7 +125,7 @@ namespace Fuse.Controls.Native.iOS
 		static void DeleteDrawable(ObjC.Object handle)
 		@{
 			GLKView* glkView = (GLKView*)handle;
-			[glkView deleteDrawable];	
+			[glkView deleteDrawable];
 		@}
 
 	}
