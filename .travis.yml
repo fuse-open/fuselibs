@@ -1,9 +1,16 @@
 os: osx
 
+cache: ccache
+
 install:
   - brew update
   - brew install mono
+  - brew install ccache
   - Stuff/stuff install Stuff
+
+before_script:
+  - export CC="ccache clang"
+  - export CXX="ccache clang++"
 
 script:
   - Stuff/uno doctor
