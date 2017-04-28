@@ -66,7 +66,7 @@ namespace Fuse.Controls
 		IViewHandleRenderer InstatiateRenderer()
 		{
 			if defined(Android)
-				return new TextEditRenderer();
+				return TextEditRenderer.NewRenderer();
 			else if defined(iOS)
 				return new NativeViewRenderer();
 		}
@@ -216,41 +216,64 @@ namespace Fuse.Controls
 		}
 	}
 
-	extern(Android) internal class TextEditRenderer : IViewHandleRenderer
+	extern(Android) internal class TextEditRenderer
 	{
-
-		ViewHandle _target;
-
-		IViewHandleRenderer _nativeViewRenderer;
-
-		public TextEditRenderer()
+		public static IViewHandleRenderer NewRenderer()
 		{
-			_target = new ViewHandle(CreateTextEdit());
-			_nativeViewRenderer = new NativeViewRenderer();
+			return new Renderer();
 		}
 
-		bool _valid = false;
-		void IViewHandleRenderer.Draw(ViewHandle viewHandle, float4x4 localToClipTransform, float2 position, float2 size, float density)
+		class Renderer : IViewHandleRenderer
 		{
-			if (!_valid)
+			IViewHandleRenderer _renderer = new NativeViewRenderer();
+
+			void IViewHandleRenderer.Draw(
+				ViewHandle viewHandle,
+				float4x4 localToClipTransform,
+				float2 position,
+				float2 size,
+				float density)
 			{
-				CopyState(viewHandle.NativeHandle, _target.NativeHandle);
-				_valid = true;
+				TextEditRenderer.Instance.Draw(
+					_renderer,
+					viewHandle,
+					localToClipTransform,
+					position,
+					size,
+					density);
 			}
-			_nativeViewRenderer.Draw(_target, localToClipTransform, position, size, density);
+
+			void IViewHandleRenderer.Invalidate()
+			{
+				_renderer.Invalidate();
+			}
+
+			void IDisposable.Dispose()
+			{
+				_renderer.Dispose();
+				_renderer = null;
+			}
 		}
 
-		void IViewHandleRenderer.Invalidate()
+		static readonly TextEditRenderer Instance = new TextEditRenderer();
+
+		ViewHandle _renderView;
+
+		TextEditRenderer()
 		{
-			_nativeViewRenderer.Invalidate();
-			_valid = false;
+			_renderView = new ViewHandle(CreateTextEdit());
 		}
 
-		void IDisposable.Dispose()
+		void Draw(
+			IViewHandleRenderer renderer,
+			ViewHandle viewHandle,
+			float4x4 localToClipTransform,
+			float2 position,
+			float2 size,
+			float density)
 		{
-			_nativeViewRenderer.Dispose();
-			_nativeViewRenderer = null;
-			_target = null;
+			CopyState(viewHandle.NativeHandle, _renderView.NativeHandle);
+			renderer.Draw(_renderView, localToClipTransform, position, size, density);
 		}
 
 		[Foreign(Language.Java)]
