@@ -3,7 +3,7 @@ os: osx
 install:
   - brew update
   - brew install mono
-  - mono Stuff/stuff.exe install Stuff
+  - Stuff/stuff install Stuff
 
 script:
-  - mono Stuff/uno.exe doctor
+  - Stuff/uno doctor
