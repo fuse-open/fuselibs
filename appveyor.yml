@@ -2,7 +2,7 @@ version: '{build}'
 
 install:
   - Stuff\stuff install Stuff
-  - ps: Invoke-WebRequest http://downloads.fdossena.com/Projects/Mesa3D/Builds/MesaForWindows-17.0.5.zip -OutFile mesa.zip
+  - ps: Invoke-WebRequest http://downloads.fdossena.com/geth.php?r=mesa-latest -OutFile mesa.zip
   - ps: Expand-Archive mesa.zip mesa
 
 build_script:
