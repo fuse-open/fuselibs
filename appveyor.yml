@@ -2,6 +2,19 @@ version: '{build}'
 
 install:
   - Stuff\stuff install Stuff
+  - ps: Invoke-WebRequest http://downloads.fdossena.com/Projects/Mesa3D/Builds/MesaForWindows-17.0.5.zip -OutFile mesa.zip
+  - ps: Expand-Archive mesa.zip mesa
 
 build_script:
   - Stuff\uno doctor Source
+
+before_test:
+  - ps: |
+      Get-ChildItem -Path Source -Recurse -Include *Test.unoproj | Select-Object -ExpandProperty DirectoryName | Foreach-Object {
+        $buildDir = Join-Path $_ build\Test\DotNet
+        New-Item -Force -ItemType directory -Path $buildDir | Out-Null
+        Copy-Item -Path mesa\opengl32.dll -Destination (Join-Path $buildDir opengl32.dll)
+      }
+
+test_script:
+  - Stuff\uno test -tDotNet Source
