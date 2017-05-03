@@ -184,7 +184,7 @@ namespace Fuse.Controls
 			extern(Android)
 			public override object New()
 			{
-				return new Fuse.Controls.Native.Android.TextEdit(_parent, _parent._isMultiline);
+				return new Fuse.Controls.Native.Android.TextEdit(_parent, _parent, _parent._isMultiline);
 			}
 
 			extern(!Android)
@@ -204,7 +204,7 @@ namespace Fuse.Controls
 			{
 				if (_parent._isMultiline)
 				{
-					return new Fuse.Controls.Native.iOS.MultiLineTextEdit(_parent);
+					return new Fuse.Controls.Native.iOS.MultiLineTextEdit(_parent, _parent);
 				}
 				else
 				{
@@ -220,14 +220,12 @@ namespace Fuse.Controls
 	{
 
 		ViewHandle _target;
-		ViewHandle _container;
 
 		IViewHandleRenderer _nativeViewRenderer;
 
 		public TextEditRenderer()
 		{
 			_target = new ViewHandle(CreateTextEdit());
-			_container = new ViewHandle(CreateContainer());
 			_nativeViewRenderer = new NativeViewRenderer();
 		}
 
@@ -236,10 +234,10 @@ namespace Fuse.Controls
 		{
 			if (!_valid)
 			{
-				CopyState(_container.NativeHandle, viewHandle.NativeHandle, _target.NativeHandle);
+				CopyState(viewHandle.NativeHandle, _target.NativeHandle);
 				_valid = true;
 			}
-			_nativeViewRenderer.Draw(_container, localToClipTransform, position, size, density);
+			_nativeViewRenderer.Draw(_target, localToClipTransform, position, size, density);
 		}
 
 		void IViewHandleRenderer.Invalidate()
@@ -253,38 +251,23 @@ namespace Fuse.Controls
 			_nativeViewRenderer.Dispose();
 			_nativeViewRenderer = null;
 			_target = null;
-			_container = null;
 		}
 
 		[Foreign(Language.Java)]
-		static void CopyState(Java.Object container, Java.Object sourceHandle, Java.Object targetHandle)
+		static void CopyState(Java.Object sourceHandle, Java.Object targetHandle)
 		@{
-			android.widget.GridLayout gridLayout = (android.widget.GridLayout)container;
 			android.widget.TextView source = (android.widget.TextView)sourceHandle;
 			android.widget.TextView target = (android.widget.TextView)targetHandle;
-
-			if (target.getParent() == gridLayout)
-			{
-				gridLayout.removeView(target);
-			}
 
 			java.lang.String text = source.getText().toString();
 			java.lang.CharSequence hint = text.length() == 0 ? source.getHint() : "";
 			target.setText(text);
 			target.setHint(hint);
+			target.setBackgroundResource(0);
 			target.setTextColor(source.getCurrentTextColor());
 			target.setHintTextColor(source.getCurrentHintTextColor());
-			target.setImeOptions(source.getImeOptions());
 			target.setIncludeFontPadding(source.getIncludeFontPadding());
 			target.setTransformationMethod(source.getTransformationMethod());
-
-			// Setting the inputtype causes bugs when rendering RTL text,
-			// it triggers the same symptoms as the TextAlignment bug below.
-			// Assuming not copying this state is safe since it does not affect
-			// the rendering. No idea why this happens...
-
-			// target.setInputType(source.getInputType());
-
 			target.setTextSize(android.util.TypedValue.COMPLEX_UNIT_PX, source.getTextSize());
 			target.setTypeface(source.getTypeface());
 			target.setLineSpacing(source.getLineSpacingExtra(), source.getLineSpacingMultiplier());
@@ -293,32 +276,13 @@ namespace Fuse.Controls
 				source.getPaddingTop(),
 				source.getPaddingRight(),
 				source.getPaddingBottom());
-			target.setTextScaleX(source.getTextScaleX());
 
-			/*
-				Nasty workaround to avoid Android rendering bug when textalignment is set to center,
-				doing it the normal way makes all the characters render on top of eachother...
-			*/
-			android.widget.GridLayout.LayoutParams lp = new android.widget.GridLayout.LayoutParams();
-			lp.rowSpec = android.widget.GridLayout.spec(0, android.widget.GridLayout.FILL);
-			int gravity = source.getGravity();
-			if ((gravity & android.view.Gravity.LEFT) == android.view.Gravity.LEFT)
-			{
-				lp.setGravity(android.view.Gravity.LEFT);
-				lp.columnSpec = android.widget.GridLayout.spec(0, android.widget.GridLayout.LEFT);
-			}
-			else if ((gravity & android.view.Gravity.RIGHT) == android.view.Gravity.RIGHT)
-			{
-				lp.setGravity(android.view.Gravity.RIGHT);
-				lp.columnSpec = android.widget.GridLayout.spec(0, android.widget.GridLayout.RIGHT);
-			}
-			else if ((gravity & android.view.Gravity.CENTER_HORIZONTAL) == android.view.Gravity.CENTER_HORIZONTAL)
-			{
-				lp.setGravity(android.view.Gravity.CENTER_HORIZONTAL);
-				lp.columnSpec = android.widget.GridLayout.spec(0, android.widget.GridLayout.CENTER);
-			}
-			target.setLayoutParams(lp);
-			gridLayout.addView(target);
+			if (android.os.Build.VERSION.SDK_INT >= 17)
+				target.setTextAlignment(source.getTextAlignment());
+
+			target.setGravity(source.getGravity());
+			target.setHorizontallyScrolling(source.getScrollX() > 0);
+			target.setScrollX(source.getScrollX());
 		@}
 
 		[Foreign(Language.Java)]
@@ -326,18 +290,11 @@ namespace Fuse.Controls
 		@{
 			android.widget.TextView tv = new android.widget.TextView(com.fuse.Activity.getRootActivity());
 			tv.setBackgroundResource(0);
-			return tv;
-		@}
-
-		[Foreign(Language.Java)]
-		static Java.Object CreateContainer()
-		@{
-			android.widget.GridLayout gridLayout = new android.widget.GridLayout(com.fuse.Activity.getRootActivity());
-			gridLayout.setLayoutParams(
-				new android.widget.RelativeLayout.LayoutParams(
+			tv.setLayoutParams(
+				new android.widget.FrameLayout.LayoutParams(
 					android.view.ViewGroup.LayoutParams.MATCH_PARENT,
 					android.view.ViewGroup.LayoutParams.MATCH_PARENT));
-			return gridLayout;
+			return tv;
 		@}
 
 	}
