@@ -1,5 +1,8 @@
 # Unreleased
 
+## Gestures
+- Fuse.Input.Gesture now only has an internal constructor. This means that external code can't instantiate it. But before, they already couldn't do so in a *meaningful* way, so this shouldn't really affect any applications.
+
 ## Native TextInput
 - Fixed issue where focusing a `<TextInput />` or `<TextView />` by tapping it would not update the caret position accordingly. 
 
