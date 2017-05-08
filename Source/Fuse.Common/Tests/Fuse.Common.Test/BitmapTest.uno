@@ -17,15 +17,7 @@ namespace Fuse.Test
 
 		public override Stream OpenRead()
 		{
-			// TODO: this doesn't work right now, due to a bug in Uno.
-			// Should be fixed by this PR:
-			// https://github.com/fusetools/uno/pull/985
-			// return new MemoryStream(_bytes);
-
-			var stream = new MemoryStream();
-			stream.Write(_bytes, 0, _bytes.Length);
-			stream.Position = 0;
-			return stream;
+			return new MemoryStream(_bytes);
 		}
 	}
 
