@@ -1,8 +1,6 @@
 os: osx
 
-cache:
-  directories:
-    - $HOME/.ccache
+cache: ccache
 
 install:
   - brew update
