@@ -2,9 +2,7 @@ os: osx
 
 language: cpp
 
-cache:
-  directories:
-    - $HOME/.ccache
+cache: ccache
 
 install:
   - brew update
