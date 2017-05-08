@@ -127,6 +127,12 @@ namespace Fuse.Internal.Bitmaps
 		@}
 
 		[Foreign(Language.ObjC)]
+		public static void ReleaseImage(IntPtr image)
+		@{
+			CGImageRelease((CGImageRef)image)
+		@}
+
+		[Foreign(Language.ObjC)]
 		static int GetWidth(IntPtr image)
 		@{
 			return CGImageGetWidth((CGImageRef)image);
@@ -299,6 +305,8 @@ namespace Fuse.Internal.Bitmaps
 		{
 			if defined(Android)
 				AndroidHelpers.Recycle(NativeBitmap);
+			else if defined(iOS)
+				IOSHelpers.ReleaseImage(NativeImage);
 			else
 				build_error; // TODO!
 		}
