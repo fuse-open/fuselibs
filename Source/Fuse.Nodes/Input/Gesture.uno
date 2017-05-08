@@ -101,13 +101,26 @@ namespace Fuse.Input
 	*/
 	public class Gesture : IPropertyListener
 	{
-		internal IGesture Handler;
-		internal GestureType Type;
-		internal Visual Target;
+		internal readonly IGesture Handler;
+		internal readonly GestureType Type;
+		internal readonly Visual Target;
 		
 		CaptureType _captureType = CaptureType.None;
 		int _down = -1;
-		
+
+		internal Gesture(IGesture handler, GestureType type, Visual target)
+		{
+			if (handler == null)
+				throw new ArgumentNullException( nameof(handler) );
+
+			if (target == null)
+				throw new ArgumentNullException( nameof(target) );
+
+			Handler = handler;
+			Type = type;
+			Target = target;
+		}
+
 		void HandleRequest( GestureRequest req, PointerEventArgs args )
 		{
 			switch (req)
@@ -260,11 +273,7 @@ namespace Fuse.Input
 			if (!type.HasFlag(GestureType.Primary))
 				throw new ArgumentException( "Invalid gesture type" );
 				
-			var g = new Gesture{ 
-				Handler = handler ,
-				Type = type,
-				Target = target,
-			};
+			var g = new Gesture(handler, type, target);
 			_gestures[handler] = g;
 		
 			//ideally we will merge this into the generate pointer handling to avoid needing an extra
