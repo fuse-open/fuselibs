@@ -423,11 +423,15 @@ namespace Fuse.Internal.Bitmaps
 			}
 			else if defined(CIL)
 			{
+				var color = NativeBitmap.GetPixel(x, y);
 				if (IsCMYK(NativeBitmap)){
-					debug_log "Yep it is";
+					debug_log "Color: ";
+					var thing = FromCmyk(color);
+
+					debug_log "returning " + thing;
+					return FromCmyk(color);
 				}
 
-				var color = NativeBitmap.GetPixel(x, y);
 				return float4(color.R / 255.0f, color.G / 255.0f, color.B / 255.0f, color.A / 255.0f);
 			}
 			else if defined(CPLUSPLUS)
@@ -439,7 +443,7 @@ namespace Fuse.Internal.Bitmaps
 				build_error;
 		}
 
-		public static bool IsCMYK(System.Drawing.Image image)
+		extern(CIL) static bool IsCMYK(System.Drawing.Image image)
 		{
 			var flags = (System.Drawing.Imaging.ImageFlags)image.Flags;
 			if (flags.HasFlag(System.Drawing.Imaging.ImageFlags.ColorSpaceCmyk) || flags.HasFlag(System.Drawing.Imaging.ImageFlags.ColorSpaceYcck))
@@ -449,6 +453,16 @@ namespace Fuse.Internal.Bitmaps
 
 			const int PixelFormat32bppCMYK = (15 | (32 << 8));
 			return (int)image.PixelFormat == PixelFormat32bppCMYK;
+		}
+
+		extern(CIL) static float4 FromCmyk (System.Drawing.Color color)
+		{
+			var C = color.R / 255.0f; 
+			var K = color.G / 255.0f;
+			var M = color.B / 255.0f;
+			var Y = color.A / 255.0f;
+
+			return float4((1 - C) * (1 - K), (1 - M) * (1 - K), (1 - Y) * (1 - K), 1);
 		}
 
 		// TODO: consider making this an extension method somewhere else instead?
