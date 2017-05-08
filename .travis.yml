@@ -9,8 +9,7 @@ install:
   - Stuff/stuff install Stuff
 
 before_script:
-  - export CC="ccache clang"
-  - export CXX="ccache clang++"
+  - export PATH="`brew --prefix ccache`/libexec:$PATH"
 
 script:
   - Stuff/uno doctor
