@@ -12,6 +12,8 @@ namespace System.Drawing
 	{
 		public extern int Width { get; }
 		public extern int Height { get; }
+		public extern int Flags { get; }
+		public extern int PixelFormat { get; }
 	}
 
 	[DotNetType, TargetSpecificType]
@@ -29,7 +31,17 @@ namespace System.Drawing
 		public extern Bitmap(Uno.IO.Stream stream);
 		public extern Color GetPixel(int x, int y);
 	}
+
+	namespace Imaging {
+		[DotNetType]
+		extern(CIL) public enum ImageFlags
+		{
+			ColorSpaceCmyk = 32,
+			ColorSpaceYcck = 256
+		} 
+	}
 }
+
 
 namespace Fuse.Internal.Bitmaps
 {
@@ -378,6 +390,9 @@ namespace Fuse.Internal.Bitmaps
 			if (bundleFileSource != null)
 				return LoadFromBundleFile(bundleFileSource.BundleFile);
 
+
+			debug_log "Inside the loader..";
+
 			if defined(CIL)
 				return LoadFromStream(fileSource.OpenRead());
 			else if defined(CPLUSPLUS)
@@ -408,6 +423,10 @@ namespace Fuse.Internal.Bitmaps
 			}
 			else if defined(CIL)
 			{
+				if (IsCMYK(NativeBitmap)){
+					debug_log "Yep it is";
+				}
+
 				var color = NativeBitmap.GetPixel(x, y);
 				return float4(color.R / 255.0f, color.G / 255.0f, color.B / 255.0f, color.A / 255.0f);
 			}
@@ -418,6 +437,18 @@ namespace Fuse.Internal.Bitmaps
 			}
 			else
 				build_error;
+		}
+
+		public static bool IsCMYK(System.Drawing.Image image)
+		{
+			var flags = (System.Drawing.Imaging.ImageFlags)image.Flags;
+			if (flags.HasFlag(System.Drawing.Imaging.ImageFlags.ColorSpaceCmyk) || flags.HasFlag(System.Drawing.Imaging.ImageFlags.ColorSpaceYcck))
+			{
+				return true;
+			}
+
+			const int PixelFormat32bppCMYK = (15 | (32 << 8));
+			return (int)image.PixelFormat == PixelFormat32bppCMYK;
 		}
 
 		// TODO: consider making this an extension method somewhere else instead?
