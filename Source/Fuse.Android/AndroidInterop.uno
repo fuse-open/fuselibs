@@ -72,7 +72,8 @@ namespace Fuse.Android.Bindings
 		[Foreign(Language.Java)]
 		public static Java.Object MakeBufferInputStream(Java.Object buf) // UnoBackedByteBuffer buf
 		@{
-			return new com.fuse.android.ByteBufferInputStream((com.uno.UnoBackedByteBuffer)buf);
+			com.uno.UnoBackedByteBuffer newBuf = (com.uno.UnoBackedByteBuffer)buf;
+			return new com.fuse.android.ByteBufferInputStream(newBuf);
 		@}
 	}
 }

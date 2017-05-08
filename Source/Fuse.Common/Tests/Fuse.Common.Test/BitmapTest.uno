@@ -57,7 +57,8 @@ namespace Fuse.Test
 		[Test]
 		public void BasicJpeg()
 		{
-			var basicJpg = Bitmap.LoadFromFileSource(CreateBundleFileSource("Assets/basic.jpg"));
+			var created = CreateBundleFileSource("Assets/basic.jpg");
+			var basicJpg = Bitmap.LoadFromFileSource(created);
 			Assert.AreNotEqual(null, basicJpg);
 			Assert.AreEqual(3, basicJpg.Size.X);
 			Assert.AreEqual(2, basicJpg.Size.Y);

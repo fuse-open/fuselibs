@@ -33,7 +33,7 @@ namespace System.Drawing
 
 namespace Fuse.Internal.Bitmaps
 {
-	[ForeignInclude(Language.Java, "android.graphics.Bitmap", "android.graphics.BitmapFactory", "android.opengl.GLES20", "android.opengl.GLUtils", "java.io.InputStream", "java.nio.ByteBuffer", "com.fuse.android.ByteBufferInputStream")]
+	[ForeignInclude(Language.Java, "android.graphics.Bitmap", "android.graphics.BitmapFactory", "android.opengl.GLES20", "android.opengl.GLUtils", "java.io.InputStream", "java.nio.ByteBuffer", "com.fuse.android.ByteBufferInputStream", "com.fuse.android.RawByteBufferInputStream")]
 	extern(Android) static class AndroidHelpers
 	{
 		[Foreign(Language.Java)]
@@ -60,7 +60,7 @@ namespace Fuse.Internal.Bitmaps
 		[Foreign(Language.Java)]
 		public static Java.Object DecodeFromByteBuffer(Java.Object byteBuffer)
 		@{
-			ByteBufferInputStream inputStream = new ByteBufferInputStream((ByteBuffer)byteBuffer);
+			RawByteBufferInputStream inputStream = new RawByteBufferInputStream((ByteBuffer)byteBuffer);
 			return BitmapFactory.decodeStream(inputStream);
 		@}
 
@@ -399,12 +399,12 @@ namespace Fuse.Internal.Bitmaps
 			if defined(Android)
 			{
 				var color = AndroidHelpers.GetPixel(NativeBitmap, x, y);
-				return Color.FromARGB(color);
+				return Color.FromArgb((uint)color);
 			}
 			else if defined(iOS)
 			{
 				var color = IOSHelpers.ReadPixel(NativeImage, x, y);
-				return Color.FromARGB(color);
+				return Color.FromArgb((uint)color);
 			}
 			else if defined(CIL)
 			{
@@ -414,7 +414,7 @@ namespace Fuse.Internal.Bitmaps
 			else if defined(CPLUSPLUS)
 			{
 				var color = CPlusPlusHelpers.ReadPixel(NativeBitmap, x, y);
-				return Color.FromARGB(color);
+				return Color.FromArgb((uint)color);
 			}
 			else
 				build_error;
