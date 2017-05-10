@@ -68,26 +68,26 @@ namespace Fuse.Testing
 
 		List<Diagnostic> _errors = new List<Diagnostic>();
 
-		AssertionFailedException FindAssertionFailedException(Exception e)
+		TestFailedException FindTestFailedException(Exception e)
 		{
-			var assertionFailedException = e as AssertionFailedException;
-			if (assertionFailedException != null)
-				return assertionFailedException;
+			var testFailedException = e as TestFailedException;
+			if (testFailedException != null)
+				return testFailedException;
 
 			var aggregateException = e as AggregateException;
 			if (aggregateException != null)
 			{
 				foreach (var innerException in aggregateException.InnerExceptions)
 				{
-					assertionFailedException = FindAssertionFailedException(innerException);
-					if (assertionFailedException != null)
-						return assertionFailedException;
+					testFailedException = FindTestFailedException(innerException);
+					if (testFailedException != null)
+						return testFailedException;
 				}
 			}
 
 			var wrapException = e as WrapException;
 			if (wrapException != null)
-				return FindAssertionFailedException(wrapException.InnerException);
+				return FindTestFailedException(wrapException.InnerException);
 
 			return null;
 		}
@@ -110,9 +110,9 @@ namespace Fuse.Testing
 				}
 				catch (Exception e)
 				{
-					var assertionFailedException = FindAssertionFailedException(e);
-					if (assertionFailedException != null)
-						throw assertionFailedException;
+					var testFailedException = FindTestFailedException(e);
+					if (testFailedException != null)
+						Assert.Fail(testFailedException.Message);
 					else
 						throw;
 				}
