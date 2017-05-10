@@ -1,6 +1,0 @@
-<Extensions Backend="CIL">
-
-	<Require Assembly="Fuse.Scripting.Jurassic.dll" />
-	<Require Assembly="Jurassic.dll" />
-
-</Extensions>
