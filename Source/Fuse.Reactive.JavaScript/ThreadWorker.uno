@@ -16,7 +16,6 @@ namespace Fuse.Reactive
 		{
 			if defined(USE_JAVASCRIPTCORE) return new Fuse.Scripting.JavaScriptCore.Context(worker);
 			else if defined(USE_V8) return new Fuse.Scripting.V8.Context(worker);
-			else if defined(USE_DUKTAPE) return new Fuse.Scripting.Duktape.Context(worker);
 			else throw new Exception("No JavaScript VM available for this platform");
 		}
 
