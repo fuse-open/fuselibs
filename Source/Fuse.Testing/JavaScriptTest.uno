@@ -1,11 +1,18 @@
+using Uno;
 using Uno.UX;
-using Uno.Testing;
 
 using Fuse.Reactive;
 using Fuse.Scripting;
 
 namespace Fuse.Testing
 {
+	class TestFailedException : Exception
+	{
+		public TestFailedException(string message) : base(message)
+		{
+		}
+	}
+
 	[UXGlobalModule]
 	public sealed class UnoTestingHelper : NativeModule
 	{
@@ -29,7 +36,7 @@ namespace Fuse.Testing
 
 			public void Fail()
 			{
-				Assert.Fail(_message);
+				throw new TestFailedException(_message);
 			}
 		}
 
