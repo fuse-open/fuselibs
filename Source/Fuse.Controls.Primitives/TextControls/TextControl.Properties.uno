@@ -176,7 +176,11 @@ namespace Fuse.Controls
 
 		float4 _color = Font.PlatformDefaultTextColor;
 
-		/** The color of the text (alias for @TextColor). */
+		/**
+			The color of the text (alias for @TextColor).
+
+		 	For more information on what notations Color supports, check out [this subpage](articles:ux-markup/literals#colors).
+		*/
 		[UXOriginSetter("SetColor")]
 		public float4 Color
 		{

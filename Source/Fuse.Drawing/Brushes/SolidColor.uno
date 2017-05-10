@@ -15,6 +15,11 @@ namespace Fuse.Drawing
 		static Selector _colorName = "Color";
 
 		float4 _color;
+		/**
+			Sets the color used for drawing
+
+		 	For more information on what notations Color supports, check out [this subpage](articles:ux-markup/literals#colors).
+		*/
 		[UXOriginSetter("SetColor")]
 		public float4 Color
 		{

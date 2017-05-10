@@ -44,6 +44,7 @@ namespace Fuse.Reactive
 		protected override void OnUnrooted()
 		{
 			SetDataContext(null);
+			_diagnostic.ClearDiagnostic();
 
 			if (_moduleResult != null)
 			{
@@ -62,14 +63,14 @@ namespace Fuse.Reactive
 			base.OnUnrooted();
 		}
 
+		extern(!FUSELIBS_NO_TOASTS)
 		internal static void UserScriptError(string msg, ScriptException ex, object obj,
-			[CallerFilePath] string filePath = "", [CallerLineNumber] int lineNumber = 0, 
+			[CallerFilePath] string filePath = "", [CallerLineNumber] int lineNumber = 0,
 			[CallerMemberName] string memberName = "" )
 		{
 			msg = msg + " in " + ex.FileName + " line " + ex.LineNumber;
 			Fuse.Diagnostics.UserError(msg, obj, filePath, lineNumber, memberName, ex);
 		}
-
 
 		Module IModuleProvider.GetModule()
 		{
@@ -180,10 +181,32 @@ namespace Fuse.Reactive
 			return null;
 		}
 
-		static string previousErrorFile;
+		extern(!FUSELIBS_NO_TOASTS) static string previousErrorFile;
+		internal class DiagnosticSubject
+		{		
+			IDisposable _diagnostic;
+			public void ClearDiagnostic()
+			{
+				if (_diagnostic != null)
+				{
+					_diagnostic.Dispose();
+					_diagnostic = null;
+				}
+			}
+			public void SetDiagnostic(ScriptException se)
+			{
+				var d = new Diagnostic(DiagnosticType.UserError, se.Name, this, se.FileName, se.LineNumber, null, se);
+				ClearDiagnostic();
+				_diagnostic = Diagnostics.ReportTemporal(d);
+			}
+		}
+
+		DiagnosticSubject _diagnostic = new DiagnosticSubject();
 
 		void EvaluateModule()
 		{
+			_diagnostic.ClearDiagnostic();
+
 			var globalId = Uno.UX.Resource.GetGlobalKey(this);
 
 			lock (_resetHookMutex)
@@ -194,11 +217,13 @@ namespace Fuse.Reactive
 				if (newModuleResult.Error == null)
 				{
 					_moduleResult = newModuleResult;
-					
-					if (previousErrorFile == FileName + LineNumber)
+					if defined(!FUSELIBS_NO_TOASTS)
 					{
-						Diagnostics.UserSuccess("JavaScript error in " + FileName + " fixed!", this);
-						previousErrorFile = null;
+						if (previousErrorFile == FileName + LineNumber)
+						{
+							Diagnostics.UserSuccess("JavaScript error in " + FileName + " fixed!", this);
+							previousErrorFile = null;
+						}
 					}
 				}
 				else
@@ -208,8 +233,13 @@ namespace Fuse.Reactive
 					// Don't report chain-errors of already reported errors
 					if (!se.Message.Contains(ScriptModule.ModuleContainsAnErrorMessage))
 					{
-						JavaScript.UserScriptError( "JavaScript error", se, this );
-						previousErrorFile = FileName + LineNumber;
+						if defined(FUSELIBS_NO_TOASTS)
+							_diagnostic.SetDiagnostic(se);
+						else
+						{
+							JavaScript.UserScriptError( "JavaScript error", se, this );
+							previousErrorFile = FileName + LineNumber;
+						}
 					}
 				}
 			}

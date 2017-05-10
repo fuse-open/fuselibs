@@ -26,20 +26,22 @@ namespace Fuse.Motion
 			SpringFunction _sf;
 			bool _isSimulating;
 			bool _hasStartValue;
-			Simulation.ElasticForce<float4> _sim;
+			Simulation.ElasticForce<float4> _sim = Simulation.ElasticForce<float4>.CreatePoints();
 			IDisposable _valueSub;
 			IListener _listener;
 
 			public Subscription(SpringFunction sf, IContext context, IListener listener)
 			{
 				_sf = sf;
-				_valueSub = sf.Value.Subscribe(context, this);
 				_listener = listener;
+				_valueSub = sf.Value.Subscribe(context, this);
 			}
 
 			public void Dispose()
 			{
-				_valueSub.Dispose();
+				if (_valueSub != null)
+					_valueSub.Dispose();
+
 				_valueSub = null;
 				_listener = null;
 				StopSimulation();
@@ -53,6 +55,7 @@ namespace Fuse.Motion
 				{
 					_sim.Reset(v);
 					_hasStartValue = true;
+					_listener.OnNewData(_sf, v);
 				}
 				else if (_sim.Destination != v)
 				{

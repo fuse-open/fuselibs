@@ -51,7 +51,11 @@ namespace Fuse.Controls
 	public abstract partial class Shape : LayoutControl, ISurfaceDrawable, IPropertyListener,
 		IDrawObjectWatcherFeedback
 	{
-		/** The `Color` of the `Shape` */
+		/**
+			The color of the `Shape`
+
+		 	For more information on what notations Color supports, check out [this subpage](articles:ux-markup/literals#colors).
+		*/
 		[UXOriginSetter("SetColor")]
 		public float4 Color
 		{
@@ -334,7 +338,8 @@ namespace Fuse.Controls
 		Surface _surface;
 		protected Surface Surface { get { return _surface; } }
 		DrawObjectWatcher _watcher;
-		protected DrawObjectWatcher Watcher { get { return _watcher; } }
+		//internal and not protected since DrawObjectWatcher is an internal class
+		internal DrawObjectWatcher Watcher { get { return _watcher; } }
 		
 		protected override void OnRooted()
 		{

@@ -55,15 +55,17 @@
 
 +(void)saveImage:(UIImage*)image path:(NSString*)path
 {
-	NSData* imageData;
-	NSString* ext = [[path pathExtension] lowercaseString];
-	if([ext isEqualToString:@"png"]) {
-		imageData = UIImagePNGRepresentation(image);
-	} else {
-		imageData = UIImageJPEGRepresentation(image, 0.9f);
-	}
+	@autoreleasepool {
+		NSData* imageData;
+		NSString* ext = [[path pathExtension] lowercaseString];
+		if([ext isEqualToString:@"png"]) {
+			imageData = UIImagePNGRepresentation(image);
+		} else {
+			imageData = UIImageJPEGRepresentation(image, 0.9f);
+		}
 
-	[imageData writeToFile:path atomically:NO];
+		[imageData writeToFile:path atomically:NO];
+	}
 }
 
 +(NSArray*) getImageSize:(NSString*)path {
@@ -274,7 +276,11 @@
 							MIN(desiredWidth, width),
 							MIN(desiredHeight, height));
 
-					newImage = [UIImage imageWithCGImage:CGImageCreateWithImageInRect([newImage CGImage], cropRect)];
+					@autoreleasepool {
+						struct CGImage* cgimage = CGImageCreateWithImageInRect([newImage CGImage], cropRect);
+						newImage = [UIImage imageWithCGImage:cgimage];
+						CGImageRelease(cgimage);
+					}
 					break;
 				default:
 					//Use width/height as given

@@ -57,6 +57,11 @@ namespace Fuse.Drawing
 
 		static Selector _colorName = "Color";
 		[UXOriginSetter("SetColor")]
+		/**
+			The color of the stroke.
+
+		 	For more information on what notations Color supports, check out [this subpage](articles:ux-markup/literals#colors).
+		*/
 		public float4 Color
 		{
 			get

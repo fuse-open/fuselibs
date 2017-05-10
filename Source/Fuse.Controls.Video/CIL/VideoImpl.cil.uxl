@@ -3,8 +3,9 @@
 	<Require Assembly="Lib/Fuse.Video.CILInterface.dll" />
 	<Require Assembly="Lib/Fuse.Video.Mono.dll" />
 	<Require Assembly="Lib/Fuse.Video.WPF.dll" />
-	<Require Assembly="Lib/MonoMac.dll" />
 	<Require Assembly="Lib/DirectShowLib.dll" />
 	<Require Assembly="Lib/Fuse.Video.CIL.dll" />
+	<Require Condition="HOST_OSX" Assembly="XamMac/XamMac.dll" />
+	<CopyFile Condition="HOST_OSX" Name="XamMac/libxammac.dylib" TargetName="@(AssemblyDirectory)/libxammac.dylib" />
 
 </Extensions>

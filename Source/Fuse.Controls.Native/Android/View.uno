@@ -13,7 +13,9 @@ namespace Fuse.Controls.Native.Android
 
 		protected View(Java.Object handle) : this(handle, false) {}
 
-		protected View(Java.Object handle, bool isLeafView) : base (handle, isLeafView)
+		protected View(Java.Object handle, bool isLeafView) : this(handle, isLeafView, false) {}
+
+		protected View(Java.Object handle, bool isLeafView, bool handlesInput) : base(handle, isLeafView, handlesInput)
 		{
 			_handle = handle;
 		}

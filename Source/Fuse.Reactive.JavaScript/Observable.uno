@@ -6,7 +6,6 @@ namespace Fuse.Reactive
 	class Observable : ListMirror, IObservable
 	{
 		List<object> _values = new List<object>();
-
 		public override int Length { get { return _values.Count; } }
 
 		public override object this[int index]
@@ -49,7 +48,7 @@ namespace Fuse.Reactive
 			}
 		}
 
-		public class Subscription: ISubscription
+		public class Subscription: JavaScript.DiagnosticSubject, ISubscription
 		{
 			static int _counter = 1;
 			readonly int _origin;
@@ -81,6 +80,8 @@ namespace Fuse.Reactive
 
 			public void SetExclusive(object newValue)
 			{
+				ClearDiagnostic();
+
 				if (_om.Object == null)
 				{
 					Fuse.Diagnostics.InternalError( "Unexpected null object", this );
@@ -95,7 +96,10 @@ namespace Fuse.Reactive
 				{
 					//This assumes the Observable.js code is not the source of the error and thus it must be
 					//user code causing the problem
-					JavaScript.UserScriptError( "Failed to set Observable value", ex, this );
+					if defined(FUSELIBS_NO_TOASTS)
+						SetDiagnostic(ex);
+					else
+						JavaScript.UserScriptError( "Failed to set Observable value", ex, this );
 				}
 			}
 

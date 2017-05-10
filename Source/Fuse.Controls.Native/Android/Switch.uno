@@ -24,7 +24,7 @@ namespace Fuse.Controls.Native.Android
 		IToggleViewHost _host;
 
 		[UXConstructor]
-		public Switch([UXParameter("Host")]IToggleViewHost host) : base(Create())
+		public Switch([UXParameter("Host")]IToggleViewHost host) : base(Create(), true)
 		{
 			_host = host;
 			AddCallback(Handle);

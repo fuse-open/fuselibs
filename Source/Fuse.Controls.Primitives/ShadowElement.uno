@@ -91,6 +91,12 @@ namespace Fuse.Controls.Primitives
 		}
 
 		float4 _color;
+
+		/**
+			Sets the color of the shadow
+
+		 	For more information on what notations Color supports, check out [this subpage](articles:ux-markup/literals#colors).
+		*/
 		public float4 Color
 		{
 			get { return _color; }

@@ -82,6 +82,17 @@ namespace Fuse.Controls
 				<TextInput Value="{entryStr}" PlaceholderText="Enter your query...." ActionTriggered="{onSearch}" />
 				<Text FontSize="20" Value="{searchStr}" />
 			</StackPanel>
+
+		In some cases, it might be undesirable for the virtual keyboard to disappear when a certain other ux element is pressed. 
+		This can be done by passing a parent container to the `Focus.Delegate` property, causing the focus state to be delegated to the delegate target:
+
+			<DockPanel ux:Name="dockpanel" IsFocusable="true" Color="#fff">
+				<TextInput Focus.Delegate="dockpanel" />
+				<Panel Dock="Right">
+					<Text Value="SEND" Alignment="Center" Margin="4,0" Color="#fff" />
+					<Rectangle CornerRadius="4" Color="#000" />
+				</Panel>
+			</DockPanel>
 		
 	*/
 	public class TextInput: TextInputControl, ITextEditControl

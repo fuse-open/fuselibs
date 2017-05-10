@@ -28,13 +28,17 @@ namespace Fuse.Controls.Native
 		}
 
 		internal readonly bool IsLeafView;
+		internal readonly bool HandlesInput;
 
-		public ViewHandle(Java.Object nativeHandle) : this(nativeHandle, false) { }
+		public ViewHandle(Java.Object nativeHandle) : this(nativeHandle, false, false) { }
 
-		public ViewHandle(Java.Object nativeHandle, bool isLeafView)
+		public ViewHandle(Java.Object nativeHandle, bool isLeafView) : this(nativeHandle, isLeafView, false) { }
+
+		public ViewHandle(Java.Object nativeHandle, bool isLeafView, bool handlesInput)
 		{
 			NativeHandle = nativeHandle;
 			IsLeafView = isLeafView;
+			HandlesInput = handlesInput;
 		}
 
 		public virtual void Dispose() {}

@@ -5,19 +5,19 @@ using Uno.Threading;
 
 namespace Fuse.Reactive
 {
-	public interface IObservable: IArray
+	interface IObservable: IArray
 	{
 		ISubscription Subscribe(IObserver observer);
 	}
 
-	public interface ISubscription: IDisposable
+	interface ISubscription: IDisposable
 	{
 		void ClearExclusive();
 		void SetExclusive(object newValue);
 		void ReplaceAllExclusive(IArray values);
 	}
 	
-	public interface IObserver
+	interface IObserver
 	{
 		/** Clear all items */
 		void OnClear();

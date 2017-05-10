@@ -23,7 +23,7 @@ namespace Fuse.Controls.Native.Android
 		IRangeViewHost _host;
 
 		[UXConstructor]
-		public Slider([UXParameter("Host")]IRangeViewHost host) : base(Create())
+		public Slider([UXParameter("Host")]IRangeViewHost host) : base(Create(), true)
 		{
 			_host = host;
 			AddChangedCallback(Handle);

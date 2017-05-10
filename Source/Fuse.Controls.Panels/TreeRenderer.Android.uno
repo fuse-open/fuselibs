@@ -58,7 +58,8 @@ namespace Fuse.Controls
 			else
 				_setRoot(v);
 
-			Fuse.Controls.Native.Android.InputDispatch.AddListener(v, e);
+			if (!v.HandlesInput)
+				Fuse.Controls.Native.Android.InputDispatch.AddListener(v, e);
 
 			_elements.Add(e, v);
 		}
@@ -97,7 +98,8 @@ namespace Fuse.Controls
 			var v = _elements[e];
 			_elements.Remove(e);
 
-			Fuse.Controls.Native.Android.InputDispatch.RemoveListener(v);
+			if (!v.HandlesInput)
+				Fuse.Controls.Native.Android.InputDispatch.RemoveListener(v);
 
 			if (e is Control)
 			{
@@ -239,7 +241,7 @@ namespace Fuse.Controls
 				var ssc = brush as Fuse.Drawing.StaticSolidColor;
 				if (ssc != null)
 					c = ssc.Color;
-					
+
 				if (sc == null && ssc == null)
 					Fuse.Diagnostics.Unsupported( "Cannot convert to a color" , brush );
 			}

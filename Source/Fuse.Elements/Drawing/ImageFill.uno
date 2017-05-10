@@ -80,6 +80,11 @@ namespace Fuse.Drawing
 
 		static Selector _colorName = "Color";
 		float4 _color = float4(1);
+		/**
+			A color used to adjust the color of the image.
+
+		 	For more information on what notations Color supports, check out [this subpage](articles:ux-markup/literals#colors).
+		*/
 		public float4 Color
 		{
 			get { return _color; }
@@ -295,7 +300,7 @@ namespace Fuse.Drawing
 		}
 		
 		double _lastUsed;
-		MemoryPolicy IMemoryResource.MemoryPolicy { get { return MemoryPolicy.UnloadInBackgroundPolicy; } }
+		MemoryPolicy IMemoryResource.MemoryPolicy { get { return _container.MemoryPolicy; } }
 		bool IMemoryResource.IsPinned { get { return _container.IsRooted; } }
 		double IMemoryResource.LastUsed { get { return _lastUsed; } }
 		void IMemoryResource.SoftDispose() { CleanTempTexture(); }

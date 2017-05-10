@@ -4,7 +4,7 @@ namespace Fuse.Reactive
 {
 	/** Utility base class that observes the first value of an `IObservable`.
 	*/
-	public abstract class ValueObserver: IDisposable, IObserver
+	abstract class ValueObserver: IDisposable, IObserver
 	{
 		IDisposable _obsSub;
 		IObservable _obs;
@@ -74,7 +74,7 @@ namespace Fuse.Reactive
 		}
 	}
 
-	public class ValueForwarder: ValueObserver
+	class ValueForwarder: ValueObserver
 	{
 		public interface IValueListener { void NewValue(object value); }
 

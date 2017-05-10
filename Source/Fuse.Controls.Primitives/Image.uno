@@ -188,7 +188,11 @@ namespace Fuse.Controls
 		}
 
 		float4 _color = float4(1);
-		/** Specifies a mask color used while drawing the image. This color is multiplied by the source color. */
+		/**
+			Specifies a mask color used while drawing the image. This color is multiplied by the source color.
+
+		 	For more information on what notations Color supports, check out [this subpage](articles:ux-markup/literals#colors).
+		*/
 		public float4 Color
 		{
 			get { return _color; }

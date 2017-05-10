@@ -49,7 +49,8 @@ namespace FuseTest
 		
 		void OnDiagnostic(Diagnostic d)
 		{
-			_diagnosticsQueue.Enqueue(d);
+			if (!d.IsTemporalWarning)
+				_diagnosticsQueue.Enqueue(d);
 		}
 
 		public void Dispose()
@@ -89,7 +90,8 @@ namespace FuseTest
 
 		static void OnDiagnosticReported(Diagnostic d)
 		{
-			throw new DiagnosticException(d);
+			if (!d.IsTemporalWarning)
+				throw new DiagnosticException(d);
 		}
 
 		internal class DiagnosticDispatch

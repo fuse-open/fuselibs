@@ -126,7 +126,7 @@ namespace Fuse
  			if (_prevStatusBarOrientation != o)
  			{
  				_prevStatusBarOrientation = o;
- 				UpdateManager.PerformNextFrame(_renderPanel.InvalidateVisual);
+				UpdateManager.PerformNextFrame(_graphicsView.InvalidateVisual);
  			}
  		}
 

@@ -23,7 +23,7 @@ namespace Fuse.Controls.Native.iOS
 
 		static void OnTouchEvent(ObjC.Object sender, ObjC.Object uiEvent)
 		{
-			if (IsUIControl(sender) && IsUIEvent(uiEvent))
+			if (sender.IsUIControl() && uiEvent.IsUIEvent())
 			{
 				if (_listeners.ContainsKey(sender))
 				{
@@ -52,7 +52,7 @@ namespace Fuse.Controls.Native.iOS
 
 		public static void HandleEvent(ObjC.Object viewHandle, Visual origin, ObjC.Object uiEvent)
 		{
-			if (IsUIEvent(uiEvent))
+			if (uiEvent.IsUIEvent())
 				HandleEvent(viewHandle, origin, new UIEvent(uiEvent));
 		}
 
@@ -182,7 +182,7 @@ namespace Fuse.Controls.Native.iOS
 
 		public static void AddListener(Visual visual, ObjC.Object handle)
 		{
-			if (!IsUIControl(handle))
+			if (!handle.IsUIControl())
 				throw new Exception("Can only listen to events on UIControls");
 
 			_listeners.Add(handle, visual);
@@ -197,22 +197,6 @@ namespace Fuse.Controls.Native.iOS
 				_listeners.Remove(handle);
 			}
 		}
-
-		[Foreign(Language.ObjC)]
-		[Require("Source.Include", "UIKit/UIKit.h")]
-		public static bool IsUIControl(ObjC.Object handle)
-		@{
-			NSObject* obj = (NSObject*)handle;
-			return [obj isKindOfClass:[UIControl class]];
-		@}
-
-		[Foreign(Language.ObjC)]
-		[Require("Source.Include", "UIKit/UIKit.h")]
-		static bool IsUIEvent(ObjC.Object handle)
-		@{
-			NSObject* obj = (NSObject*)handle;
-			return [obj isKindOfClass:[::UIEvent class]];
-		@}
 
 		[Foreign(Language.ObjC)]
 		[Require("Source.Include", "iOS/Helpers.h")]

@@ -22,11 +22,11 @@
 		<WhileDisabled>
 			<Change thumb_circle.Fill="#EFEFEF" />
 			<Change thumb_stroke.Brush="#C9C9C9" />
-			<Change thumb_shadow.Distance="0" /> 
+			<Change thumb_shadow.Distance="0" />
 			<Change thumb_shadow.Size="0" />
 			<Change scrubber_left.Fill="#D5D5D5"/>
-		</WhileDisabled> 
+		</WhileDisabled>
 	</Panel>
 	<Fuse.Controls.Native.Android.Slider ux:Condition="Android" ux:Template="AndroidAppearance" Host="this" />
-	<Fuse.Controls.Native.iOS.Slider ux:Condition="iOS" ux:Template="iOSAppearance" Host="this" />
+	<Fuse.Controls.Native.iOS.Slider ux:Condition="iOS" ux:Template="iOSAppearance" Host="this" Visual="this" />
 </RangeControl>

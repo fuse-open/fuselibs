@@ -202,6 +202,8 @@ namespace Fuse.Controls
 		float4 _color = float4(0,0,0,0);
 		/** The clear-color of the graphics view.
 
+			For more information on what notations Color supports, check out [this subpage](articles:ux-markup/literals#colors).
+
 			@default Black
 		*/
 		public float4 Color

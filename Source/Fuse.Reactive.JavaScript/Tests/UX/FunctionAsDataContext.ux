@@ -1,0 +1,31 @@
+<Panel ux:Class="UX.FunctionAsDataContext">
+  <JavaScript>
+    var Observable = require("FuseJS/Observable");
+    var ok = Observable(false);
+
+		function handler(val) {
+			if ((val.data instanceof Function)) { ok.value = true; }
+		} 
+
+		function test1() { console.log('test1');}
+
+		module.exports = {
+			handler,test1, ok
+		};  
+  </JavaScript>
+
+ <Panel ux:Class="homepagebutton" Background="White">
+    <object ux:Property="Action" />
+    <With Data="{Property Action}">
+      <Panel ux:Name="panel" HitTestMode="LocalBounds">
+          <FuseTest.Invoke Handler="{handler}" ux:Name="Step1"/>
+          <Text Alignment="Center" Value="Test" />
+      </Panel>
+    </With>
+  </Panel>
+
+  <Grid>
+    <Switch ux:Name="ok" Value="{ok}" />
+    <homepagebutton ux:Name="hpb" Action="{test1}"/>
+  </Grid>
+</Panel>

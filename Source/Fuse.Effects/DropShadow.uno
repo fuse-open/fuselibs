@@ -102,7 +102,11 @@ namespace Fuse.Effects
 
 
 		float4 _color;
-		/** The color of the drop shadow. */
+		/**
+			The color of the drop shadow.
+
+		 	For more information on what notations Color supports, check out [this subpage](articles:ux-markup/literals#colors).
+		*/
 		public float4 Color
 		{
 			get

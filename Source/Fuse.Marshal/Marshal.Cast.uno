@@ -173,6 +173,7 @@ namespace Fuse
 		{
 			if (o is Size) return (Size)o;
 			else if (o is Size2) return ((Size2)o).X;
+			else if (o is string) return StringToSize((string)o);
 			else return ToFloat(o);
 		}
 
@@ -180,7 +181,39 @@ namespace Fuse
 		{
 			if (o is Size2) return (Size2) o;
 			else if (o is Size) return new Size2((Size)o, (Size)o);
+			else if (o is string) return StringToSize2((string)o);
 			else return new Size2(ToFloat2(o).X, ToFloat2(o).Y);
+		}
+
+		static Size2 StringToSize2(string o)
+		{
+			if (o.Contains(","))
+			{
+				var p = o.Split(',');
+				return new Size2(StringToSize(p[0]), StringToSize(p[1]));
+			}
+			else
+			{
+				var s = StringToSize(o);
+				return new Size2(s, s);
+			}
+		}
+
+		static Size StringToSize(string o)
+		{
+			var s = o.Trim();
+			var unit = Unit.Unspecified;
+			if (s.EndsWith("%")) { unit = Unit.Percent; s = s.Substring(0, s.Length-1); }
+			else if (s.EndsWith("pt")) { unit = Unit.Points; s = s.Substring(0, s.Length-2); }
+			else if (s.EndsWith("px")) { unit = Unit.Pixels; s = s.Substring(0, s.Length-2); }
+			
+			float v;
+			if (!float.TryParse(s, out v))
+			{
+				throw new MarshalException(o, typeof(Size));
+			}
+
+			return new Size(v, unit);
 		}
 	}
 }

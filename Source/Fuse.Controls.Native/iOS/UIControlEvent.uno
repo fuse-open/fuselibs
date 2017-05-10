@@ -7,6 +7,11 @@ namespace Fuse.Controls.Native.iOS
 	[Require("Source.Include", "iOS/Helpers.h")]
 	extern(iOS) class UIControlEvent : IDisposable
 	{
+		public static IDisposable AddAllTouchEventsCallback(ObjC.Object uiControl, Action<ObjC.Object, ObjC.Object> handler)
+		{
+			return new UIControlEvent(uiControl, handler, extern<int>"(int)UIControlEventAllTouchEvents");
+		}
+
 		public static IDisposable AddValueChangedCallback(ObjC.Object uiControl, Action<ObjC.Object, ObjC.Object> handler)
 		{
 			return new UIControlEvent(uiControl, handler, extern<int>"(int)UIControlEventValueChanged");

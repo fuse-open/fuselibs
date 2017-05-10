@@ -14,7 +14,7 @@ namespace Fuse.Reactive
 	{
 		/** Creates a subscription to given key in this context.
 			
-			May return `null` after calling `listener` if the data was synchronously available
+			May return `null` after calling `listener.OnNewData` if the data was synchronously available
 			and will never change.
 		*/
 		IDisposable Subscribe(IExpression source, string key, IListener listener);
@@ -41,7 +41,7 @@ namespace Fuse.Reactive
 
 			May return an `IWriteable` if the expression represents a writeable source (e.g. a property).
 			
-			May return `null` after calling `listener` if the data was synchronously available
+			May return `null` after calling `listener.OnNewData` if the data was synchronously available
 			and will never change.
 		*/
 		IDisposable Subscribe(IContext context, IListener listener);

@@ -70,11 +70,13 @@ namespace Uno.Collections
 		public void Add(T value, float2 priority) { Add( value, float4(priority,0,0) ); }
 		public void Add(T value, float3 priority) { Add( value, float4(priority,0) ); }
 		
-		public void Add(T value, float4 priority = float4(0) )
+		public void Add(T value, float4 priority)
 		{
 			int at = (_type == PriorityQueueType.Fifo) ? LowerBound(priority) : UpperBound(priority);
 			_items.Insert(at, new PriorityQueueItem<T> { Value = value, Priority = priority });
 		}
+
+		public void Add(T value) { Add( value, float4(0) ); }
 		
 		public void Remove(T value)
 		{

@@ -675,7 +675,7 @@ namespace Fuse.Drawing
 				gradientEndPoint = xDiff == 0 ? endY : endX;
 			}
 
-			return new float4(gradientStartPoint, gradientEndPoint, startBoundPoint, endBoundPoint);
+			return float4(gradientStartPoint, gradientEndPoint, startBoundPoint, endBoundPoint);
 		}
 
 		static ColorBlend CreateColorBlend(LinearGradient lg, RectangleF bounds, float startX, float startY, float endX, float endY)

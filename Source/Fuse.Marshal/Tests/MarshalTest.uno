@@ -11,6 +11,25 @@ namespace Fuse
 
 	public class ValueTests: TestBase
 	{
+		public void MarshalToSizeWithGarbage()
+		{
+			Marshal.ToSize("13@pt");
+		}
+
+		[Test]
+		public void SizeParserTest()
+		{
+			Assert.AreEqual((Size)1337.0f, Marshal.ToSize("1337.00"));
+			Assert.AreEqual(Size.Percent(13.37f), Marshal.ToSize("13.3700% "));
+			Assert.AreEqual(Size.Points(13.37f), Marshal.ToSize("13.3700pt"));
+			Assert.AreEqual(Size.Points(13), Marshal.ToSize("  13pt"));
+			Assert.AreEqual(Size.Pixels(13.23f), Marshal.ToSize("13.2300px  "));
+			Assert.AreEqual(new Size2(Size.Pixels(13.23f), Size.Percent(55.6f)), Marshal.ToSize2("13.2300px, 55.60%"));
+			Assert.AreEqual(new Size2(Size.Pixels(13.23f), Size.Pixels(13.23f)), Marshal.ToSize2("13.2300px"));
+			Assert.AreEqual(new Size2((Size)1.0f, (Size)1.0f), Marshal.ToSize2("1"));
+			Assert.Throws<MarshalException>(MarshalToSizeWithGarbage);
+		}
+
 		[Test]
 		public void OperatorTest()
 		{

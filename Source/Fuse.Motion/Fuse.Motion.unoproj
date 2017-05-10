@@ -2,7 +2,7 @@
   "Copyright": "Copyright (c) Fusetools AS 2017",
   "Description": "Library for control motion and simulated physics for UI",
   "Publisher": "Fusetools AS",
-  "Version": "1.0.0-rc3",
+  "Version": "1.0.0",
   "Package": {
     "ProjectUrl": "https://fusetools.com"
   },
@@ -12,6 +12,7 @@
   ],
   "InternalsVisibleTo": [
     "Fuse.Animations",
+    "Fuse.Charting",
     "Fuse.Controls",
     "Fuse.Controls.Primitives",
     "Fuse.Controls.Navigation",

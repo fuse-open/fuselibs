@@ -27,6 +27,11 @@ namespace Fuse.Drawing
 
 		static Selector _colorName = "Color";
 		float4 _color = float4(1);
+		/**
+			The color to be used for the gradient stop.
+
+		 	For more information on what notations Color supports, check out [this subpage](articles:ux-markup/literals#colors).
+		*/
 		public float4 Color
 		{
 			get { return _color; }
@@ -115,14 +120,25 @@ namespace Fuse.Drawing
 		RootableList<GradientStop> _stops = new RootableList<GradientStop>();
 
 		static GradientStop[] _emptySortedStops = new GradientStop[0];
-		GradientStop[] _sortedStops;
-		public GradientStop[] SortedStops { get { return _sortedStops ?? _emptySortedStops; } }
+		public GradientStop[] SortedStops { get { return ToArray(_stops) ?? _emptySortedStops; } }
 
 		[UXContent]
 		public IList<GradientStop> Stops { get { return _stops; } }
 
 		static Selector _startPointName = "StartPoint";
 		float2 _startPoint;
+
+		/** 
+			Check to ensure that stops are in the right order. If they are not, throw an exception, as the code assumes they are ordered correctly.
+		*/
+		static void ValidateStopsSorted(IList<GradientStop> stops)
+		{
+			for (int i = 1; i < stops.Count; ++i)
+			{
+				if (stops[i].Offset < stops[i - 1].Offset)
+					throw new Exception(String.Format("Gradient stop offsets must be in order! Expected something bigger or equal to {0}, but got {1}!", stops[i - 1].Offset, stops[i].Offset));
+			}
+		}
 
 		/**
 			The starting point of the gradient. Can be used together with `EndPoint` instead of specifying an `Angle`.
@@ -209,12 +225,6 @@ namespace Fuse.Drawing
 			}
 		}
 		
-		void SortStops()
-		{
-			var order = OrderBy(_stops, SelectOffset);
-			_sortedStops = ToArray(order);
-		}
-
 		static int SelectOffset(GradientStop a, GradientStop b)
 		{
 			return (int)Math.Sign(a.Offset - b.Offset);
@@ -228,7 +238,7 @@ namespace Fuse.Drawing
 			if (IsPinned)
 			{
 				OnPropertyChanged(_stopsName);
-				SortStops();
+				ValidateStopsSorted(_stops);
 			}
 		}
 
@@ -285,7 +295,6 @@ namespace Fuse.Drawing
 		protected override void OnUnpinned()
 		{
 			_stops.RootUnsubscribe();
-			_sortedStops = null;
 			
 			if (_gradientBuffer != null)
 			{

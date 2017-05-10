@@ -87,7 +87,11 @@ namespace Fuse.Android
 			StatusBarHelper.InstallGlobalListener();
 		}
 
-		/** The color of the status bar. */
+		/**
+			The color of the status bar.
+
+		 	For more information on what notations Color supports, check out [this subpage](articles:ux-markup/literals#colors).
+		*/
 		public float4 Color
 		{
 			get

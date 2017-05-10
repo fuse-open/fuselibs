@@ -16,7 +16,7 @@ namespace Fuse.Triggers
 		/**
 			Checks if the scrollView is currently scrolled to within the target region and then pulses the trigger.
 			
-			This can be used as part of a self-loading/infinite ScrollView,f for example when new content is loaded when the user scrolls to the end. `check` forces the trigger to fire if it's still in the trigger zone after that new content is added.
+			This can be used as part of a self-loading/infinite ScrollView, for example when new content is loaded when the user scrolls to the end. `check()` forces the trigger to fire if it's still in the trigger zone after that new content is added.
 			
 			@scriptmethod check()
 		*/
@@ -24,7 +24,7 @@ namespace Fuse.Triggers
 		{
 			if (args.Length != 0)
 			{
-				Fuse.Diagnostics.UserError( "reset takes no parameters", s );
+				Fuse.Diagnostics.UserError( "check takes no parameters", s );
 				return;
 			}
 			

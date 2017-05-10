@@ -27,6 +27,8 @@ namespace Fuse
 		public readonly int LineNumber;
 		public readonly string MemberName;
 		public readonly Exception Exception;
+
+		internal bool IsTemporalWarning;
 		
 		internal Uno.Diagnostics.DebugMessageType UnoType
 		{
@@ -124,6 +126,13 @@ namespace Fuse
 	public static class Diagnostics
 	{
 		public static event DiagnosticHandler DiagnosticReported;
+		public static event DiagnosticHandler DiagnosticDismissed;
+
+		static void Dismiss(Diagnostic d) 
+		{
+			if (DiagnosticDismissed != null)
+				DiagnosticDismissed(d);
+		}
 		
 		public static void Report(Diagnostic d)
 		{
@@ -135,35 +144,61 @@ namespace Fuse
 				Uno.Diagnostics.Debug.Log(d.ToString(), d.UnoType);
 		}
 
-		static List<Diagnostic> _currentDiagnostics = new List<Diagnostic>();
-
 		class Temporal: IDisposable
 		{
 			readonly Diagnostic _diag;
 			public Temporal(Diagnostic diag)
 			{
 				_diag = diag;
-				lock (_currentDiagnostics) _currentDiagnostics.Add(diag);
 			}
 
 			public void Dispose()
 			{
-				lock (_currentDiagnostics) _currentDiagnostics.Remove(_diag);
+				Dismiss(_diag);
 			}
 		}
 
-		/** Reports a temporary diagnostic condition.
+		/** Reports a temporary diagnostic condition. 
+		
+			The error is also sent to debug_log. If this is not desired, use `ReportTemporalWarning`.
 
 			The condition is valid until `.Dispose()` is called on the returned object.
 		*/
-		public static IDisposable ReportTemporal(Diagnostic diag)
+		public static IDisposable ReportTemporal(Diagnostic d)
 		{
-			return new Temporal(diag);
+			if defined(FUSELIBS_NO_TOASTS)
+			{
+				if (DiagnosticReported != null)
+					DiagnosticReported(d);
+
+				Uno.Diagnostics.Debug.Log(d.ToString(), d.UnoType);
+			}
+
+			return new Temporal(d);
+		}
+
+		/** Reports a temporary diagnostic condition that should not be printed to debug_log.
+			The condition is valid until `.Dispose()` is called on the returned object.
+		*/
+		public static IDisposable ReportTemporalWarning(Diagnostic d)
+		{
+			if defined(FUSELIBS_NO_TOASTS)
+			{
+				d.IsTemporalWarning = true;
+
+				if (DiagnosticReported != null)
+					DiagnosticReported(d);
+			}
+
+			return new Temporal(d);
 		}
 
 		public static IDisposable ReportTemporalUserWarning(string message, object origin)
 		{
-			return ReportTemporal(new Diagnostic(DiagnosticType.UserWarning, message, origin, null, 0, null, null));
+			if defined(FUSELIBS_NO_TOASTS)
+				return ReportTemporalWarning(new Diagnostic(DiagnosticType.UserWarning, message, origin, null, 0, null, null));
+			else
+				return ReportTemporal(new Diagnostic(DiagnosticType.UserWarning, message, origin, null, 0, null, null));
 		}
 
 		/**

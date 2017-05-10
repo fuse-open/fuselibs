@@ -83,10 +83,15 @@ namespace Fuse.Navigation
 		NavigationPageState GetPageState(Visual page);
 		NavigationState State { get; }
 		
+		/** @hide */
 		event NavigationPageCountHandler PageCountChanged;
+		/** @hide */
 		event NavigationHandler PageProgressChanged;
+		/** @hide */
 		event NavigatedHandler Navigated;
+		/** @hide */
 		event ActivePageChangedHandler ActivePageChanged;
+		/** @hide */
 		event ValueChangedHandler<NavigationState> StateChanged;
 		
 		void Goto(Visual node, NavigationGotoMode mode = NavigationGotoMode.Transition);

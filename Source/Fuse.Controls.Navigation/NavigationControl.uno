@@ -332,38 +332,38 @@ namespace Fuse.Controls
 		/** See @INavigation.State */
 		public NavigationState INavigation.State { get { return Navigation.State; } }
 
-		/** See @Navigation.PageCountChanged */
+		/** @hide */
 		public event NavigationPageCountHandler PageCountChanged
 		{
 			add { Navigation.PageCountChanged += value; }
 			remove { Navigation.PageCountChanged -= value; }
 		}
-		/** See @Navigation.PageProgressChanged */
+		/** @hide */
 		public event NavigationHandler PageProgressChanged
 		{
 			add { Navigation.PageProgressChanged += value; }
 			remove { Navigation.PageProgressChanged -= value; }
 		}
-		/** See @Navigation.StateChanged */
+		/** @hide */
 		public event ValueChangedHandler<NavigationState> StateChanged
 		{
 			add { Navigation.StateChanged += value; }
 			remove { Navigation.StateChanged -= value; }
 		}
 
-		/** See @Navigation.Navigated */
+		/** @hide */
 		public event NavigatedHandler Navigated
 		{
 			add { Navigation.Navigated += value; }
 			remove { Navigation.Navigated -= value; }
 		}
-		/** See @Navigation.HistoryChanged */
+		/** @hide */
 		public event HistoryChangedHandler HistoryChanged
 		{
 			add { Navigation.HistoryChanged += value; }
 			remove { Navigation.HistoryChanged -= value; }
 		}
-		/** See @Navigation.ActivePageChanged */
+		/** @hide */
 		public event ActivePageChangedHandler ActivePageChanged
 		{
 			add { Navigation.ActivePageChanged += value; }

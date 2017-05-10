@@ -148,10 +148,10 @@ namespace Fuse.Navigation
 
 	}
 
-	/** Navigates forward in a @Navigation, @PageControl, or @WebView.
-
+	/** Navigates backward in the navigation stack/z-order of a @Navigation, @PageControl, or @WebView.
+	
 		# Example
-		In this example, `GoBack` will be used to navigate away from the first page of a `PageControl`. This is because "Back" means "away from the first page" when used in linear navigation.
+		In this example, `GoBack` will be used to navigate away from the first page of a `PageControl`.
 
 			<PageControl>
 				<Panel Background="#0F0" ux:Name="page1">

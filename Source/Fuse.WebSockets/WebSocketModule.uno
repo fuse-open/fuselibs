@@ -72,7 +72,7 @@ namespace Fuse.WebSocket
 	{
 		WebSocketClient _client;
 
-		public WebSocketClientWrapper(object[] args) : base(false, "open", "error", "close", "receive")
+		public WebSocketClientWrapper(object[] args) : base(true, "open", "error", "close", "receive")
 		{
 			var uri = args.Length > 0 ? args[0] as string : null;
 

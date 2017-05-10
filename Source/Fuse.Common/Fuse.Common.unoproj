@@ -2,7 +2,7 @@
   "Copyright": "Copyright (c) Fusetools AS 2017",
   "Description": "User experience design and tooling platform (core package)",
   "Publisher": "Fusetools AS",
-  "Version": "1.0.0-rc3",
+  "Version": "1.0.0",
   "Package": {
     "ProjectUrl": "https://fusetools.com"
   },

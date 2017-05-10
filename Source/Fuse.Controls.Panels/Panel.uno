@@ -32,11 +32,7 @@ namespace Fuse.Controls
 			The background color of the panel.
 			This property is a shortcut for setting the `Background` property to a `SolidColor` brush. Supports being set using a `float4` notation, or hexadecimal values(f.ex `#FF00AA`)
 
-			The following notations are supported:
-
-			* HEX RGBA - `#FFFFFFFF` (and its shorthand `#FFFF`)
-			* HEX RGBA - `#FFFFFF` (and its shorthand `#FFF`). Alpha is assumed to be `0xFF` / **255**
-			* float4 values - `1,1,1,1` (every digit ranges from `0` to `1`)
+			For more information on what notations Color supports, check out [this subpage](articles:ux-markup/literals#colors).
 		*/
 		public float4 Color
 		{

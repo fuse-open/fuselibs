@@ -28,6 +28,16 @@
 
 ## 1.0
 
+## iOS
+- Fix bug which could cause visual glitches the first time rotating from Portrait to Landscape
+
+## Fuse.Reactive
+- The interfaces `IObservable`, `ISubscriber` and `IObserver` are no longer public (affects any class that implements them). These were made accidentally public in Fuse 0.36. These need to be internal in order to allow behind-the scenes optimizations going forward.
+
+## Bugfixes
+- Fixes a bug (regression in 0.36) where functions could not be used as data context in event callbacks.
+- Fixed a bug where strings like `"20%"` did not marshal correctly to `Size` when databound.
+
 ## Instance/Each/Deferred
 - Changes to the items will not be collected and new items added once per frame. This avoids certain processing bottlenecks. This should not cause any backwards incompatibilties, though the option `Defer="Immediate"` is available to get the previous behavior.
 - `Defer="Deferred"` on `Instance`/`Each` allows the deferred creation of nodes without the need for a `Deferred` node
@@ -69,6 +79,7 @@
 
 ## ImageTools
 - Changed the algorithm for creating new file names for temporary images. Previously this used a date format that caused problems when several images were created in sub-second intervals, breaking custom map marker icons, for instance.
+- Fixed a memory leak that occured when resizing multiple images one after another.
 
 ## Vector drawing
 A new vector drawing system has been added to Fuse. This allows drawing of curves, shapes, and simple vector images.
@@ -97,6 +108,12 @@ A new vector drawing system has been added to Fuse. This allows drawing of curve
 
 ## Fuse.Audio
 - Due to a bug in Mono we have temporarily removed support for PlaySound in preview on OSX.
+
+## MapView
+- Fixed a bug causing crashes on iPhone 5s devices when using `ShowMyLocation="true"`
+
+## ImageFill
+- Fixed a bug where the `MemoryPolicy` given would not be correctly used.
 
 
 ## 0.47

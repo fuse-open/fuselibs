@@ -10,7 +10,7 @@ namespace Fuse.Controls.Native.iOS
 		public double Progress { set { } }
 
 		[UXConstructor]
-		public Slider([UXParameter("Host")]IRangeViewHost host) { }
+		public Slider([UXParameter("Host")]IRangeViewHost host, [UXParameter("Visual")]Visual visual) { }
 	}
 
 	[Require("Source.Include", "UIKit/UIKit.h")]
@@ -23,20 +23,27 @@ namespace Fuse.Controls.Native.iOS
 		}
 
 		IRangeViewHost _host;
+		Visual _visual;
 		IDisposable _valueChangedEvent;
 
+		PointerCaptureAdapter _captureAdapter;
+
 		[UXConstructor]
-		public Slider([UXParameter("Host")]IRangeViewHost host) : base(Create())
+		public Slider([UXParameter("Host")]IRangeViewHost host, [UXParameter("Visual")]Visual visual) : base(Create())
 		{
 			_host = host;
+			_visual = visual;
 			_valueChangedEvent = UIControlEvent.AddValueChangedCallback(Handle, OnValueChanged);
+			_captureAdapter = new PointerCaptureAdapter(_visual, Handle);
 		}
 
 		public override void Dispose()
 		{
 			_host = null;
 			_valueChangedEvent.Dispose();
+			_captureAdapter.Dispose();
 			_valueChangedEvent = null;
+			_captureAdapter = null;
 			base.Dispose();
 		}
 

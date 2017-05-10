@@ -29,6 +29,18 @@ namespace Fuse.Triggers.Actions
 					</Clicked>
 				</Button>
 			</StackPanel>
+
+		Note: you can pass any URI string to `LaunchUri`, but how it is handled will depend on the target platform and particular device settings.
+
+		There are several common URI schemes that you can use on both Android and iOS:
+			http://<website address>
+			https://<website address>
+			tel:<phone number>
+			sms:<phone number>
+
+		Other platform-specific URI schemes are known to be working fine, for example `geo:<parameters>` launches Maps application on Android
+		and `facetime:<parameters>` launches a Facetime video call on iOS.
+		More information on supported URI schemes: [on Android](https://developer.android.com/guide/components/intents-common.html) and [on iOS](https://developer.apple.com/library/content/featuredarticles/iPhoneURLScheme_Reference/Introduction/Introduction.html).
 	*/
 	public class LaunchUri : TriggerAction
 	{
