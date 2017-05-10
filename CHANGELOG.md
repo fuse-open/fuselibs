@@ -26,6 +26,7 @@
 ## MemoryPolicy
 - Added `QuickUnload` memory policy to keep data in memory for as short as possible.
 
+
 ## 1.0
 
 ## iOS
