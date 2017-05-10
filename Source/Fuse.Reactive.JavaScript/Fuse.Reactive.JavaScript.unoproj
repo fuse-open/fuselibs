@@ -19,7 +19,6 @@
     "../Fuse.Platform/Fuse.Platform.unoproj",
     "../Fuse.Scripting.Duktape/Fuse.Scripting.Duktape.unoproj",
     "../Fuse.Scripting.JavaScriptCore/Fuse.Scripting.JavaScriptCore.unoproj",
-    "../Fuse.Scripting.Jurassic/Fuse.Scripting.Jurassic.unoproj",
     "../Fuse.Scripting.V8/Fuse.Scripting.V8.unoproj",
     "../Fuse.Scripting/Fuse.Scripting.unoproj",
     "../Fuse.Triggers/Fuse.Triggers.unoproj",
