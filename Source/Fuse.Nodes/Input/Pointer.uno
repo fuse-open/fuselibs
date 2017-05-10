@@ -427,11 +427,10 @@ namespace Fuse.Input
 				throw new Exception( "Capture requires identity object" );
 			if (visual == null)
 				throw new Exception( "Capture requires visual" );
+			//we can't emit an error here as there are too many cases with async events, especially 
+			//with Gesture, where the state suddenly changes. Simply failing should be fine
 			if (!visual.IsContextEnabled || !visual.IsRootingCompleted)
-			{
-				Fuse.Diagnostics.InternalError("Capture can only be done on rooted enabled node");
 				return false;
-			}
 				
 			if (!IsCaptureAllowed( type, visual, pointIndex, identity ))
 				return false;
