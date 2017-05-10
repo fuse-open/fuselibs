@@ -1,0 +1,41 @@
+<ToggleControl ux:Class="Basic.Switch"
+	Focus.IsFocusable="true"
+	Width="60"
+	Height="34"
+	HitTestMode="LocalBounds"
+	Margin="4">
+
+	<Panel Margin="17,2,17,2" ux:Name="_switchBounds" SnapToPixels="false">
+		<Circle Width="26" Height="26" ux:Name="_switchThumb"
+			Anchor="50%,50%" Offset="0%,50%" SnapToPixels="false" Alignment="TopLeft">
+			<Stroke Width="30" ux:Name="_switchThumbStroke">
+				<SolidColor Color="{Resource Basic.C500}" ux:Name="_switchThumbColor"/>
+			</Stroke>
+			<DropShadow ux:Name="switchShadow" Color="{Resource Basic.CShadow}" />
+		</Circle>
+	</Panel>
+
+	<Rectangle CornerRadius="17">
+		<Stroke Width="2" Offset="0.5" ux:Name="_switchStroke">
+			<SolidColor Color="{Resource Basic.CLine}" ux:Name="_switchStrokeColor"/>
+		</Stroke>
+	</Rectangle>
+		
+	<WhileDisabled>
+		<Change Target="_switchThumbStroke.Width" Value="2" Duration="0.25"/>
+	</WhileDisabled>
+
+	<Fuse.BasicTheme.SwitchBehavior Bounds="_switchBounds">
+		<Move Target="_switchThumb" X="1" RelativeTo="ParentSize" Duration="0.25" 
+			Easing="QuadraticInOut" />
+		<Change _switchStroke.Width="30" Duration="0.25" Easing="QuadraticInOut"/>
+		<Change Target="_switchStrokeColor.Color" Value="{Resource Basic.C500}"  Duration="0.05"
+			Easing="QuadraticInOut"/>
+		<Change Target="_switchThumbColor.Color" Value="{Resource Basic.CFillFore}"  Duration="0.25"
+			Easing="QuadraticInOut"/>
+	</Fuse.BasicTheme.SwitchBehavior>
+
+	<!--<WhileFocused>
+		<Change Target="_switchThumb2.Opacity" Value="0.30" Easing="QuinticOut" EasingBack="QuinticIn" Duration="0.25" />
+	</WhileFocused>-->
+</ToggleControl>

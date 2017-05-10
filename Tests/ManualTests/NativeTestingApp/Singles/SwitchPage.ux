@@ -1,0 +1,31 @@
+<Page ux:Class="SwitchPage" Title="Switches">
+	<InfoStack ux:Key="Info">
+		<p>Test Switch and IsEnable integrataion.</p>
+		<ul>
+			<li>The enabled switch can be turned on/off.</li>
+			<li>The two disabled switches cannot be modified, one is off, the other is on.</li>
+			<li>The bottom left switch's enabled status is based on the top-left one.</li>
+		</ul>
+	</InfoStack>
+	<Grid ColumnCount="2" Alignment="VerticalCenter">
+		<Text ux:Class="CenterText3" Alignment="Center"/>
+		<StackPanel>
+			<CenterText3>Enabled</CenterText3>
+			<Switch>
+				<WhileTrue>
+					<Change statusSwitch.IsEnabled="true"/>
+					<Change statusText.Value="Enabled"/>
+				</WhileTrue>
+			</Switch>
+			
+			<CenterText3 ux:Name="statusText">Disabled</CenterText3>
+			<Switch ux:Name="statusSwitch" IsEnabled="false"/>
+		</StackPanel>
+		<StackPanel>
+			<CenterText3>Disabled &amp; Off</CenterText3>
+			<Switch IsEnabled="false"/>
+			<CenterText3>Disabled &amp; On</CenterText3>
+			<Switch IsEnabled="false" Value="true"/>
+		</StackPanel>
+	</Grid>
+</Page>

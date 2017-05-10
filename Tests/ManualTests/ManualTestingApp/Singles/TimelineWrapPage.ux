@@ -1,0 +1,39 @@
+<Page Title="Wrap Timeline" ux:Class="TimelineWrapPage" Background="#446f">	
+	<InfoStack ux:Key="Info">
+		<p>This tests some Timeline features and ensures that time synchronization is correct.</p>
+		<ul>
+			<li>There are five dots horiziontally across the page. Vertically they are equally spaced. This relative spacing stays the same.</li>
+			<li>The dots travel from the bottom to the top.</li>
+			<li>The dots shrink away as they near the top.</li>
+		</ul>
+	</InfoStack>
+	<Circle ux:Class="Dot" Width="40" Height="40" Alignment="TopCenter" ux:Name="self">
+		<double ux:Property="TimeOffsetA"/>
+		<double ux:Property="TimeOffsetB"/>
+		<SolidColor Color="0.8,0.96,0.99,1" ux:Name="TheColor"/>
+		
+		<Timeline PlayMode="Wrap" InitialProgress="{Property self.TimeOffsetA}">
+			<Scale KeyframeInterpolation="CatmullRom">
+				<Keyframe Value="1" Time="0"/>
+				<Keyframe Value="1" Time="1"/>
+				<Keyframe Value="0" Time="4"/>
+			</Scale>
+		</Timeline>
+		<Timeline PlayMode="Wrap" InitialProgress="{Property self.TimeOffsetB}" TargetProgress="0">
+			<Move KeyframeInterpolation="Linear" RelativeTo="ParentSize">
+				<Keyframe Y="0" Time="0"/>
+				<Keyframe Y="1" Time="4"/>
+			</Move>
+		</Timeline>
+	</Circle>
+	
+	<WhileVisible>
+		<Grid ColumnCount="5" Rows="1*">
+			<Dot TimeOffsetA="0" TimeOffsetB="1"/>
+			<Dot TimeOffsetA="0.2" TimeOffsetB="0.8"/>
+			<Dot TimeOffsetA="0.4" TimeOffsetB="0.6"/>
+			<Dot TimeOffsetA="0.6" TimeOffsetB="0.4"/>
+			<Dot TimeOffsetA="0.8" TimeOffsetB="0.2"/>
+		</Grid>
+	</WhileVisible>
+</Page>

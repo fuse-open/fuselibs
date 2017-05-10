@@ -1,0 +1,6 @@
+<Panel ux:Class="UX.WhileStringContains">
+	<WhileString Value="" Contains="one" ux:Name="WS">
+		<!-- needs something to trigger in test -->
+		<Nothing Duration="0"/>
+	</WhileString>
+</Panel>

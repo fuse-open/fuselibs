@@ -1,0 +1,8 @@
+<Panel ux:Class="UX.Curve.Close">
+	<Curve ux:Name="C" Close="None">
+		<CurvePoint X="0.5" Y="0.5"/>
+		<CurvePoint X="1.0" Y="0.5"/>
+		<CurvePoint X="1.0" Y="1.0"/>
+		<CurvePoint X="0.5" Y="1.0"/>
+	</Curve>
+</Panel>

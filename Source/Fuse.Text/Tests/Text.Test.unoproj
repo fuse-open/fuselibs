@@ -1,0 +1,14 @@
+{
+  "UnoCoreReference": "true",
+  "Packages": [
+    "Fuse.Text",
+    "Uno.Collections",
+    "Uno.Testing",
+  ],
+  "Projects": [
+    "../../Fuse.Common/Tests/FuseTest/FuseTest.unoproj",
+  ],
+  "Includes": [
+    "*"
+  ]
+}

@@ -1,0 +1,3 @@
+<ExitingAnimation ux:Class="Fuse.Controls.NavigationInternal.ExitHorizontal">
+	<Move X="1" RelativeTo="ParentSize"/>
+</ExitingAnimation>

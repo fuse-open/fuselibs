@@ -1,0 +1,63 @@
+<Page Title="Data binding" ux:Class="DataBindingPage">
+	<InfoStack ux:Key="Info">
+		<p>This tests data binding between controls and JS.</p>
+	</InfoStack>
+	<ScrollView>
+		<JavaScript>
+		 var Observable = require("FuseJS/Observable");
+
+		  var texin = Observable("This is text");
+
+		  function click() {
+		    texin.value = "This is text";
+		  }
+
+		  var sliderval = Observable(50);
+		  var sliderlabel = Observable(function(){
+		  	return Math.round(sliderval.value).toString() + "%";
+		  });
+
+		  function resetslider(){
+		  	sliderval.value = 50;
+		  }
+
+		   module.exports = {
+		      click : click,
+		      texin : texin,
+		      sliderval : sliderval,
+		      sliderlabel : sliderlabel,
+		      resetslider : resetslider
+		    }
+		</JavaScript>
+		<StackPanel>
+			<StackPanel ux:Class="dbThing" Margin="5,15,5,15" Padding="10" ItemSpacing="5">
+				<Rectangle Layer="Background" CornerRadius="10">
+					<SolidColor Color="#aaa8"/>
+				</Rectangle>
+			</StackPanel>
+			
+			<dbThing>
+				<Text TextWrapping="Wrap" >Type a few characters in the text input. The green field should have the same text.</Text>
+				<StdTextInput Value="{texin}"/>
+				<Panel>
+					<Panel>
+						<WhileContainsText Invert="true" Source="OutText">
+							<Text Value="-- empty text --"/>
+						</WhileContainsText>
+					</Panel>
+					<Text Value="{texin}" Background="#afa" TextColor="0,0,0,1" ux:Name="OutText"/>
+				</Panel>
+				<StdButton Text="Then click here to reset the text" Clicked="{click}" Alignment="Left"/>
+			</dbThing>
+
+			<dbThing>
+				<Text TextWrapping="Wrap">Move the slider, the red counter should reflect its position.</Text>
+				<Text Value="{sliderlabel}" Alignment="Center" Background="#f00" />
+				<Slider Value="{sliderval}"/>
+				<StdButton Text="Reset to 50%" Clicked="{resetslider}" />
+			</dbThing>
+			
+		</StackPanel>
+
+	</ScrollView>
+</Page>

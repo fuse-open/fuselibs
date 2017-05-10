@@ -1,0 +1,31 @@
+<Panel ux:Class='UX.Router.RelativeNonCurrent'>
+	<Router ux:Name="router"/> 
+	
+	<JavaScript>
+		exports.step1 = function() {
+			router.gotoRelative(iNav2,"a")
+		}
+	</JavaScript>
+		
+	<!-- just so we can have a second "b" node" -->
+	<Page ux:Class="cOne">
+		<Navigator>
+			<Page ux:Name="b"/>
+		</Navigator>
+	</Page>
+	
+	<Navigator DefaultPath="one" ux:Name="oNav">
+		<Page ux:Template="three"/>
+		
+		<cOne ux:Name="one"/>
+		
+		<Page ux:Name="two">
+			<Navigator ux:Name="iNav2">
+				<Page ux:Name="a"/>
+				<Page ux:Name="b"/>
+			</Navigator>
+		</Page>
+	</Navigator>
+	
+	<FuseTest.Invoke Handler="{step1}" ux:Name="Step1"/>
+</Panel>

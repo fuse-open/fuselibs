@@ -1,0 +1,48 @@
+<Panel ux:Class="UX.Navigator.SwipeBits">
+	<Router ux:Name="R"/> 
+	<JavaScript>
+		R.bookmark({
+			name: "two",
+			path: [ "two", {} ]
+		})
+	</JavaScript>
+	
+	<DockPanel>
+		<Page ux:Class="SBInnerPage" HitTestMode="LocalBoundsAndChildren">
+			<Router ux:Dependency="R"/>
+			<WhileCanGoBack NavigationContext="R">
+				<Change theSwipe.IsEnabled="true"/>
+			</WhileCanGoBack>
+			
+			<SwipeGesture Direction="Right" LengthNode="this" ux:Name="theSwipe" IsEnabled="false"/>
+			<SwipingAnimation Source="theSwipe">
+				<RouterModify Router="R" How="PrepareBack" When="Start"/>
+				<Change R.PrepareProgress="1"/>
+			</SwipingAnimation>
+			<Swiped Source="theSwipe">
+				<RouterModify Router="R" How="FinishPrepared"/>
+			</Swiped>
+		</Page>
+		
+		<Navigator ux:Name="ONav" DefaultPath="one">
+			<Page ux:Name="one" Title="OOne">
+				<Navigator ux:Name="INav" DefaultPath="one">
+					<SBInnerPage ux:Template="one" Title="IOne" R="R"/>
+					<SBInnerPage ux:Template="two" Title="ITwo" R="R"/>
+				</Navigator>
+			</Page>
+			
+			<SBInnerPage ux:Template="two" R="R" Title="OTwo"/>
+			
+			<SwipeGesture Direction="Left" LengthNode="ONav" ux:Name="theOuterSwipe"/>
+			<SwipingAnimation Source="theOuterSwipe">
+				<RouterModify Router="R" How="PreparePush" Bookmark="two" When="Start"/>
+				<Change R.PrepareProgress="1"/>
+			</SwipingAnimation>
+			<Swiped Source="theOuterSwipe">
+				<RouterModify Router="R" How="FinishPrepared"/>
+			</Swiped>
+			
+		</Navigator>
+	</DockPanel>
+</Panel>

@@ -1,0 +1,10 @@
+<StackPanel ux:Class="ResultItem" ux:Name="ResultItem" ux:AutoCtor="false">
+
+	<Text ux:Name="FieldName" />
+	<Grid Columns="110,auto" Rows="auto,auto" Padding="15,0,0,10">
+		<Text FontSize="14" Value="Actual result:"/>
+		<Text FontSize="14" ux:Name="ActualResult" TextWrapping="Wrap" />
+		<Text FontSize="14" Value="Expected reult:"/>
+		<Text FontSize="14" ux:Name="ExpectedResult" TextWrapping="Wrap" />
+	</Grid>
+</StackPanel>

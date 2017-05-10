@@ -1,0 +1,12 @@
+<Panel ux:Class="UX.Grid.SpanAuto2">
+	<Grid Columns="auto,1*" Rows="auto,auto,auto" Alignment="Top"
+		ChildOrder="ColumnMajor">
+		
+		<Panel Height="20" MinWidth="50" ux:Name="P1"/>
+		<Panel Height="20" MinWidth="200" ColumnSpan="2" ux:Name="P2"/>
+		<Panel Height="20" MinWidth="30" ux:Name="P3"/>
+		
+<!--		<Panel ux:Name="P4"/>
+		<Panel ux:Name="P5"/>-->
+	</Grid>
+</Panel>

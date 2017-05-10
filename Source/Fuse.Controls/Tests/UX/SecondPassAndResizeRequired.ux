@@ -1,0 +1,7 @@
+<StackPanel MaxWidth="80" ux:Class='UX.SecondPassAndResizeRequired' Alignment="Center"
+	Mode="TwoPass">
+	<!-- NOTE: The second pass is required but the box sizing "resize" aspect is no longer required. That is part of the layout optimizatons to avoid two passes. -->
+	<FuseTest.AreaElement Area="10000" ux:Name="Area1"/>
+	<FuseTest.AreaElement Area="10000" Width="50%" ux:Name="Area2"/>
+	<FuseTest.AreaElement Area="10000" Width="50%" ux:Name="Area3" Alignment="Right"/>
+</StackPanel>

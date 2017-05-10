@@ -1,0 +1,8 @@
+<Panel ux:ClassName="TriggerAndAnimators" ux:Name="panel" Height="100">
+    <WhileDisabled>
+        <Change Target="panel.Height" Value="200" />
+    </WhileDisabled>
+    <ExitingAnimation>
+        <Change Target="panel.Height" Value="300" />
+    </ExitingAnimation>
+</Panel>

@@ -1,0 +1,24 @@
+<Page ux:Class="Storage">
+    <Router ux:Dependency="router"/>
+    <JavaScript>
+        var fw = require('/framework.js');
+        var Storage = require("FuseJS/Storage");
+        fw.testStarted("Storage");
+        Storage.write("storage.txt", "content").then(function(succeeded) {
+            if (succeeded) {
+                Storage.read("storage.txt").then(function(contents){
+                    fw.assertEqual("content", contents);
+                    router.goto("filesystem");
+                }, function(error){
+                    fw.testFailed("Could not read from file: " + error)
+                });
+            }
+            else {
+                fw.testFailed("Could not write to file");
+            }
+        }).catch(function(error){
+            fw.testFailed("Writing threw an error: " + error);
+        });
+    </JavaScript>
+    <Text Value="storage"/>
+</Page>

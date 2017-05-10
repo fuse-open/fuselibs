@@ -1,0 +1,4 @@
+<RangeControl ux:Class="UX.RangeControlHorizontal" Minimum="0" Maximum="100"
+	HitTestMode="LocalBounds">
+	<LinearRangeBehavior ux:Name="LRB"/>
+</RangeControl>

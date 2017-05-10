@@ -1,0 +1,17 @@
+<Panel ux:Class="UX.Observable.TwoWaySimple">
+	<JavaScript>
+		var Observable = require("FuseJS/Observable")
+		Observable._testResetDeprecated()
+		
+		var a = Observable({ a: 1, b: 2})
+		var b = a.inner()
+		var c = b.twoWayMap(function(dt) { return dt.a; }, function(d, dt) { dt.a = d; return dt; })
+		
+		exports.aText = Observable(function() {
+			return a.value.a + "-" + a.value.b
+		})
+		exports.c = c
+	</JavaScript>
+	<Text Value="{aText}" ux:Name="A"/>
+	<Text Value="{c}" ux:Name="C"/>
+</Panel>

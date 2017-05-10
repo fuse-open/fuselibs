@@ -1,0 +1,13 @@
+<Panel ux:Class="UX.DataBinding.NodeDefer">
+	<JavaScript>
+		var Observable = require("FuseJS/Observable")
+		
+		exports.node = "A"
+	</JavaScript>
+	
+	<FuseTest.BindingNode Node="{node}" ux:Name="Bind"/>
+	
+	<WhileTrue ux:Name="B">
+		<Panel ux:Name="A"/>
+	</WhileTrue>
+</Panel>

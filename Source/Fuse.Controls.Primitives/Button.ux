@@ -1,0 +1,16 @@
+<ButtonBase ux:Class="Fuse.Controls.Button" HitTestMode="LocalBoundsAndChildren">
+	<Panel ux:Template="GraphicsAppearance" >
+		<Text ux:Name="Button_Text"
+			Value="{Property this.Text}" FontSize="16" TextColor="#5ea9fb" Alignment="Center" TextAlignment="Center">
+		</Text>
+
+		<WhilePressed>
+			<Change Target="Button_Text.TextColor" Value="#2424CC" />
+		</WhilePressed>
+		<WhileDisabled>
+			<Change Target="Button_Text.Opacity" Value="0.5" />
+		</WhileDisabled>
+	</Panel>
+	<Fuse.Controls.Native.Android.Button ux:Condition="Android" ux:Template="AndroidAppearance" />
+	<Fuse.Controls.Native.iOS.Button ux:Condition="iOS" ux:Template="iOSAppearance" />
+</ButtonBase>

@@ -1,0 +1,28 @@
+<Panel ux:Class="UX.Issue1995Select">
+	<JavaScript>
+		var Observable = require( "FuseJS/Observable" )
+		
+		exports.text = Observable("#")
+		exports.a = Observable({ text: "1"})
+		exports.b = Observable({ text: "2"})
+		
+		exports.append = function(args) {
+			exports.text.value += args.data.text
+		}
+	</JavaScript>
+	<Text Value="{text}" ux:Name="T"/>
+
+	<Panel>
+		<With Data="{a}">
+			<Panel ux:Name="In1">
+				<Panel ux:Name="C">
+					<FuseTest.Invoke Handler="{append}" ux:Name="Call"/>
+				</Panel>
+			</Panel>
+		</With>
+		
+		<With Data="{b}">
+			<Panel ux:Name="In2"/>
+		</With>
+	</Panel>
+</Panel>

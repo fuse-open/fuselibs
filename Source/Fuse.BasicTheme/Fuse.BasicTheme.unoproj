@@ -1,0 +1,40 @@
+{
+  "Description": "This package is part of Fuse",
+  "Publisher": "Fusetools AS",
+  "Copyright": "Copyright (c) Fusetools AS 2017",
+  "Version": "1.0.0",
+  "Package": {
+    "ProjectUrl": "https://fusetools.com"
+  },
+  "Packages": [
+    "Uno.Collections",
+    "Uno.Geometry"
+  ],
+  "Projects": [
+    "../Fuse.Animations/Fuse.Animations.unoproj",
+    "../Fuse.Controls/Fuse.Controls.unoproj",
+    "../Fuse.Controls.Panels/Fuse.Controls.Panels.unoproj",
+    "../Fuse.Controls.Native/Fuse.Controls.Native.unoproj",
+    "../Fuse.Controls.Primitives/Fuse.Controls.Primitives.unoproj",
+    "../Fuse.Drawing/Fuse.Drawing.unoproj",
+    "../Fuse.Effects/Fuse.Effects.unoproj",
+    "../Fuse.Navigation/Fuse.Navigation.unoproj",
+    "../Fuse.Elements/Fuse.Elements.unoproj",
+    "../Fuse.Gestures/Fuse.Gestures.unoproj",
+    "../Fuse.Physics/Fuse.Physics.unoproj",
+    "../Fuse.Triggers/Fuse.Triggers.unoproj",
+    "../Fuse.Common/Fuse.Common.unoproj",
+    "../Fuse.Scripting/Fuse.Scripting.unoproj",
+    "../Fuse.Reactive.Bindings/Fuse.Reactive.Bindings.unoproj",
+    "../Fuse.Reactive.Expressions/Fuse.Reactive.Expressions.unoproj",
+    "../Fuse.Nodes/Fuse.Nodes.unoproj"
+  ],
+  "Includes": [
+    "Fonts/Roboto-Light.ttf:File",
+    "Fonts/Roboto-Medium.ttf:File",
+    "Fonts/Roboto-Regular.ttf:File",
+    "*.ux:UX",
+    "*.uno:Source"
+  ]
+}
+

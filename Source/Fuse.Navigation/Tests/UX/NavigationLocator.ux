@@ -1,0 +1,22 @@
+<Panel ux:Class="UX.NavigationLocator">
+	<LinearNavigation ux:Name="Outer"/>
+	<PageControl ux:Name="Inner1">
+		<Page ux:Name="P1">
+			<Panel ux:Name="E1"/>
+		</Page>
+	</PageControl>
+	<Page ux:Name="P2">
+		<Panel ux:Name="E2"/>
+	</Page>
+	<Page ux:Name="P3">
+		<Panel Page="P2" ux:Name="E3">
+			<Panel ux:Name="E4"/>
+		</Panel>
+	</Page>
+	<PageControl ux:Name="Inner2">
+		<Page ux:Name="P4">
+			<LinearNavigation ux:Name="Deep1"/>
+			<Panel ux:Name="DP1"/>
+		</Page>
+	</PageControl>
+</Panel>

@@ -1,0 +1,9 @@
+<Panel ux:Class="UX.Navigator.Remove">
+	<Router ux:Name="router"/>
+	
+	<Navigator ux:Name="nav" Remove="None" Reuse="None">
+		<Page Remove="Cleared" ux:Template="One"/>
+		<Page Remove="Released" ux:Template="Two"/>
+		<Page ux:Template="Three" PrepareBusy="None"/>
+	</Navigator>
+</Panel>

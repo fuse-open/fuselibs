@@ -1,0 +1,12 @@
+<Panel ux:Class="UX.TriggerRootCapture">
+	<WhileTrue ux:Name="Out">
+		<WhileTrue ux:Name="W1">
+			<FuseTest.CountAction ux:Name="T1"/>
+		</WhileTrue>
+		
+		<WhileTrue ux:Name="W2" Value="true">
+			<Change W1.Value="true"/>
+			<FuseTest.CountAction ux:Name="T2"/>
+		</WhileTrue>
+	</WhileTrue>
+</Panel>

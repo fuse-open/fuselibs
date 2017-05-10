@@ -1,0 +1,23 @@
+<Panel ux:Class="UX.Observable.InnerInner">
+	<JavaScript>
+		var Observable = require("FuseJS/Observable")
+		
+		var a = Observable("one")
+		var b = Observable(a)
+		var c = b.inner().inner()
+		var d = Observable("d-one")
+		
+		exports.a = a
+		exports.c = c
+		exports.d = d
+		
+		exports.swap = function() {
+			b.value = d
+		}
+	</JavaScript>
+	<Text Value="{a}" ux:Name="A"/>
+	<Text Value="{c}" ux:Name="C"/>
+	<Text Value="{d}" ux:Name="D"/>
+	
+	<FuseTest.Invoke Handler="{swap}" ux:Name="Swap"/>
+</Panel>

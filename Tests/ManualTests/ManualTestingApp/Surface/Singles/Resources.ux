@@ -1,0 +1,80 @@
+<TestPage ux:Class="Pages.Resources" Title="Resources">
+	<InfoStack ux:Key="Info">
+		<p>Tests handling of resources.</p>
+		<p>When you toggle the switch at the top the individual bits will appear/disappear on each side</p>
+		<ul>
+			<li>They should always look the same.</li>
+			<li>When visible the left/right side should be identical.</li>
+			<li>The left switch will make both dispapear shortly then one reappear.</li>
+			<li>The right switch will immediately switch from one side to the other.</li>
+			<li>Toggle each switch 2-3 times (rapidly many times is also fine).</li>
+		</ul>
+	</InfoStack>
+	
+	<!-- Tests a shared, and distinct brush for each right/left scenario -->
+	<LinearGradient ux:Class="PRRainbow">
+		<GradientStop Offset="0" Color="#F00"/>
+		<GradientStop Offset="0.25" Color="#F93"/>
+		<GradientStop Offset="0.5" Color="#AC2"/>
+		<GradientStop Offset="0.75" Color="#1ab"/>
+		<GradientStop Offset="1" Color="#429"/>
+	</LinearGradient>
+	
+	<PRRainbow ux:Name="prRainbow" ux:AutoBind="false"/>
+
+	<ImageFill ux:Class="PRHeartFill" File="../../Assets/tile_bear.png"/>
+	
+	<PRHeartFill ux:Name="prHeartFill" ux:AutoBind="false"/>
+	
+	<VectorLayer ux:InnerClass="PRSide">
+		<Grid ColumnCount="1" Margin="10" CellSpacing="10">
+			<Rectangle Fill="prRainbow"/>
+			<Rectangle>
+				<PRRainbow/>
+			</Rectangle>
+			
+			<Rectangle Fill="prHeartFill"/>
+			<Rectangle>
+				<PRHeartFill/>
+			</Rectangle>
+		</Grid>
+	</VectorLayer>
+
+	<DockPanel>
+		<StackPanel Dock="Top" Orientation="Horizontal" ItemSpacing="5">
+			<Text Value="Delayed"/>
+			<Switch>
+				<WhileTrue>
+					<!-- space them out so it doesn't happen the same frame -->
+					<Change WTA.Value="false" Delay="0"/>
+					<Change WTB.Value="true" Delay="0.1"/>
+				</WhileTrue>
+			</Switch>
+			
+			<Panel Width="10"/>
+			
+			<Text Value="Immediate"/>
+			<Switch>
+				<WhileTrue>
+					<!-- space them out so it doesn't happen the same frame -->
+					<Change WTA.Value="false"/>
+					<Change WTB.Value="true"/>
+				</WhileTrue>
+			</Switch>
+		</StackPanel>
+		
+		<Grid ColumnCount="2">
+			<Panel>
+				<WhileTrue Value="true" ux:Name="WTA">
+					<PRSide/>
+				</WhileTrue>
+			</Panel>
+			
+			<Panel>
+				<WhileTrue ux:Name="WTB">
+					<PRSide/>
+				</WhileTrue>
+			</Panel>
+		</Grid>
+	</DockPanel>
+</TestPage>

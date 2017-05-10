@@ -1,0 +1,6 @@
+<Panel ux:Class="UX.ResourceBindingOnGeneric">
+	<Panel ux:Global="UX.ResourceBindingOnGeneric.FooPanel" />
+	<WhileFalse>
+		<Move ux:Name="move" Target="{Resource UX.ResourceBindingOnGeneric.FooPanel}" />
+	</WhileFalse>
+</Panel>

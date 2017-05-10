@@ -1,0 +1,20 @@
+<Panel ux:Class="UX.ExplicitBindings" Width="300" Height="200">
+	<float4 ux:Key="kolor" ux:Value="1,0,1,1" />
+	<float4 ux:Key="molor" ux:Value="1,0,0,1" />
+	<JavaScript>
+		exports.foo = 330;
+		exports.foolor = "molor";
+	</JavaScript>
+	<Panel ux:Name="p1" />
+	<PropertyBinding Target="p1.Height" Source="this.Width" />
+	<ResourceBinding Target="p1.Color" Key="kolor" />
+	<Panel>
+		<DataBinding Target="p1.Width" Key="foo" />
+		<DataBinding Target="this.Color" Key="DataToResource foolor" />
+	</Panel>
+
+	<!-- This binding is not supposed to resolve because bindings on
+		the outer panel don't see the inner <JavaScript> -->
+	<DataBinding Target="p1.X" Key="foo" />
+	
+</Panel>

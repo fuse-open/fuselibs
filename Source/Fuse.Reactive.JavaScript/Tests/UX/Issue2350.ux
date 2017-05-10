@@ -1,0 +1,14 @@
+<Panel ux:Class="UX.Issue2350">
+	<JavaScript>
+		var Observable = require("FuseJS/Observable");
+		module.exports = {
+			dataSource: Observable({array:[{ foo: "Bar" }]})
+		};
+	</JavaScript>
+
+	<Panel ux:Name="Container">
+		<Each Items="{dataSource.array}">
+			<Text Value="{foo}" />
+		</Each>
+	</Panel>
+</Panel>

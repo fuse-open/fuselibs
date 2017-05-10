@@ -1,0 +1,47 @@
+<TestPage ux:Class="Pages.Bounds" Title="Bounds">
+	<InfoStack ux:Key="Info">
+		<p>Ensures the rendering is not clipped: paths beyond the size of an element should still be drawn.</p>
+		<ul>
+			<li>The constrained image should have the flower fit perfectly within the box.</li>
+			<li>The overflow image draws outside of the box with the joints on the edges. This box is a fixed size regardless of screen size (required to test this mode).</li>
+			<li>The curve has a smooth path from start to end without being clipped.</li>
+		</ul>
+		<p>For reference the flower image should have the below shape (1:1 ratio).</p>
+		<Image File="../../Assets/flower_ref.png" Width="50%"/>
+		<p>For reference the curve looks like the following, it may be stretched/compressed horizontally/vertically but the stroke should not be clipped.</p>
+		<Image File="../../Assets/curve_ref.png" Width="50%"/>
+	</InfoStack>
+	<Grid ColumnCount="2" Rows="auto,1*,auto,1*">
+		<Text TextWrapping="Wrap" Value="Constrained" TextAlignment="Center"/>
+		<Text TextWrapping="Wrap" Value="Overflows" TextAlignment="Center"/>
+		
+		<Path ux:Class="Flower" Data="
+			M 100,50 
+			A 50,25 -45 0 0 50,0
+			A 50,25 -135 0 0 0,50
+			A 50,25 135 0 0 50,100
+			A 50,25 45 0 0 100 50
+			z
+			" StrokeWidth="2" StrokeColor="#000" Color="#AFF"/>
+			
+		<Panel Alignment="Center"  Width="50%" Height="50%" Color="#DDD" BoxSizing="FillAspect">
+			<Rectangle Layer="Overlay" StrokeWidth="1" StrokeColor="#0008"/>
+			<!-- Margin to account for stroke width -->
+			<Flower Margin="1"/>
+		</Panel>
+		<Panel Alignment="Center"  Width="100" Height="100" Color="#DDD">
+			<Rectangle Layer="Overlay" StrokeWidth="1" StrokeColor="#0008"/>
+			<Flower StretchMode="PointPrecise"/>
+		</Panel>
+		
+		<Text TextWrapping="Wrap" Value="Bezier" TextAlignment="Center"/>
+		<Text TextWrapping="Wrap" Value="" TextAlignment="Center"/>
+		
+		<Panel Alignment="Center"  Width="50%" Height="50%" Color="#DDD">
+			<Curve StrokeWidth="20">
+				<CurvePoint At="0,0" TangentOut="0,-5"/>
+				<CurvePoint At="1,1" TangentIn="0,-5"/>
+			</Curve>
+		</Panel>
+	</Grid>
+</TestPage>

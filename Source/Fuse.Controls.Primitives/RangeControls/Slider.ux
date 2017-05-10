@@ -1,0 +1,32 @@
+<RangeControl ux:Class="Fuse.Controls.Slider">
+	<Panel ux:Template="GraphicsAppearance" HitTestMode="LocalBounds" Margin="12,0,12,0" SnapToPixels="false">
+		<LinearRangeBehavior />
+		<Panel ux:Name="thumb" Anchor="50%,50%" Alignment="Left" Width="38" Height="38" HitTestMode="LocalBounds" >
+			<Circle ux:Name="thumb_circle" MaxHeight="23" Fill="#fff">
+				<Stroke ux:Name="thumb_stroke" Width="1" Brush="#979797" />
+				<DropShadow ux:Name="thumb_shadow" Angle="90" Distance="0" Size="1" Spread="0.1" Color="#9A9A9A" />
+			</Circle>
+			<Circle ux:Name="halo" Height="38" Fill="#C5C5C5" Opacity="0" ClipToBounds="false" />
+		</Panel>
+		<Panel ClipToBounds="true">
+			<Rectangle ux:Name="scrubber_right" Height="2" Fill="#E4E4E4" CornerRadius="2" />
+			<Rectangle ux:Name="scrubber_left" Height="2" Fill="#A8A8A8" CornerRadius="2" />
+		</Panel>
+		<ProgressAnimation>
+			<Move Target="thumb" X="1" RelativeTo="ParentSize" />
+			<Move Target="scrubber_right" X="1" RelativeTo="ParentSize" />
+		</ProgressAnimation>
+		<WhileFocused>
+			<Change halo.Opacity="0.5" Duration="0.3" />
+		</WhileFocused>
+		<WhileDisabled>
+			<Change thumb_circle.Fill="#EFEFEF" />
+			<Change thumb_stroke.Brush="#C9C9C9" />
+			<Change thumb_shadow.Distance="0" />
+			<Change thumb_shadow.Size="0" />
+			<Change scrubber_left.Fill="#D5D5D5"/>
+		</WhileDisabled>
+	</Panel>
+	<Fuse.Controls.Native.Android.Slider ux:Condition="Android" ux:Template="AndroidAppearance" Host="this" />
+	<Fuse.Controls.Native.iOS.Slider ux:Condition="iOS" ux:Template="iOSAppearance" Host="this" Visual="this" />
+</RangeControl>

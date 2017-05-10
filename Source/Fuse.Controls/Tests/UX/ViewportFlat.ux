@@ -1,0 +1,8 @@
+<Panel ux:Class="UX.ViewportFlat">
+	<Viewport ux:Name="C" Perspective="100">
+		<Panel>
+			<Rotation DegreesX="15" ux:Name="R"/>
+		</Panel>
+	</Viewport>
+	
+</Panel>

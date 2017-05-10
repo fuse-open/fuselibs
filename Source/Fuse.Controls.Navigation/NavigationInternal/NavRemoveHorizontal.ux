@@ -1,0 +1,5 @@
+<RemovingAnimation ux:Class="Fuse.Controls.NavigationInternal.NavRemoveHorizontal">
+	<Scale Factor="0.7" Duration="0.3"/>
+	<!-- Fade in the Uno code -->
+	<!-- <Change Target="Parent.Opacity" Value="0" Duration="0.3"/> -->
+</RemovingAnimation>

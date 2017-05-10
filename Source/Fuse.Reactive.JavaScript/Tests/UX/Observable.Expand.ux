@@ -1,0 +1,16 @@
+<Panel ux:Class="UX.Observable.Expand">
+	<JavaScript>
+		var Observable = require("FuseJS/Observable");
+
+		var obs1 = Observable().expand();
+		var obs2 = Observable([1, 2, 3]).expand();
+
+		module.exports = {
+			obs1: obs1,
+			obs2: obs2
+		};
+	</JavaScript>
+
+	<Text Value="{obs1}" ux:Name="T1" />
+	<Fuse.Reactive.Test.ObservableCollector Items="{obs2}" ux:Name="OC" />
+</Panel>

@@ -1,0 +1,14 @@
+<Panel ux:Class="UX.MatchOrder">
+	<JavaScript>
+		module.exports = { yes:true}
+	</JavaScript>
+	<StackPanel ux:Name="A">
+		<Text Value="1"/>
+		<Match Value="{yes}">
+			<Case Bool="true">
+				<Text Value="2"/>
+			</Case>
+		</Match>
+		<Text Value="3"/>
+	</StackPanel>
+</Panel>

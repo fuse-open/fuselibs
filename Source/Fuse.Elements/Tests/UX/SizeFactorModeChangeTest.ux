@@ -1,0 +1,6 @@
+<Panel ux:Class="UX.SizeFactorModeChangeTest">
+	<Panel Alignment="TopLeft" Width="200" Height="300" ux:Name="A"/>
+	<Panel Alignment="BottomRight" Width="50" Height="50" ux:Name="B">
+		<Scaling RelativeTo="SizeFactor" RelativeNode="A" Vector="1" ux:Name="S1"/>
+	</Panel>
+</Panel>

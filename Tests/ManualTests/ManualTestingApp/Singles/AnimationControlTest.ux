@@ -1,0 +1,80 @@
+<Page Title="Animation 1" ux:Class="AnimationControlTest">
+<InfoStack ux:Key="Info">
+	<p>This tests the animation system.</p>
+	<ul>
+		<li>The animation starts when the switch is toggled.</li>
+		<li>The green star and will rotate while roughly in the yellow area.</li>
+		<li>The blue descends at the same time and moves back-and-forth while roughly in the yellow area.</li>
+		<li>Toggle the switch off and the reverse will happen.</li>
+		<li>The objects should end up back at their starting position/size/orientation.</li>
+	</ul>
+</InfoStack>
+<DockPanel>
+	<Switch DockPanel.Dock="Top">
+		<WhileTrue>
+			<Change AManual.Value="true"/>
+		</WhileTrue>
+	</Switch>
+	
+	<Grid ColumnCount="2">
+		<Panel>
+			<Rectangle Layer="Background">
+				<Stroke Width="2"><SolidColor Color="0,0,0,1"/></Stroke>
+				<LinearGradient>
+					<GradientStop Offset="0" Color="0,0,0,0"/>
+					<GradientStop Offset="0.3" Color="0,0,0,0"/>
+					
+					<GradientStop Offset="0.3" Color="1,1,0,0.5"/>
+					<GradientStop Offset="0.7" Color="1,1,0,0.5"/>
+					
+					<GradientStop Offset="0.7" Color="0,0,0,0"/>
+					<GradientStop Offset="1.0" Color="0,0,0,0"/>
+				</LinearGradient>
+			</Rectangle>
+			
+			<Panel Margin="0,0,0,50">
+				<Star Height="50" Width="50" ux:Name="Delay1" Alignment="TopCenter">
+					<LinearGradient>
+						<GradientStop Offset="0" Color="0,1,0,1"/>
+						<GradientStop Offset="1" Color="1,0,0,1"/>
+					</LinearGradient>
+				</Star>
+			</Panel>
+		</Panel>
+		
+		<Panel>
+			<Rectangle Layer="Background">
+				<Stroke Width="2"><SolidColor Color="0,0,0,1"/></Stroke>
+				<LinearGradient>
+					<GradientStop Offset="0.0" Color="1,1,0,0.5"/>
+					<GradientStop Offset="0.3" Color="1,1,0,0.5"/>
+					<GradientStop Offset="0.3" Color="0,0,0,0"/>
+					
+					<GradientStop Offset="0.49" Color="0,0,0,0"/>
+					<GradientStop Offset="0.49" Color="0,0,0,1"/>
+					<GradientStop Offset="0.51" Color="0,0,0,1"/>
+					<GradientStop Offset="0.51" Color="0,0,0,0"/>
+					
+					<GradientStop Offset="1.0" Color="0,0,0,0"/>
+				</LinearGradient>
+			</Rectangle>
+			
+			<Panel Margin="25,0,25,50">
+				<Rectangle Height="50" Width="50" ux:Name="Delay2" Alignment="TopCenter">
+					<SolidColor Color="0,0,1,1"/>
+					<Translation ux:Name="Trans2" RelativeTo="ParentSize"/>
+				</Rectangle>
+			</Panel>
+		</Panel>
+
+		<WhileTrue ux:Name="AManual">
+			<Spin Target="Delay1" Delay="3" Duration="4"/>
+			<Move Target="Delay1" Y="1" RelativeTo="ParentSize" Duration="10"/>
+			
+			<Cycle Target="Trans2.X" Low="-0.5" High="0.5" Duration="3"/>
+			<Move Target="Delay2" Y="1" RelativeTo="ParentSize" Duration="10"/>
+		</WhileTrue>
+	</Grid>
+</DockPanel>
+<!--    <FpsMeter/>-->
+</Page>

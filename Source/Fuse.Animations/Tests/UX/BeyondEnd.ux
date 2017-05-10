@@ -1,0 +1,5 @@
+<Panel ux:Class="UX.BeyondEnd">
+	<WhileTrue ux:Name="TheTrigger">
+		<TimingAction ux:Name="TaP0" Delay="1"/>
+	</WhileTrue>
+</Panel>

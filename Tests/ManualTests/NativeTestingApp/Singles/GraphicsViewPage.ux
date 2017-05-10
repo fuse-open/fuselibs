@@ -1,0 +1,64 @@
+<Page ux:Class="GraphicsViewPage" Title="GraphicsViewPage">
+	<!-- https://pixabay.com/en/powwow-native-shushwap-indian-50331/ -->
+	
+	<InfoStack ux:Key="Info">
+		<p>Tests the embedding of GL into a native app using the `GraphicsView` element.</p>
+		<ul>
+			<li>Top left contains a green circle.</li>
+			<li>Top right contains vertically scrollable list of 10 text items.</li>
+			<li>Bottom left contains a grayscale image.</li>
+			<li>Bottom right contains a few controls rendered with the basic style.</li>
+		</ul>
+	</InfoStack>
+	
+	<GraphicsView ux:Class="GView">
+		
+	</GraphicsView>
+	
+	<Grid ColumnCount="2" CellSpacing="10" Margin="10">
+		<GView>
+			<Circle>
+				<SolidColor Color="0.5,1,0.5,1"/>
+				<DropShadow/>
+			</Circle>
+		</GView>
+		
+		<GView>	
+			<ScrollView>
+				<Text ux:Class="Text32" FontSize="32"/>
+				<StackPanel>
+					<Text32>Line 1 of 10</Text32>
+					<Text32>Line 2 of 10</Text32>
+					<Text32>Line 3 of 10</Text32>
+					<Text32>Line 4 of 10</Text32>
+					<Text32>Line 5 of 10</Text32>
+					<Text32>Line 6 of 10</Text32>
+					<Text32>Line 7 of 10</Text32>
+					<Text32>Line 8 of 10</Text32>
+					<Text32>Line 9 of 10</Text32>
+					<Text32>Line 10 of 10</Text32>
+				</StackPanel>
+			</ScrollView>
+		</GView>
+		
+		<GView>
+			<DockPanel>
+				<Text Dock="Top">Desaturated Image</Text>
+				
+				<Image File="../Assets/native.jpg">
+					<Desaturate/>
+				</Image>
+			</DockPanel>
+		</GView>
+		
+		<GView>
+			<ScrollView>
+				<Grid ColumnCount="2" DefaultRow="auto">
+					<Text>Switch</Text><Switch/>
+					<Text>Slided</Text><Slider/>
+					<Text>Button</Text><Button Text="Press"/>
+				</Grid>
+			</ScrollView>
+		</GView>
+	</Grid>
+</Page>

@@ -1,0 +1,21 @@
+{
+  "Copyright": "Copyright (c) Fusetools AS 2017",
+  "Description": "Audio playback support",
+  "Publisher": "Fusetools AS",
+  "Title": "Fuse.Audio",
+  "Version": "1.0.0",
+  "Package": {
+    "ProjectUrl": "https://fusetools.com"
+  },
+  "Packages": [
+    "Uno.Threading",
+    "Uno.Permissions",
+    "Experimental.Audio",
+    "Fuse"
+  ],
+  "Includes": [
+    "*",
+    "Apple/AudioHelper.h:CHeader:iOS",
+    "Apple/AudioHelper.m:CSource:iOS",
+  ]
+}

@@ -1,0 +1,19 @@
+<Panel ux:Class="UX.SwipedTest" HitTestMode="LocalBounds">
+	<SwipeGesture Direction="Left" Length="200" ux:Name="SG" Type="Active"/>
+	<SwipingAnimation Source="SG" ux:Name="SA">
+		<!-- need to have something to have progress -->
+		<Change Dummy.CornerRadius="100"/>
+	</SwipingAnimation>
+	
+	<Swiped Source="SG">
+		<FuseTest.CountAction ux:Name="SwipeActive"/>
+	</Swiped>
+	<Swiped Source="SG" How="ToInactive">
+		<FuseTest.CountAction ux:Name="SwipeInactive"/>
+	</Swiped>
+	<Swiped Source="SG" How="ToEither">
+		<FuseTest.CountAction ux:Name="SwipeEither"/>
+	</Swiped>
+	
+	<Rectangle ux:Name="Dummy"/>
+</Panel>

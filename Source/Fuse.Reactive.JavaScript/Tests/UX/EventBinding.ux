@@ -1,0 +1,14 @@
+<Panel ux:Class="UX.EventBinding">
+	<JavaScript>
+		var Observable = require("FuseJS/Observable");
+		var result = Observable("nothing");
+		module.exports = {
+			result: result,
+			foo: "bar",
+			run: function(args) { result.value = "dataContext" in args ? JSON.stringify(args.dataContext.foo) : "ERROR"; }
+		};
+	</JavaScript>
+
+	<Fuse.Reactive.Test.EventBindingTest.DummyBehavior ux:Name="Run" Handler="{run}" />
+	<Text ux:Name="Text" Value="{result}" />
+</Panel>

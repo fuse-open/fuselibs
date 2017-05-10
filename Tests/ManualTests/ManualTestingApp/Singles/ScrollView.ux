@@ -1,0 +1,71 @@
+<Page Title="ScrollView" ux:Class="ScrollViewPage">
+	<InfoStack ux:Key="Info">
+		<h2>Goal</h2>
+		<p> To show that it is possible to scroll up and down when the content is larger than the screen, and that is possible for the app to scroll automatically.</p>
+		<h2>Instructions:</h2>
+		<ul>
+			<li>Click the button to start. It should jump down in the scroll area (that is, it doesn’t slowly go down/animator, but abruptly jumps).</li>
+			<li>Swipe to scroll down. While the scroller is moving Tap it. This should stop the scrolling.</li>
+			<li>Swipe down again to scroll to the bottom.</li>
+			<li>While you are dragging a scroll bar should appear, and then fade away when you release.</li>
+			<li>Click the “Bring To Top” button, and verify that the list scrolls back to the top automatically.</li> 
+			<li>If you drag beyond the top/bottom into the snap region a half-ellipse is drawn (fades relative to over scroll)</li>
+		</ul>
+		<p>The giraffe image in the background is just to make it easier to see the scrolling. Its head will be at the top and feet at the bottom.</p>
+	</InfoStack>
+	<Panel>
+		<!-- scrollbar -->
+		<Panel Alignment="Left" Margin="2,2,0,32">
+			<Rectangle Height="30" Width="15" CornerRadius="5" Fill="0.5,0.95,0.95,1" 
+				Alignment="Top" Opacity="0" ux:Name="ScrollThumb"/>
+		</Panel>
+		
+		<Ellipse Color="0,1,0,0" Width="80%" Height="200" Alignment="TopCenter"
+			Anchor="50%,60%" ux:Name="TopEndIndicator" HitTestMode="None"/>
+		<Ellipse Color="0,1,0,0" Width="80%" Height="200" Alignment="BottomCenter"
+			Anchor="50%,40%" ux:Name="BottomEndIndicator" HitTestMode="None"/>
+			
+		<StdButton Text="Start Here. View jumps, not scrolls." Alignment="TopCenter"
+			ux:Name="JumpButton">
+			<Clicked>
+				<Set ScrollArea.ScrollPosition="0,500"/>
+				<Set JumpButton.Visibility="Collapsed"/>
+			</Clicked>
+		</StdButton>
+		
+		<ScrollView ux:Name="ScrollArea">
+			<Panel Height="2000" Alignment="Top">
+				<!--http://pixabay.com/en/giraffe-tall-spots-long-neck-tail-48393/-->
+				<Image Layer="Background" StretchMode="Fill" File="../Assets/giraffe.png"
+					Opacity="0.5"/>
+				
+				<Text Value="Done" ux:Name="TextDone" Visibility="Collapsed" Alignment="TopCenter"/>
+					
+				<Panel Alignment="TopLeft" ux:Name="NavigationBlock" Height="0" Width="0"/>
+				
+				<Text Offset="0,500" Alignment="TopCenter" Value="Tap while scrolling to bottom. It should stop scrolling. Then Continue to bottom" TextWrapping="Wrap"/>
+				
+				<StdButton Alignment="BottomCenter" Text="Bring To Top">
+					<Clicked>
+						<BringIntoView TargetNode="NavigationBlock"/>
+						<Set TextDone.Visibility="Visible"/>
+					</Clicked>
+				</StdButton>
+			</Panel>
+			
+			<ScrollingAnimation>
+				<Move Target="ScrollThumb" Y="1" RelativeTo="ParentSize"/>
+			</ScrollingAnimation>
+			<WhileInteracting>
+				<Change ScrollThumb.Opacity="1" Duration="0.1" DurationBack="1"/>
+			</WhileInteracting>
+			<ScrollingAnimation Range="SnapMin">
+				<Change TopEndIndicator.Color="0.5,1,0.5,0.8" Easing="CubicIn"/>
+			</ScrollingAnimation>
+			<ScrollingAnimation Range="SnapMax">
+				<Change BottomEndIndicator.Color="0.5,1,0.5,0.8" Easing="CubicIn"/>
+			</ScrollingAnimation>
+		</ScrollView>
+	</Panel>
+    <FpsMeter/>
+</Page>

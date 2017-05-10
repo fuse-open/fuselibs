@@ -1,0 +1,5 @@
+Updating the library:
+Latest source code here https://github.com/sta/websocket-sharp
+We are using the pre-built binaries from nuget https://packages.nuget.org/packages/WebSocketSharp/
+Currently using https://packages.nuget.org/api/v2/package/WebSocketSharp/1.0.3-rc11
+Just download and unzip to lib folder.

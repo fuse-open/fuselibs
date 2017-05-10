@@ -1,0 +1,8 @@
+<Panel ux:Class="UX.XYOffset">
+	<Rectangle>
+		<Stroke Width="2" Alignment="Outside"><SolidColor Color="0,0,0,1"/></Stroke>
+	</Rectangle>
+	<Rectangle Y="25%" Height="5%" Background="#F888" ux:Name="TheY"/>
+	<Rectangle X="25%" Width="5%" Background="#8F88" ux:Name="TheX"/>
+	<Rectangle Background="#88F" Offset="50,50" ux:Name="TheOffset"/>
+</Panel>

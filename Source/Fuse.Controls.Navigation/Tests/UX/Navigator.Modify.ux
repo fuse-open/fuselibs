@@ -1,0 +1,40 @@
+<Panel ux:Class="UX.Router.Modify">
+	<Router ux:Name="router"/> 
+	<JavaScript>
+		module.exports.goA = function() { 
+			router.modify({
+				how: "Push",
+				path: [ "P2", {}, "P3", {} ],
+			})
+		}
+		
+		module.exports.goB = function() { 
+			router.modify({
+				how: "Replace",
+				path: [ "P4", {} ],
+				relative: C2,
+			})
+		}
+		
+		module.exports.goC = function() { 
+			router.modify({
+				how: "Goto",
+				path: [ "P1" ],
+				transition: "Bypass",
+			})
+		}
+	</JavaScript>
+	<FuseTest.Invoke Handler="{goA}" ux:Name="GoA"/>
+	<FuseTest.Invoke Handler="{goB}" ux:Name="GoB"/>
+	<FuseTest.Invoke Handler="{goC}" ux:Name="GoC"/>
+	
+	<PageControl ux:Name="C1">
+		<Page ux:Name="P1"/>
+		<Page ux:Name="P2">
+			<PageControl ux:Name="C2">
+				<Page ux:Name="P3"/>
+				<Page ux:Name="P4"/>
+			</PageControl>
+		</Page>
+	</PageControl>
+</Panel>

@@ -1,0 +1,35 @@
+<Panel ux:Class="UX.ModuleLifetime" Foo="Bar">
+	<string ux:Property="Foo" />
+
+	<JavaScript>
+		var Observable = require("FuseJS/Observable");
+
+		var items = Observable("thing1", "thing2", "thing3"); 
+
+		module.exports = {
+			items: items,
+			remove: function() {
+				items.removeAt(1);
+			}
+		}
+
+	</JavaScript>
+
+	<FuseTest.Invoke Handler="{remove}" ux:Name="remove" />
+
+	<StackPanel>
+		<Each Items="{items}">
+			<Panel>
+				<JavaScript>
+				
+					function callback()
+					{
+						// do nothing
+					}
+
+					this.Foo.onValueChanged(module, callback);
+				</JavaScript>
+			</Panel>
+		</Each>
+	</StackPanel>
+</Panel>

@@ -1,0 +1,26 @@
+<Panel ux:Class="UX.Each.Issue3430">
+	<JavaScript>
+		var Observable = require('FuseJS/Observable');
+		
+		var numbers = Observable(1,2);
+		exports.numbers = numbers
+		
+		exports.increment = function() {
+			numbers.addAll([1,2,3,4,5])
+		}
+		
+		exports.decrement = function() {
+			numbers.removeRange(2,3)
+		}
+	</JavaScript>
+	<FuseTest.Invoke Handler="{increment}" ux:Name="increment"/>
+	<FuseTest.Invoke Handler="{decrement}" ux:Name="decrement"/>
+	<StackPanel ux:Name="S">
+		<Each Items="{numbers}">
+			<Text Value="{}"/>
+		</Each>
+	</StackPanel>
+
+	<Fuse.Reactive.Test.ObservableCollector ux:Name="OC" Items="{numbers}"/>
+
+</Panel>

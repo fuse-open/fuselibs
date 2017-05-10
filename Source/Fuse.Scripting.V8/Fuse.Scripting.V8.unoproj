@@ -1,0 +1,35 @@
+{
+  "Copyright": "Copyright (c) Fusetools AS 2017",
+  "Description": "This package is part of Fuse",
+  "Publisher": "Fusetools AS",
+  "Version": "1.0.0",
+  "Package": {
+    "ProjectUrl": "https://fusetools.com"
+  },
+  "Packages": [
+    "Uno.Collections",
+    "Uno.Net.Sockets",
+    "Uno.Threading",
+  ],
+  "Projects": [
+    "../Fuse.Scripting/Fuse.Scripting.unoproj",
+    "../Fuse.Common/Fuse.Common.unoproj"
+  ],
+  "Includes": [
+    "Array.uno",
+    "Context.uno",
+    "Debugger.uno",
+    "Function.uno",
+    "Handle.uno",
+    "Object.uno",
+    "V8Simple.cil.uxl",
+    "V8Simple.cpp.uxl",
+    "V8Simple.uno",
+    "V8SimpleExtensions.uno",
+    "include/V8Simple.h",
+    "lib/Android.stuff:Stuff",
+    "lib/DotNet.stuff:Stuff",
+    "lib/OSX.stuff:Stuff",
+    "lib/Windows.stuff:Stuff",
+  ]
+}

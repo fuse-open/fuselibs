@@ -1,0 +1,36 @@
+<Panel ux:Class="UX.RouterNavigatorActivated">
+	<Router ux:Name="router"/>
+	<JavaScript>
+		var Observable = require("FuseJS/Observable")
+		
+		exports.actPath = Observable("")
+		exports.deactPath = Observable("")
+		
+		exports.activateP1 = function() { actExtend("1") }
+		exports.deactivateP1 = function() { deactExtend("1") }
+		
+		exports.activateP2 = function() { actExtend("2") }
+		exports.deactivateP2 = function() { deactExtend("2") }
+		
+		function actExtend(p) {
+			exports.actPath.value += p
+		}
+		function deactExtend(p) {
+			exports.deactPath.value += p
+		}
+	</JavaScript>
+	<Navigator ux:Name="Nav">
+		<Page ux:Template="P1" PrepareBusy="None">
+			<Activated><Callback Handler="{activateP1}"/></Activated>
+			<Deactivated><Callback Handler="{deactivateP1}"/></Deactivated>
+		</Page>
+		
+		<Page ux:Template="P2" PrepareBusy="None">
+			<Activated Handler="{activateP2}"/>
+			<Deactivated Handler="{deactivateP2}"/>
+		</Page>
+	</Navigator>
+	
+	<Text ux:Name="Act" Value="{actPath}"/>
+	<Text ux:Name="Deact" Value="{deactPath}"/>
+</Panel>

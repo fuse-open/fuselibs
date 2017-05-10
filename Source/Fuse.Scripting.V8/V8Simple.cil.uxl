@@ -1,0 +1,7 @@
+<Extensions Backend="CIL" Condition="USE_V8">
+	<CopyFile Condition="HOST_OSX" Name="lib/OSX/libV8Simple.dylib" TargetName="@(AssemblyDirectory)/libV8Simple.dylib" />
+	<Require Condition="HOST_OSX" Assembly="lib/OSX/V8Simple.net.dll" />
+	<Require Condition="HOST_WIN32" Assembly="lib/DotNet/V8Simple.net.dll" />
+	<CopyFile Condition="HOST_WIN32" Name="lib/Windows/x86/V8Simple.dll" TargetName="@(AssemblyDirectory)/x86/V8Simple.dll" />
+	<CopyFile Condition="HOST_WIN32" Name="lib/Windows/x64/V8Simple.dll" TargetName="@(AssemblyDirectory)/x64/V8Simple.dll" />
+</Extensions>

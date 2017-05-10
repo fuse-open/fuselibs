@@ -1,0 +1,19 @@
+<Panel ux:Class="UX.ScrollPositionChanged">
+	<JavaScript>
+		var Observable = require("FuseJS/Observable")
+		exports.text = Observable("hi")
+		
+		exports.changed = function(args) {
+			exports.text.value = Math.floor(args.value[0]*100) + "," + Math.floor(args.value[1]*100) +
+				" " + Math.floor(args.relativePosition[0]*100) + "," + Math.floor(args.relativePosition[1]*100)
+		}
+	</JavaScript>
+	<ScrollView ScrollPositionChanged="{changed}" ux:Name="SV">
+		<StackPanel>
+			<Each Count="100">
+				<Rectangle Height="100" Color="#ABB"/>
+			</Each>
+		</StackPanel>
+	</ScrollView>
+	<Text Value="{text}" ux:Name="T"/>
+</Panel>

@@ -1,0 +1,27 @@
+<Panel ux:Class="UX.Issue2236">
+	<JavaScript>
+		var Observable = require( "FuseJS/Observable" )
+
+		exports.okay = Observable(false)
+		
+		var items = Observable()
+		items.add({i:1})
+		exports.items = items
+		
+		exports.go = function(args) {
+			try {
+				items.removeAt(3)
+			} catch(err) {
+				//ensure it's the correct error
+				exports.okay.value = err.message.search( "out-of-bounds" ) != -1
+			}
+		}
+	</JavaScript>
+	<WhileTrue Value="{okay}" ux:Name="T"/>
+
+	<FuseTest.Invoke Handler="{go}" ux:Name="Go"/>
+	<!-- the issue was breaking on Each itself -->
+	<Each Items="{items}">
+		<Text Value="{i}"/>
+	</Each>
+</Panel>

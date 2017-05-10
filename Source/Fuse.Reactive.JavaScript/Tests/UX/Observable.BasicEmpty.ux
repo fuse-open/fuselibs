@@ -1,0 +1,20 @@
+<Panel ux:Class="UX.Observable.BasicEmpty">
+	<JavaScript>
+		var Observable = require("FuseJS/Observable")
+		
+		var items = Observable()
+		exports.items = items
+		
+		exports.step1 = function() {
+			items.add( "a" )
+		}
+		
+		exports.step2 = function() {
+			items.clear()
+		}
+	</JavaScript>
+	<Fuse.Reactive.Test.ObservableCollector ux:Name="OC" Items="{items}"/>
+	
+	<FuseTest.Invoke Handler="{step1}" ux:Name="Step1"/>
+	<FuseTest.Invoke Handler="{step2}" ux:Name="Step2"/>
+</Panel>

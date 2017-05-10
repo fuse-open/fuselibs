@@ -1,0 +1,46 @@
+{
+  "Copyright": "Copyright (c) Fusetools AS 2017",
+  "Description": "Framework for general purpose animation",
+  "Publisher": "Fusetools AS",
+  "Version": "1.0.0",
+  "Package": {
+    "ProjectUrl": "https://fusetools.com"
+  },
+  "InternalsVisibleTo": [
+    "Fuse.Animations.Test",
+    "Fuse.Triggers",
+    "Uno.Testing",
+    "Fuse.Triggers.Test",
+  ],
+  "Packages": [
+    "Uno.Collections"
+  ],
+  "Projects": [
+    "../Fuse.Motion/Fuse.Motion.unoproj",
+    "../Fuse.Nodes/Fuse.Nodes.unoproj",
+    "../Fuse.Common/Fuse.Common.unoproj"
+  ],
+  "Includes": [
+    "Animator.uno:Source",
+    "Attractor.uno:Source",
+    "AverageMixer.uno:Source",
+    "Change.uno:Source",
+    "Cycle.uno:Source",
+    "DiscreteKeyframeTrack.uno:Source",
+    "DiscreteMixer.uno:Source",
+    "DiscreteSingleTrack.uno:Source",
+    "EasingTrack.uno:Source",
+    "Keyframe.uno:Source",
+    "Mixer.uno:Source",
+    "Nothing.uno:Source",
+    "OpenAnimator.uno:Source",
+    "Player.uno:Source",
+    "RangeAdapter.uno:Source",
+    "Resize.uno:Source",
+    "Spin.uno:Source",
+    "SplineTrack.uno:Source",
+    "TrackAnimator.uno:Source",
+    "TransformAnimator.uno:Source",
+    "TriggerAnimation.uno:Source"
+  ]
+}

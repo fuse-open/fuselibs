@@ -1,0 +1,9 @@
+<Panel ux:Class="UX.WrapPanel.VerticalRightToLeft">
+	<WrapPanel ux:Name="W" Alignment="Bottom" MaxHeight="160" Padding="10,20,30,40"
+		Orientation="Vertical" FlowDirection="RightToLeft" RowAlignment="TopLeft">
+		<Panel Height="50" Width="50" ux:Name="P1"/>
+		<Panel Height="40" Width="60" ux:Name="P2"/>
+		<Panel Height="40" Width="10" ux:Name="P3"/>
+		<Panel Height="50" Width="20" Margin="10" ux:Name="P4"/>
+	</WrapPanel>
+</Panel>

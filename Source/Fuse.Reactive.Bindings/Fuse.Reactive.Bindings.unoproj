@@ -1,0 +1,33 @@
+{
+  "Copyright": "Copyright (c) Fusetools AS 2017",
+  "Description": "Framework for reactive data binding",
+  "Publisher": "Fusetools AS",
+  "Version": "1.0.0",
+  "Package": {
+    "ProjectUrl": "https://fusetools.com"
+  },
+  "Packages": [
+    "Uno.Collections",
+    "Uno.Data.Json",
+    "Uno.Net.Http",
+    "Uno.Testing",
+    "Uno.Threading",
+  ],
+  "Projects": [
+    "../Fuse.Common/Fuse.Common.unoproj",
+    "../Fuse.Nodes/Fuse.Nodes.unoproj",
+    "../Fuse.Scripting/Fuse.Scripting.unoproj",
+    "../Fuse.Reactive/Fuse.Reactive.unoproj",
+    "../Fuse.Reactive.Expressions/Fuse.Reactive.Expressions.unoproj",
+    "../Fuse.Triggers/Fuse.Triggers.unoproj"
+  ],
+  "InternalsVisibleTo": [
+    "Fuse.Reactive.Test",
+    "Fuse.Scripting.Test",
+    "Fuse.Common.Test.Helpers"
+  ],
+  "Includes": [
+    "*"
+  ]
+}
+

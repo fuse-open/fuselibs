@@ -1,0 +1,27 @@
+<Panel ux:Class="UX.PageBindingFull">
+	<Panel Navigation="mainNav">
+		<Text Value="{Page Title}" Color="{Page Highlight}" ux:Name="ActiveTitle"/>
+	</Panel>
+	
+	<Page ux:Class="PBFPage">
+		<float4 ux:Property="Highlight"/>
+		<ResourceFloat4 Key="Highlight" Value="{ReadProperty this.Highlight}"/>
+	</Page>
+	
+	<PageControl ux:Name="mainNav">
+		<PBFPage Title="one" Highlight="#F00" ux:Name="P1"/>
+		<PBFPage Title="two" Highlight="#0F0" ux:Name="P2"/>
+		<PBFPage Title="three" Highlight="#00F" ux:Name="P3"/>
+	</PageControl>
+	
+	<Panel ux:Class="PBFDot">
+		<Text Value="{Page Title}" Color="{Page Highlight}" ux:Name="T"/>
+		<WhileActive ux:Name="WA">
+			<Nothing/>
+		</WhileActive>
+	</Panel>
+	
+	<PageIndicator Navigation="mainNav" ux:Name="PI">
+		<PBFDot ux:Template="Dot"/>
+	</PageIndicator>
+</Panel>

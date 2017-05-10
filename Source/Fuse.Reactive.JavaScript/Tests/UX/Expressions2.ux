@@ -1,0 +1,4 @@
+<Fuse.Reactive.Test.UXExpressionsTest.ExpressionTester ux:Class="UX.Expressions2"
+    StringAttribute="Test {= 1338 - 1 }"
+    DoubleAttribute="668 * 2 + 1"
+    BoolAttribute="true && (1 < (1+1)) && (2 <= 2) && (3 >= 1) && ('&quot;' == '&#34;') && 2 != 1" />

@@ -1,0 +1,17 @@
+<Panel ux:Class="UX.Navigator.NonTemplate">
+	<Router ux:Name="router"/> 
+	<JavaScript>
+		var count = 0;
+		exports.pushP1 = function(){ router.push('P1', "" + (++count) );};
+		exports.pushP2 = function(){ router.push('P2', "" + (++count) );};
+	</JavaScript>
+	<DockPanel>
+		<FuseTest.Invoke Handler="{pushP1}" ux:Name="PushP1"/>
+		<FuseTest.Invoke Handler="{pushP2}" ux:Name="PushP2"/>
+		
+		<PageView DefaultPath="P1" ux:Name="theNav">
+			<Page Title="One" ux:Template="P1" PrepareBusy="None"/>
+			<Page Title="Two" Name="P2" PrepareBusy="None"/>
+		</PageView>
+	</DockPanel>
+</Panel>

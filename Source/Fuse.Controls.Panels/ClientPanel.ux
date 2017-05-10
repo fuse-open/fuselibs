@@ -1,0 +1,4 @@
+<DockPanel ux:Class="Fuse.Controls.ClientPanel">
+	<TopFrameBackground Dock="Top"/>
+	<BottomFrameBackground Dock="Bottom"/>
+</DockPanel>

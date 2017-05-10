@@ -1,0 +1,13 @@
+<Panel ux:Class="UX.Clicked.ScrollView">
+	<ScrollView ux:Name="SV">
+		<StackPanel>
+			<Panel Height="100"/>
+			<Panel HitTestMode="LocalBounds" Height="50">
+				<Clicked>
+					<FuseTest.CountAction ux:Name="C1"/>
+				</Clicked>
+			</Panel>
+			<Panel Height="2000"/>
+		</StackPanel>
+	</ScrollView>
+</Panel>

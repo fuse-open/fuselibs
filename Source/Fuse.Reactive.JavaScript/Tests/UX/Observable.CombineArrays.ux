@@ -1,0 +1,34 @@
+<Panel ux:Class="UX.Observable.CombineArrays">
+	<JavaScript>
+		var Observable = require("FuseJS/Observable")
+		
+		var a = Observable("1","2")
+		var b = Observable("a","b","c")
+		var c = Observable()
+		
+		exports.items = a.combineArrays( b,c, function(a,b,c) {
+			var values = []
+			for (var i=0; i < Math.max(a.length, b.length, c.length); ++i ) {
+				values.push( (a[i] || "*") + (b[i] || "*") + (c[i] || "*") )
+			}
+			return values
+		})
+		
+		exports.step1 = function() {
+			c.add( "%" )
+		}
+		
+		exports.failed = function() {
+			c.failed("nope")
+		}
+		
+		exports.restore = function() {
+			c.value = "#"
+		}
+	</JavaScript>
+	<Fuse.Reactive.Test.ObservableCollector ux:Name="OC" Items="{items}"/>
+	
+	<FuseTest.Invoke Handler="{step1}" ux:Name="Step1"/>
+	<FuseTest.Invoke Handler="{failed}" ux:Name="Failed"/>
+	<FuseTest.Invoke Handler="{restore}" ux:Name="Restore"/>
+</Panel>

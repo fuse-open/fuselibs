@@ -1,0 +1,6 @@
+<Panel ux:Class="UX.DataBinding.FileConversion">
+	<JavaScript>
+		exports.bundle = "hello.txt"
+	</JavaScript>
+	<FuseTest.FileHolder File="Assets/{bundle}" ux:Name="B"/>
+</Panel>

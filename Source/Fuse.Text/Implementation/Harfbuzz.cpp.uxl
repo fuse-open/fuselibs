@@ -1,0 +1,6 @@
+<Extensions Backend="CPlusPlus">
+	<Type Name="Fuse.Text.Implementation.Harfbuzz">
+		<CopyFile SourceFile="hb-ft-cached.cc" />
+		<CopyFile HeaderFile="hb-ft-cached.h" />
+	</Type>
+</Extensions>

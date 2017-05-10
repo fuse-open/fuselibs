@@ -1,0 +1,12 @@
+<Panel ux:Class="UX.OffsetModeChangeLayoutMasterTest">
+	<Panel Alignment="Bottom" Height="30%" Color="#AFF8">
+		<Panel ux:Name="signupButton" Width="120" Height="50" Alignment="Top" Color="#FAF8"/>
+	</Panel>
+
+	<Rectangle ux:Name="whiteRect" LayoutMaster="signupButton"/>
+
+	<WhileTrue Value="true">
+		<Move Target="whiteRect" RelativeTo="PositionOffset" RelativeNode="signupButton" Vector="1"/>
+		<Resize Target="whiteRect" RelativeTo="Size" RelativeNode="signupButton" Vector="1"/>
+	</WhileTrue>
+</Panel>

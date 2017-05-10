@@ -1,0 +1,83 @@
+<Page Title="IsVisible / WhileVisible" ux:Class="IsVisibleTest">
+<InfoStack ux:Key="Info">
+	<p>This part tests some internals related to visibility of element.Click each numbered button (1-5) and compare the `Expect` and `Actual` results. They should list the same letters (spacing does not matter).</p>
+
+	<p>Note: Nothing happens when you press `1` the first time since the page starts in that state.</p>
+</InfoStack>
+<DockPanel>
+	<StateGroup ux:Name="TheStates">
+		<State ux:Name="State1">
+			<Change Expect.Value="A B C"/>
+		</State>
+		<State ux:Name="State2">
+			<Change StackA.Visibility="Hidden"/>
+			<Change Expect.Value=""/>
+		</State>
+		<State ux:Name="State3">
+			<Change StackA.Visibility="Hidden"/>
+			<Change Multi.LayoutElement="StackAlt"/>
+			<Change Expect.Value="C"/>
+		</State>
+		<State ux:Name="State4">
+			<Change StackA.Visibility="Hidden"/>
+			<Change Expect.Value=""/>
+		</State>
+		<State ux:Name="State5">
+			<Change Multi.LayoutElement="StackAlt"/>
+			<Change Expect.Value="A B C"/>
+		</State>
+	</StateGroup>
+
+	<Text Dock="Top" TextWrapping="Wrap" Alignment="Top">
+		Click each numbered button and compare expect/actual.
+	</Text>
+	<WrapPanel Orientation="Horizontal" Dock="Top">
+		<StdButton MinWidth="40" Text="1"><Clicked><Set TheStates.Active="State1"/></Clicked></StdButton>
+		<StdButton MinWidth="40" Text="2"><Clicked><Set TheStates.Active="State2"/></Clicked></StdButton>
+		<StdButton MinWidth="40" Text="3"><Clicked><Set TheStates.Active="State3"/></Clicked></StdButton>
+		<StdButton MinWidth="40" Text="4"><Clicked><Set TheStates.Active="State4"/></Clicked></StdButton>
+		<StdButton MinWidth="40" Text="5"><Clicked><Set TheStates.Active="State5"/></Clicked></StdButton>
+	</WrapPanel>
+	
+	<StackPanel Orientation="Horizontal" Dock="Top">
+		<Text>Expect:</Text>
+		<Text ux:Name="Expect"/>
+	</StackPanel>
+	
+	<StackPanel Orientation="Horizontal" Dock="Top">
+		<Text>Actual:</Text>
+		<Text ux:Name="VisStackA" Visibility="Hidden">A</Text>
+		<Text ux:Name="VisButtonB" Visibility="Hidden">B</Text>
+		<Text ux:Name="VisButtonC" Visibility="Hidden">C</Text>
+	</StackPanel>
+
+	<Panel Margin="0,20,0,20" Dock="Top">
+		<SolidColor Color="0,0,0,1"/>
+		<Text TextColor="1,1,1,1">Ignore stuff beneath this line</Text>
+	</Panel>
+	
+	<Grid ColumnCount="2">
+		
+		<MultiLayout ux:Name="Multi" LayoutElement="StackA"/>
+		<StackPanel ux:Name="StackA">
+			<WhileVisible><Change VisStackA.Visibility="Visible"/></WhileVisible>
+			
+			<Button Text="B" ux:Name="ButtonB">
+				<WhileVisible><Change VisButtonB.Visibility="Visible"/></WhileVisible>
+			</Button>
+
+			<Panel>
+				<Placeholder>
+					<Button Text="C" ux:Name="ButtonC">
+						<WhileVisible><Change VisButtonC.Visibility="Visible"/></WhileVisible>
+					</Button>
+				</Placeholder>
+			</Panel>
+		</StackPanel>
+		
+		<StackPanel ux:Name="StackAlt">
+			<Placeholder Target="ButtonC"/>
+		</StackPanel>
+	</Grid>
+</DockPanel>
+</Page>

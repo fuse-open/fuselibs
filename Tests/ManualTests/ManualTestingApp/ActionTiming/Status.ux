@@ -1,0 +1,17 @@
+<Panel ux:Class="Status" Margin="10,10,10,10">
+	<Rectangle Layer="Background">
+		<SolidColor Color="0.9,0.9,0.9,1"/>
+	</Rectangle>
+	
+	<Grid ColumnCount="2" DefaultRow="auto">
+		<Text>Count</Text>
+		<Panel ux:Name="CountPanel">
+			<Text ux:Name="CountText"/>
+		</Panel>
+		
+		<Text>Time</Text>
+		<Panel ux:Name="TimePanel">
+			<Text ux:Name="TimeText"/>
+		</Panel>
+	</Grid>
+</Panel>

@@ -1,0 +1,23 @@
+<Page ux:Class="DefaultFonts" Title="Default fonts">
+	<InfoStack ux:Key="Info">
+		<h2>Goal</h2>
+		<p>This page tests the default system font in different styles and weights.</p>
+		<h2>Instructions</h2>
+		<ul>
+			<li>Verify that the font matches the expected style and weight.</li>
+		</ul>
+	</InfoStack>
+
+	<StackPanel>
+		<Text Font="Thin" FontSize="30">Thin</Text>
+		<Text Font="Light" FontSize="30">Light</Text>
+		<Text Font="Regular" FontSize="30">Regular</Text>
+		<Text Font="Medium" FontSize="30">Medium</Text>
+		<Text Font="Bold" FontSize="30">Bold</Text>
+		<Text Font="ThinItalic" FontSize="30">Thin Italic</Text>
+		<Text Font="LightItalic" FontSize="30">Light Italic</Text>
+		<Text Font="Italic" FontSize="30">Regular Italic</Text>
+		<Text Font="MediumItalic" FontSize="30">Medium Italic</Text>
+		<Text Font="BoldItalic" FontSize="30">Bold Italic</Text>
+	</StackPanel>
+</Page>

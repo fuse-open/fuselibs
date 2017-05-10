@@ -1,0 +1,96 @@
+<TestPage ux:Class="Pages.LineGraph" Title="Line Graph">
+	<InfoStack ux:Key="Info">
+		<p>Displays a line graph (a smooth, or straight line, through a series of points).</p>
+		<ul>
+			<li>The switch at the top toggles between a smooth curve and straight line segments.</li>
+			<li>"Random" will change the locations of the points.</li>
+			<li>Each point has a small circle layered on top of it.</li>
+			<li>The line will be more green near the top of the graph and more red near the bottom.</li>
+			<li>Toggle "Alt-Color"  and the line will be orangeish near the top and blueish near the bottom.</li>
+		</ul>
+	</InfoStack>
+	
+	<JavaScript>
+		var Observable = require("FuseJS/Observable")
+		
+		exports.points = Observable( [0,0.4], [0.2,0.8], [0.4,0.7], [0.6,0.2], [0.8,0.5], [1,0.5])
+		exports.locs = exports.points.map( function(v) {
+			return { x: v[0], y: v[1] }
+		})
+		
+		exports.random = function() {
+			var list = []
+			for (var i=0; i <= 5; ++i ) {
+				list.push( [i/5, Math.random()] )
+			}
+			exports.points.replaceAll(list)
+		}
+	</JavaScript>
+	<DockPanel Alignment="Center" Width="100%" Height="100%" BoxSizing="FillAspect" Margin="10">
+		<StackPanel Dock="Top" Orientation="Horizontal" Alignment="Center" ItemSpacing="5">
+			<Text Value="Straight" Alignment="VerticalCenter"/>
+			<Switch>
+				<WhileTrue>
+					<Change lineGraph.Style="Straight"/>
+					<Change lineGraphFill.Style="Straight"/>
+				</WhileTrue>
+			</Switch>
+			<Panel Width="10"/>
+			<Button Text="Random" Clicked="{random}" Alignment="VerticalCenter"/>
+			
+			<Text Value="Alt-Color" Alignment="VerticalCenter"/>
+			<Switch>
+				<WhileTrue>
+					<Change lgA.Color="#862" Duration="0.5"/>
+					<Change lgB.Color="#268" Duration="0.5"/>
+					<Change lineGraphFill.Color="#FA48" Duration="0.5"/>
+				</WhileTrue>
+			</Switch>
+		</StackPanel>
+		<Panel Dock="Top" Height="10"/>
+		<VectorLayer>
+			<DockLayout/>
+	
+			<Panel>
+				<Each Items="{locs}">
+					<Circle Anchor="50%,50%" X="{x}*100%" Y="{y}*100%" Fill="#FDD" Width="6" Height="6"
+						SnapToPixels="false"/>
+				</Each>
+			</Panel>
+			<Curve ux:Name="lineGraph">	
+				<Stroke Width="15" LineJoinMiterLimit="5">
+					<LinearGradient>
+						<GradientStop Offset="0" Color="#262" ux:Name="lgA"/>
+						<GradientStop Offset="1" Color="#622" ux:Name="lgB"/>
+					</LinearGradient>
+				</Stroke>
+				<Each Items="{points}">
+					<CurvePoint At="{}"/>
+				</Each>
+			</Curve>
+			<Curve Extrude="Bottom" Color="#AFF8" ux:Name="lineGraphFill">
+				<Each Items="{points}">
+					<CurvePoint At="{}"/>
+				</Each>
+			</Curve>
+			
+			<Panel>
+				<Path Data="M 0,0 v 1 h 1 v -1" StretchMode="Fill">
+					<Stroke Width="1" Color="#000"/>
+				</Path>
+				<Rectangle>
+					<LinearGradient>
+						<GradientStop Offset="0" Color="#EEE"/>
+						<GradientStop Offset="1" Color="#CCC"/>
+					</LinearGradient>
+				</Rectangle>
+			</Panel>
+			
+			<Panel Dock="Left" Width="10">
+				<Path Data="M 0,0 H 1 M 0,0.5 H1 M 0,1 H 1" StretchMode="Fill">
+					<Stroke Width="1" Color="#000"/>
+				</Path>
+			</Panel>
+		</VectorLayer>
+	</DockPanel>
+</TestPage>

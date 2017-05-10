@@ -1,0 +1,12 @@
+<Panel ux:Class="UX.NodeGroup.Resources">
+	<NodeGroup ux:Class="NGResources">
+		<float4 ux:Key="Low" ux:Value="0.5,1,0.5,1"/>
+		<string ux:Key="Happy" ux:Value="😀"/>
+	</NodeGroup>
+
+	<Panel>
+		<NGResources/>
+		
+		<Text Value="{Resource Happy}" TextColor="{Resource Low}" ux:Name="T"/>
+	</Panel>
+</Panel>

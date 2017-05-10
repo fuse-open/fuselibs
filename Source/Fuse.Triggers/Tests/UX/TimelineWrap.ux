@@ -1,0 +1,8 @@
+<Panel ux:Class="UX.TimelineWrap">
+	<Timeline ux:Name="T1" PlayMode="Wrap">
+		<Nothing Duration="1"/>
+	</Timeline>
+	<Timeline ux:Name="T2" PlayMode="Wrap" TargetProgress="0" InitialProgress="1">
+		<Nothing Duration="1"/>
+	</Timeline>
+</Panel>

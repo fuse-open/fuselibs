@@ -1,0 +1,26 @@
+<Panel ux:Class="UX.ContentAlignment">
+	<StackPanel SnapToPixels="true" Alignment="BottomRight" Padding="10,20,30,40">
+		<Rectangle SnapToPixels="true" Width="50" Height="50" ux:Name="RA0"/>
+		<Rectangle SnapToPixels="true" Width="50" Height="50" ux:Name="RA1"/>
+		<Rectangle SnapToPixels="true" Width="50" Height="50" ux:Name="RA2"/>
+	</StackPanel>
+	<StackPanel SnapToPixels="true" Alignment="TopLeft">
+		<Rectangle SnapToPixels="true" Width="50" Height="50" ux:Name="RB0"/>
+		<Rectangle SnapToPixels="true" Width="50" Height="50" ux:Name="RB1"/>
+		<Rectangle SnapToPixels="true" Width="50" Height="50" ux:Name="RB2"/>
+	</StackPanel>
+	
+	<StackPanel SnapToPixels="true" Alignment="HorizontalCenter" ContentAlignment="VerticalCenter">
+		<Rectangle SnapToPixels="true" Width="50" Height="50" ux:Name="RC0"/>
+		<Rectangle SnapToPixels="true" Width="50" Height="50" ux:Name="RC1"/>
+		<Rectangle SnapToPixels="true" Width="50" Height="50" ux:Name="RC2"/>
+	</StackPanel>
+
+	<Panel SnapToPixels="true" Alignment="Center" Height="50" Width="50">
+		<StackPanel SnapToPixels="true" Orientation="Horizontal" Alignment="Right" Padding="20">
+			<Rectangle SnapToPixels="true" Width="50" Height="50" ux:Name="RD0"/>
+			<Rectangle SnapToPixels="true" Width="50" Height="50" ux:Name="RD1"/>
+			<Rectangle SnapToPixels="true" Width="50" Height="50" ux:Name="RD2"/>
+		</StackPanel>
+	</Panel>
+</Panel>

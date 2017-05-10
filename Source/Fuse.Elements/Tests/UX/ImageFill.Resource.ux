@@ -1,0 +1,4 @@
+<Rectangle ux:Class="UX.ImageFill.Resource">
+	<WhileLoading ux:Name="W"/>
+	<ImageFill File="Assets/green.png" StretchMode="PixelPrecise" MemoryPolicy="UnloadUnused" ux:Name="IF"/>
+</Rectangle>

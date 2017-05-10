@@ -1,0 +1,4 @@
+<Panel ux:Class="StackPanelScene4">
+  <Image ux:Name="Image2"  StretchDirection="Both" File="Assets/derp.jpg"  />
+  <Image ux:Name="Image1" File="Assets/derp.jpg"  />
+</Panel>

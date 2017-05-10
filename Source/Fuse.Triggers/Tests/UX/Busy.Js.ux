@@ -1,0 +1,13 @@
+<Panel ux:Class="UX.Busy.Js">
+	<JavaScript>
+		B.deactivate()
+		
+		exports.start = function() {
+			B.activate()
+		}
+	</JavaScript>
+	<Busy On="ParameterChanged" ux:Name="B"/>
+	<WhileBusy ux:Name="W"/>
+	
+	<FuseTest.Invoke Handler="{start}" ux:Name="{CallStart}"/>
+</Panel>

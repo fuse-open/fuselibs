@@ -1,0 +1,28 @@
+{
+  "Copyright": "Copyright (c) Fusetools AS 2017",
+  "Description": "Library for physics-based UI Effects",
+  "Publisher": "Fusetools AS",
+  "Version": "1.0.0",
+  "Package": {
+    "ProjectUrl": "https://fusetools.com"
+  },
+  "InternalsVisibleTo": [
+    "Fuse.Controls"
+  ],
+  "Packages": [
+    "Uno.Collections",
+    "Uno.Geometry"
+  ],
+  "Projects": [
+    "../Fuse.Animations/Fuse.Animations.unoproj",
+    "../Fuse.Elements/Fuse.Elements.unoproj",
+    "../Fuse.Gestures/Fuse.Gestures.unoproj",
+    "../Fuse.Triggers/Fuse.Triggers.unoproj",
+    "../Fuse.Scripting/Fuse.Scripting.unoproj",
+    "../Fuse.Nodes/Fuse.Nodes.unoproj",
+    "../Fuse.Common/Fuse.Common.unoproj"
+  ],
+  "Includes": [
+    "*.uno"
+  ]
+}

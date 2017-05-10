@@ -1,0 +1,14 @@
+<Panel ux:Class="UX.Issue2398">
+	<Panel ux:Name="foo">
+		<Each Count="10">
+			<Panel ux:Name="item">
+				<Each Count="10">
+					<WhilePressed>
+						<Change item.Color="#f00" />
+						<Change foo.Color="#f00" />
+					</WhilePressed>
+				</Each>
+			</Panel>
+		</Each>
+	</Panel>
+</Panel>

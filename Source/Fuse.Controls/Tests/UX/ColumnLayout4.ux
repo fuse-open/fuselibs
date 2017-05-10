@@ -1,0 +1,7 @@
+<Panel ux:Class="UX.ColumnLayout4" Alignment="HorizontalCenter">
+	<ColumnLayout ux:Name="L"/>
+	<Panel Height="145" Width="45"/>
+	<Panel Height="120" Width="20"/>
+	<Panel Height="150" Width="50"/>
+	<Panel Height="140" Width="40"/>
+</Panel>

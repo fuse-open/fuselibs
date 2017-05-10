@@ -1,0 +1,9 @@
+<Grid ColumnCount="2" RowCount="2" ux:Class="UX.RenderBoundsStackTest">
+	<Panel ux:Class="CellFrame"/>
+	
+	<CellFrame ux:Name="P2" Color="#FFF">
+		<StackPanel ux:Name="P1">
+			<Panel Height="20" Color="#FFF"/>
+		</StackPanel>
+	</CellFrame>
+</Grid>

@@ -1,0 +1,69 @@
+<ChattyPage ux:Class="Chat" ux:Name="selfPage">
+	<JavaScript>
+		var Observable = require("FuseJS/Observable")
+		
+		var userName = Observable()
+		
+		var gotoChat = function(args, b) {
+			userName.value = args.user
+		}
+		
+		module.exports = {
+			userName: userName,
+			gotoChat: gotoChat,
+		}
+	</JavaScript>
+	<ChattyLabel Value="{userName}" Alignment="TopCenter"/>
+	
+	<StdButton Text="Contacts" Alignment="BottomLeft">
+		<Clicked>
+			<RaiseUserEvent EventName="Chatty.GotoContacts"/>
+		</Clicked>
+	</StdButton>
+	
+	<StdButton Text="Delete" Alignment="BottomRight">
+		<Clicked>
+			<Set ModalConfirm.IsEnabled="true"/>
+		</Clicked>
+	</StdButton>
+	
+	<OnUserEvent EventName="Chatty.GotoChat" Handler="{gotoChat}"/>
+	
+	<AlternateRoot IsEnabled="false" ParentNode="{Resource MainPanel}" ux:Name="ModalConfirm">
+		<ClientPanel Color="1,0,0,0.8" ux:Name="ModalDialog" Layer="Overlay">
+			<AddingAnimation>
+				<Change ModalDialog.Opacity="0" Duration="0.3"/>
+			</AddingAnimation>
+			<RemovingAnimation>
+				<Change ModalDialog.Opacity="0" Duration="0.3"/>
+			</RemovingAnimation>
+			
+			<StackPanel Alignment="Center" Padding="10">
+				<Rectangle CornerRadius="5" Color="1,1,0.95,1" Layer="Background">
+					<Stroke Width="1" Color="0.5,0.5,0,1"/>
+				</Rectangle>
+				
+				<Text Value="Really delete user:" Alignment="Center"/>
+				<Text Value="{userName}" Alignment="Center"/>
+				<StackPanel Orientation="Horizontal" Alignment="Center">
+					<StdButton Text="Yes">
+						<Clicked>
+							<Set ModalConfirm.IsEnabled="false"/>
+							<RaiseUserEvent EventName="Chatty.DeleteContact">
+								<UserEventArg Name="user" StringValue="{userName}"/>
+							</RaiseUserEvent>
+						</Clicked>
+					</StdButton>
+					<StdButton Text="No">
+						<Clicked>
+							<Set ModalConfirm.IsEnabled="false"/>
+						</Clicked>
+					</StdButton>
+				</StackPanel>
+				
+				<Text TextAlignment="Center" TextWrapping="Wrap">This is a modal panel, it blocks the background app.</Text>
+			</StackPanel>
+		</ClientPanel>
+	</AlternateRoot>
+	
+</ChattyPage>

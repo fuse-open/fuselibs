@@ -1,0 +1,6 @@
+<Rectangle ux:Class="UX.ImageFill.Loading">
+	<WhileLoading ux:Name="W" Bypass="Never">
+		<FuseTest.CountAction ux:Name="C" When="Forward"/>
+	</WhileLoading>
+	<ImageFill File="Assets/green.png" MemoryPolicy="UnloadUnused"/>
+</Rectangle>

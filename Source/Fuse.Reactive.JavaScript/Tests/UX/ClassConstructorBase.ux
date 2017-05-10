@@ -1,0 +1,4 @@
+<Panel ux:Class="UX.ClassConstructorBase">
+	<Panel ux:Dependency="A" />
+	<Panel ux:Name="_a" Children="A" ux:AutoBind="false" />
+</Panel>

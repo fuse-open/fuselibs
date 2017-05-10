@@ -1,0 +1,8 @@
+<Panel ux:Class="UX.EdgeAction">
+	<Fuse.Triggers.Test.OpenTestTrigger ux:Name="Open">
+		<Move X="100" Duration="1"/>
+		<FuseTest.CountAction ux:Name="AFore"/>
+		<FuseTest.CountAction ux:Name="ABack" When="Backward"/>
+		<Panel ux:Name="Content"/>
+	</Fuse.Triggers.Test.OpenTestTrigger>
+</Panel>

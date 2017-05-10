@@ -1,0 +1,9 @@
+<Panel ux:Class="UX.WrapPanel.Center">
+	<Panel Alignment="Center" MaxHeight="100" ux:Name="P">
+		<WrapPanel Orientation="Vertical" ux:Name="W" Margin="2">
+			<Each Count="10">
+				<Panel Height="30" Width="30"/>
+			</Each>
+		</WrapPanel>
+	</Panel>
+</Panel>

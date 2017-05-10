@@ -1,0 +1,9 @@
+<StackPanel Orientation="Horizontal" ux:Class="Fuse.Controls.PageIndicator" ux:AutoCtor="false">
+	<Panel ux:Class="Fuse.Controls.PageIndicatorDot" Width="6" Height="6" Margin="5">
+		<Circle Color="0,0,0,0.3" ux:Name="TheCircle" />
+		<ActivatingAnimation>
+			<Scale Factor="1.2"/>
+			<Change Target="TheCircle.Color" Value="0,0,0,1"/>
+		</ActivatingAnimation>
+	</Panel>
+</StackPanel>

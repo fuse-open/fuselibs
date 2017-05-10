@@ -1,0 +1,7 @@
+<Panel ux:Class="UX.Expression.Anchor">
+	<JavaScript>
+		exports.anchorX = 0.5
+		exports.anchorY = 0.5
+	</JavaScript>
+	<Panel Anchor="({anchorX} * 100%, {anchorY} * 100%)" ux:Name="P"/>
+</Panel>

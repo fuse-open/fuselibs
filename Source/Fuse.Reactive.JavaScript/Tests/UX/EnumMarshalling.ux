@@ -1,0 +1,10 @@
+<Panel ux:Class="UX.EnumMarshalling">
+	<JavaScript>
+		var Observable = require("FuseJS/Observable")
+		var foo = Observable("FooValue");
+
+		module.exports = { 'foo': foo };
+	</JavaScript>
+	<Fuse.Reactive.Test.VariousTest.MyClass ux:Name="MyClass" Test="{foo}" />
+	<Text ux:Name="Text" Value="{foo}" />
+</Panel>

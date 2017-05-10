@@ -1,0 +1,36 @@
+<Panel ux:Class="UX.Navigator.DeferredActivation">
+    <Router ux:Name="router" />
+    <Navigator DefaultPath="Home" Background="#000000" ux:Name="Nav">
+        <Home ux:Template="Home" router="router" />
+        <Search ux:Template="Search" router="router"/>
+    </Navigator>
+
+	<JavaScript>
+		module.exports.search = function() {
+			router.push('Search');
+		}
+		module.exports.goBack = function() {
+			router.goBack();
+		}
+	</JavaScript>
+	
+    <Page ux:Class="Home" Background="#ffffff">
+        <Router ux:Dependency="router" />
+    </Page>
+
+    <Page ux:Class="Search" Color="#000">
+        <Router ux:Dependency="router" />
+        <JavaScript>
+        </JavaScript>
+
+        <WhileActive>
+			<FuseTest.CountAction ux:Name="TA"/>
+        </WhileActive>
+        <Activated>
+			<FuseTest.CountAction ux:Name="TB"/>
+		</Activated>
+    </Page>
+    
+	<FuseTest.Invoke Handler="{search}" ux:Name="GoSearch"/>
+	<FuseTest.Invoke Handler="{goBack}" ux:Name="GoBack"/>
+</Panel>

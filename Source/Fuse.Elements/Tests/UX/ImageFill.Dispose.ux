@@ -1,0 +1,4 @@
+<Rectangle ux:Class="UX.ImageFill.Dispose">
+	<WhileLoading ux:Name="W"/>
+	<ImageFill File="Assets/green.png" ux:Name="IF" MemoryPolicy="UnloadInBackground"/>
+</Rectangle>

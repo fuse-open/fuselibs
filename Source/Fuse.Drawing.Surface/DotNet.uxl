@@ -1,0 +1,4 @@
+<Extensions Backend="CIL">
+    <Require Assembly="System.Drawing" />
+    <Require Assembly="System.Windows.Forms" />
+</Extensions>

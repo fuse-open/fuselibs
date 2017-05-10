@@ -1,0 +1,7 @@
+<Panel ux:ClassName="Children">
+    <Panel ux:Name="firstChild">
+        <Panel />
+    </Panel>
+    <Panel />
+    <Panel />
+</Panel>

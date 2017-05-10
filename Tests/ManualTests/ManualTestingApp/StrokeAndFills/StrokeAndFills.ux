@@ -1,0 +1,68 @@
+<Page xmlns:b="Outracks.UIThemes.MobileBlue" xmlns:mta="ManualTestingApp" ux:Class="StrokeAndFills" ux:AutoCtor="false">
+	<InfoStack ux:Key="Info">
+		<p>This part is added to test basic shapes. Left big star is designed to test gradient stroke and image background. Right cross is custom path with gradient fill.</p>
+		<p>Bottom line of basic shapes is to test correct form of ellipse, rectangle, polygon, star, circle.</p>
+	</InfoStack>
+    <DockPanel>
+        <Grid ColumnCount="2" Rows="60,1*" Margin="10,30,10,30" DockPanel.Dock="Fill">
+            <Text Alignment="Top" TextWrapping="Wrap" Margin="5,0,5,0">Star with texture fill with gradient border</Text>
+            <Text Alignment="Top" TextWrapping="Wrap" Margin="5,0,5,0">Custom path with gradient fill with texture fill border</Text>
+            <Panel MaxWidth="400">
+                <Star ux:Name="Star" Layer="Background" Points="7" RotationDegrees="14">
+                    <ImageFill File="Assets/border_texture.png"  StretchMode="Fill"/>
+                    <Stroke Width="7" >
+                        <LinearGradient StartPoint="0,0" EndPoint="1,0">
+                            <GradientStop Color="1,0,0,1" Offset="0"/>
+                            <GradientStop Color="0,1,0,1" Offset="1"/>
+                        </LinearGradient>
+                    </Stroke>
+                </Star>
+            </Panel>
+
+            <Panel MaxWidth="400">
+                <Path Layer="Background" Data="M 200 0 l 300 300 l 300 -300 l 200 200 l -300 300 l 300 300 l -200 200 l -300 -300 l -300 300 l -200 -200 l 300 -300 l -300 -300 Z">
+
+                    <LinearGradient StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Color="1,0,0,1" Offset="0.5"/>
+                        <GradientStop Color="0,0,1,1" Offset="2.4"/>
+                    </LinearGradient>
+
+                    <Stroke Width="25" >
+						<ImageFill File="Assets/bricks.jpg"  StretchMode="Fill"/>
+                    </Stroke>
+                </Path>
+            </Panel>
+        </Grid>
+
+        <Panel DockPanel.Dock="Bottom" Height="150">
+            <Grid ColumnCount="5" Rows="1*">
+                <Panel Margin="10,10,10,10">
+                    <Ellipse Layer="Background">
+                        <SolidColor Color="1,0,0,1" />
+                    </Ellipse>
+                </Panel>
+                <Panel Margin="10,10,10,10">
+                    <Rectangle Layer="Background" CornerRadius="3">
+                        <SolidColor Color="1,0,0,1" />
+                    </Rectangle>
+                </Panel>
+                <Panel Margin="10,10,10,10">
+                    <RegularPolygon Layer="Background" Sides="9">
+                        <SolidColor Color="1,0,0,1" />
+                    </RegularPolygon>
+                </Panel>
+                <Panel Margin="10,10,10,10">
+                    <Star Layer="Background" Points="9" RotationDegrees="14">
+                        <SolidColor Color="1,0,0,1" />
+                    </Star>
+                </Panel>
+                <Panel Margin="10,10,10,10">
+                    <Circle Layer="Background">
+                        <SolidColor Color="1,0,0,1" />
+                    </Circle>
+                </Panel>
+            </Grid>
+        </Panel>
+    </DockPanel>
+    <FpsMeter/>
+</Page>

@@ -1,0 +1,13 @@
+<Panel ux:Class="UX.LimitSizing">
+	<Panel Alignment="Center" Width="100" BoxSizing="Limit" LimitHeight="50" ux:Name="L1">
+		<StackPanel>
+			<Rectangle Height="80" ux:Name="R1"/>
+		</StackPanel>
+	</Panel>
+	
+	<Panel Alignment="Center" Height="100" BoxSizing="Limit" LimitWidth="50" ux:Name="L2">
+		<StackPanel Orientation="Horizontal">
+			<Rectangle Width="80" ux:Name="R2"/>
+		</StackPanel>
+	</Panel>
+</Panel>

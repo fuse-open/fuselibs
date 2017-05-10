@@ -1,0 +1,34 @@
+<Panel ux:Class="UX.Transition.BasicNonTemplate">
+	<Router ux:Name="router"/>
+	<Panel ux:Class="TBNTPage">
+		<Transition To="ignore, two" ux:Name="t1">
+			<FuseTest.CountAction When="Forward" ux:Name="f1"/>
+			<FuseTest.CountAction When="Backward" ux:Name="b1"/>
+		</Transition>
+		
+		<Transition From="ignore, one" ux:Name="t2">
+			<FuseTest.CountAction When="Forward" ux:Name="f2"/>
+			<FuseTest.CountAction When="Backward" ux:Name="b2"/>
+		</Transition>
+		
+		<Transition Direction="ToActive" ux:Name="t3">
+			<FuseTest.CountAction When="Forward" ux:Name="f3"/>
+			<FuseTest.CountAction When="Backward" ux:Name="b3"/>
+		</Transition>
+		
+		<Transition Direction="ToInactive" ux:Name="t4">
+			<FuseTest.CountAction When="Forward" ux:Name="f4"/>
+			<FuseTest.CountAction When="Backward" ux:Name="b4"/>
+		</Transition>
+		
+		<Transition ux:Name="t5">
+			<FuseTest.CountAction When="Forward" ux:Name="f5"/>
+			<FuseTest.CountAction When="Backward" ux:Name="b5"/>
+		</Transition>
+	</Panel>
+
+	<Navigator ux:Name="nav" DefaultPath="one">
+		<TBNTPage ux:Name="one"/>
+		<TBNTPage ux:Name="two"/>
+	</Navigator>
+</Panel>

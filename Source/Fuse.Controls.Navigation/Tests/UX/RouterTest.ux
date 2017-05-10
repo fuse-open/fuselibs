@@ -1,0 +1,51 @@
+<Panel ux:Class="UX.RouterTest">
+	
+	<Panel>
+		<Router ux:Name="routerA" IsMasterRouter="false"/>
+		
+		<Panel>
+			<Navigator DefaultPath="two" ux:Name="N1">
+				<Panel ux:Template="one">
+					<PageControl ux:Name="PC1" Active="ii">
+						<PageControl ux:Name="i" IsRouterOutlet="false">
+							<Page ux:Name="un"/>
+							<Page ux:Name="deux"/>
+						</PageControl>
+						<Page ux:Name="ii"/>
+						
+						<!-- direct child outlet -->
+						<PageControl ux:Name="iii" Active="bee">
+							<Page ux:Name="eh"/>
+							<Page ux:Name="bee"/>
+						</PageControl>
+					</PageControl>
+				</Panel>
+				<Panel ux:Template="two">
+					<PageControl ux:Name="PC1" Active="b">
+						<Page ux:Name="a"/>
+						<Page ux:Name="b"/>
+						<Page ux:Name="c"/>
+					</PageControl>
+				</Panel>
+			</Navigator>
+		</Panel>
+	</Panel>
+	
+	<!-- separate test, reusing same UX to ensure multiple routers work -->
+	<Panel>
+		<Router ux:Name="routerB" IsMasterRouter="false"/>
+		
+		<Navigator ux:Name="N2">
+			<Panel ux:Template="one">
+			</Panel>
+			<Panel ux:Class="UX.TemplateTwo">
+				<PageControl ux:Name="PC2">
+					<Page ux:Name="c1"/>
+					<Page ux:Name="c2"/>
+					<Page ux:Name="c3"/>
+				</PageControl>
+			</Panel>
+			<UX.TemplateTwo ux:Template="two"/>
+		</Navigator>
+	</Panel>
+</Panel>

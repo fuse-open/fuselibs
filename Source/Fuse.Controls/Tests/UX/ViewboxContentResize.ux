@@ -1,0 +1,5 @@
+<Panel ux:Class="UX.ViewboxContentResize">
+	<Viewbox ux:Name="V1">
+		<Rectangle Width="100" Height="80" ux:Name="R1"/>
+	</Viewbox>
+</Panel>

@@ -1,0 +1,21 @@
+<Panel ux:Class="UX.RootingOrdering">
+	<!-- an illogical wacky set of bindings that tests rooting ordering doesn't end up in a broken state -->
+	<Panel ux:Name="P1">
+		<PropertyBinding Source="W2.Value" Target="W1.Value"/>
+		<WhileTrue Value="true" ux:Name="W2">
+			<Text Value="{three}"/>
+			<PropertyBinding Source="W2.Value" Target="W1.Value"/>
+		</WhileTrue>
+		<JavaScript>
+			var Observable = require("FuseJS/Observable")
+			exports.one = Observable(1)
+			exports.two = Observable(1)
+		</JavaScript>
+		<Text Value="{one}"/>
+		<WhileTrue Value="true" ux:Name="W1">
+			<Text Value="{two}"/>
+			<PropertyBinding Source="W2.Value" Target="W1.Value"/>
+		</WhileTrue>
+		<PropertyBinding Source="W2.Value" Target="W1.Value"/>
+	</Panel>
+</Panel>

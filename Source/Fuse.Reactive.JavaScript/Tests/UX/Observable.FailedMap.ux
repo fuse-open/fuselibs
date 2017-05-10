@@ -1,0 +1,29 @@
+<Panel ux:Class="UX.Observable.FailedMap">
+	<JavaScript>
+		var Observable = require("FuseJS/Observable")
+		
+		exports.a = Observable(1)
+		exports.em1 = exports.a.failedMap( function(err) {
+			return err
+		})
+		exports.em2 = exports.a.failedMap( function(err) {
+			//inverting typical true/false to ensure conditions in Observable are working
+			return false
+		}, function() {
+			return true
+		})
+		
+		exports.fail = function() {
+			exports.a.failed( "NO" )
+		}
+		
+		exports.restore = function() {
+			exports.a.value = 2
+		}
+	</JavaScript>
+	<FuseTest.Invoke Handler="{fail}" ux:Name="CallFail"/>
+	<FuseTest.Invoke Handler="{restore}" ux:Name="CallRestore"/>
+	
+	<Text Value="{ReadClear em1}" ux:Name="E1"/>
+	<WhileTrue Value="{ReadClear em2}" ux:Name="E2"/>
+</Panel>

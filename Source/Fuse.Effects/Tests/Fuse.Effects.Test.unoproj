@@ -1,0 +1,20 @@
+{
+  "Packages": [
+    "Fuse.Controls.Panels",
+    "Fuse.Controls.Primitives",
+    "Fuse.Controls",
+    "Fuse.Drawing",
+    "Fuse.Effects",
+    "Fuse.Elements",
+    "Fuse.Common",
+    "Fuse.Nodes",
+    "Uno.Testing"
+  ],
+  "Projects": [
+    "../../Fuse.Common/Tests/FuseTest/FuseTest.unoproj"
+  ],
+  "Includes": [
+    "Mask.Test.uno:Source",
+    "UX/*.ux",
+  ]
+}

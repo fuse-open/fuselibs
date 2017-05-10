@@ -1,0 +1,40 @@
+<ToggleControl ux:Class="Fuse.Controls.Switch" Focus.IsFocusable="true">
+	<Panel ux:Template="GraphicsAppearance" Width="50" Height="31" 
+		SnapToPixels="false">
+		<Tapped>
+			<Toggle Target="this" />
+		</Tapped>
+
+		<SwipeGesture Direction="Right" Length="20" Type="Active" ux:Name="swipe"
+			IsActive="{Property this.Value}"/>
+		<SwipingAnimation Source="swipe">
+			<Move Target="thumb" X="20"/>
+			<Change trackFill.Color="#A8A8A8" Easing="QuadraticInOut"/>
+		</SwipingAnimation>
+
+		<Circle Alignment="CenterLeft" Width="27" Height="27" Margin="2,0,14,0" ux:Name="thumb">
+			<SolidColor ux:Name="thumbFill" Color="#fff" />
+			<Stroke ux:Name="switch_thumb_stroke" Width="1" Color="#9A9A9A" />
+			<DropShadow ux:Name="switch_thumb_shadow" Angle="90" Distance="0" Size="1" Spread="0.1" />
+		</Circle>
+
+		<Rectangle CornerRadius="27" Width="51" Height="31" Alignment="Center">
+			<SolidColor ux:Name="trackFill" Color="#E4E4E4" />
+			<Stroke>
+				<SolidColor ux:Name="strokeColor" Color="#9A9A9A" />
+			</Stroke>
+		</Rectangle>
+
+		<WhileDisabled>
+			<Change thumbFill.Color="#F6F6F6" Easing="QuadraticInOut" Duration="0.25" />
+			<Change trackFill.Color="#EAEAEA" Easing="QuadraticInOut" Duration="0.25" />
+			<Change switch_thumb_stroke.Color="#F6F6F6" Easing="QuadraticOut" Duration="0.25" />
+			<Change strokeColor.Color="#EAEAEA" Easing="QuadraticOut" Duration="0.25" />
+			<Change switch_thumb_shadow.Size="0" Easing="QuadraticOut" Duration="0.25" />
+			<Change switch_thumb_shadow.Distance="0" Easing="QuadraticOut" Duration="0.25" />
+		 </WhileDisabled>
+
+	</Panel>
+	<Fuse.Controls.Native.Android.Switch ux:Condition="Android" ux:Template="AndroidAppearance" Host="this" />
+	<Fuse.Controls.Native.iOS.Switch  ux:Condition="iOS" ux:Template="iOSAppearance" Host="this" />
+</ToggleControl>

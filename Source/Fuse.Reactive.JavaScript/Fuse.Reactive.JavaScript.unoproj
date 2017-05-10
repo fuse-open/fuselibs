@@ -1,0 +1,45 @@
+{
+  "Copyright": "Copyright (c) Fusetools AS 2017",
+  "Description": "Framework for reactive data binding",
+  "Publisher": "Fusetools AS",
+  "Version": "1.0.0",
+  "Package": {
+    "ProjectUrl": "https://fusetools.com"
+  },
+  "Packages": [
+    "Uno.Collections",
+    "Uno.Data.Json",
+    "Uno.Net.Http",
+    "Uno.Testing",
+    "Uno.Threading",
+  ],
+  "Projects": [
+    "../Fuse.Drawing/Fuse.Drawing.unoproj",
+    "../Fuse.Reactive/Fuse.Reactive.unoproj",
+    "../Fuse.Platform/Fuse.Platform.unoproj",
+    "../Fuse.Scripting.Duktape/Fuse.Scripting.Duktape.unoproj",
+    "../Fuse.Scripting.JavaScriptCore/Fuse.Scripting.JavaScriptCore.unoproj",
+    "../Fuse.Scripting.Jurassic/Fuse.Scripting.Jurassic.unoproj",
+    "../Fuse.Scripting.V8/Fuse.Scripting.V8.unoproj",
+    "../Fuse.Scripting/Fuse.Scripting.unoproj",
+    "../Fuse.Triggers/Fuse.Triggers.unoproj",
+    "../Fuse.Nodes/Fuse.Nodes.unoproj",
+    "../Fuse.Common/Fuse.Common.unoproj",
+    "../Fuse.Marshal/Fuse.Marshal.unoproj"
+  ],
+  "InternalsVisibleTo": [
+    "Fuse.Reactive.Test",
+    "Fuse.Scripting.Test",
+    "Fuse.Testing",
+    "FuseTest",
+  ],
+  "Includes": [
+    "*",
+    "3rdparty/es6-promise.min.js:File",
+    "FuseJS/setTimeout.js:File",
+    "FuseJS/Observable.js:File",
+    "FuseJS/EventEmitter.js:Bundle",
+    "JavaScriptEngine.cil.uxl:Extensions",
+    "JavaScriptEngine.cpp.uxl:Extensions",
+  ]
+}

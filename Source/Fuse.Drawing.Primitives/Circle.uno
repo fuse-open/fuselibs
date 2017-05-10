@@ -1,0 +1,111 @@
+using Uno;
+using Uno.Graphics;
+
+using Fuse;
+using Fuse.Elements;
+using Fuse.Drawing.Internal;
+
+namespace Fuse.Drawing.Primitives
+{
+	abstract class LimitCoverage
+	{
+	}
+	
+	class OneLimitCoverage : LimitCoverage
+	{
+		public float LimitCoverage: 1;
+	}
+	
+	public class Circle 
+	{
+		static public Circle Singleton = new Circle();
+		
+		LimitCoverage _oneLimitCoverage = new OneLimitCoverage();
+		StrokeCoverage _strokeCoverage = new StrokeCoverage();
+		public void Stroke(DrawContext dc, Element visual, float radius, Stroke stroke, float2 center,
+			float smoothness)
+		{
+			var r = stroke.GetDeviceAdjusted(dc.ViewportPixelsPerPoint);
+			var sc = _strokeCoverage;
+			sc.Radius = r[0]/2;
+			sc.Center = r[1];
+
+			//include outer region for stroke
+			var extend = Math.Max(0,r[0]+r[1]) + smoothness;
+			
+			Draw(dc ,visual, radius, stroke.Brush, sc, _oneLimitCoverage,
+				float2(extend), center, smoothness );
+		}
+		
+		FillCoverage _fillCoverage = new FillCoverage();
+		public void Fill(DrawContext dc, Element visual, float radius, Brush brush, float2 center,
+			float smoothness)
+		{
+			Draw(dc, visual, radius, brush, _fillCoverage, _oneLimitCoverage, float2(smoothness), 
+				center, smoothness );
+		}
+		
+		Float2Buffer _bufferVertex;
+		UShortBuffer _bufferIndex;
+		
+		void InitBuffers()
+		{
+			_bufferVertex = new Float2Buffer();
+			_bufferIndex = new UShortBuffer();
+			
+			var numSegments = 16;
+			
+			//need to go beyond unit segments to include rounded portion
+			var theta = Math.PIf/2 - Math.PIf*2/numSegments;
+			var len = 1 / Math.Sin(theta);
+			
+			_bufferVertex.Append(0,0);
+			for( int i=0; i < numSegments; ++i )
+			{
+				var r = i / (float)numSegments * Math.PIf * 2;
+				_bufferVertex.Append( Math.Cos(r) * len, Math.Sin(r) * len);
+				
+				_bufferIndex.Append(0);
+				_bufferIndex.Append(i == (numSegments-1) ? 1 : i+2);
+				_bufferIndex.Append(i+1);
+			}
+			
+			_bufferVertex.InitDeviceVertex(BufferUsage.Immutable);
+			_bufferIndex.InitDeviceIndex(BufferUsage.Immutable);
+		}
+		
+		internal void Draw(DrawContext dc, Element visual, float radius, Brush brush,
+			Coverage cover, LimitCoverage limit, float2 extend, float2 center, float smoothness )
+		{
+			if (_bufferVertex == null)
+				InitBuffers();
+				
+			draw
+			{
+				apply Common;
+				apply virtual cover;
+				
+				DrawContext: dc;
+				Visual: visual;
+				Size: float2(radius*2);
+				CanvasSize: visual.ActualSize;
+				
+				float2 V0: vertex_attrib<float2>(VertexAttributeType.Float2, _bufferVertex.GetDeviceVertex(),
+					2*4,0, IndexType.UShort, _bufferIndex.GetDeviceIndex() );
+				VertexCount: _bufferIndex.Count();
+				
+				float2 VertexPosition: V0 * (radius + extend*2);
+				LocalPosition: VertexPosition + center;
+				float RawDistance: Vector.Length(pixel VertexPosition) - radius;
+				float2 EdgeNormal: Vector.Normalize(pixel V0);
+				
+				apply virtual brush;
+				apply CommonBrush;
+				Smoothness: smoothness;
+				
+				apply virtual limit;
+				Coverage: prev * LimitCoverage;
+			};
+		}
+	}
+}

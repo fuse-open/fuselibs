@@ -1,0 +1,75 @@
+<Page Title="Video" ux:Class="VideoPage">
+	<InfoStack ux:Key="Info">
+		<p>This page contains a video-player, that should show the video "Big Buck Bunny".</p>
+	</InfoStack>
+	<DockPanel>
+		<Panel>
+			<Panel ux:Name="_loadingMessage" Background="#000" Opacity="0.5" Visibility="Hidden">
+				<Text TextColor="#fff" Alignment="Center">Loading...</Text>
+			</Panel>
+
+			<Panel ux:Name="_pauseMessage" Background="#000" Opacity="0.5" Visibility="Hidden">
+				<Text TextColor="#fff" Alignment="Center">Paused</Text>
+			</Panel>
+
+			<Panel ux:Name="_completedMessage" Background="#000" Opacity="0.5" Visibility="Hidden">
+				<Text TextColor="#fff" Alignment="Center">Completed</Text>
+			</Panel>
+
+			<Panel ux:Name="_errorMessage" Background="#000" Visibility="Hidden">
+				<Text TextColor="#f00" Alignment="Center">Error</Text>
+			</Panel>
+
+			<Video ux:Name="_video" Volume="0" Url="http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4" StretchMode="Uniform" Progress="{Property _slider.Value}" >
+
+				<WhilePlaying>
+					<Change _playButton.Visibility="Hidden" />
+					<Change _pauseButton.Visibility="Visible" />
+				</WhilePlaying>
+
+				<WhileLoading><Change _loadingMessage.Visibility="Visible" /></WhileLoading>
+				<WhilePaused><Change _pauseMessage.Visibility="Visible" /></WhilePaused>
+				<WhileCompleted><Change _completedMessage.Visibility="Visible" /></WhileCompleted>
+				<WhileFailed><Change _errorMessage.Visibility="Visible" /></WhileFailed>
+
+				<ProgressAnimation>
+					<Change _progressBar.Width="100%" />
+				</ProgressAnimation>
+
+			</Video>
+		</Panel>
+
+		<StackPanel Dock="Bottom">
+
+			<Panel Margin="10" Height="10">
+				<Rectangle >
+					<Stroke Alignment="Outside" Width="1">
+						<SolidColor Color="#000" />
+					</Stroke>
+				</Rectangle>
+
+				<Rectangle Width="0%" ux:Name="_progressBar" Alignment="Left">
+					<SolidColor Color="#0fc" />
+				</Rectangle>
+			</Panel>
+
+			<Text Value="Progress" />
+			<Slider ux:Name="_slider" Minimum="0" Maximum="1" />
+			<Text Value="Volume" />
+			<Slider ux:Name="_volume" Minimum="0" Maximum="1" Value="1">
+				<ProgressAnimation>
+					<Change _video.Volume="1" />
+				</ProgressAnimation>
+			</Slider>
+
+			<Grid Rows="auto" ColumnCount="2">
+				<StdButton ux:Name="_playButton" Text="Play">
+					<Clicked><Resume Target="_video" /></Clicked>
+				</StdButton>
+				<StdButton ux:Name="_pauseButton" Text="Pause" Visibility="Hidden">
+					<Clicked><Pause Target="_video" /></Clicked>
+				</StdButton>
+			</Grid>
+		</StackPanel>
+	</DockPanel>
+</Page>

@@ -1,0 +1,24 @@
+<Panel ux:Class="UX.TriggerResources">
+	<Panel>
+		<string ux:Global="text1" ux:Value="A1" />
+		<string ux:Key="text2" ux:Value="A2" />
+		<Panel>
+			<WhileTrue ux:Name="WT1">
+				<string ux:Key="text1" ux:Value="B1" />
+				<string ux:Key="text2" ux:Value="B2" />
+			</WhileTrue>
+
+			<Text Value="{Resource text1}" ux:Name="t1" />
+			<Text Value="{Resource text2}" ux:Name="t2" />
+
+			<Panel>
+				<Text Value="{Resource text1}" ux:Name="t1_inside" />
+				<Text Value="{Resource text2}" ux:Name="t2_inside" />
+			</Panel>
+		</Panel>
+	</Panel>
+
+	<Text Value="{Resource text1}" ux:Name="t1_outside" />
+	<Text Value="{Resource text2}" ux:Name="t2_outside" />
+</Panel>
+

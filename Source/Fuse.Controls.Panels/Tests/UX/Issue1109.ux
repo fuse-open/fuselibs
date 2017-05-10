@@ -1,0 +1,4 @@
+<Panel ux:Class="UX.Issue1109s">
+	<Grid ColumnCount="3" Alignment="Top" ux:Name="G"/>
+	<Grid ColumnCount="3" DefaultRow="1*" ux:Name="P"/>
+</Panel>

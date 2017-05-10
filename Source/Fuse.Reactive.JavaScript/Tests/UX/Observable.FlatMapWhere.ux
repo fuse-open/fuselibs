@@ -1,0 +1,48 @@
+<Panel ux:Class="UX.Observable.FlatMapWhere">
+	<!-- inspired by fuse-sample FilterOnObservableCondition -->
+	<JavaScript>
+		var Observable = require('FuseJS/Observable');
+
+		function Color(name, category){
+			this.name = name;
+			this.category = category;
+		}
+
+		var COLOR_TYPES = {
+			REDS: 'reds',
+			GREENS: 'greens',
+			OTHER: 'other',
+			ALL: 'all'
+		};
+
+		var currentCategory = Observable(COLOR_TYPES.REDS);
+
+		var items = Observable(
+			new Color('R1', COLOR_TYPES.REDS),
+			new Color('R2', COLOR_TYPES.REDS),
+
+			new Color('O1', COLOR_TYPES.OTHER),
+			new Color('O2', COLOR_TYPES.OTHER),
+			new Color('O3', COLOR_TYPES.OTHER)
+		);
+
+		exports.filteredItems = currentCategory.flatMap(function(category){
+			return items.where(function(item){
+				return item.category === category || category === COLOR_TYPES.ALL;
+			})
+		})
+
+		exports.gotoReds = function(){ currentCategory.value = COLOR_TYPES.REDS; }
+		exports.gotoGreens = function(){ currentCategory.value = COLOR_TYPES.GREENS; }
+		exports.gotoOther = function(){ currentCategory.value = COLOR_TYPES.OTHER; }
+		exports.gotoAll = function() { currentCategory.value = COLOR_TYPES.ALL; }
+	</JavaScript>
+	<Panel ux:Name="P">
+		<Each Items="{filteredItems}">
+			<Text Value="{name}"/>
+		</Each>
+	</Panel>
+	
+	<FuseTest.Invoke Handler="{gotoOther}" ux:Name="GotoOther"/>
+	<FuseTest.Invoke Handler="{gotoGreens}" ux:Name="GotoGreens"/>
+</Panel>

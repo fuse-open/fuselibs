@@ -1,0 +1,55 @@
+<Panel ux:Class="UX.ObservableCombine">
+	<JavaScript>
+		var Observable = require("FuseJS/Observable");
+
+		var a = Observable();
+		var expected_b = 10;
+		var b = Observable(expected_b, 20, 30, 40);
+		var c = Observable("foo", "bar");
+
+		var d = a.combine(b, c, function(a, b, c) {
+			if (a && (a !== 10)) { throw new Error("a was : " + a); }
+			if (b !== expected_b) { throw new Error("b was: " + b); }
+			if (c !== "foo") { throw new Error(); }
+
+			return 19;
+		});
+
+		var e = a.combineLatest(b, c, function(a, b, c) {
+			if (a !== 10) { throw new Error(); }
+			if (b !== expected_b) { throw new Error(); }
+			if (c !== "foo") { throw new Error(); }
+
+			return 4;
+		});
+
+		var f = a.combineArrays(b, c, function(a, b, c) {
+			if (!(a instanceof Array)) throw new Error();
+			if (!(b instanceof Array)) throw new Error();
+			if (!(c instanceof Array)) throw new Error();
+
+			if (a.length > 0 && a[0] !== 10) { throw new Error(); }
+			if (b[0] !== expected_b) { throw new Error(); }
+			if (b[1] !== 20) { throw new Error(); }
+			if (b[2] !== 30) { throw new Error(); }
+			if (b.length !== 4) { throw new Error(); }
+			if (c[0] !== "foo") { throw new Error(); }
+
+			return [1,2,3];
+		});
+
+		d.addSubscriber(function() {});
+		e.addSubscriber(function() {});
+		f.addSubscriber(function() {});
+
+		exports.go = function() {
+			if (f.getAt(1) !== 2) { throw new Error(); }
+			a.value = 10; 
+			expected_b = 55; 
+			b.replaceAt(0, 55); 
+		}
+
+	</JavaScript>
+
+	<FuseTest.Invoke Handler="{go}" ux:Name="Go"/>
+</Panel>

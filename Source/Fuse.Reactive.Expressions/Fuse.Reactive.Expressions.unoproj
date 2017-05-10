@@ -1,0 +1,32 @@
+{
+  "Copyright": "Copyright (c) Fusetools AS 2017",
+  "Description": "Framework for reactive expressions",
+  "Publisher": "Fusetools AS",
+  "IsTransitive": true,
+  "Version": "1.0.0",
+  "Package": {
+    "ProjectUrl": "https://fusetools.com"
+  },
+  "Packages": [
+    "Uno.Collections",
+    "Uno.Data.Json",
+    "Uno.Net.Http",
+    "Uno.Testing",
+    "Uno.Threading",
+  ],
+  "Projects": [
+    "../Fuse.Common/Fuse.Common.unoproj",
+    "../Fuse.Marshal/Fuse.Marshal.unoproj",
+    "../Fuse.Nodes/Fuse.Nodes.unoproj",
+    "../Fuse.Reactive/Fuse.Reactive.unoproj",
+  ],
+  "InternalsVisibleTo": [
+    "Fuse.Reactive.Test",
+    "Fuse.Scripting.Test",
+    "Fuse.Common.Test.Helpers"
+  ],
+  "Includes": [
+    "*"
+  ]
+}
+

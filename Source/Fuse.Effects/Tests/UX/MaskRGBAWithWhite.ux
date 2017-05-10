@@ -1,0 +1,3 @@
+<Panel ux:Class="UX.MaskRGBAWithWhite" Color="White">
+	<Mask File="MaskRGBA.png" Mode="RGBA" />
+</Panel>

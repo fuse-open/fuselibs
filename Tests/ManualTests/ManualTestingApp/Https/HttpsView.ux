@@ -1,0 +1,21 @@
+<Page Title="Https" ux:Class="HttpsView" ux:AutoCtor="false">
+	<InfoStack ux:Key="Info">
+	<p>This part is automated. Unless there is a bug, it just displays “Https page was loaded successfully!”, and you can move to the next part. Note that for webgl platform it should tell you to skip this part.</p>
+	</InfoStack>
+	<ScrollView ClipToBounds="true">
+		<StackPanel Orientation="Vertical" Margin="5,0,5,0" Alignment="Center">
+			<Panel ux:Name="SkipSection" Visibility="Collapsed">
+				<Text Value="This part should be skipped on this device" TextWrapping="Wrap" TextAlignment="Center"/>	
+			</Panel>
+			<StackPanel ux:Name="TestSection" Visibility="Collapsed">
+				<Text TextWrapping="Wrap" Value="Loading...." ux:Name="LoadingMessage" TextAlignment="Center"/>
+				<Text TextWrapping="Wrap" TextColor="1,0,0,1" ux:Name="ErrorMessage" Visibility="Collapsed" TextAlignment="Center"/>
+				<Text TextWrapping="Wrap" Value="Https page was loaded successfully!" TextColor="0,0.5,0,1" ux:Name="SuccessValidation" Visibility="Collapsed" TextAlignment="Center" Margin="0,5,0,5" />
+				<Text TextWrapping="Wrap" Value="Https page was loaded, but it doesn't contain 'fuse' title" TextColor="1,0,0,1" ux:Name="FailedValidation" Visibility="Collapsed" TextAlignment="Center" Margin="0,5,0,5" />
+			</StackPanel>
+		</StackPanel>
+	</ScrollView>
+	<WhileActive>
+		<Callback Handler="OnActive"/>
+	</WhileActive>
+</Page>

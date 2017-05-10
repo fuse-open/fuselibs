@@ -1,0 +1,14 @@
+<Extensions Backend="CPlusPlus" Condition="USE_V8">
+	<Require Condition="Android" LinkDirectory="@('lib/Android':Path)" />
+	<Require Condition="Android" JNI.SharedLibrary="@('lib/Android/libV8Simple.so':Path)" />
+	<Require Condition="OSX" LinkDirectory="@('lib/OSX':Path)" />
+	<Require Condition="WIN32" LinkDirectory="@('lib/Windows/$(PlatformShortName)':Path)" />
+	<CopyFile Condition="WIN32" Name="lib/Windows/x86/V8Simple.dll" TargetName="V8Simple.dll" />
+	<CopyFile Condition="TARGET_MSVC" Name="lib/Windows/x86/V8Simple.dll" TargetName="bin/Win32/Debug/V8Simple.dll" />
+	<CopyFile Condition="TARGET_MSVC" Name="lib/Windows/x86/V8Simple.dll" TargetName="bin/Win32/Release/V8Simple.dll" />
+	<CopyFile Condition="TARGET_MSVC" Name="lib/Windows/x64/V8Simple.dll" TargetName="bin/x64/Debug/V8Simple.dll" />
+	<CopyFile Condition="TARGET_MSVC" Name="lib/Windows/x64/V8Simple.dll" TargetName="bin/x64/Release/V8Simple.dll" />
+	<Require IncludeDirectory="@('.':Path)" />
+	<Require LinkLibrary="V8Simple" />
+	<Require Condition="Android" JNI.SystemLibrary="log" />
+</Extensions>

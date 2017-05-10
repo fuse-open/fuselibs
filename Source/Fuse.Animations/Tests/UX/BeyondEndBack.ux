@@ -1,0 +1,5 @@
+<Panel ux:Class="UX.BeyondEndBack">
+	<WhileTrue ux:Name="TheTrigger" Value="true">
+		<TimingAction ux:Name="TaP0" When="Backward" Delay="1"/>
+	</WhileTrue>
+</Panel>

@@ -1,0 +1,4 @@
+<Panel ux:Class="UX.Swipe.InProgress" HitTestMode="LocalBounds">
+	<SwipeGesture Direction="Right" Length="500" ux:Name="SG"/>
+	<WhileSwiping Source="SG" ux:Name="W"/>
+</Panel>

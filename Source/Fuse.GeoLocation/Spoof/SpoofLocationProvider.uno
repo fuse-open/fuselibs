@@ -1,0 +1,41 @@
+using Uno.Collections;
+using Uno.Compiler.ExportTargetInterop;
+using Uno.Threading;
+using Uno;
+
+namespace Fuse.GeoLocation
+{
+	public class SpoofLocationProvider : ILocationTracker
+	{
+		Location SpoofLocation;
+		public SpoofLocationProvider()
+		{
+			SpoofLocation = new Location(new GeoCoordinates(59.9115546,10.73888), 100, 50, 0.5, DateTime.Now.LocalDateTime);
+		}
+		public Location GetLastKnownPosition(){
+			return SpoofLocation;
+		}
+
+		public void GetLocation(Promise<Location> promise, double timeout)
+		{
+			promise.Resolve(SpoofLocation);
+		}
+
+		public void StartListening(Action<Location> onLocationChanged, Action<Exception> onLocationError, int minimumReportInterval, double desiredAccuracyInMeters)
+		{
+		}
+		
+		public void StopListening()
+		{	
+		}
+
+		public void RequestAuthorization(GeoLocationAuthorizationType type)
+		{	
+		}
+		
+		public void Init(Action onReady)
+		{
+			onReady();
+		}
+	}
+}

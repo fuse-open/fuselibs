@@ -1,0 +1,40 @@
+<Page Title="Hit Test" ux:Class="HitTestPage">
+	<InfoStack ux:Key="Info">
+		<p>This tests viewports and hit testing.</p>
+		<ul>
+			<li>There's three cyan rectangles, slightly rotated in 3D (thus look distorted a bit).</li>
+			<li>Tap each one and it turns red briefly.</li>
+			<li>Only the object tapped changes color.</li>
+		</ul>
+	</InfoStack>
+
+	<Grid RowCount="2" ColumnCount="1">
+		<Panel ux:Class="ViewClickPanel" Color="#AFF" Margin="20">
+			<Tapped>
+				<Change this.Color="#F00" Duration="0.1" DurationBack="1"/>
+			</Tapped>
+		</Panel>
+		
+		<Viewport Perspective="400">
+			<Grid ColumnCount="3">
+				<Translation Z="100"/>
+				
+				<ViewClickPanel>
+					<Rotation DegreesX="15"/>
+				</ViewClickPanel>
+				
+				<Viewport Perspective="400">
+					<ViewClickPanel>
+						<Rotation DegreesY="15"/>
+					</ViewClickPanel>
+				</Viewport>
+				
+				<Viewport Perspective="400" Mode="Disabled">
+					<ViewClickPanel>
+						<Rotation DegreesX="15" DegreesY="-15"/>
+					</ViewClickPanel>
+				</Viewport>
+			</Grid>
+		</Viewport>
+	</Grid>
+</Page>

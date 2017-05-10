@@ -1,0 +1,29 @@
+{
+  "Copyright": "Copyright (c) Fusetools AS 2017",
+  "Description": "Fuse.Drawing",
+  "Publisher": "Fusetools AS",
+  "Version": "1.0.0",
+  "Package": {
+    "ProjectUrl": "https://fusetools.com"
+  },
+  "InternalsVisibleTo": [
+    "Fuse.Reactive",
+    "Fuse.Scripting",
+  ],
+  "Packages": [
+    "Uno.Collections",
+    "Uno.Geometry"
+  ],
+  "Projects": [
+    "../Fuse.Scripting/Fuse.Scripting.unoproj",
+    "../Fuse.Nodes/Fuse.Nodes.unoproj",
+    "../Fuse.Common/Fuse.Common.unoproj",
+    "../Fuse.Marshal/Fuse.Marshal.unoproj"
+  ],
+  "Includes": [
+    "*",
+  ],
+  "Excludes": [
+    "Tests/*"
+  ],
+}

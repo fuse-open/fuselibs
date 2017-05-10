@@ -1,0 +1,26 @@
+{
+  "Copyright": "Copyright (c) Fusetools AS 2017",
+  "Description": "Library for selection behavior",
+  "Publisher": "Fusetools AS",
+  "Version": "1.0.0",
+  "Package": {
+    "ProjectUrl": "https://fusetools.com"
+  },
+  "InternalsVisibleTo": [
+    "Fuse.Selection.Test",
+  ],
+  "Packages": [
+    "Uno.Collections"
+  ],
+  "Projects": [
+    "../Fuse.Common/Fuse.Common.unoproj",
+    "../Fuse.Marshal/Fuse.Marshal.unoproj",
+    "../Fuse.Scripting/Fuse.Scripting.unoproj",
+    "../Fuse.Reactive/Fuse.Reactive.unoproj",
+    "../Fuse.Nodes/Fuse.Nodes.unoproj",
+    "../Fuse.Triggers/Fuse.Triggers.unoproj",
+  ],
+  "Includes": [
+    "*"
+  ]
+}

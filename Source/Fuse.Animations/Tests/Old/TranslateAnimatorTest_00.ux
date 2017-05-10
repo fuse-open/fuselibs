@@ -1,0 +1,5 @@
+<AnimationTests.Test.AnimationTestPanel ux:Class="TranslateAnimatorTest_00" ux:AutoCtor="false" ux:Name="panel1" Width="200" Height="200" Alignment="TopLeft">
+	<WhilePressed>
+		<Move Target="panel1" Delay="1.3" Duration="2.2" Easing="CircularIn" X="107" DelayBack="0.1" DurationBack="2.2" EasingBack="CubicInOut"></Move>
+	</WhilePressed>
+</AnimationTests.Test.AnimationTestPanel>

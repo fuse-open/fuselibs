@@ -1,0 +1,42 @@
+<Panel ux:Class="TestAppTheme">
+
+	<Font ux:Global="RobotoCondensedLight" File="Fonts/RobotoCondensed-Light.ttf" />
+	<Font ux:Global="RobotoItalic" File="Fonts/Roboto-Italic.ttf" />
+	<Font ux:Global="RobotoRegular" File="Fonts/Roboto-Regular.ttf" />
+	<Font ux:Global="RobotoBold" File="Fonts/Roboto-Bold.ttf" />
+	<Font ux:Global="RobotoCondensedBold" File="Fonts/RobotoCondensed-Bold.ttf" />
+
+	<TextBlock ux:Class="h2" TextWrapping="Wrap" Margin="-8,10,-8,10" TextColor="0,0,0.2,1"
+		FontSize="22" Padding="5,2,5,0" Font="RobotoBold">
+		<SolidColor Color="0.9,0.9,0.87,1"/>
+	</TextBlock>
+	
+	<TextBlock ux:Class="p" TextWrapping="Wrap" Margin="0,10,0,10" FontSize="18"/>
+	<StackPanel ux:Class="ul" Margin="0,10,0,10"/>
+	<TextBlock ux:Class="li" TextWrapping="Wrap" Margin="24,5,0,5" FontSize="18">
+		<Circle Layer="Overlay" Anchor="100%,0%" X="-2" Y="6" Width="7" Height="10">
+			<SolidColor Color="0,0,0,1"/>
+		</Circle>
+	</TextBlock>
+	
+	<StackPanel ux:Class="InfoStack" Margin="10"/>
+	
+	<TextInput ux:Class="StdTextInput">
+		<Rectangle Height="2" Dock="Bottom" Color="#0084" ux:Name="Underline"/>
+		<WhileFocusWithin>
+			<Change Underline.Color="#008F" Duration="0.3"/>
+		</WhileFocusWithin>
+	</TextInput>
+	
+	<Panel ux:Class="StdButton" Padding="10,5,10,5" Margin="3">
+		<string ux:Property="Text"/>
+		<Rectangle Layer="Background" Color="#FFF8" CornerRadius="5">
+			<Stroke Width="1" Color="#0008"/>
+		</Rectangle>
+		<Text Alignment="Center" Value="{Property this.Text}" TextColor="#000" FontSize="16"
+			TextWrapping="Wrap" TextAlignment="Center"/>
+		<WhileDisabled>
+			<Change this.Opacity="0.3" Duration="0.2"/>
+		</WhileDisabled>
+	</Panel>
+</Panel>

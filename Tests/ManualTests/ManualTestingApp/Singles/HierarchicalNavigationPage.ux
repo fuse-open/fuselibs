@@ -1,0 +1,146 @@
+<Page Title="HierNav" ux:Class="HierarchicalNavigationPage">
+	<InfoStack ux:Key="Info">
+		<p>This tests the hiearchical navigation feature and several related triggers.</p>
+		<ul>
+			<li>A hierarchical navigation is a stack of pages, as you click the buttons a new page is added to the "top" of the list.</li>
+			<li>Use the buttons in the main display (bottom) to goto a new page.</li>
+		</ul>
+		<p>The breadcrumbs listing at the top shows the current list of pages (it is inverted from a normal order due to a missing feature).</p>
+		<ul>
+			<li>The active page has a black border around it.</li>
+			<li>Pages "in front" of the active page have no background.</li>
+			<li>You can tap on a page in the list to go back/forward to that page.</li>
+		</ul>
+		<p>Additionally, the current page title is displayed inside the test app's title bar off to the right. On narrow devices there might not be enough space, so some text may overlap/clip. This is okay.</p>
+	</InfoStack>
+	<DockPanel Background="0.8,0.8,0.8,1">
+		<WrapPanel Navigation="Navi" Dock="Top">
+			<StdButton Text="Back" ux:Name="BackButton" IsEnabled="false" Margin="5">
+				<Clicked>
+					<GoBack/>
+				</Clicked>
+				<WhileCanGoBack>
+					<Change BackButton.IsEnabled="true"/>
+				</WhileCanGoBack>
+			</StdButton>
+			<StdButton Text="Forward" ux:Name="ForwardButton" IsEnabled="false" Margin="5">
+				<Clicked>
+					<GoForward/>
+				</Clicked>
+				<WhileCanGoForward>
+					<Change ForwardButton.IsEnabled="true"/>
+				</WhileCanGoForward>
+			</StdButton>
+		</WrapPanel>
+		<!-- TODO: https://github.com/fusetools/fuselibs/issues/1203 -->
+		<!-- TODO: https://github.com/fusetools/fuselibs/issues/1204 -->
+		<PageIndicator Dock="Top" Navigation="Navi" Margin="0,3,0,6">
+			<StackPanel ux:Template="Dot" Orientation="Horizontal">
+				<Panel Margin="5,0,0,0">
+					<Text Value="{Page Title}" ux:Name="TheText" Margin="5" FontSize="20"/>
+					<Rectangle Layer="Background" CornerRadius="3">
+						<SolidColor ux:Name="TheBack" Color="0.95,1,1,1"/>
+						<Stroke Width="2"><SolidColor Color="0,0.3,0.3,0" ux:Name="TheBackBorder"/></Stroke>
+					</Rectangle>
+					<Clicked>
+						<NavigateTo Target="{Page Node}"/>
+					</Clicked>
+				</Panel>
+				<Text Value="&lt;" FontSize="20" Alignment="Center"/>
+				<!-- The ...Animation triggers look nicer here, but we want to test the ones below -->
+				<WhileActive>
+					<Change TheBackBorder.Color="0,0.3,0.3,1"/>
+				</WhileActive>
+				<WhileInEnterState>
+					<Change TheBack.Color="0,0,0,0"/>
+				</WhileInEnterState>
+				<WhileInExitState>
+					<Change TheBack.Color="0.95,1,1,0.5"/>
+				</WhileInExitState>
+			</StackPanel>
+		</PageIndicator>
+		<Panel Name="NavRoot">
+			<HierarchicalNavigation ux:Name="Navi"/>
+			<WhileVisible>
+				<AlternateRoot ParentNode="{Resource TitleBar}">
+					<Panel  Dock="Right" Alignment="Center">
+						<Text Value="{Page Title}" FontSize="18" TextColor="0,0,0.3,1" Margin="4,2,4,2"/>
+						<Rectangle CornerRadius="50" Color="1,1,1,1" Layer="Background">
+							<Stroke Width="1" Color="0,0,0,1"/>
+						</Rectangle>
+					</Panel>
+				</AlternateRoot>
+			</WhileVisible>
+			
+			<StackPanel ux:Class="MyPage" ux:Name="Myself">
+				<Text Value="{Resource Title}" FontSize="28"/>
+				<EnteringAnimation>
+					<Move X="1" RelativeTo="ParentSize" Duration="1"/>
+					<Change Myself.IsEnabled="false" Delay="0"/>
+					<Change Myself.Visibility="Collapsed" Delay="1"/>
+				</EnteringAnimation>
+				<ExitingAnimation>
+					<Move X="1" RelativeTo="ParentSize" Duration="1"/>
+					<Change Myself.IsEnabled="false" Delay="0"/>
+					<Change Myself.Visibility="Collapsed" Delay="1"/>
+				</ExitingAnimation>
+			</StackPanel>
+			
+			<MyPage Background="#AAA">
+				<string ux:Key="Title" ux:Value="Root"/>
+				<StdButton Text="Groups">
+					<Clicked>
+						<NavigateTo Target="PageGroups"/>
+					</Clicked>
+				</StdButton>
+				<StdButton Text="Users">
+					<Clicked>
+						<NavigateTo Target="PageUsers"/>
+					</Clicked>
+				</StdButton>
+			</MyPage>
+			
+			<MyPage Background="#BCB" ux:Name="PageGroups" ux:AutoBind="false">
+				<string ux:Key="Title" ux:Value="Groups"/>
+				<StdButton Text="Outgoing">
+					<Clicked>
+						<NavigateTo Target="PageOutgoing"/>
+					</Clicked>
+				</StdButton>
+				<StdButton Text="Silent">
+					<Clicked>
+						<NavigateTo Target="PageSilent"/>
+					</Clicked>
+				</StdButton>
+			</MyPage>
+			
+			<MyPage ux:Name="PageOutgoing" Background="#CCD" ux:AutoBind="false">
+				<string ux:Key="Title" ux:Value="Outgoing"/>
+			</MyPage>
+			<MyPage ux:Name="PageSilent" Background="#DCC" ux:AutoBind="false">
+				<string ux:Key="Title" ux:Value="Silent"/>
+			</MyPage>
+			
+			<MyPage Background="#CBB" ux:Name="PageUsers" ux:AutoBind="false">
+				<string ux:Key="Title" ux:Value="Users"/>
+				<StdButton Text="Julian">
+					<Clicked>
+						<NavigateTo Target="PageJulian"/>
+					</Clicked>
+				</StdButton>
+				<StdButton Text="Ricky">
+					<Clicked>
+						<NavigateTo Target="PageRicky"/>
+					</Clicked>
+				</StdButton>
+			</MyPage>
+			
+			<MyPage ux:Name="PageJulian" Background="#CCD" ux:AutoBind="false">
+				<string ux:Key="Title" ux:Value="Julian"/>
+			</MyPage>
+			<MyPage ux:Name="PageRicky" Background="#DCC" ux:AutoBind="false">
+				<string ux:Key="Title" ux:Value="Ricky"/>
+			</MyPage>
+		</Panel>
+	</DockPanel>
+</Page>

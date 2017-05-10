@@ -1,0 +1,29 @@
+<Page Title="Drop Shadow" ux:Class="DropShadowView">
+	<InfoStack ux:Key="Info">
+		<p>This tests the rendering of the DropShadow effect.</p>
+		<p>Toggle the switch to animation between the two states. The transition should be smooth. There should be no clipping near the edges: clipping would likely appear as hard straight borders.</p>
+		<ul>
+			<li>The red shadow is to the bottom left.</li>
+			<li>The green shadow is to the bottom right and further away and slightly blurrier.</li>
+		</ul>
+	</InfoStack>
+	<DockPanel>
+		<Switch Dock="Top">
+			<WhileTrue>
+				<Change TheDrop.Size="20" Duration="1"/>
+				<Change TheDrop.Angle="135" Duration="1"/>
+				<Change TheDrop.Distance="50" Duration="1"/>
+				<Change TheDrop.Color="0,0.5,0,1" Duration="1"/>
+			</WhileTrue>
+		</Switch>
+		<StackPanel Orientation="Horizontal" Dock="Top">
+		</StackPanel>
+		
+		<!--https://pixabay.com/en/chamois-animal-cute-goat-mammal-162138/-->
+		<Image File="../Assets/goat.png" Alignment="Center" Width="50%" MaxHeight="50%">
+			<DropShadow Size="10" Angle="45" Distance="25" Color="0.7,0,0,1" ux:Name="TheDrop"/>
+		</Image>
+	</DockPanel>
+	
+	<FpsMeter/>
+</Page>

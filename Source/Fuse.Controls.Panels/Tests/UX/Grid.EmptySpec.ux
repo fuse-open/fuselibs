@@ -1,0 +1,4 @@
+<Grid ux:Class="UX.Grid.EmptySpec">
+	<Panel ux:Name="P1"/>
+	<Panel ux:Name="P2"/>
+</Grid>

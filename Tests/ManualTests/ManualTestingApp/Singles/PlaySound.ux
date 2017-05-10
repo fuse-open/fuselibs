@@ -1,0 +1,17 @@
+<Page Title="Play Sound" ux:Class="PlaySoundView">
+	<InfoStack ux:Key="Info">
+		<p>This tests playback of a simple sound effect.</p>
+		<p>Press the button to play the sound. There should be an audible scream. Also try tapping the button rapidly, there should be multiple sounds playing simultaneously (Though on the simulator they will cut each other off).</p>
+	</InfoStack>
+	<StackPanel>
+		<StdButton Text="Initiate Relaxing Sound">
+			<Clicked>
+				<!-- https://archive.org/details/WilhelmScreamSample -->
+				<PlaySound File="../Assets/wilhelm.wav" />
+			</Clicked>
+		</StdButton>
+		<StackPanel Orientation="Horizontal" Dock="Top">
+		</StackPanel>
+	</StackPanel>
+	<FpsMeter/>
+</Page>

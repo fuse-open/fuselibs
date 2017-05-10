@@ -1,0 +1,35 @@
+{
+  "Copyright": "Copyright (c) Fusetools AS 2017",
+  "Description": "MapView",
+  "Publisher": "Fusetools AS",
+  "Version": "1.0.0",
+  "Package": {
+    "ProjectUrl": "https://fusetools.com"
+  },
+  "IsTransitive":true,
+  "Packages": [
+    "Uno.Collections",
+    "Uno.Permissions",
+    "Fuse",
+    "Fuse.iOS.LocationPermissions",
+    "Fuse.Common",
+    "Fuse.Marshal",
+    "Fuse.Nodes",
+    "Fuse.ImageTools"
+  ],
+  "Projects": [],
+  "Includes": [
+    "MapMarker.uno:Source",
+    "MapView.uno:Source",
+    "MapView.Events.uno:Source",
+    "MapView.ScriptClass.uno:Source",
+    "iOS/*",
+    "iOS/MapViewDelegate.h:CHeader:iOS",
+    "iOS/MapViewDelegate.m:CSource:iOS",
+    "iOS/MapViewController.h:CHeader:iOS",
+    "iOS/MapViewController.m:CSource:iOS",
+    "Android/*",
+    "Android/FuseMap.java:Java:Android",
+    "MarkerIconCache.uno"
+  ]
+}

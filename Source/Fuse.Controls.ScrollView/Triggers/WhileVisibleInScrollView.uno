@@ -1,0 +1,136 @@
+using Uno;
+
+using Fuse.Elements;
+using Fuse.Controls;
+
+namespace Fuse.Triggers
+{
+	/**
+		Active while an element is positioned within the visible area of the @ScrollView. 
+		
+			<ScrollView>
+				<StackPanel>
+					<Each Items="{images}">
+						<DockPanel Height="100">
+							<Image Url="{source}" MemoryPolicy="UnloadUnused" Dock="Left"
+								Visibility="Hidden" ux:Name="theImage"/>
+							<Text Value="{description}" TextWrapping="Wrap"/>
+							
+							<WhileVisibleInScrollView>
+								<Change theImage.Visibility="Visible"/>
+							</WhileVisibleInScrollView>
+						</DockPanel>
+					</Each>
+				</StackPanel>
+			</ScrollView>
+			
+		This example will show the images only when they are actually in the visible area. Combined with the `UnloadUnused` memory policy this will allow the memory to be freed when they aren't visible to the user.
+		
+		If the panel has a fixed height, as in this example, you could also collapse the text to save the calculation and rendering time.
+		
+		You would also use this trigger if you wish to animate something within a ScrollView. There's no point in animating something the user can't actually see; using the trigger can save resources by not animating things that aren't visible.
+			
+		Note that the element itself need not necessarily be visible, but just have a layout that positions it in the visible area. `Visibility="Hidden"` on a @Visual does not prevent the activiation of this trigger.
+		
+		This trigger responds to changes in scroll position only. Layout changes on the element, which do not modify the scrolling state, may not update the activation state.
+	*/
+	public class WhileVisibleInScrollView : WhileTrigger
+	{
+		ScrollViewBase _scrollable;
+		Element _element;
+		
+		protected override void OnRooted()
+		{
+			base.OnRooted();
+			_scrollable = Parent.FindByType<ScrollViewBase>();
+			if (_scrollable == null)
+			{
+				Fuse.Diagnostics.UserError( "Could not find a ScrollView control.", this );
+				return;
+			}
+			
+			_element = Parent as Element;
+			if (_element == null)
+			{
+				Fuse.Diagnostics.UserError( "Parent must be an Element", this );
+				return;
+			}
+			
+			if (!_element.HasLayoutIn(_scrollable))
+			{
+				Fuse.Diagnostics.UserError( "Must have an Element path to the ScrollView", this );
+				return;
+			}
+			
+			_scrollable.ScrollPositionChanged += OnScrollPositionChanged;
+			Update();
+		}
+		
+		protected override void OnUnrooted()
+		{
+			if (_scrollable != null)
+			{
+				_scrollable.ScrollPositionChanged -= OnScrollPositionChanged;
+				_scrollable = null;
+			}
+			base.OnUnrooted();
+		}
+
+		float _distance = 0;
+		/**
+			The maximum allowed distance away from the visible area where this trigger remains active.
+			
+			The distance is measured as the shortest line between the visible rectangle and the rectangle of the element. For example, in a vertical `ScrollView` an item above the top is measured from its bottom edge to the top of the visible area.
+			
+			The default is `0` meaning at least a portion must actually be visible.
+		*/
+		public float Distance
+		{
+			get { return _distance; }
+			set
+			{
+				_distance = value;
+				Update();
+			}
+		}
+
+		IScrolledLength _relativeTo = IScrolledLengths.Points;
+		/**
+			The measurement used by `Distance`.
+			
+			Default is `Points`.
+			
+			@see Fuse.Triggers.Scrolled.RelativeTo
+		*/
+		public IScrolledLength RelativeTo
+		{
+			get { return _relativeTo; }
+			set
+			{
+				_relativeTo = value;
+				Update();
+			}
+		}
+		
+		
+		void OnScrollPositionChanged(object s, object args)
+		{
+			Update();
+		}
+		
+		void Update()
+		{
+			if (_element == null || _scrollable == null)
+				return;
+				
+			var min = _element.GetLayoutPositionIn(_scrollable);
+			var max = min + _element.ActualSize;
+			
+			var dist = _scrollable.ToScalarPosition(_scrollable.DistanceToView(min, max));
+			var maxDist = _scrollable.ToScalarPosition( RelativeTo.GetPoints(Distance, _scrollable) );
+			
+			SetActive( dist < (maxDist + float.ZeroTolerance) );
+		}
+		
+	}
+}

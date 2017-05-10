@@ -1,0 +1,7 @@
+<Panel ux:Class="UX.Swipe.Progress" HitTestMode="LocalBounds">
+	<SwipeGesture Direction="Left" Length="100" ux:Name="SG" Type="Active"/>
+
+	<WhileSwipeActive Source="SG" ux:Name="W1"/>
+	<WhileSwipeActive Source="SG" ux:Name="W5" Threshold="0.5"/>
+	<SwipingAnimation Source="SG" ux:Name="S"/>
+</Panel>

@@ -1,0 +1,42 @@
+{
+  "Packages": [
+    "Fuse.Animations",
+    "Fuse.Controls",
+    "Fuse.Controls.Panels",
+    "Fuse.Controls.Primitives",
+    "Fuse.Controls.ScrollView",
+    "Fuse.Controls.Native",
+    "Fuse.Controls.Navigation",
+    "Fuse.Drawing",
+    "Fuse.Elements",
+    "Fuse.Gestures",
+    "Fuse.Navigation",
+    "Fuse.Triggers",
+    "Fuse.Common",
+    "Fuse.Nodes",
+    "Uno.Testing"
+  ],
+  "Projects": [
+    "../../Fuse.Elements/Tests/Shared/Fuse.Elements.Shared.unoproj",
+    "../../Fuse.Common/Tests/FuseTest/FuseTest.unoproj",
+    "Fuse.Controls.Test.Helpers/Fuse.Controls.Test.Helpers.unoproj"
+  ],
+  "Includes": [
+    "Button.Test.uno:Source",
+    "ColumnLayout.Test.uno:Source",
+    "DockPanel.Test.uno:Source",
+    "WrapPanel.Test.uno:Source",
+    "Image.Test.uno:Source",
+    "Navigation.Test.uno:Source",
+    "Page.Test.uno:Source",
+    "Panel.Test.uno:Source",
+    "Slider.Test.uno:Source",
+    "StackPanel.Test.uno:Source",
+    "StatusBarBackground.Test.uno:Source",
+    "Switch.Test.uno:Source",
+    "TextInput.Test.uno:Source",
+    "Viewbox.Test.uno:Source",
+    "Viewport.Test.uno:Source",
+    "UX/*.ux"
+  ]
+}

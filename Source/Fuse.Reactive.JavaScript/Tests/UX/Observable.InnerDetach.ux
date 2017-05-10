@@ -1,0 +1,49 @@
+<Panel ux:Class="UX.Observable.InnerDetach">
+	<!-- This is the actual issue reported in https://github.com/fusetools/fuselibs/issues/3703 -->
+	<Panel>
+		<JavaScript>
+			var Observable = require('FuseJS/Observable');
+			exports.a = Observable();
+			exports.b = Observable('');
+		</JavaScript>
+		<StackPanel>
+			<MyInput Value="{a}" ux:Name="IA"/>
+			<Text Value="{a}" ux:Name="TA"/>
+			<MyInput Value="{b}" ux:Name="IB" />
+			<Text Value="{b}" ux:Name="TB"/>
+		</StackPanel>
+		<Panel ux:Class="MyInput">
+			<object ux:Property="Value" />
+			<JavaScript>
+				var val = this.Value.innerTwoWay();
+				module.exports = {
+					val
+				};
+			</JavaScript>
+			<TextInput Value="{val}" ux:Name="T"/>
+		</Panel>
+	</Panel>
+	
+	<!-- a lower level test of the same fix -->
+	<Panel>
+		<JavaScript>
+			var Observable = require('FuseJS/Observable');
+			var a = Observable()
+			var b = Observable()
+			var c = b.innerTwoWay()
+			
+			exports.d = c.map( function(v) {
+				if (v instanceof Observable) {
+					throw new Exception("That observable should not be seen here" )
+				}
+				return v
+			})
+			
+			exports.step1 = function() {
+				b.value = a
+			}
+		</JavaScript>
+		<FuseTest.Invoke Handler="{step1}" ux:Name="Step1"/>
+		<Text Value="{d}" ux:Name="D"/>
+	</Panel>
+</Panel>

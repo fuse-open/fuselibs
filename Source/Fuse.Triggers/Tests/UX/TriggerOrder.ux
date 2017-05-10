@@ -1,0 +1,32 @@
+<Panel ux:Class="UX.TriggerOrder">
+	<!-- each of the ordering here has a slightly different form to test the edge conditions -->
+	<Panel ux:Name="A">
+		<WhileTrue ux:Name="AT1">
+			<Panel ux:Name="A1"/>
+		</WhileTrue>
+		<WhileTrue ux:Name="AT2">
+			<Panel ux:Name="A2"/>
+		</WhileTrue>
+		<WhileTrue ux:Name="AT3">
+			<Panel ux:Name="A3"/>
+		</WhileTrue>
+	</Panel>
+	
+	<Panel ux:Name="B">
+		<Panel ux:Name="B1"/>
+		<WhileTrue ux:Name="BT1">
+			<Panel ux:Name="B2"/>
+		</WhileTrue>
+		<Panel ux:Name="B3"/>
+	</Panel>
+	
+	<Panel ux:Name="C">
+		<WhileTrue ux:Name="CT1">
+			<Panel ux:Name="C1"/>
+		</WhileTrue>
+		<Panel ux:Name="C2"/>
+		<WhileTrue ux:Name="CT3">
+			<Panel ux:Name="C3"/>
+		</WhileTrue>
+	</Panel>
+</Panel>

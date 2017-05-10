@@ -1,0 +1,7 @@
+<Panel ux:Class="UX.Element.HitTestMode">
+	<Panel ux:Name="A">
+		<Panel ux:Name="B" HitTestMode="None">
+			<Rectangle Alignment="Center" Width="200" Height="100" ux:Name="C"/>
+		</Panel>
+	</Panel>
+</Panel>

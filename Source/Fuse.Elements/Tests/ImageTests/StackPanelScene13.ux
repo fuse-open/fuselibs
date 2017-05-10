@@ -1,0 +1,3 @@
+<Panel ux:Class="StackPanelScene13">
+  <Image StretchMode="UniformToFill" StretchDirection="DownOnly" ux:Name="Image1" File="Assets/derp.jpg"  />
+</Panel>

@@ -1,0 +1,32 @@
+<ButtonBase ux:Class="Basic.Button" 
+	Focus.IsFocusable="true" MinWidth="88" MinHeight="38" Margin="6" Padding="9,4,9,4" >
+
+	<Text Value="{Property this.Text}" Alignment="Center" Font="RobotoMedium" 
+		TextColor="#fff" TextWrapping="Wrap" TextAlignment="Center"/>
+	
+	<DropShadow Angle="90" Distance="2" Size="0.1" Color="{Resource Basic.C700}" />
+
+	<Rectangle Layer="Background" CornerRadius="4">
+		<SolidColor Color="{Resource Basic.C600}" ux:Name="_buttonBackground"/>
+	</Rectangle>
+
+	<WhilePressed>
+		<Change
+			Target="_buttonBackground.Color"
+			Value="{Resource Basic.C700}"
+			Duration="0"
+			DurationBack="0.15" />
+	</WhilePressed>
+
+	<WhileDisabled>
+		<Change
+			Target="_buttonBackground.Color"
+			Value="{Resource Basic.CFillFore}"
+			Duration="0.25"/>
+		<Change
+			Target="this.Opacity"
+			Value="0.52"
+			Duration="0.25" />
+	</WhileDisabled>
+	
+</ButtonBase>

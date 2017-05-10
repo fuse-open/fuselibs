@@ -1,0 +1,5 @@
+<Panel ux:Class="UX.SpringFunction">
+	<Slider ux:Name="Input" Minimum="0" Maximum="100" Value="1" />
+	<Slider ux:Name="Output" Minimum="0" Maximum="100" Value="spring({Property Input.Value})" />
+	<Slider ux:Name="Constant" Minimum="0" Maximum="100" Value="spring(0.5)" />
+</Panel>

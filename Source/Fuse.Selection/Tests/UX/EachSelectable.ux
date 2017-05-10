@@ -1,0 +1,22 @@
+<Panel ux:Class="UX.EachSelectable">
+	<JavaScript>	
+		var Observable = require("FuseJS/Observable")
+		exports.items = Observable(
+			{ value: "one" },
+			{ value: "two" },
+			{ value: "three" })
+		exports.selected = Observable("two")
+	</JavaScript>
+	<WhileTrue Value="true" ux:Name="WT">
+		<Selection ux:Name="TS" Values="{selected}" MinCount="1" MaxCount="1"/>
+	</WhileTrue>
+
+	<Each Items="{items}" ux:Name="E">
+		<Panel Name="{value}">
+			<Selectable Value="{value}"/>
+			<WhileSelected>
+				<Nothing/>
+			</WhileSelected>
+		</Panel>
+	</Each>
+</Panel>

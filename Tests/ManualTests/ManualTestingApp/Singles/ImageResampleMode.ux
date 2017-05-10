@@ -1,0 +1,17 @@
+<Page Title="Image ResampleMode" ux:Class="ImageResampleModePage">
+	<InfoStack ux:Key="Info">
+		<p>This tests various settings for Image.ResampleMode.</p>
+		<ul>
+			<li>The first image should be scaled up in a non-smooth way.</li>
+			<li>The second image should be scaled up in a smooth way.</li>
+		</ul>
+	</InfoStack>
+	<ScrollView>
+		<StackPanel>
+			<Text>Nearest:</Text>
+			<Image File="../Assets/checker-4x4.png" Width="128px" Height="128px" ResampleMode="Nearest" />
+			<Text>Linear:</Text>
+			<Image File="../Assets/checker-4x4.png" Width="128px" Height="128px" ResampleMode="Linear" />
+		</StackPanel>
+	</ScrollView>
+</Page>

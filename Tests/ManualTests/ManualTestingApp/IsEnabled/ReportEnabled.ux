@@ -1,0 +1,12 @@
+<StackPanel Orientation="Horizontal" ux:Class="ReportEnabled" Alignment="BottomRight">
+	<WhileDisabled>
+		<Circle Fill="#FF0" Width="15" Height="15">
+			<Stroke Width="2" Color="#880"/>
+		</Circle>
+	</WhileDisabled>
+	<WhileEnabled>
+		<Rectangle Fill="#808" Width="15" Height="15">
+			<Stroke Width="2" Color="#303"/>
+		</Rectangle>
+	</WhileEnabled>
+</StackPanel>

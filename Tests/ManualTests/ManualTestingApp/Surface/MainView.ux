@@ -1,0 +1,65 @@
+<App Background="#eee" >
+	<ClientPanel Background="1,0,1,1">
+		<TextBlock ux:Class="h2" TextWrapping="Wrap" Margin="-8,10,-8,10" TextColor="0,0,0.2,1"
+			FontSize="22" Padding="5,2,5,0">
+			<SolidColor Color="0.9,0.9,0.87,1"/>
+		</TextBlock>
+		<TextBlock ux:Class="p" TextWrapping="Wrap" Margin="0,10,0,10" FontSize="18"/>
+		<StackPanel ux:Class="ul" Margin="0,10,0,10"/>
+		<TextBlock ux:Class="li" TextWrapping="Wrap" Margin="24,5,0,5" FontSize="18">
+			<Rectangle Layer="Overlay" Anchor="100%,0%" X="-2" Y="6" Width="5" Height="5">
+				<SolidColor Color="0,0,0,1"/>
+			</Rectangle>
+		</TextBlock>
+
+		<StackPanel ux:Class="InfoStack" Margin="10"/>
+
+		<Grid Navigation="Navi" Dock="Top" Columns="auto,1*,auto" Rows="auto">
+			<SolidColor Color="0.9,0.95,0.95,1"/>
+
+			<Path ux:Class="ArrowLeft" Data="m 185.19,85.027 c -63.337,-11.324 -101.35,-9.3799 -125.16,0 4.0874,14.004 19.27,24.528 33.234,36.77 C 65.865,108.694 38.071,96.719 9.118,85.735 17.4543,50.909 45.883,31.599 69.929,7.246 66.4088,15.4356 61.2802,24.41 57.841,32.567 c -1.7246,4.0907 -2.4907,7.7979 -1.3474,10.742 41.719,-13.894 83.439,-13.43 125.16,-2.8284 l 3.5355,44.548 z" Color="#444"/>
+			<Path ux:Class="ArrowRight" Data="m 10.424813,85.027 c 63.337,-11.324 101.349997,-9.3799 125.159997,0 -4.0874,14.004 -19.27,24.528 -33.234,36.77 27.399,-13.103 55.193,-25.078 84.146,-36.062 -8.3363,-34.826 -36.765,-54.136 -60.811,-78.489 3.5202,8.1896 8.6488,17.164 12.088,25.321 1.7246,4.0907 2.4907,7.7979 1.3474,10.742 C 97.402213,29.415 55.682213,29.879 13.961213,40.4806 l -3.5355,44.548 z" Color="#444"/>
+			
+			<Panel HitTestMode="LocalBounds" Height="30" Padding="4" ux:Name="GoFore" Visibility="Hidden">
+				<ArrowLeft/>
+				<Clicked>
+					<GoForward/>
+				</Clicked>
+				<WhileCanGoForward>
+					<Change GoFore.Visibility="Visible"/>
+				</WhileCanGoForward>
+			</Panel>
+
+			<Text FontSize="20" Value="{Page Title}" Alignment="Center"/>
+
+			<Panel HitTestMode="LocalBounds" Height="30" Padding="4" Visibility="Hidden" ux:Name="GoBack">
+				<ArrowRight/>
+				<Clicked>
+					<GoBack/>
+				</Clicked>
+				<WhileCanGoBack>
+					<Change GoBack.Visibility="Visible"/>
+				</WhileCanGoBack>
+			</Panel>
+
+		</Grid>
+		<Panel Height="1px" Dock="Top" Background="0,0,0,0.5"/>
+
+		<PageControl ux:Name="Navi" Background="1,1,1,1">
+			<InfoPanel Layer="Overlay" Margin="10,6,10,6" Alignment="TopRight"/>
+
+			<Pages.WelcomePage/>
+			<Pages.SurfaceMisc/>
+			<Pages.LineGraph/>
+			<Pages.BasicFillStroke/>
+			<Pages.LinearGradient/>
+			<Pages.Elliptical/>
+			<Pages.OtherShapes/>
+			<Pages.ImageFill/>
+			<Pages.Orientation/>
+			<Pages.Bounds/>
+			<Pages.Resources/>
+		</PageControl>
+	</ClientPanel>
+</App>
+

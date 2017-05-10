@@ -1,0 +1,70 @@
+<Panel ux:Class="UX.Values">
+	<JavaScript>
+		var Observable = require("FuseJS/Observable")
+		
+		exports.current = Observable("")
+		function updateCurrent() {
+			var q = ""
+			for (var i=0; i < exports.sel.length; ++i) {
+				if (i > 0) {
+					q += ","
+				}
+				q += exports.sel.getAt(i)
+			}
+			exports.current.value = q
+		}
+		
+		exports.sel = Observable()
+		exports.sel.add( "two" )
+		exports.sel.add( "four" )
+		exports.sel.onValueChanged( module, updateCurrent)
+	
+		exports.clear = function() {
+			exports.sel.clear()
+			updateCurrent()
+		}
+		exports.remove = function() {
+			exports.sel.removeAt(0)
+			updateCurrent()
+		}
+		exports.add = function() {
+			exports.sel.insertAt(0, "one" )
+			updateCurrent()
+		}
+		exports.replace = function() {
+			exports.sel.replaceAt(1, "five" )
+			updateCurrent()
+		}
+		exports.set = function() {
+			//wacky, but should work accoridng to interface
+			exports.sel.value = "two"
+			updateCurrent()
+		}
+	</JavaScript>
+	<StackPanel>	
+		<Selection Values="{sel}" ux:Name="TS"/>
+		
+		<Panel ux:Class="VOption" Color="#0000">
+			<string ux:Property="Value"/>
+			<Selectable Value="{Property this.Value}" ux:Name="Sel"/>
+			
+			<WhileSelected>
+				<Change this.Color="#FFFF"/>
+			</WhileSelected>
+		</Panel>
+		
+		<VOption Value="one" ux:Name="O1"/>
+		<VOption Value="two" ux:Name="O2"/>
+		<VOption Value="three" ux:Name="O3"/>
+		<VOption Value="four" ux:Name="O4"/>
+		<VOption Value="five" ux:Name="O5"/>
+	</StackPanel>
+	
+	<Text ux:Name="C" Value="{current}"/>
+	
+	<FuseTest.Invoke Handler="{clear}" ux:Name="CallClear"/>
+	<FuseTest.Invoke Handler="{remove}" ux:Name="CallRemove"/>
+	<FuseTest.Invoke Handler="{add}" ux:Name="CallAdd"/>
+	<FuseTest.Invoke Handler="{replace}" ux:Name="CallReplace"/>
+	<FuseTest.Invoke Handler="{set}" ux:Name="CallSet"/>
+</Panel>

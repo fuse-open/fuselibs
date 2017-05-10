@@ -1,0 +1,89 @@
+<Page ux:Class="TextInputPage" Title="TextInput">
+	<InfoStack ux:Key="Info">
+	<p>A variety of TextInput fields.</p>
+	<ul>
+		<li>While a TextInput has focus the indicator on the left should be filled.</li>
+		<li>The password has a background color that expands just to the width of the text and expands as you type.</li>
+		<li>The multline field has an outline that contains the available width and expands in height when new lines are added.</li>
+		<li>Try scrolling the view while an edit has focus: tap and drag up/down within the edit. The virtual keyboard should remain open and the TextInput should scroll as well.</li>
+		<li>Use 'Tab' key for navigation between elements, on mobile devices set focus to the first input field and then use 'Next' button for navigation.</li>
+		<li>The disabled input can't be selected.</li>
+		<li>The password text cannot be read.</li>
+		<li>Try rapidly activating different TextInput's. So long as TextInput has focus the keyboard should remain open and there shouldn't be any flicker.</li>
+	</ul>
+	</InfoStack>
+	<ScrollView>
+		<ToggleControl ux:Class="Indicator">
+			<Circle Margin="5">
+				<Stroke Width="2" Offset="4"><SolidColor Color="0.4,0.4,0.6,1"/></Stroke>
+				<SolidColor Color="0,0,0,0" ux:Name="TheFill"/>
+			</Circle>
+			<WhileTrue>
+				<Change TheFill.Color="0.6,0.4,0.4,1" Duration="0.3"/>
+			</WhileTrue>
+		</ToggleControl>
+		
+		<Grid Columns="30,1*" CellSpacing="5" Margin="15" DefaultRow="auto">
+
+			<h2 ColumnSpan="2">Single Line</h2>
+			<Indicator ux:Name="IndSingle"/>
+			<StdTextInput ux:Name="SingleInput" Value="Scroll page up/down while editing"> 
+			<!-- TODO:https://github.com/fusetools/fuselibs/issues/1465
+				TextAlignment="Center" -->
+				<WhileFocusWithin><Change IndSingle.Value="true"/></WhileFocusWithin>
+			</StdTextInput>
+			
+			<h2 ColumnSpan="2">Password text with background color</h2>
+			<Indicator ux:Name="IndPassword"/>
+			<StdTextInput ux:Name="PasswordInput" IsPassword="true" Value="Hidden text"
+				Background="#FFc">
+				<!-- TODO: https://github.com/fusetools/fuselibs/issues/1387 
+					Alignment="Right" -->
+				<WhileFocusWithin><Change IndPassword.Value="true"/></WhileFocusWithin>
+			</StdTextInput>
+			
+			<h2 ColumnSpan="2">Disabled text, cannot edit</h2>
+			<Indicator ux:Name="IndDisabled"/>
+			<StdTextInput ux:Name="DisabledInput" Value="Disabled Input" IsEnabled="False">
+				<WhileFocusWithin><Change IndDisabled.Value="true"/></WhileFocusWithin>
+			</StdTextInput>
+			
+			<h2 ColumnSpan="2">Multiple lines, left aligned text, background color (whole width)</h2>
+			<Indicator ux:Name="IndMultiline"/>
+			<TextView ux:Name="MultilineInput" TextWrapping="Wrap"
+				Value="Multiple lines of text&#10;Try adding new lines&#10;try selecting and copying/pasting text">
+				<WhileFocusWithin><Change IndMultiline.Value="true"/></WhileFocusWithin>
+				<Rectangle Layer="Background" CornerRadius="3">
+					<Stroke Width="1" Offset="1"><SolidColor Color="#cFc"/></Stroke>
+				</Rectangle>
+			</TextView>
+			
+			<h2 ColumnSpan="2">Switch between these two quickly</h2>
+			<Indicator ux:Name="IndSwitch1"/>
+			<StdTextInput Value="Switch between">
+				<WhileFocusWithin><Change IndSwitch1.Value="true"/></WhileFocusWithin>
+			</StdTextInput>
+			<Indicator ux:Name="IndSwitch2"/>
+			<StdTextInput Value="us quickly">
+				<WhileFocusWithin><Change IndSwitch2.Value="true"/></WhileFocusWithin>
+			</StdTextInput>
+
+			<h2 ColumnSpan="2">TextView with LineSpacing</h2>
+			<Indicator ux:Name="IndLineSpacing"/>
+			<TextView ux:Name="LineSpacingView" TextWrapping="Wrap" Value="Space between all the lines in this TextView should increase when toggeling linespacing" Height="100" >
+				<WhileFocusWithin><Change IndLineSpacing.Value="true"/></WhileFocusWithin>
+				<Rectangle Layer="Background" CornerRadius="3">
+					<Stroke Width="1" Offset="1"><SolidColor Color="#cFc"/></Stroke>
+				</Rectangle>
+				<WhileTrue Value="false" ux:Name="_linespacing">
+					<Change Target="LineSpacingView.LineSpacing" Value="30" Duration="0.4" />
+				</WhileTrue>
+			</TextView>
+			<StdButton Text="Toggle LineSpacing" ColumnSpan="2">
+				<Clicked>
+					<Toggle Target="_linespacing" />
+				</Clicked>
+			</StdButton>
+		</Grid>
+	</ScrollView>
+</Page>

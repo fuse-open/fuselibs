@@ -1,0 +1,12 @@
+Android.ActivityUtils: 1.0.0
+Experimental.ApiBindings.WebAudio: 1.0.0
+Experimental.Audio: 1.0.0
+Experimental.Bindings.FMOD: 1.0.0
+Experimental.Bitmaps: 1.0.0
+Experimental.Midi: 1.0.0
+Experimental.TextureLoader: 1.0.0
+Experimental.VideoGrabber: 1.0.0
+Uno.Collections: 1.0.0
+Uno.Data.Json: 1.0.0
+Uno.Data.Xml: 1.0.0
+Uno.Geometry: 1.0.0

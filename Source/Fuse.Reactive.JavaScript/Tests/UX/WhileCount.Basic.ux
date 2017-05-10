@@ -1,0 +1,38 @@
+<Panel ux:Class="UX.WhileCount.Basic">
+    <JavaScript>
+		var Observable = require('FuseJS/Observable')
+		exports.list = Observable()
+
+		exports.add = function() {
+			exports.list.add({})
+		}
+
+		exports.remove = function() {
+			exports.list.removeAt(0)
+		}
+		
+		exports.set = function() {
+			exports.list.value = {}
+		}
+		
+		exports.clear = function() {
+			exports.list.clear()
+		}
+	</JavaScript>
+
+	<FuseTest.Invoke Handler="{add}" ux:Name="Add"/>
+	<FuseTest.Invoke Handler="{remove}" ux:Name="Remove"/>
+	<FuseTest.Invoke Handler="{set}" ux:Name="Set"/>
+	<FuseTest.Invoke Handler="{clear}" ux:Name="Clear"/>
+	
+	<Panel ux:Name="T">
+		<WhileCount Items="{list}" EqualTo="0" ux:Name="W1"><Text Value="A"/></WhileCount>
+		<WhileCount Items="{list}" GreaterThan="1" ux:Name="W2"><Text Value="B"/></WhileCount>
+		<WhileCount Items="{list}" GreaterThanEqual="1"><Text Value="C"/></WhileCount>
+		<WhileCount Items="{list}" LessThan="2"><Text Value="D"/></WhileCount>
+		<WhileCount Items="{list}" LessThanEqual="2"><Text Value="E"/></WhileCount>
+		<WhileCount Items="{list}" GreaterThan="1" LessThan="2"><Text Value="F"/></WhileCount>
+		<WhileCount Items="{list}" GreaterThan="1" LessThan="3"><Text Value="G"/></WhileCount>
+		<WhileCount Items="{list}" GreaterThanEqual="1" LessThanEqual="2" Invert="true"><Text Value="H"/></WhileCount>
+	</Panel>
+</Panel>

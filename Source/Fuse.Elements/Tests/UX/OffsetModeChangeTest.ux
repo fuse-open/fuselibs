@@ -1,0 +1,10 @@
+<Panel ux:Class="UX.OffsetModeChangeTest">
+	<Panel Alignment="TopLeft" Width="200" Height="300" ux:Name="A"/>
+	<Panel Alignment="BottomRight" Width="100" Height="200" ux:Name="B"/>
+	
+	<Panel Alignment="TopLeft" Width="50" Height="50"  X="100" Y="50" ux:Name="P">
+		<Panel ux:Name="C">
+			<Translation RelativeTo="PositionOffset" RelativeNode="A" Vector="1" ux:Name="M1"/>
+		</Panel>
+	</Panel>
+</Panel>

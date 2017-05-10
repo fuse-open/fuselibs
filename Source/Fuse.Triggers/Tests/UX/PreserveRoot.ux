@@ -1,0 +1,16 @@
+<Panel ux:Class="UX.PreserveRoot">
+	<Panel ux:Name="P1">
+		<Panel ux:Name="C">
+			<Fuse.Triggers.Test.PulseTestTrigger ux:Name="T1">
+				<Move X="100" Duration="1"/>
+				<Panel ux:Name="A"/>
+			</Fuse.Triggers.Test.PulseTestTrigger>
+			<!-- timeline has special logic in root for preserve -->
+			<Timeline ux:Name="T2">
+				<Move X="100" Duration="1"/>
+			</Timeline>
+		</Panel>
+	</Panel>
+	
+	<Panel ux:Name="P2"/>
+</Panel>

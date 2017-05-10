@@ -1,0 +1,31 @@
+<App>
+    <Router ux:Name="router"/>
+    <Navigator DefaultTemplate="startup">
+        <Start ux:Template="startup" router="router"/>
+        <Demonstration ux:Template="demonstration" router="router"/>
+        <HttpJson ux:Template="httpJson" router="router"/>
+        <WebSocket ux:Template="webSocket" router="router"/>
+        <Storage ux:Template="storage" router="router"/>
+        <FileSystem ux:Template="filesystem" router="router" />
+        <Passed ux:Template="passed" router="router"/>
+    </Navigator>
+
+    <Page ux:Class="Start">
+        <Router ux:Dependency="router"/>
+        <JavaScript>
+            var fw = require('/framework.js');
+            fw.suiteStarted();
+            router.goto("demonstration");
+        </JavaScript>
+        <Text Value="Starting test"/>
+    </Page>
+
+    <Page ux:Class="Passed">
+        <Router ux:Dependency="router"/>
+        <JavaScript>
+            var fw = require('/framework.js')
+            fw.suitePassed();
+        </JavaScript>
+        <Text Value="All tests passed"/>
+    </Page>
+</App>

@@ -1,0 +1,46 @@
+{
+  "Copyright": "Copyright (c) Fusetools AS 2017",
+  "Description": "Native bootstrapping for Android",
+  "Publisher": "Fusetools AS",
+  "Version": "1.0.0",
+  "Package": {
+    "ProjectUrl": "https://fusetools.com"
+  },
+  "InternalsVisibleTo": [
+    "Fuse.Launcher.Email",
+    "Fuse.Launcher.InterApp",
+    "Fuse.Launcher.Maps",
+    "Fuse.Launcher.Phone",
+    "Fuse.Launcher",
+    "Fuse.Audio"
+  ],
+  "Projects": [
+    "../Fuse.Platform/Fuse.Platform.unoproj",
+    "../Fuse.Android.TextRenderer/Fuse.Android.TextRenderer.unoproj",
+    "../Fuse.Animations/Fuse.Animations.unoproj",
+    "../Fuse.Controls/Fuse.Controls.unoproj",
+    "../Fuse.Controls.Native/Fuse.Controls.Native.unoproj",
+    "../Fuse.Controls.ScrollView/Fuse.Controls.ScrollView.unoproj",
+    "../Fuse.Controls.Primitives/Fuse.Controls.Primitives.unoproj",
+    "../Fuse.Controls.Panels/Fuse.Controls.Panels.unoproj",
+    "../Fuse.Drawing/Fuse.Drawing.unoproj",
+    "../Fuse.Drawing.Planar/Fuse.Drawing.Planar.unoproj",
+    "../Fuse.Elements/Fuse.Elements.unoproj",
+    "../Fuse.Gestures/Fuse.Gestures.unoproj",
+    "../Fuse.Triggers/Fuse.Triggers.unoproj",
+    "../Fuse.Nodes/Fuse.Nodes.unoproj",
+    "../Fuse.Common/Fuse.Common.unoproj"
+  ],
+  "Includes": [
+    "Theme.uxl:Extensions",
+    "StatusBarConfig.uno:SourceFile",
+    "AndroidApp.uno:SourceFile",
+    "RootGraphicsView.ux:UXFile",
+    "AndroidProperties.uno:SourceFile",
+    "AppRoot.uno:SourceFile",
+    "AndroidInterop.uno:SourceFile",
+    "AndroidInteropHelper.java:Java:Android",
+    "Internal/ByteBufferInputStream.java:Java:Android",
+    "Internal/ByteBufferMediaDataSource.java:Java:Android",
+  ]
+}

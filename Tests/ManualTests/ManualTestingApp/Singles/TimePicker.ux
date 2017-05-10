@@ -1,0 +1,184 @@
+<Page Title="Time Picker" ux:Class="TimePickerPage">
+	<InfoStack ux:Key="Info">
+		<p>This page tests several components including circular layout, range controls, and angular animation.</p>
+		<ul>
+			<li>Hold and drag to select a time on the clocks.</li>
+			<li>After selecting an hour value there is an automatic transition to the minute selection.</li>
+			<li>Selections are quantized/snapped to the values shown on the clock.</li>
+			<li>The time value at the top of the page is updated.</li>
+			<li>Tap on the hour value to get back to the hour selection page.</li>
+			<li>The clock hand is smoothly animated on transition.</li>
+		</ul>
+	</InfoStack>
+	
+	<Panel ux:Class="TPClockTick" ux:Name="self">
+		<string ux:Property="Text"/>
+		<float ux:Property="ClockValue"/>
+	<Text Alignment="Center" Value="{Property self.Text}" FontSize="24" TextColor="0,0,0,1"/>
+	</Panel>
+	
+	<Panel ux:Class="TPClockHand" Anchor="0%,50%" X="50%" Y="50%" Width="29.5%" Height="10%"
+		TransformOrigin="Anchor" ux:Name="selfTheHourLine" SnapToPixels="false">
+		<Circle Alignment="CenterLeft" Height="20%" Aspect="1" BoxSizing="FillAspect"
+			Fill="0.2,0.8,1,0.4" Anchor="50%,50%" SnapToPixels="false"/>
+		<Circle Alignment="CenterRight" Height="100%" Aspect="1" BoxSizing="FillAspect" 
+			Fill="0.2,0.8,1,0.2" Anchor="50%,50%" SnapToPixels="false"/>
+		<Circle Alignment="CenterRight" Height="20%" Aspect="1" BoxSizing="FillAspect" 
+			Fill="0.2,0.8,1,0.4" Anchor="50%,50%" SnapToPixels="false"/>
+		<Rectangle Alignment="VerticalCenter" Height="3%" 
+			Fill="0.2,0.8,1,0.2" SnapToPixels="false"/>
+	</Panel>
+			
+	<DockPanel Background="0.8,0.8,0.8,1">
+		<JavaScript>
+			var Observable = require("FuseJS/Observable")
+			
+			function formatTime(x) {
+				var q = x.toFixed(0)
+				if (x < 10) {
+					return "0" + q
+				}
+				return q
+			}
+			
+			exports.hoursX = Observable(0)
+			exports.hoursY = Observable(0)
+			exports.hours = Observable(function() {
+				return exports.hoursX.value + exports.hoursY.value * 12
+			})
+			exports.displayHours = exports.hours.map(function(x) {
+				return formatTime(x)
+			})
+			exports.minutes = Observable(0)
+			exports.displayMinutes = exports.minutes.map(function(x) {
+				return formatTime(x)
+			})
+			
+			exports.selectHour = function(args) {
+				exports.hoursX.value = args.value%12
+				exports.hoursY.value = Math.floor(args.value/12)
+			}
+			
+			exports.selectMinute = function(args) {
+				exports.minutes.value = args.value
+			}
+			
+			exports.color = Observable([1,1,0,1])
+		</JavaScript>
+		<WhileTrue ux:Name="ShowMinutes">
+			<Change HourSelect.Opacity="0" Duration="0.3"/>
+			<Scale Target="HourSelect" Factor="1.5" Duration="0.3"/>
+			<Change HourSelect.Visibility="Hidden" Delay="0.3"/>
+			<Change MinuteSelect.Visibility="Visible"/>
+			<Change HourSelect.IsEnabled="false"/>
+		</WhileTrue>
+		
+		<Panel Dock="Top" Margin="0,0,0,10">
+			<StackPanel Orientation="Horizontal" Alignment="Center">
+				<Text ux:Class="ClockText" FontSize="24" TextColor="0,0.5,0.8,1"/>
+				<ClockText Value="{displayHours}" HitTestMode="LocalBounds">
+					<Tapped>
+						<Set ShowMinutes.Value="false"/>
+					</Tapped>
+				</ClockText>
+				<ClockText Value=":"/>
+				<ClockText Value="{displayMinutes}" HitTestMode="LocalBounds">
+					<Tapped>
+						<Set ShowMinutes.Value="true"/>
+					</Tapped>
+				</ClockText>
+			</StackPanel>
+		</Panel>
+		
+		<Panel Aspect="1" BoxSizing="FillAspect" Margin="5">
+			
+			<RangeControl2D ValueX="{hoursX}" ValueY="{hoursY}" 
+				ux:Name="HourSelect" Minimum="0,0" Maximum="12,1"
+				UserStep="1,1" Visibility="Visible">
+				
+				<CircularRangeBehavior ux:Name="HourSlide"
+					StartAngleDegrees="-90" EndAngleDegrees="270"
+					MinimumRadius="0.59" MaximumRadius="0.83" IsWrapping="true"/>
+					
+				<TPClockHand ux:Name="TheHourLine">
+					<Rotation ux:Name="HourRotate"/>
+					<Attractor Target="HourRotate.Degrees" Value="{Property HourSlide.DegreesValue}"
+						Type="SmoothSnap" Unit="Degrees"/>
+						
+					<Attractor Target="TheHourLine.Width" ux:Name="HourLineAttractor"
+						Type="SmoothSnap" Unit="Points"/>
+					<RangeAnimation Value="{Property HourSelect.ValueY}" Minimum="0" Maximum="1">
+						<Change HourLineAttractor.Value="41.5"/>
+					</RangeAnimation>
+				</TPClockHand>
+
+				<InteractionCompleted>
+					<Set ShowMinutes.Value="true"/>
+				</InteractionCompleted>
+				
+				<Circle Layer="Background" Fill="1,1,1,1"/>
+				<Panel>
+					<CircleLayout Radius="0.75" StartAngleDegrees="-90" EndAngleDegrees="270"/>
+					<TPClockTick Text="00" ClockValue="0"/>
+					<TPClockTick Text="01" ClockValue="1"/>
+					<TPClockTick Text="02" ClockValue="2"/>
+					<TPClockTick Text="03" ClockValue="3"/>
+					<TPClockTick Text="04" ClockValue="4"/>
+					<TPClockTick Text="05" ClockValue="5"/>
+					<TPClockTick Text="06" ClockValue="6"/>
+					<TPClockTick Text="07" ClockValue="7"/>
+					<TPClockTick Text="08" ClockValue="8"/>
+					<TPClockTick Text="09" ClockValue="9"/>
+					<TPClockTick Text="10" ClockValue="10"/>
+					<TPClockTick Text="11" ClockValue="11"/>
+				</Panel>
+				<Panel>
+					<CircleLayout ItemSpacingDegrees="5" StartAngleDegrees="-90" EndAngleDegrees="270"/>
+					<TPClockTick Text="12" ClockValue="12"/>
+					<TPClockTick Text="13" ClockValue="13"/>
+					<TPClockTick Text="14" ClockValue="14"/>
+					<TPClockTick Text="15" ClockValue="15"/>
+					<TPClockTick Text="16" ClockValue="16"/>
+					<TPClockTick Text="17" ClockValue="17"/>
+					<TPClockTick Text="18" ClockValue="18"/>
+					<TPClockTick Text="19" ClockValue="19"/>
+					<TPClockTick Text="20" ClockValue="20"/>
+					<TPClockTick Text="21" ClockValue="21"/>
+					<TPClockTick Text="22" ClockValue="22"/>
+					<TPClockTick Text="23" ClockValue="23"/>
+				</Panel>
+			</RangeControl2D>
+			
+			<RangeControl Value="{minutes}" Minimum="0" Maximum="60" UserStep="5"
+				ux:Name="MinuteSelect" Visibility="Hidden">
+				
+				<CircularRangeBehavior ux:Name="MinuteSlide"
+					StartAngleDegrees="-90" EndAngleDegrees="270" IsWrapping="true"/>
+					
+				<TPClockHand Width="41.5%">
+					<Rotation ux:Name="MinuteRotate"/>
+					<Attractor Target="MinuteRotate.Degrees" Value="{Property MinuteSlide.DegreesValue}"
+						Type="SmoothSnap" Unit="Degrees"/>
+				</TPClockHand>
+			
+				<Circle Layer="Background" Fill="1,1,1,1"/>
+				<Panel>
+					<CircleLayout ItemSpacingDegrees="5" StartAngleDegrees="-90" EndAngleDegrees="270"/>
+					<TPClockTick Text="00" ClockValue="00"/>
+					<TPClockTick Text="05" ClockValue="05"/>
+					<TPClockTick Text="10" ClockValue="10"/>
+					<TPClockTick Text="15" ClockValue="15"/>
+					<TPClockTick Text="20" ClockValue="20"/>
+					<TPClockTick Text="25" ClockValue="25"/>
+					<TPClockTick Text="30" ClockValue="30"/>
+					<TPClockTick Text="35" ClockValue="35"/>
+					<TPClockTick Text="40" ClockValue="40"/>
+					<TPClockTick Text="45" ClockValue="45"/>
+					<TPClockTick Text="50" ClockValue="50"/>
+					<TPClockTick Text="55" ClockValue="55"/>
+				</Panel>
+			</RangeControl>
+			
+		</Panel>
+	</DockPanel>
+</Page>

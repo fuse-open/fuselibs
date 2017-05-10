@@ -1,0 +1,12 @@
+<Panel ux:Class="UX.WrapPanel.ChildSize">
+	<Panel ux:Class="WPCSPanel" Width="190" Margin="5">
+		<Panel Width="20" Height="20"/>
+	</Panel>
+	
+	<WrapPanel>
+		<WPCSPanel ux:Name="P1"/>
+		<WPCSPanel ux:Name="P2"/>
+		<WPCSPanel ux:Name="P3"/>
+		<WPCSPanel ux:Name="P4"/>
+	</WrapPanel>
+</Panel>

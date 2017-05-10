@@ -1,0 +1,3 @@
+<Extensions Backend="CPlusPlus" Condition="Android">
+    <CopyFile Name="nv-websocket-client.jar" TargetName="@(Java.LibsDirectory)/nv-websocket-client.jar" />
+</Extensions>

@@ -1,0 +1,6 @@
+<StackPanel ux:Class="UX.ExpressionsUnits" Height="70%" Width="100%" Color="#000">
+	<Rectangle ux:Name="r1" Offset="20%,0"/>
+	<Rectangle ux:Name="r2" Offset="100%/5,0"/>
+	<Rectangle ux:Name="r3" Offset="(100/5)%,0"/>
+	<Rectangle ux:Name="r4" Offset="100/5,0"/>
+</StackPanel> 

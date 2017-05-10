@@ -1,0 +1,21 @@
+<Panel ux:Class="UX.Busy.Activity">
+	<Panel>
+		<WhileBusy ux:Name="W1">
+			<Nothing/>
+		</WhileBusy>
+		<WhileBusy ux:Name="W2" Activity="Loading">
+			<Nothing/>
+		</WhileBusy>
+		
+		<Panel>
+			<WhileBusy ux:Name="W3" Activity="Processing" IsHandled="true">
+				<Nothing/>
+			</WhileBusy>
+			
+			<FuseTest.BusyControl ux:Name="B1" Activity="Common"/>
+			<FuseTest.BusyControl ux:Name="B2" Activity="Loading"/>
+			<FuseTest.BusyControl ux:Name="B3" Activity="Processing"/>
+			<FuseTest.BusyControl ux:Name="B4" Activity="Deferring"/>
+		</Panel>
+	</Panel>
+</Panel>

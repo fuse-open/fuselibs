@@ -1,0 +1,12 @@
+<Panel ux:Class="UX.StateGroupChainedSwitch">
+	<StateGroup Active="A" ux:Name="SG">
+		<State ux:Name="A">
+			<Set When="Backward" SG.Active="D"/>
+		</State>
+		<State ux:Name="B"/>
+		<State ux:Name="C"/>
+		<State ux:Name="D">
+			<Set SG.Active="C"/>
+		</State>
+	</StateGroup>
+</Panel>

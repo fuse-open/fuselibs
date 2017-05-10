@@ -1,0 +1,32 @@
+{
+  "Copyright": "Copyright (c) Fusetools AS 2017",
+  "Description": "Support for Local Notifications On Mobile",
+  "Publisher": "Fusetools AS",
+  "Version": "1.0.0",
+  "Package": {
+    "ProjectUrl": "https://fusetools.com"
+  },
+  "Packages": [
+    "Uno.Collections",
+    "Uno.Threading",
+  ],
+  "Projects": [
+    "../Fuse.Platform/Fuse.Platform.unoproj",
+    "../Fuse.Controls/Fuse.Controls.unoproj",
+    "../Fuse.Elements/Fuse.Elements.unoproj",
+    "../Fuse.Reactive/Fuse.Reactive.unoproj",
+    "../Fuse.Scripting/Fuse.Scripting.unoproj",
+    "../Fuse.Common/Fuse.Common.unoproj"
+  ],
+  "Includes": [
+    "iOS/Impl.uno:Source",
+    "iOS/AppDelegateLocalNotify.h:CHeader:iOS",
+    "iOS/AppDelegateLocalNotify.mm:CSource:iOS",
+    "Android/Impl.uno:Source",
+    "Android/Impl.uxl:Extensions",
+    "Android/LocalNotificationReceiver.java:File",
+    "Common.uno:Source",
+    "JS.uno:Source",
+    "Android/Assets/DefaultIcon.png:File"
+  ]
+}

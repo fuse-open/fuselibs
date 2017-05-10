@@ -1,0 +1,41 @@
+<Panel ux:Class="UX.Transition.Style">
+	<Router ux:Name="router"/>
+	<Panel ux:Class="TSBPage">
+		<Transition ux:Name="T1" Style="bang">
+			<Nothing Duration="1"/>
+		</Transition>
+		
+		<Transition ux:Name="T2" Style="">
+			<Nothing Duration="1"/>
+		</Transition>
+		
+		<Transition ux:Name="T3">
+			<Nothing Duration="1"/>
+		</Transition>
+	</Panel>
+
+	<JavaScript>
+		exports.bangTwo = function() {
+			router.modify({
+				how: "Push",
+				path: [ "two" ],
+				style: "bang",
+			})
+		}
+		
+		exports.flashOne = function() {
+			router.modify({
+				how: "Goto",
+				path: [ "one" ],
+				style: "flash",
+			})
+		}
+	</JavaScript>
+	<FuseTest.Invoke Handler="{bangTwo}" ux:Name="BangTwo"/>
+	<FuseTest.Invoke Handler="{flashOne}" ux:Name="FlashOne"/>
+	
+	<Navigator ux:Name="nav" DefaultPath="one">
+		<TSBPage ux:Name="one"/>
+		<TSBPage ux:Name="two"/>
+	</Navigator>
+</Panel>

@@ -1,0 +1,11 @@
+<PageControl ux:Class="UX.Issue2633">
+	<Page/>
+	<WhileTrue Value="true">
+		<Page ux:Name="B">
+			<Text Value="One" ux:Name="TheText"/>
+			<WhileActive>
+				<Set TheText.Value="Two" When="Forward"/>
+			</WhileActive>
+		</Page>
+	</WhileTrue>
+</PageControl>

@@ -1,0 +1,7 @@
+<ScrollViewBase ux:Class="Fuse.Controls.ScrollView" ux:Name="s" >
+	<WhileTrue ux:InnerClass="DefaultTrigger" Value="{Property s.KeepFocusInView}">
+		<KeepFocusInView/>
+	</WhileTrue>
+	<Fuse.Controls.Native.Android.ScrollView ux:Condition="Android" ux:Template="AndroidAppearance" Host="s" />
+	<Fuse.Controls.Native.iOS.ScrollView ux:Condition="iOS" ux:Template="iOSAppearance" Host="s" />
+</ScrollViewBase>

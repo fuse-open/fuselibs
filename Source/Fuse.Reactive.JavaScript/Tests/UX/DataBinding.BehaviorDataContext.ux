@@ -1,0 +1,48 @@
+<Panel ux:Class="UX.DataBinding.BehaviorDataContext">
+
+	<Page ux:Class="Page1">
+
+	    <Panel ux:Dependency="appBar" />
+
+	    <JavaScript>
+	        var Observable = require("FuseJS/Observable");
+
+	        var searchMode = Observable(false);
+
+	        module.exports = {
+	            searchMode,
+	            foo: "bar",
+	            toggleSearch: function () {
+	                console.log("toggled");
+	                searchMode.value = !searchMode.value;
+	            }
+	        }
+	    </JavaScript>
+
+
+        <WhileActive>
+            <AlternateRoot ParentNode="appBar">
+                <DockPanel>
+                    <Text ux:Name="t1" Value="{foo}" Clicked="{toggleSearch}" Color="#f00" Dock="Right">
+                        <Text>Search</Text>
+
+                        <WhileTrue Value="{searchMode}">
+                            <Change t1.Dock="Fill" />
+                        </WhileTrue>
+                    </Text>
+                </DockPanel>
+            </AlternateRoot>
+        </WhileActive>
+
+	    <Text>Hello this is Page1</Text>
+	</Page>
+
+	<DockPanel>
+
+		<Panel ux:Name="appBar" Dock="Top" Height="64" />
+		<PageControl>
+			<Page1 ux:Name="pg" appBar="appBar" />
+		</PageControl>
+	</DockPanel>
+
+</Panel>

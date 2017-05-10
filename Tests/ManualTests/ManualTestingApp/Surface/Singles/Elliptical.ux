@@ -1,0 +1,45 @@
+<TestPage ux:Class="Pages.Elliptical" Title="Elliptical Shapes">
+	<InfoStack ux:Key="Info">
+		<p>Displays several elliptical shapes.</p>
+		<ul>
+			<li>The first row is circular: they have a 1:1 aspect.</li>
+			<li>The wedge shapes have a red circle in the center of them.</li>
+			<li>The second row is ellipses, the expand to their parent cell size.</li>
+			<li>The third row are arcs -- they are the stroke on the outside of the matching ellipse above it.</li>
+		</ul>
+	</InfoStack>
+	<VectorLayer>
+		<Stroke ux:Name="stdStroke" Width="2" Color="#000" ux:AutoBind="false"/>
+		<Grid ColumnCount="3" Margin="10" CellSpacing="10">
+			<Circle Fill="#AFA" Stroke="stdStroke"/>
+			<Panel>
+				<Circle X="50%" Y="75%" Anchor="50%,50%" Width="10" Height="10" Color="#FAA"/>
+				<Circle StartAngleDegrees="45" LengthAngleDegrees="90" 
+					Fill="#AFA" Stroke="stdStroke"/>
+			</Panel>
+			<Panel>
+				<Circle X="50%" Y="25%" Anchor="50%,50%" Width="10" Height="10" Color="#FAA"/>
+				<Circle StartAngleDegrees="-45" LengthAngleDegrees="-90" 
+					Fill="#AFA" Stroke="stdStroke"/>
+			</Panel>
+			
+			<Ellipse Fill="#AFA">
+				<Stroke Width="2" Color="#000"/>
+			</Ellipse>
+			<Panel>
+				<Circle X="50%" Y="75%" Anchor="50%,50%" Width="10" Height="10" Color="#FAA"/>
+				<Ellipse StartAngleDegrees="45" LengthAngleDegrees="90" 
+					Fill="#AFA" Stroke="stdStroke"/>
+			</Panel>
+			<Panel>
+				<Circle X="50%" Y="25%" Anchor="50%,50%" Width="10" Height="10" Color="#FAA"/>
+				<Ellipse StartAngleDegrees="-45" LengthAngleDegrees="-90" 
+					Fill="#AFA" Stroke="stdStroke"/>
+			</Panel>
+			
+			<Arc Stroke="stdStroke"/>
+			<Arc StartAngleDegrees="45" LengthAngleDegrees="90" Stroke="stdStroke"/>
+			<Arc StartAngleDegrees="-45" LengthAngleDegrees="-90" Stroke="stdStroke"/>
+		</Grid>
+	</VectorLayer>
+</TestPage>

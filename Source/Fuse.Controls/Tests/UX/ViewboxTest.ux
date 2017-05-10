@@ -1,0 +1,13 @@
+<Panel ux:Class="UX.ViewboxTest">
+	<Viewbox ux:Name="V1">
+		<Rectangle Width="1000" Height="800" ux:Name="R1" Alignment="Center"/>
+	</Viewbox>
+	
+	<Viewbox Alignment="TopCenter" Width="200" Height="100" ux:Name="V2">
+		<Rectangle Width="10" Height="20" ux:Name="R2" Alignment="Right"/>
+	</Viewbox>
+	
+	<Viewbox ux:Name="V3" StretchDirection="DownOnly">
+		<Rectangle Width="50" Height="100" ux:Name="R3" Alignment="Center"/>
+	</Viewbox>
+</Panel>

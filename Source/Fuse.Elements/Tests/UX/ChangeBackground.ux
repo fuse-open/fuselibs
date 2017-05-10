@@ -1,0 +1,3 @@
+<Panel ux:Class="UX.ChangeBackground">
+	<Panel Alignment="Center" Width="100" Height="200" ux:Name="P1"/>
+</Panel>

@@ -1,0 +1,15 @@
+<Panel ux:Class="UX.Issue2458">
+	<float4 ux:Property="Foo" />
+
+	<JavaScript>
+		var self = this;
+		module.exports = {
+			'bar': function() {
+				self.Foo.value = '#0f0';
+			}
+		};
+	</JavaScript>
+
+	<FuseTest.Invoke Handler="{bar}" ux:Name="Bar" />
+	<Rectangle ux:Name="Rect" Color="{Property this.Foo}" />
+</Panel>

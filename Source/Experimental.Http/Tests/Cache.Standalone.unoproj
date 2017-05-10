@@ -1,0 +1,15 @@
+{
+  "Description": "Library for data caching",
+  "Publisher": "Fusetools AS",
+  "Packages": [
+    "Experimental.Http",
+    "Fuse.Common",
+    "Fuse.Nodes",
+    "Uno.Testing",
+    "UnoCore"
+  ],
+  "Includes": [
+    "Standalone.uno:Source",
+    "TestRunner.uno:Source"
+  ]
+}

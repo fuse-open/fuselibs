@@ -1,0 +1,25 @@
+{
+  "Packages": [
+    "Fuse.Animations",
+    "Fuse.Controls",
+    "Fuse.Controls.Panels",
+    "Fuse.Drawing",
+    "Fuse.Drawing.Primitives",
+    "Fuse.Elements",
+    "Fuse.Reactive",
+    "Fuse.Reactive.JavaScript",
+    "Fuse.Reactive.Bindings",
+    "Fuse.Reactive.Expressions",
+    "Fuse.Marshal",
+    "Fuse.Scripting",
+    "Fuse.Triggers",
+    "Fuse.Common",
+    "Fuse.Nodes",
+    "Uno.Geometry",
+    "Uno.Testing",
+    "Uno.Threading"
+  ],
+  "Includes": [
+    "*",
+  ]
+}

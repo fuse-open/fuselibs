@@ -1,0 +1,30 @@
+<html>
+  <head>
+    <title>FuseJS Tests</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="./index_libs/browser/mocha.css" />
+    <script src="./index_libs/browser/jquery.js" type="text/javascript"></script>
+    <script src="./index_libs/mocha.js"></script>
+    <script>mocha.setup('bdd')</script>
+    <script src="./index_libs/require.js"></script>
+    <script src="./index_libs/assert.js"></script>
+    <script src="../Observable.js"></script>
+    <script src="../Fetch.js"></script>
+    <script src="../FetchJson.js"></script>
+    <script src="../EventEmitter.js"></script>
+
+    <script src="./tests/fetchTests.js"></script>
+    <script src="./tests/generalObservableTests.js"></script>
+    <script src="./tests/observableListTests.js"></script>
+    <script src="./tests/taskListTests.js"></script>
+    <script src="./tests/eventEmitterTests.js"></script>
+    <script>
+      onload = function(){
+        var runner = mocha.run();
+      };
+    </script>
+  </head>
+  <body>
+    <div id="mocha"></div>
+  </body>
+</html>

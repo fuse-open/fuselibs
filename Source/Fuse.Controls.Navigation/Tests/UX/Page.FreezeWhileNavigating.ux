@@ -1,0 +1,8 @@
+<Panel ux:Class="UX.Page.FreezeWhileNavigating">
+	<Router ux:Name="R"/>
+	<Navigator ux:Name="Nav">
+		<Page ux:Template="one" Freeze="WhileNavigating" ux:Name="P">
+			<FuseTest.BusyControl IsBusy="true" Activity="Deferring" ux:Name="B"/>
+		</Page>
+	</Navigator>
+</Panel>

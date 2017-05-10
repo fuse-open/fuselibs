@@ -1,0 +1,5 @@
+<StackPanel ux:Class="UX.SubpixelCaching">
+	<Translation X="0.25" Y="0.25" />
+	<Rectangle Width="98" Height="98" Margin="1" SnapToPixels="false" CachingMode="Never" Color="1, 0, 0, 0.5" Opacity="1" />
+	<Rectangle Width="98" Height="98" Margin="1" SnapToPixels="false" CachingMode="Never" Color="0, 1, 0, 1" Opacity="0.5" />
+</StackPanel>

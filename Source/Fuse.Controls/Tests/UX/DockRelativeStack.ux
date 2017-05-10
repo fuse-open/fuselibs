@@ -1,0 +1,6 @@
+<DockPanel ux:Class="UX.DockRelativeStack">
+	<StackPanel Height="20%" Margin="5" ux:Name="P1" Dock="Bottom"
+		Orientation="Horizontal">
+		<Panel Aspect="2" BoxSizing="FillAspect" ux:Name="P2" Margin="10"/>
+	</StackPanel>
+</DockPanel>

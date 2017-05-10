@@ -1,0 +1,6 @@
+<Panel ux:Class="TextFont">
+    <Font ux:Global="FontAwesome" File="assets/texgyreheros-bold.otf" />
+
+    <Text ux:Class="FaBeer" Font="FontAwesome">&#xf0fc;</Text>
+    <FaBeer FontSize="40"/>
+</Panel>

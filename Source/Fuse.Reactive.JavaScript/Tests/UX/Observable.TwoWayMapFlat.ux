@@ -1,0 +1,29 @@
+<Panel ux:Class="UX.Observable.TwoWayMapFlat">
+	<JavaScript>
+		var Observable = require("FuseJS/Observable")
+		
+		var source = Observable("abc")
+		var ivalue = Observable()
+		exports.ivalue = ivalue.inner()
+		exports.ovalue = ivalue.innerTwoWay().mapTwoWay(
+			function( dt ) { 
+				return dt 
+			},
+			function( bit, whole ) { 
+				return bit 
+			} )
+		
+		exports.step1 = function() {
+			ivalue.value = source
+		}
+		
+		exports.step2 = function() {
+			source.value += "def"
+		}
+	</JavaScript>
+	<Text Value="{ivalue}" ux:Name="IV"/>
+	<Text Value="{ovalue}" ux:Name="OV"/>
+	
+	<FuseTest.Invoke Handler="{step1}" ux:Name="Step1"/>
+	<FuseTest.Invoke Handler="{step2}" ux:Name="Step2"/>
+</Panel>

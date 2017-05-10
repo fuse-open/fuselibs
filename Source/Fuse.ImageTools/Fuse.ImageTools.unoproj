@@ -1,0 +1,37 @@
+{
+  "Copyright": "Copyright (c) Fusetools AS 2017",
+  "Description": "Native image utilities",
+  "Publisher": "Fusetools AS",
+  "Title": "Fuse.ImageTools",
+  "Version": "1.0.0",
+  "Package": {
+    "ProjectUrl": "https://fusetools.com"
+  },
+  "InternalsVisibleTo":[
+    "Fuse.Camera",
+    "Fuse.CameraRoll"
+  ],
+  "Packages": [
+    "Uno.Threading",
+    "Android.ActivityUtils",
+    "Uno.Permissions"
+  ],
+  "Projects": [
+    "../Fuse.Common/Fuse.Common.unoproj",
+    "../Fuse.Scripting/Fuse.Scripting.unoproj"
+  ],
+  "Includes": [
+    "*",
+    "Android/*",
+    "iOS/*",
+    "Desktop/*",
+    "Android/ImageStorageTools.java:Java:Android",
+    "Android/Image.java:Java:Android",
+    "Android/ImageUtils.java:Java:Android",
+    "iOS/Actions.h:CHeader:iOS",
+    "iOS/ImagePicker.h:CHeader:iOS",
+    "iOS/ImagePicker.m:CSource:iOS",
+    "iOS/ImageHelper.h:CHeader:iOS",
+    "iOS/ImageHelper.m:CSource:iOS"
+  ]
+}

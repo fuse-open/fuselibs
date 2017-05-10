@@ -1,0 +1,11 @@
+<Panel ux:Class="UX.Timeline.WrapActionIssue3724">
+	<WhileVisible>
+		<Timeline ux:Name="T1" PlayMode="Wrap">
+			<Set WTA.Value="false" Delay="0"/>
+			<FuseTest.CountAction ux:Name="C1" Delay="1"/>
+			<Set WTA.Value="true" Delay="1"/>
+			<FuseTest.CountAction ux:Name="C2" Delay="2"/>
+		</Timeline>
+	</WhileVisible>
+	<ToggleControl ux:Name="WTA" Value="true"/>
+</Panel>

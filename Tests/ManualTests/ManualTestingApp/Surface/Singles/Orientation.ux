@@ -1,0 +1,61 @@
+<TestPage ux:Class="Pages.Orientation" Title="Orientation">
+	<InfoStack ux:Key="Info">
+		<p>The arrows all point down to the right.</p>
+	</InfoStack>
+	
+	<Grid ColumnCount="2" Margin="5" CellSpacing="5">
+		<Path Data="M 0,0 L 100,100 M 50,100 L 100, 100 100, 50">
+			<Stroke Width="5" Color="#444"/>
+		</Path>
+		
+		<Path Data="M 100,100 L 0,0 M 0,50 L 0, 0 50, 0">
+			<Stroke Width="5" Color="#444"/>
+			<Rotation Degrees="180"/>
+		</Path>
+		
+		<VectorLayer>
+			<Path Data="M 0,0 L 100,100 M 50,100 L 100, 100 100, 50">
+				<Stroke Width="5" Color="#444"/>
+			</Path>
+		</VectorLayer>
+		
+		<VectorLayer>
+			<Path Data="M 100,100 L 0,0 M 0,50 L 0, 0 50, 0">
+				<Stroke Width="5" Color="#444"/>
+			</Path>
+			<Rotation Degrees="180"/>
+		</VectorLayer>
+
+		<Panel>
+			<VectorLayer>
+				<Path Data="M 100,100 L 0,0 M 0,50 L 0, 0 50, 0">
+					<Stroke Width="5" Color="#444"/>
+				</Path>
+				<Rotation Degrees="180"/>
+			</VectorLayer>
+			<DropShadow/>
+		</Panel>
+		
+		<VectorLayer>
+			<Grid ColumnCount="2" CellSpacing="5">
+				<Path Data="M 0,0 L 100,100 M 50,100 L 100, 100 100, 50">
+					<Stroke Width="5" Color="#444"/>
+				</Path>
+				
+				<Path Data="M 0,50 L 100,50 M 50,25 L 100,50 50,75" StrokeWidth="5" StrokeColor="#444"
+					BoxSizing="FillAspect">
+					<Rotation Degrees="45"/>
+				</Path>
+				
+				<Path Data="M 75.603516 6.6621094 L 2.8710938 79.392578 L 433.33398 509.85547 C 379.88472 550.61324 290.69062 617.21735 295.98633 637.64453 C 303.0633 664.9426 499.21287 675.1277 526.32422 681.9668 C 553.43556 688.8059 720.79589 769.6738 740.35742 749.15234 C 759.91896 728.63088 676.92515 559.35631 669.42383 532.30469 C 661.92251 505.25307 648.50545 314.81743 621.30859 308.28711 C 601.9414 303.63679 543.56319 382.35152 504.42188 435.48242 L 75.603516 6.6621094 z " Color="#444"/>
+				
+				<Path Data="M 100,100 L 0,0 M 0,50 L 0, 0 50, 0">
+					<Stroke Width="5" Color="#444"/>
+					<Rotation Degrees="180"/>
+				</Path>
+				
+				
+			</Grid>
+		</VectorLayer>
+	</Grid>
+</TestPage>

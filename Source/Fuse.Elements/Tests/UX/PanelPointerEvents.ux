@@ -1,0 +1,31 @@
+<Panel ux:Class="UX.PanelPointerEvents">
+	<JavaScript>
+		var Observable = require("FuseJS/Observable");
+		var eventName = Observable();
+		var x = Observable();
+		var y = Observable();
+		var localX = Observable();
+		var localY = Observable();
+		module.exports = {
+			onPressed : function(args) {
+				eventName.value = "pressed";
+				x.value = args.x;
+				y.value = args.y;
+				localX.value = args.localX;
+				localY.value = args.localY;
+			},
+			eventName: eventName,
+			x: x,
+			y: y,
+			localX: localX,
+			localY: localY
+		}
+	</JavaScript>
+
+	<Panel ux:Name="panel" Alignment="TopLeft" Margin="10, 20" Width="100" Height="100" Pressed="{onPressed}" HitTestMode="LocalBounds"/>
+	<Text ux:Name="eventName" Value="{eventName}" />
+	<Text ux:Name="x" Value="{x}" />
+	<Text ux:Name="y" Value="{y}" />
+	<Text ux:Name="localX" Value="{localX}" />
+	<Text ux:Name="localY" Value="{localY}" />
+</Panel>

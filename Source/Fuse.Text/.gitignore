@@ -1,0 +1,4 @@
+harfbuzz/lib/*/
+icu/x86
+icu/x64
+icu/iOS

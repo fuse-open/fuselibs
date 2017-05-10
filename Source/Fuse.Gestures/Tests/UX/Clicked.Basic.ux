@@ -1,0 +1,7 @@
+<Panel ux:Class="UX.Clicked.Basic">
+	<Panel HitTestMode="LocalBounds" Width="10" Height="10" Alignment="TopLeft">
+		<Clicked>
+			<FuseTest.CountAction ux:Name="C1"/>
+		</Clicked>
+	</Panel>
+</Panel>

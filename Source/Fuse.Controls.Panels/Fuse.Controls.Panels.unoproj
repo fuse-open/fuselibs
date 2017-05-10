@@ -1,0 +1,49 @@
+{
+  "Copyright": "Copyright (c) Fusetools AS 2017",
+  "Description": "Primitives",
+  "Publisher": "Fusetools AS",
+  "Version": "1.0.0",
+  "Package": {
+    "ProjectUrl": "https://fusetools.com"
+  },
+  "InternalsVisibleTo": [
+    "Fuse.Android",
+    "Fuse.Views",
+    "Fuse.Desktop",
+    "Fuse.Charting",
+    "Fuse.Controls.Navigation.Test",
+    "Fuse.Controls.Panels.Test",
+    "Fuse.Controls.Primitives",
+    "Fuse.Controls.ScrollView",
+    "Fuse.Controls.Test",
+    "Fuse.Elements.Test",
+    "Fuse.iOS",
+    "Fuse.iOS.Bindings",
+  ],
+  "Packages": [
+    "Uno.Collections",
+    "Uno.Geometry"
+  ],
+  "Projects": [
+    "../Fuse.Platform/Fuse.Platform.unoproj",
+    "../Fuse.Animations/Fuse.Animations.unoproj",
+    "../Fuse.Common/Fuse.Common.unoproj",
+    "../Fuse.Nodes/Fuse.Nodes.unoproj",
+    "../Fuse.Motion/Fuse.Motion.unoproj",
+    "../Fuse.Drawing/Fuse.Drawing.unoproj",
+    "../Fuse.Drawing.Surface/Fuse.Drawing.Surface.unoproj",
+    "../Fuse.Drawing.Planar/Fuse.Drawing.Planar.unoproj",
+    "../Fuse.Elements/Fuse.Elements.unoproj",
+    "../Fuse.Controls/Fuse.Controls.unoproj",
+    "../Fuse.Controls.Native/Fuse.Controls.Native.unoproj",
+    "../Fuse.Gestures/Fuse.Gestures.unoproj",
+    "../Fuse.Motion/Fuse.Motion.unoproj",
+    "../Fuse.Navigation/Fuse.Navigation.unoproj",
+    "../Fuse.Reactive/Fuse.Reactive.unoproj",
+    "../Fuse.Scripting/Fuse.Scripting.unoproj",
+    "../Fuse.Triggers/Fuse.Triggers.unoproj",
+  ],
+  "Includes": [
+    "*"
+  ]
+}

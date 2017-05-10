@@ -1,0 +1,6 @@
+Packages.InstallDirectory: lib
+Packages.SourcePaths += ../Source
+Packages.LockFiles += [
+    uno.packages
+    unolibs.packages
+]

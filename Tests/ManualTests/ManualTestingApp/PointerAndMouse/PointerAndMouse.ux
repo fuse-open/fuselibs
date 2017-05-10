@@ -1,0 +1,56 @@
+<Page xmlns:b="Outracks.UIThemes.MobileBlue" ux:Class="PointerAndMouse" ux:AutoCtor="false">
+	<InfoStack ux:Key="Info">
+		<p>There are three panels on this page.</p>
+		<ul>
+			<li>Each touch of the first one changes it's color.</li>
+			<li>Each touch of the second one with the right-mouse button or secondary finger changes it's color.</li>
+			<li>On desktop only, the third item changes color in response to wheel movement.</li>
+			<li>The fourth should react to a long-press only (press and hold for a short time). A tap should be ignored.</li>
+			<li>The fifth responds to double-tap.</li>
+		</ul>
+	</InfoStack>
+	<ScrollView>
+		<Panel ux:InnerClass="MyPanel" MaxWidth="500" Margin="10"/>
+		<Text TextWrapping="Wrap" TextAlignment="Center" Margin="0,20,0,20" ux:InnerClass="MyText"
+			TextColor="0,0,0,1"/>
+		
+		<StackPanel>
+
+			<MyPanel Pointer.Pressed="Button1_Click">
+				<MyText Value="Left click or finger press changes color" />
+				<Rectangle Layer="Background">
+					<SolidColor ux:Name="Button1Color" Color="0.3, 0.4, 0.8, 1"></SolidColor>
+				</Rectangle>
+			</MyPanel>
+
+			<MyPanel Pointer.Pressed="Button2_Click">
+				<MyText Value="Change on right-click or second-finger down" />
+				<Rectangle Layer="Background">
+					<SolidColor ux:Name="Button2Color" Color="0.3, 0.4, 0.8, 1"></SolidColor>
+				</Rectangle>
+			</MyPanel>
+
+			<MyPanel Pointer.WheelMoved="Button3_WheelChanged">
+				<MyText Value="Mouse wheel changes color" />
+				<Rectangle Layer="Background">
+					<SolidColor ux:Name="Button3Color" Color="0.3, 0.4, 0.8, 1"></SolidColor>
+				</Rectangle>
+			</MyPanel>
+
+			<MyPanel Color="0.3,0.4,0.8,1">
+				<MyText Value="Long-Press shrinks" />
+				<LongPressed>
+					<Scale Factor="0" Duration="0.5"/>
+				</LongPressed>
+			</MyPanel>
+			
+			<MyPanel Color="0.3,0.4,0.8,1">
+				<MyText Value="Double-Tap shrinks"/>
+				<DoubleTapped>
+					<Scale Factor="0" Duration="0.5"/>
+				</DoubleTapped>
+			</MyPanel>
+			
+		</StackPanel>
+	</ScrollView>
+</Page>

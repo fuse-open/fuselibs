@@ -1,0 +1,16 @@
+<Panel ux:Class="UX.NodeGroup.Variant1063">
+	<Panel ux:Name="A">
+		<NodeGroup ux:Name="outerPanel" IsActive="true">
+			<DockPanel ux:Name="B">
+				<Text Dock="Top" Value="Outer Panel"/>
+				<NodeGroup ux:Name="innerPanel" IsActive="true">
+					<Text Alignment="TopLeft" Value="The Child in Question" ux:Name="C">
+						<RemovingAnimation>
+							<Move X="100" Duration="1"/>
+						</RemovingAnimation>
+					</Text>
+				</NodeGroup>
+			</DockPanel>
+		</NodeGroup>
+	</Panel>
+</Panel>

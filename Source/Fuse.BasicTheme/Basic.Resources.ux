@@ -1,0 +1,19 @@
+<Panel ux:Class="Basic.Resources">
+	<Font ux:Global="RobotoRegular" File="Fonts/Roboto-Regular.ttf" />
+	<Font ux:Global="RobotoLight" File="Fonts/Roboto-Light.ttf" />
+	<Font ux:Global="RobotoMedium" File="Fonts/Roboto-Medium.ttf" />
+	<float4 ux:Global="Basic.CLine" ux:Value="#ccc"/>
+	<float4 ux:Global="Basic.CFillFore" ux:Value="#fff"/>
+	<float4 ux:Global="Basic.CEmptyFore" ux:Value="#000"/>
+	<float4 ux:Global="Basic.CShadow" ux:Value="#0003"/>
+	<float4 ux:Global="Basic.C50" ux:Value="#E3F2FD" />
+	<float4 ux:Global="Basic.C100" ux:Value="#BBDEFB" />
+	<float4 ux:Global="Basic.C200" ux:Value="#90CAF9" />
+	<float4 ux:Global="Basic.C300" ux:Value="#64B5F6" />
+	<float4 ux:Global="Basic.C400" ux:Value="#42A5F5" />
+	<float4 ux:Global="Basic.C500" ux:Value="#2196F3" />
+	<float4 ux:Global="Basic.C600" ux:Value="#1E88E5" />
+	<float4 ux:Global="Basic.C700" ux:Value="#1976D2" />
+	<float4 ux:Global="Basic.C800" ux:Value="#1565C0" />
+	<float4 ux:Global="Basic.C900" ux:Value="#0D47A1" />
+</Panel>

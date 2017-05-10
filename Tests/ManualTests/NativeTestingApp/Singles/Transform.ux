@@ -1,0 +1,32 @@
+<Page ux:Class="TransformPage" Title="Transforms">
+	<InfoStack ux:Key="Info">
+		<p>This page tests element transforms.</p>
+		<ul>
+			<p>The owl has correct proportions, is spinning, and scaling slowly up/down in size.</p>
+			<p>The rule at the bottom has a fixed height and stretches to touch the edges and shrinks back
+			to half that size. It moves up/down within the colored region.</p>
+		</ul>
+	</InfoStack>
+	
+	<!-- https://pixabay.com/en/owl-animal-bird-bowler-chaplin-158410/-->
+	<Image File="../Assets/owl.png" Alignment="Center" MaxWidth="50%" MaxHeight="50%">
+		<Scaling ux:Name="TheScale"/>
+		<WhileVisible>
+			<Spin/>
+			<Cycle Target="TheScale.Factor" Low="0.5" High="1.2" Frequency="0.2"/>
+		</WhileVisible>
+	</Image>
+	
+	<!-- https://pixabay.com/en/inch-ruler-measurement-centimeter-33825/	 -->
+	<Image File="../Assets/ruler.png" Alignment="Bottom" StretchMode="Fill" Height="50">
+		<Scaling ux:Name="TheStretch"/>
+		<Translation ux:Name="TheTrans"/>
+		<WhileVisible>
+			<Cycle Target="TheStretch.X" Low="0.5" High="1" Frequency="0.2"/>
+			<Cycle Target="TheTrans.Y" Low="-50" High="0" Frequency="0.3"/>
+		</WhileVisible>
+	</Image>
+	
+	<Panel Background="#AFA" Alignment="Bottom" Height="100"/>
+	
+</Page>

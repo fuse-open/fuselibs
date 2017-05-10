@@ -1,0 +1,11 @@
+<Panel ux:Class="UX.Shape.LoadingResource">
+	<WhileBusy ux:Name="WB">
+		<Nothing/>
+	</WhileBusy>
+	<Rectangle>
+		<WhileLoading ux:Name="WL">
+			<Nothing/>
+		</WhileLoading>
+		<FuseTest.LoadingBrush ux:Name="LB"/>
+	</Rectangle>
+</Panel>

@@ -1,0 +1,15 @@
+<Panel ux:Class="UX.VisualMarginDockPanel">
+	<Fuse.Test.TestDockPanel ux:Name="D1">
+		<Fuse.Test.TestPanel Height="50" Dock="Bottom" ux:Name="P1"/>
+		<Fuse.Test.TestPanel ux:Name="P2"/>
+	</Fuse.Test.TestDockPanel>
+	
+	<Fuse.Test.TestPanel ux:Name="P6">
+		<Fuse.Test.TestDockPanel ux:Name="D2">
+			<Fuse.Test.TestPanel Width="50" Dock="Left" ux:Name="P3"/>
+			<Fuse.Test.TestPanel Width="50" Dock="Left" ux:Name="P7"/>
+			<Fuse.Test.TestPanel Width="50" Dock="Right" ux:Name="P4"/>
+			<Fuse.Test.TestPanel ux:Name="P5"/>
+		</Fuse.Test.TestDockPanel>
+	</Fuse.Test.TestPanel>
+</Panel>

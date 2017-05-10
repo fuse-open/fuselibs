@@ -1,0 +1,19 @@
+{
+  "Copyright": "Copyright (c) Fusetools AS 2017",
+  "Description": "Allows marshalling and arithmetic between boxed value types",
+  "Publisher": "Fusetools AS",
+  "Version": "1.0.0",
+  "Package": {
+    "ProjectUrl": "https://fusetools.com"
+  },
+  "Packages": [
+    "Uno.Collections",
+    "UnoCore"
+  ],
+  "Projects": [
+  	"../Fuse.Common/Fuse.Common.unoproj"
+  ],
+  "Includes": [
+    "*"
+  ]
+}

@@ -1,0 +1,22 @@
+<Panel ux:Class="UX.UserEventArgs">
+	<JavaScript>
+	var Observable = require("FuseJS/Observable");
+	var resultText = Observable("Not Triggered");
+
+	module.exports = {
+		eventHandler: function(args) { resultText.value = args.Argument; },
+		resultText: resultText
+	};
+	</JavaScript>
+
+	<UserEvent Name="TestEvent" />
+	<OnUserEvent EventName="TestEvent" Handler="{eventHandler}" />
+
+	<WhileTrue ux:Name="Trigger">
+		<RaiseUserEvent EventName="TestEvent">
+			<UserEventArg Name="Argument" StringValue="Triggered" />
+		</RaiseUserEvent>
+	</WhileTrue>
+
+	<Text ux:Name="ResultText" Value="{resultText}" />
+</Panel>

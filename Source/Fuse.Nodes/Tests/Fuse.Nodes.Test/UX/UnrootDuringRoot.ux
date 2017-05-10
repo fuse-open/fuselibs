@@ -1,0 +1,10 @@
+<Panel ux:Class="UX.UnrootDuringRoot">
+	<!-- Unlike the similar paradox test, this one actually has a stable state -->
+	<WhileTrue Value="true" ux:Name="B1">
+		<Panel ux:Name="P2">
+			<WhileTrue Value="true" ux:Name="B2" Bypass="Never">
+				<Set B1.Value="false"/>
+			</WhileTrue>
+		</Panel>
+	</WhileTrue>
+</Panel>

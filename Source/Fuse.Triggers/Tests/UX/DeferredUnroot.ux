@@ -1,0 +1,12 @@
+<Panel ux:Class="UX.DeferredUnroot">
+	<Deferred ux:Name="D1">
+		<Panel ux:Name="P1"/>
+		<Panel ux:Name="P2"/>
+	</Deferred>
+	
+	<Deferred ux:Name="D2"/>
+	
+	<Deferred ux:Name="D3">
+		<Panel ux:Name="P3"/>
+	</Deferred>
+</Panel>

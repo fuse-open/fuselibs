@@ -1,0 +1,7 @@
+<Panel ux:Class="UX.Swipe.GestureSignificance2" HitTestMode="LocalBoundsAndChildren">
+	<SwipeGesture Edge="Bottom" Length="100" ux:Name="SG"/>
+	<ScrollView>
+		<SwipeGesture Direction="Up" Length="100" ux:Name="SU"/>
+		<Panel Height="1000" HitTestMode="LocalBounds"/>
+	</ScrollView>
+</Panel>

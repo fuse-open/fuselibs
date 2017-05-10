@@ -1,0 +1,27 @@
+<Extensions Backend="CPlusPlus" Condition="Android">
+    <ProcessFile Name="LocalNotificationReceiver.java" TargetName="@(Java.SourceDirectory)/com/fuse/LocalNotifications/LocalNotificationReceiver.java" />
+    <Require AndroidManifest.ApplicationElement><![CDATA[
+        <receiver android:name="com.fuse.LocalNotifications.LocalNotificationReceiver">
+            <intent-filter>
+                <action android:name="android.media.action.DISPLAY_NOTIFICATION" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
+    ]]></Require>
+
+    <!-- http://iconhandbook.co.uk/reference/chart/android/ -->
+    <!-- pixplicity.com/dp-px-converter/ -->
+    <!-- https://material.google.com/style/icons.html -->
+    <ImageFile Name="@(Project.Android.NotificationIcon.LDPI:Path || Project.Android.Icons.LDPI:Path || '@//Android/Assets/DefaultIcon.png')"
+               TargetWidth="36" TargetName="app/src/main/res/mipmap-ldpi/notif.png" />
+    <ImageFile Name="@(Project.Android.NotificationIcon.MDPI:Path || Project.Android.Icons.MDPI:Path || '@//Android/Assets/DefaultIcon.png')"
+               TargetWidth="48" TargetName="app/src/main/res/mipmap-mdpi/notif.png" />
+    <ImageFile Name="@(Project.Android.NotificationIcon.HDPI:Path || Project.Android.Icons.HDPI:Path || '@//Android/Assets/DefaultIcon.png')"
+               TargetWidth="72" TargetName="app/src/main/res/mipmap-hdpi/notif.png" />
+    <ImageFile Name="@(Project.Android.NotificationIcon.XHDPI:Path || Project.Android.Icons.XHDPI:Path || '@//Android/Assets/DefaultIcon.png')"
+               TargetWidth="96" TargetName="app/src/main/res/mipmap-xhdpi/notif.png" />
+    <ImageFile Name="@(Project.Android.NotificationIcon.XXHDPI:Path || Project.Android.Icons.XXHDPI:Path || '@//Android/Assets/DefaultIcon.png')"
+               TargetWidth="144" TargetName="app/src/main/res/mipmap-xxhdpi/notif.png" />
+    <ImageFile Name="@(Project.Android.NotificationIcon.XXXHDPI:Path || Project.Android.Icons.XXXHDPI:Path || '@//Android/Assets/DefaultIcon.png')"
+               TargetWidth="192" TargetName="app/src/main/res/mipmap-xxxhdpi/notif.png" />
+</Extensions>

@@ -1,0 +1,19 @@
+<Panel ux:Class="UX.Swipe.GesturePriority" HitTestMode="LocalBoundsAndChildren">
+	<SwipeGesture GesturePriority="Lowest" Direction="Up" Length="100" ux:Name="SUp"/>
+	<Swiped Source="SUp">
+		<FuseTest.CountAction ux:Name="CUp"/>
+	</Swiped>
+
+	<SwipeGesture GesturePriority="Highest" Direction="Down" Length="100" ux:Name="SDown"/>
+	<Swiped Source="SDown">
+		<FuseTest.CountAction ux:Name="CDown"/>
+	</Swiped>
+	
+	<Grid ColumnCount="2">
+		<Panel HitTestMode="LocalBounds"/>
+		
+		<ScrollView ux:Name="SV">
+			<Panel Height="2000" HitTestMode="LocalBounds"/>
+		</ScrollView>
+	</Grid>
+</Panel>

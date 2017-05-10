@@ -1,0 +1,9 @@
+<Panel ux:Class="UX.ColumnLayout2">
+	<ColumnLayout ColumnCount="4" Orientation="Horizontal"/>
+	<Panel Width="100" ux:Name="P1"/>
+	<Panel Width="100" ux:Name="P2"/>
+	<Panel Width="100" ux:Name="P3"/>
+	<Panel Width="90" ux:Name="P4"/>
+	<Panel Width="100" ux:Name="P5"/>
+	<Panel Width="100" ux:Name="P6"/>
+</Panel>

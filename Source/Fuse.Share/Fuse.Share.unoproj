@@ -1,0 +1,17 @@
+{
+  "Copyright": "Copyright (c) Fusetools AS 2017",
+  "Description": "Content sharing API",
+  "Publisher": "Fusetools AS",
+  "Version": "1.0.0",
+  "Packages": [
+    "Uno.Threading",
+    "Android.ActivityUtils",
+    "Uno.Permissions",
+  ],
+  "Projects": [
+    "../Fuse.Scripting/Fuse.Scripting.unoproj"
+  ],
+  "Includes": [
+    "*"
+  ]
+}

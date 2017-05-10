@@ -1,0 +1,53 @@
+<Page Title="Pixel Alignment" ux:Class="PixelAlignment">
+	<InfoStack ux:Key="Info">
+		<p>There should be no gaps between the boxes below and the outer borders should all be aligned. The display should be perfectly sharp, to the pixel level, without any blurriness at the edges. The inner borders should not overlap, they are twice the size of the outer borders (equal size of each color). You can scroll the display and the pixel crispness should remain.</p>
+		
+		<p>In apps that work on devices on various screen sizes, it is important for lines to be able to be exactly on pixels, and not slightly off, as they will appear blurry. As an example, see below, where the left example is incorrect, and the right one is correct.</p>
+		<Image File="align_example.png"/>
+		<p>Please verify that the lines are not blurry, and that they conform to the description in the part. This should be true even when you move the squares around on the page.</p>
+		<p>It is expected that the physical size of the graphics on this page differ on each device as they are using an exact pixel layout, and different size graphics for different densities.</p>
+	</InfoStack>
+	<DockPanel>
+		<ScrollView AllowedScrollDirections="Both">
+			<Panel Width="2000" Height="2000" Alignment="Center">
+				<Grid Alignment="Center" Rows="auto,auto" Columns="auto,auto">
+					<Image StretchMode="PixelPrecise">
+						<MultiDensityImageSource>
+							<FileImageSource Density="0.5" File="black@0.5x.png" />
+							<FileImageSource Density="1" File="black@1x.png" />
+							<FileImageSource Density="2" File="black@2x.png" />
+							<FileImageSource Density="4" File="black@4x.png" />
+						</MultiDensityImageSource>
+					</Image>
+					
+					<Image StretchMode="PixelPrecise">
+						<MultiDensityImageSource>
+							<FileImageSource Density="0.5" File="red@0.5x.png" />
+							<FileImageSource Density="1" File="red@1x.png" />
+							<FileImageSource Density="2" File="red@2x.png" />
+							<FileImageSource Density="4" File="red@4x.png" />
+						</MultiDensityImageSource>
+					</Image>
+					
+					<Image StretchMode="PixelPrecise">
+						<MultiDensityImageSource>
+							<FileImageSource Density="0.5" File="blue@0.5x.png" />
+							<FileImageSource Density="1" File="blue@1x.png" />
+							<FileImageSource Density="2" File="blue@2x.png" />
+							<FileImageSource Density="4" File="blue@4x.png" />
+						</MultiDensityImageSource>
+					</Image>
+					
+					<Image StretchMode="PixelPrecise">
+						<MultiDensityImageSource>
+							<FileImageSource Density="0.5" File="green@0.5x.png" />
+							<FileImageSource Density="1" File="green@1x.png" />
+							<FileImageSource Density="2" File="green@2x.png" />
+							<FileImageSource Density="4" File="green@4x.png" />
+						</MultiDensityImageSource>
+					</Image>
+				</Grid>
+			</Panel>
+		</ScrollView>
+	</DockPanel>
+</Page>

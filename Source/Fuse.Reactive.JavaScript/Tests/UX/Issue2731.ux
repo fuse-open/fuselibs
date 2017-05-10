@@ -1,0 +1,11 @@
+<Panel ux:Class="UX.Issue2731">
+	<JavaScript>
+		var Observable = require("FuseJS/Observable");
+		module.exports = { color: Observable("#FF00FF") };
+	</JavaScript>
+
+	<Circle ux:Name="circle" Color="{color}"/>
+	<WhileTrue Value="true" Bypass="Never">
+		<Change circle.Color="#000000" Delay="0.0" Duration="0.05"/>
+	</WhileTrue>
+</Panel>

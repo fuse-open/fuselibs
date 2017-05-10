@@ -1,0 +1,9 @@
+<Panel ux:Class="UX.Expression.Property">
+	<Translation Y="0 - {Property S1.Value}" ux:Name="T1"/>
+	<Slider ux:Name="S1" Minimum="0" Maximum="100"/>
+	
+	<Translation Y="0 - {Property S2.Progress}" ux:Name="T2"/>
+	<Timeline ux:Name="S2">
+		<Nothing Duration="1"/>
+	</Timeline>
+</Panel>

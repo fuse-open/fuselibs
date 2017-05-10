@@ -1,0 +1,22 @@
+<Panel ux:Class="UX.Issue2680">
+    <Grid Columns="auto,1*" Alignment="Center" Color="#ccc" Width="300" ux:Name="G">
+        <Panel Width="100" Color="Blue"/>
+        <WrapPanel Orientation="Horizontal">
+            <Panel Height="20" Width="100" Color="#080"/>
+            <Panel Height="20" Width="100" Color="#880"/>
+            <Panel Height="20" Width="100" Color="#880"/>
+            <Panel Height="20" Width="100" Color="#080"/>
+        </WrapPanel>
+    </Grid>
+    
+    <Grid Columns="auto,1*" Alignment="Center" Color="#ccc" MaxWidth="300" ux:Name="H">
+        <Panel Width="100" Color="Blue"/>
+        <WrapPanel Orientation="Horizontal">
+            <Panel Height="20" Width="100" Color="#080"/>
+            <Panel Height="20" Width="100" Color="#880"/>
+            <Panel Height="20" Width="100" Color="#880"/>
+            <Panel Height="20" Width="100" Color="#080"/>
+        </WrapPanel>
+    </Grid>
+    
+</Panel>

@@ -1,0 +1,24 @@
+{
+  "Copyright": "Copyright (c) Fusetools AS 2017",
+  "Description": "Native Location",
+  "Publisher": "Fusetools AS",
+  "Version": "1.0.0",
+  "Package": {
+    "ProjectUrl": "https://fusetools.com"
+  },
+  "Packages": [
+    "Uno.Collections",
+    "Uno.Threading",
+    "Uno.Permissions",
+    "Fuse.Common",
+    "Fuse.Marshal",
+    "Fuse.Scripting",
+    "Fuse.iOS.LocationPermissions"
+  ],
+  "Includes": [
+    "Android/UpdateListener.java:Java:Android",
+    "iOS/LocationManagerDelegate.h:ObjCHeader:iOS",
+    "iOS/LocationManagerDelegate.mm:ObjCSource:iOS",
+    "*"
+  ]
+}

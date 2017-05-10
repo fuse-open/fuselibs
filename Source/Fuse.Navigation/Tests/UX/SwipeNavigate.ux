@@ -1,0 +1,9 @@
+<Panel ux:Class="UX.SwipeNavigate" HitTestMode="LocalBounds">
+	<LinearNavigation ux:Name="Nav" Active="P3"/>
+	<SwipeNavigate ux:Name="Swipe"/>
+	<Page ux:Name="P1"/>
+	<Page ux:Name="P2"/>
+	<Page ux:Name="P3"/>
+	<Page ux:Name="P4"/>
+	<Page ux:Name="P5"/>
+</Panel>

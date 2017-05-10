@@ -1,0 +1,4 @@
+<Panel ux:Class="UX.Expression.PropertyTriggerProgress">
+	<Translation Y="0 + {ReadProperty S3.Progress}" ux:Name="T3"/>
+	<WhileTrue ux:Name="S3"/>
+</Panel>

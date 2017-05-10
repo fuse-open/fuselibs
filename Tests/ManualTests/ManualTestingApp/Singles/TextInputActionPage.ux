@@ -1,0 +1,96 @@
+<Page ux:Class="TextInputActionPage" Title="TextInputAction" Count="3">
+	<float ux:Property="Count"/>
+	<InfoStack ux:Key="Info">
+		<p>This tests the action feature of a TextInput and some aspects of Focus.</p>
+		<ul>
+			<li>Tap on the edit field to start editing.</li>
+			<li>Each time enter is pressed the string is added to the bottom list and the text input cleared.</li>
+			<li>When the remaining count hits 0 the text input loses focus and the phrase "Enough added" appears.</li>
+			<li>While the text input has focus the little circle is green.</li>
+			<li>The keyboard (mobile) should not disappear until the remaining count hits 0.</li>
+			<li>The keyboard (mobile) should have a "Search" key as its action.</li>
+		</ul>
+	</InfoStack>
+	<DockPanel>
+		<JavaScript>
+			var Observable = require("FuseJS/Observable")
+			
+			var items = Observable()
+			var listValue = Observable("")
+			
+			var listed = function(a,b) {
+				//should check the action type here, but it's not exported yet
+				items.add( { text: listValue.value } )
+				listValue.value = ""
+			}
+			
+			module.exports = {
+				items: items,
+				listValue: listValue,
+				listed: listed,
+				language: Observable({
+					remaining: "Remaining:",
+					enough: "Enough added",
+				}),
+				countStr: this.Count.map(function(x) {
+					return x.toFixed(0)
+				})
+			}
+		</JavaScript>
+
+		<TextInput ux:Class="CustomTextInput"
+			Padding="5,2,5,2"
+			FontSize="22"
+			Font="PlatformDefault">
+			<Rectangle Layer="Background" CornerRadius="5">
+				<SolidColor Color="1,1,1,1"/>
+				<Stroke Width="1"><SolidColor Color="0.5,0.5,0.5,1"/></Stroke>
+			</Rectangle>
+
+			<Circle Dock="Left" Width="20" Margin="0,0,5,0">
+				<SolidColor Color="1,0.6,0.6,1" ux:Name="CircleColor"/>
+				<Stroke Width="1" Alignment="Inside">	
+					<SolidColor Color="0.5,0.3,0.3,0" ux:Name="StrokeColor"/>
+				</Stroke>
+			</Circle>
+			
+			<WhileContainsText>
+				<Change StrokeColor.Color="0.5,0.3,0.3,1"/>
+			</WhileContainsText>
+			
+			<WhileFocusWithin>
+				<Change CircleColor.Color="0.6,1,0.6,1" Duration="0.2"/>
+			</WhileFocusWithin>
+		</TextInput>
+
+		<Panel Background="#DDE" Dock="Top" Padding="5">
+			<CustomTextInput ux:Name="TheList" Value="{listValue}" ActionTriggered="{listed}"
+				ActionStyle="Search">
+				<TextInputActionTriggered>
+					<Set Target="this.Count" Increment="-1"/>
+				</TextInputActionTriggered>
+			</CustomTextInput>
+		</Panel>
+		
+		<StackPanel Orientation="Horizontal" Dock="Top" Background="#DDF">
+			<Text Value="{language.remaining}"/>
+			<Text Value="{countStr}"/>
+			<WhileFloat Value="{Property this.Count}" LessThanEqual="0">
+				<ReleaseFocus/>
+			</WhileFloat>
+			<WhileCount Items="{items}" GreaterThan="2">
+				<Panel>
+					<With Data="{language}">
+						<Text Margin="10,0,0,0" Value="{enough}"/>
+					</With>
+				</Panel>
+			</WhileCount>
+		</StackPanel>
+		
+		<StackPanel>
+			<Each Items="{items}">
+				<Text Value="{text}"/>
+			</Each>
+		</StackPanel>
+	</DockPanel>
+</Page>

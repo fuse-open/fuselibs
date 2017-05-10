@@ -1,0 +1,25 @@
+<Panel ux:Class="UX.HierNavBinding">
+	<PageIndicator Navigation="Outer" ux:Name="I2">
+		<Panel ux:Template="Dot" Width="10" ux:Name="self"
+			Height="10" X="10">
+			<!-- multiple triggers were messing with the list management in NavigationPageProperty, concurrent modification -->
+			<WhileActive>
+				<Change self.Width="20"/>
+			</WhileActive>
+			<WhileInEnterState>
+				<Change self.Height="20"/>
+			</WhileInEnterState>
+			<WhileInExitState>
+				<Change self.X="20"/>
+			</WhileInExitState>
+		</Panel>
+	</PageIndicator>
+	
+	<Panel>
+		<HierarchicalNavigation ux:Name="Outer" Active="P1"/>
+		
+		<Page Title="One" ux:Name="P1"/>
+		<Page Title="Two" ux:Name="P2" ux:AutoBind="false"/>
+		<Page Title="Three" ux:Name="P3" ux:AutoBind="false"/>
+	</Panel>
+</Panel>

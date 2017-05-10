@@ -1,0 +1,9 @@
+<Panel ux:Class="UX.Page.Title">
+	<Page ux:Class="PageWithTitle" ux:Name="self" >
+		<Text ux:Name="TitleText" Value="{Property self.Title}" />
+	</Page>
+
+	<PageControl>
+		<PageWithTitle ux:Name="Page" />
+	</PageControl>
+</Panel>

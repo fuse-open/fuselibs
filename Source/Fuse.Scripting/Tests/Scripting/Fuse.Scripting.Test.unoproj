@@ -1,0 +1,14 @@
+{
+  "Packages": [
+    "Fuse.Common",
+    "Fuse.Nodes",
+    "Fuse.Reactive",
+    "Fuse.Reactive.JavaScript",
+    "Fuse.Scripting",
+    "Uno.Collections",
+    "Uno.Testing",
+  ],
+  "Includes": [
+    "*"
+  ]
+}

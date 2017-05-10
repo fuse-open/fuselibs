@@ -1,0 +1,27 @@
+<Panel ux:Class="UX.MaxSizing">
+	<!-- rely on Image aspect sizing to help test -->
+
+	<Image File="../Assets/200x100.png" MaxWidth="100" Alignment="Center" ux:Name="E1"/>
+	
+	<Panel MaxHeight="80" Alignment="Center">
+		<Image File="../Assets/200x100.png" Alignment="Center" ux:Name="E2"/>
+	</Panel>
+	
+	<Panel MaxWidth="100" MaxHeight="50" Alignment="Center">
+		<Image File="../Assets/200x100.png" Width="200" ux:Name="E3"/>
+		<Image File="../Assets/200x100.png" Width="200" Height="100" ux:Name="E4"/>
+	</Panel>
+	
+	<Panel MaxHeight="60" Alignment="Center" Padding="5">
+		<Image File="../Assets/200x100.png" ux:Name="P1"/>
+	</Panel>
+	<Panel MaxHeight="60" Alignment="Center">
+		<Image File="../Assets/200x100.png" ux:Name="P2" Margin="5"/>
+	</Panel>
+	
+	<Panel MaxWidth="120" Padding="5" Alignment="Center">
+		<Panel Margin="5">
+			<Image File="../Assets/200x100.png" ux:Name="P3"/>
+		</Panel>
+	</Panel>
+</Panel>

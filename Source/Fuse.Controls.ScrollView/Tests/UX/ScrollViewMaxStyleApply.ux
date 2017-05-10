@@ -1,0 +1,19 @@
+<Panel ux:Class="UX.ScrollViewMaxStyleApply">
+	<ScrollView>
+		<StackPanel Alignment="Center" ux:Name="sp1">
+			<Rectangle Width="1000" Height="1000"/>
+		</StackPanel>
+	</ScrollView>
+
+	<ScrollView AllowedScrollDirections="Horizontal">
+		<StackPanel Alignment="Center" ux:Name="sp2" Orientation="Horizontal">
+			<Rectangle Width="1000" Height="1000"/>
+		</StackPanel>
+	</ScrollView>
+
+	<ScrollView AllowedScrollDirections="Both">
+		<StackPanel Alignment="Center" ux:Name="sp3">
+			<Rectangle Width="1000" Height="1000"/>
+		</StackPanel>
+	</ScrollView>
+</Panel>

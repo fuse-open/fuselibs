@@ -1,0 +1,45 @@
+<Page ux:Class="DataBindingPage" Title="Data Binding">
+	<InfoStack ux:Key="Info">
+		<p>This page tests the binding of data between controls.</p>
+		<p>There are three columns:</p>
+		<ul>
+			<li>The active control. Manipulate this control.</li>
+			<li>The textual feedback showing the controls value.</li>
+			<li>Another control matching the first, but is not modifiable directly.</li>
+		</ul>
+	</InfoStack>
+	<JavaScript>
+		var Observable = require("FuseJS/Observable")
+		
+		var switchValue = Observable(false)
+		
+		module.exports = {	
+			sliderValue: Observable(0),
+			switchValue: switchValue,
+			switchText: Observable(function() {
+				return switchValue.value ? "true ✓" : "false ✗"
+			}),
+			textValue: Observable("☺ Smile"),
+		}
+	</JavaScript>
+	<Text ux:Class="DBPHeader" Grid.ColumnSpan="3" Background="#aaa" TextColor="#000"
+		Margin="0,5,0,0" Padding="3" Alignment="Default"/>
+	<Grid ColumnCount="3" DefaultRow="auto">
+		<Text ux:Class="CenterText2" Alignment="Center"/>
+	
+		<DBPHeader Value="Slider"/>
+		<Slider Value="{sliderValue}"/>
+		<CenterText2 Value="{sliderValue}"/>
+		<Slider Value="{sliderValue}" IsEnabled="false"/>
+		
+		<DBPHeader Value="Switch"/>
+		<Switch Value="{switchValue}"/>
+		<CenterText2 Value="{switchText}"/>
+		<Switch Value="{switchValue}" IsEnabled="false"/>
+		
+		<DBPHeader Value="TextInput"/>
+		<TextInput Value="{textValue}"/>
+		<CenterText2 Value="{textValue}"/>
+		<TextInput Value="{textValue}" IsEnabled="false"/>
+	</Grid>
+</Page>

@@ -1,0 +1,28 @@
+<Panel ux:Class="UX.Timeline.JS">
+	<JavaScript>
+		module.exports = {
+			pause: function() { T.pause() },
+			pulse: function() { T.pulse() },
+			pulseForward: function() { T.pulseForward() },
+			pulseBackward: function() { T.pulseBackward() },
+			play: function() { T.play() },
+			playTo5: function() { T.playTo(0.5) },
+			resume: function() { T.resume() },
+			seek5: function() { T.seek(0.5) },
+			stop: function() { T.stop() },
+		}
+	</JavaScript>
+	<FuseTest.Invoke Handler="{pause}" ux:Name="Pause"/>
+	<FuseTest.Invoke Handler="{pulse}" ux:Name="Pulse"/>
+	<FuseTest.Invoke Handler="{pulseForward}" ux:Name="PulseForward"/>
+	<FuseTest.Invoke Handler="{pulseBackward}" ux:Name="PulseBackward"/>
+	<FuseTest.Invoke Handler="{play}" ux:Name="Play"/>
+	<FuseTest.Invoke Handler="{playTo5}" ux:Name="PlayTo5"/>
+	<FuseTest.Invoke Handler="{resume}" ux:Name="Resume"/>
+	<FuseTest.Invoke Handler="{seek5}" ux:Name="Seek5"/>
+	<FuseTest.Invoke Handler="{stop}" ux:Name="Stop"/>
+	
+	<Timeline ux:Name="T">
+		<Nothing Duration="5" ux:Name="N"/>
+	</Timeline>
+</Panel>

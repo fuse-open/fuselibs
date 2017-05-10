@@ -1,0 +1,5 @@
+<Panel ux:Class="StackPanelScene17" xmlns:l="Fuse.Layouts">
+  <StackPanel Orientation="Horizontal" ux:Name="StackPanel1">
+    <Image StretchMode="PointPrecise" ux:Name="Image1" Width="60" Height="20" File="Assets/derp.jpg" />
+  </StackPanel>
+</Panel>

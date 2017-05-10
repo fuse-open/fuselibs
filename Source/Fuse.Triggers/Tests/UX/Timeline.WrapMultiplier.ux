@@ -1,0 +1,17 @@
+<Panel ux:Class="UX.Timeline.WrapMultiplier">
+	<Timeline PlayMode="Wrap" TimeMultiplier="0.9" ux:Name="T1">
+		<Nothing Duration="1"/>
+	</Timeline>
+	
+	<Timeline PlayMode="Wrap" TimeMultiplier="1.3" InitialProgress="0.5" ux:Name="T2">
+		<Nothing Duration="1.7" ux:Name="N2"/>
+	</Timeline>
+	
+	<Timeline ux:Name="T3" PlayMode="Wrap" TimeMultiplier="0.7" TargetProgress="0" InitialProgress="1">
+		<Nothing Duration="1"/>
+	</Timeline>
+	
+	<Timeline ux:Name="T4" PlayMode="Wrap" TimeMultiplier="1.7" TargetProgress="0" InitialProgress="0.7">
+		<Nothing Duration="1.5" ux:Name="N4"/>
+	</Timeline>
+</Panel>

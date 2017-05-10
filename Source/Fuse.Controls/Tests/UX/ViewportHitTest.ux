@@ -1,0 +1,54 @@
+<Panel ux:Class="UX.ViewportHitTest">
+	<Panel ux:Class="ClickPanel" Margin="5" ux:Name="self">
+		<WhileHovering>
+			<Change self.Color="#FAA"/>
+		</WhileHovering>
+		<Clicked>
+			<Change self.Color="#00F" Duration="0" DurationBack="0.5"/>
+		</Clicked>
+	</Panel>
+	
+	<Grid ux:Class="RepeatGrid" ColumnCount="2" Color="#FFF8"  Margin="50" CellSpacing="25">
+		<ClickPanel ux:Name="A" Color="0,0,1,1" />
+		<Viewport>
+			<ClickPanel ux:Name="B" Color="0,1,0,1"/>
+		</Viewport>
+		<ClickPanel ux:Name="C" Color="0,1,1,1">
+			<Translation Z="-200"/>
+		</ClickPanel>
+		<Viewport Perspective="200">
+			<Panel>
+				<ClickPanel ux:Name="D" Color="1,0,0,1">
+					<Rotation DegreesX="45"/>
+				</ClickPanel>
+			</Panel>
+		</Viewport>
+	</Grid>
+	
+	<Grid ColumnCount="2" Alignment="TopLeft" Width="1000" Height="800" Color="#008"
+		SnapToPixels="false" CellSpacing="25">
+		<RepeatGrid ux:Name="Q"/>
+		
+		<Viewport Perspective="500">
+			<RepeatGrid ux:Name="R"/>
+		</Viewport>
+		
+		<Panel>
+			<Viewport Perspective="600">
+				<RepeatGrid ux:Name="S">
+					<Translation Z="200"/>
+					<Shear DegreesX="20"/>
+					<Rotation DegreesX="30"/>
+				</RepeatGrid>
+			</Viewport>
+		</Panel>
+		
+		<Panel>
+ 			<Viewport Perspective="500" Mode="Disabled">
+				<RepeatGrid ux:Name="T">
+					<Translation Z="-200"/>
+				</RepeatGrid>
+			</Viewport>
+		</Panel>
+	</Grid>
+</Panel>

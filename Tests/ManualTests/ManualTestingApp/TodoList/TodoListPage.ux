@@ -1,0 +1,68 @@
+<Page Title="Todo List" ux:Class="TodoListPage">
+	<InfoStack ux:Key="Info">
+		<p>This page tests some JavaScript list features as well as node relative animators.</p>
+		<ul>
+			<li>Click 'Add' button 5 times.</li>
+			<li>Each item is added with an animation from the add button to its place in the list.</li>
+			<li>A 'Clear' button appears. Click this to remove all items.</li> 
+			<li>The items are moved and shrunk to be placed in the trash icon.</li>
+		</ul>
+	</InfoStack>
+	<JavaScript File="MainView.js" />
+	
+	<StackPanel Orientation="Horizontal" ux:Class="TodoButton" Margin="5" Padding="3">
+		<Rectangle Fill="#F888" Layer="Background" CornerRadius="10">
+		</Rectangle>
+	</StackPanel>
+	
+	<Panel ClipToBounds="true">
+		<TodoButton Alignment="BottomLeft" ux:Name="theTrash">
+			<Image File="../Assets/small_icons_27/trash.png" Color="#880" Margin="5" Width="30"/>
+		</TodoButton>
+		<Panel Alignment="BottomRight">
+			<TodoButton Alignment="BottomRight" Clicked="{addItem}" ux:Name="addItem" >
+				<Image File="../Assets/small_icons_27/plus#1.png" Color="#080" 
+					Margin="5" Alignment="Left" Width="30"/>
+				<Text Alignment="Center" FontSize="24">Add</Text>
+			</TodoButton>
+			<TodoButton Alignment="BottomRight" Clicked="{deleteAllItems}" ux:Name="deleteAllItems">
+				<Image File="../Assets/small_icons_27/cancel.png" Color="#800" 
+					Margin="5" Alignment="Left" Width="30"/>
+				<Text Alignment="Center" FontSize="24">Clear</Text>
+			</TodoButton>
+			<WhileTrue Value="{isRemoveAllVisible}">
+				<Change Target="addItem.IsEnabled" Value="false"/>
+				<Change Target="addItem.Visibility" Value="Hidden" Delay="0"/>
+			</WhileTrue>
+			<WhileFalse Value="{isRemoveAllVisible}">
+				<Change Target="deleteAllItems.IsEnabled" Value="false"/>
+				<Change Target="deleteAllItems.Visibility" Value="Hidden" Delay="0"/>
+			</WhileFalse>
+		</Panel>
+		
+		<ScrollView ClipToBounds="false">
+			<StackPanel>
+				<Each Items="{todoList}">
+					<Panel Margin="5" Padding="10">
+						<Rectangle Layer="Background" CornerRadius="5" Fill="#DDF8">
+							<Stroke Width="1"><SolidColor Color="#448"/></Stroke>
+						</Rectangle>
+						<Text Value="{title}" TextAlignment="Center" FontSize="30"/>
+						<AddingAnimation>
+							<Move RelativeTo="TransformOriginOffset" Vector="1" RelativeNode="addItem"
+								Duration="0.5" Easing="SinusoidalInOut" />
+							<Scale RelativeTo="SizeFactor" Vector="1" RelativeNode="addItem"
+								Duration="0.5" Easing="SinusoidalInOut" />
+						</AddingAnimation>
+						<RemovingAnimation>
+							<Move RelativeTo="TransformOriginOffset" Vector="1" RelativeNode="theTrash"
+								Duration="0.5" Easing="SinusoidalInOut" />
+							<Scale RelativeTo="SizeFactor" Vector="1" RelativeNode="theTrash"
+								Duration="0.5" Easing="SinusoidalInOut" />
+						</RemovingAnimation>
+					</Panel>
+				</Each>
+			</StackPanel>
+		</ScrollView>
+	</Panel>
+</Page>

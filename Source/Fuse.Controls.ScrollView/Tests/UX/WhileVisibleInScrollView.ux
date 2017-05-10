@@ -1,0 +1,23 @@
+<Panel ux:Class="UX.WhileVisibleInScrollView.Basic">
+	<Panel ux:Class="WISV" Height="50">
+		<WhileVisibleInScrollView ux:Name="V1">
+			<Nothing/>
+		</WhileVisibleInScrollView>
+		<WhileVisibleInScrollView ux:Name="V2" Distance="50">
+			<Nothing/>
+		</WhileVisibleInScrollView>
+		<WhileVisibleInScrollView ux:Name="V3" Distance="1" RelativeTo="ScrollViewSize">
+			<Nothing/>
+		</WhileVisibleInScrollView>
+	</Panel>
+	
+	<ScrollView ux:Name="S">
+		<StackPanel>
+			<WISV ux:Name="W1"/>
+			<WISV ux:Name="W2"/>
+			<WISV ux:Name="W3"/>
+			<WISV ux:Name="W4"/>
+			<WISV ux:Name="W5"/>
+		</StackPanel>
+	</ScrollView>
+</Panel>

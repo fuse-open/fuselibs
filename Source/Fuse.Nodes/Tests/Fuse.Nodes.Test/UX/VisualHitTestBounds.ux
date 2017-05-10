@@ -1,0 +1,7 @@
+<Panel ux:Class="UX.VisualHitTestBounds">
+	<Panel ux:Name="B">
+		<WhileTrue ux:Name="Enabler">
+			<Panel Alignment="Center" Width="200" Height="200" Color="#FFA"/>
+		</WhileTrue>
+	</Panel>
+</Panel>

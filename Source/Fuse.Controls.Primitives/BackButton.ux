@@ -1,0 +1,5 @@
+<ButtonBase ux:Class="Fuse.Controls.BackButton" Text="Back" ux:Name="btn">
+	<Rectangle Color="#ddd">
+		<Text Margin="5" Value="{Property btn.Text}" Alignment="Center" />
+	</Rectangle>
+</ButtonBase>

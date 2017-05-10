@@ -1,0 +1,44 @@
+<Page ux:Class="TextInputHints" Title="TextInput Hints">
+	<InfoStack ux:Key="Info">
+		<p>A variety of TextInput fields with various "Hint" settings. These alter the keyboard that is presented to the user.</p>
+	</InfoStack>
+	<ScrollView>
+		<Grid Columns="auto,1*" DefaultRow="auto" Margin="15" CellSpacing="5">
+			<h2 ColumnSpan="2">Limits</h2>
+			<Text>MaxLength=5</Text>
+			<StdTextInput MaxLength="5" Value="abc" />
+
+			<h2 ColumnSpan="2">Text hints</h2>
+			<Text>Default</Text>
+			<StdTextInput PlaceholderText="Default" InputHint="Default" />
+			<Text>Email</Text>
+			<StdTextInput PlaceholderText="Email" InputHint="Email" />
+			<Text>URL</Text>
+			<StdTextInput PlaceholderText="URL" InputHint="URL" />
+			<Text>Phone</Text>
+			<StdTextInput PlaceholderText="Phone" InputHint="Phone" />
+			<Text>Integer</Text>
+			<StdTextInput PlaceholderText="Integer" InputHint="Integer" />
+			<Text>Decimal</Text>
+			<StdTextInput PlaceholderText="Decimal" InputHint="Decimal" />
+
+			<h2 ColumnSpan="2">AutoCorrect hints</h2>
+			<Text>OS Default</Text>
+			<StdTextInput PlaceholderText="Default" AutoCorrectHint="Default" />
+			<Text>Enabled</Text>
+			<StdTextInput PlaceholderText="Enabled" AutoCorrectHint="Enabled" />
+			<Text>Disabled</Text>
+			<StdTextInput PlaceholderText="Disabled" AutoCorrectHint="Disabled" />
+
+			<h2 ColumnSpan="2">AutoCapitalization hints</h2>
+			<Text>None</Text>
+			<StdTextInput PlaceholderText="None" AutoCapitalizationHint="None" />
+			<Text>Characters</Text>
+			<StdTextInput PlaceholderText="Characters" AutoCapitalizationHint="Characters" />
+			<Text>Words</Text>
+			<StdTextInput PlaceholderText="Words" AutoCapitalizationHint="Words" />
+			<Text>Sentences</Text>
+			<StdTextInput PlaceholderText="Sentences" AutoCapitalizationHint="Sentences" />
+		</Grid>
+	</ScrollView>
+</Page>

@@ -1,0 +1,24 @@
+<TextInput ux:Class="Basic.TextInput"
+	TextColor="0,0,0,1"
+	Padding="0,0,0,16"
+	Margin="8,8,8,8"
+	FontSize="16"
+	Font="RobotoRegular">
+
+	<Panel Dock="Bottom" Height="2">
+		<Rectangle Alignment="Bottom" Height="1" Margin="0,8,0,8" ux:Name="_dividerRect">
+			<SolidColor ux:Name="thisDivider" Color="{Resource Basic.CLine}" />
+		</Rectangle>
+	</Panel>
+
+	<WhileDisabled>
+		<Change Duration="0.25" Easing="ExponentialOut" EasingBack="ExponentialIn" Target="this.TextColor" Value="{Resource Basic.CLine}" />
+		<Change Duration="0.25" Easing="ExponentialOut" EasingBack="ExponentialIn" Target="thisDivider.Color" Value="{Resource Basic.CLine}" />
+	</WhileDisabled>
+
+	<WhileFocusWithin>
+		<Change Duration="0.25" Easing="ExponentialOut" EasingBack="ExponentialIn" Target="thisDivider.Color" Value="{Resource Basic.C700}" />
+		<Change Duration="0.25" Easing="ExponentialOut" EasingBack="ExponentialIn" Target="_dividerRect.Height" Value="2" />
+	</WhileFocusWithin>
+
+</TextInput>

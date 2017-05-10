@@ -1,0 +1,6 @@
+<Panel ux:Class="UX.CycleSquare">
+	<Panel ux:Name="P1"/>
+	<WhileVisible>
+		<Cycle Target="P1.X" Low="0" High="100" Waveform="Square"/>
+	</WhileVisible>
+</Panel>

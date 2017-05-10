@@ -1,0 +1,13 @@
+<Panel ux:Class="UX.Grid.Listener">
+	<Grid Columns="10,20" ux:Name="G">
+		<Row Height="20" Metric="Absolute" ux:Name="R1"/>
+		<Row Extent="30" Metric="Absolute" ux:Name="R2"/>
+		
+		<Panel ux:Name="P1"/>
+		<Panel ux:Name="P2"/>
+		<Panel ux:Name="P3"/>
+		<Panel ux:Name="P4"/>
+		
+		<Panel ux:Name="P5" ux:AutoBind="false"/>
+	</Grid>
+</Panel>

@@ -1,0 +1,40 @@
+<Panel ux:Class="InfoPanel" ux:Name="Myself">
+	<Rectangle Layer="Background" CornerRadius="10">
+		<SolidColor Color="1,1,1,1"/>
+		<Stroke Width="1"><SolidColor Color="0,0,0,1"/></Stroke>
+		<DropShadow/>
+	</Rectangle>
+	<Panel>
+		<FileImageSource File="Assets/icon_close.png" ux:Name="CloseIcon" ux:AutoBind="false"/>
+		<Image Alignment="TopRight" Width="30" File="Assets/icon_info.png" Margin="4" ux:Name="Icon">
+			<Tapped>
+				<Toggle Target="Reveal"/>
+			</Tapped>
+		</Image>
+		<WhileTrue ux:Name="Reveal">
+			<Change ScrollRegion.MaxWidth="10000"/>
+			<Change ScrollRegion.MaxHeight="10000"/>
+			<Change Icon.Source="CloseIcon"/>
+			<Change TheInfo.Visibility="Visible"/>
+		</WhileTrue>
+	</Panel>
+	
+	<ScrollView ux:Name="ScrollRegion" MaxWidth="0" MaxHeight="0" Padding="0,20,0,0">
+		<StackPanel MaxWidth="400" ux:Name="TheInfo" Visibility="Hidden">
+			<Panel>
+				<WhileVisible>
+					<Placeholder ux:Name="Content" />
+				</WhileVisible>
+				<DataBinding Target="Content.Content" Key="Page Info" />
+			</Panel>
+			
+			<Text Font="RobotoItalic" Value="{Resource BuildVersion}" Alignment="Right"
+				Margin="0,10,5,5"/>
+		</StackPanel>
+		
+	</ScrollView>
+	<LayoutAnimation>
+		<Resize RelativeTo="LayoutChange" Duration="0.2" Vector="1"/>
+		<Move RelativeTo="LayoutChange" Duration="0.2" Vector="1"/>
+	</LayoutAnimation>
+</Panel>

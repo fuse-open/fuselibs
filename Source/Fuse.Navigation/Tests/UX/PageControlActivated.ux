@@ -1,0 +1,40 @@
+<Panel ux:Class="UX.PageControlActivated">
+	<JavaScript>
+		var Observable = require("FuseJS/Observable")
+		
+		exports.actPath = Observable("")
+		exports.deactPath = Observable("")
+		
+		exports.activateP1 = function() { actExtend("1") }
+		exports.deactivateP1 = function() { deactExtend("1") }
+		
+		exports.activateP2 = function() { actExtend("2") }
+		exports.deactivateP2 = function() { deactExtend("2") }
+		
+		exports.activateP3 = function() { actExtend("3") }
+		exports.deactivateP3 = function() { deactExtend("3") }
+		
+		function actExtend(p) {
+			exports.actPath.value += p
+		}
+		function deactExtend(p) {
+			exports.deactPath.value += p
+		}
+	</JavaScript>
+	<PageControl ux:Name="Nav">
+		<Page ux:Name="P1">
+			<Activated><Callback Handler="{activateP1}"/></Activated>
+			<Deactivated><Callback Handler="{deactivateP1}"/></Deactivated>
+		</Page>
+		
+		<Page ux:Name="P2">
+			<Activated Handler="{activateP2}"/>
+			<Deactivated Handler="{deactivateP2}"/>
+		</Page>
+		
+		<Page ux:Name="P3" Activated="{activateP3}" Deactivated="{deactivateP3}"/>
+	</PageControl>
+	
+	<Text ux:Name="Act" Value="{actPath}"/>
+	<Text ux:Name="Deact" Value="{deactPath}"/>
+</Panel>

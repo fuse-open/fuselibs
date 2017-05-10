@@ -1,0 +1,3 @@
+<StackPanel ux:Class="StackPanelScene1">
+  <Image ux:Name="Image1"  />
+</StackPanel>

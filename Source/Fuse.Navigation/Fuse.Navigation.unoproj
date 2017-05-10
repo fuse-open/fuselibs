@@ -1,0 +1,39 @@
+{
+  "Copyright": "Copyright (c) Fusetools AS 2017",
+  "Description": "Library of common trigger behaviors for UIs",
+  "Publisher": "Fusetools AS",
+  "Title": "Fuse.Triggers",
+  "Version": "1.0.0",
+  "Package": {
+    "ProjectUrl": "https://fusetools.com"
+  },
+  "InternalsVisibleTo": [
+    "Fuse.Controls",
+    "Fuse.Controls.Primitives",
+    "Fuse.Controls.Navigation",
+    "Fuse.Controls.Navigation.Test",
+    "Fuse.Navigation.Test",
+  ],
+  "Packages": [
+    "Uno.Collections",
+    "Uno.Data.Json",
+  ],
+  "Projects": [
+    "../Fuse.Animations/Fuse.Animations.unoproj",
+    "../Fuse.Marshal/Fuse.Marshal.unoproj",
+    "../Fuse.Reactive.Expressions/Fuse.Reactive.Expressions.unoproj",
+    "../Fuse.Common/Fuse.Common.unoproj",
+    "../Fuse.Scripting/Fuse.Scripting.unoproj",
+    "../Fuse.Nodes/Fuse.Nodes.unoproj",
+    "../Fuse.Elements/Fuse.Elements.unoproj",
+    "../Fuse.Gestures/Fuse.Gestures.unoproj",
+    "../Fuse.Motion/Fuse.Motion.unoproj",
+    "../Fuse.Triggers/Fuse.Triggers.unoproj",
+  ],
+    "Includes": [
+    "*",
+  ],
+  "Excludes": [
+    "Tests/",
+  ]
+}

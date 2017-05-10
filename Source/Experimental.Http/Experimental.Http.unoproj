@@ -1,0 +1,27 @@
+{
+  "Description": "Library for data caching",
+  "Publisher": "Fusetools AS",
+  "Copyright": "Copyright (c) Fusetools AS 2017",
+  "Version": "1.0.0",
+  "Package": {
+    "ProjectUrl": "https://fusetools.com"
+  },
+  "Packages": [
+    "Uno.Net.Http",
+    "UnoCore"
+  ],
+  "Projects": [
+    "../Fuse.Common/Fuse.Common.unoproj"
+  ],
+  "Includes": [
+    "BinaryLoader.uno:Source",
+    "DiskCache.uno:Source",
+    "HttpLoader.uno:Source",
+    "HttpResponseHeader.uno:Source",
+    "ICache.uno:Source",
+    "Internal/DateUtil.uno:Source",
+    "Loader.uno:Source",
+    "RecordFile.uno:Source",
+    "TextLoader.uno:Source"
+  ]
+}

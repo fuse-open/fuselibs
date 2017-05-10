@@ -1,0 +1,19 @@
+<Panel ux:Class="UX.Busy.IsHandled">
+	<WhileBusy ux:Name="W1">
+		<Nothing/>
+	</WhileBusy>
+	
+	<Panel>
+		<WhileBusy ux:Name="W2" IsHandled="true">
+			<Nothing/>
+		</WhileBusy>
+		<FuseTest.BusyControl ux:Name="B1"/>
+	</Panel>
+	
+	<Panel>
+		<WhileBusy ux:Name="W3">
+			<Nothing/>
+		</WhileBusy>
+		<FuseTest.BusyControl ux:Name="B2"/>
+	</Panel>
+</Panel>
