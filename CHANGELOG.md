@@ -26,6 +26,9 @@
 ## MemoryPolicy
 - Added `QuickUnload` memory policy to keep data in memory for as short as possible.
 
+## Fuse.Reactive.JavaScript
+- The `-DUSE_DUKTAPE`-option has been removed, as the support was largely left unmaintaned and untested.
+
 
 ## 1.0
 
