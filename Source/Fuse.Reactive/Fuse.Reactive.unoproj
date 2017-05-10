@@ -24,7 +24,8 @@
     "Fuse.Reactive.JavaScript",
     "Fuse.Reactive.Test",
     "Fuse.Scripting.Test",
-    "Fuse.Selection"
+    "Fuse.Selection",
+    "FuseTest"
   ],
   "Includes": [
     "*"
