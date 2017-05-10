@@ -18,16 +18,15 @@
     "../Fuse.Nodes/Fuse.Nodes.unoproj"
   ],
   "InternalsVisibleTo": [
+    "Fuse.Common.Test.Helpers",
     "Fuse.Reactive.Bindings",
     "Fuse.Reactive.Expressions",
     "Fuse.Reactive.JavaScript",
     "Fuse.Reactive.Test",
-    "Fuse.Selection",
     "Fuse.Scripting.Test",
-    "Fuse.Common.Test.Helpers"
+    "Fuse.Selection"
   ],
   "Includes": [
     "*"
   ]
 }
-
