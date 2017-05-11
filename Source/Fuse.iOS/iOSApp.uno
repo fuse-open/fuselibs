@@ -19,7 +19,21 @@ namespace Fuse
 		}
 
 		TreeRendererPanel _renderPanel;
-		Fuse.Controls.GraphicsView _graphicsView;
+
+		extern(!DISABLE_IMPLICIT_GRAPHICSVIEW)
+		Fuse.Controls.GraphicsView _graphicsView = new Fuse.Controls.GraphicsView();
+
+		Visual RootVisual
+		{
+			get
+			{
+				if defined(!DISABLE_IMPLICIT_GRAPHICSVIEW)
+					return _graphicsView;
+				else
+					return _renderPanel;
+			}
+		}
+
 
 		public App()
 		{
@@ -35,8 +49,9 @@ namespace Fuse
 			Uno.Platform.Displays.MainDisplay.Tick += OnTick;
 
 			_renderPanel = new TreeRendererPanel(new RootViewHost());
-			_graphicsView = new Fuse.Controls.GraphicsView();
-			_renderPanel.Children.Add(_graphicsView);
+
+			if defined(!DISABLE_IMPLICIT_GRAPHICSVIEW)
+				_renderPanel.Children.Add(_graphicsView);
 
 			InputDispatch.AddListener(_renderPanel, AppRoot.Handle);
 
@@ -45,12 +60,12 @@ namespace Fuse
 
 		public sealed override IList<Node> Children
 		{
-			get { return _graphicsView.Children; }
+			get { return RootVisual.Children; }
 		}
 		
 		public sealed override Visual ChildrenVisual
 		{
-			get { return _graphicsView; }
+			get { return RootVisual; }
 		}
 
 		void OnTick(object sender, Uno.Platform.TimerEventArgs args)
@@ -126,7 +141,8 @@ namespace Fuse
  			if (_prevStatusBarOrientation != o)
  			{
  				_prevStatusBarOrientation = o;
-				UpdateManager.PerformNextFrame(_graphicsView.InvalidateVisual);
+				if defined(!DISABLE_IMPLICIT_GRAPHICSVIEW)
+					UpdateManager.PerformNextFrame(_graphicsView.InvalidateVisual);
  			}
  		}
 
