@@ -11,16 +11,23 @@ namespace Fuse.Android
 	extern(Android && !Library) internal static class AppRoot
 	{
 
+		public static ViewHandle ViewHandle
+		{
+			get { return _viewHandle; }
+		}
+
 		public static Java.Object Handle
 		{
 			get { return _rootContainer; }
 		}
 
 		static readonly Java.Object _rootContainer;
+		static readonly ViewHandle _viewHandle;
 
 		static AppRoot()
 		{
 			_rootContainer = CreateRootView();
+			_viewHandle = new ViewHandle(_rootContainer);
 			SetAppRoot(_rootContainer);
 		}
 
