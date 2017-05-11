@@ -11,13 +11,12 @@ namespace Fuse.ImageTools.Test
 		private Object _image = null;
 
 		[Test]
-		[Ignore("Only supported on dotnet", "!DOTNET")]
+		[Ignore("Only supported on dotnet, Android or iOS", "native")]
 		public void CreatingAnImageSucceeds()
 		{
-			Fuse.ImageTools.ImageTools image = new Fuse.ImageTools.ImageTools();
 			using (var root = new TestRootPanel()){
 				var future = ImageTools.ImageFromBase64("iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPAQMAAAABGAcJAAAABlBMVEX9//wAAQATpOzaAAAAH0l" + "EQVQI12MAAoMHIFLAAYSEwIiJgYGZASrI38AAAwBamgM5VF7xgwAAAABJRU5ErkJggg==");
-				future.Then(Print, Fail);
+				future.Then(SaveImage, Fail);
 				Assert.IsFalse(_image == null);
 			}
 			_image = null;
@@ -25,13 +24,12 @@ namespace Fuse.ImageTools.Test
 
 		void MakeInvalidImage()
 		{
-			Fuse.ImageTools.ImageTools image = new Fuse.ImageTools.ImageTools();
 			var future = ImageTools.ImageFromBase64("iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPAQMAAAABGAcJAAAABlBMVEX9//wAAQATpOzaAAAAH0l");
-			future.Then(Print, Fail);
+			future.Then(SaveImage, Fail);
 		}
 
 		[Test]
-		[Ignore("Only supported on dotnet", "!DOTNET")]
+		[Ignore("Only supported on dotnet, Android or iOS", "native")]
 		public void CreatingAnImageFails()
 		{
 			Assert.Throws<FormatException>(MakeInvalidImage);
@@ -42,7 +40,7 @@ namespace Fuse.ImageTools.Test
 			_image = null;
 		}
 
-		private void Print(Object image)
+		private void SaveImage(Object image)
 		{
 			_image = image;
 		}
