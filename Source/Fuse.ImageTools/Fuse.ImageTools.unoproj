@@ -10,8 +10,6 @@
   "InternalsVisibleTo":[
     "Fuse.Camera",
     "Fuse.CameraRoll",
-    "FuseTest",
-    "Fuse.Testing",
     "Fuse.ImageTools.Test"
   ],
   "Packages": [

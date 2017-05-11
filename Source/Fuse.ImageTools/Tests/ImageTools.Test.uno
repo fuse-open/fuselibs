@@ -10,49 +10,31 @@ namespace Fuse.ImageTools.Test
 	{
 		private Object _image = null;
 
-
 		[Test]
+		[Ignore("Only supported on dotnet", "!DOTNET")]
 		public void CreatingAnImageSucceeds()
 		{
-			if defined(!DOTNET) return;
-
 			Fuse.ImageTools.ImageTools image = new Fuse.ImageTools.ImageTools();
 			using (var root = new TestRootPanel()){
 				var future = ImageTools.ImageFromBase64("iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPAQMAAAABGAcJAAAABlBMVEX9//wAAQATpOzaAAAAH0l" + "EQVQI12MAAoMHIFLAAYSEwIiJgYGZASrI38AAAwBamgM5VF7xgwAAAABJRU5ErkJggg==");
 				future.Then(Print, Fail);
-				root.StepFrame();
-				root.StepFrame();
-				root.StepFrame();
-				root.StepFrame();
-
 				Assert.IsFalse(_image == null);
 			}
 			_image = null;
 		}
 
+		void MakeInvalidImage()
+		{
+			Fuse.ImageTools.ImageTools image = new Fuse.ImageTools.ImageTools();
+			var future = ImageTools.ImageFromBase64("iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPAQMAAAABGAcJAAAABlBMVEX9//wAAQATpOzaAAAAH0l");
+			future.Then(Print, Fail);
+		}
+
 		[Test]
+		[Ignore("Only supported on dotnet", "!DOTNET")]
 		public void CreatingAnImageFails()
 		{
-			if defined(!DOTNET) return;
-			
-			Fuse.ImageTools.ImageTools image = new Fuse.ImageTools.ImageTools();
-			using (var root = new TestRootPanel()){
-				try 
-				{
-					var future = ImageTools.ImageFromBase64("iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPAQMAAAABGAcJAAAABlBMVEX9//wAAQATpOzaAAAAH0l");
-					future.Then(Print, Fail);
-				} catch (FormatException e)
-				{
-					// expected error case
-				}
-				root.StepFrame();
-				root.StepFrame();
-				root.StepFrame();
-				root.StepFrame();
-
-				Assert.IsTrue(_image == null);
-			}
-			_image = null;
+			Assert.Throws<FormatException>(MakeInvalidImage);
 		}
 
 		private void Fail(Exception e)
