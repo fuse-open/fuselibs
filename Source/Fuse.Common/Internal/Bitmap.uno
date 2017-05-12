@@ -4,6 +4,7 @@ using Uno.Graphics;
 using Uno.IO;
 using Uno.UX;
 using OpenGL;
+using Fuse.Platform;
 
 namespace System.Drawing
 {
@@ -344,6 +345,12 @@ namespace Fuse.Internal.Bitmaps
 
 		static Bitmap LoadFromBundleFile(BundleFile bundleFile)
 		{
+			if (bundleFile.BundlePath.EndsWith(".gif"))
+			{
+				// TODO: Fuse.Diagnostic.InternalError
+				debug_log "Gif files are not fully supported!";
+			}
+
 			if defined(CIL)
 				return LoadFromStream(bundleFile.OpenRead());
 			else if defined(Android)
@@ -398,9 +405,6 @@ namespace Fuse.Internal.Bitmaps
 			if (bundleFileSource != null)
 				return LoadFromBundleFile(bundleFileSource.BundleFile);
 
-
-			debug_log "Inside the loader..";
-
 			if defined(CIL)
 				return LoadFromStream(fileSource.OpenRead());
 			else if defined(CPLUSPLUS)
@@ -433,10 +437,6 @@ namespace Fuse.Internal.Bitmaps
 			{
 				var color = NativeBitmap.GetPixel(x, y);
 				if (IsCMYK(NativeBitmap)){
-					debug_log "Color: ";
-					var thing = FromCmyk(color);
-
-					debug_log "returning " + thing;
 					return FromCmyk(color);
 				}
 
