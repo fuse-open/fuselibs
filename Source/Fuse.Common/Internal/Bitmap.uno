@@ -8,13 +8,25 @@ using Fuse.Platform;
 
 namespace System.Drawing
 {
+	[DotNetType("System.Array")]
+ public extern(CIL) class CilArray
+	{
+	}
+
+	[DotNetType("System.Runtime.InteropServices.Marshal")]
+	public extern(CIL) static class Marshal
+	{
+		public static extern IntPtr UnsafeAddrOfPinnedArrayElement(CilArray arr, int index);
+		public static extern void Copy(IntPtr source, byte[] destination, int start, int length);
+	}
+
 	[DotNetType]
 	extern(CIL) public abstract class Image
 	{
 		public extern int Width { get; }
 		public extern int Height { get; }
 		public extern int Flags { get; }
-		public extern int PixelFormat { get; }
+		public extern PixelFormat PixelFormat { get; }
 	}
 
 	[DotNetType, TargetSpecificType]
@@ -31,6 +43,42 @@ namespace System.Drawing
 	{
 		public extern Bitmap(Uno.IO.Stream stream);
 		public extern Color GetPixel(int x, int y);
+		public extern BitmapData LockBits( Rectangle rect, ImageLockMode flags, PixelFormat format );
+		public extern void UnlockBits(BitmapData bitmapdata);
+	}
+
+	[DotNetType("System.Drawing.Rectangle")]
+	public extern(DOTNET) struct Rectangle
+	{
+		public extern Rectangle(int a, int b, int x, int y);
+		public extern int Height { get; set; }
+		public extern int Width { get; set; }
+	}
+
+	[DotNetType("System.Drawing.Imaging.ImageLockMode")]
+	public extern(DOTNET) enum ImageLockMode
+	{
+		ReadOnly = 1
+	}
+
+	[DotNetType("System.Drawing.Imaging.PixelFormat")]
+	public extern(DOTNET) enum PixelFormat
+	{
+		Format32bppArgb = 2498570,
+		Format32bppPArgb = 925707,
+		Format32bppRgb = 139273,
+		PAlpha = 524288,
+		Alpha = 262144
+	}
+
+	[DotNetType("System.Drawing.Imaging.BitmapData")]
+	public extern(DOTNET) class BitmapData
+	{
+		public extern int Height { get; set; }
+		public extern PixelFormat PixelFormat { get; set; }
+		public extern IntPtr Scan0 { get; set; }
+		public extern int Stride { get; set; }
+		public extern int Width { get; set; }
 	}
 
 	namespace Imaging {
@@ -347,8 +395,7 @@ namespace Fuse.Internal.Bitmaps
 		{
 			if (bundleFile.BundlePath.EndsWith(".gif"))
 			{
-				// TODO: Fuse.Diagnostic.InternalError
-				debug_log "Gif files are not fully supported!";
+				Fuse.Diagnostics.UserWarning("Gif files are not supported!", bundleFile);
 			}
 
 			if defined(CIL)
@@ -473,14 +520,54 @@ namespace Fuse.Internal.Bitmaps
 			return float4((1 - C) * (1 - K), (1 - M) * (1 - K), (1 - Y) * (1 - K), 1);
 		}
 
+		extern(CIL) void Render(OpenGL.GLTextureHandle textureHandle)
+		{
+			System.Drawing.Rectangle rect = new System.Drawing.Rectangle(0, 0, NativeBitmap.Width, NativeBitmap.Height);
+			var bitmapData = NativeBitmap.LockBits(rect, System.Drawing.ImageLockMode.ReadOnly, System.Drawing.PixelFormat.Format32bppPArgb);
+			IntPtr ptr = bitmapData.Scan0;
+			int bytes  = Math.Abs(bitmapData.Stride) * NativeBitmap.Height;
+			byte[] rgbValues = new byte[bytes];
+			byte[] outputValues = new byte[bytes];
+
+			System.Drawing.Marshal.Copy(ptr, rgbValues, 0, bytes);
+
+			// copy the bulk of pixels
+			for (var i = 0; i < bytes; i += 1)
+			{
+				outputValues[i] = rgbValues[i];
+			}
+
+			// swap R and B
+			for (var i = 0; i < bytes; i += 4)
+			{
+				outputValues[i + 2] = rgbValues[i];
+				outputValues[i] = rgbValues[i + 2];
+			}
+
+			GL.BindTexture(GLTextureTarget.Texture2D, textureHandle);
+			GL.TexImage2D(
+				GLTextureTarget.Texture2D, 0, 
+				GLPixelFormat.Rgba, (int)NativeBitmap.Width, (int)NativeBitmap.Height, 0, 
+				GLPixelFormat.Rgba, GLPixelType.UnsignedByte, 
+				new Buffer(outputValues)
+			);
+			NativeBitmap.UnlockBits(bitmapData);
+		}
+
 		// TODO: consider making this an extension method somewhere else instead?
-		extern(OPENGL) Texture2D UploadTexture()
+		public extern(OPENGL) Texture2D UploadTexture()
 		{
 			if defined(Android)
 			{
 				var textureHandle = GL.CreateTexture();
 				// TODO: bind texture
 				AndroidHelpers.TexImage2D(0, NativeBitmap, 0);
+				return new Texture2D(textureHandle, Size, 1, Format.RGBA8888);
+			}
+			else if defined(CIL)
+			{
+				var textureHandle = GL.CreateTexture();
+				Render(textureHandle);
 				return new Texture2D(textureHandle, Size, 1, Format.RGBA8888);
 			}
 			// TODO: other platforms!

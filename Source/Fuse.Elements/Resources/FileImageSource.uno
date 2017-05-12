@@ -4,6 +4,7 @@ using Uno.UX;
 using Uno.Collections;
 using Uno.Compiler.ExportTargetInterop;
 
+using Fuse.Internal.Bitmaps;
 using Experimental.TextureLoader;
 
 namespace Fuse.Resources
@@ -193,8 +194,9 @@ namespace Fuse.Resources
 					@}
 				}
 
-				var data = _file.ReadAllBytes();
-				TextureLoader.ByteArrayToTexture2DFilename(new Buffer(data), _file.Name, SetTexture);
+				var bitmap = Bitmap.LoadFromFileSource(_file);
+				var texture = bitmap.UploadTexture();
+				SetTexture(texture);
 				OnChanged();
 			}
 			catch (Exception e)
