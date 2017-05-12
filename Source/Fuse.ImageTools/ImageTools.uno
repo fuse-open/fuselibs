@@ -384,6 +384,8 @@ namespace Fuse.ImageTools
 				new GetBase64Command(img.Path,closure.Resolve, closure.Reject).Execute();
 			else if defined(iOS)
 				iOSImageUtils.GetBase64FromImage(img.Path, closure.Resolve, closure.Reject);
+			else if defined(dotnet)
+				DotNetImageUtils.GetBase64FromImage(img.Path, closure.Resolve, closure.Reject);
 			else
 				closure.Reject("Unsupported platform");
 			return p;
@@ -418,6 +420,8 @@ namespace Fuse.ImageTools
 				new ImageFromBase64Command(b64, closure.Resolve, closure.Reject).Execute();
 			else if defined(iOS)
 				iOSImageUtils.GetImageFromBase64(b64, closure.Resolve, closure.Reject);
+			else if defined(dotnet)
+				DotNetImageUtils.GetImageFromBase64(b64, closure.Resolve, closure.Reject);
 			else
 				closure.Reject("Unsupported platform");
 			return p;

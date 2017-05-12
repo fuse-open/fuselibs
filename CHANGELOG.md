@@ -26,6 +26,8 @@
 ## MemoryPolicy
 - Added `QuickUnload` memory policy to keep data in memory for as short as possible.
 
+## ImageTools
+- Added supported for encoding/decoding images to/from base64 on DotNet platforms, including Windows and Mac OS X.
 
 ## 1.0
 

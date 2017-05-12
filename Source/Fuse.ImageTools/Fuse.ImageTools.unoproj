@@ -9,7 +9,8 @@
   },
   "InternalsVisibleTo":[
     "Fuse.Camera",
-    "Fuse.CameraRoll"
+    "Fuse.CameraRoll",
+    "Fuse.ImageTools.Test"
   ],
   "Packages": [
     "Uno.Threading",
@@ -32,5 +33,8 @@
     "iOS/ImagePicker.m:CSource:iOS",
     "iOS/ImageHelper.h:CHeader:iOS",
     "iOS/ImageHelper.m:CSource:iOS"
+  ],
+  "Excludes": [
+    "Tests/",
   ]
 }
