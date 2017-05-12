@@ -36,7 +36,6 @@ namespace Fuse.Reactive
 			var argsString = base.GenerateArgs(c, result, args);
 
 			var nt = _names;
-			int o = nt != null ? nt.Objects.Count-1 : 0;
 			while (nt != null)
 			{
 				for (int i = 0; i < nt.Entries.Length; ++i)
