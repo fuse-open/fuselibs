@@ -20,7 +20,20 @@ namespace Fuse
 		}
 
 		TreeRendererPanel _renderPanel;
-		GraphicsView _graphicsView;
+
+		extern(!DISABLE_IMPLICIT_GRAPHICSVIEW)
+		GraphicsView _graphicsView = new RootGraphicsView();
+
+		Visual RootVisual
+		{
+			get
+			{
+				if defined(!DISABLE_IMPLICIT_GRAPHICSVIEW)
+					return _graphicsView;
+				else
+					return _renderPanel;
+			}
+		}
 
 		public App()
 		{
@@ -31,12 +44,13 @@ namespace Fuse
 			Fuse.Controls.TextControl.TextRendererFactory = Fuse.Android.TextRenderer.Create;
 
 			_renderPanel = new TreeRendererPanel(new RootViewHost());
-			_graphicsView = new RootGraphicsView();
-			_renderPanel.Children.Add(_graphicsView);
+
+			if defined(!DISABLE_IMPLICIT_GRAPHICSVIEW)
+				_renderPanel.Children.Add(_graphicsView);
 
 			MobileBootstrapping.Init();
 
-			RootViewport = new NativeRootViewport(new ViewHandle(AppRoot.Handle));
+			RootViewport = new NativeRootViewport(AppRoot.ViewHandle);
 			RootViewport.Children.Add(_renderPanel);
 
 			Uno.Platform.Displays.MainDisplay.Tick += OnTick;
@@ -44,12 +58,12 @@ namespace Fuse
 
 		public sealed override IList<Node> Children
 		{
-			get { return _graphicsView.Children; }
+			get { return RootVisual.Children; }
 		}
 
 		public sealed override Visual ChildrenVisual
 		{
-			get { return _graphicsView; }
+			get { return RootVisual; }
 		}
 
 		void OnTick(object sender, Uno.Platform.TimerEventArgs args)
@@ -78,7 +92,10 @@ namespace Fuse
 
 		void PropagateBackground()
 		{
-			_graphicsView.Color = Background;
+			if defined(!DISABLE_IMPLICIT_GRAPHICSVIEW)
+				_graphicsView.Color = Background;
+			else
+				AppRoot.ViewHandle.SetBackgroundColor((int)Uno.Color.ToArgb(Background));
 		}
 	}
 }
