@@ -11,7 +11,7 @@ namespace Fuse.ImageTools.Test
 		private Object _image = null;
 
 		[Test]
-		[Ignore("Only supported on dotnet, Android or iOS", "native")]
+		[Ignore("Only supported on dotnet, Android or iOS", "MSVC || CMake")]
 		public void CreatingAnImageSucceeds()
 		{
 			using (var root = new TestRootPanel()){
@@ -29,7 +29,7 @@ namespace Fuse.ImageTools.Test
 		}
 
 		[Test]
-		[Ignore("Only supported on dotnet, Android or iOS", "native")]
+		[Ignore("Only supported on dotnet, Android or iOS", "MSVC || CMake")]
 		public void CreatingAnImageFails()
 		{
 			Assert.Throws<FormatException>(MakeInvalidImage);
