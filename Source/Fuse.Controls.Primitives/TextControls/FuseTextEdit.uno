@@ -196,7 +196,6 @@ namespace Fuse.Controls
 
 		void OnKeyPressed(object sender, KeyPressedArgs args)
 		{
-			var positionedRuns = TextRenderer.GetPositionedRuns();
 			var caretContext = CreateCaretContext();
 			switch (args.Key)
 			{
