@@ -57,23 +57,27 @@ namespace Fuse.Share
 		object ShareText(Context c, object[] args)
 		{
 			if(args.Length < 1) return false;
-			var textToShare = "" + args[0];
-			var description = args.Length>1 ? "" + args[1] : "";
 
-			if defined(android)
+			if defined(android || iOS)
 			{
-				AndroidShareImpl.ShareText(textToShare, description);
-				return true;
+				var textToShare = "" + args[0];
+				var description = args.Length>1 ? "" + args[1] : "";
+
+				if defined(android)
+				{
+					AndroidShareImpl.ShareText(textToShare, description);
+					return true;
+				}
+				else if defined(iOS)
+				{
+					iOSShareImpl.ShareText(textToShare, description);
+					return true;
+				}
+				else
+					build_error;
 			}
-			else if defined(iOS)
-			{
-				iOSShareImpl.ShareText(textToShare, description);
-				return true;
-			}
-			else
-			{
-				return false;
-			}
+
+			return false;
 		}
 
 		/**
@@ -90,25 +94,27 @@ namespace Fuse.Share
 			var type = args[1] as string;
 			if(type==null)
 				throw new Uno.Exception("Second argument of ShareFile must be a mimetype string");
-			var description = args.Length>1 ? "" + args[1] : "";
 
 			if (path==null)
 				return false;
 
-			if defined(android)
+			if defined(android || iOS)
 			{
-				AndroidShareImpl.ShareFile("file://" + path, type, description);
-				return true;
+				var description = args.Length>1 ? "" + args[1] : "";
+				if defined(android)
+				{
+					AndroidShareImpl.ShareFile("file://" + path, type, description);
+					return true;
+				}
+				else if defined(iOS)
+				{
+					iOSShareImpl.ShareFile("file://" + path, type, description);
+					return true;
+				}
+				else
+					build_error;
 			}
-			else if defined(iOS)
-			{
-				iOSShareImpl.ShareFile("file://" + path, type, description);
-				return true;
-			}
-			else
-			{
-				return false;
-			}
+			return false;
 		}
 	}
 }
