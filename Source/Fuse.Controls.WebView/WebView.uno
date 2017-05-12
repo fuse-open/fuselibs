@@ -127,16 +127,20 @@ namespace Fuse.Controls
 
 		protected override Fuse.Controls.Native.IView CreateNativeView()
 		{
-			string scheme = @(Project.Mobile.UriScheme);
-			string[] schemes = scheme!="" ? new string[]{scheme} :  new string[]{};
-			
-			if defined(Android)
-				return Fuse.Android.Controls.WebView.Create(this, schemes);
+			if defined(Android || iOS)
+			{
+				string scheme = @(Project.Mobile.UriScheme);
+				string[] schemes = scheme!="" ? new string[]{scheme} :  new string[]{};
 
-			else if defined(iOS)
-				return Fuse.iOS.Controls.WebView.Create(this, schemes);
+				if defined(Android)
+					return Fuse.Android.Controls.WebView.Create(this, schemes);
+				else if defined(iOS)
+					return Fuse.iOS.Controls.WebView.Create(this, schemes);
+				else
+					build_error;
+			}
 
-			else return base.CreateNativeView();
+			return base.CreateNativeView();
 		}
 
 		public double Progress
