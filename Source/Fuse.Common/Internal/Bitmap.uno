@@ -9,7 +9,7 @@ using Fuse.Platform;
 namespace System.Drawing
 {
 	[DotNetType("System.Array")]
- public extern(CIL) class CilArray
+	public extern(CIL) class CilArray
 	{
 	}
 
@@ -222,7 +222,9 @@ namespace Fuse.Internal.Bitmaps
 	[Require("Header.Include", "uImage/Bitmap.h")]
 	[Require("Header.Include", "uImage/Png.h")]
 	[Require("Header.Include", "uImage/Jpeg.h")]
+	[Require("Header.Include", "uImage/Texture.h")]
 	[Require("Header.Include", "Uno/Support.h")]
+	[Require("Header.Include", "XliPlatform/GL.h")]
 	extern(!Android && !iOS && CPLUSPLUS) static class CPlusPlusHelpers
 	{
 		[TargetSpecificType]
@@ -344,6 +346,12 @@ namespace Fuse.Internal.Bitmaps
 		@{
 			uBase::Vector4u8 color = nativeBitmap->GetPixelColor(x, y);
 			return color.Z | (color.Y << 8) | (color.X << 16) | (color.W << 24); // encode as 0xAARRGGBB
+		@}
+
+		public static GLTextureHandle UploadTexture(NativeBitmapHandle nativeBitmap)
+		@{
+			uImage::Texture* texture = uImage::Texture::Create(nativeBitmap);
+			return uCreateGLTexture(texture, true, NULL);
 		@}
 	}
 
@@ -555,7 +563,7 @@ namespace Fuse.Internal.Bitmaps
 		}
 
 		// TODO: consider making this an extension method somewhere else instead?
-		public extern(OPENGL) Texture2D UploadTexture()
+		public Texture2D UploadTexture()
 		{
 			if defined(Android)
 			{
@@ -570,9 +578,19 @@ namespace Fuse.Internal.Bitmaps
 				Render(textureHandle);
 				return new Texture2D(textureHandle, Size, 1, Format.RGBA8888);
 			}
-			// TODO: other platforms!
-			else
+			else if defined (iOS)
+			{
 				build_error;
+			}
+			else if defined (CPLUSPLUS)
+			{
+				var textureHandle = CPlusPlusHelpers.UploadTexture(NativeBitmap);
+				return new Texture2D(textureHandle, Size, 1, Format.RGBA8888);
+			}
+			else 
+			{
+				build_error;
+			}
 		}
 	}
 }
