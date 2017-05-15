@@ -157,6 +157,11 @@ namespace Fuse.Internal.Bitmaps
 
 	[ForeignInclude(Language.ObjC, "ImageIO/ImageIO.h")]
 	[Require("Xcode.Framework", "ImageIO")]
+	[Require("Xcode.Framework","CoreGraphics")]
+	[Require("Source.Include", "CoreGraphicsLib.h")]
+	[Require("Xcode.Framework","GLKit")]
+	[extern(OSX) Require("Source.Include","XliPlatform/GL.h")]
+	[extern(iOS) Require("Source.Include","OpenGLES/ES2/gl.h")]
 	extern(iOS) static class IOSHelpers
 	{
 		[Foreign(Language.ObjC)]
@@ -178,7 +183,7 @@ namespace Fuse.Internal.Bitmaps
 		[Foreign(Language.ObjC)]
 		public static void ReleaseImage(IntPtr image)
 		@{
-			CGImageRelease((CGImageRef)image)
+			CGImageRelease((CGImageRef)image);
 		@}
 
 		[Foreign(Language.ObjC)]
@@ -215,6 +220,24 @@ namespace Fuse.Internal.Bitmaps
 			CFRelease(pixelData);
 
 			return b | (g << 8) | (r << 16) | (a << 24); // encode as 0xAARRGGBB
+		@}
+
+		[Foreign(Language.CPlusPlus)]
+		public static void UploadTexture(IntPtr image, int textureHandle)
+		@{
+			@autoreleasepool 
+			{
+				CGImageRef imageRef = (CGImageRef)image;
+				CFDataRef pixelData = CGDataProviderCopyData(CGImageGetDataProvider(imageRef));
+				int width = CGImageGetWidth(imageRef);
+				int height = CGImageGetHeight(imageRef);
+
+				const UInt8* data = CFDataGetBytePtr(pixelData);
+
+				glBindTexture(GL_TEXTURE_2D, textureHandle);
+				glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height,
+					0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+			}
 		@}
 	}
 
@@ -580,7 +603,9 @@ namespace Fuse.Internal.Bitmaps
 			}
 			else if defined (iOS)
 			{
-				build_error;
+				var textureHandle = GL.CreateTexture();
+				IOSHelpers.UploadTexture(NativeImage, (int)textureHandle);
+				return new Texture2D(textureHandle, Size, 1, Format.RGBA8888);
 			}
 			else if defined (CPLUSPLUS)
 			{
