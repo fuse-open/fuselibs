@@ -8,6 +8,10 @@ making a change.
 Please note we have a [code of conduct](#code-of-conduct), please follow
 it in all your interactions with the project.
 
+We also have a [contributor license agreement][1], that we require
+contributors to sign in order to have their changes considered for
+inclusion.
+
 ## Pull Request Process
 
 1. Features should generally be pulled against the `master` branch.
@@ -107,3 +111,5 @@ members of the project's leadership.
 This Code of Conduct is adapted from the
 [Contributor Covenant](http://contributor-covenant.org), version 1.4,
 available at <http://contributor-covenant.org/version/1/4>
+
+[1]: https://cla-assistant.io/fusetools/fuselibs-public
