@@ -321,7 +321,9 @@ namespace Fuse.Elements
 				var opacity = entry._opacity;
 
 				var transform = entry._elm.LocalTransform;
-				float2 positionOrigin = transform[3].XY + (float2)cachingRect.Minimum * densityScale;
+				//this calculation assumes the transform is flat (a precondition to caching the element)
+				float2 localOrigin = (float2)cachingRect.Minimum * densityScale;
+				float2 positionOrigin = transform[3].XY + localOrigin.X * transform[0].XY + localOrigin.Y * transform[1].XY;
 				float2 size = (float2)cachingRect.Size * densityScale;
 				float2 right = transform[0].XY * size.X;
 				float2 up = transform[1].XY * size.Y;
