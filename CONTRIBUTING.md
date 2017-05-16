@@ -1,10 +1,5 @@
 # Contributing
 
-> *Please note that at this point, we are not accepting outside pull-requests.
-> We are currently working on changing this, but for now, all pull-requests
-> from people not working for the fusetools organization will be rejected
-> until further notice. We are sorry for the inconvenience this entails.*
-
 When contributing to this repository, please first discuss the change you
 wish to make via an issue, in our [slack](https://fusecommunity.slack.com)
 community, or any other method with the owners of this repository before
