@@ -1,10 +1,5 @@
 # Contributing
 
-> *Please note that at this point, we are not accepting outside pull-requests.
-> We are currently working on changing this, but for now, all pull-requests
-> from people not working for the fusetools organization will be rejected
-> until further notice. We are sorry for the inconvenience this entails.*
-
 When contributing to this repository, please first discuss the change you
 wish to make via an issue, in our [slack](https://fusecommunity.slack.com)
 community, or any other method with the owners of this repository before
@@ -12,6 +7,10 @@ making a change.
 
 Please note we have a [code of conduct](#code-of-conduct), please follow
 it in all your interactions with the project.
+
+We also have a [contributor license agreement][1], that we require
+contributors to sign in order to have their changes considered for
+inclusion.
 
 ## Pull Request Process
 
@@ -112,3 +111,5 @@ members of the project's leadership.
 This Code of Conduct is adapted from the
 [Contributor Covenant](http://contributor-covenant.org), version 1.4,
 available at <http://contributor-covenant.org/version/1/4>
+
+[1]: https://cla-assistant.io/fusetools/fuselibs-public
