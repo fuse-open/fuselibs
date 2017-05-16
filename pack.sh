@@ -34,7 +34,7 @@ master)
     SUFFIX="--suffix=master-$REVISION"
     ;;
 *)
-    SUFFIX="--suffix=$REVISION"
+    SUFFIX="--suffix=dev-$REVISION"
     ;;
 esac
 
