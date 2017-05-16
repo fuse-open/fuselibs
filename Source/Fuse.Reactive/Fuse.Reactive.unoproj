@@ -26,6 +26,7 @@
     "Fuse.Scripting.Test",
     "Fuse.Common.Test.Helpers",
     "Fuse.Charting",
+    "FuseTest",
     "Fabric"
   ],
   "Includes": [
