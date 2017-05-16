@@ -34,6 +34,9 @@
 
 ## 1.0
 
+## Fuse.Elements
+- Fixed a bug where elements with many children and some of them were rotated, the rotated elements would appear in the wrong location.
+
 ## iOS
 - Fix bug which could cause visual glitches the first time rotating from Portrait to Landscape
 
