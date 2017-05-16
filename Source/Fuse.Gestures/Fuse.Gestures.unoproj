@@ -2,7 +2,7 @@
   "Copyright": "Copyright (c) Fusetools AS 2017",
   "Description": "Library of common input gesture recognizers",
   "Publisher": "Fusetools AS",
-  "Version": "1.0.0",
+  "Version": "1.0.1",
   "Package": {
     "ProjectUrl": "https://fusetools.com"
   },
