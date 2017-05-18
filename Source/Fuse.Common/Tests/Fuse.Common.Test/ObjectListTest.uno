@@ -348,7 +348,30 @@ namespace Fuse.Test
 			Assert.AreEqual("#10,#1,#11,#2,#3,#4,#6,#9,#12", Join(cp4));
 		}
 		
-		string Join( ref ObjectList<Dummy>.Enumerator<Dummy> iter )
+		
+		[Test]
+		//ensures it'd being properly disposed of
+		void Foreach()
+		{
+			var l = new ObjectList<Dummy>();
+			var a = new Dummy(5);
+			var b = new Dummy(6);
+			l.Add(a);
+			l.Add(b);
+			
+			int c =0;
+			foreach( var d in l )
+				c += d.Value;
+				
+			Assert.AreEqual(11,c);
+			
+			Assert.AreEqual(0, l.UsingIndexOf(a));
+			Assert.AreEqual(1, l.ForeachIndexOf(b));
+			
+			Assert.IsTrue(l.TestIsConsistent);
+		}
+		
+		string Join( ref ObjectList<Dummy>.Enumerator iter )
 		{
 			string c = "";
 			while (iter.MoveNext())
@@ -373,5 +396,36 @@ namespace Fuse.Test
 			}
 			return c;
 		}
+	}
+	
+	static class TestExtensions
+	{
+        public static int UsingIndexOf<T>(this IEnumerable<T> self, T element)
+        {
+            int i = 0;
+            using (var iter = self.GetEnumerator())
+            {
+				while (iter.MoveNext())
+				{
+					if (iter.Current.Equals(element))
+						return i;
+					i++;
+				}
+            }
+            return -1;
+        }
+        
+        public static int ForeachIndexOf<T>(this IEnumerable<T> self, T element)
+        {
+            int i = 0;
+            foreach (var item in self)
+            {
+                if (item.Equals(element))
+                    return i;
+                i++;
+            }
+            return -1;
+        }
+        
 	}
 }

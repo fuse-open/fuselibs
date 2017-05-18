@@ -181,7 +181,24 @@ namespace Fuse.Test
 			Assert.AreEqual("2,3",Join(ref it3));
 		}
 		
-		string Join( ref MiniList<string>.Enumerator<string> iter )
+		[Test]
+		//ensures it'd being properly disposed of
+		void Foreach()
+		{
+			var l = new MiniList<string>();
+			l.Add("he");
+			l.Add("llo");
+			
+			string c ="";
+			foreach( var d in l )
+				c += d;
+				
+			Assert.AreEqual("hello",c);
+			//Assert.IsTrue(l.TestIsConsistent);
+		}
+		
+		
+		string Join( ref MiniList<string>.Enumerator iter )
 		{
 			string c = "";
 			while (iter.MoveNext())

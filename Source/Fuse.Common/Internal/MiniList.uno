@@ -172,17 +172,17 @@ namespace Fuse.Internal
 
 		public IEnumerator<T> GetEnumerator()
 		{
-			return (IEnumerator<T>)new Enumerator<T>(this);
+			return (IEnumerator<T>)new Enumerator(this);
 		}
 
-		public Enumerator<T> GetEnumeratorStruct()
+		public Enumerator GetEnumeratorStruct()
 		{
-			return new Enumerator<T>(this);
+			return new Enumerator(this);
 		}
 		
-		public struct Enumerator<T> : IEnumerator<T> where T : class
+		public struct Enumerator : IEnumerator<T>
 		{
-			ObjectList<T>.Enumerator<T> _iter;
+			ObjectList<T>.Enumerator _iter;
 			MiniList<T> _source;
 			bool _first;
 			Object _value;

@@ -345,10 +345,37 @@ namespace Fuse.Internal
 		
 		public IEnumerator<T> GetEnumerator()
 		{
-			return (IEnumerator<T>)new Enumerator<T>(this);
+			return (IEnumerator<T>)new EnumeratorClass(this);
 		}
 		
-		public struct Enumerator<T> : IEnumerator<T> where T : class
+		public class EnumeratorClass : IEnumerator<T>
+		{
+			Enumerator _en;
+			
+			public EnumeratorClass(ObjectList<T> source)
+			{
+				_en = new Enumerator(source);
+			}
+			
+			public bool MoveNext() { return _en.MoveNext(); }
+			public T Current { get { return _en.Current; } }
+			public void Reset() { _en.Reset(); }
+			public void Dispose() { _en.Dispose(); }
+		}
+		
+		/**
+			Enumerates the list. This avoids creating an enumerable and instead used a `struct` that will be copied by value (a memory optimization).
+			
+			This iterator can be used only once. It gets a versioned view of the list. It releases that view once the iteration is exhausted or disposed.
+			
+			NOTE: The Enumerable is also a struct, and the MS C# compiler can apparently make this optimization implicitly, but the Uno compiler does not recognize this optimization yet.
+		*/
+		public Enumerator GetEnumeratorStruct()
+		{
+			return new Enumerator(this);
+		}
+		
+		public struct Enumerator : IDisposable
 		{
 			ObjectList<T> _source;
 			bool _first;
@@ -361,6 +388,7 @@ namespace Fuse.Internal
 				_first = true;
 				_at = _source._nodeHead;
 				_locked = _source.Lock();
+				debug_log "Lock: " + _locked;
 			}
 			
 			public bool MoveNext()
@@ -431,6 +459,7 @@ namespace Fuse.Internal
 				{
 					_locked = (sbyte)-1;
 					_source.Unlock();
+					debug_log "Unlock";
 				}
 			}
 			
@@ -492,18 +521,6 @@ namespace Fuse.Internal
 				if (_nodes[p].RemoveVersion != -1)
 					CollapseNode(p);
 			}
-		}
-		
-		/**
-			Enumerates the list. This avoids creating an enumerable and instead used a `struct` that will be copied by value (a memory optimization).
-			
-			This iterator can be used only once. It gets a versioned view of the list. It releases that view once the iteration is exhausted or disposed.
-			
-			NOTE: The Enumerable is also a struct, and the MS C# compiler can apparently make this optimization implicitly, but the Uno compiler does not recognize this optimization yet.
-		*/
-		public Enumerator<T> GetEnumeratorStruct()
-		{
-			return new Enumerator<T>(this);
 		}
 	}
 }
