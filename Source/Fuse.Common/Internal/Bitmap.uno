@@ -494,6 +494,19 @@ namespace Fuse.Internal.Bitmaps
 				build_error;
 		}
 
+		public static Bitmap LoadFromBuffer(Buffer buffer, String contentType)
+		{
+			if defined(CIL) 
+			{
+				var stream = new MemoryStream(buffer.GetHandle, false);
+				return LoadFromStream(stream);
+			}
+			else if defined(CPLUSPLUS)
+				return LoadFromByteArray(contentType, buffer.GetHandle);
+			else
+				build_error;
+		}
+
 		public float4 GetPixel(int x, int y)
 		{
 			if (x < 0 || x >= Size.X)
@@ -551,12 +564,12 @@ namespace Fuse.Internal.Bitmaps
 			return float4((1 - C) * (1 - K), (1 - M) * (1 - K), (1 - Y) * (1 - K), 1);
 		}
 
-		extern(CIL) void Render(OpenGL.GLTextureHandle textureHandle)
+		extern(CIL) static void Render(System.Drawing.Bitmap nativeBitmap, OpenGL.GLTextureHandle textureHandle)
 		{
-			System.Drawing.Rectangle rect = new System.Drawing.Rectangle(0, 0, NativeBitmap.Width, NativeBitmap.Height);
-			var bitmapData = NativeBitmap.LockBits(rect, System.Drawing.ImageLockMode.ReadOnly, System.Drawing.PixelFormat.Format32bppPArgb);
+			System.Drawing.Rectangle rect = new System.Drawing.Rectangle(0, 0, nativeBitmap.Width, nativeBitmap.Height);
+			var bitmapData = nativeBitmap.LockBits(rect, System.Drawing.ImageLockMode.ReadOnly, System.Drawing.PixelFormat.Format32bppPArgb);
 			IntPtr ptr = bitmapData.Scan0;
-			int bytes  = Math.Abs(bitmapData.Stride) * NativeBitmap.Height;
+			int bytes  = Math.Abs(bitmapData.Stride) * nativeBitmap.Height;
 			byte[] rgbValues = new byte[bytes];
 			byte[] outputValues = new byte[bytes];
 
@@ -578,39 +591,39 @@ namespace Fuse.Internal.Bitmaps
 			GL.BindTexture(GLTextureTarget.Texture2D, textureHandle);
 			GL.TexImage2D(
 				GLTextureTarget.Texture2D, 0, 
-				GLPixelFormat.Rgba, (int)NativeBitmap.Width, (int)NativeBitmap.Height, 0, 
+				GLPixelFormat.Rgba, (int)nativeBitmap.Width, (int)nativeBitmap.Height, 0, 
 				GLPixelFormat.Rgba, GLPixelType.UnsignedByte, 
 				new Buffer(outputValues)
 			);
-			NativeBitmap.UnlockBits(bitmapData);
+			nativeBitmap.UnlockBits(bitmapData);
 		}
 
 		// TODO: consider making this an extension method somewhere else instead?
-		public Texture2D UploadTexture()
+		public static Texture2D UploadTexture(Bitmap bitmap)
 		{
 			if defined(Android)
 			{
 				var textureHandle = GL.CreateTexture();
 				// TODO: bind texture
-				AndroidHelpers.TexImage2D(0, NativeBitmap, 0);
-				return new Texture2D(textureHandle, Size, 1, Format.RGBA8888);
+				AndroidHelpers.TexImage2D(0, bitmap.NativeBitmap, 0);
+				return new Texture2D(textureHandle, bitmap.Size, 1, Format.RGBA8888);
 			}
 			else if defined(CIL)
 			{
 				var textureHandle = GL.CreateTexture();
-				Render(textureHandle);
-				return new Texture2D(textureHandle, Size, 1, Format.RGBA8888);
+				Render(bitmap.NativeBitmap, textureHandle);
+				return new Texture2D(textureHandle, bitmap.Size, 1, Format.RGBA8888);
 			}
 			else if defined (iOS)
 			{
 				var textureHandle = GL.CreateTexture();
-				IOSHelpers.UploadTexture(NativeImage, (int)textureHandle);
-				return new Texture2D(textureHandle, Size, 1, Format.RGBA8888);
+				IOSHelpers.UploadTexture(bitmap.NativeImage, (int)textureHandle);
+				return new Texture2D(textureHandle, bitmap.Size, 1, Format.RGBA8888);
 			}
 			else if defined (CPLUSPLUS)
 			{
-				var textureHandle = CPlusPlusHelpers.UploadTexture(NativeBitmap);
-				return new Texture2D(textureHandle, Size, 1, Format.RGBA8888);
+				var textureHandle = CPlusPlusHelpers.UploadTexture(bitmap.NativeBitmap);
+				return new Texture2D(textureHandle, bitmap.Size, 1, Format.RGBA8888);
 			}
 			else 
 			{
