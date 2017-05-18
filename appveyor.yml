@@ -6,7 +6,7 @@ install:
   - ps: Expand-Archive mesa.zip mesa
 
 build_script:
-  - Stuff\uno doctor Source
+  - Stuff\uno --trace doctor Source
 
 before_test:
   - ps: |
@@ -17,4 +17,4 @@ before_test:
       }
 
 test_script:
-  - Stuff\uno test -tDotNet Source
+  - Stuff\uno --trace test -tDotNet Source

@@ -15,5 +15,5 @@ before_script:
   - export CXX="ccache clang++"
 
 script:
-  - Stuff/uno doctor
-  - Stuff/uno test -tnative --timeout=30 Source
+  - Stuff/uno --trace doctor
+  - Stuff/uno --trace test -tnative --timeout=30 Source
