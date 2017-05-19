@@ -1,7 +1,7 @@
-Uno.Net.Http: 1.0.9
-Uno.Net.Sockets: 1.0.9
-Uno.PerformanceTesting: 1.0.9
-Uno.Permissions: 1.0.9
-Uno.Testing: 1.0.9
-Uno.Threading: 1.0.9
-UnoCore: 1.0.9
+Uno.Net.Http: 1.0.11
+Uno.Net.Sockets: 1.0.11
+Uno.PerformanceTesting: 1.0.11
+Uno.Permissions: 1.0.11
+Uno.Testing: 1.0.11
+Uno.Threading: 1.0.11
+UnoCore: 1.0.11
