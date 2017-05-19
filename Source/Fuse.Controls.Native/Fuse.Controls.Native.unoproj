@@ -2,7 +2,7 @@
   "Copyright": "Copyright (c) Fusetools AS 2017",
   "Description": "Abstraction over platform-specific native controls",
   "Publisher": "Fusetools AS",
-  "Version": "1.0.1",
+  "Version": "1.0.2",
   "Package": {
     "ProjectUrl": "https://fusetools.com"
   },
