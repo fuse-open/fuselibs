@@ -25,25 +25,7 @@ namespace Fuse.Reactive
 		
 		public override IDisposable Subscribe(IContext context, IListener listener)
 		{
-			var instantiator = context.Node.FindBehavior<Instantiator>();
-			if (instantiator == null)
-			{
-				Fuse.Diagnostics.UserError( "Could not an Each", this );
-				return null;
-			}
-			
-			//find our node relative to the instantiator
-			var p = context.Node;
-			while (p != null && p.ContextParent != instantiator)
-				p = p.ContextParent;
-			if (p == null)
-			{
-				//given that instantiator wasn't null this shouldn't ever really happen
-				Fuse.Diagnostics.InternalError( "Unable to resolve Each node", this );
-				return null;
-			}
-			
-			return new InstantiatorSubscription(this, instantiator, p, _item, listener, context );
+			return new InstantiatorSubscription(this, _item, listener, context );
 		}
 		
 		class InstantiatorSubscription : Subscription
@@ -53,23 +35,58 @@ namespace Fuse.Reactive
 			Node _instance;
 			Selector _item;
 			IListener _listener;
+			IContext _context; //TODO: in base?
 			
-			public InstantiatorSubscription(InstantiatorFunction expr, Instantiator instantiator, 
-				Node instance, Selector item, IListener listener, IContext context ) : 
+			public InstantiatorSubscription(InstantiatorFunction expr, Selector item, IListener listener, IContext context ) : 
 				base(expr, listener)
 			{
 				_expr = expr;
-				_instantiator = instantiator;
 				_item = item;
-				_instance = instance;
 				_listener = listener;
-				_instantiator.UpdatedWindowItems += OnUpdatedWindowItems;
+				_context = context;
 				Init(context);
 			}
 			
 			protected override void OnNewOperand(object obj)
 			{
-				PushValue();
+				if (_instantiator != null)
+				{
+					_instantiator.UpdatedWindowItems -= OnUpdatedWindowItems;
+					_instantiator = null;
+					_instance = null;
+				}
+				
+				var searchNode = obj as Node ?? _context.Node;
+				if (searchNode == null)
+				{
+					Fuse.Diagnostics.UserError( "invalid search node for InstantiatorFunction", this );
+					return;
+				}
+				
+				_instantiator = searchNode.FindBehavior<Instantiator>();
+				if (_instantiator == null)
+				{
+					Fuse.Diagnostics.UserError( "Could not find an Instantiator", this );
+					return;
+				}
+				
+				//find our node relative to the instantiator
+				var p = _context.Node;
+				while (p != null && p.ContextParent != _instantiator)
+					p = p.ContextParent;
+				if (p == null)
+				{
+					//given that instantiator wasn't null this shouldn't ever really happen
+					Fuse.Diagnostics.InternalError( "Unable to resolve Instantiator node", this );
+					return;
+				}
+			
+				if (_instantiator != null)
+				{
+					_instance = p;
+					_instantiator.UpdatedWindowItems += OnUpdatedWindowItems;
+					PushValue();
+				}
 			}
 			
 			public override void Dispose()

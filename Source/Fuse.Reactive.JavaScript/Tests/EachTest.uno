@@ -309,5 +309,16 @@ namespace Fuse.Reactive.Test
 				Assert.AreEqual("3-0", GetText(e));
 			}
 		}
+		
+		[Test]
+		public void FunctionArg()
+		{
+			var e = new UX.Each.Function.Arg();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+ 				root.StepFrame();
+ 				Assert.AreEqual("0-0,0-1,1-0,1-1", GetText(e));
+			}
+		}
 	}
 }
