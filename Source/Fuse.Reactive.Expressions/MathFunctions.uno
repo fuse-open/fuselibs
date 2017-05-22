@@ -1,3 +1,4 @@
+using Uno;
 using Uno.UX;
 
 namespace Fuse.Reactive
@@ -31,6 +32,22 @@ namespace Fuse.Reactive
 		public override string ToString()
 		{
 			return "max(" + Left + ", " + Right + ")";
+		}
+	}
+	
+	[UXFunction("mod")]
+	public sealed class Mod : BinaryOperator
+	{
+		[UXConstructor]
+		public Mod([UXParameter("Left")] Expression left, [UXParameter("Right")] Expression right): base(left, right) {}
+		protected override object Compute(object left, object right)
+		{
+			return Math.Mod( Marshal.ToFloat(left), Marshal.ToFloat(right) );
+		}
+
+		public override string ToString()
+		{
+			return "mod(" + Left + ", " + Right + ")";
 		}
 	}
 }
