@@ -165,6 +165,7 @@ namespace Fuse.Reactive
 			if (_rootTemplates != null)
 				_rootTemplates.Unsubscribe();
 				
+			_completedRemove = null;
 			base.OnUnrooted();
 		}
 
@@ -526,9 +527,13 @@ namespace Fuse.Reactive
 			}
 		}
 		
+		//prevents creation of this delegate each time an item is removed
+		Action<Node> _completedRemove;
 		void RemoveFromParent(Node n)
 		{
-			Parent.BeginRemoveChild(n, CompletedRemove);
+			if (_completedRemove == null)
+				_completedRemove = CompletedRemove;
+			Parent.BeginRemoveChild(n, _completedRemove);
 		}
 		
 		void CompletedRemove(Node n)
