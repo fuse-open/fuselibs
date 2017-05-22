@@ -329,7 +329,7 @@ namespace Fuse.Reactive
 
 		internal int WindowItemsCount { get { return _windowItems.Count; } }
 		
-		int DataIndexOfChild(Node child)
+		internal int DataIndexOfChild(Node child)
 		{
 			for (int i = 0; i < _windowItems.Count; i++)
 			{
@@ -700,8 +700,9 @@ namespace Fuse.Reactive
 			//find last node prior to where we want to introduce
 			var lastNode = GetLastNodeFromIndex(windowIndex-1);
 
-			Parent.InsertNodes( Parent.Children.IndexOf(lastNode) + 1, newElements.GetEnumerator() );
+			//assign first for lookups during the rooting in Insert can find the data
 			wi.Nodes = newElements;
+			Parent.InsertNodes( Parent.Children.IndexOf(lastNode) + 1, newElements.GetEnumerator() );
 		}
 
 		class ObservableLink: ValueObserver

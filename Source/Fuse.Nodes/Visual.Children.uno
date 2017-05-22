@@ -36,7 +36,7 @@ namespace Fuse
 			}
 			return null;
 		}
-
+		
 		public void RemoveAllChildren<T>()
 		{
 			var i = Children.Count - 1;

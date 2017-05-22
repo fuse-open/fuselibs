@@ -133,5 +133,27 @@ namespace Fuse
 			return this;
 		}
 
+		internal T FindBehavior<T>() where T : Behavior
+		{
+			var from = this;
+			while (from != null)
+			{
+				//allow specifying the target behavior directly (for overrides). Or the eventual
+				//situation where Behaviors can have children
+				var b = from as T;
+				if (b != null)
+					return b;
+					
+				var v = from as Visual;
+				if (v != null)
+				{
+					var c = v.FirstChild<T>();
+					if (c != null)
+						return c;
+				}
+				from = from.ContextParent;
+			}
+			return null;
+		}
 	}
 }

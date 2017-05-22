@@ -1,0 +1,19 @@
+<Panel ux:Class="UX.Each.Expression">
+	<JavaScript>
+		var Observable = require("FuseJS/Observable")
+		
+		exports.items = Observable()
+		for (var i=0; i < 4; ++i) {
+			exports.items.add( { index: i } )
+		}
+
+	</JavaScript>
+	
+	<Each Items="{items}" Offset="1" ux:Name="each">
+		<Text Value="{index}-{= index(each)}-{= offsetIndex(each)}"/>
+		<!-- TODO: test {Each DataIndex} was causing a crash instead of nice error -->
+		<!-- TODO: test ToggleControl  Value="index(each)" crashes horribly -->
+	</Each>
+	
+<!-- 	<FuseTest.Invoke Handler="{add}" ux:Name="CallAdd"/> -->
+</Panel>

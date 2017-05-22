@@ -3,8 +3,8 @@ using Uno.Collections;
 using Uno.Threading;
 
 using Fuse;
-using Fuse.Triggers;
 using Fuse.Elements;
+using Fuse.Triggers;
 
 namespace FuseTest
 {
@@ -105,6 +105,35 @@ namespace FuseTest
 			}
 		}
 
+		static public T[] GetChildren<T>( Visual v ) where T : class
+		{
+			var list = new List<T>();
+			for (int i=0; i < v.Children.Count; ++i)
+			{
+				var q = v.Children[i] as T;
+				if (q != null)
+					list.Add(q);
+			}
+			return list.ToArray();
+		}
+		
+		static public string GetText(Visual p)
+		{
+			var q = "";
+			for (int i=0; i < p.Children.Count; ++i)
+			{
+				var c = p.Children[i];
+				var t = c as Fuse.Controls.Text;
+				if (t != null)
+				{
+					if (q != "")
+						q += ",";
+					q += t.Value;
+				}
+			}
+			return q;
+		}
+		
 		/**
 			Use this rather than access Progress directly. It limits how many projects we have
 			to expose Internals to.
