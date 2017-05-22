@@ -324,8 +324,32 @@ namespace Fuse.Reactive
 			}
 		}
 		
-		//contains only the added nodes (not all data items)
+		/**
+			A list of all items which have been added to the Instantiator. This only includes the items
+			within the range of Offset+Limit.
+			
+			This list should only be modified via the InsertNew, RemoveAt, and RemoveAll functions.
+		*/
 		List<WindowItem> _windowItems = new List<WindowItem>();
+		
+		internal event Action UpdatedWindowItems;
+		bool _pendingUpdateWindowItems;
+		void OnUpdatedWindowItems()
+		{
+			if (UpdatedWindowItems == null || _pendingUpdateWindowItems)	
+				return;
+				
+			//defer to accumulate changes to the list
+			_pendingUpdateWindowItems = true;
+			UpdateManager.AddDeferredAction(PostUpdatedWindowItems);
+		}
+		
+		void PostUpdatedWindowItems()
+		{
+			if (UpdatedWindowItems != null)
+				UpdatedWindowItems();
+			_pendingUpdateWindowItems = false;
+		}
 
 		internal int WindowItemsCount { get { return _windowItems.Count; } }
 		
@@ -450,6 +474,7 @@ namespace Fuse.Reactive
 			SetValid();
 		}
 
+		/* Removes the item from the list of windowItems and cleans up associated nodes. */
 		void RemoveAt(int dataIndex)
 		{
 			var windowIndex = dataIndex - Offset;
@@ -465,6 +490,7 @@ namespace Fuse.Reactive
  
 			_windowItems.RemoveAt(windowIndex);
  			SetValid();		
+			OnUpdatedWindowItems();
 		}
 
 		void IObserver.OnInsertAt(int index, object value)
@@ -510,6 +536,7 @@ namespace Fuse.Reactive
 			for (int i = 0; i < dcs.Length; i++) InsertNew(i);
 		}
 
+		/** Removes all items from _windowItems */
 		void RemoveAll()
 		{
 			if (_windowItems.Count == 0) return;
@@ -525,6 +552,7 @@ namespace Fuse.Reactive
 				for (int n = 0; n < l.Count; n++)
 					RemoveFromParent(l[n]);
 			}
+			OnUpdatedWindowItems();
 		}
 		
 		//prevents creation of this delegate each time an item is removed
@@ -595,6 +623,7 @@ namespace Fuse.Reactive
 
 		bool _pendingNew;
 		
+		/** Inserts a new item into the _windowItems. The actual creation of the objects may be deferred. */
 		void InsertNew(int dataIndex)
 		{
 			var windowIndex = dataIndex - Offset;
@@ -617,6 +646,8 @@ namespace Fuse.Reactive
 					UpdateManager.AddDeferredAction(CompleteWindowItemsAction);
 				_pendingNew = true;
 			}
+			
+			OnUpdatedWindowItems();
 		}
 		
 		bool IDeferred.Perform()

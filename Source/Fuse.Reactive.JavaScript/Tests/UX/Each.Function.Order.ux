@@ -1,0 +1,28 @@
+<Panel ux:Class="UX.Each.Function.Order">
+	<JavaScript>
+		var Observable = require("FuseJS/Observable")
+		
+		exports.items = Observable()
+		for (var i=0; i < 2; ++i) {
+			exports.items.add( { id: i } )
+		}
+
+		exports.insert = function() {
+			exports.items.insertAt( 0, { id : 2 } )
+		}
+		exports.remove = function() {
+			exports.items.removeAt(1)
+		}
+		exports.replace = function() {
+			exports.items.value = { id: 3 }
+		}
+	</JavaScript>
+	
+	<Each Items="{items}" ux:Name="each">
+		<Text Value="{id}-{= index(each)}"/>
+	</Each>
+	
+	<FuseTest.Invoke Handler="{insert}" ux:Name="CallInsert"/>
+	<FuseTest.Invoke Handler="{remove}" ux:Name="CallRemove"/>
+	<FuseTest.Invoke Handler="{replace}" ux:Name="CallReplace"/>
+</Panel>

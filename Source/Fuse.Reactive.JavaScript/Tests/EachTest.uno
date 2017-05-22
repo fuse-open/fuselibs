@@ -277,13 +277,36 @@ namespace Fuse.Reactive.Test
 		}
 		
 		[Test]
-		public void Expression()
+		public void FunctionBasic()
 		{
-			var e = new UX.Each.Expression();
+			var e = new UX.Each.Function.Basic();
 			using (var root = TestRootPanel.CreateWithChild(e))
 			{
 				root.StepFrameJS();
 				Assert.AreEqual("1-1-0,2-2-1,3-3-2", GetText(e));
+			}
+		}
+		
+		[Test]
+		public void FunctionOrder()
+		{
+			var e = new UX.Each.Function.Order();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.StepFrameJS();
+				Assert.AreEqual("0-0,1-1", GetText(e));
+				
+				e.CallInsert.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual("2-0,0-1,1-2", GetText(e));
+				
+				e.CallRemove.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual("2-0,1-1", GetText(e));
+				
+				e.CallReplace.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual("3-0", GetText(e));
 			}
 		}
 	}

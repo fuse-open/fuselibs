@@ -63,6 +63,7 @@ namespace Fuse.Reactive
 				_item = item;
 				_instance = instance;
 				_listener = listener;
+				_instantiator.UpdatedWindowItems += OnUpdatedWindowItems;
 				Init(context);
 			}
 			
@@ -76,12 +77,19 @@ namespace Fuse.Reactive
 				base.Dispose();
 				_expr = null;
 				_listener = null;
+				if (_instantiator != null)
+					_instantiator.UpdatedWindowItems -= OnUpdatedWindowItems;
 				_instantiator = null;
 			}
 			
 			void PushValue()
 			{
 				_listener.OnNewData(_expr, GetValue());
+			}
+			
+			void OnUpdatedWindowItems()
+			{
+				PushValue();
 			}
 			
 			object GetValue()
