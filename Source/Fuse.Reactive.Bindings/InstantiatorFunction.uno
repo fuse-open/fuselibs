@@ -98,26 +98,22 @@ namespace Fuse.Reactive
 					_instantiator.UpdatedWindowItems -= OnUpdatedWindowItems;
 				_instantiator = null;
 			}
-			
+	
 			void PushValue()
 			{
-				_listener.OnNewData(_expr, GetValue());
+				int q = -1;
+				if (_item == InstantiatorFunction.DataIndexName)
+					q =  _instantiator.DataIndexOfChild(_instance);
+				else if (_item == InstantiatorFunction.OffsetIndexName)
+					q = _instantiator.DataIndexOfChild(_instance) - _instantiator.Offset;
+					
+				if (q != -1)
+					_listener.OnNewData(_expr, q);
 			}
 			
 			void OnUpdatedWindowItems()
 			{
 				PushValue();
-			}
-			
-			object GetValue()
-			{
-				if (_item == InstantiatorFunction.DataIndexName)
-					return _instantiator.DataIndexOfChild(_instance);
-					
-				if (_item == InstantiatorFunction.OffsetIndexName)
-					return _instantiator.DataIndexOfChild(_instance) - _instantiator.Offset;
-				
-				return null;
 			}
 		}
 	}

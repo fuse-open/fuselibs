@@ -320,5 +320,22 @@ namespace Fuse.Reactive.Test
  				Assert.AreEqual("0-0,0-1,1-0,1-1", GetText(e));
 			}
 		}
+		
+		[Test]
+		//index() retains the previous value if the item is removed, or rather it doesn't update if there is no value
+		public void FunctionRemove()
+		{
+			var e = new UX.Each.Function.Remove();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+ 				root.StepFrameJS();
+ 				Assert.AreEqual("0-0,1-1,2-2", GetText(e));
+ 				
+ 				e.CallReplace.Perform();
+ 				root.StepFrameJS();
+ 				//it's not certain if the new element is guaranteed to be in this place
+ 				Assert.AreEqual("3-0,0-0,1-1,2-2", GetText(e));
+			}
+		}
 	}
 }
