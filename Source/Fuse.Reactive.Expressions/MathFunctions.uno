@@ -121,5 +121,22 @@ namespace Fuse.Reactive
 			return "alternate(" + Left + ", " + Right + ")";
 		}
 	}
+
+	[UXFunction("sin")]
+	/** The sine of the input value */
+	public sealed class Sin : UnaryOperator
+	{
+		[UXConstructor]
+		public Sin([UXParameter("Operand")] Expression operand): base(operand) {}
+		protected override object Compute(object operand)
+		{
+			return Math.Sin(Marshal.ToType<float>(operand));
+		}
+
+		public override string ToString()
+		{
+			return "sin(" + Operand +  ")";
+		}
+	}
 	
 }

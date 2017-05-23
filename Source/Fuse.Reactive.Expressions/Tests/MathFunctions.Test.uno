@@ -77,5 +77,15 @@ namespace Fuse.Reactive.Test
 				}
 			}
 		}
+		
+		[Test]
+		public void Trig()
+		{
+			var p = new UX.MathFunctions.Trig();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				Assert.AreEqual( Math.Sin(1), p.sin.Float );
+			}
+		}
 	}
 }
