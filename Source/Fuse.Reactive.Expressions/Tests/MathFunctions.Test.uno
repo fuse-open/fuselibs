@@ -100,7 +100,6 @@ namespace Fuse.Reactive.Test
 					Assert.AreEqual( Math.Asin(v), p.asin.Float );
 					Assert.AreEqual( Math.Acos(v), p.acos.Float );
 					Assert.AreEqual( Math.Atan(v), p.atan.Float );
-					Assert.AreEqual( Math.Atan2(v,0.5f), p.atan2.Float);
 					Assert.AreEqual( Math.Abs(v), p.abs.Float );
 					Assert.AreEqual( Math.Sqrt(v), p.sqrt.Float );
 					Assert.AreEqual( Math.Ceil(v), p.ceil.Float );
@@ -113,6 +112,44 @@ namespace Fuse.Reactive.Test
 					Assert.AreEqual( Math.Log(v), p.log.Float );
 					Assert.AreEqual( Math.Log2(v), p.log2.Float );
 					Assert.AreEqual( Math.Sign(v), p.sign.Float );
+					
+					Assert.AreEqual( Math.Atan2(v,0.5f), p.atan2.Float);
+					Assert.AreEqual( Math.Pow(v,0.5f), p.pow.Float);
+				}
+			}
+		}
+		
+		[Test]
+		public void Vector()
+		{
+			var p = new UX.MathFunctions.Vector();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				var values = new[]{ float4(1,2,3,4) };
+				for (int i=0; i < values.Length; ++i)
+				{
+					var v = values[i];
+					//first time comes from 1.0 value in the UX on rooting
+					if (i !=0)
+					{
+						p.a.Float4 = v;
+						root.PumpDeferred();
+					}
+					Assert.AreEqual( Math.Sin(v), p.sin.Float4 );
+					Assert.IsTrue( p.sin.Object is float4 );
+					
+					p.a.Float3 = v.YZW;
+					root.PumpDeferred();
+					Assert.AreEqual( Math.Sin(v.YZW), p.sin.Float3 );
+					//special assignment is needed in test since assing to `Object` converts to a SolidColor :/
+					Assert.AreEqual( Math.Sin(v.YZW), p.sin3.Float3 );
+					Assert.IsTrue( p.sin3.Object is float3 );
+					
+					p.a.Float2 = v.XW;
+					root.PumpDeferred();
+					Assert.AreEqual( Math.Sin(v.XW), p.sin.Float2 );
+					Assert.AreEqual( Math.Sin(v.XW), p.sin2.Float2 );
+					Assert.IsTrue( p.sin2.Object is float2 );
 				}
 			}
 		}

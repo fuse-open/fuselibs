@@ -21,4 +21,5 @@
 	<FuseTest.Value Object="sign({Property a.Object})" ux:Name="sign"/>
 	
 	<FuseTest.Value Object="atan2({Property a.Object},{Property b.Object})" ux:Name="atan2"/>
+	<FuseTest.Value Object="pow({Property a.Object},{Property b.Object})" ux:Name="pow"/>
 </Panel>

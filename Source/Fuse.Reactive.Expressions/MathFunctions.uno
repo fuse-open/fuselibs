@@ -136,7 +136,21 @@ namespace Fuse.Reactive
 		}
 		protected override object Compute(object operand)
 		{
-			return _op(Marshal.ToType<double>(operand));
+			float4 v;
+			int size;
+			if (Marshal.TryMarshalToFloat4(operand, out v, out size))
+			{	
+				if (size == 1)
+					return _op(v[0]);
+				if (size == 2)
+					return float2((float)_op(v[0]),(float)_op(v[1]));
+				if (size == 3)
+					return float3((float)_op(v[0]),(float)_op(v[1]),(float)_op(v[2]));
+				if (size == 4)
+					return float4((float)_op(v[0]),(float)_op(v[1]),(float)_op(v[2]),(float)_op(v[3]));
+			}
+				
+			return null;
 		}
 		public override string ToString()
 		{
@@ -326,6 +340,14 @@ namespace Fuse.Reactive
 		[UXConstructor]
 		public Sign([UXParameter("Operand")] Expression operand)
 			: base(operand, "sign", Math.Sign) {}
+	}
+
+	[UXFunction("pow")]
+	public sealed class Pow : BinaryFloatOperator
+	{
+		[UXConstructor]
+		public Pow([UXParameter("Left")] Expression left, [UXParameter("Left")] Expression right)
+			: base(left, right, "pow", Math.Pow) {}
 	}
 	
 }

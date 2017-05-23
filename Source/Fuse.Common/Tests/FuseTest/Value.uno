@@ -36,6 +36,24 @@ namespace FuseTest
 			set { Object = value; }
 		}
 		
+		public float4 Float4
+		{
+			get { return Marshal.ToType<float4>(Object); }
+			set { Object = value; }
+		}
+		
+		public float3 Float3
+		{
+			get { return Marshal.ToType<float3>(Object); }
+			set { Object = value; }
+		}
+
+		public float2 Float2
+		{
+			get { return Marshal.ToType<float2>(Object); }
+			set { Object = value; }
+		}
+		
 		public bool Boolean
 		{
 			get { return Marshal.ToType<bool>(Object); }
