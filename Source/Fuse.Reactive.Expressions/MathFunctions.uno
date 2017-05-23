@@ -50,4 +50,42 @@ namespace Fuse.Reactive
 			return "mod(" + Left + ", " + Right + ")";
 		}
 	}
+
+	[UXFunction("even")]
+	/** True if the rounded value is even, false otherwise*/
+	public sealed class Even : UnaryOperator
+	{
+		[UXConstructor]
+		public Even([UXParameter("Operand")] Expression operand): base(operand) {}
+		protected override object Compute(object operand)
+		{
+			//this rounds floats automatically it seems
+			var q = (int)Math.Floor(Marshal.ToType<float>(operand)+0.5f);
+			return q % 2 == 0;
+		}
+
+		public override string ToString()
+		{
+			return "even(" + Operand +  ")";
+		}
+	}
+	
+	[UXFunction("odd")]
+	/** True if the rounded value is odd, false otherwise*/
+	public sealed class Odd : UnaryOperator
+	{
+		[UXConstructor]
+		public Odd([UXParameter("Operand")] Expression operand): base(operand) {}
+		protected override object Compute(object operand)
+		{
+			var q = (int)Math.Floor(Marshal.ToType<float>(operand)+0.5f);
+			return q % 2 != 0;
+		}
+
+		public override string ToString()
+		{
+			return "odd(" + Operand +  ")";
+		}
+	}
+	
 }

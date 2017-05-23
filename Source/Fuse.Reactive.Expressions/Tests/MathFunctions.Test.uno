@@ -19,8 +19,41 @@ namespace Fuse.Reactive.Test
 				p.b.Float = 3.5f;
 				root.PumpDeferred();
 				Assert.AreEqual(3.0f, p.c.Float);
+				
+				p.a.Float = -9.5f;
+				root.PumpDeferred();
+				Assert.AreEqual(1f, p.c.Float);
+				
+				p.b.Float = -3f;
+				root.PumpDeferred();
+				Assert.AreEqual(-0.5f, p.c.Float);
 			}
 		}
-		
+
+		[Test]
+		public void EvenOdd()
+		{
+			var p = new UX.MathFunctions.EvenOdd();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				Assert.IsTrue(p.b.Boolean);
+				Assert.IsFalse(p.c.Boolean);
+				
+				p.a.Integer = -3;
+				root.PumpDeferred();
+				Assert.IsFalse(p.b.Boolean);
+				Assert.IsTrue(p.c.Boolean);
+				
+				p.a.Float = 2.6f; //rounds to 3
+				root.PumpDeferred();
+				Assert.IsFalse(p.b.Boolean);
+				Assert.IsTrue(p.c.Boolean);
+				
+				p.a.Float = -2.3f; //rounds to -2
+				root.PumpDeferred();
+				Assert.IsTrue(p.b.Boolean);
+				Assert.IsFalse(p.c.Boolean);
+			}
+		}
 	}
 }

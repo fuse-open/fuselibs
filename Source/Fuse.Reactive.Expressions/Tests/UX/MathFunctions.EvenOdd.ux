@@ -1,0 +1,5 @@
+<Panel ux:Class="UX.MathFunctions.EvenOdd">
+	<FuseTest.Value Integer="10" ux:Name="a"/>
+	<FuseTest.Value Object="even({Property a.Object})" ux:Name="b"/>
+	<FuseTest.Value Object="odd({Property a.Object})" ux:Name="c"/>
+</Panel>
