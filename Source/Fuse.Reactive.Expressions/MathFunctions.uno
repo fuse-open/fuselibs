@@ -87,5 +87,39 @@ namespace Fuse.Reactive
 			return "odd(" + Operand +  ")";
 		}
 	}
+
+	[UXFunction("alternate")]
+	/**
+		Alternate between true/false values for ranges of integers.
+		
+			alternate( value, groupSize )
+			
+		Input values are rounded to the nearest integer.
+		
+		Example:
+		
+			alternate( value, 3 )
+			
+		This will yield true for values 0,1,2, false for 3,4,5, true for 6,7,8, false for 9,10,11, etc.
+	*/
+	public sealed class Alternate : BinaryOperator
+	{
+		[UXConstructor]
+		public Alternate([UXParameter("Left")] Expression left, [UXParameter("Right")] Expression right): base(left, right) {}
+		protected override object Compute(object left, object right)
+		{
+			var value = (int)Math.Floor(Marshal.ToType<float>(left)+0.5f);
+			var group = (int)Math.Floor(Marshal.ToType<float>(right)+0.5f);
+			var b = value >= 0 ? 
+				(value % (group*2)) < group: 
+				( -(value+1) % (group*2)) >= group;
+			return b;
+		}
+
+		public override string ToString()
+		{
+			return "alternate(" + Left + ", " + Right + ")";
+		}
+	}
 	
 }

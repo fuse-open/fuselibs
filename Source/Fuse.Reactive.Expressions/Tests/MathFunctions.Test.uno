@@ -55,5 +55,27 @@ namespace Fuse.Reactive.Test
 				Assert.IsFalse(p.c.Boolean);
 			}
 		}
+		
+		[Test]
+		public void Alternate()
+		{
+			var p = new UX.MathFunctions.Alternate();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				Assert.IsFalse(p.b.Boolean);
+				
+				var ts = new[]{ -6, -5, -4, 0, 1, 2, 6 };
+				var fs = new[]{ -7, -3, -2, -1, 3, 4, 5 };
+				for (int i=0; i < ts.Length; ++i)
+				{
+					p.a.Integer = ts[i];
+					root.PumpDeferred();
+					Assert.IsTrue(p.b.Boolean);
+					p.a.Integer = fs[i];
+					root.PumpDeferred();
+					Assert.IsFalse(p.b.Boolean);
+				}
+			}
+		}
 	}
 }
