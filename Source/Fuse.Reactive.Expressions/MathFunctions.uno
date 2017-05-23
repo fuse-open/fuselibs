@@ -232,5 +232,100 @@ namespace Fuse.Reactive
 			: base(left, right, "atan2", Math.Atan2) {}
 	}
 
+	[UXFunction("abs")]
+	public sealed class Abs : UnaryFloatOperator
+	{
+		[UXConstructor]
+		public Abs([UXParameter("Operand")] Expression operand)
+			: base(operand, "abs", Math.Abs) {}
+	}
+
+	[UXFunction("sqrt")]
+	public sealed class Sqrt : UnaryFloatOperator
+	{
+		[UXConstructor]
+		public Sqrt([UXParameter("Operand")] Expression operand)
+			: base(operand, "sqrt", Math.Sqrt) {}
+	}
+	
+	[UXFunction("ceil")]
+	public sealed class Ceil : UnaryFloatOperator
+	{
+		[UXConstructor]
+		public Ceil([UXParameter("Operand")] Expression operand)
+			: base(operand, "ceil", Math.Ceil) {}
+	}
+	
+	[UXFunction("floor")]
+	public sealed class Floor : UnaryFloatOperator
+	{
+		[UXConstructor]
+		public Floor([UXParameter("Operand")] Expression operand)
+			: base(operand, "floor", Math.Floor) {}
+	}
+	
+	[UXFunction("degreesToRadians")]
+	public sealed class DegreesToRadians : UnaryFloatOperator
+	{
+		[UXConstructor]
+		public DegreesToRadians([UXParameter("Operand")] Expression operand)
+			: base(operand, "degreesToRadians", Math.DegreesToRadians) {}
+	}
+
+	[UXFunction("radiansToDegrees")]
+	public sealed class RadiansToDegrees : UnaryFloatOperator
+	{
+		[UXConstructor]
+		public RadiansToDegrees([UXParameter("Operand")] Expression operand)
+			: base(operand, "radiansToDegrees", Math.RadiansToDegrees) {}
+	}
+
+	[UXFunction("exp")]
+	public sealed class Exp : UnaryFloatOperator
+	{
+		[UXConstructor]
+		public Exp([UXParameter("Operand")] Expression operand)
+			: base(operand, "exp", Math.Exp) {}
+	}
+
+	[UXFunction("exp2")]
+	public sealed class Exp2 : UnaryFloatOperator
+	{
+		[UXConstructor]
+		public Exp2([UXParameter("Operand")] Expression operand)
+			: base(operand, "exp2", Math.Exp2) {}
+	}
+
+	[UXFunction("fract")]
+	public sealed class Fract : UnaryFloatOperator
+	{
+		[UXConstructor]
+		public Fract([UXParameter("Operand")] Expression operand)
+			: base(operand, "fract", Math.Fract) {}
+	}
+	
+	[UXFunction("log")]
+	public sealed class Log : UnaryFloatOperator
+	{
+		[UXConstructor]
+		public Log([UXParameter("Operand")] Expression operand)
+			: base(operand, "log", Math.Log) {}
+	}
+
+	[UXFunction("log2")]
+	public sealed class Log2 : UnaryFloatOperator
+	{
+		[UXConstructor]
+		public Log2([UXParameter("Operand")] Expression operand)
+			: base(operand, "log2", Math.Log2) {}
+	}
+	
+	[UXFunction("sign")]
+	public sealed class Sign : UnaryFloatOperator
+	{
+		[UXConstructor]
+		public Sign([UXParameter("Operand")] Expression operand)
+			: base(operand, "sign", Math.Sign) {}
+	}
 	
 }

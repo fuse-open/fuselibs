@@ -79,12 +79,12 @@ namespace Fuse.Reactive.Test
 		}
 		
 		[Test]
-		public void Trig()
+		public void Simple()
 		{
-			var p = new UX.MathFunctions.Trig();
+			var p = new UX.MathFunctions.Simple();
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
-				var values = new[]{ 1.0f, 0.5f, 0.0f };
+				var values = new[]{ 1.0f, 0.5f, 0.0f, -0.5f };
 				for (int i=0; i < values.Length; ++i)
 				{
 					var v = values[i];
@@ -101,6 +101,18 @@ namespace Fuse.Reactive.Test
 					Assert.AreEqual( Math.Acos(v), p.acos.Float );
 					Assert.AreEqual( Math.Atan(v), p.atan.Float );
 					Assert.AreEqual( Math.Atan2(v,0.5f), p.atan2.Float);
+					Assert.AreEqual( Math.Abs(v), p.abs.Float );
+					Assert.AreEqual( Math.Sqrt(v), p.sqrt.Float );
+					Assert.AreEqual( Math.Ceil(v), p.ceil.Float );
+					Assert.AreEqual( Math.Floor(v), p.floor.Float );
+					Assert.AreEqual( Math.DegreesToRadians(v), p.degreesToRadians.Float );
+					Assert.AreEqual( Math.RadiansToDegrees(v), p.radiansToDegrees.Float );
+					Assert.AreEqual( Math.Exp(v), p.exp.Float );
+					Assert.AreEqual( Math.Exp2(v), p.exp2.Float );
+					Assert.AreEqual( Math.Fract(v), p.fract.Float );
+					Assert.AreEqual( Math.Log(v), p.log.Float );
+					Assert.AreEqual( Math.Log2(v), p.log2.Float );
+					Assert.AreEqual( Math.Sign(v), p.sign.Float );
 				}
 			}
 		}
