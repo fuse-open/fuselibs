@@ -288,6 +288,7 @@ namespace Fuse.Reactive.Test
 		}
 		
 		[Test]
+		//ensure values are updated as each items change
 		public void FunctionOrder()
 		{
 			var e = new UX.Each.Function.Order();
@@ -311,6 +312,7 @@ namespace Fuse.Reactive.Test
 		}
 		
 		[Test]
+		//nested Each lookup
 		public void FunctionArg()
 		{
 			var e = new UX.Each.Function.Arg();
@@ -335,6 +337,31 @@ namespace Fuse.Reactive.Test
  				root.StepFrameJS();
  				//it's not certain if the new element is guaranteed to be in this place
  				Assert.AreEqual("3-0,0-0,1-1,2-2", GetText(e));
+			}
+		}
+		
+		[Test]
+		//there's no way to test this feature yet
+		[Ignore("https://github.com/fusetools/fuselibs/issues/4199")]
+		public void FunctionDefault()
+		{
+			var e = new UX.Each.Function.Default();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+ 				root.StepFrame();
+ 				Assert.AreEqual("0,1,2", GetText(e));
+			}
+		}
+		
+		[Test]
+		//any node inside the Each will work for lookup
+		public void FunctionSearch()
+		{
+			var e = new UX.Each.Function.Search();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+ 				root.StepFrame();
+ 				Assert.AreEqual("0,1,2", GetRecursiveText(e));
 			}
 		}
 	}

@@ -117,6 +117,15 @@ namespace FuseTest
 			return list.ToArray();
 		}
 		
+		static string ConcatList(string a, string b)
+		{
+			if (b == "")
+				return a;
+			if (a == "")
+				return b;
+			return a + "," + b;
+		}
+		
 		static public string GetText(Visual p)
 		{
 			var q = "";
@@ -125,11 +134,24 @@ namespace FuseTest
 				var c = p.Children[i];
 				var t = c as Fuse.Controls.Text;
 				if (t != null)
-				{
-					if (q != "")
-						q += ",";
-					q += t.Value;
-				}
+					q = ConcatList(q,t.Value);
+			}
+			return q;
+		}
+		
+		static public string GetRecursiveText(Visual p)
+		{
+			var q = "";
+			for (int i=0; i < p.Children.Count; ++i)
+			{
+				var c = p.Children[i];
+				var t = c as Fuse.Controls.Text;
+				if (t != null)
+					q = ConcatList(q,t.Value);
+				
+				var v = c as Visual;
+				if (v != null)
+					q = ConcatList(q, GetRecursiveText(v));
 			}
 			return q;
 		}

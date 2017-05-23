@@ -80,7 +80,7 @@ namespace Fuse.Reactive
 					Fuse.Diagnostics.InternalError( "Unable to resolve Instantiator node", this );
 					return;
 				}
-			
+				
 				if (_instantiator != null)
 				{
 					_instance = p;
@@ -106,7 +106,7 @@ namespace Fuse.Reactive
 					q =  _instantiator.DataIndexOfChild(_instance);
 				else if (_item == InstantiatorFunction.OffsetIndexName)
 					q = _instantiator.DataIndexOfChild(_instance) - _instantiator.Offset;
-					
+
 				if (q != -1)
 					_listener.OnNewData(_expr, q);
 			}
@@ -122,6 +122,8 @@ namespace Fuse.Reactive
 	public class IndexFunction : InstantiatorFunction
 	{
 		[UXConstructor]
+		//due to https://github.com/fusetools/fuselibs/issues/4199 it's not possible yet to know if the default works
+		//so it's been commented out for now to avoid any unintended side-effects
 		public IndexFunction([UXParameter("Node")]/*[UXDefaultValue("null")]*/ Reactive.Expression node)
 			: base( node, DataIndexName )
 		{
