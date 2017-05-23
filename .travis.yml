@@ -8,12 +8,20 @@ install:
   - brew update
   - brew install mono
   - brew install ccache
+  - pip install six
   - Stuff/stuff install Stuff
 
 before_script:
   - export CC="ccache clang"
   - export CXX="ccache clang++"
+  - ulimit -c unlimited -S
+  - rm -rf /cores/core.*
 
 script:
   - Stuff/uno --trace doctor
   - Stuff/uno --trace test -tnative --timeout=30 Source
+
+after_failure:
+  - for c in $(ls /cores/core.*); do
+      lldb -c $c -o "bt all" -b;
+    done
