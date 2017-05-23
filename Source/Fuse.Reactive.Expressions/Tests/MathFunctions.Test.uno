@@ -153,5 +153,34 @@ namespace Fuse.Reactive.Test
 				}
 			}
 		}
+		
+		[Test]
+		public void Lerp()
+		{
+			var p = new UX.MathFunctions.Lerp();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				p.t.Float = 0.5f;
+				p.a.Float = 10;
+				p.b.Float = 20;
+				root.PumpDeferred();
+				Assert.AreEqual(15, p.lerp.Float);
+				
+				p.a.Float2 = float2(0,10);
+				p.b.Float2 = float2(10,0);
+				root.PumpDeferred();
+				Assert.AreEqual(float2(5), p.lerp.Float2);
+				
+				p.a.Float3 = float3(1,0,10);
+				p.b.Float3 = float3(1,10,0);
+				root.PumpDeferred();
+				Assert.AreEqual(float3(1,5,5), p.lerp.Float3);
+				
+				p.a.Float4 = float4(1,0,50,10);
+				p.b.Float4 = float4(1,10,100,0);
+				root.PumpDeferred();
+				Assert.AreEqual(float4(1,5,75,5), p.lerp.Float4);
+			}
+		}
 	}
 }

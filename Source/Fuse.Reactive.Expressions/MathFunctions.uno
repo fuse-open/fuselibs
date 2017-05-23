@@ -122,7 +122,13 @@ namespace Fuse.Reactive
 		}
 	}
 
-	/** Common base for floating point operations */
+	/** 
+		Common base for floating point operations 
+	
+		All the derived expressions support 1-4 component input values and will return a value of the same size.
+		
+		[subclass Fuse.Reactive.UnaryFloatOperator]
+	*/
 	public abstract class UnaryFloatOperator : UnaryOperator
 	{
 		internal delegate double FloatOp(double value);
@@ -157,7 +163,10 @@ namespace Fuse.Reactive
 			return _name + "(" + Operand +  ")";
 		}
 	}
-	
+
+	/**
+		[subclass Fuse.Reactive.BinaryFloatOperator]
+	*/
 	public abstract class BinaryFloatOperator : BinaryOperator
 	{
 		internal delegate double FloatOp(double a, double b);
@@ -346,8 +355,55 @@ namespace Fuse.Reactive
 	public sealed class Pow : BinaryFloatOperator
 	{
 		[UXConstructor]
-		public Pow([UXParameter("Left")] Expression left, [UXParameter("Left")] Expression right)
+		public Pow([UXParameter("Left")] Expression left, [UXParameter("Right")] Expression right)
 			: base(left, right, "pow", Math.Pow) {}
+	}
+
+	[UXFunction("lerp")]
+	/**
+		Calculates the linear interpolation between two values.
+		
+			lerp( from, to, step )
+			
+		When step==0 the result is `from`, when step==1 the result is `to`. Partial values are linearly interpolated. Step values <0 and >1 are also supported.
+		
+		The input supports a 1-4 component value for `from` and `to`. The result will be same size. 
+		`step` must always be a single value.
+	*/
+	public sealed class Lerp : TernaryOperator
+	{
+		[UXConstructor]
+		public Lerp([UXParameter("First")] Expression first, 
+			[UXParameter("Second")] Expression second, 
+			[UXParameter("Third")] Expression third) : 
+			base(first, second, third) 
+		{ }
+		protected override object Compute(object a, object b, object t)
+		{
+			float4 av = float4(0), bv = float4(0);
+			int asize = 0, bsize = 0;
+			if (!Marshal.TryMarshalToFloat4(a, out av, out asize) ||	
+				!Marshal.TryMarshalToFloat4(b, out bv, out bsize))
+				return null;
+			int size = Math.Max(asize, bsize);
+			
+			var tv = Marshal.ToType<float>(t);
+			
+			if (size == 1)
+				return Math.Lerp(av.X, bv.X, tv);
+			if (size == 2)
+				return Math.Lerp(av.XY, bv.XY, tv);
+			if (size == 3)
+				return Math.Lerp(av.XYZ, bv.XYZ, tv);
+			if (size == 4)
+				return Math.Lerp(av, bv, tv);
+				
+			return null;
+		}
+		public override string ToString()
+		{
+			return "lerp(" + First + "," + Second +  "," + Third + ")";
+		}
 	}
 	
 }
