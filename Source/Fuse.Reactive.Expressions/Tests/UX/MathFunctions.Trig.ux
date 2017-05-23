@@ -1,0 +1,11 @@
+<Panel ux:Class="UX.MathFunctions.Trig">
+	<FuseTest.Value Integer="1" ux:Name="a"/>
+	<FuseTest.Value Float="0.5" ux:Name="b"/>
+	<FuseTest.Value Object="sin({Property a.Object})" ux:Name="sin"/>
+	<FuseTest.Value Object="cos({Property a.Object})" ux:Name="cos"/>
+	<FuseTest.Value Object="tan({Property a.Object})" ux:Name="tan"/>
+	<FuseTest.Value Object="asin({Property a.Object})" ux:Name="asin"/>
+	<FuseTest.Value Object="acos({Property a.Object})" ux:Name="acos"/>
+	<FuseTest.Value Object="atan({Property a.Object})" ux:Name="atan"/>
+	<FuseTest.Value Object="atan2({Property a.Object},{Property b.Object})" ux:Name="atan2"/>
+</Panel>

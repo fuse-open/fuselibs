@@ -84,7 +84,24 @@ namespace Fuse.Reactive.Test
 			var p = new UX.MathFunctions.Trig();
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
-				Assert.AreEqual( Math.Sin(1), p.sin.Float );
+				var values = new[]{ 1.0f, 0.5f, 0.0f };
+				for (int i=0; i < values.Length; ++i)
+				{
+					var v = values[i];
+					//first time comes from 1.0 value in the UX on rooting
+					if (i !=0)
+					{
+						p.a.Float = v;
+						root.PumpDeferred();
+					}
+					Assert.AreEqual( Math.Sin(v), p.sin.Float );
+					Assert.AreEqual( Math.Cos(v), p.cos.Float );
+					Assert.AreEqual( Math.Tan(v), p.tan.Float );
+					Assert.AreEqual( Math.Asin(v), p.asin.Float );
+					Assert.AreEqual( Math.Acos(v), p.acos.Float );
+					Assert.AreEqual( Math.Atan(v), p.atan.Float );
+					Assert.AreEqual( Math.Atan2(v,0.5f), p.atan2.Float);
+				}
 			}
 		}
 	}

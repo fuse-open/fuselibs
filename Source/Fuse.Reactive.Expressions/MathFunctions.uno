@@ -122,21 +122,115 @@ namespace Fuse.Reactive
 		}
 	}
 
-	[UXFunction("sin")]
-	/** The sine of the input value */
-	public sealed class Sin : UnaryOperator
+	/** Common base for floating point operations */
+	public abstract class UnaryFloatOperator : UnaryOperator
 	{
-		[UXConstructor]
-		public Sin([UXParameter("Operand")] Expression operand): base(operand) {}
+		internal delegate double FloatOp(double value);
+		string _name;
+		FloatOp _op;
+		internal UnaryFloatOperator(Expression operand, string name, FloatOp op) : 
+			base(operand) 
+		{
+			_name = name;
+			_op = op;
+		}
 		protected override object Compute(object operand)
 		{
-			return Math.Sin(Marshal.ToType<float>(operand));
+			return _op(Marshal.ToType<double>(operand));
 		}
-
 		public override string ToString()
 		{
-			return "sin(" + Operand +  ")";
+			return _name + "(" + Operand +  ")";
 		}
 	}
+	
+	public abstract class BinaryFloatOperator : BinaryOperator
+	{
+		internal delegate double FloatOp(double a, double b);
+		string _name;
+		FloatOp _op;
+		internal BinaryFloatOperator(Expression left, Expression right, string name, FloatOp op) : 
+			base(left, right) 
+		{
+			_name = name;
+			_op = op;
+		}
+		protected override object Compute(object left, object right)
+		{
+			return _op(Marshal.ToType<double>(left), Marshal.ToType<double>(right));
+		}
+		public override string ToString()
+		{
+			return _name + "(" + Left + "," + Right +  ")";
+		}
+	}
+	
+	[UXFunction("sin")]
+	/** The trigonometric sine of the input angle (in radians) */
+	public sealed class Sin : UnaryFloatOperator
+	{
+		[UXConstructor]
+		public Sin([UXParameter("Operand")] Expression operand)
+			: base(operand,"sin", Math.Sin) {}
+	}
+	
+	[UXFunction("cos")]
+	/** The trigonometric cosine of the input angle (in radians) */
+	public sealed class Cos : UnaryFloatOperator
+	{
+		[UXConstructor]
+		public Cos([UXParameter("Operand")] Expression operand)
+			: base(operand, "cos", Math.Cos) {}
+	}
+	
+	[UXFunction("tan")]
+	/** The trigonometric tangent of the input angle (in radians) */
+	public sealed class Tan : UnaryFloatOperator
+	{
+		[UXConstructor]
+		public Tan([UXParameter("Operand")] Expression operand)
+			: base(operand, "tan", Math.Tan) {}
+	}
+	
+	/** The invserse trigonometric sine of the input */
+	[UXFunction("asin")]
+	public sealed class Asin : UnaryFloatOperator
+	{
+		[UXConstructor]
+		public Asin([UXParameter("Operand")] Expression operand)
+			: base(operand,"asin", Math.Asin) {}
+	}
+	
+	[UXFunction("acos")]
+	/** The invserse trigonometric cosine of the input */
+	public sealed class Acos : UnaryFloatOperator
+	{
+		[UXConstructor]
+		public Acos([UXParameter("Operand")] Expression operand)
+			: base(operand, "acos", Math.Acos) {}
+	}
+	
+	[UXFunction("atan")]
+	/** The invserse trigonometric tangent of the input */
+	public sealed class Atan : UnaryFloatOperator
+	{
+		[UXConstructor]
+		public Atan([UXParameter("Operand")] Expression operand)
+			: base(operand, "atan", Math.Atan) {}
+	}
+	
+	[UXFunction("atan2")]
+	/** 
+		The invserse trigonometric tangent of the input components 
+		
+			atan2(y, x)
+	*/
+	public sealed class Atan2 : BinaryFloatOperator
+	{
+		[UXConstructor]
+		public Atan2([UXParameter("Left")] Expression left, [UXParameter("Left")] Expression right)
+			: base(left, right, "atan2", Math.Atan2) {}
+	}
+
 	
 }
