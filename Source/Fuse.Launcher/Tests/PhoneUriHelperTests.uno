@@ -3,7 +3,7 @@ using Uno.Testing;
 using Fuse;
 using FuseTest;
 
-namespace Fuse.Tests
+namespace Fuse.LauncherTest
 {
 	public class PhoneUriHelperTests : TestBase
 	{
