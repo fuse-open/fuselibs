@@ -21,7 +21,6 @@
     "../Fuse.Reactive/Fuse.Reactive.unoproj",
   ],
   "InternalsVisibleTo": [
-    "Fuse.Reactive.Test",
     "Fuse.Scripting.Test",
     "Fuse.Common.Test.Helpers"
   ],
@@ -29,4 +28,3 @@
     "*"
   ]
 }
-
