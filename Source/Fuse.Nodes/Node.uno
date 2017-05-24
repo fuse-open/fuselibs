@@ -133,7 +133,8 @@ namespace Fuse
 			return this;
 		}
 
-		internal T FindBehavior<T>() where T : Behavior
+		//We want `: Behavior` here. This is an attempt to workaround a Uno/DotNet issue on some platforms
+		internal T FindBehavior<T>() where T : Node /*Behavior*/
 		{
 			var from = this;
 			while (from != null)

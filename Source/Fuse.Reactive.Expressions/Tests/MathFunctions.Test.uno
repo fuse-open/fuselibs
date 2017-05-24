@@ -101,7 +101,6 @@ namespace Fuse.Reactive.Test
 					Assert.AreEqual( Math.Acos(v), p.acos.Float );
 					Assert.AreEqual( Math.Atan(v), p.atan.Float );
 					Assert.AreEqual( Math.Abs(v), p.abs.Float );
-					Assert.AreEqual( Math.Sqrt(v), p.sqrt.Float );
 					Assert.AreEqual( Math.Ceil(v), p.ceil.Float );
 					Assert.AreEqual( Math.Floor(v), p.floor.Float );
 					Assert.AreEqual( Math.DegreesToRadians(v), p.degreesToRadians.Float );
@@ -109,14 +108,22 @@ namespace Fuse.Reactive.Test
 					Assert.AreEqual( Math.Exp(v), p.exp.Float );
 					Assert.AreEqual( Math.Exp2(v), p.exp2.Float );
 					Assert.AreEqual( Math.Fract(v), p.fract.Float );
-					Assert.AreEqual( Math.Log(v), p.log.Float );
-					Assert.AreEqual( Math.Log2(v), p.log2.Float );
 					Assert.AreEqual( Math.Sign(v), p.sign.Float );
 					Assert.AreEqual( Math.Round(v), p.round.Float );
 					Assert.AreEqual( Trunc.Op(v), p.trunc.Float );
+					//some have special exceptions where the Inf/NaN value doesn't compare right on some platforms
+					if (v > 0)
+					{
+						Assert.AreEqual( Math.Log(v), p.log.Float );
+						Assert.AreEqual( Math.Log2(v), p.log2.Float );
+					}
+					if (v >= 0)
+					{
+						Assert.AreEqual( Math.Sqrt(v), p.sqrt.Float );
+						Assert.AreEqual( Math.Pow(v,0.5f), p.pow.Float);
+					}
 					
 					Assert.AreEqual( Math.Atan2(v,0.5f), p.atan2.Float);
-					Assert.AreEqual( Math.Pow(v,0.5f), p.pow.Float);
 				}
 			}
 		}
