@@ -35,7 +35,7 @@ namespace Fuse.Reactive
 			Node _instance;
 			Selector _item;
 			IListener _listener;
-			IContext _context; //TODO: in base?
+			IContext _context;
 			
 			public InstantiatorSubscription(InstantiatorFunction expr, Selector item, IListener listener, IContext context ) : 
 				base(expr, listener)
