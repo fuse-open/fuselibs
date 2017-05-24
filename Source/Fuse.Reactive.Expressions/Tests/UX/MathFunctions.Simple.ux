@@ -19,6 +19,8 @@
 	<FuseTest.Value Object="log({Property a.Object})" ux:Name="log"/>
 	<FuseTest.Value Object="log2({Property a.Object})" ux:Name="log2"/>
 	<FuseTest.Value Object="sign({Property a.Object})" ux:Name="sign"/>
+	<FuseTest.Value Object="round({Property a.Object})" ux:Name="round"/>
+	<FuseTest.Value Object="trunc({Property a.Object})" ux:Name="trunc"/>
 	
 	<FuseTest.Value Object="atan2({Property a.Object},{Property b.Object})" ux:Name="atan2"/>
 	<FuseTest.Value Object="pow({Property a.Object},{Property b.Object})" ux:Name="pow"/>

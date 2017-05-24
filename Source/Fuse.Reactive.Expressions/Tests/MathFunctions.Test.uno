@@ -84,7 +84,7 @@ namespace Fuse.Reactive.Test
 			var p = new UX.MathFunctions.Simple();
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
-				var values = new[]{ 1.0f, 0.5f, 0.0f, -0.5f };
+				var values = new[]{ 1.0f, 0.5f, 0.0f, -0.55f, 0.7f, -0.4f };
 				for (int i=0; i < values.Length; ++i)
 				{
 					var v = values[i];
@@ -112,11 +112,22 @@ namespace Fuse.Reactive.Test
 					Assert.AreEqual( Math.Log(v), p.log.Float );
 					Assert.AreEqual( Math.Log2(v), p.log2.Float );
 					Assert.AreEqual( Math.Sign(v), p.sign.Float );
+					Assert.AreEqual( Math.Round(v), p.round.Float );
+					Assert.AreEqual( Trunc.Op(v), p.trunc.Float );
 					
 					Assert.AreEqual( Math.Atan2(v,0.5f), p.atan2.Float);
 					Assert.AreEqual( Math.Pow(v,0.5f), p.pow.Float);
 				}
 			}
+		}
+		
+		[Test]
+		public void TruncOp()
+		{
+			Assert.AreEqual(0, Trunc.Op(0.5));
+			Assert.AreEqual(0, Trunc.Op(-0.7));
+			Assert.AreEqual(5, Trunc.Op(5.9));
+			Assert.AreEqual(-110, Trunc.Op(-110.7));
 		}
 		
 		[Test]

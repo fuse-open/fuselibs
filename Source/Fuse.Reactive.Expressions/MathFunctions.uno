@@ -359,6 +359,28 @@ namespace Fuse.Reactive
 			: base(left, right, "pow", Math.Pow) {}
 	}
 
+	[UXFunction("round")]
+	public sealed class Round : UnaryFloatOperator
+	{
+		[UXConstructor]
+		public Round([UXParameter("Operand")] Expression operand)
+			: base(operand, "operand", Math.Round) {}
+	}
+	
+	[UXFunction("trunc")]
+	/** Rounds to the next whole integer closer to zero */
+	public sealed class Trunc : UnaryFloatOperator
+	{
+		[UXConstructor]
+		public Trunc([UXParameter("Operand")] Expression operand)
+			: base(operand, "trunc", Op) {}
+			
+		internal static double Op(double v)
+		{
+			return v < 0 ? Math.Ceil(v) : Math.Floor(v);
+		}
+	}
+	
 	[UXFunction("lerp")]
 	/**
 		Calculates the linear interpolation between two values.
