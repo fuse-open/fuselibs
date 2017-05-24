@@ -193,5 +193,32 @@ namespace Fuse.Reactive.Test
 				Assert.AreEqual(float4(1,5,75,5), p.lerp.Float4);
 			}
 		}
+		
+		[Test]
+		public void Clamp()
+		{
+			var p = new UX.MathFunctions.Clamp();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				p.t.Float = 0.5f;
+				p.a.Float = 10;
+				p.b.Float = 20;
+				root.PumpDeferred();
+				Assert.AreEqual(10, p.clamp.Float);
+				
+				p.a.Float2 = float2(0,15);
+				root.PumpDeferred();
+				Assert.AreEqual(float2(10,15), p.lerp.Float2);
+				
+				p.a.Float3 = float3(21,0,8);
+				root.PumpDeferred();
+				Assert.AreEqual(float3(20,10,10), p.lerp.Float3);
+				
+				p.a.Float4 = float4(1,0,50,15);
+				root.PumpDeferred();
+				Assert.AreEqual(float4(10,10,20,15), p.lerp.Float4);
+			}
+		}
+		
 	}
 }

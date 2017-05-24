@@ -428,4 +428,50 @@ namespace Fuse.Reactive
 		}
 	}
 	
+	/**
+		Restricts the range of a value to between two numbers.
+		
+			clamp( value, min, max)
+			
+		Returns
+		- `min` when `value < min`
+		- `max` when `value > max`
+		- `value` otherwise
+			
+		Value may be a 1-4 component value. `min` and `max` must both be a single value.
+	*/
+	public sealed class Clamp : TernaryOperator
+	{
+		[UXConstructor]
+		public Clamp([UXParameter("First")] Expression first, 
+			[UXParameter("Second")] Expression second, 
+			[UXParameter("Third")] Expression third) : 
+			base(first, second, third) 
+		{ }
+		protected override object Compute(object a, object mn, object mx)
+		{
+			float4 av = float4(0);
+			int size = 0;
+			if (!Marshal.TryMarshalToFloat4(a, out av, out size))
+				return null;
+			
+			var mnv = Marshal.ToType<float>(mn);
+			var mxv = Marshal.ToType<float>(mx);
+			
+			if (size == 1)
+				return Math.Clamp(av.X, mnv, mxv);
+			if (size == 2)
+				return Math.Clamp(av.XY, mnv, mxv);
+			if (size == 3)
+				return Math.Clamp(av.XYZ, mnv, mxv);
+			if (size == 4)
+				return Math.Clamp(av, mnv, mxv);
+				
+			return null;
+		}
+		public override string ToString()
+		{
+			return "clamp(" + First + "," + Second +  "," + Third + ")";
+		}
+	}
 }
