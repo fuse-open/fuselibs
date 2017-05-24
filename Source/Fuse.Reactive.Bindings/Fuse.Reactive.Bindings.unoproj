@@ -22,7 +22,7 @@
     "../Fuse.Triggers/Fuse.Triggers.unoproj"
   ],
   "InternalsVisibleTo": [
-    "Fuse.Reactive.Test",
+    "Fuse.Reactive.JavaScript.Test",
     "Fuse.Scripting.Test",
     "Fuse.Common.Test.Helpers"
   ],
@@ -30,4 +30,3 @@
     "*"
   ]
 }
-
