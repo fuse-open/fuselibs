@@ -6,7 +6,7 @@ install:
   - ps: Expand-Archive mesa.zip mesa
 
 build_script:
-  - Stuff\uno --trace doctor Source
+  - Stuff\uno --trace doctor
 
 before_test:
   - ps: |
