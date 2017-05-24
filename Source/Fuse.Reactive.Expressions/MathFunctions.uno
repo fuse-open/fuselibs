@@ -59,8 +59,11 @@ namespace Fuse.Reactive
 		public Even([UXParameter("Operand")] Expression operand): base(operand) {}
 		protected override object Compute(object operand)
 		{
-			//this rounds floats automatically it seems
-			var q = (int)Math.Floor(Marshal.ToType<float>(operand)+0.5f);
+			float v = 0;
+			if (!Marshal.TryToType<float>(operand, out v))
+				return null;
+				
+			var q = (int)Math.Floor(v+0.5f);
 			return q % 2 == 0;
 		}
 
@@ -78,7 +81,11 @@ namespace Fuse.Reactive
 		public Odd([UXParameter("Operand")] Expression operand): base(operand) {}
 		protected override object Compute(object operand)
 		{
-			var q = (int)Math.Floor(Marshal.ToType<float>(operand)+0.5f);
+			float v = 0;
+			if (!Marshal.TryToType<float>(operand, out v))
+				return null;
+				
+			var q = (int)Math.Floor(v+0.5f);
 			return q % 2 != 0;
 		}
 
@@ -108,8 +115,13 @@ namespace Fuse.Reactive
 		public Alternate([UXParameter("Left")] Expression left, [UXParameter("Right")] Expression right): base(left, right) {}
 		protected override object Compute(object left, object right)
 		{
-			var value = (int)Math.Floor(Marshal.ToType<float>(left)+0.5f);
-			var group = (int)Math.Floor(Marshal.ToType<float>(right)+0.5f);
+			float fvalue = 0;
+			float fgroup = 0;
+			if (!Marshal.TryToType<float>(left, out fvalue) ||
+				!Marshal.TryToType<float>(right, out fgroup))
+				return null;
+			var value = (int)Math.Floor(fvalue+0.5f);
+			var group = (int)Math.Floor(fgroup+0.5f);
 			var b = value >= 0 ? 
 				(value % (group*2)) < group: 
 				( -(value+1) % (group*2)) >= group;
@@ -144,7 +156,7 @@ namespace Fuse.Reactive
 		{
 			float4 v;
 			int size;
-			if (Marshal.TryMarshalToFloat4(operand, out v, out size))
+			if (Marshal.TryToZeroFloat4(operand, out v, out size))
 			{	
 				if (size == 1)
 					return _op(v[0]);
@@ -180,7 +192,12 @@ namespace Fuse.Reactive
 		}
 		protected override object Compute(object left, object right)
 		{
-			return _op(Marshal.ToType<double>(left), Marshal.ToType<double>(right));
+			double lv = 0;
+			double rv = 0;
+			if (!Marshal.TryToType<double>(left, out lv) ||
+				!Marshal.TryToType<double>(right, out rv))
+				return null;
+			return _op(lv, rv);
 		}
 		public override string ToString()
 		{
@@ -381,7 +398,6 @@ namespace Fuse.Reactive
 		}
 	}
 	
-	[UXFunction("lerp")]
 	/**
 		Calculates the linear interpolation between two values.
 		
@@ -392,6 +408,7 @@ namespace Fuse.Reactive
 		The input supports a 1-4 component value for `from` and `to`. The result will be same size. 
 		`step` must always be a single value.
 	*/
+	[UXFunction("lerp")]
 	public sealed class Lerp : TernaryOperator
 	{
 		[UXConstructor]
@@ -404,12 +421,12 @@ namespace Fuse.Reactive
 		{
 			float4 av = float4(0), bv = float4(0);
 			int asize = 0, bsize = 0;
-			if (!Marshal.TryMarshalToFloat4(a, out av, out asize) ||	
-				!Marshal.TryMarshalToFloat4(b, out bv, out bsize))
+			float tv = 0;
+			if (!Marshal.TryToZeroFloat4(a, out av, out asize) ||	
+				!Marshal.TryToZeroFloat4(b, out bv, out bsize) ||
+				!Marshal.TryToType<float>(t, out tv))
 				return null;
 			int size = Math.Max(asize, bsize);
-			
-			var tv = Marshal.ToType<float>(t);
 			
 			if (size == 1)
 				return Math.Lerp(av.X, bv.X, tv);
@@ -440,6 +457,7 @@ namespace Fuse.Reactive
 			
 		Value may be a 1-4 component value. `min` and `max` must both be a single value.
 	*/
+	[UXFunction("clamp")]
 	public sealed class Clamp : TernaryOperator
 	{
 		[UXConstructor]
@@ -451,12 +469,12 @@ namespace Fuse.Reactive
 		protected override object Compute(object a, object mn, object mx)
 		{
 			float4 av = float4(0);
+			float mxv = 0, mnv = 0;
 			int size = 0;
-			if (!Marshal.TryMarshalToFloat4(a, out av, out size))
+			if (!Marshal.TryToZeroFloat4(a, out av, out size) ||
+				!Marshal.TryToType<float>(mn, out mnv) ||
+				!Marshal.TryToType<float>(mx, out mxv))
 				return null;
-			
-			var mnv = Marshal.ToType<float>(mn);
-			var mxv = Marshal.ToType<float>(mx);
 			
 			if (size == 1)
 				return Math.Clamp(av.X, mnv, mxv);

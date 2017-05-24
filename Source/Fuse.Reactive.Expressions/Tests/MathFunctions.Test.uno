@@ -200,23 +200,23 @@ namespace Fuse.Reactive.Test
 			var p = new UX.MathFunctions.Clamp();
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
-				p.t.Float = 0.5f;
-				p.a.Float = 10;
-				p.b.Float = 20;
+				p.a.Float = 0.5f;
+				p.mn.Float = 10;
+				p.mx.Float = 20;
 				root.PumpDeferred();
 				Assert.AreEqual(10, p.clamp.Float);
 				
 				p.a.Float2 = float2(0,15);
 				root.PumpDeferred();
-				Assert.AreEqual(float2(10,15), p.lerp.Float2);
+				Assert.AreEqual(float2(10,15), p.clamp.Float2);
 				
 				p.a.Float3 = float3(21,0,8);
 				root.PumpDeferred();
-				Assert.AreEqual(float3(20,10,10), p.lerp.Float3);
+				Assert.AreEqual(float3(20,10,10), p.clamp.Float3);
 				
 				p.a.Float4 = float4(1,0,50,15);
 				root.PumpDeferred();
-				Assert.AreEqual(float4(10,10,20,15), p.lerp.Float4);
+				Assert.AreEqual(float4(10,10,20,15), p.clamp.Float4);
 			}
 		}
 		

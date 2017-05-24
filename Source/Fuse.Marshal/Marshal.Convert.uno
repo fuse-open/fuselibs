@@ -18,6 +18,9 @@ namespace Fuse
 			_converters.Add(conv);
 		}
 
+		/**
+			Be aware that this returns `true` if the input is null.
+		*/
 		public static bool TryConvertTo(Type t, object o, out object res, object diagnosticSource = null)
 		{
 			if (o == null) 
@@ -58,6 +61,9 @@ namespace Fuse
 			return false;
 		}
 
+		/**
+			Be aware this function may throw a NullReferenceException if the type cannot be converted to the desired one. It is advised to use TryToType or TryConvertTo instead.
+		*/
 		public static T ToType<T>(object o)
 		{
 			object res;
@@ -65,6 +71,21 @@ namespace Fuse
 			return (T)res;
 		}
 
+		/**
+			Tries to convert to a target value. Unlike `TryConvertTo` this will return `false` if the input value is `null`.
+		*/
+		public static bool TryToType<T>(object o, out T res)
+		{
+			object ores;
+			if (!TryConvertTo(typeof(T), o, out ores) || ores == null)
+			{
+				res = default(T);
+				return false;
+			}
+			res = (T)ores;
+			return true;
+		}
+		
 		public static bool CanConvertClass(Type t)
 		{
 			for (int i = 0; i < _converters.Count; i++)

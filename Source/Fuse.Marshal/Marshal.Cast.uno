@@ -116,13 +116,13 @@ namespace Fuse
 		}
 		
 		/**
-			Converts a value to a float4
+			Converts a value to a float4. Unlike `ToFloat4` this will zero extend the missing components.
 			
-			@return true if converted successfully, false if no suitable conversion exists
+			@return true if converted successfully, false if no suitable conversion exists. `null` cannot be converted and will return false;
 			@param value the result value (0 padded as necessary)
 			@param size the size of the result
 		*/
-		public static bool TryMarshalToFloat4(object o, out float4 value, out int size)
+		public static bool TryToZeroFloat4(object o, out float4 value, out int size)
 		{
 			if (o is float4) 
 			{
