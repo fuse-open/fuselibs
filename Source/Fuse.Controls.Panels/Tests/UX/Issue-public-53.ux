@@ -1,0 +1,22 @@
+<Panel ux:Class="UX.IssuePublic53">
+    <!-- test case that caused regression in Fuse 1.0.0 
+		https://github.com/fusetools/fuselibs-public/issues/53
+	-->
+	<Container ux:Class="Material.ActionButton" Subtree="inner" Width="56" Height="56" Margin="16">
+		<Material.ActionButton ux:Class="Material.MiniActionButton" Width="40" Height="40" />
+		
+		<WhileTrue ux:Binding="Children">
+			<Change this.Margin="24" />
+		</WhileTrue>
+
+		<Circle ux:Binding="Children" >
+			<Panel>
+				<Panel ux:Name="inner" Alignment="Center">
+				</Panel>
+			</Panel>
+			<Shadow />
+		</Circle>
+	</Container>
+
+	<Material.MiniActionButton />
+</Panel>
