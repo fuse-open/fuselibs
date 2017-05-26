@@ -236,15 +236,15 @@
 
 	- (MKOverlayRenderer *)mapView:(MKMapView *)mapView rendererForOverlay:(id<MKOverlay>)overlay
 	{
-	    if (![overlay isKindOfClass:[MKPolygon class]]) {
-	        FusePolyline *pl = overlay;
-	        MKPolylineRenderer *renderer = [[MKPolylineRenderer alloc] initWithPolyline:pl];
-            renderer.strokeColor = pl.color;
-            renderer.lineWidth = pl.lineWidth;
-	        return renderer;
-	    } else {
-	        return nil;
-	    }
+		if (![overlay isKindOfClass:[MKPolygon class]]) {
+			FusePolyline *pl = overlay;
+			MKPolylineRenderer *renderer = [[MKPolylineRenderer alloc] initWithPolyline:pl];
+			renderer.strokeColor = pl.color;
+			renderer.lineWidth = pl.lineWidth;
+			return renderer;
+		} else {
+			return nil;
+		}
 	}
 
 	-(int)addPolyline:(NSString*)label 
@@ -252,15 +252,15 @@
 		color:(UIColor*)col
 		linewidth:(float)lw
 	{
-        int count = (int)[coords count] / 2;
-        CLLocationCoordinate2D coordinates[count];
-        for (int i=0; i < count; i++) {
-            coordinates[i] = CLLocationCoordinate2DMake([coords[i*2] doubleValue], [coords[(i*2) + 1] doubleValue]);
-        }
+		int count = (int)[coords count] / 2;
+		CLLocationCoordinate2D coordinates[count];
+		for (int i=0; i < count; i++) {
+			coordinates[i] = CLLocationCoordinate2DMake([coords[i*2] doubleValue], [coords[(i*2) + 1] doubleValue]);
+		}
 		FusePolyline *polyline = [FusePolyline polylineWithCoordinates:coordinates count:count];
 		polyline.title = label;
-        polyline.color = col;
-        polyline.lineWidth = lw;
+		polyline.color = col;
+		polyline.lineWidth = lw;
 		[_mapView addOverlay:polyline];
 		[self nextId];
 		[_overlays setObject:polyline forKey:\@(_idPool)];

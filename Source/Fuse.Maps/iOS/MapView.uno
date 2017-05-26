@@ -337,7 +337,8 @@ namespace Fuse.Maps.iOS
 			}
 		}
 
-		public ObservableList<MapPolyline> Polylines {
+		public ObservableList<MapPolyline> Polylines
+		{
 			get
 			{
 				return _mapViewHost.Polylines;

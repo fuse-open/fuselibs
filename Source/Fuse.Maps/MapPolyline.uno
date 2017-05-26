@@ -38,7 +38,8 @@ namespace Fuse.Controls
 	{
 
 		string _label;
-		public string Label {
+		public string Label
+		{
 			get
 			{
 				return _label;
@@ -51,13 +52,15 @@ namespace Fuse.Controls
 		}
 
 		double[] _coords;
-		public double[] Coords {
+		public double[] Coords
+		{
 			get { return _coords; }
 		}
 
 		string _data;
 		char[] delimiterChars = new char[] { '|', ',' };
-		public string Data {
+		public string Data
+		{
 			get {
 				return _data;
 			}
@@ -76,7 +79,8 @@ namespace Fuse.Controls
 		}
 
 		float4 _color = float4(1,0,0,1);
-		public float4 Color {
+		public float4 Color
+		{
 			get {
 				return _color;
 			}
@@ -87,7 +91,8 @@ namespace Fuse.Controls
 		}
 
 		float _lineWidth = 1;
-		public float LineWidth {
+		public float LineWidth
+		{
 			get {
 				return _lineWidth;
 			}
