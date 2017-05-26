@@ -26,14 +26,17 @@ namespace Fuse.Controls
 		Fuse.Controls.Grid grid;
 		MarkerIconCache _markerGraphicsCache;
 
-		public MapTile() {
-			grid = new Fuse.Controls.Grid() {
+		public MapTile()
+		{
+			grid = new Fuse.Controls.Grid()
+			{
 				ColumnCount = 3
 			};
 			var i = 0;
 			for (var y = 1; y < 4; y++) {
 				for (var x = 1; x < 4; x++) {
-					maps[i] = new Fuse.Controls.Image(){
+					maps[i] = new Fuse.Controls.Image()
+					{
 						Url = MakeUrl(2, x, y)
 					};
 					grid.Add(maps[i]);
@@ -41,7 +44,8 @@ namespace Fuse.Controls
 				}
 			}
 			trans = new Fuse.Translation();
-			var scaling = new Fuse.Scaling(){
+			var scaling = new Fuse.Scaling()
+			{
 				Factor=1.5f
 			};
 			Children.Add(grid);
@@ -54,12 +58,14 @@ namespace Fuse.Controls
 		// http://wiki.openstreetmap.org/wiki/Zoom_levels
 		// http://wiki.openstreetmap.org/wiki/Slippy_map_tilenames
 		String _tileserver = "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
-		public String TileServer {
+		public String TileServer
+		{
 			get { return _tileserver; }
 			set { _tileserver = value; }
 		}
 
-		public String MakeUrl (int zoom, int x, int y) {
+		public String MakeUrl (int zoom, int x, int y)
+		{
 			var s = TileServer
 						.Replace("{s}", "{0}")
 						.Replace("{z}", "{1}")
@@ -72,19 +78,23 @@ namespace Fuse.Controls
 			return String.Format(s, "a", zoom, x, y);
 		}
 
-		public ObservableList<MapMarker> Markers {
+		public ObservableList<MapMarker> Markers
+		{
 			get
 			{
 				MapView m = Parent as MapView;
-				if (m != null) {
+				if (m != null)
+				{
 					return m.Markers;
 				}
 				return null;
 			}
 		}
 
-		public void ClearMarkers () {
-			foreach(var i in _markers) {
+		public void ClearMarkers ()
+		{
+			foreach(var i in _markers)
+			{
 				Children.Remove(i);
 			}
 			_markers.Clear();
@@ -112,13 +122,15 @@ namespace Fuse.Controls
 				p = p * (_grid_size / 3);
 				p += diff;
 
-				var i = new Fuse.Controls.Image(){
+				var i = new Fuse.Controls.Image()
+				{
 					File = fs,
 					Width = 10,
 					X = p.X,
 					Y = p.Y
 				};
-				var _trans = new Fuse.Translation(){
+				var _trans = new Fuse.Translation()
+				{
 					RelativeNode = i,
 					RelativeTo   = Fuse.TranslationModes.Size,
 					X = m.IconAnchorX - 0.5f,
@@ -166,7 +178,8 @@ namespace Fuse.Controls
 		}
 
 		float _grid_size = 0;
-		public void OnPlaced(object sender, PlacedArgs args) {
+		public void OnPlaced(object sender, PlacedArgs args)
+		{
 			var s = Math.Min(ActualSize.X, ActualSize.Y);
 			grid.Width = s;
 			grid.Height = s;
@@ -175,18 +188,22 @@ namespace Fuse.Controls
 		}
 
 		double _lng = 0;
-		public double Longitude {
-			get {
+		public double Longitude
+		{
+			get
+			{
 				MapView m = Parent as MapView;
 				if (m != null) {
 					_lng = m.Longitude; 
 				}
 				return _lng;
 			}
-			set {
+			set
+			{
 				_lng = value;
 				MapView m = Parent as MapView;
-				if (m != null) {
+				if (m != null)
+				{
 					m.Longitude = value; 
 				}
 				else {
@@ -196,42 +213,54 @@ namespace Fuse.Controls
 		}
 
 		double _lat = 0;
-		public double Latitude {
-			get {
+		public double Latitude
+		{
+			get
+			{
 				MapView m = Parent as MapView;
-				if (m != null) {
+				if (m != null)
+				{
 					_lat = m.Latitude; 
 				}
 				return _lat;
 			}
-			set {
+			set
+			{
 				_lat = value;
 				MapView m = Parent as MapView;
-				if (m != null) {
+				if (m != null)
+				{
 					m.Latitude = value; 
 				}
-				else {
+				else
+				{
 					UpdateMap();
 				}
 			}
 		}
 
 		double _zoom = 2;
-		public double Zoom {
-			get {
+		public double Zoom
+		{
+			get
+			{
 				MapView m = Parent as MapView;
-				if (m != null) {
+				if (m != null)
+				{
 					_zoom = m.Zoom; 
 				}
 				return _zoom;
 			}
-			set {
+			set
+			{
 				_zoom = value;
 				MapView m = Parent as MapView;
-				if (m != null) {
+				if (m != null)
+				{
 					m.Zoom = value; 
 				}
-				else {
+				else
+				{
 					UpdateMap();
 				}
 			}
@@ -239,7 +268,8 @@ namespace Fuse.Controls
 
 		float2 _tilepos = float2(0);
 		float2 _cornertile = float2(0);
-		public void UpdateMap() {
+		public void UpdateMap()
+		{
 			MapView m = Parent as MapView;
 			if (m == null) return;
 			var p = WorldToTilePos(Longitude, Latitude, (int)Zoom);
@@ -247,8 +277,10 @@ namespace Fuse.Controls
 			var i = 0;
 			_cornertile.X = Math.Floor(p.X - 1);
 			_cornertile.Y = Math.Floor(p.Y - 1);
-			for (var y = (int)p.Y - 1; y < (int)p.Y + 2; y++) {
-				for (var x = (int)p.X - 1; x < (int)p.X + 2; x++) {
+			for (var y = (int)p.Y - 1; y < (int)p.Y + 2; y++)
+			{
+				for (var x = (int)p.X - 1; x < (int)p.X + 2; x++)
+				{
 					maps[i].Url = MakeUrl((int)Zoom, x, y);
 					i++;
 				}
