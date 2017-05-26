@@ -20,6 +20,7 @@
   "Projects": [],
   "Includes": [
     "MapMarker.uno:Source",
+    "MapTile.uno:Source",
     "MapView.uno:Source",
     "MapView.Events.uno:Source",
     "MapView.ScriptClass.uno:Source",
@@ -30,6 +31,7 @@
     "iOS/MapViewController.m:CSource:iOS",
     "Android/*",
     "Android/FuseMap.java:Java:Android",
-    "MarkerIconCache.uno"
+    "MarkerIconCache.uno",
+    "mappin.png:Bundle"
   ]
 }
