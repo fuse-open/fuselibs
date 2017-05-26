@@ -164,6 +164,13 @@ namespace Fuse.Maps.Android
 			}
 		}
 
+		public ObservableList<MapPolyline> Polylines {
+			get
+			{
+				return SemanticControl.Polylines;
+			}
+		}
+
 		public void UpdateMarkers(){
 			if(!IsReady) return;
 			ForeignHelpers.Clear(_mapView);
@@ -180,6 +187,30 @@ namespace Fuse.Maps.Android
 					m.uid
 				);
 			}
+
+			foreach(MapPolyline p in Polylines)
+			{
+				if (p.Coords != null) {
+					ForeignHelpers.AddPolyline(
+						_mapView,
+						p.Label,
+						p.Coords,
+						EncodeColor(p.Color),
+						p.LineWidth
+					);
+				}
+			}
+		}
+
+		// Helper for Polyline
+		public static int EncodeColor(float4 c)
+		{
+			var r = Uno.Math.Clamp((int)(c.X * 255), 0, 255);
+			var g = Uno.Math.Clamp((int)(c.Y * 255), 0, 255);
+			var b = Uno.Math.Clamp((int)(c.Z * 255), 0, 255);
+			var a = Uno.Math.Clamp((int)(c.W * 255), 0, 255);
+
+			return (a << 24) | (r << 16) | (g << 8) | b;
 		}
 
 		public void SetLocation(double latitude, double longitude)

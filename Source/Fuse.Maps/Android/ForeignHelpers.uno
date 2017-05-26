@@ -135,6 +135,13 @@ namespace Fuse.Maps.Android
 		@}
 
 		[Foreign(Language.Java)]
+		internal static string AddPolyline(Java.Object handle, String label, double[] coords, int col, float linewidth)
+		@{
+			FuseMap map = (FuseMap)handle;
+			return map.addPolyline(label, coords.copyArray(), col, linewidth);
+		@}
+
+		[Foreign(Language.Java)]
 		internal static void SetMyLocationEnabled(Java.Object handle, bool b)
 		@{
 			FuseMap map = (FuseMap)handle;

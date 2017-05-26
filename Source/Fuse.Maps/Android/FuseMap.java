@@ -17,6 +17,7 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import java.util.Map;
 import java.util.HashMap;
@@ -184,6 +185,17 @@ public class FuseMap extends FrameLayout {
 		Marker m =  _googleMap.addMarker(opt);
 		_markerIDs.put(m, uid);
 		return m.getId();
+	}
+
+	public String addPolyline(String label, double[] coords, int col, float lw)
+	{
+		PolylineOptions plOpts = new PolylineOptions();
+		plOpts.width(lw);
+		plOpts.color(col);
+		for (int i=0; i < coords.length / 2; i++) {
+			plOpts.add(new LatLng(coords[i * 2], coords[(i*2) + 1]));
+		} 
+		return _googleMap.addPolyline(plOpts).getId();
 	}
 
 	/* Camera */

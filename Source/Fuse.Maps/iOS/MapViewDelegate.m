@@ -57,10 +57,19 @@
 @implementation FusePinAnnotation
 @end
 
+@interface FusePolyline : MKPolyline
+	@property UIColor* color;
+	@property CGFloat lineWidth;
+@end
+
+@implementation FusePolyline
+@end
+
 @implementation MapViewDelegate
 {
 	MKMapView* _mapView;
 	NSMutableDictionary* _annotations;
+	NSMutableDictionary* _overlays;
 	CLLocationManager* _locationMgr;
 	int _touchCount;
 }
@@ -79,6 +88,7 @@
 		_locationMgr = [[CLLocationManager alloc] init];
 		[_locationMgr setDelegate:self];
 		_annotations = [[NSMutableDictionary alloc] init];
+		_overlays = [[NSMutableDictionary alloc] init];
 		return self;
 	}
 
@@ -214,6 +224,48 @@
 			[_mapView removeAnnotation:a];
 		}
 		[_annotations removeAllObjects];
+
+		for(id key in _overlays)
+		{
+			FusePolyline* p = [_overlays objectForKey:key];
+			if(p==nil) continue;
+			[_mapView removeOverlay:p];
+		}
+		[_overlays removeAllObjects];
+	}
+
+	- (MKOverlayRenderer *)mapView:(MKMapView *)mapView rendererForOverlay:(id<MKOverlay>)overlay
+	{
+	    if (![overlay isKindOfClass:[MKPolygon class]]) {
+	        FusePolyline *pl = overlay;
+	        MKPolylineRenderer *renderer = [[MKPolylineRenderer alloc] initWithPolyline:pl];
+            renderer.strokeColor = pl.color;
+            renderer.lineWidth = pl.lineWidth;
+	        return renderer;
+	    } else {
+	        return nil;
+	    }
+	}
+
+	-(int)addPolyline:(NSString*)label 
+		coords:(NSArray*)coords
+		color:(UIColor*)col
+		linewidth:(float)lw
+	{
+        int count = (int)[coords count] / 2;
+        CLLocationCoordinate2D coordinates[count];
+        for (int i=0; i < count; i++) {
+            coordinates[i] = CLLocationCoordinate2DMake([coords[i*2] doubleValue], [coords[(i*2) + 1] doubleValue]);
+        }
+		FusePolyline *polyline = [FusePolyline polylineWithCoordinates:coordinates count:count];
+		polyline.title = label;
+        polyline.color = col;
+        polyline.lineWidth = lw;
+		[_mapView addOverlay:polyline];
+		[self nextId];
+		[_overlays setObject:polyline forKey:\@(_idPool)];
+
+		return _idPool;
 	}
 
 	-(void)onTap:(UITapGestureRecognizer*)sender
