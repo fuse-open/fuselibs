@@ -184,7 +184,7 @@ namespace Fuse.Controls
 			extern(Android)
 			public override object New()
 			{
-				return new Fuse.Controls.Native.Android.TextEdit(_parent, _parent, _parent._isMultiline);
+				return new Fuse.Controls.Native.Android.TextEdit(_parent, _parent._isMultiline);
 			}
 
 			extern(!Android)
