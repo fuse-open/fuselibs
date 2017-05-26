@@ -141,31 +141,7 @@ namespace Fuse.Controls
 				BringToFront(i);
 				i.Children.Add(_trans);
 				_markers.Add(i);
-				/*
-				Children.Add()
-				AddMarker(
-					m.Label, 
-					m.Latitude, 
-					m.Longitude,
-					_markerGraphicsCache.Get(m.IconFile),
-					m.IconAnchorX,
-					m.IconAnchorY
-					);*/
 			}
-			/*
-			foreach(MapPolyline p in Polylines)
-			{
-				AddPolyline(
-					p.Label,
-					p.Coords,
-					p.Color[0],
-					p.Color[1],
-					p.Color[2],
-					p.Color[3],
-					p.LineWidth
-				);
-			}
-			*/
 		}
 
 		bool ready = false;
