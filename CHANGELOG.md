@@ -1,5 +1,12 @@
 # Unreleased
 
+## JavaScript: Optional explicit requrie() of UX symbols
+- Symbols declared with `ux:Name`, `ux:Dependency` or `dep` are now also available to `require()` for `<JavaScript>` modules. This allows us to write code that plays nicer with transpilers and linters. Using require for names declared in UX is optional, but may make the code more readable and maintainable, e.g. `var router = require("router")` over just using `router` with no declaration. Note that UX symbols take the lowest precedence - files and `ux:Global`'s still take first priority (to preserve backwards compatibility).
+
+
+## JavaScript Dependency Injection
+- Added support for injecting UX expressions into `<JavaScript>` tags using the `dep` XML namespace. See docs on `JavaScript.Dependencies` for details.
+
 ## Native
 - Added feature toggle for implicit `GraphicsView`. If you are making an app using only Native UI disabling the implicit `GraphicsView` can increase performance. Disable the `GraphicsView` by defining `DISABLE_IMPLICIT_GRAPHICSVIEW` when building. For example `uno build -t=ios -DDISABLE_IMPLICIT_GRAPHICSVIEW`
 

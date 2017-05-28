@@ -31,7 +31,7 @@ namespace Fuse.Reactive
 
 		IDisposable IContext.Subscribe(IExpression source, string key, IListener listener)
 		{
-			return new DataSubscription(source, this, key, listener);
+			return new DataSubscription(source, Parent, key, listener);
 		}
 
 		Node IContext.Node { get { return Parent; } }

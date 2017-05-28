@@ -31,19 +31,21 @@ namespace Fuse.Reactive
 			_classInstance.EnsureRooted();
 		}
 
+		internal Dictionary<string, object> Dependencies;
+
+		protected override Dictionary<string, object> GenerateRequireTable(Context c)
+		{
+			return Dependencies;
+		}
+
 		protected override string GenerateArgs(Context c, ModuleResult result, List<object> args)
 		{
 			var argsString = base.GenerateArgs(c, result, args);
 
-			var nt = _names;
-			while (nt != null)
+			foreach (var dep in Dependencies) 
 			{
-				for (int i = 0; i < nt.Entries.Length; ++i)
-				{
-					argsString += ", " + nt.Entries[i];
-					args.Add(_worker.Unwrap(nt.Objects[i]));
-				}
-				nt = nt.ParentTable;
+				argsString += ", " + dep.Key;
+				args.Add(dep.Value);
 			}
 
 			return argsString;
