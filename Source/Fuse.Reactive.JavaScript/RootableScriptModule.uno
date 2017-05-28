@@ -43,17 +43,6 @@ namespace Fuse.Reactive
 				args.Add(dep.Value);
 			}
 
-			var nt = _names;
-			while (nt != null)
-			{
-				for (int i = 0; i < nt.Entries.Length; ++i)
-				{
-					argsString += ", " + nt.Entries[i];
-					args.Add(_worker.Unwrap(nt.Objects[i]));
-				}
-				nt = nt.ParentTable;
-			}
-
 			return argsString;
 		}
 

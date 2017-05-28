@@ -24,6 +24,14 @@ namespace Fuse.Reactive
 		// JS thread
 		void Evaluate()
 		{
+			var nt = _js._nameTable;
+			while (nt != null)
+			{
+				for (int i = 0; i < nt.Entries.Length; ++i)
+					_deps.Add(nt.Entries[i], _worker.Unwrap(nt.Objects[i]));
+				nt = nt.ParentTable;
+			}
+
 			_js.ScriptModule.Dependencies = _deps;
 			_dc = _worker.Reflect(EvaluateExports());
 			UpdateManager.PostAction(SetDataContext);
