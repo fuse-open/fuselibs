@@ -31,9 +31,17 @@ namespace Fuse.Reactive
 			_classInstance.EnsureRooted();
 		}
 
+		internal Dictionary<string, object> Dependencies;
+
 		protected override string GenerateArgs(Context c, ModuleResult result, List<object> args)
 		{
 			var argsString = base.GenerateArgs(c, result, args);
+
+			foreach (var dep in Dependencies) 
+			{
+				argsString += ", " + dep.Key;
+				args.Add(dep.Value);
+			}
 
 			var nt = _names;
 			while (nt != null)
