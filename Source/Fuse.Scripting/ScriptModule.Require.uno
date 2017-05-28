@@ -16,12 +16,14 @@ namespace Fuse.Scripting
 			readonly Context _c;
 			readonly ModuleResult _dependant;
 			readonly ScriptModule _m;
+			readonly Dictionary<string, object> _rt;
 
-			public RequireContext(Context c, ScriptModule m, ModuleResult dependant)
+			public RequireContext(Context c, ScriptModule m, ModuleResult dependant, Dictionary<string, object> rt)
 			{
 				_c = c;
 				_m = m;
 				_dependant = dependant;
+				_rt = rt;
 			}
 
 			public object Require(object[] args)
@@ -48,7 +50,16 @@ namespace Fuse.Scripting
 					var mod = _m.TryResolve(path, isFile);
 
 					if (mod == null)
+					{
+						// Last resort fallback, use require table
+						if (_rt != null)
+						{
+							object res;
+							if (_rt.TryGetValue(id, out res)) return res;
+						}
+						
 						throw new Error("require(): module not found: " + id);
+					}
 
 					module = mod.Evaluate(_c, path);
 					module.AddDependency(_dependant.Invalidate);

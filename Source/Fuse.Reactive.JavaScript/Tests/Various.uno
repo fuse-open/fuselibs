@@ -12,6 +12,15 @@ namespace Fuse.Reactive.Test
 	public class VariousTest : TestBase
 	{
 		[Test]
+		public void OptionalExplicitTest()
+		{
+			var e = new UX.OptionalExplicit();
+			var root = TestRootPanel.CreateWithChild(e);
+			root.StepFrameJS();
+			Assert.AreEqual("1", e.t.Value);
+		}
+
+		[Test]
 		public void FunctionAsDataContext()
 		{
 			var e = new UX.FunctionAsDataContext();

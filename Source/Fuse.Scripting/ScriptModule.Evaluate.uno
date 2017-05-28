@@ -57,13 +57,20 @@ namespace Fuse.Scripting
 			CallModuleFunc(moduleFunc, args.ToArray());
 		}
 
+		protected virtual Dictionary<string, object> GenerateRequireTable(Context c)
+		{
+			return null;
+		}
+
 		protected virtual string GenerateArgs(Context c, ModuleResult result, List<object> args)
 		{
 			var module = result.Object;
 
+			var rt = GenerateRequireTable(c);
+
 			args.Add(module);
 			args.Add(module["exports"]);
-			args.Add((Callback)new RequireContext(c, this, result).Require);
+			args.Add((Callback)new RequireContext(c, this, result, rt).Require);
 
 			return "module, exports, require";
 		}

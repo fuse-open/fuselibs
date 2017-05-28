@@ -33,6 +33,11 @@ namespace Fuse.Reactive
 
 		internal Dictionary<string, object> Dependencies;
 
+		protected override Dictionary<string, object> GenerateRequireTable(Context c)
+		{
+			return Dependencies;
+		}
+
 		protected override string GenerateArgs(Context c, ModuleResult result, List<object> args)
 		{
 			var argsString = base.GenerateArgs(c, result, args);
