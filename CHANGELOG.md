@@ -1,7 +1,7 @@
 # Unreleased
 
 ## JavaScript: Optional explicit requrie() of UX symbols
-- Symbols declared with `ux:Name`, `ux:Dependency` or `dep` are now also available to `require()` for `<JavaScript>` modules. This allows us to write code that plays nicer with transpilers and linters. Using require for names declared in UX is optional, but may make the code more readable and maintainable, e.g. `var router = require("router")` over just using `router` with no declaration.
+- Symbols declared with `ux:Name`, `ux:Dependency` or `dep` are now also available to `require()` for `<JavaScript>` modules. This allows us to write code that plays nicer with transpilers and linters. Using require for names declared in UX is optional, but may make the code more readable and maintainable, e.g. `var router = require("router")` over just using `router` with no declaration. Note that UX symbols take the lowest precedence - files and `ux:Global`'s still take first priority (to preserve backwards compatibility).
 
 
 ## JavaScript Dependency Injection
