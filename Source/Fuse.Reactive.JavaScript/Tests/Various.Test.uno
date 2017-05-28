@@ -541,5 +541,15 @@ namespace Fuse.Reactive.Test
 				Assert.AreEqual("Bar", e.Text.Value);
 			}
 		}
+		
+		[Test]
+		public void OptionalExplicitTest()
+		{
+			var e = new UX.OptionalExplicit();
+			var root = TestRootPanel.CreateWithChild(e);
+			root.StepFrameJS();
+			Assert.AreEqual("1", e.t.Value);
+			Assert.AreEqual("1", e.q.t.Value);
+		}
 	}
 }

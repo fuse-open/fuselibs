@@ -27,6 +27,7 @@
   ],
   "Includes": [
     "*",
+    "OptionalExplicit.js:Bundle",
     "Assets/hello.txt:Bundle",
     "Assets/test.png:Bundle",
   ],
