@@ -7,7 +7,7 @@ namespace Fuse
 	/** Contains tools for serializing scripting objects (based on `IArray` and `IObject`) to Json notation.
 
 	 */
-	public static class Json
+	public static partial class Json
 	{
 		/** Converts an object to a Json string, optionally normalized in alphabetic order.
 			@param normalized Whether to sort object keys in alphabetic order, for object hashing consistency.

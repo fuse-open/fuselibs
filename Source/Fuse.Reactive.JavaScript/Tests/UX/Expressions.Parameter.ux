@@ -1,0 +1,32 @@
+<Panel ux:Class="UX.ParameterFunction">
+	<Router ux:Name="router" />
+	<JavaScript>
+		router.goto("foo", { param: 1447 })
+
+		function step1() {
+			router.goto("foo", {param: 900})
+		}
+
+		function step2() {
+			router.goto("bar", {param: 300})
+		}
+
+		function step3() {
+			router.goto("foo", {param: 400, bar:"yeah"})
+		}
+
+		module.exports = { step1, step2, step3 }
+
+	</JavaScript>
+	<Navigator>
+		<Page ux:Name="foo">
+			<Text ux:Name="t1" Value="{= parameter(foo).param / 2} {= parameter(foo).bar??'nope'}" />
+		</Page>
+		<Page ux:Name="bar">
+			<Text ux:Name="t2" Value="{= parameter(bar).param / 2}" />
+		</Page>
+	</Navigator>
+	<FuseTest.Invoke Handler="{step1}" ux:Name="CallStep1"/>
+	<FuseTest.Invoke Handler="{step2}" ux:Name="CallStep2"/>
+	<FuseTest.Invoke Handler="{step3}" ux:Name="CallStep3"/>
+</Panel>
