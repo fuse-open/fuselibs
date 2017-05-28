@@ -32,6 +32,9 @@
 			dep:obs="{obs}"
 			dep:Foo="{Property Foo}"
 			dep:Bar="{Property Bar} / 2"
+			dep:SomeConst="4"
+			dep:SomeVector="3, 4"
+			dep:Lol="'somestring'"
 			dep:ComplexObj="{Property ComplexObj}">
 
 			var Observable = require("FuseJS/Observable")
@@ -45,6 +48,10 @@
 			if (bar !== 2) { throw new Error() }
 			if (!(obs instanceof Observable)) { throw new Error("obs is : " + JSON.stringify(obs)) }
 			if (Foo !== "correct") { throw new Error() }
+
+			if (SomeConst !== 4) { throw new Error() }
+			if (SomeVector.length !== 2 || SomeVector[0] != 3 || SomeVector[1] !== 4) { throw new Error("Expected [3, 4], got: " + JSON.stringify(SomeVector)) }
+			if (Lol !== "somestring") { throw new Error() }
 
 			obs.value++;
 
