@@ -6,7 +6,7 @@ using Fuse.Scripting;
 
 namespace Fuse.Reactive
 {
-	class FunctionMirror: JavaScript.DiagnosticSubject, IEventHandler, IRaw
+	class FunctionMirror: DiagnosticSubject, IEventHandler, IRaw
 	{
 		readonly Function _func;
 

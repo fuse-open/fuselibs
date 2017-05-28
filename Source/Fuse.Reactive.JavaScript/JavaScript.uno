@@ -15,42 +15,40 @@ namespace Fuse.Reactive
 
 		@include Docs/JavaScriptRemarks.md
 	*/
-	public class JavaScript: Behavior, IModuleProvider, ValueForwarder.IValueListener, Node.ISiblingDataProvider
+	public partial class JavaScript: Behavior, IModuleProvider, ValueForwarder.IValueListener, Node.ISiblingDataProvider, IContext
 	{
 		static int _javaScriptCounter;
 		static ThreadWorker _worker;
 		internal static ThreadWorker Worker { get { return _worker; } }
 
-		protected ScriptModule _scriptModule;
+		readonly NameTable _nameTable;
+		protected RootableScriptModule _scriptModule;
+		internal RootableScriptModule ScriptModule { get { return _scriptModule; } }
 
 		[UXConstructor]
 		public JavaScript([UXAutoNameTable] NameTable nameTable)
 		{
 			if (_worker == null)
 				_worker = new ThreadWorker();
-
+			
+			_nameTable = nameTable;
 			_scriptModule = new RootableScriptModule(_worker, nameTable);
 		}
-
-		static object _resetHookMutex = new object();
 
 		protected override void OnRooted()
 		{
 			base.OnRooted();
 			_javaScriptCounter++;
-			DispatchEvaluate();
+			SubscribeToDependenciesAndDispatchEvaluate();
 		}
 
 		protected override void OnUnrooted()
 		{
+			DisposeDependencySubscriptions();
 			SetDataContext(null);
-			_diagnostic.ClearDiagnostic();
 
-			if (_moduleResult != null)
-			{
-				_moduleResult.Dispose();
-				_moduleResult = null;
-			}
+			DisposeModuleInstance();
+
 			if(--_javaScriptCounter <= 0)
 			{
 				AppInitialized.Reset();
@@ -78,21 +76,10 @@ namespace Fuse.Reactive
 			return _scriptModule;
 		}
 
-		void OnReset()
-		{
-			if (IsRootingCompleted) DispatchEvaluate();
-		}
-
-		void DispatchEvaluate()
-		{
-			if (!IsRootingStarted) return;
-			new EvaluateDataContext(Worker, this);
-		}
-
 		object _currentDc;
 		IDisposable _sub;
 		
-		void SetDataContext(object newDc)
+		internal void SetDataContext(object newDc)
 		{
 			DisposeSubscription();
 
@@ -180,29 +167,6 @@ namespace Fuse.Reactive
 
 			return null;
 		}
-
-		extern(!FUSELIBS_NO_TOASTS) static string previousErrorFile;
-		internal class DiagnosticSubject
-		{		
-			IDisposable _diagnostic;
-			public void ClearDiagnostic()
-			{
-				if (_diagnostic != null)
-				{
-					_diagnostic.Dispose();
-					_diagnostic = null;
-				}
-			}
-			public void SetDiagnostic(ScriptException se)
-			{
-				var d = new Diagnostic(DiagnosticType.UserError, se.Name, this, se.FileName, se.LineNumber, null, se);
-				ClearDiagnostic();
-				_diagnostic = Diagnostics.ReportTemporal(d);
-			}
-		}
-
-		DiagnosticSubject _diagnostic = new DiagnosticSubject();
-
 		void EvaluateModule()
 		{
 			_diagnostic.ClearDiagnostic();
