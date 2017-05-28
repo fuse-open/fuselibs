@@ -6,17 +6,17 @@ namespace Fuse.Reactive
 	class DataSubscription: Node.DataFinder, IDisposable, Node.IDataListener
 	{
 		IExpression _source;
-		Binding _origin;
+		Node _origin;
 		IListener _listener;
 		IDisposable _diag;
 
-		public DataSubscription(IExpression source, Binding origin, string key, IListener listener): base(key)
+		public DataSubscription(IExpression source, Node origin, string key, IListener listener): base(key)
 		{
 			_source = source;
 			_origin = origin;
 			_listener = listener;
 
-			_origin.Parent.AddDataListener(key, this);
+			_origin.AddDataListener(key, this);
 
 			FindData();
 		}
@@ -29,7 +29,7 @@ namespace Fuse.Reactive
 
 			ClearDiagnostic();
 			_isResolved = false;
-			_origin.Parent.EnumerateData(this); 
+			_origin.EnumerateData(this); 
 
 			if (!_isResolved)
 				_diag = Diagnostics.ReportTemporalUserWarning("{" + Key + "} not found in data context", _origin);
@@ -50,7 +50,7 @@ namespace Fuse.Reactive
 		public void Dispose()
 		{
 			ClearDiagnostic();
-			_origin.Parent.RemoveDataListener(Key, this);
+			_origin.RemoveDataListener(Key, this);
 			_origin = null;
 			_source = null;
 			_listener = null;
