@@ -1,5 +1,8 @@
 # Unreleased
 
+## UX expressions improvements
+- Added `parameter(page)` function which returns the routing parameter of the page parsed as an JSON string.
+
 ## Native
 - Added feature toggle for implicit `GraphicsView`. If you are making an app using only Native UI disabling the implicit `GraphicsView` can increase performance. Disable the `GraphicsView` by defining `DISABLE_IMPLICIT_GRAPHICSVIEW` when building. For example `uno build -t=ios -DDISABLE_IMPLICIT_GRAPHICSVIEW`
 
