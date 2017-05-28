@@ -48,7 +48,7 @@ namespace Fuse.Reactive
 			}
 		}
 
-		public class Subscription: JavaScript.DiagnosticSubject, ISubscription
+		public class Subscription: DiagnosticSubject, ISubscription
 		{
 			static int _counter = 1;
 			readonly int _origin;
