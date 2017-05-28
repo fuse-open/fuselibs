@@ -23,6 +23,7 @@
   ],
   "InternalsVisibleTo": [
     "Fuse.Reactive.Test",
+    "Fuse.Reactive.JavaScript",
     "Fuse.Scripting.Test",
     "Fuse.Common.Test.Helpers"
   ],

@@ -60,7 +60,7 @@ namespace Fuse.Reactive
 
 		public override IDisposable SubscribeResource(IExpression source, string key, IListener listener)
 		{
-			return new ResourceSubscription(source, this, key, listener, Target.PropertyType);
+			return new ResourceSubscription(source, Parent, key, listener, Target.PropertyType);
 		}
 
 		bool Read { get { return _mode.HasFlag(BindingMode.Read); } }
