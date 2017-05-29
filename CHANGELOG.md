@@ -23,6 +23,9 @@
 ## MemoryPolicy
 - Added `QuickUnload` memory policy to keep data in memory for as short as possible.
 
+## iOS
+- Fixed an issue where the statusbar would incorrectly push the app down without triggering a resize.
+
 ## 1.0
 
 ## Instance/Each/Deferred
