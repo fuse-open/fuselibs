@@ -1,5 +1,8 @@
 # Unreleased
 
+## ColumnLayout
+- Fixed an issue that would result in a broken layout if a `Sizing="Fill"` was used there wasn't enough space for one column.
+
 ## Bug in Container
 - Fixed bug in Container which caused crash when the container had no subtree nodes. This caused the Fuse.MaterialDesign community package to stop working.
 
