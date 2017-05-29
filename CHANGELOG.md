@@ -1,5 +1,7 @@
 # Unreleased
 
+## Bug in Container
+- Fixed bug in Container which caused crash when the container had no subtree nodes. This caused the Fuse.MaterialDesign community package to stop working.
 
 ## 1.0
 
