@@ -31,7 +31,6 @@
     "Fuse.iOS",
     "Fuse.iOS.TextRenderer",
     "Fuse.Motion",
-    "Fuse.Reactive.Test",
     "Fuse.Reactive.JavaScript",
     "Fuse.Selection",
     "Fuse.Testing",

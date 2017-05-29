@@ -26,7 +26,6 @@
     "Fuse.iOS.Bindings",
     "Fuse.iOS",
     "Fuse.Motion",
-    "Fuse.Reactive.Test",
     "Fuse.Reactive.Bindings",
     "Fuse.Selection",
     "Fuse.Testing",

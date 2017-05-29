@@ -4,7 +4,7 @@ using Uno.Testing;
 
 using FuseTest;
 
-namespace Fuse.Elements.Test
+namespace Fuse.Effects.Test
 {
 	public class MaskTest : TestBase
 	{
