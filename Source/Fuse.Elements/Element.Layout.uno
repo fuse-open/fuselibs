@@ -251,9 +251,18 @@ namespace Fuse.Elements
 			internal set { _actualAnchor = value; }
 		}
 		
+		static bool _invalidValuesWarn = false;
 		protected override float2 OnArrangeMarginBox(float2 position, LayoutParams lp)
 		{
 			var bp = _boxSizing.CalcBoxPlacement(this, position, lp);
+			if (bp.SanityConstrain())
+			{
+				//just once since the user can't really do anything more than report the error
+				if (!_invalidValuesWarn)
+					Fuse.Diagnostics.InternalError( "Invalid values in ArrangeMarginBox", this );
+				_invalidValuesWarn = true;
+			}
+			
 			if (!(lp.Temporary && ignoreTempArrange))
 			{
 				if (Visibility != Visibility.Collapsed)
