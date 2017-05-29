@@ -11,12 +11,12 @@ the UI framework used in [Fuse](https://www.fusetools.com/) apps.
 
 ### Windows
 
-* `build.bat` runs stuff (which downloads uno if needed), and builds all packages.
+* `build.bat` downloads and extracts uno, and builds all packages.
 * `test.bat` runs all tests.
 
 ### macOS
 
-* `build.sh` runs stuff (which downloads uno if needed), and builds all packages.
+* `build.sh` downloads and extracts uno, and builds all packages.
 * `test.sh` runs all tests.
 
 
