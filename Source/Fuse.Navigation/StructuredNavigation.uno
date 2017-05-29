@@ -438,7 +438,7 @@ namespace Fuse.Navigation
 
 			if (_region != null)
 				_region.EndUser(float2(args.Velocity,0));
-				
+			
 			//force stop if we don't otherwise update the region (in cases where the progress doesn't change)
 			if (!TransitionToChild(GetPage(targetIndex), false, true))
 				_region.Reset(_region.Position);

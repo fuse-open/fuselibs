@@ -27,7 +27,7 @@ namespace Fuse.Gestures.Internal
 			set { _isEnabled = value; }
 		}
 		
-		GesturePriority _gesturePriority = GesturePriority.Higher;
+		GesturePriority _gesturePriority = GesturePriority.Lower;
 		public GesturePriority GesturePriority
 		{
 			get { return _gesturePriority; }
@@ -425,7 +425,6 @@ namespace Fuse.Gestures.Internal
 		}
 
 		double _startProgress;
-		int _down = -1;
 		double _prevTime;
 		float2 _startCoord;
 		float _velocityThreshold = 300.0f;

@@ -86,7 +86,7 @@ namespace Fuse.Navigation
 	/**
 		@mount Navigation
 	*/
-	public class SwipeNavigate : Behavior
+	public class SwipeNavigate : Behavior, IGesture
 	{
 		ISeekableNavigation Navigation
 		{
@@ -99,21 +99,17 @@ namespace Fuse.Navigation
 		PointerVelocity<float2> _velocity = new PointerVelocity<float2>();
 			
 		ISeekableNavigation _currentNavigation = null;
+		Gesture _gesture;
 		protected override void OnRooted()
 		{
 			base.OnRooted();
 
-			Pointer.Pressed.AddHandler(Parent, OnPointerPressed);
-			Pointer.Moved.AddHandler(Parent, OnPointerMoved);
-			Pointer.Released.AddHandler(Parent, OnPointerReleased);
+			_gesture = Input.Gestures.Add( this, Parent, GestureType.Primary );
 		}
 
 		protected override void OnUnrooted()
 		{
-			Pointer.Pressed.RemoveHandler(Parent, OnPointerPressed);
-			Pointer.Moved.RemoveHandler(Parent, OnPointerMoved);
-			Pointer.Released.RemoveHandler(Parent, OnPointerReleased);
-
+			_gesture.Dispose();
 			base.OnUnrooted();
 		}
 
@@ -208,11 +204,8 @@ namespace Fuse.Navigation
 			VelocityThreshold = 300f; //matched to Swiper
 		}
 
-		int _down = -1;
-
-		void OnLostCapture()
+		void IGesture.OnLostCapture(bool forced)
 		{
-			_down = -1;
 			if (_currentNavigation != null)
 			{
 				if ( (_currentNavigation as Node).IsRootingCompleted)
@@ -222,79 +215,87 @@ namespace Fuse.Navigation
 			}
 		}
 
-		void OnPointerPressed(object sender, PointerPressedArgs args)
+		float IGesture.Significance
 		{
-			_currentNavigation = Navigation;
-			if (_currentNavigation == null)
-			{
-				debug_log "SwipeNavigate: failed to find suitable Navigation object";
-				return;
-			}
-
-			if (args.TrySoftCapture(this, OnLostCapture))
-			{
-				_down = args.PointIndex;
-				_startCoord = _currentCoord = args.WindowPoint;
-				_prevDistance = 0;
-				_startTime = Time.FrameTime;
-				_velocity.Reset( _startCoord, float2(0), args.Timestamp );
-			}
-		}
-
-		void OnPointerMoved(object sender, PointerMovedArgs args)
-		{
-			if (_down != args.PointIndex)
-				return;
-
-			if (_currentNavigation == null)
-				return;
-
-			_currentCoord = args.WindowPoint;
-			_velocity.AddSampleTime( _currentCoord, args.Timestamp,
-				args.IsHardCapturedTo(this) ? SampleFlags.None : SampleFlags.Tentative );
-
-			if (args.IsHardCapturedTo(this))
-			{
-				_currentNavigation.Seek(GetNavigationArgs());
-			}
-			else
-			{
+			get 
+			{ 
 				var diff = _currentCoord - _startCoord;
 				var withinBounds = IsHorizontal
 					? _horizontalGesture.IsWithinBounds(diff)
 					: _verticalGesture.IsWithinBounds(diff);
 
-				if (withinBounds)
-				{
-					//reset coords to avoid jump (https://github.com/fusetools/fuselibs/issues/1175)
-					_startCoord = _currentCoord = args.WindowPoint;
-					_prevDistance = 0;
-					_startTime = Time.FrameTime;
+				if (!withinBounds)
+					return 0;
 					
-					if (args.TryHardCapture(this, OnLostCapture))
-						_currentNavigation.BeginSeek();
-					else
-						OnLostCapture();
-				}
+				//TODO: this is wrong, it should only be the significant axis
+				return Vector.Length(diff);
+			}
+		}
+		
+		GesturePriority IGesture.Priority
+		{
+			get { return GesturePriority.Lower; }
+		}
+		
+		int IGesture.PriorityAdjustment
+		{
+			get { return 0; }
+		}
+		
+		GestureRequest IGesture.OnPointerPressed(PointerPressedArgs args)
+		{
+			_startCoord = _currentCoord = args.WindowPoint;
+			_currentNavigation = Navigation;
+			_velocity.Reset( _startCoord, float2(0), args.Timestamp );
+			if (_currentNavigation == null)
+			{
+				Fuse.Diagnostics.InternalError("SwipeNavigate: failed to find suitable Navigation object", this);
+				return GestureRequest.Ignore;
+			}
+			return GestureRequest.Capture;
+		}
+		
+		void IGesture.OnCapture(PointerEventArgs args, CaptureType how)
+		{
+			//always reset coords to avoid jump (https://github.com/fusetools/fuselibs/issues/1175)
+			_startCoord = _currentCoord = args.WindowPoint;
+			_prevDistance = 0;
+			_startTime = Time.FrameTime;
+
+			if (_gesture.IsHardCapture)
+			{
+				_currentNavigation.BeginSeek();
 			}
 		}
 
-		void OnPointerReleased(object sender, PointerReleasedArgs args)
+		GestureRequest IGesture.OnPointerMoved(PointerMovedArgs args)
+		{
+			if (_currentNavigation == null)
+				return GestureRequest.Cancel;
+
+			_currentCoord = args.WindowPoint;
+			_velocity.AddSampleTime( _currentCoord, args.Timestamp,
+				_gesture.IsHardCapture ? SampleFlags.None : SampleFlags.Tentative );
+
+			if (_gesture.IsHardCapture)
+				_currentNavigation.Seek(GetNavigationArgs());
+			
+			return GestureRequest.Capture;
+		}
+
+		GestureRequest IGesture.OnPointerReleased(PointerReleasedArgs args)
 		{
 			_currentCoord = args.WindowPoint;
 			_velocity.AddSampleTime( _currentCoord, args.Timestamp, SampleFlags.Release );
-			_down = -1;
 
-			if (_currentNavigation == null)
-				return;
-
-			if (args.IsHardCapturedTo(this))
+			if (_gesture.IsHardCapture && _currentNavigation != null)
 			{
 				_currentNavigation.EndSeek(
 					new EndSeekArgs(DetermineSnap(), ProgressVelocity) );
+				//clear now to prevent double EndSeek in OnLostCapture
+				_currentNavigation = null;
 			}
-			args.ReleaseCapture(this);
-			_currentNavigation = null;
+			return GestureRequest.Cancel;
 		}
 
 		float2 Scale

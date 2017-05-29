@@ -36,7 +36,7 @@ namespace Fuse.Input
 		*/
 		GesturePriority Priority { get; }
 		/**
-			The intended visual significant of the gesture, if applied, based on the current pointer feedback. This is a value measured in points.
+			The intended visual significance of the gesture, if applied, based on the current pointer feedback. This is a value measured in points.
 			
 			For example, if the point has moved 5 points to the left, a Swiper may report 5 to indicate how much it would move (this is a logical movement, since the true animation depends on the animators and triggers being used).
 		*/
