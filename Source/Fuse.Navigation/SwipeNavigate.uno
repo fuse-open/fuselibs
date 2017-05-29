@@ -110,6 +110,7 @@ namespace Fuse.Navigation
 		protected override void OnUnrooted()
 		{
 			_gesture.Dispose();
+			_gesture = null;
 			base.OnUnrooted();
 		}
 
@@ -187,7 +188,7 @@ namespace Fuse.Navigation
 		float _prevDistance;
 		double _startTime = 0.0;
 
-		const float _delayStartThresholdDistance = 10;
+		const float _delayStartThresholdDistance = 0; //now handled by Gesture
 		static internal float TestDelayStartThresholdDistance { get { return _delayStartThresholdDistance; } }
 		
 		SwipeGestureHelper _horizontalGesture = new SwipeGestureHelper(_delayStartThresholdDistance,

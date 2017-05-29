@@ -32,7 +32,9 @@ namespace Fuse.Input
 		GestureRequest OnPointerReleased( PointerReleasedArgs args );
 
 		/**
-			The primary priority of the gesture.
+			The primary priority of the gesture. 
+			
+			TODO: Why is this not part of the capture arguments? It makes more sense unless it can somehow change mid-gesture, which I don't think is likely nor needed.
 		*/
 		GesturePriority Priority { get; }
 		/**
@@ -45,6 +47,8 @@ namespace Fuse.Input
 			An adjustment can be used to adjust the ordering between two gestures that have the same priority. This adjust the order in which captures may be elevated, giving the one with a higher adjustment first chance to escalated to a hard capture.
 			
 			It's used, for example, to resolve that edge swipes resolve prior to directional swipes even if the SwipeGesture's are in different nodes.
+			
+			TODO: Like `Priority` this seems like it should be a capture argument not an interface function.
 		*/
 		int PriorityAdjustment { get; }
 		

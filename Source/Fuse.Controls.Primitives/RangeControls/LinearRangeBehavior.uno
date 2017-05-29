@@ -32,7 +32,7 @@ namespace Fuse.Gestures
 			</StackPanel>
 
 	*/
-	public class LinearRangeBehavior : Behavior
+	public class LinearRangeBehavior : Behavior, IGesture
 	{
 		RangeControl FindRangeControl()
 		{
@@ -50,6 +50,7 @@ namespace Fuse.Gestures
 			set { _orientation = value; }
 		}
 		
+		Gesture _gesture;
 		protected override void OnRooted()
 		{
 			base.OnRooted();
@@ -57,20 +58,23 @@ namespace Fuse.Gestures
 			Control = FindRangeControl();
 			if (Control == null)
 				Fuse.Diagnostics.UserRootError( "RangeControl", Parent, this );
-
-			Pointer.AddHandlers(Control, OnPointerPressed, OnPointerMoved, OnPointerReleased);
+			else
+				_gesture = Input.Gestures.Add( this, Control, GestureType.Primary );
 		}
 
 		protected override void OnUnrooted()
 		{
-			if(Control != null)
-				Pointer.RemoveHandlers(Control, OnPointerPressed, OnPointerMoved, OnPointerReleased);
+			if(_gesture != null)
+			{
+				_gesture.Dispose();
+				_gesture = null;
+			}
 			Control = null;
 
 			base.OnUnrooted();
 		}
 
-		const float _delayStartGesture = 10.0f;
+		const float _delayStartGesture = 0.0f; //now handled by Gesture system
 		static SwipeGestureHelper _horizontalGesture = new SwipeGestureHelper(_delayStartGesture,
 			new DegreeSpan(45.0f, 135.0f),	// Right
 			new DegreeSpan(-45.0f, -135.0f));	// Left
@@ -79,66 +83,70 @@ namespace Fuse.Gestures
 			new DegreeSpan(-135.0f, -180.0f),
 			new DegreeSpan( 135.0f,  180.0f));
 
-		SwipeGestureHelper Gesture
+		SwipeGestureHelper HelpGesture
 		{
 			get { return Orientation == Orientation.Horizontal ? _horizontalGesture : _verticalGesture; }
 		}
 		
-		void OnLostCapture()
+		void IGesture.OnLostCapture(bool forced)
 		{
-			_down = -1;
-			Control.Value = _initialValue;
-			Control.EndInteraction(this);
+			if (forced)
+				Control.Value = _initialValue;
+		}
+		
+		float IGesture.Significance
+		{
+			get
+			{
+				var diff = _currentCoord - _startCoord;
+				if (!HelpGesture.IsWithinBounds(_currentCoord - _startCoord))
+					return 0;
+				
+				//TODO: length along axis
+				return Vector.Length(_currentCoord - _startCoord);
+			}
 		}
 
-		float2 _startCoord = float2(0f);
+		GesturePriority IGesture.Priority
+		{ get { return GesturePriority.Higher; } }
+		
+		int IGesture.PriorityAdjustment 
+		{ get { return 0; } }
+		
+		float2 _startCoord;
+		float2 _currentCoord;
 		double _initialValue = 0f;
-		int _down = -1;
 
-		void OnPointerPressed(object sender, PointerPressedArgs c)
+		void IGesture.OnCapture(PointerEventArgs args, CaptureType how)
 		{
-			if (_down == -1)
+			if (!_gesture.IsHardCapture)
 			{
-				if (c.TrySoftCapture(this, OnLostCapture))
-				{
-					Focus.GiveTo(Control);
-					Control.BeginInteraction(this, OnLostCapture);
-
-					_startCoord = c.WindowPoint;
-					_down = c.PointIndex;
-					_initialValue = Control.Value;
-				}
+				//TODO: it seems odd to give focus immeidately on SoftCapture, but that is how it worked before.
+				Focus.GiveTo(Control);
 			}
 		}
-
-		void OnPointerMoved(object sender, PointerMovedArgs c)
+		
+		GestureRequest IGesture.OnPointerPressed(PointerPressedArgs c)
 		{
-			if (_down != c.PointIndex)
-				return;
-
-			if (c.IsSoftCapturedTo(this))
-			{
-				if (Gesture.IsWithinBounds(c.WindowPoint - _startCoord))
-					c.TryHardCapture(this, OnLostCapture);
-			}
-			else if (c.IsHardCapturedTo(this))
-			{
-				UpdateValue(Control.WindowToLocal(c.WindowPoint));
-			}
+			_startCoord = _currentCoord = c.WindowPoint;
+			_initialValue = Control.Value;
+			return GestureRequest.Capture;
 		}
 
-		void OnPointerReleased(object sender, PointerReleasedArgs c)
+		GestureRequest IGesture.OnPointerMoved(PointerMovedArgs c)
 		{
-			if (_down != c.PointIndex)
-				return;
-
-			if (c.IsCapturedTo(this))
+			_currentCoord = c.WindowPoint;
+			if (_gesture.IsHardCapture)
 			{
-				UpdateValue(Control.WindowToLocal(c.WindowPoint));
-				c.ReleaseCapture(this);
+				UpdateValue(Control.WindowToLocal(_currentCoord));
 			}
-			Control.EndInteraction(this);
-			_down = -1;
+			return GestureRequest.Capture;
+		}
+
+		GestureRequest IGesture.OnPointerReleased(PointerReleasedArgs c)
+		{
+			UpdateValue(Control.WindowToLocal(c.WindowPoint));
+			return GestureRequest.Cancel;
 		}
 
 		void UpdateValue(float2 pos)
