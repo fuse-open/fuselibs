@@ -33,8 +33,10 @@ namespace Fuse.Controls
 				ColumnCount = 3
 			};
 			var i = 0;
-			for (var y = 1; y < 4; y++) {
-				for (var x = 1; x < 4; x++) {
+			for (var y = 1; y < 4; y++)
+			{
+				for (var x = 1; x < 4; x++)
+				{
 					maps[i] = new Fuse.Controls.Image()
 					{
 						Url = MakeUrl(2, x, y)
@@ -74,7 +76,6 @@ namespace Fuse.Controls
 			if (x < 0) return null;
 			if (y < 0) return null;
 			if (zoom < 0) return null;
-			debug_log(String.Format(s, "a", zoom, x, y));
 			return String.Format(s, "a", zoom, x, y);
 		}
 
@@ -107,7 +108,8 @@ namespace Fuse.Controls
 			foreach(MapMarker m in Markers)
 			{
 				FileSource fs = m.IconFile;
-				if (fs == null) {
+				if (fs == null)
+				{
 					fs = new global::Uno.UX.BundleFileSource(import global::Uno.IO.BundleFile("./mappin.png"));
 					m.IconAnchorY = 1;
 					m.IconAnchorX = 0;
@@ -169,7 +171,8 @@ namespace Fuse.Controls
 			get
 			{
 				MapView m = Parent as MapView;
-				if (m != null) {
+				if (m != null)
+				{
 					_lng = m.Longitude; 
 				}
 				return _lng;

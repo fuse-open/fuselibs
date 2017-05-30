@@ -238,13 +238,16 @@ namespace Fuse.Controls
 		bool _willUpdateCameraNextFrame;
 		internal void UpdateCameraNextFrame()
 		{
-			if defined(!MOBILE) {
-			        map.UpdateMap();
-			        return;
+			if defined(!MOBILE)
+			{
+				map.UpdateMap();
 			}
-			if(!MapIsReady || _willUpdateCameraNextFrame) return;
-			UpdateManager.PerformNextFrame(ApplyCameraState, UpdateStage.Primary);
-			_willUpdateCameraNextFrame = true;
+			else
+			{
+				if(!MapIsReady || _willUpdateCameraNextFrame) return;
+				UpdateManager.PerformNextFrame(ApplyCameraState, UpdateStage.Primary);
+				_willUpdateCameraNextFrame = true;
+			}
 		}
 
 		void ApplyCameraState()
