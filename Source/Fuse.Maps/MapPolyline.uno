@@ -58,13 +58,15 @@ namespace Fuse.Controls
 		}
 
 		string _data;
-		char[] delimiterChars = new char[] { '|', ',' };
+		static readonly char[] delimiterChars = new char[] { '|', ',' };
 		public string Data
 		{
-			get {
+			get
+			{
 				return _data;
 			}
-			set {
+			set
+			{
 				_data = value;
 
 				string[] words = _data.Split(delimiterChars);
@@ -81,10 +83,12 @@ namespace Fuse.Controls
 		float4 _color = float4(1,0,0,1);
 		public float4 Color
 		{
-			get {
+			get
+			{
 				return _color;
 			}
-			set {
+			set
+			{
 				_color = value;
 				MarkDirty();
 			}
@@ -93,10 +97,12 @@ namespace Fuse.Controls
 		float _lineWidth = 1;
 		public float LineWidth
 		{
-			get {
+			get
+			{
 				return _lineWidth;
 			}
-			set {
+			set
+			{
 				_lineWidth = value;
 				MarkDirty();
 			}
