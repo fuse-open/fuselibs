@@ -257,6 +257,12 @@ namespace Fuse.Controls
 			var i = 0;
 			var tmp = Math.Floor(p);
 			_cornertile = (int2)tmp - 1; // Have the corner one to the left and above the center of the map
+
+			// Calculate offset (adjustment) of tile, compared to center of map:
+			var adj = (float2(0.5f) - (p - tmp));
+			adj = adj * maps[4].ActualSize;
+			trans.XY = adj;
+
 			for (var y = (int)p.Y - 1; y < (int)p.Y + 2; y++)
 			{
 				for (var x = (int)p.X - 1; x < (int)p.X + 2; x++)
@@ -265,11 +271,6 @@ namespace Fuse.Controls
 					i++;
 				}
 			}
-			var adj = float2(0.5f);
-			adj.X -= p.X - Math.Floor(p.X);
-			adj.Y -= p.Y - Math.Floor(p.Y);
-			adj = adj * maps[4].ActualSize; 
-			trans.XY = adj;
 			UpdateMarkers();
 		}
 
