@@ -167,7 +167,11 @@ namespace Fuse.Controls.VideoImpl.Android
 		public double Position
 		{
 			get { return GetCurrentPosition(_handle) / 1000.0; }
-			set { SeekTo(_handle, (int)(value * 1000)); }
+			set
+			{
+				if (GetDuration(_handle) >= 0)
+					SeekTo(_handle, (int)(value * 1000));
+			}
 		}
 
 		public int RotationDegrees
@@ -409,7 +413,11 @@ namespace Fuse.Controls.VideoImpl.Android
 
 
 		public void Play() { Play(_handle); }
-		public void Pause() { Pause(_handle); }
+		public void Pause()
+		{
+			if (GetDuration(_handle) >= 0)
+				Pause(_handle);
+		}
 
 		[Foreign(Language.Java)]
 		static void Play(Java.Object handle)
