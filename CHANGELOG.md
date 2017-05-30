@@ -36,6 +36,7 @@
 
 ## Fuse.Controls.Video
 - Fixed a bug where we would trigger errors on Android if a live-stream was seeked or paused.
+- Fixed a bug where HLS streams would become zero-sized on iOS.
 
 
 ## 1.0
