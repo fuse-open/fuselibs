@@ -31,6 +31,12 @@
 
 ## ImageTools
 - Added supported for encoding/decoding images to/from base64 on DotNet platforms, including Windows and Mac OS X.
+## Bug in Container
+- Fixed bug in Container which caused crash when the container had no subtree nodes. This caused the Fuse.MaterialDesign community package to stop working.
+
+## Fuse.Controls.Video
+- Fixed a bug where we would trigger errors on Android if a live-stream was seeked or paused.
+
 
 ## 1.0
 
@@ -46,6 +52,7 @@
 ## Bugfixes
 - Fixes a bug (regression in 0.36) where functions could not be used as data context in event callbacks.
 - Fixed a bug where strings like `"20%"` did not marshal correctly to `Size` when databound.
+- Fixed a defect in expression functions `x,y,width,height`, they will not use the correct size if referring to an element that already has a layout
 
 ## Instance/Each/Deferred
 - Changes to the items will not be collected and new items added once per frame. This avoids certain processing bottlenecks. This should not cause any backwards incompatibilties, though the option `Defer="Immediate"` is available to get the previous behavior.

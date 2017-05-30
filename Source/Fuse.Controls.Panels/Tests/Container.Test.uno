@@ -10,6 +10,14 @@ namespace Fuse.Controls.Panels.Test
 	public class ContainerTest : TestBase
 	{
 		[Test]
+		public void IssuePublic53()
+		{
+			//https://github.com/fusetools/fuselibs-public/issues/53
+			var c = new UX.IssuePublic53();
+			var root = TestRootPanel.CreateWithChild(c);
+		}
+
+		[Test]
 		public void SubtreeNodes()
 		{
 			var c = new UX.ContainerTest();

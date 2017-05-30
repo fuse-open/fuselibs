@@ -1,0 +1,10 @@
+<Panel ux:Class="UX.LayoutFunctions.Issue4189">
+	<Panel X="10" Y="20" Width="300" Height="400" ux:Name="a"/>
+	<Deferred>
+		<Panel>
+			<Panel X="x(a)" Y="y(a)" Width="width(a)" Height="height(a)" Name="b"/>
+			<Panel X="x(b)" Y="y(b)" Width="width(b)" Height="height(b)" Name="d"/>
+		</Panel>
+	</Deferred>
+	<Panel X="x(a)" Y="y(a)" Width="width(a)" Height="height(a)" ux:Name="c"/>
+</Panel>
