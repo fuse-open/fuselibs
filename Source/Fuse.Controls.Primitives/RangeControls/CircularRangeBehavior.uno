@@ -73,7 +73,7 @@ namespace Fuse.Gestures
 				<Circle Color="#aaa" />
 			</RangeControl2D>
 	*/
-	public class CircularRangeBehavior : Behavior
+	public class CircularRangeBehavior : Behavior, IGesture
 	{
 		const float _angleHardThreshold = Math.PIf/180*5;
 		const float _radiusHardThreshold = 5;
@@ -122,6 +122,7 @@ namespace Fuse.Gestures
 			set { _wrap = value; }
 		}
 		
+		Gesture _gesture;
 		protected override void OnRooted()
 		{
 			base.OnRooted();
@@ -136,7 +137,7 @@ namespace Fuse.Gestures
 			}
 			else
 			{
-				Pointer.AddHandlers(_control, OnPointerPressed, OnPointerMoved, OnPointerReleased);
+				_gesture = Input.Gestures.Add( this, _control, GestureType.Primary );
 				if (_rangeControl != null)
 					_rangeControl.ValueChanged += OnValueChanged;
 				else
@@ -146,8 +147,11 @@ namespace Fuse.Gestures
 		
 		protected override void OnUnrooted()
 		{
-			if (_control != null)
-				Pointer.RemoveHandlers(_control, OnPointerPressed, OnPointerMoved, OnPointerReleased);
+			if (_gesture != null)
+			{
+				_gesture.Dispose();
+				_gesture = null;
+			}
 			if (_rangeControl != null)
 				_rangeControl.ValueChanged -= OnValueChanged;
 			if (_binaryRangeControl != null)
@@ -158,47 +162,53 @@ namespace Fuse.Gestures
 			base.OnUnrooted();
 		}
 		
-		void OnLostCapture()
+		void IGesture.OnLostCapture(bool forced)
 		{
-			if (_rangeControl != null)
-				_rangeControl.Value = _initialValue.X;
-			else
-				_binaryRangeControl.Value = _initialValue.AsFloat2;
-			EndInteraction();
+			if (forced)
+			{
+				if (_rangeControl != null)
+					_rangeControl.Value = _initialValue.X;
+				else
+					_binaryRangeControl.Value = _initialValue.AsFloat2;
+			}
 		}
 		
-		void EndInteraction()
+		GesturePriorityConfig IGesture.Priority
 		{
-			_down = -1;
-			_hard = false;
-			_control.EndInteraction(this);
-			Pointer.ReleaseCapture(this);
+			get
+			{
+				return new GesturePriorityConfig( GesturePriority.Higher,
+					//don't use angle to calculate a length since movements near the middle would be magnified
+					Vector.Length(_currentCoord - _initialCoord) );
+			}
 		}
 		
 		double2 _initialValue;
 		double _initialAngle, _initialRadius;
+		float2 _initialCoord, _currentCoord;
 		int _down = -1;
 		bool _hard;
 		
-		void OnPointerPressed(object s, PointerPressedArgs args)
+		void IGesture.OnCapture(PointerEventArgs args, CaptureType how)
 		{
-			if (_down != -1)
-				return;
-				
-			if (args.TrySoftCapture(this, OnLostCapture))
+			if (!_gesture.IsHardCapture)
 			{
+				//TODO: it seems odd to give focus immeidately on SoftCapture, but that is how it worked before.
 				Focus.GiveTo(_control);
-				_control.BeginInteraction(this, OnLostCapture);
-				
-				_down = args.PointIndex;
-				if (_rangeControl != null)
-					_initialValue = new double2(_rangeControl.Value,0);
-				else
-					_initialValue = new double2(_binaryRangeControl.Value);
-					
-				_initialAngle = Angle(args);
-				_initialRadius = Radius(args);
 			}
+		}
+		
+		GestureRequest IGesture.OnPointerPressed(PointerPressedArgs args)
+		{
+			if (_rangeControl != null)
+				_initialValue = new double2(_rangeControl.Value,0);
+			else
+				_initialValue = new double2(_binaryRangeControl.Value);
+					
+			_initialCoord = _currentCoord = args.WindowPoint;
+			_initialAngle = Angle(args);
+			_initialRadius = Radius(args);
+			return GestureRequest.Capture;
 		}
 		
 		float2 LocalVector(PointerEventArgs args)
@@ -222,34 +232,22 @@ namespace Fuse.Gestures
 			return a;
 		}
 		
-		void OnPointerMoved(object s, PointerMovedArgs args)
+		GestureRequest IGesture.OnPointerMoved(PointerMovedArgs args)
 		{
-			if (_down != args.PointIndex)
-				return;
-				
+			_currentCoord = args.WindowPoint;
 			var radius = Radius(args);
 			var angle = Angle(args);
-			if (!_hard && 
-				(Math.Abs(angle - _initialAngle) > _angleHardThreshold ||
-				Math.Abs(radius - _initialRadius) > _radiusHardThreshold) )
-			{
-				if (!args.TryHardCapture(this, OnLostCapture))
-					OnLostCapture();
-				else
-					_hard = true;
-			}
 			
-			if (_hard)
+			if (_gesture.IsHardCapture)
 				UpdateValue(angle, radius);
+				
+			return GestureRequest.Capture;
 		}
 		
-		void OnPointerReleased(object s, PointerReleasedArgs args)
+		GestureRequest IGesture.OnPointerReleased(PointerReleasedArgs args)
 		{
-			if (_down != args.PointIndex)
-				return;
-				
 			UpdateValue(Angle(args), Radius(args));
-			EndInteraction();
+			return GestureRequest.Cancel;
 		}
 		
 		float2 AngleRange

@@ -76,6 +76,8 @@ namespace Fuse.Input
 			Called anytime CaptureType changes, except to None (in which case OnLostCapture would be called).
 			
 			An IGesture implementation should avoid making any visual changes until it obtains a Hard capture. Prior to this point it is uncertain if the gesture will actually be the selected one.  Gestures that only ever need a soft capture can however proceed, but they shouldn't be making any direction visual changes anway.
+			
+			TODO: This interface should change to better report when a capture is first acquired as to opposed to just reporting the current state. A lot of users are assumine they get Soft capture first, which isn't guaranteed.
 		*/
 		void OnCapture( PointerEventArgs args, CaptureType how );
 		/**

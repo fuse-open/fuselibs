@@ -100,7 +100,7 @@ namespace Fuse.Gestures
 			{
 				var diff = _currentCoord - _startCoord;
 				return new GesturePriorityConfig( GesturePriority.Higher,
-					//TODO: length along axis
+					//TODO: length along axis 
 					!HelpGesture.IsWithinBounds(_currentCoord - _startCoord) ?
 						0f : Vector.Length(_currentCoord - _startCoord) );
 			}
