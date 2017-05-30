@@ -185,7 +185,8 @@ namespace Fuse.Controls
 				{
 					m.Longitude = value; 
 				}
-				else {
+				else
+				{
 					UpdateMap();
 				}
 			}
