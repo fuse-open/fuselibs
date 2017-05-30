@@ -42,7 +42,7 @@ namespace Fuse.Gestures
 		}
 	}
 
-	class Clicker
+	class Clicker : IGesture
 	{
 		public event ClickerEventHandler TappedEvent;
 		public event ClickerEventHandler ClickedEvent;
@@ -89,19 +89,16 @@ namespace Fuse.Gestures
 			}
 		}
 
+		Gesture _gesture;
 		void OnRooted()
 		{
-			Pointer.Pressed.AddHandler(_visual, OnPointerPressed);
-			Pointer.Released.AddHandler(_visual, OnPointerReleased);
-			Pointer.Moved.AddHandler(_visual, OnPointerMoved);
+			_gesture = Input.Gestures.Add( this, _visual, GestureType.Primary );
 		}
 
 		void OnUnrooted()
 		{
-			Pointer.Pressed.RemoveHandler(_visual, OnPointerPressed);
-			Pointer.Released.RemoveHandler(_visual, OnPointerReleased);
-			Pointer.Moved.RemoveHandler(_visual, OnPointerMoved);
-			Fuse.Input.Pointer.ReleaseCapture(this);
+			_gesture.Dispose();
+			_gesture = null;
 		}
 
 		float2 _startCoord;
@@ -110,7 +107,6 @@ namespace Fuse.Gestures
 		internal float2 PressedPosition { get { return _pressedPosition; } }
 
 		double _startTime;
-		int _down = -1;
 
 		int _tapCount, _clickCount;
 		double _lastUpTime;
@@ -120,11 +116,14 @@ namespace Fuse.Gestures
 
 		PointerEventArgs _lastArgs;
 
-		void OnPointerPressed(object sender, PointerPressedArgs args)
+		GestureRequest IGesture.OnPointerPressed(PointerPressedArgs args)
 		{
-			if (_down != -1 || !args.TrySoftCapture(this, OnLostCapture))
-				return;
-
+			_lastArgs = args;
+			return GestureRequest.Capture;
+		}
+		
+		void IGesture.OnCapture(PointerEventArgs args, CaptureType how)
+		{
 			var delta = args.Timestamp - _lastUpTime;
 			if (delta > _maxDoubleInterval)
 			{
@@ -132,13 +131,12 @@ namespace Fuse.Gestures
 				_clickCount = 0;
 			}
 
-			_down = args.PointIndex;
 			_pressedPosition = _visual.WindowToLocal(args.WindowPoint);
 			_startCoord = args.WindowPoint;
 			_startTime = args.Timestamp;
 			_maybeTap = true;
 
-			if (LongPressedEvent != null)
+			if (LongPressedEvent != null && !_hasUpdate)
 			{
 				_hasUpdate = true;
 				UpdateManager.AddAction(Update);
@@ -151,11 +149,8 @@ namespace Fuse.Gestures
 			_hovering = true;
 		}
 
-		void OnPointerMoved(object sender, PointerMovedArgs args)
+		GestureRequest IGesture.OnPointerMoved(PointerMovedArgs args)
 		{
-			if (_down != args.PointIndex)
-				return;
-
 			var distance = Vector.Length(args.WindowPoint - _startCoord);
 			var deltaTime = args.Timestamp - _startTime;
 			if (distance > _maxTapDistanceMoved || deltaTime > _maxTapTimeHeld)
@@ -163,10 +158,7 @@ namespace Fuse.Gestures
 
 			//give up capture if it can no longer be our gesture
 			if (!NeedCapture())
-			{
-				args.ReleaseCapture(this);
-				DoneCapture();
-			}
+				return GestureRequest.Cancel;
 
 			var hoverNow = _visual.GetHitWindowPoint(args.WindowPoint) != null;
 			if (hoverNow != _hovering)
@@ -177,6 +169,7 @@ namespace Fuse.Gestures
 			}
 
 			_lastArgs = args;
+			return GestureRequest.Capture;
 		}
 
 		bool NeedCapture()
@@ -187,12 +180,8 @@ namespace Fuse.Gestures
 				PressingEvent != null;
 		}
 
-		void OnPointerReleased(object sender, PointerReleasedArgs args)
+		GestureRequest IGesture.OnPointerReleased(PointerReleasedArgs args)
 		{
-			if (_down != args.PointIndex)
-				return;
-
-			args.ReleaseCapture(this);
 			var deltaTime = args.Timestamp - _startTime;
 			if (_maybeTap && deltaTime <= _maxTapTimeHeld)
 			{
@@ -221,9 +210,9 @@ namespace Fuse.Gestures
 				PressingEvent(args, 0);
 			_hovering = false;
 
-			DoneCapture();
 			_lastUpTime = args.Timestamp;
 			_lastArgs = args;
+			return GestureRequest.Cancel;
 		}
 
 		void Update()
@@ -239,7 +228,6 @@ namespace Fuse.Gestures
 
 		void DoneCapture()
 		{
-			_down = -1;
 			ReleaseUpdate();
 
 			if (_hovering && PressingEvent != null)
@@ -256,11 +244,21 @@ namespace Fuse.Gestures
 			}
 		}
 
-		void OnLostCapture()
+		void IGesture.OnLostCapture(bool forced)
 		{
 			DoneCapture();
-			_tapCount = 0;
-			_clickCount = 0;
+			if (forced)
+			{
+				_tapCount = 0;
+				_clickCount = 0;
+			}
 		}
+		
+		//As we have no priority we can return a high priority, forcing other gestures to be sure they
+		//recognize themselves before stealing from clicker.
+		GesturePriority IGesture.Priority { get { return GesturePriority.Highest; } }
+		//0 will prevent it from ever getting a hard capture
+		float IGesture.Significance { get { return 0; } }
+		int IGesture.PriorityAdjustment { get { return 0; } }
 	}
 }

@@ -34,13 +34,15 @@ namespace Fuse.Input
 		/**
 			The primary priority of the gesture. 
 			
-			TODO: Why is this not part of the capture arguments? It makes more sense unless it can somehow change mid-gesture, which I don't think is likely nor needed.
+			This value may change during the handling of a gesture. If a handler recognizes multiple gestures or compound gestures, it may decide to change the priority during handling.
 		*/
 		GesturePriority Priority { get; }
 		/**
 			The intended visual significance of the gesture, if applied, based on the current pointer feedback. This is a value measured in points.
 			
 			For example, if the point has moved 5 points to the left, a Swiper may report 5 to indicate how much it would move (this is a logical movement, since the true animation depends on the animators and triggers being used).
+			
+			Return 0 if a hard-capture is never desired, in which case the capture will stay as a soft capture.
 		*/
 		float Significance { get; }
 		/**
@@ -48,7 +50,7 @@ namespace Fuse.Input
 			
 			It's used, for example, to resolve that edge swipes resolve prior to directional swipes even if the SwipeGesture's are in different nodes.
 			
-			TODO: Like `Priority` this seems like it should be a capture argument not an interface function.
+			This should generally return `0`. A typical control will not modify this value.
 		*/
 		int PriorityAdjustment { get; }
 		
