@@ -247,7 +247,7 @@ namespace Fuse.Controls
 		}
 
 		float2 _tilepos = float2(0);
-		float2 _cornertile = float2(0);
+		float2 _cornertile = int2(0);
 		public void UpdateMap()
 		{
 			MapView m = Parent as MapView;
@@ -255,8 +255,8 @@ namespace Fuse.Controls
 			var p = WorldToTilePos(Longitude, Latitude, (int)Zoom);
 			_tilepos = p;
 			var i = 0;
-			_cornertile.X = Math.Floor(p.X - 1);
-			_cornertile.Y = Math.Floor(p.Y - 1);
+			var tmp = Math.Floor(p);
+			_cornertile = (int2)tmp - 1; // Have the corner one to the left and above the center of the map
 			for (var y = (int)p.Y - 1; y < (int)p.Y + 2; y++)
 			{
 				for (var x = (int)p.X - 1; x < (int)p.X + 2; x++)
