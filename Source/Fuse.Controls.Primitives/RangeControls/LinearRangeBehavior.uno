@@ -94,24 +94,17 @@ namespace Fuse.Gestures
 				Control.Value = _initialValue;
 		}
 		
-		float IGesture.Significance
+		GesturePriorityConfig IGesture.Priority
 		{
-			get
+			get 
 			{
 				var diff = _currentCoord - _startCoord;
-				if (!HelpGesture.IsWithinBounds(_currentCoord - _startCoord))
-					return 0;
-				
-				//TODO: length along axis
-				return Vector.Length(_currentCoord - _startCoord);
+				return new GesturePriorityConfig( GesturePriority.Higher,
+					//TODO: length along axis
+					!HelpGesture.IsWithinBounds(_currentCoord - _startCoord) ?
+						0f : Vector.Length(_currentCoord - _startCoord) );
 			}
 		}
-
-		GesturePriority IGesture.Priority
-		{ get { return GesturePriority.Higher; } }
-		
-		int IGesture.PriorityAdjustment 
-		{ get { return 0; } }
 		
 		float2 _startCoord;
 		float2 _currentCoord;

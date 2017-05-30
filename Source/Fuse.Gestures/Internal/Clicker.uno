@@ -254,11 +254,17 @@ namespace Fuse.Gestures
 			}
 		}
 		
-		//As we have no priority we can return a high priority, forcing other gestures to be sure they
-		//recognize themselves before stealing from clicker.
-		GesturePriority IGesture.Priority { get { return GesturePriority.Highest; } }
-		//0 will prevent it from ever getting a hard capture
-		float IGesture.Significance { get { return 0; } }
-		int IGesture.PriorityAdjustment { get { return 0; } }
+		GesturePriorityConfig IGesture.Priority
+		{
+			get
+			{
+				return new GesturePriorityConfig(
+					//As we have no priority we can return a high priority, forcing other gestures to be sure they
+					//recognize themselves before stealing from clicker.
+					GesturePriority.Highest,
+					//0 will prevent it from ever getting a hard capture
+					0 );
+			}
+		}
 	}
 }

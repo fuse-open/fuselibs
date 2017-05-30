@@ -432,23 +432,16 @@ namespace Fuse.Gestures.Internal
 		PointerVelocity<float2> _velocity = new PointerVelocity<float2>();
 		
 		float _significance;
-		float IGesture.Significance
+		GesturePriorityConfig IGesture.Priority
 		{
-			get { return _significance; }
-		}
-		
-		int IGesture.PriorityAdjustment
-		{
-			get 
+			get
 			{
-				//TODO: fixup random number based on priorities in Swipe somehow
-				return _pointerRegion == null ? 0 : (_pointerRegion.Priority < 100 ? 1 : 0);
+				return new GesturePriorityConfig(
+					_pointerRegion == null ? GesturePriority.Normal : _pointerRegion.GesturePriority,
+					_significance,
+					//TODO: fixup random number based on priorities in Swipe somehow
+					_pointerRegion == null ? 0 : (_pointerRegion.Priority < 100 ? 1 : 0) );
 			}
-		}
-		
-		GesturePriority IGesture.Priority
-		{
-			get { return _pointerRegion == null ? GesturePriority.Normal : _pointerRegion.GesturePriority; }
 		}
 		
 		GestureRequest IGesture.OnPointerPressed(PointerPressedArgs args)

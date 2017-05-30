@@ -19,6 +19,22 @@ namespace Fuse.Input
 		Highest,
 	}
 	
+	public struct GesturePriorityConfig
+	{
+		public GesturePriority Priority;
+		public float Significance;
+		public int Adjustment;
+		
+		public GesturePriorityConfig( GesturePriority priority,
+			float significance = 0, int adjustment = 0)
+		{
+			Priority = priority;
+			Significance = significance;
+			Adjustment = adjustment;
+		}
+	}
+	
+	
 	/**
 		Feedback to the gesture about pointer events as well as priority feedback to the gesture handler.
 		
@@ -32,27 +48,29 @@ namespace Fuse.Input
 		GestureRequest OnPointerReleased( PointerReleasedArgs args );
 
 		/**
+			Obtains the priority settings of the gesture.
+			
+			These values may change during the handling of a gesture. If a handler recognizes multiple gestures or compound gestures, it may decide to change the priority during handling.
+			
+			## priority
+			
 			The primary priority of the gesture. 
 			
-			This value may change during the handling of a gesture. If a handler recognizes multiple gestures or compound gestures, it may decide to change the priority during handling.
-		*/
-		GesturePriority Priority { get; }
-		/**
+			## significance 
+			
 			The intended visual significance of the gesture, if applied, based on the current pointer feedback. This is a value measured in points.
 			
 			For example, if the point has moved 5 points to the left, a Swiper may report 5 to indicate how much it would move (this is a logical movement, since the true animation depends on the animators and triggers being used).
 			
-			Return 0 if a hard-capture is never desired, in which case the capture will stay as a soft capture.
-		*/
-		float Significance { get; }
-		/**
+			## adjustment
+			
 			An adjustment can be used to adjust the ordering between two gestures that have the same priority. This adjust the order in which captures may be elevated, giving the one with a higher adjustment first chance to escalated to a hard capture.
 			
 			It's used, for example, to resolve that edge swipes resolve prior to directional swipes even if the SwipeGesture's are in different nodes.
 			
-			This should generally return `0`. A typical control will not modify this value.
+			This should generally return `0`. A typical control will not modify this value.			
 		*/
-		int PriorityAdjustment { get; }
+		GesturePriorityConfig Priority { get; }
 		
 		/**
 			Called anytime CaptureType changes, except to None (in which case OnLostCapture would be called).
@@ -64,6 +82,8 @@ namespace Fuse.Input
 			Called whenever a previous capture is lost, soft or hard.
 			
 			It must be expected that this can be called at anytime. An IGesture implementation must be able to deal with lost captures at the start, middle, or end of a gesture, even if it's started making visual changes.
+			
+			@param forced False if the capture is lost due to a cancel request by the gesture. True otherwise, in cases such as it losing priority or the app losing focus.
 		*/
 		void OnLostCapture( bool forced );
 	}
@@ -141,7 +161,9 @@ namespace Fuse.Input
 		
 		void Capture( PointerEventArgs args )
 		{
-			var sig = Handler.Significance;
+			var pr = Handler.Priority;
+			var sig = pr.Significance;
+			
 			CaptureType captureType = (sig >= HardCaptureSignificanceThreshold 
 				|| _captureType.HasFlag(CaptureType.Hard)) ? CaptureType.Hard : CaptureType.Soft;
 			if (Type.HasFlag(GestureType.Children))
@@ -352,9 +374,10 @@ namespace Fuse.Input
 			for (int i=0; i < _activeGestures.Count; ++i)
 			{
 				var ar = _activeGestures[i];
-				ar.Significance = ar.Gesture.Handler.Significance;
-				ar.PriorityAdjustment = ar.Gesture.Handler.PriorityAdjustment;
-				ar.Priority = ar.Gesture.Handler.Priority;
+				var pr = ar.Gesture.Handler.Priority;
+				ar.Priority = pr.Priority;
+				ar.Significance = pr.Significance;
+				ar.PriorityAdjustment = pr.Adjustment;
 			}
 		}
 		

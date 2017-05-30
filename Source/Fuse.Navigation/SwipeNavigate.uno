@@ -216,31 +216,19 @@ namespace Fuse.Navigation
 			}
 		}
 
-		float IGesture.Significance
+		GesturePriorityConfig IGesture.Priority
 		{
-			get 
-			{ 
+			get
+			{
 				var diff = _currentCoord - _startCoord;
 				var withinBounds = IsHorizontal
 					? _horizontalGesture.IsWithinBounds(diff)
 					: _verticalGesture.IsWithinBounds(diff);
 
-				if (!withinBounds)
-					return 0;
-					
-				//TODO: this is wrong, it should only be the significant axis
-				return Vector.Length(diff);
+				return new GesturePriorityConfig( GesturePriority.Lower,
+					//TODO: this is wrong, it should only be the significant axis				
+					!withinBounds ? 0f : Vector.Length(diff) );
 			}
-		}
-		
-		GesturePriority IGesture.Priority
-		{
-			get { return GesturePriority.Lower; }
-		}
-		
-		int IGesture.PriorityAdjustment
-		{
-			get { return 0; }
 		}
 		
 		GestureRequest IGesture.OnPointerPressed(PointerPressedArgs args)
