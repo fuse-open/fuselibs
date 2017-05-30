@@ -3,6 +3,10 @@
 ## Bug in Container
 - Fixed bug in Container which caused crash when the container had no subtree nodes. This caused the Fuse.MaterialDesign community package to stop working.
 
+## Fuse.Controls.Video
+- Fixed a bug where we would trigger errors on Android if a live-stream was seeked or paused.
+
+
 ## 1.0
 
 ## Fuse.Elements
