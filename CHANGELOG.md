@@ -1,5 +1,10 @@
 # Unreleased
 
+## FuseJS/Bundle
+- Added `.list()` to fetch a list of all bundled files
+- Added `.readBuffer()` to read a bundle as an ArrayBuffer
+- Added `.extract()` to write a bundled file into a destination path
+
 ## Native
 - Added feature toggle for implicit `GraphicsView`. If you are making an app using only Native UI disabling the implicit `GraphicsView` can increase performance. Disable the `GraphicsView` by defining `DISABLE_IMPLICIT_GRAPHICSVIEW` when building. For example `uno build -t=ios -DDISABLE_IMPLICIT_GRAPHICSVIEW`
 
