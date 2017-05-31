@@ -19,7 +19,7 @@ namespace Fuse.Controls
 	@seealso Fuse.Controls.MapView
 	*/
 
-	public class MapTile : Panel
+	internal class OSMMapTile : Panel
 	{
 		Fuse.Translation _trans;
 		Fuse.Controls.Image[] _maps = new Fuse.Controls.Image[9];
@@ -27,7 +27,7 @@ namespace Fuse.Controls
 		MarkerIconCache _markerGraphicsCache;
 
 		const int GridSize = 3;
-		public MapTile()
+		public OSMMapTile()
 		{
 			_grid = new Fuse.Controls.Grid()
 			{
@@ -83,11 +83,7 @@ namespace Fuse.Controls
 		{
 			get
 			{
-				if (_mapview_parent != null)
-				{
-					return _mapview_parent.Markers;
-				}
-				return null;
+				return _mapview_parent.Markers;
 			}
 		}
 
@@ -103,7 +99,6 @@ namespace Fuse.Controls
 		List<Fuse.Controls.Image> _markers = new List<Fuse.Controls.Image>();
 		public void UpdateMarkers()
 		{
-			if (Markers == null) return;
 			ClearMarkers();
 			foreach(MapMarker m in Markers)
 			{
@@ -146,17 +141,16 @@ namespace Fuse.Controls
 			}
 		}
 
-		bool ready = false;
 		MapView _mapview_parent = null;
 		protected override void OnRooted()
 		{
 			base.OnRooted();
 			Placed += OnPlaced;
 			_mapview_parent = Parent as MapView;
-			if (_mapview_parent != null) {
+			if (_mapview_parent == null) {
 				_mapview_parent.ClipToBounds = true;
+				Fuse.Diagnostics.UserError( "OSMapTile needs a MapView as it's parent", Parent );
 			}
-			ready = true;
 		}
 
 		protected override void OnUnrooted()
@@ -176,77 +170,59 @@ namespace Fuse.Controls
 			UpdateMap();
 		}
 
-		double _lng = 0;
 		public double Longitude
 		{
 			get
 			{
 				if (_mapview_parent != null)
 				{
-					_lng = _mapview_parent.Longitude;
+					return _mapview_parent.Longitude;
 				}
-				return _lng;
+				return 0;
 			}
 			set
 			{
-				_lng = value;
 				if (_mapview_parent != null)
 				{
 					_mapview_parent.Longitude = value;
 				}
-				else
-				{
-					UpdateMap();
-				}
 			}
 		}
 
-		double _lat = 0;
 		public double Latitude
 		{
 			get
 			{
 				if (_mapview_parent != null)
 				{
-					_lat = _mapview_parent.Latitude;
+					return _mapview_parent.Latitude;
 				}
-				return _lat;
+				return 0;
 			}
 			set
 			{
-				_lat = value;
 				if (_mapview_parent != null)
 				{
 					_mapview_parent.Latitude = value;
 				}
-				else
-				{
-					UpdateMap();
-				}
 			}
 		}
 
-		double _zoom = 2;
 		public double Zoom
 		{
 			get
 			{
 				if (_mapview_parent != null)
 				{
-					_zoom = _mapview_parent.Zoom;
+					return _mapview_parent.Zoom;
 				}
-				return _zoom;
+				return 2;
 			}
 			set
 			{
-				_zoom = value;
 				if (_mapview_parent != null)
 				{
 					_mapview_parent.Zoom = value;
-				}
-				else
-				{
-					UpdateMap();
 				}
 			}
 		}
@@ -255,7 +231,7 @@ namespace Fuse.Controls
 		float2 _cornertile = int2(0);
 		public void UpdateMap()
 		{
-			if (!ready) return;
+			if (_mapview_parent == null) return;
 			var p = WorldToTilePos(Longitude, Latitude, (int)Zoom);
 			_tilepos = p;
 			var i = 0;

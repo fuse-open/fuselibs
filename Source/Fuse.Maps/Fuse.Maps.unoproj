@@ -20,7 +20,7 @@
   "Projects": [],
   "Includes": [
     "MapMarker.uno:Source",
-    "MapTile.uno:Source",
+    "OSMMapTile.uno:Source",
     "MapView.uno:Source",
     "MapView.Events.uno:Source",
     "MapView.ScriptClass.uno:Source",

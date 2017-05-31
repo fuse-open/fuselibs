@@ -172,12 +172,12 @@ namespace Fuse.Controls
 
 		MapConfig _mapConfig;
 		MapCameraState _cameraState;
-		extern(!MOBILE) MapTile map;
+		extern(!MOBILE) OSMMapTile map;
 		public MapView()
 		{
 			if defined(!MOBILE)
 			{
-				map = new MapTile();
+				map = new OSMMapTile();
 				Children.Add(map);
 			}
 			_cameraState = new MapCameraState();
