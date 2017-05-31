@@ -163,6 +163,16 @@ namespace Fuse
 		{
 			return _children.Contains(item);
 		}
+		
+		int IndexOf(Node item)
+		{
+			for (int i=0; i < _children.Count; ++i)
+			{
+				if (_children[i] == item)
+					return i;
+			}
+			return -1;
+		}
 
 		int ICollection<Node>.Count { get { return _children.Count; } }
 
@@ -214,6 +224,51 @@ namespace Fuse
 			}
 		}
 
+		internal void InsertOrMoveNodes(int index, IEnumerator<Node> items)
+		{
+			if (index <0 || index > Children.Count)
+				throw new ArgumentOutOfRangeException("index");
+			
+			//cleanup all nodes first
+			while (items.MoveNext())
+				InsertCleanup( items.Current );
+
+			var moved = new HashSet<Node>();
+			
+			//nodes should be considered added in the same group
+			var capture = CaptureRooting();
+			try
+			{
+				//then add all
+				items.Reset();
+				while (items.MoveNext())
+				{
+					var c = items.Current;
+					var where = IndexOf(c);
+					if (where != -1)
+					{
+						_children.RemoveAt(where);
+						index--;
+						moved.Add(c);
+					}
+					_children.Insert(index++, c);
+				}
+
+				//then process them
+				items.Reset();
+				while (items.MoveNext())
+				{
+					var c = items.Current;
+					if (!moved.Contains(c))
+						OnAdded(c);
+				}
+			}
+			finally
+			{
+				ReleaseRooting(capture);
+			}
+		}
+		
 		void IList<Node>.RemoveAt(int index)
 		{
 			var b = _children[index];

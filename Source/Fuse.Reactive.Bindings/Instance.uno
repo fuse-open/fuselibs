@@ -816,7 +816,7 @@ namespace Fuse.Reactive
 			//find last node prior to where we want to introduce
 			var lastNode = GetLastNodeFromIndex(windowIndex-1);
 
-			Parent.InsertNodes( Parent.Children.IndexOf(lastNode) + 1, wi.Nodes.GetEnumerator() );
+			Parent.InsertOrMoveNodes( Parent.Children.IndexOf(lastNode) + 1, wi.Nodes.GetEnumerator() );
 		}
 
 		class ObservableLink: ValueObserver
@@ -854,24 +854,49 @@ namespace Fuse.Reactive
 
 		void AddTemplate(WindowItem item, Template f)
  		{
- 			var elm = f.New() as Node;
+			Node elm = null;
+			
+			if (_availableNodes != null && _availableNodes.ContainsKey(f))
+			{
+				var list = _availableNodes[f];
+				if (list.Count > 0)
+				{
+					elm = list[list.Count-1];
+					list.RemoveAt(list.Count-1);
+				}
+			}
+			
 			if (elm == null)
 			{
-				Fuse.Diagnostics.InternalError( "Template contains a non-Node", this );
-				return;
+				elm = f.New() as Node;
+				if (elm == null)
+				{
+					Fuse.Diagnostics.InternalError( "Template contains a non-Node", this );
+					return;
+				}
 			}
 
+			var prevOCP =(this as Node.ISubtreeDataProvider).GetData(elm);
+			object nextData = null;
+			
 			var obs = item.Data as IObservable;
 			if (obs != null)
 			{
-				_dataMap[elm] = new ObservableLink(obs, elm);
+				var link = new ObservableLink(obs, elm);
+				_dataMap[elm] = link;
+				nextData = link.Data;
 			}
 			else
 			{
 				_dataMap[elm] = item.Data;	
+				nextData = item.Data;
 			}
 			
+			//TODO: move this to the setter of OverrideContextParent
  			elm.OverrideContextParent = this;
+ 			if (prevOCP != null)
+				elm.BroadcastDataChange(prevOCP, nextData);
+ 			
  			if (item.Nodes.Count != item.Templates.Count)
 				throw new Exception( "WindowItem list corruption" );
 				
