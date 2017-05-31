@@ -9,6 +9,9 @@
 ## Fuse.Controls.Video
 - Fixed a bug where we would trigger errors on Android if a live-stream was seeked or paused.
 
+## Experimental.TextureLoader
+- Fixed an issue when loading images bigger than the maximum texture-size. Instead of failing, the image gets down-scaled so it fits.
+
 
 ## 1.0
 
