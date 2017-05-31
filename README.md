@@ -22,8 +22,11 @@ the UI framework used in [Fuse](https://www.fusetools.com/) apps.
 
 ### Fuse
 
-If you want to use a self-built fuselibs installation with an installed
-Fuse, you can do this through a `.unoconfig`-file, something like this:
+You may use a locally built copy of fuselibs with an installed copy of
+Fuse. This is done by creating a file named `.unoconfig` in either a Fuse
+project directory (applies to that project only), or in your home
+directory (applies to all projects). It should contain something like the
+following:
 
 ```
 Packages.SourcePaths += <path-to-fuselibs>/Source
