@@ -38,6 +38,89 @@ namespace Fuse.Reactive.Test
 		}
 
 		[Test]
+		public void ArrayLookup()
+		{
+			var e = new UX.ArrayLookup();
+			var root = TestRootPanel.CreateWithChild(e);
+
+			root.StepFrameJS();
+			root.StepFrameJS();
+
+			Assert.AreEqual("THIS IS FOO", e.t2.Value);
+			Assert.AreEqual("THIS IS BAR", e.t3.Value);
+
+			e.CallChangeObj.Perform();
+			root.StepFrameJS();
+
+			Assert.AreEqual("FOO HAS CHANGED", e.t2.Value);
+			Assert.AreEqual("BAR HAS CHANGED", e.t3.Value);
+
+			Assert.AreEqual("Hello foo : FOO!", e.t1.Value);
+
+			e.CallInc.Perform();
+			root.StepFrameJS();
+			root.StepFrameJS();
+
+			Assert.AreEqual("Hello foo : BAR!", e.t1.Value);
+
+			e.CallInc.Perform();
+			root.StepFrameJS();
+
+			Assert.AreEqual("Hello bar : BAR!", e.t1.Value);
+
+			e.CallDec.Perform();
+			root.StepFrameJS();
+
+			Assert.AreEqual("Hello foo : BAR!", e.t1.Value);
+
+			e.CallDec.Perform();
+			root.StepFrameJS();
+
+			Assert.AreEqual("Hello foo : FOO!", e.t1.Value);
+
+			e.CallDec.Perform(); // index = -1 now, but that's fine since its /2 so = 0
+			root.StepFrameJS();
+
+			Assert.AreEqual("Hello foo : FOO!", e.t1.Value);
+
+			if defined (FUSELIBS_NO_TOASTS)
+			{
+				Diagnostics.DiagnosticReported += OnDiagnosticReported;
+				Diagnostics.DiagnosticDismissed += OnDiagnosticDismissed;
+
+				Assert.AreEqual(0, _currentDiagnostics.Count);
+
+				e.CallDec.Perform(); // index = -2 now, so that's = -1 and should give errro
+				root.StepFrameJS();
+
+				Assert.AreEqual("Hello foo : FOO!", e.t1.Value);
+
+				Assert.AreEqual(1, _currentDiagnostics.Count);
+				Assert.IsTrue(_currentDiagnostics[0].Message.Contains("Index was outside the bounds of the array"));
+
+				e.CallInc.Perform();
+				root.StepFrameJS();
+
+				Assert.AreEqual(0, _currentDiagnostics.Count);
+
+				Diagnostics.DiagnosticReported -= OnDiagnosticReported;
+				Diagnostics.DiagnosticDismissed -= OnDiagnosticDismissed;
+			}
+		}
+
+		List<Diagnostic> _currentDiagnostics = new List<Diagnostic>();
+
+		void OnDiagnosticReported(Diagnostic d)
+		{
+			_currentDiagnostics.Add(d);
+		}
+
+		void OnDiagnosticDismissed(Diagnostic d)
+		{
+			_currentDiagnostics.Remove(d);
+		}
+
+		[Test]
 		public void StringAttribute()
 		{
 			var e = new UX.Expressions2();
