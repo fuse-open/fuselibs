@@ -93,5 +93,15 @@ namespace Fuse.Controls.Test
 			Assert.AreEqual(float2(100,50), p.P4.ActualPosition);
 		}
 		
+		[Test]
+		public void TooSmall()
+		{
+			var p = new UX.ColumnLayout.TooSmall();
+			using (var root = TestRootPanel.CreateWithChild(p,int2(100)))
+			{
+				Assert.AreEqual(float2(100,50),p.P1.ActualSize);
+			}
+		}
+		
 	}
 }
