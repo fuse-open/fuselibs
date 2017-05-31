@@ -330,7 +330,7 @@ namespace Fuse.Reactive
 			
 			This list should only be modified via the InsertNew, RemoveAt, and RemoveAll functions.
 		*/
-		List<WindowItem> _windowItems = new List<WindowItem>();
+		Fuse.Internal.ObjectList<WindowItem> _windowItems = new Fuse.Internal.ObjectList<WindowItem>();
 		
 		internal event Action UpdatedWindowItems;
 		bool _pendingUpdateWindowItems;
@@ -542,7 +542,7 @@ namespace Fuse.Reactive
 			if (_windowItems.Count == 0) return;
 
 			var items = _windowItems;
-			_windowItems = new List<WindowItem>();
+			_windowItems = new Fuse.Internal.ObjectList<WindowItem>();
 
 			for (int i = 0; i < items.Count; i++)
 			{

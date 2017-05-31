@@ -354,7 +354,7 @@ namespace Fuse.Internal
 			
 			public EnumeratorClass(ObjectList<T> source)
 			{
-				_en = new Enumerator(source);
+				_en = new Enumerator(source, false);
 			}
 			
 			public bool MoveNext() { return _en.MoveNext(); }
@@ -364,15 +364,23 @@ namespace Fuse.Internal
 		}
 		
 		/**
-			Enumerates the list. This avoids creating an enumerable and instead used a `struct` that will be copied by value (a memory optimization).
-			
 			This iterator can be used only once. It gets a versioned view of the list. It releases that view once the iteration is exhausted or disposed.
 			
-			NOTE: The Enumerable is also a struct, and the MS C# compiler can apparently make this optimization implicitly, but the Uno compiler does not recognize this optimization yet.
+			This version exists for a few reasons:
+			
+			- This avoids creating an enumerable and instead used a `struct` that will be copied by value (a memory optimization). The Enumerable is also a struct, and the MS C# compiler can apparently make this optimization implicitly, but the Uno compiler does not recognize this optimization yet.
+			- There is a Uno defect https://github.com/fusetools/uno/issues/1148 we therefore can't always just use version locking since we can't rely on `Dispose` being called. Users of this function must explicit use a `using` statement or otherwise call `Dispose`
+			
+			@param versionLock true to use version locking, false otherwise.
 		*/
-		public Enumerator GetEnumeratorStruct()
+		internal Enumerator GetEnumeratorStruct(bool versionLock)
 		{
-			return new Enumerator(this);
+			return new Enumerator(this, versionLock);
+		}
+		
+		public Enumerator GetEnumeratorVersionedStruct()
+		{
+			return GetEnumeratorStruct(true);
 		}
 		
 		public struct Enumerator : IDisposable
@@ -382,13 +390,12 @@ namespace Fuse.Internal
 			int _at;
 			sbyte _locked;
 			
-			public Enumerator(ObjectList<T> source)
+			public Enumerator(ObjectList<T> source, bool versionLock)
 			{
 				_source = source;
 				_first = true;
 				_at = _source._nodeHead;
-				_locked = _source.Lock();
-				debug_log "Lock: " + _locked;
+				_locked = versionLock ? _source.Lock() : (sbyte)-1;
 			}
 			
 			public bool MoveNext()
@@ -424,7 +431,7 @@ namespace Fuse.Internal
 			
 			void SkipNew()
 			{
-				while (_at != -1)
+				while (_at != -1 && _locked != -1)
 				{
 					var rv = _source._nodes[_at].RemoveVersion;
 					if (rv != -1 && rv <= _locked)
@@ -442,6 +449,7 @@ namespace Fuse.Internal
 					break;
 				}
 				
+				//once through we unlock it
 				if (_at == -1)
 					Unlock();
 			}
@@ -459,7 +467,6 @@ namespace Fuse.Internal
 				{
 					_locked = (sbyte)-1;
 					_source.Unlock();
-					debug_log "Unlock";
 				}
 			}
 			

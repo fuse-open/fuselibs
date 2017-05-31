@@ -172,12 +172,12 @@ namespace Fuse.Internal
 
 		public IEnumerator<T> GetEnumerator()
 		{
-			return (IEnumerator<T>)new Enumerator(this);
+			return (IEnumerator<T>)new Enumerator(this, false);
 		}
 
-		public Enumerator GetEnumeratorStruct()
+		public Enumerator GetEnumeratorVersionedStruct()
 		{
-			return new Enumerator(this);
+			return new Enumerator(this, true);
 		}
 		
 		public struct Enumerator : IEnumerator<T>
@@ -188,11 +188,11 @@ namespace Fuse.Internal
 			Object _value;
 			MiniListMode _mode;
 			
-			public Enumerator(MiniList<T> source)
+			public Enumerator(MiniList<T> source, bool versionLock)
 			{
 				_mode = source._mode;
 				if (_mode == MiniListMode.List)
-					_iter = source.AsList.GetEnumeratorStruct();
+					_iter = source.AsList.GetEnumeratorStruct(versionLock);
 				else
 					_value = source._list;
 				_source = source;
