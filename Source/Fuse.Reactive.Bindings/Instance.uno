@@ -312,15 +312,12 @@ namespace Fuse.Reactive
 			/* Will be null if the nodes haven't been created. This is distinct from being non-null but having a
 			count of zero. */
 			public List<Node> Nodes; 
+			//this is a separate list so we can call `Visual.InsertNodes` with `Nodes` alone
+			public List<Template> Templates;
 			public object Data;
 			
 			public WindowItem()
 			{
-			}
-			
-			public WindowItem(List<Node> nodes)
-			{
-				Nodes = nodes;
 			}
 		}
 		
@@ -685,7 +682,8 @@ namespace Fuse.Reactive
 		
 		void CompleteWindowItem(WindowItem wi, int windowIndex)
 		{
-			var newElements = new List<Node>();
+			wi.Nodes = new List<Node>();
+			wi.Templates = new List<Template>();
 
 			bool anyMatched = false;
 			Template defaultTemplate = null;
@@ -702,7 +700,7 @@ namespace Fuse.Reactive
 				if (t != null)
 				{
 					anyMatched = true;
-					AddTemplate(wi.Data, t, newElements);
+					AddTemplate(wi, t);
 				}
 			}
 
@@ -718,22 +716,20 @@ namespace Fuse.Reactive
 
 					anyMatched = true;
 
-					AddTemplate(wi.Data, f, newElements);
+					AddTemplate(wi, f);
 				}
 			}
 
 			// Priority 3 - Use the default template if provided
 			if (!anyMatched && defaultTemplate != null)
 			{
-				AddTemplate(wi.Data, defaultTemplate, newElements);
+				AddTemplate(wi, defaultTemplate);
 			}
 
 			//find last node prior to where we want to introduce
 			var lastNode = GetLastNodeFromIndex(windowIndex-1);
 
-			//assign first for lookups during the rooting in Insert can find the data
-			wi.Nodes = newElements;
-			Parent.InsertNodes( Parent.Children.IndexOf(lastNode) + 1, newElements.GetEnumerator() );
+			Parent.InsertNodes( Parent.Children.IndexOf(lastNode) + 1, wi.Nodes.GetEnumerator() );
 		}
 
 		class ObservableLink: ValueObserver
@@ -769,7 +765,7 @@ namespace Fuse.Reactive
 		Dictionary<Node,object> _dataMap = new Dictionary<Node,object>();
 
 
-		void AddTemplate(object data, Template f, List<Node> newElements)
+		void AddTemplate(WindowItem item, Template f)
  		{
  			var elm = f.New() as Node;
 			if (elm == null)
@@ -778,18 +774,22 @@ namespace Fuse.Reactive
 				return;
 			}
 
-			var obs = data as IObservable;
+			var obs = item.Data as IObservable;
 			if (obs != null)
 			{
 				_dataMap[elm] = new ObservableLink(obs, elm);
 			}
 			else
 			{
-				_dataMap[elm] = data;	
+				_dataMap[elm] = item.Data;	
 			}
 			
  			elm.OverrideContextParent = this;
-			newElements.Add(elm);
+ 			if (item.Nodes.Count != item.Templates.Count)
+				throw new Exception( "WindowItem list corruption" );
+				
+ 			item.Nodes.Add(elm);
+ 			item.Templates.Add(f);
  		}
 
 		internal override Node GetLastNodeInGroup()
