@@ -15,6 +15,14 @@ namespace Fuse.Reactive
 		Deferred,
 	}
 	
+	public enum InstanceReuse
+	{
+		/** Instances are not reused */
+		None,
+		/** Instances can be reused in the same frame */
+		Frame,
+	}
+	
 	[UXContentMode("Template")]
 	/** Base class for behaviors that can instantiate templates from a source.
 
@@ -64,6 +72,19 @@ namespace Fuse.Reactive
 		{
 			get { return _defer; }
 			set { _defer = value; }
+		}
+		
+		InstanceReuse _reuse = InstanceReuse.None;
+		/** Attempts to reuse template instances when items are being removed and created.
+		
+			The default is `None`
+			
+			@experimental
+		*/
+		public InstanceReuse Reuse
+		{
+			get { return _reuse; }
+			set { _reuse = value; }
 		}
 		
 		float _deferredPriority = 0;
@@ -160,6 +181,7 @@ namespace Fuse.Reactive
 				_listening = false;
 			}
 
+			RemovePendingAvailableNodes();
 			RemoveAll();
 
 			if (_rootTemplates != null)
@@ -471,18 +493,80 @@ namespace Fuse.Reactive
 			SetValid();
 		}
 
-		/* Removes the item from the list of windowItems and cleans up associated nodes. */
+		Dictionary<Template,List<Node>> _availableNodes;
+		bool _pendingAvailableNodes;
+		
+		void AddAvailableNode(Template f, Node n)
+		{
+			if (_availableNodes == null)
+				_availableNodes = new Dictionary<Template,List<Node>>();
+				
+			if (!_availableNodes.ContainsKey(f))
+				_availableNodes[f] = new List<Node>();
+			_availableNodes[f].Add(n);
+			
+			if (!_pendingAvailableNodes)
+			{
+				UpdateManager.AddDeferredAction(RemovePendingAvailableNodesAction);
+				_pendingAvailableNodes = true;
+			}
+		}
+		
+		void RemovePendingAvailableNodesAction()
+		{
+			//The pendingNew handler will have to clear the remaining nodes
+			if (!_pendingNew)	
+				RemovePendingAvailableNodes();
+		}
+		
+		void RemovePendingAvailableNodes()
+		{
+			if (_availableNodes == null)
+				return;
+				
+			//TODO: remove foreach if possible, they are inefficient in Uno's memory model
+			foreach (var tn in _availableNodes)
+			{	
+				for (int i=0; i < tn.Value.Count; ++i)
+					RemoveFromParent(tn.Value[i]);
+				tn.Value.Clear();
+			}
+			
+			_pendingNew = false;
+		}
+		
+		void AddAvailableNodes(WindowItem wi)
+		{
+			var nodes = wi.Nodes;
+			var tpls = wi.Templates;
+			if (nodes != null)
+			{
+				if (tpls == null || nodes.Count != tpls.Count)
+					throw new Exception( "WindowItems list corruption" );
+			
+				for (int i=0; i < nodes.Count; ++i)
+					AddAvailableNode(tpls[i], nodes[i]);
+			}
+		}
+		
 		void RemoveAt(int dataIndex)
 		{
 			var windowIndex = dataIndex - Offset;
 			if ( windowIndex < 0 || windowIndex >= _windowItems.Count)
 				return;
 			
-			var list = _windowItems[windowIndex].Nodes;
-			if (list != null)
+			if (Reuse == InstanceReuse.Frame)
 			{
-				for (int i=0; i < list.Count; ++i)
-					RemoveFromParent(list[i]);
+				AddAvailableNodes(_windowItems[windowIndex]);
+			}
+			else
+			{
+				var list = _windowItems[windowIndex].Nodes;
+				if (list != null)
+				{
+					for (int i=0; i < list.Count; ++i)
+						RemoveFromParent(list[i]);
+				}
 			}
  
 			_windowItems.RemoveAt(windowIndex);
@@ -677,6 +761,9 @@ namespace Fuse.Reactive
 					first = false;
 				}
 			}
+
+			//remove whatever is leftover
+			RemovePendingAvailableNodes();
 			return false;
 		}
 		
