@@ -59,16 +59,10 @@ namespace Fuse.Controls
 
 		// http://wiki.openstreetmap.org/wiki/Zoom_levels
 		// http://wiki.openstreetmap.org/wiki/Slippy_map_tilenames
-		String _tileserver = "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
-		public String TileServer
-		{
-			get { return _tileserver; }
-			set { _tileserver = value; }
-		}
-
+		const String _tileserver = "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
 		public String MakeUrl (int zoom, int x, int y)
 		{
-			var s = TileServer
+			var s = _tileserver
 					 .Replace("{s}", "{0}")
 					 .Replace("{z}", "{1}")
 					 .Replace("{x}", "{2}")
