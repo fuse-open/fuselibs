@@ -129,7 +129,7 @@ namespace Fuse.Controls
 				};
 
 				Children.Add(i);
-				BringToFront(i);
+				i.ZOffset = 1;
 				i.Children.Add(_trans);
 				_markers.Add(i);
 			}
