@@ -177,15 +177,20 @@ namespace Fuse.Elements
 
 			// Push
 			dc.PushRenderTargetFrustum(tile._framebuffer.Framebuffer, cc);
-			dc.Clear(float4(0), 1);
 
-			// Render
-			_element.CompositEffects(dc);
+			try
+			{
+				dc.Clear(float4(0), 1);
 
-			// Pop
-			dc.PopRenderTargetFrustum();
-
-			dc.IsCaching = oldIsCaching;
+				// Render
+				_element.CompositEffects(dc);
+			}
+			finally
+			{
+				// Pop
+				dc.PopRenderTargetFrustum();
+				dc.IsCaching = oldIsCaching;
+			}
 		}
 
 		static CacheHelper cacheHelper = new CacheHelper();
