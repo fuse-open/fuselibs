@@ -96,7 +96,7 @@ namespace Fuse.Gestures
 			return GestureRequest.Cancel;
 		}
 		
-		void IGesture.OnCapture( PointerEventArgs args, CaptureType how )
+		void IGesture.OnCaptureChanged( PointerEventArgs args, CaptureType how, CaptureType prev )
 		{
 			SetIsActive(true, _gesture);
 		}

@@ -110,13 +110,10 @@ namespace Fuse.Gestures
 		float2 _currentCoord;
 		double _initialValue = 0f;
 
-		void IGesture.OnCapture(PointerEventArgs args, CaptureType how)
+		void IGesture.OnCaptureChanged(PointerEventArgs args, CaptureType how, CaptureType prev)
 		{
-			if (!_gesture.IsHardCapture)
-			{
-				//TODO: it seems odd to give focus immeidately on SoftCapture, but that is how it worked before.
+			if (_gesture.IsHardCapture)
 				Focus.GiveTo(Control);
-			}
 		}
 		
 		GestureRequest IGesture.OnPointerPressed(PointerPressedArgs c)

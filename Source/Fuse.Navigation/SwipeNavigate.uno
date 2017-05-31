@@ -244,14 +244,14 @@ namespace Fuse.Navigation
 			return GestureRequest.Capture;
 		}
 		
-		void IGesture.OnCapture(PointerEventArgs args, CaptureType how)
+		void IGesture.OnCaptureChanged(PointerEventArgs args, CaptureType how, CaptureType prev)
 		{
 			//always reset coords to avoid jump (https://github.com/fusetools/fuselibs/issues/1175)
 			_startCoord = _currentCoord = args.WindowPoint;
 			_prevDistance = 0;
 			_startTime = Time.FrameTime;
 
-			if (_gesture.IsHardCapture)
+			if (how.HasFlag(CaptureType.Hard) && !prev.HasFlag(CaptureType.Hard))
 			{
 				_currentNavigation.BeginSeek();
 			}

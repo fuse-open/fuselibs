@@ -200,9 +200,10 @@ namespace Fuse.Gestures
 			return GestureRequest.Capture;
 		}
 
-		void IGesture.OnCapture( PointerEventArgs args, CaptureType how )
+		void IGesture.OnCaptureChanged( PointerEventArgs args, CaptureType how, CaptureType prev )
 		{
-			_softCaptureStart = _softCaptureCurrent = args.WindowPoint;
+			if (how.HasFlag(CaptureType.Soft))
+				_softCaptureStart = _softCaptureCurrent = args.WindowPoint;
 			_pointerPos = args.WindowPoint;
 			_prevPos = _startPos = _pointerPos;
 			_prevTime = args.Timestamp;

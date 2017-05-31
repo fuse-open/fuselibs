@@ -463,7 +463,7 @@ namespace Fuse.Gestures.Internal
 			return GestureRequest.Capture;
 		}
 		
-		void IGesture.OnCapture(PointerEventArgs args, CaptureType how)
+		void IGesture.OnCaptureChanged(PointerEventArgs args, CaptureType how, CaptureType prev)
 		{
 			if (_pointerRegions.Count == 0)
 			{
