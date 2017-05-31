@@ -253,9 +253,9 @@ namespace Fuse.Controls
 		public float2 WorldToTilePos(double lon, double lat, int zoom)
 		{
 			float2 p = float2(0);
-			p.X = (float)((lon + 180.0) / 360.0 * (1 << zoom));
+			p.X = (float)((lon + 180.0) / 360.0 * Math.Pow(2,zoom));
 			p.Y = (float)((1.0 - Math.Log(Math.Tan(lat * Math.PI / 180.0) + 
-				1.0 / Math.Cos(lat * Math.PI / 180.0)) / Math.PI) / 2.0 * (1 << zoom));
+				1.0 / Math.Cos(lat * Math.PI / 180.0)) / Math.PI) / 2.0 * Math.Pow(2,zoom));
 				
 			return p;
 		}
