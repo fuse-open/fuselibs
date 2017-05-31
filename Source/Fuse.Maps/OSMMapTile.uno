@@ -174,13 +174,6 @@ namespace Fuse.Controls
 				}
 				return 0;
 			}
-			set
-			{
-				if (_mapview_parent != null)
-				{
-					_mapview_parent.Longitude = value;
-				}
-			}
 		}
 
 		public double Latitude
@@ -193,13 +186,6 @@ namespace Fuse.Controls
 				}
 				return 0;
 			}
-			set
-			{
-				if (_mapview_parent != null)
-				{
-					_mapview_parent.Latitude = value;
-				}
-			}
 		}
 
 		public double Zoom
@@ -211,13 +197,6 @@ namespace Fuse.Controls
 					return _mapview_parent.Zoom;
 				}
 				return 2;
-			}
-			set
-			{
-				if (_mapview_parent != null)
-				{
-					_mapview_parent.Zoom = value;
-				}
 			}
 		}
 
