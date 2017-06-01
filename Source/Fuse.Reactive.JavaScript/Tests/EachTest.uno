@@ -322,6 +322,50 @@ namespace Fuse.Reactive.Test
  				Assert.AreEqual("0-0,0-1,1-0,1-1", GetText(e));
 			}
 		}
+
+		[Test]
+		public void Reuse()
+		{
+			var e = new UX.Each.Reuse();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.StepFrameJS();
+				var z0 = GetZChildren(e.s);
+				Assert.AreEqual("4,3,2,1,0", GetDudZ(e.s));
+				
+				e.e.Offset = 1;
+				root.StepFrame();
+				var z1 = GetZChildren(e.s);
+				Assert.AreEqual("5,4,3,2,1", GetDudZ(e.s));
+				
+				Assert.AreEqual(z0[0],z1[1]);
+				Assert.AreEqual(z0[4],z1[0]); //node actually reused
+			}
+		}
+
+		static Visual[] GetZChildren(Visual root)
+		{
+			var list = new Visual[root.ZOrderChildCount];
+			for (int i=0; i < root.ZOrderChildCount; ++i)
+				list[i] = root.GetZOrderChild(i);
+			return list;
+		}
+		
+		static internal string GetDudZ(Visual root)
+		{
+			var q = "";
+			for (int i=0; i < root.ZOrderChildCount; ++i)
+			{
+				var t = root.GetZOrderChild(i) as FuseTest.DudElement;
+				if (t != null)
+				{
+					if (q.Length > 0)
+						q += ",";
+					q += t.Value;
+				}
+			}
+			return q;
+		}
 		
 		[Test]
 		//index() retains the previous value if the item is removed, or rather it doesn't update if there is no value

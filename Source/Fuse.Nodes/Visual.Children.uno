@@ -11,6 +11,7 @@ namespace Fuse
 	{
 		void OnChildAddedWhileRooted(Node n);
 		void OnChildRemovedWhileRooted(Node n);
+		void OnChildMovedWhileRooted(Node n);
 	}
 	/*
 		Optimized implementation of IList<Node> that creates no extra objects unless needed
@@ -93,6 +94,20 @@ namespace Fuse
 			if (elm is IParentObserver) _observerCount--;
 		}
 
+		protected virtual void OnChildMoved(Node elm)
+		{
+			if (_observerCount != 0 && IsRootingStarted)
+			{
+				for (int i = 0; i < Children.Count; i++)
+				{
+					var n = Children[i];
+					var obs = n as IParentObserver;
+					if (obs != null && n.IsRootingCompleted) 
+						obs.OnChildMovedWhileRooted(elm);
+				}
+			}
+		}
+		
 		MiniList<Node> _children;
 
 		void OnAdded(Node b)
@@ -118,6 +133,14 @@ namespace Fuse
 			Unrelate(this, b);
 			OnChildRemoved(b);
 		}
+		
+		void OnMoved(Node b)
+		{
+			var v = b as Visual;
+			if (v != null) OnVisualMoved(v);
+			
+			OnChildMoved(b);
+		}
 
 		void OnVisualAdded(Visual v)
 		{
@@ -134,6 +157,12 @@ namespace Fuse
 			InvalidateZOrder();
 			InvalidateHitTestBounds();
 			InvalidateRenderBounds();
+		}
+		
+		void OnVisualMoved(Visual v)
+		{
+			InvalidateZOrder();
+			//Moving on its own won't affect render/hittest bounds. That will most likely be invalidated by a LayoutControl though
 		}
 
 		void ICollection<Node>.Clear()
@@ -261,6 +290,8 @@ namespace Fuse
 					var c = items.Current;
 					if (!moved.Contains(c))
 						OnAdded(c);
+					else
+						OnMoved(c);
 				}
 			}
 			finally

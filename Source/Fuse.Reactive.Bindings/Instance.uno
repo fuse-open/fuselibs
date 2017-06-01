@@ -79,6 +79,13 @@ namespace Fuse.Reactive
 		
 			The default is `None`
 			
+			Be aware that when using this feature several other features may no longer work as expected, such as:
+				- RemovingAnimation: the reused items are not actually removed
+				- AddingAnimation: the resused items are not actually added, just moved
+				- Completed: As a reused item is not added/removed it will not trigger a second time
+				
+			This feature will remain experimental until we can figure out which of these issues can be solved, avoided, or just need to be accepted.
+				
 			@experimental
 		*/
 		public InstanceReuse Reuse
@@ -425,6 +432,31 @@ namespace Fuse.Reactive
 			}
 
 			return null;
+		}
+		
+		void SetData(Node n, object data)
+		{
+			//if an item is being reused it might have existing data. We'll need to broadcast a change
+			var prevOCP =(this as Node.ISubtreeDataProvider).GetData(n);
+			object nextData = null;
+			
+			var obs = data as IObservable;
+			if (obs != null)
+			{
+				var link = new ObservableLink(obs, n);
+				_dataMap[n] = link;
+				nextData = link.Data;
+			}
+			else
+			{
+				_dataMap[n] = data;	
+				nextData = data;
+			}
+			
+ 			n.OverrideContextParent = this;
+ 			
+ 			if (prevOCP != null)
+				n.BroadcastDataChange(prevOCP, nextData);
 		}
 
 		void Repopulate()
@@ -855,7 +887,8 @@ namespace Fuse.Reactive
 		void AddTemplate(WindowItem item, Template f)
  		{
 			Node elm = null;
-			
+
+			//check if there's an available node for this template already
 			if (_availableNodes != null && _availableNodes.ContainsKey(f))
 			{
 				var list = _availableNodes[f];
@@ -876,26 +909,7 @@ namespace Fuse.Reactive
 				}
 			}
 
-			var prevOCP =(this as Node.ISubtreeDataProvider).GetData(elm);
-			object nextData = null;
-			
-			var obs = item.Data as IObservable;
-			if (obs != null)
-			{
-				var link = new ObservableLink(obs, elm);
-				_dataMap[elm] = link;
-				nextData = link.Data;
-			}
-			else
-			{
-				_dataMap[elm] = item.Data;	
-				nextData = item.Data;
-			}
-			
-			//TODO: move this to the setter of OverrideContextParent
- 			elm.OverrideContextParent = this;
- 			if (prevOCP != null)
-				elm.BroadcastDataChange(prevOCP, nextData);
+			SetData(elm, item.Data);
  			
  			if (item.Nodes.Count != item.Templates.Count)
 				throw new Exception( "WindowItem list corruption" );
