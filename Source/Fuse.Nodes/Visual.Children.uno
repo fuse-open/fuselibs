@@ -288,7 +288,7 @@ namespace Fuse
 				ReleaseRooting(capture);
 			}
 		}
-		
+
 		void IList<Node>.RemoveAt(int index)
 		{
 			var b = _children[index];
