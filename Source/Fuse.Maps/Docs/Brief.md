@@ -1,6 +1,6 @@
 The `MapView` allows you to present annotated, interactive world-wide maps to the user using the mapping APIs native to the platform: Google Maps on Android and Apple Maps on iOS.
 
-The `MapView` is a native control, and thus needs to be contained in a @NativeViewHost to be displayed. As with other native mobile controls, there currently isn't a `MapView` available for desktop targets.
+The `MapView` is a native control, and thus needs to be contained in a @NativeViewHost to be displayed. As with other native mobile controls. There is also a barebones `MapView` available for desktop, but it doesn't support interaction or gestures yet.
 
 > *Note:* You need to add a reference to `Fuse.Maps` in the `Packages` section of your `.unoproj`:
 >
@@ -39,3 +39,7 @@ Google Maps requires a valid Google Maps API key. Follow [Google's documentation
     }
 }
 ```
+
+# Maps on Desktop
+
+The desktop uses OSM tiles to display a placeholder map, so map development is possible using only local preview. It's still early days for the functionality, so there are no interactions possible, and some of the properties are not functional yet. (Tilt, Style and Bearing.)

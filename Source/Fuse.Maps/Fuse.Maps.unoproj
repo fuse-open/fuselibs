@@ -32,6 +32,6 @@
     "Android/*",
     "Android/FuseMap.java:Java:Android",
     "MarkerIconCache.uno",
-    "mappin.png:Bundle"
+    "mappin.png:Bundle:!Mobile"
   ]
 }

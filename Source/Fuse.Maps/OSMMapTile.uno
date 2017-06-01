@@ -143,7 +143,7 @@ namespace Fuse.Controls
 			_mapview_parent = Parent as MapView;
 			if (_mapview_parent == null) {
 				_mapview_parent.ClipToBounds = true;
-				Fuse.Diagnostics.UserError( "OSMapTile needs a MapView as it's parent", Parent );
+				Fuse.Diagnostics.UserError( "OSMMapTile needs a MapView as its parent", Parent );
 			}
 		}
 
