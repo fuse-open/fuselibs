@@ -18,12 +18,22 @@
                     uBase::Auto<uBase::BufferPtr> bp = new uBase::BufferPtr(U_BUFFER_PTR($0), U_BUFFER_SIZE($0), false);
                     uBase::Auto<uBase::BufferStream> bs = new uBase::BufferStream(bp, true, false);
                     uBase::Auto<uImage::ImageReader> ir = uImage::Jpeg::CreateReader(bs);
-                    uBase::Auto<uImage::Bitmap> bmp = ir->ReadBitmap();
+                    uBase::Auto<uImage ::Bitmap> bmp = ir->ReadBitmap();
+                    int originalWidth = bmp->GetWidth(), originalHeight = bmp->GetHeight();
+
+                    int maxTextureSize;
+                    glGetIntegerv(GL_MAX_TEXTURE_SIZE, &maxTextureSize);
+                    while (bmp->GetWidth() > maxTextureSize ||
+                           bmp->GetHeight() > maxTextureSize)
+                    {
+                        bmp = bmp->DownSample2x2();
+                    }
+
                     uBase::Auto<uImage::Texture> tex = uImage::Texture::Create(bmp);
                     uGLTextureInfo info;
                     GLuint handle = uCreateGLTexture(tex, false, &info);
 
-                    @{Experimental.TextureLoader.Callback.Execute(Uno.Graphics.Texture2D):Call($1, @{Uno.Graphics.Texture2D(OpenGL.GLTextureHandle,int2,int,Uno.Graphics.Format):New(handle, @{int2(int,int):New(info.Width, info.Height)}, info.MipCount, @{Uno.Graphics.Format.Unknown})})};
+                    @{Experimental.TextureLoader.Callback.Execute(Uno.Graphics.Texture2D):Call($1, @{Uno.Graphics.Texture2D(OpenGL.GLTextureHandle,int2,int,Uno.Graphics.Format):New(handle, @{int2(int,int):New(originalWidth, originalHeight)}, info.MipCount, @{Uno.Graphics.Format.Unknown})})};
                 }
                 catch (const uBase::Exception &e)
                 {
@@ -40,11 +50,21 @@
                     uBase::Auto<uBase::BufferStream> bs = new uBase::BufferStream(bp, true, false);
                     uBase::Auto<uImage::ImageReader> ir = uImage::Png::CreateReader(bs);
                     uBase::Auto<uImage::Bitmap> bmp = ir->ReadBitmap();
+                    int originalWidth = bmp->GetWidth(), originalHeight = bmp->GetHeight();
+
+                    int maxTextureSize;
+                    glGetIntegerv(GL_MAX_TEXTURE_SIZE, &maxTextureSize);
+                    while (bmp->GetWidth() > maxTextureSize ||
+                           bmp->GetHeight() > maxTextureSize)
+                    {
+                        bmp = bmp->DownSample2x2();
+                    }
+
                     uBase::Auto<uImage::Texture> tex = uImage::Texture::Create(bmp);
                     uGLTextureInfo info;
                     GLuint handle = uCreateGLTexture(tex, false, &info);
 
-                    @{Experimental.TextureLoader.Callback.Execute(Uno.Graphics.Texture2D):Call($1, @{Uno.Graphics.Texture2D(OpenGL.GLTextureHandle,int2,int,Uno.Graphics.Format):New(handle, @{int2(int,int):New(info.Width, info.Height)}, info.MipCount, @{Uno.Graphics.Format.Unknown})})};
+                    @{Experimental.TextureLoader.Callback.Execute(Uno.Graphics.Texture2D):Call($1, @{Uno.Graphics.Texture2D(OpenGL.GLTextureHandle,int2,int,Uno.Graphics.Format):New(handle, @{int2(int,int):New(originalWidth, originalHeight)}, info.MipCount, @{Uno.Graphics.Format.Unknown})})};
                 }
                 catch (const uBase::Exception &e)
                 {
