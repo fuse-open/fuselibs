@@ -32,7 +32,7 @@ namespace Fuse.Test
 		}
 					
 		[Test]
-		void Basic()
+		public void Basic()
 		{
 			var l = new ObjectList<Dummy>();
 			Assert.AreEqual(0,l.Count);
@@ -94,7 +94,7 @@ namespace Fuse.Test
 		}
 		
 		[Test]
-		void TailOps()
+		public void TailOps()
 		{
 			var l = new ObjectList<Dummy>();
 			var a = new Dummy();
@@ -128,7 +128,7 @@ namespace Fuse.Test
 		}
 		
 		[Test]
-		void HeadOps()
+		public void HeadOps()
 		{
 			var l = new ObjectList<Dummy>();
 			var a = new Dummy();
@@ -163,7 +163,7 @@ namespace Fuse.Test
 		
 		[Test]
 		//random critical path check, compare against known implementation
-		void Random()
+		public void Random()
 		{
 			var r = new Random(1234);
 			
@@ -197,7 +197,7 @@ namespace Fuse.Test
 		}
 		
 		[Test]
-		void Error()
+		public void Error()
 		{
 			var et = new ErrorTest();
 			Assert.Throws<ArgumentOutOfRangeException>(et.InsertNeg);
@@ -236,7 +236,7 @@ namespace Fuse.Test
 		}
 		
 		[Test] 
-		void Enumerator()
+		public void Enumerator()
 		{
 			var l = CreateDummyList(100);
 				
@@ -249,7 +249,7 @@ namespace Fuse.Test
 		}
 		
 		[Test]
-		void Iterator()
+		public void Iterator()
 		{
 			var l = CreateDummyList(100);
 			var cp = l.ToArray();
@@ -267,7 +267,7 @@ namespace Fuse.Test
 		}
 		
 		[Test]
-		void LockedIterate1()
+		public void LockedIterate1()
 		{
 			var r = new Random(1234);
 			var l = CreateDummyList(100);
@@ -292,7 +292,7 @@ namespace Fuse.Test
 		}
 		
 		[Test]
-		void LockedIterate2()
+		public void LockedIterate2()
 		{
 			var l = CreateDummyList(10);
 			var cp0 = l.ToArray();
@@ -351,7 +351,7 @@ namespace Fuse.Test
 		
 		[Test]
 		//ensures it'd being properly disposed of
-		void Foreach()
+		public void Foreach()
 		{
 			var l = new ObjectList<Dummy>();
 			var a = new Dummy(5);

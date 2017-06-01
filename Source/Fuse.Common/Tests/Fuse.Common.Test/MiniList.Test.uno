@@ -183,7 +183,7 @@ namespace Fuse.Test
 		
 		[Test]
 		//ensures it'd being properly disposed of
-		void Foreach()
+		public void Foreach()
 		{
 			var l = new MiniList<string>();
 			l.Add("he");
