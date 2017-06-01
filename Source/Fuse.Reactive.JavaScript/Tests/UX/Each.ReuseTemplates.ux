@@ -1,0 +1,24 @@
+<Panel ux:Class="UX.Each.ReuseTemplates">
+	<JavaScript>
+		var Observable = require("FuseJS/Observable")
+
+		var count = 0
+		function Item() {
+			this.set = (count%2==0) ? "one" : "two"
+			this.value = count++
+		}
+		
+		exports.items = Observable()
+		for (var i=0; i < 20; ++i) {
+			exports.items.add( new Item() )
+		}
+	</JavaScript>
+
+	<StackPanel ux:Name="s">
+		<Each Items="{items}" Reuse="Frame" Offset="4" Limit="4" ux:Name="e"
+			MatchKey="set">
+			<FuseTest.DudElement ux:Template="one" Value="{value}" Height="10"/>
+			<FuseTest.DudElement ux:Template="two" Value="100+{value}" Height="10"/>
+		</Each>
+	</StackPanel>
+</Panel>

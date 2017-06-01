@@ -14,7 +14,7 @@
 	</JavaScript>
 	<StackPanel ux:Name="s">
 		<Each Items="{items}" Reuse="Frame" Offset="0" Limit="5" ux:Name="e">
-			<FuseTest.DudElement Value="{value}"/>
+			<FuseTest.DudElement Value="{value}" Height="10"/>
 		</Each>
 	</StackPanel>
 	
