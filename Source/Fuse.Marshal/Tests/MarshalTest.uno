@@ -8,12 +8,49 @@ using FuseTest;
 
 namespace Fuse
 {
+	enum FooEnum
+	{
+		Bar,
+		Foo
+	}
 
 	public class ValueTests: TestBase
 	{
 		public void MarshalToSizeWithGarbage()
 		{
 			Marshal.ToSize("13@pt");
+		}
+
+		[Test]
+		public void TryConvertToTest()
+		{
+			object res;
+
+			using (var dg = new RecordDiagnosticGuard())
+			{
+				Assert.AreEqual(false, Marshal.TryConvertTo(typeof(double), false, out res, this));
+				Assert.AreEqual(true, Marshal.TryConvertTo(typeof(string), false, out res, null));  // becomes "false"
+				Assert.AreEqual(true, Marshal.TryConvertTo(typeof(Selector), false, out res, null)); // becomes new Selector("false")
+				Assert.AreEqual(false, Marshal.TryConvertTo(typeof(float), false, out res, null));
+				Assert.AreEqual(false, Marshal.TryConvertTo(typeof(int), false, out res, null));
+				Assert.AreEqual(true, Marshal.TryConvertTo(typeof(bool), false, out res, this));
+				Assert.AreEqual(false, (bool)res);
+				Assert.AreEqual(false, Marshal.TryConvertTo(typeof(Size), false, out res, this));
+				Assert.AreEqual(false, Marshal.TryConvertTo(typeof(Size2), false, out res, null));
+				Assert.AreEqual(false, Marshal.TryConvertTo(typeof(float2), false, out res, null));
+				Assert.AreEqual(true, Marshal.TryConvertTo(typeof(float3), 3.0, out res, null));
+				Assert.AreEqual(float3(3,3,3), (float3)res);
+				Assert.AreEqual(false, Marshal.TryConvertTo(typeof(float4), false, out res, null));
+				Assert.AreEqual(true, Marshal.TryConvertTo(typeof(FooEnum), "Foo", out res, null));
+				Assert.AreEqual(FooEnum.Foo, (FooEnum)res);
+
+				var diagnostics = dg.DequeueAll();
+				Assert.AreEqual(2, diagnostics.Count);
+				Assert.AreEqual(DiagnosticType.UserError, diagnostics[0].Type);
+				Assert.AreEqual(this, diagnostics[0].SourceObject);
+				Assert.AreEqual(DiagnosticType.UserError, diagnostics[1].Type);
+				Assert.AreEqual(this, diagnostics[1].SourceObject);
+			}
 		}
 
 		[Test]
