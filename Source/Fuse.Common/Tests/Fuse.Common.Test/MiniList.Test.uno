@@ -154,7 +154,7 @@ namespace Fuse.Test
 			list.Add("2");
 			list.Add("3");
 			
-			var iter = list.GetEnumeratorStruct();
+			var iter = list.GetEnumeratorVersionedStruct();
 			Assert.AreEqual("1,2,3", Join(ref iter));
 		}
 		
@@ -163,17 +163,17 @@ namespace Fuse.Test
 		public void IterateVersion()
 		{
 			var list = new MiniList<string>();
-			var it0 = list.GetEnumeratorStruct();
+			var it0 = list.GetEnumeratorVersionedStruct();
 			
 			list.Add("1");
-			var it1 = list.GetEnumeratorStruct();
+			var it1 = list.GetEnumeratorVersionedStruct();
 			
 			list.Add("2");
 			list.Add("3");
-			var it2 = list.GetEnumeratorStruct();
+			var it2 = list.GetEnumeratorVersionedStruct();
 			
 			list.RemoveAt(0);
-			var it3 = list.GetEnumeratorStruct();
+			var it3 = list.GetEnumeratorVersionedStruct();
 			
 			Assert.AreEqual("", Join(ref it0));
 			Assert.AreEqual("1",Join(ref it1));

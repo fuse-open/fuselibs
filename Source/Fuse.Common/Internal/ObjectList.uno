@@ -429,18 +429,19 @@ namespace Fuse.Internal
 				}
 			}
 			
+			/* Skip any items that should be in this version of the list. When locked this means items removed before the lock, or items added after the lock. When unlocked it means any removed items, but all new items are kept -- unlocked iterates the "Current" version. */
 			void SkipNew()
 			{
-				while (_at != -1 && _locked != -1)
+				while (_at != -1)
 				{
 					var rv = _source._nodes[_at].RemoveVersion;
-					if (rv != -1 && rv <= _locked)
+					if (rv != -1 && (_locked == -1 || rv <= _locked))
 					{
 						_at = _source._nodes[_at].Next;
 						continue;
 					}
 						
-					if (_source._nodes[_at].AddVersion > _locked)
+					if (_locked != -1 && _source._nodes[_at].AddVersion > _locked)
 					{
 						_at = _source._nodes[_at].Next;
 						continue;

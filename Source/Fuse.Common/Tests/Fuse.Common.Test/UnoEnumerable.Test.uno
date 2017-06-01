@@ -43,6 +43,7 @@ namespace Fuse.Test
 	public class UnoEnumerableTest : TestBase
 	{
 		[Test]
+		[Ignore("https://github.com/fusetools/uno/issues/1148")]
 		public void ForeachDispose()
 		{
 			var q = new SomeEnumerable<string>();
@@ -51,6 +52,7 @@ namespace Fuse.Test
 		}
 		
 		[Test]
+		[Ignore("https://github.com/fusetools/uno/issues/1148")]
 		public void ForeachDisposeException()
 		{
 			var q = new SomeEnumerable<string>();

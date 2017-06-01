@@ -254,7 +254,7 @@ namespace Fuse.Test
 			var l = CreateDummyList(100);
 			var cp = l.ToArray();
 			var c = 0;
-			using (var iter = l.GetEnumeratorStruct())
+			using (var iter = l.GetEnumeratorVersionedStruct())
 			{
 				while (iter.MoveNext())
 				{
@@ -275,7 +275,7 @@ namespace Fuse.Test
 			Assert.AreEqual(100,cp.Length);
 			
 			var c = 0;
-			using (var iter = l.GetEnumeratorStruct())
+			using (var iter = l.GetEnumeratorVersionedStruct())
 			{
 				for (int i=0; i < 20; ++i)
 					l.RemoveAt( r.NextInt(l.Count));
@@ -296,13 +296,13 @@ namespace Fuse.Test
 		{
 			var l = CreateDummyList(10);
 			var cp0 = l.ToArray();
-			var it0 = l.GetEnumeratorStruct();
+			var it0 = l.GetEnumeratorVersionedStruct();
 			
 			l.RemoveAt(5); //0,1,2,3,4,6,7,8,9
 			l.RemoveAt(0); //1,2,3,4,6,7,8,9
 			
 			var cp1 = l.ToArray();
-			var it1 = l.GetEnumeratorStruct();
+			var it1 = l.GetEnumeratorVersionedStruct();
 			
 			l.RemoveAt(5); //1,2,3,4,6,8,9
 			l.RemoveAt(5); //1,2,3,4,6,9
@@ -312,7 +312,7 @@ namespace Fuse.Test
 			Assert.AreEqual(cp0[9], l[5]);
 
 			var cp2 = l.ToArray();
-			var it2 = l.GetEnumeratorStruct();
+			var it2 = l.GetEnumeratorVersionedStruct();
 			
 			l.Add(new Dummy(12)); //1,2,3,4,6,9,12
 			Assert.AreEqual(7, l.Count);
@@ -322,7 +322,7 @@ namespace Fuse.Test
 			l.Insert(2, new Dummy(11)); //10,1,11,2,3,4,6,9,12
 			
 			var cp3 = l.ToArray();
-			var it3 = l.GetEnumeratorStruct();
+			var it3 = l.GetEnumeratorVersionedStruct();
 			
 			Assert.AreEqual(9, l.Count);
 			Assert.AreEqual(10, l[0].Value);
@@ -343,7 +343,7 @@ namespace Fuse.Test
 			Assert.IsTrue(l.TestIsConsistent);
 			
 			var cp4 = l.ToArray();
-			var it4 = l.GetEnumeratorStruct();
+			var it4 = l.GetEnumeratorVersionedStruct();
 			Assert.AreEqual("#10,#1,#11,#2,#3,#4,#6,#9,#12", Join(ref it4));
 			Assert.AreEqual("#10,#1,#11,#2,#3,#4,#6,#9,#12", Join(cp4));
 		}
