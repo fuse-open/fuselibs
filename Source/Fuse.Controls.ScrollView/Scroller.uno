@@ -212,6 +212,7 @@ namespace Fuse.Gestures
 
 		GestureRequest IGesture.OnPointerPressed(PointerPressedArgs args)
 		{
+			StartInvalidateVisual();
 			//TODO: the use of 100 is kind of magical!
 			_significance = Vector.Length(_region.Velocity) > hardCaptureVelocityThreshold ? 100 : 0;
 			return GestureRequest.Capture;
@@ -294,6 +295,8 @@ namespace Fuse.Gestures
 
 		GestureRequest IGesture.OnPointerReleased(PointerReleasedArgs args)
 		{
+			StopInvalidateVisual();
+
 			if (_delayStart && !_gesture.IsHardCapture)
 				return GestureRequest.Cancel;
 
