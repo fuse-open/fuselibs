@@ -208,6 +208,13 @@ namespace Fuse.Input
 			{
 				if (--Count > 0)
 					return;
+					
+				//safety
+				if (Count < 0)
+				{
+					Fuse.Diagnostics.InternalError( "Inconsistent Count", this );
+					Count = 0;
+				}
 				
 				if (AnyDeleted)
 				{
@@ -230,6 +237,7 @@ namespace Fuse.Input
 		
 		static CaptureLockImpl CaptureLock()
 		{
+			_captureLockImpl.Count++;
 			return _captureLockImpl;
 		}
 
@@ -360,7 +368,7 @@ namespace Fuse.Input
 					var c = _captures[i];
 					if (c.Deleted)
 						continue;
-						
+			
 					for (int p=0; p < c.PointIndex.Count; ++p)
 					{
 						if (!IsCaptureAllowedAgainst( to, c.Type,  c.Visual, c.PointIndex[p], c.Identity))

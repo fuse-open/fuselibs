@@ -233,7 +233,7 @@ namespace Fuse.Input
 		{
 			if (_down != -1)
 				return;
-				
+
 			HandleRequest( Handler.OnPointerPressed( args ), args );
 		}
 		
@@ -259,6 +259,8 @@ namespace Fuse.Input
 				return;
 				
 			HandleRequest(Handler.OnPointerReleased( args ), args);
+			//there's no guarantee the capture was cancelled, but the down button is certainly gone
+			_down = -1;
 		}
 
 		/**
