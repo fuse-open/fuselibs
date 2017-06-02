@@ -144,6 +144,7 @@ namespace Fuse.Drawing
 			int[] pixels = new int[size];
 
 			IntBuffer pixelData = IntBuffer.wrap(pixels);
+			GLES20.glPixelStorei(GLES20.GL_UNPACK_ALIGNMENT, 1);
 			GLES20.glReadPixels(0, 0, width,height, GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE, pixelData);
 
 			Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
