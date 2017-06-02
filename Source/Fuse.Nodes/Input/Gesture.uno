@@ -96,7 +96,7 @@ namespace Fuse.Input
 	*/
 	public enum GestureType
 	{
-		//activates on the primary pointer press
+		//activates only on the primary pointer press
 		Primary = 1 << 0,
 		//adds CaptureType.Children to captures
 		Children = 1 << 1,
@@ -234,6 +234,9 @@ namespace Fuse.Input
 			if (_down != -1)
 				return;
 
+			if (Type.HasFlag(GestureType.Primary) && !args.IsPrimary)
+				return;
+				
 			HandleRequest( Handler.OnPointerPressed( args ), args );
 		}
 		
@@ -242,7 +245,7 @@ namespace Fuse.Input
 			if (_down != args.PointIndex)
 				return;
 
-			//TODO: this means Pointer is broken, we should have got a LostCapture callback				
+			//this means Pointer is broken, we should have got a LostCapture callback				
 			if (!Pointer.IsPressed(_down))
 			{
 				Fuse.Diagnostics.InternalError( "Missing LostCapture", this );
