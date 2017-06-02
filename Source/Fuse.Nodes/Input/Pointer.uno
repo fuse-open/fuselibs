@@ -32,6 +32,20 @@ namespace Fuse.Input
 		NodeShare = 1 << 3,
 	}
 	
+	static public class CaptureTypeHelper
+	{
+		static public bool GainedCapture( CaptureType prev, CaptureType next )
+		{
+			return !prev.HasFlag(CaptureType.Soft) && !prev.HasFlag(CaptureType.Hard) &&
+				(next.HasFlag(CaptureType.Soft) || next.HasFlag(CaptureType.Hard));
+		}
+		
+		static public bool BecameHard( CaptureType prev, CaptureType next )
+		{
+			return !prev.HasFlag(CaptureType.Hard) && next.HasFlag(CaptureType.Hard);
+		}
+	}
+	
 	internal class Capture
 	{
 		public Visual Visual { get; private set; }

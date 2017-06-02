@@ -181,18 +181,31 @@ namespace Fuse.Input
 		internal void OnRequestChanged( PointerEventArgs args, CaptureType captureType )
 		{
 			//keep current state
-			if (_captureType == captureType)
+			if (_captureType == captureType && _down.Contains(args.PointIndex))
 				return;
-				
-			if (!Pointer.ModifyCapture(this, Target, OnLostCapture, captureType, args.PointIndex))
+
+			if ( (_captureType == CaptureType.None) ?
+				!Pointer.ModifyCapture(this, Target, OnLostCapture, captureType, args.PointIndex) :
+				!Pointer.ModifyCapture(this, captureType) )
 			{
 				OnLostCapture();
 				return;
 			}
 				
-			var prevCapture = _captureType;
 			if (!_down.Contains(args.PointIndex))
+			{
 				_down.Add(args.PointIndex);
+				if (_down.Count > 1)
+				{
+					if (!Pointer.ExtendCapture(this, args.PointIndex))
+					{
+						OnLostCapture();
+						return;
+					}
+				}
+			}
+					
+			var prevCapture = _captureType;
 			_captureType = captureType;
 			
 			if (captureType.HasFlag(CaptureType.Hard))
@@ -269,6 +282,9 @@ namespace Fuse.Input
 			HandleRequest(Handler.OnPointerReleased( args ), args);
 			//there's no guarantee the capture was cancelled, but the down button is certainly gone
 			_down.Remove(args.PointIndex);
+			//TODO: There's currently no way to remove a PointIndex from the capture (for multi-touch)
+			//though a defect, this was the case before as well. It will likely come up if more multi-touch
+			//gestures are created (and the iOS issue is fixed where any release causes all touches to release)
 		}
 
 		/**
@@ -309,9 +325,6 @@ namespace Fuse.Input
 		{
 			if (_gestures.ContainsKey(handler))
 				throw new ArgumentException( "This gesture handler is already registered" );
-				
-			if (!type.HasFlag(GestureType.Primary))
-				throw new ArgumentException( "Invalid gesture type" );
 				
 			var g = new Gesture(handler, type, target);
 			_gestures[handler] = g;
