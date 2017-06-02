@@ -1679,4 +1679,14 @@ Observable._getDataObserver = function(node, key)
 	return res;
 }
 
+Observable.prototype.pull = function(onResult){
+	var self = this;
+	function resolver(obs)
+	{
+		onResult(obs);
+		self.removeSubscriber(this);
+	}
+	self.addSubscriber(resolver);
+}
+
 module.exports = Observable;
