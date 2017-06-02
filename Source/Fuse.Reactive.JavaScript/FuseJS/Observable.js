@@ -1683,8 +1683,8 @@ Observable.prototype.pull = function(onResult){
 	var self = this;
 	function resolver(obs)
 	{
-		onResult(obs);
 		self.removeSubscriber(this);
+		onResult(obs);
 	}
 	self.addSubscriber(resolver);
 }
