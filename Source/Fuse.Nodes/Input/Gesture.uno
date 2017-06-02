@@ -98,10 +98,12 @@ namespace Fuse.Input
 	{
 		//activates only on the primary pointer press
 		Primary = 1 << 0,
+		//allows multiple pointers to be depressed at the same time, otherwise only one is allowed
+		Multi = 1 << 1,
 		//adds CaptureType.Children to captures
-		Children = 1 << 1,
+		Children = 1 << 2,
 		//adds CaptureType.NodeShare to captures
-		NodeShare = 1 << 2,
+		NodeShare = 1 << 3,
 	}
 
 	/**
@@ -133,7 +135,7 @@ namespace Fuse.Input
 		internal readonly Visual Target;
 		
 		CaptureType _captureType = CaptureType.None;
-		int _down = -1;
+		List<int> _down = new List<int>();
 
 		internal Gesture(IGesture handler, GestureType type, Visual target)
 		{
@@ -189,7 +191,8 @@ namespace Fuse.Input
 			}
 				
 			var prevCapture = _captureType;
-			_down = args.PointIndex;
+			if (!_down.Contains(args.PointIndex))
+				_down.Add(args.PointIndex);
 			_captureType = captureType;
 			
 			if (captureType.HasFlag(CaptureType.Hard))
@@ -213,7 +216,7 @@ namespace Fuse.Input
 		
 		void LostCapture(bool forced)
 		{
-			_down = -1;
+			_down.Clear();
 			_captureType = CaptureType.None;
 			Gestures.RemoveActive(this);
 			Pointer.ReleaseCapture(this);
@@ -223,7 +226,9 @@ namespace Fuse.Input
 		
 		void Cancel()
 		{
-			if (_down == -1)
+			//on mobile we can't have a capture without a pressed button, therefore this check is okay
+			//it wouldn't be okay if we allowed captures without a button being pressed
+			if (_down.Count == 0)
 				return;
 				
 			LostCapture(false);
@@ -231,7 +236,7 @@ namespace Fuse.Input
 		
 		internal void OnPointerPressed( object sender, PointerPressedArgs args )
 		{
-			if (_down != -1)
+			if (_down.Count != 0 && !Type.HasFlag(GestureType.Multi))
 				return;
 
 			if (Type.HasFlag(GestureType.Primary) && !args.IsPrimary)
@@ -242,13 +247,13 @@ namespace Fuse.Input
 		
 		internal void OnPointerMoved( object sender, PointerMovedArgs args )
 		{
-			if (_down != args.PointIndex)
+			if (!_down.Contains(args.PointIndex))
 				return;
 
 			//this means Pointer is broken, we should have got a LostCapture callback				
-			if (!Pointer.IsPressed(_down))
+			if (!Pointer.IsPressed(args.PointIndex))
 			{
-				Fuse.Diagnostics.InternalError( "Missing LostCapture", this );
+				Fuse.Diagnostics.InternalError( "Missing LostCapture on " + args.PointIndex, this );
 				LostCapture(true);
 				return;
 			}
@@ -258,12 +263,12 @@ namespace Fuse.Input
 		
 		internal void OnPointerReleased( object sender, PointerReleasedArgs args )
 		{
-			if (_down != args.PointIndex)
+			if (!_down.Contains(args.PointIndex))
 				return;
 				
 			HandleRequest(Handler.OnPointerReleased( args ), args);
 			//there's no guarantee the capture was cancelled, but the down button is certainly gone
-			_down = -1;
+			_down.Remove(args.PointIndex);
 		}
 
 		/**
