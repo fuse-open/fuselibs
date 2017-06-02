@@ -74,18 +74,9 @@ namespace Fuse.Gestures
 			base.OnUnrooted();
 		}
 
-		const float _delayStartGesture = 0.0f; //now handled by Gesture system
-		static SwipeGestureHelper _horizontalGesture = new SwipeGestureHelper(_delayStartGesture,
-			new DegreeSpan(45.0f, 135.0f),	// Right
-			new DegreeSpan(-45.0f, -135.0f));	// Left
-		static SwipeGestureHelper _verticalGesture = new SwipeGestureHelper(_delayStartGesture,
-			new DegreeSpan(-45.0f, 45.0f),
-			new DegreeSpan(-135.0f, -180.0f),
-			new DegreeSpan( 135.0f,  180.0f));
-
-		SwipeGestureHelper HelpGesture
+		float2 Direction
 		{
-			get { return Orientation == Orientation.Horizontal ? _horizontalGesture : _verticalGesture; }
+			get { return Orientation == Orientation.Horizontal ? float2(1,0) : float2(0,1); }
 		}
 		
 		void IGesture.OnLostCapture(bool forced)
@@ -100,9 +91,7 @@ namespace Fuse.Gestures
 			{
 				var diff = _currentCoord - _startCoord;
 				return new GesturePriorityConfig( GesturePriority.Higher,
-					//TODO: length along axis 
-					!HelpGesture.IsWithinBounds(_currentCoord - _startCoord) ?
-						0f : Vector.Length(_currentCoord - _startCoord) );
+					Gesture.VectorSignificance( Direction, _currentCoord - _startCoord ) );
 			}
 		}
 		

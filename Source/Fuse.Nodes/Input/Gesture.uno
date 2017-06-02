@@ -300,6 +300,21 @@ namespace Fuse.Input
 		
 		//This interface is expose to allow this gesure to be the source of changes
 		void IPropertyListener.OnPropertyChanged(PropertyObject obj, Selector sel) {}
+		
+		/* How far away from the intended vector direction a position can be before it's no longer considered part of that gesture. 44 being the Apple minimum for tappable regions, so it also seems reasonable as a constraint people can stay within.*/
+		const float _vectorOffsetThreshold = 44;
+		
+		/**
+			Calculates the significance of an offset relative to a vector.
+			
+			This will return 0 if the orthogonal distance becomes too large -- indicating it's not movement along the vector anymore.
+		*/
+		static public float VectorSignificance( float2 vector, float2 offset )
+		{
+			if (Internal.VectorUtil.NormRejection( offset, vector ) > _vectorOffsetThreshold)
+				return 0;
+			return Math.Abs(Internal.VectorUtil.ScalarProjection( offset, vector ));
+		}
 	}
 	
 	/**
