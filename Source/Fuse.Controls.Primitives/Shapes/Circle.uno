@@ -107,6 +107,11 @@ namespace Fuse.Controls
 			}
 		}
 
+		protected override bool NeedSurface 
+		{ 
+			get { return VisualContext != VisualContext.Graphics; }
+		}
+		
 		protected override SurfacePath CreateSurfacePath(Surface surface)
 		{
 			return CreateEllipticalPath( surface, Center, float2(Radius) );

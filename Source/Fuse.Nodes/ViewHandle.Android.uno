@@ -1,7 +1,6 @@
 using Uno;
 using Uno.Collections;
 using Uno.Compiler.ExportTargetInterop;
-using Fuse.Elements;
 
 namespace Fuse.Controls.Native
 {
@@ -122,6 +121,19 @@ namespace Fuse.Controls.Native
 			android.view.View handle = (android.view.View)@{Fuse.Controls.Native.ViewHandle:Of(_this).NativeHandle:Get()};
 			handle.setVisibility( (isVisible) ? android.view.View.VISIBLE : android.view.View.INVISIBLE );
 		@}
+
+		[Foreign(Language.Java)]
+		void InvalidateImpl()
+		@{
+			android.view.View handle = (android.view.View)@{Fuse.Controls.Native.ViewHandle:Of(_this).NativeHandle:Get()};
+			handle.invalidate();
+		@}
+
+		public void Invalidate()
+		{
+			if (IsViewGroup())
+				InvalidateImpl();
+		}
 
 		[Foreign(Language.Java)]
 		public string Format()

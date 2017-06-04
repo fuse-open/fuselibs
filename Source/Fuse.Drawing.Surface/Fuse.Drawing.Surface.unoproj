@@ -8,6 +8,7 @@
     "Fuse.Controls.Panels",
     "Fuse.Controls.Primitives",
     "Fuse.Drawing.Surface.Test",
+    "Fuse.Controls.Native",
   ],
   "Packages": [
     "Uno.Collections",
@@ -23,7 +24,8 @@
   "Includes": [
     "*",
     "CoreGraphicsLib.h:CHeader:iOS||OSX",
-    "AndroidGraphicsContext.java:Java:Android",
+    "Android/LinearGradientStore.java:Java:Android",
+    "Android/GraphicsSurfaceContext.java:Java:Android",
   ],
   "Excludes": [
     "Tests/",
