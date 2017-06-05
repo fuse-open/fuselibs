@@ -76,7 +76,7 @@ namespace Fuse.Reactive
 
 	class ValueForwarder: ValueObserver
 	{
-		public interface IValueListener { void NewValue(object value); }
+		internal interface IValueListener { void NewValue(object value); }
 
 		IValueListener _listener;
 		public ValueForwarder(IObservable obs, IValueListener listener)
