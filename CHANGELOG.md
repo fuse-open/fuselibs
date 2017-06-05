@@ -1,5 +1,8 @@
 # Unreleased
 
+## Improved smoothness of interaction 
+- Made overall rendering less prone to frame drops during interaction (gestures), by preventing caching to bitmap of visuals while they are interacted with. Sometimes pointer input doesn't arrive each frame during interaction. This lead to the caching heuristic incorrectly thinking the visual was appropriate to cache, which in some scenarios could lead to expensive framebuffer operations, and no more 60 FPS.
+
 ## macOS SIGILL problems
 - Updated the bundled Freetype library on macOS to now (again) include both 32-bit and 64-bit symbols, which fixes an issue where .NET and preview builds would crash with a SIGILL at startup when running on older Mac models.
 - Updated the bundled libjpeg, libpng, Freetype, and SDL2 libaries for macOS to not use AVX instructions, since they are incompatible with the CPUs in some older Mac models. This fixes an issue with SIGILLs in native builds.
