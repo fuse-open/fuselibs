@@ -1,11 +1,13 @@
-<Panel ux:Class="UX.Gesture.Layer">
-	<EdgeNavigator ux:Name="edge">
-		<Panel Edge="Right" Width="200" ux:Name="edgeRight"/>
+<Panel ux:Class="UX.Gesture.Layer" Color="#AFA">
+	<EdgeNavigator ux:Name="edge" HitTestMode="LocalBoundsAndChildren">
+		<Panel Edge="Right" Width="200" ux:Name="edgeRight" Color="#AAF"/>
 		<PageControl ux:Name="edgeMain">
-			<ScrollView>
-				<StackPanel>
-				</StackPanel>
-			</ScrollView>
+			<Page Color="#FAA">
+				<ScrollView>
+					<StackPanel>
+					</StackPanel>
+				</ScrollView>
+			</Page>
 		</PageControl>
 	</EdgeNavigator>
 </Panel>
