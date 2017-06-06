@@ -134,7 +134,7 @@ namespace Fuse
 			if (o is float3)
 			{
 				var f = (float3)o;
-				value =float4(f.X, f.Y, f.Z, 0);
+				value = float4(f.X, f.Y, f.Z, 0);
 				size = 3;
 				return true;
 			}

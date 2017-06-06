@@ -158,14 +158,17 @@ namespace Fuse.Reactive
 			int size;
 			if (Marshal.TryToZeroFloat4(operand, out v, out size))
 			{	
-				if (size == 1)
-					return _op(v[0]);
-				if (size == 2)
-					return float2((float)_op(v[0]),(float)_op(v[1]));
-				if (size == 3)
-					return float3((float)_op(v[0]),(float)_op(v[1]),(float)_op(v[2]));
-				if (size == 4)
-					return float4((float)_op(v[0]),(float)_op(v[1]),(float)_op(v[2]),(float)_op(v[3]));
+				switch (size)
+				{
+					case 1:
+						return _op(v[0]);
+					case 2:
+						return float2((float)_op(v[0]),(float)_op(v[1]));
+					case 3:
+						return float3((float)_op(v[0]),(float)_op(v[1]),(float)_op(v[2]));
+					case 4:
+						return float4((float)_op(v[0]),(float)_op(v[1]),(float)_op(v[2]),(float)_op(v[3]));
+				}
 			}
 				
 			return null;
@@ -428,14 +431,17 @@ namespace Fuse.Reactive
 				return null;
 			int size = Math.Max(asize, bsize);
 			
-			if (size == 1)
-				return Math.Lerp(av.X, bv.X, tv);
-			if (size == 2)
-				return Math.Lerp(av.XY, bv.XY, tv);
-			if (size == 3)
-				return Math.Lerp(av.XYZ, bv.XYZ, tv);
-			if (size == 4)
-				return Math.Lerp(av, bv, tv);
+			switch (size)
+			{
+				case 1:
+					return Math.Lerp(av.X, bv.X, tv);
+				case 2:
+					return Math.Lerp(av.XY, bv.XY, tv);
+				case 3:
+					return Math.Lerp(av.XYZ, bv.XYZ, tv);
+				case 4:
+					return Math.Lerp(av, bv, tv);
+			}
 				
 			return null;
 		}
