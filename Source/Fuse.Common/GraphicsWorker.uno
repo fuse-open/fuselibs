@@ -19,6 +19,7 @@ namespace Fuse
 			{
 				Start();
 				_work.Enqueue(a);
+				_resetEvent.Set();
 			}
 			else
 			{
@@ -32,6 +33,8 @@ namespace Fuse
 		static ConcurrentQueue<Action> _work;
 
 		static Thread _thread;
+
+		static AutoResetEvent _resetEvent;
 
 		static extern(iOS) ObjC.Object _workerContext;
 
@@ -58,6 +61,7 @@ namespace Fuse
 				_workerContext = CreateContext();
 
 			_work = new ConcurrentQueue<Action>();
+			_resetEvent = new AutoResetEvent(false);
 			_thread = new Thread(Run);
 			_thread.Start();
 		}
@@ -67,6 +71,7 @@ namespace Fuse
 		static void OnTerminating(Fuse.Platform.ApplicationState newState)
 		{
 			_terminating = true;
+			_resetEvent.Set();
 			_thread.Join();
 		}
 
@@ -107,8 +112,7 @@ namespace Fuse
 					}
 					continue;
 				}
-
-				Thread.Sleep(1);
+				_resetEvent.WaitOne();
 			}
 
 			if defined(iOS)
