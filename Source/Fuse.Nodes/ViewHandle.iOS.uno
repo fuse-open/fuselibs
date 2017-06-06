@@ -1,11 +1,10 @@
 using Uno;
 using Uno.Collections;
 using Uno.Compiler.ExportTargetInterop;
-using Fuse.Elements;
 
 namespace Fuse.Controls.Native
 {
-	using iOS;
+
 
 	[Require("Source.Include", "UIKit/UIKit.h")]
 	[Require("Source.Include", "iOS/Helpers.h")]

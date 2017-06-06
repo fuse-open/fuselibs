@@ -19,6 +19,23 @@ the UI framework used in [Fuse](https://www.fusetools.com/) apps.
 * `build.sh` runs stuff (which downloads uno if needed), and builds all packages.
 * `test.sh` runs all tests.
 
+
+### Fuse
+
+You may use a locally built copy of fuselibs with an installed copy of
+Fuse. This is done by creating a file named `.unoconfig` in either a Fuse
+project directory (applies to that project only), or in your home
+directory (applies to all projects). It should contain something like the
+following:
+
+```
+Packages.SourcePaths += <path-to-fuselibs>/Source
+```
+
+You'll need to replace `<path-to-fuselibs>` above with the actual path to
+your fuselibs checkout.
+
+
 ## Contributing
 
 Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.

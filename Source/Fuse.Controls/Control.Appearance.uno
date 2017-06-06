@@ -11,8 +11,6 @@ namespace Fuse.Controls
 
 		public Visual GraphicsVisual {	get; internal set; }
 
-		public ViewHandle ViewHandle { get; internal set; }
-
 		IView _nativeView;
 		public IView NativeView
 		{
@@ -22,6 +20,18 @@ namespace Fuse.Controls
 				_nativeView = value;
 				if (_nativeView != null)
 					PushPropertiesToNativeView();
+			}
+		}
+
+		protected override void OnInvalidateVisual()
+		{
+			base.OnInvalidateVisual();
+			if defined(Android)
+			{
+				if (ViewHandle != null)
+				{
+					ViewHandle.Invalidate();
+				}
 			}
 		}
 

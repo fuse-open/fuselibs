@@ -30,8 +30,6 @@ namespace Fuse.Controls
 			else return base.CreateNativeView();
 		}*/
 		
-		protected override bool NeedSurface { get { return true; } }
-		
 		protected override SurfacePath CreateSurfacePath(Surface surface)
 		{
 			return CreateEllipticalPath( surface, ActualSize/2, ActualSize/2, true );

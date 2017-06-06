@@ -1,5 +1,9 @@
 # Unreleased
 
+## macOS SIGILL problems
+- Updated the bundled Freetype library on macOS to now (again) include both 32-bit and 64-bit symbols, which fixes an issue where .NET and preview builds would crash with a SIGILL at startup when running on older Mac models.
+- Updated the bundled libjpeg, libpng, Freetype, and SDL2 libaries for macOS to not use AVX instructions, since they are incompatible with the CPUs in some older Mac models. This fixes an issue with SIGILLs in native builds.
+
 ## Native
 - Added feature toggle for implicit `GraphicsView`. If you are making an app using only Native UI disabling the implicit `GraphicsView` can increase performance. Disable the `GraphicsView` by defining `DISABLE_IMPLICIT_GRAPHICSVIEW` when building. For example `uno build -t=ios -DDISABLE_IMPLICIT_GRAPHICSVIEW`
 
@@ -31,11 +35,16 @@
 
 ## ImageTools
 - Added supported for encoding/decoding images to/from base64 on DotNet platforms, including Windows and Mac OS X.
+
+## Bugfixes
+- Fixes a bug where the app would crash if a databinding resolved to an incompatible type (e.g. binding a number property to a boolean value). (Marshal.TryConvertTo would throw exception instead of fail gracefully).
+
 ## Bug in Container
 - Fixed bug in Container which caused crash when the container had no subtree nodes. This caused the Fuse.MaterialDesign community package to stop working.
 
 ## Fuse.Controls.Video
 - Fixed a bug where we would trigger errors on Android if a live-stream was seeked or paused.
+- Fixed a bug where HLS streams would become zero-sized on iOS.
 
 # Expression functions
 - added `index` and `offsetIndex` as funtions to get the position of an element inside an `Each`
