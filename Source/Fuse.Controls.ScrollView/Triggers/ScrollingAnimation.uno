@@ -93,6 +93,9 @@ namespace Fuse.Triggers
 				_hasFrom = true;
 				if (!_hasRange)
 					_range = ScrollingAnimationRange.Explicit;
+
+				if (_scrollable != null)
+					BypassSeek(OffsetScrollProgress);
 			}
 		}
 
@@ -105,6 +108,9 @@ namespace Fuse.Triggers
 				_hasTo = true;
 				if (!_hasRange)
 					_range = ScrollingAnimationRange.Explicit;
+
+				if (_scrollable != null)
+					BypassSeek(OffsetScrollProgress);
 			}
 		}
 		
