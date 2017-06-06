@@ -55,7 +55,7 @@ namespace Fuse.Controls
 	}
 	
 	/*
-		`Panel` and `Canvas` are both `ISurfaceDrawable` which share this code. We don't want
+		`Panel` and `VectorLayer` are both `ISurfaceDrawable` which share this code. We don't want
 		`LayoutControl` to expose `ISurfaceDrawable` though, limiting it to only those derived classes.
 		Thus they both have a small mixin component forwarding to these functions.
 	*/
@@ -102,10 +102,14 @@ namespace Fuse.Controls
 		{
 			if (_surface == null)
 			{
-				Fuse.Diagnostics.InternalError( "LayouControl not properly rooted in Surface", this );
+				Fuse.Diagnostics.InternalError( "LayoutControl not properly rooted in Surface", this );
 				return;
 			}
-			
+			if (_surface.Surface != surface)
+			{
+				Fuse.Diagnostics.InternalError( "Mismatched surface", this );
+			}
+
 			_surface.Watcher.Reset();
 			_surface.Watcher.Add(Background);
 			_surface.Watcher.Sync();
@@ -143,9 +147,7 @@ namespace Fuse.Controls
 				}
 				
 				surface.PushTransform(child.LocalTransform);
-				if (child is Element)
-					surface.SetElementSize((child as Element).ActualSize);
-				drawable.Draw(surface);
+				surface.DrawLocal(drawable);
 				surface.PopTransform();
 			}
 		}

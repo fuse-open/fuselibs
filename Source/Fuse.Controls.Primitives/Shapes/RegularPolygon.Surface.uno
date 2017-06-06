@@ -7,8 +7,6 @@ namespace Fuse.Controls
 {
 	public partial class RegularPolygon
 	{
-		protected override bool NeedSurface { get { return true; } }
-		
 		protected override SurfacePath CreateSurfacePath(Surface surface)
 		{
 			var radius = Math.Min(ActualSize.X, ActualSize.Y) * 0.5f;

@@ -7,8 +7,6 @@ namespace Fuse.Controls
 {
 	public partial class Star
 	{
-		protected override bool NeedSurface { get { return true; } }
-		
 		protected override SurfacePath CreateSurfacePath(Surface surface)
 		{
 			var list = new List<LineSegment>();

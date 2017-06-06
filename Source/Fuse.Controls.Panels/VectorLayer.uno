@@ -24,12 +24,9 @@ namespace Fuse.Controls
 			LayoutSurface.Draw(dc, this, this );
 		}
 
-		//Common Mixin to expose LayoutControl.ISurfaceDrawable
-		void ISurfaceDrawable.Draw(Surface surface)
-		{
-			ISurfaceDrawableDraw(surface);
-		}
-		//End-Mixin
+		void ISurfaceDrawable.Draw(Surface surface) { ISurfaceDrawableDraw(surface); }
+		bool ISurfaceDrawable.IsPrimary { get { return true; } }
+		float2 ISurfaceDrawable.ElementSize { get { return ActualSize; } }
 		
 		protected override void OnRooted()
 		{

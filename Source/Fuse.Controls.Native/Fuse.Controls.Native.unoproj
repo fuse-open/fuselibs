@@ -20,6 +20,7 @@
     "Uno.Threading",
   ],
   "Projects": [
+    "../Fuse.Drawing.Surface/Fuse.Drawing.Surface.unoproj",
     "../Fuse.Drawing/Fuse.Drawing.unoproj",
     "../Fuse.Drawing.Planar/Fuse.Drawing.Planar.unoproj",
     "../Fuse.Triggers/Fuse.Triggers.unoproj",
@@ -35,5 +36,6 @@
     "Android/Java/HorizontalScrollView.java:Java:Android",
     "Android/Java/VerticalScrollView.java:Java:Android",
     "Android/Java/ViewGroup.java:Java:Android",
+    "Android/Java/CanvasViewGroup.java:Java:Android",
   ]
 }
