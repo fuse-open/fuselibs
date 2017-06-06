@@ -1,0 +1,11 @@
+<Panel ux:Class="UX.Gesture.Layer">
+	<EdgeNavigator ux:Name="edge">
+		<Panel Edge="Right" Width="200" ux:Name="edgeRight"/>
+		<PageControl ux:Name="edgeMain">
+			<ScrollView>
+				<StackPanel>
+				</StackPanel>
+			</ScrollView>
+		</PageControl>
+	</EdgeNavigator>
+</Panel>

@@ -8,6 +8,14 @@ namespace Fuse.Gestures
 {
 	delegate void ClickerEventHandler(PointerEventArgs args, int count);
 
+	public enum ClickerPointerIndex
+	{	
+		//activates only on the primary pointer index
+		Primary,
+		//activates on any pointer index (only one activation per gesture at a time)
+		Any,
+	}
+
 	public abstract class ClickerTrigger : Fuse.Triggers.Trigger
 	{
 		internal Clicker Clicker;
@@ -15,6 +23,7 @@ namespace Fuse.Gestures
 		{
 			base.OnRooted();
 			Clicker = Clicker.AttachClicker(Parent);
+			Clicked.PointerIndex = PointerIndex;
 		}
 
 		protected override void OnUnrooted()
@@ -23,6 +32,13 @@ namespace Fuse.Gestures
 			Clicker = null;
 			base.OnUnrooted();
 		}
+
+		ClickerPointerIndex _pointerIndex = ClickerPointerIndex.Primary;
+		public ClickerPointerIndex PointerIndex
+		{
+			get { return _pointerIndex; }
+			set { _pointerIndex = value; }
+		} 
 	}
 
 	public abstract class WhileClickerTrigger : Fuse.Triggers.WhileTrigger
@@ -61,6 +77,13 @@ namespace Fuse.Gestures
 		{
 			_visual = visual;
 		}
+
+		ClickerPointerIndex _pointerIndex = ClickerPointerIndex.Primary;
+		public ClickerPointerIndex PointerIndex
+		{
+			get { return _pointerIndex; }
+			set { _pointerIndex = value; }
+		} 
 
 		static readonly PropertyHandle _clickerProperty = Fuse.Properties.CreateHandle();
 		static public Clicker AttachClicker(Visual elm)
