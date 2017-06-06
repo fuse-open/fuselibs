@@ -7,6 +7,8 @@
 - The experimental `IGesture` interface has changed. 
 	* The `Significance`, `Priority` and `PriotityAdjustment` have been merged into the single `GetPriority` function.
 	* `OnCapture` is changed to `OnCaptureChanged` and provides the previous capture state 
+- `Clicked`, `DoubleClicked`, `Tapped`, `DoubleTapped`, and `LongPressed` have been corrected to only detect the primary "first" pointer press. If you'd like to accept any pointer index add `PointerIndex="Any"` to the gesture.
+	<Clicked PointerIndex="Any"/>
 
 ## Native
 - Added feature toggle for implicit `GraphicsView`. If you are making an app using only Native UI disabling the implicit `GraphicsView` can increase performance. Disable the `GraphicsView` by defining `DISABLE_IMPLICIT_GRAPHICSVIEW` when building. For example `uno build -t=ios -DDISABLE_IMPLICIT_GRAPHICSVIEW`

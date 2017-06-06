@@ -96,6 +96,8 @@ namespace Fuse.Input
 	*/
 	public enum GestureType
 	{
+		//activates on any pointer index
+		Any = 0<<0,
 		//activates only on the primary pointer press
 		Primary = 1 << 0,
 		//allows multiple pointers to be depressed at the same time, otherwise only one is allowed

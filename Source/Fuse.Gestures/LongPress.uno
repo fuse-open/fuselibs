@@ -39,6 +39,9 @@ namespace Fuse.Gestures
 
 		void OnLongPressed(PointerEventArgs args, int count)
 		{
+			if (!Accept(args))
+				return;
+			
 			Pulse();
 			if (Handler != null)
 				Handler(this, new LongPressedArgs(args, Parent));

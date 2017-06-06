@@ -68,7 +68,8 @@ namespace Fuse.Gestures
 
 		void OnClicked(PointerEventArgs args, int clickCount)
 		{
-			if (!IsRootingCompleted) return;
+			if (!Accept(args))
+				return;
 
 			Pulse();
 			if (Handler != null)
@@ -111,6 +112,8 @@ namespace Fuse.Gestures
 
 		void OnClicked(PointerEventArgs args, int clickCount)
 		{
+			if (!Accept(args))
+				return;
 			if (clickCount != 2)
 				return;
 

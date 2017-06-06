@@ -23,7 +23,6 @@ namespace Fuse.Gestures
 		{
 			base.OnRooted();
 			Clicker = Clicker.AttachClicker(Parent);
-			Clicked.PointerIndex = PointerIndex;
 		}
 
 		protected override void OnUnrooted()
@@ -39,6 +38,17 @@ namespace Fuse.Gestures
 			get { return _pointerIndex; }
 			set { _pointerIndex = value; }
 		} 
+
+		protected bool Accept(PointerEventArgs args)
+		{
+			//in rare event combinations this might happen if an element is unrooted prior to gesture completion
+			if (!IsRootingCompleted)
+				return false;
+
+			if (PointerIndex == ClickerPointerIndex.Any)
+				return true;
+			return args.IsPrimary;
+		}
 	}
 
 	public abstract class WhileClickerTrigger : Fuse.Triggers.WhileTrigger
@@ -77,14 +87,6 @@ namespace Fuse.Gestures
 		{
 			_visual = visual;
 		}
-
-		ClickerPointerIndex _pointerIndex = ClickerPointerIndex.Primary;
-		public ClickerPointerIndex PointerIndex
-		{
-			get { return _pointerIndex; }
-			set { _pointerIndex = value; }
-		} 
-
 		static readonly PropertyHandle _clickerProperty = Fuse.Properties.CreateHandle();
 		static public Clicker AttachClicker(Visual elm)
 		{
@@ -115,7 +117,7 @@ namespace Fuse.Gestures
 		Gesture _gesture;
 		void OnRooted()
 		{
-			_gesture = Input.Gestures.Add( this, _visual, GestureType.Primary );
+			_gesture = Input.Gestures.Add( this, _visual, GestureType.Any );
 		}
 
 		void OnUnrooted()
