@@ -31,6 +31,9 @@ namespace Fuse
 				
 			_interactions[id] = new InteractionItem{ Id = id, Cancelled = cancelled };
 			OnInteractionsChanged();
+
+			InvalidateVisual();
+			UpdateManager.AddAction(InvalidateVisual);
 		}
 		
 		public void EndInteraction(object id)
@@ -43,6 +46,7 @@ namespace Fuse
 				_interactions = null;
 				
 			OnInteractionsChanged();
+			UpdateManager.RemoveAction(InvalidateVisual);
 		}
 		
 		void OnInteractionsChanged()
