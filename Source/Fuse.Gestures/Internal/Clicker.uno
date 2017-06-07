@@ -178,11 +178,7 @@ namespace Fuse.Gestures
 		GestureRequest IGesture.OnPointerPressed(PointerPressedArgs args)
 		{
 			_lastArgs = args;
-			return GestureRequest.Capture;
-		}
-		
-		void IGesture.OnCaptureChanged(PointerEventArgs args, CaptureType how, CaptureType prev)
-		{
+
 			var delta = args.Timestamp - _lastUpTime;
 			if (delta > _maxDoubleInterval)
 			{
@@ -194,7 +190,12 @@ namespace Fuse.Gestures
 			_startCoord = args.WindowPoint;
 			_startTime = args.Timestamp;
 			_maybeTap = true;
-
+			_lastArgs = args;
+			return GestureRequest.Capture;
+		}
+		
+		void IGesture.OnCaptureChanged(PointerEventArgs args, CaptureType how, CaptureType prev)
+		{
 			if (LongPressedEvent != null && !_hasUpdate)
 			{
 				_hasUpdate = true;
@@ -204,7 +205,6 @@ namespace Fuse.Gestures
 			if (PressingEvent != null)
 				PressingEvent(args, 1);
 
-			_lastArgs = args;
 			_hovering = true;
 		}
 

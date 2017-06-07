@@ -257,6 +257,8 @@ namespace Fuse.Input
 		
 		internal void OnPointerPressed( object sender, PointerPressedArgs args )
 		{
+			Gestures.PumpEvent(args);
+
 			if (_down.Count != 0 && !Type.HasFlag(GestureType.Multi))
 				return;
 
@@ -268,6 +270,8 @@ namespace Fuse.Input
 		
 		internal void OnPointerMoved( object sender, PointerMovedArgs args )
 		{
+			Gestures.PumpEvent(args);
+
 			if (!_down.Contains(args.PointIndex))
 				return;
 
@@ -284,6 +288,8 @@ namespace Fuse.Input
 		
 		internal void OnPointerReleased( object sender, PointerReleasedArgs args )
 		{
+			Gestures.PumpEvent(args);
+
 			if (!_down.Contains(args.PointIndex))
 				return;
 				
@@ -387,9 +393,7 @@ namespace Fuse.Input
 		}
 		
 		static List<ActiveGesture> _activeGestures = new List<ActiveGesture>();
-		//frame index we last checked capture changes. This is defensive, in case something
-		//odd happens we'll still keep processing as expected the following frame
-		static int _changePosted;
+		static bool _changePosted;
 		
 		static internal void RequestCaptureChange( Gesture gesture, PointerEventArgs args, 
 			CaptureType captureType )
@@ -403,11 +407,36 @@ namespace Fuse.Input
 			ar.Args = args;
 			ar.CaptureType = captureType;
 				
-			if (_changePosted < UpdateManager.FrameIndex) 
+			if (!_changePosted) 
 			{
 				UpdateManager.AddDeferredAction( ProcessCaptureChanges );
-				_changePosted = UpdateManager.FrameIndex;
+				_changePosted = true;
 			}
+		}
+
+		static PointerEventArgs _pumpArgs;
+		/**
+			Before processing subsequent events the previous ones need to complete. This is important when multiple events arrive in a single frame. This works by comparing the "args" object to the previous one. Each event represents a full set of processing, thus if a new event shows up it must conclude the previous one.
+
+			It'd likely be cleaner for the Gestures to hook directly into the Pointer.Input system rather than relying on PumpEvent to be called. This was this easier approach for now.
+		*/
+		static internal void PumpEvent( PointerEventArgs args )
+		{
+			if (_pumpArgs == null)
+			{
+				_pumpArgs = args;
+				return;
+			}
+
+			if (_pumpArgs == args)
+				return;
+			_pumpArgs = args;
+
+			if (!_changePosted)
+				return;
+
+			ProcessCaptureChanges();
+			_changePosted = false;
 		}
 		
 		static int PriorityOrder( ActiveGesture a, ActiveGesture b )
@@ -433,6 +462,10 @@ namespace Fuse.Input
 		
 		static void ProcessCaptureChanges()
 		{
+			if (!_changePosted)	
+				return;
+			_changePosted = false;
+
 			UpdateSignificance();
 			_activeGestures.Sort( PriorityOrder );
 
