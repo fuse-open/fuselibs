@@ -210,7 +210,7 @@ namespace Fuse.Gestures
 		}
 		
 		internal static Selector GesturePriorityName = "GesturePriority";
-		GesturePriority _gesturePriority = GesturePriority.Lower;
+		GesturePriority _gesturePriority = GesturePriority.Low;
 		/**
 			The priority of the swiping gesture when competing with other gestures.
 			

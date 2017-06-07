@@ -225,7 +225,7 @@ namespace Fuse.Navigation
 					? _horizontalGesture.IsWithinBounds(diff)
 					: _verticalGesture.IsWithinBounds(diff);
 
-				return new GesturePriorityConfig( GesturePriority.Lower,
+				return new GesturePriorityConfig( GesturePriority.Low,
 					//TODO: this is wrong, it should only be the significant axis				
 					!withinBounds ? 0f : Vector.Length(diff) );
 			}

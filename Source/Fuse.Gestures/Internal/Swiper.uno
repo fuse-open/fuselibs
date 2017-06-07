@@ -27,7 +27,7 @@ namespace Fuse.Gestures.Internal
 			set { _isEnabled = value; }
 		}
 		
-		GesturePriority _gesturePriority = GesturePriority.Lower;
+		GesturePriority _gesturePriority = GesturePriority.Low;
 		public GesturePriority GesturePriority
 		{
 			get { return _gesturePriority; }

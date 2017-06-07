@@ -15,9 +15,9 @@ namespace Fuse.Input
 	public enum GesturePriority
 	{
 		Lowest = 0,
-		Lower,
+		Low,
 		Normal,
-		Higher,
+		High,
 		Highest,
 	}
 	

@@ -98,7 +98,7 @@ namespace Fuse.Controls
 		}
 		
 		internal static Selector GesturePriorityName = "GesturePriority";
-		GesturePriority _gesturePriority = GesturePriority.Lower;
+		GesturePriority _gesturePriority = GesturePriority.Low;
 		/**
 			The priority of the scrolling gestures.
 			

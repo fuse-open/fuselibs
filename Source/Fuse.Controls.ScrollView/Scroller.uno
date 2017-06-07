@@ -188,7 +188,7 @@ namespace Fuse.Gestures
 			get
 			{ 
 				return new GesturePriorityConfig(
-					_scrollable == null ? GesturePriority.Lower : _scrollable.GesturePriority,
+					_scrollable == null ? GesturePriority.Low : _scrollable.GesturePriority,
 					(!DelayStart ? 100 : 0) + _significance);
 			}
 		}
