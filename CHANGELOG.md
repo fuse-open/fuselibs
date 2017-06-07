@@ -39,11 +39,7 @@
 ## Bugfixes
 - Fixes a bug where the app would crash if a databinding resolved to an incompatible type (e.g. binding a number property to a boolean value). (Marshal.TryConvertTo would throw exception instead of fail gracefully).
 
-## Bug in Container
-- Fixed bug in Container which caused crash when the container had no subtree nodes. This caused the Fuse.MaterialDesign community package to stop working.
-
 ## Fuse.Controls.Video
-- Fixed a bug where we would trigger errors on Android if a live-stream was seeked or paused.
 - Fixed a bug where HLS streams would become zero-sized on iOS.
 
 # Expression functions
@@ -55,6 +51,23 @@
 
 
 ## 1.0
+
+### 1.0.3
+
+## ColumnLayout
+- Fixed an issue that would result in a broken layout if a `Sizing="Fill"` was used there wasn't enough space for one column.
+
+## Bug in Container
+- Fixed bug in Container which caused crash when the container had no subtree nodes. This caused the Fuse.MaterialDesign community package to stop working.
+
+## Fuse.Controls.Video
+- Fixed a bug where we would trigger errors on Android if a live-stream was seeked or paused.
+
+## Experimental.TextureLoader
+- Fixed an issue when loading images bigger than the maximum texture-size. Instead of failing, the image gets down-scaled so it fits.
+
+
+### 1.0.0 - 1.0.2
 
 ## Fuse.Elements
 - Fixed a bug where elements with many children and some of them were rotated, the rotated elements would appear in the wrong location.

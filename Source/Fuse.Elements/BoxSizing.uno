@@ -5,6 +5,7 @@ using Fuse;
 
 namespace Fuse.Elements
 {
+	/** @hide Not sure how this ended up public */
 	public struct BoxPlacement
 	{
 		//the size of the margin box
@@ -13,6 +14,52 @@ namespace Fuse.Elements
 		public float2 Position;
 		//the size of the padding box
 		public float2 Size;
+		
+		bool NoGood(float value)
+		{
+			return Float.IsInfinity(value) || Float.IsNaN(value);
+		}
+		bool NoGoodSize(float value)
+		{
+			return NoGood(value) || value < 0;
+		}
+		
+		internal bool SanityConstrain()
+		{
+			var ret = false;
+			if (NoGoodSize(MarginBox.X))
+			{
+				ret = true;
+				MarginBox.X = 0;
+			}
+			if (NoGoodSize(MarginBox.Y))
+			{
+				ret = true;
+				MarginBox.Y = 0;
+			}
+			if (NoGoodSize(Size.X))
+			{
+				ret = true;
+				Size.X = 0;
+			}
+			if (NoGoodSize(Size.Y))
+			{
+				ret = true;
+				Size.Y = 0;
+			}
+			if (NoGood(Position.X))
+			{
+				ret = true;
+				Position.X = 0;
+			}
+			if (NoGood(Position.Y))
+			{
+				ret = true;
+				Position.Y = 0;
+			}
+			
+			return ret;
+		}
 	}
 	
 	abstract class BoxSizing
