@@ -126,13 +126,13 @@ namespace Fuse.Gestures
 			if (elm.Properties.TryGet(_clickerProperty, out v))
 			{
 				var c = v as Clicker;
-				c._priority = (GesturePriority)( Math.Max((int)_priority, (int)priority));
+				c._priority = (GesturePriority)( Math.Max((int)c._priority, (int)priority));
 				c._attachCount++;
 				return c;
 			}
 
 			var nc = new Clicker(elm);
-			nv._priority = priority;
+			nc._priority = priority;
 			elm.Properties.Set(_clickerProperty, nc);
 			nc.OnRooted();
 			return nc;

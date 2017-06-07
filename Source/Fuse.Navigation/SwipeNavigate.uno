@@ -183,22 +183,15 @@ namespace Fuse.Navigation
 		bool IsVertical { get { return ForwardDirection == SwipeDirection.Up ||
 			ForwardDirection == SwipeDirection.Down; } }
 
+		float2 Direction
+		{
+			get { return IsHorizontal ? float2(1,0) : float2(0,1); }
+		}
+
 		float2 _startCoord;
 		float2 _currentCoord;
 		float _prevDistance;
 		double _startTime = 0.0;
-
-		const float _delayStartThresholdDistance = 0; //now handled by Gesture
-		static internal float TestDelayStartThresholdDistance { get { return _delayStartThresholdDistance; } }
-		
-		SwipeGestureHelper _horizontalGesture = new SwipeGestureHelper(_delayStartThresholdDistance,
-			new DegreeSpan( 75.0f,  105.0f),
-			new DegreeSpan(-75.0f, -105.0f));
-
-		SwipeGestureHelper _verticalGesture = new SwipeGestureHelper(_delayStartThresholdDistance,
-			new DegreeSpan(-15.0f,    15.0f),
-			new DegreeSpan(-165.0f, -180.0f),
-			new DegreeSpan( 165.0f,  180.0f));
 
 		public SwipeNavigate()
 		{
@@ -221,13 +214,8 @@ namespace Fuse.Navigation
 			get
 			{
 				var diff = _currentCoord - _startCoord;
-				var withinBounds = IsHorizontal
-					? _horizontalGesture.IsWithinBounds(diff)
-					: _verticalGesture.IsWithinBounds(diff);
-
 				return new GesturePriorityConfig( GesturePriority.Low,
-					//TODO: this is wrong, it should only be the significant axis				
-					!withinBounds ? 0f : Vector.Length(diff) );
+					Gesture.VectorSignificance( Direction, diff ) );
 			}
 		}
 		

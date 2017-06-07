@@ -114,7 +114,7 @@ namespace Fuse.Gestures.Internal
 				else if (_point[1].Down != -1)
 					sig = Vector.Length( _point[0].Current - _point[0].Start ) +
 					Vector.Length( _point[1].Current - _point[1].Start );
-				return new GesturePriorityConfig( GesturePriority.Higher, sig );
+				return new GesturePriorityConfig( GesturePriority.Normal, sig );
 			}
 		}
 		
