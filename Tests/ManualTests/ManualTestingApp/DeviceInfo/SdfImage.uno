@@ -89,6 +89,8 @@ public class SdfImage : Shape
 		};
 	}
 
+	override protected bool NeedSurface { get { return false; } }
+
 	protected override SurfacePath CreateSurfacePath(Fuse.Drawing.Surface surface)
 	{
 		return null;
