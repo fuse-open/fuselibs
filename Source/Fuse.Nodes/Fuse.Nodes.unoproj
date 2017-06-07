@@ -12,6 +12,7 @@
     "Fuse.Animations",
     "Fuse.Controls.Native",
     "Fuse.Controls.Navigation",
+    "Fuse.Controls.Navigation.Test",
     "Fuse.Controls.Panels",
     "Fuse.Controls.Primitives",
     "Fuse.Controls.ScrollView",

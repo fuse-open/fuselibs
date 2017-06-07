@@ -67,7 +67,7 @@ namespace Fuse.Controls.Test
 				root.PointerPress( float2(800,200) );
 				root.PointerSlide( float2(800,200), float2(550,200), speed);
 				//adjust for delayed gesture and accuracy of sliding steps
-				Assert.AreEqual(0.25 - SwipeNavigate.TestDelayStartThresholdDistance/1000,
+				Assert.AreEqual(0.25 - Fuse.Input.Gesture.HardCaptureSignificanceThreshold/1000,
 					(p as INavigation).PageProgress,
 					root.StepIncrement * speed / 1000 + float.ZeroTolerance);
 					
