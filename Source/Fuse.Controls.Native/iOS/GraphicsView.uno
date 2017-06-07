@@ -108,7 +108,7 @@ namespace Fuse.Controls.Native.iOS
 		static void EndDraw(ObjC.Object handle)
 		@{
 			GLKView* glkView = (GLKView*)handle;
-			[glkView setNeedsDisplay];
+			[glkView display];
 		@}
 
 		public override void Dispose()
