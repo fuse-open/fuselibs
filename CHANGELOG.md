@@ -1,5 +1,10 @@
 # Unreleased
 
+
+## 1.0
+
+### 1.0.3
+
 ## ColumnLayout
 - Fixed an issue that would result in a broken layout if a `Sizing="Fill"` was used there wasn't enough space for one column.
 
@@ -13,7 +18,7 @@
 - Fixed an issue when loading images bigger than the maximum texture-size. Instead of failing, the image gets down-scaled so it fits.
 
 
-## 1.0
+### 1.0.0 - 1.0.2
 
 ## Fuse.Elements
 - Fixed a bug where elements with many children and some of them were rotated, the rotated elements would appear in the wrong location.
