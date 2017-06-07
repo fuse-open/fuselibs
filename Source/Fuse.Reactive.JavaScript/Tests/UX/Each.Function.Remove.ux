@@ -1,0 +1,24 @@
+<Panel ux:Class="UX.Each.Function.Remove">
+	<JavaScript>
+		var Observable = require("FuseJS/Observable")
+		
+		exports.items = Observable()
+		for (var i=0; i < 3; ++i) {
+			exports.items.add( { id: i } )
+		}
+
+		exports.replace = function() {
+			exports.items.value = { id: 3 }
+		}
+	</JavaScript>
+	
+	<Each Items="{items}" ux:Name="each">
+		<Text Value="{id}-{= index(each)}">
+			<RemovingAnimation>
+				<Nothing Duration="1"/>
+			</RemovingAnimation>
+		</Text>
+	</Each>
+	
+	<FuseTest.Invoke Handler="{replace}" ux:Name="CallReplace"/>
+</Panel>

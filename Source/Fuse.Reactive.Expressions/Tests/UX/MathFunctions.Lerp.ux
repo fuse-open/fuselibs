@@ -1,0 +1,6 @@
+<Panel ux:Class="UX.MathFunctions.Lerp">
+	<FuseTest.Value ux:Name="a"/>
+	<FuseTest.Value ux:Name="b"/>
+	<FuseTest.Value ux:Name="t"/>
+	<FuseTest.Value Float4="lerp({Property a.Object},{Property b.Object},{Property t.Object})" ux:Name="lerp"/>
+</Panel>

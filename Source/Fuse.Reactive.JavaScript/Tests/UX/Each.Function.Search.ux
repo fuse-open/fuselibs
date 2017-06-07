@@ -1,0 +1,9 @@
+<Panel ux:Class="UX.Each.Function.Search">
+	<Each Count="3">
+		<Rectangle>
+			<Panel>
+				<Text Value="{= index(self)}" ux:Name="self"/>
+			</Panel>
+		</Rectangle>
+	</Each>
+</Panel>

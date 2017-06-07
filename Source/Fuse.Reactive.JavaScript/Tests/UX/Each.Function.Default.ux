@@ -1,0 +1,5 @@
+<Panel ux:Class="UX.Each.Function.Default">
+	<Each Count="3">
+		<!-- <Text Value="{= index()}"/> -->
+	</Each>
+</Panel>

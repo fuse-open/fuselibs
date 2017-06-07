@@ -22,7 +22,8 @@
   ],
   "InternalsVisibleTo": [
     "Fuse.Scripting.Test",
-    "Fuse.Common.Test.Helpers"
+    "Fuse.Common.Test.Helpers",
+    "Fuse.Expressions.Test",
   ],
   "Includes": [
     "*"

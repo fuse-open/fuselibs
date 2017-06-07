@@ -1,0 +1,5 @@
+<Panel ux:Class="UX.MathFunctions.Mod">
+	<FuseTest.Value Integer="10" ux:Name="a"/>
+	<FuseTest.Value Integer="3" ux:Name="b"/>
+	<FuseTest.Value Object="mod({Property a.Object},{Property b.Object})" ux:Name="c"/>
+</Panel>

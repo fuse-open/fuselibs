@@ -22,7 +22,7 @@ namespace Fuse
 
 			The conversion is performed using optimistic and relaxed conversion rules.
 
-			This method will not throw exceptions if conversion fails, but instead return false. Returns true if conversion succeededs.
+			This method will not throw exceptions if conversion fails, but instead return false. Returns true if conversion succeededs, or the input is null.
 
 			@param t The type to convert to
 			@param o The object to attempt to convert to type `t`.
@@ -76,6 +76,9 @@ namespace Fuse
 			return false;
 		}
 
+		/**
+			Be aware this function may throw a NullReferenceException if the type cannot be converted to the desired one. It is advised to use TryToType or TryConvertTo instead.
+		*/
 		public static T ToType<T>(object o)
 		{
 			object res;
@@ -83,6 +86,21 @@ namespace Fuse
 			return (T)res;
 		}
 
+		/**
+			Tries to convert to a target value. Unlike `TryConvertTo` this will return `false` if the input value is `null`.
+		*/
+		public static bool TryToType<T>(object o, out T res)
+		{
+			object ores;
+			if (!TryConvertTo(typeof(T), o, out ores) || ores == null)
+			{
+				res = default(T);
+				return false;
+			}
+			res = (T)ores;
+			return true;
+		}
+		
 		public static bool CanConvertClass(Type t)
 		{
 			for (int i = 0; i < _converters.Count; i++)

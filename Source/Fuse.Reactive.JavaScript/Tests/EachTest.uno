@@ -276,20 +276,93 @@ namespace Fuse.Reactive.Test
 			}
 		}
 		
-		static internal string GetText(Visual root)
+		[Test]
+		public void FunctionBasic()
 		{
-			var q = "";
-			for (int i=0; i < root.Children.Count; ++i)
+			var e = new UX.Each.Function.Basic();
+			using (var root = TestRootPanel.CreateWithChild(e))
 			{
-				var t = root.Children[i] as Text;
-				if (t != null)
-				{
-					if (q.Length > 0)
-						q += ",";
-					q += t.Value;
-				}
+				root.StepFrameJS();
+				Assert.AreEqual("1-1-0,2-2-1,3-3-2", GetText(e));
 			}
-			return q;
+		}
+		
+		[Test]
+		//ensure values are updated as each items change
+		public void FunctionOrder()
+		{
+			var e = new UX.Each.Function.Order();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.StepFrameJS();
+				Assert.AreEqual("0-0,1-1", GetText(e));
+				
+				e.CallInsert.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual("2-0,0-1,1-2", GetText(e));
+				
+				e.CallRemove.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual("2-0,1-1", GetText(e));
+				
+				e.CallReplace.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual("3-0", GetText(e));
+			}
+		}
+		
+		[Test]
+		//nested Each lookup
+		public void FunctionArg()
+		{
+			var e = new UX.Each.Function.Arg();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+ 				root.StepFrame();
+ 				Assert.AreEqual("0-0,0-1,1-0,1-1", GetText(e));
+			}
+		}
+		
+		[Test]
+		//index() retains the previous value if the item is removed, or rather it doesn't update if there is no value
+		public void FunctionRemove()
+		{
+			var e = new UX.Each.Function.Remove();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+ 				root.StepFrameJS();
+ 				Assert.AreEqual("0-0,1-1,2-2", GetText(e));
+ 				
+ 				e.CallReplace.Perform();
+ 				root.StepFrameJS();
+ 				//it's not certain if the new element is guaranteed to be in this place
+ 				Assert.AreEqual("3-0,0-0,1-1,2-2", GetText(e));
+			}
+		}
+		
+		[Test]
+		//there's no way to test this feature yet
+		[Ignore("https://github.com/fusetools/fuselibs/issues/4199")]
+		public void FunctionDefault()
+		{
+			var e = new UX.Each.Function.Default();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+ 				root.StepFrame();
+ 				Assert.AreEqual("0,1,2", GetText(e));
+			}
+		}
+		
+		[Test]
+		//any node inside the Each will work for lookup
+		public void FunctionSearch()
+		{
+			var e = new UX.Each.Function.Search();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+ 				root.StepFrame();
+ 				Assert.AreEqual("0,1,2", GetRecursiveText(e));
+			}
 		}
 	}
 }

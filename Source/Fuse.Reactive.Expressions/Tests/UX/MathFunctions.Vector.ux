@@ -1,0 +1,6 @@
+<Panel ux:Class="UX.MathFunctions.Vector">
+	<FuseTest.Value Float4="(1,2,3,4)" ux:Name="a"/>
+	<FuseTest.Value Float4="sin({Property a.Object})" ux:Name="sin"/>
+	<FuseTest.Value Float3="sin({Property a.Object})" ux:Name="sin3"/>
+	<FuseTest.Value Float2="sin({Property a.Object})" ux:Name="sin2"/>
+</Panel>
