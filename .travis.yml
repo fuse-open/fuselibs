@@ -1,5 +1,7 @@
 os: osx
 
+language: cpp
+
 cache:
   directories:
     - $HOME/.ccache
