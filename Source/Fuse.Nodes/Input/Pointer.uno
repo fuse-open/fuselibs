@@ -110,6 +110,8 @@ namespace Fuse.Input
 	}
 
 	/**
+		Directly using the `Pointer` class is not advised. For all typical UI controls you should iuse the @Gestures system. The gesture system is better able to deal with conflict between gestures.
+
 		## Captures
 		
 		A capture indicates some listener is interested in receiving events for a pointer event even if they no longer hit the target visual. Any capture blocks events from being sent outside of the tree starting at the provided visual.
@@ -117,6 +119,8 @@ namespace Fuse.Input
 		An `identity` is used to identify the capture listener. Each identity has only one capture. This may be at different levels, or involve single or multiple pointer indexes. Multiple captures with the same `identity` can not be created -- it always modifies the existing one.
 		
 		Only one `CaptureType.Hard` can exist for a `PointIndex` at one time. This will also cancel all soft captures that also accept that point (even if it isn't the only point they accept). An exception is those with `NodeShare`.
+
+		@advanced
 	*/
 	public static partial class Pointer
 	{

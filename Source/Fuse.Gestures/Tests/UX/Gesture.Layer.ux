@@ -8,7 +8,7 @@
 
 			<Page Color="#FAA" ux:Name="pageB">
 				<ScrollView ux:Name="scroll">
-					<StackPanel Alignment="Top">
+					<StackPanel Alignment="Top" Color="#000">
 						<Panel Height="20">
 							<RangeControl ux:Name="rangeH" Minimum="0" Maximum="100" HitTestMode="LocalBounds">
 								<LinearRangeBehavior/>

@@ -85,12 +85,20 @@ namespace Fuse.Gestures
 				Control.Value = _initialValue;
 		}
 		
+		GesturePriority _gesturePriority = GesturePriority.Normal;
+		/** Alters the priority of the gesture relative to other gestures. */
+		public GesturePriority GesturePriority
+		{
+			get { return _gesturePriority; }
+			set { _gesturePriority = value; }
+		}
+
 		GesturePriorityConfig IGesture.Priority
 		{
 			get 
 			{
 				var diff = _currentCoord - _startCoord;
-				return new GesturePriorityConfig( GesturePriority.Higher,
+				return new GesturePriorityConfig( GesturePriority.Normal,
 					Gesture.VectorSignificance( Direction, _currentCoord - _startCoord ) );
 			}
 		}

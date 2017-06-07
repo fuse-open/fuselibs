@@ -5,7 +5,9 @@ using Uno.Collections;
 namespace Fuse.Input
 {
 	/**
-		Priority helps determine which gesture to select if multiple gestures can be triggered by the same pointer input. This is not a strict ordering: lower priority gestures can still become active if their `IGesture.Significance` value is sufficiently higher than a higher priority gesture.
+		Priority helps determine which gesture to select if multiple gestures can be captured by the same pointer input.  This applies when two or more gestures are both matching the current user input (such as a Swipe, ScrollView, and Slider all handling a swipe to the right). The item with the highest priority will be used.
+
+		This is not a strict ordering: lower priority gestures can still become active if their `Significance` value is sufficiently higher than a higher priority gesture. The one with more signficance is generally considered a better match even if low priority.
 		
 		@experimental
 		@advanced
@@ -19,6 +21,10 @@ namespace Fuse.Input
 		Highest,
 	}
 	
+	/**	
+		@experimental
+		@advanced
+	*/
 	public struct GesturePriorityConfig
 	{
 		public GesturePriority Priority;
@@ -323,7 +329,9 @@ namespace Fuse.Input
 		This is currently a transition mechanism as we move pointer handling from direct handlers to a structured gesture system. This will be the preferred mechanism for handling nearly all pointer input.
 		
 		Gestures are a unified way to handle pointer input from the user. They coordinate their activation and can resolve exclusions and priorities, ensuring the correct gesture is handled.
-		
+
+		Though the Gesture system is still considered experimental it is the preferred way of handling pointer input now. The API is relatively stable, but small adjustments might be made to handle more complex gestures.
+				
 		@experimental
 		@advanced
 	*/
@@ -439,7 +447,7 @@ namespace Fuse.Input
 				var pdiff = prev != null ? prev.Priority - (int)ar.Priority : 0;
 				if (pdiff > 0 && ar.CaptureType.HasFlag(CaptureType.Hard) )
 				{
-					//lower priority must beat out higher by enough to do anything
+					//lower priority must beat out higher by enough to do anything.
 					if (ar.Significance < ( (int)prev.Priority * 2.0f + prev.Significance))
 					{
 						continue;

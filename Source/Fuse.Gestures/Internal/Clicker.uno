@@ -22,7 +22,7 @@ namespace Fuse.Gestures
 		protected override void OnRooted()
 		{
 			base.OnRooted();
-			Clicker = Clicker.AttachClicker(Parent);
+			Clicker = Clicker.AttachClicker(Parent, GesturePriority);
 		}
 
 		protected override void OnUnrooted()
@@ -38,6 +38,22 @@ namespace Fuse.Gestures
 			get { return _pointerIndex; }
 			set { _pointerIndex = value; }
 		} 
+
+		//As we have no signifiicance we can return a high priority, forcing other gestures to be sure they
+		//recognize themselves before stealing from clicker.
+		GesturePriority _gesturePriority = GesturePriority.Highest;
+		/** 
+			Alters the priority of the click trigger. 
+
+			The highest of all priorities for clicked triggers on a node will be used as the priority, as they all share the same fundamental behaviour. You must therefore override all ClickerTrigger and WhileClickerTrigger GesturePriority's values to have a consistent behaviour.
+
+			The default is `Highest`.
+		*/
+		public GesturePriority GesturePriority
+		{
+			get { return _gesturePriority; }
+			set { _gesturePriority = value; }
+		}
 
 		protected bool Accept(PointerEventArgs args)
 		{
@@ -57,7 +73,7 @@ namespace Fuse.Gestures
 		protected override void OnRooted()
 		{
 			base.OnRooted();
-			Clicker = Clicker.AttachClicker(Parent);
+			Clicker = Clicker.AttachClicker(Parent, GesturePriority);
 		}
 
 		protected override void OnUnrooted()
@@ -65,6 +81,20 @@ namespace Fuse.Gestures
 			Clicker.Detach();
 			Clicker = null;
 			base.OnUnrooted();
+		}
+
+		GesturePriority _gesturePriority = GesturePriority.Highest;
+		/** 
+			Alters the priority of the WhileClicker trigger. 
+
+			See the note on @ClickerTrigger.GesturePriority
+
+			The default is `Highest`.
+		*/
+		public GesturePriority GesturePriority
+		{
+			get { return _gesturePriority; }
+			set { _gesturePriority = value; }
 		}
 	}
 
@@ -80,6 +110,8 @@ namespace Fuse.Gestures
 		float _maxDoubleInterval = 0.3f;
 		float _longPressTimeout = 0.5f;
 
+		GesturePriority _priority;
+
 		int _attachCount = 1;
 		Visual _visual;
 
@@ -88,17 +120,19 @@ namespace Fuse.Gestures
 			_visual = visual;
 		}
 		static readonly PropertyHandle _clickerProperty = Fuse.Properties.CreateHandle();
-		static public Clicker AttachClicker(Visual elm)
+		static public Clicker AttachClicker(Visual elm, GesturePriority priority)
 		{
 			object v;
 			if (elm.Properties.TryGet(_clickerProperty, out v))
 			{
 				var c = v as Clicker;
+				c._priority = (GesturePriority)( Math.Max((int)_priority, (int)priority));
 				c._attachCount++;
 				return c;
 			}
 
 			var nc = new Clicker(elm);
+			nv._priority = priority;
 			elm.Properties.Set(_clickerProperty, nc);
 			nc.OnRooted();
 			return nc;
@@ -284,8 +318,6 @@ namespace Fuse.Gestures
 			get
 			{
 				return new GesturePriorityConfig(
-					//As we have no priority we can return a high priority, forcing other gestures to be sure they
-					//recognize themselves before stealing from clicker.
 					GesturePriority.Highest,
 					//0 will prevent it from ever getting a hard capture
 					0 );

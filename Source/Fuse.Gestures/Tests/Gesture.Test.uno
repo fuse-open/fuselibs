@@ -51,7 +51,7 @@ namespace Fuse.Gestures.Test
 				Assert.IsTrue(y > 50);
 
 				//swipe higher up gesture from bottom
-				root.PointerSwipe(float2(500,1000), float2(500,900), 100);
+				root.PointerSwipe(float2(500,999), float2(500,900), 100);
 				Assert.AreEqual(y, p.scroll.ScrollPosition.Y);
 				Assert.AreEqual(1,p.upCount.PerformedCount);
 
