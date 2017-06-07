@@ -2,6 +2,8 @@ os: osx
 
 language: cpp
 
+compiler: clang
+
 cache: ccache
 
 install:
