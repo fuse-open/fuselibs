@@ -1,5 +1,8 @@
 # Unreleased
 
+## ImageTools
+- Fixed bug in Android implementation that could result in errors due to prematurely recycled bitmaps
+
 ## Image
 - A failed to load Image with a Url will now try again when the Url is used again in a new Image
 - Added `reload` and `retry` JavaScript functions on `Image` to allow reloading failed images.
