@@ -75,10 +75,6 @@ Note that prefixing the file name with a "/" means that we are looking for the f
 
 > Note that you may omit the .js file extension in the file name if you wish
 
-Examples:
-
-* <a href="https://www.fusetools.com/developers/examples/todoparseexample">TODO App with Parse backend example</a>
-
 ## Module instancing
 
 Fuse's treatment of the `<JavaScript>` tag has some important differences from how modules work in the <a href="http://www.commonjs.org/">CommonJS</a> module system.
