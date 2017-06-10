@@ -3,6 +3,7 @@
 ## Image
 - A failed to load Image with a Url will now try again when the Url is used again in a new Image
 - Added `reload` and `retry` JavaScript functions on `Image` to allow reloading failed images.
+- Fixed infinite recursion bug that could happen if a MemoryPolicy is set on a MultiDensityImageSource
 
 ## macOS SIGILL problems
 - Updated the bundled Freetype library on macOS to now (again) include both 32-bit and 64-bit symbols, which fixes an issue where .NET and preview builds would crash with a SIGILL at startup when running on older Mac models.

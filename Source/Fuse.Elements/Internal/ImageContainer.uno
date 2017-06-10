@@ -98,7 +98,7 @@ namespace Fuse.Internal
 			if (hf != null && MemoryPolicy != null)
 				hf.DefaultPolicy = MemoryPolicy;
 
-			var mf = Source as  MultiDensityImageSource;
+			var mf = src as MultiDensityImageSource;
 			if (mf != null)
 			{
 				foreach (var s in mf.Sources)
