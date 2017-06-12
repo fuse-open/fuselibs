@@ -5,12 +5,13 @@ The `MapView` is a native control, and thus needs to be contained in a @NativeVi
 > *Note:* You need to add a reference to `Fuse.Maps` in the `Packages` section of your `.unoproj`:
 >
 > ```
-> "Packages": [
-> 	"Fuse.Maps",
-> 	"Fuse",
-> 	"FuseJS"
-> ]
-> ```
+"Packages": [
+ 	"Fuse.Maps",
+	"Fuse",
+	"FuseJS"
+]
+```
+>
 
 Getting a `MapView` included in your app is straight forward: Simply include the node in your UX as you normally would with a native control:
 
