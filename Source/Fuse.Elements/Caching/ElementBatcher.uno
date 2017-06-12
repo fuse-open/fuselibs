@@ -312,8 +312,8 @@ namespace Fuse.Elements
 
 				Recti cachingRect;
 				if (!Cache.GetCachingRect(elm, out cachingRect) ||
-					cachingRect.Size.X > e._rect.Size.X ||
-				    cachingRect.Size.Y > e._rect.Size.Y)
+					cachingRect.Size.X > e.AtlasRect.Size.X ||
+				    cachingRect.Size.Y > e.AtlasRect.Size.Y)
 				{
 					// re-insert element
 					if (!atlas.ReinsertElement(elm))
