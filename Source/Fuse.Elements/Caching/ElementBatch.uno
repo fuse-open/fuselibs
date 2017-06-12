@@ -289,6 +289,8 @@ namespace Fuse.Elements
 			_indexBuffer = new IndexBuffer(indices, BufferUsage.Immutable);
 		}
 
+		const float CachingRectPaddingAdjustment = 0.5f;
+
 		void FillVertexTexCoordBuffer()
 		{
 			var elementCount = _elements.Count;
@@ -298,8 +300,8 @@ namespace Fuse.Elements
 			{
 				var entry = _elements[i];
 
-				float2 texCoordOrigin = (float2)entry.AtlasRect.Minimum / _elementAtlas._rectPacker.Size;
-				float2 size = (float2)entry.AtlasRect.Size / _elementAtlas._rectPacker.Size;
+				float2 texCoordOrigin = ((float2)entry.AtlasRect.Minimum + CachingRectPaddingAdjustment) / _elementAtlas._rectPacker.Size;
+				float2 size = ((float2)entry.AtlasRect.Size - CachingRectPaddingAdjustment * 2) / _elementAtlas._rectPacker.Size;
 				vertexTexCoords.Set((i * 4 + 0) * _texCoordInfo.BufferStride + _texCoordInfo.BufferOffset, texCoordOrigin);
 				vertexTexCoords.Set((i * 4 + 1) * _texCoordInfo.BufferStride + _texCoordInfo.BufferOffset, texCoordOrigin + float2(size.X, 0));
 				vertexTexCoords.Set((i * 4 + 2) * _texCoordInfo.BufferStride + _texCoordInfo.BufferOffset, texCoordOrigin + size);
@@ -321,9 +323,9 @@ namespace Fuse.Elements
 
 				var transform = entry._elm.LocalTransform;
 				//this calculation assumes the transform is flat (a precondition to caching the element)
-				float2 localOrigin = (float2)entry.DrawingOffset * densityScale;
+				float2 localOrigin = ((float2)entry.DrawingOffset + CachingRectPaddingAdjustment) * densityScale;
 				float2 positionOrigin = transform[3].XY + localOrigin.X * transform[0].XY + localOrigin.Y * transform[1].XY;
-				float2 size = (float2)entry.AtlasRect.Size * densityScale;
+				float2 size = ((float2)entry.AtlasRect.Size - CachingRectPaddingAdjustment * 2) * densityScale;
 				float2 right = transform[0].XY * size.X;
 				float2 up = transform[1].XY * size.Y;
 				vertexPositions.Set((i * 4 + 0) * _positionInfo.BufferStride + _positionInfo.BufferOffset, float3(positionOrigin, opacity));
