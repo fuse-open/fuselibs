@@ -77,5 +77,30 @@ namespace Fuse.Controls.ScrollViewTest
 				Assert.AreEqual(0.25f,TriggerProgress(sv.S1));
 			}
 		}
+
+		/**
+			Ensure that the ScrollingAnimation's progress is updated if From or To
+			changes at runtime
+		*/
+		[Test]
+		public void ScrollingAnimationFromTo()
+		{
+			var sv = new UX.ScrollingAnimation.FromTo();
+			using (var root = TestRootPanel.CreateWithChild(sv, int2(100,50)))
+			{
+				Assert.AreEqual(0.0f, TriggerProgress(sv.S1));
+
+				sv.ScrollPosition = float2(0,200);
+				root.StepFrame(5);
+				Assert.AreEqual(1.0f, TriggerProgress(sv.S1));
+
+				sv.S1.From = 100.0f;
+				sv.S1.To = 300.0f;
+				Assert.AreEqual(0.5f, TriggerProgress(sv.S1));
+
+				sv.S1.From = 200.0f;
+				Assert.AreEqual(0.0f, TriggerProgress(sv.S1));
+			}
+		}
 	}
 }
