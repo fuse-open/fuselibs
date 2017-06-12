@@ -65,6 +65,7 @@ namespace Fuse.Elements
 		public ElementBatch _batch;
 		public readonly Element _elm;
 		public Recti AtlasRect;
+		public int2 DrawingOffset;
 		public float _opacity;
 		public bool IsValid;
 	}
@@ -316,12 +317,11 @@ namespace Fuse.Elements
 			for (int i = 0; i < elementCount; ++i)
 			{
 				var entry = _elements[i];
-				var cachingRect = ElementBatch.GetCachingRect(entry._elm);
 				var opacity = entry._opacity;
 
 				var transform = entry._elm.LocalTransform;
 				//this calculation assumes the transform is flat (a precondition to caching the element)
-				float2 localOrigin = (float2)cachingRect.Minimum * densityScale;
+				float2 localOrigin = (float2)entry.DrawingOffset * densityScale;
 				float2 positionOrigin = transform[3].XY + localOrigin.X * transform[0].XY + localOrigin.Y * transform[1].XY;
 				float2 size = (float2)entry.AtlasRect.Size * densityScale;
 				float2 right = transform[0].XY * size.X;
