@@ -296,10 +296,9 @@ namespace Fuse.Elements
 			for (int i = 0; i < elementCount; ++i)
 			{
 				var entry = _elements[i];
-				var cachingRect = ElementBatch.GetCachingRect(entry._elm);
 
 				float2 texCoordOrigin = (float2)entry._rect.Minimum / _elementAtlas._rectPacker.Size;
-				float2 size = (float2)cachingRect.Size / _elementAtlas._rectPacker.Size;
+				float2 size = (float2)entry._rect.Size / _elementAtlas._rectPacker.Size;
 				vertexTexCoords.Set((i * 4 + 0) * _texCoordInfo.BufferStride + _texCoordInfo.BufferOffset, texCoordOrigin);
 				vertexTexCoords.Set((i * 4 + 1) * _texCoordInfo.BufferStride + _texCoordInfo.BufferOffset, texCoordOrigin + float2(size.X, 0));
 				vertexTexCoords.Set((i * 4 + 2) * _texCoordInfo.BufferStride + _texCoordInfo.BufferOffset, texCoordOrigin + size);
@@ -324,7 +323,7 @@ namespace Fuse.Elements
 				//this calculation assumes the transform is flat (a precondition to caching the element)
 				float2 localOrigin = (float2)cachingRect.Minimum * densityScale;
 				float2 positionOrigin = transform[3].XY + localOrigin.X * transform[0].XY + localOrigin.Y * transform[1].XY;
-				float2 size = (float2)cachingRect.Size * densityScale;
+				float2 size = (float2)entry._rect.Size * densityScale;
 				float2 right = transform[0].XY * size.X;
 				float2 up = transform[1].XY * size.Y;
 				vertexPositions.Set((i * 4 + 0) * _positionInfo.BufferStride + _positionInfo.BufferOffset, float3(positionOrigin, opacity));
