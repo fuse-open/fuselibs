@@ -2,7 +2,7 @@
   "Copyright": "Copyright (c) Fusetools AS 2017",
   "Description": "Testing API",
   "Publisher": "Fusetools AS",
-  "Version": "1.0.3",
+  "Version": "1.0.4",
   "Packages": [
     "Uno.Testing",
     "Uno.Geometry",

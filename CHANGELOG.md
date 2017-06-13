@@ -2,6 +2,8 @@
 
 ## 1.0
 
+# 1.0.4
+
 ## GraphicsView
 - Fixed issue where apps would not redraw when returning to Foreground
 

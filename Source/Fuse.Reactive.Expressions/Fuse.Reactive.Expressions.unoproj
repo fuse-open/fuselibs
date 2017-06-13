@@ -3,7 +3,7 @@
   "Description": "Framework for reactive expressions",
   "Publisher": "Fusetools AS",
   "IsTransitive": true,
-  "Version": "1.0.3",
+  "Version": "1.0.4",
   "Package": {
     "ProjectUrl": "https://fusetools.com"
   },
