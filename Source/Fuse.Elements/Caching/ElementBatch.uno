@@ -133,9 +133,11 @@ namespace Fuse.Elements
 			var bounds = elm.RenderBoundsWithEffects;
 			if (bounds.IsInfinite || bounds.IsEmpty)
 				throw new Exception( "element has no caching rect" );
+
+			const int CachingRectPadding = 1;
 			
 			return Recti.Inflate(ConservativelySnapToCoveringIntegers(Rect.Scale(bounds.FlatRect,
-				elm.AbsoluteZoom)), 1);
+				elm.AbsoluteZoom)), CachingRectPadding);
 		}
 
 		VisualBounds CalcRenderBounds()
