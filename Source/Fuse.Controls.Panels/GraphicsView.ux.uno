@@ -277,6 +277,7 @@ namespace Fuse.Controls
 		bool _inBackground = false;
 		void OnEnteringForeground(Fuse.Platform.ApplicationState s)
 		{
+			rotationHackRedrawCount = 2;
 			_inBackground = false;
 			_frameScheduled = false;
 			ScheduleFrame();

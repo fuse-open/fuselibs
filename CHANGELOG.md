@@ -2,6 +2,9 @@
 
 ## 1.0
 
+## GraphicsView
+- Fixed issue where apps would not redraw when returning to Foreground
+
 ## ScrollView
 - Fixed possible nullref in Scroller that could happen in certain cases while scrolling a ScrollView
 
