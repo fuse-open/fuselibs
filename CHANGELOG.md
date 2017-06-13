@@ -1,9 +1,10 @@
 # Unreleased
 
+## 1.0
+
 ## ScrollView
 - Fixed possible nullref in Scroller that could happen in certain cases while scrolling a ScrollView
 
-## 1.0
 
 ### 1.0.3
 
