@@ -66,6 +66,7 @@
     "LayoutFunctions.Test.uno:Source",
     "LimitSizing.Test.uno:Source",
     "RenderBounds.Test.uno:Source",
+    "Rendering.Test.uno:Source",
     "SizingContainer.Test.uno:Source",
     "TransformModes.Test.uno:Source",
     "UX/*.ux",
