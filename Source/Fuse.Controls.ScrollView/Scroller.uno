@@ -245,6 +245,9 @@ namespace Fuse.Gestures
 
 		GestureRequest IGesture.OnPointerMoved(PointerMovedArgs args)
 		{
+			if (_gesture == null)
+				return GestureRequest.Ignore;
+
 			if (!_gesture.IsHardCapture)
 			{
 				_softCaptureCurrent = args.WindowPoint;
