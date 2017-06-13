@@ -5,6 +5,9 @@
 ## ScrollView
 - Fixed possible nullref in Scroller that could happen in certain cases while scrolling a ScrollView
 
+## Fuse.Elements
+- Fixed an issue where the rendering of one element could bleed into the rendering of another element under some very specific circumstances.
+
 
 ### 1.0.3
 
