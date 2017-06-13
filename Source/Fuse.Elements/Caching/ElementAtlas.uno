@@ -188,7 +188,11 @@ namespace Fuse.Elements
 
 					dc.PushViewport( new FixedViewport(_rectPacker.Size, density, cc));
 
-					dc.PushScissor(entry._rect);
+					var scissor = entry._rect;
+					if (elm.ClipToBounds)
+						scissor = elm.GetVisibleViewportInvertPixelRect(dc, elm.RenderBoundsWithEffects);
+
+					dc.PushScissor(scissor);
 
 					if (!drawAll)
 						dc.Clear(float4(0), 1);

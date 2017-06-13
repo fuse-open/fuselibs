@@ -1,0 +1,16 @@
+<Panel ux:Class="UX.Caching.BorderIssue" Width="32px" Height="32px">
+	<Panel Width="8px" Height="8px" ClipToBounds="true">
+		<Translation X="1" />
+		<Panel Color="#F00">
+			<Translation X="-1" />
+		</Panel>
+	</Panel>
+
+	<Panel Width="4px" Height="4px" Color="#0F0">
+		<Scaling Factor="2" />
+	</Panel>
+
+	<Each Count="10">
+		<Panel Width="1px" Height="1px" Color="#00F" />
+	</Each>
+</Panel>
