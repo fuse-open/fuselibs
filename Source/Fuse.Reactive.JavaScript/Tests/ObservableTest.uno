@@ -388,6 +388,7 @@ namespace Fuse.Reactive.Test
 		}
 		
 		[Test]
+		[Ignore("https://github.com/fusetools/fuselibs-public/issues/107")]
 		public void MapTwoWayFloat3()
 		{
 			var p = new UX.Observable.MapTwoWayFloat3();

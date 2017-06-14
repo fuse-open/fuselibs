@@ -60,6 +60,19 @@
 
 ## 1.0
 
+# 1.0.4
+
+## GraphicsView
+- Fixed issue where apps would not redraw when returning to Foreground
+
+## ScrollView
+- Fixed possible nullref in Scroller that could happen in certain cases while scrolling a ScrollView
+- Fixed nullref in Scroll that could happen if there are any pending LostCapture callbacks after the Scroller is Unrooted
+
+## Fuse.Elements
+- Fixed an issue where the rendering of one element could bleed into the rendering of another element under some very specific circumstances.
+
+
 ### 1.0.3
 
 ## ColumnLayout

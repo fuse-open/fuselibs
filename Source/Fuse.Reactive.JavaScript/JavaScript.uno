@@ -9,7 +9,10 @@ using Uno.Threading;
 namespace Fuse.Reactive
 {
 	/**
-		The `JavaScript` tag is used to run JavaScript and assigns its `module.export` as data context for the parent visual.
+		The `JavaScript` tag is used to run JavaScript and assigns its `module.exports` as data context for the parent visual.
+
+		**Note:** ECMAScript 5.1 is the only JavaScript version that is supported across all platforms.
+		While newer JavaScript features might work on some devices, this can't be guaranteed (particularly for earlier iOS versions).
 
 		@topic JavaScript
 
