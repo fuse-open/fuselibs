@@ -96,17 +96,17 @@ namespace Fuse.Elements.Test
 			{
 				WaitLoad(root,p.W);
 				root.CaptureDraw();
-				Assert.AreEqual(float4(1,0,0,1), root.ReadDrawPixelInv(int2(2,2)));
-				Assert.AreEqual(float4(0,0,0,1), root.ReadDrawPixelInv(int2(6,6)));
+				Assert.AreEqual(float4(1,0,0,1), root.ReadDrawPixel(int2(2,2)));
+				Assert.AreEqual(float4(0,0,0,1), root.ReadDrawPixel(int2(6,6)));
 				
-				Assert.AreEqual(float4(1,0,0,1), root.ReadDrawPixelInv(int2(11,11)));
-				Assert.AreEqual(float4(0,0,0,1), root.ReadDrawPixelInv(int2(15,15)));
+				Assert.AreEqual(float4(1,0,0,1), root.ReadDrawPixel(int2(11,11)));
+				Assert.AreEqual(float4(0,0,0,1), root.ReadDrawPixel(int2(15,15)));
 				
 				p.IF.Source = p.C50;
 				WaitLoad(root,p.W);
 				root.CaptureDraw();
 				//TODO: this is blurry here, thus the check fails, seet he IGNORE
-				Assert.AreEqual(float4(0,0,0,1), root.ReadDrawPixelInv(int2(15,15)));
+				Assert.AreEqual(float4(0,0,0,1), root.ReadDrawPixel(int2(15,15)));
 				root.ReleaseCapturedDraw();
 			}
 		}
@@ -120,7 +120,7 @@ namespace Fuse.Elements.Test
 			{
 				WaitLoad(root,p.W);
 				root.CaptureDraw();
-				Assert.AreEqual(float4(0,1,0,1), root.ReadDrawPixelInv(int2(10)));
+				Assert.AreEqual(float4(0,1,0,1), root.ReadDrawPixel(int2(10)));
 				root.ReleaseCapturedDraw();
 				
 				DisposalManager.Clean(DisposalRequest.Background);

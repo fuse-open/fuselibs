@@ -20,8 +20,8 @@ namespace Fuse.Controls.Primitives.Test
 			// check that the element is on top
 			Assert.AreEqual(float4(1, 0, 0, 1), root.ReadDrawPixel(int2( 50, 150))); // left border
 			Assert.AreEqual(float4(1, 0, 0, 1), root.ReadDrawPixel(int2(249, 150))); // right border
-			Assert.AreEqual(float4(1, 0, 0, 1), root.ReadDrawPixel(int2(150,  50))); // bottom border
-			Assert.AreEqual(float4(1, 0, 0, 1), root.ReadDrawPixel(int2(150, 249))); // top border
+			Assert.AreEqual(float4(1, 0, 0, 1), root.ReadDrawPixel(int2(150, 249))); // bottom border
+			Assert.AreEqual(float4(1, 0, 0, 1), root.ReadDrawPixel(int2(150,  50))); // top border
 		}
 
 		[Test]
@@ -31,7 +31,7 @@ namespace Fuse.Controls.Primitives.Test
 			var root = TestRootPanel.CreateWithChild(p, int2(300, 300));
 			p._panel.Padding = float4(10);
 			p._shadow.Size = 0;
-			p._shadow.Angle = 45;
+			p._shadow.Angle = -45;
 			p._shadow.Distance = Vector.Length(float2(10, 10));
 			root.CaptureDraw();
 
@@ -63,7 +63,7 @@ namespace Fuse.Controls.Primitives.Test
 			var p = new UX.Shadow.Rectangle();
 			var root = TestRootPanel.CreateWithChild(p, int2(300, 300));
 			p._shadow.Size = 0;
-			p._shadow.Angle = 45;
+			p._shadow.Angle = -45;
 			p._shadow.Distance = Vector.Length(float2(10, 10));
 
 			float[] cornerRadiuses = new float[] {10, 20, 0, 5};
@@ -89,7 +89,7 @@ namespace Fuse.Controls.Primitives.Test
 			var root = TestRootPanel.CreateWithChild(p, int2(300, 300));
 			p._panel.Color = float4(1, 0, 0, 0.5f);
 			p._shadow.Size = 0;
-			p._shadow.Angle = 45;
+			p._shadow.Angle = -45;
 			p._shadow.Distance = Vector.Length(float2(10, 10));
 			root.CaptureDraw();
 
@@ -104,7 +104,7 @@ namespace Fuse.Controls.Primitives.Test
 			var root = TestRootPanel.CreateWithChild(p, int2(300, 300));
 			p._rectangle.Color = float4(1, 0, 0, 0.5f);
 			p._shadow.Size = 0;
-			p._shadow.Angle = 45;
+			p._shadow.Angle = -45;
 			p._shadow.Distance = Vector.Length(float2(10, 10));
 			root.CaptureDraw();
 

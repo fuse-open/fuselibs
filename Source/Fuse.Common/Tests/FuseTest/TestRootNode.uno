@@ -256,19 +256,13 @@ namespace FuseTest
 		public float4 ReadDrawPixel(int2 pos)
 		{
 			var temp = new byte[4];
-			GL.ReadPixels(pos.X, pos.Y, 1, 1, GLPixelFormat.Rgba, GLPixelType.UnsignedByte, temp);
+			GL.ReadPixels(pos.X, _captureFB.Size.Y - 1 - pos.Y, 1, 1, GLPixelFormat.Rgba, GLPixelType.UnsignedByte, temp);
 			return float4(temp[0] / 255.0f,
 				temp[1] / 255.0f,
 				temp[2] / 255.0f,
 				temp[3] / 255.0f);
 		}
 		public float4 ReadDrawPixel(int x, int y) { return ReadDrawPixel( int2(x,y) ); }
-		
-		public float4 ReadDrawPixelInv(int2 pos) { return ReadDrawPixelInv(pos.X,pos.Y); }
-		public float4 ReadDrawPixelInv(int x, int y)
-		{
-			return ReadDrawPixel(x, _captureFB.Size.Y - y - 1);
-		}
 		
 		/**
 			Steps at a reasonable frame rate to reach the `elapsedTime`.

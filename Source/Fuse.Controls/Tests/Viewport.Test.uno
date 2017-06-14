@@ -80,7 +80,7 @@ namespace Fuse.Controls.Test
 		void CheckColor(float x, float y, ClickPanel expect)
 		{
 			//assume Density=1 (note Y is inverted in GL buffer)
-			var c = _cRoot.ReadDrawPixel( (int)x, (int)(1000 - y) );
+			var c = _cRoot.ReadDrawPixel((int)x, (int)y);
 			Assert.AreEqual(expect.Color, c);
 		}
 		
