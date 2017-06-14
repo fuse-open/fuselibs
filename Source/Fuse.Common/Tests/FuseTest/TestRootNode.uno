@@ -30,7 +30,7 @@ namespace FuseTest
 		}
 	}
 
-	public class TestRootPanel : Panel, IDisposable
+	public partial class TestRootPanel : Panel, IDisposable
 	{
 		TestRootViewport _rootViewport;
 		
