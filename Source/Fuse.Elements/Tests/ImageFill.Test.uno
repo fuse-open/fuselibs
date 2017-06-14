@@ -143,20 +143,6 @@ namespace Fuse.Elements.Test
 			}
 		}
 		
-		void DumpImage(TestRootPanel root, int2 sz)
-		{
-			var str = "";
-			for( int y=0; y < sz.Y; y++ ) {
-				for( int x =0; x < sz.X; x++ ) {
-					var f = root.ReadDrawPixel(int2(x,y));
-					str += String.Format("{0:X}{1:X}{2:X}{3:X} ",
-						(int)(f.X*15), (int)(f.Y*15), (int)(f.Z*15), (int)(f.W*15));
-				}
-				str += "\n";
-			}
-			debug_log str;
-		}
-		
 		void WaitLoad(TestRootPanel root, Fuse.Triggers.Trigger t)
 		{
 			while( TriggerProgress(t) > 0 || t.PlayState != Fuse.Triggers.TriggerPlayState.Stopped) {
