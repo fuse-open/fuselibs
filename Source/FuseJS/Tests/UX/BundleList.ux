@@ -1,0 +1,18 @@
+<Panel ux:Class="UX.BundleList">
+	<JavaScript>
+		var Bundle = require("FuseJS/Bundle")
+		var Observable = require("FuseJS/Observable")
+		var result = Observable()
+		module.exports = {
+			test : function(){
+				Bundle.list()
+					.then(function(list){
+						result.value = list.filter(function(path){ return path.indexOf("test.txt") >- 1 }).length > 0;
+					})
+			},
+			result : result
+		}
+	</JavaScript>
+	<Text ux:Name="output" Value="{result}"/>
+	<FuseTest.Invoke Handler="{test}" ux:Name="CallTest"/>
+</Panel>

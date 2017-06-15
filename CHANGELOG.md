@@ -3,9 +3,18 @@
 ## ImageTools
 - Fixed bug in Android implementation that could result in errors due to prematurely recycled bitmaps
 
+## FuseJS/Bundle
+- Added `.list()` to fetch a list of all bundled files
+- Added `.readBuffer()` to read a bundle as an ArrayBuffer
+- Added `.extract()` to write a bundled file into a destination path
+
 ## Image
 - A failed to load Image with a Url will now try again when the Url is used again in a new Image
 - Added `reload` and `retry` JavaScript functions on `Image` to allow reloading failed images.
+- Fixed infinite recursion bug that could happen if a MemoryPolicy is set on a MultiDensityImageSource
+
+## ScrollingAnimation
+- Fixed issue where the animation could become out of sync if the properties on ScrollingAnimation were updated.
 
 ## macOS SIGILL problems
 - Updated the bundled Freetype library on macOS to now (again) include both 32-bit and 64-bit symbols, which fixes an issue where .NET and preview builds would crash with a SIGILL at startup when running on older Mac models.
@@ -58,6 +67,19 @@
 
 
 ## 1.0
+
+# 1.0.4
+
+## GraphicsView
+- Fixed issue where apps would not redraw when returning to Foreground
+
+## ScrollView
+- Fixed possible nullref in Scroller that could happen in certain cases while scrolling a ScrollView
+- Fixed nullref in Scroll that could happen if there are any pending LostCapture callbacks after the Scroller is Unrooted
+
+## Fuse.Elements
+- Fixed an issue where the rendering of one element could bleed into the rendering of another element under some very specific circumstances.
+
 
 ### 1.0.3
 
