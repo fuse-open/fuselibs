@@ -21,32 +21,32 @@ namespace Fuse.Test
 				float eps = 1.0f / 255;
 
 				// left border
-				Assert.AreEqual(float4(0, 0, 0, 0), fb.ReadDrawPixel(int2(0, 50)), eps);
-				Assert.AreEqual(float4(0, 0, 0, 0), fb.ReadDrawPixel(int2(0, 150)), eps);
+				fb.AssertPixel(float4(0, 0, 0, 0), int2(0, 50), eps);
+				fb.AssertPixel(float4(0, 0, 0, 0), int2(0, 150), eps);
 
-				Assert.AreEqual(float4(0.375f, 0, 0, 0.375f), fb.ReadDrawPixel(int2(1, 50)), eps);
-				Assert.AreEqual(float4(0, 0.375f, 0, 0.375f), fb.ReadDrawPixel(int2(1, 150)), eps);
+				fb.AssertPixel(float4(0.375f, 0, 0, 0.375f), int2(1, 50), eps);
+				fb.AssertPixel(float4(0, 0.375f, 0, 0.375f), int2(1, 150), eps);
 
 				// right border
-				Assert.AreEqual(float4(0.125f, 0, 0, 0.125f), fb.ReadDrawPixel(int2(99, 50)), eps);
-				Assert.AreEqual(float4(0, 0.125f, 0, 0.125f), fb.ReadDrawPixel(int2(99, 150)), eps);
+				fb.AssertPixel(float4(0.125f, 0, 0, 0.125f), int2(99, 50), eps);
+				fb.AssertPixel(float4(0, 0.125f, 0, 0.125f), int2(99, 150), eps);
 
-				Assert.AreEqual(float4(0.5f, 0, 0, 0.5f), fb.ReadDrawPixel(int2(98, 50)), eps);
-				Assert.AreEqual(float4(0, 0.5f, 0, 0.5f), fb.ReadDrawPixel(int2(98, 150)), eps);
+				fb.AssertPixel(float4(0.5f, 0, 0, 0.5f), int2(98, 50), eps);
+				fb.AssertPixel(float4(0, 0.5f, 0, 0.5f), int2(98, 150), eps);
 
 				// top border
-				Assert.AreEqual(float4(0.125f, 0, 0, 0.125f), fb.ReadDrawPixel(int2(50,  99)), eps);
-				Assert.AreEqual(float4(0, 0.125f, 0, 0.125f), fb.ReadDrawPixel(int2(50, 199)), eps);
+				fb.AssertPixel(float4(0.125f, 0, 0, 0.125f), int2(50,  99), eps);
+				fb.AssertPixel(float4(0, 0.125f, 0, 0.125f), int2(50, 199), eps);
 
-				Assert.AreEqual(float4(0.5f, 0, 0, 0.5f), fb.ReadDrawPixel(int2(50, 98)), eps);
-				Assert.AreEqual(float4(0, 0.5f, 0, 0.5f), fb.ReadDrawPixel(int2(50, 198)), eps);
+				fb.AssertPixel(float4(0.5f, 0, 0, 0.5f), int2(50, 98), eps);
+				fb.AssertPixel(float4(0, 0.5f, 0, 0.5f), int2(50, 198), eps);
 
 				// bottom border
-				Assert.AreEqual(float4(0, 0, 0, 0), fb.ReadDrawPixel(int2(50, 0)), eps);
-				Assert.AreEqual(float4(0, 0, 0, 0), fb.ReadDrawPixel(int2(50, 100)), eps);
+				fb.AssertPixel(float4(0, 0, 0, 0), int2(50, 0), eps);
+				fb.AssertPixel(float4(0, 0, 0, 0), int2(50, 100), eps);
 
-				Assert.AreEqual(float4(0.375f, 0, 0, 0.375f), fb.ReadDrawPixel(int2(50, 1)), eps);
-				Assert.AreEqual(float4(0, 0.375f, 0, 0.375f), fb.ReadDrawPixel(int2(50, 101)), eps);
+				fb.AssertPixel(float4(0.375f, 0, 0, 0.375f), int2(50, 1), eps);
+				fb.AssertPixel(float4(0, 0.375f, 0, 0.375f), int2(50, 101), eps);
 			}
 		}
 
@@ -65,11 +65,11 @@ namespace Fuse.Test
 
 						// check red rectangle
 						if (manhattanDistance < 4)
-							Assert.AreEqual(float4(1.0f, 0, 0, 1.0f), fb.ReadDrawPixel(int2(16 + x, 16 + y)));
+							fb.AssertPixel(float4(1, 0, 0, 1), int2(16 + x, 16 + y));
 
 						// check outside red and green rectangle
 						if (manhattanDistance > 6)
-							Assert.AreEqual(float4(0.0f, 0.0f, 0.0f, 0.0f), fb.ReadDrawPixel(int2(16 + x, 16 + y)));
+							fb.AssertPixel(float4(0, 0, 0, 0), int2(16 + x, 16 + y));
 					}
 				}
 			}
