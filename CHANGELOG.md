@@ -2,7 +2,7 @@
 
 ## 1.1
 
-## 1.1.0
+### 1.1.0
 
 #### ImageTools
 - Fixed bug in Android implementation that could result in errors due to prematurely recycled bitmaps
