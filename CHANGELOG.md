@@ -1,5 +1,8 @@
 # Unreleased
 
+## ImageTools
+- Fixed bug in Android implementation that could result in errors due to prematurely recycled bitmaps
+
 ## FuseJS/Bundle
 - Added `.list()` to fetch a list of all bundled files
 - Added `.readBuffer()` to read a bundle as an ArrayBuffer
