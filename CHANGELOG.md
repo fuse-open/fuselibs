@@ -100,10 +100,18 @@
 - Fixed an issue when loading images bigger than the maximum texture-size. Instead of failing, the image gets down-scaled so it fits.
 
 
-## 1.0.0 - 1.0.2
+## 1.0.2
+
+This release only upgraded Uno.
+
+
+## 1.0.1
 
 ### Fuse.Elements
 - Fixed a bug where elements with many children and some of them were rotated, the rotated elements would appear in the wrong location.
+
+
+## 1.0.0
 
 ### iOS
 - Fix bug which could cause visual glitches the first time rotating from Portrait to Landscape
