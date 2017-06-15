@@ -16,10 +16,10 @@ namespace Fuse.Effects.Test
 
 			using (var fb = root.CaptureDraw())
 			{
-				Assert.AreEqual(float4(1, 0, 0, 1), fb.ReadDrawPixel(2, 2));
-				Assert.AreEqual(float4(0, 1, 0, 1), fb.ReadDrawPixel(7, 2));
-				Assert.AreEqual(float4(0, 0, 1, 1), fb.ReadDrawPixel(2, 7));
-				Assert.AreEqual(float4(0, 0, 0, 0), fb.ReadDrawPixel(7, 7));
+				fb.AssertPixel(float4(1, 0, 0, 1), int2(2, 2));
+				fb.AssertPixel(float4(0, 1, 0, 1), int2(7, 2));
+				fb.AssertPixel(float4(0, 0, 1, 1), int2(2, 7));
+				fb.AssertPixel(float4(0, 0, 0, 0), int2(7, 7));
 			}
 		}
 
@@ -31,20 +31,20 @@ namespace Fuse.Effects.Test
 
 			using (var fb = root.CaptureDraw())
 			{
-				Assert.AreEqual(float4(1, 0, 0, 1), fb.ReadDrawPixel(2, 22));
-				Assert.AreEqual(float4(0, 1, 0, 1), fb.ReadDrawPixel(7, 22));
-				Assert.AreEqual(float4(0, 0, 1, 1), fb.ReadDrawPixel(2, 27));
-				Assert.AreEqual(float4(0, 0, 0, 0), fb.ReadDrawPixel(7, 27));
+				fb.AssertPixel(float4(1, 0, 0, 1), int2(2, 22));
+				fb.AssertPixel(float4(0, 1, 0, 1), int2(7, 22));
+				fb.AssertPixel(float4(0, 0, 1, 1), int2(2, 27));
+				fb.AssertPixel(float4(0, 0, 0, 0), int2(7, 27));
 
-				Assert.AreEqual(float4(0, 0, 0, 0), fb.ReadDrawPixel(2, 12));
-				Assert.AreEqual(float4(0, 1, 0, 1), fb.ReadDrawPixel(7, 12));
-				Assert.AreEqual(float4(0, 0, 0, 0), fb.ReadDrawPixel(2, 17));
-				Assert.AreEqual(float4(0, 0, 0, 0), fb.ReadDrawPixel(7, 17));
+				fb.AssertPixel(float4(0, 0, 0, 0), int2(2, 12));
+				fb.AssertPixel(float4(0, 1, 0, 1), int2(7, 12));
+				fb.AssertPixel(float4(0, 0, 0, 0), int2(2, 17));
+				fb.AssertPixel(float4(0, 0, 0, 0), int2(7, 17));
 
-				Assert.AreEqual(float4(1, 0, 0, 1), fb.ReadDrawPixel(2, 2));
-				Assert.AreEqual(float4(0, 0, 0, 0), fb.ReadDrawPixel(7, 2));
-				Assert.AreEqual(float4(0, 0, 1, 1), fb.ReadDrawPixel(2, 7));
-				Assert.AreEqual(float4(0, 0, 0, 0), fb.ReadDrawPixel(7, 7));
+				fb.AssertPixel(float4(1, 0, 0, 1), int2(2, 2));
+				fb.AssertPixel(float4(0, 0, 0, 0), int2(7, 2));
+				fb.AssertPixel(float4(0, 0, 1, 1), int2(2, 7));
+				fb.AssertPixel(float4(0, 0, 0, 0), int2(7, 7));
 			}
 		}
 	}
