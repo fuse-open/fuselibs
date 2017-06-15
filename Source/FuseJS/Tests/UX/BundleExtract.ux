@@ -1,0 +1,20 @@
+<Panel ux:Class="UX.BundleExtract">
+	<JavaScript>
+		var Bundle = require("FuseJS/Bundle")
+        var FileSystem = require("FuseJS/FileSystem")
+		var Observable = require("FuseJS/Observable")
+		var result = Observable()
+		module.exports = {
+			test : function(){
+                var rootPath = FileSystem.dataDirectory;
+                Bundle.extract("assets/test.txt", rootPath + "/test.txt")
+                    .then(function(outPath){
+                        result.value = outPath == rootPath + "/test.txt";
+                    })
+			},
+			result : result
+		}
+	</JavaScript>
+	<Text ux:Name="output" Value="{result}"/>
+	<FuseTest.Invoke Handler="{test}" ux:Name="CallTest"/>
+</Panel>

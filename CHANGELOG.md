@@ -1,5 +1,10 @@
 # Unreleased
 
+## FuseJS/Bundle
+- Added `.list()` to fetch a list of all bundled files
+- Added `.readBuffer()` to read a bundle as an ArrayBuffer
+- Added `.extract()` to write a bundled file into a destination path
+
 ## Image
 - A failed to load Image with a Url will now try again when the Url is used again in a new Image
 - Added `reload` and `retry` JavaScript functions on `Image` to allow reloading failed images.
