@@ -2,78 +2,78 @@
 
 ## 1.0
 
-# 1.0.4
+### 1.0.4
 
-## GraphicsView
+#### GraphicsView
 - Fixed issue where apps would not redraw when returning to Foreground
 
-## ScrollView
+#### ScrollView
 - Fixed possible nullref in Scroller that could happen in certain cases while scrolling a ScrollView
 - Fixed nullref in Scroll that could happen if there are any pending LostCapture callbacks after the Scroller is Unrooted
 
-## Fuse.Elements
+#### Fuse.Elements
 - Fixed an issue where the rendering of one element could bleed into the rendering of another element under some very specific circumstances.
 
 
 ### 1.0.3
 
-## ColumnLayout
+#### ColumnLayout
 - Fixed an issue that would result in a broken layout if a `Sizing="Fill"` was used there wasn't enough space for one column.
 
-## Bug in Container
+#### Bug in Container
 - Fixed bug in Container which caused crash when the container had no subtree nodes. This caused the Fuse.MaterialDesign community package to stop working.
 
-## Fuse.Controls.Video
+#### Fuse.Controls.Video
 - Fixed a bug where we would trigger errors on Android if a live-stream was seeked or paused.
 
-## Experimental.TextureLoader
+#### Experimental.TextureLoader
 - Fixed an issue when loading images bigger than the maximum texture-size. Instead of failing, the image gets down-scaled so it fits.
 
 
 ### 1.0.0 - 1.0.2
 
-## Fuse.Elements
+#### Fuse.Elements
 - Fixed a bug where elements with many children and some of them were rotated, the rotated elements would appear in the wrong location.
 
-## iOS
+#### iOS
 - Fix bug which could cause visual glitches the first time rotating from Portrait to Landscape
 
-## Fuse.Reactive
+#### Fuse.Reactive
 - The interfaces `IObservable`, `ISubscriber` and `IObserver` are no longer public (affects any class that implements them). These were made accidentally public in Fuse 0.36. These need to be internal in order to allow behind-the scenes optimizations going forward.
 
-## Bugfixes
+#### Bugfixes
 - Fixes a bug (regression in 0.36) where functions could not be used as data context in event callbacks.
 - Fixed a bug where strings like `"20%"` did not marshal correctly to `Size` when databound.
 - Fixed a defect in expression functions `x,y,width,height`, they will not use the correct size if referring to an element that already has a layout
 
-## Instance/Each/Deferred
+#### Instance/Each/Deferred
 - Changes to the items will not be collected and new items added once per frame. This avoids certain processing bottlenecks. This should not cause any backwards incompatibilties, though the option `Defer="Immediate"` is available to get the previous behavior.
 - `Defer="Deferred"` on `Instance`/`Each` allows the deferred creation of nodes without the need for a `Deferred` node
 - `Deferred` now has an implied priority based on the node depth. Items with equal `Priority` will now be ordered based on tree depth: deeper nodes come first.
 
-## Page busy
+#### Page busy
 - A `Page` will now be busy for the first frame (or two) after it is prepared. This will block the `Navigator` from starting the transition during those frames, which should improve first frame jerkyness. The `PrepareBusy` property can be set to `None` to disable this behaviour.
 
-## Text edit controls
+#### Text edit controls
 - Fixed the behaviour of placeholder text in the text renderer used when targeting desktop. The placeholder text is now always visible when there is no text in the text control, even when it has focus.
 
-## GeoLocation
+#### GeoLocation
 - The GeoLocation module no longer throws an exception if there are no listeners to the `"error"` event when there is an error.
 - Fixed an omission that meant that the old way of listening to GeoLocation events (using `GeoLocation.onChanged = ...` instead of the recommended `EventEmitter` `GeoLocation.on("changed", ...)`) did not work.
 
-## Stroke
+#### Stroke
 - The `Stroke` will no longer emit property changed events for its Brush unless it is pinned. This is not anticipated to be an issue for any projects.
 
-## Fuse.Version
+#### Fuse.Version
 - A new static Uno class has been introduced, called `Fuse.Version`. It contains fields for the major, minor and patch-version, as well as a string with the full version number.
 
-## Native
+#### Native
 - Add implementation for `android.view.TextureView` to better support multiple `<GraphicsView />`'s and `<NativeViewHost />`'s on Android. 
 
-## Container
+#### Container
 - In order to fix a memory leak in `Container` the pre-rooting structure was changed. Children of the container will not be children of the `Subtree` until rooted. It is not believed this will have any noticable effect; other features, like Trigger, also work this way.
 
-## Gestures
+#### Gestures
 - Extended the ability of gestures at multiple levels in the UI tree to cooperate, or take priority
 - SwipeGesture now has priority over ScrollView, even if in an ancestor node
 - Edge swipes have priority over directional swipes, regardless of the node they are in
@@ -82,14 +82,14 @@
 - Added `SwipeGesture.GesturePriority` and `ScrollView.GesturePriority` to adjust priorities
 - Fixed an issue where a higher level capture where preempt one lower in the UI tree
 
-## Visual
+#### Visual
 - The `then` argument to `BeginRemoveChild` is now an `Action<Node>` to provide the node to the callback. Add an `Node child` argument to the callback function.
 
-## ImageTools
+#### ImageTools
 - Changed the algorithm for creating new file names for temporary images. Previously this used a date format that caused problems when several images were created in sub-second intervals, breaking custom map marker icons, for instance.
 - Fixed a memory leak that occured when resizing multiple images one after another.
 
-## Vector drawing
+#### Vector drawing
 A new vector drawing system has been added to Fuse. This allows drawing of curves, shapes, and simple vector images.
 - Added `Curve` which allows drawing of lines and polygons. `CurvePoint` can be used to bind to JavaScript observables and servers as the basis for drawing line graphs
 - Reintroduced `Path`, `Ellipse`, `Star` and `RegularPolygon`. These are all backed by the new vector system.
@@ -101,7 +101,7 @@ A new vector drawing system has been added to Fuse. This allows drawing of curve
 - Remove the `Fuse.Drawing.Polygons` and `Fuse.Drawing.Paths` packages. Their functionality has been replaced by the new vector system
 - `Fuse.Controls.FillRule` has moved to `Fuse.Drawing.FillRule`
 
-## Default Fonts
+#### Default Fonts
 - Added the following default-fonts, that can be used like so `<Text Font="Bold" FontSize="30">This is some bold text</Text>`:
   * `Thin`
   * `Light`
@@ -114,13 +114,13 @@ A new vector drawing system has been added to Fuse. This allows drawing of curve
   * `MediumItalic`
   * `BoldItalic`
 
-## Fuse.Audio
+#### Fuse.Audio
 - Due to a bug in Mono we have temporarily removed support for PlaySound in preview on OSX.
 
-## MapView
+#### MapView
 - Fixed a bug causing crashes on iPhone 5s devices when using `ShowMyLocation="true"`
 
-## ImageFill
+#### ImageFill
 - Fixed a bug where the `MemoryPolicy` given would not be correctly used.
 
 
