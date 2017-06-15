@@ -75,10 +75,10 @@ namespace Fuse.Controls.Test
 			var p = new UX.ViewportHitTest();
 			var r = TestRootPanel.CreateWithChild(p, int2(1000));
 
-			r.CaptureDraw();
-			foreach (var hitTestPoint in GetHitTestPoints(p))
+			using (var fb = r.CaptureDraw())
 			{
-				Assert.AreEqual(hitTestPoint.Panel.Color, r.ReadDrawPixel(hitTestPoint.Point));
+				foreach (var hitTestPoint in GetHitTestPoints(p))
+					Assert.AreEqual(hitTestPoint.Panel.Color, fb.ReadDrawPixel(hitTestPoint.Point));
 			}
 		}
 
