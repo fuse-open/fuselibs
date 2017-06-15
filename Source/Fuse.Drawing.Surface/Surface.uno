@@ -20,6 +20,9 @@ namespace Fuse.Drawing
 		This allows the users of `Canvas` to optimize for animation of either the path or the stroke/fill objects independently.
 		
 		This also keeps the API minimal. There are no convenience functions in this class. Those are provided via higher-level classes, such as `LineSegments` or `SurfaceUtil`.
+		
+		@experimental
+		@advanced
 	*/
 	abstract public class Surface : IDisposable
 	{
@@ -105,10 +108,15 @@ namespace Fuse.Drawing
 		abstract public void Unprepare( Brush brush );
 
 		/*
-			TODO: homeless function, this needs to be moved somewhere else. It's a helper function for controls to draw to a surface.
+			The GL drawing interface for an element on a DrawContext.
+			
+			@hide
 		*/
 		public void Draw( DrawContext dc, Element elm, ISurfaceDrawable drawable )
 		{
+			if (elm != drawable)
+				Fuse.Diagnostics.InternalError( "GLDraw called with mismatched elements", this );
+				
 			var pixelsPerPoint = elm.Viewport.PixelsPerPoint;
 			var bounds = elm.RenderBoundsWithoutEffects;
 
@@ -121,10 +129,7 @@ namespace Fuse.Drawing
 			m.M41 = -bounds.AxisMin.X;
 			m.M42 = -bounds.AxisMin.Y;
 			PushTransform(m);
-
-			//This is needed for brushes as they are relative to the element size.
-			SetElementSize(elm.ActualSize);
- 			drawable.Draw(this);
+			DrawLocal(drawable);
  			End();
  			
 			draw Fuse.Drawing.Planar.Image
@@ -141,8 +146,24 @@ namespace Fuse.Drawing
 			
 			FramebufferPool.Release(fb);
 		}
+		
+		/**
+			Call this method instead of `drawable.Draw` directly. This will configure the canvas correctly.
+			
+			This assumes the canvas has been configured to have coordinates local to the drawable already.
+		*/
+		public void DrawLocal( ISurfaceDrawable drawable )
+		{
+			//This is needed for brushes as they are relative to the element size.
+			SetElementSize(drawable.ElementSize);
+			drawable.Draw(this);
+		}
 	}
 	
+	/**
+		@advanced
+		@experimental
+	*/
 	public interface ISurfaceDrawable
 	{
 		/**
@@ -151,6 +172,18 @@ namespace Fuse.Drawing
 			The `surface` will either be the one provided by `SurfaceManager` during rooting or a compatible sub-surface. The actual drawing should be done via the surface provided here.
 		*/
 		void Draw(Surface surface);
+		
+		/**
+			Conveys if a surface is the primary method for drawing, or whether it can be drawn without using the surface (such as a Panel's background).
+			
+			@experimental It's not clear what Rectangle/Circle should return, it's false if on GL since they can draw without a surface, but false if in a NativeView. For now they'll ignore the GL aspect and just return true: that drawing path doesn't use this function anyway. This problem is that same as the TODO about `Shape.NeedSurface` in Shape.uno
+		*/
+		bool IsPrimary { get; }
+		
+		/**
+			The size of the element being drawn. Maps to `ElementSize` on elements.
+		*/
+		float2 ElementSize { get; }
 	}
 	
 }

@@ -5,6 +5,18 @@
 - Added `.readBuffer()` to read a bundle as an ArrayBuffer
 - Added `.extract()` to write a bundled file into a destination path
 
+## Image
+- A failed to load Image with a Url will now try again when the Url is used again in a new Image
+- Added `reload` and `retry` JavaScript functions on `Image` to allow reloading failed images.
+- Fixed infinite recursion bug that could happen if a MemoryPolicy is set on a MultiDensityImageSource
+
+## ScrollingAnimation
+- Fixed issue where the animation could become out of sync if the properties on ScrollingAnimation were updated.
+
+## macOS SIGILL problems
+- Updated the bundled Freetype library on macOS to now (again) include both 32-bit and 64-bit symbols, which fixes an issue where .NET and preview builds would crash with a SIGILL at startup when running on older Mac models.
+- Updated the bundled libjpeg, libpng, Freetype, and SDL2 libaries for macOS to not use AVX instructions, since they are incompatible with the CPUs in some older Mac models. This fixes an issue with SIGILLs in native builds.
+
 ## Native
 - Added feature toggle for implicit `GraphicsView`. If you are making an app using only Native UI disabling the implicit `GraphicsView` can increase performance. Disable the `GraphicsView` by defining `DISABLE_IMPLICIT_GRAPHICSVIEW` when building. For example `uno build -t=ios -DDISABLE_IMPLICIT_GRAPHICSVIEW`
 
@@ -37,7 +49,51 @@
 ## ImageTools
 - Added supported for encoding/decoding images to/from base64 on DotNet platforms, including Windows and Mac OS X.
 
+## Bugfixes
+- Fixes a bug where the app would crash if a databinding resolved to an incompatible type (e.g. binding a number property to a boolean value). (Marshal.TryConvertTo would throw exception instead of fail gracefully).
+
+## Fuse.Controls.Video
+- Fixed a bug where HLS streams would become zero-sized on iOS.
+
+# Expression functions
+- added `index` and `offsetIndex` as funtions to get the position of an element inside an `Each`
+- added functions `mod`, `even`, `odd`, and `alternate` to complement the index functions. These allow visually grouping elements on the screen based on their index.
+- added trigonometric math functions `sin`, `cos`, `tan`, `asin`, `acos`, `atan`, `atan2`, `radiansToDegrees`, `degreesToRadians`
+- added math functions `abs`, `sqrt`, `ceil`, `floor`, `exp`, `exp2`, `fract`,`log`, `log2`, `sign`, `pow`, `round`, `trunc`, `clamp`
+- added `lerp` function for linear interpolation between values
+
+
 ## 1.0
+
+# 1.0.4
+
+## GraphicsView
+- Fixed issue where apps would not redraw when returning to Foreground
+
+## ScrollView
+- Fixed possible nullref in Scroller that could happen in certain cases while scrolling a ScrollView
+- Fixed nullref in Scroll that could happen if there are any pending LostCapture callbacks after the Scroller is Unrooted
+
+## Fuse.Elements
+- Fixed an issue where the rendering of one element could bleed into the rendering of another element under some very specific circumstances.
+
+
+### 1.0.3
+
+## ColumnLayout
+- Fixed an issue that would result in a broken layout if a `Sizing="Fill"` was used there wasn't enough space for one column.
+
+## Bug in Container
+- Fixed bug in Container which caused crash when the container had no subtree nodes. This caused the Fuse.MaterialDesign community package to stop working.
+
+## Fuse.Controls.Video
+- Fixed a bug where we would trigger errors on Android if a live-stream was seeked or paused.
+
+## Experimental.TextureLoader
+- Fixed an issue when loading images bigger than the maximum texture-size. Instead of failing, the image gets down-scaled so it fits.
+
+
+### 1.0.0 - 1.0.2
 
 ## Fuse.Elements
 - Fixed a bug where elements with many children and some of them were rotated, the rotated elements would appear in the wrong location.
@@ -51,6 +107,7 @@
 ## Bugfixes
 - Fixes a bug (regression in 0.36) where functions could not be used as data context in event callbacks.
 - Fixed a bug where strings like `"20%"` did not marshal correctly to `Size` when databound.
+- Fixed a defect in expression functions `x,y,width,height`, they will not use the correct size if referring to an element that already has a layout
 
 ## Instance/Each/Deferred
 - Changes to the items will not be collected and new items added once per frame. This avoids certain processing bottlenecks. This should not cause any backwards incompatibilties, though the option `Defer="Immediate"` is available to get the previous behavior.

@@ -1,0 +1,4 @@
+<Panel ux:Class="UX.MathFunctions.Alternate">
+	<FuseTest.Value Integer="10" ux:Name="a"/>
+	<FuseTest.Value Object="alternate({Property a.Object},3)" ux:Name="b"/>
+</Panel>

@@ -233,7 +233,7 @@ namespace Fuse.Layouts
 		{
 			bool vert = Orientation == Orientation.Vertical;
 			
-			var columnCount = ColumnCount;
+			var columnCount = Math.Max(1,ColumnCount);
 			var columnSize = ColumnSize;
 			var columnSpace = columnSize + ColumnSpacing;
 			var useColumnSize = _hasColumnSize;
@@ -268,6 +268,7 @@ namespace Fuse.Layouts
 						columnCount = (int)Math.Floor( (avail.X + ColumnSpacing) / columnSpace);
 					else
 						columnCount = (int)Math.Floor( (avail.Y + ColumnSpacing) / columnSpace);
+					columnCount = Math.Max(1,columnCount);
 				}
 					
 				if (Sizing == ColumnLayoutSizing.Fill)
@@ -282,8 +283,6 @@ namespace Fuse.Layouts
 				columnSize = columnSpace - ColumnSpacing;
 			}
 
-			if (columnCount < 1)
-				columnCount = 1;
 			var at = new float[columnCount];
 			
 			foreach (var n in visuals)

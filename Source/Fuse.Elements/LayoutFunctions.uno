@@ -16,6 +16,7 @@ namespace Fuse.Elements
 		}
 
 		protected abstract object GetValue(PlacedArgs args);
+		protected abstract object GetCurrentValue(Element elm);
 
 		class LayoutSubscription: Subscription
 		{
@@ -41,6 +42,8 @@ namespace Fuse.Elements
 				if (_element != null)
 				{
 					_element.Placed += OnPlaced;
+					if (_element.HasMarginBox)
+						PushNewData(_lf.GetCurrentValue(_element));
 				}
 			}
 
@@ -69,6 +72,11 @@ namespace Fuse.Elements
 		{
 			return args.NewSize.X;
 		}
+		
+		protected override object GetCurrentValue(Element elm)
+		{
+			return elm.ActualSize.X;
+		}
 	}
 
 	[UXFunction("height")]
@@ -80,6 +88,11 @@ namespace Fuse.Elements
 		protected override object GetValue(PlacedArgs args)
 		{
 			return args.NewSize.Y;
+		}
+		
+		protected override object GetCurrentValue(Element elm)
+		{
+			return elm.ActualSize.Y;
 		}
 	}
 
@@ -93,6 +106,11 @@ namespace Fuse.Elements
 		{
 			return args.NewPosition.X;
 		}
+		
+		protected override object GetCurrentValue(Element elm)
+		{
+			return elm.ActualPosition.X;
+		}
 	}
 
 	[UXFunction("y")]
@@ -104,6 +122,11 @@ namespace Fuse.Elements
 		protected override object GetValue(PlacedArgs args)
 		{
 			return args.NewPosition.Y;
+		}
+		
+		protected override object GetCurrentValue(Element elm)
+		{
+			return elm.ActualPosition.Y;
 		}
 	}
 }

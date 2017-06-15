@@ -1,0 +1,7 @@
+<Panel ux:Class="UX.Each.Function.Arg">
+	<Each Count="2" ux:Name="outer">
+		<Each Count="2" ux:Name="inner">
+			<Text Value="{= index(outer)}-{= index(inner)}"/>
+		</Each>
+	</Each>
+</Panel>

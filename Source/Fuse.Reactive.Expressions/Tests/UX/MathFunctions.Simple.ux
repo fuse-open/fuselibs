@@ -1,0 +1,27 @@
+<Panel ux:Class="UX.MathFunctions.Simple">
+	<FuseTest.Value Integer="1" ux:Name="a"/>
+	<FuseTest.Value Float="0.5" ux:Name="b"/>
+	<FuseTest.Value Object="sin({Property a.Object})" ux:Name="sin"/>
+	<FuseTest.Value Object="cos({Property a.Object})" ux:Name="cos"/>
+	<FuseTest.Value Object="tan({Property a.Object})" ux:Name="tan"/>
+	<FuseTest.Value Object="asin({Property a.Object})" ux:Name="asin"/>
+	<FuseTest.Value Object="acos({Property a.Object})" ux:Name="acos"/>
+	<FuseTest.Value Object="atan({Property a.Object})" ux:Name="atan"/>
+	<FuseTest.Value Object="sqrt({Property a.Object})" ux:Name="sqrt"/>
+	<FuseTest.Value Object="abs({Property a.Object})" ux:Name="abs"/>
+	<FuseTest.Value Object="ceil({Property a.Object})" ux:Name="ceil"/>
+	<FuseTest.Value Object="floor({Property a.Object})" ux:Name="floor"/>
+	<FuseTest.Value Object="degreesToRadians({Property a.Object})" ux:Name="degreesToRadians"/>
+	<FuseTest.Value Object="radiansToDegrees({Property a.Object})" ux:Name="radiansToDegrees"/>
+	<FuseTest.Value Object="exp({Property a.Object})" ux:Name="exp"/>
+	<FuseTest.Value Object="exp2({Property a.Object})" ux:Name="exp2"/>
+	<FuseTest.Value Object="fract({Property a.Object})" ux:Name="fract"/>
+	<FuseTest.Value Object="log({Property a.Object})" ux:Name="log"/>
+	<FuseTest.Value Object="log2({Property a.Object})" ux:Name="log2"/>
+	<FuseTest.Value Object="sign({Property a.Object})" ux:Name="sign"/>
+	<FuseTest.Value Object="round({Property a.Object})" ux:Name="round"/>
+	<FuseTest.Value Object="trunc({Property a.Object})" ux:Name="trunc"/>
+	
+	<FuseTest.Value Object="atan2({Property a.Object},{Property b.Object})" ux:Name="atan2"/>
+	<FuseTest.Value Object="pow({Property a.Object},{Property b.Object})" ux:Name="pow"/>
+</Panel>

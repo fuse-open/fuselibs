@@ -47,5 +47,31 @@ namespace Fuse.Controls.Primitives.Test
 				Assert.Contains("nope", diagnostics[0].Message);
 			}
 		}
+
+		[Test]
+		public void RetryReload()
+		{
+			var p = new UX.Image.RetryReload();
+			using (var dg = new RecordDiagnosticGuard())
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				p.src.Fail( "Not there" );
+
+				p.CallRetry.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual(1, p.src.ReloadCount);
+
+				p.src.MarkReady();
+				p.CallRetry.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual(1, p.src.ReloadCount);
+
+				p.CallReload.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual(2, p.src.ReloadCount);
+
+				var d = dg.DequeueAll();
+			}
+		}
 	}
 }

@@ -18,6 +18,17 @@ namespace Fuse
 			_converters.Add(conv);
 		}
 
+		/** Attempts to convert the given object to the given type. 
+
+			The conversion is performed using optimistic and relaxed conversion rules.
+
+			This method will not throw exceptions if conversion fails, but instead return false. Returns true if conversion succeededs, or the input is null.
+
+			@param t The type to convert to
+			@param o The object to attempt to convert to type `t`.
+			@param res A reference to the variable that will receive the converted value.
+			@param diagnosticSource If not null, a diagnostic UserError will be reported if conversion fails, with this object as the source.
+		*/
 		public static bool TryConvertTo(Type t, object o, out object res, object diagnosticSource = null)
 		{
 			if (o == null) 
@@ -26,29 +37,36 @@ namespace Fuse
 				return true;
 			}
 
-			if (t == typeof(double)) { res = ToDouble(o); return true; }
-			else if (t == typeof(string)) { res = o.ToString(); return true; }
-			else if (t == typeof(Selector)) { res = (Selector)o.ToString(); return true; }
-			else if (t == typeof(float)) { res = ToFloat(o); return true; }
-			else if (t == typeof(int)) { res = ToInt(o); return true; }
-			else if (t == typeof(bool)) { res = ToBool(o); return true; }
-			else if (t == typeof(Size)) { res = ToSize(o); return true; }
-			else if (t == typeof(Size2)) { res = ToSize2(o); return true; }
-			else if (t == typeof(float2)) { res = ToFloat2(o); return true; }
-			else if (t == typeof(float3)) { res = ToFloat3(o); return true; }
-			else if (t == typeof(float4)) { res = ToFloat4(o); return true; }
-			else if (t.IsEnum && o is string) { res = Uno.Enum.Parse(t, (string)o); return true; }
-			else
+			try
 			{
-				for (int i = 0; i < _converters.Count; i++)
+				if (t == typeof(double)) { res = ToDouble(o); return true; }
+				else if (t == typeof(string)) { res = o.ToString(); return true; }
+				else if (t == typeof(Selector)) { res = (Selector)o.ToString(); return true; }
+				else if (t == typeof(float)) { res = ToFloat(o); return true; }
+				else if (t == typeof(int)) { res = ToInt(o); return true; }
+				else if (t == typeof(bool)) { res = ToBool(o); return true; }
+				else if (t == typeof(Size)) { res = ToSize(o); return true; }
+				else if (t == typeof(Size2)) { res = ToSize2(o); return true; }
+				else if (t == typeof(float2)) { res = ToFloat2(o); return true; }
+				else if (t == typeof(float3)) { res = ToFloat3(o); return true; }
+				else if (t == typeof(float4)) { res = ToFloat4(o); return true; }
+				else if (t.IsEnum && o is string) { res = Uno.Enum.Parse(t, (string)o); return true; }
+				else
 				{
-					var c = _converters[i].TryConvert(t, o);
-					if (c != null) 
+					for (int i = 0; i < _converters.Count; i++)
 					{
-						res = c;
-						return true;
+						var c = _converters[i].TryConvert(t, o);
+						if (c != null) 
+						{
+							res = c;
+							return true;
+						}
 					}
 				}
+			}
+			catch (Exception e)
+			{
+				// Do nothing, report diagnostic below if it fails
 			}
 
 			if (diagnosticSource != null)
@@ -58,6 +76,9 @@ namespace Fuse
 			return false;
 		}
 
+		/**
+			Be aware this function may throw a NullReferenceException if the type cannot be converted to the desired one. It is advised to use TryToType or TryConvertTo instead.
+		*/
 		public static T ToType<T>(object o)
 		{
 			object res;
@@ -65,6 +86,21 @@ namespace Fuse
 			return (T)res;
 		}
 
+		/**
+			Tries to convert to a target value. Unlike `TryConvertTo` this will return `false` if the input value is `null`.
+		*/
+		public static bool TryToType<T>(object o, out T res)
+		{
+			object ores;
+			if (!TryConvertTo(typeof(T), o, out ores) || ores == null)
+			{
+				res = default(T);
+				return false;
+			}
+			res = (T)ores;
+			return true;
+		}
+		
 		public static bool CanConvertClass(Type t)
 		{
 			for (int i = 0; i < _converters.Count; i++)

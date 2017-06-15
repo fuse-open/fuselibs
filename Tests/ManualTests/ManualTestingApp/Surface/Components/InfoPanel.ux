@@ -7,11 +7,10 @@
 		
 		<Rectangle Layer="Background" CornerRadius="10">
 			<SolidColor Color="0.9,0.95,0.95,1"/>
-		<Stroke Width="1"><SolidColor Color="0.2,0.2,0.2,1"/></Stroke>
+			<Stroke Width="1"><SolidColor Color="0.2,0.2,0.2,1"/></Stroke>
 		</Rectangle>
 		
 		<Panel>
-			<FileImageSource File="../Assets/icon_close.png" ux:Name="CloseIcon" ux:AutoBind="false"/>
 			<Panel HitTestMode="LocalBounds" Alignment="TopRight" Width="25" Height="25" Margin="6"
 				 ux:Name="Icon">
 				<IconInfo ux:Name="iconInfo" Color="#000"/>

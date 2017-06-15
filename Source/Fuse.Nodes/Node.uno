@@ -133,5 +133,28 @@ namespace Fuse
 			return this;
 		}
 
+		//We want `: Behavior` here. This is an attempt to workaround a Uno/DotNet issue on some platforms
+		internal T FindBehavior<T>() where T : Node /*Behavior*/
+		{
+			var from = this;
+			while (from != null)
+			{
+				//allow specifying the target behavior directly (for overrides). Or the eventual
+				//situation where Behaviors can have children
+				var b = from as T;
+				if (b != null)
+					return b;
+					
+				var v = from as Visual;
+				if (v != null)
+				{
+					var c = v.FirstChild<T>();
+					if (c != null)
+						return c;
+				}
+				from = from.ContextParent;
+			}
+			return null;
+		}
 	}
 }

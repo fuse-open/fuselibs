@@ -1,6 +1,7 @@
 {
   "Packages": [
     "Fuse.Marshal",
+    "Fuse.Common",
     "Uno.Collections",
     "UnoCore",
     "Uno.Testing",

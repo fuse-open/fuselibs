@@ -5,6 +5,9 @@
 
 #include <cstdlib>
 
+@interface PresentationSizeObserver : NSObject
+@end
+
 namespace FuseVideoImpl
 {
 
@@ -17,8 +20,33 @@ namespace FuseVideoImpl
 		CVOpenGLESTextureRef TextureHandle;
 		CVOpenGLESTextureCacheRef TextureCacheHandle;
 		uDelegate * ErrorHandler;
+		uDelegate * LoadedHandler;
+		int Width, Height;
+		PresentationSizeObserver * _presentationSizeObserver;
 	};
+}
 
+@implementation PresentationSizeObserver
+	- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+	{
+		FuseVideoImpl::VideoState *vs = (FuseVideoImpl::VideoState *)context;
+		auto size = [[vs->Player currentItem] presentationSize];
+		auto screenScale = [[UIScreen mainScreen] scale];
+
+		vs->Width = (int)floor(size.width * screenScale + 0.5f);
+		vs->Height = (int)floor(size.height * screenScale + 0.5f);
+
+		if(vs->LoadedHandler != NULL)
+		{
+			@{Uno.Action:Of(vs->LoadedHandler):Call()};
+			uRelease(vs->LoadedHandler);
+			vs->LoadedHandler = NULL;
+		}
+	}
+@end
+
+namespace FuseVideoImpl
+{
 	void setErrorHandler(void * videoState, uDelegate * errorHandler)
 	{
 		VideoState * vs = (VideoState*)videoState;
@@ -118,17 +146,17 @@ namespace FuseVideoImpl
 					vs->PlayerItem = [[AVPlayerItem alloc] initWithAsset: vs->Asset];
 					[vs->PlayerItem addOutput:vs->PlayerItemVideoOutput];
 					vs->Player = [[AVPlayer alloc] initWithPlayerItem:vs->PlayerItem];
-					
+
+					vs->LoadedHandler = loadedCallback;
+					vs->_presentationSizeObserver = [[PresentationSizeObserver alloc] init];
+					[vs->Player addObserver: vs->_presentationSizeObserver
+					             forKeyPath: @"currentItem.presentationSize"
+					                options: (NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld)
+					                context: vs];
+
 					[[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:NULL];
 					if (errorCallback != NULL)
 						uRelease(errorCallback);
-
-					if(loadedCallback != NULL)
-					{
-						@{Uno.Action:Of(loadedCallback):Call()};
-						uRelease(loadedCallback);
-					}
-
 				}
 				else
 				{
@@ -179,13 +207,13 @@ namespace FuseVideoImpl
 	int getWidth(void * videoState)
 	{
 		VideoState * vs = (VideoState*)videoState;
-		return [vs->Asset naturalSize].width;
+		return vs->Width;
 	}
 
 	int getHeight(void * videoState)
 	{
 		VideoState * vs = (VideoState*)videoState;
-		return [vs->Asset naturalSize].height;
+		return vs->Height;
 	}
 
 	void play(void * videoState)

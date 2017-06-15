@@ -114,6 +114,75 @@ namespace Fuse
 
 			throw new MarshalException(o, typeof(float4));
 		}
+		
+		/**
+			Converts a value to a float4. Unlike `ToFloat4` this will zero extend the missing components.
+			
+			@return true if converted successfully, false if no suitable conversion exists. `null` cannot be converted and will return false;
+			@param value the result value (0 padded as necessary)
+			@param size the size of the result
+		*/
+		public static bool TryToZeroFloat4(object o, out float4 value, out int size)
+		{
+			if (o is float4) 
+			{
+				value = (float4)o;
+				size = 4;
+				return true;
+			}
+			
+			if (o is float3)
+			{
+				var f = (float3)o;
+				value = float4(f.X, f.Y, f.Z, 0);
+				size = 3;
+				return true;
+			}
+			
+			if (o is float2)
+			{
+				var f = (float2)o;
+				value = float4(f.X, f.Y, 0, 0);
+				size = 2;
+				return true;
+			}
+			
+			if (o is string)
+			{
+				var s = (string)o;
+				if (s.StartsWith("#"))
+				{
+					value = Uno.Color.FromHex(s);
+					size = 4;
+					return true;
+				}
+			}
+			else if (o is IArray)
+			{
+				var a = (IArray)o;
+				var x = a.Length > 0 ? Marshal.ToFloat(a[0]) : 0.0f;
+				var y = a.Length > 1 ? Marshal.ToFloat(a[1]) : 0.0f;
+				var z = a.Length > 2 ? Marshal.ToFloat(a[2]) : 0.0f;
+				var w = a.Length > 3 ? Marshal.ToFloat(a[3]) : 0.0f;
+				value = float4(x,y,z,w);
+				size = a.Length;
+				return true;
+			}
+
+			double d;
+			if (Marshal.ToDouble(o, out d))
+			{
+				var f = (float)d;
+				value = float4(f,0,0,0);
+				size = 1;
+				return true;
+			}
+
+			value = float4(0);
+			size = 0;
+			return false;
+		}
+		
 
 		public static float3 ToFloat3(object o)
 		{

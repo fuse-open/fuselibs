@@ -7,8 +7,6 @@ namespace Fuse.Controls
 {
 	public partial class Path
 	{
-		protected override bool NeedSurface { get { return true; } }
-		
 		protected override SurfacePath CreateSurfacePath(Surface surface)
 		{
 			var pos = CalcPositioning();
