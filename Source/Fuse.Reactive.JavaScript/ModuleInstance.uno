@@ -34,7 +34,8 @@ namespace Fuse.Reactive
 		// UI thread
 		void SetDataContext()
 		{
-			_js.SetDataContext(_dc);
+			if (_moduleResult != null) // don't do this if we were disposed in the mean time
+				_js.SetDataContext(_dc);
 		}
 
 		ModuleResult _moduleResult;
