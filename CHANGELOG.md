@@ -2,11 +2,12 @@
 
 ## Gesture
 - The experimental `IGesture` interface has changed. 
-	* The `Significance`, `Priority` and `PriotityAdjustment` have been merged into the single `GetPriority` function.
-	* `OnCapture` is changed to `OnCaptureChanged` and provides the previous capture state 
+  * The `Significance`, `Priority` and `PriotityAdjustment` have been merged into the single `GetPriority` function.
+  * `OnCapture` is changed to `OnCaptureChanged` and provides the previous capture state 
 - `Clicked`, `DoubleClicked`, `Tapped`, `DoubleTapped`, and `LongPressed` have been corrected to only detect the primary "first" pointer press. If you'd like to accept any pointer index add `PointerIndex="Any"` to the gesture.
-	<Clicked PointerIndex="Any"/>
+    <Clicked PointerIndex="Any"/>
 - `SwipeGesture`, `ScrollView`, `LinearRangeBehaviour` (`Slider`), `CircularRangeBehaviour`, `Clicked`, `Tapped`, `DoubleClicked`, `DoubleTapped`, `LongPressed`, `WhilePressed` all use the gesture system now. They have a `GesturePriority` property which can be used to adjust relative priorities -- though mostly the defaults should be fine.
+- The `SwipeGesture.GesturePriority` default is changed from `High` to `Low`. This better fits with how the priorities should work together in a typical app and in general shouldn't affect any usual layouts. You can alter the priority with `GesturePriority="High"`
 
 ## macOS SIGILL problems
 - Updated the bundled Freetype library on macOS to now (again) include both 32-bit and 64-bit symbols, which fixes an issue where .NET and preview builds would crash with a SIGILL at startup when running on older Mac models.

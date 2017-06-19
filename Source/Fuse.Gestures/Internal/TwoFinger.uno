@@ -78,13 +78,13 @@ namespace Fuse.Gestures.Internal
 		void IGesture.OnLostCapture(bool forced)
 		{
 			_point[0].Down = _point[1].Down = -1;
+			_trackingKeyboard = false;
 			if (_begun)
 			{
+				_begun = false;
 				if (Ended != null)
 					Ended();
 			}
-			_begun = false;
-			_trackingKeyboard = false;
 		}
 		
 		class Point
