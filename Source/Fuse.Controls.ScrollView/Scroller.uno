@@ -222,7 +222,7 @@ namespace Fuse.Gestures
 		void IGesture.OnLostCapture( bool forced ) 
 		{ 
 			_significance = 0;
-			if (_region.IsUser)
+			if (_region != null && _region.IsUser)
 				_region.EndUser();
 			CheckNeedUpdated();
 		}
@@ -240,6 +240,9 @@ namespace Fuse.Gestures
 
 		GestureRequest IGesture.OnPointerMoved(PointerMovedArgs args)
 		{
+			if (_gesture == null)
+				return GestureRequest.Ignore;
+
 			if (!_gesture.IsHardCapture)
 			{
 				_softCaptureCurrent = args.WindowPoint;

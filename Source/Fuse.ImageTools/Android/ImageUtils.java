@@ -29,7 +29,6 @@ public class ImageUtils {
 		BitmapFactory.Options options = new BitmapFactory.Options();
 		Bitmap srcBmp = BitmapFactory.decodeFile(inImage.getFilePath(), options);
 		Bitmap dstBmp = Bitmap.createBitmap(srcBmp, x, y, width, height);
-		srcBmp.recycle();
 
 		Bitmap.CompressFormat fmt;
 		String lowerCaseType = options.outMimeType.toLowerCase();
@@ -51,6 +50,10 @@ public class ImageUtils {
 			fOut.close();
 			inImage.setDims(dstBmp.getWidth(), dstBmp.getHeight());
 			dstBmp.recycle();
+
+			if (!srcBmp.isRecycled())
+				srcBmp.recycle();
+
 			return inImage;
 		}else{
 			return ImageStorageTools.saveBitmapAndGetImage(dstBmp, true, fmt);
@@ -73,8 +76,11 @@ public class ImageUtils {
 		float width = inImage.getWidth();
 		float height = inImage.getHeight();
 		float ratio;
-		Bitmap temp;
-		Bitmap srcBmp = null;
+
+		Bitmap sourceBitmap;
+		Bitmap scaledBitmap = null;
+		Bitmap resultBitmap = null;
+
 		BitmapFactory.Options options = new BitmapFactory.Options();
 
 		if((int)width == desiredWidth && (int)height == desiredHeight)
@@ -90,7 +96,7 @@ public class ImageUtils {
 			options.inTargetDensity = desiredWidth;
 		}
 
-		srcBmp = BitmapFactory.decodeFile(inImage.getFilePath(), options);
+		sourceBitmap = BitmapFactory.decodeFile(inImage.getFilePath(), options);
 
 		switch(mode){
 			case SCALE_AND_CROP:
@@ -115,33 +121,27 @@ public class ImageUtils {
 				width *= ratio;
 				height *= ratio;
 
-				temp = Bitmap.createScaledBitmap(
-						srcBmp,
+				scaledBitmap = Bitmap.createScaledBitmap(
+						sourceBitmap,
 						(int)width,
 						(int)height,
 						true);
-				srcBmp.recycle();
-				srcBmp = temp;
 
-				temp = Bitmap.createBitmap(
-						srcBmp,
+				resultBitmap = Bitmap.createBitmap(
+						scaledBitmap,
 						Math.max(0, (int)width/2 - desiredWidth/2),
 						Math.max(0, (int)height/2 - desiredHeight/2),
 						Math.min(desiredWidth, (int)width),
 						Math.min(desiredHeight, (int)height));
-				srcBmp.recycle();
-				srcBmp = temp;
 
 				break;
 			case IGNORE_ASPECT:
 				//Use width/height as given
-				temp = Bitmap.createScaledBitmap(
-						srcBmp,
+				resultBitmap = Bitmap.createScaledBitmap(
+						sourceBitmap,
 						desiredWidth,
 						desiredHeight,
 						true);
-				srcBmp.recycle();
-				srcBmp = temp;
 		}
 
 		Bitmap.CompressFormat fmt = compressFormatFromOptions(options);
@@ -151,16 +151,23 @@ public class ImageUtils {
 			{
 				File f = inImage.getFile();
 				FileOutputStream fOut = new FileOutputStream(f);
-				srcBmp.compress(fmt, quality, fOut);
+				resultBitmap.compress(fmt, quality, fOut);
 				fOut.flush();
 				fOut.close();
-				inImage.setDims(srcBmp.getWidth(), srcBmp.getHeight());
+				inImage.setDims(resultBitmap.getWidth(), resultBitmap.getHeight());
 				return inImage;
 			}else{
-				return ImageStorageTools.saveBitmapAndGetImage(srcBmp, true, fmt);
+				return ImageStorageTools.saveBitmapAndGetImage(resultBitmap, true, fmt);
 			}
 		}finally{
-			srcBmp.recycle();
+			sourceBitmap.recycle();
+
+			if (scaledBitmap != null && !scaledBitmap.isRecycled()) {
+				scaledBitmap.recycle();
+			}
+
+			if (!resultBitmap.isRecycled())
+				resultBitmap.recycle();
 		}
 	}
 

@@ -1,0 +1,15 @@
+<Panel ux:Class="UX.BundleReadSync">
+	<JavaScript>
+		var Bundle = require("FuseJS/Bundle")
+		var Observable = require("FuseJS/Observable")
+		var result = Observable()
+		module.exports = {
+			test : function(){
+				result.value = Bundle.readSync("assets/test.txt") == "Hello world";
+			},
+			result : result
+		}
+	</JavaScript>
+	<Text ux:Name="output" Value="{result}"/>
+	<FuseTest.Invoke Handler="{test}" ux:Name="CallTest"/>
+</Panel>

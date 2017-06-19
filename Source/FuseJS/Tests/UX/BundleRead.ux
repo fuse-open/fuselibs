@@ -1,0 +1,18 @@
+<Panel ux:Class="UX.BundleRead">
+	<JavaScript>
+		var Bundle = require("FuseJS/Bundle")
+		var Observable = require("FuseJS/Observable")
+		var result = Observable()
+		module.exports = {
+			test : function(){
+				Bundle.read("assets/test.txt")
+					.then(function(text){
+						result.value = text=="Hello world";
+					})
+			},
+			result : result
+		}
+	</JavaScript>
+	<Text ux:Name="output" Value="{result}"/>
+	<FuseTest.Invoke Handler="{test}" ux:Name="CallTest"/>
+</Panel>

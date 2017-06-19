@@ -1,0 +1,5 @@
+<ScrollView ux:Class="UX.ScrollingAnimation.FromTo">
+	<Rectangle Height="2000" Y="0" ux:Name="TheRect"/>
+
+	<ScrollingAnimation ux:Name="S1" From="0" To="200" />
+</ScrollView>

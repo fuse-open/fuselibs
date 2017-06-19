@@ -48,5 +48,29 @@ namespace Fuse.Test
 			Assert.AreEqual(float4(0, 0.375f, 0, 0.375f), root.ReadDrawPixel(int2(50, 98)), eps);
 			Assert.AreEqual(float4(0.375f, 0, 0, 0.375f), root.ReadDrawPixel(int2(50, 198)), eps);
 		}
+
+		[Test]
+		public void BorderIssue()
+		{
+			var p = new UX.Caching.BorderIssue();
+			var root = TestRootPanel.CreateWithChild(p, int2(32, 32));
+			root.CaptureDraw();
+
+			for (int y = -15; y < 16; ++y)
+			{
+				for (int x = -15; x < 16; ++x)
+				{
+					int manhattanDistance = Math.Max(Math.Abs(x), Math.Abs(y));
+
+					// check red rectangle
+					if (manhattanDistance < 4)
+						Assert.AreEqual(float4(1.0f, 0, 0, 1.0f), root.ReadDrawPixel(int2(16 + x, 16 + y)));
+
+					// check outside red and green rectangle
+					if (manhattanDistance > 6)
+						Assert.AreEqual(float4(0.0f, 0.0f, 0.0f, 0.0f), root.ReadDrawPixel(int2(16 + x, 16 + y)));
+				}
+			}
+		}
 	}
 }

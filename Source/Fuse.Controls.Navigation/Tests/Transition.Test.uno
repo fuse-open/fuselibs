@@ -259,6 +259,7 @@ namespace Fuse.Navigation.Test
 		}
 		
 		[Test]
+		[Ignore("https://github.com/fusetools/fuselibs-public/issues/110")]
 		//tests operation style matching
 		public void Style()
 		{

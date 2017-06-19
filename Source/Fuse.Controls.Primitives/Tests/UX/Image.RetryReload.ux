@@ -1,0 +1,17 @@
+<Panel ux:Class="UX.Image.RetryReload">
+	<JavaScript>
+		exports.reload = function() { 
+			image.reload()
+		}
+
+		exports.retry = function() {
+			image.retry()
+		}
+	</JavaScript>
+
+	<Image ux:Name="image">
+		<FuseTest.TestImageSource ux:Name="src"/>
+	</Image>
+	<FuseTest.Invoke Handler="{reload}" ux:Name="CallReload"/>
+	<FuseTest.Invoke Handler="{retry}" ux:Name="CallRetry"/>
+</Panel>
