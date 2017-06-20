@@ -5,6 +5,7 @@ namespace Fuse.Internal
 {
 	//An error with Uno handling the Enumerator<T> generic is preventing this from being a private enum to MiniList
 	//E2047: No implicit cast from Fuse.Internal.MiniList<T>.Mode to Fuse.Internal.MiniList<T>.Mode
+	//UNO: https://github.com/fusetools/uno/issues/1172
 	enum MiniListMode
 	{
 		Empty,
@@ -13,15 +14,18 @@ namespace Fuse.Internal
 	}
 	
 	/**
-		A simple list that reduces overhead for objects where 0 or 1 items is far more common than 2+.
+		A list that reduces allocation overhead for places where 0 or 1 items is far more common than 2+. 0 and 1 item can be stored with zero allocations on the containing class -- note that `MiniList` is a `struct` type.
 
 		This does not support `null` items.
+		
+		This is backed by an `ObjectList` for 2+ items. This provides the same ability to do versioned iteration without needing a copy of the list.
 	*/
 	struct MiniList<T> : IList<T> where T : class
 	{
 		object _list;
 		ObjectList<T> AsList { get { return (ObjectList<T>)_list; } }
 		
+		//The current mode is tracked explicitly to avoid some overhead of dynamically checking the type of `_list`.
 		MiniListMode _mode = MiniListMode.Empty;
 
 		public int Count
@@ -254,7 +258,7 @@ namespace Fuse.Internal
 
 			public void Reset()
 			{
-				//it's easier not to support this since it would invovle tracking the initial iterator state (added overhead)
+				//it's easier not to support this since it would involve tracking the initial iterator state (added overhead)
 				//or it would incorrectly iterate the current source, not the one at the time of creation
 				throw new Exception( "Reset not supported" );
 			}
