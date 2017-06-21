@@ -18,10 +18,10 @@ namespace Fuse.Controls.Primitives.Test
 			using (var fb = root.CaptureDraw())
 			{
 				// check that the element is on top
-				Assert.AreEqual(float4(1, 0, 0, 1), fb.ReadDrawPixel(int2( 50, 150))); // left border
-				Assert.AreEqual(float4(1, 0, 0, 1), fb.ReadDrawPixel(int2(249, 150))); // right border
-				Assert.AreEqual(float4(1, 0, 0, 1), fb.ReadDrawPixel(int2(150, 249))); // bottom border
-				Assert.AreEqual(float4(1, 0, 0, 1), fb.ReadDrawPixel(int2(150,  50))); // top border
+				fb.AssertPixel(float4(1, 0, 0, 1), int2( 50, 150)); // left border
+				fb.AssertPixel(float4(1, 0, 0, 1), int2(249, 150)); // right border
+				fb.AssertPixel(float4(1, 0, 0, 1), int2(150, 249)); // bottom border
+				fb.AssertPixel(float4(1, 0, 0, 1), int2(150,  50)); // top border
 			}
 		}
 
@@ -36,9 +36,9 @@ namespace Fuse.Controls.Primitives.Test
 			p._shadow.Distance = Vector.Length(float2(10, 10));
 			using (var fb = root.CaptureDraw())
 			{
-				Assert.AreEqual(float4(1, 0, 0, 1),        fb.ReadDrawPixel(int2( 50, 50)));
-				Assert.AreEqual(Fuse.Drawing.Colors.Green, fb.ReadDrawPixel(int2( 41, 41)), 0.01f);
-				Assert.AreEqual(float4(0, 0, 0, 0),        fb.ReadDrawPixel(int2( 39, 39)));
+				fb.AssertPixel(float4(1, 0, 0, 1),        int2(50, 50));
+				fb.AssertPixel(Fuse.Drawing.Colors.Green, int2(41, 41), 0.01f);
+				fb.AssertPixel(float4(0, 0, 0, 0),        int2(39, 39));
 			}
 		}
 
@@ -51,12 +51,12 @@ namespace Fuse.Controls.Primitives.Test
 			using (var fb = root.CaptureDraw())
 			{
 				// sample a few values from the middle of the shadow. Reference values are taken from ShadowMode.PerPixel.
-				Assert.AreEqual(float4(0, 0, 0, 0), fb.ReadDrawPixel(int2( 30, 150))); // left border
-				Assert.AreEqual(float4(0, 0.0156863f, 0, 0.0274510f), fb.ReadDrawPixel(int2( 40, 150)), 0.02f); // left border
-				Assert.AreEqual(float4(0, 0.2274510f, 0, 0.4549020f), fb.ReadDrawPixel(int2( 49, 150)), 0.01f); // left border
-				Assert.AreEqual(float4(0, 0.2274510f, 0, 0.4549020f), fb.ReadDrawPixel(int2(250, 150)), 0.01f); // right border
-				Assert.AreEqual(float4(0, 0.0156863f, 0, 0.0274510f), fb.ReadDrawPixel(int2(259, 150)), 0.02f); // right border
-				Assert.AreEqual(float4(0, 0, 0, 0), fb.ReadDrawPixel(int2(269, 150))); // right border
+				fb.AssertPixel(float4(0, 0, 0, 0), int2(30, 150)); // left border
+				fb.AssertPixel(float4(0, 0.0156863f, 0, 0.0274510f), int2(40, 150), 0.02f); // left border
+				fb.AssertPixel(float4(0, 0.2274510f, 0, 0.4549020f), int2(49, 150), 0.01f); // left border
+				fb.AssertPixel(float4(0, 0.2274510f, 0, 0.4549020f),  int2(250, 150), 0.01f); // right border
+				fb.AssertPixel(float4(0, 0.0156863f, 0, 0.0274510f), int2(259, 150), 0.02f); // right border
+				fb.AssertPixel(float4(0, 0, 0, 0), int2(269, 150)); // right border
 			}
 		}
 
@@ -80,8 +80,8 @@ namespace Fuse.Controls.Primitives.Test
 					var cornerEdge = (1.0f - 1.0f / Math.Sqrt(2.0f)) * radius;
 					var innerPixel = 40 + (int)Math.Floor(cornerEdge - 1.5f);
 					var outerPixel = 40 + (int)Math.Ceil(cornerEdge + 1.5f);
-					Assert.AreEqual(float4(0, 0, 0, 0), fb.ReadDrawPixel(int2(innerPixel, innerPixel)));
-					Assert.AreEqual(Fuse.Drawing.Colors.Green, fb.ReadDrawPixel(int2(outerPixel, outerPixel)), 0.01f);
+					fb.AssertPixel(float4(0, 0, 0, 0),        int2(innerPixel));
+					fb.AssertPixel(Fuse.Drawing.Colors.Green, int2(outerPixel), 0.01f);
 				}
 			}
 		}
@@ -98,8 +98,8 @@ namespace Fuse.Controls.Primitives.Test
 
 			using (var fb = root.CaptureDraw())
 			{
-				Assert.AreEqual(float4(0.5f, 0.25f, 0, 1), fb.ReadDrawPixel(int2(50, 50)), 0.01f);
-				Assert.AreEqual(float4(0, 0.5f, 0, 1), fb.ReadDrawPixel(int2(41, 41)), 0.01f);
+				fb.AssertPixel(float4(0.5f, 0.25f, 0, 1), int2(50), 0.01f);
+				fb.AssertPixel(float4(0, 0.5f, 0, 1),     int2(41), 0.01f);
 			}
 		}
 
@@ -115,8 +115,8 @@ namespace Fuse.Controls.Primitives.Test
 
 			using (var fb = root.CaptureDraw())
 			{
-				Assert.AreEqual(float4(0.5f, 0.25f, 0, 1), fb.ReadDrawPixel(int2( 50, 50)), 0.01f);
-				Assert.AreEqual(float4(0, 0.5f, 0, 1), fb.ReadDrawPixel(int2( 41, 41)), 0.01f);
+				fb.AssertPixel(float4(0.5f, 0.25f, 0, 1), int2(50), 0.01f);
+				fb.AssertPixel(float4(0, 0.5f, 0, 1),     int2(41), 0.01f);
 			}
 		}
 
@@ -129,7 +129,7 @@ namespace Fuse.Controls.Primitives.Test
 
 			using (var fb = root.CaptureDraw())
 			{
-				Assert.AreEqual(float4(0.0f, 0.5f, 0, 1), fb.ReadDrawPixel(int2(100, 100)), 0.01f);
+				fb.AssertPixel(float4(0, 0.5f, 0, 1), int2(100), 0.01f);
 			}
 		}
 
@@ -142,7 +142,7 @@ namespace Fuse.Controls.Primitives.Test
 
 			using (var fb = root.CaptureDraw())
 			{
-				Assert.AreEqual(float4(0.0f, 0.5f, 0, 1), fb.ReadDrawPixel(int2(100, 100)), 0.01f);
+				fb.AssertPixel(float4(0, 0.5f, 0, 1), int2(100), 0.01f);
 			}
 		}
 	}
