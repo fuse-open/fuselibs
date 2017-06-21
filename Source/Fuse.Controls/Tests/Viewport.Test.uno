@@ -78,7 +78,7 @@ namespace Fuse.Controls.Test
 			using (var fb = r.CaptureDraw())
 			{
 				foreach (var hitTestPoint in GetHitTestPoints(p))
-					Assert.AreEqual(hitTestPoint.Panel.Color, fb.ReadDrawPixel(hitTestPoint.Point));
+					fb.AssertPixel(hitTestPoint.Panel.Color, hitTestPoint.Point);
 			}
 		}
 
