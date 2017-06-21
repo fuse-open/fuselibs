@@ -54,6 +54,7 @@ namespace FuseJS.Test
 		}
 
 		[Test]
+		[Ignore("https://github.com/fusetools/fuselibs-public/issues/117")]
 		public void TestExtract()
 		{
 			new FuseJS.Bundle();
