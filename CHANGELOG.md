@@ -1,5 +1,10 @@
 # Unreleased
 
+## Each Reuse
+- Added `Reuse` to `Each` allowing the reuse of nodes
+- Added `OnChildMoved` to `Visual`. Anything implementing `OnChildAdded` or `OnChildRemoved` will likely need to implement `OnChildMoved` as well. This happens when a child's position in `Children` list changes.
+- Added `OnChildMovedWhileRooted` to `IParentObserver`
+
 # 1.1
 
 ## 1.1.0
@@ -25,6 +30,8 @@
 - Updated the bundled libjpeg, libpng, Freetype, and SDL2 libaries for macOS to not use AVX instructions, since they are incompatible with the CPUs in some older Mac models. This fixes an issue with SIGILLs in native builds.
 
 ### Native
+
+## Native
 - Added feature toggle for implicit `GraphicsView`. If you are making an app using only Native UI disabling the implicit `GraphicsView` can increase performance. Disable the `GraphicsView` by defining `DISABLE_IMPLICIT_GRAPHICSVIEW` when building. For example `uno build -t=ios -DDISABLE_IMPLICIT_GRAPHICSVIEW`
 
 ### Gestures
