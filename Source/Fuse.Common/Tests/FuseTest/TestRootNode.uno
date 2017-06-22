@@ -311,7 +311,7 @@ namespace FuseTest
 			one is connected to an Observable in another. The single StepFrameJS only takes care of
 			a single JS propagation, not the followup to the other element.
 			
-			This calls StepFrameJS multiple times to be correct in those situations.  THe number should
+			This calls StepFrameJS multiple times to be correct in those situations.  The number should
 			be the number of modules that need to be traversed. Don't just increase the number
 			until it works.
 		*/
