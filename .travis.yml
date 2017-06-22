@@ -1,8 +1,10 @@
 os: osx
 
-cache:
-  directories:
-    - $HOME/.ccache
+language: cpp
+
+compiler: clang
+
+cache: ccache
 
 install:
   - brew update
