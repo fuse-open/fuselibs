@@ -9,7 +9,7 @@ namespace Fuse.Triggers
 	/**
 		A @Trigger that is managed by a @StateGroup.
 
-		See @StateGroup for documentation.
+		See @StateGroup for more information.
 	*/
 	public partial class State : Trigger
 	{
