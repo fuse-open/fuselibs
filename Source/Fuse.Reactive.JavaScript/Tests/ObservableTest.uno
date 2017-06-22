@@ -388,34 +388,34 @@ namespace Fuse.Reactive.Test
 		}
 		
 		[Test]
-		[Ignore("https://github.com/fusetools/fuselibs-public/issues/107")]
 		public void MapTwoWayFloat3()
 		{
 			var p = new UX.Observable.MapTwoWayFloat3();
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
-				root.StepFrameJS();
+				//multi-step an Observable linked between two JavaScript elements involved
+				root.MultiStepFrameJS(2);
 				Assert.AreEqual( "1,2,3", p.S.Value );
 				Assert.AreEqual( "1", p.C.TX.Value );
 				Assert.AreEqual( "2", p.C.TY.Value );
 				Assert.AreEqual( "3", p.C.TZ.Value );
 				
 				p.C.TX.Value = "10";
-				root.StepFrameJS();
+				root.MultiStepFrameJS(2);
 				Assert.AreEqual( "10,2,3", p.S.Value );
 				Assert.AreEqual( "10", p.C.TX.Value );
 				Assert.AreEqual( "2", p.C.TY.Value );
 				Assert.AreEqual( "3", p.C.TZ.Value );
 				
 				p.C.TZ.Value = "30";
-				root.StepFrameJS();
+				root.MultiStepFrameJS(2);
 				Assert.AreEqual( "10,2,30", p.S.Value );
 				Assert.AreEqual( "10", p.C.TX.Value );
 				Assert.AreEqual( "2", p.C.TY.Value );
 				Assert.AreEqual( "30", p.C.TZ.Value );
 				
 				p.ChangeY.Perform();
-				root.StepFrameJS();
+				root.MultiStepFrameJS(2);
 				Assert.AreEqual( "10,20,30", p.S.Value );
 				Assert.AreEqual( "10", p.C.TX.Value );
 				Assert.AreEqual( "20", p.C.TY.Value );

@@ -267,6 +267,22 @@ namespace FuseTest
 		}
 		
 		/**
+			If the test code involves multiple JavaScript elements that need to communicate between
+			each other, a single StepFrameJS may not be enough. This happens when an Observable in
+			one is connected to an Observable in another. The single StepFrameJS only takes care of
+			a single JS propagation, not the followup to the other element.
+			
+			This calls StepFrameJS multiple times to be correct in those situations.  The number should
+			be the number of modules that need to be traversed. Don't just increase the number
+			until it works.
+		*/
+		public void MultiStepFrameJS(int count)
+		{
+			for (int i=0; i < count; ++i)
+				StepFrameJS();
+		}
+		
+		/**
 			Steps frames until the Deferred actions are all cleared. Guaranteed to step at least one frame.
 		*/
 		public void StepFrameDeferred()
