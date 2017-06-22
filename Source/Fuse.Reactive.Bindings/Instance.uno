@@ -1,6 +1,8 @@
 using Uno;
 using Uno.Collections;
 using Uno.UX;
+
+using Fuse.Internal;
 using Fuse.Triggers;
 
 namespace Fuse.Reactive
@@ -330,7 +332,7 @@ namespace Fuse.Reactive
 			
 			This list should only be modified via the InsertNew, RemoveAt, and RemoveAll functions.
 		*/
-		List<WindowItem> _windowItems = new List<WindowItem>();
+		ObjectList<WindowItem> _windowItems = new ObjectList<WindowItem>();
 		
 		internal event Action UpdatedWindowItems;
 		bool _pendingUpdateWindowItems;
@@ -542,7 +544,7 @@ namespace Fuse.Reactive
 			if (_windowItems.Count == 0) return;
 
 			var items = _windowItems;
-			_windowItems = new List<WindowItem>();
+			_windowItems = new ObjectList<WindowItem>();
 
 			for (int i = 0; i < items.Count; i++)
 			{
