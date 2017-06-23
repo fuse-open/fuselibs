@@ -15,13 +15,14 @@ namespace Fuse.Controls.Primitives.Test
 			var p = new UX.Shadow.Panel();
 			var root = TestRootPanel.CreateWithChild(p, int2(300, 300));
 			p._shadow.Size = 10;
-			root.CaptureDraw();
-
-			// check that the element is on top
-			Assert.AreEqual(float4(1, 0, 0, 1), root.ReadDrawPixel(int2( 50, 150))); // left border
-			Assert.AreEqual(float4(1, 0, 0, 1), root.ReadDrawPixel(int2(249, 150))); // right border
-			Assert.AreEqual(float4(1, 0, 0, 1), root.ReadDrawPixel(int2(150,  50))); // bottom border
-			Assert.AreEqual(float4(1, 0, 0, 1), root.ReadDrawPixel(int2(150, 249))); // top border
+			using (var fb = root.CaptureDraw())
+			{
+				// check that the element is on top
+				fb.AssertPixel(float4(1, 0, 0, 1), int2( 50, 150)); // left border
+				fb.AssertPixel(float4(1, 0, 0, 1), int2(249, 150)); // right border
+				fb.AssertPixel(float4(1, 0, 0, 1), int2(150, 249)); // bottom border
+				fb.AssertPixel(float4(1, 0, 0, 1), int2(150,  50)); // top border
+			}
 		}
 
 		[Test]
@@ -31,13 +32,14 @@ namespace Fuse.Controls.Primitives.Test
 			var root = TestRootPanel.CreateWithChild(p, int2(300, 300));
 			p._panel.Padding = float4(10);
 			p._shadow.Size = 0;
-			p._shadow.Angle = 45;
+			p._shadow.Angle = -45;
 			p._shadow.Distance = Vector.Length(float2(10, 10));
-			root.CaptureDraw();
-
-			Assert.AreEqual(float4(1, 0, 0, 1), root.ReadDrawPixel(int2( 50, 50)));
-			Assert.AreEqual(Fuse.Drawing.Colors.Green, root.ReadDrawPixel(int2( 41, 41)), 0.01f);
-			Assert.AreEqual(float4(0, 0, 0, 0), root.ReadDrawPixel(int2( 39, 39)));
+			using (var fb = root.CaptureDraw())
+			{
+				fb.AssertPixel(float4(1, 0, 0, 1),        int2(50, 50));
+				fb.AssertPixel(Fuse.Drawing.Colors.Green, int2(41, 41), 0.01f);
+				fb.AssertPixel(float4(0, 0, 0, 0),        int2(39, 39));
+			}
 		}
 
 		[Test]
@@ -46,15 +48,16 @@ namespace Fuse.Controls.Primitives.Test
 			var p = new UX.Shadow.Panel();
 			var root = TestRootPanel.CreateWithChild(p, int2(300, 300));
 			p._shadow.Size = 10;
-			root.CaptureDraw();
-
-			// sample a few values from the middle of the shadow. Reference values are taken from ShadowMode.PerPixel.
-			Assert.AreEqual(float4(0, 0, 0, 0), root.ReadDrawPixel(int2( 30, 150))); // left border
-			Assert.AreEqual(float4(0, 0.0156863f, 0, 0.0274510f), root.ReadDrawPixel(int2( 40, 150)), 0.02f); // left border
-			Assert.AreEqual(float4(0, 0.2274510f, 0, 0.4549020f), root.ReadDrawPixel(int2( 49, 150)), 0.01f); // left border
-			Assert.AreEqual(float4(0, 0.2274510f, 0, 0.4549020f), root.ReadDrawPixel(int2(250, 150)), 0.01f); // right border
-			Assert.AreEqual(float4(0, 0.0156863f, 0, 0.0274510f), root.ReadDrawPixel(int2(259, 150)), 0.02f); // right border
-			Assert.AreEqual(float4(0, 0, 0, 0), root.ReadDrawPixel(int2(269, 150))); // right border
+			using (var fb = root.CaptureDraw())
+			{
+				// sample a few values from the middle of the shadow. Reference values are taken from ShadowMode.PerPixel.
+				fb.AssertPixel(float4(0, 0, 0, 0), int2(30, 150)); // left border
+				fb.AssertPixel(float4(0, 0.0156863f, 0, 0.0274510f), int2(40, 150), 0.02f); // left border
+				fb.AssertPixel(float4(0, 0.2274510f, 0, 0.4549020f), int2(49, 150), 0.01f); // left border
+				fb.AssertPixel(float4(0, 0.2274510f, 0, 0.4549020f),  int2(250, 150), 0.01f); // right border
+				fb.AssertPixel(float4(0, 0.0156863f, 0, 0.0274510f), int2(259, 150), 0.02f); // right border
+				fb.AssertPixel(float4(0, 0, 0, 0), int2(269, 150)); // right border
+			}
 		}
 
 		[Test]
@@ -63,7 +66,7 @@ namespace Fuse.Controls.Primitives.Test
 			var p = new UX.Shadow.Rectangle();
 			var root = TestRootPanel.CreateWithChild(p, int2(300, 300));
 			p._shadow.Size = 0;
-			p._shadow.Angle = 45;
+			p._shadow.Angle = -45;
 			p._shadow.Distance = Vector.Length(float2(10, 10));
 
 			float[] cornerRadiuses = new float[] {10, 20, 0, 5};
@@ -71,14 +74,15 @@ namespace Fuse.Controls.Primitives.Test
 			{
 				float radius = cornerRadiuses[i];
 				p._rectangle.CornerRadius = float4(radius);
-				root.CaptureDraw();
-
-				// bottom-left corner
-				var cornerEdge = (1.0f - 1.0f / Math.Sqrt(2.0f)) * radius;
-				var innerPixel = 40 + (int)Math.Floor(cornerEdge - 1.5f);
-				var outerPixel = 40 + (int)Math.Ceil(cornerEdge + 1.5f);
-				Assert.AreEqual(float4(0, 0, 0, 0), root.ReadDrawPixel(int2(innerPixel, innerPixel)));
-				Assert.AreEqual(Fuse.Drawing.Colors.Green, root.ReadDrawPixel(int2(outerPixel, outerPixel)), 0.01f);
+				using (var fb = root.CaptureDraw())
+				{
+					// bottom-left corner
+					var cornerEdge = (1.0f - 1.0f / Math.Sqrt(2.0f)) * radius;
+					var innerPixel = 40 + (int)Math.Floor(cornerEdge - 1.5f);
+					var outerPixel = 40 + (int)Math.Ceil(cornerEdge + 1.5f);
+					fb.AssertPixel(float4(0, 0, 0, 0),        int2(innerPixel));
+					fb.AssertPixel(Fuse.Drawing.Colors.Green, int2(outerPixel), 0.01f);
+				}
 			}
 		}
 
@@ -89,12 +93,14 @@ namespace Fuse.Controls.Primitives.Test
 			var root = TestRootPanel.CreateWithChild(p, int2(300, 300));
 			p._panel.Color = float4(1, 0, 0, 0.5f);
 			p._shadow.Size = 0;
-			p._shadow.Angle = 45;
+			p._shadow.Angle = -45;
 			p._shadow.Distance = Vector.Length(float2(10, 10));
-			root.CaptureDraw();
 
-			Assert.AreEqual(float4(0.5f, 0.25f, 0, 1), root.ReadDrawPixel(int2( 50, 50)), 0.01f);
-			Assert.AreEqual(float4(0, 0.5f, 0, 1), root.ReadDrawPixel(int2( 41, 41)), 0.01f);
+			using (var fb = root.CaptureDraw())
+			{
+				fb.AssertPixel(float4(0.5f, 0.25f, 0, 1), int2(50), 0.01f);
+				fb.AssertPixel(float4(0, 0.5f, 0, 1),     int2(41), 0.01f);
+			}
 		}
 
 		[Test]
@@ -104,12 +110,14 @@ namespace Fuse.Controls.Primitives.Test
 			var root = TestRootPanel.CreateWithChild(p, int2(300, 300));
 			p._rectangle.Color = float4(1, 0, 0, 0.5f);
 			p._shadow.Size = 0;
-			p._shadow.Angle = 45;
+			p._shadow.Angle = -45;
 			p._shadow.Distance = Vector.Length(float2(10, 10));
-			root.CaptureDraw();
 
-			Assert.AreEqual(float4(0.5f, 0.25f, 0, 1), root.ReadDrawPixel(int2( 50, 50)), 0.01f);
-			Assert.AreEqual(float4(0, 0.5f, 0, 1), root.ReadDrawPixel(int2( 41, 41)), 0.01f);
+			using (var fb = root.CaptureDraw())
+			{
+				fb.AssertPixel(float4(0.5f, 0.25f, 0, 1), int2(50), 0.01f);
+				fb.AssertPixel(float4(0, 0.5f, 0, 1),     int2(41), 0.01f);
+			}
 		}
 
 		[Test]
@@ -118,9 +126,11 @@ namespace Fuse.Controls.Primitives.Test
 			var p = new UX.Shadow.Panel();
 			var root = TestRootPanel.CreateWithChild(p, int2(300, 300));
 			p._panel.Color = float4(0, 0, 0, 0);
-			root.CaptureDraw();
 
-			Assert.AreEqual(float4(0.0f, 0.5f, 0, 1), root.ReadDrawPixel(int2(100, 100)), 0.01f);
+			using (var fb = root.CaptureDraw())
+			{
+				fb.AssertPixel(float4(0, 0.5f, 0, 1), int2(100), 0.01f);
+			}
 		}
 
 		[Test]
@@ -129,9 +139,11 @@ namespace Fuse.Controls.Primitives.Test
 			var p = new UX.Shadow.Rectangle();
 			var root = TestRootPanel.CreateWithChild(p, int2(300, 300));
 			p._rectangle.Color = float4(0, 0, 0, 0);
-			root.CaptureDraw();
 
-			Assert.AreEqual(float4(0.0f, 0.5f, 0, 1), root.ReadDrawPixel(int2(100, 100)), 0.01f);
+			using (var fb = root.CaptureDraw())
+			{
+				fb.AssertPixel(float4(0, 0.5f, 0, 1), int2(100), 0.01f);
+			}
 		}
 	}
 }

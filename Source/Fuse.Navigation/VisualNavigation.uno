@@ -214,6 +214,15 @@ namespace Fuse.Navigation
 			_pageMap.Remove(v);
 			UpdatePages();
 		}
+		
+		public virtual void OnChildMovedWhileRooted(Node child)
+		{
+			var v = child as Visual;
+			if (v == null)
+				return;
+
+			UpdatePages();
+		}
 
 		protected bool IsPage(Node x) { return Navigation.IsPage(x); }
 		

@@ -1,6 +1,8 @@
 using Uno;
 using Uno.Collections;
 using Uno.UX;
+
+using Fuse.Internal;
 using Fuse.Triggers;
 
 namespace Fuse.Reactive
@@ -13,6 +15,14 @@ namespace Fuse.Reactive
 		Frame,
 		/** Items will be added as though they are wrapped in a @Deferred node. */
 		Deferred,
+	}
+	
+	public enum InstanceReuse
+	{
+		/** Instances are not reused */
+		None,
+		/** Instances can be reused in the same frame */
+		Frame,
 	}
 	
 	[UXContentMode("Template")]
@@ -64,6 +74,26 @@ namespace Fuse.Reactive
 		{
 			get { return _defer; }
 			set { _defer = value; }
+		}
+		
+		InstanceReuse _reuse = InstanceReuse.None;
+		/** Attempts to reuse template instances when items are being removed and created.
+		
+			The default is `None`
+			
+			Be aware that when using this feature several other features may no longer work as expected, such as:
+				- RemovingAnimation: the reused items are not actually removed
+				- AddingAnimation: the resused items are not actually added, just moved
+				- Completed: As a reused item is not added/removed it will not trigger a second time
+				
+			This feature will remain experimental until we can figure out which of these issues can be solved, avoided, or just need to be accepted.
+				
+			@experimental
+		*/
+		public InstanceReuse Reuse
+		{
+			get { return _reuse; }
+			set { _reuse = value; }
 		}
 		
 		float _deferredPriority = 0;
@@ -160,6 +190,7 @@ namespace Fuse.Reactive
 				_listening = false;
 			}
 
+			RemovePendingAvailableNodes();
 			RemoveAll();
 
 			if (_rootTemplates != null)
@@ -312,15 +343,12 @@ namespace Fuse.Reactive
 			/* Will be null if the nodes haven't been created. This is distinct from being non-null but having a
 			count of zero. */
 			public List<Node> Nodes; 
+			//this is a separate list so we can call `Visual.InsertNodes` with `Nodes` alone
+			public List<Template> Templates;
 			public object Data;
 			
 			public WindowItem()
 			{
-			}
-			
-			public WindowItem(List<Node> nodes)
-			{
-				Nodes = nodes;
 			}
 		}
 		
@@ -330,7 +358,7 @@ namespace Fuse.Reactive
 			
 			This list should only be modified via the InsertNew, RemoveAt, and RemoveAll functions.
 		*/
-		List<WindowItem> _windowItems = new List<WindowItem>();
+		ObjectList<WindowItem> _windowItems = new ObjectList<WindowItem>();
 		
 		internal event Action UpdatedWindowItems;
 		bool _pendingUpdateWindowItems;
@@ -407,6 +435,31 @@ namespace Fuse.Reactive
 
 			return null;
 		}
+		
+		void SetData(Node n, object data)
+		{
+			//if an item is being reused it might have existing data. We'll need to broadcast a change
+			var prevOCP =(this as Node.ISubtreeDataProvider).GetData(n);
+			object nextData = null;
+			
+			var obs = data as IObservable;
+			if (obs != null)
+			{
+				var link = new ObservableLink(obs, n);
+				_dataMap[n] = link;
+				nextData = link.Data;
+			}
+			else
+			{
+				_dataMap[n] = data;	
+				nextData = data;
+			}
+			
+ 			n.OverrideContextParent = this;
+ 			
+ 			if (prevOCP != null)
+				n.BroadcastDataChange(prevOCP, nextData);
+		}
 
 		void Repopulate()
 		{
@@ -474,18 +527,80 @@ namespace Fuse.Reactive
 			SetValid();
 		}
 
-		/* Removes the item from the list of windowItems and cleans up associated nodes. */
+		Dictionary<Template,List<Node>> _availableNodes;
+		bool _pendingAvailableNodes;
+		
+		void AddAvailableNode(Template f, Node n)
+		{
+			if (_availableNodes == null)
+				_availableNodes = new Dictionary<Template,List<Node>>();
+				
+			if (!_availableNodes.ContainsKey(f))
+				_availableNodes[f] = new List<Node>();
+			_availableNodes[f].Add(n);
+			
+			if (!_pendingAvailableNodes)
+			{
+				UpdateManager.AddDeferredAction(RemovePendingAvailableNodesAction);
+				_pendingAvailableNodes = true;
+			}
+		}
+		
+		void RemovePendingAvailableNodesAction()
+		{
+			//The pendingNew handler will have to clear the remaining nodes
+			if (!_pendingNew)	
+				RemovePendingAvailableNodes();
+		}
+		
+		void RemovePendingAvailableNodes()
+		{
+			if (_availableNodes == null)
+				return;
+				
+			//TODO: remove foreach if possible, they are inefficient in Uno's memory model
+			foreach (var tn in _availableNodes)
+			{	
+				for (int i=0; i < tn.Value.Count; ++i)
+					RemoveFromParent(tn.Value[i]);
+				tn.Value.Clear();
+			}
+			
+			_pendingNew = false;
+		}
+		
+		void AddAvailableNodes(WindowItem wi)
+		{
+			var nodes = wi.Nodes;
+			var tpls = wi.Templates;
+			if (nodes != null)
+			{
+				if (tpls == null || nodes.Count != tpls.Count)
+					throw new Exception( "WindowItems list corruption" );
+			
+				for (int i=0; i < nodes.Count; ++i)
+					AddAvailableNode(tpls[i], nodes[i]);
+			}
+		}
+		
 		void RemoveAt(int dataIndex)
 		{
 			var windowIndex = dataIndex - Offset;
 			if ( windowIndex < 0 || windowIndex >= _windowItems.Count)
 				return;
 			
-			var list = _windowItems[windowIndex].Nodes;
-			if (list != null)
+			if (Reuse == InstanceReuse.Frame)
 			{
-				for (int i=0; i < list.Count; ++i)
-					RemoveFromParent(list[i]);
+				AddAvailableNodes(_windowItems[windowIndex]);
+			}
+			else
+			{
+				var list = _windowItems[windowIndex].Nodes;
+				if (list != null)
+				{
+					for (int i=0; i < list.Count; ++i)
+						RemoveFromParent(list[i]);
+				}
 			}
  
 			_windowItems.RemoveAt(windowIndex);
@@ -542,7 +657,7 @@ namespace Fuse.Reactive
 			if (_windowItems.Count == 0) return;
 
 			var items = _windowItems;
-			_windowItems = new List<WindowItem>();
+			_windowItems = new ObjectList<WindowItem>();
 
 			for (int i = 0; i < items.Count; i++)
 			{
@@ -680,12 +795,16 @@ namespace Fuse.Reactive
 					first = false;
 				}
 			}
+
+			//remove whatever is leftover
+			RemovePendingAvailableNodes();
 			return false;
 		}
 		
 		void CompleteWindowItem(WindowItem wi, int windowIndex)
 		{
-			var newElements = new List<Node>();
+			wi.Nodes = new List<Node>();
+			wi.Templates = new List<Template>();
 
 			bool anyMatched = false;
 			Template defaultTemplate = null;
@@ -702,7 +821,7 @@ namespace Fuse.Reactive
 				if (t != null)
 				{
 					anyMatched = true;
-					AddTemplate(wi.Data, t, newElements);
+					AddTemplate(wi, t);
 				}
 			}
 
@@ -718,22 +837,20 @@ namespace Fuse.Reactive
 
 					anyMatched = true;
 
-					AddTemplate(wi.Data, f, newElements);
+					AddTemplate(wi, f);
 				}
 			}
 
 			// Priority 3 - Use the default template if provided
 			if (!anyMatched && defaultTemplate != null)
 			{
-				AddTemplate(wi.Data, defaultTemplate, newElements);
+				AddTemplate(wi, defaultTemplate);
 			}
 
 			//find last node prior to where we want to introduce
 			var lastNode = GetLastNodeFromIndex(windowIndex-1);
 
-			//assign first for lookups during the rooting in Insert can find the data
-			wi.Nodes = newElements;
-			Parent.InsertNodes( Parent.Children.IndexOf(lastNode) + 1, newElements.GetEnumerator() );
+			Parent.InsertOrMoveNodes( Parent.Children.IndexOf(lastNode) + 1, wi.Nodes.GetEnumerator() );
 		}
 
 		class ObservableLink: ValueObserver
@@ -769,27 +886,38 @@ namespace Fuse.Reactive
 		Dictionary<Node,object> _dataMap = new Dictionary<Node,object>();
 
 
-		void AddTemplate(object data, Template f, List<Node> newElements)
+		void AddTemplate(WindowItem item, Template f)
  		{
- 			var elm = f.New() as Node;
-			if (elm == null)
-			{
-				Fuse.Diagnostics.InternalError( "Template contains a non-Node", this );
-				return;
-			}
+			Node elm = null;
 
-			var obs = data as IObservable;
-			if (obs != null)
+			//check if there's an available node for this template already
+			if (_availableNodes != null && _availableNodes.ContainsKey(f))
 			{
-				_dataMap[elm] = new ObservableLink(obs, elm);
-			}
-			else
-			{
-				_dataMap[elm] = data;	
+				var list = _availableNodes[f];
+				if (list.Count > 0)
+				{
+					elm = list[list.Count-1];
+					list.RemoveAt(list.Count-1);
+				}
 			}
 			
- 			elm.OverrideContextParent = this;
-			newElements.Add(elm);
+			if (elm == null)
+			{
+				elm = f.New() as Node;
+				if (elm == null)
+				{
+					Fuse.Diagnostics.InternalError( "Template contains a non-Node", this );
+					return;
+				}
+			}
+
+			SetData(elm, item.Data);
+ 			
+ 			if (item.Nodes.Count != item.Templates.Count)
+				throw new Exception( "WindowItem list corruption" );
+				
+ 			item.Nodes.Add(elm);
+ 			item.Templates.Add(f);
  		}
 
 		internal override Node GetLastNodeInGroup()

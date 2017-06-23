@@ -25,9 +25,10 @@ namespace Fuse.Elements.Test
 			using (var root = TestRootPanel.CreateWithChild(p,int2(100)))
 			{
 				WaitLoad(root, p.W);
-				root.CaptureDraw();
-				Assert.AreEqual(float4(0,1,0,1),root.ReadDrawPixel(int2(50)));
-				root.ReleaseCapturedDraw();
+				using (var fb = root.CaptureDraw())
+				{
+					fb.AssertPixel(float4(0,1,0,1), int2(50));
+				}
 				
 				root.Children.Remove(p);
 				root.StepFrame(61); //UnloadUnused waits 60s
@@ -47,16 +48,18 @@ namespace Fuse.Elements.Test
 			{
 				root.StepFrameJS();
 				WaitLoad(root, p.W);
-				root.CaptureDraw();
-				Assert.AreEqual(float4(0,1,0,1),root.ReadDrawPixel(int2(50)));
+				using (var fb = root.CaptureDraw())
+				{
+					fb.AssertPixel(float4(0,1,0,1), int2(50));
+				}
 				
 				p.Next.Perform();
 				root.StepFrameJS();
 				WaitLoad(root, p.W);
-				root.CaptureDraw();
-				Assert.AreEqual(float4(1,0,0,1),root.ReadDrawPixel(int2(50)));
-				
-				root.ReleaseCapturedDraw();
+				using (var fb = root.CaptureDraw())
+				{
+					fb.AssertPixel(float4(1,0,0,1), int2(50));
+				}
 				
 				root.Children.Remove(p);
 				root.StepFrame(61); //UnloadUnused waits 60s
@@ -74,9 +77,10 @@ namespace Fuse.Elements.Test
 			using (var root = TestRootPanel.CreateWithChild(p,int2(100)))
 			{
 				WaitLoad(root, p.W);
-				root.CaptureDraw();
-				Assert.AreEqual(float4(0,1,0,1),root.ReadDrawPixel(int2(50)));
-				root.ReleaseCapturedDraw();
+				using (var fb = root.CaptureDraw())
+				{
+					fb.AssertPixel(float4(0,1,0,1), int2(50));
+				}
 				
 				Assert.AreEqual(1,DisposalManager.TestMemoryResourceCount);
 				root.Children.Remove(p);
@@ -95,19 +99,23 @@ namespace Fuse.Elements.Test
 			using (var root = TestRootPanel.CreateWithChild(p,int2(31)))
 			{
 				WaitLoad(root,p.W);
-				root.CaptureDraw();
-				Assert.AreEqual(float4(1,0,0,1), root.ReadDrawPixelInv(int2(2,2)));
-				Assert.AreEqual(float4(0,0,0,1), root.ReadDrawPixelInv(int2(6,6)));
-				
-				Assert.AreEqual(float4(1,0,0,1), root.ReadDrawPixelInv(int2(11,11)));
-				Assert.AreEqual(float4(0,0,0,1), root.ReadDrawPixelInv(int2(15,15)));
-				
+				using (var fb = root.CaptureDraw())
+				{
+					fb.AssertPixel(float4(1,0,0,1), int2(2));
+					fb.AssertPixel(float4(0,0,0,1), int2(6));
+
+
+					fb.AssertPixel(float4(1,0,0,1), int2(11));
+					fb.AssertPixel(float4(0,0,0,1), int2(15));
+				}
+
 				p.IF.Source = p.C50;
 				WaitLoad(root,p.W);
-				root.CaptureDraw();
-				//TODO: this is blurry here, thus the check fails, seet he IGNORE
-				Assert.AreEqual(float4(0,0,0,1), root.ReadDrawPixelInv(int2(15,15)));
-				root.ReleaseCapturedDraw();
+				using (var fb = root.CaptureDraw())
+				{
+					//TODO: this is blurry here, thus the check fails, seet he IGNORE
+					fb.AssertPixel(float4(0,0,0,1), int2(15));
+				}
 			}
 		}
 		
@@ -119,9 +127,10 @@ namespace Fuse.Elements.Test
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
 				WaitLoad(root,p.W);
-				root.CaptureDraw();
-				Assert.AreEqual(float4(0,1,0,1), root.ReadDrawPixelInv(int2(10)));
-				root.ReleaseCapturedDraw();
+				using (var fb = root.CaptureDraw())
+				{
+					fb.AssertPixel(float4(0,1,0,1), int2(10));
+				}
 				
 				DisposalManager.Clean(DisposalRequest.Background);
 				Assert.IsTrue(p.IF.TestIsClean);
@@ -141,20 +150,6 @@ namespace Fuse.Elements.Test
 				WaitLoad(root, p.W);
 				Assert.AreEqual(1,p.C.PerformedCount);
 			}
-		}
-		
-		void DumpImage(TestRootPanel root, int2 sz)
-		{
-			var str = "";
-			for( int y=0; y < sz.Y; y++ ) {
-				for( int x =0; x < sz.X; x++ ) {
-					var f = root.ReadDrawPixel(int2(x,y));
-					str += String.Format("{0:X}{1:X}{2:X}{3:X} ",
-						(int)(f.X*15), (int)(f.Y*15), (int)(f.Z*15), (int)(f.W*15));
-				}
-				str += "\n";
-			}
-			debug_log str;
 		}
 		
 		void WaitLoad(TestRootPanel root, Fuse.Triggers.Trigger t)

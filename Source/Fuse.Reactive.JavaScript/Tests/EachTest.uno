@@ -3,6 +3,7 @@ using Uno.UX;
 using Uno.Testing;
 
 using Fuse.Controls;
+using Fuse.Elements;
 using FuseTest;
 
 namespace Fuse.Reactive.Test
@@ -321,6 +322,75 @@ namespace Fuse.Reactive.Test
  				root.StepFrame();
  				Assert.AreEqual("0-0,0-1,1-0,1-1", GetText(e));
 			}
+		}
+
+		[Test]
+		public void Reuse()
+		{
+			var e = new UX.Each.Reuse();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.StepFrameJS();
+				var z0 = GetZChildren(e.s);
+				Assert.AreEqual("4,3,2,1,0", GetDudZ(e.s));
+				
+				e.e.Offset = 1;
+				root.StepFrame();
+				var z1 = GetZChildren(e.s);
+				Assert.AreEqual("5,4,3,2,1", GetDudZ(e.s));
+				
+				Assert.AreEqual(z0[0],z1[1]);
+				Assert.AreEqual(z0[4],z1[0]); //node actually reused
+				
+				//ensure layout was invalidated
+				Assert.AreEqual(float2(0,40),(z1[0] as Element).ActualPosition);
+				Assert.AreEqual(float2(0,0),(z1[4] as Element).ActualPosition);
+			}
+		}
+		
+		[Test]
+		public void ReuseTemplates()
+		{
+			var e = new UX.Each.ReuseTemplates();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.StepFrameJS();
+				var z0 = GetZChildren(e.s);
+				Assert.AreEqual("107,6,105,4", GetDudZ(e.s));
+				
+				e.e.Offset = 2;
+				root.StepFrame();
+				var z1 = GetZChildren(e.s);
+				Assert.AreEqual("105,4,103,2", GetDudZ(e.s));
+				
+				Assert.AreEqual(z0[3],z1[1]);
+				Assert.AreEqual(z0[0],z1[2]);//reuse
+				Assert.AreEqual(z0[1],z1[3]);//reuse
+			}
+		}
+
+		static Visual[] GetZChildren(Visual root)
+		{
+			var list = new Visual[root.ZOrderChildCount];
+			for (int i=0; i < root.ZOrderChildCount; ++i)
+				list[i] = root.GetZOrderChild(i);
+			return list;
+		}
+		
+		static internal string GetDudZ(Visual root)
+		{
+			var q = "";
+			for (int i=0; i < root.ZOrderChildCount; ++i)
+			{
+				var t = root.GetZOrderChild(i) as FuseTest.DudElement;
+				if (t != null)
+				{
+					if (q.Length > 0)
+						q += ",";
+					q += t.Value;
+				}
+			}
+			return q;
 		}
 		
 		[Test]

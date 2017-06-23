@@ -8,6 +8,10 @@
     <Clicked PointerIndex="Any"/>
 - `SwipeGesture`, `ScrollView`, `LinearRangeBehaviour` (`Slider`), `CircularRangeBehaviour`, `Clicked`, `Tapped`, `DoubleClicked`, `DoubleTapped`, `LongPressed`, `WhilePressed` all use the gesture system now. They have a `GesturePriority` property which can be used to adjust relative priorities -- though mostly the defaults should be fine.
 - The `SwipeGesture.GesturePriority` default is changed from `High` to `Low`. This better fits with how the priorities should work together in a typical app and in general shouldn't affect any usual layouts. You can alter the priority with `GesturePriority="High"`
+## Each Reuse
+- Added `Reuse` to `Each` allowing the reuse of nodes
+- Added `OnChildMoved` to `Visual`. Anything implementing `OnChildAdded` or `OnChildRemoved` will likely need to implement `OnChildMoved` as well. This happens when a child's position in `Children` list changes.
+- Added `OnChildMovedWhileRooted` to `IParentObserver`
 
 # 1.1
 
@@ -34,6 +38,8 @@
 - Updated the bundled libjpeg, libpng, Freetype, and SDL2 libaries for macOS to not use AVX instructions, since they are incompatible with the CPUs in some older Mac models. This fixes an issue with SIGILLs in native builds.
 
 ### Native
+
+## Native
 - Added feature toggle for implicit `GraphicsView`. If you are making an app using only Native UI disabling the implicit `GraphicsView` can increase performance. Disable the `GraphicsView` by defining `DISABLE_IMPLICIT_GRAPHICSVIEW` when building. For example `uno build -t=ios -DDISABLE_IMPLICIT_GRAPHICSVIEW`
 
 ### Gestures

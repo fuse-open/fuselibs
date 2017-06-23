@@ -11,6 +11,8 @@ namespace Fuse.Navigation
 	public abstract class WhileHistoryTrigger : WhileTrigger
 	{
 		IBaseNavigation _context;
+		//TODO: This won't work due to being overidden in `OnUnrooted`. A good fix would be to remove this `public` part
+		//and alter the `Navigation` override to work with a `Node` (if that's even possible)
 		public IBaseNavigation NavigationContext { set { _context = value; } get { return _context; } }
 
 		protected override void OnRooted()
