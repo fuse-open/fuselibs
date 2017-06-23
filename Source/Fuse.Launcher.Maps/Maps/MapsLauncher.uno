@@ -38,6 +38,7 @@ namespace Fuse.LauncherImpl
 
 		public static void LaunchMaps(string query)
 		{
+			query = Uri.Encode(query);
 			if defined(Android)
 				LaunchMapsAndroid("geo:0,0?q=" + query);
 			else if defined(iOS)
@@ -49,6 +50,7 @@ namespace Fuse.LauncherImpl
 			if defined(Android || iOS)
 			{
 				var latlon = latitude.ToString() + "," + longitude.ToString();
+				query = Uri.Encode(query);
 
 				if defined(Android)
 					LaunchMapsAndroid("geo:" + latlon + "?q=" + query);
