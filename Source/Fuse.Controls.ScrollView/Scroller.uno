@@ -183,20 +183,14 @@ namespace Fuse.Gestures
 
 		float _significance;
 
-		float IGesture.Significance
+		GesturePriorityConfig IGesture.Priority
 		{
-			//TODO: DelayStart is untested now, the use of 100 is kind of magical!
-			get { return (!DelayStart ? 100 : 0) + _significance; }
-		}
-		
-		int IGesture.PriorityAdjustment
-		{
-			get { return 0; }
-		}
-		
-		GesturePriority IGesture.Priority
-		{
-			get { return _scrollable == null ? GesturePriority.Lower : _scrollable.GesturePriority; }
+			get
+			{ 
+				return new GesturePriorityConfig(
+					_scrollable == null ? GesturePriority.Low : _scrollable.GesturePriority,
+					(!DelayStart ? 100 : 0) + _significance);
+			}
 		}
 		
 		GestureRequest IGesture.OnPointerPressed(PointerPressedArgs args)
@@ -206,9 +200,10 @@ namespace Fuse.Gestures
 			return GestureRequest.Capture;
 		}
 
-		void IGesture.OnCapture( PointerEventArgs args, CaptureType how )
+		void IGesture.OnCaptureChanged( PointerEventArgs args, CaptureType how, CaptureType prev )
 		{
-			_softCaptureStart = _softCaptureCurrent = args.WindowPoint;
+			if (how.HasFlag(CaptureType.Soft))
+				_softCaptureStart = _softCaptureCurrent = args.WindowPoint;
 			_pointerPos = args.WindowPoint;
 			_prevPos = _startPos = _pointerPos;
 			_prevTime = args.Timestamp;

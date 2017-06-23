@@ -73,19 +73,12 @@ namespace Fuse.Gestures
 			base.OnUnrooted();
 		}
 		
-		float IGesture.Significance
+		GesturePriorityConfig IGesture.Priority
 		{
-			get { return 0; }
-		}
-		
-		int IGesture.PriorityAdjustment
-		{
-			get { return 0; }
-		}
-		
-		GesturePriority IGesture.Priority
-		{
-			get { return GesturePriority.Normal; }
+			get
+			{
+				return new GesturePriorityConfig(GesturePriority.Normal);
+			}
 		}
 		
 		GestureRequest IGesture.OnPointerPressed( PointerPressedArgs args )
@@ -103,7 +96,7 @@ namespace Fuse.Gestures
 			return GestureRequest.Cancel;
 		}
 		
-		void IGesture.OnCapture( PointerEventArgs args, CaptureType how )
+		void IGesture.OnCaptureChanged( PointerEventArgs args, CaptureType how, CaptureType prev )
 		{
 			SetIsActive(true, _gesture);
 		}

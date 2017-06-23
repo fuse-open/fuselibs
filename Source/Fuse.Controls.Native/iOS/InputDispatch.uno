@@ -100,6 +100,7 @@ namespace Fuse.Controls.Native.iOS
 
 			if (touchEnded)
 			{
+				//iOS stops tracking all other touches when one of them releases
 				for (var i = 0; i < touches.Length; i++)
 				{
 					var touch = touches[i];

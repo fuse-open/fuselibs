@@ -210,11 +210,11 @@ namespace Fuse.Gestures
 		}
 		
 		internal static Selector GesturePriorityName = "GesturePriority";
-		GesturePriority _gesturePriority = GesturePriority.Lower;
+		GesturePriority _gesturePriority = GesturePriority.Low;
 		/**
 			The priority of the swiping gesture when competing with other gestures.
 			
-			The default is Higher. 
+			The default is Lower. 
 			
 			Mutliple `SwipeGesture` behaviours in the same node become part of a single compound gesture. The priority is applied, but once the gesture acquires a hard capture (becomes solely recognized), a lower priority swipe may then nonetheless be triggered (should the pointer direction change).
 			

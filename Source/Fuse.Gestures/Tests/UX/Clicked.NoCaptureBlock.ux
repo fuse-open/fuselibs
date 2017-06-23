@@ -1,6 +1,6 @@
 <Panel ux:Class="UX.Clicked.NoCaptureBlock">
 	<Panel Alignment="TopRight" Width="100" Height="100"  HitTestMode="LocalBounds">
-		<Tapped>
+		<Tapped PointerIndex="Any">
 			<FuseTest.CountAction ux:Name="C"/>
 		</Tapped>
 	</Panel>

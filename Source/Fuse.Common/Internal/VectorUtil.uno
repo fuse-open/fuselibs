@@ -13,7 +13,7 @@ namespace Fuse.Internal
 		}
 		
 		/**
-			Scalar projectiono f `a` on `b`
+			Scalar projection of `a` on `b`
 		*/
 		public static float ScalarProjection(float2 a, float2 b )
 		{
@@ -27,6 +27,11 @@ namespace Fuse.Internal
 		{
 			var a1 = Projection(a,b);
 			return a - a1;
+		}
+		
+		public static float NormRejection(float2 a, float2 b)
+		{
+			return Vector.Length( Rejection(a,b) );
 		}
 		
 		/**

@@ -27,7 +27,7 @@ namespace Fuse.Gestures.Internal
 			set { _isEnabled = value; }
 		}
 		
-		GesturePriority _gesturePriority = GesturePriority.Higher;
+		GesturePriority _gesturePriority = GesturePriority.Low;
 		public GesturePriority GesturePriority
 		{
 			get { return _gesturePriority; }
@@ -425,7 +425,6 @@ namespace Fuse.Gestures.Internal
 		}
 
 		double _startProgress;
-		int _down = -1;
 		double _prevTime;
 		float2 _startCoord;
 		float _velocityThreshold = 300.0f;
@@ -433,23 +432,16 @@ namespace Fuse.Gestures.Internal
 		PointerVelocity<float2> _velocity = new PointerVelocity<float2>();
 		
 		float _significance;
-		float IGesture.Significance
+		GesturePriorityConfig IGesture.Priority
 		{
-			get { return _significance; }
-		}
-		
-		int IGesture.PriorityAdjustment
-		{
-			get 
+			get
 			{
-				//TODO: fixup random number based on priorities in Swipe somehow
-				return _pointerRegion == null ? 0 : (_pointerRegion.Priority < 100 ? 1 : 0);
+				return new GesturePriorityConfig(
+					_pointerRegion == null ? GesturePriority.Normal : _pointerRegion.GesturePriority,
+					_significance,
+					//TODO: fixup random number based on priorities in Swipe somehow
+					_pointerRegion == null ? 0 : (_pointerRegion.Priority < 100 ? 1 : 0) );
 			}
-		}
-		
-		GesturePriority IGesture.Priority
-		{
-			get { return _pointerRegion == null ? GesturePriority.Normal : _pointerRegion.GesturePriority; }
 		}
 		
 		GestureRequest IGesture.OnPointerPressed(PointerPressedArgs args)
@@ -471,7 +463,7 @@ namespace Fuse.Gestures.Internal
 			return GestureRequest.Capture;
 		}
 		
-		void IGesture.OnCapture(PointerEventArgs args, CaptureType how)
+		void IGesture.OnCaptureChanged(PointerEventArgs args, CaptureType how, CaptureType prev)
 		{
 			if (_pointerRegions.Count == 0)
 			{

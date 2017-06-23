@@ -1,5 +1,14 @@
 # Unreleased
 
+## Gesture
+- The experimental `IGesture` interface has changed. 
+  * The `Significance`, `Priority` and `PriotityAdjustment` have been merged into the single `GetPriority` function.
+  * `OnCapture` is changed to `OnCaptureChanged` and provides the previous capture state 
+- `Clicked`, `DoubleClicked`, `Tapped`, `DoubleTapped`, and `LongPressed` have been corrected to only detect the primary "first" pointer press. If you'd like to accept any pointer index add `PointerIndex="Any"` to the gesture.
+    <Clicked PointerIndex="Any"/>
+- `SwipeGesture`, `ScrollView`, `LinearRangeBehaviour` (`Slider`), `CircularRangeBehaviour`, `Clicked`, `Tapped`, `DoubleClicked`, `DoubleTapped`, `LongPressed`, `WhilePressed` all use the gesture system now. They have a `GesturePriority` property which can be used to adjust relative priorities -- though mostly the defaults should be fine.
+- The `SwipeGesture.GesturePriority` default is changed from `High` to `Low`. This better fits with how the priorities should work together in a typical app and in general shouldn't affect any usual layouts. You can alter the priority with `GesturePriority="High"`
+
 ## Each Reuse
 - Added `Reuse` to `Each` allowing the reuse of nodes
 - Added `OnChildMoved` to `Visual`. Anything implementing `OnChildAdded` or `OnChildRemoved` will likely need to implement `OnChildMoved` as well. This happens when a child's position in `Children` list changes.

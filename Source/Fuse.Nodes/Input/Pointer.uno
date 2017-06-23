@@ -32,6 +32,20 @@ namespace Fuse.Input
 		NodeShare = 1 << 3,
 	}
 	
+	static public class CaptureTypeHelper
+	{
+		static public bool GainedCapture( CaptureType prev, CaptureType next )
+		{
+			return !prev.HasFlag(CaptureType.Soft) && !prev.HasFlag(CaptureType.Hard) &&
+				(next.HasFlag(CaptureType.Soft) || next.HasFlag(CaptureType.Hard));
+		}
+		
+		static public bool BecameHard( CaptureType prev, CaptureType next )
+		{
+			return !prev.HasFlag(CaptureType.Hard) && next.HasFlag(CaptureType.Hard);
+		}
+	}
+	
 	internal class Capture
 	{
 		public Visual Visual { get; private set; }
@@ -96,6 +110,8 @@ namespace Fuse.Input
 	}
 
 	/**
+		Directly using the `Pointer` class is not advised. For all typical UI controls you should iuse the @Gestures system. The gesture system is better able to deal with conflict between gestures.
+
 		## Captures
 		
 		A capture indicates some listener is interested in receiving events for a pointer event even if they no longer hit the target visual. Any capture blocks events from being sent outside of the tree starting at the provided visual.
@@ -103,6 +119,8 @@ namespace Fuse.Input
 		An `identity` is used to identify the capture listener. Each identity has only one capture. This may be at different levels, or involve single or multiple pointer indexes. Multiple captures with the same `identity` can not be created -- it always modifies the existing one.
 		
 		Only one `CaptureType.Hard` can exist for a `PointIndex` at one time. This will also cancel all soft captures that also accept that point (even if it isn't the only point they accept). An exception is those with `NodeShare`.
+
+		@advanced
 	*/
 	public static partial class Pointer
 	{
@@ -208,6 +226,13 @@ namespace Fuse.Input
 			{
 				if (--Count > 0)
 					return;
+					
+				//safety
+				if (Count < 0)
+				{
+					Fuse.Diagnostics.InternalError( "Inconsistent Count", this );
+					Count = 0;
+				}
 				
 				if (AnyDeleted)
 				{
@@ -230,6 +255,7 @@ namespace Fuse.Input
 		
 		static CaptureLockImpl CaptureLock()
 		{
+			_captureLockImpl.Count++;
 			return _captureLockImpl;
 		}
 
@@ -360,7 +386,7 @@ namespace Fuse.Input
 					var c = _captures[i];
 					if (c.Deleted)
 						continue;
-						
+			
 					for (int p=0; p < c.PointIndex.Count; ++p)
 					{
 						if (!IsCaptureAllowedAgainst( to, c.Type,  c.Visual, c.PointIndex[p], c.Identity))
