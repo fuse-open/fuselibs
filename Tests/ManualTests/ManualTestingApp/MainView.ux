@@ -138,6 +138,7 @@
 			<HitTestPage/>
 			<DefaultFonts/>
 			<Pages.SurfaceMisc/>
+			<Launchers/>
 			
 			<Android>
 				<WebViewPage/>
