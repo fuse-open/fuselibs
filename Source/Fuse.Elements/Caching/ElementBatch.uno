@@ -64,7 +64,8 @@ namespace Fuse.Elements
 		public ElementAtlas _atlas;
 		public ElementBatch _batch;
 		public readonly Element _elm;
-		public Recti _rect;
+		public Recti AtlasRect;
+		public int2 DrawingOffset;
 		public float _opacity;
 		public bool IsValid;
 	}
@@ -132,9 +133,11 @@ namespace Fuse.Elements
 			var bounds = elm.RenderBoundsWithEffects;
 			if (bounds.IsInfinite || bounds.IsEmpty)
 				throw new Exception( "element has no caching rect" );
+
+			const int CachingRectPadding = 1;
 			
 			return Recti.Inflate(ConservativelySnapToCoveringIntegers(Rect.Scale(bounds.FlatRect,
-				elm.AbsoluteZoom)), 1);
+				elm.AbsoluteZoom)), CachingRectPadding);
 		}
 
 		VisualBounds CalcRenderBounds()
@@ -288,6 +291,8 @@ namespace Fuse.Elements
 			_indexBuffer = new IndexBuffer(indices, BufferUsage.Immutable);
 		}
 
+		const float CachingRectPaddingAdjustment = 0.5f;
+
 		void FillVertexTexCoordBuffer()
 		{
 			var elementCount = _elements.Count;
@@ -296,10 +301,9 @@ namespace Fuse.Elements
 			for (int i = 0; i < elementCount; ++i)
 			{
 				var entry = _elements[i];
-				var cachingRect = ElementBatch.GetCachingRect(entry._elm);
 
-				float2 texCoordOrigin = (float2)entry._rect.Minimum / _elementAtlas._rectPacker.Size;
-				float2 size = (float2)cachingRect.Size / _elementAtlas._rectPacker.Size;
+				float2 texCoordOrigin = ((float2)entry.AtlasRect.Minimum + CachingRectPaddingAdjustment) / _elementAtlas._rectPacker.Size;
+				float2 size = ((float2)entry.AtlasRect.Size - CachingRectPaddingAdjustment * 2) / _elementAtlas._rectPacker.Size;
 				vertexTexCoords.Set((i * 4 + 0) * _texCoordInfo.BufferStride + _texCoordInfo.BufferOffset, texCoordOrigin);
 				vertexTexCoords.Set((i * 4 + 1) * _texCoordInfo.BufferStride + _texCoordInfo.BufferOffset, texCoordOrigin + float2(size.X, 0));
 				vertexTexCoords.Set((i * 4 + 2) * _texCoordInfo.BufferStride + _texCoordInfo.BufferOffset, texCoordOrigin + size);
@@ -317,14 +321,13 @@ namespace Fuse.Elements
 			for (int i = 0; i < elementCount; ++i)
 			{
 				var entry = _elements[i];
-				var cachingRect = ElementBatch.GetCachingRect(entry._elm);
 				var opacity = entry._opacity;
 
 				var transform = entry._elm.LocalTransform;
 				//this calculation assumes the transform is flat (a precondition to caching the element)
-				float2 localOrigin = (float2)cachingRect.Minimum * densityScale;
+				float2 localOrigin = ((float2)entry.DrawingOffset + CachingRectPaddingAdjustment) * densityScale;
 				float2 positionOrigin = transform[3].XY + localOrigin.X * transform[0].XY + localOrigin.Y * transform[1].XY;
-				float2 size = (float2)cachingRect.Size * densityScale;
+				float2 size = ((float2)entry.AtlasRect.Size - CachingRectPaddingAdjustment * 2) * densityScale;
 				float2 right = transform[0].XY * size.X;
 				float2 up = transform[1].XY * size.Y;
 				vertexPositions.Set((i * 4 + 0) * _positionInfo.BufferStride + _positionInfo.BufferOffset, float3(positionOrigin, opacity));

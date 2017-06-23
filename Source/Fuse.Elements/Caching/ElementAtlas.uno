@@ -51,9 +51,8 @@ namespace Fuse.Elements
 
 		public bool AddElement(Element elm)
 		{
-			Recti cacheRect;
-			if (!Cache.GetCachingRect(elm, out cacheRect))
-				return false;
+			Recti cacheRect = ElementBatch.GetCachingRect(elm);
+
 			Recti rect;
 			if (!_rectPacker.TryAdd(cacheRect.Size, out rect))
 				return false;
@@ -65,7 +64,8 @@ namespace Fuse.Elements
 			if (entry._atlas != null)
 				entry._atlas.RemoveElement(elm);
 			entry._atlas = this;
-			entry._rect = rect;
+			entry.AtlasRect = rect;
+			entry.DrawingOffset = cacheRect.Minimum;
 			_elements.Add(elm);
 
 			_invalidElements++;
@@ -80,7 +80,7 @@ namespace Fuse.Elements
 			if (entry._atlas != this)
 				throw new Exception("Removing from wrong atlas");
 
-			_spilledPixels += entry._rect.Area;
+			_spilledPixels += entry.AtlasRect.Area;
 
 			if (!entry.IsValid)
 			{
@@ -101,15 +101,17 @@ namespace Fuse.Elements
 			if (entry._atlas != this)
 				throw new Exception("wrong atlas again, dummy!");
 
-			Recti cacheRect;
-			if (!Cache.GetCachingRect(elm, out cacheRect))
-				return false;
+			Recti cacheRect = ElementBatch.GetCachingRect(elm);
+
 			Recti rect;
 			if (!_rectPacker.TryAdd(cacheRect.Size, out rect))
 				return false;
 
-			_spilledPixels += entry._rect.Area;
-			entry._rect = rect;
+			_spilledPixels += entry.AtlasRect.Area;
+
+			entry.AtlasRect = rect;
+			entry.DrawingOffset = cacheRect.Minimum;
+
 			if (entry.IsValid)
 			{
 				_invalidElements++;
@@ -179,8 +181,7 @@ namespace Fuse.Elements
 					if (!scissorRectInClipSpace.Intersects(visibleRect))
 						continue;
 
-					var cachingRect =ElementBatch.GetCachingRect(elm);
-					var offset = (float2)(entry._rect.Minimum - cachingRect.Minimum) / density;
+					var offset = (float2)(entry.AtlasRect.Minimum - entry.DrawingOffset) / density;
 					var translation = Matrix.Translation(offset.X, offset.Y, 0);
 					var cc = new OrthographicFrustum{
 						Origin = float2(0, 0), Size = viewport,
@@ -188,7 +189,7 @@ namespace Fuse.Elements
 
 					dc.PushViewport( new FixedViewport(_rectPacker.Size, density, cc));
 
-					var scissor = entry._rect;
+					var scissor = entry.AtlasRect;
 					if (elm.ClipToBounds)
 						scissor = elm.GetVisibleViewportInvertPixelRect(dc, elm.RenderBoundsWithEffects);
 
