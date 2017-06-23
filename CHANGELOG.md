@@ -4,6 +4,9 @@
 
 ## 1.1.0
 
+### Fuse.Launchers
+- Fixed bug on iOS where URIs were incorrectly encoded, leading to some input with reserved URI-characters misbehaving.
+
 ### ImageTools
 - Fixed bug in Android implementation that could result in errors due to prematurely recycled bitmaps
 
