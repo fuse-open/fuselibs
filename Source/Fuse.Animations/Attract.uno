@@ -95,7 +95,7 @@ namespace Fuse.Animations
 			{
 				var value = float4(0);
 				int size = 0;
-				if (!TryMarshalToAnimFloat4(oValue, out value, out size))
+				if (!Marshal.TryToZeroFloat4(oValue, out value, out size))
 				{
 					//invalid values can simply discard the simulation (forcing a new one to be created when
 					//a good value arrives)
@@ -186,73 +186,6 @@ namespace Fuse.Animations
 				_attract = null;
 				CleanSimulation();
 			}
-		}
-		
-		/**
-			Converts a value to a float4 suitable for animation, where unspecified values are 0.
-			
-			NOTE: Perhaps this should be made a standard method in Marshal, there must be more places that
-				need this logic. The base logic was just copied from Marshal.ToFloat4 (modified to add 0's) -- Size handling was removed until we can build the special logic needed to support it's animation.
-		*/
-		static bool TryMarshalToAnimFloat4(object o, out float4 value, out int size)
-		{
-			if (o is float4) 
-			{
-				value = (float4)o;
-				size = 4;
-				return true;
-			}
-			
-			if (o is float3)
-			{
-				var f = (float3)o;
-				value =float4(f.X, f.Y, f.Z, 0);
-				size = 3;
-				return true;
-			}
-			
-			if (o is float2)
-			{
-				var f = (float2)o;
-				value = float4(f.X, f.Y, 0, 0);
-				size = 2;
-				return true;
-			}
-			
-			if (o is string)
-			{
-				var s = (string)o;
-				if (s.StartsWith("#"))
-				{
-					value = Uno.Color.FromHex(s);
-					size = 4;
-					return true;
-				}
-			}
-			else if (o is IArray)
-			{
-				var a = (IArray)o;
-				var x = a.Length > 0 ? Marshal.ToFloat(a[0]) : 0.0f;
-				var y = a.Length > 1 ? Marshal.ToFloat(a[1]) : 0.0f;
-				var z = a.Length > 2 ? Marshal.ToFloat(a[2]) : 0.0f;
-				var w = a.Length > 3 ? Marshal.ToFloat(a[3]) : 0.0f;
-				value = float4(x,y,z,w);
-				size = a.Length;
-				return true;
-			}
-
-			double d;
-			if (Marshal.ToDouble(o, out d))
-			{
-				var f = (float)d;
-				value = float4(f,0,0,0);
-				size = 1;
-				return true;
-			}
-
-			value = float4(0);
-			size = 0;
-			return false;
 		}
 	}
 }

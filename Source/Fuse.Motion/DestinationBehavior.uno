@@ -5,8 +5,6 @@ using Fuse.Motion;
 using Fuse.Reactive;
 using Fuse.Motion.Simulation;
 
-//NOTE: This is likely destined to be a fuselibs package. It resides in premiumlibs since it's necessary
-//for animation of charts desired for release-1.0
 namespace Fuse.Animations
 {
 	/**
