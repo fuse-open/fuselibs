@@ -2,6 +2,9 @@
 
 # 1.1
 
+### Fuse.ImageTools
+- Fixed bug preventing handling of KEEP_ASPECT resize mode on Android when using ImageTools.resize 
+
 ## 1.1.0
 
 ### Fuse.Launchers
