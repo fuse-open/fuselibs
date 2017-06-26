@@ -2,6 +2,9 @@
 
 # 1.1
 
+### Fuse.Camera
+- iOS: Fixed crash when using Fuse.Camera alongside `<iOS.StatusBarConfig IsVisible="false" />`
+
 ## 1.1.0
 
 ### Fuse.Launchers
