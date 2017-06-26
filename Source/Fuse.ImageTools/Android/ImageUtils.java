@@ -166,7 +166,7 @@ public class ImageUtils {
 				scaledBitmap.recycle();
 			}
 
-			if (!resultBitmap.isRecycled())
+			if (resultBitmap != null && !resultBitmap.isRecycled())
 				resultBitmap.recycle();
 		}
 	}
