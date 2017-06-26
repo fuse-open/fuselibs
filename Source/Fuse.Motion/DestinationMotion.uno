@@ -10,9 +10,9 @@ namespace Fuse.Motion
 	*/
 	/**
 		This class defines the animation of a value as it moves towards another values. It is typically used as
-		a composite object of other types, such as @MotionConfig and @Attractor.
+		a composite object of other types, such as @MotionConfig, @Attract and @Attractor.
 	*/
-	public class DestinationMotion<T>
+	public class DestinationMotionConfig
 	{
 		internal MotionDestinationType _type = MotionDestinationType.Elastic;
 		bool _explicitType;
@@ -120,7 +120,7 @@ namespace Fuse.Motion
 			}
 		}
 		
-		internal DestinationSimulation<T> Create()
+		internal DestinationSimulation<T> Create<T>()
 		{
 			var effectiveUnit = Unit;
 			var multiplier = 1f;
@@ -182,4 +182,13 @@ namespace Fuse.Motion
 			return dest;
 		}
 	}
+	
+	public class DestinationMotion<T> : DestinationMotionConfig
+	{
+		new internal DestinationSimulation<T> Create()
+		{
+			return base.Create<T>();
+		}
+	}
+	
 }

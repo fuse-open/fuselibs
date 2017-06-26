@@ -18,10 +18,13 @@
   "Projects": [
     "../Fuse.Motion/Fuse.Motion.unoproj",
     "../Fuse.Nodes/Fuse.Nodes.unoproj",
-    "../Fuse.Common/Fuse.Common.unoproj"
+    "../Fuse.Common/Fuse.Common.unoproj",
+    "../Fuse.Reactive/Fuse.Reactive.unoproj",
+    "../Fuse.Reactive.Expressions/Fuse.Reactive.Expressions.unoproj",
   ],
   "Includes": [
     "Animator.uno:Source",
+    "Attract.uno:Source",
     "Attractor.uno:Source",
     "AverageMixer.uno:Source",
     "Change.uno:Source",
