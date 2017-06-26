@@ -1,5 +1,8 @@
 # Unreleased
 
+## Attract
+- Added the `attract` feature, which was previously only in premiumlibs. This provides a much simpler syntax for animation than the `Attractor` behavior.
+
 ## Gesture
 - The experimental `IGesture` interface has changed. 
   * The `Significance`, `Priority` and `PriotityAdjustment` have been merged into the single `GetPriority` function.
