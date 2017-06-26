@@ -31,7 +31,7 @@ namespace Fuse.Reactive
 		This class can not be directly instantiated or inherited because its constructors are internal. Use one of the
 		provided derived classes instead: @Each or @Instance.
 	*/
-	public class Instantiator: Behavior, IObserver, ITemplateObserver, Node.ISubtreeDataProvider, IDeferred
+	public class Instantiator: Behavior, IObserver, Node.ISubtreeDataProvider, IDeferred
 	{
 		IList<Template> _templates;
 		RootableList<Template> _rootTemplates;
@@ -159,11 +159,6 @@ namespace Fuse.Reactive
 		public string TemplateKey
 		{
 			get; set;
-		}
-
-		void ITemplateObserver.OnTemplatesChangedWileRooted()
-		{
-			Repopulate();
 		}
 
 		void OnTemplatesChanged(Template factory)

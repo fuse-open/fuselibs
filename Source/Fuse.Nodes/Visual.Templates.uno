@@ -2,16 +2,13 @@ using Uno;
 using Uno.Collections;
 using Uno.UX;
 
+using Fuse.Internal;
+
 namespace Fuse
 {
-	public interface ITemplateObserver
-	{
-		void OnTemplatesChangedWileRooted();
-	}
-
 	public partial class Visual
 	{
-		RootableList<Template> _templates;
+		MiniList<Template> _templates;
 
 		/** List of templates that will be used to populate this Visual.
 
@@ -40,46 +37,14 @@ namespace Fuse
 		{ 
 			get
 			{
-				if (_templates == null)
-				{
-					_templates = new RootableList<Template>();
-					if (IsRootingCompleted)
-						RootTemplates();
-				}
 				return _templates;
-			}
-		}
-
-		void RootTemplates()
-		{
-			if (_templates != null)
-				_templates.Subscribe(OnTemplatesChanged, OnTemplatesChanged);
-		}
-		
-		void UnrootTemplates()
-		{
-			if (_templates != null)
-				_templates.Unsubscribe();
-		}
-		
-		void OnTemplatesChanged(Template t)
-		{
-			if (IsRootingCompleted)
-			{
-				for (var i = 0; i < Children.Count; i++)
-				{
-					var to = Children[i] as ITemplateObserver;
-					if (to != null) to.OnTemplatesChangedWileRooted();
-				}
 			}
 		}
 
 		public Template FindTemplate(string key)
 		{
-			if (_templates == null) return null;
-
 			// Search backwards to allow key overrides
-			for (int i = _templates.Count; i --> 0; )
+			for (int i = _templates.Count; i >= 0; --i )
 			{
 				var t = _templates[i];
 				if (t.Key == key) return t;

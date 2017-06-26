@@ -115,7 +115,6 @@ namespace Fuse
 			_ambLayoutParams.Reset();
 
 			_viewport = FindViewport();
-			RootTemplates();
 			RootResources();
 		}
 
@@ -126,7 +125,6 @@ namespace Fuse
 			base.OnUnrooted();
 
 			UnrootResources();
-			UnrootTemplates();
 			_viewport = null;
 
 			ResetParameterListeners();
