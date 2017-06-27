@@ -135,7 +135,25 @@ public class ImageUtils {
 						Math.min(desiredHeight, (int)height));
 
 				break;
-			case IGNORE_ASPECT:
+			case KEEP_ASPECT:
+				if (width > desiredWidth) {
+					ratio = desiredWidth / width;
+					width *= ratio;
+					height *= ratio;
+				}
+				if (height > desiredHeight) {
+					ratio = desiredHeight / height;
+					width *= ratio;
+					height *= ratio;
+				}
+
+				resultBitmap = Bitmap.createScaledBitmap(
+						sourceBitmap,
+						(int)width,
+						(int)height,
+						true);
+				break;
+			default:
 				//Use width/height as given
 				resultBitmap = Bitmap.createScaledBitmap(
 						sourceBitmap,
@@ -166,7 +184,7 @@ public class ImageUtils {
 				scaledBitmap.recycle();
 			}
 
-			if (!resultBitmap.isRecycled())
+			if (resultBitmap != null && !resultBitmap.isRecycled())
 				resultBitmap.recycle();
 		}
 	}
