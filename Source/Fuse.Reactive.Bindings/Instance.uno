@@ -147,8 +147,13 @@ namespace Fuse.Reactive
 		*/
 		public ITemplateSource TemplateSource
 		{
-			get; set;
+			get { return _weakTemplateSource; }
+			set { _weakTemplateSource = value; }
 		}
+		//https://github.com/fusetools/fuselibs-public/issues/135
+		[WeakReference]
+		ITemplateSource _weakTemplateSource;
+		ITemplateSource _templateSource; //captured at rooting time
 
 		/** Specifies a template key that is used to look up in the @TemplateSource to find an override of the default
 			`Templates` provided in this object.
@@ -174,6 +179,7 @@ namespace Fuse.Reactive
 			
 			if (_rootTemplates != null)
 				_rootTemplates.Subscribe(OnTemplatesChanged, OnTemplatesChanged);
+			_templateSource = _weakTemplateSource;
 		}
 
 		protected override void OnUnrooted()
@@ -190,6 +196,7 @@ namespace Fuse.Reactive
 
 			if (_rootTemplates != null)
 				_rootTemplates.Unsubscribe();
+			_templateSource = null;
 				
 			_completedRemove = null;
 			base.OnUnrooted();
@@ -809,9 +816,9 @@ namespace Fuse.Reactive
 			// Priority 1 - If a TemplateSource and TemplateKey is specified
 			// look for a template in the source that matches the key.
 			// If found, use that
-			if (TemplateSource != null && TemplateKey != null)
+			if (_templateSource != null && TemplateKey != null)
 			{
-				var t = TemplateSource.FindTemplate(TemplateKey);
+				var t = _templateSource.FindTemplate(TemplateKey);
 				if (t != null)
 				{
 					anyMatched = true;
