@@ -145,7 +145,7 @@ namespace Fuse.Reactive
 			The `TemplateSource` property, along with the templates in the source, as well as the `TemplateKey`, must be set prior to
 			rooting to take effect.
 		*/
-		public Visual TemplateSource
+		public ITemplateSource TemplateSource
 		{
 			get; set;
 		}
@@ -812,7 +812,6 @@ namespace Fuse.Reactive
 			if (TemplateSource != null && TemplateKey != null)
 			{
 				var t = TemplateSource.FindTemplate(TemplateKey);
-
 				if (t != null)
 				{
 					anyMatched = true;

@@ -2,16 +2,21 @@ using Uno;
 using Uno.Collections;
 using Uno.UX;
 
+using Fuse.Internal;
+
 namespace Fuse
 {
 	/**
 		A common base class that adds nodes and resources to the parent node while active.
 		
 		[subclass Fuse.NodeGroupBase]
+		
+		Be aware there is no ordering between the Nodes, Resources, and Templates. These are each independent lists which have their own order.
 	*/
-	public abstract class NodeGroupBase : Behavior
+	public abstract class NodeGroupBase : Behavior, ITemplateSource
 	{
 		RootableList<Node> _nodes;
+		int NodeCount { get { return _nodes == null ? 0 : _nodes.Count; } }
 		
 		[UXContent]
 		/**
@@ -30,8 +35,16 @@ namespace Fuse
 				return _nodes;
 			}
 		}
+
+		TemplateSourceImpl _templates;
+		
+		[UXContent]
+		public IList<Template> Templates { get { return _templates.Templates; } }
+		public Template FindTemplate(string key) { return _templates.FindTemplate(key); }
 		
 		internal NodeGroupBase() { }
+		
+		protected bool UseTemplates = true;
 		
 		bool _useContent = false;
 		internal bool UseContent
@@ -124,6 +137,7 @@ namespace Fuse
 		//used to prevent double-adding and double-removing if a derived class changes the UseContent
 		//state during rooting
 		bool _contentAdded;
+		MiniList<Node> _addedNodes;
 		
 		void AddContent()
 		{
@@ -145,7 +159,7 @@ namespace Fuse
 				}
 			}
 
-			if (_nodes == null || _nodes.Count == 0)
+			if (NodeCount == 0 && _templates.Count == 0)
 				return;
 				
 			//add after the location of `this` in Parent
@@ -156,13 +170,29 @@ namespace Fuse
 				return;
 			}
 
-			for (int i = 0; i < _nodes.Count; ++i)
+			for (int i = 0; i < NodeCount; ++i)
 			{
 				var n = _nodes[i];
 				n.OverrideContextParent = n.OverrideContextParent ?? this;
+				_addedNodes.Add(n);
 			}
 			
-			Parent.InsertNodes( where, _nodes.GetEnumerator() );
+			if (UseTemplates)
+			{
+				for (int i=0; i < _templates.Count; ++i)
+				{
+					var n = _templates[i].New() as Node;
+					if (n == null)
+					{
+						Fuse.Diagnostics.InternalError( "Template contains a non-Node", this );
+						continue;
+					}
+					n.OverrideContextParent = n.OverrideContextParent ?? this;
+					_addedNodes.Add(n);
+				}
+			}
+			
+			Parent.InsertNodes( where, _addedNodes.GetEnumerator() );
 		}
 
 		void RemoveContent()
@@ -181,15 +211,13 @@ namespace Fuse
 				}
 			}
 
-			if (_nodes != null )
+			for (int i=0; i < _addedNodes.Count; ++i)
 			{
-				for (int i=0; i < _nodes.Count; ++i)
-				{
-					var n = _nodes[i];
-					if (n.OverrideContextParent == this) n.OverrideContextParent = null;
-					Parent.BeginRemoveChild(n);
-				}
+				var n = _addedNodes[i];
+				if (n.OverrideContextParent == this) n.OverrideContextParent = null;
+				Parent.BeginRemoveChild(n);
 			}
+			_addedNodes.Clear();
 		}
 	}
 
@@ -216,6 +244,8 @@ namespace Fuse
 	{
 		/**
 			When `true` (the default) the contained nodes and resources will be added to the parent node. When `false` they will be removed.
+			
+			Like a Visual, the templates added to the NodeGroup are not instantiated when rooted. They are made available for lookup in other classes that need a source, such as `Each.TemplateSource`.  You can use @Instance if you need to instantiate templates at rooting time.
 		*/
 		public bool IsActive
 		{
@@ -225,6 +255,7 @@ namespace Fuse
 		
 		public NodeGroup()
 		{
+			UseTemplates = false;
 			UseContent = true;
 		}
 	}

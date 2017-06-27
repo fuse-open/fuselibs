@@ -6,9 +6,43 @@ using Fuse.Internal;
 
 namespace Fuse
 {
+	public interface ITemplateSource
+	{
+		IEnumerable<Template> Templates { get; }
+		Template FindTemplate(string key);
+	}
+	
+	struct TemplateSourceImpl
+	{
+		List<Template> _templates;
+		
+		public int Count { get { return _templates == null ? 0 : _templates.Count; } }
+		public Template this[int index] { get { return _templates[index]; } }
+		public List<Template> Templates
+		{
+			get
+			{
+				if (_templates == null)
+					_templates = new List<Template>();
+				return _templates;
+			}
+		}
+
+		public Template FindTemplate(string key)
+		{
+			// Search backwards to allow key overrides
+			for (int i = Count-1; i >= 0; --i )
+			{
+				var t = _templates[i];
+				if (t.Key == key) return t;
+			}
+			return null;
+		}
+	}
+	
 	public partial class Visual
 	{
-		MiniList<Template> _templates;
+		TemplateSourceImpl _templates;
 
 		/** List of templates that will be used to populate this Visual.
 
@@ -33,23 +67,7 @@ namespace Fuse
 				</Control>
 		*/
 		[UXContent]
-		public IList<Template> Templates 
-		{ 
-			get
-			{
-				return _templates;
-			}
-		}
-
-		public Template FindTemplate(string key)
-		{
-			// Search backwards to allow key overrides
-			for (int i = _templates.Count-1; i >= 0; --i )
-			{
-				var t = _templates[i];
-				if (t.Key == key) return t;
-			}
-			return null;
-		}
+		public IList<Template> Templates { get { return _templates.Templates; } }
+		public Template FindTemplate(string key) { return _templates.FindTemplate(key); }
 	}
 }
