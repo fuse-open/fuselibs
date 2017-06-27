@@ -13,7 +13,7 @@ namespace Fuse
 		
 		Be aware there is no ordering between the Nodes, Resources, and Templates. These are each independent lists which have their own order.
 	*/
-	public abstract class NodeGroupBase : Behavior, ITemplateSource
+	public abstract class NodeGroupBase : Behavior 
 	{
 		RootableList<Node> _nodes;
 		int NodeCount { get { return _nodes == null ? 0 : _nodes.Count; } }
@@ -239,8 +239,42 @@ namespace Fuse
 				<GridLine Color="#FFA" Title="Cry Baby" Emoji="😭"/>
 				<GridLine Color="#FAA" Title="Mr. Angry" Emoji="😠"/>
 			</Grid>
+			
+		A `NodeGroup` may be used as a target for `Each.TemplateSource` or `Instance.TemplateSource`. This can be used to create classes that position templated items.
+		
+			<NodeGroup ux:Class="TitleBar">
+				<Grid Columns="40,1*,40" Alignment="Top">
+					<Panel>
+						<Instance TemplateSource="this" TemplateKey="leftOption">
+							<MyMenuButton/>
+						</Instance>
+					</Panel>
+					<Panel>
+						<Instance TemplateSource="this" TemplateKey="title">
+							<Text Value="{Page Title}"/>
+						</Instance>
+					</Panel>
+					<Panel TemplateSource="this" TemplateKey="contextMenu"/>
+				</Grid>
+			</NodeGroup>
+
+			<Page>
+				<TitleBar>
+					<Panel ux:Template="contextMenu">
+						<MyShareButton/>
+					</Panel>
+				</TitleBar>
+			</Page>
+			
+			<Page>
+				<TitleBar>
+					<Panel ux:Template="leftOption"/><!-- leave empty -->
+					<Image File="pageTitle.png" ux:Template="title"/>
+				</TitleBar>
+			</Page>
+				
 	*/
-	public class NodeGroup : NodeGroupBase
+	public class NodeGroup : NodeGroupBase, ITemplateSource
 	{
 		/**
 			When `true` (the default) the contained nodes and resources will be added to the parent node. When `false` they will be removed.
