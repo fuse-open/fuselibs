@@ -16,13 +16,17 @@ The following example uses @Selection to create a simple list of options. Tap th
 	</Panel>
 
 	<JavaScript>
-		var Observable = require("FuseJS/Observable")
-		exports.values = Observable()
-		
-		exports.list = Observable("")
-		exports.values.onValueChanged( module, function() {
-			exports.list.value = exports.values.toArray().join(",")
-		})
+		var Observable = require("FuseJS/Observable");
+
+		var values = Observable();
+		var list = Observable(function() {
+			return values.toArray().join(",");
+		});
+
+		module.exports = {
+			values: values,
+			list: list
+		};
 	</JavaScript>
 	<StackPanel>
 		<Selection Values="{values}"/>
