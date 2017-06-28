@@ -69,5 +69,6 @@ namespace Fuse
 		[UXContent]
 		public IList<Template> Templates { get { return _templates.Templates; } }
 		public Template FindTemplate(string key) { return _templates.FindTemplate(key); }
+		public IEnumerable<Template> ITemplateSource.Templates { get { return _templates.Templates; } }
 	}
 }
