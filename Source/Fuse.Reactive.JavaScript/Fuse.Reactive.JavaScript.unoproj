@@ -28,6 +28,7 @@
   ],
   "InternalsVisibleTo": [
     "Fuse.Reactive.JavaScript.Test",
+    "Fuse.Reactive.Bindings.Test",
     "Fuse.Scripting.Test",
     "Fuse.Testing",
     "FuseTest",

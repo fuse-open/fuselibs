@@ -13,40 +13,41 @@ namespace Fuse.Reactive.Test
 		[Test]
 		public void Basic()
 		{
-			var e = new UX.BasicEach();
-			var root = TestRootPanel.CreateWithChild(e);
-			
-			root.StepFrameJS();
-			Assert.AreEqual(30,e.C1.ZOrderChildCount);
-			Assert.AreEqual("5", (e.C1.GetVisualChild(5) as Text).Value);
-
-			//do in a loop to try and catch a few race conditions
-			int baseCount = 30;
-			int step = 0;
-			while (baseCount > 6)
+			var e = new UX.Each.Basic();
+			using (var root = TestRootPanel.CreateWithChild(e))
 			{
-				e.CallAdd.Perform();
 				root.StepFrameJS();
-				Assert.AreEqual(baseCount+1,e.C1.ZOrderChildCount);
-				Assert.AreEqual("" + (step+5), (e.C1.GetVisualChild(5) as Text).Value);
+				Assert.AreEqual(30,e.C1.ZOrderChildCount);
+				Assert.AreEqual("5", (e.C1.GetVisualChild(5) as Text).Value);
+
+				//do in a loop to try and catch a few race conditions
+				int baseCount = 30;
+				int step = 0;
+				while (baseCount > 6)
+				{
+					e.CallAdd.Perform();
+					root.StepFrameJS();
+					Assert.AreEqual(baseCount+1,e.C1.ZOrderChildCount);
+					Assert.AreEqual("" + (step+5), (e.C1.GetVisualChild(5) as Text).Value);
+					
+					e.CallRemove.Perform();
+					root.StepFrameJS();
+					Assert.AreEqual(baseCount,e.C1.ZOrderChildCount);
+					
+					e.CallRemoveAt.Perform();
+					root.StepFrameJS();
+					Assert.AreEqual(baseCount-1,e.C1.ZOrderChildCount);
+					
+					//two removal + one addiiton
+					baseCount--;
+					//two removals at location 5, so id goes up by two
+					step+=2;
+				}
 				
-				e.CallRemove.Perform();
+				e.CallClear.Perform();
 				root.StepFrameJS();
-				Assert.AreEqual(baseCount,e.C1.ZOrderChildCount);
-				
-				e.CallRemoveAt.Perform();
-				root.StepFrameJS();
-				Assert.AreEqual(baseCount-1,e.C1.ZOrderChildCount);
-				
-				//two removal + one addiiton
-				baseCount--;
-				//two removals at location 5, so id goes up by two
-				step+=2;
+				Assert.AreEqual(0,e.C1.ZOrderChildCount);
 			}
-			
-			e.CallClear.Perform();
-			root.StepFrameJS();
-			Assert.AreEqual(0,e.C1.ZOrderChildCount);
 		}
 		
 		[Test]
@@ -55,47 +56,49 @@ namespace Fuse.Reactive.Test
 		*/
 		public void Order()
 		{
-			var e = new UX.EachOrder();
-			var root = TestRootPanel.CreateWithChild(e);
-			
-			root.StepFrameJS();
-			
-			Assert.AreEqual(4,e.C1.ZOrderChildCount);
-			Assert.AreEqual(e.C2, e.C1.GetVisualChild(0));
-			Assert.AreEqual(new Selector("Q0"), e.C1.GetVisualChild(1).Name);
-			Assert.AreEqual(new Selector("Q1"), e.C1.GetVisualChild(2).Name);
-			Assert.AreEqual(e.C3, e.C1.GetVisualChild(3));
-			
-			e.CallRemove.Perform();
-			e.CallRemove.Perform();
-			root.StepFrameJS();
-			Assert.AreEqual(2,e.C1.ZOrderChildCount);
-			
-			e.CallAdd.Perform();
-			root.StepFrameJS();
-			Assert.AreEqual(3,e.C1.ZOrderChildCount);
-			Assert.AreEqual(e.C2, e.C1.GetVisualChild(0));
-			Assert.AreEqual(new Selector("Q2"), e.C1.GetVisualChild(1).Name);
-			Assert.AreEqual(e.C3, e.C1.GetVisualChild(2));
+			var e = new UX.Each.Order();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.StepFrameJS();
+				
+				Assert.AreEqual(4,e.C1.ZOrderChildCount);
+				Assert.AreEqual(e.C2, e.C1.GetVisualChild(0));
+				Assert.AreEqual(new Selector("Q0"), e.C1.GetVisualChild(1).Name);
+				Assert.AreEqual(new Selector("Q1"), e.C1.GetVisualChild(2).Name);
+				Assert.AreEqual(e.C3, e.C1.GetVisualChild(3));
+				
+				e.CallRemove.Perform();
+				e.CallRemove.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual(2,e.C1.ZOrderChildCount);
+				
+				e.CallAdd.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual(3,e.C1.ZOrderChildCount);
+				Assert.AreEqual(e.C2, e.C1.GetVisualChild(0));
+				Assert.AreEqual(new Selector("Q2"), e.C1.GetVisualChild(1).Name);
+				Assert.AreEqual(e.C3, e.C1.GetVisualChild(2));
+			}
 		}
 		
 		[Test]
 		//variation on https://github.com/fusetools/fuselibs/issues/2802
 		public void EachEach()
 		{
-			var e = new UX.EachEach();
-			var root = TestRootPanel.CreateWithChild(e);
-			
-			root.StepFrameJS();
-			Assert.AreEqual( "G0-0,G0-1,G1-0,G1-1", GetText(e));
-			
-			e.CallAdd.Perform();
-			root.StepFrameJS();
-			Assert.AreEqual( "G0-0,G0-1,G1-0,G1-1,G2-0,G2-1", GetText(e));
-			
-			e.CallRemove1.Perform();
-			root.StepFrameJS();
-			Assert.AreEqual( "G0-0,G0-1,G2-0,G2-1", GetText(e));
+			var e = new UX.Each.Each();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.StepFrameJS();
+				Assert.AreEqual( "G0-0,G0-1,G1-0,G1-1", GetText(e));
+				
+				e.CallAdd.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual( "G0-0,G0-1,G1-0,G1-1,G2-0,G2-1", GetText(e));
+				
+				e.CallRemove1.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual( "G0-0,G0-1,G2-0,G2-1", GetText(e));
+			}
 		}
 		
 		[Test]
