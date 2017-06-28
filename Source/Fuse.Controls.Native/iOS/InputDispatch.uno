@@ -10,41 +10,53 @@ namespace Fuse.Controls.Native.iOS
 	[TargetSpecificImplementation]
 	extern(iOS) internal static class InputDispatch
 	{
-		public static void OnTouchesBegan(Visual origin, ObjC.Object touches, ObjC.Object uiEvent)
+		public static void OnTouchesBegan(Visual origin, ObjC.Object touches)
 		{
-			var rootInfo = GetRootInfo(origin);
-			foreach (var pointerEventData in MakePointerEventData(touches, rootInfo.RootView))
-				RaisePressed(rootInfo.RootVisual, pointerEventData);
+			RaiseEvent(EventType.Pressed, origin, touches);
 		}
 
-		public static void OnTouchesMoved(Visual origin, ObjC.Object touches, ObjC.Object uiEvent)
+		public static void OnTouchesMoved(Visual origin, ObjC.Object touches)
 		{
-			var rootInfo = GetRootInfo(origin);
-			foreach (var pointerEventData in MakePointerEventData(touches, rootInfo.RootView))
-				RaiseMoved(rootInfo.RootVisual, pointerEventData);
+			RaiseEvent(EventType.Moved, origin, touches);
 		}
 
-		public static void OnTouchesEnded(Visual origin, ObjC.Object touches, ObjC.Object uiEvent)
+		public static void OnTouchesEnded(Visual origin, ObjC.Object touches)
+		{
+			RaiseEvent(EventType.Released, origin, touches);
+		}
+
+		public static void OnTouchesCancelled(Visual origin, ObjC.Object touches)
+		{
+			RaiseEvent(EventType.Cancelled, origin, touches);
+		}
+
+		enum EventType : int
+		{
+			Pressed = 0,
+			Moved = 1,
+			Released = 2,
+			Cancelled = 3,
+		}
+
+		static readonly Action<Visual,PointerEventData>[] _handlers = new Action<Visual,PointerEventData>[] {
+			RaisePressed,
+			RaiseMoved,
+			RaiseReleased,
+			RaiseCancelled,
+		};
+
+		static void RaiseEvent(EventType type, Visual origin, ObjC.Object touches)
 		{
 			var rootInfo = GetRootInfo(origin);
 			var count = NSArrayCount(touches);
+			var handler = _handlers[(int)type];
+			var deactivate = ((int)type) > ((int)EventType.Moved);
 			for (var i = 0; i < count; i++)
 			{
 				var uiTouch = NSArrayObjectAtIndex(touches, i);
-				RaiseReleased(rootInfo.RootVisual, NewPointerEventData(uiTouch, rootInfo.RootView));
-				DeactivateTouch(uiTouch);
-			}
-		}
-
-		public static void OnTouchesCancelled(Visual origin, ObjC.Object touches, ObjC.Object uiEvent)
-		{
-			var rootInfo = GetRootInfo(origin);
-			var count = NSArrayCount(touches);
-			for (var i = 0; i < count; i++)
-			{
-				var uiTouch = NSArrayObjectAtIndex(touches, i);
-				RaiseCancelled(rootInfo.RootVisual, NewPointerEventData(uiTouch, rootInfo.RootView));
-				DeactivateTouch(uiTouch);
+				handler(rootInfo.RootVisual, NewPointerEventData(uiTouch, rootInfo.RootView));
+				if (deactivate)
+					DeactivateTouch(uiTouch);
 			}
 		}
 
@@ -79,9 +91,10 @@ namespace Fuse.Controls.Native.iOS
 			var availableIndex = -1;
 			for (var i = PointerCount; i-- > 0;)
 			{
-				if (CompareUITouch(_activePointers[i], null))
+				var pointer = _activePointers[i];
+				if (CompareUITouch(pointer, null))
 					availableIndex = i;
-				else if (CompareUITouch(_activePointers[i], uiTouch))
+				else if (CompareUITouch(pointer, uiTouch))
 					return i;
 			}
 			_activePointers[availableIndex] = uiTouch;
@@ -134,15 +147,6 @@ namespace Fuse.Controls.Native.iOS
 			UITouch* touch2 = (UITouch*)y;
 			return x == y;
 		@}
-
-		static PointerEventData[] MakePointerEventData(ObjC.Object uiTouches, ObjC.Object rootView)
-		{
-			var count = NSArrayCount(uiTouches);
-			var data = new PointerEventData[count];
-			for (var i = 0; i < count; i++)
-				data[i] = NewPointerEventData(NSArrayObjectAtIndex(uiTouches, i), rootView);
-			return data;
-		}
 
 		static PointerEventData NewPointerEventData(ObjC.Object uiTouch, ObjC.Object rootView)
 		{
