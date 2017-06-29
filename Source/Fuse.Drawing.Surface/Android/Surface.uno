@@ -294,42 +294,13 @@ namespace Fuse.Drawing
 
 			BitmapShader shader = new BitmapShader(scaledBitmap, Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
 			paint.setShader(shader);
-			paint.setStyle(Paint.Style.FILL);
-
-			// these measurements aren't actually used - but rect needs placeholder values
-			RectF rect = new RectF((originX), (originY), originX + tileSizeX, originY + tileSizeY);
-
-			// get the bounds of the clipping path which we will use for drawing
-			path.computeBounds(rect, true);
-
-			// if our picture path starts off screen, subtract from the bottom
-			if (originY < 0)
-			{
-				rect.bottom -= originY;
-			}
-			// otherwise, the picture starts offset on the screen - so increase the top size
-			else
-			{
-				rect.top -= originY;
-			}
-
-			// if our picture starts off the screen to the left, reduce the drawing space on the right
-			if (originX < 0)
-			{
-				rect.right -= originX;
-			}
-			// otherwise, reduce the drawing space on the left
-			else
-			{
-				rect.left -= originX;
-			}
 
 			canvas.clipPath(path);
 			// translate our canvas to draw at the right location
 			// the adjustments made above to the rectangle bounds make up for this in terms of space
 			canvas.translate(originX, originY);
 
-			canvas.drawRect(rect, paint);
+			canvas.drawPath(path, paint);
 			canvas.restoreToCount(index);
 		@}
 
