@@ -31,7 +31,7 @@ namespace Fuse.Reactive
 		This class can not be directly instantiated or inherited because its constructors are internal. Use one of the
 		provided derived classes instead: @Each or @Instance.
 	*/
-	public class Instantiator: Behavior, IObserver, Node.ISubtreeDataProvider, IDeferred
+	public partial class Instantiator: Behavior, IObserver, Node.ISubtreeDataProvider, IDeferred
 	{
 		IList<Template> _templates;
 		RootableList<Template> _rootTemplates;
@@ -495,40 +495,6 @@ namespace Fuse.Reactive
 
 		IDisposable _subscription;
 
-		void IObserver.OnSet(object newValue)
-		{
-			if (!_listening) return;
-
-			RemoveAll();
-			TrimAndPad();
-			SetValid();
-		}
-		
-		void IObserver.OnFailed(string message)
-		{
-			if (!_listening) return;
-
-			RemoveAll();
-			SetFailed(message);
-		}
-		
-		void IObserver.OnAdd(object addedValue)
-		{
-			if (!_listening) return;
-
-			TrimAndPad();
-			SetValid();
-		}
-		
-		void IObserver.OnRemoveAt(int index)
-		{
-			if (!_listening) return;
-
-			RemoveAt(index);
-			TrimAndPad();
-			SetValid();
-		}
-
 		Dictionary<Template,List<Node>> _availableNodes;
 		bool _pendingAvailableNodes;
 		
@@ -541,10 +507,21 @@ namespace Fuse.Reactive
 				_availableNodes[f] = new List<Node>();
 			_availableNodes[f].Add(n);
 			
-			if (!_pendingAvailableNodes)
+		}
+		
+		void CompleteNodeAction()
+		{
+			if (Reuse == InstanceReuse.Frame)
 			{
-				UpdateManager.AddDeferredAction(RemovePendingAvailableNodesAction);
-				_pendingAvailableNodes = true;
+				if (!_pendingAvailableNodes)
+				{
+					UpdateManager.AddDeferredAction(RemovePendingAvailableNodesAction);
+					_pendingAvailableNodes = true;
+				}
+			}
+			else
+			{
+				RemovePendingAvailableNodes();
 			}
 		}
 		
@@ -591,60 +568,12 @@ namespace Fuse.Reactive
 			if ( windowIndex < 0 || windowIndex >= _windowItems.Count)
 				return;
 			
-			if (Reuse == InstanceReuse.Frame)
-			{
-				AddAvailableNodes(_windowItems[windowIndex]);
-			}
-			else
-			{
-				var list = _windowItems[windowIndex].Nodes;
-				if (list != null)
-				{
-					for (int i=0; i < list.Count; ++i)
-						RemoveFromParent(list[i]);
-				}
-			}
+			AddAvailableNodes(_windowItems[windowIndex]);
  
 			_windowItems.RemoveAt(windowIndex);
  			SetValid();		
 			OnUpdatedWindowItems();
 		}
-
-		void IObserver.OnInsertAt(int index, object value)
-		{
-			if (!_listening) return;
-			InsertNew(index);
-			TrimAndPad();
-
-			SetValid();
-		}
-
-		void IObserver.OnNewAt(int index, object value)
-		{
-			if (!_listening) return;
-
-			RemoveAt(index);
-			InsertNew(index);
-			TrimAndPad();
-		}
-
-		void IObserver.OnNewAll(IArray values)
-		{
-			if (!_listening) return;
-
-			RemoveAll();
-			TrimAndPad();
-			SetValid();
-		}
-
-		void IObserver.OnClear()
-		{
-			if (!_listening) return;
-
-			RemoveAll();
-			SetValid();
-		}
-
 
 		void ReplaceAll(object[] dcs)
 		{
