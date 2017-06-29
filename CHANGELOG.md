@@ -1,5 +1,8 @@
 # Unreleased
 
+## Optimizaitons
+- Optimized redundant OpenGL rendertarget operations. Gives speedups on some platforms.
+
 ## Attract
 - Added the `attract` feature, which was previously only in premiumlibs. This provides a much simpler syntax for animation than the `Attractor` behavior.
 
