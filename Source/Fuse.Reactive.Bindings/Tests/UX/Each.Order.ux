@@ -1,4 +1,4 @@
-<Panel ux:Class="UX.EachOrder">
+<Panel ux:Class="UX.Each.Order">
 	<JavaScript>
 		var Observable = require("FuseJS/Observable")
 		

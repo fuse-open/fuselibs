@@ -437,5 +437,29 @@ namespace Fuse.Reactive.Test
  				Assert.AreEqual("0,1,2", GetRecursiveText(e));
 			}
 		}
+		
+		[Test]
+		//ensure ordering when items are added/removed at the same time
+		public void RemoveAdd()
+		{
+			var e = new UX.Each.RemoveAdd();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.StepFrameJS();
+				Assert.AreEqual("0,1,2,3,4,5,6,7,8,9", GetText(e));
+				
+				e.CallStep1.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual("0,1,3,a2,a1,5,6,7,8,9", GetText(e));
+				
+				e.CallStep2.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual("0,1,3,a2,a1,5,6,b1,8,9", GetText(e));
+				
+				e.CallStep3.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual("c2", GetText(e));
+			}
+		}
 	}
 }
