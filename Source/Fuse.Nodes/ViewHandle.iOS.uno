@@ -55,7 +55,7 @@ namespace Fuse.Controls.Native
 			}
 		}
 
-		public ObjC.Object HitTestHandle
+		public virtual ObjC.Object HitTestHandle
 		{
 			get { return GetHitTesthandle(); }
 		}

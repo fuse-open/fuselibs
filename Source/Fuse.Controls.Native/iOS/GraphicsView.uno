@@ -41,6 +41,11 @@ namespace Fuse.Controls.Native.iOS
 			_visual = visual;
 		}
 
+		public override ObjC.Object HitTestHandle
+		{
+			get { return _hitSurface; }
+		}
+
 		[Foreign(Language.ObjC)]
 		static ObjC.Object CreateContainer()
 		@{
