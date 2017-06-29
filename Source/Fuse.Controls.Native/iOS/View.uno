@@ -12,9 +12,9 @@ namespace Fuse.Controls.Native.iOS
 
 		readonly ObjC.Object _handle;
 
-		protected View(ObjC.Object handle) : this(handle, false) {}
+		protected View(ObjC.Object handle, ViewHandle.InputMode inputmode = ViewHandle.InputMode.Automatic) : this(handle, false, inputmode) {}
 
-		protected View(ObjC.Object handle, bool isLeafView) : base(handle, isLeafView)
+		protected View(ObjC.Object handle, bool isLeafView, ViewHandle.InputMode inputmode = ViewHandle.InputMode.Automatic) : base(handle, isLeafView, inputmode)
 		{
 			_handle = handle;
 		}

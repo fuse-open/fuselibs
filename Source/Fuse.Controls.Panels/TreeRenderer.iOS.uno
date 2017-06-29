@@ -34,6 +34,9 @@ namespace Fuse.Controls
 			else
 				_setRoot(v);
 
+			if (!v.HandlesInput)
+				Fuse.Controls.Native.iOS.InputDispatch.AddInputHandler(e, v);
+
 			_elements.Add(e, v);
 		}
 
@@ -48,6 +51,9 @@ namespace Fuse.Controls
 
 			var v = _elements[e];
 			_elements.Remove(e);
+
+			if (!v.HandlesInput)
+				Fuse.Controls.Native.iOS.InputDispatch.RemoveInputHandler(v);
 
 			if (e is Control)
 			{

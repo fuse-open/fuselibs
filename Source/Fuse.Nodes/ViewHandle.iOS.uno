@@ -12,16 +12,25 @@ namespace Fuse.Controls.Native
 	[Require("Source.Include", "QuartzCore/QuartzCore.h")]
 	extern(iOS) public class ViewHandle : IDisposable
 	{
+		public enum InputMode
+		{
+			Automatic,
+			Manual
+		}
+
 		public readonly ObjC.Object NativeHandle;
 
 		internal readonly bool IsLeafView;
 
-		public ViewHandle(ObjC.Object nativeHandle) : this(nativeHandle, false) { }
+		readonly InputMode _inputMode;
 
-		public ViewHandle(ObjC.Object nativeHandle, bool isLeafView)
+		public ViewHandle(ObjC.Object nativeHandle, InputMode inputMode = InputMode.Automatic) : this(nativeHandle, false, inputMode) { }
+
+		public ViewHandle(ObjC.Object nativeHandle, bool isLeafView, InputMode inputMode = InputMode.Automatic)
 		{
 			NativeHandle = nativeHandle;
 			IsLeafView = isLeafView;
+			_inputMode = inputMode;
 			InitAnchorPoint();
 			IsEnabled = true;
 			HitTestEnabled = true;
@@ -33,6 +42,11 @@ namespace Fuse.Controls.Native
 		}
 
 		public virtual void Dispose() {}
+
+		internal bool HandlesInput
+		{
+			get { return _inputMode == InputMode.Manual; }
+		}
 
 		float2 _position = float2(0.0f);
 		float2 _size = float2(0.0f);

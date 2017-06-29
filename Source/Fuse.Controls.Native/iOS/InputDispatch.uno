@@ -8,6 +8,7 @@ namespace Fuse.Controls.Native.iOS
 	using Fuse.Input;
 
 	[TargetSpecificImplementation]
+	[Require("Source.Include", "iOS/UIViewInputDispatch.h")]
 	extern(iOS) internal static class InputDispatch
 	{
 		public static void OnTouchesBegan(Visual origin, ObjC.Object touches)
@@ -28,6 +29,25 @@ namespace Fuse.Controls.Native.iOS
 		public static void OnTouchesCancelled(Visual origin, ObjC.Object touches)
 		{
 			RaiseEvent(EventType.Cancelled, origin, touches);
+		}
+
+		[Foreign(Language.ObjC)]
+		public static void AddInputHandler(Visual owner, ViewHandle viewHandle)
+		@{
+			UIView* view = (UIView*)@{Fuse.Controls.Native.ViewHandle:Of(viewHandle).HitTestHandle:Get()};
+			addInputHandler(view, ^void(int type, id<UnoObject> visual, id touches) { @{Fuse.Controls.Native.iOS.InputDispatch.RaiseEvent(int,object,ObjC.Object):Call(type,visual,touches)}; }, owner);
+		@}
+
+		[Foreign(Language.ObjC)]
+		public static void RemoveInputHandler(ViewHandle viewHandle)
+		@{
+			UIView* view = (UIView*)@{Fuse.Controls.Native.ViewHandle:Of(viewHandle).HitTestHandle:Get()};
+			removeInputHandler(view);
+		@}
+
+		static void RaiseEvent(int eventType, object origin, ObjC.Object touches)
+		{
+			RaiseEvent((EventType)eventType, (Visual)origin, touches);
 		}
 
 		enum EventType : int
