@@ -163,6 +163,10 @@ namespace Fuse.Elements
 		{
 			// Changing the framebuffer is expensive. This loop actually doesn't draw anything in
 			// common case. Don't push the render target unless we actually have to render something.
+			// Note: _invalidElements may also be >0 after FillFramebuffer is called
+			// because we only repaint elements that are visible in the scissor rectangle
+			// This means that (_invalidElements > 0) doesn't imply that any painting is actually 
+			// going to happen this frame
 			var framebufferPushed = false;
 
 			var density = dc.ViewportPixelsPerPoint;
