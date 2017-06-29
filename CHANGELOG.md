@@ -1,5 +1,8 @@
 # Unreleased
 
+## Optimization
+- Optimized hit testing calculations. Improves scrolling in large scroll views with deep trees inside, among other things.
+
 ## Attract
 - Added the `attract` feature, which was previously only in premiumlibs. This provides a much simpler syntax for animation than the `Attractor` behavior.
 
