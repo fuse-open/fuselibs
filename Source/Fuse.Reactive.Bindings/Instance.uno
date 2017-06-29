@@ -519,17 +519,22 @@ namespace Fuse.Reactive
 
 		IDisposable _subscription;
 
-		Dictionary<Template,List<Node>> _availableNodes;
+		struct AvailableNode
+		{
+			public Node Node;
+			public object Id;
+		}
+		Dictionary<Template,List<AvailableNode>> _availableNodes;
 		bool _pendingAvailableNodes;
 		
-		void AddAvailableNode(Template f, Node n)
+		void AddAvailableNode(object id, Template f, Node n)
 		{
 			if (_availableNodes == null)
-				_availableNodes = new Dictionary<Template,List<Node>>();
+				_availableNodes = new Dictionary<Template,List<AvailableNode>>();
 				
 			if (!_availableNodes.ContainsKey(f))
-				_availableNodes[f] = new List<Node>();
-			_availableNodes[f].Add(n);
+				_availableNodes[f] = new List<AvailableNode>();
+			_availableNodes[f].Add( new AvailableNode{ Node = n, Id = id });
 			
 		}
 		
@@ -565,7 +570,7 @@ namespace Fuse.Reactive
 			foreach (var tn in _availableNodes)
 			{	
 				for (int i=0; i < tn.Value.Count; ++i)
-					RemoveFromParent(tn.Value[i]);
+					RemoveFromParent(tn.Value[i].Node);
 				tn.Value.Clear();
 			}
 			
@@ -582,7 +587,7 @@ namespace Fuse.Reactive
 					throw new Exception( "WindowItems list corruption" );
 			
 				for (int i=0; i < nodes.Count; ++i)
-					AddAvailableNode(tpls[i], nodes[i]);
+					AddAvailableNode(wi.Id, tpls[i], nodes[i]);
 			}
 		}
 		
@@ -851,7 +856,7 @@ namespace Fuse.Reactive
 				var list = _availableNodes[f];
 				if (list.Count > 0 && Reuse != InstanceReuse.None)
 				{
-					elm = list[list.Count-1];
+					elm = list[list.Count-1].Node;
 					list.RemoveAt(list.Count-1);
 				}
 			}
