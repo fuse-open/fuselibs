@@ -115,7 +115,11 @@ namespace Fuse.Reactive
 		public string ObjectId
 		{
 			get { return _objectId; }
-			set { _objectId = value; }
+			set 
+			{ 
+				_objectId = value; 
+				ObjectMatch = InstanceObjectMatch.FieldId;
+			}
 		}
 		
 		float _deferredPriority = 0;
@@ -213,8 +217,8 @@ namespace Fuse.Reactive
 				_listening = false;
 			}
 
-			RemovePendingAvailableNodes();
 			RemoveAll();
+			RemovePendingAvailableNodes();
 
 			if (_rootTemplates != null)
 				_rootTemplates.Unsubscribe();
@@ -535,7 +539,23 @@ namespace Fuse.Reactive
 			if (!_availableNodes.ContainsKey(f))
 				_availableNodes[f] = new List<AvailableNode>();
 			_availableNodes[f].Add( new AvailableNode{ Node = n, Id = id });
-			
+		}
+		
+		/* Test interface to ensure we aren't leaking resources. */
+		internal bool TestIsAvailableClean
+		{
+			get
+			{
+				if (_availableNodes == null)
+					return true;
+					
+				foreach (var tn in _availableNodes)
+				{	
+					if (tn.Value.Count != 0)
+						return false;
+				}
+				return true;
+			}
 		}
 		
 		void CompleteNodeAction()
@@ -548,7 +568,8 @@ namespace Fuse.Reactive
 					_pendingAvailableNodes = true;
 				}
 			}
-			else
+			//we must nonetheless keep the nodes around until any pending new nodes have resolved
+			else if (!_pendingNew)
 			{
 				RemovePendingAvailableNodes();
 			}
@@ -620,13 +641,7 @@ namespace Fuse.Reactive
 			_windowItems = new ObjectList<WindowItem>();
 
 			for (int i = 0; i < items.Count; i++)
-			{
-				var l = items[i].Nodes;
-				if (l == null)
-					continue;
-				for (int n = 0; n < l.Count; n++)
-					RemoveFromParent(l[n]);
-			}
+				AddAvailableNodes(items[i]);
 			OnUpdatedWindowItems();
 		}
 		
@@ -854,7 +869,21 @@ namespace Fuse.Reactive
 			if (_availableNodes != null && _availableNodes.ContainsKey(f))
 			{
 				var list = _availableNodes[f];
-				if (list.Count > 0 && Reuse != InstanceReuse.None)
+				//search for a matching Id
+				if (ObjectMatch == InstanceObjectMatch.FieldId && item.Id != null)
+				{
+					for (int i=0; i < list.Count; ++i)
+					{
+						if (Object.Equals(list[i].Id, item.Id))
+						{
+							elm = list[i].Node;
+							list.RemoveAt(i);
+							break;
+						}
+					}
+				}
+				
+				if (elm == null && list.Count > 0 && Reuse != InstanceReuse.None)
 				{
 					elm = list[list.Count-1].Node;
 					list.RemoveAt(list.Count-1);

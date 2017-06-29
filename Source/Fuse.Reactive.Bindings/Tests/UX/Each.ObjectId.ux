@@ -1,0 +1,30 @@
+<Panel ux:Class="UX.Each.ObjectId">
+	<JavaScript>
+		var Observable = require("FuseJS/Observable")
+
+		exports.items = Observable()
+		exports.items.add( { id: 1, v: 10 })
+		exports.items.add( { id: 2, v: 20 })
+		exports.items.add( { id: 3, v: 30 })
+		
+		exports.replaceAt = function() {
+			exports.items.replaceAt( 1, { id: 2, v: "21" })
+		}
+		
+		exports.replaceAll = function() {
+			exports.items.replaceAll([
+				{ id: 2, v: "22" },
+				{ id: 1, v: "12" },
+				{ id: 3, v: "32" },
+			])
+		}
+	</JavaScript>
+	<StackPanel ux:Name="s">
+		<Each Items="{items}" Offset="0" Limit="5" ux:Name="e" ObjectId="id">
+			<FuseTest.DudElement Value="{v}" Height="10"/>
+		</Each>
+	</StackPanel>
+	
+	<FuseTest.Invoke Handler="{replaceAt}" ux:Name="CallReplace"/>
+	<FuseTest.Invoke Handler="{replaceAll}" ux:Name="CallReplaceAll"/>
+</Panel>

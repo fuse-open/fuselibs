@@ -18,5 +18,10 @@ namespace FuseTest
 		}
 		
 		protected override void OnDraw(Fuse.DrawContext dc) { }
+		
+		public override string ToString()
+		{
+			return "Dub@" + GetHashCode() + "=" + Value;
+		}
 	}
 }

@@ -347,6 +347,7 @@ namespace Fuse.Reactive.Test
 				//ensure layout was invalidated
 				Assert.AreEqual(float2(0,40),(z1[0] as Element).ActualPosition);
 				Assert.AreEqual(float2(0,0),(z1[4] as Element).ActualPosition);
+				Assert.IsTrue(e.e.TestIsAvailableClean);
 			}
 		}
 		
@@ -367,6 +368,7 @@ namespace Fuse.Reactive.Test
 				
 				Assert.AreEqual(z0[0],z1[1]);
 				Assert.AreNotEqual(z0[4],z1[0]); //node not reused
+				Assert.IsTrue(e.e.TestIsAvailableClean);
 			}
 		}
 		
@@ -388,6 +390,7 @@ namespace Fuse.Reactive.Test
 				Assert.AreEqual(z0[3],z1[1]);
 				Assert.AreEqual(z0[0],z1[2]);//reuse
 				Assert.AreEqual(z0[1],z1[3]);//reuse
+				Assert.IsTrue(e.e.TestIsAvailableClean);
 			}
 		}
 
@@ -478,6 +481,37 @@ namespace Fuse.Reactive.Test
 				e.CallStep3.Perform();
 				root.StepFrameJS();
 				Assert.AreEqual("c2", GetText(e));
+			}
+		}
+		
+		[Test]
+		public void ObjectId()
+		{
+			var e = new UX.Each.ObjectId();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.StepFrameJS();
+				var z0 = GetZChildren(e.s);
+				Assert.AreEqual("30,20,10", GetDudZ(e.s));
+				
+				e.CallReplace.Perform();
+				root.StepFrameJS();
+				var z1 = GetZChildren(e.s);
+				Assert.AreEqual("30,21,10",GetDudZ(e.s));
+				
+				for (int i=0; i < z0.Length; ++i)
+					Assert.AreEqual( z0[i], z1[i] );
+				Assert.IsTrue(e.e.TestIsAvailableClean);
+				
+				e.CallReplaceAll.Perform();
+				root.StepFrameJS();
+				var z2 = GetZChildren(e.s);
+				Assert.AreEqual("32,12,22",GetDudZ(e.s));
+				
+				Assert.AreEqual( z0[0], z2[0] );
+				Assert.AreEqual( z0[1], z2[2] );
+				Assert.AreEqual( z0[2], z2[1] );
+				Assert.IsTrue(e.e.TestIsAvailableClean);
 			}
 		}
 	}
