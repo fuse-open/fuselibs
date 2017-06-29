@@ -25,6 +25,14 @@ namespace Fuse.Reactive
 		Frame,
 	}
 	
+	public enum InstanceObjectMatch
+	{
+		/** New objects are always new, never matched to an existing one */
+		None,
+		/** The `ObjectId` is used to compare objects */
+		FieldId,
+	}
+	
 	[UXContentMode("Template")]
 	/** Base class for behaviors that can instantiate templates from a source.
 
@@ -94,6 +102,20 @@ namespace Fuse.Reactive
 		{
 			get { return _reuse; }
 			set { _reuse = value; }
+		}
+		
+		InstanceObjectMatch _objectMatch = InstanceObjectMatch.None;
+		public InstanceObjectMatch ObjectMatch
+		{
+			get { return _objectMatch; }
+			set { _objectMatch = value; }
+		}
+		
+		string _objectId = null;
+		public string ObjectId
+		{
+			get { return _objectId; }
+			set { _objectId = value; }
 		}
 		
 		float _deferredPriority = 0;
@@ -348,6 +370,8 @@ namespace Fuse.Reactive
 			//this is a separate list so we can call `Visual.InsertNodes` with `Nodes` alone
 			public List<Template> Templates;
 			public object Data;
+			//logical identifier used for matching, null if none
+			public object Id;
 			
 			public WindowItem()
 			{
@@ -654,14 +678,14 @@ namespace Fuse.Reactive
 			}
 		}
 
-		string GetMatchKey(object data)
+		object GetDataKey(object data, string key)
 		{
 			var so = data as IObject;
 
-			if (so != null && _matchKey != null)
+			if (so != null && key != null)
 			{
-				if (so.ContainsKey(_matchKey))
-					return so[_matchKey] as string;
+				if (so.ContainsKey(key))
+					return so[key];
 			}
 
 			return null;
@@ -736,6 +760,7 @@ namespace Fuse.Reactive
 		{
 			wi.Nodes = new List<Node>();
 			wi.Templates = new List<Template>();
+			wi.Id = GetDataKey(wi.Data, ObjectId);
 
 			bool anyMatched = false;
 			Template defaultTemplate = null;
@@ -759,7 +784,7 @@ namespace Fuse.Reactive
 			// Templates collection and look for a matching key (if set)
 			if (!anyMatched)
 			{
-				var key = GetMatchKey(wi.Data);
+				var key = GetDataKey(wi.Data, _matchKey) as string;
 				foreach (var f in Templates)
 				{
 					if (f.IsDefault) defaultTemplate = f;
@@ -824,7 +849,7 @@ namespace Fuse.Reactive
 			if (_availableNodes != null && _availableNodes.ContainsKey(f))
 			{
 				var list = _availableNodes[f];
-				if (list.Count > 0)
+				if (list.Count > 0 && Reuse != InstanceReuse.None)
 				{
 					elm = list[list.Count-1];
 					list.RemoveAt(list.Count-1);

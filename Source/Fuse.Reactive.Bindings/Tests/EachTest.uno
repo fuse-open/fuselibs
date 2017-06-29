@@ -335,7 +335,6 @@ namespace Fuse.Reactive.Test
 			{
 				root.StepFrameJS();
 				var z0 = GetZChildren(e.s);
-				Assert.AreEqual("4,3,2,1,0", GetDudZ(e.s));
 				
 				e.e.Offset = 1;
 				root.StepFrame();
@@ -348,6 +347,26 @@ namespace Fuse.Reactive.Test
 				//ensure layout was invalidated
 				Assert.AreEqual(float2(0,40),(z1[0] as Element).ActualPosition);
 				Assert.AreEqual(float2(0,0),(z1[4] as Element).ActualPosition);
+			}
+		}
+		
+		[Test]
+		//same setup as Reuse but ensures the nodes are not reused (Reuse="None", as default)
+		public void ReuseNone()
+		{
+			var e = new UX.Each.ReuseNone();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.StepFrameJS();
+				var z0 = GetZChildren(e.s);
+				
+				e.e.Offset = 1;
+				root.StepFrame();
+				var z1 = GetZChildren(e.s);
+				Assert.AreEqual("5,4,3,2,1", GetDudZ(e.s));
+				
+				Assert.AreEqual(z0[0],z1[1]);
+				Assert.AreNotEqual(z0[4],z1[0]); //node not reused
 			}
 		}
 		
