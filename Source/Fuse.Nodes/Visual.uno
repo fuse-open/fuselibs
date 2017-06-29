@@ -94,6 +94,7 @@ namespace Fuse
 			UpdateIsContextEnabledCache();
 			UpdateIsVisibleCache();
 			UpdateContextSnapToPixelsCache();
+			WTIRooted();
 
 			OnRootedPreChildren();
 
@@ -127,6 +128,7 @@ namespace Fuse
 
 			UnrootResources();
 			UnrootTemplates();
+			WTIUnrooted();
 			_viewport = null;
 
 			ResetParameterListeners();
