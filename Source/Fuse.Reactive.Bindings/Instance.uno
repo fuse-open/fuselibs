@@ -218,7 +218,7 @@ namespace Fuse.Reactive
 			}
 
 			RemoveAll();
-			RemovePendingAvailableNodes();
+			RemovePendingAvailableItems();
 
 			if (_rootTemplates != null)
 				_rootTemplates.Unsubscribe();
@@ -523,25 +523,19 @@ namespace Fuse.Reactive
 
 		IDisposable _subscription;
 
-		class AvailableNode
-		{
-			public Template Template;
-			public List<Node> Nodes;
-			public object Id;
-		}
-		List<AvailableNode> _availableNodes = new List<AvailableNode>();
-		bool _pendingAvailableNodes;
+		ObjectList<WindowItem> _availableItems = new ObjectList<WindowItem>();
+		bool _pendingAvailableItems;
 		
 		List<Node> GetAvailableNodes(Template f, object id)
 		{
 			if (id != null)
 			{
-				for (int i=0; i < _availableNodes.Count; ++i)
+				for (int i=0; i < _availableItems.Count; ++i)
 				{
-					var av = _availableNodes[i];
+					var av = _availableItems[i];
 					if (f == av.Template && Object.Equals(av.Id, id))
 					{
-						_availableNodes.RemoveAt(i);
+						_availableItems.RemoveAt(i);
 						return av.Nodes;
 					}
 				}
@@ -549,12 +543,12 @@ namespace Fuse.Reactive
 			
 			if (Reuse != InstanceReuse.None)
 			{
-				for (int i=0; i < _availableNodes.Count; ++i)
+				for (int i=0; i < _availableItems.Count; ++i)
 				{
-					var av = _availableNodes[i];
+					var av = _availableItems[i];
 					if (f == av.Template)
 					{
-						_availableNodes.RemoveAt(i);
+						_availableItems.RemoveAt(i);
 						return av.Nodes;
 					}
 				}
@@ -568,7 +562,7 @@ namespace Fuse.Reactive
 		{
 			get
 			{
-				return _availableNodes.Count == 0;
+				return _availableItems.Count == 0;
 			}
 		}
 		
@@ -576,48 +570,44 @@ namespace Fuse.Reactive
 		{
 			if (Reuse == InstanceReuse.Frame)
 			{
-				if (!_pendingAvailableNodes)
+				if (!_pendingAvailableItems)
 				{
-					UpdateManager.AddDeferredAction(RemovePendingAvailableNodesAction);
-					_pendingAvailableNodes = true;
+					UpdateManager.AddDeferredAction(RemovePendingAvailableItemsAction);
+					_pendingAvailableItems = true;
 				}
 			}
 			//we must nonetheless keep the nodes around until any pending new nodes have resolved
 			else if (!_pendingNew)
 			{
-				RemovePendingAvailableNodes();
+				RemovePendingAvailableItems();
 			}
 		}
 		
-		void RemovePendingAvailableNodesAction()
+		void RemovePendingAvailableItemsAction()
 		{
 			//The pendingNew handler will have to clear the remaining nodes
 			if (!_pendingNew)	
-				RemovePendingAvailableNodes();
+				RemovePendingAvailableItems();
 		}
 		
-		void RemovePendingAvailableNodes()
+		void RemovePendingAvailableItems()
 		{
-			for (int i=0; i < _availableNodes.Count; ++i)
+			for (int i=0; i < _availableItems.Count; ++i)
 			{	
-				var av = _availableNodes[i];
+				var av = _availableItems[i];
 				for (int n=0; n < av.Nodes.Count; ++n)
 					RemoveFromParent(av.Nodes[n]);
 			}
-			_availableNodes.Clear();
+			_availableItems.Clear();
 			
 			_pendingNew = false;
 		}
 		
-		void AddAvailableNodes(WindowItem wi)
+		void AddAvailableItem(WindowItem wi)
 		{
 			if (wi.Nodes == null)
 				return;
-				
-			_availableNodes.Add( new AvailableNode{
-				Template = wi.Template,
-				Id = wi.Id,
-				Nodes = wi.Nodes });
+			_availableItems.Add( wi );
 		}
 		
 		void RemoveAt(int dataIndex)
@@ -626,7 +616,7 @@ namespace Fuse.Reactive
 			if ( windowIndex < 0 || windowIndex >= _windowItems.Count)
 				return;
 			
-			AddAvailableNodes(_windowItems[windowIndex]);
+			AddAvailableItem(_windowItems[windowIndex]);
  
 			_windowItems.RemoveAt(windowIndex);
  			SetValid();		
@@ -649,7 +639,7 @@ namespace Fuse.Reactive
 			_windowItems = new ObjectList<WindowItem>();
 
 			for (int i = 0; i < items.Count; i++)
-				AddAvailableNodes(items[i]);
+				AddAvailableItem(items[i]);
 			OnUpdatedWindowItems();
 		}
 		
@@ -780,7 +770,7 @@ namespace Fuse.Reactive
 			}
 
 			//remove whatever is leftover
-			RemovePendingAvailableNodes();
+			RemovePendingAvailableItems();
 			return false;
 		}
 		
