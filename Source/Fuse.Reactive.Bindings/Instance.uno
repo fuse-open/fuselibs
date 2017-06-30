@@ -371,8 +371,8 @@ namespace Fuse.Reactive
 			/* Will be null if the nodes haven't been created. This is distinct from being non-null but having a
 			count of zero. */
 			public List<Node> Nodes; 
-			//this is a separate list so we can call `Visual.InsertNodes` with `Nodes` alone
-			public List<Template> Templates;
+			//this is either the one speicfic matching template, or null to indicate the full set
+			public Template Template;
 			public object Data;
 			//logical identifier used for matching, null if none
 			public object Id;
@@ -523,22 +523,44 @@ namespace Fuse.Reactive
 
 		IDisposable _subscription;
 
-		struct AvailableNode
+		class AvailableNode
 		{
-			public Node Node;
+			public Template Template;
+			public List<Node> Nodes;
 			public object Id;
 		}
-		Dictionary<Template,List<AvailableNode>> _availableNodes;
+		List<AvailableNode> _availableNodes = new List<AvailableNode>();
 		bool _pendingAvailableNodes;
 		
-		void AddAvailableNode(object id, Template f, Node n)
+		List<Node> GetAvailableNodes(Template f, object id)
 		{
-			if (_availableNodes == null)
-				_availableNodes = new Dictionary<Template,List<AvailableNode>>();
-				
-			if (!_availableNodes.ContainsKey(f))
-				_availableNodes[f] = new List<AvailableNode>();
-			_availableNodes[f].Add( new AvailableNode{ Node = n, Id = id });
+			if (id != null)
+			{
+				for (int i=0; i < _availableNodes.Count; ++i)
+				{
+					var av = _availableNodes[i];
+					if (f == av.Template && Object.Equals(av.Id, id))
+					{
+						_availableNodes.RemoveAt(i);
+						return av.Nodes;
+					}
+				}
+			}
+			
+			if (Reuse != InstanceReuse.None)
+			{
+				for (int i=0; i < _availableNodes.Count; ++i)
+				{
+					var av = _availableNodes[i];
+					if (f == av.Template)
+					{
+						_availableNodes.RemoveAt(i);
+						return av.Nodes;
+					}
+				}
+			}
+			
+			return null;
 		}
 		
 		/* Test interface to ensure we aren't leaking resources. */
@@ -546,15 +568,7 @@ namespace Fuse.Reactive
 		{
 			get
 			{
-				if (_availableNodes == null)
-					return true;
-					
-				foreach (var tn in _availableNodes)
-				{	
-					if (tn.Value.Count != 0)
-						return false;
-				}
-				return true;
+				return _availableNodes.Count == 0;
 			}
 		}
 		
@@ -584,32 +598,26 @@ namespace Fuse.Reactive
 		
 		void RemovePendingAvailableNodes()
 		{
-			if (_availableNodes == null)
-				return;
-				
-			//TODO: remove foreach if possible, they are inefficient in Uno's memory model
-			foreach (var tn in _availableNodes)
+			for (int i=0; i < _availableNodes.Count; ++i)
 			{	
-				for (int i=0; i < tn.Value.Count; ++i)
-					RemoveFromParent(tn.Value[i].Node);
-				tn.Value.Clear();
+				var av = _availableNodes[i];
+				for (int n=0; n < av.Nodes.Count; ++n)
+					RemoveFromParent(av.Nodes[n]);
 			}
+			_availableNodes.Clear();
 			
 			_pendingNew = false;
 		}
 		
 		void AddAvailableNodes(WindowItem wi)
 		{
-			var nodes = wi.Nodes;
-			var tpls = wi.Templates;
-			if (nodes != null)
-			{
-				if (tpls == null || nodes.Count != tpls.Count)
-					throw new Exception( "WindowItems list corruption" );
-			
-				for (int i=0; i < nodes.Count; ++i)
-					AddAvailableNode(wi.Id, tpls[i], nodes[i]);
-			}
+			if (wi.Nodes == null)
+				return;
+				
+			_availableNodes.Add( new AvailableNode{
+				Template = wi.Template,
+				Id = wi.Id,
+				Nodes = wi.Nodes });
 		}
 		
 		void RemoveAt(int dataIndex)
@@ -778,49 +786,47 @@ namespace Fuse.Reactive
 		
 		void CompleteWindowItem(WindowItem wi, int windowIndex)
 		{
-			wi.Nodes = new List<Node>();
-			wi.Templates = new List<Template>();
 			wi.Id = GetDataKey(wi.Data, ObjectId);
 
-			bool anyMatched = false;
-			Template defaultTemplate = null;
 
 			// Algorithm for picking matching the right template
-
+			Template useTemplate = null;
+			Template defaultTemplate = null;
+			
 			// Priority 1 - If a TemplateSource and TemplateKey is specified
-			// look for a template in the source that matches the key.
-			// If found, use that
 			if (_templateSource != null && TemplateKey != null)
 			{
 				var t = _templateSource.FindTemplate(TemplateKey);
 				if (t != null)
-				{
-					anyMatched = true;
-					AddTemplate(wi, t);
-				}
+					useTemplate = t;
 			}
 
-			// Priority 2 - If the template source wasn't matched, use the local
-			// Templates collection and look for a matching key (if set)
-			if (!anyMatched)
+			// Priority 2 - use the local templates collection and look for a matching key (if set)
+			if (useTemplate == null)
 			{
 				var key = GetDataKey(wi.Data, _matchKey) as string;
-				foreach (var f in Templates)
-				{
+				//match Order in FindTemplate (latest is preferred)
+				for (int i=Templates.Count-1; i>=0; --i) {
+					var f = Templates[i];
 					if (f.IsDefault) defaultTemplate = f;
 					if (key != null && f.Key != key) continue;
 
-					anyMatched = true;
-
-					AddTemplate(wi, f);
+					if (useTemplate == null) useTemplate = f;
 				}
 			}
 
 			// Priority 3 - Use the default template if provided
-			if (!anyMatched && defaultTemplate != null)
+			if (useTemplate == null)
+				useTemplate = defaultTemplate; //may still be null
+
+			AddTemplate(wi, useTemplate);
+			
+			if ( (wi.Template == null && Templates.Count != wi.Nodes.Count) ||
+				(wi.Template != null && wi.Nodes.Count != 1))
 			{
-				AddTemplate(wi, defaultTemplate);
+				debug_log "Invalid Result:" + wi.Template + ":" + wi.Nodes.Count + ":" + Templates.Count;
 			}
+			
 
 			//find last node prior to where we want to introduce
 			var lastNode = GetLastNodeFromIndex(windowIndex-1);
@@ -860,53 +866,30 @@ namespace Fuse.Reactive
 
 		Dictionary<Node,object> _dataMap = new Dictionary<Node,object>();
 
-
+		
 		void AddTemplate(WindowItem item, Template f)
  		{
-			Node elm = null;
-
-			//check if there's an available node for this template already
-			if (_availableNodes != null && _availableNodes.ContainsKey(f))
+			var av = GetAvailableNodes(f, item.Id);
+			if (av != null)
 			{
-				var list = _availableNodes[f];
-				//search for a matching Id
-				if (ObjectMatch == InstanceObjectMatch.FieldId && item.Id != null)
-				{
-					for (int i=0; i < list.Count; ++i)
-					{
-						if (Object.Equals(list[i].Id, item.Id))
-						{
-							elm = list[i].Node;
-							list.RemoveAt(i);
-							break;
-						}
-					}
-				}
-				
-				if (elm == null && list.Count > 0 && Reuse != InstanceReuse.None)
-				{
-					elm = list[list.Count-1].Node;
-					list.RemoveAt(list.Count-1);
-				}
+				item.Nodes = av;
 			}
-			
-			if (elm == null)
+			else
 			{
-				elm = f.New() as Node;
+				item.Nodes = new List<Node>();
+				var elm = f.New() as Node;
 				if (elm == null)
 				{
 					Fuse.Diagnostics.InternalError( "Template contains a non-Node", this );
 					return;
 				}
+				item.Nodes.Add(elm);
 			}
 
-			SetData(elm, item.Data);
+			for (int i=0; i < item.Nodes.Count; ++i)
+				SetData(item.Nodes[i], item.Data);
  			
- 			if (item.Nodes.Count != item.Templates.Count)
-				throw new Exception( "WindowItem list corruption" );
-				
- 			item.Nodes.Add(elm);
- 			item.Templates.Add(f);
+ 			item.Template = f;
  		}
 
 		internal override Node GetLastNodeInGroup()
