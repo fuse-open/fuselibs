@@ -19,7 +19,9 @@
 		_imagePicker = [[UIImagePickerController alloc] init];
 		_imagePicker.sourceType = type;
 		[_imagePicker setDelegate:self];
-		[[self VC] presentViewController:_imagePicker animated:YES completion:^{ }];
+		[[NSOperationQueue mainQueue] addOperationWithBlock:^ {
+			[[self VC] presentViewController:_imagePicker animated:YES completion:^{ }];
+		}];
 		return YES;
 	}else{
 		return NO;
@@ -36,9 +38,11 @@
 -(void)closePickerThen:(Action)a
 {
 	__block Action postAction = a;
-	[[self VC] dismissViewControllerAnimated:YES completion:^{
-		postAction();
-		[self cleanUp];
+	[[NSOperationQueue mainQueue] addOperationWithBlock:^ {
+		[[self VC] dismissViewControllerAnimated:YES completion:^{
+			postAction();
+			[self cleanUp];
+		}];
 	}];
 }
 

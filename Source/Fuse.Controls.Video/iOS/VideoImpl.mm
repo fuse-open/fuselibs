@@ -95,6 +95,11 @@ namespace FuseVideoImpl
 
 		if (vs->Player)
 		{
+			if (vs->_presentationSizeObserver)
+			{
+				[vs->Player removeObserver:vs->_presentationSizeObserver forKeyPath:@"currentItem.presentationSize"];
+				vs->_presentationSizeObserver = NULL;
+			}
 			[vs->Player pause];
 			vs->Player = NULL;
 		}

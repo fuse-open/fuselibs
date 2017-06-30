@@ -41,7 +41,7 @@ namespace Fuse.Reactive.FuseJS
 			## Example
 
 				var Maps = require("FuseJS/Maps");
-				Maps.searchNear("Fusetools");
+				Maps.searchNearby("Fusetools");
 		*/
 		public static object SearchNearby(Scripting.Context context, object[] args)
 		{
@@ -83,7 +83,7 @@ namespace Fuse.Reactive.FuseJS
 			## Example
 
 				var Maps = require("FuseJS/Maps");
-				Maps.searchNear(59.9117715, 10.7400957);
+				Maps.openAt(59.9117715, 10.7400957);
 		*/
 		public static object OpenAt(Scripting.Context context, object[] args)
 		{
