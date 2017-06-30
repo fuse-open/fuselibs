@@ -26,6 +26,7 @@ namespace Fuse.Triggers
 
 		This example will change the @ScrollView background color while the user scrolls.
 		The trigger will revert when the ScrollView stops, even if the user is still touching the screen.
+		If the user lift of his finger and the ScrollView still got some momentum, the trigger will remain active.
 	*/
 	public class WhileScrolling : WhileTrigger
 	{
