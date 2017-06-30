@@ -22,7 +22,17 @@
 
 # 1.1
 
+### Fuse.ImageTools
+- Fixed bug preventing handling of KEEP_ASPECT resize mode on Android when using ImageTools.resize 
+
+### Fuse.Camera
+- iOS: Fixed crash when using Fuse.Camera alongside `<iOS.StatusBarConfig IsVisible="false" />`
+
+
 ## 1.1.0
+
+### Fuse.Launchers
+- Fixed bug on iOS where URIs were incorrectly encoded, leading to some input with reserved URI-characters misbehaving.
 
 ### ImageTools
 - Fixed bug in Android implementation that could result in errors due to prematurely recycled bitmaps

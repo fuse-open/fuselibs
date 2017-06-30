@@ -8,7 +8,8 @@
     "Fuse.CameraRoll",
     "Fuse.Maps",
     "Fuse.Audio",
-    "Fuse.Share"
+    "Fuse.Share",
+    "Fuse.Launcher"
   ],
   "Projects": [
     "UnoComponents.unoproj",
