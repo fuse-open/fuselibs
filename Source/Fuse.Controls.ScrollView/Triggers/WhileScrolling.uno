@@ -35,17 +35,16 @@ namespace Fuse.Triggers
 		protected override void OnRooted()
 		{
 			base.OnRooted();
-
-			if (Parent is Element) {
-				_parent = Parent as Element;
-			}
-			else {
+			_parent = Parent as Element;
+			if (_parent == null)
+			{
 				Fuse.Diagnostics.UserError( "Parent must be an Element", this );
 				return;
 			}
 
 			_scrollView = Parent.FindByType<ScrollViewBase>();
-			if (_scrollView == null) {
+			if (_scrollView == null)
+			{
 				Fuse.Diagnostics.UserError( "WhileScrolling could not find a parent scrollable control.", this );
 				return;
 			}
@@ -59,13 +58,10 @@ namespace Fuse.Triggers
 			if (_scrollView != null)
 			{
 				_scrollView.ScrollPositionChanged -= OnScrollPositionChanged;
-
 			}
-
+			_parent = null;
 			_scrollView = null;
-
 			base.OnUnrooted();
-
 		}
 
 		bool _isActive = false;
