@@ -29,16 +29,25 @@ namespace Fuse
 			if (Parent != null) Parent.DecrementWTIListener();
 		}
 
-		void RaiseWTI()
+		void InvalidateWorldTransform()
 		{
-			if (_wtiListeners == 0) return;
-
-			OnInvalidateWorldTransform();
-
-			for (var i = 0; i < Children.Count; i++)
+			_worldTransformVersion++;
+			if (_worldTransform != null || _worldTransformInverse != null)
 			{
-				var v = Children[i] as Visual;
-				if (v != null) v.RaiseWTI();
+				_worldTransform = null;
+				_worldTransformInverse = null;
+			}
+			
+			if (_worldTransformInvalidated != null)
+				_worldTransformInvalidated(this, EventArgs.Empty);
+
+			if (_wtiListeners > 0) 
+			{
+				for (var i = 0; i < Children.Count; i++)
+				{
+					var v = Children[i] as Visual;
+					if (v != null) v.InvalidateWorldTransform();
+				}
 			}
 		}
 
@@ -78,12 +87,5 @@ namespace Fuse
 
 			if (_wtiListeners != 0) throw new Exception(); // should never happen
 		}
-		
-		protected virtual void OnInvalidateWorldTransform() 
-		{ 
-			if (_worldTransformInvalidated != null)
-				_worldTransformInvalidated(this, EventArgs.Empty);
-		}
-
 	}
 }

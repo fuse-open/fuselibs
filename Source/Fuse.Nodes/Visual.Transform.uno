@@ -60,19 +60,6 @@ namespace Fuse
 			InvalidateWorldTransform();
 		}
 
-		void InvalidateWorldTransform()
-		{
-			if (_worldTransform == null && _worldTransformInverse == null)
-				return;
-			_worldTransform = null;
-			_worldTransformInverse = null;
-			_worldTransformVersion++;
-
-			// Raises WorldTransformInvalidated for this and subtree 
-			// event implemented using special algorithm for performance reasons
-			RaiseWTI(); 
-		}
-
 		FastMatrix _worldTransformInverse;
 		public float4x4 WorldTransformInverse
 		{
