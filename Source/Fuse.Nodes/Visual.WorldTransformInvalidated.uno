@@ -67,7 +67,7 @@ namespace Fuse
 			{ 
 				_worldTransformInvalidated -= value;
 
-				if (_worldTransformInvalidated == null && IsRootingStarted)
+				if (_worldTransformInvalidated == null && Parent != null)
 					DecrementWTIListener();
 			}
 		}
