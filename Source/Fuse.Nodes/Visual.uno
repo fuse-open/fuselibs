@@ -128,7 +128,6 @@ namespace Fuse
 
 			UnrootResources();
 			UnrootTemplates();
-			WTIUnrooted();
 			_viewport = null;
 
 			ResetParameterListeners();
@@ -148,6 +147,8 @@ namespace Fuse
 						iter.Current.UnrootInternal();
 				}
 			}
+
+			WTIUnrooted();
 
 			ConcludePendingRemove();
 		}
