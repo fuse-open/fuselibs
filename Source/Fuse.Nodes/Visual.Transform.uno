@@ -68,7 +68,7 @@ namespace Fuse
 			_worldTransformInverse = null;
 			_worldTransformVersion++;
 
-			// Raises WorldTransformInvalidated for subtree 
+			// Raises WorldTransformInvalidated for this and subtree 
 			// event implemented using special algorithm for performance reasons
 			RaiseWTI(); 
 		}

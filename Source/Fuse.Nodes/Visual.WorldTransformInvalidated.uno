@@ -65,6 +65,8 @@ namespace Fuse
 
 		void WTIRooted()
 		{
+			if (_wtiListeners != 0) throw new Exception(); // should never happen
+			
 			if (_worldTransformInvalidated != null)
 				IncrementWTIListener();
 		}
@@ -73,6 +75,8 @@ namespace Fuse
 		{
 			if (_worldTransformInvalidated != null)
 				DecrementWTIListener();
+
+			if (_wtiListeners != 0) throw new Exception(); // should never happen
 		}
 		
 		protected virtual void OnInvalidateWorldTransform() 
