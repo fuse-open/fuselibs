@@ -103,7 +103,7 @@ namespace Fuse.Reactive.Test
 		
 		[Test]
 		/* Tests changes in the Limit/Offset properties */
-		public void EachWindow()
+		public void EachWindowBasic()
 		{
 			var e = new UX.Each.Window();
 			var root = TestRootPanel.CreateWithChild(e);
@@ -431,7 +431,8 @@ namespace Fuse.Reactive.Test
  				e.CallReplace.Perform();
  				root.StepFrameJS();
  				//it's not certain if the new element is guaranteed to be in this place
- 				Assert.AreEqual("3-0,0-0,1-1,2-2", GetText(e));
+ 				//Assert.AreEqual("3-0,0-0,1-1,2-2", GetText(e));
+ 				Assert.AreEqual("0-0,1-1,2-2,3-0", GetText(e));
 			}
 		}
 		

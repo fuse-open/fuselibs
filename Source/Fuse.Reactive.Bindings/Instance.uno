@@ -374,6 +374,8 @@ namespace Fuse.Reactive
 			public ObservableLink DataLink;
 			//logical identifier used for matching, null if none
 			public object Id;
+			//this item is removed from the data/window but pending child removal
+			public bool Removed;
 			
 			public WindowItem()
 			{
@@ -404,7 +406,16 @@ namespace Fuse.Reactive
 		
 		int WindowItemsActiveCount 
 		{
-			get { return _windowItems.Count; }
+			get 
+			{ 
+				var c = 0;
+				for (int i=0; i < _windowItems.Count; ++i)
+				{
+					if (!_windowItems[i].Removed)
+						c++;
+				}
+				return c;
+			}
 		}
 		
 		internal event Action UpdatedWindowItems;
@@ -430,14 +441,22 @@ namespace Fuse.Reactive
 		
 		internal int DataIndexOfChild(Node child)
 		{
+			var c = Offset;
 			for (int i = 0; i < _windowItems.Count; i++)
 			{
-				var list = _windowItems[i].Nodes;
+				var wi = _windowItems[i];
+				var list = wi.Nodes;
 				if (list == null)
 					continue;
 					
 				for (int n = 0; n < list.Count; n++)
-					if (list[n] == child) return i + Offset;
+				{
+					if (list[n] == child)
+						return wi.Removed ? -1 : c;
+				}
+					
+				if (!wi.Removed)	
+					c++;
 			}
 			return -1;
 		}
@@ -601,27 +620,50 @@ namespace Fuse.Reactive
 			_availableItems.Add( wi );
 		}
 		
+		int DataToWindowIndex(int dataIndex)
+		{
+			var raw = dataIndex - Offset;
+			if (raw < 0)
+				return raw;
+				
+			var removed = 0;
+			for (int wi=0; wi < _windowItems.Count; ++wi)
+			{
+				if (!_windowItems[wi].Removed)
+				{
+					if (raw <= 0)
+						return wi;
+				
+					raw--;
+				}
+				else
+					removed++;
+			}
+
+			return dataIndex - Offset + removed;
+		}
+	
 		void RemoveAt(int dataIndex)
 		{
-			var windowIndex = dataIndex - Offset;
+			var windowIndex = DataToWindowIndex(dataIndex);
 			if ( windowIndex < 0 || windowIndex >= _windowItems.Count)
 				return;
 			
 			AddAvailableItem(_windowItems[windowIndex]);
- 
-			_windowItems.RemoveAt(windowIndex);
+			_windowItems[windowIndex].Removed = true;
+		
  			SetValid();		
 			OnUpdatedWindowItems();
 		}
 		
 		void RemoveLastActive()
 		{
-			RemoveAt(Offset + _windowItems.Count - 1);
+			RemoveAt(Offset + WindowItemsActiveCount - 1);
 		}
 		
 		void InsertEnd()
 		{
-			InsertNew(Offset + _windowItems.Count);
+			InsertNew(Offset + WindowItemsActiveCount);
 		}
 
 		void ReplaceAll(object[] dcs)
@@ -636,11 +678,15 @@ namespace Fuse.Reactive
 		{
 			if (_windowItems.Count == 0) return;
 
-			var items = _windowItems;
-			_windowItems = new ObjectList<WindowItem>();
-
-			for (int i = 0; i < items.Count; i++)
-				AddAvailableItem(items[i]);
+			for (int i=0; i < _windowItems.Count; ++i)
+			{
+				var wi = _windowItems[i];
+				if (!wi.Removed)
+				{
+					AddAvailableItem(wi);
+					wi.Removed = true;
+				}
+			}
 			OnUpdatedWindowItems();
 		}
 		
@@ -667,6 +713,8 @@ namespace Fuse.Reactive
 				
 				if (wi.Nodes.Count == 0)
 					wi.Dispose();
+					
+				_windowItems.Remove(wi);
 			}
 
 		}
@@ -727,8 +775,12 @@ namespace Fuse.Reactive
 		/** Inserts a new item into the _windowItems. The actual creation of the objects may be deferred. */
 		void InsertNew(int dataIndex)
 		{
-			var windowIndex = dataIndex - Offset;
-			if ( (HasLimit && windowIndex >= Limit) || windowIndex < 0)
+			if (dataIndex < Offset ||
+				(HasLimit && (dataIndex - Offset) >= Limit))
+				return;
+				
+			var windowIndex = DataToWindowIndex(dataIndex);
+			if ( windowIndex > _windowItems.Count || windowIndex < 0)
 				return;		
 
 			var data = GetData(dataIndex);
@@ -772,12 +824,16 @@ namespace Fuse.Reactive
 			bool first = true;
 			for (int i=0; i < _windowItems.Count; ++i)
 			{
-				if (_windowItems[i].Nodes == null)
+				var wi = _windowItems[i];
+				if (wi.Removed)
+					continue;
+					
+				if (wi.Nodes == null)
 				{
 					if (!first && one)
 						return true;
 						
-					CompleteWindowItem(_windowItems[i], i);
+					CompleteWindowItem(wi, i);
 					first = false;
 				}
 			}
@@ -851,11 +907,14 @@ namespace Fuse.Reactive
 			if (ObjectMatch == InstanceObjectMatch.None)
 				return false;
 			
-			var windowIndex = dataIndex - Offset;
+			var windowIndex = DataToWindowIndex(dataIndex);
 			if (windowIndex < 0 || windowIndex >= _windowItems.Count)
 				return false;
 				
 			var wi = _windowItems[windowIndex];
+			if (wi.Removed)
+				return false;
+				
 			var newId = GetDataKey(newData, ObjectId);
 			if (wi.Id == null || !Object.Equals(wi.Id, newId))
 				return false;
