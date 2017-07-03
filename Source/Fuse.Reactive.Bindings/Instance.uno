@@ -368,12 +368,29 @@ namespace Fuse.Reactive
 			public List<Node> Nodes; 
 			//this is either the one speicfic matching template, or null to indicate the full set
 			public Template Template;
+			//the raw data associated with the item
 			public object Data;
+			//non-null if `Data` as an Observable
+			public ObservableLink DataLink;
 			//logical identifier used for matching, null if none
 			public object Id;
 			
 			public WindowItem()
 			{
+			}
+			
+			public object CurrentData
+			{
+				get
+				{
+					return DataLink != null ? DataLink.Data : Data;
+				}
+			}
+			
+			public void Dispose()
+			{
+				if (DataLink != null)
+					DataLink.Dispose();
 			}
 		}
 		
@@ -451,44 +468,18 @@ namespace Fuse.Reactive
 
 		object Node.ISubtreeDataProvider.GetData(Node n)
 		{
-			object v;
+			WindowItem v;
 			if (_dataMap.TryGetValue(n, out v))
 			{
-				var ol = v as ObservableLink;
-				if (ol != null) return ol.Data;
-
 				//https://github.com/fusetools/fuselibs/issues/3312
 				//`Count` does not introduce data items
-				if (!(v is CountItem))
-					return v;
+				if (v.Data is CountItem)
+					return null;
+					
+				return v.CurrentData;
 			}
 
 			return null;
-		}
-		
-		void SetData(Node n, object data)
-		{
-			//if an item is being reused it might have existing data. We'll need to broadcast a change
-			var prevOCP =(this as Node.ISubtreeDataProvider).GetData(n);
-			object nextData = null;
-			
-			var obs = data as IObservable;
-			if (obs != null)
-			{
-				var link = new ObservableLink(obs, n);
-				_dataMap[n] = link;
-				nextData = link.Data;
-			}
-			else
-			{
-				_dataMap[n] = data;	
-				nextData = data;
-			}
-			
- 			n.OverrideContextParent = this;
- 			
- 			if (prevOCP != null)
-				n.BroadcastDataChange(prevOCP, nextData);
 		}
 
 		void Repopulate()
@@ -526,7 +517,7 @@ namespace Fuse.Reactive
 		ObjectList<WindowItem> _availableItems = new ObjectList<WindowItem>();
 		bool _pendingAvailableItems;
 		
-		List<Node> GetAvailableNodes(Template f, object id)
+		WindowItem GetAvailableNodes(Template f, object id)
 		{
 			if (id != null)
 			{
@@ -536,7 +527,7 @@ namespace Fuse.Reactive
 					if (f == av.Template && Object.Equals(av.Id, id))
 					{
 						_availableItems.RemoveAt(i);
-						return av.Nodes;
+						return av;
 					}
 				}
 			}
@@ -549,7 +540,7 @@ namespace Fuse.Reactive
 					if (f == av.Template)
 					{
 						_availableItems.RemoveAt(i);
-						return av.Nodes;
+						return av;
 					}
 				}
 			}
@@ -665,7 +656,19 @@ namespace Fuse.Reactive
 		void CompletedRemove(Node n)
 		{
 			n.OverrideContextParent = null;
-			_dataMap.Remove(n);
+			
+			WindowItem wi;
+			if (_dataMap.TryGetValue(n, out wi))
+			{
+				if (!wi.Nodes.Remove(n))
+					Fuse.Diagnostics.InternalError( "inconsistent Nodes list state", this );
+					
+				_dataMap.Remove(n);
+				
+				if (wi.Nodes.Count == 0)
+					wi.Dispose();
+			}
+
 		}
 
 		string _matchKey;
@@ -860,17 +863,19 @@ namespace Fuse.Reactive
 			var tpl = GetDataTemplate(newData);
 			if (wi.Template != tpl)
 				return false;
+
 				
+			var oldData = wi.CurrentData;
 			wi.Data = newData;
-			UpdateData(wi);
+			UpdateData(wi, oldData);
 			return true;
 		}
 
 		class ObservableLink: ValueObserver
 		{
-			Node _target;
+			WindowItem _target;
 
-			public ObservableLink(IObservable obs, Node target)
+			public ObservableLink(IObservable obs, WindowItem target)
 			{
 				_target = target;
 				Subscribe(obs);
@@ -892,19 +897,22 @@ namespace Fuse.Reactive
 
 				var oldData = _currentData;
 				_currentData = newData;
-				_target.BroadcastDataChange(oldData, newData);
+				for (int i=0; i < _target.Nodes.Count; ++i)
+					_target.Nodes[i].BroadcastDataChange(oldData, newData);
 			}
 		}
 
-		Dictionary<Node,object> _dataMap = new Dictionary<Node,object>();
+		Dictionary<Node,WindowItem> _dataMap = new Dictionary<Node,WindowItem>();
 
 		
 		void AddTemplate(WindowItem item, Template f)
  		{
+			object oldData = null;
 			var av = GetAvailableNodes(f, item.Id);
 			if (av != null)
 			{
-				item.Nodes = av;
+				item.Nodes = av.Nodes;
+				oldData = av.CurrentData;
 			}
 			else
 			{
@@ -918,14 +926,31 @@ namespace Fuse.Reactive
 				item.Nodes.Add(elm);
 			}
 
-			UpdateData(item);
+			UpdateData(item, oldData);
  			item.Template = f;
  		}
  		
- 		void UpdateData(WindowItem item)
+ 		void UpdateData(WindowItem item, object oldData)
  		{
+			if (item.DataLink != null)
+			{
+				item.DataLink.Dispose();
+				item.DataLink = null;
+			}
+
+			var obs = item.Data as IObservable;
+			if (obs != null)
+				item.DataLink = new ObservableLink(obs, item);
+			
+			var nextData = item.CurrentData;
 			for (int i=0; i < item.Nodes.Count; ++i)
-				SetData(item.Nodes[i], item.Data);
+			{
+				var n = item.Nodes[i];
+				_dataMap[n] = item;
+				n.OverrideContextParent = this;
+				if (oldData != null)
+					n.BroadcastDataChange(oldData, nextData);
+			}
  		}
 
 		internal override Node GetLastNodeInGroup()
