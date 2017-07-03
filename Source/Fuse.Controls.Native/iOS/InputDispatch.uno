@@ -13,29 +13,65 @@ namespace Fuse.Controls.Native.iOS
 	{
 		public static void OnTouchesBegan(Visual origin, ObjC.Object touches)
 		{
-			RaiseEvent(EventType.Pressed, origin, touches);
+			var rootInfo = GetRootInfo(origin);
+			foreach (var data in MakePointerEventData(touches, rootInfo.RootView))
+				RaisePressed(rootInfo.RootVisual, data);
 		}
 
 		public static void OnTouchesMoved(Visual origin, ObjC.Object touches)
 		{
-			RaiseEvent(EventType.Moved, origin, touches);
+			var rootInfo = GetRootInfo(origin);
+			foreach (var data in MakePointerEventData(touches, rootInfo.RootView))
+				RaiseMoved(rootInfo.RootVisual, data);
 		}
 
 		public static void OnTouchesEnded(Visual origin, ObjC.Object touches)
 		{
-			RaiseEvent(EventType.Released, origin, touches);
+			var rootInfo = GetRootInfo(origin);
+			var count = NSArrayCount(touches);
+			for (var i = 0; i < count; i++)
+			{
+				var uiTouch = NSArrayObjectAtIndex(touches, i);
+				RaiseReleased(rootInfo.RootVisual, NewPointerEventData(uiTouch, rootInfo.RootView));
+				DeactivateTouch(uiTouch);
+			}
 		}
 
 		public static void OnTouchesCancelled(Visual origin, ObjC.Object touches)
 		{
-			RaiseEvent(EventType.Cancelled, origin, touches);
+			var rootInfo = GetRootInfo(origin);
+			var count = NSArrayCount(touches);
+			for (var i = 0; i < count; i++)
+			{
+				var uiTouch = NSArrayObjectAtIndex(touches, i);
+				RaiseCancelled(rootInfo.RootVisual, NewPointerEventData(uiTouch, rootInfo.RootView));
+				DeactivateTouch(uiTouch);
+			}
 		}
 
 		[Foreign(Language.ObjC)]
 		public static void AddInputHandler(Visual owner, ViewHandle viewHandle)
 		@{
 			UIView* view = (UIView*)@{Fuse.Controls.Native.ViewHandle:Of(viewHandle).HitTestHandle:Get()};
-			addInputHandler(view, ^void(int type, id<UnoObject> visual, id touches) { @{Fuse.Controls.Native.iOS.InputDispatch.RaiseEvent(int,object,ObjC.Object):Call(type,visual,touches)}; }, owner);
+			addInputHandler(view, ^void(int type, id<UnoObject> visual, id touches) {
+				switch(type)
+				{
+					case EVENTTYPE_PRESSED:
+						@{InputDispatch.OnTouchesBegan(Visual,ObjC.Object):Call(visual, touches)};
+						break;
+					case EVENTTYPE_MOVED:
+						@{InputDispatch.OnTouchesMoved(Visual,ObjC.Object):Call(visual, touches)};
+						break;
+					case EVENTTYPE_RELEASED:
+						@{InputDispatch.OnTouchesEnded(Visual,ObjC.Object):Call(visual, touches)};
+						break;
+					case EVENTTYPE_CANCELLED:
+						@{InputDispatch.OnTouchesCancelled(Visual,ObjC.Object):Call(visual, touches)};
+						break;
+					default:
+						break;
+				}
+			}, owner);
 		@}
 
 		[Foreign(Language.ObjC)]
@@ -45,42 +81,7 @@ namespace Fuse.Controls.Native.iOS
 			removeInputHandler(view);
 		@}
 
-		static void RaiseEvent(int eventType, object origin, ObjC.Object touches)
-		{
-			RaiseEvent((EventType)eventType, (Visual)origin, touches);
-		}
-
-		enum EventType : int
-		{
-			Pressed = 0,
-			Moved = 1,
-			Released = 2,
-			Cancelled = 3,
-		}
-
-		static readonly Action<Visual,PointerEventData>[] _handlers = new Action<Visual,PointerEventData>[] {
-			RaisePressed,
-			RaiseMoved,
-			RaiseReleased,
-			RaiseCancelled,
-		};
-
-		static void RaiseEvent(EventType type, Visual origin, ObjC.Object touches)
-		{
-			var rootInfo = GetRootInfo(origin);
-			var count = NSArrayCount(touches);
-			var handler = _handlers[(int)type];
-			var deactivate = ((int)type) > ((int)EventType.Moved);
-			for (var i = 0; i < count; i++)
-			{
-				var uiTouch = NSArrayObjectAtIndex(touches, i);
-				handler(rootInfo.RootVisual, NewPointerEventData(uiTouch, rootInfo.RootView));
-				if (deactivate)
-					DeactivateTouch(uiTouch);
-			}
-		}
-
-		class RootInfo
+		struct RootInfo
 		{
 			public readonly Visual RootVisual;
 			public readonly ObjC.Object RootView;
@@ -102,14 +103,14 @@ namespace Fuse.Controls.Native.iOS
 			return new RootInfo(rootVisual, rootView);
 		}
 
-		const int PointerCount = 10;
+		const int MaxPointerCount = 10;
 
-		static ObjC.Object[] _activePointers = new ObjC.Object[PointerCount];
+		static ObjC.Object[] _activePointers = new ObjC.Object[MaxPointerCount];
 
 		static int GetPointIndex(ObjC.Object uiTouch)
 		{
 			var availableIndex = -1;
-			for (var i = PointerCount; i-- > 0;)
+			for (var i = MaxPointerCount; i-- > 0;)
 			{
 				var pointer = _activePointers[i];
 				if (CompareUITouch(pointer, null))
@@ -123,7 +124,7 @@ namespace Fuse.Controls.Native.iOS
 
 		static void DeactivateTouch(ObjC.Object uiTouch)
 		{
-			for (var i = 0; i < PointerCount; i++)
+			for (var i = 0; i < MaxPointerCount; i++)
 			{
 				if (CompareUITouch(_activePointers[i], uiTouch))
 				{
@@ -135,22 +136,22 @@ namespace Fuse.Controls.Native.iOS
 
 		static float2 GetWindowPoint(ObjC.Object uiTouch, ObjC.Object rootView)
 		{
-			float x = 0.0f;
-			float y = 0.0f;
-			GetWindowPoint(uiTouch, rootView, extern<IntPtr>"&x", extern<IntPtr>"&y");
+			float x;
+			float y;
+			GetWindowPoint(uiTouch, rootView, out x, out y);
 			return float2(x, y);
 		}
 
 		[Foreign(Language.ObjC)]
-		static void GetWindowPoint(ObjC.Object uiTouch, ObjC.Object rootView, IntPtr x, IntPtr y)
+		static void GetWindowPoint(ObjC.Object uiTouch, ObjC.Object rootView, out float x, out float y)
 		@{
 			::UITouch* touch = (::UITouch*)uiTouch;
 			UIView* relativeView = (UIView*)rootView;
 			UIWindow* window = [touch window];
 			CGPoint location = [touch locationInView:window];
 			CGPoint localLocation = [window convertPoint:location toView:relativeView];
-			*((float*)x) = (float)localLocation.x;
-			*((float*)y) = (float)localLocation.y;
+			*x = (float)localLocation.x;
+			*y = (float)localLocation.y;
 		@}
 
 		[Foreign(Language.ObjC)]
@@ -161,12 +162,19 @@ namespace Fuse.Controls.Native.iOS
 		@}
 
 		[Foreign(Language.ObjC)]
-		static bool CompareUITouch(ObjC.Object x, ObjC.Object y)
+		static bool CompareUITouch(ObjC.Object a, ObjC.Object b)
 		@{
-			UITouch* touch1 = (UITouch*)x;
-			UITouch* touch2 = (UITouch*)y;
-			return x == y;
+			return (UITouch*)a == (UITouch*)b;
 		@}
+
+		static PointerEventData[] MakePointerEventData(ObjC.Object touches, ObjC.Object rootView)
+		{
+			var count = NSArrayCount(touches);
+			var data = new PointerEventData[count];
+			for (var i = 0; i < count; i++)
+				data[i] = NewPointerEventData(NSArrayObjectAtIndex(touches, i), rootView);
+			return data;
+		}
 
 		static PointerEventData NewPointerEventData(ObjC.Object uiTouch, ObjC.Object rootView)
 		{
