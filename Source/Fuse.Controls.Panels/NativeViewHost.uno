@@ -310,8 +310,6 @@ namespace Fuse.Controls
 		extern(Android || iOS)
 		protected override void OnRooted()
 		{
-			WorldTransformInvalidated += OnInvalidateWorldTransform;
-
 			if (IsInGraphicsContext)
 			{
 				_glRenderer = new NativeViewRenderer();
@@ -332,6 +330,7 @@ namespace Fuse.Controls
 					Fuse.Diagnostics.InternalError(this + " does not have an IProxyHost and will malfunction");
 			}
 			base.OnRooted();
+			WorldTransformInvalidated += OnInvalidateWorldTransform;
 		}
 
 		extern(Android || iOS)
