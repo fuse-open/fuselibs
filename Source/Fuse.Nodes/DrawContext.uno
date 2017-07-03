@@ -83,7 +83,7 @@ namespace Fuse
 			if defined(OPENGL)
 			{
 				GL.Enable(GLEnableCap.ScissorTest);
-				CheckGLError();
+				if defined(DEBUG) CheckGLError();
 
 				_glScissor = GL.GetInteger(GLInteger4Name.ScissorBox);
 				_glViewport = GL.GetInteger(GLInteger4Name.Viewport);
@@ -149,7 +149,7 @@ namespace Fuse
 			{
 				_glFramebuffer = value;
 				GL.BindFramebuffer(GLFramebufferTarget.Framebuffer, value);
-				CheckGLError();
+				if defined(DEBUG) CheckGLError();
 			}
 		}
 
@@ -178,7 +178,7 @@ namespace Fuse
 			if defined(OPENGL)
 			{
 				GLFramebuffer = rt.GLFramebufferHandle;
-				CheckGLError();
+				if defined(DEBUG) CheckGLError();
 			}
 			_renderTarget = rt;
 			GLViewportPixelSize = viewportPixelSize;
@@ -199,7 +199,7 @@ namespace Fuse
 			if defined(OPENGL)
 			{
 				GLFramebuffer = old.GLFramebuffer;
-				CheckGLError();
+				if defined(DEBUG) CheckGLError();
 			}
 			GLViewportPixelSize = old.GLViewportPixelSize;
 			GLScissor = old.GLScissor;
@@ -237,7 +237,7 @@ namespace Fuse
 				OpenGL.GL.ClearColor(color.X, color.Y, color.Z, color.W);
 				OpenGL.GL.Clear(GLClearBufferMask.ColorBufferBit | GLClearBufferMask.DepthBufferBit |
 				GLClearBufferMask.StencilBufferBit);
-				CheckGLError();
+				if defined(DEBUG) CheckGLError();
 			}
 		}
 
@@ -278,7 +278,7 @@ namespace Fuse
 				if defined(OpenGL)
 				{
 					OpenGL.GL.Scissor(value[0],value[1],value[2],value[3]);
-					CheckGLError();
+					if defined(DEBUG) CheckGLError();
 				}
 			}
 		}
@@ -322,7 +322,7 @@ namespace Fuse
 				if defined(OPENGL)
 				{
 					OpenGL.GL.Viewport(0, 0, value.X, value.Y);
-					CheckGLError();
+					if defined(DEBUG) CheckGLError();
 				}
 			}
 		}
