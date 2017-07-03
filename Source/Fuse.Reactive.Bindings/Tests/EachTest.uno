@@ -514,5 +514,49 @@ namespace Fuse.Reactive.Test
 				Assert.IsTrue(e.e.TestIsAvailableClean);
 			}
 		}
+		
+		[Test]
+		[Ignore("working on it")]
+		public void ObjectIdOrder()
+		{
+			var e = new UX.Each.ObjectIdOrder();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.StepFrameJS();
+				var z0 = GetZChildren(e.s);
+				Assert.AreEqual("50,40,30,20,10", GetDudZ(e.s));
+				
+				e.CallReplaceAll.Perform();
+				root.StepFrameJS();
+				var z1 = GetZChildren(e.s);
+				Assert.AreEqual("51,40,11,20,31", GetDudZ(e.s));
+			}
+		}
+		
+		[Test]
+		//ensure templates are updated if a matching object is used. Unfortunately this doesn't actually test
+		//the short path in `Instance.TryUpdateAt` is actually called.
+		public void ReuseTemplatesReplace()
+		{
+			var e = new UX.Each.ReuseTemplatesReplace();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.StepFrameJS();
+				var z0 = GetZChildren(e);
+				Assert.AreEqual("140,30,120,10", GetDudZ(e));
+				
+				e.CallReplace1.Perform();
+				root.StepFrameJS();
+				var z1 = GetZChildren(e);
+				Assert.AreEqual("140,30,121,10", GetDudZ(e));
+				Assert.AreEqual(z0[2],z1[2]);
+				
+				e.CallReplace2.Perform();
+				root.StepFrameJS();
+				var z2 = GetZChildren(e);
+				Assert.AreEqual("140,30,22,10", GetDudZ(e));
+				Assert.AreNotEqual(z0[2],z2[2]);
+			}
+		}
 	}
 }

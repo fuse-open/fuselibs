@@ -1,0 +1,26 @@
+<Panel ux:Class="UX.Each.ReuseTemplatesReplace">
+	<JavaScript>
+		var Observable = require("FuseJS/Observable")
+
+		exports.items = Observable()
+		exports.items.add( { id: 1, set: "one", value: 10 } )
+		exports.items.add( { id: 2, set: "two", value: 20 } )
+		exports.items.add( { id: 3, set: "one", value: 30 } )
+		exports.items.add( { id: 4, set: "two", value: 40 } )
+		
+		exports.replace1 = function() {
+			exports.items.replaceAt( 1, { id: 2, set: "two", value: 21 } )
+		}
+		exports.replace2 = function() {
+			exports.items.replaceAt( 1, { id: 2, set: "one", value: 22 } )
+		}
+	</JavaScript>
+
+	<Each Items="{items}" Reuse="Frame" MatchKey="set" ObjectId="id">
+		<FuseTest.DudElement ux:Template="one" Value="{value}"/>
+		<FuseTest.DudElement ux:Template="two" Value="100+{value}"/>
+	</Each>
+	
+	<FuseTest.Invoke Handler="{replace1}" ux:Name="CallReplace1"/>
+	<FuseTest.Invoke Handler="{replace2}" ux:Name="CallReplace2"/>
+</Panel>

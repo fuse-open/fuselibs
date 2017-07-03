@@ -774,11 +774,8 @@ namespace Fuse.Reactive
 			return false;
 		}
 		
-		void CompleteWindowItem(WindowItem wi, int windowIndex)
+		Template GetDataTemplate(object data)
 		{
-			wi.Id = GetDataKey(wi.Data, ObjectId);
-
-
 			// Algorithm for picking matching the right template
 			Template useTemplate = null;
 			Template defaultTemplate = null;
@@ -794,7 +791,7 @@ namespace Fuse.Reactive
 			// Priority 2 - use the local templates collection and look for a matching key (if set)
 			if (useTemplate == null)
 			{
-				var key = GetDataKey(wi.Data, _matchKey) as string;
+				var key = GetDataKey(data, _matchKey) as string;
 				//match Order in FindTemplate (latest is preferred)
 				for (int i=Templates.Count-1; i>=0; --i) {
 					var f = Templates[i];
@@ -808,13 +805,20 @@ namespace Fuse.Reactive
 			// Priority 3 - Use the default template if provided
 			if (useTemplate == null)
 				useTemplate = defaultTemplate; //may still be null
-
-			AddTemplate(wi, useTemplate);
+				
+			return useTemplate;
+		}
+		
+		void CompleteWindowItem(WindowItem wi, int windowIndex)
+		{
+			wi.Id = GetDataKey(wi.Data, ObjectId);
+			
+			AddTemplate(wi, GetDataTemplate(wi.Data));
 			
 			if ( (wi.Template == null && Templates.Count != wi.Nodes.Count) ||
 				(wi.Template != null && wi.Nodes.Count != 1))
 			{
-				debug_log "Invalid Result:" + wi.Template + ":" + wi.Nodes.Count + ":" + Templates.Count;
+				Fuse.Diagnostics.InternalError( "inconsistent instance state", this );
 			}
 			
 
@@ -822,6 +826,34 @@ namespace Fuse.Reactive
 			var lastNode = GetLastNodeFromIndex(windowIndex-1);
 
 			Parent.InsertOrMoveNodes( Parent.Children.IndexOf(lastNode) + 1, wi.Nodes.GetEnumerator() );
+		}
+		
+		/**
+			Replaces the data for the current item if it has an id and template match.
+		
+			@return true if the replacement was successful, false otherwise
+		*/
+		bool TryUpdateAt(int dataIndex, object newData)
+		{
+			if (ObjectMatch == InstanceObjectMatch.None)
+				return false;
+			
+			var windowIndex = dataIndex - Offset;
+			if (windowIndex < 0 || windowIndex >= _windowItems.Count)
+				return false;
+				
+			var wi = _windowItems[windowIndex];
+			var newId = GetDataKey(newData, ObjectId);
+			if (wi.Id == null || !Object.Equals(wi.Id, newId))
+				return false;
+				
+			var tpl = GetDataTemplate(newData);
+			if (wi.Template != tpl)
+				return false;
+				
+			wi.Data = newData;
+			UpdateData(wi);
+			return true;
 		}
 
 		class ObservableLink: ValueObserver
@@ -876,10 +908,14 @@ namespace Fuse.Reactive
 				item.Nodes.Add(elm);
 			}
 
+			UpdateData(item);
+ 			item.Template = f;
+ 		}
+ 		
+ 		void UpdateData(WindowItem item)
+ 		{
 			for (int i=0; i < item.Nodes.Count; ++i)
 				SetData(item.Nodes[i], item.Data);
- 			
- 			item.Template = f;
  		}
 
 		internal override Node GetLastNodeInGroup()

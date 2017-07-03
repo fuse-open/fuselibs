@@ -56,8 +56,12 @@ namespace Fuse.Reactive
 		{
 			if (!_listening) return;
 
-			RemoveAt(index);
-			InsertNew(index);
+			//use the shortcut if possible (saves overhead)
+			if (!TryUpdateAt(index, value))
+			{
+				RemoveAt(index);
+				InsertNew(index);
+			}
 			CompleteActionGood();
 		}
 
