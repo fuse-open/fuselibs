@@ -220,7 +220,7 @@ namespace Fuse.Test
 		}
 
 		[Test]
-		public void Compelx2()
+		public void Complex2()
 		{
 			var s = Matrix.Scaling(3.0f);
 			var r = Matrix.RotationZ(Math.PIf);
