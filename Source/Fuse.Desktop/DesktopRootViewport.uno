@@ -1,5 +1,7 @@
 using Uno;
+using Uno.Graphics;
 using Fuse.Input;
+using Fuse.Nodes;
 
 namespace Fuse.Desktop
 {
@@ -48,6 +50,8 @@ namespace Fuse.Desktop
 
 			try
 			{
+				OverdrawHaxxorz.StartFrame();
+
 				Internal.DrawManager.PrepareDraw(_dc);
 
 				EnsureSortedZOrder();
@@ -56,8 +60,66 @@ namespace Fuse.Desktop
 					ZOrder[i].Draw(_dc);
 
 				AppBase.Current.DrawSelection(_dc);
+
+				// Fade out app by drawing a semi-transparent rect on top of it
+				draw
+				{
+					float2[] Vertices: new[]
+					{
+						float2(0, 0), float2(0, 1), float2(1, 1),
+						float2(0, 0), float2(1, 1), float2(1, 0)
+					};
+
+					float2 Coord: vertex_attrib(Vertices);
+
+					ClipPosition: float4(Coord * 2 - 1, 0, 1);
+
+					PixelColor: float4(0, 0, 0, 0.5f);
+
+					CullFace : PolygonFace.None;
+					DepthTestEnabled: false;
+
+					BlendEnabled: true;
+					BlendSrcRgb: BlendOperand.SrcAlpha;
+					BlendDstRgb: BlendOperand.OneMinusSrcAlpha;
+
+					BlendSrcAlpha: BlendOperand.SrcAlpha;
+					BlendDstAlpha: BlendOperand.OneMinusSrcAlpha;
+				};
+
+				foreach (var r in OverdrawHaxxorz.DrawRects)
+				{
+					debug_log "Get rekt: " + r;
+
+					draw
+					{
+						float2[] Vertices: new[]
+						{
+							float2(0, 0), float2(0, 1), float2(1, 1),
+							float2(0, 0), float2(1, 1), float2(1, 0)
+						};
+
+						float2 Coord: vertex_attrib(Vertices);
+
+						ClipPosition: float4(r.Position + Coord * r.Size, 0, 1);
+
+						PixelColor: float4(1, 0, 0, 0.2f);
+
+						CullFace : PolygonFace.None;
+						DepthTestEnabled: false;
+
+						BlendEnabled: true;
+						BlendSrcRgb: BlendOperand.SrcAlpha;
+						BlendDstRgb: BlendOperand.One;
+
+						BlendSrcAlpha: BlendOperand.SrcAlpha;
+						BlendDstAlpha: BlendOperand.One;
+					};
+				}
 				
 				Internal.DrawManager.EndDraw(_dc);
+
+				OverdrawHaxxorz.EndFrame();
 			}
 			catch (Exception e)
 			{

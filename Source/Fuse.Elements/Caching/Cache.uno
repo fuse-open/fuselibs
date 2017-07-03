@@ -3,6 +3,8 @@ using Uno.Graphics;
 using Uno.UX;
 using Uno.Collections;
 
+using Fuse.Nodes;
+
 namespace Fuse.Elements
 {
 	internal struct CacheTile
@@ -238,6 +240,15 @@ namespace Fuse.Elements
 					DepthTestEnabled: false;
 					apply Fuse.Drawing.PreMultipliedAlphaCompositing;
 				};
+
+				debug_log "CacheHelper.Blit with tile " + tile;
+				// TODO: Is there a better way to do this?
+				var worldLeftTop = Vector.Transform(float4(0, 0, 0, 1), tile._compositMatrix);
+				var worldRightBottom = Vector.Transform(float4(float2(tile.Texture.Size.X, tile.Texture.Size.Y) / dc.ViewportPixelsPerPoint, 0, 1), tile._compositMatrix);
+				// NO NO NO NO NO (but makes this easy enough to test derrr)
+				var clipLeftTop = Vector.Transform(worldLeftTop, dc.Viewport.ViewProjectionTransform);
+				var clipRightBottom = Vector.Transform(worldRightBottom, dc.Viewport.ViewProjectionTransform);
+				OverdrawHaxxorz.AppendDrawRect(new Rect(clipLeftTop.XY, clipRightBottom.XY - clipLeftTop.XY));
 			}
 		}
 	}
