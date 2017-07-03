@@ -35,7 +35,7 @@ void installMethods(UIView* view)
 	NSString* subclassPrefix = [NSString stringWithUTF8String: SubclassPrefix];
 
 	if ([baseClassName hasPrefix:subclassPrefix])
-        return;
+		return;
 
 	NSString* subClassName = [NSString stringWithFormat:@"%@%@", subclassPrefix, baseClassName];
 
@@ -50,10 +50,10 @@ void installMethods(UIView* view)
 		}
 
 		class_addMethod(subClass, @selector(touchesBegan:withEvent:), (IMP)touchesBegan, "v@:@@");
-        class_addMethod(subClass, @selector(touchesMoved:withEvent:), (IMP)touchesMoved, "v@:@@");
-        class_addMethod(subClass, @selector(touchesEnded:withEvent:), (IMP)touchesEnded, "v@:@@");
-        class_addMethod(subClass, @selector(touchesCancelled:withEvent:), (IMP)touchesCancelled, "v@:@@");
-        objc_registerClassPair(subClass);
+		class_addMethod(subClass, @selector(touchesMoved:withEvent:), (IMP)touchesMoved, "v@:@@");
+		class_addMethod(subClass, @selector(touchesEnded:withEvent:), (IMP)touchesEnded, "v@:@@");
+		class_addMethod(subClass, @selector(touchesCancelled:withEvent:), (IMP)touchesCancelled, "v@:@@");
+		objc_registerClassPair(subClass);
 	}
 	object_setClass(view, subClass);
 }
@@ -71,11 +71,6 @@ void invokeOnSuperClass(id self, SEL _cmd, id touches, id uiEvent)
 	}
 	base(self, _cmd, touches, uiEvent);
 }
-
-const int EVENTTYPE_PRESSED = 0;
-const int EVENTTYPE_MOVED = 1;
-const int EVENTTYPE_RELEASED = 2;
-const int EVENTTYPE_CANCELLED = 3;
 
 void dispatchEvent(int eventType, id self, id touches)
 {
