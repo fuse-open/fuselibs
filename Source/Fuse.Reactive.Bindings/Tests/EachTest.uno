@@ -433,6 +433,10 @@ namespace Fuse.Reactive.Test
  				//it's not certain if the new element is guaranteed to be in this place
  				//Assert.AreEqual("3-0,0-0,1-1,2-2", GetText(e));
  				Assert.AreEqual("0-0,1-1,2-2,3-0", GetText(e));
+ 				
+ 				Assert.IsFalse(e.each.TestIsRemovedClean);
+ 				root.StepFrame(1.1f);
+ 				Assert.IsTrue(e.each.TestIsRemovedClean);
 			}
 		}
 		
@@ -503,6 +507,7 @@ namespace Fuse.Reactive.Test
 				for (int i=0; i < z0.Length; ++i)
 					Assert.AreEqual( z0[i], z1[i] );
 				Assert.IsTrue(e.e.TestIsAvailableClean);
+				Assert.IsTrue(e.e.TestIsRemovedClean);
 				
 				e.CallReplaceAll.Perform();
 				root.StepFrameJS();
@@ -513,6 +518,13 @@ namespace Fuse.Reactive.Test
 				Assert.AreEqual( z0[1], z2[2] );
 				Assert.AreEqual( z0[2], z2[1] );
 				Assert.IsTrue(e.e.TestIsAvailableClean);
+				
+				e.CallClear.Perform();
+				root.StepFrameJS();
+				//still removing
+				Assert.IsFalse(e.e.TestIsRemovedClean);
+				root.StepFrame(1.1f);
+				Assert.IsTrue(e.e.TestIsRemovedClean);
 			}
 		}
 		
@@ -557,6 +569,9 @@ namespace Fuse.Reactive.Test
 				var z2 = GetZChildren(e);
 				Assert.AreEqual("140,30,22,10", GetDudZ(e));
 				Assert.AreNotEqual(z0[2],z2[2]);
+				
+				Assert.IsTrue(e.each.TestIsRemovedClean);
+				Assert.IsTrue(e.each.TestIsAvailableClean);
 			}
 		}
 		

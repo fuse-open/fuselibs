@@ -394,6 +394,11 @@ namespace Fuse.Reactive
 				if (DataLink != null)
 					DataLink.Dispose();
 			}
+			
+			public bool IsRemovedEmpty
+			{
+				get { return Removed && (Nodes == null || Nodes.Count == 0); }
+			}
 		}
 		
 		/**
@@ -570,10 +575,12 @@ namespace Fuse.Reactive
 		/* Test interface to ensure we aren't leaking resources. */
 		internal bool TestIsAvailableClean
 		{
-			get
-			{
-				return _availableItems.Count == 0;
-			}
+			get { return _availableItems.Count == 0; }
+		}
+		
+		internal bool TestIsRemovedClean
+		{
+			get { return WindowItemsActiveCount == _windowItems.Count; }
 		}
 		
 		void CompleteNodeAction()
@@ -610,13 +617,24 @@ namespace Fuse.Reactive
 			}
 			_availableItems.Clear();
 			
+			for (int i=_windowItems.Count-1; i>=0; --i)
+			{
+				if (_windowItems[i].IsRemovedEmpty)
+					_windowItems.RemoveAt(i);
+			}
+			
 			_pendingNew = false;
 		}
 		
-		void AddAvailableItem(WindowItem wi)
+		void RemoveWindowItem(WindowItem wi)
 		{
+			wi.Removed = true;
 			if (wi.Nodes == null)
+			{
+				_windowItems.Remove(wi);
 				return;
+			}
+			
 			_availableItems.Add( wi );
 		}
 		
@@ -649,8 +667,7 @@ namespace Fuse.Reactive
 			if ( windowIndex < 0 || windowIndex >= _windowItems.Count)
 				return;
 			
-			AddAvailableItem(_windowItems[windowIndex]);
-			_windowItems[windowIndex].Removed = true;
+			RemoveWindowItem(_windowItems[windowIndex]);
 		
  			SetValid();		
 			OnUpdatedWindowItems();
@@ -682,10 +699,7 @@ namespace Fuse.Reactive
 			{
 				var wi = _windowItems[i];
 				if (!wi.Removed)
-				{
-					AddAvailableItem(wi);
-					wi.Removed = true;
-				}
+					RemoveWindowItem(wi);
 			}
 			OnUpdatedWindowItems();
 		}
@@ -838,6 +852,7 @@ namespace Fuse.Reactive
 				}
 			}
 
+			//TODO: this seems like it's in the wrong location
 			//remove whatever is leftover
 			RemovePendingAvailableItems();
 			return false;
@@ -972,6 +987,7 @@ namespace Fuse.Reactive
 			{
 				item.Nodes = av.Nodes;
 				oldData = av.CurrentData;
+				av.Nodes = null;
 			}
 			else
 			{

@@ -18,13 +18,23 @@
 				{ id: 3, v: "32" },
 			])
 		}
+		
+		exports.clear = function() {
+			exports.items.replaceAll([
+			])
+		}
 	</JavaScript>
 	<StackPanel ux:Name="s">
 		<Each Items="{items}" Offset="0" Limit="5" ux:Name="e" ObjectId="id">
-			<FuseTest.DudElement Value="{v}" Height="10"/>
+			<FuseTest.DudElement Value="{v}" Height="10">
+				<RemovingAnimation>
+					<Nothing Duration="1"/>
+				</RemovingAnimation>
+			</FuseTest.DudElement>
 		</Each>
 	</StackPanel>
 	
 	<FuseTest.Invoke Handler="{replaceAt}" ux:Name="CallReplace"/>
 	<FuseTest.Invoke Handler="{replaceAll}" ux:Name="CallReplaceAll"/>
+	<FuseTest.Invoke Handler="{clear}" ux:Name="CallClear"/>
 </Panel>
