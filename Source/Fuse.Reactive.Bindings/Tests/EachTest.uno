@@ -558,5 +558,24 @@ namespace Fuse.Reactive.Test
 				Assert.AreNotEqual(z0[2],z2[2]);
 			}
 		}
+		
+		[Test]
+		//ensure updated observables reflect their data
+		public void Observable()
+		{
+			var e = new UX.Each.Observable();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.StepFrameJS();
+				var z0 = GetZChildren(e);
+				Assert.AreEqual("30,20,10", GetDudZ(e));
+				
+				e.CallUpdate.Perform();
+				root.StepFrameJS();
+				var z1 = GetZChildren(e);
+				Assert.AreEqual("30,21,10", GetDudZ(e));
+				Assert.AreEqual(z0[1], z1[1]);
+			}
+		}
 	}
 }

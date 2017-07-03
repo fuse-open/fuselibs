@@ -1,0 +1,19 @@
+<Panel ux:Class="UX.Each.Observable">
+	<JavaScript>
+		var Observable = require("FuseJS/Observable")
+		
+		exports.items = Observable()
+		exports.items.add( Observable( { v: 10 } ) )
+		exports.items.add( Observable( { v: 20 } ) )
+		exports.items.add( Observable( { v: 30 } ) )
+		
+		exports.update = function() {
+			exports.items.getAt(1).value = { v: 21 }
+		}
+	</JavaScript>
+	<Each Items="{items}">
+		<FuseTest.DudElement Value="{v}"/>
+	</Each>
+	
+	<FuseTest.Invoke Handler="{update}" ux:Name="CallUpdate"/>
+</Panel>
