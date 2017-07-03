@@ -12,50 +12,7 @@ namespace Fuse.Triggers
 	}
 
 	/**
-		Used to group a set of @States together and switch between them.
-
-		`StateGroup` has an `Active` property, which is used to assign which @(State) is currently active in that group.
-
-		One can also specify the `Transition`, which can be either `Exclusive` or `Parallel`.
-		`Exclusive` means that each state will have to be fully deactivated before the next state becomes active.
-		`Parallel` means that as one state deactivates, the next one will become active and whatever properties they animate will be interpolated between them.
-
-		# Example
-		Here is an example of how to use a `StateGroup` to switch the color of a @(Rectangle) between three states:
-
-			<StackPanel>
-				<Panel Width="100" Height="100">
-					<SolidColor ux:Name="someColor"/>
-				</Panel>
-				<StateGroup ux:Name="stateGroup">
-					<State ux:Name="redState">
-						<Change someColor.Color="#f00" Duration="0.2"/>
-					</State>
-					<State ux:Name="blueState">
-						<Change someColor.Color="#00f" Duration="0.2"/>
-					</State>
-					<State ux:Name="greenState">
-						<Change someColor.Color="#0f0" Duration="0.2"/>
-					</State>
-				</StateGroup>
-				<Grid ColumnCount="3">
-					<Button Text="Red">
-						<Clicked>
-							<Set stateGroup.Active="redState"/>
-						</Clicked>
-					</Button>
-					<Button Text="Blue">
-						<Clicked>
-							<Set stateGroup.Active="blueState"/>
-						</Clicked>
-					</Button>
-					<Button Text="Green">
-						<Clicked>
-							<Set stateGroup.Active="greenState"/>
-						</Clicked>
-					</Button>
-				</Grid>
-			</StackPanel>
+		@include Docs/StateGroup.md
 	*/
 	public partial class StateGroup : Behavior
 	{

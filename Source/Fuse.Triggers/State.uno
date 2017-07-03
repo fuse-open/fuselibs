@@ -7,17 +7,9 @@ using Fuse.Scripting;
 namespace Fuse.Triggers
 {
 	/**
-		Acts as a normal @(Trigger), but is activated by its containing @(StateGroup).
+		A @Trigger that is managed by a @StateGroup.
 
-		A `State` consists of a set of @(Animators) inside a `State` object.
-
-		# Example
-		This is a simple example of a state
-
-			<State>
-				<Rotate Degrees="200" Duration="0.4"/>
-				<Move X="10" Duration="0.4"/>
-			</State>
+		See @StateGroup for more information.
 	*/
 	public partial class State : Trigger
 	{
