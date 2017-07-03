@@ -58,7 +58,7 @@ namespace Fuse
 		{
 			add 
 			{ 
-				if (_worldTransformInvalidated == null && IsRootingStarted)
+				if (_worldTransformInvalidated == null && IsRootingCompleted)
 					IncrementWTIListener();
 
 				_worldTransformInvalidated += value;
