@@ -109,17 +109,18 @@ namespace Fuse.Controls.Native.iOS
 
 		static int GetPointIndex(ObjC.Object uiTouch)
 		{
-			var availableIndex = -1;
-			for (var i = MaxPointerCount; i-- > 0;)
+			var firstUnused = -1;
+			for (var i = 0; i < MaxPointerCount; ++i)
 			{
 				var pointer = _activePointers[i];
-				if (CompareUITouch(pointer, null))
-					availableIndex = i;
+				if (CompareUITouch(pointer, null) && firstUnused < 0)
+					firstUnused = i;
 				else if (CompareUITouch(pointer, uiTouch))
 					return i;
 			}
-			_activePointers[availableIndex] = uiTouch;
-			return availableIndex;
+
+			_activePointers[firstUnused] = uiTouch;
+			return firstUnused;
 		}
 
 		static void DeactivateTouch(ObjC.Object uiTouch)
