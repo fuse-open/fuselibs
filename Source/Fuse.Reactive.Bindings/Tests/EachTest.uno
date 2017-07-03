@@ -529,7 +529,7 @@ namespace Fuse.Reactive.Test
 		}
 		
 		[Test]
-		[Ignore("working on it")]
+		[Ignore("not easy to get working")]
 		public void ObjectIdOrder()
 		{
 			var e = new UX.Each.ObjectIdOrder();
@@ -538,7 +538,7 @@ namespace Fuse.Reactive.Test
 				root.StepFrameJS();
 				var z0 = GetZChildren(e.s);
 				Assert.AreEqual("50,40,30,20,10", GetDudZ(e.s));
-				
+			
 				e.CallReplaceAll.Perform();
 				root.StepFrameJS();
 				var z1 = GetZChildren(e.s);

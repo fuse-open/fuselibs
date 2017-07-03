@@ -313,7 +313,7 @@ namespace Fuse.Reactive
 				Math.Min(_limit - WindowItemsActiveCount, dataCount - (Offset + WindowItemsActiveCount)) : 
 				(dataCount - (Offset + WindowItemsActiveCount));
 			for (int i=0; i < add; ++i)
-				InsertEnd();
+				Append();
 		}
 		
 		internal bool HasLimit { get { return _hasLimit; } }
@@ -538,25 +538,25 @@ namespace Fuse.Reactive
 
 		IDisposable _subscription;
 
+		//Items with Ids will be stored in this list...
+		Dictionary<object, WindowItem> _availableItemsById = new Dictionary<object,WindowItem>();
+		//...since we don't have a MultiDictionary this second list stores those with null ids
 		ObjectList<WindowItem> _availableItems = new ObjectList<WindowItem>();
 		bool _pendingAvailableItems;
 		
 		WindowItem GetAvailableNodes(Template f, object id)
 		{
-			if (id != null)
+			if (id != null && _availableItemsById != null)
 			{
-				for (int i=0; i < _availableItems.Count; ++i)
+				WindowItem item;
+				if (_availableItemsById.TryGetValue(id, out item) && f == item.Template)
 				{
-					var av = _availableItems[i];
-					if (f == av.Template && Object.Equals(av.Id, id))
-					{
-						_availableItems.RemoveAt(i);
-						return av;
-					}
+					_availableItemsById.Remove(id);
+					return item;
 				}
 			}
 			
-			if (Reuse != InstanceReuse.None)
+			if (Reuse != InstanceReuse.None && _availableItems != null)
 			{
 				for (int i=0; i < _availableItems.Count; ++i)
 				{
@@ -575,7 +575,11 @@ namespace Fuse.Reactive
 		/* Test interface to ensure we aren't leaking resources. */
 		internal bool TestIsAvailableClean
 		{
-			get { return _availableItems.Count == 0; }
+			get 
+			{ 
+				return (_availableItems == null || _availableItems.Count == 0) &&
+					(_availableItemsById == null || _availableItemsById.Count ==0);
+			}
 		}
 		
 		internal bool TestIsRemovedClean
@@ -609,13 +613,26 @@ namespace Fuse.Reactive
 		
 		void RemovePendingAvailableItems()
 		{
-			for (int i=0; i < _availableItems.Count; ++i)
-			{	
-				var av = _availableItems[i];
-				for (int n=0; n < av.Nodes.Count; ++n)
-					RemoveFromParent(av.Nodes[n]);
+			if (_availableItems != null)
+			{
+				for (int i=0; i < _availableItems.Count; ++i)
+				{	
+					var av = _availableItems[i];
+					for (int n=0; n < av.Nodes.Count; ++n)
+						RemoveFromParent(av.Nodes[n]);
+				}
+				_availableItems.Clear();
 			}
-			_availableItems.Clear();
+			
+			if (_availableItemsById != null)
+			{
+				foreach (var kvp in _availableItemsById)
+				{
+					for (int n=0; n < kvp.Value.Nodes.Count; ++n)
+						RemoveFromParent(kvp.Value.Nodes[n]);
+				}
+				_availableItemsById.Clear();
+			}
 			
 			for (int i=_windowItems.Count-1; i>=0; --i)
 			{
@@ -635,7 +652,24 @@ namespace Fuse.Reactive
 				return;
 			}
 			
-			_availableItems.Add( wi );
+			if (wi.Id != null)
+			{
+				if (_availableItemsById == null)	
+					_availableItemsById = new Dictionary<object,WindowItem>();
+
+				if (_availableItemsById.ContainsKey(wi.Id))
+					wi.Id = null; //clear id on duplicates for simplicity (will end up being added to _availableItems)
+				else
+					_availableItemsById[wi.Id] = wi;
+			}
+			
+			//not an else, since Id can change above
+			if (wi.Id == null)
+			{
+				if (_availableItems == null)
+					_availableItems = new ObjectList<WindowItem>();
+				_availableItems.Add( wi );
+			}
 		}
 		
 		int DataToWindowIndex(int dataIndex)
@@ -678,7 +712,7 @@ namespace Fuse.Reactive
 			RemoveAt(Offset + WindowItemsActiveCount - 1);
 		}
 		
-		void InsertEnd()
+		void Append()
 		{
 			InsertNew(Offset + WindowItemsActiveCount);
 		}
