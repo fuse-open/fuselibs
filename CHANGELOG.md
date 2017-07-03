@@ -1,6 +1,6 @@
 # Unreleased
 
-## Optimization
+## Optimizations
 - Optimized hit testing calculations. Improves scrolling in large scroll views with deep trees inside, among other things.
 - Optimized redundant OpenGL rendertarget operations. Gives speedups on some platforms.
 
