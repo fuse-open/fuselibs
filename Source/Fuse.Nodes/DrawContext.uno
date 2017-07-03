@@ -298,7 +298,7 @@ namespace Fuse
 		}
 
 		int4 _glViewport;
-		/**
+		/*
 			TODO: review what uses this since `Viewport.PixelSize` should probably be used instead
 			as this is a "hidden" detail. Any uses of this are also very likely wrong without considering
 			the origin as well (nothing in Fuselibs uses anything non-0,0 at the moment though)
