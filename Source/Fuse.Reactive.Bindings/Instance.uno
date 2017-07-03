@@ -303,22 +303,17 @@ namespace Fuse.Reactive
 			//trim excess
 			if (HasLimit)
 			{
-				while (_windowItems.Count > _limit)
-					RemoveAt( Offset + _windowItems.Count - 1 );
+				for (int i=WindowItemsActiveCount - _limit; i > 0; --i)
+					RemoveLastActive();
 			}
 				
 			//add new
 			var dataCount = GetDataCount();
-			if (HasLimit)
-			{
-				while (_windowItems.Count < _limit && (Offset + _windowItems.Count) < dataCount)
-					InsertNew(Offset + _windowItems.Count);
-			}
-			else
-			{
-				while ( (Offset + _windowItems.Count) < dataCount)
-					InsertNew(Offset + _windowItems.Count);
-			}
+			var add = HasLimit ?
+				Math.Min(_limit - WindowItemsActiveCount, dataCount - (Offset + WindowItemsActiveCount)) : 
+				(dataCount - (Offset + WindowItemsActiveCount));
+			for (int i=0; i < add; ++i)
+				InsertEnd();
 		}
 		
 		internal bool HasLimit { get { return _hasLimit; } }
@@ -390,6 +385,11 @@ namespace Fuse.Reactive
 		*/
 		ObjectList<WindowItem> _windowItems = new ObjectList<WindowItem>();
 		
+		int WindowItemsActiveCount 
+		{
+			get { return _windowItems.Count; }
+		}
+		
 		internal event Action UpdatedWindowItems;
 		bool _pendingUpdateWindowItems;
 		void OnUpdatedWindowItems()
@@ -409,7 +409,7 @@ namespace Fuse.Reactive
 			_pendingUpdateWindowItems = false;
 		}
 
-		internal int WindowItemsCount { get { return _windowItems.Count; } }
+		internal int WindowItemsCount { get { return WindowItemsActiveCount; } }
 		
 		internal int DataIndexOfChild(Node child)
 		{
@@ -621,6 +621,16 @@ namespace Fuse.Reactive
 			_windowItems.RemoveAt(windowIndex);
  			SetValid();		
 			OnUpdatedWindowItems();
+		}
+		
+		void RemoveLastActive()
+		{
+			RemoveAt(Offset + _windowItems.Count - 1);
+		}
+		
+		void InsertEnd()
+		{
+			InsertNew(Offset + _windowItems.Count);
 		}
 
 		void ReplaceAll(object[] dcs)
