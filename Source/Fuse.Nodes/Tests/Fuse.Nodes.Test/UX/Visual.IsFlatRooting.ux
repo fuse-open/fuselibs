@@ -1,0 +1,18 @@
+<Panel ux:Class="UX.Visual.IsFlatRooting">
+	<Panel ux:Name="A">
+		<Panel ux:Name="B">
+			<WhileTrue ux:Name="WB">
+				<Rotate DegreesX="5"/>
+			</WhileTrue>
+		</Panel>
+		<Panel>
+			<Panel ux:Name="C">
+				<WhileTrue ux:Name="WC">
+					<Panel>
+						<Rotation DegreesX="5"/>
+					</Panel>
+				</WhileTrue>
+			</Panel>
+		</Panel>
+	</Panel>
+</Panel>
