@@ -33,19 +33,19 @@ namespace Fuse
 			if (Parent != null) Parent.ParentDecrementNonFlat();
 		}
 
-		bool _localNonFlat = false;
-		internal void SetLocalNonFlat(bool isNonFlat)
+		int _localNonFlat = 0;
+		internal void IncrementLocalNonFlat()
 		{
-			if (_localNonFlat != isNonFlat)
-			{
-				_localNonFlat = isNonFlat;
+			_localNonFlat++;
+			if (_flatRooted && _localNonFlat == 1)
+				IncrementNonFlat();
+		}
 
-				if (_flatRooted)
-				{
-					if (_localNonFlat) IncrementNonFlat();
-					if (!_localNonFlat) DecrementNonFlat();
-				}
-			}
+		internal void DecrementLocalNonFlat()
+		{
+			_localNonFlat--;
+			if (_flatRooted && _localNonFlat == 0)
+				DecrementNonFlat();
 		}
 
 		bool _flatRooted;
@@ -54,7 +54,7 @@ namespace Fuse
 			if (_nonFlat != 0)
 				throw new Exception(); // Should never happen
 
-			if (_localNonFlat)
+			if (_localNonFlat > 0)
 				IncrementNonFlat();
 			
 			_flatRooted = true;
@@ -62,8 +62,9 @@ namespace Fuse
 
 		void FlatUnrooted()
 		{
-			if (_localNonFlat)
+			if (_localNonFlat > 0)
 				DecrementNonFlat();
+
 			_flatRooted = false;
 
 			if (_nonFlat != 0)
@@ -73,7 +74,7 @@ namespace Fuse
 		//refers to local transform on the element
 		internal bool IsLocalFlat
 		{
-			get { return !_localNonFlat; }
+			get { return _localNonFlat == 0; }
 		}
 
 		// Compeltely flat, both locally and children

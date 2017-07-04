@@ -29,19 +29,37 @@ namespace Fuse
 		
 		internal event Action<Transform> MatrixChanged;
 
-		bool _wasFlat;
+		bool _isFlat;
+		bool _isFlatRooted;
 		protected void OnMatrixChanged(object igoreSender = null, object ignoreArgs = null)
 		{
 			var isFlat = IsFlat;
 
-			if (Parent != null && _wasFlat != isFlat)
+			if (_isFlatRooted && _isFlat != isFlat)
 			{
-				_wasFlat = isFlat;
-				Parent.SetLocalNonFlat(!isFlat);
+				_isFlat = isFlat;
+				if (_isFlat) Parent.DecrementLocalNonFlat();
+				else Parent.IncrementLocalNonFlat();
 			}
 
 			if (MatrixChanged != null)
 				MatrixChanged(this);
+		}
+
+		protected override void OnRooted()
+		{
+			base.OnRooted();
+			_isFlatRooted = true;
+			if (!_isFlat)
+				Parent.IncrementLocalNonFlat();
+		}
+
+		protected override void OnUnrooted()
+		{
+			if (!_isFlat)
+				Parent.DecrementLocalNonFlat();
+			_isFlatRooted = false;
+			base.OnUnrooted();
 		}
 		
 		/** Whether this tranform keeps the object strictly in the XY-plane. 

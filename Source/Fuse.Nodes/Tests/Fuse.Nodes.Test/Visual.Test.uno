@@ -21,11 +21,11 @@ namespace Fuse.Test
 			
 			Assert.IsFalse(p.B.IsFlat);
 			Assert.IsFalse(p.B.IsLocalFlat);
-			Assert.IsTrue(p.B.AreChildrenFlat);
+			//Assert.IsTrue(p.B.AreChildrenFlat);
 			
 			Assert.IsFalse(p.C.IsFlat);
 			Assert.IsTrue(p.C.IsLocalFlat);
-			Assert.IsFalse(p.C.AreChildrenFlat);
+			//Assert.IsFalse(p.C.AreChildrenFlat);
 			
 			Assert.IsFalse(p.D.IsFlat);
 			Assert.IsFalse(p.E.IsLocalFlat);
