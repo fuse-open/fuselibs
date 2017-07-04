@@ -66,19 +66,15 @@ namespace Fuse.Elements
 			if (Visibility != Visibility.Visible)
 				return;
 
+			var visibleRect = GetVisibleViewportInvertPixelRect(dc, RenderBoundsWithEffects);
+			if (visibleRect.Size.X == 0 || visibleRect.Size.Y == 0)
+				return;
+
 			extern double t;
 			if defined(FUSELIBS_PROFILING)
 			{
 				t = Uno.Diagnostics.Clock.GetSeconds();
 				Fuse.Profiling.BeginRegion(this.ToString());
-			}
-
-			var visibleRect = GetVisibleViewportInvertPixelRect(dc, RenderBoundsWithEffects);
-			if (visibleRect.Size.X == 0 || visibleRect.Size.Y == 0)
-			{
-				if defined(FUSELIBS_PROFILING)
-					Fuse.Profiling.EndRegion(Uno.Diagnostics.Clock.GetSeconds() - t);
-				return;
 			}
 
 			if (NeedsClipping)
