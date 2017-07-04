@@ -58,7 +58,7 @@ namespace Fuse
 		{
 			add 
 			{ 
-				if (_worldTransformInvalidated == null && IsRootingCompleted)
+				if (_worldTransformInvalidated == null && _wtiRooted)
 					IncrementWTIListener();
 
 				_worldTransformInvalidated += value;
@@ -67,14 +67,18 @@ namespace Fuse
 			{ 
 				_worldTransformInvalidated -= value;
 
-				if (_worldTransformInvalidated == null && Parent != null)
+				if (_worldTransformInvalidated == null && _wtiRooted)
 					DecrementWTIListener();
 			}
 		}
 
+		bool _wtiRooted;
+
 		void WTIRooted()
 		{
-			if (_wtiListeners != 0) throw new Exception(); // should never happen
+			_wtiRooted = true;
+			if (_wtiListeners != 0)
+				throw new Exception(); // should never happen
 			
 			if (_worldTransformInvalidated != null)
 				IncrementWTIListener();
@@ -82,10 +86,13 @@ namespace Fuse
 
 		void WTIUnrooted()
 		{
+			_wtiRooted = false;
+
 			if (_worldTransformInvalidated != null)
 				DecrementWTIListener();
 
-			if (_wtiListeners != 0) throw new Exception(); // should never happen
+			if (_wtiListeners != 0)
+				throw new Exception(); // should never happen
 		}
 	}
 }
