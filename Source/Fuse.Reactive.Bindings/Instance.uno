@@ -838,6 +838,12 @@ namespace Fuse.Reactive
 				return;		
 
 			var data = GetData(dataIndex);
+			InsertNewWindowItem( windowIndex, data );
+		}
+		
+		/** Inserts a new window item associated with the given data */
+		void InsertNewWindowItem( int windowIndex, object data )
+		{
 			var wi = new WindowItem{ Data = data };
 			_windowItems.Insert( windowIndex, wi );
 			

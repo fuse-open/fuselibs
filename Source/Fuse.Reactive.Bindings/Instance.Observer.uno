@@ -70,7 +70,7 @@ namespace Fuse.Reactive
 
 		void PatchTo(IArray values)
 		{
-			//collect new ides in the window
+			//collect new ids in the window
 			var newIds = new List<object>();
 			var limit = CalcOffsetLimitCountOf(values.Length);
 			for (int i=0; i < limit; ++i)
@@ -83,21 +83,27 @@ namespace Fuse.Reactive
 					curIds.Add( _windowItems[i].Id);
 			}
 			
-			//TODO: clean nulls 
-			debug_log "From:" + Join(curIds) + "\n  To:" + Join(newIds);
-			
-			RemoveAll();
-		}
-		
-		static string Join( List<object> t )
-		{
-			var q = "";
-			for (int i=0; i < t.Count; ++i)
+			var ops = PatchList.Patch( curIds, newIds, PatchAlgorithm.Simple, null );
+			for (int i=0; i < ops.Count; ++i)
 			{
-				if (i>0) q += ",";
-				q += t[i];
+				var op = ops[i];
+				switch (op.Op)
+				{
+					case PatchOp.Remove:
+						RemoveAt(op.A + Offset);
+						break;
+					case PatchOp.Insert:
+						InsertNewWindowItem(DataToWindowIndex(op.A + Offset), values[op.Data]);
+						break;
+					case PatchOp.Update:
+						if (!TryUpdateAt(op.A + Offset, values[op.Data]))
+						{
+							RemoveAt(op.A + Offset);
+							InsertNewWindowItem(DataToWindowIndex(op.A + Offset), values[op.Data]);
+						}
+						break;
+				}
 			}
-			return q;
 		}
 		
 		void IObserver.OnNewAll(IArray values)

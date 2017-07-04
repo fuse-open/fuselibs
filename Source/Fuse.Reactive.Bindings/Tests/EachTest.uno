@@ -529,7 +529,6 @@ namespace Fuse.Reactive.Test
 		}
 		
 		[Test]
-		[Ignore("not easy to get working")]
 		public void ObjectIdOrder()
 		{
 			var e = new UX.Each.ObjectIdOrder();
@@ -539,10 +538,31 @@ namespace Fuse.Reactive.Test
 				var z0 = GetZChildren(e.s);
 				Assert.AreEqual("50,40,30,20,10", GetDudZ(e.s));
 			
-				e.CallReplaceAll.Perform();
+				e.CallReplaceAll1.Perform();
 				root.StepFrameJS();
 				var z1 = GetZChildren(e.s);
-				Assert.AreEqual("51,40,11,20,31", GetDudZ(e.s));
+				Assert.AreEqual("51,40,31,20,11", GetDudZ(e.s)); //40,20 linger with RemovingAnimation
+				
+				for (int i=0; i< 5; ++i)
+					Assert.AreEqual(z0[i],z1[i]);
+				
+				//clear up removing ones
+				root.StepFrame(1.1f);
+				Assert.AreEqual( 3, GetZChildren(e.s).Length );
+				Assert.AreEqual("51,31,11", GetDudZ(e.s));
+				
+				e.CallReplaceAll2.Perform();
+				root.StepFrameJS();
+				var z2 = GetZChildren(e.s);
+				Assert.AreEqual("82,52,72,32,62,11", GetDudZ(e.s)); //11 lingers
+				
+				Assert.AreEqual(z0[0],z2[1]);
+				Assert.AreEqual(z0[2],z2[3]);
+				
+				//clear up removing ones
+				root.StepFrame(1.1f);
+				Assert.AreEqual( 5, GetZChildren(e.s).Length );
+				Assert.AreEqual("82,52,72,32,62", GetDudZ(e.s));
 			}
 		}
 		

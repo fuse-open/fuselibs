@@ -88,6 +88,9 @@ namespace Fuse.Reactive.Internal.Test
 			Check( "null,1", "1", PatchAlgorithm.Simple, "R0,U0=0" );
 			Check( "1,2,null,3", "1,3,null", PatchAlgorithm.Simple, "U0=0,R1,R1,U1=1,I2=2" );
 			Check( "null,null,null", "null,null", PatchAlgorithm.RemoveAll, "R0,R0,R0,I0=0,I1=1");
+			
+			//came from testing Each (ensure patch isn't failing, but each is)
+			Check( "1,3,5", "6,3,7,5,8", PatchAlgorithm.Simple, "I1=0,R0,U1=1,I2=2,U3=3,I4=4" );
 		}
 		
 		Random rand = new Random(0);
