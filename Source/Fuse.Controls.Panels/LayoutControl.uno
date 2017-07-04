@@ -193,5 +193,14 @@ namespace Fuse.Controls
 				return LayoutDependent.Maybe;
 			}
 		}
+
+		protected override bool FastTrackDrawWithOpacity(DrawContext dc)
+		{
+			if (HasChildren) return false;
+			if (Background == null) return true;
+			
+			DrawBackground(dc, Opacity);
+			return base.FastTrackDrawWithOpacity(dc);
+		}
 	}
 }
