@@ -29,5 +29,8 @@
   ],
   "Includes": [
     "*"
+  ],
+  "Excludes": [
+    "Tests/*",
   ]
 }

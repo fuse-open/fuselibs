@@ -16,7 +16,7 @@ namespace Fuse.Reactive
 		
 		void IObserver.OnSet(object newValue)
 		{
-			if (!_listening) return;
+			if (!IsListeningItems) return;
 
 			RemoveAll();
 			CompleteActionGood();
@@ -24,7 +24,7 @@ namespace Fuse.Reactive
 		
 		void IObserver.OnFailed(string message)
 		{
-			if (!_listening) return;
+			if (!IsListeningItems) return;
 
 			RemoveAll();
 			
@@ -34,14 +34,14 @@ namespace Fuse.Reactive
 		
 		void IObserver.OnAdd(object addedValue)
 		{
-			if (!_listening) return;
+			if (!IsListeningItems) return;
 
 			CompleteActionGood();
 		}
 		
 		void IObserver.OnRemoveAt(int index)
 		{
-			if (!_listening) return;
+			if (!IsListeningItems) return;
 
 			RemoveAt(index);
 			CompleteActionGood();
@@ -49,7 +49,7 @@ namespace Fuse.Reactive
 
 		void IObserver.OnInsertAt(int index, object value)
 		{
-			if (!_listening) return;
+			if (!IsListeningItems) return;
 			InsertNew(index);
 			
 			CompleteActionGood();
@@ -57,7 +57,7 @@ namespace Fuse.Reactive
 
 		void IObserver.OnNewAt(int index, object value)
 		{
-			if (!_listening) return;
+			if (!IsListeningItems) return;
 
 			//use the shortcut if possible (saves overhead)
 			if (!TryUpdateAt(index, value))
@@ -108,7 +108,7 @@ namespace Fuse.Reactive
 		
 		void IObserver.OnNewAll(IArray values)
 		{
-			if (!_listening) return;
+			if (!IsListeningItems) return;
 
 			if (ObjectMatch != InstanceObjectMatch.None)
 				PatchTo(values);
@@ -119,7 +119,7 @@ namespace Fuse.Reactive
 
 		void IObserver.OnClear()
 		{
-			if (!_listening) return;
+			if (!IsListeningItems) return;
 
 			RemoveAll();
 			CompleteActionGood();
