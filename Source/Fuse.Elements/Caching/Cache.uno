@@ -52,6 +52,10 @@ namespace Fuse.Elements
 		{
 			if (!PinAndValidate(dc))
 				return false;
+
+			if defined(FUSELIBS_PROFILING)
+				Profiling.LogEvent("Blitting out cache", 0);
+
 			Blit(dc, _element.Opacity);
 			Unpin();
 			return true;
@@ -166,6 +170,9 @@ namespace Fuse.Elements
 
 		void Repaint(DrawContext dc, CacheTile tile)
 		{
+			if defined(FUSELIBS_PROFILING)
+				Profiling.LogEvent("Repainting cache", 0);
+
 			//undo our transform and apply new camera
 			var cc = new OrthographicFrustum{
 				Origin = float2(tile._rect.Minimum.X, tile._rect.Minimum.Y) / _element.AbsoluteZoom,
