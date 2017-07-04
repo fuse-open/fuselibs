@@ -316,6 +316,12 @@ namespace Fuse.Reactive
 				Append();
 		}
 		
+		int CalcOffsetLimitCountOf( int length )
+		{
+			var q = Math.Max( 0, length - Offset );
+			return HasLimit ? Math.Min( Limit, q ) : q;
+		}
+		
 		internal bool HasLimit { get { return _hasLimit; } }
 
 		protected internal object _items;
