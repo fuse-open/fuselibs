@@ -1,6 +1,4 @@
 using Uno;
-using Uno.Collections;
-using Uno.Graphics;
 using Fuse.Input;
 using Fuse.Nodes;
 
@@ -64,66 +62,9 @@ namespace Fuse.Desktop
 				AppBase.Current.DrawSelection(_dc);
 
 				if defined(FUSELIBS_DEBUG_DRAW_RECTS)
-				{
-					// Fade out app by drawing a semi-transparent rect on top of it
-					draw
-					{
-						float2[] Vertices: new[]
-						{
-							float2(0, 0), float2(0, 1), float2(1, 1),
-							float2(0, 0), float2(1, 1), float2(1, 0)
-						};
-
-						float2 Coord: vertex_attrib(Vertices);
-
-						ClipPosition: float4(Coord * 2 - 1, 0, 1);
-
-						PixelColor: float4(0, 0, 0, 0.5f);
-
-						CullFace : PolygonFace.None;
-						DepthTestEnabled: false;
-
-						BlendEnabled: true;
-						BlendSrcRgb: BlendOperand.SrcAlpha;
-						BlendDstRgb: BlendOperand.OneMinusSrcAlpha;
-
-						BlendSrcAlpha: BlendOperand.SrcAlpha;
-						BlendDstAlpha: BlendOperand.OneMinusSrcAlpha;
-					};
-
-					var verts = new List<float4>();
-
-					foreach (var r in OverdrawHaxxorz.DrawRects)
-					{
-						verts.AddRange(new[]
-						{
-							r.A, r.B, r.C,
-							r.C, r.D, r.A
-						});
-					}
-
-					draw
-					{
-						ClipPosition: vertex_attrib(verts.ToArray());
-
-						PixelColor: float4(1, 0, 0, 0.2f);
-
-						CullFace : PolygonFace.None;
-						DepthTestEnabled: false;
-
-						BlendEnabled: true;
-						BlendSrcRgb: BlendOperand.SrcAlpha;
-						BlendDstRgb: BlendOperand.One;
-
-						BlendSrcAlpha: BlendOperand.SrcAlpha;
-						BlendDstAlpha: BlendOperand.One;
-					};
-				}
+					OverdrawHaxxorz.EndFrameAndRenderDrawRects();
 				
 				Internal.DrawManager.EndDraw(_dc);
-
-				if defined(FUSELIBS_DEBUG_DRAW_RECTS)
-					OverdrawHaxxorz.EndFrame();
 			}
 			catch (Exception e)
 			{
