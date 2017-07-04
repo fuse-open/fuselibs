@@ -106,14 +106,10 @@ namespace Fuse.Controls
 			_proxyHost = this.FindProxyHost();
 			if (RenderToTexture == RenderState.Disabled)
 				SetOnscreen();
-
-			WorldTransformInvalidated += OnInvalidateWorldTransform;
 		}
 
 		protected override void OnUnrooted()
 		{
-			WorldTransformInvalidated -= OnInvalidateWorldTransform;
-
 			base.OnUnrooted();
 			SetOffscreen();
 			_proxyHost = null;
@@ -139,8 +135,9 @@ namespace Fuse.Controls
 		}
 
 		bool _updateTransform = false;
-		void OnInvalidateWorldTransform(object sender, EventArgs args)
+		protected override void OnInvalidateWorldTransform()
 		{
+			base.OnInvalidateWorldTransform();
 			if (!_updateTransform)
 			{
 				UpdateManager.AddDeferredAction(UpdateHostViewTransform, UpdateStage.Layout, LayoutPriority.Post);

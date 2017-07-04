@@ -310,8 +310,6 @@ namespace Fuse.Controls
 		extern(Android || iOS)
 		protected override void OnRooted()
 		{
-			WorldTransformInvalidated += OnInvalidateWorldTransform;
-
 			if (IsInGraphicsContext)
 			{
 				_glRenderer = new NativeViewRenderer();
@@ -394,8 +392,6 @@ namespace Fuse.Controls
 		extern(Android || iOS)
 		protected override void OnUnrooted()
 		{
-			WorldTransformInvalidated -= OnInvalidateWorldTransform;
-
 			if (IsInGraphicsContext && _proxyHost != null && !_offscreenEnabled)
 				_proxyHost.Remove(_root);
 
@@ -414,8 +410,9 @@ namespace Fuse.Controls
 			that responds to all local transform changes.
 		*/
 		extern(Android || iOS)
-		void OnInvalidateWorldTransform(object sender, EventArgs args)
+		protected override void OnInvalidateWorldTransform()
 		{
+			base.OnInvalidateWorldTransform();
 			if (RenderToTexture || !IsInGraphicsContext)
 				return;
 			PostUpdateTransform();
