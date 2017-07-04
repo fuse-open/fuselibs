@@ -46,9 +46,9 @@ namespace Fuse.Nodes
 		}
 	}
 
-	public class OverdrawHaxxorz
+	public class DrawRectVisualizer
 	{
-		static readonly OverdrawHaxxorz _instance = new OverdrawHaxxorz();
+		static readonly DrawRectVisualizer _instance = new DrawRectVisualizer();
 
 		readonly List<DrawRect> _drawRects = new List<DrawRect>();
 
@@ -59,17 +59,17 @@ namespace Fuse.Nodes
 			_instance._drawRects.Clear();
 		}
 
-		public static void EndFrameAndRenderDrawRects()
+		public static void EndFrameAndVisualize()
 		{
-			_instance.EndFrameAndRenderDrawRectsImpl();
+			_instance.EndFrameAndVisualizeImpl();
 		}
 
-		public static void AppendDrawRect(DrawRect r)
+		public static void Append(DrawRect r)
 		{
 			_instance._drawRects.Add(r);
 		}
 
-		void EndFrameAndRenderDrawRectsImpl()
+		void EndFrameAndVisualizeImpl()
 		{
 			// Fade out app by drawing a semi-transparent rect on top of it
 			draw
@@ -100,7 +100,7 @@ namespace Fuse.Nodes
 			// Batch draw rects and draw
 			var verts = new List<float4>();
 
-			foreach (var r in OverdrawHaxxorz.DrawRects)
+			foreach (var r in _drawRects)
 			{
 				verts.AddRange(new[]
 				{

@@ -50,7 +50,7 @@ namespace Fuse.Desktop
 			try
 			{
 				if defined(FUSELIBS_DEBUG_DRAW_RECTS)
-					OverdrawHaxxorz.StartFrame();
+					DrawRectVisualizer.StartFrame();
 
 				Internal.DrawManager.PrepareDraw(_dc);
 
@@ -62,7 +62,7 @@ namespace Fuse.Desktop
 				AppBase.Current.DrawSelection(_dc);
 
 				if defined(FUSELIBS_DEBUG_DRAW_RECTS)
-					OverdrawHaxxorz.EndFrameAndRenderDrawRects();
+					DrawRectVisualizer.EndFrameAndVisualize();
 				
 				Internal.DrawManager.EndDraw(_dc);
 			}
