@@ -29,7 +29,7 @@ namespace Fuse
 		
 		internal event Action<Transform> MatrixChanged;
 
-		bool _isFlat;
+		bool _isFlat = true;
 		bool _isFlatRooted;
 		protected void OnMatrixChanged(object igoreSender = null, object ignoreArgs = null)
 		{
