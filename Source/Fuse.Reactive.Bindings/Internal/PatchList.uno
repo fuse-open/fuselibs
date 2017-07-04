@@ -22,21 +22,30 @@ namespace Fuse.Reactive.Internal
 	
 	enum PatchAlgorithm
 	{
+		/** Removes all the items then adds the new list */
 		RemoveAll,
+		/**
+			Supports a few common cases for `Each` and `replaceAll`. In particular it can do in-place removal of items
+			if nothing else changes.
+		*/
 		Simple,
 		//Levenstein would be a nice addition (too costly?)
 	}
-	
+
+	/**
+		Determines a list of operations to convert from one list of items into another.
+	*/
 	class PatchList
 	{
-		static public List<PatchItem> Patch<T>( IList<T> from, IList<T> to, PatchAlgorithm algo )
+		static public List<PatchItem> Patch<T>( IList<T> from, IList<T> to, PatchAlgorithm algo,
+			T emptyKey )
 		{
 			switch( algo )
 			{
 				case PatchAlgorithm.RemoveAll:
 					return PatchRemoveAll( from, to );
 				case PatchAlgorithm.Simple:
-					return PatchSimple( from, to );
+					return new SimpleAlgorithm<T>(from,to, emptyKey).Calc();
 			}
 			
 			return null;
@@ -55,15 +64,6 @@ namespace Fuse.Reactive.Internal
 				ops.Add( new PatchItem{ Op = PatchOp.Insert, A = i, Data = i } );
 				
 			return ops;
-		}
-		
-		/**
-			Supports a few common cases for `Each` and `replaceAll`. In particular it can do in-place removal of items
-			if nothing else changes.
-		*/
-		static List<PatchItem> PatchSimple<T>( IList<T> from, IList<T> to )
-		{
-			return new SimpleAlgorithm<T>(from,to).Calc();
 		}
 		
 		/** Formats the list of patches for testing/debugging */
@@ -91,18 +91,24 @@ namespace Fuse.Reactive.Internal
 		}
 	}
 
+	/**
+		Iterates over the from list and finds corresponding anchors in the to list. Items in the from list before
+		the anchor are remove. Items in the to list before the anchor are inserted. The matching item is updated.
+	*/
 	class SimpleAlgorithm<T>
 	{
 		IList<T> _from, _to;
-		Dictionary<T,Location> _index;
+		Dictionary<T,int> _toIndex;
 		List<bool> _toUsed;
 		List<PatchItem> _ops;
+		T _emptyKey;
 		
-		public SimpleAlgorithm( IList<T> from, IList<T> to )
+		public SimpleAlgorithm( IList<T> from, IList<T> to, T emptyKey )
 		{
+			_emptyKey = emptyKey;
 			_from = from;
 			_to = to;
-			_index = Index(from, to);
+			_toIndex = Index(to);
 			
 			//track which ones are used in the to list
 			_toUsed = new List<bool>(to.Count);
@@ -121,24 +127,14 @@ namespace Fuse.Reactive.Internal
 				return From + "," + To;
 			}
 		}
-		static Dictionary<T,Location> Index( IList<T> from, IList<T> to )
+		Dictionary<T,int> Index( IList<T> to )
 		{
-			var d = new Dictionary<T,Location>();
-			for (int i=0; i < from.Count; ++i)
-				d[from[i]] = new Location{ From = i, To = -1 };
-			
+			var d = new Dictionary<T,int>();
 			for (int i=0; i < to.Count; ++i)
 			{
-				if (d.ContainsKey(to[i]))
-				{
-					var v = d[to[i]];
-					v.To = i;
-					d[to[i]] = v;
-				}
-				else
-					d[to[i]] = new Location{ From = -1, To = i };
+				if (!Object.Equals(to[i],_emptyKey))
+					d[to[i]] = i;
 			}
-			
 			return d;
 		}
 
@@ -204,14 +200,16 @@ namespace Fuse.Reactive.Internal
 		{
 			while (fromAt < _from.Count)
 			{
-				var faLoc = _index[_from[fromAt]];
-				if (faLoc.To == -1 || _toUsed[faLoc.To])
+				int faLoc = -1;
+				if (Object.Equals(_from[fromAt],_emptyKey) ||
+					!_toIndex.TryGetValue(_from[fromAt], out faLoc) || 
+					_toUsed[faLoc])
 				{
 					fromAt++;
 					continue;
 				}
 				
-				return faLoc;
+				return new Location{ From = fromAt, To =  faLoc };
 			}
 			
 			return new Location{ From = -1, To = -1 };

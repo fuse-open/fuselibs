@@ -9,14 +9,19 @@ namespace Fuse.Reactive.Internal.Test
 {
 	public class PatchListTest : TestBase
 	{
-		//we're lacking the List( IEnumerable ) ctor
 		List<string> Split(string a)
 		{
 			var l = new List<string>();
 			if (a == "")
 				return l; //split creates a 1-length item in this case
 			var s = a.Split(',');
-			l.AddRange(s);
+			for (int i=0; i < s.Length; ++i)
+			{
+				if (s[i] == "null")
+					l.Add(null);
+				else
+					l.Add(s[i]);
+			}
 			return l;
 		}
 		
@@ -24,16 +29,16 @@ namespace Fuse.Reactive.Internal.Test
 		{
 			var fromList = Split(from);
 			var toList = Split(to);
-			var l = PatchList.Patch( fromList, toList, algo );
+			var l = PatchList.Patch( fromList, toList, algo, null );
 			var patch = PatchList.Format(l);
 			Assert.AreEqual( ops, patch );
 			
 			Assert.AreEqual( Join(toList), Join(Patch(fromList,toList,l)) );
 		}
 		
-		void Check<T>( List<T> fromList, List<T> toList, PatchAlgorithm algo )
+		void Check<T>( List<T> fromList, List<T> toList, PatchAlgorithm algo, T emptyKey )
 		{
-			var l = PatchList.Patch( fromList, toList, algo );
+			var l = PatchList.Patch( fromList, toList, algo, emptyKey );
 			Assert.AreEqual( Join(toList), Join(Patch(fromList,toList,l)) );
 		}
 		
@@ -66,6 +71,7 @@ namespace Fuse.Reactive.Internal.Test
 		public void RemoveAll()
 		{
 			Check( "1,2,3,4,5", "5,2,3", PatchAlgorithm.RemoveAll, "R0,R0,R0,R0,R0,I0=0,I1=1,I2=2");
+			Check( "1,null,3", "null,2", PatchAlgorithm.RemoveAll, "R0,R0,R0,I0=0,I1=1");
 		}
 		
 		[Test]
@@ -78,6 +84,10 @@ namespace Fuse.Reactive.Internal.Test
 			Check( "1,2,3,4,5,6,7", "2,3,6,8", PatchAlgorithm.Simple, "R0,U0=0,U1=1,R2,R2,U2=2,R3,I3=3" );
 			Check( "1,2,3", "3,2", PatchAlgorithm.Simple, "I1=0,R0,U1=1,R2" );
 			Check( "1,2,3,4,5,6", "2,5,1,4,7", PatchAlgorithm.Simple, "I0=0,I1=1,U2=2,R3,R3,U3=3,R4,R4,I4=4" );
+			
+			Check( "null,1", "1", PatchAlgorithm.Simple, "R0,U0=0" );
+			Check( "1,2,null,3", "1,3,null", PatchAlgorithm.Simple, "U0=0,R1,R1,U1=1,I2=2" );
+			Check( "null,null,null", "null,null", PatchAlgorithm.RemoveAll, "R0,R0,R0,I0=0,I1=1");
 		}
 		
 		Random rand = new Random(0);
@@ -91,7 +101,7 @@ namespace Fuse.Reactive.Internal.Test
 			{
 				var from = ShuffledList( rand.NextInt(50) );
 				var to = ShuffledList( rand.NextInt(50) );
-				Check( from, to, PatchAlgorithm.Simple );
+				Check( from, to, PatchAlgorithm.Simple, -1 );
 			}
 		}
 		
