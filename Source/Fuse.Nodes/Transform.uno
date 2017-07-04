@@ -29,8 +29,17 @@ namespace Fuse
 		
 		internal event Action<Transform> MatrixChanged;
 
+		bool _wasFlat;
 		protected void OnMatrixChanged(object igoreSender = null, object ignoreArgs = null)
 		{
+			var isFlat = IsFlat;
+
+			if (Parent != null && _wasFlat != isFlat)
+			{
+				_wasFlat = isFlat;
+				Parent.SetLocalNonFlat(!isFlat);
+			}
+
 			if (MatrixChanged != null)
 				MatrixChanged(this);
 		}

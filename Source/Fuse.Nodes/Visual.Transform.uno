@@ -55,7 +55,6 @@ namespace Fuse
 		{
 			_localTransform = null;
 			_localTransformInverse = null;
-			InvalidateFlat();
 			InvalidateHitTestBounds();
 			InvalidateWorldTransform();
 		}
