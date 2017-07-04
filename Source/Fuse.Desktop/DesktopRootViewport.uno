@@ -50,7 +50,8 @@ namespace Fuse.Desktop
 
 			try
 			{
-				OverdrawHaxxorz.StartFrame();
+				if defined(FUSELIBS_DEBUG_DRAW_RECTS)
+					OverdrawHaxxorz.StartFrame();
 
 				Internal.DrawManager.PrepareDraw(_dc);
 
@@ -61,36 +62,9 @@ namespace Fuse.Desktop
 
 				AppBase.Current.DrawSelection(_dc);
 
-				// Fade out app by drawing a semi-transparent rect on top of it
-				draw
+				if defined(FUSELIBS_DEBUG_DRAW_RECTS)
 				{
-					float2[] Vertices: new[]
-					{
-						float2(0, 0), float2(0, 1), float2(1, 1),
-						float2(0, 0), float2(1, 1), float2(1, 0)
-					};
-
-					float2 Coord: vertex_attrib(Vertices);
-
-					ClipPosition: float4(Coord * 2 - 1, 0, 1);
-
-					PixelColor: float4(0, 0, 0, 0.5f);
-
-					CullFace : PolygonFace.None;
-					DepthTestEnabled: false;
-
-					BlendEnabled: true;
-					BlendSrcRgb: BlendOperand.SrcAlpha;
-					BlendDstRgb: BlendOperand.OneMinusSrcAlpha;
-
-					BlendSrcAlpha: BlendOperand.SrcAlpha;
-					BlendDstAlpha: BlendOperand.OneMinusSrcAlpha;
-				};
-
-				foreach (var r in OverdrawHaxxorz.DrawRects)
-				{
-					debug_log "Get rekt: " + r;
-
+					// Fade out app by drawing a semi-transparent rect on top of it
 					draw
 					{
 						float2[] Vertices: new[]
@@ -101,25 +75,52 @@ namespace Fuse.Desktop
 
 						float2 Coord: vertex_attrib(Vertices);
 
-						ClipPosition: float4(r.Position + Coord * r.Size, 0, 1);
+						ClipPosition: float4(Coord * 2 - 1, 0, 1);
 
-						PixelColor: float4(1, 0, 0, 0.2f);
+						PixelColor: float4(0, 0, 0, 0.5f);
 
 						CullFace : PolygonFace.None;
 						DepthTestEnabled: false;
 
 						BlendEnabled: true;
 						BlendSrcRgb: BlendOperand.SrcAlpha;
-						BlendDstRgb: BlendOperand.One;
+						BlendDstRgb: BlendOperand.OneMinusSrcAlpha;
 
 						BlendSrcAlpha: BlendOperand.SrcAlpha;
-						BlendDstAlpha: BlendOperand.One;
+						BlendDstAlpha: BlendOperand.OneMinusSrcAlpha;
 					};
+
+					foreach (var r in OverdrawHaxxorz.DrawRects)
+					{
+						float4[] verts = new[]
+						{
+							r.A, r.B, r.C,
+							r.C, r.D, r.A
+						};
+
+						draw
+						{
+							ClipPosition: vertex_attrib(verts);
+
+							PixelColor: float4(1, 0, 0, 0.2f);
+
+							CullFace : PolygonFace.None;
+							DepthTestEnabled: false;
+
+							BlendEnabled: true;
+							BlendSrcRgb: BlendOperand.SrcAlpha;
+							BlendDstRgb: BlendOperand.One;
+
+							BlendSrcAlpha: BlendOperand.SrcAlpha;
+							BlendDstAlpha: BlendOperand.One;
+						};
+					}
 				}
 				
 				Internal.DrawManager.EndDraw(_dc);
 
-				OverdrawHaxxorz.EndFrame();
+				if defined(FUSELIBS_DEBUG_DRAW_RECTS)
+					OverdrawHaxxorz.EndFrame();
 			}
 			catch (Exception e)
 			{
