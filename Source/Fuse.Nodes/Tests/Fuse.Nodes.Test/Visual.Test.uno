@@ -42,26 +42,31 @@ namespace Fuse.Test
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
 				Assert.IsTrue(p.A.IsFlat);
+				Assert.IsTrue(p.A.IsLocalFlat);
 				Assert.IsTrue(p.B.IsFlat);
 				Assert.IsTrue(p.C.IsFlat);
 				
 				p.RB.DegreesX = 5;
 				Assert.IsFalse(p.A.IsFlat);
+				Assert.IsTrue(p.A.IsLocalFlat);
 				Assert.IsFalse(p.B.IsFlat);
 				Assert.IsTrue(p.C.IsFlat);
 				
 				p.RC.DegreesY = 5;
 				Assert.IsFalse(p.A.IsFlat);
+				Assert.IsTrue(p.A.IsLocalFlat);
 				Assert.IsFalse(p.B.IsFlat);
 				Assert.IsFalse(p.C.IsFlat);
 				
 				p.RB.DegreesX = 0;
 				Assert.IsFalse(p.A.IsFlat);
+				Assert.IsTrue(p.A.IsLocalFlat);
 				Assert.IsTrue(p.B.IsFlat);
 				Assert.IsFalse(p.C.IsFlat);
 				
 				p.RC.DegreesY = 0;
 				Assert.IsTrue(p.A.IsFlat);
+				Assert.IsTrue(p.A.IsLocalFlat);
 				Assert.IsTrue(p.B.IsFlat);
 				Assert.IsTrue(p.C.IsFlat);
 			}
@@ -80,6 +85,7 @@ namespace Fuse.Test
 				p.WB.Value = true;
 				root.PumpDeferred();
 				Assert.IsFalse(p.A.IsFlat);
+				Assert.IsTrue(p.A.IsLocalFlat);
 				Assert.IsFalse(p.B.IsFlat);
 				Assert.IsTrue(p.C.IsFlat);
 				
@@ -87,6 +93,7 @@ namespace Fuse.Test
 				p.WC.Value = true;
 				root.PumpDeferred();
 				Assert.IsFalse(p.A.IsFlat);
+				Assert.IsTrue(p.A.IsLocalFlat);
 				Assert.IsTrue(p.B.IsFlat);
 				Assert.IsFalse(p.C.IsFlat);
 				
@@ -165,6 +172,11 @@ namespace Fuse.Test
 			{
 				Assert.IsTrue(p.IsFlat);
 				Assert.IsTrue(p.V.IsFlat);
+				Assert.IsFalse(p.B.IsFlat);
+				
+				p.RV.DegreesX = 5;
+				Assert.IsFalse(p.IsFlat);
+				Assert.IsFalse(p.V.IsFlat);
 				Assert.IsFalse(p.B.IsFlat);
 			}
 		}
