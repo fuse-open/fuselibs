@@ -122,6 +122,54 @@ namespace Fuse.Test
 		}
 		
 		[Test]
+		public void IsFlatMultiple()
+		{
+			var p = new UX.Visual.IsFlatMultiple();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				root.StepFrameDeferred();
+				var C = p.FindNodeByName("C") as Visual;
+				var D = p.FindNodeByName("D") as Visual;
+				Assert.IsFalse(p.A.IsFlat);
+				Assert.IsTrue(p.B.IsFlat);
+				Assert.IsFalse(C.IsFlat);
+				Assert.IsFalse(D.IsFlat);
+				
+ 				C.FirstChild<Translation>().Z = 0;
+ 				D.FirstChild<Translation>().Z = 0;
+ 				Assert.IsTrue(p.A.IsFlat);
+ 				Assert.IsTrue(p.B.IsFlat);
+ 				Assert.IsTrue(C.IsFlat);
+ 				Assert.IsTrue(D.IsFlat);
+ 				
+ 				p.TB.Z = -1;
+ 				Assert.IsFalse(p.A.IsFlat);
+ 				Assert.IsFalse(p.B.IsFlat);
+ 				
+ 				p.RB.DegreesY = 1;
+ 				p.TB.Z = 0;
+ 				Assert.IsFalse(p.A.IsFlat);
+ 				Assert.IsFalse(p.B.IsFlat);
+ 				
+ 				p.RB.DegreesY = 0;
+ 				Assert.IsTrue(p.A.IsFlat);
+ 				Assert.IsTrue(p.B.IsFlat);
+			}
+		}
+		
+		[Test]
+		public void IsFlatViewport()
+		{
+			var p = new UX.Visual.IsFlatViewport();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				Assert.IsTrue(p.IsFlat);
+				Assert.IsTrue(p.V.IsFlat);
+				Assert.IsFalse(p.B.IsFlat);
+			}
+		}
+		
+		[Test]
 		/*
 			Tests an invalidation issue https://github.com/fusetools/fuselibs/issues/2318
 		*/
