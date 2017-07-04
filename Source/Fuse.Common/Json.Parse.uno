@@ -1,4 +1,5 @@
 using Uno;
+using Uno.Collections;
 using Uno.Data.Json;
 
 namespace Fuse
@@ -32,20 +33,16 @@ namespace Fuse
 				case JsonDataType.Object:
 					{
 						var keys = r.Keys;
-						var values = new object[keys.Length];
+						var dict = new Dictionary<string, object>();
 						for (int i = 0; i < keys.Length; i++)
-						{
-							values[i] = Convert(r[keys[i]]);
-						}
-						return new Object(keys, values);
+							dict.Add(keys[i], Convert(r[keys[i]]));
+						return new Object(dict);
 					}
 				case JsonDataType.Array:
 					{
 						var values = new object[r.Count];
 						for (int i = 0; i < values.Length; i++)
-						{
 							values[i] = Convert(r[i]);
-						}
 						return new Array(values);
 					}
 				case JsonDataType.Number: return r.AsNumber();
@@ -57,42 +54,28 @@ namespace Fuse
 
 		class Object : IObject
 		{
-			readonly string[] _keys;
-			readonly object[] _values;
+			readonly Dictionary<string, object> _dict;
 
-			public Object(string[] keys, object[] values)
+			public Object(Dictionary<string, object> dict)
 			{
-				if (keys.Length != values.Length)
-					throw new Exception();
-				_keys = keys;
-				_values = values;
+				_dict = dict;
 			}
 
 			public string[] Keys
 			{
-				get { return _keys; }
+				get { return _dict.Keys.ToArray(); }
 			}
 
 			public bool ContainsKey(string key)
 			{
-				for (int i = 0; i < _keys.Length; i++)
-				{
-					if (_keys[i] == key)
-						return true;
-				}
-				return false;
+				return _dict.ContainsKey(key);
 			}
 
 			public object this[string key]
 			{
 				get
 				{
-					for (int i = 0; i < _keys.Length; i++)
-					{
-						if (_keys[i] == key)
-							return _values[i];
-					}
-					return null;
+					return _dict[key];
 				}
 			}
 		}
