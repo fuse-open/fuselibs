@@ -1,4 +1,5 @@
 using Uno;
+using Uno.Collections;
 using Uno.Graphics;
 using Fuse.Input;
 using Fuse.Nodes;
@@ -90,31 +91,33 @@ namespace Fuse.Desktop
 						BlendDstAlpha: BlendOperand.OneMinusSrcAlpha;
 					};
 
+					var verts = new List<float4>();
+
 					foreach (var r in OverdrawHaxxorz.DrawRects)
 					{
-						float4[] verts = new[]
+						verts.AddRange(new[]
 						{
 							r.A, r.B, r.C,
 							r.C, r.D, r.A
-						};
-
-						draw
-						{
-							ClipPosition: vertex_attrib(verts);
-
-							PixelColor: float4(1, 0, 0, 0.2f);
-
-							CullFace : PolygonFace.None;
-							DepthTestEnabled: false;
-
-							BlendEnabled: true;
-							BlendSrcRgb: BlendOperand.SrcAlpha;
-							BlendDstRgb: BlendOperand.One;
-
-							BlendSrcAlpha: BlendOperand.SrcAlpha;
-							BlendDstAlpha: BlendOperand.One;
-						};
+						});
 					}
+
+					draw
+					{
+						ClipPosition: vertex_attrib(verts.ToArray());
+
+						PixelColor: float4(1, 0, 0, 0.2f);
+
+						CullFace : PolygonFace.None;
+						DepthTestEnabled: false;
+
+						BlendEnabled: true;
+						BlendSrcRgb: BlendOperand.SrcAlpha;
+						BlendDstRgb: BlendOperand.One;
+
+						BlendSrcAlpha: BlendOperand.SrcAlpha;
+						BlendDstAlpha: BlendOperand.One;
+					};
 				}
 				
 				Internal.DrawManager.EndDraw(_dc);
