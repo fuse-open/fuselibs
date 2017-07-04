@@ -62,7 +62,7 @@ namespace Fuse.Desktop
 				AppBase.Current.DrawSelection(_dc);
 
 				if defined(FUSELIBS_DEBUG_DRAW_RECTS)
-					DrawRectVisualizer.EndFrameAndVisualize();
+					DrawRectVisualizer.EndFrameAndVisualize(_dc);
 				
 				Internal.DrawManager.EndDraw(_dc);
 			}

@@ -21,6 +21,9 @@ namespace Fuse.Nodes
 		frame to determine which ones overlap to measure actual overdraw; this should be possible
 		with this configuration, even though it won't be as convenient as comparing simple rectangles
 		necessarily.
+
+		We also store the scissor rect that was used to draw the original rectangle so we can clip the
+		draw rect accordingly for more precise info.
 	*/
 	public struct DrawRect
 	{
@@ -29,20 +32,26 @@ namespace Fuse.Nodes
 		public float4 C;
 		public float4 D;
 
-		public DrawRect(float4 a, float4 b, float4 c, float4 d)
+		public Recti Scissor;
+
+		public DrawRect(float4 a, float4 b, float4 c, float4 d, Recti scissor)
 		{
 			A = a;
 			B = b;
 			C = c;
 			D = d;
+
+			Scissor = scissor;
 		}
 
-		public DrawRect(float4[] verts)
+		public DrawRect(float4[] verts, Recti scissor)
 		{
 			A = verts[0];
 			B = verts[1];
 			C = verts[2];
 			D = verts[3];
+
+			Scissor = scissor;
 		}
 	}
 
@@ -59,9 +68,9 @@ namespace Fuse.Nodes
 			_instance._drawRects.Clear();
 		}
 
-		public static void EndFrameAndVisualize()
+		public static void EndFrameAndVisualize(DrawContext dc)
 		{
-			_instance.EndFrameAndVisualizeImpl();
+			_instance.EndFrameAndVisualizeImpl(dc);
 		}
 
 		public static void Append(DrawRect r)
@@ -69,7 +78,7 @@ namespace Fuse.Nodes
 			_instance._drawRects.Add(r);
 		}
 
-		void EndFrameAndVisualizeImpl()
+		void EndFrameAndVisualizeImpl(DrawContext dc)
 		{
 			// Fade out app by drawing a semi-transparent rect on top of it
 			draw
@@ -97,34 +106,36 @@ namespace Fuse.Nodes
 				BlendDstAlpha: BlendOperand.OneMinusSrcAlpha;
 			};
 
-			// Batch draw rects and draw
-			var verts = new List<float4>();
-
-			foreach (var r in _drawRects)
+			// Draw rects
+			foreach(var r in _drawRects)
 			{
-				verts.AddRange(new[]
+				dc.PushScissor(r.Scissor);
+
+				draw
 				{
-					r.A, r.B, r.C,
-					r.C, r.D, r.A
-				});
+					float4[] Vertices: new[]
+					{
+						r.A, r.B, r.C,
+						r.C, r.D, r.A
+					};
+
+					ClipPosition: vertex_attrib(Vertices);
+
+					PixelColor: float4(1, 0, 0, 0.2f);
+
+					CullFace : PolygonFace.None;
+					DepthTestEnabled: false;
+
+					BlendEnabled: true;
+					BlendSrcRgb: BlendOperand.SrcAlpha;
+					BlendDstRgb: BlendOperand.One;
+
+					BlendSrcAlpha: BlendOperand.SrcAlpha;
+					BlendDstAlpha: BlendOperand.One;
+				};
+
+				dc.PopScissor();
 			}
-
-			draw
-			{
-				ClipPosition: vertex_attrib(verts.ToArray());
-
-				PixelColor: float4(1, 0, 0, 0.2f);
-
-				CullFace : PolygonFace.None;
-				DepthTestEnabled: false;
-
-				BlendEnabled: true;
-				BlendSrcRgb: BlendOperand.SrcAlpha;
-				BlendDstRgb: BlendOperand.One;
-
-				BlendSrcAlpha: BlendOperand.SrcAlpha;
-				BlendDstAlpha: BlendOperand.One;
-			};
 
 			_drawRects.Clear();
 		}

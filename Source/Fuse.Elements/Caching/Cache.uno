@@ -265,7 +265,7 @@ namespace Fuse.Elements
 						var clipPosition = Vector.Transform(p, dc.Viewport.ViewProjectionTransform);
 						drawRectClipSpaceVerts[i] = clipPosition;
 					}
-					DrawRectVisualizer.Append(new DrawRect(drawRectClipSpaceVerts));
+					DrawRectVisualizer.Append(new DrawRect(drawRectClipSpaceVerts, dc.Scissor));
 				}
 			}
 		}
