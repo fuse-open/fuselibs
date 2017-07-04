@@ -37,10 +37,10 @@ namespace Fuse
 
 			if (_isFlatRooted && _isFlat != isFlat)
 			{
-				_isFlat = isFlat;
-				if (_isFlat) Parent.DecrementLocalNonFlat();
+				if (isFlat) Parent.DecrementLocalNonFlat();
 				else Parent.IncrementLocalNonFlat();
 			}
+			_isFlat = isFlat;
 
 			if (MatrixChanged != null)
 				MatrixChanged(this);

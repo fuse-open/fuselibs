@@ -22,12 +22,12 @@ namespace Fuse
 		}
 
 		int _nonFlat = 0;
-		internal virtual void IncrementNonFlat()
+		internal void IncrementNonFlat()
 		{
 			_nonFlat++;
 			if (Parent != null) Parent.ParentIncrementNonFlat();
 		}
-		internal virtual void DecrementNonFlat()
+		internal void DecrementNonFlat()
 		{
 			_nonFlat--;
 			if (Parent != null) Parent.ParentDecrementNonFlat();

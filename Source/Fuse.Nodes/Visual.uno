@@ -148,7 +148,7 @@ namespace Fuse
 				}
 			}
 
-			FlatRooted();
+			FlatUnrooted();
 
 			ConcludePendingRemove();
 		}
