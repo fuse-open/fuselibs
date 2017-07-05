@@ -5,6 +5,7 @@ using Fuse;
 using Fuse.Controls;
 using Fuse.Input;
 using Fuse.Internal;
+using Fuse.Nodes;
 
 namespace FuseTest
 {
@@ -204,6 +205,9 @@ namespace FuseTest
 				_dc = new DrawContext(_rootViewport);
 			
 			DrawManager.PrepareDraw(_dc);
+
+			if defined(FUSELIBS_DEBUG_DRAW_RECTS)
+				DrawRectVisualizer.StartFrame();
 			
 			//at the moment this is the quickest way to fake the context, by creating a real one. Otherwise
 			//we need to make `DrawContext` mockable and replace it in this test -- though something would still
@@ -215,6 +219,9 @@ namespace FuseTest
 			
 			_dc.PopRenderTarget();
 			FramebufferPool.Release(fb);
+
+			if defined(FUSELIBS_DEBUG_DRAW_RECTS)
+				DrawRectVisualizer.EndFrameAndVisualize(_dc);
 			
 			DrawManager.EndDraw(_dc);
 		}
@@ -230,7 +237,15 @@ namespace FuseTest
 			var ret = new TestFramebuffer((int2)_rootViewport.PixelSize);
 			_dc.PushRenderTarget(ret.Framebuffer);
 			_dc.Clear(float4(0),1);
+
+			if defined(FUSELIBS_DEBUG_DRAW_RECTS)
+				DrawRectVisualizer.StartFrame();
+
 			_rootViewport.Draw(_dc);
+
+			if defined(FUSELIBS_DEBUG_DRAW_RECTS)
+				DrawRectVisualizer.EndFrameAndVisualize(_dc);
+
 			_dc.PopRenderTarget();
 
 			return ret;

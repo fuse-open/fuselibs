@@ -1,0 +1,16 @@
+{
+  "Packages": [
+    "Fuse",
+    "FuseJS",
+    "Uno.Testing"
+  ],
+  "Projects": [
+    "../../../Fuse.Common/Tests/FuseTest/FuseTest.unoproj"
+  ],
+  "Includes": [
+    "DefineDrawRects.cil.uxl",
+    "DefineDrawRects.cpp.uxl",
+    "DrawRects.Test.uno",
+    "UX/*.ux"
+  ]
+}

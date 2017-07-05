@@ -49,10 +49,10 @@ namespace Fuse.Desktop
 
 			try
 			{
+				Internal.DrawManager.PrepareDraw(_dc);
+
 				if defined(FUSELIBS_DEBUG_DRAW_RECTS)
 					DrawRectVisualizer.StartFrame();
-
-				Internal.DrawManager.PrepareDraw(_dc);
 
 				EnsureSortedZOrder();
 
@@ -63,7 +63,7 @@ namespace Fuse.Desktop
 
 				if defined(FUSELIBS_DEBUG_DRAW_RECTS)
 					DrawRectVisualizer.EndFrameAndVisualize(_dc);
-				
+
 				Internal.DrawManager.EndDraw(_dc);
 			}
 			catch (Exception e)

@@ -25,7 +25,7 @@ namespace Fuse.Nodes
 		We also store the scissor rect that was used to draw the original rectangle so we can clip the
 		draw rect accordingly for more precise info.
 	*/
-	public struct DrawRect
+	internal struct DrawRect
 	{
 		public float4 A;
 		public float4 B;
@@ -55,7 +55,7 @@ namespace Fuse.Nodes
 		}
 	}
 
-	public class DrawRectVisualizer
+	internal class DrawRectVisualizer
 	{
 		static readonly DrawRectVisualizer _instance = new DrawRectVisualizer();
 
@@ -102,8 +102,8 @@ namespace Fuse.Nodes
 				BlendSrcRgb: BlendOperand.SrcAlpha;
 				BlendDstRgb: BlendOperand.OneMinusSrcAlpha;
 
-				BlendSrcAlpha: BlendOperand.SrcAlpha;
-				BlendDstAlpha: BlendOperand.OneMinusSrcAlpha;
+				BlendSrcAlpha: BlendOperand.Zero;
+				BlendDstAlpha: BlendOperand.DstAlpha;
 			};
 
 			// Draw rects
