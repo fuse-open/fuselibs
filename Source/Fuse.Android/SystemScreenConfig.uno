@@ -15,23 +15,30 @@ namespace Fuse.Android
 
 		public Visibility Show
 		{
-			get {
+			get 
+			{
 				if defined(Android)
 				{
-					if((SystemUiVisibility.Flags & (SystemUiVisibility.Flag.Fullscreen | SystemUiVisibility.Flag.HideNavigation)) != 0) {
+					if((SystemUiVisibility.Flags & (SystemUiVisibility.Flag.Fullscreen | SystemUiVisibility.Flag.HideNavigation)) != 0) 
+					{
 						return Visibility.None;
 					}
-					else if((SystemUiVisibility.Flags & SystemUiVisibility.Flag.HideNavigation) != 0) {
+					else if((SystemUiVisibility.Flags & SystemUiVisibility.Flag.HideNavigation) != 0) 
+					{
 						return Visibility.Status;
 					}
-					else {
+					else 
+					{
 						return Visibility.All;
 					}
-				} else {
+				} 
+				else 
+				{
 					return Visibility.None;
 				}
 			}
-			set {
+			set 
+			{
 				if defined(Android)
 				{ 
 					switch(value) 

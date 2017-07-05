@@ -38,10 +38,12 @@ namespace Fuse.Android
 		}
 
 		public static Flag Flags {
-			get {
+			get 
+			{
 				return getVisibilityFlags();
 			}
-			set {
+			set 
+			{
 				setVisibilityFlags(value);
 			}
 		}
@@ -50,8 +52,8 @@ namespace Fuse.Android
 		private static void JavaInit()
 		@{
 			com.fuse.Activity.getRootActivity().runOnUiThread(new Runnable() {
-			     @Override
-			     public void run() {
+				@Override
+				public void run() {
 					View decorView = com.fuse.Activity.getRootActivity().getWindow().getDecorView();
 					decorView.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
 						public void onSystemUiVisibilityChange(int visibility) {
@@ -62,7 +64,8 @@ namespace Fuse.Android
 			});
 		@}
 
-		private static void callEvent(int flags) {
+		private static void callEvent(int flags) 
+		{
 			if(VisibilityChanged != null)
 				VisibilityChanged((Flag)flags);
 		}
@@ -77,13 +80,12 @@ namespace Fuse.Android
 		public static void setVisibilityFlags(Flag flags)
 		@{
 			com.fuse.Activity.getRootActivity().runOnUiThread(new Runnable() {
-			     @Override
-			     public void run() {
-					View decorView = com.fuse.Activity.getRootActivity().getWindow().getDecorView();
-					decorView.setSystemUiVisibility(flags);
-			    }
+				@Override
+				public void run() {
+						View decorView = com.fuse.Activity.getRootActivity().getWindow().getDecorView();
+						decorView.setSystemUiVisibility(flags);
+				}
 			});
 		@}
 	}
-
 }
