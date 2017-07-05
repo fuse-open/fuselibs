@@ -3,7 +3,7 @@
   "Description": "Framework for reactive expressions",
   "Publisher": "Fusetools AS",
   "IsTransitive": true,
-  "Version": "1.0.2",
+  "Version": "1.1.0-rc2",
   "Package": {
     "ProjectUrl": "https://fusetools.com"
   },
@@ -21,12 +21,11 @@
     "../Fuse.Reactive/Fuse.Reactive.unoproj",
   ],
   "InternalsVisibleTo": [
-    "Fuse.Reactive.Test",
     "Fuse.Scripting.Test",
-    "Fuse.Common.Test.Helpers"
+    "Fuse.Common.Test.Helpers",
+    "Fuse.Expressions.Test",
   ],
   "Includes": [
     "*"
   ]
 }
-

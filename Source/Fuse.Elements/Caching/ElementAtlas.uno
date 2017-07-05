@@ -51,9 +51,8 @@ namespace Fuse.Elements
 
 		public bool AddElement(Element elm)
 		{
-			Recti cacheRect;
-			if (!Cache.GetCachingRect(elm, out cacheRect))
-				return false;
+			Recti cacheRect = ElementBatch.GetCachingRect(elm);
+
 			Recti rect;
 			if (!_rectPacker.TryAdd(cacheRect.Size, out rect))
 				return false;
@@ -65,7 +64,8 @@ namespace Fuse.Elements
 			if (entry._atlas != null)
 				entry._atlas.RemoveElement(elm);
 			entry._atlas = this;
-			entry._rect = rect;
+			entry.AtlasRect = rect;
+			entry.DrawingOffset = cacheRect.Minimum;
 			_elements.Add(elm);
 
 			_invalidElements++;
@@ -80,7 +80,7 @@ namespace Fuse.Elements
 			if (entry._atlas != this)
 				throw new Exception("Removing from wrong atlas");
 
-			_spilledPixels += entry._rect.Area;
+			_spilledPixels += entry.AtlasRect.Area;
 
 			if (!entry.IsValid)
 			{
@@ -101,15 +101,17 @@ namespace Fuse.Elements
 			if (entry._atlas != this)
 				throw new Exception("wrong atlas again, dummy!");
 
-			Recti cacheRect;
-			if (!Cache.GetCachingRect(elm, out cacheRect))
-				return false;
+			Recti cacheRect = ElementBatch.GetCachingRect(elm);
+
 			Recti rect;
 			if (!_rectPacker.TryAdd(cacheRect.Size, out rect))
 				return false;
 
-			_spilledPixels += entry._rect.Area;
-			entry._rect = rect;
+			_spilledPixels += entry.AtlasRect.Area;
+
+			entry.AtlasRect = rect;
+			entry.DrawingOffset = cacheRect.Minimum;
+
 			if (entry.IsValid)
 			{
 				_invalidElements++;
@@ -145,18 +147,10 @@ namespace Fuse.Elements
 			if (_invalidElements > 0)
 			{
 				Rect scissorRectInClipSpace = GetScissorRectInClipSpace(dc);
-				dc.PushRenderTarget(fb);
-
 				bool drawAll = _invalidElements == _elements.Count;
-				if (drawAll)
-				{
-					dc.Clear(float4(0), 1);
-					FillFramebuffer(dc, true, scissorRectInClipSpace);
-				} else
-					FillFramebuffer(dc, false, scissorRectInClipSpace);
-
-				dc.PopRenderTarget();
+				FillFramebuffer(dc, fb, drawAll, scissorRectInClipSpace);
 			}
+
 			return fb;
 		}
 
@@ -165,8 +159,16 @@ namespace Fuse.Elements
 			_framebuffer.Unpin();
 		}
 
-		void FillFramebuffer(DrawContext dc, bool drawAll, Rect scissorRectInClipSpace)
+		void FillFramebuffer(DrawContext dc, framebuffer fb, bool drawAll, Rect scissorRectInClipSpace)
 		{
+			// Changing the framebuffer is expensive. This loop actually doesn't draw anything in
+			// common case. Don't push the render target unless we actually have to render something.
+			// Note: _invalidElements may also be >0 after FillFramebuffer is called
+			// because we only repaint elements that are visible in the scissor rectangle
+			// This means that (_invalidElements > 0) doesn't imply that any painting is actually 
+			// going to happen this frame
+			var framebufferPushed = false;
+
 			var density = dc.ViewportPixelsPerPoint;
 			var viewport = (float2)_rectPacker.Size / density;
 			foreach (var elm in _elements)
@@ -179,16 +181,26 @@ namespace Fuse.Elements
 					if (!scissorRectInClipSpace.Intersects(visibleRect))
 						continue;
 
-					var cachingRect =ElementBatch.GetCachingRect(elm);
-					var offset = (float2)(entry._rect.Minimum - cachingRect.Minimum) / density;
+					var offset = (float2)(entry.AtlasRect.Minimum - entry.DrawingOffset) / density;
 					var translation = Matrix.Translation(offset.X, offset.Y, 0);
 					var cc = new OrthographicFrustum{
 						Origin = float2(0, 0), Size = viewport,
 						LocalFromWorld = Matrix.Mul(elm.WorldTransformInverse, translation) };
 
+					if (!framebufferPushed)
+					{
+						dc.PushRenderTarget(fb);
+						if (drawAll) dc.Clear(float4(0), 1);
+						framebufferPushed = true;
+					}
+
 					dc.PushViewport( new FixedViewport(_rectPacker.Size, density, cc));
 
-					dc.PushScissor(entry._rect);
+					var scissor = entry.AtlasRect;
+					if (elm.ClipToBounds)
+						scissor = elm.GetVisibleViewportInvertPixelRect(dc, elm.RenderBoundsWithEffects);
+
+					dc.PushScissor(scissor);
 
 					if (!drawAll)
 						dc.Clear(float4(0), 1);
@@ -203,6 +215,9 @@ namespace Fuse.Elements
 					entry.IsValid = true;
 				}
 			}
+
+			if (framebufferPushed)
+				dc.PopRenderTarget();
 		}
 	}
 }

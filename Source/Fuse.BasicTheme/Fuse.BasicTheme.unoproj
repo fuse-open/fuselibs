@@ -2,7 +2,7 @@
   "Description": "This package is part of Fuse",
   "Publisher": "Fusetools AS",
   "Copyright": "Copyright (c) Fusetools AS 2017",
-  "Version": "1.0.2",
+  "Version": "1.1.0-rc2",
   "Package": {
     "ProjectUrl": "https://fusetools.com"
   },

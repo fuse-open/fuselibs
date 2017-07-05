@@ -1,16 +1,10 @@
 using Uno;
 using Uno.Collections;
-using Uno.UX;
-
-using OpenGL;
 
 using Fuse;
 using Fuse.Controls;
-using Fuse.Elements;
 using Fuse.Input;
 using Fuse.Internal;
-using Fuse.Scripting;
-using Fuse.Triggers;
 
 namespace FuseTest
 {
@@ -220,56 +214,23 @@ namespace FuseTest
 			DrawManager.EndDraw(_dc);
 		}
 
-		framebuffer _captureFB;
 		/**
 			Captures the drawing output to be inspected.
 		*/
-		public void CaptureDraw()
+		public TestFramebuffer CaptureDraw()
 		{
 			if (_dc == null)
 				_dc = new DrawContext(_rootViewport);
 			
-			if (_captureFB != null)
-			{
-				FramebufferPool.Release(_captureFB);
-				_captureFB = null;
-			}
-				
-			_captureFB = FramebufferPool.Lock( (int2)_rootViewport.PixelSize, Uno.Graphics.Format.RGBA8888, true);
-			_dc.PushRenderTarget(_captureFB);
+			var ret = new TestFramebuffer((int2)_rootViewport.PixelSize);
+			_dc.PushRenderTarget(ret.Framebuffer);
 			_dc.Clear(float4(0),1);
 			_rootViewport.Draw(_dc);
 			_dc.PopRenderTarget();
-			
-			//bind to active to allow ReadDrawPixel
-			GL.BindFramebuffer(GLFramebufferTarget.Framebuffer, _captureFB.RenderTarget.GLFramebufferHandle);
+
+			return ret;
 		}
-		
-		public void ReleaseCapturedDraw()
-		{
-			FramebufferPool.Release(_captureFB);
-		}
-		
-		/**
-			Reads a pixel form the last CaptureDraw.
-		*/
-		public float4 ReadDrawPixel(int2 pos)
-		{
-			var temp = new byte[4];
-			GL.ReadPixels(pos.X, pos.Y, 1, 1, GLPixelFormat.Rgba, GLPixelType.UnsignedByte, temp);
-			return float4(temp[0] / 255.0f,
-				temp[1] / 255.0f,
-				temp[2] / 255.0f,
-				temp[3] / 255.0f);
-		}
-		public float4 ReadDrawPixel(int x, int y) { return ReadDrawPixel( int2(x,y) ); }
-		
-		public float4 ReadDrawPixelInv(int2 pos) { return ReadDrawPixelInv(pos.X,pos.Y); }
-		public float4 ReadDrawPixelInv(int x, int y)
-		{
-			return ReadDrawPixel(x, _captureFB.Size.Y - y - 1);
-		}
-		
+
 		/**
 			Steps at a reasonable frame rate to reach the `elapsedTime`.
 		*/
@@ -303,6 +264,22 @@ namespace FuseTest
 				loop = !fence.IsSignaled;
 				IncrementFrameImpl(_frameIncrement, StepFlags.WaitJS | StepFlags.IncrementFrame);
 			}
+		}
+		
+		/**
+			If the test code involves multiple JavaScript elements that need to communicate between
+			each other, a single StepFrameJS may not be enough. This happens when an Observable in
+			one is connected to an Observable in another. The single StepFrameJS only takes care of
+			a single JS propagation, not the followup to the other element.
+			
+			This calls StepFrameJS multiple times to be correct in those situations.  The number should
+			be the number of modules that need to be traversed. Don't just increase the number
+			until it works.
+		*/
+		public void MultiStepFrameJS(int count)
+		{
+			for (int i=0; i < count; ++i)
+				StepFrameJS();
 		}
 		
 		/**

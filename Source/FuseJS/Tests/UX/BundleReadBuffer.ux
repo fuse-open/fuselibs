@@ -1,0 +1,26 @@
+<Panel ux:Class="UX.BundleReadBuffer">
+	<JavaScript>
+		var Bundle = require("FuseJS/Bundle")
+		var Observable = require("FuseJS/Observable")
+		var result = Observable()
+		function arrayBufferToString(buffer){
+			var arr = new Uint8Array(buffer);
+			var str = String.fromCharCode.apply(String, arr);
+			if(/[\u0080-\uffff]/.test(str)){
+				throw new Error("this string seems to contain (still encoded) multibytes");
+			}
+			return str;
+		}
+		module.exports = {
+			test : function(){
+				Bundle.readBuffer("assets/test.txt")
+					.then(function(buffer){
+						result.value = arrayBufferToString(buffer) == "Hello world";
+					})
+			},
+			result : result
+		}
+	</JavaScript>
+	<Text ux:Name="output" Value="{result}"/>
+	<FuseTest.Invoke Handler="{test}" ux:Name="CallTest"/>
+</Panel>

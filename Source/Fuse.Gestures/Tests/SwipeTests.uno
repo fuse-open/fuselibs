@@ -381,20 +381,20 @@ namespace Fuse.Gestures.Test
 			using (var root = TestRootPanel.CreateWithChild(p,int2(500)))
 			{
 				var g = p.SG.TestSwiper as IGesture;
-				Assert.AreEqual(0, g.Significance);
+				Assert.AreEqual(0, g.Priority.Significance);
 				
 				root.PointerPress( float2(100,450));
 				root.PointerSlide( float2(100,450), float2(100,448), 100 );
-				Assert.AreEqual(2, g.Significance);
+				Assert.AreEqual(2, g.Priority.Significance);
 				root.PointerSlide( float2(100,448), float2(100,445), 100 );
-				Assert.AreEqual(5, g.Significance);
+				Assert.AreEqual(5, g.Priority.Significance);
 				root.PointerRelease( float2(100,445) );
 				
 				p.SG.IsActive = true;
 				root.StepFrame(5); //stabilize
 				root.PointerPress( float2(100,305) );
 				root.PointerSlide( float2(100,305), float2(100,310), 100 );
-				Assert.AreEqual(5, g.Significance);
+				Assert.AreEqual(5, g.Priority.Significance);
 				root.PointerRelease( float2(100,310) );
 			}
 		}
@@ -407,18 +407,18 @@ namespace Fuse.Gestures.Test
 			{
 				var g = p.SG.TestSwiper as IGesture;
 				var g2 = p.SU.TestSwiper as IGesture;
-				Assert.AreEqual(0, g.Significance);
-				Assert.AreEqual(0, g2.Significance);
+				Assert.AreEqual(0, g.Priority.Significance);
+				Assert.AreEqual(0, g2.Priority.Significance);
 				
 				root.PointerPress( float2(100,450));
 				root.PointerSlide( float2(100,450), float2(100,448), 100 );
-				Assert.AreEqual(2, g.Significance);
-				Assert.AreEqual(2, g2.Significance);
-				Assert.IsTrue(g.PriorityAdjustment > g2.PriorityAdjustment);
+				Assert.AreEqual(2, g.Priority.Significance);
+				Assert.AreEqual(2, g2.Priority.Significance);
+				Assert.IsTrue(g.Priority.Adjustment > g2.Priority.Adjustment);
 				
 				root.PointerSlide( float2(100,448), float2(100,445), 100 );
-				Assert.AreEqual(5, g.Significance);
-				Assert.AreEqual(5, g2.Significance);
+				Assert.AreEqual(5, g.Priority.Significance);
+				Assert.AreEqual(5, g2.Priority.Significance);
 			}
 		}
 		

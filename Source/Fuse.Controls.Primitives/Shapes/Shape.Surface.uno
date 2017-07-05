@@ -7,7 +7,7 @@ namespace Fuse.Controls
 {
 	public abstract partial class Shape
 	{
-		virtual protected bool NeedSurface { get { return false; } }
+		virtual protected bool NeedSurface { get { return true; } }
 		
 		bool _surfacePathDirty;
 		SurfacePath _surfacePath;
@@ -105,6 +105,9 @@ namespace Fuse.Controls
 					surface.StrokePath(path,stroke);
 			}
 		}
+		
+		bool ISurfaceDrawable.IsPrimary { get { return NeedSurface; } }
+		float2 ISurfaceDrawable.ElementSize { get { return ActualSize; } }
 		
 		protected SurfacePath GetSurfacePath(Surface surface)
 		{

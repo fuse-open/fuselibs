@@ -79,6 +79,8 @@ namespace Fuse.Gestures
 
 		void OnTapped(PointerEventArgs args, int tapCount)
 		{
+			if (!Accept(args))
+				return;
 			Pulse();
 			if (Handler != null)
 				Handler(this, new TappedArgs(args, Parent));
@@ -140,6 +142,8 @@ namespace Fuse.Gestures
 
 		void OnTapped(PointerEventArgs args, int tapCount)
 		{
+			if (!Accept(args))
+				return;
 			if (tapCount != 2)
 				return;
 

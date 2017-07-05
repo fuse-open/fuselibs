@@ -2,7 +2,7 @@
   "Copyright": "Copyright (c) Fusetools AS 2017",
   "Description": "Library for control motion and simulated physics for UI",
   "Publisher": "Fusetools AS",
-  "Version": "1.0.2",
+  "Version": "1.1.0-rc2",
   "Package": {
     "ProjectUrl": "https://fusetools.com"
   },
@@ -22,6 +22,7 @@
   ],
   "Includes": [
     "MotionConfig.uno:Source",
+    "DestinationBehavior.uno:Source",
     "DestinationMotion.uno:Source",
     "SpringFunction.uno:Source",
     "DelayFunction.uno:Source",

@@ -35,7 +35,7 @@ namespace Fuse.BasicTheme
 			Pointer.Moved.AddHandler(_switch, OnPointerMoved);
 			Pointer.Released.AddHandler(_switch, OnPointerReleased);
 
-			_clicker = Clicker.AttachClicker(_switch);
+			_clicker = Clicker.AttachClicker(_switch, GesturePriority.Normal);
 			_clicker.TappedEvent += OnPointerTapped;
 
 			if (Bounds == null)

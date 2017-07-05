@@ -7,6 +7,35 @@ namespace Fuse.Controls.Test
 {
 	public class ViewportTest : TestBase
 	{
+		struct HitTestPoint {
+			public int2 Point;
+			public ClickPanel Panel;
+		}
+
+		HitTestPoint[] GetHitTestPoints(UX.ViewportHitTest p)
+		{
+			return new HitTestPoint[] {
+				new HitTestPoint { Point = int2(107,114), Panel = p.Q.A },
+				new HitTestPoint { Point = int2(421,164), Panel = p.Q.B },
+				new HitTestPoint { Point = int2(66,326), Panel = p.Q.C },
+				new HitTestPoint { Point = int2(448,220), Panel = p.Q.D },
+				new HitTestPoint { Point = int2(729,63), Panel = p.R.A },
+				new HitTestPoint { Point = int2(787,110), Panel = p.R.B },
+				new HitTestPoint { Point = int2(455,413), Panel = p.R.C },
+				new HitTestPoint { Point = int2(960,226), Panel = p.R.D },
+				new HitTestPoint { Point = int2(72,515), Panel = p.S.A },
+				new HitTestPoint { Point = int2(265,513), Panel = p.S.B },
+				new HitTestPoint { Point = int2(114,725), Panel = p.S.C },
+				new HitTestPoint { Point = int2(288,794), Panel = p.S.C },
+				new HitTestPoint { Point = int2(399,629), Panel = p.S.D },
+				new HitTestPoint { Point = int2(733,584), Panel = p.T.A },
+				new HitTestPoint { Point = int2(782,581), Panel = p.T.B },
+				new HitTestPoint { Point = int2(734,629), Panel = p.T.C },
+				new HitTestPoint { Point = int2(757,634), Panel = p.T.D },
+				new HitTestPoint { Point = int2(960,639), Panel = p.T.D },
+			};
+		}
+
 		[Test]
 		/*
 			This checks the correctness of the hit testing.  The UX represents a variety of viewport layering.
@@ -17,50 +46,22 @@ namespace Fuse.Controls.Test
 		public void HitTest()
 		{
 			var p = new UX.ViewportHitTest();
-			_cRoot = TestRootPanel.CreateWithChild(p, int2(1000));
-			TestBits(p, CheckHitTest);
-		}
-		
-		void TestBits(UX.ViewportHitTest p, Action<float,float,ClickPanel> C)
-		{
-			C(107,114,p.Q.A);
-			C(421,164,p.Q.B);
-			C(66,326,p.Q.C);
-			C(448,220,p.Q.D);
-			
-			C(729,63,p.R.A);
-			C(787,110,p.R.B);
-			C(455,413,p.R.C);
-			C(960,226,p.R.D);
-			
-			C(72,515,p.S.A);
-			C(265,513,p.S.B);
-			C(114,725,p.S.C);
-			C(288,794,p.S.C);
-			C(399,629,p.S.D);
-			
-			C(733,584,p.T.A);
-			C(782,581,p.T.B);
-			C(734,629,p.T.C);
-			C(757,634,p.T.D);
-			C(960,639,p.T.D);
-		}
-		
-		TestRootPanel _cRoot;
-		void CheckHitTest(float x, float y, ClickPanel expect)
-		{
-			//root-level testing, used by uncapture input
-			var hitResult = Fuse.Input.HitTestHelpers.HitTestNearest(_cRoot, float2(x,y));
-			Assert.AreEqual(expect, hitResult.HitObject);
-	
-			//capture level routing
-			//so longer as there is no overlap in the tests looking in each parent should produce the same result
-			Visual start = expect;
-			while (start != null)
+			var r = TestRootPanel.CreateWithChild(p, int2(1000));
+			foreach (var hitTestPoint in GetHitTestPoints(p))
 			{
-				var hitVisual = start.GetHitWindowPoint(float2(x,y));
-				Assert.AreEqual(expect, hitVisual);
-				start = start.Parent;
+				//root-level testing, used by uncapture input
+				var hitResult = Fuse.Input.HitTestHelpers.HitTestNearest(r, hitTestPoint.Point);
+				Assert.AreEqual(hitTestPoint.Panel, hitResult.HitObject);
+
+				//capture level routing
+				//so longer as there is no overlap in the tests looking in each parent should produce the same result
+				Visual start = hitTestPoint.Panel;
+				while (start != null)
+				{
+					var hitVisual = start.GetHitWindowPoint(hitTestPoint.Point);
+					Assert.AreEqual(hitTestPoint.Panel, hitVisual);
+					start = start.Parent;
+				}
 			}
 		}
 
@@ -72,18 +73,15 @@ namespace Fuse.Controls.Test
 		public void DrawTest()
 		{
 			var p = new UX.ViewportHitTest();
-			_cRoot = TestRootPanel.CreateWithChild(p, int2(1000));
-			_cRoot.CaptureDraw();
-			TestBits(p, CheckColor);
+			var r = TestRootPanel.CreateWithChild(p, int2(1000));
+
+			using (var fb = r.CaptureDraw())
+			{
+				foreach (var hitTestPoint in GetHitTestPoints(p))
+					fb.AssertPixel(hitTestPoint.Panel.Color, hitTestPoint.Point);
+			}
 		}
-		
-		void CheckColor(float x, float y, ClickPanel expect)
-		{
-			//assume Density=1 (note Y is inverted in GL buffer)
-			var c = _cRoot.ReadDrawPixel( (int)x, (int)(1000 - y) );
-			Assert.AreEqual(expect.Color, c);
-		}
-		
+
 		[Test]
 		/* 
 			Viewport should be cacheable. This quick test tests for that. It's kept fairly light since the actual

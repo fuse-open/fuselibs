@@ -11,6 +11,7 @@ namespace Fuse
 	{
 		void OnChildAddedWhileRooted(Node n);
 		void OnChildRemovedWhileRooted(Node n);
+		void OnChildMovedWhileRooted(Node n);
 	}
 	/*
 		Optimized implementation of IList<Node> that creates no extra objects unless needed
@@ -93,6 +94,20 @@ namespace Fuse
 			if (elm is IParentObserver) _observerCount--;
 		}
 
+		protected virtual void OnChildMoved(Node elm)
+		{
+			if (_observerCount != 0 && IsRootingStarted)
+			{
+				for (int i = 0; i < Children.Count; i++)
+				{
+					var n = Children[i];
+					var obs = n as IParentObserver;
+					if (obs != null && n.IsRootingCompleted) 
+						obs.OnChildMovedWhileRooted(elm);
+				}
+			}
+		}
+		
 		MiniList<Node> _children;
 
 		void OnAdded(Node b)
@@ -118,6 +133,14 @@ namespace Fuse
 			Unrelate(this, b);
 			OnChildRemoved(b);
 		}
+		
+		void OnMoved(Node b)
+		{
+			var v = b as Visual;
+			if (v != null) OnVisualMoved(v);
+			
+			OnChildMoved(b);
+		}
 
 		void OnVisualAdded(Visual v)
 		{
@@ -134,6 +157,12 @@ namespace Fuse
 			InvalidateZOrder();
 			InvalidateHitTestBounds();
 			InvalidateRenderBounds();
+		}
+		
+		void OnVisualMoved(Visual v)
+		{
+			InvalidateZOrder();
+			//Moving on its own won't affect render/hittest bounds. That will most likely be invalidated by a LayoutControl though
 		}
 
 		void ICollection<Node>.Clear()
@@ -163,6 +192,16 @@ namespace Fuse
 		{
 			return _children.Contains(item);
 		}
+		
+		int IndexOf(Node item)
+		{
+			for (int i=0; i < _children.Count; ++i)
+			{
+				if (_children[i] == item)
+					return i;
+			}
+			return -1;
+		}
 
 		int ICollection<Node>.Count { get { return _children.Count; } }
 
@@ -187,6 +226,17 @@ namespace Fuse
 		*/
 		internal void InsertNodes(int index, IEnumerator<Node> items)
 		{
+			InsertNodesImpl(index, items, false);
+		}
+
+		internal void InsertOrMoveNodes(int index, IEnumerator<Node> items)
+		{
+			InsertNodesImpl(index, items, true);
+		}
+		
+		
+		void InsertNodesImpl(int index, IEnumerator<Node> items, bool allowMove)
+		{
 			if (index <0 || index > Children.Count)
 				throw new ArgumentOutOfRangeException("index");
 			
@@ -194,6 +244,9 @@ namespace Fuse
 			while (items.MoveNext())
 				InsertCleanup( items.Current );
 
+			//becomes non-null on the first moved node
+			HashSet<Node> moved = null;
+			
 			//nodes should be considered added in the same group
 			var capture = CaptureRooting();
 			try
@@ -201,12 +254,34 @@ namespace Fuse
 				//then add all
 				items.Reset();
 				while (items.MoveNext())
-					_children.Insert(index++, items.Current);
+				{
+					var c = items.Current;
+					if (allowMove)
+					{
+						var where = IndexOf(c);
+						if (where != -1)
+						{
+							_children.RemoveAt(where);
+							if (where < index)
+								index--;
+							if (moved == null)
+								moved = new HashSet<Node>();
+							moved.Add(c);
+						}
+					}
+					_children.Insert(index++, c);
+				}
 
 				//then process them
 				items.Reset();
 				while (items.MoveNext())
-					OnAdded(items.Current);
+				{
+					var c = items.Current;
+					if (moved == null || !moved.Contains(c))
+						OnAdded(c);
+					else
+						OnMoved(c);
+				}
 			}
 			finally
 			{

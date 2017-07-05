@@ -2,7 +2,7 @@
   "Copyright": "Copyright (c) Fusetools AS 2017",
   "Description": "Native UI and bootstrapping for iOS",
   "Publisher": "Fusetools AS",
-  "Version": "1.0.2",
+  "Version": "1.1.0-rc2",
   "Package": {
     "ProjectUrl": "https://fusetools.com"
   },
@@ -35,7 +35,6 @@
   "Includes": [
     "AppRoot.uno:SourceFile",
     "iOSApp.uno:SourceFile",
-    "iOSDevice.uno:SourceFile",
     "iOSInterop.uno:SourceFile",
     "StatusBarConfig.uno:SourceFile",
     "Support.uno:SourceFile"

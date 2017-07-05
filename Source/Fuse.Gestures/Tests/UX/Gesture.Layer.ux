@@ -1,0 +1,39 @@
+<Panel ux:Class="UX.Gesture.Layer" Color="#AFA">
+	<EdgeNavigator ux:Name="edge" HitTestMode="LocalBoundsAndChildren">
+		<Panel Edge="Right" Width="200" ux:Name="edgeRight" Color="#AAF"/>
+		<Panel Edge="Left" Width="200" ux:Name="edgeLeft" Color="#AAF"/>
+
+		<PageControl ux:Name="edgeMain" Active="pageB">
+			<Page ux:Name="pageA" Color="#AFA"/>
+
+			<Page Color="#FAA" ux:Name="pageB">
+				<ScrollView ux:Name="scroll">
+					<StackPanel Alignment="Top" Color="#000">
+						<Panel Height="20">
+							<RangeControl ux:Name="rangeH" Minimum="0" Maximum="100" HitTestMode="LocalBounds">
+								<LinearRangeBehavior/>
+							</RangeControl>
+						</Panel>
+
+						<Panel Height="100" Margin="50,0" Color="#AFF">
+							<SwipeGesture Direction="Down" Length="30" ux:Name="swipeDown"/>
+							<Swiped Source="swipeDown">
+								<FuseTest.CountAction ux:Name="downCount"/>
+							</Swiped>
+						</Panel>
+
+						<Panel Height="2000" Color="#DED"/>
+					</StackPanel>
+				</ScrollView>
+
+				<SwipeGesture Edge="Bottom" Length="30" ux:Name="swipeUp"/>
+				<Swiped Source="swipeUp">
+					<FuseTest.CountAction ux:Name="upCount"/>
+				</Swiped>
+			</Page>
+
+			<Page ux:Name="pageC" Color="#AFA"/>
+
+		</PageControl>
+	</EdgeNavigator>
+</Panel>

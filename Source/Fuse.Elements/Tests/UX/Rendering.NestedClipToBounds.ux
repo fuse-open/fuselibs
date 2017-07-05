@@ -1,0 +1,11 @@
+<Panel ux:Class="UX.Rendering.NestedClipToBounds" Width="32px" Height="32px">
+	<Panel ux:Name="_outerPanel" Width="8px" Height="16px" ClipToBounds="True">
+		<Translation X="4" />
+		<Panel ux:Name="_innerPanel" Width="16px" Height="8px" ClipToBounds="True">
+			<Translation X="-4" Y="4" />
+			<Panel Color="#F00" Width="16px" Height="16px" CachingMode="Never">
+				<Translation Y="-4" />
+			</Panel>
+		</Panel>
+	</Panel>
+</Panel>

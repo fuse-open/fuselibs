@@ -3,6 +3,7 @@ using Uno.UX;
 using Uno.Testing;
 
 using Fuse.Controls;
+using Fuse.Elements;
 using FuseTest;
 
 namespace Fuse.Reactive.Test
@@ -276,12 +277,112 @@ namespace Fuse.Reactive.Test
 			}
 		}
 		
-		static internal string GetText(Visual root)
+		[Test]
+		public void FunctionBasic()
+		{
+			var e = new UX.Each.Function.Basic();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.StepFrameJS();
+				Assert.AreEqual("1-1-0,2-2-1,3-3-2", GetText(e));
+			}
+		}
+		
+		[Test]
+		//ensure values are updated as each items change
+		public void FunctionOrder()
+		{
+			var e = new UX.Each.Function.Order();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.StepFrameJS();
+				Assert.AreEqual("0-0,1-1", GetText(e));
+				
+				e.CallInsert.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual("2-0,0-1,1-2", GetText(e));
+				
+				e.CallRemove.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual("2-0,1-1", GetText(e));
+				
+				e.CallReplace.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual("3-0", GetText(e));
+			}
+		}
+		
+		[Test]
+		//nested Each lookup
+		public void FunctionArg()
+		{
+			var e = new UX.Each.Function.Arg();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+ 				root.StepFrame();
+ 				Assert.AreEqual("0-0,0-1,1-0,1-1", GetText(e));
+			}
+		}
+
+		[Test]
+		public void Reuse()
+		{
+			var e = new UX.Each.Reuse();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.StepFrameJS();
+				var z0 = GetZChildren(e.s);
+				Assert.AreEqual("4,3,2,1,0", GetDudZ(e.s));
+				
+				e.e.Offset = 1;
+				root.StepFrame();
+				var z1 = GetZChildren(e.s);
+				Assert.AreEqual("5,4,3,2,1", GetDudZ(e.s));
+				
+				Assert.AreEqual(z0[0],z1[1]);
+				Assert.AreEqual(z0[4],z1[0]); //node actually reused
+				
+				//ensure layout was invalidated
+				Assert.AreEqual(float2(0,40),(z1[0] as Element).ActualPosition);
+				Assert.AreEqual(float2(0,0),(z1[4] as Element).ActualPosition);
+			}
+		}
+		
+		[Test]
+		public void ReuseTemplates()
+		{
+			var e = new UX.Each.ReuseTemplates();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.StepFrameJS();
+				var z0 = GetZChildren(e.s);
+				Assert.AreEqual("107,6,105,4", GetDudZ(e.s));
+				
+				e.e.Offset = 2;
+				root.StepFrame();
+				var z1 = GetZChildren(e.s);
+				Assert.AreEqual("105,4,103,2", GetDudZ(e.s));
+				
+				Assert.AreEqual(z0[3],z1[1]);
+				Assert.AreEqual(z0[0],z1[2]);//reuse
+				Assert.AreEqual(z0[1],z1[3]);//reuse
+			}
+		}
+
+		static Visual[] GetZChildren(Visual root)
+		{
+			var list = new Visual[root.ZOrderChildCount];
+			for (int i=0; i < root.ZOrderChildCount; ++i)
+				list[i] = root.GetZOrderChild(i);
+			return list;
+		}
+		
+		static internal string GetDudZ(Visual root)
 		{
 			var q = "";
-			for (int i=0; i < root.Children.Count; ++i)
+			for (int i=0; i < root.ZOrderChildCount; ++i)
 			{
-				var t = root.Children[i] as Text;
+				var t = root.GetZOrderChild(i) as FuseTest.DudElement;
 				if (t != null)
 				{
 					if (q.Length > 0)
@@ -290,6 +391,48 @@ namespace Fuse.Reactive.Test
 				}
 			}
 			return q;
+		}
+		
+		[Test]
+		//index() retains the previous value if the item is removed, or rather it doesn't update if there is no value
+		public void FunctionRemove()
+		{
+			var e = new UX.Each.Function.Remove();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+ 				root.StepFrameJS();
+ 				Assert.AreEqual("0-0,1-1,2-2", GetText(e));
+ 				
+ 				e.CallReplace.Perform();
+ 				root.StepFrameJS();
+ 				//it's not certain if the new element is guaranteed to be in this place
+ 				Assert.AreEqual("3-0,0-0,1-1,2-2", GetText(e));
+			}
+		}
+		
+		[Test]
+		//there's no way to test this feature yet
+		[Ignore("https://github.com/fusetools/fuselibs/issues/4199")]
+		public void FunctionDefault()
+		{
+			var e = new UX.Each.Function.Default();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+ 				root.StepFrame();
+ 				Assert.AreEqual("0,1,2", GetText(e));
+			}
+		}
+		
+		[Test]
+		//any node inside the Each will work for lookup
+		public void FunctionSearch()
+		{
+			var e = new UX.Each.Function.Search();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+ 				root.StepFrame();
+ 				Assert.AreEqual("0,1,2", GetRecursiveText(e));
+			}
 		}
 	}
 }

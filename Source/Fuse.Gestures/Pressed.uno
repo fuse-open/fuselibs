@@ -94,7 +94,7 @@ namespace Fuse.Gestures
 			base.OnRooted();
 			if (Capture)
 			{
-				Clicker = Clicker.AttachClicker(Parent);
+				Clicker = Clicker.AttachClicker(Parent, GesturePriority.Normal);
 				Clicker.PressingEvent += OnClickerPressing;
 			}
 			else

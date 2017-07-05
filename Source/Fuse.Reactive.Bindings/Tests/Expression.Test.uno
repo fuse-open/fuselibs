@@ -4,7 +4,7 @@ using Uno.Testing;
 
 using FuseTest;
 
-namespace Fuse.Reactive.Test
+namespace Fuse.Reactive.Bindings.Test
 {
 	public class ExpressionTest : TestBase
 	{

@@ -23,7 +23,6 @@
   ],
   "Includes": [
     "Button.Test.uno:Source",
-    "ColumnLayout.Test.uno:Source",
     "DockPanel.Test.uno:Source",
     "WrapPanel.Test.uno:Source",
     "Image.Test.uno:Source",

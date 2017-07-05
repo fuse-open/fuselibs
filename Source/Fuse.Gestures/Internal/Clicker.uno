@@ -8,13 +8,21 @@ namespace Fuse.Gestures
 {
 	delegate void ClickerEventHandler(PointerEventArgs args, int count);
 
+	public enum ClickerPointerIndex
+	{	
+		//activates only on the primary pointer index
+		Primary,
+		//activates on any pointer index (only one activation per gesture at a time)
+		Any,
+	}
+
 	public abstract class ClickerTrigger : Fuse.Triggers.Trigger
 	{
 		internal Clicker Clicker;
 		protected override void OnRooted()
 		{
 			base.OnRooted();
-			Clicker = Clicker.AttachClicker(Parent);
+			Clicker = Clicker.AttachClicker(Parent, GesturePriority);
 		}
 
 		protected override void OnUnrooted()
@@ -22,6 +30,40 @@ namespace Fuse.Gestures
 			Clicker.Detach();
 			Clicker = null;
 			base.OnUnrooted();
+		}
+
+		ClickerPointerIndex _pointerIndex = ClickerPointerIndex.Primary;
+		public ClickerPointerIndex PointerIndex
+		{
+			get { return _pointerIndex; }
+			set { _pointerIndex = value; }
+		} 
+
+		//As we have no signifiicance we can return a high priority, forcing other gestures to be sure they
+		//recognize themselves before stealing from clicker.
+		GesturePriority _gesturePriority = GesturePriority.Highest;
+		/** 
+			Alters the priority of the click trigger. 
+
+			The highest of all priorities for clicked triggers on a node will be used as the priority, as they all share the same fundamental behaviour. You must therefore override all ClickerTrigger and WhileClickerTrigger GesturePriority's values to have a consistent behaviour.
+
+			The default is `Highest`.
+		*/
+		public GesturePriority GesturePriority
+		{
+			get { return _gesturePriority; }
+			set { _gesturePriority = value; }
+		}
+
+		protected bool Accept(PointerEventArgs args)
+		{
+			//in rare event combinations this might happen if an element is unrooted prior to gesture completion
+			if (!IsRootingCompleted)
+				return false;
+
+			if (PointerIndex == ClickerPointerIndex.Any)
+				return true;
+			return args.IsPrimary;
 		}
 	}
 
@@ -31,7 +73,7 @@ namespace Fuse.Gestures
 		protected override void OnRooted()
 		{
 			base.OnRooted();
-			Clicker = Clicker.AttachClicker(Parent);
+			Clicker = Clicker.AttachClicker(Parent, GesturePriority);
 		}
 
 		protected override void OnUnrooted()
@@ -40,9 +82,23 @@ namespace Fuse.Gestures
 			Clicker = null;
 			base.OnUnrooted();
 		}
+
+		GesturePriority _gesturePriority = GesturePriority.Highest;
+		/** 
+			Alters the priority of the WhileClicker trigger. 
+
+			See the note on @ClickerTrigger.GesturePriority
+
+			The default is `Highest`.
+		*/
+		public GesturePriority GesturePriority
+		{
+			get { return _gesturePriority; }
+			set { _gesturePriority = value; }
+		}
 	}
 
-	class Clicker
+	class Clicker : IGesture
 	{
 		public event ClickerEventHandler TappedEvent;
 		public event ClickerEventHandler ClickedEvent;
@@ -54,6 +110,8 @@ namespace Fuse.Gestures
 		float _maxDoubleInterval = 0.3f;
 		float _longPressTimeout = 0.5f;
 
+		GesturePriority _priority;
+
 		int _attachCount = 1;
 		Visual _visual;
 
@@ -61,19 +119,20 @@ namespace Fuse.Gestures
 		{
 			_visual = visual;
 		}
-
 		static readonly PropertyHandle _clickerProperty = Fuse.Properties.CreateHandle();
-		static public Clicker AttachClicker(Visual elm)
+		static public Clicker AttachClicker(Visual elm, GesturePriority priority)
 		{
 			object v;
 			if (elm.Properties.TryGet(_clickerProperty, out v))
 			{
 				var c = v as Clicker;
+				c._priority = (GesturePriority)( Math.Max((int)c._priority, (int)priority));
 				c._attachCount++;
 				return c;
 			}
 
 			var nc = new Clicker(elm);
+			nc._priority = priority;
 			elm.Properties.Set(_clickerProperty, nc);
 			nc.OnRooted();
 			return nc;
@@ -89,19 +148,16 @@ namespace Fuse.Gestures
 			}
 		}
 
+		Gesture _gesture;
 		void OnRooted()
 		{
-			Pointer.Pressed.AddHandler(_visual, OnPointerPressed);
-			Pointer.Released.AddHandler(_visual, OnPointerReleased);
-			Pointer.Moved.AddHandler(_visual, OnPointerMoved);
+			_gesture = Input.Gestures.Add( this, _visual, GestureType.Any );
 		}
 
 		void OnUnrooted()
 		{
-			Pointer.Pressed.RemoveHandler(_visual, OnPointerPressed);
-			Pointer.Released.RemoveHandler(_visual, OnPointerReleased);
-			Pointer.Moved.RemoveHandler(_visual, OnPointerMoved);
-			Fuse.Input.Pointer.ReleaseCapture(this);
+			_gesture.Dispose();
+			_gesture = null;
 		}
 
 		float2 _startCoord;
@@ -110,7 +166,6 @@ namespace Fuse.Gestures
 		internal float2 PressedPosition { get { return _pressedPosition; } }
 
 		double _startTime;
-		int _down = -1;
 
 		int _tapCount, _clickCount;
 		double _lastUpTime;
@@ -120,10 +175,9 @@ namespace Fuse.Gestures
 
 		PointerEventArgs _lastArgs;
 
-		void OnPointerPressed(object sender, PointerPressedArgs args)
+		GestureRequest IGesture.OnPointerPressed(PointerPressedArgs args)
 		{
-			if (_down != -1 || !args.TrySoftCapture(this, OnLostCapture))
-				return;
+			_lastArgs = args;
 
 			var delta = args.Timestamp - _lastUpTime;
 			if (delta > _maxDoubleInterval)
@@ -132,13 +186,17 @@ namespace Fuse.Gestures
 				_clickCount = 0;
 			}
 
-			_down = args.PointIndex;
 			_pressedPosition = _visual.WindowToLocal(args.WindowPoint);
 			_startCoord = args.WindowPoint;
 			_startTime = args.Timestamp;
 			_maybeTap = true;
-
-			if (LongPressedEvent != null)
+			_lastArgs = args;
+			return GestureRequest.Capture;
+		}
+		
+		void IGesture.OnCaptureChanged(PointerEventArgs args, CaptureType how, CaptureType prev)
+		{
+			if (LongPressedEvent != null && !_hasUpdate)
 			{
 				_hasUpdate = true;
 				UpdateManager.AddAction(Update);
@@ -147,15 +205,11 @@ namespace Fuse.Gestures
 			if (PressingEvent != null)
 				PressingEvent(args, 1);
 
-			_lastArgs = args;
 			_hovering = true;
 		}
 
-		void OnPointerMoved(object sender, PointerMovedArgs args)
+		GestureRequest IGesture.OnPointerMoved(PointerMovedArgs args)
 		{
-			if (_down != args.PointIndex)
-				return;
-
 			var distance = Vector.Length(args.WindowPoint - _startCoord);
 			var deltaTime = args.Timestamp - _startTime;
 			if (distance > _maxTapDistanceMoved || deltaTime > _maxTapTimeHeld)
@@ -163,10 +217,7 @@ namespace Fuse.Gestures
 
 			//give up capture if it can no longer be our gesture
 			if (!NeedCapture())
-			{
-				args.ReleaseCapture(this);
-				DoneCapture();
-			}
+				return GestureRequest.Cancel;
 
 			var hoverNow = _visual.GetHitWindowPoint(args.WindowPoint) != null;
 			if (hoverNow != _hovering)
@@ -177,6 +228,7 @@ namespace Fuse.Gestures
 			}
 
 			_lastArgs = args;
+			return GestureRequest.Capture;
 		}
 
 		bool NeedCapture()
@@ -187,12 +239,8 @@ namespace Fuse.Gestures
 				PressingEvent != null;
 		}
 
-		void OnPointerReleased(object sender, PointerReleasedArgs args)
+		GestureRequest IGesture.OnPointerReleased(PointerReleasedArgs args)
 		{
-			if (_down != args.PointIndex)
-				return;
-
-			args.ReleaseCapture(this);
 			var deltaTime = args.Timestamp - _startTime;
 			if (_maybeTap && deltaTime <= _maxTapTimeHeld)
 			{
@@ -221,9 +269,9 @@ namespace Fuse.Gestures
 				PressingEvent(args, 0);
 			_hovering = false;
 
-			DoneCapture();
 			_lastUpTime = args.Timestamp;
 			_lastArgs = args;
+			return GestureRequest.Cancel;
 		}
 
 		void Update()
@@ -239,7 +287,6 @@ namespace Fuse.Gestures
 
 		void DoneCapture()
 		{
-			_down = -1;
 			ReleaseUpdate();
 
 			if (_hovering && PressingEvent != null)
@@ -256,11 +303,25 @@ namespace Fuse.Gestures
 			}
 		}
 
-		void OnLostCapture()
+		void IGesture.OnLostCapture(bool forced)
 		{
 			DoneCapture();
-			_tapCount = 0;
-			_clickCount = 0;
+			if (forced)
+			{
+				_tapCount = 0;
+				_clickCount = 0;
+			}
+		}
+		
+		GesturePriorityConfig IGesture.Priority
+		{
+			get
+			{
+				return new GesturePriorityConfig(
+					GesturePriority.Highest,
+					//0 will prevent it from ever getting a hard capture
+					0 );
+			}
 		}
 	}
 }

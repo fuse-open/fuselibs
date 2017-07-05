@@ -7,6 +7,8 @@ namespace Fuse
 		float4x4 _matrix;
 		public float4x4 Matrix { get { return _matrix; } }
 
+		float3 Translation { get { return _matrix.M41M42M43; } }
+
 		bool _hasNonTranslation;
 		public bool HasNonTranslation { get { return _hasNonTranslation; } }
 		
@@ -209,6 +211,18 @@ namespace Fuse
 				_matrix.M41 += fm._matrix.M41;
 				_matrix.M42 += fm._matrix.M42;
 				_matrix.M43 += fm._matrix.M43;
+			}
+		}
+
+		public float3 TransformVector(float3 v)
+		{
+			if (_hasNonTranslation)
+			{
+				return Vector.TransformCoordinate(v, Matrix);
+			}
+			else
+			{
+				return v + Translation;
 			}
 		}
 	}

@@ -86,12 +86,14 @@ namespace Fuse.Controls
 		protected override void OnRooted()
 		{
 			base.OnRooted();
-			_subtreeNodes.RootSubscribe(OnNodeAdded, OnNodeRemoved);
+			if (_subtreeNodes != null)
+				_subtreeNodes.RootSubscribe(OnNodeAdded, OnNodeRemoved);
 		}
 		
 		protected override void OnUnrooted()
 		{
-			_subtreeNodes.RootUnsubscribe();
+			if (_subtreeNodes != null)
+				_subtreeNodes.RootUnsubscribe();
 			base.OnUnrooted();
 		}
 	}

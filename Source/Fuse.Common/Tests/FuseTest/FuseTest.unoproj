@@ -3,6 +3,7 @@
     "Fuse.Animations",
     "Fuse.Controls",
     "Fuse.Controls.Panels",
+    "Fuse.Controls.Primitives",
     "Fuse.Drawing",
     "Fuse.Drawing.Primitives",
     "Fuse.Elements",

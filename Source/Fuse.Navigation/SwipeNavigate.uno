@@ -86,7 +86,7 @@ namespace Fuse.Navigation
 	/**
 		@mount Navigation
 	*/
-	public class SwipeNavigate : Behavior
+	public class SwipeNavigate : Behavior, IGesture
 	{
 		ISeekableNavigation Navigation
 		{
@@ -99,21 +99,18 @@ namespace Fuse.Navigation
 		PointerVelocity<float2> _velocity = new PointerVelocity<float2>();
 			
 		ISeekableNavigation _currentNavigation = null;
+		Gesture _gesture;
 		protected override void OnRooted()
 		{
 			base.OnRooted();
 
-			Pointer.Pressed.AddHandler(Parent, OnPointerPressed);
-			Pointer.Moved.AddHandler(Parent, OnPointerMoved);
-			Pointer.Released.AddHandler(Parent, OnPointerReleased);
+			_gesture = Input.Gestures.Add( this, Parent, GestureType.Primary );
 		}
 
 		protected override void OnUnrooted()
 		{
-			Pointer.Pressed.RemoveHandler(Parent, OnPointerPressed);
-			Pointer.Moved.RemoveHandler(Parent, OnPointerMoved);
-			Pointer.Released.RemoveHandler(Parent, OnPointerReleased);
-
+			_gesture.Dispose();
+			_gesture = null;
 			base.OnUnrooted();
 		}
 
@@ -186,33 +183,23 @@ namespace Fuse.Navigation
 		bool IsVertical { get { return ForwardDirection == SwipeDirection.Up ||
 			ForwardDirection == SwipeDirection.Down; } }
 
+		float2 Direction
+		{
+			get { return IsHorizontal ? float2(1,0) : float2(0,1); }
+		}
+
 		float2 _startCoord;
 		float2 _currentCoord;
 		float _prevDistance;
 		double _startTime = 0.0;
-
-		const float _delayStartThresholdDistance = 10;
-		static internal float TestDelayStartThresholdDistance { get { return _delayStartThresholdDistance; } }
-		
-		SwipeGestureHelper _horizontalGesture = new SwipeGestureHelper(_delayStartThresholdDistance,
-			new DegreeSpan( 75.0f,  105.0f),
-			new DegreeSpan(-75.0f, -105.0f));
-
-		SwipeGestureHelper _verticalGesture = new SwipeGestureHelper(_delayStartThresholdDistance,
-			new DegreeSpan(-15.0f,    15.0f),
-			new DegreeSpan(-165.0f, -180.0f),
-			new DegreeSpan( 165.0f,  180.0f));
 
 		public SwipeNavigate()
 		{
 			VelocityThreshold = 300f; //matched to Swiper
 		}
 
-		int _down = -1;
-
-		void OnLostCapture()
+		void IGesture.OnLostCapture(bool forced)
 		{
-			_down = -1;
 			if (_currentNavigation != null)
 			{
 				if ( (_currentNavigation as Node).IsRootingCompleted)
@@ -222,79 +209,70 @@ namespace Fuse.Navigation
 			}
 		}
 
-		void OnPointerPressed(object sender, PointerPressedArgs args)
+		GesturePriorityConfig IGesture.Priority
 		{
+			get
+			{
+				var diff = _currentCoord - _startCoord;
+				return new GesturePriorityConfig( GesturePriority.Low,
+					Gesture.VectorSignificance( Direction, diff ) );
+			}
+		}
+		
+		GestureRequest IGesture.OnPointerPressed(PointerPressedArgs args)
+		{
+			_startCoord = _currentCoord = args.WindowPoint;
 			_currentNavigation = Navigation;
+			_velocity.Reset( _startCoord, float2(0), args.Timestamp );
 			if (_currentNavigation == null)
 			{
-				debug_log "SwipeNavigate: failed to find suitable Navigation object";
-				return;
+				Fuse.Diagnostics.InternalError("SwipeNavigate: failed to find suitable Navigation object", this);
+				return GestureRequest.Ignore;
 			}
+			return GestureRequest.Capture;
+		}
+		
+		void IGesture.OnCaptureChanged(PointerEventArgs args, CaptureType how, CaptureType prev)
+		{
+			//always reset coords to avoid jump (https://github.com/fusetools/fuselibs/issues/1175)
+			_startCoord = _currentCoord = args.WindowPoint;
+			_prevDistance = 0;
+			_startTime = Time.FrameTime;
 
-			if (args.TrySoftCapture(this, OnLostCapture))
+			if (how.HasFlag(CaptureType.Hard) && !prev.HasFlag(CaptureType.Hard))
 			{
-				_down = args.PointIndex;
-				_startCoord = _currentCoord = args.WindowPoint;
-				_prevDistance = 0;
-				_startTime = Time.FrameTime;
-				_velocity.Reset( _startCoord, float2(0), args.Timestamp );
+				_currentNavigation.BeginSeek();
 			}
 		}
 
-		void OnPointerMoved(object sender, PointerMovedArgs args)
+		GestureRequest IGesture.OnPointerMoved(PointerMovedArgs args)
 		{
-			if (_down != args.PointIndex)
-				return;
-
 			if (_currentNavigation == null)
-				return;
+				return GestureRequest.Cancel;
 
 			_currentCoord = args.WindowPoint;
 			_velocity.AddSampleTime( _currentCoord, args.Timestamp,
-				args.IsHardCapturedTo(this) ? SampleFlags.None : SampleFlags.Tentative );
+				_gesture.IsHardCapture ? SampleFlags.None : SampleFlags.Tentative );
 
-			if (args.IsHardCapturedTo(this))
-			{
+			if (_gesture.IsHardCapture)
 				_currentNavigation.Seek(GetNavigationArgs());
-			}
-			else
-			{
-				var diff = _currentCoord - _startCoord;
-				var withinBounds = IsHorizontal
-					? _horizontalGesture.IsWithinBounds(diff)
-					: _verticalGesture.IsWithinBounds(diff);
-
-				if (withinBounds)
-				{
-					//reset coords to avoid jump (https://github.com/fusetools/fuselibs/issues/1175)
-					_startCoord = _currentCoord = args.WindowPoint;
-					_prevDistance = 0;
-					_startTime = Time.FrameTime;
-					
-					if (args.TryHardCapture(this, OnLostCapture))
-						_currentNavigation.BeginSeek();
-					else
-						OnLostCapture();
-				}
-			}
+			
+			return GestureRequest.Capture;
 		}
 
-		void OnPointerReleased(object sender, PointerReleasedArgs args)
+		GestureRequest IGesture.OnPointerReleased(PointerReleasedArgs args)
 		{
 			_currentCoord = args.WindowPoint;
 			_velocity.AddSampleTime( _currentCoord, args.Timestamp, SampleFlags.Release );
-			_down = -1;
 
-			if (_currentNavigation == null)
-				return;
-
-			if (args.IsHardCapturedTo(this))
+			if (_gesture.IsHardCapture && _currentNavigation != null)
 			{
 				_currentNavigation.EndSeek(
 					new EndSeekArgs(DetermineSnap(), ProgressVelocity) );
+				//clear now to prevent double EndSeek in OnLostCapture
+				_currentNavigation = null;
 			}
-			args.ReleaseCapture(this);
-			_currentNavigation = null;
+			return GestureRequest.Cancel;
 		}
 
 		float2 Scale

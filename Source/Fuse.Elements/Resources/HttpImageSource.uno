@@ -77,7 +77,11 @@ namespace Fuse.Resources
 			{
 				HttpImageSourceImpl his;
 				if( value.TryGetTarget( out his ) )
+				{
+					if (his.State == ImageSourceState.Failed)
+						his.Reload();
 					return his;
+				}
 				_cache.Remove( url );
 			}
 

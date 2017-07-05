@@ -1,5 +1,4 @@
 {
-  "Version": "0.0.0.0",
   "Packages": [
     "Fuse",
     "FuseJS",
@@ -8,7 +7,8 @@
     "Fuse.CameraRoll",
     "Fuse.Maps",
     "Fuse.Audio",
-    "Fuse.Share"
+    "Fuse.Share",
+    "Fuse.Launcher"
   ],
   "Projects": [
     "UnoComponents.unoproj",
@@ -20,7 +20,7 @@
     "DuotoneEffect/DuotoneEffectsPage.ux:UX",
     "PixelAlignment/PixelAlignment.ux:UX",
     "Singles/*.ux",
-    "Surface/TestPage.ux",
+    "Surface/Components/TestPage.ux",
     "Surface/Singles/SurfaceMisc.ux",
     "TestApp.ux:UX",
     "TodoList/TodoListPage.ux:UX",

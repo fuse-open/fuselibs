@@ -268,7 +268,10 @@ namespace Fuse.Navigation.Test
 			{
 				p.BangTwo.Perform();
 				root.StepFrameJS();
-				root.StepFrame(0.4f);
+				//get a base time, 1-2 frames anim is acceptable on sync
+				var b = (float)TriggerProgress(p.one.T1);
+				Assert.IsTrue( b < (2 * root.StepIncrement + float.ZeroTolerance) );
+				root.StepFrame(0.4f - b);
 				
 				Assert.AreEqual(0.4f, TriggerProgress(p.one.T1));
 				Assert.AreEqual(0f, TriggerProgress(p.one.T2));
@@ -281,7 +284,9 @@ namespace Fuse.Navigation.Test
 				
 				p.FlashOne.Perform();
 				root.StepFrameJS();
-				root.StepFrame(0.4f - root.StepIncrement); //it's unclear why I don't need the `-` on the StepFrame above
+				b = (float)TriggerProgress(p.two.T3);
+				Assert.IsTrue( b < (2 * root.StepIncrement + float.ZeroTolerance) );
+				root.StepFrame(0.4f - b);
 				
 				Assert.AreEqual(0f, TriggerProgress(p.one.T1));
 				Assert.AreEqual(0f, TriggerProgress(p.one.T2));

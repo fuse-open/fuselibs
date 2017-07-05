@@ -2,7 +2,7 @@
   "Copyright": "Copyright (c) Fusetools AS 2017",
   "Description": "User experience design and tooling platform (core package)",
   "Publisher": "Fusetools AS",
-  "Version": "1.0.2",
+  "Version": "1.1.0-rc2",
   "Package": {
     "ProjectUrl": "https://fusetools.com"
   },
@@ -31,7 +31,7 @@
     "Fuse.iOS",
     "Fuse.iOS.TextRenderer",
     "Fuse.Motion",
-    "Fuse.Reactive.Test",
+    "Fuse.Reactive.Bindings",
     "Fuse.Reactive.JavaScript",
     "Fuse.Selection",
     "Fuse.Testing",

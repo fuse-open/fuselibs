@@ -2,7 +2,7 @@
   "Copyright": "Copyright (c) Fusetools AS 2017",
   "Description": "Low-level Node and Visual framework",
   "Publisher": "Fusetools AS",
-  "Version": "1.0.2",
+  "Version": "1.1.0-rc2",
   "Package": {
     "ProjectUrl": "https://fusetools.com"
   },
@@ -12,6 +12,7 @@
     "Fuse.Animations",
     "Fuse.Controls.Native",
     "Fuse.Controls.Navigation",
+    "Fuse.Controls.Navigation.Test",
     "Fuse.Controls.Panels",
     "Fuse.Controls.Primitives",
     "Fuse.Controls.ScrollView",
@@ -26,7 +27,6 @@
     "Fuse.iOS.Bindings",
     "Fuse.iOS",
     "Fuse.Motion",
-    "Fuse.Reactive.Test",
     "Fuse.Reactive.Bindings",
     "Fuse.Selection",
     "Fuse.Testing",

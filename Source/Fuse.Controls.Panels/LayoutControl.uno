@@ -157,6 +157,13 @@ namespace Fuse.Controls
 				InvalidateLayout();
 			base.OnChildRemoved(elm);
 		}
+		
+		protected override void OnChildMoved(Node elm)
+		{	
+			if (elm is Visual)
+				InvalidateLayout();
+			base.OnChildMoved(elm);
+		}
 
 		protected override LayoutDependent IsMarginBoxDependent( Visual child )
 		{

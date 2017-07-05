@@ -241,8 +241,6 @@ namespace Fuse.Controls
 	*/
 	public class Curve : Shape, IPropertyListener
 	{
-		protected override bool NeedSurface { get { return true; } }
-
 		List<CurvePoint> _points = new List<CurvePoint>();
 		
 		protected override void OnChildAdded(Node elm)
