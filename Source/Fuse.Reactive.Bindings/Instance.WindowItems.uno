@@ -141,7 +141,7 @@ namespace Fuse.Reactive
 		
 		void CompleteWindowItem(WindowItem wi, int windowIndex)
 		{
-			wi.Id = GetDataKey(wi.Data, ObjectId);
+			wi.Id = GetDataId(wi.Data);
 			
 			AddTemplate(wi, GetDataTemplate(wi.Data));
 			
@@ -173,7 +173,7 @@ namespace Fuse.Reactive
 				return false;
 				
 			var wi = _windowItems[windowIndex];
-			var newId = GetDataKey(newData, ObjectId);
+			var newId = GetDataId(newData);
 			if (wi.Id == null || !Object.Equals(wi.Id, newId))
 				return false;
 				

@@ -12,6 +12,18 @@ namespace FuseTest
 	{
 		public float Value { get; set; }
 		
+		public string StringValue { get; set; }
+
+		public object UseValue 
+		{
+			get
+			{
+				if (StringValue != null)
+					return StringValue;
+				return Value;
+			}
+		}
+		
 		protected override float2 GetContentSize( LayoutParams lp )
 		{
 			return float2(0);
@@ -21,7 +33,7 @@ namespace FuseTest
 		
 		public override string ToString()
 		{
-			return "Dub@" + GetHashCode() + "=" + Value;
+			return "Dud@" + GetHashCode() + "=" + UseValue;
 		}
 	}
 }

@@ -1,0 +1,31 @@
+<Panel ux:Class="UX.Each.ObjectIdString">
+	<JavaScript>
+		var Observable = require("FuseJS/Observable")
+
+		exports.items = Observable()
+		exports.items.add( "one")
+		exports.items.add( "two" )
+		exports.items.add( "three" )
+		
+		exports.replaceAt = function() {
+			exports.items.replaceAt( 1, "two" )
+		}
+		
+		exports.replaceAll = function() {
+			exports.items.replaceAll([ "two", "one", "three" ])
+		}
+	</JavaScript>
+	<StackPanel ux:Name="s">
+		<Each Items="{items}" Offset="0" Limit="5" ux:Name="e" ObjectMatch="Object">
+			<FuseTest.DudElement StringValue="{}" Height="10">
+				<RemovingAnimation>
+					<Nothing Duration="1"/>
+				</RemovingAnimation>
+			</FuseTest.DudElement>
+		</Each>
+	</StackPanel>
+	
+	<FuseTest.Invoke Handler="{replaceAt}" ux:Name="CallReplace"/>
+	<FuseTest.Invoke Handler="{replaceAll}" ux:Name="CallReplaceAll"/>
+	<FuseTest.Invoke Handler="{clear}" ux:Name="CallClear"/>
+</Panel>

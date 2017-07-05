@@ -92,6 +92,7 @@ namespace Fuse.Reactive
 			}
  		}
 
+ 		/** Obtain a value by key from the provided value. This does not work if the data is an Observable. */
  		object GetDataKey(object data, string key)
 		{
 			var so = data as IObject;
@@ -102,6 +103,27 @@ namespace Fuse.Reactive
 					return so[key];
 			}
 
+			return null;
+		}
+		
+		/** 
+			Obtain the ID of an item based on the data. This uses the ObjectMatch properties. 
+			@return id if found, null if not found or no matching ids configured
+		*/
+		object GetDataId(object data)
+		{
+			switch (ObjectMatch)
+			{
+				case InstanceObjectMatch.None:
+					return null;
+					
+				case InstanceObjectMatch.FieldId:
+					return GetDataKey(data, ObjectId);
+					
+				case InstanceObjectMatch.Object:
+					return data;
+			}
+			
 			return null;
 		}
 		

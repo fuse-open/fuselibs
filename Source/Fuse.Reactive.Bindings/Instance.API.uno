@@ -28,8 +28,10 @@ namespace Fuse.Reactive
 	{
 		/** New objects are always new, never matched to an existing one */
 		None,
-		/** The `ObjectId` is used to compare objects */
+		/** The `ObjectId` is used to compare objects. This is set implicitly if `ObjectId` is set. */
 		FieldId,
+		/** Use the object itself as the matching key. Suitable for when the object is a plain string or number. */
+		Object,
 	}
 	
 	/* The protected and public API of the instantiator. */

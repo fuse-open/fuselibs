@@ -74,7 +74,7 @@ namespace Fuse.Reactive
 			var newIds = new List<object>();
 			var limit = CalcOffsetLimitCountOf(values.Length);
 			for (int i=0; i < limit; ++i)
-				newIds.Add( GetDataKey(values[i+Offset], ObjectId ) );
+				newIds.Add( GetDataId(values[i+Offset]) );
 				
 			var curIds = new List<object>();
 			for (int i=0; i < _windowItems.Count; ++i)
