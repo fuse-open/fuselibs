@@ -118,10 +118,23 @@ namespace Fuse.Nodes
 						r.A, r.B, r.C,
 						r.C, r.D, r.A
 					};
+					float2[] EdgeCoords: new[]
+					{
+						float2(0, 0),
+						float2(1, 0),
+						float2(1, 1),
+						float2(1, 1),
+						float2(0, 1),
+						float2(0, 0)
+					};
+
+					VertexCount: 6;
 
 					ClipPosition: vertex_attrib(Vertices);
 
-					PixelColor: float4(1, 0, 0, 0.2f);
+					float2 edgeCoord: vertex_attrib(EdgeCoords);
+
+					PixelColor: float4(edgeCoord, 0, 0.2f);
 
 					CullFace : PolygonFace.None;
 					DepthTestEnabled: false;
