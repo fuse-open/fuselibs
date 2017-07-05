@@ -51,21 +51,21 @@ namespace Fuse.Triggers
 
 		/* Composition of ScrollRegion (Copies in Scrolled.uno/WhileScrolled.uno)*/
 		ScrollRegion _region = new ScrollRegion();
-		/** @see @Scrolled.To */
+		/** @see Scrolled.To */
 		public ScrolledWhere To
 		{
 			get { return _region.To; }
 			set { if (_region.SetTo(value)) Update(); }
 		}
-		
-		/** @see @Scrolled.Within */
+
+		/** @see Scrolled.Within */
 		public float Within
 		{
 			get { return _region.Within; }
 			set { if (_region.SetWithin(value)) Update(); }
 		}
-		
-		/** @see @Scrolled.RelativeTo */
+
+		/** @see Scrolled.RelativeTo */
 		public IScrolledLength RelativeTo
 		{
 			get { return _region.RelativeTo; }
