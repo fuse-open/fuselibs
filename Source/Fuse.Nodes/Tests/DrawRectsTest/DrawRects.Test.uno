@@ -13,35 +13,33 @@ namespace DrawRectsTest
 		{
 			var p = new Panel();
 			var root = TestRootPanel.CreateWithChild(p, int2(100, 100));
-			root.CaptureDraw();
 
-			float eps = 1.0f / 255;
-
-			// Test a "random" pixel (center)
-			Assert.AreEqual(float4(0), root.ReadDrawPixel(int2(50, 50)), eps);
+			using (var fb = root.CaptureDraw())
+			{
+				// Test a "random" pixel (center)
+				fb.AssertPixel(float4(0), int2(50, 50));
+			}
 		}
 
 		[Test]
 		public void SolidRectangleWithMarginDrawRectIsRendered()
 		{
-			var r = new UX.SolidRectangleWithMargin();
+			var r = new global::UX.SolidRectangleWithMargin();
 			var root = TestRootPanel.CreateWithChild(r, int2(100, 100));
-			root.CaptureDraw();
 
-			float eps = 1.0f / 255;
+			using (var fb = root.CaptureDraw())
+			{
+				// Test pixel outside of rect to ensure it's laid out how we expect
+				fb.AssertPixel(float4(0), int2(9, 9));
 
-			// Test pixel outside of rect to ensure it's laid out how we expect
-			Assert.AreEqual(float4(0), root.ReadDrawPixel(int2(9, 9)), eps);
-
-			TestForDrawRect(root, new Recti(10, 10, 90, 90));
+				TestForDrawRect(fb, new Recti(10, 10, 90, 90));
+			}
 		}
 
-		void TestForDrawRect(TestRootPanel root, Recti drawRectBounds)
+		void TestForDrawRect(TestFramebuffer fb, Recti drawRectBounds)
 		{
-			float eps = 1.0f / 255;
-
 			// TODO
-			Assert.AreEqual(float4(0), root.ReadDrawPixel(int2(50, 50)), eps);
+			fb.AssertPixel(float4(0), int2(50, 50));
 		}
 	}
 }
