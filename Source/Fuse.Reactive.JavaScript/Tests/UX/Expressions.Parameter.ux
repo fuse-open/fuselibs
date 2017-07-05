@@ -1,5 +1,5 @@
 <Panel ux:Class="UX.ParameterFunction">
-	<Router ux:Name="router" />
+	<Router ux:Name="router" IsMasterRouter="false" />
 	<JavaScript>
 		router.goto("foo", { param: 1447 })
 
