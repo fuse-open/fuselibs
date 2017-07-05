@@ -13,7 +13,7 @@ namespace Fuse
 		
 		Be aware there is no ordering between the Nodes, Resources, and Templates. These are each independent lists which have their own order.
 	*/
-	public abstract class NodeGroupBase : Behavior 
+	public abstract class NodeGroupBase : Behavior
 	{
 		RootableList<Node> _nodes;
 		int NodeCount { get { return _nodes == null ? 0 : _nodes.Count; } }
@@ -43,9 +43,18 @@ namespace Fuse
 		public Template FindTemplate(string key) { return _templates.FindTemplate(key); }
 		public IEnumerable<Template> ITemplateSource.Templates { get { return _templates.Templates; } }
 		
-		internal NodeGroupBase() { }
+		[Flags]
+		internal enum ConstructFlags
+		{
+			None = 0,
+			DontUseTemplates = 1 << 0,
+		}
+		internal NodeGroupBase(ConstructFlags flags = ConstructFlags.None) 
+		{ 
+			_useTemplates = !flags.HasFlag(ConstructFlags.DontUseTemplates);
+		}
 		
-		protected bool UseTemplates = true;
+		bool _useTemplates;
 		
 		bool _useContent = false;
 		internal bool UseContent
@@ -178,7 +187,7 @@ namespace Fuse
 				_addedNodes.Add(n);
 			}
 			
-			if (UseTemplates)
+			if (_useTemplates)
 			{
 				for (int i=0; i < _templates.Count; ++i)
 				{
@@ -289,8 +298,8 @@ namespace Fuse
 		}
 		
 		public NodeGroup()
+			: base(ConstructFlags.DontUseTemplates)
 		{
-			UseTemplates = false;
 			UseContent = true;
 		}
 	}

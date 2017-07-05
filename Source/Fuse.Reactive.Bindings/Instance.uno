@@ -150,7 +150,11 @@ namespace Fuse.Reactive
 			get { return _weakTemplateSource; }
 			set { _weakTemplateSource = value; }
 		}
-		//https://github.com/fusetools/fuselibs-public/issues/135
+		/*
+			To avoid memory-loops between the template-source and the instantiatior, we
+			keep a weak reference here until rooting is performed, and only keep a strong
+			reference until we're unrooted again.
+		*/
 		[WeakReference]
 		ITemplateSource _weakTemplateSource;
 		ITemplateSource _templateSource; //captured at rooting time
