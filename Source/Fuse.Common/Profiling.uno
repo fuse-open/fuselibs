@@ -245,7 +245,7 @@ namespace Fuse
 			Write(id);
 		}
 
-		static string[] _cachedStrings = new string[0xFF];
+		static string[] _cachedStrings = new string[0x100];
 
 		private static byte CacheString(string str)
 		{
