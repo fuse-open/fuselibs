@@ -42,5 +42,7 @@
     "AndroidInteropHelper.java:Java:Android",
     "Internal/ByteBufferInputStream.java:Java:Android",
     "Internal/ByteBufferMediaDataSource.java:Java:Android",
+    "SystemScreenConfig.uno:SourceFile",
+    "SystemUiVisibility.uno:SourceFile",
   ]
 }
