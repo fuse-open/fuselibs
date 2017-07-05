@@ -5,6 +5,10 @@
 - Optimized redundant OpenGL rendertarget operations. Gives speedups on some platforms.
 - To improve rendering speed, Fuse no longer checks for OpenGL errors in release builds in some performance-critical code paths  
 
+## Multitouch
+- Fixed issue where during multitouch all input would stop if one finger was lifted.
+- Added the option to opt-out of automatic handling of touch events when implementing a native view.
+
 ## Attract
 - Added the `attract` feature, which was previously only in premiumlibs. This provides a much simpler syntax for animation than the `Attractor` behavior.
 
