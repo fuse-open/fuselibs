@@ -25,7 +25,7 @@ namespace Fuse.Elements
 		}
 
 		
-		private bool HasActiveEffects
+		internal bool HasActiveEffects
 		{
 			get
 			{

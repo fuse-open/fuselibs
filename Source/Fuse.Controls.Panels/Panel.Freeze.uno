@@ -214,7 +214,7 @@ namespace Fuse.Controls
 	{
 		static public FreezeDrawable Singleton = new FreezeDrawable();
 		
-		public void Draw(DrawContext dc, Panel panel, float Opacity, float2 scale,
+		public void Draw(DrawContext dc, LayoutControl panel, float Opacity, float2 scale,
 			VisualBounds renderBounds, framebuffer buffer)
 		{
 			draw 
