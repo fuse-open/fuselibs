@@ -13,7 +13,6 @@ namespace Fuse.Reactive
 		
 		internal int DataIndexOfChild(Node child)
 		{
-			var c = Offset;
 			for (int i = 0; i < _windowItems.Count; i++)
 			{
 				var wi = _windowItems[i];
@@ -24,11 +23,8 @@ namespace Fuse.Reactive
 				for (int n = 0; n < list.Count; n++)
 				{
 					if (list[n] == child)
-						return wi.Removed ? -1 : c;
+						return i + Offset;
 				}
-					
-				if (!wi.Removed)	
-					c++;
 			}
 			return -1;
 		}

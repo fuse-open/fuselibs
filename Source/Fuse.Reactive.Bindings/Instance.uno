@@ -102,8 +102,6 @@ namespace Fuse.Reactive
 				
 				if (wi.Nodes.Count == 0)
 					wi.Dispose();
-					
-				_windowItems.Remove(wi);
 			}
 		}
  		

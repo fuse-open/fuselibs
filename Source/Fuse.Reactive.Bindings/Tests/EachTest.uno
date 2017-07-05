@@ -431,12 +431,8 @@ namespace Fuse.Reactive.Test
  				e.CallReplace.Perform();
  				root.StepFrameJS();
  				//it's not certain if the new element is guaranteed to be in this place
- 				//Assert.AreEqual("3-0,0-0,1-1,2-2", GetText(e));
- 				Assert.AreEqual("0-0,1-1,2-2,3-0", GetText(e));
- 				
- 				Assert.IsFalse(e.each.TestIsRemovedClean);
- 				root.StepFrame(1.1f);
- 				Assert.IsTrue(e.each.TestIsRemovedClean);
+ 				Assert.AreEqual("3-0,0-0,1-1,2-2", GetText(e));
+ 				//Assert.AreEqual("0-0,1-1,2-2,3-0", GetText(e));
 			}
 		}
 		
@@ -507,7 +503,6 @@ namespace Fuse.Reactive.Test
 				for (int i=0; i < z0.Length; ++i)
 					Assert.AreEqual( z0[i], z1[i] );
 				Assert.IsTrue(e.e.TestIsAvailableClean);
-				Assert.IsTrue(e.e.TestIsRemovedClean);
 				
 				e.CallReplaceAll.Perform();
 				root.StepFrameJS();
@@ -521,10 +516,6 @@ namespace Fuse.Reactive.Test
 				
 				e.CallClear.Perform();
 				root.StepFrameJS();
-				//still removing
-				Assert.IsFalse(e.e.TestIsRemovedClean);
-				root.StepFrame(1.1f);
-				Assert.IsTrue(e.e.TestIsRemovedClean);
 			}
 		}
 		
@@ -554,7 +545,7 @@ namespace Fuse.Reactive.Test
 				e.CallReplaceAll2.Perform();
 				root.StepFrameJS();
 				var z2 = GetZChildren(e.s);
-				Assert.AreEqual("82,52,72,32,62,11", GetDudZ(e.s)); //11 lingers
+				Assert.AreEqual("82,52,72,32,11,62", GetDudZ(e.s)); //11 lingers (...,62,11 is another acceptble order)
 				
 				Assert.AreEqual(z0[0],z2[1]);
 				Assert.AreEqual(z0[2],z2[3]);
@@ -590,7 +581,6 @@ namespace Fuse.Reactive.Test
 				Assert.AreEqual("140,30,22,10", GetDudZ(e));
 				Assert.AreNotEqual(z0[2],z2[2]);
 				
-				Assert.IsTrue(e.each.TestIsRemovedClean);
 				Assert.IsTrue(e.each.TestIsAvailableClean);
 			}
 		}

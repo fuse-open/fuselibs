@@ -78,10 +78,7 @@ namespace Fuse.Reactive
 				
 			var curIds = new List<object>();
 			for (int i=0; i < _windowItems.Count; ++i)
-			{
-				if (!_windowItems[i].Removed)
-					curIds.Add( _windowItems[i].Id);
-			}
+				curIds.Add( _windowItems[i].Id);
 			
 			var ops = PatchList.Patch( curIds, newIds, PatchAlgorithm.Simple, null );
 			for (int i=0; i < ops.Count; ++i)

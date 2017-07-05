@@ -88,9 +88,6 @@ namespace Fuse.Reactive
 			for (int i=0; i < _windowItems.Count; ++i)
 			{
 				var wi = _windowItems[i];
-				if (wi.Removed)
-					continue;
-					
 				if (wi.Nodes == null)
 				{
 					if (!first && one)
@@ -176,9 +173,6 @@ namespace Fuse.Reactive
 				return false;
 				
 			var wi = _windowItems[windowIndex];
-			if (wi.Removed)
-				return false;
-				
 			var newId = GetDataKey(newData, ObjectId);
 			if (wi.Id == null || !Object.Equals(wi.Id, newId))
 				return false;
@@ -263,11 +257,6 @@ namespace Fuse.Reactive
 			}
 		}
 		
-		internal bool TestIsRemovedClean
-		{
-			get { return WindowItemsActiveCount == _windowItems.Count; }
-		}
-		
 		void CompleteNodeAction()
 		{
 			if (Reuse == InstanceReuse.Frame)
@@ -299,6 +288,8 @@ namespace Fuse.Reactive
 				for (int i=0; i < _availableItems.Count; ++i)
 				{	
 					var av = _availableItems[i];
+					if (av.Nodes == null)
+						continue;
 					for (int n=0; n < av.Nodes.Count; ++n)
 						RemoveFromParent(av.Nodes[n]);
 				}
@@ -309,16 +300,12 @@ namespace Fuse.Reactive
 			{
 				foreach (var kvp in _availableItemsById)
 				{
+					if (kvp.Value.Nodes == null)
+						continue;
 					for (int n=0; n < kvp.Value.Nodes.Count; ++n)
 						RemoveFromParent(kvp.Value.Nodes[n]);
 				}
 				_availableItemsById.Clear();
-			}
-			
-			for (int i=_windowItems.Count-1; i>=0; --i)
-			{
-				if (_windowItems[i].IsRemovedEmpty)
-					_windowItems.RemoveAt(i);
 			}
 			
 			_pendingNew = false;
@@ -326,12 +313,8 @@ namespace Fuse.Reactive
 		
 		void RemoveWindowItem(WindowItem wi)
 		{
-			wi.Removed = true;
-			if (wi.Nodes == null)
-			{
-				_windowItems.Remove(wi);
+			if (wi.Nodes == null || wi.Nodes.Count == 0)
 				return;
-			}
 			
 			if (wi.Id != null)
 			{
@@ -344,7 +327,7 @@ namespace Fuse.Reactive
 					_availableItemsById[wi.Id] = wi;
 			}
 			
-			//not an else, since Id can change above
+			//not an `else`, since Id can change above
 			if (wi.Id == null)
 			{
 				if (_availableItems == null)
@@ -355,25 +338,7 @@ namespace Fuse.Reactive
 		
 		int DataToWindowIndex(int dataIndex)
 		{
-			var raw = dataIndex - Offset;
-			if (raw < 0)
-				return raw;
-				
-			var removed = 0;
-			for (int wi=0; wi < _windowItems.Count; ++wi)
-			{
-				if (!_windowItems[wi].Removed)
-				{
-					if (raw <= 0)
-						return wi;
-				
-					raw--;
-				}
-				else
-					removed++;
-			}
-
-			return dataIndex - Offset + removed;
+			return dataIndex - Offset;
 		}
 	
 		void RemoveAt(int dataIndex)
@@ -383,6 +348,7 @@ namespace Fuse.Reactive
 				return;
 			
 			RemoveWindowItem(_windowItems[windowIndex]);
+			_windowItems.RemoveAt(windowIndex);
 		
  			SetValid();		
 			OnUpdatedWindowItems();
@@ -390,12 +356,12 @@ namespace Fuse.Reactive
 		
 		void RemoveLastActive()
 		{
-			RemoveAt(Offset + WindowItemsActiveCount - 1);
+			RemoveAt(Offset + _windowItems.Count - 1);
 		}
 		
 		void Append()
 		{
-			InsertNew(Offset + WindowItemsActiveCount);
+			InsertNew(Offset + _windowItems.Count);
 		}
 
 		void ReplaceAll(object[] dcs)
@@ -413,9 +379,9 @@ namespace Fuse.Reactive
 			for (int i=0; i < _windowItems.Count; ++i)
 			{
 				var wi = _windowItems[i];
-				if (!wi.Removed)
-					RemoveWindowItem(wi);
+				RemoveWindowItem(wi);
 			}
+			_windowItems.Clear();
 			OnUpdatedWindowItems();
 		}
 		
@@ -450,8 +416,6 @@ namespace Fuse.Reactive
 			public ObservableLink DataLink;
 			//logical identifier used for matching, null if none
 			public object Id;
-			//this item is removed from the data/window but pending child removal
-			public bool Removed;
 			
 			public WindowItem()
 			{
@@ -470,11 +434,6 @@ namespace Fuse.Reactive
 				if (DataLink != null)
 					DataLink.Dispose();
 			}
-			
-			public bool IsRemovedEmpty
-			{
-				get { return Removed && (Nodes == null || Nodes.Count == 0); }
-			}
 		}
 		
 		/**
@@ -484,20 +443,6 @@ namespace Fuse.Reactive
 			This list should only be modified via the InsertNew, RemoveAt, and RemoveAll functions.
 		*/
 		ObjectList<WindowItem> _windowItems = new ObjectList<WindowItem>();
-		
-		int WindowItemsActiveCount 
-		{
-			get 
-			{ 
-				var c = 0;
-				for (int i=0; i < _windowItems.Count; ++i)
-				{
-					if (!_windowItems[i].Removed)
-						c++;
-				}
-				return c;
-			}
-		}
 		
 		internal event Action UpdatedWindowItems;
 		bool _pendingUpdateWindowItems;
@@ -518,22 +463,22 @@ namespace Fuse.Reactive
 			_pendingUpdateWindowItems = false;
 		}
 
-		internal int WindowItemsCount { get { return WindowItemsActiveCount; } }
+		internal int WindowItemsCount { get { return _windowItems.Count; } }
 		
 		void TrimAndPad()
 		{
 			//trim excess
 			if (HasLimit)
 			{
-				for (int i=WindowItemsActiveCount - _limit; i > 0; --i)
+				for (int i=_windowItems.Count - _limit; i > 0; --i)
 					RemoveLastActive();
 			}
 				
 			//add new
 			var dataCount = GetDataCount();
 			var add = HasLimit ?
-				Math.Min(_limit - WindowItemsActiveCount, dataCount - (Offset + WindowItemsActiveCount)) : 
-				(dataCount - (Offset + WindowItemsActiveCount));
+				Math.Min(_limit - _windowItems.Count, dataCount - (Offset + _windowItems.Count)) : 
+				(dataCount - (Offset + _windowItems.Count));
 			for (int i=0; i < add; ++i)
 				Append();
 		}
