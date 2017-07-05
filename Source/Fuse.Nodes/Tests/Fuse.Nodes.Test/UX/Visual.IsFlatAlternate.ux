@@ -1,0 +1,11 @@
+<Panel ux:Class="UX.Visual.IsFlatAlternate">
+	<Panel ux:Name="A"/>
+	
+	<Panel ux:Name="B">
+		<AlternateRoot ParentNode="A" IsEnabled="false" ux:Name="alt">
+			<Panel ux:Name="C">
+				<Rotation DegreesX="15"/>
+			</Panel>
+		</AlternateRoot>
+	</Panel>
+</Panel>

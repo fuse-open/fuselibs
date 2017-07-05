@@ -331,10 +331,8 @@ namespace Fuse.Elements
  		}
 		
 		/* viewports flatten the view space, thus they are flat (and can be cached, the major consequence) */
- 		internal override bool CalcAreChildrenFlat()
- 		{
- 			return IsDisabled ? base.CalcAreChildrenFlat() : true;
- 		}
+		internal override void ParentIncrementNonFlat() {}
+		internal override void ParentDecrementNonFlat() {}
 		
 		internal override HitTestTransformMode HitTestTransform
 		{

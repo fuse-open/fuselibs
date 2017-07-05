@@ -1,0 +1,10 @@
+<Panel ux:Class="UX.Visual.IsFlatViewport">
+	<Viewport ux:Name="V" Perspective="100">
+		<Panel ux:Name="A">
+			<Panel ux:Name="B">
+				<Translation Z="1" ux:Name="TB"/>
+			</Panel>
+		</Panel>
+		<Rotation ux:Name="RV" DegreesZ="45"/>
+	</Viewport>
+</Panel>

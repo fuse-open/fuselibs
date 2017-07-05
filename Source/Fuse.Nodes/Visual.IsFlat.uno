@@ -1,4 +1,5 @@
 using Uno;
+using Uno.Collections;
 
 namespace Fuse
 {
@@ -8,92 +9,75 @@ namespace Fuse
 	*/
 	public abstract partial class Visual
 	{
-		internal void InvalidateFlat()
+		// To be overridden to do nothing by flattening nodes (i.e. Viewport)
+		internal virtual void ParentIncrementNonFlat()
 		{
-			if (_isLocalFlatCached || _areChildrenFlatCached)
-			{
-				_isLocalFlatCached = false;
-				_areChildrenFlatCached = false;
-				if (Parent != null)
-					Parent.InvalidateFlat();
-			}
+			IncrementNonFlat();
 		}
-		
-		bool _isLocalFlatCached 
+
+		// To be overridden to do nothing by flattening nodes (i.e. Viewport)
+		internal virtual void ParentDecrementNonFlat()
 		{
-			get { return HasBit(FastProperty1.IsLocalFlatCached); }
-			set { SetBit(FastProperty1.IsLocalFlatCached, value); }
+			DecrementNonFlat();
 		}
-		bool _isLocalFlat
+
+		int _nonFlat = 0;
+		internal void IncrementNonFlat()
 		{
-			get { return HasBit(FastProperty1.IsLocalFlat); }
-			set { SetBit(FastProperty1.IsLocalFlat, value);}
+			_nonFlat++;
+			if (Parent != null) Parent.ParentIncrementNonFlat();
+		}
+		internal void DecrementNonFlat()
+		{
+			_nonFlat--;
+			if (Parent != null) Parent.ParentDecrementNonFlat();
+		}
+
+		int _localNonFlat = 0;
+		internal void IncrementLocalNonFlat()
+		{
+			_localNonFlat++;
+			if (_flatRooted && _localNonFlat == 1)
+				IncrementNonFlat();
+		}
+
+		internal void DecrementLocalNonFlat()
+		{
+			_localNonFlat--;
+			if (_flatRooted && _localNonFlat == 0)
+				DecrementNonFlat();
+		}
+
+		bool _flatRooted;
+		void FlatRooted()
+		{
+			if (_nonFlat != 0)
+				throw new Exception(); // Should never happen
+
+			if (_localNonFlat > 0)
+				IncrementNonFlat();
+			
+			_flatRooted = true;
+		}
+
+		void FlatUnrooted()
+		{
+			if (_localNonFlat > 0)
+				DecrementNonFlat();
+
+			_flatRooted = false;
+
+			if (_nonFlat != 0)
+				throw new Exception(); // Should never happen
 		}
 
 		//refers to local transform on the element
 		internal bool IsLocalFlat
 		{
-			get
-			{
-				if (_isLocalFlatCached)
-					return _isLocalFlat;
-					
-				_isLocalFlat = CalcIsLocalFlat();
-				_isLocalFlatCached = true;
-				return _isLocalFlat;
-			}
-		}
-		
-		internal virtual bool CalcIsLocalFlat()
-		{
-			for (int i = 0; i < Children.Count; i++)
-			{
-				var t = Children[i] as Transform;
-				if (t != null && !t.IsFlat) return false;
-			}
-			return true;
-		}
-		
-		bool _areChildrenFlatCached
-		{
-			get { return HasBit(FastProperty1.AreChildrenFlatCached); }
-			set { SetBit(FastProperty1.AreChildrenFlatCached, value); }
+			get { return _localNonFlat == 0; }
 		}
 
-		bool _areChildrenFlat
-		{
-			get { return HasBit(FastProperty1.AreChildrenFlat); }
-			set { SetBit(FastProperty1.AreChildrenFlat, value); }
-		}
-
-		//refers strictly to children of the element
-		internal bool AreChildrenFlat
-		{
-			get
-			{
-				if (_areChildrenFlatCached)
-					return _areChildrenFlat;
-				
-				_areChildrenFlat = CalcAreChildrenFlat();
-				_areChildrenFlatCached = true;
-				return _areChildrenFlat;
-			}
-		}
-		
-		internal virtual bool CalcAreChildrenFlat()
-		{
-			for (int i=0; i < ZOrderChildCount; ++i )
-			{
-				var v = GetZOrderChild(i);
-
-				if (!v.AreChildrenFlat || !v.IsLocalFlat)
-					return false;
-			}
-			
-			return true;
-		}
-		
-		//Compeltely flat, both locally and children
-		internal bool IsFlat { get { return IsLocalFlat && AreChildrenFlat; } }
+		// Compeltely flat, both locally and children
+		internal bool IsFlat { get { return _nonFlat == 0; } }
 	}
 }

@@ -1,0 +1,12 @@
+<Panel ux:Class="UX.Visual.IsFlatDynamic">
+	<Panel ux:Name="A">
+		<Panel ux:Name="B">
+			<Rotation ux:Name="RB"/>
+		</Panel>
+		<Panel>
+			<Panel ux:Name="C">
+				<Rotation ux:Name="RC"/>
+			</Panel>
+		</Panel>
+	</Panel>
+</Panel>
