@@ -197,10 +197,12 @@ namespace Fuse.Controls
 		protected override bool FastTrackDrawWithOpacity(DrawContext dc)
 		{
 			if (HasChildren) return false;
-			if (Background == null) return true;
 			
-			DrawBackground(dc, Opacity);
-			return base.FastTrackDrawWithOpacity(dc);
+			if (Background != null)
+				DrawBackground(dc, Opacity);
+			
+			// Asserting base class doesn't need to draw anything!
+			return true;
 		}
 	}
 }
