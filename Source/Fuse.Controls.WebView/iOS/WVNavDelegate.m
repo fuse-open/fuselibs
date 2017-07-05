@@ -5,6 +5,7 @@
 	change:(Action)urlChanged
 	uriHandler:(StringAction)uriHandler
 	schemes:(NSArray*)schemes
+	hasURISchemeHandler:(BoolFunc)hasURISchemeHandler
 {
 	self = [super init];
 	self.onBeginLoading = beginLoading;
@@ -12,6 +13,7 @@
 	self.onURLChanged = urlChanged;
 	self.onCustomURI = uriHandler;
 	self.uriSchemes = schemes;
+	self.hasURISchemeHandler = hasURISchemeHandler;
 	return self;
 }
 
@@ -19,14 +21,17 @@
 	decidePolicyForNavigationAction:(WKNavigationAction*)navAction
 	decisionHandler:(void(^)(WKNavigationActionPolicy))handler
 {
-	NSString* url = navAction.request.URL.absoluteString;
-	for(NSString* str in self.uriSchemes)
+	if(self.hasURISchemeHandler())
 	{
-		if([url containsString:str])
+		NSString* url = navAction.request.URL.absoluteString;
+		for(NSString* schemeStr in self.uriSchemes)
 		{
-			handler(WKNavigationActionPolicyCancel);
-			self.onCustomURI(url);
-			return;
+			if([url hasPrefix:schemeStr])
+			{
+				handler(WKNavigationActionPolicyCancel);
+				self.onCustomURI(url);
+				return;
+			}
 		}
 	}
 	handler(WKNavigationActionPolicyAllow);

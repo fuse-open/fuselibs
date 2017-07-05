@@ -27,6 +27,7 @@ namespace Fuse.Android.Controls
 		
 		Fuse.Controls.WebView _webViewHost;
 		JSEvalRequestManager _evalRequestMgr;
+		string[] _uriSchemes;
 
 		public static WebView Create(Fuse.Controls.WebView webViewHost, string[] schemes)
 		{
@@ -42,9 +43,22 @@ namespace Fuse.Android.Controls
 			_evalRequestMgr = new JSEvalRequestManager(_webViewHandle);
 			
 			_webChromeClientHandle = _webViewHandle.CreateAndSetWebChromeClient(OnProgressChanged);				
-			_webViewClientHandle = _webViewHandle.CreateAndSetWebViewClient(OnPageLoaded, OnBeginloading, OnUrlChanged, OnCustomURI, schemes);
+			_webViewClientHandle = _webViewHandle.CreateAndSetWebViewClient(
+				OnPageLoaded, 
+				OnBeginloading, 
+				OnUrlChanged, 
+				OnCustomURI, 
+				schemes, 
+				HasURISchemeHandler
+			);
+			_uriSchemes = schemes;
 
 			_webViewHost.WebViewClient = this;
+		}
+		
+		public bool HasURISchemeHandler()
+		{
+			return URISchemeHandler!=null;
 		}
 		
 		void OnCustomURI(string url)
@@ -158,9 +172,19 @@ namespace Fuse.Android.Controls
 		public void LoadUrl(string url)
 		{
 			if (url == null || url== "") url = "about:blank";
+			//This extra check is needed on android since setting the Url directly doesn't trigger shouldOverrideUrlLoading
+			if(HasURISchemeHandler())
+			{
+				foreach(string uri in _uriSchemes)
+				{
+					if(url.IndexOf(uri) == 0)
+					{
+						OnCustomURI(url);
+						return;
+					}
+				}
+			}
 			_webViewHandle.LoadUrl(url);
-
-			// Should OnHistoryChanged be called here?
 			OnHistoryChanged();
 		}
 		

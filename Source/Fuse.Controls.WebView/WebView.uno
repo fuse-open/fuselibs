@@ -125,11 +125,18 @@ namespace Fuse.Controls
 	public partial class WebView : Panel, IWebView
 	{
 
+		
+		static string PreprocUriScheme(string inScheme)
+		{
+			return inScheme.Contains("://") ? inScheme : (inScheme + "://");
+		}
+		
 		protected override Fuse.Controls.Native.IView CreateNativeView()
 		{
 			if defined(Android || iOS)
 			{
 				string scheme = @(Project.Mobile.UriScheme);
+				scheme = PreprocUriScheme(scheme);
 				string[] schemes = scheme!="" ? new string[]{scheme} :  new string[]{};
 
 				if defined(Android)
