@@ -59,7 +59,7 @@ namespace Fuse.Elements
 		}
 
 		extern (FUSELIBS_PROFILING) double _childCullTime;
-		extern (FUSELIBS_PROFILING) double cullTime; // to avoid local variable unused warning
+		
 
 		public override void Draw(DrawContext dc)
 		{
@@ -69,7 +69,7 @@ namespace Fuse.Elements
 			if (Visibility != Visibility.Visible)
 				return;
 
-			
+			extern double cullTime; 
 			if defined (FUSELIBS_PROFILING)
 				cullTime = Uno.Diagnostics.Clock.GetSeconds();
 
