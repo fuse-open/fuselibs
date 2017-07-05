@@ -58,6 +58,9 @@ namespace Fuse.Elements
 			return fb;
 		}
 
+		extern (FUSELIBS_PROFILING) double _childCullTime;
+		extern (FUSELIBS_PROFILING) double cullTime; // to avoid local variable unused warning
+
 		public override void Draw(DrawContext dc)
 		{
 			if (!IsRootingCompleted)
@@ -66,7 +69,23 @@ namespace Fuse.Elements
 			if (Visibility != Visibility.Visible)
 				return;
 
+			
+			if defined (FUSELIBS_PROFILING)
+				cullTime = Uno.Diagnostics.Clock.GetSeconds();
+
 			var visibleRect = GetVisibleViewportInvertPixelRect(dc, RenderBoundsWithEffects);
+
+			if defined (FUSELIBS_PROFILING)
+			{
+				var pe = Parent as Element;
+				if (pe != null)
+				{
+					cullTime = Uno.Diagnostics.Clock.GetSeconds() - cullTime;
+					pe._childCullTime += cullTime;
+				}
+				_childCullTime = 0;
+			}
+			
 			if (visibleRect.Size.X == 0 || visibleRect.Size.Y == 0)
 				return;
 
@@ -75,6 +94,7 @@ namespace Fuse.Elements
 			{
 				t = Uno.Diagnostics.Clock.GetSeconds();
 				Fuse.Profiling.BeginRegion(this.ToString());
+				_childCullTime = 0;
 			}
 
 			if (NeedsClipping)
@@ -90,7 +110,11 @@ namespace Fuse.Elements
 			}
 
 			if defined(FUSELIBS_PROFILING)
+			{
+				if (_childCullTime > 0)
+					Fuse.Profiling.LogEvent("Culling of children", _childCullTime);
 				Fuse.Profiling.EndRegion(Uno.Diagnostics.Clock.GetSeconds() - t);
+			}
 		}
 
 		public override void DrawSelection(DrawContext dc)
