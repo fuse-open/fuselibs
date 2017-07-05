@@ -14,6 +14,7 @@ namespace Fuse.Controls.Native.iOS
 	[Require("Source.Include", "GLKit/GLKit.h")]
 	[Require("Source.Include", "OpenGLES/EAGL.h")]
 	[Require("Source.Include", "Context.h")]
+	[Require("Source.Include", "iOS/Helpers.h")]
 	extern(iOS) public class GraphicsView : View, IGraphicsView, IViewHost
 	{
 
@@ -38,7 +39,11 @@ namespace Fuse.Controls.Native.iOS
 			_glkViewHandle = CreateGlkView(NativeHandle);
 			_hitSurface = CreateHitSurface(NativeHandle);
 			_visual = visual;
-			InputDispatch.AddListener(visual, _hitSurface);
+		}
+
+		public override ObjC.Object HitTestHandle
+		{
+			get { return _hitSurface; }
 		}
 
 		[Foreign(Language.ObjC)]
@@ -113,7 +118,6 @@ namespace Fuse.Controls.Native.iOS
 
 		public override void Dispose()
 		{
-			InputDispatch.RemoveListener(_visual, _hitSurface);
 			_visual = null;
 			DeleteDrawable(_glkViewHandle);
 			_hitSurface = null;

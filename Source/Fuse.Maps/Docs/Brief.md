@@ -2,15 +2,15 @@ The `MapView` allows you to present annotated, interactive world-wide maps to th
 
 The `MapView` is a native control, and thus needs to be contained in a @NativeViewHost to be displayed. As with other native mobile controls, there currently isn't a `MapView` available for desktop targets.
 
-> *Note:* You need to add a reference to `Fuse.Maps` in the `Packages` section of your `.unoproj`:
->
-> ```
-> "Packages": [
-> 	"Fuse.Maps",
-> 	"Fuse",
-> 	"FuseJS"
-> ]
-> ```
+*Note:* You need to add a reference to `Fuse.Maps` in the `Packages` section of your `.unoproj`:
+
+```
+"Packages": [
+	"Fuse.Maps",
+	"Fuse",
+	"FuseJS"
+]
+```
 
 Getting a `MapView` included in your app is straight forward: Simply include the node in your UX as you normally would with a native control:
 
