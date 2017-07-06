@@ -297,8 +297,9 @@ namespace Fuse.Reactive
 
 		/** Name of the field on each data object which selects templates for the data objects.
 
-			If set, the `Each` will instantiate the template with a name matching the `MatchKey` instead of the 
-			default template for each data item.
+			If set, the `Each` will instantiate the template with a name matching the `MatchKey`. If no
+			match is found then the default template will be used, or no template if there is no default.
+			The default template is the one explicitly marked with `ux:DefaultTemplate="true"`.
 
 			## Example
 

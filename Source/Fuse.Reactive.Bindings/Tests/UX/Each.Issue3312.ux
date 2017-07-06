@@ -6,7 +6,7 @@
 
 	<StackPanel ux:Class="WithTemplate">
 		<Each Items="{obs}">
-			<Each TemplateSource="this" TemplateKey="Item" Count="1">
+			<Each Count="1">
 				<Text Value="{}"/>
 			</Each>
 		</Each>

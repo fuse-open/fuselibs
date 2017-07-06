@@ -104,11 +104,27 @@ namespace Fuse.Reactive
 			return false;
 		}
 		
-		Template GetDataTemplate(object data)
+		struct TemplateMatch
+		{
+			//if true then all templates used and `Template` is ignored
+			public bool All;
+			//the specific Template to use
+			public Template Template;
+			
+			public bool Matches(TemplateMatch b) 
+			{
+				if (All != b.All)
+					return false;
+				return Template == b.Template;
+			}
+		}
+		
+		TemplateMatch GetDataTemplate(object data)
 		{
 			// Algorithm for picking matching the right template
 			Template useTemplate = null;
 			Template defaultTemplate = null;
+			bool matchSpecified = TemplateKey != null || MatchKey != null;
 			
 			// Priority 1 - If a TemplateSource and TemplateKey is specified
 			if (_templateSource != null && TemplateKey != null)
@@ -121,32 +137,37 @@ namespace Fuse.Reactive
 			// Priority 2 - use the local templates collection and look for a matching key (if set)
 			if (useTemplate == null)
 			{
-				var key = GetDataKey(data, _matchKey) as string;
+				var key = GetDataKey(data, MatchKey) as string;
 				//match Order in FindTemplate (latest is preferred)
 				for (int i=Templates.Count-1; i>=0; --i) {
 					var f = Templates[i];
 					if (f.IsDefault) defaultTemplate = f;
-					if (key != null && f.Key != key) continue;
-
-					if (useTemplate == null) useTemplate = f;
+					if (key != null && f.Key == key)
+						useTemplate = f;
 				}
 			}
 
-			// Priority 3 - Use the default template if provided
+			// Priority 3 - Use the default template or all templates if no match specified
 			if (useTemplate == null)
-				useTemplate = defaultTemplate; //may still be null
+			{
+				if (matchSpecified)
+					useTemplate = defaultTemplate; //may still be null
+				else
+					return new TemplateMatch{ All = true, Template = null }; //only unspecified can use complete list
+			}
 				
-			return useTemplate;
+			return new TemplateMatch{ All = false, Template = useTemplate };
 		}
 		
 		void CompleteWindowItem(WindowItem wi, int windowIndex)
 		{
 			wi.Id = GetDataId(wi.Data);
 			
-			AddTemplate(wi, GetDataTemplate(wi.Data));
+			var match = GetDataTemplate(wi.Data);
+			AddMatchingTemplates(wi, match);
 			
-			if ( (wi.Template == null && Templates.Count != wi.Nodes.Count) ||
-				(wi.Template != null && wi.Nodes.Count != 1))
+			if ( (wi.Template.All && Templates.Count != wi.Nodes.Count) ||
+				(wi.Template.Template != null && wi.Nodes.Count != 1))
 			{
 				Fuse.Diagnostics.InternalError( "inconsistent instance state", this );
 			}
@@ -178,7 +199,7 @@ namespace Fuse.Reactive
 				return false;
 				
 			var tpl = GetDataTemplate(newData);
-			if (wi.Template != tpl)
+			if (!wi.Template.Matches(tpl))
 				return false;
 
 				
@@ -188,7 +209,8 @@ namespace Fuse.Reactive
 			return true;
 		}
 
-		void AddTemplate(WindowItem item, Template f)
+		/* `null` for the template indicates to use all templates, otherwise a specific one will be used. */
+		void AddMatchingTemplates(WindowItem item, TemplateMatch f)
  		{
 			object oldData = null;
 			var av = GetAvailableNodes(f, item.Id);
@@ -198,33 +220,58 @@ namespace Fuse.Reactive
 				oldData = av.CurrentData;
 				av.Nodes = null;
 			}
+			else if (f.All)
+			{
+				item.Nodes = new List<Node>();
+				for (int i=0; i < Templates.Count; ++i) 
+					AddTemplate(item, Templates[i]);
+			}
+			else if (f.Template == null)
+			{
+				//needed to indicate we've generated the nodes, there just aren't any.
+				item.Nodes = new List<Node>();
+			}
 			else
 			{
 				item.Nodes = new List<Node>();
-				var elm = f.New() as Node;
-				if (elm == null)
-				{
-					Fuse.Diagnostics.InternalError( "Template contains a non-Node", this );
-					return;
-				}
-				item.Nodes.Add(elm);
+				AddTemplate(item, f.Template);
 			}
 
 			UpdateData(item, oldData);
  			item.Template = f;
  		}
+ 		
+ 		void AddTemplate(WindowItem item, Template f)
+ 		{
+			var elm = f.New() as Node;
+			if (elm == null)
+			{
+				Fuse.Diagnostics.InternalError( "Template contains a non-Node", this );
+				return;
+			}
+			item.Nodes.Add(elm);
+ 		}
+ 		
+ 		
 		//Items with Ids will be stored in this list...
 		Dictionary<object, WindowItem> _availableItemsById = new Dictionary<object,WindowItem>();
 		//...since we don't have a MultiDictionary this second list stores those with null ids
 		ObjectList<WindowItem> _availableItems = new ObjectList<WindowItem>();
 		bool _pendingAvailableItems;
 		
-		WindowItem GetAvailableNodes(Template f, object id)
+		/**
+			Finds a matching item.
+			
+			The template match can be null, but this will specifically match only an item that had null
+			before (meaning all templates were used). This limits cache reuse to either a specific template
+			or all of them (which is the only high-level matching possible, so this covers all use-cases).
+		*/
+		WindowItem GetAvailableNodes(TemplateMatch f, object id)
 		{
 			if (id != null && _availableItemsById != null)
 			{
 				WindowItem item;
-				if (_availableItemsById.TryGetValue(id, out item) && f == item.Template)
+				if (_availableItemsById.TryGetValue(id, out item) && f.Matches(item.Template))
 				{
 					_availableItemsById.Remove(id);
 					return item;
@@ -236,7 +283,7 @@ namespace Fuse.Reactive
 				for (int i=0; i < _availableItems.Count; ++i)
 				{
 					var av = _availableItems[i];
-					if (f == av.Template)
+					if (f.Matches(av.Template))
 					{
 						_availableItems.RemoveAt(i);
 						return av;
@@ -408,8 +455,8 @@ namespace Fuse.Reactive
 			/* Will be null if the nodes haven't been created. This is distinct from being non-null but having a
 			count of zero. */
 			public List<Node> Nodes; 
-			//this is either the one speicfic matching template, or null to indicate the full set
-			public Template Template;
+			//which templates were used to create the item
+			public TemplateMatch Template;
 			//the raw data associated with the item
 			public object Data;
 			//non-null if `Data` as an Observable

@@ -637,5 +637,43 @@ namespace Fuse.Reactive.Test
 				Assert.AreEqual(z0[1], z1[1]);
 			}
 		}
+		
+		[Test]
+		//catches probelms with not having any templates, or having no matching templates
+		public void ZeroTemplates()
+		{
+			var e = new UX.Each.ZeroTemplates();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.StepFrameJS();
+				
+				Assert.AreEqual( 0, GetZChildren(e.a).Length );
+				Assert.AreEqual( 0, GetZChildren(e.b).Length );
+			}
+		}
+		
+		[Test]
+		public void DefaultTemplates()
+		{
+			var e = new UX.Each.DefaultTemplates();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.StepFrameJS();
+				Assert.AreEqual( "Y,X,Y", GetDudZ(e.b) );
+				Assert.AreEqual( "A", GetDudZ(e.c));
+				Assert.AreEqual( "A", GetDudZ(e.d));
+				Assert.AreEqual( "Q", GetDudZ(e.e));
+			}
+		}
+		
+		[Test]
+		public void Multiple()
+		{
+			var e = new UX.Each.Multiple();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				Assert.AreEqual( "1,2,1,2", GetText(e));
+			}
+		}
 	}
 }
