@@ -213,7 +213,13 @@ namespace Fuse.Navigation
 			float p = 1; //defensive value for odd state
 			for (int i=0; i < _levels.Count; ++i)
 			{
-				var lp = _levels[i].PageProxy.Navigation.GetPageState(_levels[i].PageProxy.Page).Progress;
+				var level = _levels[i];
+				//NavReady may not have been called on the level yet (this happens during some rooting setups)
+				if (!level.PageProxy.IsReady)
+					return 1;
+				
+				var pp = level.PageProxy.Navigation.GetPageState(level.PageProxy.Page);
+				var lp = pp.Progress;
 				if (i == 0 || Math.Abs(lp) > Math.Abs(p) )
 					p = lp;
 			}
