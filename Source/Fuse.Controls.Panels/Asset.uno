@@ -48,7 +48,7 @@ namespace Fuse.Controls
         Assets shuold not contain animations with duration. They may have triggers that respond instantly to changes properties
         (`ux:Property`) on the class, but not animate over time in response to property or data changes. This will not disply correctly.
     */
-    [UXContentMode("Template")]
+    [UXContentMode("TemplateIfClass")]
     public class Asset : LayoutControl, IPropertyListener
     {
         static Dictionary<string, List<Asset>> _rootedAssets = new Dictionary<string, List<Asset>>();
