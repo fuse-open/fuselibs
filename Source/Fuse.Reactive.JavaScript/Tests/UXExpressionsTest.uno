@@ -38,6 +38,83 @@ namespace Fuse.Reactive.Test
 		}
 
 		[Test]
+		public void ArrayLookup()
+		{
+			var e = new UX.ArrayLookup();
+			var root = TestRootPanel.CreateWithChild(e);
+
+			root.StepFrameJS();
+			root.StepFrameJS();
+
+			Assert.AreEqual("THIS IS FOO", e.t2.Value);
+			Assert.AreEqual("THIS IS BAR", e.t3.Value);
+
+			e.CallChangeObj.Perform();
+			root.StepFrameJS();
+
+			Assert.AreEqual("FOO HAS CHANGED", e.t2.Value);
+			Assert.AreEqual("BAR HAS CHANGED", e.t3.Value);
+
+			Assert.AreEqual("Hello foo : FOO!", e.t1.Value);
+
+			e.CallInc.Perform();
+			root.StepFrameJS();
+			root.StepFrameJS();
+
+			Assert.AreEqual("Hello foo : BAR!", e.t1.Value);
+
+			e.CallInc.Perform();
+			root.StepFrameJS();
+
+			Assert.AreEqual("Hello bar : BAR!", e.t1.Value);
+
+			e.CallDec.Perform();
+			root.StepFrameJS();
+
+			Assert.AreEqual("Hello foo : BAR!", e.t1.Value);
+
+			e.CallDec.Perform();
+			root.StepFrameJS();
+
+			Assert.AreEqual("Hello foo : FOO!", e.t1.Value);
+
+			e.CallDec.Perform(); // index = -1 now, but that's fine since its /2 so = 0
+			root.StepFrameJS();
+
+			Assert.AreEqual("Hello foo : FOO!", e.t1.Value);
+
+			
+			if defined (FUSELIBS_NO_TOASTS)
+				using (var dg = new RecordDiagnosticGuard())
+				{
+					var diagnostics = dg.DequeueAll();
+					Assert.AreEqual(0, diagnostics.Count);
+
+					e.CallDec.Perform(); // index = -2 now, so that's = -1 and should give errro
+					root.StepFrameJS();
+
+					Assert.AreEqual("Hello foo : FOO!", e.t1.Value);
+
+					diagnostics = dg.DequeueAll();
+					Assert.AreEqual(1, diagnostics.Count);
+					Assert.IsTrue(diagnostics[0].Message.Contains("Index was outside the bounds of the array"));
+
+					e.CallInc.Perform();
+					root.StepFrameJS();
+
+					diagnostics = dg.DequeueAll();
+					Assert.AreEqual(0, diagnostics.Count);
+
+					e.CallIllegalIndex.Perform(); // index = 'foo', should give error
+					root.StepFrameJS();
+
+					diagnostics = dg.DequeueAll();
+					Assert.AreEqual(1, diagnostics.Count);
+					Assert.IsTrue(diagnostics[0].Message.Contains("Index must be a number"));
+				}
+		}
+
+		[Test]
 		public void StringAttribute()
 		{
 			var e = new UX.Expressions2();
@@ -131,6 +208,36 @@ namespace Fuse.Reactive.Test
 
 			e.N = "Lol";
 			Assert.AreEqual("Hola, LOL! You have 2-ish new fruits!", e.t2.Value);
+		}
+
+		[Test]
+		public void ParameterFunction() 
+		{
+			var e = new UX.ParameterFunction();
+
+			var root = TestRootPanel.CreateWithChild(e);
+			root.StepFrameJS();
+
+			Assert.AreEqual("723.5 nope", e.t1.Value);
+			Assert.AreEqual("", e.t2.Value);
+
+			e.CallStep1.Perform();
+			root.StepFrameJS();
+
+			Assert.AreEqual("450 nope", e.t1.Value);
+			Assert.AreEqual("", e.t2.Value);
+
+			e.CallStep2.Perform();
+			root.StepFrameJS();
+
+			Assert.AreEqual("450 nope", e.t1.Value);
+			Assert.AreEqual("150", e.t2.Value);
+
+			e.CallStep3.Perform();
+			root.StepFrameJS();
+
+			Assert.AreEqual("200 yeah", e.t1.Value);
+			Assert.AreEqual("150", e.t2.Value);
 		}
 
 		[Test]

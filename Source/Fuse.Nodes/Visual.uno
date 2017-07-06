@@ -94,6 +94,7 @@ namespace Fuse
 			UpdateIsContextEnabledCache();
 			UpdateIsVisibleCache();
 			UpdateContextSnapToPixelsCache();
+			WTIRooted();
 
 			OnRootedPreChildren();
 
@@ -144,6 +145,8 @@ namespace Fuse
 						iter.Current.UnrootInternal();
 				}
 			}
+
+			WTIUnrooted();
 
 			ConcludePendingRemove();
 		}
