@@ -53,8 +53,6 @@ namespace Fuse
 			if defined(!DISABLE_IMPLICIT_GRAPHICSVIEW)
 				_renderPanel.Children.Add(_graphicsView);
 
-			InputDispatch.AddListener(_renderPanel, AppRoot.Handle);
-
 			RootViewport.Children.Add(_renderPanel);
 		}
 

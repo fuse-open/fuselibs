@@ -13,7 +13,7 @@ namespace Fuse
 		
 		Be aware there is no ordering between the Nodes, Resources, and Templates. These are each independent lists which have their own order.
 	*/
-	public abstract class NodeGroupBase : Behavior 
+	public abstract class NodeGroupBase : Behavior
 	{
 		RootableList<Node> _nodes;
 		int NodeCount { get { return _nodes == null ? 0 : _nodes.Count; } }
@@ -41,11 +41,19 @@ namespace Fuse
 		[UXContent]
 		public IList<Template> Templates { get { return _templates.Templates; } }
 		public Template FindTemplate(string key) { return _templates.FindTemplate(key); }
-		public IEnumerable<Template> ITemplateSource.Templates { get { return _templates.Templates; } }
 		
-		internal NodeGroupBase() { }
+		[Flags]
+		internal enum ConstructFlags
+		{
+			None = 0,
+			DontUseTemplates = 1 << 0,
+		}
+		internal NodeGroupBase(ConstructFlags flags = ConstructFlags.None) 
+		{ 
+			_useTemplates = !flags.HasFlag(ConstructFlags.DontUseTemplates);
+		}
 		
-		protected bool UseTemplates = true;
+		bool _useTemplates;
 		
 		bool _useContent = false;
 		internal bool UseContent
@@ -138,7 +146,9 @@ namespace Fuse
 		//used to prevent double-adding and double-removing if a derived class changes the UseContent
 		//state during rooting
 		bool _contentAdded;
-		MiniList<Node> _addedNodes;
+		Node[] _addedNodes; //may be null
+
+		class EmptyNode : Node { } //placeholder in case of errors, simplifies handling
 		
 		void AddContent()
 		{
@@ -171,14 +181,18 @@ namespace Fuse
 				return;
 			}
 
+			int addedNodesCount = NodeCount + (_useTemplates ? _templates.Count : 0);
+			_addedNodes = new Node[addedNodesCount];
+			int addedNodesAt = 0;
+			
 			for (int i = 0; i < NodeCount; ++i)
 			{
 				var n = _nodes[i];
 				n.OverrideContextParent = n.OverrideContextParent ?? this;
-				_addedNodes.Add(n);
+				_addedNodes[addedNodesAt++] = n;
 			}
 			
-			if (UseTemplates)
+			if (_useTemplates)
 			{
 				for (int i=0; i < _templates.Count; ++i)
 				{
@@ -186,14 +200,17 @@ namespace Fuse
 					if (n == null)
 					{
 						Fuse.Diagnostics.InternalError( "Template contains a non-Node", this );
-						continue;
+						n = new EmptyNode();
 					}
 					n.OverrideContextParent = n.OverrideContextParent ?? this;
-					_addedNodes.Add(n);
+					_addedNodes[addedNodesAt++] = n;
 				}
 			}
 			
-			Parent.InsertNodes( where, _addedNodes.GetEnumerator() );
+			if (addedNodesAt != addedNodesCount)	
+				throw new Exception( "mismatch in added nodes" );
+				
+			Parent.InsertNodes( where, ((IEnumerable<Node>)_addedNodes).GetEnumerator() );
 		}
 
 		void RemoveContent()
@@ -212,13 +229,16 @@ namespace Fuse
 				}
 			}
 
-			for (int i=0; i < _addedNodes.Count; ++i)
+			if (_addedNodes != null)
 			{
-				var n = _addedNodes[i];
-				if (n.OverrideContextParent == this) n.OverrideContextParent = null;
-				Parent.BeginRemoveChild(n);
+				for (int i=0; i < _addedNodes.Length; ++i)
+				{
+					var n = _addedNodes[i];
+					if (n.OverrideContextParent == this) n.OverrideContextParent = null;
+					Parent.BeginRemoveChild(n);
+				}
 			}
-			_addedNodes.Clear();
+			_addedNodes = null;
 		}
 	}
 
@@ -289,8 +309,8 @@ namespace Fuse
 		}
 		
 		public NodeGroup()
+			: base(ConstructFlags.DontUseTemplates)
 		{
-			UseTemplates = false;
 			UseContent = true;
 		}
 	}

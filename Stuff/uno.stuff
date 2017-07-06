@@ -1,5 +1,5 @@
 if WIN32 {
-    /* 13.80MB */ bin: "https://az664292.vo.msecnd.net/files/z3rfQeSRZX7kj0E2-uno-1.1.0-win32.zip"
+    /* 13.77MB */ bin: "https://az664292.vo.msecnd.net/files/GnA7BKQFbi3P3qE1-uno-1.1.1+5455-master-8cd0a59-win32.zip"
 } else if MAC {
-    /* 17.29MB */ bin: "https://az664292.vo.msecnd.net/files/wtc1yuHiYJFYoZwr-uno-1.1.0-macOS.zip"
+    /* 17.25MB */ bin: "https://az664292.vo.msecnd.net/files/FYXHwA5OVipMTlMw-uno-1.1.1+5455-master-8cd0a59-macOS.zip"
 }

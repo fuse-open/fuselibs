@@ -1,0 +1,7 @@
+<Page Title="Multitouch" ux:Class="Multitouch" ux:AutoCtor="false">
+	<InfoStack ux:Key="Info">
+		<p>This tests multitouch on devices with more than one pointer input.</p>
+		<p>Touch the screen with a varying number of fingers and circle should appear where you touch. Each circle should have a unique number identifing the finger.</p>
+	</InfoStack>
+	<Panel ux:Name="_testPanel" HitTestMode="LocalBounds" />
+</Page>

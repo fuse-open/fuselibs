@@ -9,6 +9,15 @@
 - `Each`, using `TemplateSource`, will no longer respond to template changes after rooting. This was done to simplify the code, and to support alternate sources, and is a minor perf improvement. It's not likely to affect any code since it didn't work correctly, and there's no way in UX to modify templates after rooting.
 - A memory leak was fixed by changing `Instantiator.TemplateSource` to a WeakReference. Only if you assigned this property a tempoary value in Uno would this change impact your code.
 
+## Optimizations
+- Optimized hit testing calculations. Improves scrolling in large scroll views with deep trees inside, among other things.
+- Optimized redundant OpenGL rendertarget operations. Gives speedups on some platforms.
+- To improve rendering speed, Fuse no longer checks for OpenGL errors in release builds in some performance-critical code paths  
+
+## Multitouch
+- Fixed issue where during multitouch all input would stop if one finger was lifted.
+- Added the option to opt-out of automatic handling of touch events when implementing a native view.
+
 ## Attract
 - Added the `attract` feature, which was previously only in premiumlibs. This provides a much simpler syntax for animation than the `Attractor` behavior.
 
@@ -28,7 +37,17 @@
 
 # 1.1
 
+### Fuse.ImageTools
+- Fixed bug preventing handling of KEEP_ASPECT resize mode on Android when using ImageTools.resize 
+
+### Fuse.Camera
+- iOS: Fixed crash when using Fuse.Camera alongside `<iOS.StatusBarConfig IsVisible="false" />`
+
+
 ## 1.1.0
+
+### Fuse.Launchers
+- Fixed bug on iOS where URIs were incorrectly encoded, leading to some input with reserved URI-characters misbehaving.
 
 ### ImageTools
 - Fixed bug in Android implementation that could result in errors due to prematurely recycled bitmaps

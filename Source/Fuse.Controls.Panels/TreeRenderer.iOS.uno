@@ -29,13 +29,13 @@ namespace Fuse.Controls
 			if (e is Control)
 				((Control)e).ViewHandle = v;
 
-			if (v.IsUIControl())
-				Fuse.Controls.Native.iOS.InputDispatch.AddListener(e, v.HitTestHandle);
-
 			if (e.Parent is Element && _elements.ContainsKey((Element)e.Parent))
 				_elements[(Element)e.Parent].InsertChild(v, 0);
 			else
 				_setRoot(v);
+
+			if (!v.HandlesInput)
+				Fuse.Controls.Native.iOS.InputDispatch.AddInputHandler(e, v);
 
 			_elements.Add(e, v);
 		}
@@ -52,8 +52,8 @@ namespace Fuse.Controls
 			var v = _elements[e];
 			_elements.Remove(e);
 
-			if (v.IsUIControl())
-				Fuse.Controls.Native.iOS.InputDispatch.RemoveListener(e, v.HitTestHandle);
+			if (!v.HandlesInput)
+				Fuse.Controls.Native.iOS.InputDispatch.RemoveInputHandler(v);
 
 			if (e is Control)
 			{

@@ -258,7 +258,7 @@ namespace Fuse.Internal
 			}
 
 			public void Reset()
-			{	
+			{
 				_first = true;
 				if (_mode == MiniListMode.List)
 					_iter.Reset();

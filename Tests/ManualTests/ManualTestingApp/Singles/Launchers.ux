@@ -1,0 +1,78 @@
+<Page Title="Launchers" ux:Class="Launchers">
+	<InfoStack ux:Key="Info">
+		<p>This part tests various launchers</p>
+		<ul>
+		<li>The "send email"-button should try to send an e-mail to email@example.com, with the subject "test", and message "Hello to email@example.com"</li>
+		<li>The "fusetools.com"-button should open fusetools.com in a browser</li>
+		<li>The "Show fusetools on map" and "Show fusetools on map (JS)"-buttons should open a map-view around the fusetools offices in Oslo/Norway</li>
+		<li>The "Find pizza"-button should search for pizza resturants on the map near the users current position</li>
+		<li>The "Find pizza near Fusetools"-button should search for pizza resturants on the map near the Fusetools offices in Oslo/Norway</li>
+		<li>The "Who you gonna call?"-button should try to call the Ghostbusters (1-800-555-2368)</li>
+		</ul>
+	</InfoStack>
+	<StackPanel Margin="20">
+		<JavaScript>
+			var Maps = require("FuseJS/Maps");
+
+			function showFusetools() {
+				Maps.openAt(59.9117715, 10.7400957);
+			}
+
+			function findPizza() {
+				Maps.searchNearby("pizza resturant");
+			}
+
+			function findPizzaNearFusetools() {
+				Maps.searchNear(59.9117715, 10.7400957, "pizza resturant");
+			}
+
+			module.exports = {
+				showFusetools: showFusetools,
+				findPizza: findPizza,
+				findPizzaNearFusetools: findPizzaNearFusetools
+			};
+		</JavaScript>
+
+		<StdButton Text="Send email">
+			<Clicked>
+				<LaunchEmail To="email@example.com" Subject="Test" CarbonCopy="" BlindCarbonCopy="" Message="Hello to email@example.com" />
+			</Clicked>
+		</StdButton>
+
+		<StdButton Text="fusetools.com">
+			<Clicked>
+				<LaunchUri Uri="https://www.fusetools.com/" />
+			</Clicked>
+		</StdButton>
+
+		<StdButton Text="Show fusetools on map">
+			<Clicked>
+				<LaunchMaps Latitude="59.9117715" Longitude="10.7400957"  />
+			</Clicked>
+		</StdButton>
+
+		<StdButton Text="Show fusetools on map (JS)">
+			<Clicked>
+				<Callback Handler="{showFusetools}" />
+			</Clicked>
+		</StdButton>
+
+		<StdButton Text="Find pizza">
+			<Clicked>
+				<Callback Handler="{findPizza}" />
+			</Clicked>
+		</StdButton>
+
+		<StdButton Text="Find pizza near Fusetools">
+			<Clicked>
+				<Callback Handler="{findPizzaNearFusetools}" />
+			</Clicked>
+		</StdButton>
+
+		<StdButton Text="Who you gonna call?">
+			<Clicked>
+				<Call Number="1-800-555-2368" />
+			</Clicked>
+		</StdButton>
+	</StackPanel>
+</Page>

@@ -17,7 +17,7 @@ namespace Fuse.Triggers
 		void ignore() {}
 		
 		/**
-			Transtions the parent @StateGroup to this state.
+			Tells the parent @StateGroup to transition to this state.
 			
 			@scriptmethod goto()
 		*/

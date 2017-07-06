@@ -256,8 +256,7 @@ namespace Fuse
 			if (HitTestTransform == HitTestTransformMode.LocalPoint)
 			{
 				var parentCoord = (Parent == null) ? windowCoord : Parent.WindowToLocal(windowCoord);
-
-				return Vector.TransformCoordinate(parentCoord, LocalTransformInverse);
+				return LocalTransformInverseInternal.TransformVector(float3(parentCoord,0)).XY;
 			}
 			else
 			{
