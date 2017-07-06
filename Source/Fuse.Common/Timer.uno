@@ -20,17 +20,23 @@ namespace Fuse
 			_once = true;
 		}
 
-		void Start()
+		public void Start()
 		{
-			_startTime = Uno.Diagnostics.Clock.GetSeconds();
-			UpdateManager.AddAction(Update);
-			_running = true;
+			if(!_running)
+			{
+				_startTime = Uno.Diagnostics.Clock.GetSeconds();
+				UpdateManager.AddAction(Update);
+				_running = true;
+			}
 		}
 
-		void Stop()
+		public void Stop()
 		{
-			_running = false;
-			UpdateManager.RemoveAction(Update);
+			if(_running) 
+			{
+				_running = false;
+				UpdateManager.RemoveAction(Update);
+			}
 		}
 
 		void Update()
@@ -54,10 +60,11 @@ namespace Fuse
 			method can not be relied upon for very short durations. For high-performance timing,
 			consider spawning a new thread. 
 		*/
-		public static void Wait(double duration, Action callback)
+		public static Timer Wait(double duration, Action callback)
 		{
 			var t = new Timer(duration, callback);
 			t.Start();
+			return t;
 		}
 	}
 }
