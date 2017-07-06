@@ -1,5 +1,14 @@
 # Unreleased
 
+## Templates
+- Triggers may now use templates which will be instantiated and added to the parent when active (like a node child).
+	<WhileActive>
+		<Circle ux:Generate="Template" Color="#AFA" Width="50" Height="50" Alignment="BottomRight"/>
+	</WhileActive>
+- Added templates to `NodeGroup`, which can now be used in `Each.TemplateSource` and `Instance.TemplateSource`
+- `Each`, using `TemplateSource`, will no longer respond to template changes after rooting. This was done to simplify the code, and to support alternate sources, and is a minor perf improvement. It's not likely to affect any code since it didn't work correctly, and there's no way in UX to modify templates after rooting.
+- A memory leak was fixed by changing `Instantiator.TemplateSource` to a WeakReference. Only if you assigned this property a tempoary value in Uno would this change impact your code.
+
 ## Optimizations
 - Optimized hit testing calculations. Improves scrolling in large scroll views with deep trees inside, among other things.
 - Optimized redundant OpenGL rendertarget operations. Gives speedups on some platforms.
