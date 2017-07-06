@@ -99,7 +99,7 @@ namespace Fuse.Reactive
 			
 			If you need to match on the observable value itself, set this to `Object`, otherwise it works like `ObjectId`
 			
-			@see MatchId
+			@see ObjectId
 		*/
 		public InstanceObjectMatch ObjectMatch
 		{
@@ -108,6 +108,18 @@ namespace Fuse.Reactive
 		}
 		
 		string _objectId = null;
+		/**
+			If specified will reuse existing items if a new item is created that has the same id.
+			
+			The `ObjectId` is a key into the provided objects. If the key is not found the item will not have an id, and will not be matched.
+			
+			Matched items keep the same Node instances that they had before. This makes it suitable for using in combination with `LayoutAnimation`. It also makes it possible to use `AddingAnimation` and `RemovingAnimation` with `Each`, as the Node lifetime will now follow the logical lifetime.
+			
+			This feature works in conjunction with `replaceAt` and `replaceAll` on Observable's.
+			
+			NOTE: This feature, if using animations, does not yet operate well in combination with `Reuse`. It may result in reuse of unintended items and/or unexpected animations.
+			https://github.com/fusetools/fuselibs-public/issues/175
+		*/
 		public string ObjectId
 		{
 			get { return _objectId; }

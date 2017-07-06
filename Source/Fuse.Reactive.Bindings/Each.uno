@@ -147,6 +147,10 @@ namespace Fuse.Reactive
 		/** An array or observable containing the data items used to populate the collection. 
 
 			Can not be used together with `Count`.
+			
+			For the view to be populated, you also have to provide at least one `ux:Template` as a child of this visual. More options are available with the `TemplateKey` and `MatchKey` properties.
+		
+			The list of items may be Observable items. Each will subscribe to these items and use the dynamic value. This however does not work in combination with the `MatchKey`, `ObjectId` and `MatchObject` features which require an immediate value.
 		*/
 		public object Items
 		{
