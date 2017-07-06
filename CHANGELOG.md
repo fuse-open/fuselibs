@@ -1,5 +1,8 @@
 # Unreleased
 
+### Fuse.Android.SystemScreenConfig
+ - Added configuration behavior, lets you control the visibility of the navigation bar and status bar on Android.
+
 # 1.1
 
 ### Fuse.ImageTools
