@@ -213,7 +213,7 @@ namespace Fuse.Controls.FuseTextRenderer
 			_cacheState = _cacheState.GetBounds(CreateTextControlData(), out bounds);
 
 			return Rect.Scale(
-				Rect.Inflate(bounds, 2 * Font.Value.LineHeight),
+				bounds,
 				1 / _control.Viewport.PixelsPerPoint);
 		}
 
