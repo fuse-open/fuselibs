@@ -92,6 +92,15 @@ namespace Fuse.Reactive
 		}
 		
 		InstanceObjectMatch _objectMatch = InstanceObjectMatch.None;
+		/**
+			Reuses existing nodes if the new objects match the old ones.
+			
+			This field is typically set implicity. It defaults to `None`. Use `ObjectId` instead if you want to match based on a id field. 
+			
+			If you need to match on the observable value itself, set this to `Object`, otherwise it works like `ObjectId`
+			
+			@see MatchId
+		*/
 		public InstanceObjectMatch ObjectMatch
 		{
 			get { return _objectMatch; }
@@ -167,7 +176,7 @@ namespace Fuse.Reactive
 		[WeakReference]
 		ITemplateSource _weakTemplateSource;
 		ITemplateSource _templateSource; //captured at rooting time
-
+		
 		/** Specifies a template key that is used to look up in the @TemplateSource to find an override of the default
 			`Templates` provided in this object.
 

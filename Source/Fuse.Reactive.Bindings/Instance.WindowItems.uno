@@ -124,7 +124,6 @@ namespace Fuse.Reactive
 			// Algorithm for picking matching the right template
 			Template useTemplate = null;
 			Template defaultTemplate = null;
-			bool matchSpecified = TemplateKey != null || MatchKey != null;
 			
 			// Priority 1 - If a TemplateSource and TemplateKey is specified
 			if (_templateSource != null && TemplateKey != null)
@@ -150,7 +149,7 @@ namespace Fuse.Reactive
 			// Priority 3 - Use the default template or all templates if no match specified
 			if (useTemplate == null)
 			{
-				if (matchSpecified)
+				if (MatchKey != null || defaultTemplate != null)
 					useTemplate = defaultTemplate; //may still be null
 				else
 					return new TemplateMatch{ All = true, Template = null }; //only unspecified can use complete list

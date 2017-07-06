@@ -663,6 +663,7 @@ namespace Fuse.Reactive.Test
 				Assert.AreEqual( "A", GetDudZ(e.c));
 				Assert.AreEqual( "A", GetDudZ(e.d));
 				Assert.AreEqual( "Q", GetDudZ(e.e));
+				Assert.AreEqual( "A,A", GetDudZ(e.f));
 			}
 		}
 		
