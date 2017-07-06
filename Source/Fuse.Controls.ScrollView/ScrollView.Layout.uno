@@ -212,7 +212,7 @@ namespace Fuse.Controls
 		}
 		
 		/**
-			The distance to the visible view area for the provided rectangle. It will be zero if any part of overlaps the view area.
+			The distance to the visible view area for the provided rectangle. It will be zero if any part of it overlaps the view area.
 		*/
 		internal float2 DistanceToView(float2 min, float2 max)
 		{
@@ -221,12 +221,46 @@ namespace Fuse.Controls
 				DistanceToViewLinear(min.Y, max.Y, ScrollPosition.Y, ActualSize.Y));
 		}
 		
+		/**
+			The distance from the visible view area start for the provided rectangle. It will be zero if any part of it resides before the view area start.
+		*/
+		internal float2 DistanceFromViewStart(float2 min, float2 max)
+		{
+			return float2(
+				DistanceFromViewStartLinear(min.X, max.X, ScrollPosition.X, ActualSize.X),
+				DistanceFromViewStartLinear(min.Y, max.Y, ScrollPosition.Y, ActualSize.Y));
+		}
+		
+		/**
+			The distance from the visible view area end for the provided rectangle. It will be zero if any part of it resides after the view area end.
+		*/
+		internal float2 DistanceFromViewEnd(float2 min, float2 max)
+		{
+			return float2(
+				DistanceFromViewEndLinear(min.X, max.X, ScrollPosition.X, ActualSize.X),
+				DistanceFromViewEndLinear(min.Y, max.Y, ScrollPosition.Y, ActualSize.Y));
+		}
+		
 		float DistanceToViewLinear(float min, float max, float sp, float size)
 		{
 			if (max < sp)
 				return sp - max;
 			if (min > (sp + size) )
 				return min - (sp + size);
+			return 0;
+		}
+		
+		float DistanceFromViewStartLinear(float min, float max, float sp, float size)
+		{
+			if (min > sp)
+				return min - sp;
+			return 0;
+		}
+		
+		float DistanceFromViewEndLinear(float min, float max, float sp, float size)
+		{
+			if (max < (sp + size) )
+				return (sp + size) - max;
 			return 0;
 		}
 		

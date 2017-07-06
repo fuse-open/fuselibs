@@ -6,6 +6,15 @@ using Fuse.Controls;
 namespace Fuse.Triggers
 {
 	/**
+		How the bounds of an element are treated.
+	*/
+	public enum WhileVisibleInScrollViewHow
+	{
+		Partial,
+		Full,
+	}
+
+	/**
 		Active while an element is positioned within the visible area of the @ScrollView. 
 		
 			<ScrollView>
@@ -111,7 +120,24 @@ namespace Fuse.Triggers
 				Update();
 			}
 		}
-		
+
+		WhileVisibleInScrollViewHow _how = WhileVisibleInScrollViewHow.Partial;
+		/**
+			How the bounds of an element are treated.
+
+			Default is `Partial`. When set to `Full`, the whole element bounds need to be inside view for the `WhileVisibleInScrollView` trigger to activate.
+
+			Both options can be combined with `Distance` to adjust when the trigger activates.
+		*/
+		public WhileVisibleInScrollViewHow How
+		{
+			get { return _how; }
+			set
+			{
+				_how = value;
+				Update();
+			}
+		}
 		
 		void OnScrollPositionChanged(object s, object args)
 		{
@@ -125,11 +151,26 @@ namespace Fuse.Triggers
 				
 			var min = _element.GetLayoutPositionIn(_scrollable);
 			var max = min + _element.ActualSize;
-			
-			var dist = _scrollable.ToScalarPosition(_scrollable.DistanceToView(min, max));
 			var maxDist = _scrollable.ToScalarPosition( RelativeTo.GetPoints(Distance, _scrollable) );
-			
-			SetActive( dist < (maxDist + float.ZeroTolerance) );
+
+			bool isInView = false;
+
+			switch (_how)
+			{
+				case WhileVisibleInScrollViewHow.Full:
+					var distStart = _scrollable.ToScalarPosition(_scrollable.DistanceFromViewStart(min, max));
+					var distEnd = _scrollable.ToScalarPosition(_scrollable.DistanceFromViewEnd(min, max));
+					isInView = (distStart > (maxDist + float.ZeroTolerance)) && (distEnd > (maxDist + float.ZeroTolerance));
+					if (distStart == 0 && distEnd == 0)
+						isInView = true;
+					break;
+				case WhileVisibleInScrollViewHow.Partial:
+					var dist = _scrollable.ToScalarPosition(_scrollable.DistanceToView(min, max));
+					isInView = dist < (maxDist + float.ZeroTolerance);
+					break;
+			}
+
+			SetActive( isInView );
 		}
 		
 	}
