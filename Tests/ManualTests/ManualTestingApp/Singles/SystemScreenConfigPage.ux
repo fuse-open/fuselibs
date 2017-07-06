@@ -1,0 +1,34 @@
+<Page Title="SystemScreenConfig" ux:Class="SystemScreenConfigPage">
+	<InfoStack ux:Key="Info">
+		<p>Buttons should show and hide status bar and navigation bar parts of the system user interface.</p>
+	</InfoStack>
+	<Android.SystemScreenConfig Show="{displayValue}" />
+		<JavaScript>
+			var Observable = require("FuseJS/Observable");
+			var displayValue = Observable("All");
+			function status() {
+				displayValue.value = "Status";
+			}
+			function all() {
+				displayValue.value = "All";
+			}
+			function none() {
+				displayValue.value = "None";
+			}
+			module.exports = {
+				status: status,
+				all: all,
+				none: none,
+				displayValue: displayValue
+			}
+		</JavaScript>
+	<StackPanel>
+		<Text>Navigation bar should be hidden:</Text>
+		<StdButton Clicked="{status}" Text="Status" Margin="20"/>
+		<Text>Navigation bar and status bar should dissapear:</Text>
+		<StdButton Clicked="{none}" Text="None" Margin="20"/>
+		<Text FontSize="12" TextWrapping="Wrap" Margin="0,0,0,20">Navigation bar might only turn transparent background on some systems</Text>
+		<Text>Navigation bar and status bar should be shown:</Text>
+		<StdButton Clicked="{all}" Text="All" Margin="20"/>
+	</StackPanel>
+</Page>
