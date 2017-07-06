@@ -1,0 +1,68 @@
+<Panel ux:Class="UX.DependencyInjection">
+	<JavaScript>
+		var Observable = require("FuseJS/Observable")
+		exports.foo = 1
+		exports.bar = 2
+		exports.obs = Observable(0)
+		exports.prop = Observable("60")
+
+		exports.complexObj = {
+			moo: 77,
+			funfun : function() {
+				return 88
+			}
+		}
+
+		exports.changeProp = function() {
+			exports.prop.value = 70
+		}
+	</JavaScript>
+	<JavaScript dep:faba="{something_undefined}">
+		throw new Error(); // should never execute, because `something_undefined` should never resolve
+	</JavaScript>
+
+	<Panel ux:Class="UX.ObserveTestPanel">
+		<string ux:Property="Foo" />
+		<int ux:Property="Bar" />
+		<object ux:Property="ComplexObj" />
+		
+		<JavaScript 
+			dep:foo="{foo}"
+			dep:bar="{bar}"
+			dep:obs="{obs}"
+			dep:Foo="{Property Foo}"
+			dep:Bar="{Property Bar} / 2"
+			dep:SomeConst="4"
+			dep:SomeVector="3, 4"
+			dep:Lol="'somestring'"
+			dep:ComplexObj="{Property ComplexObj}">
+
+			var Observable = require("FuseJS/Observable")
+
+			if (Bar === 0) { return; }
+			if (ComplexObj == null) { return; }
+			if (ComplexObj.moo !== 77) { throw new Error("Failed to pass complex object"); }
+			if (ComplexObj.funfun() !== 88) { throw new Erorr("Failed to pass function along complex object"); }		
+
+			if (foo !== 1) { throw new Error() }
+			if (bar !== 2) { throw new Error() }
+			if (!(obs instanceof Observable)) { throw new Error("obs is : " + JSON.stringify(obs)) }
+			if (Foo !== "correct") { throw new Error() }
+
+			if (SomeConst !== 4) { throw new Error() }
+			if (SomeVector.length !== 2 || SomeVector[0] != 3 || SomeVector[1] !== 4) { throw new Error("Expected [3, 4], got: " + JSON.stringify(SomeVector)) }
+			if (Lol !== "somestring") { throw new Error() }
+
+			obs.value++;
+
+			exports.yeah = Bar
+		</JavaScript>
+		<Text ux:Name="t1" Value="{yeah}" />
+	</Panel>
+
+	<Text ux:Name="counter" Value="{obs}" />
+
+	<UX.ObserveTestPanel ux:Name="p1" Foo="correct" Bar="{prop}" ComplexObj="{complexObj}" />
+	<FuseTest.Invoke Handler="{changeProp}" ux:Name="ChangeProp"/>
+
+</Panel>

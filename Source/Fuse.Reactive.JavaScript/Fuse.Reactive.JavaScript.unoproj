@@ -16,6 +16,7 @@
   "Projects": [
     "../Fuse.Drawing/Fuse.Drawing.unoproj",
     "../Fuse.Reactive/Fuse.Reactive.unoproj",
+    "../Fuse.Reactive.Bindings/Fuse.Reactive.Bindings.unoproj",
     "../Fuse.Platform/Fuse.Platform.unoproj",
     "../Fuse.Scripting.Duktape/Fuse.Scripting.Duktape.unoproj",
     "../Fuse.Scripting.JavaScriptCore/Fuse.Scripting.JavaScriptCore.unoproj",

@@ -41,6 +41,10 @@
 - Added `parameter(page)` function which returns the routing parameter of the page parsed as an JSON string.
 - UX expressions now support arbitrary array lookups, e.g. `{someArray[index+3]}`. The same syntax can also be used with string keys, e.g `{someObject[someKey]}`. The lookup is fully reactive - both the collection and the key/index can change.
 
+## JavaScript Dependency Injection
+- Added support for injecting UX expressions into `<JavaScript>` tags using the `dep` XML namespace. See docs on `JavaScript.Dependencies` for details.
+
+
 # 1.1
 
 ### Fuse.ImageTools
