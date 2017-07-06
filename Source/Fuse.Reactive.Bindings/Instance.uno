@@ -31,7 +31,7 @@ namespace Fuse.Reactive
 		This class can not be directly instantiated or inherited because its constructors are internal. Use one of the
 		provided derived classes instead: @Each or @Instance.
 	*/
-	public class Instantiator: Behavior, IObserver, ITemplateObserver, Node.ISubtreeDataProvider, IDeferred
+	public class Instantiator: Behavior, IObserver, Node.ISubtreeDataProvider, IDeferred
 	{
 		IList<Template> _templates;
 		RootableList<Template> _rootTemplates;
@@ -145,10 +145,19 @@ namespace Fuse.Reactive
 			The `TemplateSource` property, along with the templates in the source, as well as the `TemplateKey`, must be set prior to
 			rooting to take effect.
 		*/
-		public Visual TemplateSource
+		public ITemplateSource TemplateSource
 		{
-			get; set;
+			get { return _weakTemplateSource; }
+			set { _weakTemplateSource = value; }
 		}
+		/*
+			To avoid memory-loops between the template-source and the instantiatior, we
+			keep a weak reference here until rooting is performed, and only keep a strong
+			reference until we're unrooted again.
+		*/
+		[WeakReference]
+		ITemplateSource _weakTemplateSource;
+		ITemplateSource _templateSource; //captured at rooting time
 
 		/** Specifies a template key that is used to look up in the @TemplateSource to find an override of the default
 			`Templates` provided in this object.
@@ -159,11 +168,6 @@ namespace Fuse.Reactive
 		public string TemplateKey
 		{
 			get; set;
-		}
-
-		void ITemplateObserver.OnTemplatesChangedWileRooted()
-		{
-			Repopulate();
 		}
 
 		void OnTemplatesChanged(Template factory)
@@ -179,6 +183,7 @@ namespace Fuse.Reactive
 			
 			if (_rootTemplates != null)
 				_rootTemplates.Subscribe(OnTemplatesChanged, OnTemplatesChanged);
+			_templateSource = _weakTemplateSource;
 		}
 
 		protected override void OnUnrooted()
@@ -195,6 +200,7 @@ namespace Fuse.Reactive
 
 			if (_rootTemplates != null)
 				_rootTemplates.Unsubscribe();
+			_templateSource = null;
 				
 			_completedRemove = null;
 			base.OnUnrooted();
@@ -814,10 +820,9 @@ namespace Fuse.Reactive
 			// Priority 1 - If a TemplateSource and TemplateKey is specified
 			// look for a template in the source that matches the key.
 			// If found, use that
-			if (TemplateSource != null && TemplateKey != null)
+			if (_templateSource != null && TemplateKey != null)
 			{
-				var t = TemplateSource.FindTemplate(TemplateKey);
-
+				var t = _templateSource.FindTemplate(TemplateKey);
 				if (t != null)
 				{
 					anyMatched = true;
