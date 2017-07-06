@@ -5,7 +5,7 @@ using Uno.Graphics;
 namespace Fuse.Nodes
 {
 	/*
-		A DrawRect represents a rectangle drawn onto the screen in clip-space coords as follows:
+		A DrawRect represents a rectangle drawn onto the screen in world-space coords as follows:
 
 		D  C
 		+--+
@@ -14,13 +14,18 @@ namespace Fuse.Nodes
 		+--+
 		A  B
 
-		We use clip-space coords in order to easily take into account any viewport-related transforms
-		that were applied to a rectangle as possible. This may mean that the resulting area isn't
-		actually rectangular, so we store all 4 vertex positions rather than just top/left and
-		width/height. In the future it will probably make sense to compare the DrawRects for a given
-		frame to determine which ones overlap to measure actual overdraw; this should be possible
-		with this configuration, even though it won't be as convenient as comparing simple rectangles
-		necessarily.
+		We use world-space coords in order to easily be able to plot the drawn rects back on the screen,
+		regardless of whether or not the original draws they represent were targeting a framebuffer, the
+		backbuffer, etc. This may miss any viewport-related transforms that were applied to the rectangle,
+		but it seems that at least for the most part the stuff we do with fuselibs won't behave very
+		unpredictably.
+
+		It's probably sufficient to store just top/left and width/height for the draw rects, but in order
+		to mimic the vertex transformation pipeline as accurately as possible and allow for world space
+		transformations that result in a non-rectangular result, we store each of the 4 vertices of the
+		rectangle. In the future it will probably make sense to compare the DrawRects for a given frame
+		to determine which ones overlap to measure actual overdraw; this should be possible with this
+		configuration, even though it won't be as convenient as comparing simple rectangles necessarily.
 
 		We also store the scissor rect that was used to draw the original rectangle so we can clip the
 		draw rect accordingly for more precise info.
@@ -130,7 +135,9 @@ namespace Fuse.Nodes
 
 					VertexCount: 6;
 
-					ClipPosition: vertex_attrib(Vertices);
+					float4 p: vertex_attrib(Vertices);
+
+					ClipPosition: Vector.Transform(p, dc.Viewport.ViewProjectionTransform);
 
 					float2 edgeCoord: vertex_attrib(EdgeCoords);
 

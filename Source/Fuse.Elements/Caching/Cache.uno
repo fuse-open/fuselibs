@@ -250,7 +250,7 @@ namespace Fuse.Elements
 						float2(1, 1),
 						float2(0, 1)
 					};
-					float4[] drawRectClipSpaceVerts = new[]
+					float4[] drawRectWorldSpaceVerts = new[]
 					{
 						float4(0),
 						float4(0),
@@ -262,10 +262,9 @@ namespace Fuse.Elements
 					{
 						var coord = drawRectInputVerts[i];
 						var p = Vector.Transform(float4(coord * drawRectSize, 0, 1), tile._compositMatrix);
-						var clipPosition = Vector.Transform(p, dc.Viewport.ViewProjectionTransform);
-						drawRectClipSpaceVerts[i] = clipPosition;
+						drawRectWorldSpaceVerts[i] = p;
 					}
-					DrawRectVisualizer.Append(new DrawRect(drawRectClipSpaceVerts, dc.Scissor));
+					DrawRectVisualizer.Append(new DrawRect(drawRectWorldSpaceVerts, dc.Scissor));
 				}
 			}
 		}
