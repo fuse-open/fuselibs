@@ -1,4 +1,5 @@
 using Uno;
+using Uno.UX;
 using Uno.Collections;
 using Fuse.Platform;
 
@@ -106,8 +107,9 @@ namespace Fuse.Android
 			setShow(_show);
 		}
 
-		private string _actualShowName = "ActualShow";
+		private Selector _actualShowName = "ActualShow";
 		private Visibility _actualShow = Visibility.None;
+		[UXOriginSetter("SetActualShow")]
 		public Visibility ActualShow
 		{
 			get
@@ -118,6 +120,11 @@ namespace Fuse.Android
 			{
 				//Fuse.Diagnostics.UserError( "ActualShow does not have a setter", this );
 			}
+		}
+
+		public void SetActualShow(Visibility value, IPropertyListener origin)
+		{
+			//Only needed because fuselibs it in order to propagate property change events properly.
 		}
 
 		private float _resetDelay = 5f;
