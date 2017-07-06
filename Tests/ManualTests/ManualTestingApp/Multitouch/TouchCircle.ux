@@ -1,0 +1,15 @@
+<Panel ux:Class="TouchCircle" Width="100" Height="100" ux:Name="Self" Anchor="50%,50%" Alignment="TopLeft" HitTestMode="None">
+	<Text Alignment="TopLeft" ux:Name="Label" TextColor="#0000" FontSize="20" />
+	<Translation ux:Name="Translation" />
+	<Scaling ux:Name="Scale" Factor="0.3" />
+	<WhileTrue ux:Name="IsActive" Value="false">
+		<Change _color.Color="#000f" Duration="0.2" Easing="CubicInOut" DurationBack="1" />
+		<Change Label.Color="#000f" Duration="0.2" Easing="CubicInOut" DurationBack="1" />
+		<Change Scale.Factor="1" Duration="0.0" Easing="CubicInOut" DurationBack="1" />
+	</WhileTrue>
+	<Circle Layer="Background" Alignment="Center" Width="80" Height="80">
+		<Stroke Width="4">
+			<SolidColor Color="#0000" ux:Name="_color" />
+		</Stroke>
+	</Circle>
+</Panel>

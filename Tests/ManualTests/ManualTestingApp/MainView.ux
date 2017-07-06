@@ -138,7 +138,8 @@
 			<HitTestPage/>
 			<DefaultFonts/>
 			<Pages.SurfaceMisc/>
-			
+			<Launchers/>
+			<Multitouch />
 			<Android>
 				<WebViewPage/>
 				<BackButtonView/>

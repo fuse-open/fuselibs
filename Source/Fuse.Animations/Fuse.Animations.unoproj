@@ -2,7 +2,7 @@
   "Copyright": "Copyright (c) Fusetools AS 2017",
   "Description": "Framework for general purpose animation",
   "Publisher": "Fusetools AS",
-  "Version": "1.1.0-rc1",
+  "Version": "1.1.0-rc2",
   "Package": {
     "ProjectUrl": "https://fusetools.com"
   },

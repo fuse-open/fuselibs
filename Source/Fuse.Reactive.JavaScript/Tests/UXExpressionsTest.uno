@@ -211,6 +211,36 @@ namespace Fuse.Reactive.Test
 		}
 
 		[Test]
+		public void ParameterFunction() 
+		{
+			var e = new UX.ParameterFunction();
+
+			var root = TestRootPanel.CreateWithChild(e);
+			root.StepFrameJS();
+
+			Assert.AreEqual("723.5 nope", e.t1.Value);
+			Assert.AreEqual("", e.t2.Value);
+
+			e.CallStep1.Perform();
+			root.StepFrameJS();
+
+			Assert.AreEqual("450 nope", e.t1.Value);
+			Assert.AreEqual("", e.t2.Value);
+
+			e.CallStep2.Perform();
+			root.StepFrameJS();
+
+			Assert.AreEqual("450 nope", e.t1.Value);
+			Assert.AreEqual("150", e.t2.Value);
+
+			e.CallStep3.Perform();
+			root.StepFrameJS();
+
+			Assert.AreEqual("200 yeah", e.t1.Value);
+			Assert.AreEqual("150", e.t2.Value);
+		}
+
+		[Test]
 		[Ignore("https://github.com/fusetools/fuselibs/issues/3854")]
 		public void DelayFunction()
 		{

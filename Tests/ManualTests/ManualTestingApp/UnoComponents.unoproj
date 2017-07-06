@@ -1,5 +1,4 @@
 {
-  "Version": "0.3.0",
   "Packages": [
     "Fuse",
     "FuseJS",
@@ -20,7 +19,6 @@
     "DefaultTextRenderer.uno:Source",
     "DeviceInfo/DeviceInfo.ux.uno:Source",
     "DeviceInfo/DeviceInfo.ux:UX",
-    "DeviceInfo/SdfImage.uno:Source",
     "FpsMeter.ux:UX",
     "FpsMeter.ux.uno:Source",
     "Https/HttpsView.ux.uno:Source",
