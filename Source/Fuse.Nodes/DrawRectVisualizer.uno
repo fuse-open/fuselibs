@@ -85,7 +85,7 @@ namespace Fuse.Nodes
 
 		void EndFrameAndVisualizeImpl(DrawContext dc)
 		{
-			// Fade out app by drawing a semi-transparent rect on top of it
+			// Darken original rendering by drawing a semi-transparent rect on top of it
 			draw
 			{
 				float2[] Vertices: new[]
