@@ -69,10 +69,10 @@ namespace Fuse.Controls
             return _rootedAssets[hash][0];
         }
 
-        [UXAutoNameTable]
+        [UXAutoNameTable, UXOnlyAutoIfClass]
         public NameTable NameTable { get; set; }
 
-        [UXAutoClassName]
+        [UXAutoClassName, UXOnlyAutoIfClass]
         public string ClassName { get; set; }
 
         IDisposable _diag;
