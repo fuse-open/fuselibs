@@ -146,7 +146,7 @@ namespace Fuse.Triggers
 		
 		void Update()
 		{
-			if (_element == null || _scrollable == null)
+			if (_element == null || _scrollable == null || !_element.HasMarginBox)
 				return;
 				
 			var min = _element.GetLayoutPositionIn(_scrollable);
@@ -161,8 +161,6 @@ namespace Fuse.Triggers
 					var distStart = _scrollable.ToScalarPosition(_scrollable.DistanceFromViewStart(min, max));
 					var distEnd = _scrollable.ToScalarPosition(_scrollable.DistanceFromViewEnd(min, max));
 					isInView = (distStart > (maxDist + float.ZeroTolerance)) && (distEnd > (maxDist + float.ZeroTolerance));
-					if (distStart == 0 && distEnd == 0)
-						isInView = true;
 					break;
 				case WhileVisibleInScrollViewHow.Partial:
 					var dist = _scrollable.ToScalarPosition(_scrollable.DistanceToView(min, max));
