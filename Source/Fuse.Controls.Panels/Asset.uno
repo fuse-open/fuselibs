@@ -14,10 +14,6 @@ namespace Fuse.Controls
         instances being active (rooted) at the same time, with the same `ux:Property` values. It is the user's responsibility to ensure 
         this to allow this class to optimize under that assumption.
 
-        When used as a base class in UX markup, only one instance of the class with a given set of properties will actually have its 
-        content rooted at any given time. The rest of the instances will simply reuse the cached bitmap result of the single rooted 
-        instance.
-
         ## Example use
 
         Let's say we define an icon class, like so:
@@ -35,31 +31,54 @@ namespace Fuse.Controls
 
         ## Remarks
 
-        The content of a `Asset` UX markup tag are templates, not actual intances, hence `ux:Name`s are unreachable from the outside. 
-        The template(s) will be instantiated if and only if the current intance becomes the master instance for a given set of property values. 
-
         The `ux:Property` properties on the class should be trivial value types. The uniqueness of an asset is determined by building
         a string hash by doing `.ToString()` on all the property values. If using non-trival value types which doesn't meaningfully
         override `ToString()`, it won't crash, but you might end up with incorrectly shared visual appearances between instances.
 
-        An asset should not have any `Effects`, this will disable the benefits of using the class and generate a diagnostic error.
-        Instead, put the effects on the contets of the class.
-
         Assets shuold not contain animations with duration. They may have triggers that respond instantly to changes properties
         (`ux:Property`) on the class, but not animate over time in response to property or data changes. This will not disply correctly.
     */
-    [UXContentMode("TemplateIfClass")]
     public class Asset : LayoutControl, IPropertyListener
     {
-        // Internal for testing purposes
-        internal static Dictionary<string, List<Asset>> _rootedAssets = new Dictionary<string, List<Asset>>();
-
-        static List<Asset> GetAssets(string hash)
+        class Cache
         {
-            List<Asset> assets;
+            public readonly List<Asset> Assets = new List<Asset>();
+            public Asset Master { get { return Assets[0]; } }
+            
+            framebuffer Bitmap;
+
+            public framebuffer Validate(DrawContext dc)
+            {
+                if (Bitmap == null) 
+                {
+                    debug_log "###### Painting cache " + (Master.Name.ToString()??GetHashCode().ToString());
+                    Master._painting = true;
+                    Bitmap = Master.CaptureRegion(dc, Master.LocalRenderBounds.FlatRect, float2(0));
+                    Master._painting = false;
+                }
+                return Bitmap;
+            }
+
+            public void Invalidate()
+            {
+                if (Bitmap != null)
+                {
+                    FramebufferPool.Release(Bitmap);
+                    Bitmap = null;
+                }
+            }
+        }
+
+        // Internal for testing purposes
+        internal static Dictionary<string, Cache> _rootedAssets = new Dictionary<string, Cache>();
+
+
+        static Cache GetCache(string hash)
+        {
+            Cache assets;
             if (!_rootedAssets.TryGetValue(hash, out assets))
             {
-                assets = new List<Asset>();
+                assets = new Cache();
                 _rootedAssets.Add(hash, assets);
             }
             return assets;
@@ -67,7 +86,7 @@ namespace Fuse.Controls
 
         static Asset GetMaster(string hash)
         {
-            return _rootedAssets[hash][0];
+            return _rootedAssets[hash].Master;
         }
 
         [UXAutoNameTable, UXOnlyAutoIfClass]
@@ -91,6 +110,7 @@ namespace Fuse.Controls
             }
         }
 
+        bool _rooted;
         protected override void OnRooted()
         {
             base.OnRooted();
@@ -99,7 +119,18 @@ namespace Fuse.Controls
                 for (var i = 0; i < NameTable.Properties.Count; i++)
                     NameTable.Properties[i].AddListener(this);
 
-            AddToRegistry();
+            if (IsVisible) AddToRegistry();
+            _rooted = true;
+        }
+
+        protected override void OnIsVisibleChanged()
+        {
+            base.OnIsVisibleChanged();
+            if (_rooted)
+            {
+                if (IsVisible) AddToRegistry();
+                else RemoveFromRegistry();
+            }
         }
 
         protected override void OnUnrooted()
@@ -110,35 +141,33 @@ namespace Fuse.Controls
                 for (var i = 0; i < NameTable.Properties.Count; i++)
                     NameTable.Properties[i].RemoveListener(this);
 
-            RemoveFromRegistry();
+            if (IsVisible) RemoveFromRegistry();
+            _rooted = false;
 
             base.OnUnrooted();
         }
 
+        bool _inRegistry;
+
         void AddToRegistry()
         {
+            if (_inRegistry) throw new Exception(); // already in registry
+            _inRegistry = true;
+            
             ComputeHash();
 
-            var assets = GetAssets(_hash);
-            assets.Add(this);
-            if (assets.Count == 1) MakeMaster();  
+            var cache = GetCache(_hash);
+            cache.Assets.Add(this);
         }
 
         void RemoveFromRegistry()
         {
-            InvalidateCache();
+            if (!_inRegistry) throw new Exception(); // not in registry
+            _inRegistry = false;
 
-            var assets = GetAssets(_hash);
-            var thisIndex = assets.IndexOf(this);
-            assets.RemoveAt(thisIndex);
-            if (thisIndex == 0)
-            {
-                DisposeContent();
-                if (assets.Count > 0) assets[0].MakeMaster();
-            }
-
-            if (assets.Count == 0)
-                _rootedAssets.Remove(_hash);
+            var cache = GetCache(_hash);
+            var thisIndex = cache.Assets.IndexOf(this);
+            cache.Assets.RemoveAt(thisIndex);
 
             InvalidateHash();
         }
@@ -149,13 +178,6 @@ namespace Fuse.Controls
             
             RemoveFromRegistry();
             AddToRegistry();
-        }
-
-        void MakeMaster()
-        {
-            if (GetMaster(_hash) != this) throw new Exception(); // shouldn't happen
-
-            InstantiateContent();
         }
 
 		static string MakeHash(object obj)
@@ -181,68 +203,32 @@ namespace Fuse.Controls
             _hash = null;
         }
 
-        void InstantiateContent()
-        {
-            for (var i = 0; i < Templates.Count; i++)
-            {
-                var t = Templates[i];
-                var n = t.New() as Node;
-
-                if (n != null) Children.Add(n);
-            }
-        }
-
-        void DisposeContent()
-        {
-            Children.Clear();
-        }
-        
-        framebuffer _cache; // Only the current master should have a non-null cache
-        framebuffer ValidateCache(DrawContext dc)
-        {
-            if (_cache == null) 
-                _cache = CaptureRegion(dc, LocalRenderBounds.FlatRect, float2(0));
-            return _cache;
-        }
-
-        void InvalidateCache()
-        {
-            if (_cache != null)
-            {
-                FramebufferPool.Release(_cache);
-                _cache = null;
-            }
-        }
-
-        protected override float2 GetContentSize(LayoutParams lp)
-        {
-            var master = GetMaster(_hash);
-            if (master == this) return base.GetContentSize(lp);
-            else return master.GetContentSize(lp);
-        }
-
-        protected override VisualBounds CalcRenderBounds()
-		{
-            var master = GetMaster(_hash);
-            if (master == this) return base.CalcRenderBounds();
-            else return master.CalcRenderBounds();
-        }
+		bool _painting;
 
         protected override void OnInvalidateVisual()
         {
-            InvalidateCache();
+            if (_inRegistry)
+            {
+                ComputeHash();
+                var cache = GetCache(_hash);
+                if (cache.Master == this) cache.Invalidate();
+            }
             base.OnInvalidateVisual();
         }
 
         protected override void DrawWithChildren(DrawContext dc)
         {
-            var master = GetMaster(_hash);
-            if (master == this) base.DrawWithChildren(dc);
-            else
-            {
-                var cache = master.ValidateCache(dc);
-                FreezeDrawable.Singleton.Draw(dc, this, Opacity, float2(1), master.LocalRenderBounds, cache);
-            }
+			if (_painting)
+			{
+				base.DrawWithChildren(dc);
+				return;
+			}
+			
+			var cache = GetCache(_hash);
+            var bitmap = cache.Validate(dc);
+
+            debug_log "###### BLITTING " + (Name.ToString()??GetHashCode().ToString());
+            FreezeDrawable.Singleton.Draw(dc, this, Opacity, float2(1), cache.Master.LocalRenderBounds, bitmap);
         }
     }
 }
