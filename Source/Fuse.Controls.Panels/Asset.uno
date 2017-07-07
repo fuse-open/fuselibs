@@ -214,27 +214,28 @@ namespace Fuse.Controls
             else return master.GetContentSize(lp);
         }
 
+        protected override VisualBounds CalcRenderBounds()
+		{
+            var master = GetMaster(_hash);
+            if (master == this) return base.CalcRenderBounds();
+            else return master.CalcRenderBounds();
+        }
+
         protected override void OnInvalidateVisual()
         {
             InvalidateCache();
             base.OnInvalidateVisual();
         }
 
-        public override void Draw(DrawContext dc)
+        protected override void DrawWithChildren(DrawContext dc)
         {
-            if (HasActiveEffects)
-            {
-                SetDiagnostic();
-                base.Draw(dc);
-                return;
-            }
-            
-            ClearDiagnostic();
-
             var master = GetMaster(_hash);
-            var cache = master.ValidateCache(dc);
-
-            FreezeDrawable.Singleton.Draw(dc, this, Opacity, float2(1), master.LocalRenderBounds, cache);
+            if (master == this) base.DrawWithChildren(dc);
+            else
+            {
+                var cache = master.ValidateCache(dc);
+                FreezeDrawable.Singleton.Draw(dc, this, Opacity, float2(1), master.LocalRenderBounds, cache);
+            }
         }
     }
 }
