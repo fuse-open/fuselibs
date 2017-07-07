@@ -5,6 +5,30 @@ using Uno.Threading;
 
 namespace Fuse.Reactive
 {
+	/** Represents an object with reactive properties.
+
+		An `IObject` that also implements this interface will emit events to observers when the
+		value of any of its properties change.
+
+		This interface can be implemented by any reactive data provider that wants to interop
+		with the `Fuse.Reactive` framework.
+	*/
+	interface IObservableObject: IObject
+	{
+		/** Creates a new subscription to the object, which will pass change events to the given observer. */
+		IDisposable Subscribe(IPropertyObserver observer);
+	}
+
+	interface IPropertyObserver
+	{
+		/**
+			@param subscription The subscription that corresponds to this change event. Should be used to filter events that arrived after disposal.
+			@param propertyName The name of the property that changed
+			@param newValue The new value of the property
+		*/
+		void OnPropertyChanged(IDisposable subscription, string propertyName, object newValue);
+	}
+
 	/** Represents a reactive collection. 
 
 		This interface can be implemented by any reactive data provider that wants to interop
