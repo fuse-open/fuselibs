@@ -1,5 +1,8 @@
 # Unreleased
 
+## JavaScript
+- Fixed a bug where if any injected dependencies to a JavaScript (e.g. `ux:Name`, `ux:Dependency`, `dep:`) have names that correspond to EcmaScript 5.1 reserved words, these dependencies will now be available with a dollar sign `$` prefix (e.g. `$undefined`) instead of causing a script compile error.
+
 ## Templates
 - Triggers may now use templates which will be instantiated and added to the parent when active (like a node child).
 	<WhileActive>
