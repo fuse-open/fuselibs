@@ -159,22 +159,20 @@ namespace Fuse.Triggers
 			var max = min + _element.ActualSize;
 			var maxDist = _scrollable.ToScalarPosition( RelativeTo.GetPoints(Distance, _scrollable) );
 
-			bool isInView = false;
+			var dist = _scrollable.DistanceToView(min, max);
+			var distStart = _scrollable.ToScalarPosition(float2(dist.X, dist.Y));
+			var distEnd = _scrollable.ToScalarPosition(float2(dist.Z, dist.W));
 
 			switch (_how)
 			{
 				case WhileVisibleInScrollViewHow.Full:
-					var distStart = _scrollable.ToScalarPosition(_scrollable.DistanceFromView(min, Fuse.Controls.ScrollViewBase.DistanceFromViewTarget.Start));
-					var distEnd = _scrollable.ToScalarPosition(_scrollable.DistanceFromView(max, Fuse.Controls.ScrollViewBase.DistanceFromViewTarget.End));
-					isInView = (distStart > (maxDist - float.ZeroTolerance)) && (distEnd > (maxDist - float.ZeroTolerance));
 					break;
 				case WhileVisibleInScrollViewHow.Partial:
-					var dist = _scrollable.ToScalarPosition(_scrollable.DistanceToView(min, max));
-					isInView = dist < (maxDist + float.ZeroTolerance);
+					maxDist -= _scrollable.ToScalarPosition(_element.ActualSize);
 					break;
 			}
 
-			SetActive( isInView );
+			SetActive( (distStart > (maxDist - float.ZeroTolerance)) && (distEnd > (maxDist - float.ZeroTolerance)) );
 		}
 		
 	}
