@@ -95,21 +95,6 @@ namespace Fuse.Controls
 		[UXAutoClassName, UXOnlyAutoIfClass]
 		public string ClassName { get; set; }
 
-		IDisposable _diag;
-		void SetDiagnostic()
-		{
-			if (_diag == null)
-				_diag = Diagnostics.ReportTemporalUserWarning("Assets should not have any effects - this prevents optimization. Place effects on its children instead", this);
-		}
-		void ClearDiagnostic()
-		{
-			if (_diag != null)
-			{
-				_diag.Dispose();
-				_diag = null;
-			}
-		}
-
 		bool _rooted;
 		protected override void OnRooted()
 		{
@@ -151,7 +136,6 @@ namespace Fuse.Controls
 
 		void AddToRegistry()
 		{
-			if (_inRegistry) throw new Exception(); // already in registry
 			_inRegistry = true;
 			
 			ComputeHash();
@@ -162,7 +146,6 @@ namespace Fuse.Controls
 
 		void RemoveFromRegistry()
 		{
-			if (!_inRegistry) throw new Exception(); // not in registry
 			_inRegistry = false;
 
 			var cache = GetCache(_hash);
