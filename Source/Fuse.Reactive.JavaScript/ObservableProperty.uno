@@ -8,7 +8,7 @@ namespace Fuse.Reactive
 	{
 		public LazyObservableProperty(ThreadWorker w, Scripting.Object obj, Property p): base(w, obj, p)
 		{
-			w.Context.ObjectDefineProperty(obj, p.Name.ToString(), Get);	
+			w.Context.ObjectDefineProperty(obj, JSName, Get);	
 		}
 
 		object Get(object[] args)
@@ -37,6 +37,11 @@ namespace Fuse.Reactive
 		}
 
 		public string Name { get { return _property.Name; } }
+
+		protected string JSName
+		{
+			get { return JavaScript.ToValidName(Name); }
+		}
 
 		Observable _observable;
 
