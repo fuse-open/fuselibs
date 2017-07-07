@@ -25,15 +25,15 @@ namespace FuseTest
 		}
 		
 		bool _listening;
-		IObservable _items;
-		ISubscription _subscription;
+		IObservableArray _items;
+		Uno.IDisposable _subscription;
 		
 		public object Items
 		{
 			get { return _items;}
 			set
 			{
-				_items = value as IObservable;
+				_items = value as IObservableArray;
 				OnItemsChanged();
 			}
 		}
@@ -55,7 +55,7 @@ namespace FuseTest
 			CleanSubscription();
 			if (_items == null)
 				return;
-			_subscription = _items.Subscribe(this);
+			_subscription = (ISubscription)_items.Subscribe(this);
 		}
 		
 		void CleanSubscription()

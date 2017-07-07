@@ -67,6 +67,7 @@ namespace Fuse.Reactive
 				var obs = ind as IObservable;
 				if (obs != null)
 				{
+					// Special case for when index is an IObservable 
 					_indexForwarder = new ValueForwarder(obs, this);
 				}
 				else
@@ -120,6 +121,7 @@ namespace Fuse.Reactive
 
 				var obs = col as IObservable;
 				if (obs != null) 
+					// Special case for when the collection is an IObservable
 					_colObservableSub = obs.Subscribe(this);
 
 				ResultChanged();
