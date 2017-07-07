@@ -158,6 +158,13 @@ namespace Fuse.Controls
             InstantiateContent();
         }
 
+		string MakeHash(object obj)
+		{
+			if (obj == null) return "null";
+			if (obj is string) return "\"" + (string) + "\"";
+			return obj.ToString();
+		}
+
         string _hash;
         void ComputeHash()
         {
@@ -165,7 +172,7 @@ namespace Fuse.Controls
 
             var hash = ClassName;
             for (var i = 0; i < NameTable.Properties.Count; i++)
-                hash += ";" + NameTable.Properties[i].GetAsObject().ToString();
+                hash += ";" + MakeHash(NameTable.Properties[i].GetAsObject());
             
             _hash = hash;
         }
