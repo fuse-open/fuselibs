@@ -36,87 +36,9 @@ namespace Fuse.Controls.ScrollViewTest
 				Assert.AreEqual(1, TriggerProgress(sv.W4.V3) );
 				Assert.AreEqual(0, TriggerProgress(sv.W5.V3) );
 			
-				Assert.AreEqual(0, TriggerProgress(sv.W1.V4) );
-				Assert.AreEqual(0, TriggerProgress(sv.W2.V4) );
-				Assert.AreEqual(0, TriggerProgress(sv.W3.V4) );
-				Assert.AreEqual(0, TriggerProgress(sv.W4.V4) );
-				Assert.AreEqual(0, TriggerProgress(sv.W5.V4) );
-
-				Assert.AreEqual(0, TriggerProgress(sv.W1.V5) );
-				Assert.AreEqual(0, TriggerProgress(sv.W2.V5) );
-				Assert.AreEqual(0, TriggerProgress(sv.W3.V5) );
-				Assert.AreEqual(0, TriggerProgress(sv.W4.V5) );
-				Assert.AreEqual(0, TriggerProgress(sv.W5.V5) );
-
-				sv.S.ScrollPosition = float2(0,41);
-				root.IncrementFrame();
-				
-				Assert.AreEqual(1, TriggerProgress(sv.W1.V1) );
-				Assert.AreEqual(1, TriggerProgress(sv.W2.V1) );
-				Assert.AreEqual(1, TriggerProgress(sv.W3.V1) );
-				Assert.AreEqual(0, TriggerProgress(sv.W4.V1) );
-				Assert.AreEqual(0, TriggerProgress(sv.W5.V1) );
-				
-				Assert.AreEqual(1, TriggerProgress(sv.W1.V2) );
-				Assert.AreEqual(1, TriggerProgress(sv.W2.V2) );
-				Assert.AreEqual(1, TriggerProgress(sv.W3.V2) );
-				Assert.AreEqual(1, TriggerProgress(sv.W4.V2) );
-				Assert.AreEqual(0, TriggerProgress(sv.W5.V2) );
-				
-				Assert.AreEqual(1, TriggerProgress(sv.W1.V3) );
-				Assert.AreEqual(1, TriggerProgress(sv.W2.V3) );
-				Assert.AreEqual(1, TriggerProgress(sv.W3.V3) );
-				Assert.AreEqual(1, TriggerProgress(sv.W4.V3) );
-				Assert.AreEqual(1, TriggerProgress(sv.W5.V3) );
-			
-				Assert.AreEqual(0, TriggerProgress(sv.W1.V4) );
-				Assert.AreEqual(1, TriggerProgress(sv.W2.V4) );
-				Assert.AreEqual(0, TriggerProgress(sv.W3.V4) );
-				Assert.AreEqual(0, TriggerProgress(sv.W4.V4) );
-				Assert.AreEqual(0, TriggerProgress(sv.W5.V4) );
-
-				Assert.AreEqual(0, TriggerProgress(sv.W1.V5) );
-				Assert.AreEqual(0, TriggerProgress(sv.W2.V5) );
-				Assert.AreEqual(0, TriggerProgress(sv.W3.V5) );
-				Assert.AreEqual(0, TriggerProgress(sv.W4.V5) );
-				Assert.AreEqual(0, TriggerProgress(sv.W5.V5) );
-
-				sv.S.ScrollPosition = float2(0,121);
-				root.IncrementFrame();
-
-				Assert.AreEqual(0, TriggerProgress(sv.W1.V1) );
-				Assert.AreEqual(0, TriggerProgress(sv.W2.V1) );
-				Assert.AreEqual(1, TriggerProgress(sv.W3.V1) );
-				Assert.AreEqual(1, TriggerProgress(sv.W4.V1) );
-				Assert.AreEqual(1, TriggerProgress(sv.W5.V1) );
-				
-				Assert.AreEqual(0, TriggerProgress(sv.W1.V2) );
-				Assert.AreEqual(1, TriggerProgress(sv.W2.V2) );
-				Assert.AreEqual(1, TriggerProgress(sv.W3.V2) );
-				Assert.AreEqual(1, TriggerProgress(sv.W4.V2) );
-				Assert.AreEqual(1, TriggerProgress(sv.W5.V2) );
-				
-				Assert.AreEqual(1, TriggerProgress(sv.W1.V3) );
-				Assert.AreEqual(1, TriggerProgress(sv.W2.V3) );
-				Assert.AreEqual(1, TriggerProgress(sv.W3.V3) );
-				Assert.AreEqual(1, TriggerProgress(sv.W4.V3) );
-				Assert.AreEqual(1, TriggerProgress(sv.W5.V3) );
-			
-				Assert.AreEqual(0, TriggerProgress(sv.W1.V4) );
-				Assert.AreEqual(0, TriggerProgress(sv.W2.V4) );
-				Assert.AreEqual(0, TriggerProgress(sv.W3.V4) );
-				Assert.AreEqual(1, TriggerProgress(sv.W4.V4) );
-				Assert.AreEqual(0, TriggerProgress(sv.W5.V4) );
-
-				Assert.AreEqual(0, TriggerProgress(sv.W1.V5) );
-				Assert.AreEqual(0, TriggerProgress(sv.W2.V5) );
-				Assert.AreEqual(0, TriggerProgress(sv.W3.V5) );
-				Assert.AreEqual(1, TriggerProgress(sv.W4.V5) );
-				Assert.AreEqual(0, TriggerProgress(sv.W5.V5) );
-
 				sv.S.ScrollPosition = float2(0,151);
 				root.IncrementFrame();
-
+				
 				Assert.AreEqual(0, TriggerProgress(sv.W1.V1) );
 				Assert.AreEqual(0, TriggerProgress(sv.W2.V1) );
 				Assert.AreEqual(0, TriggerProgress(sv.W3.V1) );

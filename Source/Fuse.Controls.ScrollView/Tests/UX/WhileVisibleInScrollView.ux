@@ -9,12 +9,6 @@
 		<WhileVisibleInScrollView ux:Name="V3" Distance="1" RelativeTo="ScrollViewSize">
 			<Nothing/>
 		</WhileVisibleInScrollView>
-		<WhileVisibleInScrollView ux:Name="V4" How="Full">
-			<Nothing/>
-		</WhileVisibleInScrollView>
-		<WhileVisibleInScrollView ux:Name="V5" How="Full" Distance="10">
-			<Nothing/>
-		</WhileVisibleInScrollView>
 	</Panel>
 	
 	<ScrollView ux:Name="S">
