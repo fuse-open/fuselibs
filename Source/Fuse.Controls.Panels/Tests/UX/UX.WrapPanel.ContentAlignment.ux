@@ -6,7 +6,7 @@
 		<Panel Height="20" ux:Name="P4"/>
 	</WrapPanel>
 
-	<WrapPanel ItemHeight="100" Orientation="Vertical" ContentAlignment="Top" MaxHeight="200">
+	<WrapPanel ItemHeight="100" Orientation="Vertical" ContentAlignment="TopLeft" MaxHeight="200">
 		<Panel Width="2" ux:Name="VT1"/>
 		<Panel Width="10" ux:Name="VT2"/>
 		<Panel Width="30" ux:Name="VT3"/>
@@ -20,7 +20,7 @@
 		<Panel Width="20" ux:Name="VC4"/>
 	</WrapPanel>
 
-	<WrapPanel ItemHeight="100" Orientation="Vertical" ContentAlignment="Bottom" MaxHeight="200">
+	<WrapPanel ItemHeight="100" Orientation="Vertical" ContentAlignment="BottomRight" MaxHeight="200">
 		<Panel Width="2" ux:Name="VB1"/>
 		<Panel Width="10" ux:Name="VB2"/>
 		<Panel Width="30" ux:Name="VB3"/>

@@ -98,20 +98,20 @@ namespace Fuse.Controls.Panels.Test
 				Assert.AreEqual( float4(0,10,100,30), ActualPositionSize(p.P3));
 				Assert.AreEqual( float4(100,15,100,20), ActualPositionSize(p.P4));
 
-				Assert.AreEqual( float4(4,0,2,100), ActualPositionSize(p.VT1));
+				Assert.AreEqual( float4(0,0,2,100), ActualPositionSize(p.VT1));
 				Assert.AreEqual( float4(0,100,10,100), ActualPositionSize(p.VT2));
 				Assert.AreEqual( float4(10,0,30,100), ActualPositionSize(p.VT3));
-				Assert.AreEqual( float4(15,100,20,100), ActualPositionSize(p.VT4));
+				Assert.AreEqual( float4(10,100,20,100), ActualPositionSize(p.VT4));
 
 				Assert.AreEqual( float4(4,0,2,100), ActualPositionSize(p.VC1));
 				Assert.AreEqual( float4(0,100,10,100), ActualPositionSize(p.VC2));
 				Assert.AreEqual( float4(10,0,30,100), ActualPositionSize(p.VC3));
 				Assert.AreEqual( float4(15,100,20,100), ActualPositionSize(p.VC4));
 
-				Assert.AreEqual( float4(4,0,2,100), ActualPositionSize(p.VB1));
+				Assert.AreEqual( float4(8,0,2,100), ActualPositionSize(p.VB1));
 				Assert.AreEqual( float4(0,100,10,100), ActualPositionSize(p.VB2));
 				Assert.AreEqual( float4(10,0,30,100), ActualPositionSize(p.VB3));
-				Assert.AreEqual( float4(15,100,20,100), ActualPositionSize(p.VB4));
+				Assert.AreEqual( float4(20,100,20,100), ActualPositionSize(p.VB4));
 
 				// Old RowAlignment tests
 				Assert.AreEqual( float4(0,4,100,2), ActualPositionSize(p.RP1));
