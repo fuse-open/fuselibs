@@ -51,7 +51,8 @@ namespace Fuse.Controls
     [UXContentMode("TemplateIfClass")]
     public class Asset : LayoutControl, IPropertyListener
     {
-        static Dictionary<string, List<Asset>> _rootedAssets = new Dictionary<string, List<Asset>>();
+        // Internal for testing purposes
+        internal static Dictionary<string, List<Asset>> _rootedAssets = new Dictionary<string, List<Asset>>();
 
         static List<Asset> GetAssets(string hash)
         {
@@ -130,10 +131,10 @@ namespace Fuse.Controls
             var assets = GetAssets(_hash);
             var thisIndex = assets.IndexOf(this);
             assets.RemoveAt(thisIndex);
-            if (thisIndex == 0 && assets.Count > 0)
+            if (thisIndex == 0)
             {
                 DisposeContent();
-                assets[0].MakeMaster();
+                if (assets.Count > 0) assets[0].MakeMaster();
             }
 
             if (assets.Count == 0)
