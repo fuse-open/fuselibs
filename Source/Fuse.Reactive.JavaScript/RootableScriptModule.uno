@@ -50,8 +50,10 @@ namespace Fuse.Reactive
 				for (int i = 0; i < nt.Entries.Length; ++i)
 				{
 					var name = nt.Entries[i];
+					if (name == "this") continue;
+					
 					var key = IsReservedKeyword(name) ? "$" + name : name;
-					argsString += ", " + nt.Entries[i];
+					argsString += ", " + key;
 					args.Add(_worker.Unwrap(nt.Objects[i]));
 				}
 				nt = nt.ParentTable;
@@ -70,7 +72,8 @@ namespace Fuse.Reactive
 			"continue", "for", "switch", "while",
 			"debugger", "function", "this", "with",
 			"default", "if", "throw",
-			"delete", "in", "try"
+			"delete", "in", "try", 
+			"undefined" // not actually a reserved word in the spec, but most linters etc treat it as such
 		};
 
 		static bool IsReservedKeyword(string s)

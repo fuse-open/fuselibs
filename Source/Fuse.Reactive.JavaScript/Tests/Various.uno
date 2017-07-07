@@ -12,6 +12,15 @@ namespace Fuse.Reactive.Test
 	public class VariousTest : TestBase
 	{
 		[Test]
+		public void JavaScriptReservedWords()
+		{
+			var e = new UX.JavaScriptReservedWord();
+			var root = TestRootPanel.CreateWithChild(e);
+			root.StepFrameJS();
+			// No JS exception = all good
+			Assert.AreEqual(true, e.r.instanceof); // assert script was actually run
+		}
+		[Test]
 		public void FunctionAsDataContext()
 		{
 			var e = new UX.FunctionAsDataContext();
