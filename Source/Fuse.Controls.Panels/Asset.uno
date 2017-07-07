@@ -158,10 +158,10 @@ namespace Fuse.Controls
             InstantiateContent();
         }
 
-		string MakeHash(object obj)
+		static string MakeHash(object obj)
 		{
 			if (obj == null) return "null";
-			if (obj is string) return "\"" + (string) + "\"";
+			if (obj is string) return "\"" + (string)obj + "\"";
 			return obj.ToString();
 		}
 
