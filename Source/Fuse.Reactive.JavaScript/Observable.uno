@@ -143,6 +143,11 @@ namespace Fuse.Reactive
 			return new Subscription(this, observer);
 		}
 
+		IDisposable IObservableArray.Subscribe(IObserver observer)
+		{
+			return Subscribe(observer);
+		}
+
 		readonly ThreadWorker _worker;
 
 		Scripting.Object _observable;
