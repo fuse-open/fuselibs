@@ -120,8 +120,6 @@ namespace Fuse.Controls
 
 		protected override void OnUnrooted()
 		{
-			ClearDiagnostic();
-
 			if (NameTable.Properties != null)
 				for (var i = 0; i < NameTable.Properties.Count; i++)
 					NameTable.Properties[i].RemoveListener(this);
