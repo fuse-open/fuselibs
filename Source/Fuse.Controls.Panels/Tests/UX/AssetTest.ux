@@ -7,7 +7,6 @@
                 <Panel>
                     <Text>{Property Label}</Text>
                     <DropShadow Color="#f00" />
-                    <Fuse.Controls.Test.RootedCounter />
                 </Panel>
             </Each>
         </StackPanel>
@@ -20,7 +19,6 @@
                 <Panel>
                     <Text>{Property Label}</Text>
                     <DropShadow Color="#f00" />
-                    <Fuse.Controls.Test.RootedCounter />
                 </Panel>
             </Each>
         </StackPanel>

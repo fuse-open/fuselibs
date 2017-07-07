@@ -40,7 +40,7 @@ namespace Fuse.Controls
     */
     public class Asset : LayoutControl, IPropertyListener
     {
-        class Cache
+        internal class Cache
         {
             public readonly List<Asset> Assets = new List<Asset>();
             public Asset Master { get { return Assets[0]; } }
@@ -51,7 +51,6 @@ namespace Fuse.Controls
             {
                 if (Bitmap == null) 
                 {
-                    debug_log "###### Painting cache " + (Master.Name.ToString()??GetHashCode().ToString());
                     Master._painting = true;
                     Bitmap = Master.CaptureRegion(dc, Master.LocalRenderBounds.FlatRect, float2(0));
                     Master._painting = false;
@@ -71,6 +70,7 @@ namespace Fuse.Controls
 
         // Internal for testing purposes
         internal static Dictionary<string, Cache> _rootedAssets = new Dictionary<string, Cache>();
+        
 
 
         static Cache GetCache(string hash)
@@ -227,7 +227,6 @@ namespace Fuse.Controls
 			var cache = GetCache(_hash);
             var bitmap = cache.Validate(dc);
 
-            debug_log "###### BLITTING " + (Name.ToString()??GetHashCode().ToString());
             FreezeDrawable.Singleton.Draw(dc, this, Opacity, float2(1), cache.Master.LocalRenderBounds, bitmap);
         }
     }
