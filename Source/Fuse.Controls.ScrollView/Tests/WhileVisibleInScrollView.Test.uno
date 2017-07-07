@@ -58,5 +58,46 @@ namespace Fuse.Controls.ScrollViewTest
 				Assert.AreEqual(1, TriggerProgress(sv.W5.V3) );
 			}
 		}
+
+		[Test]
+		public void Mode()
+		{
+			var sv = new UX.WhileVisibleInScrollView.Mode();
+			using (var root = TestRootPanel.CreateWithChild( sv, int2(98) )) //short of 100 to prevent things exactly on edge
+			{
+				Assert.AreEqual( 0, sv.S.ScrollPosition.Y );
+				root.StepFrame(5); //TODO: It's not clear why/if this should be required, it seems to be stabilizing now!
+
+				Assert.AreEqual(1, TriggerProgress(sv.W1.V1) );
+				Assert.AreEqual(0, TriggerProgress(sv.W2.V1) );
+				Assert.AreEqual(0, TriggerProgress(sv.W3.V1) );
+				
+				Assert.AreEqual(0, TriggerProgress(sv.W1.V2) );
+				Assert.AreEqual(0, TriggerProgress(sv.W2.V2) );
+				Assert.AreEqual(0, TriggerProgress(sv.W3.V2) );
+
+				sv.S.ScrollPosition = float2(0,25);
+				root.IncrementFrame();
+				
+				Assert.AreEqual(0, TriggerProgress(sv.W1.V1) );
+				Assert.AreEqual(1, TriggerProgress(sv.W2.V1) );
+				Assert.AreEqual(0, TriggerProgress(sv.W3.V1) );
+				
+				Assert.AreEqual(0, TriggerProgress(sv.W1.V2) );
+				Assert.AreEqual(1, TriggerProgress(sv.W2.V2) );
+				Assert.AreEqual(0, TriggerProgress(sv.W3.V2) );
+
+				sv.S.ScrollPosition = float2(0,52);
+				root.IncrementFrame();
+				
+				Assert.AreEqual(0, TriggerProgress(sv.W1.V1) );
+				Assert.AreEqual(0, TriggerProgress(sv.W2.V1) );
+				Assert.AreEqual(1, TriggerProgress(sv.W3.V1) );
+				
+				Assert.AreEqual(0, TriggerProgress(sv.W1.V2) );
+				Assert.AreEqual(0, TriggerProgress(sv.W2.V2) );
+				Assert.AreEqual(0, TriggerProgress(sv.W3.V2) );
+			}
+		}
 	}
 }

@@ -1,5 +1,5 @@
 <Panel ux:Class="UX.WhileVisibleInScrollView.Mode">
-	<Panel ux:Class="WISV" Height="50">
+	<Panel ux:Class="WISVM" Height="50">
         <WhileVisibleInScrollView ux:Name="V1" How="Full">
             <Nothing/>
         </WhileVisibleInScrollView>
@@ -10,9 +10,9 @@
 	
 	<ScrollView ux:Name="S">
 		<StackPanel>
-			<WISV ux:Name="W1"/>
-			<WISV ux:Name="W2"/>
-			<WISV ux:Name="W3"/>
+			<WISVM ux:Name="W1"/>
+			<WISVM ux:Name="W2"/>
+			<WISVM ux:Name="W3"/>
 		</StackPanel>
 	</ScrollView>
 </Panel>
