@@ -8,7 +8,7 @@ namespace Fuse.Triggers
 	/**
 		How the bounds of an element are treated.
 	*/
-	public enum WhileVisibleInScrollViewHow
+	public enum WhileVisibleInScrollViewMode
 	{
 		/**
 			Activates while the element is at least partially within the ScrollView.
@@ -127,7 +127,7 @@ namespace Fuse.Triggers
 			}
 		}
 
-		WhileVisibleInScrollViewHow _how = WhileVisibleInScrollViewHow.Partial;
+		WhileVisibleInScrollViewMode _mode = WhileVisibleInScrollViewMode.Partial;
 		/**
 			How the bounds of an element are treated.
 
@@ -135,12 +135,12 @@ namespace Fuse.Triggers
 
 			Both options can be combined with `Distance` to adjust when the trigger activates.
 		*/
-		public WhileVisibleInScrollViewHow How
+		public WhileVisibleInScrollViewMode Mode
 		{
-			get { return _how; }
+			get { return _mode; }
 			set
 			{
-				_how = value;
+				_mode = value;
 				Update();
 			}
 		}
@@ -161,15 +161,15 @@ namespace Fuse.Triggers
 
 			bool isInView = false;
 
-			switch (_how)
+			switch (_mode)
 			{
-				case WhileVisibleInScrollViewHow.Full:
+				case WhileVisibleInScrollViewMode.Full:
 					var dist = _scrollable.DistanceToView(min, max);
 					var distStart = _scrollable.ToScalarPosition(float2(dist.X, dist.Y));
 					var distEnd = _scrollable.ToScalarPosition(float2(dist.Z, dist.W));
 					isInView = (distStart > (maxDist - float.ZeroTolerance)) && (distEnd > (maxDist - float.ZeroTolerance));
 					break;
-				case WhileVisibleInScrollViewHow.Partial:
+				case WhileVisibleInScrollViewMode.Partial:
 					var dist = _scrollable.DistanceToView(max, min);
 					var distStart = _scrollable.ToScalarPosition(float2(dist.X, dist.Y));
 					var distEnd = _scrollable.ToScalarPosition(float2(dist.Z, dist.W));
