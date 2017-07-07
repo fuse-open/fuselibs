@@ -4,6 +4,7 @@ using Uno.Graphics;
 using Fuse;
 using Fuse.Elements;
 using Fuse.Drawing.Internal;
+using Fuse.Nodes;
 
 namespace Fuse.Drawing.Primitives
 {
@@ -369,6 +370,32 @@ namespace Fuse.Drawing.Primitives
 				apply virtual falloff;
 				Smoothness: smoothness;
 			};
+
+			if (defined(FUSELIBS_DEBUG_DRAW_RECTS) && !dc.IsCaching)
+			{
+				float2[] drawRectInputVerts = new[]
+				{
+					float2(0, 0),
+					float2(1, 0),
+					float2(1, 1),
+					float2(0, 1)
+				};
+				float4[] drawRectWorldSpaceVerts = new[]
+				{
+					float4(0),
+					float4(0),
+					float4(0),
+					float4(0)
+				};
+				float2 drawRectSize = float2(Size.X, Size.Y) / dc.ViewportPixelsPerPoint;
+				for(int i = 0; i < 4; i++)
+				{
+					var coord = drawRectInputVerts[i];
+					var p = Vector.Transform(float4(position + coord * drawRectSize, 0, 1), visual.WorldTransform);
+					drawRectWorldSpaceVerts[i] = p;
+				}
+				DrawRectVisualizer.Append(new DrawRect(drawRectWorldSpaceVerts, dc.Scissor));
+			}
 		}
 	}
 }

@@ -23,6 +23,21 @@ namespace DrawRectsTest
 		}
 
 		[Test]
+		public void SolidRectangleWithMarginDrawRectIsRendered()
+		{
+			var r = new global::UX.SolidRectangleWithMargin();
+			var root = TestRootPanel.CreateWithChild(r, int2(100, 100));
+
+			using (var fb = root.CaptureDraw())
+			{
+				// Test pixel outside of rect to ensure it's laid out how we expect
+				fb.AssertPixel(float4(0), int2(5, 5));
+
+				TestForDrawRect(fb, new Recti(10, 10, 90, 90), float4(1));
+			}
+		}
+
+		[Test]
 		public void SolidCachedRectangleWithMarginDrawRectIsRendered()
 		{
 			var r = new global::UX.SolidCachedRectangleWithMargin();

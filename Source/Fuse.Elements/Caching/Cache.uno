@@ -241,7 +241,7 @@ namespace Fuse.Elements
 					apply Fuse.Drawing.PreMultipliedAlphaCompositing;
 				};
 
-				if defined(FUSELIBS_DEBUG_DRAW_RECTS)
+				if (defined(FUSELIBS_DEBUG_DRAW_RECTS) && !dc.IsCaching)
 				{
 					float2[] drawRectInputVerts = new[]
 					{
