@@ -10,7 +10,13 @@ namespace Fuse.Triggers
 	*/
 	public enum WhileVisibleInScrollViewHow
 	{
+		/**
+			Activates the `WhileVisibleInScrollView` trigger when at least some of the element bounds are in view.
+		*/
 		Partial,
+		/**
+			Activates the `WhileVisibleInScrollView` trigger when all of the element bounds are in view.
+		*/
 		Full,
 	}
 
@@ -158,9 +164,9 @@ namespace Fuse.Triggers
 			switch (_how)
 			{
 				case WhileVisibleInScrollViewHow.Full:
-					var distStart = _scrollable.ToScalarPosition(_scrollable.DistanceFromViewStart(min, max));
-					var distEnd = _scrollable.ToScalarPosition(_scrollable.DistanceFromViewEnd(min, max));
-					isInView = (distStart > (maxDist + float.ZeroTolerance)) && (distEnd > (maxDist + float.ZeroTolerance));
+					var distStart = _scrollable.ToScalarPosition(_scrollable.DistanceFromView(min, max, Fuse.Controls.ScrollViewBase.DistanceFromViewTarget.Start));
+					var distEnd = _scrollable.ToScalarPosition(_scrollable.DistanceFromView(min, max, Fuse.Controls.ScrollViewBase.DistanceFromViewTarget.End));
+					isInView = (distStart > (maxDist - float.ZeroTolerance)) && (distEnd > (maxDist - float.ZeroTolerance));
 					break;
 				case WhileVisibleInScrollViewHow.Partial:
 					var dist = _scrollable.ToScalarPosition(_scrollable.DistanceToView(min, max));

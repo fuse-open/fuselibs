@@ -220,27 +220,7 @@ namespace Fuse.Controls
 				DistanceToViewLinear(min.X, max.X, ScrollPosition.X, ActualSize.X),
 				DistanceToViewLinear(min.Y, max.Y, ScrollPosition.Y, ActualSize.Y));
 		}
-		
-		/**
-			The distance from the visible view area start for the provided rectangle. It will be zero if any part of it resides before the view area start.
-		*/
-		internal float2 DistanceFromViewStart(float2 min, float2 max)
-		{
-			return float2(
-				DistanceFromViewStartLinear(min.X, max.X, ScrollPosition.X, ActualSize.X),
-				DistanceFromViewStartLinear(min.Y, max.Y, ScrollPosition.Y, ActualSize.Y));
-		}
-		
-		/**
-			The distance from the visible view area end for the provided rectangle. It will be zero if any part of it resides after the view area end.
-		*/
-		internal float2 DistanceFromViewEnd(float2 min, float2 max)
-		{
-			return float2(
-				DistanceFromViewEndLinear(min.X, max.X, ScrollPosition.X, ActualSize.X),
-				DistanceFromViewEndLinear(min.Y, max.Y, ScrollPosition.Y, ActualSize.Y));
-		}
-		
+
 		float DistanceToViewLinear(float min, float max, float sp, float size)
 		{
 			if (max < sp)
@@ -250,19 +230,46 @@ namespace Fuse.Controls
 			return 0;
 		}
 		
-		float DistanceFromViewStartLinear(float min, float max, float sp, float size)
+		/**
+			Used to specify the target for measuring distance from in `DistanceFromView` method. Can be either `Start` or `End`.
+		*/
+		internal enum DistanceFromViewTarget
 		{
-			if (min > sp)
-				return min - sp;
-			return 0;
+			/**
+				When used in `DistanceFromView` method, measures the distance from the view start.
+			*/
+			Start,
+			/**
+				When used in `DistanceFromView` method, measures the distance from the view end.
+			*/
+			End
 		}
-		
-		float DistanceFromViewEndLinear(float min, float max, float sp, float size)
+		/**
+			The distance from the visible view area start or end for the provided rectangle. It will be zero if any part of it resides before or after the view area start, respectively.
+		*/
+		internal float2 DistanceFromView(float2 min, float2 max, DistanceFromViewTarget target)
 		{
-			if (max < (sp + size) )
-				return (sp + size) - max;
-			return 0;
+			var res = float2(0,0);
+			float x = 0;
+			float y = 0;
+			switch (target)
+			{
+				case DistanceFromViewTarget.Start:
+					if (min.X > ScrollPosition.X)
+						x = min.X - ScrollPosition.X;
+					if (min.Y > ScrollPosition.Y)
+						y = min.Y - ScrollPosition.Y;
+					res = float2(x,y);
+					break;
+				case DistanceFromViewTarget.End:
+					if (max.X < (ScrollPosition.X + ActualSize.X) )
+						x = (ScrollPosition.X + ActualSize.X) - max.X;
+					if (max.Y < (ScrollPosition.Y + ActualSize.Y) )
+						y = (ScrollPosition.Y + ActualSize.Y) - max.Y;
+					res = float2(x,y);
+					break;
+			}
+			return res;
 		}
-		
 	}
 }
