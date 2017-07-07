@@ -58,6 +58,13 @@ namespace Fuse.Android
 			Status,
 			All
 		}
+		private enum ActualVisibility
+		{
+			None,
+			Status,
+			All,
+			Navigation
+		}
 
 		public SystemScreenConfig() 
 		{
@@ -71,21 +78,22 @@ namespace Fuse.Android
 
 		private extern(Android) void visibilityChanged(SystemUiVisibility.Flag newFlag) 
 		{
-			debug_log "Visibility has changed";
-			if(~(newFlag & (SystemUiVisibility.Flag.Fullscreen | SystemUiVisibility.Flag.HideNavigation)) == 0) 
+			if((newFlag & (SystemUiVisibility.Flag.Fullscreen | SystemUiVisibility.Flag.HideNavigation)) == 0) 
 			{
-				_actualShow = Visibility.None;
+				_actualShow = ActualVisibility.All;
 			}
 			else if((newFlag & SystemUiVisibility.Flag.HideNavigation) != 0) 
 			{
-				_actualShow = Visibility.Status;
+				_actualShow = ActualVisibility.Status;
+			}
+			else if((newFlag & SystemUiVisibility.Flag.Fullscreen) != 0) 
+			{
+				_actualShow = ActualVisibility.Navigation;
 			}
 			else 
 			{
-				_actualShow = Visibility.All;
+				_actualShow = ActualVisibility.None;
 			}
-			debug_log "New actual visibility: " + _actualShow.ToString();
-			OnPropertyChanged(_actualShowName);
 
 			//Reset the timer anyways, in case the state changed to what we want
 			if(_timer!=null) 
@@ -94,38 +102,18 @@ namespace Fuse.Android
 				_timer = null;
 			}
 			//Was things changed due to an outside influence?
-			if(_show != _actualShow) 
+			if((int)_show != (int)_actualShow) //Cheeky 
 			{
 				_timer = Timer.Wait(_resetDelay, timerDone);
-				debug_log "Scheduled a timer because the state changed due to outside effects. Show is " + _show.ToString() + ", actualShow is " + _actualShow.ToString();
 			}
 		}
 
 		private extern(Android) void timerDone()
 		{
-			debug_log "Timer called back!";
 			setShow(_show);
 		}
 
-		private Selector _actualShowName = "ActualShow";
-		private Visibility _actualShow = Visibility.None;
-		[UXOriginSetter("SetActualShow")]
-		public Visibility ActualShow
-		{
-			get
-			{
-				return _actualShow;
-			}
-			set
-			{
-				//Fuse.Diagnostics.UserError( "ActualShow does not have a setter", this );
-			}
-		}
-
-		public void SetActualShow(Visibility value, IPropertyListener origin)
-		{
-			//Only needed because fuselibs it in order to propagate property change events properly.
-		}
+		private ActualVisibility _actualShow = ActualVisibility.None;
 
 		private float _resetDelay = 5f;
 		public float ResetDelay
@@ -151,7 +139,6 @@ namespace Fuse.Android
 			{
 				if defined(Android)
 				{ 
-					debug_log "Show updated to " + value.ToString();
 					_show = value;
 					setShow(value);
 				}

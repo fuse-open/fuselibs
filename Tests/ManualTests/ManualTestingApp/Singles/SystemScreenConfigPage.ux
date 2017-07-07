@@ -2,11 +2,10 @@
 	<InfoStack ux:Key="Info">
 		<p>Buttons should show and hide status bar and navigation bar parts of the system user interface.</p>
 	</InfoStack>
-	<Android.SystemScreenConfig Show="{displayValue}" ActualShow="{actualShow}"/>
+	<Android.SystemScreenConfig Show="{displayValue}" />
 	<JavaScript>
 		var Observable = require("FuseJS/Observable");
 		var displayValue = Observable("All");
-		var actualShow = Observable("All");
 		function status() {
 			displayValue.value = "Status";
 		}
@@ -20,8 +19,7 @@
 			status: status,
 			all: all,
 			none: none,
-			displayValue: displayValue,
-			actualShow: actualShow
+			displayValue: displayValue
 		}
 	</JavaScript>
 	<ScrollView>
@@ -35,13 +33,6 @@
 			<Text FontSize="12" TextWrapping="Wrap" Margin="0,0,0,20">Navigation bar might only turn transparent background on some systems</Text>
 			<Text>Navigation bar and status bar should be shown:</Text>
 			<StdButton Clicked="{all}" Text="All" Margin="20"/>
-
-			<Text>Press this button:</Text>
-			<StdButton Clicked="{none}" Text="Press me!" Margin="20,50,20,20"/>
-
-			<Text TextWrapping="Wrap">Swipe down from the top of the device to bring back the status bar manually</Text>
-			<Text TextWrapping="Wrap">Verify that the label below changes, then changes back to `None` after 5 seconds</Text>
-			<Text Value="{actualShow}" TextAlignment="Center"/>
 		</StackPanel>
 	</ScrollView>
 </Page>

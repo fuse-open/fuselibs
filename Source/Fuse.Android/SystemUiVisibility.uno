@@ -15,6 +15,7 @@ namespace Fuse.Android
 	//Requires android SDK version 16 or newer(Jelly Bean)
 	extern(Android) internal static class SystemUiVisibility
 	{
+		[Flags]
 		public enum Flag 
 		{
 			None = 0,
@@ -57,7 +58,6 @@ namespace Fuse.Android
 					View decorView = com.fuse.Activity.getRootActivity().getWindow().getDecorView();
 					decorView.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
 						public void onSystemUiVisibilityChange(int visibility) {
-							debug_log("Visibility changed: " + visibility);
 							@{callEvent(int):Call(visibility)};
 						}
 					});
@@ -67,7 +67,6 @@ namespace Fuse.Android
 
 		private static void callEvent(int flags) 
 		{
-			debug_log "Calling visibility changed event";
 			if(VisibilityChanged != null)
 				VisibilityChanged((Flag)flags);
 		}
