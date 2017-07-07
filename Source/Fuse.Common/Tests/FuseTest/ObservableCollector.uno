@@ -26,7 +26,7 @@ namespace FuseTest
 		
 		bool _listening;
 		IObservableArray _items;
-		Uno.IDisposable _subscription;
+		ISubscription _subscription;
 		
 		public object Items
 		{
