@@ -11,11 +11,11 @@ namespace Fuse.Triggers
 	public enum WhileVisibleInScrollViewHow
 	{
 		/**
-			Activates the `WhileVisibleInScrollView` trigger when at least some of the element bounds are in view.
+			Activates while the element is at least partially within the ScrollView.
 		*/
 		Partial,
 		/**
-			Activates the `WhileVisibleInScrollView` trigger when all of the element bounds are in view.
+			Activates while the element is completely visible within the ScrollView.
 		*/
 		Full,
 	}
