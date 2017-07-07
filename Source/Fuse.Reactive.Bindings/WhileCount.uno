@@ -84,7 +84,7 @@ namespace Fuse.Reactive
 				
 			if (_subscription != null) _subscription.Dispose();
 			
-			var obs = _items as IObservable;
+			var obs = _items as IObservableArray;
 			if (obs != null)
 				_subscription = obs.Subscribe(this);
 			
@@ -103,7 +103,7 @@ namespace Fuse.Reactive
 				return;
 			}
 			
-			var obs = _items as IObservable;
+			var obs = _items as IObservableArray;
 			if (obs != null)
 			{
 				Assess(obs.Length);

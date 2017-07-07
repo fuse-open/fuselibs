@@ -331,7 +331,7 @@ namespace Fuse.Reactive
 
 			RemoveAll();
 
-			var obs = _items as IObservable;
+			var obs = _items as IObservableArray;
 			if (obs != null)
 			{
 				if (_subscription != null) _subscription.Dispose();
@@ -448,6 +448,7 @@ namespace Fuse.Reactive
 			var prevOCP =(this as Node.ISubtreeDataProvider).GetData(n);
 			object nextData = null;
 			
+			// If the data is a single-value observable (`IObservable`), create an observable link
 			var obs = data as IObservable;
 			if (obs != null)
 			{
