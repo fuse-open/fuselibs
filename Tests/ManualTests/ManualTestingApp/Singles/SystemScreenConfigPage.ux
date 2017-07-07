@@ -6,6 +6,7 @@
 	<JavaScript>
 		var Observable = require("FuseJS/Observable");
 		var displayValue = Observable("All");
+		var actualShow = Observable("All");
 		function status() {
 			displayValue.value = "Status";
 		}
@@ -33,6 +34,11 @@
 			<Text FontSize="12" TextWrapping="Wrap" Margin="0,0,0,20">Navigation bar might only turn transparent background on some systems</Text>
 			<Text>Navigation bar and status bar should be shown:</Text>
 			<StdButton Clicked="{all}" Text="All" Margin="20"/>
+
+			<Text>Press this button:</Text>
+			<StdButton Clicked="{none}" Text="Press me!" Margin="20,50,20,20"/>
+
+			<Text TextWrapping="Wrap">Swipe down from the top of the device to bring back the status bar manually</Text>
 		</StackPanel>
 	</ScrollView>
 </Page>

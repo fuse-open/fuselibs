@@ -11,15 +11,16 @@ namespace Fuse.Android
 		# Note
 
 		 * You are not allowed to have the navigation bar visible alone. This is a general rule for Android, and is therefore enforced here
-		 * The user can change this state themselves, for example through swiping down from the top of the display.
+		 * The user can change this state themselves, for example through swiping down from the top of the display. Fuse will automatically revert such changes after a time set by `ResetDelay`
+		 * Setting `ResetDelay` to 0 disables this behavior
 
 		# Example
 
-		The following example allows the user to control the status bar and navigation bar state through three buttons.
+		The following example allows the user to control the status bar and navigation bar state through three buttons. If the user manually changes the visibility state of the bars, it will be reverted after 2 seconds.
 
 			<App>
 				<ClientPanel Color="#2196F3">
-					<Android.SystemScreenConfig Show="{displayValue}" />
+					<Android.SystemScreenConfig Show="{displayValue}" ResetDelay="2"/>
 					<JavaScript>
 						var Observable = require("FuseJS/Observable");
 						var displayValue = Observable("All");
@@ -102,7 +103,7 @@ namespace Fuse.Android
 				_timer = null;
 			}
 			//Was things changed due to an outside influence?
-			if((int)_show != (int)_actualShow) //Cheeky 
+			if((int)_show != (int)_actualShow && _resetDelay != Float.ZeroTolerance) //Cheeky 
 			{
 				_timer = Timer.Wait(_resetDelay, timerDone);
 			}
@@ -116,6 +117,10 @@ namespace Fuse.Android
 		private ActualVisibility _actualShow = ActualVisibility.None;
 
 		private float _resetDelay = 5f;
+		/** 
+			Time before a change to the visibility from the outside is reverted to `State`. 
+			Set to `0` to disable.
+		*/ 
 		public float ResetDelay
 		{
 			get
