@@ -21,6 +21,7 @@
     "Fuse.Common.Test.Helpers",
     "Fuse.Reactive.Bindings",
     "Fuse.Reactive.Expressions",
+    "Fuse.Expressions.Test",
     "Fuse.Reactive.JavaScript",
     "Fuse.Scripting.Test",
     "Fuse.Selection",
