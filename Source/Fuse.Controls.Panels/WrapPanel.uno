@@ -88,6 +88,13 @@ namespace Fuse.Controls
 			get { return _wrapLayout.RowAlignment; }
 			set { _wrapLayout.RowAlignment = value; }
 		}
+
+		/** The alignment of the content within the wrap panel rows. */
+		public Alignment ContentAlignment
+		{
+			get { return _wrapLayout.ContentAlignment; }
+			set { _wrapLayout.ContentAlignment = value; }
+		}
 		
 		readonly WrapLayout _wrapLayout;
 

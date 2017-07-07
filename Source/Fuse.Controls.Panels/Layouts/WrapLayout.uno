@@ -78,6 +78,20 @@ namespace Fuse.Layouts
 				}
 			}
 		}
+
+		Alignment _contentAlignment = Alignment.Default;
+		public Alignment ContentAlignment
+		{
+			get { return _contentAlignment; }
+			set
+			{
+				if (_contentAlignment != value)
+				{
+					_contentAlignment = value;
+					InvalidateLayout();
+				}
+			}
+		}
 		
 		OptionalSimpleAlignment EffectiveRowAlignment
 		{
@@ -135,6 +149,7 @@ namespace Fuse.Layouts
 			var placements = new float4[elements.Count];
 			//minorMaxSize in each major row, assinged per element
 			var minorSizes = new float[elements.Count];
+			var majorRest = new Dictionary<float, float>();
 			//where this row starts
 			int majorStart = 0;
 			
@@ -172,6 +187,7 @@ namespace Fuse.Layouts
 				placements[i].Y = minorUsed;
 				minorMaxSize = Math.Max(minorMaxSize, cminorSize);
 				majorUsed += cmajorSize;
+				majorRest[minorUsed] = majorAvail - majorUsed;
 			}
 
 			//final bits
@@ -207,6 +223,12 @@ namespace Fuse.Layouts
 							//stretchs to fill
 							placement.W = minorSizes[i];
 							break;
+					}
+
+					if (ContentAlignment == Alignment.Center) {
+						debug_log "Center";
+						debug_log majorRest[placements[i].Y];
+						placement.X += majorRest[placements[i].Y] / 2;
 					}
 					
 					if (IsVert)
