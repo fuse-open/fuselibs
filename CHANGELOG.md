@@ -8,6 +8,8 @@
 - Added templates to `NodeGroup`, which can now be used in `Each.TemplateSource` and `Instance.TemplateSource`
 - `Each`, using `TemplateSource`, will no longer respond to template changes after rooting. This was done to simplify the code, and to support alternate sources, and is a minor perf improvement. It's not likely to affect any code since it didn't work correctly, and there's no way in UX to modify templates after rooting.
 - A memory leak was fixed by changing `Instantiator.TemplateSource` to a WeakReference. Only if you assigned this property a tempoary value in Uno would this change impact your code.
+## Asset
+- Added new `Asset` class which can reuse the visual appearance of UX classes that look identical for a given set of properties as a shared bitmap. Can be used as an optimization.
 
 ## Optimizations
 - Optimized hit testing calculations. Improves scrolling in large scroll views with deep trees inside, among other things.
