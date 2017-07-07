@@ -56,18 +56,6 @@ namespace Fuse.Controls.ScrollViewTest
 				Assert.AreEqual(1, TriggerProgress(sv.W3.V3) );
 				Assert.AreEqual(1, TriggerProgress(sv.W4.V3) );
 				Assert.AreEqual(1, TriggerProgress(sv.W5.V3) );
-			
-				Assert.AreEqual(0, TriggerProgress(sv.W1.V4) );
-				Assert.AreEqual(0, TriggerProgress(sv.W2.V4) );
-				Assert.AreEqual(0, TriggerProgress(sv.W3.V4) );
-				Assert.AreEqual(0, TriggerProgress(sv.W4.V4) );
-				Assert.AreEqual(0, TriggerProgress(sv.W5.V4) );
-
-				Assert.AreEqual(0, TriggerProgress(sv.W1.V5) );
-				Assert.AreEqual(0, TriggerProgress(sv.W2.V5) );
-				Assert.AreEqual(0, TriggerProgress(sv.W3.V5) );
-				Assert.AreEqual(0, TriggerProgress(sv.W4.V5) );
-				Assert.AreEqual(0, TriggerProgress(sv.W5.V5) );
 			}
 		}
 	}
