@@ -164,8 +164,8 @@ namespace Fuse.Triggers
 			switch (_how)
 			{
 				case WhileVisibleInScrollViewHow.Full:
-					var distStart = _scrollable.ToScalarPosition(_scrollable.DistanceFromView(min, max, Fuse.Controls.ScrollViewBase.DistanceFromViewTarget.Start));
-					var distEnd = _scrollable.ToScalarPosition(_scrollable.DistanceFromView(min, max, Fuse.Controls.ScrollViewBase.DistanceFromViewTarget.End));
+					var distStart = _scrollable.ToScalarPosition(_scrollable.DistanceFromView(min, Fuse.Controls.ScrollViewBase.DistanceFromViewTarget.Start));
+					var distEnd = _scrollable.ToScalarPosition(_scrollable.DistanceFromView(max, Fuse.Controls.ScrollViewBase.DistanceFromViewTarget.End));
 					isInView = (distStart > (maxDist - float.ZeroTolerance)) && (distEnd > (maxDist - float.ZeroTolerance));
 					break;
 				case WhileVisibleInScrollViewHow.Partial:

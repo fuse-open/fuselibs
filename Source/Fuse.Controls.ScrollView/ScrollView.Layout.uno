@@ -236,40 +236,33 @@ namespace Fuse.Controls
 		internal enum DistanceFromViewTarget
 		{
 			/**
-				When used in `DistanceFromView` method, measures the distance from the view start.
+				Measures the distance from the view start.
 			*/
 			Start,
 			/**
-				When used in `DistanceFromView` method, measures the distance from the view end.
+				Measures the distance from the view end.
 			*/
-			End
+			End,
 		}
 		/**
-			The distance from the visible view area start or end for the provided rectangle. It will be zero if any part of it resides before or after the view area start, respectively.
+			The distance from the visible view area start or end for the provided rectangle.
 		*/
-		internal float2 DistanceFromView(float2 min, float2 max, DistanceFromViewTarget target)
+		internal float2 DistanceFromView(float2 position, DistanceFromViewTarget target)
 		{
-			var res = float2(0,0);
 			float x = 0;
 			float y = 0;
 			switch (target)
 			{
 				case DistanceFromViewTarget.Start:
-					if (min.X > ScrollPosition.X)
-						x = min.X - ScrollPosition.X;
-					if (min.Y > ScrollPosition.Y)
-						y = min.Y - ScrollPosition.Y;
-					res = float2(x,y);
+					x = position.X - ScrollPosition.X;
+					y = position.Y - ScrollPosition.Y;
 					break;
 				case DistanceFromViewTarget.End:
-					if (max.X < (ScrollPosition.X + ActualSize.X) )
-						x = (ScrollPosition.X + ActualSize.X) - max.X;
-					if (max.Y < (ScrollPosition.Y + ActualSize.Y) )
-						y = (ScrollPosition.Y + ActualSize.Y) - max.Y;
-					res = float2(x,y);
+					x = (ScrollPosition.X + ActualSize.X) - position.X;
+					y = (ScrollPosition.Y + ActualSize.Y) - position.Y;
 					break;
 			}
-			return res;
+			return float2(x,y);
 		}
 	}
 }
