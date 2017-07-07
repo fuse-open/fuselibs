@@ -104,5 +104,24 @@ namespace Fuse.Controls.Panels.Test
 				Assert.AreEqual( float4(20,100,20,100), ActualPositionSize(p.R4));
 			}
 		}
+
+		[Test]
+		public void ContentAlignment()
+		{
+			var p = new UX.WrapPanel.ContentAlignment();
+			using (var root = TestRootPanel.CreateWithChild(p,int2(200,1000)))
+			{
+				Assert.AreEqual( float4(0,4,100,2), ActualPositionSize(p.P1));
+				Assert.AreEqual( float4(100,0,100,10), ActualPositionSize(p.P2));
+				Assert.AreEqual( float4(0,10,100,30), ActualPositionSize(p.P3));
+				Assert.AreEqual( float4(100,15,100,20), ActualPositionSize(p.P4));
+
+				Assert.AreEqual( float4(8,0,2,100), ActualPositionSize(p.R1));
+				Assert.AreEqual( float4(0,100,10,100), ActualPositionSize(p.R2));
+				Assert.AreEqual( float4(10,0,30,100), ActualPositionSize(p.R3));
+				Assert.AreEqual( float4(20,100,20,100), ActualPositionSize(p.R4));
+			}
+		}
+
 	}
 }

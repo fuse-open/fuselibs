@@ -66,11 +66,15 @@ namespace Fuse.Layouts
 		}
 
 		Alignment _rowAlignment = Alignment.Default;
+		/**
+			@deprecated 2017-07-07
+		*/
 		public Alignment RowAlignment
 		{
 			get { return _rowAlignment; }
 			set
 			{
+				Fuse.Diagnostics.Deprecated( "Use ContentAlignment instead of RowAlignment.", this );
 				if (_rowAlignment != value)
 				{
 					_rowAlignment = value;
@@ -149,6 +153,7 @@ namespace Fuse.Layouts
 			var placements = new float4[elements.Count];
 			//minorMaxSize in each major row, assinged per element
 			var minorSizes = new float[elements.Count];
+			// save the available space for each row
 			var majorRest = new Dictionary<float, float>();
 			//where this row starts
 			int majorStart = 0;
@@ -199,6 +204,12 @@ namespace Fuse.Layouts
 			if (doArrange)
 			{	
 				var sa = EffectiveRowAlignment;
+				var eca = ContentAlignment;
+				var sca = IsVert ? AlignmentHelpers.GetVerticalSimpleAlignOptional(ContentAlignment) : AlignmentHelpers.GetHorizontalSimpleAlignOptional(ContentAlignment);
+				if (eca != Alignment.Default)
+				{
+					sa = IsVert ? AlignmentHelpers.GetHorizontalSimpleAlignOptional(ContentAlignment) : AlignmentHelpers.GetVerticalSimpleAlignOptional(ContentAlignment);
+				}
 				var elp = lp.CloneAndDerive();
 				for (int i=0; i < elements.Count; ++i)
 				{
@@ -225,10 +236,18 @@ namespace Fuse.Layouts
 							break;
 					}
 
-					if (ContentAlignment == Alignment.Center) {
-						debug_log "Center";
-						debug_log majorRest[placements[i].Y];
-						placement.X += majorRest[placements[i].Y] / 2;
+					switch (sca)
+					{
+						case OptionalSimpleAlignment.Begin:
+							break;
+						case OptionalSimpleAlignment.End:
+							placement.X += majorRest[placements[i].Y];
+							break;
+						case OptionalSimpleAlignment.Center:
+							placement.X += majorRest[placements[i].Y] / 2;
+							break;
+						case OptionalSimpleAlignment.None:
+							break;
 					}
 					
 					if (IsVert)
