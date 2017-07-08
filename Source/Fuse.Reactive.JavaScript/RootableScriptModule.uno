@@ -19,8 +19,20 @@ namespace Fuse.Reactive
 			_names = names;
 		}
 
+		ModuleInstance _currentInstance;
+		public ModuleResult EvaluateInstance(Context c, string globalId, ModuleInstance inst)
+		{
+			_currentInstance = inst;
+			var res = Evaluate(c, globalId);
+			_currentInstance = null;
+			return res;
+		}
+
 		public override void Evaluate(Context c, ModuleResult result)
 		{
+			if (_currentInstance != null) 
+				_currentInstance.DecorateModule(result);
+
 			EnsureClassInstanceRooted();
 			base.Evaluate(c, result);
 		}
