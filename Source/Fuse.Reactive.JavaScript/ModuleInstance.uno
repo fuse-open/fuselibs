@@ -74,7 +74,7 @@ namespace Fuse.Reactive
 
 			lock (_resetHookMutex)
 			{
-				var newModuleResult = _js.ScriptModule.Evaluate(_worker.Context, globalId);
+				var newModuleResult = _js.ScriptModule.EvaluateInstance(_worker.Context, globalId, this);
 				newModuleResult.AddDependency(_js.DispatchEvaluate);
 
 				if (newModuleResult.Error == null)
@@ -106,6 +106,19 @@ namespace Fuse.Reactive
 					}
 				}
 			}
+		}
+
+		// Mutator interface
+		public void DecorateModule(ModuleResult result)
+		{
+			var module = result.Object;
+			module["set"] = (Callback)Set;
+		}
+
+		object Set(object[] args)
+		{
+			debug_log "Set was called!";
+			return null;
 		}
 	}
 }
