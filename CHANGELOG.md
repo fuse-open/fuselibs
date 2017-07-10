@@ -1,5 +1,8 @@
 # Unreleased
 
+## Router
+- Added `findRouter` function making it easier to use a router in a page deep inside the UI
+
 ## Templates
 - Added `Identity` and `IdentityKey` to `Each`. This allows created visuals to be reused when replaced with `replaceAt` or `replaceAll` in an Observable.
 - Triggers may now use templates which will be instantiated and added to the parent when active (like a node child).
