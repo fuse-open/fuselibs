@@ -47,6 +47,9 @@
 
 # 1.1
 
+### WhileActive
+- Fixed a crash in the rooting of certain tree structures using any of the Navigation triggers such as `WhileActive`
+
 ### Fuse.ImageTools
 - Fixed bug preventing handling of KEEP_ASPECT resize mode on Android when using ImageTools.resize 
 

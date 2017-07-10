@@ -77,6 +77,12 @@ namespace Fuse.Navigation
 				_ready(this);
 		}
 		
+		/** @returns true if it is ready (the Page and Navigation objects are available) */
+		public bool IsReady
+		{
+			get { return _navigation != null; }
+		}
+		
 		void OnPageRootingCompleted()
 		{
 			if (!_waitRootingCompleted || Page == null || _source == null)
