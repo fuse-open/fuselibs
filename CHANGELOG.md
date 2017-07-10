@@ -1,5 +1,9 @@
 # Unreleased
 
+## JavaScript Exports Mutation API
+- The Exports Mutation API is a set of functions that can be used from `<JavaScript>` modules to notify the data context that an exported value has changed. This allows reactive programming without using Observables.
+  * `module.set(.. path .., value)` changes the value at the given `path`  in the `module.exports` to `value`. For example `module.set("foo", "bar", 3)` is equivalent to setting `exports.foo.bar = 3`, while notifying the data context about the change.
+
 ## Fuse.Reactive cleanup (Uno-level)
 - The `Fuse.IRaw` interface removed (now internal to the `Fuse.Reactive.JavaScript` package). Had no practical public use.
 - The `Fuse.Reactive.ListMirror` class is no longer public. This was never intended to be public and has no practical public application.
