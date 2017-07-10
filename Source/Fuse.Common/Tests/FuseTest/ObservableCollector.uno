@@ -26,7 +26,7 @@ namespace FuseTest
 		
 		bool _listening;
 		IObservableArray _items;
-		ISubscription _subscription;
+		IDisposable _subscription;
 		
 		public object Items
 		{
@@ -55,7 +55,7 @@ namespace FuseTest
 			CleanSubscription();
 			if (_items == null)
 				return;
-			_subscription = (ISubscription)_items.Subscribe(this);
+			_subscription = (IDisposable)_items.Subscribe(this);
 		}
 		
 		void CleanSubscription()
