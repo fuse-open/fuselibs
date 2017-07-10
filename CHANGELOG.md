@@ -2,6 +2,7 @@
 
 ## Fuse.Reactive cleanup (Uno-level)
 - The `Fuse.IRaw` interface removed (now internal to the `Fuse.Reactive.JavaScript` package). Had no practical public use.
+- The `Fuse.Reactive.ListMirror` class is no longer public. This was never intended to be public and has no practical public application.
 - Added detailed docs for many of the interfaces in the `Fuse.Reactive` namespace.
 
 ## Templates
