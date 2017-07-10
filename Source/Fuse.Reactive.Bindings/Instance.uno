@@ -695,7 +695,7 @@ namespace Fuse.Reactive
 		string _matchKey;
 
 		/** Name of the field on each data object which selects templates for the data objects.
-		
+
 			If set, the `Each` will instantiate the template with a name matching the `MatchKey` instead of the 
 			default template for each data item.
 
