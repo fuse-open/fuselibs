@@ -17,7 +17,4 @@
 			<FuseTest.DudElement Value="{value}" Height="10"/>
 		</Each>
 	</StackPanel>
-	
-	<FuseTest.Invoke Handler="{add}" ux:Name="CallAdd"/>
-	<FuseTest.Invoke Handler="{remove}" ux:Name="CallRemove"/>
 </Panel>

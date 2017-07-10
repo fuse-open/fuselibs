@@ -1,7 +1,7 @@
 <Panel ux:Class="UX.Instance.TemplateNodeGroup">
 	<NodeGroup ux:Class="TNGItem">
 		<Instance TemplateSource="this" TemplateKey="item">
-			<Text Value="zero"/>
+			<Text Value="zero" ux:DefaultTemplate="true"/>
 		</Instance>
 	</NodeGroup>
 

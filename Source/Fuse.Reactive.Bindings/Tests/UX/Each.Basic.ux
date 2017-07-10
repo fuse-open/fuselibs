@@ -1,14 +1,14 @@
-<Panel ux:Class="UX.EachOrder">
+<Panel ux:Class="UX.Each.Basic">
 	<JavaScript>
 		var Observable = require("FuseJS/Observable")
 		
 		var count = 0
 		function Item() {
-			this.id = "Q" + (count++)
+			this.id = count++
 		}
 		
 		exports.items = Observable()
-		for (var i=0; i < 2; ++i) {
+		for (var i=0; i < 30; ++i) {
 			exports.items.add( new Item() )
 		}
 
@@ -17,17 +17,25 @@
 		}
 		
 		exports.remove = function() {
-			exports.items.remove(exports.items.getAt(0))
+			exports.items.remove(exports.items.getAt(5))
+		}
+
+		exports.removeAt = function() {
+			exports.items.removeAt(5)
+		}
+		
+		exports.clear = function() {
+			exports.items.clear()
 		}
 	</JavaScript>
 	<StackPanel ux:Name="C1">
-		<Panel ux:Name="C2"/>
 		<Each Items="{items}">
-			<Panel Name="{id}"/>
+			<Text Value="{id}"/>
 		</Each>
-		<Panel ux:Name="C3"/>
 	</StackPanel>
 	
 	<FuseTest.Invoke Handler="{add}" ux:Name="CallAdd"/>
 	<FuseTest.Invoke Handler="{remove}" ux:Name="CallRemove"/>
+	<FuseTest.Invoke Handler="{removeAt}" ux:Name="CallRemoveAt"/>
+	<FuseTest.Invoke Handler="{clear}" ux:Name="CallClear"/>
 </Panel>

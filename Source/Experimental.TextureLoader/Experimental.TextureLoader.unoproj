@@ -2,7 +2,7 @@
   "Copyright": "Copyright (c) Fusetools AS 2015",
   "Description": "Experimental.TextureLoader",
   "Publisher": "Fuse",
-  "Version": "1.1.0-rc2",
+  "Version": "1.1.0",
   "Includes": [
     "TextureLoader.uno:Source",
     "TextureLoaderImpl.uno:Source",
