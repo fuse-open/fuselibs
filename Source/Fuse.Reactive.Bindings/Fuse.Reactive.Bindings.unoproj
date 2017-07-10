@@ -23,6 +23,7 @@
   ],
   "InternalsVisibleTo": [
     "Fuse.Reactive.JavaScript.Test",
+    "Fuse.Reactive.Bindings.Test",
     "Fuse.Reactive.Test",
     "Fuse.Reactive.JavaScript",
     "Fuse.Scripting.Test",
@@ -30,5 +31,8 @@
   ],
   "Includes": [
     "*"
+  ],
+  "Excludes": [
+    "Tests/*",
   ]
 }

@@ -12,11 +12,28 @@ namespace FuseTest
 	{
 		public float Value { get; set; }
 		
+		public string StringValue { get; set; }
+
+		public object UseValue 
+		{
+			get
+			{
+				if (StringValue != null)
+					return StringValue;
+				return Value;
+			}
+		}
+		
 		protected override float2 GetContentSize( LayoutParams lp )
 		{
 			return float2(0);
 		}
 		
 		protected override void OnDraw(Fuse.DrawContext dc) { }
+		
+		public override string ToString()
+		{
+			return "Dud@" + GetHashCode() + "=" + UseValue;
+		}
 	}
 }

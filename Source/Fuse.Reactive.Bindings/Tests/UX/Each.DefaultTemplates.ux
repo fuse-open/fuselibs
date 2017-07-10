@@ -1,0 +1,42 @@
+<Panel ux:Class="UX.Each.DefaultTemplates">
+	<Panel ux:Name="b">
+		<JavaScript>
+			exports.items = [ { key: "one" }, { key: "two" }, { blargh: "none" } ]
+		</JavaScript>
+		<Each Items="{items}" MatchKey="key">
+			<FuseTest.DudElement ux:Template="two" StringValue="X"/>
+			<FuseTest.DudElement StringValue="N"/>
+			<FuseTest.DudElement StringValue="Y" ux:DefaultTemplate="true"/>
+		</Each>
+	</Panel>
+
+	
+	<Panel ux:Name="c">
+		<Each Count="1" TemplateKey="one" TemplateSource="c">
+			<FuseTest.DudElement StringValue="X"/>
+		</Each>
+		
+		<FuseTest.DudElement ux:Template="one" StringValue="A"/>
+	</Panel>
+	
+	<Panel ux:Name="d">
+		<Each Count="1" TemplateKey="one" TemplateSource="c">
+			<FuseTest.DudElement StringValue="X"/>
+			<FuseTest.DudElement ux:Template="one" StringValue="Q" ux:DefaultTemplate="true"/>
+		</Each>
+	</Panel>
+	
+	<Panel ux:Name="e">
+		<Each Count="1" TemplateKey="one" TemplateSource="e">
+			<FuseTest.DudElement StringValue="X"/>
+			<FuseTest.DudElement ux:Template="one" StringValue="Q" ux:DefaultTemplate="true"/>
+		</Each>
+	</Panel>
+	
+	<Panel ux:Name="f">
+		<Each Count="1">
+			<FuseTest.DudElement StringValue="A"/>
+			<FuseTest.DudElement StringValue="A" ux:Template="two"/><!-- name irrelevant when not matching -->
+		</Each>
+	</Panel>
+</Panel>
