@@ -4,7 +4,13 @@ using Uno.Threading;
 
 namespace Fuse.Reactive
 {
-	public abstract class ValueMirror: IRaw
+	/** Represents a raw JS object */
+	interface IRaw
+	{
+		object Raw { get; }
+	}
+
+	abstract class ValueMirror: IRaw
 	{
 		public abstract void Unsubscribe();
 
