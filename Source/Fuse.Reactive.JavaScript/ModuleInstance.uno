@@ -4,7 +4,12 @@ using Fuse.Scripting;
 
 namespace Fuse.Reactive
 {
-	class ModuleInstance: DiagnosticSubject
+	interface IMutable
+	{
+		void Set(object[] args, int pos);
+	}
+
+	partial class ModuleInstance: DiagnosticSubject
 	{
 		readonly ThreadWorker _worker;
 		readonly JavaScript _js;
@@ -25,7 +30,12 @@ namespace Fuse.Reactive
 		void Evaluate()
 		{
 			_js.ScriptModule.Dependencies = _deps;
-			_dc = _worker.Reflect(EvaluateExports());
+			JSThreadSetDataContext(EvaluateExports());
+		}
+
+		void JSThreadSetDataContext(object dc)
+		{
+			_dc = _worker.Reflect(dc);
 			UpdateManager.PostAction(SetDataContext);
 		}
 
@@ -106,19 +116,6 @@ namespace Fuse.Reactive
 					}
 				}
 			}
-		}
-
-		// Mutator interface
-		public void DecorateModule(ModuleResult result)
-		{
-			var module = result.Object;
-			module["set"] = (Callback)Set;
-		}
-
-		object Set(object[] args)
-		{
-			debug_log "Set was called!";
-			return null;
 		}
 	}
 }
