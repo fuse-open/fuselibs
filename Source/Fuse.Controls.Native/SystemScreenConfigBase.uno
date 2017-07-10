@@ -2,6 +2,7 @@ using Uno;
 using Uno.UX;
 using Uno.Collections;
 using Fuse;
+using Fuse.Internal;
 
 namespace Fuse.Controls
 {
@@ -17,16 +18,13 @@ namespace Fuse.Controls
 	        Full,
 	    }
 
-	    private static List<SystemScreenConfigBase> rootedConfigs = new List<SystemScreenConfigBase>();
+	    private static MiniList<SystemScreenConfigBase> rootedConfigs = new MiniList<SystemScreenConfigBase>();
 
 	    protected Timer _timer;
-		private bool _rooted;
 
 	    protected override void OnRooted()
 		{
 			base.OnRooted();
-
-			_rooted = true;
 
 			rootedConfigs.Add(this);
 
@@ -38,7 +36,6 @@ namespace Fuse.Controls
 			resetTimer();
 
 			rootedConfigs.Remove(this);
-			_rooted = false;
 		}
 
 		protected double calculateResetTime() 
