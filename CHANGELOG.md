@@ -1,5 +1,14 @@
 # Unreleased
 
+## Fuse.Reactive cleanup (Uno-level)
+- These changes shouldn't affect your code unless you are working against internal interfaces in `Fuse.Reactive` interfaces (unlikely): 
+  * Introduced `IObservableArray` as an intermediary interface between `IArray` and `IObservable`, which holds the `Subscribe()` method.
+  * Changed the return type of `IObservableArray.Subscribe` method from `ISubscription` to `IDisposable`. The method *may* still return
+    an `ISubscription`, but this is no longer guaranteed. The subscriber must check this manually (with `value is ISubscription`) if an 
+    `ISubscription` is anticipated.
+  * Introduced `IObservableObject` as a way for `IObject`s to propagate property changed events.
+- Added docs for many of the interfaces in the `Fuse.Reactive` namespace.
+
 ## Templates
 - Triggers may now use templates which will be instantiated and added to the parent when active (like a node child).
 	<WhileActive>

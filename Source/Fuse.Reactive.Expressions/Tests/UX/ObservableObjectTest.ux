@@ -1,0 +1,8 @@
+<Panel ux:Class="UX.ObservableObjectTest">
+	<With>
+		<Fuse.Reactive.Test.TestData ux:Binding="Data" ux:Name="d">
+			<Fuse.Reactive.Test.TestData ux:Name="td" Foo="Lol!" Bar="yaya" />
+		</Fuse.Reactive.Test.TestData>
+		<Text ux:Name="t">Hey there {Foo} and {Bar} and {Other.Foo} and {Other.Bar}!</Text>
+	</With>
+</Panel>

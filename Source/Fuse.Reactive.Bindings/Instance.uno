@@ -331,7 +331,7 @@ namespace Fuse.Reactive
 
 			RemoveAll();
 
-			var obs = _items as IObservable;
+			var obs = _items as IObservableArray;
 			if (obs != null)
 			{
 				if (_subscription != null) _subscription.Dispose();
@@ -448,6 +448,7 @@ namespace Fuse.Reactive
 			var prevOCP =(this as Node.ISubtreeDataProvider).GetData(n);
 			object nextData = null;
 			
+			// If the data is a single-value observable (`IObservable`), create an observable link
 			var obs = data as IObservable;
 			if (obs != null)
 			{
@@ -697,6 +698,9 @@ namespace Fuse.Reactive
 
 			If set, the `Each` will instantiate the template with a name matching the `MatchKey` instead of the 
 			default template for each data item.
+
+			> Note: `MatchKey` must be available synchronously at the time of instantiation. It cannot be an observable
+			or be changed after initial instantiation.
 
 			## Example
 
