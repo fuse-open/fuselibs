@@ -41,7 +41,8 @@ namespace Fuse.Reactive.Test
 			}
 			else if (args.Length == 1)
 			{
-				Assert.AreEqual(19, args[0].Value);
+				// Parenthesized comma-expressions should parse as vectors
+				Assert.AreEqual(float2(19,2), Marshal.ToFloat2(args[0].Value));
 			}
 			else if (args.Length != 0)
 			{
