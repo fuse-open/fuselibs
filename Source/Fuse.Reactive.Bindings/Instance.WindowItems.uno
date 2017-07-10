@@ -185,7 +185,7 @@ namespace Fuse.Reactive
 		*/
 		bool TryUpdateAt(int dataIndex, object newData)
 		{
-			if (ObjectMatch == InstanceObjectMatch.None)
+			if (Identity == InstanceIdentity.None)
 				return false;
 			
 			var windowIndex = DataToWindowIndex(dataIndex);
@@ -511,6 +511,10 @@ namespace Fuse.Reactive
 
 		internal int WindowItemsCount { get { return _windowItems.Count; } }
 		
+		/**
+			Matches the length of active items to the desired length based on `Offset` and `Limit`.
+			This will add missing items and remove excess items.
+		*/
 		void TrimAndPad()
 		{
 			//trim excess

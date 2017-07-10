@@ -6,6 +6,11 @@ using Fuse.Internal;
 
 namespace Fuse.Reactive
 {
+	/**
+		Allows for the deferred creation of items to avoid processing bottlenecks.
+		
+		@see Instantiator.Defer
+	*/
 	public enum InstanceDefer
 	{
 		/** Items will be added immediately to the tree. */
@@ -16,6 +21,11 @@ namespace Fuse.Reactive
 		Deferred,
 	}
 	
+	/**
+		Which nodes can be reused as the items list changes.
+		
+		@see Instantiator.Reuse
+	*/
 	public enum InstanceReuse
 	{
 		/** Instances are not reused */
@@ -23,13 +33,18 @@ namespace Fuse.Reactive
 		/** Instances can be reused in the same frame */
 		Frame,
 	}
+
+	/**
+		How @Instance and @Each recognize an object is the same.
 	
-	public enum InstanceObjectMatch
+		@see Instantiator.Identity
+	*/
+	public enum InstanceIdentity
 	{
 		/** New objects are always new, never matched to an existing one */
 		None,
-		/** The `ObjectId` is used to compare objects. This is set implicitly if `ObjectId` is set. */
-		FieldId,
+		/** The `IdentityKey` is used to compare objects. This value is chosen implicitly if `IdentityKey` is used. */
+		Key,
 		/** Use the object itself as the matching key. Suitable for when the object is a plain string or number. */
 		Object,
 	}
@@ -91,27 +106,27 @@ namespace Fuse.Reactive
 			set { _reuse = value; }
 		}
 		
-		InstanceObjectMatch _objectMatch = InstanceObjectMatch.None;
+		InstanceIdentity _identity = InstanceIdentity.None;
 		/**
 			Reuses existing nodes if the new objects match the old ones.
 			
-			This field is typically set implicity. It defaults to `None`. Use `ObjectId` instead if you want to match based on a id field. 
+			This field is typically set implicity. It defaults to `None`. Use `IdentityKey` instead if you want to match based on a id field. 
 			
-			If you need to match on the observable value itself, set this to `Object`, otherwise it works like `ObjectId`
+			If you need to match on the observable value itself, set this to `Object`, otherwise it works like `IdentityKey`
 			
-			@see ObjectId
+			@see IdentityKey
 		*/
-		public InstanceObjectMatch ObjectMatch
+		public InstanceIdentity Identity
 		{
-			get { return _objectMatch; }
-			set { _objectMatch = value; }
+			get { return _identity; }
+			set { _identity = value; }
 		}
 		
-		string _objectId = null;
+		string _identityKey = null;
 		/**
 			If specified will reuse existing items if a new item is created that has the same id.
 			
-			The `ObjectId` is a key into the provided objects. If the key is not found the item will not have an id, and will not be matched.
+			The `IdentityKey` is a key into the provided objects. If the key is not found the item will not have an id, and will not be matched.
 			
 			Matched items keep the same Node instances that they had before. This makes it suitable for using in combination with `LayoutAnimation`. It also makes it possible to use `AddingAnimation` and `RemovingAnimation` with `Each`, as the Node lifetime will now follow the logical lifetime.
 			
@@ -120,13 +135,13 @@ namespace Fuse.Reactive
 			NOTE: This feature, if using animations, does not yet operate well in combination with `Reuse`. It may result in reuse of unintended items and/or unexpected animations.
 			https://github.com/fusetools/fuselibs-public/issues/175
 		*/
-		public string ObjectId
+		public string IdentityKey
 		{
-			get { return _objectId; }
+			get { return _identityKey; }
 			set 
 			{ 
-				_objectId = value; 
-				ObjectMatch = InstanceObjectMatch.FieldId;
+				_identityKey = value; 
+				Identity = InstanceIdentity.Key;
 			}
 		}
 		

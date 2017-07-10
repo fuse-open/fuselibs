@@ -107,7 +107,7 @@ namespace Fuse.Reactive
 		{
 			if (!IsListeningItems) return;
 
-			if (ObjectMatch != InstanceObjectMatch.None)
+			if (Identity != InstanceIdentity.None)
 				PatchTo(values);
 			else
 				RemoveAll(); //the TrimAndPad in `CompleteActionGood` restores the list

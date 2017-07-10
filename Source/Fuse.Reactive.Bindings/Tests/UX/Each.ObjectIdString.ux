@@ -1,4 +1,4 @@
-<Panel ux:Class="UX.Each.ObjectIdString">
+<Panel ux:Class="UX.Each.IdentityKeyString">
 	<JavaScript>
 		var Observable = require("FuseJS/Observable")
 
@@ -16,7 +16,7 @@
 		}
 	</JavaScript>
 	<StackPanel ux:Name="s">
-		<Each Items="{items}" Offset="0" Limit="5" ux:Name="e" ObjectMatch="Object">
+		<Each Items="{items}" Offset="0" Limit="5" ux:Name="e" Identity="Object">
 			<FuseTest.DudElement StringValue="{}" Height="10">
 				<RemovingAnimation>
 					<Nothing Duration="1"/>

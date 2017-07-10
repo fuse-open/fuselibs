@@ -16,7 +16,7 @@
 		}
 	</JavaScript>
 
-	<Each Items="{items}" Reuse="Frame" MatchKey="set" ObjectId="id" ux:Name="each">
+	<Each Items="{items}" Reuse="Frame" MatchKey="set" IdentityKey="id" ux:Name="each">
 		<FuseTest.DudElement ux:Template="one" Value="{value}"/>
 		<FuseTest.DudElement ux:Template="two" Value="100+{value}"/>
 	</Each>

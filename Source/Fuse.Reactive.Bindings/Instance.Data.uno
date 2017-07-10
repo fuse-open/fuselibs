@@ -107,20 +107,20 @@ namespace Fuse.Reactive
 		}
 		
 		/** 
-			Obtain the ID of an item based on the data. This uses the ObjectMatch properties. 
+			Obtain the ID of an item based on the data. This uses the Identity properties. 
 			@return id if found, null if not found or no matching ids configured
 		*/
 		object GetDataId(object data)
 		{
-			switch (ObjectMatch)
+			switch (Identity)
 			{
-				case InstanceObjectMatch.None:
+				case InstanceIdentity.None:
 					return null;
 					
-				case InstanceObjectMatch.FieldId:
-					return GetDataKey(data, ObjectId);
+				case InstanceIdentity.Key:
+					return GetDataKey(data, IdentityKey);
 					
-				case InstanceObjectMatch.Object:
+				case InstanceIdentity.Object:
 					return data;
 			}
 			
@@ -129,7 +129,7 @@ namespace Fuse.Reactive
 		
 		/* When the data item is an IObservable it will be subscribed to provide the actual data. 
 			Since this subscription can resolve later any of the standard data lookup, like Template
-			and ObjectId should not be used in combination with individual Observable items.
+			and IdentityKey should not be used in combination with individual Observable items.
  		*/
 		class ObservableLink: ValueObserver
 		{

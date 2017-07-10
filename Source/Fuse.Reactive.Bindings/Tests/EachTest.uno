@@ -486,9 +486,9 @@ namespace Fuse.Reactive.Test
 		}
 		
 		[Test]
-		public void ObjectId()
+		public void IdentityKey()
 		{
-			var e = new UX.Each.ObjectId();
+			var e = new UX.Each.IdentityKey();
 			using (var root = TestRootPanel.CreateWithChild(e))
 			{
 				root.StepFrameJS();
@@ -520,9 +520,9 @@ namespace Fuse.Reactive.Test
 		}
 		
 		[Test]
-		public void ObjectIdString()
+		public void IdentityKeyString()
 		{
-			var e = new UX.Each.ObjectIdString();
+			var e = new UX.Each.IdentityKeyString();
 			using (var root = TestRootPanel.CreateWithChild(e))
 			{
 				root.StepFrameJS();
@@ -554,9 +554,9 @@ namespace Fuse.Reactive.Test
 		}
 		
 		[Test]
-		public void ObjectIdOrder()
+		public void IdentityKeyOrder()
 		{
-			var e = new UX.Each.ObjectIdOrder();
+			var e = new UX.Each.IdentityKeyOrder();
 			using (var root = TestRootPanel.CreateWithChild(e))
 			{
 				root.StepFrameJS();

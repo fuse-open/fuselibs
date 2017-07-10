@@ -1,7 +1,7 @@
 # Unreleased
 
 ## Templates
-- Added `MatchId` to `Each`. This allows created visuals to be reused when replaced with `replaceAt` or `replaceAll` in an Observable.
+- Added `Identity` and `IdentityKey` to `Each`. This allows created visuals to be reused when replaced with `replaceAt` or `replaceAll` in an Observable.
 - Triggers may now use templates which will be instantiated and added to the parent when active (like a node child).
 	<WhileActive>
 		<Circle ux:Generate="Template" Color="#AFA" Width="50" Height="50" Alignment="BottomRight"/>
