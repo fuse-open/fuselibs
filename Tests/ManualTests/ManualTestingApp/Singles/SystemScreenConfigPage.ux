@@ -2,43 +2,58 @@
 	<InfoStack ux:Key="Info">
 		<p>Buttons should show and hide status bar and navigation bar parts of the system user interface.</p>
 	</InfoStack>
-	<Android.SystemScreenConfig Show="{displayValue}" />
+	<Android>
+		<SystemScreenConfig Show="{displayValue}" IsDim="{isDim}" />
+	</Android>
 	<JavaScript>
 		var Observable = require("FuseJS/Observable");
 		var displayValue = Observable("All");
 		var actualShow = Observable("All");
-		function status() {
-			displayValue.value = "Status";
+		var isDim = Observable("false");
+		function minimal() {
+			displayValue.value = "Minimal";
 		}
-		function all() {
-			displayValue.value = "All";
+		function full() {
+			displayValue.value = "Full";
 		}
 		function none() {
 			displayValue.value = "None";
 		}
+		function toggleDim() {
+			if(isDim.value == "false") {
+				isDim.value = "true";
+			} else {
+				isDim.value = "false";
+			}
+		}
 		module.exports = {
-			status: status,
-			all: all,
+			minimal: minimal,
+			full: full,
 			none: none,
-			displayValue: displayValue
+			displayValue: displayValue,
+			isDim: isDim,
+			toggleDim: toggleDim
 		}
 	</JavaScript>
 	<ScrollView>
 		<StackPanel>
+			<Text TextWrapping="Wrap">UI should turn more transparent, pressing again toggles:</Text>
+			<StdButton Clicked="{toggleDim}" Text="Minimal" Margin="20"/>
+
 			<Text>Navigation bar should be hidden:</Text>
-			<StdButton Clicked="{status}" Text="Status" Margin="20"/>
+			<StdButton Clicked="{minimal}" Text="Minimal" Margin="20"/>
 
 			<Text>Navigation bar and status bar should dissapear:</Text>
 			<StdButton Clicked="{none}" Text="None" Margin="20"/>
 
 			<Text FontSize="12" TextWrapping="Wrap" Margin="0,0,0,20">Navigation bar might only turn transparent background on some systems</Text>
 			<Text>Navigation bar and status bar should be shown:</Text>
-			<StdButton Clicked="{all}" Text="All" Margin="20"/>
+			<StdButton Clicked="{full}" Text="Full" Margin="20"/>
 
 			<Text>Press this button:</Text>
 			<StdButton Clicked="{none}" Text="Press me!" Margin="20,50,20,20"/>
 
-			<Text TextWrapping="Wrap">Swipe down from the top of the device to bring back the status bar manually</Text>
+			<Text TextWrapping="Wrap">Swipe down from the top of the device to bring back the status bar manually. It should dissapear again in 5 seconds.</Text>
 		</StackPanel>
 	</ScrollView>
 </Page>
