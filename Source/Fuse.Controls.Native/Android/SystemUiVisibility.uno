@@ -1,9 +1,8 @@
 using Uno;
 using Uno.Collections;
 using Uno.Compiler.ExportTargetInterop;
-using Fuse.Platform;
 
-namespace Fuse.Android
+namespace Fuse.Controls.Native
 {
 	[ForeignInclude(Language.Java,
 		"android.graphics.Color",

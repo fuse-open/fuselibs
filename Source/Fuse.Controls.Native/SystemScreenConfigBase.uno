@@ -3,7 +3,7 @@ using Uno.UX;
 using Uno.Collections;
 using Fuse;
 
-namespace Fuse.Controls.Native
+namespace Fuse.Controls
 {
 	/**
 		TODO write docs please
@@ -19,7 +19,7 @@ namespace Fuse.Controls.Native
 
 	    private static List<SystemScreenConfigBase> rootedConfigs = new List<SystemScreenConfigBase>();
 
-	    private Timer _timer;
+	    protected Timer _timer;
 		private bool _rooted;
 
 	    protected override void OnRooted()
@@ -39,14 +39,9 @@ namespace Fuse.Controls.Native
 
 			rootedConfigs.Remove(this);
 			_rooted = false;
-
-			if defined(Android) 
-			{
-				SystemUiVisibility.VisibilityChanged -= visibilityChanged;
-			}
 		}
 
-		private double calculateResetTime() 
+		protected double calculateResetTime() 
 		{
 			double lowestReset = _resetDelay;
 
@@ -57,7 +52,7 @@ namespace Fuse.Controls.Native
 			return lowestReset;
 		}
 
-		private void resetTimer() 
+		protected void resetTimer() 
 		{
 			if(_timer!=null) 
 			{
@@ -67,7 +62,7 @@ namespace Fuse.Controls.Native
 		}
 
 	    private Visibility _visibility;
-	    public Visibility Show 
+	    public virtual Visibility Show 
 	    { 
 	    	get
 	    	{
@@ -80,7 +75,7 @@ namespace Fuse.Controls.Native
 	    }
 
 	    private bool _showNavigation = true;
-	    public bool ShowNavigation 
+	    public virtual bool ShowNavigation 
 	    { 
 	    	get
 	    	{
@@ -93,7 +88,7 @@ namespace Fuse.Controls.Native
 	    }
 
 		private bool _showStatus = true;
-	    public bool ShowStatus 
+	    public virtual bool ShowStatus 
 	    { 
 	    	get
 	    	{
@@ -106,7 +101,7 @@ namespace Fuse.Controls.Native
 	    }
 
 	    private bool _isDim = false;
-	    public bool IsDim 
+	    public virtual bool IsDim 
 	    { 
 	    	get
 	    	{
@@ -122,7 +117,7 @@ namespace Fuse.Controls.Native
 	    //public Theme Theme { get; set; }
 
 	    private double _resetDelay = 5.0;
-	    public double ResetDelay 
+	    public virtual double ResetDelay 
 	    { 
 	    	get
 	    	{

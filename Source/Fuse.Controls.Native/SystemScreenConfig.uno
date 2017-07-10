@@ -2,7 +2,7 @@ using Uno;
 using Uno.UX;
 using Uno.Collections;
 
-namespace Fuse.Controls.Native
+namespace Fuse.Controls
 {
 	/**
 		Allows you to control certain aspects of the system UI. On android, this is the visible state of the status and navigation bar. 

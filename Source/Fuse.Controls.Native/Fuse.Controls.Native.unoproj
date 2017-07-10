@@ -38,5 +38,6 @@
     "Android/Java/VerticalScrollView.java:Java:Android",
     "Android/Java/ViewGroup.java:Java:Android",
     "Android/Java/CanvasViewGroup.java:Java:Android",
+    "Android/SystemUiVisibility.uno:SourceFile",
   ]
 }

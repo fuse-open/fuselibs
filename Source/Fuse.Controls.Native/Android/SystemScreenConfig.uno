@@ -2,8 +2,9 @@ using Uno;
 using Uno.UX;
 using Uno.Collections;
 using Fuse;
+using Fuse.Controls.Native;
 
-namespace Fuse.Controls.Native
+namespace Fuse.Controls
 {
 	/**
 		TODO write docs please
@@ -27,7 +28,7 @@ namespace Fuse.Controls.Native
 
 		private extern(Android) void visibilityChanged(SystemUiVisibility.Flag newFlag) 
 		{
-			SystemUiVisibility.Flag mask = SystemUiVisibility.Flag.Fullscreen | SystemUiVisibility.Flag.HideNavigation;
+			SystemUiVisibility.Flag mask = SystemUiVisibility.Flag.Fullscreen | SystemUiVisibility.Flag.HideNavigation | SystemUiVisibility.Flag.LowProfile;
 			SystemUiVisibility.Flag otherFlags = newFlag & (~mask);
 
 			SystemUiVisibility.Flag actualFlags = newFlag & mask;
@@ -94,12 +95,12 @@ namespace Fuse.Controls.Native
 	    	{
 	    		if(value)
 	    		{
-	    			_wantedFlags = wantedFlags ^ SystemUiVisibility.Flag.HideNavigation;
+	    			_wantedFlags = _wantedFlags ^ SystemUiVisibility.Flag.HideNavigation;
 	    			SystemUiVisibility.Flags = SystemUiVisibility.Flags ^ SystemUiVisibility.Flag.HideNavigation;
 	    		}
 	    		else
 	    		{
-	    			_wantedFlags = wantedFlags | SystemUiVisibility.Flag.HideNavigation;
+	    			_wantedFlags = _wantedFlags | SystemUiVisibility.Flag.HideNavigation;
 	    			SystemUiVisibility.Flags = SystemUiVisibility.Flags | SystemUiVisibility.Flag.HideNavigation;
 	    		}
 	    		_showNavigation = value;
@@ -120,12 +121,12 @@ namespace Fuse.Controls.Native
 	    	{
 	    		if(value)
 	    		{
-	    			_wantedFlags = wantedFlags ^ SystemUiVisibility.Flag.Fullscreen;
+	    			_wantedFlags = _wantedFlags ^ SystemUiVisibility.Flag.Fullscreen;
 	    			SystemUiVisibility.Flags = SystemUiVisibility.Flags ^ SystemUiVisibility.Flag.Fullscreen;
 	    		}
 	    		else
 	    		{
-	    			_wantedFlags = wantedFlags | SystemUiVisibility.Flag.Fullscreen;
+	    			_wantedFlags = _wantedFlags | SystemUiVisibility.Flag.Fullscreen;
 	    			SystemUiVisibility.Flags = SystemUiVisibility.Flags | SystemUiVisibility.Flag.Fullscreen;
 	    		}
 	    		_showStatus = value;
@@ -141,6 +142,16 @@ namespace Fuse.Controls.Native
 	    	} 
 	    	set
 	    	{
+	    		if(value)
+	    		{
+	    			_wantedFlags = _wantedFlags | SystemUiVisibility.Flag.LowProfile;
+	    			SystemUiVisibility.Flags = SystemUiVisibility.Flags | SystemUiVisibility.Flag.LowProfile;
+	    		}
+	    		else
+	    		{
+	    			_wantedFlags = _wantedFlags ^ SystemUiVisibility.Flag.LowProfile;
+	    			SystemUiVisibility.Flags = SystemUiVisibility.Flags ^ SystemUiVisibility.Flag.LowProfile;
+	    		}
 	    		_isDim = value;
 	    	} 
 	    }
