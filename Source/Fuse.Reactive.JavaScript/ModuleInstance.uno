@@ -4,11 +4,6 @@ using Fuse.Scripting;
 
 namespace Fuse.Reactive
 {
-	interface IMutable
-	{
-		void Set(object[] args, int pos);
-	}
-
 	partial class ModuleInstance: DiagnosticSubject
 	{
 		readonly ThreadWorker _worker;

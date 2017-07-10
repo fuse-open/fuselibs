@@ -10,7 +10,7 @@ namespace Fuse.Reactive
 		object Raw { get; }
 	}
 
-	abstract class ValueMirror: IRaw
+	abstract class ValueMirror: SubscriptionSubject, IRaw
 	{
 		public abstract void Unsubscribe();
 
