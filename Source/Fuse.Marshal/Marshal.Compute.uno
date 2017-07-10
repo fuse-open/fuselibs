@@ -46,6 +46,7 @@ namespace Fuse
 		public static object Add(object a, object b)
 		{
 			if (a == null || b == null) return null;
+			a = ArrayToVector(a);
 			var ta = a.GetType();
 			var tb = b.GetType();
 
@@ -64,6 +65,7 @@ namespace Fuse
 		public static object Subtract(object a, object b)
 		{
 			if (a == null || b == null) return null;
+			a = ArrayToVector(a);
 			var t = DominantType(a.GetType(), b.GetType());
 
 			Computer c;
@@ -76,6 +78,7 @@ namespace Fuse
 		public static object Multiply(object a, object b)
 		{
 			if (a == null || b == null) return null;
+			a = ArrayToVector(a);
 			var t = DominantType(a.GetType(), b.GetType());
 
 			Computer c;
@@ -88,6 +91,7 @@ namespace Fuse
 		public static object Divide(object a, object b)
 		{
 			if (a == null || b == null) return null;
+			a = ArrayToVector(a);
 			var t = DominantType(a.GetType(), b.GetType());
 
 			Computer c;

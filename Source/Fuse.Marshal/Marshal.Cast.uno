@@ -251,6 +251,7 @@ namespace Fuse
 			if (o is Size2) return (Size2) o;
 			else if (o is Size) return new Size2((Size)o, (Size)o);
 			else if (o is string) return StringToSize2((string)o);
+			else if (o is IArray) return ToSize2(ArrayToVector(o));
 			else return new Size2(ToFloat2(o).X, ToFloat2(o).Y);
 		}
 
