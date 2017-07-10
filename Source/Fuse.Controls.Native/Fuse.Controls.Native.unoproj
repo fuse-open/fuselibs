@@ -32,6 +32,7 @@
     "*",
     "iOS/Helpers.h:ObjCHeader:iOS",
     "iOS/Helpers.mm:ObjCSource:iOS",
+    "Android/SystemScreenConfig.uno:Source",
     "Android/Java/IScroll.java:Java:Android",
     "Android/Java/HorizontalScrollView.java:Java:Android",
     "Android/Java/VerticalScrollView.java:Java:Android",
