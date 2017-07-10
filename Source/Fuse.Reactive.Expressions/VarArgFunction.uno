@@ -43,7 +43,9 @@ namespace Fuse.Reactive
 			return new Subscription(this, context, listener);
 		}
 
-		/** Called when at least some arguments are ready and have new values. 
+		/** Called when arguments should be checked for a condition that might yield a new value to the listener.
+
+			This function is called immediately upon subscription, and when any of the arguments change.
 			
 			Override in subclass to handle partially complete arguments. If the function are not
 			interested in the arguments before they are all ready, override `OnNewArguments` instead.
@@ -60,6 +62,8 @@ namespace Fuse.Reactive
 		}
 
 		/** Called when all the arguments are ready and have new values.
+
+			If the function has zero arguments, this function is called immediately upon subscription.
 
 			Override in subclass to handle complete argument lists. If the function is interested in
 			partially ready argument lists, override `OnNewPartialArguments` instead.
@@ -92,6 +96,10 @@ namespace Fuse.Reactive
 				// get callbacks before we're fully initialized.
 				for (var i = 0; i < func.Arguments.Count; i++)
 					_arguments[i].Subscription = func.Arguments[i].Subscribe(context, this);
+
+				// To cover the case where the function has zero arguments, and also when
+				// having no arugments ready is a valid case
+				PushData();
 			}
 
 			protected override void OnNewData(IExpression source, object value)
