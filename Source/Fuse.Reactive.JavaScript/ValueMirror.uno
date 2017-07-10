@@ -29,7 +29,7 @@ namespace Fuse.Reactive
 		}
 	}
 
-	public abstract class ListMirror: ValueMirror, IArray
+	abstract class ListMirror: ValueMirror, IArray
 	{
 		public abstract int Length { get; }
 		public abstract object this[int index] { get; }
