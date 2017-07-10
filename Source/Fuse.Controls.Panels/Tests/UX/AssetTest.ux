@@ -1,0 +1,43 @@
+<Panel ux:Class="UX.AssetTest">
+    <Asset ux:Class="MyIcon">
+        <string ux:Property="Label" />
+        <int ux:Property="Number" />
+        <StackPanel>
+            <Each Count="{Property Number}">
+                <Panel>
+                    <Text>{Property Label}</Text>
+                    <DropShadow Color="#f00" />
+                </Panel>
+            </Each>
+        </StackPanel>
+    </Asset>
+    <Asset ux:Class="MyIcon2">
+        <string ux:Property="Label" />
+        <int ux:Property="Number" />
+        <StackPanel>
+            <Each Count="{Property Number}">
+                <Panel>
+                    <Text>{Property Label}</Text>
+                    <DropShadow Color="#f00" />
+                </Panel>
+            </Each>
+        </StackPanel>
+    </Asset>
+    <Each Count="5">
+        <MyIcon ux:Name="icon" Number="3" Label="foo" />
+    </Each>
+    <Each Count="7">
+        <MyIcon ux:Name="icon2" Number="3" Label="foox" />
+    </Each>
+    <MyIcon ux:Name="icon3" Number="3" Label="foo" />
+    <MyIcon ux:Name="icon4" Number="3" Label="foox" />
+    <MyIcon ux:Name="icon5" Number="5" Label="foo" />
+    <MyIcon ux:Name="icon6" Number="5" Label="foox" />
+    <MyIcon ux:Name="icon7" Number="5" Label="foox" >
+        <!-- effect here shouldn' affect number of instances rooted -->
+        <DropShadow />
+    </MyIcon>
+    <MyIcon ux:Name="icon8" Number="6" Label="foox" />
+    <MyIcon2 ux:Name="icon9" Number="6" Label="foox" />
+</Panel>
+
