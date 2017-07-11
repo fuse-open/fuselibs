@@ -1,7 +1,10 @@
 # Unreleased
 
-### Fuse.Android.SystemScreenConfig
- - Added configuration behavior, lets you control the visibility of the navigation bar and status bar on Android.
+### Fuse.Controls.SystemScreenConfig
+ - Added configuration behavior, lets you control the visibility certain aspects of the OS user interface. 
+
+### Fuse.Timer
+ - Now returns an IDisposable when `Wait` is called. Disposing this stops the timer.
 
 # 1.1
 
