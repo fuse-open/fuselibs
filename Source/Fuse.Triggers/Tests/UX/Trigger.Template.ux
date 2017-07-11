@@ -1,0 +1,5 @@
+<Panel ux:Class="UX.Trigger.Template">
+	<WhileTrue ux:Name="WA">
+		<Text Value="here" ux:Generate="Template"/>
+	</WhileTrue>
+</Panel>

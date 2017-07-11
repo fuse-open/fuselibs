@@ -281,12 +281,13 @@ namespace Fuse
 			be overridden in user code. Use @UpdateManager instead. */
 		protected virtual void OnUpdate()
 		{
-			UpdateManager.IncreaseFrameIndex();
-
 			if defined(FUSELIBS_PROFILING)
 				Profiling.BeginUpdate();
 
 			UpdateManager.Update();
+
+			if defined(MOBILE)
+				UpdateManager.IncreaseFrameIndex();
 
 			if defined(FUSELIBS_PROFILING)
 				Profiling.EndUpdate();

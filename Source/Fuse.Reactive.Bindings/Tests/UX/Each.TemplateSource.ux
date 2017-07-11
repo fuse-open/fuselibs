@@ -1,0 +1,13 @@
+<Panel ux:Class="UX.Each.TemplateSource">
+	<Panel ux:Name="tb">
+		<Each Count="1" TemplateKey="one" ux:Name="each">
+			<FuseTest.DudElement StringValue="A"/>
+		</Each>
+		
+		<FuseTest.DudElement ux:Template="one" StringValue="B"/>
+	</Panel>
+	
+	<Panel ux:Name="tc">
+		<FuseTest.DudElement ux:Template="one" StringValue="C"/>
+	</Panel>
+</Panel>

@@ -1,0 +1,26 @@
+<Panel ux:Class="UX.ArrayLookup">
+	<JavaScript>
+		var Observable = require("FuseJS/Observable");
+		var obs = Observable("foo", "bar", "moo");
+		var arr = ["FOO", "BAR", "MOO"];
+
+		var obj = Observable( { col: { foo: "THIS IS FOO", bar: "THIS IS BAR" } });
+		var bar = Observable("bar");
+
+		var index = Observable(0);
+
+		function inc() { index.value = index.value+1; }
+		function dec() { index.value = index.value-1; }
+		function illegalIndex() { index.value = "foo"; }
+		function changeObj() { obj.value = { col : { foo: "FOO HAS CHANGED", bar : "BAR HAS CHANGED" }}}
+
+		module.exports = { obs, arr, index, inc, dec, obj, bar, changeObj };
+	</JavaScript>
+	<Text ux:Name="t1" Value="Hello {obs[index/2]} : {arr[(index+1)/2]}!" />
+	<Text ux:Name="t2" Value="{obj.col['foo']}" />
+	<Text ux:Name="t3" Value="{obj.col[bar]}" />
+	<FuseTest.Invoke Handler="{inc}" ux:Name="CallInc"/>
+	<FuseTest.Invoke Handler="{dec}" ux:Name="CallDec"/>
+	<FuseTest.Invoke Handler="{illegalIndex}" ux:Name="CallIllegalIndex"/>
+	<FuseTest.Invoke Handler="{changeObj}" ux:Name="CallChangeObj"/>
+</Panel>

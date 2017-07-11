@@ -2,16 +2,21 @@ using Uno;
 using Uno.Collections;
 using Uno.UX;
 
+using Fuse.Internal;
+
 namespace Fuse
 {
 	/**
 		A common base class that adds nodes and resources to the parent node while active.
 		
 		[subclass Fuse.NodeGroupBase]
+		
+		Be aware there is no ordering between the Nodes, Resources, and Templates. These are each independent lists which have their own order.
 	*/
 	public abstract class NodeGroupBase : Behavior
 	{
 		RootableList<Node> _nodes;
+		int NodeCount { get { return _nodes == null ? 0 : _nodes.Count; } }
 		
 		[UXContent]
 		/**
@@ -30,8 +35,25 @@ namespace Fuse
 				return _nodes;
 			}
 		}
+
+		TemplateSourceImpl _templates;
 		
-		internal NodeGroupBase() { }
+		[UXContent]
+		public IList<Template> Templates { get { return _templates.Templates; } }
+		public Template FindTemplate(string key) { return _templates.FindTemplate(key); }
+		
+		[Flags]
+		internal enum ConstructFlags
+		{
+			None = 0,
+			DontUseTemplates = 1 << 0,
+		}
+		internal NodeGroupBase(ConstructFlags flags = ConstructFlags.None) 
+		{ 
+			_useTemplates = !flags.HasFlag(ConstructFlags.DontUseTemplates);
+		}
+		
+		bool _useTemplates;
 		
 		bool _useContent = false;
 		internal bool UseContent
@@ -124,6 +146,9 @@ namespace Fuse
 		//used to prevent double-adding and double-removing if a derived class changes the UseContent
 		//state during rooting
 		bool _contentAdded;
+		Node[] _addedNodes; //may be null
+
+		class EmptyNode : Node { } //placeholder in case of errors, simplifies handling
 		
 		void AddContent()
 		{
@@ -145,7 +170,7 @@ namespace Fuse
 				}
 			}
 
-			if (_nodes == null || _nodes.Count == 0)
+			if (NodeCount == 0 && _templates.Count == 0)
 				return;
 				
 			//add after the location of `this` in Parent
@@ -156,13 +181,36 @@ namespace Fuse
 				return;
 			}
 
-			for (int i = 0; i < _nodes.Count; ++i)
+			int addedNodesCount = NodeCount + (_useTemplates ? _templates.Count : 0);
+			_addedNodes = new Node[addedNodesCount];
+			int addedNodesAt = 0;
+			
+			for (int i = 0; i < NodeCount; ++i)
 			{
 				var n = _nodes[i];
 				n.OverrideContextParent = n.OverrideContextParent ?? this;
+				_addedNodes[addedNodesAt++] = n;
 			}
 			
-			Parent.InsertNodes( where, _nodes.GetEnumerator() );
+			if (_useTemplates)
+			{
+				for (int i=0; i < _templates.Count; ++i)
+				{
+					var n = _templates[i].New() as Node;
+					if (n == null)
+					{
+						Fuse.Diagnostics.InternalError( "Template contains a non-Node", this );
+						n = new EmptyNode();
+					}
+					n.OverrideContextParent = n.OverrideContextParent ?? this;
+					_addedNodes[addedNodesAt++] = n;
+				}
+			}
+			
+			if (addedNodesAt != addedNodesCount)	
+				throw new Exception( "mismatch in added nodes" );
+				
+			Parent.InsertNodes( where, ((IEnumerable<Node>)_addedNodes).GetEnumerator() );
 		}
 
 		void RemoveContent()
@@ -181,15 +229,16 @@ namespace Fuse
 				}
 			}
 
-			if (_nodes != null )
+			if (_addedNodes != null)
 			{
-				for (int i=0; i < _nodes.Count; ++i)
+				for (int i=0; i < _addedNodes.Length; ++i)
 				{
-					var n = _nodes[i];
+					var n = _addedNodes[i];
 					if (n.OverrideContextParent == this) n.OverrideContextParent = null;
 					Parent.BeginRemoveChild(n);
 				}
 			}
+			_addedNodes = null;
 		}
 	}
 
@@ -211,11 +260,47 @@ namespace Fuse
 				<GridLine Color="#FFA" Title="Cry Baby" Emoji="😭"/>
 				<GridLine Color="#FAA" Title="Mr. Angry" Emoji="😠"/>
 			</Grid>
+			
+		A `NodeGroup` may be used as a target for `Each.TemplateSource` or `Instance.TemplateSource`. This can be used to create classes that position templated items.
+		
+			<NodeGroup ux:Class="TitleBar">
+				<Grid Columns="40,1*,40" Alignment="Top">
+					<Panel>
+						<Instance TemplateSource="this" TemplateKey="leftOption">
+							<MyMenuButton/>
+						</Instance>
+					</Panel>
+					<Panel>
+						<Instance TemplateSource="this" TemplateKey="title">
+							<Text Value="{Page Title}"/>
+						</Instance>
+					</Panel>
+					<Panel TemplateSource="this" TemplateKey="contextMenu"/>
+				</Grid>
+			</NodeGroup>
+
+			<Page>
+				<TitleBar>
+					<Panel ux:Template="contextMenu">
+						<MyShareButton/>
+					</Panel>
+				</TitleBar>
+			</Page>
+			
+			<Page>
+				<TitleBar>
+					<Panel ux:Template="leftOption"/><!-- leave empty -->
+					<Image File="pageTitle.png" ux:Template="title"/>
+				</TitleBar>
+			</Page>
+				
 	*/
-	public class NodeGroup : NodeGroupBase
+	public class NodeGroup : NodeGroupBase, ITemplateSource
 	{
 		/**
 			When `true` (the default) the contained nodes and resources will be added to the parent node. When `false` they will be removed.
+			
+			Like a Visual, the templates added to the NodeGroup are not instantiated when rooted. They are made available for lookup in other classes that need a source, such as `Each.TemplateSource`.  You can use @Instance if you need to instantiate templates at rooting time.
 		*/
 		public bool IsActive
 		{
@@ -224,6 +309,7 @@ namespace Fuse
 		}
 		
 		public NodeGroup()
+			: base(ConstructFlags.DontUseTemplates)
 		{
 			UseContent = true;
 		}

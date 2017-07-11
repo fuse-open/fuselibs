@@ -1,22 +1,16 @@
 using Fuse;
 using Fuse.Input;
 using Uno;
+using Uno.Collections;
 
 public partial class Multitouch
 {
-	TouchCircle[] _touchCircles = new TouchCircle[10];
-	bool[] _down = new bool[10];
+	List<TouchCircle> _touchCircles = new List<TouchCircle>();
+	List<bool> _down = new List<bool>();
 
 	public Multitouch()
 	{
 		InitializeUX();
-		for (var i = 0; i < _touchCircles.Length; i++)
-		{
-			var t = new TouchCircle();
-			t.Label.Value = i.ToString();
-			_touchCircles[i] = t;
-			_testPanel.Children.Add(t);
-		}
 	}
 
 	protected override void OnRooted()
@@ -49,8 +43,20 @@ public partial class Multitouch
 		}
 	}
 
+	void AddToucheCircle()
+	{
+		var t = new TouchCircle();
+		t.Label.Value = _touchCircles.Count.ToString();
+		_touchCircles.Add(t);
+		_down.Add(false);
+		_testPanel.Children.Add(t);
+	}
+
 	void OnPointerPressed(object sender, PointerPressedArgs args)
 	{
+		if (args.PointIndex >= _touchCircles.Count)
+			AddToucheCircle();
+
 		var t = _touchCircles[args.PointIndex];
 		if (args.TryHardCapture(t, new LostCaptureCallback(this, args.PointIndex).LostCapture))
 		{

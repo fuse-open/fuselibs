@@ -103,14 +103,12 @@ namespace Fuse.Controls.Native.iOS
 			return new RootInfo(rootVisual, rootView);
 		}
 
-		const int MaxPointerCount = 10;
-
-		static ObjC.Object[] _activePointers = new ObjC.Object[MaxPointerCount];
+		static List<ObjC.Object> _activePointers = new List<ObjC.Object>();
 
 		static int GetPointIndex(ObjC.Object uiTouch)
 		{
 			var firstUnused = -1;
-			for (var i = 0; i < MaxPointerCount; ++i)
+			for (var i = 0; i < _activePointers.Count; ++i)
 			{
 				var pointer = _activePointers[i];
 				if (CompareUITouch(pointer, null) && firstUnused < 0)
@@ -118,14 +116,18 @@ namespace Fuse.Controls.Native.iOS
 				else if (CompareUITouch(pointer, uiTouch))
 					return i;
 			}
-
+			if (firstUnused < 0)
+			{
+				_activePointers.Add(uiTouch);
+				firstUnused = _activePointers.Count - 1;
+			}
 			_activePointers[firstUnused] = uiTouch;
 			return firstUnused;
 		}
 
 		static void DeactivateTouch(ObjC.Object uiTouch)
 		{
-			for (var i = 0; i < MaxPointerCount; i++)
+			for (var i = 0; i < _activePointers.Count; i++)
 			{
 				if (CompareUITouch(_activePointers[i], uiTouch))
 				{

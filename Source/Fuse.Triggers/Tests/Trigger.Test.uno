@@ -3,6 +3,7 @@ using Uno.Collections;
 using Uno.Testing;
 
 using Fuse.Animations;
+using Fuse.Controls;
 
 using FuseTest;
 
@@ -627,6 +628,27 @@ namespace Fuse.Triggers.Test
 				t.PS.PlayTo(1.0);
 				root.StepFrame(0.5f + root.StepIncrement);
 				Assert.AreEqual(TriggerPlayState.Stopped, t.PS.PlayState);
+			}
+		}
+		
+		[Test]
+		public void Template()
+		{
+			var t = new UX.Trigger.Template();
+			using (var root = TestRootPanel.CreateWithChild(t))
+			{
+				Assert.AreEqual(0,GetChildren<Text>(t).Length);
+				
+				for (int i=0; i < 3; ++i)
+				{
+					t.WA.Value = true;
+					root.PumpDeferred();
+					Assert.AreEqual(1,GetChildren<Text>(t).Length);	
+				
+					t.WA.Value = false;
+					root.PumpDeferred();
+					Assert.AreEqual(0,GetChildren<Text>(t).Length);	
+				}
 			}
 		}
 	}

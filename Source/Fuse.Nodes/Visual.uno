@@ -32,7 +32,7 @@ namespace Fuse
 
 		Visuals can have input focus if the `Focus.IsFocusable` property is set to `true`. 
 	*/
-	public abstract partial class Visual : Node, IList<Node>, IPropertyListener
+	public abstract partial class Visual : Node, IList<Node>, IPropertyListener, ITemplateSource
 	{
 
 		public virtual VisualContext VisualContext 
@@ -116,7 +116,6 @@ namespace Fuse
 			_ambLayoutParams.Reset();
 
 			_viewport = FindViewport();
-			RootTemplates();
 			RootResources();
 		}
 
@@ -127,7 +126,6 @@ namespace Fuse
 			base.OnUnrooted();
 
 			UnrootResources();
-			UnrootTemplates();
 			_viewport = null;
 
 			ResetParameterListeners();

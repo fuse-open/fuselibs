@@ -6,14 +6,14 @@ namespace Fuse.Reactive
 {
 	class ResourceSubscription: IDisposable
 	{
-		Binding _origin;
+		Node _origin;
 		readonly string _key;
 		readonly Type _type;
 		IListener _listener;
 		IExpression _source;
 		IDisposable _diag;
 		
-		public ResourceSubscription(IExpression source, Binding origin, string key, IListener listener, Type type)
+		public ResourceSubscription(IExpression source, Node origin, string key, IListener listener, Type type)
 		{
 			_source = source;
 			_origin = origin;
@@ -47,7 +47,7 @@ namespace Fuse.Reactive
 			ClearDiagnostic();
 
 			object resource;
-			if (_origin.Parent.TryGetResource(_key, Accept, out resource))
+			if (_origin.TryGetResource(_key, Accept, out resource))
 			{
 				_listener.OnNewData(_source, resource);
 			}
