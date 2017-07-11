@@ -97,7 +97,6 @@ namespace Fuse.Gestures
 		{
 			get 
 			{
-				var diff = _currentCoord - _startCoord;
 				return new GesturePriorityConfig( GesturePriority.Normal,
 					Gesture.VectorSignificance( Direction, _currentCoord - _startCoord ) );
 			}
