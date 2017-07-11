@@ -2,6 +2,7 @@
 
 ## Router
 - Added `findRouter` function making it easier to use a router in a page deep inside the UI
+- Fixed and issue where relative paths and nested `Router` gave an error about unknown paths
 
 ## Templates
 - Added `Identity` and `IdentityKey` to `Each`. This allows created visuals to be reused when replaced with `replaceAt` or `replaceAll` in an Observable.
