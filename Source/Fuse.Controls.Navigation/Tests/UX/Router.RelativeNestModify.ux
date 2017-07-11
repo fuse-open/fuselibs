@@ -1,18 +1,18 @@
-<Panel ux:Class='UX.Router.RelativeNest'>
+<Panel ux:Class='UX.Router.RelativeNestModify'>
 	<Router ux:Name="router"/> 
 	
 	<JavaScript>
 		exports.gotoTwo = function(){ 
-			router.gotoRelative(one, "two")
+			router.modify({ how: "Goto", relative: one, path: [ "two" ] })
 		}
 		exports.gotoI2 = function(){ 
-			inner.gotoRelative(i1, "i2")
+			inner.modify({ how: "Goto", relative: i1, path: [ "i2" ] })
 		}
 		exports.gotoN2 = function(){ 
-			inner.gotoRelative(n1, "n2")
+			inner.modify({ how: "Goto", relative: n1, path: [ "n2" ] })
 		}
 		exports.pushOne = function(){ 
-			router.pushRelative(two, "one")
+			router.modify({ how: "Push", relative: two, path: [ "one" ] })
 		}
 	</JavaScript>
 	<FuseTest.Invoke Handler="{gotoTwo}" ux:Name="GotoTwo"/>

@@ -506,7 +506,7 @@ namespace Fuse.Navigation
 			return new Route(opath, oparameter, GetCurrent(from, to));
 		}
 		
-		Route GetCurrentUp(Node from)
+		Route GetRouteUpToRouter(Node from)
 		{
 			Route route = null;
 			
@@ -607,7 +607,7 @@ namespace Fuse.Navigation
 				return null;
 			}
 			
-			var current = GetCurrentUp( (outlet as Node).Parent );
+			var current = GetRouteUpToRouter( (outlet as Node).Parent );
 			//this might be a top-level RouterOutlet so check for a null
 			var route = current == null ? rel : current.Append( rel );
 			return route;
