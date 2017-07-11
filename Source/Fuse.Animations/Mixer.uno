@@ -314,12 +314,13 @@ namespace Fuse.Animations
 			get 
 			{
 				var m = Matrix.Matrix;
-				var q = Math.Abs(m.M13) < float.ZeroTolerance &&
-					Math.Abs(m.M23) < float.ZeroTolerance &&
-					Math.Abs(m.M43) < float.ZeroTolerance &&
-					Math.Abs(m.M14) < float.ZeroTolerance &&
-					Math.Abs(m.M24) < float.ZeroTolerance &&
-					Math.Abs(m.M34) < float.ZeroTolerance;
+				const float zeroTolerance = 1e-05f;
+				var q = Math.Abs(m.M13) < zeroTolerance &&
+					Math.Abs(m.M23) < zeroTolerance &&
+					Math.Abs(m.M43) < zeroTolerance &&
+					Math.Abs(m.M14) < zeroTolerance &&
+					Math.Abs(m.M24) < zeroTolerance &&
+					Math.Abs(m.M34) < zeroTolerance;
 				return q;
 			}
 		}
