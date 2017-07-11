@@ -252,8 +252,9 @@ namespace Fuse.Controls.ScrollViewTest
 				root.PointerPress(float2(100,500));
 				root.PointerSlide(float2(100,500), float2(100,300), speed);
 				//adjust for delayed gesture and accuracy of sliding steps
+				const float zeroTolerance = 1e-05f;
 				Assert.AreEqual(200 - GestureHardCaptureSignificanceThreshold, 
-					sv.S.ScrollPosition.Y, 2 * root.StepIncrement * speed + float.ZeroTolerance);
+					sv.S.ScrollPosition.Y, 2 * root.StepIncrement * speed + zeroTolerance);
 			}
 		}
 		
@@ -341,8 +342,9 @@ namespace Fuse.Controls.ScrollViewTest
 				
 				//adjust for delayed gesture and accuracy of sliding steps
 				// 2*StepIncrement since it's allowed to delay one frame/event now
+				const float zeroTolerance = 1e-05f;
 				Assert.AreEqual(-100 + GestureHardCaptureSignificanceThreshold, 
-					s.SV.ScrollPosition.Y, 2*root.StepIncrement * speed + float.ZeroTolerance);
+					s.SV.ScrollPosition.Y, 2*root.StepIncrement * speed + zeroTolerance);
 
 				Assert.AreEqual( 100 * (-s.SV.ScrollPosition.Y / s.SM.OverflowExtent.Y), s.SAP.Height.Value );
 				

@@ -47,7 +47,7 @@ namespace Fuse.Triggers
 	public class ScrollingAnimation : Trigger, IPropertyListener
 	{
 		bool _hasScrollDirections; //if false then use the single axis default of Scrollview (or Vertical if 2-axis)
-		
+
 		ScrollDirections _scrollDirections = ScrollDirections.Vertical;
 		//only Vertical or Horizontal are supported
 		public ScrollDirections ScrollDirections 
@@ -141,7 +141,8 @@ namespace Fuse.Triggers
 				float at = _scrollable.ToScalarPosition(_scrollable.ScrollPosition - from);
 				float range = _scrollable.ToScalarPosition(range2);
 
-				if (Math.Abs(range) < float.ZeroTolerance)
+				const float zeroTolerance = 1e-05f;
+				if (Math.Abs(range) < zeroTolerance)
 					return 0;
 
 				var p = Math.Clamp( at / range, 0, 1 );
@@ -258,10 +259,11 @@ namespace Fuse.Triggers
 				var mx = _scrollable.MaxScroll;
 				var mn = _scrollable.MinScroll;
 
-				var isOn = (ScrollDirections.HasFlag(ScrollDirections.Left) && (p.X-float.ZeroTolerance) > mn.X) ||
-					(ScrollDirections.HasFlag(ScrollDirections.Right) && (p.X+float.ZeroTolerance) < mx.X) ||
-					(ScrollDirections.HasFlag(ScrollDirections.Up) && (p.Y-float.ZeroTolerance) > mn.Y) ||
-					(ScrollDirections.HasFlag(ScrollDirections.Down) && (p.Y+float.ZeroTolerance) < mx.Y);
+				const float zeroTolerance = 1e-05f;
+				var isOn = (ScrollDirections.HasFlag(ScrollDirections.Left) && (p.X-zeroTolerance) > mn.X) ||
+					(ScrollDirections.HasFlag(ScrollDirections.Right) && (p.X+zeroTolerance) < mx.X) ||
+					(ScrollDirections.HasFlag(ScrollDirections.Up) && (p.Y-zeroTolerance) > mn.Y) ||
+					(ScrollDirections.HasFlag(ScrollDirections.Down) && (p.Y+zeroTolerance) < mx.Y);
 				return isOn;
 			}
 		}

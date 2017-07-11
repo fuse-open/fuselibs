@@ -78,6 +78,7 @@ namespace Fuse.Controls
 	public partial class ScrollViewBase: ContentControl, IScrollViewHost
 	{
 		Element Element { get { return Content as Element; } }
+		const float _zeroTolerance = 1e-05f;
 
 		internal static Selector UserScrollName = "UserScroll";
 		bool _userScroll = true;
@@ -298,7 +299,7 @@ namespace Fuse.Controls
 			bool changed = false;
 			
 			position = Constrain(position);
-			if (Vector.LengthSquared(position - _scrollPosition) > float.ZeroTolerance)
+			if (Vector.LengthSquared(position - _scrollPosition) > _zeroTolerance)
 			{
 				_scrollPosition = position;
 				changed = true;
@@ -309,7 +310,7 @@ namespace Fuse.Controls
 			if (!SnapMaxTransform)
 				position = Math.Min( MaxScroll, position );
 			var nv = float3(-position,0);
-			if (Vector.LengthSquared(nv - _scrollTranslation.Vector) > float.ZeroTolerance)
+			if (Vector.LengthSquared(nv - _scrollTranslation.Vector) > _zeroTolerance)
 			{
 				_scrollTranslation.Vector = nv;
 				//assume something might watch this as well
@@ -318,7 +319,7 @@ namespace Fuse.Controls
 
 			//need to emit on relative changed, even if absolute position did not
 			var nRel = RelativeScrollPosition;
-			if (Vector.LengthSquared(nRel - _previousRelative) > float.ZeroTolerance)
+			if (Vector.LengthSquared(nRel - _previousRelative) > _zeroTolerance)
 			{
 				_previousRelative = nRel;
 				changed = true;
@@ -407,9 +408,9 @@ namespace Fuse.Controls
 				var r = MaxScroll - MinScroll;
 				var q = (ScrollPosition - MinScroll) / (MaxScroll - MinScroll);
 				//if not yet arranged, or zero-range, report position based on alignment (so animators can start in "correct" location)
-				if (r.X < float.ZeroTolerance)
+				if (r.X < _zeroTolerance)
 					q.X = Element == null ? 0.5f : AlignmentHelpers.GetAnchor(Element.Alignment).X;
-				if (r.Y < float.ZeroTolerance)
+				if (r.Y < _zeroTolerance)
 					q.Y = Element == null ? 0.5f : AlignmentHelpers.GetAnchor(Element.Alignment).Y;
 					
 				return q;
