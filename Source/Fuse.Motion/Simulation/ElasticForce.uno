@@ -51,7 +51,8 @@ namespace Fuse.Motion.Simulation
 		}
 		
 		float _scale;
-		public ElasticForce( float scale = float.ZeroTolerance )
+		const float _zeroTolerance = 1e-05f;
+		public ElasticForce( float scale = _zeroTolerance )
 		{
 			_scale = scale;
 		}

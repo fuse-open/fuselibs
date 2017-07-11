@@ -58,6 +58,8 @@ namespace Fuse
 	*/
 	public sealed class Rotation: Transform
 	{
+		const float _zeroTolerance = 1e-05f;
+
 		float3 _euler;
 		/** The rotation in radians for each axis. */
 		public float3 EulerAngle
@@ -151,7 +153,7 @@ namespace Fuse
 			get 
 			{
 				return Math.Abs(_euler.X) + Math.Abs(_euler.Y) + Math.Abs(_euler.Z)
-					> float.ZeroTolerance;
+					> _zeroTolerance;
 			}
 		}
 		
@@ -169,8 +171,8 @@ namespace Fuse
 		
 		public override bool IsFlat 
 		{ 
-			get { return Math.Abs(_euler.X) < float.ZeroTolerance
-				&& Math.Abs(_euler.Y) < float.ZeroTolerance; }
+			get { return Math.Abs(_euler.X) < _zeroTolerance
+				&& Math.Abs(_euler.Y) < _zeroTolerance; }
 		}
 	}
 

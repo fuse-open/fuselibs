@@ -9,7 +9,7 @@ namespace Fuse.Elements.Test
 	public class XYOffsetTest : TestBase
 	{
 		static void TestElementLayout(Element element, float2 expectActualPosition, float2 expectActualSize, 
-			float tolerance = float.ZeroTolerance,
+			float tolerance = Assert.ZeroTolerance,
 			[CallerFilePath] string filePath = "", [CallerLineNumber] int lineNumber = 0, 
 			[CallerMemberName] string memberName = "")
 		{

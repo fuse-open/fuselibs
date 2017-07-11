@@ -460,22 +460,23 @@ namespace Fuse
 				HasMaxX != nlp.HasMaxX || HasMaxY != nlp.HasMaxY ||
 				HasMinX != nlp.HasMinX || HasMinY != nlp.HasMinY)
 				return false;
-				
-			if (HasX && (Math.Abs(X - nlp.X) > float.ZeroTolerance))
+
+			const float zeroTolerance = 1e-05f;
+			if (HasX && (Math.Abs(X - nlp.X) > zeroTolerance))
 				return false;
-			if (HasY && (Math.Abs(Y - nlp.Y) > float.ZeroTolerance))
+			if (HasY && (Math.Abs(Y - nlp.Y) > zeroTolerance))
 				return false;
-			if (HasMaxX && (Math.Abs(MaxX - nlp.MaxX) > float.ZeroTolerance))
+			if (HasMaxX && (Math.Abs(MaxX - nlp.MaxX) > zeroTolerance))
 				return false;
-			if (HasMinX && (Math.Abs(MinX - nlp.MinX) > float.ZeroTolerance))
+			if (HasMinX && (Math.Abs(MinX - nlp.MinX) > zeroTolerance))
 				return false;
-			if (HasMaxY && (Math.Abs(MaxY - nlp.MaxY) > float.ZeroTolerance))
+			if (HasMaxY && (Math.Abs(MaxY - nlp.MaxY) > zeroTolerance))
 				return false;
-			if (HasMinY && (Math.Abs(MinY - nlp.MinY) > float.ZeroTolerance))
+			if (HasMinY && (Math.Abs(MinY - nlp.MinY) > zeroTolerance))
 				return false;
-			if (HasRelativeX && (Math.Abs(RelativeX - nlp.RelativeX) > float.ZeroTolerance))
+			if (HasRelativeX && (Math.Abs(RelativeX - nlp.RelativeX) > zeroTolerance))
 				return false;
-			if (HasRelativeY && (Math.Abs(RelativeY - nlp.RelativeY) > float.ZeroTolerance))
+			if (HasRelativeY && (Math.Abs(RelativeY - nlp.RelativeY) > zeroTolerance))
 				return false;
 				
 			return true;

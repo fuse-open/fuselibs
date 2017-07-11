@@ -280,9 +280,9 @@ namespace Fuse.Controls.Test
 		{
 			DockPanel.SetDock(element, dock);
 			root.Layout(rootSize);
-			Assert.AreEqual(expectActualSize, element.ActualSize, float.ZeroTolerance,
+			Assert.AreEqual(expectActualSize, element.ActualSize, Assert.ZeroTolerance,
 				filePath, lineNumber, memberName );
-			Assert.AreEqual(expectActualPosition, element.ActualPosition, float.ZeroTolerance,
+			Assert.AreEqual(expectActualPosition, element.ActualPosition, Assert.ZeroTolerance,
 				filePath, lineNumber, memberName);
 		}
 	}

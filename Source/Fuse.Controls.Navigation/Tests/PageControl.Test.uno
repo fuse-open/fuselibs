@@ -67,9 +67,10 @@ namespace Fuse.Controls.Test
 				root.PointerPress( float2(800,200) );
 				root.PointerSlide( float2(800,200), float2(550,200), speed);
 				//adjust for delayed gesture and accuracy of sliding steps
+				const float ZeroTolerance = 1e-05f;
 				Assert.AreEqual(0.25 - Fuse.Input.Gesture.HardCaptureSignificanceThreshold/1000,
 					(p as INavigation).PageProgress,
-					root.StepIncrement * speed / 1000 + float.ZeroTolerance);
+					root.StepIncrement * speed / 1000 + ZeroTolerance);
 					
 				//trying to check jitter https://github.com/fusetools/fuselibs/issues/3597
 				//the test doesn't produce "actual" jitter though, but it does detect the extra calls to progress changed

@@ -13,14 +13,14 @@ namespace Uno.Testing
 		public static void IsIdentity(float4x4 m, 
 			[CallerFilePath] string filePath = "", [CallerLineNumber] int lineNumber = 0, [CallerMemberName] string memberName = "")
 		{
-			Assert.AreEqual(float4(1,0,0,0),m[0], float.ZeroTolerance, filePath, lineNumber, memberName);
-			Assert.AreEqual(float4(0,1,0,0),m[1], float.ZeroTolerance, filePath, lineNumber, memberName);
-			Assert.AreEqual(float4(0,0,1,0),m[2], float.ZeroTolerance, filePath, lineNumber, memberName);
-			Assert.AreEqual(float4(0,0,0,1),m[3], float.ZeroTolerance, filePath, lineNumber, memberName);
+			Assert.AreEqual(float4(1,0,0,0),m[0], Assert.ZeroTolerance, filePath, lineNumber, memberName);
+			Assert.AreEqual(float4(0,1,0,0),m[1], Assert.ZeroTolerance, filePath, lineNumber, memberName);
+			Assert.AreEqual(float4(0,0,1,0),m[2], Assert.ZeroTolerance, filePath, lineNumber, memberName);
+			Assert.AreEqual(float4(0,0,0,1),m[3], Assert.ZeroTolerance, filePath, lineNumber, memberName);
 		}
 		
 		public static void EqualTransformCoordinate(float3 expect, float3 input, float4x4 m, 
-			float eps = float.ZeroTolerance,
+			float eps = Assert.ZeroTolerance,
 			[CallerFilePath] string filePath = "", [CallerLineNumber] int lineNumber = 0, [CallerMemberName] string memberName = "")
 		{
 			var q = Vector.TransformCoordinate(input,m);
@@ -28,7 +28,7 @@ namespace Uno.Testing
 		}
 		
 		public static void EqualTransformCoordinateXY(float2 expect, float3 input, float4x4 m, 
-			float eps = float.ZeroTolerance,
+			float eps = Assert.ZeroTolerance,
 			[CallerFilePath] string filePath = "", [CallerLineNumber] int lineNumber = 0, [CallerMemberName] string memberName = "")
 		{
 			var q = Vector.TransformCoordinate(input,m);

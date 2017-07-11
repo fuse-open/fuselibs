@@ -129,7 +129,8 @@ namespace Fuse.Triggers
 			var dist = _scrollable.ToScalarPosition(_scrollable.DistanceToView(min, max));
 			var maxDist = _scrollable.ToScalarPosition( RelativeTo.GetPoints(Distance, _scrollable) );
 			
-			SetActive( dist < (maxDist + float.ZeroTolerance) );
+			const float zeroTolerance = 1e-05f;
+			SetActive( dist < (maxDist + zeroTolerance) );
 		}
 		
 	}

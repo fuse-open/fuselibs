@@ -435,9 +435,11 @@ namespace Fuse
 			var same = HasMarginBox && 
 				(_layoutDirty == InvalidateLayoutReason.NothingChanged) &&
 				_ambLayoutParams.IsCompatible(lp);
-				
+
+			const float zeroTolerance = 1e-05f;
+
 			float2 marginBox;
-			if (same && (Vector.Distance(position, _ambPosition) < float.ZeroTolerance))
+			if (same && (Vector.Distance(position, _ambPosition) < zeroTolerance))
 			{
 				return _ambMargin;
 			}

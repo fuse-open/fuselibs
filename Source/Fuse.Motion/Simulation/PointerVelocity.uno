@@ -35,7 +35,9 @@ namespace Fuse.Motion.Simulation
 			get { return _velocity; }
 			set { _velocity = value; }
 		}
-		
+
+		const float _zeroTolerance = 1e-05f;
+
 		T _currentLocation, _startLocation;
 		public T AverageVelocity
 		{
@@ -44,7 +46,7 @@ namespace Fuse.Motion.Simulation
 				var v = _blender.Sub( _currentLocation, _startLocation );
 				double length;
 				var unit = _blender.ToUnit( v, out length );
-				var s = _totalTime > float.ZeroTolerance && length > float.ZeroTolerance ? 
+				var s = _totalTime > _zeroTolerance && length > _zeroTolerance ? 
 					(float)(length / _totalTime) : 0;
 				return _blender.Weight( unit, (float)s );
 			}
@@ -90,7 +92,7 @@ namespace Fuse.Motion.Simulation
 			var diff = _blender.Sub( location, _currentLocation );
 			double length;
 			var unit = _blender.ToUnit( diff, out length );
-			if (length < float.ZeroTolerance)
+			if (length < _zeroTolerance)
 				unit = _blender.Zero;
 			_totalDistance += length;
 			_currentLocation = location;
@@ -99,7 +101,7 @@ namespace Fuse.Motion.Simulation
 			if (flags.HasFlag(SampleFlags.Release) && length < 1)	
 				return;
 				
-			if (elapsed < float.ZeroTolerance)
+			if (elapsed < _zeroTolerance)
 				return;
 			
 			float speed = (float)(length / elapsed); 
@@ -130,7 +132,7 @@ namespace Fuse.Motion.Simulation
 		void ApplySample( T sample, double elapsed )
 		{
 			//this may cause tap jumpiness, but without it quick swipe response is terrible
-			if (_totalTime < float.ZeroTolerance)
+			if (_totalTime < _zeroTolerance)
 			{
 				_velocity = sample;
 			}	
@@ -144,4 +146,3 @@ namespace Fuse.Motion.Simulation
 		}
 	}
 }
-	
