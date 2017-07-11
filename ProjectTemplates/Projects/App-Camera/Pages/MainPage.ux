@@ -1,0 +1,20 @@
+<Page ux:Class="_$filename$_.MainPage" Color="#EEE">
+	<JavaScript File="MainPage.js"/>
+	<DockPanel>
+		<Panel Dock="Top" Height="50" Color="White" Padding="8">
+			<_$filename$_.SimpleButton Label="Take picture">
+				<Tapped Handler="{onTakePictureButton}"/>
+			</_$filename$_.SimpleButton>
+			<Shadow/>
+		</Panel>
+		<ScrollView Dock="Fill">
+			<Grid ColumnCount="4">
+				<Each Items="{images}">
+					<_$filename$_.Thumbnail ThumbnailPath="{thumbnailPath}">
+						<Tapped Handler="{onThumbnailTapped}"/>
+					</_$filename$_.Thumbnail>
+				</Each>
+			</Grid>
+		</ScrollView>
+	</DockPanel>
+</Page>

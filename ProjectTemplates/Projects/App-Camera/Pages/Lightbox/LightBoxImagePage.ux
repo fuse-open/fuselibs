@@ -1,0 +1,4 @@
+<Page ux:Class="_$filename$_.LightBoxImagePage">
+	<string ux:Property="ImagePath"/>
+	<Image Url="{Property ImagePath}" StretchMode="Uniform"/>
+</Page>

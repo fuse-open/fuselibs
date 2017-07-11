@@ -1,0 +1,4 @@
+<Page ux:Class="_$filename$_.DetailsPage">
+	<JavaScript File="DetailsPage.js"/>
+	<Text Value="{Read description}"/>
+</Page>

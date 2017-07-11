@@ -1,0 +1,12 @@
+<Page ux:Class="_$filename$_.MainPage" Color="#EEE">
+	<JavaScript File="MainPage.js"/>
+	<ScrollView>
+		<StackPanel>
+			<Each Items="{items}">
+				<_$filename$_.ItemListView Label="{title}">
+					<Tapped Handler="{onItemTapped}"/>
+				</_$filename$_.ItemListView>
+			</Each>
+		</StackPanel>
+	</ScrollView>
+</Page>

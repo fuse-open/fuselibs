@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<TemplateManifest Name="Camera app project">
+	<Description>Create a rudimentary camera app with an image gallery</Description>
+	<Alias>app/camera</Alias>
+</TemplateManifest>

@@ -1,0 +1,4 @@
+<Rectangle ux:Class="_$filename$_.ItemListView" Margin="4" Color="#111">
+	<string ux:Property="Label"/>
+	<Text Alignment="Center" Value="{ReadProperty Label}"/>
+</Rectangle>

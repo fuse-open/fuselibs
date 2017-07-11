@@ -1,0 +1,8 @@
+<Page ux:Class="_$filename$_.LightBoxPage">
+	<JavaScript File="LightBoxPage.js"/>
+	<PageControl ux:Name="pageControl" ActiveIndex="{currentIndex}" >
+		<Each Items="{Read images}">
+			<_$filename$_.LightBoxImagePage ImagePath="{Read imagePath}"/>
+		</Each>
+	</PageControl>
+</Page>

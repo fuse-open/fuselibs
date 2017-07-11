@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<TemplateManifest Name="Fuse package">
+	<Description>Create a transitive Fuse package</Description>
+	<Alias>package</Alias>
+</TemplateManifest>

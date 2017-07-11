@@ -1,2 +1,10 @@
 <App>
+	<JavaScript File="MainView.js"/>
+	<DockPanel>
+		<StatusBarBackground Dock="Top"/>
+		<!-- Begin App layout -->
+		<Text Value="{appTitle}" Alignment="Center"/>
+		<!-- End App layout -->
+		<BottomBarBackground Dock="Bottom"/>
+	</DockPanel>
 </App>
