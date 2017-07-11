@@ -1,0 +1,45 @@
+<Panel ux:Class='UX.Router.RelativeNest'>
+	<Router ux:Name="router"/> 
+	
+	<JavaScript>
+		exports.gotoTwo = function(){ 
+			router.gotoRelative(one, "two")
+		}
+		exports.gotoI2 = function(){ 
+			inner.gotoRelative(i1, "i2")
+		}
+		exports.gotoN2 = function(){ 
+			inner.gotoRelative(n1, "n2")
+		}
+		exports.pushOne = function(){ 
+			router.pushRelative(two, "one")
+		}
+	</JavaScript>
+	<FuseTest.Invoke Handler="{gotoTwo}" ux:Name="GotoTwo"/>
+	<FuseTest.Invoke Handler="{gotoI2}" ux:Name="GotoI2"/>
+	<FuseTest.Invoke Handler="{gotoN2}" ux:Name="GotoN2"/>
+	<FuseTest.Invoke Handler="{pushOne}" ux:Name="PushOne"/>
+	
+	<PageControl ux:Name="P0">
+		<Page ux:Name="one">
+		</Page>
+		
+		<Page ux:Name="two">
+			<Panel ux:Name="P1">
+				<Router ux:Name="inner" IsMasterRouter="false"/>
+				
+				<PageControl ux:Name="P2">
+					<Page ux:Name="i1"/>
+					<Page ux:Name="i2">
+						<PageControl ux:Name="P3">
+							<Page ux:Name="n1"/>
+							<Page ux:Name="n2"/>
+						</PageControl>
+					</Page>
+				</PageControl>
+			</Panel>
+			<Panel ux:Name="TP1"/>
+		</Page>
+	</PageControl>
+
+</Panel>

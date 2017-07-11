@@ -35,7 +35,8 @@ namespace Fuse.Controls
 		}
 		
 		Fuse.Internal.SizingContainer sizing = new Fuse.Internal.SizingContainer();
-		
+		const float _zeroTolerance = 1e-05f;
+
 		public StretchMode StretchMode
 		{
 			get { return sizing.stretchMode; }
@@ -94,7 +95,7 @@ namespace Fuse.Controls
 
 			var origin = sizing.CalcOrigin( lp.Size, contentDesiredSize * _scale );
 			//must divide by scale since the transform is applied to this offset as well
-			if ( _scale.X > float.ZeroTolerance && _scale.Y > float.ZeroTolerance)
+			if ( _scale.X > _zeroTolerance && _scale.Y > _zeroTolerance)
 				origin /= _scale;
 
 			if( Content != null )
@@ -109,7 +110,7 @@ namespace Fuse.Controls
 		{
 			base.PrependImplicitTransform(m);
 			//TODO: actually, it should be hidden entirely if scale is so small!
-			if (Vector.Length(_scale) > float.ZeroTolerance)
+			if (Vector.Length(_scale) > _zeroTolerance)
 				m.PrependScale( float3( _scale.X, _scale.Y, 1) );
 		}
 		

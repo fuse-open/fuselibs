@@ -414,10 +414,10 @@ namespace Fuse.Controls.Test
 				Assert.AreEqual(grid.C42.ActualPosition.Y + grid.C42.ActualSize.Y,
 					grid.C33.ActualPosition.Y + grid.C33.ActualSize.Y);
 				Assert.AreEqual(grid.C42.ActualPosition.Y + grid.C42.ActualSize.Y + spacing,
-					grid.C44.ActualPosition.Y, float.ZeroTolerance*10);
-				
+					grid.C44.ActualPosition.Y, 1e-4f);
+
 				Assert.AreEqual( sz, grid.C44.ActualPosition + grid.C44.ActualSize,
-					float.ZeroTolerance*10);
+					1e-4f);
 			}
 		}
 		

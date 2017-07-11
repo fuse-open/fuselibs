@@ -11,6 +11,7 @@ namespace Fuse.Triggers.Test
 {
 	public class TriggerTest : TestBase
 	{
+		const float _zeroTolerance = 1e-05f;
 
 		[Test]
 		public void TriggerResources()
@@ -211,7 +212,7 @@ namespace Fuse.Triggers.Test
 			//or stepping may not line up precisely, thus 1-frame delayed as well)
 			//NOTE: This is probably an issue, since a pulse trigger takes longer than expected
 			//https://github.com/fusetools/fuselibs/issues/2005
-			var tolerance = 2*root.StepIncrement + float.ZeroTolerance;
+			var tolerance = 2*root.StepIncrement + _zeroTolerance;
 			Assert.AreEqual(0.5f,TriggerProgress(p.T1), tolerance);
 			Assert.AreEqual(0.5f,TriggerProgress(p.T2), tolerance);
 			
@@ -452,7 +453,7 @@ namespace Fuse.Triggers.Test
 			var root = TestRootPanel.CreateWithChild(t);
 			
 			//since change-over foreward/backward may be one frame
-			var frameOff = root.StepIncrement + float.ZeroTolerance;
+			var frameOff = root.StepIncrement + _zeroTolerance;
 			
 			t.T1.Pulse();
 			Assert.AreEqual(0, TriggerProgress(t.T1));

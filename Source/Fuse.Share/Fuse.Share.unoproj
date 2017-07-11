@@ -8,7 +8,10 @@
     "Uno.Permissions",
   ],
   "Projects": [
-    "../Fuse.Scripting/Fuse.Scripting.unoproj"
+    "../Fuse.Scripting/Fuse.Scripting.unoproj",
+    "../Fuse.Nodes/Fuse.Nodes.unoproj",
+    "../Fuse.Common/Fuse.Common.unoproj",
+    "../Fuse.Elements/Fuse.Elements.unoproj"
   ],
   "Includes": [
     "*"

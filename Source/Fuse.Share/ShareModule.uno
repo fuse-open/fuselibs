@@ -2,6 +2,7 @@ using Uno;
 using Uno.UX;
 using Uno.Threading;
 using Fuse.Scripting;
+using Fuse.Elements;
 
 namespace Fuse.Share
 {
@@ -12,6 +13,8 @@ namespace Fuse.Share
 	Supports sharing of raw text, and files with associated [mimetype](http://www.iana.org/assignments/media-types/media-types.xhtml).
 
 	Uses Action Sheet on iOS and ACTION_SEND Intents on Android.
+
+	NB: on iPad, iOS design guidelines requires a point on screen as the origin for the share popover. You can do this by passing a reference to a UX element.
 
 	You need to add a reference to "Fuse.Share" in your project file to use this feature.
 
@@ -34,6 +37,23 @@ namespace Fuse.Share
 				}
 			}
 		</JavaScript>
+
+	## iPad example
+
+		<Panel>
+			<Button Text="Share" Clicked="{shareText}"/>
+			<Panel ux:Name="ShareOrigin" Alignment="Center" Width="1" Height="1" />
+			<JavaScript>
+				var Share = require("FuseJS/Share")
+				module.exports = {
+					shareText : function()
+					{
+						// The iOS popover will use the position of ShareOrigin as its spawn origin
+						Share.shareText("https://www.fusetools.com/", "The link to Fuse website", ShareOrigin);
+					}
+				}
+			</JavaScript>
+		</Panel>
 	*/
 	[UXGlobalModule]
 	public class ShareModule : NativeModule
@@ -70,13 +90,35 @@ namespace Fuse.Share
 				}
 				else if defined(iOS)
 				{
-					iOSShareImpl.ShareText(textToShare, description);
+					float2 position = float2(0);
+					if (args.Length > 2 && TryGetPosition(args[2], out position))
+						iOSShareImpl.ShareText(textToShare, description, position);
+					else
+						iOSShareImpl.ShareText(textToShare, description);
 					return true;
 				}
 				else
 					build_error;
 			}
 
+			return false;
+		}
+
+		bool TryGetPosition(object arg, out float2 position)
+		{
+			position = float2(0.0f);
+			var obj = arg as Fuse.Scripting.Object;
+			if (obj != null && obj.ContainsKey("external_object"))
+			{
+				var element = ((Fuse.Scripting.External)obj["external_object"]).Object as Element;
+				if (element != null)
+				{
+					var pos = element.ActualPosition;
+					var size = element.ActualSize;
+					position = pos + size * 0.5f;
+					return true;
+				}
+			}
 			return false;
 		}
 
@@ -108,7 +150,11 @@ namespace Fuse.Share
 				}
 				else if defined(iOS)
 				{
-					iOSShareImpl.ShareFile("file://" + path, type, description);
+					float2 position = float2(0);
+					if (args.Length > 2 && TryGetPosition(args[2], out position))
+						iOSShareImpl.ShareFile("file://" + path, type, description, position);
+					else
+						iOSShareImpl.ShareFile("file://" + path, type, description);
 					return true;
 				}
 				else

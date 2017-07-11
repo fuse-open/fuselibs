@@ -155,6 +155,8 @@ namespace Fuse.Triggers
 			if (_element == null || _scrollable == null || !_element.HasMarginBox)
 				return;
 				
+			const float zeroTolerance = 1e-05f;
+
 			var min = _element.GetLayoutPositionIn(_scrollable);
 			var max = min + _element.ActualSize;
 			var maxDist = _scrollable.ToScalarPosition( RelativeTo.GetPoints(Distance, _scrollable) );
@@ -167,13 +169,13 @@ namespace Fuse.Triggers
 					var dist = _scrollable.DistanceToView(min, max);
 					var distStart = _scrollable.ToScalarPosition(float2(dist.X, dist.Y));
 					var distEnd = _scrollable.ToScalarPosition(float2(dist.Z, dist.W));
-					isInView = (distStart > (maxDist - float.ZeroTolerance)) && (distEnd > (maxDist - float.ZeroTolerance));
+					isInView = (distStart > (maxDist - zeroTolerance)) && (distEnd > (maxDist - zeroTolerance));
 					break;
 				case WhileVisibleInScrollViewMode.Partial:
 					var dist = _scrollable.DistanceToView(max, min);
 					var distStart = _scrollable.ToScalarPosition(float2(dist.X, dist.Y));
 					var distEnd = _scrollable.ToScalarPosition(float2(dist.Z, dist.W));
-					isInView = (distStart > (-1 * maxDist - float.ZeroTolerance)) && (distEnd > ( -1 * maxDist - float.ZeroTolerance));
+					isInView = (distStart > (-1 * maxDist - zeroTolerance)) && (distEnd > ( -1 * maxDist - zeroTolerance));
 					break;
 			}
 

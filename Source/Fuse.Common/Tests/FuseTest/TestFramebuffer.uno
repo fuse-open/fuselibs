@@ -45,7 +45,7 @@ namespace FuseTest
 			}
 		}
 
-		public void AssertPixel(float4 expectedColor, int2 pos, float tolerace = float.ZeroTolerance, [CallerFilePath] string filePath = "", [CallerLineNumber] int lineNumber = 0, [CallerMemberName] string memberName = "")
+		public void AssertPixel(float4 expectedColor, int2 pos, float tolerace = Assert.ZeroTolerance, [CallerFilePath] string filePath = "", [CallerLineNumber] int lineNumber = 0, [CallerMemberName] string memberName = "")
 		{
 			var color = ReadDrawPixel(pos);
 			var diff = Math.Abs(color - expectedColor);
@@ -53,7 +53,7 @@ namespace FuseTest
 				Assert.Fail(string.Format("Unexpected color at [{0}]. Got [{1}], expected [{2}].", pos, color, expectedColor), filePath, lineNumber, memberName);
 		}
 
-		public void AssertSolidRectangle(Recti rect, float4 expectedColor, float tolerace = float.ZeroTolerance, [CallerFilePath] string filePath = "", [CallerLineNumber] int lineNumber = 0, [CallerMemberName] string memberName = "")
+		public void AssertSolidRectangle(Recti rect, float4 expectedColor, float tolerace = Assert.ZeroTolerance, [CallerFilePath] string filePath = "", [CallerLineNumber] int lineNumber = 0, [CallerMemberName] string memberName = "")
 		{
 			for (int y = rect.Minimum.Y; y < rect.Maximum.Y; ++y)
 			{

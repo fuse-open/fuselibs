@@ -614,15 +614,16 @@ namespace Fuse.Drawing
 			SaveContextState(_context);
 
 			//these matrix entries aren't used, so warn if they aren't the identity value
-			if (!_transformWarn && (Math.Abs(t.M13) > float.ZeroTolerance ||
-				Math.Abs(t.M14) > float.ZeroTolerance ||
-				Math.Abs(t.M23) > float.ZeroTolerance ||
-				Math.Abs(t.M24) > float.ZeroTolerance ||
-				Math.Abs(t.M31) > float.ZeroTolerance ||
-				Math.Abs(t.M32) > float.ZeroTolerance ||
-				Math.Abs(t.M34) > float.ZeroTolerance ||
-				Math.Abs(t.M43) > float.ZeroTolerance ||
-				Math.Abs(t.M44-1) > float.ZeroTolerance))
+			const float zeroTolerance = 1e-05f;
+			if (!_transformWarn && (Math.Abs(t.M13) > zeroTolerance ||
+				Math.Abs(t.M14) > zeroTolerance ||
+				Math.Abs(t.M23) > zeroTolerance ||
+				Math.Abs(t.M24) > zeroTolerance ||
+				Math.Abs(t.M31) > zeroTolerance ||
+				Math.Abs(t.M32) > zeroTolerance ||
+				Math.Abs(t.M34) > zeroTolerance ||
+				Math.Abs(t.M43) > zeroTolerance ||
+				Math.Abs(t.M44-1) > zeroTolerance))
 			{
 				//skip M33 since Z scaling of flat objects is okay and common
 				Fuse.Diagnostics.UserWarning( 

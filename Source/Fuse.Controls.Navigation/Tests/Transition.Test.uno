@@ -12,6 +12,8 @@ namespace Fuse.Navigation.Test
 {
 	public class TransitionTest : TestBase
 	{
+		const float _zeroTolerance = 1e-05f;
+
 		[Test]
 		public void Basic()
 		{
@@ -235,7 +237,7 @@ namespace Fuse.Navigation.Test
 			{
 				p.router.Push( new Route( "two" ) );
 				root.StepFrame(0.5f);
-				var eps = root.StepIncrement + float.ZeroTolerance;
+				var eps = root.StepIncrement + _zeroTolerance;
 				Assert.AreEqual(0.5f, TriggerProgress(p.one.T2), eps);
 				Assert.AreEqual(0.5f, TriggerProgress(p.two.T2), eps);
 				Assert.AreEqual(0f, TriggerProgress(p.one.T1), eps);
@@ -270,7 +272,7 @@ namespace Fuse.Navigation.Test
 				root.StepFrameJS();
 				//get a base time, 1-2 frames anim is acceptable on sync
 				var b = (float)TriggerProgress(p.one.T1);
-				Assert.IsTrue( b < (2 * root.StepIncrement + float.ZeroTolerance) );
+				Assert.IsTrue( b < (2 * root.StepIncrement + _zeroTolerance) );
 				root.StepFrame(0.4f - b);
 				
 				Assert.AreEqual(0.4f, TriggerProgress(p.one.T1));
@@ -285,7 +287,7 @@ namespace Fuse.Navigation.Test
 				p.FlashOne.Perform();
 				root.StepFrameJS();
 				b = (float)TriggerProgress(p.two.T3);
-				Assert.IsTrue( b < (2 * root.StepIncrement + float.ZeroTolerance) );
+				Assert.IsTrue( b < (2 * root.StepIncrement + _zeroTolerance) );
 				root.StepFrame(0.4f - b);
 				
 				Assert.AreEqual(0f, TriggerProgress(p.one.T1));

@@ -36,16 +36,18 @@ namespace Fuse.Drawing
 
 			EllipticArcToBezierCurve( center, radius, xAngle, angles[0], angles[1], false, curves );
 		}
-		
+
+		const float _zeroTolerance = 1e-05f;
+
 		static internal bool EllipticArcOutOfRange( float2 from, LineSegment arc )
 		{
 			//F.6.2 Out-of-range parameters
 			var len = Vector.Length( arc.To - from );
-			if (len < float.ZeroTolerance)
+			if (len < _zeroTolerance)
 				return true;
 			
 			var radius = Math.Abs(arc.A);
-			if (radius.X < float.ZeroTolerance || radius.Y < float.ZeroTolerance)
+			if (radius.X < _zeroTolerance || radius.Y < _zeroTolerance)
 				return true;
 
 			return false;
@@ -64,7 +66,7 @@ namespace Fuse.Drawing
 			if (moveToStart)
 				curves.Add( new LineSegment{ Type = LineSegmentType.Move, To = prev } );
 			
-			while( remain > float.ZeroTolerance )
+			while( remain > _zeroTolerance )
 			{
 				var step = Math.Min( remain, Math.PIf / 4 );
 				var signStep = step * sign;

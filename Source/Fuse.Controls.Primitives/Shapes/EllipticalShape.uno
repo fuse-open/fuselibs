@@ -52,7 +52,8 @@ namespace Fuse.Controls
 
 				//used to ensure that a full length gets drawn fully and hit test (otherwise would become
 				//a partial as it wraps)
-				if (_hasLengthAngle && (Math.Abs(_lengthAngle) >= (2*Math.PIf-float.ZeroTolerance)))
+				const float zeroTolerance = 1e-05f;
+				if (_hasLengthAngle && (Math.Abs(_lengthAngle) >= (2*Math.PIf-zeroTolerance)))
 					return false;
 					
 				return true;

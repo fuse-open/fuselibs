@@ -95,7 +95,8 @@ namespace Fuse.Elements
 					return float3(1);
 					
 				var sz = src.ActualSize;
-				if (sz.X < float.ZeroTolerance || sz.Y < float.ZeroTolerance)
+				const float zeroTolerance = 1e-05f;
+				if (sz.X < zeroTolerance || sz.Y < zeroTolerance)
 					return float3(1);
 					
 				var rel = float3(dst.ActualSize / sz, 1) - float3(1);
