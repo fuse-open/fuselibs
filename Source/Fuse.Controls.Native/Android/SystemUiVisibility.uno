@@ -20,12 +20,12 @@ namespace Fuse.Controls.Native
 			LowProfile = 1, 
 			HideNavigation = 2, 
 			Fullscreen = 4, 
-			LightNavigationBar = 16, //Only works in Android O
 			LayoutStable = 256, 
 			LayoutHideNavigation = 512, 
 			LayoutFullscreen = 1024, 
 			Immersive = 2048, 
-			ImmersiveSticky = 4096
+			ImmersiveSticky = 4096,
+			LightStatusBar = 8192
 		}
 
 		public delegate void VisibilityChangedHandler(Flag newFlag);

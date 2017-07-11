@@ -219,6 +219,9 @@ namespace Fuse.Controls
 		}
 
 		private StatusBarTheme _theme = StatusBarTheme.Dark;
+		/**
+			Sets if the OS UI should be light or dark
+		*/
 		public StatusBarTheme Theme
 		{
 			get

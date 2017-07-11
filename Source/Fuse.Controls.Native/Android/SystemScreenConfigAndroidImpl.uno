@@ -59,16 +59,15 @@ namespace Fuse.Controls.Native
 
 		public static void SetLightStatusbarState(bool isLight)
 		{
-			debug_log "Setting light state: " + isLight;
 			if(isLight)
 			{
-				_wantedFlags = _wantedFlags | SystemUiVisibility.Flag.LightNavigationBar;
-				SystemUiVisibility.Flags = SystemUiVisibility.Flags | SystemUiVisibility.Flag.LightNavigationBar;
+				_wantedFlags = _wantedFlags | SystemUiVisibility.Flag.LightStatusBar;
+				SystemUiVisibility.Flags = SystemUiVisibility.Flags | SystemUiVisibility.Flag.LightStatusBar;
 			}
 			else
 			{
-				_wantedFlags &= ~SystemUiVisibility.Flag.LightNavigationBar;
-				SystemUiVisibility.Flags &= ~SystemUiVisibility.Flag.LightNavigationBar;
+				_wantedFlags &= ~SystemUiVisibility.Flag.LightStatusBar;
+				SystemUiVisibility.Flags &= ~SystemUiVisibility.Flag.LightStatusBar;
 			}
 		}
 
@@ -106,7 +105,7 @@ namespace Fuse.Controls.Native
 			SystemUiVisibility.Flag mask = SystemUiVisibility.Flag.Fullscreen | 
 											SystemUiVisibility.Flag.HideNavigation | 
 											SystemUiVisibility.Flag.LowProfile | 
-											SystemUiVisibility.Flag.LightNavigationBar;
+											SystemUiVisibility.Flag.LightStatusBar;
 			
 			SystemUiVisibility.Flag otherFlags = newFlag & (~mask);
 
