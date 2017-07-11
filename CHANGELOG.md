@@ -4,6 +4,10 @@
 - Added `findRouter` function making it easier to use a router in a page deep inside the UI
 - Fixed and issue where relative paths and nested `Router` gave an error about unknown paths
 
+## UX Expressions (Uno-level)
+- Introduced support for variable arguments to UX functions - inherit from the `Fuse.Reactive.VarArgFunction` class.
+- The classes `Vector2`, `Vector3` and `Vector4` in `Fuse.Reactive` are now removed and replaced with the general purpose, variable-argument version `Vector` instead. This ensures vectors of any length are treated the same way. This is backwards incompatible in the unlikely case of having used these classes explicitly from Uno code.
+
 ## Templates
 - Added `Identity` and `IdentityKey` to `Each`. This allows created visuals to be reused when replaced with `replaceAt` or `replaceAll` in an Observable.
 - Triggers may now use templates which will be instantiated and added to the parent when active (like a node child).
