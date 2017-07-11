@@ -27,7 +27,7 @@ namespace Fuse
 			else throw new MarshalException(arr, typeof(float4));
 		}
 
-		static object ArrayToVector(object arg)
+		static object TryConvertArrayToVector(object arg)
 		{
 			var arr = arg as IArray;
 			if (arr != null) return ToVector(arr);
