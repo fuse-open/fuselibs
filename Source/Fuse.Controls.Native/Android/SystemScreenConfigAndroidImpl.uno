@@ -47,8 +47,8 @@ namespace Fuse.Controls.Native
 		{
 			if(val)
 			{
-				_wantedFlags = _wantedFlags ^ SystemUiVisibility.Flag.Fullscreen;
-				SystemUiVisibility.Flags = SystemUiVisibility.Flags ^ SystemUiVisibility.Flag.Fullscreen;
+				_wantedFlags &= ~SystemUiVisibility.Flag.Fullscreen;
+				SystemUiVisibility.Flags &= ~SystemUiVisibility.Flag.Fullscreen;
 			}
 			else
 			{
@@ -57,12 +57,27 @@ namespace Fuse.Controls.Native
 			}
 		}
 
+		public static void SetLightStatusbarState(bool isLight)
+		{
+			debug_log "Setting light state: " + isLight;
+			if(isLight)
+			{
+				_wantedFlags = _wantedFlags | SystemUiVisibility.Flag.LightNavigationBar;
+				SystemUiVisibility.Flags = SystemUiVisibility.Flags | SystemUiVisibility.Flag.LightNavigationBar;
+			}
+			else
+			{
+				_wantedFlags &= ~SystemUiVisibility.Flag.LightNavigationBar;
+				SystemUiVisibility.Flags &= ~SystemUiVisibility.Flag.LightNavigationBar;
+			}
+		}
+
 		public static void SetNavigationState(bool val)
 		{
 			if(val)
 			{
-				_wantedFlags = _wantedFlags ^ SystemUiVisibility.Flag.HideNavigation;
-				SystemUiVisibility.Flags = SystemUiVisibility.Flags ^ SystemUiVisibility.Flag.HideNavigation;
+				_wantedFlags &= ~SystemUiVisibility.Flag.HideNavigation;
+				SystemUiVisibility.Flags &= ~SystemUiVisibility.Flag.HideNavigation;
 			}
 			else
 			{
@@ -80,14 +95,19 @@ namespace Fuse.Controls.Native
 			}
 			else
 			{
-				_wantedFlags = _wantedFlags ^ SystemUiVisibility.Flag.LowProfile;
-				SystemUiVisibility.Flags = SystemUiVisibility.Flags ^ SystemUiVisibility.Flag.LowProfile;
+				_wantedFlags &= ~SystemUiVisibility.Flag.LowProfile;
+				SystemUiVisibility.Flags &= ~SystemUiVisibility.Flag.LowProfile;
 			}
 		}
 
 		private static extern(Android) void VisibilityChanged(SystemUiVisibility.Flag newFlag) 
 		{
-			SystemUiVisibility.Flag mask = SystemUiVisibility.Flag.Fullscreen | SystemUiVisibility.Flag.HideNavigation | SystemUiVisibility.Flag.LowProfile;
+			//Only modify flags we set, to avoid weirdness
+			SystemUiVisibility.Flag mask = SystemUiVisibility.Flag.Fullscreen | 
+											SystemUiVisibility.Flag.HideNavigation | 
+											SystemUiVisibility.Flag.LowProfile | 
+											SystemUiVisibility.Flag.LightNavigationBar;
+			
 			SystemUiVisibility.Flag otherFlags = newFlag & (~mask);
 
 			SystemUiVisibility.Flag actualFlags = newFlag & mask;

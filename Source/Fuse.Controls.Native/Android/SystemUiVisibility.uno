@@ -11,7 +11,6 @@ namespace Fuse.Controls.Native
 		"android.view.WindowManager",
 		"android.view.Window",
 		"android.view.WindowManager.LayoutParams")]
-	//Requires android SDK version 16 or newer(Jelly Bean)
 	extern(Android) internal static class SystemUiVisibility
 	{
 		[Flags]
@@ -21,6 +20,7 @@ namespace Fuse.Controls.Native
 			LowProfile = 1, 
 			HideNavigation = 2, 
 			Fullscreen = 4, 
+			LightNavigationBar = 16, //Only works in Android O
 			LayoutStable = 256, 
 			LayoutHideNavigation = 512, 
 			LayoutFullscreen = 1024, 
@@ -37,7 +37,8 @@ namespace Fuse.Controls.Native
 			JavaInit();
 		}
 
-		public static Flag Flags {
+		public static Flag Flags 
+		{
 			get 
 			{
 				return getVisibilityFlags();

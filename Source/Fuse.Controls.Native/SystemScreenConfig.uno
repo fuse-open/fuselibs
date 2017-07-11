@@ -60,6 +60,12 @@ namespace Fuse.Controls
 			Full,
 		}
 
+		public enum StatusBarTheme
+		{
+			Light,
+			Dark
+		}
+
 		private static SystemScreenConfig rootedConfig = null;
 
 		internal IDisposable _timer;
@@ -210,6 +216,23 @@ namespace Fuse.Controls
 			{
 				_resetDelay = value;
 			} 
+		}
+
+		private StatusBarTheme _theme = StatusBarTheme.Dark;
+		public StatusBarTheme Theme
+		{
+			get
+			{
+				return _theme;
+			}
+			set
+			{
+				_theme = value;
+				if defined(Android)
+				{
+					SystemScreenConfigAndroidImpl.SetLightStatusbarState(value == StatusBarTheme.Light);
+				}
+			}
 		}
 	}
 }
