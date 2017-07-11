@@ -238,9 +238,11 @@ namespace FuseTest
 		{
 			if (elapsedTime < 0)
 				elapsedTime = _frameIncrement;
-				
+
+			const float zeroTolerance = 1e-05f;
+
 			var e = 0f;
-			while (e < (elapsedTime - float.ZeroTolerance))
+			while (e < (elapsedTime - zeroTolerance))
 			{
 				var s = Math.Min( _frameIncrement, elapsedTime - e );
 				IncrementFrame(s);
