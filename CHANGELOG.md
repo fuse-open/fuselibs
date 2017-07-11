@@ -2,6 +2,7 @@
 
 ## Router
 - Added `findRouter` function making it easier to use a router in a page deep inside the UI
+- Fixed and issue where relative paths and nested `Router` gave an error about unknown paths
 
 ## Templates
 - Added `Identity` and `IdentityKey` to `Each`. This allows created visuals to be reused when replaced with `replaceAt` or `replaceAll` in an Observable.
@@ -15,6 +16,10 @@
 - Clarified/fixed some issues with how `Each`/`Instances` handled default templates. Previously if no matching template was found all the specified templates, or a subset, might have erronously been used. Now, as was always intended, if you use `MatchKey` and wish to have a default template you must specifiy `ux:DefaultTemplate="true"` on the default template. You cannot have multiple fallback templates, just as you can have only one template of a particular name.
 - If a `ux:DefaultTemplate="true"` is specified it will be the template that is used; the complete list of templates will not be used.
 
+## Fuse.Share
+- Fixed issue where using Fuse.Share would crash on iPad. Users must provide a position for spawn origin for the share popover. Check the Fuse.Share docs for more details.
+- Made iOS implementation internal, this was never ment to be public in the first place
+
 ## Optimizations
 - Optimized hit testing calculations. Improves scrolling in large scroll views with deep trees inside, among other things.
 - Optimized redundant OpenGL rendertarget operations. Gives speedups on some platforms.
@@ -22,6 +27,7 @@
 - Backwards incompatible optimization change: The `protected virtual void Visual.OnInvalidateWorldTransform()` method was removed. The contract of this method was very expensive to implement as it had to be called on all nodes, just in case it was overridden somewhere. If you have custom Uno code relying on this method (unlikely), then please rewrite to explicitly subscribe to the `Visual.WorldTransformInvalidated` event instead, like so: Override `OnRooted` and do `WorldTransformInvalidated += OnInvalidateWorldTransform;`, Override `OnUnrooted` and to `WorldTransformInvalidated -= OnInvalidateWorldTransform;`, then rewrite `protected override void OnInvalidateWorldTransform()` to `void OnInvalidateWorldTransform(object sender, EventArgs args)`
 - To improve rendering speed, Fuse no longer checks for OpenGL errors in release builds in some performance-critical code paths  
 - Improved perceived ScrollView performance by preventing caching while pointers are pressed on them, avoiding inconsistent framerates.
+- Fixed a bug which prevented elements like `Image` to use fast-track rendering in trivial cases with opacity (avoids render to texture).
 
 ## Multitouch
 - Fixed issue where during multitouch all input would stop if one finger was lifted.

@@ -194,7 +194,7 @@ namespace Fuse.Navigation
 			
 			var how = ModifyRouteHow.Goto;
 			Route route = null;
-			IRouterOutlet relative = null;
+			Node relative = null;
 			NavigationGotoMode mode = NavigationGotoMode.Transition;
 			var style = "";
 			
@@ -220,13 +220,7 @@ namespace Fuse.Navigation
 				}
 				else if (p == "relative")
 				{
-					var node = c.Wrap(o);
-					relative = r.FindOutletUp(node as Node);
-					if (relative == null)
-					{
-						Fuse.Diagnostics.UserError( "Could not find an outlet from the `relative` node", r );
-						return;
-					}
+					relative = c.Wrap(o) as Node;
 				}
 				else if (p == "transition")
 				{
@@ -253,10 +247,7 @@ namespace Fuse.Navigation
 			}
 			
 			if (relative != null)
-			{
-				var current = r.GetCurrent(r.Parent, relative);
-				route = current == null ? route : current.Append(route);
-			}
+				route = r.GetRelativeRoute(relative, route);
 			
 			r.Modify( how, route, mode, style );
 		}
