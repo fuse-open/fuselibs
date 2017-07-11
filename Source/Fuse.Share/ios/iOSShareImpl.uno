@@ -2,24 +2,63 @@ using Uno.Compiler.ExportTargetInterop;
 using Uno.Threading;
 namespace Fuse.Share
 {
-	public extern(iOS) class iOSShareImpl
+	internal extern(iOS) class iOSShareImpl
 	{
-		[Foreign(Language.ObjC)]
 		public static void ShareText(string text, string description)
+		{
+			if (IsIPad())
+				Fuse.Diagnostics.UserWarning("iPad requires a position as the spawn origion of the Share popover", text + " - " + description);
+
+			Present(NewShareTextActivity(text, description), false, 0, 0);
+		}
+
+		public static void ShareText(string text, string description, float2 position)
+		{
+			Present(NewShareTextActivity(text, description), true, position.X, position.Y);
+		}
+
+		public static void ShareFile(string path, string mimeType, string description)
+		{
+			if (IsIPad())
+				Fuse.Diagnostics.UserWarning("iPad requires a position as the spawn origion of the Share popover", path + " - " + mimeType + " - " + description);
+
+			Present(NewShareFileActivity(path, mimeType, description), false, 0, 0);
+		}
+
+		public static void ShareFile(string path, string mimeType, string description, float2 position)
+		{
+			Present(NewShareFileActivity(path, mimeType, description), true, position.X, position.Y);
+		}
+
+		[Foreign(Language.ObjC)]
+		static bool IsIPad()
 		@{
-			UIActivityViewController* activityVC = [[UIActivityViewController alloc] initWithActivityItems:@[text] applicationActivities:nil];
-			dispatch_async(dispatch_get_main_queue(), ^{
-				[[[[UIApplication sharedApplication] keyWindow] rootViewController] presentViewController:activityVC animated:YES completion:nil];
-			});
+			return UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPad;
 		@}
 
 		[Foreign(Language.ObjC)]
-		public static void ShareFile(string path, string mimeType,  string description)
+		static ObjC.Object NewShareTextActivity(string text, string description)
 		@{
-			NSURL* url = [NSURL URLWithString:path];
-			UIActivityViewController* activityVC = [[UIActivityViewController alloc] initWithActivityItems:@[url] applicationActivities:nil];
+			return [[UIActivityViewController alloc] initWithActivityItems:@[text] applicationActivities:nil];
+		@}
 
+		[Foreign(Language.ObjC)]
+		static ObjC.Object NewShareFileActivity(string path, string mimeType, string description)
+		@{
+			return [[UIActivityViewController alloc] initWithActivityItems:@[[NSURL URLWithString:path]] applicationActivities:nil];
+		@}
+
+		[Foreign(Language.ObjC)]
+		static void Present(ObjC.Object activityController, bool hasPosition, float x, float y)
+		@{
+			UIActivityViewController* activityVC = (UIActivityViewController*)activityController;
 			dispatch_async(dispatch_get_main_queue(), ^{
+				if (UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPad)
+				{
+					activityVC.popoverPresentationController.sourceView = [[[UIApplication sharedApplication] keyWindow] rootViewController].view;
+					if (hasPosition)
+						activityVC.popoverPresentationController.sourceRect = CGRectMake(x, y, 1, 1);
+				}
 				[[[[UIApplication sharedApplication] keyWindow] rootViewController] presentViewController:activityVC animated:YES completion:nil];
 			});
 		@}
