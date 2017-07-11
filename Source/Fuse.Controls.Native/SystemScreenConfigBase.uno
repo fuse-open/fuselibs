@@ -15,7 +15,7 @@ namespace Fuse.Controls
 			Full,
 		}
 
-		private static MiniList<SystemScreenConfigBase> rootedConfigs = new MiniList<SystemScreenConfigBase>();
+		private static SystemScreenConfigBase rootedConfig = null;
 
 		protected IDisposable _timer;
 
@@ -23,10 +23,13 @@ namespace Fuse.Controls
 		{
 			base.OnRooted();
 
-			rootedConfigs.Add(this);
-			if(rootedConfigs.Count > 1)
+			if(rootedConfig==null)
 			{
-				Fuse.Diagnostics.UserError("Only one SystemScreenConfig element should be rooted at once");
+				rootedConfig = this;
+			}
+			else
+			{
+				Fuse.Diagnostics.UserError("Only one SystemScreenConfig element should be rooted at once", this);
 			}
 
 		}
@@ -36,17 +39,7 @@ namespace Fuse.Controls
 
 			resetTimer();
 
-			rootedConfigs.Remove(this);
-		}
-
-		protected double calculateResetTime() 
-		{
-			double lowestReset = _resetDelay;
-			for(int i = 0; i < rootedConfigs.Count; i++)
-			{
-				lowestReset = Math.Min(lowestReset, rootedConfigs[i].ResetDelay);
-			}
-			return lowestReset;
+			rootedConfig = null;
 		}
 
 		protected void resetTimer() 
@@ -110,9 +103,10 @@ namespace Fuse.Controls
 			} 
 		}
 
-		//private Theme _theme = Theme.Dark;
+		//Android doesn't support Theme
 		//public Theme Theme { get; set; }
 
+		//5 seconds chosen as sane default
 		private double _resetDelay = 5.0;
 		public virtual double ResetDelay 
 		{ 

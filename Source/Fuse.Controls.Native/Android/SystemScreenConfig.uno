@@ -36,10 +36,9 @@ namespace Fuse.Controls
 			//Reset the timer anyways, in case the state changed to what we want
 			resetTimer();
 			//Was things changed due to an outside influence?
-			double resetDelay = calculateResetTime();
-			if(actualFlags != _wantedFlags && resetDelay != Float.ZeroTolerance) //Cheeky 
+			if(actualFlags != _wantedFlags && _resetDelay != Float.ZeroTolerance) //Cheeky 
 			{
-				_timer = Timer.Wait(resetDelay, timerDone);
+				_timer = Timer.Wait(_resetDelay, timerDone);
 			}
 		}
 
@@ -156,10 +155,7 @@ namespace Fuse.Controls
 			} 
 		}
 
-		//private Theme _theme = Theme.Dark;
-		//public Theme Theme { get; set; }
-
-		private double _restDelay = 5.0;
+		private double _resetDelay = 5.0;
 		/**
 			Sets the time before outside changes to visibility states is reset.
 			Setting the value to 0 disables the reset behavior.
@@ -168,11 +164,11 @@ namespace Fuse.Controls
 		{ 
 			get
 			{
-				return _restDelay;
+				return _resetDelay;
 			} 
 			set
 			{
-				_restDelay = value;
+				_resetDelay = value;
 			} 
 		}
 	}
