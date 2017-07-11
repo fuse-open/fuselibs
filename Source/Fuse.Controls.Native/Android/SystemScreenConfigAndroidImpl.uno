@@ -7,24 +7,24 @@ namespace Fuse.Controls.Native
 		private static SystemUiVisibility.Flag _wantedFlags = SystemUiVisibility.Flag.None;
 		private static SystemScreenConfig config;
 
-		public static void init(SystemScreenConfig config)
+		public static void Init(SystemScreenConfig config)
 		{
 			SystemScreenConfigAndroidImpl.config = config;
-			SystemUiVisibility.VisibilityChanged += visibilityChanged;
+			SystemUiVisibility.VisibilityChanged += VisibilityChanged;
 		}
 
-		public static void deInit()
+		public static void DeInit()
 		{
-			SystemUiVisibility.VisibilityChanged -= visibilityChanged;
+			SystemUiVisibility.VisibilityChanged -= VisibilityChanged;
 			SystemScreenConfigAndroidImpl.config = null;
 		}
 
-		public static void timerDone()
+		public static void TimerDone()
 		{
 			SystemUiVisibility.Flags = _wantedFlags;
 		}
 
-		public static void setShowState(SystemScreenConfig.Visibility state)
+		public static void SetShowState(SystemScreenConfig.Visibility state)
 		{
 			switch(state)
 			{
@@ -43,7 +43,7 @@ namespace Fuse.Controls.Native
 			}
 		}
 
-		public static void setStatusState(bool val)
+		public static void SetStatusState(bool val)
 		{
 			if(val)
 			{
@@ -57,7 +57,7 @@ namespace Fuse.Controls.Native
 			}
 		}
 
-		public static void setNavigationState(bool val)
+		public static void SetNavigationState(bool val)
 		{
 			if(val)
 			{
@@ -71,7 +71,7 @@ namespace Fuse.Controls.Native
 			}
 		}
 
-		public static void setDimState(bool val)
+		public static void SetDimState(bool val)
 		{
 			if(val)
 			{
@@ -85,7 +85,7 @@ namespace Fuse.Controls.Native
 			}
 		}
 
-		private static extern(Android) void visibilityChanged(SystemUiVisibility.Flag newFlag) 
+		private static extern(Android) void VisibilityChanged(SystemUiVisibility.Flag newFlag) 
 		{
 			SystemUiVisibility.Flag mask = SystemUiVisibility.Flag.Fullscreen | SystemUiVisibility.Flag.HideNavigation | SystemUiVisibility.Flag.LowProfile;
 			SystemUiVisibility.Flag otherFlags = newFlag & (~mask);
@@ -97,7 +97,7 @@ namespace Fuse.Controls.Native
 			//Was things changed due to an outside influence?
 			if(actualFlags != _wantedFlags && config.ResetDelay > 0.0001f) //Cheeky 
 			{
-				config._timer = Timer.Wait(config.ResetDelay, timerDone);
+				config._timer = Timer.Wait(config.ResetDelay, config.timerDone);
 			}
 		}
 	}

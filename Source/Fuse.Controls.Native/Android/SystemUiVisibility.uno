@@ -76,6 +76,7 @@ namespace Fuse.Controls.Native
 			View decorView = com.fuse.Activity.getRootActivity().getWindow().getDecorView();
 			return decorView.getSystemUiVisibility();
 		@}
+
 		[Foreign(Language.Java)]
 		public static void setVisibilityFlags(Flag flags)
 		@{

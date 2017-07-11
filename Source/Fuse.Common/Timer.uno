@@ -22,21 +22,15 @@ namespace Fuse
 
 		void Start()
 		{
-			if(!_running)
-			{
-				_startTime = Uno.Diagnostics.Clock.GetSeconds();
-				UpdateManager.AddAction(Update);
-				_running = true;
-			}
+			_startTime = Uno.Diagnostics.Clock.GetSeconds();
+			UpdateManager.AddAction(Update);
+			_running = true;
 		}
 
 		void Stop()
 		{
-			if(_running) 
-			{
-				_running = false;
-				UpdateManager.RemoveAction(Update);
-			}
+			UpdateManager.RemoveAction(Update);
+			_running = false;
 		}
 
 		void Update()
@@ -47,14 +41,15 @@ namespace Fuse
 			if (time > _interval)
 			{
 				_callback();
-
-				if (_once) Stop();
+				if (_once) Dispose();
 				else _startTime = now;
 			}
 		}
 
 		public void Dispose()
 		{
+			if(!_running)
+				return;
 			Stop();
 		}
 

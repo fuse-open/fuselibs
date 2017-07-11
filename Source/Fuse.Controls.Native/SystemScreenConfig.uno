@@ -79,7 +79,7 @@ namespace Fuse.Controls
 
 			if defined(Android)
 			{
-				SystemScreenConfigAndroidImpl.init(this);
+				SystemScreenConfigAndroidImpl.Init(this);
 			}
 		}
 		protected override void OnUnrooted()
@@ -92,7 +92,7 @@ namespace Fuse.Controls
 
 			if defined(Android)
 			{
-				SystemScreenConfigAndroidImpl.deInit();
+				SystemScreenConfigAndroidImpl.DeInit();
 			}
 		}
 
@@ -105,11 +105,11 @@ namespace Fuse.Controls
 			}
 		}
 
-		private void timerDone()
+		internal void timerDone()
 		{
 			if defined(Android)
 			{
-				SystemScreenConfigAndroidImpl.timerDone();
+				SystemScreenConfigAndroidImpl.TimerDone();
 			}
 			resetTimer();
 		}
@@ -131,7 +131,7 @@ namespace Fuse.Controls
 				_visibility = value;
 				if defined(Android)
 				{
-					SystemScreenConfigAndroidImpl.setShowState(value);
+					SystemScreenConfigAndroidImpl.SetShowState(value);
 				}
 			} 
 		}
@@ -152,7 +152,7 @@ namespace Fuse.Controls
 				_showNavigation = value;
 				if defined(Android)
 				{
-					SystemScreenConfigAndroidImpl.setNavigationState(value);
+					SystemScreenConfigAndroidImpl.SetNavigationState(value);
 				}
 			} 
 		}
@@ -172,7 +172,7 @@ namespace Fuse.Controls
 				_showStatus = value;
 				if defined(Android)
 				{
-					SystemScreenConfigAndroidImpl.setStatusState(value);
+					SystemScreenConfigAndroidImpl.SetStatusState(value);
 				}
 			} 
 		}
@@ -189,7 +189,7 @@ namespace Fuse.Controls
 				_isDim = value;
 				if defined(Android)
 				{
-					SystemScreenConfigAndroidImpl.setDimState(value);
+					SystemScreenConfigAndroidImpl.SetDimState(value);
 				}
 			} 
 		}
@@ -197,7 +197,7 @@ namespace Fuse.Controls
 		//Sane default of 5 seconds
 		private double _resetDelay = 5.0;
 		/**
-			Sets the time before outside changes to visibility states is reset.
+			Sets the time before outside changes to visibility states is reset, defaults to 5.
 			Setting the value to 0 disables the reset behavior.
 		*/
 		public double ResetDelay 
