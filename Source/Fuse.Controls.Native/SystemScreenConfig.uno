@@ -47,9 +47,10 @@ namespace Fuse.Controls
 					</StackPanel>
 				</ClientPanel>
 			</App>
+		@experimental
 	*/
 	public extern(!Android) class SystemScreenConfig : SystemScreenConfigBase
 	{
-		
+
 	}
 }
