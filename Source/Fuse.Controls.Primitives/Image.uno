@@ -94,10 +94,10 @@ namespace Fuse.Controls
 			AddDrawCost(1.0);
 
 			IsVisibleChanged += OnIsVisibleChanged;
-			_container.IsRooted = true;
 			_container.ParamChanged += OnContainerParamChanged;
 			_container.SourceChanged += OnContainerSourceChanged;
 			_container.SourceError += OnContainerSourceError;
+			_container.IsRooted = true;
 		}
 		
 		protected override void OnUnrooted()
