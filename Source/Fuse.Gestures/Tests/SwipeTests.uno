@@ -224,7 +224,8 @@ namespace Fuse.Gestures.Test
 					float2(460 - GestureHardCaptureSignificanceThreshold,500), speed );
 				
 				//it may start a frame after passing the treshhold
-				var off = 2 * root.StepIncrement * speed / 100/*Length*/ + float.ZeroTolerance;
+				const float zeroTolerance = 1e-05f;
+				var off = 2 * root.StepIncrement * speed / 100/*Length*/ + zeroTolerance;
 				Assert.AreEqual(0.4f, TriggerProgress(p.S), off);
 				Assert.AreEqual(0, TriggerProgress(p.W1));
 				Assert.AreEqual(0, TriggerProgress(p.W5));
