@@ -22,8 +22,12 @@ namespace Fuse.Reactive.Test
 
 		protected override void OnNewPartialArguments(Argument[] args, IListener listener)
 		{
-			// We want to get this callback exactly 2 times for args.Length == 3
-			if (args.Length == 3) C++;
+			// We want to get this callback exactly 3 times for args.Length == 3 (0, 1 and 2 arguments ready)
+			if (args.Length == 3) 
+			{
+				C++;
+				Assert.IsFalse(args[1].HasValue);
+			}
 			base.OnNewPartialArguments(args, listener);
 		}
 
@@ -61,7 +65,7 @@ namespace Fuse.Reactive.Test
 			var e = new UX.VarArgs();
 			var root = TestRootPanel.CreateWithChild(e);
 			Assert.AreEqual("48", e.t.Value);
-			Assert.AreEqual(2, VarArgsTestFunc.C);
+			Assert.AreEqual(3, VarArgsTestFunc.C);
 		}
 	}
 }
