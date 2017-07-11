@@ -676,5 +676,28 @@ namespace Fuse.Reactive.Test
 				Assert.AreEqual( "1,2,1,2", GetText(e));
 			}
 		}
+		
+		[Test]
+		//change TemplateSource after rooting
+		public void TemplateSource()
+		{
+			var e=  new UX.Each.TemplateSource();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				Assert.AreEqual( "A", GetDudZ(e.tb));
+				
+				e.each.TemplateSource = e.tb;
+				root.PumpDeferred();
+				Assert.AreEqual( "B", GetDudZ(e.tb));
+				
+				e.each.TemplateSource = e.tc;
+				root.PumpDeferred();
+				Assert.AreEqual( "C", GetDudZ(e.tb));
+				
+				e.each.TemplateSource = null;
+				root.PumpDeferred();
+				Assert.AreEqual( "A", GetDudZ(e.tb));
+			}
+		}
 	}
 }

@@ -197,7 +197,16 @@ namespace Fuse.Reactive
 		public ITemplateSource TemplateSource
 		{
 			get { return _weakTemplateSource; }
-			set { _weakTemplateSource = value; }
+			set 
+			{ 
+				_weakTemplateSource = value; 
+				
+				if (IsRootingCompleted)
+				{
+					_templateSource = _weakTemplateSource;
+					Repopulate();
+				}
+			}
 		}
 		//https://github.com/fusetools/fuselibs-public/issues/135
 		[WeakReference]
