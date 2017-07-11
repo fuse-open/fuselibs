@@ -5,10 +5,11 @@ namespace Fuse.Motion.Simulation
 	class SmoothSnap<T> : DestinationSimulation<T>
 	{
 		Fuse.Internal.Blender<T> _blender = Fuse.Internal.BlenderMap.Get<T>();
-		
+		const float _zeroTolerance = 1e-05f;
+
 		public static SmoothSnap<T> CreateNormalized()
 		{
-			var s = new SmoothSnap<T>(float.ZeroTolerance);
+			var s = new SmoothSnap<T>(_zeroTolerance);
 			s._speedMin = 0.2f;
 			s._speedDropoutDistance = 0.4f;
 			s._speed = 3.5f;
@@ -17,7 +18,7 @@ namespace Fuse.Motion.Simulation
 		
 		public static SmoothSnap<T> CreateRadians()
 		{
-			var s = new SmoothSnap<T>(float.ZeroTolerance);
+			var s = new SmoothSnap<T>(_zeroTolerance);
 			s._speedMin = 0.2f * Math.PIf;
 			s._speedDropoutDistance = 0.4f * Math.PIf;
 			s._speed = 3.5f * Math.PIf;
@@ -26,7 +27,7 @@ namespace Fuse.Motion.Simulation
 		
 		public static SmoothSnap<T> CreatePoints()
 		{
-			var s = new SmoothSnap<T>(float.ZeroTolerance);
+			var s = new SmoothSnap<T>(_zeroTolerance);
 			s._speedMin = 25f;
 			s._speedDropoutDistance = 100f;
 			s._speed = 600;
@@ -45,7 +46,7 @@ namespace Fuse.Motion.Simulation
 		}
 		
 		float _scale = 1;
-		public SmoothSnap( float scale = float.ZeroTolerance )
+		public SmoothSnap( float scale = _zeroTolerance )
 		{
 			_scale = scale;
 		}

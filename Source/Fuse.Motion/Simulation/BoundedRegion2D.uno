@@ -27,6 +27,8 @@ namespace Fuse.Motion.Simulation
 	*/
 	class BasicBoundedRegion2D : BoundedRegion2D
 	{
+		const float _zeroTolerance = 1e-05f;
+
 		static public BasicBoundedRegion2D CreatePoints()
 		{
 			var region = new BasicBoundedRegion2D();
@@ -211,8 +213,8 @@ namespace Fuse.Motion.Simulation
 			
 			//allow one axis to snap while other is still moving
 			MoveSnap( elapsed, 
-				Math.Abs(_velocity.X) < float.ZeroTolerance,
-				Math.Abs(_velocity.Y) < float.ZeroTolerance );
+				Math.Abs(_velocity.X) < _zeroTolerance,
+				Math.Abs(_velocity.Y) < _zeroTolerance );
 		}
 		
 		void SnapSetPositionVelocity( float2 nextPosition, float2 nextVelocity )
@@ -235,7 +237,7 @@ namespace Fuse.Motion.Simulation
 				case OverflowType.Elastic:
 				{
 					var over = CalcOver( next );
-					if (Math.Abs(over.X) + Math.Abs(over.Y) < float.ZeroTolerance)
+					if (Math.Abs(over.X) + Math.Abs(over.Y) < _zeroTolerance)
 						return next;
 					
 					//TODO: this doesn't correctly account for the step when next moves into the
@@ -260,7 +262,7 @@ namespace Fuse.Motion.Simulation
 		float2 SnapVelocity( float2 position, float2 v )
 		{
 			var over = CalcOver( position );
-			if (Math.Abs(over.X) + Math.Abs(over.Y) < float.ZeroTolerance)
+			if (Math.Abs(over.X) + Math.Abs(over.Y) < _zeroTolerance)
 				return v;
 			
 			switch (Overflow)
