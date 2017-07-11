@@ -214,5 +214,38 @@ namespace Fuse.Navigation.Test
 				Assert.AreEqual( 0, (p.C1 as INavigation).PageProgress ); //tests the Bypass part
 			}
 		}
+		
+		[Test]
+		public void RelativeNest()
+		{
+			Router.TestClearMasterRoute();
+			var p = new UX.Router.RelativeNest();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				Assert.AreEqual( "one", p.router.GetCurrentRoute().Format() );
+				Assert.AreEqual( "i1", p.inner.GetCurrentRoute().Format() );
+				
+				p.GotoTwo.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual( "two", p.router.GetCurrentRoute().Format() );
+				Assert.AreEqual( "i1", p.inner.GetCurrentRoute().Format() );
+				
+				p.GotoI2.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual( "two", p.router.GetCurrentRoute().Format() );
+				Assert.AreEqual( "i2/n1", p.inner.GetCurrentRoute().Format() );
+				
+				//make inner non-current
+				p.PushOne.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual( "one", p.router.GetCurrentRoute().Format() );
+				Assert.AreEqual( "i2/n1", p.inner.GetCurrentRoute().Format() );
+				
+				p.GotoN2.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual( "one", p.router.GetCurrentRoute().Format() );
+				Assert.AreEqual( "i2/n2", p.inner.GetCurrentRoute().Format() );
+			}
+		}
 	}
 }

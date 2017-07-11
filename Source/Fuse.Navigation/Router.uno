@@ -583,7 +583,7 @@ namespace Fuse.Navigation
 			
 				//prevent crossing bounds
 				var v = active as Visual;
-				if (v != null && HasOtherRouter(v))
+				if (v != null && HasRouter(v))
 					return null;
 					
 				page = active;
@@ -615,13 +615,13 @@ namespace Fuse.Navigation
 		
 		bool HasOtherRouter(Visual n)
 		{
-			for (int i = 0; i < n.Children.Count; i++)
-			{
-				var q = n.Children[i];
-				if (q != this && q is Router)
-					return true;
-			}
-			return false;
+			var r = n.FirstChild<Router>();
+			return r != null && r != this;
+		}
+		
+		bool HasRouter(Visual n)
+		{
+			return n.FirstChild<Router>() != null;
 		}
 		
 		void IBaseNavigation.GoForward() { }
