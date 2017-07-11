@@ -11,7 +11,7 @@ namespace Fuse.Controls
 	*/
 	public extern(Android) class SystemScreenConfig : SystemScreenConfigBase
 	{
-	    protected override void OnRooted()
+		protected override void OnRooted()
 		{
 			base.OnRooted();
 
@@ -49,22 +49,22 @@ namespace Fuse.Controls
 			resetTimer();
 		}
 
-	    private Visibility _visibility;
-	    /**
-	 		Provides a sane default behavior for the visibility of system UI on every platform.
-	    */
-	    public override Visibility Show 
-	    { 
-	    	get
-	    	{
-	    		return _visibility;
-	    	} 
-	    	set
-	    	{
-	    		_visibility = value;
-	    		switch(value)
-	    		{
-	    			case Visibility.None:
+		private Visibility _visibility;
+		/**
+			Provides a sane default behavior for the visibility of system UI on every platform.
+		*/
+		public override Visibility Show 
+		{ 
+			get
+			{
+				return _visibility;
+			} 
+			set
+			{
+				_visibility = value;
+				switch(value)
+				{
+					case Visibility.None:
 						SystemUiVisibility.Flags = SystemUiVisibility.Flag.Fullscreen | SystemUiVisibility.Flag.HideNavigation;
 						_wantedFlags = SystemUiVisibility.Flag.Fullscreen | SystemUiVisibility.Flag.HideNavigation;
 					break;
@@ -76,104 +76,104 @@ namespace Fuse.Controls
 						SystemUiVisibility.Flags = SystemUiVisibility.Flag.None;
 						_wantedFlags = SystemUiVisibility.Flag.None;
 					break;
-	    		}
-	    	} 
-	    }
+				}
+			} 
+		}
 
-	    private bool _showNavigation = true;
-	    /**
-	    	Allows you to control the visibility of the navigation bar on Android.
+		private bool _showNavigation = true;
+		/**
+			Allows you to control the visibility of the navigation bar on Android.
 			Please note there is a general rule not to show the navigation bar without also showing the status bar.
-	    */
-	    public override bool ShowNavigation 
-	    { 
-	    	get
-	    	{
-	    		return _showNavigation;
-	    	}
-	    	set
-	    	{
-	    		if(value)
-	    		{
-	    			_wantedFlags = _wantedFlags ^ SystemUiVisibility.Flag.HideNavigation;
-	    			SystemUiVisibility.Flags = SystemUiVisibility.Flags ^ SystemUiVisibility.Flag.HideNavigation;
-	    		}
-	    		else
-	    		{
-	    			_wantedFlags = _wantedFlags | SystemUiVisibility.Flag.HideNavigation;
-	    			SystemUiVisibility.Flags = SystemUiVisibility.Flags | SystemUiVisibility.Flag.HideNavigation;
-	    		}
-	    		_showNavigation = value;
-	    	} 
-	    }
+		*/
+		public override bool ShowNavigation 
+		{ 
+			get
+			{
+				return _showNavigation;
+			}
+			set
+			{
+				if(value)
+				{
+					_wantedFlags = _wantedFlags ^ SystemUiVisibility.Flag.HideNavigation;
+					SystemUiVisibility.Flags = SystemUiVisibility.Flags ^ SystemUiVisibility.Flag.HideNavigation;
+				}
+				else
+				{
+					_wantedFlags = _wantedFlags | SystemUiVisibility.Flag.HideNavigation;
+					SystemUiVisibility.Flags = SystemUiVisibility.Flags | SystemUiVisibility.Flag.HideNavigation;
+				}
+				_showNavigation = value;
+			} 
+		}
 
 		private bool _showStatus = true;
 		/**
 			Allows you to control the visibility of the status bar on Android systems.
 		*/
-	    public override bool ShowStatus 
-	    { 
-	    	get
-	    	{
-	    		return _showStatus;
-	    	}
-	    	set
-	    	{
-	    		if(value)
-	    		{
-	    			_wantedFlags = _wantedFlags ^ SystemUiVisibility.Flag.Fullscreen;
-	    			SystemUiVisibility.Flags = SystemUiVisibility.Flags ^ SystemUiVisibility.Flag.Fullscreen;
-	    		}
-	    		else
-	    		{
-	    			_wantedFlags = _wantedFlags | SystemUiVisibility.Flag.Fullscreen;
-	    			SystemUiVisibility.Flags = SystemUiVisibility.Flags | SystemUiVisibility.Flag.Fullscreen;
-	    		}
-	    		_showStatus = value;
-	    	} 
-	    }
+		public override bool ShowStatus 
+		{ 
+			get
+			{
+				return _showStatus;
+			}
+			set
+			{
+				if(value)
+				{
+					_wantedFlags = _wantedFlags ^ SystemUiVisibility.Flag.Fullscreen;
+					SystemUiVisibility.Flags = SystemUiVisibility.Flags ^ SystemUiVisibility.Flag.Fullscreen;
+				}
+				else
+				{
+					_wantedFlags = _wantedFlags | SystemUiVisibility.Flag.Fullscreen;
+					SystemUiVisibility.Flags = SystemUiVisibility.Flags | SystemUiVisibility.Flag.Fullscreen;
+				}
+				_showStatus = value;
+			} 
+		}
 
-	    private bool _isDim = false;
-	    public override bool IsDim 
-	    { 
-	    	get
-	    	{
-	    		return _isDim;
-	    	} 
-	    	set
-	    	{
-	    		if(value)
-	    		{
-	    			_wantedFlags = _wantedFlags | SystemUiVisibility.Flag.LowProfile;
-	    			SystemUiVisibility.Flags = SystemUiVisibility.Flags | SystemUiVisibility.Flag.LowProfile;
-	    		}
-	    		else
-	    		{
-	    			_wantedFlags = _wantedFlags ^ SystemUiVisibility.Flag.LowProfile;
-	    			SystemUiVisibility.Flags = SystemUiVisibility.Flags ^ SystemUiVisibility.Flag.LowProfile;
-	    		}
-	    		_isDim = value;
-	    	} 
-	    }
+		private bool _isDim = false;
+		public override bool IsDim 
+		{ 
+			get
+			{
+				return _isDim;
+			} 
+			set
+			{
+				if(value)
+				{
+					_wantedFlags = _wantedFlags | SystemUiVisibility.Flag.LowProfile;
+					SystemUiVisibility.Flags = SystemUiVisibility.Flags | SystemUiVisibility.Flag.LowProfile;
+				}
+				else
+				{
+					_wantedFlags = _wantedFlags ^ SystemUiVisibility.Flag.LowProfile;
+					SystemUiVisibility.Flags = SystemUiVisibility.Flags ^ SystemUiVisibility.Flag.LowProfile;
+				}
+				_isDim = value;
+			} 
+		}
 
-	    //private Theme _theme = Theme.Dark;
-	    //public Theme Theme { get; set; }
+		//private Theme _theme = Theme.Dark;
+		//public Theme Theme { get; set; }
 
-	    private double _restDelay = 5.0;
-	    /**
+		private double _restDelay = 5.0;
+		/**
 			Sets the time before outside changes to visibility states is reset.
 			Setting the value to 0 disables the reset behavior.
-	    */
-	    public override double ResetDelay 
-	    { 
-	    	get
-	    	{
-	    		return _restDelay;
-    		} 
-    		set
-    		{
-    			_restDelay = value;
-    		} 
-    	}
+		*/
+		public override double ResetDelay 
+		{ 
+			get
+			{
+				return _restDelay;
+			} 
+			set
+			{
+				_restDelay = value;
+			} 
+		}
 	}
 }

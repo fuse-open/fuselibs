@@ -50,6 +50,6 @@ namespace Fuse.Controls
 	*/
 	public extern(!Android) class SystemScreenConfig : SystemScreenConfigBase
 	{
-	    
+		
 	}
 }

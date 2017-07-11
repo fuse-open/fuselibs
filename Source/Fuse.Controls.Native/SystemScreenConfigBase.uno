@@ -6,27 +6,28 @@ using Fuse.Internal;
 
 namespace Fuse.Controls
 {
-	/**
-		TODO write docs please
-	*/
 	public class SystemScreenConfigBase : Behavior
 	{
 		public enum Visibility
-	    {
-	        None,
-	        Minimal,
-	        Full,
-	    }
+		{
+			None,
+			Minimal,
+			Full,
+		}
 
-	    private static MiniList<SystemScreenConfigBase> rootedConfigs = new MiniList<SystemScreenConfigBase>();
+		private static MiniList<SystemScreenConfigBase> rootedConfigs = new MiniList<SystemScreenConfigBase>();
 
-	    protected Timer _timer;
+		protected IDisposable _timer;
 
-	    protected override void OnRooted()
+		protected override void OnRooted()
 		{
 			base.OnRooted();
 
 			rootedConfigs.Add(this);
+			if(rootedConfigs.Count > 1)
+			{
+				Fuse.Diagnostics.UserError("Only one SystemScreenConfig element should be rooted at once");
+			}
 
 		}
 		protected override void OnUnrooted()
@@ -41,10 +42,9 @@ namespace Fuse.Controls
 		protected double calculateResetTime() 
 		{
 			double lowestReset = _resetDelay;
-
-			foreach(SystemScreenConfigBase theBase in rootedConfigs) 
+			for(int i = 0; i < rootedConfigs.Count; i++)
 			{
-				lowestReset = Math.Min(lowestReset, theBase.ResetDelay);
+				lowestReset = Math.Min(lowestReset, rootedConfigs[i].ResetDelay);
 			}
 			return lowestReset;
 		}
@@ -53,77 +53,77 @@ namespace Fuse.Controls
 		{
 			if(_timer!=null) 
 			{
-				_timer.Stop();
+				_timer.Dispose();
 				_timer = null;
 			}
 		}
 
-	    private Visibility _visibility;
-	    public virtual Visibility Show 
-	    { 
-	    	get
-	    	{
-	    		return _visibility;
-	    	} 
-	    	set
-	    	{
-	    		_visibility = value;
-	    	} 
-	    }
+		private Visibility _visibility;
+		public virtual Visibility Show 
+		{ 
+			get
+			{
+				return _visibility;
+			} 
+			set
+			{
+				_visibility = value;
+			} 
+		}
 
-	    private bool _showNavigation = true;
-	    public virtual bool ShowNavigation 
-	    { 
-	    	get
-	    	{
-	    		return _showNavigation;
-	    	}
-	    	set
-	    	{
-	    		_showNavigation = value;
-	    	} 
-	    }
+		private bool _showNavigation = true;
+		public virtual bool ShowNavigation 
+		{ 
+			get
+			{
+				return _showNavigation;
+			}
+			set
+			{
+				_showNavigation = value;
+			} 
+		}
 
 		private bool _showStatus = true;
-	    public virtual bool ShowStatus 
-	    { 
-	    	get
-	    	{
-	    		return _showStatus;
-	    	}
-	    	set
-	    	{
-	    		_showStatus = value;
-	    	} 
-	    }
+		public virtual bool ShowStatus 
+		{ 
+			get
+			{
+				return _showStatus;
+			}
+			set
+			{
+				_showStatus = value;
+			} 
+		}
 
-	    private bool _isDim = false;
-	    public virtual bool IsDim 
-	    { 
-	    	get
-	    	{
-	    		return _isDim;
-	    	} 
-	    	set
-	    	{
-	    		_isDim = value;
-	    	} 
-	    }
+		private bool _isDim = false;
+		public virtual bool IsDim 
+		{ 
+			get
+			{
+				return _isDim;
+			} 
+			set
+			{
+				_isDim = value;
+			} 
+		}
 
-	    //private Theme _theme = Theme.Dark;
-	    //public Theme Theme { get; set; }
+		//private Theme _theme = Theme.Dark;
+		//public Theme Theme { get; set; }
 
-	    private double _resetDelay = 5.0;
-	    public virtual double ResetDelay 
-	    { 
-	    	get
-	    	{
-	    		return _resetDelay;
-    		} 
-    		set
-    		{
-    			_resetDelay = value;
-    		} 
-    	}
+		private double _resetDelay = 5.0;
+		public virtual double ResetDelay 
+		{ 
+			get
+			{
+				return _resetDelay;
+			} 
+			set
+			{
+				_resetDelay = value;
+			} 
+		}
 	}
 }
