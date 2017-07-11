@@ -6,9 +6,6 @@ using Fuse.Controls.Native;
 
 namespace Fuse.Controls
 {
-	/**
-		TODO write docs please
-	*/
 	public extern(Android) class SystemScreenConfig : SystemScreenConfigBase
 	{
 		protected override void OnRooted()
