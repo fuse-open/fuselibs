@@ -3,13 +3,14 @@
 		<p>Buttons should show and hide status bar and navigation bar parts of the system user interface.</p>
 	</InfoStack>
 	<Android>
-		<SystemScreenConfig Show="{displayValue}" IsDim="{isDim}" />
+		<SystemScreenConfig Show="{displayValue}" IsDim="{isDim}" Theme="{theme}"/>
 	</Android>
 	<JavaScript>
 		var Observable = require("FuseJS/Observable");
 		var displayValue = Observable("All");
 		var actualShow = Observable("All");
 		var isDim = Observable("false");
+		var theme = Observable("Light");
 		function minimal() {
 			displayValue.value = "Minimal";
 		}
@@ -26,19 +27,31 @@
 				isDim.value = "false";
 			}
 		}
+		function toggleTheme() {
+			if(theme.value == "Light") {
+				theme.value = "Dark";
+			} else {
+				theme.value = "Light";
+			}
+		}
 		module.exports = {
 			minimal: minimal,
 			full: full,
 			none: none,
 			displayValue: displayValue,
 			isDim: isDim,
-			toggleDim: toggleDim
+			toggleDim: toggleDim,
+			theme: theme,
+			toggleTheme: toggleTheme
 		}
 	</JavaScript>
 	<ScrollView>
 		<StackPanel>
-			<Text TextWrapping="Wrap">UI should turn more transparent, pressing again toggles:</Text>
+			<Text TextWrapping="Wrap">Status bar should hide icon, toggles:</Text>
 			<StdButton Clicked="{toggleDim}" Text="Minimal" Margin="20"/>
+
+			<Text>Ui should toggle between light and dark theme:</Text>
+			<StdButton Clicked="{toggleTheme}" Text="Toggle theme" Margin="20"/>
 
 			<Text>Navigation bar should be hidden:</Text>
 			<StdButton Clicked="{minimal}" Text="Minimal" Margin="20"/>
