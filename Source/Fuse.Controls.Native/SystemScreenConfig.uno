@@ -1,6 +1,8 @@
 using Uno;
 using Uno.UX;
 using Uno.Collections;
+using Fuse;
+using Fuse.Controls.Native;
 
 namespace Fuse.Controls
 {
@@ -49,8 +51,165 @@ namespace Fuse.Controls
 			</App>
 		@experimental
 	*/
-	public extern(!Android) class SystemScreenConfig : SystemScreenConfigBase
+	public class SystemScreenConfig : Behavior
 	{
+		public enum Visibility
+		{
+			None,
+			Minimal,
+			Full,
+		}
 
+		private static SystemScreenConfig rootedConfig = null;
+
+		internal IDisposable _timer;
+
+		protected override void OnRooted()
+		{
+			base.OnRooted();
+
+			if(rootedConfig==null)
+			{
+				rootedConfig = this;
+			}
+			else
+			{
+				Fuse.Diagnostics.UserError("Only one SystemScreenConfig element should be rooted at once", this);
+			}
+
+			if defined(Android)
+			{
+				SystemScreenConfigAndroidImpl.init(this);
+			}
+		}
+		protected override void OnUnrooted()
+		{
+			base.OnUnrooted();
+
+			resetTimer();
+
+			rootedConfig = null;
+
+			if defined(Android)
+			{
+				SystemScreenConfigAndroidImpl.deInit();
+			}
+		}
+
+		internal void resetTimer() 
+		{
+			if(_timer!=null) 
+			{
+				_timer.Dispose();
+				_timer = null;
+			}
+		}
+
+		private void timerDone()
+		{
+			if defined(Android)
+			{
+				SystemScreenConfigAndroidImpl.timerDone();
+			}
+			resetTimer();
+		}
+
+		
+
+		private Visibility _visibility;
+		/**
+			Provides a sane default behavior for the visibility of system UI on every platform.
+		*/
+		public Visibility Show 
+		{ 
+			get
+			{
+				return _visibility;
+			} 
+			set
+			{
+				_visibility = value;
+				if defined(Android)
+				{
+					SystemScreenConfigAndroidImpl.setShowState(value);
+				}
+			} 
+		}
+
+		private bool _showNavigation = true;
+		/**
+			Allows you to control the visibility of the navigation bar on Android.
+			Please note there is a general rule not to show the navigation bar without also showing the status bar.
+		*/
+		public bool ShowNavigation 
+		{ 
+			get
+			{
+				return _showNavigation;
+			}
+			set
+			{
+				_showNavigation = value;
+				if defined(Android)
+				{
+					SystemScreenConfigAndroidImpl.setNavigationState(value);
+				}
+			} 
+		}
+
+		private bool _showStatus = true;
+		/**
+			Allows you to control the visibility of the status bar on Android systems.
+		*/
+		public bool ShowStatus 
+		{ 
+			get
+			{
+				return _showStatus;
+			}
+			set
+			{
+				_showStatus = value;
+				if defined(Android)
+				{
+					SystemScreenConfigAndroidImpl.setStatusState(value);
+				}
+			} 
+		}
+
+		private bool _isDim = false;
+		public bool IsDim 
+		{ 
+			get
+			{
+				return _isDim;
+			} 
+			set
+			{
+				_isDim = value;
+				if defined(Android)
+				{
+					SystemScreenConfigAndroidImpl.setDimState(value);
+				}
+			} 
+		}
+
+		//Sane default of 5 seconds
+		private double _resetDelay = 5.0;
+		/**
+			Sets the time before outside changes to visibility states is reset.
+			Setting the value to 0 disables the reset behavior.
+		*/
+		public double ResetDelay 
+		{ 
+			get
+			{
+				return _resetDelay;
+			} 
+			set
+			{
+				_resetDelay = value;
+			} 
+		}
 	}
 }
