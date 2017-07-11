@@ -11,6 +11,8 @@ namespace Fuse.Triggers.Test
 	*/
 	public class TimelineTests : TestBase
 	{
+		const float _zeroTolerance = 1e-05f;
+
 		[Test]
 		public void Pulse()
 		{	
@@ -27,7 +29,7 @@ namespace Fuse.Triggers.Test
 			Assert.AreEqual(1, TriggerProgress(p.T1));
 
 			//the pulse turnaround could take 1 frame, it's uncertain if this an issue.
-			var tolerance = root.StepIncrement + float.ZeroTolerance;
+			var tolerance = root.StepIncrement + _zeroTolerance;
 			root.StepFrame(0.1f);
 			Assert.AreEqual(0.9f, TriggerProgress(p.T1), tolerance);
 			
@@ -135,8 +137,8 @@ namespace Fuse.Triggers.Test
 			{
 				//the timeline may animate the first frame it is rooted
 				var bp = TriggerProgress(p.T1);
-				Assert.AreEqual(0f, TriggerProgress(p.T1), root.StepIncrement + float.ZeroTolerance);
-				Assert.AreEqual(1f, TriggerProgress(p.T2), root.StepIncrement + float.ZeroTolerance);
+				Assert.AreEqual(0f, TriggerProgress(p.T1), root.StepIncrement + _zeroTolerance);
+				Assert.AreEqual(1f, TriggerProgress(p.T2), root.StepIncrement + _zeroTolerance);
 				
 				//should just start playing with wrap mode (as TargetProgress defaults to 1)
 				root.StepFrame(0.1f);
@@ -316,7 +318,7 @@ namespace Fuse.Triggers.Test
 				root.StepFrame(2.5f);
 				Assert.AreEqual(1f, p.T.Progress);
 				root.StepFrame(2.5f);
-				Assert.AreEqual(0.5f, p.T.Progress, root.StepIncrement+ float.ZeroTolerance);
+				Assert.AreEqual(0.5f, p.T.Progress, root.StepIncrement+ _zeroTolerance);
 				root.StepFrame(3f); //overkill
 				Assert.AreEqual(0f, p.T.Progress);
 				
@@ -389,7 +391,7 @@ namespace Fuse.Triggers.Test
 				root.StepFrame(2.5f);
 				Assert.AreEqual(1f, p.T.Progress);
 				root.StepFrame(2.5f);
-				Assert.AreEqual(0.5f, p.T.Progress, root.StepIncrement + float.ZeroTolerance);
+				Assert.AreEqual(0.5f, p.T.Progress, root.StepIncrement + _zeroTolerance);
 				root.StepFrame(3f); //overkill
 				Assert.AreEqual(0f, p.T.Progress);
 				
@@ -432,7 +434,7 @@ namespace Fuse.Triggers.Test
 				p.Play.Pulse();
 				root.StepFrame();
 				root.StepFrame(1);
-				Assert.AreEqual(0.4f, p.T.Progress, root.StepIncrement + float.ZeroTolerance); //...thus no further change
+				Assert.AreEqual(0.4f, p.T.Progress, root.StepIncrement + _zeroTolerance); //...thus no further change
 				
 				p.Seek5.Pulse();
 				root.StepFrame();
