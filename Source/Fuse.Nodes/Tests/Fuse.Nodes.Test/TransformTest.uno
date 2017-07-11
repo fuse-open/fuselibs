@@ -52,7 +52,7 @@ namespace Fuse.Test
 			var f = FastMatrix.Identity();
 			transform.AppendTo(f);
 			var q = Vector.TransformCoordinate(input, f.Matrix);
-			Assert.AreEqual(expect, q, float.ZeroTolerance, filePath, lineNumber, memberName);
+			Assert.AreEqual(expect, q, Assert.ZeroTolerance, filePath, lineNumber, memberName);
 		}
 		
 		[Test]

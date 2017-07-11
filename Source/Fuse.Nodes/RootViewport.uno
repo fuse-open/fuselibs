@@ -196,13 +196,15 @@ namespace Fuse
 				aspectFlip = true;
 			}
 
+			const float zeroTolerance = 1e-05f;
+
 			var pixelsPerOSPoint = pixelSize / osPointSize;
-			if (Math.Abs(pixelsPerOSPoint.X - pixelsPerOSPoint.Y) > float.ZeroTolerance)
+			if (Math.Abs(pixelsPerOSPoint.X - pixelsPerOSPoint.Y) > zeroTolerance)
 				Fuse.Diagnostics.InternalError( "non-square pixelsPerOSPoint: " + pixelsPerOSPoint );
 
 			var osWindowDensity = PlatformWindowImpl.GetDensity(wnd);
 			_pixelsPerPoint = pixelsPerOSPoint.X * osWindowDensity;
-			if (_pixelsPerPoint <= float.ZeroTolerance)
+			if (_pixelsPerPoint <= zeroTolerance)
 				throw new Exception("A Window cannot have zero density.");
 
 			_pixelSize = pixelSize;
