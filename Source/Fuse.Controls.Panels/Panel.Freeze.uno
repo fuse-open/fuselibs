@@ -181,11 +181,7 @@ namespace Fuse.Controls
 				FreezeDrawable.Singleton.Draw(dc, this, Opacity, Scale, _frozenRenderBounds, _frozenBuffer);
 				return true;
 			}
-			
-			if (HasChildren) return false;
-			if (Background == null) return true;
-			
-			DrawBackground(dc, Opacity);
+
 			return base.FastTrackDrawWithOpacity(dc);
 		}
 

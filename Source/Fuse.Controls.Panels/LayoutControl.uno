@@ -193,5 +193,16 @@ namespace Fuse.Controls
 				return LayoutDependent.Maybe;
 			}
 		}
+
+		protected override bool FastTrackDrawWithOpacity(DrawContext dc)
+		{
+			if (HasChildren) return false;
+			
+			if (Background != null)
+				DrawBackground(dc, Opacity);
+			
+			// Asserting base class doesn't need to draw anything!
+			return true;
+		}
 	}
 }
