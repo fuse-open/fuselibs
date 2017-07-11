@@ -120,7 +120,8 @@ namespace Fuse.Drawing
 			var pixelsPerPoint = elm.Viewport.PixelsPerPoint;
 			var bounds = elm.RenderBoundsWithoutEffects;
 
-			var pixelSize = (int2)Math.Ceil(bounds.Size.XY*pixelsPerPoint - float.ZeroTolerance);
+			const float zeroTolerance = 1e-05f;
+			var pixelSize = (int2)Math.Ceil(bounds.Size.XY*pixelsPerPoint - zeroTolerance);
  			var fb = FramebufferPool.Lock(pixelSize.X,pixelSize.Y, Uno.Graphics.Format.RGBA8888, true);
  			
  			Begin(dc, fb, pixelsPerPoint);
