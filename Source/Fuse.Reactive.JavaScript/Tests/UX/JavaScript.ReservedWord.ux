@@ -1,0 +1,14 @@
+<Panel ux:Class="UX.JavaScriptReservedWord">
+	<Panel ux:Class="UX.JSReserved">
+		<Router ux:Name="undefined" />
+		<string ux:Dependency="function" />
+		<bool ux:Property="instanceof" />
+		<JavaScript dep:debugger="10">
+			if ($debugger !== 10) throw new Error();
+			if (!($undefined.goto instanceof Function)) throw new Error();
+			if ($function !== "yay!") throw new Error();
+			this.$instanceof.value = true;
+		</JavaScript>
+	</Panel>
+	<UX.JSReserved ux:Name="r" function="yay!" />
+</Panel>

@@ -39,7 +39,7 @@ namespace Fuse.Reactive
 
 			foreach (var dep in Dependencies) 
 			{
-				argsString += ", " + dep.Key;
+				argsString += ", " + JavaScript.ToValidName(dep.Key);
 				args.Add(dep.Value);
 			}
 
@@ -48,7 +48,10 @@ namespace Fuse.Reactive
 			{
 				for (int i = 0; i < nt.Entries.Length; ++i)
 				{
-					argsString += ", " + nt.Entries[i];
+					var name = nt.Entries[i];
+					if (name == "this") continue;
+					
+					argsString += ", " + JavaScript.ToValidName(name);
 					args.Add(_worker.Unwrap(nt.Objects[i]));
 				}
 				nt = nt.ParentTable;
