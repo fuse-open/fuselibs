@@ -1,5 +1,5 @@
 <Panel ux:Class="UX.Navigator.DeferPageSwitch">
-	<Router ux:Name="R"/>
+	<Router ux:Name="R" IsMasterRouter="false"/>
 	<Navigator ux:Name="Nav" DefaultPath="one">
 		<Page ux:Name="one" PrepareBusy="None"/>
 		

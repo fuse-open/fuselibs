@@ -1,5 +1,5 @@
 <Panel ux:Class="UX.Activated.Deep">
-	<Router ux:Name="router"/>
+	<Router ux:Name="router" IsMasterRouter="false"/>
 	<Panel ux:Class="ActPage">
 		<Activated Path="Full">
 			<FuseTest.CountAction ux:Name="A"/>

@@ -1,5 +1,5 @@
 <Panel ux:Class="UX.Navigator.NonTemplate">
-	<Router ux:Name="router"/> 
+	<Router ux:Name="router" IsMasterRouter="false"/>
 	<JavaScript>
 		var count = 0;
 		exports.pushP1 = function(){ router.push('P1', "" + (++count) );};

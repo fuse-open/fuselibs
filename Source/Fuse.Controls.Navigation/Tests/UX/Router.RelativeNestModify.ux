@@ -1,5 +1,5 @@
 <Panel ux:Class='UX.Router.RelativeNestModify'>
-	<Router ux:Name="router"/> 
+	<Router ux:Name="router" IsMasterRouter="false"/>
 	
 	<JavaScript>
 		exports.gotoTwo = function(){ 
