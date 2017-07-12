@@ -1,5 +1,8 @@
 # Unreleased
 
+## Image
+- Fixed issue where an `<Image />` could fail to display inside a `<NativeViewHost />` on iOS
+
 ## Router
 - Added `findRouter` function making it easier to use a router in a page deep inside the UI
 - Fixed and issue where relative paths and nested `Router` gave an error about unknown paths
