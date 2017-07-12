@@ -27,22 +27,10 @@ namespace Fuse.Reactive
 			}
 		}
 
-		void IMutable.Set(object[] args, int pos)
+		internal void Set(int index, object newValue)
 		{
-			var index = Marshal.ToInt(args[pos]);
-			if (pos < args.Length - 2)
-			{
-				var m = (IMutable)_items[index];
-				m.Set(args, pos+1);
-			}
-			else
-			{
-				Set(index, args[pos+1]);				
-			}
-		}
+			ValueMirror.Unsubscribe(_items[index]);
 
-		void Set(int index, object newValue)
-		{
 			_items[index] = newValue;
 
 			var sub = Subscribers as ArraySubscription;
