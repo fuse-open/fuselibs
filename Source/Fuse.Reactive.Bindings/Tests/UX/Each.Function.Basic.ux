@@ -10,7 +10,7 @@
 	</JavaScript>
 	
 	<Each Items="{items}" Offset="1" ux:Name="each">
-		<Text Value="{index}-{= index(each)}-{= offsetIndex(each)}"/>
+		<Text Value="{index}-{= index()}-{= offsetIndex()}"/>
 		<!-- TODO: test {Each DataIndex} was causing a crash instead of nice error -->
 		<!-- TODO: test ToggleControl  Value="index(each)" crashes horribly -->
 	</Each>
