@@ -1,5 +1,5 @@
 <Panel ux:Class="UX.Navigator.RootingCache2">
-	<Router ux:Name="R"/>
+	<Router ux:Name="R" IsMasterRouter="false"/>
 	<Navigator ux:Name="N">
 		<Page ux:Class="RCPage2">
 			<WhileActive ux:Name="A"><Nothing/></WhileActive>

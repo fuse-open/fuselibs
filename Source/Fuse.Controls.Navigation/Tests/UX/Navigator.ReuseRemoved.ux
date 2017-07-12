@@ -1,5 +1,5 @@
 <Panel ux:Class="UX.Navigator.ReuseRemoved">
-	<Router ux:Name="router"/>
+	<Router ux:Name="router" IsMasterRouter="false"/>
 	
 	<Navigator ux:Name="nav">
 		<Page Reuse="Removed" ux:Template="One" PrepareBusy="None"/>

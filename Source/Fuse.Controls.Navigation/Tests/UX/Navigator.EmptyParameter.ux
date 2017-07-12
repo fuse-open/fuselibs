@@ -1,5 +1,5 @@
 <Panel ux:Class="UX.Navigator.EmptyParameter">
-	<Router ux:Name="router"/> 
+	<Router ux:Name="router" IsMasterRouter="false"/>
 	<JavaScript>
 		module.exports.goA = function() { router.goto('p1',"") }
 		module.exports.goB = function() { router.goto('p1',null) }
