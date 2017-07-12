@@ -202,6 +202,11 @@ namespace Fuse.Input
 
 		static Dictionary<int, PointerRecord> _pointersDown = new Dictionary<int, PointerRecord>();
 
+		internal static void ClearPointersDown()
+		{
+			_pointersDown.Clear();
+		}
+
 		public static bool IsPressed()
 		{
 			return _pointersDown.Count > 0;
