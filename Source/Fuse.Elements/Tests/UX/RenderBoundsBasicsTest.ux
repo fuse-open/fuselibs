@@ -1,4 +1,4 @@
-<Panel ux:Class="UX.RenderBoundsTest">
+<Panel ux:Class="UX.RenderBoundsBasicsTest">
 	<Panel Width="100" Height="70" Offset="20,30" Alignment="TopLeft" ux:Name="P1"
 		Color="#FFF"/>
 	

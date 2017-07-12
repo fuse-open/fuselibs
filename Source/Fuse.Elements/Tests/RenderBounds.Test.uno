@@ -12,9 +12,9 @@ namespace Fuse.Test
 	public class RenderBoundsTest : TestBase
 	{
 		[Test]
-		public void RenderBounds()
+		public void Basics()
 		{
-			var tn = new UX.RenderBoundsTest();
+			var tn = new UX.RenderBoundsBasicsTest();
 			var root = TestRootPanel.CreateWithChild(tn,int2(1000));
 			
 			Assert.AreEqual( new Rect(20,30,540,540), tn.RenderBoundsWithoutEffects.FlatRect );
