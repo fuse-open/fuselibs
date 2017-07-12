@@ -1,4 +1,3 @@
-using Uno;
 using Uno.Collections;
 using Uno.Testing;
 
@@ -27,7 +26,7 @@ namespace FuseTest
 		
 		bool _listening;
 		IObservableArray _items;
-		IDisposable _subscription;
+		Uno.IDisposable _subscription;
 		
 		public object Items
 		{
@@ -56,7 +55,7 @@ namespace FuseTest
 			CleanSubscription();
 			if (_items == null)
 				return;
-			_subscription = (IDisposable)_items.Subscribe(this);
+			_subscription = (Uno.IDisposable)_items.Subscribe(this);
 		}
 		
 		void CleanSubscription()
