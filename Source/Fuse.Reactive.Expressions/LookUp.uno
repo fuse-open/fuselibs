@@ -130,9 +130,9 @@ namespace Fuse.Reactive
 				DisposeCollectionObservableObjectSub();
 				DisposeCollectionObservableSub();
 
-				var obs = col as IObservable;
+				var obs = col as IObservableArray;
 				if (obs != null) 
-					// Special case for when the collection is an IObservable
+					// Special case for when the collection is an IObservableArray
 					_colObservableSub = obs.Subscribe(this);
 
 				ResultChanged();
