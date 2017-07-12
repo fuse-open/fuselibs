@@ -49,5 +49,29 @@ namespace Fuse.Navigation.Test
 				Assert.AreEqual( "four?{\"id\":13}/inner?{\"a\":1,\"b\":2}", p.router.GetCurrentRoute().Format() );
 			}
 		}
+		
+		[Test]
+		public void DynamicPath()
+		{
+			Router.TestClearMasterRoute();
+			var p =new UX.RouterModify.DynamicPath();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				root.StepFrameJS();
+				Assert.AreEqual( "one", p.router.GetCurrentRoute().Format() );
+
+				p.gotoNext.Pulse();
+				root.StepFrameJS();
+				Assert.AreEqual( "two?{\"id\":12}", p.router.GetCurrentRoute().Format() );
+				
+				p.gotoParam.Pulse();
+				root.StepFrameJS();
+				Assert.AreEqual( "three?{\"id\":22}", p.router.GetCurrentRoute().Format() );
+				
+				p.gotoProp.Pulse();
+				root.StepFrame();
+				Assert.AreEqual( "one?{\"id\":8}", p.router.GetCurrentRoute().Format() );
+			}
+		}
 	}
 }

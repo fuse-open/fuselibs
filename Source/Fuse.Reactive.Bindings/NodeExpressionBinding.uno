@@ -10,12 +10,15 @@ namespace Fuse.Reactive
 		IListener _listener;
 		IDisposable _sub;
 		Node _node;
+		NameTable _nameTable;
 		
-		public NodeExpressionBinding( IExpression expr, Node node, IListener listener ) 
+		public NodeExpressionBinding( IExpression expr, Node node, IListener listener,
+			NameTable nameTable ) 
 		{
 			_expr = expr;
 			_listener = listener;
 			_node = node;
+			_nameTable = nameTable;
 		}
 		
 		public void Init()
@@ -24,7 +27,7 @@ namespace Fuse.Reactive
 		}
 		
 		static NameTable _emptyNameTable = new NameTable(null, new string[]{} );
-		public NameTable NameTable { get { return _emptyNameTable; } }
+		public NameTable NameTable { get { return _nameTable ?? _emptyNameTable; } }
 		
 		IDisposable IContext.Subscribe(IExpression source, string key, IListener listener)
 		{

@@ -86,6 +86,15 @@ namespace Fuse.Navigation
 		/** The router to use. If this is null (default) then it looks through the ancestor nodes to find the nearest router. */
 		public Router Router { get; set; }
 		
+		//backwards compatible constructor, won't be able to evaluate Path
+		public RouterModify() { }
+		
+		NameTable _nameTable;
+		protected RouterModify(NameTable nameTable)
+		{
+			_nameTable = nameTable;
+		}
+		
 		ModifyRouteHow _how = ModifyRouteHow.Goto;
 		/** How to modify the router. */
 		public ModifyRouteHow How
@@ -126,8 +135,7 @@ namespace Fuse.Navigation
 			if (Path != null)
 			{
 				DisposePathSub();
-				debug_log "Perform:" + n;
-				_pathSub = new NodeExpressionBinding(Path, n, this);
+				_pathSub = new NodeExpressionBinding(Path, n, this, _nameTable);
 				_pathSub.Init();
 			}
 			else
@@ -160,7 +168,6 @@ namespace Fuse.Navigation
 				else if (value is IArray)
 				{
 					var iarr = value as IArray;
-					debug_log "Array:" + iarr.Length;
 					for (int i= ((iarr.Length-1)/2)*2; i>=0; i -= 2)
 					{
 						string path;
@@ -180,7 +187,6 @@ namespace Fuse.Navigation
 				}
 				else
 				{
-					debug_log value + " :: " + value.GetType();
 					Fuse.Diagnostics.UserError("incompatible path", this);
 					return;
 				}
@@ -195,7 +201,6 @@ namespace Fuse.Navigation
 			
 		void PerformRoute(Node n, Route route)
 		{
-			debug_log "Perform:" + n + ":" +route.Format();
 			var useRouter = Router ?? Fuse.Navigation.Router.TryFindRouter(n);
 			if (useRouter == null)
 			{
@@ -215,5 +220,13 @@ namespace Fuse.Navigation
 			useRouter.Modify( How, route, Transition, Style );
 		}
 	}
+
 	
+	public class ModifyRoute : RouterModify
+	{
+		[UXConstructor]
+		public ModifyRoute([UXAutoNameTable] NameTable nameTable)
+			: base(nameTable)
+		{ }
+	}
 }
