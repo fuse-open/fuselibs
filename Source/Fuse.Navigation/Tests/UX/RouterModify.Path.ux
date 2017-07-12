@@ -1,0 +1,11 @@
+<Panel ux:Class="UX.RouterModify.Path">
+	<Router ux:Name="router"/>
+	<PageControl Transition="None">
+		<Page ux:Name="one"/>
+		<Page ux:Name="two"/>
+	</PageControl>
+	
+	<Timeline ux:Name="gotoNext">
+		<RouterModify How="Goto" Path=" 'two' "/>
+	</Timeline>
+</Panel>

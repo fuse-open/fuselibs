@@ -1,6 +1,8 @@
 using Uno;
+using Uno.UX;
 
 using Fuse.Triggers.Actions;
+using Fuse.Reactive;
 
 namespace Fuse.Navigation
 {
@@ -79,7 +81,7 @@ namespace Fuse.Navigation
 				</Panel>
 			</Navigator>
 	*/
-	public class RouterModify : TriggerAction
+	public class RouterModify : TriggerAction, IListener
 	{
 		/** The router to use. If this is null (default) then it looks through the ancestor nodes to find the nearest router. */
 		public Router Router { get; set; }
@@ -105,8 +107,62 @@ namespace Fuse.Navigation
 		
 		/** The operation style of the transition. */
 		public string Style { get; set; }
+
+		/* This is an IExpression since the claculation of the path might be costly (in terms of setup
+			and evaluation), and we don't want it to keep updating unless it is actually used. */
+		/** The target path */
+		public IExpression Path { get; set; }
+		
+		NodeExpressionBinding _pathSub;
+
+		/*protected override void OnUnrooted()
+		{
+			DisposePathSub();
+			base.OnUnrooted();
+		}*/
 		
 		protected override void Perform(Node n)
+		{
+			if (Path != null)
+			{
+				DisposePathSub();
+				_pathSub = new NodeExpressionBinding(Path, n, this);
+				_pathSub.Init();
+			}
+			else
+			{
+				PerformRoute(n, null);
+			}
+		}
+		
+		void DisposePathSub()
+		{
+			if (_pathSub != null)
+			{
+				_pathSub.Dispose();
+			}
+		}
+		
+		void IListener.OnNewData(IExpression source, object value)
+		{
+			if (source != Path)
+				return;
+				
+			Route route;
+			if (value is string)
+				route = new Route((string)value);
+			else
+			{
+				Fuse.Diagnostics.UserError("incompatible path", this);
+				DisposePathSub();
+				return;
+			}
+			
+			PerformRoute( (_pathSub as IContext).Node, route);
+			DisposePathSub();
+		}
+			
+		void PerformRoute(Node n, Route route)
 		{
 			var useRouter = Router ?? Fuse.Navigation.Router.TryFindRouter(n);
 			if (useRouter == null)
@@ -114,8 +170,6 @@ namespace Fuse.Navigation
 				Fuse.Diagnostics.UserError( "Router not set and none could be found", this );
 				return;
 			}
-			
-			Route route = null;
 			
 			if (Bookmark != null)
 			{
@@ -129,4 +183,5 @@ namespace Fuse.Navigation
 			useRouter.Modify( How, route, Transition, Style );
 		}
 	}
+	
 }
