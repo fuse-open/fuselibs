@@ -62,6 +62,9 @@
 ## JavaScript Dependency Injection
 - Added support for injecting UX expressions into `<JavaScript>` tags using the `dep` XML namespace. See docs on `JavaScript.Dependencies` for details.
 
+## WhileVisibleInScrollView
+- Added `How` property to `WhileVisibleInScrollView` trigger that accepts values `Partial` (default) and `Full`. When set to `Full`, the trigger is only active when the whole element bounds are inside view.
+
 
 # 1.1
 

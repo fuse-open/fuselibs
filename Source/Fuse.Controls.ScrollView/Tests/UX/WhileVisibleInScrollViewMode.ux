@@ -1,0 +1,18 @@
+<Panel ux:Class="UX.WhileVisibleInScrollView.Mode">
+	<Panel ux:Class="WISVM" Height="50">
+        <WhileVisibleInScrollView ux:Name="V1" Mode="Full">
+            <Nothing/>
+        </WhileVisibleInScrollView>
+        <WhileVisibleInScrollView ux:Name="V2" Mode="Full" Distance="10">
+            <Nothing/>
+        </WhileVisibleInScrollView>
+	</Panel>
+	
+	<ScrollView ux:Name="S">
+		<StackPanel>
+			<WISVM ux:Name="W1"/>
+			<WISVM ux:Name="W2"/>
+			<WISVM ux:Name="W3"/>
+		</StackPanel>
+	</ScrollView>
+</Panel>
