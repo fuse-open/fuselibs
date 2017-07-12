@@ -10,7 +10,7 @@ namespace Fuse.Reactive
 	public abstract class VarArgFunction: Expression
 	{
 		/** Holds information about an argument to a `VarArgFunction`. */
-		public class Argument 
+		protected class Argument 
 		{
 			internal IDisposable Subscription;
 
@@ -37,7 +37,27 @@ namespace Fuse.Reactive
 
 		List<Expression> _args = new List<Expression>();
 		public IList<Expression> Arguments { get { return _args; } }
+		
+		/** Can be called by `ToString` with a function name to do standard formatting of the arguments */
+		protected string FormatString(string funcName)
+		{
+			var q = funcName + "(";
+			for (int i=0; i < Arguments.Count; ++i)
+			{
+				if (i > 0)
+					q += ",";
+				q += Arguments[i].ToString();
+			}
+			q += ")";
+			return q;
+		}
+	}
 
+	/** For VarArg functions that do not need a custom subscription and can work directly with the
+		values of the arguments. 
+	*/
+	public abstract class SimpleVarArgFunction : VarArgFunction
+	{
 		public override IDisposable Subscribe(IContext context, IListener listener)
 		{
 			return new Subscription(this, context, listener);
@@ -79,10 +99,10 @@ namespace Fuse.Reactive
 		public class Subscription: InnerListener
 		{
 			IListener _listener;
-			VarArgFunction _func;
+			SimpleVarArgFunction _func;
 			Argument[] _arguments;
 
-			public Subscription(VarArgFunction func, IContext context, IListener listener)
+			public Subscription(SimpleVarArgFunction func, IContext context, IListener listener)
 			{
 				_func = func;
 				_listener = listener;
