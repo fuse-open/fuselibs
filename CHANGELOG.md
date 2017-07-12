@@ -3,6 +3,9 @@
 ## Image
 - Fixed issue where an `<Image />` could fail to display inside a `<NativeViewHost />` on iOS
 
+## TextInput
+- Fixed issue on Android causing text to align incorrectly if being scrolled and unfocused.
+
 ## Router
 - Added `findRouter` function making it easier to use a router in a page deep inside the UI
 - Fixed and issue where relative paths and nested `Router` gave an error about unknown paths
