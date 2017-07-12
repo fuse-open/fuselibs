@@ -3,10 +3,11 @@ using Uno.Testing;
 using Uno;
 
 using Fuse.Internal;
+using FuseTest;
 
 namespace Fuse.Test
 {
-	public class RectPackerTest
+	public class RectPackerTest : TestBase
 	{
 		[Test]
 		public void InsertSameSize()

@@ -1,5 +1,5 @@
 <Panel ux:Class="UX.Activated.RouterNavigator">
-	<Router ux:Name="router"/>
+	<Router ux:Name="router" IsMasterRouter="false"/>
 	<JavaScript>
 		var Observable = require("FuseJS/Observable")
 		

@@ -18,7 +18,18 @@ namespace Fuse.Effects
 			_container = new ImageContainer(this);
 			//nothing else is supported now (properties are also not exposed via Mask)
 			_container.StretchMode = Fuse.Elements.StretchMode.Fill;
-			_container.IsRooted = true; //TODO: how do we know when to pin/unpin a mask texture?
+		}
+
+		protected override void OnRooted()
+		{
+			base.OnRooted();
+			_container.IsRooted = true;
+		}
+
+		protected override void OnUnrooted()
+		{
+			_container.IsRooted = false;
+			base.OnUnrooted();
 		}
 
 		void IImageContainerOwner.OnSourceChanged()

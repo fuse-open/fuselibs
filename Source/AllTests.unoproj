@@ -1,0 +1,10 @@
+{
+  "Packages": [
+    "Fuse",
+    "FuseJS",
+  ],
+  "Projects": [
+    "**Test.unoproj"
+  ],
+  "Includes": []
+}

@@ -1,4 +1,7 @@
 {
+  "Projects": [
+    "../../Fuse.Common/Tests/FuseTest/FuseTest.unoproj"
+  ],
   "Packages": [
     "Fuse.Common",
     "Fuse.Nodes",
@@ -9,6 +12,7 @@
     "Uno.Testing",
   ],
   "Includes": [
-    "*"
+    "*.uno:Source",
+    "**.js:Bundle",
   ]
 }

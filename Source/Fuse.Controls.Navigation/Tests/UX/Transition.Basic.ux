@@ -1,5 +1,5 @@
 <Panel ux:Class="UX.Transition.Basic">
-	<Router ux:Name="router"/>
+	<Router ux:Name="router" IsMasterRouter="false"/>
 	<Panel ux:Class="TBPage">
 		<Transition To="ignore, two">
 			<FuseTest.CountAction When="Forward" ux:Name="f1"/>
