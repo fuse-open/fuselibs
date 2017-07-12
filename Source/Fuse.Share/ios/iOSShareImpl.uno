@@ -9,6 +9,8 @@ namespace Fuse.Share
 		@{
 			UIActivityViewController* activityVC = [[UIActivityViewController alloc] initWithActivityItems:@[text] applicationActivities:nil];
 			dispatch_async(dispatch_get_main_queue(), ^{
+				if (UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPad)
+					activityVC.popoverPresentationController.sourceView = [[[UIApplication sharedApplication] keyWindow] rootViewController].view;
 				[[[[UIApplication sharedApplication] keyWindow] rootViewController] presentViewController:activityVC animated:YES completion:nil];
 			});
 		@}
@@ -20,6 +22,8 @@ namespace Fuse.Share
 			UIActivityViewController* activityVC = [[UIActivityViewController alloc] initWithActivityItems:@[url] applicationActivities:nil];
 
 			dispatch_async(dispatch_get_main_queue(), ^{
+				if (UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPad)
+					activityVC.popoverPresentationController.sourceView = [[[UIApplication sharedApplication] keyWindow] rootViewController].view;
 				[[[[UIApplication sharedApplication] keyWindow] rootViewController] presentViewController:activityVC animated:YES completion:nil];
 			});
 		@}
