@@ -32,6 +32,20 @@ namespace Fuse.Reactive
 				var next = Next as ArraySubscription;
 				if (next != null) next.OnAdd(newValue);
 			}
+
+			public void OnInsertAt(int index, object newValue)
+			{
+				_observer.OnInsertAt(index, newValue);
+				var next = Next as ArraySubscription;
+				if (next != null) next.OnInsertAt(index, newValue);
+			}
+
+			public void OnRemoveAt(int index)
+			{
+				_observer.OnRemoveAt(index);
+				var next = Next as ArraySubscription;
+				if (next != null) next.OnRemoveAt(index);
+			}
 		}
 
 		internal void Set(int index, object newValue)
@@ -45,12 +59,28 @@ namespace Fuse.Reactive
 				sub.OnReplaceAt(index, newValue);
 		}
 
-		internal void Push(object value)
+		internal void Add(object value)
 		{
 			_items.Add(value);
 			var sub = Subscribers as ArraySubscription;
 			if (sub != null) 
 				sub.OnAdd(value);
+		}
+
+		internal void InsertAt(int index, object value)
+		{
+			_items.Insert(index, value);
+			var sub = Subscribers as ArraySubscription;
+			if (sub != null) 
+				sub.OnInsertAt(index, value);
+		}
+
+		internal void RemoveAt(int index)
+		{
+			_items.RemoveAt(index);
+			var sub = Subscribers as ArraySubscription;
+			if (sub != null) 
+				sub.OnRemoveAt(index);
 		}
 	}
 }
