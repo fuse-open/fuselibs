@@ -23,6 +23,14 @@ namespace Fuse.Reactive
 		static Scripting.Context _context;
 		public Scripting.Context Context { get { return _context; } }
 
+		Function _push;
+
+		public void Push(Scripting.Array arr, object value)
+		{
+			if (_push == null) _push = (Function)_context.Evaluate("push", "(function(arr, value) { arr.push(value); })");
+			_push.Call(arr, value);
+		}
+
 		static FuseJS.Builtins _fuseJS;
 		public static FuseJS.Builtins FuseJS { get { return _fuseJS; } }
 
