@@ -280,15 +280,17 @@ namespace Fuse.Controls.Test
 		[Test]
 		public void StackLayoutCompat() //https://github.com/fusetools/fuselibs/issues/1484
 		{
-			var root = new TestRootPanel();
-			var p = new UX.StackLayoutCompat();
-			root.Children.Add(p);
-			
-			root.Layout(int2(100,1000));
-			Assert.AreEqual(float2(60,30),p.I1.ActualSize);
-			
-			root.Layout(int2(200,1000));
-			Assert.AreEqual(float2(160,80),p.I1.ActualSize);
+			using (var root = new TestRootPanel())
+			{
+				var p = new UX.StackLayoutCompat();
+				root.Children.Add(p);
+
+				root.Layout(int2(100,1000));
+				Assert.AreEqual(float2(60,30),p.I1.ActualSize);
+
+				root.Layout(int2(200,1000));
+				Assert.AreEqual(float2(160,80),p.I1.ActualSize);
+			}
 		}
 		
 		//region Private Methods
