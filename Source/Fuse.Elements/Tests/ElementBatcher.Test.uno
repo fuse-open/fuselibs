@@ -51,7 +51,7 @@ namespace Fuse.Elements.Test
 		}
 	}
 
-	public class ElementBatcherTest
+	public class ElementBatcherTest : TestBase
 	{
 		[Test]
 		public void Basic()

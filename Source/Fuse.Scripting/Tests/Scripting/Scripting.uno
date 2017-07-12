@@ -1,12 +1,14 @@
-using Fuse.Reactive;
+using Uno;
 using Uno.Testing;
 using Uno.Collections;
+
+using Fuse.Reactive;
 using Fuse.Scripting;
-using Uno;
+using FuseTest;
 
 namespace Fuse.Scripting.Test
 {
-	public class ScriptingTest
+	public class ScriptingTest : TestBase
 	{
 		static int AsInt(object o)
 		{
