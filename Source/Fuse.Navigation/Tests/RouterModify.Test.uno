@@ -35,12 +35,18 @@ namespace Fuse.Navigation.Test
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
 				Assert.AreEqual( "one", p.router.GetCurrentRoute().Format() );
-				debug_log " - - - - A";
+
 				p.gotoNext.Pulse();
-				debug_log " - - - - B";
 				root.StepFrame();
-				debug_log " - - - - C";
 				Assert.AreEqual( "two", p.router.GetCurrentRoute().Format() );
+				
+				p.gotoParams.Pulse();
+				root.StepFrame();
+				Assert.AreEqual( "three?{\"id\":12}", p.router.GetCurrentRoute().Format() );
+				
+				p.gotoInner.Pulse();
+				root.StepFrame();
+				Assert.AreEqual( "four?{\"id\":13}/inner?{\"a\":1,\"b\":2}", p.router.GetCurrentRoute().Format() );
 			}
 		}
 	}

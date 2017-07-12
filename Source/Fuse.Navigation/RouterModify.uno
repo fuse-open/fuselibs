@@ -126,6 +126,7 @@ namespace Fuse.Navigation
 			if (Path != null)
 			{
 				DisposePathSub();
+				debug_log "Perform:" + n;
 				_pathSub = new NodeExpressionBinding(Path, n, this);
 				_pathSub.Init();
 			}
@@ -140,30 +141,61 @@ namespace Fuse.Navigation
 			if (_pathSub != null)
 			{
 				_pathSub.Dispose();
+				_pathSub = null;
 			}
 		}
 		
 		void IListener.OnNewData(IExpression source, object value)
 		{
-			if (source != Path)
+			if (source != Path || _pathSub == null)
 				return;
-				
-			Route route;
-			if (value is string)
-				route = new Route((string)value);
-			else
+		
+			try
 			{
-				Fuse.Diagnostics.UserError("incompatible path", this);
-				DisposePathSub();
-				return;
+				Route route = null;
+				if (value is string)
+				{
+					route = new Route((string)value);
+				}
+				else if (value is IArray)
+				{
+					var iarr = value as IArray;
+					debug_log "Array:" + iarr.Length;
+					for (int i= ((iarr.Length-1)/2)*2; i>=0; i -= 2)
+					{
+						string path;
+						if (!Marshal.TryToType<string>(iarr[i], out path))
+						{
+							Fuse.Diagnostics.UserError( "invalid path component: " + iarr[i], this);
+							return;
+						}
+						string param = null;
+						if (i+1 < iarr.Length)
+						{
+							param = Json.Stringify( iarr[i+1], true);
+						}
+						
+						route =  new Route(path, param, route);
+					}
+				}
+				else
+				{
+					debug_log value + " :: " + value.GetType();
+					Fuse.Diagnostics.UserError("incompatible path", this);
+					return;
+				}
+				
+				PerformRoute( (_pathSub as IContext).Node, route);
 			}
-			
-			PerformRoute( (_pathSub as IContext).Node, route);
-			DisposePathSub();
+			finally
+			{
+				DisposePathSub();
+			}
 		}
 			
 		void PerformRoute(Node n, Route route)
 		{
+			debug_log "Perform:" + n + ":" +route.Format();
 			var useRouter = Router ?? Fuse.Navigation.Router.TryFindRouter(n);
 			if (useRouter == null)
 			{

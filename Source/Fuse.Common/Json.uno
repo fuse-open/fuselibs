@@ -14,6 +14,7 @@ namespace Fuse
 		*/
 		public static string Stringify(object value, bool normalized = false)
 		{
+			debug_log "\n - - - -";
 			var sb = new StringBuilder();
 			Stringify(value, normalized, sb, new HashSet<object>());
 			return sb.ToString();
@@ -21,6 +22,7 @@ namespace Fuse
 
 		static void Stringify(object value, bool normalized, StringBuilder sb, HashSet<object> visitedSet)
 		{
+			debug_log "V:" + value + "@" + value.GetHashCode();
 			if (value is string) ToLiteral((string)value, sb);
 			else if (value is double) sb.Append(ToLiteral((double)value));
 			else if (value is float) sb.Append(ToLiteral((double)(float)value));
@@ -48,6 +50,8 @@ namespace Fuse
 				}
 
 				sb.Append("}");
+
+				visitedSet.Remove(value);
 			}
 			else if (value is IArray)
 			{
@@ -66,6 +70,8 @@ namespace Fuse
 				}
 
 				sb.Append("]");
+				
+				visitedSet.Remove(value);
 			}
 			else sb.Append("null");
 		}

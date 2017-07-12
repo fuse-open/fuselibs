@@ -3,9 +3,21 @@
 	<PageControl Transition="None">
 		<Page ux:Name="one"/>
 		<Page ux:Name="two"/>
+		<Page ux:Name="three"/>
+		<Page ux:Name="four">
+			<PageControl Transition="None">
+				<Page ux:Name="inner"/>
+			</PageControl>
+		</Page>
 	</PageControl>
 	
 	<Timeline ux:Name="gotoNext">
 		<RouterModify How="Goto" Path=" 'two' "/>
+	</Timeline>
+	<Timeline ux:Name="gotoParams">
+		<RouterModify How="Goto" Path=" 'three', (id: 12) "/>
+	</Timeline>
+	<Timeline ux:Name="gotoInner">
+		<RouterModify How="Goto" Path=" 'four', (id: 13), 'inner', (a:1,b:2) "/>
 	</Timeline>
 </Panel>
