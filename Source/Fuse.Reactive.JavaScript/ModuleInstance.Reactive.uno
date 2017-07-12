@@ -18,7 +18,9 @@ namespace Fuse.Reactive
 			var module = result.Object;
 			_dc = _worker.Reflect(module["exports"]);
 			module["set"] = (Callback)Set;
-			module["push"] = (Callback)Push;
+			module["add"] = (Callback)Add;
+			module["removeAt"] = (Callback)RemoveAt;
+			module["insertAt"] = (Callback)InsertAt;
 		}
 
 		object Set(object[] args)
@@ -34,10 +36,24 @@ namespace Fuse.Reactive
 			return null;
 		}
 
-		object Push(object[] args)
+		object Add(object[] args)
 		{
-			if (args.Length == 0) throw new Error("module.push(): at least one argument required");
-			else new PushOperation(this, args).JSThreadPerform();
+			if (args.Length == 0) throw new Error("module.add(): at least one argument required");
+			else new AddOperation(this, args).JSThreadPerform();
+			return null;
+		}
+
+		object RemoveAt(object[] args)
+		{
+			if (args.Length == 0) throw new Error("module.removeAt(): at least one argument required");
+			else new RemoveAtOperation(this, args).JSThreadPerform();
+			return null;
+		}
+
+		object InsertAt(object[] args)
+		{
+			if (args.Length == 0) throw new Error("module.insertAt(): at least one argument required");
+			else new InsertAtOperation(this, args).JSThreadPerform();
 			return null;
 		}
 
@@ -90,7 +106,7 @@ namespace Fuse.Reactive
 				}
 
 				var arr = dc as Scripting.Array;
-				if (obj != null)
+				if (arr != null)
 				{
 					var index = Marshal.ToInt(Arguments[pos]);
 					JSThreadPerform(arr[index], pos+1);
@@ -117,7 +133,7 @@ namespace Fuse.Reactive
 				}
 
 				var arr = dc as ArrayMirror;
-				if (obj != null)
+				if (arr != null)
 				{
 					var index = Marshal.ToInt(Arguments[pos]);
 					UIThreadPerform(arr[index], pos+1);
@@ -170,9 +186,9 @@ namespace Fuse.Reactive
 			}
 		}
 
-		class PushOperation: Operation
+		class AddOperation: Operation
 		{
-			public PushOperation(ModuleInstance inst, object[] args): base(inst, args) {}
+			public AddOperation(ModuleInstance inst, object[] args): base(inst, args) {}
 
 			object _wrappedValue;
 
@@ -189,13 +205,73 @@ namespace Fuse.Reactive
 					return;
 				}
 
-				throw new Error("module.push(): Path mistmatch");
+				throw new Error("Path mistmatch");
 			}
 
 			protected override void UIThreadPerform(object dc)
 			{
 				var arr = dc as ArrayMirror;
-				if (arr != null) arr.Push(_wrappedValue);
+				if (arr != null) arr.Add(_wrappedValue);
+			}
+		}
+
+		class InsertAtOperation: Operation
+		{
+			public InsertAtOperation(ModuleInstance inst, object[] args): base(inst, args) {}
+
+			int _index;
+			object _wrappedValue;
+
+			protected override int SpecialArgCount { get { return 2; } }
+			protected override void JSThreadPerform(object dc)
+			{
+				_index = Marshal.ToInt(Arguments[Arguments.Length-2]);
+				var value = Arguments[Arguments.Length-1];
+				_wrappedValue = ModuleInstance._worker.Reflect(value);
+
+				var arr = dc as Scripting.Array;
+				if (arr != null)
+				{
+					ModuleInstance._worker.InsertAt(arr, _index, value);
+					return;
+				}
+
+				throw new Error("Path mistmatch");
+			}
+
+			protected override void UIThreadPerform(object dc)
+			{
+				var arr = dc as ArrayMirror;
+				if (arr != null) arr.InsertAt(_index, _wrappedValue);
+			}
+		}
+
+		class RemoveAtOperation: Operation
+		{
+			public RemoveAtOperation(ModuleInstance inst, object[] args): base(inst, args) {}
+
+			int _index;
+			object _wrappedValue;
+
+			protected override int SpecialArgCount { get { return 1; } }
+			protected override void JSThreadPerform(object dc)
+			{
+				_index = Marshal.ToInt(Arguments[Arguments.Length-1]);
+
+				var arr = dc as Scripting.Array;
+				if (arr != null)
+				{
+					ModuleInstance._worker.RemoveAt(arr, _index);
+					return;
+				}
+
+				throw new Error("Path mistmatch");
+			}
+
+			protected override void UIThreadPerform(object dc)
+			{
+				var arr = dc as ArrayMirror;
+				if (arr != null) arr.RemoveAt(_index);
 			}
 		}
 	}
