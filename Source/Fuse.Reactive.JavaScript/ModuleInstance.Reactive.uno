@@ -18,6 +18,7 @@ namespace Fuse.Reactive
 			var module = result.Object;
 			_dc = _worker.Reflect(module["exports"]);
 			module["set"] = (Callback)Set;
+			module["push"] = (Callback)Push;
 		}
 
 		object Set(object[] args)
@@ -30,6 +31,13 @@ namespace Fuse.Reactive
 				UpdateManager.PostAction(SetDataContext);
 			}
 			else new SetOperation(this, args).JSThreadPerform();
+			return null;
+		}
+
+		object Push(object[] args)
+		{
+			if (args.Length == 0) throw new Error("module.push(): at least one argument required");
+			else new PushOperation(this, args).JSThreadPerform();
 			return null;
 		}
 
@@ -134,10 +142,20 @@ namespace Fuse.Reactive
 				_wrappedValue = ModuleInstance._worker.Reflect(value);
 
 				var obj = dc as Scripting.Object;
-				if (obj != null) obj[key.ToString()] = value;
+				if (obj != null) 
+				{
+					obj[key.ToString()] = value;
+					return;
+				}
 
 				var arr = dc as Scripting.Array;
-				if (arr != null) arr[Marshal.ToInt(key)] = value;
+				if (arr != null) 
+				{
+					arr[Marshal.ToInt(key)] = value;
+					return;
+				}
+
+				throw new Error("module.set(): Path mistmatch");
 			}
 
 			protected override void UIThreadPerform(object dc)
@@ -149,6 +167,35 @@ namespace Fuse.Reactive
 
 				var arr = dc as ArrayMirror;
 				if (arr != null) arr.Set(Marshal.ToInt(key), _wrappedValue);
+			}
+		}
+
+		class PushOperation: Operation
+		{
+			public PushOperation(ModuleInstance inst, object[] args): base(inst, args) {}
+
+			object _wrappedValue;
+
+			protected override int SpecialArgCount { get { return 1; } }
+			protected override void JSThreadPerform(object dc)
+			{
+				var value = Arguments[Arguments.Length-1];
+				_wrappedValue = ModuleInstance._worker.Reflect(value);
+
+				var arr = dc as Scripting.Array;
+				if (arr != null)
+				{
+					ModuleInstance._worker.Push(arr, value);
+					return;
+				}
+
+				throw new Error("module.push(): Path mistmatch");
+			}
+
+			protected override void UIThreadPerform(object dc)
+			{
+				var arr = dc as ArrayMirror;
+				if (arr != null) arr.Push(_wrappedValue);
 			}
 		}
 	}
