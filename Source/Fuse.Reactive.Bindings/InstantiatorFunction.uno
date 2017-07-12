@@ -5,6 +5,10 @@ using Fuse.Reactive;
 
 namespace Fuse.Reactive
 {
+	/* The use of VarArg is a workaround to 
+	https://github.com/fusetools/fuselibs/issues/4199 */
+	
+	/** Common base for functions that work with an item in an instantiator */
 	public abstract class InstantiatorFunction : VarArgFunction
 	{
 		static internal Selector DataIndexName = "index";
@@ -18,29 +22,38 @@ namespace Fuse.Reactive
 			_item = item;
 		}
 		
-// 		public override string ToString()
-// 		{
-// 			return _item + "(" + Operand.ToString() +")";
-// 		}
+ 		public override string ToString()
+ 		{
+ 			return FormatString(_item);
+ 		}
 		
 		public override IDisposable Subscribe(IContext context, IListener listener)
 		{
+			if (Arguments.Count > 1)
+			{
+				Fuse.Diagnostics.UserError( "too many parameters for " + _item, this );
+				return null;
+			}
+			
 			var node = Arguments.Count > 0 ? Arguments[0] : null;
 			return new InstantiatorSubscription(this, _item, listener, context, node );
 		}
 		
 		class InstantiatorSubscription : InnerListener
 		{
+			//static values
 			InstantiatorFunction _expr;
-			Instantiator _instantiator;
-			Node _instance;
 			Selector _item;
 			IListener _listener;
 			IContext _context;
-			
 			IExpression _node;
-			IDisposable _nodeSub;
 			
+			//the actual object values for the function
+			Instantiator _instantiator;
+			Node _instance;
+
+			IDisposable _nodeSub;
+
 			public InstantiatorSubscription(InstantiatorFunction expr, Selector item, IListener listener, 
 				IContext context, IExpression node ) : 
 				base()

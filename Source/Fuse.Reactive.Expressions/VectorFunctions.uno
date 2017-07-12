@@ -8,7 +8,7 @@ namespace Fuse.Reactive
 	/** Creates an `IArray` from an arbitrary number of arguments.
 		An `IArray` can be automatically marshalled to any Uno vector type (e.g. `float4`)
 	*/
-	public class Vector: VarArgFunction
+	public class Vector: SimpleVarArgFunction
 	{
 		protected override void OnNewArguments(Argument[] args, IListener listener)
 		{

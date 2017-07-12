@@ -10,13 +10,13 @@ using FuseTest;
 namespace Fuse.Reactive.Test
 {
 	[UXFunction("never_yield")]
-	public class VarArgsTestNeverYield: Fuse.Reactive.VarArgFunction
+	public class VarArgsTestNeverYield: Fuse.Reactive.SimpleVarArgFunction
 	{
 		// A function that never yields any value
 	}
 
 	[UXFunction("varargs_test")]
-	public class VarArgsTestFunc: Fuse.Reactive.VarArgFunction
+	public class VarArgsTestFunc: Fuse.Reactive.SimpleVarArgFunction
 	{
 		internal static int C;
 
