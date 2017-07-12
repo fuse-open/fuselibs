@@ -25,12 +25,17 @@ namespace Fuse.Reactive
 		void Evaluate()
 		{
 			_js.ScriptModule.Dependencies = _deps;
-			JSThreadSetDataContext(EvaluateExports());
-		}
+			
+			var exports = EvaluateExports();
 
-		void JSThreadSetDataContext(object dc)
-		{
-			_dc = _worker.Reflect(dc);
+			// DecorateModule() already set _dc to the default `exports` object, 
+			// so this is done in case the user replaced the `module.exports` object
+			if (_dc is IRaw && ((IRaw)_dc).Raw != exports)
+			{
+				ValueMirror.Unsubscribe(_dc);
+				_dc = _worker.Reflect(exports);
+			}
+
 			UpdateManager.PostAction(SetDataContext);
 		}
 
@@ -54,6 +59,8 @@ namespace Fuse.Reactive
 				_moduleResult.Dispose();
 				_moduleResult = null;
 			}
+
+			
 		}
 
 		object EvaluateExports()

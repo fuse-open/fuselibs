@@ -3,7 +3,7 @@ using Uno;
 
 namespace Fuse.Reactive
 {
-	partial class ObjectMirror : ValueMirror, IObservableObject, IMutable
+	partial class ObjectMirror : ValueMirror, IObservableObject
 	{
 		Dictionary<string, object> _props = new Dictionary<string, object>();
 

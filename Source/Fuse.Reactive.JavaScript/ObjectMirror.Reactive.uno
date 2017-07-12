@@ -27,22 +27,10 @@ namespace Fuse.Reactive
 			}
 		}
 
-		void IMutable.Set(object[] args, int pos)
+		internal void Set(string key, object newValue)
 		{
-			var key = args[pos].ToString();
-			if (pos < args.Length - 2)
-			{
-				var m = (IMutable)_props[key];
-				m.Set(args, pos+1);
-			}
-			else
-			{
-				Set(key, args[pos+1]);				
-			}
-		}
+			ValueMirror.Unsubscribe(_props[key]);
 
-		void Set(string key, object newValue)
-		{
 			_props[key] = newValue;
 
 			var sub = Subscribers as PropertySubscription;
