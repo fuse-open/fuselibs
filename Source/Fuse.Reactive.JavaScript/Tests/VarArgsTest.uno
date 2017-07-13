@@ -63,9 +63,11 @@ namespace Fuse.Reactive.Test
 		public void Basics()
 		{
 			var e = new UX.VarArgs();
-			var root = TestRootPanel.CreateWithChild(e);
-			Assert.AreEqual("48", e.t.Value);
-			Assert.AreEqual(3, VarArgsTestFunc.C);
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				Assert.AreEqual("48", e.t.Value);
+				Assert.AreEqual(3, VarArgsTestFunc.C);
+			}
 		}
 	}
 }
