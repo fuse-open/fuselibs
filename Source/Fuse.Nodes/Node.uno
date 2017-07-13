@@ -157,13 +157,13 @@ namespace Fuse
 			return null;
 		}
 		
-		public T FindByType<T>() where T : Node
+		public T FindByType<T>() where T : class
 		{
 			if (this is T) return this as T;
 			return GetNearestAncestorOfType<T>();
 		}
 
-		public T GetNearestAncestorOfType<T>() where T : Node
+		public T GetNearestAncestorOfType<T>() where T : class
 		{
 			Node current = Parent;
 			while(current != null)
