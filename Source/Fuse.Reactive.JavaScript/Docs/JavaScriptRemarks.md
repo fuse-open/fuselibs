@@ -43,69 +43,6 @@ Failing to export from modules will make it impossible to reach defined data ins
 
 This is good for hiding implementation details from other calling JavaScript modules and UX code.
 
-## Reactive modules
-
-A module related with a `<JavaScript>` tag supports the Reactive Modules API. This is a set of methods on `module` that allows the module to change the exported values and notifying the data context about the change. 
-
-Fuse's Reactive modules feature allows reactive programming between JavaScript modules and native code in a non-intrusive way. You are free to export arbitrary JavaScript objects from your module. Later, you can make observable changes to any part of this state without using observables (like Rx) or introducing a strict totalitarian state container (like Redux).
-
-Each of these APIs accept a `path` to the *node* in the `exports` tree. The path is a sequence of either string keys (to look up into objects) or number indices (to look up into arrays).
-
-### `module.set(... path, value)`
-
-Sets the value at the `path` to `value`. The `value` can be an arbitrary JavaScript object. 
-
-Example:
-
-	exports.foo = [ {bar: "apples"}, {bar: "oranges"}]
-
-	exports.changeSomething = function() {
-		// Changes the 'bar' property of the second item in the 'foo' array
-		module.set("foo", 1, "bar", "bananas");
-	}
-
-### `module.add(... path, item)`
-
-Adds `item` to the end of the array at the `path`. The `item` can be an arbitrary JavaScript object. 
-
-Example:
-
-	exports.user = { name: 'Bob', things: ["lamp", "car"] }
-
-	exports.addSomething = function() 
-	{
-		// Adds 'airplane' to the user's list of things
-		module.add("user", "things", "airplane");
-	}
-
-### `module.removeAt(... path)`
-
-Removes the item at the `path`. The last item in the `path` must be a numeric index into an array. 
-
-Example:
-
-	exports.user = { name: 'Bob', things: ["lamp", "car"] }
-
-	exports.removeSomething = function() 
-	{
-		// Removes 'lamp' from users's list of things
-		module.removeAt("user", "things", 0);
-	}
-
-### `module.insertAt(... path, value)`
-
-Inserts `value` at the path. The `item` can be an arbitrary JavaScript object. The last item in the `path` must be a numeric index into an array. 
-
-Example:
-
-	exports.user = { name: 'Bob', things: ["lamp", "car"] }
-
-	exports.insertSomething = function() 
-	{
-		// Inserts 'dog' in the middle of the user's list of things
-		module.removeAt("user", "things", 1, "dog");
-	}
-
 ## Importing modules
 
 Each code file (or inline snippet) defines a module.
