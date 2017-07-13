@@ -275,7 +275,7 @@ namespace Fuse.Controls
 			float density)
 		{
 			CopyState(_container.NativeHandle, viewHandle.NativeHandle, _renderView.NativeHandle);
-			renderer.Draw(_renderView, localToClipTransform, position, size, density);
+			renderer.Draw(_container, localToClipTransform, position, size, density);
 		}
 
 		[Foreign(Language.Java)]

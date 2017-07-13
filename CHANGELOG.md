@@ -71,6 +71,9 @@
 
 # 1.1
 
+### Fuse.Share
+- Fixed a crash in the iOS implementation for Fuse.Share that could happen on iPad.
+
 ### WhileActive
 - Fixed a crash in the rooting of certain tree structures using any of the Navigation triggers such as `WhileActive`
 
