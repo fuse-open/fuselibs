@@ -15,7 +15,7 @@ namespace Fuse.Triggers.Actions
 		protected override void Perform(Node n) 
 		{
 			_pendVisual = n.FindByType<Visual>();
-			_pendNavigator = n == null ? null : n.Parent as Navigator;
+			_pendNavigator = _pendVisual == null ? null : _pendVisual.Parent as Navigator;
 			if (_pendVisual == null || _pendNavigator == null)
 			{
 				Fuse.Diagnostics.UserError( "Requires a Visual and Navigator parent", this );
