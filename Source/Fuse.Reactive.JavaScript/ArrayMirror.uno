@@ -5,13 +5,13 @@ namespace Fuse.Reactive
 {
 	class ArrayMirror: ListMirror
 	{
-		List<object> _items;
+		protected List<object> _items;
 
-		internal ArrayMirror(ThreadWorker worker, Scripting.Array arr): base(arr)
+		internal ArrayMirror(IMirror mirror, Scripting.Array arr): base(arr)
 		{
 			_items = new List<object>();
 			for (int i = 0; i < arr.Length; i++)
-				_items.Add(worker.Reflect(arr[i]));
+				_items.Add(mirror.Reflect(arr[i]));
 		}
 
 		internal object[] ItemsReadonly { get { return _items.ToArray(); } }

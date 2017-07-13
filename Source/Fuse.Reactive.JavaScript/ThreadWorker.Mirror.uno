@@ -60,6 +60,10 @@ namespace Fuse.Reactive
 				{
 					return new Observable(this, o, false);
 				}
+				else if (o.InstanceOf(FuseJS.TreeObservable))
+				{
+					return new TreeObservable(o);
+				}
 				else
 				{
 					return new ObjectMirror(this, o);	
