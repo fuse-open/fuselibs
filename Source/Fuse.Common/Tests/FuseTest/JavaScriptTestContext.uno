@@ -15,13 +15,12 @@ namespace FuseTest
 		Queue<AssertResult> _testResults;
 		Fuse.Scripting.Context _context;
 
-		public JsTestRecorder() : this(JavaScriptTestContext.Create()) {}
-
-		public JsTestRecorder(Fuse.Scripting.Context context)
+		public JsTestRecorder()
 		{
-			_context = context;
-			var f = context.Evaluate("", "(function(obj, assert) { obj['test'] = { assert: function(exp, msg) { try { assert(Boolean(exp ? 1 : 0), msg); } catch(e) { assert(0, 'Error: ' + e); } } }; } )") as Fuse.Scripting.Function;
-			f.Call(context.GlobalObject, (Callback)TestAssert);
+			_context = Fuse.Reactive.ThreadWorker.CreateContext(null);
+			new Fuse.Reactive.FuseJS.Builtins(_context);
+			var f = _context.Evaluate("", "(function(obj, assert) { obj['test'] = { assert: function(exp, msg) { try { assert(Boolean(exp ? 1 : 0), msg); } catch(e) { assert(0, 'Error: ' + e); } } }; } )") as Fuse.Scripting.Function;
+			f.Call(_context.GlobalObject, (Callback)TestAssert);
 		}
 
 		public class AssertResult
@@ -71,16 +70,6 @@ namespace FuseTest
 		{
 			if(_context != null)
 				_context.Dispose();
-		}
-	}
-
-	public static class JavaScriptTestContext
-	{
-		public static Fuse.Scripting.Context Create()
-		{
-			var c = Fuse.Reactive.ThreadWorker.CreateContext(null);
-			new Fuse.Reactive.FuseJS.Builtins(c);
-			return c;
 		}
 	}
 }
