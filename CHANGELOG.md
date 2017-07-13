@@ -58,7 +58,7 @@
 - Added `OnChildMoved` to `Visual`. Anything implementing `OnChildAdded` or `OnChildRemoved` will likely need to implement `OnChildMoved` as well. This happens when a child's position in `Children` list changes.
 - Added `OnChildMovedWhileRooted` to `IParentObserver`
 
-### UX Expression improvements
+## UX Expression improvements
 - Added `parameter(page)` function which returns the routing parameter of the page parsed as an JSON string.
 - UX expressions now support arbitrary array lookups, e.g. `{someArray[index+3]}`. The same syntax can also be used with string keys, e.g `{someObject[someKey]}`. The lookup is fully reactive - both the collection and the key/index can change.
 
