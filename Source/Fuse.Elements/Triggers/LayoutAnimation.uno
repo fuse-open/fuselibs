@@ -348,7 +348,8 @@ namespace Fuse.Triggers.Actions
 		
 		protected override void Perform(Node target)
 		{
-			_perform = Target ?? target.FindByType<Element>();
+			//use Visual search for future-proofing this logic (it could be transitioned, just not supported now)
+			_perform = Target ?? (target.FindByType<Visual>() as Element);
 			if (_perform == null || From == null)
 			{
 				Fuse.Diagnostics.UserError( "Missing `From` or cannot find `Element` target", this );
