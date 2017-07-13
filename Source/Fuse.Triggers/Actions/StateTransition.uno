@@ -19,6 +19,12 @@ namespace Fuse.Triggers.Actions
 		protected override void Perform(Node target)
 		{
 			var t = Target;
+			if (t == null)
+			{
+				Fuse.Diagnostics.UserError( "Missing `Target`", this );
+				return;
+			}
+			
 			switch (Type)
 			{
 				case TransitionStateType.Next:
