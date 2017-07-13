@@ -14,7 +14,7 @@ namespace Fuse.Triggers.Actions
 		Navigator _pendNavigator;
 		protected override void Perform(Node n) 
 		{
-			_pendVisual = n as Visual;
+			_pendVisual = n.FindByType<Visual>();
 			_pendNavigator = n == null ? null : n.Parent as Navigator;
 			if (_pendVisual == null || _pendNavigator == null)
 			{
