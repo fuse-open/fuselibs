@@ -3,8 +3,10 @@ using Uno;
 
 namespace Fuse.Reactive
 {
-	partial class ObjectMirror 
+	class TreeObject : ObjectMirror, IObservableObject
 	{
+		internal TreeObject(ThreadWorker worker, Scripting.Object obj): base(worker, obj) {}
+
 		public IDisposable Subscribe(IPropertyObserver observer)
 		{
 			return new PropertySubscription(this, observer);
