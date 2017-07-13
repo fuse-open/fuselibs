@@ -15,10 +15,11 @@
 ## Fuse.Drawing.Surface
 - Added support for the Surface API in native UI for iOS. Meaning that `Curve`, `VectorLayer` and charting will work inside a `NativeViewHost`.
 
+## TextInput
+- Fixed issue on Android causing text to align incorrectly if being scrolled and unfocused.
+
 ## WrapPanel
 - Added possibility to use `RowAlignment` to align the elements in the major direction of the `WrapPanel` as well as in the minor.
-# TextInput
-- Fixed issue on Android causing text to align incorrectly if being scrolled and unfocused.
 
 ## Triggers
 - Several triggers were modified to properly look up the tree for a target node, whereas previously they may have only checked the immediate parent. The affected triggers are `BringIntoView`, `Show`,`Hide`,`Collapse`, `Toggle`, `TransitionState`, `Callback`, `CancelInteractions`, `Stop`, `Play`, `Resume`, `Pause`, `TransitionLayout`, `BringToFront`, `SendToBack`, `EvaluateJS`, `RaiseUserEvent`, `ScrollTo`. This should only change previous behavior if the action was previously configured incorrectly and did nothing or already found the wrong node. Many of the actions have a `Target` to target a specific node, or `TargetNode` to specify where the search begins.
