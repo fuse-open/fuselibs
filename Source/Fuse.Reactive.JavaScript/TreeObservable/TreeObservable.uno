@@ -89,6 +89,13 @@ namespace Fuse.Reactive
 
 			void Perform(object dc, int pos)
 			{
+				if (pos > Arguments.Length - SpecialArgCount)
+				{
+					// Replace entire state
+					TreeObservable.Set(TreeObservable, (Scripting.Object)Arguments[0]);
+					return;
+				}
+
 				if (pos == Arguments.Length - SpecialArgCount)
 				{
 					Perform(dc);
@@ -160,7 +167,7 @@ namespace Fuse.Reactive
 		{
 			public InsertAtOperation(TreeObservable inst, object[] args): base(inst, args) 
 			{
-				_index = Marshal.ToInt(Arguments[Arguments.Length-1]);
+				_index = Marshal.ToInt(Arguments[Arguments.Length-2]);
 			}
 			protected override int SpecialArgCount { get { return 2; } }
 
