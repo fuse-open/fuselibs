@@ -13,11 +13,12 @@ namespace Fuse.Reactive.Test
 		public void Issue2397()
 		{
 			var e = new UX.Issue2397();
-			var root = TestRootPanel.CreateWithChild(e);
-			root.StepFrameJS();
-			Assert.AreEqual(2, e.Container.ZOrderChildCount);
-
-			Assert.AreEqual("OneTwo", GetText(e.Container));
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.StepFrameJS();
+				Assert.AreEqual(2, e.Container.ZOrderChildCount);
+				Assert.AreEqual("OneTwo", GetText(e.Container));
+			}
 		}
 		
 		[Test]
@@ -25,10 +26,11 @@ namespace Fuse.Reactive.Test
 		public void MatchOrder()
 		{
 			var e = new UX.MatchOrder();
-			var root = TestRootPanel.CreateWithChild(e);
-			root.StepFrameJS();
-			
-			Assert.AreEqual( "123", GetText(e.A) );
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.StepFrameJS();
+				Assert.AreEqual( "123", GetText(e.A) );
+			}
 		}
 		
 		string GetText(Visual root)
@@ -48,18 +50,19 @@ namespace Fuse.Reactive.Test
 		public void MatchOrder2()
 		{
 			var e = new UX.MatchOrder2();
-			var root = TestRootPanel.CreateWithChild(e);
-			root.StepFrameJS();
-			
-			Assert.AreEqual( "01234", GetText(e.A) );
-			
-			e.CallFlip.Perform();
-			root.StepFrameJS();
-			Assert.AreEqual( "*1!4", GetText(e.A) );
-			
-			e.CallFlip.Perform();
-			root.StepFrameJS();
-			Assert.AreEqual( "01234", GetText(e.A) );
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.StepFrameJS();
+				Assert.AreEqual( "01234", GetText(e.A) );
+
+				e.CallFlip.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual( "*1!4", GetText(e.A) );
+
+				e.CallFlip.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual( "01234", GetText(e.A) );
+			}
 		}
 		
 		[Test]
@@ -67,10 +70,11 @@ namespace Fuse.Reactive.Test
 		public void MatchEachOrder()
 		{
 			var e = new UX.MatchEachOrder();
-			var root = TestRootPanel.CreateWithChild(e);
-			
-			root.StepFrameJS();
-			Assert.AreEqual( "123", GetText(e) );
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.StepFrameJS();
+				Assert.AreEqual( "123", GetText(e) );
+			}
 		}
 		
 		[Test]
@@ -78,10 +82,11 @@ namespace Fuse.Reactive.Test
 		public void MatchMultipleOrder()
 		{
 			var e = new UX.MatchMultipleOrder();
-			var root = TestRootPanel.CreateWithChild(e);
-			
-			root.StepFrameJS();
-			Assert.AreEqual( "112233", GetText(e) );
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.StepFrameJS();
+				Assert.AreEqual( "112233", GetText(e) );
+			}
 		}
 	}
 }

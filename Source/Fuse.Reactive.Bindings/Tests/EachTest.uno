@@ -129,36 +129,37 @@ namespace Fuse.Reactive.Test
 		public void EachWindowBasic()
 		{
 			var e = new UX.Each.Window();
-			var root = TestRootPanel.CreateWithChild(e);
-			root.StepFrameJS();
-			
-			Assert.AreEqual( 100, e.E.DataCount );
-			Assert.AreEqual( 5, e.E.WindowItemsCount );
-			Assert.AreEqual( "0,1,2,3,4", GetText(e) );
-			
-			var childOffset = 2;
-			
-			var three = e.Children[childOffset+3] as Text;
-			Assert.AreEqual( "3", three.Value );
-			
-			e.E.Offset = 3;
-			root.StepFrameJS();
-			Assert.AreEqual( "3,4,5,6,7", GetText(e) );
-			Assert.AreEqual( 5, e.E.WindowItemsCount );
-			
-			//it must use the existing children if possible
-			Assert.AreEqual( three, e.Children[childOffset+0] );
-			
-			e.E.Limit = 6;
-			root.StepFrameJS();
-			Assert.AreEqual( "3,4,5,6,7,8", GetText(e) );
-			Assert.AreEqual( 6, e.E.WindowItemsCount );
-			Assert.AreEqual( three, e.Children[childOffset+0] );
-			
-			e.E.Offset = 98;
-			root.StepFrameJS();
-			Assert.AreEqual( "98,99", GetText(e) );
-			Assert.AreEqual( 2, e.E.WindowItemsCount );
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.StepFrameJS();
+				Assert.AreEqual( 100, e.E.DataCount );
+				Assert.AreEqual( 5, e.E.WindowItemsCount );
+				Assert.AreEqual( "0,1,2,3,4", GetText(e) );
+
+				var childOffset = 2;
+
+				var three = e.Children[childOffset+3] as Text;
+				Assert.AreEqual( "3", three.Value );
+
+				e.E.Offset = 3;
+				root.StepFrameJS();
+				Assert.AreEqual( "3,4,5,6,7", GetText(e) );
+				Assert.AreEqual( 5, e.E.WindowItemsCount );
+
+				//it must use the existing children if possible
+				Assert.AreEqual( three, e.Children[childOffset+0] );
+
+				e.E.Limit = 6;
+				root.StepFrameJS();
+				Assert.AreEqual( "3,4,5,6,7,8", GetText(e) );
+				Assert.AreEqual( 6, e.E.WindowItemsCount );
+				Assert.AreEqual( three, e.Children[childOffset+0] );
+
+				e.E.Offset = 98;
+				root.StepFrameJS();
+				Assert.AreEqual( "98,99", GetText(e) );
+				Assert.AreEqual( 2, e.E.WindowItemsCount );
+			}
 		}
 		
 		[Test]
@@ -166,55 +167,56 @@ namespace Fuse.Reactive.Test
 		public void EachWindowMod()
 		{
 			var e = new UX.Each.WindowMod();
-			var root = TestRootPanel.CreateWithChild(e);
-			root.StepFrameJS();
-			
-			Assert.AreEqual( "10,11,12,13,14", GetText(e.C) );
-			
-			e.CallAdd.Perform();
-			root.StepFrameJS();
-			Assert.AreEqual( "10,11,12,13,14", GetText(e.C) );
-			
-			e.CallRemoveAt.Perform();
-			root.StepFrameJS();
-			Assert.AreEqual( "10,11,13,14,15", GetText(e.C) );
-			
-			e.CallRemove.Perform();
-			root.StepFrameJS();
-			Assert.AreEqual( "11,13,14,15,16", GetText(e.C) );
-			
-			e.CallInsert.Perform();
-			root.StepFrameJS();
-			Assert.AreEqual( "11,13,ins,14,15", GetText(e.C) );
-			
-			e.CallClear.Perform();
-			root.StepFrameJS();
-			Assert.AreEqual( "", GetText(e.C) );
-			
-			e.CallAdd.Perform();
-			root.StepFrameJS();
-			Assert.AreEqual( "", GetText(e.C) );
-			e.E.Offset = 0;
-			root.PumpDeferred();
-			Assert.AreEqual( "add", GetText(e.C) );
-			
-			e.CallReplaceAll1.Perform();
-			root.StepFrameJS();
-			Assert.AreEqual( "r0", GetText(e.C) );
-			
-			e.CallReplaceAll5.Perform();
-			e.E.Offset = 1;
-			e.E.Limit = 2;
-			root.StepFrameJS();
-			Assert.AreEqual( "r2,r3", GetText(e.C) );
-			
-			//try rerooting to ensure sanity
-			root.Children.Remove(e);
-			Assert.AreEqual( 1, e.C.Children.Count ); //Each only
-			root.StepFrameJS();
-			root.Children.Add(e);
-			root.StepFrameJS();
-			Assert.AreEqual( "1,2", GetText(e.C) );
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.StepFrameJS();
+				Assert.AreEqual( "10,11,12,13,14", GetText(e.C) );
+
+				e.CallAdd.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual( "10,11,12,13,14", GetText(e.C) );
+
+				e.CallRemoveAt.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual( "10,11,13,14,15", GetText(e.C) );
+
+				e.CallRemove.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual( "11,13,14,15,16", GetText(e.C) );
+
+				e.CallInsert.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual( "11,13,ins,14,15", GetText(e.C) );
+
+				e.CallClear.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual( "", GetText(e.C) );
+
+				e.CallAdd.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual( "", GetText(e.C) );
+				e.E.Offset = 0;
+				root.PumpDeferred();
+				Assert.AreEqual( "add", GetText(e.C) );
+
+				e.CallReplaceAll1.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual( "r0", GetText(e.C) );
+
+				e.CallReplaceAll5.Perform();
+				e.E.Offset = 1;
+				e.E.Limit = 2;
+				root.StepFrameJS();
+				Assert.AreEqual( "r2,r3", GetText(e.C) );
+
+				//try rerooting to ensure sanity
+				root.Children.Remove(e);
+				Assert.AreEqual( 1, e.C.Children.Count ); //Each only
+				root.StepFrameJS();
+				root.Children.Add(e);
+				root.StepFrameJS();
+				Assert.AreEqual( "1,2", GetText(e.C) );
+			}
 		}
 		
 		[Test]
@@ -223,20 +225,21 @@ namespace Fuse.Reactive.Test
 		public void EachLimitCount()
 		{
 			var e = new UX.Each.LimitCount();
-			var root = TestRootPanel.CreateWithChild(e);
-			root.PumpDeferred();
-			
-			Assert.AreEqual( "*,*,*,*,*", GetText(e) );
-			
-			e.E.Offset = 8;
-			root.PumpDeferred();
-			Assert.AreEqual( "*,*", GetText(e) );
-			
-			root.Children.Remove(e);
-			e.E.Offset = 7;
-			root.Children.Add(e);
-			root.PumpDeferred();
-			Assert.AreEqual( "*,*,*", GetText(e) );
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.PumpDeferred();
+				Assert.AreEqual( "*,*,*,*,*", GetText(e) );
+
+				e.E.Offset = 8;
+				root.PumpDeferred();
+				Assert.AreEqual( "*,*", GetText(e) );
+
+				root.Children.Remove(e);
+				e.E.Offset = 7;
+				root.Children.Add(e);
+				root.PumpDeferred();
+				Assert.AreEqual( "*,*,*", GetText(e) );
+			}
 		}
 		
 		[Test]
