@@ -7,7 +7,12 @@ using Fuse.Scripting;
 
 namespace Fuse.Reactive
 {
-	partial class ThreadWorker: IDisposable, IDispatcher, IThreadWorker
+	interface IMirror
+	{
+		object Reflect(object obj);
+	}
+
+	partial class ThreadWorker: IDisposable, IDispatcher, IThreadWorker, IMirror
 	{
 		IDispatcher IThreadWorker.Dispatcher { get { return this; } }
 		Function IThreadWorker.Observable { get { return FuseJS.Observable; } }

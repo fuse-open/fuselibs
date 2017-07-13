@@ -65,6 +65,10 @@ namespace Fuse.Reactive
 				{
 					return DateTimeConverterHelpers.ConvertDateToDateTime(o);
 				}
+				else if (o.InstanceOf(FuseJS.TreeObservable))
+				{
+					return new TreeObservable(o);
+				}
 				else
 				{
 					return new ObjectMirror(this, o);	
