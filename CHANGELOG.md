@@ -1,5 +1,7 @@
 # Unreleased
 
+# 1.2
+
 ## Image
 - Fixed issue where an `<Image />` could fail to display inside a `<NativeViewHost />` on iOS
 
