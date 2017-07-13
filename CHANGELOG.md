@@ -53,9 +53,8 @@
 - Added support for name-value pair syntax: `name: value`. Can be used for JSON-like object notation and named arguments in custom functions. Any vector of name-value pairs is interpreted as an `IObject`, e.g. `{name: 'Joe', apples: 10}` is an object.
 - Added support for name-value pair syntax: `name: value`. Can be used for JSON-like object notation and named arguments in custom functions.
 
-## JavaScript Reactive Modules API
-- The Reactive Modules API is a set of functions on the `module` variable in `<JavaScript>` tags that notify the data context that an exported value has changed. This allows reactive programming without using Observables.
-  * `module.set(.. path .., value)` changes the value at the given `path`  in the `module.exports` to `value`. For example `module.set("foo", "bar", 3)` is equivalent to setting `exports.foo.bar = 3`, while notifying the data context about the change.
+## FuseJS/Store API
+- The `FuseJS/Store` API introduces a predictable state container class that interops effectively with the UX data context. See docs for details.
 
 ## Fuse.Reactive cleanup (Uno-level)
 - The `Fuse.IRaw` interface removed (now internal to the `Fuse.Reactive.JavaScript` package). Had no practical public use.
