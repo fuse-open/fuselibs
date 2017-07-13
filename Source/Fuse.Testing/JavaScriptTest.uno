@@ -53,8 +53,8 @@ namespace Fuse.Testing
 		[UXConstructor]
 		public JavaScriptTest([UXAutoNameTable] NameTable nameTable) : base(nameTable)
 		{
-			_scriptModule.Preamble = "try {\n";
-			_scriptModule.Postamble = "\n} catch (err) {\n" +
+			ScriptModule.Preamble = "try {\n";
+			ScriptModule.Postamble = "\n} catch (err) {\n" +
 			                          "\tvar helper = require(\"FuseJS/Internal/UnoTestingHelper\");\n" +
 			                          "\thelper.testFailed(\"stack\" in err ? err.stack : err.message);\n" +
 			                          "}\n";
