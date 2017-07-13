@@ -13,44 +13,46 @@ namespace Fuse.Triggers.Test
 		public void ChainedSwitch()
 		{
 			var p = new UX.StateGroupChainedSwitch();
-			var root = TestRootPanel.CreateWithChild(p);
-
-			p.SG.Active = p.B;
-			root.IncrementFrame();
-			Assert.AreEqual(p.C,p.SG.Active);
-			Assert.IsFalse(p.A.On);
-			Assert.IsFalse(p.B.On);
-			Assert.IsTrue(p.C.On);
-			Assert.IsFalse(p.D.On);
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				p.SG.Active = p.B;
+				root.IncrementFrame();
+				Assert.AreEqual(p.C,p.SG.Active);
+				Assert.IsFalse(p.A.On);
+				Assert.IsFalse(p.B.On);
+				Assert.IsTrue(p.C.On);
+				Assert.IsFalse(p.D.On);
+			}
 		}
 
 		[Test]
 		public void Transition()
 		{
 			var p = new UX.StateGroupTransition();
-			var root = TestRootPanel.CreateWithChild(p);
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				p.SG1.Active = p.B1;
+				p.SG2.Active = p.B2;
+				root.StepFrame(0.5f);
 
-			p.SG1.Active = p.B1;
-			p.SG2.Active = p.B2;
-			root.StepFrame(0.5f);
+				var eps = root.StepIncrement + _zeroTolerance; //may be off a frame here (other tests check correctness of this)
+				Assert.AreEqual(0.5, TriggerProgress(p.A1), eps);
+				Assert.AreEqual(0.5, TriggerProgress(p.B1), eps);
+				Assert.AreEqual(0.5, TriggerProgress(p.A2), eps);
+				Assert.AreEqual(0, TriggerProgress(p.B2), eps);
 
-			var eps = root.StepIncrement + _zeroTolerance; //may be off a frame here (other tests check correctness of this)
-			Assert.AreEqual(0.5, TriggerProgress(p.A1), eps);
-			Assert.AreEqual(0.5, TriggerProgress(p.B1), eps);
-			Assert.AreEqual(0.5, TriggerProgress(p.A2), eps);
-			Assert.AreEqual(0, TriggerProgress(p.B2), eps);
+				root.StepFrame(0.5f);
+				Assert.AreEqual(0, TriggerProgress(p.A1), eps);
+				Assert.AreEqual(1, TriggerProgress(p.B1), eps);
+				Assert.AreEqual(0, TriggerProgress(p.A2), eps);
+				Assert.AreEqual(0, TriggerProgress(p.B2), eps);
 
-			root.StepFrame(0.5f);
-			Assert.AreEqual(0, TriggerProgress(p.A1), eps);
-			Assert.AreEqual(1, TriggerProgress(p.B1), eps);
-			Assert.AreEqual(0, TriggerProgress(p.A2), eps);
-			Assert.AreEqual(0, TriggerProgress(p.B2), eps);
-
-			root.StepFrame(0.5f);
-			Assert.AreEqual(0, TriggerProgress(p.A1), eps);
-			Assert.AreEqual(1, TriggerProgress(p.B1), eps);
-			Assert.AreEqual(0, TriggerProgress(p.A2), eps);
-			Assert.AreEqual(0.5, TriggerProgress(p.B2), eps + root.StepIncrement*2); //TODO: this seems to be too many frames off now
+				root.StepFrame(0.5f);
+				Assert.AreEqual(0, TriggerProgress(p.A1), eps);
+				Assert.AreEqual(1, TriggerProgress(p.B1), eps);
+				Assert.AreEqual(0, TriggerProgress(p.A2), eps);
+				Assert.AreEqual(0.5, TriggerProgress(p.B2), eps + root.StepIncrement*2); //TODO: this seems to be too many frames off now
+			}
 		}
 		
 		[Test]

@@ -17,34 +17,35 @@ namespace Fuse.Triggers.Test
 		public void TriggerResources()
 		{
 			var p = new UX.TriggerResources();
-			var root = TestRootPanel.CreateWithChild(p, int2(100));
+			using (var root = TestRootPanel.CreateWithChild(p, int2(100)))
+			{
+				Assert.AreEqual("A1", p.t1.Value);
+				Assert.AreEqual("A2", p.t2.Value);
+				Assert.AreEqual("A1", p.t1_inside.Value);
+				Assert.AreEqual("A2", p.t2_inside.Value);
+				Assert.AreEqual("A1", p.t1_outside.Value);
+				Assert.AreEqual("", p.t2_outside.Value);
 
-			Assert.AreEqual("A1", p.t1.Value);
-			Assert.AreEqual("A2", p.t2.Value);
-			Assert.AreEqual("A1", p.t1_inside.Value);
-			Assert.AreEqual("A2", p.t2_inside.Value);
-			Assert.AreEqual("A1", p.t1_outside.Value);
-			Assert.AreEqual("", p.t2_outside.Value);
+				p.WT1.Value = true;
+				root.StepFrame();
 
-			p.WT1.Value = true;
-			root.StepFrame();
+				Assert.AreEqual("B1", p.t1.Value);
+				Assert.AreEqual("B2", p.t2.Value);
+				Assert.AreEqual("B1", p.t1_inside.Value);
+				Assert.AreEqual("B2", p.t2_inside.Value);
+				Assert.AreEqual("A1", p.t1_outside.Value);
+				Assert.AreEqual("", p.t2_outside.Value);
 
-			Assert.AreEqual("B1", p.t1.Value);
-			Assert.AreEqual("B2", p.t2.Value);
-			Assert.AreEqual("B1", p.t1_inside.Value);
-			Assert.AreEqual("B2", p.t2_inside.Value);
-			Assert.AreEqual("A1", p.t1_outside.Value);
-			Assert.AreEqual("", p.t2_outside.Value);
+				p.WT1.Value = false;
+				root.StepFrame();
 
-			p.WT1.Value = false;
-			root.StepFrame();
-
-			Assert.AreEqual("A1", p.t1.Value);
-			Assert.AreEqual("A2", p.t2.Value);
-			Assert.AreEqual("A1", p.t1_inside.Value);
-			Assert.AreEqual("A2", p.t2_inside.Value);
-			Assert.AreEqual("A1", p.t1_outside.Value);
-			Assert.AreEqual("", p.t2_outside.Value);
+				Assert.AreEqual("A1", p.t1.Value);
+				Assert.AreEqual("A2", p.t2.Value);
+				Assert.AreEqual("A1", p.t1_inside.Value);
+				Assert.AreEqual("A2", p.t2_inside.Value);
+				Assert.AreEqual("A1", p.t1_outside.Value);
+				Assert.AreEqual("", p.t2_outside.Value);
+			}
 		}
 
 		[Test]
@@ -110,64 +111,67 @@ namespace Fuse.Triggers.Test
 		public void ChildOrder1()
 		{
 			var p = new UX.TriggerOrder();
-			var root = TestRootPanel.CreateWithChild(p, int2(100));
-			
-			var v = VisualsOf(p.A);
-			Assert.AreEqual(0, v.Count);
-			
-			p.AT2.Value = true;
-			p.AT1.Value = true;
-			v = VisualsOf(p.A);
-			Assert.AreEqual(2, v.Count);
-			Assert.AreEqual(p.A1, v[0]);
-			Assert.AreEqual(p.A2, v[1]);
-			
-			p.AT3.Value = true;
-			p.AT1.Value = false;
-			v = VisualsOf(p.A);
-			Assert.AreEqual(2, v.Count);
-			Assert.AreEqual(p.A2, v[0]);
-			Assert.AreEqual(p.A3, v[1]);
+			using (var root = TestRootPanel.CreateWithChild(p, int2(100)))
+			{
+				var v = VisualsOf(p.A);
+				Assert.AreEqual(0, v.Count);
+
+				p.AT2.Value = true;
+				p.AT1.Value = true;
+				v = VisualsOf(p.A);
+				Assert.AreEqual(2, v.Count);
+				Assert.AreEqual(p.A1, v[0]);
+				Assert.AreEqual(p.A2, v[1]);
+
+				p.AT3.Value = true;
+				p.AT1.Value = false;
+				v = VisualsOf(p.A);
+				Assert.AreEqual(2, v.Count);
+				Assert.AreEqual(p.A2, v[0]);
+				Assert.AreEqual(p.A3, v[1]);
+			}
 		}
 		
 		[Test]
 		public void ChildOrder2()
 		{
 			var p = new UX.TriggerOrder();
-			var root = TestRootPanel.CreateWithChild(p, int2(100));
-			
-			var v = VisualsOf(p.B);
-			Assert.AreEqual(2, v.Count);
-			
-			p.BT1.Value = true;
-			v = VisualsOf(p.B);
-			Assert.AreEqual(3, v.Count);
-			Assert.AreEqual(p.B1, v[0]);
-			Assert.AreEqual(p.B2, v[1]);
-			Assert.AreEqual(p.B3, v[2]);
+			using (var root = TestRootPanel.CreateWithChild(p, int2(100)))
+			{
+				var v = VisualsOf(p.B);
+				Assert.AreEqual(2, v.Count);
+
+				p.BT1.Value = true;
+				v = VisualsOf(p.B);
+				Assert.AreEqual(3, v.Count);
+				Assert.AreEqual(p.B1, v[0]);
+				Assert.AreEqual(p.B2, v[1]);
+				Assert.AreEqual(p.B3, v[2]);
+			}
 		}
 			
 		[Test]
 		public void ChildOrder3()
 		{
 			var p = new UX.TriggerOrder();
-			var root = TestRootPanel.CreateWithChild(p, int2(100));
-			
-			var v = VisualsOf(p.C);
-			Assert.AreEqual(1, v.Count);
-			
-			p.CT1.Value = true;
-			v = VisualsOf(p.C);
-			Assert.AreEqual(2, v.Count);
-			Assert.AreEqual(p.C1, v[0]);
-			Assert.AreEqual(p.C2, v[1]);
-			
-			p.CT1.Value = false;
-			p.CT3.Value = true;
-			v = VisualsOf(p.C);
-			Assert.AreEqual(2, v.Count);
-			Assert.AreEqual(p.C2, v[0]);
-			Assert.AreEqual(p.C3, v[1]);
+			using (var root = TestRootPanel.CreateWithChild(p, int2(100)))
+			{
+				var v = VisualsOf(p.C);
+				Assert.AreEqual(1, v.Count);
+
+				p.CT1.Value = true;
+				v = VisualsOf(p.C);
+				Assert.AreEqual(2, v.Count);
+				Assert.AreEqual(p.C1, v[0]);
+				Assert.AreEqual(p.C2, v[1]);
+
+				p.CT1.Value = false;
+				p.CT3.Value = true;
+				v = VisualsOf(p.C);
+				Assert.AreEqual(2, v.Count);
+				Assert.AreEqual(p.C2, v[0]);
+				Assert.AreEqual(p.C3, v[1]);
+			}
 		}
 		
 		List<Visual> VisualsOf(Visual a)
@@ -189,37 +193,38 @@ namespace Fuse.Triggers.Test
 		public void PreserveRoot()
 		{
 			var p = new UX.PreserveRoot();
-			var root = TestRootPanel.CreateWithChild(p);
-			
-			p.T1.Pulse();
-			p.T2.Pulse();
-			p.C.PreserveRootFrame();
-			p.P1.Children.Remove(p.C);
-			p.P2.Children.Add(p.C);
-			root.StepFrame(0.5f);
-			Assert.AreEqual(0.5,TriggerProgress(p.T1));
-			Assert.AreEqual(0.5,TriggerProgress(p.T2));
-			Assert.IsTrue(p.A.IsRootingCompleted);
-			
-			p.C.PreserveRootFrame();
-			p.P2.Children.Remove(p.C);
-			p.P1.Children.Add(p.C);
-			root.StepFrame(0.5f);
-			Assert.AreEqual(1,TriggerProgress(p.T1));
-			Assert.AreEqual(1,TriggerProgress(p.T2));
-			root.StepFrame(0.5f);
-			//the pulse turnaround could take 1 frame, it's uncertain if this an issue (the 2* is because
-			//or stepping may not line up precisely, thus 1-frame delayed as well)
-			//NOTE: This is probably an issue, since a pulse trigger takes longer than expected
-			//https://github.com/fusetools/fuselibs/issues/2005
-			var tolerance = 2*root.StepIncrement + _zeroTolerance;
-			Assert.AreEqual(0.5f,TriggerProgress(p.T1), tolerance);
-			Assert.AreEqual(0.5f,TriggerProgress(p.T2), tolerance);
-			
-			root.StepFrame(0.6f); //overshoot
-			Assert.AreEqual(0,TriggerProgress(p.T1));
-			Assert.AreEqual(0,TriggerProgress(p.T2));
-			Assert.IsFalse(p.A.IsRootingCompleted);
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				p.T1.Pulse();
+				p.T2.Pulse();
+				p.C.PreserveRootFrame();
+				p.P1.Children.Remove(p.C);
+				p.P2.Children.Add(p.C);
+				root.StepFrame(0.5f);
+				Assert.AreEqual(0.5,TriggerProgress(p.T1));
+				Assert.AreEqual(0.5,TriggerProgress(p.T2));
+				Assert.IsTrue(p.A.IsRootingCompleted);
+
+				p.C.PreserveRootFrame();
+				p.P2.Children.Remove(p.C);
+				p.P1.Children.Add(p.C);
+				root.StepFrame(0.5f);
+				Assert.AreEqual(1,TriggerProgress(p.T1));
+				Assert.AreEqual(1,TriggerProgress(p.T2));
+				root.StepFrame(0.5f);
+				//the pulse turnaround could take 1 frame, it's uncertain if this an issue (the 2* is because
+				//or stepping may not line up precisely, thus 1-frame delayed as well)
+				//NOTE: This is probably an issue, since a pulse trigger takes longer than expected
+				//https://github.com/fusetools/fuselibs/issues/2005
+				var tolerance = 2*root.StepIncrement + _zeroTolerance;
+				Assert.AreEqual(0.5f,TriggerProgress(p.T1), tolerance);
+				Assert.AreEqual(0.5f,TriggerProgress(p.T2), tolerance);
+
+				root.StepFrame(0.6f); //overshoot
+				Assert.AreEqual(0,TriggerProgress(p.T1));
+				Assert.AreEqual(0,TriggerProgress(p.T2));
+				Assert.IsFalse(p.A.IsRootingCompleted);
+			}
 		}
 		
 		[Test]
@@ -258,19 +263,20 @@ namespace Fuse.Triggers.Test
 		public void EdgeAction2()
 		{
 			var p = new UX.EdgeAction();
-			var root = TestRootPanel.CreateWithChild(p);
-			
-			p.Open.BypassActivate();
-			p.Open.DirectActivate();
-			Assert.AreEqual(0, p.AFore.PerformedCount);
-			Assert.AreEqual(0, p.ABack.PerformedCount);
-			
-			root.IncrementFrame();
-			
-			p.Open.BypassDeactivate();
-			p.Open.DirectDeactivate();
-			Assert.AreEqual(0, p.AFore.PerformedCount);
-			Assert.AreEqual(0, p.ABack.PerformedCount);
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				p.Open.BypassActivate();
+				p.Open.DirectActivate();
+				Assert.AreEqual(0, p.AFore.PerformedCount);
+				Assert.AreEqual(0, p.ABack.PerformedCount);
+
+				root.IncrementFrame();
+
+				p.Open.BypassDeactivate();
+				p.Open.DirectDeactivate();
+				Assert.AreEqual(0, p.AFore.PerformedCount);
+				Assert.AreEqual(0, p.ABack.PerformedCount);
+			}
 		}
 		
 		[Test]
@@ -284,23 +290,24 @@ namespace Fuse.Triggers.Test
 		public void PreserveRootActionNoDuration()
 		{
 			var p = new UX.PreserveRootAction();
-			var root = TestRootPanel.CreateWithChild(p);
-		
-			p.T1.Pulse();
-			root.PumpDeferred();
-			Assert.AreEqual(1, p.AFore1.PerformedCount);
-			Assert.AreEqual(1, p.ABack1.PerformedCount);
-			Assert.AreEqual(1, p.AFore2.PerformedCount);
-			Assert.AreEqual(1, p.ABack2.PerformedCount);
-			Assert.AreEqual(p.PL2, p.C.Parent);
-			
-			p.T1.Pulse();
-			root.PumpDeferred();
-			Assert.AreEqual(2, p.AFore1.PerformedCount);
-			Assert.AreEqual(2, p.ABack1.PerformedCount);
-			Assert.AreEqual(2, p.AFore2.PerformedCount);
-			Assert.AreEqual(2, p.ABack2.PerformedCount);
-			Assert.AreEqual(p.PL1, p.C.Parent);
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				p.T1.Pulse();
+				root.PumpDeferred();
+				Assert.AreEqual(1, p.AFore1.PerformedCount);
+				Assert.AreEqual(1, p.ABack1.PerformedCount);
+				Assert.AreEqual(1, p.AFore2.PerformedCount);
+				Assert.AreEqual(1, p.ABack2.PerformedCount);
+				Assert.AreEqual(p.PL2, p.C.Parent);
+
+				p.T1.Pulse();
+				root.PumpDeferred();
+				Assert.AreEqual(2, p.AFore1.PerformedCount);
+				Assert.AreEqual(2, p.ABack1.PerformedCount);
+				Assert.AreEqual(2, p.AFore2.PerformedCount);
+				Assert.AreEqual(2, p.ABack2.PerformedCount);
+				Assert.AreEqual(p.PL1, p.C.Parent);
+			}
 		}
 
 		[Test]
@@ -310,31 +317,32 @@ namespace Fuse.Triggers.Test
 		public void PreserveRootActionDuration()
 		{
 			var p = new UX.PreserveRootActionDuration();
-			var root = TestRootPanel.CreateWithChild(p);
-			
-			p.T1.Pulse();
-			root.StepFrame(2.1f); //overkill for frame imprecision
-			Assert.AreEqual(1, p.AFore1.PerformedCount);
-			Assert.AreEqual(1, p.ABack1.PerformedCount);
-			Assert.AreEqual(1, p.AFore2.PerformedCount);
-			Assert.AreEqual(1, p.ABack2.PerformedCount);
-			Assert.AreEqual(1, p.AFore3.PerformedCount);
-			Assert.AreEqual(1, p.ABack3.PerformedCount);
-			Assert.AreEqual(1, p.AFore4.PerformedCount);
-			Assert.AreEqual(1, p.ABack4.PerformedCount);
-			Assert.AreEqual(p.PL2, p.C.Parent);
-			
-			p.T1.Pulse();
-			root.StepFrame(2.1f); //overkill for frame imprecision
-			Assert.AreEqual(2, p.AFore1.PerformedCount);
-			Assert.AreEqual(2, p.ABack1.PerformedCount);
-			Assert.AreEqual(2, p.AFore2.PerformedCount);
-			Assert.AreEqual(2, p.ABack2.PerformedCount);
-			Assert.AreEqual(2, p.AFore3.PerformedCount);
-			Assert.AreEqual(2, p.ABack3.PerformedCount);
-			Assert.AreEqual(2, p.AFore4.PerformedCount);
-			Assert.AreEqual(2, p.ABack4.PerformedCount);
-			Assert.AreEqual(p.PL1, p.C.Parent);
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				p.T1.Pulse();
+				root.StepFrame(2.1f); //overkill for frame imprecision
+				Assert.AreEqual(1, p.AFore1.PerformedCount);
+				Assert.AreEqual(1, p.ABack1.PerformedCount);
+				Assert.AreEqual(1, p.AFore2.PerformedCount);
+				Assert.AreEqual(1, p.ABack2.PerformedCount);
+				Assert.AreEqual(1, p.AFore3.PerformedCount);
+				Assert.AreEqual(1, p.ABack3.PerformedCount);
+				Assert.AreEqual(1, p.AFore4.PerformedCount);
+				Assert.AreEqual(1, p.ABack4.PerformedCount);
+				Assert.AreEqual(p.PL2, p.C.Parent);
+
+				p.T1.Pulse();
+				root.StepFrame(2.1f); //overkill for frame imprecision
+				Assert.AreEqual(2, p.AFore1.PerformedCount);
+				Assert.AreEqual(2, p.ABack1.PerformedCount);
+				Assert.AreEqual(2, p.AFore2.PerformedCount);
+				Assert.AreEqual(2, p.ABack2.PerformedCount);
+				Assert.AreEqual(2, p.AFore3.PerformedCount);
+				Assert.AreEqual(2, p.ABack3.PerformedCount);
+				Assert.AreEqual(2, p.AFore4.PerformedCount);
+				Assert.AreEqual(2, p.ABack4.PerformedCount);
+				Assert.AreEqual(p.PL1, p.C.Parent);
+			}
 		}
 
 		[Test]
@@ -346,21 +354,22 @@ namespace Fuse.Triggers.Test
 		{
 			var p = new UX.AnimatorState();
 			Assert.AreEqual(0,p.A1.Active.Count);
-			var root = TestRootPanel.CreateWithChild(p);
-
-			for (int i=0; i < 2; ++i)
+			using (var root = TestRootPanel.CreateWithChild(p))
 			{
-				p.WT1.Value = true;
-				root.IncrementFrame(); //progress is not guaranteed to be sync, only within the same frame
-				Assert.AreEqual(1,p.A1.Active.Count);
-				var a = p.A1.Active[0];
-				Assert.AreEqual(1,TriggerProgress(p.WT1));
+				for (int i=0; i < 2; ++i)
+				{
+					p.WT1.Value = true;
+					root.IncrementFrame(); //progress is not guaranteed to be sync, only within the same frame
+					Assert.AreEqual(1,p.A1.Active.Count);
+					var a = p.A1.Active[0];
+					Assert.AreEqual(1,TriggerProgress(p.WT1));
 
-				p.WT1.Value = false;
-				root.IncrementFrame();
-				Assert.AreEqual(0,TriggerProgress(p.WT1));
-				Assert.AreEqual(0,p.A1.Active.Count);
-				Assert.IsFalse(a.IsActive);
+					p.WT1.Value = false;
+					root.IncrementFrame();
+					Assert.AreEqual(0,TriggerProgress(p.WT1));
+					Assert.AreEqual(0,p.A1.Active.Count);
+					Assert.IsFalse(a.IsActive);
+				}
 			}
 		}
 
@@ -369,20 +378,21 @@ namespace Fuse.Triggers.Test
 		{
 			var p = new UX.AnimatorState();
 			Assert.AreEqual(0,p.A2.Active.Count);
-			var root = TestRootPanel.CreateWithChild(p);
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				//startAtZero should always have it's state
+				Assert.AreEqual(1,p.A2.Active.Count);
+				var a = p.A2.Active[0];
+				p.WT2.Value = true;
+				root.IncrementFrame(); //progress is not guaranteed to be sync, only within the same frame
+				Assert.AreEqual(a,p.A2.Active[0]);
 
-			//startAtZero should always have it's state
-			Assert.AreEqual(1,p.A2.Active.Count);
-			var a = p.A2.Active[0];
-			p.WT2.Value = true;
-			root.IncrementFrame(); //progress is not guaranteed to be sync, only within the same frame
-			Assert.AreEqual(a,p.A2.Active[0]);
-
-			p.WT2.Value = false;
-			root.IncrementFrame();
-			Assert.AreEqual(1,p.A2.Active.Count);
-			Assert.IsTrue(a.IsActive);
-			Assert.AreEqual(a,p.A2.Active[0]);
+				p.WT2.Value = false;
+				root.IncrementFrame();
+				Assert.AreEqual(1,p.A2.Active.Count);
+				Assert.IsTrue(a.IsActive);
+				Assert.AreEqual(a,p.A2.Active[0]);
+			}
 		}
 
 		[Test]
@@ -390,26 +400,27 @@ namespace Fuse.Triggers.Test
 		{
 			var p = new UX.AnimatorState();
 			Assert.AreEqual(0,p.A3.Active.Count);
-			var root = TestRootPanel.CreateWithChild(p);
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				p.WT3.Value = true;
+				root.IncrementFrame(); //progress is not guaranteed to be sync, only within the same frame
+				Assert.AreEqual(1,p.A3.Active.Count); //only forward now (expected optimization)
+				var a = p.A3.Active[0];
 
-			p.WT3.Value = true;
-			root.IncrementFrame(); //progress is not guaranteed to be sync, only within the same frame
-			Assert.AreEqual(1,p.A3.Active.Count); //only forward now (expected optimization)
-			var a = p.A3.Active[0];
+				root.StepFrame(0.5f);
+				p.WT3.Value = false;
+				root.IncrementFrame();
 
-			root.StepFrame(0.5f);
-			p.WT3.Value = false;
-			root.IncrementFrame();
+				Assert.AreEqual(2,p.A3.Active.Count);
+				var b = p.A3.Active[1];
+				Assert.IsTrue(a.IsActive);
+				Assert.IsTrue(b.IsActive);
 
-			Assert.AreEqual(2,p.A3.Active.Count);
-			var b = p.A3.Active[1];
-			Assert.IsTrue(a.IsActive);
-			Assert.IsTrue(b.IsActive);
-
-			root.StepFrame(0.6f); //overkill
-			Assert.AreEqual(0,p.A3.Active.Count);
-			Assert.IsFalse(a.IsActive);
-			Assert.IsFalse(b.IsActive);
+				root.StepFrame(0.6f); //overkill
+				Assert.AreEqual(0,p.A3.Active.Count);
+				Assert.IsFalse(a.IsActive);
+				Assert.IsFalse(b.IsActive);
+			}
 		}
 
 		[Test]
@@ -417,26 +428,27 @@ namespace Fuse.Triggers.Test
 		{
 			var p = new UX.AnimatorState();
 			Assert.AreEqual(0,p.A4.Active.Count);
-			var root = TestRootPanel.CreateWithChild(p);
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				p.WT4.Value = true;
+				root.IncrementFrame(); //progress is not guaranteed to be sync, only within the same frame
+				Assert.AreEqual(1,p.A4.Active.Count);
+				var a = p.A4.Active[0];
+				root.StepFrame(1);
+				Assert.AreEqual(1,TriggerProgress(p.WT4));
 
-			p.WT4.Value = true;
-			root.IncrementFrame(); //progress is not guaranteed to be sync, only within the same frame
-			Assert.AreEqual(1,p.A4.Active.Count);
-			var a = p.A4.Active[0];
-			root.StepFrame(1);
-			Assert.AreEqual(1,TriggerProgress(p.WT4));
+				p.WT4.Value = false;
+				root.StepFrame(1.5f);
+				Assert.AreEqual(0,TriggerProgress(p.WT4));
+				Assert.AreEqual(1,p.A4.Active.Count); //still active
+				Assert.IsTrue(a.IsActive);
 
-			p.WT4.Value = false;
-			root.StepFrame(1.5f);
-			Assert.AreEqual(0,TriggerProgress(p.WT4));
-			Assert.AreEqual(1,p.A4.Active.Count); //still active
-			Assert.IsTrue(a.IsActive);
-
-			a.AllowStable = true;
-			root.IncrementFrame();
-			Assert.AreEqual(0,TriggerProgress(p.WT4));
-			Assert.AreEqual(0,p.A4.Active.Count);
-			Assert.IsFalse(a.IsActive);
+				a.AllowStable = true;
+				root.IncrementFrame();
+				Assert.AreEqual(0,TriggerProgress(p.WT4));
+				Assert.AreEqual(0,p.A4.Active.Count);
+				Assert.IsFalse(a.IsActive);
+			}
 		}
 
 		
@@ -450,48 +462,48 @@ namespace Fuse.Triggers.Test
 		public void ActionBeyondEnd()
 		{
 			var t = new UX.ActionBeyondEnd();
-			var root = TestRootPanel.CreateWithChild(t);
-			
-			//since change-over foreward/backward may be one frame
-			var frameOff = root.StepIncrement + _zeroTolerance;
-			
-			t.T1.Pulse();
-			Assert.AreEqual(0, TriggerProgress(t.T1));
-			root.StepFrame(1f);
-			Assert.AreEqual(0.5f, TriggerProgress(t.T1));
-			root.StepFrame(1f);
-			Assert.AreEqual(1f, TriggerProgress(t.T1));
-			root.StepFrame(1f);
-			Assert.AreEqual(0f, TriggerProgress(t.T1), frameOff);
-			
-			t.T2.Pulse();
-			Assert.AreEqual(0, TriggerProgress(t.T2));
-			root.StepFrame(1f);
-			Assert.AreEqual(1f, TriggerProgress(t.T2));
-			root.StepFrame(1f);
-			Assert.AreEqual(0.5f, TriggerProgress(t.T2), frameOff);
-			root.StepFrame(1f);
-			Assert.AreEqual(0f, TriggerProgress(t.T2), frameOff);
-			
-			t.T3.Pulse();
-			Assert.AreEqual(0, TriggerProgress(t.T3));
-			root.StepFrame(1f);
-			Assert.AreEqual(0.5f, TriggerProgress(t.T3));
-			root.StepFrame(1f);
-			Assert.AreEqual(1f, TriggerProgress(t.T3));
-			root.StepFrame(1f);
-			Assert.AreEqual(0.5f, TriggerProgress(t.T3), frameOff);
-			root.StepFrame(1f);
-			Assert.AreEqual(0f, TriggerProgress(t.T3), frameOff);
+			using (var root = TestRootPanel.CreateWithChild(t))
+			{
+				//since change-over foreward/backward may be one frame
+				var frameOff = root.StepIncrement + _zeroTolerance;
+
+				t.T1.Pulse();
+				Assert.AreEqual(0, TriggerProgress(t.T1));
+				root.StepFrame(1f);
+				Assert.AreEqual(0.5f, TriggerProgress(t.T1));
+				root.StepFrame(1f);
+				Assert.AreEqual(1f, TriggerProgress(t.T1));
+				root.StepFrame(1f);
+				Assert.AreEqual(0f, TriggerProgress(t.T1), frameOff);
+
+				t.T2.Pulse();
+				Assert.AreEqual(0, TriggerProgress(t.T2));
+				root.StepFrame(1f);
+				Assert.AreEqual(1f, TriggerProgress(t.T2));
+				root.StepFrame(1f);
+				Assert.AreEqual(0.5f, TriggerProgress(t.T2), frameOff);
+				root.StepFrame(1f);
+				Assert.AreEqual(0f, TriggerProgress(t.T2), frameOff);
+
+				t.T3.Pulse();
+				Assert.AreEqual(0, TriggerProgress(t.T3));
+				root.StepFrame(1f);
+				Assert.AreEqual(0.5f, TriggerProgress(t.T3));
+				root.StepFrame(1f);
+				Assert.AreEqual(1f, TriggerProgress(t.T3));
+				root.StepFrame(1f);
+				Assert.AreEqual(0.5f, TriggerProgress(t.T3), frameOff);
+				root.StepFrame(1f);
+				Assert.AreEqual(0f, TriggerProgress(t.T3), frameOff);
+			}
 		}
 		
 		[Test]
 		public void MatchOrder()
 		{
 			var t = new UX.TriggerMatchOrder();
-			var root = TestRootPanel.CreateWithChild(t);
-			
-			Assert.AreEqual( "123", GetText(t));
+			using (var root = TestRootPanel.CreateWithChild(t))
+				Assert.AreEqual( "123", GetText(t));
 		}
 		
 		string GetText(Visual root)
@@ -511,13 +523,14 @@ namespace Fuse.Triggers.Test
 		public void RootCapture()
 		{
 			var t = new UX.TriggerRootCapture();
-			var root = TestRootPanel.CreateWithChild(t);
-			
-			t.Out.Value = true;
-			//root.IncrementFrame();
-			Assert.AreEqual(0,t.T1.PerformedCount);
-			Assert.IsTrue(t.W1.Value);
-			Assert.AreEqual(0,t.T2.PerformedCount);
+			using (var root = TestRootPanel.CreateWithChild(t))
+			{
+				t.Out.Value = true;
+				//root.IncrementFrame();
+				Assert.AreEqual(0,t.T1.PerformedCount);
+				Assert.IsTrue(t.W1.Value);
+				Assert.AreEqual(0,t.T2.PerformedCount);
+			}
 		}
 		
 		[Test]
