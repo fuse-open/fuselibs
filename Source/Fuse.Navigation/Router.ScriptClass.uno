@@ -147,7 +147,7 @@ namespace Fuse.Navigation
 		/**
 			Performs a Push, Goto, or Replace operation on the router with extended options.
 
-			> Note: there is also a UX interface for @RouterModify.
+			> Note: there is also a UX interface @ModifyRoute, @PushRoute, @GotoRoute
 			
 			@scriptmethod modify( navigationSpec )
 			

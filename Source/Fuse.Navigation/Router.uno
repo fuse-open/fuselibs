@@ -405,6 +405,9 @@ namespace Fuse.Navigation
 		Route SetRoute(Route r, NavigationGotoMode gotoMode, RoutingOperation operation, 
 			string operationStyle, bool userRequest = true)
 		{
+			if (r == null)
+				throw new Exception( "Route cannot be null" );
+				
 			//prepared routes are cleared when the actual route is changed
 			ClearPrepared();
 			

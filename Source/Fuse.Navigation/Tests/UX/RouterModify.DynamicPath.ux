@@ -8,7 +8,9 @@
 		<Page ux:Name="one"/>
 		<Page ux:Name="two">
 			<Timeline ux:Name="gotoParam">
-				<!-- TODO: the {= two} shouldn't be required -->
+				<!-- TODO: the {= two} shouldn't be required 
+					https://github.com/fusetools/fuselibs-public/issues/216
+				-->
 				<ModifyRoute How="Goto" Path=" 'three', (id: parameter({= two}).id + 10) "/>
 			</Timeline>
 		</Page>

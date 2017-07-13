@@ -87,10 +87,26 @@ namespace Fuse.Navigation
 		public Router Router { get; set; }
 		
 		//backwards compatible constructor, won't be able to evaluate Path
-		public RouterModify() { }
+		[Obsolete]
+		public RouterModify() 
+		{ 
+			Fuse.Diagnostics.UserWarning( "RouterModify is deprecated. Use one of `ModifyRoute`, `GotoRoute` or `PushRoute` instead.", this );
+		}
+		
+		[Flags]
+		internal enum Flags
+		{	
+			None = 0,
+			DontNeedNameTable = 1<<0,
+		}
+		internal RouterModify(Flags flags) 
+		{
+			if (!flags.HasFlag(Flags.DontNeedNameTable))
+				throw new Exception( "Invalid construction" );
+		}
 		
 		NameTable _nameTable;
-		protected RouterModify(NameTable nameTable)
+		internal RouterModify(NameTable nameTable)
 		{
 			_nameTable = nameTable;
 		}
@@ -117,10 +133,20 @@ namespace Fuse.Navigation
 		/** The operation style of the transition. */
 		public string Style { get; set; }
 
+		IExpression _path;
 		/* This is an IExpression since the claculation of the path might be costly (in terms of setup
 			and evaluation), and we don't want it to keep updating unless it is actually used. */
 		/** The target path */
-		public IExpression Path { get; set; }
+		public IExpression Path 
+		{ 
+			get { return _path; }
+			set
+			{
+				if (_nameTable == null)
+					Fuse.Diagnostics.UserError( "The `Path` property cannot be used with this deprecated type.", this);
+				_path = value;
+			}
+		}
 		
 		NodeExpressionBinding _pathSub;
 
@@ -221,12 +247,45 @@ namespace Fuse.Navigation
 		}
 	}
 
-	
 	public class ModifyRoute : RouterModify
 	{
 		[UXConstructor]
 		public ModifyRoute([UXAutoNameTable] NameTable nameTable)
 			: base(nameTable)
 		{ }
+	}
+	
+	/**
+		Goto a new route in the router.
+		
+		This is the same as @RouterModify with `How="Goto"`
+		
+		@see RouterModify
+	*/
+	public class GotoRoute : RouterModify
+	{
+		[UXConstructor]
+		public GotoRoute([UXAutoNameTable] NameTable nameTable)
+			: base(nameTable)
+		{ 
+			How = ModifyRouteHow.Goto;
+		}
+	}
+	
+	/**
+		Push a new route onto the router.
+		
+		This is the same as @RouterModify with `How="Push"`
+		
+		@see RouterModify
+	*/
+	public class PushRoute : RouterModify
+	{
+		[UXConstructor]
+		public PushRoute([UXAutoNameTable] NameTable nameTable)
+			: base(nameTable)
+		{ 
+			How = ModifyRouteHow.Push;
+		}
 	}
 }

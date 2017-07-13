@@ -12,12 +12,12 @@
 	</PageControl>
 	
 	<Timeline ux:Name="gotoNext">
-		<RouterModify How="Goto" Path=" 'two' "/>
+		<GotoRoute Path=" 'two' "/>
 	</Timeline>
 	<Timeline ux:Name="gotoParams">
-		<RouterModify How="Goto" Path=" 'three', (id: 12) "/>
+		<GotoRoute Path=" 'three', (id: 12) "/>
 	</Timeline>
 	<Timeline ux:Name="gotoInner">
-		<RouterModify How="Goto" Path=" 'four', (id: 13), 'inner', (a:1,b:2) "/>
+		<GotoRoute Path=" 'four', (id: 13), 'inner', (a:1,b:2) "/>
 	</Timeline>
 </Panel>
