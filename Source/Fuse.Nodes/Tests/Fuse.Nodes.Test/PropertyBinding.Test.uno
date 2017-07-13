@@ -13,8 +13,8 @@ namespace Fuse.Test
 			using (var dg = new RecordDiagnosticGuard())
 			{
 				var t = new UX.PropertyBindingTest();
-				var root = TestRootPanel.CreateWithChild(t);
-				root.IncrementFrame();
+				using (var root = TestRootPanel.CreateWithChild(t))
+					root.IncrementFrame();
 
 				var diagnostics = dg.DequeueAll();
 				Assert.AreEqual(6, diagnostics.Count);

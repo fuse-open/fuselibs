@@ -54,13 +54,12 @@ namespace Fuse.Test
 
 	public class FusePointerTest : TestBase
 	{
-		private TestRootPanel _root;
-
-		public FusePointerTest()
+		TestRootPanel CreateTestRootPanel()
 		{
-			_root = new TestRootPanel();
-			Fuse.Input.Pointer.RaiseMoved(_root, GetZeroPointerEventData());
-			Fuse.Input.Pointer.RaiseReleased(_root, GetDefaultPointerEventData());
+			var root = new TestRootPanel();
+			Fuse.Input.Pointer.RaiseMoved(root, GetZeroPointerEventData());
+			Fuse.Input.Pointer.RaiseReleased(root, GetDefaultPointerEventData());
+			return root;
 		}
 
 		class BubblingSequenceTester
@@ -92,178 +91,214 @@ namespace Fuse.Test
 		[Test]
 		public void BubblingSequence()
 		{
-			var setup = SetupEnvironment();
-			var bst = new BubblingSequenceTester(setup);
+			using (var root = CreateTestRootPanel())
+			{
+				var setup = SetupEnvironment(root);
+				var bst = new BubblingSequenceTester(setup);
 
-			Fuse.Input.Pointer.RaisePressed(_root, GetDefaultPointerEventData());
-			Assert.AreEqual(new string[] { "3", "2", "1" }, bst.BubblingSequence.ToArray());
+				Fuse.Input.Pointer.RaisePressed(root, GetDefaultPointerEventData());
+				Assert.AreEqual(new string[] { "3", "2", "1" }, bst.BubblingSequence.ToArray());
 
-			bst.BubblingSequence.Clear();
-			Fuse.Input.Pointer.RaiseReleased(_root, GetDefaultPointerEventData());
-			Assert.AreEqual(new string[] { "3", "2", "1" }, bst.BubblingSequence.ToArray());
+				bst.BubblingSequence.Clear();
+				Fuse.Input.Pointer.RaiseReleased(root, GetDefaultPointerEventData());
+				Assert.AreEqual(new string[] { "3", "2", "1" }, bst.BubblingSequence.ToArray());
+			}
 		}
 
 		[Test]
 		public void SoftCapture()
 		{
-			var setup = SetupEnvironment(true);
+			using (var root = CreateTestRootPanel())
+			{
+				var setup = SetupEnvironment(root, true);
 
-			Fuse.Input.Pointer.RaisePressed(_root, GetDefaultPointerEventData());
-			Assert.IsTrue(setup.ParentPanel.Captured);
-			Assert.IsTrue(setup.ChildPanel.Captured);
-			Assert.IsTrue(setup.Control.Captured);
+				Fuse.Input.Pointer.RaisePressed(root, GetDefaultPointerEventData());
+				Assert.IsTrue(setup.ParentPanel.Captured);
+				Assert.IsTrue(setup.ChildPanel.Captured);
+				Assert.IsTrue(setup.Control.Captured);
 
-			Fuse.Input.Pointer.RaiseReleased(_root, GetDefaultPointerEventData());
-			Assert.IsFalse(setup.ParentPanel.Captured);
-			Assert.IsFalse(setup.ChildPanel.Captured);
-			Assert.IsFalse(setup.Control.Captured);
+				Fuse.Input.Pointer.RaiseReleased(root, GetDefaultPointerEventData());
+				Assert.IsFalse(setup.ParentPanel.Captured);
+				Assert.IsFalse(setup.ChildPanel.Captured);
+				Assert.IsFalse(setup.Control.Captured);
+			}
 		}
 
 		[Test]
 		public void SoftCaptureParentNoCapture()
 		{
-			var setup = SetupEnvironment(true);
-			setup.ChildPanel.SoftCaptureModeEnabled = false;
+			using (var root = CreateTestRootPanel())
+			{
+				var setup = SetupEnvironment(root, true);
+				setup.ChildPanel.SoftCaptureModeEnabled = false;
 
-			Fuse.Input.Pointer.RaisePressed(_root, GetDefaultPointerEventData());
-			Assert.IsTrue(setup.ParentPanel.Captured);
-			Assert.IsFalse(setup.ChildPanel.Captured);
+				Fuse.Input.Pointer.RaisePressed(root, GetDefaultPointerEventData());
+				Assert.IsTrue(setup.ParentPanel.Captured);
+				Assert.IsFalse(setup.ChildPanel.Captured);
+			}
 		}
 
 		[Test]
 		public void SoftCaptureOutsideOfControls()
 		{
-			var setup = SetupEnvironment(true);
+			using (var root = CreateTestRootPanel())
+			{
+				var setup = SetupEnvironment(root, true);
 
-			Fuse.Input.Pointer.RaisePressed(_root, GetOutsideOfControlsPointerEventData());
-			Assert.IsFalse(setup.ParentPanel.Captured);
-			Assert.IsFalse(setup.ChildPanel.Captured);
-			Assert.IsFalse(setup.Control.Captured);
+				Fuse.Input.Pointer.RaisePressed(root, GetOutsideOfControlsPointerEventData());
+				Assert.IsFalse(setup.ParentPanel.Captured);
+				Assert.IsFalse(setup.ChildPanel.Captured);
+				Assert.IsFalse(setup.Control.Captured);
+			}
 		}
 
 		[Test]
 		public void HardCapture()
 		{
-			var setup = SetupEnvironment(true, true);
+			using (var root = CreateTestRootPanel())
+			{
+				var setup = SetupEnvironment(root, true, true);
 
-			Fuse.Input.Pointer.RaisePressed(_root, GetDefaultPointerEventData());
-			Fuse.Input.Pointer.RaiseMoved(_root, GetDefaultPointerEventData());
-			Assert.IsFalse(setup.ParentPanel.Captured);
-			Assert.IsFalse(setup.ChildPanel.Captured);
-			Assert.IsTrue(setup.Control.Captured);
+				Fuse.Input.Pointer.RaisePressed(root, GetDefaultPointerEventData());
+				Fuse.Input.Pointer.RaiseMoved(root, GetDefaultPointerEventData());
+				Assert.IsFalse(setup.ParentPanel.Captured);
+				Assert.IsFalse(setup.ChildPanel.Captured);
+				Assert.IsTrue(setup.Control.Captured);
+			}
 		}
 
 		[Test]
 		public void HardCaptureControlNoCapture()
 		{
-			var setup = SetupEnvironment(true, true);
-			setup.Control.HardCaptureModeEnabled = false;
+			using (var root = CreateTestRootPanel())
+			{
+				var setup = SetupEnvironment(root, true, true);
+				setup.Control.HardCaptureModeEnabled = false;
 
-			Fuse.Input.Pointer.RaisePressed(_root, GetDefaultPointerEventData());
-			Fuse.Input.Pointer.RaiseMoved(_root, GetDefaultPointerEventData());
-			Assert.IsFalse(setup.ParentPanel.Captured);
-			Assert.IsTrue(setup.ChildPanel.Captured);
-			Assert.IsFalse(setup.Control.Captured);
+				Fuse.Input.Pointer.RaisePressed(root, GetDefaultPointerEventData());
+				Fuse.Input.Pointer.RaiseMoved(root, GetDefaultPointerEventData());
+				Assert.IsFalse(setup.ParentPanel.Captured);
+				Assert.IsTrue(setup.ChildPanel.Captured);
+				Assert.IsFalse(setup.Control.Captured);
+			}
 		}
 
 		[Test]
 		[Ignore("https://github.com/fusetools/fuselibs/issues/229")]
 		public void SoftCaptureForDisabledNode()
 		{
-			var setup = SetupEnvironment(true);
+			using (var root = CreateTestRootPanel())
+			{
+				var setup = SetupEnvironment(root, true);
 
-			Fuse.Input.Pointer.RaisePressed(_root, GetDefaultPointerEventData());
-			setup.ChildPanel.IsEnabled = false;
-			Fuse.Input.Pointer.RaiseMoved(_root, GetDefaultPointerEventData());
-			Assert.IsTrue(setup.ParentPanel.Captured);
-			Assert.IsTrue(setup.ChildPanel.Captured);
-			Assert.IsFalse(setup.Control.Captured);
+				Fuse.Input.Pointer.RaisePressed(root, GetDefaultPointerEventData());
+				setup.ChildPanel.IsEnabled = false;
+				Fuse.Input.Pointer.RaiseMoved(root, GetDefaultPointerEventData());
+				Assert.IsTrue(setup.ParentPanel.Captured);
+				Assert.IsTrue(setup.ChildPanel.Captured);
+				Assert.IsFalse(setup.Control.Captured);
+			}
 		}
 
 		[Test]
 		[Ignore("https://github.com/fusetools/fuselibs/issues/229")]
 		public void SoftCaptureForUnrootedNode()
 		{
-			var setup = SetupEnvironment(true);
-
-			Fuse.Input.Pointer.RaisePressed(_root, GetDefaultPointerEventData());
-			setup.ChildPanel.Children.Remove(setup.Control);
-			Fuse.Input.Pointer.RaiseMoved(_root, GetDefaultPointerEventData());
-			Assert.IsTrue(setup.ParentPanel.Captured);
-			Assert.IsTrue(setup.ChildPanel.Captured);
-			Assert.IsFalse(setup.Control.Captured);
+			using (var root = CreateTestRootPanel())
+			{
+				var setup = SetupEnvironment(root, true);
+				Fuse.Input.Pointer.RaisePressed(root, GetDefaultPointerEventData());
+				setup.ChildPanel.Children.Remove(setup.Control);
+				Fuse.Input.Pointer.RaiseMoved(root, GetDefaultPointerEventData());
+				Assert.IsTrue(setup.ParentPanel.Captured);
+				Assert.IsTrue(setup.ChildPanel.Captured);
+				Assert.IsFalse(setup.Control.Captured);
+			}
 		}
 
 		[Test]
 		public void PointerEnterLeave()
 		{
-			var setup = SetupEnvironment();
+			using (var root = CreateTestRootPanel())
+			{
+				var setup = SetupEnvironment(root);
+				Fuse.Input.Pointer.RaiseMoved(root, GetDefaultPointerEventData());
+				Assert.IsTrue(setup.ParentPanel.Entered);
+				Assert.IsTrue(setup.ChildPanel.Entered);
+				Assert.IsTrue(setup.Control.Entered);
 
-			Fuse.Input.Pointer.RaiseMoved(_root, GetDefaultPointerEventData());
-			Assert.IsTrue(setup.ParentPanel.Entered);
-			Assert.IsTrue(setup.ChildPanel.Entered);
-			Assert.IsTrue(setup.Control.Entered);
-
-			Fuse.Input.Pointer.RaiseMoved(_root, GetOutsideOfControlsPointerEventData());
-			Assert.IsFalse(setup.ParentPanel.Entered);
-			Assert.IsFalse(setup.ChildPanel.Entered);
-			Assert.IsFalse(setup.Control.Entered);
+				Fuse.Input.Pointer.RaiseMoved(root, GetOutsideOfControlsPointerEventData());
+				Assert.IsFalse(setup.ParentPanel.Entered);
+				Assert.IsFalse(setup.ChildPanel.Entered);
+				Assert.IsFalse(setup.Control.Entered);
+			}
 		}
 
 		[Test]
 		public void PointerEnterLeaveOnRemove()
 		{
-			var setup = SetupEnvironment();
-
-			Fuse.Input.Pointer.RaiseMoved(_root, GetDefaultPointerEventData());
-			setup.ChildPanel.Children.Remove(setup.Control);
-			Fuse.Input.Pointer.RaiseMoved(_root, GetDefaultPointerEventData());
-			Assert.IsTrue(setup.ParentPanel.Entered);
-			Assert.IsTrue(setup.ChildPanel.Entered);
-			Assert.IsFalse(setup.Control.Entered);
+			using (var root = CreateTestRootPanel())
+			{
+				var setup = SetupEnvironment(root);
+				Fuse.Input.Pointer.RaiseMoved(root, GetDefaultPointerEventData());
+				setup.ChildPanel.Children.Remove(setup.Control);
+				Fuse.Input.Pointer.RaiseMoved(root, GetDefaultPointerEventData());
+				Assert.IsTrue(setup.ParentPanel.Entered);
+				Assert.IsTrue(setup.ChildPanel.Entered);
+				Assert.IsFalse(setup.Control.Entered);
+			}
 		}
 
 		[Test]
 		public void PointerEnterLeaveOnDisabled()
 		{
-			var setup = SetupEnvironment();
-
-			Fuse.Input.Pointer.RaiseMoved(_root, GetDefaultPointerEventData());
-			setup.Control.IsEnabled = false;
-			Fuse.Input.Pointer.RaiseMoved(_root, GetDefaultPointerEventData());
-			Assert.IsTrue(setup.ParentPanel.Entered);
-			Assert.IsTrue(setup.ChildPanel.Entered);
-			Assert.IsFalse(setup.Control.Entered);
+			using (var root = CreateTestRootPanel())
+			{
+				var setup = SetupEnvironment(root);
+				Fuse.Input.Pointer.RaiseMoved(root, GetDefaultPointerEventData());
+				setup.Control.IsEnabled = false;
+				Fuse.Input.Pointer.RaiseMoved(root, GetDefaultPointerEventData());
+				Assert.IsTrue(setup.ParentPanel.Entered);
+				Assert.IsTrue(setup.ChildPanel.Entered);
+				Assert.IsFalse(setup.Control.Entered);
+			}
 		}
 
 		[Test]
 		public void EventResponder()
 		{
-			IPointerEventResponder prevEventResponder = Pointer.EventResponder;
-			try
+			using (var root = CreateTestRootPanel())
 			{
-				var testPointerEventResponder = new TestPointerEventResponder();
-				Pointer.EventResponder = testPointerEventResponder;
+				IPointerEventResponder prevEventResponder = Pointer.EventResponder;
+				try
+				{
+					var testPointerEventResponder = new TestPointerEventResponder();
+					Assert.AreEqual(0, testPointerEventResponder.PointerMovedArgs.Count);
+					Pointer.EventResponder = testPointerEventResponder;
+					Assert.AreEqual(0, testPointerEventResponder.PointerMovedArgs.Count);
 
-				Fuse.Input.Pointer.RaisePressed(_root, GetDefaultPointerEventData());
-				Assert.AreEqual(1, testPointerEventResponder.PointerPressedArgs.Count);
-				Assert.AreEqual(_root, testPointerEventResponder.PointerPressedArgs[0].Visual);
+					Assert.AreEqual(0, testPointerEventResponder.PointerMovedArgs.Count);
+					Fuse.Input.Pointer.RaisePressed(root, GetDefaultPointerEventData());
+					Assert.AreEqual(1, testPointerEventResponder.PointerPressedArgs.Count);
+					Assert.AreEqual(root, testPointerEventResponder.PointerPressedArgs[0].Visual);
+					Assert.AreEqual(0, testPointerEventResponder.PointerMovedArgs.Count);
 
-				Fuse.Input.Pointer.RaiseMoved(_root, GetDefaultPointerEventData());
-				Assert.AreEqual(1, testPointerEventResponder.PointerMovedArgs.Count);
-				Assert.AreEqual(_root, testPointerEventResponder.PointerMovedArgs[0].Visual);
+					Fuse.Input.Pointer.RaiseMoved(root, GetDefaultPointerEventData());
+					Assert.AreEqual(1, testPointerEventResponder.PointerMovedArgs.Count);
+					Assert.AreEqual(root, testPointerEventResponder.PointerMovedArgs[0].Visual);
 
-				Fuse.Input.Pointer.RaiseReleased(_root, GetDefaultPointerEventData());
-				Assert.AreEqual(1, testPointerEventResponder.PointerReleasedArgs.Count);
-				Assert.AreEqual(_root, testPointerEventResponder.PointerReleasedArgs[0].Visual);
+					Fuse.Input.Pointer.RaiseReleased(root, GetDefaultPointerEventData());
+					Assert.AreEqual(1, testPointerEventResponder.PointerReleasedArgs.Count);
+					Assert.AreEqual(root, testPointerEventResponder.PointerReleasedArgs[0].Visual);
 
-				Fuse.Input.Pointer.RaiseWheelMoved(_root, GetDefaultPointerEventData());
-				Assert.AreEqual(1, testPointerEventResponder.PointerWheelMovedArgs.Count);
-				Assert.AreEqual(_root, testPointerEventResponder.PointerWheelMovedArgs[0].Visual);
-			}
-			finally
-			{
-				Pointer.EventResponder = prevEventResponder;
+					Fuse.Input.Pointer.RaiseWheelMoved(root, GetDefaultPointerEventData());
+					Assert.AreEqual(1, testPointerEventResponder.PointerWheelMovedArgs.Count);
+					Assert.AreEqual(root, testPointerEventResponder.PointerWheelMovedArgs[0].Visual);
+				}
+				finally
+				{
+					Pointer.EventResponder = prevEventResponder;
+				}
 			}
 		}
 
@@ -306,7 +341,7 @@ namespace Fuse.Test
 				};
 		}
 
-		PointerSetupEntity SetupEnvironment(bool softCaptureModeEnabled = false, bool hardCaptureModeEnabled = false)
+		PointerSetupEntity SetupEnvironment(TestRootPanel root, bool softCaptureModeEnabled = false, bool hardCaptureModeEnabled = false)
 		{
 			var parentPanel = new PointerElement("1", softCaptureModeEnabled, hardCaptureModeEnabled);
 			var childPanel = new PointerElement("2", softCaptureModeEnabled, hardCaptureModeEnabled);
@@ -314,10 +349,10 @@ namespace Fuse.Test
 			parentPanel.Children.Add(childPanel);
 			childPanel.Children.Add(dummyControl);
 
-			_root.Children.Add(parentPanel);
-            _root.Layout(int2(200));
+			root.Children.Add(parentPanel);
+			root.Layout(int2(200));
 
-            return new PointerSetupEntity(parentPanel, childPanel, dummyControl);
+			return new PointerSetupEntity(parentPanel, childPanel, dummyControl);
 		}
 	}
 }
