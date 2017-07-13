@@ -341,12 +341,19 @@ namespace Fuse.Triggers.Actions
 	*/
 	public class TransitionLayout : TriggerAction
 	{
+		/** Explicit target that will be transitioned. If not specified the Element ancestor of the action will be used*/
+		public Element Target { get; set; }
+		/** Transition the element from this one. */
 		public Element From { get; set; }
+		
 		protected override void Perform(Node target)
 		{
-			_perform = target as Element;
+			_perform = Target ?? target.FindByType<Element>();
 			if (_perform == null || From == null)
+			{
+				Fuse.Diagnostics.UserError( "Missing `From` or cannot find `Element` target", this );
 				return;
+			}
 
 			//defer calculations until after layout since either element may have changed layout
 			UpdateManager.AddDeferredAction(Transition,UpdateStage.Layout, LayoutPriority.Placement);

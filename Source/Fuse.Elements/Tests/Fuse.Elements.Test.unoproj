@@ -63,6 +63,7 @@
     "ImageTests/StackPanelScene7.ux:UX",
     "ImageTests/StackPanelScene8.ux:UX",
     "ImageTests/StackPanelScene9.ux:UX",
+    "LayoutAnimation.Test.uno:Source",
     "LayoutFunctions.Test.uno:Source",
     "LimitSizing.Test.uno:Source",
     "RenderBounds.Test.uno:Source",
