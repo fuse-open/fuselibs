@@ -377,7 +377,12 @@ namespace Fuse.Controls
 		*/
 		public void GotoRelative( float2 position )
 		{
-			Goto( (MaxScroll - MinScroll) * position + MinScroll );
+			Goto( RelativeToAbsolutePosition(position) );
+		}
+		
+		public float2 RelativeToAbsolutePosition( float2 pos )
+		{
+			return MinScroll + (MaxScroll - MinScroll) * pos;
 		}
 		
 		float2 FromScalarPosition( float value )

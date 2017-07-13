@@ -156,5 +156,22 @@ namespace Fuse
 			}
 			return null;
 		}
+		
+		public T FindByType<T>() where T : Node
+		{
+			if (this is T) return this as T;
+			return GetNearestAncestorOfType<T>();
+		}
+
+		public T GetNearestAncestorOfType<T>() where T : Node
+		{
+			Node current = Parent;
+			while(current != null)
+			{
+				if(current is T) return current as T;
+				current = current.Parent;
+			}
+			return null;
+		}
 	}
 }
