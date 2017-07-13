@@ -9,7 +9,7 @@ namespace Fuse.Reactive
 
 		internal ArrayMirror(IMirror mirror, Scripting.Array arr): base(arr)
 		{
-			_items = new List<object>();
+			_items = new List<object>(arr.Length);
 			for (int i = 0; i < arr.Length; i++)
 				_items.Add(mirror.Reflect(arr[i]));
 		}
