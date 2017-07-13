@@ -26,16 +26,7 @@ namespace Fuse.Reactive
 		{
 			_js.ScriptModule.Dependencies = _deps;
 			
-			var exports = EvaluateExports();
-
-			// DecorateModule() already set _dc to the default `exports` object, 
-			// so this is done in case the user replaced the `module.exports` object
-			if (_dc is IRaw && ((IRaw)_dc).Raw != exports)
-			{
-				ValueMirror.Unsubscribe(_dc);
-				_dc = _worker.Reflect(exports);
-			}
-
+			_dc = _worker.Reflect(EvaluateExports());
 			UpdateManager.PostAction(SetDataContext);
 		}
 
@@ -59,8 +50,6 @@ namespace Fuse.Reactive
 				_moduleResult.Dispose();
 				_moduleResult = null;
 			}
-
-			
 		}
 
 		object EvaluateExports()

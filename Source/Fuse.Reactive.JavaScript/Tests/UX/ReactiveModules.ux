@@ -1,42 +1,58 @@
 <Panel ux:Class="UX.ReactiveModules">
 	<JavaScript>
-		exports.foo = { moo: [ { bar: 'orange'}, {bar: 'apple'}, {bar:'banana'} ] }
-		exports.bar = 3;
+		var TreeObservable = require("FuseJS/TreeObservable");
 
-		module.add("foo", "moo", {bar: 'grape'}) 
-		module.insertAt("foo", "moo", 1, {bar: 'lemon'})
-		module.removeAt("foo", "moo", 2)
-		module.set("foo", "moo", 3, "bar", "coconut")
+		console.log("LAL!")
 
-		exports.change1 = function() {
-			module.add("foo", "moo", {bar: 'grape'})
-		}
+		var store = new TreeObservable({
+			foo: { moo: [ { bar: 'orange'}, {bar: 'apple'}, {bar:'banana'} ] },
+			bar: 3,
 
-		exports.change2 = function() {
-			module.insertAt("foo", "moo", 1, {bar: 'lemon'})
-		}
+			change1: function() {
+				this.add("foo", "moo", {bar: 'grape'})
+			},
 
-		exports.change3 = function() {
-			module.removeAt("foo", "moo", 2)
-			module.removeAt("foo", "moo", 2)
-		}
+			change2: function() {
+				this.insertAt("foo", "moo", 1, {bar: 'lemon'})
+			},
 
-		exports.change4 = function() {
-			module.set("foo", "moo", 1, "bar", "fish")
-		}
+			change3: function() {
+				this.removeAt("foo", "moo", 2)
+				this.removeAt("foo", "moo", 2)
+			},
 
-		exports.change5 = function() {
-			module.set("bar", 1)
-		}
+			change4: function() {
+				this.set("foo", "moo", 1, "bar", "fish")
+			},
 
-		exports.change6 = function () {
-			if (reactive_modules_times !== 2) { throw new Error(); }
-			module.set({ foo: { moo: [ { bar: 'batman'}, {bar: 'batman'}, {bar:'batman'} ] }, bar: 8})
-		}
+			change5: function() {
+				this.set("bar", 1)
+			},
 
-		exports.change7 = function() {
-			if (reactive_modules_times !== 3) { throw new Error(); }
-		}
+			change6: function () {
+				if (reactive_modules_times !== 2) { throw new Error(); }
+				this.set({ foo: { moo: [ { bar: 'batman'}, {bar: 'batman'}, {bar:'batman'} ] }, bar: 8})
+			},
+
+			change7: function() {
+				if (reactive_modules_times !== 3) { throw new Error(); }
+			},
+
+			init: function() {
+				this.add("foo", "moo", {bar: 'grape'}) 
+				this.insertAt("foo", "moo", 1, {bar: 'lemon'})
+				this.removeAt("foo", "moo", 2)
+				this.set("foo", "moo", 3, "bar", "coconut")
+			}
+		});
+
+		store.init()
+
+
+		module.exports = store;
+
+		console.log(JSON.stringify(module.exports))
+		
 	</JavaScript>
 	<StackPanel ux:Name="p">
 		<Each Items="{foo.moo}">
