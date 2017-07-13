@@ -9,12 +9,12 @@ using FuseTest;
 
 namespace Fuse.Reactive.Test
 {
-	public class ReactiveModulesTest : TestBase
+	public class StoreTest : TestBase
 	{
 		[Test]
 		public void Basics()
 		{
-			var e = new UX.ReactiveModules();
+			var e = new UX.Store();
 			var root = TestRootPanel.CreateWithChild(e);
 
 			root.StepFrameJS();
@@ -57,7 +57,7 @@ namespace Fuse.Reactive.Test
 			root.StepFrameJS();
 		}
 
-		void AssertList(UX.ReactiveModules e, params string[] p)
+		void AssertList(UX.Store e, params string[] p)
 		{
 			for (int i = 0; i < p.Length; i++)
 				Assert.AreEqual(p[i], ((Text)e.p.Children[i+1]).Value);
