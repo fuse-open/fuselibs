@@ -4,14 +4,13 @@ using Fuse.Scripting;
 
 namespace Fuse.Reactive
 {
-	interface IReactive
+	class TreeObservable: TreeObject
 	{
-		void Set(object[] args, int pos);
-		void Push(object[] args, int pos);
-	}
+		public TreeObservable(ThreadWorker worker, Scripting.Object obj): base(worker, obj)
+		{
 
-	partial class ModuleInstance
-	{
+		}
+
 		// Reactive module interface
 		public void DecorateModule(ModuleResult result)
 		{
