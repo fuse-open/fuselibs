@@ -3,8 +3,10 @@ using Uno;
 
 namespace Fuse.Reactive
 {
-	partial class ArrayMirror
+	class TreeArray : ArrayMirror, IObservableArray
 	{
+		internal TreeArray(ThreadWorker worker, Scripting.Array arr): base(worker, arr) {}
+
 		public IDisposable Subscribe(IObserver observer)
 		{
 			return new ArraySubscription(this, observer);
