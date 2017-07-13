@@ -86,7 +86,7 @@ namespace Fuse.Reactive
 
 			lock (_resetHookMutex)
 			{
-				var newModuleResult = _js.ScriptModule.EvaluateInstance(_worker.Context, globalId, this);
+				var newModuleResult = _js.ScriptModule.Evaluate(_worker.Context, globalId);
 				newModuleResult.AddDependency(_js.DispatchEvaluate);
 
 				if (newModuleResult.Error == null)
