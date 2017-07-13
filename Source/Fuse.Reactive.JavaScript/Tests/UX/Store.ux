@@ -1,10 +1,8 @@
-<Panel ux:Class="UX.ReactiveModules">
+<Panel ux:Class="UX.Store">
 	<JavaScript>
-		var TreeObservable = require("FuseJS/TreeObservable");
+		var Store = require("FuseJS/Store");
 
-		console.log("LAL!")
-
-		var store = new TreeObservable({
+		var store = new Store({
 			foo: { moo: [ { bar: 'orange'}, {bar: 'apple'}, {bar:'banana'} ] },
 			bar: 3,
 
@@ -30,12 +28,12 @@
 			},
 
 			change6: function () {
-				if (reactive_modules_times !== 2) { throw new Error(); }
+				if (store_times !== 2) { throw new Error(); }
 				this.set({ foo: { moo: [ { bar: 'batman'}, {bar: 'batman'}, {bar:'batman'} ] }, bar: 8})
 			},
 
 			change7: function() {
-				if (reactive_modules_times !== 3) { throw new Error(); }
+				if (store_times !== 3) { throw new Error(); }
 			},
 
 			init: function() {
@@ -48,10 +46,7 @@
 
 		store.init()
 
-
 		module.exports = store;
-
-		console.log(JSON.stringify(module.exports))
 		
 	</JavaScript>
 	<StackPanel ux:Name="p">
@@ -61,14 +56,14 @@
 	</StackPanel>
 	<Panel>
 		<JavaScript dep:x="{foo}">
-			if (typeof reactive_modules_times === "undefined") { reactive_modules_times = 1; }
-			reactive_modules_times++;
-			if (reactive_modules_times === 2)
+			if (typeof store_times === "undefined") { store_times = 1; }
+			store_times++;
+			if (store_times === 2)
 			{
 				if (JSON.stringify(x) !== '{"moo":[{"bar":"orange"},{"bar":"lemon"},{"bar":"banana"},{"bar":"coconut"}]}')
 					{ throw new Error(JSON.stringify(x)); }
 			}
-			else if (reactive_modules_times === 3)
+			else if (store_times === 3)
 			{
 				if (JSON.stringify(x) !== '{"moo":[{"bar":"batman"},{"bar":"batman"},{"bar":"batman"}]}')
 					{ throw new Error(); }
