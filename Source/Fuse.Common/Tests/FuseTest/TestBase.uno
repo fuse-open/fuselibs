@@ -156,6 +156,24 @@ namespace FuseTest
 			return q;
 		}
 		
+		/** Get a stringified version of the UseValue's of the DudElement children in Z order */
+		static public string GetDudZ(Visual root)
+		{
+			var q = "";
+			for (int i=0; i < root.ZOrderChildCount; ++i)
+			{
+				var t = root.GetZOrderChild(i) as FuseTest.DudElement;
+				if (t != null)
+				{
+					if (q.Length > 0)
+						q += ",";
+					q += t.UseValue;
+				}
+			}
+			return q;
+		}
+		
+		
 		/**
 			Use this rather than access Progress directly. It limits how many projects we have
 			to expose Internals to.

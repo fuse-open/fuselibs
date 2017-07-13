@@ -402,22 +402,6 @@ namespace Fuse.Reactive.Test
 			return list;
 		}
 		
-		static internal string GetDudZ(Visual root)
-		{
-			var q = "";
-			for (int i=0; i < root.ZOrderChildCount; ++i)
-			{
-				var t = root.GetZOrderChild(i) as FuseTest.DudElement;
-				if (t != null)
-				{
-					if (q.Length > 0)
-						q += ",";
-					q += t.UseValue;
-				}
-			}
-			return q;
-		}
-		
 		[Test]
 		//index() retains the previous value if the item is removed, or rather it doesn't update if there is no value
 		public void FunctionRemove()

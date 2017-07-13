@@ -40,7 +40,7 @@ namespace Fuse.Triggers.Actions
 
 		protected override void Perform(Node target)
 		{
-			var elm = Target ?? target as Visual;
+			var elm = Target ?? target.FindByType<Visual>();
 			if (elm != null)
 			{
 				var panel = elm.Parent as Visual;
@@ -85,7 +85,7 @@ namespace Fuse.Triggers.Actions
 
 		protected override void Perform(Node target)
 		{
-			var elm = Target ?? target as Visual;
+			var elm = Target ?? target.FindByType<Visual>();
 			if (elm != null)
 			{
 				var panel = elm.Parent as Visual;
