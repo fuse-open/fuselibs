@@ -1,0 +1,24 @@
+<Panel ux:Class="UX.Visibility.Basic">
+	<Panel ux:Name="a">
+		<Timeline ux:Name="show1">
+			<Show/>
+		</Timeline>
+		<Timeline ux:Name="hide1">
+			<Hide/>
+		</Timeline>
+		<Timeline ux:Name="collapse1">
+			<Collapse/>
+		</Timeline>
+	</Panel>
+	
+	<Timeline ux:Name="show2">
+		<Show TargetNode="a"/>
+	</Timeline>
+	<Timeline ux:Name="hide2">
+		<Hide TargetNode="a"/>
+	</Timeline>
+	<Timeline ux:Name="collapse2">
+		<Collapse TargetNode="a"/>
+	</Timeline>
+	
+</Panel>

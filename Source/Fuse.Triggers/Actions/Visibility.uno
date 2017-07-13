@@ -31,7 +31,11 @@ namespace Fuse.Triggers.Actions
 	{
 		protected override void Perform(Node target)
 		{
-			if (target is IShow) ((IShow)target).Show();
+			var t = target.FindByType<IShow>();
+			if (t != null) 
+				t.Show();
+			else
+				Fuse.Diagnostics.UserError( "Cannot find an Element/IShow", this );
 		}
 	}
 
@@ -63,7 +67,11 @@ namespace Fuse.Triggers.Actions
 	{
 		protected override void Perform(Node target)
 		{
-			if (target is IHide) ((IHide)target).Hide();
+			var t = target.FindByType<IHide>();
+			if (t != null) 
+				t.Hide();
+			else
+				Fuse.Diagnostics.UserError( "Cannot find an Element/IHide", this );
 		}
 	}
 
@@ -95,7 +103,11 @@ namespace Fuse.Triggers.Actions
 	{
 		protected override void Perform(Node target)
 		{
-			if (target is ICollapse) ((ICollapse)target).Collapse();
+			var t = target.FindByType<ICollapse>();
+			if (t != null) 
+				t.Collapse();
+			else
+				Fuse.Diagnostics.UserError( "Cannot find an Element/ICollapse", this );
 		}
 	}
 }
