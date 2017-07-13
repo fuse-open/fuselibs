@@ -1,5 +1,18 @@
 # Unreleased
 
+## Delay Push Notification Registration on iOS
+
+On iOS you can now put the following in your unoproj file:
+
+```
+    "iOS": {
+        "PushNotifications": {
+            "RegisterOnLaunch": false
+        }
+    },
+```
+which will stop push notifications registering (and potentially asking for permissions) on launch. Your must then call `register()` from JS when you wish to begin using push notifications. On android this option & register are silently ignored.
+
 ## Image
 - Fixed issue where an `<Image />` could fail to display inside a `<NativeViewHost />` on iOS
 
