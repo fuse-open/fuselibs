@@ -76,27 +76,6 @@ namespace FuseTest
 
 	public static class JavaScriptTestContext
 	{
-		public static void CreateInJavaScriptTag(Action<Fuse.Scripting.Context> call)
-		{
-			var nt = NameTable.Empty;
-
-			var w1 = new Fuse.Reactive.JavaScript(nt);
-			w1.FileName = "Empty JS tag";
-			
-			var _rootViewport = new TestRootPanel();
-
-			nt.This = _rootViewport;
-			_rootViewport.Children.Add(w1);
-
-			var w = Fuse.Reactive.JavaScript.Worker;
-			if (w != null)
-				w.WaitIdle();
-
-			var context = w.Context;
-			call(context);
-			_rootViewport.StepFrameJS();
-		}
-
 		public static Fuse.Scripting.Context Create()
 		{
 			var c = Fuse.Reactive.ThreadWorker.CreateContext(null);
