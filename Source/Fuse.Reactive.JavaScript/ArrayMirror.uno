@@ -3,7 +3,7 @@ using Uno;
 
 namespace Fuse.Reactive
 {
-	class ArrayMirror: ListMirror
+	class ArrayMirror: ListMirror, IArray
 	{
 		protected List<object> _items;
 
