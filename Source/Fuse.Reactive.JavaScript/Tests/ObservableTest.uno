@@ -10,12 +10,34 @@ using FuseTest;
 
 namespace Fuse.Reactive.Test
 {
+	public class CreateCountPanel: Panel
+	{
+		public static int Count;
+		public CreateCountPanel() {
+			Count++;
+		}
+	}
+
 	/*
 		This tests the functions of the observable including the protocol used to synchronize
 		between JS and Uno. This is meant to be a more direct testing than the EachTest setup.
 	*/
 	public class ObservableTest : TestBase
 	{
+		[Test]
+		public void DoubleSubscribe()
+		{
+			CreateCountPanel.Count = 0;
+			var p = new UX.Observable.DoubleSubscribe();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				root.StepFrameJS();
+				Assert.AreEqual(3, CreateCountPanel.Count);
+				p.flip.Perform();
+				Assert.AreEqual(6, CreateCountPanel.Count);
+			}
+		}
+
 		[Test]
 		public void BasicEmpty()
 		{
