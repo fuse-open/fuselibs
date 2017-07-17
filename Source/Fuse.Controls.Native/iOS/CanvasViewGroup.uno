@@ -20,12 +20,8 @@ namespace Fuse.Controls.Native.iOS
 		public override void Dispose()
 		{
 			SetDrawCallback(NativeHandle, null);
-			if (_nativeSurface != null)
-			{
-				_nativeSurface.Dispose();
-				_nativeSurface = null;
-			}
 			base.Dispose();
+			_nativeSurface = null;
 		}
 
 		void OnDraw(IntPtr cgContextRef)
