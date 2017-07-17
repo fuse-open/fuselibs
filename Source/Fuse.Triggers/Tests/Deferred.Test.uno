@@ -14,21 +14,29 @@ namespace Fuse.Test
 		public void Basic()
 		{
 			//to allow only one node per frame
+			var prevTestTimeLimit = DeferredManager.TestTimeLimit;
 			DeferredManager.TestTimeLimit = 0;
-			
-			var p = new UX.DeferredBasic();
-			var root = TestRootPanel.CreateWithChild(p);
 
-			Assert.AreEqual("", GetText(p));
-			
-			root.StepFrame();
-			Assert.AreEqual("1", GetText(p));
-			
-			root.StepFrame();
-			Assert.AreEqual("12", GetText(p));
-			
-			root.StepFrame();
-			Assert.AreEqual("123", GetText(p));
+			try
+			{
+				var p = new UX.DeferredBasic();
+				var root = TestRootPanel.CreateWithChild(p);
+
+				Assert.AreEqual("", GetText(p));
+
+				root.StepFrame();
+				Assert.AreEqual("1", GetText(p));
+
+				root.StepFrame();
+				Assert.AreEqual("12", GetText(p));
+
+				root.StepFrame();
+				Assert.AreEqual("123", GetText(p));
+			}
+			finally
+			{
+				DeferredManager.TestTimeLimit = prevTestTimeLimit;
+			}
 		}
 		
 		[Test]
