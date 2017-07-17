@@ -16,6 +16,12 @@ namespace Fuse.Reactive.Test
 		public CreateCountPanel() {
 			Count++;
 		}
+		public static int RootedCount;
+		protected override void OnRooted()
+		{
+			base.OnRooted();
+			RootedCount++;
+		}
 	}
 
 	/*
@@ -32,9 +38,14 @@ namespace Fuse.Reactive.Test
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
 				root.StepFrameJS();
+				root.StepFrameJS();
+				root.StepFrameJS();
 				Assert.AreEqual(3, CreateCountPanel.Count);
+				Assert.AreEqual(3, CreateCountPanel.RootedCount);
 				p.flip.Perform();
-				Assert.AreEqual(6, CreateCountPanel.Count);
+				root.StepFrameJS();
+				Assert.AreEqual(9, CreateCountPanel.Count);
+				Assert.AreEqual(9, CreateCountPanel.RootedCount);
 			}
 		}
 
