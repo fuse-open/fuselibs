@@ -90,14 +90,25 @@ namespace Fuse.Reactive
 		}
 
 		IDisposable _itemsSubscription;
-
-		protected override void OnUnrooted()
+		void DisposeItemsSubscription()
 		{
 			if (_itemsSubscription != null)
 			{
+				_isListeningItems = false;
 				_itemsSubscription.Dispose();
 				_itemsSubscription = null;
 			}
+		}
+		bool _isListeningItems;
+		bool IsListeningItems { get { return _isListeningItems; } }
+		void StartListeningItems()
+		{
+			_isListeningItems = true;
+		}
+
+		protected override void OnUnrooted()
+		{
+			DisposeItemsSubscription();
 
 			RemoveAll();
 			RemovePendingAvailableItems();
