@@ -2,6 +2,11 @@
 
 # 1.1
 
+### Navigation
+- Fixed an issue where `Activated` and `WhileActivated` within an `EdgeNavigator` did not correctly identify an active state
+- Changed `EdgeNavigation` to return a page in `Active` when no side-panels are active
+- Added `Init` to `RoutePageProxy` that needs to be called to complete initialization -- the previous setup was broken.
+
 ### Fuse.Share
 - Fixed a crash in the iOS implementation for Fuse.Share that could happen on iPad.
 

@@ -56,6 +56,7 @@ namespace Fuse.Navigation
 			_proxy = new RoutePageProxy( Parent, ActiveChanged );
 			_proxy.Path = Path;
 			_proxy.TriggerWhen = When;
+			_proxy.Init();
 		}
 
 		protected abstract void ActiveChanged( bool isActive, bool isRoot );
