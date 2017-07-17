@@ -232,6 +232,11 @@ namespace Fuse.Controls.Native
 			Size = size;
 		}
 
+		public virtual void SetRenderBounds(VisualBounds bounds)
+		{
+			// Override in subclasses that care about renderbounds
+		}
+
 		[Foreign(Language.ObjC)]
 		void SetSize(float w, float h)
 		@{
