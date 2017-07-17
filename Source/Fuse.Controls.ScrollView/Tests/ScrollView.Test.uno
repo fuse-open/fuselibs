@@ -55,7 +55,7 @@ namespace Fuse.Controls.ScrollViewTest
 		public void BringIntoViewTest()
 		{
 			var root = new TestRootPanel();
-			var parent = new UX.BringIntoView();
+			var parent = new UX.ScrollView.BringIntoView();
 			root.Children.Add(parent);
 			
 			var scrollViewBehavior = parent.TestScroller;
