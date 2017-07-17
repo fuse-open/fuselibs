@@ -28,6 +28,7 @@ namespace Fuse.Test
 			{
 				var p = new UX.RootingParadox();
 				var root = TestRootPanel.CreateWithChild(p);
+				Assert.IsTrue(false); // we shouldn't get here
 			} catch( Exception ex ) {
 				//just ensure we've detected a rooting problem
 				Assert.IsTrue( ex.Message.IndexOf( "rooting" ) != -1 );
