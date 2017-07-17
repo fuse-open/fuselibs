@@ -82,22 +82,13 @@ namespace Fuse.Controls
 			set { _wrapLayout.FlowDirection = value; }
 		}
 
-		/**
-			@deprecated 2017-07-07
-		*/
+		/** The alignment of the content within the wrap panel rows. */
 		public Alignment RowAlignment
 		{
 			get { return _wrapLayout.RowAlignment; }
 			set { _wrapLayout.RowAlignment = value; }
 		}
 
-		/** The alignment of the content within the wrap panel rows. */
-		public Alignment ContentAlignment
-		{
-			get { return _wrapLayout.ContentAlignment; }
-			set { _wrapLayout.ContentAlignment = value; }
-		}
-		
 		readonly WrapLayout _wrapLayout;
 
 		public WrapPanel()

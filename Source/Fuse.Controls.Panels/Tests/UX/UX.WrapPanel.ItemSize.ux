@@ -1,10 +1,10 @@
 <Panel ux:Class="UX.WrapPanel.ItemSize">
-	<WrapPanel ItemHeight="50" ContentAlignment="TopLeft">
+	<WrapPanel ItemHeight="50" RowAlignment="TopLeft">
 		<FuseTest.AreaElement Area="1000" ux:Name="A1"/>
 		<FuseTest.AreaElement Area="100" ux:Name="A2"/>
 	</WrapPanel>
 	
-	<WrapPanel ItemWidth="10" ContentAlignment="TopLeft">
+	<WrapPanel ItemWidth="10" RowAlignment="TopLeft">
 		<FuseTest.AreaElement Area="1000" ux:Name="A3"/>
 		<FuseTest.AreaElement Area="100" ux:Name="A4"/>
 	</WrapPanel>

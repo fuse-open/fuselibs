@@ -88,15 +88,21 @@ namespace Fuse.Controls.Panels.Test
 		}
 		
 		[Test]
-		public void ContentAlignment()
+		public void RowAlignment()
 		{
-			var p = new UX.WrapPanel.ContentAlignment();
+			var p = new UX.WrapPanel.RowAlignment();
 			using (var root = TestRootPanel.CreateWithChild(p,int2(200,1000)))
 			{
 				Assert.AreEqual( float4(0,4,100,2), ActualPositionSize(p.P1));
 				Assert.AreEqual( float4(100,0,100,10), ActualPositionSize(p.P2));
 				Assert.AreEqual( float4(0,10,100,30), ActualPositionSize(p.P3));
 				Assert.AreEqual( float4(100,15,100,20), ActualPositionSize(p.P4));
+
+				Assert.AreEqual( float4(0,4,100,2), ActualPositionSize(p.RC1));
+				Assert.AreEqual( float4(100,0,100,10), ActualPositionSize(p.RC2));
+				Assert.AreEqual( float4(50,10,100,30), ActualPositionSize(p.RC3));
+
+				Assert.AreEqual( float4(-150,0,500,2), ActualPositionSize(p.RO1));
 
 				Assert.AreEqual( float4(0,0,2,100), ActualPositionSize(p.VT1));
 				Assert.AreEqual( float4(0,100,10,100), ActualPositionSize(p.VT2));

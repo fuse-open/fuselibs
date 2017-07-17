@@ -1,7 +1,7 @@
 # Unreleased
 
 ## WrapPanel
-- Changed `RowAlignment` to `ContentAlignment`, to allow alignment on each row as well as alignment of the items on the row.
+- Added possibility to use `RowAlignment` to align the elements in the major direction of the `WrapPanel` as well as in the minor.
 
 ## Templates
 - Triggers may now use templates which will be instantiated and added to the parent when active (like a node child).
