@@ -27,6 +27,7 @@ namespace Fuse.Drawing
 		public override void End()
 		{
 			_cgContext = IntPtr.Zero;
+			SetCGContext(_context, _cgContext);
 		}
 
 		protected override void VerifyBegun()
