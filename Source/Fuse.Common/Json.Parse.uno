@@ -52,7 +52,7 @@ namespace Fuse
 			return null;
 		}
 
-		class Object : IObject
+		internal class Object : IObject
 		{
 			readonly Dictionary<string, object> _dict;
 

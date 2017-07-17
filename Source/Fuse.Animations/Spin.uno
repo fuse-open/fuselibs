@@ -81,12 +81,13 @@ namespace Fuse.Animations
 			bool done = false;
 			var oldDegrees = degrees;
 			degrees = degrees + interval * 360 * Animator.Frequency;
+			const float zeroTolerance = 1e-05f;
 			if (on)
 			{
 				degrees = Math.Mod( degrees, 360 );
 			}
-			else if(oldDegrees <= float.ZeroTolerance || degrees <= float.ZeroTolerance ||
-				oldDegrees >= (360-float.ZeroTolerance) || degrees >= (360-float.ZeroTolerance) )
+			else if(oldDegrees <= zeroTolerance || degrees <= zeroTolerance ||
+				oldDegrees >= (360-zeroTolerance) || degrees >= (360-zeroTolerance) )
 			{
 				degrees = 0;
 				done = true;

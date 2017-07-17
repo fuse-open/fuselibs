@@ -2,15 +2,33 @@
 
 ## WrapPanel
 - Added possibility to use `RowAlignment` to align the elements in the major direction of the `WrapPanel` as well as in the minor.
+## Image
+- Fixed issue where an `<Image />` could fail to display inside a `<NativeViewHost />` on iOS
+
+## Router
+- Added `findRouter` function making it easier to use a router in a page deep inside the UI
+- Fixed and issue where relative paths and nested `Router` gave an error about unknown paths
+
+## UX Expressions (Uno-level)
+- Introduced support for variable arguments to UX functions - inherit from the `Fuse.Reactive.VarArgFunction` class.
+- The classes `Vector2`, `Vector3` and `Vector4` in `Fuse.Reactive` are now removed and replaced with the general purpose, variable-argument version `Vector` instead. This ensures vectors of any length are treated the same way. This is backwards incompatible in the unlikely case of having used these classes explicitly from Uno code.
+- Added support for name-value pair syntax: `name: value`. Can be used for JSON-like object notation and named arguments in custom functions.
 
 ## Templates
+- Added `Identity` and `IdentityKey` to `Each`. This allows created visuals to be reused when replaced with `replaceAt` or `replaceAll` in an Observable.
 - Triggers may now use templates which will be instantiated and added to the parent when active (like a node child).
 	<WhileActive>
 		<Circle ux:Generate="Template" Color="#AFA" Width="50" Height="50" Alignment="BottomRight"/>
 	</WhileActive>
 - Added templates to `NodeGroup`, which can now be used in `Each.TemplateSource` and `Instance.TemplateSource`
 - `Each`, using `TemplateSource`, will no longer respond to template changes after rooting. This was done to simplify the code, and to support alternate sources, and is a minor perf improvement. It's not likely to affect any code since it didn't work correctly, and there's no way in UX to modify templates after rooting.
-- A memory leak was fixed by changing `Instantiator.TemplateSource` to a WeakReference. Only if you assigned this property a tempoary value in Uno would this change impact your code.
+- A memory leak was fixed by changing `Instantiator.TemplateSource` to a WeakReference. Only if you assigned this property a temporary value in Uno would this change impact your code.
+- Clarified/fixed some issues with how `Each`/`Instances` handled default templates. Previously if no matching template was found all the specified templates, or a subset, might have erronously been used. Now, as was always intended, if you use `MatchKey` and wish to have a default template you must specifiy `ux:DefaultTemplate="true"` on the default template. You cannot have multiple fallback templates, just as you can have only one template of a particular name.
+- If a `ux:DefaultTemplate="true"` is specified it will be the template that is used; the complete list of templates will not be used.
+
+## Fuse.Share
+- Fixed issue where using Fuse.Share would crash on iPad. Users must provide a position for spawn origin for the share popover. Check the Fuse.Share docs for more details.
+- Made iOS implementation internal, this was never ment to be public in the first place
 
 ## Optimizations
 - Optimized hit testing calculations. Improves scrolling in large scroll views with deep trees inside, among other things.
@@ -18,6 +36,8 @@
 - Optimized invalidation strategy for transforms, to avoid subtree traversion. This improves performance generally when animating large subtrees (e.g. scrollviews).
 - Backwards incompatible optimization change: The `protected virtual void Visual.OnInvalidateWorldTransform()` method was removed. The contract of this method was very expensive to implement as it had to be called on all nodes, just in case it was overridden somewhere. If you have custom Uno code relying on this method (unlikely), then please rewrite to explicitly subscribe to the `Visual.WorldTransformInvalidated` event instead, like so: Override `OnRooted` and do `WorldTransformInvalidated += OnInvalidateWorldTransform;`, Override `OnUnrooted` and to `WorldTransformInvalidated -= OnInvalidateWorldTransform;`, then rewrite `protected override void OnInvalidateWorldTransform()` to `void OnInvalidateWorldTransform(object sender, EventArgs args)`
 - To improve rendering speed, Fuse no longer checks for OpenGL errors in release builds in some performance-critical code paths  
+- Improved perceived ScrollView performance by preventing caching while pointers are pressed on them, avoiding inconsistent framerates.
+- Fixed a bug which prevented elements like `Image` to use fast-track rendering in trivial cases with opacity (avoids render to texture).
 
 ## Multitouch
 - Fixed issue where during multitouch all input would stop if one finger was lifted.
@@ -40,24 +60,33 @@
 - Added `OnChildMoved` to `Visual`. Anything implementing `OnChildAdded` or `OnChildRemoved` will likely need to implement `OnChildMoved` as well. This happens when a child's position in `Children` list changes.
 - Added `OnChildMovedWhileRooted` to `IParentObserver`
 
-### UX Expression improvements
+## UX Expression improvements
 - Added `parameter(page)` function which returns the routing parameter of the page parsed as an JSON string.
 - UX expressions now support arbitrary array lookups, e.g. `{someArray[index+3]}`. The same syntax can also be used with string keys, e.g `{someObject[someKey]}`. The lookup is fully reactive - both the collection and the key/index can change.
 
 ## JavaScript Dependency Injection
 - Added support for injecting UX expressions into `<JavaScript>` tags using the `dep` XML namespace. See docs on `JavaScript.Dependencies` for details.
 
+## WhileVisibleInScrollView
+- Added `How` property to `WhileVisibleInScrollView` trigger that accepts values `Partial` (default) and `Full`. When set to `Full`, the trigger is only active when the whole element bounds are inside view.
+
 
 # 1.1
 
-### Fuse.ImageTools
-- Fixed bug preventing handling of KEEP_ASPECT resize mode on Android when using ImageTools.resize 
-
-### Fuse.Camera
-- iOS: Fixed crash when using Fuse.Camera alongside `<iOS.StatusBarConfig IsVisible="false" />`
+### Fuse.Share
+- Fixed a crash in the iOS implementation for Fuse.Share that could happen on iPad.
 
 
 ## 1.1.0
+
+### WhileActive
+- Fixed a crash in the rooting of certain tree structures using any of the Navigation triggers such as `WhileActive`
+
+### Fuse.ImageTools
+- Fixed bug preventing handling of `KEEP_ASPECT` resize mode on Android when using ImageTools.resize 
+
+### Fuse.Camera
+- iOS: Fixed crash when using Fuse.Camera alongside `<iOS.StatusBarConfig IsVisible="false" />`
 
 ### Fuse.Launchers
 - Fixed bug on iOS where URIs were incorrectly encoded, leading to some input with reserved URI-characters misbehaving.

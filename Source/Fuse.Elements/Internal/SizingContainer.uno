@@ -110,6 +110,7 @@ namespace Fuse.Internal
 			d.Y -= PaddingHeight;
 
 			var scale = float2(1);
+			const float zeroTolerance = 1e-05f;
 
 			if (autoWidth && autoHeight && !(stretchMode == StretchMode.PointPrecise || 
 				stretchMode == StretchMode.PixelPrecise ||
@@ -123,8 +124,8 @@ namespace Fuse.Internal
 			else
 			{
 				float2 s = float2(
-					desiredSize.X < float.ZeroTolerance ? 0f : d.X / desiredSize.X,
-					desiredSize.Y < float.ZeroTolerance ? 0f : d.Y / desiredSize.Y
+					desiredSize.X < zeroTolerance ? 0f : d.X / desiredSize.X,
+					desiredSize.Y < zeroTolerance ? 0f : d.Y / desiredSize.Y
 					);
 				switch( stretchMode )
 				{
@@ -181,7 +182,7 @@ namespace Fuse.Internal
 					break;
 			}
 
-			if (snapToPixels && desiredSize.X > float.ZeroTolerance && desiredSize.Y > float.ZeroTolerance)
+			if (snapToPixels && desiredSize.X > zeroTolerance && desiredSize.Y > zeroTolerance)
 				scale = SnapSize( scale * desiredSize ) / desiredSize;
 			return scale;
 		}

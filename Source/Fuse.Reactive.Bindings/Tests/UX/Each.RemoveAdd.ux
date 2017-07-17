@@ -1,0 +1,41 @@
+<Panel ux:Class="UX.Each.RemoveAdd">
+	<JavaScript>
+		var Observable = require("FuseJS/Observable")
+		
+		exports.items = Observable()
+		var items = exports.items
+		for (var i=0; i < 10; ++i) {
+			items.add( { v: i } )
+		}
+
+		exports.step1 = function() {
+			//0,1,2,3,4,5,6,7,8,9
+			items.removeAt(4)  //0,1,2,3,5,6,7,8,9
+			items.insertAt(4, { v: "a1" } ) //0,1,2,3,a1,5,6,7,8,9
+			items.removeAt(2) //0,1,3,a1,5,6,7,8,9
+			items.insertAt(3, { v: "a2" } ) //0,1,3,a2,a1,5,6,7,8,9
+		}
+		
+		exports.step2 = function() {
+			//0,1,3,a2,a1,5,6,7,8,9
+			items.insertAt(8, { v: "b1" } ) //0,1,3,a2,a1,5,6,7,b1,8,9
+			items.insertAt(8, { v: "b2" } ) //0,1,3,a2,a1,5,6,7,b2,b1,8,9
+			items.removeAt(7) //0,1,3,a2,a1,5,6,b2,b1,8,9
+			items.removeAt(7) //0,1,3,a2,a1,5,6,b1,8,9
+		}
+		
+		exports.step3 = function() {
+			items.clear();
+			items.insertAt(0, { v: "c1" })
+			items.removeAt(0)
+			items.add({ v: "c2" })
+		}
+	</JavaScript>
+	<Each Items="{items}">
+		<Text Value="{v}"/>
+	</Each>
+	
+	<FuseTest.Invoke Handler="{step1}" ux:Name="CallStep1"/>
+	<FuseTest.Invoke Handler="{step2}" ux:Name="CallStep2"/>
+	<FuseTest.Invoke Handler="{step3}" ux:Name="CallStep3"/>
+</Panel>

@@ -7,11 +7,12 @@ namespace Fuse
 		{
 			//Source: Real-Time Collision Detection by Christer Ericson
 			//Reference: Page 179
+			const float zeroTolerance = 1e-05f;
 
 			distance = 0.f;
 			float tmax = float.MaxValue;
 
-			if (Math.Abs(ray.Direction.X) < float.ZeroTolerance)
+			if (Math.Abs(ray.Direction.X) < zeroTolerance)
 			{
 				if (ray.Position.X < box.Minimum.X || ray.Position.X > box.Maximum.X)
 				{
@@ -42,7 +43,7 @@ namespace Fuse
 				}
 			}
 
-			if (Math.Abs(ray.Direction.Y) < float.ZeroTolerance)
+			if (Math.Abs(ray.Direction.Y) < zeroTolerance)
 			{
 				if (ray.Position.Y < box.Minimum.Y || ray.Position.Y > box.Maximum.Y)
 				{
@@ -73,7 +74,7 @@ namespace Fuse
 				}
 			}
 
-			if (Math.Abs(ray.Direction.Z) < float.ZeroTolerance)
+			if (Math.Abs(ray.Direction.Z) < zeroTolerance)
 			{
 				if (ray.Position.Z < box.Minimum.Z || ray.Position.Z > box.Maximum.Z)
 				{

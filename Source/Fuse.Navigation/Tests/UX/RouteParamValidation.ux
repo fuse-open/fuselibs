@@ -44,7 +44,7 @@
 
 	</JavaScript>
 
-	<Router ux:Name="router" />
+	<Router ux:Name="router" IsMasterRouter="false" />
 
 	<FuseTest.Invoke Handler="{goto_test1}" ux:Name="GotoTest1" />
 	<FuseTest.Invoke Handler="{goto_test2}" ux:Name="GotoTest2" />

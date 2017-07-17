@@ -7,6 +7,8 @@ namespace Fuse.Triggers.Test
 {
 	public class StateGroupTest : TestBase
 	{
+		const float _zeroTolerance = 1e-05f;
+
 		[Test]
 		public void ChainedSwitch()
 		{
@@ -32,7 +34,7 @@ namespace Fuse.Triggers.Test
 			p.SG2.Active = p.B2;
 			root.StepFrame(0.5f);
 
-			var eps = root.StepIncrement + float.ZeroTolerance; //may be off a frame here (other tests check correctness of this)
+			var eps = root.StepIncrement + _zeroTolerance; //may be off a frame here (other tests check correctness of this)
 			Assert.AreEqual(0.5, TriggerProgress(p.A1), eps);
 			Assert.AreEqual(0.5, TriggerProgress(p.B1), eps);
 			Assert.AreEqual(0.5, TriggerProgress(p.A2), eps);
@@ -107,7 +109,7 @@ namespace Fuse.Triggers.Test
 			var p = new UX.StateGroup.Interrupt();
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
-				var eps = root.StepIncrement + float.ZeroTolerance; 
+				var eps = root.StepIncrement + _zeroTolerance;
 				
 				Assert.AreEqual(p.A, p.SG.Active);
 				Assert.AreEqual(1, TriggerProgress(p.A));

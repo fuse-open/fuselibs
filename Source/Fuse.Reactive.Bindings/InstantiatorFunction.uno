@@ -5,49 +5,79 @@ using Fuse.Reactive;
 
 namespace Fuse.Reactive
 {
-	public abstract class InstantiatorFunction : UnaryOperator
+	/* The use of VarArg is a workaround to 
+	https://github.com/fusetools/fuselibs/issues/4199 */
+	
+	/** Common base for functions that work with an item in an instantiator */
+	public abstract class InstantiatorFunction : VarArgFunction
 	{
 		static internal Selector DataIndexName = "index";
 		static internal Selector OffsetIndexName = "offsetIndex";
 		
 		Selector _item;
 		
-		internal InstantiatorFunction( Reactive.Expression node, Selector item )
-			: base( node)
+		internal InstantiatorFunction( Selector item )
+			: base()
 		{
 			_item = item;
 		}
 		
-		public override string ToString()
-		{
-			return _item + "(" + Operand.ToString() +")";
-		}
+ 		public override string ToString()
+ 		{
+ 			return FormatString(_item);
+ 		}
 		
 		public override IDisposable Subscribe(IContext context, IListener listener)
 		{
-			return new InstantiatorSubscription(this, _item, listener, context );
+			if (Arguments.Count > 1)
+			{
+				Fuse.Diagnostics.UserError( "too many parameters for " + _item, this );
+				return null;
+			}
+			
+			var node = Arguments.Count > 0 ? Arguments[0] : null;
+			return new InstantiatorSubscription(this, _item, listener, context, node );
 		}
 		
-		class InstantiatorSubscription : Subscription
+		class InstantiatorSubscription : InnerListener
 		{
+			//static values
 			InstantiatorFunction _expr;
-			Instantiator _instantiator;
-			Node _instance;
 			Selector _item;
 			IListener _listener;
 			IContext _context;
+			IExpression _node;
 			
-			public InstantiatorSubscription(InstantiatorFunction expr, Selector item, IListener listener, IContext context ) : 
-				base(expr, listener)
+			//the actual object values for the function
+			Instantiator _instantiator;
+			Node _instance;
+
+			IDisposable _nodeSub;
+
+			public InstantiatorSubscription(InstantiatorFunction expr, Selector item, IListener listener, 
+				IContext context, IExpression node ) : 
+				base()
 			{
+				_node = node;
 				_expr = expr;
 				_item = item;
 				_listener = listener;
 				_context = context;
-				Init(context);
+				
+				
+				if (_node == null)	
+					OnNewNode(null);
+				else
+					_nodeSub = _node.Subscribe(context, this);
 			}
 			
-			protected override void OnNewOperand(object obj)
+			protected override void OnNewData(IExpression source, object value)
+			{
+				if (source == _node)
+					OnNewNode(value);
+			}
+			
+			void OnNewNode(object obj)
 			{
 				if (_instantiator != null)
 				{
@@ -97,6 +127,10 @@ namespace Fuse.Reactive
 				if (_instantiator != null)
 					_instantiator.UpdatedWindowItems -= OnUpdatedWindowItems;
 				_instantiator = null;
+				if (_nodeSub != null)
+					_nodeSub.Dispose();
+				_nodeSub = null;
+				_node = null;
 			}
 	
 			void PushValue()
@@ -122,10 +156,8 @@ namespace Fuse.Reactive
 	public class IndexFunction : InstantiatorFunction
 	{
 		[UXConstructor]
-		//due to https://github.com/fusetools/fuselibs/issues/4199 it's not possible yet to know if the default works
-		//so it's been commented out for now to avoid any unintended side-effects
-		public IndexFunction([UXParameter("Node")]/*[UXDefaultValue("null")]*/ Reactive.Expression node)
-			: base( node, DataIndexName )
+		public IndexFunction()
+			: base( DataIndexName )
 		{
 		}
 	}
@@ -134,8 +166,8 @@ namespace Fuse.Reactive
 	public class OffsetIndexFunction : InstantiatorFunction
 	{
 		[UXConstructor]
-		public OffsetIndexFunction([UXParameter("Node")]/*[UXDefaultValue("null")]*/ Reactive.Expression node)
-			: base( node, OffsetIndexName )
+		public OffsetIndexFunction()
+			: base( OffsetIndexName )
 		{
 		}
 	}

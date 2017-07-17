@@ -6,6 +6,21 @@ using Fuse.Controls;
 namespace Fuse.Triggers
 {
 	/**
+		How the bounds of an element are treated.
+	*/
+	public enum WhileVisibleInScrollViewMode
+	{
+		/**
+			Activates while the element is at least partially within the ScrollView.
+		*/
+		Partial,
+		/**
+			Activates while the element is completely visible within the ScrollView.
+		*/
+		Full,
+	}
+
+	/**
 		Active while an element is positioned within the visible area of the @ScrollView. 
 		
 			<ScrollView>
@@ -111,7 +126,24 @@ namespace Fuse.Triggers
 				Update();
 			}
 		}
-		
+
+		WhileVisibleInScrollViewMode _mode = WhileVisibleInScrollViewMode.Partial;
+		/**
+			How the bounds of an element are treated.
+
+			Default is `Partial`. When set to `Full`, the whole element bounds need to be inside view for the `WhileVisibleInScrollView` trigger to activate.
+
+			Both options can be combined with `Distance` to adjust when the trigger activates.
+		*/
+		public WhileVisibleInScrollViewMode Mode
+		{
+			get { return _mode; }
+			set
+			{
+				_mode = value;
+				Update();
+			}
+		}
 		
 		void OnScrollPositionChanged(object s, object args)
 		{
@@ -120,16 +152,34 @@ namespace Fuse.Triggers
 		
 		void Update()
 		{
-			if (_element == null || _scrollable == null)
+			if (_element == null || _scrollable == null || !_element.HasMarginBox)
 				return;
 				
+			const float zeroTolerance = 1e-05f;
+
 			var min = _element.GetLayoutPositionIn(_scrollable);
 			var max = min + _element.ActualSize;
-			
-			var dist = _scrollable.ToScalarPosition(_scrollable.DistanceToView(min, max));
 			var maxDist = _scrollable.ToScalarPosition( RelativeTo.GetPoints(Distance, _scrollable) );
-			
-			SetActive( dist < (maxDist + float.ZeroTolerance) );
+
+			bool isInView = false;
+
+			switch (_mode)
+			{
+				case WhileVisibleInScrollViewMode.Full:
+					var dist = _scrollable.DistanceToView(min, max);
+					var distStart = _scrollable.ToScalarPosition(float2(dist.X, dist.Y));
+					var distEnd = _scrollable.ToScalarPosition(float2(dist.Z, dist.W));
+					isInView = (distStart > (maxDist - zeroTolerance)) && (distEnd > (maxDist - zeroTolerance));
+					break;
+				case WhileVisibleInScrollViewMode.Partial:
+					var dist = _scrollable.DistanceToView(max, min);
+					var distStart = _scrollable.ToScalarPosition(float2(dist.X, dist.Y));
+					var distEnd = _scrollable.ToScalarPosition(float2(dist.Z, dist.W));
+					isInView = (distStart > (-1 * maxDist - zeroTolerance)) && (distEnd > ( -1 * maxDist - zeroTolerance));
+					break;
+			}
+
+			SetActive( isInView );
 		}
 		
 	}

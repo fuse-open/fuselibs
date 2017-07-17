@@ -42,9 +42,14 @@ namespace FuseTest
 
 		void IDisposable.Dispose()
 		{
+			Pointer.ClearPointersDown();
+
+			// dispose _rootViewport before cleaning low memory, to
+			// make sure ImageSources etc are unpinned first
+			(_rootViewport as IDisposable).Dispose();
+
 			//force things to clean (LowMemory should do most items)
 			CleanLowMemory();
-			(_rootViewport as IDisposable).Dispose();
 		}
 		
 		public void CleanLowMemory()
@@ -238,9 +243,11 @@ namespace FuseTest
 		{
 			if (elapsedTime < 0)
 				elapsedTime = _frameIncrement;
-				
+
+			const float zeroTolerance = 1e-05f;
+
 			var e = 0f;
-			while (e < (elapsedTime - float.ZeroTolerance))
+			while (e < (elapsedTime - zeroTolerance))
 			{
 				var s = Math.Min( _frameIncrement, elapsedTime - e );
 				IncrementFrame(s);

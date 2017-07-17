@@ -110,7 +110,8 @@ namespace Fuse.Triggers
 			{
 				float2 oldSize, newSize;
 				var b = LayoutTransition.GetSizeChange(v.RelativeNode, out oldSize, out newSize);
-				if (!b || newSize.Y < float.ZeroTolerance || newSize.X < float.ZeroTolerance )
+				const float zeroTolerance = 1e-05f;
+				if (!b || newSize.Y < zeroTolerance || newSize.X < zeroTolerance )
 					return v.Vector;
 
 				var n = oldSize / newSize;

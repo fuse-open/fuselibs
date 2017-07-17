@@ -161,64 +161,65 @@ namespace Fuse.Controls.ScrollViewTest
 		public void ScrollViewAlignment()
 		{
 			var sv = new UX.ScrollViewAlignment();
-			TestRootPanel.CreateWithChild( sv, int2(200,400) );
-			
-			Assert.AreEqual( float2(0,-600), sv.SV1.MinScroll );
-			Assert.AreEqual( float2(0,0), sv.SV1.MaxScroll );
-			Assert.AreEqual( float2(0,-600), sv.C1.ActualPosition );
-			
-			Assert.AreEqual( float2(0,0), sv.SV2.MinScroll );
-			Assert.AreEqual( float2(0,600), sv.SV2.MaxScroll );
-			Assert.AreEqual( float2(0,0), sv.C2.ActualPosition );
-			
-			Assert.AreEqual( float2(0,-300), sv.SV3.MinScroll );
-			Assert.AreEqual( float2(0,300), sv.SV3.MaxScroll );
-			Assert.AreEqual( float2(0,-300), sv.C3.ActualPosition );
-			
-			Assert.AreEqual( float2(-620,-760), sv.SV4.MinScroll );
-			Assert.AreEqual( float2(620,760), sv.SV4.MaxScroll );
-			Assert.AreEqual( float2(-620,-760), sv.C4.ActualPosition );
-			Assert.AreEqual( float2(1440,1920), sv.C4.ActualSize );
-			
-			Assert.AreEqual( float2(-1248.8f,0), sv.SV5.MinScroll );
-			Assert.AreEqual( float2(0,0), sv.SV5.MaxScroll );
-			Assert.AreEqual( float2(-1248.8f,0), sv.C5.ActualPosition );
-			Assert.AreEqual( float2(1448.8f,400), sv.C5.ActualSize );
-			
-			Assert.AreEqual( float2(0,0), sv.SV6.MinScroll );
-			Assert.AreEqual( float2(0,0), sv.SV6.MaxScroll );
-			Assert.AreEqual( float2(0,0), sv.C6.ActualPosition );
-			Assert.AreEqual( float2(200,400), sv.C6.ActualSize );
-			
-			Assert.AreEqual( float2(0,0), sv.SV7.MinScroll );
-			Assert.AreEqual( float2(0,0), sv.SV7.MaxScroll );
-			Assert.AreEqual( float2(0,0), sv.C7.ActualPosition );
-			Assert.AreEqual( float2(200,400), sv.C7.ActualSize );
-			
-			Assert.AreEqual( float2(0,0), sv.SV8.MinScroll );
-			Assert.AreEqual( float2(0,0), sv.SV8.MaxScroll );
-			Assert.AreEqual( float2(0,0), sv.C8.ActualPosition );
-			Assert.AreEqual( float2(200,100), sv.C8.ActualSize );
-			
-			Assert.AreEqual( float2(0,0), sv.SV9.MinScroll );
-			Assert.AreEqual( float2(0,0), sv.SV9.MaxScroll );
-			Assert.AreEqual( float2(50,0), sv.C9.ActualPosition );
-			Assert.AreEqual( float2(100,400), sv.C9.ActualSize );
-			
-			Assert.AreEqual( float2(0,0), sv.SV10.MinScroll );
-			Assert.AreEqual( float2(0,0), sv.SV10.MaxScroll );
-			Assert.AreEqual( float2(50,175), sv.C10.ActualPosition );
-			Assert.AreEqual( float2(100,50), sv.C10.ActualSize );
-			
-			Assert.AreEqual( float2(0,0), sv.SV11.MinScroll );
-			Assert.AreEqual( float2(0,0), sv.SV11.MaxScroll );
-			Assert.AreEqual( float2(40,165), sv.C11.ActualPosition );
-			Assert.AreEqual( float2(120,70), sv.C11.ActualSize );
-			
-			Assert.AreEqual( float2(0,0), sv.SV12.MinScroll );
-			Assert.AreEqual( float2(0,0), sv.SV12.MaxScroll );
-			Assert.AreEqual( float2(30,155), sv.C12.ActualPosition );
-			Assert.AreEqual( float2(140,90), sv.C12.ActualSize );
+			using (var root = TestRootPanel.CreateWithChild( sv, int2(200,400) ))
+			{
+				Assert.AreEqual( float2(0,-600), sv.SV1.MinScroll );
+				Assert.AreEqual( float2(0,0), sv.SV1.MaxScroll );
+				Assert.AreEqual( float2(0,-600), sv.C1.ActualPosition );
+
+				Assert.AreEqual( float2(0,0), sv.SV2.MinScroll );
+				Assert.AreEqual( float2(0,600), sv.SV2.MaxScroll );
+				Assert.AreEqual( float2(0,0), sv.C2.ActualPosition );
+
+				Assert.AreEqual( float2(0,-300), sv.SV3.MinScroll );
+				Assert.AreEqual( float2(0,300), sv.SV3.MaxScroll );
+				Assert.AreEqual( float2(0,-300), sv.C3.ActualPosition );
+
+				Assert.AreEqual( float2(-620,-760), sv.SV4.MinScroll );
+				Assert.AreEqual( float2(620,760), sv.SV4.MaxScroll );
+				Assert.AreEqual( float2(-620,-760), sv.C4.ActualPosition );
+				Assert.AreEqual( float2(1440,1920), sv.C4.ActualSize );
+
+				Assert.AreEqual( float2(-1248.8f,0), sv.SV5.MinScroll );
+				Assert.AreEqual( float2(0,0), sv.SV5.MaxScroll );
+				Assert.AreEqual( float2(-1248.8f,0), sv.C5.ActualPosition );
+				Assert.AreEqual( float2(1448.8f,400), sv.C5.ActualSize );
+
+				Assert.AreEqual( float2(0,0), sv.SV6.MinScroll );
+				Assert.AreEqual( float2(0,0), sv.SV6.MaxScroll );
+				Assert.AreEqual( float2(0,0), sv.C6.ActualPosition );
+				Assert.AreEqual( float2(200,400), sv.C6.ActualSize );
+
+				Assert.AreEqual( float2(0,0), sv.SV7.MinScroll );
+				Assert.AreEqual( float2(0,0), sv.SV7.MaxScroll );
+				Assert.AreEqual( float2(0,0), sv.C7.ActualPosition );
+				Assert.AreEqual( float2(200,400), sv.C7.ActualSize );
+
+				Assert.AreEqual( float2(0,0), sv.SV8.MinScroll );
+				Assert.AreEqual( float2(0,0), sv.SV8.MaxScroll );
+				Assert.AreEqual( float2(0,0), sv.C8.ActualPosition );
+				Assert.AreEqual( float2(200,100), sv.C8.ActualSize );
+
+				Assert.AreEqual( float2(0,0), sv.SV9.MinScroll );
+				Assert.AreEqual( float2(0,0), sv.SV9.MaxScroll );
+				Assert.AreEqual( float2(50,0), sv.C9.ActualPosition );
+				Assert.AreEqual( float2(100,400), sv.C9.ActualSize );
+
+				Assert.AreEqual( float2(0,0), sv.SV10.MinScroll );
+				Assert.AreEqual( float2(0,0), sv.SV10.MaxScroll );
+				Assert.AreEqual( float2(50,175), sv.C10.ActualPosition );
+				Assert.AreEqual( float2(100,50), sv.C10.ActualSize );
+
+				Assert.AreEqual( float2(0,0), sv.SV11.MinScroll );
+				Assert.AreEqual( float2(0,0), sv.SV11.MaxScroll );
+				Assert.AreEqual( float2(40,165), sv.C11.ActualPosition );
+				Assert.AreEqual( float2(120,70), sv.C11.ActualSize );
+
+				Assert.AreEqual( float2(0,0), sv.SV12.MinScroll );
+				Assert.AreEqual( float2(0,0), sv.SV12.MaxScroll );
+				Assert.AreEqual( float2(30,155), sv.C12.ActualPosition );
+				Assert.AreEqual( float2(140,90), sv.C12.ActualSize );
+			}
 		}
 		
 		[Test]
@@ -252,8 +253,9 @@ namespace Fuse.Controls.ScrollViewTest
 				root.PointerPress(float2(100,500));
 				root.PointerSlide(float2(100,500), float2(100,300), speed);
 				//adjust for delayed gesture and accuracy of sliding steps
+				const float zeroTolerance = 1e-05f;
 				Assert.AreEqual(200 - GestureHardCaptureSignificanceThreshold, 
-					sv.S.ScrollPosition.Y, 2 * root.StepIncrement * speed + float.ZeroTolerance);
+					sv.S.ScrollPosition.Y, 2 * root.StepIncrement * speed + zeroTolerance);
 			}
 		}
 		
@@ -341,8 +343,9 @@ namespace Fuse.Controls.ScrollViewTest
 				
 				//adjust for delayed gesture and accuracy of sliding steps
 				// 2*StepIncrement since it's allowed to delay one frame/event now
+				const float zeroTolerance = 1e-05f;
 				Assert.AreEqual(-100 + GestureHardCaptureSignificanceThreshold, 
-					s.SV.ScrollPosition.Y, 2*root.StepIncrement * speed + float.ZeroTolerance);
+					s.SV.ScrollPosition.Y, 2*root.StepIncrement * speed + zeroTolerance);
 
 				Assert.AreEqual( 100 * (-s.SV.ScrollPosition.Y / s.SM.OverflowExtent.Y), s.SAP.Height.Value );
 				

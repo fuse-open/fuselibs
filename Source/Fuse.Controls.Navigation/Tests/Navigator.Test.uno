@@ -326,7 +326,7 @@ namespace Fuse.Navigation.Test
 				Assert.AreEqual( "\"2\"", p.theNav.Active.Parameter );
 				root.StepFrame(0.1f);
 				Assert.AreEqual( 0.9f, TriggerProgress((p.theNav.Active as JIPageOne).T1),
-					float.ZeroTolerance + root.StepIncrement);
+					Assert.ZeroTolerance + root.StepIncrement);
 			}
 		}
 		

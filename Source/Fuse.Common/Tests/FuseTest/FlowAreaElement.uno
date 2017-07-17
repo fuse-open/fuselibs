@@ -19,7 +19,8 @@ namespace FuseTest
 		
 		protected override float2 GetContentSize( LayoutParams lp )
 		{
-			if (CellSize.X < float.ZeroTolerance || CellSize.Y < float.ZeroTolerance)
+			const float zeroTolerance = 1e-05f;
+			if (CellSize.X < zeroTolerance || CellSize.Y < zeroTolerance)
 			{
 				Fuse.Diagnostics.UserError( "invalid CellSize", this );
 				return float2(0,0);

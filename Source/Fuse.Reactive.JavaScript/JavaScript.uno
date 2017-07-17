@@ -25,7 +25,7 @@ namespace Fuse.Reactive
 		internal static ThreadWorker Worker { get { return _worker; } }
 
 		readonly NameTable _nameTable;
-		protected RootableScriptModule _scriptModule;
+		RootableScriptModule _scriptModule;
 		internal RootableScriptModule ScriptModule { get { return _scriptModule; } }
 
 		[UXConstructor]

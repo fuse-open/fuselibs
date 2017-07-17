@@ -36,10 +36,11 @@ namespace Fuse.Animations
 		{
 			var duration = tas.Duration;
 			float progress;
-			if (duration < float.ZeroTolerance)
+			const float zeroTolerance = 1e-05f;
+			if (duration < zeroTolerance)
 				progress =
 					(dir == SeekDirection.Forward ? 
-						elapsed >= -float.ZeroTolerance : elapsed > float.ZeroTolerance) ?
+						elapsed >= -zeroTolerance : elapsed > zeroTolerance) ?
 						1 : 0;
 			else
 				progress = (float)(elapsed / duration);

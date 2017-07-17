@@ -122,9 +122,10 @@ namespace Fuse.Controls
 		internal float2 ValueToRelative(float2 value)
 		{
 			var range = Maximum - Minimum;
-			var x = Math.Abs(range.X) > float.ZeroTolerance ? value.X/range.X : 
+			const float zeroTolerance = 1e-05f;
+			var x = Math.Abs(range.X) > zeroTolerance ? value.X/range.X : 
 				(value.X >= Maximum.X ? 1 : 0);
-			var y = Math.Abs(range.Y) > float.ZeroTolerance ? value.Y/range.Y :
+			var y = Math.Abs(range.Y) > zeroTolerance ? value.Y/range.Y :
 				(value.Y >= Maximum.Y ? 1 : 0);
 			return float2(x,y);
 		}

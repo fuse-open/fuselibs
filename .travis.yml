@@ -21,7 +21,7 @@ before_script:
 
 script:
   - Stuff/uno --trace doctor
-  - Stuff/uno --trace test -tnative --timeout=30 Source
+  - Stuff/uno --trace test -tnative --timeout=30 Source/AllTests.unoproj
 
 after_failure:
   - for c in $(ls /cores/core.*); do

@@ -162,7 +162,8 @@ namespace Fuse.Animations
 			{
 				int previous = segment - 1;
 				
-				var segmentProgress = _frames[segment].TimeDelta < float.ZeroTolerance ? 0.0 :
+				const float zeroTolerance = 1e-05f;
+				var segmentProgress = _frames[segment].TimeDelta < zeroTolerance ? 0.0 :
 					Math.Clamp( (elapsed - _frames[previous].Time) /  _frames[segment].TimeDelta, 0, 1);
 			
 				value = _pointInterpolater( _frames[previous].Value, _frames[segment].Value,

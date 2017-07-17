@@ -1,5 +1,5 @@
 <Panel ux:Class="UX.Navigator.SwipeBackDirection">
-	<Router ux:Name="R"/> 
+	<Router ux:Name="R" IsMasterRouter="false"/>
 	<DockPanel>
 		<Navigator ux:Name="Nav" SwipeBack="Right" DefaultPath="one">
 			<Page ux:Template="one" Title="One" PrepareBusy="None"/>
