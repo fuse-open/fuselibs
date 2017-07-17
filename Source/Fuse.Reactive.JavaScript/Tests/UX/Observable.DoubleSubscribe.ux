@@ -3,6 +3,7 @@
         var Observable = require("FuseJS/Observable")
 
         exports.items = Observable(1,2,3)
+        exports.itemsMapped = exports.items.map(function(x) { return x*2; } )
         exports.g = Observable()
 
         exports.flip = function() {
@@ -18,6 +19,9 @@
     <Each Items="{g}">
         <StackPanel ux:Name="p2">
             <Each Items="{items}">
+                <Fuse.Reactive.Test.CreateCountPanel />
+            </Each>
+            <Each Items="{itemsMapped}">
                 <Fuse.Reactive.Test.CreateCountPanel />
             </Each>
         </StackPanel>   
