@@ -16,25 +16,25 @@ function Store(state)
 		{
 			var obj = walk(store, arguments, 0, 2);
 			obj[arguments[arguments.length-2]] = arguments[arguments.length-1];
-			if (store.$set instanceof Function) { store.$set.apply(null, arguments); }
+			TreeObservable.set.apply(store, arguments); 
 		},
 		add: function() 
 		{
 			var obj = walk(store, arguments, 0, 1);
 			obj.push(arguments[arguments.length-1]);
-			if (store.$add instanceof Function) { store.$add.apply(null, arguments); }
+			TreeObservable.add.apply(store, arguments); 
 		},
 		removeAt: function() 
 		{
 			var obj = walk(store, arguments, 0, 1);
 			obj.splice(arguments[arguments.length-1], 1);
-			if (store.$removeAt instanceof Function) { store.$removeAt.apply(null, arguments); }
+			TreeObservable.removeAt.apply(store, arguments); 
 		},
 		insertAt: function() 
 		{
 			var obj = walk(store, arguments, 0, 2);
 			obj.splice(arguments[arguments.length-2], 0, arguments[arguments.length-1]);
-			if (store.$insertAt instanceof Function) { store.$insertAt.apply(null, arguments); }
+			TreeObservable.insertAt.apply(store, arguments); 
 		}
 	}
 
