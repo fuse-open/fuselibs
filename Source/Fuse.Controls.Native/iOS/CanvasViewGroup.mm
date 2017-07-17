@@ -4,15 +4,21 @@
 
 @property (copy) DrawCallback onDrawCallback;
 
+@property CGFloat translateX;
+@property CGFloat translateY;
+
 @end
 
 @implementation CanvasLayer
 
 -(void)drawInContext:(CGContextRef)ctx {
 	[self removeAllAnimations];
-    [super drawInContext:ctx];
-    if (self.onDrawCallback != NULL)
-    	self.onDrawCallback(ctx);
+	[super drawInContext:ctx];
+	if (self.onDrawCallback != NULL)
+	{
+		CGContextTranslateCTM(ctx, self.translateX, self.translateY);
+		self.onDrawCallback(ctx);
+	}
 }
 
 @end
@@ -41,12 +47,9 @@
 }
 
 -(void)setRenderBounds:(CGRect)bounds {
-}
-
--(void)setFrame:(CGRect)frame {
-	[super setFrame:frame];
-	self.layer.frame = self.bounds;
-    _canvasLayer.frame = self.bounds;
+	_canvasLayer.frame = bounds;
+	_canvasLayer.translateX = -bounds.origin.x;
+	_canvasLayer.translateY = -bounds.origin.y;
 	[_canvasLayer setNeedsDisplay];
 }
 
