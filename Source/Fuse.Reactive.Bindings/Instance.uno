@@ -82,7 +82,7 @@ namespace Fuse.Reactive
 		protected override void OnRooted()
 		{
 			base.OnRooted();
-			OnItemsChanged();
+			RefreshItems();
 			
 			if (_rootTemplates != null)
 				_rootTemplates.Subscribe(OnTemplatesChanged, OnTemplatesChanged);
