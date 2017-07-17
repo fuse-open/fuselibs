@@ -95,6 +95,7 @@ namespace Fuse.Reactive
 			_isListeningItems = false;
 			if (_itemsSubscription != null)
 			{
+				_isListeningItems = false;
 				_itemsSubscription.Dispose();
 				_itemsSubscription = null;
 			}
