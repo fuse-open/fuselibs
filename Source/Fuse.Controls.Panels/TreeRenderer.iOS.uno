@@ -139,6 +139,12 @@ namespace Fuse.Controls
 
 		ViewHandle InstantiateView(Element e)
 		{
+			var sd = e as ISurfaceDrawable;
+			if (sd != null && sd.IsPrimary)
+			{
+				return new Fuse.Controls.Native.iOS.CanvasViewGroup(sd, e.Viewport.PixelsPerPoint);
+			}
+
 			ViewHandle result = null;
 			var appearance = (InstantiateTemplate(e) ?? InstantiateViewOld(e)) as ViewHandle;
 			if (appearance != null)
