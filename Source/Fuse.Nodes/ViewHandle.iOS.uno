@@ -201,6 +201,13 @@ namespace Fuse.Controls.Native
 				[parent sendSubviewToBack:view];
 		@}
 
+		[Foreign(Language.ObjC)]
+		public void Invalidate()
+		@{
+			UIView* view = (UIView*)@{Fuse.Controls.Native.ViewHandle:Of(_this).NativeHandle:Get()};
+			[view setNeedsDisplay];
+		@}
+
 		public void SetBackgroundColor(float4 c)
 		{
 			SetBackground(NativeHandle, c.X, c.Y, c.Z, c.W);
