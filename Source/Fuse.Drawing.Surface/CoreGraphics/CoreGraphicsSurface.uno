@@ -16,7 +16,7 @@ namespace Fuse.Drawing
 	}
 	
 	[Require("Xcode.Framework","CoreGraphics")]
-	[Require("Source.Include", "CoreGraphicsLib.h")]
+	[Require("Source.Include", "CoreGraphics/CoreGraphicsLib.h")]
 	[Require("Xcode.Framework","GLKit")]
 	[extern(OSX) Require("Source.Include","XliPlatform/GL.h")]
 	[extern(iOS) Require("Source.Include","OpenGLES/ES2/gl.h")]
@@ -206,7 +206,7 @@ namespace Fuse.Drawing
 	}
 
 	[Require("Xcode.Framework","CoreGraphics")]
-	[Require("Source.Include", "CoreGraphicsLib.h")]
+	[Require("Source.Include", "CoreGraphics/CoreGraphicsLib.h")]
 	[Require("Xcode.Framework","GLKit")]
 	[extern(OSX) Require("Source.Include","XliPlatform/GL.h")]
 	[extern(iOS) Require("Source.Include","OpenGLES/ES2/gl.h")]
