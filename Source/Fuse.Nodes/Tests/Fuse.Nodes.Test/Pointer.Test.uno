@@ -55,36 +55,52 @@ namespace Fuse.Test
 	public class FusePointerTest : TestBase
 	{
 		private TestRootPanel _root;
-		private List<string> _bubblingSequence;
 
 		public FusePointerTest()
 		{
 			_root = new TestRootPanel();
-			_bubblingSequence = new List<string>();
-
 			Fuse.Input.Pointer.RaiseMoved(_root, GetZeroPointerEventData());
 			Fuse.Input.Pointer.RaiseReleased(_root, GetDefaultPointerEventData());
+		}
+
+		class BubblingSequenceTester
+		{
+			public BubblingSequenceTester(PointerSetupEntity setup)
+			{
+				Fuse.Input.Pointer.Pressed.AddHandler(setup.ParentPanel, PointerPressedHandler);
+				Fuse.Input.Pointer.Pressed.AddHandler(setup.ChildPanel, PointerPressedHandler);
+				Fuse.Input.Pointer.Pressed.AddHandler(setup.Control, PointerPressedHandler);
+
+				Fuse.Input.Pointer.Released.AddHandler(setup.ParentPanel, PointerReleasedHandler);
+				Fuse.Input.Pointer.Released.AddHandler(setup.ChildPanel, PointerReleasedHandler);
+				Fuse.Input.Pointer.Released.AddHandler(setup.Control, PointerReleasedHandler);
+			}
+
+			public void PointerPressedHandler(object sender, PointerPressedArgs args)
+			{
+				BubblingSequence.Add(((PointerElement)sender).Name);
+			}
+
+			public void PointerReleasedHandler(object sender, PointerReleasedArgs args)
+			{
+				BubblingSequence.Add(((PointerElement)sender).Name);
+			}
+
+			public readonly List<string> BubblingSequence = new List<string>();
 		}
 
 		[Test]
 		public void BubblingSequence()
 		{
 			var setup = SetupEnvironment();
-
-			Fuse.Input.Pointer.Pressed.AddHandler(setup.ParentPanel, PointerPressedHandler);
-			Fuse.Input.Pointer.Pressed.AddHandler(setup.ChildPanel, PointerPressedHandler);
-			Fuse.Input.Pointer.Pressed.AddHandler(setup.Control, PointerPressedHandler);
-
-			Fuse.Input.Pointer.Released.AddHandler(setup.ParentPanel, PointerReleasedHandler);
-			Fuse.Input.Pointer.Released.AddHandler(setup.ChildPanel, PointerReleasedHandler);
-			Fuse.Input.Pointer.Released.AddHandler(setup.Control, PointerReleasedHandler);
+			var bst = new BubblingSequenceTester(setup);
 
 			Fuse.Input.Pointer.RaisePressed(_root, GetDefaultPointerEventData());
-            Assert.AreEqual(new string[] { "3", "2", "1" }, _bubblingSequence.ToArray());
+			Assert.AreEqual(new string[] { "3", "2", "1" }, bst.BubblingSequence.ToArray());
 
-			_bubblingSequence.Clear();
+			bst.BubblingSequence.Clear();
 			Fuse.Input.Pointer.RaiseReleased(_root, GetDefaultPointerEventData());
-            Assert.AreEqual(new string[] { "3", "2", "1" }, _bubblingSequence.ToArray());
+			Assert.AreEqual(new string[] { "3", "2", "1" }, bst.BubblingSequence.ToArray());
 		}
 
 		[Test]
@@ -249,16 +265,6 @@ namespace Fuse.Test
 			{
 				Pointer.EventResponder = prevEventResponder;
 			}
-		}
-
-		void PointerPressedHandler(object sender, PointerPressedArgs args)
-		{
-			_bubblingSequence.Add(((PointerElement)sender).Name);
-		}
-
-		void PointerReleasedHandler(object sender, PointerReleasedArgs args)
-		{
-			_bubblingSequence.Add(((PointerElement)sender).Name);
 		}
 
 		PointerEventData GetZeroPointerEventData()
