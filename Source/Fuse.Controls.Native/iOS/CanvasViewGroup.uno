@@ -13,6 +13,7 @@ namespace Fuse.Controls.Native.iOS
 
 		public CanvasViewGroup(ISurfaceDrawable surfaceDrawable, float pixelsPerPoint) : base(Create(pixelsPerPoint))
 		{
+			NeedsRenderBounds = true;
 			_surfaceDrawable = surfaceDrawable;
 			_pixelsPerPoint = pixelsPerPoint;
 		}
@@ -64,21 +65,6 @@ namespace Fuse.Controls.Native.iOS
 			[cvg setOpaque:false];
 			[cvg setMultipleTouchEnabled:true];
 			return cvg;
-		@}
-
-		public override void SetRenderBounds(VisualBounds bounds)
-		{
-			Rect r = (!bounds.IsEmpty && !bounds.IsInfinite)
-				? bounds.FlatRect
-				: new Rect(0, 0, Size.X, Size.Y);
-			SetRenderBounds(NativeHandle, r.Position.X, r.Position.Y, r.Width, r.Height);
-		}
-
-		[Foreign(Language.ObjC)]
-		static void SetRenderBounds(ObjC.Object handle, float x, float y, float w, float h)
-		@{
-			::CanvasViewGroup* cvg = [[::CanvasViewGroup alloc] init];
-			[cvg setRenderBounds:CGRectMake(x, y, w, h)];
 		@}
 	}
 }

@@ -8,6 +8,7 @@ namespace Fuse.Controls.Native
 
 	[Require("Source.Include", "UIKit/UIKit.h")]
 	[Require("Source.Include", "iOS/Helpers.h")]
+	[Require("Source.Include", "iOS/CanvasViewGroup.h")]
 	[Require("Source.Include", "CoreGraphics/CoreGraphics.h")]
 	[Require("Source.Include", "QuartzCore/QuartzCore.h")]
 	extern(iOS) public class ViewHandle : IDisposable
@@ -21,6 +22,8 @@ namespace Fuse.Controls.Native
 		public readonly ObjC.Object NativeHandle;
 
 		internal readonly bool IsLeafView;
+
+		internal bool NeedsRenderBounds;
 
 		readonly InputMode _inputMode;
 
@@ -232,10 +235,35 @@ namespace Fuse.Controls.Native
 			Size = size;
 		}
 
-		public virtual void SetRenderBounds(VisualBounds bounds)
+		internal void SetSizeAndVisualBounds(float2 size, VisualBounds bounds)
 		{
-			// Override in subclasses that care about renderbounds
+			var r = bounds.FlatRect;
+			SetSizeAndBounds(size.X, size.Y, r.Position.X, r.Position.Y, r.Width, r.Height);
+			Size = size;
 		}
+
+		[Foreign(Language.ObjC)]
+		void SetSizeAndBounds(float w, float h, float bx, float by, float bw, float bh)
+		@{
+			UIView* view = (UIView*)@{Fuse.Controls.Native.ViewHandle:Of(_this).NativeHandle:Get()};
+			auto t = [[view layer] transform];
+			[[view layer] setTransform:CATransform3DIdentity];
+			[view setFrame: { { 0.0f, 0.0f }, { w, h } } ];
+
+			if ([[view superview] isKindOfClass:[UIScrollView class]])
+			{
+				auto sv = (UIScrollView*)[view superview];
+				[sv setContentSize: CGSizeMake(w, h)];
+			}
+
+			if ([view isKindOfClass:[CanvasViewGroup class]])
+			{
+				CanvasViewGroup* cvg = (CanvasViewGroup*)view;
+				[cvg setRenderBounds: CGRectMake(bx, by, bw, bh)];
+			}
+
+			[[view layer] setTransform:t];
+		@}
 
 		[Foreign(Language.ObjC)]
 		void SetSize(float w, float h)

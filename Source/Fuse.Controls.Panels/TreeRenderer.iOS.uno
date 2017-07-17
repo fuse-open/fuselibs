@@ -87,8 +87,10 @@ namespace Fuse.Controls
 		void ITreeRenderer.Placed(Element e)
 		{
 			var viewHandle = _elements[e];
-			viewHandle.SetSize(e.ActualSize);
-			viewHandle.SetRenderBounds(e.RenderBoundsWithoutEffects);
+			if (viewHandle.NeedsRenderBounds)
+				viewHandle.SetSizeAndVisualBounds(e.ActualSize, e.RenderBoundsWithoutEffects);
+			else
+				viewHandle.SetSize(e.ActualSize);
 		}
 
 		void ITreeRenderer.IsVisibleChanged(Element e, bool isVisible)
