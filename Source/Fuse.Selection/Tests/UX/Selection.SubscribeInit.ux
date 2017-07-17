@@ -1,0 +1,30 @@
+<Panel ux:Class="UX.Selection.SubscribeInit">
+	<JavaScript>
+		var Observable = require("FuseJS/Observable")
+		exports.items = Observable( 1,3 )
+	</JavaScript>
+	
+	<Panel ux:Class="Item">
+		<string ux:Property="ID"/>
+		<Selectable Value="{Property this.ID}"/>
+		<WhileSelected>
+			<Text Value="{Property this.ID}"/>
+		</WhileSelected>
+	</Panel>
+
+	<!-- Avoid using an Each to not have it's Observable stuff interfere -->
+	<StackPanel ux:Class="ItemList">
+		<Selection Values="{items}"/>
+		<Item ID="0"/>
+		<Item ID="1"/>
+		<Item ID="2"/>
+		<Item ID="3"/>
+		<Item ID="4"/>
+	</StackPanel>
+	
+	<ItemList ux:Name="l1"/>
+
+	<WhileTrue ux:Name="wt">
+		<ItemList ux:Name="l2"/>
+	</WhileTrue>
+</Panel>
