@@ -74,8 +74,6 @@ namespace Fuse.Reactive
 				_om = om;
 				_obs = obs;
 
-				if (_om.Length == 1) obs.OnSet(_om[0]);
-				else obs.OnNewAll(_om);
 			}
 
 			public void SetExclusive(object newValue)

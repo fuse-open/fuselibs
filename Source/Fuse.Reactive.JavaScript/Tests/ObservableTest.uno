@@ -34,6 +34,7 @@ namespace Fuse.Reactive.Test
 		public void DoubleSubscribe()
 		{
 			CreateCountPanel.Count = 0;
+			Instance.InsertCount = 0;
 			var p = new UX.Observable.DoubleSubscribe();
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
@@ -42,10 +43,13 @@ namespace Fuse.Reactive.Test
 				root.StepFrameJS();
 				Assert.AreEqual(3, CreateCountPanel.Count);
 				Assert.AreEqual(3, CreateCountPanel.RootedCount);
+				Assert.AreEqual(3, Instance.InsertCount);
+				Instance.InsertCount = 0;
 				p.flip.Perform();
 				root.StepFrameJS();
 				Assert.AreEqual(9, CreateCountPanel.Count);
 				Assert.AreEqual(9, CreateCountPanel.RootedCount);
+				Assert.AreEqual(7, Instance.InsertCount);
 			}
 		}
 

@@ -322,8 +322,13 @@ namespace Fuse.Reactive
 		
 		protected internal void OnItemsChanged()
 		{
-			if (!IsRootingStarted) return;
+			if (!IsRootingCompleted) return;
 
+			RefreshItems();
+		}
+
+		void RefreshItems()
+		{
 			DisposeItemsSubscription();	
 
 			Repopulate();
