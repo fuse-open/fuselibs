@@ -21,67 +21,12 @@ namespace Fuse.Drawing
 	[extern(OSX) Require("Source.Include","XliPlatform/GL.h")]
 	[extern(iOS) Require("Source.Include","OpenGLES/ES2/gl.h")]
 	extern(iOS||OSX)
-	class CoreGraphicsSurface : Surface
+	class GraphicsSurface : CoreGraphicsSurface
 	{
 		DrawContext _drawContext;
 		framebuffer _buffer;
-		float _pixelsPerPoint;
 		float2 _size;
 
-		IntPtr _context;
-		
-		public CoreGraphicsSurface()
-		{
-			_context = NewContext();
-		}
-		
-		public override void Dispose()
-		{
-			foreach (var item in _gradientBrushes)
-				ReleaseGradient(_context, item.Value);
-			_gradientBrushes.Clear();
-			
-			foreach (var item in _imageBrushes)
-			{
-				ReleaseImage(_context, item.Value);
-			}
-			_imageBrushes.Clear();
-			
-			DeleteContext(_context);
-			_context = IntPtr.Zero;
-		}
-		
-		void VerifyCreated()
-		{
-			if (_context == IntPtr.Zero)
-				throw new Exception( "Object disposed" );
-		}
-		
-		void VerifyBegun()
-		{
-			if (_buffer == null)
-				throw new Exception( "Surface.Begin was not called" );
-		}
-		
-		[Foreign(Language.CPlusPlus)]
-		static IntPtr NewContext()
-		@{
-			auto c = new CGLib::Context();
-			c->ColorSpace = CGColorSpaceCreateWithName(kCGColorSpaceGenericRGB);
-			return c;
-		@}
-	
-		[Foreign(Language.CPlusPlus)]
-		static void DeleteContext(IntPtr cp)
-		@{
-			auto ctx = (CGLib::Context*)cp;
-			CGColorSpaceRelease(ctx->ColorSpace);
-			
-			if (ctx->Context) 
-				ctx->ReleaseContext();
-			delete ctx;
-		@}
-		
 		public override void Begin( DrawContext dc, framebuffer fb, float pixelsPerPoint )
 		{
 			VerifyCreated();
@@ -158,6 +103,165 @@ namespace Fuse.Drawing
 			//There's no indication the context reuse is actually faster, and since it keeps resources
 			//around it's been disabled for now
 			ctx->ReleaseContext();
+		@}
+
+		protected override void VerifyBegun()
+		{
+			if (_buffer == null)
+				throw new Exception( "Surface.Begin was not called" );
+		}
+
+		/*
+			This approach is really bad now. When Erik refactors ImageSource we shouldn't
+			need to do the round-trip to GL.
+			We might end up not supporting ImageFill until this is fixed, but this is useful
+			here now to complete/test the sizing/tiling support.
+		*/
+		protected override void PrepareImageFill( ImageFill img )
+		{
+			var src = img.Source;
+			var tex = src.GetTexture();
+			if (tex == null) //probably still loading
+				return;
+
+			IntPtr imageRef;
+
+			if defined(OSX)
+			{
+				imageRef = LoadImage(_context, (int)tex.GLTextureHandle, src.PixelSize.X, src.PixelSize.Y );
+			}
+			else
+			{
+				var fb = FramebufferPool.Lock( src.PixelSize, Uno.Graphics.Format.RGBA8888, false );
+
+				//TODO: this is not entirely correct since _drawContext could be null now -- but it isn't
+				//in any of our use cases, but the contract certainly allows for it
+				_drawContext.PushRenderTarget(fb);
+				CoreGraphicsDrawHelper.Singleton.DrawImageFill(tex);
+				imageRef = LoadImagePoor(_context, src.PixelSize.X, src.PixelSize.Y );
+				FramebufferPool.Release(fb);
+				_drawContext.PopRenderTarget();
+			}
+			_imageBrushes[img] = imageRef;
+		}
+
+		[Foreign(Language.CPlusPlus)]
+		static IntPtr LoadImagePoor(IntPtr cp, int width, int height)
+		@{
+			auto ctx = (CGLib::Context*)cp;
+			int size = width * height * 4;
+			auto pixelData = new UInt8[size];
+			glReadPixels(0,0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, pixelData);
+
+			CFDataRef data = CFDataCreate(NULL, pixelData, size);
+			CGDataProviderRef provider = CGDataProviderCreateWithCFData(data);
+			CGImageRef imageRef = CGImageCreate(width, height, 8, 32, width * 4, ctx->ColorSpace,
+				kCGBitmapByteOrderDefault, provider, NULL, true, kCGRenderingIntentDefault);
+
+			CGDataProviderRelease(provider);
+			CFRelease(data);
+			delete[] pixelData;
+			return imageRef;
+		@}
+	}
+
+	extern(iOS||OSX)
+	class NativeSurface : CoreGraphicsSurface
+	{
+
+		IntPtr _cgContext = IntPtr.Zero;
+
+		public void Begin(IntPtr cgContext, float pixelsPerPoint)
+		{
+			// The CGContext is already scaled
+			_pixelsPerPoint = 1.0f;//pixelsPerPoint;
+			_cgContext = cgContext;
+			SetCGContext(_context, _cgContext);
+		}
+
+		public override void Begin( DrawContext dc, framebuffer fb, float pixelsPerPoint )
+		{
+			throw new NotSupportedException();
+		}
+
+		public override void End()
+		{
+			_cgContext = IntPtr.Zero;
+		}
+
+		protected override void VerifyBegun()
+		{
+			if (_cgContext == IntPtr.Zero)
+				throw new Exception("NativeSurface.Begin was not called");
+		}
+
+		protected override void PrepareImageFill( ImageFill img ) { }
+
+		[Foreign(Language.CPlusPlus)]
+		static void SetCGContext(IntPtr cp, IntPtr cgContext)
+		@{
+			auto ctx = (CGLib::Context*)cp;
+			ctx->Context = (CGContextRef)cgContext;
+		@}
+	}
+
+	[Require("Xcode.Framework","CoreGraphics")]
+	[Require("Source.Include", "CoreGraphicsLib.h")]
+	[Require("Xcode.Framework","GLKit")]
+	[extern(OSX) Require("Source.Include","XliPlatform/GL.h")]
+	[extern(iOS) Require("Source.Include","OpenGLES/ES2/gl.h")]
+	extern(iOS||OSX)
+	abstract class CoreGraphicsSurface : Surface
+	{
+		protected float _pixelsPerPoint;
+		protected IntPtr _context;
+
+		public CoreGraphicsSurface()
+		{
+			_context = NewContext();
+		}
+
+		public override void Dispose()
+		{
+			foreach (var item in _gradientBrushes)
+				ReleaseGradient(_context, item.Value);
+			_gradientBrushes.Clear();
+
+			foreach (var item in _imageBrushes)
+			{
+				ReleaseImage(_context, item.Value);
+			}
+			_imageBrushes.Clear();
+
+			DeleteContext(_context);
+			_context = IntPtr.Zero;
+		}
+
+		protected void VerifyCreated()
+		{
+			if (_context == IntPtr.Zero)
+				throw new Exception( "Object disposed" );
+		}
+
+		protected abstract void VerifyBegun();
+
+		[Foreign(Language.CPlusPlus)]
+		static IntPtr NewContext()
+		@{
+			auto c = new CGLib::Context();
+			c->ColorSpace = CGColorSpaceCreateWithName(kCGColorSpaceGenericRGB);
+			return c;
+		@}
+
+		[Foreign(Language.CPlusPlus)]
+		static void DeleteContext(IntPtr cp)
+		@{
+			auto ctx = (CGLib::Context*)cp;
+			CGColorSpaceRelease(ctx->ColorSpace);
+
+			if (ctx->Context)
+				ctx->ReleaseContext();
+			delete ctx;
 		@}
 
 		float2 PixelFromPoint( float2 point )
@@ -321,41 +425,9 @@ namespace Fuse.Drawing
 			CGFloatDeleteArray(colors);
 			CGFloatDeleteArray(offsets);
 		}
-		
-		Dictionary<Brush, IntPtr> _imageBrushes = new Dictionary<Brush,IntPtr>();
-		/*
-			This approach is really bad now. When Erik refactors ImageSource we shouldn't
-			need to do the round-trip to GL.
-			We might end up not supporting ImageFill until this is fixed, but this is useful
-			here now to complete/test the sizing/tiling support.
-		*/
-		void PrepareImageFill( ImageFill img )
-		{
-			var src = img.Source;
-			var tex = src.GetTexture();
-			if (tex == null) //probably still loading
-				return;
-			
-			IntPtr imageRef;
 
-			if defined(OSX)
-			{
-				imageRef = LoadImage(_context, (int)tex.GLTextureHandle, src.PixelSize.X, src.PixelSize.Y );
-			}
-			else
-			{
-				var fb = FramebufferPool.Lock( src.PixelSize, Uno.Graphics.Format.RGBA8888, false );
-
-				//TODO: this is not entirely correct since _drawContext could be null now -- but it isn't
-				//in any of our use cases, but the contract certainly allows for it
-				_drawContext.PushRenderTarget(fb);
-				CoreGraphicsDrawHelper.Singleton.DrawImageFill(tex);
-				imageRef = LoadImagePoor(_context, src.PixelSize.X, src.PixelSize.Y );
-				FramebufferPool.Release(fb);
-				_drawContext.PopRenderTarget();
-			}
-			_imageBrushes[img] = imageRef;
-		}
+		protected Dictionary<Brush, IntPtr> _imageBrushes = new Dictionary<Brush,IntPtr>();
+		protected abstract void PrepareImageFill( ImageFill img );
 
 		[Foreign(Language.CPlusPlus)]
 		extern(OSX) static IntPtr LoadImage(IntPtr cp, int glTexture, int width, int height)
@@ -387,26 +459,7 @@ namespace Fuse.Drawing
 			delete[] tempRow;
 			return imageRef;
 		@}
-		
-		[Foreign(Language.CPlusPlus)]
-		static IntPtr LoadImagePoor(IntPtr cp, int width, int height)
-		@{
-			auto ctx = (CGLib::Context*)cp;
-			int size = width * height * 4;
-			auto pixelData = new UInt8[size];
-			glReadPixels(0,0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, pixelData);
-			
-			CFDataRef data = CFDataCreate(NULL, pixelData, size);
-			CGDataProviderRef provider = CGDataProviderCreateWithCFData(data);
-			CGImageRef imageRef = CGImageCreate(width, height, 8, 32, width * 4, ctx->ColorSpace,
-				kCGBitmapByteOrderDefault, provider, NULL, true, kCGRenderingIntentDefault); 
 
-			CGDataProviderRelease(provider);
-			CFRelease(data);
-			delete[] pixelData;
-			return imageRef;
-		@}
-		
 		public override void Unprepare( Brush brush )
 		{
 			IntPtr ip;
