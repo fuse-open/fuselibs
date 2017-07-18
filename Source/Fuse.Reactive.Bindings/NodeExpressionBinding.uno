@@ -3,7 +3,6 @@ using Uno.UX;
 
 namespace Fuse.Reactive
 {
-	//TODO: this is hacky. clean it up, hide it, make simple interface to just evaluate an expression once
 	public sealed class NodeExpressionBinding : IContext, IDisposable
 	{
 		IExpression _expr;
@@ -15,14 +14,22 @@ namespace Fuse.Reactive
 		public NodeExpressionBinding( IExpression expr, Node node, IListener listener,
 			NameTable nameTable ) 
 		{
+			if (expr == null || node == null || listener == null || nameTable == null)
+				throw new Exception( "Invalid params" );
+				
 			_expr = expr;
 			_listener = listener;
 			_node = node;
 			_nameTable = nameTable;
+			
+			UpdateManager.AddDeferredAction( CompleteInit );
 		}
 		
-		public void Init()
+		void CompleteInit()
 		{
+			if (_expr == null) //already disposed
+				return;
+				
 			_sub = _expr.Subscribe(this, _listener);
 		}
 		

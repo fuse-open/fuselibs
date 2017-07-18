@@ -41,8 +41,7 @@ namespace Fuse
 		}
 
 		/** Creates an IObject implementation from an `IArray` of `NameValuePair`.
-			The array doesn't need to contain exclusively `NameValuePair` instances. Objects of other
-			types are ignored.
+			If the items are not `NameValuePair` instances they will be added with an indexed key value (unspecified).
 		*/
 		public static IObject ObjectFromArray(IArray list)
 		{
@@ -52,6 +51,8 @@ namespace Fuse
 				var nvp = list[i] as NameValuePair;
 				if (nvp != null)
 					dict.Add(nvp.Name, nvp.Value);
+				else
+					dict.Add("" + i, list[i]);
 			}
 			return new Json.Object(dict);
 		}

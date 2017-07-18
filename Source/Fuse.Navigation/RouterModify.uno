@@ -150,6 +150,7 @@ namespace Fuse.Navigation
 		
 		NodeExpressionBinding _pathSub;
 
+		//TODO: how to unroot actions?
 		/*protected override void OnUnrooted()
 		{
 			DisposePathSub();
@@ -162,7 +163,6 @@ namespace Fuse.Navigation
 			{
 				DisposePathSub();
 				_pathSub = new NodeExpressionBinding(Path, n, this, _nameTable);
-				_pathSub.Init();
 			}
 			else
 			{
@@ -205,7 +205,11 @@ namespace Fuse.Navigation
 						string param = null;
 						if (i+1 < iarr.Length)
 						{
-							param = Json.Stringify( iarr[i+1], true);
+							object va = iarr[i+1];
+							//TODO: awaiting changes that would make this unnecessary
+							if (va is IArray)
+								va = NameValuePair.ObjectFromArray( (IArray)va );
+							param = Json.Stringify( va, true);
 						}
 						
 						route =  new Route(path, param, route);
