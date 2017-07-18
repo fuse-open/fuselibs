@@ -1,5 +1,8 @@
 version: '{build}'
 
+init:
+  - ps: '[System.IO.File]::AppendAllText("C:\Windows\System32\drivers\etc\hosts", "`n93.184.221.200  az664292.vo.msecnd.net")'
+
 install:
   - Stuff\stuff install Stuff
   - ps: Invoke-WebRequest http://downloads.fdossena.com/geth.php?r=mesa-latest -OutFile mesa.zip
