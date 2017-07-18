@@ -150,12 +150,11 @@ namespace Fuse.Navigation
 		
 		NodeExpressionBinding _pathSub;
 
-		//TODO: how to unroot actions?
-		/*protected override void OnUnrooted()
+		protected override void OnUnrooted()
 		{
 			DisposePathSub();
 			base.OnUnrooted();
-		}*/
+		}
 		
 		protected override void Perform(Node n)
 		{
@@ -196,6 +195,7 @@ namespace Fuse.Navigation
 					var iarr = value as IArray;
 					for (int i= ((iarr.Length-1)/2)*2; i>=0; i -= 2)
 					{
+						debug_log "P: " + iarr[i];
 						string path;
 						if (!Marshal.TryToType<string>(iarr[i], out path))
 						{
@@ -206,6 +206,7 @@ namespace Fuse.Navigation
 						if (i+1 < iarr.Length)
 						{
 							object va = iarr[i+1];
+							debug_log "V: " + va;
 							//TODO: awaiting changes that would make this unnecessary
 							if (va is IArray)
 								va = NameValuePair.ObjectFromArray( (IArray)va );

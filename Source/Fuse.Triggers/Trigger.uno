@@ -777,8 +777,19 @@ namespace Fuse.Triggers
 		{
 			Stop(true);
 			CleanupState();
+			UnrootActions();
 
 			base.OnUnrooted();
 		}
+		
+		void UnrootActions()
+		{
+			if (_actions == null)
+				return;
+				
+			for (int i=0; i < _actions.Count; ++i)
+				_actions[i].Unroot();
+		}
+		
 	}
 }

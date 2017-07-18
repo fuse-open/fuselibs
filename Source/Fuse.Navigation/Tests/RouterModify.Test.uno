@@ -47,6 +47,10 @@ namespace Fuse.Navigation.Test
 				p.gotoInner.Pulse();
 				root.StepFrame();
 				Assert.AreEqual( "four?{\"id\":13}/inner?{\"a\":1,\"b\":2}", p.router.GetCurrentRoute().Format() );
+				
+				p.gotoEmpty.Pulse();
+				root.StepFrame();
+				Assert.AreEqual( "one/two", p.router.GetCurrentRoute().Format() );
 			}
 		}
 		
