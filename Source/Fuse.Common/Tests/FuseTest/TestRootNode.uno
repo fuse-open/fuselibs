@@ -205,15 +205,15 @@ namespace FuseTest
 				_dc = new DrawContext(_rootViewport);
 			
 			DrawManager.PrepareDraw(_dc);
-
-			if defined(FUSELIBS_DEBUG_DRAW_RECTS)
-				DrawRectVisualizer.StartFrame();
 			
 			//at the moment this is the quickest way to fake the context, by creating a real one. Otherwise
 			//we need to make `DrawContext` mockable and replace it in this test -- though something would still
 			//need to make `draw` statements work.
 			var fb = FramebufferPool.Lock( (int2)_rootViewport.PixelSize, Uno.Graphics.Format.RGBA8888, true);
 			_dc.PushRenderTarget(fb);
+
+			if defined(FUSELIBS_DEBUG_DRAW_RECTS)
+				DrawRectVisualizer.StartFrame(_dc.RenderTarget);
 			
 			_rootViewport.Draw(_dc);
 			
@@ -239,7 +239,7 @@ namespace FuseTest
 			_dc.Clear(float4(0),1);
 
 			if defined(FUSELIBS_DEBUG_DRAW_RECTS)
-				DrawRectVisualizer.StartFrame();
+				DrawRectVisualizer.StartFrame(_dc.RenderTarget);
 
 			_rootViewport.Draw(_dc);
 

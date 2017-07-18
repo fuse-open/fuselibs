@@ -64,13 +64,17 @@ namespace Fuse.Nodes
 	{
 		static readonly DrawRectVisualizer _instance = new DrawRectVisualizer();
 
+		RenderTarget _renderTarget;
+
 		readonly List<DrawRect> _drawRects = new List<DrawRect>();
+
+		public static RenderTarget RenderTarget { get { return _instance._renderTarget; } }
 
 		public static IEnumerable<DrawRect> DrawRects { get { return _instance._drawRects; } }
 
-		public static void StartFrame()
+		public static void StartFrame(RenderTarget rt)
 		{
-			_instance._drawRects.Clear();
+			_instance.StartFrameImpl(rt);
 		}
 
 		public static void EndFrameAndVisualize(DrawContext dc)
@@ -81,6 +85,12 @@ namespace Fuse.Nodes
 		public static void Append(DrawRect r)
 		{
 			_instance._drawRects.Add(r);
+		}
+
+		void StartFrameImpl(RenderTarget rt)
+		{
+			_renderTarget = rt;
+			_drawRects.Clear();
 		}
 
 		void EndFrameAndVisualizeImpl(DrawContext dc)
@@ -157,6 +167,7 @@ namespace Fuse.Nodes
 				dc.PopScissor();
 			}
 
+			_renderTarget = null;
 			_drawRects.Clear();
 		}
 	}

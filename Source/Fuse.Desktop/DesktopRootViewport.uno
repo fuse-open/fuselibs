@@ -52,7 +52,7 @@ namespace Fuse.Desktop
 				Internal.DrawManager.PrepareDraw(_dc);
 
 				if defined(FUSELIBS_DEBUG_DRAW_RECTS)
-					DrawRectVisualizer.StartFrame();
+					DrawRectVisualizer.StartFrame(_dc.RenderTarget);
 
 				EnsureSortedZOrder();
 

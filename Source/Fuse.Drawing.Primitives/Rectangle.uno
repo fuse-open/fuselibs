@@ -371,7 +371,7 @@ namespace Fuse.Drawing.Primitives
 				Smoothness: smoothness;
 			};
 
-			if (defined(FUSELIBS_DEBUG_DRAW_RECTS) && !dc.IsCaching)
+			if (defined(FUSELIBS_DEBUG_DRAW_RECTS) && dc.RenderTarget == DrawRectVisualizer.RenderTarget)
 			{
 				float2[] drawRectInputVerts = new[]
 				{
