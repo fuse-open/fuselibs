@@ -21,6 +21,6 @@
 		<GotoRoute Path=" 'four', (id: 13), 'inner', (a:1,b:2) "/>
 	</Timeline>
 	<Timeline ux:Name="gotoEmpty">
-		<GotoRoute Path=" 'one', null, 'two', null "/>
+		<GotoRoute Path=" 'one', 'two' "/>
 	</Timeline>
 </Panel>
