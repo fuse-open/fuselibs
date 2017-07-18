@@ -19,6 +19,7 @@
     "Fuse.Controls.Test",
     "Fuse.Controls",
     "Fuse.Desktop",
+    "Fuse.Drawing.Primitives",
     "Fuse.Elements.Shared",
     "Fuse.Elements.Test",
     "Fuse.Elements",
