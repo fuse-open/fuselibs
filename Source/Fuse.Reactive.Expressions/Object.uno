@@ -15,13 +15,13 @@ namespace Fuse.Reactive
 	{
 		protected override void OnNewArguments(Argument[] args, IListener listener)
 		{
-            var dict = new Dictionary<string, object>();
-            for (var i = 0; i < args.Length; i++)
-            {
-                var nvp = args[i].Value as Fuse.NameValuePair;
-                if (nvp != null)
-                    dict.Add(nvp.Name, nvp.Value);
-            }
+			var dict = new Dictionary<string, object>();
+			for (var i = 0; i < args.Length; i++)
+			{
+				var nvp = args[i].Value as Fuse.NameValuePair;
+				if (nvp != null)
+					dict.Add(nvp.Name, nvp.Value);
+			}
 			listener.OnNewData(this, new Json.Object(dict));
 		}
 	}

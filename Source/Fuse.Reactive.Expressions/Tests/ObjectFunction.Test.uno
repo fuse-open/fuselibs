@@ -15,7 +15,7 @@ namespace Fuse.Reactive.Test
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
 				Assert.AreEqual("10", p.ta.Value);
-                Assert.AreEqual("lol", p.tb.Value);
+				Assert.AreEqual("lol", p.tb.Value);
 			}
 		}
 		
