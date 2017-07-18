@@ -380,7 +380,7 @@ namespace Fuse.Controls
 			Goto( RelativeToAbsolutePosition(position) );
 		}
 		
-		public float2 RelativeToAbsolutePosition( float2 pos )
+		internal float2 RelativeToAbsolutePosition( float2 pos )
 		{
 			return MinScroll + (MaxScroll - MinScroll) * pos;
 		}
