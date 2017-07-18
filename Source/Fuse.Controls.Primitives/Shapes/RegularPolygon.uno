@@ -5,7 +5,6 @@ using Uno.UX;
 
 namespace Fuse.Controls
 {
-	[Obsolete]
 	/**
 		Draws a polygon with a number of equal length sides.
 	*/
