@@ -22,8 +22,7 @@ namespace FuseJS.Test
 			var root = TestRootPanel.CreateWithChild(e);
 			root.StepFrameJS();
 			e.CallTest.Perform();
-			for(var i = 0; i<JS_FRAMES_TO_STEP; i++)
-				root.StepFrameJS();
+			root.MultiStepFrameJS(JS_FRAMES_TO_STEP);
 			Assert.AreEqual("True", e.output.Value);
 		}
 
@@ -35,8 +34,7 @@ namespace FuseJS.Test
 			var root = TestRootPanel.CreateWithChild(e);
 			root.StepFrameJS();
 			e.CallTest.Perform();
-			for(var i = 0; i<JS_FRAMES_TO_STEP; i++)
-				root.StepFrameJS();
+			root.MultiStepFrameJS(JS_FRAMES_TO_STEP);
 			Assert.AreEqual("True", e.output.Value);
 		}
 
@@ -48,8 +46,7 @@ namespace FuseJS.Test
 			var root = TestRootPanel.CreateWithChild(e);
 			root.StepFrameJS();
 			e.CallTest.Perform();
-			for(var i = 0; i<JS_FRAMES_TO_STEP; i++)
-				root.StepFrameJS();
+			root.MultiStepFrameJS(JS_FRAMES_TO_STEP);
 			Assert.AreEqual("True", e.output.Value);
 		}
 
@@ -63,8 +60,7 @@ namespace FuseJS.Test
 			var root = TestRootPanel.CreateWithChild(e);
 			root.StepFrameJS();
 			e.CallTest.Perform();
-			for(var i = 0; i<JS_FRAMES_TO_STEP; i++)
-				root.StepFrameJS();
+			root.MultiStepFrameJS(JS_FRAMES_TO_STEP);
 			Assert.AreEqual("True", e.output.Value);
 		}
 
@@ -76,8 +72,7 @@ namespace FuseJS.Test
 			var root = TestRootPanel.CreateWithChild(e);
 			root.StepFrameJS();
 			e.CallTest.Perform();
-			for(var i = 0; i<JS_FRAMES_TO_STEP; i++)
-				root.StepFrameJS();
+			root.MultiStepFrameJS(JS_FRAMES_TO_STEP);
 			Assert.AreEqual("True", e.output.Value);
 		}
 	}
