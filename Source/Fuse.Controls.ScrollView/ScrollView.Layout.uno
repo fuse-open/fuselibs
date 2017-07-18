@@ -238,7 +238,7 @@ namespace Fuse.Controls
 		/**
 			The distance from the visible view area start or end for the provided position.
 		*/
-		protected float2 DistanceFromView(float2 position, DistanceFromViewTarget target)
+		internal float2 DistanceFromView(float2 position, DistanceFromViewTarget target)
 		{
 			float x = 0;
 			float y = 0;
