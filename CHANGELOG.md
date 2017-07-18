@@ -88,6 +88,9 @@
 
 # 1.0
 
+### FuseJS
+- Fixed a bug where disposing a JavaScript tag that has called the findData-method could lead to a crash.
+
 ## 1.0.4
 
 ### GraphicsView
