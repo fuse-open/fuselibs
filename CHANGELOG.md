@@ -2,6 +2,10 @@
 
 # 1.2
 
+## Fuse.Drawing.Surface
+- Added support for the Surface API in native UI for iOS. Meaning that `Curve`, `VectorLayer` and charting will work inside a `NativeViewHost`.
+
+
 ## 1.2.1
 
 ### Fuse.Elements
