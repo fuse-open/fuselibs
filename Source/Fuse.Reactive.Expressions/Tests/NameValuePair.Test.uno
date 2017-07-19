@@ -21,8 +21,8 @@ namespace Fuse.Reactive.Test
 			e.flip.Perform();
 			root.StepFrameJS();
 			Assert.AreEqual("(bar: fooTrue)", e.t.Value);
-            Assert.AreEqual("123", e.tbar.Value);
-            Assert.AreEqual("456", e.tfoo.Value);
+			Assert.AreEqual("123", e.tbar.Value);
+			Assert.AreEqual("456", e.tfoo.Value);
 		}
-    }
+	}
 }
