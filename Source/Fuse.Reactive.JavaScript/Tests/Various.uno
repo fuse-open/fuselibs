@@ -12,18 +12,6 @@ namespace Fuse.Reactive.Test
 	public class VariousTest : TestBase
 	{
 		[Test]
-		public void NameValuePair()
-		{
-			var e = new UX.NameValuePair();
-			var root = TestRootPanel.CreateWithChild(e);
-			root.StepFrameJS();
-			Assert.AreEqual("(boo: False)", e.t.Value);
-			e.flip.Perform();
-			root.StepFrameJS();
-			Assert.AreEqual("(bar: fooTrue)", e.t.Value);
-		}
-
-		[Test]
 		public void FunctionAsDataContext()
 		{
 			var e = new UX.FunctionAsDataContext();
