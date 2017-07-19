@@ -196,8 +196,13 @@ namespace Fuse.Reactive
 				ClearDiagnostic();
 				DisposeCollectionObservableSub();
 				DisposeIndexSub();
-				_colSub.Dispose();
-				_indexSub.Dispose();
+
+				if (_colSub != null)
+					_colSub.Dispose();
+
+				if (_indexSub != null)
+					_indexSub.Dispose();
+
 				_colSub = null;
 				_indexSub = null;
 				_collection = null;

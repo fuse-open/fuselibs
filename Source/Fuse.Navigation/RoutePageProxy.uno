@@ -65,21 +65,23 @@ namespace Fuse.Navigation
 		}
 		List<Level> _levels = new List<Level>();
 		
+		/** `Init()` must be called to finish initialization. */
 		public RoutePageProxy( Visual source, ProgressUpdated progressUpdated )
 		{
 			_progressUpdated = progressUpdated;
-			Init(source);
+			_source = source;
 		}
 		
+		/** `Init()` must be called to finish initialization. */
 		public RoutePageProxy( Visual source, ActiveChanged activeChanged )
 		{
 			_activeChanged = activeChanged;
-			Init(source);
-		}
-		
-		void Init( Visual source )
-		{
 			_source = source;
+		}
+
+		/** Call after configuration is completed. This could start the actual registration and messaging */
+		public void Init()
+		{
 			var level = new Level{
 				PageProxy = new NavigationPageProxy(),
 			};

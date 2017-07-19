@@ -11,6 +11,29 @@ namespace Fuse.Reactive.Test
 	public class EachTest : TestBase
 	{
 		[Test]
+		public void DoubleSubscribe()
+		{
+			var e = new UX.Each.DoubleSubscribe();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.StepFrameJS();
+				Assert.AreEqual(6, e.sp.Children.Count);
+				e.sw.Value = true;
+				root.StepFrameJS();
+				Assert.AreEqual(10, e.sp.Children.Count);
+				e.sw.Value = false;
+				root.StepFrameJS();
+				Assert.AreEqual(6, e.sp.Children.Count);
+
+				// Weridly, second time it failed to add the items back
+				// https://github.com/fusetools/fuselibs-public/issues/227
+				e.sw.Value = true;
+				root.StepFrameJS();
+				Assert.AreEqual(10, e.sp.Children.Count);
+			}
+		}
+
+		[Test]
 		public void Basic()
 		{
 			var e = new UX.Each.Basic();

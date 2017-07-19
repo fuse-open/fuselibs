@@ -89,6 +89,7 @@ namespace Fuse.Navigation
 			base.OnRooted();
 			_proxy = new RoutePageProxy(Parent, ProgressUpdated);
 			_proxy.Path = Path;
+			_proxy.Init();
 		}
 		
 		protected override void OnUnrooted()

@@ -318,18 +318,20 @@ namespace Fuse.Reactive
 			}
 		}
 		
-		bool IsListeningItems { get { return _itemsSubscription != null; } }
+		
 		
 		protected internal void OnItemsChanged()
 		{
 			if (!IsRootingStarted) return;
+
+			DisposeItemsSubscription();	
 
 			RemoveAll();
 
 			var obs = _items as IObservable;
 			if (obs != null)
 			{
-				if (_itemsSubscription != null) _itemsSubscription.Dispose();
+				StartListeningItems();
 				_itemsSubscription = obs.Subscribe(this);
 			}
 			else

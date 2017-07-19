@@ -149,14 +149,14 @@ namespace Fuse.Reactive.Test
 		public void FindData()
 		{
 			var e = new UX.FindData();
-			var root = TestRootPanel.CreateWithChild(e);
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.StepFrameJS();
 
-			root.StepFrameJS();
-
-			Assert.AreEqual("correct", e.t1.Value);
-			Assert.AreEqual("correct", e.t2.Value);
-			Assert.AreEqual("correct", e.t3.Value);
-
+				Assert.AreEqual("correct", e.t1.Value);
+				Assert.AreEqual("correct", e.t2.Value);
+				Assert.AreEqual("correct", e.t3.Value);
+			}
 		}
 
 		// Stuff needed by the OnValueChanged test
