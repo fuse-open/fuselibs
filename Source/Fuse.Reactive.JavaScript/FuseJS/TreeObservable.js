@@ -30,8 +30,10 @@ TreeObservable.removeAt = function() {
 }
 
 TreeObservable.diff = function(newState, config) {
+	var t = this;
+
 	if (config === undefined) { config = {} }
-	updatePath([], this, newState);
+	updatePath([], t, newState);
 
 	function updatePath(path, oldState, newState)
 	{
