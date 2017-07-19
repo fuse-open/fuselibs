@@ -25,8 +25,8 @@ namespace Fuse.Scripting.V8
 
 		~Function()
 		{
-			var cxt = _context == null ? default(Simple.JSContext) : _context._context;
-			_function.AsValue().Release(cxt);
+			if (_context != null && !_context.IsDisposed)
+				_function.AsValue().Release(_context._context);
 		}
 
 		public override object Call(params object[] args)

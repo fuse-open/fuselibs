@@ -463,7 +463,6 @@ namespace Fuse.Scripting.Test
 			}
 		}
 
-		[Ignore("https://github.com/fusetools/fuselibs-public/issues/237")]
 		[Test]
 		public void ExternalSameObject()
 		{
