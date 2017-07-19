@@ -26,8 +26,8 @@ namespace Fuse.Scripting.V8
 
 		~Object()
 		{
-			var cxt = _context == null ? default(Simple.JSContext) : _context._context;
-			_object.AsValue().Release(cxt);
+			if (_context != null && !_context.IsDisposed)
+				_object.AsValue().Release(_context._context);
 		}
 
 		public override object this[string key]

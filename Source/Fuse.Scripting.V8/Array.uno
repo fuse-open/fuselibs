@@ -25,8 +25,8 @@ namespace Fuse.Scripting.V8
 
 		~Array()
 		{
-			var cxt = _context == null ? default(Simple.JSContext) : _context._context;
-			_array.AsValue().Release(cxt);
+			if (_context != null && !_context.IsDisposed)
+				_array.AsValue().Release(_context._context);
 		}
 
 		public override object this[int index]

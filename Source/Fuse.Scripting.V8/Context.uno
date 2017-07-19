@@ -18,6 +18,7 @@ namespace Fuse.Scripting.V8
 		internal Function _instanceOf;
 		int _vmDepth;
 		internal Exception _cachedException;
+		internal bool IsDisposed { get; private set; }
 
 		static extern(CIL) Context()
 		{
@@ -140,6 +141,7 @@ namespace Fuse.Scripting.V8
 				_debugger.Dispose();
 				_debugger = null;
 			}
+			IsDisposed = true;
 			_context.Release();
 			_context = default(Simple.JSContext);
 		}
