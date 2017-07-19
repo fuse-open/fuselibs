@@ -1,5 +1,8 @@
 # Unreleased
 
+## Fuse.Drawing.Surface
+- Added support for the Surface API in native UI for iOS. Meaning that `Curve`, `VectorLayer` and charting will work inside a `NativeViewHost`.
+
 ## WrapPanel
 - Added possibility to use `RowAlignment` to align the elements in the major direction of the `WrapPanel` as well as in the minor.
 
