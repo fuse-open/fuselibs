@@ -11,7 +11,6 @@ namespace Fuse.Gestures.Test
 	public class GestureTest : TestBase
 	{
 		[Test]
-		[Ignore("https://github.com/fusetools/fuselibs-public/issues/247")]
 		public void Layer()
 		{	
 			var p = new UX.Gesture.Layer();
@@ -29,7 +28,7 @@ namespace Fuse.Gestures.Test
 				//swipe away the right EgeNavigator panel
 				root.PointerSwipe(float2(810,50), float2(950,50), 100);
 				root.StepFrame(5);//stabilize
-				Assert.AreEqual(null, p.edge.Active);
+				Assert.AreEqual(p.edgeMain, p.edge.Active);
 
 				//swipe the RangeControl
 				root.PointerSwipe(float2(600,10), float2(400,10), 100);
