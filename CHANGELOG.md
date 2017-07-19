@@ -1,5 +1,8 @@
 # Unreleased
 
+## WrapPanel
+- Added possibility to use `RowAlignment` to align the elements in the major direction of the `WrapPanel` as well as in the minor.
+
 ## Triggers
 - Several triggers were modified to properly look up the tree for a target node, whereas previously they may have only checked the immediate parent. The affected triggers are `BringIntoView`, `Show`,`Hide`,`Collapse`, `Toggle`, `TransitionState`, `Callback`, `CancelInteractions`, `Stop`, `Play`, `Resume`, `Pause`, `TransitionLayout`, `BringToFront`, `SendToBack`, `EvaluateJS`, `RaiseUserEvent`, `ScrollTo`. This should only change previous behavior if the action was previously configured incorrectly and did nothing or already found the wrong node. Many of the actions have a `Target` to target a specific node, or `TargetNode` to specify where the search begins.
 - Changed/fixed `Trigger` to provide the trigger itself as the target node to a `TriggerAction`, previously it'd provide the parent of the trigger. The old behaviour was due to an old tree structure. This should have been updated a long time ago. This allows actions to reference the trigger in which they are contained. If you've created a custom Uno `TriggerAction` and need the old behaviour modify your `Perform(Node target)` to use `target.Parent`. Triggers should in general scan upwards from the target node.

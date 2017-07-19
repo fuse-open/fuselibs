@@ -79,17 +79,6 @@ namespace Fuse.Layouts
 			}
 		}
 		
-		OptionalSimpleAlignment EffectiveRowAlignment
-		{
-			get
-			{
-				if (IsVert)
-					return AlignmentHelpers.GetHorizontalSimpleAlignOptional(RowAlignment);
-				else
-					return AlignmentHelpers.GetVerticalSimpleAlignOptional(RowAlignment);
-			}
-		}
-		
 		public string ID { get; set; }
 
 		internal override float2 GetContentSize(
@@ -135,8 +124,14 @@ namespace Fuse.Layouts
 			var placements = new float4[elements.Count];
 			//minorMaxSize in each major row, assinged per element
 			var minorSizes = new float[elements.Count];
+			// save the row each element is on
+			var elementOnRow = new int[elements.Count];
+			// save the available space for each row
+			var majorRest = new float[elements.Count];
 			//where this row starts
 			int majorStart = 0;
+			// current row
+			int currentRow = 0;
 			
 			for (int i = 0; i < elements.Count;++i)
 			{
@@ -166,12 +161,15 @@ namespace Fuse.Layouts
 					minorMaxSize = 0;
 					majorUsed = 0;
 					majorStart = i;
+					currentRow++;
 				}
 				
 				placements[i].X = majorUsed;
 				placements[i].Y = minorUsed;
 				minorMaxSize = Math.Max(minorMaxSize, cminorSize);
 				majorUsed += cmajorSize;
+				elementOnRow[i] = currentRow;
+				majorRest[currentRow] = majorAvail - majorUsed;
 			}
 
 			//final bits
@@ -182,7 +180,8 @@ namespace Fuse.Layouts
 
 			if (doArrange)
 			{	
-				var sa = EffectiveRowAlignment;
+				var saMin = IsVert ? AlignmentHelpers.GetHorizontalSimpleAlignOptional(RowAlignment) : AlignmentHelpers.GetVerticalSimpleAlignOptional(RowAlignment);
+				var saMaj = IsVert ? AlignmentHelpers.GetVerticalSimpleAlignOptional(RowAlignment) : AlignmentHelpers.GetHorizontalSimpleAlignOptional(RowAlignment);
 				var elp = lp.CloneAndDerive();
 				for (int i=0; i < elements.Count; ++i)
 				{
@@ -193,7 +192,7 @@ namespace Fuse.Layouts
 
 					var placement = placements[i];
 
-					switch (sa)
+					switch (saMin)
 					{
 						case OptionalSimpleAlignment.Begin:
 							break;
@@ -206,6 +205,20 @@ namespace Fuse.Layouts
 						case OptionalSimpleAlignment.None:
 							//stretchs to fill
 							placement.W = minorSizes[i];
+							break;
+					}
+
+					switch (saMaj)
+					{
+						case OptionalSimpleAlignment.Begin:
+							break;
+						case OptionalSimpleAlignment.End:
+							placement.X += majorRest[elementOnRow[i]];
+							break;
+						case OptionalSimpleAlignment.Center:
+							placement.X += majorRest[elementOnRow[i]] / 2;
+							break;
+						case OptionalSimpleAlignment.None:
 							break;
 					}
 					
