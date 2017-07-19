@@ -17,6 +17,15 @@
 	if (self.onDrawCallback != NULL)
 	{
 		CGContextTranslateCTM(ctx, self.translateX, self.translateY);
+
+		CGAffineTransform t = CGContextGetCTM(ctx);
+
+		CGFloat scaleX = sqrt((t.a * t.a) + (t.b + t.b));
+		CGFloat scaleY = sqrt((t.c * t.c) + (t.d * t.d));
+
+		CGAffineTransform scale = CGAffineTransformInvert(CGAffineTransformMakeScale(scaleX, scaleY));
+		CGContextConcatCTM(ctx, scale);
+
 		self.onDrawCallback(ctx);
 	}
 }
