@@ -4,7 +4,13 @@ using Uno.Threading;
 
 namespace Fuse.Reactive
 {
-	public abstract class ValueMirror: IRaw
+	/** Represents a raw JS object */
+	interface IRaw
+	{
+		object Raw { get; }
+	}
+
+	abstract class ValueMirror: SubscriptionSubject, IRaw
 	{
 		public abstract void Unsubscribe();
 
@@ -23,7 +29,7 @@ namespace Fuse.Reactive
 		}
 	}
 
-	public abstract class ListMirror: ValueMirror, IArray
+	abstract class ListMirror: ValueMirror, IArray
 	{
 		public abstract int Length { get; }
 		public abstract object this[int index] { get; }

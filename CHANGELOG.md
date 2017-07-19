@@ -19,6 +19,15 @@
 - The classes `Vector2`, `Vector3` and `Vector4` in `Fuse.Reactive` are now removed and replaced with the general purpose, variable-argument version `Vector` instead. This ensures vectors of any length are treated the same way. This is backwards incompatible in the unlikely case of having used these classes explicitly from Uno code.
 - Added support for name-value pair syntax: `name: value`. Can be used for JSON-like object notation and named arguments in custom functions. Any vector of name-value pairs is interpreted as an `IObject`, e.g. `{name: 'Joe', apples: 10}` is an object.
 
+## JavaScript Reactive Modules API
+- The Reactive Modules API is a set of functions on the `module` variable in `<JavaScript>` tags that notify the data context that an exported value has changed. This allows reactive programming without using Observables.
+  * `module.set(.. path .., value)` changes the value at the given `path`  in the `module.exports` to `value`. For example `module.set("foo", "bar", 3)` is equivalent to setting `exports.foo.bar = 3`, while notifying the data context about the change.
+
+## Fuse.Reactive cleanup (Uno-level)
+- The `Fuse.IRaw` interface removed (now internal to the `Fuse.Reactive.JavaScript` package). Had no practical public use.
+- The `Fuse.Reactive.ListMirror` class is no longer public. This was never intended to be public and has no practical public application.
+- Added detailed docs for many of the interfaces in the `Fuse.Reactive` namespace.
+
 ## Templates
 - Added `Identity` and `IdentityKey` to `Each`. This allows created visuals to be reused when replaced with `replaceAt` or `replaceAll` in an Observable.
 - Triggers may now use templates which will be instantiated and added to the parent when active (like a node child).

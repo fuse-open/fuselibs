@@ -181,7 +181,11 @@ namespace Fuse.Reactive
 			{
 				if (_subscription != null)
 				{
-					if (Write) _subscription.SetExclusive(Target.GetAsObject());
+					if (Write) 
+					{
+						var sub = _subscription as ISubscription;
+						if (sub != null) sub.SetExclusive(Target.GetAsObject());
+					}
 				}
 				else if (CanWriteBack)
 				{
@@ -190,7 +194,7 @@ namespace Fuse.Reactive
 			}
 		}
 
-		ISubscription _subscription;
+		IDisposable _subscription;
 
 		internal override void NewValue(object value)
 		{
@@ -203,13 +207,14 @@ namespace Fuse.Reactive
 			if (Marshal.Is(value, Target.PropertyType))
 			{
 				// Note - this case is required in addition to the final 'else', because if the target
-				// property accepts Observable, we should not create a subscription, but pass it
+				// property accepts the observable object, we should not create a subscription, but pass it
 				// directly to the target
 
 				PushValue(value);
 			}
 			else if (Marshal.Is(value, typeof(IObservable)))
 			{
+				// Special treatment for the IObservable interface - see docs on IObservable for rationale
 				var obs = (IObservable)value;
 				_subscription = obs.Subscribe(this);
 			}

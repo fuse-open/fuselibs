@@ -4,7 +4,7 @@ using Fuse.Scripting;
 
 namespace Fuse.Reactive
 {
-	class ModuleInstance: DiagnosticSubject
+	partial class ModuleInstance: DiagnosticSubject
 	{
 		readonly ThreadWorker _worker;
 		readonly JavaScript _js;
@@ -25,7 +25,17 @@ namespace Fuse.Reactive
 		void Evaluate()
 		{
 			_js.ScriptModule.Dependencies = _deps;
-			_dc = _worker.Reflect(EvaluateExports());
+			
+			var exports = EvaluateExports();
+
+			// DecorateModule() already set _dc to the default `exports` object, 
+			// so this is done in case the user replaced the `module.exports` object
+			if (_dc is IRaw && ((IRaw)_dc).Raw != exports)
+			{
+				ValueMirror.Unsubscribe(_dc);
+				_dc = _worker.Reflect(exports);
+			}
+
 			UpdateManager.PostAction(SetDataContext);
 		}
 
@@ -49,6 +59,8 @@ namespace Fuse.Reactive
 				_moduleResult.Dispose();
 				_moduleResult = null;
 			}
+
+			
 		}
 
 		object EvaluateExports()
@@ -74,7 +86,7 @@ namespace Fuse.Reactive
 
 			lock (_resetHookMutex)
 			{
-				var newModuleResult = _js.ScriptModule.Evaluate(_worker.Context, globalId);
+				var newModuleResult = _js.ScriptModule.EvaluateInstance(_worker.Context, globalId, this);
 				newModuleResult.AddDependency(_js.DispatchEvaluate);
 
 				if (newModuleResult.Error == null)

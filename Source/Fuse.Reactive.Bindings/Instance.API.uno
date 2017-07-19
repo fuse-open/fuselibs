@@ -324,17 +324,18 @@ namespace Fuse.Reactive
 		{
 			if (!IsRootingStarted) return;
 
-			RemoveAll();
+			if (_itemsSubscription != null) 
+			{
+				_itemsSubscription.Dispose();
+				_itemsSubscription = null;
+			}
 
-			var obs = _items as IObservable;
+			Repopulate();
+
+			var obs = _items as IObservableArray;
 			if (obs != null)
 			{
-				if (_itemsSubscription != null) _itemsSubscription.Dispose();
 				_itemsSubscription = obs.Subscribe(this);
-			}
-			else
-			{
-				Repopulate();
 			}
 		}
 		

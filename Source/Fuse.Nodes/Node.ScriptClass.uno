@@ -66,7 +66,7 @@ namespace Fuse
 			}
 
 			object _data;
-			protected override void Resolve(object data)
+			protected override void Resolve(IObject provider, object data)
 			{
 				_data = data;
 				_context.Dispatcher.Invoke(Update);
