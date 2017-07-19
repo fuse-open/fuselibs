@@ -20,7 +20,7 @@
 	<Timeline ux:Name="gotoInner">
 		<GotoRoute Path=" 'four', (id: 13), 'inner', (a:1,b:2) "/>
 	</Timeline>
-	<Timeline ux:Name="gotoEmpty">
+<!--	<Timeline ux:Name="gotoEmpty">
 		<GotoRoute Path=" 'one', 'two' "/>
-	</Timeline>
+	</Timeline>-->
 </Panel>

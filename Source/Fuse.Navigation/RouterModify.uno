@@ -201,7 +201,7 @@ namespace Fuse.Navigation
 			try
 			{
 				Route route = null;
-				if (!RouterRequest.ParseNVPRoute(null, out route))
+				if (!RouterRequest.ParseNVPRoute(value, out route))
 					return;
 				
 				PerformRoute( (_pathSub as IContext).Node, route);

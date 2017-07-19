@@ -43,24 +43,14 @@ namespace Fuse.Navigation.Test
 				p.gotoParams.Pulse();
 				root.StepFrame();
 				Assert.AreEqual( "three?{\"id\":12}", p.router.GetCurrentRoute().Format() );
-			}
-		}
-		
-		[Test]
-		[Ignore("Not working yet, need UX fixes")]
-		public void Path2() //technically part of Path
-		{
-			Router.TestClearMasterRoute();
-			var p =new UX.RouterModify.Path();
-			using (var root = TestRootPanel.CreateWithChild(p))
-			{
+				
 				p.gotoInner.Pulse();
 				root.StepFrame();
 				Assert.AreEqual( "four?{\"id\":13}/inner?{\"a\":1,\"b\":2}", p.router.GetCurrentRoute().Format() );
 				
-				p.gotoEmpty.Pulse();
-				root.StepFrame();
-				Assert.AreEqual( "one/two", p.router.GetCurrentRoute().Format() );
+// 				p.gotoEmpty.Pulse();
+// 				root.StepFrame();
+// 				Assert.AreEqual( "one/two", p.router.GetCurrentRoute().Format() );
 			}
 		}
 		
