@@ -87,6 +87,7 @@ namespace Fuse.Navigation
 		public Router Router { get; set; }
 		
 		//backwards compatible constructor, won't be able to evaluate Path
+		//Deprecated: 2017-07-18
 		[Obsolete]
 		public RouterModify() 
 		{ 
@@ -195,7 +196,6 @@ namespace Fuse.Navigation
 					var iarr = value as IArray;
 					for (int i= ((iarr.Length-1)/2)*2; i>=0; i -= 2)
 					{
-						debug_log "P: " + iarr[i];
 						string path;
 						if (!Marshal.TryToType<string>(iarr[i], out path))
 						{
@@ -206,7 +206,6 @@ namespace Fuse.Navigation
 						if (i+1 < iarr.Length)
 						{
 							object va = iarr[i+1];
-							debug_log "V: " + va;
 							//TODO: awaiting changes that would make this unnecessary
 							if (va is IArray)
 								va = NameValuePair.ObjectFromArray( (IArray)va );

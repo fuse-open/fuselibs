@@ -35,7 +35,7 @@ namespace Fuse.Navigation
 		{
 			if (!r.IsRootingCompleted) return;
 
-			var where = ParseRoute(c, args);
+			var where = RouterRequest.ParseRoute(args);
 			if (where != null)
 			{
 				r.Goto(where);
@@ -99,7 +99,7 @@ namespace Fuse.Navigation
 			
 			var node = c.Wrap(args[0]) as Node;
 			//null is actually okay for `where`
-			var where = ParseRoute(c, args, 1);
+			var where = RouterRequest.ParseRoute(args, 1);
 			
 			return r.GetRelativeRoute(node, where);
 		}
@@ -122,7 +122,7 @@ namespace Fuse.Navigation
 		{
 			if (!r.IsRootingCompleted) return;
 
-			var where = ParseRoute(c, args);
+			var where = RouterRequest.ParseRoute(args);
 			r.Push(where);
 		}
 		
@@ -192,64 +192,31 @@ namespace Fuse.Navigation
 				return;
 			}
 			
-			var how = ModifyRouteHow.Goto;
-			Route route = null;
-			Node relative = null;
-			NavigationGotoMode mode = NavigationGotoMode.Transition;
-			var style = "";
+			var request = new ScriptRouterRequest(c);
 			
 			var keys = obj.Keys;
 			for (int i=0; i < keys.Length; ++i)
 			{
-				var p = keys[i];
-				var o = obj[p];
-				if (p == "how")
-				{
-					how = Marshal.ToType<ModifyRouteHow>(o);
-				}
-				else if (p == "path")
-				{
-					var path = o as Array;
-					if (path == null)
-					{
-						Fuse.Diagnostics.UserError( "`path` should be an array", r );
-						return;
-					}
-					
-					route = ParseRoute(c, path);
-				}
-				else if (p == "relative")
-				{
-					relative = c.Wrap(o) as Node;
-				}
-				else if (p == "transition")
-				{
-					mode = Marshal.ToType<NavigationGotoMode>(o);
-				}
-				else if (p == "bookmark")
-				{
-					var bk = Marshal.ToType<string>(o);
-					if (!r.Bookmarks.TryGetValue(bk, out route))
-					{	
-						Fuse.Diagnostics.UserError( "Unknown bookmark: " + bk, r);
-						return;
-					}
-				}
-				else if (p == "style")
-				{
-					style = Marshal.ToType<string>(o);
-				}
-				else
-				{
-					Fuse.Diagnostics.UserError( "Unrecognized argument: " + p, r );
+				var key = keys[i];
+				if (!request.AddArgument(key, obj[key]))
 					return;
-				}
+			}
+			request.MakeRequest(r);
+		}
+		
+		class ScriptRouterRequest : RouterRequest
+		{
+			Context _context;
+			
+			public ScriptRouterRequest( Context context ) 
+			{
+				_context = context;
 			}
 			
-			if (relative != null)
-				route = r.GetRelativeRoute(relative, route);
-			
-			r.Modify( how, route, mode, style );
+			protected override Node ParseNode(object value)
+			{
+				return _context.Wrap(value) as Node;
+			}
 		}
 
 		/**
@@ -319,7 +286,7 @@ namespace Fuse.Navigation
 						return;
 					}
 					
-					route = ParseRoute(c, path);
+					route = RouterRequest.ParseRoute(path);
 				}
 				else
 				{
@@ -343,71 +310,6 @@ namespace Fuse.Navigation
 			r.Bookmarks[name] = route;
 		}
 		
-		static bool ValidateParameter(Context c, object arg, int depth)
-		{
-			if (depth > 50)
-			{
-				Fuse.Diagnostics.UserError("Route parameter must be serializeable, it contains reference loops or is too large", null);
-				return false;
-			}
-
-			if (arg is Scripting.Object)
-			{
-				var obj = (Scripting.Object)arg;
-				if (obj.InstanceOf(c.Observable))
-				{
-					Fuse.Diagnostics.UserError("Route parameter must be serializeable, cannot contain Observables.", null);		
-					return false;
-				}
-
-				var keys = obj.Keys;
-				for (var i = 0; i < keys.Length; i++)
-				{
-					var key = keys[i];
-					if (!ValidateParameter(c, obj[key], depth+1)) return false;
-				}
-			}
-
-			if (arg is Scripting.Array)
-			{
-				var arr = (Scripting.Array)arg;
-				for (var i = 0; i < arr.Length; i++)
-				{
-					if (!ValidateParameter(c, arr[i], depth+1)) return false;
-				}
-			}
-
-			if (arg is Scripting.Function) 
-			{
-				Fuse.Diagnostics.UserError("Route parameter must be serializeable, cannot contain functions.", null);
-				return false;
-			}
-
-			return true;
-		}
-		
-		static Route ParseRoute(Context c, Array path)
-		{
-			var cvt = new object[path.Length];
-			for (int i=0; i < cvt.Length; ++i)
-				cvt[i] = path[i];
-			return ParseRoute(c, cvt);
-		}
-		
-		static Route ParseRoute(Context c, object[] args, int pos = 0)
-		{
-			if (args.Length <= pos) return null;
-			if (args.Length <= pos+1) return new Route(args[pos] as string, null, null);
-
-			var arg = args[pos+1];
-
-			if (!ValidateParameter(c, arg, 0)) return null;
-
-			var path = args[pos] as string;
-			var parameter = Json.Stringify(arg, true);
-			return new Route(path, parameter, ParseRoute(c, args, pos+2));
-		}
-
 		/** Requests the current route (async) and calls a callback when ready.
 			
 			@scriptmethod getRoute(callback)
