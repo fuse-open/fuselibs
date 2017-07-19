@@ -11,6 +11,7 @@ namespace Fuse.Gestures.Test
 	public class GestureTest : TestBase
 	{
 		[Test]
+		[Ignore("https://github.com/fusetools/fuselibs-public/issues/247")]
 		public void Layer()
 		{	
 			var p = new UX.Gesture.Layer();
