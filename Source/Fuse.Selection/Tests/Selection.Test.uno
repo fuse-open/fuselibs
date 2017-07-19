@@ -275,5 +275,30 @@ namespace Fuse.Gestures.Test
 				Assert.AreEqual("two", p.TS.Value);
 			}
 		}
+		
+		[Test]
+		/* Sensitive to changes if data is availabe at Values subscription time */
+		public void SubscribeInit()
+		{
+			var p = new UX.Selection.SubscribeInit();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				root.StepFrameJS();
+				
+				for (int i=0; i<3; ++i)
+				{
+					Assert.AreEqual("1,3", GetRecursiveText(p.l1));
+					Assert.AreEqual("", GetRecursiveText(p.l2));
+				
+					p.wt.Value = true;
+					root.PumpDeferred();
+					Assert.AreEqual("1,3", GetRecursiveText(p.l1));
+					Assert.AreEqual("1,3", GetRecursiveText(p.l2));
+				
+					p.wt.Value = false;
+					root.PumpDeferred();
+				}
+			}
+		}
 	}
 }

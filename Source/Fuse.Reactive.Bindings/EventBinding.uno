@@ -26,7 +26,7 @@ namespace Fuse.Reactive
 	public class EventBinding: ExpressionBinding
 	{
 		[UXConstructor]
-		public EventBinding([UXParameter("Key")] IExpression key, [UXAutoNameTable, UXParameter("NameTable")] NameTable nameTable): base(key, nameTable)
+		public EventBinding([UXParameter("Key"), UXVerbatim] IExpression key, [UXAutoNameTable, UXParameter("NameTable")] NameTable nameTable): base(key, nameTable)
 		{
 		}
 

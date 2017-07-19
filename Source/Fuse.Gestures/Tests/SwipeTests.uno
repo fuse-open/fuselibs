@@ -489,7 +489,7 @@ namespace Fuse.Gestures.Test
 		public double Normal=-1, Later=-1, Post=-1;
 		protected override void Perform(Node target)
 		{
-			SA = (target as UX.Swipe.SimpleDefer).SA;
+			SA = target.FindByType<UX.Swipe.SimpleDefer>().SA;
 			Normal = SA.Progress;
 			UpdateManager.AddDeferredAction(CheckLater, LayoutPriority.Later);
 			UpdateManager.AddDeferredAction(CheckPost, LayoutPriority.Post);

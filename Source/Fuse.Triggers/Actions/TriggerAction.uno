@@ -47,7 +47,12 @@ namespace Fuse.Triggers.Actions
 			}
 		}
 		
-		/** The node that the action targets. */
+		/** The node that the action targets. If not specified then the enclsoing Trigger will be used.
+			Several triggers can look for a target starting from this point. Some triggers require
+			a `Target` to be specified. 
+			
+			If a trigger has a `Target` then only one of `Target` or `TargetNode` should be used.
+		*/
 		public Node TargetNode { get; set; }
 
 		float _progress;

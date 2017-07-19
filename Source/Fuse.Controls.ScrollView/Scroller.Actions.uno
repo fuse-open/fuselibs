@@ -6,6 +6,12 @@ using Fuse.Triggers.Actions;
 
 namespace Fuse.Gestures
 {
+	public enum ScrollToHow
+	{
+		Goto,
+		Seek,
+	}
+	
 	/** Scrolls a @ScrollView to a given position when triggered.
 	
 		### Absolute position
@@ -84,16 +90,31 @@ namespace Fuse.Gestures
 				_hasRelativePosition = true;
 			}
 		}
+	
+		ScrollToHow _how = ScrollToHow.Goto;
+		public ScrollToHow How
+		{
+			get { return _how; }
+			set { _how = value; }
+		}
 		
 		protected override void Perform(Node target)
 		{
-			if (Target == null)
+			var scrollView = Target ?? target.FindByType<ScrollView>();
+			if (scrollView == null)
+			{
+				Fuse.Diagnostics.UserError( "Unabled to locate ScrollView", this );
 				return;
+			}
 				
-			if (_hasRelativePosition)
-				Target.Goto(Target.MinScroll + (Target.MaxScroll - Target.MinScroll)*_relativePosition);
-			else if (_hasPosition)
-				Target.Goto(_position);
+			var toPos = _hasRelativePosition ?
+				scrollView.RelativeToAbsolutePosition(_relativePosition) :
+				_position;
+				
+			if (How == ScrollToHow.Goto)
+				scrollView.Goto(toPos);
+			else
+				scrollView.ScrollPosition = toPos;
 		}
 	}
 

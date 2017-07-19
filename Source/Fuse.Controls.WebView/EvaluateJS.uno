@@ -134,12 +134,9 @@ namespace Fuse.Triggers.Actions
 
 		protected override void Perform(Node target)
 		{
-			if (_target == null && target is IWebView)
-			{
-				_target = target as IWebView;
-			}
+			var webView = _target ?? target.FindByType<IWebView>();
 
-			if (_target != null && _rawSource != "")
+			if (webView != null && _rawSource != "")
 			{
 				Execute();
 			}

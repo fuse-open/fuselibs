@@ -6,7 +6,6 @@ using Fuse.Controls.Native;
 
 namespace Fuse.Controls
 {
-	[Obsolete]
 	/** Displays an ellipse
 
 		Ellipse is a @Shape that can have @Fills and @Strokes.

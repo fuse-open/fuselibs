@@ -12,10 +12,7 @@ namespace Fuse.Navigation
 
 		protected override void Perform(Node n)
 		{
-			var v = n as Visual;
-			if (v == null) return;
-
-			var ctx = NavigationContext ?? Navigation.TryFind(v);
+			var ctx = NavigationContext ?? Navigation.TryFind(n);
 			if (ctx == null)
 			{
 				Fuse.Diagnostics.UserError( "No navigation context was found", this );
@@ -115,10 +112,7 @@ namespace Fuse.Navigation
 
 		protected override void Perform(INavigation ctx, Node n)
 		{
-			var v = n as Visual;
-			if (v == null) return;
-
-			var page = Navigation.TryFindPage(Target ?? v);
+			var page = Navigation.TryFindPage((Node)Target ?? n);
 			if (page != null)
 				ctx.Toggle(page);
 			else
@@ -133,10 +127,7 @@ namespace Fuse.Navigation
 
 		protected sealed override void Perform(Node n)
 		{
-			var v = n as Visual;
-			if (v == null) return;
-
-			var nav = NavigationContext ?? Navigation.TryFindBaseNavigation(v);
+			var nav = NavigationContext ?? Navigation.TryFindBaseNavigation(n);
 
 			if (nav != null)
 				Perform(nav, n);

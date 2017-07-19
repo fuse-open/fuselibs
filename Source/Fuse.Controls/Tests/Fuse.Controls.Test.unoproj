@@ -22,20 +22,7 @@
     "Fuse.Controls.Test.Helpers/Fuse.Controls.Test.Helpers.unoproj"
   ],
   "Includes": [
-    "Button.Test.uno:Source",
-    "DockPanel.Test.uno:Source",
-    "WrapPanel.Test.uno:Source",
-    "Image.Test.uno:Source",
-    "Navigation.Test.uno:Source",
-    "Page.Test.uno:Source",
-    "Panel.Test.uno:Source",
-    "Slider.Test.uno:Source",
-    "StackPanel.Test.uno:Source",
-    "StatusBarBackground.Test.uno:Source",
-    "Switch.Test.uno:Source",
-    "TextInput.Test.uno:Source",
-    "Viewbox.Test.uno:Source",
-    "Viewport.Test.uno:Source",
+    "*.uno:Source",
     "UX/*.ux"
   ]
 }

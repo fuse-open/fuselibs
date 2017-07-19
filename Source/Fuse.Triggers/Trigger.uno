@@ -256,16 +256,16 @@ namespace Fuse.Triggers
 		class DeferredItem
 		{
 			public TriggerAction Action;
-			public Node Parent;
+			public Node Node;
 			
 			public void Perform()
 			{
-				Action.PerformFromNode(Parent);
+				Action.PerformFromNode(Node);
 			}
 		}
 		void AddDeferredAction(TriggerAction i)
 		{
-			UpdateManager.AddDeferredAction( new DeferredItem{ Action = i, Parent = Parent }.Perform );
+			UpdateManager.AddDeferredAction( new DeferredItem{ Action = i, Node = this }.Perform );
 		}
 		
 		protected virtual void OnPlayStateChanged(TriggerPlayState state)
@@ -341,7 +341,7 @@ namespace Fuse.Triggers
 					//a good idea, but was required for the Navigation preparation stuff (which likely
 					//needs to chagne anyway)
 					if (act.When == when)
-						act.PerformFromNode(Parent); 
+						act.PerformFromNode(this); 
 				}
 			}
 		}

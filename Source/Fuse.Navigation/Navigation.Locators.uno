@@ -35,7 +35,7 @@ namespace Fuse.Navigation
 			return null;
 		}
 
-		public static INavigation TryFind(Visual node)
+		public static INavigation TryFind(Node node)
 		{
 			//always take the first navigtaon object, even if it isn't an `INavigation`. This prevents
 			//confusing lookup across navigation bounds for different triggers
@@ -79,7 +79,7 @@ namespace Fuse.Navigation
 			This version of TryFindPage is suitable only for single lookups during event response
 			and the value should not be cached since it may change.
 		*/
-		public static Visual TryFindPage(Visual node)
+		public static Visual TryFindPage(Node node)
 		{
 			INavigation nav;
 			Visual bind;
