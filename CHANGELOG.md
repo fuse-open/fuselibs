@@ -14,6 +14,11 @@
 
 ## Fuse.Drawing.Surface
 - Added support for the Surface API in native UI for iOS. Meaning that `Curve`, `VectorLayer` and charting will work inside a `NativeViewHost`.
+## Fuse.Reactive cleanup (Uno-level)
+- The `Fuse.IRaw` interface removed (now internal to the `Fuse.Reactive.JavaScript` package). Had no practical public use.
+- The `Fuse.Reactive.ListMirror` class is no longer public. This was never intended to be public and has no practical public application.
+- Added detailed docs for many of the interfaces in the `Fuse.Reactive` namespace.
+- The `Fuse.Reactive.IWriteable` interface has changed (breaking!). The method signature is now `bool TrySetExclusive(object)` instead of `void SetExclusive(object)`. Unlikely to affect your code.
 
 ## WrapPanel
 - Added possibility to use `RowAlignment` to align the elements in the major direction of the `WrapPanel` as well as in the minor.
@@ -49,11 +54,6 @@
 
 ## FuseJS/Store API
 - The `FuseJS/Store` API introduces a predictable state container class that interops effectively with the UX data context. See docs for details.
-
-## Fuse.Reactive cleanup (Uno-level)
-- The `Fuse.IRaw` interface removed (now internal to the `Fuse.Reactive.JavaScript` package). Had no practical public use.
-- The `Fuse.Reactive.ListMirror` class is no longer public. This was never intended to be public and has no practical public application.
-- Added detailed docs for many of the interfaces in the `Fuse.Reactive` namespace.
 
 ## Templates
 - Added `Identity` and `IdentityKey` to `Each`. This allows created visuals to be reused when replaced with `replaceAt` or `replaceAll` in an Observable.

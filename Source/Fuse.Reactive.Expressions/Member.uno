@@ -24,7 +24,7 @@ namespace Fuse.Reactive
 			return new MemberSubscription(this, context, listener);
 		}
 
-		class MemberSubscription: Subscription, IPropertyObserver
+		class MemberSubscription: Subscription, IPropertyObserver, IWriteable
 		{
 			Member _member;
 			public MemberSubscription(Member member, IContext context, IListener listener): base(member, listener)
@@ -33,7 +33,7 @@ namespace Fuse.Reactive
 				Init(context);
 			}
 
-			IDisposable _obsObjSub;
+			IPropertySubscription _obsObjSub;
 			void DisposeObservableObjectSubscription()
 			{
 				if (_obsObjSub != null)
@@ -69,6 +69,13 @@ namespace Fuse.Reactive
 				if (_obsObjSub != sub) return;
 				if (propName != _member.Name) return;
 				PushNewData(newValue);
+			}
+
+			bool IWriteable.TrySetExclusive(object newObj)
+			{
+				if (_obsObjSub != null)
+					return _obsObjSub.TrySetExclusive(_member.Name, newObj);
+				return false;
 			}
 
 			public override void Dispose()

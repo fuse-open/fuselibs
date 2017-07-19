@@ -11,13 +11,14 @@ namespace Fuse.Reactive
 
 		protected Subscription Subscribers { get { return _subscribers; } }
 
-		protected abstract class Subscription: IDisposable
+		protected internal abstract class Subscription: IDisposable
 		{
 			Subscription _next, _prev;
 
 			protected Subscription Next { get { return _next; } }
 
 			readonly SubscriptionSubject _s;
+			protected SubscriptionSubject SubscriptionSubject { get { return _s; } }
 
 			protected Subscription(SubscriptionSubject s)
 			{
