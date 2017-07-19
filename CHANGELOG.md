@@ -73,8 +73,15 @@
 
 # 1.1
 
+### Navigation
+- Fixed an issue where `Activated` and `WhileActivated` within an `EdgeNavigator` did not correctly identify an active state
+- Changed `EdgeNavigation` to return a page in `Active` when no side-panels are active
+
 ### Fuse.Share
 - Fixed a crash in the iOS implementation for Fuse.Share that could happen on iPad.
+
+### FuseJS
+- Fixed a bug where disposing a JavaScript tag that has called the findData-method could lead to a crash.
 
 
 ## 1.1.0
@@ -158,6 +165,9 @@
 
 
 # 1.0
+
+### FuseJS
+- Fixed a bug where disposing a JavaScript tag that has called the findData-method could lead to a crash.
 
 ## 1.0.4
 

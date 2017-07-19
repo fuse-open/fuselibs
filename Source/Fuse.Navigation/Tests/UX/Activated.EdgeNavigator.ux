@@ -1,0 +1,31 @@
+<Panel ux:Class="UX.Activated.EdgeNavigator">
+	<Router ux:Name="router" IsMasterRouter="false"/>
+	
+	<EdgeNavigator ux:Name="edge">
+		<Panel Edge="Left" ux:Name="left"/>
+		
+		<Panel ux:Class="EActPage">
+			<Activated Path="Local">
+				<FuseTest.CountAction ux:Name="LA"/>
+			</Activated>
+			<Deactivated Path="Local">
+				<FuseTest.CountAction ux:Name="LD"/>
+			</Deactivated>
+			
+			<Activated Path="Full">
+				<FuseTest.CountAction ux:Name="FA"/>
+			</Activated>
+			<Deactivated Path="Full">
+				<FuseTest.CountAction ux:Name="FD"/>
+			</Deactivated>
+			
+			<WhileActive ux:Name="LWA" Path="Local"/>
+			<WhileActive ux:Name="FWA" Path="Full"/>
+		</Panel>
+	
+		<PageControl Transition="None" ux:Name="A1">
+			<EActPage ux:Name="AP1"/>
+			<Page ux:Name="AP2"/>
+		</PageControl>
+	</EdgeNavigator>
+</Panel>

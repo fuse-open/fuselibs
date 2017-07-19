@@ -25,8 +25,11 @@ namespace Fuse
 
 		static void _destroyWatcher(Context c, Node n, object[] args)
 		{
-			var watcher = (DataWatcher)((External)args[0]).Object;
-			watcher.Dispose();
+			if (args[0] != null)
+			{
+				var watcher = (DataWatcher)((External)args[0]).Object;
+				watcher.Dispose();
+			}
 		}
 
 		class DataWatcher: Node.DataFinder, IDataListener
