@@ -12,10 +12,7 @@ namespace Fuse.Triggers.Actions
 
 		protected override void Perform(Node target)
 		{
-			var v = target as Visual;
-			if (v == null) return;
-
-			var webView = v.FindByType<WebView>();
+			var webView = target.FindByType<WebView>();
 			if (webView != null)
 				Execute(webView);
 		}

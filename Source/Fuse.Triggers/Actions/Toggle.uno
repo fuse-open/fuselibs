@@ -28,23 +28,21 @@ namespace Fuse.Triggers.Actions
 	*/
 	public class Toggle : TriggerAction
 	{
+		/** The ToggleControl (or Switch) to toggle. 
+			If not specified this Action will look up the tree for the next control. 
+		*/
 		public IToggleable Target { get; set; }
 		
 		protected override void Perform(Node target)
 		{
-			var t = Target ?? FindTarget(target);
-			if (t != null) t.Toggle();
-		}
-
-		IToggleable FindTarget(Node n)
-		{
-			while (n != null)
+			var t = Target ?? target.FindByType<IToggleable>();
+			if (t == null)
 			{
-				var iv = n as IToggleable;
-				if (iv != null) return iv;
-				n = n.Parent;
+				Fuse.Diagnostics.UserError( "Could not find `IToggleable` target", this );
+				return;
 			}
-			return null;
+			
+			t.Toggle();
 		}
 	}
 }

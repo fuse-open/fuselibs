@@ -1,4 +1,4 @@
-<ScrollView ux:Class="UX.BringIntoView">
+<ScrollView ux:Class="UX.ScrollView.BringIntoView">
 	<StackPanel ux:Name="S1">
 		<Panel Height="300" ux:Name="P1"/>
 		<Panel Height="300" ux:Name="P2"/>

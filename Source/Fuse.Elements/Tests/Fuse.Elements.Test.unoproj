@@ -1,19 +1,7 @@
 {
   "Packages": [
-    "Fuse.Animations",
-    "Fuse.Controls",
-    "Fuse.Controls.Panels",
-    "Fuse.Controls.Primitives",
-    "Fuse.Controls.Native",
-    "Fuse.Drawing",
-    "Fuse.Elements",
-    "Fuse.Triggers",
-    "Fuse.Reactive",
-    "Fuse.Reactive.Bindings",
-    "Fuse.Reactive.Expressions",
-    "Fuse.Reactive.JavaScript",
-    "Fuse.Common",
-    "Fuse.Nodes",
+	"Fuse",
+	"FuseJS",
     "Uno.Testing"
   ],
   "Projects": [
@@ -23,6 +11,7 @@
   "Includes": [
     "AspectSizing.Test.uno:Source",
     "BoxSizing.Test.uno:Source",
+    "BringIntoView.Test.uno:Source",
     "Caching.Test.uno:Source",
     "ElementBatcher.Test.uno:Source",
     "ElementEventTester.uno:Source",
@@ -63,6 +52,7 @@
     "ImageTests/StackPanelScene7.ux:UX",
     "ImageTests/StackPanelScene8.ux:UX",
     "ImageTests/StackPanelScene9.ux:UX",
+    "LayoutAnimation.Test.uno:Source",
     "LayoutFunctions.Test.uno:Source",
     "LimitSizing.Test.uno:Source",
     "RenderBounds.Test.uno:Source",

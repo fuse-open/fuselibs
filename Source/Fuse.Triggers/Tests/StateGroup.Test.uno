@@ -130,5 +130,18 @@ namespace Fuse.Triggers.Test
 			}
 		}
 		
+		[Test]
+		public void TransitionState()
+		{
+			var p = new UX.StateGroup.TransitionState();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				Assert.AreEqual(p.s1,p.sg.Active);
+				
+				p.t1.Pulse();
+				root.PumpDeferred();
+				Assert.AreEqual(p.s2,p.sg.Active);
+			}
+		}
 	}
 }

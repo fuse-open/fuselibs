@@ -1,0 +1,14 @@
+<ScrollView ux:Class="UX.BringIntoView.Basic">
+	<Panel Height="1000">
+		<Panel ux:Name="a" Height="50" Y="300"/>
+		<Panel ux:Name="b" Height="60" Y="600">
+			<Timeline ux:Name="t2">
+				<BringIntoView/>
+			</Timeline>
+		</Panel>
+	</Panel>
+	
+	<Timeline ux:Name="t1">
+		<BringIntoView TargetNode="a"/>
+	</Timeline>
+</ScrollView>
