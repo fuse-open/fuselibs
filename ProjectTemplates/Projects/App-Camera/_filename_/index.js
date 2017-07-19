@@ -1,4 +1,3 @@
-var Observable = require("FuseJS/Observable");
 var ImageStore = require("_$filename$_/imagestore");
 var Navigation = require("_$filename$_/navigation");
 module.exports = {
@@ -8,7 +7,13 @@ module.exports = {
 	initializeNavigation : function(router){
 		Navigation.initialize(router);
 	},
-	takeNewPicture : ImageStore.takeNewPicture,
-	gotoImage : Navigation.gotoImage,
-	getPictures : ImageStore.getPictures
+	getPictures : function(){
+		return ImageStore.getPictures();
+	},
+	takeNewPicture : function(){
+		ImageStore.takeNewPicture();
+	},
+	getNavigation : function(){
+		return Navigation;
+	}
 }

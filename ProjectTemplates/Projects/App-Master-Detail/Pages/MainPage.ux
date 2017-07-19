@@ -2,10 +2,12 @@
 	<JavaScript File="MainPage.js"/>
 	<ScrollView>
 		<StackPanel>
-			<Each Items="{items}">
-				<_$filename$_.ItemListView Label="{title}">
-					<Tapped Handler="{onItemTapped}"/>
-				</_$filename$_.ItemListView>
+			<Each Items="{Read data}">
+				<Deferred>
+					<_$filename$_.ItemListView Label="{Read title}" Margin="4">
+						<Tapped Handler="{onItemTapped}"/>
+					</_$filename$_.ItemListView>
+				</Deferred>
 			</Each>
 		</StackPanel>
 	</ScrollView>

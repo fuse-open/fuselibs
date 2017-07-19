@@ -21,5 +21,5 @@ module.exports = {
 	initialize : initialize,
 	goBack : goBack,
 	gotoMainPage : gotoMainPage,
-	gotoImage : gotoImage
+	gotoPicture : gotoPicture
 }

@@ -1,13 +1,13 @@
 {
-  "RootNamespace":"",
-  "Packages": [
-    "Fuse",
-    "FuseJS",
+	"RootNamespace":"",
+	"Packages": [
+		"Fuse",
+		"FuseJS",
 		"Fuse.Camera",
 		"Fuse.ImageTools"
-  ],
-  "Includes": [
+	],
+	"Includes": [
 		"_$filename$_/**.js:Bundle",
-    "*"
-  ]
+		"*"
+	]
 }

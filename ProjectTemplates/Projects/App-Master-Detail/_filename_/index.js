@@ -2,8 +2,7 @@ var Observable = require("FuseJS/Observable");
 var Navigation = require("_$filename$_/navigation");
 
 var data = []
-
-for(var i = 0; i<255; i++)
+for(var i = 0; i<100; i++)
 	data.push({title:"Item "+i, id:i})
 
 module.exports = {
