@@ -253,6 +253,7 @@ namespace Fuse.Navigation
 				return;
 			}
 			
+			//TODO: Switch to using RouterRequest
 			string name = null;
 			IRouterOutlet relative = null;
 			Route route = null;

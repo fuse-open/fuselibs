@@ -1,3 +1,5 @@
+using Uno;
+
 using Fuse.Scripting;
 
 namespace Fuse.Navigation
@@ -11,8 +13,9 @@ namespace Fuse.Navigation
 	{
 		public ModifyRouteHow How;
 		public Route Route;
+		[WeakReference]
 		public Node Relative;
-		public NavigationGotoMode Mode;
+		public NavigationGotoMode Transition;
 		public string Style;
 		public string Bookmark;
 		
@@ -26,7 +29,7 @@ namespace Fuse.Navigation
 			How = ModifyRouteHow.Goto;
 			Route = null;
 			Relative = null;
-			Mode = NavigationGotoMode.Transition;
+			Transition = NavigationGotoMode.Transition;
 			Style = "";
 		}
 		
@@ -38,7 +41,7 @@ namespace Fuse.Navigation
 			}
 			else if (name == "path")
 			{
-				var path = value as Array;
+				var path = value as Fuse.Scripting.Array;
 				if (path == null)
 				{
 					Fuse.Diagnostics.UserError( "`path` should be an array", this );
@@ -53,7 +56,7 @@ namespace Fuse.Navigation
 			}
 			else if (name == "transition")
 			{
-				Mode = Marshal.ToType<NavigationGotoMode>(value);
+				Transition = Marshal.ToType<NavigationGotoMode>(value);
 			}
 			else if (name == "bookmark")
 			{
@@ -74,17 +77,17 @@ namespace Fuse.Navigation
 		
 		public bool MakeRequest(Router router)
 		{
-			var route = Route;
+			var targetRoute = Route;
 			
 			if (Bookmark != null)
 			{
-				if (route != null)
+				if (targetRoute != null)
 				{
 					Fuse.Diagnostics.UserError( "A path and bookmark cannot both be specified", router);
 					return false;
 				}
 				
-				if (!router.Bookmarks.TryGetValue(Bookmark, out route))
+				if (!router.Bookmarks.TryGetValue(Bookmark, out targetRoute))
 				{	
 					Fuse.Diagnostics.UserError( "Unknown bookmark: " + Bookmark, router);
 					return false;
@@ -92,13 +95,13 @@ namespace Fuse.Navigation
 			}
 			
 			if (Relative != null)
-				route = router.GetRelativeRoute(Relative, route);
+				targetRoute = router.GetRelativeRoute(Relative, targetRoute);
 				
-			router.Modify( How, route, Mode, Style );
+			router.Modify( How, targetRoute, Transition, Style );
 			return true;
 		}
 
-		static public Route ParseRoute(Array path)
+		static public Route ParseRoute(Fuse.Scripting.Array path)
 		{
 			var cvt = new object[path.Length];
 			for (int i=0; i < cvt.Length; ++i)

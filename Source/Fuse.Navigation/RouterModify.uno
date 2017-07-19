@@ -112,27 +112,41 @@ namespace Fuse.Navigation
 			_nameTable = nameTable;
 		}
 		
-		ModifyRouteHow _how = ModifyRouteHow.Goto;
+		RouterRequest _request = new RouterRequest();
+		
 		/** How to modify the router. */
 		public ModifyRouteHow How
 		{
-			get { return _how; }
-			set { _how = value; }
+			get { return _request.How; }
+			set { _request.How = value; }
 		}
 		
 		/** Get the route from this bookmark. */
-		public string Bookmark { get; set; }
+		public string Bookmark 
+		{ 
+			get { return _request.Bookmark; }
+			set { _request.Bookmark = value; }
+		}
 		
-		NavigationGotoMode _transition = NavigationGotoMode.Transition;
 		/** How to transition to the new page. */
 		public NavigationGotoMode Transition
 		{
-			get { return _transition; }
-			set { _transition = value; }
+			get { return _request.Transition; }
+			set { _request.Transition = value; }
 		}
 		
 		/** The operation style of the transition. */
-		public string Style { get; set; }
+		public string Style 
+		{ 
+			get { return _request.Style; }
+			set { _request.Style = value; }
+		}
+		
+		public Node Relative
+		{
+			get { return _request.Relative; }
+			set { _request.Relative = value; }
+		}
 
 		IExpression _path;
 		/* This is an IExpression since the claculation of the path might be costly (in terms of setup
@@ -231,6 +245,8 @@ namespace Fuse.Navigation
 			
 		void PerformRoute(Node n, Route route)
 		{
+			_request.Route = route;
+			
 			var useRouter = Router ?? Fuse.Navigation.Router.TryFindRouter(n);
 			if (useRouter == null)
 			{
@@ -238,16 +254,7 @@ namespace Fuse.Navigation
 				return;
 			}
 			
-			if (Bookmark != null)
-			{
-				if (!useRouter.Bookmarks.TryGetValue(Bookmark, out route))
-				{
-					Fuse.Diagnostics.UserError( "Unknown bookmark: " + Bookmark, this );
-					return;
-				}
-			}
-			
-			useRouter.Modify( How, route, Transition, Style );
+			_request.MakeRequest(useRouter);
 		}
 	}
 
