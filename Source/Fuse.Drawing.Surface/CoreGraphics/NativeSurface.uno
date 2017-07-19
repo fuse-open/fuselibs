@@ -13,8 +13,7 @@ namespace Fuse.Drawing
 
 		public void Begin(IntPtr cgContext, float pixelsPerPoint)
 		{
-			// The CGContext is already scaled
-			_pixelsPerPoint = 1.0f;//pixelsPerPoint;
+			_pixelsPerPoint = pixelsPerPoint;
 			_cgContext = cgContext;
 			SetCGContext(_context, _cgContext);
 		}
