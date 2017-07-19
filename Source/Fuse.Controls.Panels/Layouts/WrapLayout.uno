@@ -180,8 +180,8 @@ namespace Fuse.Layouts
 
 			if (doArrange)
 			{	
-				var saMaj = IsVert ? AlignmentHelpers.GetHorizontalSimpleAlignOptional(RowAlignment) : AlignmentHelpers.GetVerticalSimpleAlignOptional(RowAlignment);
-				var saMin = IsVert ? AlignmentHelpers.GetVerticalSimpleAlignOptional(RowAlignment) : AlignmentHelpers.GetHorizontalSimpleAlignOptional(RowAlignment);
+				var saMin = IsVert ? AlignmentHelpers.GetHorizontalSimpleAlignOptional(RowAlignment) : AlignmentHelpers.GetVerticalSimpleAlignOptional(RowAlignment);
+				var saMaj = IsVert ? AlignmentHelpers.GetVerticalSimpleAlignOptional(RowAlignment) : AlignmentHelpers.GetHorizontalSimpleAlignOptional(RowAlignment);
 				var elp = lp.CloneAndDerive();
 				for (int i=0; i < elements.Count; ++i)
 				{
@@ -192,7 +192,7 @@ namespace Fuse.Layouts
 
 					var placement = placements[i];
 
-					switch (saMaj)
+					switch (saMin)
 					{
 						case OptionalSimpleAlignment.Begin:
 							break;
@@ -208,7 +208,7 @@ namespace Fuse.Layouts
 							break;
 					}
 
-					switch (saMin)
+					switch (saMaj)
 					{
 						case OptionalSimpleAlignment.Begin:
 							break;
