@@ -16,7 +16,13 @@ namespace Fuse.Reactive
 	interface IObservableObject: IObject
 	{
 		/** Creates a new subscription to the object, which will pass change events to the given observer. */
-		IDisposable Subscribe(IPropertyObserver observer);
+		IPropertySubscription Subscribe(IPropertyObserver observer);
+	}
+
+	interface IPropertySubscription: IDisposable
+	{
+		/** Attempts to write back to the property. If successful, the current subscription will not be notified. */
+		bool TrySetExclusive(string propertyName, object newValue);
 	}
 
 	interface IPropertyObserver

@@ -142,7 +142,7 @@ namespace Fuse.Reactive
 				var key = Arguments[Arguments.Length-2];
 
 				var obj = dc as TreeObject;
-				if (obj != null) obj.Set(key.ToString(), WrappedValue);
+				if (obj != null) obj.Set(key.ToString(), WrappedValue, null);
 
 				var arr = dc as TreeArray;
 				if (arr != null) arr.Set(Marshal.ToInt(key), WrappedValue);

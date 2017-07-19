@@ -3,7 +3,7 @@ using Uno.Collections;
 
 namespace Fuse.Reactive
 {
-	class DataSubscription: Node.DataFinder, IDisposable, Node.IDataListener, IPropertyObserver
+	class DataSubscription: Node.DataFinder, IDisposable, Node.IDataListener, IPropertyObserver, IWriteable
 	{
 		IExpression _source;
 		Node _origin;
@@ -36,7 +36,7 @@ namespace Fuse.Reactive
 		}
 
 		object _currentData;
-		IDisposable _sub;
+		IPropertySubscription _sub;
 
 		void DisposeSubscription()
 		{
@@ -45,6 +45,15 @@ namespace Fuse.Reactive
 				_sub.Dispose();
 				_sub = null;
 			}
+		}
+
+		bool IWriteable.TrySetExclusive(object newValue)
+		{
+			var w = _sub as IPropertySubscription;
+			if (w != null)
+				return w.TrySetExclusive(Key, newValue);
+			
+			return false;
 		}
 
 		protected override void Resolve(IObject provider, object data)
