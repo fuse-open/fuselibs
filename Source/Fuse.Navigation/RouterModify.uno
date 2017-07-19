@@ -201,39 +201,8 @@ namespace Fuse.Navigation
 			try
 			{
 				Route route = null;
-				if (value is string)
-				{
-					route = new Route((string)value);
-				}
-				else if (value is IArray)
-				{
-					var iarr = value as IArray;
-					for (int i= ((iarr.Length-1)/2)*2; i>=0; i -= 2)
-					{
-						string path;
-						if (!Marshal.TryToType<string>(iarr[i], out path))
-						{
-							Fuse.Diagnostics.UserError( "invalid path component: " + iarr[i], this);
-							return;
-						}
-						string param = null;
-						if (i+1 < iarr.Length)
-						{
-							object va = iarr[i+1];
-							//TODO: awaiting changes that would make this unnecessary
-							if (va is IArray)
-								va = NameValuePair.ObjectFromArray( (IArray)va );
-							param = Json.Stringify( va, true);
-						}
-						
-						route =  new Route(path, param, route);
-					}
-				}
-				else
-				{
-					Fuse.Diagnostics.UserError("incompatible path", this);
+				if (!RouterRequest.ParseNVPRoute(null, out route))
 					return;
-				}
 				
 				PerformRoute( (_pathSub as IContext).Node, route);
 			}

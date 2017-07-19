@@ -19,8 +19,18 @@ namespace Fuse.Navigation
 		public string Style;
 		public string Bookmark;
 		
-		public RouterRequest()
+		[Flags]
+		public enum Flags
 		{
+			None = 0,
+			//the path and parameters are specified as a flat array (JS interface)
+			FlatRoute = 1 << 0,
+		}
+		Flags _flags;
+		
+		public RouterRequest(Flags flags = Flags.None)
+		{
+			_flags = flags;
 			Reset();
 		}
 		
@@ -41,14 +51,23 @@ namespace Fuse.Navigation
 			}
 			else if (name == "path")
 			{
-				var path = value as Fuse.Scripting.Array;
-				if (path == null)
+				if (_flags.HasFlag(Flags.FlatRoute))
 				{
-					Fuse.Diagnostics.UserError( "`path` should be an array", this );
-					return false;
+					var path = value as IArray;
+					if (path == null)
+					{
+						Fuse.Diagnostics.UserError( "`path` should be an array", this );
+						return false;
+					}
+					
+					//TODO: conver to bool form like ParseNVPRoute
+					Route = ParseFlatRoute(path);
 				}
-				
-				Route = ParseRoute(path);
+				else
+				{
+					if (!ParseNVPRoute(value, out Route))
+						return false;
+				}
 			}
 			else if (name == "relative")
 			{
@@ -101,15 +120,16 @@ namespace Fuse.Navigation
 			return true;
 		}
 
-		static public Route ParseRoute(Fuse.Scripting.Array path)
+		static public Route ParseFlatRoute(IArray path)
 		{
+			//TODO: It would make more sense to wrap object[] as an IArray, and rewrite the object[] function
 			var cvt = new object[path.Length];
 			for (int i=0; i < cvt.Length; ++i)
 				cvt[i] = path[i];
-			return ParseRoute(cvt);
+			return ParseFlatRoute(cvt);
 		}
 		
-		static public Route ParseRoute(object[] args, int pos = 0)
+		static public Route ParseFlatRoute(object[] args, int pos = 0)
 		{
 			if (args.Length <= pos) return null;
 			if (args.Length <= pos+1) return new Route(args[pos] as string, null, null);
@@ -120,7 +140,48 @@ namespace Fuse.Navigation
 
 			var path = args[pos] as string;
 			var parameter = Json.Stringify(arg, true);
-			return new Route(path, parameter, ParseRoute(args, pos+2));
+			return new Route(path, parameter, ParseFlatRoute(args, pos+2));
+		}
+		
+		static public bool ParseNVPRoute(object value, out Route route)
+		{
+			route = null;
+			
+			if (value is string)
+			{
+				route = new Route((string)value);
+				return true;
+			}
+
+			if (value is IArray)
+			{
+				var iarr = value as IArray;
+				for (int i= ((iarr.Length-1)/2)*2; i>=0; i -= 2)
+				{
+					string path;
+					if (!Marshal.TryToType<string>(iarr[i], out path))
+					{
+						Fuse.Diagnostics.UserError( "invalid path component: " + iarr[i], value);
+						return false;
+					}
+					string param = null;
+					if (i+1 < iarr.Length)
+					{
+						object va = iarr[i+1];
+						//TODO: awaiting changes that would make this unnecessary
+						if (va is IArray)
+							va = NameValuePair.ObjectFromArray( (IArray)va );
+						param = Json.Stringify( va, true);
+					}
+					
+					route =  new Route(path, param, route);
+				}
+				
+				return true;
+			}
+			
+			Fuse.Diagnostics.UserError("incompatible path", value);
+			return false;
 		}
 		
 		static bool ValidateParameter(object arg, int depth = 0)

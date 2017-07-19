@@ -35,7 +35,7 @@ namespace Fuse.Navigation
 		{
 			if (!r.IsRootingCompleted) return;
 
-			var where = RouterRequest.ParseRoute(args);
+			var where = RouterRequest.ParseFlatRoute(args);
 			if (where != null)
 			{
 				r.Goto(where);
@@ -99,7 +99,7 @@ namespace Fuse.Navigation
 			
 			var node = c.Wrap(args[0]) as Node;
 			//null is actually okay for `where`
-			var where = RouterRequest.ParseRoute(args, 1);
+			var where = RouterRequest.ParseFlatRoute(args, 1);
 			
 			return r.GetRelativeRoute(node, where);
 		}
@@ -122,7 +122,7 @@ namespace Fuse.Navigation
 		{
 			if (!r.IsRootingCompleted) return;
 
-			var where = RouterRequest.ParseRoute(args);
+			var where = RouterRequest.ParseFlatRoute(args);
 			r.Push(where);
 		}
 		
@@ -287,7 +287,7 @@ namespace Fuse.Navigation
 						return;
 					}
 					
-					route = RouterRequest.ParseRoute(path);
+					route = RouterRequest.ParseFlatRoute(path);
 				}
 				else
 				{

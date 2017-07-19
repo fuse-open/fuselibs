@@ -6,8 +6,7 @@ using Fuse.Reactive;
 namespace Fuse.Navigation
 {
 	[UXFunction("modifyRoute")]
-	//TODO: Rename ModifyRouteCommand (...Command pattern for things returning IEventHandler)
-	public class ModifyRouteEventFunction : VarArgFunction
+	public class ModifyRouteCommand : VarArgFunction
 	{
 		public override IDisposable Subscribe(IContext context, IListener listener)
 		{
@@ -16,12 +15,12 @@ namespace Fuse.Navigation
 		
 		class OuterSubscription : InnerListener, IEventHandler
 		{
-			internal ModifyRouteEventFunction _expr;
+			internal ModifyRouteCommand _expr;
 			internal IListener _listener;
 			internal IContext _context;
 			InnerSubscription _innerSub;
 			
-			public OuterSubscription( ModifyRouteEventFunction expr, IContext context, IListener listener )
+			public OuterSubscription( ModifyRouteCommand expr, IContext context, IListener listener )
 			{
 				_expr = expr;
 				_context = context;
@@ -56,7 +55,6 @@ namespace Fuse.Navigation
 				if (_innerSub != null)
 					return;
 					
-				debug_log "Dispatched";
 				_innerSub = new InnerSubscription(this);
 			}
 			
@@ -82,12 +80,38 @@ namespace Fuse.Navigation
 			{
 				if (_outSub == null || _triggered)
 					return;
-					
-				debug_log "Yeah";
 				_triggered = true;
+					
+				HandleRequest(args);
 				
 				//we might be in the Ctor.Init function still (yucky), Dispose in Ctor is apparently not good.
 				UpdateManager.AddDeferredAction( Dispose );
+			}
+			
+			void HandleRequest(Argument[] args)
+			{
+				var request = new RouterRequest();
+				for (int i=0; i < args.Length; ++i)
+				{
+					var nvp = args[i].Value as NameValuePair;
+					if (nvp == null)
+					{
+						Fuse.Diagnostics.UserError( "arguments to modifyRoute must be name-value-pairs", this );
+						return;
+					}
+					
+					if (!request.AddArgument(nvp.Name,nvp.Value))
+						return;
+				}
+				
+				var router = Router.TryFindRouter(_outSub._context.Node);
+				if (router == null)
+				{
+					Fuse.Diagnostics.UserError( "could not find router", this );
+					return;
+				}
+				
+				request.MakeRequest(router);
 			}
 			
 			public override void Dispose()
