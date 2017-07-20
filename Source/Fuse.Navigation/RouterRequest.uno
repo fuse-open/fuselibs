@@ -146,41 +146,41 @@ namespace Fuse.Navigation
 		static public bool ParseNVPRoute(object value, out Route route)
 		{
 			route = null;
-			
-			if (value is string)
-			{
-				route = new Route((string)value);
-				return true;
-			}
 
-			if (value is IArray)
+			var array = value as IArray;
+			if (array != null)
 			{
-				var iarr = value as IArray;
-				for (int i= ((iarr.Length-1)/2)*2; i>=0; i -= 2)
+				for (int i = array.Length-1; i>=0; --i)
 				{
-					string path;
-					if (!Marshal.TryToType<string>(iarr[i], out path))
-					{
-						Fuse.Diagnostics.UserError( "invalid path component: " + iarr[i], value);
+					if (!ParseNVPComponent(array[i], ref route))
 						return false;
-					}
-					string param = null;
-					if (i+1 < iarr.Length)
-					{
-						object va = iarr[i+1];
-						//TODO: awaiting changes that would make this unnecessary
-						if (va is IArray)
-							va = NameValuePair.ObjectFromArray( (IArray)va );
-						param = Json.Stringify( va, true);
-					}
-					
-					route =  new Route(path, param, route);
 				}
 				
 				return true;
 			}
+			else
+			{
+				return ParseNVPComponent(value, ref route);
+			}
+		}
+		
+		static bool ParseNVPComponent(object value, ref Route route)
+		{
+			//require a "string", rather than use TryToType, to avoid nonsense being accepted
+			if (value is string)
+			{
+				route = new Route((string)value, null, route);
+				return true;
+			}
 			
-			Fuse.Diagnostics.UserError("incompatible path", value);
+			var nvp = value as NameValuePair;
+			if (nvp != null)
+			{
+				route = new Route(nvp.Name, Json.Stringify(nvp.Value), route);
+				return true;
+			}
+			
+			Fuse.Diagnostics.UserError("incompatible path component", value);
 			return false;
 		}
 		

@@ -11,18 +11,18 @@
 				<!-- TODO: the {= two} shouldn't be required 
 					https://github.com/fusetools/fuselibs-public/issues/216
 				-->
-				<ModifyRoute How="Goto" Path=" 'three', (id: parameter({= two}).id + 10) "/>
+				<ModifyRoute How="Goto" Path=" 'three': (id: parameter({= two}).id + 10) "/>
 			</Timeline>
 		</Page>
 		<Page ux:Name="three"/>
 	</PageControl>
 	
 	<Timeline ux:Name="gotoNext">
-		<ModifyRoute How="Goto" Path="{path}, (id: {value})"/>
+		<ModifyRoute How="Goto" Path="{path}: (id: {value})"/>
 	</Timeline>
 
 	<RangeControl ux:Name="range" Value="8"/>
 	<Timeline ux:Name="gotoProp">
-		<ModifyRoute How="Goto" Path=' "one", (id: {Property range.Value})'/>
+		<ModifyRoute How="Goto" Path=' "one": (id: {Property range.Value})'/>
 	</Timeline>
 </Panel>
