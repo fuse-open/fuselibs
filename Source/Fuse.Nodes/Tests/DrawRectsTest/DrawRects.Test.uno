@@ -33,7 +33,7 @@ namespace DrawRectsTest
 				// Test pixel outside of element to ensure it's laid out how we expect
 				fb.AssertPixel(float4(0), int2(5, 5));
 
-				TestForDrawRect(fb, new Recti(10, 10, 90, 90), float4(1));
+				TestForDrawRects(fb, new Recti(10, 10, 90, 90), 1, float4(1));
 			}
 		}
 
@@ -48,7 +48,7 @@ namespace DrawRectsTest
 				// Test pixel outside of element to ensure it's laid out how we expect
 				fb.AssertPixel(float4(0), int2(5, 5));
 
-				TestForDrawRect(fb, new Recti(10, 10, 90, 90), float4(1));
+				TestForDrawRects(fb, new Recti(10, 10, 90, 90), 1, float4(1));
 			}
 		}
 
@@ -63,7 +63,7 @@ namespace DrawRectsTest
 				// Test pixel outside of element to ensure it's laid out how we expect
 				fb.AssertPixel(float4(0), int2(5, 5));
 
-				TestForDrawRect(fb, new Recti(10, 10, 90, 90), float4(0, 1, 0, 1));
+				TestForDrawRects(fb, new Recti(10, 10, 90, 90), 1, float4(0, 1, 0, 1));
 			}
 		}
 
@@ -78,7 +78,7 @@ namespace DrawRectsTest
 				// Test pixel outside of element to ensure it's laid out how we expect
 				fb.AssertPixel(float4(0), int2(5, 5));
 
-				TestForDrawRect(fb, new Recti(60, 10, 140, 90), float4(0), float4(1));
+				TestForDrawRects(fb, new Recti(60, 10, 140, 90), 1, float4(0), float4(1));
 			}
 		}
 
@@ -93,7 +93,7 @@ namespace DrawRectsTest
 				// Test pixel outside of element to ensure it's laid out how we expect
 				fb.AssertPixel(float4(0), int2(5, 5));
 
-				TestForDrawRect(fb, new Recti(10, 10, 90, 90), float4(0, 0, 1, 1));
+				TestForDrawRects(fb, new Recti(10, 10, 90, 90), 1, float4(0, 0, 1, 1));
 			}
 		}
 
@@ -108,7 +108,7 @@ namespace DrawRectsTest
 				// Test pixel outside of element to ensure it's laid out how we expect
 				fb.AssertPixel(float4(0), int2(5, 5));
 
-				TestForDrawRect(fb, new Recti(10, 10, 90, 90), float4(1));
+				TestForDrawRects(fb, new Recti(10, 10, 90, 90), 1, float4(1));
 			}
 		}
 
@@ -123,16 +123,31 @@ namespace DrawRectsTest
 				// Test pixel outside of element to ensure it's laid out how we expect
 				fb.AssertPixel(float4(0), int2(5, 5));
 
-				TestForDrawRect(fb, new Recti(10, 10, 90, 90), float4(1));
+				TestForDrawRects(fb, new Recti(10, 10, 90, 90), 1, float4(1));
 			}
 		}
 
-		void TestForDrawRect(TestFramebuffer fb, Recti drawRectBounds, float4 drawnColor)
+		[Test]
+		public void SolidRectangleWithDropShadowAndMarginDrawRectIsRendered()
 		{
-			TestForDrawRect(fb, drawRectBounds, drawnColor, drawnColor);
+			var r = new global::UX.SolidRectangleWithDropShadowAndMargin();
+			var root = TestRootPanel.CreateWithChild(r, int2(100, 100));
+
+			using (var fb = root.CaptureDraw())
+			{
+				// Test pixel outside of element to ensure it's laid out how we expect
+				fb.AssertPixel(float4(0), int2(5, 5));
+
+				TestForDrawRects(fb, new Recti(10, 10, 90, 90), 2, float4(1));
+			}
 		}
 
-		void TestForDrawRect(TestFramebuffer fb, Recti drawRectBounds, float4 drawnCornerColor, float4 drawnCenterColor)
+		void TestForDrawRects(TestFramebuffer fb, Recti drawRectBounds, int numRects, float4 drawnColor)
+		{
+			TestForDrawRects(fb, drawRectBounds, numRects, drawnColor, drawnColor);
+		}
+
+		void TestForDrawRects(TestFramebuffer fb, Recti drawRectBounds, int numRects, float4 drawnCornerColor, float4 drawnCenterColor)
 		{
 			// Slightly larger epsilon than normal since we're testing for a blended rect with some margin etc
 			float eps = 5.0f / 255.0f;
@@ -153,11 +168,11 @@ namespace DrawRectsTest
 			// Test for the rendered draw rect at a few expected points in the drawn rect
 			//  We make sure to apply a little margin around the edges to be sure we test inside the rect
 			int margin = 1;
-			fb.AssertPixel(Math.Saturate(darkenedCornerColor + leftTopColor * alpha), drawRectBounds.LeftTop + int2(margin, margin), eps);
-			fb.AssertPixel(Math.Saturate(darkenedCornerColor + rightTopColor * alpha), drawRectBounds.RightTop + int2(-margin, margin), eps);
-			fb.AssertPixel(Math.Saturate(darkenedCornerColor + leftBottomColor * alpha), drawRectBounds.LeftBottom + int2(margin, -margin), eps);
-			fb.AssertPixel(Math.Saturate(darkenedCornerColor + rightBottomColor * alpha), drawRectBounds.RightBottom + int2(-margin, -margin), eps);
-			fb.AssertPixel(Math.Saturate(darkenedCenterColor + middleColor * alpha), drawRectBounds.Center, eps);
+			fb.AssertPixel(Math.Saturate(darkenedCornerColor + leftTopColor * alpha * (float)numRects), drawRectBounds.LeftTop + int2(margin, margin), eps);
+			fb.AssertPixel(Math.Saturate(darkenedCornerColor + rightTopColor * alpha * (float)numRects), drawRectBounds.RightTop + int2(-margin, margin), eps);
+			fb.AssertPixel(Math.Saturate(darkenedCornerColor + leftBottomColor * alpha * (float)numRects), drawRectBounds.LeftBottom + int2(margin, -margin), eps);
+			fb.AssertPixel(Math.Saturate(darkenedCornerColor + rightBottomColor * alpha * (float)numRects), drawRectBounds.RightBottom + int2(-margin, -margin), eps);
+			fb.AssertPixel(Math.Saturate(darkenedCenterColor + middleColor * alpha * (float)numRects), drawRectBounds.Center, eps);
 		}
 	}
 }
