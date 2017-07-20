@@ -84,7 +84,7 @@ namespace Fuse
 			}
 			else
 			{
-				args.Remove();				
+				UpdateManager.AddDeferredAction(args.Remove);
 			}
 		}
 
