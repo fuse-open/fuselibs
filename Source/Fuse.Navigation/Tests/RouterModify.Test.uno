@@ -34,7 +34,7 @@ namespace Fuse.Navigation.Test
 			var p =new UX.RouterModify.Path();
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
-				Assert.AreEqual( "one", p.router.GetCurrentRoute().Format() );
+				Assert.AreEqual( "one/a", p.router.GetCurrentRoute().Format() );
 
 				p.gotoNext.Pulse();
 				root.StepFrame();
@@ -44,13 +44,13 @@ namespace Fuse.Navigation.Test
 				root.StepFrame();
 				Assert.AreEqual( "three?{\"id\":12}", p.router.GetCurrentRoute().Format() );
 				
-// 				p.gotoInner.Pulse();
-// 				root.StepFrame();
-// 				Assert.AreEqual( "four?{\"id\":13}/inner?{\"a\":1,\"b\":2}", p.router.GetCurrentRoute().Format() );
+				p.gotoInner.Pulse();
+				root.StepFrame();
+				Assert.AreEqual( "four?{\"id\":13}/inner?{\"a\":1,\"b\":2}", p.router.GetCurrentRoute().Format() );
 				
  				p.gotoEmpty.Pulse();
  				root.StepFrame();
- 				Assert.AreEqual( "one/two", p.router.GetCurrentRoute().Format() );
+ 				Assert.AreEqual( "one/b", p.router.GetCurrentRoute().Format() );
 			}
 		}
 		
