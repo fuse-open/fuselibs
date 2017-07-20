@@ -2,6 +2,7 @@ using Uno;
 using Uno.UX;
 
 using Fuse.Drawing;
+using Fuse.Nodes;
 using Fuse.Triggers;
 
 namespace Fuse.Controls
@@ -227,6 +228,33 @@ namespace Fuse.Controls
 				
 				PixelColor: float4( prev.XYZ, prev.W * Opacity );
 			};
+
+			if (defined(FUSELIBS_DEBUG_DRAW_RECTS) && dc.RenderTarget == DrawRectVisualizer.RenderTarget)
+			{
+				float2[] drawRectInputVerts = new[]
+				{
+					float2(0, 0),
+					float2(1, 0),
+					float2(1, 1),
+					float2(0, 1)
+				};
+				float4[] drawRectWorldSpaceVerts = new[]
+				{
+					float4(0),
+					float4(0),
+					float4(0),
+					float4(0)
+				};
+				float2 drawRectPos = renderBounds.AxisMin.XY * scale / dc.ViewportPixelsPerPoint;
+				float2 drawRectSize = renderBounds.Size.XY * scale / dc.ViewportPixelsPerPoint;
+				for(int i = 0; i < 4; i++)
+				{
+					var coord = drawRectInputVerts[i];
+					var p = Vector.Transform(float4(drawRectPos + coord * drawRectSize, 0, 1), panel.WorldTransform);
+					drawRectWorldSpaceVerts[i] = p;
+				}
+				DrawRectVisualizer.Append(new DrawRect(drawRectWorldSpaceVerts, dc.Scissor));
+			}
 		}
 	}
 }

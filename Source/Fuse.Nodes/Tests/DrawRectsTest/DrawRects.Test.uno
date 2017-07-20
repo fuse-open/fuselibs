@@ -82,6 +82,21 @@ namespace DrawRectsTest
 			}
 		}
 
+		[Test]
+		public void FrozenPanelWithBackgroundAndMarginDrawRectIsRendered()
+		{
+			var c = new global::UX.FrozenPanelWithBackgroundAndMargin();
+			var root = TestRootPanel.CreateWithChild(c, int2(100, 100));
+
+			using (var fb = root.CaptureDraw())
+			{
+				// Test pixel outside of element to ensure it's laid out how we expect
+				fb.AssertPixel(float4(0), int2(5, 5));
+
+				TestForDrawRect(fb, new Recti(10, 10, 90, 90), float4(0, 0, 1, 1));
+			}
+		}
+
 		void TestForDrawRect(TestFramebuffer fb, Recti drawRectBounds, float4 drawnColor)
 		{
 			TestForDrawRect(fb, drawRectBounds, drawnColor, drawnColor);
