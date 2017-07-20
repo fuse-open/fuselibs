@@ -1,0 +1,77 @@
+<Panel ux:Class="UX.Each.ReplaceWithLessData">
+    <JavaScript>
+        var Observable = require("FuseJS/Observable")
+
+        var now = new Date()
+
+        var principal = 300000;
+        var interestAPR = 5;
+        exports.monthsToMaturity = Observable(360);
+        var currentYear = now.getFullYear();
+        var startYear = now.getFullYear();
+        var startMonth = now.getMonth();
+        var principalPerPaymentAdditional = 0;
+
+        exports.payments = Observable();
+    
+        exports.calculate = function() {
+            var payments = [];
+
+            var yearCurrent = startYear;
+            var monthCurrent = startMonth + 1;
+
+            var centsPerDollar = 100;
+
+            var principalRemainingInCents = principal * centsPerDollar;
+            var principalPerPaymentAdditionalInCents = principalPerPaymentAdditional * centsPerDollar;
+            var interestRatePerMonth = interestAPR / 100 / 12;
+
+            var denominator = Math.pow(1 + interestRatePerMonth, exports.monthsToMaturity.value) - 1;
+
+            var amountPerPaymentInCents = Math.round(principalRemainingInCents *
+                                                        (interestRatePerMonth / denominator + interestRatePerMonth));
+
+            for (var t = 0; t < exports.monthsToMaturity.value; t++) {
+                var interestThisPaymentInCents = Math.round(principalRemainingInCents * interestRatePerMonth);
+
+                var principalThisPaymentInCents = amountPerPaymentInCents
+                                                - interestThisPaymentInCents
+                                                + principalPerPaymentAdditionalInCents;
+
+                if (principalThisPaymentInCents > principalRemainingInCents) {
+                    principalThisPaymentInCents = principalRemainingInCents;
+                }
+
+                principalRemainingInCents -= principalThisPaymentInCents;
+
+                payments.push({
+                    principalThisPaymentPaymentInCents: principalThisPaymentInCents,
+                    interestThisPaymentInCents: interestThisPaymentInCents,
+                    yearCurrent: yearCurrent,
+                    monthCurrent: monthCurrent,
+                    principalRemainingInCents: principalRemainingInCents
+                });
+
+                if (principalRemainingInCents <= 0) {
+                    break;
+                }
+            }
+            exports.payments.replaceAll(payments);
+        }
+
+        exports.calculate();
+    </JavaScript>
+    <DockPanel>
+        <ScrollView>
+            <StackPanel Margin="20">
+                <Slider ux:Name="monthsToMaturitySlider" Minimum="1" Maximum="1000" Value="{monthsToMaturity}" ValueChanged="{calculate}"  />
+                <Grid ux:Name="grid" ColumnCount="5">
+                    <Each Items="{payments}">
+                        <Text Value="{= trunc({monthCurrent})}" />
+                        <Text Value="{= trunc({yearCurrent})}" />
+                    </Each>
+                </Grid>
+            </StackPanel>
+        </ScrollView>
+    </DockPanel>
+</Panel>
