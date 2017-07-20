@@ -163,7 +163,7 @@ namespace Fuse.Reactive
 			wi.Id = GetDataId(wi.Data);
 			
 			var match = GetDataTemplate(wi.Data);
-			AddMatchingTemplates(wi, match);
+			var reuse = AddMatchingTemplates(wi, match);
 			
 			if ( (wi.Template.All && Templates.Count != wi.Nodes.Count) ||
 				(wi.Template.Template != null && wi.Nodes.Count != 1))
@@ -175,7 +175,11 @@ namespace Fuse.Reactive
 			//find last node prior to where we want to introduce
 			var lastNode = GetLastNodeFromIndex(windowIndex-1);
 
-			Parent.InsertOrMoveNodes( Parent.Children.IndexOf(lastNode) + 1, wi.Nodes.GetEnumerator() );
+			//InsertOrMove is slower than Insert, thus optimize if we can 
+			if (reuse)
+				Parent.InsertOrMoveNodes( Parent.Children.IndexOf(lastNode) + 1, wi.Nodes.GetEnumerator() );
+			else
+				Parent.InsertNodes( Parent.Children.IndexOf(lastNode) + 1, wi.Nodes.GetEnumerator() );
 		}
 		
 		/**
@@ -208,9 +212,13 @@ namespace Fuse.Reactive
 			return true;
 		}
 
-		/* `null` for the template indicates to use all templates, otherwise a specific one will be used. */
-		void AddMatchingTemplates(WindowItem item, TemplateMatch f)
+		/* `null` for the template indicates to use all templates, otherwise a specific one will be used. 
+			
+			@return true if reusing existing nodes, false if new nodes
+		*/
+		bool AddMatchingTemplates(WindowItem item, TemplateMatch f)
  		{
+			bool reuse = false;
 			object oldData = null;
 			var av = GetAvailableNodes(f, item.Id);
 			if (av != null)
@@ -218,6 +226,7 @@ namespace Fuse.Reactive
 				item.Nodes = av.Nodes;
 				oldData = av.CurrentData;
 				av.Nodes = null;
+				reuse = true;
 			}
 			else if (f.All)
 			{
@@ -238,6 +247,7 @@ namespace Fuse.Reactive
 
 			UpdateData(item, oldData);
  			item.Template = f;
+ 			return reuse;
  		}
  		
  		void AddTemplate(WindowItem item, Template f)
