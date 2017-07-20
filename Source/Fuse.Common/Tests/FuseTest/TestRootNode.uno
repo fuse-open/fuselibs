@@ -233,6 +233,8 @@ namespace FuseTest
 		{
 			if (_dc == null)
 				_dc = new DrawContext(_rootViewport);
+
+			DrawManager.PrepareDraw(_dc);
 			
 			var ret = new TestFramebuffer((int2)_rootViewport.PixelSize);
 			_dc.PushRenderTarget(ret.Framebuffer);
@@ -247,6 +249,8 @@ namespace FuseTest
 				DrawRectVisualizer.EndFrameAndVisualize(_dc);
 
 			_dc.PopRenderTarget();
+
+			DrawManager.EndDraw(_dc);
 
 			return ret;
 		}
