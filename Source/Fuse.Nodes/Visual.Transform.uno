@@ -242,9 +242,9 @@ namespace Fuse
 			if (HasExplicitTransforms)
 			{
 				PrependTransformOrigin(m);
-				for (int i = 0; i < Children.Count; i++)
+				for (var c = Children_first; c != null; c = c.Children_next)
 				{
-					var t = Children[i] as Transform;
+					var t = c as Transform;
 					if (t != null) 	t.PrependTo(m);
 				}
 				PrependInverseTransformOrigin(m);

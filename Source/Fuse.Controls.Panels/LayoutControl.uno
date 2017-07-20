@@ -131,7 +131,7 @@ namespace Fuse.Controls
 			var b = base.GetContentSize( lp );
 
 			if (HasVisualChildren)
-				return Math.Max(b, Layout.GetContentSize(Children, lp));
+				return Math.Max(b, Layout.GetContentSize(this, lp));
 
 			return b;
 		}
@@ -141,7 +141,7 @@ namespace Fuse.Controls
 			base.ArrangePaddingBox(lp);
 			
 			if (HasVisualChildren) // optimization
-				Layout.ArrangePaddingBox(Children, Padding, lp);
+				Layout.ArrangePaddingBox(this, Padding, lp);
 		}
 
 		protected override void OnChildAdded(Node elm)

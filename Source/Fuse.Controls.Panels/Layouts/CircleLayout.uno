@@ -97,7 +97,7 @@ namespace Fuse.Layouts
 			}
 		}
 
-		internal override float2 GetContentSize(IList<Node> elements, LayoutParams lp)
+		internal override float2 GetContentSize(Visual elements, LayoutParams lp)
 		{
 			//TODO: something sensible?
 			return float2(0);
@@ -109,15 +109,15 @@ namespace Fuse.Layouts
 			all as circles, such that arranging them they all just touch the Radius edge and each other (with
 			a zero arc-spacing).
 		*/
-		internal override void ArrangePaddingBox(IList<Node> elements, float4 padding, LayoutParams lp)
+		internal override void ArrangePaddingBox(Visual elements, float4 padding, LayoutParams lp)
 		{
 			var nlp = lp.CloneAndDerive();
 			nlp.RemoveSize(padding);
 
 			int c = 0;
-			for (int i=0; i < elements.Count; ++i)
+			for (var cn = elements.Children_first; cn != null; cn = cn.Children_next)
 			{
-				var e = elements[i] as Visual;
+				var e = cn as Visual;
 				if (e == null) continue;
 				if (ArrangeMarginBoxSpecial(e, padding, lp))
 					continue;
@@ -133,9 +133,9 @@ namespace Fuse.Layouts
 			var angle = _startAngle;
 			nlp.SetSize(elementSize);
 
-			for (int i=0; i < elements.Count; ++i)
+			for (var cn = elements.Children_first; cn != null; cn = cn.Children_next)
 			{
-				var e = elements[i] as Visual;
+				var e = cn as Visual;
 				if (!AffectsLayout(e))
 					continue;
 

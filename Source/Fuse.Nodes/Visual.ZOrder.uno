@@ -14,9 +14,14 @@ namespace Fuse
 		{ 
 			get
 			{
-				if (!HasVisualChildren) return null;
-
-				return FirstChild<Visual>();
+				var c = Children_first;
+				while (c != null)
+				{
+					var v = c as Visual;
+					if (v != null) return v;
+					c = c.Children_next;
+				}
+				return null;
 			}
 		}
 
@@ -132,7 +137,7 @@ namespace Fuse
 			return a.ZOffsetNatural - b.ZOffsetNatural;
 		}
 
-		static void AssignZOrder( IList<Node> nodes )
+		void AssignZOrder( )
 		{
 			var current = new int[]
 			{
@@ -142,15 +147,18 @@ namespace Fuse
 				0  // Layer.Overlay
 			};
 
-			for (int i = 0; i < nodes.Count; i++)
+			var c = Children_first;
+			while (c != null)
 			{
-				var visual = nodes[i] as Visual;
-				if (visual == null) continue;
-				
-				int c = (int)visual.Layer;
-				visual.ZLayer = c;
-				if (!visual.ZOffsetFixed)
-					visual.ZOffsetNatural = current[c]--;
+				var visual = c as Visual;
+				if (visual != null)
+				{
+					int z = (int)visual.Layer;
+					visual.ZLayer = z;
+					if (!visual.ZOffsetFixed)
+						visual.ZOffsetNatural = current[z]--;
+				}
+				c = c.Children_next;
 			}
 		}
 		
@@ -179,7 +187,7 @@ namespace Fuse
 		{
 			if (!_nodeZOrders)
 			{
-				AssignZOrder(Children);
+				AssignZOrder();
 				_nodeZOrders = true;
 			}
 		}

@@ -102,11 +102,7 @@ namespace Fuse
 			{
 				// iterate over a copy of the list to prevent problems when
 				// behaviors add/remove childen during rooting
-				using (var iter = _children.GetEnumeratorVersionedStruct())
-				{
-					while (iter.MoveNext())
-						iter.Current.RootInternal(this);
-				}
+				Children_SafeForEach(_rootChild);
 			}
 
 			//this forces an invalidation now that we're rooted (ensures no old stale value is there)
@@ -117,6 +113,12 @@ namespace Fuse
 
 			_viewport = FindViewport();
 			RootResources();
+		}
+
+		static Action<Visual, Node> _rootChild = RootChild;
+		static void RootChild(Visual parent, Node child)
+		{
+			child.RootInternal(parent);
 		}
 
 		internal protected virtual void OnRootedPreChildren() { }
@@ -139,16 +141,18 @@ namespace Fuse
 			{
 				// iterate over a copy of the list to prevent problems when
 				// behaviors add/remove childen during rooting
-				using (var iter = _children.GetEnumeratorVersionedStruct())
-				{
-					while (iter.MoveNext())
-						iter.Current.UnrootInternal();
-				}
+				Children_SafeForEach(_unrootChild);
 			}
 
 			WTIUnrooted();
 
 			ConcludePendingRemove();
+		}
+
+		static Action<Visual, Node> _unrootChild = UnrootChild;
+		static void UnrootChild(Visual parent, Node child)
+		{
+			child.UnrootInternal();
 		}
 
 		public override void VisitSubtree(Action<Node> action)

@@ -87,7 +87,7 @@ namespace Fuse.Layouts
 		}
 
 
-		internal override float2 GetContentSize(IList<Node> elements, LayoutParams lp)
+		internal override float2 GetContentSize(Visual elements, LayoutParams lp)
 		{
 			var orientation = Orientation;
 
@@ -133,16 +133,16 @@ namespace Fuse.Layouts
 			}
 		}
 		
-		float2 GetElementsSize(IList<Node> elements, LayoutParams lp)
+		float2 GetElementsSize(Visual elements, LayoutParams lp)
 		{
 			var orientation = Orientation;
 			var desiredSize = float2(0);
 
 			var effectiveSpacing = EffectiveItemSpacing;
 			bool firstItem = true;
-			for (int i = 0; i < elements.Count; i++)
+			for (var cn = elements.Children_first; cn != null; cn = cn.Children_next)
 			{
-				var c = elements[i] as Visual;
+				var c = cn as Visual;
 				if (!AffectsLayout(c)) continue;
 
 				var spacing = effectiveSpacing;
@@ -183,7 +183,7 @@ namespace Fuse.Layouts
 			}
 		}
 		
-		internal override void ArrangePaddingBox(IList<Node> elements, float4 padding, 
+		internal override void ArrangePaddingBox(Visual elements, float4 padding, 
 			LayoutParams lp)
 		{
 			var d = 0.0f;
@@ -207,9 +207,9 @@ namespace Fuse.Layouts
 
 			var effectiveSpacing = EffectiveItemSpacing;
 			var hasItem = false;
-			for (int i = 0; i < elements.Count; i++)
+			for (var cn = elements.Children_first; cn != null; cn = cn.Children_next)
 			{
-				var c = elements[i] as Visual;
+				var c = cn as Visual;
 				if (c == null) continue;
 				if (ArrangeMarginBoxSpecial(c, padding, lp)) //TODO: hmm, used to drop X/Y Flag
 					continue;
@@ -230,9 +230,9 @@ namespace Fuse.Layouts
 				else
 					off = Vector.Dot(lp.Size-pad,axis)/2 - d/2;
 
-				for (int i = 0; i < elements.Count; i++)
+				for (var cn = elements.Children_first; cn != null; cn = cn.Children_next)
 				{
-					var e = elements[i] as Visual;
+					var e = cn as Visual;
 					if (AffectsLayout(e))
 					{
 						var old = e.MarginBoxPosition;

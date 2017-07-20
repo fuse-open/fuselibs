@@ -82,21 +82,21 @@ namespace Fuse.Layouts
 		public string ID { get; set; }
 
 		internal override float2 GetContentSize(
-			IList<Node> elements,
+			Visual elements,
 			LayoutParams lp)
 		{
 			return Arrange(elements, lp, false);
 		}
 		
 		internal override void ArrangePaddingBox(
-			IList<Node> elements,
+			Visual elements,
 			float4 padding,
 			LayoutParams lp)
 		{
 			Arrange(elements, lp, true, padding);
 		}
 		
-		float2 Arrange(IList<Node> elements, LayoutParams lp,	
+		float2 Arrange(Visual elements, LayoutParams lp,	
 			bool doArrange, float4 padding = float4(0))
 		{
 			var nlp = lp.CloneAndDerive();
@@ -121,21 +121,22 @@ namespace Fuse.Layouts
 			if (_hasItemHeight)
 				clp.SetY(ItemHeight);
 
-			var placements = new float4[elements.Count];
+			var placements = new float4[elements.Children.Count];
 			//minorMaxSize in each major row, assinged per element
-			var minorSizes = new float[elements.Count];
+			var minorSizes = new float[elements.Children.Count];
 			// save the row each element is on
-			var elementOnRow = new int[elements.Count];
+			var elementOnRow = new int[elements.Children.Count];
 			// save the available space for each row
-			var majorRest = new float[elements.Count];
+			var majorRest = new float[elements.Children.Count];
 			//where this row starts
 			int majorStart = 0;
 			// current row
 			int currentRow = 0;
 			
-			for (int i = 0; i < elements.Count;++i)
+			int i = 0;
+			for (var cn = elements.Children_first; cn != null; cn = cn.Children_next, i++)
 			{
-				var e = elements[i] as Visual;
+				var e = cn as Visual;
 				if (!AffectsLayout(e))
 					continue;
 
@@ -173,7 +174,7 @@ namespace Fuse.Layouts
 			}
 
 			//final bits
-			for (int j=majorStart; j < elements.Count; ++j)
+			for (int j=majorStart; j < elements.Children.Count; ++j)
 				minorSizes[j] = minorMaxSize;
 			majorMaxUsed = Math.Max(majorMaxUsed, majorUsed);
 			minorUsed += minorMaxSize;
@@ -183,9 +184,9 @@ namespace Fuse.Layouts
 				var saMin = IsVert ? AlignmentHelpers.GetHorizontalSimpleAlignOptional(RowAlignment) : AlignmentHelpers.GetVerticalSimpleAlignOptional(RowAlignment);
 				var saMaj = IsVert ? AlignmentHelpers.GetVerticalSimpleAlignOptional(RowAlignment) : AlignmentHelpers.GetHorizontalSimpleAlignOptional(RowAlignment);
 				var elp = lp.CloneAndDerive();
-				for (int i=0; i < elements.Count; ++i)
+				for (var cn = elements.Children_first; cn != null; cn = cn.Children_next)
 				{
-					var element = elements[i] as Visual;
+					var element = cn as Visual;
 					if (element == null) continue;
 					if (ArrangeMarginBoxSpecial(element, padding, lp ))
 						continue;

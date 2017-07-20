@@ -11,7 +11,7 @@ namespace Fuse.Layouts
 
 	public sealed class DefaultLayout : Layout
 	{
-		internal override float2 GetContentSize(IList<Node> elements, LayoutParams lp)
+		internal override float2 GetContentSize(Visual elements, LayoutParams lp)
 		{
 			var size = GetElementsSize(elements, lp);
 			
@@ -37,12 +37,12 @@ namespace Fuse.Layouts
 			return size;
 		}
 
-		float2 GetElementsSize(IList<Node> elements, LayoutParams lp)
+		float2 GetElementsSize(Visual elements, LayoutParams lp)
 		{
 			var ds = float2(0);
-			for (int i = 0; i < elements.Count; i++)
+			for (var cn = elements.Children_first; cn != null; cn = cn.Children_next)
 			{
-				var e = elements[i] as Visual;
+				var e = cn as Visual;
 				if (!AffectsLayout(e)) continue;
 
 				ds = Math.Max( ds, e.GetMarginSize(lp) );
@@ -50,13 +50,13 @@ namespace Fuse.Layouts
 			return ds;
 		}
 
-		internal override void ArrangePaddingBox(IList<Node> elements, float4 padding, LayoutParams lp)
+		internal override void ArrangePaddingBox(Visual elements, float4 padding, LayoutParams lp)
 		{
 			var av = lp.CloneAndDerive();
 			av.RemoveSize(padding.XY+padding.ZW);
-			for (int i = 0; i < elements.Count; i++)
+			for (var cn = elements.Children_first; cn != null; cn = cn.Children_next)
 			{
-				var e = elements[i] as Visual;
+				var e = cn as Visual;
 				if (e == null) continue;
 				if (!ArrangeMarginBoxSpecial(e, padding, lp))
 				{

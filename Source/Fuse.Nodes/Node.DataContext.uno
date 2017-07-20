@@ -87,9 +87,9 @@ namespace Fuse
 				var p = np as Visual;
 				if (p != null)
 				{
-					for (var i = p.Children.Count-1; i >= 0; i--)
+					for (var c = p.Children_last; c != null; c = c.Children_previous)
 					{
-						var sibdp = p.Children[i] as ISiblingDataProvider;
+						var sibdp = c as ISiblingDataProvider;
 						if (sibdp != null)
 						{
 							var data = sibdp.Data;

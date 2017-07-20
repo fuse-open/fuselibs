@@ -175,7 +175,7 @@ namespace Fuse.Reactive
 			//find last node prior to where we want to introduce
 			var lastNode = GetLastNodeFromIndex(windowIndex-1);
 
-			Parent.InsertOrMoveNodes( Parent.Children.IndexOf(lastNode) + 1, wi.Nodes.GetEnumerator() );
+			Parent.InsertOrMoveNodes( lastNode, wi.Nodes.GetEnumerator() );
 		}
 		
 		/**
