@@ -71,131 +71,141 @@ namespace Fuse.Controls.Test
 
 		public static void LayoutAlignment(Panel panelToTest)
 		{
-	        var root = new TestRootPanel(true);
-			var parent = new Panel();
-			root.Children.Add(parent);
-
-			FillPanelProperties(panelToTest, float4( 10, 5, 21, 13 ), 200, 50, Alignment.TopRight);
-			parent.Children.Add(panelToTest);
-
-			panelToTest.Alignment = Alignment.TopRight;
-			LayoutTestHelper.TestElementLayout(root, panelToTest, int2(1000,500), float2(200,50), float2(1000-200-21,5));
-
-			panelToTest.Alignment = Alignment.BottomLeft;
-			LayoutTestHelper.TestElementLayout(root, panelToTest, int2(100,500), float2(200,50), float2(10,500-50-13));
-
-			parent.Children.Clear();
-
-			if (panelToTest.Parent == parent)
+			using (var root = new TestRootPanel(true))
 			{
-				throw new Exception("parent.Children.Clear() is broken");
-			}
-			else if (panelToTest.Parent != null)
-			{
-				throw new Exception("Something's wrong");
+				var parent = new Panel();
+				root.Children.Add(parent);
+
+				FillPanelProperties(panelToTest, float4( 10, 5, 21, 13 ), 200, 50, Alignment.TopRight);
+				parent.Children.Add(panelToTest);
+
+				panelToTest.Alignment = Alignment.TopRight;
+				LayoutTestHelper.TestElementLayout(root, panelToTest, int2(1000,500), float2(200,50), float2(1000-200-21,5));
+
+				panelToTest.Alignment = Alignment.BottomLeft;
+				LayoutTestHelper.TestElementLayout(root, panelToTest, int2(100,500), float2(200,50), float2(10,500-50-13));
+
+				parent.Children.Clear();
+
+				if (panelToTest.Parent == parent)
+				{
+					throw new Exception("parent.Children.Clear() is broken");
+				}
+				else if (panelToTest.Parent != null)
+				{
+					throw new Exception("Something's wrong");
+				}
 			}
 		}
 
 		public static void SnappingToPixels(Panel panelToTest)
 		{
-			var root = new TestRootPanel(true);
 			var parent = new Panel();
-			float screenDensity = 1;
-			root.Children.Add(parent);
-			FillPanelProperties(panelToTest, float4( 10.2f, 5.3f, 21.4f, 13.7f ), 100, 71, Alignment.TopRight);
-			parent.Children.Add( panelToTest );
+			using (var root = new TestRootPanel(true))
+			{
+				root.Children.Add(parent);
+				FillPanelProperties(panelToTest, float4( 10.2f, 5.3f, 21.4f, 13.7f ), 100, 71, Alignment.TopRight);
+				parent.Children.Add( panelToTest );
 
-			panelToTest.SnapToPixels = false;
-			LayoutTestHelper.TestElementLayout(root, panelToTest, int2(420,80), float2(100, 71), 
-				float2(420 - 100 - 21.4f, 5.3f));
-			root.Children.Clear();
+				panelToTest.SnapToPixels = false;
+				LayoutTestHelper.TestElementLayout(root, panelToTest, int2(420,80), float2(100, 71),
+					float2(420 - 100 - 21.4f, 5.3f));
+			}
 
 			panelToTest.SnapToPixels = true;
 
-			screenDensity = 2f;
-			root = new TestRootPanel(false, screenDensity);
-			root.Children.Add(parent);
+			var screenDensity = 2f;
+			using (var root = new TestRootPanel(false, screenDensity))
+			{
+				root.Children.Add(parent);
 
-			LayoutTestHelper.TestElementLayout(root, panelToTest, int2(800,600), 
-				root.SnapToPixelsSize(float2(100, 71)), float2(800 - 100 - root.SnapToPixelsPos(21.4f),
-				root.SnapToPixelsPos(5.3f)));
-			root.Children.Clear();
+				LayoutTestHelper.TestElementLayout(root, panelToTest, int2(800,600),
+					root.SnapToPixelsSize(float2(100, 71)), float2(800 - 100 - root.SnapToPixelsPos(21.4f),
+					root.SnapToPixelsPos(5.3f)));
+			}
 
 			screenDensity = 0.75f;
-			root = new TestRootPanel(false, screenDensity);
-			root.Children.Add(parent);
 
-			LayoutTestHelper.TestElementLayout(root, panelToTest, int2(600,600), 
-				root.SnapToPixelsSize(float2(100, 71)) , float2(600 - 100 - root.SnapToPixelsPos(21.4f),
-				root.SnapToPixelsPos(5.3f)), 0.0001f);
-			root.Children.Clear();
+			using (var root = new TestRootPanel(false, screenDensity))
+			{
+				root.Children.Add(parent);
+
+				LayoutTestHelper.TestElementLayout(root, panelToTest, int2(600,600), 
+					root.SnapToPixelsSize(float2(100, 71)) , float2(600 - 100 - root.SnapToPixelsPos(21.4f),
+					root.SnapToPixelsPos(5.3f)), 0.0001f);
+			}
 
 			screenDensity = 1.4f;
-			root = new TestRootPanel(false, screenDensity);
-			root.Children.Add(parent);
+			using (var root = new TestRootPanel(false, screenDensity))
+			{
+				root.Children.Add(parent);
 
-			LayoutTestHelper.TestElementLayout(root, panelToTest, int2(900,600), 
-				root.SnapToPixelsSize(float2(100, 71)) , float2(900 - 100 - root.SnapToPixelsPos(21.4f),
-				root.SnapToPixelsPos(5.3f)), 0.0001f);
+				LayoutTestHelper.TestElementLayout(root, panelToTest, int2(900,600), 
+					root.SnapToPixelsSize(float2(100, 71)) , float2(900 - 100 - root.SnapToPixelsPos(21.4f),
+					root.SnapToPixelsPos(5.3f)), 0.0001f);
 
-			panelToTest.SnapToPixels = false;
-			parent.Children.Clear();
+				panelToTest.SnapToPixels = false;
+				parent.Children.Clear();
+			}
 		}
 
 		public static void MaxAndMinWidthTest(Panel panelToTest)
 		{
-			var root = new TestRootPanel();
 			var parent = new Panel();
-			root.Children.Add(parent);
 			parent.Children.Add(panelToTest);
-			panelToTest.Width = Size.Auto;
-			panelToTest.Alignment = Alignment.Default;
-			panelToTest.Margin = float4(7, 15, 9, 3);
-			panelToTest.MaxWidth = 347;
-			panelToTest.Height = 72;
 
-			LayoutTestHelper.TestElementLayout(root, panelToTest, int2(281, 515), float2(281-7-9, 72), float2(7, (515-72-3+15)/2f));
-			LayoutTestHelper.TestElementLayout(root, panelToTest, int2(703, 95), float2(347, 72), float2((703-347-9+7)/2f, (95-72-3+15)/2f));
+			using (var root = TestRootPanel.CreateWithChild(parent))
+			{
+				panelToTest.Width = Size.Auto;
+				panelToTest.Alignment = Alignment.Default;
+				panelToTest.Margin = float4(7, 15, 9, 3);
+				panelToTest.MaxWidth = 347;
+				panelToTest.Height = 72;
 
-			panelToTest.MaxWidth = Size.Auto;
-			panelToTest.Margin = float4(11, 12, 13, 14);
-			panelToTest.MinWidth = 542;
-			panelToTest.Height = 417;
+				LayoutTestHelper.TestElementLayout(root, panelToTest, int2(281, 515), float2(281-7-9, 72), float2(7, (515-72-3+15)/2f));
+				LayoutTestHelper.TestElementLayout(root, panelToTest, int2(703, 95), float2(347, 72), float2((703-347-9+7)/2f, (95-72-3+15)/2f));
 
-			LayoutTestHelper.TestElementLayout(root, panelToTest, int2(341, 608), float2(542, 417), 
-				float2(-101.5f, (608-417-14+12)/2f));
-			LayoutTestHelper.TestElementLayout(root, panelToTest, int2(847, 609), float2(847-11-13, 417), float2(11, (609-417-14+12)/2f));
+				panelToTest.MaxWidth = Size.Auto;
+				panelToTest.Margin = float4(11, 12, 13, 14);
+				panelToTest.MinWidth = 542;
+				panelToTest.Height = 417;
 
-			panelToTest.Alignment = Alignment.Default;
-			panelToTest.MinWidth = Size.Auto;
-			parent.Children.Clear();
+				LayoutTestHelper.TestElementLayout(root, panelToTest, int2(341, 608), float2(542, 417), 
+					float2(-101.5f, (608-417-14+12)/2f));
+				LayoutTestHelper.TestElementLayout(root, panelToTest, int2(847, 609), float2(847-11-13, 417), float2(11, (609-417-14+12)/2f));
+
+				panelToTest.Alignment = Alignment.Default;
+				panelToTest.MinWidth = Size.Auto;
+				parent.Children.Clear();
+			}
 		}
 
 		public static void MaxAndMinHeightTest(Panel panelToTest)
 		{
-			var root = new TestRootPanel();
 			var parent = new Panel();
-			root.Children.Add(parent);
-			parent.Children.Add(panelToTest);
-			panelToTest.Height = Size.Auto;
-			panelToTest.Margin = float4(8, 3, 16, 7);
-			panelToTest.MaxHeight = 401;
-			panelToTest.Width = 265;
+			using (var root = TestRootPanel.CreateWithChild(parent))
+			{
+				parent.Children.Add(panelToTest);
+				panelToTest.Height = Size.Auto;
+				panelToTest.Margin = float4(8, 3, 16, 7);
+				panelToTest.MaxHeight = 401;
+				panelToTest.Width = 265;
 
-			LayoutTestHelper.TestElementLayout(root, panelToTest, int2(602, 230), float2(265, 230-3-7), float2((602-265-16+8)/2f, 3));
-			LayoutTestHelper.TestElementLayout(root, panelToTest, int2(482, 679), float2(265, 401), float2((482-265-16+8)/2f, (679-401-7+3)/2f));
+				LayoutTestHelper.TestElementLayout(root, panelToTest, int2(602, 230), float2(265, 230-3-7), float2((602-265-16+8)/2f, 3));
+				LayoutTestHelper.TestElementLayout(root, panelToTest, int2(482, 679), float2(265, 401), float2((482-265-16+8)/2f, (679-401-7+3)/2f));
 
-			panelToTest.MaxHeight = Size.Auto;
-			panelToTest.Height = Size.Auto;
-			panelToTest.Margin = float4(8, 3, 16, 7);
-			panelToTest.MinHeight = 401;
-			panelToTest.Width = 265;
+				panelToTest.MaxHeight = Size.Auto;
+				panelToTest.Height = Size.Auto;
+				panelToTest.Margin = float4(8, 3, 16, 7);
+				panelToTest.MinHeight = 401;
+				panelToTest.Width = 265;
 
-			LayoutTestHelper.TestElementLayout(root, panelToTest, int2(678, 299), float2(265, 401), float2((678-265-16+8)/2f, -53));
-			LayoutTestHelper.TestElementLayout(root, panelToTest, int2(692, 703), float2(265, 703-7-3), float2((692-265-16+8)/2f, 3));
+				LayoutTestHelper.TestElementLayout(root, panelToTest, int2(678, 299), float2(265, 401), float2((678-265-16+8)/2f, -53));
+				LayoutTestHelper.TestElementLayout(root, panelToTest, int2(692, 703), float2(265, 703-7-3), float2((692-265-16+8)/2f, 3));
 
-			panelToTest.MinHeight = Size.Auto;
-			parent.Children.Clear();
+				panelToTest.MinHeight = Size.Auto;
+				parent.Children.Clear();
+			}
 		}
 
 		public static void FillPanelProperties(Panel panelToTest, float4 margin, float width, float height, Alignment align)

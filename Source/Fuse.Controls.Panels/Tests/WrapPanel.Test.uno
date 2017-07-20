@@ -13,9 +13,10 @@ namespace Fuse.Controls.Panels.Test
 		public void Issue2680()
 		{
 			var p = new UX.Issue2680();
-			var root = TestRootPanel.CreateWithChild(p);
-			
-			Assert.AreEqual(float2(300,40), p.G.ActualSize);
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				Assert.AreEqual(float2(300,40), p.G.ActualSize);
+			}
 		}
 		
 		[Test]

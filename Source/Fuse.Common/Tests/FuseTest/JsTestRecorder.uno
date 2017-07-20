@@ -15,13 +15,12 @@ namespace FuseTest
 		Queue<AssertResult> _testResults;
 		Fuse.Scripting.Context _context;
 
-		public JsTestRecorder() : this(JavaScriptTestContext.Create()) {}
-
-		public JsTestRecorder(Fuse.Scripting.Context context)
+		public JsTestRecorder()
 		{
-			_context = context;
-			var f = context.Evaluate("", "(function(obj, assert) { obj['test'] = { assert: function(exp, msg) { try { assert(Boolean(exp ? 1 : 0), msg); } catch(e) { assert(0, 'Error: ' + e); } } }; } )") as Fuse.Scripting.Function;
-			f.Call(context.GlobalObject, (Callback)TestAssert);
+			_context = Fuse.Reactive.ThreadWorker.CreateContext(null);
+			new Fuse.Reactive.FuseJS.Builtins(_context);
+			var f = _context.Evaluate("", "(function(obj, assert) { obj['test'] = { assert: function(exp, msg) { try { assert(Boolean(exp ? 1 : 0), msg); } catch(e) { assert(0, 'Error: ' + e); } } }; } )") as Fuse.Scripting.Function;
+			f.Call(_context.GlobalObject, (Callback)TestAssert);
 		}
 
 		public class AssertResult
@@ -71,37 +70,6 @@ namespace FuseTest
 		{
 			if(_context != null)
 				_context.Dispose();
-		}
-	}
-
-	public static class JavaScriptTestContext
-	{
-		public static void CreateInJavaScriptTag(Action<Fuse.Scripting.Context> call)
-		{
-			var nt = NameTable.Empty;
-
-			var w1 = new Fuse.Reactive.JavaScript(nt);
-			w1.FileName = "Empty JS tag";
-			
-			var _rootViewport = new TestRootPanel();
-
-			nt.This = _rootViewport;
-			_rootViewport.Children.Add(w1);
-
-			var w = Fuse.Reactive.JavaScript.Worker;
-			if (w != null)
-				w.WaitIdle();
-
-			var context = w.Context;
-			call(context);
-			_rootViewport.StepFrameJS();
-		}
-
-		public static Fuse.Scripting.Context Create()
-		{
-			var c = Fuse.Reactive.ThreadWorker.CreateContext(null);
-			new Fuse.Reactive.FuseJS.Builtins(c);
-			return c;
 		}
 	}
 }

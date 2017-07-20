@@ -44,10 +44,7 @@ namespace Fuse.Triggers.Test
 		{
 			using (var root = CreateRoot())
 			{
-				var whilePressed = new WhilePressed() {
-					Name = "OMG3000"
-				};
-				var setup = SetupHelper.Setup(root, GetDummyButton(), whilePressed);
+				var setup = SetupHelper.Setup(root, GetDummyButton(), new WhilePressed());
 
 				Fuse.Input.Pointer.RaisePressed(root, GetDefaultPointerEventData());
 				root.PumpDeferred();

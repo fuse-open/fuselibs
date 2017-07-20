@@ -14,36 +14,36 @@ namespace Fuse.Test
 		[Test]
 		public void WorldInvalidate()
 		{
-			var root = new TestRootPanel();
 			var tn = new UX.TransformTestNode();
-			root.Children.Add(tn);
-			
-			Assert.AreEqual( 0, tn.PA.WorldTransform.M41 );
-			Assert.AreEqual( 1, tn.PB.WorldTransform.M41 );
-			Assert.AreEqual( 11, tn.PC.WorldTransform.M41 );
-			
-			tn.TRoot.X = 100;
-			Assert.AreEqual( 100, tn.PA.WorldTransform.M41 );
-			Assert.AreEqual( -101, tn.PB.WorldTransformInverse.M41 );
-			Assert.AreEqual( 111, tn.PC.WorldTransform.M41 );
-			
-			//newly added
-			var q = new Translation{X = 1000};
-			tn.PB.Children.Add(q);
-			Assert.AreEqual( 100, tn.PA.WorldTransform.M41 );
-			Assert.AreEqual( -1111, tn.PC.WorldTransformInverse.M41 );
-			Assert.AreEqual( 1101, tn.PB.WorldTransform.M41 );
-			
-			tn.PB.Children.Remove(q);
-			Assert.AreEqual( 101, tn.PB.WorldTransform.M41 );
-			Assert.AreEqual( 111, tn.PC.WorldTransform.M41 );
-			
-			//with intervening nodes
-			tn.TRoot.X = 0;
-			Assert.AreEqual( 0, tn.D4.WorldTransform.M41 );
-			tn.D1.Children.Add(q);
-			Assert.AreEqual( 1000, tn.D4.WorldTransform.M41 );
-			Assert.AreEqual( 1, tn.D4.WorldTransform.M42 );
+			using (var root = TestRootPanel.CreateWithChild(tn))
+			{
+				Assert.AreEqual( 0, tn.PA.WorldTransform.M41 );
+				Assert.AreEqual( 1, tn.PB.WorldTransform.M41 );
+				Assert.AreEqual( 11, tn.PC.WorldTransform.M41 );
+
+				tn.TRoot.X = 100;
+				Assert.AreEqual( 100, tn.PA.WorldTransform.M41 );
+				Assert.AreEqual( -101, tn.PB.WorldTransformInverse.M41 );
+				Assert.AreEqual( 111, tn.PC.WorldTransform.M41 );
+
+				//newly added
+				var q = new Translation{X = 1000};
+				tn.PB.Children.Add(q);
+				Assert.AreEqual( 100, tn.PA.WorldTransform.M41 );
+				Assert.AreEqual( -1111, tn.PC.WorldTransformInverse.M41 );
+				Assert.AreEqual( 1101, tn.PB.WorldTransform.M41 );
+
+				tn.PB.Children.Remove(q);
+				Assert.AreEqual( 101, tn.PB.WorldTransform.M41 );
+				Assert.AreEqual( 111, tn.PC.WorldTransform.M41 );
+
+				//with intervening nodes
+				tn.TRoot.X = 0;
+				Assert.AreEqual( 0, tn.D4.WorldTransform.M41 );
+				tn.D1.Children.Add(q);
+				Assert.AreEqual( 1000, tn.D4.WorldTransform.M41 );
+				Assert.AreEqual( 1, tn.D4.WorldTransform.M42 );
+			}
 		}
 		
 		static void CheckTransform(float3 expect, float3 input, Transform transform,
@@ -107,34 +107,35 @@ namespace Fuse.Test
 		public void TranslationRelative()
 		{
 			var p = new UX.TranslationRelative();
-			var root = TestRootPanel.CreateWithChild(p, int2(100));
-			
-			Assert.AreEqual( 10 + 30*0.5f, p.P2.WorldTransform.M41 );
-			Assert.AreEqual( 20 + 40*0.25f, p.P2.WorldTransform.M42 );
-			
-			Assert.AreEqual( 50 - 20*0.5f, p.P1.WorldTransform.M41 );
-			Assert.AreEqual( 60 - 30*1f, p.P1.WorldTransform.M42 );
-			
-			//first time is easy since the transform is deferred you can't tell if the subscriptions are correct
-			Assert.AreEqual( 30, p.P3.WorldTransform.M41 );
-			Assert.AreEqual( 40, p.P3.WorldTransform.M42 );
-			Assert.AreEqual( 30, p.P5.WorldTransform.M41 );
-			Assert.AreEqual( 40, p.P5.WorldTransform.M42 );
-			
-			Assert.AreEqual( 30, p.P4.WorldTransform.M41 );
-			Assert.AreEqual( 40, p.P4.WorldTransform.M42 );
-			Assert.AreEqual( 30, p.P6.WorldTransform.M41 );
-			Assert.AreEqual( 40, p.P6.WorldTransform.M42 );
-			
-			//so change the size and see that everything updates
-			p.P2.Width = Size.Points(20);
-			root.IncrementFrame();
-			
-			Assert.AreEqual( 20, p.P3.WorldTransform.M41 );
-			Assert.AreEqual( 20, p.P5.WorldTransform.M41 );
-			
-			Assert.AreEqual( 20, p.P4.WorldTransform.M41 );
-			Assert.AreEqual( 20, p.P6.WorldTransform.M41 ); //trouble point for issue 1881
+			using (var root = TestRootPanel.CreateWithChild(p, int2(100)))
+			{
+				Assert.AreEqual( 10 + 30*0.5f, p.P2.WorldTransform.M41 );
+				Assert.AreEqual( 20 + 40*0.25f, p.P2.WorldTransform.M42 );
+
+				Assert.AreEqual( 50 - 20*0.5f, p.P1.WorldTransform.M41 );
+				Assert.AreEqual( 60 - 30*1f, p.P1.WorldTransform.M42 );
+
+				//first time is easy since the transform is deferred you can't tell if the subscriptions are correct
+				Assert.AreEqual( 30, p.P3.WorldTransform.M41 );
+				Assert.AreEqual( 40, p.P3.WorldTransform.M42 );
+				Assert.AreEqual( 30, p.P5.WorldTransform.M41 );
+				Assert.AreEqual( 40, p.P5.WorldTransform.M42 );
+
+				Assert.AreEqual( 30, p.P4.WorldTransform.M41 );
+				Assert.AreEqual( 40, p.P4.WorldTransform.M42 );
+				Assert.AreEqual( 30, p.P6.WorldTransform.M41 );
+				Assert.AreEqual( 40, p.P6.WorldTransform.M42 );
+
+				//so change the size and see that everything updates
+				p.P2.Width = Size.Points(20);
+				root.IncrementFrame();
+
+				Assert.AreEqual( 20, p.P3.WorldTransform.M41 );
+				Assert.AreEqual( 20, p.P5.WorldTransform.M41 );
+
+				Assert.AreEqual( 20, p.P4.WorldTransform.M41 );
+				Assert.AreEqual( 20, p.P6.WorldTransform.M41 ); //trouble point for issue 1881
+			}
 		}
 	}
 }

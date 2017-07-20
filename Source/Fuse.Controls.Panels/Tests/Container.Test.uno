@@ -14,33 +14,36 @@ namespace Fuse.Controls.Panels.Test
 		{
 			//https://github.com/fusetools/fuselibs-public/issues/53
 			var c = new UX.IssuePublic53();
-			var root = TestRootPanel.CreateWithChild(c);
+			using (var root = TestRootPanel.CreateWithChild(c))
+			{
+				// just creating this should be enough to show that this works
+			}
 		}
 
 		[Test]
 		public void SubtreeNodes()
 		{
 			var c = new UX.ContainerTest();
-			var root = TestRootPanel.CreateWithChild(c);
+			using (var root = TestRootPanel.CreateWithChild(c))
+			{
+				Assert.IsTrue(c.container.SubtreeNodes.Contains(c.bluepanel));
+				Assert.IsTrue(c.container.SubtreeNodes.Contains(c.container.foo));
 
-			Assert.IsTrue(c.container.SubtreeNodes.Contains(c.bluepanel));
-			Assert.IsTrue(c.container.SubtreeNodes.Contains(c.container.foo));
+				Assert.IsTrue(c.container.Children.Contains(c.container.bar));
+				Assert.IsFalse(c.container.Children.Contains(c.bluepanel));
+				Assert.IsFalse(c.container.Children.Contains(c.container.foo));
 
-			Assert.IsTrue(c.container.Children.Contains(c.container.bar));
-			Assert.IsFalse(c.container.Children.Contains(c.bluepanel));
-			Assert.IsFalse(c.container.Children.Contains(c.container.foo));
+				Assert.IsTrue(c.container.innerPanel.Children.Contains(c.bluepanel));
+				Assert.IsTrue(c.container.innerPanel.Children.Contains(c.container.foo));
 
-			Assert.IsTrue(c.container.innerPanel.Children.Contains(c.bluepanel));
-			Assert.IsTrue(c.container.innerPanel.Children.Contains(c.container.foo));
+				c.container.Subtree = c.container.other;
 
-			c.container.Subtree = c.container.other;
+				Assert.IsFalse(c.container.innerPanel.Children.Contains(c.bluepanel));
+				Assert.IsFalse(c.container.innerPanel.Children.Contains(c.container.foo));
 
-			Assert.IsFalse(c.container.innerPanel.Children.Contains(c.bluepanel));
-			Assert.IsFalse(c.container.innerPanel.Children.Contains(c.container.foo));
-
-			Assert.IsTrue(c.container.other.Children.Contains(c.bluepanel));
-			Assert.IsTrue(c.container.other.Children.Contains(c.container.foo));
-
+				Assert.IsTrue(c.container.other.Children.Contains(c.bluepanel));
+				Assert.IsTrue(c.container.other.Children.Contains(c.container.foo));
+			}
 		}
 	}
 }

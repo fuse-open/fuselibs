@@ -40,13 +40,14 @@ namespace Fuse.Reactive.Test
 		public void SerializeObject()
 		{
 			var e = new UX.EventBinding();
-			var root = TestRootPanel.CreateWithChild(e);
-			root.StepFrameJS();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.StepFrameJS();
+				e.Run.Perform();
+				root.StepFrameJS();
 
-			e.Run.Perform();
-			root.StepFrameJS();
-
-			Assert.AreEqual("\"bar\"", e.Text.Value);
+				Assert.AreEqual("\"bar\"", e.Text.Value);
+			}
 		}
 	}
 }

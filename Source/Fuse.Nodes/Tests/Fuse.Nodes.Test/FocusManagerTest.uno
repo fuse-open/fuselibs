@@ -14,43 +14,45 @@ namespace Fuse.Test
 		public void CanSetFocusedVisual()
 		{
 			var dummy = new FocusableVisual();
-			var root = new TestRootPanel();
-			root.Children.Add(dummy);
+			using (var root = TestRootPanel.CreateWithChild(dummy))
+			{
+				Assert.IsTrue(Focus.IsFocusable(dummy));
+				Assert.IsTrue(dummy.IsContextEnabled);
 
-			Assert.IsTrue(Focus.IsFocusable(dummy));
-			Assert.IsTrue(dummy.IsContextEnabled);
-			
-			Focus.GiveTo( dummy );
-			Assert.AreEqual(dummy, Focus.FocusedVisual);
+				Focus.GiveTo( dummy );
+				Assert.AreEqual(dummy, Focus.FocusedVisual);
+			}
 		}
 		
 		[Test]
 		public void CanNotSetFocusedVisualOnNotIsFocusable()
 		{
 			var dummy = new NotFocusableVisual();
-			var root = new TestRootPanel();
-			root.Children.Add(dummy);
-			Assert.IsFalse(Focus.IsFocusable(dummy));
-			
-			Focus.GiveTo( dummy );
-			
-			Assert.AreEqual(null, Focus.FocusedVisual);
-			Assert.AreNotEqual(dummy, Focus.FocusedVisual);
+			using (var root = TestRootPanel.CreateWithChild(dummy))
+			{
+				Assert.IsFalse(Focus.IsFocusable(dummy));
+
+				Focus.GiveTo( dummy );
+
+				Assert.AreEqual(null, Focus.FocusedVisual);
+				Assert.AreNotEqual(dummy, Focus.FocusedVisual);
+			}
 		}
 		
 		[Test]
 		public void CanNotSetFocusedVisualOnNotEnbled()
 		{
 			var dummy = new NotEnabledVisual();
-			var root = new TestRootPanel();
-			root.Children.Add(dummy);
-			Assert.IsTrue(Focus.IsFocusable(dummy));
-			Assert.IsFalse(dummy.IsContextEnabled);
-			
-			Focus.GiveTo( dummy );
-			
-			Assert.AreEqual(null, Focus.FocusedVisual); // No Root
-			Assert.AreNotEqual(dummy, Focus.FocusedVisual);
+			using (var root = TestRootPanel.CreateWithChild(dummy))
+			{
+				Assert.IsTrue(Focus.IsFocusable(dummy));
+				Assert.IsFalse(dummy.IsContextEnabled);
+
+				Focus.GiveTo( dummy );
+
+				Assert.AreEqual(null, Focus.FocusedVisual); // No Root
+				Assert.AreNotEqual(dummy, Focus.FocusedVisual);
+			}
 		}
 		
 		[Test]
@@ -64,14 +66,12 @@ namespace Fuse.Test
 		[Test]
 		public void PredictFocus1()
 		{
-			var root = new TestRootPanel();
 			var target = new FocusableVisual();
-			root.Children.Add(target);
-
-			var result = PredictFocusDown(root);
-
-			Assert.AreEqual(result, target);
-
+			using (var root = TestRootPanel.CreateWithChild(target))
+			{
+				var result = PredictFocusDown(root);
+				Assert.AreEqual(result, target);
+			}
 		}
 
 		static Visual PredictFocusDown(Visual visual)

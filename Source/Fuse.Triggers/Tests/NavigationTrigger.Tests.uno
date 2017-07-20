@@ -15,13 +15,6 @@ namespace Fuse.Triggers.Test
 {
 	public class NavigationTriggerTests : TestBase
 	{
-		private TestRootPanel _root;
-
-		public NavigationTriggerTests()
-		{
-			_root = new TestRootPanel();
-		}
-
 		[Test]
 		//Enter trigger shouldn't be called
 		public void DirectNavigation()
@@ -35,53 +28,53 @@ namespace Fuse.Triggers.Test
 			var thirdPageSetup = SetupPage(panel);
 			var fourthPageSetup = SetupPage(panel, false);
 
-			_root.Children.Add(panel);
-			_root.Layout(int2(200));
+			using (var root = TestRootPanel.CreateWithChild(panel, int2(200)))
+			{
+				TestPageTriggers(firstPageSetup, 0, 0, 0, 0, 0, 0);
+				TestPageTriggers(secondPageSetup, 0, 0, 0, 0, 0, 0);
+				TestPageTriggers(thirdPageSetup, 0, 0, 0, 0, 0, 0);
 
-			TestPageTriggers(firstPageSetup, 0, 0, 0, 0, 0, 0);
-			TestPageTriggers(secondPageSetup, 0, 0, 0, 0, 0, 0);
-			TestPageTriggers(thirdPageSetup, 0, 0, 0, 0, 0, 0);
+				//+Act1, -Exit1
+				navigation.Goto(firstPageSetup.Page,NavigationGotoMode.Transition);
+				root.CompleteNextFrame(); //navigation animations use ProcessNextFrame
+				TestPageTriggers(firstPageSetup, 1, 0, 0, 0, 0, 1);
+				TestPageTriggers(secondPageSetup, 0, 0, 0, 0, 0, 0);
+				TestPageTriggers(thirdPageSetup, 0, 0, 0, 0, 0, 0);
 
-			//+Act1, -Exit1
-			navigation.Goto(firstPageSetup.Page,NavigationGotoMode.Transition);
-			_root.CompleteNextFrame(); //navigation animations use ProcessNextFrame
-			TestPageTriggers(firstPageSetup, 1, 0, 0, 0, 0, 1);
-			TestPageTriggers(secondPageSetup, 0, 0, 0, 0, 0, 0);
-			TestPageTriggers(thirdPageSetup, 0, 0, 0, 0, 0, 0);
+				//+Act2, -Exit2, -Act1, +Exit1
+				navigation.Goto(secondPageSetup.Page,NavigationGotoMode.Transition);
+				root.CompleteNextFrame();
+				TestPageTriggers(firstPageSetup, 1, 1, 0, 0, 1, 1);
+				TestPageTriggers(secondPageSetup, 1, 0, 0, 0, 0, 1);
+				TestPageTriggers(thirdPageSetup, 0, 0, 0, 0, 0, 0);
 
-			//+Act2, -Exit2, -Act1, +Exit1
-			navigation.Goto(secondPageSetup.Page,NavigationGotoMode.Transition);
-			_root.CompleteNextFrame();
-			TestPageTriggers(firstPageSetup, 1, 1, 0, 0, 1, 1);
-			TestPageTriggers(secondPageSetup, 1, 0, 0, 0, 0, 1);
-			TestPageTriggers(thirdPageSetup, 0, 0, 0, 0, 0, 0);
+				//-Act2, +Exit2, +Act3, -Exit3
+				navigation.Goto(thirdPageSetup.Page,NavigationGotoMode.Transition);
+				root.CompleteNextFrame();
+				TestPageTriggers(firstPageSetup, 1, 1, 0, 0, 1, 1);
+				TestPageTriggers(secondPageSetup, 1, 1, 0, 0, 1, 1);
+				TestPageTriggers(thirdPageSetup, 1, 0, 0, 0, 0, 1);
 
-			//-Act2, +Exit2, +Act3, -Exit3
-			navigation.Goto(thirdPageSetup.Page,NavigationGotoMode.Transition);
-			_root.CompleteNextFrame();
-			TestPageTriggers(firstPageSetup, 1, 1, 0, 0, 1, 1);
-			TestPageTriggers(secondPageSetup, 1, 1, 0, 0, 1, 1);
-			TestPageTriggers(thirdPageSetup, 1, 0, 0, 0, 0, 1);
+				//-Act3, +Exit3
+				navigation.Goto(null,NavigationGotoMode.Transition);
+				root.CompleteNextFrame();
+				TestPageTriggers(firstPageSetup, 1, 1, 0, 0, 1, 1);
+				TestPageTriggers(secondPageSetup, 1, 1, 0, 0, 1, 1);
+				TestPageTriggers(thirdPageSetup, 1, 1, 0, 0, 1, 1);
 
-			//-Act3, +Exit3
-			navigation.Goto(null,NavigationGotoMode.Transition);
-			_root.CompleteNextFrame();
-			TestPageTriggers(firstPageSetup, 1, 1, 0, 0, 1, 1);
-			TestPageTriggers(secondPageSetup, 1, 1, 0, 0, 1, 1);
-			TestPageTriggers(thirdPageSetup, 1, 1, 0, 0, 1, 1);
-	
-			panel.Children.Add(fourthPageSetup.Page);
-			TestPageTriggers(firstPageSetup, 1, 1, 0, 0, 1, 1);
-			TestPageTriggers(secondPageSetup, 1, 1, 0, 0, 1, 1);
-			TestPageTriggers(thirdPageSetup, 1, 1, 0, 0, 1, 1);
-			TestPageTriggers(fourthPageSetup, 0, 0, 0, 0, 0, 0);
-			
-			navigation.Goto(fourthPageSetup.Page,NavigationGotoMode.Transition);
-			_root.CompleteNextFrame();
-			TestPageTriggers(firstPageSetup, 1, 1, 0, 0, 1, 1);
-			TestPageTriggers(secondPageSetup, 1, 1, 0, 0, 1, 1);
-			TestPageTriggers(thirdPageSetup, 1, 1, 0, 0, 1, 1);
-			TestPageTriggers(fourthPageSetup, 1, 0, 0, 0, 0, 1);
+				panel.Children.Add(fourthPageSetup.Page);
+				TestPageTriggers(firstPageSetup, 1, 1, 0, 0, 1, 1);
+				TestPageTriggers(secondPageSetup, 1, 1, 0, 0, 1, 1);
+				TestPageTriggers(thirdPageSetup, 1, 1, 0, 0, 1, 1);
+				TestPageTriggers(fourthPageSetup, 0, 0, 0, 0, 0, 0);
+
+				navigation.Goto(fourthPageSetup.Page,NavigationGotoMode.Transition);
+				root.CompleteNextFrame();
+				TestPageTriggers(firstPageSetup, 1, 1, 0, 0, 1, 1);
+				TestPageTriggers(secondPageSetup, 1, 1, 0, 0, 1, 1);
+				TestPageTriggers(thirdPageSetup, 1, 1, 0, 0, 1, 1);
+				TestPageTriggers(fourthPageSetup, 1, 0, 0, 0, 0, 1);
+			}
 		}
 
 		/*
@@ -103,43 +96,43 @@ namespace Fuse.Triggers.Test
 			var thirdPageSetup = SetupPage(panel);
 			var fourthPageSetup = SetupPage(panel);
 
-			_root.Children.Add(panel);
-			_root.Layout(int2(200));
+			using (var root = TestRootPanel.CreateWithChild(panel, int2(200)))
+			{
+				root.IncrementFrame(1);
+				TestPageTriggers(firstPageSetup, 0, 0, 0, 0, 0, 0);
+				TestPageTriggers(secondPageSetup, 0, 0, 0, 0, 0, 0);
+				TestPageTriggers(thirdPageSetup, 0, 0, 0, 0, 0, 0);
 
-			_root.IncrementFrame(1);
-			TestPageTriggers(firstPageSetup, 0, 0, 0, 0, 0, 0);
-			TestPageTriggers(secondPageSetup, 0, 0, 0, 0, 0, 0);
-			TestPageTriggers(thirdPageSetup, 0, 0, 0, 0, 0, 0);
+				navigation.Goto(secondPageSetup.Page,NavigationGotoMode.Transition);
+				root.IncrementFrame(1);
+				TestPageTriggers(firstPageSetup, 0, 1, 1, 0, 0, 0);
+				TestPageTriggers(secondPageSetup, 1, 0, 0, 0, 0, 1);
+				TestPageTriggers(thirdPageSetup, 0, 0, 0, 0, 0, 0);
 
-			navigation.Goto(secondPageSetup.Page,NavigationGotoMode.Transition);
-			_root.IncrementFrame(1);
-			TestPageTriggers(firstPageSetup, 0, 1, 1, 0, 0, 0);
-			TestPageTriggers(secondPageSetup, 1, 0, 0, 0, 0, 1);
-			TestPageTriggers(thirdPageSetup, 0, 0, 0, 0, 0, 0);
+				navigation.Goto(thirdPageSetup.Page,NavigationGotoMode.Transition);
+				root.IncrementFrame(1);
+				TestPageTriggers(firstPageSetup, 0, 1, 1, 0, 0, 0);
+				TestPageTriggers(secondPageSetup, 1, 1, 1, 0, 0, 1);
+				TestPageTriggers(thirdPageSetup, 1, 0, 0, 0, 0, 1);
 
-			navigation.Goto(thirdPageSetup.Page,NavigationGotoMode.Transition);
-			_root.IncrementFrame(1);
-			TestPageTriggers(firstPageSetup, 0, 1, 1, 0, 0, 0);
-			TestPageTriggers(secondPageSetup, 1, 1, 1, 0, 0, 1);
-			TestPageTriggers(thirdPageSetup, 1, 0, 0, 0, 0, 1);
+				navigation.Goto(firstPageSetup.Page,NavigationGotoMode.Transition);
+				root.IncrementFrame(1);
+				TestPageTriggers(firstPageSetup, 1, 1, 1, 1, 0, 0);
+				//TODO: RESTORE: TestPageTriggers(secondPageSetup, 2, 2, 1, 1, 1, 1);
+				TestPageTriggers(thirdPageSetup, 1, 1, 0, 0, 1, 1);
 
-			navigation.Goto(firstPageSetup.Page,NavigationGotoMode.Transition);
-			_root.IncrementFrame(1);
-			TestPageTriggers(firstPageSetup, 1, 1, 1, 1, 0, 0);
-			//TODO: RESTORE: TestPageTriggers(secondPageSetup, 2, 2, 1, 1, 1, 1);
-			TestPageTriggers(thirdPageSetup, 1, 1, 0, 0, 1, 1);
-			
-			navigation.Goto(firstPageSetup.Page,NavigationGotoMode.Transition);
-			_root.IncrementFrame(1);
-			firstPageSetup.Reset();
-			secondPageSetup.Reset();
-			thirdPageSetup.Reset();
-			navigation.Goto(fourthPageSetup.Page,NavigationGotoMode.Transition);
-			_root.IncrementFrame(1);
-			TestPageTriggers(firstPageSetup, 0, 1, 1, 0, 0, 0);
-			//TODO: RESTORE: //TestPageTriggers(secondPageSetup, 1, 1, 1, 0, 0, 1);
-			//TODO: RESTORE: //TestPageTriggers(thirdPageSetup, 1, 1, 1, 0, 0, 1);
-			TestPageTriggers(fourthPageSetup, 1, 0, 0, 0, 0, 1);
+				navigation.Goto(firstPageSetup.Page,NavigationGotoMode.Transition);
+				root.IncrementFrame(1);
+				firstPageSetup.Reset();
+				secondPageSetup.Reset();
+				thirdPageSetup.Reset();
+				navigation.Goto(fourthPageSetup.Page,NavigationGotoMode.Transition);
+				root.IncrementFrame(1);
+				TestPageTriggers(firstPageSetup, 0, 1, 1, 0, 0, 0);
+				//TODO: RESTORE: //TestPageTriggers(secondPageSetup, 1, 1, 1, 0, 0, 1);
+				//TODO: RESTORE: //TestPageTriggers(thirdPageSetup, 1, 1, 1, 0, 0, 1);
+				TestPageTriggers(fourthPageSetup, 1, 0, 0, 0, 0, 1);
+			}
 		}
 
 		[Test]
@@ -155,33 +148,33 @@ namespace Fuse.Triggers.Test
 			var thirdPageSetup = SetupPage(panel);
 			var fourthPageSetup = SetupPage(panel, false);
 
-			_root.Children.Add(panel);
-			_root.Layout(int2(200));
+			using (var root = TestRootPanel.CreateWithChild(panel, int2(200)))
+			{
+				root.IncrementFrame(1);
+				TestPageTriggers(firstPageSetup, 0, 0, 0, 0, 0, 0);
+				TestPageTriggers(secondPageSetup, 0, 0, 0, 0, 0, 0);
+				TestPageTriggers(thirdPageSetup, 0, 0, 0, 0, 0, 0);
 
-			_root.IncrementFrame(1);
-			TestPageTriggers(firstPageSetup, 0, 0, 0, 0, 0, 0);
-			TestPageTriggers(secondPageSetup, 0, 0, 0, 0, 0, 0);
-			TestPageTriggers(thirdPageSetup, 0, 0, 0, 0, 0, 0);
+				navigation.GoBack();
+				root.IncrementFrame(1);
+				TestPageTriggers(firstPageSetup, 0, 1, 1, 0, 0, 0);
+				TestPageTriggers(secondPageSetup, 1, 0, 0, 0, 0, 1);
+				TestPageTriggers(thirdPageSetup, 0, 0, 0, 0, 0, 0);
 
-			navigation.GoBack();
-			_root.IncrementFrame(1);
-			TestPageTriggers(firstPageSetup, 0, 1, 1, 0, 0, 0);
-			TestPageTriggers(secondPageSetup, 1, 0, 0, 0, 0, 1);
-			TestPageTriggers(thirdPageSetup, 0, 0, 0, 0, 0, 0);
+				navigation.GoForward();
+				root.IncrementFrame(1);
+				TestPageTriggers(firstPageSetup, 1, 1, 1, 1, 0, 0);
+				TestPageTriggers(secondPageSetup, 1, 1, 0, 0, 1, 1);
+				TestPageTriggers(thirdPageSetup, 0, 0, 0, 0, 0, 0);
+				TestPageTriggers(fourthPageSetup, 0, 0, 0, 0, 0, 0);
 
-			navigation.GoForward();
-			_root.IncrementFrame(1);
-			TestPageTriggers(firstPageSetup, 1, 1, 1, 1, 0, 0);
-			TestPageTriggers(secondPageSetup, 1, 1, 0, 0, 1, 1);
-			TestPageTriggers(thirdPageSetup, 0, 0, 0, 0, 0, 0);
-			TestPageTriggers(fourthPageSetup, 0, 0, 0, 0, 0, 0);
-			
-			navigation.Goto(fourthPageSetup.Page,NavigationGotoMode.Transition);
-			_root.IncrementFrame(1);
-			TestPageTriggers(firstPageSetup, 1, 2, 1, 1, 1, 0);
-			TestPageTriggers(secondPageSetup, 1, 1, 0, 0, 1, 1);
-			TestPageTriggers(thirdPageSetup, 0, 0, 0, 0, 0, 0);
-			TestPageTriggers(fourthPageSetup, 1, 0, 0, 1, 0, 0);
+				navigation.Goto(fourthPageSetup.Page,NavigationGotoMode.Transition);
+				root.IncrementFrame(1);
+				TestPageTriggers(firstPageSetup, 1, 2, 1, 1, 1, 0);
+				TestPageTriggers(secondPageSetup, 1, 1, 0, 0, 1, 1);
+				TestPageTriggers(thirdPageSetup, 0, 0, 0, 0, 0, 0);
+				TestPageTriggers(fourthPageSetup, 1, 0, 0, 1, 0, 0);
+			}
 		}
 
 		private NavigationSetupEntity SetupPage(Panel panel, bool add = true)

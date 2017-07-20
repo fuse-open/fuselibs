@@ -11,7 +11,7 @@ namespace Fuse.Test
 		public void NestedClipToBounds()
 		{
 			var p = new UX.Rendering.NestedClipToBounds();
-			var root = TestRootPanel.CreateWithChild(p, int2(32, 32));
+			using (var root = TestRootPanel.CreateWithChild(p, int2(32, 32)))
 			using (var fb = root.CaptureDraw())
 			{
 				fb.AssertSolidRectangle(new Recti(0, 0, 32, 16), float4(0, 0, 0, 0));
