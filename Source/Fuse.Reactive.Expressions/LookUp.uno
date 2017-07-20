@@ -43,8 +43,8 @@ namespace Fuse.Reactive
 			{
 				_listener = listener;
 				_lu = lu;
-				_colSub = _lu.Index.Subscribe(context, this);
-				_indexSub = _lu.Collection.Subscribe(context, this);
+				_colSub = _lu.Collection.Subscribe(context, this);
+				_indexSub = _lu.Index.Subscribe(context, this);
 			}
 
 			bool _hasCollection;
