@@ -1,0 +1,3 @@
+<Rectangle ux:Class="UX.SolidRectangleWithDuotoneAndMargin" Color="#fff" Margin="10" CachingMode="Never">
+	<Duotone Amount="0" />
+</Rectangle>
