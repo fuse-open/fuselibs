@@ -97,10 +97,12 @@ namespace Fuse.Triggers.Test
 				Assert.AreEqual(0, v.Count);
 				
 				p.AT1.Value = true;
+				root.PumpDeferred();
 				v = VisualsOf(p);
 				Assert.AreEqual(1, v.Count);
 				
 				p.AT1.Value = false;
+				root.PumpDeferred();
 				v = VisualsOf(p);
 				Assert.AreEqual(0, v.Count);
 			}
@@ -118,12 +120,14 @@ namespace Fuse.Triggers.Test
 			p.AT2.Value = true;
 			p.AT1.Value = true;
 			v = VisualsOf(p.A);
+			root.PumpDeferred();
 			Assert.AreEqual(2, v.Count);
 			Assert.AreEqual(p.A1, v[0]);
 			Assert.AreEqual(p.A2, v[1]);
 			
 			p.AT3.Value = true;
 			p.AT1.Value = false;
+			root.PumpDeferred();
 			v = VisualsOf(p.A);
 			Assert.AreEqual(2, v.Count);
 			Assert.AreEqual(p.A2, v[0]);
@@ -157,6 +161,7 @@ namespace Fuse.Triggers.Test
 			Assert.AreEqual(1, v.Count);
 			
 			p.CT1.Value = true;
+			root.PumpDeferred();
 			v = VisualsOf(p.C);
 			Assert.AreEqual(2, v.Count);
 			Assert.AreEqual(p.C1, v[0]);
@@ -164,6 +169,7 @@ namespace Fuse.Triggers.Test
 			
 			p.CT1.Value = false;
 			p.CT3.Value = true;
+			root.PumpDeferred();
 			v = VisualsOf(p.C);
 			Assert.AreEqual(2, v.Count);
 			Assert.AreEqual(p.C2, v[0]);

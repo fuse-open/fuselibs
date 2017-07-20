@@ -1,20 +1,20 @@
 <Panel ux:Class="UX.Each.ReplaceWithLessData">
-    <JavaScript>
-        var Observable = require("FuseJS/Observable")
+	<JavaScript>
+		var Observable = require("FuseJS/Observable")
 
-        exports.monthsToMaturity = Observable(3);
-        exports.payments = Observable();
-    
-        exports.calculate = function() {
-            var payments = [];
-            for (var t = 0; t < exports.monthsToMaturity.value; t++) {
-                payments.push(t)
-            }
-            exports.payments.replaceAll(payments);
-        }
+		exports.monthsToMaturity = Observable(3);
+		exports.payments = Observable();
 
-        exports.calculate();
-    </JavaScript>
+		exports.calculate = function() {
+			var payments = [];
+			for (var t = 0; t < exports.monthsToMaturity.value; t++) {
+				payments.push(t)
+			}
+			exports.payments.replaceAll(payments);
+		}
+
+		exports.calculate();
+	</JavaScript>
 	<Slider ux:Name="monthsToMaturitySlider" Minimum="1" Maximum="1000" Value="{monthsToMaturity}" ValueChanged="{calculate}"  />
 	<Grid ux:Name="grid" ColumnCount="5">
 		<Each Items="{payments}">
