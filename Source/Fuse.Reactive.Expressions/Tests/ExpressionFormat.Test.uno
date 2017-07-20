@@ -77,6 +77,18 @@ namespace Fuse.Reactive.Test
 				Assert.AreEqual( "#2=a,b", a[0] );
 			}
 		}
+		
+		[Test]
+		public void ExpressionList()
+		{
+			var e = new UX.ExpressionFormat.ExpressionList();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				var x = e.a.Expression;
+				//The format is not guaranteed by Expression.ToString
+				Assert.AreEqual( "'a', 'b'", x.ToString() );
+			}
+		}
 	}
 }
 

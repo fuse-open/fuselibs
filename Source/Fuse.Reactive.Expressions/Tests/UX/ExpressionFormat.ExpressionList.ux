@@ -1,0 +1,3 @@
+<Panel ux:Class="UX.ExpressionFormat.ExpressionList">
+	<FuseTest.DudElement Expression=" 'a', 'b' " ux:Name="a"/>
+</Panel>
