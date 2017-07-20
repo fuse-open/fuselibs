@@ -10,8 +10,19 @@ namespace Fuse.Test
 {
 	public class MockElement : Element
 	{
+		public MockElement()
+		{
+			IsContextEnabledChanged += OnIsContextEnabledChanged;
+		}
+
 		protected override void OnDraw(DrawContext dc)
 		{
+		}
+
+		public int IsContextEnabledChangedCount { get; private set; }
+		private void OnIsContextEnabledChanged(object sender, EventArgs args)
+		{
+			IsContextEnabledChangedCount += 1;
 		}
 	}
 
@@ -60,15 +71,13 @@ namespace Fuse.Test
 		public void ImageElementIsContextEnabledEventTest()
 		{
 			var element = new MockElement();
-			var elementEventsHelper = new ElementEventsHelper(element);
-
-			Assert.AreEqual(0, elementEventsHelper.NumIsContextEnabledCalled);
+			Assert.AreEqual(0, element.IsContextEnabledChangedCount);
 
 			element.IsEnabled = false;
-			Assert.AreEqual(1, elementEventsHelper.NumIsContextEnabledCalled);
+			Assert.AreEqual(1, element.IsContextEnabledChangedCount);
 
 			element.IsEnabled = true;
-			Assert.AreEqual(2, elementEventsHelper.NumIsContextEnabledCalled);
+			Assert.AreEqual(2, element.IsContextEnabledChangedCount);
 		}
 	}
 }
