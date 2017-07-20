@@ -2,6 +2,8 @@ using Uno;
 using Uno.Graphics;
 using Uno.UX;
 
+using Fuse.Nodes;
+
 namespace Fuse.Effects
 {
 	/** Applies a classic halftone effect to an @Element.
@@ -131,6 +133,33 @@ namespace Fuse.Effects
 				float4 DotColor: Math.Lerp(float4(0,0,0,TextureColor.W), TextureColor, DotTint);
 				PixelColor: Math.Lerp(PaperColor, DotColor, Coverage);
 			};
+
+			if (defined(FUSELIBS_DEBUG_DRAW_RECTS) && dc.RenderTarget == DrawRectVisualizer.RenderTarget)
+			{
+				float2[] drawRectInputVerts = new[]
+				{
+					float2(0, 0),
+					float2(1, 0),
+					float2(1, 1),
+					float2(0, 1)
+				};
+				float4[] drawRectWorldSpaceVerts = new[]
+				{
+					float4(0),
+					float4(0),
+					float4(0),
+					float4(0)
+				};
+				float2 drawRectPos = elementRect.Minimum / dc.ViewportPixelsPerPoint;
+				float2 drawRectSize = elementRect.Size / dc.ViewportPixelsPerPoint;
+				for(int i = 0; i < 4; i++)
+				{
+					var coord = drawRectInputVerts[i];
+					var p = Vector.Transform(float4(drawRectPos + coord * drawRectSize, 0, 1), Element.WorldTransform);
+					drawRectWorldSpaceVerts[i] = p;
+				}
+				DrawRectVisualizer.Append(new DrawRect(drawRectWorldSpaceVerts, dc.Scissor));
+			}
 
 			FramebufferPool.Release(original);
 		}
