@@ -4,6 +4,7 @@ using Uno.UX;
 using Fuse.Elements;
 using Fuse.Drawing;
 using Fuse.Controls.Native;
+using Fuse.Nodes;
 
 namespace Fuse.Controls
 {
@@ -332,9 +333,13 @@ namespace Fuse.Controls
 					}
 
 					Internal.DrawManager.PrepareDraw(_dc);
+
 					_dc.PushViewport(this);
 					_dc.PushScissor( new Recti(0, 0, size.X, size.Y) );
 					_dc.Clear(Color);
+
+					if defined(FUSELIBS_DEBUG_DRAW_RECTS)
+						DrawRectVisualizer.StartFrame(_dc.RenderTarget);
 
 					if defined(FUSELIBS_PROFILING)
 						Profiling.EndRegion(Uno.Diagnostics.Clock.GetSeconds() - t);
@@ -343,6 +348,9 @@ namespace Fuse.Controls
 
 					_dc.PopScissor();
 					_dc.PopViewport();
+
+					if defined(FUSELIBS_DEBUG_DRAW_RECTS)
+						DrawRectVisualizer.EndFrameAndVisualize(_dc);
 
 					Internal.DrawManager.EndDraw(_dc);
 
