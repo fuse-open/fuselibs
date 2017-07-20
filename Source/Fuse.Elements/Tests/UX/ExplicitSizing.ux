@@ -2,11 +2,11 @@
 	<!-- rely on Image aspect sizing to help test -->
 
 	<Panel Width="300" Alignment="Center">
-		<Image File="../Assets/200x100.png" ux:Name="E1" MemoryPolicy="UnloadUnused"/>
+		<Image File="Assets/200x100.png" ux:Name="E1" MemoryPolicy="UnloadUnused"/>
 	</Panel>
 	
 	<Panel Width="100" Height="100" Alignment="Center">
-		<Image File="../Assets/200x100.png" ux:Name="E2" Alignment="Center" MemoryPolicy="UnloadUnused"/>
+		<Image File="Assets/200x100.png" ux:Name="E2" Alignment="Center" MemoryPolicy="UnloadUnused"/>
 	</Panel>
 	
 	<!-- ordering of limits -->
