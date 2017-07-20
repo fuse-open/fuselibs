@@ -202,6 +202,21 @@ namespace DrawRectsTest
 			}
 		}
 
+		[Test]
+		public void ImageWithMarginDrawRectIsRendered()
+		{
+			var c = new global::UX.ImageWithMargin();
+			var root = TestRootPanel.CreateWithChild(c, int2(200, 100));
+
+			using (var fb = root.CaptureDraw())
+			{
+				// Test pixel outside of element to ensure it's laid out how we expect
+				fb.AssertPixel(float4(0), int2(5, 5));
+
+				TestForDrawRects(fb, new Recti(60, 10, 140, 90), 1, float4(1));
+			}
+		}
+
 		void TestForDrawRects(TestFramebuffer fb, Recti drawRectBounds, int numRects, float4 drawnColor)
 		{
 			TestForDrawRects(fb, drawRectBounds, numRects, drawnColor, drawnColor);
