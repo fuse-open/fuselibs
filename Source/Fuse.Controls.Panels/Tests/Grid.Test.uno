@@ -4,11 +4,7 @@ using Uno.Collections;
 
 using Fuse.Elements;
 using Fuse.Controls;
-using Fuse.Controls.Test;
-using Fuse.Controls.Test.Helpers;
 using Fuse.Layouts;
-using FuseTest;
-
 using FuseTest;
 
 class Issue2462Text : Text

@@ -6,8 +6,6 @@
   ],
   "Projects": [
     "../../Fuse.Common/Tests/FuseTest/FuseTest.unoproj",
-    "../../Fuse.Controls/Tests/Fuse.Controls.Test.Helpers/Fuse.Controls.Test.Helpers.unoproj",
-    "../../Fuse.Elements/Tests/Shared/Fuse.Elements.Shared.unoproj",
   ],
   "Includes": [
     "*",

@@ -6,7 +6,6 @@
   ],
   "Projects": [
     "../../Fuse.Common/Tests/FuseTest/FuseTest.unoproj",
-    "Shared/Fuse.Elements.Shared.unoproj"
   ],
   "Includes": [
     "AspectSizing.Test.uno:Source",

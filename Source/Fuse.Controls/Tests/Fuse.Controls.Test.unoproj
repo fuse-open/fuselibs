@@ -17,9 +17,7 @@
     "Uno.Testing"
   ],
   "Projects": [
-    "../../Fuse.Elements/Tests/Shared/Fuse.Elements.Shared.unoproj",
     "../../Fuse.Common/Tests/FuseTest/FuseTest.unoproj",
-    "Fuse.Controls.Test.Helpers/Fuse.Controls.Test.Helpers.unoproj"
   ],
   "Includes": [
     "*.uno:Source",

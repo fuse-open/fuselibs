@@ -5,7 +5,6 @@ using Fuse;
 using FuseTest;
 using Fuse.Elements;
 using Fuse.Controls;
-using Fuse.Controls.Test.Helpers;
 using FuseTest;
 
 namespace Fuse.Controls.Test

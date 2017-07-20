@@ -4,9 +4,8 @@ using Uno.Collections;
 using Uno.Testing;
 using Fuse;
 using Fuse.Elements;
-using FuseTest;
 
-namespace Fuse.Controls.Test.Helpers
+namespace FuseTest
 {
 	public class LayoutTestHelper
 	{
