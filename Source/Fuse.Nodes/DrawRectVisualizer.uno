@@ -160,7 +160,7 @@ namespace Fuse.Nodes
 					BlendSrcRgb: BlendOperand.SrcAlpha;
 					BlendDstRgb: BlendOperand.One;
 
-					BlendSrcAlpha: BlendOperand.SrcAlpha;
+					BlendSrcAlpha: BlendOperand.One;
 					BlendDstAlpha: BlendOperand.One;
 				};
 

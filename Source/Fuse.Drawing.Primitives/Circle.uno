@@ -4,6 +4,7 @@ using Uno.Graphics;
 using Fuse;
 using Fuse.Elements;
 using Fuse.Drawing.Internal;
+using Fuse.Nodes;
 
 namespace Fuse.Drawing.Primitives
 {
@@ -106,6 +107,37 @@ namespace Fuse.Drawing.Primitives
 				apply virtual limit;
 				Coverage: prev * LimitCoverage;
 			};
+
+			// Circles don't actually draw as rectangles, but this is a good-enough-to-be-useful(-and-testable) approximation.
+			if (defined(FUSELIBS_DEBUG_DRAW_RECTS) && dc.RenderTarget == DrawRectVisualizer.RenderTarget)
+			{
+				float2[] drawRectInputVerts = new[]
+				{
+					float2(0, 0),
+					float2(1, 0),
+					float2(1, 1),
+					float2(0, 1)
+				};
+				float4[] drawRectWorldSpaceVerts = new[]
+				{
+					float4(0),
+					float4(0),
+					float4(0),
+					float4(0)
+				};
+				float2 elementPos = visual.ActualPosition / dc.ViewportPixelsPerPoint;
+				float2 elementSize = visual.ActualSize / dc.ViewportPixelsPerPoint;
+				float minSize = Math.Min(elementSize.X, elementSize.Y);
+				float2 drawRectPos = elementPos + elementSize / 2.0f - minSize / 2.0f;
+				float2 drawRectSize = float2(minSize);
+				for(int i = 0; i < 4; i++)
+				{
+					var coord = drawRectInputVerts[i];
+					var p = float4(drawRectPos + coord * drawRectSize, 0, 1);
+					drawRectWorldSpaceVerts[i] = p;
+				}
+				DrawRectVisualizer.Append(new DrawRect(drawRectWorldSpaceVerts, dc.Scissor));
+			}
 		}
 	}
 }
