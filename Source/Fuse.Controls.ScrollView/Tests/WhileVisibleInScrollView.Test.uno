@@ -99,5 +99,23 @@ namespace Fuse.Controls.ScrollViewTest
 				Assert.AreEqual(0, TriggerProgress(sv.W3.V2) );
 			}
 		}
+		
+		[Test]
+		public void Placed()
+		{
+			var sv = new UX.WhileVisibleInScrollView.Placed();
+			using (var root = TestRootPanel.CreateWithChild( sv, int2(100)))
+			{
+				Assert.AreEqual( 0, sv.V.Progress );
+				
+				sv.P.Y = 75;
+				root.StepFrame();
+				Assert.AreEqual( 1, sv.V.Progress );
+				
+				sv.P.Y = -75;
+				root.StepFrame();
+				Assert.AreEqual( 0, sv.V.Progress );
+			}
+		}
 	}
 }
