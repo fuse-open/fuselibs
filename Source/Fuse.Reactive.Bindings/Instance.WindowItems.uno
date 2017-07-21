@@ -338,6 +338,7 @@ namespace Fuse.Reactive
 						continue;
 					for (int n=0; n < av.Nodes.Count; ++n)
 						RemoveFromParent(av.Nodes[n]);
+					av.Unlink();
 				}
 				_availableItems.Clear();
 			}
@@ -350,6 +351,7 @@ namespace Fuse.Reactive
 						continue;
 					for (int n=0; n < kvp.Value.Nodes.Count; ++n)
 						RemoveFromParent(kvp.Value.Nodes[n]);
+					kvp.Value.Unlink();
 				}
 				_availableItemsById.Clear();
 			}
@@ -475,10 +477,15 @@ namespace Fuse.Reactive
 				}
 			}
 			
-			public void Dispose()
+			//cleans up the memory link from DataLink to Each by fixating the current data.
+			public void Unlink()
 			{
 				if (DataLink != null)
+				{
+					Data = DataLink.Data;
 					DataLink.Dispose();
+					DataLink = null;
+				}
 			}
 		}
 		
