@@ -1,0 +1,16 @@
+<Panel ux:Class="UX.WhileVisibleInScrollView.Bypass">
+	<Panel ux:Class="WVPanel" Height="50">
+		<WhileVisibleInScrollView ux:Name="V">
+			<Nothing Duration="1"/>
+			<FuseTest.CountAction ux:Name="CF"/>
+			<FuseTest.CountAction ux:Name="CB" When="Backward"/>
+		</WhileVisibleInScrollView>
+	</Panel>
+	
+	<ScrollView ux:Name="S">
+		<Panel Height="1000">
+			<WVPanel Y="200" ux:Name="P1"/>
+			<WVPanel Y="50" ux:Name="P2"/>
+		</Panel>
+	</ScrollView>
+</Panel>

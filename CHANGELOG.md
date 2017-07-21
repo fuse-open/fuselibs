@@ -1,5 +1,9 @@
 # Unreleased
 
+## Trigger
+- Fixed an issue where certain triggers would not skip their animation/actions as part of the Bypass phase. In particular `WhileVisibleInScrollView`.  
+  * If you required this behaviour add `Bypass="None"` to the trigger -- in exceptional cases you can add `Bypass="ExceptLayout"` to get the precise previous behaviour, but it should not be required, and is only temporarily available for backwards compatibility.
+
 ## ScrollView
 - Added minimal support to WhileVisibleInScrollView for changes in Element layout updating the status
 

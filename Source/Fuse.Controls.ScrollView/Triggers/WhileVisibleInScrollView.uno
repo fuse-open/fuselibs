@@ -79,6 +79,7 @@ namespace Fuse.Triggers
 			
 			_scrollable.ScrollPositionChanged += OnScrollPositionChanged;
 			_element.Placed += OnElementPlaced;
+			RequireLayout(_element);
 			Update();
 		}
 		
