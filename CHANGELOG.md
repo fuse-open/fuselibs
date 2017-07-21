@@ -1,5 +1,8 @@
 # Unreleased
 
+## ScrollView
+- Added minimal support to WhileVisibleInScrollView for changes in Element layout updating the status
+
 ## Fuse.Drawing.Surface
 - Added support for the Surface API in native UI for iOS. Meaning that `Curve`, `VectorLayer` and charting will work inside a `NativeViewHost`.
 
