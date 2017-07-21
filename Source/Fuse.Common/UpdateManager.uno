@@ -34,12 +34,14 @@ namespace Fuse
 		void Update();
 	}
 	
-	class UpdateCallback
+	class UpdateListener
 	{
-		//only one of udpate/action will be set
+		//only one of update/action will be set
 		public Action action;
 		public IUpdateListener update;
 		public bool removed;
+		public int deferFrame;
+		public int sequence;
 		
 		public void Invoke()
 		{
@@ -53,16 +55,21 @@ namespace Fuse
 				update.Update();
 		}
 	}
-	
-	class UpdateListener : UpdateCallback
-	{
-		public int deferFrame;
-		public int sequence;
-	}
 
-	class UpdateAction : UpdateCallback
+	struct UpdateAction
 	{
+		public Action action;
+		public IUpdateListener update;
 		public int priority;
+		
+		public void Invoke()
+		{
+			if (action != null)
+				action();
+				
+			if (update != null)
+				update.Update();
+		}
 	}
 	
 	class Stage
@@ -109,8 +116,7 @@ namespace Fuse
 				PhaseDeferredActions[at-1].priority > priority )
 				at--;
 				
-			PhaseDeferredActions.Insert(at, new UpdateAction{
-				action = pu, update = ul, priority = priority});
+			PhaseDeferredActions.Insert(at, new UpdateAction{ action = pu, update = ul, priority = priority });
 		}
 		
 		public void ResetDeferredActions()
