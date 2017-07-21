@@ -34,14 +34,12 @@ namespace Fuse
 		void Update();
 	}
 	
-	class UpdateListener
+	class UpdateCallback
 	{
 		//only one of udpate/action will be set
 		public Action action;
 		public IUpdateListener update;
 		public bool removed;
-		public int deferFrame;
-		public int sequence;
 		
 		public void Invoke()
 		{
@@ -55,10 +53,15 @@ namespace Fuse
 				update.Update();
 		}
 	}
-
-	struct UpdateAction
+	
+	class UpdateListener : UpdateCallback
 	{
-		public Action action;
+		public int deferFrame;
+		public int sequence;
+	}
+
+	class UpdateAction : UpdateCallback
+	{
 		public int priority;
 	}
 	
@@ -99,7 +102,7 @@ namespace Fuse
 			Keeps a sorted list of deferred actions. This list is processed in parallel, thus
 			the add only scans back to PhaseDeferredActionsAt (the one currently being executed).
 		*/
-		public void AddDeferredAction( Action pu, int priority = 0 )
+		public void AddDeferredAction( Action pu, IUpdateListener ul, int priority = 0 )
 		{
 			int at = PhaseDeferredActions.Count;
 			while( at - 1 > PhaseDeferredActionsAt && 
@@ -107,7 +110,7 @@ namespace Fuse
 				at--;
 				
 			PhaseDeferredActions.Insert(at, new UpdateAction{
-				action = pu, priority = priority});
+				action = pu, update = ul, priority = priority});
 		}
 		
 		public void ResetDeferredActions()
@@ -247,14 +250,28 @@ namespace Fuse
 		
 		/**
 			Add an action to the deferred set of actions. Defaults to the current stage.
+			
+			Be aware that binding a member function to `Action` involves allocating memory. If you
+			already have a suitable object use the `IUpdateListener` version instead.
 		*/
 		public static void AddDeferredAction(Action pu, UpdateStage stage = UpdateStage.None, int priority=0)
 		{
 			var use = stage != UpdateStage.None ? _stages[(int)stage] : CurrentDeferredActionStage;
-			use.AddDeferredAction(pu, priority);
+			use.AddDeferredAction(pu, null, priority);
+		}
+		
+		public static void AddDeferredAction(IUpdateListener pu, UpdateStage stage = UpdateStage.None, int priority=0)
+		{
+			var use = stage != UpdateStage.None ? _stages[(int)stage] : CurrentDeferredActionStage;
+			use.AddDeferredAction(null, pu, priority);
 		}
 		
 		public static void AddDeferredAction(Action pu, int priority)
+		{
+			AddDeferredAction(pu, UpdateStage.None, priority);
+		}
+		
+		public static void AddDeferredAction(IUpdateListener pu, int priority)
 		{
 			AddDeferredAction(pu, UpdateStage.None, priority);
 		}
@@ -385,7 +402,7 @@ namespace Fuse
 			{
 				try
 				{
-					stage.PhaseDeferredActions[stage.PhaseDeferredActionsAt].action();
+					stage.PhaseDeferredActions[stage.PhaseDeferredActionsAt].Invoke();
 				}
 				catch (Exception e)
 				{

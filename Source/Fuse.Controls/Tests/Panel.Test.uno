@@ -286,9 +286,13 @@ namespace Fuse.Controls.Test
 				p.innerPanel.Value = true;
 				root.IncrementFrame(0.1f);
 				Assert.IsTrue(p.B.Children.Contains(p.C));
+				
 				p.outerPanel.Value = false;
+				root.PumpDeferred();
 				Assert.IsFalse(p.A.Children.Contains(p.B));
+				
 				p.innerPanel.Value = false;
+				root.PumpDeferred();
 				Assert.IsFalse(p.B.Children.Contains(p.C));
 			}
 		}

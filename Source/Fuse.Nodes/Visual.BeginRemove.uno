@@ -2,7 +2,7 @@ using Uno;
 
 namespace Fuse
 {
-	public sealed class PendingRemoveVisual
+	public sealed class PendingRemoveVisual : IUpdateListener
 	{
 		public Visual Parent { get; private set; }
 		public Visual Child { get; private set; }
@@ -46,6 +46,11 @@ namespace Fuse
 			_done = true;
 			Child.ConcludePendingRemove();
 		}
+		
+		void IUpdateListener.Update()
+		{
+			Remove();
+		}
 	}
 	
 	public interface IBeginRemoveVisualListener
@@ -80,11 +85,10 @@ namespace Fuse
 			if (args.HasSubscribers)
 			{
 				InvalidateLayout();
-				return;
 			}
 			else
 			{
-				args.Remove();				
+				UpdateManager.AddDeferredAction(args);
 			}
 		}
 
