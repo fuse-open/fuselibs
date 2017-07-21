@@ -251,6 +251,32 @@ namespace Fuse
 			return BoxTransform(box, FastMatrix.FromFloat4x4(transform));
 		}
 
+		static float Min8(float a, float b, float c, float d, float e, float f, float g, float h)
+		{
+			float min = a;
+			if (b < min) min = b;
+			if (c < min) min = c;
+			if (d < min) min = d;
+			if (e < min) min = e;
+			if (f < min) min = f;
+			if (g < min) min = g;
+			if (h < min) min = h;
+			return min;
+		}
+
+		static float Max8(float a, float b, float c, float d, float e, float f, float g, float h)
+		{
+			float max = a;
+			if (b > max) max = b;
+			if (c > max) max = c;
+			if (d > max) max = d;
+			if (e > max) max = e;
+			if (f > max) max = f;
+			if (g > max) max = g;
+			if (h > max) max = h;
+			return max;
+		}
+
 		//uses the W paramete runlike Box.Transform (which may be a defect there)
 		public static Box BoxTransform(Box box, FastMatrix matrix)
 		{
@@ -263,59 +289,13 @@ namespace Fuse
 			float3 G = matrix.TransformVector(float3(box.Maximum.X, box.Maximum.Y, box.Maximum.Z));
 			float3 H = matrix.TransformVector(float3(box.Minimum.X, box.Maximum.Y, box.Maximum.Z));
 
-			float minX = A.X;
-			if (B.X < minX) minX = B.X;
-			if (C.X < minX) minX = C.X;
-			if (D.X < minX) minX = D.X;
-			if (E.X < minX) minX = E.X;
-			if (F.X < minX) minX = F.X;
-			if (G.X < minX) minX = G.X;
-			if (H.X < minX) minX = H.X;
+			float minX = Min8(A.X, B.X, C.X, D.X, E.X, F.X, G.X, H.X);
+			float minY = Min8(A.Y, B.Y, C.Y, D.Y, E.Y, F.Y, G.Y, H.Y);
+			float minZ = Min8(A.Z, B.Z, C.Z, D.Z, E.Z, F.Z, G.Z, H.Z);
 
-			float minY = A.Y;
-			if (B.Y < minY) minY = B.Y;
-			if (C.Y < minY) minY = C.Y;
-			if (D.Y < minY) minY = D.Y;
-			if (E.Y < minY) minY = E.Y;
-			if (F.Y < minY) minY = F.Y;
-			if (G.Y < minY) minY = G.Y;
-			if (H.Y < minY) minY = H.Y;
-
-			float minZ = A.Z;
-			if (B.Z < minZ) minZ = B.Z;
-			if (C.Z < minZ) minZ = C.Z;
-			if (D.Z < minZ) minZ = D.Z;
-			if (E.Z < minZ) minZ = E.Z;
-			if (F.Z < minZ) minZ = F.Z;
-			if (G.Z < minZ) minZ = G.Z;
-			if (H.Z < minZ) minZ = H.Z;
-
-			float maxX = A.X;
-			if (B.X > maxX) maxX = B.X;
-			if (C.X > maxX) maxX = C.X;
-			if (D.X > maxX) maxX = D.X;
-			if (E.X > maxX) maxX = E.X;
-			if (F.X > maxX) maxX = F.X;
-			if (G.X > maxX) maxX = G.X;
-			if (H.X > maxX) maxX = H.X;
-
-			float maxY = A.Y;
-			if (B.Y > maxY) maxY = B.Y;
-			if (C.Y > maxY) maxY = C.Y;
-			if (D.Y > maxY) maxY = D.Y;
-			if (E.Y > maxY) maxY = E.Y;
-			if (F.Y > maxY) maxY = F.Y;
-			if (G.Y > maxY) maxY = G.Y;
-			if (H.Y > maxY) maxY = H.Y;
-
-			float maxZ = A.Z;
-			if (B.Z > maxZ) maxZ = B.Z;
-			if (C.Z > maxZ) maxZ = C.Z;
-			if (D.Z > maxZ) maxZ = D.Z;
-			if (E.Z > maxZ) maxZ = E.Z;
-			if (F.Z > maxZ) maxZ = F.Z;
-			if (G.Z > maxZ) maxZ = G.Z;
-			if (H.Z > maxZ) maxZ = H.Z;
+			float maxX = Max8(A.X, B.X, C.X, D.X, E.X, F.X, G.X, H.X);
+			float maxY = Max8(A.Y, B.Y, C.Y, D.Y, E.Y, F.Y, G.Y, H.Y);
+			float maxZ = Max8(A.Z, B.Z, C.Z, D.Z, E.Z, F.Z, G.Z, H.Z);
 
 			return new Box(float3(minX, minY, minZ), float3(maxX, maxY, maxZ));
 		}
