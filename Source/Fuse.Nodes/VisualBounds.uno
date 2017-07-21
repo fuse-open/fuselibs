@@ -245,7 +245,7 @@ namespace Fuse
 			return "" + _box.Minimum + " " + _box.Maximum;
 		}
 		
-		/** @deprecated Please use the other overload (for performance) */
+		[Obsolete("Please use the other overload (for performance)")]
 		public static Box BoxTransform(Box box, float4x4 transform)
 		{
 			return BoxTransform(box, FastMatrix.FromFloat4x4(transform));
