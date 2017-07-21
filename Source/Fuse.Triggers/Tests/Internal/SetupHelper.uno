@@ -26,6 +26,7 @@ namespace Fuse.Triggers.Test
 			root.Layout(int2(200));
 
 			Node.ReleaseRooting(capture);
+			root.PumpDeferred();
 			return se;
 		}
 		
