@@ -183,7 +183,8 @@ namespace Fuse.Layouts
 				var saMin = IsVert ? AlignmentHelpers.GetHorizontalSimpleAlignOptional(RowAlignment) : AlignmentHelpers.GetVerticalSimpleAlignOptional(RowAlignment);
 				var saMaj = IsVert ? AlignmentHelpers.GetVerticalSimpleAlignOptional(RowAlignment) : AlignmentHelpers.GetHorizontalSimpleAlignOptional(RowAlignment);
 				var elp = lp.CloneAndDerive();
-				for (var element = container.FirstChild<Visual>(); element != null; element = element.NextSibling<Visual>())
+				i = 0;
+				for (var element = container.FirstChild<Visual>(); element != null; element = element.NextSibling<Visual>(), i++)
 				{
 					if (ArrangeMarginBoxSpecial(element, padding, lp ))
 						continue;
