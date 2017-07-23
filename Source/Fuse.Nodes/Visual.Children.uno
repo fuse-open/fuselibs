@@ -245,16 +245,16 @@ namespace Fuse
 		*/
 		internal void InsertNodesAfter(Node preceeder, IEnumerator<Node> items)
 		{
-			InsertNodesImpl(preceeder, items, false);
+			InsertNodesAfterImpl(preceeder, items, false);
 		}
 
-		internal void InsertOrMoveNodes(Node preceeder, IEnumerator<Node> items)
+		internal void InsertOrMoveNodesAfter(Node preceeder, IEnumerator<Node> items)
 		{
-			InsertNodesImpl(preceeder, items, true);
+			InsertNodesAfterImpl(preceeder, items, true);
 		}
 		
 		
-		void InsertNodesImpl(Node preceeder, IEnumerator<Node> items, bool allowMove)
+		void InsertNodesAfterImpl(Node preceeder, IEnumerator<Node> items, bool allowMove)
 		{
 			//cleanup all nodes first
 			while (items.MoveNext())
