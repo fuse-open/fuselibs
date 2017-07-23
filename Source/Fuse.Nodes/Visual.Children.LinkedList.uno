@@ -78,8 +78,7 @@ namespace Fuse
 
 		void Children_Add(Node n)
 		{
-			Children_CompleteCurrentAction();
-			Children_InvalidateCache();
+			Children_Invalidate();
 			Children_MakeParent(this, n);
 
 			if (_firstChild == null) 
@@ -101,8 +100,7 @@ namespace Fuse
 		{
 			if (n._parentID != _thisID) return false;
 
-			Children_CompleteCurrentAction();
-			Children_InvalidateCache();
+			Children_Invalidate();
 			Children_MakeOrphan(n);
 
 			if (_firstChild == n)
@@ -137,19 +135,6 @@ namespace Fuse
 			return -1;
 		}
 
-		Node Children_ItemAt(int index)
-		{
-			Node k = _firstChild;
-			int i = 0;
-			while (k != null)
-			{
-				if (i == index) return k;
-				i++;
-				k = k._nextSibling;
-			}
-			throw new IndexOutOfRangeException();
-		}
-
 		// Returns the node appropriate to pass to InsertAt(node, elm)
 		// if the intention is to Insert(index, elm)
 		// This means it returns null if the index == 0, and throws exception
@@ -170,8 +155,7 @@ namespace Fuse
 		{
 			if (preceeder != null && !Children_Contains(preceeder)) throw new Exception();
 
-			Children_InvalidateCache();
-			Children_CompleteCurrentAction();
+			Children_Invalidate();
 
 			if (preceeder == null)
 			{
@@ -204,54 +188,6 @@ namespace Fuse
 		bool Children_Contains(Node n)
 		{
 			return n._parentID == _thisID;
-		}
-
-		Node Children_CurrentNode;
-		Action<Visual, Node> Children_CurrentAction;
-
-		void Children_SafeForEach(Action<Visual, Node> action)
-		{
-			Children_CompleteCurrentAction();
-			Children_CurrentAction = action;
-			Children_CurrentNode = _firstChild;
-			Children_CompleteCurrentAction();
-		}
-
-		void Children_CompleteCurrentAction()
-		{
-			while (Children_CurrentNode != null)
-			{
-				Children_CurrentAction(this, Children_CurrentNode);
-				Children_CurrentNode = Children_CurrentNode._nextSibling;
-			}
-			Children_CurrentAction = null;
-		}
-
-		Node[] Children_cachedArray;
-		Node[] Children_ToArray()
-		{
-			if (Children_cachedArray != null) return Children_cachedArray;
-
-			var nodes = new Node[_childCount];
-			var c = _firstChild;
-			int i = 0;
-			while (c != null)
-			{
-				nodes[i] = c;
-				c = c._nextSibling;
-			}
-			Children_cachedArray = nodes;
-			return nodes;
-		}
-
-		void Children_InvalidateCache()
-		{
-			Children_cachedArray = null;
-		}
-
-		IEnumerator<Node> Children_GetEnumerator()
-		{
-			return ((IEnumerable<Node>)Children_ToArray()).GetEnumerator();
 		}
 
 	}
