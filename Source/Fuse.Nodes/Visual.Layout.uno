@@ -330,13 +330,8 @@ namespace Fuse
 			{
 				SetBit(FastProperty1.ContextSnapToPixelsCache, newValue);
 
-				var c = Children_first;
-				while (c != null)
-				{
-					var v = c as Visual;
-					if (v != null) v.UpdateContextSnapToPixelsCache();
-					c = c.Children_next;
-				}	
+				for (var v = FirstChild<Visual>(); v != null; v = v.NextSibling<Visual>())
+					v.UpdateContextSnapToPixelsCache();
 			}
 		}
 	

@@ -245,9 +245,8 @@ namespace Fuse.Layouts
 			{
 				//assume all columns contain max/fixed-size elements
 				var mx = float2(0);
-				for (var cn = container.Children_first; cn != null; cn = cn.Children_next)
+				for (var v = container.FirstChild<Visual>(); v != null; v = v.NextSibling<Visual>())
 				{
-					var v = cn as Visual;
 					if (!AffectsLayout(v))
 						continue;
 					var c = v.GetMarginSize(LayoutParams.CreateEmpty());
@@ -285,11 +284,8 @@ namespace Fuse.Layouts
 
 			var at = new float[columnCount];
 			
-			for (var cn = container.Children_first; cn != null; cn = cn.Children_next)
+			for (var v = container.FirstChild<Visual>(); v != null; v = v.NextSibling<Visual>())
 			{
-				var v = cn as Visual;
-				if (v == null) continue;
-
 				var avs = float2(vert ? columnSize : 0.0f, vert ? 0.0f : columnSize);
 				int col = LeastAt(at);
 				float2 nsz;

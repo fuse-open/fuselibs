@@ -115,10 +115,8 @@ namespace Fuse.Layouts
 			nlp.RemoveSize(padding);
 
 			int c = 0;
-			for (var cn = container.Children_first; cn != null; cn = cn.Children_next)
+			for (var e = container.FirstChild<Visual>(); e != null; e = e.NextSibling<Visual>())
 			{
-				var e = cn as Visual;
-				if (e == null) continue;
 				if (ArrangeMarginBoxSpecial(e, padding, lp))
 					continue;
 				c++;
@@ -133,9 +131,8 @@ namespace Fuse.Layouts
 			var angle = _startAngle;
 			nlp.SetSize(elementSize);
 
-			for (var cn = container.Children_first; cn != null; cn = cn.Children_next)
+			for (var e = container.FirstChild<Visual>(); e != null; e = e.NextSibling<Visual>())
 			{
-				var e = cn as Visual;
 				if (!AffectsLayout(e))
 					continue;
 

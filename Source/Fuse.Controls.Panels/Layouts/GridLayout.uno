@@ -516,9 +516,8 @@ namespace Fuse.Layouts
 			
 			//find expected max column
 			int minorCount = Math.Max(1,rowMajor ? UserCount(ColumnList) : UserCount(RowList));
-			for (var cn = container.Children_first; cn != null; cn = cn.Children_next)
+			for (var e = container.FirstChild<Visual>(); e != null; e = e.NextSibling<Visual>())
 			{
-				var e = cn as Visual;
 				if (!AffectsLayout(e)) continue;
 
 				if (rowMajor)
@@ -541,9 +540,8 @@ namespace Fuse.Layouts
 			int maxRow = 0;
 			int maxCol = 0;
 			
-			for (var cn = container.Children_first; cn != null; cn = cn.Children_next)
+			for (var elm = container.FirstChild<Visual>(); elm != null; elm = elm.NextSibling<Visual>())
 			{
-				var elm = cn as Visual;
 				if (!AffectsLayout(elm)) continue;
 
 				object v;
@@ -874,9 +872,8 @@ namespace Fuse.Layouts
 			bool hasFirstHorzSize, bool hasFirstVertSize,
 			bool expandWidth, bool expandHeight)
 		{
-			for (var cn = container.Children_first; cn != null; cn = cn.Children_next)
+			for (var child = container.FirstChild<Visual>(); child != null; child = child.NextSibling<Visual>())
 			{
-				var child = cn as Visual;
 				if (!AffectsLayout(child)) continue;
 
 				int x = GetActualColumn(child);
@@ -1048,10 +1045,8 @@ namespace Fuse.Layouts
 			
 			var effectiveCellSpacing = EffectiveCellSpacing;
 			var nlp = lp.CloneAndDerive();
-			for (var cn = container.Children_first; cn != null; cn = cn.Children_next)
+			for (var child = container.FirstChild<Visual>(); child != null; child = child.NextSibling<Visual>())
 			{
-				var child = cn as Visual;
-				if (child == null) continue;
 				if (ArrangeMarginBoxSpecial(child, padding, lp))
 					continue;
 

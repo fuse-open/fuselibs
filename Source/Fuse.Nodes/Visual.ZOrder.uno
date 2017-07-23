@@ -10,50 +10,42 @@ namespace Fuse
 
 		public bool HasVisualChildren { get { return _zOrder != null && _zOrder.Count > 0; } }
 
+		[Obsolete("Use FirstChild<Visual>() instead")]
 		public Visual FirstVisualChild
 		{ 
 			get
 			{
-				var c = Children_first;
-				while (c != null)
-				{
-					var v = c as Visual;
-					if (v != null) return v;
-					c = c.Children_next;
-				}
-				return null;
+				return FirstChild<Visual>();
 			}
 		}
 
+		/** Returns the visual child with the given index. 
+		
+			For performance reasons, avoid using this function. Can be used for testing. 
+		*/
 		public Visual GetVisualChild(int index)
 		{
-			if (!HasVisualChildren) return null;
-
-			int x = 0;
-			for (int i = 0; i < Children.Count; i++)
+			var c = _firstChild;
+			int i = 0;
+			while (c != null)
 			{
-				var c = Children[i] as Visual;
-				if (c != null) 
+				var v = c as Visual;
+				if (v != null)
 				{
-					if (x == index) return c;
-					x++;
+					if (i == index) return v;
+					i++;
 				}
+				c = c._nextSibling;
 			}
 			return null;
 		}
 
+		[Obsolete("Use LastChild<Visual>() instead")]
 		public Visual LastVisualChild
 		{ 
 			get
 			{
-				if (!HasVisualChildren) return null;
-
-				for (int i = Children.Count; i --> 0;)
-				{
-					var c = Children[i] as Visual;
-					if (c != null) return c;
-				}
-				return null;
+				return LastChild<Visual>();
 			}
 		}
 
@@ -147,18 +139,12 @@ namespace Fuse
 				0  // Layer.Overlay
 			};
 
-			var c = Children_first;
-			while (c != null)
+			for (var visual = FirstChild<Visual>(); visual != null; visual = visual.NextSibling<Visual>())
 			{
-				var visual = c as Visual;
-				if (visual != null)
-				{
-					int z = (int)visual.Layer;
-					visual.ZLayer = z;
-					if (!visual.ZOffsetFixed)
-						visual.ZOffsetNatural = current[z]--;
-				}
-				c = c.Children_next;
+				int z = (int)visual.Layer;
+				visual.ZLayer = z;
+				if (!visual.ZOffsetFixed)
+					visual.ZOffsetNatural = current[z]--;
 			}
 		}
 		

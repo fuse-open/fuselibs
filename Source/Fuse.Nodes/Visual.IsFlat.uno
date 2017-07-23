@@ -46,11 +46,9 @@ namespace Fuse
 		
 		internal virtual bool CalcIsLocalFlat()
 		{
-			for (var c = Children_first; c != null; c = c.Children_next)
-			{
-				var t = c as Transform;
-				if (t != null && !t.IsFlat) return false;
-			}
+			for (var t = FirstChild<Transform>(); t != null; t = t.NextSibling<Transform>())
+				if (!t.IsFlat) return false;
+
 			return true;
 		}
 		

@@ -140,9 +140,8 @@ namespace Fuse.Layouts
 
 			var effectiveSpacing = EffectiveItemSpacing;
 			bool firstItem = true;
-			for (var cn = container.Children_first; cn != null; cn = cn.Children_next)
+			for (var c = container.FirstChild<Visual>(); c != null; c = c.NextSibling<Visual>())
 			{
-				var c = cn as Visual;
 				if (!AffectsLayout(c)) continue;
 
 				var spacing = effectiveSpacing;
@@ -207,10 +206,8 @@ namespace Fuse.Layouts
 
 			var effectiveSpacing = EffectiveItemSpacing;
 			var hasItem = false;
-			for (var cn = container.Children_first; cn != null; cn = cn.Children_next)
+			for (var c = container.FirstChild<Visual>(); c != null; c = c.NextSibling<Visual>())
 			{
-				var c = cn as Visual;
-				if (c == null) continue;
 				if (ArrangeMarginBoxSpecial(c, padding, lp)) //TODO: hmm, used to drop X/Y Flag
 					continue;
 				
@@ -230,9 +227,8 @@ namespace Fuse.Layouts
 				else
 					off = Vector.Dot(lp.Size-pad,axis)/2 - d/2;
 
-				for (var cn = container.Children_first; cn != null; cn = cn.Children_next)
+				for (var e = container.FirstChild<Visual>(); e != null; e = e.NextSibling<Visual>())
 				{
-					var e = cn as Visual;
 					if (AffectsLayout(e))
 					{
 						var old = e.MarginBoxPosition;

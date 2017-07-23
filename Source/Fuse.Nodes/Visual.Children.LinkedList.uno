@@ -9,30 +9,59 @@ namespace Fuse
 {
 	public partial class Node
 	{
-		internal Node Children_next;
-		internal Node Children_previous;
-		internal int Children_parentID = -1;
+		internal Node _nextSibling;
+		internal Node _previousSibling;
+		internal int _parentID = -1;
+
+		/** Returns the next sibling node of the given type. */
+		public T NextSibling<T>() where T: Node
+		{ 
+			var n = _nextSibling; 
+			while (n != null)
+			{
+				var v = n as T;
+				if (v != null) return v;
+				n = n._nextSibling;
+			}
+			return null;
+		}
+
+		/** Returns the next sibling node of the given type. */
+		public T PreviousSibling<T>() where T: Node 
+		{ 
+			var n = _previousSibling;
+			while (n != null)
+			{
+				var v = n as T;
+				if (v != null) return v;
+				n = n._previousSibling;
+			}
+			return null;
+		}
 	}
 
 	public partial class Visual
 	{
-		static int Children_thisIDEnumerator;
-		readonly int Children_thisID = Children_thisIDEnumerator++;
+		static int _thisIDEnumerator;
+		readonly int _thisID = _thisIDEnumerator++;
 
 		void Children_MakeParent(Visual parent, Node child)
 		{
-			if (child.Children_parentID != -1) throw new Exception();
-			child.Children_parentID = parent.Children_thisID;
+			if (child._parentID != -1) throw new Exception();
+			child._parentID = parent._thisID;
 		}
 
 		void Children_MakeOrphan(Node child)
 		{
-			child.Children_parentID = -1;
+			child._parentID = -1;
 		}
 
-		internal Node Children_first;
-		internal Node Children_last;
-		int Children_count;
+		Node _firstChild, _lastChild;
+		int _childCount;
+
+		// Internal for now, make public when API matures
+		internal int ChildCount { get { return _childCount; } }
+		
 
 		void Children_Add(Node n)
 		{
@@ -40,70 +69,70 @@ namespace Fuse
 			Children_InvalidateCache();
 			Children_MakeParent(this, n);
 
-			if (Children_first == null) 
+			if (_firstChild == null) 
 			{
-				Children_first = n;
-				Children_last = n;
+				_firstChild = n;
+				_lastChild = n;
 			}
 			else
 			{
-				Children_last.Children_next = n;
-				n.Children_previous = Children_last;
-				Children_last = n;
+				_lastChild._nextSibling = n;
+				n._previousSibling = _lastChild;
+				_lastChild = n;
 			}
 
-			Children_count++;
+			_childCount++;
 		}
 
 		bool Children_Remove(Node n)
 		{
-			if (n.Children_parentID != Children_thisID) return false;
+			if (n._parentID != _thisID) return false;
 
 			Children_CompleteCurrentAction();
 			Children_InvalidateCache();
 			Children_MakeOrphan(n);
 
-			if (Children_first == n)
+			if (_firstChild == n)
 			{
-				Children_first = n.Children_next;
-				if (Children_last == n) Children_last = null;
+				_firstChild = n._nextSibling;
+				if (_lastChild == n) _lastChild = null;
 			}
-			else if (Children_last == n)
+			else if (_lastChild == n)
 			{
-				Children_last = n.Children_previous;
+				_lastChild = n._previousSibling;
 			}
 			else
 			{
-				n.Children_previous.Children_next = n.Children_next;
+				n._previousSibling._nextSibling = n._nextSibling;
 			}
-			n.Children_next = null;
-			n.Children_previous = null;
-			Children_count--;
+			n._nextSibling = null;
+			n._previousSibling = null;
+			_childCount--;
 			return true;
 		}
 
 		int Children_IndexOf(Node n)
 		{
-			var k = Children_first;
+			var k = _firstChild;
 			int i = 0;
 			while (k != null)
 			{
 				if (k == n) return i;
 				i++;
-				k = k.Children_next;
+				k = k._nextSibling;
 			}
 			return -1;
 		}
 
 		Node Children_ItemAt(int index)
 		{
-			Node k = Children_first;
+			Node k = _firstChild;
 			int i = 0;
 			while (k != null)
 			{
 				if (i == index) return k;
 				i++;
-				k = k.Children_next;
+				k = k._nextSibling;
 			}
 			throw new IndexOutOfRangeException();
 		}
@@ -133,27 +162,27 @@ namespace Fuse
 
 			if (preceeder == null)
 			{
-				if (Children_first == null) Children_Add(newNode);
+				if (_firstChild == null) Children_Add(newNode);
 				else
 				{
 					Children_MakeParent(this, newNode);
-					newNode.Children_next = Children_first;
-					Children_first.Children_previous = newNode;
-					Children_first = newNode;
-					Children_count++;
+					newNode._nextSibling = _firstChild;
+					_firstChild._previousSibling = newNode;
+					_firstChild = newNode;
+					_childCount++;
 				}
 			}
 			else
 			{
-				if (Children_last == preceeder) Children_Add(newNode);
+				if (_lastChild == preceeder) Children_Add(newNode);
 				else
 				{
 					Children_MakeParent(this, newNode);
-					newNode.Children_previous = preceeder;
-					newNode.Children_next = preceeder.Children_next;
-					preceeder.Children_next.Children_previous = newNode;
-					preceeder.Children_next = newNode;
-					Children_count++;
+					newNode._previousSibling = preceeder;
+					newNode._nextSibling = preceeder._nextSibling;
+					preceeder._nextSibling._previousSibling = newNode;
+					preceeder._nextSibling = newNode;
+					_childCount++;
 				}
 			}
 
@@ -161,7 +190,7 @@ namespace Fuse
 
 		bool Children_Contains(Node n)
 		{
-			return n.Children_parentID == Children_thisID;
+			return n._parentID == _thisID;
 		}
 
 		Node Children_CurrentNode;
@@ -171,7 +200,7 @@ namespace Fuse
 		{
 			Children_CompleteCurrentAction();
 			Children_CurrentAction = action;
-			Children_CurrentNode = Children_first;
+			Children_CurrentNode = _firstChild;
 			Children_CompleteCurrentAction();
 		}
 
@@ -180,7 +209,7 @@ namespace Fuse
 			while (Children_CurrentNode != null)
 			{
 				Children_CurrentAction(this, Children_CurrentNode);
-				Children_CurrentNode = Children_CurrentNode.Children_next;
+				Children_CurrentNode = Children_CurrentNode._nextSibling;
 			}
 			Children_CurrentAction = null;
 		}
@@ -190,13 +219,13 @@ namespace Fuse
 		{
 			if (Children_cachedArray != null) return Children_cachedArray;
 
-			var nodes = new Node[Children_count];
-			var c = Children_first;
+			var nodes = new Node[_childCount];
+			var c = _firstChild;
 			int i = 0;
 			while (c != null)
 			{
 				nodes[i] = c;
-				c = c.Children_next;
+				c = c._nextSibling;
 			}
 			Children_cachedArray = nodes;
 			return nodes;

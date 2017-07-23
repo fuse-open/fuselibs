@@ -87,13 +87,13 @@ namespace Fuse
 				var p = np as Visual;
 				if (p != null)
 				{
-					for (var c = p.Children_last; c != null; c = c.Children_previous)
+					for (var dp = p.LastChild<Node>(); dp != null; dp = dp.PreviousSibling<Node>())
 					{
-						var sibdp = c as ISiblingDataProvider;
-						if (sibdp != null)
+						var sdp = dp as ISiblingDataProvider;
+						if (sdp != null)
 						{
-							var data = sibdp.Data;
-							if (data != null && !e.NextData(sibdp.Data)) return;
+							var data = sdp.Data;
+							if (data != null && !e.NextData(data)) return;
 						}
 					}
 				}

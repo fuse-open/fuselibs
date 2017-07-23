@@ -18,7 +18,7 @@ namespace Fuse
 	*/
 	public partial class Visual
 	{
-		public bool HasChildren { get { return Children_count > 0; } }
+		public bool HasChildren { get { return ChildCount > 0; } }
 
 		protected override void SubtreeToString(StringBuilder sb, int indent)
 		{
@@ -27,26 +27,50 @@ namespace Fuse
 				Children[i].SubtreeToString(sb, indent+1);
 		}
 
+		/** Returns the first child node of the given type. 
+			
+			To get the very first child node (of any type), use `FirstChild<Node>()`.
+		*/
 		public T FirstChild<T>() where T: Node
 		{
-			var c = Children_first;
+			var c = _firstChild;
 			while (c != null)
 			{
 				var v = c as T;
 				if (v != null) return v;
-				c = c.Children_next;
+				c = c._nextSibling;
 			}
 			return null;
 		}
 
-		public void RemoveAllChildren<T>() where T: Node
+		/** Returns the last child node of the given type. 
+
+			To get the very last child node (of any type), use `LastChild<Node>()`.
+		*/
+		public T LastChild<T>() where T: Node
 		{
-			var c = Children_first;
+			var c = _lastChild;
 			while (c != null)
 			{
 				var v = c as T;
+				if (v != null) return v;
+				c = c._previousSibling; 
+			}
+			return null;
+		}
+
+		/** Removes all children of the given type. 
+			
+			To remove all children (of all types), use `RemoveAllChildren<Node>()`.
+		*/
+		public void RemoveAllChildren<T>() where T: Node
+		{
+			var c = _firstChild;
+			while (c != null)
+			{
+				var v = c as T;
+				c = c._nextSibling; // important to do this before calling Remove!
 				if (v != null) Children_Remove(v);
-				c = c.Children_next;
 			}
 		}
 
@@ -198,7 +222,7 @@ namespace Fuse
 			return Children_IndexOf(item);
 		}
 
-		int ICollection<Node>.Count { get { return Children_count; } }
+		int ICollection<Node>.Count { get { return ChildCount; } }
 
 		public void Insert(int index, Node item)
 		{

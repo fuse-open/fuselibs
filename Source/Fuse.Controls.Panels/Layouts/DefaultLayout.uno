@@ -40,9 +40,8 @@ namespace Fuse.Layouts
 		float2 GetElementsSize(Visual container, LayoutParams lp)
 		{
 			var ds = float2(0);
-			for (var cn = container.Children_first; cn != null; cn = cn.Children_next)
+			for (var e = container.FirstChild<Visual>(); e != null; e = e.NextSibling<Visual>())
 			{
-				var e = cn as Visual;
 				if (!AffectsLayout(e)) continue;
 
 				ds = Math.Max( ds, e.GetMarginSize(lp) );
@@ -54,10 +53,8 @@ namespace Fuse.Layouts
 		{
 			var av = lp.CloneAndDerive();
 			av.RemoveSize(padding.XY+padding.ZW);
-			for (var cn = container.Children_first; cn != null; cn = cn.Children_next)
+			for (var e = container.FirstChild<Visual>(); e != null; e = e.NextSibling<Visual>())
 			{
-				var e = cn as Visual;
-				if (e == null) continue;
 				if (!ArrangeMarginBoxSpecial(e, padding, lp))
 				{
 					e.ArrangeMarginBox(padding.XY, av);
