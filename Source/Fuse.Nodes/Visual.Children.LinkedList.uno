@@ -9,9 +9,10 @@ namespace Fuse
 {
 	public partial class Node
 	{
+		const int OrphanParentID = -1;
 		internal Node _nextSibling;
 		internal Node _previousSibling;
-		internal int _parentID = -1;
+		internal int _parentID = OrphanParentID;
 
 		/** Returns the next sibling node of the given type. */
 		public T NextSibling<T>() where T: Node
@@ -47,13 +48,13 @@ namespace Fuse
 
 		void Children_MakeParent(Visual parent, Node child)
 		{
-			if (child._parentID != -1) throw new Exception();
+			if (child._parentID != Node.OrphanParentID) throw new Exception();
 			child._parentID = parent._thisID;
 		}
 
 		void Children_MakeOrphan(Node child)
 		{
-			child._parentID = -1;
+			child._parentID = Node.OrphanParentID;
 		}
 
 		Node _firstChild, _lastChild;
