@@ -191,7 +191,7 @@ namespace Fuse
 		{
 			for (var c = _firstChild; c != null; c = c._nextSibling)
 				OnRemoved(c);
-			Children_clear();
+			Children_Clear();
 		}
 
 		public void Add(Node item)

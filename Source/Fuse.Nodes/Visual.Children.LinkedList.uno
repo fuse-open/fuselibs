@@ -63,7 +63,7 @@ namespace Fuse
 		// Internal for now, make public when API matures
 		internal int ChildCount { get { return _childCount; } }
 		
-		void Children_clear()
+		void Children_Clear()
 		{
 			for (var c = _firstChild; c != null; c = c._nextSibling)
 			{
