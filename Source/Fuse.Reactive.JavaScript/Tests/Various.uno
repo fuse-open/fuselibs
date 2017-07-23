@@ -101,7 +101,7 @@ namespace Fuse.Reactive.Test
 			using (var root = TestRootPanel.CreateWithChild(e))
 			{
 				Assert.DoesNotThrowAny(root.StepFrameJS);
-				root.RootViewport.Children.Remove(e);
+				e.Parent.Remove(e);
 				Assert.DoesNotThrowAny(root.StepFrameJS);
 			}
 		}
