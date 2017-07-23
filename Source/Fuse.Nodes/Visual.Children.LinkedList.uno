@@ -99,7 +99,7 @@ namespace Fuse
 
 		bool Children_Remove(Node n)
 		{
-			if (n._parentID != _thisID) throw new Exception("Node not a child of this parent");
+			if (n._parentID != _thisID) return false;
 
 			Children_Invalidate();
 			Children_MakeOrphan(n);
