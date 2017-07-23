@@ -107,13 +107,13 @@ namespace Fuse
 			if (_firstChild == n)
 			{
 				_firstChild = n._nextSibling;
-				_firstChild._previousSibling = null;
+				if (_firstChild != null) _firstChild._previousSibling = null;
 				if (_lastChild == n) _lastChild = null;
 			}
 			else if (_lastChild == n)
 			{
 				_lastChild = n._previousSibling;
-				_lastChild._nextSibling = null;
+				if (_lastChild != null) _lastChild._nextSibling = null;
 			}
 			else
 			{
