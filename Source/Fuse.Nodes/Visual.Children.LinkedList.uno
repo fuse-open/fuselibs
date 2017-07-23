@@ -9,7 +9,7 @@ namespace Fuse
 {
 	public partial class Node
 	{
-		const int OrphanParentID = -1;
+		internal const int OrphanParentID = -1;
 		internal Node _nextSibling;
 		internal Node _previousSibling;
 		internal int _parentID = OrphanParentID;
