@@ -18,7 +18,7 @@ namespace Fuse.Reactive.Test
 			int i = 0;
 			while (c != null)
 			{
-				if (i == index) return v;
+				if (i == index) return c;
 				i++;
 				c = c.NextSibling<Visual>();
 			}
