@@ -21,8 +21,9 @@ namespace Fuse
 
 		/** Returns the visual child with the given index. 
 		
-			For performance reasons, avoid using this function. Can be used for testing. 
+			For performance reasons, avoid using this function. 
 		*/
+		[Obsolete("Deprecated for performance reasons. Iterate over collection manually instead.")]
 		public Visual GetVisualChild(int index)
 		{
 			var c = _firstChild;
