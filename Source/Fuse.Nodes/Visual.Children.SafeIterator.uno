@@ -23,7 +23,7 @@ namespace Fuse
 			int i = 0;
 			while (c != null)
 			{
-				nodes[i] = c;
+				nodes[i++] = c;
 				c = c._nextSibling;
 			}
 			Children_cachedArray = nodes;
@@ -66,8 +66,16 @@ namespace Fuse
 			{
 				get
 				{
-					if (_array != null) return _array[_pos];
-					else return _current;
+					if (_array != null) 
+					{
+						if (_array[_pos] == null) throw new Exception();
+						return _array[_pos];
+					}
+					else 
+					{
+						if (_current == null) throw new Exception();
+						return _current;
+					}
 				}
 			}
 
