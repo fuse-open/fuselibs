@@ -135,23 +135,36 @@ namespace Fuse
 				}
 			}
 
+			bool MultipleIterators { get { return _v._safeIterator._nextIterator != null; } }
+
 			internal void SecureCopy()
 			{
 				if (_array == null)
 				{
-					_array = new Node[_v._childCount-_pos];
-					int i = 0;
-					while (_current != null)
+					if (MultipleIterators)
 					{
-						_array[i++] = _current;
-						_current = _current._nextSibling;
+						// If early there are multiple iterators, get reuse of the array
+						_array = _v.Children_GetCachedArray();
 					}
-					// the copied array is just a subset, so reset index
-					if (_pos != -1 && _array.Length > 0) _pos = 0; 
+					else
+					{
+						// Otherwise, just copy the remaining items
+						_array = new Node[_v._childCount-_pos];
+						int i = 0;
+						while (_current != null)
+						{
+							_array[i++] = _current;
+							_current = _current._nextSibling;
+						}
+						// the copied array is just a subset, so reset index
+						if (_pos != -1 && _array.Length > 0) _pos = 0; 
 
-					// tempting, but not correct. when _pos != -1, it uses _array[_pos]
-					// _current = _array[0]; 
+						// tempting, but not correct. when _pos != -1, it uses _array[_pos]
+						// _current = _array[0]; 
+					}
 				}
+
+				if (_nextIterator != null) _nextIterator.SecureCopy();
 			}
 		}
 	}
