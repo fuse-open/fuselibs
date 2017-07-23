@@ -11,9 +11,9 @@ namespace Fuse.Layouts
 
 	public sealed class DefaultLayout : Layout
 	{
-		internal override float2 GetContentSize(Visual elements, LayoutParams lp)
+		internal override float2 GetContentSize(Visual container, LayoutParams lp)
 		{
-			var size = GetElementsSize(elements, lp);
+			var size = GetElementsSize(container, lp);
 			
 			/*
 			bool recalc = false;
@@ -31,16 +31,16 @@ namespace Fuse.Layouts
 			}
 			
 			if (recalc)
-				size = GetElementsSize(elements, fillSize, fillSet);
+				size = GetElementsSize(container, fillSize, fillSet);
 			*/
 				
 			return size;
 		}
 
-		float2 GetElementsSize(Visual elements, LayoutParams lp)
+		float2 GetElementsSize(Visual container, LayoutParams lp)
 		{
 			var ds = float2(0);
-			for (var cn = elements.Children_first; cn != null; cn = cn.Children_next)
+			for (var cn = container.Children_first; cn != null; cn = cn.Children_next)
 			{
 				var e = cn as Visual;
 				if (!AffectsLayout(e)) continue;
@@ -50,11 +50,11 @@ namespace Fuse.Layouts
 			return ds;
 		}
 
-		internal override void ArrangePaddingBox(Visual elements, float4 padding, LayoutParams lp)
+		internal override void ArrangePaddingBox(Visual container, float4 padding, LayoutParams lp)
 		{
 			var av = lp.CloneAndDerive();
 			av.RemoveSize(padding.XY+padding.ZW);
-			for (var cn = elements.Children_first; cn != null; cn = cn.Children_next)
+			for (var cn = container.Children_first; cn != null; cn = cn.Children_next)
 			{
 				var e = cn as Visual;
 				if (e == null) continue;

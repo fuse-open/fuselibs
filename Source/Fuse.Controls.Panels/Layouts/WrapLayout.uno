@@ -82,21 +82,21 @@ namespace Fuse.Layouts
 		public string ID { get; set; }
 
 		internal override float2 GetContentSize(
-			Visual elements,
+			Visual container,
 			LayoutParams lp)
 		{
-			return Arrange(elements, lp, false);
+			return Arrange(container, lp, false);
 		}
 		
 		internal override void ArrangePaddingBox(
-			Visual elements,
+			Visual container,
 			float4 padding,
 			LayoutParams lp)
 		{
-			Arrange(elements, lp, true, padding);
+			Arrange(container, lp, true, padding);
 		}
 		
-		float2 Arrange(Visual elements, LayoutParams lp,	
+		float2 Arrange(Visual container, LayoutParams lp,	
 			bool doArrange, float4 padding = float4(0))
 		{
 			var nlp = lp.CloneAndDerive();
@@ -121,20 +121,20 @@ namespace Fuse.Layouts
 			if (_hasItemHeight)
 				clp.SetY(ItemHeight);
 
-			var placements = new float4[elements.Children.Count];
+			var placements = new float4[container.Children.Count];
 			//minorMaxSize in each major row, assinged per element
-			var minorSizes = new float[elements.Children.Count];
+			var minorSizes = new float[container.Children.Count];
 			// save the row each element is on
-			var elementOnRow = new int[elements.Children.Count];
+			var elementOnRow = new int[container.Children.Count];
 			// save the available space for each row
-			var majorRest = new float[elements.Children.Count];
+			var majorRest = new float[container.Children.Count];
 			//where this row starts
 			int majorStart = 0;
 			// current row
 			int currentRow = 0;
 			
 			int i = 0;
-			for (var cn = elements.Children_first; cn != null; cn = cn.Children_next, i++)
+			for (var cn = container.Children_first; cn != null; cn = cn.Children_next, i++)
 			{
 				var e = cn as Visual;
 				if (!AffectsLayout(e))
@@ -174,7 +174,7 @@ namespace Fuse.Layouts
 			}
 
 			//final bits
-			for (int j=majorStart; j < elements.Children.Count; ++j)
+			for (int j=majorStart; j < container.Children.Count; ++j)
 				minorSizes[j] = minorMaxSize;
 			majorMaxUsed = Math.Max(majorMaxUsed, majorUsed);
 			minorUsed += minorMaxSize;
@@ -184,7 +184,7 @@ namespace Fuse.Layouts
 				var saMin = IsVert ? AlignmentHelpers.GetHorizontalSimpleAlignOptional(RowAlignment) : AlignmentHelpers.GetVerticalSimpleAlignOptional(RowAlignment);
 				var saMaj = IsVert ? AlignmentHelpers.GetVerticalSimpleAlignOptional(RowAlignment) : AlignmentHelpers.GetHorizontalSimpleAlignOptional(RowAlignment);
 				var elp = lp.CloneAndDerive();
-				for (var cn = elements.Children_first; cn != null; cn = cn.Children_next)
+				for (var cn = container.Children_first; cn != null; cn = cn.Children_next)
 				{
 					var element = cn as Visual;
 					if (element == null) continue;

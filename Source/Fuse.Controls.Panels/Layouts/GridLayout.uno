@@ -510,13 +510,13 @@ namespace Fuse.Layouts
 			else return 0;
 		}
 		
-		void CalcActualPositions(Visual elements)
+		void CalcActualPositions(Visual container)
 		{
 			bool rowMajor = ChildOrder == GridChildOrder.RowMajor;
 			
 			//find expected max column
 			int minorCount = Math.Max(1,rowMajor ? UserCount(ColumnList) : UserCount(RowList));
-			for (var cn = elements.Children_first; cn != null; cn = cn.Children_next)
+			for (var cn = container.Children_first; cn != null; cn = cn.Children_next)
 			{
 				var e = cn as Visual;
 				if (!AffectsLayout(e)) continue;
@@ -541,7 +541,7 @@ namespace Fuse.Layouts
 			int maxRow = 0;
 			int maxCol = 0;
 			
-			for (var cn = elements.Children_first; cn != null; cn = cn.Children_next)
+			for (var cn = container.Children_first; cn != null; cn = cn.Children_next)
 			{
 				var elm = cn as Visual;
 				if (!AffectsLayout(elm)) continue;
@@ -728,9 +728,9 @@ namespace Fuse.Layouts
 			_rows.RootUnsubscribe();
 		}
 
-		internal override float2 GetContentSize(Visual elements, LayoutParams lp)
+		internal override float2 GetContentSize(Visual container, LayoutParams lp)
 		{
-			return Measure(elements, lp);	
+			return Measure(container, lp);	
 		}
 
 		float EffectiveCellSpacing
@@ -870,11 +870,11 @@ namespace Fuse.Layouts
 			return sz;
 		}
 		
-		void CalcAuto(Visual elements, ref float availableWidth, ref float availableHeight, bool secondPass,
+		void CalcAuto(Visual container, ref float availableWidth, ref float availableHeight, bool secondPass,
 			bool hasFirstHorzSize, bool hasFirstVertSize,
 			bool expandWidth, bool expandHeight)
 		{
-			for (var cn = elements.Children_first; cn != null; cn = cn.Children_next)
+			for (var cn = container.Children_first; cn != null; cn = cn.Children_next)
 			{
 				var child = cn as Visual;
 				if (!AffectsLayout(child)) continue;
@@ -928,11 +928,11 @@ namespace Fuse.Layouts
 			availableHeight = Math.Max(availableHeight, 0.0f);
 		}
 		
-		float2 Measure(Visual elements, LayoutParams lp)
+		float2 Measure(Visual container, LayoutParams lp)
 		{
 			var effectiveCellSpacing = EffectiveCellSpacing;
 			
-			CalcActualPositions(elements);
+			CalcActualPositions(container);
 			
 			var fillHorizontal = lp.HasX;
 			var fillVertical = lp.HasY;
@@ -976,7 +976,7 @@ namespace Fuse.Layouts
 			}
 			
 			// Measure cols/rows with auto metrics in both dimensions
-			CalcAuto(elements, ref availableWidth, ref availableHeight, false, hasFirstHorzSize, hasFirstVertSize,
+			CalcAuto(container, ref availableWidth, ref availableHeight, false, hasFirstHorzSize, hasFirstVertSize,
 				expandWidth, expandHeight);
 
 			// do fill for axes not done before
@@ -987,7 +987,7 @@ namespace Fuse.Layouts
 				CalcFill(_rows, availableHeight, heightProportion, expandHeight);
 			
 			//measure again for auto cells that didn't get measured the first pass
-			CalcAuto(elements, ref availableWidth, ref availableHeight, true, hasFirstHorzSize, hasFirstVertSize,
+			CalcAuto(container, ref availableWidth, ref availableHeight, true, hasFirstHorzSize, hasFirstVertSize,
 				expandWidth, expandHeight);
 
 			// Place rows/cols
@@ -1013,11 +1013,11 @@ namespace Fuse.Layouts
 			}
 		}
 		
-		internal override void ArrangePaddingBox(Visual elements, float4 padding, 
+		internal override void ArrangePaddingBox(Visual container, float4 padding, 
 			LayoutParams lp)
 		{
 			var remainSize = lp.Size - padding.XY - padding.ZW;
-			var measured = Measure( elements, LayoutParams.Create(remainSize) );
+			var measured = Measure( container, LayoutParams.Create(remainSize) );
 
 			var off = float2(0);
 			var eca = EffectiveContentAlignment;
@@ -1048,7 +1048,7 @@ namespace Fuse.Layouts
 			
 			var effectiveCellSpacing = EffectiveCellSpacing;
 			var nlp = lp.CloneAndDerive();
-			for (var cn = elements.Children_first; cn != null; cn = cn.Children_next)
+			for (var cn = container.Children_first; cn != null; cn = cn.Children_next)
 			{
 				var child = cn as Visual;
 				if (child == null) continue;

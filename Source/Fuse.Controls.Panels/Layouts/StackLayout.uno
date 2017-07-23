@@ -87,7 +87,7 @@ namespace Fuse.Layouts
 		}
 
 
-		internal override float2 GetContentSize(Visual elements, LayoutParams lp)
+		internal override float2 GetContentSize(Visual container, LayoutParams lp)
 		{
 			var orientation = Orientation;
 
@@ -95,7 +95,7 @@ namespace Fuse.Layouts
 			var nlp = lp.CloneAndDerive();
 			nlp.RetainXY(vert, !vert);
 
-			var size = GetElementsSize(elements, nlp);
+			var size = GetElementsSize(container, nlp);
 			
 			if (Mode == StackLayoutMode.TwoPass)
 			{
@@ -118,7 +118,7 @@ namespace Fuse.Layouts
 				}
 				
 				if (recalc)
-					size = GetElementsSize(elements, nlp);
+					size = GetElementsSize(container, nlp);
 			}
 				
 			return size;
@@ -133,14 +133,14 @@ namespace Fuse.Layouts
 			}
 		}
 		
-		float2 GetElementsSize(Visual elements, LayoutParams lp)
+		float2 GetElementsSize(Visual container, LayoutParams lp)
 		{
 			var orientation = Orientation;
 			var desiredSize = float2(0);
 
 			var effectiveSpacing = EffectiveItemSpacing;
 			bool firstItem = true;
-			for (var cn = elements.Children_first; cn != null; cn = cn.Children_next)
+			for (var cn = container.Children_first; cn != null; cn = cn.Children_next)
 			{
 				var c = cn as Visual;
 				if (!AffectsLayout(c)) continue;
@@ -183,7 +183,7 @@ namespace Fuse.Layouts
 			}
 		}
 		
-		internal override void ArrangePaddingBox(Visual elements, float4 padding, 
+		internal override void ArrangePaddingBox(Visual container, float4 padding, 
 			LayoutParams lp)
 		{
 			var d = 0.0f;
@@ -207,7 +207,7 @@ namespace Fuse.Layouts
 
 			var effectiveSpacing = EffectiveItemSpacing;
 			var hasItem = false;
-			for (var cn = elements.Children_first; cn != null; cn = cn.Children_next)
+			for (var cn = container.Children_first; cn != null; cn = cn.Children_next)
 			{
 				var c = cn as Visual;
 				if (c == null) continue;
@@ -230,7 +230,7 @@ namespace Fuse.Layouts
 				else
 					off = Vector.Dot(lp.Size-pad,axis)/2 - d/2;
 
-				for (var cn = elements.Children_first; cn != null; cn = cn.Children_next)
+				for (var cn = container.Children_first; cn != null; cn = cn.Children_next)
 				{
 					var e = cn as Visual;
 					if (AffectsLayout(e))

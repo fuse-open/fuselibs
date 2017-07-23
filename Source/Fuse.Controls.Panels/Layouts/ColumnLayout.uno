@@ -218,17 +218,17 @@ namespace Fuse.Layouts
 			return mx;
 		}
 		
-		internal override float2 GetContentSize(Visual visuals, LayoutParams lp)
+		internal override float2 GetContentSize(Visual container, LayoutParams lp)
 		{
-			return Arrange(visuals, lp);
+			return Arrange(container, lp);
 		}
 		
-		internal override void ArrangePaddingBox(Visual visuals, float4 padding, LayoutParams lp)
+		internal override void ArrangePaddingBox(Visual container, float4 padding, LayoutParams lp)
 		{
-			Arrange(visuals, lp, true, padding);
+			Arrange(container, lp, true, padding);
 		}
 		
-		float2 Arrange(Visual visuals, LayoutParams lp, 
+		float2 Arrange(Visual container, LayoutParams lp, 
 			bool doArrange = false, float4 padding=float4(0) )
 		{
 			bool vert = Orientation == Orientation.Vertical;
@@ -245,7 +245,7 @@ namespace Fuse.Layouts
 			{
 				//assume all columns contain max/fixed-size elements
 				var mx = float2(0);
-				for (var cn = visuals.Children_first; cn != null; cn = cn.Children_next)
+				for (var cn = container.Children_first; cn != null; cn = cn.Children_next)
 				{
 					var v = cn as Visual;
 					if (!AffectsLayout(v))
@@ -285,7 +285,7 @@ namespace Fuse.Layouts
 
 			var at = new float[columnCount];
 			
-			for (var cn = visuals.Children_first; cn != null; cn = cn.Children_next)
+			for (var cn = container.Children_first; cn != null; cn = cn.Children_next)
 			{
 				var v = cn as Visual;
 				if (v == null) continue;
