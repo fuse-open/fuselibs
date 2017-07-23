@@ -74,6 +74,7 @@ namespace Fuse
 			
 			_firstChild = null;
 			_lastChild = null;
+			_childCount = 0;
 		}
 
 		void Children_Add(Node n)
@@ -98,7 +99,7 @@ namespace Fuse
 
 		bool Children_Remove(Node n)
 		{
-			if (n._parentID != _thisID) return false;
+			if (n._parentID != _thisID) throw new Exception("Node not a child of this parent");
 
 			Children_Invalidate();
 			Children_MakeOrphan(n);
@@ -106,15 +107,18 @@ namespace Fuse
 			if (_firstChild == n)
 			{
 				_firstChild = n._nextSibling;
+				_firstChild._previousSibling = null;
 				if (_lastChild == n) _lastChild = null;
 			}
 			else if (_lastChild == n)
 			{
 				_lastChild = n._previousSibling;
+				_lastChild._nextSibling = null;
 			}
 			else
 			{
 				n._previousSibling._nextSibling = n._nextSibling;
+				n._nextSibling._previousSibling = n._previousSibling;
 			}
 			n._nextSibling = null;
 			n._previousSibling = null;
