@@ -60,6 +60,7 @@ namespace Fuse
 			internal SafeIterator(Visual v)
 			{
 				_v = v;
+				AddToIteratorList();
 			}
 
 			public Node Current
@@ -83,17 +84,9 @@ namespace Fuse
 			{
 				if (_pos == -1)
 				{
-					AddToIteratorList();
 					_array = _v.Children_cachedArray; // If we have a cached array, go ahead and use that
 				}
 
-				var res = MoveNextInternal();
-				if (!res) RemoveFromIteratorList();
-				return res;
-			}
-
-			bool MoveNextInternal()
-			{
 				_pos++;
 
 				if (_array != null)
@@ -108,6 +101,7 @@ namespace Fuse
 			public void Dispose()
 			{
 				Reset();
+				RemoveFromIteratorList();
 				_v = null;
 			}
 
@@ -116,7 +110,6 @@ namespace Fuse
 				_pos = -1;
 				_current = null;
 				_array = null;
-				RemoveFromIteratorList();
 			}
 
 			void AddToIteratorList()
@@ -130,7 +123,6 @@ namespace Fuse
 				if (_v._safeIterator == this)
 				{
 					_v._safeIterator = _nextIterator;
-					_v._safeIterator = null;
 				}
 				else
 				{
@@ -145,24 +137,21 @@ namespace Fuse
 
 			internal void SecureCopy()
 			{
-				if (_pos != -1 && _array == null)
-					CopyRemainingNodes();
-			}
-
-			void CopyRemainingNodes()
-			{
-				_array = new Node[_v._childCount-_pos];
-				int i = 0;
-				while (_current != null)
+				if (_array == null)
 				{
-					_array[i++] = _current;
-					_current = _current._nextSibling;
-				}
-				// the copied array is just a subset, so reset index
-				_pos = 0; 
+					_array = new Node[_v._childCount-_pos];
+					int i = 0;
+					while (_current != null)
+					{
+						_array[i++] = _current;
+						_current = _current._nextSibling;
+					}
+					// the copied array is just a subset, so reset index
+					if (_pos != -1 && _array.Length > 0) _pos = 0; 
 
-				// tempting, but not correct. when _pos != -1, it uses _array[_pos]
-				// _current = _array[0]; 
+					// tempting, but not correct. when _pos != -1, it uses _array[_pos]
+					// _current = _array[0]; 
+				}
 			}
 		}
 	}
