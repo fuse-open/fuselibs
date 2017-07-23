@@ -152,6 +152,9 @@ namespace Fuse
 				}
 				// the copied array is just a subset, so reset index
 				_pos = 0; 
+
+				// tempting, but not correct. when _pos != -1, it uses _array[_pos]
+				// _current = _array[0]; 
 			}
 		}
 	}
