@@ -189,9 +189,9 @@ namespace Fuse
 
 		void ICollection<Node>.Clear()
 		{
-			foreach (var child in Children)
-				OnRemoved(child);
-			Children.Clear();
+			for (var c = _firstChild; c != null; c = c._nextSibling)
+				OnRemoved(c);
+			Children_clear();
 		}
 
 		public void Add(Node item)
