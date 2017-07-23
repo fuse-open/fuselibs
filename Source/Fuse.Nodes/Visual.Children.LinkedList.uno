@@ -48,7 +48,7 @@ namespace Fuse
 
 		void Children_MakeParent(Visual parent, Node child)
 		{
-			if (child._parentID != Node.OrphanParentID) throw new Exception();
+			if (child._parentID != Node.OrphanParentID) throw new Exception("Node already has a parent - can only have one");
 			child._parentID = parent._thisID;
 		}
 
