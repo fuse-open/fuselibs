@@ -212,9 +212,17 @@ namespace Fuse
 			return false;
 		}
 
+		/** Inserts a child node after the given sibling node.
+			
+			For performance reasons, this entrypoint is recommended over using `InsertAt`.
+
+			To insert at the beginning of the list, use `null` as the first argument.
+		*/
 		public void InsertAfter(Node sibling, Node node)
 		{
+			InsertCleanup(node);
 			Children_InsertAfter(sibling, node);
+			OnAdded(node);
 		}
 
 		bool ICollection<Node>.Contains(Node item)
