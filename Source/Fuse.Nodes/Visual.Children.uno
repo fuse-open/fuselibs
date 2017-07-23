@@ -212,6 +212,11 @@ namespace Fuse
 			return false;
 		}
 
+		public void InsertAfter(Node sibling, Node node)
+		{
+			Children_InsertAfter(sibling, node);
+		}
+
 		bool ICollection<Node>.Contains(Node item)
 		{
 			return Children_Contains(item);
