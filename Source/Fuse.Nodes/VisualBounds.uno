@@ -41,6 +41,11 @@ namespace Fuse
 			nb._box.Maximum = pt;
 			return nb;
 		}
+
+		public static implicit operator Box(VisualBounds vb)
+		{
+			return vb._box;
+		}
 		
 		/**
 			Create a VisualBounds of the rect with two corner points.
@@ -280,6 +285,9 @@ namespace Fuse
 		//uses the W paramete runlike Box.Transform (which may be a defect there)
 		public static Box BoxTransform(Box box, FastMatrix matrix)
 		{
+			if (!matrix.HasNonTranslation)
+				return new Box(box.Minimum + matrix.Translation, box.Maximum + matrix.Translation);
+
 			float3 A = matrix.TransformVector(float3(box.Minimum.X, box.Minimum.Y, box.Minimum.Z));
 			float3 B = matrix.TransformVector(float3(box.Maximum.X, box.Minimum.Y, box.Minimum.Z));
 			float3 C = matrix.TransformVector(float3(box.Maximum.X, box.Maximum.Y, box.Minimum.Z));
