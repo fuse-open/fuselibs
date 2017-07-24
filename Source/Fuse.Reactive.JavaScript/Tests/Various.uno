@@ -526,8 +526,8 @@ namespace Fuse.Reactive.Test
 			{
 				Assert.AreEqual(p1, ((UX.ClassConstructorBase)e)._a.Children[0]);
 
-				Assert.AreEqual(p1, e._a.Children[0]);
-				Assert.AreEqual(p2, e._b.Children[0]);
+				Assert.AreEqual(p1, e._a.Nodes[0]);
+				Assert.AreEqual(p2, e._b.Nodes[0]);
 			}
 		}
 
