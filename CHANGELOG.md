@@ -2,6 +2,11 @@
 
 # 1.2
 
+## Optimizations
+- Optimized how bounding boxes are calculated (improves layout and rendering performance).
+- Optimized how render bounds are compounded for larger lists.
+
+
 ## 1.2.1
 
 ### Fuse.Elements
