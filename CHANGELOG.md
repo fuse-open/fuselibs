@@ -23,6 +23,7 @@
 - Changed/fixed `Trigger` to provide the trigger itself as the target node to a `TriggerAction`, previously it'd provide the parent of the trigger. The old behaviour was due to an old tree structure. This should have been updated a long time ago. This allows actions to reference the trigger in which they are contained. If you've created a custom Uno `TriggerAction` and need the old behaviour modify your `Perform(Node target)` to use `target.Parent`. Triggers should in general scan upwards from the target node.
 
 ## Optimizations
+- Optimized UpdateManager dispatcher to deal better with high numbers of dispatches per frame (as when populating long lists).
 - Optimized how bounding boxes are calculated (improves layout and rendering performance).
 
 # 1.2
