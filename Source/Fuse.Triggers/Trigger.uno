@@ -16,6 +16,11 @@ namespace Fuse.Triggers
 		Never,
 		/** Only changes during the rooting frame are handled as bypass, without special exceptions. */
 		Rooting,
+		
+		/** Deprecated: 2017-07-21
+			For possible backwards compatibilty, like Standard but excludes the check for layout bypass.
+			This mode should not be used. */
+		ExceptLayout,
 	}
 
 	public enum TriggerPlayState
@@ -82,6 +87,7 @@ namespace Fuse.Triggers
 		//special mode for Timeline to be in "started" state at Progress==0
 		internal bool _startAtZero = false;
 		
+		TriggerBypassMode _bypass = TriggerBypassMode.Standard;
 		/**
 			Specifies how changes in state are handled while initializing and rooting the trigger. 
 
@@ -93,7 +99,20 @@ namespace Fuse.Triggers
 			One can use the `Bypass` property to differentiate between these. The default is `Bypass="Standard"`, 
 			which corresponds to case 2. If one wants the effect of case 2, one can use `Bypass="Never"` instead.
 		*/
-		public TriggerBypassMode Bypass { get; set; }
+		public TriggerBypassMode Bypass 
+		{ 
+			get { return _bypass; }
+			set
+			{
+				_bypass = value;
+				if (value == TriggerBypassMode.ExceptLayout && !_warnBypass)
+				{
+					Fuse.Diagnostics.Deprecated( "ExceptLayout mode indicates a problem in trigger expecations and should no tbe used", this );
+					_warnBypass = true; //once is enough
+				}
+			}
+		}
+		static bool _warnBypass;
 
 		/**
 			The animation associated with this trigger.
@@ -379,6 +398,9 @@ namespace Fuse.Triggers
 				if (IsPreservedRootFrame && Bypass != TriggerBypassMode.Rooting)
 					return false;
 					
+				if (_noLayoutFrame == UpdateManager.FrameIndex && Bypass != TriggerBypassMode.ExceptLayout)
+					return true;
+					
 				if (Node.IsRootCapture(_rootCaptureIndex))
 					return true;
 				else	
@@ -386,6 +408,21 @@ namespace Fuse.Triggers
 					
 				return !IsRootingCompleted;
 			}
+		}
+		
+		int _noLayoutFrame = -1;
+		/**
+			Indicates the trigger is bound to the layout of a visual. This will keep the trigger in Bypass
+			mode until after the first layout of the element is obtained. This is required since layout
+			does not happen in the same root grouping/update phase as the creation of the element, yet
+			not having a layout should qualify as part of the rooting period.
+			
+			A trigger that deals with layout should call this during its rooting.
+		*/
+		protected void RequireLayout(Visual visual)
+		{
+			if (visual == null || !visual.HasMarginBox)
+				_noLayoutFrame = UpdateManager.FrameIndex;
 		}
 		
 		/**

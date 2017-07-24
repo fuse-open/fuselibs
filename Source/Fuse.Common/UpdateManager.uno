@@ -23,6 +23,8 @@ namespace Fuse
 	{
 		static public int Layout = 0;
 		static public int Placement = 100;
+		//everything below this is considered part of a logical rooting group
+		static public int EndGroup = 499;
 		//should be resolved after other normal activities, but is not cleanup
 		static public int Later = 500;
 		//should be resolved last, such as cleanup

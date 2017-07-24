@@ -665,6 +665,22 @@ namespace Fuse.Triggers.Test
 				}
 			}
 		}
+		
+		[Test]
+		public void DeferredRootGroup()
+		{
+			var t = new UX.Trigger.DeferredRootGroup();
+			using (var root = TestRootPanel.CreateWithChild(t))
+			{
+				Assert.AreEqual( 1, t.W1.Progress );
+				Assert.AreEqual( 0, t.W2.Progress );
+				Assert.AreEqual( 1, t.D1.Progress );
+				Assert.AreEqual( 0, t.L1.Progress );
+				
+				root.StepFrame(0.5f);
+				Assert.AreEqual(0.5, t.L1.Progress );
+			}
+		}
 	}
 
 	public class PlayStateTrigger : Trigger
@@ -692,4 +708,5 @@ namespace Fuse.Triggers.Test
 		
 		public new TriggerPlayState PlayState { get { return base.PlayState; } }
 	}
+	
 }

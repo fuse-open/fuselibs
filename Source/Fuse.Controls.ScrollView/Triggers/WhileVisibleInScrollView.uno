@@ -47,7 +47,7 @@ namespace Fuse.Triggers
 			
 		Note that the element itself need not necessarily be visible, but just have a layout that positions it in the visible area. `Visibility="Hidden"` on a @Visual does not prevent the activiation of this trigger.
 		
-		This trigger responds to changes in scroll position only. Layout changes on the element, which do not modify the scrolling state, may not update the activation state.
+		This trigger responds to changes in scroll position. Layout changes on the element will also update the status but layout changes further up the tree may not update the status (we do not have an efficient way to monitor for global positioning changes).
 	*/
 	public class WhileVisibleInScrollView : WhileTrigger
 	{
@@ -78,6 +78,8 @@ namespace Fuse.Triggers
 			}
 			
 			_scrollable.ScrollPositionChanged += OnScrollPositionChanged;
+			_element.Placed += OnElementPlaced;
+			RequireLayout(_element);
 			Update();
 		}
 		
@@ -85,6 +87,7 @@ namespace Fuse.Triggers
 		{
 			if (_scrollable != null)
 			{
+				_element.Placed -= OnElementPlaced;
 				_scrollable.ScrollPositionChanged -= OnScrollPositionChanged;
 				_scrollable = null;
 			}
@@ -147,6 +150,11 @@ namespace Fuse.Triggers
 		
 		void OnScrollPositionChanged(object s, object args)
 		{
+			Update();
+		}
+
+		void OnElementPlaced(object s, object args)
+		{	
 			Update();
 		}
 		
