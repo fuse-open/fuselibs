@@ -152,18 +152,7 @@ namespace Fuse.Reactive
 		void CompletedRemove(Node n)
 		{
 			n.OverrideContextParent = null;
-			
-			WindowItem wi;
-			if (_dataMap.TryGetValue(n, out wi))
-			{
-				if (!wi.Nodes.Remove(n))
-					Fuse.Diagnostics.InternalError( "inconsistent Nodes list state", this );
-					
-				_dataMap.Remove(n);
-				
-				if (wi.Nodes.Count == 0)
-					wi.Dispose();
-			}
+			_dataMap.Remove(n);
 		}
  		
 		internal override Node GetLastNodeInGroup()

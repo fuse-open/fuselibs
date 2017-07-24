@@ -94,6 +94,8 @@
 
 # 1.1
 
+## 1.1.1
+
 ### Navigation
 - Fixed an issue where `Activated` and `WhileActivated` within an `EdgeNavigator` did not correctly identify an active state
 - Changed `EdgeNavigation` to return a page in `Active` when no side-panels are active
