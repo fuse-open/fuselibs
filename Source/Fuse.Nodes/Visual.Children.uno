@@ -54,7 +54,7 @@ namespace Fuse
 			{
 				var v = c as T;
 				if (v != null) return v;
-				c = c._previousSibling; 
+				c = (Node)c._previousSibling;
 			}
 			return null;
 		}
@@ -65,13 +65,9 @@ namespace Fuse
 		*/
 		public void RemoveAllChildren<T>() where T: Node
 		{
-			var c = _firstChild;
-			while (c != null)
-			{
-				var v = c as T;
-				c = c._nextSibling; // important to do this before calling Remove!
-				if (v != null) Children_Remove(v);
-			}
+			// Has to use use safe iterator, ref discussion on https://github.com/fusetools/fuselibs-public/pull/260
+			foreach (var c in Children) 
+				if (c is T) Children_Remove(c);
 		}
 
 		[UXPrimary]
@@ -266,6 +262,9 @@ namespace Fuse
 		
 		void InsertNodesAfterImpl(Node preceeder, IEnumerator<Node> items, bool allowMove)
 		{
+			if (Children_Contains(preceeder)) 
+				throw new Exception("Cannot insert nodes after a node that is not a child of this parent");
+
 			//cleanup all nodes first
 			while (items.MoveNext())
 				InsertCleanup( items.Current );

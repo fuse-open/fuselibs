@@ -134,8 +134,9 @@ namespace Fuse.Layouts
 			int currentRow = 0;
 			
 			int i = 0;
-			for (var e = container.FirstChild<Visual>(); e != null; e = e.NextSibling<Visual>(), i++)
+			for (var n = container.FirstChild<Node>(); n != null; n = n.NextSibling<Node>(), i++)
 			{
+				var e = n as Visual;
 				if (!AffectsLayout(e))
 					continue;
 
@@ -184,8 +185,9 @@ namespace Fuse.Layouts
 				var saMaj = IsVert ? AlignmentHelpers.GetVerticalSimpleAlignOptional(RowAlignment) : AlignmentHelpers.GetHorizontalSimpleAlignOptional(RowAlignment);
 				var elp = lp.CloneAndDerive();
 				i = 0;
-				for (var element = container.FirstChild<Visual>(); element != null; element = element.NextSibling<Visual>(), i++)
+				for (var n = container.FirstChild<Node>(); n != null; n = n.NextSibling<Node>(), i++)
 				{
+					var element = n as Visual;
 					if (ArrangeMarginBoxSpecial(element, padding, lp ))
 						continue;
 

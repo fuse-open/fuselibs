@@ -11,8 +11,13 @@ namespace Fuse
 	{
 		internal const int OrphanParentID = -1;
 		internal Node _nextSibling;
-		internal Node _previousSibling;
+		
 		internal int _parentID = OrphanParentID;
+
+		// Using Fuse.Internal.Pointer<T> to avoid reference loop
+		// use this field with special caution!
+		internal Pointer<Node> _previousSibling;
+
 
 		/** Returns the next sibling node of the given type. */
 		public T NextSibling<T>() where T: Node
@@ -30,12 +35,12 @@ namespace Fuse
 		/** Returns the next sibling node of the given type. */
 		public T PreviousSibling<T>() where T: Node 
 		{ 
-			var n = _previousSibling;
+			var n = (Node)_previousSibling;
 			while (n != null)
 			{
 				var v = n as T;
 				if (v != null) return v;
-				n = n._previousSibling;
+				n = (Node)n._previousSibling;
 			}
 			return null;
 		}
@@ -69,7 +74,7 @@ namespace Fuse
 			{
 				Children_MakeOrphan(c);
 				c._nextSibling = null;
-				c._previousSibling = null;
+				c._previousSibling = (Node)null;
 			}
 			
 			_firstChild = null;
@@ -107,21 +112,21 @@ namespace Fuse
 			if (_firstChild == n)
 			{
 				_firstChild = n._nextSibling;
-				if (_firstChild != null) _firstChild._previousSibling = null;
+				if (_firstChild != null) _firstChild._previousSibling = (Node)null;
 				if (_lastChild == n) _lastChild = null;
 			}
 			else if (_lastChild == n)
 			{
-				_lastChild = n._previousSibling;
+				_lastChild = (Node)n._previousSibling;
 				if (_lastChild != null) _lastChild._nextSibling = null;
 			}
 			else
 			{
-				n._previousSibling._nextSibling = n._nextSibling;
-				n._nextSibling._previousSibling = n._previousSibling;
+				((Node)n._previousSibling)._nextSibling = n._nextSibling;
+				n._nextSibling._previousSibling = (Node)n._previousSibling;
 			}
 			n._nextSibling = null;
-			n._previousSibling = null;
+			n._previousSibling = (Node)null;
 			_childCount--;
 			return true;
 		}

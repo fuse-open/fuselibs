@@ -80,8 +80,11 @@ namespace Fuse
 				}
 			}
 
+			bool _reachedEnd;
 			public bool MoveNext()
 			{
+				if (_reachedEnd) return false;
+
 				if (_pos == -1)
 				{
 					_array = _v.Children_cachedArray; // If we have a cached array, go ahead and use that
@@ -95,7 +98,9 @@ namespace Fuse
 				if (_current == null) _current = _v._firstChild;
 				else _current = _current._nextSibling;
 
-				return _current != null;
+				_reachedEnd = (_current == null);
+
+				return !_reachedEnd;
 			}
 
 			public void Dispose()
@@ -110,6 +115,7 @@ namespace Fuse
 				_pos = -1;
 				_current = null;
 				_array = null;
+				_reachedEnd = false;
 			}
 
 			void AddToIteratorList()
@@ -141,9 +147,9 @@ namespace Fuse
 			{
 				if (_array == null)
 				{
-					if (MultipleIterators)
+					if (_v.Children_cachedArray != null || MultipleIterators)
 					{
-						// If early there are multiple iterators, get reuse of the array
+						// If early there are multiple iterators or existing array, get reuse of the array
 						_array = _v.Children_GetCachedArray();
 					}
 					else
@@ -165,6 +171,9 @@ namespace Fuse
 				}
 
 				if (_nextIterator != null) _nextIterator.SecureCopy();
+
+				// We got our copy now, kthxbye
+				RemoveFromIteratorList();
 			}
 		}
 	}
