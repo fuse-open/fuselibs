@@ -140,12 +140,28 @@ namespace Fuse.Elements
 				elm.AbsoluteZoom)), CachingRectPadding);
 		}
 
+		Box GetRenderBounds(Element elm)
+		{
+			var t = elm.InternLocalTransformInternal;
+			return VisualBounds.BoxTransform((Box)elm.LocalRenderBounds, t);
+		}
+
 		VisualBounds CalcRenderBounds()
 		{
-			var rect = VisualBounds.Empty;
-			for (int i = 0; i < _elements.Count; i++)
-				rect = rect.Merge(_elements[i]._elm.CalcRenderBoundsInParentSpace());
-			return rect;
+			if (_elements.Count == 0) return VisualBounds.Empty;
+
+			var box = GetRenderBounds(_elements[0]._elm);
+			for (int i = 1; i < _elements.Count; i++)
+			{
+				var b = GetRenderBounds(_elements[i]._elm);
+				if (b.Minimum.X < box.Minimum.X) box.Minimum.X = b.Minimum.X;
+				if (b.Minimum.Y < box.Minimum.Y) box.Minimum.Y = b.Minimum.Y;
+				if (b.Minimum.Z < box.Minimum.Z) box.Minimum.Z = b.Minimum.Z;
+				if (b.Maximum.X > box.Maximum.X) box.Maximum.X = b.Maximum.X;
+				if (b.Maximum.Y > box.Maximum.Y) box.Maximum.Y = b.Maximum.Y;
+				if (b.Maximum.Z > box.Maximum.Z) box.Maximum.Z = b.Maximum.Z;
+			}
+			return VisualBounds.Box(box);
 		}
 
 		VisualBounds _renderBounds;
