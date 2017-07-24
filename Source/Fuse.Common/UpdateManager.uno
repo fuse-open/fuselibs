@@ -116,10 +116,6 @@ namespace Fuse
 			list.Insert(0,us);
 		}
 
-		/*
-			Keeps a sorted list of deferred actions. This list is processed in parallel, thus
-			the add only scans back to PhaseDeferredActionsAt (the one currently being executed).
-		*/
 		public void AddDeferredAction( Action pu, IUpdateListener ul, int priority = 0 )
 		{
 			Queue<UpdateAction> list;
