@@ -62,8 +62,7 @@ namespace Fuse
 	{
 		public Action action;
 		public IUpdateListener update;
-		public int priority;
-		
+
 		public void Invoke()
 		{
 			if (action != null)
@@ -73,7 +72,7 @@ namespace Fuse
 				update.Update();
 		}
 	}
-	
+
 	class Stage
 	{
 		public UpdateStage UpdateStage;
@@ -82,8 +81,18 @@ namespace Fuse
 		public List<UpdateListener> Onces = new List<UpdateListener>();
 		public List<UpdateListener> OncesPending = new List<UpdateListener>();
 		
-		public List<UpdateAction> PhaseDeferredActions = new List<UpdateAction>();
-		public int PhaseDeferredActionsAt = -1;
+		public Dictionary<int, Queue<UpdateAction>> PhaseDeferredActions = new Dictionary<int, Queue<UpdateAction>>();
+
+		public int HighestPriority
+		{
+			get
+			{
+				int max = -1;
+				foreach (var p in PhaseDeferredActions)
+					if (p.Value.Count > 0 && p.Key > max) max = p.Key;
+				return max;
+			}
+		}
 		
 		public bool HasListenersRemoved;
 
@@ -106,25 +115,18 @@ namespace Fuse
 			
 			list.Insert(0,us);
 		}
-		
+
 		/*
 			Keeps a sorted list of deferred actions. This list is processed in parallel, thus
 			the add only scans back to PhaseDeferredActionsAt (the one currently being executed).
 		*/
 		public void AddDeferredAction( Action pu, IUpdateListener ul, int priority = 0 )
 		{
-			int at = PhaseDeferredActions.Count;
-			while( at - 1 > PhaseDeferredActionsAt && 
-				PhaseDeferredActions[at-1].priority > priority )
-				at--;
-				
-			PhaseDeferredActions.Insert(at, new UpdateAction{ action = pu, update = ul, priority = priority });
-		}
-		
-		public void ResetDeferredActions()
-		{
-			PhaseDeferredActions.Clear();
-			PhaseDeferredActionsAt = -1;
+			Queue<UpdateAction> list;
+			if (!PhaseDeferredActions.TryGetValue(priority, out list))
+				PhaseDeferredActions.Add(priority, list = new Queue<UpdateAction>());
+			
+			list.Enqueue(new UpdateAction{ action = pu, update = ul });
 		}
 	}
 
@@ -400,17 +402,17 @@ namespace Fuse
 				}
 			}
 		}
-		
+
 		static void ProcessDeferredActions(Stage stage, ref List<Exception> _exceptions)
 		{
-			//by index to include deferred actions added while processing
-			stage.PhaseDeferredActionsAt = 0;
-			for (; stage.PhaseDeferredActionsAt < stage.PhaseDeferredActions.Count; 
-				++stage.PhaseDeferredActionsAt )
+			for (var priority = stage.HighestPriority; priority != -1; priority = stage.HighestPriority)
 			{
+				var queue = stage.PhaseDeferredActions[priority];
+				var a = queue.Dequeue();
+
 				try
 				{
-					stage.PhaseDeferredActions[stage.PhaseDeferredActionsAt].Invoke();
+					a.Invoke();
 				}
 				catch (Exception e)
 				{
@@ -419,7 +421,6 @@ namespace Fuse
 					_exceptions.Add(e);
 				}
 			}
-			stage.ResetDeferredActions();
 		}
 		
 		/** A test interface that just clears the pending deferred actions */
