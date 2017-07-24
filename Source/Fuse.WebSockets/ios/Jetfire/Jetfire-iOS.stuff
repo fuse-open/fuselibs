@@ -1,3 +1,0 @@
-if iOS {
-  Jetfire-iOS: "https://github.com/acmacalister/jetfire/releases/download/0.1.6/Jetfire.framework.zip"
-}
