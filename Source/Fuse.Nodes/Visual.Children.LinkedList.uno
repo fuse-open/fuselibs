@@ -16,7 +16,7 @@ namespace Fuse
 
 		// Using Fuse.Internal.Pointer<T> to avoid reference loop
 		// use this field with special caution!
-		internal Pointer<Node> _previousSibling;
+		internal Fuse.Internal.Pointer<Node> _previousSibling;
 
 
 		/** Returns the next sibling node of the given type. */
