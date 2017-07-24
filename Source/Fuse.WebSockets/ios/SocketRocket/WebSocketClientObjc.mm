@@ -47,7 +47,7 @@
 }
 
 - (void)setHeaderKey:(NSString *)key withValue:(NSString *)value {
-	//[self.webSocket addHeader:key forKey:value];
+	//TODO: [self.webSocket addHeader:key forKey:value];
 }
 
 ///--------------------------------------
@@ -75,16 +75,6 @@
 		self.receivedData((uint8_t *)[data bytes], [data length]);
     }
 }
-
-/*- (void)webSocket:(SRWebSocket *)webSocket d	idReceiveMessageWithString:(NSString *)string
-{
-	self.receivedMessage(string);
-}
-
-- (void)webSocket:(SRWebSocket *)webSocket didReceiveMessageWithData:(NSData *)data
-{
-	self.receivedData((uint8_t *)[data bytes], [data length]);
-}*/
 
 - (void)webSocket:(SRWebSocket *)webSocket didCloseWithCode:(NSInteger)code reason:(NSString *)reason wasClean:(BOOL)wasClean;
 {
