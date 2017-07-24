@@ -23,8 +23,8 @@ namespace Fuse
 		protected override void SubtreeToString(StringBuilder sb, int indent)
 		{
 			base.SubtreeToString(sb, indent);
-			for (int i = 0; i < Children.Count; i++)
-				Children[i].SubtreeToString(sb, indent+1);
+			for (var c = FirstChild<Node>(); c != null; c = c.NextSibling<Node>())
+				c.SubtreeToString(sb, indent+1);
 		}
 
 		/** Returns the first child node of the given type. 
@@ -90,9 +90,8 @@ namespace Fuse
 		{
 			if (_observerCount != 0 && IsRootingStarted)
 			{
-				for (int i = 0; i < Children.Count; i++)
+				for (var n = FirstChild<Node>(); n != null; n = n.NextSibling<Node>())
 				{
-					var n = Children[i];
 					var obs = n as IParentObserver;
 					if (obs != null && n.IsRootingCompleted)
 						obs.OnChildAddedWhileRooted(elm);
@@ -106,9 +105,8 @@ namespace Fuse
 		{
 			if (_observerCount != 0 && IsRootingStarted)
 			{
-				for (int i = 0; i < Children.Count; i++)
+				for (var n = FirstChild<Node>(); n != null; n = n.NextSibling<Node>())
 				{
-					var n = Children[i];
 					var obs = n as IParentObserver;
 					if (obs != null && n.IsRootingCompleted) 
 						obs.OnChildRemovedWhileRooted(elm);
@@ -122,9 +120,8 @@ namespace Fuse
 		{
 			if (_observerCount != 0 && IsRootingStarted)
 			{
-				for (int i = 0; i < Children.Count; i++)
+				for (var n = FirstChild<Node>(); n != null; n = n.NextSibling<Node>())
 				{
-					var n = Children[i];
 					var obs = n as IParentObserver;
 					if (obs != null && n.IsRootingCompleted) 
 						obs.OnChildMovedWhileRooted(elm);

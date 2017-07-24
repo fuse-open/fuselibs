@@ -9,15 +9,10 @@ namespace Fuse.Physics
 
 		internal static void SetForce(ForceField field, Body body, float force)
 		{
-			for (int i = 0; i < body.Visual.Children.Count; i++)
+			for (var fft = body.Visual.FirstChild<ForceFieldTrigger>(); fft != null; fft = fft.NextSibling<ForceFieldTrigger>())
 			{
-				var b = body.Visual.Children[i];
-				var fft = b as ForceFieldTrigger;
-
-				if (fft != null && fft.ForceField == field)
-				{
+				if (fft.ForceField == field)
 					fft.SetForce(body, force);
-				}
 			}
 		}
 

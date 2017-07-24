@@ -98,11 +98,8 @@ namespace Fuse
 
 		public override void Draw(DrawContext dc)
 		{
-			for (int i = 0; i < Children.Count; i++)
-			{
-				var v = Children[i] as Visual;
+			for (var v = FirstChild<Visual>(); v != null; v = v.NextSibling<Visual>())
 				v.Draw(dc);
-			}
 		}
 
 		void OnGotFocus(object sender, EventArgs args)

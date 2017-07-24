@@ -108,9 +108,9 @@ namespace Fuse
 		{
 			SetBit(FastProperty1.PendingRemove, true);
 
-			for (int i = 0; i < Children.Count; i++)
+			for (var n = FirstChild<Node>(); n != null; n = n.NextSibling<Node>())
 			{
-				var rvl = Children[i] as IBeginRemoveVisualListener;
+				var rvl = n as IBeginRemoveVisualListener;
 				if (rvl != null) rvl.OnBeginRemoveVisual(args);
 			}
 		}

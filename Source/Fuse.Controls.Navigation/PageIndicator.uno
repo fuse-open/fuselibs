@@ -115,10 +115,8 @@ namespace Fuse.Controls
 			}
 
 			var p = 0;
-			for (int i = 0; i < Children.Count; i++)
+			for (var v = FirstChild<Visual>(); v != null; v = v.NextSibling<Visual>())
 			{
-				var v = Children[i] as Visual;
-				if (v == null) continue;
 				var page = _pageProgress.GetPage(p++);
 				NavigationPageProperty.SetNavigationPage(v, page);
 			}

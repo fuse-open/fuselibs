@@ -26,11 +26,10 @@ namespace Fuse.Navigation
 			if (t != null)
 				return t;
 				
-			for (int i = 0; i < node.Children.Count; i++)
+			for (var x = node.FirstChild<Behavior>(); x != null; x = x.NextSibling<Behavior>())
 			{
-				var c = node.Children[i] as IBaseNavigation;
-				//mean to check only behaviours (as was a distinct list before), so exclude visuals
-				if (c != null && !(c is Visual)) return c;
+				var c = x as IBaseNavigation;
+				if (c != null) return c;
 			}
 			return null;
 		}

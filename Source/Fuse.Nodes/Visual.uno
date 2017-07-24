@@ -146,8 +146,8 @@ namespace Fuse
 		public override void VisitSubtree(Action<Node> action)
 		{
 			action(this);
-			for (int i = 0; i < Children.Count; i++) 
-				Children[i].VisitSubtree(action);
+			for (var n = FirstChild<Node>(); n != null; n = n.NextSibling<Node>())
+				n.VisitSubtree(action);
 		}
 
 		/**
