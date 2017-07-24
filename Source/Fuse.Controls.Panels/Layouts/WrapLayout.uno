@@ -188,6 +188,7 @@ namespace Fuse.Layouts
 				for (var n = container.FirstChild<Node>(); n != null; n = n.NextSibling<Node>(), i++)
 				{
 					var element = n as Visual;
+					if (element == null) continue;
 					if (ArrangeMarginBoxSpecial(element, padding, lp ))
 						continue;
 
