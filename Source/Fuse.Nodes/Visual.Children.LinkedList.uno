@@ -14,9 +14,9 @@ namespace Fuse
 		
 		internal int _parentID = OrphanParentID;
 
-		// Using Fuse.Internal.Pointer<T> to avoid reference loop
+		// Using Fuse.Internal.RawPointer<T> to avoid reference loop
 		// use this field with special caution!
-		internal Fuse.Internal.Pointer<Node> _previousSibling;
+		internal RawPointer<Node> _previousSibling;
 
 
 		/** Returns the next sibling node of the given type. */
