@@ -1,0 +1,7 @@
+<Video ux:Class="UX.VideoWithMargin" File="../data/mask.mp4" Margin="10" CachingMode="Never" AutoPlay="true">
+	<bool ux:Property="IsPlaying" />
+
+	<WhileLoading Invert="true">
+		<Set this.IsPlaying="true" />
+	</WhileLoading>
+</Video>

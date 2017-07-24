@@ -17,6 +17,7 @@
     "Fuse.Controls.Primitives",
     "Fuse.Controls.ScrollView",
     "Fuse.Controls.Test",
+    "Fuse.Controls.Video",
     "Fuse.Controls",
     "Fuse.Desktop",
     "Fuse.Drawing.Primitives",

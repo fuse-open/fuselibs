@@ -1,12 +1,16 @@
 using Uno;
+using Uno.Compiler.ExportTargetInterop;
 using Uno.Math;
 using Uno.Testing;
+using Uno.Threading;
 using Fuse;
 using Fuse.Controls;
 using FuseTest;
 
 namespace DrawRectsTest
 {
+	using DotNetNative;
+
 	public class DrawRectsTest : TestBase
 	{
 		[Test]
@@ -217,6 +221,55 @@ namespace DrawRectsTest
 			}
 		}
 
+		extern(DOTNET) static class MessagePumper
+		{
+			public static void PumpMessages()
+			{
+				DotNetNative.Application.DoEvents();
+			}
+		}
+
+		extern(!DOTNET) static class MessagePumper
+		{
+			public static void PumpMessages()
+			{
+				// Do nothing
+			}
+		}
+
+		[Test]
+		public void VideoWithMarginDrawRectIsRendered()
+		{
+			var c = new global::UX.VideoWithMargin();
+			var root = TestRootPanel.CreateWithChild(c, int2(200, 100));
+
+			// Wait until the video is playing before grabbing pixels
+			while (!c.IsPlaying)
+			{
+				root.StepFrame();
+				root.TestDraw();
+				MessagePumper.PumpMessages();
+				Thread.Sleep(16);
+			}
+
+			// Step some more frames so the video will start playing
+			for (int i = 0; i < 10; i++)
+			{
+				root.StepFrame();
+				root.TestDraw();
+				MessagePumper.PumpMessages();
+				Thread.Sleep(16);
+			}
+
+			using (var fb = root.CaptureDraw())
+			{
+				// Test pixel outside of element to ensure it's laid out how we expect
+				fb.AssertPixel(float4(0), int2(5, 5));
+
+				TestForDrawRects(fb, new Recti(60, 10, 140, 90), 1, float4(float3(0.92f), 1));
+			}
+		}
+
 		void TestForDrawRects(TestFramebuffer fb, Recti drawRectBounds, int numRects, float4 drawnColor)
 		{
 			TestForDrawRects(fb, drawRectBounds, numRects, drawnColor, drawnColor);
@@ -248,6 +301,15 @@ namespace DrawRectsTest
 			fb.AssertPixel(Math.Saturate(darkenedCornerColor + leftBottomColor * alpha * (float)numRects), drawRectBounds.LeftBottom + int2(margin, -margin), eps);
 			fb.AssertPixel(Math.Saturate(darkenedCornerColor + rightBottomColor * alpha * (float)numRects), drawRectBounds.RightBottom + int2(-margin, -margin), eps);
 			fb.AssertPixel(Math.Saturate(darkenedCenterColor + middleColor * alpha * (float)numRects), drawRectBounds.Center, eps);
+		}
+	}
+
+	namespace DotNetNative
+	{
+		[DotNetType("System.Windows.Forms.Application")]
+		extern(DOTNET) public class Application
+		{
+			public extern static void DoEvents();
 		}
 	}
 }
