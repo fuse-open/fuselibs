@@ -262,7 +262,7 @@ namespace Fuse
 		
 		void InsertNodesAfterImpl(Node preceeder, IEnumerator<Node> items, bool allowMove)
 		{
-			if (Children_Contains(preceeder)) 
+			if (!Children_Contains(preceeder)) 
 				throw new Exception("Cannot insert nodes after a node that is not a child of this parent");
 
 			//cleanup all nodes first
