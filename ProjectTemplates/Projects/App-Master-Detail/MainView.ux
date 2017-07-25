@@ -1,11 +1,11 @@
 <App>
-	<Router ux:Name="mainRouter"/>
-	<JavaScript File="MainView.js"/>
+	<Router ux:Name="mainRouter" />
+	<JavaScript File="MainView.js" />
 	<DockPanel>
-		<StatusBarBackground Dock="Top" Background="Black"/>
+		<StatusBarBackground Dock="Top" Background="Black" />
 		<Navigator>
-			<_$filename$_.MainPage ux:Template="MainPage"/>
-			<_$filename$_.DetailsPage ux:Template="DetailsPage"/>
+			<_$filename$_.MainPage ux:Template="MainPage" />
+			<_$filename$_.DetailsPage ux:Template="DetailsPage" />
 		</Navigator>
 		<BottomBarBackground Dock="Bottom"/>
 	</DockPanel>

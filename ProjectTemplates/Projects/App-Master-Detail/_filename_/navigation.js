@@ -1,25 +1,25 @@
 var router = null;
 
-function initialize(inRouter){
+function initialize(inRouter) {
 	router = inRouter;
 	gotoMainPage();
 }
 
-function gotoMainPage(){
+function gotoMainPage() {
 	router.goto("MainPage");
 }
 
-function gotoDetails(item){
+function gotoDetails(item) {
 	router.push("DetailsPage", item);
 }
 
-function goBack(){
+function goBack() {
 	router.goBack();
 }
 
 module.exports = {
-	initialize : initialize,
-	goBack : goBack,
-	gotoMainPage : gotoMainPage,
-	gotoDetails : gotoDetails
-}
+	initialize: initialize,
+	goBack: goBack,
+	gotoMainPage: gotoMainPage,
+	gotoDetails: gotoDetails
+};

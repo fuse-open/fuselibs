@@ -1,11 +1,11 @@
 <Page ux:Class="_$filename$_.MainPage" Color="#EEE">
-	<JavaScript File="MainPage.js"/>
+	<JavaScript File="MainPage.js" />
 	<ScrollView>
 		<StackPanel>
 			<Each Items="{Read data}">
 				<Deferred>
 					<_$filename$_.ItemListView Label="{Read title}" Margin="4">
-						<Tapped Handler="{onItemTapped}"/>
+						<Tapped Handler="{onItemTapped}" />
 					</_$filename$_.ItemListView>
 				</Deferred>
 			</Each>

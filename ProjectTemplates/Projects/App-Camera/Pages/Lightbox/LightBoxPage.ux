@@ -1,14 +1,14 @@
 <Page ux:Class="_$filename$_.LightBoxPage">
-	<JavaScript File="LightBoxPage.js"/>
+	<JavaScript File="LightBoxPage.js" />
 	<DockPanel>
-		<PageControl ux:Name="pageControl" ActiveIndex="{currentIndex}" >
+		<PageControl ux:Name="pageControl" ActiveIndex="{currentIndex}">
 			<Each Items="{Read images}">
-				<_$filename$_.LightBoxImagePage ImagePath="{Read imagePath}"/>
+				<_$filename$_.LightBoxImagePage ImagePath="{Read imagePath}" />
 			</Each>
 		</PageControl>
 		<iOS>
 			<_$filename$_.SimpleButton Margin="4" Label="Go back" Dock="Bottom">
-				<Tapped Handler="{goBack}"/>
+				<Tapped Handler="{goBack}" />
 			</_$filename$_.SimpleButton>
 		</iOS>
 	</DockPanel>
