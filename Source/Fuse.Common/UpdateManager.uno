@@ -83,14 +83,14 @@ namespace Fuse
 		
 		public Dictionary<int, Queue<UpdateAction>> PhaseDeferredActions = new Dictionary<int, Queue<UpdateAction>>();
 
-		public int HighestPriority
+		public int FirstPriority
 		{
 			get
 			{
-				int max = -1;
+				int min = int.MaxValue;
 				foreach (var p in PhaseDeferredActions)
-					if (p.Value.Count > 0 && p.Key > max) max = p.Key;
-				return max;
+					if (p.Value.Count > 0 && p.Key < min) min = p.Key;
+				return min;
 			}
 		}
 		
@@ -401,7 +401,7 @@ namespace Fuse
 
 		static void ProcessDeferredActions(Stage stage, ref List<Exception> _exceptions)
 		{
-			for (var priority = stage.HighestPriority; priority != -1; priority = stage.HighestPriority)
+			for (var priority = stage.FirstPriority; priority != int.MaxValue; priority = stage.FirstPriority)
 			{
 				var queue = stage.PhaseDeferredActions[priority];
 				var a = queue.Dequeue();
