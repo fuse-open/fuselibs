@@ -149,14 +149,14 @@ namespace Fuse.Elements
 				var lrb = elm.LocalRenderBounds;
 				if (lrb == VisualBounds.Empty) continue;
 				if (lrb == VisualBounds.Infinite) return VisualBounds.Infinite;
+				var b = VisualBounds.BoxTransform((Box)lrb, elm.InternLocalTransformInternal);
 				if (!hasAnyBounds)
 				{
-					box = lrb;
+					box = b;
 					hasAnyBounds = true;
 				}
 				else
 				{
-					var b = VisualBounds.BoxTransform((Box)lrb, elm.InternLocalTransformInternal);
 					if (b.Minimum.X < box.Minimum.X) box.Minimum.X = b.Minimum.X;
 					if (b.Minimum.Y < box.Minimum.Y) box.Minimum.Y = b.Minimum.Y;
 					if (b.Minimum.Z < box.Minimum.Z) box.Minimum.Z = b.Minimum.Z;
