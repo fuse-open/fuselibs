@@ -105,20 +105,24 @@ namespace Fuse.Triggers.Actions
 	{
 		string _rawSource;
 		string _processedSource;
-		IWebView _target;
 
 		public event JSEventHandler Handler;
 
+		IWebView _target;
 		public IWebView WebView {
 			get { return _target; }
 			set { _target = value; }
 		}
-
+		
 		[UXContent,UXVerbatim]
 		public string JavaScript
 		{
-			get { return _processedSource; }
-			set { _processedSource = PrepareScriptForEval(_rawSource = value); }
+			get { return _rawSource; }
+			set 
+			{ 
+				_rawSource = value;
+				_processedSource = PrepareScriptForEval(_rawSource); 
+			}
 		}
 
 
@@ -136,7 +140,7 @@ namespace Fuse.Triggers.Actions
 		{
 			var webView = _target ?? target.FindByType<IWebView>();
 
-			if (webView != null && _rawSource != "")
+			if (webView != null && _rawSource != null)
 			{
 				Execute(webView);
 			}

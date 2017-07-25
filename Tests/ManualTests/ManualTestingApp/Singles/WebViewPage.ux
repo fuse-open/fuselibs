@@ -4,14 +4,33 @@
 		<p>This page has an embeded `WebView` that should show the "Astronomy Picture of the Day".</p>
 	</InfoStack>
 
+	<JavaScript>
+		var Observable = require("FuseJS/Observable")
+		exports.page = Observable("n/a")
+		exports.onPageLoaded = function(res) {
+			exports.page.value = JSON.parse(res.json).url
+		}
+	</JavaScript>
 	<NativeViewHost>
 		<DockPanel>
 			<Text Dock="Top" Background="#EEE">Shows "Astronomy Picture of the Day" web page. (No "Info" box here.)</Text>
 		
 			<WhileVisible>
-				<WebView Url="http://apod.nasa.gov/apod/astropix.html"/>
-				<!--<WebView Url="https://en.wikipedia.org/wiki/Astronomy_Picture_of_the_Day"/>-->
+				<WebView Url="http://apod.nasa.gov/apod/astropix.html">
+					<PageLoaded>
+						<EvaluateJS Handler="{onPageLoaded}">
+							var result = {
+								url : document.location.href
+							};
+							return result;
+						</EvaluateJS>
+					</PageLoaded>
+				</WebView>
 			</WhileVisible>
+			
+			<Panel Dock="Bottom" Color="#AAA" ux:Name="bottom">
+				<Text Alignment="Center" Value="URL: {page}"/>
+			</Panel>
 		</DockPanel>
 	</NativeViewHost>
 </Page>
