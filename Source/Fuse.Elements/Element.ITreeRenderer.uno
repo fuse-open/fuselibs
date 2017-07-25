@@ -41,19 +41,23 @@ namespace Fuse.Elements
 			}
 		}
 
+		bool _dispatchedZOrderChanged; // This can happen a lot, so avoid multiple dispatch
 		void NotifyTreeRendererZOrderChanged()
 		{
-			if (HasChildren)
+			if (HasChildren && !_dispatchedZOrderChanged)
+			{
+				_dispatchedZOrderChanged = true;
 				UpdateManager.AddDeferredAction(OnZOrderChanged, UpdateStage.Layout, LayoutPriority.Post);
+			}
 		}
 
 		void OnZOrderChanged()
 		{
+			_dispatchedZOrderChanged = false;
 			if (IsRootingCompleted)
 			{
 				var t = TreeRenderer;
 				if (t != null)
-					// TODO: this should probably be deferred to avoid recalculating the Z-order each time
 					t.ZOrderChanged(this, GetCachedZOrder());
 			}
 		}
