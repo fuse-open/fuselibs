@@ -242,30 +242,7 @@ namespace Fuse.Elements
 				};
 
 				if (defined(FUSELIBS_DEBUG_DRAW_RECTS) && dc.RenderTarget == DrawRectVisualizer.RenderTarget)
-				{
-					float2[] drawRectInputVerts = new[]
-					{
-						float2(0, 0),
-						float2(1, 0),
-						float2(1, 1),
-						float2(0, 1)
-					};
-					float4[] drawRectWorldSpaceVerts = new[]
-					{
-						float4(0),
-						float4(0),
-						float4(0),
-						float4(0)
-					};
-					float2 drawRectSize = float2(tile.Texture.Size.X, tile.Texture.Size.Y) / dc.ViewportPixelsPerPoint;
-					for(int i = 0; i < 4; i++)
-					{
-						var coord = drawRectInputVerts[i];
-						var p = Vector.Transform(float4(coord * drawRectSize, 0, 1), tile._compositMatrix);
-						drawRectWorldSpaceVerts[i] = p;
-					}
-					DrawRectVisualizer.Append(new DrawRect(drawRectWorldSpaceVerts, dc.Scissor));
-				}
+					DrawRectVisualizer.Capture(float2(0), float2(tile.Texture.Size.X, tile.Texture.Size.Y), tile._compositMatrix, dc);
 			}
 		}
 	}

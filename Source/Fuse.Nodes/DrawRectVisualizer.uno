@@ -80,9 +80,29 @@ namespace Fuse.Nodes
 			_instance.EndFrameAndVisualizeImpl(dc);
 		}
 
-		public static void Append(DrawRect r)
+		public static void Capture(float2 position, float2 size, float4x4 worldTransform, DrawContext dc)
 		{
-			_instance._drawRects.Add(r);
+			float2[] drawRectInputVerts = new[]
+			{
+				float2(0, 0),
+				float2(1, 0),
+				float2(1, 1),
+				float2(0, 1)
+			};
+			float4[] drawRectWorldSpaceVerts = new[]
+			{
+				float4(0),
+				float4(0),
+				float4(0),
+				float4(0)
+			};
+			for(int i = 0; i < 4; i++)
+			{
+				var coord = drawRectInputVerts[i];
+				var p = Vector.Transform(float4((position + coord * size) / dc.ViewportPixelsPerPoint, 0, 1), worldTransform);
+				drawRectWorldSpaceVerts[i] = p;
+			}
+			_instance._drawRects.Add(new DrawRect(drawRectWorldSpaceVerts, dc.Scissor));
 		}
 
 		void StartFrameImpl(RenderTarget rt)

@@ -111,32 +111,12 @@ namespace Fuse.Drawing.Primitives
 			// Circles don't actually draw as rectangles, but this is a good-enough-to-be-useful(-and-testable) approximation.
 			if (defined(FUSELIBS_DEBUG_DRAW_RECTS) && dc.RenderTarget == DrawRectVisualizer.RenderTarget)
 			{
-				float2[] drawRectInputVerts = new[]
-				{
-					float2(0, 0),
-					float2(1, 0),
-					float2(1, 1),
-					float2(0, 1)
-				};
-				float4[] drawRectWorldSpaceVerts = new[]
-				{
-					float4(0),
-					float4(0),
-					float4(0),
-					float4(0)
-				};
-				float2 elementPos = visual.ActualPosition / dc.ViewportPixelsPerPoint;
-				float2 elementSize = visual.ActualSize / dc.ViewportPixelsPerPoint;
+				float2 elementPos = float2(0);
+				float2 elementSize = visual.ActualSize;
 				float minSize = Math.Min(elementSize.X, elementSize.Y);
-				float2 drawRectPos = elementPos + elementSize / 2.0f - minSize / 2.0f;
-				float2 drawRectSize = float2(minSize);
-				for(int i = 0; i < 4; i++)
-				{
-					var coord = drawRectInputVerts[i];
-					var p = float4(drawRectPos + coord * drawRectSize, 0, 1);
-					drawRectWorldSpaceVerts[i] = p;
-				}
-				DrawRectVisualizer.Append(new DrawRect(drawRectWorldSpaceVerts, dc.Scissor));
+				float2 offset = elementPos + elementSize / 2.0f - minSize / 2.0f;
+				float2 size = float2(minSize);
+				DrawRectVisualizer.Capture(offset, size, visual.WorldTransform, dc);
 			}
 		}
 	}
