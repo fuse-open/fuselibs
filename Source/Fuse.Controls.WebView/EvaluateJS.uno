@@ -138,13 +138,13 @@ namespace Fuse.Triggers.Actions
 
 			if (webView != null && _rawSource != "")
 			{
-				Execute();
+				Execute(webView);
 			}
 		}
 
-		void Execute()
+		void Execute(IWebView webView)
 		{
-			WebView.Eval(_processedSource, ResultHandler);
+			webView.Eval(_processedSource, ResultHandler);
 		}
 
 		void ResultHandler(string result)
