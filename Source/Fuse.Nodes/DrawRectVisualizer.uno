@@ -66,10 +66,6 @@ namespace Fuse.Nodes
 
 		readonly List<DrawRect> _drawRects = new List<DrawRect>();
 
-		public static RenderTarget RenderTarget { get { return _instance._renderTarget; } }
-
-		public static IEnumerable<DrawRect> DrawRects { get { return _instance._drawRects; } }
-
 		public static void StartFrame(RenderTarget rt)
 		{
 			_instance.StartFrameImpl(rt);
@@ -82,7 +78,7 @@ namespace Fuse.Nodes
 
 		public static void Capture(float2 position, float2 size, float4x4 worldTransform, DrawContext dc)
 		{
-			if (dc.RenderTarget != DrawRectVisualizer.RenderTarget)
+			if (dc.RenderTarget != _instance._renderTarget)
 				return;
 
 			float2[] drawRectInputVerts = new[]
