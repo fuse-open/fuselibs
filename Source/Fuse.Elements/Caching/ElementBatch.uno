@@ -196,7 +196,10 @@ namespace Fuse.Elements
 			_indexBufferValid = false;
 			_vertexPositionBufferValid = false;
 			_vertexTexCoordBufferValid = false;
-			_renderBounds = null;
+			if (_renderBounds != null)
+				_renderBounds = _renderBounds.Merge(elm.CalcRenderBoundsInParentSpace());
+			else
+				_renderBounds = elm.CalcRenderBoundsInParentSpace();
 		}
 
 		public void RemoveElement(Element elm)
