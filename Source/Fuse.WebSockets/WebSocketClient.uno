@@ -46,7 +46,7 @@ namespace Fuse.WebSocket
 		public WebSocketClient(string uri, string[] protocols)
 		{
 			if defined(iOS) {
-				_client = new Jetfire.WebSocketClient();
+				_client = new SocketRocket.WebSocketClient();
 			} else if defined(Android) {
 				_client = new Neovisionaries.WebSocketClient();
 			} else if defined(CIL) {

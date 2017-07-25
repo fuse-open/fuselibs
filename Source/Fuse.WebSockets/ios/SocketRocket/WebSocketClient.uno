@@ -3,13 +3,17 @@ using Uno.Collections;
 using Uno.Compiler.ExportTargetInterop;
 using Fuse.WebSocket;
 
-namespace Jetfire
+namespace SocketRocket
 {
-	[Require("Xcode.FrameworkDirectory", "@('Jetfire-iOS/Carthage/Build/iOS':Path)")]
-	[Require("Xcode.EmbeddedFramework", "@('Jetfire-iOS/Carthage/Build/iOS/Jetfire.framework':Path)")]
+	[Require("IncludeDirectory", "@('include/':Path)")]
+	[Require("LinkDirectory", "@('lib/':Path)")]
+	[Require("LinkLibrary", "SocketRocket")]
+	[Require("Source.Include", "SRWebSocket.h")]
 	[Require("Xcode.Framework", "Security.framework")]
 	[Require("Xcode.Framework", "CFNetwork.framework")]
-	[ForeignInclude(Language.ObjC, "ios/Jetfire/WebSocketClientObjc.h")]
+	[Require("Xcode.Framework", "Foundation.framework")]
+	[Require("LinkLibrary", "icucore")]
+	[ForeignInclude(Language.ObjC, "ios/SocketRocket/WebSocketClientObjc.h")]
 	extern(iOS) public class WebSocketClient : IWebSocketClient, IDisposable
 	{
 		ObjC.Object _webSocket;
