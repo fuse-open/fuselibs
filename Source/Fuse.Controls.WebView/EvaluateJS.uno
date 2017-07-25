@@ -113,7 +113,7 @@ namespace Fuse.Triggers.Actions
 			get { return _target; }
 			set { _target = value; }
 		}
-		
+
 		[UXContent,UXVerbatim]
 		public string JavaScript
 		{
@@ -140,7 +140,7 @@ namespace Fuse.Triggers.Actions
 		{
 			var webView = _target ?? target.FindByType<IWebView>();
 
-			if (webView != null && _rawSource != null)
+			if (webView != null && !string.IsNullOrEmpty(_rawSource))
 			{
 				Execute(webView);
 			}
