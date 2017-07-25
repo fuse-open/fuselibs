@@ -133,13 +133,7 @@ namespace Fuse
 		{
 			get
 			{
-				var nb = VisualBounds.Empty;
-				for (int i = 0; i < ZOrderChildCount; ++i)
-				{
-					var n = GetZOrderChild(i);
-					nb = nb.MergeChild( n, n.HitTestBounds );
-				}
-				return nb;
+				return VisualBounds.Merge(VisualChildren);
 			}
 		}
 	}
