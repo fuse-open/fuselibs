@@ -59,7 +59,7 @@ namespace Fuse.Elements
 
 		protected virtual VisualBounds CalcRenderBounds()
 		{
-			return VisualBounds.Merge(VisualChildren);
+			return VisualBounds.Merge(VisualChildren, VisualBounds.Type.Render);
 		}
 
 		//how much of a pixel must be covered by a virtual pixel/bound to be considered as covering that pixel

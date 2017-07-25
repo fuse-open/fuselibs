@@ -309,13 +309,19 @@ namespace Fuse
 			return new Box(float3(minX, minY, minZ), float3(maxX, maxY, maxZ));
 		}
 
-		internal static VisualBounds Merge(IEnumerable<Visual> visuals)
+		internal enum Type
+		{
+			Render,
+			HitTest
+		}
+
+		internal static VisualBounds Merge(IEnumerable<Visual> visuals, Type bt)
 		{
 			bool hasAnyBounds = false;
 			Box box = new Box(float3(0), float3(0));
 			foreach (var elm in visuals)
 			{
-				var lrb = elm.LocalRenderBounds;
+				var lrb = bt == Type.HitTest ? elm.HitTestBounds : elm.LocalRenderBounds;
 				if (lrb == VisualBounds.Empty) continue;
 				if (lrb == VisualBounds.Infinite) return VisualBounds.Infinite;
 				var b = VisualBounds.BoxTransform((Box)lrb, elm.InternLocalTransformInternal);

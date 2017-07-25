@@ -133,7 +133,7 @@ namespace Fuse
 		{
 			get
 			{
-				return VisualBounds.Merge(VisualChildren);
+				return VisualBounds.Merge(VisualChildren, VisualBounds.Type.HitTest);
 			}
 		}
 	}

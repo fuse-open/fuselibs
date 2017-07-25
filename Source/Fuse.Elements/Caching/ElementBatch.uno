@@ -147,7 +147,7 @@ namespace Fuse.Elements
 			{
 				if (_renderBounds == null)
 				{
-					_renderBounds = VisualBounds.Merge(this);
+					_renderBounds = VisualBounds.Merge(this, VisualBounds.Type.Render);
 				}
 				return _renderBounds;
 			}
