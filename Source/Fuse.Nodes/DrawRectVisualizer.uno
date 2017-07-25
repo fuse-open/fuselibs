@@ -62,9 +62,17 @@ namespace Fuse.Nodes
 	{
 		static readonly DrawRectVisualizer _instance = new DrawRectVisualizer();
 
+		bool _isCaptureEnabled;
+
 		RenderTarget _renderTarget;
 
 		readonly List<DrawRect> _drawRects = new List<DrawRect>();
+
+		public static bool IsCaptureEnabled
+		{
+			get { return _instance._isCaptureEnabled; }
+			set { _instance._isCaptureEnabled = value; }
+		}
 
 		public static void StartFrame(RenderTarget rt)
 		{
@@ -78,7 +86,7 @@ namespace Fuse.Nodes
 
 		public static void Capture(float2 position, float2 size, float4x4 worldTransform, DrawContext dc)
 		{
-			if (dc.RenderTarget != _instance._renderTarget)
+			if (!IsCaptureEnabled || dc.RenderTarget != _instance._renderTarget)
 				return;
 
 			float2[] drawRectInputVerts = new[]
@@ -106,12 +114,18 @@ namespace Fuse.Nodes
 
 		void StartFrameImpl(RenderTarget rt)
 		{
+			if (!IsCaptureEnabled)
+				return;
+
 			_renderTarget = rt;
 			_drawRects.Clear();
 		}
 
 		void EndFrameAndVisualizeImpl(DrawContext dc)
 		{
+			if (!IsCaptureEnabled)
+				return;
+
 			// Darken original rendering by drawing a semi-transparent rect on top of it
 			draw
 			{
