@@ -1,4 +1,5 @@
 using Uno;
+using Uno.Collections;
 
 namespace Fuse
 {
@@ -306,6 +307,36 @@ namespace Fuse
 			float maxZ = Max8(A.Z, B.Z, C.Z, D.Z, E.Z, F.Z, G.Z, H.Z);
 
 			return new Box(float3(minX, minY, minZ), float3(maxX, maxY, maxZ));
+		}
+
+		internal static VisualBounds Merge(IEnumerable<Visual> visuals)
+		{
+			bool hasAnyBounds = false;
+			Box box = new Box(float3(0), float3(0));
+			foreach (var elm in visuals)
+			{
+				var lrb = elm.LocalRenderBounds;
+				if (lrb == VisualBounds.Empty) continue;
+				if (lrb == VisualBounds.Infinite) return VisualBounds.Infinite;
+				var b = VisualBounds.BoxTransform((Box)lrb, elm.InternLocalTransformInternal);
+				if (!hasAnyBounds)
+				{
+					box = b;
+					hasAnyBounds = true;
+				}
+				else
+				{
+					if (b.Minimum.X < box.Minimum.X) box.Minimum.X = b.Minimum.X;
+					if (b.Minimum.Y < box.Minimum.Y) box.Minimum.Y = b.Minimum.Y;
+					if (b.Minimum.Z < box.Minimum.Z) box.Minimum.Z = b.Minimum.Z;
+					if (b.Maximum.X > box.Maximum.X) box.Maximum.X = b.Maximum.X;
+					if (b.Maximum.Y > box.Maximum.Y) box.Maximum.Y = b.Maximum.Y;
+					if (b.Maximum.Z > box.Maximum.Z) box.Maximum.Z = b.Maximum.Z;
+				}
+			}
+			
+			if (!hasAnyBounds) return VisualBounds.Empty;
+			else return VisualBounds.Box(box);
 		}
 		
 	}
