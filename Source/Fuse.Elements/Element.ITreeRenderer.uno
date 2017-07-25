@@ -18,7 +18,7 @@ namespace Fuse.Elements
 		void IsEnabledChanged(Element e, bool isEnabled);
 		void OpacityChanged(Element e, float opacity);
 		void ClipToBoundsChanged(Element e, bool clipToBounds);
-		void ZOrderChanged(Element e, List<Visual> zorder);
+		void ZOrderChanged(Element e, Visual[] zorder);
 		void HitTestModeChanged(Element e, bool enabled);
 		bool Measure(Element e, LayoutParams lp, out float2 size);
 	}
@@ -53,7 +53,8 @@ namespace Fuse.Elements
 			{
 				var t = TreeRenderer;
 				if (t != null)
-					t.ZOrderChanged(this, ZOrder);
+					// TODO: this should probably be deferred to avoid recalculating the Z-order each time
+					t.ZOrderChanged(this, GetCachedZOrder());
 			}
 		}
 
@@ -134,7 +135,7 @@ namespace Fuse.Elements
 				t.ClipToBoundsChanged(this, ClipToBounds);
 				t.HitTestModeChanged(this, HitTestMode != Fuse.Elements.HitTestMode.None);
 				if (HasChildren)
-					t.ZOrderChanged(this, ZOrder);
+					t.ZOrderChanged(this, GetCachedZOrder());
 			}
 		}
 
