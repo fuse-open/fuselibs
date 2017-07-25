@@ -17,18 +17,22 @@ namespace Fuse
 	}
 	
 	/**
-		Provides appropriate values for priority of actions within the Layout stage.
+		The allowed values for priority of actions within the Layout stage.
 	*/
-	public static class LayoutPriority
+	public enum LayoutPriority
 	{
-		static public int Layout = 0;
-		static public int Placement = 100;
+		/*
+			IF ADDING NEW ITEMS TO THIS ENUM, MAKE SURE YOU EXPAND THE 
+			SIZE OF THE PhaseDeferredActions ARRAY BELOW 
+		*/
+		Layout,
+		Placement,
 		//everything below this is considered part of a logical rooting group
-		static public int EndGroup = 499;
+		EndGroup,
 		//should be resolved after other normal activities, but is not cleanup
-		static public int Later = 500;
+		Later,
 		//should be resolved last, such as cleanup
-		static public int Post = 1000;
+		Post
 	}
 	
 	public interface IUpdateListener
@@ -58,7 +62,7 @@ namespace Fuse
 		}
 	}
 
-	struct UpdateAction
+	class UpdateAction
 	{
 		public Action action;
 		public IUpdateListener update;
@@ -81,17 +85,24 @@ namespace Fuse
 		public List<UpdateListener> Onces = new List<UpdateListener>();
 		public List<UpdateListener> OncesPending = new List<UpdateListener>();
 		
-		public Dictionary<int, Queue<UpdateAction>> PhaseDeferredActions = new Dictionary<int, Queue<UpdateAction>>();
+		// This size is hardcoded for performance reasons instead of using a dictionary
+		// to avoid using a foreach in the dispatch innerloop
+		public Queue<UpdateAction>[] PhaseDeferredActions = new Queue<UpdateAction>[] {
+			new Queue<UpdateAction>(),
+			new Queue<UpdateAction>(),
+			new Queue<UpdateAction>(),
+			new Queue<UpdateAction>(),
+			new Queue<UpdateAction>()
+		};
 
-		public int FirstPriority
+		public UpdateAction GetFirstPriorityAction()
 		{
-			get
+			for (var i = 0; i < PhaseDeferredActions.Length; i++)
 			{
-				int min = int.MaxValue;
-				foreach (var p in PhaseDeferredActions)
-					if (p.Value.Count > 0 && p.Key < min) min = p.Key;
-				return min;
+				var q = PhaseDeferredActions[i];
+				if (q.Count > 0) return q.Dequeue();
 			}
+			return null;
 		}
 		
 		public bool HasListenersRemoved;
@@ -116,13 +127,10 @@ namespace Fuse
 			list.Insert(0,us);
 		}
 
-		public void AddDeferredAction( Action pu, IUpdateListener ul, int priority = 0 )
+		public void AddDeferredAction( Action pu, IUpdateListener ul, LayoutPriority priority = LayoutPriority.Layout)
 		{
-			Queue<UpdateAction> list;
-			if (!PhaseDeferredActions.TryGetValue(priority, out list))
-				PhaseDeferredActions.Add(priority, list = new Queue<UpdateAction>());
-			
-			list.Enqueue(new UpdateAction{ action = pu, update = ul });
+			var queue = PhaseDeferredActions[(int)priority];
+			queue.Enqueue(new UpdateAction{ action = pu, update = ul });
 		}
 	}
 
@@ -260,24 +268,24 @@ namespace Fuse
 			Be aware that binding a member function to `Action` involves allocating memory. If you
 			already have a suitable object use the `IUpdateListener` version instead.
 		*/
-		public static void AddDeferredAction(Action pu, UpdateStage stage = UpdateStage.None, int priority=0)
+		public static void AddDeferredAction(Action pu, UpdateStage stage = UpdateStage.None, LayoutPriority priority=LayoutPriority.Layout)
 		{
 			var use = stage != UpdateStage.None ? _stages[(int)stage] : CurrentDeferredActionStage;
 			use.AddDeferredAction(pu, null, priority);
 		}
 		
-		public static void AddDeferredAction(IUpdateListener pu, UpdateStage stage = UpdateStage.None, int priority=0)
+		public static void AddDeferredAction(IUpdateListener pu, UpdateStage stage = UpdateStage.None, LayoutPriority priority=LayoutPriority.Layout)
 		{
 			var use = stage != UpdateStage.None ? _stages[(int)stage] : CurrentDeferredActionStage;
 			use.AddDeferredAction(null, pu, priority);
 		}
 		
-		public static void AddDeferredAction(Action pu, int priority)
+		public static void AddDeferredAction(Action pu, LayoutPriority priority)
 		{
 			AddDeferredAction(pu, UpdateStage.None, priority);
 		}
 		
-		public static void AddDeferredAction(IUpdateListener pu, int priority)
+		public static void AddDeferredAction(IUpdateListener pu, LayoutPriority priority)
 		{
 			AddDeferredAction(pu, UpdateStage.None, priority);
 		}
@@ -401,11 +409,8 @@ namespace Fuse
 
 		static void ProcessDeferredActions(Stage stage, ref List<Exception> _exceptions)
 		{
-			for (var priority = stage.FirstPriority; priority != int.MaxValue; priority = stage.FirstPriority)
+			for (var a = stage.GetFirstPriorityAction(); a != null; a = stage.GetFirstPriorityAction())
 			{
-				var queue = stage.PhaseDeferredActions[priority];
-				var a = queue.Dequeue();
-
 				try
 				{
 					a.Invoke();

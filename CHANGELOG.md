@@ -26,6 +26,9 @@
 - Optimized UpdateManager dispatcher to deal better with high numbers of dispatches per frame (as when populating long lists).
 - Optimized how bounding boxes are calculated (improves layout and rendering performance).
 
+## UpdateManager changes (Uno-level)
+- Breaking change: Several entrypoints on UpdateManager now take a `LayoutPriority` enum instead of `int` as the `priority` argument. Very unlikely to affect user code code.
+
 # 1.2
 
 ## Image
