@@ -1,4 +1,5 @@
 using Uno;
+using Uno.Collections;
 using Uno.Compiler;
 using Uno.Testing;
 using Uno.UX;
@@ -9,8 +10,54 @@ using FuseTest;
 
 namespace Fuse.Test
 {
+	public class ZOrderTestPanel: Fuse.Controls.Panel
+	{
+		internal int InvalidatedCount;
+		protected override void OnZOrderInvalidated() 
+		{
+			InvalidatedCount++;
+		}
+	}
+
+	public class ZOrderTestChildPanel: Fuse.Controls.Panel
+	{
+		protected override void OnZOrderInvalidated() 
+		{
+			throw new Exception("This shouldn't happen");
+		}
+	}
+
 	public class VisualTest : TestBase
 	{
+		
+		[Test]
+		public void ZOrderChanged()
+		{
+			var p = new UX.ZOrderChanged();
+			using (var r = TestRootPanel.CreateWithChild(p))
+			{
+				Assert.AreEqual(3, p.InvalidatedCount);
+				p.toggle.Value = true;
+				r.StepFrame();
+				Assert.AreEqual(4, p.InvalidatedCount);
+
+				p.BringToFront(p.p3);
+				Assert.AreEqual(5, p.InvalidatedCount);
+				p.BringToFront(p.p3); // shouldn't fire the event, it's already in front
+				Assert.AreEqual(5, p.InvalidatedCount);
+
+				p.p1.ZOffset = 3;
+				Assert.AreEqual(6, p.InvalidatedCount);
+				p.p1.ZOffset = 3; // shouldn't fire the event, the same z-order
+				Assert.AreEqual(6, p.InvalidatedCount);
+
+				p.p2.Layer = Layer.Background;
+				Assert.AreEqual(7, p.InvalidatedCount);
+				p.p2.Layer = Layer.Background;
+				Assert.AreEqual(7, p.InvalidatedCount);
+			}
+		}
+
 		[Test]
 		public void IsFlat()
 		{

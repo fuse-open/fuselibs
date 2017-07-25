@@ -1,0 +1,7 @@
+<Fuse.Test.ZOrderTestPanel ux:Class="UX.ZOrderChanged">
+    <Fuse.Test.ZOrderTestChildPanel ux:Name="p1" />
+    <WhileTrue ux:Name="toggle">
+        <Fuse.Test.ZOrderTestChildPanel ux:Name="p2" />
+    </WhileTrue>
+    <Fuse.Test.ZOrderTestChildPanel ux:Name="p3" />
+</Fuse.Test.ZOrderTestPanel>
