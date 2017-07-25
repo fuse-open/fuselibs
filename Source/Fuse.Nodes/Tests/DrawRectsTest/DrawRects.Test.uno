@@ -238,6 +238,7 @@ namespace DrawRectsTest
 		}
 
 		[Test]
+		[Ignore("Needs macOS message pump", "OSX")]
 		public void VideoWithMarginDrawRectIsRendered()
 		{
 			var c = new global::UX.VideoWithMargin();
@@ -286,6 +287,7 @@ namespace DrawRectsTest
 		}
 
 		[Test]
+		[Ignore("Needs macOS message pump", "OSX")]
 		public void Scale9VideoWithMarginDrawRectIsRendered()
 		{
 			var c = new global::UX.Scale9VideoWithMargin();
