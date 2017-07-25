@@ -150,6 +150,7 @@ namespace Fuse.Elements
 				var lrb = elm.LocalRenderBounds;
 				if (lrb == VisualBounds.Empty) continue;
 				if (lrb == VisualBounds.Infinite) return VisualBounds.Infinite;
+				
 				var b = VisualBounds.BoxTransform((Box)lrb, elm.InternLocalTransformInternal);
 				if (!hasAnyBounds)
 				{
