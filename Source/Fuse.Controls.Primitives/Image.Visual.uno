@@ -157,7 +157,7 @@ namespace Fuse.Controls
 				TextureColor: prev * Color;
 			};
 
-			if (defined(FUSELIBS_DEBUG_DRAW_RECTS) && dc.RenderTarget == DrawRectVisualizer.RenderTarget)
+			if defined(FUSELIBS_DEBUG_DRAW_RECTS)
 				DrawRectVisualizer.Capture(offset, size, element.WorldTransform, dc);
 		}
 	}

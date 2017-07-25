@@ -52,7 +52,7 @@ namespace Fuse.Effects
 				PixelColor: float4(Math.Lerp(TextureColor.XYZ, float3(Luminance), Amount), TextureColor.W);
 			};
 
-			if (defined(FUSELIBS_DEBUG_DRAW_RECTS) && dc.RenderTarget == DrawRectVisualizer.RenderTarget)
+			if defined(FUSELIBS_DEBUG_DRAW_RECTS)
 				DrawRectVisualizer.Capture(elementRect.Minimum, elementRect.Size, Element.WorldTransform, dc);
 
 			FramebufferPool.Release(original);

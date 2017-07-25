@@ -109,7 +109,7 @@ namespace Fuse.Drawing.Primitives
 			};
 
 			// Circles don't actually draw as rectangles, but this is a good-enough-to-be-useful(-and-testable) approximation.
-			if (defined(FUSELIBS_DEBUG_DRAW_RECTS) && dc.RenderTarget == DrawRectVisualizer.RenderTarget)
+			if defined(FUSELIBS_DEBUG_DRAW_RECTS)
 			{
 				float2 elementPos = float2(0);
 				float2 elementSize = visual.ActualSize;

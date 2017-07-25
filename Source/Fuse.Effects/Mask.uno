@@ -151,7 +151,7 @@ namespace Fuse.Effects
 				break;
 			}
 
-			if (defined(FUSELIBS_DEBUG_DRAW_RECTS) && dc.RenderTarget == DrawRectVisualizer.RenderTarget)
+			if defined(FUSELIBS_DEBUG_DRAW_RECTS)
 				DrawRectVisualizer.Capture(elementRect.Minimum, elementRect.Size, Element.WorldTransform, dc);
 
 			FramebufferPool.Release(original);

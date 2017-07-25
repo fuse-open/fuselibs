@@ -371,7 +371,7 @@ namespace Fuse.Drawing.Primitives
 				Smoothness: smoothness;
 			};
 
-			if (defined(FUSELIBS_DEBUG_DRAW_RECTS) && dc.RenderTarget == DrawRectVisualizer.RenderTarget)
+			if defined(FUSELIBS_DEBUG_DRAW_RECTS)
 				DrawRectVisualizer.Capture(float2(0), local::Size, visual.WorldTransform, dc);
 		}
 	}

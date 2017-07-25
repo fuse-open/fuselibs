@@ -229,7 +229,7 @@ namespace Fuse.Controls
 				PixelColor: float4( prev.XYZ, prev.W * Opacity );
 			};
 
-			if (defined(FUSELIBS_DEBUG_DRAW_RECTS) && dc.RenderTarget == DrawRectVisualizer.RenderTarget)
+			if defined(FUSELIBS_DEBUG_DRAW_RECTS)
 			{
 				float2 position = renderBounds.AxisMin.XY * scale;
 				float2 size = renderBounds.Size.XY * scale;

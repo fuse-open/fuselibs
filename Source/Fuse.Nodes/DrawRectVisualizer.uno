@@ -82,6 +82,9 @@ namespace Fuse.Nodes
 
 		public static void Capture(float2 position, float2 size, float4x4 worldTransform, DrawContext dc)
 		{
+			if (dc.RenderTarget != DrawRectVisualizer.RenderTarget)
+				return;
+
 			float2[] drawRectInputVerts = new[]
 			{
 				float2(0, 0),

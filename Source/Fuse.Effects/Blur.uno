@@ -70,7 +70,7 @@ namespace Fuse.Effects
 				DepthTestEnabled: false;
 			};
 
-			if (defined(FUSELIBS_DEBUG_DRAW_RECTS) && dc.RenderTarget == DrawRectVisualizer.RenderTarget)
+			if defined(FUSELIBS_DEBUG_DRAW_RECTS)
 				DrawRectVisualizer.Capture(elementRect.Minimum - Padding, paddedRect.Size, Element.WorldTransform, dc);
 
 			FramebufferPool.Release(blur);

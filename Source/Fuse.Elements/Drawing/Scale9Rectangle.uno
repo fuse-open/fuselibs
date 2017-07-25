@@ -67,7 +67,7 @@ namespace Fuse.Elements.Internal
 				PixelColor: TextureColor * color;
 			};
 
-			if (defined(FUSELIBS_DEBUG_DRAW_RECTS) && dc.RenderTarget == DrawRectVisualizer.RenderTarget)
+			if defined(FUSELIBS_DEBUG_DRAW_RECTS)
 				DrawRectVisualizer.Capture(float2(0), size, element.WorldTransform, dc);
 		}
 	}

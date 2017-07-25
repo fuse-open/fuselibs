@@ -241,7 +241,7 @@ namespace Fuse.Elements
 					apply Fuse.Drawing.PreMultipliedAlphaCompositing;
 				};
 
-				if (defined(FUSELIBS_DEBUG_DRAW_RECTS) && dc.RenderTarget == DrawRectVisualizer.RenderTarget)
+				if defined(FUSELIBS_DEBUG_DRAW_RECTS)
 					DrawRectVisualizer.Capture(float2(0), float2(tile.Texture.Size.X, tile.Texture.Size.Y), tile._compositMatrix, dc);
 			}
 		}
