@@ -10,45 +10,43 @@ namespace Fuse
 
 		public bool HasVisualChildren { get { return _zOrder != null && _zOrder.Count > 0; } }
 
+		[Obsolete("Use FirstChild<Visual>() instead")]
 		public Visual FirstVisualChild
 		{ 
 			get
 			{
-				if (!HasVisualChildren) return null;
-
 				return FirstChild<Visual>();
 			}
 		}
 
+		/** Returns the visual child with the given index. 
+		
+			For performance reasons, avoid using this function. 
+		*/
+		[Obsolete("Deprecated for performance reasons. Iterate over collection manually instead.")]
 		public Visual GetVisualChild(int index)
 		{
-			if (!HasVisualChildren) return null;
-
-			int x = 0;
-			for (int i = 0; i < Children.Count; i++)
+			var c = _firstChild;
+			int i = 0;
+			while (c != null)
 			{
-				var c = Children[i] as Visual;
-				if (c != null) 
+				var v = c as Visual;
+				if (v != null)
 				{
-					if (x == index) return c;
-					x++;
+					if (i == index) return v;
+					i++;
 				}
+				c = c._nextSibling;
 			}
 			return null;
 		}
 
+		[Obsolete("Use LastChild<Visual>() instead")]
 		public Visual LastVisualChild
 		{ 
 			get
 			{
-				if (!HasVisualChildren) return null;
-
-				for (int i = Children.Count; i --> 0;)
-				{
-					var c = Children[i] as Visual;
-					if (c != null) return c;
-				}
-				return null;
+				return LastChild<Visual>();
 			}
 		}
 
@@ -132,7 +130,7 @@ namespace Fuse
 			return a.ZOffsetNatural - b.ZOffsetNatural;
 		}
 
-		static void AssignZOrder( IList<Node> nodes )
+		void AssignZOrder( )
 		{
 			var current = new int[]
 			{
@@ -142,15 +140,12 @@ namespace Fuse
 				0  // Layer.Overlay
 			};
 
-			for (int i = 0; i < nodes.Count; i++)
+			for (var visual = FirstChild<Visual>(); visual != null; visual = visual.NextSibling<Visual>())
 			{
-				var visual = nodes[i] as Visual;
-				if (visual == null) continue;
-				
-				int c = (int)visual.Layer;
-				visual.ZLayer = c;
+				int z = (int)visual.Layer;
+				visual.ZLayer = z;
 				if (!visual.ZOffsetFixed)
-					visual.ZOffsetNatural = current[c]--;
+					visual.ZOffsetNatural = current[z]--;
 			}
 		}
 		
@@ -179,7 +174,7 @@ namespace Fuse
 		{
 			if (!_nodeZOrders)
 			{
-				AssignZOrder(Children);
+				AssignZOrder();
 				_nodeZOrders = true;
 			}
 		}

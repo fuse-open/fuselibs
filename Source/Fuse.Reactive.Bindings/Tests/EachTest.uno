@@ -8,6 +8,24 @@ using FuseTest;
 
 namespace Fuse.Reactive.Test
 {
+	// This is here because a test depends on an obsolete entrypoint
+	// Visual.GetVisualChild
+	static class VisualExtensions
+	{
+		public static Visual GetVisualChildImpl(this Visual parent, int index)
+		{
+			var c = parent.FirstChild<Visual>();
+			int i = 0;
+			while (c != null)
+			{
+				if (i == index) return c;
+				i++;
+				c = c.NextSibling<Visual>();
+			}
+			return null;
+		}
+	}
+
 	public class EachTest : TestBase
 	{
 		[Test]
@@ -41,7 +59,7 @@ namespace Fuse.Reactive.Test
 			{
 				root.StepFrameJS();
 				Assert.AreEqual(30,e.C1.ZOrderChildCount);
-				Assert.AreEqual("5", (e.C1.GetVisualChild(5) as Text).Value);
+				Assert.AreEqual("5", (e.C1.GetVisualChildImpl(5) as Text).Value);
 
 				//do in a loop to try and catch a few race conditions
 				int baseCount = 30;
@@ -51,7 +69,7 @@ namespace Fuse.Reactive.Test
 					e.CallAdd.Perform();
 					root.StepFrameJS();
 					Assert.AreEqual(baseCount+1,e.C1.ZOrderChildCount);
-					Assert.AreEqual("" + (step+5), (e.C1.GetVisualChild(5) as Text).Value);
+					Assert.AreEqual("" + (step+5), (e.C1.GetVisualChildImpl(5) as Text).Value);
 					
 					e.CallRemove.Perform();
 					root.StepFrameJS();
@@ -85,10 +103,10 @@ namespace Fuse.Reactive.Test
 				root.StepFrameJS();
 				
 				Assert.AreEqual(4,e.C1.ZOrderChildCount);
-				Assert.AreEqual(e.C2, e.C1.GetVisualChild(0));
-				Assert.AreEqual(new Selector("Q0"), e.C1.GetVisualChild(1).Name);
-				Assert.AreEqual(new Selector("Q1"), e.C1.GetVisualChild(2).Name);
-				Assert.AreEqual(e.C3, e.C1.GetVisualChild(3));
+				Assert.AreEqual(e.C2, e.C1.GetVisualChildImpl(0));
+				Assert.AreEqual(new Selector("Q0"), e.C1.GetVisualChildImpl(1).Name);
+				Assert.AreEqual(new Selector("Q1"), e.C1.GetVisualChildImpl(2).Name);
+				Assert.AreEqual(e.C3, e.C1.GetVisualChildImpl(3));
 				
 				e.CallRemove.Perform();
 				e.CallRemove.Perform();
@@ -98,9 +116,9 @@ namespace Fuse.Reactive.Test
 				e.CallAdd.Perform();
 				root.StepFrameJS();
 				Assert.AreEqual(3,e.C1.ZOrderChildCount);
-				Assert.AreEqual(e.C2, e.C1.GetVisualChild(0));
-				Assert.AreEqual(new Selector("Q2"), e.C1.GetVisualChild(1).Name);
-				Assert.AreEqual(e.C3, e.C1.GetVisualChild(2));
+				Assert.AreEqual(e.C2, e.C1.GetVisualChildImpl(0));
+				Assert.AreEqual(new Selector("Q2"), e.C1.GetVisualChildImpl(1).Name);
+				Assert.AreEqual(e.C3, e.C1.GetVisualChildImpl(2));
 			}
 		}
 		

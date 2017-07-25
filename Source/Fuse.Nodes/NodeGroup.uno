@@ -173,14 +173,6 @@ namespace Fuse
 			if (NodeCount == 0 && _templates.Count == 0)
 				return;
 				
-			//add after the location of `this` in Parent
-			int where = Parent.Children.IndexOf(this);
-			if (where == -1)
-			{
-				Fuse.Diagnostics.InternalError( "Could not locate node in parent, content not added", this );
-				return;
-			}
-
 			int addedNodesCount = NodeCount + (_useTemplates ? _templates.Count : 0);
 			_addedNodes = new Node[addedNodesCount];
 			int addedNodesAt = 0;
@@ -210,7 +202,7 @@ namespace Fuse
 			if (addedNodesAt != addedNodesCount)	
 				throw new Exception( "mismatch in added nodes" );
 				
-			Parent.InsertNodes( where, ((IEnumerable<Node>)_addedNodes).GetEnumerator() );
+			Parent.InsertNodesAfter( this, ((IEnumerable<Node>)_addedNodes).GetEnumerator() );
 		}
 
 		void RemoveContent()

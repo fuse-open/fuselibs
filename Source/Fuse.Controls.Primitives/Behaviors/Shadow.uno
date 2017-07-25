@@ -179,7 +179,7 @@ namespace Fuse.Controls
 					_rectangleTranslation.XY = Offset;
 					_rectangle.Children.Add(_rectangleTranslation);
 
-					_elementParent.Children.Insert(_elementParent.Children.IndexOf(this) + 1, _rectangle);
+					_elementParent.InsertAfter(this, _rectangle);
 					break;
 
 				case ShadowMode.PerPixel:
@@ -193,7 +193,7 @@ namespace Fuse.Controls
 						Angle = _angle,
 						Distance = _distance
 					};
-					_elementParent.Children.Insert(_elementParent.Children.IndexOf(this) + 1, _dropShadow);
+					_elementParent.InsertAfter(this, _dropShadow);
 					break;
 			}
 		}

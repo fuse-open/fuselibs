@@ -110,9 +110,12 @@ namespace Fuse.Controls.Test
 				panelToTest.SnapToPixels = false;
 				LayoutTestHelper.TestElementLayout(root, panelToTest, int2(420,80), float2(100, 71),
 					float2(420 - 100 - 21.4f, 5.3f));
+
+				root.Children.Remove(parent);
 			}
 
 			panelToTest.SnapToPixels = true;
+
 
 			var screenDensity = 2f;
 			using (var root = new TestRootPanel(false, screenDensity))
@@ -122,6 +125,8 @@ namespace Fuse.Controls.Test
 				LayoutTestHelper.TestElementLayout(root, panelToTest, int2(800,600),
 					root.SnapToPixelsSize(float2(100, 71)), float2(800 - 100 - root.SnapToPixelsPos(21.4f),
 					root.SnapToPixelsPos(5.3f)));
+
+				root.Children.Remove(parent);
 			}
 
 			screenDensity = 0.75f;
@@ -133,6 +138,8 @@ namespace Fuse.Controls.Test
 				LayoutTestHelper.TestElementLayout(root, panelToTest, int2(600,600), 
 					root.SnapToPixelsSize(float2(100, 71)) , float2(600 - 100 - root.SnapToPixelsPos(21.4f),
 					root.SnapToPixelsPos(5.3f)), 0.0001f);
+
+				root.Children.Remove(parent);
 			}
 
 			screenDensity = 1.4f;
@@ -146,6 +153,8 @@ namespace Fuse.Controls.Test
 
 				panelToTest.SnapToPixels = false;
 				parent.Children.Clear();
+
+				root.Children.Remove(parent);
 			}
 		}
 

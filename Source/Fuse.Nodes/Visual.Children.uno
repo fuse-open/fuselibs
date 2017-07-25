@@ -18,36 +18,56 @@ namespace Fuse
 	*/
 	public partial class Visual
 	{
-		public bool HasChildren { get { return _children.Count > 0; } }
+		public bool HasChildren { get { return ChildCount > 0; } }
 
 		protected override void SubtreeToString(StringBuilder sb, int indent)
 		{
 			base.SubtreeToString(sb, indent);
-			for (int i = 0; i < Children.Count; i++)
-				Children[i].SubtreeToString(sb, indent+1);
+			for (var c = FirstChild<Node>(); c != null; c = c.NextSibling<Node>())
+				c.SubtreeToString(sb, indent+1);
 		}
 
+		/** Returns the first child node of the given type. 
+			
+			To get the very first child node (of any type), use `FirstChild<Node>()`.
+		*/
 		public T FirstChild<T>() where T: Node
 		{
-			for (var i = 0; i < Children.Count; ++i)
+			var c = _firstChild;
+			while (c != null)
 			{
-				var c = Children[i] as T;
-				if (c != null)
-					return c;
+				var v = c as T;
+				if (v != null) return v;
+				c = c._nextSibling;
 			}
 			return null;
 		}
 
-		public void RemoveAllChildren<T>()
-		{
-			var i = Children.Count - 1;
-			while (i >= 0)
-			{
-				if (Children[i] is T)
-					Children.RemoveAt(i);
+		/** Returns the last child node of the given type. 
 
-				i = Math.Min(i, Children.Count) - 1;
+			To get the very last child node (of any type), use `LastChild<Node>()`.
+		*/
+		public T LastChild<T>() where T: Node
+		{
+			var c = _lastChild;
+			while (c != null)
+			{
+				var v = c as T;
+				if (v != null) return v;
+				c = (Node)c._previousSibling;
 			}
+			return null;
+		}
+
+		/** Removes all children of the given type. 
+			
+			To remove all children (of all types), use `RemoveAllChildren<Node>()`.
+		*/
+		public void RemoveAllChildren<T>() where T: Node
+		{
+			// Has to use use safe iterator, ref discussion on https://github.com/fusetools/fuselibs-public/pull/260
+			foreach (var c in Children) 
+				if (c is T) Children_Remove(c);
 		}
 
 		[UXPrimary]
@@ -66,9 +86,8 @@ namespace Fuse
 		{
 			if (_observerCount != 0 && IsRootingStarted)
 			{
-				for (int i = 0; i < Children.Count; i++)
+				for (var n = FirstChild<Node>(); n != null; n = n.NextSibling<Node>())
 				{
-					var n = Children[i];
 					var obs = n as IParentObserver;
 					if (obs != null && n.IsRootingCompleted)
 						obs.OnChildAddedWhileRooted(elm);
@@ -82,9 +101,8 @@ namespace Fuse
 		{
 			if (_observerCount != 0 && IsRootingStarted)
 			{
-				for (int i = 0; i < Children.Count; i++)
+				for (var n = FirstChild<Node>(); n != null; n = n.NextSibling<Node>())
 				{
-					var n = Children[i];
 					var obs = n as IParentObserver;
 					if (obs != null && n.IsRootingCompleted) 
 						obs.OnChildRemovedWhileRooted(elm);
@@ -98,9 +116,8 @@ namespace Fuse
 		{
 			if (_observerCount != 0 && IsRootingStarted)
 			{
-				for (int i = 0; i < Children.Count; i++)
+				for (var n = FirstChild<Node>(); n != null; n = n.NextSibling<Node>())
 				{
-					var n = Children[i];
 					var obs = n as IParentObserver;
 					if (obs != null && n.IsRootingCompleted) 
 						obs.OnChildMovedWhileRooted(elm);
@@ -108,8 +125,6 @@ namespace Fuse
 			}
 		}
 		
-		MiniList<Node> _children;
-
 		void OnAdded(Node b)
 		{
 			var v = b as Visual;
@@ -167,19 +182,21 @@ namespace Fuse
 
 		void ICollection<Node>.Clear()
 		{
-			foreach (var child in _children)
-				OnRemoved(child);
-			_children.Clear();
+			for (var c = _firstChild; c != null; c = c._nextSibling)
+				OnRemoved(c);
+			Children_Clear();
 		}
 
 		public void Add(Node item)
 		{
-			Insert(Children.Count, item);
+			InsertCleanup(item);
+			Children_Add(item);
+			OnAdded(item);
 		}
 
 		public bool Remove(Node item)
 		{
-			if (_children.Remove(item))
+			if (Children_Remove(item))
 			{
 				OnRemoved(item);
 				return true;
@@ -188,27 +205,35 @@ namespace Fuse
 			return false;
 		}
 
+		/** Inserts a child node after the given sibling node.
+			
+			For performance reasons, this entrypoint is recommended over using `InsertAt`.
+
+			To insert at the beginning of the list, use `null` as the first argument.
+		*/
+		public void InsertAfter(Node sibling, Node node)
+		{
+			InsertCleanup(node);
+			Children_InsertAfter(sibling, node);
+			OnAdded(node);
+		}
+
 		bool ICollection<Node>.Contains(Node item)
 		{
-			return _children.Contains(item);
+			return Children_Contains(item);
 		}
 		
 		int IndexOf(Node item)
 		{
-			for (int i=0; i < _children.Count; ++i)
-			{
-				if (_children[i] == item)
-					return i;
-			}
-			return -1;
+			return Children_IndexOf(item);
 		}
 
-		int ICollection<Node>.Count { get { return _children.Count; } }
+		int ICollection<Node>.Count { get { return ChildCount; } }
 
 		public void Insert(int index, Node item)
 		{
 			InsertCleanup(item);
-			_children.Insert(index, item);
+			Children_Insert(index, item);
 			OnAdded(item);
 		}
 
@@ -219,27 +244,27 @@ namespace Fuse
 		}
 
 		/**
-			Inserts several nodes at the index. This ensures they are all added befor starting 
+			Inserts several nodes at the location. This ensures they are all added befor starting 
 			any rooting behaviouir, thus guaranteeing they are inerted in consecutive order
 			in the Children list (something that calling `Insert` in sequence cannot do, as
 			rooting a child could introduce new children).
 		*/
-		internal void InsertNodes(int index, IEnumerator<Node> items)
+		internal void InsertNodesAfter(Node preceeder, IEnumerator<Node> items)
 		{
-			InsertNodesImpl(index, items, false);
+			InsertNodesAfterImpl(preceeder, items, false);
 		}
 
-		internal void InsertOrMoveNodes(int index, IEnumerator<Node> items)
+		internal void InsertOrMoveNodesAfter(Node preceeder, IEnumerator<Node> items)
 		{
-			InsertNodesImpl(index, items, true);
+			InsertNodesAfterImpl(preceeder, items, true);
 		}
 		
 		
-		void InsertNodesImpl(int index, IEnumerator<Node> items, bool allowMove)
+		void InsertNodesAfterImpl(Node preceeder, IEnumerator<Node> items, bool allowMove)
 		{
-			if (index <0 || index > Children.Count)
-				throw new ArgumentOutOfRangeException("index");
-			
+			if (!Children_Contains(preceeder)) 
+				throw new Exception("Cannot insert nodes after a node that is not a child of this parent");
+
 			//cleanup all nodes first
 			while (items.MoveNext())
 				InsertCleanup( items.Current );
@@ -258,18 +283,16 @@ namespace Fuse
 					var c = items.Current;
 					if (allowMove)
 					{
-						var where = IndexOf(c);
-						if (where != -1)
+						if (Children_Contains(c))
 						{
-							_children.RemoveAt(where);
-							if (where < index)
-								index--;
+							Children_Remove(c);
 							if (moved == null)
 								moved = new HashSet<Node>();
 							moved.Add(c);
 						}
 					}
-					_children.Insert(index++, c);
+					Children_InsertAfter(preceeder, c);
+					preceeder = c;
 				}
 
 				//then process them
@@ -291,13 +314,13 @@ namespace Fuse
 
 		void IList<Node>.RemoveAt(int index)
 		{
-			var b = _children[index];
-			_children.RemoveAt(index);
+			var b = Children[index];
+			Children_Remove(b);
 			OnRemoved(b);
 		}
 
-		Node IList<Node>.this[int index] { get { return _children[index]; } }
+		Node IList<Node>.this[int index] { get { return Children_ItemAt(index); } }
 
-		IEnumerator<Node> IEnumerable<Node>.GetEnumerator() { return _children.GetEnumerator(); }
+		IEnumerator<Node> IEnumerable<Node>.GetEnumerator() { return Children_GetEnumerator(); }
 	}
 }

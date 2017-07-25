@@ -240,9 +240,6 @@ namespace Fuse.Reactive
 		{
 			if (c != null)
 			{
-				//if IndexOf returns -1, for some odd reason, then we'll insert at 0
-				int childIndex = Parent.Children.IndexOf(this) + 1;
-				
 				foreach (var f in c.Factories)
 				{
 					var elm = f.New() as Node;
@@ -254,7 +251,7 @@ namespace Fuse.Reactive
 
 				}
 				
-				Parent.InsertNodes(childIndex, _elements.GetEnumerator());
+				Parent.InsertNodesAfter(this, _elements.GetEnumerator());
 			}
 			_oldCase = c;
 		}

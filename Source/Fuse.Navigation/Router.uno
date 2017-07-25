@@ -558,9 +558,9 @@ namespace Fuse.Navigation
 				if (HasOtherRouter(v))
 					return null;
 				
-				for (int i = 0; i < v.Children.Count; i++)
+				for (var ue = v.FirstChild<Node>(); ue != null; ue = ue.NextSibling<Node>())
 				{
-					ro = FindOutletDown(v.Children[i]);
+					ro = FindOutletDown(ue);
 					if (ro != null) return ro;
 				}
 			}

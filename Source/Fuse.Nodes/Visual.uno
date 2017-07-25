@@ -100,13 +100,9 @@ namespace Fuse
 
 			if (HasChildren)
 			{
-				// iterate over a copy of the list to prevent problems when
-				// behaviors add/remove childen during rooting
-				using (var iter = _children.GetEnumeratorVersionedStruct())
-				{
-					while (iter.MoveNext())
-						iter.Current.RootInternal(this);
-				}
+				// Use the IEnumerable<Node> implementation here, as this correctly deals
+				// with the list being manipulated during rooting/unrooting
+				foreach (var c in Children) c.RootInternal(this);
 			}
 
 			//this forces an invalidation now that we're rooted (ensures no old stale value is there)
@@ -137,13 +133,9 @@ namespace Fuse
 
 			if (HasChildren)
 			{
-				// iterate over a copy of the list to prevent problems when
-				// behaviors add/remove childen during rooting
-				using (var iter = _children.GetEnumeratorVersionedStruct())
-				{
-					while (iter.MoveNext())
-						iter.Current.UnrootInternal();
-				}
+				// Use the IEnumerable<Node> implementation here, as this correctly deals
+				// with the list being manipulated during rooting/unrooting
+				foreach (var c in Children) c.UnrootInternal();
 			}
 
 			WTIUnrooted();
@@ -154,8 +146,8 @@ namespace Fuse
 		public override void VisitSubtree(Action<Node> action)
 		{
 			action(this);
-			for (int i = 0; i < Children.Count; i++) 
-				Children[i].VisitSubtree(action);
+			for (var n = FirstChild<Node>(); n != null; n = n.NextSibling<Node>())
+				n.VisitSubtree(action);
 		}
 
 		/**

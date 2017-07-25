@@ -7,6 +7,10 @@
 
 ## ScrollView
 - Added minimal support to WhileVisibleInScrollView for changes in Element layout updating the status
+## Optimizations for long list of elements
+- Several low-level optimizations that speeds up scenarios with long lists (e.g. scrollviews). Here are the Uno-level details:
+ * Optimized the implementation of the `Visual.Children` collection to be an implicitly linked list. This avoids all memory allocation and shifting in connection with inserting and removing nodes from a parent, and ensures a `O(1)` cost for all child list manipulations.
+ * Introduced new public API: `Node.NextSibling<T>()` and `Node.PreviousSibling<T>()`, which can be together with `Visual.FirstChild<T>()` and `Visual.LastChild<T>()`. The recommended way of iterating over the children of a `Visual` is now `for (var c = parent.FirstChild<Visual>(); c != null; c = c.NextSibling<Visual>())` where `Visual` can be replaced with the desired node type to visit.
 
 ## Fuse.Drawing.Surface
 - Added support for the Surface API in native UI for iOS. Meaning that `Curve`, `VectorLayer` and charting will work inside a `NativeViewHost`.

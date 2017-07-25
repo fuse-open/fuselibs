@@ -329,11 +329,9 @@ namespace Fuse
 			if (newValue != SnapToPixels)
 			{
 				SetBit(FastProperty1.ContextSnapToPixelsCache, newValue);
-				for (int i = 0; i < Children.Count; i++)
-				{
-					var v = Children[i] as Visual;
-					if (v != null) v.UpdateContextSnapToPixelsCache();
-				}	
+
+				for (var v = FirstChild<Visual>(); v != null; v = v.NextSibling<Visual>())
+					v.UpdateContextSnapToPixelsCache();
 			}
 		}
 	
@@ -387,11 +385,8 @@ namespace Fuse
 					break;
 					
 				case InvalidateLayoutReason.ChildChanged:
-					for (int i = 0; i < Children.Count; i++)
-					{
-						var v = Children[i] as Visual;
-						if (v != null) v.UpdateLayout();
-					}
+					for (var v = FirstChild<Visual>(); v != null; v = v.NextSibling<Visual>())
+						v.UpdateLayout();
 					break;
 					
 				case InvalidateLayoutReason.MarginBoxChanged:

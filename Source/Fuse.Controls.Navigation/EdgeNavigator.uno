@@ -144,11 +144,8 @@ namespace Fuse.Controls
 		
 		void GotoEdge(NavigationEdge edge)
 		{
-			for (int i=0; i < Children.Count; ++i)
+			for (var elm = FirstChild<Visual>(); elm != null; elm = elm.NextSibling<Visual>())
 			{
-				var elm = Children[i] as Visual;
-				if (elm == null)
-					continue;
 				var e = EdgeNavigation.GetEdge(elm);
 				if (e != edge)
 					continue;

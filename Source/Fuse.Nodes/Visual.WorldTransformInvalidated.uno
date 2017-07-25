@@ -43,11 +43,8 @@ namespace Fuse
 
 			if (_wtiListeners > 0) 
 			{
-				for (var i = 0; i < Children.Count; i++)
-				{
-					var v = Children[i] as Visual;
-					if (v != null) v.InvalidateWorldTransform();
-				}
+				for (var v = FirstChild<Visual>(); v != null; v = v.NextSibling<Visual>())
+					v.InvalidateWorldTransform();
 			}
 		}
 

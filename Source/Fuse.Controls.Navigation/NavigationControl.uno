@@ -113,11 +113,8 @@ namespace Fuse.Controls
 			//defer first update to rooted, to avoid creating/deleting unused Swipe behavior if None
 			UpdateInteraction();
 			
-			for (int i=0; i < Children.Count; ++i)
-			{
-				var c = Children[i] as Element;
-				if (c != null) UpdateChild(c);
-			}
+			for (var c = FirstChild<Element>(); c != null; c = c.NextSibling<Element>())
+				UpdateChild(c);
 			
 			Navigation.PageProgressChanged += OnPageProgressChanged;
 		}
@@ -167,11 +164,8 @@ namespace Fuse.Controls
 			
 			Navigation.PageProgressChanged -= OnPageProgressChanged;
 			
-			for (int i=0; i < Children.Count; ++i)
+			for (var c = FirstChild<Element>(); c != null; c = c.NextSibling<Element>())
 			{
-				var c = Children[i] as Element;
-				if (c == null) continue;
-
 				var pd = GetPageData(c,false);
 				if (pd == null)
 					continue;

@@ -388,10 +388,9 @@ namespace Fuse.Controls
 		
 		Visual FindPage(Selector path)
 		{
-			for (int i=0; i < Children.Count; ++i)
+			for (var c = FirstChild<Visual>(); c != null; c = c.NextSibling<Visual>())
 			{
-				var c = Children[i] as Visual;
-				if (c == null || c.Name != path)
+				if (c.Name != path)
 					continue;
 					
 				if (GetPageData(c).FromTemplate)
@@ -620,10 +619,9 @@ namespace Fuse.Controls
 		
 		void CleanupChildren(Visual exclude = null)
 		{
-			for (int i=Children.Count-1; i >= 0; --i)
+			for (var c = LastChild<Visual>(); c != null; c = c.PreviousSibling<Visual>())
 			{
-				var c = Children[i] as Visual;
-				if (c != null && Fuse.Navigation.Navigation.IsPage(c) && c != exclude)
+				if (Fuse.Navigation.Navigation.IsPage(c) && c != exclude)
 				{
 					if (IsRemoveLevel(c, RemoveType.Cleared) || GetReuse(c) == ReuseType.None)
 						BeginRemoveChild(c);

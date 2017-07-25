@@ -112,10 +112,9 @@ namespace Fuse.Controls
 			var relAnchor = AlignmentHelpers.GetAnchor(_contentAlignment);
 			var anchor = relAnchor * ActualSize;
 			
-			for (int i=0; i < Element.Children.Count; ++i)
+			for (var c = Element.FirstChild<Element>(); c != null; c = c.NextSibling<Element>())
 			{
-				var c = Element.Children[i] as Element;
-				if (c == null || !c.HasMarginBox || c.LayoutRole != LayoutRole.Standard)
+				if (!c.HasMarginBox || c.LayoutRole != LayoutRole.Standard)
 					continue;
 					
 				var cAnchor = Content.ActualPosition - ScrollPosition + c.ActualPosition + c.ActualSize * relAnchor;

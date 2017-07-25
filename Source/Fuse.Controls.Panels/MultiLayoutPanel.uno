@@ -23,9 +23,8 @@ namespace Fuse.Controls
 				return;
 
 			// Avoid changing layout on inner multi layout panels
-			for (int i = 0; i < layoutRoot.Children.Count; i++)
-				if (layoutRoot.Children[i] is MultiLayout)
-					return;
+			if (layoutRoot.FirstChild<MultiLayout>() != null)
+				return;
 
 			if (layoutRoot is Placeholder)
 			{
