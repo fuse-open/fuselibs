@@ -129,6 +129,7 @@ namespace Fuse
 			}
 			else
 			{
+				Unroot(BindingList[index]);
 				BindingList.RemoveAt(index);
 			}
 		}
