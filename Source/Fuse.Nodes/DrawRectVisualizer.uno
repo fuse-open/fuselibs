@@ -14,15 +14,13 @@ namespace Fuse.Nodes
 		+--+
 		A  B
 
-		We use world-space coords in order to easily be able to plot the drawn rects back on the screen,
-		regardless of whether or not the original draws they represent were targeting a framebuffer, the
-		backbuffer, etc. This may miss any viewport-related transforms that were applied to the rectangle,
-		but it seems that at least for the most part the stuff we do with fuselibs won't behave very
-		unpredictably.
+		We use world-space coords in order to easily be able to plot the drawn rects back on the screen.
+		This may miss any viewport-related transforms that were applied to the rectangle, but it seems
+		that at least for the most part the stuff we do with fuselibs won't behave very unpredictably.
 
 		It's probably sufficient to store just top/left and width/height for the draw rects, but in order
 		to mimic the vertex transformation pipeline as accurately as possible and allow for world space
-		transformations that result in a non-rectangular result, we store each of the 4 vertices of the
+		transformations that result in a non-rectangular shape, we store each of the 4 vertices of the
 		rectangle. In the future it will probably make sense to compare the DrawRects for a given frame
 		to determine which ones overlap to measure actual overdraw; this should be possible with this
 		configuration, even though it won't be as convenient as comparing simple rectangles necessarily.
