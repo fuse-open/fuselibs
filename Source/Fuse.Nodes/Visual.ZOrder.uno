@@ -34,20 +34,24 @@ namespace Fuse
 		}
 
 		int _naturalZOrder;
+		bool _zOrderFixed;
 
 		/** Brings the given child to the front of the Z-order. 
 			In UX markup, use the @BringToFront trigger action instead.
 		*/
 		public void BringToFront(Visual item)
 		{
+			ComputeZOrder(); // ensures _naturalZOrder is up to date
+
 			var maxNaturalZOrder = int.MinValue;
 			for (var v = FirstChild<Visual>(); v != null; v = v.NextSibling<Visual>())
-				if (v != item && v._naturalZOrder > maxNaturalZOrder) 
+				if (v != item && v.Layer == item.Layer && v._naturalZOrder > maxNaturalZOrder) 
 					maxNaturalZOrder = v._naturalZOrder;
 			
-			if (maxNaturalZOrder != int.MinValue && maxNaturalZOrder+1 != _naturalZOrder)
+			if (maxNaturalZOrder != int.MinValue && maxNaturalZOrder+1 != item._naturalZOrder)
 			{
-				_naturalZOrder = maxNaturalZOrder+1;
+				item._naturalZOrder = maxNaturalZOrder+1;
+				item._zOrderFixed = true;
 				InvalidateZOrder();
 			}
 		}
@@ -57,13 +61,16 @@ namespace Fuse
 		*/
 		public void SendToBack(Visual item)
 		{
+			ComputeZOrder(); // ensures _naturalZOrder is up to date
+
 			var minNaturalZOrder = int.MaxValue;
 			for (var v = FirstChild<Visual>(); v != null; v = v.NextSibling<Visual>())
-				if (v != item && v._naturalZOrder < minNaturalZOrder) minNaturalZOrder = v._naturalZOrder;
+				if (v != item && v.Layer == item.Layer && v._naturalZOrder < minNaturalZOrder) minNaturalZOrder = v._naturalZOrder;
 			
-			if (minNaturalZOrder != int.MaxValue && minNaturalZOrder-1 != _naturalZOrder)
+			if (minNaturalZOrder != int.MaxValue && minNaturalZOrder-1 != item._naturalZOrder)
 			{
-				_naturalZOrder = minNaturalZOrder-1;
+				item._naturalZOrder = minNaturalZOrder-1;
+				item._zOrderFixed = true;
 				InvalidateZOrder();
 			}
 		}
@@ -93,12 +100,16 @@ namespace Fuse
 			{
 				zOrder[i] = v;
 				if (v.ZOffset != 0) needsSorting = true;
+				if (v._zOrderFixed) needsSorting = true;
 				if (!hasLayer) { layer = v.Layer; hasLayer = true; }
 				else if (v.Layer != layer) needsSorting = true;
 			}
 
 			if (needsSorting)
 				Array.Sort(zOrder, ZOrderComparator);
+
+			for (var n = 0; n < zOrder.Length; n++)
+				if (!zOrder[n]._zOrderFixed) zOrder[n]._naturalZOrder = -i;
 
 			return zOrder;
 		}
