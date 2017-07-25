@@ -76,8 +76,13 @@ namespace Fuse
 			OnZOrderInvalidated();
 		}
 
+		static Visual[] _emptyVisuals = new Visual[0];
+
 		Visual[] ComputeZOrder()
 		{
+			if (_visualChildCount == 0) return _emptyVisuals;
+			if (_visualChildCount == 1) return new Visual[1] { FirstChild<Visual>() };
+
 			var zOrder = new Visual[_visualChildCount];
 
 			bool needsSorting = false;
