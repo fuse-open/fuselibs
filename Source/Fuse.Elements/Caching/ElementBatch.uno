@@ -142,10 +142,33 @@ namespace Fuse.Elements
 
 		VisualBounds CalcRenderBounds()
 		{
-			var rect = VisualBounds.Empty;
-			for (int i = 0; i < _elements.Count; i++)
-				rect = rect.Merge(_elements[i]._elm.CalcRenderBoundsInParentSpace());
-			return rect;
+			bool hasAnyBounds = false;
+			Box box = new Box(float3(0), float3(0));
+			for (var i = 0; i < _elements.Count; i++)
+			{
+				var elm = _elements[0]._elm;
+				var lrb = elm.LocalRenderBounds;
+				if (lrb == VisualBounds.Empty) continue;
+				if (lrb == VisualBounds.Infinite) return VisualBounds.Infinite;
+				if (!hasAnyBounds)
+				{
+					box = lrb;
+					hasAnyBounds = true;
+				}
+				else
+				{
+					var b = VisualBounds.BoxTransform((Box)lrb, elm.InternLocalTransformInternal);
+					if (b.Minimum.X < box.Minimum.X) box.Minimum.X = b.Minimum.X;
+					if (b.Minimum.Y < box.Minimum.Y) box.Minimum.Y = b.Minimum.Y;
+					if (b.Minimum.Z < box.Minimum.Z) box.Minimum.Z = b.Minimum.Z;
+					if (b.Maximum.X > box.Maximum.X) box.Maximum.X = b.Maximum.X;
+					if (b.Maximum.Y > box.Maximum.Y) box.Maximum.Y = b.Maximum.Y;
+					if (b.Maximum.Z > box.Maximum.Z) box.Maximum.Z = b.Maximum.Z;
+				}
+			}
+			
+			if (!hasAnyBounds) return VisualBounds.Empty;
+			else return VisualBounds.Box(box);
 		}
 
 		VisualBounds _renderBounds;
@@ -173,7 +196,10 @@ namespace Fuse.Elements
 			_indexBufferValid = false;
 			_vertexPositionBufferValid = false;
 			_vertexTexCoordBufferValid = false;
-			_renderBounds = null;
+			if (_renderBounds != null)
+				_renderBounds = _renderBounds.Merge(elm.CalcRenderBoundsInParentSpace());
+			else
+				_renderBounds = elm.CalcRenderBoundsInParentSpace();
 		}
 
 		public void RemoveElement(Element elm)
