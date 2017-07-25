@@ -60,9 +60,9 @@ namespace Fuse
 		{
 			if (HasVisualChildren)
 			{
-				EnsureSortedZOrder();
-				for (int i = ZOrder.Count-1; i >=0; --i)
-					ZOrder[i].HitTest(htc);
+				var zOrder = GetCachedZOrder();
+				for (var i = zOrder.Length; i --> 0;)
+					zOrder[i].HitTest(htc);
 			}
 		}
 		
