@@ -417,9 +417,9 @@ namespace Fuse
 		protected virtual float2 OnArrangeMarginBox(float2 position, LayoutParams lp)
 		{
 			var sz = float2(0);
-			for (int i=0; i < ZOrderChildCount; ++i)
+			for (var v = FirstChild<Visual>(); v != null; v = v.NextSibling<Visual>())
 			{
-				var msz = GetZOrderChild(i).ArrangeMarginBox(position, lp);
+				var msz = v.ArrangeMarginBox(position, lp);
 				sz = Math.Max(sz,msz);
 			}
 			return sz;

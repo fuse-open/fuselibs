@@ -102,13 +102,13 @@ namespace Fuse.Controls
 		{
 			var count = _pageProgress.PageCount;
 
-			while (ZOrderChildCount > count)
+			while (VisualChildCount > count)
 				Children.Remove(LastVisualChild);
 
-			while (ZOrderChildCount < count)
+			while (VisualChildCount < count)
 			{
 				var dot = DotTemplate.New() as Visual;
-				var page = _pageProgress.GetPage(ZOrderChildCount);
+				var page = _pageProgress.GetPage(VisualChildCount);
 				//prevent dot {Page} bindings from ever binding to the navigation object (Page is always present)
 				NavigationPageProperty.SetNavigationPage(dot, page);
 				Children.Add( dot );

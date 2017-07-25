@@ -70,7 +70,7 @@ namespace Fuse.Elements
 		public bool IsValid;
 	}
 
-	internal class ElementBatch : IElementBatchDrawable
+	internal class ElementBatch : IElementBatchDrawable, IEnumerable<Visual>
 	{
 		public readonly ElementBatcher _elementBatcher;
 		public readonly ElementAtlas _elementAtlas;
@@ -140,38 +140,6 @@ namespace Fuse.Elements
 				elm.AbsoluteZoom)), CachingRectPadding);
 		}
 
-		VisualBounds CalcRenderBounds()
-		{
-			bool hasAnyBounds = false;
-			Box box = new Box(float3(0), float3(0));
-			for (var i = 0; i < _elements.Count; i++)
-			{
-				var elm = _elements[0]._elm;
-				var lrb = elm.LocalRenderBounds;
-				if (lrb == VisualBounds.Empty) continue;
-				if (lrb == VisualBounds.Infinite) return VisualBounds.Infinite;
-				
-				var b = VisualBounds.BoxTransform((Box)lrb, elm.InternLocalTransformInternal);
-				if (!hasAnyBounds)
-				{
-					box = b;
-					hasAnyBounds = true;
-				}
-				else
-				{
-					if (b.Minimum.X < box.Minimum.X) box.Minimum.X = b.Minimum.X;
-					if (b.Minimum.Y < box.Minimum.Y) box.Minimum.Y = b.Minimum.Y;
-					if (b.Minimum.Z < box.Minimum.Z) box.Minimum.Z = b.Minimum.Z;
-					if (b.Maximum.X > box.Maximum.X) box.Maximum.X = b.Maximum.X;
-					if (b.Maximum.Y > box.Maximum.Y) box.Maximum.Y = b.Maximum.Y;
-					if (b.Maximum.Z > box.Maximum.Z) box.Maximum.Z = b.Maximum.Z;
-				}
-			}
-			
-			if (!hasAnyBounds) return VisualBounds.Empty;
-			else return VisualBounds.Box(box);
-		}
-
 		VisualBounds _renderBounds;
 		public VisualBounds RenderBounds
 		{
@@ -179,11 +147,14 @@ namespace Fuse.Elements
 			{
 				if (_renderBounds == null)
 				{
-					_renderBounds = CalcRenderBounds();
+					_renderBounds = VisualBounds.Merge(this);
 				}
 				return _renderBounds;
 			}
 		}
+
+		public IEnumerator<Visual> GetEnumerator() { return _elements.Select(PickVisual).GetEnumerator(); }
+		static Visual PickVisual(ElementBatchEntry e) { return e._elm; }
 
 		List<ElementBatchEntry> _elements = new List<ElementBatchEntry>();
 		public void AddElement(Element elm)

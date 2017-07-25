@@ -30,10 +30,8 @@ namespace Fuse.Controls
 			{
 				((Placeholder)layoutRoot).AcquireTarget();
 			}
-			for (int i = 0; i < layoutRoot.ZOrderChildCount; i++)
-			{
-				ChangeLayout(layoutRoot.GetZOrderChild(i));
-			}
+			for (var v = layoutRoot.FirstChild<Visual>(); v != null; v = v.NextSibling<Visual>())
+				ChangeLayout(v);
 		}
 
 		Element _layoutElement;

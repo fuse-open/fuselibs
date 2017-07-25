@@ -9,14 +9,12 @@ namespace Fuse.Elements
 
 		bool ShouldBatch()
 		{
-			if (ZOrderChildCount < 10)
+			if (VisualChildCount < 10)
 				return false;
 
 			int batchable = 0;
-			for (int i = 0; i < ZOrderChildCount; i++)
+			for (var v = FirstChild<Visual>(); v != null; v = v.NextSibling<Visual>())
 			{
-				var v = GetZOrderChild(i);
-
 				if (ElementBatcher.ShouldBatchElement(v))
 					batchable++;
 			}
