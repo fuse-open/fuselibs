@@ -73,7 +73,7 @@ namespace Fuse.Elements
 			if (HasVisualChildren)
 			{
 				var zOrder = GetCachedZOrder();
-				for (var i = zOrder.Length; i --> 0; )
+				for (var i = zOrder.Length-1; i >= 0; i--)
 					zOrder[i].HitTest(htc);
 			}
 		}
