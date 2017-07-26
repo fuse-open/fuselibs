@@ -1,18 +1,15 @@
 using Uno;
-using Uno.Time;
 
 namespace Fuse.FileSystem
 {
     internal class FileStatus
     {
-        internal static readonly Instant FileTimeEpoch = Instant.FromUtc(1601, 1, 1, 0, 0);
-
         readonly bool _exists;
         readonly long _length;
         readonly FileAttributes _attributes;
-        readonly ZonedDateTime _creationTimeUtc;
-        readonly ZonedDateTime _lastAccessTimeUtc;
-        readonly ZonedDateTime _lastWriteTimeUtc;
+        readonly DateTime _creationTimeUtc;
+        readonly DateTime _lastAccessTimeUtc;
+        readonly DateTime _lastWriteTimeUtc;
 
 
         public FileStatus()
@@ -20,7 +17,7 @@ namespace Fuse.FileSystem
             // When file does not exists the timestamps will be
             //  12:00 midnight, January 1, 1601 A.D. (C.E.) Coordinated Universal Time (UTC).
             // This is because we want to follow the .NET API behavior
-            var defaultTime = new ZonedDateTime(FileTimeEpoch, DateTimeZone.Utc);
+            var defaultTime = DateTime.FromFileTimeUtc(0);
             _creationTimeUtc = defaultTime;
             _lastWriteTimeUtc = defaultTime;
             _lastAccessTimeUtc = defaultTime;
@@ -33,9 +30,9 @@ namespace Fuse.FileSystem
 
         public FileStatus(long length,
                           FileAttributes attributes,
-                          ZonedDateTime creationTimeUtc,
-                          ZonedDateTime lastAccessTimeUtc,
-                          ZonedDateTime lastWriteTimeUtc)
+                          DateTime creationTimeUtc,
+                          DateTime lastAccessTimeUtc,
+                          DateTime lastWriteTimeUtc)
         {
             _length = length;
             _attributes = attributes;
@@ -48,15 +45,15 @@ namespace Fuse.FileSystem
 
         // This is not currently exposed on FileSystemInfo, as there's no simple way
         // to get file creation timestamp on Linux.
-        public ZonedDateTime CreationTimeUtc { get { return _creationTimeUtc; } }
+        public DateTime CreationTimeUtc { get { return _creationTimeUtc; } }
 
         public bool Exists { get { return _exists; } }
 
         public FileAttributes Attributes { get { return _attributes; } }
 
-        public ZonedDateTime LastAccessTimeUtc { get { return _lastAccessTimeUtc; } }
+        public DateTime LastAccessTimeUtc { get { return _lastAccessTimeUtc; } }
 
-        public ZonedDateTime LastWriteTimeUtc { get { return _lastWriteTimeUtc; } }
+        public DateTime LastWriteTimeUtc { get { return _lastWriteTimeUtc; } }
 
         public long Length { get { return _length; } }
     }
