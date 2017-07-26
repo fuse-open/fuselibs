@@ -213,7 +213,7 @@ namespace Fuse.Controls
 		void ITreeRenderer.Unrooted(Element e) {}
 		void ITreeRenderer.BackgroundChanged(Element e, Brush background) {}
 		void ITreeRenderer.ClipToBoundsChanged(Element e, bool clipToBounds) {}
-		void ITreeRenderer.ZOrderChanged(Element e, List<Visual> zorder) {}
+		void ITreeRenderer.ZOrderChanged(Element e, Visual[] zorder) {}
 
 		bool _isVisible = true;
 		void ITreeRenderer.IsVisibleChanged(Element e, bool isVisible)
