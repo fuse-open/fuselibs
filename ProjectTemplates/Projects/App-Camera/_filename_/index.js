@@ -1,19 +1,20 @@
 var ImageStore = require("_$filename$_/imagestore");
 var Navigation = require("_$filename$_/navigation");
+
 module.exports = {
-	getAppTitle : function(){
+	getAppTitle: function () {
 		return "_$filename$_";
 	},
-	initializeNavigation : function(router){
+	initializeNavigation: function (router) {
 		Navigation.initialize(router);
 	},
-	getPictures : function(){
+	getPictures: function () {
 		return ImageStore.getPictures();
 	},
-	takeNewPicture : function(){
+	takeNewPicture: function () {
 		ImageStore.takeNewPicture();
 	},
-	getNavigation : function(){
+	getNavigation: function () {
 		return Navigation;
 	}
-}
+};

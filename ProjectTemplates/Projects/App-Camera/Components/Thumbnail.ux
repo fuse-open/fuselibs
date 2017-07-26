@@ -1,7 +1,7 @@
 <Rectangle ux:Class="_$filename$_.Thumbnail" Color="White" BoxSizing="FillAspect" Margin="2">
-	<string ux:Property="ThumbnailPath"/>
-	<Image StretchMode="UniformToFill" Url="{Property ThumbnailPath}"/>
+	<string ux:Property="ThumbnailPath" />
+	<Image StretchMode="UniformToFill" Url="{Property ThumbnailPath}" />
 	<WhilePressed Capture="true">
-		<Scale Factor="0.98"/>
+		<Scale Factor="0.98" />
 	</WhilePressed>
 </Rectangle>

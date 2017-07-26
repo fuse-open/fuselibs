@@ -1,9 +1,9 @@
 <Page ux:Class="_$filename$_.MainPage" Color="#EEE">
-	<JavaScript File="MainPage.js"/>
+	<JavaScript File="MainPage.js" />
 	<DockPanel>
 		<Panel Dock="Top" Height="50" Color="White" Padding="8">
 			<_$filename$_.SimpleButton Label="Take picture">
-				<Tapped Handler="{onTakePictureButton}"/>
+				<Tapped Handler="{onTakePictureButton}" />
 			</_$filename$_.SimpleButton>
 			<Shadow/>
 		</Panel>
@@ -11,7 +11,7 @@
 			<Grid ColumnCount="4">
 				<Each Items="{images}">
 					<_$filename$_.Thumbnail ThumbnailPath="{thumbnailPath}">
-						<Tapped Handler="{onThumbnailTapped}"/>
+						<Tapped Handler="{onThumbnailTapped}" />
 					</_$filename$_.Thumbnail>
 				</Each>
 			</Grid>
