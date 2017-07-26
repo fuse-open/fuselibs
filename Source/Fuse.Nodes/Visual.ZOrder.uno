@@ -8,8 +8,13 @@ namespace Fuse
 	{
 		float _zOffset = 0;
 		/**
-			Specifics a ZOffset, higher values are in front of other nodes. Only used by certain Node's,
-			such as `Panel`. The ZLayer has priority, then ZOffset, then ZOffsetNatural.
+			Specifies a Z-Offset, visuals with higher values are in front of other visuals.
+
+			The default value is `0`. Visuals with the same ZOffset are sorted by their natural
+			Z-Order according to their position in the `Children`-collection of the parent.
+			`BringToFront` and `SendToBack` can be used to modify the natural Z-Order.
+
+			`Layer` takes priority. Visuals in different layers are sorted separately.
 		*/
 		public float ZOffset
 		{
