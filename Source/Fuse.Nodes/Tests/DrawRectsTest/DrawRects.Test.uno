@@ -17,251 +17,321 @@ namespace DrawRectsTest
 		[Test]
 		public void EmptyPanelIsBlack()
 		{
-			DrawRectVisualizer.IsCaptureEnabled = true;
-
-			var p = new Panel();
-			using (var root = TestRootPanel.CreateWithChild(p, int2(100, 100)))
-			using (var fb = root.CaptureDraw())
+			try
 			{
-				// Test a "random" pixel (center)
-				fb.AssertPixel(float4(0), int2(50, 50));
-			}
+				DrawRectVisualizer.IsCaptureEnabled = true;
 
-			DrawRectVisualizer.IsCaptureEnabled = false;
+				var p = new Panel();
+				using (var root = TestRootPanel.CreateWithChild(p, int2(100, 100)))
+				using (var fb = root.CaptureDraw())
+				{
+					// Test a "random" pixel (center)
+					fb.AssertPixel(float4(0), int2(50, 50));
+				}
+			}
+			finally
+			{
+				DrawRectVisualizer.IsCaptureEnabled = false;
+			}
 		}
 
 		[Test]
 		public void SolidRectangleWithMarginDrawRectIsRendered()
 		{
-			DrawRectVisualizer.IsCaptureEnabled = true;
-
-			var r = new global::UX.SolidRectangleWithMargin();
-			using (var root = TestRootPanel.CreateWithChild(r, int2(100, 100)))
-			using (var fb = root.CaptureDraw())
+			try
 			{
-				// Test pixel outside of element to ensure it's laid out how we expect
-				fb.AssertPixel(float4(0), int2(5, 5));
+				DrawRectVisualizer.IsCaptureEnabled = true;
 
-				TestForDrawRects(fb, new Recti(10, 10, 90, 90), 1, float4(1));
+				var r = new global::UX.SolidRectangleWithMargin();
+				using (var root = TestRootPanel.CreateWithChild(r, int2(100, 100)))
+				using (var fb = root.CaptureDraw())
+				{
+					// Test pixel outside of element to ensure it's laid out how we expect
+					fb.AssertPixel(float4(0), int2(5, 5));
+
+					TestForDrawRects(fb, new Recti(10, 10, 90, 90), 1, float4(1));
+				}
 			}
-
-			DrawRectVisualizer.IsCaptureEnabled = false;
+			finally
+			{
+				DrawRectVisualizer.IsCaptureEnabled = false;
+			}
 		}
 
 		[Test]
 		public void SolidCachedRectangleWithMarginDrawRectIsRendered()
 		{
-			DrawRectVisualizer.IsCaptureEnabled = true;
-
-			var r = new global::UX.SolidCachedRectangleWithMargin();
-			using (var root = TestRootPanel.CreateWithChild(r, int2(100, 100)))
-			using (var fb = root.CaptureDraw())
+			try
 			{
-				// Test pixel outside of element to ensure it's laid out how we expect
-				fb.AssertPixel(float4(0), int2(5, 5));
+				DrawRectVisualizer.IsCaptureEnabled = true;
 
-				TestForDrawRects(fb, new Recti(10, 10, 90, 90), 1, float4(1));
+				var r = new global::UX.SolidCachedRectangleWithMargin();
+				using (var root = TestRootPanel.CreateWithChild(r, int2(100, 100)))
+				using (var fb = root.CaptureDraw())
+				{
+					// Test pixel outside of element to ensure it's laid out how we expect
+					fb.AssertPixel(float4(0), int2(5, 5));
+
+					TestForDrawRects(fb, new Recti(10, 10, 90, 90), 1, float4(1));
+				}
 			}
-
-			DrawRectVisualizer.IsCaptureEnabled = false;
+			finally
+			{
+				DrawRectVisualizer.IsCaptureEnabled = false;
+			}
 		}
 
 		[Test]
 		public void PanelWithBackgroundAndMarginDrawRectIsRendered()
 		{
-			DrawRectVisualizer.IsCaptureEnabled = true;
-
-			var c = new global::UX.PanelWithBackgroundAndMargin();
-			using (var root = TestRootPanel.CreateWithChild(c, int2(100, 100)))
-			using (var fb = root.CaptureDraw())
+			try
 			{
-				// Test pixel outside of element to ensure it's laid out how we expect
-				fb.AssertPixel(float4(0), int2(5, 5));
+				DrawRectVisualizer.IsCaptureEnabled = true;
 
-				TestForDrawRects(fb, new Recti(10, 10, 90, 90), 1, float4(0, 1, 0, 1));
+				var c = new global::UX.PanelWithBackgroundAndMargin();
+				using (var root = TestRootPanel.CreateWithChild(c, int2(100, 100)))
+				using (var fb = root.CaptureDraw())
+				{
+					// Test pixel outside of element to ensure it's laid out how we expect
+					fb.AssertPixel(float4(0), int2(5, 5));
+
+					TestForDrawRects(fb, new Recti(10, 10, 90, 90), 1, float4(0, 1, 0, 1));
+				}
 			}
-
-			DrawRectVisualizer.IsCaptureEnabled = false;
+			finally
+			{
+				DrawRectVisualizer.IsCaptureEnabled = false;
+			}
 		}
 
 		[Test]
 		public void CircleWithBackgroundAndMarginDrawRectIsRendered()
 		{
-			DrawRectVisualizer.IsCaptureEnabled = true;
-
-			var c = new global::UX.CircleWithBackgroundAndMargin();
-			using (var root = TestRootPanel.CreateWithChild(c, int2(200, 100)))
-			using (var fb = root.CaptureDraw())
+			try
 			{
-				// Test pixel outside of element to ensure it's laid out how we expect
-				fb.AssertPixel(float4(0), int2(5, 5));
+				DrawRectVisualizer.IsCaptureEnabled = true;
 
-				TestForDrawRects(fb, new Recti(60, 10, 140, 90), 1, float4(0), float4(1));
+				var c = new global::UX.CircleWithBackgroundAndMargin();
+				using (var root = TestRootPanel.CreateWithChild(c, int2(200, 100)))
+				using (var fb = root.CaptureDraw())
+				{
+					// Test pixel outside of element to ensure it's laid out how we expect
+					fb.AssertPixel(float4(0), int2(5, 5));
+
+					TestForDrawRects(fb, new Recti(60, 10, 140, 90), 1, float4(0), float4(1));
+				}
 			}
-
-			DrawRectVisualizer.IsCaptureEnabled = false;
+			finally
+			{
+				DrawRectVisualizer.IsCaptureEnabled = false;
+			}
 		}
 
 		[Test]
 		public void FrozenPanelWithBackgroundAndMarginDrawRectIsRendered()
 		{
-			DrawRectVisualizer.IsCaptureEnabled = true;
-
-			var c = new global::UX.FrozenPanelWithBackgroundAndMargin();
-			using (var root = TestRootPanel.CreateWithChild(c, int2(100, 100)))
-			using (var fb = root.CaptureDraw())
+			try
 			{
-				// Test pixel outside of element to ensure it's laid out how we expect
-				fb.AssertPixel(float4(0), int2(5, 5));
+				DrawRectVisualizer.IsCaptureEnabled = true;
 
-				TestForDrawRects(fb, new Recti(10, 10, 90, 90), 1, float4(0, 0, 1, 1));
+				var c = new global::UX.FrozenPanelWithBackgroundAndMargin();
+				using (var root = TestRootPanel.CreateWithChild(c, int2(100, 100)))
+				using (var fb = root.CaptureDraw())
+				{
+					// Test pixel outside of element to ensure it's laid out how we expect
+					fb.AssertPixel(float4(0), int2(5, 5));
+
+					TestForDrawRects(fb, new Recti(10, 10, 90, 90), 1, float4(0, 0, 1, 1));
+				}
 			}
-
-			DrawRectVisualizer.IsCaptureEnabled = false;
+			finally
+			{
+				DrawRectVisualizer.IsCaptureEnabled = false;
+			}
 		}
 
 		[Test]
 		public void SolidRectangleWithBlurAndMarginDrawRectIsRendered()
 		{
-			DrawRectVisualizer.IsCaptureEnabled = true;
-
-			var r = new global::UX.SolidRectangleWithBlurAndMargin();
-			using (var root = TestRootPanel.CreateWithChild(r, int2(100, 100)))
-			using (var fb = root.CaptureDraw())
+			try
 			{
-				// Test pixel outside of element to ensure it's laid out how we expect
-				fb.AssertPixel(float4(0), int2(5, 5));
+				DrawRectVisualizer.IsCaptureEnabled = true;
 
-				TestForDrawRects(fb, new Recti(10, 10, 90, 90), 1, float4(1));
+				var r = new global::UX.SolidRectangleWithBlurAndMargin();
+				using (var root = TestRootPanel.CreateWithChild(r, int2(100, 100)))
+				using (var fb = root.CaptureDraw())
+				{
+					// Test pixel outside of element to ensure it's laid out how we expect
+					fb.AssertPixel(float4(0), int2(5, 5));
+
+					TestForDrawRects(fb, new Recti(10, 10, 90, 90), 1, float4(1));
+				}
 			}
-
-			DrawRectVisualizer.IsCaptureEnabled = false;
+			finally
+			{
+				DrawRectVisualizer.IsCaptureEnabled = false;
+			}
 		}
 
 		[Test]
 		public void SolidRectangleWithDesaturateAndMarginDrawRectIsRendered()
 		{
-			DrawRectVisualizer.IsCaptureEnabled = true;
-
-			var r = new global::UX.SolidRectangleWithDesaturateAndMargin();
-			using (var root = TestRootPanel.CreateWithChild(r, int2(100, 100)))
-			using (var fb = root.CaptureDraw())
+			try
 			{
-				// Test pixel outside of element to ensure it's laid out how we expect
-				fb.AssertPixel(float4(0), int2(5, 5));
+				DrawRectVisualizer.IsCaptureEnabled = true;
 
-				TestForDrawRects(fb, new Recti(10, 10, 90, 90), 1, float4(1));
+				var r = new global::UX.SolidRectangleWithDesaturateAndMargin();
+				using (var root = TestRootPanel.CreateWithChild(r, int2(100, 100)))
+				using (var fb = root.CaptureDraw())
+				{
+					// Test pixel outside of element to ensure it's laid out how we expect
+					fb.AssertPixel(float4(0), int2(5, 5));
+
+					TestForDrawRects(fb, new Recti(10, 10, 90, 90), 1, float4(1));
+				}
 			}
-
-			DrawRectVisualizer.IsCaptureEnabled = false;
+			finally
+			{
+				DrawRectVisualizer.IsCaptureEnabled = false;
+			}
 		}
 
 		[Test]
 		public void SolidRectangleWithDropShadowAndMarginDrawRectIsRendered()
 		{
-			DrawRectVisualizer.IsCaptureEnabled = true;
-
-			var r = new global::UX.SolidRectangleWithDropShadowAndMargin();
-			using (var root = TestRootPanel.CreateWithChild(r, int2(100, 100)))
-			using (var fb = root.CaptureDraw())
+			try
 			{
-				// Test pixel outside of element to ensure it's laid out how we expect
-				fb.AssertPixel(float4(0), int2(5, 5));
+				DrawRectVisualizer.IsCaptureEnabled = true;
 
-				TestForDrawRects(fb, new Recti(10, 10, 90, 90), 2, float4(1));
+				var r = new global::UX.SolidRectangleWithDropShadowAndMargin();
+				using (var root = TestRootPanel.CreateWithChild(r, int2(100, 100)))
+				using (var fb = root.CaptureDraw())
+				{
+					// Test pixel outside of element to ensure it's laid out how we expect
+					fb.AssertPixel(float4(0), int2(5, 5));
+
+					TestForDrawRects(fb, new Recti(10, 10, 90, 90), 2, float4(1));
+				}
 			}
-
-			DrawRectVisualizer.IsCaptureEnabled = false;
+			finally
+			{
+				DrawRectVisualizer.IsCaptureEnabled = false;
+			}
 		}
 
 		[Test]
 		public void SolidRectangleWithDuotoneAndMarginDrawRectIsRendered()
 		{
-			DrawRectVisualizer.IsCaptureEnabled = true;
-
-			var r = new global::UX.SolidRectangleWithDuotoneAndMargin();
-			using (var root = TestRootPanel.CreateWithChild(r, int2(100, 100)))
-			using (var fb = root.CaptureDraw())
+			try
 			{
-				// Test pixel outside of element to ensure it's laid out how we expect
-				fb.AssertPixel(float4(0), int2(5, 5));
+				DrawRectVisualizer.IsCaptureEnabled = true;
 
-				TestForDrawRects(fb, new Recti(10, 10, 90, 90), 1, float4(1));
+				var r = new global::UX.SolidRectangleWithDuotoneAndMargin();
+				using (var root = TestRootPanel.CreateWithChild(r, int2(100, 100)))
+				using (var fb = root.CaptureDraw())
+				{
+					// Test pixel outside of element to ensure it's laid out how we expect
+					fb.AssertPixel(float4(0), int2(5, 5));
+
+					TestForDrawRects(fb, new Recti(10, 10, 90, 90), 1, float4(1));
+				}
 			}
-
-			DrawRectVisualizer.IsCaptureEnabled = false;
+			finally
+			{
+				DrawRectVisualizer.IsCaptureEnabled = false;
+			}
 		}
 
 		[Test]
 		public void SolidRectangleWithHalftoneAndMarginDrawRectIsRendered()
 		{
-			DrawRectVisualizer.IsCaptureEnabled = true;
-
-			var r = new global::UX.SolidRectangleWithHalftoneAndMargin();
-			using (var root = TestRootPanel.CreateWithChild(r, int2(100, 100)))
-			using (var fb = root.CaptureDraw())
+			try
 			{
-				// Test pixel outside of element to ensure it's laid out how we expect
-				fb.AssertPixel(float4(0), int2(5, 5));
+				DrawRectVisualizer.IsCaptureEnabled = true;
 
-				TestForDrawRects(fb, new Recti(10, 10, 90, 90), 1, float4(1));
+				var r = new global::UX.SolidRectangleWithHalftoneAndMargin();
+				using (var root = TestRootPanel.CreateWithChild(r, int2(100, 100)))
+				using (var fb = root.CaptureDraw())
+				{
+					// Test pixel outside of element to ensure it's laid out how we expect
+					fb.AssertPixel(float4(0), int2(5, 5));
+
+					TestForDrawRects(fb, new Recti(10, 10, 90, 90), 1, float4(1));
+				}
 			}
-
-			DrawRectVisualizer.IsCaptureEnabled = false;
+			finally
+			{
+				DrawRectVisualizer.IsCaptureEnabled = false;
+			}
 		}
 
 		[Test]
 		public void SolidRectangleWithMaskAndMarginDrawRectIsRendered()
 		{
-			DrawRectVisualizer.IsCaptureEnabled = true;
-
-			var r = new global::UX.SolidRectangleWithMaskAndMargin();
-			using (var root = TestRootPanel.CreateWithChild(r, int2(100, 100)))
-			using (var fb = root.CaptureDraw())
+			try
 			{
-				// Test pixel outside of element to ensure it's laid out how we expect
-				fb.AssertPixel(float4(0), int2(5, 5));
+				DrawRectVisualizer.IsCaptureEnabled = true;
 
-				TestForDrawRects(fb, new Recti(10, 10, 90, 90), 1, float4(1));
+				var r = new global::UX.SolidRectangleWithMaskAndMargin();
+				using (var root = TestRootPanel.CreateWithChild(r, int2(100, 100)))
+				using (var fb = root.CaptureDraw())
+				{
+					// Test pixel outside of element to ensure it's laid out how we expect
+					fb.AssertPixel(float4(0), int2(5, 5));
+
+					TestForDrawRects(fb, new Recti(10, 10, 90, 90), 1, float4(1));
+				}
 			}
-
-			DrawRectVisualizer.IsCaptureEnabled = false;
+			finally
+			{
+				DrawRectVisualizer.IsCaptureEnabled = false;
+			}
 		}
 
 		[Test]
 		public void ViewportWithRectangleDrawRectIsRendered()
 		{
-			DrawRectVisualizer.IsCaptureEnabled = true;
-
-			var r = new global::UX.ViewportWithRectangle();
-			using (var root = TestRootPanel.CreateWithChild(r, int2(100, 100)))
-			using (var fb = root.CaptureDraw())
+			try
 			{
-				// Test pixel outside of element to ensure it's laid out how we expect
-				fb.AssertPixel(float4(0), int2(5, 5));
+				DrawRectVisualizer.IsCaptureEnabled = true;
 
-				TestForDrawRects(fb, new Recti(10, 10, 90, 90), 1, float4(1));
+				var r = new global::UX.ViewportWithRectangle();
+				using (var root = TestRootPanel.CreateWithChild(r, int2(100, 100)))
+				using (var fb = root.CaptureDraw())
+				{
+					// Test pixel outside of element to ensure it's laid out how we expect
+					fb.AssertPixel(float4(0), int2(5, 5));
+
+					TestForDrawRects(fb, new Recti(10, 10, 90, 90), 1, float4(1));
+				}
 			}
-
-			DrawRectVisualizer.IsCaptureEnabled = false;
+			finally
+			{
+				DrawRectVisualizer.IsCaptureEnabled = false;
+			}
 		}
 
 		[Test]
 		public void ImageWithMarginDrawRectIsRendered()
 		{
-			DrawRectVisualizer.IsCaptureEnabled = true;
-
-			var c = new global::UX.ImageWithMargin();
-			using (var root = TestRootPanel.CreateWithChild(c, int2(200, 100)))
-			using (var fb = root.CaptureDraw())
+			try
 			{
-				// Test pixel outside of element to ensure it's laid out how we expect
-				fb.AssertPixel(float4(0), int2(5, 5));
+				DrawRectVisualizer.IsCaptureEnabled = true;
 
-				TestForDrawRects(fb, new Recti(60, 10, 140, 90), 1, float4(1));
+				var c = new global::UX.ImageWithMargin();
+				using (var root = TestRootPanel.CreateWithChild(c, int2(200, 100)))
+				using (var fb = root.CaptureDraw())
+				{
+					// Test pixel outside of element to ensure it's laid out how we expect
+					fb.AssertPixel(float4(0), int2(5, 5));
+
+					TestForDrawRects(fb, new Recti(60, 10, 140, 90), 1, float4(1));
+				}
 			}
-
-			DrawRectVisualizer.IsCaptureEnabled = false;
+			finally
+			{
+				DrawRectVisualizer.IsCaptureEnabled = false;
+			}
 		}
 
 		extern(DOTNET) static class MessagePumper
@@ -284,96 +354,111 @@ namespace DrawRectsTest
 		[Ignore("Needs macOS message pump", "OSX")]
 		public void VideoWithMarginDrawRectIsRendered()
 		{
-			DrawRectVisualizer.IsCaptureEnabled = true;
-
-			var c = new global::UX.VideoWithMargin();
-			using (var root = TestRootPanel.CreateWithChild(c, int2(200, 100)))
+			try
 			{
-				// Wait until the video is playing before grabbing pixels
-				while (!c.IsPlaying)
-				{
-					root.StepFrame();
-					root.TestDraw();
-					MessagePumper.PumpMessages();
-					Thread.Sleep(16);
-				}
+				DrawRectVisualizer.IsCaptureEnabled = true;
 
-				// Step some more frames so the video will start playing
-				for (int i = 0; i < 10; i++)
+				var c = new global::UX.VideoWithMargin();
+				using (var root = TestRootPanel.CreateWithChild(c, int2(200, 100)))
 				{
-					root.StepFrame();
-					root.TestDraw();
-					MessagePumper.PumpMessages();
-					Thread.Sleep(16);
-				}
+					// Wait until the video is playing before grabbing pixels
+					while (!c.IsPlaying)
+					{
+						root.StepFrame();
+						root.TestDraw();
+						MessagePumper.PumpMessages();
+						Thread.Sleep(16);
+					}
 
-				using (var fb = root.CaptureDraw())
-				{
-					// Test pixel outside of element to ensure it's laid out how we expect
-					fb.AssertPixel(float4(0), int2(5, 5));
+					// Step some more frames so the video will start playing
+					for (int i = 0; i < 10; i++)
+					{
+						root.StepFrame();
+						root.TestDraw();
+						MessagePumper.PumpMessages();
+						Thread.Sleep(16);
+					}
 
-					TestForDrawRects(fb, new Recti(60, 10, 140, 90), 1, float4(float3(0.92f), 1));
+					using (var fb = root.CaptureDraw())
+					{
+						// Test pixel outside of element to ensure it's laid out how we expect
+						fb.AssertPixel(float4(0), int2(5, 5));
+
+						TestForDrawRects(fb, new Recti(60, 10, 140, 90), 1, float4(float3(0.92f), 1));
+					}
 				}
 			}
-
-			DrawRectVisualizer.IsCaptureEnabled = false;
+			finally
+			{
+				DrawRectVisualizer.IsCaptureEnabled = false;
+			}
 		}
 
 		[Test]
 		public void Scale9ImageWithMarginDrawRectIsRendered()
 		{
-			DrawRectVisualizer.IsCaptureEnabled = true;
-
-			var c = new global::UX.Scale9ImageWithMargin();
-			using (var root = TestRootPanel.CreateWithChild(c, int2(200, 100)))
-			using (var fb = root.CaptureDraw())
+			try
 			{
-				// Test pixel outside of element to ensure it's laid out how we expect
-				fb.AssertPixel(float4(0), int2(5, 5));
+				DrawRectVisualizer.IsCaptureEnabled = true;
 
-				TestForDrawRects(fb, new Recti(10, 10, 190, 90), 1, float4(1));
+				var c = new global::UX.Scale9ImageWithMargin();
+				using (var root = TestRootPanel.CreateWithChild(c, int2(200, 100)))
+				using (var fb = root.CaptureDraw())
+				{
+					// Test pixel outside of element to ensure it's laid out how we expect
+					fb.AssertPixel(float4(0), int2(5, 5));
+
+					TestForDrawRects(fb, new Recti(10, 10, 190, 90), 1, float4(1));
+				}
 			}
-
-			DrawRectVisualizer.IsCaptureEnabled = false;
+			finally
+			{
+				DrawRectVisualizer.IsCaptureEnabled = false;
+			}
 		}
 
 		[Test]
 		[Ignore("Needs macOS message pump", "OSX")]
 		public void Scale9VideoWithMarginDrawRectIsRendered()
 		{
-			DrawRectVisualizer.IsCaptureEnabled = true;
-
-			var c = new global::UX.Scale9VideoWithMargin();
-			using (var root = TestRootPanel.CreateWithChild(c, int2(200, 100)))
+			try
 			{
-				// Wait until the video is playing before grabbing pixels
-				while (!c.IsPlaying)
-				{
-					root.StepFrame();
-					root.TestDraw();
-					MessagePumper.PumpMessages();
-					Thread.Sleep(16);
-				}
+				DrawRectVisualizer.IsCaptureEnabled = true;
 
-				// Step some more frames so the video will start playing
-				for (int i = 0; i < 10; i++)
+				var c = new global::UX.Scale9VideoWithMargin();
+				using (var root = TestRootPanel.CreateWithChild(c, int2(200, 100)))
 				{
-					root.StepFrame();
-					root.TestDraw();
-					MessagePumper.PumpMessages();
-					Thread.Sleep(16);
-				}
+					// Wait until the video is playing before grabbing pixels
+					while (!c.IsPlaying)
+					{
+						root.StepFrame();
+						root.TestDraw();
+						MessagePumper.PumpMessages();
+						Thread.Sleep(16);
+					}
 
-				using (var fb = root.CaptureDraw())
-				{
-					// Test pixel outside of element to ensure it's laid out how we expect
-					fb.AssertPixel(float4(0), int2(5, 5));
+					// Step some more frames so the video will start playing
+					for (int i = 0; i < 10; i++)
+					{
+						root.StepFrame();
+						root.TestDraw();
+						MessagePumper.PumpMessages();
+						Thread.Sleep(16);
+					}
 
-					TestForDrawRects(fb, new Recti(10, 10, 190, 90), 1, float4(float3(0.92f), 1));
+					using (var fb = root.CaptureDraw())
+					{
+						// Test pixel outside of element to ensure it's laid out how we expect
+						fb.AssertPixel(float4(0), int2(5, 5));
+
+						TestForDrawRects(fb, new Recti(10, 10, 190, 90), 1, float4(float3(0.92f), 1));
+					}
 				}
 			}
-
-			DrawRectVisualizer.IsCaptureEnabled = false;
+			finally
+			{
+				DrawRectVisualizer.IsCaptureEnabled = false;
+			}
 		}
 
 		void TestForDrawRects(TestFramebuffer fb, Recti drawRectBounds, int numRects, float4 drawnColor)
