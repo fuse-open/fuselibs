@@ -80,13 +80,9 @@ namespace Fuse
 		
 		internal virtual bool CalcAreChildrenFlat()
 		{
-			for (int i=0; i < ZOrderChildCount; ++i )
-			{
-				var v = GetZOrderChild(i);
-
+			for (var v = FirstChild<Visual>(); v != null; v = v.NextSibling<Visual>())
 				if (!v.AreChildrenFlat || !v.IsLocalFlat)
 					return false;
-			}
 			
 			return true;
 		}

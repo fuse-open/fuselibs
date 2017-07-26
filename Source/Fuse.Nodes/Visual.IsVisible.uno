@@ -46,10 +46,8 @@ namespace Fuse
 				_isVisibleCached = newValue;
 				OnIsVisibleChanged();
 				
-				for (int i = 0; i < ZOrderChildCount; i++)
-				{
-					GetZOrderChild(i).UpdateIsVisibleCache();
-				}
+				for (var v = FirstChild<Visual>(); v != null; v = v.NextSibling<Visual>())
+					v.UpdateIsVisibleCache();
 			}
 		}
 		

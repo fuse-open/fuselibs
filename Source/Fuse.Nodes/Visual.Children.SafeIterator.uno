@@ -40,6 +40,7 @@ namespace Fuse
 		{
 			if (_safeIterator != null) _safeIterator.SecureCopy();
 			Children_cachedArray = null;
+			InvalidateZOrder();
 		}
 
 		IEnumerator<Node> Children_GetEnumerator()

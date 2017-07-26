@@ -100,8 +100,12 @@ namespace Fuse
 			}
 			set 
 			{
-				Properties.Set(_layerProperty, value);
-				InvalidateLayout();
+				if (Layer != value)
+				{
+					Properties.Set(_layerProperty, value);
+					InvalidateLayout();
+					if (Parent != null) Parent.InvalidateZOrder();
+				}
 			}
 		}
 		
@@ -417,9 +421,9 @@ namespace Fuse
 		protected virtual float2 OnArrangeMarginBox(float2 position, LayoutParams lp)
 		{
 			var sz = float2(0);
-			for (int i=0; i < ZOrderChildCount; ++i)
+			for (var v = FirstChild<Visual>(); v != null; v = v.NextSibling<Visual>())
 			{
-				var msz = GetZOrderChild(i).ArrangeMarginBox(position, lp);
+				var msz = v.ArrangeMarginBox(position, lp);
 				sz = Math.Max(sz,msz);
 			}
 			return sz;
@@ -500,30 +504,5 @@ namespace Fuse
         	{
 	        	OnBringIntoView(this);
         	}
-        	
-		//intrinsics used to manage zOrder
-		internal int ZLayer;
-		//child relative position (natural order based on child ordering)
-		internal int ZOffsetNatural;
-		//true if the ZOffset has been manually modified, such as via a SendToFront
-		internal bool ZOffsetFixed;
-		
-		float _zOffset = 0;
-		/**
-			Specifics a ZOffset, higher values are in front of other nodes. Only used by certain Node's,
-			such as `Panel`. The ZLayer has priority, then ZOffset, then ZOffsetNatural.
-		*/
-		public float ZOffset
-		{
-			get { return _zOffset; }
-			set
-			{
-				if (_zOffset == value)
-					return;
-				_zOffset = value;
-				if (Parent != null)	
-					Parent.OnInvalidateChildZOffset(this);
-			}
-		}
 	}
 }

@@ -151,16 +151,11 @@ namespace Fuse
 		
 		void OnMoved(Node b)
 		{
-			var v = b as Visual;
-			if (v != null) OnVisualMoved(v);
-			
 			OnChildMoved(b);
 		}
 
 		void OnVisualAdded(Visual v)
 		{
-			ZOrder.Insert(0, v);
-			InvalidateZOrder();
 			InvalidateHitTestBounds();
 			InvalidateRenderBounds();
 		}
@@ -168,18 +163,10 @@ namespace Fuse
 		void OnVisualRemoved(Visual v)
 		{
 			v.CancelPendingRemove();
-			ZOrder.Remove(v);
-			InvalidateZOrder();
 			InvalidateHitTestBounds();
 			InvalidateRenderBounds();
 		}
 		
-		void OnVisualMoved(Visual v)
-		{
-			InvalidateZOrder();
-			//Moving on its own won't affect render/hittest bounds. That will most likely be invalidated by a LayoutControl though
-		}
-
 		void ICollection<Node>.Clear()
 		{
 			for (var c = _firstChild; c != null; c = c._nextSibling)

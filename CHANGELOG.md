@@ -24,6 +24,7 @@
 
 ## Optimizations
 - Optimized UpdateManager dispatcher to deal better with high numbers of dispatches per frame (as when populating long lists).
+- Optimized how ZOrder was computed which improves layout and tree initialization speed. Inlcudes a minor change on the `ITreeRenderer` interface, unlikely to affect your code.
 - Optimized how bounding boxes are calculated (improves layout and rendering performance).
 - Optimized how render bounds are compounded for larger lists.
 

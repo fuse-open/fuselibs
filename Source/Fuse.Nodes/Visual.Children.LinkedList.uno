@@ -64,12 +64,18 @@ namespace Fuse
 
 		Node _firstChild, _lastChild;
 		int _childCount;
+		int _visualChildCount;
 
-		// Internal for now, make public when API matures
-		internal int ChildCount { get { return _childCount; } }
+		/** The number of child nodes of this visual. */
+		public int ChildCount { get { return _childCount; } }
+
+		/** The number of child visuals of this visual. */
+		public int VisualChildCount { get { return _visualChildCount; } }
 		
 		void Children_Clear()
 		{
+			Children_Invalidate();
+			
 			for (var c = _firstChild; c != null; c = c._nextSibling)
 			{
 				Children_MakeOrphan(c);
@@ -80,6 +86,7 @@ namespace Fuse
 			_firstChild = null;
 			_lastChild = null;
 			_childCount = 0;
+			_visualChildCount = 0;
 		}
 
 		void Children_Add(Node n)
@@ -100,6 +107,7 @@ namespace Fuse
 			}
 
 			_childCount++;
+			if (n is Visual) _visualChildCount++;
 		}
 
 		bool Children_Remove(Node n)
@@ -128,6 +136,7 @@ namespace Fuse
 			n._nextSibling = null;
 			n._previousSibling = (Node)null;
 			_childCount--;
+			if (n is Visual) _visualChildCount--;
 			return true;
 		}
 
@@ -176,6 +185,7 @@ namespace Fuse
 					_firstChild._previousSibling = newNode;
 					_firstChild = newNode;
 					_childCount++;
+					if (newNode is Visual) _visualChildCount++;
 				}
 			}
 			else
@@ -189,6 +199,7 @@ namespace Fuse
 					preceeder._nextSibling._previousSibling = newNode;
 					preceeder._nextSibling = newNode;
 					_childCount++;
+					if (newNode is Visual) _visualChildCount++;
 				}
 			}
 

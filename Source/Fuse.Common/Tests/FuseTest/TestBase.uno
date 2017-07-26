@@ -160,9 +160,12 @@ namespace FuseTest
 		static public string GetDudZ(Visual root)
 		{
 			var q = "";
-			for (int i=0; i < root.ZOrderChildCount; ++i)
+			
+			var zOrder = root.GetCachedZOrder();
+
+			for (int i = 0; i < zOrder.Length; ++i)
 			{
-				var t = root.GetZOrderChild(i) as FuseTest.DudElement;
+				var t = zOrder[i] as FuseTest.DudElement;
 				if (t != null)
 				{
 					if (q.Length > 0)

@@ -43,7 +43,7 @@ namespace Fuse.Controls
 			base.OnChildAdded(n);
 			if (n is Visual)
 			{	
-				if (ZOrderChildCount > 1)
+				if (VisualChildCount > 1)
 				{
 					throw new Exception(this + " (ContentControl) can only have one visual child");
 				}

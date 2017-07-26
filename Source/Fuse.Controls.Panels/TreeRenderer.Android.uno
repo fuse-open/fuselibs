@@ -169,12 +169,11 @@ namespace Fuse.Controls
 				viewHandle.SetHitTestEnabled(enabled);
 		}
 
-		void ITreeRenderer.ZOrderChanged(Element e, List<Visual> zorder)
+		void ITreeRenderer.ZOrderChanged(Element e, Visual[] zorder)
 		{
-			var len = zorder.Count;
-			for (var i = 0; i < len; i++)
+			for (var i = 0; i < zorder.Length; i++)
 			{
-				var child = e.GetZOrderChild(i) as Element;
+				var child = zorder[i] as Element;
 				if (child != null)
 					_elements[child].BringToFront();
 			}

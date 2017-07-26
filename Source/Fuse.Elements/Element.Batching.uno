@@ -9,14 +9,12 @@ namespace Fuse.Elements
 
 		bool ShouldBatch()
 		{
-			if (ZOrderChildCount < 10)
+			if (VisualChildCount < 10)
 				return false;
 
 			int batchable = 0;
-			for (int i = 0; i < ZOrderChildCount; i++)
+			for (var v = FirstChild<Visual>(); v != null; v = v.NextSibling<Visual>())
 			{
-				var v = GetZOrderChild(i);
-
 				if (ElementBatcher.ShouldBatchElement(v))
 					batchable++;
 			}
@@ -47,24 +45,32 @@ namespace Fuse.Elements
 
 		protected void DrawUnderlayChildren(DrawContext dc)
 		{
-			for (int i = 0; i < _firstNonUnderlay; i++)
-				ZOrder[i].Draw(dc);
+			var zOrder = GetCachedZOrder();
+			for (var i = 0; i < zOrder.Length; i++) 
+			{
+				var v = zOrder[i];
+				if (v.Layer != Layer.Underlay) return;
+				v.Draw(dc);
+			}
 		}
 
 		protected void DrawNonUnderlayChildren(DrawContext dc)
 		{
 			if (!HasChildren) return;
 
-			EnsureSortedZOrder();
-
+			var zOrder = GetCachedZOrder();
 			if (!ShouldBatch())
 			{
 				// get rid of old element batcher
 				if (_elementBatcher != null)
 					_elementBatcher = null;
 
-				for (int i = _firstNonUnderlay; i < ZOrder.Count; ++i)
-					ZOrder[i].Draw(dc);
+				for (var i = 0; i < zOrder.Length; i++) 
+				{
+					var v = zOrder[i];
+					if (v.Layer == Layer.Underlay) continue;
+					v.Draw(dc);
+				}
 			}
 			else
 			{
@@ -75,8 +81,12 @@ namespace Fuse.Elements
 					else
 						_elementBatcher.RemoveAllElements();
 
-					for (int i = _firstNonUnderlay; i < ZOrder.Count; ++i)
-						_elementBatcher.AddElement(ZOrder[i]);
+					for (var i = 0; i < zOrder.Length; i++) 
+					{
+						var v = zOrder[i];
+						if (v.Layer == Layer.Underlay) continue;
+						_elementBatcher.AddElement(v);
+					}
 
 					_elementBatchValid = true;
 				}
