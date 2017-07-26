@@ -121,7 +121,7 @@ namespace Fuse
 		void AssignNaturalZOrder()
 		{
 			int i = 0;
-			for (var v = LastChild<Visual>(); v != null; v = v.PreviousSibling<Visual>())
+			for (var v = FirstChild<Visual>(); v != null; v = v.NextSibling<Visual>())
 				if (!v._zOrderFixed) v._naturalZOrder = i--;
 		}
 
