@@ -1,0 +1,3 @@
+<Rectangle ux:Class="UX.SolidRectangleWithDesaturateAndMargin" Color="#fff" Margin="10" CachingMode="Never">
+	<Desaturate />
+</Rectangle>

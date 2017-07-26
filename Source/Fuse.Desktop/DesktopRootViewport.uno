@@ -1,5 +1,6 @@
 using Uno;
 using Fuse.Input;
+using Fuse.Nodes;
 
 namespace Fuse.Desktop
 {
@@ -50,13 +51,19 @@ namespace Fuse.Desktop
 			{
 				Internal.DrawManager.PrepareDraw(_dc);
 
+				if defined(FUSELIBS_DEBUG_DRAW_RECTS)
+					DrawRectVisualizer.StartFrame(_dc.RenderTarget);
+
 				EnsureSortedZOrder();
 
 				for (int i = 0; i < ZOrder.Count; i++)
 					ZOrder[i].Draw(_dc);
 
 				AppBase.Current.DrawSelection(_dc);
-				
+
+				if defined(FUSELIBS_DEBUG_DRAW_RECTS)
+					DrawRectVisualizer.EndFrameAndVisualize(_dc);
+
 				Internal.DrawManager.EndDraw(_dc);
 			}
 			catch (Exception e)

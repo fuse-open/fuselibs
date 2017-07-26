@@ -5,6 +5,7 @@ using Fuse;
 using Fuse.Controls;
 using Fuse.Input;
 using Fuse.Internal;
+using Fuse.Nodes;
 
 namespace FuseTest
 {
@@ -210,11 +211,17 @@ namespace FuseTest
 			//need to make `draw` statements work.
 			var fb = FramebufferPool.Lock( (int2)_rootViewport.PixelSize, Uno.Graphics.Format.RGBA8888, true);
 			_dc.PushRenderTarget(fb);
+
+			if defined(FUSELIBS_DEBUG_DRAW_RECTS)
+				DrawRectVisualizer.StartFrame(_dc.RenderTarget);
 			
 			_rootViewport.Draw(_dc);
 			
 			_dc.PopRenderTarget();
 			FramebufferPool.Release(fb);
+
+			if defined(FUSELIBS_DEBUG_DRAW_RECTS)
+				DrawRectVisualizer.EndFrameAndVisualize(_dc);
 			
 			DrawManager.EndDraw(_dc);
 		}
@@ -226,12 +233,24 @@ namespace FuseTest
 		{
 			if (_dc == null)
 				_dc = new DrawContext(_rootViewport);
+
+			DrawManager.PrepareDraw(_dc);
 			
 			var ret = new TestFramebuffer((int2)_rootViewport.PixelSize);
 			_dc.PushRenderTarget(ret.Framebuffer);
 			_dc.Clear(float4(0),1);
+
+			if defined(FUSELIBS_DEBUG_DRAW_RECTS)
+				DrawRectVisualizer.StartFrame(_dc.RenderTarget);
+
 			_rootViewport.Draw(_dc);
+
+			if defined(FUSELIBS_DEBUG_DRAW_RECTS)
+				DrawRectVisualizer.EndFrameAndVisualize(_dc);
+
 			_dc.PopRenderTarget();
+
+			DrawManager.EndDraw(_dc);
 
 			return ret;
 		}

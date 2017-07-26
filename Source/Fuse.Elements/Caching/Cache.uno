@@ -3,6 +3,8 @@ using Uno.Graphics;
 using Uno.UX;
 using Uno.Collections;
 
+using Fuse.Nodes;
+
 namespace Fuse.Elements
 {
 	internal struct CacheTile
@@ -238,6 +240,9 @@ namespace Fuse.Elements
 					DepthTestEnabled: false;
 					apply Fuse.Drawing.PreMultipliedAlphaCompositing;
 				};
+
+				if defined(FUSELIBS_DEBUG_DRAW_RECTS)
+					DrawRectVisualizer.Capture(float2(0), float2(tile.Texture.Size.X, tile.Texture.Size.Y), tile._compositMatrix, dc);
 			}
 		}
 	}

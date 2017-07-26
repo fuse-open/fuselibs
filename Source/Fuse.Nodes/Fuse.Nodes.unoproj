@@ -7,6 +7,7 @@
     "ProjectUrl": "https://fusetools.com"
   },
   "InternalsVisibleTo": [
+    "DrawRectsTest",
     "Fuse.Android",
     "Fuse.Views",
     "Fuse.Animations",
@@ -17,8 +18,11 @@
     "Fuse.Controls.Primitives",
     "Fuse.Controls.ScrollView",
     "Fuse.Controls.Test",
+    "Fuse.Controls.Video",
     "Fuse.Controls",
     "Fuse.Desktop",
+    "Fuse.Drawing.Primitives",
+    "Fuse.Effects",
     "Fuse.Elements.Shared",
     "Fuse.Elements.Test",
     "Fuse.Elements",

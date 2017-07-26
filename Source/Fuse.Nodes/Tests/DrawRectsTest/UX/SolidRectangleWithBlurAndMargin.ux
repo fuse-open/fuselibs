@@ -1,0 +1,3 @@
+<Rectangle ux:Class="UX.SolidRectangleWithBlurAndMargin" Color="#fff" Margin="10" CachingMode="Never">
+	<Blur Radius="0.1" />
+</Rectangle>
