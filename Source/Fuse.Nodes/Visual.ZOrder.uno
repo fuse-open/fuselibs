@@ -41,7 +41,7 @@ namespace Fuse
 		*/
 		public void BringToFront(Visual item)
 		{
-			ComputeZOrder(); // ensures _naturalZOrder is up to date
+			AssignNaturalZOrder(); // ensures _naturalZOrder is up to date
 
 			var maxNaturalZOrder = int.MinValue;
 			for (var v = FirstChild<Visual>(); v != null; v = v.NextSibling<Visual>())
@@ -61,7 +61,7 @@ namespace Fuse
 		*/
 		public void SendToBack(Visual item)
 		{
-			ComputeZOrder(); // ensures _naturalZOrder is up to date
+			AssignNaturalZOrder(); // ensures _naturalZOrder is up to date
 
 			var minNaturalZOrder = int.MaxValue;
 			for (var v = FirstChild<Visual>(); v != null; v = v.NextSibling<Visual>())
@@ -90,6 +90,8 @@ namespace Fuse
 			if (_visualChildCount == 0) return _emptyVisuals;
 			if (_visualChildCount == 1) return new Visual[1] { FirstChild<Visual>() };
 
+			AssignNaturalZOrder();
+
 			var zOrder = new Visual[_visualChildCount];
 
 			bool needsSorting = false;
@@ -108,10 +110,14 @@ namespace Fuse
 			if (needsSorting)
 				Array.Sort(zOrder, ZOrderComparator);
 
-			for (var n = 0; n < zOrder.Length; n++)
-				if (!zOrder[n]._zOrderFixed) zOrder[n]._naturalZOrder = -i;
-
 			return zOrder;
+		}
+
+		void AssignNaturalZOrder()
+		{
+			int i = 0;
+			for (var v = LastChild<Visual>(); v != null; v = v.PreviousSibling<Visual>())
+				if (!v._zOrderFixed) v._naturalZOrder = i--;
 		}
 
 		static int ZOrderComparator(Visual a, Visual b)
