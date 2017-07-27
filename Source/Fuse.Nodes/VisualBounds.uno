@@ -148,28 +148,40 @@ namespace Fuse
 			
 			return Box(add);
 		}
-		
+
+		[Obsolete("Please use the other overload (for performance)")]
 		public VisualBounds Transform(float4x4 matrix)
+		{
+			return Transform(FastMatrix.FromFloat4x4(matrix));
+		}
+
+		public VisualBounds Transform(FastMatrix fastMatrix)
 		{
 			if (IsInfinite || IsEmpty)
 				return this;
 				
-			var n = BoxTransform(_box, matrix);
+			var n = BoxTransform(_box, fastMatrix);
 			return Box(n);
 		}
 
-		//OPT: This version could be optimized since it doesn't care about the Z results.
+		[Obsolete("Please use the other overload (for performance)")]
 		public VisualBounds TransformFlatten(float4x4 matrix)
+		{
+			return TransformFlatten(FastMatrix.FromFloat4x4(matrix));
+		}
+
+		//OPT: This version could be optimized since it doesn't care about the Z results.
+		public VisualBounds TransformFlatten(FastMatrix fastMatrix)
 		{
 			if (IsInfinite || IsEmpty)
 				return this;
 				
-			var n = BoxTransform(_box, matrix);
+			var n = BoxTransform(_box, fastMatrix);
 			n.Minimum.Z = 0;
 			n.Maximum.Z = 0;
 			return Box(n);
 		}
-		
+
 		public VisualBounds Merge( VisualBounds nb, FastMatrix trans = null )
 		{
 			if (nb.IsEmpty)
