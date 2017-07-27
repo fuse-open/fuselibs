@@ -123,14 +123,14 @@ namespace Fuse.Elements
 			get 
 			{ 
 				if (!HasVisualChildren) return null;
-				return  GetZOrderChild(0);
+				return FirstChild<Visual>();
 			}
 			set 
 			{ 
 				if (RootVisual != value)
 				{
 					while (HasVisualChildren)
-						Children.Remove(GetZOrderChild(0));
+						Children.Remove(FirstChild<Visual>());
 					Children.Add(value);
 					InvalidateLayout();
 				}
