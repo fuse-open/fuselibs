@@ -351,7 +351,7 @@ namespace DrawRectsTest
 		}
 
 		[Test]
-		[Ignore("Needs macOS message pump", "OSX")]
+		[Ignore("https://github.com/fusetools/fuselibs-public/issues/297")]
 		public void VideoWithMarginDrawRectIsRendered()
 		{
 			try
@@ -418,7 +418,7 @@ namespace DrawRectsTest
 		}
 
 		[Test]
-		[Ignore("Needs macOS message pump", "OSX")]
+		[Ignore("https://github.com/fusetools/fuselibs-public/issues/297")]
 		public void Scale9VideoWithMarginDrawRectIsRendered()
 		{
 			try
