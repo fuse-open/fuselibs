@@ -17,7 +17,6 @@ namespace Fuse.Video.Mono
 		public AVUrlAsset Asset;
 		public AVPlayer Player;
 		public AVPlayerItem PlayerItem;
-		public AVAudioPlayer AudioPlayer;
 		public AVPlayerItemVideoOutput Output;
 		public byte[] Pixels;
 		public int WidthCache = -1;
@@ -63,7 +62,6 @@ namespace Fuse.Video.Mono
 							handle.PlayerItem = AVPlayerItem.FromAsset(handle.Asset);
 							handle.PlayerItem.AddOutput(handle.Output);
 							handle.Player = AVPlayer.FromPlayerItem(handle.PlayerItem);
-							handle.AudioPlayer = Runtime.GetNSObject<AVAudioPlayer>(handle.Player.Handle);
 							PollReadyState(handle, loaded, error);
 						}
 						else
@@ -145,12 +143,12 @@ namespace Fuse.Video.Mono
 
 		public static float GetVolume(VideoHandle handle)
 		{
-			return handle.AudioPlayer.Volume;	
+			return handle.Player.Volume;	
 		}
 
 		public static void SetVolume(VideoHandle handle, float volume)
 		{
-			handle.AudioPlayer.Volume = volume;
+			handle.Player.Volume = volume;
 		}
 
 		public static void Stop(VideoHandle handle)
@@ -177,10 +175,7 @@ namespace Fuse.Video.Mono
 		}
 		
 		public static void Dispose(VideoHandle handle)
-		{
-			if (handle.AudioPlayer != null)
-				handle.AudioPlayer.Dispose();
-			
+		{	
 			if (handle.Player != null)
 				handle.Player.Dispose();
 			
