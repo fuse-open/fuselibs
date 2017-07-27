@@ -37,7 +37,13 @@ namespace Fuse.Reactive
 				}
 				public void Perform()
 				{
-					_obj[_key] = _value;
+					if (_obj.ContainsKey("$requestChange")) {
+						((Scripting.Function)_obj["$requestChange"]).Call(_key, _value);
+					}
+					else
+					{
+						_obj[_key] = _value;
+					}
 				}
 			}
 

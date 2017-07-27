@@ -6,12 +6,18 @@ function ComponentStore(source)
 {
     instrument(this, this, [], source)
 
+    var subscribers = []
+
+    this.subscribe = function(callback) {
+        subscribers.push(callback);
+    }
+
     function instrument(store, node, path, state)
     {
         for (var k in state) {
             var v = state[k];
             if (v instanceof Function) {
-                node[k] = wrapFunction(v);
+                node[k] = wrapFunction(k, v);
                 state[k] = node[k];
             }
             else if (v instanceof Array) {
@@ -26,9 +32,8 @@ function ComponentStore(source)
             }
         }
 
-        function wrapFunction(func) {
-            if (func.$isWrapped) { return func; }
-
+        function wrapFunction(name, func) {
+            
             var f = function() {
                 func.apply(state, arguments);
                 dirty();
@@ -50,31 +55,63 @@ function ComponentStore(source)
             isDirty = false;
             for (var k in state) {
                 var v = state[k];
-                if (v instanceof Function) {
-                    node[k] = wrapFunction(v);
-                    state[k] = node[k];
-                }
-                else if (v instanceof Array) {
-                    if (v.length == node[k].length && 'diff' in node[k]) { node[k].diff(); }
-                    else 
-                    {
-                        node[k] = instrument(store, [], path.concat(k), v);
-                        TreeObservable.set.apply(store, path.concat(k, [node[k]]));
-                    }
-                }
-                else if (v instanceof Object) {
-                    if ('diff' in node[k]) { node[k].diff(); }
-                    else {
-                        node[k] = instrument(store, {}, path.concat(k), v);
-                        TreeObservable.set.apply(store, path.concat(k, node[k]));
-                    }
-                }
-                else if (v != node[k])
-                {
-                    TreeObservable.set.apply(store, path.concat(k, v));
-                    node[k] = v;
+                update(k, v);
+            }
+        }
+
+        node.$requestChange = function(key, value) {
+
+            var changeAccepted = true;
+            if ('$requestChange' in state) {
+                changeAccepted = state.$requestChange(key, value);
+            }
+
+            if (changeAccepted) {
+                state[key] = value;
+                set(key, value);
+            }
+
+            node.diff();
+        }
+
+        function update(key, value)
+        {
+            if (value instanceof Function) {
+                if (!value.$isWrapped) {
+                    state[key] = wrapFunction(k, value)
+                    set(key, state[key]); 
                 }
             }
+            else if (value instanceof Array) {
+                if (value.length == node[key].length && 'diff' in node[key]) { node[key].diff(); }
+                else { set(key, instrument(store, [], path.concat(key), value)); }
+            }
+            else if (value instanceof Object) {
+                if ('diff' in node[key]) { node[key].diff(); }
+                else { set(key, instrument(store, {}, path.concat(key), value));  }
+            }
+            else if (value !== node[key])
+            {
+                node[key] = value;
+                set(key, value);
+            }
+        }
+
+        function set(key, value) 
+        {
+            node[key] = value;
+
+            var argPath = path.concat(key, value instanceof Array ? [value] : value);
+            TreeObservable.set.apply(store, argPath);
+
+            var msg = {
+                operation: "set",
+                path: path,
+                key: key,
+                value: value
+            }
+
+            for (var s of subscribers) s.call(store, msg);
         }
 
         return node;
