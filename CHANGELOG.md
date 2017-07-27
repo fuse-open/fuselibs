@@ -9,6 +9,9 @@
 ## Ellipse
 - Added missing hit testing from `Ellipse`. If you relied on there not being any hit testing on an ellipse add `HitTestMode="None"`
 
+## Video
+- Xamarin Mac was upgraded to support 64-bit executables on macOS.
+
 ## Trigger
 - Fixed an issue where certain triggers would not skip their animation/actions as part of the Bypass phase. This will not likely affect many projects, but may resolve some spurious issues where animations did not bypass under certain conditions.
 - Fixed an issue where `WhileVisibleInScrollView` did not respect the Bypass phase for element layout.
