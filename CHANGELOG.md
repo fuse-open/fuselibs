@@ -75,6 +75,9 @@
 ## WhileVisibleInScrollView
 - Added `How` property to `WhileVisibleInScrollView` trigger that accepts values `Partial` (default) and `Full`. When set to `Full`, the trigger is only active when the whole element bounds are inside view.
 
+## WebSocket
+- Fixed connection problems on ios devices.
+
 
 # 1.1
 
