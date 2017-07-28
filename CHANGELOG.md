@@ -38,6 +38,7 @@
 - To improve rendering speed, Fuse no longer checks for OpenGL errors in release builds in some performance-critical code paths  
 - Improved perceived ScrollView performance by preventing caching while pointers are pressed on them, avoiding inconsistent framerates.
 - Fixed a bug which prevented elements like `Image` to use fast-track rendering in trivial cases with opacity (avoids render to texture).
+- Optimized how bounding boxes are calculated (improves layout and rendering performance).
 
 ## Multitouch
 - Fixed issue where during multitouch all input would stop if one finger was lifted.
