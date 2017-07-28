@@ -1,4 +1,5 @@
 using Uno;
+using Uno.Time;
 
 namespace Experimental.Http.Internal
 {
@@ -9,7 +10,7 @@ namespace Experimental.Http.Internal
 			get
 			{
 				//rough timestamp
-				var d = DateTime.Now;
+				var d = ZonedDateTime.Now;
 				var mon = (d.Year - 2000) * 12 + d.Month;
 				var day = (mon * 31) + d.Day;
 				var hour = (day * 24) + d.Hour;
