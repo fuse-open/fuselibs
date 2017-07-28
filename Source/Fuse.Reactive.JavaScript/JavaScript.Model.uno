@@ -28,39 +28,20 @@ namespace Fuse.Reactive
                 js = new JavaScript(_dummyNameTable);
                 js.FileName = "(model-script)";
                 v.Properties.Set(_modelHandle, js);
-                v.Children.Add(js);
             }
             return js;
         }
 
-        static void RemoveModelScript(Visual v)
-        {
-            var script = v.Properties.Get(_modelHandle) as JavaScript;
-            if (script != null)
-            {
-                v.Children.Remove(script);
-                v.Properties.RemoveFromList(_modelHandle, script);
-            }
-        }
-
         [UXAttachedPropertySetter("JavaScript.Model")]
-        public static void SetModel(Visual v, string model)
+        public static void SetModel(Visual v, IExpression model)
         {
-            if (string.IsNullOrEmpty(model))
-                RemoveModelScript(v);
-            else
-            {
-                var js = GetModelScript(v);
-                js.Code = "var ComponentStore = require('FuseJS/ComponentStore');\n"+
-                          "var model = require('" + model + "');\n"+
-                          "module.exports = new ComponentStore(new model());";
-            }
+            var js = GetModelScript(v);
+            SetupModel(v.Children, js, model);
         }
 
         static JavaScript _appModel;
-
         [UXAttachedPropertySetter("Model")]
-        public static void SetModel(AppBase app, string model)
+        public static void SetModel(AppBase app, IExpression model)
         {
             MakeDummyNameTable();
             if (_appModel == null)
@@ -68,17 +49,43 @@ namespace Fuse.Reactive
                 _appModel = new JavaScript(_dummyNameTable);
                 _appModel.FileName = "(model-script)";
             }
+            SetupModel(app.Children, _appModel, model);
+        }
 
-            if (string.IsNullOrEmpty(model))
-                app.Children.Remove(_appModel);
-            else
+        static void SetupModel(IList<Node> children, JavaScript js, IExpression model)
+        {
+            children.Remove(js);
+            js.Dependencies.Clear();
+
+            string module;
+            string argString = "";
+            if (model is Fuse.Reactive.Name)
             {
-                app.Children.Add(_appModel);
-
-                _appModel.Code = "var ComponentStore = require('FuseJS/ComponentStore');\n"+
-                          "var model = require('" + model + "');\n"+
-                          "module.exports = new ComponentStore(new model());";
+                module = ((Fuse.Reactive.Name)model).Identifier;
+                
             }
+            else if (model is Fuse.Reactive.NamedFunctionCall)
+            {
+                var nfc = (Fuse.Reactive.NamedFunctionCall)model;
+                module = nfc.Name;
+
+                for (int i = 0; i < nfc.Arguments.Count; i++)
+                {
+                    var argName = "__dep" + i;
+                    js.Dependencies.Add(new Dependency(argName, nfc.Arguments[i]));
+                    if (i > 0) argString = argString + ", ";
+                    argString += argName;
+                }
+            }
+            else throw new Exception("Unsupported Model expression");
+
+            js.Code = "var ComponentStore = require('FuseJS/ComponentStore');\n"+
+                    "var model = require('" + module + "');\n"+
+                    "console.log('eval!');" +
+                    "module.exports = new ComponentStore(new model(" + argString + "));";
+
+            debug_log "adding !";
+            children.Add(js);            
         }
     }
 }
