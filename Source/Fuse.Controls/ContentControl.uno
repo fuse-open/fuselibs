@@ -21,7 +21,7 @@ namespace Fuse.Controls
 		{
 			get 
 			{ 
-				return FirstVisualChild as Element;
+				return FirstChild<Visual>() as Element;
 			}
 			set
 			{

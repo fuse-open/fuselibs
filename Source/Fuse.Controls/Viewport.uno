@@ -123,14 +123,14 @@ namespace Fuse.Elements
 			get 
 			{ 
 				if (!HasVisualChildren) return null;
-				return  GetZOrderChild(0);
+				return FirstChild<Visual>();
 			}
 			set 
 			{ 
 				if (RootVisual != value)
 				{
 					while (HasVisualChildren)
-						Children.Remove(GetZOrderChild(0));
+						Children.Remove(FirstChild<Visual>());
 					Children.Add(value);
 					InvalidateLayout();
 				}
@@ -314,7 +314,7 @@ namespace Fuse.Elements
 			var mx = FrustumViewport.GetFlatWorldToVisualTransform(ActualSize);
 			//the result should be flat, so force it to smooth out floating point precision issues
 			//having it flat enables optimizations elsehwere in rendering/hit testing
-			var q = vb.TransformFlatten(mx);
+			var q = vb.TransformFlatten(FastMatrix.FromFloat4x4(mx));
 			return q;
 		}
 		

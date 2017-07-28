@@ -103,7 +103,7 @@ namespace Fuse.Controls
 			var count = _pageProgress.PageCount;
 
 			while (VisualChildCount > count)
-				Children.Remove(LastVisualChild);
+				Children.Remove(LastChild<Visual>());
 
 			while (VisualChildCount < count)
 			{
