@@ -2,7 +2,7 @@
 
 var TreeObservable = require("FuseJS/TreeObservable")
 
-function ComponentStore(source) 
+function ComponentStore(source)
 {
     instrument(this, null, this, [], source)
 
@@ -14,21 +14,23 @@ function ComponentStore(source)
 
     function instrument(store, parentNode, node, path, state)
     {
+        node.$isClass = false;
         for (var k in state) {
             var v = state[k];
             if (v instanceof Function) {
                 node[k] = wrapFunction(k, v);
                 state[k] = node[k];
+                node.$isClass = true;
             }
             else if (v instanceof Array) {
                 node[k] = instrument(store, node, [], path.concat(k), v);
             }
-            else if (v instanceof Object) { 
+            else if (v instanceof Object) {
                 node[k] = instrument(store, node, {}, path.concat(k), v);
             }
             else
             {
-                node[k] = v; 
+                node[k] = v;
             }
         }
 
@@ -45,12 +47,10 @@ function ComponentStore(source)
                 if (p === "constructor") { continue; }
                 var value = state[p];
                 if (value instanceof Function) {
-                    console.log("registering method " + p)
                     node[p] = wrapFunction(p, value);
                 }
                 else if (descs[p].get instanceof Function)
                 {
-                    console.log("registering property " + p)
                     node[p] = value;
                     propGetters[p] = function() { return state[p]; }
                 }
@@ -70,7 +70,7 @@ function ComponentStore(source)
         }
 
         function wrapFunction(name, func) {
-            
+
             var f = function() {
                 func.apply(state, arguments);
                 dirty();
@@ -89,7 +89,7 @@ function ComponentStore(source)
         }
 
         node.diff = function() {
-            node.evaluateDerivedProps();
+            node.evaluateDerivedProps(); // Consider calling this after seeing whether or not any changes have been detected
             isDirty = false;
             for (var k in state) {
                 var v = state[k];
@@ -98,7 +98,6 @@ function ComponentStore(source)
         }
 
         node.$requestChange = function(key, value) {
-
             var changeAccepted = true;
             if ('$requestChange' in state) {
                 changeAccepted = state.$requestChange(key, value);
@@ -106,7 +105,7 @@ function ComponentStore(source)
 
             if (changeAccepted) {
                 state[key] = value;
-                set(key, value);
+                setInternal(key, value);
             }
 
             node.diff();
@@ -117,7 +116,7 @@ function ComponentStore(source)
             if (value instanceof Function) {
                 if (!value.$isWrapped) {
                     state[key] = wrapFunction(k, value)
-                    set(key, state[key]); 
+                    set(key, state[key]);
                 }
             }
             else if (value instanceof Array) {
@@ -125,7 +124,11 @@ function ComponentStore(source)
                 else { set(key, instrument(store, node, [], path.concat(key), value)); }
             }
             else if (value instanceof Object) {
-                if ('diff' in node[key]) { node[key].diff(); }
+                if ('diff' in node[key]) {
+                    if (node.$isClass === false) {
+                        node[key].diff();
+                    }
+                }
                 else { set(key, instrument(store, node, {}, path.concat(key), value));  }
             }
             else if (value !== node[key])
@@ -134,13 +137,17 @@ function ComponentStore(source)
             }
         }
 
-        function set(key, value) 
+        function set(key, value)
         {
-            if (node[key] === value) { return; }
-            node[key] = value;
+            if (!setInternal(key, value)) { return; }
 
             var argPath = path.concat(key, value instanceof Array ? [value] : value);
             TreeObservable.set.apply(store, argPath);
+        }
+
+        function setInternal(key, value) {
+            if (node[key] === value) { return false; }
+            node[key] = value;
 
             var msg = {
                 operation: "set",
@@ -150,6 +157,7 @@ function ComponentStore(source)
             }
 
             for (var s of subscribers) s.call(store, msg);
+            return true;
         }
 
         return node;

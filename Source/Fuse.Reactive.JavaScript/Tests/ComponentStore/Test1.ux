@@ -1,0 +1,26 @@
+<Panel ux:Class="UX.ComponentStore.Test1">
+    <JavaScript>
+        class TestClass {
+            constructor() {
+                this.isSet = false;
+            }
+
+            get flipped() {
+                return !this.isSet;
+            }
+            set flipped(value) {
+                this.isSet = !value;
+            }
+        }
+        var ComponentStore = require("FuseJS/ComponentStore")
+        var store = new ComponentStore(new TestClass());
+
+        store.subscribe(function (v) {
+            console.log(JSON.stringify(v));
+        });
+
+        module.exports = store;
+    </JavaScript>
+    <Switch ux:Name="mySwitch" Value="{isSet}" />
+    <Switch ux:Name="myFlippedSwitch" Value="{flipped}" />
+</Panel>
