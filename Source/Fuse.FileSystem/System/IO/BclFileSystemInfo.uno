@@ -1,3 +1,4 @@
+using Uno;
 using Uno.Compiler.ExportTargetInterop;
 
 namespace Fuse.FileSystem
@@ -9,8 +10,8 @@ namespace Fuse.FileSystem
         public extern BclFileAttributes Attributes { get; }
         public extern void Refresh();
         public extern bool Exists { get; }
-        public extern BclDateTime LastAccessTimeUtc { get; }
-        public extern BclDateTime LastWriteTimeUtc { get; }
-        public extern BclDateTime CreationTimeUtc { get; }
+        public extern DateTime LastAccessTimeUtc { get; }
+        public extern DateTime LastWriteTimeUtc { get; }
+        public extern DateTime CreationTimeUtc { get; }
     }
 }
