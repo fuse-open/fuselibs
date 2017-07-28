@@ -81,10 +81,8 @@ namespace Fuse.Reactive
 
             js.Code = "var ComponentStore = require('FuseJS/ComponentStore');\n"+
                     "var model = require('" + module + "');\n"+
-                    "console.log('eval!');" +
                     "module.exports = new ComponentStore(new model(" + argString + "));";
 
-            debug_log "adding !";
             children.Add(js);            
         }
     }
