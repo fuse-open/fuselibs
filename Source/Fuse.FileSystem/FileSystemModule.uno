@@ -950,9 +950,9 @@ namespace Fuse.FileSystem
 		}
 
 
-		private static object ToScriptingDate(Context context, ZonedDateTime time)
+		private static object ToScriptingDate(Context context, DateTime time)
 		{
-			var msSinceUnixEpoch = ((time.ToInstant() - Uno.Time.Constants.UnixEpoch).Ticks)
+			var msSinceUnixEpoch = ((time._time.ToInstant() - Uno.Time.Constants.UnixEpoch).Ticks)
 										/ Uno.Time.Constants.TicksPerMillisecond;
 			return context.Evaluate("(Date Converter)", string.Format("new Date({0})", msSinceUnixEpoch));
 		}

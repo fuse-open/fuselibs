@@ -1,6 +1,5 @@
 using Uno;
 using Uno.Compiler.ExportTargetInterop;
-using Uno.Time;
 
 namespace Fuse.FileSystem
 {
@@ -18,11 +17,10 @@ namespace Fuse.FileSystem
     [Require("Source.Include", "Uno/Support.h")]
     extern(MSVC) internal static class FileStatusHelpers
     {
-        extern(MSVC) private static ZonedDateTime FileTimeToZoned(uint fileTimeHigh, uint fileTimeLow)
+        extern(MSVC) private static DateTime FileTimeToZoned(uint fileTimeHigh, uint fileTimeLow)
         {
-            var fileTime = ((ulong)fileTimeHigh << 32) | fileTimeLow;
-            var instant = FileStatus.FileTimeEpoch.PlusTicks((long)fileTime);
-            return new ZonedDateTime(instant, DateTimeZone.Utc);
+            var fileTime = ((long)fileTimeHigh << 32) | fileTimeLow;
+            return DateTime.FromFileTimeUtc(fileTime);
         }
 
 
@@ -51,7 +49,7 @@ namespace Fuse.FileSystem
             if (data.dwFileAttributes & FILE_ATTRIBUTE_REPARSE_POINT)
                 attributes |= @{FileAttributes.ReparsePoint};
 
-            return @{FileStatus(long, FileAttributes, ZonedDateTime, ZonedDateTime, ZonedDateTime):New(
+            return @{FileStatus(long, FileAttributes, DateTime, DateTime, DateTime):New(
                 size,
                 attributes,
                 // CreationTime

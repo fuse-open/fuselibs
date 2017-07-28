@@ -31,28 +31,15 @@ namespace Fuse.FileSystem
         }
 
 
-        private static ZonedDateTime ConvertTime(object time)
-        {
-            if defined(DOTNET)
-            {
-                var dt = (BclDateTime)time;
-                var instant = Constants.BclEpoch.PlusTicks(dt.Ticks);
-                return new ZonedDateTime(instant, DateTimeZone.Utc);
-            }
-            else
-                return (ZonedDateTime)time;
-        }
-
-
         public FileAttributes Attributes { get { return (FileAttributes)Status.Attributes; } }
 
         public bool Exists { get { return Status.Exists; } }
 
         public string FullName { get { return _fullPath; } }
 
-        public ZonedDateTime LastAccessTimeUtc { get { return ConvertTime(Status.LastAccessTimeUtc); } }
+        public DateTime LastAccessTimeUtc { get { return Status.LastAccessTimeUtc; } }
 
-        public ZonedDateTime LastWriteTimeUtc { get { return ConvertTime(Status.LastWriteTimeUtc); } }
+        public DateTime LastWriteTimeUtc { get { return Status.LastWriteTimeUtc; } }
 
 
         extern(!DOTNET) private FileStatus _status;
