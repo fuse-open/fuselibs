@@ -48,7 +48,7 @@ namespace Fuse.Reactive.Test
 				_listeners[i].Observer.OnPropertyChanged(_listeners[i], key, value);
 		}
 
-		public IDisposable Subscribe(IPropertyObserver observer)
+		public IPropertySubscription Subscribe(IPropertyObserver observer)
 		{
 			var sub = new Subscription(this, observer);
 			_listeners.Add(sub);
@@ -57,7 +57,7 @@ namespace Fuse.Reactive.Test
 
 		List<Subscription> _listeners = new List<Subscription>();
 
-		class Subscription: IDisposable
+		class Subscription: IPropertySubscription
 		{
 			TestData _td;
 			public readonly IPropertyObserver Observer;
@@ -65,6 +65,10 @@ namespace Fuse.Reactive.Test
 			{
 				_td = td;
 				Observer = observer;
+			}
+			public bool TrySetExclusive(string propertyName, object newValue)
+			{
+				throw new Exception();
 			}
 			public void Dispose()
 			{
