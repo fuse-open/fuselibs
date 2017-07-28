@@ -96,7 +96,7 @@ namespace Fuse.Reactive
 				for (var i = 0; i < _dependencies.Count; i++)
 					_dependencies[i].Subscribe(this);
 
-			DispatchEvaluateIfDependenciesReady();
+			if (_dependencies.Count == 0) DispatchEvaluateIfDependenciesReady();
 		}
 
 		void DisposeDependencySubscriptions()
