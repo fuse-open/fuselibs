@@ -7,15 +7,9 @@ namespace Fuse.Reactive
 	{
 		public IExpression Key { get; private set; }
 
-		[WeakReference]
-		NameTable _nameTable;
-		public NameTable NameTable { get { return _nameTable; } }
-
-
-		protected ExpressionBinding(IExpression key, NameTable nameTable)
+		protected ExpressionBinding(IExpression key)
 		{
 			Key = key;
-			_nameTable = nameTable;
 		}
 
 		IDisposable _expressionSub;
