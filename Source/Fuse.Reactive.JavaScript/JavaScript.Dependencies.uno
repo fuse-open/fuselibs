@@ -149,7 +149,5 @@ namespace Fuse.Reactive
 		{
 			return new ResourceSubscription(source, this, key, listener, typeof(object));
 		}
-
-		NameTable IContext.NameTable { get { return _nameTable; } }
 	}
 }
