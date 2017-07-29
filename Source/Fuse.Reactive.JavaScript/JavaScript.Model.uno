@@ -52,22 +52,18 @@ namespace Fuse.Reactive
             SetupModel(app.Children, _appModel, model);
         }
 
-        static void SetupModel(IList<Node> children, JavaScript js, IExpression model)
+        static string ParseModelExpression(IExpression exp, JavaScript js, ref string argString)
         {
-            children.Remove(js);
-            js.Dependencies.Clear();
-
-            string module;
-            string argString = "";
-            if (model is Fuse.Reactive.Name)
+            if (exp is Data) return ((Data)exp).Key;
+            else if (exp is Divide)
             {
-                module = ((Fuse.Reactive.Name)model).Identifier;
-                
+                var left = ParseModelExpression(((Divide)exp).Left, js, ref argString);
+                var right = ParseModelExpression(((Divide)exp).Right, js, ref argString);
+                return left + "/" + right;
             }
-            else if (model is Fuse.Reactive.NamedFunctionCall)
+            else if (exp is Fuse.Reactive.NamedFunctionCall)
             {
-                var nfc = (Fuse.Reactive.NamedFunctionCall)model;
-                module = nfc.Name;
+                var nfc = (Fuse.Reactive.NamedFunctionCall)exp;
 
                 for (int i = 0; i < nfc.Arguments.Count; i++)
                 {
@@ -76,9 +72,20 @@ namespace Fuse.Reactive
                     if (i > 0) argString = argString + ", ";
                     argString += argName;
                 }
-            }
-            else throw new Exception("Unsupported Model expression");
 
+                return nfc.Name;
+            }
+            else throw new Exception("Invalid Model path expression: " + exp);
+        }
+
+        static void SetupModel(IList<Node> children, JavaScript js, IExpression model)
+        {
+            children.Remove(js);
+            js.Dependencies.Clear();
+
+            string argString = "";
+            string module = ParseModelExpression(model, js, ref argString);
+            
             js.Code = "var ComponentStore = require('FuseJS/ComponentStore');\n"+
                     "var model = require('" + module + "');\n"+
                     "module.exports = new ComponentStore(new model(" + argString + "));";
