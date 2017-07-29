@@ -34,46 +34,6 @@ namespace Fuse.Reactive
 		}
 	}
 
-	public sealed class Name: ConstantExpression
-	{
-		public string Identifier { get; private set; }
-		[UXConstructor]
-		public Name([UXParameter("Identifier")] string identifier) { Identifier = identifier; }
-
-		public override object GetValue(IContext context)
-		{
-			if (context.NameTable != null)
-			{
-				var obj = context.NameTable[Identifier];
-				if (obj != null) return obj;
-			}
-			throw new Exception("Named object not found: " + Identifier);
-		}
-
-		public override string ToString()
-		{
-			return Identifier;
-		}
-	}
-
-	public sealed class This: ConstantExpression
-	{
-		public override object GetValue(IContext context)
-		{
-			if (context.NameTable != null)
-			{
-				var obj = context.NameTable.This;
-				if (obj != null) return obj;
-			}
-			throw new Exception("Name table missing 'this' pointer");
-		}
-
-		public override string ToString()
-		{
-			return "this";
-		}
-	}
-
 	public sealed class Data: Expression
 	{
 		public string Key { get; private set; }

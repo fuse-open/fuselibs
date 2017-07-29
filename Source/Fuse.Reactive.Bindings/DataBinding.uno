@@ -53,8 +53,7 @@ namespace Fuse.Reactive
 		public DataBinding(
 			[UXParameter("Target")] Uno.UX.Property target, 
 			[UXParameter("Key"), UXVerbatim] IExpression key, 
-			[UXAutoNameTable, UXParameter("NameTable")] NameTable nameTable,
-			[UXParameter("Mode"), UXDefaultValue("Default")] BindingMode mode): base(key, nameTable)
+			[UXParameter("Mode"), UXDefaultValue("Default")] BindingMode mode): base(key)
 		{
 			_mode = mode;
 			Target = target;
@@ -319,14 +318,14 @@ namespace Fuse.Reactive
 	{
 		[UXConstructor]
 		public PropertyBinding([UXParameter("Target")] Uno.UX.Property target, [UXParameter("Source")] Uno.UX.Property source) 
-			: base(target, new Reactive.Property(new Constant(source.Object), source), null, BindingMode.Default) {}
+			: base(target, new Reactive.Property(new Constant(source.Object), source), BindingMode.Default) {}
 	}
 
 	public class ResourceBinding: DataBinding
 	{
 		[UXConstructor]
 		public ResourceBinding([UXParameter("Target")] Uno.UX.Property target, [UXParameter("Key")] string key) 
-			: base(target, new Reactive.Resource(key), null, BindingMode.Default) {}
+			: base(target, new Reactive.Resource(key), BindingMode.Default) {}
 	}
 
 	
