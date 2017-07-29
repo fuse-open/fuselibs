@@ -24,9 +24,6 @@ namespace Fuse.Reactive
 
 		/** The closest enclosing node of this context */
 		Node Node { get; }
-
-		/** The name table for this context */
-		NameTable NameTable { get; }
 	}
 
 	/** Represents a subscription that might support write-back. */
