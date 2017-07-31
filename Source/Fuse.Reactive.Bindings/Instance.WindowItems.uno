@@ -98,7 +98,6 @@ namespace Fuse.Reactive
 				}
 			}
 
-			//TODO: this seems like it's in the wrong location
 			//remove whatever is leftover
 			RemovePendingAvailableItems();
 			return false;
@@ -335,6 +334,7 @@ namespace Fuse.Reactive
 			//The pendingNew handler will have to clear the remaining nodes
 			if (!_pendingNew)	
 				RemovePendingAvailableItems();
+			_pendingAvailableItems = false;
 		}
 		
 		void RemovePendingAvailableItems()
