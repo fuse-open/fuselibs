@@ -150,12 +150,12 @@ namespace Fuse.Reactive
 
 		Scripting.Function _observeChange;
 
-		internal Observable(ThreadWorker worker, Scripting.Object obj, bool supressCallback): base(obj)
+		internal Observable(ThreadWorker worker, Scripting.Object obj, bool suppressCallback): base(obj)
 		{
 			_worker = worker;
 			_observable = obj;
 			_observeChange = worker.Context.CallbackToFunction((Scripting.Callback)ObserveChange);
-			obj.CallMethod("addSubscriber", _observeChange, supressCallback);
+			obj.CallMethod("addSubscriber", _observeChange, suppressCallback);
 		}
 
 		internal static Observable Create(ThreadWorker worker)
