@@ -2,6 +2,9 @@
 
 # 1.2
 
+## Each
+- Fixed an issue where removing an element would not actually remove the element
+
 ## Image
 - Fixed issue where an `<Image />` could fail to display inside a `<NativeViewHost />` on iOS
 
