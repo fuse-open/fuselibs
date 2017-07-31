@@ -10,6 +10,8 @@ namespace Fuse.Scripting
 	public interface IThreadWorker
 	{
 		Function Observable { get; }
+		Function Date { get; }
+		Function DateCtor { get; }
 		IDispatcher Dispatcher { get; }
 		object Unwrap(object obj);
 		object Wrap(object obj);
@@ -81,6 +83,11 @@ namespace Fuse.Scripting
 		public Function Observable
 		{
 			get { return _worker.Observable; }
+		}
+
+		public Function Date
+		{
+			get { return _worker.Date; }
 		}
 
 		Function _identity;

@@ -11,6 +11,8 @@ namespace Fuse.Reactive
 	{
 		IDispatcher IThreadWorker.Dispatcher { get { return this; } }
 		Function IThreadWorker.Observable { get { return FuseJS.Observable; } }
+		Function IThreadWorker.Date { get { return FuseJS.Date; } }
+		Function IThreadWorker.DateCtor { get { return FuseJS.DateCtor; } }
 
 		internal static Context CreateContext(IThreadWorker worker)
 		{

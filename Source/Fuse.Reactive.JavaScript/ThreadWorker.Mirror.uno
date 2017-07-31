@@ -60,6 +60,10 @@ namespace Fuse.Reactive
 				{
 					return new Observable(this, o, false);
 				}
+				else if (o.InstanceOf(Context.Date))
+				{
+					return new Date(o);
+				}
 				else
 				{
 					return new ObjectMirror(this, o);	
