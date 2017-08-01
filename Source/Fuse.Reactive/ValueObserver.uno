@@ -15,9 +15,13 @@ namespace Fuse.Reactive
 
 		public IObservable Observable { get { return _obs; } }
 
+		/** Calling this method will push the current `value[0]` if available, and then
+			subscribe to changes.
+		*/
 		protected void Subscribe(IObservable obs)
 		{
 			_obs = obs;
+			if (obs.Length > 0) PushData(obs[0]);
 			_obsSub = obs.Subscribe(this);
 		}
 
