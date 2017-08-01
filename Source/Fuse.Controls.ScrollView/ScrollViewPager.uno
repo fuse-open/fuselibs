@@ -8,10 +8,40 @@ namespace Fuse.Controls
 	public class ScrollViewPagerArgs : EventArgs
 	{
 	}
-	
-	public class ScrollViewPager : Behavior, IPropertyListener
+
+	/**
+		Paging and loading manager for a list of items. Allows a large, or infinite list, to be displayed in a `ScrollView`.
+		
+		This controls the `Each.Offset` and `Each.Limit` values while using `Each` within a `ScrollView`. It limits the number of items actually displayed to improve performance.
+		
+		The setup that works now is with a `StackPanel` (Horizontal or Vertical)
+		
+			<ScrollView LayoutMode="PreserveVisual">
+				<StackPanel>
+					<Each Items="{items}" Reuse="Frame" ux:Name="theEach">
+						<Panel Color="#AAA">
+							<Text Value="{title}"/>
+						</Panel>
+					</Each>
+				</StackPanel>
+				
+				<ScrollViewPager Each="theEach" ReachedEnd="{loadMore}"/>
+			</ScrollView>
+			
+		It's required that `LayoutMode="PreserveVisual"` is used, otherwise the scrolling will not function correctly. `Reuse="Frame"` is optional but recommended: it improves performance be reusing objects.
+		
+		`ReachedEnd` is called when the true end of the list is reached and more data is required. It's actually called somewhat before the end is reached, starting any loading before the user reaches the end. There is also a `RechedStart` to allow loading when scrolling the opposite direction.  Neither of these callbacks are mandatory; `ScrollViewPager` is also helpful for displaying large static lists.
+		
+		@experimental
+	*/
+	public partial class ScrollViewPager : Behavior, IPropertyListener
 	{
 		int _retain = 3;
+		/**
+			An approximate number of pages to retain. The size of the visible part of the `ScrollView` is the page size. Enough items to fill multiple amounts of this size are kept around. The rest are discarded.
+			
+			The default of `3` is about as low as you can go to not interrupt common scrolling. If you have small scrollable list, or expect the user to fling often, you may increase this value.
+		*/
 		public int Retain
 		{
 			get { return _retain; }
@@ -23,7 +53,10 @@ namespace Fuse.Controls
 				_retain = value;
 			}
 		}
-		
+
+		/**
+			When scrolled to this number of pages from the end the `ReachedStart` or `ReachedEnd` event will be raised.
+		*/
 		float _endRange = 0.75f;
 		public float EndRange
 		{
@@ -38,6 +71,9 @@ namespace Fuse.Controls
 		}
 		
 		Each _each;
+		/**
+			The `Each` instance to control. This parameter is required.
+		*/
 		public Each Each 
 		{
 			get { return _each; }
@@ -108,8 +144,14 @@ namespace Fuse.Controls
 
 		public delegate void ScrollViewPagerHandler(object s, ScrollViewPagerArgs args);
 		
+		/**
+			Raised when the `ScrollView` comes near the end of the data.
+		*/
 		public event ScrollViewPagerHandler ReachedEnd;
 		
+		/**
+			Raised when the `ScrollView` comes near the start of the data.
+		*/
 		public event ScrollViewPagerHandler ReachedStart;
 		
 		bool _nearTrueEnd;
