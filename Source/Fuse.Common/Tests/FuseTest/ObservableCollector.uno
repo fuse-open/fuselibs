@@ -55,6 +55,7 @@ namespace FuseTest
 			CleanSubscription();
 			if (_items == null)
 				return;
+			OnNewAll(_items);
 			_subscription = (Uno.IDisposable)_items.Subscribe(this);
 		}
 		
@@ -78,6 +79,11 @@ namespace FuseTest
 		}
 
 		void IObserver.OnNewAll(IArray values)
+		{
+			OnNewAll(values);
+		}
+
+		void OnNewAll(IArray values)
 		{
 			this.Failed = false;
 			_values.Clear();
