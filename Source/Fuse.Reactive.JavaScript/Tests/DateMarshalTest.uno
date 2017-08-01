@@ -3,6 +3,7 @@ using Uno.Collections;
 using Uno.UX;
 using Uno.Testing;
 
+using Fuse;
 using Fuse.Controls;
 using Fuse.Navigation;
 using Fuse.Scripting;
@@ -30,6 +31,22 @@ namespace Fuse.Reactive.Test
 			var newDt = new DateTime(dt.Ticks + oneHourInDotNetTicks, dt.Kind);
 
 			return c.Unwrap(newDt);
+		}
+	}
+
+	public class DateMarshalTestScriptClass : Node
+	{
+		static DateMarshalTestScriptClass()
+		{
+			ScriptClass.Register(typeof(DateMarshalTestScriptClass),
+				new ScriptMethod<DateMarshalTestScriptClass>("setDateTime", SetDateTime, ExecutionThread.MainThread));
+		}
+
+		public DateTime DateTime { get; set; }
+
+		static void SetDateTime(Context c, DateMarshalTestScriptClass self, object[] args)
+		{
+			self.DateTime = (DateTime)c.Wrap(args[0]);
 		}
 	}
 
@@ -76,6 +93,21 @@ namespace Fuse.Reactive.Test
 			{
 				e.CallTest.Perform();
 				root.StepFrameJS();
+			}
+		}
+
+		[Test]
+		public void PassDateToScriptClassAsDateTime()
+		{
+			var e = new UX.DateMarshal.PassDateToScriptClass();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				e.CallTest.Perform();
+				root.StepFrameJS();
+
+				// Expected date/time (UTC): January 3 1337 03:07:13.371
+				const long expectedTicks = 421602736333710000L;
+				Assert.AreEqual(e.ScriptClassInstance.DateTime, new DateTime(expectedTicks, DateTimeKind.Utc));
 			}
 		}
 	}
