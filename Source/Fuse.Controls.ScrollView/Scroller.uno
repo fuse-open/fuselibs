@@ -417,6 +417,8 @@ namespace Fuse.Gestures
 			//trust new position and stop any region movement
 			if (!args.IsAdjustment)
 				_region.Reset(args.Value);
+			else if (_region.IsDestination)
+				_region.MoveTo( _region.Destination + args.ArrangeOffset );
 			CheckNeedUpdated(true); //allow remove of Update
 		}
 
