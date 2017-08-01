@@ -1,3 +1,4 @@
+using Fuse.Scripting;
 using Uno;
 using Uno.Collections;
 using Uno.Threading;

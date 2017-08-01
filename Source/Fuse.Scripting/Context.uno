@@ -90,6 +90,11 @@ namespace Fuse.Scripting
 			get { return _worker.Date; }
 		}
 
+		public Function DateCtor
+		{
+			get { return _worker.DateCtor; }
+		}
+
 		Function _identity;
 
 		public Function CallbackToFunction(Callback c)

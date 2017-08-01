@@ -1,3 +1,4 @@
+using Fuse.Scripting;
 using Uno;
 using Uno.Collections;
 using Uno.Text;
@@ -49,7 +50,7 @@ namespace Fuse.Reactive
 			else if (dc is int2) return ToArray((int2)dc);
 			else if (dc is int3) return ToArray((int3)dc);
 			else if (dc is int4) return ToArray((int4)dc);
-			else if (dc is DateTime) return ConvertDateTimeToDate((DateTime)dc);
+			else if (dc is DateTime) return DateTimeConverterHelpers.ConvertDateTimeToJSDate((DateTime)dc, Context);
 			else if (dc.GetType().IsClass) return WrapScriptClass(dc);
 			else if (dc.GetType().IsEnum) return dc.ToString();
 			else return dc;
@@ -83,17 +84,6 @@ namespace Fuse.Reactive
 		Scripting.Array ToArray(int4 v)
 		{
 			return Context.NewArray((double)v.X, (double)v.Y, (double)v.Z, (double)v.W);
-		}
-
-		object ConvertDateTimeToDate(DateTime dt)
-		{
-			var dotNetTicks = dt.Ticks;
-			const long unixEpochInDotNetTicks = 621355968000000000L;
-			var dotNetTicksRelativeToUnixEpoch = dotNetTicks - unixEpochInDotNetTicks;
-			const long dotNetTicksInJsTick = 10000L;
-			var jsTicks = dotNetTicksRelativeToUnixEpoch / dotNetTicksInJsTick;
-
-			return ((Scripting.IThreadWorker)this).DateCtor.Call((double)jsTicks);
 		}
 	}
 }
