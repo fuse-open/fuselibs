@@ -117,6 +117,46 @@ namespace Fuse.Drawing
 				}
 			}
 		}
+		
+		static Selector _scaleOriginName = "ScaleOrigin";
+		float2 _scaleOrigin;
+		/**
+			A normalized offset used to adjust the position on which ScaleFactor is based.
+			
+			Default is 0.5,0.5 (center of the image)
+		*/
+		public float2 ScaleOrigin
+		{
+			get { return _scaleOrigin; }
+			set
+			{
+				if(_scaleOrigin != value)
+				{
+					_scaleOrigin = value;
+					OnPropertyChanged(_scaleOriginName);
+				}
+			}
+		}
+		
+		static Selector _scaleFactorName = "ScaleFactor";
+		float _scaleFactor = 1.0f;
+		/**
+			A nor
+
+			Useful for animating scrolling effects. 
+		*/
+		public float ScaleFactor
+		{
+			get { return _scaleFactor; }
+			set
+			{
+				if(_scaleFactor != value)
+				{
+					_scaleFactor = value;
+					OnPropertyChanged(_scaleFactorName);
+				}
+			}
+		}
 
 		float2 GetSize()
 		{
@@ -130,7 +170,8 @@ namespace Fuse.Drawing
 			public float2 Origin, Size;
 			public float4 UVClip;
 			public Texture2D Texture;
-			public float2 TexCoordBias1, TexCoordBias2, TexCoordScale1, TexCoordScale2, TexCoordOffset;
+			public float2 TexCoordBias1, TexCoordBias2, TexCoordScale1, TexCoordScale2, TexCoordOffset, ScaleOrigin;
+			public float ScaleFactor;
 			public SamplerState SamplerState;
 			public bool NeedFract;
 		}
@@ -201,6 +242,8 @@ namespace Fuse.Drawing
 				dp.NeedFract = false;
 			}
 			dp.TexCoordOffset = _uvOffset;
+			dp.ScaleFactor = _scaleFactor;
+			dp.ScaleOrigin = _scaleOrigin;
 			
 			_drawParams = dp;
 			_lastUsed = Time.FrameTime;
@@ -214,8 +257,12 @@ namespace Fuse.Drawing
 		//translate to/from element position to get the correct UV coordinates based on _container.Sizing
 		float2 ElementPosition: req(TexCoord as float2)
 			CanvasSize * TexCoord;
+		
+		//Apply offset, then scale
 		float2 OurTC: 
-			(ElementPosition - DP.Origin)/DP.Size *(DP.UVClip.ZW - DP.UVClip.XY) + DP.UVClip.XY + DP.TexCoordOffset;
+			((ElementPosition - DP.Origin) / DP.Size * (DP.UVClip.ZW - DP.UVClip.XY) 
+			+ DP.UVClip.XY 
+			+ DP.TexCoordOffset - DP.ScaleOrigin) * DP.ScaleFactor + DP.ScaleOrigin;
 			
 		DrawContext DrawContext: prev, null;
 		DrawParams DP: 
