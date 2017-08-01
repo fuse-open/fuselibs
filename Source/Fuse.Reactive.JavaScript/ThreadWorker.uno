@@ -104,8 +104,6 @@ namespace Fuse.Reactive
 				_ready.Set();
 			}
 
-			UpdateManager.AddAction(ProcessUIMessages);
-
 			double t = Uno.Diagnostics.Clock.GetSeconds();
 
 			while (true)
