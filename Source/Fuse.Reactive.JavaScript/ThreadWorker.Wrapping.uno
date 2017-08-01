@@ -19,7 +19,11 @@ namespace Fuse.Reactive
 			{
 				var sobj = (Scripting.Object)obj;
 
-				if (sobj.ContainsKey("external_object"))
+				if (sobj.InstanceOf(_context.Date))
+				{
+					return DateTimeConverterHelpers.ConvertDateToDateTime(new Date(sobj));
+				}
+				else if (sobj.ContainsKey("external_object"))
 				{
 					var ext = sobj["external_object"] as Scripting.External;
 					if (ext != null) return ext.Object;

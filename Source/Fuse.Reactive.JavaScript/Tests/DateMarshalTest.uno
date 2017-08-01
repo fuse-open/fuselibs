@@ -24,13 +24,12 @@ namespace Fuse.Reactive.Test
 
 		static object AddAnHour(Context c, object[] args)
 		{
-			DateTime dt;
-			DateHelpers.TryConvertJSDateToDateTime(args[0], c, out dt);
+			var dt = (DateTime)c.Wrap(args[0]);
 
 			const long oneHourInDotNetTicks = 36000000000L;
 			var newDt = new DateTime(dt.Ticks + oneHourInDotNetTicks, dt.Kind);
 
-			return DateHelpers.ConvertDateTimeToJSDate(newDt, c);
+			return c.Unwrap(newDt);
 		}
 	}
 

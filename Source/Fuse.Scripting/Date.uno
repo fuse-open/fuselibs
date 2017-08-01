@@ -3,36 +3,6 @@ using Uno.Time;
 
 namespace Fuse.Scripting
 {
-	// TODO: Document this public interface
-	public static class DateHelpers
-	{
-		public static bool TryConvertJSDateToDateTime(object obj, Context context, out DateTime result)
-		{
-			var o = obj as Object;
-			if (o == null)
-			{
-				result = default(DateTime);
-				return false;
-			}
-
-			if (!o.InstanceOf(context.Date))
-			{
-				result = default(DateTime);
-				return false;
-			}
-
-			var jsDate = new Date(o);
-
-			result = DateTimeConverterHelpers.ConvertDateToDateTime(jsDate);
-			return true;
-		}
-
-		public static object ConvertDateTimeToJSDate(DateTime dt, Context context)
-		{
-			return DateTimeConverterHelpers.ConvertDateTimeToJSDate(dt, context);
-		}
-	}
-
 	static class DateTimeConverterHelpers
 	{
 		const long dotNetTicksInJsTick = 10000L;
