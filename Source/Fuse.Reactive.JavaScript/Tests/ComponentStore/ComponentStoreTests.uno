@@ -17,6 +17,7 @@ namespace Fuse.Reactive.Test
             var e = new UX.ComponentStore.Test1();
             using (var root = TestRootPanel.CreateWithChild(e))
             {
+                root.StepFrameJS();
                 Assert.AreEqual(false, e.mySwitch.Value);
                 Assert.AreEqual(true, e.myFlippedSwitch.Value);
 
