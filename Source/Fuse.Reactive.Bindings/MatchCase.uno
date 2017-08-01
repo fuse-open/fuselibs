@@ -133,6 +133,7 @@ namespace Fuse.Reactive
 					{
 						// Special treatment for IObservable which can be interpreted as a single value
 						var obs = (IObservable)_value;
+						if (obs.Length > 0) _realValue = obs[0];
 						_subscription = obs.Subscribe(this);
 					}
 					else
