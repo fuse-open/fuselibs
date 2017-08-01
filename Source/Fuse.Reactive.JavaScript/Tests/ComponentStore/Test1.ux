@@ -13,13 +13,7 @@
             }
         }
         var ComponentStore = require("FuseJS/ComponentStore")
-        var store = new ComponentStore(new TestClass());
-
-        store.subscribe(function (v) {
-            console.log(JSON.stringify(v));
-        });
-
-        module.exports = store;
+        module.exports = new ComponentStore(new TestClass());
     </JavaScript>
     <Switch ux:Name="mySwitch" Value="{isSet}" />
     <Switch ux:Name="myFlippedSwitch" Value="{flipped}" />
