@@ -97,6 +97,26 @@ namespace Fuse.Drawing
 				}
 			}
 		}
+		
+		static Selector _uvOffsetName = "Offset";
+		float2 _uvOffset;
+		/**
+			A normalized offset used to adjust the position of the image when drawn.
+
+			Useful for animating scrolling effects. 
+		*/
+		public float2 Offset
+		{
+			get { return _uvOffset; }
+			set
+			{
+				if(_uvOffset != value)
+				{
+					_uvOffset = value;
+					OnPropertyChanged(_uvOffsetName);
+				}
+			}
+		}
 
 		float2 GetSize()
 		{
@@ -110,7 +130,7 @@ namespace Fuse.Drawing
 			public float2 Origin, Size;
 			public float4 UVClip;
 			public Texture2D Texture;
-			public float2 TexCoordBias1, TexCoordBias2, TexCoordScale1, TexCoordScale2;
+			public float2 TexCoordBias1, TexCoordBias2, TexCoordScale1, TexCoordScale2, TexCoordOffset;
 			public SamplerState SamplerState;
 			public bool NeedFract;
 		}
@@ -180,7 +200,8 @@ namespace Fuse.Drawing
 				dp.SamplerState = (WrapMode == WrapMode.Repeat) ? SamplerState.LinearWrap : SamplerState.LinearClamp;
 				dp.NeedFract = false;
 			}
-
+			dp.TexCoordOffset = _uvOffset;
+			
 			_drawParams = dp;
 			_lastUsed = Time.FrameTime;
 		}
@@ -194,7 +215,7 @@ namespace Fuse.Drawing
 		float2 ElementPosition: req(TexCoord as float2)
 			CanvasSize * TexCoord;
 		float2 OurTC: 
-			(ElementPosition - DP.Origin)/DP.Size *(DP.UVClip.ZW - DP.UVClip.XY) + DP.UVClip.XY;
+			(ElementPosition - DP.Origin)/DP.Size *(DP.UVClip.ZW - DP.UVClip.XY) + DP.UVClip.XY + DP.TexCoordOffset;
 			
 		DrawContext DrawContext: prev, null;
 		DrawParams DP: 
@@ -202,7 +223,7 @@ namespace Fuse.Drawing
 
 		float2 AdjustedTexCoord: DP.TexCoordBias1 + OurTC * DP.TexCoordScale1;
 		float2 WrappedTexCoord: DP.TexCoordBias2 + Math.Fract(pixel AdjustedTexCoord) * DP.TexCoordScale2;
-		float2 FinalTexCoord: DP.NeedFract ? WrappedTexCoord : OurTC;
+		float2 FinalTexCoord: (DP.NeedFract ? WrappedTexCoord : OurTC);
 		float4 TextureColor: DP.Texture == null ? float4(0) : sample(DP.Texture, FinalTexCoord, DP.SamplerState);
 
 		float4 fc : TextureColor * Color;
