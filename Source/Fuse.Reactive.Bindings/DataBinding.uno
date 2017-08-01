@@ -215,6 +215,7 @@ namespace Fuse.Reactive
 			{
 				// Special treatment for the IObservable interface - see docs on IObservable for rationale
 				var obs = (IObservable)value;
+				if (obs.Length > 0) PushValue(obs[0]);
 				_subscription = obs.Subscribe(this);
 			}
 			else
