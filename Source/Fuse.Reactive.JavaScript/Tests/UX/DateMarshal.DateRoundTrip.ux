@@ -1,5 +1,5 @@
-<Panel ux:Class="UX.DateRoundTrip">
-	<StackPanel ux:Class="UX.DateRoundTripUXComponent">
+<Panel ux:Class="UX.DateMarshal.DateRoundTrip">
+	<StackPanel ux:Class="UX.DateMarshal.DateRoundTripInnerComponent">
 		<JavaScript>
 			var self = this;
 
@@ -25,7 +25,7 @@
 	</JavaScript>
 
 	<StackPanel>
-		<UX.DateRoundTripUXComponent ux:Name="RoundTripComponent" DateTime="{myDate}" />
+		<UX.DateMarshal.DateRoundTripInnerComponent ux:Name="RoundTripComponent" DateTime="{myDate}" />
 		<Fuse.Reactive.Test.DotNetDateTimeComponent ux:Name="DateTimeComponent" TheDateTime="{myDate}" />
 	</StackPanel>
 </Panel>
