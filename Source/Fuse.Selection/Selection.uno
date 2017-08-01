@@ -408,6 +408,8 @@ namespace Fuse.Selection
 			ClearSubscription();
 			if (_observableValues == null)
 				return;
+
+			OnNewAll(_observableValues);
 				
 			_subscription = _observableValues.Subscribe(this);
 		}
@@ -429,6 +431,11 @@ namespace Fuse.Selection
 		}
 
 		void Reactive.IObserver.OnNewAll(IArray values)
+		{
+			OnNewAll(values);
+		}
+
+		void OnNewAll(IArray values)
 		{
 			_values.Clear();
 			for (int i=0; i < values.Length; ++i)
