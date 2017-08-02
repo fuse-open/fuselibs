@@ -61,7 +61,7 @@ namespace Fuse.Reactive
 				{
 					return new Observable(this, o, false);
 				}
-				else if (o.InstanceOf(Context.Date))
+				else if (o.InstanceOf(FuseJS.Date))
 				{
 					return DateTimeConverterHelpers.ConvertDateToDateTime(o);
 				}

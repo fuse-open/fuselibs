@@ -8,6 +8,30 @@ using Uno.UX;
 
 namespace Fuse.Reactive
 {
+	static class DateTimeConverterHelpers
+	{
+		const long DotNetTicksInJsTick = 10000L;
+		const long UnixEpochInDotNetTicks = 621355968000000000L;
+
+		public static DateTime ConvertDateToDateTime(Scripting.Object date)
+		{
+			var jsTicks = (long)(double)date.CallMethod("getTime");
+			var dotNetTicksRelativeToUnixEpoch = jsTicks * DotNetTicksInJsTick;
+			var dotNetTicks = dotNetTicksRelativeToUnixEpoch + UnixEpochInDotNetTicks;
+
+			return new DateTime(dotNetTicks, DateTimeKind.Utc);
+		}
+
+		public static object ConvertDateTimeToJSDate(DateTime dt, Scripting.Function dateCtor)
+		{
+			var dotNetTicks = dt.Ticks;
+			var dotNetTicksRelativeToUnixEpoch = dotNetTicks - UnixEpochInDotNetTicks;
+			var jsTicks = dotNetTicksRelativeToUnixEpoch / DotNetTicksInJsTick;
+
+			return dateCtor.Call((double)jsTicks);
+		}
+	}
+
 	partial class ThreadWorker
 	{
 		/** Wraps an object that came from the script VM in an appropriate wrapper
@@ -19,7 +43,7 @@ namespace Fuse.Reactive
 			{
 				var sobj = (Scripting.Object)obj;
 
-				if (sobj.InstanceOf(_context.Date))
+				if (sobj.InstanceOf(FuseJS.Date))
 				{
 					return DateTimeConverterHelpers.ConvertDateToDateTime(sobj);
 				}
@@ -54,7 +78,7 @@ namespace Fuse.Reactive
 			else if (dc is int2) return ToArray((int2)dc);
 			else if (dc is int3) return ToArray((int3)dc);
 			else if (dc is int4) return ToArray((int4)dc);
-			else if (dc is DateTime) return DateTimeConverterHelpers.ConvertDateTimeToJSDate((DateTime)dc, Context);
+			else if (dc is DateTime) return DateTimeConverterHelpers.ConvertDateTimeToJSDate((DateTime)dc, FuseJS.DateCtor);
 			else if (dc.GetType().IsClass) return WrapScriptClass(dc);
 			else if (dc.GetType().IsEnum) return dc.ToString();
 			else return dc;

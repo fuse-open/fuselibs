@@ -11,8 +11,6 @@ namespace Fuse.Reactive
 	{
 		IDispatcher IThreadWorker.Dispatcher { get { return this; } }
 		Function IThreadWorker.Observable { get { return FuseJS.Observable; } }
-		Function IThreadWorker.Date { get { return FuseJS.Date; } }
-		Function IThreadWorker.DateCtor { get { return FuseJS.DateCtor; } }
 
 		internal static Context CreateContext(IThreadWorker worker)
 		{
@@ -26,7 +24,7 @@ namespace Fuse.Reactive
 		public Scripting.Context Context { get { return _context; } }
 
 		static FuseJS.Builtins _fuseJS;
-		public FuseJS.Builtins FuseJS { get { return _fuseJS; } }
+		public static FuseJS.Builtins FuseJS { get { return _fuseJS; } }
 
 		readonly Thread _thread;
 		readonly ManualResetEvent _ready = new ManualResetEvent(false);
