@@ -7,6 +7,22 @@ Fuselibs is the [Uno](https://www.fusetools.com/docs/uno/uno-lang)-libraries tha
 the UI framework used in [Fuse](https://www.fusetools.com/) apps.
 
 
+## Requirements
+
+In order to use Uno / Fuselibs, the following software must be installed:
+
+### Windows
+
+* VCRedist 2010: [x86](https://www.microsoft.com/en-us/download/details.aspx?id=5555), [x64](https://www.microsoft.com/en-US/Download/confirmation.aspx?id=14632)
+* [VCRedist 2013](https://www.microsoft.com/en-gb/download/details.aspx?id=40784)
+
+### macOS
+
+* [Mono 4.4.2](https://download.mono-project.com/archive/4.4.2/macos-10-universal/MonoFramework-MDK-4.4.2.macos10.xamarin.universal.pkg)
+* [XCode](https://developer.apple.com/xcode/)
+* [CMake](https://cmake.org/)
+
+
 ## How do I build and test?
 
 ### Windows
