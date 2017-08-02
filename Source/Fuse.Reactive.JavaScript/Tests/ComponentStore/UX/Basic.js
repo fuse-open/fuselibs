@@ -11,4 +11,4 @@ class Basic {
 	}
 }
 
-modules.exports = Basic
+module.exports = Basic
