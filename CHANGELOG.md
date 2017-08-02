@@ -2,6 +2,9 @@
 
 # 1.2
 
+## Fuse.Text
+- Fixed an issue where the combination of `-DUSE_HARFBUZZ`, `-DCOCOAPODS` *and* certain Pods (in particular Firebase.Database has been identified) caused an app to link to symbols that the AppStore disallows.
+
 ## Each
 - Fixed an issue where removing an element would not actually remove the element
 
