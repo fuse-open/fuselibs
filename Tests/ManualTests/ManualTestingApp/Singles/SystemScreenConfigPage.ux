@@ -3,7 +3,7 @@
 		<p>Buttons should show and hide status bar and navigation bar parts of the system user interface.</p>
 	</InfoStack>
 	<Android>
-		<SystemScreenConfig Show="{displayValue}" IsDim="{isDim}" Theme="{theme}"/>
+		<SystemScreenConfig Show="{displayValue}" IsDim="{isDim}" Theme="{theme}" ResetDelay="2"/>
 	</Android>
 	<JavaScript>
 		var Observable = require("FuseJS/Observable");
@@ -66,7 +66,7 @@
 			<Text>Press this button:</Text>
 			<StdButton Clicked="{none}" Text="Press me!" Margin="20,50,20,20"/>
 
-			<Text TextWrapping="Wrap">Swipe down from the top of the device to bring back the status bar manually. It should dissapear again in 5 seconds.</Text>
+			<Text TextWrapping="Wrap">Swipe down from the top of the device to bring back the status bar manually. It should dissapear again in 2 seconds.</Text>
 		</StackPanel>
 	</ScrollView>
 </Page>

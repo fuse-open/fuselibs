@@ -204,7 +204,7 @@ namespace Fuse.Controls
 		private double _resetDelay = 5.0;
 		/**
 			Sets the time before outside changes to visibility states is reset, defaults to 5.
-			Setting the value to 0 disables the reset behavior.
+			Setting a negative value disables this behavior.
 		*/
 		public double ResetDelay 
 		{ 

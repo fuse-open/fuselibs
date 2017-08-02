@@ -22,6 +22,7 @@ namespace Fuse.Controls.Native
 		public static void TimerDone()
 		{
 			SystemUiVisibility.Flags = _wantedFlags;
+			debug_log "Settingh state";
 		}
 
 		public static void SetShowState(SystemScreenConfig.Visibility state)
@@ -114,7 +115,7 @@ namespace Fuse.Controls.Native
 			//Reset the timer anyways, in case the state changed to what we want
 			config.resetTimer();
 			//Was things changed due to an outside influence?
-			if(actualFlags != _wantedFlags && config.ResetDelay > 0.0001f) //Cheeky 
+			if(actualFlags != _wantedFlags && config.ResetDelay >= 0) //Cheeky 
 			{
 				config._timer = Timer.Wait(config.ResetDelay, config.timerDone);
 			}
