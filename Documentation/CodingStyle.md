@@ -47,6 +47,17 @@ but we also have a few additional guidelines:
    }
    ```
 * *Do not* use egyptian braces
+* Use spaces around operators and keywords, but not inside parentheses and
+  not around function calls. So, like this:
+  ```Uno
+  if (condition)
+        foo(bar + 1);
+  ```
+  ...and not like this:
+  ```Uno
+  if( condition )
+        foo( bar+1 );
+  ```
 
 ## JavaScript
 
