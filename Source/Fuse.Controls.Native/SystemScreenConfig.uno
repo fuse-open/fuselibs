@@ -66,7 +66,7 @@ namespace Fuse.Controls
 			Dark
 		}
 
-		private static SystemScreenConfig rootedConfig = null;
+		private static SystemScreenConfig _rootedConfig = null;
 
 		internal IDisposable _timer;
 
@@ -74,9 +74,9 @@ namespace Fuse.Controls
 		{
 			base.OnRooted();
 
-			if(rootedConfig==null)
+			if(_rootedConfig==null)
 			{
-				rootedConfig = this;
+				_rootedConfig = this;
 			}
 			else
 			{
@@ -93,8 +93,9 @@ namespace Fuse.Controls
 			base.OnUnrooted();
 
 			resetTimer();
-
-			rootedConfig = null;
+			
+			if(_rootedConfig == this)
+				_rootedConfig = null;
 
 			if defined(Android)
 			{
