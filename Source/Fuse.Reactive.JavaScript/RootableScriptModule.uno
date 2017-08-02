@@ -27,8 +27,11 @@ namespace Fuse.Reactive
 
 		void EnsureClassInstanceRooted()
 		{
-			if (_classInstance == null) _classInstance = _worker.GetClassInstance(_names);
-			_classInstance.EnsureRooted();
+			if (_names != null) 
+			{
+				if (_classInstance == null) _classInstance = _worker.GetClassInstance(_names);
+				_classInstance.EnsureRooted();
+			}
 		}
 
 		internal Dictionary<string, object> Dependencies;
@@ -59,7 +62,10 @@ namespace Fuse.Reactive
 
 		protected override void CallModuleFunc(Function moduleFunc, object[] args)
 		{
-			_classInstance.CallMethod(moduleFunc, args);
+			if (_classInstance != null)
+				_classInstance.CallMethod(moduleFunc, args);
+			else
+				moduleFunc.Call(args);
 		}
 	}
 }
