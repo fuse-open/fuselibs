@@ -29,8 +29,8 @@ namespace Fuse
 
 		void Stop()
 		{
-			UpdateManager.RemoveAction(Update);
 			_running = false;
+			UpdateManager.RemoveAction(Update);
 		}
 
 		void Update()
@@ -48,9 +48,8 @@ namespace Fuse
 
 		public void Dispose()
 		{
-			if(!_running)
-				return;
-			Stop();
+			if(_running)
+				Stop();
 		}
 
 		/** Executes a callback on the UI thread after a minimum specified duration.
