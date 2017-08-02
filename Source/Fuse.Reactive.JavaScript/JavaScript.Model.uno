@@ -10,22 +10,14 @@ namespace Fuse.Reactive
 {
     public partial class JavaScript
     {
-        static NameTable _dummyNameTable;
-        static void MakeDummyNameTable()
-        {
-            _dummyNameTable = new NameTable(null, new string[0]);
-            _dummyNameTable.This = AppBase.Current;
-        }
-
         static PropertyHandle _modelHandle = Properties.CreateHandle();
 
         static JavaScript GetModelScript(Visual v)
         {
-            MakeDummyNameTable();
             var js = v.Properties.Get(_modelHandle) as JavaScript;
             if (js == null)
             {
-                js = new JavaScript(_dummyNameTable);
+                js = new JavaScript(null);
                 js.FileName = "(model-script)";
                 v.Properties.Set(_modelHandle, js);
             }
@@ -43,10 +35,9 @@ namespace Fuse.Reactive
         [UXAttachedPropertySetter("Model"), UXNameScope]
         public static void SetModel(AppBase app, IExpression model)
         {
-            MakeDummyNameTable();
             if (_appModel == null)
             {
-                _appModel = new JavaScript(_dummyNameTable);
+                _appModel = new JavaScript(null);
                 _appModel.FileName = "(model-script)";
             }
             SetupModel(app.Children, _appModel, model);
