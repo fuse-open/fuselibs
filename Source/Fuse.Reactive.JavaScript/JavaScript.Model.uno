@@ -32,7 +32,7 @@ namespace Fuse.Reactive
             return js;
         }
 
-        [UXAttachedPropertySetter("JavaScript.Model")]
+        [UXAttachedPropertySetter("JavaScript.Model"), UXNameScope]
         public static void SetModel(Visual v, IExpression model)
         {
             var js = GetModelScript(v);
@@ -40,7 +40,7 @@ namespace Fuse.Reactive
         }
 
         static JavaScript _appModel;
-        [UXAttachedPropertySetter("Model")]
+        [UXAttachedPropertySetter("Model"), UXNameScope]
         public static void SetModel(AppBase app, IExpression model)
         {
             MakeDummyNameTable();
