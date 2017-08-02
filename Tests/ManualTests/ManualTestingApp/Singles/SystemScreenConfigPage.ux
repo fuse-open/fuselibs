@@ -56,7 +56,7 @@
 			<Text>Navigation bar should be hidden:</Text>
 			<StdButton Clicked="{minimal}" Text="Minimal" Margin="20"/>
 
-			<Text>Navigation bar and status bar should dissapear:</Text>
+			<Text>Navigation bar and status bar should disappear:</Text>
 			<StdButton Clicked="{none}" Text="None" Margin="20"/>
 
 			<Text FontSize="12" TextWrapping="Wrap" Margin="0,0,0,20">Navigation bar might only turn transparent background on some systems</Text>
