@@ -143,6 +143,7 @@
 			<Android>
 				<WebViewPage/>
 				<BackButtonView/>
+				<SystemScreenConfigPage />
 			</Android>
 			<iOS>
 				<MapViewPage/>

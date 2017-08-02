@@ -4,7 +4,7 @@ using Uno.Collections;
 namespace Fuse
 {
 	/** Provides callback services on the UI thread based on elapsed time. */
-	public sealed class Timer
+	public sealed class Timer : IDisposable
 	{
 		Action _callback;
 		double _startTime;
@@ -41,10 +41,15 @@ namespace Fuse
 			if (time > _interval)
 			{
 				_callback();
-
-				if (_once) Stop();
+				if (_once) Dispose();
 				else _startTime = now;
 			}
+		}
+
+		public void Dispose()
+		{
+			if(_running)
+				Stop();
 		}
 
 		/** Executes a callback on the UI thread after a minimum specified duration.
@@ -54,10 +59,11 @@ namespace Fuse
 			method can not be relied upon for very short durations. For high-performance timing,
 			consider spawning a new thread. 
 		*/
-		public static void Wait(double duration, Action callback)
+		public static IDisposable Wait(double duration, Action callback)
 		{
 			var t = new Timer(duration, callback);
 			t.Start();
+			return t;
 		}
 	}
 }
