@@ -21,7 +21,7 @@ namespace Fuse.Reactive
 
 				if (sobj.InstanceOf(_context.Date))
 				{
-					return DateTimeConverterHelpers.ConvertDateToDateTime(new Date(sobj));
+					return DateTimeConverterHelpers.ConvertDateToDateTime(sobj);
 				}
 				else if (sobj.ContainsKey("external_object"))
 				{

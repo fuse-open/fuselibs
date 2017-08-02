@@ -63,7 +63,7 @@ namespace Fuse.Reactive
 				}
 				else if (o.InstanceOf(Context.Date))
 				{
-					return new Date(o);
+					return DateTimeConverterHelpers.ConvertDateToDateTime(o);
 				}
 				else
 				{
