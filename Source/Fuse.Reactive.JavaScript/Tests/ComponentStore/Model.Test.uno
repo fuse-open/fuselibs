@@ -15,30 +15,30 @@ namespace Fuse.Reactive.Test
             using (var root = TestRootPanel.CreateWithChild(e))
             {
                 root.StepFrameJS();
-//                 Assert.AreEqual(false, e.mySwitch.Value);
-//                 Assert.AreEqual(true, e.myFlippedSwitch.Value);
-// 
-//                 e.mySwitch.Value = true;
-// 
-//                 Assert.AreEqual(true, e.mySwitch.Value);
-//                 root.StepFrameJS();
-//                 Assert.AreEqual(true, e.mySwitch.Value);
-//                 Assert.AreEqual(false, e.myFlippedSwitch.Value);
-// 
-//                 e.myFlippedSwitch.Value = true;
-//                 Assert.AreEqual(true, e.myFlippedSwitch.Value);
-//                 root.StepFrameJS();
-// 
-//                 Assert.AreEqual(false, e.mySwitch.Value);
-//                 Assert.AreEqual(true, e.myFlippedSwitch.Value);
-// 
-//                 e.myFlippedSwitch.Value = false;
-//                 e.mySwitch.Value = true;
-//                 e.myFlippedSwitch.Value = true;
-//                 root.StepFrameJS();
-// 
-//                 Assert.AreEqual(false, e.mySwitch.Value);
-//                 Assert.AreEqual(true, e.myFlippedSwitch.Value);
+                Assert.AreEqual(false, e.mySwitch.Value);
+                Assert.AreEqual(true, e.myFlippedSwitch.Value);
+
+                e.mySwitch.Value = true;
+
+                Assert.AreEqual(true, e.mySwitch.Value);
+                root.StepFrameJS();
+                Assert.AreEqual(true, e.mySwitch.Value);
+                Assert.AreEqual(false, e.myFlippedSwitch.Value);
+
+                e.myFlippedSwitch.Value = true;
+                Assert.AreEqual(true, e.myFlippedSwitch.Value);
+                root.StepFrameJS();
+
+                Assert.AreEqual(false, e.mySwitch.Value);
+                Assert.AreEqual(true, e.myFlippedSwitch.Value);
+
+                e.myFlippedSwitch.Value = false;
+                e.mySwitch.Value = true;
+                e.myFlippedSwitch.Value = true;
+                root.StepFrameJS();
+
+                Assert.AreEqual(false, e.mySwitch.Value);
+                Assert.AreEqual(true, e.myFlippedSwitch.Value);
 
             }
         }
