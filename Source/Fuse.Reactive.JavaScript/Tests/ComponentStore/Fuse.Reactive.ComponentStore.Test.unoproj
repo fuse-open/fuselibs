@@ -26,6 +26,7 @@
     "../../../Fuse.Common/Tests/FuseTest/FuseTest.unoproj"
   ],
   "Includes": [
-    "*"
+    "*",
+    "UX/*.js:Bundle",
   ]
 }
