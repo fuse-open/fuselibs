@@ -93,7 +93,7 @@ namespace Fuse.Reactive.Test
 				
 				e.callRepC.Perform();
 				root.StepFrameJS();
-				Assert.AreEqual("3,1,1", GetDudZ(e));
+				Assert.AreEqual("1,3,1", GetDudZ(e));
 			}
         }
         
@@ -138,14 +138,17 @@ namespace Fuse.Reactive.Test
 				Assert.AreEqual("b", e.b.UseValue);
 				
 				e.callStep1.Perform();
+				root.StepFrameJS();
 				Assert.AreEqual("c", e.a.UseValue);
 				Assert.AreEqual("b", e.b.UseValue);
 				
 				e.callStep2.Perform();
+				root.StepFrameJS();
 				Assert.AreEqual("c", e.a.UseValue);
 				Assert.AreEqual("d", e.b.UseValue);
 				
-				e.callStep2.Perform();
+				e.callStep3.Perform();
+				root.StepFrameJS();
 				Assert.AreEqual("c", e.a.UseValue);
 				Assert.AreEqual("e", e.b.UseValue);
 			}
