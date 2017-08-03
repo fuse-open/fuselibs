@@ -2,7 +2,7 @@ class ModelList {
 	constructor() { 
 		this.items = []
 		
-		this._count = 0
+		this._count = 5
 	}
 	
 	add() {
