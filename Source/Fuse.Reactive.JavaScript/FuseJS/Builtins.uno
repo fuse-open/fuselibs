@@ -73,10 +73,13 @@ namespace Fuse.Reactive.FuseJS
 			}
 		}
 
-		internal void UpdateModules(Fuse.Scripting.Context context)
+		internal bool UpdateModules(Fuse.Scripting.Context context)
 		{
+			var activity = false;
 			if(_timer != null)
-				_timer.UpdateModule();
+				activity = _timer.UpdateModule() || activity;
+				
+			return activity;
 		}
 	}
 }

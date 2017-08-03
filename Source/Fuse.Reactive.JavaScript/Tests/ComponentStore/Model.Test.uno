@@ -54,7 +54,6 @@ namespace Fuse.Reactive.Test
 				
 				e.callAdd.Perform();
 				root.StepFrameJS();
-				root.StepFrameJS(); //TODO: Double StepFrameJS shouldn't be necessary
 				Assert.AreEqual( "5", e.oc.JoinValues() );
 			}
         }
@@ -82,7 +81,6 @@ namespace Fuse.Reactive.Test
 				
 				e.callModB.Perform();
 				root.StepFrameJS();
-				root.StepFrameJS(); //TODO: Double StepFrameJS shouldn't be necessary
 				Assert.AreEqual("3,3,1", GetDudZ(e));
 			}
         }
