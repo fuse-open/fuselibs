@@ -9,7 +9,7 @@ namespace Fuse.Reactive.Test
 	public class ModelTest : TestBase
 	{
 		[Test]
-		public void Test1()
+		public void Basic()
 		{
             var e = new UX.Model.Basic();
             using (var root = TestRootPanel.CreateWithChild(e))
@@ -41,6 +41,34 @@ namespace Fuse.Reactive.Test
                 Assert.AreEqual(true, e.myFlippedSwitch.Value);
 
             }
+        }
+        
+        [Test]
+        [Ignore("Failing")]
+        public void List()
+        {
+			var e = new UX.Model.List();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.StepFrameJS();
+				Assert.AreEqual( "", e.oc.JoinValues() );
+				
+				e.callAdd.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual( "0", e.oc.JoinValues() );
+			}
+        }
+        
+        [Test]
+        [Ignore("Not parsing correctly, see UX file")]
+        public void PathName()
+        {
+			var e = new UX.Model.PathName();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.StepFrameJS();
+				//Assert.AreEqual("abc", e.v.Value);
+			}
         }
     }
 }

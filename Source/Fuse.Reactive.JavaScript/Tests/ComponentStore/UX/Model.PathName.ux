@@ -1,0 +1,5 @@
+<Panel ux:Class="UX.Model.PathName"/>
+<!-- Does not parse
+<Panel ux:Class="UX.Model.PathName" Model="UX/Model.PathName()">
+	<Text Value="{value}" ux:Name="v"/>
+</Panel>-->
