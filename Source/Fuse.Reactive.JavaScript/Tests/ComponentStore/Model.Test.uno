@@ -55,6 +55,14 @@ namespace Fuse.Reactive.Test
 				e.callAdd.Perform();
 				root.StepFrameJS();
 				Assert.AreEqual( "5", e.oc.JoinValues() );
+				
+				e.callAdd.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual( "5,6", e.oc.JoinValues() );
+				
+				e.callShift.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual( "6", e.oc.JoinValues() );
 			}
         }
         
@@ -102,6 +110,20 @@ namespace Fuse.Reactive.Test
 				root.StepFrameJS();
 				root.StepFrameJS();
 				Assert.AreEqual("****", e.s.UseValue);
+			}
+        }
+        
+        [Test]
+        [Ignore("Yeah, this fails hard")]
+        public void Loop()
+        {
+			var e = new UX.Model.Loop();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.StepFrameJS();
+				Assert.AreEqual( "%", e.a.UseValue );
+				Assert.AreEqual( "%", e.b.UseValue );
+				Assert.AreEqual( "%", e.c.UseValue );
 			}
         }
     }

@@ -6,10 +6,14 @@ class ModelList {
 	}
 	
 	add() {
-		console.log( "Adding" )
 		this.items.push( this._count )
 		this._count++
 	}
+	
+	shift() {
+		this.items.shift()
+	}
+	
 }
 
 module.exports = ModelList
