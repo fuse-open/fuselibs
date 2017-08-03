@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using OpenTK.Graphics.OpenGL;
+using MonoMac.OpenGL;
 using System.Drawing;
 
 namespace Fuse.Video.Mono
