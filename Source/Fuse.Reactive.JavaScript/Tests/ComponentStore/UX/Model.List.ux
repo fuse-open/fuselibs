@@ -2,4 +2,5 @@
 	<FuseTest.ObservableCollector ux:Name="oc" Items="{items}"/>
 	
 	<FuseTest.Invoke Handler="{add}" ux:Name="callAdd"/>
+	<FuseTest.Invoke Handler="{shift}" ux:Name="callShift"/>
 </Panel>
