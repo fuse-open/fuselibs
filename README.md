@@ -1,5 +1,5 @@
 # Fuselibs
-[![TeamCity](https://tc.outracks.com/app/rest/builds/buildType:(id:FuselibsPublic_Trigger)/statusIcon)](https://tc.outracks.com/project.html?projectId=FuselibsPublic)
+[![TeamCity](https://tc.outracks.com/app/rest/builds/buildType:%28id:FuselibsPublic_Trigger%29/statusIcon)](https://tc.outracks.com/project.html?projectId=FuselibsPublic)
 [![license: MIT](https://img.shields.io/github/license/fusetools/fuselibs-public.svg)](LICENSE.txt)
 [![Slack](https://img.shields.io/badge/chat-on%20slack-blue.svg)](https://fusecommunity.slack.com/messages/fuselibs)
 
