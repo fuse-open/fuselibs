@@ -126,5 +126,29 @@ namespace Fuse.Reactive.Test
 				Assert.AreEqual( "%", e.c.UseValue );
 			}
         }
+        
+        [Test]
+        public void Pod()
+        {
+			var e = new UX.Model.Pod();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.StepFrameJS();
+				Assert.AreEqual("a", e.a.UseValue);
+				Assert.AreEqual("b", e.b.UseValue);
+				
+				e.callStep1.Perform();
+				Assert.AreEqual("c", e.a.UseValue);
+				Assert.AreEqual("b", e.b.UseValue);
+				
+				e.callStep2.Perform();
+				Assert.AreEqual("c", e.a.UseValue);
+				Assert.AreEqual("d", e.b.UseValue);
+				
+				e.callStep2.Perform();
+				Assert.AreEqual("c", e.a.UseValue);
+				Assert.AreEqual("e", e.b.UseValue);
+			}
+        }
     }
 }
