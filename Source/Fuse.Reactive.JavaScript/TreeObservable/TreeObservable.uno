@@ -23,6 +23,11 @@ namespace Fuse.Reactive
 
 		public override void Unsubscribe()
 		{
+			JavaScript.Worker.Invoke(NullifyCallbacks);
+		}
+
+		void NullifyCallbacks()
+		{
 			var obj = (Scripting.Object)Raw;
 			obj["$set"] = null;
 			obj["$add"] = null;
