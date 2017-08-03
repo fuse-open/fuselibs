@@ -199,5 +199,22 @@ namespace Fuse.Reactive.Test
 				Assert.AreEqual( 3, e.c.Value );
 			}
         }
+        
+        [Test]
+        public void Bind()
+        {
+			var e = new UX.Model.Bind();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.StepFrameJS();
+				Assert.AreEqual( "bop", e.u.v.StringValue );
+				Assert.AreEqual( 0, e.u.id.Value );
+				
+				e.u.Value = "loppy";
+				root.StepFrameJS();
+				Assert.AreEqual( "loppy", e.u.v.StringValue );
+				Assert.AreEqual( 1, e.u.id.Value );
+			}
+        }
     }
 }

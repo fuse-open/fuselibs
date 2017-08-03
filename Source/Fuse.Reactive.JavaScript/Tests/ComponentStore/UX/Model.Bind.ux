@@ -1,0 +1,9 @@
+<Panel ux:Class="UX.Model.Bind">
+	<Panel ux:Class="UMBPanel" Model="UX/ModelBind({Property this.Value})">
+		<string ux:Property="Value"/>
+		<FuseTest.DudElement StringValue="{value}" ux:Name="v"/>
+		<FuseTest.DudElement Value="{id}" ux:Name="id"/>
+	</Panel>
+
+	<UMBPanel Value="bop" ux:Name="u"/>
+</Panel>
