@@ -69,7 +69,7 @@ function ComponentStore(source)
             for (var p in propGetters) {
                 var v = propGetters[p].call(state);
                 console.log("Re-evaluating " + p + " = "+v)
-                set(p, propGetters[p].call());
+                set(p, v);
             }
             if (parentNode !== null) parentNode.evaluateDerivedProps();
         }
