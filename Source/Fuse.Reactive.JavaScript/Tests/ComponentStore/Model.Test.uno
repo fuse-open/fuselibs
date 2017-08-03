@@ -70,5 +70,21 @@ namespace Fuse.Reactive.Test
 				//Assert.AreEqual("abc", e.v.Value);
 			}
         }
+        
+        [Test]
+        [Ignore("Not seeing updated values in Inner")]
+        public void Nested()
+        {
+			var e = new UX.Model.Nested();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.StepFrameJS();
+				Assert.AreEqual("2,2,1", GetDudZ(e));
+				
+				e.callModB.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual("3,3,1", GetDudZ(e));
+			}
+        }
     }
 }
