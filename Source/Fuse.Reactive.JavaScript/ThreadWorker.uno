@@ -162,12 +162,11 @@ namespace Fuse.Reactive
 						_exceptionQueue.Enqueue(e);
 					}
 				}
-				else
-					_idle.Set();
 
 				try
 				{
-					_fuseJS.UpdateModules(_context);
+					var activity = _fuseJS.UpdateModules(_context);
+					didAnything ||= activity;
 				}
 				catch (Exception e)
 				{
@@ -176,6 +175,9 @@ namespace Fuse.Reactive
 
 				var t2 = Uno.Diagnostics.Clock.GetSeconds();
 
+				if (!didAnything)
+					_idle.Set();
+					
 				if (!didAnything || t2-t > 5)
 				{
 					Thread.Sleep(1);	
