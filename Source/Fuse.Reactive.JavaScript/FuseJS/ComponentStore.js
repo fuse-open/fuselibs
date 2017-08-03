@@ -14,6 +14,8 @@ function ComponentStore(source)
 
     function instrument(store, parentNode, node, path, state)
     {
+        node.$getState = function() { return state; }
+
         node.$isClass = false;
         for (var k in state) {
             var v = state[k];
@@ -121,11 +123,11 @@ function ComponentStore(source)
                 }
             }
             else if (value instanceof Array) {
-                if (value.length == node[key].length && 'diff' in node[key]) { node[key].diff(); }
+                if (node.$getState() == value && value.length == node[key].length && 'diff' in node[key]) { node[key].diff(); }
                 else { set(key, instrument(store, node, [], path.concat(key), value)); }
             }
             else if (value instanceof Object) {
-                if ('diff' in node[key]) {
+                if (node.$getState() == value && 'diff' in node[key]) {
                     if (node.$isClass === false) {
                         node[key].diff();
                     }
