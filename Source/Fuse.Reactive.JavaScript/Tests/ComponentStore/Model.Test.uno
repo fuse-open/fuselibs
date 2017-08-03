@@ -93,7 +93,7 @@ namespace Fuse.Reactive.Test
 				
 				e.callRepC.Perform();
 				root.StepFrameJS();
-				Assert.AreEqual("1,3,1", GetDudZ(e));
+				Assert.AreEqual("3,1,1", GetDudZ(e));
 			}
         }
         
@@ -138,17 +138,14 @@ namespace Fuse.Reactive.Test
 				Assert.AreEqual("b", e.b.UseValue);
 				
 				e.callStep1.Perform();
-				root.StepFrameJS();
 				Assert.AreEqual("c", e.a.UseValue);
 				Assert.AreEqual("b", e.b.UseValue);
 				
 				e.callStep2.Perform();
-				root.StepFrameJS();
 				Assert.AreEqual("c", e.a.UseValue);
 				Assert.AreEqual("d", e.b.UseValue);
 				
-				e.callStep3.Perform();
-				root.StepFrameJS();
+				e.callStep2.Perform();
 				Assert.AreEqual("c", e.a.UseValue);
 				Assert.AreEqual("e", e.b.UseValue);
 			}
@@ -278,6 +275,31 @@ namespace Fuse.Reactive.Test
 				
 				Assert.AreEqual( "three,two,one", GetDudZ(e.a));
 				Assert.AreEqual( "three,two,one", GetDudZ(e.b));
+			}
+        }
+        
+        [Test]
+        public void NestedAccessor()
+        {
+			var e = new UX.Model.NestedAccessor();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.StepFrameJS();
+				Assert.AreEqual( 110, e.v.Value );
+				Assert.AreEqual( 10, e.r.Value );
+				Assert.AreEqual( -10, e.d.Value );
+				
+				e.v.Value = 115;
+				root.StepFrameJS();
+				Assert.AreEqual( 115, e.v.Value );
+				Assert.AreEqual( 15, e.r.Value );
+				Assert.AreEqual( -15, e.d.Value );
+				
+				e.callIncr.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual( 116, e.v.Value );
+				Assert.AreEqual( 16, e.r.Value );
+				Assert.AreEqual( -16, e.d.Value );
 			}
         }
     }
