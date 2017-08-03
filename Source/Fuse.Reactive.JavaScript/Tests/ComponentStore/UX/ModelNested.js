@@ -16,8 +16,11 @@ class ModelNested {
 	}
 	
 	modB() {
-		console.log("modB")
 		this.b.set(3)
+	}
+	
+	repC() {
+		this.c = this.a
 	}
 }
 

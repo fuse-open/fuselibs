@@ -82,6 +82,10 @@ namespace Fuse.Reactive.Test
 				e.callModB.Perform();
 				root.StepFrameJS();
 				Assert.AreEqual("3,3,1", GetDudZ(e));
+				
+				e.callRepC.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual("3,1,1", GetDudZ(e));
 			}
         }
         
