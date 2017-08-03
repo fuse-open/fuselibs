@@ -86,5 +86,20 @@ namespace Fuse.Reactive.Test
 				Assert.AreEqual("3,3,1", GetDudZ(e));
 			}
         }
+        
+        [Test]
+        public void Function()
+        {
+			var e = new UX.Model.Function();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.StepFrameJS();
+				Assert.AreEqual("***", e.s.UseValue);
+				
+				e.callIncr.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual("****", e.s.UseValue);
+			}
+        }
     }
 }
