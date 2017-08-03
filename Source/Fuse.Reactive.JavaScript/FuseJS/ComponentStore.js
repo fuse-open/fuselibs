@@ -48,6 +48,7 @@ function ComponentStore(source)
                 var value = state[p];
                 if (value instanceof Function) {
                     node[p] = wrapFunction(p, value);
+                    state[p] = node[p];
                 }
                 else if (descs[p].get instanceof Function)
                 {
