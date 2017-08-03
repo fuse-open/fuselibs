@@ -249,5 +249,36 @@ namespace Fuse.Reactive.Test
 				Assert.AreEqual( 232, e.d.Value );
 			}
         }
+        
+        [Test]
+        //TODO: working on this this one still (found the Each one)
+        public void UseCase1()
+        {
+			var e = new UX.Model.UseCase1();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.StepFrameJS();
+				
+				Assert.AreEqual( "one,two,three,four,five", GetRecursiveText(e.a) );
+				
+				var two = e.a.FindNodeByName( "two" ) as UMUItem;
+				two.callAdd.Perform();
+				
+				root.StepFrameJS();
+			}
+        }
+        
+        [Test]
+        public void Each()
+        {
+			var e = new UX.Model.Each();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.StepFrameJS();
+				
+				Assert.AreEqual( "three,two,one", GetDudZ(e.a));
+				Assert.AreEqual( "three,two,one", GetDudZ(e.b));
+			}
+        }
     }
 }
