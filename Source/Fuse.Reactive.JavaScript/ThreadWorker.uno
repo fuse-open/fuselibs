@@ -177,7 +177,7 @@ namespace Fuse.Reactive
 			while (_exceptionQueue.TryDequeue(out next))
 			{
 				if (prev != null)
-					Fuse.Diagnostics.UnknownException("Skipped Exception", next, this);
+					Fuse.Diagnostics.UnknownException("Skipped Exception", prev, this);
 				prev = next;
 			}
 			
