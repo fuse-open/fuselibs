@@ -44,7 +44,6 @@ namespace Fuse.Reactive.Test
         }
         
         [Test]
-        [Ignore("Failing")]
         public void List()
         {
 			var e = new UX.Model.List();
@@ -55,7 +54,8 @@ namespace Fuse.Reactive.Test
 				
 				e.callAdd.Perform();
 				root.StepFrameJS();
-				Assert.AreEqual( "0", e.oc.JoinValues() );
+				root.StepFrameJS(); //TODO: Double StepFrameJS shouldn't be necessary
+				Assert.AreEqual( "5", e.oc.JoinValues() );
 			}
         }
         
@@ -72,7 +72,6 @@ namespace Fuse.Reactive.Test
         }
         
         [Test]
-        [Ignore("Not seeing updated values in Inner")]
         public void Nested()
         {
 			var e = new UX.Model.Nested();
@@ -83,6 +82,7 @@ namespace Fuse.Reactive.Test
 				
 				e.callModB.Perform();
 				root.StepFrameJS();
+				root.StepFrameJS(); //TODO: Double StepFrameJS shouldn't be necessary
 				Assert.AreEqual("3,3,1", GetDudZ(e));
 			}
         }
@@ -97,6 +97,7 @@ namespace Fuse.Reactive.Test
 				Assert.AreEqual("***", e.s.UseValue);
 				
 				e.callIncr.Perform();
+				root.StepFrameJS();
 				root.StepFrameJS();
 				Assert.AreEqual("****", e.s.UseValue);
 			}
