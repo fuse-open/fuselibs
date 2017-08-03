@@ -1,0 +1,19 @@
+<Panel ux:Class="UX.Model.UseCase1" Model="UX/ModelUseCase1">
+	<Panel ux:Name="a">
+		<Each Count="5">
+			<Panel ux:Class="UMUItem">
+				<Text Value="{name}"/>
+				<FuseTest.Invoke Handler="{add}" ux:Name="callAdd"/>
+				<FuseTest.Invoke Handler="{remove}" ux:Name="callRemove"/>
+			</Panel>
+			
+ 			<UMUItem ux:Name="{name}"/>
+		</Each>
+	</Panel>
+	
+	<Panel ux:Name="s">
+		<Each Items="{sel}">
+			<FuseTest.DudElement StringValue="{name}"/>
+		</Each>
+	</Panel>
+</Panel>
