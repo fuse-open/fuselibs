@@ -164,6 +164,26 @@ namespace Fuse.Reactive.Test
 				e.callSwap.Perform();
 				root.StepFrameJS();
 				Assert.AreEqual(11,e.a.Value);
+				
+				e.callUpdateNext.Perform();
+				e.callSwap.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual(6,e.a.Value);
+			}
+        }
+        
+        [Test]
+        public void AltEntry()
+        {
+			var e = new UX.Model.AltEntry();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.StepFrameJS();
+				Assert.AreEqual( "a", e.a.StringValue );
+				
+				e.callSetB.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual( "b", e.a.StringValue );
 			}
         }
     }
