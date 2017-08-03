@@ -27,6 +27,11 @@ typedef void (^TouchesEventBlock)(NSSet * touches, UIEvent * event);
 	iconX:(float)iconX
 	iconY:(float)iconY
 	markerID:(int)markerID;
+	- (MKOverlayRenderer *)mapView:(MKMapView *)mapView rendererForOverlay:(id<MKOverlay>)overlay;
+	-(int)addPolyline:(NSString*)label 
+		coords:(NSArray*)coords
+		color:(UIColor*)col
+		linewidth:(float)lw;
 	-(BOOL)authorized;
 	-(void)removeMarker:(int)identifier;
 	-(void)clearMarkers;

@@ -209,12 +209,43 @@ namespace Fuse.Controls
 			Markers.Remove(m);
 		}
 
+		internal ObservableList<MapPolyline> _polylines;
+		public ObservableList<MapPolyline> Polylines
+		{
+			get
+			{
+				if(_polylines==null) _polylines = new ObservableList<MapPolyline>(OnPolylineAdded, OnPolylineRemoved);
+				return _polylines;
+			}
+		}
+
+		internal void AddPolyline(MapPolyline m)
+		{
+			if(Polylines.Contains(m)) return;
+			Polylines.Add(m);
+		}
+
+		internal void RemovePolyline(MapPolyline m)
+		{
+			Polylines.Remove(m);
+		}
+
 		void OnMarkerAdded(MapMarker marker)
 		{
 			UpdateMarkersNextFrame();
 		}
 
 		void OnMarkerRemoved(MapMarker marker)
+		{
+			UpdateMarkersNextFrame();
+		}
+
+		void OnPolylineAdded(MapPolyline polyline)
+		{
+			UpdateMarkersNextFrame();
+		}
+
+		void OnPolylineRemoved(MapPolyline polyline)
 		{
 			UpdateMarkersNextFrame();
 		}

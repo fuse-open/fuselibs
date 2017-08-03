@@ -19,6 +19,7 @@
   ],
   "Projects": [],
   "Includes": [
+    "MapPolyline.uno:Source",
     "MapMarker.uno:Source",
     "MapView.uno:Source",
     "MapView.Events.uno:Source",

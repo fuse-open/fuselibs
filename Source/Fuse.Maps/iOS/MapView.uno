@@ -280,6 +280,15 @@ namespace Fuse.Maps.iOS
 		@}
 
 		[Foreign(Language.ObjC)]
+		int AddPolyline(string label, double[] coords, float rr, float gg, float bb, float aa, float linewidth)
+		@{
+			MapViewDelegate* dg = (MapViewDelegate*)@{MapView:Of(_this)._mapViewDelegate:Get()};
+			UIColor *col = [UIColor colorWithRed:rr green:gg blue:bb alpha:aa];
+
+			return [dg addPolyline:label coords:[coords copyArray] color:col linewidth:linewidth];
+		@}
+
+		[Foreign(Language.ObjC)]
 		void ClearMarkers()
 		@{
 			MapViewDelegate* dg = (MapViewDelegate*)@{MapView:Of(_this)._mapViewDelegate:Get()};
@@ -306,12 +315,33 @@ namespace Fuse.Maps.iOS
 					m.IconAnchorY
 					);
 			}
+
+			foreach(MapPolyline p in Polylines)
+			{
+				AddPolyline(
+					p.Label,
+					p.Coords,
+					p.Color[0],
+					p.Color[1],
+					p.Color[2],
+					p.Color[3],
+					p.LineWidth
+				);
+			}
 		}
 
 		public ObservableList<MapMarker> Markers {
 			get
 			{
 				return _mapViewHost.Markers;
+			}
+		}
+
+		public ObservableList<MapPolyline> Polylines
+		{
+			get
+			{
+				return _mapViewHost.Polylines;
 			}
 		}
 
