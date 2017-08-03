@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Reflection;
-using MonoMac.Foundation;
-using MonoMac.AVFoundation;
-using MonoMac.CoreVideo;
-using MonoMac.CoreMedia;
-using MonoMac.CoreFoundation;
-using MonoMac.OpenGL;
-using MonoMac.CoreGraphics;
+using Foundation;
+using AVFoundation;
+using CoreVideo;
+using CoreMedia;
+using CoreFoundation;
+using OpenTK.Graphics.OpenGL;
+using CoreGraphics;
 using System.Drawing;
+using ObjCRuntime;
 
 namespace Fuse.Video.Mono
 {
@@ -16,7 +17,6 @@ namespace Fuse.Video.Mono
 		public AVUrlAsset Asset;
 		public AVPlayer Player;
 		public AVPlayerItem PlayerItem;
-		public AVAudioPlayer AudioPlayer;
 		public AVPlayerItemVideoOutput Output;
 		public byte[] Pixels;
 		public int WidthCache = -1;
@@ -45,8 +45,8 @@ namespace Fuse.Video.Mono
 			var handle = new VideoHandle();
 			var url = new NSUrl(uri);
 			handle.Asset = new AVUrlAsset(url, (AVUrlAssetOptions)null);
-			handle.Asset.LoadValuesAsynchronously(new string[] { "tracks" }, new NSAction(
-				() => DispatchQueue.MainQueue.DispatchAsync(new NSAction(
+			handle.Asset.LoadValuesAsynchronously(new string[] { "tracks" },
+				() => DispatchQueue.MainQueue.DispatchAsync(
 					() => {
 
 						NSError e;
@@ -62,14 +62,13 @@ namespace Fuse.Video.Mono
 							handle.PlayerItem = AVPlayerItem.FromAsset(handle.Asset);
 							handle.PlayerItem.AddOutput(handle.Output);
 							handle.Player = AVPlayer.FromPlayerItem(handle.PlayerItem);
-							handle.AudioPlayer = new AVAudioPlayer(handle.Player.Handle);
 							PollReadyState(handle, loaded, error);
 						}
 						else
 						{
 							error("Failed to load: " + status.ToString());
 						}
-					}))));
+					}));
 
 			return handle;
 		}
@@ -85,8 +84,7 @@ namespace Fuse.Video.Mono
 				error("Failed to load: " + handle.PlayerItem.Status.ToString());
 				break;
 			default:
-				DispatchQueue.MainQueue.DispatchAsync(
-					new NSAction(() => PollReadyState(handle, ready, error)));
+				DispatchQueue.MainQueue.DispatchAsync(() => PollReadyState(handle, ready, error));
 				break;
 			}
 		}
@@ -113,12 +111,12 @@ namespace Fuse.Video.Mono
 
 		public static int GetWidth(VideoHandle handle)
 		{
-			return handle.PlayerItem.PresentationSize.ToSize().Width;
+			return (int)handle.PlayerItem.PresentationSize.ToRoundedCGSize().Width;
 		}
 
 		public static int GetHeight(VideoHandle handle)
 		{
-			return handle.PlayerItem.PresentationSize.ToSize().Height;
+			return (int)handle.PlayerItem.PresentationSize.ToRoundedCGSize().Height;
 		}
 
 		public static double GetDuration(VideoHandle handle)
@@ -145,12 +143,12 @@ namespace Fuse.Video.Mono
 
 		public static float GetVolume(VideoHandle handle)
 		{
-			return handle.AudioPlayer.Volume;	
+			return handle.Player.Volume;	
 		}
 
 		public static void SetVolume(VideoHandle handle, float volume)
 		{
-			handle.AudioPlayer.Volume = volume;
+			handle.Player.Volume = volume;
 		}
 
 		public static void Stop(VideoHandle handle)
@@ -177,10 +175,7 @@ namespace Fuse.Video.Mono
 		}
 		
 		public static void Dispose(VideoHandle handle)
-		{
-			if (handle.AudioPlayer != null)
-				handle.AudioPlayer.Dispose();
-			
+		{	
 			if (handle.Player != null)
 				handle.Player.Dispose();
 			
