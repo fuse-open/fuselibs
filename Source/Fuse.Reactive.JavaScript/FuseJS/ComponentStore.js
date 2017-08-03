@@ -55,7 +55,7 @@ function ComponentStore(source)
                 else if (descs[p].get instanceof Function)
                 {
                     node[p] = value;
-                    propGetters[p] = function() { return state[p]; }
+                    propGetters[p] = descs[p].get;
                 }
             }
 
@@ -67,6 +67,8 @@ function ComponentStore(source)
         node.evaluateDerivedProps = function()
         {
             for (var p in propGetters) {
+                var v = propGetters[p].call(state);
+                console.log("Re-evaluating " + p + " = "+v)
                 set(p, propGetters[p].call());
             }
             if (parentNode !== null) parentNode.evaluateDerivedProps();
