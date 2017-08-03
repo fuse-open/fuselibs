@@ -186,5 +186,18 @@ namespace Fuse.Reactive.Test
 				Assert.AreEqual( "b", e.a.StringValue );
 			}
         }
+        
+        [Test]
+        public void Multi()
+        {
+			var e = new UX.Model.Multi();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.StepFrameJS();
+				Assert.AreEqual( 1, e.a.Value );
+				Assert.AreEqual( 2, e.b.Value );
+				Assert.AreEqual( 3, e.c.Value );
+			}
+        }
     }
 }
