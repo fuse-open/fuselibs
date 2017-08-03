@@ -52,7 +52,7 @@ namespace Fuse.Reactive
 		[UXConstructor]
 		public DataBinding(
 			[UXParameter("Target")] Uno.UX.Property target, 
-			[UXParameter("Key"), UXVerbatim] IExpression key, 
+			[UXParameter("Key"), UXDataScope] IExpression key, 
 			[UXAutoNameTable, UXParameter("NameTable")] NameTable nameTable,
 			[UXParameter("Mode"), UXDefaultValue("Default")] BindingMode mode): base(key, nameTable)
 		{
