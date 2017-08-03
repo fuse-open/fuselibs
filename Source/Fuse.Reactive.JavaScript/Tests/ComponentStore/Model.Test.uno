@@ -150,5 +150,21 @@ namespace Fuse.Reactive.Test
 				Assert.AreEqual("e", e.b.UseValue);
 			}
         }
+        
+        [Test]
+        public void Disconnected()
+        {
+			var e = new UX.Model.Disconnected();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.StepFrameJS();
+				Assert.AreEqual(5,e.a.Value);
+				
+				e.callUpdateNext.Perform();
+				e.callSwap.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual(11,e.a.Value);
+			}
+        }
     }
 }
