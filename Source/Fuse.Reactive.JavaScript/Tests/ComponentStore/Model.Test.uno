@@ -93,7 +93,7 @@ namespace Fuse.Reactive.Test
 				
 				e.callRepC.Perform();
 				root.StepFrameJS();
-				Assert.AreEqual("3,1,1", GetDudZ(e));
+				Assert.AreEqual("1,3,1", GetDudZ(e));
 			}
         }
         

@@ -14,6 +14,8 @@ function ComponentStore(source)
 
     function instrument(store, parentNode, node, path, state)
     {
+        node.$getState = function() { return state; }
+
         node.$isClass = false;
         for (var k in state) {
             var v = state[k];
@@ -48,11 +50,12 @@ function ComponentStore(source)
                 var value = state[p];
                 if (value instanceof Function) {
                     node[p] = wrapFunction(p, value);
+                    state[p] = node[p];
                 }
                 else if (descs[p].get instanceof Function)
                 {
                     node[p] = value;
-                    propGetters[p] = function() { return state[p]; }
+                    propGetters[p] = descs[p].get;
                 }
             }
 
@@ -64,6 +67,8 @@ function ComponentStore(source)
         node.evaluateDerivedProps = function()
         {
             for (var p in propGetters) {
+                var v = propGetters[p].call(state);
+                console.log("Re-evaluating " + p + " = "+v)
                 set(p, propGetters[p].call());
             }
             if (parentNode !== null) parentNode.evaluateDerivedProps();
@@ -120,11 +125,11 @@ function ComponentStore(source)
                 }
             }
             else if (value instanceof Array) {
-                if (value.length == node[key].length && 'diff' in node[key]) { node[key].diff(); }
+                if (node.$getState() == value && value.length == node[key].length && 'diff' in node[key]) { node[key].diff(); }
                 else { set(key, instrument(store, node, [], path.concat(key), value)); }
             }
             else if (value instanceof Object) {
-                if ('diff' in node[key]) {
+                if (node.$getState() == value && 'diff' in node[key]) {
                     if (node.$isClass === false) {
                         node[key].diff();
                     }
