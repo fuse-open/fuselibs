@@ -4,7 +4,6 @@
 		
 		exports.setB = function() {
 			common.item.set("b")
-			console.log( "New: " + common.item.value )
 		}
 	</JavaScript>
 	<FuseTest.DudElement StringValue="{item.value}" ux:Name="a"/>
