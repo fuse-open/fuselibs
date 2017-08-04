@@ -1,4 +1,4 @@
-var common = require("UX/Model.AltEntryCommon")
+var common = require("UX/AltEntryCommon")
 
 class ModelAltEntry {
 	constructor() {
