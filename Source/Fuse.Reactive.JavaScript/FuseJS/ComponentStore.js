@@ -4,7 +4,8 @@ var TreeObservable = require("FuseJS/TreeObservable")
 
 function ComponentStore(source)
 {
-    instrument(this, null, this, [], source)
+    var store = this;
+    instrument(null, this, [], source)
 
     var subscribers = []
 
@@ -14,7 +15,7 @@ function ComponentStore(source)
         subscribers.push(callback);
     }
 
-    function instrument(store, parentNode, node, path, state)
+    function instrument(parentNode, node, path, state)
     {
         node.$getState = function() { return state; }
 
@@ -27,10 +28,10 @@ function ComponentStore(source)
                 node.$isClass = true;
             }
             else if (v instanceof Array) {
-                node[k] = instrument(store, node, [], path.concat(k), v);
+                node[k] = instrument(node, [], path.concat(k), v);
             }
             else if (v instanceof Object) {
-                node[k] = instrument(store, node, {}, path.concat(k), v);
+                node[k] = instrument(node, {}, path.concat(k), v);
             }
             else
             {
@@ -150,7 +151,7 @@ function ComponentStore(source)
             }
             else if (value instanceof Array) {
                 if (node.$getState() == value && value.length == node[key].length && 'diff' in node[key]) { node[key].diff(); }
-                else { set(key, instrument(store, node, [], path.concat(key), value)); }
+                else { set(key, instrument(node, [], path.concat(key), value)); }
             }
             else if (value instanceof Object) {
                 if (node.$getState() == value && 'diff' in node[key]) {
@@ -160,7 +161,7 @@ function ComponentStore(source)
                 }
                 else { 
                     console.log("Found new object: " + JSON.stringify(value));
-                    set(key, instrument(store, node, {}, path.concat(key), value));  
+                    set(key, instrument(node, {}, path.concat(key), value));  
                 }
             }
             else if (value !== node[key])
