@@ -12,6 +12,14 @@ namespace Fuse.Reactive
     {
         static PropertyHandle _modelHandle = Properties.CreateHandle();
 
+        IExpression _model;
+
+        void SetupModel()
+        {
+            if (_model != null)
+                SetupModel(Parent.Children, this, _model);
+        }
+
         static JavaScript GetModelScript(Visual v)
         {
             var js = v.Properties.Get(_modelHandle) as JavaScript;
@@ -19,6 +27,7 @@ namespace Fuse.Reactive
             {
                 js = new JavaScript(null);
                 js.FileName = "(model-script)";
+				v.Children.Add(js);
                 v.Properties.Set(_modelHandle, js);
             }
             return js;
@@ -28,7 +37,7 @@ namespace Fuse.Reactive
         public static void SetModel(Visual v, IExpression model)
         {
             var js = GetModelScript(v);
-            SetupModel(v.Children, js, model);
+            js._model = model;
         }
 
         static JavaScript _appModel;
@@ -39,8 +48,9 @@ namespace Fuse.Reactive
             {
                 _appModel = new JavaScript(null);
                 _appModel.FileName = "(model-script)";
+                app.Children.Add(_appModel);
             }
-            SetupModel(app.Children, _appModel, model);
+			SetupModel(app.Children, _appModel, model);
         }
 
         static string ParseModelExpression(IExpression exp, JavaScript js, ref string argString)
@@ -71,7 +81,6 @@ namespace Fuse.Reactive
 
         static void SetupModel(IList<Node> children, JavaScript js, IExpression model)
         {
-            children.Remove(js);
             js.Dependencies.Clear();
 
             string argString = "";
@@ -80,8 +89,6 @@ namespace Fuse.Reactive
             js.Code = "var ComponentStore = require('FuseJS/ComponentStore');\n"+
                     "var model = require('" + module + "');\n"+
                     "module.exports = new ComponentStore(new model(" + argString + "));";
-
-            children.Add(js);            
         }
     }
 }
