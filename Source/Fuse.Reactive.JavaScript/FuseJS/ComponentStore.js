@@ -89,11 +89,12 @@ function ComponentStore(source)
 
             var f = function() {
                 console.log("WRAP: " + JSON.stringify(arguments))
-                func.apply(state, arguments);
+                var res = func.apply(state, arguments);
                 
                 if (evaluatingDerivedProps === 0) {
                     dirty();
                 }
+                return res
             }
             f.$isWrapped = true;
 
