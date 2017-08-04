@@ -35,7 +35,6 @@ function ComponentStore(source)
             }
             else
             {
-                console.log(k + " = " + v)
                 node[k] = v;
             }
         }
@@ -75,7 +74,6 @@ function ComponentStore(source)
                 try
                 {
                     var v = propGetters[p].call(state);
-                    console.log("Re-evaluating " + p + " = "+v)
                     set(p, v);
                 }
                 finally
@@ -112,7 +110,6 @@ function ComponentStore(source)
         var changesDetected = 0;
 
         node.diff = function() {
-            console.log("checking for changes in " + JSON.stringify(node))
             isDirty = false;
             for (var k in state) {
                 var v = state[k];
@@ -141,7 +138,6 @@ function ComponentStore(source)
 
         function update(key, value)
         {
-            console.log("Examining '" + key + "' = " + JSON.stringify(value))
             if (value instanceof Function) {
                 if (!value.$isWrapped) {
                     state[key] = wrapFunction(k, value)
@@ -159,7 +155,6 @@ function ComponentStore(source)
                     }
                 }
                 else { 
-                    console.log("Found new object: " + JSON.stringify(value));
                     set(key, instrument(node, {}, path.concat(key), value));  
                 }
             }

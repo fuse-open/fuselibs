@@ -25,7 +25,6 @@ class ModelDisconnected {
 		cur = next
 		next = t
 		this.inner = cur
-		console.log( "->" + this.inner.value )
 	}
 }
 
