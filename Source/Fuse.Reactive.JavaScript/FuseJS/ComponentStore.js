@@ -175,8 +175,6 @@ function ComponentStore(source)
 
             var argPath = path.concat(key, value instanceof Array ? [value] : value);
             TreeObservable.set.apply(store, argPath);
-
-            changesDetected++;
         }
 
         function setInternal(key, value) {
@@ -190,7 +188,7 @@ function ComponentStore(source)
                 value: value
             }
 
-            console.log("YAYA!" + JSON.stringify(msg));
+			changesDetected++;
 
             for (var s of subscribers) s.call(store, msg);
             return true;
