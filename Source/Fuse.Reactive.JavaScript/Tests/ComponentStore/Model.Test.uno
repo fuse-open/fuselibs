@@ -138,14 +138,17 @@ namespace Fuse.Reactive.Test
 				Assert.AreEqual("b", e.b.UseValue);
 				
 				e.callStep1.Perform();
+				root.StepFrameJS();
 				Assert.AreEqual("c", e.a.UseValue);
 				Assert.AreEqual("b", e.b.UseValue);
 				
 				e.callStep2.Perform();
+				root.StepFrameJS();
 				Assert.AreEqual("c", e.a.UseValue);
 				Assert.AreEqual("d", e.b.UseValue);
 				
-				e.callStep2.Perform();
+				e.callStep3.Perform();
+				root.StepFrameJS();
 				Assert.AreEqual("c", e.a.UseValue);
 				Assert.AreEqual("e", e.b.UseValue);
 			}
