@@ -4,7 +4,7 @@ class Item {
 	}
 }
 
-class ModelUseCase1 {
+class UseCase1 {
 	constructor() {
 		this.items = [ "one", "two", "three", "four", "five" ].map( n => new Item(n) )
 		console.dir(this.items)
@@ -20,4 +20,4 @@ class ModelUseCase1 {
 	}
 }
 
-module.exports = ModelUseCase1
+module.exports = UseCase1

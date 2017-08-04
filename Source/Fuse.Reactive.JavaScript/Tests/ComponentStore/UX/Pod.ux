@@ -1,4 +1,4 @@
-<Panel ux:Class="UX.Model.Pod" Model="UX/ModelPod()">
+<Panel ux:Class="UX.Model.Pod" Model="UX/Pod()">
 	<FuseTest.DudElement StringValue="{data.value}" ux:Name="a"/>
 	<FuseTest.DudElement StringValue="{data.nest.value}" ux:Name="b"/>
 	

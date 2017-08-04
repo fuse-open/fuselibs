@@ -1,4 +1,4 @@
-<Panel ux:Class="UX.Model.AltEntry" Model="UX/ModelAltEntry">
+<Panel ux:Class="UX.Model.AltEntry" Model="UX/AltEntry">
 	<JavaScript>
 		var common = require( "UX/Model.AltEntryCommon" )
 		

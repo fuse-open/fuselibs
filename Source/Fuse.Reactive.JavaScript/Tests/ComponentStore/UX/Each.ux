@@ -1,4 +1,4 @@
-<Panel ux:Class="UX.Model.Each" Model="UX/ModelEach">
+<Panel ux:Class="UX.Model.Each" Model="UX/Each">
 	<Panel ux:Name="a">
 		<Each Items="{simple}">
 			<FuseTest.DudElement StringValue="{}"/>
