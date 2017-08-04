@@ -89,7 +89,6 @@ function ComponentStore(source)
         function wrapFunction(name, func) {
 
             var f = function() {
-                console.log("WRAP: " + JSON.stringify(arguments))
                 var res = func.apply(state, arguments);
                 
                 if (evaluatingDerivedProps === 0) {
@@ -173,8 +172,6 @@ function ComponentStore(source)
         function set(key, value)
         {
             if (!setInternal(key, value)) { return; }
-
-            console.log("HAHAH  " + JSON.stringify(store));
 
             var argPath = path.concat(key, value instanceof Array ? [value] : value);
             TreeObservable.set.apply(store, argPath);
