@@ -1,4 +1,4 @@
-<Panel ux:Class="UX.Model.Disconnected" Model="UX/ModelDisconnected()">
+<Panel ux:Class="UX.Model.Disconnected" Model="UX/Disconnected()">
 	<FuseTest.DudElement Value="{inner.value}" ux:Name="a"/>
 	
 	<FuseTest.Invoke Handler="{updateNext}" ux:Name="callUpdateNext"/>

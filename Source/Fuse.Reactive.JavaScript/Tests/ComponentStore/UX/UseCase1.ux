@@ -1,4 +1,4 @@
-<Panel ux:Class="UX.Model.UseCase1" Model="UX/ModelUseCase1">
+<Panel ux:Class="UX.Model.UseCase1" Model="UX/UseCase1">
 	<Panel ux:Name="a">
 		<Each Count="5">
 			<Panel ux:Class="UMUItem">

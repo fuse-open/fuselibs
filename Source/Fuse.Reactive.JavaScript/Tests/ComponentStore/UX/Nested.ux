@@ -1,4 +1,4 @@
-<Panel ux:Class="UX.Model.Nested" Model="UX/ModelNested()">
+<Panel ux:Class="UX.Model.Nested" Model="UX/Nested()">
 	<FuseTest.DudElement Value="{a.value}"/>
 	<FuseTest.DudElement Value="{b.value}"/>
 	<FuseTest.DudElement Value="{c.value}"/>

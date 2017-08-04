@@ -32,6 +32,7 @@ function ComponentStore(source)
             }
             else
             {
+                console.log(k + " = " + v)
                 node[k] = v;
             }
         }
@@ -77,6 +78,7 @@ function ComponentStore(source)
         function wrapFunction(name, func) {
 
             var f = function() {
+                console.log("WRAP: " + JSON.stringify(arguments))
                 func.apply(state, arguments);
                 dirty();
             }
@@ -95,6 +97,8 @@ function ComponentStore(source)
 
         node.diff = function() {
             node.evaluateDerivedProps(); // Consider calling this after seeing whether or not any changes have been detected
+
+            console.log("checking for changes in " + JSON.stringify(node))
             isDirty = false;
             for (var k in state) {
                 var v = state[k];
@@ -118,6 +122,7 @@ function ComponentStore(source)
 
         function update(key, value)
         {
+            console.log("Examining '" + key + "' = " + JSON.stringify(value))
             if (value instanceof Function) {
                 if (!value.$isWrapped) {
                     state[key] = wrapFunction(k, value)
@@ -134,7 +139,10 @@ function ComponentStore(source)
                         node[key].diff();
                     }
                 }
-                else { set(key, instrument(store, node, {}, path.concat(key), value));  }
+                else { 
+                    console.log("Found new object: " + JSON.stringify(value));
+                    set(key, instrument(store, node, {}, path.concat(key), value));  
+                }
             }
             else if (value !== node[key])
             {
@@ -145,6 +153,8 @@ function ComponentStore(source)
         function set(key, value)
         {
             if (!setInternal(key, value)) { return; }
+
+            console.log("HAHAH  " + JSON.stringify(store));
 
             var argPath = path.concat(key, value instanceof Array ? [value] : value);
             TreeObservable.set.apply(store, argPath);
@@ -160,6 +170,8 @@ function ComponentStore(source)
                 key: key,
                 value: value
             }
+
+            console.log("YAYA!" + JSON.stringify(msg));
 
             for (var s of subscribers) s.call(store, msg);
             return true;
