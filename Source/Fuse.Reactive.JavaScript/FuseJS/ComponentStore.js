@@ -109,14 +109,19 @@ function ComponentStore(source)
             setTimeout(node.diff, 0);
         }
 
-        node.diff = function() {
-            node.evaluateDerivedProps(); // Consider calling this after seeing whether or not any changes have been detected
+        var changesDetected = 0;
 
+        node.diff = function() {
             console.log("checking for changes in " + JSON.stringify(node))
             isDirty = false;
             for (var k in state) {
                 var v = state[k];
                 update(k, v);
+            }
+
+            if (changesDetected > 0) {
+                node.evaluateDerivedProps(); 
+                changesDetected = 0;
             }
         }
 
@@ -172,6 +177,8 @@ function ComponentStore(source)
 
             var argPath = path.concat(key, value instanceof Array ? [value] : value);
             TreeObservable.set.apply(store, argPath);
+
+            changesDetected++;
         }
 
         function setInternal(key, value) {
