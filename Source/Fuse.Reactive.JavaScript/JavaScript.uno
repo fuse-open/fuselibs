@@ -40,6 +40,8 @@ namespace Fuse.Reactive
 
 		protected override void OnRooted()
 		{
+			SetupModel();
+
 			base.OnRooted();
 			_javaScriptCounter++;
 			SubscribeToDependenciesAndDispatchEvaluate();
