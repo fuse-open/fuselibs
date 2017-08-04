@@ -1,5 +1,5 @@
 class Item {
-	construct( name ) {
+	constructor( name ) {
 		this.name = name
 	}
 }
