@@ -8,6 +8,8 @@ function ComponentStore(source)
 
     var subscribers = []
 
+    var evaluatingDerivedProps = 0;
+
     this.subscribe = function(callback) {
         subscribers.push(callback);
     }
@@ -68,9 +70,17 @@ function ComponentStore(source)
         node.evaluateDerivedProps = function()
         {
             for (var p in propGetters) {
-                var v = propGetters[p].call(state);
-                console.log("Re-evaluating " + p + " = "+v)
-                set(p, v);
+                evaluatingDerivedProps++;
+                try
+                {
+                    var v = propGetters[p].call(state);
+                    console.log("Re-evaluating " + p + " = "+v)
+                    set(p, v);
+                }
+                finally
+                {
+                    evaluatingDerivedProps--;
+                }
             }
             if (parentNode !== null) parentNode.evaluateDerivedProps();
         }
@@ -80,7 +90,10 @@ function ComponentStore(source)
             var f = function() {
                 console.log("WRAP: " + JSON.stringify(arguments))
                 func.apply(state, arguments);
-                dirty();
+                
+                if (evaluatingDerivedProps === 0) {
+                    dirty();
+                }
             }
             f.$isWrapped = true;
 
