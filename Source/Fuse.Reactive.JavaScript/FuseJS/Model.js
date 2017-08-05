@@ -171,6 +171,7 @@ function Model(source)
 			if (oldMeta instanceof Object) {
 				var thisIndex = oldMeta.parents.findIndex(function(x) { return x.meta == meta });
 				oldMeta.parents.splice(thisIndex, 1);
+				oldMeta.invalidatePath();
 
 				if (oldMeta.parents.length === 0) {
 					idToMeta.delete(node.$id);
@@ -235,12 +236,18 @@ function Model(source)
 			}
 		}
 
+		var cachedPath = null;
 		function getPath() {
-			return meta.getPath();
+			if (cachedPath === null) { cachedPath = computePath(); }
+			return cachedPath;
 		} 
+		
+		meta.getPath = getPath;
+		meta.invalidatePath = function() { cachedPath = null; }
 
 		// Finds a valid path to the root TreeObservable, if any
-		meta.getPath = function() {
+		function computePath()
+		{
 			for (var i = 0; i < meta.parents.length; i++) {
 				if (meta.parents[i] === null) { return [] }
 				else 
