@@ -1,22 +1,13 @@
-
-
 var TreeObservable = require("FuseJS/TreeObservable")
 
 function ComponentStore(source)
 {
 	var stateToMeta = new Map();
-
+	var evaluatingDerivedProps = 0;
 	var idEnumerator = 0;
 	var store = this;
+
 	instrument(null, this, [], source)
-
-	var subscribers = []
-
-	var evaluatingDerivedProps = 0;
-
-	this.subscribe = function(callback) {
-		subscribers.push(callback);
-	}
 
 	function instrument(parentMeta, node, path, state)
 	{
@@ -262,7 +253,6 @@ function ComponentStore(source)
 
 			changesDetected++;
 
-			for (var s of subscribers) s.call(store, msg);
 			return true;
 		}
 
