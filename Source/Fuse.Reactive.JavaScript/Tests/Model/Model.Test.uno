@@ -67,18 +67,6 @@ namespace Fuse.Reactive.Test
 		}
 		
 		[Test]
-		[Ignore("Not parsing correctly, see UX file")]
-		public void PathName()
-		{
-			var e = new UX.Model.PathName();
-			using (var root = TestRootPanel.CreateWithChild(e))
-			{
-				root.StepFrameJS();
-				//Assert.AreEqual("abc", e.v.Value);
-			}
-		}
-		
-		[Test]
 		public void Nested()
 		{
 			var e = new UX.Model.Nested();
