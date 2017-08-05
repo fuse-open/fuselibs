@@ -11,41 +11,41 @@ namespace Fuse.Reactive.Test
 		[Test]
 		public void Basic()
 		{
-            var e = new UX.Model.Basic();
-            using (var root = TestRootPanel.CreateWithChild(e))
-            {
-                root.StepFrameJS();
-                Assert.AreEqual(false, e.mySwitch.Value);
-                Assert.AreEqual(true, e.myFlippedSwitch.Value);
+			var e = new UX.Model.Basic();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.StepFrameJS();
+				Assert.AreEqual(false, e.mySwitch.Value);
+				Assert.AreEqual(true, e.myFlippedSwitch.Value);
 
-                e.mySwitch.Value = true;
+				e.mySwitch.Value = true;
 
-                Assert.AreEqual(true, e.mySwitch.Value);
-                root.StepFrameJS();
-                Assert.AreEqual(true, e.mySwitch.Value);
-                Assert.AreEqual(false, e.myFlippedSwitch.Value);
+				Assert.AreEqual(true, e.mySwitch.Value);
+				root.StepFrameJS();
+				Assert.AreEqual(true, e.mySwitch.Value);
+				Assert.AreEqual(false, e.myFlippedSwitch.Value);
 
-                e.myFlippedSwitch.Value = true;
-                Assert.AreEqual(true, e.myFlippedSwitch.Value);
-                root.StepFrameJS();
+				e.myFlippedSwitch.Value = true;
+				Assert.AreEqual(true, e.myFlippedSwitch.Value);
+				root.StepFrameJS();
 
-                Assert.AreEqual(false, e.mySwitch.Value);
-                Assert.AreEqual(true, e.myFlippedSwitch.Value);
+				Assert.AreEqual(false, e.mySwitch.Value);
+				Assert.AreEqual(true, e.myFlippedSwitch.Value);
 
-                e.myFlippedSwitch.Value = false;
-                e.mySwitch.Value = true;
-                e.myFlippedSwitch.Value = true;
-                root.StepFrameJS();
+				e.myFlippedSwitch.Value = false;
+				e.mySwitch.Value = true;
+				e.myFlippedSwitch.Value = true;
+				root.StepFrameJS();
 
-                Assert.AreEqual(false, e.mySwitch.Value);
-                Assert.AreEqual(true, e.myFlippedSwitch.Value);
+				Assert.AreEqual(false, e.mySwitch.Value);
+				Assert.AreEqual(true, e.myFlippedSwitch.Value);
 
-            }
-        }
-        
-        [Test]
-        public void List()
-        {
+			}
+		}
+		
+		[Test]
+		public void List()
+		{
 			var e = new UX.Model.List();
 			using (var root = TestRootPanel.CreateWithChild(e))
 			{
@@ -64,23 +64,23 @@ namespace Fuse.Reactive.Test
 				root.StepFrameJS();
 				Assert.AreEqual( "6", e.oc.JoinValues() );
 			}
-        }
-        
-        [Test]
-        [Ignore("Not parsing correctly, see UX file")]
-        public void PathName()
-        {
+		}
+		
+		[Test]
+		[Ignore("Not parsing correctly, see UX file")]
+		public void PathName()
+		{
 			var e = new UX.Model.PathName();
 			using (var root = TestRootPanel.CreateWithChild(e))
 			{
 				root.StepFrameJS();
 				//Assert.AreEqual("abc", e.v.Value);
 			}
-        }
-        
-        [Test]
-        public void Nested()
-        {
+		}
+		
+		[Test]
+		public void Nested()
+		{
 			var e = new UX.Model.Nested();
 			using (var root = TestRootPanel.CreateWithChild(e))
 			{
@@ -95,11 +95,11 @@ namespace Fuse.Reactive.Test
 				root.StepFrameJS();
 				Assert.AreEqual("1,3,1", GetDudZ(e));
 			}
-        }
-        
-        [Test]
-        public void Function()
-        {
+		}
+		
+		[Test]
+		public void Function()
+		{
 			var e = new UX.Model.Function();
 			using (var root = TestRootPanel.CreateWithChild(e))
 			{
@@ -111,11 +111,11 @@ namespace Fuse.Reactive.Test
 				root.StepFrameJS();
 				Assert.AreEqual("****", e.s.UseValue);
 			}
-        }
-        
-        [Test]
-        public void Loop()
-        {
+		}
+		
+		[Test]
+		public void Loop()
+		{
 			var e = new UX.Model.Loop();
 			using (var root = TestRootPanel.CreateWithChild(e))
 			{
@@ -124,11 +124,11 @@ namespace Fuse.Reactive.Test
 				Assert.AreEqual( "%", e.b.UseValue );
 				Assert.AreEqual( "%", e.c.UseValue );
 			}
-        }
-        
-        [Test]
-        public void Pod()
-        {
+		}
+		
+		[Test]
+		public void Pod()
+		{
 			var e = new UX.Model.Pod();
 			using (var root = TestRootPanel.CreateWithChild(e))
 			{
@@ -151,11 +151,11 @@ namespace Fuse.Reactive.Test
 				Assert.AreEqual("c", e.a.UseValue);
 				Assert.AreEqual("e", e.b.UseValue);
 			}
-        }
-        
-        [Test]
-        public void Disconnected()
-        {
+		}
+		
+		[Test]
+		public void Disconnected()
+		{
 			var e = new UX.Model.Disconnected();
 			using (var root = TestRootPanel.CreateWithChild(e))
 			{
@@ -172,11 +172,11 @@ namespace Fuse.Reactive.Test
 				root.StepFrameJS();
 				Assert.AreEqual(6,e.a.Value);
 			}
-        }
-        
-        [Test]
-        public void AltEntry()
-        {
+		}
+		
+		[Test]
+		public void AltEntry()
+		{
 			var e = new UX.Model.AltEntry();
 			using (var root = TestRootPanel.CreateWithChild(e))
 			{
@@ -187,11 +187,11 @@ namespace Fuse.Reactive.Test
 				root.StepFrameJS();
 				Assert.AreEqual( "b", e.a.StringValue );
 			}
-        }
-        
-        [Test]
-        public void Multi()
-        {
+		}
+		
+		[Test]
+		public void Multi()
+		{
 			var e = new UX.Model.Multi();
 			using (var root = TestRootPanel.CreateWithChild(e))
 			{
@@ -200,11 +200,11 @@ namespace Fuse.Reactive.Test
 				Assert.AreEqual( 2, e.b.Value );
 				Assert.AreEqual( 3, e.c.Value );
 			}
-        }
-        
-        [Test]
-        public void Bind()
-        {
+		}
+		
+		[Test]
+		public void Bind()
+		{
 			var e = new UX.Model.Bind();
 			using (var root = TestRootPanel.CreateWithChild(e))
 			{
@@ -222,11 +222,11 @@ namespace Fuse.Reactive.Test
 				root.StepFrameJS();
 				Assert.AreEqual( 12, e.u.Load );
 			}
-        }
-        
-        [Test]
-        public void Accessor() 
-        {
+		}
+		
+		[Test]
+		public void Accessor() 
+		{
 			var e = new UX.Model.Accessor();
 			using (var root = TestRootPanel.CreateWithChild(e))
 			{
@@ -247,12 +247,12 @@ namespace Fuse.Reactive.Test
 				Assert.AreEqual( 16, e.r.Value );
 				Assert.AreEqual( 232, e.d.Value );
 			}
-        }
-        
-        [Test]
-        //TODO: working on this this one still (found the Each one)
-        public void UseCase1()
-        {
+		}
+		
+		[Test]
+		//TODO: working on this this one still (found the Each one)
+		public void UseCase1()
+		{
 			var e = new UX.Model.UseCase1();
 			using (var root = TestRootPanel.CreateWithChild(e))
 			{
@@ -265,11 +265,11 @@ namespace Fuse.Reactive.Test
 				
 				root.StepFrameJS();
 			}
-        }
-        
-        [Test]
-        public void Each()
-        {
+		}
+		
+		[Test]
+		public void Each()
+		{
 			var e = new UX.Model.Each();
 			using (var root = TestRootPanel.CreateWithChild(e))
 			{
@@ -278,11 +278,11 @@ namespace Fuse.Reactive.Test
 				Assert.AreEqual( "three,two,one", GetDudZ(e.a));
 				Assert.AreEqual( "three,two,one", GetDudZ(e.b));
 			}
-        }
-        
-        [Test]
-        public void NestedAccessor()
-        {
+		}
+		
+		[Test]
+		public void NestedAccessor()
+		{
 			var e = new UX.Model.NestedAccessor();
 			using (var root = TestRootPanel.CreateWithChild(e))
 			{
@@ -303,6 +303,41 @@ namespace Fuse.Reactive.Test
 				Assert.AreEqual( 16, e.r.Value );
 				Assert.AreEqual( -16, e.d.Value );
 			}
-        }
-    }
+		}
+
+		[Test]
+		public void Test1()
+		{
+			var e = new UX.Model.Test1();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.StepFrameJS();
+				Assert.AreEqual(false, e.mySwitch.Value);
+				Assert.AreEqual(true, e.myFlippedSwitch.Value);
+
+				e.mySwitch.Value = true;
+
+				Assert.AreEqual(true, e.mySwitch.Value);
+				root.StepFrameJS();
+				Assert.AreEqual(true, e.mySwitch.Value);
+				Assert.AreEqual(false, e.myFlippedSwitch.Value);
+
+				e.myFlippedSwitch.Value = true;
+				Assert.AreEqual(true, e.myFlippedSwitch.Value);
+				root.StepFrameJS();
+
+				Assert.AreEqual(false, e.mySwitch.Value);
+				Assert.AreEqual(true, e.myFlippedSwitch.Value);
+
+				e.myFlippedSwitch.Value = false;
+				e.mySwitch.Value = true;
+				e.myFlippedSwitch.Value = true;
+				root.StepFrameJS();
+
+				Assert.AreEqual(false, e.mySwitch.Value);
+				Assert.AreEqual(true, e.myFlippedSwitch.Value);
+
+			}
+		}
+	}
 }

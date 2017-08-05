@@ -1,6 +1,6 @@
 var TreeObservable = require("FuseJS/TreeObservable")
 
-function ComponentStore(source)
+function Model(source)
 {
 	var stateToMeta = new Map();
 	var evaluatingDerivedProps = 0;
@@ -260,6 +260,6 @@ function ComponentStore(source)
 	}
 }
 
-ComponentStore.prototype = Object.create(TreeObservable.prototype);
+Model.prototype = Object.create(TreeObservable.prototype);
 
-module.exports = ComponentStore;
+module.exports = Model;

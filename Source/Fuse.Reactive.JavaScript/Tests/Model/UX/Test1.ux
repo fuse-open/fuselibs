@@ -1,4 +1,4 @@
-<Panel ux:Class="UX.ComponentStore.Test1">
+<Panel ux:Class="UX.Model.Test1">
     <JavaScript>
         class TestClass {
             constructor() {
@@ -12,8 +12,8 @@
                 this.isSet = !value;
             }
         }
-        var ComponentStore = require("FuseJS/ComponentStore")
-        module.exports = new ComponentStore(new TestClass());
+        var Model = require("FuseJS/Model")
+        module.exports = new Model(new TestClass());
     </JavaScript>
     <Switch ux:Name="mySwitch" Value="{isSet}" />
     <Switch ux:Name="myFlippedSwitch" Value="{flipped}" />

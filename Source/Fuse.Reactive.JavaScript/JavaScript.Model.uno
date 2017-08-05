@@ -86,9 +86,9 @@ namespace Fuse.Reactive
             string argString = "";
             string module = ParseModelExpression(model, js, ref argString);
             
-            js.Code = "var ComponentStore = require('FuseJS/ComponentStore');\n"+
-                    "var model = require('" + module + "');\n"+
-                    "module.exports = new ComponentStore(new model(" + argString + "));";
+            js.Code = "var Model = require('FuseJS/Model');\n"+
+                    "var modelClass = require('" + module + "');\n"+
+                    "module.exports = new Model(new modelClass(" + argString + "));";
         }
     }
 }

@@ -41,7 +41,7 @@
     "FuseJS/setTimeout.js:File",
     "FuseJS/Observable.js:File",
     "FuseJS/TreeObservable.js:Bundle",
-    "FuseJS/ComponentStore.js:Bundle",
+    "FuseJS/Model.js:Bundle",
     "FuseJS/EventEmitter.js:Bundle",
     "JavaScriptEngine.cil.uxl:Extensions",
     "JavaScriptEngine.cpp.uxl:Extensions",
