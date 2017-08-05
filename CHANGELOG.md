@@ -58,9 +58,6 @@
 - Added support for name-value pair syntax: `name: value`. Can be used for JSON-like object notation and named arguments in custom functions. Any vector of name-value pairs is interpreted as an `IObject`, e.g. `{name: 'Joe', apples: 10}` is an object.
 - Added support for name-value pair syntax: `name: value`. Can be used for JSON-like object notation and named arguments in custom functions.
 
-## FuseJS/Store API
-- The `FuseJS/Store` API introduces a predictable state container class that interops effectively with the UX data context. See docs for details.
-
 ## Templates
 - Added `Identity` and `IdentityKey` to `Each`. This allows created visuals to be reused when replaced with `replaceAt` or `replaceAll` in an Observable.
 - Triggers may now use templates which will be instantiated and added to the parent when active (like a node child).
