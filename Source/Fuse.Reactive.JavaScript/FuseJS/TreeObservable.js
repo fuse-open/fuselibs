@@ -29,32 +29,4 @@ TreeObservable.removeAt = function() {
 	if (this.$removeAt instanceof Function) { this.$removeAt.apply(this, arguments); }
 }
 
-TreeObservable.diff = function(newState, config) {
-	var t = this;
-
-	if (config === undefined) { config = {} }
-	updatePath([], t, newState);
-
-	function updatePath(path, oldState, newState)
-	{
-		for (var k in newState) {
-			if (oldState[k] instanceof Object && newState[k] instanceof Object)
-			{
-				if (config.immutableObjects && oldState[k] === newState[k]) { continue; }
-			
-				if (!(newState[k] instanceof Array))
-				{
-					updatePath(path.concat(k), oldState[k], newState[k]);
-					continue;
-				}
-			}
-
-			// Last resort: replace entire subtree
-			oldState[k] = newState[k];
-			TreeObservable.set.apply(t, path.concat([k, newState[k]]));
-		}
-	}
-}
-
-
 module.exports = TreeObservable;
