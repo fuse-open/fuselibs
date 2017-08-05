@@ -3,13 +3,14 @@ var TreeObservable = require("FuseJS/TreeObservable")
 function Model(source)
 {
 	var stateToMeta = new Map();
+	var idToMeta = new Map();
 	var evaluatingDerivedProps = 0;
 	var idEnumerator = 0;
 	var store = this;
 
-	instrument(null, this, [], source)
+	instrument(null, this, source)
 
-	function instrument(parentMeta, node, path, state)
+	function instrument(parentMeta, node, state)
 	{
 		var meta = stateToMeta.get(state);
 
@@ -19,15 +20,17 @@ function Model(source)
 		}
 
 		meta = {
-			parents: parentMeta !== null ? [parentMeta] : [],
+			parents: [parentMeta],
 			id: idEnumerator++,
 			node: node,
 			state: state,
 			isClass: false
 		}
+		
+		idToMeta.set(meta.id, meta);
 		stateToMeta.set(state, meta);
-
 		node.$id = meta.id;
+		
 
 		meta.isClass = false;
 		for (var k in state) {
@@ -39,10 +42,10 @@ function Model(source)
 				meta.isClass = true;
 			}
 			else if (v instanceof Array) {
-				node[k] = instrument(meta, [], path.concat(k), v);
+				node[k] = instrument({meta: meta, key: k}, [], v);
 			}
 			else if (v instanceof Object) {
-				node[k] = instrument(meta, {}, path.concat(k), v);
+				node[k] = instrument({meta: meta, key: k}, {}, v);
 			}
 			else
 			{
@@ -97,7 +100,9 @@ function Model(source)
 			}
 			
 			for (var parent of meta.parents) {
-				parent.evaluateDerivedProps(visited);
+				if (parent !== null) {
+					parent.meta.evaluateDerivedProps(visited);
+				}
 			}
 		}
 
@@ -128,6 +133,13 @@ function Model(source)
 
 		meta.diff = function() {
 			isDirty = false;
+
+			if (meta.parents.length === 0) { 
+				// This object is no longer attached to the model tree,
+				// we got this callback as an async remnant
+				return; 
+			}
+
 			if (state instanceof Array) {
 				var c = Math.min(state.length, node.length);
 				for (var i = 0; i < c; i++) { 
@@ -154,6 +166,19 @@ function Model(source)
 			}
 		}
 
+		function removeAsParentFrom(node) {
+			var oldMeta = idToMeta.get(node.$id);
+			if (oldMeta instanceof Object) {
+				var thisIndex = oldMeta.parents.findIndex(function(x) { return x.meta == meta });
+				oldMeta.parents.splice(thisIndex, 1);
+
+				if (oldMeta.parents.length === 0) {
+					idToMeta.delete(node.$id);
+					stateToMeta.delete(oldMeta.state);
+				}
+			}
+		}
+
 		node.$requestChange = function(key, value) {
 			var changeAccepted = true;
 			if ('$requestChange' in state) {
@@ -162,7 +187,7 @@ function Model(source)
 
 			if (changeAccepted) {
 				state[key] = value;
-				setInternal(key, value);
+				setInternal(meta.getPath(), key, value);
 			}
 
 			meta.diff();
@@ -187,7 +212,8 @@ function Model(source)
 				}
 				else 
 				{ 
-					set(key, instrument(meta, [], path.concat(key), value)); 
+					removeAsParentFrom(node[key]);
+					set(key, instrument({meta: meta, key: key}, [], value)); 
 				}
 			}
 			else if (value instanceof Object) {
@@ -199,7 +225,8 @@ function Model(source)
 					}
 				}
 				else { 
-					set(key, instrument(meta, {}, path.concat(key), value));  
+					removeAsParentFrom(node[key]);
+					set(key, instrument({meta: meta, key: key}, {}, value));  
 				}
 			}
 			else if (value !== node[key])
@@ -208,9 +235,28 @@ function Model(source)
 			}
 		}
 
+		function getPath() {
+			return meta.getPath();
+		} 
+
+		// Finds a valid path to the root TreeObservable, if any
+		meta.getPath = function() {
+			for (var i = 0; i < meta.parents.length; i++) {
+				if (meta.parents[i] === null) { return [] }
+				else 
+				{
+					var arr = meta.parents[i].meta.getPath();
+					if (arr instanceof Array) {
+						return arr.concat(meta.parents[i].key);
+					}	
+				}
+			}
+		}
+
 		function set(key, value)
 		{
-			if (!setInternal(key, value)) { return; }
+			var path = getPath();
+			if (!setInternal(path, key, value)) { return; }
 
 			var argPath = path.concat(key, value instanceof Array ? [value] : value);
 			TreeObservable.set.apply(store, argPath);
@@ -218,7 +264,7 @@ function Model(source)
 
 		function removeRange(index, count) {
 			node.splice(index, count);
-			var removePath = path.concat(index);
+			var removePath = getPath().concat(index);
 			for (var i = 0; i < count; i++) {
 				TreeObservable.removeAt.apply(store, removePath);
 			}
@@ -228,19 +274,20 @@ function Model(source)
 		function addRange(items) {
 			for (var item of items) {
 				node.push(item);
-				TreeObservable.add.apply(store, path.concat(item));
+				TreeObservable.add.apply(store, getPath().concat(item));
 			}
 			
 			changesDetected++;
 		}
 		
 		function pathString(key) {
+			var path = getPath();
 			if (path.length === 0) { return key }
 			if (path.length === 1) { return path[0] + "." + key; }
 			return path.reduce((a, b) => a + "." + b) + "." + key;
 		}
 
-		function setInternal(key, value) {
+		function setInternal(path, key, value) {
 			if (node[key] === value) { return false; }
 			node[key] = value;
 
