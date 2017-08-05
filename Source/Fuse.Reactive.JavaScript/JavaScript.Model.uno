@@ -20,24 +20,37 @@ namespace Fuse.Reactive
                 SetupModel(Parent.Children, this, _model);
         }
 
-        static JavaScript GetModelScript(Visual v)
+        static JavaScript GetModelScript(Visual v, NameTable nt = null)
         {
             var js = v.Properties.Get(_modelHandle) as JavaScript;
-            if (js == null)
+            if (js == null || nt != null)
             {
-                js = new JavaScript(null);
+                var oldJs = js;
+                
+                js = new JavaScript(nt);
                 js.FileName = "(model-script)";
-				v.Children.Add(js);
+                if (oldJs != null) 
+                {
+                    v.Children.Remove(oldJs);
+                    js._model = oldJs._model;
+                } 
+                v.Children.Add(js);
                 v.Properties.Set(_modelHandle, js);
             }
             return js;
         }
 
-        [UXAttachedPropertySetter("JavaScript.Model"), UXNameScope]
+        [UXAttachedPropertySetter("JavaScript.Model"), UXNameScope, UXAuxNameTable("ModelNameTable")]
         public static void SetModel(Visual v, IExpression model)
         {
             var js = GetModelScript(v);
             js._model = model;
+        }
+
+        [UXAttachedPropertySetterAttribute("ModelNameTable")]
+        public static void SetModelNameTable(Visual v, NameTable nt)
+        {
+            GetModelScript(v, nt);
         }
 
         static JavaScript _appModel;
@@ -53,13 +66,13 @@ namespace Fuse.Reactive
 			SetupModel(app.Children, _appModel, model);
         }
 
-        static string ParseModelExpression(IExpression exp, JavaScript js, ref string argString)
+        static string ParseModelExpression(IExpression exp, JavaScript js, ref string argString, List<string> thisSymbols)
         {
             if (exp is Data) return ((Data)exp).Key;
             else if (exp is Divide)
             {
-                var left = ParseModelExpression(((Divide)exp).Left, js, ref argString);
-                var right = ParseModelExpression(((Divide)exp).Right, js, ref argString);
+                var left = ParseModelExpression(((Divide)exp).Left, js, ref argString, thisSymbols);
+                var right = ParseModelExpression(((Divide)exp).Right, js, ref argString, thisSymbols);
                 return left + "/" + right;
             }
             else if (exp is Fuse.Reactive.NamedFunctionCall)
@@ -68,10 +81,19 @@ namespace Fuse.Reactive
 
                 for (int i = 0; i < nfc.Arguments.Count; i++)
                 {
-                    var argName = "__dep" + i;
-                    js.Dependencies.Add(new Dependency(argName, nfc.Arguments[i]));
-                    if (i > 0) argString = argString + ", ";
-                    argString += argName;
+					var argName = "__dep" + i;
+                    var nt = js._nameTable;
+					var c = nfc.Arguments[i] as Constant;
+                    if (nt != null && c != null && c.Value == nt.This)
+                    {
+                        thisSymbols.Add(argName);
+                    }
+					else
+					{
+						js.Dependencies.Add(new Dependency(argName, nfc.Arguments[i]));
+					}
+					if (i > 0) argString = argString + ", ";
+					argString += argName;
                 }
 
                 return nfc.Name;
@@ -84,11 +106,20 @@ namespace Fuse.Reactive
             js.Dependencies.Clear();
 
             string argString = "";
-            string module = ParseModelExpression(model, js, ref argString);
+			var thisSymbols = new List<string>();
+            string module = ParseModelExpression(model, js, ref argString, thisSymbols);
             
-            js.Code = "var Model = require('FuseJS/Model');\n"+
-                    "var modelClass = require('" + module + "');\n"+
+            var code = "var Model = require('FuseJS/Model');\n"+
+					"var ViewModelAdapter = require('FuseJS/ViewModelAdapter')\n";
+
+			for (var i = 0; i < thisSymbols.Count; i++)
+				code += "var " + thisSymbols[i] + " = new ViewModelAdapter(module, this);\n";
+					
+			code += "var modelClass = require('" + module + "');\n"+
+                    "if (!(modelClass instanceof Function)) { throw new Error('\"" + module + "\" does not export a class or function required to construct a Model'); }\n"+
                     "module.exports = new Model(new modelClass(" + argString + "));";
+
+			js.Code = code;
         }
     }
 }
