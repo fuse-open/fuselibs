@@ -5,7 +5,7 @@ namespace Fuse.Reactive
 {
 	class TreeArray : ArrayMirror, IObservableArray
 	{
-		internal TreeArray(IMirror mirror, Scripting.Array arr): base(mirror, arr) {}
+		internal TreeArray(Scripting.Array arr): base(arr) {}
 
 		public IDisposable Subscribe(IObserver observer)
 		{

@@ -7,11 +7,20 @@ namespace Fuse.Reactive
 	{
 		protected List<object> _items;
 
+		/** Does not poulate the _props. This allows calling Set later with mirror == this */
+		protected ArrayMirror(Scripting.Array obj) : base(obj) {}
+
 		internal ArrayMirror(IMirror mirror, Scripting.Array arr): base(arr)
 		{
+			Set(mirror, arr);
+		}
+
+		internal void Set(IMirror mirror, Scripting.Array arr)
+		{
 			_items = new List<object>(arr.Length);
-			for (int i = 0; i < arr.Length; i++)
+			for (int i = 0; i < arr.Length; i++) {
 				_items.Add(mirror.Reflect(arr[i]));
+			}
 		}
 
 		internal object[] ItemsReadonly { get { return _items.ToArray(); } }

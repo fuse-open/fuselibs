@@ -114,7 +114,6 @@ namespace Fuse.Reactive.Test
         }
         
         [Test]
-        [Ignore("Yeah, this fails hard")]
         public void Loop()
         {
 			var e = new UX.Model.Loop();
