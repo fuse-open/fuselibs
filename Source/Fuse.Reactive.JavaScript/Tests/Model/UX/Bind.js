@@ -1,15 +1,17 @@
 var instCount = 0
 
 class ModelBind {
-	constructor(v) {
+	constructor(view) {
 		this.id = instCount++
-		this.value = v
-		this.load = 5
+		this.view = view;
+		this.view.Load = 5
 	}
 	
 	incrLoad() {
-		this.load++
+		this.view.Load++
 	}
+
+	get value() { return this.view.Value; }
 }
 
 module.exports = ModelBind
