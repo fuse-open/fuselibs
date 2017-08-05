@@ -8,8 +8,6 @@ namespace Fuse.Reactive
 		/** Does not poulate the _props. Must call Set() later */
 		protected TreeObject(Scripting.Object obj) : base(obj) {}
 
-		internal TreeObject(IMirror mirror, Scripting.Object obj): base(mirror, obj) {}
-
 		public IPropertySubscription Subscribe(IPropertyObserver observer)
 		{
 			return new PropertySubscription(this, observer);

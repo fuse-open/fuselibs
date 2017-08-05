@@ -35,18 +35,55 @@ namespace Fuse.Reactive
 			obj["$insertAt"] = null;
 		}
 
+		Dictionary<long, ValueMirror> _reflections = new Dictionary<long, ValueMirror>();
+
 		public object Reflect(object obj)
 		{
+			var id = GetId(obj);
+			
+			if (id > -1) 
+			{
+				ValueMirror res;
+				
+				if (_reflections.TryGetValue(id, out res))
+					return res;
+			}
+
+			
 			if (obj is Scripting.Object)
-				return new TreeObject(this, (Scripting.Object)obj);
+			{
+				var so = (Scripting.Object)obj;
+				var k = new TreeObject(so);
+				if (id > -1)
+					_reflections.Add(id, k); // Important to add to dictionary *before* calling Set
+				k.Set(this, so);
+				return k;
+			}
 			
 			if (obj is Scripting.Array)
-				return new TreeArray(this, (Scripting.Array)obj);
+			{
+				var sa = (Scripting.Array)obj;
+				var k = new TreeArray(sa);
+				if (id > -1)
+					_reflections.Add(id, k); // Important to add to dictionary *before* calling Set
+				k.Set(this, sa);
+				return k;
+			}
 
 			if (obj is Scripting.Function)
 				return new FunctionMirror((Scripting.Function)obj);
 
 			return obj;
+		}
+
+		long GetId(object obj)
+		{
+			var func = (Function)JavaScript.Worker.Context.Evaluate("lol", "(function(obj) { if (obj instanceof Object && typeof obj.$id  !== 'undefined') return obj.$id; return -1 })");
+			var res = func.Call(obj);
+			if (res is double) return (long)(double)res;
+			if (res is int) return (long)(int)res;
+			if (res is long) return (long)res;
+			return -1;
 		}
 
 		object Set(object[] args)
