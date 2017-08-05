@@ -1,5 +1,5 @@
 <Panel ux:Class="UX.Model.Bind">
-	<Panel ux:Class="UMBPanel" Model="UX/Bind({Property this.Value})">
+	<Panel ux:Class="UMBPanel" Model="UX/Bind(this)" >
 		<string ux:Property="Value"/>
 		<float ux:Property="Load"/>
 		
