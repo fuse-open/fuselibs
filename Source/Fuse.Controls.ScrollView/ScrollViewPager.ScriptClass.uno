@@ -21,7 +21,7 @@ namespace Fuse.Controls
 			}
 
 			//defer to allow deferred Each handling to create items
-			UpdateManager.AddDeferredAction(s.CheckPosition, UpdateStage.Layout, LayoutPriority.Post);
+			s.Check();
 		}
 	}
 }

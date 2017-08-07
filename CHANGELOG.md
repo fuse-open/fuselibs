@@ -1,5 +1,8 @@
 # Unreleased
 
+## ScrollViewPager
+- Added `ScrollViewPage` which simplifies the creation of infinite scrolling lists
+
 ## Trigger
 - Fixed an issue where certain triggers would not skip their animation/actions as part of the Bypass phase. This will not likely affect many projects, but may resolve some spurious issues where animations did not bypass under certain conditions.
 - Fixed an issue where `WhileVisibleInScrollView` did not respect the Bypass phase for element layout.

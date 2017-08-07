@@ -12,7 +12,7 @@ namespace Fuse.Controls
 	/**
 		Paging and loading manager for a list of items. Allows a large, or infinite list, to be displayed in a `ScrollView`.
 		
-		This controls the `Each.Offset` and `Each.Limit` values while using `Each` within a `ScrollView`. It limits the number of items actually displayed to improve performance.
+		This controls the `Offset` and `Limit` properties of an `Each` inside a `ScrollView`. It limits the number of items displayed to improve performance.
 		
 		The setup that works now is with a `StackPanel` (Horizontal or Vertical)
 		
@@ -28,9 +28,9 @@ namespace Fuse.Controls
 				<ScrollViewPager Each="theEach" ReachedEnd="{loadMore}"/>
 			</ScrollView>
 			
-		It's required that `LayoutMode="PreserveVisual"` is used, otherwise the scrolling will not function correctly. `Reuse="Frame"` is optional but recommended: it improves performance be reusing objects.
+		It's required to use `LayoutMode="PreserveVisual"`, otherwise the scrolling will not function correctly. `Reuse="Frame"` is optional but recommended: it improves performance by reusing objects.
 		
-		`ReachedEnd` is called when the true end of the list is reached and more data is required. It's actually called somewhat before the end is reached, starting any loading before the user reaches the end. There is also a `RechedStart` to allow loading when scrolling the opposite direction.  Neither of these callbacks are mandatory; `ScrollViewPager` is also helpful for displaying large static lists.
+		`ReachedEnd` is called when the true end of the list is reached and more data is required. It's actually called somewhat before the end is reached, thus allowing the loading process to start before the user reaches the end. There is also a `RechedStart` to allow loading when scrolling the opposite direction.  Neither of these callbacks are mandatory; `ScrollViewPager` is also helpful for displaying large static lists.
 		
 		@experimental
 	*/
@@ -72,7 +72,7 @@ namespace Fuse.Controls
 		
 		Each _each;
 		/**
-			The `Each` instance to control. This parameter is required.
+			The `Each` instance to control. This property is required.
 		*/
 		public Each Each 
 		{
@@ -163,14 +163,29 @@ namespace Fuse.Controls
 		
 		/**
 			Raised when the `ScrollView` comes near the end of the data.
+			
+			When responding to this event from JavaScript it is important to call the `check` method once the loading is completed. This forces the ScrollViewPager to reconsider the position in light of the new data. Otherwise it might not update until the user interacts again.
 		*/
 		public event ScrollViewPagerHandler ReachedEnd;
 		
 		/**
 			Raised when the `ScrollView` comes near the start of the data.
+			
+			@see ReachedEnd
 		*/
 		public event ScrollViewPagerHandler ReachedStart;
 
+		
+		/**
+			Should be called whenever new data is added in response to `ReachedEnd` or `ReachedStart`. This will ensure the paging is updated even when nothing else would trigger the update.
+		*/
+		public void Check()
+		{
+			_nearTrueEnd = false;
+			_nearTrueStart = false;
+			UpdateManager.AddDeferredAction(CheckPosition, UpdateStage.Layout, LayoutPriority.Post);
+		}
+		
 		int _lastActivityFrame = 0;
 		internal int LastActivityFrame { get { return _lastActivityFrame;  } }
 		
