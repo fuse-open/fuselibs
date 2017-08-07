@@ -1,0 +1,5 @@
+<Panel ux:Class="UX.Model.Identity" Model="UX/Identity">
+	<Text Value="{items0id}" ux:Name="a1"/>
+	<Text Value="{foo0id}" ux:Name="a2"/>
+
+</Panel>
