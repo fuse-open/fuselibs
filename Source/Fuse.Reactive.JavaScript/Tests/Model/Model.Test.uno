@@ -344,18 +344,5 @@ namespace Fuse.Reactive.Test
 
 			}
 		}
-		
-		[Test]
-		public void Identity()
-		{
-			var e = new UX.Model.Identity();
-			using (var root = TestRootPanel.CreateWithChild(e))
-			{
-				root.StepFrameJS();
-				//asume $id is a numeric field > 0
-				Assert.IsTrue( Marshal.ToType<int>(e.a1.Value ) > 0 );
-				Assert.AreEqual(e.a1.Value, e.a2.Value);
-			}
-		}
 	}
 }
