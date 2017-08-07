@@ -8,6 +8,11 @@ namespace Fuse.Reactive
 	interface IRaw
 	{
 		object Raw { get; }
+
+		/**	The object that JavaScript will see if this object is passed
+			back into the VM. TreeObject will override this
+		*/
+		object ReflectedRaw { get; }
 	}
 
 	abstract class ValueMirror: SubscriptionSubject, IRaw
@@ -16,6 +21,7 @@ namespace Fuse.Reactive
 
 		readonly object _raw;
 		public object Raw { get { return _raw; } }
+		public virtual object ReflectedRaw { get { return _raw; } }
 
 		protected ValueMirror(object raw)
 		{
