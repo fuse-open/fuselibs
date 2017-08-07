@@ -30,6 +30,7 @@ function Model(source)
 		idToMeta.set(meta.id, meta);
 		stateToMeta.set(state, meta);
 		node.$id = meta.id;
+		node.$raw = state;
 		
 
 		meta.isClass = false;

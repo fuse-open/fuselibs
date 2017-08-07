@@ -65,9 +65,30 @@ namespace Fuse.Reactive
 			}
 		}
 
+		const string _rawHandle = "$raw";
+		object _rawOverride;
+		public override object ReflectedRaw 
+		{ 
+			get 
+			{ 
+				return _rawOverride ?? base.ReflectedRaw; 
+			} 
+		}
+
 		internal override void Set(IMirror mirror, Scripting.Object obj)
 		{
-			base.Set(mirror, obj);
+			_props.Clear();
+			var k = obj.Keys;
+			for (int i = 0; i < k.Length; i++)
+			{
+				var s = k[i];
+				if (s == _rawHandle)
+				{
+					_rawOverride = obj[s];
+					continue;
+				}
+				_props.Add(s, mirror.Reflect(obj[s]));
+			}
 
 			var sub = Subscribers as PropertySubscription;
 			if (sub != null) 
