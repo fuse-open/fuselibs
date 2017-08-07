@@ -43,7 +43,7 @@ namespace Fuse.Reactive
 			foreach (var dep in Dependencies) 
 			{
 				argsString += ", " + dep.Key;
-				args.Add(_worker.Unwrap(dep.Value));
+				args.Add(dep.Value);
 			}
 
 			var nt = _names;
