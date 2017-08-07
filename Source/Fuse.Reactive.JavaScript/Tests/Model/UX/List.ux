@@ -3,4 +3,6 @@
 	
 	<FuseTest.Invoke Handler="{add}" ux:Name="callAdd"/>
 	<FuseTest.Invoke Handler="{shift}" ux:Name="callShift"/>
+	<FuseTest.Invoke Handler="{replace}" ux:Name="callReplace"/>
+	<FuseTest.Invoke Handler="{sort}" ux:Name="callSort"/>
 </Panel>

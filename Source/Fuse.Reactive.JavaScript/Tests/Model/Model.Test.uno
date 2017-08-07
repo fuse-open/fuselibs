@@ -63,6 +63,14 @@ namespace Fuse.Reactive.Test
 				e.callShift.Perform();
 				root.StepFrameJS();
 				Assert.AreEqual( "6", e.oc.JoinValues() );
+				
+				e.callReplace.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual( "4,8,2,5,1", e.oc.JoinValues() );
+				
+				e.callSort.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual( "1,2,4,5,8", e.oc.JoinValues() );
 			}
 		}
 		
@@ -111,6 +119,9 @@ namespace Fuse.Reactive.Test
 				Assert.AreEqual( "%", e.a.UseValue );
 				Assert.AreEqual( "%", e.b.UseValue );
 				Assert.AreEqual( "%", e.c.UseValue );
+				
+				Assert.AreEqual( "5", e.q.UseValue );
+				Assert.AreEqual( "5", e.r.UseValue );
 			}
 		}
 		
@@ -247,11 +258,17 @@ namespace Fuse.Reactive.Test
 				root.StepFrameJS();
 				
 				Assert.AreEqual( "one,two,three,four,five", GetRecursiveText(e.a) );
+				Assert.AreEqual( "five", GetText(e.s) );
 				
 				var two = e.a.FindNodeByName( "two" ) as UMUItem;
 				two.callAdd.Perform();
-				
 				root.StepFrameJS();
+				Assert.AreEqual( "five,two", GetText(e.s) );
+				
+				var five = e.a.FindNodeByName( "five" ) as UMUItem;
+				five.callRemove.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual( "two", GetText(e.s) );
 			}
 		}
 		
@@ -325,6 +342,19 @@ namespace Fuse.Reactive.Test
 				Assert.AreEqual(false, e.mySwitch.Value);
 				Assert.AreEqual(true, e.myFlippedSwitch.Value);
 
+			}
+		}
+		
+		[Test]
+		public void Identity()
+		{
+			var e = new UX.Model.Identity();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.StepFrameJS();
+				//asume $id is a numeric field > 0
+				Assert.IsTrue( Marshal.ToType<int>(e.a1.Value ) > 0 );
+				Assert.AreEqual(e.a1.Value, e.a2.Value);
 			}
 		}
 	}
