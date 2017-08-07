@@ -101,8 +101,16 @@ namespace Fuse.Controls
 				return;
 			}
 			
+			//this mode won't work correctly, emit a warning with a suitable one
+			if (_scrollable.LayoutMode == ScrollViewLayoutMode.PreserveScrollPosition) 
+			{
+				Fuse.Diagnostics.UserError( "The ScrollView should have `LayoutMode=\"PreserveVisual\"` for paging to work correctly", this );
+				return;
+			}
+			
 			_scrollable.AddPropertyListener(this);
 			_prevActualSize = float2(0);
+			_lastActivityFrame = UpdateManager.FrameIndex;
 		}
 		
 		protected override void OnUnrooted()
@@ -120,27 +128,36 @@ namespace Fuse.Controls
 		{
 			if (obj != _scrollable)
 				return;
-				
+
 			if (prop == ScrollView.ScrollPositionName)
-			{
-				if (!_pendingPosition)
-				{
-					UpdateManager.AddDeferredAction(CheckPosition);
-					_pendingPosition = true;
-				}
-			}
+				RequestCheckPosition();
 			else if (prop == ScrollView.SizingChanged)
-			{
-				if (!_pendingSizing)
-				{
-					UpdateManager.AddDeferredAction(CheckSizing);
-					_pendingSizing = true;
-				}
-			}
+				RequestCheckSizing();
+			else 
+				return;
+				
+			_lastActivityFrame = UpdateManager.FrameIndex;
 		}
 		
 		bool _pendingPosition;
+		void RequestCheckPosition() 
+		{
+			if (!_pendingPosition)
+			{
+				UpdateManager.AddDeferredAction(CheckPosition);
+				_pendingPosition = true;
+			}
+		}
+		
 		bool _pendingSizing;
+		void RequestCheckSizing()
+		{
+			if (!_pendingSizing)
+			{
+				UpdateManager.AddDeferredAction(CheckSizing);
+				_pendingSizing = true;
+			}
+		}
 
 		public delegate void ScrollViewPagerHandler(object s, ScrollViewPagerArgs args);
 		
@@ -153,20 +170,25 @@ namespace Fuse.Controls
 			Raised when the `ScrollView` comes near the start of the data.
 		*/
 		public event ScrollViewPagerHandler ReachedStart;
+
+		int _lastActivityFrame = 0;
+		internal int LastActivityFrame { get { return _lastActivityFrame;  } }
 		
 		bool _nearTrueEnd;
 		bool _nearTrueStart;
 		void CheckPosition()
 		{
+			_lastActivityFrame = UpdateManager.FrameIndex;
+			
 			_pendingPosition = false;
 			var nearEnd = _scrollable.ToScalarPosition( (_scrollable.MaxScroll - _scrollable.ScrollPosition) /
 				_scrollable.ActualSize) < EndRange;
 			var nearStart = _scrollable.ToScalarPosition( (_scrollable.ScrollPosition - _scrollable.MinScroll) /
 				_scrollable.ActualSize) < EndRange;
-			
+
 			var nearTrueEnd = false;
 			var nearTrueStart = false;
-			
+
 			if (nearEnd && nearStart)
 			{
 				//nothing, otherwise we'd flip back and forth
@@ -211,6 +233,8 @@ namespace Fuse.Controls
 		float2 _prevActualSize;
 		void CheckSizing()
 		{
+			_lastActivityFrame = UpdateManager.FrameIndex;
+			
 			_pendingSizing = false;
 			var range = _scrollable.MaxScroll - _scrollable.MinScroll;
 			var pages = _scrollable.ContentMarginSize / _scrollable.ActualSize;

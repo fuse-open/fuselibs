@@ -1,0 +1,12 @@
+<Panel ux:Class="UX.ScrollViewPager.Basic">
+	<JavaScript/>
+	<ScrollView ux:Name="scroll" LayoutMode="PreserveVisual">
+		<StackPanel ux:Name="s">
+			<Each Count="21" ux:Name="theEach">
+				<FuseTest.DudElement Value="{index()}" Height="100"/>
+			</Each>
+		</StackPanel>
+		
+		<ScrollViewPager Each="theEach" Retain="3" ux:Name="svp"/>
+	</ScrollView>
+</Panel>
