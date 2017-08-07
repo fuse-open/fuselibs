@@ -344,5 +344,41 @@ namespace Fuse.Reactive.Test
 
 			}
 		}
+		
+		[Test]
+		public void ListOrder()
+		{
+			var e = new UX.Model.ListOrder();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.StepFrameJS();
+				Assert.AreEqual( "2,3", e.oc.JoinValues() );
+				e.oc.Log.Clear(); //TODO: it's undecided what the bootstrapping messages will be still
+				
+				e.callAdd.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual( "2,3,5", e.oc.JoinValues() );
+				Assert.AreEqual( 1, e.oc.Log.Count );
+				Assert.AreEqual( ObservableCollector.LogType.Add, e.oc.Log[0].Type );
+				Assert.AreEqual( 5, e.oc.Log[0].Value );
+				
+				e.oc.Log.Clear();
+				e.callInsert.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual( "2,6,3,5", e.oc.JoinValues() );
+				Assert.AreEqual( 1, e.oc.Log.Count );
+				Assert.AreEqual( ObservableCollector.LogType.InsertAt, e.oc.Log[0].Type );
+				Assert.AreEqual( 6, e.oc.Log[0].Value );
+				Assert.AreEqual( 1, e.oc.Log[0].Index );
+				
+				e.oc.Log.Clear();
+				e.callShift.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual( "6,3,5", e.oc.JoinValues() );
+				Assert.AreEqual( 1, e.oc.Log.Count );
+				Assert.AreEqual( ObservableCollector.LogType.RemoveAt, e.oc.Log[0].Type );
+				Assert.AreEqual( 0, e.oc.Log[0].Index );
+			}
+		}
 	}
 }

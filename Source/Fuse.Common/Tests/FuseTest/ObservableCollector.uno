@@ -27,6 +27,29 @@ namespace FuseTest
 		bool _listening;
 		IObservableArray _items;
 		Uno.IDisposable _subscription;
+
+		public enum LogType
+		{
+			Add,
+			InsertAt,
+			RemoveAt,
+		}
+		
+		public class LogItem
+		{
+			public LogType Type;
+			public object Value;
+			public int Index;
+			
+			public LogItem( LogType type, object value = null, int index = -1 ) 
+			{
+				Type = type;
+				Value = value;
+				Index = index;
+			}
+		}
+		
+		public List<LogItem> Log = new List<LogItem>();
 		
 		public object Items
 		{
@@ -127,6 +150,7 @@ namespace FuseTest
 			
 			Assert.AreEqual( _values.Count, _items.Length);
 			Assert.AreEqual( _values[_values.Count-1], _items[_values.Count-1] );
+			Log.Add( new LogItem( LogType.Add, addedValue ) );
 		}
 		
 		void IObserver.OnRemoveAt(int index)
@@ -140,6 +164,7 @@ namespace FuseTest
 			
 			_values.RemoveAt(index);
 			Assert.AreEqual( _values.Count, _items.Length );
+			Log.Add( new LogItem( LogType.RemoveAt, index ) );
 		}
 		
 		void IObserver.OnInsertAt(int index, object value)
@@ -154,6 +179,7 @@ namespace FuseTest
 			_values.Insert(index, value);
 			Assert.AreEqual( _values.Count, _items.Length );
 			Assert.AreEqual( value, _items[index] );
+			Log.Add( new LogItem( LogType.InsertAt, value, index ) );
 		}
 
 		public bool AllowFailed;
