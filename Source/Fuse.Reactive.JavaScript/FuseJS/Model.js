@@ -44,11 +44,7 @@ function Model(source)
 				meta.isClass = true;
 			}
 			else if (v instanceof Promise) {
-				meta.promises[k] = v;
-				node[k] = "lolas";
-				v.then(function(result) {
-					set(k, result)
-				})
+				dealWithPromise(k, v);
 			}
 			else if (v instanceof Array) {
 				node[k] = instrument({meta: meta, key: k}, [], v);
@@ -68,6 +64,15 @@ function Model(source)
 			registerProps(state);
 		}
 
+		function dealWithPromise(key, prom) {
+			if (meta.promises[key] !== prom) {
+				meta.promises[key] = prom;
+				prom.then(function(result) {
+					set(ky, result);
+				})
+			}
+		}
+
 		function registerProps(obj) {
 
 			var descs = Object.getOwnPropertyDescriptors(obj);
@@ -80,7 +85,8 @@ function Model(source)
 				}
 				else if (descs[p].get instanceof Function)
 				{
-					node[p] = value;
+					if (value instanceof Promise) { dealWithPromise(p, value); }
+					else { node[p] = value; }
 					propGetters[p] = descs[p].get;
 				}
 			}
@@ -100,7 +106,12 @@ function Model(source)
 				try
 				{
 					var v = propGetters[p].call(state);
-					set(p, v);
+					if (v instanceof Promise) {
+						dealWithPromise(p, v);
+					}
+					else {
+						set(p, v);
+					}
 				}
 				finally
 				{
@@ -212,12 +223,7 @@ function Model(source)
 				}
 			}
 			else if (value instanceof Promise) {
-				if (meta.promises[key] !== value) {
-					meta.promises[key] = value;
-					value.then(function(result) {
-						set(key, result);
-					})
-				}
+				dealWithPromise(key, value);
 			}
 			else if (value instanceof Array) {
 				var keyMeta = stateToMeta.get(value);
