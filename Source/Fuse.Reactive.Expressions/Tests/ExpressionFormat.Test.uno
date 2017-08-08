@@ -30,13 +30,11 @@ namespace Fuse.Reactive.Test
 		}
 		
 		[Test]
-		[Ignore("https://github.com/fusetools/fuselibs-public/issues/253")]
 		public void StringList()
 		{
 			var e = new UX.ExpressionFormat.StringList();
 			using (var root = TestRootPanel.CreateWithChild(e))
 			{
-			/* Cannot be compiled due to parse error in UX file
 				var a = e.a.ArrayValue;
 				Assert.AreEqual( 1, a.Length );
 				Assert.AreEqual( "one", a[0] );
@@ -44,8 +42,7 @@ namespace Fuse.Reactive.Test
 				var b = e.b.ArrayValue;
 				Assert.AreEqual( 2, b.Length );
 				Assert.AreEqual( "one", b[0] );
-				Assert.AreEqual( "two", b[0] );
-			*/
+				Assert.AreEqual( "two", b[1] );
 			}
 		}
 		
