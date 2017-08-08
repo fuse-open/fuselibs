@@ -14,7 +14,7 @@ namespace Fuse.Controls
 		
 		@include Docs/Navigator.md
 	*/
-	public partial class Navigator: NavigationControl, IRouterOutlet
+	public partial class Navigator: NavigationControl, IRouterOutlet, Fuse.Reactive.IObserver, Node.ISubtreeDataProvider
 	{
 		/**
 			@deprecated Use `DefaultPath` instead
@@ -87,6 +87,7 @@ namespace Fuse.Controls
 			base.OnRooted();
 			
 			RootInteraction();
+			OnPagesChanged();
 			
 			//the rooting of children could place them in invalid states, fix that now
 			CleanupChildren(_current.Visual);
