@@ -40,5 +40,10 @@ namespace Fuse.Reactive
 				return sb.ToString();
 			}
 		}
+
+		public override string ToString()
+		{
+			return FormatString("");
+		}
 	}
 }
