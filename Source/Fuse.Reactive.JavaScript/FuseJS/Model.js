@@ -24,6 +24,7 @@ function Model(source)
 			id: idEnumerator++,
 			node: node,
 			state: state,
+			promises: {},
 			isClass: false
 		}
 		
@@ -41,6 +42,13 @@ function Model(source)
 				node[k] = wrapFunction(k, v);
 				state[k] = node[k];
 				meta.isClass = true;
+			}
+			else if (v instanceof Promise) {
+				meta.promises[k] = v;
+				node[k] = "lolas";
+				v.then(function(result) {
+					set(k, result)
+				})
 			}
 			else if (v instanceof Array) {
 				node[k] = instrument({meta: meta, key: k}, [], v);
@@ -201,6 +209,14 @@ function Model(source)
 				if (!value.$isWrapped) {
 					state[key] = wrapFunction(k, value)
 					set(key, state[key]);
+				}
+			}
+			else if (value instanceof Promise) {
+				if (meta.promises[key] !== value) {
+					meta.promises[key] = value;
+					value.then(function(result) {
+						set(key, result);
+					})
 				}
 			}
 			else if (value instanceof Array) {
