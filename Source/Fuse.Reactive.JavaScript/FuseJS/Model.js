@@ -32,7 +32,10 @@ function Model(source)
 		stateToMeta.set(state, meta);
 		node.$id = meta.id;
 		node.$raw = state;
-		
+
+		if (state instanceof Object) {
+			node.path = state.constructor.name;
+		}
 
 		meta.isClass = false;
 		for (var k in state) {
