@@ -1,0 +1,31 @@
+<Panel ux:Class="UX.DateMarshal.DateRoundTrip">
+	<StackPanel ux:Class="UX.DateMarshal.DateRoundTripInnerComponent">
+		<JavaScript>
+			var self = this;
+
+			module.exports = {
+				read_date: function() {
+					var expectedTime = 878379300000;
+					var date = self.DateTime.value;
+					if (expectedTime != date.getTime())
+						throw "Round-trip value didn't match expected time!";
+				}
+			};
+		</JavaScript>
+
+		<Uno.DateTime ux:Property="DateTime" />
+
+		<FuseTest.Invoke Handler="{read_date}" ux:Name="CallReadDate"/>
+	</StackPanel>
+
+	<JavaScript>
+		module.exports = {
+			myDate: new Date(Date.parse("1997-11-01T10:15:00.000Z"))
+		};
+	</JavaScript>
+
+	<StackPanel>
+		<UX.DateMarshal.DateRoundTripInnerComponent ux:Name="RoundTripComponent" DateTime="{myDate}" />
+		<Fuse.Reactive.Test.DotNetDateTimeComponent ux:Name="DateTimeComponent" TheDateTime="{myDate}" />
+	</StackPanel>
+</Panel>

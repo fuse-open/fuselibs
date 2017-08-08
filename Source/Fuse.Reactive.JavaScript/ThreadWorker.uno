@@ -24,7 +24,7 @@ namespace Fuse.Reactive
 		public Scripting.Context Context { get { return _context; } }
 
 		static FuseJS.Builtins _fuseJS;
-		public FuseJS.Builtins FuseJS { get { return _fuseJS; } }
+		public static FuseJS.Builtins FuseJS { get { return _fuseJS; } }
 
 		readonly Thread _thread;
 		readonly ManualResetEvent _ready = new ManualResetEvent(false);

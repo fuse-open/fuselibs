@@ -31,6 +31,9 @@
 - Optimized how bounding boxes are calculated (improves layout and rendering performance).
 - Optimized how render bounds are compounded for larger lists.
 
+## JS/Uno marshalling
+- Fuse.Scripting now knows about the JS `Date` type, allowing instances to be passed to/from Uno in the form of `Uno.DateTime` objects. This support extends to databinding, `NativeModule`s, `ScriptClass`s, and the `Context.Wrap/Unwrap` API.
+
 ## UpdateManager changes (Uno-level)
 - Breaking change: Several entrypoints on UpdateManager now take a `LayoutPriority` enum instead of `int` as the `priority` argument. Very unlikely to affect user code code.
 - Fixed an issue where writes to `FuseJS/Observables` would not dispatch in the right order on the UI thread if interleaved with `ScriptClass` callbacks (slightly breaking behavior).
