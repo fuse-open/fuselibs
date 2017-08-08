@@ -98,7 +98,8 @@ namespace Fuse.Reactive
 
 		internal void Set(string key, object newValue, PropertySubscription exclude)
 		{
-			ValueMirror.Unsubscribe(_props[key]);
+			if (_props.ContainsKey(key))
+				ValueMirror.Unsubscribe(_props[key]);
 
 			_props[key] = newValue;
 
