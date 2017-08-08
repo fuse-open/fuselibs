@@ -69,7 +69,9 @@ function Model(source)
 			if (meta.promises[key] !== prom) {
 				meta.promises[key] = prom;
 				prom.then(function(result) {
-					set(key, result);
+					if (meta.promises[key] === prom) {
+						set(key, result);
+					}
 				})
 			}
 		}
