@@ -380,5 +380,26 @@ namespace Fuse.Reactive.Test
 				Assert.AreEqual( 0, e.oc.Log[0].Index );
 			}
 		}
+
+		[Test]
+		public void Promise()
+		{
+			var e = new UX.Promise();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.StepFrameJS();
+				root.StepFrameJS();
+				root.StepFrameJS();
+				Assert.AreEqual("yay!", e.t.Value);
+
+				e.changePromise.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual("yay!", e.t.Value);
+
+				e.resolveNow.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual("hoho!", e.t.Value);
+			}
+		}
 	}
 }
