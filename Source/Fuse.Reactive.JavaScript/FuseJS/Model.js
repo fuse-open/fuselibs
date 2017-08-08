@@ -44,6 +44,7 @@ function Model(source)
 				meta.isClass = true;
 			}
 			else if (v instanceof Promise) {
+				node[k] = null;
 				dealWithPromise(k, v);
 			}
 			else if (v instanceof Array) {
@@ -68,7 +69,7 @@ function Model(source)
 			if (meta.promises[key] !== prom) {
 				meta.promises[key] = prom;
 				prom.then(function(result) {
-					set(ky, result);
+					set(key, result);
 				})
 			}
 		}
@@ -85,7 +86,7 @@ function Model(source)
 				}
 				else if (descs[p].get instanceof Function)
 				{
-					if (value instanceof Promise) { dealWithPromise(p, value); }
+					if (value instanceof Promise) { node[p] = null; dealWithPromise(p, value); }
 					else { node[p] = value; }
 					propGetters[p] = descs[p].get;
 				}
