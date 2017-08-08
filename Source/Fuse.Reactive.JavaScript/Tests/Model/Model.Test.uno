@@ -388,7 +388,8 @@ namespace Fuse.Reactive.Test
 			using (var root = TestRootPanel.CreateWithChild(e))
 			{
 				root.StepFrameJS();
-				root.StepFrameJS();
+				Assert.AreEqual("kaka", e.p.Value);
+
 				root.StepFrameJS();
 				Assert.AreEqual("yay!", e.t.Value);
 

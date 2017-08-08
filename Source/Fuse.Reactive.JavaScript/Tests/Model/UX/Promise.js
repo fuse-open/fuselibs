@@ -5,9 +5,12 @@ class PromiseTest {
         this.result = new Promise((resolve, reject) => {
             setTimeout(() => {
                 resolve("yay!")
-                console.log("Resovled!")
             }, 0);
         })
+    }
+
+    get somePromise() {
+        return new Promise(resolve => setTimeout(function() { resolve("kaka") }, 0))
     }
 
     changePromise() {
