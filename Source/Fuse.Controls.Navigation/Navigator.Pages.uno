@@ -62,8 +62,14 @@ namespace Fuse.Controls
 			{
 				data = _pages[pageNdx];
 				var obj = _pages[pageNdx] as IObject;
-				if (obj != null && obj.ContainsKey("path"))
-					path = Marshal.ToType<string>(obj["path"]);
+				if (obj != null && obj.ContainsKey("$template")) //set implicitly by Model API
+					path = Marshal.ToType<string>(obj["$template"]);
+				if (obj != null && obj.ContainsKey("$path"))
+					path = Marshal.ToType<string>(obj["$path"]);
+					
+				//null is an erorr, but we can process it nonetheless (will go to no page)
+				if (path == null)
+					Fuse.Diagnostics.UserError( "Model is missing a $template or $page property", this);
 					
 				//perhaps this is good enough to distinguish different objects from being recognized
 				//as the same page

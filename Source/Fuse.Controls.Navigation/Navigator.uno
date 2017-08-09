@@ -315,9 +315,18 @@ namespace Fuse.Controls
 			_prepareReady = false;
 		}
 		
+		//this is the simplest way to test things (like Pages) that should invoke `Goto`. 
+		extern(UNO_TEST) internal Action<string, string, NavigationGotoMode, RoutingOperation, string> _testInterceptGoto;
+		
 		RoutingResult IRouterOutlet.Goto(ref string path, ref string parameter, NavigationGotoMode gotoMode, 
 			RoutingOperation operation, string operationStyle, out Visual active)
 		{
+			if defined(UNO_TEST)
+			{
+				if (_testInterceptGoto != null)
+					_testInterceptGoto(path, parameter, gotoMode, operation, operationStyle );
+			}
+				
 			if (gotoMode == NavigationGotoMode.Prepare)
 			{
 				CleanupPrepared();
