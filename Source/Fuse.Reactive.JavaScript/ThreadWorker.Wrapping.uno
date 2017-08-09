@@ -24,6 +24,9 @@ namespace Fuse.Reactive
 
 		public static object ConvertDateTimeToJSDate(DateTime dt, Scripting.Function dateCtor)
 		{
+			// TODO: This assumes dt's `Kind` is set to `Utc`. The `Ticks` value may have to be adjusted if `Kind` is `Local` or `Unspecified`.
+			//  Currently we don't support other `Kind`'s than `Utc`, but when we do, this code should be updated accordingly.
+			//  Something like: `if (dt.Kind != DateTimeKind.Utc) { dt = dt.ToUniversalTime(); }`
 			var dotNetTicks = dt.Ticks;
 			var dotNetTicksRelativeToUnixEpoch = dotNetTicks - UnixEpochInDotNetTicks;
 			var jsTicks = dotNetTicksRelativeToUnixEpoch / DotNetTicksInJsTick;
