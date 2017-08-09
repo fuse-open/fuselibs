@@ -3,12 +3,18 @@ using Fuse.Navigation;
 
 namespace Fuse.Controls
 {
-	//TODO: Can probably be moved up to NavigationControl
-	public partial class Navigator
+	public partial class NavigationControl
 	{
-		//TODO: Change to IObservableArray
+		//TODO: Change to IObservableArray once Model feature is merged
 		IArray _pages;
 		Uno.IDisposable _pagesSubscription;
+		/**
+			Pages is a stack of pages that controls the local history for a NavigationControl.
+			
+			It should be bound to a JavaScript observable array. The highest index page will always be the active page for the control. As pages are added/removed from this array the navigation state will change.
+			
+			The items in the array are objects, either explicitly created or via the Model feature. They should contain the the `$path` property which specifies the path to use. The object itself will be added to the data context for the page, allowing lookups from within the object.
+		*/
 		public IArray Pages
 		{
 			get { return _pages; }
@@ -153,5 +159,4 @@ namespace Fuse.Controls
 			return n.Properties.Get(_pageContextProperty);
 		}
 	}
-	
 }

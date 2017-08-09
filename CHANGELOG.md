@@ -1,5 +1,8 @@
 # Unreleased
 
+## Navigator / PageControl
+- Added `Pages` property that allows for a state driven app navigation
+
 ## Ellipse
 - Added missing hit testing from `Ellipse`. If you relied on there not being any hit testing on an ellipse add `HitTestMode="None"`
 
