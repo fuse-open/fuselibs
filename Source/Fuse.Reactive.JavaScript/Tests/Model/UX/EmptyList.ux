@@ -1,0 +1,17 @@
+<Panel ux:Class="UX.Model.EmptyList" Model="UX/EmptyList">
+    <FuseTest.ObservableCollector ux:Name="oc" Items="{items}"/>
+    <FuseTest.ObservableCollector ux:Name="poc" Items="{promisedItems}" />
+
+    <FuseTest.Invoke Handler="{empty}" ux:Name="callEmpty"/>
+    <FuseTest.Invoke Handler="{emptyPromise}" ux:Name="callEmptyPromise" />
+    <StackPanel ux:Name="collector1">
+        <Each Items="{items}">
+            <Text Value="{}" />
+        </Each>
+    </StackPanel>
+    <StackPanel ux:Name="collector2">
+        <Each Items="{promisedItems}">
+            <Text Value="{}" />
+        </Each>
+    </StackPanel>
+</Panel>
