@@ -167,10 +167,23 @@ function Model(source)
 			}
 
 			if (state instanceof Array) {
-				var c = Math.min(state.length, node.length);
-				for (var i = 0; i < c; i++) { 
-					 update(i, state[i]); 
+				for (var i = 0; i < Math.min(state.length, node.length); i++) { 
+					if (state[i] instanceof Promise) { dealWithPromise(i, state[i]); }
+					if (oldValueEquals(i, state[i])) continue;
+					
+					if (state.length > node.length) {
+						insertAt(i, state[i]);
+						i++;
+					}
+					else if (state.length < node.length) {
+						removeRange(i, 1)
+						i--;
+					}
+					else {
+						set(i, state[i]);
+					}
 				}
+				
 				if (state.length > node.length) { 
 					addRange(state.slice(node.length, state.length))
 				}
@@ -189,6 +202,20 @@ function Model(source)
 			if (changesDetected > 0) {
 				meta.evaluateDerivedProps([]); 
 				changesDetected = 0;
+			}
+		}
+
+		function oldValueEquals(key, newValue) {
+			if (newValue instanceof Array) {
+				var keyMeta = stateToMeta.get(newValue);
+				return keyMeta instanceof Object && meta.node[key].$id === keyMeta.id;
+			}
+			else if (newValue instanceof Object) {
+				var keyMeta = stateToMeta.get(newValue);
+				return keyMeta instanceof Object && meta.node[key].$id === keyMeta.id;
+			}
+			else {
+				return node[key] === newValue;
 			}
 		}
 
@@ -304,6 +331,12 @@ function Model(source)
 			for (var i = 0; i < count; i++) {
 				TreeObservable.removeAt.apply(store, removePath);
 			}
+			changesDetected++;
+		}
+
+		function insertAt(index, item) {
+			node.splice(index, 0, item);
+			TreeObservable.insertAt.apply(store, getPath().concat(index, item));
 			changesDetected++;
 		}
 

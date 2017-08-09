@@ -49,7 +49,7 @@ namespace Fuse.Reactive
 		}
 
 		static FuseJS.Builtins _fuseJS;
-		public FuseJS.Builtins FuseJS { get { return _fuseJS; } }
+		public static FuseJS.Builtins FuseJS { get { return _fuseJS; } }
 
 		readonly Thread _thread;
 		readonly ManualResetEvent _ready = new ManualResetEvent(false);
@@ -204,7 +204,7 @@ namespace Fuse.Reactive
 			while (_exceptionQueue.TryDequeue(out next))
 			{
 				if (prev != null)
-					Fuse.Diagnostics.UnknownException("Skipped Exception", next, this);
+					Fuse.Diagnostics.UnknownException("Skipped Exception", prev, this);
 				prev = next;
 			}
 			

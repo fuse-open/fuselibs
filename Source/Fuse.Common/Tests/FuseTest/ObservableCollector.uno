@@ -164,7 +164,7 @@ namespace FuseTest
 			
 			_values.RemoveAt(index);
 			Assert.AreEqual( _values.Count, _items.Length );
-			Log.Add( new LogItem( LogType.RemoveAt, index ) );
+			Log.Add( new LogItem( LogType.RemoveAt, null, index ) );
 		}
 		
 		void IObserver.OnInsertAt(int index, object value)

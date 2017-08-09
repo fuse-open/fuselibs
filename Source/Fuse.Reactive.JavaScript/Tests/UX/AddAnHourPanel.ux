@@ -1,0 +1,11 @@
+<Panel ux:Class="UX.AddAnHourPanel">
+	<JavaScript>
+		var AddAnHour = require("AddAnHour");
+
+		var originalDate = new Date(Date.parse("1337-01-03T03:07:13.371Z"));
+		var newDate = AddAnHour.AddAnHour(originalDate);
+		var oneHourInMs = 3600000;
+		if (newDate.getTime() != originalDate.getTime() + oneHourInMs)
+			throw "New date doesn't match expected value!";
+	</JavaScript>
+</Panel>

@@ -11,6 +11,8 @@ namespace Fuse.Reactive.FuseJS
 		internal readonly Function Observable;
 		internal readonly Function TreeObservable;
 		internal readonly Function EventEmitter;
+		internal readonly Function Date;
+		internal readonly Function DateCtor;
 
 		internal Builtins(Fuse.Scripting.Context context)
 		{
@@ -47,6 +49,8 @@ namespace Fuse.Reactive.FuseJS
 			Observable = (Scripting.Function)new FileModule(import BundleFile("Observable.js")).EvaluateExports(context, "FuseJS/Observable");
 			TreeObservable = (Scripting.Function)new FileModule(import BundleFile("TreeObservable.js")).EvaluateExports(context, "FuseJS/TreeObservable");
 			EventEmitter = EventEmitterModule.GetConstructor(context);
+			Date = (Scripting.Function)context.Evaluate("fuse-builtins", "Date");
+			DateCtor = (Scripting.Function)context.Evaluate("fuse-builtins", "(function(ticks) { return new Date(ticks); })");
 			
 			res = null;
 			// TODO: This should eventually be an optional module. It's here until we accept to break stuff.

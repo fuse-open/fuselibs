@@ -1,5 +1,8 @@
 # Unreleased
 
+## Ellipse
+- Added missing hit testing from `Ellipse`. If you relied on there not being any hit testing on an ellipse add `HitTestMode="None"`
+
 ## Trigger
 - Fixed an issue where certain triggers would not skip their animation/actions as part of the Bypass phase. This will not likely affect many projects, but may resolve some spurious issues where animations did not bypass under certain conditions.
 - Fixed an issue where `WhileVisibleInScrollView` did not respect the Bypass phase for element layout.
@@ -32,6 +35,9 @@
 - Optimized how ZOrder was computed which improves layout and tree initialization speed. Inlcudes a minor change on the `ITreeRenderer` interface, unlikely to affect your code.
 - Optimized how bounding boxes are calculated (improves layout and rendering performance).
 - Optimized how render bounds are compounded for larger lists.
+
+## JS/Uno marshalling
+- Fuse.Scripting now knows about the JS `Date` type, allowing instances to be passed to/from Uno in the form of `Uno.DateTime` objects. This support extends to databinding, `NativeModule`s, `ScriptClass`s, and the `Context.Wrap/Unwrap` API.
 
 ## UpdateManager changes (Uno-level)
 - Breaking change: Several entrypoints on UpdateManager now take a `LayoutPriority` enum instead of `int` as the `priority` argument. Very unlikely to affect user code code.

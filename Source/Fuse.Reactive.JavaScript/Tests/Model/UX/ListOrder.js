@@ -12,7 +12,6 @@ class ModelListOrder {
 
 	insert() {
 		this.items.splice(1, 0, this._count )
-		console.log( this.items.join() )
 		this._count++
 	}
 	
