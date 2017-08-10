@@ -325,6 +325,7 @@ namespace Fuse.Reactive
 			//The pendingNew handler will have to clear the remaining nodes
 			if (!_pendingNew)	
 				RemovePendingAvailableItems();
+			_pendingAvailableItems = false;
 		}
 		
 		void RemovePendingAvailableItems()

@@ -1,5 +1,8 @@
 # Unreleased
 
+## ScrollViewPager
+- Added `ScrollViewPage` which simplifies the creation of infinite scrolling lists
+
 ## Navigator / PageControl
 - Added `Pages` property that allows for a state driven app navigation
 

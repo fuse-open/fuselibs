@@ -1,4 +1,5 @@
 using Uno;
+using Uno.UX;
 
 using Fuse.Elements;
 
@@ -62,6 +63,8 @@ namespace Fuse.Controls
 			UpdateManager.AddDeferredAction(UpdateScrollPosition, LayoutPriority.Post);
 		}
 		
+		internal static Selector SizingChanged = "SizingChanged";
+		
 		void UpdateScrollPosition()
 		{
 			if (_placeAnchor != null)
@@ -96,6 +99,8 @@ namespace Fuse.Controls
 				//force messages since relative position always changes
 				OnScrollPositionChanged(float2(0), false, this);
 			}
+			
+			OnPropertyChanged(SizingChanged);
 		}
 		
 		 
@@ -132,6 +137,8 @@ namespace Fuse.Controls
 		//track the result of `ArrangeContent`
 		Alignment _contentAlignment;
 		float2 _contentMarginSize;
+		
+		internal float2 ContentMarginSize { get { return _contentMarginSize; } }
 		
 		void ArrangeContent(LayoutParams lp)
 		{
