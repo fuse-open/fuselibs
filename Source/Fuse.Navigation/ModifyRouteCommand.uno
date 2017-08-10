@@ -5,23 +5,10 @@ using Fuse.Reactive;
 
 namespace Fuse.Navigation
 {
-	[UXFunction("modifyRoute")]
-	/**
-		Navigates on the router.
-		
-		The arguments must be name-value pairs.  It shares the same arguments as the JAvaScript `router.modify` function and the `RouterModify` action. In short the options are:
-		
-			- how : @ModifyRouteHow
-			- path : An array of name-value pairs that specify the path components and their parameter. This syntax differs from the JavaScript interface.
-			- relative : Routing relative to the provided node. By default the path will be treated as global.
-			- transition : @NavigationGotoMode
-			- bookmark : Use a bookmark instead of `path`.
-			- style : Transition style for animation
-			
-		The expression provided to `modifyRoute` is evaluated only when needed. It is expected the bindings will resolve quickly (not bound to a remote lookup for example), otherwise the routing operation will be delayed.
-	*/
-	public class ModifyRouteCommand : VarArgFunction
+	abstract public class RouteModificationCommand : VarArgFunction
 	{
+		internal RouteModificationCommand() { }
+		
 		public override IDisposable Subscribe(IContext context, IListener listener)
 		{
 			return new OuterSubscription(this, context, listener);
@@ -29,12 +16,12 @@ namespace Fuse.Navigation
 		
 		class OuterSubscription : InnerListener, IEventHandler
 		{
-			internal ModifyRouteCommand _expr;
+			internal RouteModificationCommand _expr;
 			internal IListener _listener;
 			internal IContext _context;
 			InnerSubscription _innerSub;
 			
-			public OuterSubscription( ModifyRouteCommand expr, IContext context, IListener listener )
+			public OuterSubscription( RouteModificationCommand expr, IContext context, IListener listener )
 			{
 				_expr = expr;
 				_context = context;
@@ -129,7 +116,40 @@ namespace Fuse.Navigation
 			}
 		}
 		
-		protected virtual bool ProcessArguments(RouterRequest request, Argument[] args)
+		protected abstract bool ProcessArguments(RouterRequest request, Argument[] args);
+		
+		protected class ArgumentArrayAdapter : IArray
+		{
+			readonly Argument[] _args;
+
+			public ArgumentArrayAdapter(Argument[] args)
+			{
+				_args = args;
+			}
+
+			public int Length { get { return _args.Length; } }
+			public object this[int index] { get { return _args[index].Value; } }
+		}
+	}
+	
+	/**
+		Navigates on the router.
+		
+		The arguments must be name-value pairs.  It shares the same arguments as the JAvaScript `router.modify` function and the `RouterModify` action. In short the options are:
+		
+			- how : @ModifyRouteHow
+			- path : An array of name-value pairs that specify the path components and their parameter. This syntax differs from the JavaScript interface.
+			- relative : Routing relative to the provided node. By default the path will be treated as global.
+			- transition : @NavigationGotoMode
+			- bookmark : Use a bookmark instead of `path`.
+			- style : Transition style for animation
+			
+		The expression provided to `modifyRoute` is evaluated only when needed. It is expected the bindings will resolve quickly (not bound to a remote lookup for example), otherwise the routing operation will be delayed.
+	*/
+	[UXFunction("modifyRoute")]
+	public sealed class ModifyRouteCommand : RouteModificationCommand
+	{
+		protected override bool ProcessArguments(RouterRequest request, Argument[] args)
 		{
 			for (int i=0; i < args.Length; ++i)
 			{
@@ -146,22 +166,8 @@ namespace Fuse.Navigation
 			
 			return true;
 		}
-		
-		protected class ArgumentArrayAdapter : IArray
-		{
-			readonly Argument[] _args;
-
-			public ArgumentArrayAdapter(Argument[] args)
-			{
-				_args = args;
-			}
-
-			public int Length { get { return _args.Length; } }
-			public object this[int index] { get { return _args[index].Value; } }
-		}
 	}
 	
-	[UXFunction("gotoRoute")]
 	/**
 		Goto a full path in the router.
 		
@@ -169,7 +175,8 @@ namespace Fuse.Navigation
 		
 		@see ModifyRouteCommand
 	*/
-	public class GotoRouteCommand : ModifyRouteCommand
+	[UXFunction("gotoRoute")]
+	public sealed class GotoRouteCommand : RouteModificationCommand
 	{
 		protected override bool ProcessArguments(RouterRequest request, Argument[] args)
 		{
@@ -178,13 +185,13 @@ namespace Fuse.Navigation
 		}
 	}
 
-	[UXFunction("pushRoute")]
 	/**
 		Push a full path on the router.
 		
 		@see GotoRouteCommand
 	*/
-	public class PushRouteCommand : ModifyRouteCommand
+	[UXFunction("pushRoute")]
+	public sealed class PushRouteCommand : RouteModificationCommand
 	{
 		protected override bool ProcessArguments(RouterRequest request, Argument[] args)
 		{
