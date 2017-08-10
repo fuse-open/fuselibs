@@ -6,6 +6,20 @@ using Fuse.Reactive;
 namespace Fuse.Navigation
 {
 	[UXFunction("modifyRoute")]
+	/**
+		Navigates on the router.
+		
+		The arguments must be name-value pairs.  It shares the same arguments as the JAvaScript `router.modify` function and the `RouterModify` action. In short the options are:
+		
+			- how : @ModifyRouteHow
+			- path : An array of name-value pairs that specify the path components and their parameter. This syntax differs from the JavaScript interface.
+			- relative : Routing relative to the provided node. By default the path will be treated as global.
+			- transition : @NavigationGotoMode
+			- bookmark : Use a bookmark instead of `path`.
+			- style : Transition style for animation
+			
+		The expression provided to `modifyRoute` is evaluated only when needed. It is expected the bindings will resolve quickly (not bound to a remote lookup for example), otherwise the routing operation will be delayed.
+	*/
 	public class ModifyRouteCommand : VarArgFunction
 	{
 		public override IDisposable Subscribe(IContext context, IListener listener)
@@ -91,19 +105,9 @@ namespace Fuse.Navigation
 			void HandleRequest(Argument[] args)
 			{
 				var request = new RouterRequest();
-				for (int i=0; i < args.Length; ++i)
-				{
-					var nvp = args[i].Value as NameValuePair;
-					if (nvp == null)
-					{
-						Fuse.Diagnostics.UserError( "arguments to modifyRoute must be name-value-pairs", this );
-						return;
-					}
+				if (!_outSub._expr.ProcessArguments(request, args))
+					return;
 					
-					if (!request.AddArgument(nvp.Name,nvp.Value))
-						return;
-				}
-				
 				var router = Router.TryFindRouter(_outSub._context.Node);
 				if (router == null)
 				{
@@ -124,5 +128,69 @@ namespace Fuse.Navigation
 				base.Dispose();
 			}
 		}
+		
+		protected virtual bool ProcessArguments(RouterRequest request, Argument[] args)
+		{
+			for (int i=0; i < args.Length; ++i)
+			{
+				var nvp = args[i].Value as NameValuePair;
+				if (nvp == null)
+				{
+					Fuse.Diagnostics.UserError( "arguments to modifyRoute must be name-value-pairs", this );
+					return false;
+				}
+				
+				if (!request.AddArgument(nvp.Name,nvp.Value))
+					return false;
+			}
+			
+			return true;
+		}
+		
+		protected class ArgumentArrayAdapter : IArray
+		{
+			readonly Argument[] _args;
+
+			public ArgumentArrayAdapter(Argument[] args)
+			{
+				_args = args;
+			}
+
+			public int Length { get { return _args.Length; } }
+			public object this[int index] { get { return _args[index].Value; } }
+		}
 	}
+	
+	[UXFunction("gotoRoute")]
+	/**
+		Goto a full path in the router.
+		
+		The arguments are name-value pairs that specify the path components and their parameter.
+		
+		@see ModifyRouteCommand
+	*/
+	public class GotoRouteCommand : ModifyRouteCommand
+	{
+		protected override bool ProcessArguments(RouterRequest request, Argument[] args)
+		{
+			return request.AddHow( ModifyRouteHow.Goto ) &&
+				request.AddPath( new ArgumentArrayAdapter(args) );
+		}
+	}
+
+	[UXFunction("pushRoute")]
+	/**
+		Push a full path on the router.
+		
+		@see GotoRouteCommand
+	*/
+	public class PushRouteCommand : ModifyRouteCommand
+	{
+		protected override bool ProcessArguments(RouterRequest request, Argument[] args)
+		{
+			return request.AddHow( ModifyRouteHow.Push ) &&
+				request.AddPath( new ArgumentArrayAdapter(args) );
+		}
+	}
+	
 }

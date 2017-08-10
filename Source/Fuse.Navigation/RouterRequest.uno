@@ -43,33 +43,44 @@ namespace Fuse.Navigation
 			Style = "";
 		}
 		
+		public bool AddHow( ModifyRouteHow how ) 
+		{
+			How = how;
+			return true;
+		}
+		
+		public bool AddPath( object value )
+		{
+			if (_flags.HasFlag(Flags.FlatRoute))
+			{
+				var path = value as IArray;
+				if (path == null)
+				{
+					Fuse.Diagnostics.UserError( "`path` should be an array", this );
+					return false;
+				}
+				
+				//TODO: conver to bool form like ParseNVPRoute
+				Route = ParseFlatRoute(path);
+			}
+			else
+			{
+				if (!ParseNVPRoute(value, out Route))
+					return false;
+			}
+			
+			return true;
+		}
+		
 		public bool AddArgument(string name, object value)
 		{
 			if (name == "how")
-			{
-				How = Marshal.ToType<ModifyRouteHow>(value);
-			}
-			else if (name == "path")
-			{
-				if (_flags.HasFlag(Flags.FlatRoute))
-				{
-					var path = value as IArray;
-					if (path == null)
-					{
-						Fuse.Diagnostics.UserError( "`path` should be an array", this );
-						return false;
-					}
-					
-					//TODO: conver to bool form like ParseNVPRoute
-					Route = ParseFlatRoute(path);
-				}
-				else
-				{
-					if (!ParseNVPRoute(value, out Route))
-						return false;
-				}
-			}
-			else if (name == "relative")
+				return AddHow(Marshal.ToType<ModifyRouteHow>(value));
+
+			if (name == "path")
+				return AddPath( value );
+			
+			if (name == "relative")
 			{
 				Relative = ParseNode(value);
 			}
