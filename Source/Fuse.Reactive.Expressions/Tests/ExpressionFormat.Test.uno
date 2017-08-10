@@ -83,7 +83,7 @@ namespace Fuse.Reactive.Test
 			{
 				var x = e.a.Expression;
 				//The format is not guaranteed by Expression.ToString
-				Assert.AreEqual( "('a', 'b')", x.ToString() );
+				Assert.AreEqual( "('a','b')", x.ToString() );
 			}
 		}
 	}
