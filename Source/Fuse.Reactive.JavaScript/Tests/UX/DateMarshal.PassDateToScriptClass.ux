@@ -1,0 +1,14 @@
+<Panel ux:Class="UX.DateMarshal.PassDateToScriptClass">
+	<Fuse.Reactive.Test.DateMarshalTestScriptClass ux:Name="ScriptClassInstance" />
+
+	<JavaScript>
+		module.exports = {
+			test: function() {
+				var someDate = new Date(Date.parse("1337-01-03T03:07:13.371Z"));
+				ScriptClassInstance.setDateTime(someDate);
+			}
+		}
+	</JavaScript>
+
+	<FuseTest.Invoke Handler="{test}" ux:Name="CallTest"/>
+</Panel>
