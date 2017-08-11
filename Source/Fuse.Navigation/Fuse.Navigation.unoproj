@@ -3,7 +3,7 @@
   "Description": "Library of common trigger behaviors for UIs",
   "Publisher": "Fusetools AS",
   "Title": "Fuse.Triggers",
-  "Version": "1.2.0-rc1",
+  "Version": "1.2.0-rc2",
   "Package": {
     "ProjectUrl": "https://fusetools.com"
   },

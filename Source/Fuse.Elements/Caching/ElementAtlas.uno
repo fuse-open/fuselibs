@@ -65,7 +65,6 @@ namespace Fuse.Elements
 				entry._atlas.RemoveElement(elm);
 			entry._atlas = this;
 			entry.AtlasRect = rect;
-			entry.DrawingOffset = cacheRect.Minimum;
 			_elements.Add(elm);
 
 			_invalidElements++;
@@ -108,10 +107,7 @@ namespace Fuse.Elements
 				return false;
 
 			_spilledPixels += entry.AtlasRect.Area;
-
 			entry.AtlasRect = rect;
-			entry.DrawingOffset = cacheRect.Minimum;
-
 			if (entry.IsValid)
 			{
 				_invalidElements++;
@@ -181,7 +177,8 @@ namespace Fuse.Elements
 					if (!scissorRectInClipSpace.Intersects(visibleRect))
 						continue;
 
-					var offset = (float2)(entry.AtlasRect.Minimum - entry.DrawingOffset) / density;
+					var cachingRect = ElementBatch.GetCachingRect(elm);
+					var offset = (float2)(entry.AtlasRect.Minimum - cachingRect.Minimum) / density;
 					var translation = Matrix.Translation(offset.X, offset.Y, 0);
 					var cc = new OrthographicFrustum{
 						Origin = float2(0, 0), Size = viewport,
