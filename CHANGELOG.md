@@ -51,6 +51,12 @@
 
 # 1.2
 
+## Fuse.Text
+- Fixed an issue where the combination of `-DUSE_HARFBUZZ`, `-DCOCOAPODS` *and* certain Pods (in particular Firebase.Database has been identified) caused an app to link to symbols that the AppStore disallows.
+
+## Each
+- Fixed an issue where removing an element would not actually remove the element
+
 ## Image
 - Fixed issue where an `<Image />` could fail to display inside a `<NativeViewHost />` on iOS
 
@@ -87,6 +93,7 @@
 - To improve rendering speed, Fuse no longer checks for OpenGL errors in release builds in some performance-critical code paths  
 - Improved perceived ScrollView performance by preventing caching while pointers are pressed on them, avoiding inconsistent framerates.
 - Fixed a bug which prevented elements like `Image` to use fast-track rendering in trivial cases with opacity (avoids render to texture).
+- Optimized how bounding boxes are calculated (improves layout and rendering performance).
 
 ## Multitouch
 - Fixed issue where during multitouch all input would stop if one finger was lifted.

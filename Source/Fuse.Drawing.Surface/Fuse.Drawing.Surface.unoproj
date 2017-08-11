@@ -3,7 +3,7 @@
   "Description": "Library of vector drawing and surface",
   "Publisher": "Fusetools AS",
   "Title": "Fuse.Drawing.Surface",
-  "Version": "1.2.0-rc1",
+  "Version": "1.2.0-rc2",
   "InternalsVisibleTo": [
     "Fuse.Controls.Panels",
     "Fuse.Controls.Primitives",
