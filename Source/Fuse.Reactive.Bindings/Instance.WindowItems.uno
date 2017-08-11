@@ -176,9 +176,9 @@ namespace Fuse.Reactive
 
 			//InsertOrMove is slower than Insert, thus optimize if we can 
 			if (reuse)
-				Parent.InsertOrMoveNodes( lastNode, wi.Nodes.GetEnumerator() );
+				Parent.InsertOrMoveNodesAfter( lastNode, wi.Nodes.GetEnumerator() );
 			else
-				Parent.InsertNodes( lastNode, wi.Nodes.GetEnumerator() );
+				Parent.InsertNodesAfter( lastNode, wi.Nodes.GetEnumerator() );
 		}
 		
 		/**
