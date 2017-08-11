@@ -8,10 +8,13 @@ namespace Fuse
 		Implements `IObject`, which means the `NameValuePair` can be viewed as an object
 		with a single property.
 
+		Implements `IArray`, which means the `NameValuePair` can be viewed as an array
+		with a single element.
+
 		An `IArray` containing some `NameValuePairs` can be converted to an `IObject`
 		implementation containing all those properties using the `ObjectFromArray` method.
 	*/
-	public sealed class NameValuePair : IObject
+	public sealed class NameValuePair : IObject, IArray
 	{
 		public string Name { get; private set; }
 		public object Value { get; private set; }
@@ -24,6 +27,16 @@ namespace Fuse
 		public override string ToString()
 		{
 			return "(" + Name + ": " + Value + ")";
+		}
+
+		int IArray.Length { get { return 1; } }
+		object IArray.this[int index] 
+		{ 
+			get 
+			{ 
+				if (index != 0) throw new ArgumentException("Array index out of bounds");
+				return Value;
+			}
 		}
 
 		string[] IObject.Keys { get { return new [] { Name }; } }
