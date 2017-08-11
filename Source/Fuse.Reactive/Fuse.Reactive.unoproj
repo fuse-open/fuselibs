@@ -19,6 +19,7 @@
   ],
   "InternalsVisibleTo": [
     "Fuse.Common.Test.Helpers",
+    "Fuse.Navigation",
     "Fuse.Reactive.Bindings",
     "Fuse.Reactive.Expressions",
     "Fuse.Reactive.JavaScript",
