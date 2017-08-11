@@ -40,8 +40,10 @@
 - Optimized how bounding boxes are calculated (improves layout and rendering performance).
 - Optimized how render bounds are compounded for larger lists.
 
-## JS/Uno marshalling
+## Marshalling
 - Fuse.Scripting now knows about the JS `Date` type, allowing instances to be passed to/from Uno in the form of `Uno.DateTime` objects. This support extends to databinding, `NativeModule`s, `ScriptClass`s, and the `Context.Wrap/Unwrap` API.
+- Binding an object that does not implement `IArray` to a property that expects `IArray` will now automatically convert the value to an array of length 1.
+
 
 ## UpdateManager changes (Uno-level)
 - Breaking change: Several entrypoints on UpdateManager now take a `LayoutPriority` enum instead of `int` as the `priority` argument. Very unlikely to affect user code code.

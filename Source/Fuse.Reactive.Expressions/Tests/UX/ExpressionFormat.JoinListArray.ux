@@ -1,0 +1,3 @@
+<Panel ux:Class="UX.ExpressionFormat.JoinListArray">
+	<FuseTest.DudElement ArrayValue="testJoin('a','b')" ux:Name="d"/>
+</Panel>
