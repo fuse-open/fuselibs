@@ -15,7 +15,7 @@ namespace Fuse.Reactive
 
 		public static DateTime ConvertDateToDateTime(Scripting.Object date)
 		{
-			var jsTicks = (long)(double)date.CallMethod("getTime");
+			var jsTicks = (long)(double)ThreadWorker.Wrap(date.CallMethod("getTime"));
 			var dotNetTicksRelativeToUnixEpoch = jsTicks * DotNetTicksInJsTick;
 			var dotNetTicks = dotNetTicksRelativeToUnixEpoch + UnixEpochInDotNetTicks;
 
