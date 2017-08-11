@@ -8,6 +8,9 @@ namespace Fuse
 		Implements `IObject`, which means the `NameValuePair` can be viewed as an object
 		with a single property.
 
+		Implements `IArray`, which means the `NameValuePair` can be viewed as an array
+		with a single element.
+
 		An `IArray` containing some `NameValuePairs` can be converted to an `IObject`
 		implementation containing all those properties using the `ObjectFromArray` method.
 	*/

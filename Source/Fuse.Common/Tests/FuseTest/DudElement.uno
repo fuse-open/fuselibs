@@ -22,6 +22,8 @@ namespace FuseTest
 		
 		public IExpression Expression { get; set; }
 		
+		public IObject IObjectValue { get; set; }
+		
 		public object UseValue 
 		{
 			get
@@ -32,6 +34,8 @@ namespace FuseTest
 					return ArrayValue;
 				if (ObjectValue != null)
 					return ObjectValue;
+				if (IObjectValue != null)
+					return IObjectValue;
 				return Value;
 			}
 		}

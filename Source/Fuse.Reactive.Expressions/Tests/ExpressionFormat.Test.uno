@@ -63,7 +63,6 @@ namespace Fuse.Reactive.Test
 		}
 		
 		[Test]
-		[Ignore("https://github.com/fusetools/fuselibs-public/issues/253")]
 		public void JoinListArray()
 		{
 			var e = new UX.ExpressionFormat.JoinListArray();
@@ -84,6 +83,43 @@ namespace Fuse.Reactive.Test
 				var x = e.a.Expression;
 				//The format is not guaranteed by Expression.ToString
 				Assert.AreEqual( "('a','b')", x.ToString() );
+			}
+		}
+		
+		[Test]
+		public void ArrayObject()
+		{
+			var e = new UX.ExpressionFormat.ArrayObject();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				var x = e.a.ArrayValue;
+				Assert.AreEqual( 2, x.Length );
+				Assert.AreEqual( "pine", (x[0] as Fuse.NameValuePair).Name );
+				//format is not guaranteed, it could be an object here as well
+				Assert.AreEqual( "((pine: cone), (key: door))", x.ToString() );
+				
+				var y = e.b.IObjectValue;
+				Assert.AreEqual( "cone", y["pine"] );
+				Assert.AreEqual( "door", y["key"] );
+			}
+		}
+		
+		[Test]
+		public void Array()
+		{
+			var e = new UX.ExpressionFormat.Array();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				Assert.AreEqual( 1, e.b.ArrayValue.Length );
+				Assert.AreEqual( "one", e.b.ArrayValue[0] );
+				
+				Assert.AreEqual( 1, e.c.ArrayValue.Length );
+				var nvp =  e.c.ArrayValue[0] as Fuse.NameValuePair;
+				Assert.AreEqual( "pine", nvp.Name );
+				Assert.AreEqual( "cone", nvp.Value );
+				
+				Assert.AreEqual( 1, e.d.ArrayValue.Length );
+				Assert.AreEqual( 7, e.d.ArrayValue[0] );
 			}
 		}
 	}
