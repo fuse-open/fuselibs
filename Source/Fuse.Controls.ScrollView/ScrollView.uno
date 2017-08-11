@@ -452,7 +452,7 @@ namespace Fuse.Controls
 				if (Element == null) 
 					return float2(0);
 
-				return ConstrainUp( Math.Max(_contentMarginSize + Element.ActualPosition + 
+				return ConstrainUp( Math.Max(ContentMarginSize + Element.ActualPosition + 
 					Padding.XY + Padding.ZW - ActualSize, float2(0)) );
 			}
 		}

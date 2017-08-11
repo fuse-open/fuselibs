@@ -14,6 +14,7 @@ namespace Fuse.Motion.Simulation
 		void StepUser(float2 offset);
 		void EndUser(float2 velocity = float2(0));
 		bool IsUser { get; }
+		bool IsDestination { get; }
 		
 		void MoveTo( float2 position );
 		float2 Destination { get; }
@@ -126,6 +127,11 @@ namespace Fuse.Motion.Simulation
 		public bool IsUser
 		{
 			get { return _moveMode == MoveMode.User; }
+		}
+		
+		public bool IsDestination
+		{
+			get { return _moveMode == MoveMode.Destination; }
 		}
 		
 		public float2 Position { get; set; }

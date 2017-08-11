@@ -1,5 +1,11 @@
 # Unreleased
 
+## ScrollViewPager
+- Added `ScrollViewPage` which simplifies the creation of infinite scrolling lists
+
+## Navigator / PageControl
+- Added `Pages` property that allows for a state driven app navigation
+
 ## Ellipse
 - Added missing hit testing from `Ellipse`. If you relied on there not being any hit testing on an ellipse add `HitTestMode="None"`
 
@@ -17,6 +23,9 @@
 
 ## Fuse.Drawing.Surface
 - Added support for the Surface API in native UI for iOS. Meaning that `Curve`, `VectorLayer` and charting will work inside a `NativeViewHost`.
+
+## TextInput
+- Fixed issue on Android causing text to align incorrectly if being scrolled and unfocused.
 
 ## WrapPanel
 - Added possibility to use `RowAlignment` to align the elements in the major direction of the `WrapPanel` as well as in the minor.
