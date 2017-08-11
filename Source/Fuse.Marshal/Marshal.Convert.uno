@@ -12,6 +12,21 @@ namespace Fuse
 			object TryConvert(Type t, object o);
 		}
 
+		class SingleArray: IArray
+		{
+			readonly object _obj;
+			public SingleArray(object obj) { _obj = obj; }
+			public int Length { get { return 1; } }
+			public object this[int index]
+			{
+				get 
+				{
+					if (index != 0) throw new IndexOutOfRangeException();
+					return _obj;
+				}
+			}
+		}
+
 		static List<IConverter> _converters = new List<IConverter>();
 		public static void AddConverter(IConverter conv)
 		{
@@ -51,6 +66,12 @@ namespace Fuse
 				else if (t == typeof(float3)) { res = ToFloat3(o); return true; }
 				else if (t == typeof(float4)) { res = ToFloat4(o); return true; }
 				else if (t.IsEnum && o is string) { res = Uno.Enum.Parse(t, (string)o); return true; }
+				else if (t == typeof(IArray))
+				{
+					if (o is IArray) res = o;
+					else res = new SingleArray(o);
+					return true;
+				}
 				else
 				{
 					for (int i = 0; i < _converters.Count; i++)
