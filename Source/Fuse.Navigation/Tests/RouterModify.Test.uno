@@ -45,9 +45,9 @@ namespace Fuse.Navigation.Test
 				Assert.AreEqual( "three?{\"id\":12}", p.router.GetCurrentRoute().Format() );
 				
 				//TODO: https://github.com/fusetools/fuselibs-public/issues/274
-// 				p.gotoInner.Pulse();
-// 				root.StepFrame();
-// 				Assert.AreEqual( "four?{\"id\":13}/inner?{\"a\":1,\"b\":2}", p.router.GetCurrentRoute().Format() );
+				p.gotoInner.Pulse();
+				root.StepFrame();
+				Assert.AreEqual( "four?{\"id\":13}/inner?{\"a\":1,\"b\":2}", p.router.GetCurrentRoute().Format() );
 	
  				p.gotoEmpty.Pulse();
  				root.StepFrame();

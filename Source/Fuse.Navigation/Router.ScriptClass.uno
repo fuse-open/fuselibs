@@ -207,8 +207,9 @@ namespace Fuse.Navigation
 		class ScriptRouterRequest : RouterRequest
 		{
 			Context _context;
-			
-			public ScriptRouterRequest( Context context ) 
+
+			public ScriptRouterRequest( Context context ) :
+				base( Flags.FlatRoute )
 			{
 				_context = context;
 			}

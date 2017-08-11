@@ -151,7 +151,9 @@ namespace Fuse.Navigation
 		IExpression _path;
 		/* This is an IExpression since the claculation of the path might be costly (in terms of setup
 			and evaluation), and we don't want it to keep updating unless it is actually used. */
-		/** The target path */
+		/** The target path.
+			
+			This is expression is evaluated only when the trigger fires. */
 		public IExpression Path 
 		{ 
 			get { return _path; }

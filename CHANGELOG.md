@@ -1,10 +1,12 @@
 # Unreleased
 
+## Router
+- Added `ModifyRoute`, `GotoRoute` and `PushRoute` to replace `RouterModify`
+  * Added `Path` property allowing a path to be specified in UX
+- Added `gotoRoute`, `pushRoute`, and `modifyRoute` allowing for navigation within UX
+
 ## ScrollViewPager
 - Added `ScrollViewPage` which simplifies the creation of infinite scrolling lists
-## Router
-- Added `RouterModify.Path` allowing a path to be specified in UX
-- Added `gotoRoute`, `pushRoute`, and `modifyRoute` allowing for navigation within UX
 
 ## Navigator / PageControl
 - Added `Pages` property that allows for a state driven app navigation
