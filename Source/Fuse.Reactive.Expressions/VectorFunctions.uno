@@ -14,6 +14,11 @@ namespace Fuse.Reactive
 		{
 			listener.OnNewData(this, new Array(args));
 		}
+		
+		public override string ToString()
+		{
+			return FormatString("");
+		}
 	}
 
 	class Array: IArray
@@ -39,11 +44,6 @@ namespace Fuse.Reactive
 			}
 			sb.Append(")");
 			return sb.ToString();
-		}
-
-		public override string ToString()
-		{
-			return FormatString("");
 		}
 	}
 }
