@@ -32,7 +32,10 @@ namespace Fuse.Reactive
 		public JavaScript([UXAutoNameTable] NameTable nameTable)
 		{
 			if (_worker == null)
+			{
 				_worker = new ThreadWorker();
+				Fuse.Scripting.ScriptModule.AddPriorityPath(".ES2015/");
+			}
 			
 			_nameTable = nameTable;
 			_scriptModule = new RootableScriptModule(_worker, nameTable);

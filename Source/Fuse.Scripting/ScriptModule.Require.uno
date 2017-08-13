@@ -148,7 +148,25 @@ namespace Fuse.Scripting
 			return sourcePath;
 		}
 
+
+		static List<string> _priorityPaths = new List<string>();
+		internal static void AddPriorityPath(string path)
+		{
+			_priorityPaths.Add(path);
+		}
+
 		BundleFile LookForFile(string path)
+		{
+			for (var i = 0; i < _priorityPaths.Count; i++)
+			{
+				var res = LookForFileInternal(_priorityPaths[i] + path);
+				if (res != null) return res;
+			}
+
+			return LookForFileInternal(path);
+		}
+
+		BundleFile LookForFileInternal(string path)
 		{
 			// Prioritize the local bundle if applicable
 			if (Bundle != null)
