@@ -116,6 +116,7 @@ namespace Fuse.Reactive
 				code += "var " + thisSymbols[i] + " = new ViewModelAdapter(module, this);\n";
 					
 			code += "var modelClass = require('" + module + "');\n"+
+                    "if (!(modelClass instanceof Function)) { modelClass = modelClass.default }\n"+
                     "if (!(modelClass instanceof Function)) { throw new Error('\"" + module + "\" does not export a class or function required to construct a Model'); }\n"+
                     "module.exports = new Model(new modelClass(" + argString + "));";
 
