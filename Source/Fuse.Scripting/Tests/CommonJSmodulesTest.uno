@@ -12,7 +12,7 @@ public class CommonJSmodules : TestBase
 		using (var jsRecorder = new JsTestRecorder())
 		{
 			var context = jsRecorder.Begin();
-			var moduleResult = new FileModule(import BundleFile("absolute/main.js")).Evaluate(context, "main");
+			var moduleResult = new FileModule(import("absolute/main.js")).Evaluate(context, "main");
 			if (moduleResult.Error != null)
 				throw moduleResult.Error;
 
@@ -26,7 +26,7 @@ public class CommonJSmodules : TestBase
 		using (var jsRecorder = new JsTestRecorder())
 		{
 			var context = jsRecorder.Begin();
-			var moduleResult = new FileModule(import BundleFile("cyclic/main.js")).Evaluate(context, "main");
+			var moduleResult = new FileModule(import("cyclic/main.js")).Evaluate(context, "main");
 			if (moduleResult.Error != null)
 				throw moduleResult.Error;
 
@@ -40,7 +40,7 @@ public class CommonJSmodules : TestBase
 		using (var jsRecorder = new JsTestRecorder())
 		{
 			var context = jsRecorder.Begin();
-			var moduleResult = new FileModule(import BundleFile("determinism/main.js")).Evaluate(context, "main");
+			var moduleResult = new FileModule(import("determinism/main.js")).Evaluate(context, "main");
 			if (moduleResult.Error != null)
 				throw moduleResult.Error;
 
@@ -54,7 +54,7 @@ public class CommonJSmodules : TestBase
 		using (var jsRecorder = new JsTestRecorder())
 		{
 			var context = jsRecorder.Begin();
-			var moduleResult = new FileModule(import BundleFile("directory/main.js")).Evaluate(context, "main");
+			var moduleResult = new FileModule(import("directory/main.js")).Evaluate(context, "main");
 			if (moduleResult.Error != null)
 				throw moduleResult.Error;
 
@@ -68,7 +68,7 @@ public class CommonJSmodules : TestBase
 		using (var jsRecorder = new JsTestRecorder())
 		{
 			var context = jsRecorder.Begin();
-			var moduleResult = new FileModule(import BundleFile("doubleEvaluate/main.js")).Evaluate(context, "main");
+			var moduleResult = new FileModule(import("doubleEvaluate/main.js")).Evaluate(context, "main");
 			if (moduleResult.Error != null)
 				throw moduleResult.Error;
 
@@ -82,7 +82,7 @@ public class CommonJSmodules : TestBase
 		using (var jsRecorder = new JsTestRecorder())
 		{
 			var context = jsRecorder.Begin();
-			var moduleResult = new FileModule(import BundleFile("exactExports/main.js")).Evaluate(context, "main");
+			var moduleResult = new FileModule(import("exactExports/main.js")).Evaluate(context, "main");
 			if (moduleResult.Error != null)
 				throw moduleResult.Error;
 
@@ -96,7 +96,7 @@ public class CommonJSmodules : TestBase
 		using (var jsRecorder = new JsTestRecorder())
 		{
 			var context = jsRecorder.Begin();
-			var moduleResult = new FileModule(import BundleFile("method/main.js")).Evaluate(context, "main");
+			var moduleResult = new FileModule(import("method/main.js")).Evaluate(context, "main");
 			if (moduleResult.Error != null)
 				throw moduleResult.Error;
 
@@ -110,7 +110,7 @@ public class CommonJSmodules : TestBase
 		using (var jsRecorder = new JsTestRecorder())
 		{
 			var context = jsRecorder.Begin();
-			var moduleResult = new FileModule(import BundleFile("missing/main.js")).Evaluate(context, "main");
+			var moduleResult = new FileModule(import("missing/main.js")).Evaluate(context, "main");
 			if (moduleResult.Error != null)
 				throw moduleResult.Error;
 
@@ -124,7 +124,7 @@ public class CommonJSmodules : TestBase
 		using (var jsRecorder = new JsTestRecorder())
 		{
 			var context = jsRecorder.Begin();
-			var moduleResult = new FileModule(import BundleFile("monkeys/main.js")).Evaluate(context, "main");
+			var moduleResult = new FileModule(import("monkeys/main.js")).Evaluate(context, "main");
 			if (moduleResult.Error != null)
 				throw moduleResult.Error;
 
@@ -138,7 +138,7 @@ public class CommonJSmodules : TestBase
 		using (var jsRecorder = new JsTestRecorder())
 		{
 			var context = jsRecorder.Begin();
-			var moduleResult = new FileModule(import BundleFile("nested/main.js")).Evaluate(context, "main");
+			var moduleResult = new FileModule(import("nested/main.js")).Evaluate(context, "main");
 			if (moduleResult.Error != null)
 				throw moduleResult.Error;
 
@@ -152,7 +152,7 @@ public class CommonJSmodules : TestBase
 		using (var jsRecorder = new JsTestRecorder())
 		{
 			var context = jsRecorder.Begin();
-			var moduleResult = new FileModule(import BundleFile("relative/main.js")).Evaluate(context, "main");
+			var moduleResult = new FileModule(import("relative/main.js")).Evaluate(context, "main");
 			if (moduleResult.Error != null)
 				throw moduleResult.Error;
 
@@ -166,7 +166,7 @@ public class CommonJSmodules : TestBase
 		using (var jsRecorder = new JsTestRecorder())
 		{
 			var context = jsRecorder.Begin();
-			var moduleResult = new FileModule(import BundleFile("transitive/main.js")).Evaluate(context, "main");
+			var moduleResult = new FileModule(import("transitive/main.js")).Evaluate(context, "main");
 			if (moduleResult.Error != null)
 				throw moduleResult.Error;
 
