@@ -100,10 +100,49 @@ namespace Fuse.Controls
 
 		protected override void OnChildAdded(Node n)
 		{
-			var v = n as Element;
-			if (v != null) UpdateChild(v);
+			if (IsRootingStarted)
+			{
+				var v = n as Element;
+				if (v != null) UpdateChild(v);
+			}
 			
 			base.OnChildAdded(n);
+		}
+		
+		//the outlet page on which this control resides.
+		protected Visual AncestorPage { private set; get; }
+		protected RouterPage AncestorRouterPage { private set; get; }
+
+		/* 
+			This affects the structure of navigation, in particular by associating PageData.RouterPage's
+			with each child, thus needs to happen prior to rooting the children.
+		*/
+		protected override void OnRootedPreChildren()
+		{
+			base.OnRootedPreChildren();
+			
+			if (IsRouterOutlet)
+			{
+				AncestorPage = Router.FindRouterOutletPage(this);
+				if (AncestorPage != null)
+				{
+					var pd = PageData.GetOrCreate(AncestorPage);
+					pd.RouterPageChanged += OnRouterPageChanged;
+					this.AncestorRouterPage = pd.RouterPage;
+				}
+				else
+				{
+					//for simplicity always have a root, this isn't part of the path however
+					var router = Router.TryFindRouter(this);
+					if (router != null)
+						this.AncestorRouterPage = router.RootPage;
+					else
+						this.AncestorRouterPage = new RouterPage();
+				}
+			}
+			
+			for (var c = FirstChild<Element>(); c != null; c = c.NextSibling<Element>())
+				UpdateChild(c);
 		}
 		
 		protected override void OnRooted()
@@ -112,9 +151,6 @@ namespace Fuse.Controls
 			
 			//defer first update to rooted, to avoid creating/deleting unused Swipe behavior if None
 			UpdateInteraction();
-			
-			for (var c = FirstChild<Element>(); c != null; c = c.NextSibling<Element>())
-				UpdateChild(c);
 			
 			Navigation.PageProgressChanged += OnPageProgressChanged;
 			
@@ -131,24 +167,30 @@ namespace Fuse.Controls
 			if (!Fuse.Navigation.Navigation.IsPage(c))
 				return;
 				
-			var pd = GetPageData(c);
-			UpdateProgress(c, Navigation.GetPageState(c), pd);
+			var cpd = GetControlPageData(c);
+			UpdateProgress(c, Navigation.GetPageState(c), cpd);
 
-			if ( (pd.Enter == null || pd.Exit == null || pd.Inactive == null || pd.Removing == null) )
+			if ( (cpd.Enter == null || cpd.Exit == null || cpd.Inactive == null || cpd.Removing == null) )
 			{
-				CleanupTriggers(c, pd); //in case partially null
+				CleanupTriggers(c, cpd); //in case partially null
 				
-				CreateTriggers(c, pd);
+				CreateTriggers(c, cpd);
 				
-				if (pd.Enter != null)
-					c.Children.Add(pd.Enter);
-				if (pd.Exit != null)
-					c.Children.Add(pd.Exit);
-				if (pd.Inactive != null)
-					c.Children.Add(pd.Inactive);
-				if (pd.Removing != null)
-					c.Children.Add(pd.Removing);
+				if (cpd.Enter != null)
+					c.Children.Add(cpd.Enter);
+				if (cpd.Exit != null)
+					c.Children.Add(cpd.Exit);
+				if (cpd.Inactive != null)
+					c.Children.Add(cpd.Inactive);
+				if (cpd.Removing != null)
+					c.Children.Add(cpd.Removing);
 			}
+			
+			//attach a default RouterPage if it doesn't have one
+			var pd = PageData.GetOrCreate(c);
+			if (pd.RouterPage == null)
+				pd.AttachRouterPage( new RouterPage{ Path = c.Name, Parameter = c.Parameter,
+					Visual = c });
 		}
 
 		/**
@@ -158,24 +200,30 @@ namespace Fuse.Controls
 			@param c the element targeted by the trigger (don't add them here, just create them)
 			@param pd where to store the created triggers
 		*/
-		protected abstract void CreateTriggers(Element c, PageData pd);
+		protected abstract void CreateTriggers(Element c, ControlPageData pd);
 		
 		protected override void OnUnrooted()
 		{
 			base.OnUnrooted();
 			
+			if (AncestorPage != null)
+			{
+				PageData.GetOrCreate(AncestorPage).RouterPageChanged -= OnRouterPageChanged;
+				AncestorPage = null;
+			}
+			
 			Navigation.PageProgressChanged -= OnPageProgressChanged;
 			
 			for (var c = FirstChild<Element>(); c != null; c = c.NextSibling<Element>())
 			{
-				var pd = GetPageData(c,false);
+				var pd = GetControlPageData(c,false);
 				if (pd == null)
 					continue;
 				CleanupTriggers(c, pd);
 			}
 		}
 		
-		void CleanupTriggers(Element page, PageData data)
+		void CleanupTriggers(Element page, ControlPageData data)
 		{
 			if (data.Enter != null)
 			{
@@ -204,7 +252,7 @@ namespace Fuse.Controls
 			var pc = n as Element;
 			if (pc != null)
 			{
-				var pd = GetPageData(pc, false);
+				var pd = GetControlPageData(pc, false);
 				if (pd != null)
 				{
 					CleanupTriggers(pc, pd);
@@ -222,11 +270,11 @@ namespace Fuse.Controls
 				if (n == null)
 					return;
 				
-				UpdateProgress(n, Navigation.GetPageState(n), GetPageData(n));
+				UpdateProgress(n, Navigation.GetPageState(n), GetControlPageData(n));
 			}
 		}
 		
-		protected virtual void UpdateProgress(Element page, NavigationPageState state, PageData pd) { }
+		protected virtual void UpdateProgress(Element page, NavigationPageState state, ControlPageData pd) { }
 
 		bool _isRouterOutlet = true;
 		/**
@@ -255,13 +303,10 @@ namespace Fuse.Controls
 			}
 		}
 		
-		static readonly PropertyHandle _pageDataProperty = Fuse.Properties.CreateHandle();
-	
 		//UNO: should be protected but the compiler says it isn't accessible for protected functions then
-		public class PageData
+		public class ControlPageData
 		{
 			public Trigger Enter, Exit, Inactive, Removing;
-			public bool Active;
 			
 			public bool HasTriggers
 			{
@@ -272,18 +317,18 @@ namespace Fuse.Controls
 			public bool FromTemplate;
 		}
 		
-		internal static PageData GetPageData(Visual elm, bool create = true)
+		internal static ControlPageData GetControlPageData(Visual elm, bool create = true)
 		{
-			object v;
-			if (elm.Properties.TryGet(_pageDataProperty, out v))
-				return (PageData)v;
-				
-			if (!create)
+			var pd = PageData.GetOrCreate(elm, create);
+			if (pd == null) //could only happen if create == false
 				return null;
 				
-			var sd = new PageData();
-			elm.Properties.Set(_pageDataProperty, sd);
-			return sd;
+			if (pd.ControlPageData != null || !create)
+				return (ControlPageData)pd.ControlPageData;
+				
+			var cpd = new ControlPageData();
+			pd.ControlPageData = cpd;
+			return cpd;
 		}
 		
 		static PropertyHandle _propTransition = Properties.CreateHandle();
@@ -377,6 +422,33 @@ namespace Fuse.Controls
 		public void Goto(Visual node, NavigationGotoMode mode) { Navigation.Goto(node, mode); }
 		/** See @Navigation.Toggle */
 		public void Toggle(Visual node) { Navigation.Toggle(node);}
+
+		internal bool IsEmptyParameter(string a)
+		{
+			//the last tests are for a JS empty string, empty object, and null. The value is expected to be a JSON
+			//serialized string.
+			return a == null || a == "" || a == "\"\"" || a == "{}" || a == "null";
+		}
 		
+		internal bool CompatibleParameter( string a, string b )
+		{
+			if (a == b)
+				return true;
+				
+			return IsEmptyParameter(a) && IsEmptyParameter(b);
+		}
+
+		void OnRouterPageChanged(object sender, RouterPage routerPage)
+		{
+			AncestorRouterPage = routerPage;
+			
+			if (AncestorRouterPage == null)
+				return;
+				
+			var pages = AncestorRouterPage.ChildRouterPages;
+			var current = (this as IRouterOutlet).GetCurrent();
+			if (pages.Count == 0 && current != null)
+				pages.Add(current);
+		}
 	}
 }

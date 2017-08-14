@@ -64,7 +64,7 @@ namespace Fuse.Controls
 			if (elm == null)
 				return;
 				
-			var pd = GetPageData(elm);
+			var pd = GetControlPageData(elm);
 			CleanupChild(pd,elm);
 			var e = EdgeNavigation.GetEdge(elm);
 			switch(e)
@@ -98,13 +98,13 @@ namespace Fuse.Controls
 			var elm = o as Element;
 			if (elm != null) 
 			{
-				var pd = GetPageData(elm, false);
+				var pd = GetControlPageData(elm, false);
 				if (pd != null)
 					CleanupChild(pd,elm);
 			}
 		}
 
-		void SetupEdge(PageData pd, Element elm,float2 rel, Alignment align)
+		void SetupEdge(ControlPageData pd, Element elm,float2 rel, Alignment align)
 		{
 			elm.Alignment = align;
 			
@@ -120,7 +120,7 @@ namespace Fuse.Controls
 			elm.Children.Add(enter);
 		}
 
-		void CleanupChild(PageData pd, Visual elm)
+		void CleanupChild(ControlPageData pd, Visual elm)
 		{
 			if (pd.Enter != null)
 			{
@@ -154,25 +154,25 @@ namespace Fuse.Controls
 			}
 		}
 		
-		static readonly PropertyHandle _pageDataProperty = Fuse.Properties.CreateHandle();
+		static readonly PropertyHandle _controlPageDataProperty = Fuse.Properties.CreateHandle();
 	
-		class PageData
+		class ControlPageData
 		{
 			public Trigger Enter;
 		}
 		
-		static PageData GetPageData(Element elm, bool create = true)
+		static ControlPageData GetControlPageData(Element elm, bool create = true)
 		{
-			object v;
-			if (elm.Properties.TryGet(_pageDataProperty, out v))
-				return (PageData)v;
-				
-			if (!create)
+			var pd = PageData.GetOrCreate(elm, create);
+			if (pd == null) //could only happen if create == false
 				return null;
 				
-			var sd = new PageData();
-			elm.Properties.Set(_pageDataProperty, sd);
-			return sd;
+			if (pd.ControlPageData != null || !create)
+				return (ControlPageData)pd.ControlPageData;
+				
+			var cpd = new ControlPageData();
+			pd.ControlPageData = cpd;
+			return cpd;
 		}
 		
 	}

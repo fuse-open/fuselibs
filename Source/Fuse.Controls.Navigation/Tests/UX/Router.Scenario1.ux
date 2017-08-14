@@ -1,0 +1,17 @@
+<Panel ux:Class="UX.Router.Scenario1">
+	<Router ux:Name="router" IsMasterRouter="false"/>
+	<Panel>
+		<Navigator DefaultPath="one" ux:Name="N1">
+			<Panel ux:Template="one">
+				<PageControl ux:Name="PC1" Active="ii">
+					<Page ux:Name="ii"/>
+					
+					<!-- direct child outlet -->
+					<PageControl ux:Name="iii">
+						<Page ux:Name="bee"/>
+					</PageControl>
+				</PageControl>
+			</Panel>
+		</Navigator>
+	</Panel>
+</Panel>

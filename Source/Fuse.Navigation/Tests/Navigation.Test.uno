@@ -19,12 +19,13 @@ namespace Fuse.Navigation.Test
 			var p = new UX.JSGetRoute();
 			using (var root = TestRootPanel.CreateWithChild(p, int2(100)))
 			{
-
-				root.StepFrameJS();
-				root.StepFrameJS();
-				root.StepFrameJS();
+				root.MultiStepFrameJS(2);
+				
+				p.CallStepTwo.Perform();
+				root.MultiStepFrameJS(2);
 
 				// If no exceptions we're good.
+				Assert.AreEqual( "yes", p.done.Value );
 			}
 
 			Assert.AreEqual(0, Fuse.Triggers.TransitionGroup.TestMemoryCount );

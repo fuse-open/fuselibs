@@ -116,7 +116,7 @@ namespace Fuse
 			RootResources();
 		}
 
-		internal protected virtual void OnRootedPreChildren() { }
+		protected virtual void OnRootedPreChildren() { }
 		
 		protected override void OnUnrooted()
 		{

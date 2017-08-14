@@ -10,6 +10,13 @@ namespace Fuse.Navigation.Test
 {
 	public class RouterTest : TestBase
 	{
+		string SafeFormat( Route r )
+		{
+			if (r == null) 
+				return "*null*";
+			return r.Format();
+		}
+		
 		[Test]
 		public void Basic()
 		{
@@ -18,28 +25,49 @@ namespace Fuse.Navigation.Test
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
 				Assert.AreEqual( "two/b", p.routerA.GetCurrentRoute().Format() ); 
+				Assert.AreEqual( "two/b", SafeFormat(p.routerA.GetHistoryRoute(0)) );
+				Assert.AreEqual( null, p.routerA.GetHistoryRoute(1) );
 				
 				p.routerA.Goto( new Route("one"));
 				root.StepFrame(5); //stabilse animation (it's undefined precisely when the route changes)
-				Assert.AreEqual( "one/ii", p.routerA.GetCurrentRoute().Format() ); 
+				Assert.AreEqual( "one/ii", SafeFormat(p.routerA.GetCurrentRoute()) ); 
+				Assert.AreEqual( "one/ii", SafeFormat(p.routerA.GetHistoryRoute(0)) );
+				Assert.AreEqual( null, p.routerA.GetHistoryRoute(1) );
 
 				p.routerA.Push( new Route("one", null, new Route( "iii")));
 				root.StepFrame(5);
 				Assert.AreEqual( "one/iii/bee", p.routerA.GetCurrentRoute().Format() ); 
+				Assert.AreEqual( "one/iii/bee", SafeFormat(p.routerA.GetHistoryRoute(0)) );
 				
 				p.routerA.Push( new Route("one", null, new Route( "i")));
 				root.StepFrame(5);
 				Assert.AreEqual( "one/i", p.routerA.GetCurrentRoute().Format() ); 
+				Assert.AreEqual( "one/i", SafeFormat(p.routerA.GetHistoryRoute(0)) );
 				
 				p.routerA.GoBack();
 				root.StepFrame(5);
 				Assert.AreEqual( "one/iii/bee", p.routerA.GetCurrentRoute().Format() );
+				Assert.AreEqual( "one/iii/bee", SafeFormat(p.routerA.GetHistoryRoute(0)) );
 				
 				p.routerA.GoBack();
 				root.StepFrame(5);
 				Assert.AreEqual( "one/ii", p.routerA.GetCurrentRoute().Format() );
+				Assert.AreEqual( "one/ii", SafeFormat(p.routerA.GetHistoryRoute(0)) );
 				
 				Assert.IsFalse(p.routerA.CanGoBack);
+			}
+		}
+		
+		[Test]
+		//extracted from a failure in Basic
+		public void Scenario1()
+		{
+			Router.TestClearMasterRoute();
+			var p = new UX.Router.Scenario1();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+ 				Assert.AreEqual( "one/ii", SafeFormat(p.router.GetHistoryRoute(0)) );
+ 				Assert.AreEqual( null, p.router.GetHistoryRoute(1) );
 			}
 		}
 		
@@ -291,5 +319,188 @@ namespace Fuse.Navigation.Test
 				Assert.AreEqual( "i2/n2", p.inner.GetCurrentRoute().Format() );
 			}
 		}
+		
+		[Test]
+		public void HistoryBasic()
+		{
+			Router.TestClearMasterRoute();
+			var p = new UX.Router.HistoryBasic();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				Assert.AreEqual( "a", p.router.GetCurrentRoute().Format() ); 
+				Assert.AreEqual( "a", SafeFormat(p.router.GetHistoryRoute(0)) );
+				Assert.AreEqual( null, p.router.GetHistoryRoute(1) );
+				
+				p.router.Goto( new Route("b"));
+				root.StepFrame(); //actual change could be delayed a frame
+				Assert.AreEqual( "b", SafeFormat(p.router.GetCurrentRoute()) ); 
+				Assert.AreEqual( "b", SafeFormat(p.router.GetHistoryRoute(0)) );
+				Assert.AreEqual( null, p.router.GetHistoryRoute(1) );
+				
+				p.router.Push( new Route("c"));
+				root.StepFrame();
+				Assert.AreEqual( "c", SafeFormat(p.router.GetCurrentRoute()) ); 
+				Assert.AreEqual( "c", SafeFormat(p.router.GetHistoryRoute(0)) );
+				Assert.AreEqual( "b", SafeFormat(p.router.GetHistoryRoute(1)) );
+				Assert.AreEqual( null, p.router.GetHistoryRoute(2) );
+				
+				p.router.GoBack();
+				root.StepFrame();
+				Assert.AreEqual( "b", SafeFormat(p.router.GetHistoryRoute(0)) );
+				Assert.AreEqual( null, p.router.GetHistoryRoute(1) );
+			}
+		}
+		
+		[Test]
+		public void HistoryMulti()
+		{
+			Router.TestClearMasterRoute();
+			var p = new UX.Router.HistoryMulti();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				Assert.AreEqual( "a/hot", SafeFormat(p.router.GetHistoryRoute(0)) );
+				Assert.AreEqual( null, p.router.GetHistoryRoute(1) );
+				
+				p.router.Push( new Route( "a", null, new Route("cold" ) ) );
+				root.StepFrame();
+				Assert.AreEqual( "a/cold", SafeFormat(p.router.GetHistoryRoute(0)) );
+				Assert.AreEqual( "a/hot", SafeFormat(p.router.GetHistoryRoute(1)) );
+				Assert.AreEqual( null, p.router.GetHistoryRoute(2) );
+				
+				p.router.Push( new Route( "b", null, new Route("cat" ) ) );
+				root.StepFrame();
+				Assert.AreEqual( "b/cat", SafeFormat(p.router.GetHistoryRoute(0)) );
+				Assert.AreEqual( "a/cold", SafeFormat(p.router.GetHistoryRoute(1)) );
+				Assert.AreEqual( "a/hot", SafeFormat(p.router.GetHistoryRoute(2)) );
+				Assert.AreEqual( null, p.router.GetHistoryRoute(3) );
+				
+				p.router.Push( new Route( "a", null, new Route("warm" ) ) );
+				root.StepFrame();
+				Assert.AreEqual( "a/warm", SafeFormat(p.router.GetHistoryRoute(0)) );
+				Assert.AreEqual( "b/cat", SafeFormat(p.router.GetHistoryRoute(1)) );
+				Assert.AreEqual( "a/cold", SafeFormat(p.router.GetHistoryRoute(2)) );
+				Assert.AreEqual( "a/hot", SafeFormat(p.router.GetHistoryRoute(3)) );
+				Assert.AreEqual( null, p.router.GetHistoryRoute(4) );
+
+				debug_log "\nA - - - - ";
+				debug_log p.router.TestDumpHistory();
+				p.router.GoBack();
+				root.StepFrame();
+				debug_log p.router.TestDumpHistory();
+				Assert.AreEqual( "b/cat", SafeFormat(p.router.GetHistoryRoute(0)) );
+				Assert.AreEqual( "a/cold", SafeFormat(p.router.GetHistoryRoute(1)) );
+				Assert.AreEqual( "a/hot", SafeFormat(p.router.GetHistoryRoute(2)) );
+				Assert.AreEqual( null, p.router.GetHistoryRoute(3) );
+				
+				debug_log " - - - - ";
+				p.router.GoBack();
+				root.StepFrame();
+				debug_log p.router.TestDumpHistory();
+				Assert.AreEqual( "a/cold", SafeFormat(p.router.GetHistoryRoute(0)) );
+				Assert.AreEqual( "a/hot", SafeFormat(p.router.GetHistoryRoute(1)) );
+				Assert.AreEqual( null, p.router.GetHistoryRoute(2) );
+			}
+		}
+		
+		[Test]
+		public void NavigatorHistoryBasic()
+		{
+			Router.TestClearMasterRoute();
+			var p = new UX.Router.NavigatorHistoryBasic();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				Assert.AreEqual( null, p.router.GetHistoryRoute(0) );
+				
+				p.router.Goto( new Route("b"));
+				root.StepFrame(); //actual change could be delayed a frame
+				Assert.AreEqual( "b", SafeFormat(p.router.GetCurrentRoute()) ); 
+				Assert.AreEqual( "b", SafeFormat(p.router.GetHistoryRoute(0)) );
+				Assert.AreEqual( null, p.router.GetHistoryRoute(1) );
+				
+				p.router.Push( new Route("c"));
+				root.StepFrame();
+				Assert.AreEqual( "c", SafeFormat(p.router.GetCurrentRoute()) ); 
+				Assert.AreEqual( "c", SafeFormat(p.router.GetHistoryRoute(0)) );
+				Assert.AreEqual( "b", SafeFormat(p.router.GetHistoryRoute(1)) );
+				Assert.AreEqual( null, p.router.GetHistoryRoute(2) );
+				
+				p.router.GoBack();
+				root.StepFrame();
+				Assert.AreEqual( "b", SafeFormat(p.router.GetHistoryRoute(0)) );
+				Assert.AreEqual( null, p.router.GetHistoryRoute(1) );
+			}
+		}
+
+		[Test]
+		public void NavigatorHistoryMulti()
+		{
+				Router.TestClearMasterRoute();
+			var p = new UX.Router.NavigatorHistoryMulti();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{	
+				root.MultiStepFrame(5);
+				Assert.AreEqual( "a/hot", SafeFormat(p.router.GetHistoryRoute(0)) );
+				Assert.AreEqual( null, p.router.GetHistoryRoute(1) );
+				
+				p.router.Push( new Route( "a", null, new Route("cold" ) ) );
+				root.MultiStepFrame(5);
+				Assert.AreEqual( "a/cold", SafeFormat(p.router.GetHistoryRoute(0)) );
+				Assert.AreEqual( "a/hot", SafeFormat(p.router.GetHistoryRoute(1)) );
+				Assert.AreEqual( null, p.router.GetHistoryRoute(2) );
+				
+				p.router.Push( new Route( "b", null, new Route("cat" ) ) );
+				root.StepFrame();
+				Assert.AreEqual( "b/cat", SafeFormat(p.router.GetHistoryRoute(0)) );
+				Assert.AreEqual( "a/cold", SafeFormat(p.router.GetHistoryRoute(1)) );
+				Assert.AreEqual( "a/hot", SafeFormat(p.router.GetHistoryRoute(2)) );
+				Assert.AreEqual( null, p.router.GetHistoryRoute(3) );
+				
+				p.router.Push( new Route( "a", null, new Route("warm" ) ) );
+				root.StepFrame();
+				debug_log "\n- - - -\n" + p.router.TestDumpHistory();
+				Assert.AreEqual( "a/warm", SafeFormat(p.router.GetHistoryRoute(0)) );
+				Assert.AreEqual( "b/cat", SafeFormat(p.router.GetHistoryRoute(1)) );
+				Assert.AreEqual( "a/cold", SafeFormat(p.router.GetHistoryRoute(2)) );
+				Assert.AreEqual( "a/hot", SafeFormat(p.router.GetHistoryRoute(3)) );
+				Assert.AreEqual( null, p.router.GetHistoryRoute(4) );
+
+				p.router.GoBack();
+				root.StepFrame();
+				debug_log p.router.TestDumpHistory();
+				Assert.AreEqual( "b/cat", SafeFormat(p.router.GetHistoryRoute(0)) );
+				Assert.AreEqual( "a/cold", SafeFormat(p.router.GetHistoryRoute(1)) );
+				Assert.AreEqual( "a/hot", SafeFormat(p.router.GetHistoryRoute(2)) );
+				Assert.AreEqual( null, p.router.GetHistoryRoute(3) );
+				
+				p.router.GoBack();
+				root.StepFrame();
+				debug_log p.router.TestDumpHistory();
+				Assert.AreEqual( "a/cold", SafeFormat(p.router.GetHistoryRoute(0)) );
+				Assert.AreEqual( "a/hot", SafeFormat(p.router.GetHistoryRoute(1)) );
+				Assert.AreEqual( null, p.router.GetHistoryRoute(2) );
+			}
+		}
+		
+		[Test]
+		public void HistoryActiveIndex()
+		{
+			Router.TestClearMasterRoute();
+			var p = new UX.Router.HistoryActiveIndex();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				Assert.AreEqual( "A", SafeFormat(p.router.GetHistoryRoute(0)) );
+				Assert.AreEqual( null, p.router.GetHistoryRoute(1) );
+				
+				p.Goto2.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual( "C", SafeFormat(p.router.GetHistoryRoute(0)) );
+				
+				p.Goto4.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual( "E", SafeFormat(p.router.GetHistoryRoute(0)) );
+				Assert.AreEqual( null, p.router.GetHistoryRoute(1) );
+			}
+		}
+		
 	}
 }

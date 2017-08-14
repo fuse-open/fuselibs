@@ -126,22 +126,8 @@ namespace Fuse.Navigation
 		public virtual bool CanGoForward { get { return false; } }
 		public virtual void ClearHistory() { }
 
-		public class PageData
-		{
-			public Visual Visual { get; private set; }
-			public int Index;
-			
-			public float Progress;
-			public float PreviousProgress;
-			
-			public PageData( Visual visual ) 
-			{
-				Visual = visual;
-			}
-		}
 		
 		List<PageData> _pages = new List<PageData>();
-		Dictionary<Visual,PageData> _pageMap = new Dictionary<Visual,PageData>();
 		
 		internal protected IList<PageData> Pages { get { return _pages; } }
 		
@@ -150,16 +136,12 @@ namespace Fuse.Navigation
 			if (page == null)
 				return null;
 				
-			PageData pd;
-			if (!_pageMap.TryGetValue(page, out pd))
-				return null;
-			return pd;
+			return PageData.Get(page);
 		}
 		
 		protected override void OnRooted()
 		{
 			base.OnRooted();
-			_pageMap.Clear();
 			UpdatePages();
 		}
 
@@ -173,14 +155,7 @@ namespace Fuse.Navigation
 				if (!Navigation.IsPage(x))
 					continue;
 					
-				//resuse items from _pageMap when possible
-				PageData pd;
-				if (!_pageMap.TryGetValue(x, out pd))
-				{
-					pd = new PageData(x);
-					_pageMap.Add( x, pd );
-				}
-				
+				var pd = PageData.GetOrCreate(x);
 				pd.Index = c;
 				_pages.Add( pd );
 				c++;
@@ -192,7 +167,6 @@ namespace Fuse.Navigation
 		protected override void OnUnrooted()
 		{
 			_pages.Clear();
-			_pageMap.Clear();
 			base.OnUnrooted();
 		}
 
@@ -211,7 +185,6 @@ namespace Fuse.Navigation
 			if (v == null)
 				return;
 				
-			_pageMap.Remove(v);
 			UpdatePages();
 		}
 		

@@ -26,6 +26,9 @@ which will stop push notifications registering (and potentially asking for permi
 - Fixed a bug where replacing the whole list of items with an empty list would not immediately remove the items from the UI.
 ## Navigation
 - Changed `IRouterOutlet` and related types to be internal. This was not meant to be public as it's a private detail of the navigation system and could not be implemented correctly by users.
+- Removed the `Navigator` `IsReusable` property. These were deprecated over a year ago. Use `Resuse="Any"` instead.
+- Removed `PageControl.TransitionEasing` and `Pagecontrol.TransitionDuration`. These were deprecated over a year ago. Use a `NavigationMotion` object instead with `GotoEasing` and `GotoDuration` properties.
+- Removed `PageIndicator.DotTemplate` and `PageIndicator.DotFactor`. These were deprecated over a year ago. Use a `ux:Tempate="Dot"` child instead.
 
 ## Router
 - Added several features to allow navigation/routing from within UX, whereas previously JavaScript code was required.

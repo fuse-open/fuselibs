@@ -175,6 +175,7 @@ namespace Fuse.Navigation
 		public Route GetCurrentRoute()
 		{
 			return GetCurrent(Parent);
+			//return GetHistoryRoute(0);
 		}
 		
 		/**	Clears the history and navigates to the specified route. */
@@ -266,12 +267,8 @@ namespace Fuse.Navigation
 			get
 			{
 				//be strict for typical use
-				return _history.Count > 0;
-				
-				/*if (_history.Count > 0)
-					return true;
-					
-				return GetCurrentRoute().HasUp;*/
+				//return _history.Count > 0;
+				return GetHistoryRoute(1) != null;
 			}
 		}
 		
@@ -298,14 +295,21 @@ namespace Fuse.Navigation
 
 		void Pop()
 		{
-			if (_history.Count == 0)
+			/*if (_history.Count == 0)
 			{
 				Fuse.Diagnostics.UserError( "Cannot pop() - history is empty", this );
 				return;
 			}
 
 			var route = _history[_history.Count-1];
-			_history.RemoveAt(_history.Count-1);
+			_history.RemoveAt(_history.Count-1);*/
+			var route = GetHistoryRoute(1);
+			if (route == null)
+			{
+				Fuse.Diagnostics.UserError( "Cannot pop() - history is empty", this );
+				return;
+			}
+			debug_log "Popping To: " + route.Format();
 			var c = SetRoute(route, NavigationGotoMode.Transition, RoutingOperation.Pop, "");
 			OnHistoryChanged(c);
 		}
@@ -320,7 +324,7 @@ namespace Fuse.Navigation
 		void PrepareRoute(Route r, RoutingOperation operation, string operationStyle)
 		{
 			_prepareCurrent = GetCurrentRoute();
-			_prepareNext = SetRouteImpl(Parent, r, NavigationGotoMode.Prepare, operation, operationStyle,
+			_prepareNext = SetRouteImpl(Parent, _rootPage, r, NavigationGotoMode.Prepare, operation, operationStyle,
 				out _prepareOutlet);
 			_prepareOperation = operation;
 			_prepareProgress = 0;
@@ -405,6 +409,7 @@ namespace Fuse.Navigation
 		Route SetRoute(Route r, NavigationGotoMode gotoMode, RoutingOperation operation, 
 			string operationStyle, bool userRequest = true)
 		{
+			//debug_log "SetRoute: " + r.Format() + " " + operation;
 			if (r == null)
 				throw new Exception( "Route cannot be null" );
 				
@@ -414,7 +419,7 @@ namespace Fuse.Navigation
 			var current = GetCurrentRoute();
 			
 			IRouterOutlet ignore;
-			var outR = SetRouteImpl(Parent, r, gotoMode, operation, operationStyle, out ignore);
+			var outR = SetRouteImpl(Parent, _rootPage, r, gotoMode, operation, operationStyle, out ignore);
 			if (outR == null)
 			{
 				var msg = "Unable to navigate to route: " + r.Format();
@@ -425,7 +430,7 @@ namespace Fuse.Navigation
 					
 				//try to cleanup on error and go to previous state
 				_history.Clear();
-				var c = SetRouteImpl(Parent, current, NavigationGotoMode.Bypass, RoutingOperation.Goto,
+				var c = SetRouteImpl(Parent, _rootPage, current, NavigationGotoMode.Bypass, RoutingOperation.Goto,
 					"", out ignore);
 				OnHistoryChanged(c);
 				return null;
@@ -433,9 +438,11 @@ namespace Fuse.Navigation
 			return outR;
 		}
 		
-		Route SetRouteImpl(Visual root, Route r, NavigationGotoMode gotoMode, 
-			RoutingOperation operation, string operationStyle, out IRouterOutlet majorChange)
+		Route SetRouteImpl(Visual root, RouterPage rootPage, Route r, NavigationGotoMode gotoMode, 
+			RoutingOperation operation, string operationStyle, out IRouterOutlet majorChange,
+			bool canReuse = true)
 		{	
+			var pages = rootPage.ChildRouterPages;
 			majorChange = null;
 			var outlet = FindOutletDown(root);
 			if (outlet == null)
@@ -444,15 +451,74 @@ namespace Fuse.Navigation
 				return null;
 			}
 			
-			Visual active;
-			string opath = r.Path;
-			string oparameter = r.Parameter;
-			var didTransition = outlet.Goto(ref opath, ref oparameter, gotoMode, operation, 
-				operationStyle, out active);
-
+			RouterPage page;
+			if (r.RouterPage != null)
+				page = r.RouterPage;
+			else
+				page = new RouterPage{ Path = r.Path, Parameter = r.Parameter };
+			var cur = outlet.GetCurrent();
+			var didTransition = outlet.CompareCurrent(page);
 			if (didTransition == RoutingResult.Invalid)
 				return null;
-
+				
+			bool reusePage = canReuse && didTransition == RoutingResult.NoChange;
+			if (reusePage)
+				page = outlet.GetCurrent();
+			
+			debug_log operation + " " + r.Format() + " " + " RP: " + reusePage + " CU:" + canReuse + r.RouterPage +
+				" #" + pages.Count;
+			switch (operation)
+			{
+				case RoutingOperation.Goto:
+					pages.Clear();
+					pages.Add(page);
+					break;
+					
+				case RoutingOperation.Push:
+					if (!canReuse)
+					{
+						pages.Clear();
+						pages.Add(page);
+					}
+					else if (!reusePage)
+						pages.Add(page);
+					break;
+					
+				case RoutingOperation.Replace:
+					if (!reusePage)
+					{
+						if (pages.Count  > 0)
+							pages[pages.Count-1] = page;
+						else
+							pages.Add(page);
+					}
+					break;
+					
+				case RoutingOperation.Pop:
+					if (!canReuse)
+					{
+					}
+					else if (!reusePage)
+					{
+						if (pages.Count >0)
+							pages.RemoveAt(pages.Count -1);
+							
+						//assume a correct logical transition
+						/*if (pages.Count > 0)
+							pages[pages.Count-1] = page;
+						else
+							pages.Add(page);*/
+					}
+					break;
+			}
+			
+			if (didTransition != RoutingResult.NoChange)
+			{
+				didTransition = outlet.Goto(page, gotoMode, operation, operationStyle);
+				if (didTransition == RoutingResult.Invalid)
+					return null;
+			}
+			
 			bool trackMajorChange = true;
 			if (didTransition == RoutingResult.Change)
 			{
@@ -464,36 +530,28 @@ namespace Fuse.Navigation
 			Route outSubRoute = null;
 			if (r.SubRoute != null)
 			{
-				if (active == null)
+				if (page.Visual == null)
 				{
 					Fuse.Diagnostics.InternalError( "SubRoute requested but outlet has no active path: " + r, this );
 					return null;
 				}
-				else
-				{
-					if (trackMajorChange)
-					{
-						outSubRoute = SetRouteImpl(active, r.SubRoute, gotoMode, operation, 
-							operationStyle, out majorChange );
-					}
-					else
-					{
-						IRouterOutlet ignore;
-						outSubRoute = SetRouteImpl(active, r.SubRoute, gotoMode, operation, 
-							operationStyle, out ignore );
-					}
-					if (outSubRoute == null)
-						return null;
-				}
+				
+				IRouterOutlet subMajorChange;
+				outSubRoute = SetRouteImpl(page.Visual, page, r.SubRoute, gotoMode, operation, 
+					operationStyle, out subMajorChange, reusePage );
+				if (trackMajorChange)
+					majorChange = subMajorChange;
+				if (outSubRoute == null)
+					return null;
 			}
 			else
 			{
-				outSubRoute = GetCurrent(active);
+				outSubRoute = GetCurrent(page.Visual);
 			}
 			
-			return new Route(opath, oparameter, outSubRoute);
+			return new Route(page.Path, page.Parameter, outSubRoute);
 		}
-
+		
 		Route GetCurrent(Visual from, IRouterOutlet to = null)
 		{
 			if (from == null)
@@ -503,10 +561,8 @@ namespace Fuse.Navigation
 			if (outlet == null || outlet == to)
 				return null;
 				
-			string opath;
-			string oparameter;
-			outlet.GetCurrent(out opath, out oparameter, out from);
-			return new Route(opath, oparameter, GetCurrent(from, to));
+			var page = outlet.GetCurrent();
+			return new Route( page.Path, page.Parameter, GetCurrent(page.Visual, to));
 		}
 		
 		Route GetRouteUpToRouter(Node from)
@@ -523,14 +579,44 @@ namespace Fuse.Navigation
 				string opath = "";
 				string oparameter = "";
 				var v = page as Visual;
-				if (v == null || !outlet.GetPath(v, out opath, out oparameter))
-					outlet.GetCurrent(out opath, out oparameter, out v);
+				var pd = v != null ? PageData.Get(v) : null;
+				if (pd == null || pd.RouterPage == null)
+				{
+					var opage = outlet.GetCurrent();
+					opath = opage.Path;
+					oparameter = opage.Parameter;
+					v = opage.Visual;
+				}
+				else
+				{
+					opath = pd.RouterPage.Path;
+					oparameter = pd.RouterPage.Parameter;
+				}
 				route = new Route( opath, oparameter, route );
 				
 				from = (outlet as Node).Parent;
 			}
 			
 			return route;
+		}
+		
+		/* Find the nearest ancestor that is a Page in a RouterOutlet */
+		static internal Visual FindRouterOutletPage(Node from)
+		{
+			while (from != null && from.Parent != null)
+			{
+				var ro = AsRouterOutlet(from.Parent);
+				if (ro != null)
+				{
+					var v = from as Visual;
+					if (v != null) return v;
+					Fuse.Diagnostics.InternalError( "Unexpected request for RouterOutlet page", from );
+				}
+				
+				from = from.Parent;
+			}
+			
+			return null;
 		}
 		
 		int GetOutletDepth(IRouterOutlet outlet)
@@ -550,8 +636,8 @@ namespace Fuse.Navigation
 		
 		IRouterOutlet FindOutletDown(Node active)
 		{
-			var ro = active as IRouterOutlet;
-			if (ro != null && ro.Type.HasFlag(OutletType.Outlet) ) return ro;
+			var ro = AsRouterOutlet(active);
+			if (ro != null) return ro;
 			
 			var v = active as Visual;
 			if (v != null)
@@ -570,6 +656,13 @@ namespace Fuse.Navigation
 			return null;
 		}
 		
+		static IRouterOutlet AsRouterOutlet(Node n)
+		{
+			var ro = n as IRouterOutlet;
+			if (ro != null && ro.Type.HasFlag(OutletType.Outlet) ) return ro;
+			return null;
+		}
+		
 		IRouterOutlet FindOutletUp(Node active)
 		{
 			Node ignore;
@@ -581,8 +674,8 @@ namespace Fuse.Navigation
 			page = active;
 			while (active != null)
 			{
-				var ro = active as IRouterOutlet;
-				if (ro != null && ro.Type.HasFlag(OutletType.Outlet) ) return ro;
+				var ro = AsRouterOutlet(active);
+				if (ro != null) return ro;
 			
 				//prevent crossing bounds
 				var v = active as Visual;
@@ -662,6 +755,95 @@ namespace Fuse.Navigation
 			
 			return null;
 		}
+		
+		RouterPage _rootPage = new RouterPage();
+		/* The root of the navigation hierachy. */
+		internal RouterPage RootPage
+		{
+			get { return _rootPage; }
+		}
+		
+		internal Route GetHistoryRoute( int at )
+		{
+			var gha = new GetHistoryAt{ At = at };
+			var list = new List<RouterPage>();
+			EnumerateHistory( gha.HistoryAction, list, _rootPage );
+			return gha.Result;
+		}
+		
+		class GetHistoryAt
+		{
+			public int At;
+			
+			public Route Result;
+			
+			public bool HistoryAction( List<RouterPage> stack )
+			{
+				Route r = null;
+				for (int i=stack.Count-1; i>=0; --i)
+				{
+					r = new Route( stack[i].Path, stack[i].Parameter, r );
+					r.RouterPage = stack[i];
+				}
+		
+				if (At == 0)
+					Result = r;
+					
+				At--;
+				return At >= 0;
+			}
+		}
+		
+		delegate bool HistoryAction( List<RouterPage> stack );
+		
+		bool EnumerateHistory( HistoryAction action, List<RouterPage> stack, RouterPage rp )
+		{
+			if (rp == null)
+				return true;
+			
+			var cp = rp.ChildRouterPages;
+			if (cp == null || cp.Count == 0)
+				return action(stack);
+			
+			for (int i= cp.Count -1; i >= 0; --i) 
+			{
+				var childPage = cp[i];
+				stack.Add( childPage );
+				var q = EnumerateHistory( action, stack, childPage );
+				stack.RemoveAt( stack.Count -1 );
+				if (!q)
+					return false;
+			}
+			
+			return true;
+		}
+		
+		internal string TestDumpHistory()
+		{
+			return "*\n" + TestDumpHistory(_rootPage, "");
+		}
+		
+		string TestDumpHistory(RouterPage rp, string indent )
+		{
+			if (rp == null)
+				return "";
+				
+			var cp = rp.ChildRouterPages;
+			string ret = indent + rp.Path + " @" + rp.GetHashCode() + "\n";
+			
+			if (cp == null)
+				return ret;
+				
+			for (int i=cp.Count - 1; i >= 0; --i)
+			{
+				var childPage = cp[i];
+				ret += TestDumpHistory( childPage, indent + "    " );
+			}
+			
+			return ret;
+		}
+		
+		
 	}
 
 	
