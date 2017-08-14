@@ -4,8 +4,6 @@ language: cpp
 
 compiler: clang
 
-cache: ccache
-
 env:
   global:
     - XCODE_XCCONFIG_FILE=$TRAVIS_BUILD_DIR/.travis.xcconfig
@@ -13,13 +11,10 @@ env:
 install:
   - brew update
   - brew install mono
-  - brew install ccache
   - pip install six
   - Stuff/stuff install Stuff
 
 before_script:
-  - export CC="ccache clang"
-  - export CXX="ccache clang++"
   - ulimit -c unlimited -S
   - rm -rf /cores/core.*
 
