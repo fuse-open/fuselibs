@@ -24,6 +24,8 @@ which will stop push notifications registering (and potentially asking for permi
 
 ## Each
 - Fixed a bug where replacing the whole list of items with an empty list would not immediately remove the items from the UI.
+## Navigation
+- Changed `IRouterOutlet` and related types to be internal. This was not meant to be public as it's a private detail of the navigation system and could not be implemented correctly by users.
 
 ## Router
 - Added several features to allow navigation/routing from within UX, whereas previously JavaScript code was required.

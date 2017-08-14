@@ -2,7 +2,7 @@ using Uno;
 
 namespace Fuse.Navigation
 {
-	public enum RoutingOperation
+	enum RoutingOperation
 	{
 		Goto,
 		Push,
@@ -11,7 +11,7 @@ namespace Fuse.Navigation
 	}
 	
 	[Flags]
-	public enum OutletType
+	enum OutletType
 	{
 		None = 0,
 		/** This IRouterOutlet is an outlet, if not specified it will be skipped over during searching */
@@ -23,7 +23,7 @@ namespace Fuse.Navigation
 		For example, only the outermost page change should be animated, the inner ones will just
 		be at the target page (otherwise you end up with a vertigo inducing layering of animations).
 	*/
-	public enum RoutingResult
+	enum RoutingResult
 	{
 		/** There has been no change at all */
 		NoChange,
@@ -36,7 +36,7 @@ namespace Fuse.Navigation
 	}
 	
 	/**	Represents an object that handle navigation to one @Route path element. */
-	public interface IRouterOutlet
+	interface IRouterOutlet
 	{
 		/** Navigates the outlet to the given path, with the given parameter. 
 
