@@ -3,7 +3,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.graphics.Bitmap;
 import com.foreign.Uno.Action;
-import com.foreign.Uno.Func;
+import com.foreign.Uno.Func_String;
 import com.foreign.Uno.Action_String;
 import com.uno.StringArray;
 
@@ -15,19 +15,15 @@ public class FuseWebViewClient extends WebViewClient
 	Action _pageLoadedAction; 
 	Action _pageStartedAction; 
 	Action _urlChangedAction; 
-	Action_String _onCustomURI;
-	String[] _customURIs;
-	Func _hasUriSchemeHandler;
+	Func_String _matchedUriScheme;
 	
-	public FuseWebViewClient(Action loaded, Action started, Action changed, Action_String onCustomURI, StringArray customURIs, Func hasUriSchemeHandler)
+	public FuseWebViewClient(Action loaded, Action started, Action changed, Func_String matchedUriScheme)
 	{
 		super();
 		_pageLoadedAction = loaded;
 		_pageStartedAction = started;
 		_urlChangedAction = changed;
-		_onCustomURI = onCustomURI;
-		_customURIs = customURIs.copyArray();
-		_hasUriSchemeHandler = hasUriSchemeHandler;
+		_matchedUriScheme = matchedUriScheme;
 		loadingFinished = true;
 		redirect = false;
 	}
@@ -35,7 +31,7 @@ public class FuseWebViewClient extends WebViewClient
 	@Override
 	public boolean shouldOverrideUrlLoading(WebView view, String url) 
 	{
-		if(tryInterceptUriScheme(url))
+		if(_matchedUriScheme.run(url))
 			return true;
 		
 		if(!loadingFinished){
@@ -46,22 +42,6 @@ public class FuseWebViewClient extends WebViewClient
 		}
 		loadingFinished = false;
 		view.loadUrl(url);
-		return false;
-	}
-	
-	private boolean tryInterceptUriScheme(String url){
-		boolean hasUriSchemeHandler = _hasUriSchemeHandler.run();
-		if(hasUriSchemeHandler)
-		{
-			for(String uri : _customURIs)
-			{
-				if(url.indexOf(uri) == 0)
-				{
-					_onCustomURI.run(url);
-					return true;
-				}
-			}
-		}
 		return false;
 	}
 	

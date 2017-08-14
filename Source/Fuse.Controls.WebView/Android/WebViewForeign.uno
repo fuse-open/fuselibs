@@ -43,9 +43,9 @@ namespace Fuse.Android.Controls.WebViewUtils
 		@}
 		
 		[Foreign(Language.Java)]
-		public extern (Android) static Java.Object CreateAndSetWebViewClient(this Java.Object webViewHandle, Action loaded, Action started, Action changed, Action<string> onCustomURI, string[] customURIs, Func<bool> hasUriSchemeHandler)
+		public extern (Android) static Java.Object CreateAndSetWebViewClient(this Java.Object webViewHandle, Action loaded, Action started, Action changed, Func<string, bool> matchedUriSchemeHandler)
 		@{
-			FuseWebViewClient client = new FuseWebViewClient(loaded, started, changed, onCustomURI, customURIs, hasUriSchemeHandler);
+			FuseWebViewClient client = new FuseWebViewClient(loaded, started, changed, matchedUriSchemeHandler);
 			((WebView)webViewHandle).setWebViewClient(client);
 			return client;
 		@}
