@@ -50,6 +50,8 @@ namespace Fuse.Internal
 
 		float PaddingWidth { get { return padding[0] + padding[2]; } }
 		float PaddingHeight { get { return padding[1] + padding[3]; } }
+		
+		public float2 Offset;
 
 		public float2 CalcScale( float2 availableSize, float2 desiredSize )
 		{
@@ -223,6 +225,8 @@ namespace Fuse.Internal
 					origin.Y = availableSize.Y - padding[3] - contentActualSize.Y;
 					break;
 			}
+			
+			origin += Offset * contentActualSize;
 
 			if (snapToPixels)
 				origin = SnapSize(origin);
@@ -231,41 +235,44 @@ namespace Fuse.Internal
 
 		public float4 CalcClip( float2 availableSize, ref float2 origin, ref float2 contentActualSize )
 		{
+			//compensate for offset if any
+			var offsetOrigin = origin - Offset * contentActualSize;
+			
 			//cases where everything is outside clip region
-			if (origin.X > availableSize.X ||
-				origin.X + contentActualSize.X < 0 ||
-				origin.Y > availableSize.Y ||
-				origin.Y + contentActualSize.Y < 0)
+			if (offsetOrigin.X > availableSize.X ||
+				offsetOrigin.X + contentActualSize.X < 0 ||
+				offsetOrigin.Y > availableSize.Y ||
+				offsetOrigin.Y + contentActualSize.Y < 0)
 			{
 				origin = float2(0,0);
 				contentActualSize = float2(0);
 				return float4(0,0,1,1);
 			}
 
-			float2 tl = Math.Max( float2(0), (padding.XY-origin) / contentActualSize );
-			float2 br = Math.Min( float2(1), (availableSize - origin - padding.ZW) / contentActualSize );
+			float2 tl = Math.Max( float2(0), (padding.XY-offsetOrigin) / contentActualSize );
+			float2 br = Math.Min( float2(1), (availableSize - offsetOrigin - padding.ZW) / contentActualSize );
 
-			var dx = padding.X - origin.X;
+			var dx = padding.X - offsetOrigin.X;
 			if (dx > 0)
 			{
 				contentActualSize.X -= dx;
-				origin.X = padding.X;
+				offsetOrigin.X = padding.X;
 			}
 
-			dx = origin.X + contentActualSize.X - availableSize.X + padding.Z;
+			dx = offsetOrigin.X + contentActualSize.X - availableSize.X + padding.Z;
 			if (dx > 0)
 			{
 				contentActualSize.X -= dx;
 			}
 
-			var dy = padding.Y - origin.Y;
+			var dy = padding.Y - offsetOrigin.Y;
 			if (dy > 0)
 			{
 				contentActualSize.Y -= dy;
-				origin.Y = padding.Y;
+				offsetOrigin.Y = padding.Y;
 			}
 
-			dy = origin.Y + contentActualSize.Y - availableSize.Y + padding.W;
+			dy = offsetOrigin.Y + contentActualSize.Y - availableSize.Y + padding.W;
 			if (dy > 0)
 			{
 				contentActualSize.Y -= dy;
