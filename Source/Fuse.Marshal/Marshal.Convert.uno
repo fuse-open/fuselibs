@@ -54,34 +54,43 @@ namespace Fuse
 
 			try
 			{
-				if (t == typeof(double)) { res = ToDouble(o); return true; }
+				if (t.IsValueType)
+				{
+					if (t == typeof(double)) { res = ToDouble(o); return true; }
+					else if (t == typeof(Selector)) { res = (Selector)o.ToString(); return true; }
+					else if (t == typeof(float)) { res = ToFloat(o); return true; }
+					else if (t == typeof(int)) { res = ToInt(o); return true; }
+					else if (t == typeof(bool)) { res = ToBool(o); return true; }
+					else if (t == typeof(Size)) { res = ToSize(o); return true; }
+					else if (t == typeof(Size2)) { res = ToSize2(o); return true; }
+					else if (t == typeof(float2)) { res = ToFloat2(o); return true; }
+					else if (t == typeof(float3)) { res = ToFloat3(o); return true; }
+					else if (t == typeof(float4)) { res = ToFloat4(o); return true; }
+					else if (t.IsEnum && o is string) { res = Uno.Enum.Parse(t, (string)o); return true; }
+				}
 				else if (t == typeof(string)) { res = o.ToString(); return true; }
-				else if (t == typeof(Selector)) { res = (Selector)o.ToString(); return true; }
-				else if (t == typeof(float)) { res = ToFloat(o); return true; }
-				else if (t == typeof(int)) { res = ToInt(o); return true; }
-				else if (t == typeof(bool)) { res = ToBool(o); return true; }
-				else if (t == typeof(Size)) { res = ToSize(o); return true; }
-				else if (t == typeof(Size2)) { res = ToSize2(o); return true; }
-				else if (t == typeof(float2)) { res = ToFloat2(o); return true; }
-				else if (t == typeof(float3)) { res = ToFloat3(o); return true; }
-				else if (t == typeof(float4)) { res = ToFloat4(o); return true; }
-				else if (t.IsEnum && o is string) { res = Uno.Enum.Parse(t, (string)o); return true; }
-				else if (t == typeof(IArray))
+
+				var ot = o.GetType();
+				if (ot == t || ot.IsSubclassOf(t))
+				{
+					res = o;
+					return true;
+				}
+
+				if (t == typeof(IArray))
 				{
 					if (o is IArray) res = o;
 					else res = new SingleArray(o);
 					return true;
 				}
-				else
+
+				for (int i = 0; i < _converters.Count; i++)
 				{
-					for (int i = 0; i < _converters.Count; i++)
+					var c = _converters[i].TryConvert(t, o);
+					if (c != null)
 					{
-						var c = _converters[i].TryConvert(t, o);
-						if (c != null) 
-						{
-							res = c;
-							return true;
-						}
+						res = c;
+						return true;
 					}
 				}
 			}
