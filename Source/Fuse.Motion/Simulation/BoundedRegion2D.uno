@@ -20,6 +20,8 @@ namespace Fuse.Motion.Simulation
 		float2 Destination { get; }
 		
 		void Reset(float2 position);
+		
+		void Adjust(float2 adjust);
 	}
 	
 	/*
@@ -141,6 +143,30 @@ namespace Fuse.Motion.Simulation
 		{
 			get { return _destination; }
 			set { _destination = value; }
+		}
+		
+		public void Adjust(float2 adjust)
+		{
+			if (adjust == float2(0)) //exact to avoid 0-update scenario
+				return;
+				
+			if (_moveMode == MoveMode.User)
+				return;
+				
+			Position += adjust;
+			
+			switch (_moveMode) 
+			{
+				case MoveMode.User:
+				case MoveMode.Stop:
+					break;
+					
+				case MoveMode.Destination:
+					MoveTo( Destination + adjust );
+					break;
+					
+				//It's unsure what to do in the other modes still...
+			}
 		}
 		
 		public void MoveTo( float2 target )

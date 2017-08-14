@@ -140,6 +140,7 @@
 			<Pages.SurfaceMisc/>
 			<Launchers/>
 			<Multitouch />
+			<ScrollViewPagerPage/>
 			<Android>
 				<WebViewPage/>
 				<BackButtonView/>

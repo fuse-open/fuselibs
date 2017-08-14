@@ -21,17 +21,18 @@ namespace Fuse
 	*/
 	public enum LayoutPriority
 	{
-		/*
-			IF ADDING NEW ITEMS TO THIS ENUM, MAKE SURE YOU EXPAND THE 
-			SIZE OF THE PhaseDeferredActions ARRAY BELOW 
-		*/
-		Layout,
-		Placement,
+		//used to indicate it should happen immediately, it is not a phase/group deferred action
+		Now,
 		//everything below this is considered part of a logical rooting group
 		EndGroup,
+		//when primary layout happens
+		Layout,
+		//responses to layout
+		Placement,
 		//should be resolved after other normal activities, but is not cleanup
 		Later,
 		//should be resolved last, such as cleanup
+		//if modified adjust the value in the Stage constructor
 		Post
 	}
 	
@@ -87,13 +88,7 @@ namespace Fuse
 		
 		// This size is hardcoded for performance reasons instead of using a dictionary
 		// to avoid using a foreach in the dispatch innerloop
-		public Queue<UpdateAction>[] PhaseDeferredActions = new Queue<UpdateAction>[] {
-			new Queue<UpdateAction>(),
-			new Queue<UpdateAction>(),
-			new Queue<UpdateAction>(),
-			new Queue<UpdateAction>(),
-			new Queue<UpdateAction>()
-		};
+		public Queue<UpdateAction>[] PhaseDeferredActions;
 
 		public UpdateAction GetFirstPriorityAction()
 		{
@@ -110,6 +105,11 @@ namespace Fuse
 		public Stage(UpdateStage _updateStage)
 		{
 			UpdateStage = _updateStage;
+			
+			var queueCount = (int)LayoutPriority.Post + 1;
+			PhaseDeferredActions = new Queue<UpdateAction>[queueCount];
+			for (int i=0; i < queueCount; ++i)
+				PhaseDeferredActions[i] = new Queue<UpdateAction>();
 		}
 		
 		//insert them in sequenced order
