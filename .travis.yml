@@ -6,6 +6,10 @@ compiler: clang
 
 cache: ccache
 
+env:
+  global:
+    - XCODE_XCCONFIG_FILE=$TRAVIS_BUILD_DIR/.travis.xcconfig
+
 install:
   - brew update
   - brew install mono
@@ -21,6 +25,7 @@ before_script:
 
 script:
   - Stuff/uno --trace doctor
+  - Stuff/uno --trace build -tios Tests/ManualTests/ManualTestingApp/ManualTestingApp.unoproj
   - Stuff/uno --trace test -tnative --timeout=30 Source/AllTests.unoproj
 
 after_failure:
