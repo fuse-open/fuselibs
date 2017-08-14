@@ -128,7 +128,7 @@ namespace Fuse.Controls
 		
 		static string PreprocUriScheme(string inScheme)
 		{
-			return inScheme.Contains("://") ? inScheme : (inScheme + "://");
+			return inScheme.Contains(":") ? inScheme : (inScheme + ":");
 		}
 		
 		protected override Fuse.Controls.Native.IView CreateNativeView()
