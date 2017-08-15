@@ -41,7 +41,7 @@ namespace Fuse.Scripting
 				Diagnostics.UserWarning("JavaScript data model contains circular references or is too deep. Some data may not display correctly.", this);
 				return null;
 			}
-			
+
 			var a = obj as Scripting.Array;
 			if (a != null)
 			{
@@ -57,7 +57,7 @@ namespace Fuse.Scripting
 			var o = obj as Scripting.Object;
 			if (o != null)
 			{
-				if (o.InstanceOf(Observable)) 
+				if (o.InstanceOf(FuseJS.Observable))
 				{
 					return new Observable(this, o, false);
 				}
@@ -65,9 +65,13 @@ namespace Fuse.Scripting
 				{
 					return DateTimeConverterHelpers.ConvertDateToDateTime(o);
 				}
+				else if (o.InstanceOf(FuseJS.TreeObservable))
+				{
+					return new TreeObservable(o);
+				}
 				else
 				{
-					return new ObjectMirror(this, o);	
+					return new ObjectMirror(this, o);
 				}
 			}
 
