@@ -311,20 +311,18 @@ namespace Fuse.Elements
 					continue;
 
 				Recti cachingRect;
-				if (!Cache.GetCachingRect(elm, out cachingRect) ||
-					cachingRect.Size.X > e.AtlasRect.Size.X ||
-				    cachingRect.Size.Y > e.AtlasRect.Size.Y)
+				if (Cache.GetCachingRect(elm, out cachingRect))
 				{
-					// re-insert element
-					if (!atlas.ReinsertElement(elm))
-					{
-						atlas.RemoveElement(elm);
-						elm.ElementBatchEntry = null;
-
-						// need to rebuild draw-list
-						DrawListValid = false;
-					}
+					if ((cachingRect.Size.X <= e.AtlasRect.Size.X &&
+					     cachingRect.Size.Y <= e.AtlasRect.Size.Y) ||
+					    atlas.ReinsertElement(elm))
+						continue;
 				}
+
+				// remove element and force rebuild of draw-list
+				atlas.RemoveElement(elm);
+				elm.ElementBatchEntry = null;
+				DrawListValid = false;
 			}
 			_reinsertCheckList.Clear();
 
