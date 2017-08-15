@@ -25,15 +25,38 @@ namespace FuseTest
 		}
 		
 		bool _listening;
-		IObservable _items;
-		ISubscription _subscription;
+		IObservableArray _items;
+		Uno.IDisposable _subscription;
+
+		public enum LogType
+		{
+			Add,
+			InsertAt,
+			RemoveAt,
+		}
+		
+		public class LogItem
+		{
+			public LogType Type;
+			public object Value;
+			public int Index;
+			
+			public LogItem( LogType type, object value = null, int index = -1 ) 
+			{
+				Type = type;
+				Value = value;
+				Index = index;
+			}
+		}
+		
+		public List<LogItem> Log = new List<LogItem>();
 		
 		public object Items
 		{
 			get { return _items;}
 			set
 			{
-				_items = value as IObservable;
+				_items = value as IObservableArray;
 				OnItemsChanged();
 			}
 		}
@@ -55,7 +78,8 @@ namespace FuseTest
 			CleanSubscription();
 			if (_items == null)
 				return;
-			_subscription = _items.Subscribe(this);
+			OnNewAll(_items);
+			_subscription = (Uno.IDisposable)_items.Subscribe(this);
 		}
 		
 		void CleanSubscription()
@@ -78,6 +102,11 @@ namespace FuseTest
 		}
 
 		void IObserver.OnNewAll(IArray values)
+		{
+			OnNewAll(values);
+		}
+
+		void OnNewAll(IArray values)
 		{
 			this.Failed = false;
 			_values.Clear();
@@ -121,6 +150,7 @@ namespace FuseTest
 			
 			Assert.AreEqual( _values.Count, _items.Length);
 			Assert.AreEqual( _values[_values.Count-1], _items[_values.Count-1] );
+			Log.Add( new LogItem( LogType.Add, addedValue ) );
 		}
 		
 		void IObserver.OnRemoveAt(int index)
@@ -134,6 +164,7 @@ namespace FuseTest
 			
 			_values.RemoveAt(index);
 			Assert.AreEqual( _values.Count, _items.Length );
+			Log.Add( new LogItem( LogType.RemoveAt, null, index ) );
 		}
 		
 		void IObserver.OnInsertAt(int index, object value)
@@ -148,6 +179,7 @@ namespace FuseTest
 			_values.Insert(index, value);
 			Assert.AreEqual( _values.Count, _items.Length );
 			Assert.AreEqual( value, _items[index] );
+			Log.Add( new LogItem( LogType.InsertAt, value, index ) );
 		}
 
 		public bool AllowFailed;

@@ -5,15 +5,24 @@ namespace Fuse.Reactive
 {
 	class ObjectMirror : ValueMirror, IObject
 	{
-		Dictionary<string, object> _props = new Dictionary<string, object>();
+		protected Dictionary<string, object> _props = new Dictionary<string, object>();
 
-		internal ObjectMirror(ThreadWorker worker, Scripting.Object obj): base(obj)
+		/** Does not poulate the _props. This allows calling Set later with mirror == this */
+		protected ObjectMirror(Scripting.Object obj) : base(obj) {}
+
+		internal ObjectMirror(IMirror mirror, Scripting.Object obj): base(obj)
 		{
+			Set(mirror, obj);
+		}
+
+		internal virtual void Set(IMirror mirror, Scripting.Object obj)
+		{
+			_props.Clear();
 			var k = obj.Keys;
 			for (int i = 0; i < k.Length; i++)
 			{
 				var s = k[i];
-				_props.Add(s, worker.Reflect(obj[s]));
+				_props.Add(s, mirror.Reflect(obj[s]));
 			}
 		}
 

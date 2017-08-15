@@ -17,6 +17,7 @@
     "../Fuse.Drawing/Fuse.Drawing.unoproj",
     "../Fuse.Reactive/Fuse.Reactive.unoproj",
     "../Fuse.Reactive.Bindings/Fuse.Reactive.Bindings.unoproj",
+    "../Fuse.Reactive.Expressions/Fuse.Reactive.Expressions.unoproj",
     "../Fuse.Platform/Fuse.Platform.unoproj",
     "../Fuse.Scripting.Duktape/Fuse.Scripting.Duktape.unoproj",
     "../Fuse.Scripting.JavaScriptCore/Fuse.Scripting.JavaScriptCore.unoproj",

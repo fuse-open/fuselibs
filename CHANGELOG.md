@@ -98,6 +98,11 @@ which will stop push notifications registering (and potentially asking for permi
 
 ### Fuse.Drawing.Surface
 - Added support for the Surface API in native UI for iOS. Meaning that `Curve`, `VectorLayer` and charting will work inside a `NativeViewHost`.
+## Fuse.Reactive cleanup (Uno-level)
+- The `Fuse.IRaw` interface removed (now internal to the `Fuse.Reactive.JavaScript` package). Had no practical public use.
+- The `Fuse.Reactive.ListMirror` class is no longer public. This was never intended to be public and has no practical public application.
+- Added detailed docs for many of the interfaces in the `Fuse.Reactive` namespace.
+- The `Fuse.Reactive.IWriteable` interface has changed (breaking!). The method signature is now `bool TrySetExclusive(object)` instead of `void SetExclusive(object)`. Unlikely to affect your code.
 
 ### TextInput
 - Fixed issue on Android causing text to align incorrectly if being scrolled and unfocused.

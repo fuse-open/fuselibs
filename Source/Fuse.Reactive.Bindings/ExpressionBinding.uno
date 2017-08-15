@@ -15,7 +15,7 @@ namespace Fuse.Reactive
 		IDisposable _expressionSub;
 
 		protected internal bool CanWriteBack { get { return _expressionSub is IWriteable; } }
-		protected internal void WriteBack(object value) { ((IWriteable)_expressionSub).SetExclusive(value); }
+		protected internal void WriteBack(object value) { ((IWriteable)_expressionSub).TrySetExclusive(value); }
 
 		protected override void OnRooted()
 		{
