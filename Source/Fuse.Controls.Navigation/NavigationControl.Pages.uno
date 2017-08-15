@@ -64,6 +64,21 @@ namespace Fuse.Controls
 			Replace = 1 << 2,
 		}
 
+		protected string GetObjectPath( object data )
+		{
+			string path = null;
+			var obj = data as IObject;
+			if(obj == null) return null;
+
+			if(obj.ContainsKey("$path"))
+				return Marshal.ToType<string>(obj["$path"]);
+
+			if(obj.ContainsKey("$template"))
+				return Marshal.ToType<string>(obj["$template"]);
+
+			return null;
+		}
+
 		/*
 			By the time this is called the backing ChildRouterPages map will already have the object, mapped with the path and context. 
 		*/

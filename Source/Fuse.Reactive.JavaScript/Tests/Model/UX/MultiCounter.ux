@@ -1,0 +1,14 @@
+<Panel ux:Class="UX.Model.MultiCounter" Model="UX/MultiCounter">
+    <Panel ux:Class="UX.Model.Counter" Model="UX/MultiCounter_Counter">
+        <Text Value="{counter}" ux:Name="counter" />
+        <FuseTest.Invoke Handler="{increment}" ux:Name="callIncrement" />
+        <FuseTest.Invoke Handler="{decrement}" ux:Name="callDecrement" />
+    </Panel>
+    <StackPanel ux:Name="counterCollector">
+        <Each Items="{counters}">
+            <UX.Model.Counter />
+        </Each>
+    </StackPanel>
+    <FuseTest.Invoke Handler="{addCounter}" ux:Name="callAddCounter"/>
+    <FuseTest.Invoke Handler="{removeCounter}" ux:Name="callRemoveCounter" />
+</Panel>
