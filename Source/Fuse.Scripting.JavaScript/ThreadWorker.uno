@@ -86,7 +86,7 @@ namespace Fuse.Scripting.JavaScript
 
 			try
 			{
-				context.FuseJS.UpdateModules(context);
+				didAnything = context.FuseJS.UpdateModules(context) || didAnything;
 			}
 			catch (Exception e)
 			{

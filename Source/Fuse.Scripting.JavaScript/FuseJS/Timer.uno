@@ -135,12 +135,11 @@ namespace Fuse.Reactive.FuseJS
 
 			return null;
 		}
-		
-		internal void UpdateModule(Scripting.Context context)
+
+		internal bool UpdateModule(Scripting.Context context)
 		{
 			// NOTE: Don't use UpdateManager for this, for things to run smoothly, this needs to be a JS only thread thing.
-			if(_tm != null)
-				_tm.Tick(context);
+			return _tm != null ? _tm.Tick(context) : false;
 		}
 		
 		class CallbackClosure
@@ -233,12 +232,14 @@ namespace Fuse.Reactive.FuseJS
 			return null;
 		}
 
-		public void Tick(Scripting.Context context)
+		public bool Tick(Scripting.Context context)
 		{
+			var activity = false;
 			for (var i = 0; i < _timers.Count; i++)
 			{
-				_timers[i].Update(context);
+				activity = _timers[i].Update(context) || activity;
 			}
+			return activity;
 		}
 
 		class Timer
@@ -278,14 +279,18 @@ namespace Fuse.Reactive.FuseJS
 					OnStop(ID);
 			}
 
-			internal void Update(Scripting.Context context)
+			internal bool Update(Scripting.Context context)
 			{
-				if(!_isRunning) return;
+				if(!_isRunning) return false;
 
+				var activity = false;
 				var now = GetMilliseconds();
 				var elapsed = now - _startTime;
-				if (_timeout < elapsed)
+				// <= primarily for the case when _timeout == 0 and the timer granuality gives us 0 elapsed time
+				// it's unlikely, but theoretically possible
+				if (_timeout <= elapsed)
 				{
+					activity = true;
 					try
 					{
 						if(_callback != null)
@@ -299,6 +304,8 @@ namespace Fuse.Reactive.FuseJS
 							Stop();
 					}
 				}
+
+				return activity;
 			}
 
 			public static double GetMilliseconds()
