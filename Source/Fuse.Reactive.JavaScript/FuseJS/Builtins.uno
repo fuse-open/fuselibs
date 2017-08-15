@@ -27,7 +27,7 @@ namespace Fuse.Reactive.FuseJS
 			else
 				_timer = new Fuse.Reactive.FuseJS.TimerModule();
 			
-			var setTimout = (Scripting.Function) context.Evaluate("fuse-builtins: setTimeout", import BundleFile("setTimeout.js").ReadAllText());
+			var setTimout = (Scripting.Function) context.Evaluate("fuse-builtins: setTimeout", import("setTimeout.js").ReadAllText());
 			if (setTimout != null && _timer != null)
 				setTimout.Call(_timer.EvaluateExports(context, "FuseJS/Timer"), context.GlobalObject);
 			else
@@ -39,15 +39,15 @@ namespace Fuse.Reactive.FuseJS
 				// This resets the default Promise implementation in JavascriptCore
 				context.Evaluate("fuse-builtins", "Promise = undefined;");
 			}
-			context.Evaluate("fuse-builtins: es6-promise", import BundleFile("../3rdparty/es6-promise.min.js").ReadAllText());
+			context.Evaluate("fuse-builtins: es6-promise", import("../3rdparty/es6-promise.min.js").ReadAllText());
 			context.Evaluate("fuse-builtins: es6-promise", "ES6Promise.polyfill();");
 
 			//load/register Diagnostics
 			new DiagnosticsImplModule();
-			new FileModule(import BundleFile("Diagnostics.js")).EvaluateExports(context, "FuseJS/Diagnostics");
+			new FileModule(import("Diagnostics.js")).EvaluateExports(context, "FuseJS/Diagnostics");
 			
-			Observable = (Scripting.Function)new FileModule(import BundleFile("Observable.js")).EvaluateExports(context, "FuseJS/Observable");
-			TreeObservable = (Scripting.Function)new FileModule(import BundleFile("TreeObservable.js")).EvaluateExports(context, "FuseJS/TreeObservable");
+			Observable = (Scripting.Function)new FileModule(import("Observable.js")).EvaluateExports(context, "FuseJS/Observable");
+			TreeObservable = (Scripting.Function)new FileModule(import("TreeObservable.js")).EvaluateExports(context, "FuseJS/TreeObservable");
 			EventEmitter = EventEmitterModule.GetConstructor(context);
 			Date = (Scripting.Function)context.Evaluate("fuse-builtins", "Date");
 			DateCtor = (Scripting.Function)context.Evaluate("fuse-builtins", "(function(ticks) { return new Date(ticks); })");

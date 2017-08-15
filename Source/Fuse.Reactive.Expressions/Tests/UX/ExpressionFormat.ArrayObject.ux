@@ -1,0 +1,4 @@
+<Panel ux:Class="UX.ExpressionFormat.ArrayObject">
+	<FuseTest.DudElement ArrayValue="pine: 'cone', key: 'door'" ux:Name="a"/>
+	<FuseTest.DudElement IObjectValue="pine: 'cone', key: 'door'" ux:Name="b"/>
+</Panel>

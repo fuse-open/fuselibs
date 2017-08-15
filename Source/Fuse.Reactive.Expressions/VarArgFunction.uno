@@ -11,7 +11,7 @@ namespace Fuse.Reactive
 	public abstract class VarArgFunction: Expression
 	{
 		/** Holds information about an argument to a `VarArgFunction`. */
-		protected class Argument 
+		protected internal class Argument 
 		{
 			internal IDisposable Subscription;
 
@@ -154,7 +154,6 @@ namespace Fuse.Reactive
 		}
 
 	}
-
 	public class NamedFunctionCall: SimpleVarArgFunction
 	{
 		public string Name { get; private set; }

@@ -60,12 +60,6 @@ namespace Fuse.Reactive.Test
 			{
 				e.RoundTripComponent.CallReadDate.Perform();
 				root.StepFrameJS();
-
-				// Expected date/time (UTC): November 1 1997 10:15:00
-				const long expectedTicks = 630139761000000000L;
-				var expectedDateTime = new DateTime(expectedTicks, DateTimeKind.Utc);
-
-				Assert.AreEqual(e.DateTimeComponent.TheDateTime, expectedDateTime);
 			}
 		}
 
@@ -79,6 +73,33 @@ namespace Fuse.Reactive.Test
 
 				// Expected date/time (UTC): November 1 1997 10:15:00
 				const long expectedTicks = 630139761000000000L;
+				var expectedDateTime = new DateTime(expectedTicks, DateTimeKind.Utc);
+
+				Assert.AreEqual(e.DateTimeComponent.TheDateTime, expectedDateTime);
+			}
+		}
+
+		[Test]
+		public void JSRoundTripUnixEpochDateMatches()
+		{
+			var e = new UX.DateMarshal.UnixEpochDateRoundTrip();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				e.RoundTripComponent.CallReadDate.Perform();
+				root.StepFrameJS();
+			}
+		}
+
+		[Test]
+		public void JSRoundTripUnixEpochDateTimeMatches()
+		{
+			var e = new UX.DateMarshal.UnixEpochDateRoundTrip();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.StepFrameJS();
+
+				// Expected date/time (UTC): January 1 1970 00:00:00 (Unix Epoch)
+				const long expectedTicks = 621355968000000000L;
 				var expectedDateTime = new DateTime(expectedTicks, DateTimeKind.Utc);
 
 				Assert.AreEqual(e.DateTimeComponent.TheDateTime, expectedDateTime);

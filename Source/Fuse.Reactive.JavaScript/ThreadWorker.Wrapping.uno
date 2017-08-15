@@ -15,7 +15,7 @@ namespace Fuse.Reactive
 
 		public static DateTime ConvertDateToDateTime(Scripting.Object date)
 		{
-			var jsTicks = (long)(double)date.CallMethod("getTime");
+			var jsTicks = (long)(double)ThreadWorker.Wrap(date.CallMethod("getTime"));
 			var dotNetTicksRelativeToUnixEpoch = jsTicks * DotNetTicksInJsTick;
 			var dotNetTicks = dotNetTicksRelativeToUnixEpoch + UnixEpochInDotNetTicks;
 
@@ -24,6 +24,9 @@ namespace Fuse.Reactive
 
 		public static object ConvertDateTimeToJSDate(DateTime dt, Scripting.Function dateCtor)
 		{
+			// TODO: This assumes dt's `Kind` is set to `Utc`. The `Ticks` value may have to be adjusted if `Kind` is `Local` or `Unspecified`.
+			//  Currently we don't support other `Kind`'s than `Utc`, but when we do, this code should be updated accordingly.
+			//  Something like: `if (dt.Kind != DateTimeKind.Utc) { dt = dt.ToUniversalTime(); }`
 			var dotNetTicks = dt.Ticks;
 			var dotNetTicksRelativeToUnixEpoch = dotNetTicks - UnixEpochInDotNetTicks;
 			var jsTicks = dotNetTicksRelativeToUnixEpoch / DotNetTicksInJsTick;
@@ -72,6 +75,8 @@ namespace Fuse.Reactive
 			else if (dc is string) return dc;
 			else if (dc is IRaw) return ((IRaw)dc).ReflectedRaw;
 			else if (dc is Scripting.Function) return dc;
+			else if (dc is Scripting.Object) return dc;
+			else if (dc is Scripting.Array) return dc;
 			else if (dc is float2) return ToArray((float2)dc);
 			else if (dc is float3) return ToArray((float3)dc);
 			else if (dc is float4) return ToArray((float4)dc);

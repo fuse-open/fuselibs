@@ -299,6 +299,7 @@ namespace Fuse.Controls
 			bool changed = false;
 			
 			position = Constrain(position);
+			//TODO: It's uncertain why this check is needed, it may not be anymore
 			if (Vector.LengthSquared(position - _scrollPosition) > _zeroTolerance)
 			{
 				_scrollPosition = position;
@@ -452,7 +453,7 @@ namespace Fuse.Controls
 				if (Element == null) 
 					return float2(0);
 
-				return ConstrainUp( Math.Max(_contentMarginSize + Element.ActualPosition + 
+				return ConstrainUp( Math.Max(ContentMarginSize + Element.ActualPosition + 
 					Padding.XY + Padding.ZW - ActualSize, float2(0)) );
 			}
 		}

@@ -283,6 +283,10 @@ namespace FuseTest
 		*/
 		public void StepFrameJS()
 		{
+			var w = Fuse.Reactive.JavaScript.Worker;
+			if (w == null)
+				throw new Exception("Calling stepFrameJS though there is no JavaScript worker" );
+				
 			var fence = Fuse.Reactive.JavaScript.Worker.PostFence();
 			var loop = true;
 			while(loop)

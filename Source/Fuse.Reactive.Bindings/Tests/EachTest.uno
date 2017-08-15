@@ -404,6 +404,21 @@ namespace Fuse.Reactive.Test
 		}
 		
 		[Test]
+		public void ReuseRemove()
+		{
+			var e  = new UX.Each.ReuseRemove();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.StepFrameJS();
+				Assert.AreEqual("9,8,7,6,5,4,3,2,1,0", GetDudZ(e.s));
+		
+				e.Remove.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual("9,8,7,6,5,4,3,1,0", GetDudZ(e.s));
+			}
+		}
+		
+		[Test]
 		//same setup as Reuse but ensures the nodes are not reused (Reuse="None", as default)
 		public void ReuseNone()
 		{

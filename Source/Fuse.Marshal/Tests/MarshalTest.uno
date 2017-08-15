@@ -14,6 +14,14 @@ namespace Fuse
 		Foo
 	}
 
+	class A
+	{
+	}
+
+	class B : A
+	{
+	}
+
 	public class ValueTests: TestBase
 	{
 		public void MarshalToSizeWithGarbage()
@@ -43,6 +51,8 @@ namespace Fuse
 				Assert.AreEqual(false, Marshal.TryConvertTo(typeof(float4), false, out res, null));
 				Assert.AreEqual(true, Marshal.TryConvertTo(typeof(FooEnum), "Foo", out res, null));
 				Assert.AreEqual(FooEnum.Foo, (FooEnum)res);
+				Assert.AreEqual(true, Marshal.TryConvertTo(typeof(DateTime), DateTime.UtcNow, out res, null)); // validates that an instance of a type that the marshal doesn't know about can be converted to itself
+				Assert.AreEqual(true, Marshal.TryConvertTo(typeof(A), new B(), out res, null)); // validates that an instance of a type that the marshal doesn't know about can be converted to a base class
 
 				var diagnostics = dg.DequeueAll();
 				Assert.AreEqual(2, diagnostics.Count);

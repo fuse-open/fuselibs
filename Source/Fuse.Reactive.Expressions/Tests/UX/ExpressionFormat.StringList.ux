@@ -1,0 +1,4 @@
+<Panel ux:Class="UX.ExpressionFormat.StringList">
+	<FuseTest.DudElement ArrayValue=" 'one' " ux:Name="a"/>
+	<FuseTest.DudElement ArrayValue=" 'one', 'two'" ux:Name="b"/>
+</Panel>

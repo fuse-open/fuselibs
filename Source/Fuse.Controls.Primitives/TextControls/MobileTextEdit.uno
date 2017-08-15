@@ -66,7 +66,7 @@ namespace Fuse.Controls
 		IViewHandleRenderer InstatiateRenderer()
 		{
 			if defined(Android)
-				return TextEditRenderer.NewRenderer();
+				return TextEditRenderer.NewRenderer(this, _isMultiline);
 			else if defined(iOS)
 				return new NativeViewRenderer();
 		}
@@ -218,14 +218,27 @@ namespace Fuse.Controls
 
 	extern(Android) internal class TextEditRenderer
 	{
-		public static IViewHandleRenderer NewRenderer()
+		public static IViewHandleRenderer NewRenderer(TextEdit textEdit, bool isMultiline)
 		{
-			return new Renderer();
+			return new Renderer(textEdit, isMultiline);
 		}
 
 		class Renderer : IViewHandleRenderer
 		{
 			IViewHandleRenderer _renderer = new NativeViewRenderer();
+
+			readonly bool _isMultiline;
+
+			TextEdit _textEdit;
+			TextAlignment _prevTextAlignment;
+			bool _firstFrame = true;
+
+			public Renderer(TextEdit textEdit, bool isMultiline)
+			{
+				_textEdit = textEdit;
+				_isMultiline = isMultiline;
+				_prevTextAlignment = _textEdit.TextAlignment;
+			}
 
 			void IViewHandleRenderer.Draw(
 				ViewHandle viewHandle,
@@ -234,13 +247,18 @@ namespace Fuse.Controls
 				float2 size,
 				float density)
 			{
+				var updateTextAlignment = _firstFrame || _prevTextAlignment != _textEdit.TextAlignment;
+				_prevTextAlignment = _textEdit.TextAlignment;
 				TextEditRenderer.Instance.Draw(
 					_renderer,
 					viewHandle,
 					localToClipTransform,
 					position,
 					size,
-					density);
+					density,
+					updateTextAlignment,
+					_isMultiline);
+				_firstFrame = false;
 			}
 
 			void IViewHandleRenderer.Invalidate()
@@ -258,12 +276,10 @@ namespace Fuse.Controls
 		static readonly TextEditRenderer Instance = new TextEditRenderer();
 
 		ViewHandle _renderView;
-		ViewHandle _container;
 
 		TextEditRenderer()
 		{
 			_renderView = new ViewHandle(CreateTextEdit());
-			_container = new ViewHandle(CreateContainer());
 		}
 
 		void Draw(
@@ -272,30 +288,30 @@ namespace Fuse.Controls
 			float4x4 localToClipTransform,
 			float2 position,
 			float2 size,
-			float density)
+			float density,
+			bool updateTextAlignment,
+			bool isMultiline)
 		{
-			CopyState(_container.NativeHandle, viewHandle.NativeHandle, _renderView.NativeHandle);
-			renderer.Draw(_container, localToClipTransform, position, size, density);
+			var pixelSize = (int2)Math.Ceil(size * density);
+			CopyState(viewHandle.NativeHandle, _renderView.NativeHandle, updateTextAlignment, isMultiline, pixelSize.X, pixelSize.Y);
+			renderer.Draw(_renderView, localToClipTransform, position, size, density);
 		}
 
 		[Foreign(Language.Java)]
-		static void CopyState(Java.Object container, Java.Object sourceHandle, Java.Object targetHandle)
+		static void CopyState(Java.Object sourceHandle, Java.Object targetHandle, bool updateTextAlignment, bool isMultiline, int width, int height)
 		@{
-			android.widget.GridLayout gridLayout = (android.widget.GridLayout)container;
-			android.widget.TextView source = (android.widget.TextView)sourceHandle;
-			android.widget.TextView target = (android.widget.TextView)targetHandle;
+			android.widget.EditText source = (android.widget.EditText)sourceHandle;
+			android.widget.EditText target = (android.widget.EditText)targetHandle;
 
-			if (target.getParent() == gridLayout)
-			{
-				gridLayout.removeView(target);
-			}
-
+			// Use setText and setTextColor for both text and hint.
+			// Setting the hint and hintTextColor breaks text alignment
+			// when the alignment is set to right.
 			java.lang.String text = source.getText().toString();
-			java.lang.CharSequence hint = text.length() == 0 ? source.getHint() : "";
-			target.setText(text);
-			target.setHint(hint);
-			target.setTextColor(source.getCurrentTextColor());
-			target.setHintTextColor(source.getCurrentHintTextColor());
+			boolean isHint = text.length() == 0;
+
+			target.setText(isHint ? source.getHint() : text);
+			target.setTextColor(isHint ? source.getCurrentHintTextColor() : source.getCurrentTextColor());
+
 			target.setImeOptions(source.getImeOptions());
 			target.setIncludeFontPadding(source.getIncludeFontPadding());
 			target.setTransformationMethod(source.getTransformationMethod());
@@ -317,51 +333,43 @@ namespace Fuse.Controls
 				source.getPaddingBottom());
 			target.setTextScaleX(source.getTextScaleX());
 
-			/*
-				Nasty workaround to avoid Android rendering bug when textalignment is set to center,
-				doing it the normal way makes all the characters render on top of eachother...
-			*/
-			android.widget.GridLayout.LayoutParams lp = new android.widget.GridLayout.LayoutParams();
-			lp.rowSpec = android.widget.GridLayout.spec(0, android.widget.GridLayout.FILL);
-			int gravity = source.getGravity();
-			if ((gravity & android.view.Gravity.LEFT) == android.view.Gravity.LEFT)
+			target.setLayoutParams(new android.widget.FrameLayout.LayoutParams(width, height));
+
+			if (android.os.Build.VERSION.SDK_INT >= 17)
+				target.setTextAlignment(android.view.View.TEXT_ALIGNMENT_GRAVITY);
+
+			target.setGravity(source.getGravity());
+
+			target.setHorizontallyScrolling(!isMultiline);
+
+			if (updateTextAlignment)
 			{
-				lp.setGravity(android.view.Gravity.LEFT);
-				lp.columnSpec = android.widget.GridLayout.spec(0, android.widget.GridLayout.LEFT);
+				// This piece of code fixes the textalignment issues we have
+				// been having for a long time. What happens is that TextView/EditText
+				// has some internal state for text alignment that is not updated when
+				// setting properties like textAlignment/gravity/scroll etc.
+				// Reading the TextView code, I found that the following method
+				// calls will hit the codepaths that update the text alignment state
+				target.setSelection(source.getSelectionStart(), source.getSelectionEnd());
+				target.layout(0, 0, width, height);
+				target.onPreDraw();
 			}
-			else if ((gravity & android.view.Gravity.RIGHT) == android.view.Gravity.RIGHT)
+			else
 			{
-				lp.setGravity(android.view.Gravity.RIGHT);
-				lp.columnSpec = android.widget.GridLayout.spec(0, android.widget.GridLayout.RIGHT);
+				// One cause of the issue above is that the source TextEdit's scrollposition
+				// does not have a valid value. One frame after changing textalignment this state
+				// will be valid
+				target.setScrollX(source.getScrollX());
+				target.setScrollY(source.getScrollY());
 			}
-			else if ((gravity & android.view.Gravity.CENTER_HORIZONTAL) == android.view.Gravity.CENTER_HORIZONTAL)
-			{
-				lp.setGravity(android.view.Gravity.CENTER_HORIZONTAL);
-				lp.columnSpec = android.widget.GridLayout.spec(0, android.widget.GridLayout.CENTER);
-			}
-			target.setLayoutParams(lp);
-			gridLayout.addView(target);
 		@}
 
 		[Foreign(Language.Java)]
 		static Java.Object CreateTextEdit()
 		@{
-			android.widget.TextView tv = new android.widget.TextView(com.fuse.Activity.getRootActivity());
+			android.widget.EditText tv = new android.widget.EditText(com.fuse.Activity.getRootActivity());
 			tv.setBackgroundResource(0);
 			return tv;
 		@}
-
-		[Foreign(Language.Java)]
-		static Java.Object CreateContainer()
-		@{
-			android.widget.GridLayout gridLayout = new android.widget.GridLayout(com.fuse.Activity.getRootActivity());
-			gridLayout.setLayoutParams(
-				new android.widget.RelativeLayout.LayoutParams(
-					android.view.ViewGroup.LayoutParams.MATCH_PARENT,
-					android.view.ViewGroup.LayoutParams.MATCH_PARENT));
-			return gridLayout;
-		@}
-
 	}
-
 }

@@ -142,7 +142,7 @@ namespace Fuse.Controls.Test
 				child1.Height = 441;
 				child1.StretchMode = StretchMode.Scale9;
 				var image1Source = new TextureImageSource();
-				image1Source.Texture = import Texture2D("Assets/713x441.png");
+				image1Source.Texture = texture2D.Load(import("Assets/713x441.png"));
 				image1Source.Density = 1.3f;
 				child1.Source = image1Source;
 				child1.Alignment = Alignment.HorizontalCenter;
@@ -171,7 +171,7 @@ namespace Fuse.Controls.Test
 				var c2 = new Image();
 
 				c2.Width = Size.Percent(100);
-				c2.Source = new TextureImageSource{ Texture = import Texture2D("Assets/200x100.png" ) };
+				c2.Source = new TextureImageSource{ Texture = texture2D.Load(import("Assets/200x100.png")) };
 				parent.Children.Add(c2);
 
 				var c3 = new Panel();
@@ -210,7 +210,7 @@ namespace Fuse.Controls.Test
 				parent.Children.Add(c1);
 
 				var c2 = new Image();
-				c2.Source = new TextureImageSource{ Texture = import Texture2D("Assets/200x100.png" ) };
+				c2.Source = new TextureImageSource{ Texture = texture2D.Load(import("Assets/200x100.png")) };
 				parent.Children.Add(c2);
 
 				var c3 = new Panel();

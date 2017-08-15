@@ -282,21 +282,18 @@ namespace Fuse.Controls.ScrollViewTest
 			using (var root = TestRootPanel.CreateWithChild( sv, int2(150) ))
 			{
 				Assert.AreEqual( 0, sv.S.ScrollPosition.Y );
-				root.StepFrame(5); //TODO: It's not clear why/if this should be required, it seems to be stabilizing now!
+				root.StepFrame(5); //alignment chagne above may cause animation
 
 				sv.T.Children.Insert(0,sv.P1);
-				root.IncrementFrame();
+				root.StepFrame(5);
 				//50 is as far as it should go to be in range, see:
 				//https://github.com/fusetools/fuselibs/issues/2891
-				Assert.AreEqual( 50, sv.S.ScrollPosition.Y );
-
-				//no animation expected
-				root.StepFrame(1);
-				Assert.AreEqual( 50, sv.S.ScrollPosition.Y );
+				//tolerance needed due to tolerance check in `ScrollView.SetScrolPositionImpl`
+				Assert.AreEqual( 50, sv.S.ScrollPosition.Y, 1e-3 );
 
 				sv.T.Children.Add(sv.P3);
 				root.IncrementFrame();
-				Assert.AreEqual( 50, sv.S.ScrollPosition.Y );
+				Assert.AreEqual( 50, sv.S.ScrollPosition.Y, 1e-3 );
 			}
 		}
 		

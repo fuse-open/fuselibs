@@ -208,7 +208,7 @@ namespace Fuse.Controls.Test
 			var child1 = new Image();
 			child1.Height = 441;
 			var image1Source = new TextureImageSource();
-			image1Source.Texture = import Texture2D("Assets/713x441.png");
+			image1Source.Texture = texture2D.Load(import("Assets/713x441.png"));
 			image1Source.Density = 2;
 			child1.Source = image1Source;
 			DockPanel.SetDock(child1, Dock.Top);
@@ -219,7 +219,7 @@ namespace Fuse.Controls.Test
 			child2.Height = 109;
 			child2.StretchMode = StretchMode.Fill;
 			var image2Source = new TextureImageSource();
-			image2Source.Texture = import Texture2D("Assets/92x218.png");
+			image2Source.Texture = texture2D.Load(import("Assets/92x218.png"));
 			child2.Source = image2Source;
 			DockPanel.SetDock(child2, Dock.Right);
 			parent.Children.Add(child2);
