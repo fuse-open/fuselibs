@@ -9,6 +9,7 @@ namespace Fuse.Reactive.FuseJS
 		static FuseJS.TimerModule _timer;
 
 		internal readonly Function Observable;
+		internal readonly Function TreeObservable;
 		internal readonly Function EventEmitter;
 		internal readonly Function Date;
 		internal readonly Function DateCtor;
@@ -46,6 +47,7 @@ namespace Fuse.Reactive.FuseJS
 			new FileModule(import("Diagnostics.js")).EvaluateExports(context, "FuseJS/Diagnostics");
 			
 			Observable = (Scripting.Function)new FileModule(import("Observable.js")).EvaluateExports(context, "FuseJS/Observable");
+			TreeObservable = (Scripting.Function)new FileModule(import("TreeObservable.js")).EvaluateExports(context, "FuseJS/TreeObservable");
 			EventEmitter = EventEmitterModule.GetConstructor(context);
 			Date = (Scripting.Function)context.Evaluate("fuse-builtins", "Date");
 			DateCtor = (Scripting.Function)context.Evaluate("fuse-builtins", "(function(ticks) { return new Date(ticks); })");
