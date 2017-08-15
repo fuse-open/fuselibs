@@ -1,0 +1,6 @@
+<Panel ux:Class="UX.Promise" Model="UX/Promise">
+    <Text ux:Name="t" Value="{result}" />
+    <Text ux:Name="p" Value="{somePromise}" />
+    <FuseTest.Invoke Handler="{changePromise}" ux:Name="changePromise"/>
+    <FuseTest.Invoke Handler="{resolveNow}" ux:Name="resolveNow"/>
+</Panel>

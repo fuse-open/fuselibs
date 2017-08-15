@@ -1,0 +1,11 @@
+<Panel ux:Class="UX.Model.Multi" Model="UX/Multi(1)">
+	<FuseTest.DudElement Value="{value}" ux:Name="a"/>
+	
+	<Panel Model="UX/Multi(2)">
+		<FuseTest.DudElement Value="{value}" ux:Name="b"/>
+	</Panel>
+	
+	<Panel Model="UX/Multi(3)">
+		<FuseTest.DudElement Value="{value}" ux:Name="c"/>
+	</Panel>
+</Panel>
