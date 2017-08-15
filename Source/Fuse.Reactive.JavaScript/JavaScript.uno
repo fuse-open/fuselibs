@@ -32,7 +32,10 @@ namespace Fuse.Reactive
 		public JavaScript([UXAutoNameTable] NameTable nameTable)
 		{
 			if (_worker == null)
+			{
 				_worker = new ThreadWorker();
+				Fuse.Scripting.ScriptModule.AddMagicPath(".ES2015/", TransformModel);
+			}
 			
 			_nameTable = nameTable;
 			_scriptModule = new RootableScriptModule(_worker, nameTable);
@@ -40,6 +43,8 @@ namespace Fuse.Reactive
 
 		protected override void OnRooted()
 		{
+			SetupModel();
+
 			base.OnRooted();
 			_javaScriptCounter++;
 			SubscribeToDependenciesAndDispatchEvaluate();

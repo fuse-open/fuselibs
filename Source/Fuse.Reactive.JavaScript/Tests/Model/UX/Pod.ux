@@ -1,0 +1,8 @@
+<Panel ux:Class="UX.Model.Pod" Model="UX/Pod()">
+	<FuseTest.DudElement StringValue="{data.value}" ux:Name="a"/>
+	<FuseTest.DudElement StringValue="{data.nest.value}" ux:Name="b"/>
+	
+	<FuseTest.Invoke Handler="{step1}" ux:Name="callStep1"/>
+	<FuseTest.Invoke Handler="{step2}" ux:Name="callStep2"/>
+	<FuseTest.Invoke Handler="{step3}" ux:Name="callStep3"/>
+</Panel>
