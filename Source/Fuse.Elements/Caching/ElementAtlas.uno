@@ -100,7 +100,9 @@ namespace Fuse.Elements
 			if (entry._atlas != this)
 				throw new Exception("wrong atlas again, dummy!");
 
-			Recti cacheRect = ElementBatch.GetCachingRect(elm);
+			Recti cacheRect;
+			if (!Cache.GetCachingRect(elm, out cacheRect))
+				return false;
 
 			Recti rect;
 			if (!_rectPacker.TryAdd(cacheRect.Size, out rect))
