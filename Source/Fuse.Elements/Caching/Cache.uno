@@ -87,12 +87,12 @@ namespace Fuse.Elements
 				origin.X + size.X + 1, origin.Y + size.Y + 1);
 		}
 
-		internal bool GetCachingRect(DrawContext dc, out Recti rect)
+		bool GetCachingRect(DrawContext dc, out Recti rect)
 		{
 			return GetCachingRect(_element, out rect);
 		}
 
-		static internal bool GetCachingRect(Element elm, out Recti rect)
+		static bool GetCachingRect(Element elm, out Recti rect)
 		{
 			var bounds = elm.RenderBoundsWithEffects;
 			if (bounds.IsInfinite || bounds.IsEmpty)
