@@ -20,10 +20,10 @@ function wrap(func) {
                     args.push(model[dependency]);
                 }
             }
-            func.apply(Object.create(func.prototype), args);
+            return func.apply(Object.create(func.prototype), args);
         }
         else {
-            func.apply(this, arguments);
+            return func.apply(this, arguments);
         }
     }
     wfunc.prototype = func.prototype;
