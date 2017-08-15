@@ -315,7 +315,7 @@ namespace Fuse.Elements
 				{
 					if ((cachingRect.Size.X <= e.AtlasRect.Size.X &&
 					     cachingRect.Size.Y <= e.AtlasRect.Size.Y) ||
-					    atlas.ReinsertElement(elm))
+					    atlas.ReinsertElement(elm, cachingRect))
 						continue;
 				}
 

@@ -90,7 +90,7 @@ namespace Fuse.Elements
 			entry._atlas = null;
 		}
 
-		public bool ReinsertElement(Element elm)
+		public bool ReinsertElement(Element elm, Recti cacheRect)
 		{
 			if (elm.ElementBatchEntry == null)
 				throw new Exception("element not already inserted anywhere!");
@@ -99,10 +99,6 @@ namespace Fuse.Elements
 
 			if (entry._atlas != this)
 				throw new Exception("wrong atlas again, dummy!");
-
-			Recti cacheRect;
-			if (!Cache.GetCachingRect(elm, out cacheRect))
-				return false;
 
 			Recti rect;
 			if (!_rectPacker.TryAdd(cacheRect.Size, out rect))
