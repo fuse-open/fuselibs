@@ -96,7 +96,7 @@ namespace Fuse.Reactive
 				for (var i = 0; i < _dependencies.Count; i++)
 					_dependencies[i].Subscribe(this);
 
-			DispatchEvaluateIfDependenciesReady();
+			if (_dependencies == null || _dependencies.Count == 0) DispatchEvaluateIfDependenciesReady();
 		}
 
 		void DisposeDependencySubscriptions()
@@ -149,7 +149,5 @@ namespace Fuse.Reactive
 		{
 			return new ResourceSubscription(source, this, key, listener, typeof(object));
 		}
-
-		NameTable IContext.NameTable { get { return _nameTable; } }
 	}
 }

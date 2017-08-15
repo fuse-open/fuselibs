@@ -22,6 +22,7 @@
     "Fuse.Navigation",
     "Fuse.Reactive.Bindings",
     "Fuse.Reactive.Expressions",
+    "Fuse.Expressions.Test",
     "Fuse.Reactive.JavaScript",
     "Fuse.Scripting.Test",
     "Fuse.Selection",

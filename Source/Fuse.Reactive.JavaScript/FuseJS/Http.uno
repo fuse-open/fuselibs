@@ -15,7 +15,7 @@ namespace Fuse.Reactive.FuseJS
 		public Http()
 		{
 			if (_instance != null) return;
-			Resource.SetGlobalKey(_instance = this, "FuseJS/Http");
+			Uno.UX.Resource.SetGlobalKey(_instance = this, "FuseJS/Http");
 		}
 
 		public override void Evaluate(Context c, ModuleResult result)

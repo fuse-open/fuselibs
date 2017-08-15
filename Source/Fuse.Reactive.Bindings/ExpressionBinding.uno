@@ -7,21 +7,15 @@ namespace Fuse.Reactive
 	{
 		public IExpression Key { get; private set; }
 
-		[WeakReference]
-		NameTable _nameTable;
-		public NameTable NameTable { get { return _nameTable; } }
-
-
-		protected ExpressionBinding(IExpression key, NameTable nameTable)
+		protected ExpressionBinding(IExpression key)
 		{
 			Key = key;
-			_nameTable = nameTable;
 		}
 
 		IDisposable _expressionSub;
 
 		protected internal bool CanWriteBack { get { return _expressionSub is IWriteable; } }
-		protected internal void WriteBack(object value) { ((IWriteable)_expressionSub).SetExclusive(value); }
+		protected internal void WriteBack(object value) { ((IWriteable)_expressionSub).TrySetExclusive(value); }
 
 		protected override void OnRooted()
 		{

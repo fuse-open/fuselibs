@@ -13,7 +13,7 @@ namespace Fuse.Reactive
 		readonly NameTable _rootTable;
 		readonly object _obj;
 		Scripting.Object _self;
-		Dictionary<Property, ObservableProperty> _properties;
+		Dictionary<Uno.UX.Property, ObservableProperty> _properties;
 
 		internal ObservableProperty GetObservableProperty(string name)
 		{
@@ -68,7 +68,7 @@ namespace Fuse.Reactive
 
 		void EnsureHasProperties()
 		{
-			if (_properties == null) _properties = new Dictionary<Property, ObservableProperty>();
+			if (_properties == null) _properties = new Dictionary<Uno.UX.Property, ObservableProperty>();
 		}
 
 		void DispatchUnroot()
@@ -78,7 +78,7 @@ namespace Fuse.Reactive
 			_worker.Invoke(Unroot);
 		}
 
-		internal Scripting.Object GetPropertyObservable(Property p)
+		internal Scripting.Object GetPropertyObservable(Uno.UX.Property p)
 		{
 			EnsureHasProperties();
 
