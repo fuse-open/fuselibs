@@ -2,6 +2,10 @@
 
 # 1.2
 
+## Fuse.Elements
+- Fixed an issue where the ElementBatcher ended up throwing an Exception complaining about the element not having a caching rect.
+
+
 ## 1.2.0
 
 ### Fuse.Text

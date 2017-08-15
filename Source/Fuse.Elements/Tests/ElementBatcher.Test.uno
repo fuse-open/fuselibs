@@ -111,5 +111,34 @@ namespace Fuse.Elements.Test
 
 			}
 		}
+
+		[Test]
+		public void ZeroSizeAfterFirstDraw()
+		{
+			var p = new UX.ElementBatcher.ZeroSizeAfterFirstDraw();
+			using (var root = TestRootPanel.CreateWithChild(p, int2(10, 13)))
+			{
+				var edgeMargin = 1;
+
+				using (var fb = root.CaptureDraw())
+				{
+					fb.AssertSolidRectangle(new Recti(int2(0,  0), int2(10,  1)), float4(0, 0, 1, 1)); // Guard
+					fb.AssertSolidRectangle(new Recti(int2(0,  1), int2(10, 10)), float4(0, 1, 0, 1));
+					fb.AssertSolidRectangle(new Recti(int2(0, 11), int2(10,  1)), float4(1, 0, 0, 1)); // Poison
+					fb.AssertSolidRectangle(new Recti(int2(0, 12), int2(10,  1)), float4(0, 0, 1, 1)); // Guard
+				}
+
+				p.Poison.Height = 0;
+				p.Poison.Background = null;
+				root.StepFrame();
+
+				using (var fb = root.CaptureDraw())
+				{
+					fb.AssertSolidRectangle(new Recti(int2(0,  0), int2(10,  1)), float4(0, 0, 1, 1)); // Guard
+					fb.AssertSolidRectangle(new Recti(int2(0,  1), int2(10, 10)), float4(0, 1, 0, 1));
+					fb.AssertSolidRectangle(new Recti(int2(0, 11), int2(10,  1)), float4(0, 0, 1, 1)); // Guard
+				}
+			}
+		}
 	}
 }
