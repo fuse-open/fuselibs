@@ -66,13 +66,16 @@ namespace Fuse.Reactive
 			SetupModel(app.Children, _appModel, model);
         }
 
-        static string ParseModelExpression(IExpression exp, JavaScript js, ref string argString, List<string> thisSymbols)
+        static string ParseModelExpression(IExpression exp, JavaScript js, ref string argString, ref string className, List<string> thisSymbols)
         {
-            if (exp is Data) return ((Data)exp).Key;
+            if (exp is Data) {
+                className = ((Data)exp).Key;
+                return className;
+            } 
             else if (exp is Divide)
             {
-                var left = ParseModelExpression(((Divide)exp).Left, js, ref argString, thisSymbols);
-                var right = ParseModelExpression(((Divide)exp).Right, js, ref argString, thisSymbols);
+                var left = ParseModelExpression(((Divide)exp).Left, js, ref argString, ref className, thisSymbols);
+                var right = ParseModelExpression(((Divide)exp).Right, js, ref argString, ref className, thisSymbols);
                 return left + "/" + right;
             }
             else if (exp is Fuse.Reactive.NamedFunctionCall)
@@ -92,10 +95,11 @@ namespace Fuse.Reactive
 					{
 						js.Dependencies.Add(new Dependency(argName, nfc.Arguments[i]));
 					}
-					if (i > 0) argString = argString + ", ";
+					argString = argString + ", ";
 					argString += argName;
                 }
 
+                className = nfc.Name;
                 return nfc.Name;
             }
             else throw new Exception("Invalid Model path expression: " + exp);
@@ -103,11 +107,21 @@ namespace Fuse.Reactive
 
         static void SetupModel(IList<Node> children, JavaScript js, IExpression model)
         {
+            var isRootModel = true;
+            var p = (Node)js;
+            while (p != null) 
+            {
+                if ((p.Properties.Get(_modelHandle) as JavaScript) != null) isRootModel = false;
+                p = p.Parent;
+            }
+
+
             js.Dependencies.Clear();
 
             string argString = "";
+            string className = "";
 			var thisSymbols = new List<string>();
-            string module = ParseModelExpression(model, js, ref argString, thisSymbols);
+            string module = ParseModelExpression(model, js, ref argString, ref className, thisSymbols);
             
             var code = "var Model = require('FuseJS/Model');\n"+
 					"var ViewModelAdapter = require('FuseJS/ViewModelAdapter')\n";
@@ -117,10 +131,19 @@ namespace Fuse.Reactive
 					
 			code += "var modelClass = require('" + module + "');\n"+
                     "if (!(modelClass instanceof Function) && 'default' in modelClass) { modelClass = modelClass.default }\n"+
+                    "if (!(modelClass instanceof Function) && '" + className +"' in modelClass) { modelClass = modelClass."+ className +" }\n"+
                     "if (!(modelClass instanceof Function)) { throw new Error('\"" + module + "\" does not export a class or function required to construct a Model'); }\n"+
-                    "module.exports = new Model(new modelClass(" + argString + "));";
+                    "var model = Object.create(modelClass.prototype);\n"+
+                    (isRootModel ? "require('FuseJS/ModelAdapter').GlobalModel = model;\n" : "")+
+                    "modelClass.call(model" + argString + ")\n"+
+                    "module.exports = new Model(model);\n";
 
 			js.Code = code;
+        }
+
+        static string TransformModel(string code) 
+        {
+            return "require('FuseJS/ModelAdapter').ModelAdapter(module.exports, (function() {" + code + "\n})())";
         }
     }
 }

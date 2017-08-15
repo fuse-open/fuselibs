@@ -86,11 +86,8 @@ namespace Fuse.Scripting
 
 		Module TryResolve(string path, bool isFile)
 		{
-			var file = LookForFile(path);
-			if (file != null)
-			{
-				return new FileModule(new Uno.UX.BundleFileSource(file));
-			}
+			var mod = LookForModule(path);
+			if (mod != null) return mod;
 
 			if (!isFile)
 			{
@@ -149,24 +146,33 @@ namespace Fuse.Scripting
 		}
 
 
-		static List<string> _priorityPaths = new List<string>();
-		internal static void AddPriorityPath(string path)
+		static Dictionary<string, Func<string, string>> _magicPaths = new Dictionary<string, Func<string, string>>();
+		internal static void AddMagicPath(string path, Func<string, string> preprocessor)
 		{
-			_priorityPaths.Add(path);
+			_magicPaths.Add(path, preprocessor);
 		}
 
-		BundleFile LookForFile(string path)
+		Module LookForModule(string path)
 		{
-			for (var i = 0; i < _priorityPaths.Count; i++)
+			foreach (var k in _magicPaths) 
 			{
-				var res = LookForFileInternal(_priorityPaths[i] + path);
-				if (res != null) return res;
+				var res = LookForModuleInternal(k.Key + path);
+				if (res != null) 
+				{
+					var code = res.ReadAllText();
+					code = k.Value(code); // Transform with preprocessor
+					return new CodeModule(res.Bundle, path, code, 0);
+				}
 			}
 
-			return LookForFileInternal(path);
+			var bf = LookForModuleInternal(path);
+			if (bf != null)
+				return new FileModule(bf);
+
+			return null;
 		}
 
-		BundleFile LookForFileInternal(string path)
+		BundleFile LookForModuleInternal(string path)
 		{
 			// Prioritize the local bundle if applicable
 			if (Bundle != null)
