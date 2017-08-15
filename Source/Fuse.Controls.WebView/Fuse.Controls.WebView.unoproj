@@ -2,7 +2,7 @@
   "Copyright": "Copyright (c) Fusetools AS 2017",
   "Description": "WebView",
   "Publisher": "Fusetools AS",
-  "Version": "1.2.0-rc2",
+  "Version": "1.2.0",
   "Package": {
     "ProjectUrl": "https://fusetools.com"
   },

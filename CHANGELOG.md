@@ -54,25 +54,27 @@
 
 # 1.2
 
-## Fuse.Text
+## 1.2.0
+
+### Fuse.Text
 - Fixed an issue where the combination of `-DUSE_HARFBUZZ`, `-DCOCOAPODS` *and* certain Pods (in particular Firebase.Database has been identified) caused an app to link to symbols that the AppStore disallows.
 
-## Each
+### Each
 - Fixed an issue where removing an element would not actually remove the element
 
-## Image
+### Image
 - Fixed issue where an `<Image />` could fail to display inside a `<NativeViewHost />` on iOS
 
-## Router
+### Router
 - Added `findRouter` function making it easier to use a router in a page deep inside the UI
 - Fixed and issue where relative paths and nested `Router` gave an error about unknown paths
 
-## UX Expressions (Uno-level)
+### UX Expressions (Uno-level)
 - Introduced support for variable arguments to UX functions - inherit from the `Fuse.Reactive.VarArgFunction` class.
 - The classes `Vector2`, `Vector3` and `Vector4` in `Fuse.Reactive` are now removed and replaced with the general purpose, variable-argument version `Vector` instead. This ensures vectors of any length are treated the same way. This is backwards incompatible in the unlikely case of having used these classes explicitly from Uno code.
 - Added support for name-value pair syntax: `name: value`. Can be used for JSON-like object notation and named arguments in custom functions. Any vector of name-value pairs is interpreted as an `IObject`, e.g. `{name: 'Joe', apples: 10}` is an object.
 
-## Templates
+### Templates
 - Added `Identity` and `IdentityKey` to `Each`. This allows created visuals to be reused when replaced with `replaceAt` or `replaceAll` in an Observable.
 - Triggers may now use templates which will be instantiated and added to the parent when active (like a node child).
 	<WhileActive>
@@ -84,11 +86,11 @@
 - Clarified/fixed some issues with how `Each`/`Instances` handled default templates. Previously if no matching template was found all the specified templates, or a subset, might have erronously been used. Now, as was always intended, if you use `MatchKey` and wish to have a default template you must specifiy `ux:DefaultTemplate="true"` on the default template. You cannot have multiple fallback templates, just as you can have only one template of a particular name.
 - If a `ux:DefaultTemplate="true"` is specified it will be the template that is used; the complete list of templates will not be used.
 
-## Fuse.Share
+### Fuse.Share
 - Fixed issue where using Fuse.Share would crash on iPad. Users must provide a position for spawn origin for the share popover. Check the Fuse.Share docs for more details.
 - Made iOS implementation internal, this was never ment to be public in the first place
 
-## Optimizations
+### Optimizations
 - Optimized hit testing calculations. Improves scrolling in large scroll views with deep trees inside, among other things.
 - Optimized redundant OpenGL rendertarget operations. Gives speedups on some platforms.
 - Optimized invalidation strategy for transforms, to avoid subtree traversion. This improves performance generally when animating large subtrees (e.g. scrollviews).
@@ -98,14 +100,14 @@
 - Fixed a bug which prevented elements like `Image` to use fast-track rendering in trivial cases with opacity (avoids render to texture).
 - Optimized how bounding boxes are calculated (improves layout and rendering performance).
 
-## Multitouch
+### Multitouch
 - Fixed issue where during multitouch all input would stop if one finger was lifted.
 - Added the option to opt-out of automatic handling of touch events when implementing a native view.
 
-## Attract
+### Attract
 - Added the `attract` feature, which was previously only in premiumlibs. This provides a much simpler syntax for animation than the `Attractor` behavior.
 
-## Gesture
+### Gesture
 - The experimental `IGesture` interface has changed. 
   * The `Significance`, `Priority` and `PriotityAdjustment` have been merged into the single `GetPriority` function.
   * `OnCapture` is changed to `OnCaptureChanged` and provides the previous capture state 
@@ -114,19 +116,19 @@
 - `SwipeGesture`, `ScrollView`, `LinearRangeBehaviour` (`Slider`), `CircularRangeBehaviour`, `Clicked`, `Tapped`, `DoubleClicked`, `DoubleTapped`, `LongPressed`, `WhilePressed` all use the gesture system now. They have a `GesturePriority` property which can be used to adjust relative priorities -- though mostly the defaults should be fine.
 - The `SwipeGesture.GesturePriority` default is changed from `High` to `Low`. This better fits with how the priorities should work together in a typical app and in general shouldn't affect any usual layouts. You can alter the priority with `GesturePriority="High"`
 
-## Each Reuse
+### Each Reuse
 - Added `Reuse` to `Each` allowing the reuse of nodes
 - Added `OnChildMoved` to `Visual`. Anything implementing `OnChildAdded` or `OnChildRemoved` will likely need to implement `OnChildMoved` as well. This happens when a child's position in `Children` list changes.
 - Added `OnChildMovedWhileRooted` to `IParentObserver`
 
-## UX Expression improvements
+### UX Expression improvements
 - Added `parameter(page)` function which returns the routing parameter of the page parsed as an JSON string.
 - UX expressions now support arbitrary array lookups, e.g. `{someArray[index+3]}`. The same syntax can also be used with string keys, e.g `{someObject[someKey]}`. The lookup is fully reactive - both the collection and the key/index can change.
 
-## JavaScript Dependency Injection
+### JavaScript Dependency Injection
 - Added support for injecting UX expressions into `<JavaScript>` tags using the `dep` XML namespace. See docs on `JavaScript.Dependencies` for details.
 
-## WhileVisibleInScrollView
+### WhileVisibleInScrollView
 - Added `How` property to `WhileVisibleInScrollView` trigger that accepts values `Partial` (default) and `Full`. When set to `Full`, the trigger is only active when the whole element bounds are inside view.
 
 ## WebSocket
