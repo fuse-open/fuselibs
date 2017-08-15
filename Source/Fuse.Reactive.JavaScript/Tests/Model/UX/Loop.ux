@@ -1,0 +1,11 @@
+<Panel ux:Class="UX.Model.Loop" Model="UX/Loop()">
+	<FuseTest.DudElement StringValue="{value}" ux:Name="a"/>
+	<FuseTest.DudElement StringValue="{next.value}" ux:Name="b"/>
+	<FuseTest.DudElement StringValue="{next.next.value}" ux:Name="c"/>
+	
+	<FuseTest.DudElement StringValue="{array[0]}" ux:Name="q"/>
+	<FuseTest.DudElement StringValue="{array[1][0]}" ux:Name="r"/>
+	
+	<FuseTest.Invoke Handler="{add}" ux:Name="callAdd"/>
+	<FuseTest.Invoke Handler="{shift}" ux:Name="callShift"/>
+</Panel>
