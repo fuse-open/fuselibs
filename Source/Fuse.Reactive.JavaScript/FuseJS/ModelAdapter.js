@@ -19,6 +19,10 @@ function wrap(func) {
                 if (dependency in model) {
                     args.push(model[dependency]);
                 }
+                else {
+                    args.push(undefined);
+                    console.log("Unable to satisfy dependency '" + argNames[i] + "' on '" + func.name + "'");
+                }
             }
             return func.apply(Object.create(func.prototype), args);
         }
