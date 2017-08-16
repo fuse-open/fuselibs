@@ -98,7 +98,7 @@ namespace Fuse.Elements.Test
 
 				using (var fb = root.CaptureDraw())
 				{
-					fb.AssertSolidRectangle(new Recti(int2(0 + edgeMargin, 100 + edgeMargin), int2(20 - 2 * edgeMargin, 10 - 2 * edgeMargin)), float4(1, 0, 0, 1));
+					fb.AssertSolidRectangle(float4(1, 0, 0, 1), new Recti(int2(0 + edgeMargin, 100 + edgeMargin), int2(20 - 2 * edgeMargin, 10 - 2 * edgeMargin)));
 				}
 
 				p._translation.X = 15;
@@ -106,7 +106,7 @@ namespace Fuse.Elements.Test
 
 				using (var fb = root.CaptureDraw())
 				{
-					fb.AssertSolidRectangle(new Recti(int2(15 + edgeMargin, 100 + edgeMargin), int2(20 - 2 * edgeMargin, 10 - 2 * edgeMargin)), float4(1, 0, 0, 1));
+					fb.AssertSolidRectangle(float4(1, 0, 0, 1), new Recti(int2(15 + edgeMargin, 100 + edgeMargin), int2(20 - 2 * edgeMargin, 10 - 2 * edgeMargin)));
 					fb.AssertPixel(float4(0, 0, 0, 0), int2(15 - edgeMargin, 105));
 				}
 
@@ -123,10 +123,10 @@ namespace Fuse.Elements.Test
 
 				using (var fb = root.CaptureDraw())
 				{
-					fb.AssertSolidRectangle(new Recti(int2(0,  0), int2(10,  1)), float4(0, 0, 1, 1)); // Guard
-					fb.AssertSolidRectangle(new Recti(int2(0,  1), int2(10, 10)), float4(0, 1, 0, 1));
-					fb.AssertSolidRectangle(new Recti(int2(0, 11), int2(10,  1)), float4(1, 0, 0, 1)); // Poison
-					fb.AssertSolidRectangle(new Recti(int2(0, 12), int2(10,  1)), float4(0, 0, 1, 1)); // Guard
+					fb.AssertSolidRectangle(float4(0, 0, 1, 1), new Recti(int2(0,  0), int2(10,  1))); // Guard
+					fb.AssertSolidRectangle(float4(0, 1, 0, 1), new Recti(int2(0,  1), int2(10, 10)));
+					fb.AssertSolidRectangle(float4(1, 0, 0, 1), new Recti(int2(0, 11), int2(10,  1))); // Poison
+					fb.AssertSolidRectangle(float4(0, 0, 1, 1), new Recti(int2(0, 12), int2(10,  1))); // Guard
 				}
 
 				p.Poison.Height = 0;
@@ -135,9 +135,9 @@ namespace Fuse.Elements.Test
 
 				using (var fb = root.CaptureDraw())
 				{
-					fb.AssertSolidRectangle(new Recti(int2(0,  0), int2(10,  1)), float4(0, 0, 1, 1)); // Guard
-					fb.AssertSolidRectangle(new Recti(int2(0,  1), int2(10, 10)), float4(0, 1, 0, 1));
-					fb.AssertSolidRectangle(new Recti(int2(0, 11), int2(10,  1)), float4(0, 0, 1, 1)); // Guard
+					fb.AssertSolidRectangle(float4(0, 0, 1, 1), new Recti(int2(0,  0), int2(10,  1))); // Guard
+					fb.AssertSolidRectangle(float4(0, 1, 0, 1), new Recti(int2(0,  1), int2(10, 10)));
+					fb.AssertSolidRectangle(float4(0, 0, 1, 1), new Recti(int2(0, 11), int2(10,  1))); // Guard
 				}
 			}
 		}
