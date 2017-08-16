@@ -9,8 +9,10 @@ namespace Fuse.Reactive
 	*/
 	public abstract class VarArgFunction: Expression
 	{
-		/** Holds information about an argument to a `VarArgFunction`. */
-		protected internal class Argument 
+		//UNO: https://github.com/fusetools/uno/issues/1292  This is meant to be `protected internal`
+		/** Holds information about an argument to a `VarArgFunction`. 
+			@hide */
+		public class Argument 
 		{
 			internal IDisposable Subscription;
 
