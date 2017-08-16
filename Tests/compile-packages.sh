@@ -29,6 +29,16 @@ function usage {
     echo "    -a, --argument <uno argument>        extra argument to uno.exe (use -a <arg1> -a <arg2> ... to add more arguments)"
 }
 
+function monow {
+    if [ "$OSTYPE" = msys ]; then
+        "$@"
+    elif which mono64 > /dev/null 2>&1; then
+        mono64 "$@"
+    else
+        mono "$@"
+    fi
+}
+
 if [[ "$1" == "-h" || "$1" == "--help" ]]
 then
     usage
@@ -87,16 +97,8 @@ fi
 
 echo "Generating project..."
 echo
-if [ "$OSTYPE" = msys ]; then
-    $UNO test-gen $PACKAGES $OUTPUT_DIR
-else
-    mono $UNO test-gen $PACKAGES $OUTPUT_DIR
-fi
+monow $UNO test-gen $PACKAGES $OUTPUT_DIR
 
 echo "Building project..."
 echo
-if [ "$OSTYPE" = msys ]; then
-    $UNO build -v --target=$TARGET --no-strip --clean $ARGUMENTS $OUTPUT_DIR
-else
-    mono $UNO build -v --target=$TARGET --no-strip --clean $ARGUMENTS $OUTPUT_DIR
-fi
+monow $UNO build -v --target=$TARGET --no-strip --clean $ARGUMENTS $OUTPUT_DIR
