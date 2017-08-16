@@ -325,6 +325,17 @@ namespace Fuse.Internal
 					OnSizingChanged(); 
 			}
 		}
+
+		public bool SnapToPixels
+		{
+			get { return Sizing.snapToPixels; }
+			set 
+			{ 
+				if(Sizing.SetSnapToPixels(value))
+					OnSizingChanged(); 
+			}
+		}
+
 		void OnSizingChanged()
 		{
 			OnParamChanged();

@@ -4,6 +4,14 @@ using Fuse.Elements;
 
 namespace Fuse.Internal
 {
+	public struct SizingInfo
+	{
+		public float2 scale;
+		public float2 origin;
+		public float2 size;
+		public float4 clip;
+	}
+
 	internal class SizingContainer
 	{
 		public StretchMode stretchMode = StretchMode.Uniform;
@@ -56,11 +64,28 @@ namespace Fuse.Internal
 		public float4 padding;
 		public float absoluteZoom = 1;
 		public bool snapToPixels;
+		public bool SetSnapToPixels(bool newValue)
+		{
+			if(newValue == snapToPixels) 
+				return false;
+			snapToPixels = newValue;
+			return true;
+		}
 
 		float PaddingWidth { get { return padding[0] + padding[2]; } }
 		float PaddingHeight { get { return padding[1] + padding[3]; } }
-		
-		public float2 Offset;
+
+		public SizingInfo Calc(float2 availableSize, float2 sourceSize, int2 sourcePixelSize)
+		{
+			SizingInfo output;
+			var desiredSize = CalcContentSize(sourceSize, sourcePixelSize);
+			output.scale = CalcScale(availableSize, desiredSize);
+			output.size = desiredSize * output.scale;
+			output.origin = CalcOrigin(availableSize, output.size);
+			output.clip = CalcClip(availableSize, ref output.origin, ref output.size);
+
+			return output;
+		}
 
 		public float2 CalcScale( float2 availableSize, float2 desiredSize )
 		{
