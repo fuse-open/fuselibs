@@ -24,7 +24,7 @@ namespace FuseTest
 		
 		void Defer()
 		{
-			UpdateManager.AddDeferredAction(SwitchOn, Later ? LayoutPriority.Later : LayoutPriority.Layout);
+			UpdateManager.AddDeferredAction(SwitchOn, Later ? LayoutPriority.Later : LayoutPriority.Now);
 		}
 		
 		protected override void OnRooted()

@@ -60,7 +60,7 @@ namespace Fuse.Controls
 				
 				_hasPrevArrange = true;
 			}
-			UpdateManager.AddDeferredAction(UpdateScrollPosition, LayoutPriority.Post);
+			UpdateManager.AddDeferredAction(UpdateScrollPosition, LayoutPriority.Later);
 		}
 		
 		internal static Selector SizingChanged = "SizingChanged";
@@ -79,11 +79,11 @@ namespace Fuse.Controls
 				var newOffset = Content.ActualPosition + _placeAnchor.ActualPosition - newAnchor;
 					
 				var diff = newOffset - oldOffset;
-				
 				//gestures need the "diff" to offset their scrolling interaction
 				//don't exceed min/max though as to not trigger any ends animation
 				//https://github.com/fusetools/fuselibs/issues/2891
-				var nsp = Math.Min( MaxScroll, Math.Max( MinScroll, ScrollPosition + diff ) );
+				//var nsp = Math.Min( MaxScroll, Math.Max( MinScroll, ScrollPosition + diff ) );
+				var nsp = ScrollPosition + diff;
 				var ndiff = nsp - ScrollPosition;
 				SetScrollPosition( nsp, ndiff, this );
 			}
@@ -91,7 +91,7 @@ namespace Fuse.Controls
 			//constrain to new ends (use scroller if possible to allow for animation and interplay with pointer)
 			if (_scroller != null && IsRootingCompleted)
 			{
-				_scroller.CheckLimits();
+				UpdateManager.AddDeferredAction(_scroller.CheckLimits, LayoutPriority.Later);
 			}
 			else
 			{

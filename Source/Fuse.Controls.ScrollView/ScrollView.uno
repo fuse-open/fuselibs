@@ -299,6 +299,7 @@ namespace Fuse.Controls
 			bool changed = false;
 			
 			position = Constrain(position);
+			//TODO: It's uncertain why this check is needed, it may not be anymore
 			if (Vector.LengthSquared(position - _scrollPosition) > _zeroTolerance)
 			{
 				_scrollPosition = position;

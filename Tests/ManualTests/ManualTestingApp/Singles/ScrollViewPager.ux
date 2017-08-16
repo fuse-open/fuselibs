@@ -1,0 +1,83 @@
+<Page Title="Scroll View Pager" ux:Class="ScrollViewPagerPage">
+	<InfoStack ux:Key="Info">
+		<p>This page tests a typical endless scrolling of list items. You should scroll up/down and test/observe these things:</p>
+		<ul>
+			<li>The list shouldn't skip abruptly while scrolling. The visuals should remain stable when still or smoothly animate when moving.  The exception is when new items load they will "pop" into place and the placeholder disappears, but the existing items still shouldn't skip.</li>
+			<li>Use the remove option to remove items.  Try this with items the are partially out of bounds at the top and bottom as well as ones in the middle. Items on one side of the remove item will stay in place, the other side will "jump" to fill in the space.</li>
+			<li>Use the add option in a similar way. Items will jump on one side of this item, but remain still on the other.</li>
+			<li>Once you've scrolled down a sufficient way you should be able to fling to go back up and cover several pages at once.</li>
+			<li>If you scroll fast enough to the bottom you'll get a loading message. This will be replaced with new items shortly. Nothing should jump abruptly when the loading is finished -- existing items remain stable, new ones appear in the correct place at the bottom.</li>
+		</ul>
+	</InfoStack>
+	
+	<JavaScript>
+		var Observable = require("FuseJS/Observable")
+		
+		exports.items = Observable()
+
+		function Item(id) {
+			this.id = id
+			this.color = [ Math.random() * 0.2 + 0.8,  Math.random() * 0.2 + 0.8, Math.random() * 0.2 + 0.8, 1]
+			this.size = Math.random() * 100 + 50
+		}
+		
+		exports.remove = function(args) {
+			exports.items.remove(args.data)
+		}
+		exports.add = function(args) {
+			exports.items.insertAt( exports.items.indexOf(args.data) + 1,
+				new Item(args.data.id + "*") )
+		}
+
+		var count = 0
+		var delayMax = 1000
+		var loading = Observable(false)
+		exports.loading = loading
+		exports.reachedEnd = function(args) {
+			if (loading.value) {
+				return
+			}
+
+			function loadMore() {
+				loading.value = false
+				var add = 1 + Math.random() * 10
+				for (var i=0; i < add; ++i) {
+					exports.items.add( new Item(++count) )
+				}
+				pager.check()
+			}
+			loading.value = true
+			setTimeout( loadMore, Math.random() * delayMax )
+		}
+		exports.reachedStart = function(args) {
+			console.log( "Reached the start" )
+		}
+	</JavaScript>
+	<ScrollView LayoutMode="PreserveVisual">
+		<StackPanel ux:Name="tplSource" ItemSpacing="10" Color="#DDD">
+			<Each Items="{items}" ux:Name="theEach" Reuse="Frame">
+				<Panel Color="{color}" Height="{size}">
+					<Text Alignment="Left" FontSize="20" Value="{id}"/>
+					<StackPanel Alignment="BottomRight" ItemSpacing="10" Orientation="Horizontal">
+						<Button Text="remove" Clicked="{remove}"/>
+						<Button Text="add" Clicked="{add}"/>
+					</StackPanel>
+				</Panel>
+			</Each>
+			
+			<Panel LayoutRole="Placeholder" Color="#FF88">
+				<WhileTrue Value="{loading}">
+					<Panel Height="100" ux:Name="Icon">
+						<Circle Color="#444" Margin="10"/>
+						<Text Value="Loading..."/>
+					</Panel>
+					<Cycle Target="Icon.Opacity" Low="0" High="1"/>
+				</WhileTrue>
+			</Panel>
+			
+		</StackPanel>
+
+		<ScrollViewPager Each="theEach" ReachedEnd="{reachedEnd}" ReachedStart="{reachedStart}"
+			ux:Name="pager"/>
+	</ScrollView>
+</Page>

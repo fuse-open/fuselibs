@@ -4,23 +4,24 @@ language: cpp
 
 compiler: clang
 
-cache: ccache
+env:
+  global:
+    - XCODE_XCCONFIG_FILE=$TRAVIS_BUILD_DIR/.travis.xcconfig
 
 install:
-  - brew update
-  - brew install mono
-  - brew install ccache
   - pip install six
+  - wget https://download.mono-project.com/archive/4.4.2/macos-10-universal/MonoFramework-MDK-4.4.2.macos10.xamarin.universal.pkg -O mono.pkg &&
+    sudo installer -pkg mono.pkg -target / &&
+    export PATH=$PATH:/Library/Frameworks/Mono.framework/Versions/Current/Commands
   - Stuff/stuff install Stuff
 
 before_script:
-  - export CC="ccache clang"
-  - export CXX="ccache clang++"
   - ulimit -c unlimited -S
   - rm -rf /cores/core.*
 
 script:
   - Stuff/uno --trace doctor
+  - Stuff/uno --trace build -tios Tests/ManualTests/ManualTestingApp/ManualTestingApp.unoproj
   - Stuff/uno --trace test -tnative --timeout=30 Source/AllTests.unoproj
 
 after_failure:

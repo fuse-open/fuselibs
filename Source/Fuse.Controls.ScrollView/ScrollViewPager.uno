@@ -110,7 +110,8 @@ namespace Fuse.Controls
 			
 			_scrollable.AddPropertyListener(this);
 			_prevActualSize = float2(0);
-			_lastActivityFrame = UpdateManager.FrameIndex;
+			_lastActivityPosition = UpdateManager.FrameIndex;
+			_lastActivitySizing = UpdateManager.FrameIndex;
 		}
 		
 		protected override void OnUnrooted()
@@ -130,19 +131,22 @@ namespace Fuse.Controls
 				return;
 
 			if (prop == ScrollView.ScrollPositionName)
+			{
 				RequestCheckPosition();
+				_lastActivityPosition = UpdateManager.FrameIndex;
+			}
 			else if (prop == ScrollView.SizingChanged)
+			{
 				RequestCheckSizing();
-			else 
-				return;
+				_lastActivitySizing = UpdateManager.FrameIndex;
+			}
 				
-			_lastActivityFrame = UpdateManager.FrameIndex;
 		}
 		
 		bool _pendingPosition;
 		void RequestCheckPosition() 
 		{
-			if (!_pendingPosition)
+			if (!_pendingPosition && !_pendingSizing)
 			{
 				UpdateManager.AddDeferredAction(CheckPosition);
 				_pendingPosition = true;
@@ -183,17 +187,22 @@ namespace Fuse.Controls
 		{
 			_nearTrueEnd = false;
 			_nearTrueStart = false;
-			UpdateManager.AddDeferredAction(CheckPosition, UpdateStage.Layout, LayoutPriority.Post);
+			//we don't set a priority since we want this to happen prior to layout in case there are new items
+			//being added. We need to ensure the ScrollView's sizing calculations happen with the new items in place
+			UpdateManager.AddDeferredAction(CheckSizing);
 		}
 		
-		int _lastActivityFrame = 0;
-		internal int LastActivityFrame { get { return _lastActivityFrame;  } }
+		int _lastActivityPosition = 0;
+		int _lastActivitySizing = 0;
+		internal int LastActivityFrame { get { return Math.Max(_lastActivityPosition, _lastActivitySizing);  } }
 		
 		bool _nearTrueEnd;
 		bool _nearTrueStart;
 		void CheckPosition()
 		{
-			_lastActivityFrame = UpdateManager.FrameIndex;
+			if (_pendingSizing)
+				return;
+			_lastActivityPosition = UpdateManager.FrameIndex;
 			
 			_pendingPosition = false;
 			var nearEnd = _scrollable.ToScalarPosition( (_scrollable.MaxScroll - _scrollable.ScrollPosition) /
@@ -248,13 +257,15 @@ namespace Fuse.Controls
 		float2 _prevActualSize;
 		void CheckSizing()
 		{
-			_lastActivityFrame = UpdateManager.FrameIndex;
+			_lastActivitySizing = UpdateManager.FrameIndex;
 			
 			_pendingSizing = false;
 			var range = _scrollable.MaxScroll - _scrollable.MinScroll;
 			var pages = _scrollable.ContentMarginSize / _scrollable.ActualSize;
 
 			var scalarPages = _scrollable.ToScalarPosition(pages);
+			var changed = false;
+			
 			if (scalarPages < Retain)
 			{
 				var count = Each.DataCount;
@@ -262,7 +273,10 @@ namespace Fuse.Controls
 				var limit = Each.Limit;
 				
 				if (offset + limit < count)
+				{
 					Each.Limit = limit + 1;
+					changed = true;
+				}
 			}
 			else if (scalarPages > Retain &&
 				_scrollable.ToScalarPosition(_scrollable.ActualSize) < _scrollable.ToScalarPosition(_prevActualSize) )
@@ -272,8 +286,23 @@ namespace Fuse.Controls
 				var limit = Each.Limit;
 				
 				if (limit > 1)
+				{
 					Each.Limit = limit - 1;
+					changed = true;
+				}
 			}
+			
+			if (!changed)
+			{
+				//only check once the sizing is done to prevent needless event calls while still doing layout
+				//of several items.
+				CheckPosition();
+				return;
+			}
+
+			//force a check next frame in the odd case the size doesn't actually change
+			_pendingSizing = true;
+			UpdateManager.PerformNextFrame(CheckSizing);
 		}
 		
 	}
