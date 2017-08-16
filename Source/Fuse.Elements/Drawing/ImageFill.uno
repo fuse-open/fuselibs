@@ -105,6 +105,12 @@ namespace Fuse.Drawing
 			return float2(0);
 		}
 
+		public float2 TextureOffset
+		{
+			get { return _container.Offset; }
+			set	{ _container.Offset = value; }
+		}
+		
 		public struct DrawParams
 		{
 			public float2 Origin, Size;

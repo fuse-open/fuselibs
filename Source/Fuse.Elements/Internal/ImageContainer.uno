@@ -316,6 +316,15 @@ namespace Fuse.Internal
 			}
 		}
 
+		public float2 Offset
+		{
+			get { return Sizing.offset; }
+			set 
+			{ 
+				if(Sizing.SetOffset(value))
+					OnSizingChanged(); 
+			}
+		}
 		void OnSizingChanged()
 		{
 			OnParamChanged();

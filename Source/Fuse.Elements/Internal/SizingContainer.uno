@@ -43,6 +43,15 @@ namespace Fuse.Internal
 			return true;
 		}
 
+		public float2 offset;
+		public bool SetOffset(float2 newOffset)
+		{
+			if(offset == newOffset) 
+				return false;
+			offset = newOffset;
+			return true;
+		}
+
 		//set prior to calling CalcSize
 		public float4 padding;
 		public float absoluteZoom = 1;
@@ -225,8 +234,6 @@ namespace Fuse.Internal
 					origin.Y = availableSize.Y - padding[3] - contentActualSize.Y;
 					break;
 			}
-			
-			origin += Offset * contentActualSize;
 
 			if (snapToPixels)
 				origin = SnapSize(origin);
@@ -234,50 +241,46 @@ namespace Fuse.Internal
 		}
 
 		public float4 CalcClip( float2 availableSize, ref float2 origin, ref float2 contentActualSize )
-		{
-			//compensate for offset if any
-			var offsetOrigin = origin - Offset * contentActualSize;
-			
+		{	
 			//cases where everything is outside clip region
-			if (offsetOrigin.X > availableSize.X ||
-				offsetOrigin.X + contentActualSize.X < 0 ||
-				offsetOrigin.Y > availableSize.Y ||
-				offsetOrigin.Y + contentActualSize.Y < 0)
+			if (origin.X > availableSize.X ||
+				origin.X + contentActualSize.X < 0 ||
+				origin.Y > availableSize.Y ||
+				origin.Y + contentActualSize.Y < 0)
 			{
 				origin = float2(0,0);
 				contentActualSize = float2(0);
 				return float4(0,0,1,1);
 			}
 
-			float2 tl = Math.Max( float2(0), (padding.XY-offsetOrigin) / contentActualSize );
-			float2 br = Math.Min( float2(1), (availableSize - offsetOrigin - padding.ZW) / contentActualSize );
+			float2 tl = Math.Max( float2(0), (padding.XY - origin) / contentActualSize ) - offset;
+			float2 br = Math.Min( float2(1), (availableSize - origin - padding.ZW) / contentActualSize ) - offset;
 
-			var dx = padding.X - offsetOrigin.X;
+			var dx = padding.X - origin.X;
 			if (dx > 0)
 			{
 				contentActualSize.X -= dx;
-				offsetOrigin.X = padding.X;
+				origin.X = padding.X;
 			}
 
-			dx = offsetOrigin.X + contentActualSize.X - availableSize.X + padding.Z;
+			dx = origin.X + contentActualSize.X - availableSize.X + padding.Z;
 			if (dx > 0)
 			{
 				contentActualSize.X -= dx;
 			}
 
-			var dy = padding.Y - offsetOrigin.Y;
+			var dy = padding.Y - origin.Y;
 			if (dy > 0)
 			{
 				contentActualSize.Y -= dy;
-				offsetOrigin.Y = padding.Y;
+				origin.Y = padding.Y;
 			}
 
-			dy = offsetOrigin.Y + contentActualSize.Y - availableSize.Y + padding.W;
+			dy = origin.Y + contentActualSize.Y - availableSize.Y + padding.W;
 			if (dy > 0)
 			{
 				contentActualSize.Y -= dy;
 			}
-
 			return float4( tl.X, tl.Y, br.X, br.Y );
 		}
 
