@@ -2,7 +2,7 @@
   "Copyright": "Copyright (c) Fusetools AS 2017",
   "Description": "Content sharing API",
   "Publisher": "Fusetools AS",
-  "Version": "1.2.0",
+  "Version": "1.2.1",
   "Packages": [
     "Uno.Threading",
     "Uno.Permissions",
