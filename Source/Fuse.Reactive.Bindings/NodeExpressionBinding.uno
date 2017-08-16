@@ -6,7 +6,7 @@ namespace Fuse.Reactive
 	/**
 		Provides a binding between an node an expression.
 	*/
-	public sealed class NodeExpressionBinding : IContext, IDisposable
+	sealed class NodeExpressionBinding : IContext, IDisposable
 	{
 		IExpression _expr;
 		IListener _listener;
