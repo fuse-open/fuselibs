@@ -34,7 +34,7 @@ function Model(source)
 		node.$raw = state;
 
 		if (state instanceof Object) {
-			node.path = state.constructor.name;
+			node.$template = state.constructor.name;
 		}
 
 		meta.isClass = false;

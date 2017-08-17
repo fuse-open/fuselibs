@@ -24,7 +24,7 @@ function wrap(func) {
                     console.log("Unable to satisfy dependency '" + argNames[i] + "' on '" + func.name + "'");
                 }
             }
-            return func.apply(Object.create(func.prototype), args);
+            return func.apply(this, args);
         }
         else {
             return func.apply(this, arguments);
