@@ -45,6 +45,7 @@
     "FuseJS/ModelAdapter.js:Bundle",
     "FuseJS/ViewModelAdapter.js:Bundle",
     "FuseJS/EventEmitter.js:Bundle",
+    "FuseJS/Test.js:Bundle",
     "JavaScriptEngine.cil.uxl:Extensions",
     "JavaScriptEngine.cpp.uxl:Extensions",
   ]
