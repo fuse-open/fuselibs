@@ -127,16 +127,28 @@ namespace Fuse.Elements
 			                 origin.Y + size.Y + 1);
 		}
 
-		public static Recti GetCachingRect(Element elm)
+		public static bool TryGetCachingRect(Element elm, out Recti cachingRect)
 		{
 			var bounds = elm.RenderBoundsWithEffects;
 			if (bounds.IsInfinite || bounds.IsEmpty)
+			{
+				cachingRect = new Recti(0, 0, 0, 0);
+				return false;
+			}
+
+			const int cachingRectPadding = 1;
+			cachingRect = Recti.Inflate(ConservativelySnapToCoveringIntegers(Rect.Scale(bounds.FlatRect,
+				elm.AbsoluteZoom)), cachingRectPadding);
+			return true;
+		}
+
+		public static Recti GetCachingRect(Element elm)
+		{
+			Recti cachingRect;
+			if (!TryGetCachingRect(elm, out cachingRect))
 				throw new Exception( "element has no caching rect" );
 
-			const int CachingRectPadding = 1;
-			
-			return Recti.Inflate(ConservativelySnapToCoveringIntegers(Rect.Scale(bounds.FlatRect,
-				elm.AbsoluteZoom)), CachingRectPadding);
+			return cachingRect;
 		}
 
 		VisualBounds _renderBounds;
