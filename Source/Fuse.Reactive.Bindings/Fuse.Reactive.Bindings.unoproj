@@ -22,6 +22,7 @@
     "../Fuse.Triggers/Fuse.Triggers.unoproj"
   ],
   "InternalsVisibleTo": [
+	"Fuse.Navigation",
     "Fuse.Reactive.JavaScript.Test",
     "Fuse.Reactive.Bindings.Test",
     "Fuse.Reactive.Test",

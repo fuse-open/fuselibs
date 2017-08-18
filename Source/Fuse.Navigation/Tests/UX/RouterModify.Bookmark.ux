@@ -1,0 +1,17 @@
+<Panel ux:Class="UX.RouterModify.Bookmark">
+	<Router ux:Name="router"/>
+	<JavaScript>	
+		router.bookmark({
+			name: "next",
+			path: ["two", {}]
+		})
+	</JavaScript>
+	<PageControl Transition="None">
+		<Page ux:Name="one"/>
+		<Page ux:Name="two"/>
+	</PageControl>
+	
+	<Timeline ux:Name="gotoNext">
+		<PushRoute Bookmark="next"/>
+	</Timeline>
+</Panel>

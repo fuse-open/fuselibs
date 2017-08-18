@@ -48,6 +48,8 @@ namespace Fuse
 				}
 
 				sb.Append("}");
+
+				visitedSet.Remove(value);
 			}
 			else if (value is IArray)
 			{
@@ -66,6 +68,8 @@ namespace Fuse
 				}
 
 				sb.Append("]");
+				
+				visitedSet.Remove(value);
 			}
 			else sb.Append("null");
 		}

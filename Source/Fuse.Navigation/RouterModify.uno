@@ -1,6 +1,8 @@
 using Uno;
+using Uno.UX;
 
 using Fuse.Triggers.Actions;
+using Fuse.Reactive;
 
 namespace Fuse.Navigation
 {
@@ -79,35 +81,143 @@ namespace Fuse.Navigation
 				</Panel>
 			</Navigator>
 	*/
-	public class RouterModify : TriggerAction
+	public class RouterModify : TriggerAction, IListener
 	{
 		/** The router to use. If this is null (default) then it looks through the ancestor nodes to find the nearest router. */
 		public Router Router { get; set; }
 		
-		ModifyRouteHow _how = ModifyRouteHow.Goto;
+		//backwards compatible constructor, won't be able to evaluate Path
+		//Deprecated: 2017-07-18
+		[Obsolete]
+		public RouterModify() 
+		{ 
+			Fuse.Diagnostics.UserWarning( "RouterModify is deprecated. Use one of `ModifyRoute`, `GotoRoute` or `PushRoute` instead.", this );
+		}
+		
+		[Flags]
+		internal enum Flags
+		{	
+			None = 0,
+			DontNeedNameTable = 1<<0,
+		}
+		internal RouterModify(Flags flags) 
+		{
+			if (!flags.HasFlag(Flags.DontNeedNameTable))
+				throw new Exception( "Invalid construction" );
+		}
+		
+		NameTable _nameTable;
+		internal RouterModify(NameTable nameTable)
+		{
+			_nameTable = nameTable;
+		}
+		
+		RouterRequest _request = new RouterRequest();
+		
 		/** How to modify the router. */
 		public ModifyRouteHow How
 		{
-			get { return _how; }
-			set { _how = value; }
+			get { return _request.How; }
+			set { _request.How = value; }
 		}
 		
 		/** Get the route from this bookmark. */
-		public string Bookmark { get; set; }
+		public string Bookmark 
+		{ 
+			get { return _request.Bookmark; }
+			set { _request.Bookmark = value; }
+		}
 		
-		NavigationGotoMode _transition = NavigationGotoMode.Transition;
 		/** How to transition to the new page. */
 		public NavigationGotoMode Transition
 		{
-			get { return _transition; }
-			set { _transition = value; }
+			get { return _request.Transition; }
+			set { _request.Transition = value; }
 		}
 		
 		/** The operation style of the transition. */
-		public string Style { get; set; }
+		public string Style 
+		{ 
+			get { return _request.Style; }
+			set { _request.Style = value; }
+		}
+		
+		public Node Relative
+		{
+			get { return _request.Relative; }
+			set { _request.Relative = value; }
+		}
+
+		IExpression _path;
+		/* This is an IExpression since the claculation of the path might be costly (in terms of setup
+			and evaluation), and we don't want it to keep updating unless it is actually used. */
+		/** The target path.
+			
+			This is expression is evaluated only when the trigger fires. */
+		public IExpression Path 
+		{ 
+			get { return _path; }
+			set
+			{
+				if (_nameTable == null)
+					Fuse.Diagnostics.UserError( "The `Path` property cannot be used with this deprecated type.", this);
+				_path = value;
+			}
+		}
+		
+		NodeExpressionBinding _pathSub;
+
+		protected override void OnUnrooted()
+		{
+			DisposePathSub();
+			base.OnUnrooted();
+		}
 		
 		protected override void Perform(Node n)
 		{
+			if (Path != null)
+			{
+				DisposePathSub();
+				_pathSub = new NodeExpressionBinding(Path, n, this, _nameTable);
+			}
+			else
+			{
+				PerformRoute(n, null);
+			}
+		}
+		
+		void DisposePathSub()
+		{
+			if (_pathSub != null)
+			{
+				_pathSub.Dispose();
+				_pathSub = null;
+			}
+		}
+		
+		void IListener.OnNewData(IExpression source, object value)
+		{
+			if (source != Path || _pathSub == null)
+				return;
+		
+			try
+			{
+				Route route = null;
+				if (!RouterRequest.ParseNVPRoute(value, out route))
+					return;
+				
+				PerformRoute( (_pathSub as IContext).Node, route);
+			}
+			finally
+			{
+				DisposePathSub();
+			}
+		}
+			
+		void PerformRoute(Node n, Route route)
+		{
+			_request.Route = route;
+			
 			var useRouter = Router ?? Fuse.Navigation.Router.TryFindRouter(n);
 			if (useRouter == null)
 			{
@@ -115,18 +225,49 @@ namespace Fuse.Navigation
 				return;
 			}
 			
-			Route route = null;
-			
-			if (Bookmark != null)
-			{
-				if (!useRouter.Bookmarks.TryGetValue(Bookmark, out route))
-				{
-					Fuse.Diagnostics.UserError( "Unknown bookmark: " + Bookmark, this );
-					return;
-				}
-			}
-			
-			useRouter.Modify( How, route, Transition, Style );
+			_request.MakeRequest(useRouter);
+		}
+	}
+
+	public class ModifyRoute : RouterModify
+	{
+		[UXConstructor]
+		public ModifyRoute([UXAutoNameTable] NameTable nameTable)
+			: base(nameTable)
+		{ }
+	}
+	
+	/**
+		Goto a new route in the router.
+		
+		This is the same as @RouterModify with `How="Goto"`
+		
+		@see RouterModify
+	*/
+	public class GotoRoute : RouterModify
+	{
+		[UXConstructor]
+		public GotoRoute([UXAutoNameTable] NameTable nameTable)
+			: base(nameTable)
+		{ 
+			How = ModifyRouteHow.Goto;
+		}
+	}
+	
+	/**
+		Push a new route onto the router.
+		
+		This is the same as @RouterModify with `How="Push"`
+		
+		@see RouterModify
+	*/
+	public class PushRoute : RouterModify
+	{
+		[UXConstructor]
+		public PushRoute([UXAutoNameTable] NameTable nameTable)
+			: base(nameTable)
+		{ 
+			How = ModifyRouteHow.Push;
 		}
 	}
 }

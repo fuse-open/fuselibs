@@ -41,8 +41,12 @@ namespace Fuse
 		}
 
 		/** Creates an IObject implementation from an `IArray` of `NameValuePair`.
-			The array doesn't need to contain exclusively `NameValuePair` instances. Objects of other
-			types are ignored.
+			If the items are not `NameValuePair` instances, or there is a duplicate, they will be 
+			added with an indexed key value (unspecified) -- this is to pass through information
+			to later error detection rather than silently discarding it.
+			
+			TODO: we probably don't need this function after  this issue is done:
+			https://github.com/fusetools/fuselibs-public/issues/233
 		*/
 		public static IObject ObjectFromArray(IArray list)
 		{
@@ -50,8 +54,10 @@ namespace Fuse
 			for (var i = 0; i < list.Length; i++)
 			{
 				var nvp = list[i] as NameValuePair;
-				if (nvp != null)
+				if (nvp != null && !dict.ContainsKey(nvp.Name))
 					dict.Add(nvp.Name, nvp.Value);
+				else
+					dict.Add("" + i, list[i]);
 			}
 			return new Json.Object(dict);
 		}

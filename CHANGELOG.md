@@ -1,5 +1,18 @@
 # Unreleased
 
+## Router
+- Added several features to allow navigation/routing from within UX, whereas previously JavaScript code was required.
+- Added `ModifyRoute`, `GotoRoute` and `PushRoute` actions to replace `RouterModify`. These all have a `Path` property.
+	<Each Items="{tags}">
+		<Text Value="{tag}">
+			<Clicked>
+				<PushRoute Path=" 'list', 'tag' : ('id': {tag})"/>
+			</Clicked>
+		</Text>
+	</Each>
+- Added `gotoRoute`, `pushRoute`, and `modifyRoute` expression events which allow for simple navigation in event handlers.
+	<Button Text="View Details" Clicked="gotoRoute( 'home', 'user' : ( 'id': {userId}) )"/>
+
 ## ScrollViewPager
 - Added `ScrollViewPage` which simplifies the creation of infinite scrolling lists
 

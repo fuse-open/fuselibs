@@ -113,6 +113,21 @@ namespace Fuse.Triggers.Actions
 		}
 		
 		protected abstract void Perform(Node target);
+		
+		/**
+			Called when the owner of this object is unrooted. This gives an action to cleanup resources
+			or cancel pending actions.
+			
+			There is no matching `Rooted` since nothing should be prepared before `Perform`.
+			
+			Despite this call the action should expect `Peform` to be called again at any time.
+		*/
+		public void Unroot()
+		{
+			OnUnrooted();
+		}
+		
+		protected virtual void OnUnrooted() { }
 	}
 
 }
