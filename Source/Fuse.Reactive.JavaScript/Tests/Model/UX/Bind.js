@@ -1,6 +1,6 @@
 var instCount = 0
 
-class ModelBind {
+export class Bind {
 	constructor(view) {
 		this.id = instCount++
 		this.view = view;
@@ -13,5 +13,3 @@ class ModelBind {
 
 	get value() { return this.view.Value; }
 }
-
-module.exports = ModelBind

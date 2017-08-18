@@ -1,4 +1,4 @@
-class ModelList {
+export class List {
 	constructor() { 
 		this.items = []
 		
@@ -23,4 +23,3 @@ class ModelList {
 	}
 }
 
-module.exports = ModelList

@@ -1,4 +1,4 @@
-class ModelAccessor {
+export default class ModelAccessor {
 	constructor() {
 		this.value = 10
 	}
@@ -18,5 +18,3 @@ class ModelAccessor {
 		this.value++
 	}
 }
-
-module.exports = ModelAccessor

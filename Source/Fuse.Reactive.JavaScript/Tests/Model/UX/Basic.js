@@ -1,4 +1,4 @@
-class Basic {
+export class Basic {
 	constructor() {
 		this.isSet = false
 	}
@@ -10,5 +10,3 @@ class Basic {
 		this.isSet = !value
 	}
 }
-
-module.exports = Basic

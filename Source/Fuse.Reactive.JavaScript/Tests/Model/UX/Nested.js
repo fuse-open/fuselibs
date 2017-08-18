@@ -8,7 +8,7 @@ class Inner {
 	}
 }
 
-class ModelNested {
+export class Nested {
 	constructor() { 
 		this.a = new Inner(1)
 		this.b = new Inner(2)
@@ -23,5 +23,3 @@ class ModelNested {
 		this.c = this.a
 	}
 }
-
-module.exports = ModelNested

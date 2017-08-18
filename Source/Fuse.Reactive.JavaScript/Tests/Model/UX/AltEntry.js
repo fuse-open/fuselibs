@@ -1,9 +1,7 @@
-var common = require("UX/AltEntryCommon")
+import * as common from "UX/AltEntryCommon"
 
-class ModelAltEntry {
+export default class ModelAltEntry {
 	constructor() {
 		this.item = common.item
 	}
 }
-
-module.exports = ModelAltEntry

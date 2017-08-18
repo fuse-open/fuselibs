@@ -1,4 +1,4 @@
-class ModelLoop {
+export class Loop {
 	constructor() {
 		this.next = this
 		this.value = "%"
@@ -7,5 +7,3 @@ class ModelLoop {
 		this.array.push( this.array )
 	}
 }
-
-module.exports = ModelLoop

@@ -1,4 +1,4 @@
-class ModelListOrder {
+export class ListOrder {
 	constructor() { 
 		this.items = [ 2, 3 ]
 		
@@ -19,5 +19,3 @@ class ModelListOrder {
 		this.items.shift()
 	}
 }
-
-module.exports = ModelListOrder

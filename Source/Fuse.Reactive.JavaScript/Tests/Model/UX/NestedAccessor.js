@@ -12,7 +12,7 @@ class Inner {
 	}
 }
 
-class ModelNestedAccessor {
+export class NestedAccessor {
 	constructor() {
 		this.inner = new Inner()
 	}
@@ -36,5 +36,3 @@ class ModelNestedAccessor {
 		this.inner.incr()
 	}
 }
-
-module.exports = ModelNestedAccessor

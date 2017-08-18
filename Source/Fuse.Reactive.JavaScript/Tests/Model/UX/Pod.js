@@ -1,4 +1,4 @@
-class ModelPod {
+export class Pod {
 	constructor() {
 		this.data = {
 			value: "a",
@@ -22,5 +22,3 @@ class ModelPod {
 		}
 	}
 }
-
-module.exports = ModelPod

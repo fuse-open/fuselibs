@@ -1,4 +1,4 @@
-class ModelFunction {
+export class Function {
 	constructor() {
 		this.count = 3
 	}
@@ -11,5 +11,3 @@ class ModelFunction {
 		this.count++
 	}
 }
-
-module.exports = ModelFunction

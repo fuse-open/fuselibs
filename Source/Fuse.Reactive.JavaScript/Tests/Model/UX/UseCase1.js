@@ -4,7 +4,7 @@ class Item {
 	}
 }
 
-class UseCase1 {
+export class UseCase1 {
 	constructor() {
 		this.items = [ "one", "two", "three", "four", "five" ].map( n => new Item(n) )
 		this.sel = [ this.items[4] ]
@@ -18,5 +18,3 @@ class UseCase1 {
 		this.sel.splice( this.sel.indexOf(args.data), 1 )
 	}
 }
-
-module.exports = UseCase1

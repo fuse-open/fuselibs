@@ -1,6 +1,6 @@
-var Counter = require("./MultiCounter_Counter");
+import Counter from "./MultiCounter_Counter"
 
-class MultiCounter {
+export class MultiCounter {
     constructor() {
         this.counters = [ new Counter() ];
     }
@@ -13,5 +13,3 @@ class MultiCounter {
         this.counters.pop();
     }
 };
-
-module.exports = MultiCounter;

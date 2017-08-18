@@ -1,4 +1,4 @@
-class Counter {
+export default class Counter {
     constructor() {
         this.counter = 0;
     }
@@ -10,6 +10,4 @@ class Counter {
     decrement() {
         this.counter--;
     }
-};
-
-module.exports = Counter;
+}

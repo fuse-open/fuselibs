@@ -1,5 +1,5 @@
 
-class PromiseTest {
+export default class PromiseTest {
     constructor() {
         this.resolve = () => { throw new Error("Shouldn't happen!"); }
         this.result = new Promise((resolve, reject) => {
@@ -23,5 +23,3 @@ class PromiseTest {
         this.resolve("hoho!");
     }
 }
-
-module.exports = PromiseTest;

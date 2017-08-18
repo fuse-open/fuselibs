@@ -1,7 +1,5 @@
-class ModelMulti {
+export class Multi {
 	constructor(v) {
 		this.value = v
 	}
 }
-
-module.exports = ModelMulti

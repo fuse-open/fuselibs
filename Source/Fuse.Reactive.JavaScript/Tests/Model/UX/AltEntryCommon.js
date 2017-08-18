@@ -8,4 +8,4 @@ class Inner {
 	}
 }
 
-exports.item = new Inner()
+export var item = new Inner()

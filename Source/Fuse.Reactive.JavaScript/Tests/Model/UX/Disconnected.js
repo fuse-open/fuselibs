@@ -11,7 +11,7 @@ class Inner {
 var cur = new Inner(5)
 var next = new Inner(10)
 
-class ModelDisconnected {
+export class Disconnected {
 	constructor() {
 		this.inner = cur
 	}
@@ -27,5 +27,3 @@ class ModelDisconnected {
 		this.inner = cur
 	}
 }
-
-module.exports = ModelDisconnected
