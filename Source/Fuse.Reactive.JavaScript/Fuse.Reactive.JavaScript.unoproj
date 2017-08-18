@@ -38,6 +38,7 @@
   "Includes": [
     "*",
     "3rdparty/es6-promise.min.js:File",
+    "3rdparty/zone.min.js:Bundle",
     "FuseJS/setTimeout.js:File",
     "FuseJS/Observable.js:File",
     "FuseJS/TreeObservable.js:Bundle",

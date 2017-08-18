@@ -11,6 +11,38 @@ namespace Fuse.Reactive.Test
 {
 	public class ModelTest : TestBase
 	{
+		static ModelTest()
+		{
+			new global::Fuse.Reactive.FuseJS.DiagnosticsImplModule();
+			new global::Fuse.Reactive.FuseJS.Http();
+			new global::Fuse.Reactive.FuseJS.TimerModule();
+			new global::Fuse.Drawing.BrushConverter();
+			new global::Fuse.Triggers.BusyTaskModule();
+			new global::Polyfills.Window.WindowModule();
+			new global::FuseJS.Globals();
+			new global::FuseJS.Lifecycle();
+			new global::FuseJS.Environment();
+			new global::FuseJS.Base64();
+			new global::FuseJS.Bundle();
+			new global::FuseJS.FileReaderImpl();
+			new global::FuseJS.UserEvents();
+		}
+		
+		[Test]
+		public void Async()
+		{
+			var e = new UX.Model.Async();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.StepFrameJS();
+				Assert.AreEqual("10", e.t1.Value);
+				e.doSomething.Perform();
+				root.StepFrameJS();
+				root.StepFrameJS();
+				Assert.AreEqual("50", e.t1.Value);
+			}
+		}
+
 		[Test]
 		public void Basic()
 		{
