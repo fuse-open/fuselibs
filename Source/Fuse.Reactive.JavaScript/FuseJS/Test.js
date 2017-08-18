@@ -4,22 +4,38 @@ function assert(condition) {
 	}
 }
 
-module.exports = function Test() {
-	var props = Object.getOwnPropertyNames(Object.getPrototypeOf(this));
-	for(var prop of props) {
-		console.log(prop);
-		var test = this[prop];
-		if(!(test instanceof Function) || prop === "constructor") {
-			continue;
-		}
+function isThenable(obj) {
+	return "object" === typeof obj
+		&& "then" in obj
+		&& "function" === typeof obj.then
+}
 
-		(function(prop) {
-			var result = test.call(this, assert);
-			if("then" in result && result.then instanceof Function) {
-				result.then(
-					() => console.log("Passed: " + prop),
-					() => console.log("Failed: " + prop));
+function runTest(fn, self) {
+	var result = fn.call(self, assert);
+
+	if(isThenable(result)) {
+		result.then(
+			function() { console.log("Passed: " + fn.name) },
+			function() { console.log("Failed: " + fn.name) }
+		);
+	}
+}
+
+module.exports = function TestBase() {
+	var self = this;
+	var proto = this;
+
+	while(typeof proto === "object" && proto !== TestBase.prototype) {
+		var props = Object.getOwnPropertyNames(proto);
+		
+		for(var key of props) {
+			var test = proto[key];
+
+			if(typeof test === "function" && key !== "constructor") {
+				runTest(test, self);
 			}
-		})(prop);
+		}
+		
+		proto = Object.getPrototypeOf(proto);
 	}
 }
