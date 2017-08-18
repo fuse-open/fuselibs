@@ -34,7 +34,7 @@ namespace Fuse.Reactive
 			if (_worker == null)
 			{
 				_worker = new ThreadWorker();
-				Fuse.Scripting.ScriptModule.AddMagicPath(".ES2015/", TransformModel);
+				Fuse.Scripting.ScriptModule.AddMagicPath(".FuseJS/", TransformModel);
 			}
 			
 			_nameTable = nameTable;

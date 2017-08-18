@@ -27,6 +27,6 @@
   ],
   "Includes": [
     "*",
-    "UX/*.js:Bundle",
+    "UX/*.js:FuseJS",
   ]
 }
