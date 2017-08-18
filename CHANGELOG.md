@@ -1,5 +1,8 @@
 # Unreleased
 
+## Each
+- Fixed a bug where replacing the whole list of items with an empty list would not immediately remove the items from the UI.
+
 ## Router
 - Added several features to allow navigation/routing from within UX, whereas previously JavaScript code was required.
 - Added `ModifyRoute`, `GotoRoute` and `PushRoute` actions to replace `RouterModify`. These all have a `Path` property.

@@ -422,13 +422,6 @@ namespace Fuse.Reactive
 			InsertNew(Offset + _windowItems.Count);
 		}
 
-		void ReplaceAll(object[] dcs)
-		{
-			RemoveAll();
-
-			for (int i = 0; i < dcs.Length; i++) InsertNew(i);
-		}
-
 		/** Removes all items from _windowItems */
 		void RemoveAll()
 		{
@@ -445,19 +438,23 @@ namespace Fuse.Reactive
 		
 		void Repopulate()
 		{
-			var e = _items as object[];
-			var a = _items as IArray;
+			RemoveAll();
 
-			if (e != null)
+			var e = _items as object[];
+			if (e != null) 
 			{
-				ReplaceAll(e);
-				return;
+				for (int i = 0; i < e.Length; i++) InsertNew(i);
 			}
-			else if (a != null)
+			else
 			{
-				RemoveAll();
-				for (int i = 0; i < a.Length; i++) InsertNew(i);
+				var a = _items as IArray;
+				if (a != null) 
+				{
+					for (int i = 0; i < a.Length; i++) InsertNew(i);
+				}
 			}
+
+			CompleteActionGood();
 		}
 		
 
