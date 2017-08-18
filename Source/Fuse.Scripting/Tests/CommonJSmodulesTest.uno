@@ -68,7 +68,7 @@ public class CommonJSmodules : TestBase
 		using (var jsRecorder = new JsTestRecorder())
 		{
 			var context = jsRecorder.Begin();
-			var moduleResult = new FileModule(import("doubleEvaluate/main.js")).Evaluate(context, "main");
+			var moduleResult = new FileModule(import("doubleEval/main.js")).Evaluate(context, "main");
 			if (moduleResult.Error != null)
 				throw moduleResult.Error;
 
