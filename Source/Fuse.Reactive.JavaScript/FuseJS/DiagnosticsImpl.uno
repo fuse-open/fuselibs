@@ -18,7 +18,7 @@ namespace Fuse.Reactive.FuseJS
 			if (_instance != null) 
 				return;
 				
-			Resource.SetGlobalKey(_instance = this, "FuseJS/DiagnosticsImpl");
+			Uno.UX.Resource.SetGlobalKey(_instance = this, "FuseJS/DiagnosticsImpl");
 			
 			AddMember(new NativeFunction("report", (NativeCallback)Report));
 		}

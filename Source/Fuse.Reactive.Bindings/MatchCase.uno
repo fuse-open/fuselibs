@@ -108,7 +108,7 @@ namespace Fuse.Reactive
 			throw new Exception("<Match> can not be used on lists (received OnRemoveAt)");
 		}
 
-		ISubscription _subscription;
+		IDisposable _subscription;
 
 		object _realValue;
 		object _value;
@@ -131,7 +131,9 @@ namespace Fuse.Reactive
 
 					if (_value is IObservable)
 					{
+						// Special treatment for IObservable which can be interpreted as a single value
 						var obs = (IObservable)_value;
+						if (obs.Length > 0) _realValue = obs[0];
 						_subscription = obs.Subscribe(this);
 					}
 					else

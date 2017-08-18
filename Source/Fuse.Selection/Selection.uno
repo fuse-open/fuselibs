@@ -355,7 +355,9 @@ namespace Fuse.Selection
 				
 			if (how == How.API && _subscription != null)
 			{
-				_subscription.ReplaceAllExclusive( new ListWrapper(_values) );
+				var sub = _subscription as ISubscription;
+				if (sub != null) sub.ReplaceAllExclusive( new ListWrapper(_values) );
+				else Diagnostics.UserWarning("Selection changed, but the bound collection is not writeable.", this);
 			}
 		}
 		
@@ -375,9 +377,9 @@ namespace Fuse.Selection
 			}
 		}
 		
-		Reactive.IObservable _observableValues;
+		Reactive.IObservableArray _observableValues;
 		/**
-			The current list of selected values. This should be bound to an `Observable` array in JavaScript in order to create a 2-way interface for the selected items.
+			The current list of selected values. This should be bound to an `IObservableArray` (e.g `FuseJS/Observable`) order to create a 2-way interface for the selected items.
 			
 			@examples Docs/example.md
 		*/
@@ -386,10 +388,10 @@ namespace Fuse.Selection
 			get { return _observableValues; }
 			set 
 			{ 
-				var q = value as Reactive.IObservable;
+				var q = value as Reactive.IObservableArray;
 				if (value != null && q == null)
 				{
-					Fuse.Diagnostics.UserError( "`Values` must be an Observable", this );
+					Fuse.Diagnostics.UserError( "`Values` must be an IObservableArray", this );
 					return;
 				}
 				
@@ -406,11 +408,13 @@ namespace Fuse.Selection
 			ClearSubscription();
 			if (_observableValues == null)
 				return;
+
+			OnNewAll(_observableValues);
 				
 			_subscription = _observableValues.Subscribe(this);
 		}
 		
-		ISubscription _subscription;
+		IDisposable _subscription;
 		void ClearSubscription()
 		{
 			if (_subscription != null)
@@ -427,6 +431,11 @@ namespace Fuse.Selection
 		}
 
 		void Reactive.IObserver.OnNewAll(IArray values)
+		{
+			OnNewAll(values);
+		}
+
+		void OnNewAll(IArray values)
 		{
 			_values.Clear();
 			for (int i=0; i < values.Length; ++i)

@@ -31,7 +31,7 @@ namespace Fuse.Reactive
 			return new LookUpSubscription(this, context, listener);
 		}
 
-		sealed class LookUpSubscription: IDisposable, IObserver, IListener, ValueForwarder.IValueListener
+		sealed class LookUpSubscription: IDisposable, IObserver, IListener, ValueForwarder.IValueListener, IPropertyObserver
 		{
 			IListener _listener;
 			LookUp _lu;
@@ -67,6 +67,7 @@ namespace Fuse.Reactive
 				var obs = ind as IObservable;
 				if (obs != null)
 				{
+					// Special case for when index is an IObservable 
 					_indexForwarder = new ValueForwarder(obs, this);
 				}
 				else
@@ -110,16 +111,28 @@ namespace Fuse.Reactive
 				}
 			}
 
+			void DisposeCollectionObservableObjectSub()
+			{
+				if (_colObsObjSub != null)
+				{
+					_colObsObjSub.Dispose();
+					_colObsObjSub = null;
+				}
+			}
+
+			IDisposable _colObsObjSub;
 			IDisposable _colObservableSub;
 			void NewCollection(object col)
 			{
 				_collection = col;
 				_hasCollection = true;
 
+				DisposeCollectionObservableObjectSub();
 				DisposeCollectionObservableSub();
 
-				var obs = col as IObservable;
+				var obs = col as IObservableArray;
 				if (obs != null) 
+					// Special case for when the collection is an IObservableArray
 					_colObservableSub = obs.Subscribe(this);
 
 				ResultChanged();
@@ -133,6 +146,8 @@ namespace Fuse.Reactive
 					_colObservableSub = null;
 				}
 			}
+
+			
 
 			void ResultChanged()
 			{
@@ -171,6 +186,10 @@ namespace Fuse.Reactive
 				var obj = _collection as IObject;
 				if (obj != null)
 				{
+					var obsObj = obj as IObservableObject;
+					if (obsObj != null)
+						_colObsObjSub = obsObj.Subscribe(this);
+
 					var key = _index.ToString();
 					if (obj.ContainsKey(key))
 					{
@@ -186,6 +205,13 @@ namespace Fuse.Reactive
 				SetDiagnostic("Look-up operator not supported on collection type: " + _collection, _lu.Collection);
 			}
 
+			void IPropertyObserver.OnPropertyChanged(IDisposable sub, string propertyName, object newValue)
+			{
+				if (sub != _colObsObjSub) return;
+				if (propertyName != _index.ToString()) return;
+				PushNewData(newValue);
+			}
+
 			void PushNewData(object value)
 			{
 				_listener.OnNewData(_lu, value);
@@ -194,6 +220,7 @@ namespace Fuse.Reactive
 			public void Dispose()
 			{
 				ClearDiagnostic();
+				DisposeCollectionObservableObjectSub();
 				DisposeCollectionObservableSub();
 				DisposeIndexSub();
 

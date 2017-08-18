@@ -39,6 +39,11 @@
 
 ## Fuse.Drawing.Surface
 - Added support for the Surface API in native UI for iOS. Meaning that `Curve`, `VectorLayer` and charting will work inside a `NativeViewHost`.
+## Fuse.Reactive cleanup (Uno-level)
+- The `Fuse.IRaw` interface removed (now internal to the `Fuse.Reactive.JavaScript` package). Had no practical public use.
+- The `Fuse.Reactive.ListMirror` class is no longer public. This was never intended to be public and has no practical public application.
+- Added detailed docs for many of the interfaces in the `Fuse.Reactive` namespace.
+- The `Fuse.Reactive.IWriteable` interface has changed (breaking!). The method signature is now `bool TrySetExclusive(object)` instead of `void SetExclusive(object)`. Unlikely to affect your code.
 
 ## TextInput
 - Fixed issue on Android causing text to align incorrectly if being scrolled and unfocused.
@@ -92,6 +97,7 @@
 - Introduced support for variable arguments to UX functions - inherit from the `Fuse.Reactive.VarArgFunction` class.
 - The classes `Vector2`, `Vector3` and `Vector4` in `Fuse.Reactive` are now removed and replaced with the general purpose, variable-argument version `Vector` instead. This ensures vectors of any length are treated the same way. This is backwards incompatible in the unlikely case of having used these classes explicitly from Uno code.
 - Added support for name-value pair syntax: `name: value`. Can be used for JSON-like object notation and named arguments in custom functions. Any vector of name-value pairs is interpreted as an `IObject`, e.g. `{name: 'Joe', apples: 10}` is an object.
+- Added support for name-value pair syntax: `name: value`. Can be used for JSON-like object notation and named arguments in custom functions.
 
 ### Templates
 - Added `Identity` and `IdentityKey` to `Each`. This allows created visuals to be reused when replaced with `replaceAt` or `replaceAll` in an Observable.

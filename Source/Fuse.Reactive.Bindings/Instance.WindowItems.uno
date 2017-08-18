@@ -28,10 +28,16 @@ namespace Fuse.Reactive
 			return this;
 		}
 		bool _pendingNew;
+
+		// Used to test that Instance internals behaves correctly
+		// in light of https://github.com/fusetools/fuselibs-public/issues/227
+		extern (UNO_TEST) internal static int InsertCount;
 		
 		/** Inserts a new item into the _windowItems. The actual creation of the objects may be deferred. */
 		void InsertNew(int dataIndex)
 		{
+			if defined (UNO_TEST) InsertCount++; 
+
 			if (dataIndex < Offset ||
 				(HasLimit && (dataIndex - Offset) >= Limit))
 				return;

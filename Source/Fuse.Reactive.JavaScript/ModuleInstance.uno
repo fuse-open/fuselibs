@@ -4,7 +4,7 @@ using Fuse.Scripting;
 
 namespace Fuse.Reactive
 {
-	class ModuleInstance: DiagnosticSubject
+	partial class ModuleInstance: DiagnosticSubject
 	{
 		readonly ThreadWorker _worker;
 		readonly JavaScript _js;
@@ -25,6 +25,7 @@ namespace Fuse.Reactive
 		void Evaluate()
 		{
 			_js.ScriptModule.Dependencies = _deps;
+			
 			_dc = _worker.Reflect(EvaluateExports());
 			UpdateManager.PostAction(SetDataContext);
 		}

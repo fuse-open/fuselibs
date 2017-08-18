@@ -1,0 +1,7 @@
+<Panel ux:Class="UX.Model.NestedAccessor" Model="UX/NestedAccessor">
+	<Slider Value="{highCount}" ux:Name="v" Minimum="0" Maximum="1000"/>
+	<FuseTest.DudElement Value="{value}" ux:Name="r"/>
+	<FuseTest.DudElement Value="{negCount}" ux:Name="d"/>
+	
+	<FuseTest.Invoke Handler="{incr}" ux:Name="callIncr"/>
+</Panel>

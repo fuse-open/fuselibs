@@ -7,7 +7,12 @@ using Fuse.Scripting;
 
 namespace Fuse.Reactive
 {
-	partial class ThreadWorker: IDisposable, IDispatcher, IThreadWorker
+	interface IMirror
+	{
+		object Reflect(object obj);
+	}
+
+	partial class ThreadWorker: IDisposable, IDispatcher, IThreadWorker, IMirror
 	{
 		IDispatcher IThreadWorker.Dispatcher { get { return this; } }
 		Function IThreadWorker.Observable { get { return FuseJS.Observable; } }
@@ -22,6 +27,26 @@ namespace Fuse.Reactive
 
 		static Scripting.Context _context;
 		public Scripting.Context Context { get { return _context; } }
+
+		Function _push, _insertAt, _removeAt;
+
+		public void Push(Scripting.Array arr, object value)
+		{
+			if (_push == null) _push = (Function)_context.Evaluate("push", "(function(arr, value) { arr.push(value); })");
+			_push.Call(arr, value);
+		}
+
+		public void InsertAt(Scripting.Array arr, int index, object value)
+		{
+			if (_insertAt == null) _insertAt = (Function)_context.Evaluate("insertAt", "(function(arr, index, value) { arr.splice(index, 0, value); })");
+			_insertAt.Call(arr, index, value);
+		}
+
+		public void RemoveAt(Scripting.Array arr, int index)
+		{
+			if (_removeAt == null) _removeAt = (Function)_context.Evaluate("removeAt", "(function(arr, index) { arr.splice(index, 1); })");
+			_removeAt.Call(arr, index);
+		}
 
 		static FuseJS.Builtins _fuseJS;
 		public static FuseJS.Builtins FuseJS { get { return _fuseJS; } }
@@ -137,12 +162,11 @@ namespace Fuse.Reactive
 						_exceptionQueue.Enqueue(e);
 					}
 				}
-				else
-					_idle.Set();
 
 				try
 				{
-					_fuseJS.UpdateModules(_context);
+					var activity = _fuseJS.UpdateModules(_context);
+					didAnything ||= activity;
 				}
 				catch (Exception e)
 				{
@@ -151,6 +175,9 @@ namespace Fuse.Reactive
 
 				var t2 = Uno.Diagnostics.Clock.GetSeconds();
 
+				if (!didAnything)
+					_idle.Set();
+					
 				if (!didAnything || t2-t > 5)
 				{
 					Thread.Sleep(1);	

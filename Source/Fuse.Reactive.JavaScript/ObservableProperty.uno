@@ -6,7 +6,7 @@ namespace Fuse.Reactive
 {
 	class LazyObservableProperty: ObservableProperty
 	{
-		public LazyObservableProperty(ThreadWorker w, Scripting.Object obj, Property p): base(w, obj, p)
+		public LazyObservableProperty(ThreadWorker w, Scripting.Object obj, Uno.UX.Property p): base(w, obj, p)
 		{
 			w.Context.ObjectDefineProperty(obj, p.Name.ToString(), Get);	
 		}
@@ -26,10 +26,10 @@ namespace Fuse.Reactive
 	class ObservableProperty: IObserver, IPropertyListener
 	{
 		protected readonly ThreadWorker _worker;
-		Property _property;
+		Uno.UX.Property _property;
 		Scripting.Object _obj;
 
-		public ObservableProperty(ThreadWorker w, Scripting.Object obj, Property p)
+		public ObservableProperty(ThreadWorker w, Scripting.Object obj, Uno.UX.Property p)
 		{
 			_obj = obj;
 			_worker = w;

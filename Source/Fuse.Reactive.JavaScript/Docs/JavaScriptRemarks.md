@@ -43,7 +43,6 @@ Failing to export from modules will make it impossible to reach defined data ins
 
 This is good for hiding implementation details from other calling JavaScript modules and UX code.
 
-
 ## Importing modules
 
 Each code file (or inline snippet) defines a module.

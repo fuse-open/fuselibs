@@ -11,6 +11,7 @@ namespace Fuse.Reactive
 		readonly Function _func;
 
 		public object Raw { get { return _func; } }
+		public object ReflectedRaw { get { return _func; } }
 
 		public FunctionMirror(Function func)
 		{

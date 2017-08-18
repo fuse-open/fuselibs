@@ -1,0 +1,32 @@
+{
+  "Packages": [
+    "Fuse.Controls",
+    "Fuse.Controls.Panels",
+    "Fuse.Controls.Primitives",
+    "Fuse.Controls.Navigation",
+    "Fuse.Navigation",
+    "Fuse.Drawing",
+    "Fuse.Common",
+    "Fuse.Nodes",
+    "Fuse.Animations",
+    "Fuse.Elements",
+    "Fuse.Gestures",
+    "Fuse.Motion",
+    "Fuse.Reactive",
+    "Fuse.Reactive.Expressions",
+    "Fuse.Reactive.Bindings",
+    "Fuse.Reactive.JavaScript",
+    "Fuse.Scripting",
+    "Fuse.Triggers",
+    "Uno.Collections",
+    "Uno.Testing",
+    "Uno.Threading"
+  ],
+  "Projects": [
+    "../../../Fuse.Common/Tests/FuseTest/FuseTest.unoproj"
+  ],
+  "Includes": [
+    "*",
+    "UX/*.js:Bundle",
+  ]
+}

@@ -1,0 +1,13 @@
+<Panel ux:Class="UX.Model.Each" Model="UX/Each">
+	<Panel ux:Name="a">
+		<Each Items="{simple}">
+			<FuseTest.DudElement StringValue="{}"/>
+		</Each>
+	</Panel>
+	
+	<Panel ux:Name="b">
+		<Each Items="{items}">
+			<FuseTest.DudElement StringValue="{name}"/>
+		</Each>
+	</Panel>
+</Panel>

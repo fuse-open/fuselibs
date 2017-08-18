@@ -24,15 +24,15 @@ namespace Fuse.Reactive
 
 		/** The closest enclosing node of this context */
 		Node Node { get; }
-
-		/** The name table for this context */
-		NameTable NameTable { get; }
 	}
 
-	/** Represents a subscription that supports write-back. */
+	/** Represents a subscription that might support write-back. */
 	public interface IWriteable: IDisposable
 	{
-		void SetExclusive(object value);
+		/** Attempts to write to the source. 
+			Returns whether or not the source was successfully updated.
+		*/
+		bool TrySetExclusive(object value);
 	}
 
 	public interface IExpression
