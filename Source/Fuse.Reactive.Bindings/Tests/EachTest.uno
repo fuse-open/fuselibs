@@ -28,6 +28,43 @@ namespace Fuse.Reactive.Test
 
 	public class EachTest : TestBase
 	{
+		class DummyList: IArray
+		{
+			int _length;
+			public DummyList(int length) { _length = length; }
+			public int Length { get { return _length; } }
+			public object this[int index] { get { return new object(); }}
+		}
+		[Test]
+		public void ReplaceList()
+		{
+			var e = new UX.Each.ReplaceList();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				Assert.AreEqual(1, e.Children.Count);
+				e.each.Items = new object[] { 1, 2, 3 };
+				root.StepFrame();
+				Assert.AreEqual(4, e.Children.Count);
+				e.each.Items = new object[0];
+				root.StepFrame();
+				Assert.AreEqual(1, e.Children.Count);
+				e.each.Items = new DummyList(5);
+				root.StepFrame();
+				Assert.AreEqual(6, e.Children.Count);
+				e.each.Items = new DummyList(0);
+				root.StepFrame();
+				Assert.AreEqual(1, e.Children.Count);
+				e.each.Items = new DummyList(8);
+				root.StepFrame();
+				Assert.AreEqual(9, e.Children.Count);
+				e.each.Items = null;
+				root.StepFrame();
+				Assert.AreEqual(1, e.Children.Count);
+			}
+		}
+
+		
+
 		[Test]
 		public void DoubleSubscribe()
 		{

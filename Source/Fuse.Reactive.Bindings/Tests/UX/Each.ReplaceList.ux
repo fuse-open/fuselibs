@@ -1,0 +1,5 @@
+<Panel ux:Class="UX.Each.ReplaceList">
+	<Each ux:Name="each">
+		<Panel />
+	</Each>
+</Panel>
