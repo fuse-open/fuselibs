@@ -1,7 +1,7 @@
 class ModelEmptyList {
     constructor() {
         this.items = [ 1, 2, 3 ];
-        this.promisedItems = new Promise(resolve => setTimeout(resolve([3, 4, 5]), 0));
+        this.promisedItems = new Promise(resolve => setTimeout(() => resolve([3, 4, 5]), 0));
     }
 
     empty() {
@@ -9,7 +9,7 @@ class ModelEmptyList {
     }
 
     emptyPromise() {
-        this.promisedItems = new Promise(resolve => setTimeout(resolve([]), 0));
+        this.promisedItems = new Promise(resolve => setTimeout(() => resolve([]), 0));
     }
 }
 
