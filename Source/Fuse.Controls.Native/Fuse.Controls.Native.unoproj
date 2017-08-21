@@ -12,6 +12,7 @@
     "Fuse.Views",
     "Fuse.iOS",
     "Fuse.iOS.TextRenderer",
+    "Fuse.Controls.DatePicker",
     "Fuse.Controls.Panels",
     "Fuse.Controls.Primitives",
   ],
