@@ -326,6 +326,9 @@ function Model(source)
 		}
 
 		function removeRange(index, count) {
+			for (var i = 0; i < count; i++) {
+				removeAsParentFrom(node[index+i]);
+			}
 			node.splice(index, count);
 			var removePath = getPath().concat(index);
 			for (var i = 0; i < count; i++) {
@@ -334,15 +337,34 @@ function Model(source)
 			changesDetected++;
 		}
 
+		function wrap(key, item) {
+			if (item instanceof Promise) {
+				dealWithPromise(key, item);
+			}
+			else if (item instanceof Array) {
+				return instrument({meta: meta, key: key}, [], item)
+			}
+			else if (item instanceof Object) {
+				return instrument({meta: meta, key: key}, {}, item)
+			}
+			else {
+				return item
+			}
+		}
+
 		function insertAt(index, item) {
-			node.splice(index, 0, item);
+			node.splice(index, 0, null);
+			node[index] = item = wrap(index, item)
+			
 			TreeObservable.insertAt.apply(store, getPath().concat(index, item));
 			changesDetected++;
 		}
 
 		function addRange(items) {
 			for (var item of items) {
-				node.push(item);
+				var index = node.length;
+				node.push(null);
+				node[index] = item = wrap(node.length, item);
 				TreeObservable.add.apply(store, getPath().concat(item));
 			}
 			
