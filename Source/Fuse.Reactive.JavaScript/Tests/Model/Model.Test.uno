@@ -487,9 +487,7 @@ namespace Fuse.Reactive.Test
 				e.popPage.Perform();
 				root.StepFrameJS();
 
-				var childrenAfterPop = ChildrenOfType<Visual>(e.navigator);
-				Assert.AreEqual(1, childrenAfterPop.Count);
-				Assert.OfType<UX.Model.MainPage>(childrenAfterPop[0]);
+				Assert.OfType<UX.Model.MainPage>(e.navigator.Active);
 			}
 		}
 
