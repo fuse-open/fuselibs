@@ -47,11 +47,9 @@ function Model(source)
 			if (nodeZone !== null) { return; }
 			nodeZone = rootZone.fork({
 				name: (parentMeta != null ? parentMeta.key : '(root)'),
-				onInvoke: function(parentZoneDelegate, currentZone, targetZone, callback, applyThis, applyArgs, source) {
-					console.log("Enter invoke dirty")
+				onInvokeTask: function(parentZoneDelegate, currentZone, targetZone, task, applyThis, applyArgs) {
 					dirty();
-					parentZoneDelegate.invoke(targetZone, callback, applyThis, applyArgs, source);
-					console.log("leave invoke")
+					parentZoneDelegate.invokeTask(targetZone, task, applyThis, applyArgs);
 				}
 			})
 		}
