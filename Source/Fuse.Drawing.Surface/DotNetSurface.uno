@@ -495,6 +495,7 @@ namespace Fuse.Drawing
 			int size = width * height * 4;
 			var pixelData = new byte[size];
 
+			GL.PixelStore(GLPixelStoreParameter.PackAlignment, 1);
 			GL.ReadPixels(0,0, width, height, GLPixelFormat.Rgba, GLPixelType.UnsignedByte, pixelData);
 
 			// flip r and b
