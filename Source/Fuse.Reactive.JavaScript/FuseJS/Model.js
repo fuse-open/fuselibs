@@ -153,10 +153,11 @@ function Model(source)
 		function wrapFunction(name, func) {
 			
 			var f = function() {
+				var args = arguments;
 				prepareZone();
-				nodeZone.run(function() {
+				return nodeZone.run(function() {
 					dirty();
-					var res = func.apply(state, arguments);
+					var res = func.apply(state, args);
 					return res
 				})
 			}
