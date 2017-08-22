@@ -171,15 +171,12 @@ function Model(source)
 			if (evaluatingDerivedProps !== 0) { return; }
 			if (isDirty) { return; }
 			isDirty = true;
-			console.log("setting timeout")
 			setTimeout(meta.diff, 0);
-			console.log("done setting timeout")
 		}
 
 		var changesDetected = 0;
 
 		meta.diff = function() {
-			console.log("Diffing!")
 			isDirty = false;
 
 			if (meta.parents.length === 0) { 
