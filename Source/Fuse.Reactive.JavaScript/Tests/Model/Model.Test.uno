@@ -1,6 +1,9 @@
 using Uno;
 using Uno.UX;
 using Uno.Testing;
+using Uno.Collections;
+using Uno.Compiler;
+using Fuse.Navigation;
 
 using FuseTest;
 
@@ -516,6 +519,62 @@ namespace Fuse.Reactive.Test
 				root.StepFrameJS();
 				Assert.AreEqual("2", counter2.counter.Value);
 
+			}
+		}
+
+		[Test]
+		public void MutatePages()
+		{
+			var e = new UX.Model.MutatePages();
+			using(var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.StepFrameJS();
+				var children = ChildrenOfType<Visual>(e.navigator);
+				Assert.AreEqual(1, children.Count);
+				Assert.OfType<UX.Model.MainPage>(children[0]);
+
+				e.pushPage.Perform();
+				root.StepFrameJS();
+
+				var childrenAfterPush = ChildrenOfType<Visual>(e.navigator);
+				Assert.AreEqual(2, childrenAfterPush.Count);
+				Assert.OfType<UX.Model.MainPage>(childrenAfterPush[0]);
+				Assert.OfType<UX.Model.DetailPage>(childrenAfterPush[1]);
+
+				e.popPage.Perform();
+				root.StepFrameJS();
+
+				Assert.OfType<UX.Model.MainPage>(e.navigator.Active);
+			}
+		}
+
+		List<T> ChildrenOfType<T>(Visual n) where T : Node
+		{
+			var l = new List<T>();
+			for (int i=0; i < n.Children.Count; ++i)
+			{
+				var m = n.Children[i] as T;
+				if (m != null)
+					l.Add(m);
+			}
+			return l;
+		}
+	}
+}
+
+namespace Uno.Testing {
+	public static partial class Assert {
+		public static void OfType<T>(
+			object obj,
+			[CallerFilePath] string filePath = "",
+			[CallerLineNumber] int lineNumber = 0,
+			[CallerMemberName] string memberName = "")
+		{
+			if(!(obj is T)) {
+				var expected = "object of type '" + typeof(T).FullName + "'";
+				var actual = (obj == null) ? "null" : "object of type '" + obj.GetType().FullName + "'";
+
+				Assert.ReportFailure(filePath, lineNumber, memberName, expected, actual);
 			}
 		}
 	}
