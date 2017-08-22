@@ -34,8 +34,8 @@ namespace Fuse.Controls
 			
 			if (_pageHistory == null)
 				return;
-			
-			var obs = _pageHistory as IObservable;
+				
+			var obs = _pageHistory as IObservableArray;
 			if (obs != null)
 			{
 				AncestorRouterPage.ChildRouterPages.Attach( obs, this );
