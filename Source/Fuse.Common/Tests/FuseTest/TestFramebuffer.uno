@@ -33,6 +33,7 @@ namespace FuseTest
 			try
 			{
 				var temp = new byte[4];
+				GL.PixelStore(GLPixelStoreParameter.PackAlignment, 1);
 				GL.ReadPixels(pos.X, Framebuffer.Size.Y - 1 - pos.Y, 1, 1, GLPixelFormat.Rgba, GLPixelType.UnsignedByte, temp);
 				return float4(temp[0] / 255.0f,
 					temp[1] / 255.0f,
