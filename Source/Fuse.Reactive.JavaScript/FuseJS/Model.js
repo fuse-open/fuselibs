@@ -171,7 +171,9 @@ function Model(source)
 			if (evaluatingDerivedProps !== 0) { return; }
 			if (isDirty) { return; }
 			isDirty = true;
-			setTimeout(meta.diff, 0);
+			rootZone.run(function() {
+				setTimeout(meta.diff, 0)
+			});
 		}
 
 		var changesDetected = 0;
