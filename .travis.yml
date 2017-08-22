@@ -10,9 +10,9 @@ env:
 
 install:
   - pip install six
-  - wget https://download.mono-project.com/archive/4.4.2/macos-10-universal/MonoFramework-MDK-4.4.2.macos10.xamarin.universal.pkg -O mono.pkg &&
-    sudo installer -pkg mono.pkg -target / &&
-    export PATH=$PATH:/Library/Frameworks/Mono.framework/Versions/Current/Commands
+  - wget https://az664292.vo.msecnd.net/files/9Wz3GRnbPRghC2nt-Mono.zip -O mono.zip &&
+    unzip -d mono mono.zip &&
+    export PATH=$PATH:$PWD/mono/bin
   - Stuff/stuff install Stuff
 
 before_script:
