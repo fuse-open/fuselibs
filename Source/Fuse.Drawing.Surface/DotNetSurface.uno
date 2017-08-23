@@ -566,6 +566,7 @@ namespace Fuse.Drawing
 		public static extern void Render (float2 size, Buffer buffer, OpenGL.GLTextureHandle GLBuffer)
 		{
 			GL.BindTexture(GLTextureTarget.Texture2D, GLBuffer);
+			GL.PixelStore(GLPixelStoreParameter.UnpackAlignment, 1);
 			GL.TexImage2D(
 				GLTextureTarget.Texture2D, 0, 
 				GLPixelFormat.Rgba, (int)size.X, (int)size.Y, 0, 

@@ -90,6 +90,7 @@ namespace Fuse.Drawing
 		@{
 			auto ctx = (CGLib::Context*)cp;
 			glBindTexture(GL_TEXTURE_2D, ctx->GLTexture);
+			glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, ctx->Width, ctx->Height, 0, GL_RGBA,
 				GL_UNSIGNED_BYTE, ctx->BitmapData);
 
