@@ -59,7 +59,6 @@ namespace Experimental.TextureLoader
 
 					var textureHandle = GL.CreateTexture();
 					GL.BindTexture(GLTextureTarget.Texture2D, textureHandle);
-					GL.PixelStore(GLPixelStoreParameter.PackAlignment, 1);
 					GL.PixelStore(GLPixelStoreParameter.UnpackAlignment, 1);
 					GL.TexImage2D(GLTextureTarget.Texture2D, 0, internalFormat, bitmap.Width, bitmap.Height, 0, pixelFormat, pixelType, new Uno.Buffer(bitmap.ReadData()));
 					var texture = new Uno.Graphics.Texture2D(textureHandle, new Uno.Int2(bitmap.Width, bitmap.Height), 1, format);
