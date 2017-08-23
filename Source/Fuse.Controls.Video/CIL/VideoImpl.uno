@@ -164,6 +164,7 @@ namespace Fuse.Controls.VideoImpl.CIL
 
 			if (Fuse.Video.Graphics.CIL.VideoImpl.IsFrameAvailable(_handle))
 			{
+				GL.PixelStore(GLPixelStoreParameter.UnpackAlignment, 1);
 				Fuse.Video.Graphics.CIL.VideoImpl.UpdateTexture(_handle, _texture.GLTextureHandle);
 				_videoTexture = new VideoTexture(_texture.GLTextureHandle);
 				OnFrameAvailable();
