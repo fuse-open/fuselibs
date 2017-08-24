@@ -2,6 +2,10 @@
 
 # 1.2
 
+## Reactive Expressions
+- Fixed a bug where `toUpper` and `toLower` would crash on null-input.
+
+
 ## 1.2.1
 
 ### Fuse.Elements
