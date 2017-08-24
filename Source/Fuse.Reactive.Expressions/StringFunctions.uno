@@ -9,6 +9,9 @@ namespace Fuse.Reactive
 		public ToUpper([UXParameter("Value")] Expression value): base(value) {}
 		protected override object Compute(object s)
 		{
+			if (s == null)
+				return null;
+
 			return s.ToString().ToUpper();
 		}
 
@@ -25,6 +28,9 @@ namespace Fuse.Reactive
 		public ToLower([UXParameter("Value")] Expression value): base(value) {}
 		protected override object Compute(object s)
 		{
+			if (s == null)
+				return null;
+
 			return s.ToString().ToLower();
 		}
 

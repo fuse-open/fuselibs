@@ -1,0 +1,5 @@
+<Panel ux:Class="UX.StringFunctions.Simple">
+	<string ux:Property="Input" />
+	<Text Value="{= toUpper(Property Input)}" ux:Name="ToUpper" />
+	<Text Value="{= toLower(Property Input)}" ux:Name="ToLower" />
+</Panel>
