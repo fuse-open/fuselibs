@@ -35,6 +35,7 @@
 
 ## ScrollView
 - Added minimal support to WhileVisibleInScrollView for changes in Element layout updating the status
+
 ## Optimizations for long list of elements
 - Several low-level optimizations that speeds up scenarios with long lists (e.g. scrollviews). Here are the Uno-level details:
  * Optimized the implementation of the `Visual.Children` collection to be an implicitly linked list. This avoids all memory allocation and shifting in connection with inserting and removing nodes from a parent, and ensures a `O(1)` cost for all child list manipulations.
@@ -63,10 +64,10 @@
 - Fuse.Scripting now knows about the JS `Date` type, allowing instances to be passed to/from Uno in the form of `Uno.DateTime` objects. This support extends to databinding, `NativeModule`s, `ScriptClass`s, and the `Context.Wrap/Unwrap` API.
 - Binding an object that does not implement `IArray` to a property that expects `IArray` will now automatically convert the value to an array of length 1.
 
-
 ## UpdateManager changes (Uno-level)
 - Breaking change: Several entrypoints on UpdateManager now take a `LayoutPriority` enum instead of `int` as the `priority` argument. Very unlikely to affect user code code.
 - Fixed an issue where writes to `FuseJS/Observables` would not dispatch in the right order on the UI thread if interleaved with `ScriptClass` callbacks (slightly breaking behavior).
+
 
 # 1.2
 
