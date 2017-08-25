@@ -2,13 +2,15 @@
 
 # 1.2
 
-## Reactive Expressions
+## 1.2.2
+
+### Reactive Expressions
 - Fixed a bug where `toUpper` and `toLower` would crash on null-input.
 
-## Fuse.Drawing.Surface
+### Fuse.Drawing.Surface
 - Added support for the Surface API in native UI for iOS. Meaning that `Curve`, `VectorLayer` and charting will work inside a `NativeViewHost`.
 
-## Optimizations
+### Optimizations
 - Optimized how bounding boxes are calculated (improves layout and rendering performance).
 - Optimized how render bounds are compounded for larger lists.
 
