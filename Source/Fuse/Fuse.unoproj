@@ -1,6 +1,6 @@
 {
   "Copyright": "Copyright (c) Fusetools AS 2017",
-  "Version": "1.2.1",
+  "Version": "1.2.2-rc1",
   "Publisher": "Fusetools AS",
   "Description": "References the complete set of canonical, non-optional Fuse libraries",
   "Package": {

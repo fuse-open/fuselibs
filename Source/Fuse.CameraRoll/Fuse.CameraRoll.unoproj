@@ -3,7 +3,7 @@
   "Description": "Nativ CameraRoll support",
   "Publisher": "Fusetools AS",
   "Title": "Fuse.CameraRoll",
-  "Version": "1.2.1",
+  "Version": "1.2.2-rc1",
   "Package": {
     "ProjectUrl": "https://fusetools.com"
   },
