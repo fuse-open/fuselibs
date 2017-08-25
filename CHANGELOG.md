@@ -8,6 +8,10 @@
 ## Fuse.Drawing.Surface
 - Added support for the Surface API in native UI for iOS. Meaning that `Curve`, `VectorLayer` and charting will work inside a `NativeViewHost`.
 
+## Optimizations
+- Optimized how bounding boxes are calculated (improves layout and rendering performance).
+- Optimized how render bounds are compounded for larger lists.
+
 
 ## 1.2.1
 
