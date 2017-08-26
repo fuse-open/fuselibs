@@ -51,8 +51,14 @@ namespace Fuse.Reactive
 		{
 			var w = _sub as IPropertySubscription;
 			if (w != null)
-				return w.TrySetExclusive(Key, newValue);
-			
+			{
+				if (w.TrySetExclusive(Key, newValue))
+				{
+					_currentData = newValue;
+					return true;
+				}
+			}
+
 			return false;
 		}
 
