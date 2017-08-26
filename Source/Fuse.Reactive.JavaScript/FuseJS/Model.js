@@ -144,7 +144,7 @@ function Model(source)
 						dealWithPromise(p, v);
 					}
 					else {
-						set(p, v);
+						set(p, v, true); // don't count this as a state change
 					}
 				}
 				finally
@@ -360,10 +360,10 @@ function Model(source)
 			}
 		}
 
-		function set(key, value)
+		function set(key, value, omitStateChange)
 		{
 			var path = getPath();
-			if (!setInternal(path, key, value)) { return; }
+			if (!setInternal(path, key, value, omitStateChange)) { return; }
 
 			var argPath = path.concat(key, value instanceof Array ? [value] : value);
 			TreeObservable.set.apply(store, argPath);
@@ -422,7 +422,7 @@ function Model(source)
 			return path.reduce((a, b) => a + "." + b) + "." + key;
 		}
 
-		function setInternal(path, key, value) {
+		function setInternal(path, key, value, omitStateChange) {
 			if (node[key] === value) { return false; }
 			node[key] = value;
 
@@ -433,7 +433,7 @@ function Model(source)
 				value: value
 			}
 
-			changesDetected++;
+			if (!omitStateChange) { changesDetected++; }
 
 			return true;
 		}
