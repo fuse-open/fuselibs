@@ -27,6 +27,20 @@ namespace Fuse.Reactive.Test
 			new global::FuseJS.FileReaderImpl();
 			new global::FuseJS.UserEvents();
 		}
+
+		[Test]
+		public void ReplaceAt() 
+		{
+			var e = new UX.Model.ReplaceAt();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.StepFrameJS();
+				e.replaceTodo.Perform();
+				root.StepFrameJS();
+				e.changeFeedTheCat.Perform();
+				root.StepFrameJS(); // Throws if test fails
+			}
+		}
 		
 		[Test]
 		public void Async()
