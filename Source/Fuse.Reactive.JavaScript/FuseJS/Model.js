@@ -221,7 +221,7 @@ function Model(source)
 				if (state.length > node.length) { 
 					addRange(state.slice(node.length, state.length))
 				}
-				else {
+				else if (state.length < node.length) {
 					removeRange(i, node.length-state.length) 
 				}
 			}
