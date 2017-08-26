@@ -90,7 +90,8 @@ function Model(source)
 				meta.promises[key] = prom;
 				prom.then(function(result) {
 					if (meta.promises[key] === prom) {
-						set(key, result);
+						removeAsParentFrom(node[key])
+						set(key, wrap(key, result));
 					}
 				})
 			}
@@ -202,7 +203,8 @@ function Model(source)
 						i--;
 					}
 					else {
-						set(i, state[i]);
+						removeAsParentFrom(node[i]);
+						set(i, wrap(i, state[i]))
 					}
 				}
 				
