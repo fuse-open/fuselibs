@@ -386,7 +386,7 @@ function Model(source)
 			for (var item of items) {
 				var index = node.length;
 				node.push(null);
-				node[index] = item = wrap(node.length, item);
+				node[index] = item = wrap(index, item);
 				TreeObservable.add.apply(store, getPath().concat(item));
 			}
 			
