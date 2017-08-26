@@ -125,6 +125,8 @@ function Model(source)
 		
 		meta.evaluateDerivedProps = function(visited)
 		{
+			isDerivedPropsDirty = false;
+
 			if (visited.indexOf(node) !== -1) { return; }
 			visited.push(node);
 
@@ -227,9 +229,18 @@ function Model(source)
 			}
 
 			if (changesDetected > 0) {
-				meta.evaluateDerivedProps([]); 
-				changesDetected = 0;
+				dirtyDerivedProps()
+				changesDetected = 0
 			}
+		}
+
+		var isDerivedPropsDirty = false;
+		function dirtyDerivedProps() {
+			if (isDerivedPropsDirty) { return; }
+			isDerivedPropsDirty = true;
+			rootZone.run(function() {
+				setTimeout(function() { meta.evaluateDerivedProps([]) }, 0)
+			});
 		}
 
 		function oldValueEquals(key, newValue) {
