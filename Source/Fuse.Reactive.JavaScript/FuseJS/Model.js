@@ -50,6 +50,9 @@ function Model(source)
 				onInvokeTask: function(parentZoneDelegate, currentZone, targetZone, task, applyThis, applyArgs) {
 					dirty();
 					parentZoneDelegate.invokeTask(targetZone, task, applyThis, applyArgs);
+				},
+				onHandleError: function(error) {
+					throw error;
 				}
 			})
 		}
