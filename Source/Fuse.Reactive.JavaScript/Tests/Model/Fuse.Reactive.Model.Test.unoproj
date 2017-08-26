@@ -18,6 +18,7 @@
     "Fuse.Reactive.JavaScript",
     "Fuse.Scripting",
     "Fuse.Triggers",
+    "FuseJS",
     "Uno.Collections",
     "Uno.Testing",
     "Uno.Threading"

@@ -1,0 +1,4 @@
+<Panel ux:Class="UX.Model.Async" Model="UX/Async">
+	<FuseTest.Invoke Handler="{doSomething}" ux:Name="doSomething"/>
+	<Text ux:Name="t1">{foo}</Text>
+</Panel>

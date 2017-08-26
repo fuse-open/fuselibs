@@ -1,4 +1,8 @@
 var TreeObservable = require("FuseJS/TreeObservable")
+require("3rdparty/zone.min")
+
+
+var rootZone = Zone.current;
 
 function Model(source)
 {
@@ -35,6 +39,19 @@ function Model(source)
 
 		if (state instanceof Object) {
 			node.$template = state.constructor.name;
+		}
+
+		// create zone lazily to avoid overhead when not needed
+		var nodeZone = null;
+		function prepareZone() {
+			if (nodeZone !== null) { return; }
+			nodeZone = rootZone.fork({
+				name: (parentMeta != null ? parentMeta.key : '(root)'),
+				onInvokeTask: function(parentZoneDelegate, currentZone, targetZone, task, applyThis, applyArgs) {
+					dirty();
+					parentZoneDelegate.invokeTask(targetZone, task, applyThis, applyArgs);
+				}
+			})
 		}
 
 		meta.isClass = false;
@@ -132,15 +149,17 @@ function Model(source)
 			}
 		}
 
-		function wrapFunction(name, func) {
 
+		function wrapFunction(name, func) {
+			
 			var f = function() {
-				var res = func.apply(state, arguments);
-				
-				if (evaluatingDerivedProps === 0) {
+				var args = arguments;
+				prepareZone();
+				return nodeZone.run(function() {
 					dirty();
-				}
-				return res
+					var res = func.apply(state, args);
+					return res
+				})
 			}
 			f.$isWrapped = true;
 
@@ -150,9 +169,12 @@ function Model(source)
 		var isDirty = false;
 
 		function dirty() {
+			if (evaluatingDerivedProps !== 0) { return; }
 			if (isDirty) { return; }
 			isDirty = true;
-			setTimeout(meta.diff, 0);
+			rootZone.run(function() {
+				setTimeout(meta.diff, 0)
+			});
 		}
 
 		var changesDetected = 0;
