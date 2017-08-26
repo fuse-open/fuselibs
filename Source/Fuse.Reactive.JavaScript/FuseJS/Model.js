@@ -1,4 +1,9 @@
 var TreeObservable = require("FuseJS/TreeObservable")
+
+console.error = function(e) {
+	console.log(JSON.stringify(e))
+}
+
 require("3rdparty/zone.min")
 
 
@@ -258,6 +263,7 @@ function Model(source)
 		}
 
 		function removeAsParentFrom(node) {
+			if (!(node instanceof Object)) { return; }
 			var oldMeta = idToMeta.get(node.$id);
 			if (oldMeta instanceof Object) {
 				var thisIndex = oldMeta.parents.findIndex(function(x) { return x.meta == meta });
