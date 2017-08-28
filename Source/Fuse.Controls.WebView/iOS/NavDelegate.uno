@@ -12,9 +12,9 @@ namespace Fuse.iOS.Controls
 	static public extern(iOS) class NavDelegate
 	{
 		[Foreign(Language.ObjC)]
-		public static ObjC.Object Create(Action beginLoading, Action pageLoaded, Action urlChanged, Action<string> OnCustomURI, string[] schemes )
+		public static ObjC.Object Create(Action beginLoading, Action pageLoaded, Action urlChanged, Action<string> OnCustomURI, string[] schemes, Func<bool> hasURISchemeHandler)
 		@{
-			return [[WVNavDelegate alloc] initWithEventHandlers:beginLoading loaded:pageLoaded change:urlChanged uriHandler:OnCustomURI schemes:[schemes copyArray]];
+			return [[WVNavDelegate alloc] initWithEventHandlers:beginLoading loaded:pageLoaded change:urlChanged uriHandler:OnCustomURI schemes:[schemes copyArray] hasURISchemeHandler:hasURISchemeHandler];
 		@}
 	}
 }

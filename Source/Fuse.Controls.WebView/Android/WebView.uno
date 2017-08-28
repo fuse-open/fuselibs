@@ -27,6 +27,7 @@ namespace Fuse.Android.Controls
 		
 		Fuse.Controls.WebView _webViewHost;
 		JSEvalRequestManager _evalRequestMgr;
+		string[] _uriSchemes;
 
 		public static WebView Create(Fuse.Controls.WebView webViewHost, string[] schemes)
 		{
@@ -42,9 +43,31 @@ namespace Fuse.Android.Controls
 			_evalRequestMgr = new JSEvalRequestManager(_webViewHandle);
 			
 			_webChromeClientHandle = _webViewHandle.CreateAndSetWebChromeClient(OnProgressChanged);				
-			_webViewClientHandle = _webViewHandle.CreateAndSetWebViewClient(OnPageLoaded, OnBeginloading, OnUrlChanged, OnCustomURI, schemes);
+			_webViewClientHandle = _webViewHandle.CreateAndSetWebViewClient(
+				OnPageLoaded, 
+				OnBeginLoading, 
+				OnUrlChanged,
+				MatchedURISchemeHandler
+			);
+			_uriSchemes = schemes;
 
 			_webViewHost.WebViewClient = this;
+		}
+		
+		public bool MatchedURISchemeHandler(string url)
+		{
+			if(URISchemeHandler!=null){
+					return true;
+					foreach(string uri in _uriSchemes)
+					{
+						if(url.IndexOf(uri) == 0)
+						{
+							OnCustomURI(url);
+							return true;
+						}
+					}
+			}
+			return false;
 		}
 		
 		void OnCustomURI(string url)
@@ -59,7 +82,7 @@ namespace Fuse.Android.Controls
 				PageLoaded(this, EventArgs.Empty);
 		}
 		
-		void OnBeginloading()
+		void OnBeginLoading()
 		{
 			if(BeginLoading!=null)
 				BeginLoading(this, EventArgs.Empty);
@@ -158,9 +181,10 @@ namespace Fuse.Android.Controls
 		public void LoadUrl(string url)
 		{
 			if (url == null || url== "") url = "about:blank";
+			//This extra check is needed on android since setting the Url directly doesn't trigger shouldOverrideUrlLoading
+			if(MatchedURISchemeHandler(url))
+				return;
 			_webViewHandle.LoadUrl(url);
-
-			// Should OnHistoryChanged be called here?
 			OnHistoryChanged();
 		}
 		
