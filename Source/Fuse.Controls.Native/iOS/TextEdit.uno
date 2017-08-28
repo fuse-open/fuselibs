@@ -652,18 +652,7 @@ namespace Fuse.Controls.Native.iOS
 
 		TextInputActionStyle ITextEdit.ActionStyle
 		{
-			set
-			{
-				switch(value)
-				{
-					case TextInputActionStyle.Default: SetActionStyle(Handle, extern<int>"UIReturnKeyDefault"); break;
-					case TextInputActionStyle.Done: SetActionStyle(Handle, extern<int>"UIReturnKeyDone"); break;
-					case TextInputActionStyle.Next: SetActionStyle(Handle, extern<int>"UIReturnKeyNext"); break;
-					case TextInputActionStyle.Go: SetActionStyle(Handle, extern<int>"UIReturnKeyGo"); break;
-					case TextInputActionStyle.Search: SetActionStyle(Handle, extern<int>"UIReturnKeySearch"); break;
-					case TextInputActionStyle.Send: SetActionStyle(Handle, extern<int>"UIReturnKeySend"); break;
-				}
-			}
+			set { /* Does not apply to MultilineTextEdit */ }
 		}
 
 		AutoCorrectHint ITextEdit.AutoCorrectHint
@@ -750,13 +739,6 @@ namespace Fuse.Controls.Native.iOS
 		@{
 			::UITextView* textView = (::UITextView*)handle;
 			[textView setKeyboardType:(UIKeyboardType)hint];
-		@}
-
-		[Foreign(Language.ObjC)]
-		static void SetActionStyle(ObjC.Object handle, int style)
-		@{
-			::UITextView* textView = (::UITextView*)handle;
-			[textView setReturnKeyType: (UIReturnKeyType)style];
 		@}
 
 		[Foreign(Language.ObjC)]
