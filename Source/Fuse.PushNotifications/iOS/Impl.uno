@@ -94,5 +94,22 @@ namespace Fuse.PushNotifications
 			DelayedRegToken = "";
 			Lifecycle.EnteringForeground -= DispatchDelayedRegToken;
 		}
+
+		[Foreign(Language.ObjC)]
+		internal static void RegisterForPushNotifications()
+		@{
+			UIApplication* application = [UIApplication sharedApplication];
+			if ([application respondsToSelector:@selector(registerUserNotificationSettings:)]) {
+				// use registerUserNotificationSettings
+				[application registerUserNotificationSettings: [UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeSound  | UIUserNotificationTypeAlert | UIUserNotificationTypeBadge)  categories:nil]];
+				[application registerForRemoteNotifications];
+			} else {
+				// use registerForRemoteNotificationTypes:
+				[application registerForRemoteNotificationTypes:
+				 UIRemoteNotificationTypeBadge |
+				 UIRemoteNotificationTypeSound |
+				 UIRemoteNotificationTypeAlert];
+			}
+		@}
 	}
 }

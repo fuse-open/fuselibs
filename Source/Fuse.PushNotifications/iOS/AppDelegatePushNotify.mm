@@ -9,17 +9,9 @@
 	if (launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey]) {
 		[self application:application dispatchPushNotification:launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey] fromBar:YES];
 	}
-	if ([application respondsToSelector:@selector(registerUserNotificationSettings:)]) {
-		// use registerUserNotificationSettings
-		[application registerUserNotificationSettings: [UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeSound  | UIUserNotificationTypeAlert | UIUserNotificationTypeBadge)  categories:nil]];
-		[application registerForRemoteNotifications];
-	} else {
-		// use registerForRemoteNotificationTypes:
-		[application registerForRemoteNotificationTypes:
-		 UIRemoteNotificationTypeBadge |
-		 UIRemoteNotificationTypeSound |
-		 UIRemoteNotificationTypeAlert];
-	}
+#if (!@(Project.iOS.PushNotifications.RegisterOnLaunch:IsSet)) || @(Project.iOS.PushNotifications.RegisterOnLaunch:Or(0))
+	@{Fuse.PushNotifications.iOSImpl.RegisterForPushNotifications():Call()};
+#endif
 }
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {

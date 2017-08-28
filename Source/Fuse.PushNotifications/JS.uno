@@ -63,6 +63,7 @@ namespace Fuse.PushNotifications
 			AddMember(onRegistrationFailed);
 			AddMember(new NativeFunction("clearBadgeNumber", ClearBadgeNumber));
 			AddMember(new NativeFunction("clearAllNotifications", ClearAllNotifications));
+			AddMember(new NativeFunction("register", Register));
 
 			Fuse.PushNotifications.PushNotify.ReceivedNotification += OnReceivedNotification;
 			Fuse.PushNotifications.PushNotify.RegistrationSucceeded += OnRegistrationSucceeded;
@@ -123,6 +124,23 @@ namespace Fuse.PushNotifications
 		public object ClearAllNotifications(Context context, object[] args)
 		{
 			Fuse.PushNotifications.PushNotify.ClearAllNotifications();
+			return null;
+		}
+
+		/**
+			@scriptmethod register
+
+			Registers the app with APNS. Only neccesary if APNS.RegisterOnLaunch was
+			set to false in the unoproj file.
+		*/
+		public object Register(Context context, object[] args)
+		{
+			if (args.Length != 0)
+			{
+				Fuse.Diagnostics.UserError( "Push.register takes no arguments", this);
+				return null;
+			}
+			Fuse.PushNotifications.PushNotify.Register();
 			return null;
 		}
 	}

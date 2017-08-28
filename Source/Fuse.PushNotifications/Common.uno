@@ -143,5 +143,12 @@ namespace Fuse.PushNotifications
 		@}
 
 		public extern(!iOS && !Android) static void ClearAllNotifications() { }
+
+		public extern(iOS) static void Register()
+		{
+			iOSImpl.RegisterForPushNotifications();
+		}
+
+		public extern(!iOS) static void Register() { }
 	}
 }
