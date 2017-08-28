@@ -1,0 +1,6 @@
+<Panel ux:Class="UX.Router.HistoryParameter">
+	<Router ux:Name="router" IsMasterRouter="false"/>
+	<PageControl ux:Name="PC1" Active="a" Transition="None">
+		<Page ux:Name="a"/>
+	</PageControl>
+</Panel>

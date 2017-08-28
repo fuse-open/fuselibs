@@ -85,7 +85,6 @@ namespace Fuse.Navigation
 		protected override void OnRooted()
 		{
 			base.OnRooted();
-			_history.Clear();
 
 			Fuse.Input.Keyboard.KeyPressed.AddGlobalHandler(OnKeyPressed);
 
@@ -106,11 +105,7 @@ namespace Fuse.Navigation
 				
 				if (root)
 				{
-					if (_masterHistory != null)
-						_history = _masterHistory;
-					else
-						_masterHistory = _history;
-					
+					//TODO: find way to restore this, if desired
 					UpdateManager.AddDeferredAction(GotoMasterRoute);
 				}
 			}
@@ -170,12 +165,10 @@ namespace Fuse.Navigation
 			_masterHistory = null;
 		}
 		
-		internal int TestHistoryCount { get { return _history.Count; } }
-		
 		public Route GetCurrentRoute()
 		{
-			return GetCurrent(Parent);
-			//return GetHistoryRoute(0);
+			//return GetCurrent(Parent);
+			return GetHistoryRoute(0);
 		}
 		
 		/**	Clears the history and navigates to the specified route. */
@@ -197,13 +190,11 @@ namespace Fuse.Navigation
 			switch( how )
 			{
 				case ModifyRouteHow.Goto:
-					_history.Clear();
 					current = SetRoute(route, mode, RoutingOperation.Goto, operationStyle);
 					OnHistoryChanged(current);
 					break;
 					
 				case ModifyRouteHow.Push:
-					_history.Add( GetCurrentRoute() );
 					current = SetRoute(route, mode, RoutingOperation.Push, operationStyle);
 					OnHistoryChanged(current);
 					break;
@@ -220,14 +211,14 @@ namespace Fuse.Navigation
 				case ModifyRouteHow.PrepareBack:
 					if (route != null)
 						Fuse.Diagnostics.UserWarning( "PrepareBack does not support an explicit route", this );
-						
-					if (_history.Count == 0)
+					
+					var popRoute = GetHistoryRoute(1);
+					if (popRoute == null)
 					{
 						Fuse.Diagnostics.UserError( "There is no history for PrepareBack", this );
 						return;
 					}
-					
-					var popRoute = _history[_history.Count-1];
+
 					PrepareRoute(popRoute, RoutingOperation.Pop, operationStyle);
 					break;
 					
@@ -258,7 +249,7 @@ namespace Fuse.Navigation
 		*/
 		public void GoBack()
 		{
-			if (_history.Count > 0) Pop();
+			if (CanGoBack) Pop();
 			else GoUp();
 		}
 
@@ -267,7 +258,6 @@ namespace Fuse.Navigation
 			get
 			{
 				//be strict for typical use
-				//return _history.Count > 0;
 				return GetHistoryRoute(1) != null;
 			}
 		}
@@ -295,26 +285,15 @@ namespace Fuse.Navigation
 
 		void Pop()
 		{
-			/*if (_history.Count == 0)
-			{
-				Fuse.Diagnostics.UserError( "Cannot pop() - history is empty", this );
-				return;
-			}
-
-			var route = _history[_history.Count-1];
-			_history.RemoveAt(_history.Count-1);*/
 			var route = GetHistoryRoute(1);
 			if (route == null)
 			{
 				Fuse.Diagnostics.UserError( "Cannot pop() - history is empty", this );
 				return;
 			}
-			debug_log "Popping To: " + route.Format();
 			var c = SetRoute(route, NavigationGotoMode.Transition, RoutingOperation.Pop, "");
 			OnHistoryChanged(c);
 		}
-
-		List<Route> _history = new List<Route>();
 
 		Route _prepareCurrent, _prepareNext;
 		RoutingOperation _prepareOperation;
@@ -336,23 +315,6 @@ namespace Fuse.Navigation
 			if (_prepareOutlet == null)
 				return;
 
-			//the operation implies how history is modified
-			switch (_prepareOperation)
-			{
-				case RoutingOperation.Pop:
-					if (_history.Count != 0)
-						_history.RemoveAt(_history.Count-1);
-					break;
-					
-				case RoutingOperation.Push:
-					_history.Add( GetCurrentRoute() );
-					break;
-					
-				case RoutingOperation.Goto:
-					_history.Clear();
-					break;
-			}
-			
 			var c = SetRoute(_prepareNext, NavigationGotoMode.Transition, _prepareOperation,
 				_prepareOperationStyle);
 			OnHistoryChanged(c);
@@ -409,7 +371,6 @@ namespace Fuse.Navigation
 		Route SetRoute(Route r, NavigationGotoMode gotoMode, RoutingOperation operation, 
 			string operationStyle, bool userRequest = true)
 		{
-			//debug_log "SetRoute: " + r.Format() + " " + operation;
 			if (r == null)
 				throw new Exception( "Route cannot be null" );
 				
@@ -429,7 +390,6 @@ namespace Fuse.Navigation
 					Fuse.Diagnostics.InternalError( msg, this );
 					
 				//try to cleanup on error and go to previous state
-				_history.Clear();
 				var c = SetRouteImpl(Parent, _rootPage, current, NavigationGotoMode.Bypass, RoutingOperation.Goto,
 					"", out ignore);
 				OnHistoryChanged(c);
@@ -456,7 +416,6 @@ namespace Fuse.Navigation
 				page = r.RouterPage;
 			else
 				page = new RouterPage{ Path = r.Path, Parameter = r.Parameter };
-			var cur = outlet.GetCurrent();
 			var didTransition = outlet.CompareCurrent(page);
 			if (didTransition == RoutingResult.Invalid)
 				return null;
@@ -465,51 +424,52 @@ namespace Fuse.Navigation
 			if (reusePage)
 				page = outlet.GetCurrent();
 			
-			debug_log operation + " " + r.Format() + " " + " RP: " + reusePage + " CU:" + canReuse + r.RouterPage +
-				" #" + pages.Count;
-			switch (operation)
+			if (gotoMode != NavigationGotoMode.Prepare)
 			{
-				case RoutingOperation.Goto:
-					pages.Clear();
-					pages.Add(page);
-					break;
-					
-				case RoutingOperation.Push:
-					if (!canReuse)
-					{
+				switch (operation)
+				{
+					case RoutingOperation.Goto:
 						pages.Clear();
 						pages.Add(page);
-					}
-					else if (!reusePage)
-						pages.Add(page);
-					break;
-					
-				case RoutingOperation.Replace:
-					if (!reusePage)
-					{
-						if (pages.Count  > 0)
-							pages[pages.Count-1] = page;
-						else
+						break;
+						
+					case RoutingOperation.Push:
+						if (!canReuse)
+						{
+							pages.Clear();
 							pages.Add(page);
-					}
-					break;
-					
-				case RoutingOperation.Pop:
-					if (!canReuse)
-					{
-					}
-					else if (!reusePage)
-					{
-						if (pages.Count >0)
-							pages.RemoveAt(pages.Count -1);
-							
-						//assume a correct logical transition
-						/*if (pages.Count > 0)
-							pages[pages.Count-1] = page;
-						else
-							pages.Add(page);*/
-					}
-					break;
+						}
+						else if (!reusePage)
+							pages.Add(page);
+						break;
+						
+					case RoutingOperation.Replace:
+						if (!reusePage)
+						{
+							if (pages.Count  > 0)
+								pages[pages.Count-1] = page;
+							else
+								pages.Add(page);
+						}
+						break;
+						
+					case RoutingOperation.Pop:
+						if (!canReuse)
+						{
+						}
+						else if (!reusePage)
+						{
+							if (pages.Count >0)
+								pages.RemoveAt(pages.Count -1);
+								
+							//assume a correct logical transition
+							/*if (pages.Count > 0)
+								pages[pages.Count-1] = page;
+							else
+								pages.Add(page);*/
+						}
+						break;
+				}
 			}
 			
 			if (didTransition != RoutingResult.NoChange)
@@ -600,11 +560,14 @@ namespace Fuse.Navigation
 			return route;
 		}
 		
-		/* Find the nearest ancestor that is a Page in a RouterOutlet */
+		/* Find the nearest ancestor that is a Page in a RouterOutlet, but do not cross a Router. */
 		static internal Visual FindRouterOutletPage(Node from)
 		{
 			while (from != null && from.Parent != null)
 			{
+				if (HasRouter(from))
+					return null;
+
 				var ro = AsRouterOutlet(from.Parent);
 				if (ro != null)
 				{
@@ -715,9 +678,12 @@ namespace Fuse.Navigation
 			return r != null && r != this;
 		}
 		
-		bool HasRouter(Visual n)
+		static bool HasRouter(Node n)
 		{
-			return n.FirstChild<Router>() != null;
+			var v = n as Visual;
+			if (v == null)
+				return false;
+			return v.FirstChild<Router>() != null;
 		}
 		
 		void IBaseNavigation.GoForward() { }
@@ -794,6 +760,28 @@ namespace Fuse.Navigation
 			}
 		}
 		
+		internal int TestHistoryCount 
+		{
+			get
+			{
+				var thc = new TestHistoryCounter();
+				var list = new List<RouterPage>();
+				EnumerateHistory( thc.HistoryAction, list, _rootPage );
+				return thc.Count - 1;
+			}
+		}
+
+		class TestHistoryCounter
+		{
+			public int Count;
+
+			public bool HistoryAction( List<RouterPage> stack )
+			{
+				Count++;
+				return true;
+			}
+		}
+
 		delegate bool HistoryAction( List<RouterPage> stack );
 		
 		bool EnumerateHistory( HistoryAction action, List<RouterPage> stack, RouterPage rp )

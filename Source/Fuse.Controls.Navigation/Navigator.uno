@@ -98,13 +98,16 @@ namespace Fuse.Controls
 			{
 				(this as IRouterOutlet).Goto( pages[pages.Count-1], NavigationGotoMode.Bypass, RoutingOperation.Goto, "" );
 			}
-			else if (DefaultPath != null)
+			else
 			{
-				var rPage = new RouterPage{ Path = DefaultPath, Parameter = null };
+				if (DefaultPath != null)
+				{
+					_current = new RouterPage{ Path = DefaultPath, Parameter = null };
+					(this as IRouterOutlet).Goto(_current, NavigationGotoMode.Bypass,
+						RoutingOperation.Goto, "");
+				}
 				if (pages != null)
-					pages.Add( rPage );
-				(this as IRouterOutlet).Goto(rPage, NavigationGotoMode.Bypass,
-					RoutingOperation.Goto, "");
+					pages.Add( _current );
 			}
 		}
 		
@@ -219,9 +222,8 @@ namespace Fuse.Controls
 					
 				if (compat || reuse || replace || nonTemplate)
 				{
-					var result = new PrepareResult{ Page = curPage.Clone(), Routing = RoutingResult.MinorChange };
-					result.Page.Parameter = routerPage.Parameter;
-					PageData.GetOrCreate(result.Page.Visual).AttachRouterPage(result.Page);
+					var result = new PrepareResult{ Page = routerPage, Routing = RoutingResult.MinorChange };
+					PageData.GetOrCreate(curPageVisual).AttachRouterPage(result.Page);
 					return result;
 				}
 			}
@@ -293,8 +295,6 @@ namespace Fuse.Controls
 					Children.Add(useVisual);
 			}
 
-			//var page = new RouterPage{ Path = routerPage.Path, Parameter = routerPage.Parameter,
-			//	Visual = useVisual };
 			return new PrepareResult{ Page = routerPage, Routing = RoutingResult.Change };
 		}
 		
