@@ -4,6 +4,7 @@ using Uno.Graphics;
 using Fuse;
 using Fuse.Elements;
 using Fuse.Drawing.Internal;
+using Fuse.Nodes;
 
 namespace Fuse.Drawing.Primitives
 {
@@ -369,6 +370,9 @@ namespace Fuse.Drawing.Primitives
 				apply virtual falloff;
 				Smoothness: smoothness;
 			};
+
+			if defined(FUSELIBS_DEBUG_DRAW_RECTS)
+				DrawRectVisualizer.Capture(float2(0), local::Size, visual.WorldTransform, dc);
 		}
 	}
 }

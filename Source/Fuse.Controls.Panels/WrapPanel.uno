@@ -88,7 +88,7 @@ namespace Fuse.Controls
 			get { return _wrapLayout.RowAlignment; }
 			set { _wrapLayout.RowAlignment = value; }
 		}
-		
+
 		readonly WrapLayout _wrapLayout;
 
 		public WrapPanel()

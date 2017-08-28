@@ -363,24 +363,8 @@ namespace Fuse.Controls.Native.Android
 				java.lang.reflect.Field fCursorDrawable = clazz.getDeclaredField("mCursorDrawable");
 				fCursorDrawable.setAccessible(true);
 				android.graphics.drawable.Drawable[] drawables = new android.graphics.drawable.Drawable[2];
-#if @(GRADLE:Defined)
 				drawables[0] = android.support.v4.content.ContextCompat.getDrawable(com.fuse.Activity.getRootActivity(), mCursorDrawableRes);
 				drawables[1] = android.support.v4.content.ContextCompat.getDrawable(com.fuse.Activity.getRootActivity(), mCursorDrawableRes);
-#else
-				android.content.Context context = editText.getContext();
-				android.content.res.Resources res = context.getResources();
-				if (android.os.Build.VERSION.SDK_INT >= 21)
-				{
-					drawables[0] = context.getDrawable(mCursorDrawableRes);
-					drawables[1] = context.getDrawable(mCursorDrawableRes);
-				}
-				else
-				{
-					drawables[0] = res.getDrawable(mCursorDrawableRes);
-					drawables[1] = res.getDrawable(mCursorDrawableRes);
-				}
-#endif
-
 				drawables[0].setColorFilter(color, android.graphics.PorterDuff.Mode.SRC_IN);
 				drawables[1].setColorFilter(color, android.graphics.PorterDuff.Mode.SRC_IN);
 				fCursorDrawable.set(editor, drawables);

@@ -1,0 +1,16 @@
+<Panel ux:Class="UX.NameValuePair">
+	<JavaScript>
+		var Observable = require("FuseJS/Observable");
+		exports.v = Observable(false);
+		exports.flip = function() {
+			exports.v.value = true;
+		}
+		exports.foo = 'bar';
+	</JavaScript>
+	<Text ux:Name="t">{v?(bar:'foo' + v):('boo':v)}</Text>
+	<FuseTest.Invoke Handler="{flip}" ux:Name="flip" />
+	<With Data="{{foo}: '123', foo: 456}">
+		<Text ux:Name="tbar">{bar}</Text>
+		<Text ux:Name="tfoo">{foo}</Text>
+	</With>
+</Panel>

@@ -3,7 +3,7 @@
   "Description": "Library of vector drawing and surface",
   "Publisher": "Fusetools AS",
   "Title": "Fuse.Drawing.Surface",
-  "Version": "1.1.0",
+  "Version": "1.2.1",
   "InternalsVisibleTo": [
     "Fuse.Controls.Panels",
     "Fuse.Controls.Primitives",
@@ -23,7 +23,7 @@
   ],
   "Includes": [
     "*",
-    "CoreGraphicsLib.h:CHeader:iOS||OSX",
+    "CoreGraphics/CoreGraphicsLib.h:CHeader:iOS||OSX",
     "Android/LinearGradientStore.java:Java:Android",
     "Android/GraphicsSurfaceContext.java:Java:Android",
   ],

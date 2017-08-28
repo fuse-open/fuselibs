@@ -67,8 +67,8 @@ namespace Fuse
 				SetBit(FastProperty1.IsContextEnabledCache, newValue);
 				OnIsContextEnabledChanged();
 
-				for (int i = 0; i < ZOrderChildCount; i++)
-					GetZOrderChild(i).UpdateIsContextEnabledCache();
+				for (var v = FirstChild<Visual>(); v != null; v = v.NextSibling<Visual>())
+					v.UpdateIsContextEnabledCache();
 			}
 		}
 		

@@ -35,7 +35,7 @@ namespace Fuse.FileSystem
         {
             if defined(DOTNET)
             {
-                var dt = (BclDateTime)time;
+                var dt = (DateTime)time;
                 var instant = Constants.BclEpoch.PlusTicks(dt.Ticks);
                 return new ZonedDateTime(instant, DateTimeZone.Utc);
             }

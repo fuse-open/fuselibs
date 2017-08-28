@@ -510,15 +510,14 @@ namespace Fuse.Layouts
 			else return 0;
 		}
 		
-		void CalcActualPositions(IList<Node> elements)
+		void CalcActualPositions(Visual container)
 		{
 			bool rowMajor = ChildOrder == GridChildOrder.RowMajor;
 			
 			//find expected max column
 			int minorCount = Math.Max(1,rowMajor ? UserCount(ColumnList) : UserCount(RowList));
-			for (int nx = 0; nx < elements.Count; nx++)
+			for (var e = container.FirstChild<Visual>(); e != null; e = e.NextSibling<Visual>())
 			{
-				var e = elements[nx] as Visual;
 				if (!AffectsLayout(e)) continue;
 
 				if (rowMajor)
@@ -541,9 +540,8 @@ namespace Fuse.Layouts
 			int maxRow = 0;
 			int maxCol = 0;
 			
-			for (int nx = 0; nx < elements.Count; nx++)
+			for (var elm = container.FirstChild<Visual>(); elm != null; elm = elm.NextSibling<Visual>())
 			{
-				var elm = elements[nx] as Visual;
 				if (!AffectsLayout(elm)) continue;
 
 				object v;
@@ -728,9 +726,9 @@ namespace Fuse.Layouts
 			_rows.RootUnsubscribe();
 		}
 
-		internal override float2 GetContentSize(IList<Node> elements, LayoutParams lp)
+		internal override float2 GetContentSize(Visual container, LayoutParams lp)
 		{
-			return Measure(elements, lp);	
+			return Measure(container, lp);	
 		}
 
 		float EffectiveCellSpacing
@@ -870,13 +868,12 @@ namespace Fuse.Layouts
 			return sz;
 		}
 		
-		void CalcAuto(IList<Node> elements, ref float availableWidth, ref float availableHeight, bool secondPass,
+		void CalcAuto(Visual container, ref float availableWidth, ref float availableHeight, bool secondPass,
 			bool hasFirstHorzSize, bool hasFirstVertSize,
 			bool expandWidth, bool expandHeight)
 		{
-			for (int nx = 0; nx < elements.Count; nx++)
+			for (var child = container.FirstChild<Visual>(); child != null; child = child.NextSibling<Visual>())
 			{
-				var child = elements[nx] as Visual;
 				if (!AffectsLayout(child)) continue;
 
 				int x = GetActualColumn(child);
@@ -928,11 +925,11 @@ namespace Fuse.Layouts
 			availableHeight = Math.Max(availableHeight, 0.0f);
 		}
 		
-		float2 Measure(IList<Node> elements, LayoutParams lp)
+		float2 Measure(Visual container, LayoutParams lp)
 		{
 			var effectiveCellSpacing = EffectiveCellSpacing;
 			
-			CalcActualPositions(elements);
+			CalcActualPositions(container);
 			
 			var fillHorizontal = lp.HasX;
 			var fillVertical = lp.HasY;
@@ -976,7 +973,7 @@ namespace Fuse.Layouts
 			}
 			
 			// Measure cols/rows with auto metrics in both dimensions
-			CalcAuto(elements, ref availableWidth, ref availableHeight, false, hasFirstHorzSize, hasFirstVertSize,
+			CalcAuto(container, ref availableWidth, ref availableHeight, false, hasFirstHorzSize, hasFirstVertSize,
 				expandWidth, expandHeight);
 
 			// do fill for axes not done before
@@ -987,7 +984,7 @@ namespace Fuse.Layouts
 				CalcFill(_rows, availableHeight, heightProportion, expandHeight);
 			
 			//measure again for auto cells that didn't get measured the first pass
-			CalcAuto(elements, ref availableWidth, ref availableHeight, true, hasFirstHorzSize, hasFirstVertSize,
+			CalcAuto(container, ref availableWidth, ref availableHeight, true, hasFirstHorzSize, hasFirstVertSize,
 				expandWidth, expandHeight);
 
 			// Place rows/cols
@@ -1013,11 +1010,11 @@ namespace Fuse.Layouts
 			}
 		}
 		
-		internal override void ArrangePaddingBox(IList<Node> elements, float4 padding, 
+		internal override void ArrangePaddingBox(Visual container, float4 padding, 
 			LayoutParams lp)
 		{
 			var remainSize = lp.Size - padding.XY - padding.ZW;
-			var measured = Measure( elements, LayoutParams.Create(remainSize) );
+			var measured = Measure( container, LayoutParams.Create(remainSize) );
 
 			var off = float2(0);
 			var eca = EffectiveContentAlignment;
@@ -1048,10 +1045,8 @@ namespace Fuse.Layouts
 			
 			var effectiveCellSpacing = EffectiveCellSpacing;
 			var nlp = lp.CloneAndDerive();
-			for (int nx = 0; nx < elements.Count; nx++)
+			for (var child = container.FirstChild<Visual>(); child != null; child = child.NextSibling<Visual>())
 			{
-				var child = elements[nx] as Visual;
-				if (child == null) continue;
 				if (ArrangeMarginBoxSpecial(child, padding, lp))
 					continue;
 

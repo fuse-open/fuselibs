@@ -406,17 +406,11 @@ namespace Fuse.Gestures
 			if (args.Origin == this)
 				return;
 				
-			//adjust our position if the ScrollView changed it's layout
-			if (args.IsAdjustment && args.ArrangeOffset != float2(0))
-				_region.Position = _region.Position + args.ArrangeOffset; 
-
-			//current user interaction dominates
-			if (_region.IsUser)
-				return;
-					
-			//trust new position and stop any region movement
-			if (!args.IsAdjustment)
+			if (args.IsAdjustment)
+				_region.Adjust(args.ArrangeOffset);
+			else
 				_region.Reset(args.Value);
+				
 			CheckNeedUpdated(true); //allow remove of Update
 		}
 

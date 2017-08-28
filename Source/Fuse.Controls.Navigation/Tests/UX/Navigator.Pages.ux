@@ -1,0 +1,42 @@
+<Panel ux:Class="UX.Navigator.Pages">
+	<JavaScript>
+		var Observable = require("FuseJS/Observable")
+		
+		exports.pages = Observable({ 
+			$path: "one",
+			value: "dog" ,
+		})
+		
+		exports.pushTwo = function() {
+			exports.pages.add({
+				$template: "two",
+				value: "cat",
+			})
+		}
+		
+		exports.goBack = function() {
+			exports.pages.removeAt( exports.pages.length - 1)
+		}
+		
+		exports.replaceThree = function() {
+			exports.pages.replaceAt( exports.pages.length - 1, {
+				$template: "junk",
+				$path: "three",
+				value: "weasel",
+			})
+		}
+	</JavaScript>
+	<Navigator Pages="{pages}" ux:Name="theNav" Transition="None">
+		<Page ux:Class="MyPage">
+			<Text Value="{value}" ux:Name="v"/>
+		</Page>
+		
+		<MyPage ux:Name="one"/>
+		<MyPage ux:Name="two"/>
+		<MyPage ux:Name="three"/>
+		
+		<FuseTest.Invoke Handler="{pushTwo}" ux:Name="callPushTwo"/>
+		<FuseTest.Invoke Handler="{goBack}" ux:Name="callGoBack"/>
+		<FuseTest.Invoke Handler="{replaceThree}" ux:Name="callReplaceThree"/>
+	</Navigator>
+</Panel>

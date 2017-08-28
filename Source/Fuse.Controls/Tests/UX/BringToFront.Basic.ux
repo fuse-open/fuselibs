@@ -1,0 +1,13 @@
+<Panel ux:Class="UX.BringToFront.Basic">
+	<FuseTest.DudElement StringValue="A" ux:Name="a"/>
+	<FuseTest.DudElement StringValue="B" ux:Name="b"/>
+	<FuseTest.DudElement StringValue="C" ux:Name="c">
+		<Timeline ux:Name="cFront">
+			<BringToFront/>
+		</Timeline>
+	</FuseTest.DudElement>
+	
+	<Timeline ux:Name="bFront">
+		<BringToFront Target="b"/>
+	</Timeline>
+</Panel>

@@ -18,14 +18,15 @@ namespace Fuse.Navigation.Test
 		public void ValidParam1()
 		{
 			var p = new UX.RouteParamValidation();
-			var root = TestRootPanel.CreateWithChild(p, int2(100));
+			using (var root = TestRootPanel.CreateWithChild(p, int2(100)))
+			{
+				p.GotoTest1.Perform();
+				root.StepFrameJS();
+				root.StepFrameJS();
 
-			p.GotoTest1.Perform();
-			root.StepFrameJS();
-			root.StepFrameJS();
-
-			Assert.AreEqual("\"param_string\"", p.GetParamValue("page1"));
-			p.Children.Clear();
+				Assert.AreEqual("\"param_string\"", p.GetParamValue("page1"));
+				p.Children.Clear();
+			}
 		}
 
 		[Test]
@@ -46,8 +47,8 @@ namespace Fuse.Navigation.Test
 		public void BadParam1()
 		{
 			var p = new UX.RouteParamValidation();
-			var root = TestRootPanel.CreateWithChild(p, int2(100));
 
+			using (var root = TestRootPanel.CreateWithChild(p, int2(100)))
 			using (var dg = new RecordDiagnosticGuard())
 			{
 				p.GotoTest3.Perform();
@@ -66,8 +67,8 @@ namespace Fuse.Navigation.Test
 		public void BadParam2()
 		{
 			var p = new UX.RouteParamValidation();
-			var root = TestRootPanel.CreateWithChild(p, int2(100));
 
+			using (var root = TestRootPanel.CreateWithChild(p, int2(100)))
 			using (var dg = new RecordDiagnosticGuard())
 			{
 				p.GotoTest4.Perform();
@@ -86,8 +87,8 @@ namespace Fuse.Navigation.Test
 		public void NestedObjects()
 		{
 			var p = new UX.RouteParamValidation();
-			var root = TestRootPanel.CreateWithChild(p, int2(100));
 
+			using (var root = TestRootPanel.CreateWithChild(p, int2(100)))
 			using (var dg = new RecordDiagnosticGuard())
 			{
 				p.GotoTest5.Perform();

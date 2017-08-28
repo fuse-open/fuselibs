@@ -36,7 +36,7 @@ namespace Fuse.Triggers.Actions
 				Action();
 				
 			if (Handler != null)
-				Handler(target, new VisualEventArgs(target as Visual) );
+				Handler(target, new VisualEventArgs(target.FindByType<Visual>()) );
 		}
 	}
 }

@@ -1,0 +1,19 @@
+<Panel ux:Class="UX.LayoutAnimation.TransitionLayout">
+	<Panel Height="100" Width="100" X="0" Y="0" ux:Name="m">
+		<LayoutAnimation>
+			<Move Vector="1" RelativeTo="WorldPositionChange" Duration="1" />
+			<Resize Vector="1" RelativeTo="SizeChange" Duration="1" />
+		</LayoutAnimation>
+		<Timeline ux:Name="s1">
+			<TransitionLayout From="f"/>
+		</Timeline>
+	</Panel>
+	
+	<Panel Height="50" Width="200" Alignment="BottomRight" ux:Name="f"/>
+	<Panel Height="200" Width="50" Alignment="BottomLeft" ux:Name="g">
+		<Timeline ux:Name="s2">
+			<TransitionLayout Target="m" From="g"/>
+		</Timeline>
+	</Panel>
+	
+</Panel>

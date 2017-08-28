@@ -167,9 +167,9 @@ namespace Fuse.Navigation
 		{
 			_pages.Clear();
 			int c = 0;
-			for (int i = 0; i < Parent.Children.Count; i++)
+			for (var x = Parent.FirstChild<Visual>(); x != null; x = x.NextSibling<Visual>())
 			{
-				var x = Parent.Children[i] as Visual; //we require Visual (though IsPage tends to check that anyway)
+				//we require Visual (though IsPage tends to check that anyway)
 				if (!Navigation.IsPage(x))
 					continue;
 					

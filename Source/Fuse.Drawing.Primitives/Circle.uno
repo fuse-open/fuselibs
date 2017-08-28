@@ -4,6 +4,7 @@ using Uno.Graphics;
 using Fuse;
 using Fuse.Elements;
 using Fuse.Drawing.Internal;
+using Fuse.Nodes;
 
 namespace Fuse.Drawing.Primitives
 {
@@ -106,6 +107,17 @@ namespace Fuse.Drawing.Primitives
 				apply virtual limit;
 				Coverage: prev * LimitCoverage;
 			};
+
+			// Circles don't actually draw as rectangles, but this is a good-enough-to-be-useful(-and-testable) approximation.
+			if defined(FUSELIBS_DEBUG_DRAW_RECTS)
+			{
+				float2 elementPos = float2(0);
+				float2 elementSize = visual.ActualSize;
+				float minSize = Math.Min(elementSize.X, elementSize.Y);
+				float2 offset = elementPos + elementSize / 2.0f - minSize / 2.0f;
+				float2 size = float2(minSize);
+				DrawRectVisualizer.Capture(offset, size, visual.WorldTransform, dc);
+			}
 		}
 	}
 }

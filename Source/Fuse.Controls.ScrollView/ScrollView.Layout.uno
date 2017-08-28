@@ -1,4 +1,5 @@
 using Uno;
+using Uno.UX;
 
 using Fuse.Elements;
 
@@ -59,8 +60,10 @@ namespace Fuse.Controls
 				
 				_hasPrevArrange = true;
 			}
-			UpdateManager.AddDeferredAction(UpdateScrollPosition, LayoutPriority.Post);
+			UpdateManager.AddDeferredAction(UpdateScrollPosition, LayoutPriority.Later);
 		}
+		
+		internal static Selector SizingChanged = "SizingChanged";
 		
 		void UpdateScrollPosition()
 		{
@@ -76,11 +79,11 @@ namespace Fuse.Controls
 				var newOffset = Content.ActualPosition + _placeAnchor.ActualPosition - newAnchor;
 					
 				var diff = newOffset - oldOffset;
-				
 				//gestures need the "diff" to offset their scrolling interaction
 				//don't exceed min/max though as to not trigger any ends animation
 				//https://github.com/fusetools/fuselibs/issues/2891
-				var nsp = Math.Min( MaxScroll, Math.Max( MinScroll, ScrollPosition + diff ) );
+				//var nsp = Math.Min( MaxScroll, Math.Max( MinScroll, ScrollPosition + diff ) );
+				var nsp = ScrollPosition + diff;
 				var ndiff = nsp - ScrollPosition;
 				SetScrollPosition( nsp, ndiff, this );
 			}
@@ -88,7 +91,7 @@ namespace Fuse.Controls
 			//constrain to new ends (use scroller if possible to allow for animation and interplay with pointer)
 			if (_scroller != null && IsRootingCompleted)
 			{
-				_scroller.CheckLimits();
+				UpdateManager.AddDeferredAction(_scroller.CheckLimits, LayoutPriority.Later);
 			}
 			else
 			{
@@ -96,6 +99,8 @@ namespace Fuse.Controls
 				//force messages since relative position always changes
 				OnScrollPositionChanged(float2(0), false, this);
 			}
+			
+			OnPropertyChanged(SizingChanged);
 		}
 		
 		 
@@ -112,10 +117,9 @@ namespace Fuse.Controls
 			var relAnchor = AlignmentHelpers.GetAnchor(_contentAlignment);
 			var anchor = relAnchor * ActualSize;
 			
-			for (int i=0; i < Element.Children.Count; ++i)
+			for (var c = Element.FirstChild<Element>(); c != null; c = c.NextSibling<Element>())
 			{
-				var c = Element.Children[i] as Element;
-				if (c == null || !c.HasMarginBox || c.LayoutRole != LayoutRole.Standard)
+				if (!c.HasMarginBox || c.LayoutRole != LayoutRole.Standard)
 					continue;
 					
 				var cAnchor = Content.ActualPosition - ScrollPosition + c.ActualPosition + c.ActualSize * relAnchor;
@@ -133,6 +137,8 @@ namespace Fuse.Controls
 		//track the result of `ArrangeContent`
 		Alignment _contentAlignment;
 		float2 _contentMarginSize;
+		
+		internal float2 ContentMarginSize { get { return _contentMarginSize; } }
 		
 		void ArrangeContent(LayoutParams lp)
 		{
@@ -238,7 +244,7 @@ namespace Fuse.Controls
 		/**
 			The distance from the visible view area start or end for the provided position.
 		*/
-		protected float2 DistanceFromView(float2 position, DistanceFromViewTarget target)
+		internal float2 DistanceFromView(float2 position, DistanceFromViewTarget target)
 		{
 			float x = 0;
 			float y = 0;

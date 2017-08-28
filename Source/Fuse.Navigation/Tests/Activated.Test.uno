@@ -261,5 +261,66 @@ namespace Fuse.Navigation.Test
 				Assert.AreEqual( "12", p.Deact.Value);
 			}
 		}
+		
+		[Test]
+		//tracking down https://github.com/fusetools/fuselibs-public/issues/223
+		public void EdgeNavigator()
+		{
+			var p = new UX.Activated.EdgeNavigator();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				Assert.AreEqual( 1, p.AP1.LA.PerformedCount );
+ 				Assert.AreEqual( 0, p.AP1.LD.PerformedCount );
+				Assert.AreEqual( 1, p.AP1.FA.PerformedCount );
+ 				Assert.AreEqual( 0, p.AP1.FD.PerformedCount );
+ 				
+ 				Assert.AreEqual( 1, p.AP1.LWA.Progress );
+ 				Assert.AreEqual( 1, p.AP1.FWA.Progress );
+ 				
+ 				p.edge.Active = p.left;
+ 				root.StepFrame(1);
+ 				
+				Assert.AreEqual( 1, p.AP1.LA.PerformedCount );
+ 				Assert.AreEqual( 0, p.AP1.LD.PerformedCount );
+				Assert.AreEqual( 1, p.AP1.FA.PerformedCount );
+ 				Assert.AreEqual( 1, p.AP1.FD.PerformedCount );
+ 				
+ 				Assert.AreEqual( 1, p.AP1.LWA.Progress );
+ 				Assert.AreEqual( 0, p.AP1.FWA.Progress );
+
+ 				p.A1.Active = p.AP2;
+ 				root.StepFrame(1); //TODO: it's uncertain why PumpDeferred doesn't work here
+ 				
+				Assert.AreEqual( 1, p.AP1.LA.PerformedCount );
+ 				Assert.AreEqual( 1, p.AP1.LD.PerformedCount );
+				Assert.AreEqual( 1, p.AP1.FA.PerformedCount );
+ 				Assert.AreEqual( 1, p.AP1.FD.PerformedCount );
+ 				
+ 				Assert.AreEqual( 0, p.AP1.LWA.Progress );
+ 				Assert.AreEqual( 0, p.AP1.FWA.Progress );
+ 				
+ 				p.A1.Active = p.AP1;
+ 				root.StepFrame(1);
+ 				
+				Assert.AreEqual( 2, p.AP1.LA.PerformedCount );
+ 				Assert.AreEqual( 1, p.AP1.LD.PerformedCount );
+				Assert.AreEqual( 1, p.AP1.FA.PerformedCount );
+ 				Assert.AreEqual( 1, p.AP1.FD.PerformedCount );
+ 				
+ 				Assert.AreEqual( 1, p.AP1.LWA.Progress );
+ 				Assert.AreEqual( 0, p.AP1.FWA.Progress );
+ 				
+ 				p.edge.Navigation.GoBack();
+ 				root.StepFrame(1);
+ 				
+				Assert.AreEqual( 2, p.AP1.LA.PerformedCount );
+ 				Assert.AreEqual( 1, p.AP1.LD.PerformedCount );
+				Assert.AreEqual( 2, p.AP1.FA.PerformedCount );
+ 				Assert.AreEqual( 1, p.AP1.FD.PerformedCount );
+ 				
+ 				Assert.AreEqual( 1, p.AP1.LWA.Progress );
+ 				Assert.AreEqual( 1, p.AP1.FWA.Progress );
+			}
+		}
 	}
 }

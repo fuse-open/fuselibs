@@ -16,99 +16,104 @@ namespace Fuse.Reactive.Test
 			// ref https://github.com/fusetools/fuselibs/issues/3211
 
 			var e = new UX.DataBinding.BehaviorDataContext();
-			var root = TestRootPanel.CreateWithChild(e);
-			root.StepFrameJS();
-
-			Assert.AreEqual(e.pg.t1.Value, "bar");
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.StepFrameJS();
+				Assert.AreEqual(e.pg.t1.Value, "bar");
+			}
 		}
 
 		[Test]
 		public void BindingDirections()
 		{
 			var e = new UX.DataBinding.BindingDirections();
-			var root = TestRootPanel.CreateWithChild(e);
-			root.StepFrameJS();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.StepFrameJS();
 
-			Assert.AreEqual("foo", e.ta.Value);
-			Assert.AreEqual("bar", e.tb.Value);
-			Assert.AreEqual("", e.tc.Value);
-			Assert.AreEqual("FOO", e.tA.Value);
-			Assert.AreEqual("BAR", e.tB.Value);
-			Assert.AreEqual("", e.tC.Value);
+				Assert.AreEqual("foo", e.ta.Value);
+				Assert.AreEqual("bar", e.tb.Value);
+				Assert.AreEqual("", e.tc.Value);
+				Assert.AreEqual("FOO", e.tA.Value);
+				Assert.AreEqual("BAR", e.tB.Value);
+				Assert.AreEqual("", e.tC.Value);
 
-			e.ta.Value = "hehe";
-			e.tb.Value = "haha";
-			e.tc.Value = "hoho";
-			e.tA.Value = "hEhE";
-			e.tB.Value = "hAhA";
-			e.tC.Value = "hOhO";
+				e.ta.Value = "hehe";
+				e.tb.Value = "haha";
+				e.tc.Value = "hoho";
+				e.tA.Value = "hEhE";
+				e.tB.Value = "hAhA";
+				e.tC.Value = "hOhO";
 
-			root.StepFrameJS();
+				root.StepFrameJS();
 
-			Assert.AreEqual("hehe", e.mirror_a.Value);
-			Assert.AreEqual("bar", e.mirror_b.Value);
-			Assert.AreEqual("hoho", e.mirror_c.Value);
+				Assert.AreEqual("hehe", e.mirror_a.Value);
+				Assert.AreEqual("bar", e.mirror_b.Value);
+				Assert.AreEqual("hoho", e.mirror_c.Value);
 
-			Assert.AreEqual("hEhE", e.A);
-			Assert.AreEqual("BAR", e.B);
-			Assert.AreEqual("hOhO", e.C);
+				Assert.AreEqual("hEhE", e.A);
+				Assert.AreEqual("BAR", e.B);
+				Assert.AreEqual("hOhO", e.C);
 
-			e.changeThingsUp.Perform();
-			root.StepFrameJS();
-			Assert.AreEqual("foo++", e.ta.Value);
-			Assert.AreEqual("bar++", e.tb.Value);
-			Assert.AreEqual("hoho", e.tc.Value);
+				e.changeThingsUp.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual("foo++", e.ta.Value);
+				Assert.AreEqual("bar++", e.tb.Value);
+				Assert.AreEqual("hoho", e.tc.Value);
 
-			Assert.AreEqual("foo++", e.mirror_a.Value);
-			Assert.AreEqual("bar++", e.mirror_b.Value);
-			Assert.AreEqual("moo++", e.mirror_c.Value);
+				Assert.AreEqual("foo++", e.mirror_a.Value);
+				Assert.AreEqual("bar++", e.mirror_b.Value);
+				Assert.AreEqual("moo++", e.mirror_c.Value);
+			}
 		}
 
 		[Test]
 		public void Simple()
 		{
 			var e = new UX.DataBinding.SimpleBindings();
-			var root = TestRootPanel.CreateWithChild(e);
-			
-			root.StepFrameJS();
-			Assert.AreEqual(true, e.TheWhile.Value);
-			Assert.AreEqual("hello", e.TheText.Value);
-			Assert.AreEqual(200, e.TheRange.Value);
-			Assert.AreEqual(float4(1,0,0,1), e.TheText.TextColor);
-			
-			e.CallNext.Perform();
-			root.StepFrameJS();
-			Assert.AreEqual(false, e.TheWhile.Value);
-			Assert.AreEqual("goodbye", e.TheText.Value);
-			Assert.AreEqual(100, e.TheRange.Value);
-			Assert.AreEqual(float4(0,1,0,1), e.TheText.TextColor);
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.StepFrameJS();
+				Assert.AreEqual(true, e.TheWhile.Value);
+				Assert.AreEqual("hello", e.TheText.Value);
+				Assert.AreEqual(200, e.TheRange.Value);
+				Assert.AreEqual(float4(1,0,0,1), e.TheText.TextColor);
+
+				e.CallNext.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual(false, e.TheWhile.Value);
+				Assert.AreEqual("goodbye", e.TheText.Value);
+				Assert.AreEqual(100, e.TheRange.Value);
+				Assert.AreEqual(float4(0,1,0,1), e.TheText.TextColor);
+			}
 		}
 		
 		[Test]
 		public void Object()
 		{
 			var e = new UX.DataBinding.ObjectBindings();
-			var root = TestRootPanel.CreateWithChild(e);
-			
-			root.StepFrameJS();
-			Assert.AreEqual(true, e.TheWhile.Value);
-			Assert.AreEqual("hello", e.TheText.Value);
-			Assert.AreEqual(200, e.TheRange.Value);
-			Assert.AreEqual(float4(1,0,0,1), e.TheText.TextColor);
-			
-			e.CallNext.Perform();
-			root.StepFrameJS();
-			Assert.AreEqual(false, e.TheWhile.Value);
-			Assert.AreEqual("goodbye", e.TheText.Value);
-			Assert.AreEqual(100, e.TheRange.Value);
-			Assert.AreEqual(float4(0,1,0,1), e.TheText.TextColor);
-			
-			e.CallNext.Perform();
-			root.StepFrameJS();
-			Assert.AreEqual(true, e.TheWhile.Value);
-			Assert.AreEqual("oop", e.TheText.Value);
-			Assert.AreEqual(50, e.TheRange.Value);
-			Assert.AreEqual(float4(0,0,1,1), e.TheText.TextColor);
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.StepFrameJS();
+				Assert.AreEqual(true, e.TheWhile.Value);
+				Assert.AreEqual("hello", e.TheText.Value);
+				Assert.AreEqual(200, e.TheRange.Value);
+				Assert.AreEqual(float4(1,0,0,1), e.TheText.TextColor);
+
+				e.CallNext.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual(false, e.TheWhile.Value);
+				Assert.AreEqual("goodbye", e.TheText.Value);
+				Assert.AreEqual(100, e.TheRange.Value);
+				Assert.AreEqual(float4(0,1,0,1), e.TheText.TextColor);
+
+				e.CallNext.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual(true, e.TheWhile.Value);
+				Assert.AreEqual("oop", e.TheText.Value);
+				Assert.AreEqual(50, e.TheRange.Value);
+				Assert.AreEqual(float4(0,0,1,1), e.TheText.TextColor);
+			}
 		}
 		
 		[Test]

@@ -202,11 +202,12 @@ namespace Fuse.Navigation
 		{
 			if (_currentNavigation != null)
 			{
-				if ( (_currentNavigation as Node).IsRootingCompleted)
+				if ( (_currentNavigation as Node).IsRootingCompleted && _startedSeek)
 					_currentNavigation.EndSeek(new EndSeekArgs(SnapTo.Current));
 
 				_currentNavigation = null;
 			}
+			_startedSeek = false;
 		}
 
 		GesturePriorityConfig IGesture.Priority
@@ -232,6 +233,7 @@ namespace Fuse.Navigation
 			return GestureRequest.Capture;
 		}
 		
+		bool _startedSeek;
 		void IGesture.OnCaptureChanged(PointerEventArgs args, CaptureType how, CaptureType prev)
 		{
 			//always reset coords to avoid jump (https://github.com/fusetools/fuselibs/issues/1175)
@@ -242,6 +244,7 @@ namespace Fuse.Navigation
 			if (how.HasFlag(CaptureType.Hard) && !prev.HasFlag(CaptureType.Hard))
 			{
 				_currentNavigation.BeginSeek();
+				_startedSeek = true;
 			}
 		}
 

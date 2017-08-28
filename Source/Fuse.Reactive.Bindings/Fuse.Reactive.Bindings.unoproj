@@ -2,7 +2,7 @@
   "Copyright": "Copyright (c) Fusetools AS 2017",
   "Description": "Framework for reactive data binding",
   "Publisher": "Fusetools AS",
-  "Version": "1.1.0",
+  "Version": "1.2.1",
   "Package": {
     "ProjectUrl": "https://fusetools.com"
   },
@@ -22,12 +22,14 @@
     "../Fuse.Triggers/Fuse.Triggers.unoproj"
   ],
   "InternalsVisibleTo": [
+	"Fuse.Navigation",
     "Fuse.Reactive.JavaScript.Test",
     "Fuse.Reactive.Bindings.Test",
     "Fuse.Reactive.Test",
     "Fuse.Reactive.JavaScript",
     "Fuse.Scripting.Test",
-    "Fuse.Common.Test.Helpers"
+    "Fuse.Common.Test.Helpers",
+    "Fuse.Controls.ScrollView",
   ],
   "Includes": [
     "*"

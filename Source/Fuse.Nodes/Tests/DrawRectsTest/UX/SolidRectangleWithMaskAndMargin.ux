@@ -1,0 +1,3 @@
+<Rectangle ux:Class="UX.SolidRectangleWithMaskAndMargin" Color="#fff" Margin="10" CachingMode="Never">
+	<Mask File="../data/mask.png" />
+</Rectangle>

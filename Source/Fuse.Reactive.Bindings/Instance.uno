@@ -90,14 +90,25 @@ namespace Fuse.Reactive
 		}
 
 		IDisposable _itemsSubscription;
-
-		protected override void OnUnrooted()
+		void DisposeItemsSubscription()
 		{
+			_isListeningItems = false;
 			if (_itemsSubscription != null)
 			{
 				_itemsSubscription.Dispose();
 				_itemsSubscription = null;
 			}
+		}
+		bool _isListeningItems;
+		bool IsListeningItems { get { return _isListeningItems; } }
+		void StartListeningItems()
+		{
+			_isListeningItems = true;
+		}
+
+		protected override void OnUnrooted()
+		{
+			DisposeItemsSubscription();
 
 			RemoveAll();
 			RemovePendingAvailableItems();
@@ -141,18 +152,7 @@ namespace Fuse.Reactive
 		void CompletedRemove(Node n)
 		{
 			n.OverrideContextParent = null;
-			
-			WindowItem wi;
-			if (_dataMap.TryGetValue(n, out wi))
-			{
-				if (!wi.Nodes.Remove(n))
-					Fuse.Diagnostics.InternalError( "inconsistent Nodes list state", this );
-					
-				_dataMap.Remove(n);
-				
-				if (wi.Nodes.Count == 0)
-					wi.Dispose();
-			}
+			_dataMap.Remove(n);
 		}
  		
 		internal override Node GetLastNodeInGroup()

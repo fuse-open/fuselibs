@@ -29,11 +29,8 @@ namespace Fuse.Triggers
 			if (v != playing)
 			{
 				n.Properties.Set(_whilePlayingProp, playing);
-				for (int i = 0; i < n.Children.Count; i++)
-				{
-					var wl = n.Children[i] as WhilePlaying;
-					if (wl != null) wl.SetActive(playing);
-				}
+				for (var wl = n.FirstChild<WhilePlaying>(); wl != null; wl = wl.NextSibling<WhilePlaying>())
+					wl.SetActive(playing);
 			}
 		}
 
@@ -68,11 +65,8 @@ namespace Fuse.Triggers
 			if (v != paused)
 			{
 				n.Properties.Set(_whilePausedProp, paused);
-				for (int i = 0; i < n.Children.Count; i++)
-				{
-					var wl = n.Children[i] as WhilePaused;
-					if (wl != null) wl.SetActive(paused);
-				}
+				for (var wl = n.FirstChild<WhilePaused>(); wl != null; wl = wl.NextSibling<WhilePaused>())
+					wl.SetActive(paused);
 			}
 		}
 
@@ -107,11 +101,8 @@ namespace Fuse.Triggers
 			if (v != paused)
 			{
 				n.Properties.Set(_whileCompletedProp, paused);
-				for (int i = 0; i < n.Children.Count; i++)
-				{
-					var wl = n.Children[i] as WhileCompleted;
-					if (wl != null && wl.IsRootingCompleted) wl.SetActive(paused);
-				}
+				for (var wl = n.FirstChild<WhileCompleted>(); wl != null; wl = wl.NextSibling<WhileCompleted>())
+					if (wl.IsRootingCompleted) wl.SetActive(paused);
 			}
 		}
 

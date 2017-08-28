@@ -3,6 +3,8 @@ using Uno.Graphics;
 using Uno.UX;
 using Uno.Collections;
 
+using Fuse.Nodes;
+
 namespace Fuse.Elements
 {
 	internal struct CacheTile
@@ -85,12 +87,12 @@ namespace Fuse.Elements
 				origin.X + size.X + 1, origin.Y + size.Y + 1);
 		}
 
-		internal bool GetCachingRect(DrawContext dc, out Recti rect)
+		bool GetCachingRect(DrawContext dc, out Recti rect)
 		{
 			return GetCachingRect(_element, out rect);
 		}
 
-		static internal bool GetCachingRect(Element elm, out Recti rect)
+		static bool GetCachingRect(Element elm, out Recti rect)
 		{
 			var bounds = elm.RenderBoundsWithEffects;
 			if (bounds.IsInfinite || bounds.IsEmpty)
@@ -238,6 +240,9 @@ namespace Fuse.Elements
 					DepthTestEnabled: false;
 					apply Fuse.Drawing.PreMultipliedAlphaCompositing;
 				};
+
+				if defined(FUSELIBS_DEBUG_DRAW_RECTS)
+					DrawRectVisualizer.Capture(float2(0), float2(tile.Texture.Size.X, tile.Texture.Size.Y), tile._compositMatrix, dc);
 			}
 		}
 	}

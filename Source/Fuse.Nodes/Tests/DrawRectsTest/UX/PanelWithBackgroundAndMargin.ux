@@ -1,0 +1,1 @@
+<Panel ux:Class="UX.PanelWithBackgroundAndMargin" Background="#0f0" Margin="10" CachingMode="Never" />

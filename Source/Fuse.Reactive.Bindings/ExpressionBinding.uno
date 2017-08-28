@@ -43,8 +43,11 @@ namespace Fuse.Reactive
 
 		protected override void OnUnrooted()
 		{
-			_expressionSub.Dispose();
-			_expressionSub = null;
+			if (_expressionSub != null)
+			{
+				_expressionSub.Dispose();
+				_expressionSub = null;
+			}
 			base.OnUnrooted();
 		}
 

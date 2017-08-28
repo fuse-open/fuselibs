@@ -1,0 +1,3 @@
+<Viewport ux:Class="UX.ViewportWithRectangle" Margin="10" Mode="RenderToTexture" CachingMode="Never">
+	<Rectangle Color="#fff" CachingMode="Never" />
+</Viewport>

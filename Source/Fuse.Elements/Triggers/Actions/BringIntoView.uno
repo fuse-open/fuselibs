@@ -40,7 +40,8 @@ namespace Fuse.Triggers.Actions
 	{
 		protected override void Perform(Node target)
 		{
-			var elm = target as Element;
+			//use Visual for future-proofing this logic (it could be brought into view, just not supported now)
+			var elm = target.FindByType<Visual>() as Element;
 			if (elm != null)	
 				elm.BringIntoView();
 		}

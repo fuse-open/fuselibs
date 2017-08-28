@@ -17,18 +17,17 @@ namespace Fuse.Elements.Test
 			Assert.AreEqual(expectActualPosition, element.ActualPosition, tolerance, filePath, lineNumber,
 				memberName);
 		}
-		
+
 		[Test]
 		public void Basic()
 		{
-			var root = new TestRootPanel();
 			var p = new global::UX.XYOffset();
-			root.Children.Add(p);
-			
-			root.Layout(int2(100));
-			TestElementLayout(p.TheY, float2(0,25), float2(100,5));
-			TestElementLayout(p.TheX, float2(25,0), float2(5,100));
-			TestElementLayout(p.TheOffset, float2(50,50), float2(100,100));
+			using (var root = TestRootPanel.CreateWithChild(p, int2(100)))
+			{
+				TestElementLayout(p.TheY, float2(0,25), float2(100,5));
+				TestElementLayout(p.TheX, float2(25,0), float2(5,100));
+				TestElementLayout(p.TheOffset, float2(50,50), float2(100,100));
+			}
 		}
 	}
 }

@@ -98,7 +98,6 @@ namespace Fuse.Reactive
 				}
 			}
 
-			//TODO: this seems like it's in the wrong location
 			//remove whatever is leftover
 			RemovePendingAvailableItems();
 			return false;
@@ -163,7 +162,7 @@ namespace Fuse.Reactive
 			wi.Id = GetDataId(wi.Data);
 			
 			var match = GetDataTemplate(wi.Data);
-			AddMatchingTemplates(wi, match);
+			var reuse = AddMatchingTemplates(wi, match);
 			
 			if ( (wi.Template.All && Templates.Count != wi.Nodes.Count) ||
 				(wi.Template.Template != null && wi.Nodes.Count != 1))
@@ -175,7 +174,11 @@ namespace Fuse.Reactive
 			//find last node prior to where we want to introduce
 			var lastNode = GetLastNodeFromIndex(windowIndex-1);
 
-			Parent.InsertOrMoveNodes( Parent.Children.IndexOf(lastNode) + 1, wi.Nodes.GetEnumerator() );
+			//InsertOrMove is slower than Insert, thus optimize if we can 
+			if (reuse)
+				Parent.InsertOrMoveNodesAfter( lastNode, wi.Nodes.GetEnumerator() );
+			else
+				Parent.InsertNodesAfter( lastNode, wi.Nodes.GetEnumerator() );
 		}
 		
 		/**
@@ -208,9 +211,13 @@ namespace Fuse.Reactive
 			return true;
 		}
 
-		/* `null` for the template indicates to use all templates, otherwise a specific one will be used. */
-		void AddMatchingTemplates(WindowItem item, TemplateMatch f)
+		/* `null` for the template indicates to use all templates, otherwise a specific one will be used. 
+			
+			@return true if reusing existing nodes, false if new nodes
+		*/
+		bool AddMatchingTemplates(WindowItem item, TemplateMatch f)
  		{
+			bool reuse = false;
 			object oldData = null;
 			var av = GetAvailableNodes(f, item.Id);
 			if (av != null)
@@ -218,6 +225,7 @@ namespace Fuse.Reactive
 				item.Nodes = av.Nodes;
 				oldData = av.CurrentData;
 				av.Nodes = null;
+				reuse = true;
 			}
 			else if (f.All)
 			{
@@ -238,6 +246,7 @@ namespace Fuse.Reactive
 
 			UpdateData(item, oldData);
  			item.Template = f;
+ 			return reuse;
  		}
  		
  		void AddTemplate(WindowItem item, Template f)
@@ -325,6 +334,7 @@ namespace Fuse.Reactive
 			//The pendingNew handler will have to clear the remaining nodes
 			if (!_pendingNew)	
 				RemovePendingAvailableItems();
+			_pendingAvailableItems = false;
 		}
 		
 		void RemovePendingAvailableItems()
@@ -338,6 +348,7 @@ namespace Fuse.Reactive
 						continue;
 					for (int n=0; n < av.Nodes.Count; ++n)
 						RemoveFromParent(av.Nodes[n]);
+					av.Unlink();
 				}
 				_availableItems.Clear();
 			}
@@ -350,6 +361,7 @@ namespace Fuse.Reactive
 						continue;
 					for (int n=0; n < kvp.Value.Nodes.Count; ++n)
 						RemoveFromParent(kvp.Value.Nodes[n]);
+					kvp.Value.Unlink();
 				}
 				_availableItemsById.Clear();
 			}
@@ -410,13 +422,6 @@ namespace Fuse.Reactive
 			InsertNew(Offset + _windowItems.Count);
 		}
 
-		void ReplaceAll(object[] dcs)
-		{
-			RemoveAll();
-
-			for (int i = 0; i < dcs.Length; i++) InsertNew(i);
-		}
-
 		/** Removes all items from _windowItems */
 		void RemoveAll()
 		{
@@ -433,19 +438,23 @@ namespace Fuse.Reactive
 		
 		void Repopulate()
 		{
-			var e = _items as object[];
-			var a = _items as IArray;
+			RemoveAll();
 
-			if (e != null)
+			var e = _items as object[];
+			if (e != null) 
 			{
-				ReplaceAll(e);
-				return;
+				for (int i = 0; i < e.Length; i++) InsertNew(i);
 			}
-			else if (a != null)
+			else
 			{
-				RemoveAll();
-				for (int i = 0; i < a.Length; i++) InsertNew(i);
+				var a = _items as IArray;
+				if (a != null) 
+				{
+					for (int i = 0; i < a.Length; i++) InsertNew(i);
+				}
 			}
+
+			CompleteActionGood();
 		}
 		
 
@@ -475,10 +484,15 @@ namespace Fuse.Reactive
 				}
 			}
 			
-			public void Dispose()
+			//cleans up the memory link from DataLink to Each by fixating the current data.
+			public void Unlink()
 			{
 				if (DataLink != null)
+				{
+					Data = DataLink.Data;
 					DataLink.Dispose();
+					DataLink = null;
+				}
 			}
 		}
 		

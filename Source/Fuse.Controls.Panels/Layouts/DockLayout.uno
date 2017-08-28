@@ -41,24 +41,23 @@ namespace Fuse.Layouts
 			elm.InvalidateLayout();
 		}
 
-		internal override float2 GetContentSize(IList<Node> elements, LayoutParams lp)
+		internal override float2 GetContentSize(Visual container, LayoutParams lp)
 		{
 			var nlp = lp.CloneAndDerive();
 			nlp.SetRelativeSize(lp.Size,lp.HasX,lp.HasY);
-			return MeasureSubtree(elements, 0, nlp);
+			return MeasureSubtree(container, container.FirstChild<Node>(), nlp);
 		}
 
 		//LayoutParams is mutated (not relevant if a struct)
-		float2 MeasureSubtree(IList<Node> elements, int childIndex, LayoutParams lp)
+		float2 MeasureSubtree(Visual container, Node child, LayoutParams lp)
 		{
-			Visual c = null;
-			if (childIndex >= elements.Count)
+			Visual c = child as Visual;
+			if (child == null)
 			{
 				//max size of all fill children
 				var mx = float2(0);
-				for (int i=0; i < elements.Count; ++i)
+				for (c = container.FirstChild<Visual>(); c != null; c = c.NextSibling<Visual>())
 				{
-					c = elements[i] as Visual;
 					if (!AffectsLayout(c)) continue;
 
 					if (GetDock(c) == Dock.Fill)
@@ -70,8 +69,7 @@ namespace Fuse.Layouts
 				return mx;
 			}
 
-			c = elements[childIndex] as Visual;	
-			if (c == null) return MeasureSubtree(elements, childIndex+1, lp);
+			if (c == null) return MeasureSubtree(container, child.NextSibling<Node>(), lp);
 
 			switch (GetDock(c))
 			{
@@ -83,7 +81,7 @@ namespace Fuse.Layouts
 					var cds = c.GetMarginSize( nlp );
 					
 					lp.RemoveSize(float2(cds.X,0));
-					var subtree = MeasureSubtree(elements, childIndex+1, lp);
+					var subtree = MeasureSubtree(container, child.NextSibling<Node>(), lp);
 					return float2(cds.X + subtree.X, 
 						Math.Max(cds.Y, subtree.Y));
 				}
@@ -96,19 +94,19 @@ namespace Fuse.Layouts
 					var cds = c.GetMarginSize( nlp );
 					
 					lp.RemoveSize(float2(0,cds.Y));
-					var subtree = MeasureSubtree(elements, childIndex+1, lp);
+					var subtree = MeasureSubtree(container, child.NextSibling<Node>(), lp);
 					return float2(Math.Max(cds.X, subtree.X), 
 						cds.Y + subtree.Y);
 				}
 
 				case Dock.Fill:
-					return MeasureSubtree(elements, childIndex+1, lp);
+					return MeasureSubtree(container, child.NextSibling<Node>(), lp);
 			}
 			
 			return float2(0);
 		}
 
-		internal override void ArrangePaddingBox(IList<Node> elements, float4 padding, 
+		internal override void ArrangePaddingBox(Visual container, float4 padding, 
 			LayoutParams lp)
 		{
 			var availablePosition = padding.XY;
@@ -117,10 +115,8 @@ namespace Fuse.Layouts
 			var nlp = lp.CloneAndDerive();
 			nlp.SetRelativeSize(lp.Size,lp.HasX,lp.HasY);
 			
-			for (int i = 0; i < elements.Count; i++)
+			for (var c = container.FirstChild<Visual>(); c != null; c = c.NextSibling<Visual>())
 			{
-				var c = elements[i] as Visual;
-				if (c == null) continue;
 				if (ArrangeMarginBoxSpecial(c, padding, lp))
 					continue;
 
@@ -171,9 +167,8 @@ namespace Fuse.Layouts
 			}
 			
 			nlp.SetSize(availableSize);
-			for (int i=0; i < elements.Count; ++i)
+			for (var c = container.FirstChild<Visual>(); c != null; c = c.NextSibling<Visual>())
 			{
-				var c = elements[i] as Visual;
 				if (!AffectsLayout(c)) continue;
 				
 				if (GetDock(c) != Dock.Fill)

@@ -8,8 +8,86 @@ using FuseTest;
 
 namespace Fuse.Reactive.Test
 {
+	// This is here because a test depends on an obsolete entrypoint
+	// Visual.GetVisualChild
+	static class VisualExtensions
+	{
+		public static Visual GetVisualChildImpl(this Visual parent, int index)
+		{
+			var c = parent.FirstChild<Visual>();
+			int i = 0;
+			while (c != null)
+			{
+				if (i == index) return c;
+				i++;
+				c = c.NextSibling<Visual>();
+			}
+			return null;
+		}
+	}
+
 	public class EachTest : TestBase
 	{
+		class DummyList: IArray
+		{
+			int _length;
+			public DummyList(int length) { _length = length; }
+			public int Length { get { return _length; } }
+			public object this[int index] { get { return new object(); }}
+		}
+		[Test]
+		public void ReplaceList()
+		{
+			var e = new UX.Each.ReplaceList();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				Assert.AreEqual(1, e.Children.Count);
+				e.each.Items = new object[] { 1, 2, 3 };
+				root.StepFrame();
+				Assert.AreEqual(4, e.Children.Count);
+				e.each.Items = new object[0];
+				root.StepFrame();
+				Assert.AreEqual(1, e.Children.Count);
+				e.each.Items = new DummyList(5);
+				root.StepFrame();
+				Assert.AreEqual(6, e.Children.Count);
+				e.each.Items = new DummyList(0);
+				root.StepFrame();
+				Assert.AreEqual(1, e.Children.Count);
+				e.each.Items = new DummyList(8);
+				root.StepFrame();
+				Assert.AreEqual(9, e.Children.Count);
+				e.each.Items = null;
+				root.StepFrame();
+				Assert.AreEqual(1, e.Children.Count);
+			}
+		}
+
+		
+
+		[Test]
+		public void DoubleSubscribe()
+		{
+			var e = new UX.Each.DoubleSubscribe();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.StepFrameJS();
+				Assert.AreEqual(6, e.sp.Children.Count);
+				e.sw.Value = true;
+				root.StepFrameJS();
+				Assert.AreEqual(10, e.sp.Children.Count);
+				e.sw.Value = false;
+				root.StepFrameJS();
+				Assert.AreEqual(6, e.sp.Children.Count);
+
+				// Weridly, second time it failed to add the items back
+				// https://github.com/fusetools/fuselibs-public/issues/227
+				e.sw.Value = true;
+				root.StepFrameJS();
+				Assert.AreEqual(10, e.sp.Children.Count);
+			}
+		}
+
 		[Test]
 		public void Basic()
 		{
@@ -18,7 +96,7 @@ namespace Fuse.Reactive.Test
 			{
 				root.StepFrameJS();
 				Assert.AreEqual(30,e.C1.ZOrderChildCount);
-				Assert.AreEqual("5", (e.C1.GetVisualChild(5) as Text).Value);
+				Assert.AreEqual("5", (e.C1.GetVisualChildImpl(5) as Text).Value);
 
 				//do in a loop to try and catch a few race conditions
 				int baseCount = 30;
@@ -28,7 +106,7 @@ namespace Fuse.Reactive.Test
 					e.CallAdd.Perform();
 					root.StepFrameJS();
 					Assert.AreEqual(baseCount+1,e.C1.ZOrderChildCount);
-					Assert.AreEqual("" + (step+5), (e.C1.GetVisualChild(5) as Text).Value);
+					Assert.AreEqual("" + (step+5), (e.C1.GetVisualChildImpl(5) as Text).Value);
 					
 					e.CallRemove.Perform();
 					root.StepFrameJS();
@@ -62,10 +140,10 @@ namespace Fuse.Reactive.Test
 				root.StepFrameJS();
 				
 				Assert.AreEqual(4,e.C1.ZOrderChildCount);
-				Assert.AreEqual(e.C2, e.C1.GetVisualChild(0));
-				Assert.AreEqual(new Selector("Q0"), e.C1.GetVisualChild(1).Name);
-				Assert.AreEqual(new Selector("Q1"), e.C1.GetVisualChild(2).Name);
-				Assert.AreEqual(e.C3, e.C1.GetVisualChild(3));
+				Assert.AreEqual(e.C2, e.C1.GetVisualChildImpl(0));
+				Assert.AreEqual(new Selector("Q0"), e.C1.GetVisualChildImpl(1).Name);
+				Assert.AreEqual(new Selector("Q1"), e.C1.GetVisualChildImpl(2).Name);
+				Assert.AreEqual(e.C3, e.C1.GetVisualChildImpl(3));
 				
 				e.CallRemove.Perform();
 				e.CallRemove.Perform();
@@ -75,9 +153,9 @@ namespace Fuse.Reactive.Test
 				e.CallAdd.Perform();
 				root.StepFrameJS();
 				Assert.AreEqual(3,e.C1.ZOrderChildCount);
-				Assert.AreEqual(e.C2, e.C1.GetVisualChild(0));
-				Assert.AreEqual(new Selector("Q2"), e.C1.GetVisualChild(1).Name);
-				Assert.AreEqual(e.C3, e.C1.GetVisualChild(2));
+				Assert.AreEqual(e.C2, e.C1.GetVisualChildImpl(0));
+				Assert.AreEqual(new Selector("Q2"), e.C1.GetVisualChildImpl(1).Name);
+				Assert.AreEqual(e.C3, e.C1.GetVisualChildImpl(2));
 			}
 		}
 		
@@ -106,36 +184,37 @@ namespace Fuse.Reactive.Test
 		public void EachWindowBasic()
 		{
 			var e = new UX.Each.Window();
-			var root = TestRootPanel.CreateWithChild(e);
-			root.StepFrameJS();
-			
-			Assert.AreEqual( 100, e.E.DataCount );
-			Assert.AreEqual( 5, e.E.WindowItemsCount );
-			Assert.AreEqual( "0,1,2,3,4", GetText(e) );
-			
-			var childOffset = 2;
-			
-			var three = e.Children[childOffset+3] as Text;
-			Assert.AreEqual( "3", three.Value );
-			
-			e.E.Offset = 3;
-			root.StepFrameJS();
-			Assert.AreEqual( "3,4,5,6,7", GetText(e) );
-			Assert.AreEqual( 5, e.E.WindowItemsCount );
-			
-			//it must use the existing children if possible
-			Assert.AreEqual( three, e.Children[childOffset+0] );
-			
-			e.E.Limit = 6;
-			root.StepFrameJS();
-			Assert.AreEqual( "3,4,5,6,7,8", GetText(e) );
-			Assert.AreEqual( 6, e.E.WindowItemsCount );
-			Assert.AreEqual( three, e.Children[childOffset+0] );
-			
-			e.E.Offset = 98;
-			root.StepFrameJS();
-			Assert.AreEqual( "98,99", GetText(e) );
-			Assert.AreEqual( 2, e.E.WindowItemsCount );
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.StepFrameJS();
+				Assert.AreEqual( 100, e.E.DataCount );
+				Assert.AreEqual( 5, e.E.WindowItemsCount );
+				Assert.AreEqual( "0,1,2,3,4", GetText(e) );
+
+				var childOffset = 2;
+
+				var three = e.Children[childOffset+3] as Text;
+				Assert.AreEqual( "3", three.Value );
+
+				e.E.Offset = 3;
+				root.StepFrameJS();
+				Assert.AreEqual( "3,4,5,6,7", GetText(e) );
+				Assert.AreEqual( 5, e.E.WindowItemsCount );
+
+				//it must use the existing children if possible
+				Assert.AreEqual( three, e.Children[childOffset+0] );
+
+				e.E.Limit = 6;
+				root.StepFrameJS();
+				Assert.AreEqual( "3,4,5,6,7,8", GetText(e) );
+				Assert.AreEqual( 6, e.E.WindowItemsCount );
+				Assert.AreEqual( three, e.Children[childOffset+0] );
+
+				e.E.Offset = 98;
+				root.StepFrameJS();
+				Assert.AreEqual( "98,99", GetText(e) );
+				Assert.AreEqual( 2, e.E.WindowItemsCount );
+			}
 		}
 		
 		[Test]
@@ -143,55 +222,56 @@ namespace Fuse.Reactive.Test
 		public void EachWindowMod()
 		{
 			var e = new UX.Each.WindowMod();
-			var root = TestRootPanel.CreateWithChild(e);
-			root.StepFrameJS();
-			
-			Assert.AreEqual( "10,11,12,13,14", GetText(e.C) );
-			
-			e.CallAdd.Perform();
-			root.StepFrameJS();
-			Assert.AreEqual( "10,11,12,13,14", GetText(e.C) );
-			
-			e.CallRemoveAt.Perform();
-			root.StepFrameJS();
-			Assert.AreEqual( "10,11,13,14,15", GetText(e.C) );
-			
-			e.CallRemove.Perform();
-			root.StepFrameJS();
-			Assert.AreEqual( "11,13,14,15,16", GetText(e.C) );
-			
-			e.CallInsert.Perform();
-			root.StepFrameJS();
-			Assert.AreEqual( "11,13,ins,14,15", GetText(e.C) );
-			
-			e.CallClear.Perform();
-			root.StepFrameJS();
-			Assert.AreEqual( "", GetText(e.C) );
-			
-			e.CallAdd.Perform();
-			root.StepFrameJS();
-			Assert.AreEqual( "", GetText(e.C) );
-			e.E.Offset = 0;
-			root.PumpDeferred();
-			Assert.AreEqual( "add", GetText(e.C) );
-			
-			e.CallReplaceAll1.Perform();
-			root.StepFrameJS();
-			Assert.AreEqual( "r0", GetText(e.C) );
-			
-			e.CallReplaceAll5.Perform();
-			e.E.Offset = 1;
-			e.E.Limit = 2;
-			root.StepFrameJS();
-			Assert.AreEqual( "r2,r3", GetText(e.C) );
-			
-			//try rerooting to ensure sanity
-			root.Children.Remove(e);
-			Assert.AreEqual( 1, e.C.Children.Count ); //Each only
-			root.StepFrameJS();
-			root.Children.Add(e);
-			root.StepFrameJS();
-			Assert.AreEqual( "1,2", GetText(e.C) );
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.StepFrameJS();
+				Assert.AreEqual( "10,11,12,13,14", GetText(e.C) );
+
+				e.CallAdd.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual( "10,11,12,13,14", GetText(e.C) );
+
+				e.CallRemoveAt.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual( "10,11,13,14,15", GetText(e.C) );
+
+				e.CallRemove.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual( "11,13,14,15,16", GetText(e.C) );
+
+				e.CallInsert.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual( "11,13,ins,14,15", GetText(e.C) );
+
+				e.CallClear.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual( "", GetText(e.C) );
+
+				e.CallAdd.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual( "", GetText(e.C) );
+				e.E.Offset = 0;
+				root.PumpDeferred();
+				Assert.AreEqual( "add", GetText(e.C) );
+
+				e.CallReplaceAll1.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual( "r0", GetText(e.C) );
+
+				e.CallReplaceAll5.Perform();
+				e.E.Offset = 1;
+				e.E.Limit = 2;
+				root.StepFrameJS();
+				Assert.AreEqual( "r2,r3", GetText(e.C) );
+
+				//try rerooting to ensure sanity
+				root.Children.Remove(e);
+				Assert.AreEqual( 1, e.C.Children.Count ); //Each only
+				root.StepFrameJS();
+				root.Children.Add(e);
+				root.StepFrameJS();
+				Assert.AreEqual( "1,2", GetText(e.C) );
+			}
 		}
 		
 		[Test]
@@ -200,20 +280,21 @@ namespace Fuse.Reactive.Test
 		public void EachLimitCount()
 		{
 			var e = new UX.Each.LimitCount();
-			var root = TestRootPanel.CreateWithChild(e);
-			root.PumpDeferred();
-			
-			Assert.AreEqual( "*,*,*,*,*", GetText(e) );
-			
-			e.E.Offset = 8;
-			root.PumpDeferred();
-			Assert.AreEqual( "*,*", GetText(e) );
-			
-			root.Children.Remove(e);
-			e.E.Offset = 7;
-			root.Children.Add(e);
-			root.PumpDeferred();
-			Assert.AreEqual( "*,*,*", GetText(e) );
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.PumpDeferred();
+				Assert.AreEqual( "*,*,*,*,*", GetText(e) );
+
+				e.E.Offset = 8;
+				root.PumpDeferred();
+				Assert.AreEqual( "*,*", GetText(e) );
+
+				root.Children.Remove(e);
+				e.E.Offset = 7;
+				root.Children.Add(e);
+				root.PumpDeferred();
+				Assert.AreEqual( "*,*,*", GetText(e) );
+			}
 		}
 		
 		[Test]
@@ -352,6 +433,21 @@ namespace Fuse.Reactive.Test
 		}
 		
 		[Test]
+		public void ReuseRemove()
+		{
+			var e  = new UX.Each.ReuseRemove();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.StepFrameJS();
+				Assert.AreEqual("9,8,7,6,5,4,3,2,1,0", GetDudZ(e.s));
+		
+				e.Remove.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual("9,8,7,6,5,4,3,1,0", GetDudZ(e.s));
+			}
+		}
+		
+		[Test]
 		//same setup as Reuse but ensures the nodes are not reused (Reuse="None", as default)
 		public void ReuseNone()
 		{
@@ -400,22 +496,6 @@ namespace Fuse.Reactive.Test
 			for (int i=0; i < root.ZOrderChildCount; ++i)
 				list[i] = root.GetZOrderChild(i);
 			return list;
-		}
-		
-		static internal string GetDudZ(Visual root)
-		{
-			var q = "";
-			for (int i=0; i < root.ZOrderChildCount; ++i)
-			{
-				var t = root.GetZOrderChild(i) as FuseTest.DudElement;
-				if (t != null)
-				{
-					if (q.Length > 0)
-						q += ",";
-					q += t.UseValue;
-				}
-			}
-			return q;
 		}
 		
 		[Test]
@@ -697,6 +777,34 @@ namespace Fuse.Reactive.Test
 				e.each.TemplateSource = null;
 				root.PumpDeferred();
 				Assert.AreEqual( "A", GetDudZ(e.tb));
+			}
+		}
+		
+		[Test]
+		public void ReplaceWithLess()
+		{
+			var e = new UX.Each.ReplaceWithLessData();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.StepFrameJS();
+
+				Assert.AreEqual(3*2+1, e.grid.Children.Count);
+				
+				e.monthsToMaturitySlider.Value = 12;
+				root.StepFrameJS();
+				Assert.AreEqual(12*2+1, e.grid.Children.Count);
+
+				e.monthsToMaturitySlider.Value = 100;
+				root.StepFrameJS();
+				Assert.AreEqual(100*2+1, e.grid.Children.Count);
+
+				e.monthsToMaturitySlider.Value = 200;
+				root.StepFrameJS();
+				Assert.AreEqual(200*2+1, e.grid.Children.Count);
+
+				e.monthsToMaturitySlider.Value = 50;
+				root.StepFrameJS();
+				Assert.AreEqual(50*2+1, e.grid.Children.Count);
 			}
 		}
 	}

@@ -87,7 +87,11 @@
  * @internal
  */
 #ifndef U_DISABLE_RENAMING
+#if defined(__APPLE__) && !TARGET_OS_IPHONE
 #define U_DISABLE_RENAMING 1
+#else
+#define U_DISABLE_RENAMING 0
+#endif
 #endif
 
 /**

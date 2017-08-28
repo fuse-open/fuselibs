@@ -29,6 +29,7 @@ namespace Fuse.Controls.Test
 				//remove outer while removing
 				p.innerPanel.IsActive = false;
 				p.outerPanel.IsActive = false;
+				root.PumpDeferred();
 				Assert.IsFalse(p.A.Children.Contains(p.B));
 				Assert.IsFalse(p.B.Children.Contains(p.C));
 				
@@ -39,9 +40,13 @@ namespace Fuse.Controls.Test
 				//remove inner while outer not visible
 				p.innerPanel.IsActive = true;
 				Assert.IsTrue(p.B.Children.Contains(p.C));
+				
 				p.outerPanel.IsActive = false;
+				root.PumpDeferred();
 				Assert.IsFalse(p.A.Children.Contains(p.B));
+				
 				p.innerPanel.IsActive = false;
+				root.PumpDeferred();
 				Assert.IsFalse(p.B.Children.Contains(p.C));
 			}
 		}

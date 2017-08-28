@@ -1,6 +1,7 @@
 using Uno.Collections;
 using Uno.Compiler.ExportTargetInterop;
 using Uno.Threading;
+using Uno.Time;
 using Uno;
 
 namespace Fuse.GeoLocation
@@ -10,7 +11,7 @@ namespace Fuse.GeoLocation
 		Location SpoofLocation;
 		public SpoofLocationProvider()
 		{
-			SpoofLocation = new Location(new GeoCoordinates(59.9115546,10.73888), 100, 50, 0.5, DateTime.Now.LocalDateTime);
+			SpoofLocation = new Location(new GeoCoordinates(59.9115546,10.73888), 100, 50, 0.5, ZonedDateTime.Now.LocalDateTime);
 		}
 		public Location GetLastKnownPosition(){
 			return SpoofLocation;

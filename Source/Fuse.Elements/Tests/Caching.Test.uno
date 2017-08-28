@@ -15,7 +15,7 @@ namespace Fuse.Test
 		public void SubpixelCaching()
 		{
 			var p = new UX.SubpixelCaching();
-			var root = TestRootPanel.CreateWithChild(p, int2(100, 200));
+			using (var root = TestRootPanel.CreateWithChild(p, int2(100, 200)))
 			using (var fb = root.CaptureDraw())
 			{
 				float eps = 1.0f / 255;
@@ -54,7 +54,7 @@ namespace Fuse.Test
 		public void BorderIssue()
 		{
 			var p = new UX.Caching.BorderIssue();
-			var root = TestRootPanel.CreateWithChild(p, int2(32, 32));
+			using (var root = TestRootPanel.CreateWithChild(p, int2(32, 32)))
 			using (var fb = root.CaptureDraw())
 			{
 				for (int y = -15; y < 16; ++y)

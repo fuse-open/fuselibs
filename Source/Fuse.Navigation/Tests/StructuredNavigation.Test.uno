@@ -21,13 +21,15 @@ namespace Fuse.Navigation.Test
 		public void Issue2435()
 		{
 			var p = new MockStructuredNavigation(StructuredNavigation.NavigationStructure.Linear);
-			var root = TestRootPanel.CreateWithChild(p);
-			var button = new Fuse.Controls.Button();
-			root.Children.Add(button);
-			root.IncrementFrame();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				var button = new Fuse.Controls.Button();
+				root.Children.Add(button);
+				root.IncrementFrame();
 
-			p.Active = button;
-			p.Active = null;
+				p.Active = button;
+				p.Active = null;
+			}
 		}
 	}
 }

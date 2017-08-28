@@ -2,6 +2,7 @@ using Uno;
 using Uno.UX;
 using Fuse.Drawing;
 using Fuse.Elements;
+using Fuse.Nodes;
 
 namespace Fuse.Controls
 {
@@ -145,6 +146,9 @@ namespace Fuse.Internal.Drawing
 			},
 			virtual brush,
 			{ PixelColor: prev*opacity; };
+
+			if defined(FUSELIBS_DEBUG_DRAW_RECTS)
+				DrawRectVisualizer.Capture(float2(0), element.ActualSize, element.WorldTransform, dc);
 		}
 	}
 }

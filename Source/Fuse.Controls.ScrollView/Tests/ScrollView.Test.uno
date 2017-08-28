@@ -41,76 +41,74 @@ namespace Fuse.Controls.ScrollViewTest
 		[Test]
 		public void MaxStyleApply()
 		{
-			var root = new TestRootPanel();
 			var p = new UX.ScrollViewMaxStyleApply();
-			root.Children.Add(p);
-			
-			root.Layout(int2(200,200));
-			Assert.AreEqual(float2(200,1000),p.sp1.ActualSize);
-			Assert.AreEqual(float2(1000,200),p.sp2.ActualSize);
-			Assert.AreEqual(float2(1000,1000),p.sp3.ActualSize);
+			using (var root = TestRootPanel.CreateWithChild(p, int2(200, 200)))
+			{
+				Assert.AreEqual(float2(200,1000),p.sp1.ActualSize);
+				Assert.AreEqual(float2(1000,200),p.sp2.ActualSize);
+				Assert.AreEqual(float2(1000,1000),p.sp3.ActualSize);
+			}
 		}
 		
 		[Test]
 		public void BringIntoViewTest()
 		{
-			var root = new TestRootPanel();
-			var parent = new UX.BringIntoView();
-			root.Children.Add(parent);
-			
-			var scrollViewBehavior = parent.TestScroller;
+			var parent = new UX.ScrollView.BringIntoView();
 
-			root.Layout(int2(50, 400));
+			using (var root = TestRootPanel.CreateWithChild(parent, int2(50, 400)))
+			{
+				var scrollViewBehavior = parent.TestScroller;
 
-			Assert.AreEqual(float2 (0, 0), scrollViewBehavior.TestTargetDestination);
+				root.Layout(int2(50, 400));
 
-			parent.P2.BringIntoView();
-			//pending is performed after layout
-			root.IncrementFrame(0.1f);
-			//The elements are centered in the ScrollView
-			Assert.AreEqual(float2(0, 250), scrollViewBehavior.TestTargetDestination);
+				Assert.AreEqual(float2 (0, 0), scrollViewBehavior.TestTargetDestination);
 
-			parent.P3.BringIntoView();
-			root.IncrementFrame(0.1f);
-			//maxed-out position
-			Assert.AreEqual(float2(0, 500), scrollViewBehavior.TestTargetDestination);
+				parent.P2.BringIntoView();
+				//pending is performed after layout
+				root.IncrementFrame(0.1f);
+				//The elements are centered in the ScrollView
+				Assert.AreEqual(float2(0, 250), scrollViewBehavior.TestTargetDestination);
 
-			parent.S1.Children.Add(parent.P4);
-			parent.P4.BringIntoView();
-			root.IncrementFrame(0.1f);
-			//also maxed-out
-			Assert.AreEqual(float2(0, 800), scrollViewBehavior.TestTargetDestination);
+				parent.P3.BringIntoView();
+				root.IncrementFrame(0.1f);
+				//maxed-out position
+				Assert.AreEqual(float2(0, 500), scrollViewBehavior.TestTargetDestination);
 
-			parent.S1.Children.Remove(parent.P2);
-			parent.P3.BringIntoView();
-			root.IncrementFrame(0.1f);
-			Assert.AreEqual(float2(0, 250), scrollViewBehavior.TestTargetDestination);
+				parent.S1.Children.Add(parent.P4);
+				parent.P4.BringIntoView();
+				root.IncrementFrame(0.1f);
+				//also maxed-out
+				Assert.AreEqual(float2(0, 800), scrollViewBehavior.TestTargetDestination);
 
-			parent.P1.BringIntoView();
-			root.IncrementFrame(0.1f);
-			Assert.AreEqual(float2(0, 0), scrollViewBehavior.TestTargetDestination);
-			
-			//ensure BringIntoView happens post layout
-			parent.P1.Height = 500;
-			parent.P3.BringIntoView();
-			root.IncrementFrame(0.1f);
-			Assert.AreEqual(float2(0, 450), scrollViewBehavior.TestTargetDestination);
+				parent.S1.Children.Remove(parent.P2);
+				parent.P3.BringIntoView();
+				root.IncrementFrame(0.1f);
+				Assert.AreEqual(float2(0, 250), scrollViewBehavior.TestTargetDestination);
+
+				parent.P1.BringIntoView();
+				root.IncrementFrame(0.1f);
+				Assert.AreEqual(float2(0, 0), scrollViewBehavior.TestTargetDestination);
+
+				//ensure BringIntoView happens post layout
+				parent.P1.Height = 500;
+				parent.P3.BringIntoView();
+				root.IncrementFrame(0.1f);
+				Assert.AreEqual(float2(0, 450), scrollViewBehavior.TestTargetDestination);
+			}
 		}
 
 		[Test]
 		public void Extents()
 		{
-			var root = new TestRootPanel();
 			var sv = new UX.ScrollViewExtent();
-			root.Children.Add(sv);
-			
-			root.Layout(int2(500,1000));
-			
-			Assert.AreEqual(float2(0,1200),sv.MaxScroll);
-			Assert.AreEqual(float2(0,0),sv.MinScroll);
-			Assert.AreEqual(float2(0,0),sv.ScrollPosition);
-			Assert.AreEqual(float2(0,1350),sv.MaxOverflow);
-			Assert.AreEqual(float2(0,-150),sv.MinOverflow);
+			using (var root = TestRootPanel.CreateWithChild(sv, int2(500, 1000)))
+			{
+				Assert.AreEqual(float2(0,1200),sv.MaxScroll);
+				Assert.AreEqual(float2(0,0),sv.MinScroll);
+				Assert.AreEqual(float2(0,0),sv.ScrollPosition);
+				Assert.AreEqual(float2(0,1350),sv.MaxOverflow);
+				Assert.AreEqual(float2(0,-150),sv.MinOverflow);
+			}
 		}
 			
 
@@ -122,39 +120,37 @@ namespace Fuse.Controls.ScrollViewTest
 		public void ScrollIssue1595()
 		{
 			//https://github.com/fusetools/fuselibs/issues/1595
-			var root = new TestRootPanel();
 			var p = new UX.ScrollIssue1595();
-			root.Children.Add(p);
-			
-			root.Layout(int2(200,500));
-	
-			p.P1.Visibility = Visibility.Visible;
-			p.P1.BringIntoView();
-			root.IncrementFrame(0.01f);
-			Assert.AreEqual(300, p.SV.TestScroller.TestTargetDestination.X);
-			
-			root.IncrementFrame(0.01f);
-			
-			p.P1.Visibility = Visibility.Collapsed;
-			root.IncrementFrame(0.01f);
-			//should still be in destination move mode, but with a new clipped destination
-			Assert.AreEqual(200, p.SV.TestScroller.TestTargetDestination.X);
-			
-			root.IncrementFrame(0.01f);
+			using (var root = TestRootPanel.CreateWithChild(p, int2(200, 500)))
+			{
+				p.P1.Visibility = Visibility.Visible;
+				p.P1.BringIntoView();
+				root.IncrementFrame(0.01f);
+				Assert.AreEqual(300, p.SV.TestScroller.TestTargetDestination.X);
 
-			//back to the hidden item
-			p.P1.Visibility = Visibility.Visible;
-			p.P1.BringIntoView();
-			root.IncrementFrame(0.01f);
-			Assert.AreEqual(300, p.SV.TestScroller.TestTargetDestination.X);
-			//allow to stabilize
-			root.StepFrame(5);
-			Assert.AreEqual(300, p.SV.ScrollPosition.X);
-			
-			//hide again
-			p.P1.Visibility = Visibility.Collapsed;
-			root.IncrementFrame(0.01f);
-			Assert.AreEqual(200, p.SV.TestScroller.TestTargetDestination.X);
+				root.IncrementFrame(0.01f);
+
+				p.P1.Visibility = Visibility.Collapsed;
+				root.IncrementFrame(0.01f);
+				//should still be in destination move mode, but with a new clipped destination
+				Assert.AreEqual(200, p.SV.TestScroller.TestTargetDestination.X);
+
+				root.IncrementFrame(0.01f);
+
+				//back to the hidden item
+				p.P1.Visibility = Visibility.Visible;
+				p.P1.BringIntoView();
+				root.IncrementFrame(0.01f);
+				Assert.AreEqual(300, p.SV.TestScroller.TestTargetDestination.X);
+				//allow to stabilize
+				root.StepFrame(5);
+				Assert.AreEqual(300, p.SV.ScrollPosition.X);
+
+				//hide again
+				p.P1.Visibility = Visibility.Collapsed;
+				root.IncrementFrame(0.01f);
+				Assert.AreEqual(200, p.SV.TestScroller.TestTargetDestination.X);
+			}
 		}
 		
 		[Test]
@@ -226,19 +222,20 @@ namespace Fuse.Controls.ScrollViewTest
 		public void UserScroll()
 		{
 			var sv = new UX.UserScroll();
-			var root = TestRootPanel.CreateWithChild( sv, int2(1000) );
-			
-			Assert.AreEqual(0,sv.S.ScrollPosition.Y);
-			
-			root.PointerSwipe(float2(100,500), float2(100,400),100);
-			//the actual scroll position depends on physics/delayed-start, it's of no interest here
-			root.StepFrame(5); //let animation stabilize
-			var pos = sv.S.ScrollPosition.Y;
-			Assert.IsTrue(pos > 80);
-			
-			sv.S.UserScroll = false;
-			root.PointerSwipe(float2(100,500), float2(100,400),100);
-			Assert.AreEqual(pos, sv.S.ScrollPosition.Y);
+			using (var root = TestRootPanel.CreateWithChild( sv, int2(1000) ))
+			{
+				Assert.AreEqual(0,sv.S.ScrollPosition.Y);
+
+				root.PointerSwipe(float2(100,500), float2(100,400),100);
+				//the actual scroll position depends on physics/delayed-start, it's of no interest here
+				root.StepFrame(5); //let animation stabilize
+				var pos = sv.S.ScrollPosition.Y;
+				Assert.IsTrue(pos > 80);
+
+				sv.S.UserScroll = false;
+				root.PointerSwipe(float2(100,500), float2(100,400),100);
+				Assert.AreEqual(pos, sv.S.ScrollPosition.Y);
+			}
 		}
 		
 		[Test]
@@ -248,7 +245,7 @@ namespace Fuse.Controls.ScrollViewTest
 			using (var root = TestRootPanel.CreateWithChild(sv,int2(1000)))
 			{
 				Assert.AreEqual(0, sv.S.ScrollPosition.Y);
-				
+
 				float speed = 100;
 				root.PointerPress(float2(100,500));
 				root.PointerSlide(float2(100,500), float2(100,300), speed);
@@ -263,17 +260,18 @@ namespace Fuse.Controls.ScrollViewTest
 		public void LayoutChangeBottom()
 		{
 			var sv = new UX.LayoutChange();
-			var root = TestRootPanel.CreateWithChild( sv, int2(150) );
-			
-			Assert.AreEqual( 0, sv.S.ScrollPosition.Y );
-			
-			sv.T.Children.Insert(0,sv.P1);
-			root.IncrementFrame();
-			Assert.AreEqual( 0, sv.S.ScrollPosition.Y );
-			
-			sv.T.Children.Add(sv.P3);
-			root.IncrementFrame();
-			Assert.AreEqual( -100, sv.S.ScrollPosition.Y );
+			using (var root = TestRootPanel.CreateWithChild( sv, int2(150) ))
+			{
+				Assert.AreEqual( 0, sv.S.ScrollPosition.Y );
+
+				sv.T.Children.Insert(0,sv.P1);
+				root.IncrementFrame();
+				Assert.AreEqual( 0, sv.S.ScrollPosition.Y );
+
+				sv.T.Children.Add(sv.P3);
+				root.IncrementFrame();
+				Assert.AreEqual( -100, sv.S.ScrollPosition.Y );
+			}
 		}
 		
 		[Test]
@@ -281,43 +279,42 @@ namespace Fuse.Controls.ScrollViewTest
 		{
 			var sv = new UX.LayoutChange();
 			sv.T.Alignment = Alignment.Top;
-			var root = TestRootPanel.CreateWithChild( sv, int2(150) );
-			
-			Assert.AreEqual( 0, sv.S.ScrollPosition.Y );
-			root.StepFrame(5); //TODO: It's not clear why/if this should be required, it seems to be stabilizing now!
-			
-			sv.T.Children.Insert(0,sv.P1);
-			root.IncrementFrame();
-			//50 is as far as it should go to be in range, see:
-			//https://github.com/fusetools/fuselibs/issues/2891
-			Assert.AreEqual( 50, sv.S.ScrollPosition.Y );
+			using (var root = TestRootPanel.CreateWithChild( sv, int2(150) ))
+			{
+				Assert.AreEqual( 0, sv.S.ScrollPosition.Y );
+				root.StepFrame(5); //alignment chagne above may cause animation
 
-			//no animation expected
-			root.StepFrame(1);
-			Assert.AreEqual( 50, sv.S.ScrollPosition.Y );
-			
-			sv.T.Children.Add(sv.P3);
-			root.IncrementFrame();
-			Assert.AreEqual( 50, sv.S.ScrollPosition.Y );
+				sv.T.Children.Insert(0,sv.P1);
+				root.StepFrame(5);
+				//50 is as far as it should go to be in range, see:
+				//https://github.com/fusetools/fuselibs/issues/2891
+				//tolerance needed due to tolerance check in `ScrollView.SetScrolPositionImpl`
+				Assert.AreEqual( 50, sv.S.ScrollPosition.Y, 1e-3 );
+
+				sv.T.Children.Add(sv.P3);
+				root.IncrementFrame();
+				Assert.AreEqual( 50, sv.S.ScrollPosition.Y, 1e-3 );
+			}
 		}
 		
 		[Test]
 		public void ScrollPositionChanged()
 		{
 			var s= new UX.ScrollPositionChanged();
-			var root = TestRootPanel.CreateWithChild(s, int2(100,1000));
-			
-			root.StepFrameJS();
-			root.StepFrameJS(); //first event isn't sent until this frame
-			Assert.AreEqual( "0,0 50,0", s.T.Value );
-			
- 			s.SV.ScrollPosition = float2(0,100);
- 			root.StepFrameJS();
-			Assert.AreEqual( "0,10000 50,1", s.T.Value );
-			
- 			s.SV.ScrollPosition = float2(0,800);
- 			root.StepFrameJS();
-			Assert.AreEqual( "0,80000 50,8", s.T.Value );
+			using (var root = TestRootPanel.CreateWithChild(s, int2(100,1000)))
+			{
+				root.StepFrameJS();
+				root.StepFrameJS(); //first event isn't sent until this frame
+				Assert.AreEqual( "0,0 50,0", s.T.Value );
+
+				s.SV.ScrollPosition = float2(0,100);
+				root.StepFrameJS();
+				Assert.AreEqual( "0,10000 50,1", s.T.Value );
+
+				s.SV.ScrollPosition = float2(0,800);
+				root.StepFrameJS();
+				Assert.AreEqual( "0,80000 50,8", s.T.Value );
+			}
 		}
 		
 		[Test]

@@ -2,7 +2,7 @@
   "Copyright": "Copyright (c) Fusetools AS 2017",
   "Description": "Library for physics-based UI Effects",
   "Publisher": "Fusetools AS",
-  "Version": "1.1.0",
+  "Version": "1.2.1",
   "Package": {
     "ProjectUrl": "https://fusetools.com"
   },

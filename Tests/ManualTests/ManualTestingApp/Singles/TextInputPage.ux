@@ -22,32 +22,32 @@
 				<Change TheFill.Color="0.6,0.4,0.4,1" Duration="0.3"/>
 			</WhileTrue>
 		</ToggleControl>
-		
+
 		<Grid Columns="30,1*" CellSpacing="5" Margin="15" DefaultRow="auto">
 
 			<h2 ColumnSpan="2">Single Line</h2>
 			<Indicator ux:Name="IndSingle"/>
-			<StdTextInput ux:Name="SingleInput" Value="Scroll page up/down while editing"> 
+			<StdTextInput ux:Name="SingleInput" Value="Scroll page up/down while editing">
 			<!-- TODO:https://github.com/fusetools/fuselibs/issues/1465
 				TextAlignment="Center" -->
 				<WhileFocusWithin><Change IndSingle.Value="true"/></WhileFocusWithin>
 			</StdTextInput>
-			
+
 			<h2 ColumnSpan="2">Password text with background color</h2>
 			<Indicator ux:Name="IndPassword"/>
 			<StdTextInput ux:Name="PasswordInput" IsPassword="true" Value="Hidden text"
 				Background="#FFc">
-				<!-- TODO: https://github.com/fusetools/fuselibs/issues/1387 
+				<!-- TODO: https://github.com/fusetools/fuselibs/issues/1387
 					Alignment="Right" -->
 				<WhileFocusWithin><Change IndPassword.Value="true"/></WhileFocusWithin>
 			</StdTextInput>
-			
+
 			<h2 ColumnSpan="2">Disabled text, cannot edit</h2>
 			<Indicator ux:Name="IndDisabled"/>
 			<StdTextInput ux:Name="DisabledInput" Value="Disabled Input" IsEnabled="False">
 				<WhileFocusWithin><Change IndDisabled.Value="true"/></WhileFocusWithin>
 			</StdTextInput>
-			
+
 			<h2 ColumnSpan="2">Multiple lines, left aligned text, background color (whole width)</h2>
 			<Indicator ux:Name="IndMultiline"/>
 			<TextView ux:Name="MultilineInput" TextWrapping="Wrap"
@@ -57,7 +57,7 @@
 					<Stroke Width="1" Offset="1"><SolidColor Color="#cFc"/></Stroke>
 				</Rectangle>
 			</TextView>
-			
+
 			<h2 ColumnSpan="2">Switch between these two quickly</h2>
 			<Indicator ux:Name="IndSwitch1"/>
 			<StdTextInput Value="Switch between">
@@ -84,6 +84,43 @@
 					<Toggle Target="_linespacing" />
 				</Clicked>
 			</StdButton>
+
+			<h2 ColumnSpan="2">TextInput with TextAlignment</h2>
+			<Indicator ux:Name="IndTextAlignmentLeft"/>
+			<StdTextInput TextAlignment="Left" PlaceholderText="Left">
+				<WhileFocusWithin><Change IndTextAlignmentLeft.Value="true" /></WhileFocusWithin>
+			</StdTextInput>
+			<Indicator ux:Name="IndTextAlignmentCenter"/>
+			<StdTextInput TextAlignment="Center" PlaceholderText="Center">
+				<WhileFocusWithin><Change IndTextAlignmentCenter.Value="true" /></WhileFocusWithin>
+			</StdTextInput>
+			<Indicator ux:Name="IndTextAlignmentRight"/>
+			<StdTextInput TextAlignment="Right" PlaceholderText="Right">
+				<WhileFocusWithin><Change IndTextAlignmentRight.Value="true" /></WhileFocusWithin>
+			</StdTextInput>
+
+			<h2 ColumnSpan="2">Animating TextAlignment</h2>
+			<Indicator ux:Name="IndTextAlignmentAnimate"/>
+			<StdTextInput PlaceholderText="TextAlignment" ux:Name="_textAlignment">
+				<WhileFocusWithin><Change IndTextAlignmentAnimate.Value="true" /></WhileFocusWithin>
+			</StdTextInput>
+			<Grid ColumnSpan="2" Columns="1*,1*,1*">
+				<StdButton Text="Left">
+					<Clicked>
+						<Set _textAlignment.TextAlignment="Left" />
+					</Clicked>
+				</StdButton>
+				<StdButton Text="Center">
+					<Clicked>
+						<Set _textAlignment.TextAlignment="Center" />
+					</Clicked>
+				</StdButton>
+				<StdButton Text="Right">
+					<Clicked>
+						<Set _textAlignment.TextAlignment="Right" />
+					</Clicked>
+				</StdButton>
+			</Grid>
 		</Grid>
 	</ScrollView>
 </Page>

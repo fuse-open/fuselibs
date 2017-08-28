@@ -1,0 +1,25 @@
+<Panel ux:Class="UX.RouterModify.DynamicPath">
+	<Router ux:Name="router"/>
+	<JavaScript>
+		exports.path = "two"
+		exports.value = 12
+	</JavaScript>
+	<PageControl Transition="None">
+		<Page ux:Name="one"/>
+		<Page ux:Name="two">
+			<Timeline ux:Name="gotoParam">
+				<ModifyRoute How="Goto" Path=" 'three': (id: parameter(two).id + 10) "/>
+			</Timeline>
+		</Page>
+		<Page ux:Name="three"/>
+	</PageControl>
+	
+	<Timeline ux:Name="gotoNext">
+		<ModifyRoute How="Goto" Path="{path}: (id: {value})"/>
+	</Timeline>
+
+	<RangeControl ux:Name="range" Value="8"/>
+	<Timeline ux:Name="gotoProp">
+		<ModifyRoute How="Goto" Path=' "one": (id: {Property range.Value})'/>
+	</Timeline>
+</Panel>

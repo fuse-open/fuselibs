@@ -16,11 +16,11 @@
 			
 			<SwipeGesture Direction="Right" LengthNode="this" ux:Name="theSwipe" IsEnabled="false"/>
 			<SwipingAnimation Source="theSwipe">
-				<RouterModify Router="R" How="PrepareBack" When="Start"/>
+				<ModifyRoute Router="R" How="PrepareBack" When="Start"/>
 				<Change R.PrepareProgress="1"/>
 			</SwipingAnimation>
 			<Swiped Source="theSwipe">
-				<RouterModify Router="R" How="FinishPrepared"/>
+				<ModifyRoute Router="R" How="FinishPrepared"/>
 			</Swiped>
 		</Page>
 		
@@ -36,11 +36,11 @@
 			
 			<SwipeGesture Direction="Left" LengthNode="ONav" ux:Name="theOuterSwipe"/>
 			<SwipingAnimation Source="theOuterSwipe">
-				<RouterModify Router="R" How="PreparePush" Bookmark="two" When="Start"/>
+				<ModifyRoute Router="R" How="PreparePush" Bookmark="two" When="Start"/>
 				<Change R.PrepareProgress="1"/>
 			</SwipingAnimation>
 			<Swiped Source="theOuterSwipe">
-				<RouterModify Router="R" How="FinishPrepared"/>
+				<ModifyRoute Router="R" How="FinishPrepared"/>
 			</Swiped>
 			
 		</Navigator>

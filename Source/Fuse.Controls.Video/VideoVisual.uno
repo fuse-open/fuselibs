@@ -8,6 +8,7 @@ using Fuse.Elements;
 using Fuse.Controls;
 using Fuse.Controls.Graphics;
 using Fuse.Internal;
+using Fuse.Nodes;
 
 namespace Fuse.Controls.VideoImpl
 {
@@ -361,6 +362,9 @@ namespace Fuse.Controls.VideoImpl
 
 				PixelColor: float4(sample(tex, TexCoord, SamplerState.LinearClamp).XYZ, 1.0f);
 			};
+
+			if defined(FUSELIBS_DEBUG_DRAW_RECTS)
+				DrawRectVisualizer.Capture(offset, size, element.WorldTransform, dc);
 		}
 	}
 
@@ -426,6 +430,9 @@ namespace Fuse.Controls.VideoImpl
 				public float4 TextureColor: float4(sample( tex, TexCoord, SamplerState.LinearClamp ).XYZ, 1.0f);
 				PixelColor: TextureColor;
 			};
+
+			if defined(FUSELIBS_DEBUG_DRAW_RECTS)
+				DrawRectVisualizer.Capture(float2(0), size, element.WorldTransform, dc);
 		}
 	}
 

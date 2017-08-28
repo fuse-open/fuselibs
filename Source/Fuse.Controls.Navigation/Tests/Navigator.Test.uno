@@ -331,7 +331,7 @@ namespace Fuse.Navigation.Test
 		}
 		
 		[Test]
-		//https://github.com/fusetools/support-idesse/issues/3
+		// https://github.com/fusetools/fuselibs/issues/4256
 		public void RootingCache()
 		{
 			Router.TestClearMasterRoute();
@@ -640,6 +640,57 @@ namespace Fuse.Navigation.Test
 			}
 		}
 		
+		[Test]
+		public void Pages()
+		{
+			var p = new UX.Navigator.Pages();
+			p.theNav._testInterceptGoto = TestInterceptGoto;
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				root.StepFrameJS();
+				Assert.AreEqual( "one", _lastPath );
+				Assert.AreEqual( NavigationGotoMode.Transition, _lastGotoMode );
+				Assert.AreEqual( RoutingOperation.Goto, _lastOperation );
+				Assert.AreEqual( "dog", p.one.v.Value );
+				
+				p.callPushTwo.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual( "two", _lastPath );
+				Assert.AreEqual( RoutingOperation.Push, _lastOperation );
+				Assert.AreEqual( "cat", p.two.v.Value );
+				
+				p.callGoBack.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual( "one", _lastPath );
+				Assert.AreEqual( RoutingOperation.Pop, _lastOperation );
+				Assert.AreEqual( "dog", p.one.v.Value );
+				
+				p.callReplaceThree.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual( "three", _lastPath );
+				Assert.AreEqual( RoutingOperation.Replace, _lastOperation );
+				Assert.AreEqual( "weasel", p.three.v.Value );
+				
+				p.callGoBack.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual( null, _lastPath );
+				Assert.AreEqual( RoutingOperation.Pop, _lastOperation );
+			}
+		}
+		
+		string _lastPath, _lastParameter, _lastOperationStyle;
+		NavigationGotoMode _lastGotoMode;
+		RoutingOperation _lastOperation;
+		void TestInterceptGoto(string path, string parameter, NavigationGotoMode gotoMode,
+			RoutingOperation operation, string operationStyle)
+		{
+			_lastPath = path;
+			_lastParameter = parameter;
+			_lastGotoMode = gotoMode;
+			_lastOperation = operation;
+			_lastOperationStyle = operationStyle;
+		}
+			
 		List<T> GetChildren<T>(Visual n) where T : Node
 		{
 			var l = new List<T>();

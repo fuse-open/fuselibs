@@ -405,6 +405,9 @@ namespace Fuse.Navigation
 		Route SetRoute(Route r, NavigationGotoMode gotoMode, RoutingOperation operation, 
 			string operationStyle, bool userRequest = true)
 		{
+			if (r == null)
+				throw new Exception( "Route cannot be null" );
+				
 			//prepared routes are cleared when the actual route is changed
 			ClearPrepared();
 			
@@ -558,9 +561,9 @@ namespace Fuse.Navigation
 				if (HasOtherRouter(v))
 					return null;
 				
-				for (int i = 0; i < v.Children.Count; i++)
+				for (var ue = v.FirstChild<Node>(); ue != null; ue = ue.NextSibling<Node>())
 				{
-					ro = FindOutletDown(v.Children[i]);
+					ro = FindOutletDown(ue);
 					if (ro != null) return ro;
 				}
 			}

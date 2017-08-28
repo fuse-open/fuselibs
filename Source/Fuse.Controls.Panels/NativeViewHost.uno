@@ -269,7 +269,7 @@ namespace Fuse.Controls
 
 		void ITreeRenderer.HitTestModeChanged(Element e, bool enabled) { _nativeRenderer.HitTestModeChanged(e, enabled); }
 
-		void ITreeRenderer.ZOrderChanged(Element e, List<Visual> zorder) { _nativeRenderer.ZOrderChanged(e, zorder); }
+		void ITreeRenderer.ZOrderChanged(Element e, Visual[] zorder) { _nativeRenderer.ZOrderChanged(e, zorder); }
 
 		void ITreeRenderer.TransformChanged(Element e)
 		{
