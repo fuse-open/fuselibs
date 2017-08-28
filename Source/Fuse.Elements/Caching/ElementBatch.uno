@@ -145,7 +145,7 @@ namespace Fuse.Elements
 			Box box = new Box(float3(0), float3(0));
 			for (var i = 0; i < _elements.Count; i++)
 			{
-				var elm = _elements[0]._elm;
+				var elm = _elements[i]._elm;
 				var lrb = elm.LocalRenderBounds;
 				if (lrb == VisualBounds.Empty) continue;
 				if (lrb == VisualBounds.Infinite) return VisualBounds.Infinite;
