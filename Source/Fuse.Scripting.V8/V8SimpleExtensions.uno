@@ -43,7 +43,7 @@ namespace Fuse.Scripting.V8
 		// Value
 		public static JSType GetJSType(this JSValue value) { return Simple.Value.GetType(value); }
 		public static JSValue Retain(this JSValue value, JSContext context) { Simple.Value.Retain(context, value); return value; }
-		public static JSValue Release(this JSValue value, JSContext context) { Simple.Value.Release(context, value); return value; }
+		public static void Release(this JSValue value, JSContext context) { Simple.Value.Release(context, value); }
 		public static JSValue Null() { return Simple.Value.JSNull(); }
 		public static JSValue NewInt(int value, AutoReleasePool pool) { return pool.AutoRelease(Simple.Value.CreateInt(value)); }
 		public static JSValue NewDouble(double value, AutoReleasePool pool) { return pool.AutoRelease(Simple.Value.CreateDouble(value)); }

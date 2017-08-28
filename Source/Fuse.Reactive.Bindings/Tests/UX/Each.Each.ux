@@ -1,0 +1,40 @@
+<Panel ux:Class="UX.Each.Each">
+	<JavaScript>
+		var Observable = require("FuseJS/Observable")
+		exports.items = Observable()
+		
+		var count = 0
+		function createGroup() {
+			var group = "G" + count++
+			var list = Observable()
+			list.add( { text: group + "-0" } )
+			list.add( { text: group + "-1" } )
+			return {
+				group: group,
+				items: list,
+			}
+		}
+
+		exports.add = function() {
+			exports.items.add( createGroup() )
+		}
+		exports.add()
+		exports.add()
+		
+		exports.remove1 = function() {
+			exports.items.removeAt(1)
+		}
+		exports.add2 = function() {
+			exports.items.insertAt( 2, { text: "" + (count++) } )
+		}
+	</JavaScript>
+	<Each Items="{items}">
+		<Each Items="{items}">
+			<Text Value="{text}"/>
+		</Each>
+	</Each>
+	
+	<FuseTest.Invoke Handler="{add}" ux:Name="CallAdd"/>
+	<FuseTest.Invoke Handler="{add2}" ux:Name="CallAdd2"/>
+	<FuseTest.Invoke Handler="{remove1}" ux:Name="CallRemove1"/>
+</Panel>

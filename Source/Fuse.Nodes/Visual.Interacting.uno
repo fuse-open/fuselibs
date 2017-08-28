@@ -77,10 +77,8 @@ namespace Fuse
 			
 			if (how == CancelInteractionsType.Recursive)
 			{
-				for (int i=0; i < ZOrderChildCount; ++i)
-				{
-					GetZOrderChild(i).CancelInteractions(how);
-				}
+				for (var v = FirstChild<Visual>(); v != null; v = NextSibling<Visual>())
+					v.CancelInteractions(how);
 			}
 		}
 	}

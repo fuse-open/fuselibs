@@ -13,9 +13,10 @@ namespace Fuse.Controls.Panels.Test
 		public void Issue2680()
 		{
 			var p = new UX.Issue2680();
-			var root = TestRootPanel.CreateWithChild(p);
-			
-			Assert.AreEqual(float2(300,40), p.G.ActualSize);
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				Assert.AreEqual(float2(300,40), p.G.ActualSize);
+			}
 		}
 		
 		[Test]
@@ -97,12 +98,40 @@ namespace Fuse.Controls.Panels.Test
 				Assert.AreEqual( float4(100,0,100,10), ActualPositionSize(p.P2));
 				Assert.AreEqual( float4(0,10,100,30), ActualPositionSize(p.P3));
 				Assert.AreEqual( float4(100,15,100,20), ActualPositionSize(p.P4));
+
+				Assert.AreEqual( float4(0,4,100,2), ActualPositionSize(p.RC1));
+				Assert.AreEqual( float4(100,0,100,10), ActualPositionSize(p.RC2));
+				Assert.AreEqual( float4(50,10,100,30), ActualPositionSize(p.RC3));
+
+				Assert.AreEqual( float4(-150,0,500,2), ActualPositionSize(p.RO1));
+
+				Assert.AreEqual( float4(0,0,2,100), ActualPositionSize(p.VT1));
+				Assert.AreEqual( float4(0,100,10,100), ActualPositionSize(p.VT2));
+				Assert.AreEqual( float4(10,0,30,100), ActualPositionSize(p.VT3));
+				Assert.AreEqual( float4(10,100,20,100), ActualPositionSize(p.VT4));
+
+				Assert.AreEqual( float4(4,0,2,100), ActualPositionSize(p.VC1));
+				Assert.AreEqual( float4(0,100,10,100), ActualPositionSize(p.VC2));
+				Assert.AreEqual( float4(10,0,30,100), ActualPositionSize(p.VC3));
+				Assert.AreEqual( float4(15,100,20,100), ActualPositionSize(p.VC4));
+
+				Assert.AreEqual( float4(8,0,2,100), ActualPositionSize(p.VB1));
+				Assert.AreEqual( float4(0,100,10,100), ActualPositionSize(p.VB2));
+				Assert.AreEqual( float4(10,0,30,100), ActualPositionSize(p.VB3));
+				Assert.AreEqual( float4(20,100,20,100), ActualPositionSize(p.VB4));
+
+				// Old RowAlignment tests
+				Assert.AreEqual( float4(0,4,100,2), ActualPositionSize(p.RP1));
+				Assert.AreEqual( float4(100,0,100,10), ActualPositionSize(p.RP2));
+				Assert.AreEqual( float4(0,10,100,30), ActualPositionSize(p.RP3));
+				Assert.AreEqual( float4(100,15,100,20), ActualPositionSize(p.RP4));
 				
-				Assert.AreEqual( float4(8,0,2,100), ActualPositionSize(p.R1));
-				Assert.AreEqual( float4(0,100,10,100), ActualPositionSize(p.R2));
-				Assert.AreEqual( float4(10,0,30,100), ActualPositionSize(p.R3));
-				Assert.AreEqual( float4(20,100,20,100), ActualPositionSize(p.R4));
+				Assert.AreEqual( float4(8,0,2,100), ActualPositionSize(p.RR1));
+				Assert.AreEqual( float4(0,100,10,100), ActualPositionSize(p.RR2));
+				Assert.AreEqual( float4(10,0,30,100), ActualPositionSize(p.RR3));
+				Assert.AreEqual( float4(20,100,20,100), ActualPositionSize(p.RR4));
 			}
 		}
+
 	}
 }

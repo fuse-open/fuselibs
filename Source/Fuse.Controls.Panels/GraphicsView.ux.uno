@@ -4,6 +4,7 @@ using Uno.UX;
 using Fuse.Elements;
 using Fuse.Drawing;
 using Fuse.Controls.Native;
+using Fuse.Nodes;
 
 namespace Fuse.Controls
 {
@@ -54,7 +55,7 @@ namespace Fuse.Controls
 		public void OpacityChanged(Element e, float opacity) {}
 		public void ClipToBoundsChanged(Element e, bool clipToBounds) {}
 		public void BackgroundChanged(Element e, Brush background) {}
-		public void ZOrderChanged(Element e, List<Visual> zorder) {}
+		public void ZOrderChanged(Element e, Visual[] zorder) {}
 		public void HitTestModeChanged(Element e, bool enabled) {}
 		public bool Measure(Element e, LayoutParams lp, out float2 size) { size = float2(0.0f); return false; }
 
@@ -180,7 +181,7 @@ namespace Fuse.Controls
 
 		void ITreeRenderer.HitTestModeChanged(Element e, bool enabled) { GetTreeRenderer(e).HitTestModeChanged(e, enabled); }
 
-		void ITreeRenderer.ZOrderChanged(Element e, List<Visual> zorder) { /*GetTreeRenderer(e).ZOrderChanged(e, zorder);*/ }
+		void ITreeRenderer.ZOrderChanged(Element e, Visual[] zorder) { /*GetTreeRenderer(e).ZOrderChanged(e, zorder);*/ }
 
 		bool ITreeRenderer.Measure(Element e, LayoutParams lp, out float2 size) { return GetTreeRenderer(e).Measure(e, lp, out size); }
 
@@ -332,9 +333,13 @@ namespace Fuse.Controls
 					}
 
 					Internal.DrawManager.PrepareDraw(_dc);
+
 					_dc.PushViewport(this);
 					_dc.PushScissor( new Recti(0, 0, size.X, size.Y) );
 					_dc.Clear(Color);
+
+					if defined(FUSELIBS_DEBUG_DRAW_RECTS)
+						DrawRectVisualizer.StartFrame(_dc.RenderTarget);
 
 					if defined(FUSELIBS_PROFILING)
 						Profiling.EndRegion(Uno.Diagnostics.Clock.GetSeconds() - t);
@@ -343,6 +348,9 @@ namespace Fuse.Controls
 
 					_dc.PopScissor();
 					_dc.PopViewport();
+
+					if defined(FUSELIBS_DEBUG_DRAW_RECTS)
+						DrawRectVisualizer.EndFrameAndVisualize(_dc);
 
 					Internal.DrawManager.EndDraw(_dc);
 

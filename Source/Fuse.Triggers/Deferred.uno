@@ -182,9 +182,6 @@ namespace Fuse
 			if (_added != null)
 				Fuse.Diagnostics.InternalError( "Duplicate call to Deferred.Perform", this );
 				
-			//if IndexOf returns -1, for some odd reason, then we'll insert at 0
-			int childIndex = Parent.Children.IndexOf(this) + 1;
-
 			_added = new List<Node>();
 			for (int i=0; i < Templates.Count; ++i)
 			{
@@ -193,7 +190,7 @@ namespace Fuse
 				_added.Add(elm);
 			}
 			
-			Parent.InsertNodes(childIndex, _added.GetEnumerator());
+			Parent.InsertNodesAfter(this, _added.GetEnumerator());
 			
 			BusyTask.SetBusy(Parent, ref _busyTask, BusyTaskActivity.None);
 			return true;

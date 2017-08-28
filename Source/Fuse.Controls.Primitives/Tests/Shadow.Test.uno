@@ -13,8 +13,8 @@ namespace Fuse.Controls.Primitives.Test
 		public void Underlay()
 		{
 			var p = new UX.Shadow.Panel();
-			var root = TestRootPanel.CreateWithChild(p, int2(300, 300));
 			p._shadow.Size = 10;
+			using (var root = TestRootPanel.CreateWithChild(p, int2(300, 300)))
 			using (var fb = root.CaptureDraw())
 			{
 				// check that the element is on top
@@ -29,11 +29,11 @@ namespace Fuse.Controls.Primitives.Test
 		public void Padding()
 		{
 			var p = new UX.Shadow.Panel();
-			var root = TestRootPanel.CreateWithChild(p, int2(300, 300));
 			p._panel.Padding = float4(10);
 			p._shadow.Size = 0;
 			p._shadow.Angle = -45;
 			p._shadow.Distance = Vector.Length(float2(10, 10));
+			using (var root = TestRootPanel.CreateWithChild(p, int2(300, 300)))
 			using (var fb = root.CaptureDraw())
 			{
 				fb.AssertPixel(float4(1, 0, 0, 1),        int2(50, 50));
@@ -46,8 +46,8 @@ namespace Fuse.Controls.Primitives.Test
 		public void Falloff()
 		{
 			var p = new UX.Shadow.Panel();
-			var root = TestRootPanel.CreateWithChild(p, int2(300, 300));
 			p._shadow.Size = 10;
+			using (var root = TestRootPanel.CreateWithChild(p, int2(300, 300)))
 			using (var fb = root.CaptureDraw())
 			{
 				// sample a few values from the middle of the shadow. Reference values are taken from ShadowMode.PerPixel.
@@ -64,24 +64,26 @@ namespace Fuse.Controls.Primitives.Test
 		public void CornerRadius()
 		{
 			var p = new UX.Shadow.Rectangle();
-			var root = TestRootPanel.CreateWithChild(p, int2(300, 300));
 			p._shadow.Size = 0;
 			p._shadow.Angle = -45;
 			p._shadow.Distance = Vector.Length(float2(10, 10));
 
-			float[] cornerRadiuses = new float[] {10, 20, 0, 5};
-			for (int i = 0; i < cornerRadiuses.Length; ++i)
+			using (var root = TestRootPanel.CreateWithChild(p, int2(300, 300)))
 			{
-				float radius = cornerRadiuses[i];
-				p._rectangle.CornerRadius = float4(radius);
-				using (var fb = root.CaptureDraw())
+				float[] cornerRadiuses = new float[] {10, 20, 0, 5};
+				for (int i = 0; i < cornerRadiuses.Length; ++i)
 				{
-					// bottom-left corner
-					var cornerEdge = (1.0f - 1.0f / Math.Sqrt(2.0f)) * radius;
-					var innerPixel = 40 + (int)Math.Floor(cornerEdge - 1.5f);
-					var outerPixel = 40 + (int)Math.Ceil(cornerEdge + 1.5f);
-					fb.AssertPixel(float4(0, 0, 0, 0),        int2(innerPixel));
-					fb.AssertPixel(Fuse.Drawing.Colors.Green, int2(outerPixel), 0.01f);
+					float radius = cornerRadiuses[i];
+					p._rectangle.CornerRadius = float4(radius);
+					using (var fb = root.CaptureDraw())
+					{
+						// bottom-left corner
+						var cornerEdge = (1.0f - 1.0f / Math.Sqrt(2.0f)) * radius;
+						var innerPixel = 40 + (int)Math.Floor(cornerEdge - 1.5f);
+						var outerPixel = 40 + (int)Math.Ceil(cornerEdge + 1.5f);
+						fb.AssertPixel(float4(0, 0, 0, 0),        int2(innerPixel));
+						fb.AssertPixel(Fuse.Drawing.Colors.Green, int2(outerPixel), 0.01f);
+					}
 				}
 			}
 		}
@@ -90,12 +92,12 @@ namespace Fuse.Controls.Primitives.Test
 		public void ColorPanel()
 		{
 			var p = new UX.Shadow.Panel();
-			var root = TestRootPanel.CreateWithChild(p, int2(300, 300));
 			p._panel.Color = float4(1, 0, 0, 0.5f);
 			p._shadow.Size = 0;
 			p._shadow.Angle = -45;
 			p._shadow.Distance = Vector.Length(float2(10, 10));
 
+			using (var root = TestRootPanel.CreateWithChild(p, int2(300, 300)))
 			using (var fb = root.CaptureDraw())
 			{
 				fb.AssertPixel(float4(0.5f, 0.25f, 0, 1), int2(50), 0.01f);
@@ -107,12 +109,12 @@ namespace Fuse.Controls.Primitives.Test
 		public void ColorRectangle()
 		{
 			var p = new UX.Shadow.Rectangle();
-			var root = TestRootPanel.CreateWithChild(p, int2(300, 300));
 			p._rectangle.Color = float4(1, 0, 0, 0.5f);
 			p._shadow.Size = 0;
 			p._shadow.Angle = -45;
 			p._shadow.Distance = Vector.Length(float2(10, 10));
 
+			using (var root = TestRootPanel.CreateWithChild(p, int2(300, 300)))
 			using (var fb = root.CaptureDraw())
 			{
 				fb.AssertPixel(float4(0.5f, 0.25f, 0, 1), int2(50), 0.01f);
@@ -124,9 +126,9 @@ namespace Fuse.Controls.Primitives.Test
 		public void InvisiblePanel()
 		{
 			var p = new UX.Shadow.Panel();
-			var root = TestRootPanel.CreateWithChild(p, int2(300, 300));
 			p._panel.Color = float4(0, 0, 0, 0);
 
+			using (var root = TestRootPanel.CreateWithChild(p, int2(300, 300)))
 			using (var fb = root.CaptureDraw())
 			{
 				fb.AssertPixel(float4(0, 0.5f, 0, 1), int2(100), 0.01f);
@@ -137,9 +139,9 @@ namespace Fuse.Controls.Primitives.Test
 		public void InvisibleRectangle()
 		{
 			var p = new UX.Shadow.Rectangle();
-			var root = TestRootPanel.CreateWithChild(p, int2(300, 300));
 			p._rectangle.Color = float4(0, 0, 0, 0);
 
+			using (var root = TestRootPanel.CreateWithChild(p, int2(300, 300)))
 			using (var fb = root.CaptureDraw())
 			{
 				fb.AssertPixel(float4(0, 0.5f, 0, 1), int2(100), 0.01f);

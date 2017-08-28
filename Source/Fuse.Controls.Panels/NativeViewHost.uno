@@ -269,7 +269,7 @@ namespace Fuse.Controls
 
 		void ITreeRenderer.HitTestModeChanged(Element e, bool enabled) { _nativeRenderer.HitTestModeChanged(e, enabled); }
 
-		void ITreeRenderer.ZOrderChanged(Element e, List<Visual> zorder) { _nativeRenderer.ZOrderChanged(e, zorder); }
+		void ITreeRenderer.ZOrderChanged(Element e, Visual[] zorder) { _nativeRenderer.ZOrderChanged(e, zorder); }
 
 		void ITreeRenderer.TransformChanged(Element e)
 		{
@@ -310,6 +310,8 @@ namespace Fuse.Controls
 		extern(Android || iOS)
 		protected override void OnRooted()
 		{
+			WorldTransformInvalidated += OnInvalidateWorldTransform;
+
 			if (IsInGraphicsContext)
 			{
 				_glRenderer = new NativeViewRenderer();
@@ -392,6 +394,8 @@ namespace Fuse.Controls
 		extern(Android || iOS)
 		protected override void OnUnrooted()
 		{
+			WorldTransformInvalidated -= OnInvalidateWorldTransform;
+
 			if (IsInGraphicsContext && _proxyHost != null && !_offscreenEnabled)
 				_proxyHost.Remove(_root);
 
@@ -410,9 +414,8 @@ namespace Fuse.Controls
 			that responds to all local transform changes.
 		*/
 		extern(Android || iOS)
-		protected override void OnInvalidateWorldTransform()
+		void OnInvalidateWorldTransform(object sender, EventArgs args)
 		{
-			base.OnInvalidateWorldTransform();
 			if (RenderToTexture || !IsInGraphicsContext)
 				return;
 			PostUpdateTransform();

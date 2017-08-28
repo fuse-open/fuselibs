@@ -2,7 +2,7 @@
   "Copyright": "Copyright (c) Fusetools AS 2017",
   "Description": "Framework for reactive programming",
   "Publisher": "Fusetools AS",
-  "Version": "1.1.0-rc2",
+  "Version": "1.2.1",
   "Package": {
     "ProjectUrl": "https://fusetools.com"
   },
@@ -19,12 +19,14 @@
   ],
   "InternalsVisibleTo": [
     "Fuse.Common.Test.Helpers",
+    "Fuse.Navigation",
     "Fuse.Reactive.Bindings",
     "Fuse.Reactive.Expressions",
     "Fuse.Reactive.JavaScript",
     "Fuse.Scripting.Test",
     "Fuse.Selection",
     "Fuse.Common.Test.Helpers",
+    "Fuse.Controls.Navigation",
     "Fuse.Charting",
     "FuseTest",
     "Fabric"

@@ -1,10 +1,10 @@
 <Panel ux:Class="UX.RouterEmbed">
-	<Router ux:Name="routerA"/>
+	<Router ux:Name="routerA" IsMasterRouter="false"/>
 	<Panel>
 		<PageControl ux:Name="N1">
 			<Panel Name="one"/>
 			<Panel Name="two">
-				<Router ux:Name="routerB"/>
+				<Router ux:Name="routerB" IsMasterRouter="false"/>
 				<Navigator DefaultPath="three" ux:Name="N2">
 					<Panel ux:Template="one"/>
 					<Panel ux:Template="two"/>

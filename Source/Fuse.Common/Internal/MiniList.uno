@@ -19,6 +19,8 @@ namespace Fuse.Internal
 		This does not support `null` items.
 		
 		This is backed by an `ObjectList` for 2+ items. This provides the same ability to do versioned iteration without needing a copy of the list.
+		
+		WARNING: Be careful using the `IList` interface. You only use it in certain generic functions and in `using` statements. Otherwise you will end up creating a boxed copy.
 	*/
 	struct MiniList<T> : IList<T> where T : class
 	{
@@ -246,7 +248,6 @@ namespace Fuse.Internal
 							_first = false;
 							return true;
 						}
-						_mode = MiniListMode.Empty;
 						return false;
 						
 					case MiniListMode.List:
@@ -258,9 +259,9 @@ namespace Fuse.Internal
 
 			public void Reset()
 			{
-				//it's easier not to support this since it would involve tracking the initial iterator state (added overhead)
-				//or it would incorrectly iterate the current source, not the one at the time of creation
-				throw new Exception( "Reset not supported" );
+				_first = true;
+				if (_mode == MiniListMode.List)
+					_iter.Reset();
 			}
 		}
 	}

@@ -405,6 +405,9 @@ namespace Fuse.Navigation
 		Route SetRoute(Route r, NavigationGotoMode gotoMode, RoutingOperation operation, 
 			string operationStyle, bool userRequest = true)
 		{
+			if (r == null)
+				throw new Exception( "Route cannot be null" );
+				
 			//prepared routes are cleared when the actual route is changed
 			ClearPrepared();
 			
@@ -506,7 +509,7 @@ namespace Fuse.Navigation
 			return new Route(opath, oparameter, GetCurrent(from, to));
 		}
 		
-		Route GetCurrentUp(Node from)
+		Route GetRouteUpToRouter(Node from)
 		{
 			Route route = null;
 			
@@ -558,9 +561,9 @@ namespace Fuse.Navigation
 				if (HasOtherRouter(v))
 					return null;
 				
-				for (int i = 0; i < v.Children.Count; i++)
+				for (var ue = v.FirstChild<Node>(); ue != null; ue = ue.NextSibling<Node>())
 				{
-					ro = FindOutletDown(v.Children[i]);
+					ro = FindOutletDown(ue);
 					if (ro != null) return ro;
 				}
 			}
@@ -583,7 +586,7 @@ namespace Fuse.Navigation
 			
 				//prevent crossing bounds
 				var v = active as Visual;
-				if (v != null && HasOtherRouter(v))
+				if (v != null && HasRouter(v))
 					return null;
 					
 				page = active;
@@ -607,7 +610,7 @@ namespace Fuse.Navigation
 				return null;
 			}
 			
-			var current = GetCurrentUp( (outlet as Node).Parent );
+			var current = GetRouteUpToRouter( (outlet as Node).Parent );
 			//this might be a top-level RouterOutlet so check for a null
 			var route = current == null ? rel : current.Append( rel );
 			return route;
@@ -615,13 +618,13 @@ namespace Fuse.Navigation
 		
 		bool HasOtherRouter(Visual n)
 		{
-			for (int i = 0; i < n.Children.Count; i++)
-			{
-				var q = n.Children[i];
-				if (q != this && q is Router)
-					return true;
-			}
-			return false;
+			var r = n.FirstChild<Router>();
+			return r != null && r != this;
+		}
+		
+		bool HasRouter(Visual n)
+		{
+			return n.FirstChild<Router>() != null;
 		}
 		
 		void IBaseNavigation.GoForward() { }

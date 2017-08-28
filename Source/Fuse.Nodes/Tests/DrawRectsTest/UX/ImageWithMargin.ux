@@ -1,0 +1,1 @@
+<Image ux:Class="UX.ImageWithMargin" File="../data/mask.png" Margin="10" CachingMode="Never" />

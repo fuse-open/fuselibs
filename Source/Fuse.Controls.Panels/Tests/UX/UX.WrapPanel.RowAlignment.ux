@@ -5,11 +5,49 @@
 		<Panel Height="30" ux:Name="P3"/>
 		<Panel Height="20" ux:Name="P4"/>
 	</WrapPanel>
+
+	<WrapPanel ItemWidth="100" RowAlignment="Center">
+		<Panel Height="2" ux:Name="RC1"/>
+		<Panel Height="10" ux:Name="RC2"/>
+		<Panel Height="30" ux:Name="RC3"/>
+	</WrapPanel>
+
+	<WrapPanel ItemWidth="100" RowAlignment="Center">
+		<Panel Height="2" Width="500" ux:Name="RO1"/>
+	</WrapPanel>
+
+	<WrapPanel ItemHeight="100" Orientation="Vertical" RowAlignment="TopLeft" MaxHeight="200">
+		<Panel Width="2" ux:Name="VT1"/>
+		<Panel Width="10" ux:Name="VT2"/>
+		<Panel Width="30" ux:Name="VT3"/>
+		<Panel Width="20" ux:Name="VT4"/>
+	</WrapPanel>
+
+	<WrapPanel ItemHeight="100" Orientation="Vertical" RowAlignment="Center" MaxHeight="200">
+		<Panel Width="2" ux:Name="VC1"/>
+		<Panel Width="10" ux:Name="VC2"/>
+		<Panel Width="30" ux:Name="VC3"/>
+		<Panel Width="20" ux:Name="VC4"/>
+	</WrapPanel>
+
+	<WrapPanel ItemHeight="100" Orientation="Vertical" RowAlignment="BottomRight" MaxHeight="200">
+		<Panel Width="2" ux:Name="VB1"/>
+		<Panel Width="10" ux:Name="VB2"/>
+		<Panel Width="30" ux:Name="VB3"/>
+		<Panel Width="20" ux:Name="VB4"/>
+	</WrapPanel>
+
+	<WrapPanel ItemWidth="100" RowAlignment="CenterLeft">
+		<Panel Height="2" ux:Name="RP1"/>
+		<Panel Height="10" ux:Name="RP2"/>
+		<Panel Height="30" ux:Name="RP3"/>
+		<Panel Height="20" ux:Name="RP4"/>
+	</WrapPanel>
 	
 	<WrapPanel ItemHeight="100" Orientation="Vertical" RowAlignment="Right" MaxHeight="200">
-		<Panel Width="2" ux:Name="R1"/>
-		<Panel Width="10" ux:Name="R2"/>
-		<Panel Width="30" ux:Name="R3"/>
-		<Panel Width="20" ux:Name="R4"/>
+		<Panel Width="2" ux:Name="RR1"/>
+		<Panel Width="10" ux:Name="RR2"/>
+		<Panel Width="30" ux:Name="RR3"/>
+		<Panel Width="20" ux:Name="RR4"/>
 	</WrapPanel>
 </Panel>

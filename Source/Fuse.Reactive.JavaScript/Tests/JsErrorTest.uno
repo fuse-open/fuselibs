@@ -14,8 +14,8 @@ namespace Fuse.Reactive.Test
 			using (var dg = new RecordDiagnosticGuard())
 			{
 				var e = new UX.Error.UnknownSymbol();
-				var root = TestRootPanel.CreateWithChild(e);
-				root.StepFrameJS();
+				using (var root = TestRootPanel.CreateWithChild(e))
+					root.StepFrameJS();
 
 				var diagnostics = dg.DequeueAll();
 				Assert.AreEqual(1, diagnostics.Count);
@@ -33,8 +33,8 @@ namespace Fuse.Reactive.Test
 			using (var dg = new RecordDiagnosticGuard())
 			{
 				var e = new UX.Error.RequireInvalid();
-				var root = TestRootPanel.CreateWithChild(e);
-				root.StepFrameJS();
+				using (var root = TestRootPanel.CreateWithChild(e))
+					root.StepFrameJS();
 
 				var diagnostics = dg.DequeueAll();
 				Assert.AreEqual(1, diagnostics.Count);
@@ -51,21 +51,23 @@ namespace Fuse.Reactive.Test
 		public void ReadUndefined()
 		{
 			var e = new UX.Error.ReadUndefined();
-			var root = TestRootPanel.CreateWithChild(e);
-			root.StepFrameJS();
-
-			using (var dg = new RecordDiagnosticGuard())
+			using (var root = TestRootPanel.CreateWithChild(e))
 			{
-				e.CallFlub.Perform();
 				root.StepFrameJS();
 
-				var diagnostics = dg.DequeueAll();
-				Assert.AreEqual(1, diagnostics.Count);
-				var s = (ScriptException)diagnostics[0].Exception;
-				Assert.Contains("q.value.x", s.SourceLine);
-				Assert.AreEqual(6, s.LineNumber);
-				Assert.Contains("Error.ReadUndefined.ux", s.FileName);
-				Assert.Contains("Cannot read property 'x' of undefined", s.ErrorMessage);
+				using (var dg = new RecordDiagnosticGuard())
+				{
+					e.CallFlub.Perform();
+					root.StepFrameJS();
+
+					var diagnostics = dg.DequeueAll();
+					Assert.AreEqual(1, diagnostics.Count);
+					var s = (ScriptException)diagnostics[0].Exception;
+					Assert.Contains("q.value.x", s.SourceLine);
+					Assert.AreEqual(6, s.LineNumber);
+					Assert.Contains("Error.ReadUndefined.ux", s.FileName);
+					Assert.Contains("Cannot read property 'x' of undefined", s.ErrorMessage);
+				}
 			}
 		}
 		
@@ -77,8 +79,8 @@ namespace Fuse.Reactive.Test
 			using (var dg = new RecordDiagnosticGuard())
 			{
 				var e = new UX.Error.OnValueChanged();
-				var root = TestRootPanel.CreateWithChild(e);
-				root.StepFrameJS();
+				using (var root = TestRootPanel.CreateWithChild(e))
+					root.StepFrameJS();
 
 				var diagnostics = dg.DequeueAll();
 				Assert.AreEqual(1, diagnostics.Count);

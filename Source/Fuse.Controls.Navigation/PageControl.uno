@@ -141,12 +141,11 @@ namespace Fuse.Controls
 			RoutingOperation direction, string operationStyle, out Visual page)
 		{
 			page = null;
-			for (int i=0; i < Children.Count; ++i)
+			for (var n = FirstChild<Visual>(); n != null; n = n.NextSibling<Visual>())
 			{
-				var n = Children[i];
 				if ((string)n.Name == path)
-					{
-					page = n as Visual;
+				{
+					page = n;
 					break;
 				}
 			}

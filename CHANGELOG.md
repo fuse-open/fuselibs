@@ -1,18 +1,152 @@
 # Unreleased
 
+## Delay Push Notification Registration on iOS
+
+On iOS you can now put the following in your unoproj file:
+
+```
+    "iOS": {
+        "PushNotifications": {
+            "RegisterOnLaunch": false
+        }
+    },
+```
+which will stop push notifications registering (and potentially asking for permissions) on launch. Your must then call `register()` from JS when you wish to begin using push notifications. On android this option & register are silently ignored.
+
+## Image
+- Fixed issue where an `<Image />` could fail to display inside a `<NativeViewHost />` on iOS
+
+## Each
+- Fixed a bug where replacing the whole list of items with an empty list would not immediately remove the items from the UI.
+
+## Router
+- Added several features to allow navigation/routing from within UX, whereas previously JavaScript code was required.
+- Added `ModifyRoute`, `GotoRoute` and `PushRoute` actions to replace `RouterModify`. These all have a `Path` property.
+	<Each Items="{tags}">
+		<Text Value="{tag}">
+			<Clicked>
+				<PushRoute Path=" 'list', 'tag' : ('id': {tag})"/>
+			</Clicked>
+		</Text>
+	</Each>
+- Added `gotoRoute`, `pushRoute`, and `modifyRoute` expression events which allow for simple navigation in event handlers.
+	<Button Text="View Details" Clicked="gotoRoute( 'home', 'user' : ( 'id': {userId}) )"/>
+
+## ScrollViewPager
+- Added `ScrollViewPage` which simplifies the creation of infinite scrolling lists
+
+## Navigator / PageControl
+- Added `Pages` property that allows for a state driven app navigation
+
+## Ellipse
+- Added missing hit testing from `Ellipse`. If you relied on there not being any hit testing on an ellipse add `HitTestMode="None"`
+
+## Video
+- Xamarin Mac was upgraded to support 64-bit executables on macOS.
+
+## Trigger
+- Fixed an issue where certain triggers would not skip their animation/actions as part of the Bypass phase. This will not likely affect many projects, but may resolve some spurious issues where animations did not bypass under certain conditions.
+- Fixed an issue where `WhileVisibleInScrollView` did not respect the Bypass phase for element layout.
+  * If you required this behaviour add `Bypass="None"` to the trigger -- in exceptional cases you can add `Bypass="ExceptLayout"` to get the precise previous behaviour, but it should not be required, and is only temporarily available for backwards compatibility.
+
+## ScrollView
+- Added minimal support to WhileVisibleInScrollView for changes in Element layout updating the status
+
+## Optimizations for long list of elements
+- Several low-level optimizations that speeds up scenarios with long lists (e.g. scrollviews). Here are the Uno-level details:
+ * Optimized the implementation of the `Visual.Children` collection to be an implicitly linked list. This avoids all memory allocation and shifting in connection with inserting and removing nodes from a parent, and ensures a `O(1)` cost for all child list manipulations.
+ * Introduced new public API: `Node.NextSibling<T>()` and `Node.PreviousSibling<T>()`, which can be together with `Visual.FirstChild<T>()` and `Visual.LastChild<T>()`. The recommended way of iterating over the children of a `Visual` is now `for (var c = parent.FirstChild<Visual>(); c != null; c = c.NextSibling<Visual>())` where `Visual` can be replaced with the desired node type to visit.
+
+## Fuse.Drawing.Surface
+- Added support for the Surface API in native UI for iOS. Meaning that `Curve`, `VectorLayer` and charting will work inside a `NativeViewHost`.
+
+## TextInput
+- Fixed issue on Android causing text to align incorrectly if being scrolled and unfocused.
+
+## WrapPanel
+- Added possibility to use `RowAlignment` to align the elements in the major direction of the `WrapPanel` as well as in the minor.
+
+## Triggers
+- Several triggers were modified to properly look up the tree for a target node, whereas previously they may have only checked the immediate parent. The affected triggers are `BringIntoView`, `Show`,`Hide`,`Collapse`, `Toggle`, `TransitionState`, `Callback`, `CancelInteractions`, `Stop`, `Play`, `Resume`, `Pause`, `TransitionLayout`, `BringToFront`, `SendToBack`, `EvaluateJS`, `RaiseUserEvent`, `ScrollTo`. This should only change previous behavior if the action was previously configured incorrectly and did nothing or already found the wrong node. Many of the actions have a `Target` to target a specific node, or `TargetNode` to specify where the search begins.
+- Changed/fixed `Trigger` to provide the trigger itself as the target node to a `TriggerAction`, previously it'd provide the parent of the trigger. The old behaviour was due to an old tree structure. This should have been updated a long time ago. This allows actions to reference the trigger in which they are contained. If you've created a custom Uno `TriggerAction` and need the old behaviour modify your `Perform(Node target)` to use `target.Parent`. Triggers should in general scan upwards from the target node.
+
 ## Optimizations
+- Optimized UpdateManager dispatcher to deal better with high numbers of dispatches per frame (as when populating long lists).
+- Optimized how ZOrder was computed which improves layout and tree initialization speed. Inlcudes a minor change on the `ITreeRenderer` interface, unlikely to affect your code.
+- Optimized how bounding boxes are calculated (improves layout and rendering performance).
+- Optimized how render bounds are compounded for larger lists.
+
+## Marshalling
+- Fuse.Scripting now knows about the JS `Date` type, allowing instances to be passed to/from Uno in the form of `Uno.DateTime` objects. This support extends to databinding, `NativeModule`s, `ScriptClass`s, and the `Context.Wrap/Unwrap` API.
+- Binding an object that does not implement `IArray` to a property that expects `IArray` will now automatically convert the value to an array of length 1.
+
+## UpdateManager changes (Uno-level)
+- Breaking change: Several entrypoints on UpdateManager now take a `LayoutPriority` enum instead of `int` as the `priority` argument. Very unlikely to affect user code code.
+- Fixed an issue where writes to `FuseJS/Observables` would not dispatch in the right order on the UI thread if interleaved with `ScriptClass` callbacks (slightly breaking behavior).
+
+
+# 1.2
+
+## 1.2.1
+
+### Fuse.Elements
+- Fixed an issue where the ElementBatcher ended up throwing an Exception complaining about the element not having a caching rect.
+
+
+## 1.2.0
+
+### Fuse.Text
+- Fixed an issue where the combination of `-DUSE_HARFBUZZ`, `-DCOCOAPODS` *and* certain Pods (in particular Firebase.Database has been identified) caused an app to link to symbols that the AppStore disallows.
+
+### Each
+- Fixed an issue where removing an element would not actually remove the element
+
+### Image
+- Fixed issue where an `<Image />` could fail to display inside a `<NativeViewHost />` on iOS
+
+### Router
+- Added `findRouter` function making it easier to use a router in a page deep inside the UI
+- Fixed and issue where relative paths and nested `Router` gave an error about unknown paths
+
+### UX Expressions (Uno-level)
+- Introduced support for variable arguments to UX functions - inherit from the `Fuse.Reactive.VarArgFunction` class.
+- The classes `Vector2`, `Vector3` and `Vector4` in `Fuse.Reactive` are now removed and replaced with the general purpose, variable-argument version `Vector` instead. This ensures vectors of any length are treated the same way. This is backwards incompatible in the unlikely case of having used these classes explicitly from Uno code.
+- Added support for name-value pair syntax: `name: value`. Can be used for JSON-like object notation and named arguments in custom functions. Any vector of name-value pairs is interpreted as an `IObject`, e.g. `{name: 'Joe', apples: 10}` is an object.
+
+### Templates
+- Added `Identity` and `IdentityKey` to `Each`. This allows created visuals to be reused when replaced with `replaceAt` or `replaceAll` in an Observable.
+- Triggers may now use templates which will be instantiated and added to the parent when active (like a node child).
+	<WhileActive>
+		<Circle ux:Generate="Template" Color="#AFA" Width="50" Height="50" Alignment="BottomRight"/>
+	</WhileActive>
+- Added templates to `NodeGroup`, which can now be used in `Each.TemplateSource` and `Instance.TemplateSource`
+- `Each`, using `TemplateSource`, will no longer respond to template changes after rooting. This was done to simplify the code, and to support alternate sources, and is a minor perf improvement. It's not likely to affect any code since it didn't work correctly, and there's no way in UX to modify templates after rooting.
+- A memory leak was fixed by changing `Instantiator.TemplateSource` to a WeakReference. Only if you assigned this property a temporary value in Uno would this change impact your code.
+- Clarified/fixed some issues with how `Each`/`Instances` handled default templates. Previously if no matching template was found all the specified templates, or a subset, might have erronously been used. Now, as was always intended, if you use `MatchKey` and wish to have a default template you must specifiy `ux:DefaultTemplate="true"` on the default template. You cannot have multiple fallback templates, just as you can have only one template of a particular name.
+- If a `ux:DefaultTemplate="true"` is specified it will be the template that is used; the complete list of templates will not be used.
+
+### Fuse.Share
+- Fixed issue where using Fuse.Share would crash on iPad. Users must provide a position for spawn origin for the share popover. Check the Fuse.Share docs for more details.
+- Made iOS implementation internal, this was never ment to be public in the first place
+
+### Optimizations
 - Optimized hit testing calculations. Improves scrolling in large scroll views with deep trees inside, among other things.
 - Optimized redundant OpenGL rendertarget operations. Gives speedups on some platforms.
+- Optimized invalidation strategy for transforms, to avoid subtree traversion. This improves performance generally when animating large subtrees (e.g. scrollviews).
+- Backwards incompatible optimization change: The `protected virtual void Visual.OnInvalidateWorldTransform()` method was removed. The contract of this method was very expensive to implement as it had to be called on all nodes, just in case it was overridden somewhere. If you have custom Uno code relying on this method (unlikely), then please rewrite to explicitly subscribe to the `Visual.WorldTransformInvalidated` event instead, like so: Override `OnRooted` and do `WorldTransformInvalidated += OnInvalidateWorldTransform;`, Override `OnUnrooted` and to `WorldTransformInvalidated -= OnInvalidateWorldTransform;`, then rewrite `protected override void OnInvalidateWorldTransform()` to `void OnInvalidateWorldTransform(object sender, EventArgs args)`
 - To improve rendering speed, Fuse no longer checks for OpenGL errors in release builds in some performance-critical code paths  
+- Improved perceived ScrollView performance by preventing caching while pointers are pressed on them, avoiding inconsistent framerates.
+- Fixed a bug which prevented elements like `Image` to use fast-track rendering in trivial cases with opacity (avoids render to texture).
+- Optimized how bounding boxes are calculated (improves layout and rendering performance).
 
-## Multitouch
+### Multitouch
 - Fixed issue where during multitouch all input would stop if one finger was lifted.
 - Added the option to opt-out of automatic handling of touch events when implementing a native view.
 
-## Attract
+### Attract
 - Added the `attract` feature, which was previously only in premiumlibs. This provides a much simpler syntax for animation than the `Attractor` behavior.
 
-## Gesture
+### Gesture
 - The experimental `IGesture` interface has changed. 
   * The `Significance`, `Priority` and `PriotityAdjustment` have been merged into the single `GetPriority` function.
   * `OnCapture` is changed to `OnCaptureChanged` and provides the previous capture state 
@@ -21,21 +155,50 @@
 - `SwipeGesture`, `ScrollView`, `LinearRangeBehaviour` (`Slider`), `CircularRangeBehaviour`, `Clicked`, `Tapped`, `DoubleClicked`, `DoubleTapped`, `LongPressed`, `WhilePressed` all use the gesture system now. They have a `GesturePriority` property which can be used to adjust relative priorities -- though mostly the defaults should be fine.
 - The `SwipeGesture.GesturePriority` default is changed from `High` to `Low`. This better fits with how the priorities should work together in a typical app and in general shouldn't affect any usual layouts. You can alter the priority with `GesturePriority="High"`
 
-## Each Reuse
+### Each Reuse
 - Added `Reuse` to `Each` allowing the reuse of nodes
 - Added `OnChildMoved` to `Visual`. Anything implementing `OnChildAdded` or `OnChildRemoved` will likely need to implement `OnChildMoved` as well. This happens when a child's position in `Children` list changes.
 - Added `OnChildMovedWhileRooted` to `IParentObserver`
 
+### UX Expression improvements
+- Added `parameter(page)` function which returns the routing parameter of the page parsed as an JSON string.
+- UX expressions now support arbitrary array lookups, e.g. `{someArray[index+3]}`. The same syntax can also be used with string keys, e.g `{someObject[someKey]}`. The lookup is fully reactive - both the collection and the key/index can change.
+
+### JavaScript Dependency Injection
+- Added support for injecting UX expressions into `<JavaScript>` tags using the `dep` XML namespace. See docs on `JavaScript.Dependencies` for details.
+
+### WhileVisibleInScrollView
+- Added `How` property to `WhileVisibleInScrollView` trigger that accepts values `Partial` (default) and `Full`. When set to `Full`, the trigger is only active when the whole element bounds are inside view.
+
+## WebSocket
+- Fixed connection problems on ios devices.
+
+
 # 1.1
 
-### Fuse.ImageTools
-- Fixed bug preventing handling of KEEP_ASPECT resize mode on Android when using ImageTools.resize 
+## 1.1.1
 
-### Fuse.Camera
-- iOS: Fixed crash when using Fuse.Camera alongside `<iOS.StatusBarConfig IsVisible="false" />`
+### Navigation
+- Fixed an issue where `Activated` and `WhileActivated` within an `EdgeNavigator` did not correctly identify an active state
+- Changed `EdgeNavigation` to return a page in `Active` when no side-panels are active
+
+### Fuse.Share
+- Fixed a crash in the iOS implementation for Fuse.Share that could happen on iPad.
+
+### FuseJS
+- Fixed a bug where disposing a JavaScript tag that has called the findData-method could lead to a crash.
 
 
 ## 1.1.0
+
+### WhileActive
+- Fixed a crash in the rooting of certain tree structures using any of the Navigation triggers such as `WhileActive`
+
+### Fuse.ImageTools
+- Fixed bug preventing handling of `KEEP_ASPECT` resize mode on Android when using ImageTools.resize 
+
+### Fuse.Camera
+- iOS: Fixed crash when using Fuse.Camera alongside `<iOS.StatusBarConfig IsVisible="false" />`
 
 ### Fuse.Launchers
 - Fixed bug on iOS where URIs were incorrectly encoded, leading to some input with reserved URI-characters misbehaving.
@@ -61,8 +224,6 @@
 - Updated the bundled libjpeg, libpng, Freetype, and SDL2 libaries for macOS to not use AVX instructions, since they are incompatible with the CPUs in some older Mac models. This fixes an issue with SIGILLs in native builds.
 
 ### Native
-
-## Native
 - Added feature toggle for implicit `GraphicsView`. If you are making an app using only Native UI disabling the implicit `GraphicsView` can increase performance. Disable the `GraphicsView` by defining `DISABLE_IMPLICIT_GRAPHICSVIEW` when building. For example `uno build -t=ios -DDISABLE_IMPLICIT_GRAPHICSVIEW`
 
 ### Gestures
@@ -109,6 +270,9 @@
 
 
 # 1.0
+
+### FuseJS
+- Fixed a bug where disposing a JavaScript tag that has called the findData-method could lead to a crash.
 
 ## 1.0.4
 

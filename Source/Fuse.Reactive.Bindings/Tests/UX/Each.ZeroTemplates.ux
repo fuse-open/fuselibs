@@ -1,0 +1,15 @@
+<Panel ux:Class="UX.Each.ZeroTemplates">
+	<Panel ux:Name="a">
+		<Each Count="1">
+		</Each>
+	</Panel>
+	
+	<Panel ux:Name="b">
+		<JavaScript>
+			exports.items = [ { key: "one" } ]
+		</JavaScript>
+		<Each Items="{items}" MatchKey="key">
+			<Panel ux:Template="two"/>
+		</Each>
+	</Panel>
+</Panel>

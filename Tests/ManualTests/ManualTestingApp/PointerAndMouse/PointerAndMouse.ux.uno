@@ -11,7 +11,7 @@ public partial class PointerAndMouse
     {
         InitializeUX();
         this.Title = "Pointer & Mouse";
-        _random = new Random(DateTime.Now.Millisecond);
+        _random = new Random(1337);
     }
 
 
@@ -53,4 +53,3 @@ public partial class PointerAndMouse
         return result;
     }
 }
-

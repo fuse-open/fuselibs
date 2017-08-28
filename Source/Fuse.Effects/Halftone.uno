@@ -2,6 +2,8 @@ using Uno;
 using Uno.Graphics;
 using Uno.UX;
 
+using Fuse.Nodes;
+
 namespace Fuse.Effects
 {
 	/** Applies a classic halftone effect to an @Element.
@@ -131,6 +133,9 @@ namespace Fuse.Effects
 				float4 DotColor: Math.Lerp(float4(0,0,0,TextureColor.W), TextureColor, DotTint);
 				PixelColor: Math.Lerp(PaperColor, DotColor, Coverage);
 			};
+
+			if defined(FUSELIBS_DEBUG_DRAW_RECTS)
+				DrawRectVisualizer.Capture(elementRect.Minimum, elementRect.Size, Element.WorldTransform, dc);
 
 			FramebufferPool.Release(original);
 		}

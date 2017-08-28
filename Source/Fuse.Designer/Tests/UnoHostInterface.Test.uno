@@ -24,12 +24,12 @@ namespace Fuse.Designer.Test
 		[Test]
 		public void VisualAppeared()
 		{
-			var root = new TestRootPanel();
 			var child = new Panel();
 			var va = new VisualAppearedCallback();
 			UnoHostInterface.OnVisualAppeared(child, va.OnVisualAppeared);
 			Assert.IsFalse(va.Called);
-			root.Children.Add(child);
+			using (var root = new TestRootPanel())
+				root.Children.Add(child);
 			Assert.IsTrue(va.Called);
 		}
 
@@ -46,13 +46,16 @@ namespace Fuse.Designer.Test
 		[Test]
 		public void VisualDisappeared()
 		{
-			var root = new TestRootPanel();
 			var child = new Panel();
-			root.Add(child);
+
 			var vd = new VisualDisappearedCallback();
 			UnoHostInterface.OnVisualDisappeared(child, vd.OnVisualDisappeared);
+
 			Assert.IsFalse(vd.Called);
-			root.Children.Remove(child);
+
+			using (var root = TestRootPanel.CreateWithChild(child))
+				root.Children.Remove(child);
+
 			Assert.IsTrue(vd.Called);
 		}
 
@@ -69,20 +72,19 @@ namespace Fuse.Designer.Test
 		[Test]
 		public void VisualBoundsChanged()
 		{
-			var root = new TestRootPanel();
 			var child = new Panel();
 			child.Alignment = Alignment.TopLeft;
-			root.Add(child);
-			root.Layout(int2(200));
+			using (var root = TestRootPanel.CreateWithChild(child, int2(200)))
+			{
+				var bc = new BoundsChangedCallback();
+				UnoHostInterface.OnVisualBoundsChanged(child, bc.OnBoundsChanged);
 
-			var bc = new BoundsChangedCallback();
-			UnoHostInterface.OnVisualBoundsChanged(child, bc.OnBoundsChanged);
-
-			Assert.AreEqual(new Rect(0, 0, 0, 0), bc.Bounds);
-			child.Width = 100;
-			child.Height = 100;
-			root.StepFrame();
-			Assert.AreEqual(new Rect(0, 0, 100, 100), bc.Bounds);
+				Assert.AreEqual(new Rect(0, 0, 0, 0), bc.Bounds);
+				child.Width = 100;
+				child.Height = 100;
+				root.StepFrame();
+				Assert.AreEqual(new Rect(0, 0, 100, 100), bc.Bounds);
+			}
 		}
 
 		class TransformChanged
@@ -106,20 +108,20 @@ namespace Fuse.Designer.Test
 		[Test]
 		public void VisualTransformChanged()
 		{
-			var root = new TestRootPanel();
 			var child = new Panel();
 			var t = new Translation();
 			child.Children.Add(t);
-			root.Add(child);
-			root.Layout(int2(200));
 
-			var tc = new TransformChanged();
-			UnoHostInterface.OnVisualTransformChanged(child, tc.OnTransformChanged);
+			using (var root = TestRootPanel.CreateWithChild(child, int2(200)))
+			{
+				var tc = new TransformChanged();
+				UnoHostInterface.OnVisualTransformChanged(child, tc.OnTransformChanged);
 
-			Assert.AreEqual(child.WorldTransform, tc.Transform);
-			t.X = 50;
-			root.StepFrame();
-			Assert.AreEqual(50, tc.Translation.X);
+				Assert.AreEqual(child.WorldTransform, tc.Transform);
+				t.X = 50;
+				root.StepFrame();
+				Assert.AreEqual(50, tc.Translation.X);
+			}
 		}
 	}
 }

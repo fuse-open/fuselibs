@@ -132,9 +132,10 @@ namespace Fuse.Controls
 				surface.FillPath(_surface.BackgroundPath, Background);
 			}
 			
-			for (int i=0; i < ZOrderChildCount; ++i)
+			var zOrder = GetCachedZOrder();
+			for (int i = 0; i < zOrder.Length; i++)
 			{
-				var child = GetZOrderChild(i);
+				var child = zOrder[i];
 				var drawable = child as ISurfaceDrawable;
 				if (drawable == null)
 				{

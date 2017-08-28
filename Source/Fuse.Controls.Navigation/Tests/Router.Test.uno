@@ -214,5 +214,82 @@ namespace Fuse.Navigation.Test
 				Assert.AreEqual( 0, (p.C1 as INavigation).PageProgress ); //tests the Bypass part
 			}
 		}
+		
+		[Test]
+		public void RelativeNest()
+		{
+			Router.TestClearMasterRoute();
+			var p = new UX.Router.RelativeNest();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				Assert.AreEqual( "one", p.router.GetCurrentRoute().Format() );
+				Assert.AreEqual( "i1", p.inner.GetCurrentRoute().Format() );
+				
+				p.GotoTwo.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual( "two", p.router.GetCurrentRoute().Format() );
+				Assert.AreEqual( "i1", p.inner.GetCurrentRoute().Format() );
+				
+				p.GotoI2.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual( "two", p.router.GetCurrentRoute().Format() );
+				Assert.AreEqual( "i2/n1", p.inner.GetCurrentRoute().Format() );
+				
+				//make inner non-current
+				p.PushOne.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual( "one", p.router.GetCurrentRoute().Format() );
+				Assert.AreEqual( "i2/n1", p.inner.GetCurrentRoute().Format() );
+				
+				p.GotoN2.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual( "one", p.router.GetCurrentRoute().Format() );
+				Assert.AreEqual( "i2/n2", p.inner.GetCurrentRoute().Format() );
+				
+				//A few tests on the relative node checks of the internal functions
+				Assert.AreEqual( "q", p.router.GetRelativeRoute(p.one, new Route("q")).Format() );
+				Assert.AreEqual( "q", p.router.GetRelativeRoute(p.two,new Route("q")).Format() );
+				Assert.AreEqual( "q", p.router.GetRelativeRoute(p.P0, new Route("q")).Format() );
+				Assert.AreEqual( "q", p.router.GetRelativeRoute(p.TP1, new Route("q")).Format() );
+				
+				Assert.AreEqual( "q", p.inner.GetRelativeRoute(p.i1, new Route("q")).Format() );
+				Assert.AreEqual( "i2/q", p.inner.GetRelativeRoute(p.P3, new Route("q")).Format() );
+				Assert.AreEqual( "i2/q", p.inner.GetRelativeRoute(p.n1, new Route("q")).Format() );
+			}
+		}
+		
+		[Test]
+		//variant of RelativeNest to ensure modify does the same thing
+		public void RelativeNestModify()
+		{
+			Router.TestClearMasterRoute();
+			var p = new UX.Router.RelativeNestModify();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				Assert.AreEqual( "one", p.router.GetCurrentRoute().Format() );
+				Assert.AreEqual( "i1", p.inner.GetCurrentRoute().Format() );
+				
+				p.GotoTwo.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual( "two", p.router.GetCurrentRoute().Format() );
+				Assert.AreEqual( "i1", p.inner.GetCurrentRoute().Format() );
+				
+				p.GotoI2.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual( "two", p.router.GetCurrentRoute().Format() );
+				Assert.AreEqual( "i2/n1", p.inner.GetCurrentRoute().Format() );
+				
+				//make inner non-current
+				p.PushOne.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual( "one", p.router.GetCurrentRoute().Format() );
+				Assert.AreEqual( "i2/n1", p.inner.GetCurrentRoute().Format() );
+				
+				p.GotoN2.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual( "one", p.router.GetCurrentRoute().Format() );
+				Assert.AreEqual( "i2/n2", p.inner.GetCurrentRoute().Format() );
+			}
+		}
 	}
 }

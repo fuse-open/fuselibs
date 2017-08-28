@@ -1,0 +1,11 @@
+<ScrollView ux:Class="UX.ScrollTo.Basic">
+	<Rectangle Height="2000">
+		<Timeline ux:Name="stB">
+			<ScrollTo RelativePosition="0.5"/>
+		</Timeline>
+	</Rectangle>
+	
+	<Timeline ux:Name="stA">
+		<ScrollTo Position="300"/>
+	</Timeline>
+</ScrollView>

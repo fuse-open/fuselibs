@@ -7,7 +7,7 @@ namespace Fuse
 		float4x4 _matrix;
 		public float4x4 Matrix { get { return _matrix; } }
 
-		float3 Translation { get { return _matrix.M41M42M43; } }
+		internal float3 Translation { get { return _matrix.M41M42M43; } }
 
 		bool _hasNonTranslation;
 		public bool HasNonTranslation { get { return _hasNonTranslation; } }
@@ -18,6 +18,19 @@ namespace Fuse
 			 such as a failed inversion. If the matrix is not valid then the `Matrix` values are undefined.
 		*/
 		public bool IsValid { get { return _isValid; } }
+
+		public bool IsIdentity
+		{
+			get
+			{
+				if (!_hasNonTranslation)
+					return _matrix.M41M42M43 == float3(0);
+				else
+				{
+					return _matrix == float4x4.Identity;
+				}
+			}
+		}
 
 		FastMatrix()
 		{

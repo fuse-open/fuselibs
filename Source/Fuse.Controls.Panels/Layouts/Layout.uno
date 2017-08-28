@@ -71,8 +71,8 @@ namespace Fuse.Layouts
 		//true at the start of rooting, prior to OnRooted call
 		internal bool IsRootingStarted { get { return Container != null; } }
 	
-		internal abstract float2 GetContentSize(IList<Node> elements, LayoutParams lp);
-		internal abstract void ArrangePaddingBox(IList<Node> elements, float4 padding, LayoutParams lp);
+		internal abstract float2 GetContentSize(Visual elementOwner, LayoutParams lp);
+		internal abstract void ArrangePaddingBox(Visual elementOwner, float4 padding, LayoutParams lp);
 		
 		protected bool AffectsLayout(Node n)
 		{

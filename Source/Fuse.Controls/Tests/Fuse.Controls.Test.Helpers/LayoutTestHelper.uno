@@ -27,8 +27,8 @@ namespace Fuse.Controls.Test.Helpers
 		public static void TestElementLayout(Element element, float2 expectActualSize, float2 expectActualPosition,
 			[CallerFilePath] string filePath = "", [CallerLineNumber] int lineNumber = 0, [CallerMemberName] string memberName = "")
 		{
-			Assert.AreEqual(expectActualSize, element.ActualSize, float.ZeroTolerance, filePath, lineNumber, memberName);
-			Assert.AreEqual(expectActualPosition, element.ActualPosition, float.ZeroTolerance, filePath, lineNumber, memberName);
+			Assert.AreEqual(expectActualSize, element.ActualSize, Assert.ZeroTolerance, filePath, lineNumber, memberName);
+			Assert.AreEqual(expectActualPosition, element.ActualPosition, Assert.ZeroTolerance, filePath, lineNumber, memberName);
 		}
 
 		public static void TestElementLayout(Element element, float2 expectActualSize, float2 expectActualPosition, float tolerance,

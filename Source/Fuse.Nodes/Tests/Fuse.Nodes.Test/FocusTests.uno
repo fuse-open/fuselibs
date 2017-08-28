@@ -13,42 +13,38 @@ namespace Fuse.Test
 		[Test]
 		public void PredictFocus1()
 		{
-			var root = new TestRootPanel();
 			var target = new FocusableVisual();
-			root.Children.Add(target);
-
-			var result = PredictFocusDown(root);
-			Assert.AreEqual(target, result);
-
+			using (var root = TestRootPanel.CreateWithChild(target))
+			{
+				var result = PredictFocusDown(root);
+				Assert.AreEqual(target, result);
+			}
 		}
 
 		[Test]
 		public void PredictFocus2()
 		{
-			var root = new TestRootPanel();
 			var target = new FocusableVisual();
-
-			root.Children.Add(new NoFocus() {
+			var parent = new NoFocus() {
 				Children = {
 					new NoFocus(),
 					target,
 				}
-			});
+			};
 
-			var result = PredictFocusDown(root);
-			Assert.AreEqual(target, result);
-
+			using (var root = TestRootPanel.CreateWithChild(parent))
+			{
+				var result = PredictFocusDown(root);
+				Assert.AreEqual(target, result);
+			}
 		}
 
 		[Test]
 		public void PredictNextSibling()
 		{
-			var root = new TestRootPanel();
-
 			var focused = new FocusableVisual();
 			var target = new FocusableVisual();
-
-			root.Children.Add(new NoFocus()
+			var parent = new NoFocus()
 			{
 				Children =
 				{
@@ -56,19 +52,18 @@ namespace Fuse.Test
 					new NoFocus(),
 					target
 				}
-			});
+			};
 
-
-			var result = PredictFocusDown(focused);
-			Assert.AreEqual(target, result);
-
+			using (var root = TestRootPanel.CreateWithChild(parent))
+			{
+				var result = PredictFocusDown(focused);
+				Assert.AreEqual(target, result);
+			}
 		}
 
 		[Test]
 		public void PredictNextSibling1()
 		{
-			var root = new TestRootPanel();
-
 			var target = new FocusableVisual();
 			var focused = new FocusableVisual()
 			{
@@ -82,30 +77,28 @@ namespace Fuse.Test
 					},
 				}
 			};
-
-			root.Children.Add(new NoFocus()
+			var parent = new NoFocus()
 			{
 				Children =
 				{
 					focused,
 					new NoFocus(),
 				}
-			});
+			};
 
-			var result = PredictFocusDown(focused);
-			Assert.AreEqual(target, result);
-
+			using (var root = TestRootPanel.CreateWithChild(parent))
+			{
+				var result = PredictFocusDown(focused);
+				Assert.AreEqual(target, result);
+			}
 		}
 
 		[Test]
 		public void PredictPrevSibling1()
 		{
-			var root = new TestRootPanel();
-
 			var focused = new FocusableVisual();
 			var target = new FocusableVisual();
-
-			root.Children.Add(new NoFocus()
+			var parent = new NoFocus()
 			{
 				Children =
 				{
@@ -113,21 +106,22 @@ namespace Fuse.Test
 					new NoFocus(),
 					focused,
 				}
-			});
+			};
 
-			var result = PredictFocusUp(focused);
-			Assert.AreEqual(target, result);
+			using (var root = TestRootPanel.CreateWithChild(parent))
+			{
+				var result = PredictFocusUp(focused);
+				Assert.AreEqual(target, result);
+			}
 		}
 
 		[Test]
 		public void PredictNextSibling2()
 		{
-			var root = new TestRootPanel();
-
 			var focused = new FocusableVisual();
 			var target = new FocusableVisual();
 
-			root.Children.Add(new NoFocus()
+			var parent = new NoFocus()
 			{
 				Children =
 				{
@@ -136,22 +130,22 @@ namespace Fuse.Test
 					new NoFocus() { Children = { target } },
 					new FocusableVisual(),
 				}
-			});
+			};
 
-			var result = PredictFocusDown(focused);
-			Assert.AreEqual(target, result);
-
+			using (var root = TestRootPanel.CreateWithChild(parent))
+			{
+				var result = PredictFocusDown(focused);
+				Assert.AreEqual(target, result);
+			}
 		}
 
 		[Test]
 		public void PredictPrevSibling2()
 		{
-			var root = new TestRootPanel();
-
 			var focused = new FocusableVisual();
 			var target = new FocusableVisual();
 
-			root.Children.Add(new NoFocus()
+			var parent = new NoFocus()
 			{
 				Children =
 				{
@@ -176,10 +170,13 @@ namespace Fuse.Test
 						}
 					}
 				}
-			});
+			};
 
-			var result = PredictFocusUp(focused);
-			Assert.AreEqual(target, result);
+			using (var root = TestRootPanel.CreateWithChild(parent))
+			{
+				var result = PredictFocusUp(focused);
+				Assert.AreEqual(target, result);
+			}
 		}
 
 		class F1 : FocusableVisual { }
@@ -192,8 +189,6 @@ namespace Fuse.Test
 		[Test]
 		public void PredictUpAndDown()
 		{
-			var root = new TestRootPanel();
-
 			var f1 = new F1();
 			var f2 = new F2();
 			var f3 = new F3();
@@ -201,7 +196,7 @@ namespace Fuse.Test
 			var f5 = new F5();
 			var f6 = new F6();
 
-			root.Children.Add(new NoFocus()
+			var parent = new NoFocus()
 			{
 				f1,
 				new NoFocus()
@@ -212,42 +207,43 @@ namespace Fuse.Test
 				},
 				f5,
 				new NoFocus() { new NoFocus() { new NoFocus() { f6 } } }
-			});
+			};
 
+			using (var root = TestRootPanel.CreateWithChild(parent))
+			{
+				var result = PredictFocusDown(root);
+				Assert.AreEqual(f1, result);
 
-			var result = PredictFocusDown(root);
-			Assert.AreEqual(f1, result);
+				result = PredictFocusDown(result);
+				Assert.AreEqual(f2, result);
 
-			result = PredictFocusDown(result);
-			Assert.AreEqual(f2, result);
+				result = PredictFocusDown(result);
+				Assert.AreEqual(f3, result);
 
-			result = PredictFocusDown(result);
-			Assert.AreEqual(f3, result);
+				result = PredictFocusDown(result);
+				Assert.AreEqual(f4, result);
 
-			result = PredictFocusDown(result);
-			Assert.AreEqual(f4, result);
+				result = PredictFocusDown(result);
+				Assert.AreEqual(f5, result);
 
-			result = PredictFocusDown(result);
-			Assert.AreEqual(f5, result);
+				result = PredictFocusDown(result);
+				Assert.AreEqual(f6, result);
 
-			result = PredictFocusDown(result);
-			Assert.AreEqual(f6, result);
+				result = PredictFocusUp(result);
+				Assert.AreEqual(f5, result);
 
-			result = PredictFocusUp(result);
-			Assert.AreEqual(f5, result);
+				result = PredictFocusUp(result);
+				Assert.AreEqual(f4, result);
 
-			result = PredictFocusUp(result);
-			Assert.AreEqual(f4, result);
+				result = PredictFocusUp(result);
+				Assert.AreEqual(f3, result);
 
-			result = PredictFocusUp(result);
-			Assert.AreEqual(f3, result);
+				result = PredictFocusUp(result);
+				Assert.AreEqual(f2, result);
 
-			result = PredictFocusUp(result);
-			Assert.AreEqual(f2, result);
-
-			result = PredictFocusUp(result);
-			Assert.AreEqual(f1, result);
-
+				result = PredictFocusUp(result);
+				Assert.AreEqual(f1, result);
+			}
 		}
 
 		static Visual PredictFocusDown(Visual visual)

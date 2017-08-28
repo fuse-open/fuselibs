@@ -66,6 +66,13 @@ namespace Fuse
 		{
 			if (!captured)
 				return;
+				
+			UpdateManager.AddDeferredAction( _laterReleaseRooting, LayoutPriority.EndGroup );
+		}
+		
+		static Action _laterReleaseRooting = LaterReleaseRooting;
+		static void LaterReleaseRooting()
+		{
 			_hasRootCapture = false;
 		}
 		

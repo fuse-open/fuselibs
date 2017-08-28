@@ -261,7 +261,11 @@ namespace Fuse
 		
 		public override bool IsFlat 
 		{ 
-			get { return Math.Abs(Z) < float.ZeroTolerance; }
+			get
+			{
+				const float zeroTolerance = 1e-05f;
+				return Math.Abs(Z) < zeroTolerance;
+			}
 		}
 	}
 }

@@ -7,7 +7,7 @@ namespace Fuse.Controls.VideoImpl
 
 	extern(!Mobile) static class Placeholder
 	{
-		static readonly BundleFile _placeHolder = import BundleFile("placeholder.png");
+		static readonly BundleFile _placeHolder = import("placeholder.png");
 
 		public static FileSource File
 		{

@@ -267,12 +267,8 @@ namespace Fuse.Controls
 		{
 			InvalidateSurfacePath();
 			_points.Clear();
-			for (int i=0; i < Children.Count; ++i)
-			{
-				var lp = Children[i] as CurvePoint;
-				if (lp != null)
-					_points.Add(lp);
-			}
+			for (var n = FirstChild<CurvePoint>(); n != null; n = n.NextSibling<CurvePoint>())
+				_points.Add(n);
 		}
 		
 		void IPropertyListener.OnPropertyChanged(PropertyObject obj, Selector prop)

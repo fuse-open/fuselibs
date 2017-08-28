@@ -2,6 +2,7 @@ using Uno;
 using Uno.Graphics;
 using Uno.UX;
 using Fuse.Elements;
+using Fuse.Nodes;
 
 namespace Fuse.Effects
 {
@@ -68,6 +69,9 @@ namespace Fuse.Effects
 				apply Fuse.Drawing.PreMultipliedAlphaCompositing;
 				DepthTestEnabled: false;
 			};
+
+			if defined(FUSELIBS_DEBUG_DRAW_RECTS)
+				DrawRectVisualizer.Capture(elementRect.Minimum - Padding, paddedRect.Size, Element.WorldTransform, dc);
 
 			FramebufferPool.Release(blur);
 		}

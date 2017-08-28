@@ -1,3 +1,4 @@
+using Fuse.Scripting;
 using Uno;
 using Uno.Collections;
 using Uno.Threading;
@@ -6,39 +7,6 @@ namespace Fuse.Reactive
 {
 	partial class ThreadWorker
 	{
-		List<Observable.Operation> _messages = new List<Observable.Operation>();
-		readonly object _messagesMutex = new object();
-
-		List<Observable.Operation> TakeMessages()
-		{
-			lock (_messagesMutex)
-			{
-				if (_messages.Count == 0) return null;
-
-				var msgs = _messages;
-				_messages = new List<Observable.Operation>();
-				return msgs;
-			}
-		}
-
-		internal void Enqueue(Observable.Operation op)
-		{
-			lock (_messagesMutex)
-				_messages.Add(op);
-		}
-
-		// Called from UI thread
-		public void ProcessUIMessages()
-		{
-			var msgs = TakeMessages();
-			if (msgs == null) return;
-
-			for (int i = 0; i < msgs.Count; i++)
-			{
-				msgs[i].Perform();
-			}
-		}
-
 		// Used for stack overflow protection
 		int _reflectionDepth;
 
@@ -92,6 +60,10 @@ namespace Fuse.Reactive
 				if (o.InstanceOf(Context.Observable)) 
 				{
 					return new Observable(this, o, false);
+				}
+				else if (o.InstanceOf(FuseJS.Date))
+				{
+					return DateTimeConverterHelpers.ConvertDateToDateTime(o);
 				}
 				else
 				{

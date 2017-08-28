@@ -15,7 +15,7 @@ namespace FuseJS.Test
 			using (var jsRecorder = new JsTestRecorder())
 			{
 				var context = jsRecorder.Begin();
-				var moduleResult = new FileModule(import BundleFile("Base64Tests.js")).Evaluate(context, "Base64Tests");
+				var moduleResult = new FileModule(import("Base64Tests.js")).Evaluate(context, "Base64Tests");
 				if (moduleResult.Error != null)
 					throw moduleResult.Error;
 

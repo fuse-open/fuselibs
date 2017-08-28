@@ -1,5 +1,5 @@
 <Panel ux:Class="UX.Transition.Style">
-	<Router ux:Name="router"/>
+	<Router ux:Name="router" IsMasterRouter="false"/>
 	<Panel ux:Class="TSBPage">
 		<Transition ux:Name="T1" Style="bang">
 			<Nothing Duration="1"/>

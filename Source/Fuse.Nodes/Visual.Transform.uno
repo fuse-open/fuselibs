@@ -60,37 +60,14 @@ namespace Fuse
 			InvalidateWorldTransform();
 		}
 
-		void InvalidateWorldTransform()
-		{
-			if (_worldTransform == null && _worldTransformInverse == null)
-				return;
-			_worldTransform = null;
-			_worldTransformInverse = null;
-			for (int i=0; i < ZOrderChildCount; i++)
-				GetZOrderChild(i).InvalidateWorldTransform();
-				
-			OnInvalidateWorldTransform();
-		}
-		
-		static PropertyHandle _worldTransformInvalidatedHandle = Fuse.Properties.CreateHandle();
-		/** @advanced
-		*/
-		public event EventHandler WorldTransformInvalidated
-		{
-			add { AddEventHandler(_worldTransformInvalidatedHandle, VisualBits.WorldTransformInvalidated, value); }
-			remove { RemoveEventHandler(_worldTransformInvalidatedHandle, VisualBits.WorldTransformInvalidated, value); }
-		}
-		
-		protected virtual void OnInvalidateWorldTransform() 
-		{ 
-			RaiseEvent(_worldTransformInvalidatedHandle, VisualBits.WorldTransformInvalidated);
-		}
-
 		FastMatrix _worldTransformInverse;
 		public float4x4 WorldTransformInverse
 		{
 			get
 			{
+				if (_worldTransformInverse != null)
+					CheckWorldTransformVersion();
+
 				if (_worldTransformInverse == null)
 				{
 					_worldTransformInverse = WorldTransformInternal.Copy();
@@ -118,11 +95,34 @@ namespace Fuse
 			get { return new Box(float3(0), float3(0)); }
 		}
 
+		int _worldTransformVersion;
+		int _parentWorldTransformVersion;
+
+		void CheckWorldTransformVersion()
+		{
+			if (_worldTransform != null || _worldTransformInverse != null)
+				if (Parent != null)
+				{
+					Parent.CheckWorldTransformVersion();
+				
+					if (_parentWorldTransformVersion != Parent._worldTransformVersion)
+					{
+						_parentWorldTransformVersion = Parent._worldTransformVersion;
+						_worldTransform = null;
+						_worldTransformInverse = null;
+						_worldTransformVersion++;
+					}
+				}
+		}
+
 		FastMatrix _worldTransform;
 		FastMatrix WorldTransformInternal
 		{
 			get
 			{
+				if (_worldTransform != null)
+					CheckWorldTransformVersion();
+				
 				if (_worldTransform == null)
 					_worldTransform = CalcWorldTransform();
 				return _worldTransform;
@@ -242,11 +242,10 @@ namespace Fuse
 			if (HasExplicitTransforms)
 			{
 				PrependTransformOrigin(m);
-				for (int i = 0; i < Children.Count; i++)
-				{
-					var t = Children[i] as Transform;
-					if (t != null) 	t.PrependTo(m);
-				}
+				
+				for (var t = FirstChild<Transform>(); t != null; t = t.NextSibling<Transform>())
+					t.PrependTo(m);
+					
 				PrependInverseTransformOrigin(m);
 			}
 		}

@@ -4,11 +4,13 @@ namespace Fuse.Internal
 {
 	static class FrustumMatrix
 	{
+		const float _zeroTolerance = 1e-05f;
+
 		static public bool TryOrthoLH(float width, float height, float near, float far, out float4x4 result)
 		{
 			var depth = far - near;
-			if (Math.Min(Math.Abs(width), Math.Abs(height)) < float.ZeroTolerance ||
-			    Math.Abs(depth) < float.ZeroTolerance)
+			if (Math.Min(Math.Abs(width), Math.Abs(height)) < _zeroTolerance ||
+			    Math.Abs(depth) < _zeroTolerance)
 			{
 				result = float4x4.Identity;
 				return false;
@@ -74,8 +76,8 @@ namespace Fuse.Internal
 		public static bool TryPerspectiveProjection( float2 viewSize, float znear, float zfar, float distance, out float4x4 result )
 		{
 			var zdiff = znear - zfar;
-			if (Math.Min(Math.Abs(viewSize.X), Math.Abs(viewSize.Y)) < float.ZeroTolerance ||
-			    Math.Abs(zdiff) < float.ZeroTolerance)
+			if (Math.Min(Math.Abs(viewSize.X), Math.Abs(viewSize.Y)) < _zeroTolerance ||
+			    Math.Abs(zdiff) < _zeroTolerance)
 			{
 				result = float4x4.Identity;
 				return false;
@@ -93,8 +95,8 @@ namespace Fuse.Internal
 		public static bool TryPerspectiveProjectionInverse( float2 viewSize, float znear, float zfar, float distance, out float4x4 result )
 		{
 			float zdiv = 2*zfar*znear;
-			if (Math.Abs(distance) < float.ZeroTolerance ||
-			    Math.Abs(zdiv)  < float.ZeroTolerance)
+			if (Math.Abs(distance) < _zeroTolerance ||
+			    Math.Abs(zdiv)  < _zeroTolerance)
 			{
 				result = float4x4.Identity;
 				return false;

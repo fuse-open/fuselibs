@@ -1,5 +1,5 @@
 <Panel ux:Class="UX.Observable.Parameter">
-	<Router ux:Name="router" />
+	<Router ux:Name="router" IsMasterRouter="false" />
 
 	<JavaScript>
 		router.goto("one", { "a\t\u00A9" : 1})

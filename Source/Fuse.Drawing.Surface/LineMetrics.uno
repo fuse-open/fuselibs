@@ -99,7 +99,8 @@ namespace Fuse.Drawing
 			// t = (-b ± sqrt( b^2 - 4ac)) / 2a
 
 			//float precision stuff
-			if (Math.Abs(a) < float.ZeroTolerance)
+			const float zeroTolerance = 1e-05f;
+			if (Math.Abs(a) < zeroTolerance)
 			{
 				//technically if -c/b is within 0<t<1 we have a min/max, but it's within
 				//the bounding box of the endpoints so we don't need to identify that

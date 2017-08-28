@@ -1,5 +1,5 @@
 <Panel ux:Class="UX.Navigator.Removing">
-	<Router ux:Name="R"/>
+	<Router ux:Name="R" IsMasterRouter="false"/>
 	
 	<Page ux:Class="NRPage" PrepareBusy="None">
 		<Transition ux:Name="T1">

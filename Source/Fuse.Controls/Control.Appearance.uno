@@ -26,7 +26,7 @@ namespace Fuse.Controls
 		protected override void OnInvalidateVisual()
 		{
 			base.OnInvalidateVisual();
-			if defined(Android)
+			if defined(Android||iOS)
 			{
 				if (ViewHandle != null)
 				{

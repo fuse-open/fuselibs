@@ -46,11 +46,9 @@ namespace Fuse
 		
 		internal virtual bool CalcIsLocalFlat()
 		{
-			for (int i = 0; i < Children.Count; i++)
-			{
-				var t = Children[i] as Transform;
-				if (t != null && !t.IsFlat) return false;
-			}
+			for (var t = FirstChild<Transform>(); t != null; t = t.NextSibling<Transform>())
+				if (!t.IsFlat) return false;
+
 			return true;
 		}
 		
@@ -82,13 +80,9 @@ namespace Fuse
 		
 		internal virtual bool CalcAreChildrenFlat()
 		{
-			for (int i=0; i < ZOrderChildCount; ++i )
-			{
-				var v = GetZOrderChild(i);
-
+			for (var v = FirstChild<Visual>(); v != null; v = v.NextSibling<Visual>())
 				if (!v.AreChildrenFlat || !v.IsLocalFlat)
 					return false;
-			}
 			
 			return true;
 		}

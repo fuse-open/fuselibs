@@ -147,6 +147,8 @@ namespace Fuse.Reactive
 		/** An array or observable containing the data items used to populate the collection. 
 
 			Can not be used together with `Count`.
+			
+			The list of items may be Observable items. Each will subscribe to these items and use the dynamic value. This however does not work in combination with the `MatchKey`, `IdentityKey` and `MatchObject` features which require an immediate value.
 		*/
 		public object Items
 		{

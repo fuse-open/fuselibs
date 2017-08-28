@@ -11,7 +11,7 @@ namespace Fuse.Triggers.Actions
 		
 		protected override void Perform(Node target)
 		{
-			var t = Target ?? target as Visual;
+			var t = Target ?? target.FindByType<Visual>();
 			if (t != null)
 				t.CancelInteractions();
 		}

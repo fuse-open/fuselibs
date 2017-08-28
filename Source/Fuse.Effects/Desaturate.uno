@@ -1,6 +1,7 @@
 using Uno;
 using Uno.Graphics;
 using Uno.UX;
+using Fuse.Nodes;
 
 namespace Fuse.Effects
 {
@@ -50,6 +51,9 @@ namespace Fuse.Effects
 				float Luminance: Math.Sqrt(Vector.Dot(TextureColor.XYZ * TextureColor.XYZ, Primaries)); // HSP Color Model
 				PixelColor: float4(Math.Lerp(TextureColor.XYZ, float3(Luminance), Amount), TextureColor.W);
 			};
+
+			if defined(FUSELIBS_DEBUG_DRAW_RECTS)
+				DrawRectVisualizer.Capture(elementRect.Minimum, elementRect.Size, Element.WorldTransform, dc);
 
 			FramebufferPool.Release(original);
 		}

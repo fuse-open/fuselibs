@@ -98,11 +98,8 @@ namespace Fuse
 
 		public override void Draw(DrawContext dc)
 		{
-			for (int i = 0; i < Children.Count; i++)
-			{
-				var v = Children[i] as Visual;
+			for (var v = FirstChild<Visual>(); v != null; v = v.NextSibling<Visual>())
 				v.Draw(dc);
-			}
 		}
 
 		void OnGotFocus(object sender, EventArgs args)
@@ -196,13 +193,15 @@ namespace Fuse
 				aspectFlip = true;
 			}
 
+			const float zeroTolerance = 1e-05f;
+
 			var pixelsPerOSPoint = pixelSize / osPointSize;
-			if (Math.Abs(pixelsPerOSPoint.X - pixelsPerOSPoint.Y) > float.ZeroTolerance)
+			if (Math.Abs(pixelsPerOSPoint.X - pixelsPerOSPoint.Y) > zeroTolerance)
 				Fuse.Diagnostics.InternalError( "non-square pixelsPerOSPoint: " + pixelsPerOSPoint );
 
 			var osWindowDensity = PlatformWindowImpl.GetDensity(wnd);
 			_pixelsPerPoint = pixelsPerOSPoint.X * osWindowDensity;
-			if (_pixelsPerPoint <= float.ZeroTolerance)
+			if (_pixelsPerPoint <= zeroTolerance)
 				throw new Exception("A Window cannot have zero density.");
 
 			_pixelSize = pixelSize;

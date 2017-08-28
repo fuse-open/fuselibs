@@ -32,8 +32,9 @@ namespace Fuse.Controls
 
 				if (i==0)
 					list.Add( new LineSegment{ Type = LineSegmentType.Move, To = pa } );
-					
-				if (cornerRatio > float.ZeroTolerance)
+
+				const float zeroTolerance = 1e-05f;
+				if (cornerRatio > zeroTolerance)
 				{
 					var na = float2(Math.Cos(t*i + rotation), Math.Sin(t*i + rotation));
 					var nb = float2(Math.Cos(t*(i+1) + rotation), Math.Sin(t*(i+1) + rotation));

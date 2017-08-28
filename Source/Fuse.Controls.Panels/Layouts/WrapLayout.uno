@@ -79,35 +79,24 @@ namespace Fuse.Layouts
 			}
 		}
 		
-		OptionalSimpleAlignment EffectiveRowAlignment
-		{
-			get
-			{
-				if (IsVert)
-					return AlignmentHelpers.GetHorizontalSimpleAlignOptional(RowAlignment);
-				else
-					return AlignmentHelpers.GetVerticalSimpleAlignOptional(RowAlignment);
-			}
-		}
-		
 		public string ID { get; set; }
 
 		internal override float2 GetContentSize(
-			IList<Node> elements,
+			Visual container,
 			LayoutParams lp)
 		{
-			return Arrange(elements, lp, false);
+			return Arrange(container, lp, false);
 		}
 		
 		internal override void ArrangePaddingBox(
-			IList<Node> elements,
+			Visual container,
 			float4 padding,
 			LayoutParams lp)
 		{
-			Arrange(elements, lp, true, padding);
+			Arrange(container, lp, true, padding);
 		}
 		
-		float2 Arrange(IList<Node> elements, LayoutParams lp,	
+		float2 Arrange(Visual container, LayoutParams lp,	
 			bool doArrange, float4 padding = float4(0))
 		{
 			var nlp = lp.CloneAndDerive();
@@ -132,15 +121,22 @@ namespace Fuse.Layouts
 			if (_hasItemHeight)
 				clp.SetY(ItemHeight);
 
-			var placements = new float4[elements.Count];
+			var placements = new float4[container.Children.Count];
 			//minorMaxSize in each major row, assinged per element
-			var minorSizes = new float[elements.Count];
+			var minorSizes = new float[container.Children.Count];
+			// save the row each element is on
+			var elementOnRow = new int[container.Children.Count];
+			// save the available space for each row
+			var majorRest = new float[container.Children.Count];
 			//where this row starts
 			int majorStart = 0;
+			// current row
+			int currentRow = 0;
 			
-			for (int i = 0; i < elements.Count;++i)
+			int i = 0;
+			for (var n = container.FirstChild<Node>(); n != null; n = n.NextSibling<Node>(), i++)
 			{
-				var e = elements[i] as Visual;
+				var e = n as Visual;
 				if (!AffectsLayout(e))
 					continue;
 
@@ -166,34 +162,39 @@ namespace Fuse.Layouts
 					minorMaxSize = 0;
 					majorUsed = 0;
 					majorStart = i;
+					currentRow++;
 				}
 				
 				placements[i].X = majorUsed;
 				placements[i].Y = minorUsed;
 				minorMaxSize = Math.Max(minorMaxSize, cminorSize);
 				majorUsed += cmajorSize;
+				elementOnRow[i] = currentRow;
+				majorRest[currentRow] = majorAvail - majorUsed;
 			}
 
 			//final bits
-			for (int j=majorStart; j < elements.Count; ++j)
+			for (int j=majorStart; j < container.Children.Count; ++j)
 				minorSizes[j] = minorMaxSize;
 			majorMaxUsed = Math.Max(majorMaxUsed, majorUsed);
 			minorUsed += minorMaxSize;
 
 			if (doArrange)
 			{	
-				var sa = EffectiveRowAlignment;
+				var saMin = IsVert ? AlignmentHelpers.GetHorizontalSimpleAlignOptional(RowAlignment) : AlignmentHelpers.GetVerticalSimpleAlignOptional(RowAlignment);
+				var saMaj = IsVert ? AlignmentHelpers.GetVerticalSimpleAlignOptional(RowAlignment) : AlignmentHelpers.GetHorizontalSimpleAlignOptional(RowAlignment);
 				var elp = lp.CloneAndDerive();
-				for (int i=0; i < elements.Count; ++i)
+				i = 0;
+				for (var n = container.FirstChild<Node>(); n != null; n = n.NextSibling<Node>(), i++)
 				{
-					var element = elements[i] as Visual;
+					var element = n as Visual;
 					if (element == null) continue;
 					if (ArrangeMarginBoxSpecial(element, padding, lp ))
 						continue;
 
 					var placement = placements[i];
 
-					switch (sa)
+					switch (saMin)
 					{
 						case OptionalSimpleAlignment.Begin:
 							break;
@@ -206,6 +207,20 @@ namespace Fuse.Layouts
 						case OptionalSimpleAlignment.None:
 							//stretchs to fill
 							placement.W = minorSizes[i];
+							break;
+					}
+
+					switch (saMaj)
+					{
+						case OptionalSimpleAlignment.Begin:
+							break;
+						case OptionalSimpleAlignment.End:
+							placement.X += majorRest[elementOnRow[i]];
+							break;
+						case OptionalSimpleAlignment.Center:
+							placement.X += majorRest[elementOnRow[i]] / 2;
+							break;
+						case OptionalSimpleAlignment.None:
 							break;
 					}
 					

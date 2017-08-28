@@ -48,7 +48,7 @@ namespace Fuse.Reactive
 			}
 		}
 
-		public class Subscription: JavaScript.DiagnosticSubject, ISubscription
+		public class Subscription: DiagnosticSubject, ISubscription
 		{
 			static int _counter = 1;
 			readonly int _origin;
@@ -150,12 +150,12 @@ namespace Fuse.Reactive
 
 		Scripting.Function _observeChange;
 
-		internal Observable(ThreadWorker worker, Scripting.Object obj, bool supressCallback): base(obj)
+		internal Observable(ThreadWorker worker, Scripting.Object obj, bool suppressCallback): base(obj)
 		{
 			_worker = worker;
 			_observable = obj;
 			_observeChange = worker.Context.CallbackToFunction((Scripting.Callback)ObserveChange);
-			obj.CallMethod("addSubscriber", _observeChange, supressCallback);
+			obj.CallMethod("addSubscriber", _observeChange, suppressCallback);
 		}
 
 		internal static Observable Create(ThreadWorker worker)
@@ -179,43 +179,43 @@ namespace Fuse.Reactive
 
 			if (op == "set")
 			{
-				_worker.Enqueue(new Set(this, _worker.Reflect(args[3]), origin));
+				UpdateManager.PostAction(new Set(this, _worker.Reflect(args[3]), origin).Perform);
 			}
 			else if (op == "clear") 
 			{
-				_worker.Enqueue(new Clear(this, origin));
+				UpdateManager.PostAction(new Clear(this, origin).Perform);
 			}
 			else if (op == "newAt")
 			{
-				_worker.Enqueue(new NewAt(this, ToInt(args[3]), _worker.Reflect(args[4])));
+				UpdateManager.PostAction(new NewAt(this, ToInt(args[3]), _worker.Reflect(args[4])).Perform);
 			}
 			else if (op == "newAll") 
 			{
-				_worker.Enqueue(new NewAll(this, (ArrayMirror)_worker.Reflect(args[3]), origin));
+				UpdateManager.PostAction(new NewAll(this, (ArrayMirror)_worker.Reflect(args[3]), origin).Perform);
 			}
 			else if (op == "add") 
 			{
-				_worker.Enqueue(new Add(this, _worker.Reflect(args[3])));
+				UpdateManager.PostAction(new Add(this, _worker.Reflect(args[3])).Perform);
 			}
 			else if (op == "removeAt")
 			{
-				_worker.Enqueue(new RemoveAt(this, ToInt(args[3])));
+				UpdateManager.PostAction(new RemoveAt(this, ToInt(args[3])).Perform);
 			}
 			else if (op == "insertAt")
 			{
-				_worker.Enqueue(new InsertAt(this, ToInt(args[3]), _worker.Reflect(args[4])));
+				UpdateManager.PostAction(new InsertAt(this, ToInt(args[3]), _worker.Reflect(args[4])).Perform);
 			}
 			else if (op == "removeRange")
 			{
-				_worker.Enqueue(new RemoveRange(this, ToInt(args[3]), ToInt(args[4])));
+				UpdateManager.PostAction(new RemoveRange(this, ToInt(args[3]), ToInt(args[4])).Perform);
 			}
 			else if (op == "insertAll") 
 			{
-				_worker.Enqueue(new InsertAll(this, ToInt(args[3]), (ArrayMirror)_worker.Reflect(args[4])));
+				UpdateManager.PostAction(new InsertAll(this, ToInt(args[3]), (ArrayMirror)_worker.Reflect(args[4])).Perform);
 			}
 			else if (op == "failed")
 			{
-				_worker.Enqueue(new Failed(this, args[3] as string));
+				UpdateManager.PostAction(new Failed(this, args[3] as string).Perform);
 			}
 			else 
 			{	

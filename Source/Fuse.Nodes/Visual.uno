@@ -32,8 +32,9 @@ namespace Fuse
 
 		Visuals can have input focus if the `Focus.IsFocusable` property is set to `true`. 
 	*/
-	public abstract partial class Visual : Node, IList<Node>, IPropertyListener
+	public abstract partial class Visual : Node, IList<Node>, IPropertyListener, ITemplateSource, IEnumerable<Visual>
 	{
+		public abstract void Draw(DrawContext dc);
 
 		public virtual VisualContext VisualContext 
 		{ 
@@ -94,18 +95,15 @@ namespace Fuse
 			UpdateIsContextEnabledCache();
 			UpdateIsVisibleCache();
 			UpdateContextSnapToPixelsCache();
+			WTIRooted();
 
 			OnRootedPreChildren();
 
 			if (HasChildren)
 			{
-				// iterate over a copy of the list to prevent problems when
-				// behaviors add/remove childen during rooting
-				using (var iter = _children.GetEnumeratorVersionedStruct())
-				{
-					while (iter.MoveNext())
-						iter.Current.RootInternal(this);
-				}
+				// Use the IEnumerable<Node> implementation here, as this correctly deals
+				// with the list being manipulated during rooting/unrooting
+				foreach (var c in Children) c.RootInternal(this);
 			}
 
 			//this forces an invalidation now that we're rooted (ensures no old stale value is there)
@@ -115,7 +113,6 @@ namespace Fuse
 			_ambLayoutParams.Reset();
 
 			_viewport = FindViewport();
-			RootTemplates();
 			RootResources();
 		}
 
@@ -126,7 +123,6 @@ namespace Fuse
 			base.OnUnrooted();
 
 			UnrootResources();
-			UnrootTemplates();
 			_viewport = null;
 
 			ResetParameterListeners();
@@ -138,14 +134,12 @@ namespace Fuse
 
 			if (HasChildren)
 			{
-				// iterate over a copy of the list to prevent problems when
-				// behaviors add/remove childen during rooting
-				using (var iter = _children.GetEnumeratorVersionedStruct())
-				{
-					while (iter.MoveNext())
-						iter.Current.UnrootInternal();
-				}
+				// Use the IEnumerable<Node> implementation here, as this correctly deals
+				// with the list being manipulated during rooting/unrooting
+				foreach (var c in Children) c.UnrootInternal();
 			}
+
+			WTIUnrooted();
 
 			ConcludePendingRemove();
 		}
@@ -153,25 +147,8 @@ namespace Fuse
 		public override void VisitSubtree(Action<Node> action)
 		{
 			action(this);
-			for (int i = 0; i < Children.Count; i++) 
-				Children[i].VisitSubtree(action);
-		}
-
-		public T FindByType<T>() where T : Visual
-		{
-			if (this is T) return this as T;
-			return GetNearestAncestorOfType<T>();
-		}
-
-		public T GetNearestAncestorOfType<T>() where T : Visual
-		{
-			Visual current = Parent;
-			while(current != null)
-			{
-				if(current is T) return current as T;
-				current = current.Parent;
-			}
-			return null;
+			for (var n = FirstChild<Node>(); n != null; n = n.NextSibling<Node>())
+				n.VisitSubtree(action);
 		}
 
 		/**

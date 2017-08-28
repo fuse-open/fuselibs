@@ -102,93 +102,6 @@ namespace Fuse
 
 	}
 
-	extern(FUSELIBS_PROFILING) class StringCache
-	{
-		class Cache
-		{
-			public string Value { get; private set; }
-			public double LastTimeUsed { get; private set; }
-			public int StringHash { get; private set; }
-			public double IdleTime
-			{
-				get { return Uno.Diagnostics.Clock.GetSeconds() - LastTimeUsed; }
-			}
-
-			public Cache(string s)
-			{
-				Value = s;
-				StringHash = s.GetHashCode();
-				UpdateLastTimeUsed();
-			}
-			public override int GetHashCode()
-			{
-				return Value.GetHashCode();
-			}
-			public void UpdateLastTimeUsed()
-			{
-				LastTimeUsed = Uno.Diagnostics.Clock.GetSeconds();
-			}
-		}
-
-		readonly Cache[] _cache = new Cache[0xff];
-
-		public bool IsStringCached(string s)
-		{
-			var hash = s.GetHashCode();
-			for (byte b = (byte)(_cache.Length - 1); b != 0x00; b--)
-			{
-				var c = _cache[b];
-				if (c != null && c.StringHash == hash)
-					return true;
-			}
-			return false;
-		}
-
-		public byte CacheString(string s)
-		{
-			var stringHash = s.GetHashCode();
-			short leastUsedIndex = -1;
-			short availableIndex = -1;
-			var maxIdle = 0.0;
-			for (byte b = 0; b < _cache.Length; b++)
-			{
-				var c = _cache[b];
-				if (c == null)
-				{
-					availableIndex = b;
-				}
-				else if (c.StringHash == stringHash)
-				{
-					c.UpdateLastTimeUsed();
-					return b;
-				}
-				else
-				{
-					var idleTime = c.IdleTime;
-					if (maxIdle < idleTime)
-					{
-						maxIdle = idleTime;
-						leastUsedIndex = b;
-					}
-				}
-			}
-
-			if (availableIndex != -1)
-			{
-				_cache[availableIndex] = new Cache(s);
-				return (byte)availableIndex;
-			}
-			else if (leastUsedIndex != -1)
-			{
-				_cache[leastUsedIndex] = new Cache(s);
-				return (byte)leastUsedIndex;
-			}
-
-			throw new Exception("String cache error, leastUsedIndex=" + leastUsedIndex + ", availableIndex=" + availableIndex);
-		}
-
-	}
-
 	extern(FUSELIBS_PROFILING) public static class Profiling
 	{
 		public static IProfileClient ProfileClient { get; set; }
@@ -219,8 +132,6 @@ namespace Fuse
 				_commandBuffer = value;
 			}
 		}
-
-		static StringCache _stringCache = new StringCache();
 
 		static void CheckBuffer(int requiredSize)
 		{
@@ -334,21 +245,20 @@ namespace Fuse
 			Write(id);
 		}
 
+		static string[] _cachedStrings = new string[0x100];
+
 		private static byte CacheString(string str)
 		{
-			var isCached = _stringCache.IsStringCached(str);
-			var id = _stringCache.CacheString(str);
+			var hash = (byte)(str.GetHashCode() & 0xFF);
+			if (_cachedStrings[hash] != str)
+			{
+				Write(Command.CacheString);
+				Write(hash);
+				Write(str);
+				_cachedStrings[hash] = str;
+			}
 
-			if (isCached)
-				return id;
-
-			debug_log("Caching string to remote: " + str);
-
-			Write(Command.CacheString);
-			Write(id);
-			Write(str);
-
-			return id;
+			return hash;
 		}
 
 		public static void EndRegion(double duration)

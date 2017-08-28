@@ -1,5 +1,5 @@
 <Panel ux:Class="UX.Navigator.DeferredActivation">
-    <Router ux:Name="router" />
+    <Router ux:Name="router" IsMasterRouter="false"/>
     <Navigator DefaultPath="Home" Background="#000000" ux:Name="Nav">
         <Home ux:Template="Home" router="router" />
         <Search ux:Template="Search" router="router"/>

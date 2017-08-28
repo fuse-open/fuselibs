@@ -1,0 +1,18 @@
+<Panel ux:Class="UX.Each.DoubleSubscribe">
+    <JavaScript>
+		var Observable = require("FuseJS/Observable")
+
+		exports.foo = Observable(1,2,3)
+	</JavaScript>
+	<StackPanel ux:Name="sp">
+		<Each Items="{foo}">
+			<Text>Yo</Text>
+		</Each>
+		<WhileTrue Value="{Property sw.Value}">
+			<Each Items="{foo}">
+				<Text>Fo</Text>
+			</Each>
+		</WhileTrue>
+		<Switch ux:Name="sw" />
+	</StackPanel>
+</Panel>

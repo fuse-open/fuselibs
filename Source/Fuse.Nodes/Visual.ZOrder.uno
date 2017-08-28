@@ -6,98 +6,59 @@ namespace Fuse
 {
 	public partial class Visual
 	{
-		public abstract void Draw(DrawContext dc);
+		float _zOffset = 0;
+		/**
+			Specifies a Z-Offset, visuals with higher values are in front of other visuals.
 
-		public bool HasVisualChildren { get { return _zOrder != null && _zOrder.Count > 0; } }
+			The default value is `0`. Visuals with the same ZOffset are sorted by their natural
+			Z-Order according to their position in the `Children`-collection of the parent.
+			`BringToFront` and `SendToBack` can be used to modify the natural Z-Order.
 
-		public Visual FirstVisualChild
-		{ 
-			get
-			{
-				if (!HasVisualChildren) return null;
-
-				return FirstChild<Visual>();
-			}
-		}
-
-		public Visual GetVisualChild(int index)
+			`Layer` takes priority. Visuals in different layers are sorted separately.
+		*/
+		public float ZOffset
 		{
-			if (!HasVisualChildren) return null;
-
-			int x = 0;
-			for (int i = 0; i < Children.Count; i++)
+			get { return _zOffset; }
+			set
 			{
-				var c = Children[i] as Visual;
-				if (c != null) 
-				{
-					if (x == index) return c;
-					x++;
-				}
-			}
-			return null;
-		}
-
-		public Visual LastVisualChild
-		{ 
-			get
-			{
-				if (!HasVisualChildren) return null;
-
-				for (int i = Children.Count; i --> 0;)
-				{
-					var c = Children[i] as Visual;
-					if (c != null) return c;
-				}
-				return null;
+				if (_zOffset == value)
+					return;
+				_zOffset = value;
+				if (Parent != null)	
+					Parent.InvalidateZOrder();
 			}
 		}
 
-		public int ZOrderChildCount
+		Visual[] _cachedZOrder;
+		internal Visual[] GetCachedZOrder()
 		{
-			get 
-			{ 
-				if (!HasVisualChildren) return 0;
-				return ZOrder.Count; 
-			}
+			if (_cachedZOrder == null)
+					_cachedZOrder = ComputeZOrder();
+				
+			return _cachedZOrder;
 		}
 
-		public Visual GetZOrderChild(int index)
-		{
-			EnsureSortedZOrder();
-			return ZOrder[index];
-		}
-
-		internal List<Visual> ZOrder
-		{
-			get
-			{
-				if (_zOrder == null)
-					_zOrder = new List<Visual>();
-					
-				return _zOrder;
-			}
-		}
-		List<Visual> _zOrder = null;
+		int _naturalZOrder;
+		bool _zOrderFixed;
 
 		/** Brings the given child to the front of the Z-order. 
 			In UX markup, use the @BringToFront trigger action instead.
 		*/
 		public void BringToFront(Visual item)
 		{
-			if (!HasChildren)
-				return;
-				
-			EnsureZOrder(); //to force the update of the natural zorder state
+			AssignNaturalZOrder(); // ensures _naturalZOrder is up to date
+
+			var maxNaturalZOrder = int.MinValue;
+			for (var v = FirstChild<Visual>(); v != null; v = v.NextSibling<Visual>())
+				if (v != item && v.Layer == item.Layer && v._naturalZOrder > maxNaturalZOrder) 
+					maxNaturalZOrder = v._naturalZOrder;
 			
-			int mx = item.ZOffsetNatural;
-			foreach (var c in ZOrder)
+			if (maxNaturalZOrder != int.MinValue && maxNaturalZOrder+1 != item._naturalZOrder)
 			{
-				if (c.ZLayer == item.ZLayer)
-					mx = Math.Max(mx, c.ZOffsetNatural);
+				item._naturalZOrder = maxNaturalZOrder+1;
+				item._zOrderFixed = true;
+				InvalidateZOrder();
 			}
-			item.ZOffsetNatural = mx + 1;
-			item.ZOffsetFixed = true;
-			SoftInvalidateZOrder();
 		}
 
 		/** Sends the given child to the back of the Z-order. 
@@ -105,125 +66,74 @@ namespace Fuse
 		*/
 		public void SendToBack(Visual item)
 		{
-			if (!HasChildren)
-				return;
-				
-			EnsureZOrder(); //to force the update of the natural zorder state
+			AssignNaturalZOrder(); // ensures _naturalZOrder is up to date
+
+			var minNaturalZOrder = int.MaxValue;
+			for (var v = FirstChild<Visual>(); v != null; v = v.NextSibling<Visual>())
+				if (v != item && v.Layer == item.Layer && v._naturalZOrder < minNaturalZOrder) minNaturalZOrder = v._naturalZOrder;
 			
-			int mn = item.ZOffsetNatural;
-			foreach (var c in ZOrder)
+			if (minNaturalZOrder != int.MaxValue && minNaturalZOrder-1 != item._naturalZOrder)
 			{
-				if (c.ZLayer == item.ZLayer)
-					mn = Math.Min(mn, c.ZOffsetNatural);
+				item._naturalZOrder = minNaturalZOrder-1;
+				item._zOrderFixed = true;
+				InvalidateZOrder();
 			}
-			item.ZOffsetNatural = mn - 1;
-			item.ZOffsetFixed = true;
-			SoftInvalidateZOrder();
 		}
 
-		int ZOrderComparator(Visual a, Visual b)
+		protected virtual void OnZOrderInvalidated() {}
+	
+		void InvalidateZOrder()
 		{
-			if (a.ZLayer != b.ZLayer)
-				return a.ZLayer - b.ZLayer;
+			_cachedZOrder = null;
+			OnZOrderInvalidated();
+		}
+
+		static Visual[] _emptyVisuals = new Visual[0];
+
+		Visual[] ComputeZOrder()
+		{
+			if (_visualChildCount == 0) return _emptyVisuals;
+			if (_visualChildCount == 1) return new Visual[1] { FirstChild<Visual>() };
+
+			AssignNaturalZOrder();
+
+			var zOrder = new Visual[_visualChildCount];
+
+			bool needsSorting = false;
+			Layer layer = Layer.Underlay;
+			bool hasLayer = false;
+			int i = 0;
+			for (var v = LastChild<Visual>(); v != null; v = v.PreviousSibling<Visual>(), i++)
+			{
+				zOrder[i] = v;
+				if (v.ZOffset != 0) needsSorting = true;
+				if (v._zOrderFixed) needsSorting = true;
+				if (!hasLayer) { layer = v.Layer; hasLayer = true; }
+				else if (v.Layer != layer) needsSorting = true;
+			}
+
+			if (needsSorting)
+				Array.Sort(zOrder, ZOrderComparator);
+
+			return zOrder;
+		}
+
+		void AssignNaturalZOrder()
+		{
+			int i = 0;
+			for (var v = FirstChild<Visual>(); v != null; v = v.NextSibling<Visual>())
+				if (!v._zOrderFixed) v._naturalZOrder = i--;
+		}
+
+		static int ZOrderComparator(Visual a, Visual b)
+		{
+			if (a.Layer != b.Layer)
+				return (int)a.Layer - (int)b.Layer;
 			//to preserve ordering through interpolation we're forced to do exact match here. This is
 			//also okay, since things that need exact match will just use integer values
 			if (a.ZOffset != b.ZOffset)
 				return a.ZOffset > b.ZOffset ? 1 : -1;
-			return a.ZOffsetNatural - b.ZOffsetNatural;
+			return a._naturalZOrder - b._naturalZOrder;
 		}
-
-		static void AssignZOrder( IList<Node> nodes )
-		{
-			var current = new int[]
-			{
-				0, // Layer.Underlay
-				0, // Layer.Background
-				0, // Layer.Layout
-				0  // Layer.Overlay
-			};
-
-			for (int i = 0; i < nodes.Count; i++)
-			{
-				var visual = nodes[i] as Visual;
-				if (visual == null) continue;
-				
-				int c = (int)visual.Layer;
-				visual.ZLayer = c;
-				if (!visual.ZOffsetFixed)
-					visual.ZOffsetNatural = current[c]--;
-			}
-		}
-		
-		//is the zorder list sorted
-		bool _sortedZOrder;
-		//has the layout assigned a zorder to the nodes
-		bool _nodeZOrders;
-		protected int _firstNonUnderlay;
-		internal void EnsureSortedZOrder()
-		{
-			if (_sortedZOrder && _nodeZOrders)
-				return;
-			
-			EnsureZOrder();
-			ZOrder.Sort( ZOrderComparator );
-			_sortedZOrder = true;
-
-			int firstNonUnderlay;
-			for (firstNonUnderlay = 0; firstNonUnderlay < ZOrder.Count; ++firstNonUnderlay)
-				if (ZOrder[firstNonUnderlay].Layer != Layer.Underlay)
-					break;
-			_firstNonUnderlay = firstNonUnderlay;
-		}
-		
-		void EnsureZOrder()
-		{
-			if (!_nodeZOrders)
-			{
-				AssignZOrder(Children);
-				_nodeZOrders = true;
-			}
-		}
-		
-		void OnInvalidateChildZOffset(Visual child)
-		{
-			SoftInvalidateZOrder();
-		}
-		
-		internal event EventHandler ZOrderChanged;
-		
-		/**
-			Does not invalidate the Layout assigned orders, stored in _nodeZOrders
-		*/
-		void SoftInvalidateZOrder(bool force = false)
-		{
-			OnZOrderInvalidated();
-			if (!_sortedZOrder && !force)
-				return;
-				
-			_sortedZOrder = false;
-			InvalidateVisual();
-			
-			if (ZOrderChanged != null)
-				UpdateManager.AddDeferredAction( EmitZOrderChanged );
-		}
-
-		// Needed by Element to invalidate batching
-		protected virtual void OnZOrderInvalidated() {}
-	
-		void EmitZOrderChanged()
-		{
-			if (ZOrderChanged != null)
-				ZOrderChanged(this, EventArgs.Empty);
-		}
-		
-		void InvalidateZOrder()
-		{
-			if (!_nodeZOrders)
-				return;
-				
-			_nodeZOrders = false;
-			SoftInvalidateZOrder(true);
-		}
-		
 	}
 }

@@ -140,7 +140,8 @@ namespace Fuse.Animations
 			if (_hasStretchDuration)
 			{
 				var dur = GetAnimatorsDuration(variant);
-				if (_stretchDuration < float.ZeroTolerance)
+				const float zeroTolerance = 1e-05f;
+				if (_stretchDuration < zeroTolerance)
 					return 1;
 					
 				var mult = dur / _stretchDuration * TimeMultiplier;
@@ -398,7 +399,8 @@ namespace Fuse.Animations
 					cur.Strength = 0;
 					
 				var remainTime = prev.RemainTime;
-				if (prev.IsSyncState || remainTime < float.ZeroTolerance || noFade)
+				const float zeroTolerance = 1e-05f;
+				if (prev.IsSyncState || remainTime < zeroTolerance || noFade)
 				{
 					prev.Strength = 0;
 					cur.Strength = 1;

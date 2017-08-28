@@ -24,7 +24,7 @@ namespace Fuse.Reactive
 		public Scripting.Context Context { get { return _context; } }
 
 		static FuseJS.Builtins _fuseJS;
-		public FuseJS.Builtins FuseJS { get { return _fuseJS; } }
+		public static FuseJS.Builtins FuseJS { get { return _fuseJS; } }
 
 		readonly Thread _thread;
 		readonly ManualResetEvent _ready = new ManualResetEvent(false);
@@ -104,8 +104,6 @@ namespace Fuse.Reactive
 				_ready.Set();
 			}
 
-			UpdateManager.AddAction(ProcessUIMessages);
-
 			double t = Uno.Diagnostics.Clock.GetSeconds();
 
 			while (true)
@@ -179,7 +177,7 @@ namespace Fuse.Reactive
 			while (_exceptionQueue.TryDequeue(out next))
 			{
 				if (prev != null)
-					Fuse.Diagnostics.UnknownException("Skipped Exception", next, this);
+					Fuse.Diagnostics.UnknownException("Skipped Exception", prev, this);
 				prev = next;
 			}
 			
