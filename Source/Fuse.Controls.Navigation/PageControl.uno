@@ -205,10 +205,20 @@ namespace Fuse.Controls
 			{
 				var current = (this as IRouterOutlet).GetCurrent();
 				var pages = AncestorRouterPage.ChildRouterPages;
+				var changed = false;
 				if (pages.Count == 0)
+				{
 					pages.Add( current );
-				else
+					changed = true;
+				}
+				else if (pages[pages.Count -1] != current) 
+				{
 					pages[pages.Count-1] = current;
+					changed = true;
+				}
+
+				if (changed)
+					RouterPage.BubbleHistoryChanged(this);
 			}
 		}
 		

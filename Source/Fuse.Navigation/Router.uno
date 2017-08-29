@@ -191,17 +191,14 @@ namespace Fuse.Navigation
 			{
 				case ModifyRouteHow.Goto:
 					current = SetRoute(route, mode, RoutingOperation.Goto, operationStyle);
-					OnHistoryChanged(current);
 					break;
 					
 				case ModifyRouteHow.Push:
 					current = SetRoute(route, mode, RoutingOperation.Push, operationStyle);
-					OnHistoryChanged(current);
 					break;
 					
 				case ModifyRouteHow.Replace:
 					current = SetRoute(route, mode, RoutingOperation.Replace, operationStyle);
-					OnHistoryChanged(current);
 					break;
 					
 				case ModifyRouteHow.GoBack:
@@ -272,8 +269,7 @@ namespace Fuse.Navigation
 			}
 			else 
 			{
-				var c = SetRoute(up, NavigationGotoMode.Transition, RoutingOperation.Pop, "");
-				OnHistoryChanged(c);
+				SetRoute(up, NavigationGotoMode.Transition, RoutingOperation.Pop, "");
 			}
 		}
 
@@ -291,8 +287,7 @@ namespace Fuse.Navigation
 				Fuse.Diagnostics.UserError( "Cannot pop() - history is empty", this );
 				return;
 			}
-			var c = SetRoute(route, NavigationGotoMode.Transition, RoutingOperation.Pop, "");
-			OnHistoryChanged(c);
+			SetRoute(route, NavigationGotoMode.Transition, RoutingOperation.Pop, "");
 		}
 
 		Route _prepareCurrent, _prepareNext;
@@ -317,7 +312,6 @@ namespace Fuse.Navigation
 
 			var c = SetRoute(_prepareNext, NavigationGotoMode.Transition, _prepareOperation,
 				_prepareOperationStyle);
-			OnHistoryChanged(c);
 			ClearPrepared();
 		}
 		
@@ -392,9 +386,9 @@ namespace Fuse.Navigation
 				//try to cleanup on error and go to previous state
 				var c = SetRouteImpl(Parent, _rootPage, current, NavigationGotoMode.Bypass, RoutingOperation.Goto,
 					"", out ignore);
-				OnHistoryChanged(c);
 				return null;
 			}
+			OnHistoryChanged();
 			return outR;
 		}
 		
@@ -462,12 +456,6 @@ namespace Fuse.Navigation
 						{
 							if (pages.Count >0)
 								pages.RemoveAt(pages.Count -1);
-								
-							//assume a correct logical transition
-							/*if (pages.Count > 0)
-								pages[pages.Count-1] = page;
-							else
-								pages.Add(page);*/
 						}
 						break;
 				}
@@ -691,17 +679,13 @@ namespace Fuse.Navigation
 		bool IBaseNavigation.CanGoForward { get { return false; } }
 		
 		public event HistoryChangedHandler IBaseNavigation.HistoryChanged;
-		void OnHistoryChanged(Route current)
+		internal void OnHistoryChanged()
 		{
-			//an error in routing (result from SetRoute passed to here)
-			if (current == null)
-				current = GetCurrentRoute();
-				
 			if (HistoryChanged != null)
 				HistoryChanged(this);
 				
 			if (IsMasterRouter)
-				_masterCurrent = current;
+				_masterCurrent = GetCurrentRoute();
 		}
 		
 		internal static Router TryFindRouter(Node n)

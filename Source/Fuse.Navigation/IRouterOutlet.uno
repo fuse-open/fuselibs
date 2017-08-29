@@ -69,6 +69,14 @@ namespace Fuse.Navigation
 		{
 			return Path + "?" + Parameter + " " + Visual;
 		}
+
+		internal static void BubbleHistoryChanged( Node at )
+		{
+			//the only thing that needs this now is the Router, so we don't need to actually bubble
+			var router = at.FindBehavior<Router>();
+			if (at != null)
+				router.OnHistoryChanged();
+		}
 	}
 	
 	/**	Represents an object that handle navigation to one @Route path element. */
