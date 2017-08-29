@@ -319,7 +319,6 @@ namespace Fuse.Controls.ScrollViewTest
 		
 		[Test]
 		//UserMode must be maintained regardless of what happens to the scroller
-		//https://github.com/fusetools/fuselibs/pull/3708
 		public void UserMode()
 		{
 			var s = new UX.UserMode();
