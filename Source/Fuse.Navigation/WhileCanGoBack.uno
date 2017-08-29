@@ -10,33 +10,29 @@ namespace Fuse.Navigation
 	*/
 	public abstract class WhileHistoryTrigger : WhileTrigger
 	{
-		IBaseNavigation _context;
-		//TODO: This won't work due to being overidden in `OnUnrooted`. A good fix would be to remove this `public` part
-		//and alter the `Navigation` override to work with a `Node` (if that's even possible)
-		public IBaseNavigation NavigationContext { set { _context = value; } get { return _context; } }
+		internal IBaseNavigation _context;
+		public IBaseNavigation NavigationContext { set; get; }
 
 		protected override void OnRooted()
 		{
 			base.OnRooted();
-			if (NavigationContext == null)
-			{
-				NavigationContext = Navigation.TryFindBaseNavigation(Parent);
-			}
-			if (NavigationContext == null)
+			_context = NavigationContext ?? Navigation.TryFindBaseNavigation(Parent);
+
+			if (_context == null)
 			{
 				Diagnostics.UserError( "WhileHistoryTrigger requires a Navigation context", this );
 				return;
 			}
 			SetActive(IsOn);
-			NavigationContext.HistoryChanged += OnHistoryChanged;
+			_context.HistoryChanged += OnHistoryChanged;
 		}
 
 		protected override void OnUnrooted()
 		{
-			if (NavigationContext != null)
+			if (_context != null)
 			{
-				NavigationContext.HistoryChanged -= OnHistoryChanged;
-				NavigationContext = null;
+				_context.HistoryChanged -= OnHistoryChanged;
+				_context = null;
 			}
 			base.OnUnrooted();
 		}
@@ -60,7 +56,7 @@ namespace Fuse.Navigation
 	*/
 	public class WhileCanGoBack : WhileHistoryTrigger
 	{
-		protected override bool IsOn { get { return NavigationContext.CanGoBack; } }
+		protected override bool IsOn { get { return _context.CanGoBack; } }
 	}
 
 	/**
@@ -74,7 +70,7 @@ namespace Fuse.Navigation
 	*/
 	public class WhileCanGoForward : WhileHistoryTrigger
 	{
-		protected override bool IsOn { get { return NavigationContext.CanGoForward; } }
+		protected override bool IsOn { get { return _context.CanGoForward; } }
 	}
 
 }
