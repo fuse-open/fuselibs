@@ -36,6 +36,7 @@
     "Fuse.Reactive.Expressions",
     "Fuse.Reactive.JavaScript",
     "Fuse.Selection",
+    "Fuse.Scripting.Test",
     "Fuse.Testing",
     "Fuse.Text",
     "Fuse.Triggers.Test",
