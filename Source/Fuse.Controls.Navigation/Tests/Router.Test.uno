@@ -570,5 +570,50 @@ namespace Fuse.Navigation.Test
 				Assert.AreEqual( null, p.router.GetHistoryRoute(1) );
 			}
 		}
+
+		[Test]
+		public void HistorySame()
+		{
+			Router.TestClearMasterRoute();
+			var p = new UX.Router.HistorySame();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				p.router.Push( new Route("a") );
+				root.StepFrame();
+				Assert.AreEqual( "a", SafeFormat(p.router.GetHistoryRoute(0)) );
+				Assert.AreEqual( "a", SafeFormat(p.router.GetHistoryRoute(1)) );
+				Assert.AreEqual( null, p.router.GetHistoryRoute(2) );
+
+				p.router.Goto( new Route( "b", null, new Route("i" )) );
+				root.StepFrame();
+				p.router.Push( new Route( "b", null, new Route("i" )) );
+				root.StepFrame();
+				p.router.Push( new Route( "b", null, new Route("ii" )) );
+				root.StepFrame();
+				p.router.Push( new Route( "a" ) );
+				root.StepFrame();
+				p.router.Push( new Route( "a" ) );
+				root.StepFrame();
+				p.router.Push( new Route( "c" ) );
+				root.StepFrame();
+				p.router.Push( new Route( "b", null, new Route("ii" )) );
+				root.StepFrame();
+				p.router.Push( new Route( "b", null, new Route("ii" )) );
+				root.StepFrame();
+				p.router.Push( new Route( "b", null, new Route("ii" )) );
+				root.StepFrame();
+				Assert.AreEqual( "b/ii", SafeFormat(p.router.GetHistoryRoute(0)) );
+				Assert.AreEqual( "b/ii", SafeFormat(p.router.GetHistoryRoute(1)) );
+				Assert.AreEqual( "b/ii", SafeFormat(p.router.GetHistoryRoute(2)) );
+				Assert.AreEqual( "c", SafeFormat(p.router.GetHistoryRoute(3)) );
+				Assert.AreEqual( "a", SafeFormat(p.router.GetHistoryRoute(4)) );
+				Assert.AreEqual( "a", SafeFormat(p.router.GetHistoryRoute(5)) );
+				Assert.AreEqual( "b/ii", SafeFormat(p.router.GetHistoryRoute(6)) );
+				Assert.AreEqual( "b/i", SafeFormat(p.router.GetHistoryRoute(7)) );
+				Assert.AreEqual( "b/i", SafeFormat(p.router.GetHistoryRoute(8)) );
+				Assert.AreEqual( null, p.router.GetHistoryRoute(9) );
+			}
+		}
 	}
 }
+	

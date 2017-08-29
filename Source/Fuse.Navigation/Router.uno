@@ -419,8 +419,9 @@ namespace Fuse.Navigation
 			var didTransition = outlet.CompareCurrent(page);
 			if (didTransition == RoutingResult.Invalid)
 				return null;
-				
-			bool reusePage = canReuse && didTransition == RoutingResult.NoChange;
+			
+			bool leafPush = r.SubRoute == null && operation == RoutingOperation.Push;	
+			bool reusePage = canReuse && didTransition == RoutingResult.NoChange && !leafPush;
 			if (reusePage)
 				page = outlet.GetCurrent();
 			

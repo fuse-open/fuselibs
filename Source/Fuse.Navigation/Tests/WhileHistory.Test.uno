@@ -29,6 +29,45 @@ namespace Fuse.Navigation.Test
 				Assert.AreEqual(0,p.wcb.Progress);
 			}
 		}
+
+		[Test]
+		public void GoBackRouter()
+		{
+			Router.TestClearMasterRoute();
+			var p = new UX.WhileHistory.GoBackRouter();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				Assert.AreEqual(0,p.wcb.Progress);
+
+				p.router.Push( new Route("b") );
+				root.StepFrame();
+				Assert.AreEqual(1, p.wcb.Progress);
+				
+				p.router.Push( new Route("c") );
+				root.StepFrame();
+				Assert.AreEqual(1, p.wcb.Progress);
+
+				p.router.GoBack();
+				root.StepFrame();
+				Assert.AreEqual(1, p.wcb.Progress);
+
+				p.router.GoBack();
+				root.StepFrame();
+				Assert.AreEqual(0, p.wcb.Progress);
+
+				p.router.Push( new Route("b" ));
+				root.StepFrame();
+				Assert.AreEqual(1, p.wcb.Progress);
+
+				p.router.Goto( new Route("c"));
+				root.StepFrame();
+				Assert.AreEqual(0, p.wcb.Progress);
+
+				p.router.Push( new Route("c", null, new Route("i")));
+				root.StepFrame();
+				Assert.AreEqual(1, p.wcb.Progress);
+			}
+		}
 		
 	}
 }

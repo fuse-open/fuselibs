@@ -1,0 +1,16 @@
+<Panel ux:Class="UX.WhileHistory.GoBackRouter">
+	<Router ux:Name="router" IsMasterRouter="false"/>
+	<Panel>
+		<WhileCanGoBack ux:Name="wcb"/>
+		<Navigator DefaultPath="a">
+			<Page ux:Name="a"/>
+			<Page ux:Name="b"/>
+			<Page ux:Name="c">
+				<Navigator>
+					<Page ux:Name="i"/>
+					<Page ux:Name="ii"/>
+				</Navigator>
+			</Page>
+		</Navigator>
+	</Panel>
+</Panel>

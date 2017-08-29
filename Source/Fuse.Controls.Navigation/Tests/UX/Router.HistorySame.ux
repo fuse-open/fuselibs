@@ -1,0 +1,13 @@
+<Panel ux:Class="UX.Router.HistorySame">
+	<Router ux:Name="router" IsMasterRouter="false"/>
+	<PageControl Active="a" Transition="None">
+		<Page ux:Name="a"/>
+		<Page ux:Name="b">
+			<Navigator>
+				<Page ux:Template="i"/>
+				<Page ux:Template="ii"/>
+			</Navigator>
+		</Page>
+		<Page ux:Name="c"/>
+	</PageControl>
+</Panel>
