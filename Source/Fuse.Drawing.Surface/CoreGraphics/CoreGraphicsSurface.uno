@@ -247,6 +247,7 @@ namespace Fuse.Drawing
 			int size = rowSize * height;
 			auto pixelData = new UInt8[size];
 			glBindTexture(GL_TEXTURE_2D, glTexture);
+			glPixelStorei(GL_PACK_ALIGNMENT, 1);
 			glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixelData);
 			
 			//flip the image

@@ -254,6 +254,7 @@ namespace Fuse.iOS.Bindings
 
 				var textureHandle = GL.CreateTexture();
 				GL.BindTexture(GLTextureTarget.Texture2D, textureHandle);
+				GL.PixelStore(GLPixelStoreParameter.UnpackAlignment, 1);
 				GL.TexImage2D(GLTextureTarget.Texture2D, 0, GLPixelFormat.Rgba, pixelSize.X, pixelSize.Y, 0, GLPixelFormat.Bgra, GLPixelType.UnsignedByte, textureBuffer);
 				extern(textureBuffer) "free($0)";
 				textureBuffer = IntPtr.Zero;

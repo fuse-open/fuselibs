@@ -90,6 +90,7 @@ namespace Fuse.Drawing
 		@{
 			auto ctx = (CGLib::Context*)cp;
 			glBindTexture(GL_TEXTURE_2D, ctx->GLTexture);
+			glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, ctx->Width, ctx->Height, 0, GL_RGBA,
 				GL_UNSIGNED_BYTE, ctx->BitmapData);
 
@@ -144,6 +145,7 @@ namespace Fuse.Drawing
 			auto ctx = (CGLib::Context*)cp;
 			int size = width * height * 4;
 			auto pixelData = new UInt8[size];
+			glPixelStorei(GL_PACK_ALIGNMENT, 1);
 			glReadPixels(0,0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, pixelData);
 
 			CFDataRef data = CFDataCreate(NULL, pixelData, size);
@@ -165,6 +167,7 @@ namespace Fuse.Drawing
 			int size = rowSize * height;
 			auto pixelData = new UInt8[size];
 			glBindTexture(GL_TEXTURE_2D, glTexture);
+			glPixelStorei(GL_PACK_ALIGNMENT, 1);
 			glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixelData);
 
 			//flip the image
