@@ -5,7 +5,7 @@ console.error = function(e) {
 }
 
 require("3rdparty/zone.min")
-
+require("./ZonePatches");
 
 var rootZone = Zone.current;
 
