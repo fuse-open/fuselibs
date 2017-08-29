@@ -184,39 +184,6 @@ namespace Fuse.Test
 		}
 
 		[Test]
-		[Ignore("https://github.com/fusetools/fuselibs/issues/229")]
-		public void SoftCaptureForDisabledNode()
-		{
-			using (var root = CreateTestRootPanel())
-			{
-				var setup = SetupEnvironment(root, true);
-
-				Fuse.Input.Pointer.RaisePressed(root, GetDefaultPointerEventData());
-				setup.ChildPanel.IsEnabled = false;
-				Fuse.Input.Pointer.RaiseMoved(root, GetDefaultPointerEventData());
-				Assert.IsTrue(setup.ParentPanel.Captured);
-				Assert.IsTrue(setup.ChildPanel.Captured);
-				Assert.IsFalse(setup.Control.Captured);
-			}
-		}
-
-		[Test]
-		[Ignore("https://github.com/fusetools/fuselibs/issues/229")]
-		public void SoftCaptureForUnrootedNode()
-		{
-			using (var root = CreateTestRootPanel())
-			{
-				var setup = SetupEnvironment(root, true);
-				Fuse.Input.Pointer.RaisePressed(root, GetDefaultPointerEventData());
-				setup.ChildPanel.Children.Remove(setup.Control);
-				Fuse.Input.Pointer.RaiseMoved(root, GetDefaultPointerEventData());
-				Assert.IsTrue(setup.ParentPanel.Captured);
-				Assert.IsTrue(setup.ChildPanel.Captured);
-				Assert.IsFalse(setup.Control.Captured);
-			}
-		}
-
-		[Test]
 		public void PointerEnterLeave()
 		{
 			using (var root = CreateTestRootPanel())
