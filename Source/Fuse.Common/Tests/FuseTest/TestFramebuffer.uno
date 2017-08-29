@@ -54,7 +54,7 @@ namespace FuseTest
 				Assert.Fail(string.Format("Unexpected color at [{0}]. Got [{1}], expected [{2}].", pos, color, expectedColor), filePath, lineNumber, memberName);
 		}
 
-		public void AssertSolidRectangle(Recti rect, float4 expectedColor, float tolerance = Assert.ZeroTolerance, [CallerFilePath] string filePath = "", [CallerLineNumber] int lineNumber = 0, [CallerMemberName] string memberName = "")
+		public void AssertSolidRectangle(float4 expectedColor, Recti rect, float tolerance = Assert.ZeroTolerance, [CallerFilePath] string filePath = "", [CallerLineNumber] int lineNumber = 0, [CallerMemberName] string memberName = "")
 		{
 			for (int y = rect.Minimum.Y; y < rect.Maximum.Y; ++y)
 			{

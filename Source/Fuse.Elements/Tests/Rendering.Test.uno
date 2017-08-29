@@ -14,13 +14,13 @@ namespace Fuse.Test
 			using (var root = TestRootPanel.CreateWithChild(p, int2(32, 32)))
 			using (var fb = root.CaptureDraw())
 			{
-				fb.AssertSolidRectangle(new Recti(0, 0, 32, 16), float4(0, 0, 0, 0));
+				fb.AssertSolidRectangle(float4(0, 0, 0, 0), new Recti(0, 0, 32, 16));
 
-				fb.AssertSolidRectangle(new Recti(0, 16, 16, 24), float4(0, 0, 0, 0));
-				fb.AssertSolidRectangle(new Recti(16, 16, 24, 24), float4(1, 0, 0, 1));
-				fb.AssertSolidRectangle(new Recti(24, 16, 32, 24), float4(0, 0, 0, 0));
+				fb.AssertSolidRectangle(float4(0, 0, 0, 0), new Recti(0, 16, 16, 24));
+				fb.AssertSolidRectangle(float4(1, 0, 0, 1), new Recti(16, 16, 24, 24));
+				fb.AssertSolidRectangle(float4(0, 0, 0, 0), new Recti(24, 16, 32, 24));
 
-				fb.AssertSolidRectangle(new Recti(0, 24, 32, 32), float4(0, 0, 0, 0));
+				fb.AssertSolidRectangle(float4(0, 0, 0, 0), new Recti(0, 24, 32, 32));
 			}
 		}
 	}
