@@ -17,8 +17,7 @@ namespace Fuse.Elements
 		LocalBounds = 1<<1,
 		/** Only the cildren of this element will be hit tested. */
 		Children = 1 <<2,
-			
-		//TODO: temporary workaround for https://github.com/fusetools/fuselibs/issues/213
+
 		/** Hit testing will include the appearance of the element and its children. */
 		LocalVisualAndChildren = LocalVisual | Children,
 		/** Hit testing will include the size of the element and its children. */
