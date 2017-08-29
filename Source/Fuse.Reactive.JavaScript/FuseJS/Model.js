@@ -1,7 +1,7 @@
 var TreeObservable = require("FuseJS/TreeObservable")
 
 require("3rdparty/zone.min")
-
+require("FuseJS/Internal/ZonePatches");
 
 var rootZone = Zone.current;
 
