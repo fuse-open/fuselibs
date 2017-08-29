@@ -20,10 +20,7 @@
 		</Rectangle>
 		<ChattyLabel Value="{messageText}" TextWrapping="Wrap" TextAlignment="Center"/>
 	</Panel>
-	
-	<!-- if we have UX level event bindings the JS part would not be needed 
-		https://github.com/fusetools/fuselibs/issues/619
-	-->
+
 	<OnUserEvent EventName="Chatty.ContactDeleted" Handler="{contactDeleted}" Filter="Global">
 		<Change Warning.Opacity="1" Duration="0.1" DelayBack="2"/>
 	</OnUserEvent>
