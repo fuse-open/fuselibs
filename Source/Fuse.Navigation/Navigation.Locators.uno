@@ -26,10 +26,11 @@ namespace Fuse.Navigation
 			if (t != null)
 				return t;
 				
-			for (var x = node.FirstChild<Behavior>(); x != null; x = x.NextSibling<Behavior>())
+			for (var x = node.FirstChild<Node>(); x != null; x = x.NextSibling<Node>())
 			{
 				var c = x as IBaseNavigation;
-				if (c != null) return c;
+				//we excluded Visual's before, so continue to do so (this logical prevents a trigger from matching a sibling Visual navigation control
+				if (c != null && !(c is Visual)) return c;
 			}
 			return null;
 		}
