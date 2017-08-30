@@ -112,7 +112,7 @@ namespace Fuse.Controls
 			_interaction = NavigationControlInteraction.Swipe;
 			_transition = NavigationControlTransition.Standard;
 
-			var nav = new LinearNavigation();
+			var nav = new DynamicLinearNavigation();
 			nav.AddPropertyListener(this);
 			SetNavigation( nav );
 		}
