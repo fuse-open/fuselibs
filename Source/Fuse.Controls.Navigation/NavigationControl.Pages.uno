@@ -6,8 +6,8 @@ namespace Fuse.Controls
 	public partial class NavigationControl
 	{
 		//TODO: Change to IObservableArray once Model feature is merged
-		IArray _pages;
-		Uno.IDisposable _pagesSubscription;
+		IArray _pageHistory;
+		Uno.IDisposable _pageHistorySubscription;
 		/**
 			Pages is a stack of pages that controls the local history for a NavigationControl.
 			
@@ -15,34 +15,34 @@ namespace Fuse.Controls
 			
 			The items in the array are objects, either explicitly created or via the Model feature. They should contain the the `$path` property which specifies the path to use. The object itself will be added to the data context for the page, allowing lookups from within the object.
 		*/
-		public IArray Pages
+		public IArray PageHistory
 		{
-			get { return _pages; }
+			get { return _pageHistory; }
 			set
 			{
-				_pages = value;
-				OnPagesChanged();
+				_pageHistory = value;
+				OnPageHistoryChanged();
 			}
 		}
 		
 		int _curPageIndex = -1;
-		void OnPagesChanged()
+		void OnPageHistoryChanged()
 		{
 			if (!IsRootingStarted)
 				return;
 				
-			if (_pagesSubscription != null)
+			if (_pageHistorySubscription != null)
 			{
-				_pagesSubscription.Dispose();
-				_pagesSubscription = null;
+				_pageHistorySubscription.Dispose();
+				_pageHistorySubscription = null;
 			}
 			
-			if (_pages == null)
+			if (_pageHistory == null)
 				return;
 				
-			var obs = _pages as IObservable;
+			var obs = _pageHistory as IObservable;
 			if (obs != null)
-				_pagesSubscription = obs.Subscribe(this);
+				_pageHistorySubscription = obs.Subscribe(this);
 				
 			_curPageIndex = -1;
 			FullUpdatePages(UpdateFlags.ForceGoto);
@@ -62,12 +62,12 @@ namespace Fuse.Controls
 		void FullUpdatePages(UpdateFlags flags = UpdateFlags.None)
 		{
 			string path = null, param = null;
-			int pageNdx = _pages.Length - 1;
+			int pageNdx = _pageHistory.Length - 1;
 			object data = null;
 			if (pageNdx >= 0)
 			{
-				data = _pages[pageNdx];
-				var obj = _pages[pageNdx] as IObject;
+				data = _pageHistory[pageNdx];
+				var obj = _pageHistory[pageNdx] as IObject;
 				if (obj != null && obj.ContainsKey("$template")) //set implicitly by Model API
 					path = Marshal.ToType<string>(obj["$template"]);
 				if (obj != null && obj.ContainsKey("$path"))

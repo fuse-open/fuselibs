@@ -762,6 +762,13 @@ namespace Fuse.Controls
 				Fuse.Diagnostics.InternalError( "removing prepared child" );
 			base.OnChildRemoved(elm);
 		}
+
+		/** The stack of pages that is the history of this navigator. Only the top-most page will be active. Changes in the list will activate/deactive pages. */
+		public IArray Pages
+		{
+			get { return PageHistory; }
+			set { PageHistory = value; }
+		}
 	}
 	
 	class Element_Opacity_Property: Uno.UX.Property<float>
