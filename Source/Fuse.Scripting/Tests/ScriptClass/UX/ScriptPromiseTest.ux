@@ -1,0 +1,57 @@
+<Panel ux:Class="UX.ScriptPromiseTests">
+	<Panel ux:Class="UX.BasicTest">
+		<Fuse.Scripting.Test.CustomPanel ux:Name="customPanel" >
+
+			<JavaScript>
+				var Observable = require("FuseJS/Observable");
+
+				var stringResult = Observable();
+				var numberResult = Observable();
+				var objectResult = Observable();
+
+				var numberError = Observable();
+
+				customPanel.getString()
+					.then(function (result) {
+						stringResult.value = result;
+					});
+
+				customPanel.getNumber()
+					.then(function (result) {
+						numberResult.value = result;
+					})
+					.catch(function (err) {
+						numberError.value = err;
+					});
+
+				customPanel.getObject()
+					.then(function (result) {
+						objectResult.value = result;
+					});
+
+				module.exports = {
+					stringResult: stringResult,
+					numberResult: numberResult,
+					objectResult: objectResult,
+					numberError: numberError,
+				};
+
+			</JavaScript>
+
+			<Properties
+				ux:Name="Properties"
+				StringResult="{stringResult}"
+				NumberResult="{numberResult}"
+				ObjectResult="{objectResult}"
+				NumberError="{numberError}" />
+
+			<Panel ux:Class="Properties">
+				<string ux:Property="StringResult" />
+				<double ux:Property="NumberResult" />
+				<object ux:Property="ObjectResult" />
+				<string ux:Property="NumberError" />
+			</Panel>
+
+		</Fuse.Scripting.Test.CustomPanel>
+	</Panel>
+</Panel>

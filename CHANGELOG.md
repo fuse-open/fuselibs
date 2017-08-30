@@ -1,5 +1,8 @@
 # Unreleased
 
+## ScriptClass
+- Added ScriptPromise. This addes support for passing Promises between Uno and the scripting engine. Very useful when dealing with async stuff and JavaScript
+
 ## WebView
 Fixed issue where custom URI schemes were matched too greedily in URLs, making for erroneously intercepted URL requests.
 
