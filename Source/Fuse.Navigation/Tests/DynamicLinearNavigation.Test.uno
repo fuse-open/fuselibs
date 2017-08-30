@@ -37,5 +37,15 @@ namespace Fuse.Navigation.Test
 				Assert.AreEqual(p.four, p.theNav.Active);
 			}
 		}
+		
+		[Test]
+		public void Basic()
+		{
+			var p = new UX.DynamicLinearNavigation.Basic();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				Assert.AreEqual(p.one, p.theNav.Active);
+			}
+		}
 	}
 }

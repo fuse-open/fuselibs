@@ -1,0 +1,9 @@
+<Panel ux:Class="UX.DynamicLinearNavigation.Basic">
+	<Panel ux:Name="theNavPanel">
+		<DynamicLinearNavigation ux:Name="theNav"/>
+		
+		<Page ux:Name="one"/>
+		<Page ux:Name="two"/>
+		<Page ux:Name="three"/>
+	</Panel>
+</Panel>

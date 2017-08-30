@@ -98,9 +98,9 @@ namespace Fuse.Controls
 			else Diagnostics.UserError("PageControl.goto() : Argument must be a node object", pc);
 		}
 		
-		new internal Fuse.Navigation.StructuredNavigation Navigation
+		new internal Fuse.Navigation.DynamicLinearNavigation Navigation
 		{
-			get { return ((NavigationControl)this).Navigation as Fuse.Navigation.StructuredNavigation; }
+			get { return ((NavigationControl)this).Navigation as Fuse.Navigation.DynamicLinearNavigation; }
 		}
 		
 		public PageControl()
