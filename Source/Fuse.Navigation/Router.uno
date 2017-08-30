@@ -384,14 +384,15 @@ namespace Fuse.Navigation
 					Fuse.Diagnostics.InternalError( msg, this );
 					
 				//try to cleanup on error and go to previous state
-				var c = SetRouteImpl(Parent, _rootPage, current, NavigationGotoMode.Bypass, RoutingOperation.Goto,
+				SetRouteImpl(Parent, _rootPage, current, NavigationGotoMode.Bypass, RoutingOperation.Goto,
 					"", out ignore);
-				return null;
 			}
+			
 			OnHistoryChanged();
 			return outR;
 		}
 		
+		/* This has become an unfortunate monstrosity of logic. All the standard use-cases are covered by tests but the overall logic is a bit confusing. It may not produce the desired/expected history in non-standard uses.  It should not however produce a garbage state: the current route will always be valid. A proper cleanup would require passing a separate pageOperation, distinct from operation.  Or it may be cleaner to take a list of RouterPage instead of a Route, and determine the history/pages changes separately. */
 		Route SetRouteImpl(Visual root, RouterPage rootPage, Route r, NavigationGotoMode gotoMode, 
 			RoutingOperation operation, string operationStyle, out IRouterOutlet majorChange,
 			bool canReuse = true)
@@ -414,7 +415,8 @@ namespace Fuse.Navigation
 			if (didTransition == RoutingResult.Invalid)
 				return null;
 			
-			bool leafPush = r.SubRoute == null && operation == RoutingOperation.Push;	
+			//pushing/goto up to the leaf route can reuse existing matching pages
+			bool leafPush = r.SubRoute == null && operation == RoutingOperation.Push;
 			bool reusePage = canReuse && didTransition == RoutingResult.NoChange && !leafPush;
 			if (reusePage)
 				page = outlet.GetCurrent();
@@ -449,10 +451,7 @@ namespace Fuse.Navigation
 						break;
 						
 					case RoutingOperation.Pop:
-						if (!canReuse)
-						{
-						}
-						else if (!reusePage)
+						if (canReuse && !reusePage)
 						{
 							if (pages.Count >0)
 								pages.RemoveAt(pages.Count -1);
@@ -714,6 +713,7 @@ namespace Fuse.Navigation
 			get { return _rootPage; }
 		}
 		
+		/* Get a Route from the history stack, where 0 is the current route, -1 the previous, etc. */
 		internal Route GetHistoryRoute( int at )
 		{
 			var gha = new GetHistoryAt{ At = at };
@@ -790,7 +790,8 @@ namespace Fuse.Navigation
 			
 			return true;
 		}
-		
+
+		/* An invaluable tool for debugging. */		
 		internal string TestDumpHistory()
 		{
 			return "*\n" + TestDumpHistory(_rootPage, "");

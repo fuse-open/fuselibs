@@ -74,7 +74,7 @@ namespace Fuse.Navigation
 		{
 			//the only thing that needs this now is the Router, so we don't need to actually bubble
 			var router = at.FindBehavior<Router>();
-			if (at != null)
+			if (router != null)
 				router.OnHistoryChanged();
 		}
 	}

@@ -120,8 +120,18 @@ namespace Fuse.Controls
 		protected override void OnRooted()
 		{
 			base.OnRooted();
+
+			var pages = AncestorRouterPage != null ? AncestorRouterPage.ChildRouterPages : null;
+			if (pages != null && pages.Count > 0)
+			{ 
+				(this as IRouterOutlet).Goto( pages[pages.Count-1], NavigationGotoMode.Bypass, RoutingOperation.Goto, "" );
+			}
+			else
+			{
+				OnActivePageChanged(this, Navigation.Active);
+			}
+
 			Navigation.ActivePageChanged += OnActivePageChanged;
-			OnActivePageChanged(this, Navigation.Active);
 		}
 		
 		void IPropertyListener.OnPropertyChanged(PropertyObject obj, Selector property)
