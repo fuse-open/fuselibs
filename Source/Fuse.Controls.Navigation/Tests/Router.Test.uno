@@ -101,7 +101,6 @@ namespace Fuse.Navigation.Test
 		
 		[Test]
 		/* kind of a clunky feature, but it should be tested nonetheless */
-		[Ignore("Uncertain of how to retain this feature -- it would have be recreated in a new fashion")]
 		public void MasterState()
 		{
 			Router.TestClearMasterRoute();

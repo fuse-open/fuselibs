@@ -105,8 +105,10 @@ namespace Fuse.Navigation
 				
 				if (root)
 				{
-					//TODO: find way to restore this, if desired
-					UpdateManager.AddDeferredAction(GotoMasterRoute);
+					if (_masterRootPage != null)
+						_rootPage = _masterRootPage;
+					else
+						_masterRootPage = _rootPage;
 				}
 			}
 		}
@@ -151,18 +153,11 @@ namespace Fuse.Navigation
 			This is kind of a hacky solution for now just to show off a Fuse level feature. It's not
 			something that would actually be used/relied on in an exported app.
 		*/
-		static Route _masterCurrent;
-		static List<Route> _masterHistory;
-		void GotoMasterRoute()
-		{
-			if (_masterCurrent != null)
-				SetRoute(_masterCurrent, NavigationGotoMode.Bypass, RoutingOperation.Goto, "", false);
-		}
+		static RouterPage _masterRootPage;
 	
 		static internal void TestClearMasterRoute()
 		{
-			_masterCurrent = null;
-			_masterHistory = null;
+			_masterRootPage = null;
 		}
 		
 		public Route GetCurrentRoute()
@@ -682,9 +677,6 @@ namespace Fuse.Navigation
 		{
 			if (HistoryChanged != null)
 				HistoryChanged(this);
-				
-			if (IsMasterRouter)
-				_masterCurrent = GetCurrentRoute();
 		}
 		
 		internal static Router TryFindRouter(Node n)
