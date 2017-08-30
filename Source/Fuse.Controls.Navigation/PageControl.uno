@@ -77,7 +77,7 @@ namespace Fuse.Controls
 		See [Navigation Order](articles:navigation/navigationorder.md)
 		
 	*/
-	public class PageControl : NavigationControl, ISeekableNavigation, IRouterOutlet, IPropertyListener
+	public partial class PageControl : NavigationControl, ISeekableNavigation, IRouterOutlet, IPropertyListener
 	{
 		static PageControl()
 		{
@@ -121,6 +121,8 @@ namespace Fuse.Controls
 		{
 			base.OnRooted();
 
+			OnPagesChanged();
+			
 			var pages = AncestorRouterPage != null ? AncestorRouterPage.ChildRouterPages : null;
 			if (pages != null && pages.Count > 0)
 			{ 

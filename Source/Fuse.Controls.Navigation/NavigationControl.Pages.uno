@@ -59,6 +59,24 @@ namespace Fuse.Controls
 			Replace = 1 << 2,
 		}
 		
+		protected string GetObjectPath( object data )
+		{
+			var obj = data as IObject;
+			if (obj != null && obj.ContainsKey("$template")) //set implicitly by Model API
+				return Marshal.ToType<string>(obj["$template"]);
+			if (obj != null && obj.ContainsKey("$path"))
+				return Marshal.ToType<string>(obj["$path"]);
+				
+			return null;
+		}
+		
+		protected void UpdateContextData( Visual page, object data )
+		{
+			var oldData = page.Properties.Get(_pageContextProperty);
+			page.Properties.Set(_pageContextProperty, data);
+			page.BroadcastDataChange(oldData, data);
+		}
+		
 		void FullUpdatePages(UpdateFlags flags = UpdateFlags.None)
 		{
 			string path = null, param = null;
@@ -67,12 +85,8 @@ namespace Fuse.Controls
 			if (pageNdx >= 0)
 			{
 				data = _pageHistory[pageNdx];
-				var obj = _pageHistory[pageNdx] as IObject;
-				if (obj != null && obj.ContainsKey("$template")) //set implicitly by Model API
-					path = Marshal.ToType<string>(obj["$template"]);
-				if (obj != null && obj.ContainsKey("$path"))
-					path = Marshal.ToType<string>(obj["$path"]);
 					
+				path = GetObjectPath( data );
 				//null is an erorr, but we can process it nonetheless (will go to no page)
 				if (path == null)
 					Fuse.Diagnostics.UserError( "Model is missing a $template or $page property", this);
@@ -98,11 +112,7 @@ namespace Fuse.Controls
 			RouterPage rPage = new RouterPage{ Path = path, Parameter = param };
 			(this as IRouterOutlet).Goto( rPage, trans, op, "" );
 			if (rPage.Visual != null)
-			{
-				var oldData = rPage.Visual.Properties.Get(_pageContextProperty);
-				rPage.Visual.Properties.Set(_pageContextProperty, data);
-				rPage.Visual.BroadcastDataChange(oldData, data);
-			}
+				UpdateContextData( rPage.Visual, data );
 			
 			_curPageIndex = pageNdx;
 		}
