@@ -55,7 +55,7 @@ namespace Fuse.Reactive
 
         static JavaScript _appModel;
         [UXAttachedPropertySetter("Model"), UXNameScope]
-        public static void SetModel(AppBase app, IExpression model)
+        public static void SetAppModel(AppBase app, IExpression model)
         {
             if (_appModel == null)
             {
