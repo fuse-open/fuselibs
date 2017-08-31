@@ -1,0 +1,23 @@
+<Panel ux:Class="UX.DynamicLinearNavigation.Index">
+	<JavaScript>
+		var Observable = require("FuseJS/Observable")
+		exports.index = Observable(2)
+		
+		exports.items = Observable()
+		
+		exports.add = function() {
+			for (var i=0; i < 5; ++i ) {
+				exports.items.add( { id: i } )
+			}
+		}
+	</JavaScript>
+	<Panel ux:Name="theNavPanel">
+		<DynamicLinearNavigation ux:Name="theNav" ActiveIndex="{index}"/>
+		
+		<Each Items="{items}">
+			<Text Value="{id}"/>
+		</Each>
+	</Panel>
+	
+	<FuseTest.Invoke Handler="{add}" ux:Name="callAdd"/>
+</Panel>

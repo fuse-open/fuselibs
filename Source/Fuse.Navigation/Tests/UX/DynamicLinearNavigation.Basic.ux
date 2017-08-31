@@ -1,9 +1,11 @@
 <Panel ux:Class="UX.DynamicLinearNavigation.Basic">
 	<Panel ux:Name="theNavPanel">
-		<DynamicLinearNavigation ux:Name="theNav"/>
+		<DynamicLinearNavigation ux:Name="theNav" Active="two"/>
 		
 		<Page ux:Name="one"/>
-		<Page ux:Name="two"/>
+		<WhileTrue Value="true" ux:Name="wt">
+			<Page ux:Name="two"/>
+		</WhileTrue>
 		<Page ux:Name="three"/>
 	</Panel>
 </Panel>
