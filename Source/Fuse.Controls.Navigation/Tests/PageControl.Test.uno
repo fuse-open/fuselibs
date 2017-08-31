@@ -136,13 +136,26 @@ namespace Fuse.Controls.Test
 		public void DynamicActiveIndex()
 		{
 			var p = new UX.PageControl.DynamicActiveIndex();
-			using (var root = TestRootPanel.CreateWithChild(p))
+			using (var root = TestRootPanel.CreateWithChild(p, int2(1000)))
 			{
 				//give any changes to ActiveIndex a chance to propagate in both directions
 				root.StepFrameJS();
 				root.StepFrameJS(); 
-				
 				Assert.AreEqual( 2, p.index.Value );
+				
+				p.callAdd.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual( 2, p.index.Value );
+				
+				p.goForward.Pulse();
+				root.StepFrame(5);
+				root.StepFrameJS();
+				Assert.AreEqual( 1, p.index.Value );
+				
+				//swipe left (default to go forward)
+				root.PointerSwipe( float2(100,100), float2(800,100), 300 );
+				root.StepFrame(5); //stabilize
+				Assert.AreEqual( 0, p.index.Value );
 			}
 		}
 	}

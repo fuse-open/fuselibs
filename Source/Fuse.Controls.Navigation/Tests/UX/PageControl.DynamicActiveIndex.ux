@@ -16,6 +16,11 @@
 			<Text Value="{id}"/>
 		</Each>
 	</PageControl>
+	<Panel Navigation="theNav">
+		<Timeline ux:Name="goForward">
+			<GoForward/>
+		</Timeline>
+	</Panel>
 	<FuseTest.DudElement Value="{Read index}" ux:Name="index"/>
 	
 	<FuseTest.Invoke Handler="{add}" ux:Name="callAdd"/>

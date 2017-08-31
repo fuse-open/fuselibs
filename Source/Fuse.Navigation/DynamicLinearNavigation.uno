@@ -282,13 +282,13 @@ namespace Fuse.Navigation
 		public override void GoForward()
 		{
 			if (CanGoForward)
-				TransitionToChild(Next);
+				DesiredTransition(Next);
 		}
 
 		public override void GoBack()
 		{
 			if (CanGoBack)
-				TransitionToChild(Previous);
+				DesiredTransition(Previous);
 		}
 		
 		//transition to an update the desired values
@@ -298,18 +298,30 @@ namespace Fuse.Navigation
 			TransitionToChild(target);
 		}
 		
+		internal static Selector DesiredActiveName = "DesiredActive";
+		internal static Selector DesiredActiveIndexName = "DesiredActiveIndex";
+		
 		void UpdateDesired(Visual target, int index)
 		{
 			if (target != null)
 			{
-				_desiredActive = target;
 				var pd = GetPageData(target);
-				_desiredIndex = pd == null ? -1 : pd.Index;
+				index = pd == null ? -1 : pd.Index;
 			}
 			else
 			{
+				target = GetPage(index);
+			}
+			
+			if (_desiredActive != target)
+			{
+				_desiredActive = target;
+				OnPropertyChanged(DesiredActiveName);
+			}
+			if (_desiredIndex != index)
+			{
 				_desiredIndex = index;
-				_desiredActive = GetPage(index);
+				OnPropertyChanged(DesiredActiveIndexName);
 			}
 		}
 
@@ -467,6 +479,7 @@ namespace Fuse.Navigation
 				_region.EndUser(float2(args.Velocity,0));
 			
 			//force stop if we don't otherwise update the region (in cases where the progress doesn't change)
+			UpdateDesired( null, targetIndex );
 			if (!TransitionToChild(GetPage(targetIndex), false, true))
 				_region.Reset(_region.Position);
 		}
