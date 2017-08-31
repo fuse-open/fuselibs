@@ -135,5 +135,8 @@ namespace Fuse
 				return a.ZOffset > b.ZOffset ? 1 : -1;
 			return a._naturalZOrder - b._naturalZOrder;
 		}
+
+		/** Whether this visual has any visual child nodes. */
+		public bool HasVisualChildren { get { return VisualChildCount > 0; } }
 	}
 }

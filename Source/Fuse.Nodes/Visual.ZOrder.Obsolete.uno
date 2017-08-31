@@ -6,9 +6,6 @@ namespace Fuse
 {
 	public partial class Visual
 	{
-        /** Whether this visual has any visual child nodes. */
-        public bool HasVisualChildren { get { return VisualChildCount > 0; } }
-
 		[Obsolete("Use FirstChild<Visual>() instead")]
 		public Visual FirstVisualChild
 		{ 
