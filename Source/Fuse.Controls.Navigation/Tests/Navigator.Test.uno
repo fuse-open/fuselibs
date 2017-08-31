@@ -332,8 +332,7 @@ namespace Fuse.Navigation.Test
 		
 		[Test]
 		// https://github.com/fusetools/fuselibs/issues/4256
-		[Ignore("Decisions/problems to address with rooting and history, not my biggest problem now")]
-		public void RootingCache()
+		public void RootingCache1()
 		{
 			Router.TestClearMasterRoute();
 			var p =  new UX.Navigator.RootingCache();
@@ -349,7 +348,7 @@ namespace Fuse.Navigation.Test
 				p.Children.Remove(p.N);
 				root.IncrementFrame();
 				p.Children.Add(p.N);
-				root.PumpDeferred();
+				root.MultiStepFrame(2); //timing of removal is not so important for the cache
 				
 				//white box: other pages are removed from the cache, it's actually undefined if they are removed
 				//or simply the state updated
@@ -362,7 +361,6 @@ namespace Fuse.Navigation.Test
 		
 		[Test]
 		//variant of RootingCache that uses non-template pages
-		[Ignore("Decisions/problems to address with rooting and history, not my biggest problem now")]
 		public void RootingCache2()
 		{
 			Router.TestClearMasterRoute();
@@ -382,7 +380,7 @@ namespace Fuse.Navigation.Test
 				p.Children.Remove(p.N);
 				root.IncrementFrame();
 				p.Children.Add(p.N);
-				root.PumpDeferred();
+				root.MultiStepFrame(2); //timing of removal is not so important for the cache
 				
 				Assert.AreEqual(1, TriggerProgress(p.one.A));
 				Assert.AreEqual(0, TriggerProgress(p.two.A));
