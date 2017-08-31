@@ -5,6 +5,7 @@ using Uno.Compiler;
 using Fuse.Scripting;
 using Uno.Testing;
 using Uno.Threading;
+using Uno.IO;
 
 namespace Fuse.Reactive
 {
@@ -137,13 +138,16 @@ namespace Fuse.Reactive
                     (isRootModel ? "require('FuseJS/ModelAdapter').GlobalModel = model;\n" : "")+
                     "modelClass.call(model" + argString + ")\n"+
                     "module.exports = new Model(model);\n";
-
+            
 			js.Code = code;
         }
 
-        static string TransformModel(string code) 
+        static Module TransformModel(string moduleName, BundleFile file)
         {
-            return "require('FuseJS/ModelAdapter').ModelAdapter(module.exports, (function() {" + code + "\n})())";
+            var fileModule = new FileModule(new BundleFileSource(file));
+            fileModule.Preamble = "require('FuseJS/ModelAdapter').ModelAdapter(module.exports, (function() {\n";
+            fileModule.Postamble = "\n})());";
+            return fileModule;
         }
     }
 }
