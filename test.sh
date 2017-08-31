@@ -5,4 +5,4 @@ ROOT=`dirname $0`
 
 "$ROOT/Stuff/uno" test "$ROOT/Source"
 
-"$ROOT/Tests/package-compilation.sh"
+"$ROOT/Tests/compile-packages.sh"
