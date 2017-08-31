@@ -40,7 +40,7 @@ namespace Fuse.Navigation
 	{
 		public string Path;
 		public string Parameter;
-		//[WeakReference] //UNO: this is causing segfaults There is a memory loop without this WeakReference
+		[WeakReference]
 		public Visual Visual;
 		
 		//if there is an Outlet descendent of this page it should use this to track it's pages. This will
