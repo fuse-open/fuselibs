@@ -45,6 +45,11 @@ namespace Fuse.Controls
 		PagesListener _pagesListener;
 
 		IArray _pages;
+		/**
+			Provides a list of models that define the pages for the page control. The pages have the same structure as `Navigator.Pages` -- but here they do not define a history. To control what is the current page bind to `ActiveIndex`.
+			
+			The items in the array are objects, either explicitly created or via the Model feature. They should contain the the `$path` property which specifies the path to use. The object itself will be added to the data context for the page, allowing lookups from within the object.
+		*/
 		public IArray Pages
 		{
 			get { return _pages; }
