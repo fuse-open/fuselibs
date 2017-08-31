@@ -95,6 +95,7 @@ namespace Fuse.Navigation
 				return;
 			}
 		
+			UpdateDesired(desiredPage, -1);
 			if (desiredPage != _active)	
 				GotoImpl(desiredPage, NavigationGotoMode.Bypass);
 		}
@@ -281,18 +282,34 @@ namespace Fuse.Navigation
 		public override void GoForward()
 		{
 			if (CanGoForward)
-			{
-				_desiredActive = Next;
-				TransitionToChild(_desiredActive);
-			}
+				TransitionToChild(Next);
 		}
 
 		public override void GoBack()
 		{
 			if (CanGoBack)
+				TransitionToChild(Previous);
+		}
+		
+		//transition to an update the desired values
+		void DesiredTransition(Visual target)
+		{
+			UpdateDesired(target, -1);
+			TransitionToChild(target);
+		}
+		
+		void UpdateDesired(Visual target, int index)
+		{
+			if (target != null)
 			{
-				_desiredActive = Previous;
-				TransitionToChild(_desiredActive);
+				_desiredActive = target;
+				var pd = GetPageData(target);
+				_desiredIndex = pd == null ? -1 : pd.Index;
+			}
+			else
+			{
+				_desiredIndex = index;
+				_desiredActive = GetPage(index);
 			}
 		}
 
@@ -348,28 +365,33 @@ namespace Fuse.Navigation
 		public override Visual Active
 		{
 			get { return _active; }
-			set { SetActive(value); }
+			set { SetDesiredActive(value); }
 		}
 		
-		int _activeIndex;
-		public int ActiveIndex
+		public Visual DesiredActive
 		{
-			get { return _activeIndex; }
-			set { SetActiveIndex(value); }
+			get { return _desiredActive; }
+			set { SetDesiredActive(value); }
 		}
 		
-		void SetActive( Visual page )
+		public int DesiredActiveIndex
 		{
-			_desiredActive = page;
+			get { return _desiredIndex; }
+			set { SetDesiredActiveIndex(value); }
+		}
+		
+		void SetDesiredActive( Visual page )
+		{
+			UpdateDesired(page, -1);
 			_desired = Desired.Active;
 			Goto(page, NavigationGotoMode.Transition);
 		}
 		
-		void SetActiveIndex( int index )
+		void SetDesiredActiveIndex( int index )
 		{
-			_desiredIndex = index;
+			UpdateDesired( null, index );
 			_desired = Desired.Index;
-			Goto( GetPage(_desiredIndex),NavigationGotoMode.Transition );
+			Goto( _desiredActive, NavigationGotoMode.Transition );
 		}
 		
 		void DirectSetActive(Visual page)

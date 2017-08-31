@@ -61,13 +61,14 @@ namespace Fuse.Controls
 		
 		protected string GetObjectPath( object data )
 		{
+			string path = null;
 			var obj = data as IObject;
 			if (obj != null && obj.ContainsKey("$template")) //set implicitly by Model API
-				return Marshal.ToType<string>(obj["$template"]);
+				path = Marshal.ToType<string>(obj["$template"]);
 			if (obj != null && obj.ContainsKey("$path"))
-				return Marshal.ToType<string>(obj["$path"]);
+				path = Marshal.ToType<string>(obj["$path"]);
 				
-			return null;
+			return path;
 		}
 		
 		protected void UpdateContextData( Visual page, object data )

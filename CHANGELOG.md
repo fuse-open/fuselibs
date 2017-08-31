@@ -10,6 +10,8 @@
 
 ## ScriptClass
 - Added ScriptPromise. This addes support for passing Promises between Uno and the scripting engine. Very useful when dealing with async stuff and JavaScript
+## PageControl
+- Changed the semantics of `ActiveIndex`. The output, getter, will only be updated when the navigation is intentionally changed to a new page. Previously it would always reflect the current page, which causes problem with dynamic pages. The variation between th desired target and actual target only lasts while the desired target is not yet rooted.
 
 ## WebView
 Fixed issue where custom URI schemes were matched too greedily in URLs, making for erroneously intercepted URL requests.

@@ -396,12 +396,12 @@ namespace Fuse.Controls
 		*/
 		public int ActiveIndex
 		{
-			get { return Navigation.ActiveIndex; }
-			set { SetActiveIndex(value,null); }
+			get { return Navigation.DesiredActiveIndex; }
+			set { Navigation.DesiredActiveIndex = value; }
 		}
 		public void SetActiveIndex(int value, IPropertyListener origin)
 		{
-			Navigation.SetActiveIndex(value, origin);
+			Navigation.DesiredActiveIndex = value;
 		}
 		
 		//ISeekableNavigation

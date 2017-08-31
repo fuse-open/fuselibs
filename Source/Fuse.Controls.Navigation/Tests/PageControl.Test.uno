@@ -131,5 +131,19 @@ namespace Fuse.Controls.Test
 			var diff = args.Progress - args.PreviousProgress;
 			_absChangedSum += Math.Abs(diff);
 		}
+		
+		[Test]
+		public void DynamicActiveIndex()
+		{
+			var p = new UX.PageControl.DynamicActiveIndex();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				//give any changes to ActiveIndex a chance to propagate in both directions
+				root.StepFrameJS();
+				root.StepFrameJS(); 
+				
+				Assert.AreEqual( 2, p.index.Value );
+			}
+		}
 	}
 }

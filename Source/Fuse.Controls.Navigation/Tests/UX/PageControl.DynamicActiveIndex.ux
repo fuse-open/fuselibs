@@ -1,4 +1,4 @@
-<Panel ux:Class="UX.DynamicLinearNavigation.Index">
+<Panel ux:Class="UX.PageControl.DynamicActiveIndex">
 	<JavaScript>
 		var Observable = require("FuseJS/Observable")
 		exports.index = Observable(2)
@@ -11,13 +11,12 @@
 			}
 		}
 	</JavaScript>
-	<Panel ux:Name="theNavPanel">
-		<DynamicLinearNavigation ux:Name="theNav" DesiredActiveIndex="{index}"/>
-		
+	<PageControl ux:Name="theNav" ActiveIndex="{index}">
 		<Each Items="{items}">
 			<Text Value="{id}"/>
 		</Each>
-	</Panel>
+	</PageControl>
+	<FuseTest.DudElement Value="{Read index}" ux:Name="index"/>
 	
 	<FuseTest.Invoke Handler="{add}" ux:Name="callAdd"/>
 </Panel>
