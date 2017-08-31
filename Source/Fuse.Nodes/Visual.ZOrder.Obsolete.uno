@@ -6,9 +6,6 @@ namespace Fuse
 {
 	public partial class Visual
 	{
-        /** Whether this visual has any visual child nodes. */
-        public bool HasVisualChildren { get { return VisualChildCount > 0; } }
-
 		[Obsolete("Use FirstChild<Visual>() instead")]
 		public Visual FirstVisualChild
 		{ 
@@ -57,11 +54,5 @@ namespace Fuse
 				return VisualChildCount;
 			}
 		}
-
-        [Obsolete("Iterate over ZOrder instead")]
-		public Visual GetZOrderChild(int index)
-		{
-			return GetCachedZOrder()[index];
-		}
-    }
+	}
 }

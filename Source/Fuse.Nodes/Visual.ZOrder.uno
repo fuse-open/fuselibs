@@ -135,5 +135,18 @@ namespace Fuse
 				return a.ZOffset > b.ZOffset ? 1 : -1;
 			return a._naturalZOrder - b._naturalZOrder;
 		}
+
+		/** Whether this visual has any visual child nodes. */
+		public bool HasVisualChildren { get { return VisualChildCount > 0; } }
+
+		/**  Get the Visual for a given z-order
+
+			This method might have a surprisingly high performance impact; avoid calling it in
+			performance sensitive code-paths.
+		*/
+		public Visual GetZOrderChild(int index)
+		{
+			return GetCachedZOrder()[index];
+		}
 	}
 }

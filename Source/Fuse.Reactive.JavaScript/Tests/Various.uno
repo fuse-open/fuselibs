@@ -294,7 +294,7 @@ namespace Fuse.Reactive.Test
 			{
 				root.StepFrameJS();
 
-				Assert.IsTrue(e.items.ZOrderChildCount > 0);
+				Assert.IsTrue(e.items.VisualChildCount > 0);
 				AssertTextCorrect(e.items);
 			}
 		}
@@ -382,7 +382,7 @@ namespace Fuse.Reactive.Test
 			{
 				root.StepFrameJS();
 				Assert.AreEqual(true, e.Container.HasVisualChildren);
-				Assert.AreEqual(1, e.Container.ZOrderChildCount);
+				Assert.AreEqual(1, e.Container.VisualChildCount);
 
 				var text = e.Container.GetZOrderChild(0) as Text;
 				Assert.AreNotEqual(null, text);
@@ -441,7 +441,7 @@ namespace Fuse.Reactive.Test
 			using (var root = TestRootPanel.CreateWithChild(e))
 			{
 				root.StepFrameJS();
-				Assert.AreEqual(10001, e.ZOrderChildCount);
+				Assert.AreEqual(10001, e.VisualChildCount);
 			}
 		}
 

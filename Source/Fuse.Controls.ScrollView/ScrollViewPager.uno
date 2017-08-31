@@ -260,7 +260,6 @@ namespace Fuse.Controls
 			_lastActivitySizing = UpdateManager.FrameIndex;
 			
 			_pendingSizing = false;
-			var range = _scrollable.MaxScroll - _scrollable.MinScroll;
 			var pages = _scrollable.ContentMarginSize / _scrollable.ActualSize;
 
 			var scalarPages = _scrollable.ToScalarPosition(pages);

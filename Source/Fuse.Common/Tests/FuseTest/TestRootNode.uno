@@ -440,10 +440,4 @@ namespace FuseTest
 			AppBase.TestSetRootViewport( null );
 		}
 	}
-	
-	[Flags]
-	public enum EventFlags
-	{
-		None = 0,
-	}
 }
