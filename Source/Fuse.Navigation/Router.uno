@@ -180,19 +180,18 @@ namespace Fuse.Navigation
 		internal void Modify( ModifyRouteHow how, Route route, NavigationGotoMode mode,
 			string operationStyle )
 		{
-			Route current = null;
 			switch( how )
 			{
 				case ModifyRouteHow.Goto:
-					current = SetRoute(route, mode, RoutingOperation.Goto, operationStyle);
+					SetRoute(route, mode, RoutingOperation.Goto, operationStyle);
 					break;
 					
 				case ModifyRouteHow.Push:
-					current = SetRoute(route, mode, RoutingOperation.Push, operationStyle);
+					SetRoute(route, mode, RoutingOperation.Push, operationStyle);
 					break;
 					
 				case ModifyRouteHow.Replace:
-					current = SetRoute(route, mode, RoutingOperation.Replace, operationStyle);
+					SetRoute(route, mode, RoutingOperation.Replace, operationStyle);
 					break;
 					
 				case ModifyRouteHow.GoBack:
@@ -304,8 +303,7 @@ namespace Fuse.Navigation
 			if (_prepareOutlet == null)
 				return;
 
-			var c = SetRoute(_prepareNext, NavigationGotoMode.Transition, _prepareOperation,
-				_prepareOperationStyle);
+			SetRoute(_prepareNext, NavigationGotoMode.Transition, _prepareOperation, _prepareOperationStyle);
 			ClearPrepared();
 		}
 		

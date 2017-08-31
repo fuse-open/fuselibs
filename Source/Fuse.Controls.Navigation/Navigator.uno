@@ -345,7 +345,6 @@ namespace Fuse.Controls
 			{
 				CleanupPrepared();
 				
-				bool ignore;
 				var r = Prepare(_current, routerPage, operation);
 				if (r.Routing == RoutingResult.Invalid)
 					return RoutingResult.Invalid;
