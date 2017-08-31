@@ -54,11 +54,5 @@ namespace Fuse
 				return VisualChildCount;
 			}
 		}
-
-        [Obsolete("Iterate over ZOrder instead")]
-		public Visual GetZOrderChild(int index)
-		{
-			return GetCachedZOrder()[index];
-		}
-    }
+	}
 }
