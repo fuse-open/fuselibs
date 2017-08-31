@@ -70,6 +70,8 @@ namespace Fuse.Controls
 		/**
 			Specifies what transitions should be used for page navigation. If you wish to create your own
 			transitions set to `None` and add your own to the pages.
+			
+			When using custom transitions be sure to add a @ReleasePage action. This instructs the `Navigator` on when it can reuse, discard, or add the page to its cache.
 		*/
 		public NavigationControlTransition Transition
 		{

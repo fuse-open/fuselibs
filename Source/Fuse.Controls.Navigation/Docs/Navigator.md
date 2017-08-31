@@ -34,6 +34,8 @@ Navigator comes with a set of default transitions that match the behavior of
 
 To have complete control over page transitions use the @PageView class. It works just like a `Navigator` but has no standard transitions or state changes.
 
+When using custom transitions be sure to add a @ReleasePage action. This instructs the `Navigator` and `PageView` on when it can reuse, discard, or add the page to its cache.
+
 ## Example
 	
 The following example illustrates a basic navigation setup using a @Router and @Navigator.
