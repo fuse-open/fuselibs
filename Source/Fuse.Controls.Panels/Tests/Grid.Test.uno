@@ -459,7 +459,7 @@ namespace Fuse.Controls.Test
 				root.Layout(int2(1000));
 				Assert.AreEqual(float2(1000,200),g.G.ActualSize);
 				
-				while(g.G.ZOrderChildCount > 0)
+				while (g.G.HasVisualChildren)
 					g.G.Children.Remove(g.G.FirstChild<Visual>());
 				root.Layout(int2(1000));
 				Assert.AreEqual(float2(1000,0),g.G.ActualSize);

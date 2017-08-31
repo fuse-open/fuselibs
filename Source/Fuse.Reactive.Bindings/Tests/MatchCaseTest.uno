@@ -16,7 +16,7 @@ namespace Fuse.Reactive.Test
 			using (var root = TestRootPanel.CreateWithChild(e))
 			{
 				root.StepFrameJS();
-				Assert.AreEqual(2, e.Container.ZOrderChildCount);
+				Assert.AreEqual(2, e.Container.VisualChildCount);
 				Assert.AreEqual("OneTwo", GetText(e.Container));
 			}
 		}

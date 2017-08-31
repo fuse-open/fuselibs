@@ -304,13 +304,13 @@ namespace Fuse.Controls.Test
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
 				var order = new Panel[]{ p.B2, p.B1, p.S2, p.S1, p.S3, p.O2, p.O1 };
-				for (int i=0; i < p.ZOrderChildCount; i++)
+				for (int i=0; i < p.VisualChildCount ; i++)
 					Assert.AreEqual(order[i], p.GetZOrderChild(i));
-					
+
 				p.S1.ZOffset = 2;
 				p.O1.ZOffset = -1;
 				order = new Panel[]{ p.B2, p.B1, p.S2, p.S3, p.S1, p.O1, p.O2 };
-				for (int i=0; i < p.ZOrderChildCount; i++)
+				for (int i=0; i < p.VisualChildCount ; i++)
 					Assert.AreEqual(order[i], p.GetZOrderChild(i));
 			}
 		}

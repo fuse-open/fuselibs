@@ -95,7 +95,7 @@ namespace Fuse.Reactive.Test
 			using (var root = TestRootPanel.CreateWithChild(e))
 			{
 				root.StepFrameJS();
-				Assert.AreEqual(30,e.C1.ZOrderChildCount);
+				Assert.AreEqual(30,e.C1.VisualChildCount);
 				Assert.AreEqual("5", (e.C1.GetVisualChildImpl(5) as Text).Value);
 
 				//do in a loop to try and catch a few race conditions
@@ -105,16 +105,16 @@ namespace Fuse.Reactive.Test
 				{
 					e.CallAdd.Perform();
 					root.StepFrameJS();
-					Assert.AreEqual(baseCount+1,e.C1.ZOrderChildCount);
+					Assert.AreEqual(baseCount+1,e.C1.VisualChildCount);
 					Assert.AreEqual("" + (step+5), (e.C1.GetVisualChildImpl(5) as Text).Value);
 					
 					e.CallRemove.Perform();
 					root.StepFrameJS();
-					Assert.AreEqual(baseCount,e.C1.ZOrderChildCount);
+					Assert.AreEqual(baseCount,e.C1.VisualChildCount);
 					
 					e.CallRemoveAt.Perform();
 					root.StepFrameJS();
-					Assert.AreEqual(baseCount-1,e.C1.ZOrderChildCount);
+					Assert.AreEqual(baseCount-1,e.C1.VisualChildCount);
 					
 					//two removal + one addiiton
 					baseCount--;
@@ -124,7 +124,7 @@ namespace Fuse.Reactive.Test
 				
 				e.CallClear.Perform();
 				root.StepFrameJS();
-				Assert.AreEqual(0,e.C1.ZOrderChildCount);
+				Assert.AreEqual(0,e.C1.VisualChildCount);
 			}
 		}
 		
@@ -139,7 +139,7 @@ namespace Fuse.Reactive.Test
 			{
 				root.StepFrameJS();
 				
-				Assert.AreEqual(4,e.C1.ZOrderChildCount);
+				Assert.AreEqual(4,e.C1.VisualChildCount);
 				Assert.AreEqual(e.C2, e.C1.GetVisualChildImpl(0));
 				Assert.AreEqual(new Selector("Q0"), e.C1.GetVisualChildImpl(1).Name);
 				Assert.AreEqual(new Selector("Q1"), e.C1.GetVisualChildImpl(2).Name);
@@ -148,11 +148,11 @@ namespace Fuse.Reactive.Test
 				e.CallRemove.Perform();
 				e.CallRemove.Perform();
 				root.StepFrameJS();
-				Assert.AreEqual(2,e.C1.ZOrderChildCount);
+				Assert.AreEqual(2,e.C1.VisualChildCount);
 				
 				e.CallAdd.Perform();
 				root.StepFrameJS();
-				Assert.AreEqual(3,e.C1.ZOrderChildCount);
+				Assert.AreEqual(3,e.C1.VisualChildCount);
 				Assert.AreEqual(e.C2, e.C1.GetVisualChildImpl(0));
 				Assert.AreEqual(new Selector("Q2"), e.C1.GetVisualChildImpl(1).Name);
 				Assert.AreEqual(e.C3, e.C1.GetVisualChildImpl(2));
@@ -492,8 +492,8 @@ namespace Fuse.Reactive.Test
 
 		static Visual[] GetZChildren(Visual root)
 		{
-			var list = new Visual[root.ZOrderChildCount];
-			for (int i=0; i < root.ZOrderChildCount; ++i)
+			var list = new Visual[root.VisualChildCount];
+			for (int i=0; i < root.VisualChildCount; ++i)
 				list[i] = root.GetZOrderChild(i);
 			return list;
 		}
