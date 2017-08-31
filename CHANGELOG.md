@@ -1,5 +1,12 @@
 # Unreleased
 
+## Navigation
+- Changed how `Router` maintains history. This resolves several minor issues, including local histories (though this isn't fully exposed yet). It's intended to be backwards compatible for all known use-cases.
+- Changed `IRouterOutlet` and related types to be internal. This was not meant to be public as it's a private detail of the navigation system and could not be implemented correctly by users.
+- Removed the `Navigator` `IsReusable` property. These were deprecated over a year ago. Use `Resuse="Any"` instead.
+- Removed `PageControl.TransitionEasing` and `Pagecontrol.TransitionDuration`. These were deprecated over a year ago. Use a `NavigationMotion` object instead with `GotoEasing` and `GotoDuration` properties.
+- Removed `PageIndicator.DotTemplate` and `PageIndicator.DotFactor`. These were deprecated over a year ago. Use a `ux:Tempate="Dot"` child instead.
+
 ## ScriptClass
 - Added ScriptPromise. This addes support for passing Promises between Uno and the scripting engine. Very useful when dealing with async stuff and JavaScript
 
@@ -24,11 +31,6 @@ which will stop push notifications registering (and potentially asking for permi
 
 ## Each
 - Fixed a bug where replacing the whole list of items with an empty list would not immediately remove the items from the UI.
-## Navigation
-- Changed `IRouterOutlet` and related types to be internal. This was not meant to be public as it's a private detail of the navigation system and could not be implemented correctly by users.
-- Removed the `Navigator` `IsReusable` property. These were deprecated over a year ago. Use `Resuse="Any"` instead.
-- Removed `PageControl.TransitionEasing` and `Pagecontrol.TransitionDuration`. These were deprecated over a year ago. Use a `NavigationMotion` object instead with `GotoEasing` and `GotoDuration` properties.
-- Removed `PageIndicator.DotTemplate` and `PageIndicator.DotFactor`. These were deprecated over a year ago. Use a `ux:Tempate="Dot"` child instead.
 
 ## Router
 - Added several features to allow navigation/routing from within UX, whereas previously JavaScript code was required.
