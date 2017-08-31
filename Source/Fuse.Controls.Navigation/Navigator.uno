@@ -756,7 +756,7 @@ namespace Fuse.Controls
 		protected override void OnChildRemoved(Node elm)
 		{
 			if (elm == _current.Visual)
-				Fuse.Diagnostics.InternalError( "Removign child!" );
+				Fuse.Diagnostics.InternalError( "Removing child!" );
 			if (_deferred != null && _deferred.Page.Visual == elm)
 				Fuse.Diagnostics.InternalError( "removing deferred child" );
 			if (_prepared != null && _prepared.Visual == elm)

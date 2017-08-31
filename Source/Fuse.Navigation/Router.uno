@@ -162,7 +162,6 @@ namespace Fuse.Navigation
 		
 		public Route GetCurrentRoute()
 		{
-			//return GetCurrent(Parent);
 			return GetHistoryRoute(0);
 		}
 		
@@ -808,9 +807,5 @@ namespace Fuse.Navigation
 			
 			return ret;
 		}
-		
-		
 	}
-
-	
 }
