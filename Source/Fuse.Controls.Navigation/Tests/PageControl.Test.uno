@@ -131,5 +131,57 @@ namespace Fuse.Controls.Test
 			var diff = args.Progress - args.PreviousProgress;
 			_absChangedSum += Math.Abs(diff);
 		}
+		
+		[Test]
+		public void DynamicActiveIndex()
+		{
+			var p = new UX.PageControl.DynamicActiveIndex();
+			using (var root = TestRootPanel.CreateWithChild(p, int2(1000)))
+			{
+				//give any changes to ActiveIndex a chance to propagate in both directions
+				root.StepFrameJS();
+				root.StepFrameJS(); 
+				Assert.AreEqual( 2, p.index.Value );
+				
+				p.callAdd.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual( 2, p.index.Value );
+				
+				p.goForward.Pulse();
+				root.StepFrame(5);
+				root.StepFrameJS();
+				Assert.AreEqual( 1, p.index.Value );
+				
+				//swipe left (default to go forward)
+				root.PointerSwipe( float2(100,100), float2(800,100), 300 );
+				root.StepFrame(5); //stabilize
+				Assert.AreEqual( 0, p.index.Value );
+			}
+		}
+		
+		[Test]
+		public void Active()
+		{
+			var p = new UX.PageControl.Active();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				Assert.AreEqual( p.p2, p.pc1.Active );
+				Assert.AreEqual( 1, p.p2.wa.Progress );
+				Assert.AreEqual( 1, p.p2.an.Progress );
+				Assert.AreEqual( 0, p.p1.wa.Progress );
+				Assert.AreEqual( 0, p.p1.an.Progress );
+			}
+		}
+		
+		[Test]
+		//ensuring it works without content
+		public void Empty()
+		{
+			var p = new UX.PageControl.Empty();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				Assert.AreEqual( null, p.pc.Active );
+			}
+		}
 	}
 }

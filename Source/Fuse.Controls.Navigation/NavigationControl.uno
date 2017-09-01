@@ -154,7 +154,7 @@ namespace Fuse.Controls
 			
 			Navigation.PageProgressChanged += OnPageProgressChanged;
 			
-			OnPagesChanged();
+			OnPageHistoryChanged();
 		}
 		
 		/**

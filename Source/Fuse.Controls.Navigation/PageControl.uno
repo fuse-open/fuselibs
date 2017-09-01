@@ -77,7 +77,7 @@ namespace Fuse.Controls
 		See [Navigation Order](articles:navigation/navigationorder.md)
 		
 	*/
-	public class PageControl : NavigationControl, ISeekableNavigation, IRouterOutlet, IPropertyListener
+	public partial class PageControl : NavigationControl, ISeekableNavigation, IRouterOutlet, IPropertyListener
 	{
 		static PageControl()
 		{
@@ -98,9 +98,9 @@ namespace Fuse.Controls
 			else Diagnostics.UserError("PageControl.goto() : Argument must be a node object", pc);
 		}
 		
-		new internal Fuse.Navigation.StructuredNavigation Navigation
+		new internal Fuse.Navigation.DynamicLinearNavigation Navigation
 		{
-			get { return ((NavigationControl)this).Navigation as Fuse.Navigation.StructuredNavigation; }
+			get { return ((NavigationControl)this).Navigation as Fuse.Navigation.DynamicLinearNavigation; }
 		}
 		
 		public PageControl()
@@ -112,7 +112,7 @@ namespace Fuse.Controls
 			_interaction = NavigationControlInteraction.Swipe;
 			_transition = NavigationControlTransition.Standard;
 
-			var nav = new LinearNavigation();
+			var nav = new DynamicLinearNavigation();
 			nav.AddPropertyListener(this);
 			SetNavigation( nav );
 		}
@@ -121,6 +121,8 @@ namespace Fuse.Controls
 		{
 			base.OnRooted();
 
+			OnPagesChanged();
+			
 			var pages = AncestorRouterPage != null ? AncestorRouterPage.ChildRouterPages : null;
 			if (pages != null && pages.Count > 0)
 			{ 
@@ -394,12 +396,12 @@ namespace Fuse.Controls
 		*/
 		public int ActiveIndex
 		{
-			get { return Navigation.ActiveIndex; }
-			set { SetActiveIndex(value,null); }
+			get { return Navigation.DesiredActiveIndex; }
+			set { Navigation.DesiredActiveIndex = value; }
 		}
 		public void SetActiveIndex(int value, IPropertyListener origin)
 		{
-			Navigation.SetActiveIndex(value, origin);
+			Navigation.DesiredActiveIndex = value;
 		}
 		
 		//ISeekableNavigation

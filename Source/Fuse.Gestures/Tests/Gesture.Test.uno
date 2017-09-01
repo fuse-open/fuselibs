@@ -24,11 +24,13 @@ namespace Fuse.Gestures.Test
 				root.PointerSwipe(float2(990,50), float2(790,50), 100);
 				root.StepFrame(5);//stabilize
 				Assert.AreEqual(p.edgeRight, p.edge.Active);
+				Assert.AreEqual(p.pageB, p.edgeMain.Active);
 
 				//swipe away the right EgeNavigator panel
 				root.PointerSwipe(float2(810,50), float2(950,50), 100);
 				root.StepFrame(5);//stabilize
 				Assert.AreEqual(p.edgeMain, p.edge.Active);
+				Assert.AreEqual(p.pageB, p.edgeMain.Active);
 
 				//swipe the RangeControl
 				root.PointerSwipe(float2(600,10), float2(400,10), 100);

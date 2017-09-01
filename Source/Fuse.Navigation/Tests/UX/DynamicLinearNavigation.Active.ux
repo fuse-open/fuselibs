@@ -1,0 +1,12 @@
+<Panel ux:Class="UX.DynamicLinearNavigation.Active">
+	<WhileTrue ux:Name="toggleNav" Value="true">
+		<Panel ux:Name="theNavPanel">
+			<DynamicLinearNavigation ux:Name="theNav"/>
+			
+			<Page ux:Name="one"/>
+			<Page ux:Name="two"/>
+			<Page ux:Name="three"/>
+			<Page ux:Name="four"/>
+		</Panel>
+	</WhileTrue>
+</Panel>
