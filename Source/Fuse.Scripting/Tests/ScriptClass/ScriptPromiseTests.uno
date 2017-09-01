@@ -61,9 +61,9 @@ namespace Fuse.Scripting.Test
 		public void StringTest()
 		{
 			var child = new UX.BasicTest();
+			child.customPanel.StringFuture = new Promise<string>("this is a string");
 			using (var root = TestRootPanel.CreateWithChild(child))
 			{
-				child.customPanel.StringFuture = new Promise<string>("this is a string");
 				root.StepFrameJS();
 				Assert.AreEqual("this is a string", child.Properties.StringResult);
 			}
@@ -73,9 +73,9 @@ namespace Fuse.Scripting.Test
 		public void NumberTest()
 		{
 			var child = new UX.BasicTest();
+			child.customPanel.NumberFuture = new Promise<double>(13.37);
 			using (var root = TestRootPanel.CreateWithChild(child))
 			{
-				child.customPanel.NumberFuture = new Promise<double>(13.37);
 				root.StepFrameJS();
 				Assert.AreEqual(13.37, child.Properties.NumberResult);
 			}
@@ -85,11 +85,11 @@ namespace Fuse.Scripting.Test
 		public void FailTest()
 		{
 			var child = new UX.BasicTest();
+			var p = new Promise<double>();
+			child.customPanel.NumberFuture = p;
 			using (var root = TestRootPanel.CreateWithChild(child))
 			{
-				var p = new Promise<double>();
 				p.Reject(new Exception("fail"));
-				child.customPanel.NumberFuture = p;
 				root.StepFrameJS();
 				Assert.AreEqual("fail", child.Properties.NumberError);
 			}
@@ -99,12 +99,12 @@ namespace Fuse.Scripting.Test
 		public void ObjectTest()
 		{
 			var child = new UX.BasicTest();
+			var p = new Promise<TestObject>();
+			child.customPanel.ObjectFuture = p;
 			using (var root = TestRootPanel.CreateWithChild(child))
 			{
 				var o = new TestObject() { Value = "Hello, World!" };
-				var p = new Promise<TestObject>();
 				p.Resolve(o);
-				child.customPanel.ObjectFuture = p;
 				root.StepFrameJS();
 
 				var obs = child.Properties.ObjectResult as Fuse.Reactive.IObservable;

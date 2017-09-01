@@ -1,0 +1,12 @@
+<App>
+	<TestRunner>
+
+		<ProfilePanel ux:Template="Text Rendering" FrameCount="100">
+			<Text ux:Name="_text" Value="Frame: {frameIndex()}" />
+			<WhileTrue Value="true">
+				<Cycle Target="_text.Color" Offset="0, 0, 0, 1" Base="1, 0, 0, 0" Low="0" High="1" Frequency="0.5"/>
+			</WhileTrue>
+		</ProfilePanel>
+
+	</TestRunner>
+</App>
