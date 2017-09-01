@@ -10,6 +10,20 @@ namespace Fuse.Controls.Test
 	public class PageTest : TestBase
 	{
 		[Test]
+		public void AllElementProps()
+		{
+			var p = new Page();
+			ElementPropertyTester.All(p);
+		}
+
+		[Test]
+		public void AllLayoutTets()
+		{
+			var p = new Page();
+			ElementLayoutTester.All(p);
+		}
+
+		[Test]
 		public void FreezeWhileNavigating()
 		{
 			var p = new UX.Page.FreezeWhileNavigating();
