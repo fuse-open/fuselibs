@@ -9,7 +9,7 @@ using FuseTest;
 
 namespace Fuse.Test
 {
-	public partial class ImageTests : TestBase
+	public partial class ImageTest : TestBase
 	{
 		[Test]
 		public void StretchFillTest()

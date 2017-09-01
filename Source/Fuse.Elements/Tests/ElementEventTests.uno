@@ -15,7 +15,7 @@ namespace Fuse.Test
 		}
 	}
 
-	public class ElementEventTests : TestBase
+	public class ElementEventTest : TestBase
 	{
 		[Test]
 		public void PanelPlaced()
