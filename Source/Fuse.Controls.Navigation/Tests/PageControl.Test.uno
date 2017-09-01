@@ -158,5 +158,30 @@ namespace Fuse.Controls.Test
 				Assert.AreEqual( 0, p.index.Value );
 			}
 		}
+		
+		[Test]
+		public void Active()
+		{
+			var p = new UX.PageControl.Active();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				Assert.AreEqual( p.p2, p.pc1.Active );
+				Assert.AreEqual( 1, p.p2.wa.Progress );
+				Assert.AreEqual( 1, p.p2.an.Progress );
+				Assert.AreEqual( 0, p.p1.wa.Progress );
+				Assert.AreEqual( 0, p.p1.an.Progress );
+			}
+		}
+		
+		[Test]
+		//ensuring it works without content
+		public void Empty()
+		{
+			var p = new UX.PageControl.Empty();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				Assert.AreEqual( null, p.pc.Active );
+			}
+		}
 	}
 }

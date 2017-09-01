@@ -48,12 +48,13 @@ namespace Fuse.Navigation
 		{
 			base.OnRooted();
 
-			if (_desiredActive == null && PageCount > 0)
+			if (_desired == Desired.None && PageCount > 0)
 				_desiredActive = GetPage(0);
 				
 			_region = Motion.AcquireSimulation();
 			_region.Position = float2(_progress,0);
-			GotoDesiredActive();
+			if (!GotoDesiredActive())
+				SetProgress(GetPageIndex(_active));
 		}
 		
 		Visual _listenComplete;
@@ -61,12 +62,17 @@ namespace Fuse.Navigation
 		{
 			if (_listenComplete != null)
 			{
-				_listenComplete.RootingCompleted -= GotoDesiredActive;
+				_listenComplete.RootingCompleted -= GotoDesiredActiveAction;
 				_listenComplete = null;
 			}
 		}
 		
-		void GotoDesiredActive()
+		void GotoDesiredActiveAction()
+		{
+			GotoDesiredActive();
+		}
+		
+		bool GotoDesiredActive()
 		{
 			Visual desiredPage = null;
 			switch (_desired)
@@ -85,19 +91,22 @@ namespace Fuse.Navigation
 			}
 			
 			if (desiredPage == null)
-				return;
+				return false;
 				
 			if (!desiredPage.IsRootingStarted)
 			{
 				CleanupListenComplete();
 				_listenComplete = desiredPage;
-				_listenComplete.RootingCompleted += GotoDesiredActive;
-				return;
+				_listenComplete.RootingCompleted += GotoDesiredActiveAction;
+				return false;
 			}
 		
 			UpdateDesired(desiredPage, -1);
-			if (desiredPage != _active)	
-				GotoImpl(desiredPage, NavigationGotoMode.Bypass);
+			if (desiredPage == _active)	
+				return false;
+				
+			GotoImpl(desiredPage, NavigationGotoMode.Bypass);
+			return true;
 		}
 
 		protected override void OnUnrooted()
