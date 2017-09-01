@@ -55,7 +55,7 @@ namespace Fuse.Scripting.Test
 		public Future<TestObject> ObjectFuture { get; set; }
 	}
 
-	public class ScriptPromiseTests : TestBase
+	public class ScriptPromiseTest : TestBase
 	{
 		[Test]
 		public void StringTest()
