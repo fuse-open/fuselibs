@@ -1,53 +1,49 @@
+using Uno;
+using Uno.Collections;
 using Uno.UX;
+using Uno.Text;
 
 namespace Fuse.Reactive
 {
-	public class Vector2: BinaryOperator
+	/** Creates an `IArray` from an arbitrary number of arguments.
+		An `IArray` can be automatically marshalled to any Uno vector type (e.g. `float4`)
+	*/
+	public class Vector: SimpleVarArgFunction
 	{
-		[UXConstructor]
-		public Vector2([UXParameter("X")] Expression x, [UXParameter("Y")] Expression y): base(x, y) { }
-
-		protected override object Compute(object left, object right)
+		protected override void OnNewArguments(Argument[] args, IListener listener)
 		{
-			if (left is Size || right is Size) return new Size2(Marshal.ToSize(left), Marshal.ToSize(right));
-			return float2(Marshal.ToFloat(left), Marshal.ToFloat(right));
+			listener.OnNewData(this, new Array(args));
 		}
-
+		
 		public override string ToString()
 		{
-			return "(" + Left + ", " + Right + ")";
+			return FormatString("");
 		}
 	}
 
-	public class Vector3: TernaryOperator
+	class Array: IArray
 	{
-		[UXConstructor]
-		public Vector3([UXParameter("X")] Expression x, [UXParameter("Y")] Expression y, [UXParameter("Z")] Expression z) : base(x,y,z) {}
-
-		protected override object Compute(object first, object second, object third)
+		object[] _items;
+		public Array(VarArgFunction.Argument[] args)
 		{
-			return float3(Marshal.ToFloat(first), Marshal.ToFloat(second), Marshal.ToFloat(third));
+			_items = new object[args.Length];
+			for (var i = 0; i < args.Length; i++)
+				_items[i] = args[i].Value;
 		}
+		object IArray.this[int index] { get { return _items[index]; } }
+		int IArray.Length { get { return _items.Length; } }
 
 		public override string ToString()
 		{
-			return "(" + First + ", " + Second + ", " + Third + ")";
-		}
-	}
-
-	public class Vector4: QuaternaryOperator
-	{
-		[UXConstructor]
-		public Vector4([UXParameter("X")] Expression x, [UXParameter("Y")] Expression y, [UXParameter("Z")] Expression z, [UXParameter("W")] Expression w) : base(x,y,z,w) {}
-
-		protected override object Compute(object first, object second, object third, object fourth)
-		{
-			return float4(Marshal.ToFloat(first), Marshal.ToFloat(second), Marshal.ToFloat(third), Marshal.ToFloat(fourth));
-		}
-
-		public override string ToString()
-		{
-			return "(" + First + ", " + Second + ", " + Third + ", " + Fourth + ")";
+			var sb = new StringBuilder();
+			sb.Append("(");
+			for (var i = 0; i < _items.Length; i++)
+			{
+				if (i > 0) sb.Append(", ");
+				sb.Append(_items[i].ToString());
+			}
+			sb.Append(")");
+			return sb.ToString();
 		}
 	}
 }

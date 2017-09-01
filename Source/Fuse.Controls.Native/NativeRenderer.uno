@@ -146,6 +146,7 @@ namespace Fuse.Controls.Native
 
 			[[view layer] renderInContext:context];
 
+			glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 			if (reuse)
 			{
 				glTexSubImage2D(

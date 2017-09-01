@@ -3,6 +3,6 @@ set -e
 
 ROOT=`dirname $0`
 
-mono "$ROOT/Stuff/uno.exe" test "$ROOT/Source"
+"$ROOT/Stuff/uno" test "$ROOT/Source"
 
-$ROOT/Tests/package-compilation.sh
+"$ROOT/Tests/compile-packages.sh"

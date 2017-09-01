@@ -46,21 +46,23 @@ namespace Fuse.Controls.Test
 		public void HitTest()
 		{
 			var p = new UX.ViewportHitTest();
-			var r = TestRootPanel.CreateWithChild(p, int2(1000));
-			foreach (var hitTestPoint in GetHitTestPoints(p))
+			using (var r = TestRootPanel.CreateWithChild(p, int2(1000)))
 			{
-				//root-level testing, used by uncapture input
-				var hitResult = Fuse.Input.HitTestHelpers.HitTestNearest(r, hitTestPoint.Point);
-				Assert.AreEqual(hitTestPoint.Panel, hitResult.HitObject);
-
-				//capture level routing
-				//so longer as there is no overlap in the tests looking in each parent should produce the same result
-				Visual start = hitTestPoint.Panel;
-				while (start != null)
+				foreach (var hitTestPoint in GetHitTestPoints(p))
 				{
-					var hitVisual = start.GetHitWindowPoint(hitTestPoint.Point);
-					Assert.AreEqual(hitTestPoint.Panel, hitVisual);
-					start = start.Parent;
+					//root-level testing, used by uncapture input
+					var hitResult = Fuse.Input.HitTestHelpers.HitTestNearest(r, hitTestPoint.Point);
+					Assert.AreEqual(hitTestPoint.Panel, hitResult.HitObject);
+
+					//capture level routing
+					//so longer as there is no overlap in the tests looking in each parent should produce the same result
+					Visual start = hitTestPoint.Panel;
+					while (start != null)
+					{
+						var hitVisual = start.GetHitWindowPoint(hitTestPoint.Point);
+						Assert.AreEqual(hitTestPoint.Panel, hitVisual);
+						start = start.Parent;
+					}
 				}
 			}
 		}
@@ -73,8 +75,7 @@ namespace Fuse.Controls.Test
 		public void DrawTest()
 		{
 			var p = new UX.ViewportHitTest();
-			var r = TestRootPanel.CreateWithChild(p, int2(1000));
-
+			using (var r = TestRootPanel.CreateWithChild(p, int2(1000)))
 			using (var fb = r.CaptureDraw())
 			{
 				foreach (var hitTestPoint in GetHitTestPoints(p))
@@ -90,15 +91,16 @@ namespace Fuse.Controls.Test
 		public void Cache()
 		{
 			var p = new UX.ViewportCache();
-			var r = TestRootPanel.CreateWithChild(p, int2(500));
-
-			for (int i=0;i < 5; ++i)
-				r.TestDraw();
-			
-			Assert.AreEqual(5,p.B.DrawCount);
-			//Dependent on exact heuristic and can be changed, but certainly should be less than 5, probably 1 or 2
-			Assert.AreEqual(1,p.A.DrawCount);
-			Assert.AreEqual(1,p.C.DrawCount);
+			using (var r = TestRootPanel.CreateWithChild(p, int2(500)))
+			{
+				for (int i=0;i < 5; ++i)
+					r.TestDraw();
+				
+				Assert.AreEqual(5,p.B.DrawCount);
+				//Dependent on exact heuristic and can be changed, but certainly should be less than 5, probably 1 or 2
+				Assert.AreEqual(1,p.A.DrawCount);
+				Assert.AreEqual(1,p.C.DrawCount);
+			}
 		}
 		
 		[Test]
@@ -108,13 +110,14 @@ namespace Fuse.Controls.Test
 		public void IsFlat()
 		{
 			var p = new UX.ViewportFlat();
-			var r = TestRootPanel.CreateWithChild(p);
-			
-			Assert.IsTrue(p.C.IsFlat);
-			p.C.Mode = Fuse.Elements.ViewportMode.Disabled;
-			Assert.IsFalse(p.C.IsFlat);
-			p.R.DegreesX = 0;
-			Assert.IsTrue(p.C.IsFlat);
+			using (var r = TestRootPanel.CreateWithChild(p))
+			{
+				Assert.IsTrue(p.C.IsFlat);
+				p.C.Mode = Fuse.Elements.ViewportMode.Disabled;
+				Assert.IsFalse(p.C.IsFlat);
+				p.R.DegreesX = 0;
+				Assert.IsTrue(p.C.IsFlat);
+			}
 		}
 	}
 	

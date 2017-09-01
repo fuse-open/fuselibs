@@ -1,0 +1,3 @@
+<Rectangle ux:Class="UX.SolidRectangleWithDropShadowAndMargin" Color="#fff" Margin="10" CachingMode="Never">
+	<DropShadow Color="#f0f" Distance="0" Size="0" Spread="0" />
+</Rectangle>

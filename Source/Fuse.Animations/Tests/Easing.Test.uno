@@ -19,7 +19,7 @@ namespace Fuse.Test
 		                           [CallerMemberName] string memberName = "")
 		{
 			foreach (var val in vals)
-				Assert.AreEqual(val.Y, EvaluateAt(e, val.X), float.ZeroTolerance, filePath, lineNumber, memberName);
+				Assert.AreEqual(val.Y, EvaluateAt(e, val.X), Assert.ZeroTolerance, filePath, lineNumber, memberName);
 		}
 
 		[Test]

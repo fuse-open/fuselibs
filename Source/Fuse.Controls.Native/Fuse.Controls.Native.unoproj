@@ -2,7 +2,7 @@
   "Copyright": "Copyright (c) Fusetools AS 2017",
   "Description": "Abstraction over platform-specific native controls",
   "Publisher": "Fusetools AS",
-  "Version": "1.1.0-rc2",
+  "Version": "1.2.1",
   "Package": {
     "ProjectUrl": "https://fusetools.com"
   },
@@ -30,8 +30,12 @@
   ],
   "Includes": [
     "*",
+    "iOS/UIViewInputDispatch.h:ObjCHeader:iOS",
+    "iOS/UIViewInputDispatch.mm:ObjCSource:iOS",
     "iOS/Helpers.h:ObjCHeader:iOS",
     "iOS/Helpers.mm:ObjCSource:iOS",
+    "iOS/CanvasViewGroup.h:ObjCHeader:iOS",
+    "iOS/CanvasViewGroup.mm:ObjCSource:iOS",
     "Android/Java/IScroll.java:Java:Android",
     "Android/Java/HorizontalScrollView.java:Java:Android",
     "Android/Java/VerticalScrollView.java:Java:Android",

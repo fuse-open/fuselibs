@@ -1,0 +1,6 @@
+<Panel ux:Class="UX.ObjectFunction">
+	<With Data="{a: 10, b: 'lol'}">
+		<Text ux:Name="ta">{a}</Text>
+		<Text ux:Name="tb">{b}</Text>
+	</With>
+</Panel>

@@ -4,6 +4,7 @@ using Uno.Graphics;
 using Fuse.Drawing;
 using Fuse.Internal;
 using Fuse.Elements;
+using Fuse.Nodes;
 
 namespace Fuse.Controls
 {
@@ -155,6 +156,9 @@ namespace Fuse.Controls
 				TexCoord: VertexData * uvSize + uvPosition;
 				TextureColor: prev * Color;
 			};
+
+			if defined(FUSELIBS_DEBUG_DRAW_RECTS)
+				DrawRectVisualizer.Capture(offset, size, element.WorldTransform, dc);
 		}
 	}
 }

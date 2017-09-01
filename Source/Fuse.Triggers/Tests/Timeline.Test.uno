@@ -11,120 +11,126 @@ namespace Fuse.Triggers.Test
 	*/
 	public class TimelineTests : TestBase
 	{
+		const float _zeroTolerance = 1e-05f;
+
 		[Test]
 		public void Pulse()
 		{	
 			var p = new UX.TimelinePulse();
-			var root = TestRootPanel.CreateWithChild(p, int2(100));
-			
-			p.T1.Pulse();
-			//the first frame is expected to animate for the interval time
-			root.IncrementFrame(0.1f);
-			Assert.AreEqual(0.1, TriggerProgress(p.T1));
-			
-			//then revert to stepping
-			root.StepFrame(0.9f);
-			Assert.AreEqual(1, TriggerProgress(p.T1));
+			using (var root = TestRootPanel.CreateWithChild(p, int2(100)))
+			{
+				p.T1.Pulse();
+				//the first frame is expected to animate for the interval time
+				root.IncrementFrame(0.1f);
+				Assert.AreEqual(0.1, TriggerProgress(p.T1));
 
-			//the pulse turnaround could take 1 frame, it's uncertain if this an issue.
-			var tolerance = root.StepIncrement + float.ZeroTolerance;
-			root.StepFrame(0.1f);
-			Assert.AreEqual(0.9f, TriggerProgress(p.T1), tolerance);
-			
-			root.StepFrame(0.9f);
-			Assert.AreEqual(0f, TriggerProgress(p.T1), tolerance);
-			
-			//one final frame to catchup at most
-			root.IncrementFrame();
-			Assert.AreEqual(0f, TriggerProgress(p.T1));
+				//then revert to stepping
+				root.StepFrame(0.9f);
+				Assert.AreEqual(1, TriggerProgress(p.T1));
+
+				//the pulse turnaround could take 1 frame, it's uncertain if this an issue.
+				var tolerance = root.StepIncrement + _zeroTolerance;
+				root.StepFrame(0.1f);
+				Assert.AreEqual(0.9f, TriggerProgress(p.T1), tolerance);
+
+				root.StepFrame(0.9f);
+				Assert.AreEqual(0f, TriggerProgress(p.T1), tolerance);
+
+				//one final frame to catchup at most
+				root.IncrementFrame();
+				Assert.AreEqual(0f, TriggerProgress(p.T1));
+			}
 		}
 		
 		[Test]
 		public void SeekPlay()
 		{	
 			var p = new UX.TimelinePulse();
-			var root = TestRootPanel.CreateWithChild(p, int2(100));
+			using (var root = TestRootPanel.CreateWithChild(p, int2(100)))
+			{
+				var play = p.T1;
 
-			var play = p.T1;
-			
-			//seek to target
-			play.Progress = 0.2f;
-			root.IncrementFrame();
-			Assert.AreEqual(0.2, TriggerProgress(p.T1));
-			//should be stopped there
-			root.IncrementFrame();
-			Assert.AreEqual(0.2, TriggerProgress(p.T1));
-			
-			//play to new target
-			play.TimelinePlayTo(0.8f);
-			root.StepFrame(0.6f);
-			Assert.AreEqual(0.8f, TriggerProgress(p.T1));
-			//should be stopped there
-			root.StepFrame(0.2f);
-			Assert.AreEqual(0.8f, TriggerProgress(p.T1));
-			
-			//pause in middle (pause does not reset target progress)
-			play.TimelinePlayTo(1);
-			root.StepFrame(0.1f);
-			Assert.AreEqual(0.9f, TriggerProgress(p.T1));
-			
-			play.Pause();
-			root.StepFrame(0.1f);
-			Assert.AreEqual(0.9f, TriggerProgress(p.T1));
-			
-			play.Resume();
-			root.StepFrame(0.1f);
-			Assert.AreEqual(1.0f, TriggerProgress(p.T1));
-			
-			//stop in middle (stop resets target progress)
-			play.Progress = 0;
-			play.TimelinePlayTo(1);
-			root.StepFrame(0.3f);
-			Assert.AreEqual(0.3f, TriggerProgress(p.T1));
-			
-			play.Stop();
-			root.StepFrame(0.1f);
-			Assert.AreEqual(0.3f, TriggerProgress(p.T1));
-			
-			play.Resume();
-			root.StepFrame(0.1f);
-			Assert.AreEqual(0.3f, TriggerProgress(p.T1)); //stopped reset target
+				//seek to target
+				play.Progress = 0.2f;
+				root.IncrementFrame();
+				Assert.AreEqual(0.2, TriggerProgress(p.T1));
+				//should be stopped there
+				root.IncrementFrame();
+				Assert.AreEqual(0.2, TriggerProgress(p.T1));
+
+				//play to new target
+				play.TimelinePlayTo(0.8f);
+				root.StepFrame(0.6f);
+				Assert.AreEqual(0.8f, TriggerProgress(p.T1));
+				//should be stopped there
+				root.StepFrame(0.2f);
+				Assert.AreEqual(0.8f, TriggerProgress(p.T1));
+
+				//pause in middle (pause does not reset target progress)
+				play.TimelinePlayTo(1);
+				root.StepFrame(0.1f);
+				Assert.AreEqual(0.9f, TriggerProgress(p.T1));
+
+				play.Pause();
+				root.StepFrame(0.1f);
+				Assert.AreEqual(0.9f, TriggerProgress(p.T1));
+
+				play.Resume();
+				root.StepFrame(0.1f);
+				Assert.AreEqual(1.0f, TriggerProgress(p.T1));
+
+				//stop in middle (stop resets target progress)
+				play.Progress = 0;
+				play.TimelinePlayTo(1);
+				root.StepFrame(0.3f);
+				Assert.AreEqual(0.3f, TriggerProgress(p.T1));
+
+				play.Stop();
+				root.StepFrame(0.1f);
+				Assert.AreEqual(0.3f, TriggerProgress(p.T1));
+
+				play.Resume();
+				root.StepFrame(0.1f);
+				Assert.AreEqual(0.3f, TriggerProgress(p.T1)); //stopped reset target
+			}
 		}
 		
 		[Test]
 		public void PulseForward()
 		{	
 			var p = new UX.TimelinePulse();
-			var root = TestRootPanel.CreateWithChild(p, int2(100));
-			
-			p.T1.PulseForward();
-			root.StepFrame(1f);
-			Assert.AreEqual(1, TriggerProgress(p.T1));
-			
-			//return to 0
-			root.IncrementFrame();
-			Assert.AreEqual(0, TriggerProgress(p.T1));
-			
-			//and be stopped there
-			root.IncrementFrame();
-			Assert.AreEqual(0, TriggerProgress(p.T1));
+			using (var root = TestRootPanel.CreateWithChild(p, int2(100)))
+			{
+				p.T1.PulseForward();
+				root.StepFrame(1f);
+				Assert.AreEqual(1, TriggerProgress(p.T1));
+
+				//return to 0
+				root.IncrementFrame();
+				Assert.AreEqual(0, TriggerProgress(p.T1));
+
+				//and be stopped there
+				root.IncrementFrame();
+				Assert.AreEqual(0, TriggerProgress(p.T1));
+			}
 		}
 		
 		[Test]
 		public void PulseBackward()
 		{	
 			var p = new UX.TimelinePulse();
-			var root = TestRootPanel.CreateWithChild(p, int2(100));
-			
-			p.T1.PulseBackward();
-			root.StepFrame(0.1f);
-			Assert.AreEqual(0.9f, TriggerProgress(p.T1));
-			
-			root.StepFrame(0.8f);
-			Assert.AreEqual(0.1f, TriggerProgress(p.T1));
-			
-			root.StepFrame(0.2f); //overstep, stops at 0
-			Assert.AreEqual(0f, TriggerProgress(p.T1));
+			using (var root = TestRootPanel.CreateWithChild(p, int2(100)))
+			{
+				p.T1.PulseBackward();
+				root.StepFrame(0.1f);
+				Assert.AreEqual(0.9f, TriggerProgress(p.T1));
+
+				root.StepFrame(0.8f);
+				Assert.AreEqual(0.1f, TriggerProgress(p.T1));
+
+				root.StepFrame(0.2f); //overstep, stops at 0
+				Assert.AreEqual(0f, TriggerProgress(p.T1));
+			}
 		}
 		
 		[Test]
@@ -135,8 +141,8 @@ namespace Fuse.Triggers.Test
 			{
 				//the timeline may animate the first frame it is rooted
 				var bp = TriggerProgress(p.T1);
-				Assert.AreEqual(0f, TriggerProgress(p.T1), root.StepIncrement + float.ZeroTolerance);
-				Assert.AreEqual(1f, TriggerProgress(p.T2), root.StepIncrement + float.ZeroTolerance);
+				Assert.AreEqual(0f, TriggerProgress(p.T1), root.StepIncrement + _zeroTolerance);
+				Assert.AreEqual(1f, TriggerProgress(p.T2), root.StepIncrement + _zeroTolerance);
 				
 				//should just start playing with wrap mode (as TargetProgress defaults to 1)
 				root.StepFrame(0.1f);
@@ -316,7 +322,7 @@ namespace Fuse.Triggers.Test
 				root.StepFrame(2.5f);
 				Assert.AreEqual(1f, p.T.Progress);
 				root.StepFrame(2.5f);
-				Assert.AreEqual(0.5f, p.T.Progress, root.StepIncrement+ float.ZeroTolerance);
+				Assert.AreEqual(0.5f, p.T.Progress, root.StepIncrement+ _zeroTolerance);
 				root.StepFrame(3f); //overkill
 				Assert.AreEqual(0f, p.T.Progress);
 				
@@ -389,7 +395,7 @@ namespace Fuse.Triggers.Test
 				root.StepFrame(2.5f);
 				Assert.AreEqual(1f, p.T.Progress);
 				root.StepFrame(2.5f);
-				Assert.AreEqual(0.5f, p.T.Progress, root.StepIncrement + float.ZeroTolerance);
+				Assert.AreEqual(0.5f, p.T.Progress, root.StepIncrement + _zeroTolerance);
 				root.StepFrame(3f); //overkill
 				Assert.AreEqual(0f, p.T.Progress);
 				
@@ -432,7 +438,7 @@ namespace Fuse.Triggers.Test
 				p.Play.Pulse();
 				root.StepFrame();
 				root.StepFrame(1);
-				Assert.AreEqual(0.4f, p.T.Progress, root.StepIncrement + float.ZeroTolerance); //...thus no further change
+				Assert.AreEqual(0.4f, p.T.Progress, root.StepIncrement + _zeroTolerance); //...thus no further change
 				
 				p.Seek5.Pulse();
 				root.StepFrame();

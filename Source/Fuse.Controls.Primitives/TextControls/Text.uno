@@ -4,12 +4,11 @@ namespace Fuse.Controls
 	/** Displays a block of text.
 
 	@include Docs/Text/Brief.md
-	@ux Docs/Text/Example.ux
 
-	@include Docs/Text/ExampleDescription.md
+	@include Docs/Text/Examples.md
 
-	@remarks Docs/Text/Remarks.md
-	@examples Docs/Text/Examples.md
+	@include Docs/Text/Remarks.md
+
 	@seealso Fuse.Controls.TextInput	
 	@seealso Fuse.Font
 	*/	

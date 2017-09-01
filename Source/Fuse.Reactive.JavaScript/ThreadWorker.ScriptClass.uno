@@ -138,7 +138,7 @@ namespace Fuse.Reactive
 				_worker = worker;
 
 				var factory = (Function)_worker.Context.Evaluate(m.Name + " (ScriptMethod)", "(function (cl, callback) { cl.prototype." + m.Name + 
-					" = function() { callback(this.external_object, Array.prototype.slice.call(arguments)); }})");
+					" = function() { return callback(this.external_object, Array.prototype.slice.call(arguments)); }})");
 				
 				factory.Call(cl, (Callback)Callback);	
 			}

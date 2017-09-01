@@ -13,13 +13,6 @@ namespace AnimationTests.Test
 {
 	public class AnimationTests
 	{
-		private TestRootPanel _root;
-
-		public AnimationTests()
-		{
-			_root = new TestRootPanel();
-		}
-
 		[Test]
 		public void ScaleAnimatorTest_00()
 		{
@@ -101,22 +94,23 @@ namespace AnimationTests.Test
 
 		private void RunGeneralAnimationTest(AnimationTestPanel panel, List<Timestamp> forwardStamps, List<Timestamp> backwardStamps, Action<AnimationTestPanel, Timestamp> assertionAction)
 		{
-			_root.Children.Add(panel as Panel);
+			using (var root = TestRootPanel.CreateWithChild(panel))
+			{
+				// Forward animation
+				panel.Pressed();
+				ValidateAnimation(root, panel, forwardStamps, assertionAction);
 
-			// Forward animation
-			panel.Pressed();
-			ValidateAnimation(panel, forwardStamps, assertionAction);
-
-			// Backward animation
-			panel.Unpressed();
-			ValidateAnimation(panel, backwardStamps, assertionAction);
+				// Backward animation
+				panel.Unpressed();
+				ValidateAnimation(root, panel, backwardStamps, assertionAction);
+			}
 		}
 
-		private void ValidateAnimation(AnimationTestPanel panel, List<Timestamp> stamps, Action<AnimationTestPanel, Timestamp> assertionAction)
+		private void ValidateAnimation(TestRootPanel root, AnimationTestPanel panel, List<Timestamp> stamps, Action<AnimationTestPanel, Timestamp> assertionAction)
 		{
 			foreach (var stamp in stamps)
 			{
-				_root.IncrementFrame(stamp.TimeDelta);
+				root.IncrementFrame(stamp.TimeDelta);
 				assertionAction(panel, stamp);
 			}
 		}

@@ -1,0 +1,13 @@
+<Panel ux:Class="UX.BringToFront.BackBasic">
+	<FuseTest.DudElement StringValue="A" ux:Name="a">
+		<Timeline ux:Name="aBack">
+			<SendToBack/>
+		</Timeline>
+	</FuseTest.DudElement>
+	<FuseTest.DudElement StringValue="B" ux:Name="b"/>
+	<FuseTest.DudElement StringValue="C" ux:Name="c"/>
+	
+	<Timeline ux:Name="bBack">
+		<SendToBack Target="b"/>
+	</Timeline>
+</Panel>

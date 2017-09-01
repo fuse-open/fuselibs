@@ -20,7 +20,9 @@ namespace Fuse.Animations
 		//tracks time within the nominal range
 		public double Current, Source, Target;
 		public double SourceTime;
-		
+
+		const float _zeroTolerance = 1e-05f;
+
 		public PlayerPart( double currentProgress = 0 )
 		{
 			IsProgress = true;
@@ -32,7 +34,7 @@ namespace Fuse.Animations
 			bool nIsProgress;
 			double nTarget;
 			
-			if (Duration < float.ZeroTolerance)
+			if (Duration < _zeroTolerance)
 			{
 				nIsProgress = true;
 				nTarget = progress;
@@ -133,7 +135,7 @@ namespace Fuse.Animations
 		{
 			p = Math.Clamp( p, 0, 1 );
 			Animate = false;
-			if (Duration < float.ZeroTolerance)
+			if (Duration < _zeroTolerance)
 			{
 				IsProgress = true;
 				Current = p;
@@ -328,7 +330,8 @@ namespace Fuse.Animations
 		{
 			get 
 			{
-				if (_progress.IsProgress || _progress.Duration < float.ZeroTolerance)
+				const float zeroTolerance = 1e-05f;
+				if (_progress.IsProgress || _progress.Duration < zeroTolerance)
 					return 0;
 				return Variant == AnimationVariant.Forward ?
 					_progress.Duration - _progress.Current :

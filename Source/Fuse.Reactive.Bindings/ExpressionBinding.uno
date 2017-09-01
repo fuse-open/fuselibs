@@ -31,7 +31,7 @@ namespace Fuse.Reactive
 
 		IDisposable IContext.Subscribe(IExpression source, string key, IListener listener)
 		{
-			return new DataSubscription(source, this, key, listener);
+			return new DataSubscription(source, Parent, key, listener);
 		}
 
 		Node IContext.Node { get { return Parent; } }
@@ -43,8 +43,11 @@ namespace Fuse.Reactive
 
 		protected override void OnUnrooted()
 		{
-			_expressionSub.Dispose();
-			_expressionSub = null;
+			if (_expressionSub != null)
+			{
+				_expressionSub.Dispose();
+				_expressionSub = null;
+			}
 			base.OnUnrooted();
 		}
 

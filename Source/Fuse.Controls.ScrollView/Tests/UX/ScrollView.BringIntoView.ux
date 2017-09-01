@@ -1,0 +1,8 @@
+<ScrollView ux:Class="UX.ScrollView.BringIntoView">
+	<StackPanel ux:Name="S1">
+		<Panel Height="300" ux:Name="P1"/>
+		<Panel Height="300" ux:Name="P2"/>
+		<Panel Height="300" ux:Name="P3"/>
+		<Panel Height="300" ux:Name="P4" ux:AutoBind="false"/>
+	</StackPanel>
+</ScrollView>

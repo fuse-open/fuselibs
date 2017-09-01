@@ -19,7 +19,9 @@ namespace Fuse.Gestures.Internal
 	class SwipeRegion: PropertyObject, IPropertyListener
 	{
 		void IPropertyListener.OnPropertyChanged(PropertyObject obj, Selector prop) { }
-		
+
+		const float _zeroTolerance = 1e-05f;
+
 		bool _isEnabled = true;
 		public bool IsEnabled
 		{
@@ -94,9 +96,9 @@ namespace Fuse.Gestures.Internal
 			if (endProgress)
 			{
 				//truncate _progress
-				if (Math.Abs(_progress) < float.ZeroTolerance)
+				if (Math.Abs(_progress) < _zeroTolerance)
 					_progress = 0;
-				else if (Math.Abs(_progress-1) < float.ZeroTolerance)
+				else if (Math.Abs(_progress-1) < _zeroTolerance)
 					_progress = 1;
 				else
 					Fuse.Diagnostics.InternalError("Unexpected progress in swipe", this );
@@ -237,7 +239,7 @@ namespace Fuse.Gestures.Internal
 		public float ActivateStrength(float2 diff)
 		{
 			var l = Vector.Length(diff);
-			if (l < float.ZeroTolerance)
+			if (l < _zeroTolerance)
 				return 0;
 				
 			//only activate in the direction where it could move currently

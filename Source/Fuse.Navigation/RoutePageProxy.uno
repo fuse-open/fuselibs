@@ -65,21 +65,23 @@ namespace Fuse.Navigation
 		}
 		List<Level> _levels = new List<Level>();
 		
+		/** `Init()` must be called to finish initialization. */
 		public RoutePageProxy( Visual source, ProgressUpdated progressUpdated )
 		{
 			_progressUpdated = progressUpdated;
-			Init(source);
+			_source = source;
 		}
 		
+		/** `Init()` must be called to finish initialization. */
 		public RoutePageProxy( Visual source, ActiveChanged activeChanged )
 		{
 			_activeChanged = activeChanged;
-			Init(source);
-		}
-		
-		void Init( Visual source )
-		{
 			_source = source;
+		}
+
+		/** Call after configuration is completed. This could start the actual registration and messaging */
+		public void Init()
+		{
 			var level = new Level{
 				PageProxy = new NavigationPageProxy(),
 			};
@@ -213,7 +215,13 @@ namespace Fuse.Navigation
 			float p = 1; //defensive value for odd state
 			for (int i=0; i < _levels.Count; ++i)
 			{
-				var lp = _levels[i].PageProxy.Navigation.GetPageState(_levels[i].PageProxy.Page).Progress;
+				var level = _levels[i];
+				//NavReady may not have been called on the level yet (this happens during some rooting setups)
+				if (!level.PageProxy.IsReady)
+					return 1;
+				
+				var pp = level.PageProxy.Navigation.GetPageState(level.PageProxy.Page);
+				var lp = pp.Progress;
 				if (i == 0 || Math.Abs(lp) > Math.Abs(p) )
 					p = lp;
 			}

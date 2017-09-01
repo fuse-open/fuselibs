@@ -52,8 +52,9 @@ namespace Fuse.Triggers.Actions
 				_event = null;
 			}
 		}
-			
-		Visual _eventTarget;
+		
+		//caches found Event to avoid multiple lookups	
+		Node _eventTarget;
 		UserEvent _event;
 		
 		IList<UserEventArg> _args;
@@ -74,14 +75,11 @@ namespace Fuse.Triggers.Actions
 		
 		protected override void Perform(Node target)
 		{
-			var v = target as Visual;
-			if (v == null) return;
-
-			if (_event == null || _eventTarget != v)
+			if (_event == null || _eventTarget != target)
 			{
 				Visual n;
-				_event = UserEvent.ScanTree(v, EventName, out n);
-				_eventTarget = v;
+				_event = UserEvent.ScanTree(target, EventName, out n);
+				_eventTarget = target;
 			}
 				
 			if (_event == null)

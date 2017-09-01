@@ -78,15 +78,16 @@ namespace Fuse.Animations
 			double strength )
 		{
 			var delay = Animator.GetDelay(Variant, TotalDuration);
-			var on = dir == SeekDirection.Forward ? nominal > (delay - float.ZeroTolerance) : 
-				nominal > (delay + float.ZeroTolerance);
+			const float zeroTolerance = 1e-05f;
+			var on = dir == SeekDirection.Forward ? nominal > (delay - zeroTolerance) :
+				nominal > (delay + zeroTolerance);
 	
-			if (Animator.HasDuration && nominal > (delay + Animator.Duration - float.ZeroTolerance))
+			if (Animator.HasDuration && nominal > (delay + Animator.Duration - zeroTolerance))
 				on = false;
 	
 			var mayEnd = dir == SeekDirection.Forward ?
-				nominal >= (Animator.GetDurationWithDelay(Variant) - float.ZeroTolerance) :
-				nominal <= (delay + float.ZeroTolerance);
+				nominal >= (Animator.GetDurationWithDelay(Variant) - zeroTolerance) :
+				nominal <= (delay + zeroTolerance);
 			
 			//this would require knowing that we actually seeked "interval" length, which isn't always
 			//true during progress seeking

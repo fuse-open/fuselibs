@@ -229,10 +229,9 @@ namespace Fuse
 				var v = at as Visual;
 				if (v != null)
 				{
-					for (int i = 0; i < v.Children.Count; i++)
+					for (var ue = v.FirstChild<UserEvent>(); ue != null; ue = ue.NextSibling<UserEvent>())
 					{
-						var ue = v.Children[i] as UserEvent;
-						if (ue != null && ue.Name == name)
+						if (ue.Name == name)
 						{
 							visual = v;
 							return ue;

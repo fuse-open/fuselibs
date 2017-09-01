@@ -77,6 +77,7 @@ namespace Fuse.Gestures
 	{
 		const float _angleHardThreshold = Math.PIf/180*5;
 		const float _radiusHardThreshold = 5;
+		const float _zeroTolerance = 1e-05f;
 		
 		Element _control;
 		RangeControl _rangeControl;
@@ -264,9 +265,9 @@ namespace Fuse.Gestures
 				var low = s < e;
 				s = Math.Mod(s, 2 * Math.PIf);
 				e = Math.Mod(e, 2 * Math.PIf);
-				if (low && s > (e - float.ZeroTolerance))
+				if (low && s > (e - _zeroTolerance))
 					s -= 2 * Math.PIf;
-				else if(!low && s < (e + float.ZeroTolerance))
+				else if(!low && s < (e + _zeroTolerance))
 					s += 2 * Math.PIf;
 					
 				return float2(s,e);
@@ -279,15 +280,15 @@ namespace Fuse.Gestures
 				_binaryRangeControl.RelativeUserStep;
 			var range = AngleRange;
 			var rel = Math.Mod(angle - range.X, 2 * Math.PIf) / (range.Y - range.X);
-			if (step.X > float.ZeroTolerance)
+			if (step.X > _zeroTolerance)
 				rel = Math.Round(rel/step.X) * step.X;
-			if (IsWrapping && rel > (1.0f - float.ZeroTolerance))
+			if (IsWrapping && rel > (1.0f - _zeroTolerance))
 				rel = 0;
 			
 			//assume square like Angle
 			var relRad = radius / (_control.ActualSize.X / 2);
 			var xRad = (relRad - MinimumRadius) / (MaximumRadius - MinimumRadius);
-			if (step.Y > float.ZeroTolerance)
+			if (step.Y > _zeroTolerance)
 				xRad = Math.Round(xRad/step.Y) * step.Y;
 			
 			ControlRelativeValue = new double2(rel,xRad);

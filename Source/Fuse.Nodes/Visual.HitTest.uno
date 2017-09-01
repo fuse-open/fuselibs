@@ -60,9 +60,9 @@ namespace Fuse
 		{
 			if (HasVisualChildren)
 			{
-				EnsureSortedZOrder();
-				for (int i = ZOrder.Count-1; i >=0; --i)
-					ZOrder[i].HitTest(htc);
+				var zOrder = GetCachedZOrder();
+				for (var i = zOrder.Length-1; i >= 0; i--)
+					zOrder[i].HitTest(htc);
 			}
 		}
 		
@@ -133,13 +133,7 @@ namespace Fuse
 		{
 			get
 			{
-				var nb = VisualBounds.Empty;
-				for (int i = 0; i < ZOrderChildCount; ++i)
-				{
-					var n = GetZOrderChild(i);
-					nb = nb.MergeChild( n, n.HitTestBounds );
-				}
-				return nb;
+				return VisualBounds.Merge(VisualChildren, VisualBounds.Type.HitTest);
 			}
 		}
 	}

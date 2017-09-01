@@ -26,16 +26,16 @@ namespace Fuse.Navigation
 			if (t != null)
 				return t;
 				
-			for (int i = 0; i < node.Children.Count; i++)
+			for (var x = node.FirstChild<Node>(); x != null; x = x.NextSibling<Node>())
 			{
-				var c = node.Children[i] as IBaseNavigation;
-				//mean to check only behaviours (as was a distinct list before), so exclude visuals
+				var c = x as IBaseNavigation;
+				//we excluded Visual's before, so continue to do so (this logical prevents a trigger from matching a sibling Visual navigation control
 				if (c != null && !(c is Visual)) return c;
 			}
 			return null;
 		}
 
-		public static INavigation TryFind(Visual node)
+		public static INavigation TryFind(Node node)
 		{
 			//always take the first navigtaon object, even if it isn't an `INavigation`. This prevents
 			//confusing lookup across navigation bounds for different triggers
@@ -79,7 +79,7 @@ namespace Fuse.Navigation
 			This version of TryFindPage is suitable only for single lookups during event response
 			and the value should not be cached since it may change.
 		*/
-		public static Visual TryFindPage(Visual node)
+		public static Visual TryFindPage(Node node)
 		{
 			INavigation nav;
 			Visual bind;

@@ -1,5 +1,5 @@
 # Fuselibs
-[![TeamCity](https://tc.outracks.com/app/rest/builds/buildType:(id:FuselibsPublic_Trigger)/statusIcon)](https://tc.outracks.com/project.html?projectId=FuselibsPublic)
+[![TeamCity](https://tc.outracks.com/app/rest/builds/buildType:%28id:FuselibsPublic_Trigger%29/statusIcon)](https://tc.outracks.com/project.html?projectId=FuselibsPublic)
 [![license: MIT](https://img.shields.io/github/license/fusetools/fuselibs-public.svg)](LICENSE.txt)
 [![Slack](https://img.shields.io/badge/chat-on%20slack-blue.svg)](https://fusecommunity.slack.com/messages/fuselibs)
 
@@ -7,16 +7,32 @@ Fuselibs is the [Uno](https://www.fusetools.com/docs/uno/uno-lang)-libraries tha
 the UI framework used in [Fuse](https://www.fusetools.com/) apps.
 
 
+## Requirements
+
+In order to use Uno / Fuselibs, the following software must be installed:
+
+### Windows
+
+* VCRedist 2010: [x86](https://www.microsoft.com/en-us/download/details.aspx?id=5555), [x64](https://www.microsoft.com/en-US/Download/confirmation.aspx?id=14632)
+* [VCRedist 2013](https://www.microsoft.com/en-gb/download/details.aspx?id=40784)
+
+### macOS
+
+* [Mono 4.4.2](https://download.mono-project.com/archive/4.4.2/macos-10-universal/MonoFramework-MDK-4.4.2.macos10.xamarin.universal.pkg)
+* [XCode](https://developer.apple.com/xcode/)
+* [CMake](https://cmake.org/)
+
+
 ## How do I build and test?
 
 ### Windows
 
-* `build.bat` runs stuff (which downloads uno if needed), and builds all packages.
+* `build.bat` downloads and extracts uno, and builds all packages.
 * `test.bat` runs all tests.
 
 ### macOS
 
-* `build.sh` runs stuff (which downloads uno if needed), and builds all packages.
+* `build.sh` downloads and extracts uno, and builds all packages.
 * `test.sh` runs all tests.
 
 
@@ -38,7 +54,8 @@ your fuselibs checkout.
 
 ## Contributing
 
-Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
+Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of
+conduct, and the process for submitting pull requests to us.
 
 ### Reporting issues
 
@@ -46,7 +63,13 @@ Please report issues [here](https://github.com/fusetools/fuselibs-public/issues)
 
 ## What's this "Stuff" thing?
 
-Stuff is the tool that downloads and extracts `uno` (which is required to build fuselibs), as well as some other useful utilities. The `Stuff` directory contains `stuff.exe`, a few `.stuff`-files and a few `.packages`-files. `stuff.exe` is a tool that reads the `.stuff`-files, and download and extract them into the source tree. The dependencies specified in the `.package`-files installed lazily by `uno doctor` when needed. This is all automated in `build.bat` and `build.sh`.
+Stuff is the tool that downloads and extracts `uno` (which is required to
+build fuselibs), as well as some other useful utilities. The `Stuff`
+directory contains `stuff.exe`, a few `.stuff`-files and a few
+`.packages`-files. `stuff.exe` is a tool that reads the `.stuff`-files,
+and download and extract them into the source tree. The dependencies
+specified in the `.package`-files installed lazily by `uno doctor` when
+needed. This is all automated in `build.bat` and `build.sh`.
 
 After `stuff.exe` has done it's job, you can find:
 

@@ -134,20 +134,14 @@ namespace Fuse.Physics
 	{
 		internal static void Begin(Visual n)
 		{
-			for (int i = 0; i < n.Children.Count; i++)
-			{
-				var wd = n.Children[i] as WhileDragging;
-				if (wd != null) wd.Activate();
-			}
+			for (var v = n.FirstChild<WhileDragging>(); v != null; v = v.NextSibling<WhileDragging>())
+				v.Activate();
 		}
 
 		internal static void End(Visual n)
 		{
-			for (int i = 0; i < n.Children.Count; i++)
-			{
-				var wd = n.Children[i] as WhileDragging;
-				if (wd != null) wd.Deactivate();
-			}
+			for (var v = n.FirstChild<WhileDragging>(); v != null; v = v.NextSibling<WhileDragging>())
+				v.Deactivate();
 		}
 	}
 }

@@ -16,6 +16,7 @@
   "Includes": [
     "InfoPanel.ux:UX",
     "MainView.ux:UX",
+    "Multitouch/*",
     "MaskEffects/MaskEffects.ux:UX",
     "DuotoneEffect/DuotoneEffectsPage.ux:UX",
     "PixelAlignment/PixelAlignment.ux:UX",

@@ -7,6 +7,7 @@ namespace Fuse.Motion.Simulation
 	class EasingMotion<T> : DestinationSimulation<T>
 	{
 		Fuse.Internal.Blender<T> _blender = Fuse.Internal.BlenderMap.Get<T>();
+		const float _zeroTolerance = 1e-05f;
 
 		public static EasingMotion<T> CreateNormalized()
 		{
@@ -119,7 +120,7 @@ namespace Fuse.Motion.Simulation
 			get { return _position; }
 			set
 			{
-				if (_blender.Distance(_position,value) > float.ZeroTolerance)
+				if (_blender.Distance(_position,value) > _zeroTolerance)
 					_isDirty = true;
 				_position = value;
 			}
@@ -131,7 +132,7 @@ namespace Fuse.Motion.Simulation
 			get { return _velocity; }
 			set 
 			{ 
-				if (_blender.Distance(_velocity,value) > float.ZeroTolerance)
+				if (_blender.Distance(_velocity,value) > _zeroTolerance)
 					_isDirty = true;
 				_velocity = value;
 			}
@@ -143,7 +144,7 @@ namespace Fuse.Motion.Simulation
 			get { return _destination; }
 			set 
 			{ 
-				if (_blender.Distance(_destination,value) > float.ZeroTolerance)
+				if (_blender.Distance(_destination,value) > _zeroTolerance)
 					_isDirty = true;
 				_destination = value;
 			}
@@ -159,7 +160,7 @@ namespace Fuse.Motion.Simulation
 		{
 			_isDirty = false;
 			
-			var shouldLock = _blender.Length(Velocity) < float.ZeroTolerance;
+			var shouldLock = _blender.Length(Velocity) < _zeroTolerance;
 			
 			_source = Position;
 			_isStatic = false;
@@ -168,7 +169,7 @@ namespace Fuse.Motion.Simulation
 			var partial = dist  / _nominalDistance;
 			
 			var lenDuration = Duration * Math.Pow(partial, _durationExp);
-			if (lenDuration < float.ZeroTolerance)
+			if (lenDuration < _zeroTolerance)
 			{
 				//even if there is velocity there is nothing we can do but just lock in place (this situation is unlikely)
 				_isStatic = true;

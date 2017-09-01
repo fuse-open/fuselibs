@@ -114,9 +114,10 @@ namespace Fuse
 		
 		bool IsIdentity(float3 v)
 		{
-			return Math.Abs(v.X-1) < float.ZeroTolerance &&
-				Math.Abs(v.Y-1) < float.ZeroTolerance &&
-				Math.Abs(v.Z-1) < float.ZeroTolerance;
+			const float zeroTolerance = 1e-05f;
+			return Math.Abs(v.X-1) < zeroTolerance &&
+				Math.Abs(v.Y-1) < zeroTolerance &&
+				Math.Abs(v.Z-1) < zeroTolerance;
 		}
 
 		public override void AppendTo(FastMatrix m, float weight)

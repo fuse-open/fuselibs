@@ -1,0 +1,7 @@
+<Panel ux:Class="UX.Ellipse.HitTest">
+	<Ellipse Color="#AAA" X="0" Y="0" Width="200" Height="100" ux:Name="a"/>
+	<Ellipse Color="#AAA" X="0" Y="100" Width="200" Height="100" 
+		StartAngleDegrees="0" LengthAngleDegrees="180" ux:Name="b"/>
+	<Ellipse Color="#AAA" X="200" Y="0" Width="100" Height="200" 
+		StartAngleDegrees="-90" LengthAngleDegrees="90" ux:Name="c"/>
+</Panel>

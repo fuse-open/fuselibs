@@ -29,13 +29,13 @@ namespace Fuse.Controls
 			if (e is Control)
 				((Control)e).ViewHandle = v;
 
-			if (v.IsUIControl())
-				Fuse.Controls.Native.iOS.InputDispatch.AddListener(e, v.HitTestHandle);
-
 			if (e.Parent is Element && _elements.ContainsKey((Element)e.Parent))
 				_elements[(Element)e.Parent].InsertChild(v, 0);
 			else
 				_setRoot(v);
+
+			if (!v.HandlesInput)
+				Fuse.Controls.Native.iOS.InputDispatch.AddInputHandler(e, v);
 
 			_elements.Add(e, v);
 		}
@@ -52,8 +52,8 @@ namespace Fuse.Controls
 			var v = _elements[e];
 			_elements.Remove(e);
 
-			if (v.IsUIControl())
-				Fuse.Controls.Native.iOS.InputDispatch.RemoveListener(e, v.HitTestHandle);
+			if (!v.HandlesInput)
+				Fuse.Controls.Native.iOS.InputDispatch.RemoveInputHandler(v);
 
 			if (e is Control)
 			{
@@ -86,7 +86,11 @@ namespace Fuse.Controls
 
 		void ITreeRenderer.Placed(Element e)
 		{
-			_elements[e].SetSize(e.ActualSize);
+			var viewHandle = _elements[e];
+			if (viewHandle.NeedsRenderBounds)
+				viewHandle.SetSizeAndVisualBounds(e.ActualSize, e.RenderBoundsWithoutEffects);
+			else
+				viewHandle.SetSize(e.ActualSize);
 		}
 
 		void ITreeRenderer.IsVisibleChanged(Element e, bool isVisible)
@@ -116,12 +120,11 @@ namespace Fuse.Controls
 			v.SetHitTestEnabled(enabled);
 		}
 
-		void ITreeRenderer.ZOrderChanged(Element e, List<Visual> zorder)
+		void ITreeRenderer.ZOrderChanged(Element e, Visual[] zorder)
 		{
-			var len = zorder.Count;
-			for (var i = 0; i < len; i++)
+			for (var i = 0; i < zorder.Length; i++)
 			{
-				var child = e.GetZOrderChild(i) as Element;
+				var child = zorder[i] as Element;
 				if (child != null)
 					_elements[child].BringToFront();
 			}
@@ -139,6 +142,12 @@ namespace Fuse.Controls
 
 		ViewHandle InstantiateView(Element e)
 		{
+			var sd = e as ISurfaceDrawable;
+			if (sd != null && sd.IsPrimary)
+			{
+				return new Fuse.Controls.Native.iOS.CanvasViewGroup(sd, e.Viewport.PixelsPerPoint);
+			}
+
 			ViewHandle result = null;
 			var appearance = (InstantiateTemplate(e) ?? InstantiateViewOld(e)) as ViewHandle;
 			if (appearance != null)

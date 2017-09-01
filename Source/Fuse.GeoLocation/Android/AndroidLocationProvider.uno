@@ -126,7 +126,7 @@ namespace Fuse.GeoLocation
 					if(lo != null)
 						locations.Add(LocationHelpers.ConvertLocation(lo));
 				}
-				var minTime = DateTime.UtcNow.Minus(Duration.FromHours(1)).ToInstant();
+				var minTime = ZonedDateTime.Now.WithZone(DateTimeZone.Utc).Minus(Duration.FromHours(1)).ToInstant();
 				return ChooseBestLocation(locations, 50, minTime);
 			}
 			return null;

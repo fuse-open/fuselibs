@@ -8,20 +8,32 @@ namespace Fuse.Controls.Native
 
 	[Require("Source.Include", "UIKit/UIKit.h")]
 	[Require("Source.Include", "iOS/Helpers.h")]
+	[Require("Source.Include", "iOS/CanvasViewGroup.h")]
 	[Require("Source.Include", "CoreGraphics/CoreGraphics.h")]
 	[Require("Source.Include", "QuartzCore/QuartzCore.h")]
 	extern(iOS) public class ViewHandle : IDisposable
 	{
+		public enum InputMode
+		{
+			Automatic,
+			Manual
+		}
+
 		public readonly ObjC.Object NativeHandle;
 
 		internal readonly bool IsLeafView;
 
-		public ViewHandle(ObjC.Object nativeHandle) : this(nativeHandle, false) { }
+		internal bool NeedsRenderBounds;
 
-		public ViewHandle(ObjC.Object nativeHandle, bool isLeafView)
+		readonly InputMode _inputMode;
+
+		public ViewHandle(ObjC.Object nativeHandle, InputMode inputMode = InputMode.Automatic) : this(nativeHandle, false, inputMode) { }
+
+		public ViewHandle(ObjC.Object nativeHandle, bool isLeafView, InputMode inputMode = InputMode.Automatic)
 		{
 			NativeHandle = nativeHandle;
 			IsLeafView = isLeafView;
+			_inputMode = inputMode;
 			InitAnchorPoint();
 			IsEnabled = true;
 			HitTestEnabled = true;
@@ -33,6 +45,11 @@ namespace Fuse.Controls.Native
 		}
 
 		public virtual void Dispose() {}
+
+		internal bool HandlesInput
+		{
+			get { return _inputMode == InputMode.Manual; }
+		}
 
 		float2 _position = float2(0.0f);
 		float2 _size = float2(0.0f);
@@ -55,7 +72,7 @@ namespace Fuse.Controls.Native
 			}
 		}
 
-		public ObjC.Object HitTestHandle
+		public virtual ObjC.Object HitTestHandle
 		{
 			get { return GetHitTesthandle(); }
 		}
@@ -187,6 +204,13 @@ namespace Fuse.Controls.Native
 				[parent sendSubviewToBack:view];
 		@}
 
+		[Foreign(Language.ObjC)]
+		public void Invalidate()
+		@{
+			UIView* view = (UIView*)@{Fuse.Controls.Native.ViewHandle:Of(_this).NativeHandle:Get()};
+			[view setNeedsDisplay];
+		@}
+
 		public void SetBackgroundColor(float4 c)
 		{
 			SetBackground(NativeHandle, c.X, c.Y, c.Z, c.W);
@@ -210,6 +234,36 @@ namespace Fuse.Controls.Native
 			SetSize(size.X, size.Y);
 			Size = size;
 		}
+
+		internal void SetSizeAndVisualBounds(float2 size, VisualBounds bounds)
+		{
+			var r = bounds.FlatRect;
+			SetSizeAndBounds(size.X, size.Y, r.Position.X, r.Position.Y, r.Width, r.Height);
+			Size = size;
+		}
+
+		[Foreign(Language.ObjC)]
+		void SetSizeAndBounds(float w, float h, float bx, float by, float bw, float bh)
+		@{
+			UIView* view = (UIView*)@{Fuse.Controls.Native.ViewHandle:Of(_this).NativeHandle:Get()};
+			auto t = [[view layer] transform];
+			[[view layer] setTransform:CATransform3DIdentity];
+			[view setFrame: { { 0.0f, 0.0f }, { w, h } } ];
+
+			if ([[view superview] isKindOfClass:[UIScrollView class]])
+			{
+				auto sv = (UIScrollView*)[view superview];
+				[sv setContentSize: CGSizeMake(w, h)];
+			}
+
+			if ([view isKindOfClass:[CanvasViewGroup class]])
+			{
+				CanvasViewGroup* cvg = (CanvasViewGroup*)view;
+				[cvg setRenderBounds: CGRectMake(bx, by, bw, bh)];
+			}
+
+			[[view layer] setTransform:t];
+		@}
 
 		[Foreign(Language.ObjC)]
 		void SetSize(float w, float h)

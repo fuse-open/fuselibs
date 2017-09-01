@@ -94,7 +94,7 @@ namespace Fuse
 				if (fb.Size.Y != height) continue;
 				if (fb.Format != format) continue;
 				if (fb.HasDepth != flags.HasFlag(FramebufferFlags.DepthBuffer)) continue;
-				if (fb.SupportsMipmap != flags.HasFlag(FramebufferFlags.Mipmap)) continue;
+				if (fb.ColorBuffer.IsMipmap != flags.HasFlag(FramebufferFlags.Mipmap)) continue;
 
 				framebufferPool.RemoveAt(i);
 				lockedFramebuffers.Add(fb);

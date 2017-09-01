@@ -1,0 +1,26 @@
+{
+  "Projects": [
+    "../../Fuse.Common/Tests/FuseTest/FuseTest.unoproj"
+  ],
+  "Packages": [
+    "Fuse.Common",
+    "Fuse.Nodes",
+    "Fuse.Reactive",
+    "Fuse.Reactive.JavaScript",
+    "Fuse.Reactive.Bindings",
+    "Fuse.Reactive.Expressions",
+    "Fuse.Marshal",
+    "Fuse.Controls",
+    "Fuse.Controls.Panels",
+    "Fuse.Controls.Primitives",
+    "Fuse.Scripting",
+    "Uno.Collections",
+    "Uno.Testing",
+    "Uno.Threading",
+  ],
+  "Includes": [
+    "*.ux",
+    "*.uno:Source",
+    "**.js:Bundle",
+  ]
+}

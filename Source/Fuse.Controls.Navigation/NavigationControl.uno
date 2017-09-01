@@ -52,7 +52,7 @@ namespace Fuse.Controls
 		A standard page navigation system. This provides standard transitions, user interaction and 
 		appropriate page handling for a basic linear navigation.
 	*/
-	public abstract partial class NavigationControl : Panel, INavigation
+	public abstract partial class NavigationControl : Panel, INavigation, Fuse.Reactive.IObserver, Node.ISubtreeDataProvider
 	{
 		internal NavigationControl()
 		{
@@ -113,13 +113,12 @@ namespace Fuse.Controls
 			//defer first update to rooted, to avoid creating/deleting unused Swipe behavior if None
 			UpdateInteraction();
 			
-			for (int i=0; i < Children.Count; ++i)
-			{
-				var c = Children[i] as Element;
-				if (c != null) UpdateChild(c);
-			}
+			for (var c = FirstChild<Element>(); c != null; c = c.NextSibling<Element>())
+				UpdateChild(c);
 			
 			Navigation.PageProgressChanged += OnPageProgressChanged;
+			
+			OnPagesChanged();
 		}
 		
 		/**
@@ -167,11 +166,8 @@ namespace Fuse.Controls
 			
 			Navigation.PageProgressChanged -= OnPageProgressChanged;
 			
-			for (int i=0; i < Children.Count; ++i)
+			for (var c = FirstChild<Element>(); c != null; c = c.NextSibling<Element>())
 			{
-				var c = Children[i] as Element;
-				if (c == null) continue;
-
 				var pd = GetPageData(c,false);
 				if (pd == null)
 					continue;

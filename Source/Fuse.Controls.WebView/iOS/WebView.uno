@@ -172,7 +172,7 @@ namespace Fuse.iOS.Controls
 		{
 			_webViewHost = webViewHost;
 			Handle = wvHandle;
-			NavigationDelegate = NavDelegate.Create(OnBeginNavigation, OnFinishNavigation, OnURLChanged, OnCustomURI, schemes);
+			NavigationDelegate = NavDelegate.Create(OnBeginNavigation, OnFinishNavigation, OnURLChanged, OnCustomURI, schemes, HasURISchemeHandler);
 			WKWebViewHelpers.SetNavigationDelegate(Handle, NavigationDelegate);
 			Fuse.Platform.AppEvents.LowMemoryWarning += OnLowMemory;
 			_webViewHost.WebViewClient = this;
@@ -307,6 +307,11 @@ namespace Fuse.iOS.Controls
 		{
 			if(UrlChanged != null)
 				UrlChanged(this, EventArgs.Empty);
+		}
+		
+		public bool HasURISchemeHandler()
+		{
+			return URISchemeHandler != null;
 		}
 		
 		void OnCustomURI(string url)

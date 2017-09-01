@@ -726,15 +726,15 @@ namespace Fuse.Reactive.Test
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
 				root.StepFrameJS();
-				Assert.AreEqual("R1,R2",EachTest.GetText(p.P));
+				Assert.AreEqual("R1,R2",GetText(p.P));
 				
 				p.GotoOther.Perform();
 				root.StepFrameJS();
-				Assert.AreEqual("O1,O2,O3",EachTest.GetText(p.P));
+				Assert.AreEqual("O1,O2,O3",GetText(p.P));
 				
 				p.GotoGreens.Perform();
 				root.StepFrameJS();
-				Assert.AreEqual("",EachTest.GetText(p.P));
+				Assert.AreEqual("",GetText(p.P));
 			}
 		}
 		

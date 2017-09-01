@@ -1,0 +1,10 @@
+<StackPanel ux:Class="UX.ElementBatcher.MoveAfterFirstDraw">
+	<Each Count="10">
+		<Rectangle Width="20" Alignment="Left" Height="10" Color="#00F" />
+	</Each>
+	<Panel Alignment="Left">
+		<Rectangle Width="20" Height="10" Color="#F00">
+			<Translation ux:Name="_translation" />
+		</Rectangle>
+	</Panel>
+</StackPanel>

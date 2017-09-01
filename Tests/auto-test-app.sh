@@ -15,7 +15,11 @@ if [ $# == 2 ]; then
 fi
 
 if [ "$OSTYPE" != "msys" ]; then
-    UNO="mono $UNO"
+    if which mono64 > /dev/null 2>&1; then
+        UNO="mono64 $UNO"
+    else
+        UNO="mono $UNO"
+    fi
 fi
 
 shopt -s nocasematch

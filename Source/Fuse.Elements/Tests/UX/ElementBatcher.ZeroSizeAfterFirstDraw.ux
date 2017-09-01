@@ -1,0 +1,8 @@
+<StackPanel ux:Class="UX.ElementBatcher.ZeroSizeAfterFirstDraw">
+	<Rectangle Width="100%" Alignment="Left" Height="1px" Color="#00F" />
+	<Each Count="10">
+		<Rectangle Width="100%" Alignment="Left" Height="1px" Color="#0F0" />
+	</Each>
+	<Panel ux:Name="Poison" Width="100%" Height="1px" Color="#F00" />
+	<Rectangle Width="100%" Height="1px" Color="#00F" />
+</StackPanel>

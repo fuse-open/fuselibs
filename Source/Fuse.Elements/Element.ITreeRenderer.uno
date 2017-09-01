@@ -18,7 +18,7 @@ namespace Fuse.Elements
 		void IsEnabledChanged(Element e, bool isEnabled);
 		void OpacityChanged(Element e, float opacity);
 		void ClipToBoundsChanged(Element e, bool clipToBounds);
-		void ZOrderChanged(Element e, List<Visual> zorder);
+		void ZOrderChanged(Element e, Visual[] zorder);
 		void HitTestModeChanged(Element e, bool enabled);
 		bool Measure(Element e, LayoutParams lp, out float2 size);
 	}
@@ -41,19 +41,24 @@ namespace Fuse.Elements
 			}
 		}
 
+		bool _dispatchedZOrderChanged; // This can happen a lot, so avoid multiple dispatch
 		void NotifyTreeRendererZOrderChanged()
 		{
-			if (HasChildren)
+			if (HasChildren && !_dispatchedZOrderChanged)
+			{
+				_dispatchedZOrderChanged = true;
 				UpdateManager.AddDeferredAction(OnZOrderChanged, UpdateStage.Layout, LayoutPriority.Post);
+			}
 		}
 
 		void OnZOrderChanged()
 		{
+			_dispatchedZOrderChanged = false;
 			if (IsRootingCompleted)
 			{
 				var t = TreeRenderer;
 				if (t != null)
-					t.ZOrderChanged(this, ZOrder);
+					t.ZOrderChanged(this, GetCachedZOrder());
 			}
 		}
 
@@ -134,7 +139,7 @@ namespace Fuse.Elements
 				t.ClipToBoundsChanged(this, ClipToBounds);
 				t.HitTestModeChanged(this, HitTestMode != Fuse.Elements.HitTestMode.None);
 				if (HasChildren)
-					t.ZOrderChanged(this, ZOrder);
+					t.ZOrderChanged(this, GetCachedZOrder());
 			}
 		}
 

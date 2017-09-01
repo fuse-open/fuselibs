@@ -47,7 +47,12 @@ namespace Fuse.Triggers.Actions
 			}
 		}
 		
-		/** The node that the action targets. */
+		/** The node that the action targets. If not specified then the enclsoing Trigger will be used.
+			Several triggers can look for a target starting from this point. Some triggers require
+			a `Target` to be specified. 
+			
+			If a trigger has a `Target` then only one of `Target` or `TargetNode` should be used.
+		*/
 		public Node TargetNode { get; set; }
 
 		float _progress;
@@ -108,6 +113,21 @@ namespace Fuse.Triggers.Actions
 		}
 		
 		protected abstract void Perform(Node target);
+		
+		/**
+			Called when the owner of this object is unrooted. This gives an action to cleanup resources
+			or cancel pending actions.
+			
+			There is no matching `Rooted` since nothing should be prepared before `Perform`.
+			
+			Despite this call the action should expect `Peform` to be called again at any time.
+		*/
+		public void Unroot()
+		{
+			OnUnrooted();
+		}
+		
+		protected virtual void OnUnrooted() { }
 	}
 
 }

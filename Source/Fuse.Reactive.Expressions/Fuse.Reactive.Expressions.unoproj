@@ -3,7 +3,7 @@
   "Description": "Framework for reactive expressions",
   "Publisher": "Fusetools AS",
   "IsTransitive": true,
-  "Version": "1.1.0-rc2",
+  "Version": "1.2.1",
   "Package": {
     "ProjectUrl": "https://fusetools.com"
   },
@@ -24,6 +24,7 @@
     "Fuse.Scripting.Test",
     "Fuse.Common.Test.Helpers",
     "Fuse.Expressions.Test",
+    "Fuse.Reactive.JavaScript.Test"
   ],
   "Includes": [
     "*"

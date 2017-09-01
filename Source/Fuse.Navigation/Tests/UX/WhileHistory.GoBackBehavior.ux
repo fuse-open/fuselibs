@@ -1,0 +1,24 @@
+<Panel ux:Class="UX.WhileHistory.GoBackBehavior">
+	<Router ux:Name="router" IsMasterRouter="false"/>
+	<JavaScript>
+		exports.step1 = function() {
+			router.push( "b" )
+		}
+		
+		exports.step2 = function() {
+			router.goBack()
+		}
+	</JavaScript>
+	<Panel>
+		<Panel>
+			<WhileCanGoBack ux:Name="wcb"/>
+		</Panel>
+		<Navigator DefaultPath="a">
+			<Page ux:Name="a"/>
+			<Page ux:Name="b"/>
+		</Navigator>
+	</Panel>
+	
+	<FuseTest.Invoke Handler="{step1}" ux:Name="Step1"/>
+	<FuseTest.Invoke Handler="{step2}" ux:Name="Step2"/>
+</Panel>

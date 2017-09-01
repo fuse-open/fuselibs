@@ -1,4 +1,5 @@
 using Uno;
+using Uno.Time;
 
 public partial class ClockPage
 {
@@ -13,7 +14,7 @@ public partial class ClockPage
 		if (!IsVisible)
 			return;
 			
-		var t = DateTime.Now;
+		var t = ZonedDateTime.Now;
 		float h = t.Hour;
 		float m = t.Minute;
 		float s = t.Second;

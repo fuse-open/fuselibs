@@ -1,6 +1,7 @@
 using Uno;
 using Uno.UX;
 using Fuse.Elements;
+using Fuse.Nodes;
 
 namespace Fuse.Effects
 {
@@ -188,6 +189,9 @@ namespace Fuse.Effects
 					Texture: blurTexture;
 					PixelColor: float4(color.XYZ, Math.Clamp(TextureColor.W * spreadScale, 0, 1) * color.W);
 				};
+
+				if defined(FUSELIBS_DEBUG_DRAW_RECTS)
+					DrawRectVisualizer.Capture(elementRect.Minimum + offset - padding, float2(tempSize.X, tempSize.Y) / element.AbsoluteZoom, element.WorldTransform, dc);
 			}
 
 		}

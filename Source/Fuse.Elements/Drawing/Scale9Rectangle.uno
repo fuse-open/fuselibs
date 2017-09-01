@@ -1,5 +1,6 @@
 using Uno;
 using Uno.Graphics;
+using Fuse.Nodes;
 
 namespace Fuse.Elements.Internal
 {
@@ -65,6 +66,9 @@ namespace Fuse.Elements.Internal
 				public float4 TextureColor: sample( tex, TexCoord, SamplerState.LinearClamp);
 				PixelColor: TextureColor * color;
 			};
+
+			if defined(FUSELIBS_DEBUG_DRAW_RECTS)
+				DrawRectVisualizer.Capture(float2(0), size, element.WorldTransform, dc);
 		}
 	}
 }

@@ -54,6 +54,16 @@ All three callbacks mentioned are available in JavaScript and Uno.
 
 - When your app starts it registers with APNS. As all access is controlled through Apple's certificate system there is no extra info to provide (we will mention server side a bit later)
 
+If you wish to disable auto-registration you can place the following in your unoproj file:
+
+    "iOS": {
+        "PushNotifications": {
+            "RegisterOnLaunch": false
+        }
+    },
+
+You must then register for push notifications by calling `register()` from JS. This option is useful as when the notifications are registered the OS may ask the user for permission to use push notifications and this may be undesirable on launch.
+
 ## Using the API from JavaScript
 
 Integrating with notifications from JavaScript is simple. Here is an example that just logs when the callbacks fire:

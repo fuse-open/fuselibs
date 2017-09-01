@@ -417,6 +417,10 @@ namespace Fuse.Navigation
 
 		void ISeekableNavigation.EndSeek(EndSeekArgs args)
 		{
+			//don't allow an end to interrupt something else
+			if (!_region.IsUser)
+				return;
+				
 			var targetIndex = 0;
 			switch (args.SnapTo)
 			{

@@ -2,13 +2,16 @@
   "Copyright": "Copyright (c) Fusetools AS 2017",
   "Description": "Content sharing API",
   "Publisher": "Fusetools AS",
-  "Version": "1.1.0-rc2",
+  "Version": "1.2.1",
   "Packages": [
     "Uno.Threading",
     "Uno.Permissions",
   ],
   "Projects": [
-    "../Fuse.Scripting/Fuse.Scripting.unoproj"
+    "../Fuse.Scripting/Fuse.Scripting.unoproj",
+    "../Fuse.Nodes/Fuse.Nodes.unoproj",
+    "../Fuse.Common/Fuse.Common.unoproj",
+    "../Fuse.Elements/Fuse.Elements.unoproj"
   ],
   "Includes": [
     "*"

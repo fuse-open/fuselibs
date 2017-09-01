@@ -66,6 +66,8 @@ namespace Fuse
 
 			if defined(FUSELIBS_PROFILING)
 				Profiling.EndDraw();
+
+			UpdateManager.IncreaseFrameIndex();
 		}
 
 		public override bool NeedsRedraw 

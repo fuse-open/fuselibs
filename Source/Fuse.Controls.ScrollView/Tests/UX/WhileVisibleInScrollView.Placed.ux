@@ -1,0 +1,9 @@
+<Panel ux:Class="UX.WhileVisibleInScrollView.Placed">
+	<ScrollView ux:Name="S">
+		<Panel Height="1000">
+			<Panel Y="200" ux:Name="P">
+				<WhileVisibleInScrollView ux:Name="V" Bypass="Never"/>
+			</Panel>
+		</Panel>
+	</ScrollView>
+</Panel>

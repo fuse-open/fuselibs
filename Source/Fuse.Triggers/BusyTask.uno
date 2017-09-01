@@ -148,9 +148,9 @@ namespace Fuse.Triggers
 			var v = n as Visual;
 			if (v == null) return false;
 
-			for (int i = 0; i < v.Children.Count; i++)
+			for (var x = v.FirstChild<Node>(); x != null; x = x.NextSibling<Node>())
 			{
-				var handler = v.Children[i] as IBusyHandler;
+				var handler = x as IBusyHandler;
 				var vact = handler == null ? BusyTaskActivity.None : handler.BusyActivityHandled;
 				activity &= ~vact;
 			}

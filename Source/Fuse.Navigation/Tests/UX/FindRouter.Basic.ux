@@ -1,0 +1,23 @@
+<Panel ux:Class="UX.FindRouter.Basic">
+	<Router/>
+
+	<PageControl ux:Name="pc">
+		<Page Color="#AFA" ux:Name="one">
+			<JavaScript dep:router="findRouter()">
+				exports.go = function() {
+					router.goto( "two" )
+				}
+			</JavaScript>
+			<FuseTest.Invoke Handler="{go}" ux:Name="OneGo"/>
+		</Page>
+		
+		<Page Color="#FAA" ux:Name="two">
+			<JavaScript dep:router="findRouter()">
+				exports.go = function() {
+					router.goto( "one" )
+				}
+			</JavaScript>
+			<FuseTest.Invoke Handler="{go}" ux:Name="TwoGo"/>
+		</Page>
+	</PageControl>
+</Panel>

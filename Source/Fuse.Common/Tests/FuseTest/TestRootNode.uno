@@ -5,6 +5,7 @@ using Fuse;
 using Fuse.Controls;
 using Fuse.Input;
 using Fuse.Internal;
+using Fuse.Nodes;
 
 namespace FuseTest
 {
@@ -42,9 +43,14 @@ namespace FuseTest
 
 		void IDisposable.Dispose()
 		{
+			Pointer.ClearPointersDown();
+
+			// dispose _rootViewport before cleaning low memory, to
+			// make sure ImageSources etc are unpinned first
+			(_rootViewport as IDisposable).Dispose();
+
 			//force things to clean (LowMemory should do most items)
 			CleanLowMemory();
-			(_rootViewport as IDisposable).Dispose();
 		}
 		
 		public void CleanLowMemory()
@@ -205,11 +211,17 @@ namespace FuseTest
 			//need to make `draw` statements work.
 			var fb = FramebufferPool.Lock( (int2)_rootViewport.PixelSize, Uno.Graphics.Format.RGBA8888, true);
 			_dc.PushRenderTarget(fb);
+
+			if defined(FUSELIBS_DEBUG_DRAW_RECTS)
+				DrawRectVisualizer.StartFrame(_dc.RenderTarget);
 			
 			_rootViewport.Draw(_dc);
 			
 			_dc.PopRenderTarget();
 			FramebufferPool.Release(fb);
+
+			if defined(FUSELIBS_DEBUG_DRAW_RECTS)
+				DrawRectVisualizer.EndFrameAndVisualize(_dc);
 			
 			DrawManager.EndDraw(_dc);
 		}
@@ -221,12 +233,24 @@ namespace FuseTest
 		{
 			if (_dc == null)
 				_dc = new DrawContext(_rootViewport);
+
+			DrawManager.PrepareDraw(_dc);
 			
 			var ret = new TestFramebuffer((int2)_rootViewport.PixelSize);
 			_dc.PushRenderTarget(ret.Framebuffer);
 			_dc.Clear(float4(0),1);
+
+			if defined(FUSELIBS_DEBUG_DRAW_RECTS)
+				DrawRectVisualizer.StartFrame(_dc.RenderTarget);
+
 			_rootViewport.Draw(_dc);
+
+			if defined(FUSELIBS_DEBUG_DRAW_RECTS)
+				DrawRectVisualizer.EndFrameAndVisualize(_dc);
+
 			_dc.PopRenderTarget();
+
+			DrawManager.EndDraw(_dc);
 
 			return ret;
 		}
@@ -238,9 +262,11 @@ namespace FuseTest
 		{
 			if (elapsedTime < 0)
 				elapsedTime = _frameIncrement;
-				
+
+			const float zeroTolerance = 1e-05f;
+
 			var e = 0f;
-			while (e < (elapsedTime - float.ZeroTolerance))
+			while (e < (elapsedTime - zeroTolerance))
 			{
 				var s = Math.Min( _frameIncrement, elapsedTime - e );
 				IncrementFrame(s);
@@ -257,6 +283,10 @@ namespace FuseTest
 		*/
 		public void StepFrameJS()
 		{
+			var w = Fuse.Reactive.JavaScript.Worker;
+			if (w == null)
+				throw new Exception("Calling stepFrameJS though there is no JavaScript worker" );
+				
 			var fence = Fuse.Reactive.JavaScript.Worker.PostFence();
 			var loop = true;
 			while(loop)
@@ -409,11 +439,5 @@ namespace FuseTest
 		{
 			AppBase.TestSetRootViewport( null );
 		}
-	}
-	
-	[Flags]
-	public enum EventFlags
-	{
-		None = 0,
 	}
 }

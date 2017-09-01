@@ -113,7 +113,7 @@ namespace Fuse.Triggers.Actions
 	{
 		protected override void Perform(Node target)
 		{
-			var t = Target ?? (target as IPlayback);
+			var t = Target ?? target.FindByType<IPlayback>();
 			if (t != null)
 				t.Stop();
 		}
@@ -145,7 +145,7 @@ namespace Fuse.Triggers.Actions
 	{
 		protected override void Perform(Node target)
 		{
-			var t = Target ?? (target as IPlayback);
+			var t = Target ?? target.FindByType<IPlayback>();
 			if (t != null)
 				t.Pause();
 		}
@@ -214,7 +214,7 @@ namespace Fuse.Triggers.Actions
 	{
 		protected override void Perform(Node target)
 		{
-			var t = Target ?? (target as IPlayback);
+			var t = Target ?? target.FindByType<IPlayback>();
 			if (t != null)
 				t.Resume();
 		}
@@ -290,7 +290,7 @@ namespace Fuse.Triggers.Actions
 		
 		protected override void Perform(Node target)
 		{
-			var t = Target ?? (target as IPlayback);
+			var t = Target ?? target.FindByType<IPlayback>();
 			if (t != null)
 				t.PlayTo(Progress);		
 		}

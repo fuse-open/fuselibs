@@ -1,5 +1,5 @@
 <Panel ux:Class="UX.Navigator.SwipeBookmark">
-	<Router ux:Name="R"/> 
+	<Router ux:Name="R" IsMasterRouter="false"/>
 	<JavaScript>
 		R.bookmark({
 			name: "upMark",

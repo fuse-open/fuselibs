@@ -121,23 +121,12 @@ namespace Fuse.Input
 
 		static Visual FirstVisualChild(Visual visual)
 		{
-			foreach (var c in visual.Children)
-			{
-				if (c is Visual)
-					return (Visual)c;
-			}
-			return null;
+			return visual.FirstChild<Visual>();
 		}
 
 		static Visual LastVisualChild(Visual visual)
 		{
-			for (var i = visual.Children.Count - 1; i >= 0; i--)
-			{
-				var c = visual.Children[i] as Visual;
-				if (c != null)
-					return c;
-			}
-			return null;
+			return visual.LastChild<Visual>();
 		}
 	}
 }

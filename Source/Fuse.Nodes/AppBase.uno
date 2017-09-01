@@ -6,6 +6,7 @@ using Uno.Diagnostics;
 using Uno.UX;
 
 using Fuse.Input;
+using Fuse.Nodes;
 using Fuse.Resources;
 
 namespace Fuse
@@ -74,6 +75,9 @@ namespace Fuse
 					debug_log "Connection failed: " + e.Message;
 				}
 			}
+
+			if defined(FUSELIBS_DEBUG_DRAW_RECTS && FUSELIBS_DEBUG_DRAW_RECTS_DEFAULT_ENABLE_CAPTURE)
+				DrawRectVisualizer.IsCaptureEnabled = true;
 		}
 
 		//a workaround for static contexts for now
@@ -281,12 +285,13 @@ namespace Fuse
 			be overridden in user code. Use @UpdateManager instead. */
 		protected virtual void OnUpdate()
 		{
-			UpdateManager.IncreaseFrameIndex();
-
 			if defined(FUSELIBS_PROFILING)
 				Profiling.BeginUpdate();
 
 			UpdateManager.Update();
+
+			if defined(MOBILE)
+				UpdateManager.IncreaseFrameIndex();
 
 			if defined(FUSELIBS_PROFILING)
 				Profiling.EndUpdate();

@@ -106,10 +106,14 @@ namespace Fuse.Controls
 			_proxyHost = this.FindProxyHost();
 			if (RenderToTexture == RenderState.Disabled)
 				SetOnscreen();
+
+			WorldTransformInvalidated += OnInvalidateWorldTransform;
 		}
 
 		protected override void OnUnrooted()
 		{
+			WorldTransformInvalidated -= OnInvalidateWorldTransform;
+
 			base.OnUnrooted();
 			SetOffscreen();
 			_proxyHost = null;
@@ -135,9 +139,8 @@ namespace Fuse.Controls
 		}
 
 		bool _updateTransform = false;
-		protected override void OnInvalidateWorldTransform()
+		void OnInvalidateWorldTransform(object sender, EventArgs args)
 		{
-			base.OnInvalidateWorldTransform();
 			if (!_updateTransform)
 			{
 				UpdateManager.AddDeferredAction(UpdateHostViewTransform, UpdateStage.Layout, LayoutPriority.Post);
@@ -210,7 +213,7 @@ namespace Fuse.Controls
 		void ITreeRenderer.Unrooted(Element e) {}
 		void ITreeRenderer.BackgroundChanged(Element e, Brush background) {}
 		void ITreeRenderer.ClipToBoundsChanged(Element e, bool clipToBounds) {}
-		void ITreeRenderer.ZOrderChanged(Element e, List<Visual> zorder) {}
+		void ITreeRenderer.ZOrderChanged(Element e, Visual[] zorder) {}
 
 		bool _isVisible = true;
 		void ITreeRenderer.IsVisibleChanged(Element e, bool isVisible)

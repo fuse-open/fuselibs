@@ -1,3 +1,4 @@
+using Fuse.Scripting;
 using Uno;
 using Uno.Collections;
 using Uno.Text;
@@ -7,6 +8,33 @@ using Uno.UX;
 
 namespace Fuse.Reactive
 {
+	static class DateTimeConverterHelpers
+	{
+		const long DotNetTicksInJsTick = 10000L;
+		const long UnixEpochInDotNetTicks = 621355968000000000L;
+
+		public static DateTime ConvertDateToDateTime(Scripting.Object date)
+		{
+			var jsTicks = (long)(double)ThreadWorker.Wrap(date.CallMethod("getTime"));
+			var dotNetTicksRelativeToUnixEpoch = jsTicks * DotNetTicksInJsTick;
+			var dotNetTicks = dotNetTicksRelativeToUnixEpoch + UnixEpochInDotNetTicks;
+
+			return new DateTime(dotNetTicks, DateTimeKind.Utc);
+		}
+
+		public static object ConvertDateTimeToJSDate(DateTime dt, Scripting.Function dateCtor)
+		{
+			// TODO: This assumes dt's `Kind` is set to `Utc`. The `Ticks` value may have to be adjusted if `Kind` is `Local` or `Unspecified`.
+			//  Currently we don't support other `Kind`'s than `Utc`, but when we do, this code should be updated accordingly.
+			//  Something like: `if (dt.Kind != DateTimeKind.Utc) { dt = dt.ToUniversalTime(); }`
+			var dotNetTicks = dt.Ticks;
+			var dotNetTicksRelativeToUnixEpoch = dotNetTicks - UnixEpochInDotNetTicks;
+			var jsTicks = dotNetTicksRelativeToUnixEpoch / DotNetTicksInJsTick;
+
+			return dateCtor.Call((double)jsTicks);
+		}
+	}
+
 	partial class ThreadWorker
 	{
 		/** Wraps an object that came from the script VM in an appropriate wrapper
@@ -18,7 +46,11 @@ namespace Fuse.Reactive
 			{
 				var sobj = (Scripting.Object)obj;
 
-				if (sobj.ContainsKey("external_object"))
+				if (sobj.InstanceOf(FuseJS.Date))
+				{
+					return DateTimeConverterHelpers.ConvertDateToDateTime(sobj);
+				}
+				else if (sobj.ContainsKey("external_object"))
 				{
 					var ext = sobj["external_object"] as Scripting.External;
 					if (ext != null) return ext.Object;
@@ -43,12 +75,15 @@ namespace Fuse.Reactive
 			else if (dc is string) return dc;
 			else if (dc is IRaw) return ((IRaw)dc).Raw;
 			else if (dc is Scripting.Function) return dc;
+			else if (dc is Scripting.Object) return dc;
+			else if (dc is Scripting.Array) return dc;
 			else if (dc is float2) return ToArray((float2)dc);
 			else if (dc is float3) return ToArray((float3)dc);
 			else if (dc is float4) return ToArray((float4)dc);
 			else if (dc is int2) return ToArray((int2)dc);
 			else if (dc is int3) return ToArray((int3)dc);
 			else if (dc is int4) return ToArray((int4)dc);
+			else if (dc is DateTime) return DateTimeConverterHelpers.ConvertDateTimeToJSDate((DateTime)dc, FuseJS.DateCtor);
 			else if (dc.GetType().IsClass) return WrapScriptClass(dc);
 			else if (dc.GetType().IsEnum) return dc.ToString();
 			else return dc;

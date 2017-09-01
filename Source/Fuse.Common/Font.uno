@@ -146,43 +146,43 @@ namespace Fuse
 
 		[UXGlobalResource]
 		/** The default font of the system, in it's thin weight typeface. */
-		extern (!iOS && !Android) public static readonly Font Thin = new Font(import BundleFile("Internal/DesktopFonts/Roboto-Thin.ttf"));
+		extern (!iOS && !Android) public static readonly Font Thin = new Font(import("Internal/DesktopFonts/Roboto-Thin.ttf"));
 
 		[UXGlobalResource]
 		/** The default font of the system, in it's light weight typeface. */
-		extern (!iOS && !Android) public static readonly Font Light = new Font(import BundleFile("Internal/DesktopFonts/Roboto-Light.ttf"));
+		extern (!iOS && !Android) public static readonly Font Light = new Font(import("Internal/DesktopFonts/Roboto-Light.ttf"));
 
 		[UXGlobalResource]
 		/** The default font of the system, in it's regular weight typeface. */
-		extern (!iOS && !Android) public static readonly Font Regular = new Font(import BundleFile("Internal/DesktopFonts/Roboto-Regular.ttf"));
+		extern (!iOS && !Android) public static readonly Font Regular = new Font(import("Internal/DesktopFonts/Roboto-Regular.ttf"));
 
 		[UXGlobalResource]
 		/** The default font of the system, in it's medium typeface. */
-		extern (!iOS && !Android) public static readonly Font Medium = new Font(import BundleFile("Internal/DesktopFonts/Roboto-Medium.ttf"));
+		extern (!iOS && !Android) public static readonly Font Medium = new Font(import("Internal/DesktopFonts/Roboto-Medium.ttf"));
 
 		[UXGlobalResource]
 		/** The default font of the system, in it's bold typeface. */
-		extern (!iOS && !Android) public static readonly Font Bold = new Font(import BundleFile("Internal/DesktopFonts/Roboto-Bold.ttf"));
+		extern (!iOS && !Android) public static readonly Font Bold = new Font(import("Internal/DesktopFonts/Roboto-Bold.ttf"));
 
 
 		[UXGlobalResource]
 		/** The default font of the system, in it's thin weight typeface. */
-		extern (!iOS && !Android) public static readonly Font ThinItalic = new Font(import BundleFile("Internal/DesktopFonts/Roboto-ThinItalic.ttf"));
+		extern (!iOS && !Android) public static readonly Font ThinItalic = new Font(import("Internal/DesktopFonts/Roboto-ThinItalic.ttf"));
 
 		[UXGlobalResource]
 		/** The default font of the system, in it's light weight italic typeface. */
-		extern (!iOS && !Android) public static readonly Font LightItalic = new Font(import BundleFile("Internal/DesktopFonts/Roboto-LightItalic.ttf"));
+		extern (!iOS && !Android) public static readonly Font LightItalic = new Font(import("Internal/DesktopFonts/Roboto-LightItalic.ttf"));
 
 		[UXGlobalResource]
 		/** The default font of the system, in it's regular weight, italic typeface. */
-		extern (!iOS && !Android) public static readonly Font Italic = new Font(import BundleFile("Internal/DesktopFonts/Roboto-Italic.ttf"));
+		extern (!iOS && !Android) public static readonly Font Italic = new Font(import("Internal/DesktopFonts/Roboto-Italic.ttf"));
 
 		[UXGlobalResource]
 		/** The default font of the system, in it's medium and italic typeface. */
-		extern (!iOS && !Android) public static readonly Font MediumItalic = new Font(import BundleFile("Internal/DesktopFonts/Roboto-MediumItalic.ttf"));
+		extern (!iOS && !Android) public static readonly Font MediumItalic = new Font(import("Internal/DesktopFonts/Roboto-MediumItalic.ttf"));
 
 		[UXGlobalResource]
 		/** The default font of the system, in it's bold and italic typeface. */
-		extern (!iOS && !Android) public static readonly Font BoldItalic = new Font(import BundleFile("Internal/DesktopFonts/Roboto-BoldItalic.ttf"));
+		extern (!iOS && !Android) public static readonly Font BoldItalic = new Font(import("Internal/DesktopFonts/Roboto-BoldItalic.ttf"));
 	}
 }

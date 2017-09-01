@@ -1,0 +1,6 @@
+<Panel ux:Class="UX.Each.Multiple">
+	<Each Count="2">
+		<Text Value="1"/>
+		<Text Value="2"/>
+	</Each>
+</Panel>

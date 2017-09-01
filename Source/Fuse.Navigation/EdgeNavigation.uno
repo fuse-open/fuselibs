@@ -57,6 +57,7 @@ namespace Fuse.Navigation
 					sw.Value.Disable();
 			}
 			_active = element;
+			OnActiveChanged(_active);
 		}
 		
 		public override void Toggle(Visual page)
@@ -72,6 +73,10 @@ namespace Fuse.Navigation
 		{
 			get
 			{
+				//this is to ensure a RoutePageProxy can identiy the active page (there is no good
+				//mapping for Active in an EdgeNavigator, this will have to be rethough at some point)
+				if (_active == null && _mains.Count > 0)
+					return _mains[0];
 				return _active;
 			}
 			set
@@ -139,6 +144,8 @@ namespace Fuse.Navigation
 				if (edge == NavigationEdge.None)
 				{
 					_mains.Add(nodeChild);
+					if (_mains.Count > 1)
+						Fuse.Diagnostics.UserWarning( "EdgeNavigation may not work as expected with more than one main (non-edge) page." , this );
 				}
 				else
 				{
@@ -162,7 +169,6 @@ namespace Fuse.Navigation
 			var panel = swiper.Target;
 			if (panel == null || swiper == null)
 			{
-				debug_log "Unexpected message";
 				return;
 			}
 
@@ -177,7 +183,12 @@ namespace Fuse.Navigation
 					_maxProgress = sw.Value.Progress;
 				}
 			}
-			_active = maxPage;
+			var newActive = _maxProgress == 0 ? null : maxPage;
+			if (newActive != _active)
+			{
+				_active = newActive;
+				OnActiveChanged(_active);
+			}
 
 			OnPageProgressChanged(NavigationMode.Seek);
 		}

@@ -106,7 +106,7 @@ namespace Fuse.Elements
 				return;
 			}
 
-			if (FastTrackDrawWithOpacity(dc))
+			if (!HasActiveEffects && FastTrackDrawWithOpacity(dc))
 			{
 				return;
 			}

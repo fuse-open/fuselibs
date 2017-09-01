@@ -1,5 +1,6 @@
 using Uno;
 using Uno.UX;
+using Uno.Threading;
 using Uno.Collections;
 
 namespace Fuse.Scripting
@@ -132,7 +133,159 @@ namespace Fuse.Scripting
 				_method(_context, (T)_obj, _args);
 			}
 		}
-		
+
+	}
+
+	public class ScriptPromise<TSelf,TResult,TJSResult> : ScriptMethod
+	{
+		public delegate Future<TResult> FutureFactory<TSelf,TResult>(TSelf self, object[] args);
+		public delegate TJSResult ResultConverter<TResult,TJSResult>(Context context, TResult result);
+
+		FutureFactory<TSelf,TResult> _futureFactory;
+		ResultConverter<TResult,TJSResult> _resultConverter;
+
+		public ScriptPromise(
+			string name,
+			ExecutionThread thread,
+			FutureFactory<TSelf,TResult> futureFactory,
+			ResultConverter<TResult,TJSResult> resultConverter = null) : base(name, thread)
+		{
+			_futureFactory = futureFactory;
+			_resultConverter = resultConverter;
+		}
+
+		Future<TResult> InvokeFutureFactory(TSelf self, object[] args)
+		{
+			if (_futureFactory == null)
+			{
+				var p = new Promise<TResult>();
+				p.Reject(new Exception("FutureFactory is null"));
+				return p;
+			}
+
+			var future = _futureFactory(self, args);
+			if (future == null)
+			{
+				var p = new Promise<TResult>();
+				p.Reject(new Exception("FutureFactory returned null"));
+				return p;
+			}
+			return future;
+		}
+
+		public override object Call(Context c, object obj, object[] args)
+		{
+			var promise = (Function)c.GlobalObject["Promise"];
+			var promiseClosure = new PromiseClosure(c, _resultConverter);
+			var self = (TSelf)obj;
+
+			if (Thread == ExecutionThread.MainThread)
+				UpdateManager.PostAction(new FutureClosure(c.Dispatcher, InvokeFutureFactory, promiseClosure, self, args).Run);
+			else
+				promiseClosure.OnFutureReady(InvokeFutureFactory(self, args));
+
+			return promise.Construct((Callback)promiseClosure.Run);
+		}
+
+		class FutureClosure
+		{
+			IDispatcher _dispatcher;
+			FutureFactory<TSelf,TResult> _futureFactory;
+			PromiseClosure _promiseClosure;
+			TSelf _self;
+			object[] _args;
+
+			public FutureClosure(
+				IDispatcher dispatcher,
+				FutureFactory<TSelf,TResult> futureFactory,
+				PromiseClosure promiseClosure,
+				TSelf self,
+				object[] args)
+			{
+				_dispatcher = dispatcher;
+				_futureFactory = futureFactory;
+				_promiseClosure = promiseClosure;
+				_self = self;
+				_args = args;
+			}
+
+			Future<TResult> _future;
+			public void Run()
+			{
+				_future = _futureFactory(_self, _args);
+				_dispatcher.Invoke(DispatchFuture);
+			}
+
+			void DispatchFuture()
+			{
+				_promiseClosure.OnFutureReady(_future);
+			}
+		}
+
+		class PromiseClosure
+		{
+			Context _context;
+			ResultConverter<TResult,TJSResult> _resultConverter;
+
+			public PromiseClosure(Context context, ResultConverter<TResult,TJSResult> resultConverter)
+			{
+				_context = context;
+				_resultConverter = resultConverter;
+			}
+
+			Function _resolve;
+			Function _reject;
+			public object Run(object[] args)
+			{
+				if (args.Length > 0)
+					_resolve = args[0] as Function;
+
+				if (args.Length > 1)
+					_reject = args[1] as Function;
+
+				if (_future != null)
+					_future.Then(Resolve, Reject);
+
+				return null;
+			}
+
+			Future<TResult> _future;
+			public void OnFutureReady(Future<TResult> future)
+			{
+				_future = future;
+				if (_resolve != null || _reject != null)
+					_future.Then(Resolve, Reject);
+			}
+
+			TResult _result = default(TResult);
+			void Resolve(TResult result)
+			{
+				_result = result;
+				if (_resolve != null)
+					_context.Dispatcher.Invoke(DispatchResolve);
+			}
+
+			Exception _reason;
+			void Reject(Exception reason)
+			{
+				_reason = reason;
+				if (_reject != null)
+					_context.Dispatcher.Invoke(DispatchReject);
+			}
+
+			void DispatchResolve()
+			{
+				if (_resultConverter != null)
+					_resolve.Call(_resultConverter(_context, _result));
+				else
+					_resolve.Call(_result);
+			}
+
+			void DispatchReject()
+			{
+				_reject.Call(_reason.Message);
+			}
+		}
 	}
 
 	public class ScriptClass

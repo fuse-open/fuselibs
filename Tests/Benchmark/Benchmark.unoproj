@@ -1,0 +1,12 @@
+{
+  "Packages": [
+    "Fuse",
+    "FuseJS",
+  ],
+  "Includes": [
+    "Utils/FrameIndex.uno",
+    "Utils/ProfilePanel.uno",
+    "Utils/TestRunner.uno",
+    "MainView.ux"
+  ]
+}
