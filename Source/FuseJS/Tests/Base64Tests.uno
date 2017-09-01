@@ -6,7 +6,7 @@ using FuseTest;
 
 namespace FuseJS.Test
 {
-	public class Base64Tests : TestBase
+	public class Base64Test : TestBase
 	{
 		[Test]
 		public void JavaScriptTests()
