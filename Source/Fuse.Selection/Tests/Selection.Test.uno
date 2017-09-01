@@ -6,7 +6,7 @@ using Fuse.Selection;
 
 namespace Fuse.Gestures.Test
 {
-	public class SelectionTests : TestBase
+	public class SelectionTest : TestBase
 	{
 		[Test]
 		/* Using Min/MaxCount==1 */
