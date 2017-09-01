@@ -95,13 +95,13 @@ namespace Fuse.Controls
 				
 			var trans = NavigationGotoMode.Transition;
 			
-			Visual v;
-			(this as IRouterOutlet).Goto( ref path, ref param, trans, op, "", out v );
-			if (v != null)
+			RouterPage rPage = new RouterPage{ Path = path, Parameter = param };
+			(this as IRouterOutlet).Goto( rPage, trans, op, "" );
+			if (rPage.Visual != null)
 			{
-				var oldData = v.Properties.Get(_pageContextProperty);
-				v.Properties.Set(_pageContextProperty, data);
-				v.BroadcastDataChange(oldData, data);
+				var oldData = rPage.Visual.Properties.Get(_pageContextProperty);
+				rPage.Visual.Properties.Set(_pageContextProperty, data);
+				rPage.Visual.BroadcastDataChange(oldData, data);
 			}
 			
 			_curPageIndex = pageNdx;

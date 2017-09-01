@@ -1,6 +1,6 @@
 <Panel ux:Class="UX.Navigator.RootingCache">
 	<Router ux:Name="R" IsMasterRouter="false"/>
-	<Navigator ux:Name="N">
+	<Navigator ux:Name="N" Transition="None">
 		<Page ux:Class="RCPage">
 			<WhileActive ux:Name="A"><Nothing/></WhileActive>
 		</Page>

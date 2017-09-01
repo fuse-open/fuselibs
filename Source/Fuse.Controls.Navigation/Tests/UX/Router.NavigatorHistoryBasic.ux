@@ -1,0 +1,8 @@
+<Panel ux:Class="UX.Router.NavigatorHistoryBasic">
+	<Router ux:Name="router" IsMasterRouter="false"/>
+	<Navigator ux:Name="PC1" Transition="None">
+		<Page ux:Template="a" PrepareBusy="None"/>
+		<Page ux:Template="b" PrepareBusy="None"/>
+		<Page ux:Template="c" PrepareBusy="None"/>
+	</Navigator>
+</Panel>

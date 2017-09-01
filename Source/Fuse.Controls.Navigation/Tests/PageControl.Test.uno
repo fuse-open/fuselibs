@@ -81,6 +81,47 @@ namespace Fuse.Controls.Test
 				Assert.IsTrue(_progressCount < (250/*dist*/ / speed / root.StepIncrement + 1) );
 			}
 		}
+
+		string SafeFormat( Route r )
+		{
+			if (r == null) 
+				return "*null*";
+			return r.Format();
+		}
+
+		[Test]
+		//tests history through a local Active change
+		public void History()
+		{
+			var p = new UX.PageControl.History();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				Assert.AreEqual("a/i", SafeFormat(p.router.GetHistoryRoute(0)) );
+				Assert.AreEqual( null, p.router.GetHistoryRoute(1));
+				Assert.AreEqual( 0, p.wcb.Progress );
+
+				p.router.Push( new Route("a", null, new Route("ii") ) );
+				root.StepFrame();
+				Assert.AreEqual("a/ii", SafeFormat(p.router.GetHistoryRoute(0)));
+				Assert.AreEqual("a/i", SafeFormat(p.router.GetHistoryRoute(1)));
+				Assert.AreEqual( null, p.router.GetHistoryRoute(2));
+				Assert.AreEqual( 1, p.wcb.Progress );
+
+				p.pc.Active = p.b;
+				root.StepFrame();
+				Assert.AreEqual("b", SafeFormat(p.router.GetHistoryRoute(0)) );
+				Assert.AreEqual( null, p.router.GetHistoryRoute(1));
+				Assert.AreEqual( 0, p.wcb.Progress );
+
+				p.pc.Active = p.a;
+				root.StepFrame();
+				Assert.AreEqual("a/ii", SafeFormat(p.router.GetHistoryRoute(0)));
+				Assert.AreEqual("a/i", SafeFormat(p.router.GetHistoryRoute(1)));
+				Assert.AreEqual( null, p.router.GetHistoryRoute(2));
+				Assert.AreEqual( 1, p.wcb.Progress );
+
+			}
+		}
 		
 		double _absChangedSum;
 		int _progressCount;

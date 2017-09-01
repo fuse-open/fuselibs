@@ -114,7 +114,7 @@ namespace Fuse.Elements
 			}
 		}
 
-		internal protected override void OnRootedPreChildren()
+		protected override void OnRootedPreChildren()
 		{
 			NotifyTreeRendererRootingStarted();
 			base.OnRootedPreChildren();

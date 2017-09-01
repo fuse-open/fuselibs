@@ -312,6 +312,12 @@ namespace FuseTest
 				StepFrameJS();
 		}
 		
+		public void MultiStepFrame(int count)
+		{
+			for (int i=0; i < count; ++i)
+				StepFrame();
+		}
+		
 		/**
 			Steps frames until the Deferred actions are all cleared. Guaranteed to step at least one frame.
 		*/

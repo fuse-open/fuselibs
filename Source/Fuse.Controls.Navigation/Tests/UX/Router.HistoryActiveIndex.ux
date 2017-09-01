@@ -1,0 +1,23 @@
+<Panel ux:Class="UX.Router.HistoryActiveIndex">
+	<Router ux:Name="router"/>
+	<JavaScript>
+		var Observable = require("FuseJS/Observable");
+		exports.pageIndex = Observable(0)
+		
+		exports.goto0 = function() { exports.pageIndex.value = 0 }
+		exports.goto2 = function() { exports.pageIndex.value = 2 }
+		exports.goto4 = function() { exports.pageIndex.value = 4 }
+	</JavaScript>
+	
+	<PageControl ActiveIndex="{pageIndex}">
+		<Page ux:Name="A"/>
+		<Page ux:Name="B"/>
+		<Page ux:Name="C"/>
+		<Page ux:Name="D"/>
+		<Page ux:Name="E"/>
+	</PageControl>
+
+	<FuseTest.Invoke Handler="{goto0}" ux:Name="Goto0"/>
+	<FuseTest.Invoke Handler="{goto2}" ux:Name="Goto2"/>
+	<FuseTest.Invoke Handler="{goto4}" ux:Name="Goto4"/>
+</Panel>

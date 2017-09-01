@@ -1,0 +1,31 @@
+<Panel ux:Class="UX.Router.NavigatorHistoryParameter">
+	<Router ux:Name="router" IsMasterRouter="false"/>
+	<JavaScript>
+		var count = 0
+		exports.pushBird = function() {
+			router.push( "one", {}, "bird", { id: ++count } )
+		}
+		exports.goBack = function() {
+			router.goBack()
+		}
+	</JavaScript>
+	<Navigator DefaultPath="one" ux:Name="outerNav">
+		<Page ux:Name="one" Color="#AAF" Padding="50">
+			<Navigator ux:Name="innerNav" DefaultPath="bird">
+				
+				<Page ux:Class="NHPMyPage" Color="#AFF" Title="bird">
+					<StackPanel Alignment="Center">
+						<Text Value="{parameter(this).id}"/>
+					</StackPanel>
+					
+					<Circle Alignment="BottomLeft" Width="50" Height="50" Color="#448"/>
+					
+				</Page>
+				<NHPMyPage ux:Template="bird"/>
+			</Navigator>
+		</Page>
+	</Navigator>	
+	
+	<FuseTest.Invoke Handler="{pushBird}" ux:Name="callPushBird"/>
+	<FuseTest.Invoke Handler="{goBack}" ux:Name="callGoBack"/>
+</Panel>

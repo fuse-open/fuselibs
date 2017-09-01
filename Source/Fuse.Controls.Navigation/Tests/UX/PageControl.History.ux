@@ -1,0 +1,16 @@
+<Panel ux:Class="UX.PageControl.History">
+	<Router ux:Name="router"/>
+
+	<PageControl Active="a" ux:Name="pc" Transition="None">
+		<Page ux:Name="a">
+			<Navigator DefaultPath="i" Transition="None">
+				<Page ux:Template="i"/>
+				<Page ux:Template="ii"/>
+				<Page ux:Template="iii"/>
+			</Navigator>
+		</Page>
+		<Page ux:Name="b"/>
+	</PageControl>
+
+	<WhileCanGoBack ux:Name="wcb"/>
+</Panel>
