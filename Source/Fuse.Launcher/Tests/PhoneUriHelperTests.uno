@@ -5,7 +5,7 @@ using FuseTest;
 
 namespace Fuse.LauncherTest
 {
-	public class PhoneUriHelperTests : TestBase
+	public class PhoneUriHelperTest : TestBase
 	{
 		[Test]
 		public void PhoneNumberToUri_encodes_whitespace_correctly()
