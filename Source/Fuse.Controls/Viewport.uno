@@ -55,12 +55,30 @@ namespace Fuse.Elements
 				if ( value == _mode)
 					return;
 
+				var wasDisabled = IsDisabled;
 				_mode = value;
-
+				UpdateDisabled( wasDisabled );
+				
 				InvalidateFrustum();
 			}
 		}
 
+		bool IsDisabled { get { return Mode == ViewportMode.Disabled; } }
+
+		void UpdateDisabled( bool wasDisabled )
+		{
+			if (wasDisabled == IsDisabled)
+				return;
+				
+			if (_childFlat == 0)
+				return;
+				
+			if (!wasDisabled && _childFlat > 0)
+				IncrementNonFlat();
+			else
+				DecrementNonFlat();
+		}
+		
 		PolygonFace _cullFace = PolygonFace.None;
 		bool _hasCullFace;
 		/** 
@@ -335,10 +353,22 @@ namespace Fuse.Elements
 			}
  		}
 		
-		/* viewports flatten the view space, thus they are flat (and can be cached, the major consequence) */
-		internal override void ParentIncrementNonFlat() {}
-		internal override void ParentDecrementNonFlat() {}
-		
+		/* An enabled viewport flattens the view space, thus they are flat (and can be cached, the major consequence) */
+		internal override void ParentIncrementNonFlat() 
+		{
+			_childFlat++;
+			//collapse into a single count for parents to make enabling/disabling easier
+			if (IsDisabled && _childFlat == 1)
+				IncrementNonFlat();
+		}
+		internal override void ParentDecrementNonFlat() 
+		{
+			_childFlat--;
+			if (IsDisabled && _childFlat == 0)
+				DecrementNonFlat();
+		}
+		int _childFlat;
+
 		internal override HitTestTransformMode HitTestTransform
 		{
 			get { return IsDisabled ? base.HitTestTransform : HitTestTransformMode.WorldRay; }
@@ -351,8 +381,6 @@ namespace Fuse.Elements
 		{
 			get { return IsDisabled ? base.ParentWorldTransformInternal : FastMatrix.Identity(); }
 		}
-
-		bool IsDisabled { get { return Mode == ViewportMode.Disabled; } }
 
 		//ICommonViewport
 		public float PixelsPerPoint
