@@ -1,4 +1,5 @@
 using Uno;
+using Uno.UX;
 using Uno.Collections;
 
 namespace Fuse.Reactive
@@ -202,5 +203,14 @@ namespace Fuse.Reactive
 			}
 		}
 
+	}
+	public class NamedFunctionCall: SimpleVarArgFunction
+	{
+		public string Name { get; private set; }
+		[UXConstructor]
+		public NamedFunctionCall([UXParameter("Name")] string name)
+		{
+			Name = name;
+		}
 	}
 }

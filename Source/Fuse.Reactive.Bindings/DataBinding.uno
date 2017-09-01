@@ -53,8 +53,7 @@ namespace Fuse.Reactive
 		public DataBinding(
 			[UXParameter("Target")] Uno.UX.Property target, 
 			[UXParameter("Key"), UXDataScope] IExpression key, 
-			[UXAutoNameTable, UXParameter("NameTable")] NameTable nameTable,
-			[UXParameter("Mode"), UXDefaultValue("Default")] BindingMode mode): base(key, nameTable)
+			[UXParameter("Mode"), UXDefaultValue("Default")] BindingMode mode): base(key)
 		{
 			_mode = mode;
 			Target = target;
@@ -181,7 +180,11 @@ namespace Fuse.Reactive
 			{
 				if (_subscription != null)
 				{
-					if (Write) _subscription.SetExclusive(Target.GetAsObject());
+					if (Write) 
+					{
+						var sub = _subscription as ISubscription;
+						if (sub != null) sub.SetExclusive(Target.GetAsObject());
+					}
 				}
 				else if (CanWriteBack)
 				{
@@ -190,7 +193,7 @@ namespace Fuse.Reactive
 			}
 		}
 
-		ISubscription _subscription;
+		IDisposable _subscription;
 
 		internal override void NewValue(object value)
 		{
@@ -203,14 +206,16 @@ namespace Fuse.Reactive
 			if (Marshal.Is(value, Target.PropertyType))
 			{
 				// Note - this case is required in addition to the final 'else', because if the target
-				// property accepts Observable, we should not create a subscription, but pass it
+				// property accepts the observable object, we should not create a subscription, but pass it
 				// directly to the target
 
 				PushValue(value);
 			}
 			else if (Marshal.Is(value, typeof(IObservable)))
 			{
+				// Special treatment for the IObservable interface - see docs on IObservable for rationale
 				var obs = (IObservable)value;
+				if (obs.Length > 0) PushValue(obs[0]);
 				_subscription = obs.Subscribe(this);
 			}
 			else
@@ -319,14 +324,14 @@ namespace Fuse.Reactive
 	{
 		[UXConstructor]
 		public PropertyBinding([UXParameter("Target")] Uno.UX.Property target, [UXParameter("Source")] Uno.UX.Property source) 
-			: base(target, new Reactive.Property(new Constant(source.Object), source), null, BindingMode.Default) {}
+			: base(target, new Reactive.Property(new Constant(source.Object), source), BindingMode.Default) {}
 	}
 
 	public class ResourceBinding: DataBinding
 	{
 		[UXConstructor]
 		public ResourceBinding([UXParameter("Target")] Uno.UX.Property target, [UXParameter("Key")] string key) 
-			: base(target, new Reactive.Resource(key), null, BindingMode.Default) {}
+			: base(target, new Reactive.Resource(key), BindingMode.Default) {}
 	}
 
 	

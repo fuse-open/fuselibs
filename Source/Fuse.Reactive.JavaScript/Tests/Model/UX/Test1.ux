@@ -1,0 +1,20 @@
+<Panel ux:Class="UX.Model.Test1">
+    <JavaScript>
+        class TestClass {
+            constructor() {
+                this.isSet = false;
+            }
+
+            get flipped() {
+                return !this.isSet;
+            }
+            set flipped(value) {
+                this.isSet = !value;
+            }
+        }
+        var Model = require("FuseJS/Model")
+        module.exports = new Model(new TestClass());
+    </JavaScript>
+    <Switch ux:Name="mySwitch" Value="{isSet}" />
+    <Switch ux:Name="myFlippedSwitch" Value="{flipped}" />
+</Panel>

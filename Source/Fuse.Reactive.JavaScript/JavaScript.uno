@@ -32,7 +32,10 @@ namespace Fuse.Reactive
 		public JavaScript([UXAutoNameTable] NameTable nameTable)
 		{
 			if (_worker == null)
+			{
 				_worker = new ThreadWorker();
+				Fuse.Scripting.ScriptModule.AddMagicPath(".FuseJS/", TransformModel);
+			}
 			
 			_nameTable = nameTable;
 			_scriptModule = new RootableScriptModule(_worker, nameTable);
@@ -40,6 +43,8 @@ namespace Fuse.Reactive
 
 		protected override void OnRooted()
 		{
+			SetupModel();
+
 			base.OnRooted();
 			_javaScriptCounter++;
 			SubscribeToDependenciesAndDispatchEvaluate();
@@ -56,7 +61,7 @@ namespace Fuse.Reactive
 			{
 				AppInitialized.Reset();
 				// When all JavaScript nodes is unrooted, send a reset event to all global NativeModules.
-				foreach(var nm in Resource.GetGlobalsOfType<NativeModule>())
+				foreach(var nm in Uno.UX.Resource.GetGlobalsOfType<NativeModule>())
 				{
 					nm.InternalReset();
 				}

@@ -41,11 +41,15 @@ namespace Fuse.Reactive
 				PushValue();
 			}
 
-			public void SetExclusive(object value)
+			public bool TrySetExclusive(object value)
 			{
 				object res;
 				if (Marshal.TryConvertTo(_accessor.PropertyType, value, out res, _object))
+				{
 					_accessor.SetAsObject(_object, res, this);
+					return true;
+				}
+				return false;
 			}
 
 			public void Dispose()

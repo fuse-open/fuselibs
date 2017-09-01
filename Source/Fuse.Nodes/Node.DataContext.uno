@@ -39,7 +39,7 @@ namespace Fuse
 			{
 				if (_key == "")
 				{
-					Resolve(data);
+					Resolve(null, data);
 					return false;
 				}
 				else
@@ -49,7 +49,7 @@ namespace Fuse
 					{
 						if (obj.ContainsKey(_key))
 						{
-							Resolve(obj[_key]);
+							Resolve(obj, obj[_key]);
 							return false;
 						}
 					}
@@ -57,7 +57,7 @@ namespace Fuse
 
 				return true; // keep looking 
 			}
-			protected abstract void Resolve(object data);
+			protected abstract void Resolve(IObject provider, object data);
 		}
 
 		public object GetFirstData()

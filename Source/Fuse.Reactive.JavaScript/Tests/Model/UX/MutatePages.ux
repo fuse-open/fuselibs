@@ -1,0 +1,12 @@
+<Panel ux:Class="UX.Model.MutatePages" Model="UX/MutatePages">
+	<FuseTest.Invoke Handler="{pushPage}" ux:Name="pushPage" />
+	<FuseTest.Invoke Handler="{popPage}" ux:Name="popPage" />
+
+	<Panel ux:Class="UX.Model.MainPage" />
+	<Panel ux:Class="UX.Model.DetailPage" />
+
+	<Navigator ux:Name="navigator" Pages="{pages}">
+		<UX.Model.MainPage ux:Template="MainPage" />
+		<UX.Model.DetailPage ux:Template="DetailPage" />
+	</Navigator>
+</Panel>

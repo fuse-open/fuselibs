@@ -82,7 +82,7 @@ namespace Fuse.Reactive
 		protected override void OnRooted()
 		{
 			base.OnRooted();
-			OnItemsChanged();
+			RefreshItems();
 			
 			if (_rootTemplates != null)
 				_rootTemplates.Subscribe(OnTemplatesChanged, OnTemplatesChanged);
@@ -95,6 +95,7 @@ namespace Fuse.Reactive
 			_isListeningItems = false;
 			if (_itemsSubscription != null)
 			{
+				_isListeningItems = false;
 				_itemsSubscription.Dispose();
 				_itemsSubscription = null;
 			}

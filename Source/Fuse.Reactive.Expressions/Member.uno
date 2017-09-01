@@ -24,7 +24,7 @@ namespace Fuse.Reactive
 			return new MemberSubscription(this, context, listener);
 		}
 
-		class MemberSubscription: Subscription
+		class MemberSubscription: Subscription, IPropertyObserver, IWriteable
 		{
 			Member _member;
 			public MemberSubscription(Member member, IContext context, IListener listener): base(member, listener)
@@ -33,19 +33,55 @@ namespace Fuse.Reactive
 				Init(context);
 			}
 
+			IPropertySubscription _obsObjSub;
+			void DisposeObservableObjectSubscription()
+			{
+				if (_obsObjSub != null)
+				{
+					_obsObjSub.Dispose();
+					_obsObjSub = null;
+				}
+			}
+
 			protected override void OnNewOperand(object obj)
 			{
+				DisposeObservableObjectSubscription();
+
 				ClearDiagnostic();
 
 				var io = obj as IObject;
 				if (io != null && io.ContainsKey(_member.Name))
 				{
+					var obsObj = io as IObservableObject;
+					if (obsObj != null)
+						_obsObjSub = obsObj.Subscribe(this);
+
 					PushNewData(io[_member.Name]);
 				}
 				else
 				{
 					SetDiagnostic("'" + _member.Operand.ToString() +"' does not contain property '" + _member.Name + "'", _member);
 				}
+			}
+
+			void IPropertyObserver.OnPropertyChanged(IDisposable sub, string propName, object newValue)
+			{
+				if (_obsObjSub != sub) return;
+				if (propName != _member.Name) return;
+				PushNewData(newValue);
+			}
+
+			bool IWriteable.TrySetExclusive(object newObj)
+			{
+				if (_obsObjSub != null)
+					return _obsObjSub.TrySetExclusive(_member.Name, newObj);
+				return false;
+			}
+
+			public override void Dispose()
+			{
+				DisposeObservableObjectSubscription();
+				base.Dispose();
 			}
 		}
 	}

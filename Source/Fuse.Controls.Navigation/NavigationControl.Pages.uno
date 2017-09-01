@@ -40,7 +40,7 @@ namespace Fuse.Controls
 			if (_pages == null)
 				return;
 				
-			var obs = _pages as IObservable;
+			var obs = _pages as IObservableArray;
 			if (obs != null)
 				_pagesSubscription = obs.Subscribe(this);
 				
