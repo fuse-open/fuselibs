@@ -656,7 +656,7 @@ namespace Fuse.FileSystem
 
 
 		/**
-			@scriptmethod move(source, destination)
+			@scriptmethod copy(source, destination)
 			@param source (String) Source path
 			@param destination (String) Destination path
 			@return Promise of nothing
