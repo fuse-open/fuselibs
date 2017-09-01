@@ -124,7 +124,7 @@ namespace Fuse.Controls
 			var pages = AncestorRouterPage != null ? AncestorRouterPage.ChildRouterPages : null;
 			if (pages != null && pages.Count > 0)
 			{ 
-				(this as IRouterOutlet).Goto( pages[pages.Count-1], NavigationGotoMode.Bypass, RoutingOperation.Goto, "" );
+				((IRouterOutlet)this).Goto( pages[pages.Count-1], NavigationGotoMode.Bypass, RoutingOperation.Goto, "" );
 			}
 			else
 			{

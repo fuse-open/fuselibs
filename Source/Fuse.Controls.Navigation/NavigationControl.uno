@@ -303,8 +303,7 @@ namespace Fuse.Controls
 			}
 		}
 		
-		//UNO: should be protected but the compiler says it isn't accessible for protected functions then
-		public class ControlPageData
+		internal class ControlPageData
 		{
 			public Trigger Enter, Exit, Inactive, Removing;
 			
