@@ -22,7 +22,7 @@ namespace Fuse
 	{
 	}
 
-	public class ValueTests: TestBase
+	public class MarshalTests: TestBase
 	{
 		public void MarshalToSizeWithGarbage()
 		{
