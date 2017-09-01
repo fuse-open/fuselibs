@@ -326,6 +326,14 @@ namespace Fuse.Drawing.Primitives
 			_uniforms[8] = extend.Y;
 			_uniforms[9] = mn;
 
+			// Mali-400 has FP16 max precision, which doesn't have big enough range to square
+			// the biggest on-screen coordinates without overflowing. So let's just reduce the
+			// range before squaring.
+			float float16MaxValue = 65504;
+			float distanceScale = Math.Max(1.0f, Math.Max(Size.X + extend.X, Size.Y + extend.Y) / Math.Sqrt(float16MaxValue * 0.5f));
+			distanceScale = Math.Exp2(Math.Ceil(Math.Log2(distanceScale)));
+			float distanceScaleRcp = 1.0f / distanceScale;
+
 			var elm = visual as Element;
 			var csz = elm == null ? float2(1) : elm.ActualSize;
 			draw
@@ -361,8 +369,11 @@ namespace Fuse.Drawing.Primitives
 				float2 Edge: VertexEdge + position;
 				float EdgeBase: Uniforms[(int)ED];
 				LocalPosition: VertexPosition + position;
-				
-				float RawDistance: Vector.Distance(pixel LocalPosition, Edge) - EdgeBase;
+
+				float2 EdgeScaled: Edge * distanceScaleRcp;
+				float2 LocalPositionScaled: LocalPosition * distanceScaleRcp;
+
+				float RawDistance: Vector.Distance(pixel LocalPositionScaled, EdgeScaled) * distanceScale - EdgeBase;
 				float2 EdgeNormal: Vector.Normalize(pixel LocalPosition - Edge);
 				
 				apply virtual brush;

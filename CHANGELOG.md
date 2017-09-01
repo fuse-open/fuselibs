@@ -1,5 +1,8 @@
 # Unreleased
 
+## Rectangle
+- Fixed issue where Rectangles could render incorreclty due to FP16 precision limitation.
+
 ## Navigation
 - Changed how `Router` maintains history. This resolves several minor issues, including local histories (though this isn't fully exposed yet). It's intended to be backwards compatible for all known use-cases.
 - Changed `IRouterOutlet` and related types to be internal. This was not meant to be public as it's a private detail of the navigation system and could not be implemented correctly by users.
