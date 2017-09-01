@@ -5,7 +5,7 @@ using FuseTest;
 
 namespace Fuse.Animations.Test
 {
-	public class PlayerTests : TestBase
+	public class PlayerTest : TestBase
 	{
 		[Test]
 		public void StableClosed()
