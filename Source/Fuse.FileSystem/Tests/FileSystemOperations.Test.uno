@@ -8,7 +8,7 @@ using FuseTest;
 
 namespace Fuse.FileSystem.Test
 {
-	public class FileSystemTests : TestBase
+	public class FileSystemTest : TestBase
 	{
 		FileSystemOperations _operations = new FileSystemOperations();
 
