@@ -13,7 +13,7 @@ using FuseTest;
 
 namespace Fuse.Triggers.Test
 {
-	public class NavigationTriggerTests : TestBase
+	public class NavigationTriggerTest : TestBase
 	{
 		[Test]
 		//Enter trigger shouldn't be called

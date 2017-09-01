@@ -13,7 +13,7 @@ using FuseTest;
 
 namespace Fuse.Triggers.Test
 {
-	public class VariousTriggerTests : TestBase
+	public class VariousTriggerTest : TestBase
 	{
 		[Test]
 		public void WhileToggled1()

@@ -9,7 +9,7 @@ namespace Fuse.Triggers.Test
 		This serves also as a test for the animation system, as how the Timeline works is
 		inseparable from that.
 	*/
-	public class TimelineTests : TestBase
+	public class TimelineTest : TestBase
 	{
 		const float _zeroTolerance = 1e-05f;
 
