@@ -5,7 +5,7 @@ using FuseTest;
 
 namespace Fuse.Navigation.Test
 {
-	public class SwipeNavigateTests : TestBase
+	public class SwipeNavigateTest : TestBase
 	{
 		[Test]
 		public void Active()

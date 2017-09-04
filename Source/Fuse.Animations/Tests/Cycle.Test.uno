@@ -5,7 +5,7 @@ using FuseTest;
 
 namespace Fuse.Animations.Test
 {
-	public class CycleTests : TestBase
+	public class CycleTest : TestBase
 	{
 		[Test]
 		public void Square()

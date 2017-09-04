@@ -4,7 +4,7 @@ using Fuse.UserEvents;
 
 namespace Fuse.UserEvents.Test
 {
-	public class UserEventTests : TestBase
+	public class UserEventTest : TestBase
 	{
 		[Test]
 		public void UserEventArgs()

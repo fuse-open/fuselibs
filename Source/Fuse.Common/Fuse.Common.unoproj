@@ -21,7 +21,6 @@
     "Fuse.Desktop",
     "Fuse.Drawing.Surface",
     "Fuse.Drawing.Surface.Test",
-    "Fuse.Elements.Shared",
     "Fuse.Elements.Test",
     "Fuse.Elements",
     "Fuse.Nodes",

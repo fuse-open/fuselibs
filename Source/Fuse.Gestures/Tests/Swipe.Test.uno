@@ -9,7 +9,7 @@ using FuseTest;
 
 namespace Fuse.Gestures.Test
 {
-	public class SwipeTests : TestBase
+	public class SwipeTest : TestBase
 	{
 		[Test]
 		public void Active()

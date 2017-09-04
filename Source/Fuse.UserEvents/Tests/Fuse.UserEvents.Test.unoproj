@@ -9,6 +9,6 @@
   ],
   "Includes": [
     "UX/*",
-    "UserEventTests.uno"
+    "UserEvent.Test.uno"
   ]
 }

@@ -7,8 +7,6 @@ using Uno.Testing;
 using FuseTest;
 using Fuse.Resources;
 using Fuse.Elements;
-using FuseTest;
-using Fuse.Controls.Test.Helpers;
 
 namespace Fuse.Controls.Test
 {

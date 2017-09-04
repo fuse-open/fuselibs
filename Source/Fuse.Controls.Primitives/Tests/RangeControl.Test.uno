@@ -5,7 +5,7 @@ using FuseTest;
 
 namespace Fuse.Gestures.Test
 {
-	public class RangeControlTests : TestBase
+	public class RangeControlTest : TestBase
 	{
 		[Test]
 		public void Orientation()

@@ -10,7 +10,7 @@ using FuseTest;
 
 namespace FuseTest
 {
-	public class ElementPropetiesTests : TestBase
+	public class ElementPropetiesTest : TestBase
 	{
 
 		[Test]

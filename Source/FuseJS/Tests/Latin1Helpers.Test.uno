@@ -4,7 +4,7 @@ using Fuse.Scripting;
 
 namespace FuseJS.Test
 {
-	public class Latin1HelpersTests
+	public class Latin1HelpersTest
 	{
 		[Test]
 		public void DecodeLatin1_given_valid_base64_encoded_arg_decodes_string()

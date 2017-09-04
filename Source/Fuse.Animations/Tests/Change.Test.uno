@@ -5,7 +5,7 @@ using FuseTest;
 
 namespace Fuse.Animations.Test
 {
-	public class ChangeTests : TestBase
+	public class ChangeTest : TestBase
 	{
 		[Test]
 		/*

@@ -5,7 +5,7 @@ using FuseTest;
 
 namespace Fuse.Triggers.Test
 {
-	public class AddingAnimationTests : TestBase
+	public class AddingAnimationTest : TestBase
 	{
 		[Test]
 		public void DelayFrameTest()

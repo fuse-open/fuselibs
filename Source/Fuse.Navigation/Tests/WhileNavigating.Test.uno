@@ -5,7 +5,7 @@ using FuseTest;
 
 namespace Fuse.Navigation.Test
 {
-	public class WhileNavigatingTests : TestBase
+	public class WhileNavigatingTest : TestBase
 	{
 		[Test]
 		public void Basic()

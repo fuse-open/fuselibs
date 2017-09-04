@@ -6,11 +6,8 @@ using Uno.Testing;
 using Fuse;
 using Fuse.Elements;
 using Fuse.Controls;
-using Fuse.Controls.Test;
-using FuseTest;
-using Fuse.Controls.Test.Helpers;
 
-namespace Fuse.Controls.Test
+namespace FuseTest
 {
 	public class PanelTester
 	{

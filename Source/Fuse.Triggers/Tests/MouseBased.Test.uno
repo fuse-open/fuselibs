@@ -10,7 +10,7 @@ using FuseTest;
 
 namespace Fuse.Triggers.Test
 {
-	public class MouseBasedTests : TestBase
+	public class MouseBasedTest : TestBase
 	{
 		TestRootPanel CreateRoot()
 		{

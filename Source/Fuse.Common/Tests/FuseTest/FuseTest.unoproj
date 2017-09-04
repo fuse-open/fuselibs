@@ -4,6 +4,7 @@
     "Fuse.Controls",
     "Fuse.Controls.Panels",
     "Fuse.Controls.Primitives",
+    "Fuse.Controls.ScrollView",
     "Fuse.Drawing",
     "Fuse.Drawing.Primitives",
     "Fuse.Elements",
