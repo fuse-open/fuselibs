@@ -1,5 +1,8 @@
 # Unreleased
 
+## Rectangle
+- Fixed issue where Rectangles could render incorreclty due to FP16 precision limitation.
+
 ## Navigation
 - Added `Navigator.Pages` to bind the local history to an observable/model
 - Added `PageControl.Pages` to bind the list of available pages to an observable/model
