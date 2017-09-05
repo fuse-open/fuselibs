@@ -5,6 +5,12 @@ require("FuseJS/Internal/ZonePatches");
 
 var rootZone = Zone.current;
 
+function shouldEmitProperty(key) {
+	return key[0] !== "$"
+		|| key === "$path"
+		|| key === "$template"
+}
+
 function Model(source)
 {
 	var stateToMeta = new Map();
@@ -60,7 +66,7 @@ function Model(source)
 
 		meta.isClass = false;
 		for (var k in state) {
-			if (k.startsWith("$")) continue;
+			if (!shouldEmitProperty(k)) continue;
 			var v = state[k];
 			if (v instanceof Function) {
 				node[k] = wrapFunction(k, v);
@@ -223,7 +229,7 @@ function Model(source)
 			}
 			else {
 				for (var k in state) {
-					if (k.startsWith("$")) continue;
+					if (!shouldEmitProperty(k)) continue;
 					var v = state[k];
 					update(k, v);
 				}
