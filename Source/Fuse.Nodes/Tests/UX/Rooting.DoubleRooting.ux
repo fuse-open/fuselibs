@@ -1,0 +1,3 @@
+<Panel ux:Class="UX.Rooting.DoubleRooting">
+	<Fuse.Test.RootOrderVisual ux:Name="rov"/>
+</Panel>
