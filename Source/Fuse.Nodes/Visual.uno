@@ -103,7 +103,11 @@ namespace Fuse
 			{
 				// Use the IEnumerable<Node> implementation here, as this correctly deals
 				// with the list being manipulated during rooting/unrooting
-				foreach (var c in Children) c.RootInternal(this);
+				foreach (var c in Children) 
+				{
+					if (c.IsUnrooted)
+						c.RootInternal(this);
+				}
 			}
 
 			//this forces an invalidation now that we're rooted (ensures no old stale value is there)
