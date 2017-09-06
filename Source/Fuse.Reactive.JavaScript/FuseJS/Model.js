@@ -192,7 +192,16 @@ function Model(source)
 
 		var changesDetected = 0;
 
-		meta.diff = function() {
+		meta.diff = function(visited) {
+			if(visited == undefined) {
+				visited = [];
+			}
+			if(visited.indexOf(state) > -1) {
+				return;
+			}
+
+			visited.push(state);
+
 			isDirty = false;
 
 			if (meta.parents.length === 0) { 
@@ -231,7 +240,7 @@ function Model(source)
 				for (var k in state) {
 					if (!shouldEmitProperty(k)) continue;
 					var v = state[k];
-					update(k, v);
+					update(k, v, visited);
 				}
 			}
 
@@ -293,7 +302,7 @@ function Model(source)
 			meta.diff();
 		}
 
-		function update(key, value)
+		function update(key, value, visited)
 		{
 			if (value instanceof Function) {
 				if (!value.$isWrapped) {
@@ -310,7 +319,7 @@ function Model(source)
 				if (keyMeta instanceof Object && meta.node[key].$id == keyMeta.id) 
 				{ 
 					if (!keyMeta.isClass) { 
-						keyMeta.diff(); 
+						keyMeta.diff(visited); 
 					}
 				}
 				else 
@@ -324,7 +333,7 @@ function Model(source)
 
 				if (keyMeta instanceof Object && meta.node[key].$id === keyMeta.id) {
 					if (!keyMeta.isClass) {
-						keyMeta.diff();
+						keyMeta.diff(visited);
 					}
 				}
 				else { 
