@@ -173,6 +173,17 @@ namespace Fuse.Reactive.Test
 				Assert.AreEqual( "5", e.r.UseValue );
 			}
 		}
+		
+		[Test]
+		public void Loop2()
+		{
+			var e = new UX.Model.Loop2();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.StepFrameJS();
+				Assert.AreEqual("5", GetRecursiveText(e) );
+			}
+		}
 
 		[Test]
 		public void Pod()
