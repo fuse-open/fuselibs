@@ -88,6 +88,13 @@ namespace Fuse
 		}
 
 		IViewport _viewport;
+		
+		bool _childrenShouldRoot = false;
+		internal override bool ShouldRootChildren		
+		{
+			get { return IsRootingStarted && _childrenShouldRoot; }
+		}
+
 		protected override void OnRooted()
 		{
 			base.OnRooted();
@@ -98,6 +105,10 @@ namespace Fuse
 			WTIRooted();
 
 			OnRootedPreChildren();
+			//children should not be rooted until after the call to OnRootedPreChildren. Certain behaviours, like
+			//bindings, may add children prior to this point. This boolean defers the rooting freeing behaviours
+			//and visuals from worrying about when it's safe to add children.
+			_childrenShouldRoot = true;
 
 			if (HasChildren)
 			{
@@ -125,7 +136,8 @@ namespace Fuse
 		protected override void OnUnrooted()
 		{
 			base.OnUnrooted();
-
+			_childrenShouldRoot = false;
+			
 			UnrootResources();
 			_viewport = null;
 
