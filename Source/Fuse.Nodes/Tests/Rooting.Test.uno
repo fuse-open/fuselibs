@@ -2,6 +2,8 @@ using Uno;
 using Uno.Testing;
 using Uno.UX;
 
+using Fuse.Controls;
+
 using FuseTest;
 
 namespace Fuse.Test
@@ -71,6 +73,44 @@ namespace Fuse.Test
 				Assert.IsTrue(p.Children.Contains(p.P2));
 				Assert.IsTrue(p.P2.IsRootingCompleted);
 			}
+		}
+		
+		//https://github.com/fusetools/fuselibs-public/issues/430
+		[Test]
+		public void DoubleRooting()
+		{
+			var p = new UX.Rooting.DoubleRooting();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				Assert.AreEqual( "okay", GetText(p.rov));
+			}
+		}
+	}
+	
+	/*
+		This mimics a behavior that `PageControl.Pages` and `AlternateRoot` could exhibit. Those might change thus as not being relied upon to test the rooting guarantee. This new class tests a specific scenario where those classes failed.
+		
+		Refer to https://github.com/fusetools/fuselibs-public/issues/430
+	*/
+	public class RootOrderVisual : Panel
+	{
+		Text _p;
+		
+		//bindings resolve prior to OnRooted, but during rooting, this simulates that
+		protected override void OnRootedPreChildren()
+		{
+			base.OnRootedPreChildren();
+			
+			_p = new Text();
+			_p.Value = "okay";
+			Children.Add(_p);
+		}
+		
+		protected override void OnUnrooted()
+		{
+			base.OnUnrooted();
+			Children.Remove(_p);
+			_p = null;
 		}
 	}
 }
