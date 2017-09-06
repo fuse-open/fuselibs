@@ -11,6 +11,11 @@ function shouldEmitProperty(key) {
 		|| key === "$template"
 }
 
+function isThenable(thing) {
+	return typeof thing === "object"
+		&& typeof thing.then === "function";
+}
+
 function Model(source)
 {
 	var stateToMeta = new Map();
@@ -73,7 +78,7 @@ function Model(source)
 				state[k] = node[k];
 				meta.isClass = true;
 			}
-			else if (v instanceof Promise) {
+			else if (isThenable(v)) {
 				node[k] = null;
 				dealWithPromise(k, v);
 			}
@@ -393,7 +398,7 @@ function Model(source)
 		}
 
 		function wrap(key, item) {
-			if (item instanceof Promise) {
+			if (isThenable(item)) {
 				dealWithPromise(key, item);
 			}
 			else if (item instanceof Array) {
