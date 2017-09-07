@@ -121,7 +121,10 @@ namespace Fuse.Gestures.Internal
 		bool _begun;
 		void IGesture.OnCaptureChanged( PointerEventArgs args, CaptureType type, CaptureType prev )
 		{
-			Point p = _point[0].Down == -1 ? _point[0] : _point[1];
+			var p = PointFromArgs(args);
+			if (p == null)
+				p = _point[0].Down == -1 ? _point[0] : _point[1];
+				
 			if (p.Down == -1)
 			{
 				p.Start = p.Current = p.Previous = FromWindow(args.WindowPoint);
