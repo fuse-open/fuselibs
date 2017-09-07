@@ -12,6 +12,17 @@ namespace FuseTest
 	*/
 	public abstract class ObservableData : IObservable
 	{
+		protected enum Flags
+		{
+			None = 0,
+			ReadOnly = 1 << 0,
+		}
+		Flags _flags;
+		protected ObservableData( Flags flags )
+		{
+			_flags = flags;
+		}
+		
 		List<IObserver> _observers;
 		
 		ISubscription IObservable.Subscribe(IObserver observer)
@@ -27,7 +38,9 @@ namespace FuseTest
 				
 			OnSubscribe(observer);
 			
-			return new Subscription{ Source = this, Observer = observer };
+			return _flags.HasFlag(Flags.ReadOnly) ?
+				(ISubscription)new ReadOnlySubscription{ Source = this, Observer = observer }	:
+				(ISubscription)new Subscription{ Source = this, Observer = observer };
 		}
 		
 		void Unsubscribe(IObserver observer)
@@ -48,6 +61,13 @@ namespace FuseTest
 				Source.Unsubscribe(Observer);
 			}
 			
+			public void ClearExclusive() { Fuse.Diagnostics.InternalError( "Unsupported", this ); }
+			public void SetExclusive(object newValue) { Fuse.Diagnostics.InternalError( "Unsupported", this ); }
+			public void ReplaceAllExclusive(IArray values) { Source.ReplaceAllExclusive(values); }
+		}
+		
+		class ReadOnlySubscription : Subscription
+		{
 			public void ClearExclusive() { Fuse.Diagnostics.InternalError( "ReadOnly array", this ); }
 			public void SetExclusive(object newValue) { Fuse.Diagnostics.InternalError( "ReadOnly array", this ); }
 			public void ReplaceAllExclusive(IArray values) { Fuse.Diagnostics.InternalError( "ReadOnly array", this ); }
@@ -55,6 +75,7 @@ namespace FuseTest
 		
 		virtual protected void OnSubscription() { }
 		virtual protected void OnUnsubscription() { }
+		virtual protected void ReplaceAllExclusive(IArray values) {  Fuse.Diagnostics.InternalError( "Unsupported", this ); }
 
 		protected bool HasSubscription
 		{
@@ -148,8 +169,12 @@ namespace FuseTest
 	/**
 		A typed observable list. Only the owner can modify the list, for subscribers it is readonly.
 	*/
-	public class ReadOnlyObservableList<T> : ObservableData
+	public class ObservableList<T> : ObservableData
 	{
+		public ObservableList()
+			: base( Flags.None )
+		{ }
+		
 		List<T> _values = new List<T>();
 		public void ReplaceAll(T[] values)
 		{
@@ -199,6 +224,13 @@ namespace FuseTest
 			return _values[index];
 		}
 		
+		protected override void ReplaceAllExclusive(IArray values)
+		{
+			_values.Clear();
+			for (int i=0; i < values.Length; ++i)
+				_values.Add( (T)values[i]);
+		}
+		
 		public int Count { get { return _values.Count; } }
 		public T this[int index] { get { return _values[index]; } }
 	}
@@ -208,9 +240,12 @@ namespace FuseTest
 	*/
 	public class ReadOnlyObservableData<T> : ObservableData where T : object
 	{
-		public ReadOnlyObservableData() { }
+		public ReadOnlyObservableData() 
+			: base( Flags.ReadOnly )
+		{ }
 		
 		public ReadOnlyObservableData( T initialValue )
+			: base( Flags.ReadOnly )
 		{
 			_value = initialValue;
 		}
