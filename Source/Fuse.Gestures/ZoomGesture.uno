@@ -98,7 +98,7 @@ namespace Fuse.Gestures
 		
 		float _minimum = 0;
 		/**
-			The minimum zoom factor that will be set this gesture.
+			The minimum zoom factor that will be set by this gesture.
 		*/
 		public float Minimum
 		{
