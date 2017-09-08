@@ -23,6 +23,7 @@
     "../Fuse.Marshal/Fuse.Marshal.unoproj",
     "../Fuse.Reactive.Expressions/Fuse.Reactive.Expressions.unoproj",
     "../Fuse.Reactive.Bindings/Fuse.Reactive.Bindings.unoproj",
+    "../Fuse.Reactive/Fuse.Reactive.unoproj",
     "../Fuse.Common/Fuse.Common.unoproj",
     "../Fuse.Scripting/Fuse.Scripting.unoproj",
     "../Fuse.Nodes/Fuse.Nodes.unoproj",

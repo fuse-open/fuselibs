@@ -1,6 +1,8 @@
 using Uno;
 using Uno.Collections;
 
+using Fuse.Reactive;
+
 namespace Fuse.Navigation
 {
 	enum RoutingOperation
@@ -40,18 +42,19 @@ namespace Fuse.Navigation
 	{
 		public string Path;
 		public string Parameter;
+		public object Context;
 		[WeakReference]
 		public Visual Visual;
 		
 		//if there is an Outlet descendent of this page it should use this to track it's pages. This will
 		//keep the pages hierarchy/history during navigation.
-		List<RouterPage> _childRouterPages;
-		public List<RouterPage> ChildRouterPages
+		ObserverMap<RouterPage> _childRouterPages;
+		public ObserverMap<RouterPage> ChildRouterPages
 		{
 			get 
 			{
 				if (_childRouterPages == null)
-					_childRouterPages = new List<RouterPage>();
+					_childRouterPages = new PagesMap();
 				return _childRouterPages;
 			}
 		}
@@ -78,6 +81,20 @@ namespace Fuse.Navigation
 				router.OnHistoryChanged();
 		}
 	}
+	
+	class PagesMap : ObserverMap<RouterPage>
+	{
+		protected override RouterPage Map(object v)
+		{
+			return new RouterPage{ Context = v };
+		}
+		
+		protected override object Unmap(RouterPage mv)
+		{
+			return mv.Context;
+		}
+	}
+	
 	
 	/**	Represents an object that handle navigation to one @Route path element. */
 	interface IRouterOutlet

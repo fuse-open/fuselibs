@@ -20,7 +20,7 @@ namespace Fuse.Reactive
 		A two-way mapped observable list. This serves as the outermost list: the list functions here will update the backing
 		Observable.
 	*/
-	abstract class ObserverMap<T> : IObserver, IArray where T : class
+	abstract class ObserverMap<T> : IObserver where T : class
 	{
 		internal List<T> _list = new List<T>();
 		
@@ -29,10 +29,13 @@ namespace Fuse.Reactive
 	
 		internal object UVUnmap(T mv) { return Unmap(mv); }
 		
-		public int Length { get { return _list.Count; } }
-		object IArray.this[int index] {  get { return _list[index]; } }		
-		//UNO: can't have a second indexer returning T
-		public T Get(int index) {  return _list[index]; }
+		public int Count { get { return _list.Count; } }
+		public T this[int index]
+		{
+			get { return _list[index]; }
+			set { _list[index] = value; }
+		}
+			
 		
 		IObservable _observable;
 		ISubscription _subscription;

@@ -15,17 +15,17 @@ namespace Fuse.Reactive.Test
 			
 			rl.Add( new Source(5) );
 			rl.Insert(0, new Source(3) );
-			Assert.AreEqual( 2, tm.Length );
-			Assert.AreEqual( 5, tm.Get(1).InitValue );
-			Assert.AreEqual( 3, tm.Get(0).InitValue );
+			Assert.AreEqual( 2, tm.Count );
+			Assert.AreEqual( 5, tm[1].InitValue );
+			Assert.AreEqual( 3, tm[0].InitValue );
 			
 			rl.Replace(1, new Source(7));
 			rl.RemoveAt(0);
-			Assert.AreEqual( 1, tm.Length );
-			Assert.AreEqual( 7, tm.Get(0).InitValue );
+			Assert.AreEqual( 1, tm.Count );
+			Assert.AreEqual( 7, tm[0].InitValue );
 			
 			rl.Clear();
-			Assert.AreEqual( 0, tm.Length );
+			Assert.AreEqual( 0, tm.Count );
 			
 			tm.Detach();
 		}
@@ -66,11 +66,11 @@ namespace Fuse.Reactive.Test
 			rl.Insert( 1, new Source(3) ); //1,3,2
 			tm.Insert( 1, new Mapped { InitValue = 4 } ); //1,4,3,2
 			Assert.AreEqual( 4, rl.Count );
-			Assert.AreEqual( 4, tm.Length );
+			Assert.AreEqual( 4, tm.Count );
 			var expect = new[]{ 1, 4, 3, 2 };
 			for (int i=0; i < expect.Length; ++i)
 			{
-				Assert.AreEqual( expect[i], tm.Get(i).InitValue );
+				Assert.AreEqual( expect[i], tm[i].InitValue );
 				Assert.AreEqual( expect[i], rl[i].Value );
 			}
 			
