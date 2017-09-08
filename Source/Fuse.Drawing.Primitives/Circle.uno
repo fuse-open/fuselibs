@@ -78,6 +78,9 @@ namespace Fuse.Drawing.Primitives
 		internal void Draw(DrawContext dc, Element visual, float radius, Brush brush,
 			Coverage cover, LimitCoverage limit, float extend, float2 center, float smoothness )
 		{
+			if (radius <= 0)
+				return;
+
 			if (_bufferVertex == null)
 				InitBuffers();
 				
