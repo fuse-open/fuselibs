@@ -28,6 +28,7 @@
     "Fuse.Common.Test.Helpers",
     "Fuse.Controls.Navigation",
     "Fuse.Charting",
+    "Fuse.Charting.Test",
     "FuseTest",
     "Fabric"
   ],
