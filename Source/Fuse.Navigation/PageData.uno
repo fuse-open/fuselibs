@@ -42,12 +42,12 @@ namespace Fuse.Navigation
 				return;
 			}
 			
-			if (rp.Visual != null && visual != rp.Visual)
+			if (rp.Node != null && visual != rp.Node)
 			{
 				Fuse.Diagnostics.InternalError( "Mismatched page visual", this );
 				return;
 			}
-			rp.Visual = visual;
+			rp.Node = visual;
 			
 			this.RouterPage = rp;
 			visual.Prepare(rp.Parameter);

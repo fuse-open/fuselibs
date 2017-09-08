@@ -39,10 +39,17 @@ namespace Fuse.Controls
 			
 			if (_pageHistory == null)
 				return;
-				
+			
 			var obs = _pageHistory as IObservable;
 			if (obs != null)
+			{
 				_pageHistorySubscription = obs.Subscribe(this);
+				AncestorRouterPage.ChildRouterPages.Attach( obs );
+			}
+			else
+			{
+				Fuse.Diagnostics.UserError( "PageHistory expects an observable array. It will not work correctly otherwise", this );
+			}
 				
 			_curPageIndex = -1;
 			FullUpdatePages(UpdateFlags.ForceGoto);

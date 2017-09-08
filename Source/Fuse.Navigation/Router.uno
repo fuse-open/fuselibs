@@ -111,6 +111,10 @@ namespace Fuse.Navigation
 						_masterRootPage = _rootPage;
 				}
 			}
+			
+			_rootPage.Node = Parent;
+			if (_rootPage.Node == null)
+				Fuse.Diagnostics.UserError( "No visual routing outlet was found",this );
 		}
 
 		protected override void OnUnrooted()

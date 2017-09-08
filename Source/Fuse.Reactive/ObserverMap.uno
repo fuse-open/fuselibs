@@ -26,6 +26,7 @@ namespace Fuse.Reactive
 		
 		protected abstract T Map(object v);
 		protected abstract object Unmap(T mv);
+		protected virtual void OnUpdated() { }
 	
 		internal object UVUnmap(T mv) { return Unmap(mv); }
 		
@@ -41,6 +42,7 @@ namespace Fuse.Reactive
 		ISubscription _subscription;
 		public void Attach( IObservable obs ) 
 		{
+			Detach();
 			_observable = obs;
 			_subscription = _observable.Subscribe(this);
 			((IObserver)this).OnNewAll(obs);
@@ -93,6 +95,7 @@ namespace Fuse.Reactive
 		void IObserver.OnClear()
 		{
 			_list.Clear();
+			OnUpdated();
 		}
 		
 		void IObserver.OnNewAll(IArray values)
@@ -100,37 +103,44 @@ namespace Fuse.Reactive
 			_list.Clear();
 			for (int i=0; i < values.Length;  ++i)
 				_list.Add( Map(values[i]) );
+			OnUpdated();
 		}
 		
 		void IObserver.OnNewAt(int index, object newValue)
 		{
 			_list[index] = Map(newValue);
+			OnUpdated();
 		}
 		
 		void IObserver.OnSet(object newValue)
 		{
 			_list.Clear();
 			_list.Add( Map(newValue) );
+			OnUpdated();
 		}
 		
 		void IObserver.OnAdd(object addedValue)
 		{
 			_list.Add( Map(addedValue) );
+			OnUpdated();
 		}
 		
 		void IObserver.OnRemoveAt(int index)
 		{
 			_list.RemoveAt(index);
+			OnUpdated();
 		}
 		
 		void IObserver.OnInsertAt(int index, object value)
 		{
 			_list.Insert(index, Map(value));
+			OnUpdated();
 		}
 		
 		void IObserver.OnFailed(string message)
 		{
 			_list.Clear();
+			OnUpdated();
 		}
 	}
 }
