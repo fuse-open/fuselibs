@@ -27,6 +27,9 @@ namespace Fuse.Reactive
 
 		public override void Unsubscribe()
 		{
+			if (_isDisposed) return;
+			_isDisposed = true;
+
 			for (int i = 0; i < _items.Count; i++)
 			{
 				var d = _items[i] as ValueMirror;
