@@ -28,6 +28,9 @@ namespace Fuse.Scripting
 
 		public override void Unsubscribe()
 		{
+			if (_isDisposed) return;
+			_isDisposed = true;
+
 			foreach (var p in _props)
 			{
 				var d = p.Value as ValueMirror;
