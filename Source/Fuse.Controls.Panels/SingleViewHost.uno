@@ -47,7 +47,11 @@ namespace Fuse.Controls
 			{
 				_host = host;
 				_host.SetOnscreen();
-				UpdateManager.PerformNextFrame(NextFrame);
+
+				var delay = defined(ANDROID) ? 2 : 1;
+				// Delay disabling of draw for 2 frames on android. In testing I observed that
+				// there often were a 2 frame delay for the native view to show up on screen.
+				UpdateManager.PerformNextFrame(NextFrame, UpdateStage.Primary, delay);
 			}
 
 			void NextFrame()
