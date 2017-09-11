@@ -7,7 +7,7 @@ using Fuse.Drawing;
 namespace Fuse.Controls
 {
 	using Fuse.Controls.Native;
-	extern(Android || iOS) internal class SingleViewHost : Control, ITreeRenderer, IDisposable
+	extern(Android || iOS) public class SingleViewHost : Control, ITreeRenderer, IDisposable
 	{
 		public enum RenderState
 		{
