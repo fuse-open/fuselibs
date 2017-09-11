@@ -7,7 +7,7 @@ using OpenGL;
 namespace Fuse.Controls.Native
 {
 	extern(Android || iOS)
-	internal interface IViewHandleRenderer : IDisposable
+	public interface IViewHandleRenderer : IDisposable
 	{
 		void Draw(ViewHandle viewHandle, float4x4 localToClipTransform, float2 position, float2 size, float density);
 		void Invalidate();
