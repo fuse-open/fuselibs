@@ -436,7 +436,7 @@ function Model(source)
 			var path = getPath();
 			if (path.length === 0) { return key }
 			if (path.length === 1) { return path[0] + "." + key; }
-			return path.reduce((a, b) => a + "." + b) + "." + key;
+			return path.concat(key).join(".");
 		}
 
 		function setInternal(path, key, value, omitStateChange) {
