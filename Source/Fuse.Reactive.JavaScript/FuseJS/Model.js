@@ -125,7 +125,7 @@ function Model(source)
 				else if (descs[p].get instanceof Function)
 				{
 					if (isThenable(value)) { node[p] = null; dealWithPromise(p, value); }
-					else { node[p] = value; }
+					else { node[p] = wrap(p, value); }
 					propGetters[p] = descs[p].get;
 				}
 			}
@@ -151,7 +151,7 @@ function Model(source)
 						dealWithPromise(p, v);
 					}
 					else {
-						set(p, v, true); // don't count this as a state change
+						set(p, wrap(p, v), true); // don't count this as a state change
 					}
 				}
 				finally
