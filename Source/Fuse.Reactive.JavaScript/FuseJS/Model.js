@@ -124,7 +124,7 @@ function Model(source)
 				}
 				else if (descs[p].get instanceof Function)
 				{
-					if (value instanceof Promise) { node[p] = null; dealWithPromise(p, value); }
+					if (isThenable(value)) { node[p] = null; dealWithPromise(p, value); }
 					else { node[p] = value; }
 					propGetters[p] = descs[p].get;
 				}
@@ -147,7 +147,7 @@ function Model(source)
 				try
 				{
 					var v = propGetters[p].call(state);
-					if (v instanceof Promise) {
+					if (isThenable(v)) {
 						dealWithPromise(p, v);
 					}
 					else {
@@ -217,7 +217,7 @@ function Model(source)
 
 			if (state instanceof Array) {
 				for (var i = 0; i < Math.min(state.length, node.length); i++) { 
-					if (state[i] instanceof Promise) { dealWithPromise(i, state[i]); }
+					if (isThenable(state[i])) { dealWithPromise(i, state[i]); }
 					if (oldValueEquals(i, state[i])) continue;
 					
 					if (state.length > node.length) {
@@ -315,7 +315,7 @@ function Model(source)
 					set(key, state[key]);
 				}
 			}
-			else if (value instanceof Promise) {
+			else if (isThenable(value)) {
 				dealWithPromise(key, value);
 			}
 			else if (value instanceof Array) {
