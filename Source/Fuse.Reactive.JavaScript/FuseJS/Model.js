@@ -443,13 +443,6 @@ function Model(source)
 			if (node[key] === value) { return false; }
 			node[key] = value;
 
-			var msg = {
-				operation: "set",
-				path: path,
-				key: key,
-				value: value
-			}
-
 			if (!omitStateChange) { changesDetected++; }
 
 			return true;
