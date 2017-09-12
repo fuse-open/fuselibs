@@ -191,21 +191,22 @@ function Model(source)
 			if (isDirty) { return; }
 			isDirty = true;
 			rootZone.run(function() {
-				setTimeout(meta.diff, 0)
+				setTimeout(function() {
+					meta.diff(new Set())
+				}, 0)
 			});
 		}
 
 		var changesDetected = 0;
 
 		meta.diff = function(visited) {
-			if(visited == undefined) {
-				visited = [];
+			if(!(visited instanceof Set)) {
+				throw new Error("Needs set of visited nodes");
 			}
-			if(visited.indexOf(state) > -1) {
+			if(visited.has(state)) {
 				return;
 			}
-
-			visited.push(state);
+			visited.add(state);
 
 			isDirty = false;
 
@@ -304,7 +305,7 @@ function Model(source)
 				setInternal(meta.getPath(), key, value);
 			}
 
-			meta.diff();
+			meta.diff(new Set());
 		}
 
 		function update(key, value, visited)
