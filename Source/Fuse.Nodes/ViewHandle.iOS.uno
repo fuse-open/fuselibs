@@ -19,9 +19,16 @@ namespace Fuse.Controls.Native
 			Manual
 		}
 
+		public enum Invalidation
+		{
+			None,
+			OnInvalidateVisual,
+		}
+
 		public readonly ObjC.Object NativeHandle;
 
 		internal readonly bool IsLeafView;
+		internal readonly bool NeedsInvalidation;
 
 		internal bool NeedsRenderBounds;
 
@@ -29,10 +36,11 @@ namespace Fuse.Controls.Native
 
 		public ViewHandle(ObjC.Object nativeHandle, InputMode inputMode = InputMode.Automatic) : this(nativeHandle, false, inputMode) { }
 
-		public ViewHandle(ObjC.Object nativeHandle, bool isLeafView, InputMode inputMode = InputMode.Automatic)
+		public ViewHandle(ObjC.Object nativeHandle, bool isLeafView, InputMode inputMode = InputMode.Automatic, Invalidation invalidation = Invalidation.None)
 		{
 			NativeHandle = nativeHandle;
 			IsLeafView = isLeafView;
+			NeedsInvalidation = invalidation == Invalidation.OnInvalidateVisual;
 			_inputMode = inputMode;
 			InitAnchorPoint();
 			IsEnabled = true;
@@ -207,8 +215,11 @@ namespace Fuse.Controls.Native
 		[Foreign(Language.ObjC)]
 		public void Invalidate()
 		@{
-			UIView* view = (UIView*)@{Fuse.Controls.Native.ViewHandle:Of(_this).NativeHandle:Get()};
-			[view setNeedsDisplay];
+			if (@{Fuse.Controls.Native.ViewHandle:Of(_this).NeedsInvalidation})
+			{
+				UIView* view = (UIView*)@{Fuse.Controls.Native.ViewHandle:Of(_this).NativeHandle:Get()};
+				[view setNeedsDisplay];
+			}
 		@}
 
 		public void SetBackgroundColor(float4 c)

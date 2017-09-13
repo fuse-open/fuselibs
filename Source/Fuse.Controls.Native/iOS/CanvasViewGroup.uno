@@ -11,7 +11,8 @@ namespace Fuse.Controls.Native.iOS
 		ISurfaceDrawable _surfaceDrawable;
 		float _pixelsPerPoint;
 
-		public CanvasViewGroup(ISurfaceDrawable surfaceDrawable, float pixelsPerPoint) : base(Create(pixelsPerPoint))
+		public CanvasViewGroup(ISurfaceDrawable surfaceDrawable, float pixelsPerPoint)
+			: base(Create(pixelsPerPoint), false, ViewHandle.InputMode.Automatic, ViewHandle.Invalidation.OnInvalidateVisual)
 		{
 			NeedsRenderBounds = true;
 			_surfaceDrawable = surfaceDrawable;

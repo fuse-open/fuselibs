@@ -12,7 +12,8 @@ namespace Fuse.Controls.Native.Android
 		ISurfaceDrawable _surfaceDrawable;
 		float _pixelsPerPoint;
 
-		public CanvasViewGroup(ISurfaceDrawable surfaceDrawable, float pixelsPerPoint) : base(Instantiate())
+		public CanvasViewGroup(ISurfaceDrawable surfaceDrawable, float pixelsPerPoint)
+			: base(Instantiate(), false, false, ViewHandle.Invalidation.OnInvalidateVisual)
 		{
 			_surfaceDrawable = surfaceDrawable;
 			_pixelsPerPoint = pixelsPerPoint;
