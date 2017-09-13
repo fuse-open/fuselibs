@@ -4,12 +4,19 @@ using Uno.Compiler.ExportTargetInterop;
 
 namespace Fuse.Controls.Native
 {
+
 	extern(!Android && !iOS)
 	public class ViewHandle { }
 
 	extern(Android)
 	public class ViewHandle : IDisposable
 	{
+		public enum Invalidation
+		{
+			None,
+			OnInvalidateVisual,
+		}
+
 		public readonly Java.Object NativeHandle;
 
 		int2 _size = int2(0);
@@ -26,6 +33,7 @@ namespace Fuse.Controls.Native
 			}
 		}
 
+		internal readonly bool NeedsInvalidation;
 		internal readonly bool IsLeafView;
 		internal readonly bool HandlesInput;
 
@@ -33,11 +41,14 @@ namespace Fuse.Controls.Native
 
 		public ViewHandle(Java.Object nativeHandle, bool isLeafView) : this(nativeHandle, isLeafView, false) { }
 
-		public ViewHandle(Java.Object nativeHandle, bool isLeafView, bool handlesInput)
+		public ViewHandle(Java.Object nativeHandle, bool isLeafView, bool handlesInput) : this(nativeHandle, isLeafView, handlesInput, Invalidation.None) { }
+
+		public ViewHandle(Java.Object nativeHandle, bool isLeafView, bool handlesInput, Invalidation invalidation)
 		{
 			NativeHandle = nativeHandle;
 			IsLeafView = isLeafView;
 			HandlesInput = handlesInput;
+			NeedsInvalidation = invalidation == Invalidation.OnInvalidateVisual;
 		}
 
 		public virtual void Dispose() {}
@@ -131,7 +142,7 @@ namespace Fuse.Controls.Native
 
 		public void Invalidate()
 		{
-			if (IsViewGroup())
+			if (NeedsInvalidation)
 				InvalidateImpl();
 		}
 

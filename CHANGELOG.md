@@ -1,5 +1,8 @@
 # Unreleased
 
+## ViewHandle
+- Fixed issue where Images with Mask could end up not displaying. This happend due to unnecessary invalidation of the implicit native GraphicsView in the app root. This invalidation was introduced when the Surface API was implemented for native. Invalidation is now opt-in on ViewHandle
+
 ## Rectangle
 - Fixed issue where Rectangles could render incorreclty due to FP16 precision limitation.
 
