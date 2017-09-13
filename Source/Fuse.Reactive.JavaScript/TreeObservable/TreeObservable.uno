@@ -39,39 +39,42 @@ namespace Fuse.Reactive
 
 		public object Reflect(object obj)
 		{
-			var id = GetId(obj);
-			
-			if (id > -1) 
-			{
-				ValueMirror res;
-				
-				if (_reflections.TryGetValue(id, out res))
-					return res;
-			}
-
-			
-			if (obj is Scripting.Object)
-			{
-				var so = (Scripting.Object)obj;
-				var k = new TreeObject(so);
-				if (id > -1)
-					_reflections.Add(id, k); // Important to add to dictionary *before* calling Set
-				k.Set(this, so);
-				return k;
-			}
-			
-			if (obj is Scripting.Array)
-			{
-				var sa = (Scripting.Array)obj;
-				var k = new TreeArray(sa);
-				if (id > -1)
-					_reflections.Add(id, k); // Important to add to dictionary *before* calling Set
-				k.Set(this, sa);
-				return k;
-			}
-
 			if (obj is Scripting.Function)
 				return new FunctionMirror((Scripting.Function)obj);
+
+
+
+			if (obj is Scripting.Object || obj is Scripting.Array)
+			{
+				var id = GetId(obj);
+				if (id < 0)
+				{
+					throw new Exception("Expected model object to have $id");
+				}
+
+				ValueMirror res;
+				if (_reflections.TryGetValue(id, out res))
+					return res;
+
+
+				if (obj is Scripting.Object)
+				{
+					var so = (Scripting.Object)obj;
+					var k = new TreeObject(so);
+					_reflections.Add(id, k); // Important to add to dictionary *before* calling Set
+					k.Set(this, so);
+					return k;
+				}
+
+				if (obj is Scripting.Array)
+				{
+					var sa = (Scripting.Array)obj;
+					var k = new TreeArray(sa);
+					_reflections.Add(id, k); // Important to add to dictionary *before* calling Set
+					k.Set(this, sa);
+					return k;
+				}
+			}
 
 			return obj;
 		}
