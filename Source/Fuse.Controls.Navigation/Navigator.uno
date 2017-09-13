@@ -188,11 +188,13 @@ namespace Fuse.Controls
 				return RoutingResult.Change;
 				
 			routerPage.Visual = current.Visual;
-			if (routerPage.Parameter == current.Parameter)
+			if (routerPage.Parameter == current.Parameter &&
+				routerPage.Context == current.Context)
 				return RoutingResult.NoChange;
 				
-			return CompatibleParameter(routerPage.Parameter, _current.Parameter) ?
-				RoutingResult.MinorChange : RoutingResult.Change;
+			return RoutingResult.MinorChange;
+			//return CompatibleParameter(routerPage.Parameter, _current.Parameter) ?
+			//	RoutingResult.MinorChange : RoutingResult.Change;
 		}
 		
 		PrepareResult Prepare(RouterPage curPage, 
@@ -205,7 +207,8 @@ namespace Fuse.Controls
 			if (routerPage.Path == curPage.Path && curPageVisual != null)
 			{
 				//no change
-				if (routerPage.Parameter == curPage.Parameter)
+				if (routerPage.Parameter == curPage.Parameter &&
+					routerPage.Context == curPage.Context)
 					return new PrepareResult{ Page = curPage, Routing = RoutingResult.NoChange };
 					
 				// https://github.com/fusetools/fuselibs/issues/2982

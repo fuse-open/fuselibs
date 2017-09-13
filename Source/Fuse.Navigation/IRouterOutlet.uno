@@ -76,7 +76,8 @@ namespace Fuse.Navigation
 		
 		public override string ToString() 
 		{
-			return Path + "?" + Parameter + " " + Visual;
+			return Path + "?" + Parameter + " " + Visual + " " + 
+				(Context == null ? "no-ctx" : ("@" + Context.GetHashCode()));
 		}
 
 		internal static void BubbleHistoryChanged( Node at )

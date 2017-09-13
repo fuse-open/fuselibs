@@ -27,6 +27,8 @@ namespace Fuse.Navigation
 		public RouterPage RouterPage { get; private set; }
 	
 		public event RouterPageChangedHandler RouterPageChanged;
+
+		public object Context { get; private set; }
 		
 		public PageData( Visual visual ) 
 		{
@@ -51,9 +53,23 @@ namespace Fuse.Navigation
 			
 			this.RouterPage = rp;
 			visual.Prepare(rp.Parameter);
+			UpdateContextData( visual, rp.Context );
 			
 			if (RouterPageChanged != null)
 				RouterPageChanged( this, rp );
+		}
+		
+		void UpdateContextData( Visual page, object data )
+		{
+			var oldData = Context;
+			Context = data;
+			page.BroadcastDataChange(oldData, data);
+		}
+		
+		//TODO: temporary  until PageControl is migrated better
+		public void SetContext( object data )
+		{
+			UpdateContextData( Visual, data );
 		}
 		
 		static PropertyHandle _propPageData = Properties.CreateHandle();

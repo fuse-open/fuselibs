@@ -39,24 +39,35 @@ namespace Fuse.Reactive
 			
 		
 		IObservable _observable;
+		IObserver _slave;
 		ISubscription _subscription;
-		public void Attach( IObservable obs ) 
+		
+		/**
+			@param obs The observable to attach to
+			@param slace An optional slave observer that will also receive callbacks from the observable. 
+				This allows that slave to behave as a part of this map, rather than subscribing and getting
+				copies of the events. This is important especially when this map updates the observable,
+				we don't want the slave getting events for that.
+		*/
+		public void Attach( IObservable obs, IObserver slave ) 
 		{
 			Detach();
 			_observable = obs;
+			_slave = slave;
 			_subscription = _observable.Subscribe(this);
+			//treat the bound observable as the source-of-truth
 			((IObserver)this).OnNewAll(obs);
 		}
 		
 		public void Detach()
 		{
-			_list.Clear();
 			if (_subscription != null)
 			{
 				_subscription.Dispose();
 				_subscription = null;
 			}
 			_observable = null;
+			_slave = null;
 		}
 		
 		public void Add( T value )
@@ -96,6 +107,9 @@ namespace Fuse.Reactive
 		{
 			_list.Clear();
 			OnUpdated();
+			
+			if (_slave != null)
+				_slave.OnClear();
 		}
 		
 		void IObserver.OnNewAll(IArray values)
@@ -104,12 +118,18 @@ namespace Fuse.Reactive
 			for (int i=0; i < values.Length;  ++i)
 				_list.Add( Map(values[i]) );
 			OnUpdated();
+			
+			if (_slave != null)
+				_slave.OnNewAll(values);
 		}
 		
 		void IObserver.OnNewAt(int index, object newValue)
 		{
 			_list[index] = Map(newValue);
 			OnUpdated();
+			
+			if (_slave != null)
+				_slave.OnNewAt(index, newValue);
 		}
 		
 		void IObserver.OnSet(object newValue)
@@ -117,30 +137,45 @@ namespace Fuse.Reactive
 			_list.Clear();
 			_list.Add( Map(newValue) );
 			OnUpdated();
+			
+			if (_slave != null)
+				_slave.OnSet(newValue);
 		}
 		
 		void IObserver.OnAdd(object addedValue)
 		{
 			_list.Add( Map(addedValue) );
 			OnUpdated();
+			
+			if (_slave != null)
+				_slave.OnAdd(addedValue);
 		}
 		
 		void IObserver.OnRemoveAt(int index)
 		{
 			_list.RemoveAt(index);
 			OnUpdated();
+			
+			if (_slave != null)
+				_slave.OnRemoveAt(index);
 		}
 		
 		void IObserver.OnInsertAt(int index, object value)
 		{
 			_list.Insert(index, Map(value));
 			OnUpdated();
+			
+			if (_slave != null)
+				_slave.OnInsertAt(index, value);
 		}
 		
 		void IObserver.OnFailed(string message)
 		{
 			_list.Clear();
 			OnUpdated();
+			
+			if (_slave != null)
+				_slave.OnFailed(message);
 		}
 	}
 }
