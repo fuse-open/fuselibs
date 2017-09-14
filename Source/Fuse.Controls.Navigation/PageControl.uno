@@ -254,7 +254,6 @@ namespace Fuse.Controls
 		
 		protected override void UpdateProgress(Element page, NavigationPageState state, ControlPageData pd)
 		{
-			debug_log "Update: " + page;
 			var active = Math.Abs(state.Progress) < 1;
 
 			var elm = page as Element;

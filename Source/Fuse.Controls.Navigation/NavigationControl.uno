@@ -140,9 +140,6 @@ namespace Fuse.Controls
 						this.AncestorRouterPage = new RouterPage();
 				}
 			}
-			
-			for (var c = FirstChild<Element>(); c != null; c = c.NextSibling<Element>())
-				UpdateChild(c);
 		}
 		
 		protected override void OnRooted()
@@ -154,6 +151,10 @@ namespace Fuse.Controls
 			
 			Navigation.PageProgressChanged += OnPageProgressChanged;
 			
+			//do after child rooting since it relies on the navigation behaviour to have been rooted
+			for (var c = FirstChild<Element>(); c != null; c = c.NextSibling<Element>())
+				UpdateChild(c);
+				
 			OnPageHistoryChanged();
 		}
 		

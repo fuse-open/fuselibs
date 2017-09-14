@@ -1,0 +1,14 @@
+<Panel ux:Class="UX.PageControl.Visibility">
+	<PageControl ux:Name="nav">
+		
+		<Page ux:Name="pa">
+			<WhileVisible ux:Name="pav"/>
+		</Page>
+		<Page ux:Name="pb">
+			<WhileVisible ux:Name="pbv"/>
+		</Page>
+		<Page ux:Name="pc">
+			<WhileVisible ux:Name="pcv"/>
+		</Page>
+	</PageControl>
+</Panel>

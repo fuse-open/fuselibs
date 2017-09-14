@@ -285,6 +285,26 @@ namespace Fuse.Controls.Test
 				Assert.AreEqual( Fuse.Elements.Visibility.Visible, p.pa.Visibility );
 				Assert.AreEqual( Fuse.Elements.Visibility.Collapsed, p.pb.Visibility );
 				Assert.AreEqual( Fuse.Elements.Visibility.Collapsed, p.pc.Visibility );
+				Assert.AreEqual( 1, p.pav.Progress );
+				Assert.AreEqual( 0, p.pbv.Progress );
+				Assert.AreEqual( 0, p.pcv.Progress );
+				
+				p.nav.Active = p.pb;
+				root.StepFrame(0.1f); //just a bit, both visible
+				Assert.AreEqual( Fuse.Elements.Visibility.Visible, p.pa.Visibility );
+				Assert.AreEqual( Fuse.Elements.Visibility.Visible, p.pb.Visibility );
+				Assert.AreEqual( Fuse.Elements.Visibility.Collapsed, p.pc.Visibility );
+				Assert.AreEqual( 1, p.pav.Progress );
+				Assert.AreEqual( 1, p.pbv.Progress );
+				Assert.AreEqual( 0, p.pcv.Progress );
+				
+				root.StepFrame(1); //complete animation
+				Assert.AreEqual( Fuse.Elements.Visibility.Collapsed, p.pa.Visibility );
+				Assert.AreEqual( Fuse.Elements.Visibility.Visible, p.pb.Visibility );
+				Assert.AreEqual( Fuse.Elements.Visibility.Collapsed, p.pc.Visibility );
+				Assert.AreEqual( 0, p.pav.Progress );
+				Assert.AreEqual( 1, p.pbv.Progress );
+				Assert.AreEqual( 0, p.pcv.Progress );
 			}
 		}
 		
