@@ -55,6 +55,9 @@ namespace Fuse.Navigation
 			_region.Position = float2(_progress,0);
 			if (!GotoDesiredActive())
 				SetProgress(GetPageIndex(_active));
+				
+			//force events as the above may not actually change the values, yet the logical state can change
+			OnHistoryChanged();
 		}
 		
 		Visual _listenComplete;
@@ -159,7 +162,6 @@ namespace Fuse.Navigation
 			}
 			
 			TransitionToChild(element, mode.HasFlag(NavigationGotoMode.Bypass) );
-			OnHistoryChanged();
 		}
 		
 		/**
@@ -422,6 +424,7 @@ namespace Fuse.Navigation
 
 			_active = page;
 			OnActiveChanged(_active);
+			OnHistoryChanged();
 		}
 
 		float _seekBase;
