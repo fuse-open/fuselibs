@@ -1,5 +1,8 @@
 # Unreleased
 
+## Attract
+- Fixed an issue with `attract` not updating when using a data binding as the source value
+
 ## Fonts
 - Fixed bug where the default font on Android could end up being null.
 
