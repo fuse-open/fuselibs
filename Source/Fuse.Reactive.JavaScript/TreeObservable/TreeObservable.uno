@@ -125,7 +125,7 @@ namespace Fuse.Reactive
 			void PerformStart()
 			{
 				Perform(TreeObservable, 0);
-			}
+			} 
 
 			protected abstract int SpecialArgCount { get; }
 			protected abstract void Perform(object dc);

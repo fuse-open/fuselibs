@@ -12,7 +12,7 @@ namespace Fuse.Reactive
     public partial class JavaScript
     {
         static PropertyHandle _modelHandle = Properties.CreateHandle();
-
+		
         IExpression _model;
 
         void SetupModel()
@@ -55,6 +55,7 @@ namespace Fuse.Reactive
         }
 
         static JavaScript _appModel;
+		static string _appModelModuleId = null;
         [UXAttachedPropertySetter("Model"), UXNameScope]
         public static void SetAppModel(AppBase app, IExpression model)
         {
@@ -123,6 +124,16 @@ namespace Fuse.Reactive
             string className = "";
 			var thisSymbols = new List<string>();
             string module = ParseModelExpression(model, js, ref argString, ref className, thisSymbols);
+			
+			if(js == _appModel)
+			{
+				if(_appModelModuleId == module)
+				{
+					return;
+				}
+
+				_appModelModuleId = module;
+			}
             
             var code = "var Model = require('FuseJS/Model');\n"+
 					"var ViewModelAdapter = require('FuseJS/ViewModelAdapter')\n";
