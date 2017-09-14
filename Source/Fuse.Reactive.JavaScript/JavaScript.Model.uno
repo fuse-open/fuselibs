@@ -12,7 +12,7 @@ namespace Fuse.Reactive
     public partial class JavaScript
     {
         static PropertyHandle _modelHandle = Properties.CreateHandle();
-
+		
         IExpression _model;
 
         void SetupModel()
@@ -55,6 +55,7 @@ namespace Fuse.Reactive
         }
 
         static JavaScript _appModel;
+		static string _appModelModuleId = null;
         [UXAttachedPropertySetter("Model"), UXNameScope]
         public static void SetAppModel(AppBase app, IExpression model)
         {
@@ -62,9 +63,32 @@ namespace Fuse.Reactive
             {
                 _appModel = new JavaScript(null);
                 _appModel.FileName = "(model-script)";
-                app.Children.Add(_appModel);
+                app.RootViewport.Children.Add(_appModel);
+                
+                var previewState = PreviewState.Find(_appModel);
+                if(previewState != null)
+                {
+                    var appModelPreviewState = new AppModelPreviewState(_appModel);
+                    previewState.AddSaver(appModelPreviewState);
+                }
+
             }
-			SetupModel(app.Children, _appModel, model);
+            SetupModel(app.RootViewport.Children, _appModel, model);
+        }
+        
+        internal struct AppModelPreviewState : IPreviewStateSaver
+        {
+            public static string ID = "AppModel";
+            public readonly JavaScript Instance;
+            public AppModelPreviewState(JavaScript instance)
+            {
+                Instance = instance;
+            }
+
+            void IPreviewStateSaver.Save(PreviewStateData data)
+            {
+                data.Set(AppModelPreviewState.ID, this);
+            }
         }
 
         static string ParseModelExpression(IExpression exp, JavaScript js, ref string argString, ref string className, List<string> thisSymbols)
@@ -123,6 +147,16 @@ namespace Fuse.Reactive
             string className = "";
 			var thisSymbols = new List<string>();
             string module = ParseModelExpression(model, js, ref argString, ref className, thisSymbols);
+			
+			if(js == _appModel)
+			{
+				if(_appModelModuleId == module)
+				{
+					return;
+				}
+
+				_appModelModuleId = module;
+			}
             
             var code = "var Model = require('FuseJS/Model');\n"+
 					"var ViewModelAdapter = require('FuseJS/ViewModelAdapter')\n";
