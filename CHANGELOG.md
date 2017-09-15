@@ -111,6 +111,12 @@ which will stop push notifications registering (and potentially asking for permi
 - Fixed an issue where writes to `FuseJS/Observables` would not dispatch in the right order on the UI thread if interleaved with `ScriptClass` callbacks (slightly breaking behavior).
 
 
+## `Fuse.Reactive` framework changes (Uno-level)
+- These are breaking changes, but very unlikely to affect your app:
+ * The `DataBinding`, `EventBinding` and `ExpressionBinding` class constructors no longer take a `NameTable` argument.
+ * The `Name` and `This` expression classes has been removed. The UX compiler will now compile these as `Constant` expressions that contain the actual objects instead.
+ * The `IContext` interface no longer contains the `NameTable` property.
+
 # 1.2
 
 ## 1.2.1

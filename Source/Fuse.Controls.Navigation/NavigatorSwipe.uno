@@ -153,7 +153,7 @@ namespace Fuse.Controls
 		SwipingAnimation _swipeAnim;
 		Swiped _swipedCompleted;
 		Swiped _swipedCancelled;
-		RouterModify _modify = new RouterModify(RouterModify.Flags.DontNeedNameTable){ 
+		RouterModify _modify = new RouterModify(RouterModify.Flags.None){ 
 			When = TriggerWhen.Start };
 		Router _router;
 		Animator _prepareAnim;
@@ -168,7 +168,7 @@ namespace Fuse.Controls
 			_swipeAnim.Actions.Add( _modify );
 
 			_swipedCompleted = new Swiped(_swipeGesture );
-			_swipedCompleted.Actions.Add( new RouterModify(RouterModify.Flags.DontNeedNameTable){
+			_swipedCompleted.Actions.Add( new RouterModify(RouterModify.Flags.None){
 				How = ModifyRouteHow.FinishPrepared });
 				
 			_swipedCancelled = new Swiped(_swipeGesture);
