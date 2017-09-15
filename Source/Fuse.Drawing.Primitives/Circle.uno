@@ -35,14 +35,14 @@ namespace Fuse.Drawing.Primitives
 			var extend = Math.Max(0,r[0]+r[1]) + smoothness;
 			
 			Draw(dc ,visual, radius, stroke.Brush, sc, _oneLimitCoverage,
-				float2(extend), center, smoothness );
+				extend, center, smoothness );
 		}
 		
 		FillCoverage _fillCoverage = new FillCoverage();
 		public void Fill(DrawContext dc, Element visual, float radius, Brush brush, float2 center,
 			float smoothness)
 		{
-			Draw(dc, visual, radius, brush, _fillCoverage, _oneLimitCoverage, float2(smoothness), 
+			Draw(dc, visual, radius, brush, _fillCoverage, _oneLimitCoverage, smoothness,
 				center, smoothness );
 		}
 		
@@ -76,11 +76,14 @@ namespace Fuse.Drawing.Primitives
 		}
 		
 		internal void Draw(DrawContext dc, Element visual, float radius, Brush brush,
-			Coverage cover, LimitCoverage limit, float2 extend, float2 center, float smoothness )
+			Coverage cover, LimitCoverage limit, float extend, float2 center, float smoothness )
 		{
+			if (radius <= 0)
+				return;
+
 			if (_bufferVertex == null)
 				InitBuffers();
-				
+
 			draw
 			{
 				apply Common;
@@ -97,7 +100,11 @@ namespace Fuse.Drawing.Primitives
 				
 				float2 VertexPosition: V0 * (radius + extend*2);
 				LocalPosition: VertexPosition + center;
-				float RawDistance: Vector.Length(pixel VertexPosition) - radius;
+				// Mali-400 hax GP16 max precision, which cannot square big numbers without overflowing.
+				// So let's make sure the vector we do Length() always has a result in the 0..1 range, to
+				// avoid overflowing.
+				float2 VertexPositionScaled: VertexPosition / radius;
+				float RawDistance: (Vector.Length(pixel VertexPositionScaled) - 1.0f) * radius;
 				float2 EdgeNormal: Vector.Normalize(pixel V0);
 				
 				apply virtual brush;

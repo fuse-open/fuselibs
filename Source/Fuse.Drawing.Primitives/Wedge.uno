@@ -85,7 +85,7 @@ namespace Fuse.Drawing.Primitives
 		
 			var wc = SetupWedgeCoverage(startAngle, endAngle);
 			Circle.Singleton.Draw(dc ,node, radius, stroke.Brush, sc, wc,
-				float2(extend), center, smoothness );
+				extend, center, smoothness );
 		}
 		
 		FillCoverage _fillCoverage = new FillCoverage();
@@ -93,7 +93,7 @@ namespace Fuse.Drawing.Primitives
 			float startAngle, float endAngle, float smoothness)
 		{
 			var wc = SetupWedgeCoverage(startAngle, endAngle);
-			Circle.Singleton.Draw(dc, node, radius, brush, _fillCoverage, wc, float2(smoothness), 
+			Circle.Singleton.Draw(dc, node, radius, brush, _fillCoverage, wc, smoothness,
 				center,	smoothness);
 		}
 	}
