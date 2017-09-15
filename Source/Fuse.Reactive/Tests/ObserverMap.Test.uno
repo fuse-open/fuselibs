@@ -11,7 +11,7 @@ namespace Fuse.Reactive.Test
 		{
 			var rl = new ObservableList<Source>();
 			var tm = new TestMap();
-			tm.Attach(rl);
+			tm.Attach(rl, null);
 			
 			rl.Add( new Source(5) );
 			rl.Insert(0, new Source(3) );
@@ -35,7 +35,7 @@ namespace Fuse.Reactive.Test
 		{
 			var rl = new ObservableList<Source>();
 			var tm = new TestMap();
-			tm.Attach(rl);
+			tm.Attach(rl, null);
 			
 			tm.Add( new Mapped{ InitValue = 4 } );
 			Assert.AreEqual( 1, rl.Count );
@@ -59,7 +59,7 @@ namespace Fuse.Reactive.Test
 		{
 			var rl = new ObservableList<Source>();
 			var tm = new TestMap();
-			tm.Attach(rl);
+			tm.Attach(rl, null);
 			
 			rl.Add( new Source(1) ); // 1
 			tm.Add( new Mapped{ InitValue = 2 } ); //1,2
