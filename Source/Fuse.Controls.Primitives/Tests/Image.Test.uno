@@ -10,6 +10,20 @@ namespace Fuse.Controls.Primitives.Test
 	public class ImageTest : TestBase
 	{
 		[Test]
+		public void AllElementProps()
+		{
+			var p = new Image();
+			ElementPropertyTester.All(p);
+		}
+
+		[Test]
+		public void AllElementLayoutTest()
+		{
+			var p = new Image();
+			ElementLayoutTester.All(p);
+		}
+
+		[Test]
 		public void NullSource()
 		{
 			var img = new Image();

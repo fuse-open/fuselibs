@@ -13,13 +13,13 @@
 		<Panel Width="50" Height="80" X="60" Y="50" Color="#FFF"/>
 	</ContentControl>
 	
-	<Image Alignment="TopLeft" StretchMode="PointPrecise" File="../Assets/200x100.png" ux:Name="I1"/>
+	<Image Alignment="TopLeft" StretchMode="PointPrecise" File="Assets/200x100.png" ux:Name="I1"/>
 	<Panel Width="200" Height="200" ux:Name="P1">
 		<!-- does not fill whole area -->
-		<Image File="../Assets/200x100.png" ux:Name="I2"/>
+		<Image File="Assets/200x100.png" ux:Name="I2"/>
 	</Panel>
 	
-	<Image Alignment="TopLeft" StretchMode="PointPrecise" File="../Assets/200x100.png" ux:Name="I3">
+	<Image Alignment="TopLeft" StretchMode="PointPrecise" File="Assets/200x100.png" ux:Name="I3">
 		<Panel Alignment="BottomRight" Width="50" Height="60" Anchor="50%,50%" Color="#FFF"/>
 	</Image>
 

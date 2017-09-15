@@ -11,7 +11,7 @@ using FuseTest;
 
 namespace AnimationTests.Test
 {
-	public class AnimationTests
+	public class AnimationTest
 	{
 		[Test]
 		public void ScaleAnimatorTest_00()

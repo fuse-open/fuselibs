@@ -10,8 +10,7 @@ using Uno.Compiler.ExportTargetInterop;
 
 namespace FuseJS.Test
 {
-	
-	public class BundleTests : TestBase
+	public class BundleTest : TestBase
 	{
 		const int JS_FRAMES_TO_STEP = 5;
 		[Test]

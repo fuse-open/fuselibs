@@ -3,7 +3,7 @@ using FuseTest;
 
 namespace Fuse.Controls.Primitives.Test
 {
-	public class TextTests : TestBase
+	public class TextTest : TestBase
 	{
 		[Test]
 		public void LineSpacingAffectsHeight()

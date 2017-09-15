@@ -6,7 +6,12 @@ namespace Fuse.Triggers.Actions
 		For navigation this indicates the page (Visual) is no longer required and can be reused, or discarded,
 		by the container.
 		
-		This works only within a `Navigator`.
+			<ExitingAnimation>
+				<Move X="1" RelativeTo="Size" Duration="0.3"/>
+				<ReleasePage AtProgress="1"/>
+			</ExitingAnimation>
+		
+		This is currently only necessary in a `Navigator` and `PageView`. You can safely call it on transitions used potentially also in a `PageControl`.
 	*/
 	public class ReleasePage : TriggerAction 
 	{

@@ -6,8 +6,8 @@ namespace Fuse.Controls
 	public partial class NavigationControl
 	{
 		//TODO: Change to IObservableArray once Model feature is merged
-		IArray _pages;
-		Uno.IDisposable _pagesSubscription;
+		IArray _pageHistory;
+		Uno.IDisposable _pageHistorySubscription;
 		/**
 			Pages is a stack of pages that controls the local history for a NavigationControl.
 			
@@ -15,34 +15,34 @@ namespace Fuse.Controls
 			
 			The items in the array are objects, either explicitly created or via the Model feature. They should contain the the `$path` property which specifies the path to use. The object itself will be added to the data context for the page, allowing lookups from within the object.
 		*/
-		public IArray Pages
+		public IArray PageHistory
 		{
-			get { return _pages; }
+			get { return _pageHistory; }
 			set
 			{
-				_pages = value;
-				OnPagesChanged();
+				_pageHistory = value;
+				OnPageHistoryChanged();
 			}
 		}
 		
 		int _curPageIndex = -1;
-		void OnPagesChanged()
+		void OnPageHistoryChanged()
 		{
 			if (!IsRootingStarted)
 				return;
 				
-			if (_pagesSubscription != null)
+			if (_pageHistorySubscription != null)
 			{
-				_pagesSubscription.Dispose();
-				_pagesSubscription = null;
+				_pageHistorySubscription.Dispose();
+				_pageHistorySubscription = null;
 			}
 			
-			if (_pages == null)
+			if (_pageHistory == null)
 				return;
 				
-			var obs = _pages as IObservable;
+			var obs = _pageHistory as IObservable;
 			if (obs != null)
-				_pagesSubscription = obs.Subscribe(this);
+				_pageHistorySubscription = obs.Subscribe(this);
 				
 			_curPageIndex = -1;
 			FullUpdatePages(UpdateFlags.ForceGoto);
@@ -59,20 +59,35 @@ namespace Fuse.Controls
 			Replace = 1 << 2,
 		}
 		
+		protected string GetObjectPath( object data )
+		{
+			string path = null;
+			var obj = data as IObject;
+			if (obj != null && obj.ContainsKey("$template")) //set implicitly by Model API
+				path = Marshal.ToType<string>(obj["$template"]);
+			if (obj != null && obj.ContainsKey("$path"))
+				path = Marshal.ToType<string>(obj["$path"]);
+				
+			return path;
+		}
+		
+		protected void UpdateContextData( Visual page, object data )
+		{
+			var oldData = page.Properties.Get(_pageContextProperty);
+			page.Properties.Set(_pageContextProperty, data);
+			page.BroadcastDataChange(oldData, data);
+		}
+		
 		void FullUpdatePages(UpdateFlags flags = UpdateFlags.None)
 		{
 			string path = null, param = null;
-			int pageNdx = _pages.Length - 1;
+			int pageNdx = _pageHistory.Length - 1;
 			object data = null;
 			if (pageNdx >= 0)
 			{
-				data = _pages[pageNdx];
-				var obj = _pages[pageNdx] as IObject;
-				if (obj != null && obj.ContainsKey("$template")) //set implicitly by Model API
-					path = Marshal.ToType<string>(obj["$template"]);
-				if (obj != null && obj.ContainsKey("$path"))
-					path = Marshal.ToType<string>(obj["$path"]);
+				data = _pageHistory[pageNdx];
 					
+				path = GetObjectPath( data );
 				//null is an erorr, but we can process it nonetheless (will go to no page)
 				if (path == null)
 					Fuse.Diagnostics.UserError( "Model is missing a $template or $page property", this);
@@ -95,14 +110,10 @@ namespace Fuse.Controls
 				
 			var trans = NavigationGotoMode.Transition;
 			
-			Visual v;
-			(this as IRouterOutlet).Goto( ref path, ref param, trans, op, "", out v );
-			if (v != null)
-			{
-				var oldData = v.Properties.Get(_pageContextProperty);
-				v.Properties.Set(_pageContextProperty, data);
-				v.BroadcastDataChange(oldData, data);
-			}
+			RouterPage rPage = new RouterPage{ Path = path, Parameter = param };
+			(this as IRouterOutlet).Goto( rPage, trans, op, "" );
+			if (rPage.Visual != null)
+				UpdateContextData( rPage.Visual, data );
 			
 			_curPageIndex = pageNdx;
 		}

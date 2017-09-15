@@ -3,12 +3,9 @@ using Uno.Collections;
 using Uno.Graphics;
 using Uno.Testing;
 
-using Fuse.Controls.Test.Helpers;
 using Fuse.Elements;
 using Fuse.Layouts;
 using Fuse.Resources;
-using FuseTest;
-
 using FuseTest;
 
 namespace Fuse.Controls.Test

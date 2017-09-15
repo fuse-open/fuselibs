@@ -88,6 +88,13 @@ namespace Fuse
 		}
 
 		IViewport _viewport;
+		
+		bool _childrenShouldRoot = false;
+		internal override bool ShouldRootChildren		
+		{
+			get { return IsRootingStarted && _childrenShouldRoot; }
+		}
+
 		protected override void OnRooted()
 		{
 			base.OnRooted();
@@ -99,12 +106,20 @@ namespace Fuse
 			WTIRooted();
 
 			OnRootedPreChildren();
+			//children should not be rooted until after the call to OnRootedPreChildren. Certain behaviours, like
+			//bindings, may add children prior to this point. This boolean defers the rooting freeing behaviours
+			//and visuals from worrying about when it's safe to add children.
+			_childrenShouldRoot = true;
 
 			if (HasChildren)
 			{
 				// Use the IEnumerable<Node> implementation here, as this correctly deals
 				// with the list being manipulated during rooting/unrooting
-				foreach (var c in Children) c.RootInternal(this);
+				foreach (var c in Children) 
+				{
+					if (c.IsUnrooted)
+						c.RootInternal(this);
+				}
 			}
 
 			//this forces an invalidation now that we're rooted (ensures no old stale value is there)
@@ -117,12 +132,13 @@ namespace Fuse
 			RootResources();
 		}
 
-		internal protected virtual void OnRootedPreChildren() { }
+		protected virtual void OnRootedPreChildren() { }
 		
 		protected override void OnUnrooted()
 		{
 			base.OnUnrooted();
-
+			_childrenShouldRoot = false;
+			
 			UnrootResources();
 			_viewport = null;
 

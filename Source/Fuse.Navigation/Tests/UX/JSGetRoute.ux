@@ -13,6 +13,9 @@
 	</Page>
 
 	<JavaScript>
+		var Observable = require("FuseJS/Observable")
+		exports.done = Observable("no")
+		
 		rxx.getRoute(function(r) {
 			if (r.length > 2) { throw new Error(); }
 			if (r[0] !== "maa") { throw new Error(); }
@@ -29,14 +32,22 @@
 			if (r[3][1] !== 2) { throw new Error(); }
 			if (r[3][2] !== 3) { throw new Error(); }
 		})
+		
+		exports.stepTwo = function() {
 
-		rxx.goto("maa");
+			rxx.goto("maa");
 
-		rxx.getRoute(function(r) {
-			if (r[0] !== "maa") { throw new Error(); }
-			if (r.length > 2) { throw new Error(); }
-		})
+			rxx.getRoute(function(r) {
+				if (r[0] !== "maa") { throw new Error(); }
+				if (r.length > 2) { throw new Error(); }
+				
+				//ensures we actually reached this point
+				exports.done.value = "yes"
+			})
+		}
 
 	</JavaScript>
 
+	<FuseTest.Invoke Handler="{stepTwo}" ux:Name="CallStepTwo"/>
+	<Text Value="{done}" ux:Name="done"/>
 </Panel>

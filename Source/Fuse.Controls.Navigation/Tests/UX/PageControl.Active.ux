@@ -1,0 +1,11 @@
+<Panel ux:Class="UX.PageControl.Active">
+	<PageControl ux:Name="pc1" Active="p2">
+		<Page ux:Class="PCAPage">
+			<WhileActive ux:Name="wa"/>
+			<ActivatingAnimation ux:Name="an"/>
+		</Page>
+		<PCAPage ux:Name="p1"/>
+		<PCAPage ux:Name="p2"/>
+		<PCAPage ux:Name="p3"/>
+	</PageControl>
+</Panel>

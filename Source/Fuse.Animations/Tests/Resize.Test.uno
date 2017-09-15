@@ -5,7 +5,7 @@ using FuseTest;
 
 namespace Fuse.Animations.Test
 {
-	public class ResizeTests : TestBase
+	public class ResizeTest : TestBase
 	{
 		[Test]
 		public void ResizeRelative()

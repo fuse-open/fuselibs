@@ -1,5 +1,22 @@
 # Unreleased
 
+## ViewHandle
+- Fixed issue where Images with Mask could end up not displaying. This happend due to unnecessary invalidation of the implicit native GraphicsView in the app root. This invalidation was introduced when the Surface API was implemented for native. Invalidation is now opt-in on ViewHandle
+
+## Rectangle
+- Fixed issue where Rectangles could render incorreclty due to FP16 precision limitation.
+
+## Navigation
+- Added `Navigator.Pages` to bind the local history to an observable/model
+- Added `PageControl.Pages` to bind the list of available pages to an observable/model
+- Fixed the semantics of `PageControl.ActiveIndex` to work with dynamic pages. The output, getter, will only be updated when the navigation is intentionally changed to a new page. Previously it would always reflect the current page, which causes problem with dynamic pages. The variation between th desired target and actual target only lasts while the desired target is not yet rooted.
+- Changed how `Router` maintains history. This resolves several minor issues, including local histories (though this isn't fully exposed yet). It's intended to be backwards compatible for all known use-cases.
+- Changed `IRouterOutlet` and related types to be internal. This was not meant to be public as it's a private detail of the navigation system and could not be implemented correctly by users.
+- Removed the `Navigator` `IsReusable` property. These were deprecated over a year ago. Use `Resuse="Any"` instead.
+- Removed `PageControl.TransitionEasing` and `Pagecontrol.TransitionDuration`. These were deprecated over a year ago. Use a `NavigationMotion` object instead with `GotoEasing` and `GotoDuration` properties.
+- Removed `PageIndicator.DotTemplate` and `PageIndicator.DotFactor`. These were deprecated over a year ago. Use a `ux:Tempate="Dot"` child instead.
+- Removed `Navigation.PageData`. It was always meant to be internal and has no public use.
+
 ## ScriptClass
 - Added ScriptPromise. This addes support for passing Promises between Uno and the scripting engine. Very useful when dealing with async stuff and JavaScript
 
@@ -40,9 +57,6 @@ which will stop push notifications registering (and potentially asking for permi
 
 ## ScrollViewPager
 - Added `ScrollViewPage` which simplifies the creation of infinite scrolling lists
-
-## Navigator / PageControl
-- Added `Pages` property that allows for a state driven app navigation
 
 ## Ellipse
 - Added missing hit testing from `Ellipse`. If you relied on there not being any hit testing on an ellipse add `HitTestMode="None"`

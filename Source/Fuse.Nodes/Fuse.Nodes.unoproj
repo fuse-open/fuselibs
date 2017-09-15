@@ -23,7 +23,6 @@
     "Fuse.Desktop",
     "Fuse.Drawing.Primitives",
     "Fuse.Effects",
-    "Fuse.Elements.Shared",
     "Fuse.Elements.Test",
     "Fuse.Elements",
     "Fuse.Gestures",

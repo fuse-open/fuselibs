@@ -77,7 +77,7 @@ namespace Fuse.Controls
 		See [Navigation Order](articles:navigation/navigationorder.md)
 		
 	*/
-	public class PageControl : NavigationControl, ISeekableNavigation, IRouterOutlet, IPropertyListener
+	public partial class PageControl : NavigationControl, ISeekableNavigation, IRouterOutlet, IPropertyListener
 	{
 		static PageControl()
 		{
@@ -98,9 +98,9 @@ namespace Fuse.Controls
 			else Diagnostics.UserError("PageControl.goto() : Argument must be a node object", pc);
 		}
 		
-		new internal Fuse.Navigation.StructuredNavigation Navigation
+		new internal Fuse.Navigation.DynamicLinearNavigation Navigation
 		{
-			get { return ((NavigationControl)this).Navigation as Fuse.Navigation.StructuredNavigation; }
+			get { return ((NavigationControl)this).Navigation as Fuse.Navigation.DynamicLinearNavigation; }
 		}
 		
 		public PageControl()
@@ -112,9 +112,28 @@ namespace Fuse.Controls
 			_interaction = NavigationControlInteraction.Swipe;
 			_transition = NavigationControlTransition.Standard;
 
-			var nav = new LinearNavigation();
+			var nav = new DynamicLinearNavigation();
 			nav.AddPropertyListener(this);
 			SetNavigation( nav );
+		}
+
+		protected override void OnRooted()
+		{
+			base.OnRooted();
+
+			OnPagesChanged();
+			
+			var pages = AncestorRouterPage != null ? AncestorRouterPage.ChildRouterPages : null;
+			if (pages != null && pages.Count > 0)
+			{ 
+				((IRouterOutlet)this).Goto( pages[pages.Count-1], NavigationGotoMode.Bypass, RoutingOperation.Goto, "" );
+			}
+			else
+			{
+				OnActivePageChanged(this, Navigation.Active);
+			}
+
+			Navigation.ActivePageChanged += OnActivePageChanged;
 		}
 		
 		void IPropertyListener.OnPropertyChanged(PropertyObject obj, Selector property)
@@ -137,56 +156,92 @@ namespace Fuse.Controls
 		{
 		}
 		
-		RoutingResult IRouterOutlet.Goto(ref string path, ref string parameter, NavigationGotoMode gotoMode, 
-			RoutingOperation direction, string operationStyle, out Visual page)
+		Visual FindPath(string path)
 		{
-			page = null;
+			Visual useVisual = null;
 			for (var n = FirstChild<Visual>(); n != null; n = n.NextSibling<Visual>())
 			{
 				if ((string)n.Name == path)
 				{
-					page = n;
+					useVisual = n;
 					break;
 				}
 			}
-			if (!Fuse.Navigation.Navigation.IsPage(page))
+			
+			if (!Fuse.Navigation.Navigation.IsPage(useVisual))
 			{
 				Diagnostics.InternalError("Can not navigate to '" + path + "', not found!", this);
-				return RoutingResult.Invalid;
+				return null;
 			}
+			
+			return useVisual;
+		}
+		
+		RoutingResult IRouterOutlet.CompareCurrent(RouterPage routerPage)
+		{
+			var useVisual = FindPath(routerPage.Path);
+			if (useVisual == null)
+				return RoutingResult.Invalid;
+				
+			if (Active != useVisual)
+				return RoutingResult.Change;
+				
+			routerPage.Visual = useVisual;
+			if (useVisual.Parameter == routerPage.Parameter)
+				return RoutingResult.NoChange;
+				
+			return CompatibleParameter(useVisual.Parameter, routerPage.Parameter) ?
+				RoutingResult.MinorChange : RoutingResult.Change;
+		}
+		
+		RoutingResult IRouterOutlet.Goto(RouterPage routerPage, NavigationGotoMode gotoMode, 
+			RoutingOperation operation, string operationStyle)
+		{
+			var useVisual = FindPath(routerPage.Path);
+			if (useVisual == null)
+				return RoutingResult.Invalid;
 
-			bool same = page.Parameter == parameter;
-			page.Parameter = parameter;
-			if (page == Active) 
+			routerPage.Visual = useVisual;
+			bool same = useVisual.Parameter == routerPage.Parameter;
+			PageData.GetOrCreate(useVisual).AttachRouterPage(routerPage);
+			if (useVisual == Active) 
 				return same ? RoutingResult.NoChange : RoutingResult.MinorChange;
 			
-			Navigation.Goto(page, gotoMode);
+			Navigation.Goto(useVisual, gotoMode);
 			return RoutingResult.Change;
 		}
 		
-		void IRouterOutlet.GetCurrent(out string path, out string parameter, out Visual active)
+		void OnActivePageChanged(object sender, Visual active)
 		{
-			if (Active == null)
+			if (AncestorRouterPage != null)
 			{
-				path = "";
-				parameter = null;
-				active = null;
-			}
-			else
-			{
-				path = Active.Name;
-				parameter = Active.Parameter;
-				active = Active;
+				var current = (this as IRouterOutlet).GetCurrent();
+				var pages = AncestorRouterPage.ChildRouterPages;
+				var changed = false;
+				if (pages.Count == 0)
+				{
+					pages.Add( current );
+					changed = true;
+				}
+				else if (pages[pages.Count -1] != current) 
+				{
+					pages[pages.Count-1] = current;
+					changed = true;
+				}
+
+				if (changed)
+					RouterPage.BubbleHistoryChanged(this);
 			}
 		}
 		
-		bool IRouterOutlet.GetPath(Visual active, out string path, out string parameter)
+		RouterPage IRouterOutlet.GetCurrent()
 		{
-			path = active.Name;
-			parameter = active.Parameter;
-			return active.Parent == this;
+			if (Active == null)
+				return new RouterPage{ Path = "" };
+			else
+				return PageData.Get(Active).RouterPage;
 		}
-
+		
 		internal NavigationControlInactiveState _inactive = NavigationControlInactiveState.Collapsed;
 		/**
 			Specifiy what is done to pages that are inactive.
@@ -197,18 +252,18 @@ namespace Fuse.Controls
 			set { _inactive = value; }
 		}
 		
-		protected override void UpdateProgress(Element page, NavigationPageState state, PageData pd)
+		protected override void UpdateProgress(Element page, NavigationPageState state, ControlPageData pd)
 		{
-			pd.Active = Math.Abs(state.Progress) < 1;
+			var active = Math.Abs(state.Progress) < 1;
 
 			var elm = page as Element;
 			if (elm != null && CollapseInactive)
-				elm.Visibility = !pd.Active ? Visibility.Collapsed : Visibility.Visible;
+				elm.Visibility = !active ? Visibility.Collapsed : Visibility.Visible;
 			if (DisableInactive)
-				page.IsEnabled = pd.Active;
+				page.IsEnabled = active;
 		}
 		
-		protected override void CreateTriggers(Element c, PageData pd)
+		protected override void CreateTriggers(Element c, ControlPageData pd)
 		{
 			switch (PageTransition(c))
 			{
@@ -330,27 +385,6 @@ namespace Fuse.Controls
 		
 		bool IsHorizontal { get { return _orient == Orientation.Horizontal; } }
 		
-		
-		/**
-			DEPRECATED: Use a `NavigationMotion` with `GotoEasing` instead.
-			2016-04-01
-		*/
-		public Easing TransitionEasing
-		{
-			get { return Navigation.Easing; }
-			set { Navigation.Easing = value; }
-		}
-		
-		/**
-			DEPRECATED: Use a `NavigationMotion` with `GotoDuration` instead.
-			2016-04-01
-		*/
-		public double TransitionDuration
-		{
-			get { return Navigation.Duration; }
-			set { Navigation.Duration = value; }
-		}
-		
 		public static Selector ActiveIndexName = "ActiveIndex";
 		[UXOriginSetter("SetActiveIndex")]
 		/**
@@ -362,12 +396,12 @@ namespace Fuse.Controls
 		*/
 		public int ActiveIndex
 		{
-			get { return Navigation.ActiveIndex; }
-			set { SetActiveIndex(value,null); }
+			get { return Navigation.DesiredActiveIndex; }
+			set { Navigation.DesiredActiveIndex = value; }
 		}
 		public void SetActiveIndex(int value, IPropertyListener origin)
 		{
-			Navigation.SetActiveIndex(value, origin);
+			Navigation.DesiredActiveIndex = value;
 		}
 		
 		//ISeekableNavigation

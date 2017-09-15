@@ -81,6 +81,47 @@ namespace Fuse.Controls.Test
 				Assert.IsTrue(_progressCount < (250/*dist*/ / speed / root.StepIncrement + 1) );
 			}
 		}
+
+		string SafeFormat( Route r )
+		{
+			if (r == null) 
+				return "*null*";
+			return r.Format();
+		}
+
+		[Test]
+		//tests history through a local Active change
+		public void History()
+		{
+			var p = new UX.PageControl.History();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				Assert.AreEqual("a/i", SafeFormat(p.router.GetHistoryRoute(0)) );
+				Assert.AreEqual( null, p.router.GetHistoryRoute(1));
+				Assert.AreEqual( 0, p.wcb.Progress );
+
+				p.router.Push( new Route("a", null, new Route("ii") ) );
+				root.StepFrame();
+				Assert.AreEqual("a/ii", SafeFormat(p.router.GetHistoryRoute(0)));
+				Assert.AreEqual("a/i", SafeFormat(p.router.GetHistoryRoute(1)));
+				Assert.AreEqual( null, p.router.GetHistoryRoute(2));
+				Assert.AreEqual( 1, p.wcb.Progress );
+
+				p.pc.Active = p.b;
+				root.StepFrame();
+				Assert.AreEqual("b", SafeFormat(p.router.GetHistoryRoute(0)) );
+				Assert.AreEqual( null, p.router.GetHistoryRoute(1));
+				Assert.AreEqual( 0, p.wcb.Progress );
+
+				p.pc.Active = p.a;
+				root.StepFrame();
+				Assert.AreEqual("a/ii", SafeFormat(p.router.GetHistoryRoute(0)));
+				Assert.AreEqual("a/i", SafeFormat(p.router.GetHistoryRoute(1)));
+				Assert.AreEqual( null, p.router.GetHistoryRoute(2));
+				Assert.AreEqual( 1, p.wcb.Progress );
+
+			}
+		}
 		
 		double _absChangedSum;
 		int _progressCount;
@@ -90,5 +131,182 @@ namespace Fuse.Controls.Test
 			var diff = args.Progress - args.PreviousProgress;
 			_absChangedSum += Math.Abs(diff);
 		}
+		
+		[Test]
+		public void DynamicActiveIndex()
+		{
+			var p = new UX.PageControl.DynamicActiveIndex();
+			using (var root = TestRootPanel.CreateWithChild(p, int2(1000)))
+			{
+				//give any changes to ActiveIndex a chance to propagate in both directions
+				root.StepFrameJS();
+				root.StepFrameJS(); 
+				Assert.AreEqual( 2, p.index.Value );
+				
+				p.callAdd.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual( 2, p.index.Value );
+				
+				p.goForward.Pulse();
+				root.StepFrame(5);
+				root.StepFrameJS();
+				Assert.AreEqual( 1, p.index.Value );
+				
+				//swipe left (default to go forward)
+				root.PointerSwipe( float2(100,100), float2(800,100), 300 );
+				root.StepFrame(5); //stabilize
+				Assert.AreEqual( 0, p.index.Value );
+			}
+		}
+		
+		[Test]
+		public void Active()
+		{
+			var p = new UX.PageControl.Active();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				Assert.AreEqual( p.p2, p.pc1.Active );
+				Assert.AreEqual( 1, p.p2.wa.Progress );
+				Assert.AreEqual( 1, p.p2.an.Progress );
+				Assert.AreEqual( 0, p.p1.wa.Progress );
+				Assert.AreEqual( 0, p.p1.an.Progress );
+			}
+		}
+		
+		[Test]
+		//ensuring it works without content
+		public void Empty()
+		{
+			var p = new UX.PageControl.Empty();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				Assert.AreEqual( null, p.pc.Active );
+			}
+		}
+		
+		[Test]
+		public void WhileTrigger()
+		{
+			var p = new UX.PageControl.WhileTrigger();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				Assert.AreEqual( p.pa, p.nav.Active );
+				Assert.AreEqual( 0, p.wf1.Progress );
+				Assert.AreEqual( 1, p.wb1.Progress );
+				Assert.AreEqual( 0, p.wf2.Progress );
+				Assert.AreEqual( 1, p.wb2.Progress );
+				
+				p.nav.GoBack();
+				root.PumpDeferred();
+				Assert.AreEqual( p.pb, p.nav.Active );
+				Assert.AreEqual( 1, p.wf1.Progress );
+				Assert.AreEqual( 1, p.wb1.Progress );
+				Assert.AreEqual( 1, p.wf2.Progress );
+				Assert.AreEqual( 1, p.wb2.Progress );
+				
+				p.nav.GoBack();
+				root.PumpDeferred();
+				Assert.AreEqual( p.pc, p.nav.Active );
+				Assert.AreEqual( 1, p.wf1.Progress );
+				Assert.AreEqual( 0, p.wb1.Progress );
+				Assert.AreEqual( 1, p.wf2.Progress );
+				Assert.AreEqual( 0, p.wb2.Progress );
+				
+				p.nav.GoForward();
+				root.PumpDeferred();
+				Assert.AreEqual( p.pb, p.nav.Active );
+				Assert.AreEqual( 1, p.wf1.Progress );
+				Assert.AreEqual( 1, p.wb1.Progress );
+				Assert.AreEqual( 1, p.wf2.Progress );
+				Assert.AreEqual( 1, p.wb2.Progress );
+			}
+		}
+		
+		[Test]
+		//variant without a PageControl.Active set initially
+		public void WhileTrigger2()
+		{
+			var p = new UX.PageControl.WhileTrigger2();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				Assert.AreEqual( p.pa, p.nav.Active );
+				Assert.AreEqual( 0, p.wf1.Progress );
+				Assert.AreEqual( 1, p.wb1.Progress );
+				Assert.AreEqual( 0, p.wf2.Progress );
+				Assert.AreEqual( 1, p.wb2.Progress );
+				
+				p.nav.GoBack();
+				root.PumpDeferred();
+				Assert.AreEqual( p.pb, p.nav.Active );
+				Assert.AreEqual( 1, p.wf1.Progress );
+				Assert.AreEqual( 1, p.wb1.Progress );
+				Assert.AreEqual( 1, p.wf2.Progress );
+				Assert.AreEqual( 1, p.wb2.Progress );
+			}
+		}
+		
+		[Test]
+		public void WhileActive()
+		{
+			var p = new UX.PageControl.WhileActive();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				Assert.AreEqual( 1, p.paA.Progress );
+				Assert.AreEqual( 0, p.pbA.Progress );
+				Assert.AreEqual( 0, p.pcA.Progress );
+				
+				p.nav.GoBack();
+				root.StepFrame();
+				Assert.AreEqual( 0, p.paA.Progress );
+				Assert.AreEqual( 1, p.pbA.Progress );
+				Assert.AreEqual( 0, p.pcA.Progress );
+				
+				p.nav.GoBack();
+				root.StepFrame();
+				Assert.AreEqual( 0, p.paA.Progress );
+				Assert.AreEqual( 0, p.pbA.Progress );
+				Assert.AreEqual( 1, p.pcA.Progress );
+				
+				p.nav.GoForward();
+				root.StepFrame();
+				Assert.AreEqual( 0, p.paA.Progress );
+				Assert.AreEqual( 1, p.pbA.Progress );
+				Assert.AreEqual( 0, p.pcA.Progress );
+			}
+		}
+		
+		[Test]
+		//by default inactive pages will be collapsed
+		public void Visibility()
+		{
+			var p = new UX.PageControl.Visibility();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				Assert.AreEqual( Fuse.Elements.Visibility.Visible, p.pa.Visibility );
+				Assert.AreEqual( Fuse.Elements.Visibility.Collapsed, p.pb.Visibility );
+				Assert.AreEqual( Fuse.Elements.Visibility.Collapsed, p.pc.Visibility );
+				Assert.AreEqual( 1, p.pav.Progress );
+				Assert.AreEqual( 0, p.pbv.Progress );
+				Assert.AreEqual( 0, p.pcv.Progress );
+				
+				p.nav.Active = p.pb;
+				root.StepFrame(0.1f); //just a bit, both visible
+				Assert.AreEqual( Fuse.Elements.Visibility.Visible, p.pa.Visibility );
+				Assert.AreEqual( Fuse.Elements.Visibility.Visible, p.pb.Visibility );
+				Assert.AreEqual( Fuse.Elements.Visibility.Collapsed, p.pc.Visibility );
+				Assert.AreEqual( 1, p.pav.Progress );
+				Assert.AreEqual( 1, p.pbv.Progress );
+				Assert.AreEqual( 0, p.pcv.Progress );
+				
+				root.StepFrame(1); //complete animation
+				Assert.AreEqual( Fuse.Elements.Visibility.Collapsed, p.pa.Visibility );
+				Assert.AreEqual( Fuse.Elements.Visibility.Visible, p.pb.Visibility );
+				Assert.AreEqual( Fuse.Elements.Visibility.Collapsed, p.pc.Visibility );
+				Assert.AreEqual( 0, p.pav.Progress );
+				Assert.AreEqual( 1, p.pbv.Progress );
+				Assert.AreEqual( 0, p.pcv.Progress );
+			}
+		}
+		
 	}
 }

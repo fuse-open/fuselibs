@@ -27,6 +27,9 @@ namespace Fuse.Navigation
 			Can be `null` if this is the last path element in the route. */
 		public readonly Route SubRoute;
 
+		//a workaround for now in Router
+		internal RouterPage RouterPage;
+
 		public Route(string path, string parameter = null, Route subRoute = null)
 		{
 			Path = path;

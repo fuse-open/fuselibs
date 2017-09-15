@@ -1,0 +1,27 @@
+<Panel ux:Class="UX.PageControl.DynamicActiveIndex">
+	<JavaScript>
+		var Observable = require("FuseJS/Observable")
+		exports.index = Observable(2)
+		
+		exports.items = Observable()
+		
+		exports.add = function() {
+			for (var i=0; i < 5; ++i ) {
+				exports.items.add( { id: i } )
+			}
+		}
+	</JavaScript>
+	<PageControl ux:Name="theNav" ActiveIndex="{index}">
+		<Each Items="{items}">
+			<Text Value="{id}"/>
+		</Each>
+	</PageControl>
+	<Panel Navigation="theNav">
+		<Timeline ux:Name="goForward">
+			<GoForward/>
+		</Timeline>
+	</Panel>
+	<FuseTest.DudElement Value="{Read index}" ux:Name="index"/>
+	
+	<FuseTest.Invoke Handler="{add}" ux:Name="callAdd"/>
+</Panel>

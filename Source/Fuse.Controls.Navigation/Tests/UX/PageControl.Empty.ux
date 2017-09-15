@@ -1,0 +1,4 @@
+<Panel ux:Class="UX.PageControl.Empty">
+	<PageControl ux:Name="pc">
+	</PageControl>
+</Panel>

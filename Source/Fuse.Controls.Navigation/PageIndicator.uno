@@ -56,28 +56,9 @@ namespace Fuse.Controls
 		}
 
 		Template _dotTemplate;
-		public Template DotTemplate 
+		Template DotTemplate 
 		{ 
 			get { return FindTemplate("Dot") ?? _dotTemplate; }
-			set 
-			{ 
-				if (_dotTemplate != value)
-				{
-					Diagnostics.Deprecated("PageIndicator.DotTemplate is deprecated, use ux:Template=\"Dot\" instead.", this);
-					_dotTemplate = value;
-					RecreateDots();
-				}
-			}
-		}
-
-		public Template DotFactory
-		{
-			get { return DotTemplate; }
-			set
-			{
-				Diagnostics.Deprecated("PageIndicator.DotFactory is deprecated, use ux:Template=\"Dot\" instead.", this);
-				DotTemplate = value;
-			}
 		}
 
 		protected override void OnRooted()

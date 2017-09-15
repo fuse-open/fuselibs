@@ -19,7 +19,6 @@
     "Fuse.Controls.Test",
     "Fuse.Drawing.Surface",
     "Fuse.Effects",
-    "Fuse.Elements.Shared",
     "Fuse.Elements.Test",
     "Fuse.Elements.Test.ImageRenderingTests",
     "Fuse.Gestures",

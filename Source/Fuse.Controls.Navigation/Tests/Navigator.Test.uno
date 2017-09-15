@@ -332,7 +332,7 @@ namespace Fuse.Navigation.Test
 		
 		[Test]
 		// https://github.com/fusetools/fuselibs/issues/4256
-		public void RootingCache()
+		public void RootingCache1()
 		{
 			Router.TestClearMasterRoute();
 			var p =  new UX.Navigator.RootingCache();
@@ -348,7 +348,7 @@ namespace Fuse.Navigation.Test
 				p.Children.Remove(p.N);
 				root.IncrementFrame();
 				p.Children.Add(p.N);
-				root.PumpDeferred();
+				root.MultiStepFrame(2); //timing of removal is not so important for the cache
 				
 				//white box: other pages are removed from the cache, it's actually undefined if they are removed
 				//or simply the state updated
@@ -380,7 +380,7 @@ namespace Fuse.Navigation.Test
 				p.Children.Remove(p.N);
 				root.IncrementFrame();
 				p.Children.Add(p.N);
-				root.PumpDeferred();
+				root.MultiStepFrame(2); //timing of removal is not so important for the cache
 				
 				Assert.AreEqual(1, TriggerProgress(p.one.A));
 				Assert.AreEqual(0, TriggerProgress(p.two.A));
@@ -467,6 +467,7 @@ namespace Fuse.Navigation.Test
 			using (var root = TestRootPanel.CreateWithChild(p,int2(1000)))
 			{
 				Assert.AreEqual( "", p.R.GetCurrentRoute().Format() );
+				
 				p.R.Push( new Route( "a" ) );
 				root.PumpDeferred();
 				Assert.AreEqual( "a/", p.R.GetCurrentRoute().Format() );
@@ -474,19 +475,24 @@ namespace Fuse.Navigation.Test
 				p.R.Push( new Route( "a", null, new Route( "one" ) ) );
 				root.PumpDeferred();
 				Assert.AreEqual( "a/one", p.R.GetCurrentRoute().Format() );
-				Assert.AreEqual(2, p.R.TestHistoryCount);
+				Assert.AreEqual( "a/one", p.R.GetHistoryRoute(0).Format() );
+				Assert.AreEqual( "a/", p.R.GetHistoryRoute(1).Format() );
+				Assert.AreEqual( "", p.R.GetHistoryRoute(2).Format() );
+				Assert.AreEqual( null, p.R.GetHistoryRoute(3) );
 				Assert.AreEqual(p.one, p.Nav.Active);
 				
 				root.PointerSwipe(float2(100,100), float2(100,400));
 				root.StepFrame(5);
 				Assert.AreEqual( "a/", p.R.GetCurrentRoute().Format() );
-				Assert.AreEqual(1, p.R.TestHistoryCount);
+				Assert.AreEqual( "a/", p.R.GetHistoryRoute(0).Format() );
+				Assert.AreEqual( "", p.R.GetHistoryRoute(1).Format() );
+				Assert.AreEqual( null, p.R.GetHistoryRoute(2) );
 				Assert.AreEqual(null, p.Nav.Active);
 				
 				root.PointerSwipe(float2(100,100), float2(100,400));
 				root.StepFrame(5);
 				Assert.AreEqual( "", p.R.GetCurrentRoute().Format() );
-				Assert.AreEqual(0, p.R.TestHistoryCount);
+				Assert.AreEqual( null, p.R.GetHistoryRoute(1) );
 				Assert.AreEqual(null, p.NavO.Active);
 			}
 		}

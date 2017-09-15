@@ -1,0 +1,19 @@
+<Panel ux:Class="UX.Router.NavigatorHistoryMulti">
+	<Router ux:Name="router" IsMasterRouter="false"/>
+	<Navigator ux:Name="PC1" DefaultPath="a" Transition="None">
+		<Page ux:Template="a">
+			<Navigator DefaultPath="hot" Transition="None" ux:Name="PC2">	
+				<Page ux:Template="hot" PrepareBusy="None"/>
+				<Page ux:Template="cold" PrepareBusy="None"/>
+				<Page ux:Template="warm" PrepareBusy="None"/>
+			</Navigator>
+		</Page>
+		<Page ux:Template="b">
+			<Navigator DefaultPath="cat" Transition="None" ux:Name="PC3">	
+				<Page ux:Template="cat" PrepareBusy="None"/>
+				<Page ux:Template="dog" PrepareBusy="None"/>
+			</Navigator>
+		</Page>
+		<Page ux:Template="c"/>
+	</Navigator>
+</Panel>
