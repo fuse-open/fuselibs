@@ -1,0 +1,18 @@
+<Panel ux:Class="UX.Transform.WorldTransformInvalidated">
+	<Panel Alignment="TopLeft" ux:Name="a" Width="10" Height="10">
+		<Translation Vector="1" RelativeTo="PositionOffset" RelativeNode="b"/>
+	</Panel>
+	<Panel>
+		<Panel Alignment="BottomRight" ux:Name="b" Width="10" Height="10"/>
+	</Panel>
+	
+	<Panel Alignment="TopLeft" ux:Name="c" Width="10" Height="10">
+		<Translation Vector="1" RelativeTo="PositionOffset" RelativeNode="d"/>
+	</Panel>
+	<WhileTrue ux:Name="w">
+		<Panel>
+			<Panel Alignment="BottomRight" ux:Name="d" Width="10" Height="10"/>
+		</Panel>
+	</WhileTrue>
+	
+</Panel>

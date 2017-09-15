@@ -96,6 +96,7 @@ namespace Fuse
 			UpdateIsVisibleCache();
 			UpdateContextSnapToPixelsCache();
 			FlatRooted();
+			WTIRooted();
 
 			OnRootedPreChildren();
 
@@ -139,6 +140,7 @@ namespace Fuse
 				foreach (var c in Children) c.UnrootInternal();
 			}
 
+			WTIUnrooted();
 			FlatUnrooted();
 
 			ConcludePendingRemove();
