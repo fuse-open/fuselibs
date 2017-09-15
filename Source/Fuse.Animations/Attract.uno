@@ -53,10 +53,12 @@ namespace Fuse.Animations
 		
 		public override IDisposable Subscribe(IContext context, IListener listener)
 		{
-			return new Subscription(this, context, listener);
+			var sub = new Subscription(this, context, listener);
+			sub.Init(context);
+			return sub;
 		}
 		
-		class Subscription : IListener, IDisposable
+		class Subscription : InnerListener
 		{
 			IListener _target;
 			Attract _attract;
@@ -77,7 +79,11 @@ namespace Fuse.Animations
 				_attract = attract;
 				_simulation4 = new DestinationBehavior<float4>();
 				_simulation4.Motion = attract._config;
-				_sourceSub = attract._sourceValue.Subscribe(context, this);
+			}
+			
+			public void Init(IContext context)
+			{
+				_sourceSub = _attract._sourceValue.Subscribe(context, this);
 			}
 			
 			void OnValueUpdate<T>(T value)
@@ -91,7 +97,7 @@ namespace Fuse.Animations
 			void OnValueUpdate2(float2 value) { OnValueUpdate(value); }
 			void OnValueUpdate1(float value) { OnValueUpdate(value); }
 			
-			void IListener.OnNewData( IExpression source, object oValue )
+			protected override void OnNewData( IExpression source, object oValue )
 			{
 				var value = float4(0);
 				int size = 0;
@@ -175,8 +181,9 @@ namespace Fuse.Animations
 				}
 			}
 			
-			public void Dispose()
+			public override void Dispose()
 			{
+				base.Dispose();
 				if (_sourceSub != null)
 				{
 					_sourceSub.Dispose();
