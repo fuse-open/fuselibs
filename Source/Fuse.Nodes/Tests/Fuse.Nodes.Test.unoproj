@@ -9,5 +9,8 @@
   ],
   "Includes": [
     "*"
-  ]
+  ],
+  "Excludes": [
+    "DrawRectsTest",
+  ],
 }

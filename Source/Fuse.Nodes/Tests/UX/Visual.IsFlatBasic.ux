@@ -1,4 +1,4 @@
-<Panel ux:Class="UX.VisualIsFlat">
+<Panel ux:Class="UX.Visual.IsFlatBasic">
 	<Panel ux:Name="A"/>
 	
 	<Panel ux:Name="B">
