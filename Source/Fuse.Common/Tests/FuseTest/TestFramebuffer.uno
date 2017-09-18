@@ -50,7 +50,8 @@ namespace FuseTest
 		{
 			var color = ReadDrawPixel(pos);
 			var diff = Math.Abs(color - expectedColor);
-			if (Vector.Length(diff) > tolerance)
+			var maxError = Math.Max(Math.Max(diff.X, diff.Y), Math.Max(diff.Z, diff.W));
+			if (maxError > tolerance)
 				Assert.Fail(string.Format("Unexpected color at [{0}]. Got [{1}], expected [{2}].", pos, color, expectedColor), filePath, lineNumber, memberName);
 		}
 
