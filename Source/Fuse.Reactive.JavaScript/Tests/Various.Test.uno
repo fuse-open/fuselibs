@@ -100,9 +100,10 @@ namespace Fuse.Reactive.Test
 			var e = new UX.ObservableSubscribe();
 			using (var root = TestRootPanel.CreateWithChild(e))
 			{
-				Assert.DoesNotThrowAny(root.StepFrameJS);
+				//just not throwing is good enough
+				root.StepFrameJS();
 				e.Parent.Remove(e);
-				Assert.DoesNotThrowAny(root.StepFrameJS);
+				root.StepFrameJS();
 			}
 		}
 
@@ -113,13 +114,14 @@ namespace Fuse.Reactive.Test
 			var e = new UX.ObservableCombine();
 			using (var root = TestRootPanel.CreateWithChild(e))
 			{
-				Assert.DoesNotThrowAny(root.StepFrameJS);
-				Assert.DoesNotThrowAny(root.StepFrameJS);
+				//just not throwing is good enough
+				root.StepFrameJS();
+				root.StepFrameJS();
 
 				e.Go.Perform();
 
-				Assert.DoesNotThrowAny(root.StepFrameJS);
-				Assert.DoesNotThrowAny(root.StepFrameJS);
+				root.StepFrameJS();
+				root.StepFrameJS();
 			}
 		}
 
@@ -130,8 +132,9 @@ namespace Fuse.Reactive.Test
 			var e = new UX.Issue2532();
 			using (var root = TestRootPanel.CreateWithChild(e))
 			{
-				Assert.DoesNotThrowAny(root.StepFrameJS);
-				Assert.DoesNotThrowAny(root.StepFrameJS);
+				//just not throwing is good enough
+				root.StepFrameJS();
+				root.StepFrameJS();
 			}
 		}
 

@@ -98,18 +98,10 @@ namespace Fuse.Navigation
 		internal enum Flags
 		{	
 			None = 0,
-			DontNeedNameTable = 1<<0,
 		}
+		//different Ctor to distinguish from deprecated one
 		internal RouterModify(Flags flags) 
 		{
-			if (!flags.HasFlag(Flags.DontNeedNameTable))
-				throw new Exception( "Invalid construction" );
-		}
-		
-		NameTable _nameTable;
-		internal RouterModify(NameTable nameTable)
-		{
-			_nameTable = nameTable;
 		}
 		
 		RouterRequest _request = new RouterRequest();
@@ -157,12 +149,7 @@ namespace Fuse.Navigation
 		public IExpression Path 
 		{ 
 			get { return _path; }
-			set
-			{
-				if (_nameTable == null)
-					Fuse.Diagnostics.UserError( "The `Path` property cannot be used with this deprecated type.", this);
-				_path = value;
-			}
+			set { _path = value; }
 		}
 		
 		NodeExpressionBinding _pathSub;
@@ -178,7 +165,7 @@ namespace Fuse.Navigation
 			if (Path != null)
 			{
 				DisposePathSub();
-				_pathSub = new NodeExpressionBinding(Path, n, this, _nameTable);
+				_pathSub = new NodeExpressionBinding(Path, n, this);
 			}
 			else
 			{
@@ -232,8 +219,7 @@ namespace Fuse.Navigation
 	public class ModifyRoute : RouterModify
 	{
 		[UXConstructor]
-		public ModifyRoute([UXAutoNameTable] NameTable nameTable)
-			: base(nameTable)
+		public ModifyRoute()  : base(Flags.None)
 		{ }
 	}
 	
@@ -247,8 +233,7 @@ namespace Fuse.Navigation
 	public class GotoRoute : RouterModify
 	{
 		[UXConstructor]
-		public GotoRoute([UXAutoNameTable] NameTable nameTable)
-			: base(nameTable)
+		public GotoRoute() : base(Flags.None)
 		{ 
 			How = ModifyRouteHow.Goto;
 		}
@@ -264,8 +249,7 @@ namespace Fuse.Navigation
 	public class PushRoute : RouterModify
 	{
 		[UXConstructor]
-		public PushRoute([UXAutoNameTable] NameTable nameTable)
-			: base(nameTable)
+		public PushRoute()  : base(Flags.None)
 		{ 
 			How = ModifyRouteHow.Push;
 		}

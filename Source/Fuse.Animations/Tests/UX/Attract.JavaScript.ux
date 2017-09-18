@@ -1,0 +1,14 @@
+<Panel ux:Class="UX.Attract.JavaScript">
+	<JavaScript>
+		var Observable = require("FuseJS/Observable")
+		exports.a = Observable(50)
+		
+		exports.update = function() {
+			exports.a.value = 100
+		}
+	</JavaScript>
+	<AttractorConfig Unit="Points" Easing="Linear" 
+		Duration="1" DurationExp="1" Distance="25" ux:Global="lit"/>
+	<Translation X="attract({a}, lit)" ux:Name="T"/>
+	<FuseTest.Invoke Handler="{update}" ux:Name="callUpdate"/>
+</Panel>

@@ -3,6 +3,9 @@
 ## JavaScript: Optional explicit requrie() of UX symbols
 - Symbols declared with `ux:Name`, `ux:Dependency` or `dep` are now also available to `require()` for `<JavaScript>` modules using the `ux:` prefix. This allows us to write code that plays nicer with transpilers and linters. Using require for names declared in UX is optional, but may make the code more readable and maintainable, e.g. `var router = require("ux:router")` over just using `router` with no declaration.
 
+## Attract
+- Fixed an issue with `attract` not updating when using a data binding as the source value
+
 ## Fonts
 - Fixed bug where the default font on Android could end up being null.
 
@@ -113,6 +116,12 @@ which will stop push notifications registering (and potentially asking for permi
 - Breaking change: Several entrypoints on UpdateManager now take a `LayoutPriority` enum instead of `int` as the `priority` argument. Very unlikely to affect user code code.
 - Fixed an issue where writes to `FuseJS/Observables` would not dispatch in the right order on the UI thread if interleaved with `ScriptClass` callbacks (slightly breaking behavior).
 
+
+## `Fuse.Reactive` framework changes (Uno-level)
+- These are breaking changes, but very unlikely to affect your app:
+ * The `DataBinding`, `EventBinding` and `ExpressionBinding` class constructors no longer take a `NameTable` argument.
+ * The `Name` and `This` expression classes has been removed. The UX compiler will now compile these as `Constant` expressions that contain the actual objects instead.
+ * The `IContext` interface no longer contains the `NameTable` property.
 
 # 1.2
 
