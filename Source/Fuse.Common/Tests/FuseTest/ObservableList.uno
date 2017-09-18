@@ -8,7 +8,7 @@ namespace FuseTest
 	/**
 		An implementation of an IObservable for Uno-level data.
 		
-		NOTE: Taken from the charting in premiumlibs. Stuck in FuseTest for now since there is now use in fuselibs yet other than for testing.
+		NOTE: Taken from the charting in premiumlibs. Stuck in FuseTest for now since there is no use in fuselibs yet other than for testing.
 	*/
 	public abstract class ObservableData : IObservable
 	{

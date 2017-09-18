@@ -4,6 +4,7 @@ using Uno.Collections;
 namespace Fuse.Reactive
 {
 	//UNO: Cast to IArray was failing if this class is declared inside ObserverMap
+	//https://github.com/fusetools/uno/issues/1321
 	class UnmappedView<T> : IArray where T : class
 	{
 		ObserverMap<T> _source;
@@ -17,8 +18,7 @@ namespace Fuse.Reactive
 	}
 	
 	/**
-		A two-way mapped observable list. This serves as the outermost list: the list functions here will update the backing
-		Observable.
+		A two-way mapped observable list. This serves as the outermost list: the list functions here will update the backing Observable.
 	*/
 	abstract class ObserverMap<T> : IObserver where T : class
 	{

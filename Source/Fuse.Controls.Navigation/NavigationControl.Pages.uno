@@ -47,8 +47,12 @@ namespace Fuse.Controls
 				
 			_curPageIndex = -1;
 			FullUpdatePages(UpdateFlags.ForceGoto);
-			
-			//TODO: Unroot needs to detach
+		}
+		
+		void OnPageHistoryUnrooted()
+		{
+			if (AncestorRouterPage != null)
+				AncestorRouterPage.ChildRouterPages.Detach();
 		}
 		
 		[Uno.Flags]
@@ -72,12 +76,6 @@ namespace Fuse.Controls
 			return path;
 		}
 
-		[Uno.Obsolete]
-		protected void UpdateContextData( Visual page, object data )
-		{
-			PageData.GetOrCreate(page).SetContext(data);
-		}
-		
 		void FullUpdatePages(UpdateFlags flags = UpdateFlags.None)
 		{
 			string path = null, param = null;
@@ -131,7 +129,7 @@ namespace Fuse.Controls
 			
 			(this as IRouterOutlet).Goto( rPage, trans, op, "" );
 			if (rPage.Visual != null)
-				UpdateContextData( rPage.Visual, data );
+				PageData.GetOrCreate(rPage.Visual).SetContext(data);
 			
 			_curPageIndex = pageNdx;
 		}

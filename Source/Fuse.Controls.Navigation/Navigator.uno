@@ -193,8 +193,6 @@ namespace Fuse.Controls
 				return RoutingResult.NoChange;
 				
 			return RoutingResult.MinorChange;
-			//return CompatibleParameter(routerPage.Parameter, _current.Parameter) ?
-			//	RoutingResult.MinorChange : RoutingResult.Change;
 		}
 		
 		PrepareResult Prepare(RouterPage curPage, 

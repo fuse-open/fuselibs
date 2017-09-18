@@ -107,7 +107,12 @@ namespace Fuse.Controls
 					}
 					
 					var useVisual = f.New() as Visual;
-					UpdateContextData( useVisual, page );
+					if (useVisual == null)
+					{
+						Fuse.Diagnostics.UserError( "Template is not a Visual: " + path, this );
+						continue;
+					}
+					PageData.GetOrCreate(useVisual).SetContext(page);
 					toAdd.Add( useVisual );
 				}
 			}

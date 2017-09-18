@@ -207,7 +207,7 @@ namespace Fuse.Controls
 		
 		protected override void OnUnrooted()
 		{
-			base.OnUnrooted();
+			OnPageHistoryUnrooted();
 			
 			if (AncestorPage != null)
 			{
@@ -224,6 +224,8 @@ namespace Fuse.Controls
 					continue;
 				CleanupTriggers(c, pd);
 			}
+			
+			base.OnUnrooted();
 		}
 		
 		void CleanupTriggers(Element page, ControlPageData data)
