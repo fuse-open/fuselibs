@@ -34,7 +34,7 @@ namespace Fuse.GeoLocation
 			{
 				@{IOSLocationProvider:Of(_this).OnError(string):Call(err.localizedDescription)};
 			}
-      changeAuthorizationStatus: ^void (int status)
+			changeAuthorizationStatus: ^void (int status)
 			{
 				@{IOSLocationProvider:Of(_this).OnChangeAuthorizationStatus(int):Call(status)};
 			}
@@ -187,7 +187,7 @@ namespace Fuse.GeoLocation
 			}
 		}
 
-	  void OnChangeAuthorizationStatus(int clAuthorizationStatus)
+		void OnChangeAuthorizationStatus(int clAuthorizationStatus)
 		{
 			if (clAuthorizationStatus == AuthorizedWhenInUse && _currentWaitingPromise != null)
 			{
