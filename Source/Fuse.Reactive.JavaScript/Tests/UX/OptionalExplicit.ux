@@ -1,0 +1,33 @@
+<Panel ux:Class="UX.OptionalExplicit">
+	<Router ux:Name="router" />
+	<JavaScript>
+		exports.foo = 123
+		// should not be reached below, as there is a bundled file that matches
+		// this path
+		exports.OptionalExplicit = 777 
+	</JavaScript>
+	<JavaScript dep:bar="{foo}">
+		var OptionalExplicit = require("OptionalExplicit")
+		var foo = require("ux:router")
+		var maa = require("ux:bar")
+		if (!(foo.goBack instanceof Function)) { throw new Error(); }
+		if (maa !== 123) { throw new Error() }
+
+		// would crash if wrong symbol is resolved
+		if (OptionalExplicit.haha !== 1337) { throw new Error() }
+		exports.success = 1
+	</JavaScript>
+	<Text ux:Name="t" Value="{success}" />
+	
+	<Panel ux:Class="OESub">
+		<Router ux:Dependency="quirk"/>
+		<JavaScript>
+			var qfoo = require("ux:quirk")
+			if (!(qfoo.goBack instanceof Function)) { throw new Error(); }
+			exports.success = 1
+		</JavaScript>
+		<Text ux:Name="t" Value="{success}" />
+	</Panel>
+	<OESub quirk="router" ux:Name="q"/>
+	
+</Panel>
