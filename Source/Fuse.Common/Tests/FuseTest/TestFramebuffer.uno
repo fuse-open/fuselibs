@@ -60,7 +60,7 @@ namespace FuseTest
 			{
 				for (int x = rect.Minimum.X; x < rect.Maximum.X; ++x)
 				{
-					AssertPixel(expectedColor, int2(x, y), tolerance);
+					AssertPixel(expectedColor, int2(x, y), tolerance, filePath, lineNumber, memberName);
 				}
 			}
 		}
