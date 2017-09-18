@@ -1,5 +1,8 @@
 # Unreleased
 
+## AppConfig
+-  Added `<AppConfig>` class which can be used to configure the `Background` of the `App` using a data binding expression. This allows the `Background` (which is the fastest way to fill the screen with a solid color) to be controlled by a data source.
+
 ## Attract
 - Fixed an issue with `attract` not updating when using a data binding as the source value
 
