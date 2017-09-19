@@ -294,6 +294,19 @@ function Model(source)
 			}
 		}
 
+		if(node instanceof Array) {
+			node.$replaceAll = function(values) {
+				replaceAllInternal(state, values);
+				replaceAllInternal(node, values);
+				dirty();
+			}
+		}
+
+		function replaceAllInternal(subject, values) {
+			Array.prototype.splice.call(subject, 0);
+			Array.prototype.push.apply(subject, values);
+		}
+
 		node.$requestChange = function(key, value) {
 			var changeAccepted = true;
 			if ('$requestChange' in state) {

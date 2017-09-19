@@ -83,7 +83,7 @@ namespace Fuse.Reactive
 
 					var replaceAllFn = (Scripting.Function) ctx.Evaluate("replaceAll",
 						"(function(array, values) {" +
-							"if ('__fuse_replaceAll' in array) array.__fuse_replaceAll(values);" +
+							"if('$replaceAll' in array) array.$replaceAll(values);" +
 							"else {"+
 								"array.length = 0;"+
 								"Array.prototype.push.apply(array, values);"+
