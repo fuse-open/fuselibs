@@ -1,0 +1,11 @@
+<Extensions Backend="CPlusPlus">
+	<CopyFile HeaderFile="JavaScriptCore/JavaScript.h" />
+	<CopyFile HeaderFile="JavaScriptCore/JavaScriptCore.h" />
+	<CopyFile HeaderFile="JavaScriptCore/JSBase.h" />
+	<CopyFile HeaderFile="JavaScriptCore/JSContextRef.h" />
+	<CopyFile HeaderFile="JavaScriptCore/JSObjectRef.h" />
+	<CopyFile HeaderFile="JavaScriptCore/JSStringRef.h" />
+	<CopyFile HeaderFile="JavaScriptCore/JSTypedArray.h" />
+	<CopyFile HeaderFile="JavaScriptCore/JSValueRef.h" />
+	<CopyFile HeaderFile="JavaScriptCore/WebKitAvailability.h" />
+</Extensions>
