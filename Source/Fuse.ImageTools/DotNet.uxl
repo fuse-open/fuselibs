@@ -1,3 +1,0 @@
-<Extensions Backend="CIL">
-    <Require AssemblyReference="System.Drawing" />
-</Extensions>

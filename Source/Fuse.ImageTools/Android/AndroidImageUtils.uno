@@ -42,6 +42,14 @@ namespace Fuse.ImageTools
 			t.start();
 		@}
 
+		public static void GetImageFromBuffer(byte[] bytes, Action<string> onSuccess, Action<string> onFail)
+		{
+			sbyte[] sbytes = new sbyte[bytes.Length];
+			for(var i = 0; i<bytes.Length; i++)
+				sbytes[i] = (sbyte) bytes[i];
+			GetImageFromBuffer(sbytes, onSuccess, onFail);
+		}
+
 		[Foreign(Language.Java)]
 		public static void GetImageFromBuffer(sbyte[] bytes, Action<string> onSuccess, Action<string> onFail)
 		@{
@@ -56,6 +64,14 @@ namespace Fuse.ImageTools
 			}});
 			t.start();
 		@}
+
+		public static string GetImageFromBufferSync(sbyte[] bytes)
+		{
+			sbyte[] sbytes = new sbyte[bytes.Length];
+			for(var i = 0; i<bytes.Length; i++)
+				sbytes[i] = (sbyte) bytes[i];				
+			GetImageFromBufferSync(sbytes);
+		}
 
 		[Foreign(Language.Java)]
 		public static string GetImageFromBufferSync(sbyte[] bytes)

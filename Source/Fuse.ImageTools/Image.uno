@@ -36,7 +36,13 @@ namespace Fuse.ImageTools
 			if(_dims.X == 0 && _dims.Y == 0)
 				_dims = iOSImageUtils.GetSize(this);
 		}
-		
+
+		extern (DOTNET) void CheckDims()
+		{
+			if(_dims.X == 0 && _dims.Y == 0)
+				_dims = DotNetImageUtils.GetSize(this);
+		}
+
 		public bool Rename(string newName, bool overwrite = false)
 		{
 			if(newName == Name) return true;
@@ -48,7 +54,7 @@ namespace Fuse.ImageTools
 			return true;
 		}
 
-		extern(!Mobile) void CheckDims() { }
+		extern(!Android && !iOS && !DOTNET) void CheckDims() { }
 
 		public Dictionary<string, object> Info { get; private set; }
 

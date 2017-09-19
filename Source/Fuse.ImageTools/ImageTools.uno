@@ -18,7 +18,7 @@ namespace Fuse.ImageTools
 		@scriptmodule FuseJS/ImageTools
 
 		Utility methods for common Image manipulation.
-		
+
 		> To use this module, add `Fuse.ImageTools` to your package references in your `.unoproj`.
 
 		Fuse represents images as frozen JavaScript Image objects, consisting of a path, a filename, a width and a height.
@@ -65,19 +65,20 @@ namespace Fuse.ImageTools
 			AddMember(new NativeProperty<object, int>("KEEP_ASPECT", ResizeMode.KeepAspect));
 			AddMember(new NativeProperty<object, int>("SCALE_AND_CROP", ResizeMode.ScaleAndCrop));
 		}
-		
+
 		public static Image ImageFromByteArray(byte[] bytes)
 		{
 			if defined(Android)
 			{
-				sbyte[] sbytes = new sbyte[bytes.Length];
-				for(var i = 0; i<bytes.Length; i++)
-					sbytes[i] = (sbyte) bytes[i];
-				return new Image(AndroidImageUtils.GetImageFromBufferSync(sbytes));
+				return new Image(AndroidImageUtils.GetImageFromBufferSync(bytes));
 			}
 			else if defined(iOS)
 			{
 				return new Image(iOSImageUtils.GetImageFromBufferSync(bytes));
+			}
+			else if defined(DOTNET)
+			{
+				return new Image(DotNetImageUtils.GetImageFromBufferSync(bytes));
 			}
 			else
 			{
@@ -89,47 +90,23 @@ namespace Fuse.ImageTools
 		/**
 			@scriptmethod getImageFromBuffer(imageData)
 			@param imageData (ArrayBuffer) The image data
-			@return (Promise) a Promise of a file path
+			@return (Promise) a Promise of an Image
 
 			Creates a new temporary image file from an ArrayBuffer of image data.
 
 			## Example
 
 				var ImageTools = require("FuseJS/ImageTools");
-				ImageTool.imageData(existingBuffer).
-					then(function (path) { console.log("Scratch image path is: " + path); });
+				ImageTools.getImageFromBuffer(imageData).
+					then(function (image) { console.log("Scratch image path is: " + image.path); });
 		*/
 		Future<Image> ImageFromBufferInterface(object[] args)
 		{
-			var p = new Promise<Image>();
-			var cb = new ImagePromiseCallback(p);
-			if(args.Length == 1){
-				var bytes = args[0] as byte[];
-				if(bytes!=null)
-				{
-					if defined(Android)
-					{
-						sbyte[] sbytes = new sbyte[bytes.Length];
-						for(var i = 0; i<bytes.Length; i++)
-							sbytes[i] = (sbyte) bytes[i];
-						AndroidImageUtils.GetImageFromBuffer(sbytes, cb.Resolve, cb.Reject);
-					}
-					else if defined(iOS)
-					{
-						iOSImageUtils.GetImageFromBuffer(bytes, cb.Resolve, cb.Reject);
-					}
-					else
-					{
-						cb.Reject("Not supported on current platform.");
-					}
-				}else{
-						cb.Reject("getImageFromBuffer requires an arraybuffer argument");
-				}
-			}else{
-					cb.Reject("getImageFromBuffer requires an arraybuffer argument");
-			}
+			if(args.Length != 1 || args[0] == null)
+				throw new Exception("getImageFromBuffer requires an arraybuffer argument");
 
-			return p;
+			var bytes = args[0] as byte[];
+			return ImageFromByteArrayAsync(bytes);
 		}
 
 		/**
@@ -149,23 +126,12 @@ namespace Fuse.ImageTools
 		Future<byte[]> BufferFromImageInterface(object[] args)
 		{
 			var p = new Promise<byte[]>();
+			var cb = new PromiseCallback<byte[]>(p);
 			if(args.Length == 1){
 				var img = Image.FromObject(args[0]);
-				if(img != null)
-				{
-					try
-					{
-						byte[] bytes = Uno.IO.File.ReadAllBytes(img.Path);
-						p.Resolve(bytes);
-					}catch(Exception e)
-					{
-						p.Reject(e);
-					}
-				}else{
-					p.Reject(new Exception("Invalid image reference"));
-				}
+				BufferFromImage(img, cb.Resolve, cb.Reject);
 			}else{
-				p.Reject(new Exception("Invalid arguments"));
+				cb.Reject("Invalid arguments");
 			}
 			return p;
 		}
@@ -323,6 +289,49 @@ namespace Fuse.ImageTools
 			return ImageToBase64(image);
 		}
 
+		public static Future<Image> ImageFromByteArrayAsync(byte[] bytes)
+		{
+			var p = new Promise<Image>();
+			var cb = new ImagePromiseCallback(p);
+
+			if defined(Android)
+			{
+				AndroidImageUtils.GetImageFromBuffer(bytes, cb.Resolve, cb.Reject);
+			}
+			else if defined(iOS)
+			{
+				iOSImageUtils.GetImageFromBuffer(bytes, cb.Resolve, cb.Reject);
+			}
+			else if defined(DOTNET)
+			{
+				DotNetImageUtils.GetImageFromBuffer(bytes, cb.Resolve, cb.Reject);
+			}
+			else
+			{
+				cb.Reject("Not supported on current platform.");
+			}
+			return p;
+		}
+
+ 		public static void BufferFromImage(Image img, Action<byte[]> onSuccess, Action<string> onFail)
+		{
+			if(img != null)
+			{
+				try
+				{
+					byte[] bytes = Uno.IO.File.ReadAllBytes(img.Path);
+					onSuccess(bytes);
+				} catch(Exception e)
+				{
+					onFail(e.Message);
+				}
+			}
+			else
+			{
+				onFail("Invalid image reference");
+			}
+		}
+
 		public static Future<Image> Resize(Image img, int desiredWidth, int desiredHeight, ResizeMode mode, bool inPlace = true)
 		{
 			var p = new Promise<Image>();
@@ -334,6 +343,10 @@ namespace Fuse.ImageTools
 			else if defined(iOS)
 			{
 				iOSImageUtils.Resize(img.Path, desiredWidth, desiredHeight, (int)mode, closure.Resolve, closure.Reject, inPlace);
+			}
+			else if defined(DOTNET)
+			{
+				DotNetImageUtils.Resize(img.Path, desiredWidth, desiredHeight, (int)mode, closure.Resolve, closure.Reject, inPlace);
 			}
 			else
 			{
@@ -347,33 +360,22 @@ namespace Fuse.ImageTools
 			var p = new Promise<Image>();
 			var closure = new ImagePromiseCallback(p);
 			if defined(Android)
+			{
 				new CropCommand(img.Path, x, y, width, height, closure.Resolve, closure.Reject, inPlace).Execute();
+			}
 			else if defined(iOS)
+			{
 				iOSImageUtils.Crop(img.Path, x, y, width, height, closure.Resolve, closure.Reject, inPlace);
+			}
+			else if defined(DOTNET)
+			{
+				DotNetImageUtils.Crop(img.Path, x, y, width, height, closure.Resolve, closure.Reject, inPlace);
+			}
 			else
+			{
 				closure.Resolve(img.Path);
+			}
 			return p;
-		}
-
-		extern (Android) class GetBase64Command : PCommand {
-			string _path;
-			Action<string> _resolve;
-			Action<string> _reject;
-			public GetBase64Command(string path, Action<string> Resolve, Action<string> Reject) : base(new PlatformPermission[] { Permissions.Android.READ_EXTERNAL_STORAGE })
-			{
-				_path = path;
-				_resolve = Resolve;
-				_reject = Reject;
-			}
-			override void OnGranted()
-			{
-				AndroidImageUtils.GetBase64FromImage(_path, _resolve, _reject);
-			}
-
-			override void OnRejected(Exception e)
-			{
-				_reject(e.Message);
-			}
 		}
 
 		public static Future<string> ImageToBase64(Image img)
@@ -381,35 +383,20 @@ namespace Fuse.ImageTools
 			var p = new Promise<string>();
 			var closure = new PromiseCallback<string>(p);
 			if defined(Android)
+			{
 				new GetBase64Command(img.Path,closure.Resolve, closure.Reject).Execute();
+			}
 			else if defined(iOS)
+			{
 				iOSImageUtils.GetBase64FromImage(img.Path, closure.Resolve, closure.Reject);
-			else if defined(dotnet)
+			}
+			else if defined(DOTNET)
+			{
 				DotNetImageUtils.GetBase64FromImage(img.Path, closure.Resolve, closure.Reject);
+			}
 			else
 				closure.Reject("Unsupported platform");
 			return p;
-		}
-
-		extern (Android) class ImageFromBase64Command : PCommand {
-			string _base64Image;
-			Action<string> _resolve;
-			Action<string> _reject;
-			public ImageFromBase64Command(string base64Image, Action<string> Resolve, Action<string> Reject) : base(new PlatformPermission[] { Permissions.Android.WRITE_EXTERNAL_STORAGE })
-			{
-				_base64Image = base64Image;
-				_resolve = Resolve;
-				_reject = Reject;
-			}
-			override void OnGranted()
-			{
-				AndroidImageUtils.GetImageFromBase64(_base64Image, _resolve, _reject);
-			}
-
-			override void OnRejected(Exception e)
-			{
-				_reject(e.Message);
-			}
 		}
 
 		public static Future<Image> ImageFromBase64(string b64)
@@ -417,15 +404,20 @@ namespace Fuse.ImageTools
 			var p = new Promise<Image>();
 			var closure = new ImagePromiseCallback(p);
 			if defined(Android)
+			{
 				new ImageFromBase64Command(b64, closure.Resolve, closure.Reject).Execute();
+			}
 			else if defined(iOS)
+			{
 				iOSImageUtils.GetImageFromBase64(b64, closure.Resolve, closure.Reject);
-			else if defined(dotnet)
+			}
+			else if defined(DOTNET)
+			{
 				DotNetImageUtils.GetImageFromBase64(b64, closure.Resolve, closure.Reject);
+			}
 			else
 				closure.Reject("Unsupported platform");
 			return p;
 		}
-
 	}
 }

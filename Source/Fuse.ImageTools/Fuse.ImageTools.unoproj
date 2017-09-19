@@ -21,18 +21,27 @@
     "../Fuse.Scripting/Fuse.Scripting.unoproj"
   ],
   "Includes": [
-    "*",
-    "Android/*",
-    "iOS/*",
-    "Desktop/*",
-    "Android/ImageStorageTools.java:Java:Android",
+    "Android/AndroidImageUtils.uno",
+    "Android/Commands.uno",
+    "Android/GetBase64Command.uno",
     "Android/Image.java:Java:Android",
+    "Android/ImageFromBase64Command.uno",
+    "Android/ImageStorageTools.java:Java:Android",
     "Android/ImageUtils.java:Java:Android",
+
+    "CLI/DotNetImageUtils.uno",
+    "CLI/DotNetNative.uno",
+
     "iOS/Actions.h:CHeader:iOS",
+    "iOS/ImageHelper.h:CHeader:iOS",
+    "iOS/ImageHelper.m:CSource:iOS",
     "iOS/ImagePicker.h:CHeader:iOS",
     "iOS/ImagePicker.m:CSource:iOS",
-    "iOS/ImageHelper.h:CHeader:iOS",
-    "iOS/ImageHelper.m:CSource:iOS"
+    "iOS/iOSImageUtils.uno",
+
+    "Image.uno",
+    "ImageTools.uno",
+    "PromiseCallbacks.uno"
   ],
   "Excludes": [
     "Tests/",
