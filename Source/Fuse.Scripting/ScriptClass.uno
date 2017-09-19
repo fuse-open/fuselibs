@@ -22,6 +22,16 @@ namespace Fuse.Scripting
 		}
 	}
 
+	public class ScriptReadonlyProperty: ScriptMember
+	{
+		public readonly object Value;
+
+		public ScriptReadonlyProperty(string name, object value): base(name)
+		{
+			Value = value;
+		}
+	}
+
 	public abstract class ScriptProperty: ScriptMember
 	{
 		public readonly string Modifier;
