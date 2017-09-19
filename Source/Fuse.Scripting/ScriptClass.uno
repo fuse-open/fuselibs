@@ -138,7 +138,7 @@ namespace Fuse.Scripting
 
 	public class ScriptPromise<TSelf,TResult,TJSResult> : ScriptMethod
 	{
-		public delegate Future<TResult> FutureFactory<TSelf,TResult>(TSelf self, object[] args);
+		public delegate Future<TResult> FutureFactory<TSelf,TResult>(Context context, TSelf self, object[] args);
 		public delegate TJSResult ResultConverter<TResult,TJSResult>(Context context, TResult result);
 
 		FutureFactory<TSelf,TResult> _futureFactory;
@@ -154,7 +154,7 @@ namespace Fuse.Scripting
 			_resultConverter = resultConverter;
 		}
 
-		Future<TResult> InvokeFutureFactory(TSelf self, object[] args)
+		Future<TResult> InvokeFutureFactory(Context context, TSelf self, object[] args)
 		{
 			if (_futureFactory == null)
 			{
@@ -163,7 +163,7 @@ namespace Fuse.Scripting
 				return p;
 			}
 
-			var future = _futureFactory(self, args);
+			var future = _futureFactory(context, self, args);
 			if (future == null)
 			{
 				var p = new Promise<TResult>();
@@ -180,29 +180,29 @@ namespace Fuse.Scripting
 			var self = (TSelf)obj;
 
 			if (Thread == ExecutionThread.MainThread)
-				UpdateManager.PostAction(new FutureClosure(c.Dispatcher, InvokeFutureFactory, promiseClosure, self, args).Run);
+				UpdateManager.PostAction(new FutureClosure(c, InvokeFutureFactory, promiseClosure, self, args).Run);
 			else
-				promiseClosure.OnFutureReady(InvokeFutureFactory(self, args));
+				promiseClosure.OnFutureReady(InvokeFutureFactory(c, self, args));
 
 			return promise.Construct((Callback)promiseClosure.Run);
 		}
 
 		class FutureClosure
 		{
-			IDispatcher _dispatcher;
+			Context _context;
 			FutureFactory<TSelf,TResult> _futureFactory;
 			PromiseClosure _promiseClosure;
 			TSelf _self;
 			object[] _args;
 
 			public FutureClosure(
-				IDispatcher dispatcher,
+				Context context,
 				FutureFactory<TSelf,TResult> futureFactory,
 				PromiseClosure promiseClosure,
 				TSelf self,
 				object[] args)
 			{
-				_dispatcher = dispatcher;
+				_context = context;
 				_futureFactory = futureFactory;
 				_promiseClosure = promiseClosure;
 				_self = self;
@@ -212,8 +212,8 @@ namespace Fuse.Scripting
 			Future<TResult> _future;
 			public void Run()
 			{
-				_future = _futureFactory(_self, _args);
-				_dispatcher.Invoke(DispatchFuture);
+				_future = _futureFactory(_context, _self, _args);
+				_context.Invoke(DispatchFuture);
 			}
 
 			void DispatchFuture()

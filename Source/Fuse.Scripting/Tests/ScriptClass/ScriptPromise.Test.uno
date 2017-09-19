@@ -35,17 +35,17 @@ namespace Fuse.Scripting.Test
 				new ScriptPromise<CustomPanel,TestObject,External>("getObject", ExecutionThread.MainThread, getObject, new ResultConverter().Convert));
 		}
 
-		static Future<string> getString(CustomPanel self, object[] args)
+		static Future<string> getString(Context context, CustomPanel self, object[] args)
 		{
 			return self.StringFuture;
 		}
 
-		static Future<double> getNumber(CustomPanel self, object[] args)
+		static Future<double> getNumber(Context context, CustomPanel self, object[] args)
 		{
 			return self.NumberFuture;
 		}
 
-		static Future<TestObject> getObject(CustomPanel self, object[] args)
+		static Future<TestObject> getObject(Context context, CustomPanel self, object[] args)
 		{
 			return self.ObjectFuture;
 		}
