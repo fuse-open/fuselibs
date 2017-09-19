@@ -5,6 +5,7 @@ using Uno;
 
 namespace Fuse.Scripting.JavaScriptCore
 {
+	[Require("Xcode.Framework", "JavaScriptCore")]
 	[Require("Header.Include", "JavaScriptCore/JavaScript.h")]
 	public extern(USE_JAVASCRIPTCORE) class Context : Fuse.Scripting.JavaScript.JSContext
 	{
