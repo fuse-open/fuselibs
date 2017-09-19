@@ -157,9 +157,6 @@ namespace Fuse.Drawing
 
 			var graphicsPath = actualPath.Path.GetGraphicsPath();
 
-			// if the path has no size, return
-			if (DotNetHelpers.IsEmptyPath(graphicsPath)) return;
-			
 			bool eoFill = actualPath.FillRule == FillRule.EvenOdd;
 			// set the path filling mode
 			DotNetHelpers.SetEOFill(graphicsPath, eoFill);
@@ -230,9 +227,6 @@ namespace Fuse.Drawing
 			var actualPath = (DotNetCanvasPath)path;
 
 			var graphicsPath = actualPath.Path.GetGraphicsPath();
-
-			// if the path has no size, return
-			if (DotNetHelpers.IsEmptyPath(graphicsPath)) return;
 
 			bool eoFill = actualPath.FillRule == FillRule.EvenOdd;
 			// set the path filling mode
@@ -575,11 +569,6 @@ namespace Fuse.Drawing
 			);
 			return;
 		}
-
-		public static extern bool IsEmptyPath(GraphicsPath path)
-		{
-			return path.GetBounds().Width == 0 || path.GetBounds().Height == 0;
-		} 
 
 		public static extern void SetEOFill(GraphicsPath path, bool eoFill)
 		{

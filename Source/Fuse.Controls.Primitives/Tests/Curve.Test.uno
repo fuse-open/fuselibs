@@ -51,5 +51,24 @@ namespace Fuse.Controls.Primitives.Test
 				Assert.AreEqual(0, p.C.TestLineSegments.Count);
 			}
 		}
+
+		[Test]
+		[extern(MSVC) Ignore("no surface backend")]
+		public void LineRendering()
+		{
+			var p = new UX.Curve.LineRendering();
+			using (var root = TestRootPanel.CreateWithChild(p, int2(100, 100)))
+			using (var fb = root.CaptureDraw())
+			{
+				// left background
+				fb.AssertSolidRectangle(float4(0, 0, 0, 0), new Recti(int2(0,  0), int2(50 - 6, 100)));
+
+				// line
+				fb.AssertSolidRectangle(float4(1, 0, 0, 1), new Recti(int2(50 - 4,  0), int2(8, 100)));
+
+				// right background
+				fb.AssertSolidRectangle(float4(0, 0, 0, 0), new Recti(int2(50 + 6,  0), int2(50 - 6, 100)));
+			}
+		}
 	}
 }

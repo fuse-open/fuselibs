@@ -1,0 +1,7 @@
+<Panel ux:Class="UX.Curve.LineRendering">
+	<Curve Width="100" Height="100" Style="Straight">
+		<Stroke Alignment="Center" LineCap="Round" Width="10" Color="Red" />
+		<CurvePoint At="0.5,0" />
+		<CurvePoint At="0.5,1" />
+	</Curve>
+</Panel>
