@@ -27,6 +27,8 @@ namespace Fuse.Navigation
 		public RouterPage RouterPage { get; private set; }
 	
 		public event RouterPageChangedHandler RouterPageChanged;
+
+		public object Context { get; private set; }
 		
 		public PageData( Visual visual ) 
 		{
@@ -42,18 +44,32 @@ namespace Fuse.Navigation
 				return;
 			}
 			
-			if (rp.Visual != null && visual != rp.Visual)
+			if (rp.Node != null && visual != rp.Node)
 			{
 				Fuse.Diagnostics.InternalError( "Mismatched page visual", this );
 				return;
 			}
-			rp.Visual = visual;
+			rp.Node = visual;
 			
 			this.RouterPage = rp;
 			visual.Prepare(rp.Parameter);
+			UpdateContextData( visual, rp.Context );
 			
 			if (RouterPageChanged != null)
 				RouterPageChanged( this, rp );
+		}
+		
+		void UpdateContextData( Visual page, object data )
+		{
+			var oldData = Context;
+			Context = data;
+			page.BroadcastDataChange(oldData, data);
+		}
+		
+		//TODO: temporary  until PageControl is migrated better
+		public void SetContext( object data )
+		{
+			UpdateContextData( Visual, data );
 		}
 		
 		static PropertyHandle _propPageData = Properties.CreateHandle();

@@ -102,7 +102,7 @@ namespace Fuse
 			}
 		}
 
-		protected void BroadcastDataChange(object oldData, object newData)
+		internal protected void BroadcastDataChange(object oldData, object newData)
 		{
 			string[] newKeys = null;
 			var newObj = newData as IObject;

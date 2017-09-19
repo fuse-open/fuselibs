@@ -613,6 +613,49 @@ namespace Fuse.Navigation.Test
 				Assert.AreEqual( null, p.router.GetHistoryRoute(9) );
 			}
 		}
+		
+		[Test]
+		public void ObservableGoBack()
+		{
+			Router.TestClearMasterRoute();
+			var p = new UX.Router.ObservableGoBack();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				root.StepFrameJS();
+				Assert.AreEqual( 0, p.wc.Progress );
+				Assert.AreEqual( "1", GetText(p.nav.Active) );
+				Assert.AreEqual( "1", p.history.Value );
+				
+				p.callPush.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual( 1, p.wc.Progress );
+				Assert.AreEqual( "2", GetText(p.nav.Active) );
+				Assert.AreEqual( "1,2", p.history.Value );
+
+				//several calls to build up history and have navigator reuse the pages
+				p.callPush.Perform(); //3
+				root.StepFrameJS();
+				p.callPush.Perform(); //4
+				root.StepFrameJS();
+				p.callPush.Perform(); //5
+				root.StepFrameJS();
+				Assert.AreEqual( 1, p.wc.Progress );
+				Assert.AreEqual( "5", GetText(p.nav.Active) );
+				Assert.AreEqual( "1,2,3,4,5", p.history.Value );
+				
+				p.goBack.Pulse();
+				root.StepFrameJS();
+				Assert.AreEqual( 1, p.wc.Progress );
+				Assert.AreEqual( "4", GetText(p.nav.Active) );
+				Assert.AreEqual( "1,2,3,4", p.history.Value );
+				
+				p.goBack.Pulse();
+				root.StepFrameJS();
+				Assert.AreEqual( 1, p.wc.Progress );
+				Assert.AreEqual( "3", GetText(p.nav.Active) );
+				Assert.AreEqual( "1,2,3", p.history.Value );
+			}
+		}
 	}
 }
 	

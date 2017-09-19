@@ -7,7 +7,6 @@ namespace Fuse.Controls
 	{
 		//TODO: Change to IObservableArray once Model feature is merged
 		IArray _pageHistory;
-		Uno.IDisposable _pageHistorySubscription;
 		/**
 			Pages is a stack of pages that controls the local history for a NavigationControl.
 			
@@ -28,27 +27,33 @@ namespace Fuse.Controls
 		int _curPageIndex = -1;
 		void OnPageHistoryChanged()
 		{
-			if (!IsRootingStarted)
+			if (AncestorRouterPage == null || !IsRootingStarted)
 				return;
 				
-			if (_pageHistorySubscription != null)
-			{
-				_pageHistorySubscription.Dispose();
-				_pageHistorySubscription = null;
-			}
+			AncestorRouterPage.ChildRouterPages.Detach();
 			
 			if (_pageHistory == null)
 				return;
-				
+			
 			var obs = _pageHistory as IObservable;
 			if (obs != null)
-				_pageHistorySubscription = obs.Subscribe(this);
+			{
+				AncestorRouterPage.ChildRouterPages.Attach( obs, this );
+			}
+			else
+			{
+				Fuse.Diagnostics.UserError( "PageHistory expects an observable array. It will not work correctly otherwise", this );
+			}
 				
 			_curPageIndex = -1;
 			FullUpdatePages(UpdateFlags.ForceGoto);
 		}
 		
-		static readonly PropertyHandle _pageContextProperty = Fuse.Properties.CreateHandle();
+		void OnPageHistoryUnrooted()
+		{
+			if (AncestorRouterPage != null)
+				AncestorRouterPage.ChildRouterPages.Detach();
+		}
 		
 		[Uno.Flags]
 		enum UpdateFlags
@@ -70,14 +75,7 @@ namespace Fuse.Controls
 				
 			return path;
 		}
-		
-		protected void UpdateContextData( Visual page, object data )
-		{
-			var oldData = page.Properties.Get(_pageContextProperty);
-			page.Properties.Set(_pageContextProperty, data);
-			page.BroadcastDataChange(oldData, data);
-		}
-		
+
 		void FullUpdatePages(UpdateFlags flags = UpdateFlags.None)
 		{
 			string path = null, param = null;
@@ -110,10 +108,28 @@ namespace Fuse.Controls
 				
 			var trans = NavigationGotoMode.Transition;
 			
-			RouterPage rPage = new RouterPage{ Path = path, Parameter = param };
+			RouterPage rPage;
+			if (pageNdx >= AncestorRouterPage.ChildRouterPages.Count)
+			{
+				rPage = new RouterPage{ Path = path, Parameter = param, Context = data };
+				Fuse.Diagnostics.InternalError( "Inconsistent navigation history", this );
+			}
+			else if (pageNdx >= 0)
+			{
+				rPage = AncestorRouterPage.ChildRouterPages[pageNdx];
+				rPage.Path = path;
+				rPage.Parameter = param;
+				rPage.Context = data;
+			}
+			else
+			{
+				//having no page is inconsistent but must be dealt with since it can happen temporarily while binding
+				rPage = new RouterPage();
+			}
+			
 			(this as IRouterOutlet).Goto( rPage, trans, op, "" );
 			if (rPage.Visual != null)
-				UpdateContextData( rPage.Visual, data );
+				PageData.GetOrCreate(rPage.Visual).SetContext(data);
 			
 			_curPageIndex = pageNdx;
 		}
@@ -167,7 +183,16 @@ namespace Fuse.Controls
 		
 		object Node.ISubtreeDataProvider.GetData(Node n)
 		{
-			return n.Properties.Get(_pageContextProperty);
+			var v = n as Visual;
+			if (v == null)
+				return null;
+				
+			var pd = PageData.Get(v);
+			if (pd == null)
+				return null;
+				
+			return pd.Context;
 		}
 	}
+	
 }
