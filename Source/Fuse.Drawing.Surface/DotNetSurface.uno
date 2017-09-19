@@ -576,9 +576,10 @@ namespace Fuse.Drawing
 			return;
 		}
 
+		/* The backing API crashes if you attempt to stroke or fill an empty path (when both dimensions are 0). But we need to still draw when one dimension is zero and the other not, since that is a veritcal/horizontal line. */
 		public static extern bool IsEmptyPath(GraphicsPath path)
 		{
-			return path.GetBounds().Width == 0 || path.GetBounds().Height == 0;
+			return path.GetBounds().Width == 0 && path.GetBounds().Height == 0;
 		} 
 
 		public static extern void SetEOFill(GraphicsPath path, bool eoFill)
