@@ -1,5 +1,6 @@
 using Uno.Collections;
 using Uno;
+using Fuse;
 
 namespace Fuse.Reactive
 {
@@ -12,7 +13,7 @@ namespace Fuse.Reactive
 			return new ArraySubscription(this, observer);
 		}
 
-		class ArraySubscription: Subscription
+		internal class ArraySubscription: Subscription, ISubscription
 		{
 			readonly IObserver _observer;
 
@@ -48,6 +49,110 @@ namespace Fuse.Reactive
 				var next = Next as ArraySubscription;
 				if (next != null) next.OnRemoveAt(index);
 			}
+
+			public void OnReplaceAll(IArray values, ArraySubscription exclude)
+			{
+				if(this != exclude) _observer.OnNewAll(values);
+
+				var next = Next as ArraySubscription;
+				if(next != null) next.OnReplaceAll(values, exclude);
+			}
+
+			class ReplaceAllOperation
+			{
+				ThreadWorker _worker;
+				Scripting.Array _target;
+				IArray _newValues;
+
+				public ReplaceAllOperation(ThreadWorker worker, Scripting.Array target, IArray newValues)
+				{
+					_worker = worker;
+					_target = target;
+					_newValues = newValues;
+				}
+
+				public void Perform()
+				{
+					var ctx = _worker.Context;
+
+					var nv = new object[_newValues.Length];
+					for(var i = 0; i < _newValues.Length; ++i) {
+						nv[i] = _worker.Unwrap(_newValues[i]);
+					}
+					var newValuesJs = ctx.NewArray(nv);
+
+					var replaceAllFn = (Scripting.Function) ctx.Evaluate("replaceAll",
+						"(function(array, values) {" +
+							"if('$replaceAll' in array) array.$replaceAll(values);" +
+							"else {"+
+								"array.length = 0;"+
+								"Array.prototype.push.apply(array, values);"+
+							"}"+
+						"})");
+
+					replaceAllFn.Call(_target, newValuesJs);
+				}
+			}
+
+
+			public void ReplaceAllExclusive(IArray values)
+			{
+				var ta = SubscriptionSubject as TreeArray;
+
+				var worker = JavaScript.Worker;
+				var replaceAll = new ReplaceAllOperation(worker, (Scripting.Array)ta.Raw, values);
+				worker.Invoke(replaceAll.Perform);
+
+				ta.ReplaceAll(values, this);
+			}
+
+			public void ClearExclusive()
+			{
+				ReplaceAllExclusive(new SimpleArray());
+			}
+
+			public void SetExclusive(object newValue)
+			{
+				ReplaceAllExclusive(new SimpleArray(newValue));
+			}
+
+			class SimpleArray : IArray
+			{
+				object[] _values;
+
+				public SimpleArray(params object[] values)
+				{
+					_values = values;
+				}
+
+				public int Length { get { return _values.Length; } }
+				public object this[int index]
+				{
+					get
+					{
+						return _values[index];
+					}
+				}
+			}
+		}
+
+		internal void ReplaceAll(IArray newValues, ArraySubscription exclude)
+		{
+			for(var i = 0; i < _items.Count; ++i)
+			{
+				ValueMirror.Unsubscribe(_items[i]);
+			}
+
+			_items.Clear();
+
+			for(var i = 0; i < newValues.Length; ++i)
+			{
+				_items.Add(newValues[i]);
+			}
+
+			var sub = Subscribers as ArraySubscription;
+			if(sub != null)
+				sub.OnReplaceAll(newValues, exclude);
 		}
 
 		internal void Set(int index, object newValue)
