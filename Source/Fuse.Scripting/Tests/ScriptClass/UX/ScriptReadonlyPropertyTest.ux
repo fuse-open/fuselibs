@@ -1,0 +1,22 @@
+<Panel ux:Class="UX.ScriptReadonlyPropertyTest">
+	<Fuse.Scripting.Test.ReadonlyPropertyPanel ux:Name="testPanel" >
+
+		<JavaScript>
+			module.exports = {
+				stringProperty: testPanel.stringProperty,
+				numberProperty: testPanel.numberProperty,
+			};
+		</JavaScript>
+
+		<Properties2
+			ux:Name="Properties"
+			StringProperty="{stringProperty}"
+			NumberProperty="{numberProperty}" />
+
+		<Panel ux:Class="Properties2">
+			<string ux:Property="StringProperty" />
+			<double ux:Property="NumberProperty" />
+		</Panel>
+
+	</Fuse.Scripting.Test.ReadonlyPropertyPanel>
+</Panel>

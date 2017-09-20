@@ -81,10 +81,38 @@ namespace Fuse.Reactive
 				{
 					new PropertyClosure(cl, property, this);
 					continue;
-				}				
+				}
+				var readonlyProperty = sc.Members[i] as ScriptReadonlyProperty;
+				if (readonlyProperty != null)
+				{
+					new ReadonlyPropertyClosure(cl, readonlyProperty, this);
+					continue;
+				}
 			}
 
 			return cl;
+		}
+
+		class ReadonlyPropertyClosure
+		{
+			public ReadonlyPropertyClosure(Function cl, ScriptReadonlyProperty constant, ThreadWorker worker)
+			{
+				var definer = (Function)worker.Context.Evaluate(constant.Name + " (ScriptReadonlyProperty)",
+					"(function(cl,propValue)"
+					+ "{"
+						+ "Object.defineProperty("
+							+ "cl.prototype,"
+							+ "'" + constant.Name + "',"
+							+ "{"
+								+ "value: propValue,"
+								+ "writable: false,"
+								+ "enumerable: true,"
+								+ "configurable: false"
+							+ "}"
+						+ ");"
+					+ "})");
+				definer.Call(cl, worker.Unwrap(constant.Value));
+			}
 		}
 
 		class PropertyClosure
