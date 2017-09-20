@@ -180,7 +180,7 @@ namespace Fuse.ImageTools
 
 			The `options` parameter must be an object with one or more of the following properties defined:
 
-			* `desiredWith` - The new width in pixels
+			* `desiredWidth` - The new width in pixels
 			* `desiredHeight` - The new height in pixels
 			* `mode` - The resizing mode, which can be:
 			  - `ImageTools.IGNORE_ASPECT` - The image is resized exactly to the desired width and height. This is the default.
