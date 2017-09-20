@@ -3,6 +3,9 @@
 ## JavaScript: Optional explicit requrie() of UX symbols
 - Symbols declared with `ux:Name`, `ux:Dependency` or `dep` are now also available to `require()` for `<JavaScript>` modules using the `ux:` prefix. This allows us to write code that plays nicer with transpilers and linters. Using require for names declared in UX is optional, but may make the code more readable and maintainable, e.g. `var router = require("ux:router")` over just using `router` with no declaration.
 
+## Fuse.Drawing.Surface
+- Fixed a problem where horizontal or vertical lines would not draw in the .NET backend.
+
 ## Attract
 - Fixed an issue with `attract` not updating when using a data binding as the source value
 
