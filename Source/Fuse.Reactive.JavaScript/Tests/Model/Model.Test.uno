@@ -181,7 +181,7 @@ namespace Fuse.Reactive.Test
 			using (var root = TestRootPanel.CreateWithChild(e))
 			{
 				root.StepFrameJS();
-				Assert.AreEqual("5", GetRecursiveText(e) );
+				Assert.AreEqual("Q5", GetRecursiveText(e) );
 			}
 		}
 

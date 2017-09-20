@@ -2,7 +2,7 @@
 	<Navigator DefaultPath="Home" Pages="{pages}">
 		<PageControl Interaction="None" ux:Name="Home" Pages="{homePages}" ActiveIndex="{pageIndex}">
 			<Page ux:Template="Flights">
-				<Text Value="{pageIndex}"/>
+				<Text Value="Q{pageIndex}"/>
 			</Page>
 		</PageControl>
 	</Navigator>
