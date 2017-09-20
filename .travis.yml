@@ -7,6 +7,10 @@ compiler: clang
 env:
   global:
     - XCODE_XCCONFIG_FILE=$TRAVIS_BUILD_DIR/.travis.xcconfig
+  matrix:
+    - TARGET=native
+    - TARGET=ios
+    - TARGET=dotnet
 
 install:
   - pip install six
@@ -21,8 +25,10 @@ before_script:
 
 script:
   - Stuff/uno --trace doctor
-  - Stuff/uno --trace build -tios Tests/ManualTests/ManualTestingApp/ManualTestingApp.unoproj
-  - Stuff/uno --trace test -tnative --timeout=30 Source/AllTests.unoproj
+  - Stuff/uno --trace build --target=$TARGET Tests/ManualTests/ManualTestingApp/ManualTestingApp.unoproj
+  - if [ "$TARGET" != "ios" ]; then
+      Stuff/uno --trace test --target=$TARGET --timeout=30 Source/AllTests.unoproj;
+    fi
 
 after_failure:
   - for c in $(ls /cores/core.*); do
