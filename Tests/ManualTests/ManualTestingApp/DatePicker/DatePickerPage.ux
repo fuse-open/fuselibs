@@ -1,0 +1,65 @@
+<Page Title="DatePicker" ux:Class="DatePickerPage">
+	<InfoStack ux:Key="Info">
+		<h2>Goal</h2>
+		<p>To test that native DatePickers work as expected.</p>
+		<h2>Instructions</h2>
+		<p>Below there should be two different DatePickers, both showing 14 February 2007.</p>
+		<p>Change the date in the first picker, wait for animations to settle, and make sure the value of the second picker changes to match the value of the first.</p>
+		<p>Then, change the value of the second picker, wait for animations to settle, and make sure the value of the first picker changes to match the value of the second.</p>
+		<p>Then, using either picker, try to pick a date before 1st January 1950 or after 1st January 2050 and verify that this isn't possible.</p>
+		<p>Finally, press the "Log DateTime property" button and ensure the currently picked date is output to the console, and push the "Change DateTime property" button and ensure the time picked by both pickers matches 8th June 1984.</p>
+	</InfoStack>
+
+	<StackPanel ux:Class="MyClass">
+		<Uno.DateTime ux:Property="DateTime" />
+
+		<JavaScript>
+			var self = this;
+
+			module.exports = {
+				logDateTime: function() {
+					console.log("DateTime: " + JSON.stringify(self.DateTime.value));
+				},
+				whoYouGonnaCall: function() {
+					self.DateTime.value = new Date(Date.parse("1984-06-08T00:00:00.000Z"));
+				}
+			};
+		</JavaScript>
+
+		<Button Text="Log DateTime property" Clicked="{logDateTime}" Margin="5" />
+		<Button Text="Change DateTime property" Clicked="{whoYouGonnaCall}" Margin="5" />
+	</StackPanel>
+
+	<ScrollView>
+		<StackPanel>
+			<JavaScript>
+				var Observable = require("FuseJS/Observable");
+
+				var someDate = Observable(new Date(Date.parse("2007-02-14T00:00:00.000Z")));
+
+				someDate.onValueChanged(module, function(date) {
+					console.log("someDate changed in JS: " + JSON.stringify(date));
+				});
+
+				module.exports = {
+					someDate: someDate,
+
+					minDate: new Date(Date.parse("1950-01-01T00:00:00.000Z")),
+					maxDate: new Date(Date.parse("2050-01-01T00:00:00.000Z"))
+				};
+			</JavaScript>
+
+			<Text>Placeholder area to hide native controls beneath info panel; scroll down for test view</Text>
+			<Panel Height="600" />
+
+			<MyClass DateTime="{someDate}" />
+
+			<NativeViewHost>
+				<StackPanel>
+					<DatePicker Value="{someDate}" MinValue="{minDate}" MaxValue="{maxDate}" />
+					<DatePicker Value="{someDate}" MinValue="{minDate}" MaxValue="{maxDate}" />
+				</StackPanel>
+			</NativeViewHost>
+		</StackPanel>
+	</ScrollView>
+</Page>

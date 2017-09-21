@@ -16,6 +16,7 @@
     "BackButton/BackButtonView.ux:UX",
     "Clock/Clock.ux.uno:Source",
     "Clock/Clock.ux:UX",
+    "DatePicker/DatePickerPage.ux:UX",
     "DefaultTextRenderer.uno:Source",
     "DeviceInfo/DeviceInfo.ux.uno:Source",
     "DeviceInfo/DeviceInfo.ux:UX",

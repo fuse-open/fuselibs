@@ -143,11 +143,13 @@
 			<ScrollViewPagerPage/>
 			<Android>
 				<WebViewPage/>
+				<DatePickerPage/>
 				<BackButtonView/>
 			</Android>
 			<iOS>
 				<MapViewPage/>
 				<WebViewPage/>
+				<DatePickerPage/>
 			</iOS>
 		</PageControl>
 		<BottomFrameBackground DockPanel.Dock="Bottom"/>
