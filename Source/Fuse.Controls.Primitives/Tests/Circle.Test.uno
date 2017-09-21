@@ -26,7 +26,7 @@ namespace Fuse.Controls.Primitives.Test
 						var pos = int2(x, y);
 						float distance = Vector.Distance(center, pos + float2(0.5f, 0.5f));
 						float alpha = Math.Saturate(radius - distance + 0.5f);
-						fb.AssertPixel(float4(alpha, 0, 0, alpha), pos, 1.0f / 255);
+						fb.AssertPixel(float4(alpha, 0, 0, alpha), pos, 2.0f / 255);
 					}
 				}
 			}

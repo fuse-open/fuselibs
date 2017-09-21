@@ -119,14 +119,16 @@ namespace Fuse.Elements.Test
 			var p = new UX.ElementBatcher.ZeroSizeAfterFirstDraw();
 			using (var root = TestRootPanel.CreateWithChild(p, int2(10, 13)))
 			{
-				var edgeMargin = 1;
+				// Due to precision issues while blitting on AMD hardware, we sadly need a surprisingly
+				// large tolerance here. The test still tests what it tries too, though.
+				var tolerance = 3.0f / 255;
 
 				using (var fb = root.CaptureDraw())
 				{
-					fb.AssertSolidRectangle(float4(0, 0, 1, 1), new Recti(int2(0,  0), int2(10,  1))); // Guard
-					fb.AssertSolidRectangle(float4(0, 1, 0, 1), new Recti(int2(0,  1), int2(10, 10)));
-					fb.AssertSolidRectangle(float4(1, 0, 0, 1), new Recti(int2(0, 11), int2(10,  1))); // Poison
-					fb.AssertSolidRectangle(float4(0, 0, 1, 1), new Recti(int2(0, 12), int2(10,  1))); // Guard
+					fb.AssertSolidRectangle(float4(0, 0, 1, 1), new Recti(int2(0,  0), int2(10,  1)), tolerance); // Guard
+					fb.AssertSolidRectangle(float4(0, 1, 0, 1), new Recti(int2(0,  1), int2(10, 10)), tolerance);
+					fb.AssertSolidRectangle(float4(1, 0, 0, 1), new Recti(int2(0, 11), int2(10,  1)), tolerance); // Poison
+					fb.AssertSolidRectangle(float4(0, 0, 1, 1), new Recti(int2(0, 12), int2(10,  1)), tolerance); // Guard
 				}
 
 				p.Poison.Height = 0;
@@ -135,9 +137,9 @@ namespace Fuse.Elements.Test
 
 				using (var fb = root.CaptureDraw())
 				{
-					fb.AssertSolidRectangle(float4(0, 0, 1, 1), new Recti(int2(0,  0), int2(10,  1))); // Guard
-					fb.AssertSolidRectangle(float4(0, 1, 0, 1), new Recti(int2(0,  1), int2(10, 10)));
-					fb.AssertSolidRectangle(float4(0, 0, 1, 1), new Recti(int2(0, 11), int2(10,  1))); // Guard
+					fb.AssertSolidRectangle(float4(0, 0, 1, 1), new Recti(int2(0,  0), int2(10,  1)), tolerance); // Guard
+					fb.AssertSolidRectangle(float4(0, 1, 0, 1), new Recti(int2(0,  1), int2(10, 10)), tolerance);
+					fb.AssertSolidRectangle(float4(0, 0, 1, 1), new Recti(int2(0, 11), int2(10,  1)), tolerance); // Guard
 				}
 			}
 		}
