@@ -53,10 +53,13 @@ namespace Fuse.Reactive
 		{
 			Detach();
 			_observable = obs;
-			_slave = slave;
+			
 			_subscription = _observable.Subscribe(this);
 			//treat the bound observable as the source-of-truth
 			((IObserver)this).OnNewAll(obs);
+			
+			//set after call to OnNewAll since Attach should not generate a callback
+			_slave = slave;			
 		}
 		
 		public void Detach()

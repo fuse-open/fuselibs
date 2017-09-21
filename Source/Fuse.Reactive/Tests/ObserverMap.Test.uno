@@ -76,6 +76,71 @@ namespace Fuse.Reactive.Test
 			
 			tm.Detach();
 		}
+		
+		[Test]
+		//tests some basic behaviour of ObserverMap, including that which isn't easy to detect at a higher level
+		public void Slave()
+		{
+			var rl = new ObservableList<Source>();
+			var tm = new TestMap();
+			var slave = new ObserverSlave();
+			tm.Attach(rl, slave);
+			
+			//Attach should not genereate any callback
+			Assert.AreEqual( "", slave.Trace );
+			
+			rl.Add( new Source(1) );
+			rl.Insert( 1, new Source(2) );
+			rl.RemoveAt( 0 );
+			rl.Clear();
+			Assert.AreEqual( "AI@1R@0C", slave.Trace );
+		}
+	}
+	
+	//minimal sanity test
+	class ObserverSlave : IObserver
+	{
+		public string Trace = "";
+		
+		void IObserver.OnClear()
+		{
+			Trace += "C";
+		}
+
+		void IObserver.OnNewAll(IArray values)
+		{
+			Trace += "NA" + values.Length;
+		}
+		
+		void IObserver.OnNewAt(int index, object newValue)
+		{
+			Trace += "N@" + index;
+		}
+		
+		void IObserver.OnSet(object newValue)
+		{
+			Trace += "S";
+		}
+		
+		void IObserver.OnAdd(object addedValue)
+		{
+			Trace += "A";
+		}
+		
+		void IObserver.OnRemoveAt(int index)
+		{
+			Trace += "R@" + index;
+		}
+		
+		void IObserver.OnInsertAt(int index, object value)
+		{
+			Trace += "I@" + index;
+		}
+		
+		void IObserver.OnFailed(string message)
+		{
+			Trace += "F";
+		}
 	}
 	
 	class TestMap : ObserverMap<Mapped>
