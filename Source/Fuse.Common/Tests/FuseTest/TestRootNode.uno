@@ -12,12 +12,19 @@ namespace FuseTest
 	 /* TODO: Missing bootstrapper */
 	public class TestRootViewport : RootViewport, IRenderViewport
 	{
+		extern(!Android && !iOS)
 		public TestRootViewport(Uno.Platform.Window window, float pixelsPerPoint = 0)
 			: base(window, pixelsPerPoint)
 		{ 
 			OverrideSize( float2(100), pixelsPerPoint, pixelsPerPoint );
 		}
-		
+
+		extern(Android || iOS)
+		public TestRootViewport(Uno.Platform.Window window, float pixelsPerPoint = 0)
+		{
+			OverrideSize( float2(100), pixelsPerPoint, pixelsPerPoint );
+		}
+
 		public void Resize(float2 size)
 		{
 			OverrideSize(size, PixelsPerPoint, PixelsPerOSPoint);
