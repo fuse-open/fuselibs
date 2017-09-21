@@ -4,10 +4,13 @@
 
 @synthesize _onLocationChanged;
 @synthesize _onError;
+@synthesize _onChangeAuthorizationStatus;
 
-- (id)initWithBlock:(void (^)(CLLocation* location))onLocationChanged error:(void (^)(NSError* err))onError {
+- (id)initWithBlock:(void (^)(CLLocation* location))onLocationChanged error:(void (^)(NSError* err))onError
+										 changeAuthorizationStatus:(void (^)(int status))onChangeAuthorizationStatus {
 	self = [super init];
 	if (self) {
+		self._onChangeAuthorizationStatus = onChangeAuthorizationStatus;
 		self._onLocationChanged = onLocationChanged;
 		self._onError = onError;
 	}
@@ -26,6 +29,10 @@
 
 - (void)locationManager:(CLLocationManager*)manager didFailWithError:(NSError*)error {
 	_onError(error);
+}
+
+- (void)locationManager:(CLLocationManager*)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status {
+	_onChangeAuthorizationStatus((int)status);
 }
 
 @end

@@ -10,11 +10,15 @@ namespace Fuse.GeoLocation
 	[ForeignInclude(Language.ObjC, "iOS/LocationManagerDelegate.h")]
 	extern(iOS) class IOSLocationProvider : ILocationTracker
 	{
+		private const int AuthorizedWhenInUse = 4;
+
 		ObjC.Object _lm; // CLLocationManager*
 		ObjC.Object _lmDelegate; // LocationManagerDelegate*
 		Action<Location> _continuousLocationListener;
 		Action<Exception> _continuousErrorListener;
 		Queue<Promise<Location>> _waitingPromises = new Queue<Promise<Location>>();
+		Promise<Location> _currentWaitingPromise;
+		double _promiseTimeout;
 		double _desiredAccuracyInMeters;
 
 		[Foreign(Language.ObjC)]
@@ -29,7 +33,12 @@ namespace Fuse.GeoLocation
 			error: ^void (NSError* err)
 			{
 				@{IOSLocationProvider:Of(_this).OnError(string):Call(err.localizedDescription)};
-			}];
+			}
+			changeAuthorizationStatus: ^void (int status)
+			{
+				@{IOSLocationProvider:Of(_this).OnChangeAuthorizationStatus(int):Call(status)};
+			}
+			];
 
 			lm.delegate = lmDelegate;
 
@@ -162,13 +171,41 @@ namespace Fuse.GeoLocation
 
 		public void GetLocation(Promise<Location> promise, double timeout)
 		{
-			Timer.Wait(timeout / 1000, new The(promise).TimedOut);
-			_waitingPromises.Enqueue(promise);
 			SetCLLocationManagerParams(_lm, 0);
 			// Stopping and starting triggers a new callback
 			StopUpdatingLocation(_lm);
 			StartUpdatingLocation(_lm);
+			if (IsLocationPermitted())
+			{
+				PublishLocationPromise(promise, timeout);
+			}
+			else
+			{
+				RequestAuthorization(GeoLocationAuthorizationType.WhenInUse);
+				_currentWaitingPromise = promise;
+				_promiseTimeout = timeout;
+			}
 		}
+
+		void OnChangeAuthorizationStatus(int clAuthorizationStatus)
+		{
+			if (clAuthorizationStatus == AuthorizedWhenInUse && _currentWaitingPromise != null)
+			{
+				PublishLocationPromise(_currentWaitingPromise, _promiseTimeout);
+			}
+		}
+
+		private void PublishLocationPromise(Promise<Location> promise, double timeout)
+		{
+			Timer.Wait(timeout / 1000, new The(promise).TimedOut);
+			_waitingPromises.Enqueue(promise);
+		}
+
+		[Foreign(Language.ObjC)]
+		private bool IsLocationPermitted()
+		@{
+			return [CLLocationManager authorizationStatus]==kCLAuthorizationStatusAuthorizedWhenInUse;
+		@}
 
 		class The
 		{
@@ -221,7 +258,7 @@ namespace Fuse.GeoLocation
 			*altitude = location.altitude;
 			*speed = location.speed;
 		@}
-		
+
 		public void Init(Action onReady)
 		{
 			onReady();
