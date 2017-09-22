@@ -1,27 +1,29 @@
 # Unreleased
 
-## JavaScript: Optional explicit requrie() of UX symbols
+# 1.3
+
+## 1.3.0
+
+### JavaScript: Optional explicit requrie() of UX symbols
 - Symbols declared with `ux:Name`, `ux:Dependency` or `dep` are now also available to `require()` for `<JavaScript>` modules using the `ux:` prefix. This allows us to write code that plays nicer with transpilers and linters. Using require for names declared in UX is optional, but may make the code more readable and maintainable, e.g. `var router = require("ux:router")` over just using `router` with no declaration.
 
-## Fuse.Drawing.Surface
+### Fuse.Drawing.Surface
 - Fixed a problem where horizontal or vertical lines would not draw in the .NET backend.
 
-## Attract
+### Attract
 - Fixed an issue with `attract` not updating when using a data binding as the source value
 
-## Fonts
+### Fonts
 - Fixed bug where the default font on Android could end up being null.
 
-## ViewHandle
+### ViewHandle
 - Fixed issue where Images with Mask could end up not displaying. This happend due to unnecessary invalidation of the implicit native GraphicsView in the app root. This invalidation was introduced when the Surface API was implemented for native. Invalidation is now opt-in on ViewHandle
 
-## Circle
+### Fuse.Drawing.Primitives
 - Fixed issue where Circles could draw incorrect due to floating point precision
-
-## Rectangle
 - Fixed issue where Rectangles could render incorreclty due to FP16 precision limitation.
 
-## Navigation
+### Navigation
 - Added `Navigator.Pages` to bind the local history to an observable/model
 - Added `PageControl.Pages` to bind the list of available pages to an observable/model
 - Fixed the semantics of `PageControl.ActiveIndex` to work with dynamic pages. The output, getter, will only be updated when the navigation is intentionally changed to a new page. Previously it would always reflect the current page, which causes problem with dynamic pages. The variation between th desired target and actual target only lasts while the desired target is not yet rooted.
@@ -33,14 +35,14 @@
 - Removed `Navigation.PageData`. It was always meant to be internal and has no public use.
 - Allowed `GoBack` and `WhileCanGoBack` on the router to properly interact with bound observable/model `PageHistory`
 
-## ScriptClass
+### ScriptClass
 - Added ScriptPromise. This adds support for passing Promises between Uno and the scripting engine. Very useful when dealing with async stuff and JavaScript
 - Added ScriptReadonlyProperty. This feature lets you expose readonly data in JavaScript. Useful for exposing constants for example
 
-## WebView
+### WebView
 Fixed issue where custom URI schemes were matched too greedily in URLs, making for erroneously intercepted URL requests.
 
-## Delay Push Notification Registration on iOS
+### Delay Push Notification Registration on iOS
 
 On iOS you can now put the following in your unoproj file:
 
@@ -53,13 +55,13 @@ On iOS you can now put the following in your unoproj file:
 ```
 which will stop push notifications registering (and potentially asking for permissions) on launch. Your must then call `register()` from JS when you wish to begin using push notifications. On android this option & register are silently ignored.
 
-## Image
+### Image
 - Fixed issue where an `<Image />` could fail to display inside a `<NativeViewHost />` on iOS
 
-## Each
+### Each
 - Fixed a bug where replacing the whole list of items with an empty list would not immediately remove the items from the UI.
 
-## Router
+### Router
 - Added several features to allow navigation/routing from within UX, whereas previously JavaScript code was required.
 - Added `ModifyRoute`, `GotoRoute` and `PushRoute` actions to replace `RouterModify`. These all have a `Path` property.
 	<Each Items="{tags}">
@@ -72,61 +74,57 @@ which will stop push notifications registering (and potentially asking for permi
 - Added `gotoRoute`, `pushRoute`, and `modifyRoute` expression events which allow for simple navigation in event handlers.
 	<Button Text="View Details" Clicked="gotoRoute( 'home', 'user' : ( 'id': {userId}) )"/>
 
-## ScrollViewPager
+### ScrollViewPager
 - Added `ScrollViewPage` which simplifies the creation of infinite scrolling lists
 
-## Ellipse
+### Ellipse
 - Added missing hit testing from `Ellipse`. If you relied on there not being any hit testing on an ellipse add `HitTestMode="None"`
 
-## Video
+### Video
 - Xamarin Mac was upgraded to support 64-bit executables on macOS.
 
-## Trigger
+### Triggers
 - Fixed an issue where certain triggers would not skip their animation/actions as part of the Bypass phase. This will not likely affect many projects, but may resolve some spurious issues where animations did not bypass under certain conditions.
 - Fixed an issue where `WhileVisibleInScrollView` did not respect the Bypass phase for element layout.
   * If you required this behaviour add `Bypass="None"` to the trigger -- in exceptional cases you can add `Bypass="ExceptLayout"` to get the precise previous behaviour, but it should not be required, and is only temporarily available for backwards compatibility.
-
-## ScrollView
-- Added minimal support to WhileVisibleInScrollView for changes in Element layout updating the status
-
-## Optimizations for long list of elements
-- Several low-level optimizations that speeds up scenarios with long lists (e.g. scrollviews). Here are the Uno-level details:
- * Optimized the implementation of the `Visual.Children` collection to be an implicitly linked list. This avoids all memory allocation and shifting in connection with inserting and removing nodes from a parent, and ensures a `O(1)` cost for all child list manipulations.
- * Introduced new public API: `Node.NextSibling<T>()` and `Node.PreviousSibling<T>()`, which can be together with `Visual.FirstChild<T>()` and `Visual.LastChild<T>()`. The recommended way of iterating over the children of a `Visual` is now `for (var c = parent.FirstChild<Visual>(); c != null; c = c.NextSibling<Visual>())` where `Visual` can be replaced with the desired node type to visit.
-
-## Fuse.Drawing.Surface
-- Added support for the Surface API in native UI for iOS. Meaning that `Curve`, `VectorLayer` and charting will work inside a `NativeViewHost`.
-
-## TextInput
-- Fixed issue on Android causing text to align incorrectly if being scrolled and unfocused.
-
-## WrapPanel
-- Added possibility to use `RowAlignment` to align the elements in the major direction of the `WrapPanel` as well as in the minor.
-
-## Triggers
 - Several triggers were modified to properly look up the tree for a target node, whereas previously they may have only checked the immediate parent. The affected triggers are `BringIntoView`, `Show`,`Hide`,`Collapse`, `Toggle`, `TransitionState`, `Callback`, `CancelInteractions`, `Stop`, `Play`, `Resume`, `Pause`, `TransitionLayout`, `BringToFront`, `SendToBack`, `EvaluateJS`, `RaiseUserEvent`, `ScrollTo`. This should only change previous behavior if the action was previously configured incorrectly and did nothing or already found the wrong node. Many of the actions have a `Target` to target a specific node, or `TargetNode` to specify where the search begins.
 - Changed/fixed `Trigger` to provide the trigger itself as the target node to a `TriggerAction`, previously it'd provide the parent of the trigger. The old behaviour was due to an old tree structure. This should have been updated a long time ago. This allows actions to reference the trigger in which they are contained. If you've created a custom Uno `TriggerAction` and need the old behaviour modify your `Perform(Node target)` to use `target.Parent`. Triggers should in general scan upwards from the target node.
 
-## Optimizations
+### ScrollView
+- Added minimal support to WhileVisibleInScrollView for changes in Element layout updating the status
+
+### Fuse.Drawing.Surface
+- Added support for the Surface API in native UI for iOS. Meaning that `Curve`, `VectorLayer` and charting will work inside a `NativeViewHost`.
+
+### TextInput
+- Fixed issue on Android causing text to align incorrectly if being scrolled and unfocused.
+
+### WrapPanel
+- Added possibility to use `RowAlignment` to align the elements in the major direction of the `WrapPanel` as well as in the minor.
+
+### Optimizations
 - Optimized UpdateManager dispatcher to deal better with high numbers of dispatches per frame (as when populating long lists).
 - Optimized how ZOrder was computed which improves layout and tree initialization speed. Inlcudes a minor change on the `ITreeRenderer` interface, unlikely to affect your code.
 - Optimized how bounding boxes are calculated (improves layout and rendering performance).
 - Optimized how render bounds are compounded for larger lists.
+- Several low-level optimizations that speeds up scenarios with long lists (e.g. scrollviews). Here are the Uno-level details:
+ * Optimized the implementation of the `Visual.Children` collection to be an implicitly linked list. This avoids all memory allocation and shifting in connection with inserting and removing nodes from a parent, and ensures a `O(1)` cost for all child list manipulations.
+ * Introduced new public API: `Node.NextSibling<T>()` and `Node.PreviousSibling<T>()`, which can be together with `Visual.FirstChild<T>()` and `Visual.LastChild<T>()`. The recommended way of iterating over the children of a `Visual` is now `for (var c = parent.FirstChild<Visual>(); c != null; c = c.NextSibling<Visual>())` where `Visual` can be replaced with the desired node type to visit.
 
-## Marshalling
+### Marshalling
 - Fuse.Scripting now knows about the JS `Date` type, allowing instances to be passed to/from Uno in the form of `Uno.DateTime` objects. This support extends to databinding, `NativeModule`s, `ScriptClass`s, and the `Context.Wrap/Unwrap` API.
 - Binding an object that does not implement `IArray` to a property that expects `IArray` will now automatically convert the value to an array of length 1.
 
-## UpdateManager changes (Uno-level)
+### UpdateManager changes (Uno-level)
 - Breaking change: Several entrypoints on UpdateManager now take a `LayoutPriority` enum instead of `int` as the `priority` argument. Very unlikely to affect user code code.
 - Fixed an issue where writes to `FuseJS/Observables` would not dispatch in the right order on the UI thread if interleaved with `ScriptClass` callbacks (slightly breaking behavior).
 
-
-## `Fuse.Reactive` framework changes (Uno-level)
+### Fuse.Reactive framework changes (Uno-level)
 - These are breaking changes, but very unlikely to affect your app:
  * The `DataBinding`, `EventBinding` and `ExpressionBinding` class constructors no longer take a `NameTable` argument.
  * The `Name` and `This` expression classes has been removed. The UX compiler will now compile these as `Constant` expressions that contain the actual objects instead.
  * The `IContext` interface no longer contains the `NameTable` property.
+
 
 # 1.2
 
@@ -450,5 +448,3 @@ A new vector drawing system has been added to Fuse. This allows drawing of curve
 ## Old
 
 See [the commit history for this file](https://github.com/fusetools/fuselibs-public/commits/master/CHANGELOG.md) for older entries.
-
-
