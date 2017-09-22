@@ -6,9 +6,7 @@ require("FuseJS/Internal/ZonePatches");
 var rootZone = Zone.current;
 
 function shouldEmitProperty(key) {
-	return key[0] !== "$"
-		|| key === "$path"
-		|| key === "$template"
+	return !key.startsWith("__fuse_");
 }
 
 function isThenable(thing) {
@@ -46,11 +44,11 @@ function Model(source)
 		
 		idToMeta.set(meta.id, meta);
 		stateToMeta.set(state, meta);
-		node.$id = meta.id;
-		node.$raw = state;
+		node.__fuse_id = meta.id;
+		node.__fuse_raw = state;
 
 		if (state instanceof Object) {
-			node.$template = state.constructor.name;
+			node.__fuse_class = state.constructor.name;
 		}
 
 		// create zone lazily to avoid overhead when not needed
@@ -179,7 +177,7 @@ function Model(source)
 					return res
 				})
 			}
-			f.$isWrapped = true;
+			f.__fuse_isWrapped = true;
 
 			return f;
 		}
@@ -266,13 +264,9 @@ function Model(source)
 		}
 
 		function oldValueEquals(key, newValue) {
-			if (newValue instanceof Array) {
+			if (newValue instanceof Object) {
 				var keyMeta = stateToMeta.get(newValue);
-				return keyMeta instanceof Object && meta.node[key].$id === keyMeta.id;
-			}
-			else if (newValue instanceof Object) {
-				var keyMeta = stateToMeta.get(newValue);
-				return keyMeta instanceof Object && meta.node[key].$id === keyMeta.id;
+				return keyMeta instanceof Object && meta.node[key].__fuse_id === keyMeta.id;
 			}
 			else {
 				return node[key] === newValue;
@@ -281,21 +275,21 @@ function Model(source)
 
 		function removeAsParentFrom(node) {
 			if (!(node instanceof Object)) { return; }
-			var oldMeta = idToMeta.get(node.$id);
+			var oldMeta = idToMeta.get(node.__fuse_id);
 			if (oldMeta instanceof Object) {
 				var thisIndex = oldMeta.parents.findIndex(function(x) { return x.meta == meta });
 				oldMeta.parents.splice(thisIndex, 1);
 				oldMeta.invalidatePath();
 
 				if (oldMeta.parents.length === 0) {
-					idToMeta.delete(node.$id);
+					idToMeta.delete(node.__fuse_id);
 					stateToMeta.delete(oldMeta.state);
 				}
 			}
 		}
 
 		if(node instanceof Array) {
-			node.$replaceAll = function(values) {
+			node.__fuse_replaceAll = function(values) {
 				replaceAllInternal(state, values);
 				replaceAllInternal(node, values);
 				dirty();
@@ -307,7 +301,7 @@ function Model(source)
 			Array.prototype.push.apply(subject, values);
 		}
 
-		node.$requestChange = function(key, value) {
+		node.__fuse_requestChange = function(key, value) {
 			var changeAccepted = true;
 			if ('$requestChange' in state) {
 				changeAccepted = state.$requestChange(key, value);
@@ -324,7 +318,7 @@ function Model(source)
 		function update(key, value, visited)
 		{
 			if (value instanceof Function) {
-				if (!value.$isWrapped) {
+				if (!value.__fuse_isWrapped) {
 					state[key] = wrapFunction(k, value)
 					set(key, state[key]);
 				}
@@ -335,7 +329,7 @@ function Model(source)
 			else if (value instanceof Array) {
 				var keyMeta = stateToMeta.get(value);
 
-				if (keyMeta instanceof Object && meta.node[key].$id == keyMeta.id) 
+				if (keyMeta instanceof Object && meta.node[key].__fuse_id == keyMeta.id) 
 				{ 
 					if (!keyMeta.isClass) { 
 						keyMeta.diff(visited); 
@@ -350,7 +344,7 @@ function Model(source)
 			else if (value instanceof Object) {
 				var keyMeta = stateToMeta.get(value);
 
-				if (keyMeta instanceof Object && meta.node[key].$id === keyMeta.id) {
+				if (keyMeta instanceof Object && meta.node[key].__fuse_id === keyMeta.id) {
 					if (!keyMeta.isClass) {
 						keyMeta.diff(visited);
 					}
