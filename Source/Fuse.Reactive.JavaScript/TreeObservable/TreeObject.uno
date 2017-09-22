@@ -35,8 +35,8 @@ namespace Fuse.Reactive
 				}
 				public void Perform()
 				{
-					if (_obj.ContainsKey("$requestChange")) {
-						((Scripting.Function)_obj["$requestChange"]).Call(_key, _value);
+					if (_obj.ContainsKey("__fuse_requestChange")) {
+						((Scripting.Function)_obj["__fuse_requestChange"]).Call(_key, _value);
 					}
 					else
 					{
@@ -65,7 +65,7 @@ namespace Fuse.Reactive
 			}
 		}
 
-		const string _rawHandle = "$raw";
+		const string _rawHandle = "__fuse_raw";
 		object _rawOverride;
 		public override object ReflectedRaw 
 		{ 

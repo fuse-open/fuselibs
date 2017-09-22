@@ -15,10 +15,10 @@ namespace Fuse.Reactive
 		void Subscribe()
 		{
 			var obj = (Scripting.Object)Raw;
-			obj["$set"] = (Callback)Set;
-			obj["$add"] = (Callback)Add;
-			obj["$removeAt"] = (Callback)RemoveAt;
-			obj["$insertAt"] = (Callback)InsertAt;
+			obj["__fuse_set"] = (Callback)Set;
+			obj["__fuse_add"] = (Callback)Add;
+			obj["__fuse_removeAt"] = (Callback)RemoveAt;
+			obj["__fuse_insertAt"] = (Callback)InsertAt;
 		}
 
 		public override void Unsubscribe()
@@ -29,10 +29,10 @@ namespace Fuse.Reactive
 		void NullifyCallbacks()
 		{
 			var obj = (Scripting.Object)Raw;
-			obj["$set"] = null;
-			obj["$add"] = null;
-			obj["$removeAt"] = null;
-			obj["$insertAt"] = null;
+			obj["__fuse_set"] = null;
+			obj["__fuse_add"] = null;
+			obj["__fuse_removeAt"] = null;
+			obj["__fuse_insertAt"] = null;
 		}
 
 		Dictionary<long, ValueMirror> _reflections = new Dictionary<long, ValueMirror>();
@@ -42,14 +42,12 @@ namespace Fuse.Reactive
 			if (obj is Scripting.Function)
 				return new FunctionMirror((Scripting.Function)obj);
 
-
-
 			if (obj is Scripting.Object || obj is Scripting.Array)
 			{
 				var id = GetId(obj);
 				if (id < 0)
 				{
-					throw new Exception("Expected model object to have $id");
+					throw new Exception("Expected TreeObservable node to have an ID");
 				}
 
 				ValueMirror res;
@@ -81,7 +79,7 @@ namespace Fuse.Reactive
 
 		long GetId(object obj)
 		{
-			var func = (Function)JavaScript.Worker.Context.Evaluate("lol", "(function(obj) { if (obj instanceof Object && typeof obj.$id  !== 'undefined') return obj.$id; return -1 })");
+			var func = (Function)JavaScript.Worker.Context.Evaluate("(get node ID)", "(function(obj) { if (obj instanceof Object && typeof obj.__fuse_id  !== 'undefined') return obj.__fuse_id; return -1 })");
 			var res = func.Call(obj);
 			if (res is double) return (long)(double)res;
 			if (res is int) return (long)(int)res;
