@@ -308,5 +308,39 @@ namespace Fuse.Controls.Test
 			}
 		}
 		
+		[Test]
+		public void Pages()
+		{
+			var p = new UX.PageControl.Pages();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				root.StepFrameJS();
+				Assert.AreEqual("one", GetRecursiveText(p.pc.Active));
+				
+				p.goto1.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual("two", GetRecursiveText(p.pc.Active));
+			}
+		}
+		
+		[Test]
+		//trying to get the Pages value known at rooting time to invoke other code paths
+		public void PagesRoot()
+		{
+			var p = new UX.PageControl.PagesRoot();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				root.StepFrameJS();
+				
+				p.w.Value = true;
+				root.StepFrameJS();
+				Assert.AreEqual("one", GetRecursiveText(p.pc.Active));
+				
+				p.goto1.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual("two", GetRecursiveText(p.pc.Active));
+			}
+		}
+		
 	}
 }

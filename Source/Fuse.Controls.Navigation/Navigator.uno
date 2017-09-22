@@ -383,7 +383,6 @@ namespace Fuse.Controls
 			var result = Prepare(_current, routerPage, operation);
 			if (result.Routing == RoutingResult.Invalid)
 				return result.Routing;
-			debug_log "Prep: " + routerPage + " "  + operation + " " + result.Routing;
 				
 			if (result.Page == null)
 			{

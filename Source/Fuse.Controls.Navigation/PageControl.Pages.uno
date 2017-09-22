@@ -8,41 +8,40 @@ namespace Fuse.Controls
 {
 	public partial class PageControl
 	{	
-		//extra class as NavigationControl is already a Fuse.Reactive.IObserver
-		class PagesListener : Fuse.Reactive.IObserver
+		/* Maps the bound objects to AddedPage and tracks updates on the source data */
+		class PagesMap : ObserverMap<AddedPage>
 		{
-			[WeakReference]
 			PageControl PageControl;
 
-			public PagesListener( PageControl pageControl, Fuse.Reactive.IObservable data )
+			public new void Attach( PageControl pageControl, IArray obs )
 			{
 				PageControl = pageControl;
-				_data = data;
-				_subscription = data.Subscribe(this);
+				base.Attach( obs );
 			}
-
-			Uno.IDisposable _subscription;
-			Fuse.Reactive.IObservable _data;
-
-			public void Dispose()
+			
+			public new void Detach()
 			{
-				if (_subscription != null)
-				{
-					_subscription.Dispose();
-					_subscription = null;
-				}
+				PageControl = null;
+				base.Detach();
 			}
 
-			void Fuse.Reactive.IObserver.OnSet(object newValue) { PageControl.UpdatePages(); }
-			void Fuse.Reactive.IObserver.OnFailed(string message ) { PageControl.UpdatePages(); }
-			void Fuse.Reactive.IObserver.OnAdd(object value) { PageControl.UpdatePages(); }
-			void Fuse.Reactive.IObserver.OnRemoveAt(int index) { PageControl.UpdatePages(); }
-			void Fuse.Reactive.IObserver.OnInsertAt(int index, object value) { PageControl.UpdatePages(); }
-			void Fuse.Reactive.IObserver.OnNewAt(int index, object value) { PageControl.UpdatePages(); }
-			void Fuse.Reactive.IObserver.OnNewAll(IArray values) { PageControl.UpdatePages(); }
-			void Fuse.Reactive.IObserver.OnClear() { PageControl.UpdatePages(); }
+			protected override AddedPage Map(object v)
+			{
+				return new AddedPage{ Data = v };
+			}
+			
+			protected override object Unmap(AddedPage mv)
+			{
+				return mv.Data;
+			}
+			
+			protected override void OnUpdated() 
+			{ 
+				if (PageControl != null)
+					PageControl.UpdatePages();
+			}
 		}
-		PagesListener _pagesListener;
+		PagesMap _pagesMap = new PagesMap();
 
 		IArray _pages;
 		/**
@@ -65,80 +64,103 @@ namespace Fuse.Controls
 			if (!IsRootingStarted)
 				return;
 
-			if (_pagesListener != null)
-			{
-				_pagesListener.Dispose();
-				_pagesListener = null;
-			}
+			_pagesMap.Detach();
 
 			if (_pages != null)
 			{
-				var obs = _pages as Fuse.Reactive.IObservable;
-				if (obs != null)
-					_pagesListener = new PagesListener( this, obs );
+				_pagesMap.Attach( this, _pages );
 			}
-			
-			UpdatePages();
+			else
+			{
+				_pagesMap.Clear();
+				UpdatePages();
+			}
+		}
+		
+		void OnPagesUnrooted()
+		{
+			_pagesMap.Detach();
 		}
 
-		List<Visual> _addedPages;
+		class AddedPage
+		{
+			public string Template;
+			public Visual Visual;
+			public object Data;
+			public RouterPage Page;
+		}
+		List<AddedPage> _addedPages = new List<AddedPage>();
 		void UpdatePages()
 		{
-			List<Visual> toAdd = null;
+			var visualCount = 0;
 			
-			if (_pages != null)
+			for (int i=0; i < _pagesMap.Count; ++i)
 			{
-				toAdd = new List<Visual>();
-				for (int i=0; i < _pages.Length; ++i)
+				var mp = _pagesMap[i];
+				//already completed
+				if (mp.Template != null && mp.Visual != null)
 				{
-					var page = _pages[i];
-					var path = GetObjectPath( page );
-					if (path == null)
-					{
-						Fuse.Diagnostics.UserError( "Model is missing a $template or $page property", this);
-						continue;
-					}
-
-					var f = FindTemplate(path);
-					if (f == null)
-					{
-						Fuse.Diagnostics.UserError( "No matching template path: " + path, this );
-						continue;
-					}
-					
-					var useVisual = f.New() as Visual;
-					if (useVisual == null)
-					{
-						Fuse.Diagnostics.UserError( "Template is not a Visual: " + path, this );
-						continue;
-					}
-					PageData.GetOrCreate(useVisual).SetContext(page);
-					toAdd.Add( useVisual );
+					visualCount++;
+					continue;
 				}
-			}
-			
-			if (_addedPages != null)
-			{
-				if (toAdd != null)
+					
+				if (mp.Data == null)
 				{
-					for (int i=0; i < toAdd.Count; ++i)
-						_addedPages.Remove( toAdd[i] );
+					Fuse.Diagnostics.UserError( "null page in list", this );
+					continue;
+				}
+					
+				mp.Template = GetObjectPath( mp.Data );
+				if (mp.Template == null)
+				{
+					Fuse.Diagnostics.UserError( "Model is missing a $template or $page property", this);
+					continue;
+				}
+
+				var f = FindTemplate(mp.Template);
+				if (f == null)
+				{
+					Fuse.Diagnostics.UserError( "No matching template path: " + mp.Template, this );
+					continue;
 				}
 				
-				//remaining are no longer used
-				for (int i=0; i < _addedPages.Count; ++i)
-					BeginRemoveChild( _addedPages[i] );
-				_addedPages = null;
+				if (mp.Visual == null)
+				{
+					mp.Visual = f.New() as Visual;
+					if (mp.Visual == null)
+					{
+						Fuse.Diagnostics.UserError( "Template is not a Visual: " + mp.Template, this );
+						continue;
+					}
+				}
+				
+				mp.Page = new RouterPage{ Path = mp.Template, Context = mp.Data };
+				PageData.GetOrCreate(mp.Visual).AttachRouterPage( mp.Page );
+				visualCount++;
 			}
 			
-			if (toAdd != null)
+			//remove pages still used
+			for (int i=0; i < _pagesMap.Count; ++i)
+				_addedPages.Remove( _pagesMap[i] );
+				
+			//remaining are no longer used
+			for (int i=0; i < _addedPages.Count; ++i)
+				BeginRemoveChild( _addedPages[i].Visual );
+				
+			//create a new list of used pages
+			_addedPages.Clear();
+
+			var ta = new Node[visualCount];
+			var vc = 0;
+			for (int i=0; i < _pagesMap.Count; ++i)
 			{
-				var ta = new Node[toAdd.Count];
-				for (int i=0; i < toAdd.Count; ++i)
-					ta[i] = toAdd[i];
-				InsertOrMoveNodesAfter( (Node)Navigation, ((IEnumerable<Node>)ta).GetEnumerator() );
-				_addedPages = toAdd;
+				if (_pagesMap[i].Visual == null)
+					continue;
+					
+				ta[vc++] = _pagesMap[i].Visual;
+				_addedPages.Add( _pagesMap[i] );
 			}
+			InsertOrMoveNodesAfter( (Node)Navigation, ((IEnumerable<Node>)ta).GetEnumerator() );
 		}
 	}
 }

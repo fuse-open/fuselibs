@@ -38,6 +38,7 @@ namespace Fuse.Reactive
 		}
 			
 		
+		IArray _source;
 		IObservable _observable;
 		IObserver _slave;
 		ISubscription _subscription;
@@ -49,17 +50,20 @@ namespace Fuse.Reactive
 				copies of the events. This is important especially when this map updates the observable,
 				we don't want the slave getting events for that.
 		*/
-		public void Attach( IObservable obs, IObserver slave ) 
+		public void Attach( IArray src, IObserver slave = null ) 
 		{
 			Detach();
-			_observable = obs;
+			_source = src;
+			_observable = src as IObservable;
 			
-			_subscription = _observable.Subscribe(this);
+			if (_observable != null)
+				_subscription = _observable.Subscribe(this);
+				
 			//treat the bound observable as the source-of-truth
-			((IObserver)this).OnNewAll(obs);
+			((IObserver)this).OnNewAll(src);
 			
 			//set after call to OnNewAll since Attach should not generate a callback
-			_slave = slave;			
+			_slave = slave;	
 		}
 		
 		public void Detach()
@@ -70,6 +74,7 @@ namespace Fuse.Reactive
 				_subscription = null;
 			}
 			_observable = null;
+			_source = null;
 			_slave = null;
 		}
 		
