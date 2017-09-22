@@ -122,7 +122,7 @@ namespace Fuse.Controls
 			</DockPanel>
 			
 	*/
-	public class Video : Panel, IMediaPlayback
+	public partial class Video : Panel, IMediaPlayback
 	{
 
 		VideoSource _source;
@@ -485,6 +485,8 @@ namespace Fuse.Controls
 
 		void OnProgressChanged(object sender, EventArgs args)
 		{
+			UpdateScriptClass(Duration);
+
 			OnPropertyChanged(_progressName);
 			if (ProgressChanged != null)
 				ProgressChanged(this, new ValueChangedArgs<double>(Progress));

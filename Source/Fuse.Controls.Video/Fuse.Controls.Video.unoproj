@@ -20,6 +20,7 @@
     "../Fuse.Drawing/Fuse.Drawing.unoproj",
     "../Fuse.Elements/Fuse.Elements.unoproj",
     "../Fuse.Triggers/Fuse.Triggers.unoproj",
+    "../Fuse.Scripting/Fuse.Scripting.unoproj",
     "../Fuse.Nodes/Fuse.Nodes.unoproj",
     "../Fuse.Marshal/Fuse.Marshal.unoproj",
     "../Fuse.Common/Fuse.Common.unoproj"

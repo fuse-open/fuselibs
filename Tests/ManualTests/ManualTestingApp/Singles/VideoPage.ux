@@ -37,7 +37,10 @@
 				</ProgressAnimation>
 
 			</Video>
+			<Text Dock="Bottom" Value="Duration: {duration}" />
 		</Panel>
+
+		<JavaScript File="VideoPage.js" />
 
 		<StackPanel Dock="Bottom">
 
@@ -69,6 +72,11 @@
 				<StdButton ux:Name="_pauseButton" Text="Pause" Visibility="Hidden">
 					<Clicked><Pause Target="_video" /></Clicked>
 				</StdButton>
+
+				<StdButton Text="Resume JavaScript" Clicked="{resume}" />
+				<StdButton Text="Pause JavaScript" Clicked="{pause}" />
+				<StdButton Text="Stop JavaScript" Clicked="{stop}" />
+				<StdButton Text="Update Duration Text" Clicked="{updateDurationText}" />
 			</Grid>
 		</StackPanel>
 	</DockPanel>
