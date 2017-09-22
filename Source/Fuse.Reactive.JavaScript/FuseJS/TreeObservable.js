@@ -14,19 +14,19 @@ function TreeObservable()
 }
 
 TreeObservable.set = function() {
-	if (this.$set instanceof Function) { this.$set.apply(this, arguments); }
+	if (this.__fuse_set instanceof Function) { this.__fuse_set.apply(this, arguments); }
 }
 
 TreeObservable.add = function() {
-	if (this.$add instanceof Function) { this.$add.apply(this, arguments); }
+	if (this.__fuse_add instanceof Function) { this.__fuse_add.apply(this, arguments); }
 }
 
 TreeObservable.insertAt = function() {
-	if (this.$insertAt instanceof Function) { this.$insertAt.apply(this, arguments); }
+	if (this.__fuse_insertAt instanceof Function) { this.__fuse_insertAt.apply(this, arguments); }
 }
 
 TreeObservable.removeAt = function() {
-	if (this.$removeAt instanceof Function) { this.$removeAt.apply(this, arguments); }
+	if (this.__fuse_removeAt instanceof Function) { this.__fuse_removeAt.apply(this, arguments); }
 }
 
 module.exports = TreeObservable;
