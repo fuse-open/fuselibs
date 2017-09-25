@@ -5,7 +5,8 @@
 		fw.testStarted("WebSocket");
 
 		var env = require('FuseJS/Environment');
-		if (env.ios || env.android || env.dotnet) {
+		//  `&& !(env.preview && env.host_mac)` can be removed when #467 is fixed
+		if (env.ios || env.android || env.dotnet && !(env.preview && env.host_mac)) {
 			var ws = new WebSocket("wss://echo.websocket.org/");
 
 			ws.addEventListener('open', function() {
