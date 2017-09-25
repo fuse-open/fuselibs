@@ -1,5 +1,8 @@
 # Unreleased
 
+## MultiDensityImageSource
+- Added native support, meaning it can be used by images inside a `NativeViewHost`.
+
 # 1.3
 
 ## 1.3.0
