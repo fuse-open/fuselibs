@@ -10,7 +10,7 @@ function shouldEmitProperty(key) {
 }
 
 function isThenable(thing) {
-	return typeof thing === "object"
+	return thing instanceof Object
 		&& typeof thing.then === "function";
 }
 
