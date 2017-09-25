@@ -60,5 +60,27 @@ namespace Fuse.Controls.Native.iOS
 
 			return [utcCalendar dateFromComponents:utcComponents];
 		@}
+
+		[Foreign(Language.ObjC)]
+		public static ObjC.Object ReconstructUtcTime(ObjC.Object date)
+		@{
+			if (!date)
+				return [NSDate dateWithTimeIntervalSince1970:0];
+
+			// Reconstruct the same date in UTC without date components
+			NSCalendar *utcCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+			[utcCalendar setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
+
+			NSDateComponents *components = [utcCalendar components:NSHourCalendarUnit|NSMinuteCalendarUnit fromDate:date];
+
+			NSDateComponents *utcComponents = [[NSDateComponents alloc] init];
+			[utcComponents setYear:1970];
+			[utcComponents setMonth:1];
+			[utcComponents setDay:1];
+			[utcComponents setHour:[components hour]];
+			[utcComponents setMinute:[components minute]];
+
+			return [utcCalendar dateFromComponents:utcComponents];
+		@}
 	}
 }
