@@ -62,6 +62,7 @@ namespace FuseJS
 			AddMember(new NativeProperty<bool, bool>("desktop", defined(!MOBILE)));
 			AddMember(new NativeProperty<bool, bool>("preview", defined(DESIGNMODE)));
 			AddMember(new NativeProperty<bool, bool>("dotnet", defined(DOTNET))); // Undocumented for testing use only
+			AddMember(new NativeProperty<bool, bool>("host_mac", defined(HOST_MAC))); // Undocumented for testing use only
 			AddMember(new NativeProperty<string, string>("mobileOSVersion", GetMobileOSVersion));
 		}
 		
