@@ -21,9 +21,11 @@
 		<NavigationMotion GotoDuration="0"/>
 		<Page ux:Template="any">
 			<Text Value="{desc}"/>
+			<FuseTest.InstanceCounter/>
 		</Page>
 		<Page ux:Template="alter">
 			<Text Value="{desc}"/>
+			<FuseTest.InstanceCounter/>
 		</Page>
 	</PageControl>
 

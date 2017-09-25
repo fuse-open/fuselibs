@@ -309,17 +309,22 @@ namespace Fuse.Controls.Test
 		}
 		
 		[Test]
-		public void Pages()
+		public void PagesBasic()
 		{
 			var p = new UX.PageControl.Pages();
+			FuseTest.InstanceCounter.Reset();
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
 				root.StepFrameJS();
 				Assert.AreEqual("one", GetRecursiveText(p.pc.Active));
+				//ensure the Template instantiation isn't overdone
+				Assert.AreEqual( 3, FuseTest.InstanceCounter.Count );
+				Assert.AreEqual( 3, GetChildren<Page>(p.pc).Length );
 				
 				p.goto1.Perform();
 				root.StepFrameJS();
 				Assert.AreEqual("two", GetRecursiveText(p.pc.Active));
+				Assert.AreEqual( 3, FuseTest.InstanceCounter.Count );
 			}
 		}
 		
