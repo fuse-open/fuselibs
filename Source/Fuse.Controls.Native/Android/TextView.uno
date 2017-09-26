@@ -92,7 +92,7 @@ namespace Fuse.Controls.Native.Android
 		[Foreign(Language.Java)]
 		static void SetTextWrapping(Java.Object handle, bool wrap)
 		@{
-			((android.widget.TextView)handle).setMaxLines( (wrap) ? java.lang.Integer.MAX_VALUE : 1 );
+			((android.widget.TextView)handle).setHorizontallyScrolling( (wrap) ? false : true );
 		@}
 
 		[Foreign(Language.Java)]
