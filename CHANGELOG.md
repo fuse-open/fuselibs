@@ -3,6 +3,18 @@
 ## MultiDensityImageSource
 - Added native support, meaning it can be used by images inside a `NativeViewHost`.
 
+### Fuse.Reactive framework changes (Uno-level)
+- These are breaking changes, but very unlikely to affect your app:
+ * The `DataBinding`, `EventBinding` and `ExpressionBinding` class constructors no longer take a `NameTable` argument.
+ * The `Name` and `This` expression classes has been removed. The UX compiler will now compile these as `Constant` expressions that contain the actual objects instead.
+ * The `IContext` interface no longer contains the `NameTable` property.
+ * The `Fuse.IRaw` interface removed (now internal to the `Fuse.Reactive.JavaScript` package). Had no practical public use.
+ * The `Fuse.Reactive.ListMirror` class is no longer public. This was never intended to be public and has no practical public application.
+ * Added detailed docs for many of the interfaces in the `Fuse.Reactive` namespace.
+ * The `Fuse.Reactive.IWriteable` interface has changed (breaking!). The method signature is now `bool TrySetExclusive(object)` instead of `void SetExclusive(object)`. Unlikely to affect your code.
+ * `IObservable` and `IObservableArray` no longer push their initial value on `Subscribe`.
+
+
 # 1.3
 
 ## 1.3.0
@@ -98,11 +110,6 @@ which will stop push notifications registering (and potentially asking for permi
 
 ### Fuse.Drawing.Surface
 - Added support for the Surface API in native UI for iOS. Meaning that `Curve`, `VectorLayer` and charting will work inside a `NativeViewHost`.
-## Fuse.Reactive cleanup (Uno-level)
-- The `Fuse.IRaw` interface removed (now internal to the `Fuse.Reactive.JavaScript` package). Had no practical public use.
-- The `Fuse.Reactive.ListMirror` class is no longer public. This was never intended to be public and has no practical public application.
-- Added detailed docs for many of the interfaces in the `Fuse.Reactive` namespace.
-- The `Fuse.Reactive.IWriteable` interface has changed (breaking!). The method signature is now `bool TrySetExclusive(object)` instead of `void SetExclusive(object)`. Unlikely to affect your code.
 
 ### TextInput
 - Fixed issue on Android causing text to align incorrectly if being scrolled and unfocused.
@@ -126,12 +133,6 @@ which will stop push notifications registering (and potentially asking for permi
 ### UpdateManager changes (Uno-level)
 - Breaking change: Several entrypoints on UpdateManager now take a `LayoutPriority` enum instead of `int` as the `priority` argument. Very unlikely to affect user code code.
 - Fixed an issue where writes to `FuseJS/Observables` would not dispatch in the right order on the UI thread if interleaved with `ScriptClass` callbacks (slightly breaking behavior).
-
-### Fuse.Reactive framework changes (Uno-level)
-- These are breaking changes, but very unlikely to affect your app:
- * The `DataBinding`, `EventBinding` and `ExpressionBinding` class constructors no longer take a `NameTable` argument.
- * The `Name` and `This` expression classes has been removed. The UX compiler will now compile these as `Constant` expressions that contain the actual objects instead.
- * The `IContext` interface no longer contains the `NameTable` property.
 
 
 # 1.2
