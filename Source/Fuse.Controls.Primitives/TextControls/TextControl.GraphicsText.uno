@@ -44,7 +44,12 @@ namespace Fuse.Controls
 				else
 				{
 					if defined(Android || iOS)
-						_textRenderer = TextRendererFactory(this);
+					{
+						if (TextRendererFactory != null)
+							_textRenderer = TextRendererFactory(this);
+						else
+							_textRenderer = new FallbackTextRenderer.TextRenderer(this);
+					}
 					else
 						_textRenderer = new FallbackTextRenderer.TextRenderer(this);
 					AddDrawCost(2.0);
