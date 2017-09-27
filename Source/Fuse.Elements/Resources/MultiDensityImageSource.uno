@@ -6,6 +6,7 @@ using Fuse.Drawing;
 
 namespace Fuse.Resources
 {
+
 	/** Used to specify multiple image sources that an @Image element can display at different pixel densities.
 
 		In order to ensure a given image looks best across multiple screens with different pixel densities,
@@ -44,6 +45,17 @@ namespace Fuse.Resources
 			_proxy = new ProxyImageSource(this);
 		}
 
+		internal event Action ActiveChanged;
+
+		void OnActiveChanged()
+		{
+			var handler = ActiveChanged;
+			if (handler != null)
+			{
+				handler();
+			}
+		}
+
 		void OnImageAdded(ImageSource img)
 		{
 			if (IsPinned)
@@ -75,6 +87,12 @@ namespace Fuse.Resources
 		}
 
 		ImageSource _active;
+
+		internal ImageSource Active
+		{
+			get { return _active; }
+		}
+
 		void SelectActive()
 		{
 			var screen = _hasMatchDensity ? _matchDensity : AppBase.Current.PixelsPerPoint;
@@ -104,6 +122,8 @@ namespace Fuse.Resources
 			_active = use;
 			if (use != null)
 				_proxy.Attach( use );
+
+			OnActiveChanged();
 		}
 
 		internal MemoryPolicy Policy

@@ -13,22 +13,45 @@ namespace Fuse.Controls.Native.iOS
 
 	extern(iOS) internal class ImageView : LeafView, IImageView
 	{
+
+		ImageSource _imageSource;
 		public ImageSource ImageSource
 		{
 			set
 			{
+				if (ImageSource is MultiDensityImageSource)
+					((MultiDensityImageSource)ImageSource).ActiveChanged -= OnMultiDensityImageSourceActiveChanged;
+
 				if (value == null)
 					ImageHandle = null;
-				else if (value is FileImageSource)
+
+				_imageSource = value;
+
+				if (value is FileImageSource)
 					UpdateImage((FileImageSource)value);
 				else if (value is HttpImageSource)
 					UpdateImage((HttpImageSource)value);
 				else if (value is MultiDensityImageSource)
+				{
+					((MultiDensityImageSource)ImageSource).ActiveChanged += OnMultiDensityImageSourceActiveChanged;
 					UpdateImage((MultiDensityImageSource)value);
+				}
 				else
 				{
 					throw new Exception(value + " not supported in native context");
 				}
+			}
+			private get
+			{
+				return _imageSource;
+			}
+		}
+
+		void OnMultiDensityImageSourceActiveChanged()
+		{
+			if (ImageSource is MultiDensityImageSource)
+			{
+				UpdateImage((MultiDensityImageSource)ImageSource);
 			}
 		}
 
@@ -67,8 +90,12 @@ namespace Fuse.Controls.Native.iOS
 
 		public override void Dispose()
 		{
-			base.Dispose();
 			ImageHandle = null;
+			if (ImageSource != null && ImageSource is MultiDensityImageSource)
+			{
+				((MultiDensityImageSource)ImageSource).ActiveChanged -= OnMultiDensityImageSourceActiveChanged;
+			}
+			base.Dispose();
 		}
 
 		ObjC.Object _uiImageHandle;
@@ -109,14 +136,23 @@ namespace Fuse.Controls.Native.iOS
 			ImageHandle = handle;
 		}
 
+		void UpdateImage(MultiDensityImageSource multi)
+		{
+			var active = multi.Active;
+			if (active != null)
+			{
+				if (active is FileImageSource)
+					UpdateImage((FileImageSource)active);
+				else if (active is HttpImageSource)
+					UpdateImage((HttpImageSource)active);
+				else
+					throw new Exception(active + " not supported in native context");
+			}
+		}
+
 		void OnImageLoadFailed(Exception e)
 		{
 			ImageHandle = null;
-		}
-
-		void UpdateImage(MultiDensityImageSource multi)
-		{
-			Fuse.Diagnostics.Unsupported("MultiDensityImageSource in a native context not supported", this);
 		}
 
 		public void UpdateImageTransform(float density, float2 origin, float2 scale, float2 drawSize)
