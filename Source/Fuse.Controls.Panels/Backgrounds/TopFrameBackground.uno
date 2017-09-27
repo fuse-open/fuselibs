@@ -51,8 +51,10 @@ namespace Fuse.Controls
 		{
 			if defined(iOS || Android)
 			{
-				var x = SystemUI.TopFrame.Size / AppBase.Current.PixelsPerPoint;
-				return x;
+				var pixelsPerPoint = 1.0f;
+				if (AppBase.Current != null)
+					pixelsPerPoint = AppBase.Current.PixelsPerPoint;
+				return SystemUI.TopFrame.Size / pixelsPerPoint;
 			}
 			return float2(0,0);
 		}

@@ -253,8 +253,19 @@ namespace Fuse.Controls
 
 		public float PixelsPerPoint
 		{
-			get { return Parent != null ? Parent.Viewport.PixelsPerPoint :
-				AppBase.Current.PixelsPerPoint; }
+			get
+			{
+				if (Parent != null)
+					return Parent.Viewport.PixelsPerPoint;
+				else
+				{
+					// this only happens during testing
+					if (AppBase.Current == null)
+						return 1;
+
+					return AppBase.Current.PixelsPerPoint;
+				}
+			}
 		}
 
 		public float2 Size
