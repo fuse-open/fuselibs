@@ -1,0 +1,35 @@
+<Panel ux:Class="UX.TreeObservable.SetCyclic">
+	<JavaScript>
+		var TreeObservable = require("FuseJS/TreeObservable");
+		function Tree() {}
+		Tree.prototype = Object.create(TreeObservable.prototype);
+		var tree = new Tree();
+
+		var cycle1 = { __fuse_id: 1 };
+		var cycle2 = { __fuse_id: 2, value: "foo" };
+		cycle1.cycle2 = cycle2;
+		cycle2.cycle1 = cycle1;
+
+		tree.__fuse_id = 0;
+		tree.cycle1 = cycle1;
+
+
+		module.exports = {
+			tree: tree,
+			setDeep: function() {
+				cycle2.value = "bar";
+				TreeObservable.set.call(tree, "cycle1", "cycle2", "cycle1", "cycle2", "value", "bar");
+			},
+			replaceCycle2: function() {
+				cycle2 = cycle1.cycle2 = { __fuse_id: 3, value: "baz" };
+				TreeObservable.set.call(tree, "cycle1", "cycle2", cycle2);
+			}
+		};
+	</JavaScript>
+
+	<Text ux:Name="t1" Value="{tree.cycle1.cycle2.value}" />
+	<Text ux:Name="t2" Value="{tree.cycle1.cycle2.cycle1.cycle2.value}" />
+
+	<FuseTest.Invoke ux:Name="setDeep" Handler="{setDeep}" />
+	<FuseTest.Invoke ux:Name="replaceCycle2" Handler="{replaceCycle2}" />
+</Panel>
