@@ -58,6 +58,7 @@ namespace Fuse.Reactive
 			var obs = value as IObservable;
 			if (obs != null)
 			{
+				// Special case for IObservable which can be interpreted as a single value
 				if (_obsSubs == null) _obsSubs = new Dictionary<IExpression, ObservableSubscription>();
 				_obsSubs.Add(source, new ObservableSubscription(source, obs, this));
 			}

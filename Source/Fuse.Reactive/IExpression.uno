@@ -26,10 +26,13 @@ namespace Fuse.Reactive
 		Node Node { get; }
 	}
 
-	/** Represents a subscription that supports write-back. */
+	/** Represents a subscription that might support write-back. */
 	public interface IWriteable: IDisposable
 	{
-		void SetExclusive(object value);
+		/** Attempts to write to the source. 
+			Returns whether or not the source was successfully updated.
+		*/
+		bool TrySetExclusive(object value);
 	}
 
 	public interface IExpression

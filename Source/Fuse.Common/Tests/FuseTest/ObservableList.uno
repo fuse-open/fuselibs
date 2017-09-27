@@ -25,7 +25,7 @@ namespace FuseTest
 		
 		List<IObserver> _observers;
 		
-		ISubscription IObservable.Subscribe(IObserver observer)
+		Uno.IDisposable IObservableArray.Subscribe(IObserver observer)
 		{
 			if (_observers == null)
 				_observers = new List<IObserver>();

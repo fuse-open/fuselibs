@@ -73,7 +73,7 @@ namespace Fuse.Reactive
 		{
 			if (dc == null) return null;
 			else if (dc is string) return dc;
-			else if (dc is IRaw) return ((IRaw)dc).Raw;
+			else if (dc is IRaw) return ((IRaw)dc).ReflectedRaw;
 			else if (dc is Scripting.Function) return dc;
 			else if (dc is Scripting.Object) return dc;
 			else if (dc is Scripting.Array) return dc;
