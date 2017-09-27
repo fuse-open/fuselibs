@@ -16,18 +16,25 @@ namespace Fuse.Test
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
 				Assert.AreEqual( "init", p.st.Value );
-				p.st.Value = "okay";
+				p.st.Value = "store";
 				
 				var o = root.RootViewport.PreviewSaveState();
 				
 				root.Children.Remove(p);
 				root.StepFrame();
 				
-				root.RootViewport.PreviewSetState( o );
+				root.RootViewport.PreviewRestoreState( o );
 				
 				p = new UX.Preview.State();
 				root.Children.Add(p);
-				Assert.AreEqual( "okay", p.st.Value );
+				Assert.AreEqual( "store", p.st.Value );
+				
+				//the second rooting should not use the state, it was consumed
+				root.Children.Remove(p);
+				root.StepFrame();
+				p = new UX.Preview.State();
+				root.Children.Add(p);
+				Assert.AreEqual( "init", p.st.Value );
 			}
 		}
 	}
@@ -53,7 +60,11 @@ namespace Fuse.Test
 				ps.AddSaver( this );
 				var cur = ps.Current;
 				if (cur != null)
-					Value = cur.Get( _id ) as string;
+				{
+					var q = cur.Consume( _id ) as string;
+					if (q != null)
+						Value = q;
+				}
 			}
 		}
 		

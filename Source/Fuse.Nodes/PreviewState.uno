@@ -19,6 +19,13 @@ namespace Fuse
 		
 		public void SetState(PreviewStateData data)
 		{
+			if (data.Consumed)
+			{
+				Fuse.Diagnostics.InternalError( "Attempting to restore an already consumed state", this );
+				_current = null;
+				return;
+			}
+			
 			_current = data;
 		}
 		
@@ -56,18 +63,41 @@ namespace Fuse
 	
 	class PreviewStateData
 	{
-		Dictionary<string, object> _data = new Dictionary<string, object>();
+		/** Has this state data already been consumed/restored? */
+		public bool Consumed;
 		
-		public void Set( string key, object data )
+		class Entry
 		{
-			_data[key] = data;
+			public object Data;
+			public bool Consumed;
 		}
 		
-		public object Get( string key )
+		Dictionary<string, Entry> _data = new Dictionary<string, Entry>();
+		
+		/** Sets the data for a key. Note that a null value will not be considered a value, and will erase an existing value. */
+		public void Set( string key, object data )
 		{
-			object v;
+			_data[key] = new Entry{ Data = data, Consumed = false };
+		}
+		
+		/** Returns true if data has been stored for this key. Note that a null value is not considered to be actual data. */
+		public object Has( string key )
+		{
+			Entry v;
 			if (_data.TryGetValue( key, out v) )
-				return v;
+				return v.Data != null;
+			return null;
+		}
+		
+		/** Obtains the data just once, returning null on subsequent requests. This allows for rooting to only pick up the state data the first time, not if rerooted without it being saved again. */
+		public object Consume( string key )
+		{
+			Entry v;
+			if (_data.TryGetValue( key, out v ) && !v.Consumed)
+			{
+				v.Consumed = true;
+				return v.Data;
+			}
 			return null;
 		}
 	}
