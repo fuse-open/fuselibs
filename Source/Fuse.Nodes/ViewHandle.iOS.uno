@@ -259,6 +259,7 @@ namespace Fuse.Controls.Native
 			UIView* view = (UIView*)@{Fuse.Controls.Native.ViewHandle:Of(_this).NativeHandle:Get()};
 			auto t = [[view layer] transform];
 			[[view layer] setTransform:CATransform3DIdentity];
+			[view setCenter: CGPointZero];
 			[view setFrame: { { 0.0f, 0.0f }, { w, h } } ];
 
 			if ([[view superview] isKindOfClass:[UIScrollView class]])
@@ -282,6 +283,7 @@ namespace Fuse.Controls.Native
 			UIView* view = (UIView*)@{Fuse.Controls.Native.ViewHandle:Of(_this).NativeHandle:Get()};
 			auto t = [[view layer] transform];
 			[[view layer] setTransform:CATransform3DIdentity];
+			[view setCenter: CGPointZero];
 			[view setFrame: { { 0.0f, 0.0f }, { w, h } } ];
 
 			if ([[view superview] isKindOfClass:[UIScrollView class]])
