@@ -17,7 +17,7 @@ namespace Fuse
 		
 		public void SetState(PreviewStateData data)
 		{
-			if (data.Consumed)
+			if (data != null && data.Consumed)
 			{
 				Fuse.Diagnostics.InternalError( "Attempting to restore an already consumed state", this );
 				_current = null;
