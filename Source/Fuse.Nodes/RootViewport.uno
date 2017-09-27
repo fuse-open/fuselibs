@@ -273,5 +273,27 @@ namespace Fuse
 			return ViewportHelpers.WorldToLocalRay(this, world, worldRay, where);
 		}
 
+		/** Composition for PreviewState support */
+		PreviewState _previewState = new PreviewState();
+		internal PreviewState PreviewState { get { return _previewState; } }
+		
+		/** Returns an opaque object of the saved state for preview. */
+		public object PreviewSaveState()
+		{
+			if (_previewState != null)
+				return _previewState.Save();
+			return null;
+		}
+		
+		/** Sets the current state to restore (may be null). This must be called prior to adding any children. */
+		public void PreviewSetState(object state)
+		{
+			var psd = state as PreviewStateData;
+			if (psd == null && state != null)
+				Fuse.Diagnostics.InternalError( "Incorrect state type for PreviewSetState", this );
+				
+			if (_previewState != null)
+				_previewState.SetState(psd);
+		}
 	}
 }

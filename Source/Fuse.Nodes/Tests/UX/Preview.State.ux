@@ -1,0 +1,3 @@
+<Panel ux:Class="UX.Preview.State">
+	<Fuse.Test.StateTest ux:Name="st"/>
+</Panel>
