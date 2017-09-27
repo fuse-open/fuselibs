@@ -322,21 +322,22 @@ namespace Fuse.Reactive
 		
 		protected internal void OnItemsChanged()
 		{
-			if (!IsRootingStarted) return;
+			if (!IsRootingCompleted) return;
 
+			RefreshItems();
+		}
+
+		void RefreshItems()
+		{
 			DisposeItemsSubscription();	
 
-			RemoveAll();
+			Repopulate();
 
-			var obs = _items as IObservable;
+			var obs = _items as IObservableArray;
 			if (obs != null)
 			{
 				StartListeningItems();
 				_itemsSubscription = obs.Subscribe(this);
-			}
-			else
-			{
-				Repopulate();
 			}
 		}
 		

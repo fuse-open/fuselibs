@@ -38,9 +38,10 @@ namespace Fuse.Reactive
 		}
 			
 		
-		IObservable _observable;
+		IObservableArray _observable;
 		IObserver _slave;
 		ISubscription _subscription;
+		IDisposable _disposable;
 		
 		/**
 			@param obs The observable to attach to
@@ -49,23 +50,28 @@ namespace Fuse.Reactive
 				copies of the events. This is important especially when this map updates the observable,
 				we don't want the slave getting events for that.
 		*/
-		public void Attach( IObservable obs, IObserver slave ) 
+		public void Attach( IObservableArray obs, IObserver slave ) 
 		{
 			Detach();
 			_observable = obs;
 			_slave = slave;
-			_subscription = _observable.Subscribe(this);
+			_disposable = _observable.Subscribe(this);
+			_subscription = _disposable as ISubscription;
+			if (_subscription == null)
+				Fuse.Diagnostics.InternalError( "An observable with write-back is expected", this );
+				
 			//treat the bound observable as the source-of-truth
 			((IObserver)this).OnNewAll(obs);
 		}
 		
 		public void Detach()
 		{
-			if (_subscription != null)
+			if (_disposable != null)
 			{
-				_subscription.Dispose();
-				_subscription = null;
+				_disposable.Dispose();
+				_disposable = null;
 			}
+			_subscription = null;
 			_observable = null;
 			_slave = null;
 		}

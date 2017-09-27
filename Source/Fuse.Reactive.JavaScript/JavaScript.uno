@@ -56,7 +56,7 @@ namespace Fuse.Reactive
 			{
 				AppInitialized.Reset();
 				// When all JavaScript nodes is unrooted, send a reset event to all global NativeModules.
-				foreach(var nm in Resource.GetGlobalsOfType<NativeModule>())
+				foreach(var nm in Uno.UX.Resource.GetGlobalsOfType<NativeModule>())
 				{
 					nm.InternalReset();
 				}

@@ -144,11 +144,17 @@ namespace Fuse.Reactive
 		Each(IList<Template> templates): base(templates) {}
 		public Each() {}
 
-		/** An array or observable containing the data items used to populate the collection. 
+		/** A collection containing the data items used to populate the parent. 
 
-			Can not be used together with `Count`.
-			
-			The list of items may be Observable items. Each will subscribe to these items and use the dynamic value. This however does not work in combination with the `MatchKey`, `IdentityKey` and `MatchObject` features which require an immediate value.
+			This property can not be used together with `Count`.
+
+			The provided object must implement `IArray`. To support dynamic changes to the collection, it can also implement `IObservableArray`.
+			For example, if a `FuseJS/Observable` is provided, this implements `IObservableArray`.
+	
+			Each item in the collection can in turn be an `IObservable`. If so, the Each will subscribe to these items and use the dynamic value. However,
+			this will not work in combination with the `MatchKey`, `IdentityKey` and `MatchObject` features which require an immediate value.
+
+			For legacy reasons, this property will also accept an `object[]` as the collection. This feature is deprecated.
 		*/
 		public object Items
 		{
