@@ -14,7 +14,6 @@ namespace Fuse.Navigation.Test
 		[Test]
 		public void WhileNavigationDeep()
 		{
-			Router.TestClearMasterRoute();
 			var p = new UX.WhileNavigation.Deep();
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{

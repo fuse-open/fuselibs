@@ -14,7 +14,6 @@ namespace Fuse.Navigation.Test
 		[Test]
 		public void Deep()
 		{
-			Router.TestClearMasterRoute();
 			var p = new UX.Activated.Deep();
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
@@ -76,7 +75,6 @@ namespace Fuse.Navigation.Test
 		/** Testing of De/Activated events via a Router using a Navigator */
 		public void RouterNavigatorActivated()
 		{
-			Router.TestClearMasterRoute();
 			var p  = new UX.Activated.RouterNavigator();
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{

@@ -30,7 +30,6 @@ namespace Fuse.Navigation.Test
 		[Test]
 		public void Reuse()
 		{
-			Router.TestClearMasterRoute();
 			var p = new UX.Navigator.Reuse();
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
@@ -53,7 +52,6 @@ namespace Fuse.Navigation.Test
 		[Test]
 		public void ReuseNoneRemove()
 		{
-			Router.TestClearMasterRoute();
 			var p = new UX.Navigator.ReuseNoneRemove();
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
@@ -88,7 +86,6 @@ namespace Fuse.Navigation.Test
 		[Test]
 		public void ReuseInactive()
 		{
-			Router.TestClearMasterRoute();
 			var p = new UX.Navigator.ReuseInactive();
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
@@ -128,7 +125,6 @@ namespace Fuse.Navigation.Test
 		[Test]
 		public void ReuseRemoved()
 		{
-			Router.TestClearMasterRoute();
 			var p = new UX.Navigator.ReuseRemoved();
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
@@ -164,7 +160,6 @@ namespace Fuse.Navigation.Test
 		[Test]
 		public void Remove()
 		{
-			Router.TestClearMasterRoute();
 			var p = new UX.Navigator.Remove();
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
@@ -208,7 +203,6 @@ namespace Fuse.Navigation.Test
 		[Test]
 		public void DeferredActivation()
 		{	
-			Router.TestClearMasterRoute();
 			var p = new UX.Navigator.DeferredActivation();
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
@@ -227,7 +221,6 @@ namespace Fuse.Navigation.Test
 		//https://github.com/fusetools/fuselibs/issues/2982
 		public void EmptyParameter()
 		{
-			Router.TestClearMasterRoute();
 			var p = new UX.Navigator.EmptyParameter();
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
@@ -261,7 +254,6 @@ namespace Fuse.Navigation.Test
 		[Test]
 		public void PageBinding()
 		{
-			Router.TestClearMasterRoute();
 			var p = new UX.Navigator.Page();
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
@@ -279,7 +271,6 @@ namespace Fuse.Navigation.Test
 		[Test]
 		public void NonTemplates()
 		{
-			Router.TestClearMasterRoute();
 			var p = new UX.Navigator.NonTemplate();
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
@@ -310,7 +301,6 @@ namespace Fuse.Navigation.Test
 		[Test]
 		public void JsInterface()
 		{
-			Router.TestClearMasterRoute();
 			var p = new UX.Navigator.JsInterface();
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
@@ -334,7 +324,6 @@ namespace Fuse.Navigation.Test
 		// https://github.com/fusetools/fuselibs/issues/4256
 		public void RootingCache1()
 		{
-			Router.TestClearMasterRoute();
 			var p =  new UX.Navigator.RootingCache();
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
@@ -363,7 +352,6 @@ namespace Fuse.Navigation.Test
 		//variant of RootingCache that uses non-template pages
 		public void RootingCache2()
 		{
-			Router.TestClearMasterRoute();
 			var p =  new UX.Navigator.RootingCache2();
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
@@ -390,7 +378,6 @@ namespace Fuse.Navigation.Test
 		[Test]
 		public void SwipeBack()
 		{
-			Router.TestClearMasterRoute();
 			var p = new UX.Navigator.SwipeBack();
 			using (var root = TestRootPanel.CreateWithChild(p,int2(1000)))
 			{
@@ -430,7 +417,6 @@ namespace Fuse.Navigation.Test
 		[Test]
 		public void SwipeBackDirection()
 		{
-			Router.TestClearMasterRoute();
 			var p = new UX.Navigator.SwipeBackDirection();
 			using (var root = TestRootPanel.CreateWithChild(p,int2(1000)))
 			{
@@ -462,7 +448,6 @@ namespace Fuse.Navigation.Test
 		//tests null paths and swiping back to them
 		public void SwipeBackNull()
 		{
-			Router.TestClearMasterRoute();
 			var p = new UX.Navigator.SwipeBackNull();
 			using (var root = TestRootPanel.CreateWithChild(p,int2(1000)))
 			{
@@ -501,7 +486,6 @@ namespace Fuse.Navigation.Test
 		//an explicit NavigatorSwipe to work with bookmarks
 		public void SwipeBookmark()
 		{
-			Router.TestClearMasterRoute();
 			var p = new UX.Navigator.SwipeBookmark();
 			using (var root = TestRootPanel.CreateWithChild(p,int2(1000)))
 			{
@@ -523,7 +507,6 @@ namespace Fuse.Navigation.Test
 		//constructs the swiping logic at the UX level
 		public void SwipeBits()
 		{
-			Router.TestClearMasterRoute();
 			var p = new UX.Navigator.SwipeBits();
 			using (var root = TestRootPanel.CreateWithChild(p,int2(10000)))
 			{
@@ -550,7 +533,6 @@ namespace Fuse.Navigation.Test
 		//tests the Busy waiting mechanism used to defer page transitions
 		public void DeferPageSwitch()
 		{
-			Router.TestClearMasterRoute();
 			var p = new UX.Navigator.DeferPageSwitch();
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
@@ -579,7 +561,6 @@ namespace Fuse.Navigation.Test
 		//ensures a busy deferred page transition is forced if a new route request comes in
 		public void ForceDefer()
 		{
-			Router.TestClearMasterRoute();
 			var p = new UX.Navigator.ForceDefer();
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
@@ -598,7 +579,6 @@ namespace Fuse.Navigation.Test
 		//checks some cleanup and caching conditions in the navigator
 		public void PreparedCleanup()
 		{
-			Router.TestClearMasterRoute();
 			var p = new UX.Navigator.PreparedCleanup();
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
@@ -632,7 +612,6 @@ namespace Fuse.Navigation.Test
 		//checks the removing items aren't transition triggered as well
 		public void Removing()
 		{
-			Router.TestClearMasterRoute();
 			var p = new UX.Navigator.Removing();
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{

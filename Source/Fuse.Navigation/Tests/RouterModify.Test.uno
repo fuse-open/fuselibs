@@ -14,7 +14,6 @@ namespace Fuse.Navigation.Test
 		[Test]
 		public void Bookmark()
 		{
-			Router.TestClearMasterRoute();
 			var p = new UX.RouterModify.Bookmark();
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
@@ -30,7 +29,6 @@ namespace Fuse.Navigation.Test
 		[Test]
 		public void Path()
 		{
-			Router.TestClearMasterRoute();
 			var p =new UX.RouterModify.Path();
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
@@ -58,7 +56,6 @@ namespace Fuse.Navigation.Test
 		[Test]
 		public void DynamicPath()
 		{
-			Router.TestClearMasterRoute();
 			var p =new UX.RouterModify.DynamicPath();
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
@@ -82,7 +79,6 @@ namespace Fuse.Navigation.Test
 		[Test]
 		public void GotoPush()
 		{
-			Router.TestClearMasterRoute();
 			var p =new UX.RouterModify.GotoPush();
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{

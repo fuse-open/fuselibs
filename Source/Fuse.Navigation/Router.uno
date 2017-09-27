@@ -80,7 +80,7 @@ namespace Fuse.Navigation
 		
 		The router however does not decide on the navigation order of the pages in the individual controls, as described in [Navigation Order](articles:navigation/navigationorder.md). This is controlled by each outlet being used.
 	*/
-	public partial class Router : Node, IBaseNavigation
+	public partial class Router : Node, IBaseNavigation, IPreviewStateSaver
 	{
 		protected override void OnRooted()
 		{
@@ -105,10 +105,19 @@ namespace Fuse.Navigation
 				
 				if (root)
 				{
-					if (_masterRootPage != null)
-						_rootPage = _masterRootPage;
-					else
-						_masterRootPage = _rootPage;
+					var ps = PreviewState.Find( this );
+					if (ps != null)
+					{
+						ps.AddSaver(this);
+						
+						var psd = ps.Current;
+						if (psd != null)
+						{
+							var storedPage = psd.Consume( _previewStateId ) as RouterPage;
+							if (storedPage != null)
+								_rootPage = storedPage;
+						}
+					}
 				}
 			}
 			
@@ -119,7 +128,19 @@ namespace Fuse.Navigation
 
 		protected override void OnUnrooted()
 		{
+			var ps = PreviewState.Find( this);
+			if (ps != null)
+				ps.RemoveSaver(this);
+				
 			Fuse.Input.Keyboard.KeyPressed.RemoveGlobalHandler(OnKeyPressed);
+			
+			base.OnUnrooted();
+		}
+		
+		const string _previewStateId = "router";
+		void IPreviewStateSaver.Save( PreviewStateData psd )
+		{
+			psd.Set( _previewStateId, _rootPage );
 		}
 		
 		bool _isMasterRouter = true;
@@ -152,18 +173,6 @@ namespace Fuse.Navigation
 			set { _backButtonAction = value; }
 		}
 
-		/*
-			Remembers the current route between reify updates in fuse preview.
-			This is kind of a hacky solution for now just to show off a Fuse level feature. It's not
-			something that would actually be used/relied on in an exported app.
-		*/
-		static RouterPage _masterRootPage;
-	
-		static internal void TestClearMasterRoute()
-		{
-			_masterRootPage = null;
-		}
-		
 		public Route GetCurrentRoute()
 		{
 			return GetHistoryRoute(0);

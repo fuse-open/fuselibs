@@ -14,7 +14,6 @@ namespace Fuse.Navigation.Test
 		[Test]
 		public void GoBackBehavior()
 		{
-			Router.TestClearMasterRoute();
 			var p = new UX.WhileHistory.GoBackBehavior();
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
@@ -33,7 +32,6 @@ namespace Fuse.Navigation.Test
 		[Test]
 		public void GoBackRouter()
 		{
-			Router.TestClearMasterRoute();
 			var p = new UX.WhileHistory.GoBackRouter();
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
