@@ -19,11 +19,14 @@ namespace Fuse.Test
 				p.st.Value = "store";
 				
 				var o = root.RootViewport.SavePreviewState();
+				Assert.AreEqual( null, root.RootViewport.PreviewState.Current );
 				
 				root.Children.Remove(p);
 				root.StepFrame();
 				
 				root.RootViewport.RestorePreviewState( o );
+				Assert.IsTrue( root.RootViewport.PreviewState.Current.Has( StateTest.StateId ) );
+				Assert.IsFalse( root.RootViewport.PreviewState.Current.Has( "none" ) );
 				
 				p = new UX.Preview.State();
 				root.Children.Add(p);
@@ -43,11 +46,11 @@ namespace Fuse.Test
 	{
 		public string Value = "init";
 		
-		const string _id = "StateTest";
+		public const string StateId = "StateTest";
 		
 		void IPreviewStateSaver.Save( PreviewStateData data )
 		{
-			data.Set( _id, Value );
+			data.Set( StateId, Value );
 		}
 		
 		protected override void OnRooted()
@@ -61,7 +64,7 @@ namespace Fuse.Test
 				var cur = ps.Current;
 				if (cur != null)
 				{
-					var q = cur.Consume( _id ) as string;
+					var q = cur.Consume( StateId ) as string;
 					if (q != null)
 						Value = q;
 				}

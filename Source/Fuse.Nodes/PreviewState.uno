@@ -79,12 +79,12 @@ namespace Fuse
 		}
 		
 		/** Returns true if data has been stored for this key. Note that a null value is not considered to be actual data. */
-		public object Has( string key )
+		public bool Has( string key )
 		{
 			Entry v;
 			if (_data.TryGetValue( key, out v) )
 				return v.Data != null;
-			return null;
+			return false;
 		}
 		
 		/** Obtains the data just once, returning null on subsequent requests. This allows for rooting to only pick up the state data the first time, not if rerooted without it being saved again. */
