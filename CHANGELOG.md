@@ -3,6 +3,10 @@
 ## MultiDensityImageSource
 - Added native support, meaning it can be used by images inside a `NativeViewHost`.
 
+## Video
+
+- Fixed bug in Video where playback actions, like `Play`, used before the video was initialized would end up getting swallowed.
+
 # 1.3
 
 ## 1.3.0
