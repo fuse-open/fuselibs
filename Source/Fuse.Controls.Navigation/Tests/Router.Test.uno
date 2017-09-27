@@ -109,11 +109,11 @@ namespace Fuse.Navigation.Test
 				root.PumpDeferred();
 
 				//Route survives destruction
-				var store = root.RootViewport.PreviewSaveState();
+				var store = root.RootViewport.SavePreviewState();
 				root.Children.Remove(p);
 				
 				p = new UX.MasterRoute();
-				root.RootViewport.PreviewRestoreState(store);
+				root.RootViewport.RestorePreviewState(store);
 				root.Children.Add(p);
 				root.IncrementFrame();
 				

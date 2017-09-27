@@ -4,8 +4,6 @@ namespace Fuse
 {
 	/** 
 		State management in Preview for reloading/reifying. This has not use other than when running in preview.
-		
-		TODO: Reduce as much as possible if not defined(DESIGNMODE)
 	*/
 	class PreviewState
 	{
@@ -101,15 +99,9 @@ namespace Fuse
 			return null;
 		}
 	}
-	
 
 	interface IPreviewStateSaver
 	{
 		void Save( PreviewStateData data );
-	}
-	
-	interface IStateSource
-	{
-		
 	}
 }

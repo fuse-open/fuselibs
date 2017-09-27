@@ -18,12 +18,12 @@ namespace Fuse.Test
 				Assert.AreEqual( "init", p.st.Value );
 				p.st.Value = "store";
 				
-				var o = root.RootViewport.PreviewSaveState();
+				var o = root.RootViewport.SavePreviewState();
 				
 				root.Children.Remove(p);
 				root.StepFrame();
 				
-				root.RootViewport.PreviewRestoreState( o );
+				root.RootViewport.RestorePreviewState( o );
 				
 				p = new UX.Preview.State();
 				root.Children.Add(p);
