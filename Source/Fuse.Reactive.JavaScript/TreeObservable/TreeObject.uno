@@ -47,7 +47,7 @@ namespace Fuse.Reactive
 
 			bool IPropertySubscription.TrySetExclusive(string key, object newValue)
 			{
-				var t = SubscriptionSubject as TreeObject;
+				var t = (TreeObject)SubscriptionSubject;
 
 				// Must be done first - to ensure the operations happen in the right order on the JS thread
 				JavaScript.Worker.Invoke(new JSThreadSet((Scripting.Object)t.Raw, key, JavaScript.Worker.Unwrap(newValue)).Perform);
