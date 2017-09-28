@@ -1,4 +1,4 @@
 if HOST_WINDOWS {
-x86: "http://download.icu-project.org/files/icu4c/55.1/icu4c-55_1-Win32-msvc10.zip"
-x64: "http://download.icu-project.org/files/icu4c/55.1/icu4c-55_1-Win64-msvc10.zip"
+x86: "https://files.fusetools.com/tooling/HtthIgwJ2TdH-icu4c-55_1-Win32-msvc10.zip"
+x64: "https://files.fusetools.com/tooling/Oe1jy7Kg5uTN-icu4c-55_1-Win64-msvc10.zip"
 }
