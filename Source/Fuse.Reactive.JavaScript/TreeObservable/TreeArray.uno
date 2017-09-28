@@ -52,10 +52,10 @@ namespace Fuse.Reactive
 
 			public void OnReplaceAll(IArray values, ArraySubscription exclude)
 			{
-				if(this != exclude) _observer.OnNewAll(values);
+				if (this != exclude) _observer.OnNewAll(values);
 
 				var next = Next as ArraySubscription;
-				if(next != null) next.OnReplaceAll(values, exclude);
+				if (next != null) next.OnReplaceAll(values, exclude);
 			}
 
 			class ReplaceAllOperation
@@ -76,14 +76,14 @@ namespace Fuse.Reactive
 					var ctx = _worker.Context;
 
 					var nv = new object[_newValues.Length];
-					for(var i = 0; i < _newValues.Length; ++i) {
+					for (var i = 0; i < _newValues.Length; ++i) {
 						nv[i] = _worker.Unwrap(_newValues[i]);
 					}
 					var newValuesJs = ctx.NewArray(nv);
 
 					var replaceAllFn = (Scripting.Function) ctx.Evaluate("replaceAll",
 						"(function(array, values) {" +
-							"if('__fuse_replaceAll' in array) array.__fuse_replaceAll(values);" +
+							"if ('__fuse_replaceAll' in array) array.__fuse_replaceAll(values);" +
 							"else {"+
 								"array.length = 0;"+
 								"Array.prototype.push.apply(array, values);"+
@@ -138,20 +138,20 @@ namespace Fuse.Reactive
 
 		internal void ReplaceAll(IArray newValues, ArraySubscription exclude)
 		{
-			for(var i = 0; i < _items.Count; ++i)
+			for (var i = 0; i < _items.Count; ++i)
 			{
 				ValueMirror.Unsubscribe(_items[i]);
 			}
 
 			_items.Clear();
 
-			for(var i = 0; i < newValues.Length; ++i)
+			for (var i = 0; i < newValues.Length; ++i)
 			{
 				_items.Add(newValues[i]);
 			}
 
 			var sub = Subscribers as ArraySubscription;
-			if(sub != null)
+			if (sub != null)
 				sub.OnReplaceAll(newValues, exclude);
 		}
 
