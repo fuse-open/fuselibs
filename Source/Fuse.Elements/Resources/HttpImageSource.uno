@@ -125,7 +125,7 @@ namespace Fuse.Resources
 		void FailureCallback(Exception e)
 		{
 			_loading = false;
-			Fail( "HttpImageSource-failed-converson", e);
+			Fail( "HttpImageSource-failed-conversion", e);
 		}
 
 		void HttpCallback( HttpResponseHeader response, Buffer data )
