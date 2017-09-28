@@ -1,5 +1,8 @@
 # Unreleased
 
+## TextView
+- Fixed bug on Android where setting `TextWrapping="NoWrap"` would force the `TextView` to be single line. New behavior is to instead allow the view to scroll horizontally instead of automatically wrapping the text.
+
 ## MultiDensityImageSource
 - Added native support, meaning it can be used by images inside a `NativeViewHost`.
 
