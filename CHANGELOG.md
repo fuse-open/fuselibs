@@ -3,7 +3,7 @@
 ## MultiDensityImageSource
 - Added native support, meaning it can be used by images inside a `NativeViewHost`.
 
-### Fuse.Reactive framework changes (Uno-level)
+## Fuse.Reactive framework changes (Uno-level)
 - These are breaking changes, but very unlikely to affect your app:
  * The `DataBinding`, `EventBinding` and `ExpressionBinding` class constructors no longer take a `NameTable` argument.
  * The `Name` and `This` expression classes has been removed. The UX compiler will now compile these as `Constant` expressions that contain the actual objects instead.
