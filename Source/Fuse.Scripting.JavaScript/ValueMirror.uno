@@ -22,7 +22,6 @@ namespace Fuse.Scripting
 		readonly object _raw;
 		public object Raw { get { return _raw; } }
 		public virtual object ReflectedRaw { get { return _raw; } }
-		protected bool _isDisposed = false;
 
 		protected ValueMirror(object raw)
 		{
