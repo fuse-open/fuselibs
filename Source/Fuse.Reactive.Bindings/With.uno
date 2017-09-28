@@ -55,6 +55,7 @@ namespace Fuse.Reactive
 					var obs = value as IObservable;
 					if (obs != null) 
 					{
+						// Special case for `IObservable` which can be interpreted as a single value
 						SetSubtreeData(null);
 						_sub = new ValueForwarder(obs, this);
 					}

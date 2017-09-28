@@ -44,7 +44,7 @@ namespace Fuse.Reactive.FuseJS
 		{
 			if(_instance != null) return;
 
-			Resource.SetGlobalKey(_instance = this, "FuseJS/Timer");
+			Uno.UX.Resource.SetGlobalKey(_instance = this, "FuseJS/Timer");
 			
 			_tm = new TimerManager();
 			AddMember(new NativeFunction("create", (NativeCallback)Create));

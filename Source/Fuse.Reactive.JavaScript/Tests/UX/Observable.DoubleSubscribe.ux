@@ -1,0 +1,30 @@
+<Panel ux:Class="UX.Observable.DoubleSubscribe">
+    <JavaScript>
+        var Observable = require("FuseJS/Observable")
+
+        exports.items = Observable(1,2,3)
+        exports.itemsMapped = exports.items.map(function(x) { return x*2; } )
+        exports.g = Observable()
+
+        exports.flip = function() {
+            exports.g.add(123)
+        }
+        
+    </JavaScript>
+    <StackPanel ux:Name="p1">
+        <Each Items="{items}">
+            <Fuse.Reactive.Test.CreateCountPanel />
+        </Each>
+    </StackPanel>
+    <Each Items="{g}">
+        <StackPanel ux:Name="p2">
+            <Each Items="{items}">
+                <Fuse.Reactive.Test.CreateCountPanel />
+            </Each>
+            <Each Items="{itemsMapped}">
+                <Fuse.Reactive.Test.CreateCountPanel />
+            </Each>
+        </StackPanel>   
+    </Each>
+    <FuseTest.Invoke Handler="{flip}" ux:Name="flip"/>
+</Panel>

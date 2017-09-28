@@ -3,6 +3,10 @@ using Uno;
 namespace Fuse.Reactive
 {
 	/** Utility base class that observes the first value of an `IObservable`.
+		
+		Note that this class should only be used with instances that support `IObservable`, 
+		not just `IObservableArray`. This ensures the collection is semantically inteneded
+		for single-value use.
 	*/
 	abstract class ValueObserver: IDisposable, IObserver
 	{
@@ -11,9 +15,13 @@ namespace Fuse.Reactive
 
 		public IObservable Observable { get { return _obs; } }
 
+		/** Calling this method will push the current `value[0]` if available, and then
+			subscribe to changes.
+		*/
 		protected void Subscribe(IObservable obs)
 		{
 			_obs = obs;
+			if (obs.Length > 0) PushData(obs[0]);
 			_obsSub = obs.Subscribe(this);
 		}
 
