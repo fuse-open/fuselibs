@@ -26,10 +26,11 @@ namespace Fuse.Reactive
 			}
 		}
 
+		bool _hasUnsubscribed;
 		public override void Unsubscribe()
 		{
-			if (_isDisposed) return;
-			_isDisposed = true;
+			if (_hasUnsubscribed) return;
+			_hasUnsubscribed = true;
 
 			foreach (var p in _props)
 			{
