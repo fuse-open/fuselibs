@@ -60,6 +60,7 @@ which will stop push notifications registering (and potentially asking for permi
 
 ### Image
 - Fixed issue where an `<Image />` could fail to display inside a `<NativeViewHost />` on iOS
+- Fixed an issue where a JPEG image from a misconfigured server using `image/jpg` would fail to load.
 
 ### Each
 - Fixed a bug where replacing the whole list of items with an empty list would not immediately remove the items from the UI.
