@@ -25,6 +25,8 @@ namespace Fuse
 			}
 			
 			_current = data;
+			if (_current != null)
+				_current.Consumed = true;
 		}
 		
 		PreviewStateData _current;
