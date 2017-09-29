@@ -1,6 +1,5 @@
 package com.fuse.PushNotifications;
 
-
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -23,36 +22,30 @@ public class BigPictureStyleHttp extends AsyncTask<String, Void, Bitmap>
 	private NotificationManager _notificationManager;
 	private int _id;
 	private NotificationCompat.Builder _notificationBuilder;
-	private String _bigTitle;
-	private String _bigBody;
+	private NotificationCompat.BigPictureStyle _style;
 	private String _sound;
 
 	private void launchNotification(Bitmap bitmap)
 	{
-
-		_notificationBuilder.setStyle(new NotificationCompat.BigPictureStyle()
-				.bigPicture(bitmap)
-				.setBigContentTitle(_bigTitle)
-				.setSummaryText(_bigBody));
+		_style.bigPicture(bitmap);
+		_notificationBuilder.setStyle(_style);
 
 		Notification n = _notificationBuilder.build();
-
 		if (_sound != "")
 			n.defaults |= Notification.DEFAULT_SOUND;
 		n.defaults |= Notification.DEFAULT_LIGHTS;
 		n.defaults |= Notification.DEFAULT_VIBRATE;
-
 		_notificationManager.notify(_id, n);
 
 	}
 
-	public BigPictureStyleHttp(NotificationManager notificationManager, int id, NotificationCompat.Builder notificationBuilder, String bigTitle, String bigBody, String sound)
+	public BigPictureStyleHttp(NotificationManager notificationManager, int id, NotificationCompat.Builder notificationBuilder,
+							   NotificationCompat.BigPictureStyle style, String sound)
 	{
 		this._notificationManager = notificationManager;
 		this._id = id;
 		this._notificationBuilder = notificationBuilder;
-		this._bigTitle = bigTitle;
-		this._bigBody = bigBody;
+		this._style = style;
 		this._sound = sound;
 	}
 

@@ -18,14 +18,12 @@ namespace Fuse.PushNotifications
 					"android.app.Notification",
 					"android.content.Context",
 					"android.content.Intent",
-					"android.content.res.Resources",
 					"android.media.RingtoneManager",
 					"android.net.Uri",
 					"android.os.Bundle",
 					"android.support.v4.app.NotificationCompat",
 					"com.fuse.PushNotifications.PushNotificationReceiver",
 					"com.fuse.PushNotifications.BigPictureStyleHttp",
-					"com.google.android.gms.gcm.GcmListenerService",
 					"com.google.android.gms.gcm.GoogleCloudMessaging",
 					"com.google.android.gms.common.ConnectionResult",
 					"com.google.android.gms.common.GooglePlayServicesUtil",
@@ -266,9 +264,9 @@ namespace Fuse.PushNotifications
 
 			if (cls == String.class)
 			{
-				String s = (String)alertObj;
+				String title = (String)alertObj;
 				@{SpitOutNotification(Java.Object,string,string,string,string,string,string,string,Java.Object):Call(listener,
-						s,
+						title,
 						"",
 						json.optString("bigTitle"),
 						json.optString("bigBody"),
@@ -335,50 +333,53 @@ namespace Fuse.PushNotifications
 				}
 				else if (notificationStyle == BIGPICTURESTYLE || notificationStyle.equals(BIGPICTURESTYLE))
 				{
+					NotificationCompat.BigPictureStyle style = new NotificationCompat.BigPictureStyle();
+
+					if (bigTitle!=null && !bigTitle.isEmpty())
+						style.setBigContentTitle(bigTitle);
+					if (bigBody!=null && !bigBody.isEmpty())
+						style.setSummaryText(bigBody);
+
 					if (featuredImage.startsWith("http://") || featuredImage.startsWith("https://"))
 					{
-						BigPictureStyleHttp bps = new BigPictureStyleHttp(notificationManager, id, notificationBuilder, bigTitle, bigBody, sound);
+						BigPictureStyleHttp bps = new BigPictureStyleHttp(notificationManager, id, notificationBuilder, style, sound);
 						bps.execute(featuredImage);
 						return;
 					}
 					else
 					{
-						Bitmap bitmap = null;
 						int iconResourceID = com.fuse.R.get(featuredImage);
 
 						if (iconResourceID!=-1)
 						{
-							bitmap = android.graphics.BitmapFactory.decodeResource(context.getResources(), iconResourceID);
+							style.bigPicture(android.graphics.BitmapFactory.decodeResource(context.getResources(), iconResourceID));
 						}
 						else
 						{
 							String packageName = "@(Project.Name)";
-							InputStream afs = com.fuse.PushNotifications.BundleFiles.OpenBundledFile(context, packageName, featuredImage);
+							java.io.InputStream afs = com.fuse.PushNotifications.BundleFiles.OpenBundledFile(context, packageName, featuredImage);
 
 							if (afs != null)
 							{
-								bitmap = android.graphics.BitmapFactory.decodeStream(afs);
+								android.graphics.Bitmap bitmap = android.graphics.BitmapFactory.decodeStream(afs);
 								try
 								{
 									afs.close();
 								}
-								catch (IOException e)
+								catch (java.io.IOException e)
 								{
-									Log.d(packageName, "Could close the notification image '" + featuredImage);
+									debug_log("Could close the notification image '" + featuredImage);
 									e.printStackTrace();
 									return;
 								}
+								style.bigPicture(bitmap);
 							}
 							else
 							{
-								Log.d(packageName, "Could not the load image '" + featuredImage + "' as either a bundled file or android resource");
+								debug_log("Could not the load image '" + featuredImage + "' as either a bundled file or android resource");
 							}
 						}
-
-						notificationBuilder.setStyle(new NotificationCompat.BigPictureStyle()
-							.bigPicture(bitmap)
-							.setBigContentTitle(bigTitle)
-							.setSummaryText(bigBody));
+						notificationBuilder.setStyle(style);
 					}
 				}
 			}
