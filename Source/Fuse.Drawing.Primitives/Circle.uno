@@ -84,6 +84,7 @@ namespace Fuse.Drawing.Primitives
 			if (_bufferVertex == null)
 				InitBuffers();
 
+			float radiusRcp = 1.0f / radius;
 			draw
 			{
 				apply Common;
@@ -103,7 +104,7 @@ namespace Fuse.Drawing.Primitives
 				// Mali-400 has FP16 max precision, which cannot square big numbers without overflowing.
 				// So let's make sure the vector we do Length() always has a result in the 0..1 range, to
 				// avoid overflowing.
-				float2 VertexPositionScaled: VertexPosition / radius;
+				float2 VertexPositionScaled: VertexPosition * radiusRcp;
 				float RawDistance: (Vector.Length(pixel VertexPositionScaled) - 1.0f) * radius;
 				float2 EdgeNormal: Vector.Normalize(pixel V0);
 				
