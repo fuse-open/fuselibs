@@ -100,7 +100,7 @@ namespace Fuse.Drawing.Primitives
 				
 				float2 VertexPosition: V0 * (radius + extend*2);
 				LocalPosition: VertexPosition + center;
-				// Mali-400 hax GP16 max precision, which cannot square big numbers without overflowing.
+				// Mali-400 has FP16 max precision, which cannot square big numbers without overflowing.
 				// So let's make sure the vector we do Length() always has a result in the 0..1 range, to
 				// avoid overflowing.
 				float2 VertexPositionScaled: VertexPosition / radius;
