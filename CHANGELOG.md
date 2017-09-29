@@ -7,7 +7,7 @@
 ### Native UI:
 - Fixed bug on iOS that could cause native views from thirdparty libraries to get an incorrect position. (Fixes issues with Firebase AdMob)
 
-### JavaScript: Optional explicit requrie() of UX symbols
+### JavaScript: Optional explicit require() of UX symbols
 - Symbols declared with `ux:Name`, `ux:Dependency` or `dep` are now also available to `require()` for `<JavaScript>` modules using the `ux:` prefix. This allows us to write code that plays nicer with transpilers and linters. Using require for names declared in UX is optional, but may make the code more readable and maintainable, e.g. `var router = require("ux:router")` over just using `router` with no declaration.
 
 ### Fuse.Drawing.Surface
