@@ -38,6 +38,7 @@ namespace Fuse.Reactive
 		}
 			
 		
+		IArray _source;
 		IObservable _observable;
 		IObserver _slave;
 		ISubscription _subscription;
@@ -49,14 +50,23 @@ namespace Fuse.Reactive
 				copies of the events. This is important especially when this map updates the observable,
 				we don't want the slave getting events for that.
 		*/
-		public void Attach( IObservable obs, IObserver slave ) 
+		public void Attach( IArray src, IObserver slave = null ) 
 		{
 			Detach();
-			_observable = obs;
-			_slave = slave;
-			_subscription = _observable.Subscribe(this);
+			_source = src;
+			_observable = src as IObservable;
+
+			//TODO (feature-Models branch). This class doesn't want feedback from `Subscribe` so it
+			//checks _subscription == null on all callback fucntions. The feature-Models branch has this
+			//fixed and those checks could be removed.
+			if (_observable != null)
+				_subscription = _observable.Subscribe(this);
+				
 			//treat the bound observable as the source-of-truth
-			((IObserver)this).OnNewAll(obs);
+			((IObserver)this).OnNewAll(src);
+			
+			//set after call to OnNewAll since Attach should not generate a callback
+			_slave = slave;	
 		}
 		
 		public void Detach()
@@ -67,6 +77,7 @@ namespace Fuse.Reactive
 				_subscription = null;
 			}
 			_observable = null;
+			_source = null;
 			_slave = null;
 		}
 		
@@ -105,6 +116,8 @@ namespace Fuse.Reactive
 		
 		void IObserver.OnClear()
 		{
+			if (_subscription == null) return; //workaround, see Attach
+			
 			_list.Clear();
 			OnUpdated();
 			
@@ -114,6 +127,8 @@ namespace Fuse.Reactive
 		
 		void IObserver.OnNewAll(IArray values)
 		{
+			if (_subscription == null) return; //workaround, see Attach
+			
 			_list.Clear();
 			for (int i=0; i < values.Length;  ++i)
 				_list.Add( Map(values[i]) );
@@ -125,6 +140,8 @@ namespace Fuse.Reactive
 		
 		void IObserver.OnNewAt(int index, object newValue)
 		{
+			if (_subscription == null) return; //workaround, see Attach
+		
 			_list[index] = Map(newValue);
 			OnUpdated();
 			
@@ -134,6 +151,8 @@ namespace Fuse.Reactive
 		
 		void IObserver.OnSet(object newValue)
 		{
+			if (_subscription == null) return; //workaround, see Attach
+		
 			_list.Clear();
 			_list.Add( Map(newValue) );
 			OnUpdated();
@@ -144,6 +163,8 @@ namespace Fuse.Reactive
 		
 		void IObserver.OnAdd(object addedValue)
 		{
+			if (_subscription == null) return; //workaround, see Attach
+
 			_list.Add( Map(addedValue) );
 			OnUpdated();
 			
@@ -153,6 +174,8 @@ namespace Fuse.Reactive
 		
 		void IObserver.OnRemoveAt(int index)
 		{
+			if (_subscription == null) return; //workaround, see Attach
+		
 			_list.RemoveAt(index);
 			OnUpdated();
 			
@@ -162,6 +185,8 @@ namespace Fuse.Reactive
 		
 		void IObserver.OnInsertAt(int index, object value)
 		{
+			if (_subscription == null) return; //workaround, see Attach
+		
 			_list.Insert(index, Map(value));
 			OnUpdated();
 			
@@ -171,6 +196,8 @@ namespace Fuse.Reactive
 		
 		void IObserver.OnFailed(string message)
 		{
+			if (_subscription == null) return; //workaround, see Attach
+		
 			_list.Clear();
 			OnUpdated();
 			

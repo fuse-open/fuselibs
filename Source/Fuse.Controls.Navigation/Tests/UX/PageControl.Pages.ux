@@ -1,0 +1,33 @@
+<Panel ux:Class="UX.PageControl.Pages">
+	<JavaScript>
+		var Observable = require("FuseJS/Observable");
+		
+		exports.pageIndex = Observable(0)
+		exports.pages = Observable({
+			$path: "any",
+			desc: "one",
+		}, {
+			$path: "any",
+			desc: "two",
+		}, {
+			$path: "alter",
+			desc: "three",
+		})
+		
+		exports.goto1 = function() { exports.pageIndex.value = 1 }
+	</JavaScript>
+	
+	<PageControl ActiveIndex="{pageIndex}" Pages="{pages}" ux:Name="pc" Transition="None">
+		<NavigationMotion GotoDuration="0"/>
+		<Page ux:Template="any">
+			<Text Value="{desc}"/>
+			<FuseTest.InstanceCounter/>
+		</Page>
+		<Page ux:Template="alter">
+			<Text Value="{desc}"/>
+			<FuseTest.InstanceCounter/>
+		</Page>
+	</PageControl>
+
+	<FuseTest.Invoke Handler="{goto1}" ux:Name="goto1"/>
+</Panel>
