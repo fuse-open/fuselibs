@@ -11,7 +11,6 @@ namespace Fuse.Navigation.Test
 		[Test]
 		public void Basic()
 		{
-			Router.TestClearMasterRoute();
 			var p = new UX.FindRouter.Basic();
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{

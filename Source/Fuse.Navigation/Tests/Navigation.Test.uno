@@ -100,7 +100,6 @@ namespace Fuse.Navigation.Test
 			
 			npp.Dispose();
 			Assert.IsFalse(_navReady);
-			Router.TestClearMasterRoute();
 		}
 		
 		bool _navReady;

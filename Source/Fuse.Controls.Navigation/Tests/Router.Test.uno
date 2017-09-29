@@ -20,7 +20,6 @@ namespace Fuse.Navigation.Test
 		[Test]
 		public void Basic()
 		{
-			Router.TestClearMasterRoute();
 			var p = new UX.RouterTest();
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
@@ -62,7 +61,6 @@ namespace Fuse.Navigation.Test
 		//extracted from a failure in Basic
 		public void Scenario1()
 		{
-			Router.TestClearMasterRoute();
 			var p = new UX.Router.Scenario1();
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
@@ -74,7 +72,6 @@ namespace Fuse.Navigation.Test
 		[Test]
 		public void SelfChange()
 		{
-			Router.TestClearMasterRoute();
 			var p = new UX.RouterTest();
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
@@ -103,7 +100,6 @@ namespace Fuse.Navigation.Test
 		/* kind of a clunky feature, but it should be tested nonetheless */
 		public void MasterState()
 		{
-			Router.TestClearMasterRoute();
 			var p = new UX.MasterRoute();
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
@@ -113,8 +109,11 @@ namespace Fuse.Navigation.Test
 				root.PumpDeferred();
 
 				//Route survives destruction
+				var store = root.RootViewport.SavePreviewState();
 				root.Children.Remove(p);
+				
 				p = new UX.MasterRoute();
+				root.RootViewport.RestorePreviewState(store);
 				root.Children.Add(p);
 				root.IncrementFrame();
 				
@@ -130,7 +129,6 @@ namespace Fuse.Navigation.Test
 		/* checks a router that is inside the routing path of another router */
 		public void Embedded()
 		{
-			Router.TestClearMasterRoute();
 			var p = new UX.RouterEmbed();
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
@@ -160,7 +158,6 @@ namespace Fuse.Navigation.Test
 		[Test]
 		public void Relative()
 		{
-			Router.TestClearMasterRoute();
 			var p = new UX.Router.Relative();
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
@@ -192,7 +189,6 @@ namespace Fuse.Navigation.Test
 		//https://github.com/fusetools/fuselibs/issues/3689
 		public void RelativeNonCurrent()
 		{
-			Router.TestClearMasterRoute();
 			var p = new UX.Router.RelativeNonCurrent();
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
@@ -219,7 +215,6 @@ namespace Fuse.Navigation.Test
 		[Test]
 		public void Modify()
 		{
-			Router.TestClearMasterRoute();
 			var p = new UX.Router.Modify();
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
@@ -246,7 +241,6 @@ namespace Fuse.Navigation.Test
 		[Test]
 		public void RelativeNest()
 		{
-			Router.TestClearMasterRoute();
 			var p = new UX.Router.RelativeNest();
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
@@ -290,7 +284,6 @@ namespace Fuse.Navigation.Test
 		//variant of RelativeNest to ensure modify does the same thing
 		public void RelativeNestModify()
 		{
-			Router.TestClearMasterRoute();
 			var p = new UX.Router.RelativeNestModify();
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
@@ -323,7 +316,6 @@ namespace Fuse.Navigation.Test
 		[Test]
 		public void HistoryBasic()
 		{
-			Router.TestClearMasterRoute();
 			var p = new UX.Router.HistoryBasic();
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
@@ -354,7 +346,6 @@ namespace Fuse.Navigation.Test
 		[Test]
 		public void HistoryMulti()
 		{
-			Router.TestClearMasterRoute();
 			var p = new UX.Router.HistoryMulti();
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
@@ -400,7 +391,6 @@ namespace Fuse.Navigation.Test
 		[Test]
 		public void NavigatorHistoryBasic()
 		{
-			Router.TestClearMasterRoute();
 			var p = new UX.Router.NavigatorHistoryBasic();
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
@@ -429,7 +419,6 @@ namespace Fuse.Navigation.Test
 		[Test]
 		public void NavigatorHistoryMulti()
 		{
-				Router.TestClearMasterRoute();
 			var p = new UX.Router.NavigatorHistoryMulti();
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{	
@@ -476,7 +465,6 @@ namespace Fuse.Navigation.Test
 		[Test]
 		public void HistoryActiveIndex()
 		{
-			Router.TestClearMasterRoute();
 			var p = new UX.Router.HistoryActiveIndex();
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
@@ -497,7 +485,6 @@ namespace Fuse.Navigation.Test
 		[Test]
 		public void HistoryParameter()
 		{
-			Router.TestClearMasterRoute();
 			var p = new UX.Router.HistoryParameter();
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
@@ -533,7 +520,6 @@ namespace Fuse.Navigation.Test
 		[Test]
 		public void NavigatorHistoryParameter()
 		{
-			Router.TestClearMasterRoute();
 			var p = new UX.Router.NavigatorHistoryParameter();
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
@@ -573,7 +559,6 @@ namespace Fuse.Navigation.Test
 		[Test]
 		public void HistorySame()
 		{
-			Router.TestClearMasterRoute();
 			var p = new UX.Router.HistorySame();
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
@@ -617,7 +602,6 @@ namespace Fuse.Navigation.Test
 		[Test]
 		public void ObservableGoBack()
 		{
-			Router.TestClearMasterRoute();
 			var p = new UX.Router.ObservableGoBack();
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{

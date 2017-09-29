@@ -17,7 +17,6 @@ namespace Fuse.Navigation.Test
 		[Test]
 		public void Basic()
 		{
-			Router.TestClearMasterRoute();
 			var p = new UX.Transition.Basic();
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
@@ -78,7 +77,6 @@ namespace Fuse.Navigation.Test
 		//checks some basic with non-template pages and with Bypass mode
 		public void BasicNonTemplate()
 		{
-			Router.TestClearMasterRoute();
 			var p = new UX.Transition.BasicNonTemplate();
 			using(var root = TestRootPanel.CreateWithChild(p))
 			{
@@ -131,7 +129,6 @@ namespace Fuse.Navigation.Test
 		[Test]
 		public void FrontBack()
 		{
-			Router.TestClearMasterRoute();
 			var p = new UX.Transition.FrontBack();
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
@@ -160,7 +157,6 @@ namespace Fuse.Navigation.Test
 		[Test]
 		public void InFrontBehind()
 		{
-			Router.TestClearMasterRoute();
 			var p = new UX.Transition.InFrontBehind();
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
@@ -213,7 +209,6 @@ namespace Fuse.Navigation.Test
 		[Test]
 		public void Release()
 		{
-			Router.TestClearMasterRoute();
 			var p = new UX.Transition.Release();
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
@@ -239,7 +234,6 @@ namespace Fuse.Navigation.Test
 		[Test]
 		public void Interactive()
 		{
-			Router.TestClearMasterRoute();
 			var p = new UX.Transition.Interactive();
 			using (var root = TestRootPanel.CreateWithChild(p,int2(1000)))
 			{
@@ -272,7 +266,6 @@ namespace Fuse.Navigation.Test
 		//tests operation style matching
 		public void Style()
 		{
-			Router.TestClearMasterRoute();
 			var p = new UX.Transition.Style();
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
