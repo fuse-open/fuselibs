@@ -48,7 +48,8 @@ function Model(source)
 		node.__fuse_raw = state;
 
 		if (state instanceof Object) {
-			node.__fuse_class = state.constructor.name;
+			if('$template' in state || '$path' in state) return;
+			node.$template = state.constructor.name;
 		}
 
 		// create zone lazily to avoid overhead when not needed
