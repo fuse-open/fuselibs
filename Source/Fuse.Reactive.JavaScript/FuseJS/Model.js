@@ -14,7 +14,7 @@ function isThenable(thing) {
 		&& typeof thing.then === "function";
 }
 
-function Model(source)
+function Model(stateFactory)
 {
 	var stateToMeta = new Map();
 	var idToMeta = new Map();
@@ -22,10 +22,14 @@ function Model(source)
 	var idEnumerator = 0;
 	var store = this;
 
-	instrument(null, this, source)
+	instrument(null, this, stateFactory)
 
 	function instrument(parentMeta, node, state)
 	{
+		if(state instanceof Function) {
+			state = runInZone(state, []);
+		}
+
 		var meta = stateToMeta.get(state);
 
 		if (meta instanceof Object) {
@@ -47,14 +51,14 @@ function Model(source)
 		node.__fuse_id = meta.id;
 		node.__fuse_raw = state;
 
-		if (state instanceof Object) {
-			node.__fuse_class = state.constructor.name;
+		if (state instanceof Object && !('$template' in state || '$path' in state)) {
+			node.$template = state.constructor.name;
 		}
 
 		// create zone lazily to avoid overhead when not needed
-		var nodeZone = null;
+		var nodeZone = undefined;
 		function prepareZone() {
-			if (nodeZone !== null) { return; }
+			if (nodeZone != undefined) { return; }
 			nodeZone = rootZone.fork({
 				name: (parentMeta != null ? parentMeta.key : '(root)'),
 				onInvokeTask: function(parentZoneDelegate, currentZone, targetZone, task, applyThis, applyArgs) {
@@ -72,7 +76,7 @@ function Model(source)
 			if (!shouldEmitProperty(k)) continue;
 			var v = state[k];
 			if (v instanceof Function) {
-				node[k] = wrapFunction(k, v);
+				node[k] = wrapFunction(v);
 				state[k] = node[k];
 				meta.isClass = true;
 			}
@@ -117,7 +121,7 @@ function Model(source)
 				if (p === "constructor") { continue; }
 				var value = state[p];
 				if (value instanceof Function) {
-					node[p] = wrapFunction(p, value);
+					node[p] = wrapFunction(value);
 					state[p] = node[p];
 				}
 				else if (descs[p].get instanceof Function)
@@ -165,20 +169,20 @@ function Model(source)
 			}
 		}
 
+		function runInZone(func, args) {
+			prepareZone();
+			return nodeZone.run(function() {
+				dirty();
+				var res = func.apply(state, args);
+				return res
+			})
+		}
 
-		function wrapFunction(name, func) {
-			
+		function wrapFunction(func) {
 			var f = function() {
-				var args = arguments;
-				prepareZone();
-				return nodeZone.run(function() {
-					dirty();
-					var res = func.apply(state, args);
-					return res
-				})
+				return runInZone(func, arguments);
 			}
 			f.__fuse_isWrapped = true;
-
 			return f;
 		}
 
@@ -319,7 +323,7 @@ function Model(source)
 		{
 			if (value instanceof Function) {
 				if (!value.__fuse_isWrapped) {
-					state[key] = wrapFunction(k, value)
+					state[key] = wrapFunction(value)
 					set(key, state[key]);
 				}
 			}
