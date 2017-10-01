@@ -147,9 +147,10 @@ namespace Fuse.Reactive
                     "if (!(modelClass instanceof Function)) { throw new Error('\"" + module + "\" does not export a class or function required to construct a Model'); }\n"+
                     "var model = Object.create(modelClass.prototype);\n"+
                     (isRootModel ? "require('FuseJS/ModelAdapter').GlobalModel = model;\n" : "")+
-                    "modelClass.call(model" + argString + ")\n"+
-                    "module.exports = new Model(model);\n";
-            
+                    "module.exports = new Model(function() {\n"+
+                    "    modelClass.call(model" + argString + ");\n"+
+                    "    return model;\n"+
+                    "});\n";
 			js.Code = code;
         }
 
