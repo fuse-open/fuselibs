@@ -85,6 +85,37 @@ namespace Fuse.Test
 				Assert.AreEqual( "okay", GetText(p.rov));
 			}
 		}
+		
+		[Test]
+		//covers the scenario from https://github.com/fusetools/fuselibs-public/issues/518
+		public void RemoveAll()
+		{
+			var p = new UX.Rooting.RemoveAll();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				Assert.AreEqual(1, p.a.RootCount);
+				Assert.AreEqual(1, p.b.RootCount);
+				
+				p.RemoveAllChildren<RootTracker>();
+				Assert.AreEqual(0, p.a.RootCount);
+				Assert.AreEqual(0, p.b.RootCount);
+				Assert.IsFalse(root.Children.Contains(p.a));
+				Assert.IsFalse(root.Children.Contains(p.b));
+			}
+		}
+		
+		[Test]
+		public void ScrollViewScenario()
+		{
+			var p = new UX.Rooting.ScrollViewScenario();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				Assert.AreEqual(1, p.a.Tracker.RootCount);
+				root.Children.Remove(p);
+				Assert.AreEqual(0, p.a.Tracker.RootCount);
+			}
+		}
+		
 	}
 	
 	/*
@@ -113,4 +144,44 @@ namespace Fuse.Test
 			_p = null;
 		}
 	}
+	
+	public class RootTracker : Panel
+	{
+		public int RootCount;
+		
+		protected override void OnRooted()
+		{
+			base.OnRooted();
+			if (RootCount != 0)
+				Fuse.Diagnostics.InternalError("Invalid rooting" );
+			RootCount++;
+		}
+		
+		protected override void OnUnrooted()
+		{
+			if (RootCount != 1)
+				Fuse.Diagnostics.InternalError("Invalid unrooting" );
+			RootCount--;
+			base.OnUnrooted();
+		}
+	}
+	
+	//simulates how Scroller is added/removed in ScrollView
+	public class ScrollViewScenarioBehavior : Panel
+	{	
+		public RootTracker Tracker = new RootTracker();
+		
+		protected override void OnRooted()
+		{
+			base.OnRooted();
+			Children.Add( Tracker );
+		}
+		
+		protected override void OnUnrooted()
+		{
+			RemoveAllChildren<RootTracker>();
+			base.OnUnrooted();
+		}
+	}
+	
 }

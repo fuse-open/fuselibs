@@ -1,0 +1,4 @@
+<Panel ux:Class="UX.Rooting.RemoveAll">
+	<Fuse.Test.RootTracker ux:Name="a"/>
+	<Fuse.Test.RootTracker ux:Name="b"/>
+</Panel>
