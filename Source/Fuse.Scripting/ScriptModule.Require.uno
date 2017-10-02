@@ -158,25 +158,8 @@ namespace Fuse.Scripting
 			return sourcePath;
 		}
 
-
-		static Dictionary<string, Func<string, BundleFile, Module>> _magicPaths = new Dictionary<string, Func<string, BundleFile, Module>>();
-		internal static void AddMagicPath(string path, Func<string, BundleFile, Module> loader)
-		{
-			_magicPaths.Add(path, loader);
-		}
-
 		Module LookForModule(string path)
 		{
-			foreach (var k in _magicPaths) 
-			{
-				var actualPath = k.Key + path;
-				var res = LookForModuleInternal(actualPath);
-				if (res != null) 
-				{
-					return k.Value(path, res);
-				}
-			}
-
 			var bf = LookForModuleInternal(path);
 			if (bf != null)
 				return new FileModule(bf);
