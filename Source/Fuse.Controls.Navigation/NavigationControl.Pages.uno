@@ -73,8 +73,8 @@ namespace Fuse.Controls
 			if(obj.ContainsKey("$path"))
 				return Marshal.ToType<string>(obj["$path"]);
 
-			if(obj.ContainsKey("__fuse_class"))
-				return Marshal.ToType<string>(obj["__fuse_class"]);
+			if(obj.ContainsKey("$template"))
+				return Marshal.ToType<string>(obj["$template"]);
 
 			return null;
 		}
