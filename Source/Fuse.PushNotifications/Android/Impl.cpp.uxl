@@ -1,6 +1,8 @@
 <Extensions Backend="CPlusPlus" Condition="Android">
     <Require AndroidManifest.Permission="com.google.android.c2dm.permission.RECEIVE" />
     <ProcessFile Name="PushNotificationReceiver.java" TargetName="@(Java.SourceDirectory)/com/fuse/PushNotifications/PushNotificationReceiver.java" />
+    <ProcessFile Name="BigPictureStyleHttp.java" TargetName="@(Java.SourceDirectory)/com/fuse/PushNotifications/BigPictureStyleHttp.java" />
+    <ProcessFile Name="BundleFiles.java" TargetName="@(Java.SourceDirectory)/com/fuse/PushNotifications/BundleFiles.java" />
     <Require AndroidManifest.ApplicationElement><![CDATA[
         <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
         <receiver android:name="com.google.android.gms.gcm.GcmReceiver"

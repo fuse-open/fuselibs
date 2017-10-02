@@ -18,13 +18,12 @@ namespace Fuse.PushNotifications
 					"android.app.Notification",
 					"android.content.Context",
 					"android.content.Intent",
-					"android.content.res.Resources",
 					"android.media.RingtoneManager",
 					"android.net.Uri",
 					"android.os.Bundle",
 					"android.support.v4.app.NotificationCompat",
 					"com.fuse.PushNotifications.PushNotificationReceiver",
-					"com.google.android.gms.gcm.GcmListenerService",
+					"com.fuse.PushNotifications.BigPictureStyleHttp",
 					"com.google.android.gms.gcm.GoogleCloudMessaging",
 					"com.google.android.gms.common.ConnectionResult",
 					"com.google.android.gms.common.GooglePlayServicesUtil",
@@ -263,24 +262,39 @@ namespace Fuse.PushNotifications
 
 			Class cls = alertObj.getClass();
 
-			if (cls == String.class) {
-				String s = (String)alertObj;
-				@{SpitOutNotification(Java.Object,string,string,string,Java.Object):Call(listener, s, "", json.optString("sound"), bundle)};
-			} else {
+			if (cls == String.class)
+			{
+				String title = (String)alertObj;
+				@{SpitOutNotification(Java.Object,string,string,string,string,string,string,string,Java.Object):Call(listener,
+						title,
+						"",
+						json.optString("bigTitle"),
+						json.optString("bigBody"),
+						json.optString("notificationStyle"),
+						json.optString("featuredImage"),
+						json.optString("sound"),
+						bundle)};
+			}
+			else
+			{
 				JSONObject alert = (JSONObject)alertObj;
-				if (alertObj!=null) {
-					@{SpitOutNotification(Java.Object,string,string,string,Java.Object):Call(listener,
-																				   alert.optString("title"),
-																				   alert.optString("body"),
-																				   alert.optString("sound"),
-																				   bundle)};
+				if (alertObj!=null)
+				{
+					@{SpitOutNotification(Java.Object,string,string,string,string,string,string,string,Java.Object):Call(listener,
+						alert.optString("title"),
+						alert.optString("body"),
+						alert.optString("bigTitle"),
+						alert.optString("bigBody"),
+						alert.optString("notificationStyle"),
+						alert.optString("featuredImage"),
+						alert.optString("sound"),
+						bundle)};
 				}
 			}
 		@}
 
-
 		[Foreign(Language.Java)]
-		static void SpitOutNotification(Java.Object _listener, string title, string body, string sound, Java.Object _payload)
+		static void SpitOutNotification(Java.Object _listener, string title, string body, string bigTitle, string bigBody, string notificationStyle, string featuredImage, string sound, Java.Object _payload)
 		@{
 			Context context = (Context)_listener;
 			Bundle payload = (Bundle)_payload;
@@ -288,9 +302,8 @@ namespace Fuse.PushNotifications
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			intent.setAction(PushNotificationReceiver.ACTION);
 			intent.replaceExtras(payload);
-			android.app.PendingIntent pendingIntent =
-				android.app.PendingIntent.getActivity(context, 0, intent, android.app.PendingIntent.FLAG_ONE_SHOT);
-
+			android.app.PendingIntent pendingIntent = android.app.PendingIntent.getActivity(context, 0, intent, android.app.PendingIntent.FLAG_ONE_SHOT);
+			android.app.NotificationManager notificationManager = (android.app.NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
 
 			NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context)
 				.setSmallIcon(@(Activity.Package).R.mipmap.notif)
@@ -305,15 +318,77 @@ namespace Fuse.PushNotifications
 				notificationBuilder.setSound(defaultSoundUri);
 			}
 
-			android.app.NotificationManager notificationManager = (android.app.NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
+			int id = PushNotificationReceiver.nextID();
+
+			if (notificationStyle != null && !notificationStyle.isEmpty())
+			{
+				String BIGTEXTSTYLE = "bigtextstyle";
+				String BIGPICTURESTYLE = "bigpicturestyle";
+				if (notificationStyle == BIGTEXTSTYLE || notificationStyle.equals(BIGTEXTSTYLE))
+				{
+					notificationBuilder.setStyle(new NotificationCompat.BigTextStyle()
+						.bigText(bigBody)
+						.setBigContentTitle(bigTitle));
+
+				}
+				else if (notificationStyle == BIGPICTURESTYLE || notificationStyle.equals(BIGPICTURESTYLE))
+				{
+					NotificationCompat.BigPictureStyle style = new NotificationCompat.BigPictureStyle();
+
+					if (bigTitle!=null && !bigTitle.isEmpty())
+						style.setBigContentTitle(bigTitle);
+					if (bigBody!=null && !bigBody.isEmpty())
+						style.setSummaryText(bigBody);
+
+					if (featuredImage.startsWith("http://") || featuredImage.startsWith("https://"))
+					{
+						BigPictureStyleHttp bps = new BigPictureStyleHttp(notificationManager, id, notificationBuilder, style, sound);
+						bps.execute(featuredImage);
+						return;
+					}
+					else
+					{
+						int iconResourceID = com.fuse.R.get(featuredImage);
+
+						if (iconResourceID!=-1)
+						{
+							style.bigPicture(android.graphics.BitmapFactory.decodeResource(context.getResources(), iconResourceID));
+						}
+						else
+						{
+							String packageName = "@(Project.Name)";
+							java.io.InputStream afs = com.fuse.PushNotifications.BundleFiles.OpenBundledFile(context, packageName, featuredImage);
+
+							if (afs != null)
+							{
+								android.graphics.Bitmap bitmap = android.graphics.BitmapFactory.decodeStream(afs);
+								try
+								{
+									afs.close();
+								}
+								catch (java.io.IOException e)
+								{
+									debug_log("Could close the notification image '" + featuredImage);
+									e.printStackTrace();
+									return;
+								}
+								style.bigPicture(bitmap);
+							}
+							else
+							{
+								debug_log("Could not the load image '" + featuredImage + "' as either a bundled file or android resource");
+							}
+						}
+						notificationBuilder.setStyle(style);
+					}
+				}
+			}
+
 			Notification n = notificationBuilder.build();
 			if (sound!="")
 				n.defaults |= Notification.DEFAULT_SOUND;
 			n.defaults |= Notification.DEFAULT_LIGHTS;
 			n.defaults |= Notification.DEFAULT_VIBRATE;
-
-			int id = PushNotificationReceiver.nextID();
-
 			notificationManager.notify(id, n);
 		@}
 	}
