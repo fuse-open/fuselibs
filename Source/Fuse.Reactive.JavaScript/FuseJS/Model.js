@@ -51,8 +51,7 @@ function Model(stateFactory)
 		node.__fuse_id = meta.id;
 		node.__fuse_raw = state;
 
-		if (state instanceof Object) {
-			if('$template' in state || '$path' in state) return;
+		if (state instanceof Object && !('$template' in state || '$path' in state)) {
 			node.$template = state.constructor.name;
 		}
 
