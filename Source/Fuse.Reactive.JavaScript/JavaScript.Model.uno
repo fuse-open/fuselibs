@@ -132,15 +132,6 @@ namespace Fuse.Reactive
 
         static void SetupModel(IList<Node> children, JavaScript js, IExpression model)
         {
-            var isRootModel = true;
-            var p = (Node)js;
-            while (p != null) 
-            {
-                if ((p.Properties.Get(_modelHandle) as JavaScript) != null) isRootModel = false;
-                p = p.Parent;
-            }
-
-
             js.Dependencies.Clear();
 
             string argString = "";
@@ -168,21 +159,12 @@ namespace Fuse.Reactive
                     "if (!(modelClass instanceof Function) && 'default' in modelClass) { modelClass = modelClass.default }\n"+
                     "if (!(modelClass instanceof Function) && '" + className +"' in modelClass) { modelClass = modelClass."+ className +" }\n"+
                     "if (!(modelClass instanceof Function)) { throw new Error('\"" + module + "\" does not export a class or function required to construct a Model'); }\n"+
-                    "var model = Object.create(modelClass.prototype);\n"+
-                    (isRootModel ? "require('FuseJS/ModelAdapter').GlobalModel = model;\n" : "")+
                     "module.exports = new Model(function() {\n"+
+                    "    var model = Object.create(modelClass.prototype);\n"+
                     "    modelClass.call(model" + argString + ");\n"+
                     "    return model;\n"+
                     "});\n";
 			js.Code = code;
-        }
-
-        static Module TransformModel(string moduleName, BundleFile file)
-        {
-            var fileModule = new FileModule(new BundleFileSource(file));
-            fileModule.Preamble = "require('FuseJS/ModelAdapter').ModelAdapter(module.exports, (function() {\n";
-            fileModule.Postamble = "\n})());";
-            return fileModule;
         }
     }
 }
