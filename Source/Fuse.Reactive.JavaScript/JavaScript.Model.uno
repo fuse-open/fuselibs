@@ -63,9 +63,32 @@ namespace Fuse.Reactive
             {
                 _appModel = new JavaScript(null);
                 _appModel.FileName = "(model-script)";
-                app.Children.Add(_appModel);
+                app.RootViewport.Children.Add(_appModel);
+                
+                var previewState = PreviewState.Find(_appModel);
+                if(previewState != null)
+                {
+                    var appModelPreviewState = new AppModelPreviewState(_appModel);
+                    previewState.AddSaver(appModelPreviewState);
+                }
+
             }
-			SetupModel(app.Children, _appModel, model);
+            SetupModel(app.RootViewport.Children, _appModel, model);
+        }
+        
+        internal struct AppModelPreviewState : IPreviewStateSaver
+        {
+            public static string ID = "AppModel";
+            public readonly JavaScript Instance;
+            public AppModelPreviewState(JavaScript instance)
+            {
+                Instance = instance;
+            }
+
+            void IPreviewStateSaver.Save(PreviewStateData data)
+            {
+                data.Set(AppModelPreviewState.ID, this);
+            }
         }
 
         static string ParseModelExpression(IExpression exp, JavaScript js, ref string argString, ref string className, List<string> thisSymbols)
