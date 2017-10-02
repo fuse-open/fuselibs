@@ -1,0 +1,3 @@
+<Panel ux:Class="UX.Rooting.ScrollViewScenario">
+	<Fuse.Test.ScrollViewScenarioBehavior ux:Name="a"/>
+</Panel>
