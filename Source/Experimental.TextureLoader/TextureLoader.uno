@@ -82,7 +82,7 @@ namespace Experimental.TextureLoader
 
 		public static void ByteArrayToTexture2DContentType(Buffer arr, string contentType, Uno.Action<texture2D> callback)
 		{
-			if (contentType.IndexOf("image/jpeg") != -1)
+			if (contentType.IndexOf("image/jpeg") != -1 || contentType.IndexOf("image/jpg") != -1)
 				JpegByteArrayToTexture2D(arr, callback);
 			else if (contentType.IndexOf("image/png") != -1)
 				PngByteArrayToTexture2D(arr, callback);

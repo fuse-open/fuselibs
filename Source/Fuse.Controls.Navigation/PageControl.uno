@@ -136,6 +136,12 @@ namespace Fuse.Controls
 			Navigation.ActivePageChanged += OnActivePageChanged;
 		}
 		
+		protected override void OnUnrooted()
+		{
+			OnPagesUnrooted();
+			base.OnUnrooted();
+		}
+		
 		void IPropertyListener.OnPropertyChanged(PropertyObject obj, Selector property)
 		{
 			if (obj == Navigation) 

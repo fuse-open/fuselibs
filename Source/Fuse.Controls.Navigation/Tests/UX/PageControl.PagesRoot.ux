@@ -1,0 +1,36 @@
+<Panel ux:Class="UX.PageControl.PagesRoot">
+	<JavaScript>
+		var Observable = require("FuseJS/Observable");
+		
+		exports.pageIndex = Observable(0)
+		exports.pages = Observable({
+			$path: "any",
+			desc: "one",
+		}, {
+			$path: "any",
+			desc: "two",
+		}, {
+			$path: "alter",
+			desc: "three",
+		})
+		
+		exports.goto1 = function() { exports.pageIndex.value = 1 }
+	</JavaScript>
+
+	<!-- ensure the binding is available prior to PageControl rooting -->
+	<Each Items="{pages}"/>
+	
+	<WhileTrue ux:Name="w">
+		<PageControl ActiveIndex="{pageIndex}" Pages="{pages}" ux:Name="pc" Transition="None">
+			<NavigationMotion GotoDuration="0"/>
+			<Page ux:Template="any">
+				<Text Value="{desc}"/>
+			</Page>
+			<Page ux:Template="alter">
+				<Text Value="{desc}"/>
+			</Page>
+		</PageControl>
+	</WhileTrue>
+
+	<FuseTest.Invoke Handler="{goto1}" ux:Name="goto1"/>
+</Panel>

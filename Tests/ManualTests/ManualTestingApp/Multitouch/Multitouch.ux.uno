@@ -43,7 +43,7 @@ public partial class Multitouch
 		}
 	}
 
-	void AddToucheCircle()
+	void AddTouchCircle()
 	{
 		var t = new TouchCircle();
 		t.Label.Value = _touchCircles.Count.ToString();
@@ -54,8 +54,8 @@ public partial class Multitouch
 
 	void OnPointerPressed(object sender, PointerPressedArgs args)
 	{
-		if (args.PointIndex >= _touchCircles.Count)
-			AddToucheCircle();
+		while (args.PointIndex >= _touchCircles.Count)
+			AddTouchCircle();
 
 		var t = _touchCircles[args.PointIndex];
 		if (args.TryHardCapture(t, new LostCaptureCallback(this, args.PointIndex).LostCapture))
@@ -68,12 +68,18 @@ public partial class Multitouch
 
 	void OnPointerMoved(object sender, PointerMovedArgs args)
 	{
+		if (args.PointIndex >= _down.Count)
+			return;
+			
 		if (_down[args.PointIndex])
 			UpdatePos(args);
 	}
 
 	void OnPointerReleased(object sender, PointerReleasedArgs args)
 	{
+		if (args.PointIndex >= _down.Count)
+			return;
+			
 		_down[args.PointIndex] = false;
 		_touchCircles[args.PointIndex].IsActive.Value = false;
 		args.ReleaseCapture(_touchCircles[args.PointIndex]);

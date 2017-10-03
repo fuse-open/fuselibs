@@ -630,50 +630,85 @@ namespace Fuse.Navigation.Test
 		{
 			var p = new UX.Navigator.Pages();
 			p.theNav._testInterceptGoto = TestInterceptGoto;
+			ResetInterceptGoto();
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
 				root.StepFrameJS();
-				Assert.AreEqual( "one", _lastPath );
+				Assert.AreEqual( "one", _lastPage.Path );
 				Assert.AreEqual( NavigationGotoMode.Transition, _lastGotoMode );
 				Assert.AreEqual( RoutingOperation.Goto, _lastOperation );
 				Assert.AreEqual( "dog", p.one.v.Value );
 				
 				p.callPushTwo.Perform();
 				root.StepFrameJS();
-				Assert.AreEqual( "two", _lastPath );
+				Assert.AreEqual( "two", _lastPage.Path );
 				Assert.AreEqual( RoutingOperation.Push, _lastOperation );
 				Assert.AreEqual( "cat", p.two.v.Value );
 				
 				p.callGoBack.Perform();
 				root.StepFrameJS();
-				Assert.AreEqual( "one", _lastPath );
+				Assert.AreEqual( "one", _lastPage.Path );
 				Assert.AreEqual( RoutingOperation.Pop, _lastOperation );
 				Assert.AreEqual( "dog", p.one.v.Value );
 				
 				p.callReplaceThree.Perform();
 				root.StepFrameJS();
-				Assert.AreEqual( "three", _lastPath );
+				Assert.AreEqual( "three", _lastPage.Path );
 				Assert.AreEqual( RoutingOperation.Replace, _lastOperation );
 				Assert.AreEqual( "weasel", p.three.v.Value );
 				
 				p.callGoBack.Perform();
 				root.StepFrameJS();
-				Assert.AreEqual( null, _lastPath );
+				Assert.AreEqual( null, _lastPage.Path );
 				Assert.AreEqual( RoutingOperation.Pop, _lastOperation );
 			}
 		}
 		
-		string _lastPath, _lastParameter, _lastOperationStyle;
+		[Test]
+		public void PagesInert()
+		{
+			var p = new UX.Navigator.PagesInert();
+			p.theNav._testInterceptGoto = TestInterceptGoto;
+			ResetInterceptGoto();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				root.StepFrameJS();
+				Assert.AreEqual( "two", _lastPage.Path );
+				Assert.AreEqual( NavigationGotoMode.Transition, _lastGotoMode );
+				Assert.AreEqual( RoutingOperation.Goto, _lastOperation );
+				
+				ResetInterceptGoto();
+				p.callReplace.Perform();
+				root.StepFrameJS();
+				//We ideally want NoChange here, but a limitation in the binding engine prevents it:
+				//replacing the items in an observable with the same ones results in new Uno side objects
+				//there's no way to tell something hasn't changed
+				Assert.AreEqual( RoutingResult.MinorChange, _lastResult );
+				//Assert.AreEqual( RoutingResult.NoChange, _lastResult );
+				
+				//thus not much point in testing more now since you can't have inert changes :(
+			}
+		}
+		
+		RouterPage _lastPage;
+		string _lastOperationStyle;
 		NavigationGotoMode _lastGotoMode;
 		RoutingOperation _lastOperation;
-		void TestInterceptGoto(string path, string parameter, NavigationGotoMode gotoMode,
-			RoutingOperation operation, string operationStyle)
+		RoutingResult _lastResult;
+		void TestInterceptGoto(RouterPage page, NavigationGotoMode gotoMode,
+			RoutingOperation operation, string operationStyle, RoutingResult result)
 		{
-			_lastPath = path;
-			_lastParameter = parameter;
+			_lastPage = page;
 			_lastGotoMode = gotoMode;
 			_lastOperation = operation;
 			_lastOperationStyle = operationStyle;
+			_lastResult = result;
+		}
+		
+		void ResetInterceptGoto()
+		{
+			_lastPage = null;
+			_lastOperationStyle = null;
 		}
 			
 		List<T> GetChildren<T>(Visual n) where T : Node

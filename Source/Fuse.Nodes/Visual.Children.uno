@@ -67,7 +67,7 @@ namespace Fuse
 		{
 			// Has to use use safe iterator, ref discussion on https://github.com/fusetools/fuselibs-public/pull/260
 			foreach (var c in Children) 
-				if (c is T) Children_Remove(c);
+				if (c is T) Remove(c);
 		}
 
 		[UXPrimary]
