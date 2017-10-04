@@ -4,8 +4,8 @@
 		"Fuse",
 		"FuseJS"
 	],
+	"IsTransitive" : true,
 	"Includes": [
-		"_$filename$_/**.js:Bundle",
 		"*"
 	]
 }

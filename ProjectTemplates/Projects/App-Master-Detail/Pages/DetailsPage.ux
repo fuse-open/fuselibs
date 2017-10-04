@@ -1,0 +1,11 @@
+<Page ux:Class="_$filename$_.DetailsPage">
+	<JavaScript File="DetailsPage.js" />
+	<DockPanel>
+		<Text Value="{Read description}" Alignment="Center" />
+		<iOS>
+			<_$filename$_.SimpleButton Margin="4" Label="Go back" Dock="Bottom">
+				<Tapped Handler="{goBack}" />
+			</_$filename$_.SimpleButton>
+		</iOS>
+	</DockPanel>
+</Page>

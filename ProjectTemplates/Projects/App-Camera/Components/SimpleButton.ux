@@ -1,0 +1,8 @@
+<Rectangle ux:Class="_$filename$_.SimpleButton" Color="White" Padding="8" Label="Button">
+	<string ux:Property="Label" />
+	<Stroke Color="Black" />
+	<Text Value="{ReadProperty Label}" Alignment="Center" />
+	<WhilePressed>
+		<Scale Factor="0.98" />
+	</WhilePressed>
+</Rectangle>

@@ -5,7 +5,6 @@
 		"FuseJS"
 	],
 	"Includes": [
-		"_$filename$_/**.js:Bundle",
 		"*"
 	]
 }
