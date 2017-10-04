@@ -75,10 +75,12 @@ namespace Fuse
 		void Children_Clear()
 		{
 			Children_Invalidate();
-			
-			for (var c = _firstChild; c != null; c = c._nextSibling)
+
+			Node nextSibling;
+			for (var c = _firstChild; c != null; c = nextSibling)
 			{
 				Children_MakeOrphan(c);
+				nextSibling = c._nextSibling;
 				c._nextSibling = null;
 				c._previousSibling = (Node)null;
 			}
