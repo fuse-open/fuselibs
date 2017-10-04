@@ -10,7 +10,7 @@ namespace Fuse.ImageTools.Test
 	class ImageToolsTestUtils
 	{
 		public const string TmpTestImage = "tmpTestImg";
-		
+
 		public static Image LoadFromBundle(string path)
 		{
 			var bytes = LoadBytesFromBundle(path);

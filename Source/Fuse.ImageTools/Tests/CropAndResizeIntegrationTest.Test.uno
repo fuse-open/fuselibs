@@ -136,7 +136,7 @@ namespace Fuse.ImageTools.Test
 			if(!ImageToolsTestUtils.TryGetBundleFile(path, out bundleFile))
 				Assert.Fail("File Not Found");
 			var bytes = bundleFile.ReadAllBytes();
-			var tmpPath = ImageToolsTestUtils.TmpTestImage + "." + extension;
+			var tmpPath = ImageToolsTestUtils.RandomFile() + "." + extension;
 			File.WriteAllBytes(tmpPath, bytes);
 			TestImageResize(tmpPath, desiredWidth, desiredHeight, resizeMode, expectedWidth, expectedHeight, inPlace);
 		}
@@ -162,7 +162,7 @@ namespace Fuse.ImageTools.Test
 			if(!ImageToolsTestUtils.TryGetBundleFile(path, out bundleFile))
 				Assert.Fail("File Not Found");
 			var bytes = bundleFile.ReadAllBytes();
-			var tmpPath = ImageToolsTestUtils.TmpTestImage + "." + extension;
+			var tmpPath = ImageToolsTestUtils.RandomFile() + "." + extension;
 			File.WriteAllBytes(tmpPath, bytes);
 			TestImageCrop(tmpPath, x, y, width, height, inPlace);
 		}

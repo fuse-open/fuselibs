@@ -1,6 +1,5 @@
 {
-  "Packages": [
-    "Fuse",
+  "Packages": [    
     "FuseJS",
     "Uno.Testing",
     "Fuse.ImageTools"

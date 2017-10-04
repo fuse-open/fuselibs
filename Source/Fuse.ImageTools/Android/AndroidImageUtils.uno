@@ -69,8 +69,8 @@ namespace Fuse.ImageTools
 		{
 			sbyte[] sbytes = new sbyte[bytes.Length];
 			for(var i = 0; i<bytes.Length; i++)
-				sbytes[i] = (sbyte) bytes[i];				
-			GetImageFromBufferSync(sbytes);
+				sbytes[i] = (sbyte) bytes[i];
+			return GetImageFromBufferSync(sbytes);
 		}
 
 		[Foreign(Language.Java)]

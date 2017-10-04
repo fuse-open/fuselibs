@@ -34,6 +34,13 @@ namespace DotNetNative
 		public extern static ImageFormat Png { get; }
 	}
 
+	[DotNetType("System.Drawing.ImageFormatConverter")]
+	extern(DOTNET) internal class ImageFormatConverter
+	{
+		public extern ImageFormatConverter();				
+		public extern string ConvertToString(object value);
+	}
+
 	[DotNetType("System.IO.Path")]
 	extern(DOTNET) internal class Path
 	{

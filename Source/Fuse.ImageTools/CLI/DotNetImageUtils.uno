@@ -10,7 +10,6 @@ namespace Fuse.ImageTools
 
 	extern (DOTNET) internal class DotNetImageUtils
 	{
-		private const string default_extension = "jpg";
 
 		public static void GetImageFromBase64(string b64, Action<string> onSuccess, Action<string> onFail)
 		{
@@ -21,7 +20,7 @@ namespace Fuse.ImageTools
 				var stream = new MemoryStream(asBytes);
 				DotNetImage outImage = DotNetImage.FromStream(stream);
 
-				var path = TemporaryPath(default_extension);
+				var path = TemporaryPath(ImageFormat.Png);
 				outImage.Save(path);
 				onSuccess(path);
 			} catch (Exception e)
@@ -149,7 +148,7 @@ namespace Fuse.ImageTools
 					}
 
 					var lowerCaseType = Uno.IO.Path.GetExtension(path).ToLower();
-					ImageFormat fmt = CompressFormatFromOptions(lowerCaseType);
+					ImageFormat fmt = CompressFormatFromExtension(lowerCaseType);
 
 					if(inPlace)
 					{
@@ -157,7 +156,7 @@ namespace Fuse.ImageTools
 						onSuccess(path);
 					} else
 					{
-						var newPath = TemporaryPath(lowerCaseType);
+						var newPath = TemporaryPath(fmt);
 						resultBitmap.Save(newPath, fmt);
 						onSuccess(newPath);
 					}
@@ -182,7 +181,7 @@ namespace Fuse.ImageTools
 					croppedImage = bitmap.Clone(cropRect, (PixelFormat)bitmap.PixelFormat);
 
 					var lowerCaseType = Uno.IO.Path.GetExtension(path).ToLower();
-					ImageFormat fmt = CompressFormatFromOptions(lowerCaseType);
+					ImageFormat fmt = CompressFormatFromExtension(lowerCaseType);
 
 					if(inPlace)
 					{
@@ -190,7 +189,7 @@ namespace Fuse.ImageTools
 						onSuccess(path);
 					} else
 					{
-						var newPath = TemporaryPath(lowerCaseType);
+						var newPath = TemporaryPath(fmt);
 						croppedImage.Save(newPath, fmt);
 						onSuccess(newPath);
 					}
@@ -228,7 +227,7 @@ namespace Fuse.ImageTools
 			}
 		}
 
-		public static ImageFormat CompressFormatFromOptions(string lowerCaseType)
+		public static ImageFormat CompressFormatFromExtension(string lowerCaseType)
 		{
 			if( lowerCaseType.Contains("jpeg") || lowerCaseType.Contains("jpg") )
 			{
@@ -242,20 +241,21 @@ namespace Fuse.ImageTools
 			}
 		}
 
-		static string TemporaryPath(string extension)
+		static string TemporaryPath(ImageFormat imageFormat)
 		{
+			var extension = new ImageFormatConverter().ConvertToString(imageFormat);
 			var dir = DotNetNative.Path.GetTempPath ();
 			var path = DotNetNative.Path.ChangeExtension(dir + DotNetNative.Path.GetRandomFileName(), extension);
 			return path;
 		}
 
-		static string GetContentTypeForImageData(byte[] bytes) {
+		static ImageFormat GetContentTypeForImageData(byte[] bytes) {
 				int c = bytes[0];
 				switch (c) {
 					case 0xFF:
-							return "jpg";
+							return ImageFormat.Jpeg;
 					case 0x89:
-							return "png";
+							return ImageFormat.Png;
 					default:
 							return null;
 				}
