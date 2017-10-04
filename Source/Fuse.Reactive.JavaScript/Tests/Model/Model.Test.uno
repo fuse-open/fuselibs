@@ -249,7 +249,7 @@ namespace Fuse.Reactive.Test
 		}
 
 		[Test]
-		public void Multi()
+		public void MultiBasic()
 		{
 			var e = new UX.Model.Multi();
 			using (var root = TestRootPanel.CreateWithChild(e))

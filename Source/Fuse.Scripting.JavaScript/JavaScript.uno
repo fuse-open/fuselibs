@@ -34,7 +34,6 @@ namespace Fuse.Reactive
 			if (Worker == null)
 			{
 				Worker = new Fuse.Scripting.JavaScript.ThreadWorker();
-				Fuse.Scripting.ScriptModule.AddMagicPath(".uno/fusejs/", TransformModel);
 			}
 			_nameTable = nameTable;
 			_scriptModule = new Fuse.Scripting.JavaScript.RootableScriptModule(Worker, nameTable);
@@ -42,11 +41,14 @@ namespace Fuse.Reactive
 
 		protected override void OnRooted()
 		{
-			SetupModel();
-
 			base.OnRooted();
 			_javaScriptCounter++;
-			SubscribeToDependenciesAndDispatchEvaluate();
+			//for migration we could preserve the _moduleInstance across rooting
+			if (_moduleInstance == null || !_moduleInstance.ReflectExports())
+				SubscribeToDependenciesAndDispatchEvaluate();
+				
+			//must be explicit set each time to preserve
+			_preserveModuleInstance = false;
 		}
 
 		protected override void OnUnrooted()
