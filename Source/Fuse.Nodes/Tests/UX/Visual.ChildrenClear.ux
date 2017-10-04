@@ -1,0 +1,7 @@
+<Panel ux:Class="UX.Visual.ChildrenClear">
+	<Panel ux:Name="ParentA">
+		<Panel ux:Name="ChildA" />
+		<Panel ux:Name="ChildB" />
+	</Panel>
+	<Panel ux:Name="ParentB" />
+</Panel>
