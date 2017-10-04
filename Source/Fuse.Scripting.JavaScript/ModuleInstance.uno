@@ -41,10 +41,17 @@ namespace Fuse.Scripting.JavaScript
 			}
 
 			_js.ScriptModule.Dependencies = deps;
-			_dc = ctx.Reflect(context, EvaluateExports(ctx));
+			EvaluateModule();
+			ReflectExportsJS();
+		}
+
+		void ReflectExportsJS(Scripting.Context context)
+		{
+			_dc = ((JSContext)context).Reflect(context, _moduleResult == null ? null : _moduleResult.Object["exports"] );
 			UpdateManager.PostAction(SetDataContext);
 		}
 
+		//argument for PostAction callback
 		object _dc;
 
 		// UI thread
@@ -52,6 +59,15 @@ namespace Fuse.Scripting.JavaScript
 		{
 			if (_moduleResult != null) // don't do this if we were disposed in the mean time
 				_js.SetDataContext(_dc);
+		}
+
+		internal bool ReflectExports()
+		{
+			if (_moduleResult == null)
+				return false;
+
+			_worker.Invoke(ReflectExportsJS);
+			return true;
 		}
 
 		ModuleResult _moduleResult;
@@ -65,16 +81,6 @@ namespace Fuse.Scripting.JavaScript
 				_moduleResult.Dispose();
 				_moduleResult = null;
 			}
-		}
-
-		object EvaluateExports(Scripting.Context context)
-		{
-			EvaluateModule(context);
-
-			if (_moduleResult != null)
-				return _moduleResult.Object["exports"];
-
-			return null;
 		}
 
 		static object _resetHookMutex = new object();
