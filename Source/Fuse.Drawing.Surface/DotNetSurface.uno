@@ -156,8 +156,6 @@ namespace Fuse.Drawing
 			var actualPath = (DotNetCanvasPath)path;
 
 			var graphicsPath = actualPath.Path.GetGraphicsPath();
-			if (DotNetHelpers.IsEmptyPath(graphicsPath))
-				return;
 
 			bool eoFill = actualPath.FillRule == FillRule.EvenOdd;
 			// set the path filling mode
@@ -229,8 +227,6 @@ namespace Fuse.Drawing
 			var actualPath = (DotNetCanvasPath)path;
 
 			var graphicsPath = actualPath.Path.GetGraphicsPath();
-			if (DotNetHelpers.IsEmptyPath(graphicsPath))
-				return;
 
 			bool eoFill = actualPath.FillRule == FillRule.EvenOdd;
 			// set the path filling mode
@@ -288,8 +284,9 @@ namespace Fuse.Drawing
 				var tileSize = imageSize * _pixelsPerPoint * scale;
 				var pixelOrigin = origin * _pixelsPerPoint;
 
-				var tileSizeX = (int)tileSize.X;
-				var tileSizeY = (int)tileSize.Y;
+				var tileSizeX = Math.Max((int)tileSize.X, 1);
+				var tileSizeY = Math.Max((int)tileSize.Y, 1);
+
 				var tuple = Tuple.Create(fill, tileSizeX, tileSizeY);
 				Bitmap newImage;
 
@@ -572,11 +569,6 @@ namespace Fuse.Drawing
 				buffer
 			);
 			return;
-		}
-
-		public static extern bool IsEmptyPath(GraphicsPath path)
-		{
-			return path.GetBounds().Width == 0 && path.GetBounds().Height == 0;
 		}
 
 		public static extern void SetEOFill(GraphicsPath path, bool eoFill)
@@ -902,7 +894,9 @@ namespace Fuse.Drawing
 			if (bounds.IsEmpty)
 				return;
 
-			var newImage = new Bitmap(image, (int)tileSizeX, (int)tileSizeY);
+			int bitmapSizeX = Math.Max((int)tileSizeX, 1);
+			int bitmapSizeY = Math.Max((int)tileSizeY, 1);
+			var newImage = new Bitmap(image, bitmapSizeX, bitmapSizeY);
 
 			var brush = new TextureBrush(newImage, DotNetWrapMode.Tile);
 			brush.ScaleTransform(1, -1);
