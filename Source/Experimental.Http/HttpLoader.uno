@@ -57,23 +57,5 @@ namespace Experimental.Http
 			bl.Cache = _cache;
 			bl.Initiate();
 		}
-		
-		public static void LoadText(string requestUri, Action<HttpResponseHeader,String> callback,
-			Action<string> error)
-		{
-			if (callback == null)
-				throw new Exception( "LoadBinary requires callback action" );
-			if (error == null)
-				throw new Exception( "LoadBinary requires error action" );
-				
-			var bl = new TextLoader();
-			bl.Uri = requestUri;
-			bl.Method = "GET";
-			bl.Callback = callback;
-			bl.ErrorCallback = error;
-			bl.Cache = _cache;
-			bl.Initiate();
-		}
-		
 	}
 }

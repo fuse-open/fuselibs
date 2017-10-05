@@ -21,7 +21,6 @@
     "ICache.uno:Source",
     "Internal/DateUtil.uno:Source",
     "Loader.uno:Source",
-    "RecordFile.uno:Source",
-    "TextLoader.uno:Source"
+    "RecordFile.uno:Source"
   ]
 }
