@@ -8,6 +8,7 @@ using Uno;
 namespace Fuse.Internal
 {
 	[ForeignInclude(Language.ObjC, "CoreText/CoreText.h")]
+	[Require("Xcode.Framework", "CoreText")]
 	extern(iOS) static class iOSSystemFont
 	{
 		static HashSet<string> _families;
