@@ -6,59 +6,31 @@ describe("FuseJS/DI", function() {
     var DI = null;
     beforeEach(function() {
         DI = GlobalDI.createContainer();
-    })
-
-    it('evaluates transient dependencies every time they are injected', function() {
-        var i = 0;
-        function factory() { return i++; }
-        DI.provideTransient("foo", factory);
-        
-        assert.strictEqual(DI("foo"), 0);
-        assert.strictEqual(DI("foo"), 1);
     });
 
-    it('only evaluates lazy dependencies once', function() {
-        var i = 0;
-        function factory() { return ++i; }
-        DI.provideLazy("foo", factory);
+	it("only accepts string or object", function() {
+		[1, NaN, undefined, null, Infinity].forEach(function(v) {
+			assert.throws(function() { DI(v) })
+		})
+	});
 
-        assert.strictEqual(DI("foo"), 1);
-        assert.strictEqual(DI("foo"), 1);
-    });
+	it("can inject from prototype", function() {
+		DI(Object.create({ foo: "bar" }));
+		assert.strictEqual(DI("foo"), "bar");
+	});
 
-    it('throws if a dependency cannot be satisfied', function() {
-        assert.throws(function() {
-            DI("bazujiuofsd");
-        });
-    });
+	it("evaluates dependencies on demand", function() {
+		function Foo() {
+			this.i = 0;
+		}
+		Object.defineProperty(Foo.prototype, "bar", {
+			get: function() { return this.i++; }
+		});
 
-    it('can inject undefined', function() {
-        DI.provide("foo", undefined);
-        assert.doesNotThrow(function() {
-            assert.strictEqual(DI("foo"), undefined);
-        })
-    });
+		DI(new Foo());
 
-    describe('#wrap()', function() {
-        function unwrapped(a, b, c) {
-            return [a,b,c];
-        }
-        var wrapped;
-
-        beforeEach(function() {
-            DI = GlobalDI.createContainer();
-            wrapped = DI.wrap(unwrapped);
-        })
-
-        it('does not override explicitly provided dependencies', function() {
-            DI.provide({
-                a: "injected",
-                b: "injected",
-                c: "injected"
-            });
-
-            let result = wrapped("provided", undefined, null);
-            assert.deepStrictEqual(["provided", "injected", null], result);
-        })
-    });
+		assert.strictEqual(DI("bar"), 0);
+		assert.strictEqual(DI("bar"), 1);
+		assert.strictEqual(DI("bar"), 2);
+	});
 });
