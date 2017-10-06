@@ -103,5 +103,21 @@ namespace Fuse.Test
 				Assert.IsTrue(p.B.HitTestBounds.IsEmpty);
 			}
 		}
+
+		[Test]
+		public void ChildrenClear()
+		{
+			var p = new UX.Visual.ChildrenClear();
+			using (var r = TestRootPanel.CreateWithChild(p))
+			{
+				Assert.AreEqual(2, p.ParentA.Children.Count);
+				p.ParentA.Children.Clear();
+				Assert.AreEqual(0, p.ParentA.Children.Count);
+
+				p.ParentB.Children.Add(p.ChildA);
+				p.ParentB.Children.Add(p.ChildB);
+				Assert.AreEqual(2, p.ParentB.Children.Count);
+			}
+		}
 	}
 }
