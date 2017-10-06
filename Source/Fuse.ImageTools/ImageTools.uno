@@ -89,15 +89,15 @@ namespace Fuse.ImageTools
 		/**
 			@scriptmethod getImageFromBuffer(imageData)
 			@param imageData (ArrayBuffer) The image data
-			@return (Promise) a Promise of a file path
+			@return (Promise) a Promise of an Image
 
 			Creates a new temporary image file from an ArrayBuffer of image data.
 
 			## Example
 
 				var ImageTools = require("FuseJS/ImageTools");
-				ImageTool.imageData(existingBuffer).
-					then(function (path) { console.log("Scratch image path is: " + path); });
+				ImageTools.getImageFromBuffer(imageData).
+					then(function (image) { console.log("Scratch image path is: " + image.path); });
 		*/
 		Future<Image> ImageFromBufferInterface(object[] args)
 		{
