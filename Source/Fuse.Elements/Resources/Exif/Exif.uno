@@ -83,8 +83,7 @@ namespace Fuse.Resources.Exif
 
 		internal static ExifData FromByteArray(byte[] bytes)
 		{
-			var memStream = new MemoryStream(bytes);
-			var img = Image.FromStream(memStream);
+			var img = Image.FromStream(new MemoryStream(bytes));
 			return new ExifData(GetOrientation(img));
 		}
 
