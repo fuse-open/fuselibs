@@ -87,7 +87,6 @@
     "Resources/MultiDensityImageSource.uno:Source",
     "Resources/ProxyImageSource.uno:Source",
     "Resources/TextureImageSource.uno:Source",
-    "Resources/Exif/Exif.uno",
     "Transforms.uno:Source",
     "Triggers/Actions/BringIntoView.uno:Source",
     "Triggers/LayoutAnimation.uno:Source",
