@@ -127,6 +127,8 @@ namespace Fuse.Controls.VideoImpl
 			ResetTriggers();
 			BusyTask.SetBusy(Control, ref _busyTask, BusyTaskActivity.None);
 
+			Control.OnDurationChanged();
+
 			if (_playbackTarget == PlaybackTarget.Playing)
 				((IPlayback)this).Resume();
 			else if (_playbackTarget == PlaybackTarget.Paused)

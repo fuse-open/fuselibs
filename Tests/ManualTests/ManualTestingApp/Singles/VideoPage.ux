@@ -37,7 +37,12 @@
 				</ProgressAnimation>
 
 			</Video>
-			<Text Dock="Bottom" Value="Duration: {duration}" />
+
+			<Grid Dock="Bottom" ColumnCount="3" Rows="Auto">
+				<Text Value="Position: {=floor({ReadProperty _video.Position})}" />
+				<Text Value="Property-Bound duration: {= {ReadProperty _video.Duration}}" />
+				<Text Value="Duration from JS: {duration}" />
+			</Grid>
 		</Panel>
 
 		<JavaScript File="VideoPage.js" />
