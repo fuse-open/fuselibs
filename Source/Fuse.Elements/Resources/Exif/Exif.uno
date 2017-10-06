@@ -4,6 +4,10 @@ using Uno.Compiler.ExportTargetInterop;
 
 namespace Fuse.Resources.Exif
 {
+	/** ImageOrientation is used to indicate the orientation of an image.
+		The enum describes a transformation containing a vertical flip (if the FlipVertical flag is active), and then a rotation (if one of the rotation flags is active).
+		Note that the flip should be applied before the rotation.
+	 */
 	[Flags]
 	public enum ImageOrientation
 	{
@@ -32,7 +36,6 @@ namespace Fuse.Resources.Exif
 
 		internal ExifData(int orientation)
 		{
-			//This is based on the vertical flip being applied before the rotation
 			switch (orientation)
 			{
 				case 0: Orientation = ImageOrientation.Identity; break; //Exif orientation is undefined
