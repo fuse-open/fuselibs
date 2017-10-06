@@ -38,11 +38,11 @@
 
 			</Video>
 
-			<Grid Dock="Bottom" ColumnCount="3" Rows="Auto">
+			<StackPanel Dock="Bottom">
 				<Text Value="Position: {=floor({ReadProperty _video.Position})}" />
 				<Text Value="Property-Bound duration: {= {ReadProperty _video.Duration}}" />
 				<Text Value="Duration from JS: {duration}" />
-			</Grid>
+			</StackPanel>
 		</Panel>
 
 		<JavaScript File="VideoPage.js" />
