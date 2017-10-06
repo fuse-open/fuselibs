@@ -64,19 +64,24 @@ namespace Fuse
 			return double.TryParse(s, out res);
 		}
 
+		static float4 ToFloat4(float3 f)
+		{
+			return float4(f.X, f.Y, f.Z, 1.0f);
+		}
+
+		static float4 ToFloat4(float2 f)
+		{
+			return float4(f.X, f.Y, f.X, f.Y);
+		}
+
 		public static float4 ToFloat4(object o)
 		{
-			if (o is float4) return (float4)o;
+			if (o is float4)
+				return (float4)o;
 			else if (o is float3)
-			{
-				var f = (float3)o;
-				return float4(f.X, f.Y, f.Z, 1.0f);
-			}
+				return ToFloat4((float3)o);
 			else if (o is float2)
-			{
-				var f = (float2)o;
-				return float4(f.X, f.Y, f.X, f.Y);
-			}
+				return ToFloat4((float2)o);
 			else if (o is string)
 			{
 				var s = (string)o;
