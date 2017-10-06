@@ -114,7 +114,16 @@ namespace Fuse
 				var y = a.Length > 1 ? ToFloat(a[1]) : 0.0f;
 				var z = a.Length > 2 ? ToFloat(a[2]) : 0.0f;
 				var w = a.Length > 3 ? ToFloat(a[3]) : 1.0f;
-				return float4(x,y,z,w);
+
+				switch (a.Length)
+				{
+					case 0: return default(float4);
+					case 1: return ToFloat4(x);
+					case 2: return ToFloat4(float2(x, y));
+					case 3: return ToFloat4(float3(x, y, z));
+					default:
+						return float4(x, y, z, w);
+				}
 			}
 
 			double d;

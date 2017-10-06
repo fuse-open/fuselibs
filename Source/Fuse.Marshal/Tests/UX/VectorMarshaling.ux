@@ -1,0 +1,10 @@
+<Panel ux:Class="UX.VectorMarshalling">
+	<Panel ux:Name="Literal1" Margin="1" />
+	<Panel ux:Name="Literal2" Margin="1, 2" />
+	<Panel ux:Name="Literal4" Margin="1, 2, 3, 4" />
+
+	<float ux:Global="One" ux:Value="1" />
+	<Panel ux:Name="Constant1" Margin="1 * One" />
+	<Panel ux:Name="Constant2" Margin="1 * One, 2 * One" />
+	<Panel ux:Name="Constant4" Margin="1 * One, 2 * One, 3 * One, 4 * One" />
+</Panel>

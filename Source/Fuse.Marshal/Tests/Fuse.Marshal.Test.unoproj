@@ -1,11 +1,6 @@
 {
   "Packages": [
-    "Fuse.Marshal",
-    "Fuse.Common",
-    "Uno.Collections",
-    "UnoCore",
-    "Uno.Testing",
-    "Uno.Threading"
+    "Fuse"
   ],
   "Projects": [
     "../../Fuse.Common/Tests/FuseTest/FuseTest.unoproj"

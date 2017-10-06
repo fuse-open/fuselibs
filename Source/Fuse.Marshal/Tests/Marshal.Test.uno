@@ -173,5 +173,21 @@ namespace Fuse
 			Assert.AreEqual(new Size(r.X, Unit.Unspecified), Marshal.ToSize(v));
 
 		}
+
+		[Test]
+		public void VectorMarshaling()
+		{
+			var p = new UX.VectorMarshalling();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				Assert.AreEqual(float4(1, 1, 1, 1), p.Literal1.Margin);
+				Assert.AreEqual(float4(1, 2, 1, 2), p.Literal2.Margin);
+				Assert.AreEqual(float4(1, 2, 3, 4), p.Literal4.Margin);
+
+				Assert.AreEqual(float4(1, 1, 1, 1), p.Constant1.Margin);
+				Assert.AreEqual(float4(1, 2, 1, 2), p.Constant2.Margin);
+				Assert.AreEqual(float4(1, 2, 3, 4), p.Constant4.Margin);
+			}
+		}
 	}
 }

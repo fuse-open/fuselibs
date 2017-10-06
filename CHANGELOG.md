@@ -12,6 +12,9 @@
 ## Video
 - Fixed bug in Video where playback actions, like `Play`, used before the video was initialized would end up getting swallowed.
 
+## Fuse.Marshal:
+- Fixed a bug where UX expressions that produce two component floats did not expand to four compoent floats the same same way as literals did.
+
 ## Fuse.Reactive framework changes (Uno-level)
 - These are breaking changes, but very unlikely to affect your app:
  * The `DataBinding`, `EventBinding` and `ExpressionBinding` class constructors no longer take a `NameTable` argument.
