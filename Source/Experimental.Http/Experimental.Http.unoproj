@@ -15,13 +15,7 @@
   ],
   "Includes": [
     "BinaryLoader.uno:Source",
-    "DiskCache.uno:Source",
     "HttpLoader.uno:Source",
-    "HttpResponseHeader.uno:Source",
-    "ICache.uno:Source",
-    "Internal/DateUtil.uno:Source",
-    "Loader.uno:Source",
-    "RecordFile.uno:Source",
-    "TextLoader.uno:Source"
+    "HttpResponseHeader.uno:Source"
   ]
 }

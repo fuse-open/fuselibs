@@ -207,8 +207,6 @@ namespace Fuse.Resources
 		{
 			Cleanup(CleanupReason.Failed);
 			OnError(msg, e);
-			//avoid caching broken stuff (mortoray: this is mainly because we fail to load often, http errors)
-			HttpLoader.Discard(_url);
 		}
 	}
 }
