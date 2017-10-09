@@ -57,12 +57,13 @@ namespace Fuse.Controls.VideoImpl
 
 		enum PlaybackTarget
 		{
+			Undefined,
 			Playing,
 			Paused,
 			Stopped
 		}
 
-		PlaybackTarget _playbackTarget = PlaybackTarget.Stopped;
+		PlaybackTarget _playbackTarget = PlaybackTarget.Undefined;
 
 		protected override void Attach()
 		{
