@@ -45,9 +45,6 @@ namespace Fuse.Controls
 			set { SetValue(value, this); }
 		}
 
-		DateTime _outValue = DateTime.UtcNow;
-		DateTime _inValue = DateTime.UtcNow;
-
 		public void SetValue(DateTime value, IPropertyListener origin)
 		{
 			var dpv = DatePickerView;
@@ -60,15 +57,7 @@ namespace Fuse.Controls
 
 		internal void OnValueChanged(IPropertyListener origin)
 		{
-			lock(this)
-				_outValue = Value;
 			OnPropertyChanged(_valueName, origin);
-		}
-
-		void UpdateValue()
-		{
-			lock(this)
-				Value = _inValue;
 		}
 
 		static Selector _minValueName = "MinValue";
@@ -89,9 +78,6 @@ namespace Fuse.Controls
 			set { SetMinValue(value, this); }
 		}
 
-		DateTime _outMinValue = DateTime.UtcNow;
-		DateTime _inMinValue = DateTime.UtcNow;
-
 		public void SetMinValue(DateTime value, IPropertyListener origin)
 		{
 			var dpv = DatePickerView;
@@ -104,15 +90,7 @@ namespace Fuse.Controls
 
 		internal void OnMinValueChanged(IPropertyListener origin)
 		{
-			lock(this)
-				_outMinValue = MinValue;
 			OnPropertyChanged(_minValueName, origin);
-		}
-
-		void UpdateMinValue()
-		{
-			lock(this)
-				MinValue = _inMinValue;
 		}
 
 		static Selector _maxValueName = "MaxValue";
@@ -133,9 +111,6 @@ namespace Fuse.Controls
 			set { SetMaxValue(value, this); }
 		}
 
-		DateTime _outMaxValue = DateTime.UtcNow;
-		DateTime _inMaxValue = DateTime.UtcNow;
-
 		public void SetMaxValue(DateTime value, IPropertyListener origin)
 		{
 			var dpv = DatePickerView;
@@ -148,15 +123,7 @@ namespace Fuse.Controls
 
 		internal void OnMaxValueChanged(IPropertyListener origin)
 		{
-			lock(this)
-				_outMaxValue = MaxValue;
 			OnPropertyChanged(_maxValueName, origin);
-		}
-
-		void UpdateMaxValue()
-		{
-			lock(this)
-				MaxValue = _inMaxValue;
 		}
 
 		IDatePickerView DatePickerView
@@ -181,13 +148,6 @@ namespace Fuse.Controls
 		protected override void OnRooted()
 		{
 			base.OnRooted();
-			_outValue = Value;
-			_inValue = Value;
-			_outMinValue = MinValue;
-			_inMinValue = MinValue;
-			_outMaxValue = MaxValue;
-			_inMaxValue = MaxValue;
-
 			UpdateManager.AddAction(PollViewValue);
 		}
 
