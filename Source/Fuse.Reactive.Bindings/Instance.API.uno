@@ -322,7 +322,7 @@ namespace Fuse.Reactive
 		
 		protected internal void OnItemsChanged()
 		{
-			if (!IsRootingCompleted) return;
+			if (!IsRootingStarted) return;
 
 			RefreshItems();
 		}
