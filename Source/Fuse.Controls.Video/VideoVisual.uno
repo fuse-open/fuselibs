@@ -130,12 +130,21 @@ namespace Fuse.Controls.VideoImpl
 
 			Control.OnDurationChanged();
 
-			if (_playbackTarget == PlaybackTarget.Playing)
-				((IPlayback)this).Resume();
-			else if (_playbackTarget == PlaybackTarget.Paused)
-				((IPlayback)this).Pause();
-			else if (_playbackTarget == PlaybackTarget.Stopped)
-				((IPlayback)this).Stop();
+			var playback = (IPlayback)this;
+			switch (_playbackTarget)
+			{
+				case PlaybackTarget.Playing:
+					playback.Resume();
+					break;
+
+				case PlaybackTarget.Paused:
+					playback.Pause();
+					break;
+
+				case PlaybackTarget.Stopped:
+					playback.Stop();
+					break;
+			}
 
 			_playbackTarget = PlaybackTarget.Undefined;
 		}
