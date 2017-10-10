@@ -76,6 +76,40 @@ namespace Fuse.Reactive
 
 			}
 
+			class SetExclusiveOperation
+			{
+				public SetExclusiveOperation(ThreadWorker worker, Scripting.Object obj, object newValue, int origin)
+				{
+					Worker = worker;
+					Object = obj;
+					NewValue = newValue;
+					Origin = origin;
+				}
+
+				readonly ThreadWorker Worker;
+				readonly Scripting.Object Object;
+				readonly object NewValue;
+				readonly int Origin;
+
+				public void Perform()
+				{
+					try
+					{
+						var newValue = Worker.Unwrap(NewValue);
+						Object.CallMethod("setValueWithOrigin", newValue, Origin);
+					}
+					catch (Scripting.ScriptException ex)
+					{
+						//This assumes the Observable.js code is not the source of the error and thus it must be
+						//user code causing the problem
+						if defined(FUSELIBS_NO_TOASTS)
+							SetDiagnostic(ex);
+						else
+							JavaScript.UserScriptError( "Failed to set Observable value", ex, this );
+					}
+				}
+			}
+
 			public void SetExclusive(object newValue)
 			{
 				ClearDiagnostic();
@@ -85,19 +119,31 @@ namespace Fuse.Reactive
 					Fuse.Diagnostics.InternalError( "Unexpected null object", this );
 					return;
 				}
-				
-				try
+
+				var op = new SetExclusiveOperation(_om._worker, _om.Object, newValue, _origin);
+				if (_om._worker.CanEvaluate)
+					op.Perform();
+				else
+					_om._worker.Invoke(op.Perform);
+			}
+
+			class ReplaceAllExclusiveOperation
+			{
+				public ReplaceAllExclusiveOperation(Scripting.Object obj, object newValue, int origin)
 				{
-					_om.Object.CallMethod("setValueWithOrigin", _om._worker.Unwrap(newValue), _origin);
+					Object = obj;
+					NewValue = newValue;
+					Origin = origin;
 				}
-				catch (Scripting.ScriptException ex)
+
+				Scripting.Object Object;
+				readonly object NewValue;
+				readonly int Origin;
+
+
+				public void Perform()
 				{
-					//This assumes the Observable.js code is not the source of the error and thus it must be
-					//user code causing the problem
-					if defined(FUSELIBS_NO_TOASTS)
-						SetDiagnostic(ex);
-					else
-						JavaScript.UserScriptError( "Failed to set Observable value", ex, this );
+					Object.CallMethod("replaceAllWithOrigin", NewValue, Origin);
 				}
 			}
 
@@ -107,15 +153,38 @@ namespace Fuse.Reactive
 				for (int i = 0; i < arr.Length; i++)
 					arr[i] = _om._worker.Unwrap(newValues[i]);
 
-				var sa = _om._worker.Context.NewArray(arr);
-
-				_om.Object.CallMethod("replaceAllWithOrigin", sa, _origin);
+				var op = new ReplaceAllExclusiveOperation(_om.Object, _om._worker.Context.NewArray(arr), _origin);
+				if (_om._worker.CanEvaluate)
+					op.Perform();
+				else
+					_om._worker.Invoke(op.Perform);
 			}
 
+			class ClearExclusiveOperation
+			{
+				public ClearExclusiveOperation(Scripting.Object obj, int origin)
+				{
+					Object = obj;
+					Origin = origin;
+				}
+
+				Scripting.Object Object;
+				readonly int Origin;
+
+
+				public void Perform()
+				{
+					Object.CallMethod("clear", Origin);
+				}
+			}
 
 			public void ClearExclusive()
 			{
-				_om.Object.CallMethod("clear", _origin);
+				var op = new ClearExclusiveOperation(_om.Object, _origin);
+				if (_om._worker.CanEvaluate)
+					op.Perform();
+				else
+					_om._worker.Invoke(op.Perform);
 			}
 
 			/**
