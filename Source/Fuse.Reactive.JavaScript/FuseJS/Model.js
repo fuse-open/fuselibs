@@ -169,18 +169,18 @@ function Model(stateFactory)
 			}
 		}
 
-		function runInZone(func, args) {
+		function runInZone(func) {
 			prepareZone();
-			return nodeZone.run(function() {
-				dirty();
-				var res = func.apply(state, args);
-				return res
-			})
+			return nodeZone.run(func);
 		}
 
 		function wrapFunction(func) {
 			var f = function() {
-				return runInZone(func, arguments);
+				var args = arguments;
+				return runInZone(function() {
+					dirty();
+					return func.apply(state, args);
+				});
 			}
 			f.__fuse_isWrapped = true;
 			return f;
