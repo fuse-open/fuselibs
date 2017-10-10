@@ -10,7 +10,7 @@
 		<p>Finally, press the "Log DateTime property" button and ensure the currently picked date is output to the console, and push the "Change DateTime property" button and ensure the time picked by both pickers matches 8th June 1984.</p>
 	</InfoStack>
 
-	<StackPanel ux:Class="MyClass">
+	<StackPanel ux:Class="DatePickerCustomComponent">
 		<Uno.DateTime ux:Property="DateTime" />
 
 		<JavaScript>
@@ -52,7 +52,7 @@
 			<Text>Placeholder area to hide native controls beneath info panel; scroll down for test view</Text>
 			<Panel Height="600" />
 
-			<MyClass DateTime="{someDate}" />
+			<DatePickerCustomComponent DateTime="{someDate}" />
 
 			<NativeViewHost>
 				<StackPanel>

@@ -1,0 +1,10 @@
+<Fuse.Controls.TimePickerBase ux:Class="Fuse.Controls.TimePicker" ux:Name="self">
+	<Panel ux:Template="GraphicsAppearance" Margin="4" Background="#eee" Padding="30">
+		<Text Value="GraphicsAppearance for TimePicker not implemented!" Alignment="Center" TextWrapping="Wrap" />
+		<Rectangle Layer="Background">
+			<Stroke Color="#000" />
+		</Rectangle>
+	</Panel>
+	<Fuse.Controls.Native.iOS.TimePickerView ux:Condition="iOS" ux:Template="iOSAppearance" Host="self" />
+	<Fuse.Controls.Native.Android.TimePickerView ux:Condition="Android" ux:Template="AndroidAppearance" Host="self" />
+</Fuse.Controls.TimePickerBase>

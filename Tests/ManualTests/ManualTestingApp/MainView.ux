@@ -144,12 +144,14 @@
 			<Android>
 				<WebViewPage/>
 				<DatePickerPage/>
+				<NativeTimePickerPage/>
 				<BackButtonView/>
 			</Android>
 			<iOS>
 				<MapViewPage/>
 				<WebViewPage/>
 				<DatePickerPage/>
+				<NativeTimePickerPage/>
 			</iOS>
 		</PageControl>
 		<BottomFrameBackground DockPanel.Dock="Bottom"/>

@@ -18,6 +18,7 @@
     "../Fuse.Controls.Panels/Fuse.Controls.Panels.unoproj",
     "../Fuse.Controls.Primitives/Fuse.Controls.Primitives.unoproj",
     "../Fuse.Controls.ScrollView/Fuse.Controls.ScrollView.unoproj",
+    "../Fuse.Controls.TimePicker/Fuse.Controls.TimePicker.unoproj",
     "../Fuse.Controls.Video/Fuse.Controls.Video.unoproj",
     "../Fuse.Controls.WebView/Fuse.Controls.WebView.unoproj",
     "../Fuse.Common/Fuse.Common.unoproj",

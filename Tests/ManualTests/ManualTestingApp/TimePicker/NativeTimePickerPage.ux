@@ -1,0 +1,72 @@
+<Page Title="TimePicker" ux:Class="NativeTimePickerPage">
+	<InfoStack ux:Key="Info">
+		<h2>Goal</h2>
+		<p>To test that native TimePickers work as expected.</p>
+		<h2>Instructions</h2>
+		<p>Below there should be two different TimePickers, both showing 10:11 AM.</p>
+		<p>First, push the "Change DateTime property" button and ensure the time picked by both pickers matches 17:34 (5:34 PM).</p>
+		<Android>
+			<p>Push the "toggle AM/PM" button a couple times and ensure that both pickers switch between AM/PM and 24 hour modes.</p>
+		</Android>
+		<p>Change the time in the first picker, wait for animations to settle, and make sure the value of the second picker changes to match the value of the first.</p>
+		<p>Then, change the value of the second picker, wait for animations to settle, and make sure the value of the first picker changes to match the value of the second.</p>
+	</InfoStack>
+
+	<StackPanel ux:Class="TimePickerCustomComponent">
+		<Uno.DateTime ux:Property="DateTime" />
+
+		<JavaScript>
+			var self = this;
+
+			module.exports = {
+				whoYouGonnaCall: function() {
+					self.DateTime.value = new Date(Date.parse("1984-06-08T17:34:56.000Z"));
+				}
+			};
+		</JavaScript>
+
+		<Button Text="Change DateTime property" Clicked="{whoYouGonnaCall}" Margin="5" />
+	</StackPanel>
+
+	<ScrollView>
+		<StackPanel>
+			<JavaScript>
+				var Observable = require("FuseJS/Observable");
+
+				var someTime = Observable(new Date(Date.parse("1970-01-01T10:11:12.000Z")));
+
+				var is24HourView = Observable(false);
+
+				someTime.onValueChanged(module, function(date) {
+					console.log("someTime changed in JS: " + JSON.stringify(date));
+				});
+
+				module.exports = {
+					someTime: someTime,
+
+					is24HourView: is24HourView,
+
+					toggleIs24HourView: function() {
+						is24HourView.value = !is24HourView.value;
+					}
+				};
+			</JavaScript>
+
+			<Text>Placeholder area to hide native controls beneath info panel; scroll down for test view</Text>
+			<Panel Height="600" />
+
+			<TimePickerCustomComponent DateTime="{someTime}" />
+
+			<Android>
+				<Button Text="Toggle AM/PM" Clicked="{toggleIs24HourView}" Margin="5" />
+			</Android>
+
+			<NativeViewHost>
+				<StackPanel>
+					<TimePicker Value="{someTime}" Is24HourView="{is24HourView}" />
+					<TimePicker Value="{someTime}" Is24HourView="{is24HourView}" />
+				</StackPanel>
+			</NativeViewHost>
+		</StackPanel>
+	</ScrollView>
+</Page>
