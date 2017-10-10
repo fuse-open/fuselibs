@@ -181,24 +181,11 @@ namespace Fuse.Controls.Native.Android
 
 			// setMinDate and setMaxDate take in milliseconds since midnight, January 1, 1970, _in getDefault()
 			//  time zone_, not necessarily UTC. To compensate for this, we need to offset the incoming
-			//  UTC-relative ticks by subtracting the difference between the default timezone-relative epoch
-			//  and the UTC-relative epoch.
+			//  UTC-relative ticks by subtracting the default time zone offset. Note that the time zone offset
+			//  actually depends on the incoming UTC time, as different dates will have different time offsets.
 
-			java.util.Calendar cal = java.util.Calendar.getInstance();
-
-			cal.set(java.util.Calendar.YEAR, 1970);
-			cal.set(java.util.Calendar.MONTH, 0); // Month starts at 0
-			cal.set(java.util.Calendar.DAY_OF_MONTH, 1);
-
-			cal.set(java.util.Calendar.AM_PM, java.util.Calendar.AM);
-			cal.set(java.util.Calendar.HOUR, 0);
-			cal.set(java.util.Calendar.MINUTE, 0);
-			cal.set(java.util.Calendar.SECOND, 0);
-			cal.set(java.util.Calendar.MILLISECOND, 0);
-
-			long timezoneRelativeEpochOffset = cal.getTimeInMillis();
-
-			long javaTicksInDefaultTimezone = msSince1970InUtc - timezoneRelativeEpochOffset;
+			long timezoneRelativeOffset = java.util.TimeZone.getDefault().getOffset(msSince1970InUtc);
+			long javaTicksInDefaultTimezone = msSince1970InUtc - timezoneRelativeOffset;
 
 			datePicker.setMinDate(javaTicksInDefaultTimezone);
 		@}
@@ -210,24 +197,11 @@ namespace Fuse.Controls.Native.Android
 
 			// setMinDate and setMaxDate take in milliseconds since midnight, January 1, 1970, _in getDefault()
 			//  time zone_, not necessarily UTC. To compensate for this, we need to offset the incoming
-			//  UTC-relative ticks by subtracting the difference between the default timezone-relative epoch
-			//  and the UTC-relative epoch.
+			//  UTC-relative ticks by subtracting the default time zone offset. Note that the time zone offset
+			//  actually depends on the incoming UTC time, as different dates will have different time offsets.
 
-			java.util.Calendar cal = java.util.Calendar.getInstance();
-
-			cal.set(java.util.Calendar.YEAR, 1970);
-			cal.set(java.util.Calendar.MONTH, 0); // Month starts at 0
-			cal.set(java.util.Calendar.DAY_OF_MONTH, 1);
-
-			cal.set(java.util.Calendar.AM_PM, java.util.Calendar.AM);
-			cal.set(java.util.Calendar.HOUR, 0);
-			cal.set(java.util.Calendar.MINUTE, 0);
-			cal.set(java.util.Calendar.SECOND, 0);
-			cal.set(java.util.Calendar.MILLISECOND, 0);
-
-			long timezoneRelativeEpochOffset = cal.getTimeInMillis();
-
-			long javaTicksInDefaultTimezone = msSince1970InUtc - timezoneRelativeEpochOffset;
+			long timezoneRelativeOffset = java.util.TimeZone.getDefault().getOffset(msSince1970InUtc);
+			long javaTicksInDefaultTimezone = msSince1970InUtc - timezoneRelativeOffset;
 
 			datePicker.setMaxDate(javaTicksInDefaultTimezone);
 		@}
