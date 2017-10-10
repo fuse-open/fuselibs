@@ -11,6 +11,8 @@
 
 ## Video
 - Fixed bug in Video where playback actions, like `Play`, used before the video was initialized would end up getting swallowed.
+- Added some JavaScript methods to `Video` to make it easier to control playback from JavaScript, as well as obtaining information the video duration.
+- Made `Video.Duration` and `Video.Position` property-bindable.
 
 ## Fuse.Reactive framework changes (Uno-level)
 - These are breaking changes, but very unlikely to affect your app:

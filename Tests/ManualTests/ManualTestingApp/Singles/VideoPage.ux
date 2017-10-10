@@ -37,7 +37,15 @@
 				</ProgressAnimation>
 
 			</Video>
+
+			<StackPanel Dock="Bottom">
+				<Text Value="Position: {=floor({ReadProperty _video.Position})}" />
+				<Text Value="Property-Bound duration: {= {ReadProperty _video.Duration}}" />
+				<Text Value="Duration from JS: {duration}" />
+			</StackPanel>
 		</Panel>
+
+		<JavaScript File="VideoPage.js" />
 
 		<StackPanel Dock="Bottom">
 
@@ -69,6 +77,11 @@
 				<StdButton ux:Name="_pauseButton" Text="Pause" Visibility="Hidden">
 					<Clicked><Pause Target="_video" /></Clicked>
 				</StdButton>
+
+				<StdButton Text="Resume JavaScript" Clicked="{resume}" />
+				<StdButton Text="Pause JavaScript" Clicked="{pause}" />
+				<StdButton Text="Stop JavaScript" Clicked="{stop}" />
+				<StdButton Text="Update Duration Text" Clicked="{updateDurationText}" />
 			</Grid>
 		</StackPanel>
 	</DockPanel>

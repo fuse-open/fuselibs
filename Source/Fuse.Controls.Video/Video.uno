@@ -122,7 +122,7 @@ namespace Fuse.Controls
 			</DockPanel>
 			
 	*/
-	public class Video : Panel, IMediaPlayback
+	public partial class Video : Panel, IMediaPlayback
 	{
 
 		VideoSource _source;
@@ -481,13 +481,24 @@ namespace Fuse.Controls
 			}
 		}
 
+		static Selector _positionName = "Position";
+		static Selector _durationName = "Duration";
 		static Selector _progressName = "Progress";
 
 		void OnProgressChanged(object sender, EventArgs args)
 		{
+			UpdateScriptClass(Duration);
+
+			OnPropertyChanged(_positionName);
 			OnPropertyChanged(_progressName);
+
 			if (ProgressChanged != null)
 				ProgressChanged(this, new ValueChangedArgs<double>(Progress));
+		}
+
+		internal void OnDurationChanged()
+		{
+			OnPropertyChanged(_durationName);
 		}
 
 		public void SetPlayback(IMediaPlayback playback)
