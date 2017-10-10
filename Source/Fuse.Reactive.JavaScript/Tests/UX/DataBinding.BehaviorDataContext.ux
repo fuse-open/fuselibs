@@ -10,7 +10,7 @@
 	        var searchMode = Observable(false);
 
 	        module.exports = {
-	            searchMode,
+	            searchMode: searchMode,
 	            foo: "bar",
 	            toggleSearch: function () {
 	                console.log("toggled");
