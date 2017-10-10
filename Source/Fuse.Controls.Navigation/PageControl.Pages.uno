@@ -13,7 +13,7 @@ namespace Fuse.Controls
 		{
 			PageControl PageControl;
 
-			public new void Attach( PageControl pageControl, IArray obs )
+			public void Attach( PageControl pageControl, IArray obs )
 			{
 				PageControl = pageControl;
 				base.Attach( obs );
