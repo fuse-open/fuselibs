@@ -37,8 +37,7 @@ namespace Fuse.Reactive.Bindings.Test
 		protected override void OnRooted()
 		{
 			base.OnRooted();
-			_items = new object[]{2,3};
-			OnItemsChanged();
+			SetItemsDerivedRooting( new object[]{2,3} );
 		}
 	}
 }
