@@ -136,6 +136,8 @@ namespace Fuse.Controls.VideoImpl
 				((IPlayback)this).Pause();
 			else if (_playbackTarget == PlaybackTarget.Stopped)
 				((IPlayback)this).Stop();
+
+			_playbackTarget = PlaybackTarget.Undefined;
 		}
 
 		void IVideoCallbacks.OnCompleted()
