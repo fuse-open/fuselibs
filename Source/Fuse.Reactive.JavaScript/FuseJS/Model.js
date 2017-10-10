@@ -14,7 +14,7 @@ function isThenable(thing) {
 		&& typeof thing.then === "function";
 }
 
-function Model(stateFactory)
+function Model(initialState, stateInitializer)
 {
 	var stateToMeta = new Map();
 	var idToMeta = new Map();
@@ -22,12 +22,12 @@ function Model(stateFactory)
 	var idEnumerator = 0;
 	var store = this;
 
-	instrument(null, this, stateFactory)
+	instrument(null, this, initialState, stateInitializer)
 
-	function instrument(parentMeta, node, state)
+	function instrument(parentMeta, node, state, stateInitializer)
 	{
-		if(state instanceof Function) {
-			state = runInZone(state, []);
+		if(stateInitializer instanceof Function) {
+			runInZone(stateInitializer);
 		}
 
 		var meta = stateToMeta.get(state);
