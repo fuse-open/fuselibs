@@ -1,45 +1,50 @@
+var Observable = require("FuseJS/Observable");
 
-/** Adapts the injected 'this' variable into <JavaScript> to a Fuse Model */
-function ViewModelAdapter(viewModule, view) {
+exports.adaptView = function(view, viewModule, model) {
 
-	var adapter = this;
-
-	// Dummy function to call to invoke change detection
-	// Will be replaced by the Model system	
-	adapter.__dirty = function() {}
-
-	var props = Object.getOwnPropertyDescriptors(view);
-	for (var p in props) {
-		if (props[p].enumerable) { continue; }
-		wrapProp(p);
+	// Dummy method to trigger change detection
+	model.__fuse_dirty = function() {}
+	function dirty() {
+		model.__fuse_dirty();
 	}
 
-	function wrapProp(p) {
-		var obs = view[p];
-		var privateProp = "__" + p;
-
-		obs.addSubscriber(propChanged);
+	function wrapProperty(key) {
+		var observable = view[key];
+		
+		function propChanged() {
+			dirty();
+		}
+		
+		observable.addSubscriber(propChanged);
 
 		viewModule.disposed.push(function() {
-			obs.removeSubscriber(propChanged);
+			observable.removeSubscriber(propChanged);
 		})
+		
+		var initialValue = model[key];
 
-		function propChanged() {
-			adapter[privateProp] = obs.value;
-			adapter.__dirty();
-		}
-
-		Object.defineProperty(adapter, p, {
+		Object.defineProperty(model, key, {
 			get: function() {
-				return adapter[privateProp];
+				return observable.value;
 			},
 			set: function(value) {
-				adapter[privateProp] = value;
-				adapter.__dirty();
-				obs.setValueExclusive(value, propChanged);
+				observable.setValueExclusive(value, propChanged);
+				dirty();
 			}
-		})
+		});
+		
+		if('_defaultValueCallback' in observable) {
+			observable._defaultValueCallback(initialValue);
+		}
+	}
+
+	var viewProps = Object.getOwnPropertyDescriptors(view);
+	for (var key in viewProps) {
+		if(key in model
+			&& !viewProps[key].enumerable
+			&& view[key] instanceof Observable)
+		{
+			wrapProperty(key);
+		}
 	}
 }
-
-module.exports = ViewModelAdapter;

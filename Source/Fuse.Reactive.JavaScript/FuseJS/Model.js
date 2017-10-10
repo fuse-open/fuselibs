@@ -14,7 +14,7 @@ function isThenable(thing) {
 		&& typeof thing.then === "function";
 }
 
-function Model(stateFactory)
+function Model(initialState, stateInitializer)
 {
 	var stateToMeta = new Map();
 	var idToMeta = new Map();
@@ -22,12 +22,12 @@ function Model(stateFactory)
 	var idEnumerator = 0;
 	var store = this;
 
-	instrument(null, this, stateFactory)
+	instrument(null, this, initialState, stateInitializer)
 
-	function instrument(parentMeta, node, state)
+	function instrument(parentMeta, node, state, stateInitializer)
 	{
-		if(state instanceof Function) {
-			state = runInZone(state, []);
+		if (stateInitializer instanceof Function) {
+			runInZone(stateInitializer);
 		}
 
 		var meta = stateToMeta.get(state);
@@ -202,24 +202,24 @@ function Model(stateFactory)
 		var changesDetected = 0;
 
 		meta.diff = function(visited) {
-			if(!(visited instanceof Set)) {
+			if (!(visited instanceof Set)) {
 				throw new Error("Needs set of visited nodes");
 			}
-			if(visited.has(state)) {
+			if (visited.has(state)) {
 				return;
 			}
 			visited.add(state);
 
 			isDirty = false;
 
-			if (meta.parents.length === 0) { 
+			if (meta.parents.length === 0) {
 				// This object is no longer attached to the model tree,
 				// we got this callback as an async remnant
 				return; 
 			}
 
 			if (state instanceof Array) {
-				for (var i = 0; i < Math.min(state.length, node.length); i++) { 
+				for (var i = 0; i < Math.min(state.length, node.length); i++) {
 					if (isThenable(state[i])) { dealWithPromise(i, state[i]); }
 					if (oldValueEquals(i, state[i])) continue;
 					
@@ -236,8 +236,8 @@ function Model(stateFactory)
 						set(i, wrap(i, state[i]))
 					}
 				}
-				
-				if (state.length > node.length) { 
+
+				if (state.length > node.length) {
 					addRange(state.slice(node.length, state.length))
 				}
 				else if (state.length < node.length) {
@@ -292,7 +292,7 @@ function Model(stateFactory)
 			}
 		}
 
-		if(node instanceof Array) {
+		if (node instanceof Array) {
 			node.__fuse_replaceAll = function(values) {
 				replaceAllInternal(state, values);
 				replaceAllInternal(node, values);
@@ -333,10 +333,10 @@ function Model(stateFactory)
 			else if (value instanceof Array) {
 				var keyMeta = stateToMeta.get(value);
 
-				if (keyMeta instanceof Object && meta.node[key].__fuse_id == keyMeta.id) 
-				{ 
-					if (!keyMeta.isClass) { 
-						keyMeta.diff(visited); 
+				if (keyMeta instanceof Object && meta.node[key].__fuse_id == keyMeta.id)
+				{
+					if (!keyMeta.isClass) {
+						keyMeta.diff(visited);
 					}
 				}
 				else 
