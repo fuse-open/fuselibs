@@ -87,7 +87,6 @@ namespace Fuse.Reactive
 			public string ClassName;
 			public List<string> Args = new List<string>();
 			public List<Dependency> Dependencies = new List<Dependency>();
-			public List<string> Symbols = new List<string>();
 			
 			public string ArgString
 			{
@@ -104,8 +103,7 @@ namespace Fuse.Reactive
 			{
 				//there is no way to migrate these now as they might refer to tree objects, thus reject entirely
 				if (Args.Count != 0 || o.Args.Count != 0 ||	
-					Dependencies.Count != 0 || o.Dependencies.Count != 0 ||
-					Symbols.Count != 0 || o.Symbols.Count != 0)
+					Dependencies.Count != 0 || o.Dependencies.Count != 0)
 					return false;
 					
 				return o.ModuleName == ModuleName &&
@@ -125,7 +123,7 @@ namespace Fuse.Reactive
                 var left = ParseModelExpression(((Divide)exp).Left, nt);
                 var right = ParseModelExpression(((Divide)exp).Right, nt);
                 
-                if (left.Args.Count > 0 || left.Dependencies.Count > 0 || left.Symbols.Count > 0)
+                if (left.Args.Count > 0 || left.Dependencies.Count > 0)
 					throw new Exception( "Invalid Model path expression: " + exp);
                 
                 right.ModuleName = left.ModuleName + "/" + right.ModuleName;
@@ -144,10 +142,6 @@ namespace Fuse.Reactive
 					var c = nfc.Arguments[i] as Constant;
                     if (nt != null && c != null && c.Value == nt.This)
                     {
-						result.Symbols.Add(argName);
-                    }
-					else
-					{
 						result.Dependencies.Add(new Dependency(argName, nfc.Arguments[i]));
 					}
 					result.Args.Add( argName );
@@ -177,18 +171,17 @@ namespace Fuse.Reactive
 			
             var code = "var Model = require('FuseJS/Model');\n"+
 					"var ViewModelAdapter = require('FuseJS/ViewModelAdapter')\n";
-
-			for (var i = 0; i < module.Symbols.Count; i++)
-				code += "var " + module.Symbols[i] + " = new ViewModelAdapter(module, this);\n";
 					
-			code += "var modelClass = require('" + module.ModuleName + "');\n"+
+			code += "var self = this;\n"+
+					"var modelClass = require('" + module.ModuleName + "');\n"+
                     "if (!(modelClass instanceof Function) && 'default' in modelClass) { modelClass = modelClass.default }\n"+
                     "if (!(modelClass instanceof Function) && '" + module.ClassName +"' in modelClass) { modelClass = modelClass."+ module.ClassName +" }\n"+
                     "if (!(modelClass instanceof Function)) { throw new Error('\"" + module.ModuleName + "\" does not export a class or function required to construct a Model'); }\n"+
-                    "module.exports = new Model(function() {\n"+
-                    "    var model = Object.create(modelClass.prototype);\n"+
-                    "    modelClass.call(model" + module.ArgString + ");\n"+
-                    "    return model;\n"+
+                    "var modelInstance = Object.create(modelClass.prototype);\n"+
+					"module.exports = new Model(modelInstance, function() {\n"+
+                    "    modelClass.call(modelInstance" + module.ArgString + ");\n"+
+					"    ViewModelAdapter.adaptView(self, module, modelInstance);\n"+
+                    "    return modelInstance;\n"+
                     "});\n";
 			Code = code;
         }

@@ -26,8 +26,8 @@ namespace Fuse.Scripting.JavaScript
 	class ObservableProperty: IObserver, IPropertyListener
 	{
 		protected readonly ThreadWorker _worker;
-		Uno.UX.Property _property;
-		Scripting.Object _obj;
+		readonly Uno.UX.Property _property;
+		readonly Scripting.Object _obj;
 
 		public ObservableProperty(ThreadWorker w, Scripting.Object obj, Uno.UX.Property p)
 		{
@@ -40,14 +40,96 @@ namespace Fuse.Scripting.JavaScript
 
 		Observable _observable;
 
+		// JS thread
 		internal Observable GetObservable(Scripting.Context context)
 		{
 			if (_observable == null)
 			{
 				_observable = Observable.Create(context, _worker);
+				_observable.Object["_defaultValueCallback"] = (Scripting.Callback)DefaultValueCallback;
 				Subscribe(context);
 			}
 			return _observable;
+		}
+
+		// JS thread
+		object DefaultValueCallback(object[] args)
+		{
+			var value = args[0];
+
+			object marshalledValue;
+			if(!Marshal.TryConvertTo(_property.PropertyType, value, out marshalledValue))
+			{
+				return null;
+			}
+
+			var resolveClosure = new ResolveDefaultValueClosure(this, marshalledValue);
+			UpdateManager.PostAction(resolveClosure.Perform);
+
+			return null;
+		}
+
+		internal class ResolveDefaultValueClosure
+		{
+			readonly Uno.UX.Property _property;
+			readonly ISubscription _subscription;
+			readonly object _value;
+			readonly Action<object> _pushValueOnJSThread;
+
+			public ResolveDefaultValueClosure(ObservableProperty op, object value)
+			{
+				_property = op._property;
+				_subscription = op._subscription;
+				_pushValueOnJSThread = op.PushValueOnJSThread;
+				_value = value;
+			}
+
+			// UI thread
+			public void Perform()
+			{
+				// HACK: This should really check if the property has ever been set.
+				// However, this requires some bigger changes to the UX compiler,
+				// so we check for the default value of the UX Property's type instead.
+				// Note that this will fail when the initial value is explicitly set to the default value of the type.
+				if(IsDefaultValueForType(_property.GetAsObject(), _property.PropertyType))
+				{
+					_property.SetAsObject(_value, null);
+					_pushValueOnJSThread(_value);
+				}
+			}
+
+			static bool IsDefaultValueForType(object value, Type t)
+			{
+				return (!t.IsValueType && value == null)
+					|| IsDefault<bool>(value, t)
+					|| IsDefault<byte>(value, t)
+					|| IsDefault<sbyte>(value, t)
+					|| IsDefault<char>(value, t)
+					|| IsDefault<short>(value, t)
+					|| IsDefault<ushort>(value, t)
+					|| IsDefault<int>(value, t)
+					|| IsDefault<uint>(value, t)
+					|| IsDefault<long>(value, t)
+					|| IsDefault<ulong>(value, t)
+					|| IsDefault<float>(value, t)
+					|| IsDefault<double>(value, t)
+					|| IsDefault<int2>(value, t)
+					|| IsDefault<int3>(value, t)
+					|| IsDefault<int4>(value, t)
+					|| IsDefault<byte2>(value, t)
+					|| IsDefault<byte4>(value, t)
+					|| IsDefault<float2>(value, t)
+					|| IsDefault<float3>(value, t)
+					|| IsDefault<float4>(value, t)
+					|| IsDefault<Size>(value, t)
+					|| IsDefault<Size2>(value, t);
+			}
+
+			static bool IsDefault<T>(object value, Type t)
+			{
+				if(typeof(T) != t) return false;
+				return value.Equals(default(T));
+			}
 		}
 
 		ISubscription _subscription;
@@ -121,8 +203,12 @@ namespace Fuse.Scripting.JavaScript
 			if (prop != _property.Name) return;
 			if (obj != _property.Object) return;
 			if (_subscription == null) return;
+			PushValueOnJSThread(_property.GetAsObject());
+		}
 
-			_worker.Invoke(new PushCapture(PushValue, _property.GetAsObject()).Run);
+		void PushValueOnJSThread(object value)
+		{
+			_worker.Invoke(new PushCapture(PushValue, value).Run);
 		}
 
 		class PushCapture
@@ -144,6 +230,8 @@ namespace Fuse.Scripting.JavaScript
 
 		void PushValue(Scripting.Context context, object val)
 		{
+			if(_subscription == null) return;
+
 			if (val != null)
 			{
 				_subscription.SetExclusive(context, val);
