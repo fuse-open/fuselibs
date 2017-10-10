@@ -74,6 +74,11 @@ namespace Fuse
 			return float4(f.X, f.Y, f.X, f.Y);
 		}
 
+		static float4 ToFloat4(float f)
+		{
+			return float4(f);
+		}
+
 		public static float4 ToFloat4(object o)
 		{
 			if (o is float4)
@@ -82,6 +87,8 @@ namespace Fuse
 				return ToFloat4((float3)o);
 			else if (o is float2)
 				return ToFloat4((float2)o);
+			else if (o is float)
+				return ToFloat4((float)o);
 			else if (o is string)
 			{
 				var s = (string)o;
