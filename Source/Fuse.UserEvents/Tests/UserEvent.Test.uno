@@ -7,6 +7,7 @@ namespace Fuse.UserEvents.Test
 	public class UserEventTest : TestBase
 	{
 		[Test]
+		[Ignore("https://github.com/fusetools/fuselibs-public/issues/551")]
 		public void UserEventArgs()
 		{
 			var e = new UX.UserEventArgs();
