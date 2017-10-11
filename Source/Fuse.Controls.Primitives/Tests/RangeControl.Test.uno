@@ -45,5 +45,23 @@ namespace Fuse.Gestures.Test
 				Assert.AreEqual( 100, p.Value );
 			}
 		}
+		
+		[Test]
+		public void Properties()
+		{
+			var p = new UX.RangeControl.Properties();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				Assert.AreEqual( 20, p.value.Value );
+				Assert.AreEqual( 0.6, p.relativeValue.Value );
+				Assert.AreEqual( 0.6, p.progress.Value );
+				
+				p.rc.Value = -50;
+				Assert.AreEqual( -50, p.value.Value );
+				Assert.AreEqual( 0.25, p.relativeValue.Value );
+				Assert.AreEqual( 0.25, p.progress.Value );
+			}
+		}
+		
 	}
 }

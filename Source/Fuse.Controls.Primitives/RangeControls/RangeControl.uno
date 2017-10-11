@@ -115,6 +115,10 @@ namespace Fuse.Controls
 			}
 		}
 
+		static Selector _relativeValueName = "RelativeValue";
+		/**
+			The current value expressed in the range 0..1, where 0 is the `MinimumValue` and 1 is the `MaximumValue`.
+		*/
 		public double RelativeValue
 		{
 			get { return ValueToRelative(Value); }
@@ -173,8 +177,12 @@ namespace Fuse.Controls
 		protected virtual void OnProgressChanged()
 		{
 			OnPropertyChanged(_progressName);
+			OnPropertyChanged(_relativeValueName);
 		}
 
+		/**
+			This is a synonym for `RelativeValue`, allowing us in a ProgressAnimation. It is recommended to use `RelativeValue` instead if referencing values directly.
+		*/
 		public double Progress
 		{
 			get { return ValueToRelative(Value); }

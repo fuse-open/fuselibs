@@ -1,5 +1,9 @@
 # Unreleased
 
+## RangeControl
+- `LinearRangeBehavior` now correctly responds to `UserStep` values, providing quantized input
+- Fixed `RangeControl.RelativeValue` to properly update when bound in UX
+
 ## DatePicker
 - Introduced Fuse.Controls.DatePicker class, which wraps native date pickers on Android and iOS. See the `DatePicker` class documentation for more details.
 
