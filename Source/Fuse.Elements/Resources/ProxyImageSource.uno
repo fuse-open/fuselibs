@@ -1,4 +1,5 @@
 using Uno;
+using Fuse.Resources.Exif;
 
 namespace Fuse.Resources
 {
@@ -53,6 +54,16 @@ namespace Fuse.Resources
 			var loading = _impl as LoadingImageSource;
 			if (loading != null)
 				loading.Policy = _policy;
+		}
+
+		public ImageOrientation Orientation
+		{
+			get
+			{
+				if (_impl != null)
+					return _impl.Orientation;
+				return ImageOrientation.Identity;
+			}
 		}
 
 		public float2 Size

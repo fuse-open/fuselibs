@@ -1,6 +1,7 @@
 using Uno;
 using Uno.Graphics;
 using Uno.UX;
+using Fuse.Resources.Exif;
 
 namespace Fuse.Resources
 {
@@ -28,6 +29,11 @@ namespace Fuse.Resources
 					OnChanged();
 				}
 			}
+		}
+
+		public override ImageOrientation Orientation
+		{
+			get { return ImageOrientation.Identity; }
 		}
 
 		float _density = 1;

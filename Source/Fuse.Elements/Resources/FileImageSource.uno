@@ -3,7 +3,7 @@ using Uno.Graphics;
 using Uno.UX;
 using Uno.Collections;
 using Uno.Compiler.ExportTargetInterop;
-
+using Fuse.Resources.Exif;
 using Experimental.TextureLoader;
 
 namespace Fuse.Resources
@@ -124,6 +124,7 @@ namespace Fuse.Resources
 			}
 		}
 		protected override void OnPinChanged() {  _proxy.OnPinChanged(); }
+		public override ImageOrientation Orientation { get { return _proxy.Orientation; } }
 		public override float2 Size { get { return _proxy.Size; } }
 		public override int2 PixelSize { get { return _proxy.PixelSize; } }
 		public override ImageSourceState State { get { return _proxy.State; } }
@@ -194,6 +195,7 @@ namespace Fuse.Resources
 				}
 
 				var data = _file.ReadAllBytes();
+				_orientation = ExifData.FromByteArray(data).Orientation;
 				TextureLoader.ByteArrayToTexture2DFilename(new Buffer(data), _file.Name, SetTexture);
 				OnChanged();
 			}
@@ -204,6 +206,12 @@ namespace Fuse.Resources
 			}
 		}
 
+		ImageOrientation _orientation = ImageOrientation.Identity;
+		public override ImageOrientation Orientation
+		{
+			get { return _orientation; }
+		}
+
 		protected override void AttemptLoad()
 		{
 			if (Policy.BundlePreload)
@@ -211,15 +219,16 @@ namespace Fuse.Resources
 				SyncLoad();
 				return;
 			}
-			
+
 			_loading = true;
 			new BackgroundLoad(_file, SuccessCallback, FailureCallback);
 			OnChanged();
 		}
 
-		void SuccessCallback(texture2D texture)
+		void SuccessCallback(texture2D texture, ImageOrientation orientation)
 		{
 			_loading = false;
+			_orientation = orientation;
 			SetTexture(texture);
 		}
 
@@ -229,15 +238,17 @@ namespace Fuse.Resources
 			Cleanup(CleanupReason.Failed);
 			OnError("BundleFileImageSource-failed-conversion", e);
 		}
-		
+
 		//NOTE: a copy from HttpImageSource.BackgroundLoad with minor changes
 		class BackgroundLoad
 		{
 			FileSource _file;
-			Action<texture2D> _done;
+			Action<texture2D, ImageOrientation> _done;
 			Action<Exception> _fail;
 			Exception _exception;
-			public BackgroundLoad(FileSource file, Action<texture2D> done, Action<Exception> fail)
+			ImageOrientation _orientation;
+
+			public BackgroundLoad(FileSource file, Action<texture2D, ImageOrientation> done, Action<Exception> fail)
 			{
 				_file = file;
 				_done = done;
@@ -250,6 +261,7 @@ namespace Fuse.Resources
 				try
 				{
 					var data = _file.ReadAllBytes();
+					_orientation = ExifData.FromByteArray(data).Orientation;
 					TextureLoader.ByteArrayToTexture2DFilename(new Buffer(data), _file.Name, GWDoneCallback);
 				}
 				catch (Exception e)
@@ -271,7 +283,7 @@ namespace Fuse.Resources
 
 			void UIDoneCallback()
 			{
-				_done(_tex);
+				_done(_tex, _orientation);
 			}
 
 			void UIFailCallback()
