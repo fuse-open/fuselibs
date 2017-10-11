@@ -59,7 +59,12 @@ namespace Fuse.Controls.Native.iOS
 			set { SetMaxValue(Handle, DateTimeConverterHelpers.ReconstructUtcDate(DateTimeConverterHelpers.ConvertDateTimeToNSDate(value))); }
 		}
 
-		public void PollViewValue()
+		public void OnRooted()
+		{
+			// Do nothing
+		}
+
+		public void OnUnrooted()
 		{
 			// Do nothing
 		}
