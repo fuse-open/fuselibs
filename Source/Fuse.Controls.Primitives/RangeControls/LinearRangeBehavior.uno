@@ -34,6 +34,8 @@ namespace Fuse.Gestures
 	*/
 	public class LinearRangeBehavior : Behavior, IGesture
 	{
+		const float _zeroTolerance = 1e-05f;
+		
 		RangeControl FindRangeControl()
 		{
 			var p = Parent;
@@ -137,7 +139,10 @@ namespace Fuse.Gestures
 
 		void UpdateValue(float2 pos)
 		{
-			Control.RelativeValue = PositionToValue(pos);
+			var step = Control.RelativeUserStep;
+			var r = PositionToValue(pos);
+			var q = step > _zeroTolerance ? Math.Round(r/step) * step : r;
+			Control.RelativeValue = q;
 		}
 
 		double PositionToValue(float2 pos)
