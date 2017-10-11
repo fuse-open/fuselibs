@@ -158,14 +158,11 @@ namespace Fuse.Reactive
 		*/
 		public object Items
 		{
-			get { return _items; }
+			get { return GetItems(); }
 			set
 			{
-				if (_items != value)
-				{
-					_items = value;
-					OnItemsChanged();
-				}
+				if (GetItems() != value)
+					SetItems( value );
 			}
 		}
 

@@ -1,0 +1,5 @@
+<Panel ux:Class="UX.Instance.RootItems">
+	<Fuse.Reactive.Bindings.Test.RootInstantiator>
+		<FuseTest.DudElement Value="{}"/>
+	</Fuse.Reactive.Bindings.Test.RootInstantiator>
+</Panel>

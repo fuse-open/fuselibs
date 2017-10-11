@@ -296,11 +296,28 @@ namespace Fuse.Reactive
 		
 		internal bool HasLimit { get { return _hasLimit; } }
 
-		protected internal object _items;
+		object _items;
+		/** @hide */
+		protected object GetItems() { return _items; }
+		/** @hide */
+		protected void SetItems( object value )
+		{
+			_items = value;
+			if (!IsRootingCompleted) return;
+			RefreshItems();
+		}
+		/** Call to set the items during the OnRooted override (post base.OnRooted call)
+			@hide */
+		protected void SetItemsDerivedRooting( object value )
+		{
+			_items = value;
+			RefreshItems();
+		}
 		
 		class CountItem { }
 		
 		int _count;
+		/** @hide */
 		protected internal int Count
 		{
 			get { return _count; }
@@ -313,18 +330,8 @@ namespace Fuse.Reactive
 				var items = new object[_count];
 				for (int i=0; i < _count; ++i)
 					items[i] = new CountItem();
-				_items = items;
-				OnItemsChanged();
+				SetItems( items );
 			}
-		}
-		
-		
-		
-		protected internal void OnItemsChanged()
-		{
-			if (!IsRootingCompleted) return;
-
-			RefreshItems();
 		}
 
 		void RefreshItems()
@@ -375,7 +382,8 @@ namespace Fuse.Reactive
 				if (_matchKey != value)
 				{
 					_matchKey = value;
-					OnItemsChanged();
+					if (IsRootingCompleted)
+						RefreshItems();
 				}
 			}
 		}
