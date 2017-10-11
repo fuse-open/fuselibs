@@ -200,7 +200,7 @@ namespace Fuse.Controls
 		bool _nearTrueStart;
 		void CheckPosition()
 		{
-			if (_pendingSizing)
+			if (_pendingSizing || _scrollable == null)
 				return;
 			_lastActivityPosition = UpdateManager.FrameIndex;
 			
@@ -257,6 +257,9 @@ namespace Fuse.Controls
 		float2 _prevActualSize;
 		void CheckSizing()
 		{
+			if (_scrollable == null)
+				return;
+				
 			_lastActivitySizing = UpdateManager.FrameIndex;
 			
 			_pendingSizing = false;

@@ -1,0 +1,12 @@
+<Panel ux:Class="UX.ScrollViewPager.Issue560">
+	<JavaScript/>
+	<ScrollView ux:Name="scroll" LayoutMode="PreserveVisual">
+		<StackPanel ux:Name="s">
+			<Each Count="21" ux:Name="theEach">
+				<Panel Height="50"/>
+			</Each>
+		</StackPanel>
+		
+		<ScrollViewPager Each="theEach" ux:Name="svp"/>
+	</ScrollView>
+</Panel>
