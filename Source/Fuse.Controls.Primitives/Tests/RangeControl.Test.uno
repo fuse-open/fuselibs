@@ -47,6 +47,27 @@ namespace Fuse.Gestures.Test
 		}
 		
 		[Test]
+		public void ReverseRange()
+		{
+			var p = new UX.RangeControl.ReverseRange();
+			using (var root = TestRootPanel.CreateWithChild(p, int2(1000,500)))
+			{
+				root.PointerSwipe( float2(100,100), float2(240,100) );
+				Assert.AreEqual( 75, p.Value );
+				//back
+				root.PointerSwipe( float2(700,200), float2(660,200) );
+				Assert.AreEqual( 35, p.Value );
+
+				p.LRB.Orientation = Fuse.Layouts.Orientation.Vertical;
+				root.PointerSwipe( float2(100,100), float2(100,255) );
+				Assert.AreEqual( 50, p.Value );
+
+				root.PointerSwipe( float2(300,450), float2(300,399) );
+				Assert.AreEqual( 20, p.Value );
+			}
+		}
+		
+		[Test]
 		public void Properties()
 		{
 			var p = new UX.RangeControl.Properties();

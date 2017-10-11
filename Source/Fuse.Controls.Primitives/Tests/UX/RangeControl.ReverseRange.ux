@@ -1,0 +1,4 @@
+<RangeControl ux:Class="UX.RangeControl.ReverseRange" Range="100,0"
+	HitTestMode="LocalBounds" UserStep="5">
+	<LinearRangeBehavior ux:Name="LRB"/>
+</RangeControl>
