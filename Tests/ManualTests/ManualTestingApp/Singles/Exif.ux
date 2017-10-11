@@ -1,0 +1,11 @@
+<Page Title="Exif" ux:Class="ExifPage">
+	<InfoStack ux:Key="Info">
+		<p>This page tests whether exif orientation has been applied correctly. If you see 8 copies of the letter F in its correct orientation, then the test has passed. If any of them are rotated, the test fails.</p>
+	</InfoStack>
+	<JavaScript File="Exif.js" />
+	<Grid RowCount="4" ColumnCount="2" Margin="10" CellSpacing="5">
+		<Each Items="{images}">
+			<Image File="{}" />
+		</Each>
+	</Grid>
+</Page>
