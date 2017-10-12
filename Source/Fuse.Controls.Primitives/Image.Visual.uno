@@ -20,8 +20,7 @@ namespace Fuse.Controls
 
 			var size = Source.Size;
 			var pixelSize = Source.PixelSize;
-			if (Source.Orientation.HasFlag(ImageOrientation.Rotate90)
-				|| Source.Orientation.HasFlag(ImageOrientation.Rotate270))
+			if (Source.Orientation.HasFlag(ImageOrientation.Rotate90))
 			{
 				size = float2(Source.Size.Y, Source.Size.X);
 				pixelSize = int2(Source.PixelSize.Y, Source.PixelSize.X);
