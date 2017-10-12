@@ -140,10 +140,7 @@ namespace Fuse.Reactive
                 {
 					var argName = "__dep" + i;
 					var c = nfc.Arguments[i] as Constant;
-                    if (nt != null && c != null && c.Value == nt.This)
-                    {
-						result.Dependencies.Add(new Dependency(argName, nfc.Arguments[i]));
-					}
+                    result.Dependencies.Add(new Dependency(argName, nfc.Arguments[i]));
 					result.Args.Add( argName );
                 }
 
