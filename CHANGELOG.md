@@ -85,6 +85,8 @@
 ### WebView
 Fixed issue where custom URI schemes were matched too greedily in URLs, making for erroneously intercepted URL requests.
 
+- Exported the methods goBack, goForward, reload and stop for use in FuseJS
+
 ### Delay Push Notification Registration on iOS
 
 On iOS you can now put the following in your unoproj file:
