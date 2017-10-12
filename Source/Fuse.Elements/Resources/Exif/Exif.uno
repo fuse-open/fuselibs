@@ -12,9 +12,9 @@ namespace Fuse.Resources.Exif
 	public enum ImageOrientation
 	{
 		Identity = 0,
-		Rotate90 = 1,
-		Rotate180 = 2,
-		Rotate270 = 3,
+		Rotate90 = 1 << 0,
+		Rotate180 = 1 << 1,
+		Rotate270 = Rotate90 | Rotate180,
 		FlipVertical = 1 << 2,
 	}
 
@@ -32,7 +32,7 @@ namespace Fuse.Resources.Exif
 				data = ExifDotNetImpl.FromByteArray(buffer);
 			else
 			{
-				data = new ExifData();
+				data = default(ExifData);
 				return false;
 			}
 			return true;
@@ -50,7 +50,6 @@ namespace Fuse.Resources.Exif
 		{
 			switch (orientation)
 			{
-				case 0: Orientation = ImageOrientation.Identity; break; //Exif orientation is undefined
 				case 1: Orientation = ImageOrientation.Identity; break;
 				case 2: Orientation = ImageOrientation.FlipVertical | ImageOrientation.Rotate180; break;
 				case 3: Orientation = ImageOrientation.Rotate180; break;
@@ -59,6 +58,11 @@ namespace Fuse.Resources.Exif
 				case 6: Orientation = ImageOrientation.Rotate90; break;
 				case 7: Orientation = ImageOrientation.FlipVertical | ImageOrientation.Rotate90; break;
 				case 8: Orientation = ImageOrientation.Rotate270; break;
+
+				default:
+					Fuse.Diagnostics.InternalError(string.Format("Reserved Exif orientation {0}, assuming identity", orientation));
+					Orientation = ImageOrientation.Identity;
+					break;
 			}
 		}
 	}
