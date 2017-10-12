@@ -1,0 +1,6 @@
+<Panel ux:Class="UX.RangeControl.Properties">
+	<RangeControl Minimum="-100" Maximum="100" Value="20" ux:Name="rc"/>
+	<FuseTest.DudElement Value="{Property rc.Value}" ux:Name="value"/>
+	<FuseTest.DudElement Value="{Property rc.RelativeValue}" ux:Name="relativeValue"/>
+	<FuseTest.DudElement Value="{Property rc.Progress}" ux:Name="progress"/>
+</Panel>

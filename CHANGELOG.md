@@ -1,5 +1,10 @@
 # Unreleased
 
+## RangeControl
+- `LinearRangeBehavior` now correctly responds to `UserStep` values, providing quantized input
+- Fixed `RangeControl.RelativeValue` to properly update when bound in UX
+- Allowed `Minimum` to be less than `Maximum` on `RangeControl` making it easier to do left-to-right `100..0` ranges.
+
 ## ScrollViewPager
 - Fixed a NullReferenceError that could happen while using ScrollViewPager in preview
 

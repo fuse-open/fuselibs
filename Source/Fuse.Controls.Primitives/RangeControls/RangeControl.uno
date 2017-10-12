@@ -42,7 +42,10 @@ namespace Fuse.Controls
 	public class RangeControl: Panel, IProgress, IValue<double>, IRangeViewHost
 	{
 		double _minimum = 0.0f;
-		/** Minimum value of the RangeControl. Defaults to 0*/
+		/** Minimum value of the RangeControl. Defaults to 0
+
+			This is the left/top value of the RangeControl and may be a value larger than Maximum.
+		*/
 		public double Minimum
 		{
 			get { return _minimum; }
@@ -55,9 +58,13 @@ namespace Fuse.Controls
 				}
 			}
 		}
-
+		
 		double _maximum = 100.0f;
-		/** Maximum value of the RangeControl. Defaults to 100 */
+		/** 
+			Maximum value of the RangeControl. Defaults to 100 
+		
+			This is the bottom/right value of the RangeControl and may be a value smaller than Minimum.
+		*/
 		public double Maximum
 		{
 			get { return _maximum; }
@@ -70,9 +77,36 @@ namespace Fuse.Controls
 				}
 			}
 		}
+		
+		/**
+			The range of values covered by the control.
+			
+			This maps to `Minimum, Maximum`.
+		*/
+		public float2 Range
+		{
+			get { return float2( (float)Minimum, (float)Maximum ); }
+			set
+			{
+				Minimum = value[0];
+				Maximum = value[1];
+			}
+		}
 
+		double EffectiveMinimum
+		{
+			get { return Minimum < Maximum ? Minimum : Maximum; }
+		}
+		double EffectiveMaximum
+		{
+			get { return Minimum < Maximum ? Maximum : Minimum; }
+		}
+		
 		double _value = 0.0;
 		[UXOriginSetter("SetValue")]
+		/**
+			The current value of the control.
+		*/
 		public double Value
 		{
 			get { return _value; }
@@ -115,6 +149,10 @@ namespace Fuse.Controls
 			}
 		}
 
+		static Selector _relativeValueName = "RelativeValue";
+		/**
+			The current value expressed in the range 0..1, where 0 is the `MinimumValue` and 1 is the `MaximumValue`.
+		*/
 		public double RelativeValue
 		{
 			get { return ValueToRelative(Value); }
@@ -134,13 +172,13 @@ namespace Fuse.Controls
 		
 		public double RelativeUserStep
 		{
-			get { return ValueToRelative(UserStep); }
-			set { UserStep = ValueFromRelative(value); }
+			get { return StepValueToRelative(UserStep); }
+			set { UserStep = StepValueFromRelative(value); }
 		}
 
 		double ClampToRange(double v)
 		{
-			return Math.Min(Math.Max(Minimum, v), Maximum);
+			return Math.Min(Math.Max(EffectiveMinimum, v), EffectiveMaximum);
 		}
 
 		public event ValueChangedHandler<double> ValueChanged;
@@ -173,8 +211,12 @@ namespace Fuse.Controls
 		protected virtual void OnProgressChanged()
 		{
 			OnPropertyChanged(_progressName);
+			OnPropertyChanged(_relativeValueName);
 		}
 
+		/**
+			This is a synonym for `RelativeValue`, allowing us in a ProgressAnimation. It is recommended to use `RelativeValue` instead if referencing values directly.
+		*/
 		public double Progress
 		{
 			get { return ValueToRelative(Value); }
@@ -189,6 +231,15 @@ namespace Fuse.Controls
 		internal double ValueToRelative(double value)
 		{
 			return (value - Minimum) / (Maximum - Minimum);
+		}
+		
+		internal double StepValueToRelative( double value )
+		{
+			return Math.Abs( value / (Maximum - Minimum) );
+		}
+		internal double StepValueFromRelative( double relative )
+		{
+			return Math.Abs( relative * (Maximum - Minimum) );
 		}
 
 		void IRangeViewHost.OnProgressChanged(double newProgress)
