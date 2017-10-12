@@ -22,16 +22,20 @@ namespace Fuse.Resources.Exif
 	{
 		public readonly ImageOrientation Orientation;
 
-		public static ExifData FromByteArray(byte[] buffer)
+		public static bool FromByteArray(byte[] buffer, out ExifData data)
 		{
 			if defined(Android)
-				return ExifAndroidImpl.FromByteArray(buffer);
+				data = ExifAndroidImpl.FromByteArray(buffer);
 			if defined(iOS)
-				return ExifIOSImpl.FromByteArray(buffer);
+				data = ExifIOSImpl.FromByteArray(buffer);
 			if defined(DotNet)
-				return ExifDotNetImpl.FromByteArray(buffer);
+				data = ExifDotNetImpl.FromByteArray(buffer);
 			else
-				throw new Exception("Exif is not supported by this platform");
+			{
+				data = new ExifData(0);
+				return false;
+			}
+			return true;
 		}
 
 		internal ExifData(int orientation)

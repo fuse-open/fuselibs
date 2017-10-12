@@ -8,8 +8,11 @@ public class OrientationTest
 	public void AssertImageOrientation(ImageOrientation expected, BundleFile image, [CallerFilePath] string filePath = "", [CallerLineNumber] int lineNumber = 0, [CallerMemberName] string memberName = "")
 	{
 		var bytes = image.ReadAllBytes();
-		var ori = ExifData.FromByteArray(bytes).Orientation;
-		Assert.AreEqual(expected, ori, filePath, lineNumber, memberName);
+		ExifData exif;
+		if (ExifData.FromByteArray(bytes, out exif))
+		{
+			Assert.AreEqual(expected, exif.Orientation, filePath, lineNumber, memberName);
+		}
 	}
 
 
