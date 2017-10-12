@@ -8,7 +8,7 @@ namespace Experimental.Http
 {
 	static public class HttpLoader
 	{
-		public static void LoadBinary(string requestUri, Action<HttpResponseHeader,Buffer> callback,
+		public static void LoadBinary(string requestUri, Action<HttpResponseHeader, byte[]> callback,
 			Action<string> error)
 		{
 			if (callback == null)

@@ -128,7 +128,7 @@ namespace Fuse.Resources
 			Fail( "HttpImageSource-failed-conversion", e);
 		}
 
-		void HttpCallback( HttpResponseHeader response, Buffer data )
+		void HttpCallback(HttpResponseHeader response, byte[] data)
 		{
 			if (response.StatusCode != 200)
 			{
@@ -148,12 +148,12 @@ namespace Fuse.Resources
 
 		class BackgroundLoad
 		{
-			Buffer _data;
+			byte[] _data;
 			string _contentType;
 			Action<texture2D> _done;
 			Action<Exception> _fail;
 			Exception _exception;
-			public BackgroundLoad(Buffer data, string contentType, Action<texture2D> done, Action<Exception> fail)
+			public BackgroundLoad(byte[] data, string contentType, Action<texture2D> done, Action<Exception> fail)
 			{
 				_data = data;
 				_contentType = contentType;
@@ -166,7 +166,7 @@ namespace Fuse.Resources
 			{
 				try
 				{
-					TextureLoader.ByteArrayToTexture2DContentType(_data, _contentType, GWDoneCallback);
+					TextureLoader.ByteArrayToTexture2DContentType(new Buffer(_data), _contentType, GWDoneCallback);
 				}
 				catch (Exception e)
 				{
