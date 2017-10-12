@@ -5,6 +5,10 @@
 - Fixed `RangeControl.RelativeValue` to properly update when bound in UX
 - Allowed `Minimum` to be less than `Maximum` on `RangeControl` making it easier to do left-to-right `100..0` ranges.
 
+### WebView
+- Exported the methods goBack, goForward, reload and stop for use in FuseJS
+
+# 1.2
 ## ScrollViewPager
 - Fixed a NullReferenceError that could happen while using ScrollViewPager in preview
 
@@ -39,9 +43,6 @@
  * The `Fuse.Reactive.IWriteable` interface has changed (breaking!). The method signature is now `bool TrySetExclusive(object)` instead of `void SetExclusive(object)`. Unlikely to affect your code.
  * `IObservable` and `IObservableArray` no longer push their initial value on `Subscribe`.
 
-
-### WebView
-- Exported the methods goBack, goForward, reload and stop for use in FuseJS
 
 # 1.3
 
