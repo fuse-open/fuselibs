@@ -187,7 +187,7 @@ namespace Fuse.Controls
 			if (routerPage.Path != current.Path || (current.Visual == null && routerPage.Path != null))
 				return RoutingResult.Change;
 				
-			routerPage.Visual = current.Visual;
+			//routerPage.Visual = current.Visual;
 			if (routerPage.Parameter == current.Parameter &&
 				routerPage.Context == current.Context)
 				return RoutingResult.NoChange;

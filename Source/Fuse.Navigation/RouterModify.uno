@@ -189,7 +189,7 @@ namespace Fuse.Navigation
 		
 			try
 			{
-				Route route = null;
+				RouterPageRoute route = null;
 				if (!RouterRequest.ParseNVPRoute(value, out route))
 					return;
 				
@@ -201,7 +201,7 @@ namespace Fuse.Navigation
 			}
 		}
 			
-		void PerformRoute(Node n, Route route)
+		void PerformRoute(Node n, RouterPageRoute route)
 		{
 			_request.Route = route;
 			

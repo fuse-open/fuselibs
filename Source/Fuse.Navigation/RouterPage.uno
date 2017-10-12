@@ -37,7 +37,9 @@ namespace Fuse.Navigation
 			var np = new RouterPage();
 			np.Path = Path;
 			np.Parameter = Parameter;
-			np.Node = Node;
+			np.Context = Context;
+			np._childRouterPages = _childRouterPages;
+			//np.Node = Node;
 			return np;
 		}
 		
@@ -45,6 +47,16 @@ namespace Fuse.Navigation
 		{
 			return Path + "?" + Parameter + " " + Visual + " " + 
 				(Context == null ? "no-ctx" : ("@" + Context.GetHashCode()));
+		}
+		
+		public string ToPathString()
+		{
+			var q = Path ?? "";
+			if (Parameter != null)
+				q += "?" + Parameter;
+			if (Context != null)
+				q += "<" + Context.GetHashCode() + ">";
+			return q;
 		}
 
 		internal static void BubbleHistoryChanged( Node at )
@@ -84,5 +96,91 @@ namespace Fuse.Navigation
 			RouterPage.BubbleHistoryChanged(_owner.Node);
 		}
 	}
-
+	
+	class RouterPageRoute
+	{
+		public RouterPage RouterPage;
+		public RouterPageRoute SubRoute;
+		
+		public RouterPageRoute( RouterPage routerPage, RouterPageRoute sub )
+		{
+			RouterPage = routerPage;
+			SubRoute = sub;
+		}
+		
+		internal static RouterPageRoute Convert(Route r)
+		{
+			RouterPageRoute cur = null;
+			RouterPageRoute bas = null;
+			while (r != null) 
+			{
+				var nxtrp = r.RouterPage;
+				if (nxtrp == null)
+					nxtrp = new RouterPage{ Path = r.Path, Parameter = r.Parameter };
+				var nxt = new RouterPageRoute( nxtrp, null );
+				
+				if (cur == null)
+				{
+					cur = nxt;
+					bas =  nxt;
+				}
+				else
+				{
+					cur.SubRoute = nxt;
+					cur = nxt;
+				}
+				
+				r = r.SubRoute;
+			}
+			
+			return bas;
+		}
+		
+		public Route ToRoute()
+		{
+			var r = new Route( RouterPage.Path, RouterPage.Parameter, 
+				SubRoute != null ? SubRoute.ToRoute() : null );
+			r.RouterPage = RouterPage;
+			return r;
+		}
+		
+		internal RouterPageRoute Up()
+		{
+			if (SubRoute == null) return this;
+			else if (SubRoute.SubRoute == null) return new RouterPageRoute(RouterPage, null);
+			return new RouterPageRoute( RouterPage, SubRoute.Up());
+		}
+		
+		internal string Format()
+		{
+			var q = RouterPage.ToPathString();
+			if (SubRoute != null)
+				q += "/" + SubRoute.Format();
+			return q;
+		}
+		
+		internal RouterPageRoute SubDepth(int count)
+		{
+			if (count <0)
+			{
+				Fuse.Diagnostics.InternalError( "count can't be < 0", this );
+				return null;
+			}
+			
+			if (count == 0)
+				return this;
+				
+			if (SubRoute == null)
+				return null;
+				
+			return SubRoute.SubDepth(count-1);
+		}
+		
+		public RouterPageRoute Append( RouterPageRoute subRoute )
+		{
+			var sub = SubRoute == null ? subRoute : SubRoute.Append(subRoute);
+			return new RouterPageRoute(RouterPage, sub);
+		}
+		
+	}
 }

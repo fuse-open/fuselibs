@@ -38,7 +38,7 @@ namespace Fuse.Navigation
 			var where = RouterRequest.ParseFlatRoute(args);
 			if (where != null)
 			{
-				r.Goto(where);
+				r.Modify( ModifyRouteHow.Goto, where, NavigationGotoMode.Transition, "" );
 			}
 			else
 			{
@@ -71,7 +71,7 @@ namespace Fuse.Navigation
 		{
 			var route = GetRelative(c, r, args);
 			if (route != null)
-				r.Goto(route);
+				r.Modify( ModifyRouteHow.Goto, route, NavigationGotoMode.Transition, "" );
 		}
 		
 		/**
@@ -86,10 +86,10 @@ namespace Fuse.Navigation
 		{
 			var route = GetRelative(c, r, args);
 			if (route != null)
-				r.Push(route);
+				r.Modify( ModifyRouteHow.Push, route, NavigationGotoMode.Transition, "" );
 		}
 		
-		static Route GetRelative(Context c, Router r, object[] args)
+		static RouterPageRoute GetRelative(Context c, Router r, object[] args)
 		{
 			if (args.Length < 1)
 			{
@@ -123,7 +123,7 @@ namespace Fuse.Navigation
 			if (!r.IsRootingCompleted) return;
 
 			var where = RouterRequest.ParseFlatRoute(args);
-			r.Push(where);
+			r.Modify( ModifyRouteHow.Push, where, NavigationGotoMode.Transition, "" );
 		}
 		
 		/**
@@ -257,7 +257,7 @@ namespace Fuse.Navigation
 			//TODO: Switch to using RouterRequest
 			string name = null;
 			IRouterOutlet relative = null;
-			Route route = null;
+			RouterPageRoute route = null;
 			
 			var keys = obj.Keys;
 			for (int i=0; i < keys.Length; ++i)

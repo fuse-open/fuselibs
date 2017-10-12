@@ -82,7 +82,7 @@ namespace Fuse.Controls.Test
 			}
 		}
 
-		string SafeFormat( Route r )
+		string SafeFormat( RouterPageRoute r )
 		{
 			if (r == null) 
 				return "*null*";

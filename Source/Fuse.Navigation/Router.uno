@@ -175,22 +175,33 @@ namespace Fuse.Navigation
 
 		public Route GetCurrentRoute()
 		{
+			return GetHistoryRoute(0).ToRoute();
+		}
+		
+		RouterPageRoute GetCurrentRouterPageRoute()
+		{
 			return GetHistoryRoute(0);
 		}
 		
 		/**	Clears the history and navigates to the specified route. */
 		public void Goto(Route route, string operationStyle = "")
 		{
-			Modify( ModifyRouteHow.Goto, route, NavigationGotoMode.Transition, operationStyle );
+			Modify( ModifyRouteHow.Goto, RouterPageRoute.Convert(route), NavigationGotoMode.Transition, operationStyle );
 		}
 
 		/** Pushes the current route (if any) on navigation history and navigates to the specified route. */
 		public void Push(Route route, string operationStyle = "")
 		{
-			Modify( ModifyRouteHow.Push, route, NavigationGotoMode.Transition, operationStyle );
+			Modify( ModifyRouteHow.Push, RouterPageRoute.Convert(route), NavigationGotoMode.Transition, operationStyle );
 		}
 
 		internal void Modify( ModifyRouteHow how, Route route, NavigationGotoMode mode,
+			string operationStyle )
+		{
+			Modify( how, RouterPageRoute.Convert(route), mode, operationStyle );
+		}
+		
+		internal void Modify( ModifyRouteHow how, RouterPageRoute route, NavigationGotoMode mode,
 			string operationStyle )
 		{
 			switch( how )
@@ -240,7 +251,7 @@ namespace Fuse.Navigation
 			
 		}
 		
-		internal Dictionary<string,Route> Bookmarks = new Dictionary<string,Route>();
+		internal Dictionary<string,RouterPageRoute> Bookmarks = new Dictionary<string,RouterPageRoute>();
 		
 		/** Goes back to the previous page in the navigation history, or up one level in the route if the history is empty.
 			
@@ -267,7 +278,7 @@ namespace Fuse.Navigation
 		
 		void GoUp()
 		{
-			var cur = GetCurrentRoute();
+			var cur = GetCurrentRouterPageRoute();
 			var up = cur.Up();
 			if (up == cur) 
 			{
@@ -296,16 +307,16 @@ namespace Fuse.Navigation
 			SetRoute(route, NavigationGotoMode.Transition, RoutingOperation.Pop, "");
 		}
 
-		Route _prepareCurrent, _prepareNext;
+		RouterPageRoute _prepareCurrent, _prepareNext;
 		RoutingOperation _prepareOperation;
 		string _prepareOperationStyle;
 		double _prepareProgress = 0;
 		IRouterOutlet _prepareOutlet;
-		void PrepareRoute(Route r, RoutingOperation operation, string operationStyle)
+		void PrepareRoute(RouterPageRoute r, RoutingOperation operation, string operationStyle)
 		{
-			_prepareCurrent = GetCurrentRoute();
-			_prepareNext = SetRouteImpl(Parent, _rootPage, r, NavigationGotoMode.Prepare, operation, operationStyle,
-				out _prepareOutlet);
+			_prepareCurrent = GetCurrentRouterPageRoute();
+			_prepareNext = SetRouteImpl(Parent, _rootPage, r, NavigationGotoMode.Prepare, operation,
+				operationStyle, out _prepareOutlet);
 			_prepareOperation = operation;
 			_prepareProgress = 0;
 			_prepareOperationStyle = operationStyle;
@@ -367,7 +378,7 @@ namespace Fuse.Navigation
 			}
 		}
 		
-		Route SetRoute(Route r, NavigationGotoMode gotoMode, RoutingOperation operation, 
+		RouterPageRoute SetRoute(RouterPageRoute r, NavigationGotoMode gotoMode, RoutingOperation operation, 
 			string operationStyle, bool userRequest = true)
 		{
 			if (r == null)
@@ -376,7 +387,7 @@ namespace Fuse.Navigation
 			//prepared routes are cleared when the actual route is changed
 			ClearPrepared();
 			
-			var current = GetCurrentRoute();
+			var current = GetCurrentRouterPageRoute();
 			
 			IRouterOutlet ignore;
 			var outR = SetRouteImpl(Parent, _rootPage, r, gotoMode, operation, operationStyle, out ignore);
@@ -398,7 +409,8 @@ namespace Fuse.Navigation
 		}
 		
 		/* This has become an unfortunate monstrosity of logic. All the standard use-cases are covered by tests but the overall logic is a bit confusing. It may not produce the desired/expected history in non-standard uses.  It should not however produce a garbage state: the current route will always be valid. A proper cleanup would require passing a separate pageOperation, distinct from operation.  Or it may be cleaner to take a list of RouterPage instead of a Route, and determine the history/pages changes separately. */
-		Route SetRouteImpl(Visual root, RouterPage rootPage, Route r, NavigationGotoMode gotoMode, 
+		RouterPageRoute SetRouteImpl(Visual root, RouterPage rootPage, RouterPageRoute r, 
+			NavigationGotoMode gotoMode, 
 			RoutingOperation operation, string operationStyle, out IRouterOutlet majorChange,
 			bool canReuse = true)
 		{	
@@ -411,11 +423,9 @@ namespace Fuse.Navigation
 				return null;
 			}
 			
-			RouterPage page;
-			if (r.RouterPage != null)
-				page = r.RouterPage;
-			else
-				page = new RouterPage{ Path = r.Path, Parameter = r.Parameter };
+			//TODO: This .CLone is wrong, it's just to get rid of the `.Node` parameter. This indicates
+			//the API is wrong to assocaite Node with RouterPage
+			RouterPage page = r.RouterPage.Clone();
 			var didTransition = outlet.CompareCurrent(page);
 			if (didTransition == RoutingResult.Invalid)
 				return null;
@@ -480,7 +490,7 @@ namespace Fuse.Navigation
 				trackMajorChange = false;
 			}
 
-			Route outSubRoute = null;
+			RouterPageRoute outSubRoute = null;
 			if (r.SubRoute != null)
 			{
 				if (page.Visual == null)
@@ -502,10 +512,10 @@ namespace Fuse.Navigation
 				outSubRoute = GetCurrent(page.Visual);
 			}
 			
-			return new Route(page.Path, page.Parameter, outSubRoute);
+			return new RouterPageRoute( page, outSubRoute);
 		}
 		
-		Route GetCurrent(Visual from, IRouterOutlet to = null)
+		RouterPageRoute GetCurrent(Visual from, IRouterOutlet to = null)
 		{
 			if (from == null)
 				return null;
@@ -515,12 +525,12 @@ namespace Fuse.Navigation
 				return null;
 				
 			var page = outlet.GetCurrent();
-			return new Route( page.Path, page.Parameter, GetCurrent(page.Visual, to));
+			return new RouterPageRoute( page, GetCurrent(page.Visual, to));
 		}
 		
-		Route GetRouteUpToRouter(Node from)
+		RouterPageRoute GetRouteUpToRouter(Node from)
 		{
-			Route route = null;
+			RouterPageRoute route = null;
 			
 			while (from != null)
 			{
@@ -529,23 +539,14 @@ namespace Fuse.Navigation
 				if (outlet == null)
 					break;
 					
-				string opath = "";
-				string oparameter = "";
 				var v = page as Visual;
 				var pd = v != null ? PageData.Get(v) : null;
+				RouterPage opage = null;
 				if (pd == null || pd.RouterPage == null)
-				{
-					var opage = outlet.GetCurrent();
-					opath = opage.Path;
-					oparameter = opage.Parameter;
-					v = opage.Visual;
-				}
+					opage = outlet.GetCurrent();
 				else
-				{
-					opath = pd.RouterPage.Path;
-					oparameter = pd.RouterPage.Parameter;
-				}
-				route = new Route( opath, oparameter, route );
+					opage = pd.RouterPage;
+				route = new RouterPageRoute( opage, route );
 				
 				from = (outlet as Node).Parent;
 			}
@@ -645,6 +646,11 @@ namespace Fuse.Navigation
 		}
 		
 		internal Route GetRelativeRoute(Node from, Route rel)
+		{
+			return GetRelativeRoute( from, RouterPageRoute.Convert(rel) ).ToRoute();
+		}
+		
+		internal RouterPageRoute GetRelativeRoute(Node from, RouterPageRoute rel)
 		{	
 			if (!IsRootingCompleted || !from.IsRootingCompleted)
 			{
@@ -716,7 +722,7 @@ namespace Fuse.Navigation
 		}
 		
 		/* Get a Route from the history stack, where 0 is the current route, -1 the previous, etc. */
-		internal Route GetHistoryRoute( int at )
+		internal RouterPageRoute GetHistoryRoute( int at )
 		{
 			var gha = new GetHistoryAt{ At = at };
 			var list = new List<RouterPage>();
@@ -728,16 +734,13 @@ namespace Fuse.Navigation
 		{
 			public int At;
 			
-			public Route Result;
+			public RouterPageRoute Result;
 			
 			public bool HistoryAction( List<RouterPage> stack )
 			{
-				Route r = null;
+				RouterPageRoute r = null;
 				for (int i=stack.Count-1; i>=0; --i)
-				{
-					r = new Route( stack[i].Path, stack[i].Parameter, r );
-					r.RouterPage = stack[i];
-				}
+					r = new RouterPageRoute( stack[i], r );
 		
 				if (At == 0)
 					Result = r;
