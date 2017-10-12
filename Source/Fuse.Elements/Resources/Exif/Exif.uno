@@ -32,7 +32,7 @@ namespace Fuse.Resources.Exif
 				data = ExifDotNetImpl.FromByteArray(buffer);
 			else
 			{
-				data = new ExifData();
+				data = default(ExifData);
 				return false;
 			}
 			return true;
