@@ -5,6 +5,9 @@
 - Fixed `RangeControl.RelativeValue` to properly update when bound in UX
 - Allowed `Minimum` to be less than `Maximum` on `RangeControl` making it easier to do left-to-right `100..0` ranges.
 
+## ScrollViewPager
+- Fixed a NullReferenceError that could happen while using ScrollViewPager in preview
+
 ## DatePicker
 - Introduced Fuse.Controls.DatePicker class, which wraps native date pickers on Android and iOS. See the `DatePicker` class documentation for more details.
 

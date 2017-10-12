@@ -98,5 +98,19 @@ namespace Fuse.Controls.ScrollViewTest
 		{
 			_countReachedStart++;
 		}
+		
+		[Test]
+		// Accesses _scrollable while unrooting
+		//https://github.com/fusetools/fuselibs-public/issues/560
+		public void Issue560()
+		{
+			var s = new UX.ScrollViewPager.Issue560();
+			using (var root = TestRootPanel.CreateWithChild(s, int2(300)))
+			{
+				s.scroll.Goto( float2(300) );
+				s.Children.Remove( s.scroll );
+				root.StepFrame(); //just not failing is good
+			}
+		}
 	}
 }

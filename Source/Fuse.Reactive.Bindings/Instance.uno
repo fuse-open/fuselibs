@@ -64,11 +64,13 @@ namespace Fuse.Reactive
 	[UXContentMode("Template")]
 	public partial class Instantiator: Behavior, IObserver, Node.ISubtreeDataProvider, IDeferred
 	{
+		/** @hide */
 		protected internal Instantiator(IList<Template> templates)
 		{
 			_templates = templates;
 		}
 
+		/** @hide */
 		protected internal Instantiator()
 		{
 		}
