@@ -48,6 +48,13 @@ namespace Fuse.Resources.Exif
 
 		internal ExifData(int orientation)
 		{
+			if (orientation < 0)
+			{
+				// No Exif orientation chunk
+				Orientation = ImageOrientation.Identity;
+				return;
+			}
+
 			switch (orientation)
 			{
 				case 1: Orientation = ImageOrientation.Identity; break;
@@ -115,7 +122,7 @@ namespace Fuse.Resources.Exif
 					return orientation;
 				}
 			}
-			return 0;
+			return -1;
 		}
 	}
 
@@ -148,7 +155,7 @@ namespace Fuse.Resources.Exif
 				CFRelease(imageSource);
 			}
 
-			int rotation = 0;
+			int rotation = -1;
 			NSString* tagTarget = @"Orientation";
 			if (metadataArray != nil)
 			{
@@ -202,7 +209,7 @@ namespace Fuse.Resources.Exif
 			catch (Exception e) {
 				e.printStackTrace();
 			}
-			return 0;
+			return -1;
 		@}
 	}
 }
