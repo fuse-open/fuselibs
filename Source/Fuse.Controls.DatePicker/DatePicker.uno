@@ -17,7 +17,8 @@ namespace Fuse.Controls
 		DateTime MinValue { get; set; }
 		DateTime MaxValue { get; set; }
 
-		void PollViewValue();
+		void OnRooted();
+		void OnUnrooted();
 	}
 
 	interface IDatePickerHost
@@ -131,15 +132,6 @@ namespace Fuse.Controls
 			get { return (IDatePickerView)NativeView; }
 		}
 
-		void PollViewValue()
-		{
-			var dpv = DatePickerView;
-			if (dpv == null)
-				return;
-
-			dpv.PollViewValue();
-		}
-
 		void IDatePickerHost.OnValueChanged()
 		{
 			OnValueChanged(this);
@@ -148,12 +140,18 @@ namespace Fuse.Controls
 		protected override void OnRooted()
 		{
 			base.OnRooted();
-			UpdateManager.AddAction(PollViewValue);
+
+			var dpv = DatePickerView;
+			if (dpv != null)
+				dpv.OnRooted();
 		}
 
 		protected override void OnUnrooted()
 		{
-			UpdateManager.RemoveAction(PollViewValue);
+			var dpv = DatePickerView;
+			if (dpv != null)
+				dpv.OnUnrooted();
+
 			base.OnUnrooted();
 		}
 	}

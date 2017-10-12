@@ -53,13 +53,66 @@ namespace Fuse.Controls.Native.Android
 			_pollValueCache = Value;
 		}
 
-		public void PollViewValue()
+		void PollViewValue()
 		{
 			if (Value != _pollValueCache)
 			{
 				OnValueChanged();
 				UpdatePollValueCache();
 			}
+		}
+
+		// On older versions of Android, layout changes can cause the calendar part of the DatePicker's
+		//  view to scroll to a bogus month, which both makes the view look like it has the wrong value,
+		//  and also makes it hard to pick a relevant value in many cases. To get around this, we need
+		//  to somehow get the control to scroll to show the currently set value whenever layout changes.
+		//  To achieve this, we'll reset a counter to zero on layout change, count that up a couple times
+		//  in order to wait at least 1 frame (we need more than just one iteration to avoid potential
+		//  update manager ordering issues). Then, we'll grab the picker's current value and write it
+		//  back, tricking the picker to invalidate and scroll where we want it. The downside of this
+		//  approach is that _any_ change in layout that causes this view to change size will scroll
+		//  the picker view to the currently selected value, but this is a decent tradeoff.
+		int writebackFrameCounter = 0;
+
+		internal protected override void OnSizeChanged()
+		{
+			if (GetApiLevel() >= 24)
+				return;
+
+			writebackFrameCounter = 0;
+		}
+
+		void UpdateWriteback()
+		{
+			if (GetApiLevel() >= 24)
+				return;
+
+			if (writebackFrameCounter < 2)
+			{
+				writebackFrameCounter++;
+				if (writebackFrameCounter == 2)
+				{
+					var v = DateTimeConverterHelpers.ConvertDateTimeToMsSince1970InUtc(Value);
+					SetDate(Handle, v - 1); // Write temp value, as the picker won't scroll unless the value actually changes
+					SetDate(Handle, v);
+				}
+			}
+		}
+
+		public void Update()
+		{
+			PollViewValue();
+			UpdateWriteback();
+		}
+
+		public void OnRooted()
+		{
+			UpdateManager.AddAction(Update);
+		}
+
+		public void OnUnrooted()
+		{
+			UpdateManager.RemoveAction(Update);
 		}
 
 		DateTime _minValue;
@@ -90,6 +143,12 @@ namespace Fuse.Controls.Native.Android
 		{
 			_host.OnValueChanged();
 		}
+
+		[Foreign(Language.Java)]
+		static int GetApiLevel()
+		@{
+			return android.os.Build.VERSION.SDK_INT;
+		@}
 
 		[Foreign(Language.Java)]
 		static Java.Object Create()
