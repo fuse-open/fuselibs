@@ -40,6 +40,9 @@
  * `IObservable` and `IObservableArray` no longer push their initial value on `Subscribe`.
 
 
+### WebView
+- Exported the methods goBack, goForward, reload and stop for use in FuseJS
+
 # 1.3
 
 ## 1.3.0
@@ -84,8 +87,6 @@
 
 ### WebView
 Fixed issue where custom URI schemes were matched too greedily in URLs, making for erroneously intercepted URL requests.
-
-- Exported the methods goBack, goForward, reload and stop for use in FuseJS
 
 ### Delay Push Notification Registration on iOS
 
