@@ -12,9 +12,9 @@ namespace Fuse.Resources.Exif
 	public enum ImageOrientation
 	{
 		Identity = 0,
-		Rotate90 = 1,
-		Rotate180 = 2,
-		Rotate270 = 3,
+		Rotate90 = 1 << 0,
+		Rotate180 = 1 << 1,
+		Rotate270 = Rotate90 | Rotate180,
 		FlipVertical = 1 << 2,
 	}
 
