@@ -48,12 +48,7 @@ namespace Experimental.Http
 			//_header.ReasonPhrase = resp.ReasonPhrase;
 
 			_header.Headers = ExtractHeaders(resp.GetResponseHeaders());
-			OnBufferLoaded(resp.GetResponseContentByteArray());
-		}
-
-		void OnBufferLoaded( byte[] data )
-		{
-			Callback(Header, new Buffer(data));
+			Callback(Header, new Buffer(resp.GetResponseContentByteArray()));
 		}
 
 		Dictionary<string, string> ExtractHeaders(string headers)
