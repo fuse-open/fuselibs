@@ -32,10 +32,18 @@ namespace Fuse.Resources.Exif
 				data = ExifDotNetImpl.FromByteArray(buffer);
 			else
 			{
-				data = new ExifData(0);
+				data = new ExifData();
 				return false;
 			}
 			return true;
+		}
+
+		public static ImageOrientation GetImageOrientationFromByteArrayOrDefault(byte[] buffer)
+		{
+			ExifData data;
+			if (FromByteArray(buffer, out data))
+				return data.Orientation;
+			return ImageOrientation.Identity;
 		}
 
 		internal ExifData(int orientation)
