@@ -16,6 +16,10 @@ namespace Fuse.Controls
 		{
 			ScriptClass.Register(typeof(WebView),
 				new ScriptMethod<WebView>("goto", setUrl, ExecutionThread.MainThread),
+				new ScriptMethod<WebView>("goBack", goBack, ExecutionThread.MainThread),
+				new ScriptMethod<WebView>("goForward", goForward, ExecutionThread.MainThread),
+				new ScriptMethod<WebView>("reload", reload, ExecutionThread.MainThread),
+				new ScriptMethod<WebView>("stop", stop, ExecutionThread.MainThread),
 				new ScriptMethod<WebView>("loadHtml", loadHtml, ExecutionThread.MainThread),
 				new ScriptMethod<WebView>("setBaseUrl", setBaseUrl, ExecutionThread.MainThread));
 		}
@@ -44,6 +48,79 @@ namespace Fuse.Controls
 					return;
 			}
 
+		}
+
+		/**
+			Go back to the previous page.
+
+			@scriptmethod goBack()
+		*/
+		static void goBack(Context c, WebView view, object[] args)
+		{
+			switch(args.Length)
+			{
+				case 0:
+					view.GoBack();
+					return;
+				default:
+					Fuse.Diagnostics.UserError( "WebView.goBack does not take any arguments", view);
+					return;
+			}
+		}
+
+		/**
+			Go forward to the next page.
+
+			@scriptmethod goForward()
+		*/
+		static void goForward(Context c, WebView view, object[] args)
+		{
+			switch(args.Length)
+			{
+				case 0:
+					view.GoForward();
+					return;
+				default:
+					Fuse.Diagnostics.UserError( "WebView.goForward does not take any arguments", view);
+					return;
+			}
+		}
+
+		/**
+			Reload the current page.
+
+			@scriptmethod reload()
+		*/
+		static void reload(Context c, WebView view, object[] args)
+		{
+			switch(args.Length)
+			{
+				case 0:
+					view.Reload();
+					return;
+				default:
+					Fuse.Diagnostics.UserError( "WebView.reload does not take any arguments", view);
+					return;
+			}
+		}
+
+
+		/**
+			Stop loading the page.
+
+			@scriptmethod stop()
+		*/
+		static void stop(Context c, WebView view, object[] args)
+		{
+			switch(args.Length)
+			{
+				case 0:
+					view.Stop();
+					return;
+				default:
+					Fuse.Diagnostics.UserError( "WebView.stop does not take any arguments", view);
+					return;
+			}
 		}
 
 		/**
