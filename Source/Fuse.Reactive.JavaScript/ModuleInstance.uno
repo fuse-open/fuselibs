@@ -77,7 +77,6 @@ namespace Fuse.Reactive
 
 		static object _resetHookMutex = new object();
 
-		extern(!FUSELIBS_NO_TOASTS) static string previousErrorFile;
 		DiagnosticSubject _diagnostic = new DiagnosticSubject();
 
 		void EvaluateModule()
@@ -92,32 +91,14 @@ namespace Fuse.Reactive
 				newModuleResult.AddDependency(_js.DispatchEvaluate);
 
 				if (newModuleResult.Error == null)
-				{
 					_moduleResult = newModuleResult;
-					if defined(!FUSELIBS_NO_TOASTS)
-					{
-						if (previousErrorFile == _js.FileName + _js.LineNumber)
-						{
-							Diagnostics.UserSuccess("JavaScript error in " + _js.FileName + " fixed!", this);
-							previousErrorFile = null;
-						}
-					}
-				}
 				else
 				{
 					var se = newModuleResult.Error;
 
 					// Don't report chain-errors of already reported errors
 					if (!se.Message.Contains(ScriptModule.ModuleContainsAnErrorMessage))
-					{
-						if defined(FUSELIBS_NO_TOASTS)
-							_diagnostic.SetDiagnostic(se);
-						else
-						{
-							JavaScript.UserScriptError( "JavaScript error", se, this );
-							previousErrorFile = _js.FileName + _js.LineNumber;
-						}
-					}
+						_diagnostic.SetDiagnostic(se);
 				}
 			}
 		}

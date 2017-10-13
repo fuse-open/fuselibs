@@ -104,10 +104,7 @@ namespace Fuse.Reactive
 					{
 						//This assumes the Observable.js code is not the source of the error and thus it must be
 						//user code causing the problem
-						if defined(FUSELIBS_NO_TOASTS)
-							DiagnosticSubject.SetDiagnostic(ex);
-						else
-							JavaScript.UserScriptError( "Failed to set Observable value", ex, this );
+						DiagnosticSubject.SetDiagnostic(ex);
 					}
 				}
 			}
