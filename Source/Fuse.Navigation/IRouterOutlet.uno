@@ -43,9 +43,7 @@ namespace Fuse.Navigation
 	{
 		/** Navigates the outlet to the given path, with the given parameter. 
 
-			@param page Can be modified by the receiver to normalize the Path/Parameter. The Visual
-				parameter will be set as output. The caller passes ownership to the RouterOutlet -- it
-				may read data after the call but no longer modify it.
+			@param page Can be modified by the receiver to normalize the Path/Parameter.  The caller passes ownership to the RouterOutlet -- it may read data after the call but no longer modify it.
 			@param gotoMode Specifies whether the router should transition (animate) to the new state,
 				or bypass (go directly) to the new state.
 			@param operation specifies what routing operation is being performed to generate this
@@ -55,17 +53,17 @@ namespace Fuse.Navigation
 			@return what happened as a result of this request. This assists the router in combining this operation into the entire routing request.
 		*/
 		RoutingResult Goto(RouterPage page, NavigationGotoMode gotoMode, 
-			RoutingOperation operation, string operationStyle);
+			RoutingOperation operation, string operationStyle, out Visual visual);
 
 		/*
 			If NoChange or MinorChange then page.Visual will be set
 		*/
-		RoutingResult CompareCurrent(RouterPage page);
+		RoutingResult CompareCurrent(RouterPage page, out Visual visual);
 			
 		void PartialPrepareGoto(	double progress);
 		void CancelPrepare();
 			
-		RouterPage GetCurrent();
+		RouterPage GetCurrent(out Visual visual);
 		
 		OutletType Type { get; }
 	}

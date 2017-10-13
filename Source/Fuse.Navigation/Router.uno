@@ -120,10 +120,6 @@ namespace Fuse.Navigation
 					}
 				}
 			}
-			
-			_rootPage.Node = Parent;
-			if (_rootPage.Node == null)
-				Fuse.Diagnostics.UserError( "No visual routing outlet was found",this );
 		}
 
 		protected override void OnUnrooted()
@@ -423,10 +419,9 @@ namespace Fuse.Navigation
 				return null;
 			}
 			
-			//TODO: This .CLone is wrong, it's just to get rid of the `.Node` parameter. This indicates
-			//the API is wrong to assocaite Node with RouterPage
-			RouterPage page = r.RouterPage.Clone();
-			var didTransition = outlet.CompareCurrent(page);
+			RouterPage page = r.RouterPage;
+			Visual pageVisual = null;
+			var didTransition = outlet.CompareCurrent(page, out pageVisual);
 			if (didTransition == RoutingResult.Invalid)
 				return null;
 			
@@ -434,7 +429,7 @@ namespace Fuse.Navigation
 			bool leafPush = r.SubRoute == null && operation == RoutingOperation.Push;
 			bool reusePage = canReuse && didTransition == RoutingResult.NoChange && !leafPush;
 			if (reusePage)
-				page = outlet.GetCurrent();
+				page = outlet.GetCurrent(out pageVisual);
 			
 			if (gotoMode != NavigationGotoMode.Prepare)
 			{
@@ -475,9 +470,10 @@ namespace Fuse.Navigation
 				}
 			}
 			
+			
 			if (didTransition != RoutingResult.NoChange)
 			{
-				didTransition = outlet.Goto(page, gotoMode, operation, operationStyle);
+				didTransition = outlet.Goto(page, gotoMode, operation, operationStyle, out pageVisual);
 				if (didTransition == RoutingResult.Invalid)
 					return null;
 			}
@@ -493,14 +489,14 @@ namespace Fuse.Navigation
 			RouterPageRoute outSubRoute = null;
 			if (r.SubRoute != null)
 			{
-				if (page.Visual == null)
+				if (pageVisual == null)
 				{
 					Fuse.Diagnostics.InternalError( "SubRoute requested but outlet has no active path: " + r, this );
 					return null;
 				}
 				
 				IRouterOutlet subMajorChange;
-				outSubRoute = SetRouteImpl(page.Visual, page, r.SubRoute, gotoMode, operation, 
+				outSubRoute = SetRouteImpl(pageVisual, page, r.SubRoute, gotoMode, operation, 
 					operationStyle, out subMajorChange, reusePage );
 				if (trackMajorChange)
 					majorChange = subMajorChange;
@@ -509,7 +505,7 @@ namespace Fuse.Navigation
 			}
 			else
 			{
-				outSubRoute = GetCurrent(page.Visual);
+				outSubRoute = GetCurrent(pageVisual);
 			}
 			
 			return new RouterPageRoute( page, outSubRoute);
@@ -524,8 +520,9 @@ namespace Fuse.Navigation
 			if (outlet == null || outlet == to)
 				return null;
 				
-			var page = outlet.GetCurrent();
-			return new RouterPageRoute( page, GetCurrent(page.Visual, to));
+			Visual pageVisual;
+			var page = outlet.GetCurrent(out pageVisual);
+			return new RouterPageRoute( page, GetCurrent(pageVisual, to));
 		}
 		
 		RouterPageRoute GetRouteUpToRouter(Node from)
@@ -542,8 +539,9 @@ namespace Fuse.Navigation
 				var v = page as Visual;
 				var pd = v != null ? PageData.Get(v) : null;
 				RouterPage opage = null;
+				Visual ignore;
 				if (pd == null || pd.RouterPage == null)
-					opage = outlet.GetCurrent();
+					opage = outlet.GetCurrent(out ignore);
 				else
 					opage = pd.RouterPage;
 				route = new RouterPageRoute( opage, route );

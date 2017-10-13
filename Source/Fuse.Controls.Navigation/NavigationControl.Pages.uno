@@ -127,9 +127,8 @@ namespace Fuse.Controls
 				rPage = new RouterPage();
 			}
 			
-			(this as IRouterOutlet).Goto( rPage, trans, op, "" );
-			if (rPage.Visual != null)
-				PageData.GetOrCreate(rPage.Visual).SetContext(data);
+			Visual ignore;
+			((IRouterOutlet)this).Goto( rPage, trans, op, "", out ignore );
 			
 			_curPageIndex = pageNdx;
 		}

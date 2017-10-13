@@ -126,7 +126,9 @@ namespace Fuse.Controls
 			var pages = AncestorRouterPage != null ? AncestorRouterPage.ChildRouterPages : null;
 			if (pages != null && pages.Count > 0)
 			{ 
-				((IRouterOutlet)this).Goto( pages[pages.Count-1], NavigationGotoMode.Bypass, RoutingOperation.Goto, "" );
+				Visual ignore;
+				((IRouterOutlet)this).Goto( pages[pages.Count-1], NavigationGotoMode.Bypass, 
+					RoutingOperation.Goto, "", out ignore );
 			}
 			else
 			{
@@ -183,8 +185,9 @@ namespace Fuse.Controls
 			return useVisual;
 		}
 		
-		RoutingResult IRouterOutlet.CompareCurrent(RouterPage routerPage)
+		RoutingResult IRouterOutlet.CompareCurrent(RouterPage routerPage, out Visual pageVisual)
 		{
+			pageVisual = null;
 			var useVisual = FindPath(routerPage.Path);
 			if (useVisual == null)
 				return RoutingResult.Invalid;
@@ -192,7 +195,7 @@ namespace Fuse.Controls
 			if (Active != useVisual)
 				return RoutingResult.Change;
 				
-			routerPage.Visual = useVisual;
+			pageVisual = useVisual;
 			if (useVisual.Parameter == routerPage.Parameter)
 				return RoutingResult.NoChange;
 				
@@ -201,13 +204,15 @@ namespace Fuse.Controls
 		}
 		
 		RoutingResult IRouterOutlet.Goto(RouterPage routerPage, NavigationGotoMode gotoMode, 
-			RoutingOperation operation, string operationStyle)
+			RoutingOperation operation, string operationStyle, out Visual pageVisual)
 		{
+			pageVisual = null;
+			
 			var useVisual = FindPath(routerPage.Path);
 			if (useVisual == null)
 				return RoutingResult.Invalid;
 
-			routerPage.Visual = useVisual;
+			pageVisual = useVisual;
 			bool same = useVisual.Parameter == routerPage.Parameter;
 			PageData.GetOrCreate(useVisual).AttachRouterPage(routerPage);
 			if (useVisual == Active) 
@@ -221,7 +226,8 @@ namespace Fuse.Controls
 		{
 			if (AncestorRouterPage != null)
 			{
-				var current = (this as IRouterOutlet).GetCurrent();
+				Visual ignore;
+				var current = (this as IRouterOutlet).GetCurrent(out ignore);
 				var pages = AncestorRouterPage.ChildRouterPages;
 				var changed = false;
 				if (pages.Count == 0)
@@ -240,8 +246,9 @@ namespace Fuse.Controls
 			}
 		}
 		
-		RouterPage IRouterOutlet.GetCurrent()
+		RouterPage IRouterOutlet.GetCurrent(out Visual pageVisual)
 		{
+			pageVisual = Active;
 			if (Active == null)
 				return new RouterPage{ Path = "" };
 			else

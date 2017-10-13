@@ -64,7 +64,8 @@ namespace Fuse.Controls
 			if (args.Length > 1)
 				param = Json.Stringify(args[1], true);
 			var rPage = new RouterPage{ Path = path, Parameter = param };
-			outlet.Goto(rPage, gotoMode, RoutingOperation.Goto, "");
+			Visual ignore;
+			outlet.Goto(rPage, gotoMode, RoutingOperation.Goto, "", out ignore);
 		}
 	}
 }

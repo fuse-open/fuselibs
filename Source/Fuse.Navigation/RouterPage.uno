@@ -5,47 +5,37 @@ using Fuse.Reactive;
 
 namespace Fuse.Navigation
 {
+	delegate void ChildRouterPagesUpdated();
+	
 	class RouterPage
 	{
+		//These are meant to be readonly, but the initialization is difficult if truly done as such
 		public string Path;
 		public string Parameter;
 		public object Context;
-		[WeakReference]
-		public Node Node;
-		
-		public Visual Visual 
-		{ 	
-			get { return Node as Visual; } 
-			set { Node = value; }
-		}
 		
 		//if there is an Outlet descendent of this page it should use this to track it's pages. This will
 		//keep the pages hierarchy/history during navigation.
-		ObserverMap<RouterPage> _childRouterPages;
+		PagesMap _childRouterPages;
 		public ObserverMap<RouterPage> ChildRouterPages
 		{
 			get 
 			{
 				if (_childRouterPages == null)
-					_childRouterPages = new PagesMap(this);
+					_childRouterPages = new PagesMap();
 				return _childRouterPages;
 			}
 		}
 		
-		public RouterPage Clone()
+		public event ChildRouterPagesUpdated ChildRouterPagesUpdated
 		{
-			var np = new RouterPage();
-			np.Path = Path;
-			np.Parameter = Parameter;
-			np.Context = Context;
-			np._childRouterPages = _childRouterPages;
-			//np.Node = Node;
-			return np;
+			add { ((PagesMap)ChildRouterPages).Updated += value; }
+			remove { ((PagesMap)ChildRouterPages).Updated -= value; }
 		}
 		
 		public override string ToString() 
 		{
-			return Path + "?" + Parameter + " " + Visual + " " + 
+			return Path + "?" + Parameter  + " " + 
 				(Context == null ? "no-ctx" : ("@" + Context.GetHashCode()));
 		}
 		
@@ -70,13 +60,7 @@ namespace Fuse.Navigation
 	
 	class PagesMap : ObserverMap<RouterPage>
 	{
-		[WeakReference]
-		RouterPage _owner;
-		
-		public PagesMap( RouterPage owner )
-		{
-			_owner = owner;
-		}
+		public event ChildRouterPagesUpdated Updated;
 		
 		protected override RouterPage Map(object v)
 		{
@@ -90,10 +74,8 @@ namespace Fuse.Navigation
 	
 		protected override void OnUpdated()
 		{
-			if (_owner == null || _owner.Node == null)
-				return;
-				
-			RouterPage.BubbleHistoryChanged(_owner.Node);
+			if (Updated != null)
+				Updated();
 		}
 	}
 	
