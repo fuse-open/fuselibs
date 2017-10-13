@@ -78,18 +78,20 @@ namespace Fuse.Reactive
 
 			class SetExclusiveOperation
 			{
-				public SetExclusiveOperation(ThreadWorker worker, Scripting.Object obj, object newValue, int origin)
+				public SetExclusiveOperation(ThreadWorker worker, Scripting.Object obj, object newValue, int origin, DiagnosticSubject diagnosticSubject)
 				{
 					Worker = worker;
 					Object = obj;
 					NewValue = newValue;
 					Origin = origin;
+					DiagnosticSubject = diagnosticSubject;
 				}
 
 				readonly ThreadWorker Worker;
 				readonly Scripting.Object Object;
 				readonly object NewValue;
 				readonly int Origin;
+				readonly DiagnosticSubject DiagnosticSubject;
 
 				public void Perform()
 				{
@@ -103,7 +105,7 @@ namespace Fuse.Reactive
 						//This assumes the Observable.js code is not the source of the error and thus it must be
 						//user code causing the problem
 						if defined(FUSELIBS_NO_TOASTS)
-							SetDiagnostic(ex);
+							DiagnosticSubject.SetDiagnostic(ex);
 						else
 							JavaScript.UserScriptError( "Failed to set Observable value", ex, this );
 					}
@@ -120,7 +122,7 @@ namespace Fuse.Reactive
 					return;
 				}
 
-				var op = new SetExclusiveOperation(_om._worker, _om.Object, newValue, _origin);
+				var op = new SetExclusiveOperation(_om._worker, _om.Object, newValue, _origin, this);
 				if (_om._worker.CanEvaluate)
 					op.Perform();
 				else
