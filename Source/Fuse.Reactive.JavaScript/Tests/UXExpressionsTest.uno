@@ -82,37 +82,6 @@ namespace Fuse.Reactive.Test
 				root.StepFrameJS();
 
 				Assert.AreEqual("Hello foo : FOO!", e.t1.Value);
-
-				if defined(FUSELIBS_NO_TOASTS)
-				{
-					using (var dg = new RecordDiagnosticGuard())
-					{
-						var diagnostics = dg.DequeueAll();
-						Assert.AreEqual(0, diagnostics.Count);
-
-						e.CallDec.Perform(); // index = -2 now, so that's = -1 and should give errro
-						root.StepFrameJS();
-
-						Assert.AreEqual("Hello foo : FOO!", e.t1.Value);
-
-						diagnostics = dg.DequeueAll();
-						Assert.AreEqual(1, diagnostics.Count);
-						Assert.IsTrue(diagnostics[0].Message.Contains("Index was outside the bounds of the array"));
-
-						e.CallInc.Perform();
-						root.StepFrameJS();
-
-						diagnostics = dg.DequeueAll();
-						Assert.AreEqual(0, diagnostics.Count);
-
-						e.CallIllegalIndex.Perform(); // index = 'foo', should give error
-						root.StepFrameJS();
-
-						diagnostics = dg.DequeueAll();
-						Assert.AreEqual(1, diagnostics.Count);
-						Assert.IsTrue(diagnostics[0].Message.Contains("Index must be a number"));
-					}
-				}
 			}
 		}
 
