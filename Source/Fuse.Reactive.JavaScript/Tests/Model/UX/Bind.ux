@@ -1,8 +1,9 @@
 <Panel ux:Class="UX.Model.Bind">
-	<Panel ux:Class="UMBPanel" Model="UX/Bind(this)" >
+	<Panel ux:Class="UMBPanel" Model="UX/Bind" >
 		<string ux:Property="Value"/>
 		<float ux:Property="Load"/>
-		
+		<float ux:Property="DefaultFromJS" />
+
 		<FuseTest.DudElement StringValue="{value}" ux:Name="v"/>
 		<FuseTest.DudElement Value="{id}" ux:Name="id"/>
 		<DataBinding Target="this.Load" Key="load"/>

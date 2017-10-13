@@ -270,7 +270,8 @@ namespace Fuse.Reactive.Test
 				root.StepFrameJS();
 				Assert.AreEqual( "bop", e.u.v.StringValue );
 				Assert.AreEqual( 0, e.u.id.Value );
-				Assert.AreEqual( 5, e.u.Load );
+				Assert.AreEqual( 11, e.u.Load );
+				Assert.AreEqual( 10, e.u.DefaultFromJS );
 
 				e.u.Value = "loppy";
 				root.StepFrameJS();
@@ -279,7 +280,7 @@ namespace Fuse.Reactive.Test
 
 				e.u.callIncrLoad.Perform();
 				root.StepFrameJS();
-				Assert.AreEqual( 6, e.u.Load );
+				Assert.AreEqual( 12, e.u.Load );
 			}
 		}
 

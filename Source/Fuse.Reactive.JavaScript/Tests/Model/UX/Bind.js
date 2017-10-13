@@ -3,13 +3,14 @@ var instCount = 0
 export class Bind {
 	constructor(view) {
 		this.id = instCount++
-		this.view = view;
-		this.view.Load = 5
+		this.Load = 5
+		this.DefaultFromJS = 10
+		this.Value = undefined
 	}
 	
 	incrLoad() {
-		this.view.Load++
+		this.Load++
 	}
 
-	get value() { return this.view.Value; }
+	get value() { return this.Value; }
 }
