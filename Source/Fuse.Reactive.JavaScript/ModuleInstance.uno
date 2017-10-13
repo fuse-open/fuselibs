@@ -14,7 +14,7 @@ namespace Fuse.Reactive
 		public ModuleInstance(ThreadWorker worker, JavaScript js)
 		{
 			for (var i = 0; i < js.Dependencies.Count; i++)
-				_deps.Add(js.Dependencies[i].Name, worker.Unwrap(js.Dependencies[i].Value));
+				_deps.Add(js.Dependencies[i].Name, js.Dependencies[i].Value);
 
 			_js = js;
 			_worker = worker;
@@ -24,15 +24,21 @@ namespace Fuse.Reactive
 		// JS thread
 		void Evaluate()
 		{
+			var deps = new Dictionary<string, object>();
+			foreach (var key in _deps.Keys)
+			{
+				deps[key] = _worker.Unwrap(_deps[key]);
+			}
+
 			var nt = _js._nameTable;
 			while (nt != null)
 			{
 				for (int i = 0; i < nt.Entries.Length; ++i)
-					_deps.Add(nt.Entries[i], _worker.Unwrap(nt.Objects[i]));
+					deps.Add(nt.Entries[i], _worker.Unwrap(nt.Objects[i]));
 				nt = nt.ParentTable;
 			}
 
-			_js.ScriptModule.Dependencies = _deps;
+			_js.ScriptModule.Dependencies = deps;
 			_dc = _worker.Reflect(EvaluateExports());
 			UpdateManager.PostAction(SetDataContext);
 		}

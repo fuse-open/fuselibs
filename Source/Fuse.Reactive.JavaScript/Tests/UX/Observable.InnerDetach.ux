@@ -17,7 +17,7 @@
 			<JavaScript>
 				var val = this.Value.innerTwoWay();
 				module.exports = {
-					val
+					val: val
 				};
 			</JavaScript>
 			<TextInput Value="{val}" ux:Name="T"/>

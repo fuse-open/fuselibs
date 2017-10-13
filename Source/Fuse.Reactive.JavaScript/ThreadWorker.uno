@@ -32,6 +32,9 @@ namespace Fuse.Reactive
 		public static FuseJS.Builtins FuseJS { get { return _fuseJS; } }
 
 		readonly Thread _thread;
+
+		public bool CanEvaluate { get { return Thread.CurrentThread == _thread; } }
+
 		readonly ManualResetEvent _ready = new ManualResetEvent(false);
 		readonly ManualResetEvent _idle = new ManualResetEvent(true);
 		readonly ManualResetEvent _terminate = new ManualResetEvent(false);

@@ -155,6 +155,7 @@ namespace Fuse.Controls.Test
 				//swipe left (default to go forward)
 				root.PointerSwipe( float2(100,100), float2(800,100), 300 );
 				root.StepFrame(5); //stabilize
+				root.StepFrameJS();
 				Assert.AreEqual( 0, p.index.Value );
 			}
 		}

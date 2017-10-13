@@ -21,7 +21,12 @@
 			c.value = "moo++";
 		}
 
-		module.exports = { a, b, c, changeThingsUp };
+		module.exports = {
+			a : a,
+			b : b,
+			c : c,
+			changeThingsUp : changeThingsUp
+		};
 	</JavaScript>
 	<Text ux:Name="ta" Value="{a}" />
 	<Text ux:Name="tb" Value="{Read b}" />
