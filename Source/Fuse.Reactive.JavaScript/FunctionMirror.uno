@@ -47,10 +47,7 @@ namespace Fuse.Reactive
 				}
 				catch( ScriptException ex )
 				{
-					if defined(FUSELIBS_NO_TOASTS)
-						_f.SetDiagnostic(ex);
-					else
-						JavaScript.UserScriptError( "JavaScript call error", ex, this );
+					_f.SetDiagnostic(ex);
 				}
 			}
 		}

@@ -64,15 +64,6 @@ namespace Fuse.Reactive
 			base.OnUnrooted();
 		}
 
-		extern(!FUSELIBS_NO_TOASTS)
-		internal static void UserScriptError(string msg, ScriptException ex, object obj,
-			[CallerFilePath] string filePath = "", [CallerLineNumber] int lineNumber = 0,
-			[CallerMemberName] string memberName = "" )
-		{
-			msg = msg + " in " + ex.FileName + " line " + ex.LineNumber;
-			Fuse.Diagnostics.UserError(msg, obj, filePath, lineNumber, memberName, ex);
-		}
-
 		Module IModuleProvider.GetModule()
 		{
 			if (IsRootingCompleted) throw new Exception("Cannot require() a rooted module");
