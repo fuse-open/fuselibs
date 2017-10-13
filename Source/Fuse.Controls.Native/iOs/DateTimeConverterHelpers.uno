@@ -51,7 +51,7 @@ namespace Fuse.Controls.Native.iOS
 			NSCalendar *utcCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
 			[utcCalendar setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
 
-			NSDateComponents *components = [utcCalendar components:NSYearCalendarUnit|NSMonthCalendarUnit|NSDayCalendarUnit fromDate:date];
+			NSDateComponents *components = [utcCalendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:date];
 
 			NSDateComponents *utcComponents = [[NSDateComponents alloc] init];
 			[utcComponents setYear:[components year]];
@@ -71,7 +71,7 @@ namespace Fuse.Controls.Native.iOS
 			NSCalendar *utcCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
 			[utcCalendar setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
 
-			NSDateComponents *components = [utcCalendar components:NSHourCalendarUnit|NSMinuteCalendarUnit fromDate:date];
+			NSDateComponents *components = [utcCalendar components:NSCalendarUnitHour|NSCalendarUnitMinute fromDate:date];
 
 			NSDateComponents *utcComponents = [[NSDateComponents alloc] init];
 			[utcComponents setYear:1970];
