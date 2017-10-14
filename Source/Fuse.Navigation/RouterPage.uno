@@ -60,11 +60,24 @@ namespace Fuse.Navigation
 	
 	class PagesMap : ObserverMap<RouterPage>
 	{
+		static public string GetObjectPath( object data )
+		{
+			string path = null;
+			var obj = data as IObject;
+			//TODO: Until the Model is merged this shouldn't work, and it shouldn't be $template
+			//if (obj != null && obj.ContainsKey("$template")) //set implicitly by Model API
+			//	path = Marshal.ToType<string>(obj["$template"]);
+			if (obj != null && obj.ContainsKey("$path"))
+				path = Marshal.ToType<string>(obj["$path"]);
+				
+			return path;
+		}
+
 		public event ChildRouterPagesUpdated Updated;
 		
 		protected override RouterPage Map(object v)
 		{
-			return new RouterPage{ Context = v };
+			return new RouterPage{ Path = GetObjectPath(v), Context = v };
 		}
 		
 		protected override object Unmap(RouterPage mv)
