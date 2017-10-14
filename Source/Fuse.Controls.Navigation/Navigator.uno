@@ -104,7 +104,7 @@ namespace Fuse.Controls
 			{
 				if (DefaultPath != null)
 				{
-					_current = new NavPage{ RouterPage = new RouterPage{ Path = DefaultPath, Parameter = null } };
+					_current = new NavPage{ RouterPage = new RouterPage( DefaultPath ) };
 					((IRouterOutlet)this).Goto(_current.RouterPage, NavigationGotoMode.Bypass,
 						RoutingOperation.Goto, "", out _current.Visual);
 				}
@@ -185,8 +185,8 @@ namespace Fuse.Controls
 			Visual currentVisual;
 			var current = (this as IRouterOutlet).GetCurrent(out currentVisual);
 			
-			if ( (routerPage.Path == null || routerPage.Path == "") && DefaultPath != null)
-				routerPage.Path = DefaultPath;
+			if (DefaultPath != null)
+				routerPage.DefaultPath( DefaultPath );
 				
 			if (routerPage.Path != current.Path || (currentVisual == null && routerPage.Path != null))
 				return RoutingResult.Change;
@@ -202,8 +202,8 @@ namespace Fuse.Controls
 		PrepareResult Prepare(NavPage curPage, 
 			RouterPage routerPage, RoutingOperation operation)
 		{
-			if ( (routerPage.Path == null || routerPage.Path == "") && DefaultPath != null)
-				routerPage.Path = DefaultPath;
+			if (DefaultPath != null)
+				routerPage.DefaultPath( DefaultPath );
 				
 			var curPageVisual = curPage.Visual;
 			if (routerPage.Path == curPage.RouterPage.Path && curPageVisual != null)
@@ -462,7 +462,7 @@ namespace Fuse.Controls
 			
 			public NavPage()
 			{
-				RouterPage = new RouterPage();
+				RouterPage = RouterPage.CreateDefault();
 			}
 		}
 		

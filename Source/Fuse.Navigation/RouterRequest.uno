@@ -144,7 +144,7 @@ namespace Fuse.Navigation
 		{
 			if (args.Length <= pos) return null;
 			if (args.Length <= pos+1) return new RouterPageRoute(
-				new RouterPage{ Path = args[pos] as string }, null );
+				new RouterPage( args[pos] as string ), null );
 
 			var arg = args[pos+1];
 
@@ -153,7 +153,7 @@ namespace Fuse.Navigation
 			var path = args[pos] as string;
 			var parameter = Json.Stringify(arg, true);
 			return new RouterPageRoute( 
-				new RouterPage{ Path = path, Parameter = parameter }, ParseFlatRoute(args, pos+2));
+				new RouterPage( path, parameter ), ParseFlatRoute(args, pos+2));
 		}
 		
 		static public bool ParseNVPRoute(object value, out RouterPageRoute route)
@@ -182,15 +182,15 @@ namespace Fuse.Navigation
 			//require a "string", rather than use TryToType, to avoid nonsense being accepted
 			if (value is string)
 			{
-				route = new RouterPageRoute( new RouterPage{ Path = (string)value },  route);
+				route = new RouterPageRoute( new RouterPage( (string)value ),  route);
 				return true;
 			}
 			
 			var nvp = value as NameValuePair;
 			if (nvp != null)
 			{
-				route = new RouterPageRoute( new RouterPage{ Path = nvp.Name, 
-					Parameter = Json.Stringify(nvp.Value)}, route);
+				route = new RouterPageRoute( new RouterPage( nvp.Name, 
+					Json.Stringify(nvp.Value)), route);
 				return true;
 			}
 			

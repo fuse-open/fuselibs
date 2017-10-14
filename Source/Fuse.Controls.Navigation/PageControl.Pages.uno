@@ -134,7 +134,7 @@ namespace Fuse.Controls
 					}
 				}
 
-				mp.Page = new RouterPage{ Path = mp.Template, Context = mp.Data };
+				mp.Page = new RouterPage( mp.Template, null, mp.Data );
 				PageData.GetOrCreate(mp.Visual).AttachRouterPage( mp.Page );
 				visualCount++;
 			}

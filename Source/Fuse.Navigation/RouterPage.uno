@@ -7,16 +7,51 @@ namespace Fuse.Navigation
 {
 	delegate void ChildRouterPagesUpdated();
 	
+	/**
+		Represents a logical page in navigation. This creates a state-based navigation with these properties:
+		
+		- A router is not the master of the state, only a user of it
+		- the navigation state can persist without actual controls
+		- two-way binding with JavaScript variables
+		- pages are not strictly coupled to visuals
+		
+		The `Path`, `Parameter` and `Context` form a unique page. These cannot be changed. Each unique page requires a new `RouterPage`. This doesn't prevent a control from reusing the same Visual for multiple pages.
+		
+		Navigation controls form a hierarchy of pages up to the root. If there is a Router this will be the root, otherwise the highest control will be the root. An intervening Router can create a separate hieararchy.
+	*/
 	class RouterPage
 	{
-		//These are meant to be readonly, but the initialization is difficult if truly done as such
-		public string Path;
-		public string Parameter;
-		public object Context;
+		//The Path can't be read-only due to when/where the normalization/defaulting can happen
+		public string Path { get; private set; }
+		public readonly string Parameter;
+		public readonly object Context;
 		
-		//if there is an Outlet descendent of this page it should use this to track it's pages. This will
-		//keep the pages hierarchy/history during navigation.
+		public RouterPage( string path, string parameter = null, object context = null )
+		{
+			Path = path;
+			Parameter = parameter;
+			Context = context;
+		}
+		
+		/**
+			Creates a "default" page, the initial state for migration and most high-level navigation controls. Navigation must always have a current page: the stack cannot be completely empty.
+		*/
+		public static RouterPage CreateDefault()
+		{
+			return new RouterPage(null, null, null);
+		}
+		
+		/** This may be used to normalize an unspecified path to the default, or undergo other normalization */
+		public void DefaultPath( string defaultPath )
+		{
+			if (Path == null || Path == "")
+				Path = defaultPath;
+		}
+		
 		PagesMap _childRouterPages;
+		/**
+			If there is an Outlet descendent of this page it should use this to track it's pages. This will 	keep the pages hierarchy/history during navigation. This maintains a navigation state independent of controls, and also allows local histories to persist even when not active.
+		*/
 		public ObserverMap<RouterPage> ChildRouterPages
 		{
 			get 
@@ -77,7 +112,7 @@ namespace Fuse.Navigation
 		
 		protected override RouterPage Map(object v)
 		{
-			return new RouterPage{ Path = GetObjectPath(v), Context = v };
+			return new RouterPage( GetObjectPath(v), null, v );
 		}
 		
 		protected override object Unmap(RouterPage mv)
@@ -111,7 +146,7 @@ namespace Fuse.Navigation
 			{
 				var nxtrp = r.RouterPage;
 				if (nxtrp == null)
-					nxtrp = new RouterPage{ Path = r.Path, Parameter = r.Parameter };
+					nxtrp = new RouterPage( r.Path, r.Parameter );
 				var nxt = new RouterPageRoute( nxtrp, null );
 				
 				if (cur == null)

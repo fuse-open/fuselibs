@@ -712,7 +712,7 @@ namespace Fuse.Navigation
 			return null;
 		}
 		
-		RouterPage _rootPage = new RouterPage();
+		RouterPage _rootPage = RouterPage.CreateDefault();
 		/* The root of the navigation hierachy. */
 		internal RouterPage RootPage
 		{

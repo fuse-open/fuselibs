@@ -87,17 +87,18 @@ namespace Fuse.Controls
 			RouterPage rPage;
 			if (pageNdx >= AncestorRouterPage.ChildRouterPages.Count)
 			{
-				rPage = new RouterPage();
+				rPage = RouterPage.CreateDefault();
 				Fuse.Diagnostics.InternalError( "Inconsistent navigation history", this );
 			}
 			else if (pageNdx >= 0)
 			{
 				//this is expected, since the PagesMap will do the mapping
+				rPage = AncestorRouterPage.ChildRouterPages[pageNdx];
 			}
 			else
 			{
 				//having no page is inconsistent but must be dealt with since it can happen temporarily while binding
-				rPage = new RouterPage();
+				rPage = RouterPage.CreateDefault();
 			}
 			
 			Visual ignore;
