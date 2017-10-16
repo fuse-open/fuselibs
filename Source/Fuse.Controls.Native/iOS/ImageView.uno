@@ -22,10 +22,9 @@ namespace Fuse.Controls.Native.iOS
 				if (ImageSource is MultiDensityImageSource)
 					((MultiDensityImageSource)ImageSource).ActiveChanged -= OnMultiDensityImageSourceActiveChanged;
 
-				if (value == null)
-					ImageHandle = null;
-
 				_imageSource = value;
+				if (value == null)
+					return;
 
 				if (value is FileImageSource)
 					UpdateImage((FileImageSource)value);
