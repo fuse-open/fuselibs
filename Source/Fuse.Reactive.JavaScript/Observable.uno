@@ -11,7 +11,7 @@ namespace Fuse.Reactive
 		public override object this[int index]
 		{
 			get { return _values[index]; }
-			
+
 		}
 
 		public void SetValue(int index, object value)
@@ -21,19 +21,19 @@ namespace Fuse.Reactive
 
 		readonly List<Subscription> _observers = new List<Subscription>();
 		bool _usingObservers;
-		
+
 		void ObserversCleanup()
 		{
 			if (_usingObservers)
 				return;
-		
+
 			for (int i=_observers.Count-1; i>=0; --i)
 			{
 				if (_observers[i].Removed)
 					_observers.RemoveAt(i);
 			}
 		}
-		
+
 		internal int TestObserverCount
 		{
 			get
@@ -55,7 +55,7 @@ namespace Fuse.Reactive
 			public int Origin { get { return _origin; } }
 			//actual remove is deferred until safe (`Perform` locks the removals)
 			public bool Removed { get; private set; }
-			
+
 			public bool ShouldSend(int origin = -1)
 			{
 				return !Removed && origin != _origin;
@@ -104,7 +104,10 @@ namespace Fuse.Reactive
 					{
 						//This assumes the Observable.js code is not the source of the error and thus it must be
 						//user code causing the problem
-						DiagnosticSubject.SetDiagnostic(ex);
+						if defined(FUSELIBS_NO_TOASTS)
+							DiagnosticSubject.SetDiagnostic(ex);
+						else
+							JavaScript.UserScriptError( "Failed to set Observable value", ex, this );
 					}
 				}
 			}
@@ -198,7 +201,7 @@ namespace Fuse.Reactive
 
 		/**
 			Subscribes to updates on the `Observable`.
-			
+
 			The `Observer` state will be updated just prior to the callback on the `IObserver`.
 			The internal state will be consistent with the state expected as a result of that operation (it
 			won't lag behind or go ahead with compount operations, such as InsertAll using individual
@@ -252,7 +255,7 @@ namespace Fuse.Reactive
 			{
 				UpdateManager.PostAction(new Set(this, _worker.Reflect(args[3]), origin).Perform);
 			}
-			else if (op == "clear") 
+			else if (op == "clear")
 			{
 				UpdateManager.PostAction(new Clear(this, origin).Perform);
 			}
@@ -260,11 +263,11 @@ namespace Fuse.Reactive
 			{
 				UpdateManager.PostAction(new NewAt(this, ToInt(args[3]), _worker.Reflect(args[4])).Perform);
 			}
-			else if (op == "newAll") 
+			else if (op == "newAll")
 			{
 				UpdateManager.PostAction(new NewAll(this, (ArrayMirror)_worker.Reflect(args[3]), origin).Perform);
 			}
-			else if (op == "add") 
+			else if (op == "add")
 			{
 				UpdateManager.PostAction(new Add(this, _worker.Reflect(args[3])).Perform);
 			}
@@ -280,7 +283,7 @@ namespace Fuse.Reactive
 			{
 				UpdateManager.PostAction(new RemoveRange(this, ToInt(args[3]), ToInt(args[4])).Perform);
 			}
-			else if (op == "insertAll") 
+			else if (op == "insertAll")
 			{
 				UpdateManager.PostAction(new InsertAll(this, ToInt(args[3]), (ArrayMirror)_worker.Reflect(args[4])).Perform);
 			}
@@ -288,8 +291,8 @@ namespace Fuse.Reactive
 			{
 				UpdateManager.PostAction(new Failed(this, args[3] as string).Perform);
 			}
-			else 
-			{	
+			else
+			{
 				throw new Exception("Unhandled observable operation: " + op);
 			}
 
@@ -342,7 +345,7 @@ namespace Fuse.Reactive
 
 			public void Perform()
 			{
-				if (_observable.IsUnsubscribed) 
+				if (_observable.IsUnsubscribed)
 				{
 					Unsubscribe();
 					return;
@@ -358,7 +361,7 @@ namespace Fuse.Reactive
 				{
 					_observable._usingObservers = false;
 				}
-				
+
 				_isPerformed = true;
 			}
 
@@ -396,7 +399,7 @@ namespace Fuse.Reactive
 
 				Observable._values.Clear();
 				Observable._values.Add(_value);
-				
+
 				for (int i=0; i < sub.Count; ++i)
 				{
 					if (sub[i].ShouldSend(_origin))
@@ -418,7 +421,7 @@ namespace Fuse.Reactive
 			{
 				Observable.UnsubscribeValues();
 				Observable._values.Clear();
-				
+
 				for (int i=0; i < sub.Count; ++i)
 				{
 					if (sub[i].ShouldSend(_origin))
@@ -426,21 +429,21 @@ namespace Fuse.Reactive
 				}
 			}
 		}
-		
+
 		class Failed : Operation
 		{
 			readonly string _message;
-			
+
 			public Failed(Observable obs, string message) : base(obs)
 			{
 				_message = message;
 			}
-			
+
 			protected override void OnPerform(IList<Subscription> sub)
 			{
 				Observable.UnsubscribeValues();
 				Observable._values.Clear();
-				
+
 				for (int i=0; i < sub.Count; ++i)
 				{
 					if (sub[i].ShouldSend())
@@ -470,7 +473,7 @@ namespace Fuse.Reactive
 			{
 				ValueMirror.Unsubscribe(Observable[_index]);
 				Observable.SetValue(_index, _value);
-				
+
 				for (int i=0; i < sub.Count; ++i)
 				{
 					if (sub[i].ShouldSend())
@@ -501,7 +504,7 @@ namespace Fuse.Reactive
 
 				Observable._values.Clear();
 				Observable._values.AddRange(_newValues.ItemsReadonly);
-				
+
 				for (int i=0; i < sub.Count; ++i)
 				{
 					if (sub[i].ShouldSend(_origin))
@@ -522,7 +525,7 @@ namespace Fuse.Reactive
 			protected override void OnPerform(IList<Subscription> sub)
 			{
 				Observable._values.Add(_value);
-				
+
 				for (int i=0; i < sub.Count; ++i)
 				{
 					if (sub[i].ShouldSend())
@@ -544,7 +547,7 @@ namespace Fuse.Reactive
 			{
 				ValueMirror.Unsubscribe(Observable[_index]);
 				Observable._values.RemoveAt(_index);
-				
+
 				for (int i=0; i < sub.Count; ++i)
 				{
 					if (sub[i].ShouldSend())
@@ -571,7 +574,7 @@ namespace Fuse.Reactive
 				{
 					ValueMirror.Unsubscribe(Observable[_index]);
 					Observable._values.RemoveAt(_index);
-					
+
 					for (int j=0; j < sub.Count; ++j)
 					{
 						if (sub[j].ShouldSend())
@@ -600,7 +603,7 @@ namespace Fuse.Reactive
 			protected override void OnPerform(IList<Subscription> sub)
 			{
 				Observable._values.Insert(_index, _value);
-				
+
 				for (int i=0; i < sub.Count; ++i)
 				{
 					if (sub[i].ShouldSend())
@@ -631,7 +634,7 @@ namespace Fuse.Reactive
 				for (int i = 0; i < _items.Length; i++)
 				{
 					Observable._values.Insert(_index+i, _items[i]);
-					
+
 					for (int j = 0; j < sub.Count; ++j)
 					{
 						if (sub[j].ShouldSend())
