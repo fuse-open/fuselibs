@@ -84,5 +84,20 @@ namespace Fuse.Gestures.Test
 			}
 		}
 		
+		[Test]
+		//https://github.com/fusetools/fuselibs-public/issues/578
+		public void LinearRangeBounds()
+		{
+			var p = new UX.RangeControl.LinearRangeBounds();
+			using (var root = TestRootPanel.CreateWithChild(p, int2(400)))
+			{
+				root.PointerSwipe( float2(300,100), float2(223,100) );
+				Assert.AreEqual(73, p.Value);
+				
+				root.PointerSwipe( float2(100,100), float2(150,100) );
+				Assert.AreEqual(0, p.Value);
+			}
+		}
+		
 	}
 }
