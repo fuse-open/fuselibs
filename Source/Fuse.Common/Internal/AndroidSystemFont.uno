@@ -88,13 +88,7 @@ namespace Fuse.Internal
 		{
 			var result = new List<FontFaceDescriptor>();
 			result.Add(new FontFaceDescriptor(file, 0));
-
-			var normal = Get(null, Fuse.SystemFont.Style.Normal, Fuse.SystemFont.Weight.Normal);
-			if (normal != null)
-			{
-				result.AddRange(normal);
-			}
-
+			result.AddRange(Get(null, Fuse.SystemFont.Style.Normal, Fuse.SystemFont.Weight.Normal));
 			return result;
 		}
 
