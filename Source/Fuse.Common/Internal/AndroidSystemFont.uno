@@ -117,7 +117,7 @@ namespace Fuse.Internal
 						result.Add(descriptor);
 				}
 			}
-			if (realMatch || style != Fuse.SystemFont.Style.Normal || weight != Fuse.SystemFont.Weight.Normal)
+			if (result.Count > 0 && (realMatch || style != Fuse.SystemFont.Style.Normal || weight != Fuse.SystemFont.Weight.Normal))
 			{
 				return result;
 			}
