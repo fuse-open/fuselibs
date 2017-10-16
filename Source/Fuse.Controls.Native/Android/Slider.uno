@@ -48,16 +48,25 @@ namespace Fuse.Controls.Native.Android
 		@{
 			((android.widget.SeekBar)handle).setOnSeekBarChangeListener(new android.widget.SeekBar.OnSeekBarChangeListener() {
 				public void onProgressChanged(android.widget.SeekBar seekBar, int progress, boolean fromUser) {
-					@{global::Fuse.Controls.Native.Android.Slider:Of(_this).OnSeekBarChanged(double):Call(progress / 1000.0)};
+					@{global::Fuse.Controls.Native.Android.Slider:Of(_this).OnSeekBarChanged(double,bool):Call(progress / 1000.0, fromUser)};
 				}
 				public void onStartTrackingTouch(android.widget.SeekBar seekBar) { }
 				public void onStopTrackingTouch(android.widget.SeekBar seekBar) { }
 			});
 		@}
 
-		void OnSeekBarChanged(double newProgress)
+		void OnSeekBarChanged(double rel, bool fromUser)
 		{
-			_host.OnProgressChanged(newProgress);
+			if (fromUser)
+			{
+				var us = _host.RelativeUserStep;
+				if (us > 0)
+				{
+					rel = Math.Round(rel/us) * us;
+					SetProgress(Handle, rel * 1000);
+				}
+			}
+			_host.OnProgressChanged(rel);
 		}
 
 		public override void Dispose()

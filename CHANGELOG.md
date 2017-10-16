@@ -5,6 +5,7 @@
 - Fixed `RangeControl.RelativeValue` to properly update when bound in UX
 - Allowed `Minimum` to be less than `Maximum` on `RangeControl` making it easier to do left-to-right `100..0` ranges.
 - Fixed a defect in position calculations in `LinearRangeBehavior`. It now uses the immediate Element parent for bounds calculation as opposed to the `RangeControl`.
+- Added `UserStep` support to Android and iOS native Slider
 
 ## WebView
 - Exported the methods goBack, goForward, reload and stop for use in FuseJS
