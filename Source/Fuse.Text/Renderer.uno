@@ -199,7 +199,7 @@ namespace Fuse.Text
 				if (quadCount > 0)
 				{
 					var vertexBuffer = new VertexBuffer(BufferUsage.Stream);
-					vertexBuffer.Update(CreateVertexBufferData(quads, textures[i].Size));
+					vertexBuffer.Update(CreateVertexBufferData(quads, textures[i].Size).GetBytes());
 
 					_batches.Add(new Batch(i, vertexBuffer, quadCount));
 				}
@@ -282,7 +282,7 @@ namespace Fuse.Text
 				if (length > _length)
 				{
 					_length = Math.Max(length, _length * 2);
-					IndexBuffer.Update(CreateIndexBufferData(_length));
+					IndexBuffer.Update(CreateIndexBufferData(_length).GetBytes());
 				}
 			}
 

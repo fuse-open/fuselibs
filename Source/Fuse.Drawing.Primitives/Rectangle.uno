@@ -298,8 +298,8 @@ namespace Fuse.Drawing.Primitives
 					i < (4*3*4+18) ? 2 /*CornerRadius[2]*/ : 3 /*CornerRadius[3]*/)) );
 			}
 
-			_vertexInfo.Buffer.Update(bufferVertex);
-			_edgeInfo.Buffer.Update(bufferEdge);
+			_vertexInfo.Buffer.Update(bufferVertex.GetBytes());
+			_edgeInfo.Buffer.Update(bufferEdge.GetBytes());
 			_bufferDistance.InitDeviceVertex(BufferUsage.Immutable);
 		}
 

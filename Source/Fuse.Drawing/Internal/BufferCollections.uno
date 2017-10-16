@@ -48,7 +48,7 @@ namespace Fuse.Drawing.Internal {
 			Creates a device index buffer for this buffer.
 		*/
 		public void InitDeviceIndex( BufferUsage bu = BufferUsage.Dynamic ) {
-			deviceIndex = new IndexBuffer( back, bu );
+			deviceIndex = new IndexBuffer( back.GetBytes(), bu );
 		}
 		public IndexBuffer GetDeviceIndex() {
 			return deviceIndex;
@@ -56,7 +56,7 @@ namespace Fuse.Drawing.Internal {
 		
 		VertexBuffer deviceVertex = null;
 		public void InitDeviceVertex( BufferUsage bu = BufferUsage.Dynamic ) {
-			deviceVertex = new VertexBuffer( back, bu );
+			deviceVertex = new VertexBuffer( back.GetBytes(), bu );
 		}
 		public VertexBuffer GetDeviceVertex() {
 			return deviceVertex;
@@ -64,10 +64,10 @@ namespace Fuse.Drawing.Internal {
 		
 		public void UpdateDevice() {
 			if( deviceIndex != null ) {
-				deviceIndex.Update( back );
+				deviceIndex.Update( back.GetBytes() );
 			} 
 			if( deviceVertex != null ) {
-				deviceVertex.Update( back );
+				deviceVertex.Update( back.GetBytes() );
 			}
 		}
 		
