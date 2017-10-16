@@ -58,7 +58,15 @@ namespace Fuse.Controls.Native.iOS
 
 		void OnValueChanged(ObjC.Object sender, ObjC.Object uiEvent)
 		{
-			_host.OnProgressChanged( (double)(Value / 100.0f) );
+			var rel = (double)(Value / 100.0f);
+			var us = _host.RelativeUserStep;
+			if (us > 0)
+			{
+				rel = Math.Round(rel/us) * us;
+				SetValue(Handle, (float)rel * 100);
+			}
+			
+			_host.OnProgressChanged( rel );
 		}
 
 		float Value

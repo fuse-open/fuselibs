@@ -60,6 +60,7 @@ namespace Fuse.Controls.Native
 	public interface IRangeViewHost
 	{
 		void OnProgressChanged(double newProgress);
+		double RelativeUserStep { get; }
 	}
 
 	public interface ITextEdit: ITextView

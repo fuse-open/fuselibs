@@ -139,13 +139,10 @@ namespace Fuse.Controls
 				OnValueChanged(v, origin);
 			}
 
-			if (origin != null)
+			var rv = RangeView;
+			if (rv != null && origin != rv)
 			{
-				var rv = RangeView;
-				if (rv != null)
-				{
-					rv.Progress = ValueToRelative(value);
-				}
+				rv.Progress = ValueToRelative(value);
 			}
 		}
 
@@ -163,6 +160,8 @@ namespace Fuse.Controls
 		/** 	
 			Quantizes user selection to this step. This is enforced by the behavior and not by this
 			control. The control can still have non-quantized values (allowing animation).
+			
+			A value of 0, the default, will use a continuous value range.
 		*/
 		public double UserStep
 		{
@@ -245,6 +244,11 @@ namespace Fuse.Controls
 		void IRangeViewHost.OnProgressChanged(double newProgress)
 		{
 			SetValue(ValueFromRelative(newProgress), null);	
+		}
+		
+		double IRangeViewHost.RelativeUserStep
+		{
+			get { return RelativeUserStep; }
 		}
 	}
 }
