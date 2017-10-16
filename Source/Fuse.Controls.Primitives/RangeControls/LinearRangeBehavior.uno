@@ -2,6 +2,7 @@ using Uno;
 
 using Fuse.Input;
 using Fuse.Controls;
+using Fuse.Elements;
 using Fuse.Triggers;
 using Fuse.Layouts;
 
@@ -11,14 +12,16 @@ namespace Fuse.Gestures
 		Common linear sliding behaviour used for implementing a @RangeControl.
 
 		Used to enable sliding touch input on @RangeControl.
+		
+		The range of motion of the control is the size of the `LinearRangeBehavior` parent. By nesting deeper than the immediate child of the @RangeControl you can have a range of motion distinct from the size of the overall control.
 
 		## Example
 
 			<StackPanel>
 
 				<RangeControl ux:Class="CustomSlider" Padding="16,2,16,2" Margin="2" >
-					<LinearRangeBehavior />
 					<Panel>
+						<LinearRangeBehavior />
 						<Circle Anchor="50%,50%" ux:Name="thumb" Alignment="Left" Color="#ffffffee" Width="28" Height="28" />
 					</Panel>
 					<Rectangle Layer="Background" Color="#aaaaaacc" CornerRadius="45" />
@@ -52,6 +55,7 @@ namespace Fuse.Gestures
 			set { _orientation = value; }
 		}
 		
+		Element _boundsElement;
 		Gesture _gesture;
 		protected override void OnRooted()
 		{
@@ -60,8 +64,12 @@ namespace Fuse.Gestures
 			Control = FindRangeControl();
 			if (Control == null)
 				Fuse.Diagnostics.UserRootError( "RangeControl", Parent, this );
+			
+			_boundsElement = Parent as Element;
+			if (_boundsElement == null)
+				Fuse.Diagnostics.UserRootError( "Element", Parent, this );
 			else
-				_gesture = Input.Gestures.Add( this, Control, GestureType.Primary );
+				_gesture = Input.Gestures.Add( this, _boundsElement, GestureType.Primary );
 		}
 
 		protected override void OnUnrooted()
@@ -72,6 +80,7 @@ namespace Fuse.Gestures
 				_gesture = null;
 			}
 			Control = null;
+			_boundsElement = null;
 
 			base.OnUnrooted();
 		}
@@ -126,14 +135,14 @@ namespace Fuse.Gestures
 			_currentCoord = c.WindowPoint;
 			if (_gesture.IsHardCapture)
 			{
-				UpdateValue(Control.WindowToLocal(_currentCoord));
+				UpdateValue(_boundsElement.WindowToLocal(_currentCoord));
 			}
 			return GestureRequest.Capture;
 		}
 
 		GestureRequest IGesture.OnPointerReleased(PointerReleasedArgs c)
 		{
-			UpdateValue(Control.WindowToLocal(c.WindowPoint));
+			UpdateValue(_boundsElement.WindowToLocal(c.WindowPoint));
 			return GestureRequest.Cancel;
 		}
 
@@ -148,8 +157,8 @@ namespace Fuse.Gestures
 		double PositionToValue(float2 pos)
 		{
 			if (Orientation == Orientation.Vertical)
-				return pos.Y / Control.ActualSize.Y;
-			return pos.X / Control.ActualSize.X;
+				return pos.Y / _boundsElement.ActualSize.Y;
+			return pos.X / _boundsElement.ActualSize.X;
 		}
 	}
 }
