@@ -44,13 +44,6 @@ namespace Fuse.Navigation
 				return;
 			}
 			
-			if (rp.Node != null && visual != rp.Node)
-			{
-				Fuse.Diagnostics.InternalError( "Mismatched page visual", this );
-				return;
-			}
-			rp.Node = visual;
-			
 			this.RouterPage = rp;
 			visual.Prepare(rp.Parameter);
 			UpdateContextData( visual, rp.Context );

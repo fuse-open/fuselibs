@@ -10,6 +10,12 @@ namespace Fuse.Navigation.Test
 {
 	public class RouterTest : TestBase
 	{
+		string SafeFormat( RouterPageRoute r )
+		{
+			if (r == null) 
+				return "*null*";
+			return r.Format();
+		}
 		string SafeFormat( Route r )
 		{
 			if (r == null) 

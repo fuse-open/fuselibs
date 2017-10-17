@@ -63,37 +63,13 @@ namespace Fuse.Controls
 			Add = 1 << 1,
 			Replace = 1 << 2,
 		}
-		
-		protected string GetObjectPath( object data )
-		{
-			string path = null;
-			var obj = data as IObject;
-			if (obj != null && obj.ContainsKey("$template")) //set implicitly by Model API
-				path = Marshal.ToType<string>(obj["$template"]);
-			if (obj != null && obj.ContainsKey("$path"))
-				path = Marshal.ToType<string>(obj["$path"]);
-				
-			return path;
-		}
 
+		/*
+			By the time this is called the backing ChildRouterPages map will already have the object, mapped with the path and context. 
+		*/
 		void FullUpdatePages(UpdateFlags flags = UpdateFlags.None)
 		{
-			string path = null, param = null;
 			int pageNdx = _pageHistory.Length - 1;
-			object data = null;
-			if (pageNdx >= 0)
-			{
-				data = _pageHistory[pageNdx];
-					
-				path = GetObjectPath( data );
-				//null is an erorr, but we can process it nonetheless (will go to no page)
-				if (path == null)
-					Fuse.Diagnostics.UserError( "Model is missing a $template or $page property", this);
-					
-				//perhaps this is good enough to distinguish different objects from being recognized
-				//as the same page
-				param = "" + data.GetHashCode();
-			}
 				
 			var op = pageNdx < _curPageIndex ? RoutingOperation.Pop :
 				pageNdx == _curPageIndex ? RoutingOperation.Replace :
@@ -111,25 +87,22 @@ namespace Fuse.Controls
 			RouterPage rPage;
 			if (pageNdx >= AncestorRouterPage.ChildRouterPages.Count)
 			{
-				rPage = new RouterPage{ Path = path, Parameter = param, Context = data };
+				rPage = RouterPage.CreateDefault();
 				Fuse.Diagnostics.InternalError( "Inconsistent navigation history", this );
 			}
 			else if (pageNdx >= 0)
 			{
+				//this is expected, since the PagesMap will do the mapping
 				rPage = AncestorRouterPage.ChildRouterPages[pageNdx];
-				rPage.Path = path;
-				rPage.Parameter = param;
-				rPage.Context = data;
 			}
 			else
 			{
 				//having no page is inconsistent but must be dealt with since it can happen temporarily while binding
-				rPage = new RouterPage();
+				rPage = RouterPage.CreateDefault();
 			}
 			
-			(this as IRouterOutlet).Goto( rPage, trans, op, "" );
-			if (rPage.Visual != null)
-				PageData.GetOrCreate(rPage.Visual).SetContext(data);
+			Visual ignore;
+			((IRouterOutlet)this).Goto( rPage, trans, op, "", out ignore );
 			
 			_curPageIndex = pageNdx;
 		}

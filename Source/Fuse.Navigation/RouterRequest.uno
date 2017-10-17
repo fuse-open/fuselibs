@@ -12,7 +12,7 @@ namespace Fuse.Navigation
 	class RouterRequest
 	{
 		public ModifyRouteHow How;
-		public Route Route;
+		public RouterPageRoute Route;
 		[WeakReference]
 		public Node Relative;
 		public NavigationGotoMode Transition;
@@ -131,7 +131,7 @@ namespace Fuse.Navigation
 			return true;
 		}
 
-		static public Route ParseFlatRoute(IArray path)
+		static public RouterPageRoute ParseFlatRoute(IArray path)
 		{
 			//TODO: It would make more sense to wrap object[] as an IArray, and rewrite the object[] function
 			var cvt = new object[path.Length];
@@ -140,10 +140,11 @@ namespace Fuse.Navigation
 			return ParseFlatRoute(cvt);
 		}
 		
-		static public Route ParseFlatRoute(object[] args, int pos = 0)
+		static public RouterPageRoute ParseFlatRoute(object[] args, int pos = 0)
 		{
 			if (args.Length <= pos) return null;
-			if (args.Length <= pos+1) return new Route(args[pos] as string, null, null);
+			if (args.Length <= pos+1) return new RouterPageRoute(
+				new RouterPage( args[pos] as string ), null );
 
 			var arg = args[pos+1];
 
@@ -151,10 +152,11 @@ namespace Fuse.Navigation
 
 			var path = args[pos] as string;
 			var parameter = Json.Stringify(arg, true);
-			return new Route(path, parameter, ParseFlatRoute(args, pos+2));
+			return new RouterPageRoute( 
+				new RouterPage( path, parameter ), ParseFlatRoute(args, pos+2));
 		}
 		
-		static public bool ParseNVPRoute(object value, out Route route)
+		static public bool ParseNVPRoute(object value, out RouterPageRoute route)
 		{
 			route = null;
 
@@ -175,19 +177,20 @@ namespace Fuse.Navigation
 			}
 		}
 		
-		static bool ParseNVPComponent(object value, ref Route route)
+		static bool ParseNVPComponent(object value, ref RouterPageRoute route)
 		{
 			//require a "string", rather than use TryToType, to avoid nonsense being accepted
 			if (value is string)
 			{
-				route = new Route((string)value, null, route);
+				route = new RouterPageRoute( new RouterPage( (string)value ),  route);
 				return true;
 			}
 			
 			var nvp = value as NameValuePair;
 			if (nvp != null)
 			{
-				route = new Route(nvp.Name, Json.Stringify(nvp.Value), route);
+				route = new RouterPageRoute( new RouterPage( nvp.Name, 
+					Json.Stringify(nvp.Value)), route);
 				return true;
 			}
 			

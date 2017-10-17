@@ -376,7 +376,7 @@ namespace Fuse.Navigation.Test
 		}
 		
 		[Test]
-		public void SwipeBack()
+		public void SwipeBackBasic()
 		{
 			var p = new UX.Navigator.SwipeBack();
 			using (var root = TestRootPanel.CreateWithChild(p,int2(1000)))
@@ -588,7 +588,7 @@ namespace Fuse.Navigation.Test
 				p.R.Modify( ModifyRouteHow.PreparePush, 
 					new Route( "one", "1" ), NavigationGotoMode.Transition, "" );
 				p.R.PrepareProgress = 0.5;
-				p.R.Modify( ModifyRouteHow.FinishPrepared, null, NavigationGotoMode.Transition, "" );
+				p.R.Modify( ModifyRouteHow.FinishPrepared, (Route)null, NavigationGotoMode.Transition, "" );
 				root.PumpDeferred();
 				
 				var p2 = p.Nav.Active;
@@ -598,7 +598,7 @@ namespace Fuse.Navigation.Test
 				p.R.Modify( ModifyRouteHow.PreparePush, 
 					new Route( "one", "2" ), NavigationGotoMode.Transition, "" );
 				p.R.PrepareProgress = 0.5;
-				p.R.Modify( ModifyRouteHow.FinishPrepared, null, NavigationGotoMode.Transition, "" );
+				p.R.Modify( ModifyRouteHow.FinishPrepared, (Route)null, NavigationGotoMode.Transition, "" );
 				root.PumpDeferred();
 				
 				var p3 = p.Nav.Active;

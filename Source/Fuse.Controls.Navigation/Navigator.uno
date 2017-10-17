@@ -88,26 +88,28 @@ namespace Fuse.Controls
 			
 			RootInteraction();
 			
-			_current = new RouterPage();
+			_current = new NavPage();
 			//the rooting of children could place them in invalid states, fix that now
 			CleanupChildren(null);
 			Navigation.UpdateProgress(NavigationMode.Bypass);
 		
+			Visual ignore;
 			var pages = AncestorRouterPage != null ? AncestorRouterPage.ChildRouterPages : null;
 			if (pages != null && pages.Count > 0)
 			{
-				(this as IRouterOutlet).Goto( pages[pages.Count-1], NavigationGotoMode.Bypass, RoutingOperation.Goto, "" );
+				((IRouterOutlet)this).Goto( pages[pages.Count-1], NavigationGotoMode.Bypass, 
+					RoutingOperation.Goto, "", out ignore );
 			}
 			else
 			{
 				if (DefaultPath != null)
 				{
-					_current = new RouterPage{ Path = DefaultPath, Parameter = null };
-					(this as IRouterOutlet).Goto(_current, NavigationGotoMode.Bypass,
-						RoutingOperation.Goto, "");
+					_current = new NavPage{ RouterPage = new RouterPage( DefaultPath ) };
+					((IRouterOutlet)this).Goto(_current.RouterPage, NavigationGotoMode.Bypass,
+						RoutingOperation.Goto, "", out _current.Visual);
 				}
 				if (pages != null)
-					pages.Add( _current );
+					pages.Add( _current.RouterPage );
 			}
 		}
 		
@@ -172,22 +174,24 @@ namespace Fuse.Controls
 		{
 			public RoutingResult Routing;
 			public bool UsedPrepared;
-			public RouterPage Page;
+			public NavPage Page;
 		}
 		
 		/* This unfortunately has to duplicate logic from various locations in Prepare. The Router
 			needs to know in advacned what will happen without anything changing. */
-		RoutingResult IRouterOutlet.CompareCurrent(RouterPage routerPage)
+		RoutingResult IRouterOutlet.CompareCurrent(RouterPage routerPage, out Visual pageVisual)
 		{
-			var current = (this as IRouterOutlet).GetCurrent();
+			pageVisual = null;
+			Visual currentVisual;
+			var current = (this as IRouterOutlet).GetCurrent(out currentVisual);
 			
-			if ( (routerPage.Path == null || routerPage.Path == "") && DefaultPath != null)
-				routerPage.Path = DefaultPath;
+			if (DefaultPath != null)
+				routerPage.DefaultPath( DefaultPath );
 				
-			if (routerPage.Path != current.Path || (current.Visual == null && routerPage.Path != null))
+			if (routerPage.Path != current.Path || (currentVisual == null && routerPage.Path != null))
 				return RoutingResult.Change;
 				
-			routerPage.Visual = current.Visual;
+			pageVisual = currentVisual;
 			if (routerPage.Parameter == current.Parameter &&
 				routerPage.Context == current.Context)
 				return RoutingResult.NoChange;
@@ -195,22 +199,22 @@ namespace Fuse.Controls
 			return RoutingResult.MinorChange;
 		}
 		
-		PrepareResult Prepare(RouterPage curPage, 
+		PrepareResult Prepare(NavPage curPage, 
 			RouterPage routerPage, RoutingOperation operation)
 		{
-			if ( (routerPage.Path == null || routerPage.Path == "") && DefaultPath != null)
-				routerPage.Path = DefaultPath;
+			if (DefaultPath != null)
+				routerPage.DefaultPath( DefaultPath );
 				
 			var curPageVisual = curPage.Visual;
-			if (routerPage.Path == curPage.Path && curPageVisual != null)
+			if (routerPage.Path == curPage.RouterPage.Path && curPageVisual != null)
 			{
 				//no change
-				if (routerPage.Parameter == curPage.Parameter &&
-					routerPage.Context == curPage.Context)
+				if (routerPage.Parameter == curPage.RouterPage.Parameter &&
+					routerPage.Context == curPage.RouterPage.Context)
 					return new PrepareResult{ Page = curPage, Routing = RoutingResult.NoChange };
 					
 				// https://github.com/fusetools/fuselibs/issues/2982
-				var compat = CompatibleParameter(routerPage.Parameter, curPage.Parameter);
+				var compat = CompatibleParameter(routerPage.Parameter, curPage.RouterPage.Parameter);
 					
 				//reusable page with parameter change
 				var reuse = operation == RoutingOperation.Goto && IsReuseLevel(curPageVisual, ReuseType.Any);
@@ -223,8 +227,9 @@ namespace Fuse.Controls
 					
 				if (compat || reuse || replace || nonTemplate)
 				{
-					var result = new PrepareResult{ Page = routerPage, Routing = RoutingResult.MinorChange };
-					PageData.GetOrCreate(curPageVisual).AttachRouterPage(result.Page);
+					var np = new NavPage{ Visual = curPageVisual, RouterPage = routerPage };
+					var result = new PrepareResult{ Page = np, Routing = RoutingResult.MinorChange };
+					PageData.GetOrCreate(curPageVisual).AttachRouterPage(result.Page.RouterPage);
 					return result;
 				}
 			}
@@ -232,9 +237,10 @@ namespace Fuse.Controls
 			var preparedVisual = _prepared != null ? _prepared.Visual : null;
 			if (curPage != _prepared && preparedVisual != null)
 			{
-				if (_prepared.Path == routerPage.Path && _prepared.Parameter == routerPage.Parameter)
+				if (_prepared.RouterPage.Path == routerPage.Path && 
+					_prepared.RouterPage.Parameter == routerPage.Parameter)
 				{
-					PageData.GetOrCreate(preparedVisual).AttachRouterPage(_prepared);
+					PageData.GetOrCreate(preparedVisual).AttachRouterPage(_prepared.RouterPage);
 					return new PrepareResult{ Page = _prepared, Routing = RoutingResult.Change,
 						UsedPrepared = true };
 				}
@@ -296,20 +302,21 @@ namespace Fuse.Controls
 					Children.Add(useVisual);
 			}
 
-			return new PrepareResult{ Page = routerPage, Routing = RoutingResult.Change };
+			var nvp = new NavPage{ Visual = useVisual, RouterPage = routerPage };
+			return new PrepareResult{ Page = nvp, Routing = RoutingResult.Change };
 		}
 		
 		/* Should be called whenever the RouterPage.Visual is about to be cleared or replaced.*/
-		void AddToCache(RouterPage page, Visual target)
+		void AddToCache(NavPage page, Visual target)
 		{
 			var visual = page.Visual;
 			if (visual == target)
 				return;
 				
 			//cache templates that can be reused
-			if (visual != null && page.Path != null && IsReuseLevel(visual, ReuseType.Removed)
+			if (visual != null && page.RouterPage.Path != null && IsReuseLevel(visual, ReuseType.Removed)
 				&& GetControlPageData(visual).FromTemplate)
-				GetCache(page.Path).Add(visual);
+				GetCache(page.RouterPage.Path).Add(visual);
 		}
 		
 		void CleanupPrepared(Visual newTarget = null)
@@ -333,9 +340,9 @@ namespace Fuse.Controls
 			string,RoutingResult> _testInterceptGoto;
 		
 		RoutingResult IRouterOutlet.Goto(RouterPage routerPage, NavigationGotoMode gotoMode, 
-			RoutingOperation operation, string operationStyle)
+			RoutingOperation operation, string operationStyle, out Visual pageVisual)
 		{
-			var result = GotoImpl(routerPage, gotoMode, operation, operationStyle);
+			var result = GotoImpl(routerPage, gotoMode, operation, operationStyle, out pageVisual);
 			
 			if defined(UNO_TEST)
 			{
@@ -347,9 +354,10 @@ namespace Fuse.Controls
 		}
 		
 		RoutingResult GotoImpl(RouterPage routerPage, NavigationGotoMode gotoMode, 
-			RoutingOperation operation, string operationStyle)
+			RoutingOperation operation, string operationStyle, out Visual pageVisual)
 		{
-			routerPage.Visual = null;
+			pageVisual = null;
+			
 			if (gotoMode == NavigationGotoMode.Prepare)
 			{
 				CleanupPrepared();
@@ -362,10 +370,10 @@ namespace Fuse.Controls
 				_prepareBack = operation == RoutingOperation.Pop;
 				
 				var args = new NavigatorSwitchedArgs(this){
-					OldPath = _current.Path,
-					NewPath = _prepared.Path,
-					OldParameter = _current.Parameter,
-					NewParameter = _prepared.Parameter,
+					OldPath = _current.RouterPage.Path,
+					NewPath = _prepared.RouterPage.Path,
+					OldParameter = _current.RouterPage.Parameter,
+					NewParameter = _prepared.RouterPage.Parameter,
 					OldVisual = _current.Visual,
 					NewVisual = _prepared.Visual,
 					Operation = operation,
@@ -373,7 +381,7 @@ namespace Fuse.Controls
 					Mode = gotoMode };
 				OnSwitched(args);
 				
-				routerPage.Visual = _prepared.Visual;
+				pageVisual = _prepared.Visual;
 				return r.Routing;
 			}
 				
@@ -389,7 +397,7 @@ namespace Fuse.Controls
 				Fuse.Diagnostics.InternalError( "Unexpected null page", this );
 				return RoutingResult.Invalid;
 			}
-			routerPage.Visual = result.Page.Visual;
+			pageVisual = result.Page.Visual;
 			
 			if (result.Routing != RoutingResult.Change)
 			{
@@ -447,30 +455,45 @@ namespace Fuse.Controls
 			return null;
 		}
 		
-		RouterPage _current = new RouterPage();
-		RouterPage _prepared;
+		class NavPage
+		{
+			public Visual Visual;
+			public RouterPage RouterPage;
+			
+			public NavPage()
+			{
+				RouterPage = RouterPage.CreateDefault();
+			}
+		}
 		
-		RouterPage IRouterOutlet.GetCurrent()
+		NavPage _current = new NavPage();
+		NavPage _prepared;
+		
+		RouterPage IRouterOutlet.GetCurrent(out Visual pageVisual)
 		{
 			//the _deferred is the effective current path (even if not yet the active node)
 			if (_deferred != null)
-				return _deferred.Page;
-			return _current;
+			{
+				pageVisual = _deferred.Page.Visual;
+				return _deferred.Page.RouterPage;
+			}
+			pageVisual = _current.Visual;
+			return _current.RouterPage;
 		}
 		
 		/*
 			The current page should be transitioned to this new one. This prepares that transition, but
 			may delay it waiting for the page's busy status to clear.
 		*/
-		void SwitchToPage(RouterPage newPage, 
+		void SwitchToPage(NavPage newPage, 
 			NavigationGotoMode gotoMode, RoutingOperation operation, string operationStyle,
 			bool usedPrepared)
 		{
 			var args = new NavigatorSwitchedArgs(this){
-				OldPath = _current.Path,
-				NewPath = newPage.Path,
-				OldParameter = _current.Parameter,
-				NewParameter = newPage.Parameter,
+				OldPath = _current.RouterPage.Path,
+				NewPath = newPage.RouterPage.Path,
+				OldParameter = _current.RouterPage.Parameter,
+				NewParameter = newPage.RouterPage.Parameter,
 				OldVisual = _current.Visual,
 				NewVisual = newPage.Visual,
 				Operation = operation,
@@ -613,7 +636,7 @@ namespace Fuse.Controls
 		
 		class DeferSwitch
 		{
-			public RouterPage Page;
+			public NavPage Page;
 			public NavigationGotoMode GotoMode;
 			public RoutingOperation Operation;
 		}

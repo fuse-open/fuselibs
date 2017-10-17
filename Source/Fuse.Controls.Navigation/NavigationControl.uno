@@ -139,7 +139,7 @@ namespace Fuse.Controls
 					if (router != null)
 						this.AncestorRouterPage = router.RootPage;
 					else
-						this.AncestorRouterPage = new RouterPage();
+						this.AncestorRouterPage = RouterPage.CreateDefault();
 				}
 			}
 		}
@@ -156,8 +156,15 @@ namespace Fuse.Controls
 			//do after child rooting since it relies on the navigation behaviour to have been rooted
 			for (var c = FirstChild<Element>(); c != null; c = c.NextSibling<Element>())
 				UpdateChild(c);
-				
+			
+			if (AncestorRouterPage != null)
+				AncestorRouterPage.ChildRouterPagesUpdated += OnChildRouterPagesUpdated;
 			OnPageHistoryChanged();
+		}
+		
+		void OnChildRouterPagesUpdated()
+		{
+			RouterPage.BubbleHistoryChanged(this);
 		}
 		
 		/**
@@ -192,8 +199,7 @@ namespace Fuse.Controls
 			//attach a default RouterPage if it doesn't have one
 			var pd = PageData.GetOrCreate(c);
 			if (pd.RouterPage == null)
-				pd.AttachRouterPage( new RouterPage{ Path = c.Name, Parameter = c.Parameter,
-					Visual = c });
+				pd.AttachRouterPage( new RouterPage( c.Name, c.Parameter ));
 		}
 
 		/**
@@ -450,7 +456,8 @@ namespace Fuse.Controls
 				return;
 				
 			var pages = AncestorRouterPage.ChildRouterPages;
-			var current = (this as IRouterOutlet).GetCurrent();
+			Visual ignore;
+			var current = (this as IRouterOutlet).GetCurrent(out ignore);
 			if (pages.Count == 0 && current != null)
 				pages.Add(current);
 		}

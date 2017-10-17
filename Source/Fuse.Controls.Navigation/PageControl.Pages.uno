@@ -110,7 +110,7 @@ namespace Fuse.Controls
 					continue;
 				}
 					
-				mp.Template = GetObjectPath( mp.Data );
+				mp.Template = Fuse.Navigation.PagesMap.GetObjectPath( mp.Data );
 				if (mp.Template == null)
 				{
 					Fuse.Diagnostics.UserError( "Model is missing a $template or $page property", this);
@@ -134,7 +134,7 @@ namespace Fuse.Controls
 					}
 				}
 
-				mp.Page = new RouterPage{ Path = mp.Template, Context = mp.Data };
+				mp.Page = new RouterPage( mp.Template, null, mp.Data );
 				PageData.GetOrCreate(mp.Visual).AttachRouterPage( mp.Page );
 				visualCount++;
 			}
