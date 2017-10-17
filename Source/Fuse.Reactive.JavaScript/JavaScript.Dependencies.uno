@@ -129,8 +129,12 @@ namespace Fuse.Reactive
 			_moduleInstance = new ModuleInstance(Worker, this);
 		}
 
-		void DisposeModuleInstance()
+		internal bool _preserveModuleInstance = false;
+		internal void DisposeModuleInstance()
 		{
+			if (_preserveModuleInstance)
+				return;
+				
 			if (_moduleInstance != null)
 			{
 				_moduleInstance.Dispose();

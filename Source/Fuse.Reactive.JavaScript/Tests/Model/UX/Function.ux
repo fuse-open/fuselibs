@@ -1,0 +1,5 @@
+<Panel ux:Class="UX.Model.Function" Model="UX/Function()">
+	<FuseTest.DudElement StringValue="{stars}" ux:Name="s"/>
+	
+	<FuseTest.Invoke Handler="{incr}" ux:Name="callIncr"/>
+</Panel>

@@ -1,0 +1,25 @@
+<Panel ux:Class="UX.TreeObservable.TwoWayArray">
+	<JavaScript>
+		var TreeObservable = require("FuseJS/TreeObservable");
+		function Tree() {
+			this.__fuse_id = 0;
+		}
+		Tree.prototype = Object.create(TreeObservable.prototype);
+		var tree = new Tree();
+
+		tree.items = Object.assign([1,2,3], { __fuse_id: 1 });
+		tree.itemsRef = tree.items;
+
+		module.exports = { tree:tree };
+	</JavaScript>
+	
+	<FuseTest.ObservableCollector ux:Name="OC" Items="{tree.itemsRef}" />
+
+	<Panel>
+		<Selection Values="{tree.items}" />
+		<Selectable ux:Name="s1" Value="1" />
+		<Selectable ux:Name="s2" Value="2" />
+		<Selectable ux:Name="s3" Value="3" />
+		<Selectable ux:Name="s4" Value="4" />
+	</Panel>
+</Panel>

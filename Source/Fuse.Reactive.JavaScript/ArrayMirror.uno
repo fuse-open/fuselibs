@@ -25,8 +25,12 @@ namespace Fuse.Reactive
 
 		internal object[] ItemsReadonly { get { return _items.ToArray(); } }
 
+		bool _hasUnsubscribed;
 		public override void Unsubscribe()
 		{
+			if (_hasUnsubscribed) return;
+			_hasUnsubscribed = true;
+
 			for (int i = 0; i < _items.Count; i++)
 			{
 				var d = _items[i] as ValueMirror;
