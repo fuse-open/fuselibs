@@ -128,21 +128,26 @@ namespace Fuse.Scripting
 
 			class ReplaceAllExclusiveOperation
 			{
-				public ReplaceAllExclusiveOperation(Scripting.Object obj, object newValue, int origin)
+				public ReplaceAllExclusiveOperation(ThreadWorker worker, Scripting.Object obj, object[] newValues, int origin)
 				{
+					Worker = worker;
 					Object = obj;
-					NewValue = newValue;
+					NewValues = newValues;
 					Origin = origin;
 				}
 
+				readonly ThreadWorker Worker;
 				Scripting.Object Object;
-				readonly object NewValue;
+				readonly object[] NewValues;
 				readonly int Origin;
 
 
 				public void Perform(Scripting.Context context)
 				{
-					Object.CallMethod("replaceAllWithOrigin", NewValue, Origin);
+					for (int i = 0; i < NewValues.Length; i++)
+						NewValues[i] = Worker.Unwrap(NewValues[i]);
+
+					Object.CallMethod("replaceAllWithOrigin", Worker.Context.NewArray(NewValues), Origin);
 				}
 			}
 
@@ -150,9 +155,9 @@ namespace Fuse.Scripting
 			{
 				var arr = new object[newValues.Length];
 				for (int i = 0; i < arr.Length; i++)
-					arr[i] = _om._worker.Unwrap(newValues[i]);
+					arr[i] = newValues[i];
 
-				var op = new ReplaceAllExclusiveOperation(_om.Object, _om._worker.Context.NewArray(arr), _origin);
+				var op = new ReplaceAllExclusiveOperation(_om._worker, _om.Object, arr, _origin);
 				if (_om._worker.CanEvaluate)
 					op.Perform(null);
 				else
