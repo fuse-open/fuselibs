@@ -42,7 +42,7 @@ namespace Fuse.Scripting
 		}
 
 		/** Called on JS thread when the node instance must be rooted. */
-		public void EnsureRooted()
+		public void EnsureRooted(Context context)
 		{
 			if (_self != null) return;
 
@@ -60,7 +60,7 @@ namespace Fuse.Scripting
 					{
 						var p = _rootTable.Properties[i];
 						if (!_properties.ContainsKey(p))
-							_properties.Add(p, new LazyObservableProperty(_worker, _self, p));
+							_properties.Add(p, new LazyObservableProperty(_worker, _self, p, context));
 					}
 				}
 			}

@@ -39,7 +39,7 @@ namespace Fuse.Scripting
 			}
 
 			_js.ScriptModule.Dependencies = deps;
-			_dc = _worker.Reflect(EvaluateExports());
+			_dc = _worker.Reflect(EvaluateExports(_worker.Context));
 			UpdateManager.PostAction(SetDataContext);
 		}
 
@@ -65,9 +65,9 @@ namespace Fuse.Scripting
 			}
 		}
 
-		object EvaluateExports()
+		object EvaluateExports(Context context)
 		{
-			EvaluateModule();
+			EvaluateModule(context);
 
 			if (_moduleResult != null)
 				return _moduleResult.Object["exports"];
@@ -79,7 +79,7 @@ namespace Fuse.Scripting
 
 		DiagnosticSubject _diagnostic = new DiagnosticSubject();
 
-		void EvaluateModule()
+		void EvaluateModule(Context context)
 		{
 			_diagnostic.ClearDiagnostic();
 
@@ -87,7 +87,7 @@ namespace Fuse.Scripting
 
 			lock (_resetHookMutex)
 			{
-				var newModuleResult = _js.ScriptModule.Evaluate(_worker.Context, globalId);
+				var newModuleResult = _js.ScriptModule.Evaluate(context, globalId);
 				newModuleResult.AddDependency(_js.DispatchEvaluate);
 
 				if (newModuleResult.Error == null)

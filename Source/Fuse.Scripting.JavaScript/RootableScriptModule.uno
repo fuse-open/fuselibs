@@ -21,14 +21,14 @@ namespace Fuse.Scripting
 
 		public override void Evaluate(Context c, ModuleResult result)
 		{
-			EnsureClassInstanceRooted();
+			EnsureClassInstanceRooted(c);
 			base.Evaluate(c, result);
 		}
 
-		void EnsureClassInstanceRooted()
+		void EnsureClassInstanceRooted(Context c)
 		{
 			if (_classInstance == null) _classInstance = _worker.GetClassInstance(_names);
-			_classInstance.EnsureRooted();
+			_classInstance.EnsureRooted(c);
 		}
 
 		internal Dictionary<string, object> Dependencies;

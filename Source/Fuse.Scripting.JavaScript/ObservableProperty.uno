@@ -6,9 +6,9 @@ namespace Fuse.Scripting
 {
 	class LazyObservableProperty: ObservableProperty
 	{
-		public LazyObservableProperty(ThreadWorker w, Scripting.Object obj, Uno.UX.Property p): base(w, obj, p)
+		public LazyObservableProperty(ThreadWorker w, Scripting.Object obj, Uno.UX.Property p, Context c): base(w, obj, p)
 		{
-			w.Context.ObjectDefineProperty(obj, p.Name.ToString(), Get);	
+			c.ObjectDefineProperty(obj, p.Name.ToString(), Get);
 		}
 
 		object Get(object[] args)
