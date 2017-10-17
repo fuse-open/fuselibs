@@ -4,6 +4,7 @@ using Uno.UX;
 using Uno.Collections;
 using Uno.Compiler.ExportTargetInterop;
 
+using Fuse.Internal.Bitmaps;
 using Experimental.TextureLoader;
 
 namespace Fuse.Resources
@@ -193,8 +194,9 @@ namespace Fuse.Resources
 					@}
 				}
 
-				var data = _file.ReadAllBytes();
-				TextureLoader.ByteArrayToTexture2DFilename(new Buffer(data), _file.Name, SetTexture);
+				var bitmap = Bitmap.LoadFromFileSource(_file);
+				var texture = Bitmap.UploadTexture(bitmap);
+				SetTexture(texture);
 				OnChanged();
 			}
 			catch (Exception e)
@@ -234,12 +236,15 @@ namespace Fuse.Resources
 		class BackgroundLoad
 		{
 			FileSource _file;
+			string _contentType;
 			Action<texture2D> _done;
 			Action<Exception> _fail;
 			Exception _exception;
 			public BackgroundLoad(FileSource file, Action<texture2D> done, Action<Exception> fail)
 			{
 				_file = file;
+				_contentType = file.Name;
+
 				_done = done;
 				_fail = fail;
 
@@ -249,8 +254,11 @@ namespace Fuse.Resources
 			{
 				try
 				{
-					var data = _file.ReadAllBytes();
-					TextureLoader.ByteArrayToTexture2DFilename(new Buffer(data), _file.Name, GWDoneCallback);
+					// TODO: better way of loading this data?
+					var buffer = new Buffer(_file.ReadAllBytes());
+					var bitmap = Bitmap.LoadFromBuffer(buffer, _contentType);
+					var texture = Bitmap.UploadTexture(bitmap);
+					GWDoneCallback(texture);
 				}
 				catch (Exception e)
 				{

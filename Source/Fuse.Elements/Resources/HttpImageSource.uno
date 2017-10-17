@@ -3,7 +3,7 @@ using Uno.Graphics;
 using Uno.Collections;
 using Uno.UX;
 using Fuse.Drawing;
-
+using Fuse.Internal.Bitmaps;
 using Experimental.TextureLoader;
 using Experimental.Http;
 
@@ -166,7 +166,9 @@ namespace Fuse.Resources
 			{
 				try
 				{
-					TextureLoader.ByteArrayToTexture2DContentType(_data, _contentType, GWDoneCallback);
+					var bitmap = Bitmap.LoadFromBuffer(_data, _contentType);
+					var texture = Bitmap.UploadTexture(bitmap);
+					GWDoneCallback(texture);
 				}
 				catch (Exception e)
 				{
