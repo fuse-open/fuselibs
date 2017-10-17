@@ -13,7 +13,7 @@ namespace Experimental.Http
 
 	class BinaryLoader
 	{
-		public Action<HttpResponseHeader,Buffer> Callback;
+		public Action<HttpResponseHeader, byte[]> Callback;
 		public Action<string> ErrorCallback;
 		public String Uri;
 		public String Method;
@@ -48,12 +48,7 @@ namespace Experimental.Http
 			//_header.ReasonPhrase = resp.ReasonPhrase;
 
 			_header.Headers = ExtractHeaders(resp.GetResponseHeaders());
-			OnBufferLoaded(resp.GetResponseContentByteArray());
-		}
-
-		void OnBufferLoaded( byte[] data )
-		{
-			Callback(Header, new Buffer(data));
+			Callback(Header, resp.GetResponseContentByteArray());
 		}
 
 		Dictionary<string, string> ExtractHeaders(string headers)

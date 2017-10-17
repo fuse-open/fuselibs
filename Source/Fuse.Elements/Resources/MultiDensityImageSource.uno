@@ -3,6 +3,7 @@ using Uno.Graphics;
 using Uno.Collections;
 using Uno.UX;
 using Fuse.Drawing;
+using Fuse.Resources.Exif;
 
 namespace Fuse.Resources
 {
@@ -151,6 +152,14 @@ namespace Fuse.Resources
 			get
 			{
 				return _proxy.PixelSize;
+			}
+		}
+
+		public override ImageOrientation Orientation
+		{
+			get
+			{
+				return _proxy.Orientation;
 			}
 		}
 

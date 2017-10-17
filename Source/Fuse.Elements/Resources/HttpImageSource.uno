@@ -3,6 +3,7 @@ using Uno.Graphics;
 using Uno.Collections;
 using Uno.UX;
 using Fuse.Drawing;
+using Fuse.Resources.Exif;
 
 using Experimental.TextureLoader;
 using Experimental.Http;
@@ -54,6 +55,8 @@ namespace Fuse.Resources
 		/** Specifies a hint for how the image should be managed in memory. See @MemoryPolicy. */
 		public MemoryPolicy Policy { get { return _proxy.Policy; } set { _proxy.Policy = value; } }
 		protected override void OnPinChanged() {  _proxy.OnPinChanged(); }
+
+		public override ImageOrientation Orientation { get { return _proxy.Orientation; } }
 		public override float2 Size { get { return _proxy.Size; } }
 		public override int2 PixelSize { get { return _proxy.PixelSize; } }
 		public override ImageSourceState State { get { return _proxy.State; } }
@@ -128,7 +131,13 @@ namespace Fuse.Resources
 			Fail( "HttpImageSource-failed-conversion", e);
 		}
 
-		void HttpCallback( HttpResponseHeader response, Buffer data )
+		ImageOrientation _orientation = ImageOrientation.Identity;
+		public override ImageOrientation Orientation
+		{
+			get { return _orientation; }
+		}
+
+		void HttpCallback(HttpResponseHeader response, byte[] data)
 		{
 			if (response.StatusCode != 200)
 			{
@@ -143,17 +152,19 @@ namespace Fuse.Resources
 			else
 				_contentType = ct;
 
+			_orientation = ExifData.FromByteArray(data).Orientation;
+
 			new BackgroundLoad(data, _contentType, SuccessCallback, FailureCallback);
 		}
 
 		class BackgroundLoad
 		{
-			Buffer _data;
+			byte[] _data;
 			string _contentType;
 			Action<texture2D> _done;
 			Action<Exception> _fail;
 			Exception _exception;
-			public BackgroundLoad(Buffer data, string contentType, Action<texture2D> done, Action<Exception> fail)
+			public BackgroundLoad(byte[] data, string contentType, Action<texture2D> done, Action<Exception> fail)
 			{
 				_data = data;
 				_contentType = contentType;
@@ -166,7 +177,7 @@ namespace Fuse.Resources
 			{
 				try
 				{
-					TextureLoader.ByteArrayToTexture2DContentType(_data, _contentType, GWDoneCallback);
+					TextureLoader.ByteArrayToTexture2DContentType(new Buffer(_data), _contentType, GWDoneCallback);
 				}
 				catch (Exception e)
 				{

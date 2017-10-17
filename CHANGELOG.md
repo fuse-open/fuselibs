@@ -44,6 +44,8 @@
  * The `Fuse.Reactive.IWriteable` interface has changed (breaking!). The method signature is now `bool TrySetExclusive(object)` instead of `void SetExclusive(object)`. Unlikely to affect your code.
  * `IObservable` and `IObservableArray` no longer push their initial value on `Subscribe`.
 
+## Image
+- Image will now respect Exif orientation.
 
 # 1.3
 

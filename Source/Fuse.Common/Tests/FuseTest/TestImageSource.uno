@@ -2,6 +2,7 @@ using Uno;
 
 using Fuse;
 using Fuse.Resources;
+using Fuse.Resources.Exif;
 
 namespace FuseTest
 {
@@ -20,6 +21,7 @@ namespace FuseTest
 		{ 
 			get { return float2(SourcePixelSize.X / PixelsPerPoint, SourcePixelSize.Y / PixelsPerPoint); } 
 		}
+		public override ImageOrientation Orientation { get { return ImageOrientation.Identity; } }
 		public override int2 PixelSize { get { return SourcePixelSize; } }
 		public override ImageSourceState State { get  { return _state; } }
 		public override texture2D GetTexture()

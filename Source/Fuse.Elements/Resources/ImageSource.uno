@@ -7,6 +7,7 @@ using Fuse.Scripting;
 
 using Experimental.TextureLoader;
 using Uno.Net.Http;
+using Fuse.Resources.Exif;
 
 namespace Fuse.Resources
 {
@@ -147,6 +148,7 @@ namespace Fuse.Resources
 		}
 		protected virtual void OnPinChanged() { }
 
+		public abstract ImageOrientation Orientation { get; }
 		public abstract float2 Size { get; }
 		public abstract int2 PixelSize { get; }
 		public abstract ImageSourceState State { get; }
