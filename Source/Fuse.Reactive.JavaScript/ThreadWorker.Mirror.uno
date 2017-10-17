@@ -57,17 +57,13 @@ namespace Fuse.Reactive
 			var o = obj as Scripting.Object;
 			if (o != null)
 			{
-				if (o.InstanceOf(FuseJS.Observable)) 
+				if (o.InstanceOf(Context.Observable)) 
 				{
 					return new Observable(this, o, false);
 				}
 				else if (o.InstanceOf(FuseJS.Date))
 				{
 					return DateTimeConverterHelpers.ConvertDateToDateTime(o);
-				}
-				else if (o.InstanceOf(FuseJS.TreeObservable))
-				{
-					return new TreeObservable(o);
 				}
 				else
 				{
