@@ -1,5 +1,8 @@
 # Unreleased
 
+## DesktopApp Updates
+- Fixed an issue about certain event not triggering a proper update and redraw on desktop preview/build
+
 ## RangeControl
 - `LinearRangeBehavior` now correctly responds to `UserStep` values, providing quantized input
 - Fixed `RangeControl.RelativeValue` to properly update when bound in UX
