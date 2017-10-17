@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * Parser for font config files.
@@ -207,13 +208,7 @@ public class FontListParser {
         while (parser.next() != XmlPullParser.END_TAG) {
             if (parser.getEventType() != XmlPullParser.START_TAG) continue;
             if (parser.getName().equals("font")) {
-                String indexStr = parser.getAttributeValue(null, "index");
-                int index = indexStr == null ? 0 : Integer.parseInt(indexStr);
-                String weightStr = parser.getAttributeValue(null, "weight");
-                int weight = weightStr == null ? NormalWeight : Integer.parseInt(weightStr);
-                boolean isItalic = "italic".equals(parser.getAttributeValue(null, "style"));
-                String fileName = parser.nextText();
-                fonts.add(new Font(absoluteFontPath(fileName), index, weight, isItalic));
+                fonts.add(readFont(parser));
             } else {
                 skip(parser);
             }
@@ -222,6 +217,29 @@ public class FontListParser {
         if (name != null)
             names.add(name);
         return new Family(names, fonts, lang, variant);
+    }
+
+    /** Matches leading and trailing XML whitespace. */
+    private static final Pattern FILENAME_WHITESPACE_PATTERN =
+            Pattern.compile("^[ \\n\\r\\t]+|[ \\n\\r\\t]+$");
+
+    private static Font readFont(XmlPullParser parser)
+            throws XmlPullParserException, IOException {
+        String indexStr = parser.getAttributeValue(null, "index");
+        int index = indexStr == null ? 0 : Integer.parseInt(indexStr);
+        String weightStr = parser.getAttributeValue(null, "weight");
+        int weight = weightStr == null ? 400 : Integer.parseInt(weightStr);
+        boolean isItalic = "italic".equals(parser.getAttributeValue(null, "style"));
+        StringBuilder filename = new StringBuilder();
+        while (parser.next() != XmlPullParser.END_TAG) {
+            if (parser.getEventType() == XmlPullParser.TEXT) {
+                filename.append(parser.getText());
+            }
+            if (parser.getEventType() != XmlPullParser.START_TAG) continue;
+            skip(parser);
+        }
+        String sanitizedName = FILENAME_WHITESPACE_PATTERN.matcher(filename).replaceAll("");
+        return new Font(absoluteFontPath(sanitizedName), index, weight, isItalic);
     }
 
     private static Alias readAlias(XmlPullParser parser)
