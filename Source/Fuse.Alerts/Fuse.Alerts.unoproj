@@ -2,7 +2,7 @@
   "Copyright": "Copyright (c) Fusetools AS 2017",
   "Description": "Native alerts and simple dialogs for mobile targets",
   "Publisher": "Fusetools AS",
-  "Version": "1.3.0-rc3",
+  "Version": "1.3.0",
   "Package": {
     "ProjectUrl": "https://fusetools.com"
   },
