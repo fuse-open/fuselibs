@@ -15,7 +15,7 @@ namespace Fuse
 		//tree structure and data should be static at this point
 		Draw
 	}
-	
+
 	/**
 		The allowed values for priority of actions within the Layout stage.
 	*/
@@ -35,12 +35,12 @@ namespace Fuse
 		//if modified adjust the value in the Stage constructor
 		Post
 	}
-	
+
 	public interface IUpdateListener
 	{
 		void Update();
 	}
-	
+
 	class UpdateListener
 	{
 		//only one of update/action will be set
@@ -49,15 +49,15 @@ namespace Fuse
 		public bool removed;
 		public int deferFrame;
 		public int sequence;
-		
+
 		public void Invoke()
 		{
 			if (removed)
 				return;
-				
+
 			if (action != null)
 				action();
-				
+
 			if (update != null)
 				update.Update();
 		}
@@ -72,7 +72,7 @@ namespace Fuse
 		{
 			if (action != null)
 				action();
-				
+
 			if (update != null)
 				update.Update();
 		}
@@ -81,11 +81,11 @@ namespace Fuse
 	class Stage
 	{
 		public UpdateStage UpdateStage;
-		
+
 		public List<UpdateListener> Listeners = new List<UpdateListener>();
 		public List<UpdateListener> Onces = new List<UpdateListener>();
 		public List<UpdateListener> OncesPending = new List<UpdateListener>();
-		
+
 		// This size is hardcoded for performance reasons instead of using a dictionary
 		// to avoid using a foreach in the dispatch innerloop
 		public Queue<UpdateAction>[] PhaseDeferredActions;
@@ -99,19 +99,19 @@ namespace Fuse
 			}
 			return null;
 		}
-		
+
 		public bool HasListenersRemoved;
 
 		public Stage(UpdateStage _updateStage)
 		{
 			UpdateStage = _updateStage;
-			
+
 			var queueCount = (int)LayoutPriority.Post + 1;
 			PhaseDeferredActions = new Queue<UpdateAction>[queueCount];
 			for (int i=0; i < queueCount; ++i)
 				PhaseDeferredActions[i] = new Queue<UpdateAction>();
 		}
-		
+
 		//insert them in sequenced order
 		public void Insert( List<UpdateListener> list, UpdateListener us )
 		{
@@ -123,7 +123,7 @@ namespace Fuse
 					return;
 				}
 			}
-			
+
 			list.Insert(0,us);
 		}
 
@@ -141,14 +141,14 @@ namespace Fuse
 			UpdateManager.PostAction(action);
 		}
 	}
-	
+
 	public static class UpdateManager
 	{
 		static List<Stage> _stages = new List<Stage>();
-		
+
 		static List<Action> _postActions = new List<Action>();
 		static List<Action> _postActionsSwap = new List<Action>();
-		
+
 		static UpdateManager()
 		{
 			for (int i=0; i <= (int)UpdateStage.Draw; ++i)
@@ -157,14 +157,14 @@ namespace Fuse
 
 		public static readonly Uno.Threading.IDispatcher Dispatcher = new UpdateDispatcher();
 
-		
+
 		public static void AddAction(Action pu, UpdateStage stage = UpdateStage.Primary/*,
 			int sequence = 0*/) //em: I've disabled sequence for now since we don't need it yet
 		{
 			var us = new UpdateListener();
 			us.action = pu;
 			//us.sequence = sequence;
-			
+
 			var s = _stages[(int)stage];
 			s.Insert( s.Listeners, us );
 		}
@@ -173,7 +173,7 @@ namespace Fuse
 		{
 			var us = new UpdateListener();
 			us.update = pu;
-			
+
 			var s = _stages[(int)stage];
 			s.Insert( s.Listeners, us );
 		}
@@ -186,7 +186,7 @@ namespace Fuse
 			{
 				if (list[i].removed)
 					continue;
-					
+
 				if ( (action != null && object.Equals(action, list[i].action)) ||
 					(update != null && object.Equals(update, list[i].update)) )
 				{
@@ -196,23 +196,23 @@ namespace Fuse
 			}
 			return false;
 		}
-		
+
 		public static void RemoveAction(Action pu, UpdateStage stage = UpdateStage.Primary)
 		{
 			var s = _stages[(int)stage];
-			if (!RemoveFrom( s.Listeners, pu, null ))	
+			if (!RemoveFrom( s.Listeners, pu, null ))
 				throw new Exception("no Action found to remove");
 			s.HasListenersRemoved = true;
 		}
-		
+
 		public static void RemoveAction(IUpdateListener pu, UpdateStage stage = UpdateStage.Primary)
 		{
 			var s = _stages[(int)stage];
-			if (!RemoveFrom( s.Listeners, null, pu ))	
+			if (!RemoveFrom( s.Listeners, null, pu ))
 				throw new Exception("no Action found to remove");
 			s.HasListenersRemoved = true;
 		}
-		
+
 		public static void AddOnceAction(Action pu, UpdateStage stage = UpdateStage.Primary)
 		{
 			var us = new UpdateListener();
@@ -225,16 +225,16 @@ namespace Fuse
 			var s = _stages[(int)stage];
 			if (RemoveFrom( s.OncesPending, pu, null ))
 				return;
-			
+
 			if (!RemoveFrom( s.Onces, pu, null ))
 				throw new Exception("no OnceAction found to remove");
 		}
-		
-		public static void PerformNextFrame(Action pu, UpdateStage stage = UpdateStage.Primary)
+
+		public static void PerformNextFrame(Action pu, UpdateStage stage = UpdateStage.Primary, int deferFrame = 1)
 		{
 			var us = new UpdateListener();
 			us.action = pu;
-			us.deferFrame = FrameIndex + 1;
+			us.deferFrame = FrameIndex + deferFrame;
 			_stages[(int)stage].OncesPending.Add(us);
 		}
 
@@ -256,15 +256,15 @@ namespace Fuse
 			else
 				_postActions.Add(pu);
 		}
-		
+
 		static Stage CurrentDeferredActionStage
-		{	
+		{
 			get { return _currentStage != null ? _currentStage : _stages[0]; }
 		}
-		
+
 		/**
 			Add an action to the deferred set of actions. Defaults to the current stage.
-			
+
 			Be aware that binding a member function to `Action` involves allocating memory. If you
 			already have a suitable object use the `IUpdateListener` version instead.
 		*/
@@ -273,23 +273,23 @@ namespace Fuse
 			var use = stage != UpdateStage.None ? _stages[(int)stage] : CurrentDeferredActionStage;
 			use.AddDeferredAction(pu, null, priority);
 		}
-		
+
 		public static void AddDeferredAction(IUpdateListener pu, UpdateStage stage = UpdateStage.None, LayoutPriority priority=LayoutPriority.Layout)
 		{
 			var use = stage != UpdateStage.None ? _stages[(int)stage] : CurrentDeferredActionStage;
 			use.AddDeferredAction(null, pu, priority);
 		}
-		
+
 		public static void AddDeferredAction(Action pu, LayoutPriority priority)
 		{
 			AddDeferredAction(pu, UpdateStage.None, priority);
 		}
-		
+
 		public static void AddDeferredAction(IUpdateListener pu, LayoutPriority priority)
 		{
 			AddDeferredAction(pu, UpdateStage.None, priority);
 		}
-		
+
 		public static void IncreaseFrameIndex()
 		{
 			_frameIndex++;
@@ -301,7 +301,7 @@ namespace Fuse
 			ProcessPostActions();
 			ProcessStages();
 		}
-		
+
 		static void ProcessStages()
 		{
 			extern double t;
@@ -321,30 +321,30 @@ namespace Fuse
 					Profiling.EndRegion(Uno.Diagnostics.Clock.GetSeconds() - t);
 			}
 		}
-		
+
 		internal static UpdateStage CurrentStage
 		{
 			get { return _currentStage == null ? UpdateStage.None : _currentStage.UpdateStage; }
 		}
-		
+
 		internal static bool IsPastStage(UpdateStage stage)
 		{
 			return (int)stage < (int)CurrentStage;
 		}
-		
+
 		static void Update(Stage stage)
 		{
 			_currentStage = stage;
 			List<Exception> _exceptions = null;
-			
+
 			ProcessOnces( stage, ref _exceptions );
 			ProcessListeners( stage, ref _exceptions );
 			ProcessDeferredActions( stage, ref _exceptions );
-			
+
 			_currentStage = null;
 			CheckExceptions(_exceptions);
 		}
-		
+
 		static void ProcessOnces(Stage stage, ref List<Exception> _exceptions)
 		{
 			if (stage.OncesPending.Count > 0)
@@ -353,7 +353,7 @@ namespace Fuse
 				stage.Onces = stage.OncesPending;
 				stage.OncesPending = t;
 				stage.OncesPending.Clear();
-				
+
 				var c = stage.Onces.Count;
 				for (int i=0; i < c; ++i)
 				{
@@ -378,7 +378,7 @@ namespace Fuse
 				}
 			}
 		}
-		
+
 		static void ProcessListeners(Stage stage, ref List<Exception> _exceptions)
 		{
 			//iterate by index so new ones can be added and even activated the same frame
@@ -396,7 +396,7 @@ namespace Fuse
 					_exceptions.Add(e);
 				}
 			}
-			
+
 			if (stage.HasListenersRemoved)
 			{
 				for (int i=stage.Listeners.Count-1; i>=0; --i)
@@ -423,7 +423,7 @@ namespace Fuse
 				}
 			}
 		}
-		
+
 		/** A test interface that just clears the pending deferred actions */
 		static internal void TestProcessCurrentDeferredActions()
 		{
@@ -431,7 +431,7 @@ namespace Fuse
 			ProcessDeferredActions(CurrentDeferredActionStage, ref _exceptions);
 			CheckExceptions(_exceptions);
 		}
-		
+
 		static int maxDeferred =0;
 
 		static void ProcessPostActions()
@@ -448,11 +448,11 @@ namespace Fuse
 			if defined(FUSELIBS_PROFILING)
 				Profiling.EndRegion(Uno.Diagnostics.Clock.GetSeconds() - t);
 		}
-		
+
 		static void ProcessPostActionsImpl()
 		{
 			List<Exception> _exceptions = null;
-			
+
 			//loop to ensure any posted actions during processing are also handled
 			while(true)
 			{
@@ -468,7 +468,7 @@ namespace Fuse
 
 				if (a.Count == 0)
 					break;
-					
+
 				for (int i=0; i < a.Count; ++i )
 				{
 					try
@@ -488,7 +488,7 @@ namespace Fuse
 			_currentStage = null;
 			CheckExceptions(_exceptions);
 		}
-		
+
 		static void CheckExceptions(List<Exception> exs)
 		{
 			if (exs != null)
@@ -499,7 +499,7 @@ namespace Fuse
 					throw new AggregateException(exs.ToArray());
 			}
 		}
-		
+
 		static int _frameIndex = 1; //start at 1 so 0 can be used as not set
 		public static int FrameIndex
 		{
