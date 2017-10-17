@@ -67,6 +67,7 @@ namespace Fuse
 			if defined(FUSELIBS_PROFILING)
 				Profiling.EndDraw();
 
+			// See the note in Update about frame index
 			UpdateManager.IncreaseFrameIndex();
 		}
 
@@ -81,6 +82,12 @@ namespace Fuse
 			{
 				Time.Set(Uno.Diagnostics.Clock.GetSeconds());
 				OnUpdate();
+				
+				// It's important that the FrameIndex is incremented every frame even if nothing draws. The increment
+				// should happen after drawing, but if there is nothing to draw it won't reach that code, thus we
+				// check for that condition here.
+				if (!NeedsRedraw)
+					UpdateManager.IncreaseFrameIndex();
 			}
 			catch (Exception e)
 			{
