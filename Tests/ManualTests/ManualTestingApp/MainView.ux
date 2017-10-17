@@ -142,6 +142,7 @@
 			<Launchers/>
 			<Multitouch />
 			<ScrollViewPagerPage/>
+			<UpdatePage/>
 			<Android>
 				<WebViewPage/>
 				<DatePickerPage/>
