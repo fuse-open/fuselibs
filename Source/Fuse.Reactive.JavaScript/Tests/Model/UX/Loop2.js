@@ -2,6 +2,8 @@ class Flights {
 	constructor(app) {
 		this.app = app
 		this.pageIndex = 5
+		//TODO: Shouldn't be required (Path can default to ClassName)
+		this.$path = "Flights"
 	}
 }
 
