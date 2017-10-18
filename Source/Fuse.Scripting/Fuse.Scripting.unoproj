@@ -7,7 +7,7 @@
     "ProjectUrl": "https://fusetools.com"
   },
   "InternalsVisibleTo": [
-    "Fuse.Reactive.JavaScript"
+    "Fuse.Scripting.JavaScript"
   ],
   "Packages": [
     "Uno.Collections",

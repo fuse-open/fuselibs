@@ -39,7 +39,7 @@
     "../Fuse.Reactive/Fuse.Reactive.unoproj",
     "../Fuse.Reactive.Expressions/Fuse.Reactive.Expressions.unoproj",
     "../Fuse.Reactive.Bindings/Fuse.Reactive.Bindings.unoproj",
-    "../Fuse.Reactive.JavaScript/Fuse.Reactive.JavaScript.unoproj",
+    "../Fuse.Scripting.JavaScript/Fuse.Scripting.JavaScript.unoproj",
     "../Fuse.Scripting/Fuse.Scripting.unoproj",
     "../Fuse.Selection/Fuse.Selection.unoproj",
     "../Fuse.Storage/Fuse.Storage.unoproj",

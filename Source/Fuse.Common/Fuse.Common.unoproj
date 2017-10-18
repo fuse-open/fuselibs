@@ -33,7 +33,7 @@
     "Fuse.Reactive.Bindings",
     "Fuse.Reactive.Test",
     "Fuse.Reactive.Expressions",
-    "Fuse.Reactive.JavaScript",
+    "Fuse.Scripting.JavaScript",
     "Fuse.Selection",
     "Fuse.Scripting.Test",
     "Fuse.Testing",
