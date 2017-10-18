@@ -15,7 +15,7 @@ namespace Fuse.Scripting
 	partial class ThreadWorker: IDisposable, IDispatcher, IThreadWorker, IMirror
 	{
 		IDispatcher IThreadWorker.Dispatcher { get { return this; } }
-		Function IThreadWorker.Observable { get { return FuseJS.Observable; } }
+		public Function Observable { get { return FuseJS.Observable; } }
 
 		internal static Context CreateContext(IThreadWorker worker)
 		{

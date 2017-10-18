@@ -231,7 +231,7 @@ namespace Fuse.Scripting
 
 		internal static Observable Create(ThreadWorker worker)
 		{
-			return new Observable(worker, (Scripting.Object)worker.Context.Observable.Call(), true);
+			return new Observable(worker, (Scripting.Object)worker.Observable.Call(), true);
 		}
 
 		int ToInt(object obj)
