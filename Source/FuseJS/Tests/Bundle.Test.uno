@@ -28,6 +28,7 @@ namespace FuseJS.Test
 		}
 
 		[Test]
+		[Ignore("https://github.com/fusetools/fuselibs-public/issues/466")]
 		public void TestRead()
 		{
 			new FuseJS.Bundle();
