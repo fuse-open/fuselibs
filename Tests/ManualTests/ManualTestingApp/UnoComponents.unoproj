@@ -42,5 +42,7 @@
     "StrokeAndFills/StrokeAndFills.ux:UX",
     "TestAppTheme.ux:UX",
     "TimePicker/NativeTimePickerPage.ux:UX",
+    "Update/UpdatePage.ux:UX",
+    "Update/UpdatePage.ux.uno:Source",
   ]
 }

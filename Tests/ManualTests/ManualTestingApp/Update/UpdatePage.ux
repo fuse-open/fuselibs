@@ -1,0 +1,38 @@
+<Page Title="Update Timing" ux:Class="UpdatePage">
+	<InfoStack ux:Key="Info">
+		<p>Tests some internal mechanisms for timing, updating, and invalidation.</p>
+		<p>Click "start" and wait for the circles to turn green. It shouldn't take more than 10 seconds.</p>
+		<p>During the test you should not touch the screen, or in any way interact with the device.</p>
+	</InfoStack>
+	<DockPanel>
+		<Panel Dock="Top">
+			<StdButton Alignment="TopCenter" Text="Start">
+				<Clicked>
+					<Pulse Target="step0"/>
+				</Clicked>
+			</StdButton>
+		</Panel>
+
+		<WrapPanel Alignment="Center">
+			<Circle Color="#800" ux:Name="circ0" Width="100" Height="100" Margin="10"/>
+			<Timeline ux:Name="step0">
+				<Set circ0.Color="#080"/>
+				<Set stepA.Value="true" Delay="1"/>
+				<Callback Handler="Start" Delay="1"/>
+			</Timeline>
+			
+			<Circle Color="#800" ux:Name="circA" Width="100" Height="100" Margin="10"/>
+			<WhileTrue ux:Name="stepA">
+				<Change circA.Color="#080" Duration="0.2"/>
+			</WhileTrue>
+			
+			<Circle Color="#800" ux:Name="circB" Width="100" Height="100" Margin="10"/>
+			<WhileTrue ux:Name="stepB">
+				<Change circB.Color="#080" Duration="0"/>
+			</WhileTrue>
+			
+			<UpdateCircle Color="#800" ux:Name="circC" Width="100" Height="100" Margin="10"/>
+		</WrapPanel>
+		
+	</DockPanel>
+</Page>
