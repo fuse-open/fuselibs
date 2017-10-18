@@ -189,5 +189,30 @@ namespace Fuse
 				Assert.AreEqual(float4(1, 2, 3, 4), p.Constant4.Margin);
 			}
 		}
+		
+		[Test]
+		public void TryToZeroFloat4()
+		{
+			//https://github.com/fusetools/fuselibs-public/issues/592
+			float4 val;
+			int size;
+			Assert.IsFalse( Marshal.TryToZeroFloat4( "#ch", out val, out size ) );
+			Assert.IsFalse( Marshal.TryToZeroFloat4(  new ListWrapper(
+				new object[]{ 1,2, new Junk()}), out val, out size ) );
+			Assert.IsFalse( Marshal.TryToZeroFloat4(  new ListWrapper(
+				new object[]{ 1, "abc"}), out val, out size ) );
+		}
+	}
+	
+	class Junk{}
+	class ListWrapper: IArray
+	{
+		readonly object[] _list;
+		public ListWrapper(object[] list)
+		{
+			_list = list;
+		}
+		public int Length { get { return _list.Length; } }
+		public object this [int index] { get { return _list[index]; } }
 	}
 }

@@ -1,5 +1,8 @@
 # Unreleased
 
+## Fuse.Marshal
+- `ToDouble` replaced with `TryToDouble` for naming consistency (old names remain as deprecated)
+
 ## Scripting.Context
 - Invoke now takes an Action<Scripting.Context>. This is the first step in refactoring our scripting layer to make sure code does not evaluate JS on the wrong thread
 - The `Observable` property has been removed from Context & IThreadWorker
