@@ -1,7 +1,7 @@
-using Uno;
 using Uno.Collections;
+using Fuse.Reactive;
 
-namespace Fuse.Reactive
+namespace Fuse.Scripting
 {
 	class Observable : ListMirror, IObservable
 	{
@@ -209,7 +209,7 @@ namespace Fuse.Reactive
 			return new Subscription(this, observer);
 		}
 
-		IDisposable IObservableArray.Subscribe(IObserver observer)
+		Uno.IDisposable IObservableArray.Subscribe(IObserver observer)
 		{
 			return Subscribe(observer);
 		}
@@ -290,7 +290,7 @@ namespace Fuse.Reactive
 			}
 			else 
 			{	
-				throw new Exception("Unhandled observable operation: " + op);
+				throw new Uno.Exception("Unhandled observable operation: " + op);
 			}
 
 			return null;

@@ -10,6 +10,7 @@
     "Uno.Collections",
     "Uno.Data.Json",
     "Uno.Net.Http",
+    "Uno.Net.Sockets",
     "Uno.Testing",
     "Uno.Threading",
   ],
@@ -19,9 +20,6 @@
     "../Fuse.Reactive.Bindings/Fuse.Reactive.Bindings.unoproj",
     "../Fuse.Reactive.Expressions/Fuse.Reactive.Expressions.unoproj",
     "../Fuse.Platform/Fuse.Platform.unoproj",
-    "../Fuse.Scripting.Duktape/Fuse.Scripting.Duktape.unoproj",
-    "../Fuse.Scripting.JavaScriptCore/Fuse.Scripting.JavaScriptCore.unoproj",
-    "../Fuse.Scripting.V8/Fuse.Scripting.V8.unoproj",
     "../Fuse.Scripting/Fuse.Scripting.unoproj",
     "../Fuse.Triggers/Fuse.Triggers.unoproj",
     "../Fuse.Nodes/Fuse.Nodes.unoproj",
@@ -29,7 +27,7 @@
     "../Fuse.Marshal/Fuse.Marshal.unoproj"
   ],
   "InternalsVisibleTo": [
-    "Fuse.Reactive.JavaScript.Test",
+    "Fuse.Scripting.JavaScript.Test",
     "Fuse.Reactive.Bindings.Test",
     "Fuse.Scripting.Test",
     "Fuse.Testing",
@@ -37,11 +35,25 @@
   ],
   "Includes": [
     "*",
+    "*/*",
     "3rdparty/es6-promise.min.js:File",
     "FuseJS/setTimeout.js:File",
     "FuseJS/Observable.js:File",
     "FuseJS/EventEmitter.js:Bundle",
     "JavaScriptEngine.cil.uxl:Extensions",
     "JavaScriptEngine.cpp.uxl:Extensions",
+
+    "V8/include/V8Simple.h",
+    "V8/lib/Android.stuff:Stuff",
+    "V8/lib/DotNet.stuff:Stuff",
+    "V8/lib/OSX.stuff:Stuff",
+    "V8/lib/Windows.stuff:Stuff",
+
+    "JavaScriptCore/JSTypedArrayInclude.h:CHeader",
+
+    "Duktape/duk_config.h:File",
+    "Duktape/duktape.c:File",
+    "Duktape/duktape.h:File",
+    "Duktape/duktape_helpers.h:File"
   ]
 }

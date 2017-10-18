@@ -1,7 +1,7 @@
 using Uno.Collections;
 using Uno;
 
-namespace Fuse.Reactive
+namespace Fuse.Scripting
 {
 	class ObjectMirror : ValueMirror, IObject
 	{

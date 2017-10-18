@@ -2,7 +2,7 @@ using Uno;
 using Uno.Collections;
 using Uno.Threading;
 
-namespace Fuse.Reactive
+namespace Fuse.Scripting
 {
 	/** Represents a raw JS object */
 	interface IRaw

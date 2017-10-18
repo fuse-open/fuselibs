@@ -22,11 +22,11 @@
     "../Fuse.Triggers/Fuse.Triggers.unoproj"
   ],
   "InternalsVisibleTo": [
-	"Fuse.Navigation",
-    "Fuse.Reactive.JavaScript.Test",
+    "Fuse.Navigation",
+    "Fuse.Scripting.JavaScript.Test",
     "Fuse.Reactive.Bindings.Test",
     "Fuse.Reactive.Test",
-    "Fuse.Reactive.JavaScript",
+    "Fuse.Scripting.JavaScript",
     "Fuse.Scripting.Test",
     "Fuse.Common.Test.Helpers",
     "Fuse.Controls.ScrollView",

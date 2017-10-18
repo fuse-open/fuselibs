@@ -23,7 +23,7 @@
     "Fuse.Reactive.Bindings",
     "Fuse.Reactive.Expressions",
     "Fuse.Expressions.Test",
-    "Fuse.Reactive.JavaScript",
+    "Fuse.Scripting.JavaScript",
     "Fuse.Reactive.Test",
     "Fuse.Scripting.Test",
     "Fuse.Selection",

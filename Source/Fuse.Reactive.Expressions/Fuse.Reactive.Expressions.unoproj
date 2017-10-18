@@ -24,7 +24,7 @@
     "Fuse.Scripting.Test",
     "Fuse.Common.Test.Helpers",
     "Fuse.Expressions.Test",
-    "Fuse.Reactive.JavaScript.Test"
+    "Fuse.Scripting.JavaScript.Test"
   ],
   "Includes": [
     "*"

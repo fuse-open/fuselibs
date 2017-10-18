@@ -32,7 +32,7 @@
     "Fuse.Motion",
     "Fuse.Navigation",
     "Fuse.Reactive.Bindings",
-    "Fuse.Reactive.JavaScript",
+    "Fuse.Scripting.JavaScript",
     "Fuse.Selection",
     "Fuse.Testing",
     "Fuse.Text",

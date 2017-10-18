@@ -9,7 +9,7 @@
     "Fuse.Drawing.Primitives",
     "Fuse.Elements",
     "Fuse.Reactive",
-    "Fuse.Reactive.JavaScript",
+    "Fuse.Scripting.JavaScript",
     "Fuse.Reactive.Bindings",
     "Fuse.Reactive.Expressions",
     "Fuse.Marshal",

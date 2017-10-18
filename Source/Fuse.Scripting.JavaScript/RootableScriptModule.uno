@@ -5,7 +5,7 @@ using Fuse.Scripting;
 using Uno.Testing;
 using Uno.Threading;
 
-namespace Fuse.Reactive
+namespace Fuse.Scripting
 {
 	class RootableScriptModule: ScriptModule
 	{

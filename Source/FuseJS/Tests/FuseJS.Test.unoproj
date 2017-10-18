@@ -8,7 +8,7 @@
     "Fuse.Reactive",
     "Fuse.Reactive.Expressions",
     "Fuse.Reactive.Bindings",
-    "Fuse.Reactive.JavaScript",
+    "Fuse.Scripting.JavaScript",
     "Fuse.Nodes",
     "Uno.Testing",
     "Fuse.FileSystem"

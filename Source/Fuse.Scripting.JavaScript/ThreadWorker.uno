@@ -5,7 +5,7 @@ using Uno.Testing;
 using Uno.Threading;
 using Fuse.Scripting;
 
-namespace Fuse.Reactive
+namespace Fuse.Scripting
 {
 	interface IMirror
 	{
@@ -28,8 +28,8 @@ namespace Fuse.Reactive
 		static Scripting.Context _context;
 		public Scripting.Context Context { get { return _context; } }
 
-		static FuseJS.Builtins _fuseJS;
-		public static FuseJS.Builtins FuseJS { get { return _fuseJS; } }
+		static Fuse.Reactive.FuseJS.Builtins _fuseJS;
+		public static Fuse.Reactive.FuseJS.Builtins FuseJS { get { return _fuseJS; } }
 
 		readonly Thread _thread;
 
@@ -104,7 +104,7 @@ namespace Fuse.Reactive
 					}
 					UpdateManager.AddAction(CheckAndThrow);
 
-					_fuseJS = new FuseJS.Builtins(_context);
+					_fuseJS = new Fuse.Reactive.FuseJS.Builtins(_context);
 				}
 			}
 			finally

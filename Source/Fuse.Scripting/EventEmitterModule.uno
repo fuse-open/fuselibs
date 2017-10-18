@@ -11,7 +11,7 @@ namespace Fuse.Scripting
 		{
 			if (_instance == null)
 			{
-				var fileSource = Bundle.Get("Fuse.Reactive.JavaScript").GetFile("FuseJS/EventEmitter.js");
+				var fileSource = Bundle.Get("Fuse.Scripting.JavaScript").GetFile("FuseJS/EventEmitter.js");
 				var exports = new FileModule(fileSource).EvaluateExports(c, "FuseJS/EventEmitter");
 				_instance = exports as Scripting.Function;
 				if (_instance == null)

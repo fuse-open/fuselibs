@@ -6,7 +6,7 @@ using Uno.Threading;
 using Uno.IO;
 using Uno.UX;
 
-namespace Fuse.Reactive
+namespace Fuse.Scripting
 {
 	static class DateTimeConverterHelpers
 	{

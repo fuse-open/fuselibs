@@ -6,7 +6,7 @@
     "Fuse.Common",
     "Fuse.Nodes",
     "Fuse.Reactive",
-    "Fuse.Reactive.JavaScript",
+    "Fuse.Scripting.JavaScript",
     "Fuse.Reactive.Bindings",
     "Fuse.Reactive.Expressions",
     "Fuse.Marshal",
