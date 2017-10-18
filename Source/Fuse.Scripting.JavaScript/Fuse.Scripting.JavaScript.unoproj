@@ -27,7 +27,7 @@
     "../Fuse.Marshal/Fuse.Marshal.unoproj"
   ],
   "InternalsVisibleTo": [
-    "Fuse.Reactive.JavaScript.Test",
+    "Fuse.Scripting.JavaScript.Test",
     "Fuse.Reactive.Bindings.Test",
     "Fuse.Scripting.Test",
     "Fuse.Testing",

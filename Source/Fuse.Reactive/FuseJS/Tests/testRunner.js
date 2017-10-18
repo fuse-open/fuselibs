@@ -4,5 +4,5 @@
 	the tests that have moved to Fuse.Reactive.JavaScript
 */
 var fork = require('child_process').fork;
-var child = fork('Source/Fuse.Reactive.JavaScript/FuseJS/tests/testRunner', process.argv.splice(2));
+var child = fork('Source/Fuse.Scripting.JavaScript/FuseJS/tests/testRunner', process.argv.splice(2));
 child.on('exit', function(code) { process.exit(code); });
