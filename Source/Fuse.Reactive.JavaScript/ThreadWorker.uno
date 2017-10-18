@@ -39,7 +39,7 @@ namespace Fuse.Reactive
 		readonly ManualResetEvent _idle = new ManualResetEvent(true);
 		readonly ManualResetEvent _terminate = new ManualResetEvent(false);
 
-		readonly ConcurrentQueue<Action> _queue = new ConcurrentQueue<Action>();
+		readonly ConcurrentQueue<Action<Scripting.Context>> _queue = new ConcurrentQueue<Action<Scripting.Context>>();
 		readonly ConcurrentQueue<Exception> _exceptionQueue = new ConcurrentQueue<Exception>();
 
 		public ThreadWorker()
@@ -132,13 +132,13 @@ namespace Fuse.Reactive
 
 				bool didAnything = false;
 
-				Action action;
+				Action<Scripting.Context> action;
 				if (_queue.TryDequeue(out action))
 				{
 					try
 					{
 						didAnything = true;
-						action();
+						action(_context);
 					}
 					catch (Exception e)
 					{
@@ -193,10 +193,15 @@ namespace Fuse.Reactive
 				throw new WrapException(prev);
 		}
 
-		public void Invoke(Action action)
+		public void Invoke(Action<Scripting.Context> action)
 		{
 			_idle.Reset();
 			_queue.Enqueue(action);
+		}
+
+		public void Invoke(Action action)
+		{
+			Invoke(new ContextIgnoringAction(action).Run);
 		}
 
 		public class Fence
@@ -206,7 +211,7 @@ namespace Fuse.Reactive
 			public bool IsSignaled { get { return _signaled.WaitOne(0); } }
 			public void Wait() { _signaled.WaitOne(); }
 
-			internal void Signal() { _signaled.Set(); }
+			internal void Signal(Scripting.Context context) { _signaled.Set(); }
 		}
 
 		public Fence PostFence()
@@ -214,6 +219,21 @@ namespace Fuse.Reactive
 			var f = new Fence();
 			Invoke(f.Signal);
 			return f;
+		}
+
+		class ContextIgnoringAction
+		{
+			Uno.Action _action;
+
+			public ContextIgnoringAction(Uno.Action action)
+			{
+				_action = action;
+			}
+
+			public void Run(Scripting.Context context)
+			{
+				_action();
+			}
 		}
 	}
 }

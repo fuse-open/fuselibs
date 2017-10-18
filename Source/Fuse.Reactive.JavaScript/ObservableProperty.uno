@@ -136,7 +136,7 @@ namespace Fuse.Reactive
 				_arg = arg;
 			}
 
-			public void Run()
+			public void Run(Scripting.Context context)
 			{
 				_push(_arg);
 			}

@@ -29,7 +29,7 @@ namespace Fuse.Reactive
 				_e = e;
 			}
 
-			public void Call()
+			public void Call(Scripting.Context context)
 			{
 				_f.ClearDiagnostic();
 

@@ -91,7 +91,7 @@ namespace Fuse.Reactive
 			return op.GetObservable().Object;
 		}
 
-		void Unroot()
+		void Unroot(Scripting.Context context)
 		{
 			if (_self == null) return;
 
