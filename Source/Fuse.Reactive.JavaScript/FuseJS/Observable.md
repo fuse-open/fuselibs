@@ -170,6 +170,7 @@ to the results. We can do this using the following methods:
 
 * `.addSubscriber(func)` - adds `func` to the list of functions that will be called when changes occur
 * `.removeSubscriber(func)` - removes `func` from the list of funcitons that will be called when changes occur 
+* `.pull(func)` - creates a single-update temporary subscription that is cleared once a result has been acquired
 
 We can subscribe to the observables in our TODO app example to be notified when a value changes:
 
@@ -182,6 +183,21 @@ You will get a callback immeditately when subscribing to an observable.
 If we now add or remove elements from the TODO list, or change `isDone.value` on some of the tasks,
 the above function will be called and log a message about the new status.
 
+`pull` is a special convenience function that, when used in combination with operators such as `combineLatest`, makes it easier to write certain kinds of logic:
+
+	var signinDataObs = usernameObs.combineLatest(passwordObs, function(username, password) {
+		return {
+			username : username,
+			password : password
+		}
+	})
+	function onSigninButtonPressed()
+	{
+		signinDataObs.pull(function(observable) {
+			console.dir(observable.value)
+			//do sign-in with observable.value here
+		})
+	}
 
 ### Asynchronous programming
 Observables can act as promises of data that will arrive later, allowing elegant handling of 
