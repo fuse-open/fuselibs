@@ -425,10 +425,22 @@ namespace Fuse.Reactive
 			float4 av = float4(0), bv = float4(0);
 			int asize = 0, bsize = 0;
 			float tv = 0;
-			if (!Marshal.TryToZeroFloat4(a, out av, out asize) ||	
-				!Marshal.TryToZeroFloat4(b, out bv, out bsize) ||
-				!Marshal.TryToType<float>(t, out tv))
+
+			var aValid = Marshal.TryToZeroFloat4(a, out av, out asize);
+			var bValid = Marshal.TryToZeroFloat4(b, out bv, out bsize);
+			var tValid = Marshal.TryToType<float>(t, out tv);
+			if (!aValid)
+				Fuse.Diagnostics.UserWarning("The first argument of lerp is not supported.", this);
+			if (!bValid)
+				Fuse.Diagnostics.UserWarning("The second argument of lerp is not supported.", this);
+			if (!tValid)
+				Fuse.Diagnostics.UserWarning("The third argument of lerp is not supported.", this);
+
+			if (!aValid ||
+				!bValid	||
+				!tValid)
 				return null;
+
 			int size = Math.Max(asize, bsize);
 			
 			switch (size)
