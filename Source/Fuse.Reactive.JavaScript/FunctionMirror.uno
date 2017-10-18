@@ -33,7 +33,7 @@ namespace Fuse.Reactive
 			{
 				_f.ClearDiagnostic();
 
-				var obj = JavaScript.Worker.Context.NewObject();
+				var obj = context.NewObject();
 				if (_e.Node != null) obj["node"] = JavaScript.Worker.Unwrap(_e.Node);
 				if (_e.Data != null) obj["data"] = JavaScript.Worker.Unwrap(_e.Data);
 				if (_e.Sender != null) obj["sender"] = _e.Sender;
