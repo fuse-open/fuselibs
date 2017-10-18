@@ -3,7 +3,7 @@ using Uno;
 using Uno.Collections;
 using Uno.Threading;
 
-namespace Fuse.Reactive
+namespace Fuse.Scripting
 {
 	partial class ThreadWorker
 	{

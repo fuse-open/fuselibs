@@ -2,7 +2,7 @@ using Uno;
 using Uno.UX;
 using Uno.Collections;
 
-namespace Fuse.Reactive
+namespace Fuse.Scripting
 {
 	/** Manages the lifetime of a UX class instance's representation in JavaScript modules
 		within the class, dealing with disposal of resources when the related node is unrooted.

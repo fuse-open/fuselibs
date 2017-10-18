@@ -1,8 +1,8 @@
-using Uno;
 using Uno.UX;
 using Uno.Collections;
+using Fuse.Reactive;
 
-namespace Fuse.Reactive
+namespace Fuse.Scripting
 {
 	class LazyObservableProperty: ObservableProperty
 	{
@@ -127,10 +127,10 @@ namespace Fuse.Reactive
 
 		class PushCapture
 		{
-			readonly Action<object> _push;
+			readonly Uno.Action<object> _push;
 			readonly object _arg;
 
-			public PushCapture(Action<object> push, object arg)
+			public PushCapture(Uno.Action<object> push, object arg)
 			{
 				_push = push;
 				_arg = arg;

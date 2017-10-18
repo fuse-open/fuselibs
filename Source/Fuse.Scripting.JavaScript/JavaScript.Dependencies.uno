@@ -1,10 +1,9 @@
-using Uno;
-using Uno.UX;
 using Uno.Collections;
 using Uno.Compiler;
 using Fuse.Scripting;
 using Uno.Testing;
 using Uno.Threading;
+using Fuse.Reactive;
 
 namespace Fuse.Reactive
 {
@@ -15,15 +14,15 @@ namespace Fuse.Reactive
 			internal string Name { get; private set; }
 			internal IExpression Expression { get; private set; }
 
-			[UXConstructor]
-			public Dependency([UXParameter("Name")] string name, [UXParameter("Expression")] IExpression expression)
+			[Uno.UX.UXConstructor]
+			public Dependency([Uno.UX.UXParameter("Name")] string name, [Uno.UX.UXParameter("Expression")] IExpression expression)
 			{
 				Name = name;
 				Expression = expression;
 			}
 
 			JavaScript _script;
-			IDisposable _expSubscription;
+			Uno.IDisposable _expSubscription;
 
 			internal void Subscribe(JavaScript script)
 			{
@@ -138,14 +137,14 @@ namespace Fuse.Reactive
 			}
 		}
 
-		IDisposable IContext.Subscribe(IExpression source, string key, IListener listener)
+		Uno.IDisposable IContext.Subscribe(IExpression source, string key, IListener listener)
 		{
 			return new DataSubscription(source, this, key, listener);
 		}
 
 		Node IContext.Node { get { return this; } }
 
-		IDisposable IContext.SubscribeResource(IExpression source, string key, IListener listener)
+		Uno.IDisposable IContext.SubscribeResource(IExpression source, string key, IListener listener)
 		{
 			return new ResourceSubscription(source, this, key, listener, typeof(object));
 		}

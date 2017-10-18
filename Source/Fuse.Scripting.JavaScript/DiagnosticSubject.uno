@@ -1,7 +1,7 @@
 using Uno;
 using Fuse.Scripting;
 
-namespace Fuse.Reactive
+namespace Fuse.Scripting
 {
     class DiagnosticSubject
     {		

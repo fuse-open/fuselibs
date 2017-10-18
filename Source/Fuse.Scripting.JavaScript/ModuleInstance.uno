@@ -2,16 +2,16 @@ using Uno;
 using Uno.Collections;
 using Fuse.Scripting;
 
-namespace Fuse.Reactive
+namespace Fuse.Scripting
 {
 	class ModuleInstance: DiagnosticSubject
 	{
 		readonly ThreadWorker _worker;
-		readonly JavaScript _js;
+		readonly Reactive.JavaScript _js;
 		readonly Dictionary<string, object> _deps = new Dictionary<string, object>();
 
 		// UI thread
-		public ModuleInstance(ThreadWorker worker, JavaScript js)
+		public ModuleInstance(ThreadWorker worker, Reactive.JavaScript js)
 		{
 			for (var i = 0; i < js.Dependencies.Count; i++)
 				_deps.Add(js.Dependencies[i].Name, js.Dependencies[i].Value);

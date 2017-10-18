@@ -1,6 +1,6 @@
 using Uno;
 
-namespace Fuse.Reactive
+namespace Fuse.Scripting
 {
 	/** Implements subscription subject with a fast linked list of disposable subscriptions-
 		This is intended as the base class of ValueMirro.

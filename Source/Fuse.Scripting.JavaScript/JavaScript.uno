@@ -1,10 +1,11 @@
-using Uno;
+//using Uno;
 using Uno.UX;
 using Uno.Collections;
 using Uno.Compiler;
 using Fuse.Scripting;
 using Uno.Testing;
 using Uno.Threading;
+using Fuse.Reactive;
 
 namespace Fuse.Reactive
 {
@@ -66,12 +67,12 @@ namespace Fuse.Reactive
 
 		Module IModuleProvider.GetModule()
 		{
-			if (IsRootingCompleted) throw new Exception("Cannot require() a rooted module");
+			if (IsRootingCompleted) throw new Uno.Exception("Cannot require() a rooted module");
 			return _scriptModule;
 		}
 
 		object _currentDc;
-		IDisposable _sub;
+		Uno.IDisposable _sub;
 		
 		internal void SetDataContext(object newDc)
 		{
