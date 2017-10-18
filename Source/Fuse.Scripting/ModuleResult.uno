@@ -104,7 +104,7 @@ namespace Fuse.Scripting
 			Context.Invoke(OnDisposed);
 		}
 
-		void OnDisposed()
+		void OnDisposed(Scripting.Context action)
 		{
 			if (Object.ContainsKey("disposed"))
 			{

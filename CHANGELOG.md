@@ -1,5 +1,8 @@
 # Unreleased
 
+## Scripting.Context
+- Invoke now takes an Action<Scripting.Context>. This is the first step in refactoring our scripting layer to make sure code does not evaluate JS on the wrong thread
+
 ## DesktopApp Updates
 - Fixed an issue about certain event not triggering a proper update and redraw on desktop preview/build
 

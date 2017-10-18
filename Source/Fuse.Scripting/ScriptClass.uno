@@ -226,7 +226,7 @@ namespace Fuse.Scripting
 				_context.Invoke(DispatchFuture);
 			}
 
-			void DispatchFuture()
+			void DispatchFuture(Scripting.Context action)
 			{
 				_promiseClosure.OnFutureReady(_future);
 			}

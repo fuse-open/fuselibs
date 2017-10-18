@@ -93,7 +93,7 @@ namespace Fuse.Reactive
 				readonly int Origin;
 				readonly DiagnosticSubject DiagnosticSubject;
 
-				public void Perform()
+				public void Perform(Scripting.Context context)
 				{
 					try
 					{
@@ -121,7 +121,7 @@ namespace Fuse.Reactive
 
 				var op = new SetExclusiveOperation(_om._worker, _om.Object, newValue, _origin, this);
 				if (_om._worker.CanEvaluate)
-					op.Perform();
+					op.Perform(null);
 				else
 					_om._worker.Invoke(op.Perform);
 			}
@@ -140,7 +140,7 @@ namespace Fuse.Reactive
 				readonly int Origin;
 
 
-				public void Perform()
+				public void Perform(Scripting.Context context)
 				{
 					Object.CallMethod("replaceAllWithOrigin", NewValue, Origin);
 				}
@@ -154,7 +154,7 @@ namespace Fuse.Reactive
 
 				var op = new ReplaceAllExclusiveOperation(_om.Object, _om._worker.Context.NewArray(arr), _origin);
 				if (_om._worker.CanEvaluate)
-					op.Perform();
+					op.Perform(null);
 				else
 					_om._worker.Invoke(op.Perform);
 			}
@@ -171,7 +171,7 @@ namespace Fuse.Reactive
 				readonly int Origin;
 
 
-				public void Perform()
+				public void Perform(Scripting.Context context)
 				{
 					Object.CallMethod("clear", Origin);
 				}
@@ -181,7 +181,7 @@ namespace Fuse.Reactive
 			{
 				var op = new ClearExclusiveOperation(_om.Object, _origin);
 				if (_om._worker.CanEvaluate)
-					op.Perform();
+					op.Perform(null);
 				else
 					_om._worker.Invoke(op.Perform);
 			}
@@ -320,7 +320,7 @@ namespace Fuse.Reactive
 			}
 		}
 
-		void RemoveSubscriber()
+		void RemoveSubscriber(Scripting.Context context)
 		{
 			_observable.CallMethod("removeSubscriber", _observeChange);
 			_observeChange = null;

@@ -22,7 +22,7 @@ namespace Fuse.Reactive
 		}
 
 		// JS thread
-		void Evaluate()
+		void Evaluate(Scripting.Context context)
 		{
 			var deps = new Dictionary<string, object>();
 			foreach (var key in _deps.Keys)
