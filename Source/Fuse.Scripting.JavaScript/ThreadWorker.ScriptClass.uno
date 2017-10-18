@@ -65,7 +65,7 @@ namespace Fuse.Scripting
 				if (inlineMethod != null)
 				{
 					var m = (Function)Context.Evaluate(sc.Type.FullName + "." + inlineMethod.Name + " (ScriptMethod)", "(function(cl, Observable) { cl.prototype." + inlineMethod.Name + " = " + inlineMethod.Code + "; })");
-					m.Call(cl, Context.Observable);
+					m.Call(cl, Observable);
 					continue;
 				}
 
