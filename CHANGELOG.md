@@ -3,6 +3,9 @@
 ## Scripting.Context
 - Invoke now takes an Action<Scripting.Context>. This is the first step in refactoring our scripting layer to make sure code does not evaluate JS on the wrong thread
 
+## Fuse.Reactive.JavaScript
+- Fuse.Reactive.JavaScript has been renamed to Fuse.Scripting.JavaScript & the separate VM packages are now subdirectories of this package
+
 ## DesktopApp Updates
 - Fixed an issue about certain event not triggering a proper update and redraw on desktop preview/build
 
