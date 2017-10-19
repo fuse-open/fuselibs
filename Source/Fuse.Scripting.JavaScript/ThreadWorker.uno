@@ -12,7 +12,7 @@ namespace Fuse.Scripting.JavaScript
 		object Reflect(object obj);
 	}
 
-	partial class ThreadWorker: IDisposable, IDispatcher, IThreadWorker
+	class ThreadWorker: IDisposable, IDispatcher, IThreadWorker
 	{
 		IDispatcher IThreadWorker.Dispatcher { get { return this; } }
 		public Function Observable { get { return FuseJS.Observable; } }
