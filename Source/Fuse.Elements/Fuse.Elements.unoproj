@@ -17,6 +17,7 @@
     "Fuse.Controls.Native",
     "Fuse.Controls.ScrollView",
     "Fuse.Controls.Test",
+    "Fuse.Controls.CameraView",
     "Fuse.Drawing.Surface",
     "Fuse.Effects",
     "Fuse.Elements.Test",
