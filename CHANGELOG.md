@@ -1,49 +1,54 @@
 # Unreleased
 
-## Scripting.Context
-- Invoke now takes an Action<Scripting.Context>. This is the first step in refactoring our scripting layer to make sure code does not evaluate JS on the wrong thread
+
+# 1.4
+
+## 1.4.0
+
+### Scripting.Context
+- Invoke now takes an `Action<Scripting.Context>`. This is the first step in refactoring our scripting layer to make sure code does not evaluate JS on the wrong thread
 - The `Observable` property has been removed from Context & IThreadWorker
 
-## Fuse.Reactive.JavaScript
+### Fuse.Reactive.JavaScript
 - Fuse.Reactive.JavaScript has been renamed to Fuse.Scripting.JavaScript & the separate VM packages are now subdirectories of this package
 
-## DesktopApp Updates
+### DesktopApp Updates
 - Fixed an issue about certain event not triggering a proper update and redraw on desktop preview/build
 
-## RangeControl
+### RangeControl
 - `LinearRangeBehavior` now correctly responds to `UserStep` values, providing quantized input
 - Fixed `RangeControl.RelativeValue` to properly update when bound in UX
 - Allowed `Minimum` to be less than `Maximum` on `RangeControl` making it easier to do left-to-right `100..0` ranges.
 - Fixed a defect in position calculations in `LinearRangeBehavior`. It now uses the immediate Element parent for bounds calculation as opposed to the `RangeControl`.
 - Added `UserStep` support to Android and iOS native Slider
 
-## WebView
+### WebView
 - Exported the methods goBack, goForward, reload and stop for use in FuseJS
 
-## ScrollViewPager
+### ScrollViewPager
 - Fixed a NullReferenceError that could happen while using ScrollViewPager in preview
 
-## DatePicker
+### DatePicker
 - Introduced Fuse.Controls.DatePicker class, which wraps native date pickers on Android and iOS. See the `DatePicker` class documentation for more details.
 
-## TimePicker
+### TimePicker
 - Introduced Fuse.Controls.TimePicker class, which wraps native time pickers on Android and iOS. See the `TimePicker` class documentation for more details.
 
-## TextView
+### TextView
 - Fixed bug on Android where setting `TextWrapping="NoWrap"` would force the `TextView` to be single line. New behavior is to instead allow the view to scroll horizontally instead of automatically wrapping the text.
 
-## MultiDensityImageSource
+### MultiDensityImageSource
 - Added native support, meaning it can be used by images inside a `NativeViewHost`.
 
-## Video
+### Video
 - Fixed bug in Video where playback actions, like `Play`, used before the video was initialized would end up getting swallowed.
 - Added some JavaScript methods to `Video` to make it easier to control playback from JavaScript, as well as obtaining information the video duration.
 - Made `Video.Duration` and `Video.Position` property-bindable.
 
-## Fuse.Marshal:
+### Fuse.Marshal:
 - Fixed a bug where UX expressions that produce two component floats did not expand to four compoent floats the same same way as literals did.
 
-## Fuse.Reactive framework changes (Uno-level)
+### Fuse.Reactive framework changes (Uno-level)
 - These are breaking changes, but very unlikely to affect your app:
  * The `DataBinding`, `EventBinding` and `ExpressionBinding` class constructors no longer take a `NameTable` argument.
  * The `Name` and `This` expression classes has been removed. The UX compiler will now compile these as `Constant` expressions that contain the actual objects instead.
@@ -54,8 +59,9 @@
  * The `Fuse.Reactive.IWriteable` interface has changed (breaking!). The method signature is now `bool TrySetExclusive(object)` instead of `void SetExclusive(object)`. Unlikely to affect your code.
  * `IObservable` and `IObservableArray` no longer push their initial value on `Subscribe`.
 
-## Image
+### Image
 - Image will now respect Exif orientation.
+
 
 # 1.3
 
