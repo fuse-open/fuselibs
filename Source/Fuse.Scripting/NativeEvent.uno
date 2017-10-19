@@ -41,7 +41,7 @@ namespace Fuse.Scripting
 			DispatchQueue();
 		}
 
-		internal object RaiseSync(params object[] args)
+		internal object RaiseSync(Context context, params object[] args)
 		{
 			assert Context != null;
 			if (_jsFunction != null)

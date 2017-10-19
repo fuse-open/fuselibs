@@ -52,7 +52,7 @@ namespace FuseTest
 			} while(_testResults.Count > 0);
 		}
 
-		object TestAssert(object[] args)
+		object TestAssert(Fuse.Scripting.Context context, object[] args)
 		{
 			var result = false;
 			if(args.Length > 0)

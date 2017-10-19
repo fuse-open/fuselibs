@@ -245,7 +245,7 @@ namespace Fuse.Scripting
 
 			Function _resolve;
 			Function _reject;
-			public object Run(object[] args)
+			public object Run(Context context, object[] args)
 			{
 				if (args.Length > 0)
 					_resolve = args[0] as Function;

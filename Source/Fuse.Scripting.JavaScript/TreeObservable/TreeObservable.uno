@@ -87,25 +87,25 @@ namespace Fuse.Reactive
 			return -1;
 		}
 
-		object Set(object[] args)
+		object Set(Fuse.Scripting.Context context, object[] args)
 		{
 			new SetOperation(this, args);
 			return null;
 		}
 
-		object Add(object[] args)
+		object Add(Fuse.Scripting.Context context, object[] args)
 		{
 			new AddOperation(this, args);
 			return null;
 		}
 
-		object RemoveAt(object[] args)
+		object RemoveAt(Fuse.Scripting.Context context, object[] args)
 		{
 			new RemoveAtOperation(this, args);
 			return null;
 		}
 
-		object InsertAt(object[] args)
+		object InsertAt(Fuse.Scripting.Context context, object[] args)
 		{
 			new InsertAtOperation(this, args);
 			return null;

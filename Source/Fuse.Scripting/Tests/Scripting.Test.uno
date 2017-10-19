@@ -142,7 +142,7 @@ namespace Fuse.Scripting.Test
 			}
 		}
 
-		public object MyCallback(object[] args)
+		public object MyCallback(Scripting.Context context, object[] args)
 		{
 			if (args.Length == 2)
 			{
@@ -175,7 +175,7 @@ namespace Fuse.Scripting.Test
 				_context = context;
 			}
 
-			public object Callback(object[] args)
+			public object Callback(Scripting.Context context, object[] args)
 			{
 				if (args.Length == 2)
 				{
@@ -387,7 +387,7 @@ namespace Fuse.Scripting.Test
 			}
 		}
 
-		object ScriptingErrorThrowingCallback(object[] xs)
+		object ScriptingErrorThrowingCallback(Scripting.Context context, object[] xs)
 		{
 			throw new Scripting.Error("baaaaaaaah");
 		}
@@ -412,7 +412,7 @@ namespace Fuse.Scripting.Test
 			}
 		}
 
-		object ExceptionThrowingCallback(object[] xs)
+		object ExceptionThrowingCallback(Scripting.Context context, object[] xs)
 		{
 			throw new Exception("baaaaaaaaaaaaaaaah");
 		}

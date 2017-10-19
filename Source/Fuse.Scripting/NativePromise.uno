@@ -79,7 +79,7 @@ namespace Fuse.Scripting
 				_factory = factory;
 				_converter = converter;
 			}
-			internal object CreatePromise(object[] args)
+			internal object CreatePromise(Context context, object[] args)
 			{
 				var promise = (Function)_c.GlobalObject["Promise"]; // HACK - TODO: get rid of this
 				var future = _factory(args);
@@ -104,7 +104,7 @@ namespace Fuse.Scripting
 	    		_converter = converter;
 	    	}
 
-	    	public object Run(object[] args)
+	    	public object Run(Context context, object[] args)
 	    	{
 		    	if (args.Length > 0)
 		    		_resolve = args[0] as Function;

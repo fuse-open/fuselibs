@@ -11,7 +11,7 @@ namespace Fuse.Scripting
 			c.ObjectDefineProperty(obj, p.Name.ToString(), Get);
 		}
 
-		object Get(object[] args)
+		object Get(Context context, object[] args)
 		{
 			return _worker.Unwrap(GetObservable());
 		}

@@ -32,7 +32,7 @@ namespace Fuse.Triggers
 
 			static bool _warning = false;
 			
-			public object Construct(object[] args)
+			public object Construct(Context context, object[] args)
 			{
 				if (!_warning) 
 				{

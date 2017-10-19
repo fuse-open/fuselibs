@@ -43,7 +43,7 @@ namespace Fuse.Scripting
                 _action = action;
             }
 
-            public object Run(object[] args)
+            public object Run(Context context, object[] args)
             {
                 _action();
                 return null;
@@ -59,7 +59,7 @@ namespace Fuse.Scripting
                 _action = action;
             }
 
-            public object Run(object[] args)
+            public object Run(Context context, object[] args)
             {
                 T arg = default(T);
                 if (GetArg(args, out arg, 0))
@@ -80,7 +80,7 @@ namespace Fuse.Scripting
                 _action = action;
             }
 
-            public object Run(object[] args)
+            public object Run(Context context, object[] args)
             {
                 T1 arg = default(T1);
                 T2 arg1 = default(T2);
@@ -102,7 +102,7 @@ namespace Fuse.Scripting
                 _method = method;
             }
 
-            public object Run(object[] args)
+            public object Run(Context context, object[] args)
             {
                 return _method();
             }
@@ -117,7 +117,7 @@ namespace Fuse.Scripting
                  _method = method;
              }
 
-             public object Run(object[] args)
+             public object Run(Context context, object[] args)
              {
                 if(typeof(TArg) == typeof(object[])) return _method((TArg)args);
 
@@ -138,7 +138,7 @@ namespace Fuse.Scripting
                 _method = method;
             }
 
-            public object Run(object[] args)
+            public object Run(Context context, object[] args)
             {
                 TArg arg = default(TArg);
                 TArg1 arg1 = default(TArg1);

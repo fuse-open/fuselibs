@@ -243,7 +243,7 @@ namespace Fuse.Scripting.V8
 				{
 					try
 					{
-						return Unwrap(_context, _callback(WrapArray(_context, args)), pool).Retain(cxt);
+						return Unwrap(_context, _callback(_context, WrapArray(_context, args)), pool).Retain(cxt);
 					}
 					catch (Exception e)
 					{

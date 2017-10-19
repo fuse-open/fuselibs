@@ -248,7 +248,7 @@ namespace Fuse.Scripting
 			return -1;
 		}
 
-		object ObserveChange(object[] args)
+		object ObserveChange(Context context, object[] args)
 		{
 			var op = args[1] as string;
 			var origin = ToInt(args[2]);

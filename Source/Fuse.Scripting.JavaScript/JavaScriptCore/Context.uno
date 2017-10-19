@@ -298,7 +298,7 @@ namespace Fuse.Scripting.JavaScriptCore
 				exception = default(JSValueRef);
 				try
 				{
-					return _context.Unwrap(_callback(_context.Wrap(args)));
+					return _context.Unwrap(_callback(_context, _context.Wrap(args)));
 				}
 				catch (Scripting.Error e)
 				{

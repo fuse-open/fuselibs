@@ -123,5 +123,5 @@ namespace Fuse.Scripting
 
 		@advanced
 	*/
-	public delegate object Callback(object[] args);
+	public delegate object Callback(Context context, object[] args);
 }

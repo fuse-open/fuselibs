@@ -10,7 +10,7 @@ namespace Fuse.Reactive
 			c.GlobalObject["debug_log"] = (Callback)Log;
 		}
 
-		static object Log(object[] args)
+		static object Log(Context context, object[] args)
 		{
 			for (int i = 0; i < args.Length; i++)
 			{
@@ -32,7 +32,7 @@ namespace Fuse.Reactive
 			 c.GlobalObject["console"] = console;
 		}
 
-		static object Log(object[] args)
+		static object Log(Context context, object[] args)
 		{
 			for (int i = 0; i < args.Length; i++)
 			{
@@ -42,7 +42,7 @@ namespace Fuse.Reactive
 			return null;
 		}
 
-		static object Dir(object[] args)
+		static object Dir(Context context, object[] args)
 		{
 			const int maxDepth = 1; // Only walk down one level for now
 			var builder = new StringBuilder();

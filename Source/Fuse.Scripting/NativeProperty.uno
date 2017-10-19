@@ -40,7 +40,7 @@ namespace Fuse.Scripting
 			return null;
 		}
 		
-		object SetProperty(object[] args)
+		object SetProperty(Context context, object[] args)
 		{
 			if(_setHandler == null) _setHandler = SetProperty;
 
@@ -50,7 +50,7 @@ namespace Fuse.Scripting
 		}
 		protected virtual void SetProperty(TJSValue value) {}
 		
-		object GetProperty(object[] args)
+		object GetProperty(Context context, object[] args)
 		{
 			if(_getHandler == null)
 				_getHandler = GetProperty;
