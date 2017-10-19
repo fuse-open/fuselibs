@@ -1,3 +1,4 @@
+using Uno;
 using Uno.UX;
 using Uno.Collections;
 using Fuse.Reactive;
@@ -8,7 +9,11 @@ namespace Fuse.Scripting.JavaScript
 	{
 		public LazyObservableProperty(ThreadWorker w, Scripting.Object obj, Uno.UX.Property p, Scripting.Context c): base(w, obj, p)
 		{
+<<<<<<< HEAD
 			c.ObjectDefineProperty(obj, p.Name.ToString(), Get);
+=======
+			w.Context.ObjectDefineProperty(obj, p.Name.ToString(), Get);
+>>>>>>> Port code after rebase on master
 		}
 
 		object Get(Scripting.Context context, object[] args)
@@ -23,7 +28,7 @@ namespace Fuse.Scripting.JavaScript
 
 		This prevents leakage of strong references to observables on the JS side.
 	*/
-	class ObservableProperty: IObserver, IPropertyListener
+	class ObservableProperty: Fuse.Reactive.IObserver, IPropertyListener
 	{
 		protected readonly ThreadWorker _worker;
 		readonly Uno.UX.Property _property;
@@ -156,37 +161,37 @@ namespace Fuse.Scripting.JavaScript
 			}
 		}
 
-		void IObserver.OnClear()
+		void Fuse.Reactive.IObserver.OnClear()
 		{
 			if (_property.PropertyType.IsClass)
 				_property.SetAsObject(null, this);
 		}
 
-		void IObserver.OnNewAll(IArray values)
+		void Fuse.Reactive.IObserver.OnNewAll(IArray values)
 		{
 			if (values.Length == 1) Set(values[0]);
 		}
-		void IObserver.OnNewAt(int index, object newValue)
+		void Fuse.Reactive.IObserver.OnNewAt(int index, object newValue)
 		{
 			if (index == 0) Set(newValue);
 		}
-		void IObserver.OnSet(object newValue)
+		void Fuse.Reactive.IObserver.OnSet(object newValue)
 		{
 			Set(newValue);
 		}
-		void IObserver.OnAdd(object addedValue)
+		void Fuse.Reactive.IObserver.OnAdd(object addedValue)
 		{
 			// Not supported
 		}
-		void IObserver.OnRemoveAt(int index)
+		void Fuse.Reactive.IObserver.OnRemoveAt(int index)
 		{
 			// Not supported
 		}
-		void IObserver.OnInsertAt(int index, object value)
+		void Fuse.Reactive.IObserver.OnInsertAt(int index, object value)
 		{
 			if (index == 0) Set(value);
 		}
-		void IObserver.OnFailed(string message)
+		void Fuse.Reactive.IObserver.OnFailed(string message)
 		{
 			// Not supported
 		}
