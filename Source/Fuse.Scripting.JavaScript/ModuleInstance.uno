@@ -24,7 +24,7 @@ namespace Fuse.Scripting.JavaScript
 		// JS thread
 		void Evaluate(Scripting.Context context)
 		{
-			var ctx = (Context)context;
+			var ctx = (JSContext)context;
 
 			var deps = new Dictionary<string, object>();
 			foreach (var key in _deps.Keys)

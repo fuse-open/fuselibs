@@ -7,11 +7,11 @@ using Uno.UX;
 
 namespace Fuse.Scripting.JavaScript
 {
-	public abstract class Context: Fuse.Scripting.Context, IMirror
+	public abstract class JSContext: Fuse.Scripting.Context, IMirror
 	{
 		int _reflectionDepth;
 
-		protected Context() : base () {}
+		protected JSContext() : base () {}
 
 		public override Fuse.Scripting.IThreadWorker ThreadWorker
 		{
@@ -21,7 +21,7 @@ namespace Fuse.Scripting.JavaScript
 			}
 		}
 
-		internal static Context Create()
+		internal static JSContext Create()
 		{
 			if defined(USE_JAVASCRIPTCORE) return new Fuse.Scripting.JavaScriptCore.Context();
 			else if defined(USE_V8) return new Fuse.Scripting.V8.Context();

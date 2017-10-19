@@ -6,7 +6,7 @@ using Uno;
 namespace Fuse.Scripting.JavaScriptCore
 {
 	[Require("Header.Include", "JavaScriptCore/JavaScript.h")]
-	public extern(USE_JAVASCRIPTCORE) class Context : Fuse.Scripting.JavaScript.Context
+	public extern(USE_JAVASCRIPTCORE) class Context : Fuse.Scripting.JavaScript.JSContext
 	{
 		internal bool _disposed;
 		internal readonly JSContextRef _context;

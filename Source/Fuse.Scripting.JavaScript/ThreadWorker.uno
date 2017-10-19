@@ -109,7 +109,7 @@ namespace Fuse.Scripting.JavaScript
 			{
 				if (_context == null)
 				{
-					_context = Fuse.Scripting.JavaScript.Context.Create();
+					_context = Fuse.Scripting.JavaScript.JSContext.Create();
 					if (_context == null)
 					{
 						throw new Exception("Could not create script context");

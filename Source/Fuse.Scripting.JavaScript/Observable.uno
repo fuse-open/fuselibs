@@ -250,7 +250,7 @@ namespace Fuse.Scripting.JavaScript
 
 		object ObserveChange(Scripting.Context context, object[] args)
 		{
-			var ctx = (Context)context;
+			var ctx = (JSContext)context;
 
 			var op = args[1] as string;
 			var origin = ToInt(args[2]);
