@@ -201,6 +201,13 @@ namespace Fuse
 				new object[]{ 1,2, new Junk()}), out val, out size ) );
 			Assert.IsFalse( Marshal.TryToZeroFloat4(  new ListWrapper(
 				new object[]{ 1, "abc"}), out val, out size ) );
+				
+			Assert.IsTrue( Marshal.TryToZeroFloat4(  new ListWrapper(
+				new object[]{ 1, 2, 3}), out val, out size ) );
+			Assert.AreEqual( float4(1,2,3,0), val );
+			Assert.IsTrue( Marshal.TryToZeroFloat4(  new ListWrapper(
+				new object[]{}), out val, out size ) );
+			Assert.AreEqual( float4(0,0,0,0), val );
 		}
 	}
 	

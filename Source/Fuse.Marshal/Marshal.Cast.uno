@@ -215,7 +215,7 @@ namespace Fuse
 						size = 4;
 						return true;
 					}
-					catch (Exception ex)
+					catch (ArgumentException ex)
 					{
 						return false;
 					}
@@ -225,10 +225,10 @@ namespace Fuse
 			{
 				var a = (IArray)o;
 				float x = 0,y = 0,z = 0,w =0;
-				if (!TryToFloat( a[0], out x ) ||
-					!TryToFloat( a[1], out y ) ||
-					!TryToFloat( a[2], out z ) ||
-					!TryToFloat( a[3], out w ))
+				if ( (a.Length > 0 && !TryToFloat( a[0], out x )) ||
+					(a.Length > 1 && !TryToFloat( a[1], out y )) ||
+					(a.Length > 2 && !TryToFloat( a[2], out z )) ||
+					(a.Length > 3 && !TryToFloat( a[3], out w )))
 					return false;
 					
 				value = float4(x,y,z,w);
