@@ -1,6 +1,7 @@
 using Uno.Collections;
 using Uno;
 using Fuse;
+using Fuse.Scripting;
 
 namespace Fuse.Reactive
 {
@@ -162,7 +163,7 @@ namespace Fuse.Reactive
 			_items[index] = newValue;
 
 			var sub = Subscribers as ArraySubscription;
-			if (sub != null) 
+			if (sub != null)
 				sub.OnReplaceAt(index, newValue);
 		}
 
@@ -170,7 +171,7 @@ namespace Fuse.Reactive
 		{
 			_items.Add(value);
 			var sub = Subscribers as ArraySubscription;
-			if (sub != null) 
+			if (sub != null)
 				sub.OnAdd(value);
 		}
 
@@ -178,7 +179,7 @@ namespace Fuse.Reactive
 		{
 			_items.Insert(index, value);
 			var sub = Subscribers as ArraySubscription;
-			if (sub != null) 
+			if (sub != null)
 				sub.OnInsertAt(index, value);
 		}
 
@@ -186,7 +187,7 @@ namespace Fuse.Reactive
 		{
 			_items.RemoveAt(index);
 			var sub = Subscribers as ArraySubscription;
-			if (sub != null) 
+			if (sub != null)
 				sub.OnRemoveAt(index);
 		}
 	}

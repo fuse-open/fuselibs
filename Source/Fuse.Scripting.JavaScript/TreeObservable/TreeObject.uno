@@ -1,5 +1,6 @@
 using Uno.Collections;
 using Uno;
+using Fuse.Scripting;
 
 namespace Fuse.Reactive
 {
@@ -16,7 +17,7 @@ namespace Fuse.Reactive
 		internal class PropertySubscription : Subscription, IPropertySubscription
 		{
 			readonly IPropertyObserver _observer;
-			
+
 			public PropertySubscription(TreeObject om, IPropertyObserver observer): base(om)
 			{
 				_observer = observer;
@@ -51,7 +52,7 @@ namespace Fuse.Reactive
 
 				// Must be done first - to ensure the operations happen in the right order on the JS thread
 				JavaScript.Worker.Invoke(new JSThreadSet((Scripting.Object)t.Raw, key, JavaScript.Worker.Unwrap(newValue)).Perform);
-				
+
 				// then notify the UI (which in turn can trigger re-evaluation of scripts)
 				t.Set(key, newValue, this);
 				return true;
@@ -67,12 +68,12 @@ namespace Fuse.Reactive
 
 		const string _rawHandle = "__fuse_raw";
 		object _rawOverride;
-		public override object ReflectedRaw 
-		{ 
-			get 
-			{ 
-				return _rawOverride ?? base.ReflectedRaw; 
-			} 
+		public override object ReflectedRaw
+		{
+			get
+			{
+				return _rawOverride ?? base.ReflectedRaw;
+			}
 		}
 
 		internal override void Set(IMirror mirror, Scripting.Object obj)
@@ -91,7 +92,7 @@ namespace Fuse.Reactive
 			}
 
 			var sub = Subscribers as PropertySubscription;
-			if (sub != null) 
+			if (sub != null)
 				foreach (var p in _props)
 					sub.OnPropertyChanged(p.Key, p.Value, null);
 		}
@@ -104,7 +105,7 @@ namespace Fuse.Reactive
 			_props[key] = newValue;
 
 			var sub = Subscribers as PropertySubscription;
-			if (sub != null) 
+			if (sub != null)
 				sub.OnPropertyChanged(key, newValue, exclude);
 		}
 	}

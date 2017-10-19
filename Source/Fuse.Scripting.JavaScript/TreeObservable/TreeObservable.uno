@@ -194,7 +194,7 @@ namespace Fuse.Reactive
 
 		class AddOperation: ValueOperation
 		{
-			public AddOperation(TreeObservable inst, object[] args): base(inst, args) 
+			public AddOperation(TreeObservable inst, object[] args): base(inst, args)
 			{
 			}
 
@@ -208,7 +208,7 @@ namespace Fuse.Reactive
 
 		class InsertAtOperation: ValueOperation
 		{
-			public InsertAtOperation(TreeObservable inst, object[] args): base(inst, args) 
+			public InsertAtOperation(TreeObservable inst, object[] args): base(inst, args)
 			{
 				_index = Marshal.ToInt(Arguments[Arguments.Length-2]);
 			}
@@ -225,7 +225,7 @@ namespace Fuse.Reactive
 
 		class RemoveAtOperation: Operation
 		{
-			public RemoveAtOperation(TreeObservable inst, object[] args): base(inst, args) 
+			public RemoveAtOperation(TreeObservable inst, object[] args): base(inst, args)
 			{
 				_index = Marshal.ToInt(Arguments[Arguments.Length-1]);
 			}

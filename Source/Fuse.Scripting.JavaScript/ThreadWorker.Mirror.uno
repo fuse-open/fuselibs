@@ -2,6 +2,7 @@ using Fuse.Scripting;
 using Uno;
 using Uno.Collections;
 using Uno.Threading;
+using Fuse.Reactive;
 
 namespace Fuse.Scripting
 {
