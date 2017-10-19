@@ -9,9 +9,10 @@ namespace Fuse.Scripting.JavaScript
 {
 	public abstract class JSContext: Fuse.Scripting.Context, IMirror
 	{
+		readonly Dictionary<ScriptClass, Function> _registeredClasses = new Dictionary<ScriptClass, Function>();
+		PropertyHandle _classInstanceProperty = Properties.CreateHandle();
+		Function _setSuperclass;
 		int _reflectionDepth;
-
-		protected JSContext() : base () {}
 
 		public override Fuse.Scripting.IThreadWorker ThreadWorker
 		{
@@ -20,6 +21,14 @@ namespace Fuse.Scripting.JavaScript
 				return Fuse.Reactive.JavaScript.Worker;
 			}
 		}
+
+		static JSContext()
+		{
+			// Make sure all objects have script classes
+			ScriptClass.Register(typeof(object));
+		}
+
+		protected JSContext() : base () {}
 
 		internal static JSContext Create()
 		{
@@ -31,12 +40,12 @@ namespace Fuse.Scripting.JavaScript
 
 		public override object Wrap(object obj)
 		{
-			return Fuse.Scripting.JavaScript.ThreadWorker.Wrap(obj);
+			return TypeWrapper.Wrap(this, obj);
 		}
 
 		public override object Unwrap(object obj)
 		{
-			return ((ThreadWorker)ThreadWorker).Unwrap(obj);
+			return TypeWrapper.Unwrap(this, obj);
 		}
 
 		public object Reflect(object obj)
@@ -88,11 +97,11 @@ namespace Fuse.Scripting.JavaScript
 			{
 				if (o.InstanceOf(Fuse.Scripting.JavaScript.ThreadWorker.FuseJS.Observable))
 				{
-					return new Observable(((ThreadWorker)ThreadWorker), o, false);
+					return new Observable((ThreadWorker)ThreadWorker, o, false);
 				}
 				else if (o.InstanceOf(Fuse.Scripting.JavaScript.ThreadWorker.FuseJS.Date))
 				{
-					return DateTimeConverterHelpers.ConvertDateToDateTime(o);
+					return DateTimeConverterHelpers.ConvertDateToDateTime(this, o);
 				}
 				else if (o.InstanceOf(Fuse.Scripting.JavaScript.ThreadWorker.FuseJS.TreeObservable))
 				{
@@ -105,6 +114,199 @@ namespace Fuse.Scripting.JavaScript
 			}
 
 			return null;
+		}
+
+		internal Function GetClass(ScriptClass sc)
+		{
+			Function cl;
+			if (!_registeredClasses.TryGetValue(sc, out cl))
+			{
+				cl = RegisterClass(sc);
+				_registeredClasses.Add(sc, cl);
+			}
+			return cl;
+		}
+
+		Function RegisterClass(ScriptClass sc)
+		{
+			var cl = (Function)Evaluate(sc.Type.FullName + " (ScriptClass)", "(function(external_object) { this.external_object = external_object; })");
+
+			if (sc.SuperType != null)
+			{
+				var super = GetClass(sc.SuperType);
+
+				if (_setSuperclass == null)
+					_setSuperclass = (Function)Evaluate("(set-superclass)", "(function(cl, superclass) { cl.prototype = new superclass(); cl.prototype.constructor = cl; })");
+
+				_setSuperclass.Call(cl, super);
+			}
+
+			for (int i = 0; i < sc.Members.Length; i++)
+			{
+				var inlineMethod = sc.Members[i] as ScriptMethodInline;
+				if (inlineMethod != null)
+				{
+					var m = (Function)Evaluate(sc.Type.FullName + "." + inlineMethod.Name + " (ScriptMethod)", "(function(cl, Observable) { cl.prototype." + inlineMethod.Name + " = " + inlineMethod.Code + "; })");
+					m.Call(cl, ((ThreadWorker)ThreadWorker).Observable);
+					continue;
+				}
+
+				var method = sc.Members[i] as ScriptMethod;
+				if (method != null)
+				{
+					new MethodClosure(this, cl, method);
+					continue;
+				}
+
+				var property = sc.Members[i] as ScriptProperty;
+				if (property != null)
+				{
+					new PropertyClosure(this, cl, property);
+					continue;
+				}
+				var readonlyProperty = sc.Members[i] as ScriptReadonlyProperty;
+				if (readonlyProperty != null)
+				{
+					new ReadonlyPropertyClosure(this, cl, readonlyProperty);
+					continue;
+				}
+			}
+
+			return cl;
+		}
+
+		/** Retrieves the ClassInstance associated with the given name scope in this thread worker. */
+		internal ClassInstance GetClassInstance(NameTable scope)
+		{
+			var rootTable = FindRootTable(scope);
+
+			return GetClassInstance(rootTable.This, rootTable);
+		}
+
+		/** Retrieves the ClassInstance associated with the given object in this thread worker. */
+		internal ClassInstance GetClassInstance(object obj, NameTable rootTable)
+		{
+			var n = obj as IProperties;
+			if (n != null)
+			{
+				var ni = n.Properties.Get(_classInstanceProperty) as ClassInstance;
+				if (ni == null) 
+				{
+					ni = new ClassInstance((ThreadWorker)ThreadWorker, obj, rootTable);
+					n.Properties.Set(_classInstanceProperty, ni);
+				}
+				return ni;
+			}
+
+			throw new Exception("Cannot use object of type '" + rootTable.This.GetType().FullName + "' as 'this' in JavaScript module; must be 'IProperties' or 'App'");
+		}
+
+		internal ClassInstance GetExistingClassInstance(IProperties n)
+		{
+			return n.Properties.Get(_classInstanceProperty) as ClassInstance;
+		}
+
+		static NameTable FindRootTable(NameTable names)
+		{
+			var nt = names;
+			while (nt != null)
+			{
+				if (nt.This != null) return nt;
+				nt = nt.ParentTable;
+			}
+			throw new Exception();
+		}
+
+		class ReadonlyPropertyClosure
+		{
+			public ReadonlyPropertyClosure(Scripting.Context context, Function cl, ScriptReadonlyProperty constant)
+			{
+				var definer = (Function)context.Evaluate(constant.Name + " (ScriptReadonlyProperty)",
+					"(function(cl,propValue)"
+					+ "{"
+						+ "Object.defineProperty("
+							+ "cl.prototype,"
+							+ "'" + constant.Name + "',"
+							+ "{"
+								+ "value: propValue,"
+								+ "writable: false,"
+								+ "enumerable: true,"
+								+ "configurable: false"
+							+ "}"
+						+ ");"
+					+ "})");
+				definer.Call(cl, context.Unwrap(constant.Value));
+			}
+		}
+
+		class PropertyClosure
+		{
+			readonly ScriptProperty _p;
+
+			public PropertyClosure(Scripting.Context context, Function cl, ScriptProperty p)
+			{
+				_p = p;
+
+				var rawField = "this._raw_" + p.Name;
+				var propField = "this._" + p.Name;
+
+				// The backing observable may be recycled between accesses if the associated view
+				// is unrooted. This is why we need to call getObservable() time every and check if it has changed.
+
+				var definer = (Function)context.Evaluate(p.Name + " (ScriptProperty)",
+						"(function(cl, getObservable) { Object.defineProperty(cl.prototype, '" + p.Name + "', "
+							+ "{" 
+								+ "get: function() { "
+									+ "var obs = getObservable(this); "
+									+ "if (" + rawField + " != obs) {"
+										+ rawField + " = obs;"
+										+ propField + " = obs" + p.Modifier + ";"
+									+ "}"
+									+ "return " + propField
+								+ "}"
+							+ "})"
+						+ "})");
+
+				definer.Call(cl, (Callback)GetObservable);
+			}
+
+			object GetObservable(Scripting.Context context, object[] args)
+			{
+				var obj = context.Wrap(args[0]) as PropertyObject;
+				var ci = ((JSContext)context).GetClassInstance(obj, null);
+				return ci.GetPropertyObservable(context, _p.GetProperty(obj));
+			}
+		}
+
+		class MethodClosure
+		{
+			readonly ScriptMethod _m;
+			public MethodClosure(Scripting.Context context, Function cl, ScriptMethod m)
+			{
+				_m = m;
+
+				var factory = (Function)context.Evaluate(m.Name + " (ScriptMethod)", "(function (cl, callback) { cl.prototype." + m.Name + 
+					" = function() { return callback(this.external_object, Array.prototype.slice.call(arguments)); }})");
+
+				factory.Call(cl, (Callback)Callback);
+			}
+
+			static object[] _emptyArgs = new object[0];
+
+			object Callback(Scripting.Context context, object[] args)
+			{
+				var self = ((External)args[0]).Object;
+				var realArgs = CopyArgs(context, (Scripting.Array)args[1]);
+				var res = context.Unwrap(_m.Call(context, self, realArgs));
+				return res;
+			}
+
+			static object[] CopyArgs(Scripting.Context context, Scripting.Array args)
+			{
+				var res = new object[args.Length];
+				for (int i = 0; i < res.Length; i++) res[i] = context.Wrap(args[i]);
+				return res;
+			}
 		}
 	}
 }

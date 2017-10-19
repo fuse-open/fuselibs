@@ -13,9 +13,9 @@ namespace Fuse.Scripting.JavaScript
 		const long DotNetTicksInJsTick = 10000L;
 		const long UnixEpochInDotNetTicks = 621355968000000000L;
 
-		public static DateTime ConvertDateToDateTime(Scripting.Object date)
+		public static DateTime ConvertDateToDateTime(Scripting.Context context, Scripting.Object date)
 		{
-			var jsTicks = (long)(double)ThreadWorker.Wrap(date.CallMethod("getTime"));
+			var jsTicks = (long)(double)context.Wrap(date.CallMethod("getTime"));
 			var dotNetTicksRelativeToUnixEpoch = jsTicks * DotNetTicksInJsTick;
 			var dotNetTicks = dotNetTicksRelativeToUnixEpoch + UnixEpochInDotNetTicks;
 
@@ -35,20 +35,20 @@ namespace Fuse.Scripting.JavaScript
 		}
 	}
 
-	partial class ThreadWorker
+	static class TypeWrapper
 	{
 		/** Wraps an object that came from the script VM in an appropriate wrapper
 			for use in the Uno world. */
-		public static object Wrap(object obj)
+		public static object Wrap(Scripting.Context context, object obj)
 		{
 			if (obj is Scripting.External) return ((Scripting.External)obj).Object;
 			else if (obj is Scripting.Object)
 			{
 				var sobj = (Scripting.Object)obj;
 
-				if (sobj.InstanceOf(FuseJS.Date))
+				if (sobj.InstanceOf(ThreadWorker.FuseJS.Date))
 				{
-					return DateTimeConverterHelpers.ConvertDateToDateTime(sobj);
+					return DateTimeConverterHelpers.ConvertDateToDateTime(context, sobj);
 				}
 				else if (sobj.ContainsKey("external_object"))
 				{
@@ -64,7 +64,7 @@ namespace Fuse.Scripting.JavaScript
 
 		/** Takes an object from the Uno world, removes any wrapping applied by @Wrap
 			and returns an object appropriate for passing into the scripting VM */
-		public object Unwrap(object dc)
+		public static object Unwrap(Scripting.Context context, object dc)
 		{
 			if (dc == null) return null;
 			else if (dc is string) return dc;
@@ -72,46 +72,63 @@ namespace Fuse.Scripting.JavaScript
 			else if (dc is Scripting.Function) return dc;
 			else if (dc is Scripting.Object) return dc;
 			else if (dc is Scripting.Array) return dc;
-			else if (dc is float2) return ToArray((float2)dc);
-			else if (dc is float3) return ToArray((float3)dc);
-			else if (dc is float4) return ToArray((float4)dc);
-			else if (dc is int2) return ToArray((int2)dc);
-			else if (dc is int3) return ToArray((int3)dc);
-			else if (dc is int4) return ToArray((int4)dc);
-			else if (dc is DateTime) return DateTimeConverterHelpers.ConvertDateTimeToJSDate((DateTime)dc, FuseJS.DateCtor);
-			else if (dc.GetType().IsClass) return WrapScriptClass(dc);
+			else if (dc is float2) return ToArray(context, (float2)dc);
+			else if (dc is float3) return ToArray(context, (float3)dc);
+			else if (dc is float4) return ToArray(context, (float4)dc);
+			else if (dc is int2) return ToArray(context, (int2)dc);
+			else if (dc is int3) return ToArray(context, (int3)dc);
+			else if (dc is int4) return ToArray(context, (int4)dc);
+			else if (dc is DateTime) return DateTimeConverterHelpers.ConvertDateTimeToJSDate((DateTime)dc, ThreadWorker.FuseJS.DateCtor);
+			else if (dc.GetType().IsClass) return WrapScriptClass(context, dc);
 			else if (dc.GetType().IsEnum) return dc.ToString();
 			else return dc;
 		}
 
-		Scripting.Array ToArray(float2 v)
+		static Scripting.Array ToArray(Scripting.Context context, float2 v)
 		{
-			return Context.NewArray((double)v.X, (double)v.Y);
+			return context.NewArray((double)v.X, (double)v.Y);
 		}
 
-		Scripting.Array ToArray(float3 v)
+		static Scripting.Array ToArray(Scripting.Context context, float3 v)
 		{
-			return Context.NewArray((double)v.X, (double)v.Y, (double)v.Z);
+			return context.NewArray((double)v.X, (double)v.Y, (double)v.Z);
 		}
 
-		Scripting.Array ToArray(float4 v)
+		static Scripting.Array ToArray(Scripting.Context context, float4 v)
 		{
-			return Context.NewArray((double)v.X, (double)v.Y, (double)v.Z, (double)v.W);
+			return context.NewArray((double)v.X, (double)v.Y, (double)v.Z, (double)v.W);
 		}
 
-		Scripting.Array ToArray(int2 v)
+		static Scripting.Array ToArray(Scripting.Context context, int2 v)
 		{
-			return Context.NewArray((double)v.X, (double)v.Y);
+			return context.NewArray((double)v.X, (double)v.Y);
 		}
 
-		Scripting.Array ToArray(int3 v)
+		static Scripting.Array ToArray(Scripting.Context context, int3 v)
 		{
-			return Context.NewArray((double)v.X, (double)v.Y, (double)v.Z);
+			return context.NewArray((double)v.X, (double)v.Y, (double)v.Z);
 		}
 
-		Scripting.Array ToArray(int4 v)
+		static Scripting.Array ToArray(Scripting.Context context, int4 v)
 		{
-			return Context.NewArray((double)v.X, (double)v.Y, (double)v.Z, (double)v.W);
+			return context.NewArray((double)v.X, (double)v.Y, (double)v.Z, (double)v.W);
+		}
+
+		static object WrapScriptClass(Scripting.Context context, object obj)
+		{
+			var so = obj as IScriptObject;
+			if (so != null && so.ScriptObject != null) return so.ScriptObject;
+
+			var ext = new External(obj);
+
+			var sc = ScriptClass.Get(obj.GetType());
+			if (sc == null) return ext;
+
+			var ctor = ((JSContext)context).GetClass(sc);
+			var res = ctor.Construct(ext);
+
+			if (so != null) so.SetScriptObject(res, context);
+			return res;
 		}
 	}
 }

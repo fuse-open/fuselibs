@@ -27,7 +27,7 @@ namespace Fuse.Scripting.JavaScript
 
 		void EnsureClassInstanceRooted(Scripting.Context c)
 		{
-			if (_classInstance == null) _classInstance = _worker.GetClassInstance(_names);
+			if (_classInstance == null) _classInstance = ((JSContext)c).GetClassInstance(_names);
 			_classInstance.EnsureRooted(c);
 		}
 
