@@ -10,7 +10,8 @@ namespace Fuse.Reactive
 		Expression BaseObject { get; private set; }
 		public string Name { get; private set; }
 		[UXConstructor]
-		public Member([UXParameter("BaseObject")] Expression obj, [UXParameter("Name")] string name)
+		//It's unclear why this has to have the name "Object" here... "BaseObject" causes UX compile erorrs on bindings like {some.key}
+		public Member([UXParameter("Object")] Expression obj, [UXParameter("Name")] string name)
 		{
 			BaseObject = obj;
 			Name = name;
