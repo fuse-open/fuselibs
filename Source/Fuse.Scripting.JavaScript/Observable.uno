@@ -247,17 +247,17 @@ namespace Fuse.Scripting.JavaScript
 
 		Scripting.Function _observeChange;
 
-		internal Observable(ThreadWorker worker, Scripting.Object obj, bool suppressCallback): base(obj)
+		internal Observable(Scripting.Context context, ThreadWorker worker, Scripting.Object obj, bool suppressCallback): base(obj)
 		{
 			_worker = worker;
 			_observable = obj;
-			_observeChange = worker.Context.CallbackToFunction((Scripting.Callback)ObserveChange);
+			_observeChange = context.CallbackToFunction((Scripting.Callback)ObserveChange);
 			obj.CallMethod("addSubscriber", _observeChange, suppressCallback);
 		}
 
-		internal static Observable Create(ThreadWorker worker)
+		internal static Observable Create(Scripting.Context context, ThreadWorker worker)
 		{
-			return new Observable(worker, (Scripting.Object)worker.Observable.Call(), true);
+			return new Observable(context, worker, (Scripting.Object)worker.Observable.Call(), true);
 		}
 
 		int ToInt(object obj)

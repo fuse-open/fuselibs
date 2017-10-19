@@ -97,7 +97,7 @@ namespace Fuse.Scripting.JavaScript
 			{
 				if (o.InstanceOf(Fuse.Scripting.JavaScript.ThreadWorker.FuseJS.Observable))
 				{
-					return new Observable((ThreadWorker)ThreadWorker, o, false);
+					return new Observable(this, (ThreadWorker)ThreadWorker, o, false);
 				}
 				else if (o.InstanceOf(Fuse.Scripting.JavaScript.ThreadWorker.FuseJS.Date))
 				{

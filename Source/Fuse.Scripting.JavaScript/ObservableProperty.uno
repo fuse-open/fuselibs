@@ -44,7 +44,7 @@ namespace Fuse.Scripting.JavaScript
 		{
 			if (_observable == null)
 			{
-				_observable = Observable.Create(_worker);	
+				_observable = Observable.Create(context, _worker);
 				Subscribe(context);
 			}
 			return _observable;

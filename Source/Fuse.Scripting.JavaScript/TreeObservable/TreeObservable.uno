@@ -7,8 +7,13 @@ namespace Fuse.Scripting.JavaScript
 {
 	class TreeObservable: TreeObject, IMirror
 	{
-		public TreeObservable(Scripting.Object obj) : base(obj)
+		// TreeObservable requires unsafe access to the context. For more info please see this ticket:
+		// https://github.com/fusetools/fuselibs-public/issues/639
+		readonly Scripting.Context _context;
+
+		public TreeObservable(Scripting.Context context, Scripting.Object obj) : base(obj)
 		{
+			_context = context;
 			Set(this, obj);
 			Subscribe();
 		}
@@ -45,7 +50,7 @@ namespace Fuse.Scripting.JavaScript
 
 			if (obj is Scripting.Object || obj is Scripting.Array)
 			{
-				var id = GetId(obj);
+				var id = GetId(_context, obj);
 				if (id < 0)
 				{
 					throw new Exception("Expected TreeObservable node to have an ID");
@@ -78,9 +83,9 @@ namespace Fuse.Scripting.JavaScript
 			return obj;
 		}
 
-		long GetId(object obj)
+		long GetId(Scripting.Context context, object obj)
 		{
-			var func = (Function)Fuse.Reactive.JavaScript.Worker.Context.Evaluate("(get node ID)", "(function(obj) { if (obj instanceof Object && typeof obj.__fuse_id  !== 'undefined') return obj.__fuse_id; return -1 })");
+			var func = (Function)context.Evaluate("(get node ID)", "(function(obj) { if (obj instanceof Object && typeof obj.__fuse_id  !== 'undefined') return obj.__fuse_id; return -1 })");
 			var res = func.Call(obj);
 			if (res is double) return (long)(double)res;
 			if (res is int) return (long)(int)res;
