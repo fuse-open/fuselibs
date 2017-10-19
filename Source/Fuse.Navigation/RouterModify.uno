@@ -200,6 +200,11 @@ namespace Fuse.Navigation
 				DisposePathSub();
 			}
 		}
+		
+		void IListener.OnLostData(IExpression source)
+		{
+			//unexpected/ignorable as listening is one-off
+		}
 			
 		void PerformRoute(Node n, RouterPageRoute route)
 		{

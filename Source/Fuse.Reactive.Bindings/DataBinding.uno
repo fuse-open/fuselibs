@@ -194,14 +194,18 @@ namespace Fuse.Reactive
 		}
 
 		IDisposable _subscription;
-
-		internal override void NewValue(object value)
+		void CleanSubscription()
 		{
 			if (_subscription != null)
 			{
 				_subscription.Dispose();
 				_subscription = null;
 			}
+		}
+
+		internal override void NewValue(object value)
+		{
+			CleanSubscription();
 			
 			if (Marshal.Is(value, Target.PropertyType))
 			{
@@ -222,6 +226,12 @@ namespace Fuse.Reactive
 			{
 				PushValue(value);
 			}
+		}
+		
+		internal override void LostValue()
+		{
+			CleanSubscription();
+			ClearValue();
 		}
 
 		object _currentValue;

@@ -21,18 +21,23 @@ namespace Fuse.Reactive
 			FindData();
 		}
 
-		bool _isResolved;
+		bool _isResolved = false;
 
 		void FindData()
 		{
 			if (_origin == null) return;
 
 			ClearDiagnostic();
+			var wasResolved = _isResolved;
 			_isResolved = false;
 			_origin.EnumerateData(this); 
 
 			if (!_isResolved)
+			{
 				_diag = Diagnostics.ReportTemporalUserWarning("{" + Key + "} not found in data context", _origin);
+				if (wasResolved)
+					_listener.OnLostData(_source);
+			}
 		}
 
 		object _currentData;

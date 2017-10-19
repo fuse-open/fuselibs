@@ -5,6 +5,8 @@ using Uno.Collections;
 namespace Fuse.Reactive
 {
 	/** Represents a reactive object-member look-up operation. */
+	
+	//TODO: this shouldn't derive from UnaryOperator since it isn't one, and overrides most of the subscription behavior
 	public sealed class Member: UnaryOperator
 	{
 		public string Name { get; private set; }
@@ -61,7 +63,16 @@ namespace Fuse.Reactive
 				else
 				{
 					SetDiagnostic("'" + _member.Operand.ToString() +"' does not contain property '" + _member.Name + "'", _member);
+					
+					//TODO: yuck! See todo at top of file
+					base.OnLostData(null);
 				}
+			}
+			
+			protected override void OnLostData(IExpression source)
+			{
+				base.OnLostData(source);
+				DisposeObservableObjectSubscription();
 			}
 
 			void IPropertyObserver.OnPropertyChanged(IDisposable sub, string propName, object newValue)

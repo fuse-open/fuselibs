@@ -12,32 +12,48 @@ namespace FuseTest
 	*/
 	public class DudElement : Element
 	{
-		public float Value { get; set; }
+		//only one backing value to prevent tests from seeing different values
+		object _value;
 		
-		public string StringValue { get; set; }
+		public float Value 
+		{ 
+			get { return (float)_value; }
+			set { _value = value; }
+		}
+		
+		public string StringValue 
+		{ 
+			get { return (string)_value; }
+			set { _value = value; }
+		}
 
-		public IArray ArrayValue { get; set; }
+		public IArray ArrayValue
+		{ 
+			get { return (IArray)_value; }
+			set { _value = value; }
+		}
 		
-		public object ObjectValue { get; set; }
+		public object ObjectValue
+		{ 
+			get { return _value; }
+			set { _value = value; }
+		}
 		
-		public IExpression Expression { get; set; }
+		public IExpression Expression
+		{ 
+			get { return (IExpression)_value; }
+			set { _value = value; }
+		}
 		
-		public IObject IObjectValue { get; set; }
+		public IObject IObjectValue
+		{ 
+			get { return (IObject)_value; }
+			set { _value = value; }
+		}
 		
 		public object UseValue 
 		{
-			get
-			{
-				if (StringValue != null)
-					return StringValue;
-				if (ArrayValue != null)
-					return ArrayValue;
-				if (ObjectValue != null)
-					return ObjectValue;
-				if (IObjectValue != null)
-					return IObjectValue;
-				return Value;
-			}
+			get { return _value; }
 		}
 		
 		protected override float2 GetContentSize( LayoutParams lp )

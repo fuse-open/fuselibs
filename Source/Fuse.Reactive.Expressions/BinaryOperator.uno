@@ -36,6 +36,11 @@ namespace Fuse.Reactive
 		{
 			listener.OnNewData(this, Compute(left, right));
 		}
+		
+		protected virtual void OnLostOperands(IListener listener)
+		{
+			listener.OnLostData(this);
+		}
 
 		class Subscription: InnerListener
 		{
@@ -77,6 +82,11 @@ namespace Fuse.Reactive
 
 				if ((_hasLeft || _bo.IsLeftOptional) && (_hasRight || _bo.IsRightOptional))
 					OnNewOperands(_left, _right);
+			}
+			
+			protected override void OnLostData(IExpression source)
+			{
+				_bo.OnLostOperands(_listener);
 			}
 
 			protected virtual void OnNewOperands(object left, object right)

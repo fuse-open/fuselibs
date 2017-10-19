@@ -10,6 +10,12 @@
 
 ### Scripting.Context
 - Invoke now takes an `Action<Scripting.Context>`. This is the first step in refactoring our scripting layer to make sure code does not evaluate JS on the wrong thread
+## Fuse.Reactive
+- Add `OnLostData` to the `IListener` interface. This is needed to properly deal with changes in context in Preview, Model, and some JavaScript situations.
+- Changed null coalesce `??` to use the default when the left operand doesn't exist, not just when it's null
+
+## Scripting.Context
+- Invoke now takes an Action<Scripting.Context>. This is the first step in refactoring our scripting layer to make sure code does not evaluate JS on the wrong thread
 - The `Observable` property has been removed from Context & IThreadWorker
 
 ### Fuse.Reactive.JavaScript

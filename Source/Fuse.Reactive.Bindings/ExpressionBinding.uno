@@ -46,7 +46,9 @@ namespace Fuse.Reactive
 		}
 
 		void IListener.OnNewData(IExpression source, object obj) { NewValue(obj); }
+		void IListener.OnLostData(IExpression source) { LostValue(); }
 
 		internal abstract void NewValue(object obj);
+		internal abstract void LostValue();
 	}
 }

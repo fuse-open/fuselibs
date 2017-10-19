@@ -51,6 +51,11 @@ namespace Fuse.Reactive
 			_eventHandler = obj as IEventHandler;
 			ProcessQueuedEvents();
 		}
+		
+		internal override void LostValue()
+		{	
+			_eventHandler = null;
+		}
 
 		protected override void OnUnrooted()
 		{
