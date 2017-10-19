@@ -12,7 +12,7 @@ namespace Fuse.Scripting.JavaScript
 	{
 		/** Wraps an object that came from the script VM in an appropriate wrapper
 			for use in the Uno world. */
-		public static object Wrap(Scripting.Context context, object obj)
+		public static object Wrap(JSContext context, object obj)
 		{
 			if (obj is Scripting.External) return ((Scripting.External)obj).Object;
 			else if (obj is Scripting.Object)
@@ -37,7 +37,7 @@ namespace Fuse.Scripting.JavaScript
 
 		/** Takes an object from the Uno world, removes any wrapping applied by @Wrap
 			and returns an object appropriate for passing into the scripting VM */
-		public static object Unwrap(Scripting.Context context, object dc)
+		public static object Unwrap(JSContext context, object dc)
 		{
 			if (dc == null) return null;
 			else if (dc is string) return dc;
@@ -57,37 +57,37 @@ namespace Fuse.Scripting.JavaScript
 			else return dc;
 		}
 
-		static Scripting.Array ToArray(Scripting.Context context, float2 v)
+		static Scripting.Array ToArray(JSContext context, float2 v)
 		{
 			return context.NewArray((double)v.X, (double)v.Y);
 		}
 
-		static Scripting.Array ToArray(Scripting.Context context, float3 v)
+		static Scripting.Array ToArray(JSContext context, float3 v)
 		{
 			return context.NewArray((double)v.X, (double)v.Y, (double)v.Z);
 		}
 
-		static Scripting.Array ToArray(Scripting.Context context, float4 v)
+		static Scripting.Array ToArray(JSContext context, float4 v)
 		{
 			return context.NewArray((double)v.X, (double)v.Y, (double)v.Z, (double)v.W);
 		}
 
-		static Scripting.Array ToArray(Scripting.Context context, int2 v)
+		static Scripting.Array ToArray(JSContext context, int2 v)
 		{
 			return context.NewArray((double)v.X, (double)v.Y);
 		}
 
-		static Scripting.Array ToArray(Scripting.Context context, int3 v)
+		static Scripting.Array ToArray(JSContext context, int3 v)
 		{
 			return context.NewArray((double)v.X, (double)v.Y, (double)v.Z);
 		}
 
-		static Scripting.Array ToArray(Scripting.Context context, int4 v)
+		static Scripting.Array ToArray(JSContext context, int4 v)
 		{
 			return context.NewArray((double)v.X, (double)v.Y, (double)v.Z, (double)v.W);
 		}
 
-		static object WrapScriptClass(Scripting.Context context, object obj)
+		static object WrapScriptClass(JSContext context, object obj)
 		{
 			var so = obj as IScriptObject;
 			if (so != null && so.ScriptObject != null) return so.ScriptObject;
@@ -97,7 +97,7 @@ namespace Fuse.Scripting.JavaScript
 			var sc = ScriptClass.Get(obj.GetType());
 			if (sc == null) return ext;
 
-			var ctor = ((JSContext)context).GetClass(sc);
+			var ctor = context.GetClass(sc);
 			var res = ctor.Construct(ext);
 
 			if (so != null) so.SetScriptObject(res, context);
