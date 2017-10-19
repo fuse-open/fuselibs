@@ -53,7 +53,7 @@ namespace Fuse.Scripting.JavaScript
 		}
 
 		// JS thread
-		object DefaultValueCallback(object[] args)
+		object DefaultValueCallback(Scripting.Context context, object[] args)
 		{
 			var value = args[0];
 
@@ -74,7 +74,7 @@ namespace Fuse.Scripting.JavaScript
 			readonly Uno.UX.Property _property;
 			readonly ISubscription _subscription;
 			readonly object _value;
-			readonly Action<object> _pushValueOnJSThread;
+			readonly Uno.Action<object> _pushValueOnJSThread;
 
 			public ResolveDefaultValueClosure(ObservableProperty op, object value)
 			{
@@ -98,7 +98,7 @@ namespace Fuse.Scripting.JavaScript
 				}
 			}
 
-			static bool IsDefaultValueForType(object value, Type t)
+			static bool IsDefaultValueForType(object value, Uno.Type t)
 			{
 				return (!t.IsValueType && value == null)
 					|| IsDefault<bool>(value, t)
@@ -125,7 +125,7 @@ namespace Fuse.Scripting.JavaScript
 					|| IsDefault<Size2>(value, t);
 			}
 
-			static bool IsDefault<T>(object value, Type t)
+			static bool IsDefault<T>(object value, Uno.Type t)
 			{
 				if (typeof(T) != t) return false;
 				return value.Equals(default(T));

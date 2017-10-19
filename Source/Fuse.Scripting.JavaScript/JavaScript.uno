@@ -32,9 +32,8 @@ namespace Fuse.Reactive
 		public JavaScript([UXAutoNameTable] NameTable nameTable)
 		{
 			if (Worker == null)
-			{
 				Worker = new Fuse.Scripting.JavaScript.ThreadWorker();
-			}
+
 			_nameTable = nameTable;
 			_scriptModule = new Fuse.Scripting.JavaScript.RootableScriptModule(Worker, nameTable);
 		}
@@ -46,7 +45,7 @@ namespace Fuse.Reactive
 			//for migration we could preserve the _moduleInstance across rooting
 			if (_moduleInstance == null || !_moduleInstance.ReflectExports())
 				SubscribeToDependenciesAndDispatchEvaluate();
-				
+
 			//must be explicit set each time to preserve
 			_preserveModuleInstance = false;
 		}
@@ -78,7 +77,7 @@ namespace Fuse.Reactive
 
 		object _currentDc;
 		Uno.IDisposable _sub;
-		
+
 		internal void SetDataContext(object newDc)
 		{
 			DisposeSubscription();
@@ -87,7 +86,7 @@ namespace Fuse.Reactive
 			_currentDc = newDc;
 
 			var obs = newDc as IObservable;
-			if (obs != null) 
+			if (obs != null)
 			{
 				SetSiblingData(null);
 				_sub = new ValueForwarder(obs, this);
@@ -104,7 +103,7 @@ namespace Fuse.Reactive
 		{
 			SetSiblingData(data);
 		}
-		
+
 		void ValueForwarder.IValueListener.LostValue()
 		{
 			SetSiblingData(null);

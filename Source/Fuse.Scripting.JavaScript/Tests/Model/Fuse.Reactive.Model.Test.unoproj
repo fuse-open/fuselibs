@@ -15,7 +15,7 @@
     "Fuse.Reactive",
     "Fuse.Reactive.Expressions",
     "Fuse.Reactive.Bindings",
-    "Fuse.Reactive.JavaScript",
+    "Fuse.Scripting.JavaScript",
     "Fuse.Scripting",
     "Fuse.Triggers",
     "FuseJS",
