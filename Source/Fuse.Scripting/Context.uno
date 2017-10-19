@@ -15,7 +15,7 @@ namespace Fuse.Scripting
 		object Wrap(object obj);
 	}
 
-	public abstract partial class Context: Uno.IDisposable
+	public abstract class Context: Uno.IDisposable
 	{
 		ConcurrentDictionary<string, ModuleResult> _moduleResults = new ConcurrentDictionary<string, ModuleResult>();
 
