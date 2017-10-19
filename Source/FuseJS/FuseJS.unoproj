@@ -1,6 +1,6 @@
 {
   "Copyright": "Copyright (c) Fusetools AS 2017",
-  "Version": "1.3.0",
+  "Version": "1.4.0-rc1",
   "Publisher": "Fusetools AS",
   "Description": "References FuseJS standard features",
   "Package": {
