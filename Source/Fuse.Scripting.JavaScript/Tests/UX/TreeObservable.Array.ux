@@ -1,0 +1,46 @@
+<Panel ux:Class="UX.TreeObservable.Array">
+	<JavaScript>
+		var TreeObservable = require("FuseJS/TreeObservable");
+		function Tree() { node(this); }
+		Tree.prototype = Object.create(TreeObservable.prototype);
+		let tree = new Tree();
+
+		var id = 0;
+		function node(o) {
+			o.__fuse_id = id++;
+			return o;
+		}
+
+		var foo = tree.foo = node([1,2,3]);
+
+		module.exports = {
+			tree: tree,
+			setElement: function() {
+				foo[2] = 1337;
+				TreeObservable.set.call(tree, "foo", 2, 1337);
+			},
+			addElement: function() {
+				foo.push(123);
+				TreeObservable.add.call(tree, "foo", 123);
+			},
+			insertAt: function() {
+				foo.splice(1, 0, 333);
+				TreeObservable.insertAt.call(tree, "foo", 1, 333);
+			},
+			removeAt: function() {
+				var idx = foo.length - 1;
+				foo.splice(idx, 1);
+				TreeObservable.removeAt.call(tree, "foo", idx);
+			}
+		};
+	</JavaScript>
+
+	<Each Items="{tree.foo}">
+		<Text Value="{}" />
+	</Each>
+
+	<FuseTest.Invoke ux:Name="setElement" Handler="{setElement}" />
+	<FuseTest.Invoke ux:Name="addElement" Handler="{addElement}" />
+	<FuseTest.Invoke ux:Name="insertAt" Handler="{insertAt}" />
+	<FuseTest.Invoke ux:Name="removeAt" Handler="{removeAt}" />
+</Panel>

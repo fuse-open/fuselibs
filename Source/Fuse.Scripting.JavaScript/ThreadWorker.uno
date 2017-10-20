@@ -31,6 +31,26 @@ namespace Fuse.Scripting
 		static Fuse.Reactive.FuseJS.Builtins _fuseJS;
 		public static Fuse.Reactive.FuseJS.Builtins FuseJS { get { return _fuseJS; } }
 
+		Function _push, _insertAt, _removeAt;
+
+		public void Push(Scripting.Array arr, object value)
+		{
+			if (_push == null) _push = (Function)_context.Evaluate("push", "(function(arr, value) { arr.push(value); })");
+			_push.Call(arr, value);
+		}
+
+		public void InsertAt(Scripting.Array arr, int index, object value)
+		{
+			if (_insertAt == null) _insertAt = (Function)_context.Evaluate("insertAt", "(function(arr, index, value) { arr.splice(index, 0, value); })");
+			_insertAt.Call(arr, index, value);
+		}
+
+		public void RemoveAt(Scripting.Array arr, int index)
+		{
+			if (_removeAt == null) _removeAt = (Function)_context.Evaluate("removeAt", "(function(arr, index) { arr.splice(index, 1); })");
+			_removeAt.Call(arr, index);
+		}
+
 		readonly Thread _thread;
 
 		public bool CanEvaluate { get { return Thread.CurrentThread == _thread; } }
@@ -161,7 +181,7 @@ namespace Fuse.Scripting
 
 				if (!didAnything || t2-t > 5)
 				{
-					Thread.Sleep(1);	
+					Thread.Sleep(1);
 					t = t2;
 				}
 			}
@@ -188,7 +208,7 @@ namespace Fuse.Scripting
 					Fuse.Diagnostics.UnknownException("Skipped Exception", prev, this);
 				prev = next;
 			}
-			
+
 			if (prev != null)
 				throw new WrapException(prev);
 		}
