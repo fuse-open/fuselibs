@@ -53,6 +53,7 @@ namespace Fuse.Reactive
 			IListener _listener;
 			bool _hasLeft;
 			bool _hasRight;
+			bool _hasData;
 
 			protected Subscription(BinaryOperator bo, IListener listener)
 			{
@@ -73,29 +74,39 @@ namespace Fuse.Reactive
 			{
 				_leftSub = _bo.Left.Subscribe(context, this);
 				_rightSub = _bo.Right.Subscribe(context, this);
+				UpdateOperands();
 			}
 
 			protected override void OnNewData(IExpression source, object value)
 			{
 				if (source == _bo.Left) { _hasLeft = true; _left = value; }
 				if (source == _bo.Right) { _hasRight = true; _right = value; }
-
-				if ((_hasLeft || _bo.IsLeftOptional) && (_hasRight || _bo.IsRightOptional))
-					OnNewOperands(_left, _right);
+				UpdateOperands();
 			}
 			
 			protected override void OnLostData(IExpression source)
 			{
-				_bo.OnLostOperands(_listener);
+				if (source == _bo.Left) { _hasLeft = false; _left = null; }
+				if (source == _bo.Right) { _hasRight = false; _right = null; }
+				UpdateOperands();
 			}
-
-			protected virtual void OnNewOperands(object left, object right)
+			
+			void UpdateOperands()
 			{
 				ClearDiagnostic();
-
+				
 				try
 				{
-					_bo.OnNewOperands(_listener, left, right);
+					if ((_hasLeft || _bo.IsLeftOptional) && (_hasRight || _bo.IsRightOptional))
+					{
+						_hasData = true;
+						_bo.OnNewOperands(_listener, _left, _right);
+					}
+					else if (_hasData)
+					{
+						_hasData = false;
+						_bo.OnLostOperands(_listener);
+					}
 				}
 				catch (MarshalException me)
 				{

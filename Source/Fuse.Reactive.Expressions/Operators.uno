@@ -64,22 +64,6 @@ namespace Fuse.Reactive
 		public override string Symbol { get { return "/"; } } 
 	}
 
-	/*public sealed class NullCoalesce: InfixOperator
-	{
-		[UXConstructor]
-		public NullCoalesce([UXParameter("Left")] Expression left, [UXParameter("Right")] Expression right): base(left, right) {}
-
-		protected override bool IsLeftOptional { get { return true; } }
-
-		protected override object Compute(object left, object right)
-		{
-			if (left != null) return left;
-			else return right;
-		}
-
-		public override string Symbol { get { return "??"; } } 
-	}*/
-
 	public sealed class Conditional: TernaryOperator
 	{
 		[UXConstructor]
