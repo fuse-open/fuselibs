@@ -97,5 +97,25 @@ namespace Fuse.Reactive.Bindings.Test
 				Assert.AreEqual( 5, p.structCoal.Value );
 			}
 		}
+		
+		[Test]
+		public void NullNoJS()
+		{
+			var p = new UX.Expression.NullNoJS();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				Assert.AreEqual( 9, p.ta.Value );
+				Assert.AreEqual( 9, p.tb.Value );
+				Assert.AreEqual( 2, p.tc.Value );
+				Assert.AreEqual( 8, p.td.Value );
+				
+				p.a.Value = 12;
+				p.c.Value = p.b.Value;
+				root.PumpDeferred();
+				Assert.AreEqual( 12, p.ta.Value );
+				Assert.AreEqual( 9, p.tb.Value );
+				Assert.AreEqual( 3, p.td.Value );
+			}
+		}
 	}
 }

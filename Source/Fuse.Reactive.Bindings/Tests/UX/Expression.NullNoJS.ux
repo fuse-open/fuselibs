@@ -1,0 +1,11 @@
+<Panel ux:Class="UX.Expression.NullNoJS">
+	<FuseTest.Data ux:Name="a"/>
+	<FuseTest.Data Value="(one: 1, two: 2, three: 3)" ux:Name="b"/>
+	<FuseTest.Data ux:Name="c"/>
+
+	<FuseTest.DudElement Value="{Property a.Value} ?? 9" ux:Name="ta"/>
+	<FuseTest.DudElement Value="{Property a.Value}.abc ?? 9" ux:Name="tb"/>
+	
+	<FuseTest.DudElement Value="{Property b.Value}.two" ux:Name="tc"/>
+	<FuseTest.DudElement Value="{Property c.Value}.three ?? 8" ux:Name="td"/>
+</Panel>
