@@ -257,7 +257,7 @@ namespace Fuse.Scripting.JavaScript
 
 		internal static Observable Create(Scripting.Context context, ThreadWorker worker)
 		{
-			return new Observable(context, worker, (Scripting.Object)worker.Observable.Call(), true);
+			return new Observable(context, worker, (Scripting.Object)worker.Observable.Call(context), true);
 		}
 
 		int ToInt(object obj)

@@ -39,7 +39,7 @@ namespace Fuse.Scripting.JavaScript
 				{
 					var val = context.Unwrap(_value);
 					if (_obj.ContainsKey("__fuse_requestChange")) {
-						((Scripting.Function)_obj["__fuse_requestChange"]).Call(_key, val);
+						((Scripting.Function)_obj["__fuse_requestChange"]).Call(context, _key, val);
 					}
 					else
 					{

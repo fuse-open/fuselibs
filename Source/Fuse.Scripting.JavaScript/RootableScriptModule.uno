@@ -51,7 +51,7 @@ namespace Fuse.Scripting.JavaScript
 			return argsString;
 		}
 
-		protected override void CallModuleFunc(Function moduleFunc, object[] args)
+		protected override void CallModuleFunc(Context context, Function moduleFunc, object[] args)
 		{
 			_classInstance.CallMethod(moduleFunc, args);
 		}

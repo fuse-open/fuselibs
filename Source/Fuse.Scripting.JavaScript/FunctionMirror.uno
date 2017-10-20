@@ -44,7 +44,7 @@ namespace Fuse.Scripting
 
 				try
 				{
-					_f._func.Call(obj);
+					_f._func.Call(context, obj);
 				}
 				catch( ScriptException ex )
 				{

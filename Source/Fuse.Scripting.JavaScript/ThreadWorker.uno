@@ -24,22 +24,26 @@ namespace Fuse.Scripting.JavaScript
 
 		Function _push, _insertAt, _removeAt;
 
+		// The use of _context in the following 3 methods is suspect and potentially allows execution of JS
+		// from the wrong thread. Please see the following ticket:
+		// issue: https://github.com/fusetools/fuselibs-public/issues/643
+		
 		public void Push(Scripting.Array arr, object value)
 		{
 			if (_push == null) _push = (Function)_context.Evaluate("push", "(function(arr, value) { arr.push(value); })");
-			_push.Call(arr, value);
+			_push.Call(_context, arr, value);
 		}
 
 		public void InsertAt(Scripting.Array arr, int index, object value)
 		{
 			if (_insertAt == null) _insertAt = (Function)_context.Evaluate("insertAt", "(function(arr, index, value) { arr.splice(index, 0, value); })");
-			_insertAt.Call(arr, index, value);
+			_insertAt.Call(_context, arr, index, value);
 		}
 
 		public void RemoveAt(Scripting.Array arr, int index)
 		{
 			if (_removeAt == null) _removeAt = (Function)_context.Evaluate("removeAt", "(function(arr, index) { arr.splice(index, 1); })");
-			_removeAt.Call(arr, index);
+			_removeAt.Call(_context, arr, index);
 		}
 
 		readonly Thread _thread;
@@ -208,6 +212,11 @@ namespace Fuse.Scripting.JavaScript
 			_queue.Enqueue(action);
 		}
 
+		public void Invoke<T>(Uno.Action<Scripting.Context, T> action, T arg0)
+		{
+			Invoke(new ContextClosureOneArg<T>(action, arg0).Run);
+		}
+
 		public void Invoke(Action action)
 		{
 			Invoke(new ContextIgnoringAction(action).Run);
@@ -242,6 +251,23 @@ namespace Fuse.Scripting.JavaScript
 			public void Run(Scripting.Context context)
 			{
 				_action();
+			}
+		}
+
+		class ContextClosureOneArg<T>
+		{
+			T _arg0;
+			Uno.Action<Context, T> _action;
+
+			public ContextClosureOneArg(Uno.Action<Context, T> action, T arg0)
+			{
+				_action = action;
+				_arg0 = arg0;
+			}
+
+			public void Run(Context context)
+			{
+				_action(context, _arg0);
 			}
 		}
 	}

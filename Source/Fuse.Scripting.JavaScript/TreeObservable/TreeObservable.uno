@@ -86,7 +86,7 @@ namespace Fuse.Scripting.JavaScript
 		long GetId(Scripting.Context context, object obj)
 		{
 			var func = (Function)context.Evaluate("(get node ID)", "(function(obj) { if (obj instanceof Object && typeof obj.__fuse_id  !== 'undefined') return obj.__fuse_id; return -1 })");
-			var res = func.Call(obj);
+			var res = func.Call(context, obj);
 			if (res is double) return (long)(double)res;
 			if (res is int) return (long)(int)res;
 			if (res is long) return (long)res;

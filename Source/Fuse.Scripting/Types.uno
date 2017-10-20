@@ -57,7 +57,13 @@ namespace Fuse.Scripting
 	*/
 	public abstract class Function
 	{
-		public abstract object Call(params object[] args);
+		public abstract object Call(Context context, params object[] args);
+
+		internal void CallDiscardingResult(Context context, params object[] args)
+		{
+			Call(context, args);
+		}
+
 		public abstract Scripting.Object Construct(params object[] args);
 		public abstract bool Equals(Function f);
 

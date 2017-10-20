@@ -138,7 +138,7 @@ namespace Fuse.Scripting.JavaScript
 				if (_setSuperclass == null)
 					_setSuperclass = (Function)Evaluate("(set-superclass)", "(function(cl, superclass) { cl.prototype = new superclass(); cl.prototype.constructor = cl; })");
 
-				_setSuperclass.Call(cl, super);
+				_setSuperclass.Call(this, cl, super);
 			}
 
 			for (int i = 0; i < sc.Members.Length; i++)
@@ -147,7 +147,7 @@ namespace Fuse.Scripting.JavaScript
 				if (inlineMethod != null)
 				{
 					var m = (Function)Evaluate(sc.Type.FullName + "." + inlineMethod.Name + " (ScriptMethod)", "(function(cl, Observable) { cl.prototype." + inlineMethod.Name + " = " + inlineMethod.Code + "; })");
-					m.Call(cl, ((ThreadWorker)ThreadWorker).Observable);
+					m.Call(this, cl, ((ThreadWorker)ThreadWorker).Observable);
 					continue;
 				}
 
@@ -235,7 +235,7 @@ namespace Fuse.Scripting.JavaScript
 							+ "}"
 						+ ");"
 					+ "})");
-				definer.Call(cl, context.Unwrap(constant.Value));
+				definer.Call(context, cl, context.Unwrap(constant.Value));
 			}
 		}
 
@@ -267,7 +267,7 @@ namespace Fuse.Scripting.JavaScript
 							+ "})"
 						+ "})");
 
-				definer.Call(cl, (Callback)GetObservable);
+				definer.Call(context, cl, (Callback)GetObservable);
 			}
 
 			object GetObservable(Scripting.Context context, object[] args)
@@ -288,7 +288,7 @@ namespace Fuse.Scripting.JavaScript
 				var factory = (Function)context.Evaluate(m.Name + " (ScriptMethod)", "(function (cl, callback) { cl.prototype." + m.Name + 
 					" = function() { return callback(this.external_object, Array.prototype.slice.call(arguments)); }})");
 
-				factory.Call(cl, (Callback)Callback);
+				factory.Call(context, cl, (Callback)Callback);
 			}
 
 			static object[] _emptyArgs = new object[0];

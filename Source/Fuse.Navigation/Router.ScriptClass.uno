@@ -358,7 +358,7 @@ namespace Fuse.Navigation
 			}
 			public void Run(Scripting.Context context)
 			{
-				_callback.Call(ToArray());
+				_callback.Call(context, ToArray());
 			}
 			Array ToArray()
 			{

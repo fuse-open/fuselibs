@@ -88,7 +88,7 @@ namespace Fuse.Scripting.JavaScript
 							"}"+
 						"})");
 
-					replaceAllFn.Call(_target, newValuesJs);
+					replaceAllFn.Call(context, _target, newValuesJs);
 				}
 			}
 

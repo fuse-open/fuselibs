@@ -30,7 +30,7 @@ namespace Fuse.Scripting
 		public static void Freeze(this Scripting.Object ob, Context c)
 		{
 			var freeze = (Scripting.Function)c.Evaluate("(Object Freeze)", "Object.freeze");
-			freeze.Call(ob);
+			freeze.Call(c, ob);
 		}
 	}
 }

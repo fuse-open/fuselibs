@@ -127,9 +127,9 @@ namespace Fuse.Scripting
 	    	void InternalResolve()
     		{
     			if(_converter != null)
-    				_resolve.Call(_converter(_c, _result));
+    				_resolve.Call(_c, _converter(_c, _result));
     			else
-    				_resolve.Call(_result);
+    				_resolve.Call(_c, _result);
     		}
 
 	    	void Reject(Exception reason)
@@ -141,7 +141,7 @@ namespace Fuse.Scripting
 
 	    	void InternalReject()
 	    	{
-	    		_reject.Call(_reason.Message);
+	    		_reject.Call(_c, _reason.Message);
 	    	}
 	    }
 	}

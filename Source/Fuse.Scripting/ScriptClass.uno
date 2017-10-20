@@ -286,14 +286,14 @@ namespace Fuse.Scripting
 			void DispatchResolve()
 			{
 				if (_resultConverter != null)
-					_resolve.Call(_resultConverter(_context, _result));
+					_resolve.Call(_context, _resultConverter(_context, _result));
 				else
-					_resolve.Call(_result);
+					_resolve.Call(_context, _result);
 			}
 
 			void DispatchReject()
 			{
-				_reject.Call(_reason.Message);
+				_reject.Call(_context, _reason.Message);
 			}
 		}
 	}

@@ -30,6 +30,8 @@ namespace Fuse.Reactive.FuseJS
 		
 		class FunctionClosure
 		{
+			// This caching of Context is suspect. Please see the issue below for context
+			// https://github.com/fusetools/fuselibs-public/issues/641
 			Context _context;
 			Func<Context, object[], object> _callback;
 
@@ -79,6 +81,10 @@ namespace Fuse.Reactive.FuseJS
 		{
 			public Scripting.Object Obj { get; private set; }
 
+			// This caching of Context is suspect. Please see the issue below for context
+			// https://github.com/fusetools/fuselibs-public/issues/641
+			Scripting.Context _context;
+
 			HttpMessageHandlerRequest _req;
 
 			string _cachedResponseHeaders;
@@ -90,6 +96,7 @@ namespace Fuse.Reactive.FuseJS
 
 			public FuseJSHttpRequest(Context context, HttpMessageHandlerRequest req)
 			{
+				_context = context;
 				_req = req;
 				Obj = context.NewObject();
 
@@ -129,10 +136,10 @@ namespace Fuse.Reactive.FuseJS
 					switch (_req.HttpResponseType)
 					{
 						case HttpResponseType.ByteArray:
-							GetResponseContentByteArray(null, null);
+							GetResponseContentByteArray(_context, null);
 							break;
 						case HttpResponseType.String:
-							GetResponseContentString(null, null);
+							GetResponseContentString(_context, null);
 							break;
 					}
 				}
@@ -242,7 +249,7 @@ namespace Fuse.Reactive.FuseJS
 			{
 				var func = Obj["onabort"] as Function;
 				if (func != null)
-					func.Call();
+					func.Call(_context);
 				DetachRequest();
 			}
 
@@ -250,7 +257,7 @@ namespace Fuse.Reactive.FuseJS
 			{
 				var func = Obj["onerror"] as Function;
 				if (func != null)
-					func.Call(error);
+					func.Call(_context, error);
 				DetachRequest();
 			}
 
@@ -258,7 +265,7 @@ namespace Fuse.Reactive.FuseJS
 			{
 				var func = Obj["ontimeout"] as Function;
 				if (func != null)
-					func.Call();
+					func.Call(_context);
 				DetachRequest();
 			}
 
@@ -266,14 +273,14 @@ namespace Fuse.Reactive.FuseJS
 			{
 				var func = Obj["onstatechanged"] as Function;
 				if (func != null)
-					func.Call((int)_req.State);
+					func.Call(_context, (int)_req.State);
 			}
 
 			void OnDone(HttpMessageHandlerRequest res)
 			{
 				var func = Obj["ondone"] as Function;
 				if (func != null)
-					func.Call();
+					func.Call(_context);
 				DetachRequest();
 			}
 
@@ -281,7 +288,7 @@ namespace Fuse.Reactive.FuseJS
 			{
 				var func = Obj["onprogress"] as Function;
 				if (func != null)
-					func.Call(current, total, hastotal);
+					func.Call(_context, current, total, hastotal);
 			}
 
 			object SendAsync(Context context, object[] args)

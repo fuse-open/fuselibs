@@ -51,7 +51,7 @@ namespace Fuse.Scripting.JavaScript
 			else if (dc is int2) return ToArray(context, (int2)dc);
 			else if (dc is int3) return ToArray(context, (int3)dc);
 			else if (dc is int4) return ToArray(context, (int4)dc);
-			else if (dc is DateTime) return DateTimeConverterHelpers.ConvertDateTimeToJSDate((DateTime)dc, ThreadWorker.FuseJS.DateCtor);
+			else if (dc is DateTime) return DateTimeConverterHelpers.ConvertDateTimeToJSDate(context, (DateTime)dc, ThreadWorker.FuseJS.DateCtor);
 			else if (dc.GetType().IsClass) return WrapScriptClass(context, dc);
 			else if (dc.GetType().IsEnum) return dc.ToString();
 			else return dc;

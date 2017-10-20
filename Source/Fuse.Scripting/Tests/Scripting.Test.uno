@@ -128,7 +128,7 @@ namespace Fuse.Scripting.Test
 			{
 				var fun = context.Evaluate("FunctionTests", "(function(x, y) { return x * y; })") as Scripting.Function;
 				Assert.IsFalse(fun == null);
-				var callResult = fun.Call(new object[] { 11, 12 });
+				var callResult = fun.Call(context, new object[] { 11, 12 });
 				Assert.IsFalse(callResult == null);
 				Assert.AreEqual(132, AsInt(callResult));
 				Assert.IsTrue(fun.Equals(fun));
@@ -162,15 +162,15 @@ namespace Fuse.Scripting.Test
 					"Callbacks",
 					"(function(f) { return f(12, 13) + f(10, 20); })") as Scripting.Function;
 				Assert.AreEqual(
-					AsInt(f.Call(new object[] { new Scripting.Callback(MyCallback) })),
+					AsInt(f.Call(context, new object[] { new Scripting.Callback(MyCallback) })),
 					12 + 13 + 1000 + 10 + 20 + 1000);
 			}
 		}
 
-		class ContextClosure
+		class ContextObjectFactory
 		{
 			readonly Context _context;
-			public ContextClosure(Context context)
+			public ContextObjectFactory(Context context)
 			{
 				_context = context;
 			}
@@ -190,6 +190,23 @@ namespace Fuse.Scripting.Test
 			}
 		}
 
+		internal class ContextClosure<T1, TRes>
+		{
+			Scripting.Context _context;
+			Func<Scripting.Context, T1, TRes> _f;
+			T1 _arg;
+			public ContextClosure(Scripting.Context context, Func<Scripting.Context, T1, TRes> f, T1 arg)
+			{
+				_context = context;
+				_f = f;
+				_arg = arg;
+			}
+			public void Run()
+			{
+				_f(_context, _arg);
+			}
+		}
+
 		[Test]
 		public void CallbackAsConstructor()
 		{
@@ -198,7 +215,7 @@ namespace Fuse.Scripting.Test
 				var f = context.Evaluate(
 					"CallbackAsConstructor",
 					"(function(f) { return new f(12, 13); })") as Scripting.Function;
-				var res = f.Construct(new object[] { new Scripting.Callback(new ContextClosure(context).Callback) });
+				var res = f.Construct(new object[] { new Scripting.Callback(new ContextObjectFactory(context).Callback) });
 				Assert.IsTrue(res is Scripting.Object);
 				Assert.IsTrue(res.ContainsKey("x"));
 				Assert.IsTrue(res.ContainsKey("y"));
@@ -294,7 +311,7 @@ namespace Fuse.Scripting.Test
 				Assert.Throws(new Closure2<string, string, object>(context.Evaluate, "Errors", null).Run);
 
 				var throwingFun = (Scripting.Function)context.Evaluate("Errors", "(function() { throw \"Error\"; })");
-				Assert.Throws<ScriptException>(new Closure<object[], object>(throwingFun.Call, new object[0]).Run);
+				Assert.Throws<ScriptException>(new ContextClosure<object[], object>(context, throwingFun.Call, new object[0]).Run);
 			}
 		}
 
@@ -304,7 +321,7 @@ namespace Fuse.Scripting.Test
 			using (var context = Fuse.Scripting.JavaScript.JSContext.Create())
 			{
 				var f = context.Evaluate("ExceptionObjectLooksGoodWhenCatchedInJavaScript", "(function(f) { try { f(); } catch(ex) { return ex.toString(); } })") as Scripting.Function;
-				var message = (string)f.Call(new object[] { new Scripting.Callback(ScriptingErrorThrowingCallback) });
+				var message = (string)f.Call(context, new object[] { new Scripting.Callback(ScriptingErrorThrowingCallback) });
 				Assert.IsTrue(message.Contains("baaaaaaaah"));
 			}
 		}
@@ -366,7 +383,7 @@ namespace Fuse.Scripting.Test
 				var id = context.Evaluate("Unicode2", "(function(x) { return x; })") as Scripting.Function;
 				foreach (var str in _unicodeStrings)
 				{
-					var res = id.Call(str) as string;
+					var res = id.Call(context, str) as string;
 					Assert.AreEqual(str, res);
 				}
 			}
@@ -381,7 +398,7 @@ namespace Fuse.Scripting.Test
 				foreach (var x in _unicodeStrings)
 				foreach (var y in _unicodeStrings)
 				{
-					var res = f.Call(x, y) as string;
+					var res = f.Call(context, x, y) as string;
 					Assert.AreEqual(x + y, res);
 				}
 			}
@@ -398,7 +415,7 @@ namespace Fuse.Scripting.Test
 			using (var context = Fuse.Scripting.JavaScript.JSContext.Create())
 			{
 				var f = context.Evaluate("CallbackException", "(function(f) { f(); })") as Scripting.Function;
-				Assert.Throws(new Closure<object[], object>(f.Call, new object[] { new Scripting.Callback(ScriptingErrorThrowingCallback) }).Run);
+				Assert.Throws(new ContextClosure<object[], object>(context, f.Call, new object[] { new Scripting.Callback(ScriptingErrorThrowingCallback) }).Run);
 			}
 		}
 
@@ -408,7 +425,7 @@ namespace Fuse.Scripting.Test
 			using (var context = Fuse.Scripting.JavaScript.JSContext.Create())
 			{
 				var f = context.Evaluate("CatchingCallbackExceptions", "(function(f) { try { f(); } catch (e) { } })") as Scripting.Function;
-				Assert.DoesNotThrowAny(new Closure<object[], object>(f.Call, new object[] { new Scripting.Callback(ScriptingErrorThrowingCallback) }).Run);
+				Assert.DoesNotThrowAny(new ContextClosure<object[], object>(context, f.Call, new object[] { new Scripting.Callback(ScriptingErrorThrowingCallback) }).Run);
 			}
 		}
 
@@ -423,7 +440,7 @@ namespace Fuse.Scripting.Test
 			using (var context = Fuse.Scripting.JavaScript.JSContext.Create())
 			{
 				var f = context.Evaluate("CatchingUnoExceptions", "(function(f) { try { f(); } catch (e) { } })") as Scripting.Function;
-				Assert.Throws(new Closure<object[], object>(f.Call, new object[] { new Scripting.Callback(ExceptionThrowingCallback) }).Run);
+				Assert.Throws(new ContextClosure<object[], object>(context, f.Call, new object[] { new Scripting.Callback(ExceptionThrowingCallback) }).Run);
 			}
 		}
 
@@ -444,7 +461,7 @@ namespace Fuse.Scripting.Test
 				var someObject = new SomeObject("theField");
 				{
 					var f = context.Evaluate("External", "(function(x) { return x; })") as Scripting.Function;
-					var res = f.Call(new object[] { new External(someObject) });
+					var res = f.Call(context, new object[] { new External(someObject) });
 					Assert.IsTrue(res is Scripting.External);
 					var ext = res as Scripting.External;
 					var o = ext.Object;
@@ -520,7 +537,7 @@ namespace Fuse.Scripting.Test
 				// This should trigger GC after a while, and tests that the finalizers don't crash.
 				for (int i = 0; i < 10000; ++i)
 				{
-					fun.Call(new Scripting.Callback(MyCallback), new Scripting.External(new Uno.Object()));
+					fun.Call(context, new Scripting.Callback(MyCallback), new Scripting.External(new Uno.Object()));
 				}
 			}
 		}
@@ -550,7 +567,7 @@ namespace Fuse.Scripting.Test
 					var getLastItem = context.Evaluate(
 						"ArrayBufferSupport",
 						"(function(x) { var z = new Int8Array(x, 0, x.byteLength); return z[99]; })") as Scripting.Function;
-					Assert.AreEqual(42, AsInt(getLastItem.Call(int8)));
+					Assert.AreEqual(42, AsInt(getLastItem.Call(context, int8)));
 				}
 		}
 
@@ -570,7 +587,7 @@ namespace Fuse.Scripting.Test
 					var instanceOfArrayBuffer = context.Evaluate(
 						"Buffers",
 						"(function(x) { return x instanceof ArrayBuffer; })") as Scripting.Function;
-					Assert.IsTrue((bool)instanceOfArrayBuffer.Call(buf));
+					Assert.IsTrue((bool)instanceOfArrayBuffer.Call(context, buf));
 				}
 
 				{
@@ -584,15 +601,15 @@ namespace Fuse.Scripting.Test
 
 					Assert.IsFalse(check1 == null);
 					Assert.IsFalse(check2 == null);
-					Assert.IsTrue((bool)check1.Call(buf, len));
-					Assert.IsTrue((bool)check2.Call(buf, len));
+					Assert.IsTrue((bool)check1.Call(context, buf, len));
+					Assert.IsTrue((bool)check2.Call(context, buf, len));
 				}
 
 				{
 					var createBuffer = context.Evaluate(
 						"Buffers 3",
 						"(function(len) { var res = new ArrayBuffer(len); var arr = new Uint8Array(res); for (var i = 0; i < len; ++i) arr[i] = i; return res; })") as Scripting.Function;
-					var buf2 = createBuffer.Call(len);
+					var buf2 = createBuffer.Call(context, len);
 					Assert.IsTrue(buf2 is byte[]);
 					var buf3 = buf2 as byte[];
 					Assert.AreEqual(len, buf3.Length);
@@ -606,7 +623,7 @@ namespace Fuse.Scripting.Test
 					var identity = context.Evaluate(
 						"Buffers 4",
 						"(function(x) { return x; })") as Scripting.Function;
-					var res = identity.Call(buf);
+					var res = identity.Call(context, buf);
 					Assert.IsTrue(res is byte[]);
 					var buf2 = res as byte[];
 					Assert.AreEqual(len, buf2.Length);
@@ -622,7 +639,7 @@ namespace Fuse.Scripting.Test
 					var identity = context.Evaluate(
 						"Buffers 5",
 						"(function(x) { return x; })") as Scripting.Function;
-					Assert.AreEqual(identity.Call(buf), buf);
+					Assert.AreEqual(identity.Call(context, buf), buf);
 				}
 			}
 		}
