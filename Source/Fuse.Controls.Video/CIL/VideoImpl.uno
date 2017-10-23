@@ -165,7 +165,7 @@ namespace Fuse.Controls.VideoImpl.CIL
 			if (Fuse.Video.Graphics.CIL.VideoImpl.IsFrameAvailable(_handle))
 			{
 				GL.PixelStore(GLPixelStoreParameter.UnpackAlignment, 1);
-				Fuse.Video.Graphics.CIL.VideoImpl.UpdateTexture(_handle, _texture.GLTextureHandle);
+				Fuse.Video.Graphics.CIL.VideoImpl.UpdateTexture(_handle, (int) _texture.GLTextureHandle);
 				_videoTexture = new VideoTexture(_texture.GLTextureHandle);
 				OnFrameAvailable();
 			}
@@ -248,7 +248,7 @@ namespace Fuse.Video.Graphics.CIL
 		public static extern void Pause(VideoHandle handle);
 
 		[TargetSpecificImplementation]
-		public static extern void UpdateTexture(VideoHandle handle, GLTextureHandle textureHandle);
+		public static extern void UpdateTexture(VideoHandle handle, int textureHandle);
 
 		[TargetSpecificImplementation]
 		public static extern void Dispose(VideoHandle handle);

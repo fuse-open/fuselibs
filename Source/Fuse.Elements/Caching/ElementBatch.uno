@@ -297,7 +297,7 @@ namespace Fuse.Elements
 			if (_indexBuffer != null)
 				_indexBuffer.Dispose();
 
-			_indexBuffer = new IndexBuffer(indices, BufferUsage.Immutable);
+			_indexBuffer = new IndexBuffer(indices.GetBytes(), BufferUsage.Immutable);
 		}
 
 		const float CachingRectPaddingAdjustment = 0.5f;
@@ -318,7 +318,7 @@ namespace Fuse.Elements
 				vertexTexCoords.Set((i * 4 + 2) * _texCoordInfo.BufferStride + _texCoordInfo.BufferOffset, texCoordOrigin + size);
 				vertexTexCoords.Set((i * 4 + 3) * _texCoordInfo.BufferStride + _texCoordInfo.BufferOffset, texCoordOrigin + float2(0, size.Y));
 			}
-			_texCoordInfo.Buffer.Update(vertexTexCoords);
+			_texCoordInfo.Buffer.Update(vertexTexCoords.GetBytes());
 		}
 
 		void FillVertexPositionBuffer(DrawContext dc)
@@ -345,7 +345,7 @@ namespace Fuse.Elements
 				vertexPositions.Set((i * 4 + 2) * _positionInfo.BufferStride + _positionInfo.BufferOffset, float3(positionOrigin + right + up, opacity));
 				vertexPositions.Set((i * 4 + 3) * _positionInfo.BufferStride + _positionInfo.BufferOffset, float3(positionOrigin + up, opacity));
 			}
-			_positionInfo.Buffer.Update(vertexPositions);
+			_positionInfo.Buffer.Update(vertexPositions.GetBytes());
 		}
 	}
 }

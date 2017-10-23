@@ -78,7 +78,7 @@ namespace Fuse.Text
 			{
 				_dirty = false;
 				var texture = _textures[_textureIndex];
-				texture.Update(_bitmap.Buffer);
+				texture.Update(_bitmap.Buffer.GetBytes());
 			}
 		}
 
