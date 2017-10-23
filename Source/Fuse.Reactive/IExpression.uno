@@ -7,9 +7,13 @@ namespace Fuse.Reactive
 {
 	public interface IListener
 	{
-		/** New data has been resolved for the expression. This data is assumed to be valid at this level of evaluation. This will not be sent prior to having a valid value. */
+		/** 
+			New data has been resolved for the expression. This data is assumed to be valid at this level of evaluation. This will not be sent prior to having a valid value.
+		*/
 		void OnNewData(IExpression source, object data);
-		/** The expression no longer resolves to a valid value, either the source is unavailable, or it doesn't convert properly. This should not be sent unless `OnNewData` was called previously. */
+		/** 
+			The expression no longer resolves to a valid value, either the source is unavailable, or it doesn't convert properly. Publishers should avoid sending this unless they previously sent `OnNewData`, as it can generate needless overhead. However, listeners should gracefully handle repeated calls to `OnLostData`.
+		*/
 		void OnLostData(IExpression source);
 	}
 

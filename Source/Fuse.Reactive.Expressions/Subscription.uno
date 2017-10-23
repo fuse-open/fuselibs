@@ -14,7 +14,7 @@ namespace Fuse.Reactive
 	public abstract class InnerListener: IDisposable, IListener
 	{
 		protected abstract void OnNewData(IExpression source, object value);
-		protected virtual void OnLostData(IExpression source) { }
+		protected abstract void OnLostData(IExpression source);
 
 		IDisposable _diag;
 
