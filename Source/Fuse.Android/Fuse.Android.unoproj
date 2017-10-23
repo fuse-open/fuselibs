@@ -40,7 +40,6 @@
     "AppRoot.uno:SourceFile",
     "AndroidInterop.uno:SourceFile",
     "AndroidInteropHelper.java:Java:Android",
-    "Internal/ByteBufferInputStream.java:Java:Android",
     "Internal/ByteBufferMediaDataSource.java:Java:Android",
   ]
 }
