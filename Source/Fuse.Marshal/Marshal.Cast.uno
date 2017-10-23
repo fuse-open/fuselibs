@@ -28,15 +28,24 @@ namespace Fuse
 		public static double ToDouble(object v)
 		{
 			double res;
-			if (ToDouble(v, out res)) return res;
+			if (TryToDouble(v, out res)) return res;
 			throw new MarshalException(v, typeof(double));
 		}
 
+		/**
+			@deprecated Name kept for compatibility, use `TryToDouble` instead 2017-10-19
+		*/
+		[Obsolete]
 		public static bool ToDouble(object v, out double res)
+		{
+			return TryToDouble( v, out res );
+		}
+		
+		public static bool TryToDouble( object v, out double res )
 		{
 			if (v is double) { res = (double)v; return true; }
 			else if (v is float) { res = (double)(float)v; return true; }
-			else if (v is string) { return ToDouble((string)v, out res); }
+			else if (v is string) { return TryToDouble((string)v, out res); }
 			else if (v is int) { res = (double)(int)v; return true; }
 			else if (v is float2) { res = ((float2)v).X; return true; }
 			else if (v is float3) { res = ((float3)v).X; return true; }
@@ -58,8 +67,30 @@ namespace Fuse
 			res = default(double);
 			return false;
 		}
+		
+		public static bool TryToFloat( object v, out float res )
+		{
+			double d;
+			if (!TryToDouble(v, out d))
+			{
+				res = default(float);
+				return false;
+			}
+			
+			res = (float)d;
+			return true;
+		}
 
+		/**
+			@deprecated use `TryToDouble` instead 2017-10-19
+		*/
+		[Obsolete]
 		public static bool ToDouble(string s, out double res)
+		{
+			return double.TryParse(s, out res);
+		}
+		
+		public static bool TryToDouble(string s, out double res)
 		{
 			return double.TryParse(s, out res);
 		}
@@ -127,7 +158,7 @@ namespace Fuse
 			}
 
 			double d;
-			if (ToDouble(o, out d))
+			if (TryToDouble(o, out d))
 			{
 				var f = (float)d;
 				return float4(f);
@@ -142,9 +173,13 @@ namespace Fuse
 			@return true if converted successfully, false if no suitable conversion exists. `null` cannot be converted and will return false;
 			@param value the result value (0 padded as necessary)
 			@param size the size of the result
+			
 		*/
 		public static bool TryToZeroFloat4(object o, out float4 value, out int size)
 		{
+			value = float4(0);
+			size = 0;
+			
 			if (o is float4) 
 			{
 				value = (float4)o;
@@ -173,25 +208,36 @@ namespace Fuse
 				var s = (string)o;
 				if (s.StartsWith("#"))
 				{
-					value = Uno.Color.FromHex(s);
-					size = 4;
-					return true;
+					//TODO: once https://github.com/fusetools/uno/pull/1383 is avialble use Color.TryParse instead
+					try
+					{
+						value = Uno.Color.FromHex(s);
+						size = 4;
+						return true;
+					}
+					catch (ArgumentException ex)
+					{
+						return false;
+					}
 				}
 			}
 			else if (o is IArray)
 			{
 				var a = (IArray)o;
-				var x = a.Length > 0 ? Marshal.ToFloat(a[0]) : 0.0f;
-				var y = a.Length > 1 ? Marshal.ToFloat(a[1]) : 0.0f;
-				var z = a.Length > 2 ? Marshal.ToFloat(a[2]) : 0.0f;
-				var w = a.Length > 3 ? Marshal.ToFloat(a[3]) : 0.0f;
+				float x = 0,y = 0,z = 0,w =0;
+				if ( (a.Length > 0 && !TryToFloat( a[0], out x )) ||
+					(a.Length > 1 && !TryToFloat( a[1], out y )) ||
+					(a.Length > 2 && !TryToFloat( a[2], out z )) ||
+					(a.Length > 3 && !TryToFloat( a[3], out w )))
+					return false;
+					
 				value = float4(x,y,z,w);
 				size = a.Length;
 				return true;
 			}
 
 			double d;
-			if (Marshal.ToDouble(o, out d))
+			if (TryToDouble(o, out d))
 			{
 				var f = (float)d;
 				value = float4(f,0,0,0);
@@ -199,8 +245,6 @@ namespace Fuse
 				return true;
 			}
 
-			value = float4(0);
-			size = 0;
 			return false;
 		}
 		

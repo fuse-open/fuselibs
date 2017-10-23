@@ -1,5 +1,8 @@
 # Unreleased
 
+## Fuse.Marshal
+- `ToDouble` replaced with `TryToDouble` for naming consistency (old names remain as deprecated)
+
 
 # 1.4
 
