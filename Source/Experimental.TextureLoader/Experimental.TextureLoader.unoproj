@@ -10,7 +10,6 @@
     "TextureLoaderImpl.cpp.uxl:Extensions",
     "TextureLoaderImpl.cil.uxl:Extensions",
     "CIL/CILTextureLoader.uno:Source",
-    "CIL/Uno/BufferAccessor.uno:Source",
-    "CIL/Uno/Texture.uno:Source"
+    "CIL/Uno/BufferAccessor.uno:Source"
   ]
 }
