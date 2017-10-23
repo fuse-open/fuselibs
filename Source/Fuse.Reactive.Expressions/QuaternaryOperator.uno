@@ -37,6 +37,7 @@ namespace Fuse.Reactive
 			readonly QuaternaryOperator _qo;
 			object _first, _second, _third, _fourth;
 			bool _hasFirst, _hasSecond, _hasThird, _hasFourth;
+			bool _hasData;
 
 			IDisposable _firstSub;
 			IDisposable _secondSub;
@@ -66,6 +67,7 @@ namespace Fuse.Reactive
 				_secondSub = _qo.Second.Subscribe(context, this);
 				_thirdSub = _qo.Third.Subscribe(context, this);
 				_fourthSub = _qo.Fourth.Subscribe(context, this);
+				UpdateOperands(); //in case all optional
 			}
 
 			protected override void OnNewData(IExpression source, object value)
@@ -74,18 +76,34 @@ namespace Fuse.Reactive
 				if (source == _qo.Second) { _hasSecond = true; _second = value; }
 				if (source == _qo.Third) { _hasThird = true; _third = value; }
 				if (source == _qo.Fourth) { _hasFourth = true; _fourth = value; }
-
-				if ((_hasFirst || _qo.IsFirstOptional) && (_hasSecond || _qo.IsSecondOptional) && (_hasThird || _qo.IsThirdOptional) && (_hasFourth || _qo.IsFourthOptional))
-					OnNewOperands(_first, _second, _third, _fourth);
+				UpdateOperands();
+			}
+			
+			protected override void OnLostData(IExpression source)
+			{
+				if (source == _qo.First) { _hasFirst = false; _first = null; }
+				if (source == _qo.Second) { _hasSecond = false; _second = null; }
+				if (source == _qo.Third) { _hasThird = false; _third = null; }
+				if (source == _qo.Fourth) { _hasFourth = false; _fourth = null; }
+				UpdateOperands();
 			}
 
-			protected virtual void OnNewOperands(object first, object second, object third, object fourth)
+			void UpdateOperands()
 			{
 				ClearDiagnostic();
-
+				
 				try
 				{
-					_listener.OnNewData(_qo, _qo.Compute(first, second, third, fourth));
+					if ((_hasFirst || _qo.IsFirstOptional) && (_hasSecond || _qo.IsSecondOptional) && (_hasThird || _qo.IsThirdOptional) && (_hasFourth || _qo.IsFourthOptional))
+					{
+						_hasData = true;
+						_listener.OnNewData(_qo, _qo.Compute(_first, _second, _third, _fourth));
+					}
+					else if (_hasData)
+					{
+						_hasData = false;
+						_listener.OnLostData(_qo);
+					}
 				}
 				catch (MarshalException me)
 				{
