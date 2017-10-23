@@ -3,7 +3,7 @@
   "Description": "Native image utilities",
   "Publisher": "Fusetools AS",
   "Title": "Fuse.ImageTools",
-  "Version": "1.3.0",
+  "Version": "1.4.0-rc1",
   "Package": {
     "ProjectUrl": "https://fusetools.com"
   },

@@ -18,6 +18,7 @@
     "Fuse.Scripting.JavaScript",
     "Fuse.Scripting",
     "Fuse.Triggers",
+    "Fuse.Selection",
     "Uno.Collections",
     "Uno.Testing",
     "Uno.Threading"
