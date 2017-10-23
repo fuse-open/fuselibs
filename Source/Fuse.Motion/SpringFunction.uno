@@ -66,7 +66,9 @@ namespace Fuse.Motion
 			
 			void IListener.OnLostData(IExpression source)
 			{ 
-				//keep current data for simulation
+				StopSimulation();
+				if (_listener != null)
+					_listener.OnLostData( source );
 			}
 
 			void StartSimulation()

@@ -106,7 +106,8 @@ namespace Fuse.Animations
 					//invalid values can simply discard the simulation (forcing a new one to be created when
 					//a good value arrives)
 					CleanSimulation();
-					_target.OnLostData(_attract);
+					if (_target != null)
+						_target.OnLostData(_attract);
 					return;
 				}
 
@@ -125,7 +126,8 @@ namespace Fuse.Animations
 			protected override void OnLostData( IExpression source )
 			{
 				CleanSimulation();
-				_target.OnLostData(_attract);
+				if (_target != null)
+					_target.OnLostData(_attract);
 			}
 			
 			void NeedSim(int size)
