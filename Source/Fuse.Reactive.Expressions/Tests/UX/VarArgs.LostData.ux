@@ -1,0 +1,11 @@
+<Panel ux:Class="UX.VarArgs.LostData">
+	<FuseTest.Data ux:Name="strct"/>
+	<FuseTest.Data ux:Name="strctData1" Value="(one: 'x', two: 'y')"/>
+	<FuseTest.Data ux:Name="strctData2" Value="(one: 'x', three: 'z')"/>
+	<FuseTest.Data ux:Name="strctData3" Value="(two: 'y', three: 'z')"/>
+	<FuseTest.Data ux:Name="strctData4" Value="(one: 'x', two: 'y', three: 'z')"/>
+	
+	<FuseTest.DudElement StringValue="{= varJoin( {Property strct.Value}.one ) }" ux:Name="a"/>
+	<FuseTest.DudElement StringValue="{= varJoin( {Property strct.Value}.one, {Property strct.Value}.two ) }" ux:Name="b"/>
+	<FuseTest.DudElement StringValue="{= varJoin( {Property strct.Value}.one, {Property strct.Value}.two, {Property strct.Value}.three ) }" ux:Name="c"/>
+</Panel>
