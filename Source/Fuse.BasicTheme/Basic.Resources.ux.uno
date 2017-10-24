@@ -40,7 +40,7 @@ namespace Basic
 		{
 			var s = GetColorScheme(scheme);
 			for (int i = 0; i < ColorCodes.Length; i++)
-				control.SetResource(ColorCodes[i], Uno.Color.FromHex(s[i]));				
+				control.SetResource(ColorCodes[i], Uno.Color.Parse(s[i]));
 		}
 
         static string[] GetColorScheme(ColorScheme scheme)

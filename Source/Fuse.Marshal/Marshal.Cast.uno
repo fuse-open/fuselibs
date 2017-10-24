@@ -124,7 +124,7 @@ namespace Fuse
 			{
 				var s = (string)o;
 				if (s.StartsWith("#"))
-					return Uno.Color.FromHex(s);
+					return Uno.Color.Parse(s);
 			}
 			else if (o is Size)
 			{
@@ -208,17 +208,13 @@ namespace Fuse
 				var s = (string)o;
 				if (s.StartsWith("#"))
 				{
-					//TODO: once https://github.com/fusetools/uno/pull/1383 is avialble use Color.TryParse instead
-					try
+					if (Uno.Color.TryParse(s, out value))
 					{
-						value = Uno.Color.FromHex(s);
 						size = 4;
 						return true;
 					}
-					catch (ArgumentException ex)
-					{
-						return false;
-					}
+
+					return false;
 				}
 			}
 			else if (o is IArray)
