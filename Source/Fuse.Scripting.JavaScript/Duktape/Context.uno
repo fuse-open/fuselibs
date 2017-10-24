@@ -48,7 +48,7 @@ namespace Fuse.Scripting.Duktape
 
 		public override Fuse.Scripting.Object GlobalObject { get { return _globalObject; } }
 
-		public Context(IThreadWorker worker): base(worker)
+		public Context(): base()
 		{
 			DukContext = duktape.create_heap_default();
 

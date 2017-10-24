@@ -59,23 +59,20 @@ namespace Fuse.Scripting
 			return sb.ToString();
 		}
 
-		IThreadWorker _worker;
-
-		protected Context(IThreadWorker worker)
+		protected Context()
 		{
-			_worker = worker;
 		}
 
-		public IThreadWorker ThreadWorker { get { return _worker; } }
+		public abstract IThreadWorker ThreadWorker { get; }
 
-		public object Wrap(object obj) { return _worker.Wrap(obj); }
-		public object Unwrap(object obj) { return _worker.Unwrap(obj); }
+		public object Wrap(object obj) { return ThreadWorker.Wrap(obj); }
+		public object Unwrap(object obj) { return ThreadWorker.Unwrap(obj); }
 
-		public IDispatcher Dispatcher { get { return _worker.Dispatcher; } }
+		public IDispatcher Dispatcher { get { return ThreadWorker.Dispatcher; } }
 
 		public void Invoke(Uno.Action<Scripting.Context> action)
 		{
-			_worker.Invoke(action);
+			ThreadWorker.Invoke(action);
 		}
 
 		Function _identity;

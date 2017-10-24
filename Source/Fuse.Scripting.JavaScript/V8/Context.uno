@@ -28,7 +28,7 @@ namespace Fuse.Scripting.V8
 		extern(!CPlusPlus) Simple.JSCallbackFinalizer _handleCallbackFree;
 		extern(!CPlusPlus) Simple.JSExternalFinalizer _handleExternalFree;
 
-		public Context(IThreadWorker worker): base(worker)
+		public Context(): base()
 		{
 			_errorHandler = OnScriptException;
 

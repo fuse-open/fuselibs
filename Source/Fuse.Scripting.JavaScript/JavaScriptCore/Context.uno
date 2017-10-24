@@ -19,7 +19,7 @@ namespace Fuse.Scripting.JavaScriptCore
 		readonly JSClassRef _unoFinalizerClass;
 		readonly JSClassRef _unoCallbackClass;
 
-		public Context(IThreadWorker worker): base(worker)
+		public Context(): base()
 		{
 			_context = JSContextRef.Create();
 

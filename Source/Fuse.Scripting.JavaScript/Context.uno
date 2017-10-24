@@ -9,6 +9,14 @@ namespace Fuse.Scripting.JavaScript
 {
 	public abstract class Context: Fuse.Scripting.Context
 	{
-		protected Context(IThreadWorker threadWorker) : base (threadWorker) {}
+		protected Context() : base () {}
+
+		public override Fuse.Scripting.IThreadWorker ThreadWorker
+		{
+			get
+			{
+				return Fuse.Reactive.JavaScript.Worker;
+			}
+		}
 	}
 }
