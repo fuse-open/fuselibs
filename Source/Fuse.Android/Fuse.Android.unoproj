@@ -2,7 +2,7 @@
   "Copyright": "Copyright (c) Fusetools AS 2017",
   "Description": "Native bootstrapping for Android",
   "Publisher": "Fusetools AS",
-  "Version": "1.4.0-rc1",
+  "Version": "1.4.0-rc2",
   "Package": {
     "ProjectUrl": "https://fusetools.com"
   },
@@ -40,7 +40,6 @@
     "AppRoot.uno:SourceFile",
     "AndroidInterop.uno:SourceFile",
     "AndroidInteropHelper.java:Java:Android",
-    "Internal/ByteBufferInputStream.java:Java:Android",
     "Internal/ByteBufferMediaDataSource.java:Java:Android",
   ]
 }
