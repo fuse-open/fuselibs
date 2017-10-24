@@ -10,5 +10,6 @@
   ],
   "Includes": [
     "*",
+    "Assets/*:Bundle"
   ]
 }
