@@ -9,7 +9,7 @@ namespace Fuse.Scripting.V8
 {
 	[Require("Header.Include", "include/V8Simple.h")]
 	[Require("Source.Declaration", "#undef GetMessage")]
-	public extern(USE_V8) class Context: Fuse.Scripting.Context
+	public extern(USE_V8) class Context: Fuse.Scripting.JavaScript.Context
 	{
 		internal Simple.JSContext _context;
 		extern(DEBUG_V8) Debugger _debugger;

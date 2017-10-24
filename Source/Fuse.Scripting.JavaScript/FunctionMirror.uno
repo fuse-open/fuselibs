@@ -40,7 +40,7 @@ namespace Fuse.Scripting
 				if (_e.Sender != null) obj["sender"] = _e.Sender;
 
 				if (_e.Args != null)
-					foreach (var arg in _e.Args) obj[arg.Key] = JavaScript.Worker.Unwrap(arg.Value);
+					foreach (var arg in _e.Args) obj[arg.Key] = Reactive.JavaScript.Worker.Unwrap(arg.Value);
 
 				try
 				{
@@ -55,7 +55,7 @@ namespace Fuse.Scripting
 
 		public void Dispatch(IEventRecord e)
 		{
-			JavaScript.Worker.Invoke(new CallClosure(this, e).Call);
+			Reactive.JavaScript.Worker.Invoke(new CallClosure(this, e).Call);
 		}
 	}
 

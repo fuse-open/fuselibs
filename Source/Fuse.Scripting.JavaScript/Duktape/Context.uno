@@ -37,7 +37,7 @@ namespace Fuse.Scripting.Duktape
 		}
 	}
 
-	public extern(USE_DUKTAPE) class Context : Fuse.Scripting.Context
+	public extern(USE_DUKTAPE) class Context : Fuse.Scripting.JavaScript.Context
 	{
 		readonly Object _globalObject;
 		internal readonly ConcurrentQueue<int> _unstash = new ConcurrentQueue<int>();
