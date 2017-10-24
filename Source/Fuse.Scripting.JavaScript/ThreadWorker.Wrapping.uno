@@ -6,7 +6,7 @@ using Uno.Threading;
 using Uno.IO;
 using Uno.UX;
 
-namespace Fuse.Scripting
+namespace Fuse.Scripting.JavaScript
 {
 	static class DateTimeConverterHelpers
 	{
@@ -60,11 +60,6 @@ namespace Fuse.Scripting
 			if (obj is int) return (double)(int)obj;
 			if (obj is uint) return (double)(uint)obj;
 			return obj;
-		}
-
-		object Scripting.IThreadWorker.Wrap(object obj)
-		{
-			return ThreadWorker.Wrap(obj);
 		}
 
 		/** Takes an object from the Uno world, removes any wrapping applied by @Wrap

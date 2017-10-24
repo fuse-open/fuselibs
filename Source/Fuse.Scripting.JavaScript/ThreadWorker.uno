@@ -5,14 +5,14 @@ using Uno.Testing;
 using Uno.Threading;
 using Fuse.Scripting;
 
-namespace Fuse.Scripting
+namespace Fuse.Scripting.JavaScript
 {
 	interface IMirror
 	{
 		object Reflect(object obj);
 	}
 
-	partial class ThreadWorker: IDisposable, IDispatcher, IThreadWorker, IMirror
+	partial class ThreadWorker: IDisposable, IDispatcher, IThreadWorker
 	{
 		IDispatcher IThreadWorker.Dispatcher { get { return this; } }
 		public Function Observable { get { return FuseJS.Observable; } }

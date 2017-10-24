@@ -2,16 +2,16 @@ using Uno;
 using Uno.Collections;
 using Fuse.Scripting;
 
-namespace Fuse.Scripting
+namespace Fuse.Scripting.JavaScript
 {
 	class ModuleInstance: DiagnosticSubject
 	{
-		readonly ThreadWorker _worker;
+		readonly IThreadWorker _worker;
 		readonly Reactive.JavaScript _js;
 		readonly Dictionary<string, object> _deps = new Dictionary<string, object>();
 
 		// UI thread
-		public ModuleInstance(ThreadWorker worker, Reactive.JavaScript js)
+		public ModuleInstance(IThreadWorker worker, Reactive.JavaScript js)
 		{
 			for (var i = 0; i < js.Dependencies.Count; i++)
 				_deps.Add(js.Dependencies[i].Name, js.Dependencies[i].Value);
@@ -24,22 +24,24 @@ namespace Fuse.Scripting
 		// JS thread
 		void Evaluate(Scripting.Context context)
 		{
+			var ctx = (Context)context;
+
 			var deps = new Dictionary<string, object>();
 			foreach (var key in _deps.Keys)
 			{
-				deps[key] = _worker.Unwrap(_deps[key]);
+				deps[key] = ctx.Unwrap(_deps[key]);
 			}
 
 			var nt = _js._nameTable;
 			while (nt != null)
 			{
 				for (int i = 0; i < nt.Entries.Length; ++i)
-					deps.Add(nt.Entries[i], _worker.Unwrap(nt.Objects[i]));
+					deps.Add(nt.Entries[i], ctx.Unwrap(nt.Objects[i]));
 				nt = nt.ParentTable;
 			}
 
 			_js.ScriptModule.Dependencies = deps;
-			_dc = _worker.Reflect(EvaluateExports(_worker.Context));
+			_dc = ctx.Reflect(EvaluateExports(ctx));
 			UpdateManager.PostAction(SetDataContext);
 		}
 
@@ -65,7 +67,7 @@ namespace Fuse.Scripting
 			}
 		}
 
-		object EvaluateExports(Context context)
+		object EvaluateExports(Scripting.Context context)
 		{
 			EvaluateModule(context);
 
@@ -79,15 +81,17 @@ namespace Fuse.Scripting
 
 		DiagnosticSubject _diagnostic = new DiagnosticSubject();
 
-		void EvaluateModule(Context context)
+		void EvaluateModule(Scripting.Context context)
 		{
+			var ctx = (Context)context;
+
 			_diagnostic.ClearDiagnostic();
 
 			var globalId = Uno.UX.Resource.GetGlobalKey(this);
 
 			lock (_resetHookMutex)
 			{
-				var newModuleResult = _js.ScriptModule.Evaluate(context, globalId);
+				var newModuleResult = _js.ScriptModule.Evaluate(ctx, globalId);
 				newModuleResult.AddDependency(_js.DispatchEvaluate);
 
 				if (newModuleResult.Error == null)

@@ -2,23 +2,24 @@ using Uno.Collections;
 using Uno;
 using Fuse;
 using Fuse.Scripting;
+using Fuse.Reactive;
 
-namespace Fuse.Reactive
+namespace Fuse.Scripting.JavaScript
 {
 	class TreeArray : ArrayMirror, IObservableArray
 	{
 		internal TreeArray(Scripting.Array arr): base(arr) {}
 
-		public IDisposable Subscribe(IObserver observer)
+		public IDisposable Subscribe(Fuse.Reactive.IObserver observer)
 		{
 			return new ArraySubscription(this, observer);
 		}
 
 		internal class ArraySubscription: Subscription, ISubscription
 		{
-			readonly IObserver _observer;
+			readonly Fuse.Reactive.IObserver _observer;
 
-			public ArraySubscription(ArrayMirror am, IObserver observer): base(am)
+			public ArraySubscription(ArrayMirror am, Fuse.Reactive.IObserver observer): base(am)
 			{
 				_observer = observer;
 			}
@@ -100,7 +101,7 @@ namespace Fuse.Reactive
 			{
 				var ta = SubscriptionSubject as TreeArray;
 
-				var worker = JavaScript.Worker;
+				var worker = Fuse.Reactive.JavaScript.Worker;
 				var replaceAll = new ReplaceAllOperation(worker, (Scripting.Array)ta.Raw, values);
 				worker.Invoke(replaceAll.Perform);
 

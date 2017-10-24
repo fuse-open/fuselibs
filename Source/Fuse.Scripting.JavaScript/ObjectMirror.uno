@@ -1,7 +1,7 @@
 using Uno.Collections;
 using Uno;
 
-namespace Fuse.Scripting
+namespace Fuse.Scripting.JavaScript
 {
 	class ObjectMirror : ValueMirror, IObject
 	{

@@ -2,7 +2,7 @@ using Uno;
 using Uno.UX;
 using Uno.Collections;
 
-namespace Fuse.Scripting
+namespace Fuse.Scripting.JavaScript
 {
 	/** Manages the lifetime of a UX class instance's representation in JavaScript modules
 		within the class, dealing with disposal of resources when the related node is unrooted.
@@ -42,7 +42,7 @@ namespace Fuse.Scripting
 		}
 
 		/** Called on JS thread when the node instance must be rooted. */
-		public void EnsureRooted(Context context)
+		public void EnsureRooted(Scripting.Context context)
 		{
 			if (_self != null) return;
 

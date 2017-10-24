@@ -11,8 +11,6 @@ namespace Fuse.Scripting
 	{
 		IDispatcher Dispatcher { get; }
 		void Invoke(Uno.Action<Scripting.Context> action);
-		object Unwrap(object obj);
-		object Wrap(object obj);
 	}
 
 	public abstract class Context: Uno.IDisposable
@@ -65,8 +63,8 @@ namespace Fuse.Scripting
 
 		public abstract IThreadWorker ThreadWorker { get; }
 
-		public object Wrap(object obj) { return ThreadWorker.Wrap(obj); }
-		public object Unwrap(object obj) { return ThreadWorker.Unwrap(obj); }
+		public abstract object Wrap(object obj);
+		public abstract object Unwrap(object obj);
 
 		public IDispatcher Dispatcher { get { return ThreadWorker.Dispatcher; } }
 

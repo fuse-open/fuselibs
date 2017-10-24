@@ -1,8 +1,9 @@
 using Uno;
 using Uno.Collections;
 using Fuse.Scripting;
+using Fuse.Reactive;
 
-namespace Fuse.Reactive
+namespace Fuse.Scripting.JavaScript
 {
 	class TreeObservable: TreeObject, IMirror
 	{
@@ -23,7 +24,7 @@ namespace Fuse.Reactive
 
 		public override void Unsubscribe()
 		{
-			JavaScript.Worker.Invoke(NullifyCallbacks);
+			Fuse.Reactive.JavaScript.Worker.Invoke(NullifyCallbacks);
 		}
 
 		void NullifyCallbacks()
@@ -79,7 +80,7 @@ namespace Fuse.Reactive
 
 		long GetId(object obj)
 		{
-			var func = (Function)JavaScript.Worker.Context.Evaluate("(get node ID)", "(function(obj) { if (obj instanceof Object && typeof obj.__fuse_id  !== 'undefined') return obj.__fuse_id; return -1 })");
+			var func = (Function)Fuse.Reactive.JavaScript.Worker.Context.Evaluate("(get node ID)", "(function(obj) { if (obj instanceof Object && typeof obj.__fuse_id  !== 'undefined') return obj.__fuse_id; return -1 })");
 			var res = func.Call(obj);
 			if (res is double) return (long)(double)res;
 			if (res is int) return (long)(int)res;

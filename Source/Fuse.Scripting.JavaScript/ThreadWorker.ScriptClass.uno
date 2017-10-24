@@ -3,7 +3,7 @@ using Uno.UX;
 using Uno.Collections;
 using Fuse.Scripting;
 
-namespace Fuse.Scripting
+namespace Fuse.Scripting.JavaScript
 {
 	partial class ThreadWorker
 	{
@@ -148,7 +148,7 @@ namespace Fuse.Scripting
 				definer.Call(cl, (Callback)GetObservable);
 			}
 
-			object GetObservable(Context context, object[] args)
+			object GetObservable(Scripting.Context context, object[] args)
 			{
 				var obj = ThreadWorker.Wrap(args[0]) as PropertyObject;
 				var ci = _worker.GetClassInstance(obj, null);
@@ -173,7 +173,7 @@ namespace Fuse.Scripting
 
 			static object[] _emptyArgs = new object[0];
 
-			object Callback(Context context, object[] args)
+			object Callback(Scripting.Context context, object[] args)
 			{
 				var self = ((External)args[0]).Object;
 				var realArgs = CopyArgs((Scripting.Array)args[1]);

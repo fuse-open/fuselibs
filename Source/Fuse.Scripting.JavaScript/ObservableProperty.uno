@@ -2,16 +2,16 @@ using Uno.UX;
 using Uno.Collections;
 using Fuse.Reactive;
 
-namespace Fuse.Scripting
+namespace Fuse.Scripting.JavaScript
 {
 	class LazyObservableProperty: ObservableProperty
 	{
-		public LazyObservableProperty(ThreadWorker w, Scripting.Object obj, Uno.UX.Property p, Context c): base(w, obj, p)
+		public LazyObservableProperty(ThreadWorker w, Scripting.Object obj, Uno.UX.Property p, Scripting.Context c): base(w, obj, p)
 		{
 			c.ObjectDefineProperty(obj, p.Name.ToString(), Get);
 		}
 
-		object Get(Context context, object[] args)
+		object Get(Scripting.Context context, object[] args)
 		{
 			return _worker.Unwrap(GetObservable());
 		}

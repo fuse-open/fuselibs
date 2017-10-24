@@ -43,7 +43,7 @@ namespace Fuse.Triggers
 				
 				if (args.Length == 0 || args.Length > 2)
 					throw new Error("new BusyTask() - must provide 1 or 2 arguments");
-				var n = _c.ThreadWorker.Wrap(args[0]) as Node;
+				var n = _c.Wrap(args[0]) as Node;
 				if (n == null) throw new Error("new BusyTask() - argument must be an UX node");
 				
 				var act = BusyTaskActivity.Processing;
