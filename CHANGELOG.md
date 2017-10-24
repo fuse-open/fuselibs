@@ -1,5 +1,11 @@
 # Unreleased
 
+## Fuse.Reactive
+- Added `OnLostData` to the `IListener` interface. This is needed to properly deal with changes in context in
+ Preview, Model, and some JavaScript situations.
+- Added `OnLostData` to the `InnerListener` class. Implementations should deal with this scenario.
+- Changed null coalesce `??` to use the default when the left operand doesn't exist, not just when it's null
+
 ## Fuse.Marshal
 - `ToDouble` replaced with `TryToDouble` for naming consistency (old names remain as deprecated)
 
@@ -10,11 +16,6 @@
 
 ### Scripting.Context
 - Invoke now takes an `Action<Scripting.Context>`. This is the first step in refactoring our scripting layer to make sure code does not evaluate JS on the wrong thread
-## Fuse.Reactive
-- Added `OnLostData` to the `IListener` interface. This is needed to properly deal with changes in context in
- Preview, Model, and some JavaScript situations.
-- Added `OnLostData` to the `InnerListener` class. Implementations should deal with this scenario.
-- Changed null coalesce `??` to use the default when the left operand doesn't exist, not just when it's null
 
 ## Scripting.Context
 - Invoke now takes an Action<Scripting.Context>. This is the first step in refactoring our scripting layer to make sure code does not evaluate JS on the wrong thread
