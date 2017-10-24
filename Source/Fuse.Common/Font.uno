@@ -44,6 +44,12 @@ namespace Fuse
 
 		internal Font(List<FontFaceDescriptor> descriptors)
 		{
+			if (descriptors == null)
+				throw new ArgumentNullException(nameof(descriptors));
+
+			if (descriptors.Count < 1)
+				throw new Exception("font contains no descriptors!");
+
 			Descriptors = descriptors;
 		}
 
