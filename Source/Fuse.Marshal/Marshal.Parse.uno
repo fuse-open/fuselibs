@@ -36,7 +36,7 @@ namespace Fuse
 			if (s == "false") return false;
 
 			if (s.Contains("#"))
-				return Uno.Color.FromHex(s);
+				return Uno.Color.Parse(s);
 
 			var unit = Unit.Unspecified;
 			if (s.EndsWith("px"))
