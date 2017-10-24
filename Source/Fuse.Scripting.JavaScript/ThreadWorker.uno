@@ -17,14 +17,6 @@ namespace Fuse.Scripting
 		IDispatcher IThreadWorker.Dispatcher { get { return this; } }
 		public Function Observable { get { return FuseJS.Observable; } }
 
-		internal static Context CreateContext(IThreadWorker worker)
-		{
-			if defined(USE_JAVASCRIPTCORE) return new Fuse.Scripting.JavaScriptCore.Context();
-			else if defined(USE_V8) return new Fuse.Scripting.V8.Context();
-			else if defined(USE_DUKTAPE) return new Fuse.Scripting.Duktape.Context();
-			else throw new Exception("No JavaScript VM available for this platform");
-		}
-
 		static Scripting.Context _context;
 		public Scripting.Context Context { get { return _context; } }
 
@@ -117,7 +109,7 @@ namespace Fuse.Scripting
 			{
 				if (_context == null)
 				{
-					_context = CreateContext(this);
+					_context = Fuse.Scripting.JavaScript.Context.Create();
 					if (_context == null)
 					{
 						throw new Exception("Could not create script context");

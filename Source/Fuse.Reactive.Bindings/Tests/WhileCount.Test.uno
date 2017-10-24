@@ -4,6 +4,7 @@ using Uno.Testing;
 
 using Fuse.Controls;
 using Fuse.Scripting;
+using Fuse.Scripting.JavaScript;
 
 using FuseTest;
 
