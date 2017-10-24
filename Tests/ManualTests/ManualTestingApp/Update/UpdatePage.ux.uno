@@ -18,24 +18,32 @@ public partial class UpdatePage
 	{
 		CheckFrame();
 		var app = AppBase.Current;
-		var need = app.NeedsRedraw;
+		var validFrame = app.RootViewport.ValidFrameCount;
+		bool noDraw = validFrame > 30;
 		
-		if (!need)
-		{	
-			//the counting ensures that we have render stability, not just one lucky frame
-			_idleCount++;
-			
-			if (_idleCount > 30)
+		// `NeedsRedraw` is not used on the GraphicsView drivers
+		if defined(OSX||DotNet)
+		{
+			var need = app.NeedsRedraw;
+		
+			if (!need)
+			{	
+				//the counting ensures that we have render stability, not just one lucky frame
+				_idleCount++;
+				noDraw = _idleCount > 30;
+			}
+			else
 			{
-				UpdateManager.RemoveAction(WaitNoDraw);
-				_waitCount = 10;
-				UpdateManager.PerformNextFrame(WaitDone);
-				stepB.Value = true;
+				_idleCount = 0;
 			}
 		}
-		else
+
+		if (noDraw)
 		{
-			_idleCount = 0;
+			UpdateManager.RemoveAction(WaitNoDraw);
+			_waitCount = 10;
+			UpdateManager.PerformNextFrame(WaitDone);
+			stepB.Value = true;
 		}
 	}
 
@@ -61,16 +69,23 @@ public partial class UpdatePage
 		// the counting here is to ensure onces (PErformNextFrame) also work as intended
 		if (_waitCount > 0)
 		{
-			if (AppBase.Current.NeedsRedraw)
-			{
-				_idleCount = 0;
-				UpdateManager.AddAction(WaitNoDraw);
-			}
-			
 			UpdateManager.PerformNextFrame(WaitDone);
 			return;
 		}
 		
+		bool waitAgain = AppBase.Current.RootViewport.ValidFrameCount < 2;
+		if defined(OSX||DotNet)
+		{
+			waitAgain = waitAgain || AppBase.Current.NeedsRedraw;
+		}
+
+		if (waitAgain)
+		{
+			_idleCount = 0;
+			UpdateManager.AddAction(WaitNoDraw);
+			return;
+		}
+			
 		stepB.Value = true;
 		UpdateManager.PerformNextFrame(PingCircle);
 	}
