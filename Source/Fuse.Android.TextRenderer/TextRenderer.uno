@@ -4,6 +4,7 @@ using OpenGL;
 using Fuse.Elements;
 using Fuse.Controls;
 using Fuse.Controls.Graphics;
+using Fuse.Drawing;
 using Fuse.Resources;
 using Uno.Compiler.ExportTargetInterop;
 
@@ -338,44 +339,13 @@ namespace Fuse.Android
 			}*/
 			
 			var m = dc.GetLocalToClipTransform(where);
-			Blitter.Singleton.Blit(_texture, position, pointSize, m);
+			Blitter.Singleton.Blit(_texture, new Rect(position, pointSize), m);
 		}
 
 		public void Draw(DrawContext dc, Visual where)
 		{
 			PrepareDraw();
 			OnBitmapDraw(dc,where,_arrangePosition,_arrangeSize);
-		}
-	}
-
-	class Blitter
-	{
-		internal static Blitter Singleton = new Blitter();
-
-		public void Blit(texture2D vt, float2 pos, float2 size, float4x4 localToClipTransform)
-		{
-			draw
-			{
-				apply Fuse.Drawing.PreMultipliedAlphaCompositing;
-
-				CullFace : PolygonFace.None;
-				DepthTestEnabled: false;
-				float2[] verts: readonly new float2[] {
-
-					float2(0,0),
-					float2(1,0),
-					float2(1,1),
-					float2(0,0),
-					float2(1,1),
-					float2(0,1)
-				};
-
-				float2 v: vertex_attrib(verts);
-				float2 LocalVertex: pos + v * size;
-				ClipPosition: Vector.Transform(LocalVertex, localToClipTransform);
-				float2 TexCoord: v;
-				PixelColor: sample(vt, TexCoord, SamplerState.LinearClamp);
-			};
 		}
 	}
 }

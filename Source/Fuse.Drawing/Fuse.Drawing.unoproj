@@ -7,8 +7,7 @@
     "ProjectUrl": "https://fusetools.com"
   },
   "InternalsVisibleTo": [
-    "Fuse.Reactive",
-    "Fuse.Scripting",
+    "Fuse.Android.TextRenderer"
   ],
   "Packages": [
     "Uno.Collections"
