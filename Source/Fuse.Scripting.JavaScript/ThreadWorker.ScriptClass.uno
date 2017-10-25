@@ -152,7 +152,7 @@ namespace Fuse.Scripting.JavaScript
 			{
 				var obj = ThreadWorker.Wrap(args[0]) as PropertyObject;
 				var ci = _worker.GetClassInstance(obj, null);
-				return ci.GetPropertyObservable(_p.GetProperty(obj));
+				return ci.GetPropertyObservable(context, _p.GetProperty(obj));
 			}
 		}
 

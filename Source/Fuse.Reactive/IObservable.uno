@@ -136,8 +136,15 @@ namespace Fuse.Reactive
 		void SetExclusive(object newValue);
 		/** Replaces the `IObservableArray` with the given values, without notifying this subscription of the change. */
 		void ReplaceAllExclusive(IArray values);
+
+		/** Clears the contents of the `IObservableArray` without notifying this subscription of the change. Guareentees this was called from language thread */
+		void ClearExclusive(Scripting.Context context);
+		/** Replaces the `IObservableArray` with a list of length 1, containting the given object, without notifying this subscription of the change. Guareentees this was called from language thread  */
+		void SetExclusive(Scripting.Context context, object newValue);
+		/** Replaces the `IObservableArray` with the given values, without notifying this subscription of the change. Guareentees this was called from language thread  */
+		void ReplaceAllExclusive(Scripting.Context context, IArray values);
 	}
-	
+
 	/** Represents an object that can receive change notifications for an `IObservableArray`. */
 	interface IObserver
 	{

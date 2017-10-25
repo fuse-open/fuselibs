@@ -192,11 +192,12 @@ namespace Fuse.Reactive.Test
 
 		static Scripting.Object GetObservableForProperty(Visual e, string propName)
 		{
+			var context = JavaScript.Worker._context;
 			var ci = JavaScript.Worker.GetExistingClassInstance(e);
 			Assert.IsTrue(ci != null);
 			var foo = ci.GetObservableProperty(propName);
 			Assert.IsTrue(foo != null);
-			return (Scripting.Object)foo.GetObservable().Raw;
+			return (Scripting.Object)foo.GetObservable(context).Raw;
 		}
 
 		[Test]

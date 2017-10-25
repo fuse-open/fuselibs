@@ -78,7 +78,7 @@ namespace Fuse.Scripting.JavaScript
 
 			class SetExclusiveOperation
 			{
-				public SetExclusiveOperation(ThreadWorker worker, Scripting.Object obj, object newValue, int origin, DiagnosticSubject diagnosticSubject)
+				public SetExclusiveOperation(IThreadWorker worker, Scripting.Object obj, object newValue, int origin, DiagnosticSubject diagnosticSubject)
 				{
 					Worker = worker;
 					Object = obj;
@@ -87,7 +87,7 @@ namespace Fuse.Scripting.JavaScript
 					DiagnosticSubject = diagnosticSubject;
 				}
 
-				readonly ThreadWorker Worker;
+				readonly IThreadWorker Worker;
 				readonly Scripting.Object Object;
 				readonly object NewValue;
 				readonly int Origin;
@@ -97,7 +97,7 @@ namespace Fuse.Scripting.JavaScript
 				{
 					try
 					{
-						var newValue = Worker.Unwrap(NewValue);
+						var newValue = context.Unwrap(NewValue);
 						Object.CallMethod("setValueWithOrigin", newValue, Origin);
 					}
 					catch (Scripting.ScriptException ex)
@@ -107,6 +107,20 @@ namespace Fuse.Scripting.JavaScript
 						DiagnosticSubject.SetDiagnostic(ex);
 					}
 				}
+			}
+
+			public void SetExclusive(Scripting.Context context, object newValue)
+			{
+				ClearDiagnostic();
+
+				if (_om.Object == null)
+				{
+					Fuse.Diagnostics.InternalError( "Unexpected null object", this );
+					return;
+				}
+
+				var op = new SetExclusiveOperation(_om._worker, _om.Object, newValue, _origin, this);
+				op.Perform(context);
 			}
 
 			public void SetExclusive(object newValue)
@@ -120,15 +134,12 @@ namespace Fuse.Scripting.JavaScript
 				}
 
 				var op = new SetExclusiveOperation(_om._worker, _om.Object, newValue, _origin, this);
-				if (_om._worker.CanEvaluate)
-					op.Perform(null);
-				else
-					_om._worker.Invoke(op.Perform);
+				_om._worker.Invoke(op.Perform);
 			}
 
 			class ReplaceAllExclusiveOperation
 			{
-				public ReplaceAllExclusiveOperation(ThreadWorker worker, Scripting.Object obj, object[] newValues, int origin)
+				public ReplaceAllExclusiveOperation(IThreadWorker worker, Scripting.Object obj, object[] newValues, int origin)
 				{
 					Worker = worker;
 					Object = obj;
@@ -136,7 +147,7 @@ namespace Fuse.Scripting.JavaScript
 					Origin = origin;
 				}
 
-				readonly ThreadWorker Worker;
+				readonly IThreadWorker Worker;
 				Scripting.Object Object;
 				readonly object[] NewValues;
 				readonly int Origin;
@@ -145,9 +156,9 @@ namespace Fuse.Scripting.JavaScript
 				public void Perform(Scripting.Context context)
 				{
 					for (int i = 0; i < NewValues.Length; i++)
-						NewValues[i] = Worker.Unwrap(NewValues[i]);
+						NewValues[i] = context.Unwrap(NewValues[i]);
 
-					Object.CallMethod("replaceAllWithOrigin", Worker.Context.NewArray(NewValues), Origin);
+					Object.CallMethod("replaceAllWithOrigin", context.NewArray(NewValues), Origin);
 				}
 			}
 
@@ -158,10 +169,17 @@ namespace Fuse.Scripting.JavaScript
 					arr[i] = newValues[i];
 
 				var op = new ReplaceAllExclusiveOperation(_om._worker, _om.Object, arr, _origin);
-				if (_om._worker.CanEvaluate)
-					op.Perform(null);
-				else
-					_om._worker.Invoke(op.Perform);
+				_om._worker.Invoke(op.Perform);
+			}
+
+			public void ReplaceAllExclusive(Scripting.Context context, IArray newValues)
+			{
+				var arr = new object[newValues.Length];
+				for (int i = 0; i < arr.Length; i++)
+					arr[i] = newValues[i];
+
+				var op = new ReplaceAllExclusiveOperation(_om._worker, _om.Object, arr, _origin);
+				op.Perform(context);
 			}
 
 			class ClearExclusiveOperation
@@ -182,13 +200,16 @@ namespace Fuse.Scripting.JavaScript
 				}
 			}
 
+			public void ClearExclusive(Scripting.Context context)
+			{
+				var op = new ClearExclusiveOperation(_om.Object, _origin);
+				op.Perform(context);
+			}
+
 			public void ClearExclusive()
 			{
 				var op = new ClearExclusiveOperation(_om.Object, _origin);
-				if (_om._worker.CanEvaluate)
-					op.Perform(null);
-				else
-					_om._worker.Invoke(op.Perform);
+				_om._worker.Invoke(op.Perform);
 			}
 
 			/**
@@ -219,7 +240,7 @@ namespace Fuse.Scripting.JavaScript
 			return Subscribe(observer);
 		}
 
-		readonly ThreadWorker _worker;
+		readonly IThreadWorker _worker;
 
 		Scripting.Object _observable;
 		internal Scripting.Object Object { get { return _observable; } }

@@ -78,7 +78,7 @@ namespace Fuse.Scripting.JavaScript
 			_worker.Invoke(Unroot);
 		}
 
-		internal Scripting.Object GetPropertyObservable(Uno.UX.Property p)
+		internal Scripting.Object GetPropertyObservable(Scripting.Context context, Uno.UX.Property p)
 		{
 			EnsureHasProperties();
 
@@ -88,7 +88,7 @@ namespace Fuse.Scripting.JavaScript
 				op = new ObservableProperty(_worker, _self, p);
 				_properties.Add(p, op);
 			}
-			return op.GetObservable().Object;
+			return op.GetObservable(context).Object;
 		}
 
 		void Unroot(Scripting.Context context)

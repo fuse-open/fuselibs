@@ -62,28 +62,24 @@ namespace Fuse.Scripting.JavaScript
 
 			class ReplaceAllOperation
 			{
-				ThreadWorker _worker;
 				Scripting.Array _target;
 				IArray _newValues;
 
-				public ReplaceAllOperation(ThreadWorker worker, Scripting.Array target, IArray newValues)
+				public ReplaceAllOperation(Scripting.Array target, IArray newValues)
 				{
-					_worker = worker;
 					_target = target;
 					_newValues = newValues;
 				}
 
-				public void Perform()
+				public void Perform(Scripting.Context context)
 				{
-					var ctx = _worker.Context;
-
 					var nv = new object[_newValues.Length];
 					for (var i = 0; i < _newValues.Length; ++i) {
-						nv[i] = _worker.Unwrap(_newValues[i]);
+						nv[i] = context.Unwrap(_newValues[i]);
 					}
-					var newValuesJs = ctx.NewArray(nv);
+					var newValuesJs = context.NewArray(nv);
 
-					var replaceAllFn = (Scripting.Function) ctx.Evaluate("replaceAll",
+					var replaceAllFn = (Scripting.Function) context.Evaluate("replaceAll",
 						"(function(array, values) {" +
 							"if ('__fuse_replaceAll' in array) array.__fuse_replaceAll(values);" +
 							"else {"+
@@ -97,12 +93,23 @@ namespace Fuse.Scripting.JavaScript
 			}
 
 
+			public void ReplaceAllExclusive(Scripting.Context context, IArray values)
+			{
+				var ta = SubscriptionSubject as TreeArray;
+
+				var worker = Fuse.Reactive.JavaScript.Worker;
+				var replaceAll = new ReplaceAllOperation((Scripting.Array)ta.Raw, values);
+				replaceAll.Perform(context);
+
+				ta.ReplaceAll(values, this);
+			}
+
 			public void ReplaceAllExclusive(IArray values)
 			{
 				var ta = SubscriptionSubject as TreeArray;
 
 				var worker = Fuse.Reactive.JavaScript.Worker;
-				var replaceAll = new ReplaceAllOperation(worker, (Scripting.Array)ta.Raw, values);
+				var replaceAll = new ReplaceAllOperation((Scripting.Array)ta.Raw, values);
 				worker.Invoke(replaceAll.Perform);
 
 				ta.ReplaceAll(values, this);
@@ -113,9 +120,19 @@ namespace Fuse.Scripting.JavaScript
 				ReplaceAllExclusive(new SimpleArray());
 			}
 
+			public void ClearExclusive(Scripting.Context context)
+			{
+				ReplaceAllExclusive(context, new SimpleArray());
+			}
+
 			public void SetExclusive(object newValue)
 			{
 				ReplaceAllExclusive(new SimpleArray(newValue));
+			}
+
+			public void SetExclusive(Scripting.Context context, object newValue)
+			{
+				ReplaceAllExclusive(context, new SimpleArray(newValue));
 			}
 
 			class SimpleArray : IArray

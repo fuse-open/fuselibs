@@ -13,7 +13,7 @@ namespace Fuse.Scripting.JavaScript
 
 		object Get(Scripting.Context context, object[] args)
 		{
-			return context.Unwrap(GetObservable());
+			return context.Unwrap(GetObservable(context));
 		}
 	}
 
@@ -40,21 +40,21 @@ namespace Fuse.Scripting.JavaScript
 
 		Observable _observable;
 
-		internal Observable GetObservable()
+		internal Observable GetObservable(Scripting.Context context)
 		{
 			if (_observable == null)
 			{
 				_observable = Observable.Create(_worker);	
-				Subscribe();
+				Subscribe(context);
 			}
 			return _observable;
 		}
 
 		ISubscription _subscription;
-		void Subscribe()
+		void Subscribe(Scripting.Context context)
 		{
 			_subscription = _observable.Subscribe(this);
-			PushValue(_property.GetAsObject());
+			PushValue(context, _property.GetAsObject());
 			_property.AddListener(this);
 		}
 
@@ -127,10 +127,10 @@ namespace Fuse.Scripting.JavaScript
 
 		class PushCapture
 		{
-			readonly Uno.Action<object> _push;
+			readonly Uno.Action<Scripting.Context,object> _push;
 			readonly object _arg;
 
-			public PushCapture(Uno.Action<object> push, object arg)
+			public PushCapture(Uno.Action<Scripting.Context,object> push, object arg)
 			{
 				_push = push;
 				_arg = arg;
@@ -138,19 +138,19 @@ namespace Fuse.Scripting.JavaScript
 
 			public void Run(Scripting.Context context)
 			{
-				_push(_arg);
+				_push(context, _arg);
 			}
 		}
 
-		void PushValue(object val)
+		void PushValue(Scripting.Context context, object val)
 		{
 			if (val != null)
 			{
-				_subscription.SetExclusive(val);	
+				_subscription.SetExclusive(context, val);
 			}
 			else
 			{
-				_subscription.ClearExclusive();
+				_subscription.ClearExclusive(context);
 			}
 		}
 	}
