@@ -179,7 +179,17 @@ namespace Fuse.Controls
 		{
 			if (IsFrozen && HasFreezePrepared)
 			{
-				FreezeDrawable.Singleton.Draw(dc, this, Opacity, Scale, _frozenRenderBounds, _frozenBuffer);
+				var rect = Rect.Scale(_frozenRenderBounds.FlatRect, Scale);
+				Blitter.Singleton.Blit(
+					_frozenBuffer.ColorBuffer,
+					rect,
+					dc.GetLocalToClipTransform(this),
+					Opacity,
+					true);
+
+					if defined(FUSELIBS_DEBUG_DRAW_RECTS)
+						DrawRectVisualizer.Capture(rect.Minimum, rect.Size, WorldTransform, dc);
+
 				return true;
 			}
 
@@ -198,43 +208,21 @@ namespace Fuse.Controls
 				return;
 			}
 
-			FreezeDrawable.Singleton.Draw(dc, this, Opacity, Scale, _frozenRenderBounds, _frozenBuffer);
+			var rect = Rect.Scale(_frozenRenderBounds.FlatRect, Scale);
+			Blitter.Singleton.Blit(
+				_frozenBuffer.ColorBuffer,
+				rect,
+				dc.GetLocalToClipTransform(this),
+				Opacity,
+				true);
+
+				if defined(FUSELIBS_DEBUG_DRAW_RECTS)
+					DrawRectVisualizer.Capture(rect.Minimum, rect.Size, WorldTransform, dc);
 		}
 		
 		internal override bool IsLayoutRoot
 		{
 			get { return HasFreezePrepared; }
-		}
-	}
-	
-	class FreezeDrawable
-	{
-		static public FreezeDrawable Singleton = new FreezeDrawable();
-		
-		public void Draw(DrawContext dc, Panel panel, float Opacity, float2 scale,
-			VisualBounds renderBounds, framebuffer buffer)
-		{
-			draw 
-			{
-				apply Fuse.Drawing.Planar.Image;
-				apply Fuse.Drawing.PreMultipliedAlphaCompositing;
-				
-				DrawContext: dc;
-				Visual: panel;
-				Size: renderBounds.Size.XY * scale;
-				Position: renderBounds.AxisMin.XY * scale;
-				Texture: buffer.ColorBuffer;
-				Invert: true;
-				
-				PixelColor: prev * Opacity;
-			};
-
-			if defined(FUSELIBS_DEBUG_DRAW_RECTS)
-			{
-				float2 position = renderBounds.AxisMin.XY * scale;
-				float2 size = renderBounds.Size.XY * scale;
-				DrawRectVisualizer.Capture(position, size, panel.WorldTransform, dc);
-			}
 		}
 	}
 }
