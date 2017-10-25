@@ -1,0 +1,3 @@
+<Panel ux:Class="UX.Freeze.Opacity" Color="#f00">
+	<Panel ux:Name="FreezeMe" Color="#0f0" Opacity="0.5" />
+</Panel>
