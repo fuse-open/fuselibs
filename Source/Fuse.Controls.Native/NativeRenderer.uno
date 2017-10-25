@@ -70,9 +70,10 @@ namespace Fuse.Controls.Native
 			}
 			Blitter.Singleton.Blit(
 				new texture2D(_textureHandle, pixelSize, 1, Format.RGBA8888),
-				position,
-				size,
-				localToClipTransform);
+				new Rect(position, size),
+				localToClipTransform,
+				1.0f,
+				defined(iOS));
 		}
 
 		public void Invalidate()
@@ -236,40 +237,5 @@ namespace Fuse.Controls.Native
 			((android.graphics.Bitmap)bitmap).recycle();
 		@}
 
-	}
-
-	extern(Android || iOS) class Blitter
-	{
-		internal static Blitter Singleton = new Blitter();
-
-		extern(iOS) readonly bool _ios = true;
-		extern(Android) readonly bool _ios = false;
-
-		public void Blit(texture2D vt, float2 pos, float2 size, float4x4 localToClipTransform)
-		{
-			draw
-			{
-				apply Fuse.Drawing.PreMultipliedAlphaCompositing;
-
-				CullFace : PolygonFace.None;
-				DepthTestEnabled: false;
-				float2[] verts: readonly new float2[] {
-
-					float2(0,0),
-					float2(1,0),
-					float2(1,1),
-					float2(0,0),
-					float2(1,1),
-					float2(0,1)
-				};
-
-				float2 v: vertex_attrib(verts);
-				float2 LocalVertex: pos + v * size;
-				ClipPosition: Vector.Transform(LocalVertex, localToClipTransform);
-				float2 TexCoord: v;
-
-				PixelColor: _ios ? sample(vt, float2(TexCoord.X, 1.0f - TexCoord.Y)) : sample(vt, TexCoord);
-			};
-		}
 	}
 }
