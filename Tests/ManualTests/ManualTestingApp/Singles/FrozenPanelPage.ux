@@ -1,0 +1,31 @@
+<Page Title="FrozenPanel" ux:Class="FrozenPanelPage">
+	<InfoStack ux:Key="Info">
+		<p>This page tests freezing animated panels. Try toggling the switches, and make sure they stop updating. Their animation should resume as if it had been rotating all along when the switch is turned back on, not where they left off.</p>
+	</InfoStack>
+
+	<!-- This needs to be in a separate class because of #632 -->
+	<Panel ux:Class="FreezePanel">
+		<StackPanel Orientation="Horizontal" ItemSpacing="5" Margin="5">
+			<Each ux:Name="myEach" Count="4">
+				<Rectangle Width="50" Height="50" CornerRadius="5" Color="#0f08">
+					<WhileFalse>
+						<Spin Frequency="0.1 * pow(1 + index(myEach), 2)" />
+					</WhileFalse>
+				</Rectangle>
+			</Each>
+		</StackPanel>
+	</Panel>
+
+	<ScrollView>
+		<StackPanel ItemSpacing="5" Margin="5">
+			<Each Count="3">
+				<Rectangle CornerRadius="5" Color="#CCC">
+					<StackPanel Orientation="Horizontal" ItemSpacing="5" Margin="5">
+						<Switch ux:Name="shouldSwitch" />
+						<FreezePanel IsFrozen="{ReadProperty shouldSwitch.Value}" Color="#f0f8" />
+					</StackPanel>
+				</Rectangle>
+			</Each>
+		</StackPanel>
+	</ScrollView>
+</Page>
