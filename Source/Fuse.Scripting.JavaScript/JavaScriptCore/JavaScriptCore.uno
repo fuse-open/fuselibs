@@ -491,7 +491,7 @@ namespace Fuse.Scripting.JavaScriptCore
 		@}
 	}
 
-	[Require("Source.Include", "JSTypedArrayInclude.h")]
+	[Require("Source.Include", "JavaScriptCore/JSTypedArrayInclude.h")]
 	[Require("Xcode.Framework", "JavaScriptCore")]
 	extern(USE_JAVASCRIPTCORE) static class JSTypedArray
 	{
