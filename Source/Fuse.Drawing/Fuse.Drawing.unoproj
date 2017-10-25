@@ -9,7 +9,8 @@
   "InternalsVisibleTo": [
     "Fuse.Android.TextRenderer",
     "Fuse.Controls.Native",
-    "Fuse.Controls.Panels"
+    "Fuse.Controls.Panels",
+    "Fuse.Controls.Primitives"
   ],
   "Packages": [
     "Uno.Collections"
