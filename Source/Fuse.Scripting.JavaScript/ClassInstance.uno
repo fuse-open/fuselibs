@@ -49,7 +49,7 @@ namespace Fuse.Scripting.JavaScript
 			var n = _obj as INotifyUnrooted;
 			if (n != null) n.Unrooted += DispatchUnroot;
 
-			_self = _worker.Unwrap(_obj) as Scripting.Object;
+			_self = context.Unwrap(_obj) as Scripting.Object;
 
 			if (_properties == null)
 			{

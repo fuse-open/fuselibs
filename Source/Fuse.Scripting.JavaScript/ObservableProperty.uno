@@ -13,7 +13,7 @@ namespace Fuse.Scripting.JavaScript
 
 		object Get(Scripting.Context context, object[] args)
 		{
-			return _worker.Unwrap(GetObservable());
+			return context.Unwrap(GetObservable());
 		}
 	}
 

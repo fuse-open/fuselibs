@@ -17,7 +17,7 @@ namespace Fuse.Scripting.JavaScript
 		IDispatcher IThreadWorker.Dispatcher { get { return this; } }
 		public Function Observable { get { return FuseJS.Observable; } }
 
-		static Scripting.Context _context;
+		internal JSContext _context;
 		public Scripting.Context Context { get { return _context; } }
 
 		static Fuse.Reactive.FuseJS.Builtins _fuseJS;
