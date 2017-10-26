@@ -8,6 +8,7 @@
   },
   "InternalsVisibleTo": [
     "Fuse.Android.TextRenderer",
+    "Fuse.Controls",
     "Fuse.Controls.Native",
     "Fuse.Controls.Panels",
     "Fuse.Controls.Primitives"
