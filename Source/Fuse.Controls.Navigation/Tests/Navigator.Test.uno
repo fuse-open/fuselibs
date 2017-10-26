@@ -386,9 +386,13 @@ namespace Fuse.Navigation.Test
 				root.StepFrame(5); //stabilize navigator animations
 				
 				//don't swipe far enough
+				Assert.AreEqual( NavigationState.Stable, ((INavigation)p.Nav).State );
 				var two = p.Nav.Active;
 				root.PointerSwipe(float2(100,100), float2(150,100), 50); //too slow to trigger velocity
+				//it's debatable that perhaps an incomplete swipe should change to "Transition" mode instead
+				Assert.AreEqual( NavigationState.Seek, ((INavigation)p.Nav).State );
 				root.StepFrame(5);
+				Assert.AreEqual( NavigationState.Stable, ((INavigation)p.Nav).State );
 
 				Assert.AreEqual(two, p.Nav.Active);
 				Assert.AreEqual(1, p.R.TestHistoryCount);
@@ -538,7 +542,9 @@ namespace Fuse.Navigation.Test
 			{
 				Assert.AreEqual(p.one, p.Nav.Active);
 				
+				Assert.AreEqual( NavigationState.Stable, ((INavigation)p.Nav).State );
 				p.R.Push( new Route("two") );
+				Assert.AreEqual( NavigationState.Transition, ((INavigation)p.Nav).State );
 				root.PumpDeferred();
 				
 				Assert.AreEqual(p.one, p.Nav.Active); //this need not be guaranteed I think
@@ -551,9 +557,13 @@ namespace Fuse.Navigation.Test
 				root.PumpDeferred();
 				Assert.AreEqual(p.two, p.Nav.Active);
 				Assert.AreEqual(TriggerPlayState.Backward, p.T.PlayState);
+				Assert.AreEqual( NavigationState.Transition, ((INavigation)p.Nav).State );
 				
 				root.StepFrame(0.5f);
 				Assert.AreEqual(0.5f,TriggerProgress(p.T));
+				
+				root.StepFrame(1f);
+				Assert.AreEqual( NavigationState.Stable, ((INavigation)p.Nav).State );
 			}
 		}
 		
@@ -564,14 +574,20 @@ namespace Fuse.Navigation.Test
 			var p = new UX.Navigator.ForceDefer();
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
+				Assert.AreEqual( NavigationState.Stable, ((INavigation)p.Nav).State );
 				p.R.Push( new Route("two") );
+				Assert.AreEqual( NavigationState.Transition, ((INavigation)p.Nav).State );
 				p.R.Push( new Route("three") );
+				Assert.AreEqual( NavigationState.Transition, ((INavigation)p.Nav).State );
 				root.StepFrameJS();
 				Assert.AreEqual("yes", p.one.Title);
 				//there's no guarantee of Activate/Deactived being called anymore in this situation.
 				//we don't have a good way to test the forced change
 				//Assert.AreEqual("yes", p.two.Title);
 				Assert.AreEqual("yes", p.three.Title);
+				
+				root.StepFrame(5);
+				Assert.AreEqual( NavigationState.Stable, ((INavigation)p.Nav).State );
 			}
 		}
 		
@@ -584,12 +600,15 @@ namespace Fuse.Navigation.Test
 			{
 				var p1 = p.Nav.Active;
 				
+				Assert.AreEqual( NavigationState.Stable, ((INavigation)p.Nav).State );
 				//use internal interface for simplicity/directness in test.
 				p.R.Modify( ModifyRouteHow.PreparePush, 
 					new Route( "one", "1" ), NavigationGotoMode.Transition, "" );
+				Assert.AreEqual( NavigationState.Seek, ((INavigation)p.Nav).State );
 				p.R.PrepareProgress = 0.5;
 				p.R.Modify( ModifyRouteHow.FinishPrepared, (Route)null, NavigationGotoMode.Transition, "" );
 				root.PumpDeferred();
+				Assert.AreEqual( NavigationState.Transition, ((INavigation)p.Nav).State );
 				
 				var p2 = p.Nav.Active;
 				Assert.IsFalse( p1 == p2 );
@@ -605,6 +624,9 @@ namespace Fuse.Navigation.Test
 				Assert.IsFalse(p2 == p3); //first fix ensured only this bit...
 				Assert.IsTrue( p1 == p3 ); //not this
 				Assert.AreEqual( "2", p3.Parameter );
+				
+				root.StepFrame(5); //stabilize
+				Assert.AreEqual( NavigationState.Stable, ((INavigation)p.Nav).State );
 			}
 		}
 		

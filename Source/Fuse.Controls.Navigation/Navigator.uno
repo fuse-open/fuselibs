@@ -78,8 +78,11 @@ namespace Fuse.Controls
 		{
 			var hasTrans = _activeTransitions.Count > 0;
 			var hasDefer = _deferred != null;
+			var hasPrepared = _prepared != null;
 			var isOn = hasTrans || hasDefer;
-			Navigation.SetState(isOn ? NavigationState.Transition : NavigationState.Stable);
+			// Preparing is used with PartialPrepareGoto which implies a Seek
+			Navigation.SetState( hasPrepared ? NavigationState.Seek :
+				isOn ? NavigationState.Transition : NavigationState.Stable);
 		}
 		
 		protected override void OnRooted()
@@ -168,6 +171,7 @@ namespace Fuse.Controls
 
 			CleanupPrepared();
 			Navigation.UpdateProgress(NavigationMode.Switch);
+			UpdateNavigationState();
 		}
 		
 		struct PrepareResult
@@ -382,6 +386,7 @@ namespace Fuse.Controls
 				OnSwitched(args);
 				
 				pageVisual = _prepared.Visual;
+				UpdateNavigationState();
 				return r.Routing;
 			}
 				
