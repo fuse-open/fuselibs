@@ -58,11 +58,10 @@ namespace Fuse.Navigation
 					
 				_innerSub = new InnerSubscription(this);
 			}
-			
-			protected override void OnNewData(IExpression expr, object value)
-			{
-				//TODO: can we remove this? This subscription does not get data, inner does
-			}
+
+			//TODO: Remove these, perhaps this class doesn't need to be an InnerListener?
+			protected override void OnNewData(IExpression expr, object value) { }
+			protected override void OnLostData(IExpression expr) { }
 		}
 		
 		class InnerSubscription : Subscription

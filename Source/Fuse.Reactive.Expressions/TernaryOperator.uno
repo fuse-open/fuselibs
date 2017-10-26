@@ -34,6 +34,7 @@ namespace Fuse.Reactive
 			readonly TernaryOperator _to;
 			object _first, _second, _third;
 			bool _hasFirst, _hasSecond, _hasThird;
+			bool _hasData;
 
 			IDisposable _firstSub;
 			IDisposable _secondSub;
@@ -61,6 +62,7 @@ namespace Fuse.Reactive
 				_firstSub = _to.First.Subscribe(context, this);
 				_secondSub = _to.Second.Subscribe(context, this);
 				_thirdSub = _to.Third.Subscribe(context, this);
+				UpdateOperands(); //in case all optional
 			}
 
 			protected override void OnNewData(IExpression source, object value)
@@ -68,18 +70,34 @@ namespace Fuse.Reactive
 				if (source == _to.First) { _hasFirst = true; _first = value; }
 				if (source == _to.Second) { _hasSecond = true; _second = value; }
 				if (source == _to.Third) { _hasThird = true; _third = value; }
-
-				if ((_hasFirst || _to.IsFirstOptional) && (_hasSecond || _to.IsSecondOptional) && (_hasThird || _to.IsThirdOptional))
-					OnNewOperands(_first, _second, _third);
+				UpdateOperands();
 			}
-
-			protected virtual void OnNewOperands(object first, object second, object third)
+			
+			protected override void OnLostData(IExpression source)
+			{
+				if (source == _to.First) { _hasFirst = false; _first = null; }
+				if (source == _to.Second) { _hasSecond = false; _second = null; }
+				if (source == _to.Third) { _hasThird = false; _third = null; }
+				UpdateOperands();
+			}
+			
+			void UpdateOperands()
 			{
 				ClearDiagnostic();
-
+				
 				try
 				{
-					_listener.OnNewData(_to, _to.Compute(first, second, third));
+					if ((_hasFirst || _to.IsFirstOptional) && (_hasSecond || _to.IsSecondOptional) && 
+						(_hasThird || _to.IsThirdOptional))
+					{
+						_hasData = true;
+						_listener.OnNewData(_to, _to.Compute(_first, _second, _third));
+					}
+					else if (_hasData)
+					{
+						_hasData = false;
+						_listener.OnLostData(_to);
+					}
 				}
 				catch (MarshalException me)
 				{

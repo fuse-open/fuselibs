@@ -50,6 +50,11 @@ namespace Fuse.Reactive
 					
 				Dispose();
 			}
+			
+			void IListener.OnLostData(IExpression source)
+			{
+				//keeps old value
+			}
 		}
 	}
 }

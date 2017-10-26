@@ -97,6 +97,20 @@ namespace Fuse.Reactive
 
 				PushData();
 			}
+			
+			protected override void OnLostData(IExpression source)
+			{
+				for (var i = 0; i < _func.Arguments.Count; i++)
+				{
+					if (_func.Arguments[i] == source)
+					{
+						_arguments[i].Value = null;
+						_arguments[i].HasValue = false;
+					}
+				}
+
+				PushData();
+			}
 
 			void PushData()
 			{

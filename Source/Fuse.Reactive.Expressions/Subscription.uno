@@ -14,6 +14,7 @@ namespace Fuse.Reactive
 	public abstract class InnerListener: IDisposable, IListener
 	{
 		protected abstract void OnNewData(IExpression source, object value);
+		protected abstract void OnLostData(IExpression source);
 
 		IDisposable _diag;
 
@@ -66,6 +67,11 @@ namespace Fuse.Reactive
 			{
 				OnNewData(source, value);
 			}
+		}
+		
+		void IListener.OnLostData(IExpression source)
+		{
+			OnLostData(source);
 		}
 
 		class ObservableSubscription: ValueObserver

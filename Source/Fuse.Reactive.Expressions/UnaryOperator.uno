@@ -27,7 +27,7 @@ namespace Fuse.Reactive
 		{
 			listener.OnNewData(this, Compute(operand));
 		}
-
+		
 		protected class Subscription: InnerListener
 		{
 			UnaryOperator _uo;
@@ -64,6 +64,11 @@ namespace Fuse.Reactive
 			protected override void OnNewData(IExpression source, object value)
 			{
 				OnNewOperand(value);
+			}
+			
+			protected override void OnLostData(IExpression source)
+			{
+				_listener.OnLostData( _uo );
 			}
 
 			protected virtual void OnNewOperand(object value)

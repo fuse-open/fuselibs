@@ -47,7 +47,7 @@ namespace Fuse.Motion
 				StopSimulation();
 			}
 
-			public void OnNewData(IExpression source, object value)
+			void IListener.OnNewData(IExpression source, object value)
 			{
 				var v = Marshal.ToFloat4(value);
 
@@ -62,6 +62,13 @@ namespace Fuse.Motion
 					_sim.Destination = v;
 					StartSimulation();
 				}
+			}
+			
+			void IListener.OnLostData(IExpression source)
+			{ 
+				StopSimulation();
+				if (_listener != null)
+					_listener.OnLostData( source );
 			}
 
 			void StartSimulation()

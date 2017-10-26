@@ -52,11 +52,16 @@ namespace Fuse.Reactive
 			bool _hasIndex;
 			object _index;
 
-			public void OnNewData(IExpression source, object value)
+			void IListener.OnNewData(IExpression source, object value)
 			{
 				if (_lu == null) return;
 				if (source == _lu.Index) NewIndex(value);
 				if (source == _lu.Collection) NewCollection(value);
+			}
+			
+			void IListener.OnLostData(IExpression source)
+			{
+				_listener.OnLostData(_lu);
 			}
 
 			IDisposable _indexForwarder;

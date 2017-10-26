@@ -55,6 +55,11 @@ namespace Fuse.Reactive
 
 				_script.DispatchEvaluateIfDependenciesReady();
 			}
+			
+			void IListener.OnLostData(IExpression source)
+			{
+				//TODO: uncertain now, maybe nothing is correct (keep currently evaluated state)
+			}
 		}
 
 
