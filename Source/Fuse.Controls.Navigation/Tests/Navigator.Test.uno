@@ -648,6 +648,35 @@ namespace Fuse.Navigation.Test
 		}
 		
 		[Test]
+		public void HitTest()
+		{
+			var p = new UX.Navigator.HitTest();
+			var initMode = HitTestMode.LocalVisualAndChildren;
+			Assert.AreEqual( initMode, p.nav.HitTestMode );
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				for (int i=0; i < 3; ++i)
+				{
+					p.r.Push( new Route( "one", "1" + i ) );
+					root.PumpDeferred();
+					Assert.AreEqual( HitTestMode.LocalBounds, p.nav.HitTestMode );
+					root.StepFrame(5); //stabilize
+					Assert.AreEqual( initMode, p.nav.HitTestMode );
+					
+					p.nav.BlockInput = NavigationControlBlockInput.Never;
+					p.r.Push( new Route( "two", "2" + i) );
+					root.PumpDeferred();
+					Assert.AreEqual( initMode, p.nav.HitTestMode );
+					root.StepFrame(5);
+					Assert.AreEqual( initMode, p.nav.HitTestMode );
+					
+					p.nav.BlockInput = NavigationControlBlockInput.WhileNavigating;
+					root.PumpDeferred();
+				}
+			}
+		}
+		
+		[Test]
 		public void Pages()
 		{
 			var p = new UX.Navigator.Pages();

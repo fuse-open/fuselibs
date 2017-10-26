@@ -1,5 +1,8 @@
 # Unreleased
 
+## Navigation
+- `Navigator` blocks input to pages while trasitioning to new pages. To get the old behaviour, where input is not blocked, set `<Navigator BlockInput="Never">`.
+
 ## Fuse.Reactive
 - Added `OnLostData` to the `IListener` interface. This is needed to properly deal with changes in context in
  Preview, Model, and some JavaScript situations.
