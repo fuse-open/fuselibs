@@ -86,19 +86,19 @@ namespace Fuse.Controls
 			DrawVisualColor(dc, Color);
 		}
 
-		float4x4 TransformFromImageOrientation(ImageOrientation orientation)
+		static float4x4 TransformFromImageOrientation(ImageOrientation orientation)
 		{
 			var flip = Matrix.Scaling(1,1,1);
 			var rotation = Matrix.RotationZ(0.0f);
 
-			if (Source.Orientation.HasFlag(ImageOrientation.FlipVertical))
+			if (orientation.HasFlag(ImageOrientation.FlipVertical))
 				flip = Matrix.Scaling(1,-1,1);
 
-			if ((Source.Orientation & (int)0x03) == ImageOrientation.Rotate270)
+			if ((orientation & (int)0x03) == ImageOrientation.Rotate270)
 				rotation = Matrix.RotationZ(Math.PIf / 2.0f);
-			else if ((Source.Orientation & (int)0x03) == ImageOrientation.Rotate90)
+			else if ((orientation & (int)0x03) == ImageOrientation.Rotate90)
 				rotation = Matrix.RotationZ(-Math.PIf / 2.0f);
-			else if ((Source.Orientation & (int)0x03) == ImageOrientation.Rotate180)
+			else if ((orientation & (int)0x03) == ImageOrientation.Rotate180)
 				rotation = Matrix.RotationZ(Math.PIf);
 
 			var translateToCenter = Matrix.Translation(0.5f,0.5f,0.0f);
