@@ -476,7 +476,7 @@ namespace Fuse.Drawing
 			//TODO: this is not entirely correct since _drawContext could be null now -- but it isn't
 			//in any of our use cases, but the contract certainly allows for it
 			_drawContext.PushRenderTarget(fb);
-			DrawImageFill(tex);
+			Blitter.Singleton.Blit(tex, new Rect(float2(-1), float2(2)), float4x4.Identity, 1.0f, true);
 			var imageRef = LoadImage(src.PixelSize.X, src.PixelSize.Y );
 			FramebufferPool.Release(fb);
 			_drawContext.PopRenderTarget();
@@ -508,25 +508,6 @@ namespace Fuse.Drawing
 			var image = new Bitmap(width, height, width * 4, PixelFormat.Format32bppPArgb, buffer);			
 
 			return Tuple.Create(image, handle);
-		}
-
-		public void DrawImageFill( texture2D texture )
-		{
-			draw
-			{
-				float2[] Vertices: new []
-				{
-					float2(0, 0), float2(1, 0), float2(1, 1),
-					float2(1, 1), float2(0, 1), float2(0, 0)
-				};
-				float2 VertexData: vertex_attrib(Vertices);
-				VertexCount : 6;
-
-				ClipPosition: float4(VertexData*2 -1, 0,1);
-
-				DepthTestEnabled: false;
-				PixelColor: sample(texture, float2(VertexData.X,1-VertexData.Y), Uno.Graphics.SamplerState.LinearClamp);
-			};
 		}
 
 		void VerifyCreated()

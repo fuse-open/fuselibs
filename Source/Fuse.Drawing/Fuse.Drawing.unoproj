@@ -11,7 +11,8 @@
     "Fuse.Controls",
     "Fuse.Controls.Native",
     "Fuse.Controls.Panels",
-    "Fuse.Controls.Primitives"
+    "Fuse.Controls.Primitives",
+    "Fuse.Drawing.Surface"
   ],
   "Packages": [
     "Uno.Collections"
