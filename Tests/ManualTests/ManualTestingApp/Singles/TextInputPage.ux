@@ -35,7 +35,7 @@
 
 			<h2 ColumnSpan="2">Password text with background color</h2>
 			<Indicator ux:Name="IndPassword"/>
-			<StdTextInput ux:Name="PasswordInput" IsPassword="true" Value="Hidden text"
+			<StdTextInput ux:Name="PasswordInput" IsPassword="true" PlaceholderText="Password"
 				Background="#FFc">
 				<!-- TODO: https://github.com/fusetools/fuselibs/issues/1387
 					Alignment="Right" -->

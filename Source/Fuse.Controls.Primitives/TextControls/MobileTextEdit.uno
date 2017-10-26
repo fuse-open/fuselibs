@@ -314,7 +314,7 @@ namespace Fuse.Controls
 
 			target.setImeOptions(source.getImeOptions());
 			target.setIncludeFontPadding(source.getIncludeFontPadding());
-			target.setTransformationMethod(source.getTransformationMethod());
+			target.setTransformationMethod(isHint ? null : source.getTransformationMethod());
 
 			// Setting the inputtype causes bugs when rendering RTL text,
 			// it triggers the same symptoms as the TextAlignment bug below.

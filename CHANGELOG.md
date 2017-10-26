@@ -5,6 +5,9 @@
 
 ## 1.4.0
 
+### TextInput
+- Fixed issue on android where placeholder text on a `<TextInput IsPassword="true" />` would be drawn as password dots
+
 ### Scripting.Context
 - Invoke now takes an `Action<Scripting.Context>`. This is the first step in refactoring our scripting layer to make sure code does not evaluate JS on the wrong thread
 - The `Observable` property has been removed from Context & IThreadWorker
