@@ -3,6 +3,9 @@
 ## Fuse.Marshal
 - `ToDouble` replaced with `TryToDouble` for naming consistency (old names remain as deprecated)
 
+## Fuse.Panel
+- Fixed a bug where `IsFrozen` would ignore `Panel.Opacity`.
+
 
 # 1.4
 

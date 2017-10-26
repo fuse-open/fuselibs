@@ -198,7 +198,7 @@ namespace Fuse.Controls
 				return;
 			}
 
-			FreezeDrawable.Singleton.Draw(dc, this, 1, Scale, _frozenRenderBounds, _frozenBuffer);
+			FreezeDrawable.Singleton.Draw(dc, this, Opacity, Scale, _frozenRenderBounds, _frozenBuffer);
 		}
 		
 		internal override bool IsLayoutRoot
@@ -226,7 +226,7 @@ namespace Fuse.Controls
 				Texture: buffer.ColorBuffer;
 				Invert: true;
 				
-				PixelColor: float4( prev.XYZ, prev.W * Opacity );
+				PixelColor: prev * Opacity;
 			};
 
 			if defined(FUSELIBS_DEBUG_DRAW_RECTS)
