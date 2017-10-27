@@ -354,6 +354,9 @@ namespace Fuse.Input
 		*/
 		static public Gesture Add( IGesture handler, Visual target, GestureType type )
 		{
+			if (handler == null)
+				throw new ArgumentNullException( nameof(handler) );
+
 			if (_gestures.ContainsKey(handler))
 				throw new ArgumentException( "This gesture handler is already registered" );
 				
