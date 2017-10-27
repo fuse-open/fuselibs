@@ -14,7 +14,7 @@ namespace Fuse.Scripting.JavaScript
 		public TreeObservable(Scripting.Context context, Scripting.Object obj) : base(obj)
 		{
 			_context = context;
-			Set(this, obj);
+			Set(context, this, obj);
 			Subscribe();
 		}
 
@@ -43,14 +43,14 @@ namespace Fuse.Scripting.JavaScript
 
 		Dictionary<long, ValueMirror> _reflections = new Dictionary<long, ValueMirror>();
 
-		public object Reflect(object obj)
+		public object Reflect(Scripting.Context context, object obj)
 		{
 			if (obj is Scripting.Function)
 				return new FunctionMirror((Scripting.Function)obj);
 
 			if (obj is Scripting.Object || obj is Scripting.Array)
 			{
-				var id = GetId(_context, obj);
+				var id = GetId(context, obj);
 				if (id < 0)
 				{
 					throw new Exception("Expected TreeObservable node to have an ID");
@@ -66,7 +66,7 @@ namespace Fuse.Scripting.JavaScript
 					var so = (Scripting.Object)obj;
 					var k = new TreeObject(so);
 					_reflections.Add(id, k); // Important to add to dictionary *before* calling Set
-					k.Set(this, so);
+					k.Set(context, this, so);
 					return k;
 				}
 
@@ -75,7 +75,7 @@ namespace Fuse.Scripting.JavaScript
 					var sa = (Scripting.Array)obj;
 					var k = new TreeArray(sa);
 					_reflections.Add(id, k); // Important to add to dictionary *before* calling Set
-					k.Set(this, sa);
+					k.Set(context, this, sa);
 					return k;
 				}
 			}
@@ -95,13 +95,13 @@ namespace Fuse.Scripting.JavaScript
 
 		object Set(Fuse.Scripting.Context context, object[] args)
 		{
-			new SetOperation(this, args);
+			new SetOperation(context, this, args);
 			return null;
 		}
 
 		object Add(Fuse.Scripting.Context context, object[] args)
 		{
-			new AddOperation(this, args);
+			new AddOperation(context, this, args);
 			return null;
 		}
 
@@ -113,7 +113,7 @@ namespace Fuse.Scripting.JavaScript
 
 		object InsertAt(Fuse.Scripting.Context context, object[] args)
 		{
-			new InsertAtOperation(this, args);
+			new InsertAtOperation(context, this, args);
 			return null;
 		}
 
@@ -141,7 +141,9 @@ namespace Fuse.Scripting.JavaScript
 				if (pos > Arguments.Length - SpecialArgCount)
 				{
 					// Replace entire state
-					TreeObservable.Set(TreeObservable, (Scripting.Object)Arguments[0]);
+					// WARNING: UNSAFE USE OF CACHED JS CONTEXT
+					// See issue linked at definition of _context
+					TreeObservable.Set(TreeObservable._context, TreeObservable, (Scripting.Object)Arguments[0]);
 					return;
 				}
 
@@ -173,9 +175,9 @@ namespace Fuse.Scripting.JavaScript
 
 		abstract class ValueOperation: Operation
 		{
-			protected ValueOperation(TreeObservable inst, object[] args): base(inst, args)
+			protected ValueOperation(Scripting.Context context, TreeObservable inst, object[] args): base(inst, args)
 			{
-				WrappedValue = inst.Reflect(args[args.Length-1]);
+				WrappedValue = inst.Reflect(context, args[args.Length-1]);
 			}
 
 			protected readonly object WrappedValue;
@@ -183,7 +185,7 @@ namespace Fuse.Scripting.JavaScript
 
 		class SetOperation: ValueOperation
 		{
-			public SetOperation(TreeObservable inst, object[] args): base(inst, args) {}
+			public SetOperation(Scripting.Context context, TreeObservable inst, object[] args): base(context, inst, args) {}
 			protected override int SpecialArgCount { get { return 2; } }
 
 			protected override void Perform(object dc)
@@ -200,7 +202,7 @@ namespace Fuse.Scripting.JavaScript
 
 		class AddOperation: ValueOperation
 		{
-			public AddOperation(TreeObservable inst, object[] args): base(inst, args)
+			public AddOperation(Scripting.Context context, TreeObservable inst, object[] args): base(context, inst, args)
 			{
 			}
 
@@ -214,7 +216,7 @@ namespace Fuse.Scripting.JavaScript
 
 		class InsertAtOperation: ValueOperation
 		{
-			public InsertAtOperation(TreeObservable inst, object[] args): base(inst, args)
+			public InsertAtOperation(Scripting.Context context, TreeObservable inst, object[] args): base(context, inst, args)
 			{
 				_index = Marshal.ToInt(Arguments[Arguments.Length-2]);
 			}

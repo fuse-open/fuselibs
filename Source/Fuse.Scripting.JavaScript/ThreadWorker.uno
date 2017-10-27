@@ -9,7 +9,7 @@ namespace Fuse.Scripting.JavaScript
 {
 	interface IMirror
 	{
-		object Reflect(object obj);
+		object Reflect(Scripting.Context context, object obj);
 	}
 
 	class ThreadWorker: IDisposable, IDispatcher, IThreadWorker

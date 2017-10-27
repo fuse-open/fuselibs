@@ -10,19 +10,19 @@ namespace Fuse.Scripting.JavaScript
 		/** Does not poulate the _props. This allows calling Set later with mirror == this */
 		protected ObjectMirror(Scripting.Object obj) : base(obj) {}
 
-		internal ObjectMirror(IMirror mirror, Scripting.Object obj): base(obj)
+		internal ObjectMirror(Scripting.Context context, IMirror mirror, Scripting.Object obj): base(obj)
 		{
-			Set(mirror, obj);
+			Set(context, mirror, obj);
 		}
 
-		internal virtual void Set(IMirror mirror, Scripting.Object obj)
+		internal virtual void Set(Scripting.Context context, IMirror mirror, Scripting.Object obj)
 		{
 			_props.Clear();
 			var k = obj.Keys;
 			for (int i = 0; i < k.Length; i++)
 			{
 				var s = k[i];
-				_props.Add(s, mirror.Reflect(obj[s]));
+				_props.Add(s, mirror.Reflect(context, obj[s]));
 			}
 		}
 

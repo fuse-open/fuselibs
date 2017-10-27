@@ -48,7 +48,7 @@ namespace Fuse.Scripting.JavaScript
 			return TypeWrapper.Unwrap(this, obj);
 		}
 
-		public object Reflect(object obj)
+		public object Reflect(Scripting.Context context, object obj)
 		{
 			var e = obj as Scripting.External;
 			if (e != null) return e.Object;
@@ -83,7 +83,7 @@ namespace Fuse.Scripting.JavaScript
 			var a = obj as Scripting.Array;
 			if (a != null)
 			{
-				return new ArrayMirror(this, a);
+				return new ArrayMirror(this, this, a);
 			}
 
 			var f = obj as Scripting.Function;
@@ -109,7 +109,7 @@ namespace Fuse.Scripting.JavaScript
 				}
 				else
 				{
-					return new ObjectMirror(this, o);
+					return new ObjectMirror(this, this, o);
 				}
 			}
 

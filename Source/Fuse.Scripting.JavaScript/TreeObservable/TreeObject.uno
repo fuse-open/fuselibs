@@ -78,7 +78,7 @@ namespace Fuse.Scripting.JavaScript
 			}
 		}
 
-		internal override void Set(IMirror mirror, Scripting.Object obj)
+		internal override void Set(Scripting.Context context, IMirror mirror, Scripting.Object obj)
 		{
 			_props.Clear();
 			var k = obj.Keys;
@@ -90,7 +90,7 @@ namespace Fuse.Scripting.JavaScript
 					_rawOverride = obj[s];
 					continue;
 				}
-				_props.Add(s, mirror.Reflect(obj[s]));
+				_props.Add(s, mirror.Reflect(context, obj[s]));
 			}
 
 			var sub = Subscribers as PropertySubscription;
