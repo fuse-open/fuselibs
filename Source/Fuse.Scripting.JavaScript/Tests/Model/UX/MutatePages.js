@@ -1,14 +1,6 @@
 export class MainPage {
-	constructor() {
-		//TODO: Shouldn't be required (Path can default to ClassName)
-		this.$path = "MainPage"
-	}
 }
 export class DetailPage {
-	constructor() {
-		//TODO: Shouldn't be required (Path can default to ClassName)
-		this.$path = "DetailPage"
-	}
 }
 
 export default class MutatePages {

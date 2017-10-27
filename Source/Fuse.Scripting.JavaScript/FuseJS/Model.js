@@ -51,8 +51,10 @@ function Model(initialState, stateInitializer)
 		node.__fuse_id = meta.id;
 		node.__fuse_raw = state;
 
-		if (state instanceof Object && !('$template' in state || '$path' in state)) {
-			node.$template = state.constructor.name;
+		//this is an internal variable but needs to be emitted for use in Uno, the primary use-case is for
+		//the default $path for Navigation. Ideally this wouldn't be part of the IObject keys, but it works for now.
+		if (state instanceof Object && !('$__fuse_classname' in state)) {
+			node.$__fuse_classname = state.constructor.name;
 		}
 
 		// create zone lazily to avoid overhead when not needed
