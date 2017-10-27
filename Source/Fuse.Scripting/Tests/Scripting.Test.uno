@@ -169,11 +169,7 @@ namespace Fuse.Scripting.Test
 
 		class ContextObjectFactory
 		{
-			readonly Context _context;
-			public ContextObjectFactory(Context context)
-			{
-				_context = context;
-			}
+			public ContextObjectFactory() {}
 
 			public object Callback(Scripting.Context context, object[] args)
 			{
@@ -181,7 +177,7 @@ namespace Fuse.Scripting.Test
 				{
 					var x = AsInt(args[0]);
 					var y = AsInt(args[1]);
-					var result = _context.NewObject();
+					var result = context.NewObject();
 					result["x"] = x;
 					result["y"] = y;
 					return result;
@@ -234,7 +230,7 @@ namespace Fuse.Scripting.Test
 				var f = context.Evaluate(
 					"CallbackAsConstructor",
 					"(function(f) { return new f(12, 13); })") as Scripting.Function;
-				var res = f.Construct(new object[] { new Scripting.Callback(new ContextObjectFactory(context).Callback) });
+				var res = f.Construct(new object[] { new Scripting.Callback(new ContextObjectFactory().Callback) });
 				Assert.IsTrue(res is Scripting.Object);
 				Assert.IsTrue(res.ContainsKey("x"));
 				Assert.IsTrue(res.ContainsKey("y"));

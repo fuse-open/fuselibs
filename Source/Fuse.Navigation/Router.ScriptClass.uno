@@ -343,32 +343,32 @@ namespace Fuse.Navigation
 			}
 
 			var route = r.GetCurrentRoute();
-			c.Invoke(new GetRouteCallback(route, callback, c).Run);
+			c.Invoke(new GetRouteCallback(route, callback).Run);
 		}
 		class GetRouteCallback
 		{
 			readonly Route _route;
 			readonly Function _callback;
-			readonly Context _context;
-			public GetRouteCallback(Route route, Function callback, Context context)
+			public GetRouteCallback(Route route, Function callback)
 			{
 				_route = route;
 				_callback = callback;
-				_context = context;
 			}
+
 			public void Run(Scripting.Context context)
 			{
-				_callback.Call(context, ToArray());
+				_callback.Call(context, ToArray(context));
 			}
-			Array ToArray()
+
+			Array ToArray(Scripting.Context context)
 			{
 				var route = _route;
 				var len = route.Length;
-				var arr = _context.NewArray(len*2);
+				var arr = context.NewArray(len*2);
 				for (int i = 0; i < len; i++)
 				{
 					arr[i*2+0] = route.Path;
-					arr[i*2+1] = _context.ParseJson(route.Parameter);
+					arr[i*2+1] = context.ParseJson(route.Parameter);
 					route = route.SubRoute;
 				}
 				return arr;

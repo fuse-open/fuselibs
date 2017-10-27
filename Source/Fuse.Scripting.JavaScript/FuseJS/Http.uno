@@ -92,7 +92,7 @@ namespace Fuse.Reactive.FuseJS
 				var method = args[0] as string;
 				var url = args[1] as string;
 				var dispatcher = new HttpJSDispatcher(_context.ThreadWorker);
-				
+
 				return new FuseJSHttpRequest(_context, _client.CreateRequest(method, url, dispatcher)).Obj;
 			}
 		}

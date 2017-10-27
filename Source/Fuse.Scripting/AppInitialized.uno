@@ -16,7 +16,7 @@ namespace Fuse.Scripting
 	{
 		static bool _initialized;
 
-		public static void On(Context context, Action action)
+		public static void On(IThreadWorker worker, Action action)
 		{
 			if (_initialized)
 			{
@@ -24,7 +24,7 @@ namespace Fuse.Scripting
 			}
 			else
 			{
-				UpdateManager.Dispatcher.Invoke(new Closure(context, action).Run);
+				UpdateManager.Dispatcher.Invoke(new Closure(worker, action).Run);
 			}
 		}
 
@@ -35,18 +35,18 @@ namespace Fuse.Scripting
 
 		class Closure
 		{
-			readonly Context _context;
+			readonly IThreadWorker _worker;
 			readonly Action _action;
 
-			public Closure(Context context, Action action)
+			public Closure(IThreadWorker worker, Action action)
 			{
-				_context = context;
+				_worker = worker;
 				_action = action;
 			}
 
 			public void Run()
 			{
-				_context.ThreadWorker.Invoke<Action>(RunJS, _action);
+				_worker.Invoke<Action>(RunJS, _action);
 			}
 
 			static void RunJS(Scripting.Context context, Action action)
