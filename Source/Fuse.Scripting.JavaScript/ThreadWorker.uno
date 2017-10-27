@@ -22,30 +22,6 @@ namespace Fuse.Scripting.JavaScript
 		static Fuse.Reactive.FuseJS.Builtins _fuseJS;
 		public static Fuse.Reactive.FuseJS.Builtins FuseJS { get { return _fuseJS; } }
 
-		Function _push, _insertAt, _removeAt;
-
-		// The use of _context in the following 3 methods is suspect and potentially allows execution of JS
-		// from the wrong thread. Please see the following ticket:
-		// issue: https://github.com/fusetools/fuselibs-public/issues/643
-		
-		public void Push(Scripting.Array arr, object value)
-		{
-			if (_push == null) _push = (Function)_context.Evaluate("push", "(function(arr, value) { arr.push(value); })");
-			_push.Call(_context, arr, value);
-		}
-
-		public void InsertAt(Scripting.Array arr, int index, object value)
-		{
-			if (_insertAt == null) _insertAt = (Function)_context.Evaluate("insertAt", "(function(arr, index, value) { arr.splice(index, 0, value); })");
-			_insertAt.Call(_context, arr, index, value);
-		}
-
-		public void RemoveAt(Scripting.Array arr, int index)
-		{
-			if (_removeAt == null) _removeAt = (Function)_context.Evaluate("removeAt", "(function(arr, index) { arr.splice(index, 1); })");
-			_removeAt.Call(_context, arr, index);
-		}
-
 		readonly Thread _thread;
 
 		readonly ManualResetEvent _ready = new ManualResetEvent(false);
