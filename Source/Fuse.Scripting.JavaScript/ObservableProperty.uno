@@ -9,11 +9,7 @@ namespace Fuse.Scripting.JavaScript
 	{
 		public LazyObservableProperty(ThreadWorker w, Scripting.Object obj, Uno.UX.Property p, Scripting.Context c): base(w, obj, p)
 		{
-<<<<<<< HEAD
 			c.ObjectDefineProperty(obj, p.Name.ToString(), Get);
-=======
-			w.Context.ObjectDefineProperty(obj, p.Name.ToString(), Get);
->>>>>>> Port code after rebase on master
 		}
 
 		object Get(Scripting.Context context, object[] args)
@@ -58,7 +54,7 @@ namespace Fuse.Scripting.JavaScript
 		}
 
 		// JS thread
-		object DefaultValueCallback(object[] args)
+		object DefaultValueCallback(Scripting.Context context, object[] args)
 		{
 			var value = args[0];
 

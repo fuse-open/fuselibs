@@ -41,8 +41,8 @@ namespace Fuse.Scripting.JavaScript
 			}
 
 			_js.ScriptModule.Dependencies = deps;
-			EvaluateModule();
-			ReflectExportsJS();
+			EvaluateModule(context);
+			ReflectExportsJS(context);
 		}
 
 		void ReflectExportsJS(Scripting.Context context)
