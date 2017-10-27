@@ -38,23 +38,31 @@ namespace Fuse.Controls
 			UpdateBlockInput();
 		}
 		
-		
 		void BlockInputUnrooted()
 		{
-			UpdateBlockInput(true);
+			DisableBlockInput();
 		}
 		
-		void UpdateBlockInput(bool forceOff = false)
+		void UpdateBlockInput()
 		{
-			if (forceOff || _blockInput == NavigationControlBlockInput.Never)
+			if (_blockInput == NavigationControlBlockInput.Never)
+				DisableBlockInput();
+			else
+				EnableBlockInput();
+		}
+			
+		void DisableBlockInput()
+		{
+			if (_blockInputTrigger != null)
 			{
-				if (_blockInputTrigger != null)
-				{
-					Children.Remove(_blockInputTrigger);
-					_blockInputTrigger = null;
-				}
+				Children.Remove(_blockInputTrigger);
+				_blockInputTrigger = null;
 			}
-			else if (_blockInputTrigger == null)
+		}
+		
+		void EnableBlockInput()
+		{
+			if (_blockInputTrigger == null)
 			{
 				_blockInputTrigger = new NavigationInternal.BlockInputWhileNavigating(this);
 				Children.Add(_blockInputTrigger);
