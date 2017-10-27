@@ -1,0 +1,5 @@
+<WhileNavigating ux:Class="Fuse.Controls.NavigationInternal.BlockInputWhileNavigating">
+	<NavigationControl ux:Dependency="nav"/>
+	<!-- remove children from hit testing -->
+	<Change nav.HitTestMode="LocalBounds"/>
+</WhileNavigating>

@@ -160,6 +160,8 @@ namespace Fuse.Controls
 			if (AncestorRouterPage != null)
 				AncestorRouterPage.ChildRouterPagesUpdated += OnChildRouterPagesUpdated;
 			OnPageHistoryChanged();
+			
+			BlockInputRooted();
 		}
 		
 		void OnChildRouterPagesUpdated()
@@ -213,6 +215,7 @@ namespace Fuse.Controls
 		
 		protected override void OnUnrooted()
 		{
+			BlockInputUnrooted();
 			OnPageHistoryUnrooted();
 			
 			if (AncestorPage != null)

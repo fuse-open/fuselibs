@@ -1,0 +1,7 @@
+<Panel ux:Class="UX.Navigator.HitTest">
+	<Router ux:Name="r"/>
+	<Navigator ux:Name="nav">
+		<Page ux:Name="one"/>
+		<Page ux:Name="two"/>
+	</Navigator>
+</Panel>
