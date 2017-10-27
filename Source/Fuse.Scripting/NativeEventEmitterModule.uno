@@ -39,12 +39,12 @@ namespace Fuse.Scripting
 			}
 
 			if (_context != null)
-				_context.Dispatcher.Invoke(ResetListenersJS);
+				_context.ThreadWorker.Invoke(ResetListenersJS);
 		}
 
-		void ResetListenersJS()
+		void ResetListenersJS(Scripting.Context context)
 		{
-			_this.CallMethod("removeAllListeners");
+			_this.CallMethod(context, "removeAllListeners");
 			// Reconnect any callbacks set from native code
 			lock (_mutex)
 				foreach (var l in _listeningCallbacks)
@@ -171,7 +171,7 @@ namespace Fuse.Scripting
 
 			public void Emit(Context c, Scripting.Object o)
 			{
-				o.CallMethod("emit", _args);
+				o.CallMethod(c, "emit", _args);
 			}
 		}
 
@@ -186,7 +186,7 @@ namespace Fuse.Scripting
 
 			public void Emit(Context c, Scripting.Object o)
 			{
-				o.CallMethod("emit", _argsFactory(c));
+				o.CallMethod(c, "emit", _argsFactory(c));
 			}
 		}
 
@@ -203,7 +203,7 @@ namespace Fuse.Scripting
 
 			public void Emit(Context c, Scripting.Object o)
 			{
-				o.CallMethod("emit", _argsFactory(c, _t));
+				o.CallMethod(c, "emit", _argsFactory(c, _t));
 			}
 		}
 
@@ -220,7 +220,7 @@ namespace Fuse.Scripting
 
 			public void On(Context c, Scripting.Object o)
 			{
-				o.CallMethod("on", _eventName, _listener);
+				o.CallMethod(c, "on", _eventName, _listener);
 			}
 		}
 	}

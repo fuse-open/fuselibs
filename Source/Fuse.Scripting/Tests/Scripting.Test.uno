@@ -74,7 +74,7 @@ namespace Fuse.Scripting.Test
 				Assert.IsTrue(obj.Equals(obj));
 				Assert.IsFalse(obj.Equals(context.Evaluate("Objects 2", "({ abc: \"abc\" })")));
 				obj["f"] = context.Evaluate("Objects 3", "(function(x, y) { return x + y; })");
-				var callResult = obj.CallMethod("f", new object[] { 12, 13 });
+				var callResult = obj.CallMethod(context, "f", new object[] { 12, 13 });
 				Assert.IsFalse(callResult == null);
 				Assert.IsTrue(IsNumber(callResult));
 				Assert.AreEqual(25, AsInt(callResult));
@@ -137,7 +137,7 @@ namespace Fuse.Scripting.Test
 				Assert.IsFalse(fun.Equals(str));
 				var obj = str.Construct(new object[] { "abc 123" });
 				Assert.IsFalse(obj == null);
-				var i = obj.CallMethod("indexOf", new object[] { "1" });
+				var i = obj.CallMethod(context, "indexOf", new object[] { "1" });
 				Assert.AreEqual(4, AsInt(i));
 			}
 		}
@@ -204,6 +204,25 @@ namespace Fuse.Scripting.Test
 			public void Run()
 			{
 				_f(_context, _arg);
+			}
+		}
+
+		internal class ContextClosure2<T1, T2, TRes>
+		{
+			Func<Scripting.Context, T1, T2, TRes> _f;
+			Scripting.Context _context;
+			T1 _arg1;
+			T2 _arg2;
+			public ContextClosure2(Scripting.Context context, Func<Scripting.Context, T1, T2, TRes> f, T1 arg1, T2 arg2)
+			{
+				_context = context;
+				_f = f;
+				_arg1 = arg1;
+				_arg2 = arg2;
+			}
+			public void Run()
+			{
+				_f(_context, _arg1, _arg2);
 			}
 		}
 
@@ -307,7 +326,7 @@ namespace Fuse.Scripting.Test
 				Assert.Throws(new Getter(obj, null).Run);
 				Assert.Throws(new Setter(obj, null, "a").Run);
 				Assert.DoesNotThrowAny(new Setter(obj, "a", null).Run);
-				Assert.Throws(new Closure2<string, object[], object>(obj.CallMethod, null, new object[] { }).Run);
+				Assert.Throws(new ContextClosure2<string, object[], object>(context, obj.CallMethod, null, new object[] { }).Run);
 				Assert.Throws(new Closure2<string, string, object>(context.Evaluate, "Errors", null).Run);
 
 				var throwingFun = (Scripting.Function)context.Evaluate("Errors", "(function() { throw \"Error\"; })");

@@ -19,6 +19,7 @@
 - Invoke now takes an Action<Scripting.Context>. This is the first step in refactoring our scripting layer to make sure code does not evaluate JS on the wrong thread
 - The `Observable` property has been removed from Context & IThreadWorker
 - `Fuse.Scripting`'s `Function` type has a `Call` method, this now takes a `Scripting.Context`. This guarentees that it can only occur on the VM thread.
+- `Fuse.Scripting`'s `Object` type has a `CallMethod` method, this now takes a `Scripting.Context`. This guarentees that it can only occur on the VM thread.
 - IMirror is no longer implemented by ThreadWorker. This functionality has been moved to the context
 - Moved `ArrayMirror`, `ClassInstance`, `ModuleInstance`, `ObjectMirror`, `Observable`, `ObservableProperty`, `RootableScriptModule` & `ThreadWorker` to the `Fuse.Scripting.JavaScript` namespace
 - Removed the `CanEvaluate` method and instead rely on the passing of the `Scripting.Context` to know if we are on the VM thread or not. This required adding some methods to the `ISubscription` which take the `Scripting.Context`
@@ -28,6 +29,7 @@
 - `Fuse.Reactive` now depends on `Fuse.Scripting` so that it can talk about the `Scripting.Context` in it's provided interfaces.
 - `DateTimeConverterHelpers` moved to its own uno file.
 - `IMirror`'s `Reflect` now takes a `Scripting.Context`
+
 
 # 1.4
 

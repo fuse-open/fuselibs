@@ -98,7 +98,7 @@ namespace Fuse.Scripting.JavaScript
 					try
 					{
 						var newValue = context.Unwrap(NewValue);
-						Object.CallMethod("setValueWithOrigin", newValue, Origin);
+						Object.CallMethod(context, "setValueWithOrigin", newValue, Origin);
 					}
 					catch (Scripting.ScriptException ex)
 					{
@@ -158,7 +158,7 @@ namespace Fuse.Scripting.JavaScript
 					for (int i = 0; i < NewValues.Length; i++)
 						NewValues[i] = context.Unwrap(NewValues[i]);
 
-					Object.CallMethod("replaceAllWithOrigin", context.NewArray(NewValues), Origin);
+					Object.CallMethod(context, "replaceAllWithOrigin", context.NewArray(NewValues), Origin);
 				}
 			}
 
@@ -196,7 +196,7 @@ namespace Fuse.Scripting.JavaScript
 
 				public void Perform(Scripting.Context context)
 				{
-					Object.CallMethod("clear", Origin);
+					Object.CallMethod(context, "clear", Origin);
 				}
 			}
 
@@ -252,7 +252,7 @@ namespace Fuse.Scripting.JavaScript
 			_worker = worker;
 			_observable = obj;
 			_observeChange = context.CallbackToFunction((Scripting.Callback)ObserveChange);
-			obj.CallMethod("addSubscriber", _observeChange, suppressCallback);
+			obj.CallMethod(context, "addSubscriber", _observeChange, suppressCallback);
 		}
 
 		internal static Observable Create(Scripting.Context context, ThreadWorker worker)
@@ -350,7 +350,7 @@ namespace Fuse.Scripting.JavaScript
 
 		void RemoveSubscriber(Scripting.Context context)
 		{
-			_observable.CallMethod("removeSubscriber", _observeChange);
+			_observable.CallMethod(context, "removeSubscriber", _observeChange);
 			_observeChange = null;
 			_observable = null;
 		}
