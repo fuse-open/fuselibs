@@ -77,7 +77,7 @@ namespace Fuse
 
 			void Update()
 			{
-				_updateCallback.Call(_context.Unwrap(_data));
+				_updateCallback.Call(_context, _context.Unwrap(_data));
 			}
 		}
 	}

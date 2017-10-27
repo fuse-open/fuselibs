@@ -21,8 +21,11 @@ namespace Fuse.Scripting.JavaScriptCore
 				_value.GetJSValueRef().Unprotect(_context._context);
 		}
 
-		public override object Call(params object[] args)
+		public override object Call(Scripting.Context context, params object[] args)
 		{
+			// Ensure this function is being called from the context/vm it belongs to
+			assert context == _context;
+
 			return _context.Wrap(
 				_value.CallAsFunction(
 					_context._context,

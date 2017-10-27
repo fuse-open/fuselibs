@@ -119,7 +119,7 @@ namespace Fuse.Reactive
 			DispatchEvaluate();
 		}
 
-		ModuleInstance _moduleInstance;
+		Fuse.Scripting.JavaScript.ModuleInstance _moduleInstance;
 
 		void OnReset()
 		{
@@ -130,7 +130,7 @@ namespace Fuse.Reactive
 		{
 			if (!IsRootingStarted) return;
 			DisposeModuleInstance();
-			_moduleInstance = new ModuleInstance(Worker, this);
+			_moduleInstance = new Fuse.Scripting.JavaScript.ModuleInstance(Worker, this);
 		}
 
 		void DisposeModuleInstance()

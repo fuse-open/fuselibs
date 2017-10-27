@@ -15,7 +15,8 @@
   ],
   "Projects": [
     "../Fuse.Common/Fuse.Common.unoproj",
-    "../Fuse.Nodes/Fuse.Nodes.unoproj"
+    "../Fuse.Nodes/Fuse.Nodes.unoproj",
+    "../Fuse.Scripting/Fuse.Scripting.unoproj"
   ],
   "InternalsVisibleTo": [
     "Fuse.Common.Test.Helpers",

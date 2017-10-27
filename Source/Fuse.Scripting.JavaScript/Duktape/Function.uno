@@ -47,7 +47,7 @@ namespace Fuse.Scripting.Duktape
 			return (Object)returnValue;
 		}
 
-		public override object Call(params object[] args)
+		public override object Call(Scripting.Context context, params object[] args)
 		{
 			_ctx.DukContext.push_heapptr(_handle);
 

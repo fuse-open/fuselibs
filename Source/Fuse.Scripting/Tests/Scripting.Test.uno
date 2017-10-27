@@ -23,7 +23,7 @@ namespace Fuse.Scripting.Test
 		[Test]
 		public void Primitives()
 		{
-			using (var context = ThreadWorker.CreateContext(null))
+			using (var context = Fuse.Scripting.JavaScript.JSContext.Create())
 			{
 				{
 					var result = context.Evaluate("Primitive number", "12 + 13");
@@ -51,7 +51,7 @@ namespace Fuse.Scripting.Test
 		[Test]
 		public void Objects()
 		{
-			using (var context = ThreadWorker.CreateContext(null))
+			using (var context = Fuse.Scripting.JavaScript.JSContext.Create())
 			{
 				var obj = context.Evaluate("Objects", "({ a: \"abc åæø\", b: 123 })") as Scripting.Object;
 				Assert.IsFalse(obj == null);
@@ -90,7 +90,7 @@ namespace Fuse.Scripting.Test
 		[Test]
 		public void NonStringKeys()
 		{
-			using (var context = ThreadWorker.CreateContext(null))
+			using (var context = Fuse.Scripting.JavaScript.JSContext.Create())
 			{
 				var obj = context.Evaluate("NonStringKeys", "(function() { var o = {}; o[1] = 'a'; o[2] = 'b'; o[3] = 'c'; return o;})()") as Scripting.Object;
 				var keys = obj.Keys;
@@ -107,7 +107,7 @@ namespace Fuse.Scripting.Test
 		[Test]
 		public void Arrays()
 		{
-			using (var context = ThreadWorker.CreateContext(null))
+			using (var context = Fuse.Scripting.JavaScript.JSContext.Create())
 			{
 				var arr = context.Evaluate("Arrays", "[\"abc\", 123]") as Scripting.Array;
 				Assert.IsFalse(arr == null);
@@ -124,11 +124,11 @@ namespace Fuse.Scripting.Test
 		[Test]
 		public void Functions()
 		{
-			using (var context = ThreadWorker.CreateContext(null))
+			using (var context = Fuse.Scripting.JavaScript.JSContext.Create())
 			{
 				var fun = context.Evaluate("FunctionTests", "(function(x, y) { return x * y; })") as Scripting.Function;
 				Assert.IsFalse(fun == null);
-				var callResult = fun.Call(new object[] { 11, 12 });
+				var callResult = fun.Call(context, new object[] { 11, 12 });
 				Assert.IsFalse(callResult == null);
 				Assert.AreEqual(132, AsInt(callResult));
 				Assert.IsTrue(fun.Equals(fun));
@@ -142,7 +142,7 @@ namespace Fuse.Scripting.Test
 			}
 		}
 
-		public object MyCallback(object[] args)
+		public object MyCallback(Scripting.Context context, object[] args)
 		{
 			if (args.Length == 2)
 			{
@@ -156,26 +156,26 @@ namespace Fuse.Scripting.Test
 		[Test]
 		public void Callbacks()
 		{
-			using (var context = ThreadWorker.CreateContext(null))
+			using (var context = Fuse.Scripting.JavaScript.JSContext.Create())
 			{
 				var f = context.Evaluate(
 					"Callbacks",
 					"(function(f) { return f(12, 13) + f(10, 20); })") as Scripting.Function;
 				Assert.AreEqual(
-					AsInt(f.Call(new object[] { new Scripting.Callback(MyCallback) })),
+					AsInt(f.Call(context, new object[] { new Scripting.Callback(MyCallback) })),
 					12 + 13 + 1000 + 10 + 20 + 1000);
 			}
 		}
 
-		class ContextClosure
+		class ContextObjectFactory
 		{
 			readonly Context _context;
-			public ContextClosure(Context context)
+			public ContextObjectFactory(Context context)
 			{
 				_context = context;
 			}
 
-			public object Callback(object[] args)
+			public object Callback(Scripting.Context context, object[] args)
 			{
 				if (args.Length == 2)
 				{
@@ -190,15 +190,32 @@ namespace Fuse.Scripting.Test
 			}
 		}
 
+		internal class ContextClosure<T1, TRes>
+		{
+			Scripting.Context _context;
+			Func<Scripting.Context, T1, TRes> _f;
+			T1 _arg;
+			public ContextClosure(Scripting.Context context, Func<Scripting.Context, T1, TRes> f, T1 arg)
+			{
+				_context = context;
+				_f = f;
+				_arg = arg;
+			}
+			public void Run()
+			{
+				_f(_context, _arg);
+			}
+		}
+
 		[Test]
 		public void CallbackAsConstructor()
 		{
-			using (var context = ThreadWorker.CreateContext(null))
+			using (var context = Fuse.Scripting.JavaScript.JSContext.Create())
 			{
 				var f = context.Evaluate(
 					"CallbackAsConstructor",
 					"(function(f) { return new f(12, 13); })") as Scripting.Function;
-				var res = f.Construct(new object[] { new Scripting.Callback(new ContextClosure(context).Callback) });
+				var res = f.Construct(new object[] { new Scripting.Callback(new ContextObjectFactory(context).Callback) });
 				Assert.IsTrue(res is Scripting.Object);
 				Assert.IsTrue(res.ContainsKey("x"));
 				Assert.IsTrue(res.ContainsKey("y"));
@@ -278,7 +295,7 @@ namespace Fuse.Scripting.Test
 		[Test]
 		public void Errors()
 		{
-			using (var context = ThreadWorker.CreateContext(null))
+			using (var context = Fuse.Scripting.JavaScript.JSContext.Create())
 			{
 				Assert.Throws<ScriptException>(new Closure2<string, string, object>(context.Evaluate, "Errors", "new ...").Run);
 				Assert.Throws<ScriptException>(new Closure2<string, string, object>(context.Evaluate, "Errors", "obj.someMethod()").Run);
@@ -294,17 +311,17 @@ namespace Fuse.Scripting.Test
 				Assert.Throws(new Closure2<string, string, object>(context.Evaluate, "Errors", null).Run);
 
 				var throwingFun = (Scripting.Function)context.Evaluate("Errors", "(function() { throw \"Error\"; })");
-				Assert.Throws<ScriptException>(new Closure<object[], object>(throwingFun.Call, new object[0]).Run);
+				Assert.Throws<ScriptException>(new ContextClosure<object[], object>(context, throwingFun.Call, new object[0]).Run);
 			}
 		}
 
 		[Test]
 		public void ExceptionMessageIsMarshalledToJavaScript()
 		{
-			using (var context = ThreadWorker.CreateContext(null))
+			using (var context = Fuse.Scripting.JavaScript.JSContext.Create())
 			{
 				var f = context.Evaluate("ExceptionObjectLooksGoodWhenCatchedInJavaScript", "(function(f) { try { f(); } catch(ex) { return ex.toString(); } })") as Scripting.Function;
-				var message = (string)f.Call(new object[] { new Scripting.Callback(ScriptingErrorThrowingCallback) });
+				var message = (string)f.Call(context, new object[] { new Scripting.Callback(ScriptingErrorThrowingCallback) });
 				Assert.IsTrue(message.Contains("baaaaaaaah"));
 			}
 		}
@@ -348,7 +365,7 @@ namespace Fuse.Scripting.Test
 		[Test]
 		public void Unicode1()
 		{
-			using (var context = ThreadWorker.CreateContext(null))
+			using (var context = Fuse.Scripting.JavaScript.JSContext.Create())
 			{
 				foreach (var str in _unicodeStrings)
 				{
@@ -361,12 +378,12 @@ namespace Fuse.Scripting.Test
 		[Test]
 		public void Unicode2()
 		{
-			using (var context = ThreadWorker.CreateContext(null))
+			using (var context = Fuse.Scripting.JavaScript.JSContext.Create())
 			{
 				var id = context.Evaluate("Unicode2", "(function(x) { return x; })") as Scripting.Function;
 				foreach (var str in _unicodeStrings)
 				{
-					var res = id.Call(str) as string;
+					var res = id.Call(context, str) as string;
 					Assert.AreEqual(str, res);
 				}
 			}
@@ -375,19 +392,19 @@ namespace Fuse.Scripting.Test
 		[Test]
 		public void StringHomomorphism()
 		{
-			using (var context = ThreadWorker.CreateContext(null))
+			using (var context = Fuse.Scripting.JavaScript.JSContext.Create())
 			{
 				var f = context.Evaluate("StringHomomorphism", "(function(x, y) { return x + y; })") as Scripting.Function;
 				foreach (var x in _unicodeStrings)
 				foreach (var y in _unicodeStrings)
 				{
-					var res = f.Call(x, y) as string;
+					var res = f.Call(context, x, y) as string;
 					Assert.AreEqual(x + y, res);
 				}
 			}
 		}
 
-		object ScriptingErrorThrowingCallback(object[] xs)
+		object ScriptingErrorThrowingCallback(Scripting.Context context, object[] xs)
 		{
 			throw new Scripting.Error("baaaaaaaah");
 		}
@@ -395,24 +412,24 @@ namespace Fuse.Scripting.Test
 		[Test]
 		public void CallbackExceptions()
 		{
-			using (var context = ThreadWorker.CreateContext(null))
+			using (var context = Fuse.Scripting.JavaScript.JSContext.Create())
 			{
 				var f = context.Evaluate("CallbackException", "(function(f) { f(); })") as Scripting.Function;
-				Assert.Throws(new Closure<object[], object>(f.Call, new object[] { new Scripting.Callback(ScriptingErrorThrowingCallback) }).Run);
+				Assert.Throws(new ContextClosure<object[], object>(context, f.Call, new object[] { new Scripting.Callback(ScriptingErrorThrowingCallback) }).Run);
 			}
 		}
 
 		[Test]
 		public void CatchingCallbackExceptions()
 		{
-			using (var context = ThreadWorker.CreateContext(null))
+			using (var context = Fuse.Scripting.JavaScript.JSContext.Create())
 			{
 				var f = context.Evaluate("CatchingCallbackExceptions", "(function(f) { try { f(); } catch (e) { } })") as Scripting.Function;
-				Assert.DoesNotThrowAny(new Closure<object[], object>(f.Call, new object[] { new Scripting.Callback(ScriptingErrorThrowingCallback) }).Run);
+				Assert.DoesNotThrowAny(new ContextClosure<object[], object>(context, f.Call, new object[] { new Scripting.Callback(ScriptingErrorThrowingCallback) }).Run);
 			}
 		}
 
-		object ExceptionThrowingCallback(object[] xs)
+		object ExceptionThrowingCallback(Scripting.Context context, object[] xs)
 		{
 			throw new Exception("baaaaaaaaaaaaaaaah");
 		}
@@ -420,10 +437,10 @@ namespace Fuse.Scripting.Test
 		[Test]
 		public void CatchingUnoExceptions()
 		{
-			using (var context = ThreadWorker.CreateContext(null))
+			using (var context = Fuse.Scripting.JavaScript.JSContext.Create())
 			{
 				var f = context.Evaluate("CatchingUnoExceptions", "(function(f) { try { f(); } catch (e) { } })") as Scripting.Function;
-				Assert.Throws(new Closure<object[], object>(f.Call, new object[] { new Scripting.Callback(ExceptionThrowingCallback) }).Run);
+				Assert.Throws(new ContextClosure<object[], object>(context, f.Call, new object[] { new Scripting.Callback(ExceptionThrowingCallback) }).Run);
 			}
 		}
 
@@ -439,12 +456,12 @@ namespace Fuse.Scripting.Test
 		[Test]
 		public void External()
 		{
-			using (var context = ThreadWorker.CreateContext(null))
+			using (var context = Fuse.Scripting.JavaScript.JSContext.Create())
 			{
 				var someObject = new SomeObject("theField");
 				{
 					var f = context.Evaluate("External", "(function(x) { return x; })") as Scripting.Function;
-					var res = f.Call(new object[] { new External(someObject) });
+					var res = f.Call(context, new object[] { new External(someObject) });
 					Assert.IsTrue(res is Scripting.External);
 					var ext = res as Scripting.External;
 					var o = ext.Object;
@@ -466,7 +483,7 @@ namespace Fuse.Scripting.Test
 		[Test]
 		public void ExternalSameObject()
 		{
-			using (var context = ThreadWorker.CreateContext(null))
+			using (var context = Fuse.Scripting.JavaScript.JSContext.Create())
 			{
 				var someObject = new SomeObject("theField");
 				{
@@ -499,7 +516,7 @@ namespace Fuse.Scripting.Test
 		[Test]
 		public void Memory()
 		{
-			using (var context = ThreadWorker.CreateContext(null))
+			using (var context = Fuse.Scripting.JavaScript.JSContext.Create())
 			{
 				for (int i = 0; i < 100; ++i)
 				{
@@ -513,14 +530,14 @@ namespace Fuse.Scripting.Test
 		[Test]
 		public void Memory2()
 		{
-			using (var context = ThreadWorker.CreateContext(null))
+			using (var context = Fuse.Scripting.JavaScript.JSContext.Create())
 			{
 				var fun = context.Evaluate("Memory2", "(function(x, y) { var arr = new Array(1000); arr[100] = x; arr[200] = y; return arr[0]; })") as Scripting.Function;
 				Assert.IsFalse(fun == null);
 				// This should trigger GC after a while, and tests that the finalizers don't crash.
 				for (int i = 0; i < 10000; ++i)
 				{
-					fun.Call(new Scripting.Callback(MyCallback), new Scripting.External(new Uno.Object()));
+					fun.Call(context, new Scripting.Callback(MyCallback), new Scripting.External(new Uno.Object()));
 				}
 			}
 		}
@@ -528,7 +545,7 @@ namespace Fuse.Scripting.Test
 		[Test]
 		public void ArrayBufferSupport()
 		{
-				using (var context = ThreadWorker.CreateContext(null))
+				using (var context = Fuse.Scripting.JavaScript.JSContext.Create())
 				{
 					Assert.IsTrue((bool)context.Evaluate("ArrayBufferSupport", "typeof(ArrayBuffer) !== 'undefined'"));
 					Assert.IsTrue((bool)context.Evaluate("ArrayBufferSupport", "typeof(Int8Array) !== 'undefined'"));
@@ -550,14 +567,14 @@ namespace Fuse.Scripting.Test
 					var getLastItem = context.Evaluate(
 						"ArrayBufferSupport",
 						"(function(x) { var z = new Int8Array(x, 0, x.byteLength); return z[99]; })") as Scripting.Function;
-					Assert.AreEqual(42, AsInt(getLastItem.Call(int8)));
+					Assert.AreEqual(42, AsInt(getLastItem.Call(context, int8)));
 				}
 		}
 
 		[Test]
 		public void Buffers()
 		{
-			using (var context = ThreadWorker.CreateContext(null))
+			using (var context = Fuse.Scripting.JavaScript.JSContext.Create())
 			{
 				int len = 10;
 				var buf = new byte[len];
@@ -570,7 +587,7 @@ namespace Fuse.Scripting.Test
 					var instanceOfArrayBuffer = context.Evaluate(
 						"Buffers",
 						"(function(x) { return x instanceof ArrayBuffer; })") as Scripting.Function;
-					Assert.IsTrue((bool)instanceOfArrayBuffer.Call(buf));
+					Assert.IsTrue((bool)instanceOfArrayBuffer.Call(context, buf));
 				}
 
 				{
@@ -584,15 +601,15 @@ namespace Fuse.Scripting.Test
 
 					Assert.IsFalse(check1 == null);
 					Assert.IsFalse(check2 == null);
-					Assert.IsTrue((bool)check1.Call(buf, len));
-					Assert.IsTrue((bool)check2.Call(buf, len));
+					Assert.IsTrue((bool)check1.Call(context, buf, len));
+					Assert.IsTrue((bool)check2.Call(context, buf, len));
 				}
 
 				{
 					var createBuffer = context.Evaluate(
 						"Buffers 3",
 						"(function(len) { var res = new ArrayBuffer(len); var arr = new Uint8Array(res); for (var i = 0; i < len; ++i) arr[i] = i; return res; })") as Scripting.Function;
-					var buf2 = createBuffer.Call(len);
+					var buf2 = createBuffer.Call(context, len);
 					Assert.IsTrue(buf2 is byte[]);
 					var buf3 = buf2 as byte[];
 					Assert.AreEqual(len, buf3.Length);
@@ -606,7 +623,7 @@ namespace Fuse.Scripting.Test
 					var identity = context.Evaluate(
 						"Buffers 4",
 						"(function(x) { return x; })") as Scripting.Function;
-					var res = identity.Call(buf);
+					var res = identity.Call(context, buf);
 					Assert.IsTrue(res is byte[]);
 					var buf2 = res as byte[];
 					Assert.AreEqual(len, buf2.Length);
@@ -622,7 +639,7 @@ namespace Fuse.Scripting.Test
 					var identity = context.Evaluate(
 						"Buffers 5",
 						"(function(x) { return x; })") as Scripting.Function;
-					Assert.AreEqual(identity.Call(buf), buf);
+					Assert.AreEqual(identity.Call(context, buf), buf);
 				}
 			}
 		}
@@ -630,7 +647,7 @@ namespace Fuse.Scripting.Test
 		[Test]
 		public void StringObjects()
 		{
-			using (var context = ThreadWorker.CreateContext(null))
+			using (var context = Fuse.Scripting.JavaScript.JSContext.Create())
 			{
 				var str1 = context.Evaluate("StringObjects", "\"abc 123\"") as string;
 				var str2 = context.Evaluate("StringObjects", "new String(\"abc 123\")") as Scripting.Object;
@@ -643,7 +660,7 @@ namespace Fuse.Scripting.Test
 		[Test]
 		public void ArrayObjects()
 		{
-			using (var context = ThreadWorker.CreateContext(null))
+			using (var context = Fuse.Scripting.JavaScript.JSContext.Create())
 			{
 				var arr1 = context.Evaluate("ArrayObjects", "['a', 'b', 'c', 1, 2, 3]") as Scripting.Array;
 				var arr2 = context.Evaluate("ArrayObjects", "new Array('a', 'b', 'c', 1, 2, 3)") as Scripting.Array;
@@ -659,7 +676,7 @@ namespace Fuse.Scripting.Test
 		[Test]
 		public void NumberObjects()
 		{
-			using (var context = ThreadWorker.CreateContext(null))
+			using (var context = Fuse.Scripting.JavaScript.JSContext.Create())
 			{
 				var num1 = AsInt(context.Evaluate("NumberObjects", "123"));
 				var num2 = context.Evaluate("NumberObjects", "new Number(123)") as Scripting.Object;
@@ -672,7 +689,7 @@ namespace Fuse.Scripting.Test
 		[Test]
 		public void BooleanObjects()
 		{
-			using (var context = ThreadWorker.CreateContext(null))
+			using (var context = Fuse.Scripting.JavaScript.JSContext.Create())
 			{
 				var t1 = (bool)context.Evaluate("BooleanObjects", "true");
 				var t2 = context.Evaluate("BooleanObjects", "new Boolean(true)") as Scripting.Object;

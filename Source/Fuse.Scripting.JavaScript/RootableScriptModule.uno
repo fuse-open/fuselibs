@@ -5,7 +5,7 @@ using Fuse.Scripting;
 using Uno.Testing;
 using Uno.Threading;
 
-namespace Fuse.Scripting
+namespace Fuse.Scripting.JavaScript
 {
 	class RootableScriptModule: ScriptModule
 	{
@@ -19,26 +19,26 @@ namespace Fuse.Scripting
 			_names = names;
 		}
 
-		public override void Evaluate(Context c, ModuleResult result)
+		public override void Evaluate(Scripting.Context c, ModuleResult result)
 		{
-			EnsureClassInstanceRooted();
+			EnsureClassInstanceRooted(c);
 			base.Evaluate(c, result);
 		}
 
-		void EnsureClassInstanceRooted()
+		void EnsureClassInstanceRooted(Scripting.Context c)
 		{
-			if (_classInstance == null) _classInstance = _worker.GetClassInstance(_names);
-			_classInstance.EnsureRooted();
+			if (_classInstance == null) _classInstance = ((JSContext)c).GetClassInstance(_names);
+			_classInstance.EnsureRooted(c);
 		}
 
 		internal Dictionary<string, object> Dependencies;
 
-		protected override Dictionary<string, object> GenerateRequireTable(Context c)
+		protected override Dictionary<string, object> GenerateRequireTable(Scripting.Context c)
 		{
 			return Dependencies;
 		}
 
-		protected override string GenerateArgs(Context c, ModuleResult result, List<object> args)
+		protected override string GenerateArgs(Scripting.Context c, ModuleResult result, List<object> args)
 		{
 			var argsString = base.GenerateArgs(c, result, args);
 
@@ -51,7 +51,7 @@ namespace Fuse.Scripting
 			return argsString;
 		}
 
-		protected override void CallModuleFunc(Function moduleFunc, object[] args)
+		protected override void CallModuleFunc(Context context, Function moduleFunc, object[] args)
 		{
 			_classInstance.CallMethod(moduleFunc, args);
 		}

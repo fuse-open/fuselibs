@@ -136,11 +136,11 @@ namespace Fuse.Reactive.FuseJS
 			return null;
 		}
 		
-		internal void UpdateModule()
+		internal void UpdateModule(Scripting.Context context)
 		{
 			// NOTE: Don't use UpdateManager for this, for things to run smoothly, this needs to be a JS only thread thing.
 			if(_tm != null)
-				_tm.Tick();
+				_tm.Tick(context);
 		}
 		
 		class CallbackClosure
@@ -159,9 +159,9 @@ namespace Fuse.Reactive.FuseJS
 				_args = args;
 			}
 
-			public void Callback()
+			public void Callback(Scripting.Context context)
 			{
-				_func.Call(_args);
+				_func.Call(context, _args);
 			}
 		}
 	}
@@ -187,7 +187,7 @@ namespace Fuse.Reactive.FuseJS
 
 		readonly List<Timer> _timers = new List<Timer>();
 
-		public int AddTimer(double ms, Action callback, bool repeat = false)
+		public int AddTimer(double ms, Action<Scripting.Context> callback, bool repeat = false)
 		{
 			var t = new Timer(ms, callback, repeat);
 			t.OnStop = RemoveTimer;
@@ -233,11 +233,11 @@ namespace Fuse.Reactive.FuseJS
 			return null;
 		}
 
-		public void Tick()
+		public void Tick(Scripting.Context context)
 		{
 			for (var i = 0; i < _timers.Count; i++)
 			{
-				_timers[i].Update();
+				_timers[i].Update(context);
 			}
 		}
 
@@ -247,7 +247,7 @@ namespace Fuse.Reactive.FuseJS
 			static int _id;
 
 			readonly double _timeout;
-			readonly Action _callback;
+			readonly Action<Scripting.Context> _callback;
 			readonly bool _repeat;
 			
 			public bool _isRunning;
@@ -256,7 +256,7 @@ namespace Fuse.Reactive.FuseJS
 			public readonly int ID;
 			public Action<int> OnStop;
 			
-			public Timer(double ms, Action callback, bool repeat)
+			public Timer(double ms, Action<Scripting.Context> callback, bool repeat)
 			{
 				ID = _id++;
 				_timeout = ms;
@@ -278,7 +278,7 @@ namespace Fuse.Reactive.FuseJS
 					OnStop(ID);
 			}
 
-			internal void Update()
+			internal void Update(Scripting.Context context)
 			{
 				if(!_isRunning) return;
 
@@ -289,7 +289,7 @@ namespace Fuse.Reactive.FuseJS
 					try
 					{
 						if(_callback != null)
-							_callback();
+							_callback(context);
 					}
 					finally
 					{

@@ -11,11 +11,10 @@ namespace Fuse.Scripting
 	{
 		IDispatcher Dispatcher { get; }
 		void Invoke(Uno.Action<Scripting.Context> action);
-		object Unwrap(object obj);
-		object Wrap(object obj);
+		void Invoke<T>(Uno.Action<Scripting.Context, T> action, T arg0);
 	}
 
-	public abstract partial class Context: Uno.IDisposable
+	public abstract class Context: Uno.IDisposable
 	{
 		ConcurrentDictionary<string, ModuleResult> _moduleResults = new ConcurrentDictionary<string, ModuleResult>();
 
@@ -59,23 +58,20 @@ namespace Fuse.Scripting
 			return sb.ToString();
 		}
 
-		IThreadWorker _worker;
-
-		protected Context(IThreadWorker worker)
+		protected Context()
 		{
-			_worker = worker;
 		}
 
-		public IThreadWorker ThreadWorker { get { return _worker; } }
+		public abstract IThreadWorker ThreadWorker { get; }
 
-		public object Wrap(object obj) { return _worker.Wrap(obj); }
-		public object Unwrap(object obj) { return _worker.Unwrap(obj); }
+		public abstract object Wrap(object obj);
+		public abstract object Unwrap(object obj);
 
-		public IDispatcher Dispatcher { get { return _worker.Dispatcher; } }
+		public IDispatcher Dispatcher { get { return ThreadWorker.Dispatcher; } }
 
 		public void Invoke(Uno.Action<Scripting.Context> action)
 		{
-			_worker.Invoke(action);
+			ThreadWorker.Invoke(action);
 		}
 
 		Function _identity;
@@ -85,27 +81,27 @@ namespace Fuse.Scripting
 			if (_identity == null) 
 				_identity = (Function)Evaluate("(Context)", "(function(x) { return x; })");
 
-			return (Function)_identity.Call(c);
+			return (Function)_identity.Call(this, c);
 		}
 
 		public void ObjectDefineProperty(Object obj, string name, Callback getProperty, Callback setProperty = null, bool enumerable = false, bool configurable = false)
 		{
 			var func = Evaluate(name, "(function(obj, name, getCallback, setCallback, e, c) { Object.defineProperty(obj, name, { get: getCallback, "
 				+ (setProperty != null ? " set: setCallback," : "") + " enumerable: e, configurable: c }); })") as Scripting.Function;
-			func.Call(obj, name, getProperty, setProperty, enumerable, configurable);
+			func.Call(this, obj, name, getProperty, setProperty, enumerable, configurable);
 		}
 
 		public void ObjectDefineProperty(Object obj, string name, object value, bool enumerable = false, bool configurable = false)
 		{
 			var func = Evaluate(name, "(function(obj, name, value, e, c) { Object.defineProperty(obj, name, { value: value, enumerable: e, configurable: c }); })") as Scripting.Function;
-			func.Call(obj, name, value, enumerable, configurable);
+			func.Call(this, obj, name, value, enumerable, configurable);
 		}
 
 		public Object ObjectCreate(params object[] args)
 		{
 			var objectCreate = Evaluate("(Context)", "Object.create") as Scripting.Function;
 			if(objectCreate != null)
-				return objectCreate.Call(args) as Scripting.Object;
+				return objectCreate.Call(this, args) as Scripting.Object;
 
 			return null;
 		}
@@ -116,21 +112,21 @@ namespace Fuse.Scripting
 			if (_parseJson == null)
 				_parseJson = (Function)Evaluate("(Context)", "JSON.parse");
 
-			return _parseJson.Call(json);
+			return _parseJson.Call(this, json);
 		}
 
 		Function _newObject;
 		public Object NewObject()
 		{
 			if (_newObject == null) _newObject = (Function)Evaluate("(Context)", "(function() { return new Object; })");
-			return (Object)_newObject.Call();
+			return (Object)_newObject.Call(this);
 		}
 
 		Function _newArray;
 		public Array NewArray(params object[] values)
 		{
 			if (_newArray == null) _newArray = (Function)Evaluate("(Context)", "(function(count) { return new Array(count); })");
-			var a = (Array)_newArray.Call(values.Length);
+			var a = (Array)_newArray.Call(this, values.Length);
 			for (int i = 0; i < values.Length; i++) a[i] = values[i];
 			return a;
 		}

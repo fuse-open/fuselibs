@@ -7,7 +7,7 @@ namespace Fuse.Scripting
 
 	public class NativeProperty<T, TJSValue> : NativeMember
 	{
-		Action<TJSValue> _setHandler;
+		Action<Context, TJSValue> _setHandler;
 		Func<T> _getHandler;
 		ValueConverter<T, TJSValue> _valueConverter;
 		TJSValue _readonlyValue = default(TJSValue);
@@ -22,7 +22,7 @@ namespace Fuse.Scripting
 			_readonlyValue = value;
 		}
 		
-		public NativeProperty(string name, Func<T> getHandler = null, Action<TJSValue> setHandler = null, ValueConverter<T, TJSValue> valueConverter = null) : base(name)
+		public NativeProperty(string name, Func<T> getHandler = null, Action<Context, TJSValue> setHandler = null, ValueConverter<T, TJSValue> valueConverter = null) : base(name)
 		{
 			_setHandler = setHandler;
 			_getHandler = getHandler;
@@ -40,17 +40,17 @@ namespace Fuse.Scripting
 			return null;
 		}
 		
-		object SetProperty(object[] args)
+		object SetProperty(Context context, object[] args)
 		{
 			if(_setHandler == null) _setHandler = SetProperty;
 
-			_setHandler((args.Length > 0 && args[0] is TJSValue) ? (TJSValue)args[0] : default(TJSValue));
+			_setHandler(context, (args.Length > 0 && args[0] is TJSValue) ? (TJSValue)args[0] : default(TJSValue));
 
 			return null;
 		}
-		protected virtual void SetProperty(TJSValue value) {}
+		protected virtual void SetProperty(Context context, TJSValue value) {}
 		
-		object GetProperty(object[] args)
+		object GetProperty(Context context, object[] args)
 		{
 			if(_getHandler == null)
 				_getHandler = GetProperty;

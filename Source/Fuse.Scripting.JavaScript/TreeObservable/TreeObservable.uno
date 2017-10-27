@@ -1,13 +1,19 @@
 using Uno;
 using Uno.Collections;
 using Fuse.Scripting;
+using Fuse.Reactive;
 
-namespace Fuse.Reactive
+namespace Fuse.Scripting.JavaScript
 {
 	class TreeObservable: TreeObject, IMirror
 	{
-		public TreeObservable(Scripting.Object obj) : base(obj)
+		// TreeObservable requires unsafe access to the context. For more info please see this ticket:
+		// https://github.com/fusetools/fuselibs-public/issues/639
+		readonly Scripting.Context _context;
+
+		public TreeObservable(Scripting.Context context, Scripting.Object obj) : base(obj)
 		{
+			_context = context;
 			Set(this, obj);
 			Subscribe();
 		}
@@ -23,7 +29,7 @@ namespace Fuse.Reactive
 
 		public override void Unsubscribe()
 		{
-			JavaScript.Worker.Invoke(NullifyCallbacks);
+			Fuse.Reactive.JavaScript.Worker.Invoke(NullifyCallbacks);
 		}
 
 		void NullifyCallbacks()
@@ -44,7 +50,7 @@ namespace Fuse.Reactive
 
 			if (obj is Scripting.Object || obj is Scripting.Array)
 			{
-				var id = GetId(obj);
+				var id = GetId(_context, obj);
 				if (id < 0)
 				{
 					throw new Exception("Expected TreeObservable node to have an ID");
@@ -77,35 +83,35 @@ namespace Fuse.Reactive
 			return obj;
 		}
 
-		long GetId(object obj)
+		long GetId(Scripting.Context context, object obj)
 		{
-			var func = (Function)JavaScript.Worker.Context.Evaluate("(get node ID)", "(function(obj) { if (obj instanceof Object && typeof obj.__fuse_id  !== 'undefined') return obj.__fuse_id; return -1 })");
-			var res = func.Call(obj);
+			var func = (Function)context.Evaluate("(get node ID)", "(function(obj) { if (obj instanceof Object && typeof obj.__fuse_id  !== 'undefined') return obj.__fuse_id; return -1 })");
+			var res = func.Call(context, obj);
 			if (res is double) return (long)(double)res;
 			if (res is int) return (long)(int)res;
 			if (res is long) return (long)res;
 			return -1;
 		}
 
-		object Set(object[] args)
+		object Set(Fuse.Scripting.Context context, object[] args)
 		{
 			new SetOperation(this, args);
 			return null;
 		}
 
-		object Add(object[] args)
+		object Add(Fuse.Scripting.Context context, object[] args)
 		{
 			new AddOperation(this, args);
 			return null;
 		}
 
-		object RemoveAt(object[] args)
+		object RemoveAt(Fuse.Scripting.Context context, object[] args)
 		{
 			new RemoveAtOperation(this, args);
 			return null;
 		}
 
-		object InsertAt(object[] args)
+		object InsertAt(Fuse.Scripting.Context context, object[] args)
 		{
 			new InsertAtOperation(this, args);
 			return null;

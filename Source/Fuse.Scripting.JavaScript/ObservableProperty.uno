@@ -2,18 +2,18 @@ using Uno.UX;
 using Uno.Collections;
 using Fuse.Reactive;
 
-namespace Fuse.Scripting
+namespace Fuse.Scripting.JavaScript
 {
 	class LazyObservableProperty: ObservableProperty
 	{
-		public LazyObservableProperty(ThreadWorker w, Scripting.Object obj, Uno.UX.Property p): base(w, obj, p)
+		public LazyObservableProperty(ThreadWorker w, Scripting.Object obj, Uno.UX.Property p, Scripting.Context c): base(w, obj, p)
 		{
-			w.Context.ObjectDefineProperty(obj, p.Name.ToString(), Get);	
+			c.ObjectDefineProperty(obj, p.Name.ToString(), Get);
 		}
 
-		object Get(object[] args)
+		object Get(Scripting.Context context, object[] args)
 		{
-			return _worker.Unwrap(GetObservable());
+			return context.Unwrap(GetObservable(context));
 		}
 	}
 
@@ -40,21 +40,21 @@ namespace Fuse.Scripting
 
 		Observable _observable;
 
-		internal Observable GetObservable()
+		internal Observable GetObservable(Scripting.Context context)
 		{
 			if (_observable == null)
 			{
-				_observable = Observable.Create(_worker);	
-				Subscribe();
+				_observable = Observable.Create(context, _worker);
+				Subscribe(context);
 			}
 			return _observable;
 		}
 
 		ISubscription _subscription;
-		void Subscribe()
+		void Subscribe(Scripting.Context context)
 		{
 			_subscription = _observable.Subscribe(this);
-			PushValue(_property.GetAsObject());
+			PushValue(context, _property.GetAsObject());
 			_property.AddListener(this);
 		}
 
@@ -127,10 +127,10 @@ namespace Fuse.Scripting
 
 		class PushCapture
 		{
-			readonly Uno.Action<object> _push;
+			readonly Uno.Action<Scripting.Context,object> _push;
 			readonly object _arg;
 
-			public PushCapture(Uno.Action<object> push, object arg)
+			public PushCapture(Uno.Action<Scripting.Context,object> push, object arg)
 			{
 				_push = push;
 				_arg = arg;
@@ -138,19 +138,19 @@ namespace Fuse.Scripting
 
 			public void Run(Scripting.Context context)
 			{
-				_push(_arg);
+				_push(context, _arg);
 			}
 		}
 
-		void PushValue(object val)
+		void PushValue(Scripting.Context context, object val)
 		{
 			if (val != null)
 			{
-				_subscription.SetExclusive(val);	
+				_subscription.SetExclusive(context, val);
 			}
 			else
 			{
-				_subscription.ClearExclusive();
+				_subscription.ClearExclusive(context);
 			}
 		}
 	}

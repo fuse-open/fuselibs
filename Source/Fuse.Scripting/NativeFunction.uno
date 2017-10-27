@@ -35,7 +35,7 @@ namespace Fuse.Scripting
 				_callback = callback;
 			}
 
-			public object Callback(object[] args)
+			public object Callback(Context context, object[] args)
 			{
 				return _callback(_context, args);
 			}

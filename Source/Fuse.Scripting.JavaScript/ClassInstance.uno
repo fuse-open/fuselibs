@@ -2,7 +2,7 @@ using Uno;
 using Uno.UX;
 using Uno.Collections;
 
-namespace Fuse.Scripting
+namespace Fuse.Scripting.JavaScript
 {
 	/** Manages the lifetime of a UX class instance's representation in JavaScript modules
 		within the class, dealing with disposal of resources when the related node is unrooted.
@@ -42,14 +42,14 @@ namespace Fuse.Scripting
 		}
 
 		/** Called on JS thread when the node instance must be rooted. */
-		public void EnsureRooted()
+		public void EnsureRooted(Scripting.Context context)
 		{
 			if (_self != null) return;
 
 			var n = _obj as INotifyUnrooted;
 			if (n != null) n.Unrooted += DispatchUnroot;
 
-			_self = _worker.Unwrap(_obj) as Scripting.Object;
+			_self = context.Unwrap(_obj) as Scripting.Object;
 
 			if (_properties == null)
 			{
@@ -60,7 +60,7 @@ namespace Fuse.Scripting
 					{
 						var p = _rootTable.Properties[i];
 						if (!_properties.ContainsKey(p))
-							_properties.Add(p, new LazyObservableProperty(_worker, _self, p));
+							_properties.Add(p, new LazyObservableProperty(_worker, _self, p, context));
 					}
 				}
 			}
@@ -78,7 +78,7 @@ namespace Fuse.Scripting
 			_worker.Invoke(Unroot);
 		}
 
-		internal Scripting.Object GetPropertyObservable(Uno.UX.Property p)
+		internal Scripting.Object GetPropertyObservable(Scripting.Context context, Uno.UX.Property p)
 		{
 			EnsureHasProperties();
 
@@ -88,7 +88,7 @@ namespace Fuse.Scripting
 				op = new ObservableProperty(_worker, _self, p);
 				_properties.Add(p, op);
 			}
-			return op.GetObservable().Object;
+			return op.GetObservable(context).Object;
 		}
 
 		void Unroot(Scripting.Context context)

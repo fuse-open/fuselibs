@@ -30,6 +30,8 @@ namespace Fuse.Reactive.FuseJS
 		
 		class FunctionClosure
 		{
+			// This caching of Context is suspect. Please see the issue below for context
+			// https://github.com/fusetools/fuselibs-public/issues/641
 			Context _context;
 			Func<Context, object[], object> _callback;
 
@@ -39,7 +41,7 @@ namespace Fuse.Reactive.FuseJS
 				_callback = callback;
 			}
 
-			object function(object[] args)
+			object function(Context context, object[] args)
 			{
 				return _callback(_context, args);
 			}
@@ -66,7 +68,7 @@ namespace Fuse.Reactive.FuseJS
 				Obj["createRequest"] = (Callback)CreateRequest;
 			}
 
-			object CreateRequest(object[] args)
+			object CreateRequest(Context context, object[] args)
 			{
 				var method = args[0] as string;
 				var url = args[1] as string;
@@ -79,6 +81,10 @@ namespace Fuse.Reactive.FuseJS
 		{
 			public Scripting.Object Obj { get; private set; }
 
+			// This caching of Context is suspect. Please see the issue below for context
+			// https://github.com/fusetools/fuselibs-public/issues/641
+			Scripting.Context _context;
+
 			HttpMessageHandlerRequest _req;
 
 			string _cachedResponseHeaders;
@@ -90,6 +96,7 @@ namespace Fuse.Reactive.FuseJS
 
 			public FuseJSHttpRequest(Context context, HttpMessageHandlerRequest req)
 			{
+				_context = context;
 				_req = req;
 				Obj = context.NewObject();
 
@@ -129,10 +136,10 @@ namespace Fuse.Reactive.FuseJS
 					switch (_req.HttpResponseType)
 					{
 						case HttpResponseType.ByteArray:
-							GetResponseContentByteArray(null);
+							GetResponseContentByteArray(_context, null);
 							break;
 						case HttpResponseType.String:
-							GetResponseContentString(null);
+							GetResponseContentString(_context, null);
 							break;
 					}
 				}
@@ -208,7 +215,7 @@ namespace Fuse.Reactive.FuseJS
 				return new HttpHeaders(_cachedResponseHeaders).GetValue(key);
 			}
 
-			string GetResponseContentString(object[] args)
+			string GetResponseContentString(Context context, object[] args)
 			{
 				if (_cachedResponseContent == null)
 				{
@@ -223,7 +230,7 @@ namespace Fuse.Reactive.FuseJS
 				return contentAsString;
 			}
 
-			object GetResponseContentByteArray(object[] args)
+			object GetResponseContentByteArray(Context context, object[] args)
 			{
 				if (_cachedResponseContent == null)
 				{
@@ -242,7 +249,7 @@ namespace Fuse.Reactive.FuseJS
 			{
 				var func = Obj["onabort"] as Function;
 				if (func != null)
-					func.Call();
+					func.Call(_context);
 				DetachRequest();
 			}
 
@@ -250,7 +257,7 @@ namespace Fuse.Reactive.FuseJS
 			{
 				var func = Obj["onerror"] as Function;
 				if (func != null)
-					func.Call(error);
+					func.Call(_context, error);
 				DetachRequest();
 			}
 
@@ -258,7 +265,7 @@ namespace Fuse.Reactive.FuseJS
 			{
 				var func = Obj["ontimeout"] as Function;
 				if (func != null)
-					func.Call();
+					func.Call(_context);
 				DetachRequest();
 			}
 
@@ -266,14 +273,14 @@ namespace Fuse.Reactive.FuseJS
 			{
 				var func = Obj["onstatechanged"] as Function;
 				if (func != null)
-					func.Call((int)_req.State);
+					func.Call(_context, (int)_req.State);
 			}
 
 			void OnDone(HttpMessageHandlerRequest res)
 			{
 				var func = Obj["ondone"] as Function;
 				if (func != null)
-					func.Call();
+					func.Call(_context);
 				DetachRequest();
 			}
 
@@ -281,10 +288,10 @@ namespace Fuse.Reactive.FuseJS
 			{
 				var func = Obj["onprogress"] as Function;
 				if (func != null)
-					func.Call(current, total, hastotal);
+					func.Call(_context, current, total, hastotal);
 			}
 
-			object SendAsync(object[] args)
+			object SendAsync(Context context, object[] args)
 			{
 				if (args != null && args.Length > 0)
 				{
@@ -317,7 +324,7 @@ namespace Fuse.Reactive.FuseJS
 				return null;
 			}
 
-			object EnableCache(object[] args)
+			object EnableCache(Context context, object[] args)
 			{
 				if (args.Length > 0)
 				{
@@ -329,7 +336,7 @@ namespace Fuse.Reactive.FuseJS
 				return null;
 			}
 
-			object GetState(object[] args)
+			object GetState(Context context, object[] args)
 			{
 				return (_req != null) ? (int)_req.State : _finalState;
 			}
@@ -344,12 +351,12 @@ namespace Fuse.Reactive.FuseJS
 				return _cachedResponseStatus;
 			}
 
-			object GetResponseReasonPhrase(object[] args)
+			object GetResponseReasonPhrase(Context context, object[] args)
 			{
 				return HttpStatusReasonPhrase.GetFromStatusCode(GetResponseStatus());
 			}
 
-			object SetResponseType(object[] args)
+			object SetResponseType(Context context, object[] args)
 			{
 				CheckIsAttached();
 
@@ -362,7 +369,7 @@ namespace Fuse.Reactive.FuseJS
 				return null;
 			}
 
-			object GetResponseType(object[] args)
+			object GetResponseType(Context context, object[] args)
 			{
 				if (_req == null)
 				{

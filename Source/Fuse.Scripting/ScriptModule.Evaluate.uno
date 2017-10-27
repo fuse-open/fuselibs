@@ -54,7 +54,7 @@ namespace Fuse.Scripting
 				throw new Exception("Could not evaluate module '" + FileName + "': JavaScript code contains errors");
 			}
 
-			CallModuleFunc(moduleFunc, args.ToArray());
+			CallModuleFunc(c, moduleFunc, args.ToArray());
 		}
 
 		protected virtual Dictionary<string, object> GenerateRequireTable(Context c)
@@ -75,9 +75,9 @@ namespace Fuse.Scripting
 			return "module, exports, require";
 		}
 
-		protected virtual void CallModuleFunc(Function moduleFunc, object[] args)
+		protected virtual void CallModuleFunc(Context context, Function moduleFunc, object[] args)
 		{
-			moduleFunc.Call(args);
+			moduleFunc.Call(context, args);
 		}
 	}
 }

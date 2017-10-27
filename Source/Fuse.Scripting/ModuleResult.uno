@@ -104,7 +104,7 @@ namespace Fuse.Scripting
 			Context.Invoke(OnDisposed);
 		}
 
-		void OnDisposed(Scripting.Context action)
+		void OnDisposed(Scripting.Context context)
 		{
 			if (Object.ContainsKey("disposed"))
 			{
@@ -114,7 +114,7 @@ namespace Fuse.Scripting
 					for (int i = 0; i < disposed.Length; i++)
 					{
 						var func = (Function)disposed[i];
-						if (func != null) func.Call();
+						if (func != null) func.Call(context);
 					}
 				}
 			}

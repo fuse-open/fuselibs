@@ -22,21 +22,20 @@ namespace Fuse.Reactive
 	public partial class JavaScript: Behavior, IModuleProvider, ValueForwarder.IValueListener, Node.ISiblingDataProvider, IContext
 	{
 		static int _javaScriptCounter;
-		static ThreadWorker _worker;
-		internal static ThreadWorker Worker { get { return _worker; } }
+		static internal readonly Fuse.Scripting.JavaScript.ThreadWorker Worker;
 
 		internal readonly NameTable _nameTable;
-		RootableScriptModule _scriptModule;
-		internal RootableScriptModule ScriptModule { get { return _scriptModule; } }
+		Fuse.Scripting.JavaScript.RootableScriptModule _scriptModule;
+		internal Fuse.Scripting.JavaScript.RootableScriptModule ScriptModule { get { return _scriptModule; } }
 
 		[UXConstructor]
 		public JavaScript([UXAutoNameTable] NameTable nameTable)
 		{
-			if (_worker == null)
-				_worker = new ThreadWorker();
-			
+			if (Worker == null)
+				Worker = new Fuse.Scripting.JavaScript.ThreadWorker();
+
 			_nameTable = nameTable;
-			_scriptModule = new RootableScriptModule(_worker, nameTable);
+			_scriptModule = new Fuse.Scripting.JavaScript.RootableScriptModule(Worker, nameTable);
 		}
 
 		protected override void OnRooted()

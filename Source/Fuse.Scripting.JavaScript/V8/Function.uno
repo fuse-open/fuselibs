@@ -29,9 +29,9 @@ namespace Fuse.Scripting.V8
 				_function.AsValue().Release(_context._context);
 		}
 
-		public override object Call(params object[] args)
+		public override object Call(Scripting.Context context, params object[] args)
 		{
-			var cxt = _context._context;
+			var cxt = ((Context)context)._context;
 			object result = null;
 			using (var pool = new AutoReleasePool(cxt))
 			using (var vm = new Context.EnterVM(_context))

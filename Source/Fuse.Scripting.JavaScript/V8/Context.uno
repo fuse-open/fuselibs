@@ -9,7 +9,7 @@ namespace Fuse.Scripting.V8
 {
 	[Require("Header.Include", "include/V8Simple.h")]
 	[Require("Source.Declaration", "#undef GetMessage")]
-	public extern(USE_V8) class Context: Fuse.Scripting.Context
+	public extern(USE_V8) class Context: Fuse.Scripting.JavaScript.JSContext
 	{
 		internal Simple.JSContext _context;
 		extern(DEBUG_V8) Debugger _debugger;
@@ -28,7 +28,7 @@ namespace Fuse.Scripting.V8
 		extern(!CPlusPlus) Simple.JSCallbackFinalizer _handleCallbackFree;
 		extern(!CPlusPlus) Simple.JSExternalFinalizer _handleExternalFree;
 
-		public Context(IThreadWorker worker): base(worker)
+		public Context(): base()
 		{
 			_errorHandler = OnScriptException;
 
@@ -243,7 +243,7 @@ namespace Fuse.Scripting.V8
 				{
 					try
 					{
-						return Unwrap(_context, _callback(WrapArray(_context, args)), pool).Retain(cxt);
+						return Unwrap(_context, _callback(_context, WrapArray(_context, args)), pool).Retain(cxt);
 					}
 					catch (Exception e)
 					{

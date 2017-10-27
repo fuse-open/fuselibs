@@ -1,8 +1,9 @@
 using Uno.Collections;
 using Uno;
 using Fuse.Scripting;
+using Fuse.Reactive;
 
-namespace Fuse.Reactive
+namespace Fuse.Scripting.JavaScript
 {
 	class TreeObject : ObjectMirror, IObservableObject
 	{
@@ -34,14 +35,15 @@ namespace Fuse.Reactive
 					_key = key;
 					_value = value;
 				}
-				public void Perform()
+				public void Perform(Scripting.Context context)
 				{
+					var val = context.Unwrap(_value);
 					if (_obj.ContainsKey("__fuse_requestChange")) {
-						((Scripting.Function)_obj["__fuse_requestChange"]).Call(_key, _value);
+						((Scripting.Function)_obj["__fuse_requestChange"]).Call(context, _key, val);
 					}
 					else
 					{
-						_obj[_key] = _value;
+						_obj[_key] = val;
 					}
 				}
 			}
@@ -51,7 +53,7 @@ namespace Fuse.Reactive
 				var t = (TreeObject)SubscriptionSubject;
 
 				// Must be done first - to ensure the operations happen in the right order on the JS thread
-				JavaScript.Worker.Invoke(new JSThreadSet((Scripting.Object)t.Raw, key, JavaScript.Worker.Unwrap(newValue)).Perform);
+				Fuse.Reactive.JavaScript.Worker.Invoke(new JSThreadSet((Scripting.Object)t.Raw, key, newValue).Perform);
 
 				// then notify the UI (which in turn can trigger re-evaluation of scripts)
 				t.Set(key, newValue, this);

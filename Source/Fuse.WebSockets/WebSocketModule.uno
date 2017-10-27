@@ -38,7 +38,7 @@ namespace Fuse.WebSocket
 				_callback = callback;
 			}
 
-			object function(object[] args)
+			object function(Context context, object[] args)
 			{
 				return _callback(_context, args);
 			}

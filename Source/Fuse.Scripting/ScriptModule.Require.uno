@@ -26,7 +26,7 @@ namespace Fuse.Scripting
 				_rt = rt;
 			}
 
-			public object Require(object[] args)
+			public object Require(Context context, object[] args)
 			{
 				if (args.Length != 1) throw new Error("require(): accepts exactly one argument, " + args.Length + " provided");
 

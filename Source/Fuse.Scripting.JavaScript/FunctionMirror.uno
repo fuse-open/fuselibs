@@ -35,16 +35,16 @@ namespace Fuse.Scripting
 				_f.ClearDiagnostic();
 
 				var obj = context.NewObject();
-				if (_e.Node != null) obj["node"] = Reactive.JavaScript.Worker.Unwrap(_e.Node);
-				if (_e.Data != null) obj["data"] = Reactive.JavaScript.Worker.Unwrap(_e.Data);
+				if (_e.Node != null) obj["node"] = context.Unwrap(_e.Node);
+				if (_e.Data != null) obj["data"] = context.Unwrap(_e.Data);
 				if (_e.Sender != null) obj["sender"] = _e.Sender;
 
 				if (_e.Args != null)
-					foreach (var arg in _e.Args) obj[arg.Key] = JavaScript.Worker.Unwrap(arg.Value);
+					foreach (var arg in _e.Args) obj[arg.Key] = context.Unwrap(arg.Value);
 
 				try
 				{
-					_f._func.Call(obj);
+					_f._func.Call(context, obj);
 				}
 				catch( ScriptException ex )
 				{
@@ -55,9 +55,7 @@ namespace Fuse.Scripting
 
 		public void Dispatch(IEventRecord e)
 		{
-			JavaScript.Worker.Invoke(new CallClosure(this, e).Call);
+			Fuse.Reactive.JavaScript.Worker.Invoke(new CallClosure(this, e).Call);
 		}
 	}
-
-	
 }

@@ -29,7 +29,7 @@ namespace Fuse.Reactive.FuseJS
 			
 			var setTimout = (Scripting.Function) context.Evaluate("fuse-builtins: setTimeout", import("setTimeout.js").ReadAllText());
 			if (setTimout != null && _timer != null)
-				setTimout.Call(_timer.EvaluateExports(context, "FuseJS/Timer"), context.GlobalObject);
+				setTimout.Call(context, _timer.EvaluateExports(context, "FuseJS/Timer"), context.GlobalObject);
 			else
 				throw new Exception("Could not load setTimout function to context.");
 
@@ -76,7 +76,7 @@ namespace Fuse.Reactive.FuseJS
 		internal void UpdateModules(Fuse.Scripting.Context context)
 		{
 			if(_timer != null)
-				_timer.UpdateModule();
+				_timer.UpdateModule(context);
 		}
 	}
 }

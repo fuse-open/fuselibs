@@ -6,7 +6,7 @@ using Uno;
 namespace Fuse.Scripting.JavaScriptCore
 {
 	[Require("Header.Include", "JavaScriptCore/JavaScript.h")]
-	public extern(USE_JAVASCRIPTCORE) class Context: Fuse.Scripting.Context
+	public extern(USE_JAVASCRIPTCORE) class Context : Fuse.Scripting.JavaScript.JSContext
 	{
 		internal bool _disposed;
 		internal readonly JSContextRef _context;
@@ -19,7 +19,7 @@ namespace Fuse.Scripting.JavaScriptCore
 		readonly JSClassRef _unoFinalizerClass;
 		readonly JSClassRef _unoCallbackClass;
 
-		public Context(IThreadWorker worker): base(worker)
+		public Context(): base()
 		{
 			_context = JSContextRef.Create();
 
@@ -298,7 +298,7 @@ namespace Fuse.Scripting.JavaScriptCore
 				exception = default(JSValueRef);
 				try
 				{
-					return _context.Unwrap(_callback(_context.Wrap(args)));
+					return _context.Unwrap(_callback(_context, _context.Wrap(args)));
 				}
 				catch (Scripting.Error e)
 				{

@@ -17,10 +17,10 @@ namespace FuseTest
 
 		public JsTestRecorder()
 		{
-			_context = Fuse.Scripting.ThreadWorker.CreateContext(null);
+			_context = Fuse.Scripting.JavaScript.JSContext.Create();
 			new Fuse.Reactive.FuseJS.Builtins(_context);
 			var f = _context.Evaluate("", "(function(obj, assert) { obj['test'] = { assert: function(exp, msg) { try { assert(Boolean(exp ? 1 : 0), msg); } catch(e) { assert(0, 'Error: ' + e); } } }; } )") as Fuse.Scripting.Function;
-			f.Call(_context.GlobalObject, (Callback)TestAssert);
+			f.Call(_context, _context.GlobalObject, (Callback)TestAssert);
 		}
 
 		public class AssertResult
@@ -52,7 +52,7 @@ namespace FuseTest
 			} while(_testResults.Count > 0);
 		}
 
-		object TestAssert(object[] args)
+		object TestAssert(Fuse.Scripting.Context context, object[] args)
 		{
 			var result = false;
 			if(args.Length > 0)

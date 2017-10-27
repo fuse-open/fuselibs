@@ -5,55 +5,48 @@ using Uno.Testing;
 using Uno.Threading;
 using Fuse.Scripting;
 
-namespace Fuse.Scripting
+namespace Fuse.Scripting.JavaScript
 {
 	interface IMirror
 	{
 		object Reflect(object obj);
 	}
 
-	partial class ThreadWorker: IDisposable, IDispatcher, IThreadWorker, IMirror
+	class ThreadWorker: IDisposable, IDispatcher, IThreadWorker
 	{
 		IDispatcher IThreadWorker.Dispatcher { get { return this; } }
 		public Function Observable { get { return FuseJS.Observable; } }
 
-		internal static Context CreateContext(IThreadWorker worker)
-		{
-			if defined(USE_JAVASCRIPTCORE) return new Fuse.Scripting.JavaScriptCore.Context(worker);
-			else if defined(USE_V8) return new Fuse.Scripting.V8.Context(worker);
-			else if defined(USE_DUKTAPE) return new Fuse.Scripting.Duktape.Context(worker);
-			else throw new Exception("No JavaScript VM available for this platform");
-		}
-
-		static Scripting.Context _context;
-		public Scripting.Context Context { get { return _context; } }
+		internal JSContext _context;
 
 		static Fuse.Reactive.FuseJS.Builtins _fuseJS;
 		public static Fuse.Reactive.FuseJS.Builtins FuseJS { get { return _fuseJS; } }
 
 		Function _push, _insertAt, _removeAt;
 
+		// The use of _context in the following 3 methods is suspect and potentially allows execution of JS
+		// from the wrong thread. Please see the following ticket:
+		// issue: https://github.com/fusetools/fuselibs-public/issues/643
+		
 		public void Push(Scripting.Array arr, object value)
 		{
 			if (_push == null) _push = (Function)_context.Evaluate("push", "(function(arr, value) { arr.push(value); })");
-			_push.Call(arr, value);
+			_push.Call(_context, arr, value);
 		}
 
 		public void InsertAt(Scripting.Array arr, int index, object value)
 		{
 			if (_insertAt == null) _insertAt = (Function)_context.Evaluate("insertAt", "(function(arr, index, value) { arr.splice(index, 0, value); })");
-			_insertAt.Call(arr, index, value);
+			_insertAt.Call(_context, arr, index, value);
 		}
 
 		public void RemoveAt(Scripting.Array arr, int index)
 		{
 			if (_removeAt == null) _removeAt = (Function)_context.Evaluate("removeAt", "(function(arr, index) { arr.splice(index, 1); })");
-			_removeAt.Call(arr, index);
+			_removeAt.Call(_context, arr, index);
 		}
 
 		readonly Thread _thread;
-
-		public bool CanEvaluate { get { return Thread.CurrentThread == _thread; } }
 
 		readonly ManualResetEvent _ready = new ManualResetEvent(false);
 		readonly ManualResetEvent _idle = new ManualResetEvent(true);
@@ -117,7 +110,7 @@ namespace Fuse.Scripting
 			{
 				if (_context == null)
 				{
-					_context = CreateContext(this);
+					_context = Fuse.Scripting.JavaScript.JSContext.Create();
 					if (_context == null)
 					{
 						throw new Exception("Could not create script context");
@@ -219,6 +212,11 @@ namespace Fuse.Scripting
 			_queue.Enqueue(action);
 		}
 
+		public void Invoke<T>(Uno.Action<Scripting.Context, T> action, T arg0)
+		{
+			Invoke(new ContextClosureOneArg<T>(action, arg0).Run);
+		}
+
 		public void Invoke(Action action)
 		{
 			Invoke(new ContextIgnoringAction(action).Run);
@@ -253,6 +251,23 @@ namespace Fuse.Scripting
 			public void Run(Scripting.Context context)
 			{
 				_action();
+			}
+		}
+
+		class ContextClosureOneArg<T>
+		{
+			T _arg0;
+			Uno.Action<Context, T> _action;
+
+			public ContextClosureOneArg(Uno.Action<Context, T> action, T arg0)
+			{
+				_action = action;
+				_arg0 = arg0;
+			}
+
+			public void Run(Context context)
+			{
+				_action(context, _arg0);
 			}
 		}
 	}

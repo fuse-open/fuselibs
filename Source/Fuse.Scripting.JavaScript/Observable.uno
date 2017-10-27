@@ -1,7 +1,7 @@
 using Uno.Collections;
 using Fuse.Reactive;
 
-namespace Fuse.Scripting
+namespace Fuse.Scripting.JavaScript
 {
 	class Observable : ListMirror, IObservable
 	{
@@ -78,7 +78,7 @@ namespace Fuse.Scripting
 
 			class SetExclusiveOperation
 			{
-				public SetExclusiveOperation(ThreadWorker worker, Scripting.Object obj, object newValue, int origin, DiagnosticSubject diagnosticSubject)
+				public SetExclusiveOperation(IThreadWorker worker, Scripting.Object obj, object newValue, int origin, DiagnosticSubject diagnosticSubject)
 				{
 					Worker = worker;
 					Object = obj;
@@ -87,7 +87,7 @@ namespace Fuse.Scripting
 					DiagnosticSubject = diagnosticSubject;
 				}
 
-				readonly ThreadWorker Worker;
+				readonly IThreadWorker Worker;
 				readonly Scripting.Object Object;
 				readonly object NewValue;
 				readonly int Origin;
@@ -97,7 +97,7 @@ namespace Fuse.Scripting
 				{
 					try
 					{
-						var newValue = Worker.Unwrap(NewValue);
+						var newValue = context.Unwrap(NewValue);
 						Object.CallMethod("setValueWithOrigin", newValue, Origin);
 					}
 					catch (Scripting.ScriptException ex)
@@ -107,6 +107,20 @@ namespace Fuse.Scripting
 						DiagnosticSubject.SetDiagnostic(ex);
 					}
 				}
+			}
+
+			public void SetExclusive(Scripting.Context context, object newValue)
+			{
+				ClearDiagnostic();
+
+				if (_om.Object == null)
+				{
+					Fuse.Diagnostics.InternalError( "Unexpected null object", this );
+					return;
+				}
+
+				var op = new SetExclusiveOperation(_om._worker, _om.Object, newValue, _origin, this);
+				op.Perform(context);
 			}
 
 			public void SetExclusive(object newValue)
@@ -120,15 +134,12 @@ namespace Fuse.Scripting
 				}
 
 				var op = new SetExclusiveOperation(_om._worker, _om.Object, newValue, _origin, this);
-				if (_om._worker.CanEvaluate)
-					op.Perform(null);
-				else
-					_om._worker.Invoke(op.Perform);
+				_om._worker.Invoke(op.Perform);
 			}
 
 			class ReplaceAllExclusiveOperation
 			{
-				public ReplaceAllExclusiveOperation(ThreadWorker worker, Scripting.Object obj, object[] newValues, int origin)
+				public ReplaceAllExclusiveOperation(IThreadWorker worker, Scripting.Object obj, object[] newValues, int origin)
 				{
 					Worker = worker;
 					Object = obj;
@@ -136,7 +147,7 @@ namespace Fuse.Scripting
 					Origin = origin;
 				}
 
-				readonly ThreadWorker Worker;
+				readonly IThreadWorker Worker;
 				Scripting.Object Object;
 				readonly object[] NewValues;
 				readonly int Origin;
@@ -145,9 +156,9 @@ namespace Fuse.Scripting
 				public void Perform(Scripting.Context context)
 				{
 					for (int i = 0; i < NewValues.Length; i++)
-						NewValues[i] = Worker.Unwrap(NewValues[i]);
+						NewValues[i] = context.Unwrap(NewValues[i]);
 
-					Object.CallMethod("replaceAllWithOrigin", Worker.Context.NewArray(NewValues), Origin);
+					Object.CallMethod("replaceAllWithOrigin", context.NewArray(NewValues), Origin);
 				}
 			}
 
@@ -158,10 +169,17 @@ namespace Fuse.Scripting
 					arr[i] = newValues[i];
 
 				var op = new ReplaceAllExclusiveOperation(_om._worker, _om.Object, arr, _origin);
-				if (_om._worker.CanEvaluate)
-					op.Perform(null);
-				else
-					_om._worker.Invoke(op.Perform);
+				_om._worker.Invoke(op.Perform);
+			}
+
+			public void ReplaceAllExclusive(Scripting.Context context, IArray newValues)
+			{
+				var arr = new object[newValues.Length];
+				for (int i = 0; i < arr.Length; i++)
+					arr[i] = newValues[i];
+
+				var op = new ReplaceAllExclusiveOperation(_om._worker, _om.Object, arr, _origin);
+				op.Perform(context);
 			}
 
 			class ClearExclusiveOperation
@@ -182,13 +200,16 @@ namespace Fuse.Scripting
 				}
 			}
 
+			public void ClearExclusive(Scripting.Context context)
+			{
+				var op = new ClearExclusiveOperation(_om.Object, _origin);
+				op.Perform(context);
+			}
+
 			public void ClearExclusive()
 			{
 				var op = new ClearExclusiveOperation(_om.Object, _origin);
-				if (_om._worker.CanEvaluate)
-					op.Perform(null);
-				else
-					_om._worker.Invoke(op.Perform);
+				_om._worker.Invoke(op.Perform);
 			}
 
 			/**
@@ -219,24 +240,24 @@ namespace Fuse.Scripting
 			return Subscribe(observer);
 		}
 
-		readonly ThreadWorker _worker;
+		readonly IThreadWorker _worker;
 
 		Scripting.Object _observable;
 		internal Scripting.Object Object { get { return _observable; } }
 
 		Scripting.Function _observeChange;
 
-		internal Observable(ThreadWorker worker, Scripting.Object obj, bool suppressCallback): base(obj)
+		internal Observable(Scripting.Context context, ThreadWorker worker, Scripting.Object obj, bool suppressCallback): base(obj)
 		{
 			_worker = worker;
 			_observable = obj;
-			_observeChange = worker.Context.CallbackToFunction((Scripting.Callback)ObserveChange);
+			_observeChange = context.CallbackToFunction((Scripting.Callback)ObserveChange);
 			obj.CallMethod("addSubscriber", _observeChange, suppressCallback);
 		}
 
-		internal static Observable Create(ThreadWorker worker)
+		internal static Observable Create(Scripting.Context context, ThreadWorker worker)
 		{
-			return new Observable(worker, (Scripting.Object)worker.Observable.Call(), true);
+			return new Observable(context, worker, (Scripting.Object)worker.Observable.Call(context), true);
 		}
 
 		int ToInt(object obj)
@@ -248,14 +269,16 @@ namespace Fuse.Scripting
 			return -1;
 		}
 
-		object ObserveChange(object[] args)
+		object ObserveChange(Scripting.Context context, object[] args)
 		{
+			var ctx = (JSContext)context;
+
 			var op = args[1] as string;
 			var origin = ToInt(args[2]);
 
 			if (op == "set")
 			{
-				UpdateManager.PostAction(new Set(this, _worker.Reflect(args[3]), origin).Perform);
+				UpdateManager.PostAction(new Set(this, ctx.Reflect(args[3]), origin).Perform);
 			}
 			else if (op == "clear") 
 			{
@@ -263,15 +286,15 @@ namespace Fuse.Scripting
 			}
 			else if (op == "newAt")
 			{
-				UpdateManager.PostAction(new NewAt(this, ToInt(args[3]), _worker.Reflect(args[4])).Perform);
+				UpdateManager.PostAction(new NewAt(this, ToInt(args[3]), ctx.Reflect(args[4])).Perform);
 			}
 			else if (op == "newAll") 
 			{
-				UpdateManager.PostAction(new NewAll(this, (ArrayMirror)_worker.Reflect(args[3]), origin).Perform);
+				UpdateManager.PostAction(new NewAll(this, (ArrayMirror)ctx.Reflect(args[3]), origin).Perform);
 			}
 			else if (op == "add") 
 			{
-				UpdateManager.PostAction(new Add(this, _worker.Reflect(args[3])).Perform);
+				UpdateManager.PostAction(new Add(this, ctx.Reflect(args[3])).Perform);
 			}
 			else if (op == "removeAt")
 			{
@@ -279,7 +302,7 @@ namespace Fuse.Scripting
 			}
 			else if (op == "insertAt")
 			{
-				UpdateManager.PostAction(new InsertAt(this, ToInt(args[3]), _worker.Reflect(args[4])).Perform);
+				UpdateManager.PostAction(new InsertAt(this, ToInt(args[3]), ctx.Reflect(args[4])).Perform);
 			}
 			else if (op == "removeRange")
 			{
@@ -287,7 +310,7 @@ namespace Fuse.Scripting
 			}
 			else if (op == "insertAll") 
 			{
-				UpdateManager.PostAction(new InsertAll(this, ToInt(args[3]), (ArrayMirror)_worker.Reflect(args[4])).Perform);
+				UpdateManager.PostAction(new InsertAll(this, ToInt(args[3]), (ArrayMirror)ctx.Reflect(args[4])).Perform);
 			}
 			else if (op == "failed")
 			{

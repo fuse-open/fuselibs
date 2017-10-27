@@ -66,7 +66,7 @@ namespace Fuse
 			{
 				var so = this as IScriptObject;
 				if (so != null)
-					func.Call(so.ScriptContext.ParseJson(_parameter));
+					func.Call(so.ScriptContext, so.ScriptContext.ParseJson(_parameter));
 			}
 		}
 
@@ -81,7 +81,7 @@ namespace Fuse
 				{
 					var param = so.ScriptContext.ParseJson(_parameter);
 					for (int i = 0; i < _parameterListeners.Count; i++)
-						_parameterListeners[i].Call(param);
+						_parameterListeners[i].Call(so.ScriptContext, param);
 				}
 			}
 			OnPropertyChanged(ParameterName);

@@ -15,37 +15,36 @@ namespace Fuse.Scripting
 			_eventArgsQueue = new Queue<object[]>();
 			_queueEventsBeforeEvaluation = queueEventsBeforeHandlerIsSet;
 		}
-		
-		protected override void SetProperty(Scripting.Function function)
+
+		protected override void SetProperty(Context context, Scripting.Function function)
 		{
 			_jsFunction = function;
-			DispatchQueue();
+			DispatchQueue(context.ThreadWorker);
 		}
-		
+
 		protected override Scripting.Function GetProperty()
 		{
 			return _jsFunction;
 		}
 
-		void DispatchQueue()
+		void DispatchQueue(IThreadWorker threadWorker)
 		{
 			while (_eventArgsQueue.Count > 0 && _jsFunction != null)
-				Context.Dispatcher.Invoke1<object[], object>(_jsFunction.Call, _eventArgsQueue.Dequeue());
+				threadWorker.Invoke<object[]>(_jsFunction.CallDiscardingResult, _eventArgsQueue.Dequeue());
 		}
 
-		public void RaiseAsync(params object[] args)
+		public void RaiseAsync(IThreadWorker threadWorker, params object[] args)
 		{
 			if(Context != null || _queueEventsBeforeEvaluation)
 				_eventArgsQueue.Enqueue(args);
-			
-			DispatchQueue();
+
+			DispatchQueue(threadWorker);
 		}
 
-		internal object RaiseSync(params object[] args)
+		internal object RaiseSync(Context context, params object[] args)
 		{
-			assert Context != null;
 			if (_jsFunction != null)
-				Context.Dispatcher.Invoke1<object[], object>(_jsFunction.Call, args);
+				context.ThreadWorker.Invoke<object[]>(_jsFunction.CallDiscardingResult, args);
 
 			return null;
 		}
