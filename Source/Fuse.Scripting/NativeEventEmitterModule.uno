@@ -137,7 +137,7 @@ namespace Fuse.Scripting
 					return;
 				}
 			}
-			_context.Dispatcher.Invoke2(action, _context, _this);
+			_context.ThreadWorker.Invoke<Scripting.Object>(action, _this);
 		}
 
 		/** Connect a @NativeEvent to an event.

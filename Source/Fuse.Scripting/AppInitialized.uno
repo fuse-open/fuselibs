@@ -46,10 +46,10 @@ namespace Fuse.Scripting
 
 			public void Run()
 			{
-				_context.Dispatcher.Invoke1(RunJS, _action);
+				_context.ThreadWorker.Invoke<Action>(RunJS, _action);
 			}
 
-			static void RunJS(Action action)
+			static void RunJS(Scripting.Context context, Action action)
 			{
 				_initialized = true;
 				action();

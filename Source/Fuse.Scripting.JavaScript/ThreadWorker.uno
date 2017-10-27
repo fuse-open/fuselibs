@@ -12,9 +12,8 @@ namespace Fuse.Scripting.JavaScript
 		object Reflect(Scripting.Context context, object obj);
 	}
 
-	class ThreadWorker: IDisposable, IDispatcher, IThreadWorker
+	class ThreadWorker: IDisposable, IThreadWorker
 	{
-		IDispatcher IThreadWorker.Dispatcher { get { return this; } }
 		public Function Observable { get { return FuseJS.Observable; } }
 
 		internal JSContext _context;

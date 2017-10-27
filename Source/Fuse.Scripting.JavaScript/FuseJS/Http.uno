@@ -52,6 +52,25 @@ namespace Fuse.Reactive.FuseJS
 			}
 		}
 
+		class HttpJSDispatcher : Uno.Threading.IDispatcher
+		{
+			Scripting.IThreadWorker _worker;
+			public HttpJSDispatcher(Scripting.IThreadWorker worker)
+			{
+				_worker = worker;
+			}
+
+			public void Invoke(Action action)
+			{
+				_worker.Invoke<Action>(DoIt, action);
+			}
+
+			public void DoIt(Scripting.Context context, Action action)
+			{
+				action();
+			}
+		}
+
 		class FuseJSHttpClient
 		{
 			public Scripting.Object Obj { get; private set; }
@@ -72,8 +91,9 @@ namespace Fuse.Reactive.FuseJS
 			{
 				var method = args[0] as string;
 				var url = args[1] as string;
-
-				return new FuseJSHttpRequest(_context, _client.CreateRequest(method, url, _context.Dispatcher)).Obj;
+				var dispatcher = new HttpJSDispatcher(_context.ThreadWorker);
+				
+				return new FuseJSHttpRequest(_context, _client.CreateRequest(method, url, dispatcher)).Obj;
 			}
 		}
 

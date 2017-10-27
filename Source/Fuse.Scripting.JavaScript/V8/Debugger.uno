@@ -298,7 +298,7 @@ namespace Fuse.Scripting.V8
 							var message = new String(buffer);
 							var cxt = _parent._context._context;
 							Simple.Debug.SendCommand(cxt, message, message.Length);
-							_parent._context.Dispatcher.Invoke1(Simple.Debug.ProcessMessages, cxt);
+							_parent._context.ThreadWorker.Invoke<Simple.JSContext>(ProcessMessages, cxt);
 						}
 					}
 					else
@@ -318,6 +318,11 @@ namespace Fuse.Scripting.V8
 					Reconnect();
 				}
 				return this;
+			}
+
+			void ProcessMessages(Scripting.Context uContext, Simple.JSContext sContext)
+			{
+				Simple.Debug.ProcessMessages(sContext);
 			}
 
 			public void Reconnect()

@@ -9,7 +9,6 @@ namespace Fuse.Scripting
 {
 	public interface IThreadWorker
 	{
-		IDispatcher Dispatcher { get; }
 		void Invoke(Uno.Action<Scripting.Context> action);
 		void Invoke<T>(Uno.Action<Scripting.Context, T> action, T arg0);
 	}
@@ -66,8 +65,6 @@ namespace Fuse.Scripting
 
 		public abstract object Wrap(object obj);
 		public abstract object Unwrap(object obj);
-
-		public IDispatcher Dispatcher { get { return ThreadWorker.Dispatcher; } }
 
 		public void Invoke(Uno.Action<Scripting.Context> action)
 		{

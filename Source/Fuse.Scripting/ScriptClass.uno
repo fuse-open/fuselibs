@@ -272,7 +272,7 @@ namespace Fuse.Scripting
 			{
 				_result = result;
 				if (_resolve != null)
-					_context.Dispatcher.Invoke(DispatchResolve);
+					_context.ThreadWorker.Invoke(DispatchResolve);
 			}
 
 			Exception _reason;
@@ -280,10 +280,10 @@ namespace Fuse.Scripting
 			{
 				_reason = reason;
 				if (_reject != null)
-					_context.Dispatcher.Invoke(DispatchReject);
+					_context.ThreadWorker.Invoke(DispatchReject);
 			}
 
-			void DispatchResolve()
+			void DispatchResolve(Scripting.Context context)
 			{
 				if (_resultConverter != null)
 					_resolve.Call(_context, _resultConverter(_context, _result));
@@ -291,7 +291,7 @@ namespace Fuse.Scripting
 					_resolve.Call(_context, _result);
 			}
 
-			void DispatchReject()
+			void DispatchReject(Scripting.Context context)
 			{
 				_reject.Call(_context, _reason.Message);
 			}
