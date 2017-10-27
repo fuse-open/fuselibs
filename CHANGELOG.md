@@ -16,8 +16,6 @@
 - Fixed a bug where `IsFrozen` would ignore `Panel.Opacity`.
 
 ## Scripting
-- Invoke now takes an Action<Scripting.Context>. This is the first step in refactoring our scripting layer to make sure code does not evaluate JS on the wrong thread
-- The `Observable` property has been removed from Context & IThreadWorker
 - `Fuse.Scripting`'s `Function` type has a `Call` method, this now takes a `Scripting.Context`. This guarentees that it can only occur on the VM thread.
 - `Fuse.Scripting`'s `Object` type has a `CallMethod` method, this now takes a `Scripting.Context`. This guarentees that it can only occur on the VM thread.
 - IMirror is no longer implemented by ThreadWorker. This functionality has been moved to the context
@@ -40,9 +38,6 @@
 
 ### Scripting.Context
 - Invoke now takes an `Action<Scripting.Context>`. This is the first step in refactoring our scripting layer to make sure code does not evaluate JS on the wrong thread
-
-## Scripting.Context
-- Invoke now takes an Action<Scripting.Context>. This is the first step in refactoring our scripting layer to make sure code does not evaluate JS on the wrong thread
 - The `Observable` property has been removed from Context & IThreadWorker
 
 ### Fuse.Reactive.JavaScript
