@@ -68,19 +68,20 @@ namespace Fuse.Scripting.JavaScriptCore
 					_context._onError);
 		}
 
-		public override object CallMethod(string name, params object[] args)
+		public override object CallMethod(Scripting.Context context, string name, params object[] args)
 		{
+			var ctx = (Context)context;
 			if (name == null) throw new ArgumentException("Object.CallMethod.name");
 			var f = _value.GetProperty(
-				_context._context,
+				ctx._context,
 				name,
-				_context._onError).GetJSObjectRef(_context._context);
-			return _context.Wrap(
+				ctx._onError).GetJSObjectRef(ctx._context);
+			return ctx.Wrap(
 				f.CallAsFunction(
-					_context._context,
+					ctx._context,
 					_value,
-					_context.Unwrap(args),
-					_context._onError));
+					ctx.Unwrap(args),
+					ctx._onError));
 		}
 
 		public override bool ContainsKey(string key)

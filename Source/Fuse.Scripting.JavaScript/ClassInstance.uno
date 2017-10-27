@@ -34,11 +34,11 @@ namespace Fuse.Scripting.JavaScript
 		}
 
 		/** Calls a function on this node instance, making the node 'this' within the function */
-		public void CallMethod(Scripting.Function method, object[] args)
+		public void CallMethod(Scripting.Context context, Scripting.Function method, object[] args)
 		{
 			// TODO: Rewrite to use Function.apply() to avoid leaking this member
 			_self["_tempMethod"] = method;
-			_self.CallMethod("_tempMethod", args);
+			_self.CallMethod(context, "_tempMethod", args);
 		}
 
 		/** Called on JS thread when the node instance must be rooted. */

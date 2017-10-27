@@ -93,7 +93,7 @@ namespace Fuse.Scripting.V8
 			var jsExceptionObj = Marshaller.Wrap(this, jsException) as Object;
 			if (jsExceptionObj != null)
 			{
-				exceptionName = jsExceptionObj.CallMethod("toString") as string;
+				exceptionName = jsExceptionObj.CallMethod(this, "toString") as string;
 			}
 
 			var se = new ScriptException(

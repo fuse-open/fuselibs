@@ -88,7 +88,7 @@ namespace Fuse.Scripting.Duktape
 			}
 		}
 
-		public override object CallMethod(string name, params object[] args)
+		public override object CallMethod(Scripting.Context context, string name, params object[] args)
 		{
 			if (name == null) throw new ArgumentNullException(nameof(name));
 			var index = _ctx.DukContext.push_heapptr(_handle);

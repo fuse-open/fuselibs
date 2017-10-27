@@ -15,7 +15,7 @@ namespace Fuse.Scripting.JavaScript
 
 		public static DateTime ConvertDateToDateTime(Scripting.Context context, Scripting.Object date)
 		{
-			var jsTicks = (long)(double)context.Wrap(date.CallMethod("getTime"));
+			var jsTicks = (long)(double)context.Wrap(date.CallMethod(context, "getTime"));
 			var dotNetTicksRelativeToUnixEpoch = jsTicks * DotNetTicksInJsTick;
 			var dotNetTicks = dotNetTicksRelativeToUnixEpoch + UnixEpochInDotNetTicks;
 

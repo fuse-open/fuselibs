@@ -53,7 +53,7 @@ namespace Fuse.Scripting.JavaScript
 
 		protected override void CallModuleFunc(Context context, Function moduleFunc, object[] args)
 		{
-			_classInstance.CallMethod(moduleFunc, args);
+			_classInstance.CallMethod(context, moduleFunc, args);
 		}
 	}
 }

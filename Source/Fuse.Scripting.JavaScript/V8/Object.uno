@@ -85,7 +85,7 @@ namespace Fuse.Scripting.V8
 			return (bool)_context._instanceOf.Call(_context, this, type);
 		}
 
-		public override object CallMethod(string name, params object[] args)
+		public override object CallMethod(Scripting.Context context, string name, params object[] args)
 		{
 			var cxt = _context._context;
 			object result = null;
