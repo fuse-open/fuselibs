@@ -405,7 +405,7 @@ namespace Fuse.Controls
 			
 			This can used to get and set the current page from JavaScript as well as listen to page changes. When used in conjunction with an `Each` to create dynamic pages the `ActiveIndex` is an index into that list of items (assuming no other children are added).
 			
-			@see VisualNavigation.ActiveIndex
+			@see VisualNavigation.DesiredActiveIndex
 		*/
 		public int ActiveIndex
 		{
