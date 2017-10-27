@@ -130,13 +130,24 @@ namespace Fuse.Navigation
 			get { return Progress; }
 		}
 
+		/*
+			External goto is a "desired" requres, and thus updates the desired mode.
+		*/
 		public override void Goto(Visual element, NavigationGotoMode mode)
 		{
 			if (mode != NavigationGotoMode.Transition &&
 				mode != NavigationGotoMode.Bypass)
 				return;
 		
-			_desiredActive = element;
+			UpdateDesired(element, -1);
+			GotoInternal(element, mode);
+		}
+		
+		/*
+			Internal goto does not update the desired mode. It should be used by anything internally that needs a Goto but does not reflect a user desired change.
+		*/
+		void GotoInternal(Visual element, NavigationGotoMode mode)
+		{
 			if (!IsRootingCompleted)
 			{
 				//queue until rooted
@@ -407,14 +418,14 @@ namespace Fuse.Navigation
 		{
 			UpdateDesired(page, -1);
 			_desired = Desired.Active;
-			Goto(page, NavigationGotoMode.Transition);
+			GotoInternal(page, NavigationGotoMode.Transition);
 		}
 		
 		void SetDesiredActiveIndex( int index )
 		{
 			UpdateDesired( null, index );
 			_desired = Desired.Index;
-			Goto( _desiredActive, NavigationGotoMode.Transition );
+			GotoInternal( _desiredActive, NavigationGotoMode.Transition );
 		}
 		
 		void DirectSetActive(Visual page)

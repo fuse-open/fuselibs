@@ -68,6 +68,11 @@
 
 # 1.3
 
+## 1.3.1
+
+### Navigation
+- Fixed an issue where `PageControl.ActiveIndex` would not update if navigation done with JavaScript `seekToPath` or `Router` interfaces.
+
 ## 1.3.0
 
 ### Native UI:
