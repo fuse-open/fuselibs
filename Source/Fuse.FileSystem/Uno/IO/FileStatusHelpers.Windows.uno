@@ -30,7 +30,7 @@ namespace Fuse.FileSystem
         @{
             WIN32_FILE_ATTRIBUTE_DATA data;
 
-            if (!GetFileAttributesEx(path->Ptr(), GetFileExInfoStandard, &data))
+            if (!GetFileAttributesEx((LPCWSTR) path->Ptr(), GetFileExInfoStandard, &data))
                 return @{FileStatus():New()};
 
             uint64_t size = ((uint64_t)data.nFileSizeHigh << 32) | data.nFileSizeLow;
