@@ -49,7 +49,7 @@ public class OrientationTest
 	}
 
 	[Test]
-	[Ignore("Only supported on dotnet, Android or iOS", "NATIVE || CIL || iOS")]
+	[Ignore("Only supported on dotnet, Android or iOS", "NATIVE || DOTNET || iOS")]
 	public extern(Android) void ImageOrientationsUsingAndroidInputStream()
 	{
 		AssertImageOrientationUsingAndroidStreamApi(ImageOrientation.Identity, import("Assets/f1t.jpg"));

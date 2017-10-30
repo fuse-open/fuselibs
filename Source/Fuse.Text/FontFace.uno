@@ -70,7 +70,7 @@ namespace Fuse.Text
 		// If index >= 0: The face with index `index` in the file.
 		public static FontFace Load(byte[] data, int index = -1, Predicate<string> stylePredicate = null)
 		{
-			if defined(CIL || CPlusPlus)
+			if defined(DOTNET || CPlusPlus)
 				return new Implementation.FreeTypeFontFace(data, index, stylePredicate);
 			else build_error;
 		}
@@ -79,7 +79,7 @@ namespace Fuse.Text
 		{
 			if defined(iOS)
 				return new Implementation.CoreTextFontFace(fileName, index, stylePredicate);
-			else if defined(CIL || CPlusPlus)
+			else if defined(DOTNET || CPlusPlus)
 				return new Implementation.FreeTypeFontFace(fileName, index, stylePredicate);
 			else build_error;
 		}

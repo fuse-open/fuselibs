@@ -13,7 +13,7 @@ using Fuse.Nodes;
 namespace Fuse.Controls.VideoImpl
 {
 
-	internal extern (!iOS && !Android && !CIL) class VideoVisual : ControlVisual<global::Fuse.Controls.Video>
+	internal extern (!iOS && !Android && !DOTNET) class VideoVisual : ControlVisual<global::Fuse.Controls.Video>
 	{
 	
 		readonly Panel _placeholder;
@@ -49,7 +49,7 @@ namespace Fuse.Controls.VideoImpl
 		public override void Draw(DrawContext dc) { }
 	}
 
-	internal extern (iOS || Android || CIL) class VideoVisual :
+	internal extern (iOS || Android || DOTNET) class VideoVisual :
 		ControlVisual<global::Fuse.Controls.Video>,
 		IVideoCallbacks,
 		IMediaPlayback

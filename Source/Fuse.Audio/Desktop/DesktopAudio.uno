@@ -8,7 +8,7 @@ using Uno.Compiler.ExportTargetInterop;
 namespace System.Media
 {
 	[TargetSpecificImplementation, DotNetType]
-	extern(CIL) internal class SoundPlayer
+	extern(DOTNET) internal class SoundPlayer
 	{
 		[TargetSpecificImplementation]
 		public extern SoundPlayer(Stream stream);
@@ -20,7 +20,7 @@ namespace System.Media
 
 namespace Fuse.Audio
 {
-	internal extern(CIL) class SoundPlayer
+	internal extern(DOTNET) class SoundPlayer
 	{
 		static List<SoundHandle> _playingSounds = new List<SoundHandle>();
 
@@ -44,7 +44,7 @@ namespace Fuse.Audio
 		}
 	}
 
-	extern(CIL) class SoundHandle
+	extern(DOTNET) class SoundHandle
 	{
 		MemoryStream _memStream;
 		Action<SoundHandle> _onComplete;

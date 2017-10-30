@@ -68,7 +68,7 @@ namespace Fuse.Resources.Exif
 	}
 
 	[TargetSpecificImplementation, DotNetType("System.Drawing.Image")]
-	extern(CIL) class Image
+	extern(DOTNET) class Image
 	{
 		[TargetSpecificImplementation]
 		public extern static Image FromStream(Stream stream);
@@ -78,7 +78,7 @@ namespace Fuse.Resources.Exif
 	}
 
 	[TargetSpecificImplementation, DotNetType("System.Drawing.Imaging.PropertyItem")]
-	extern(CIL) class PropertyItem
+	extern(DOTNET) class PropertyItem
 	{
 		[TargetSpecificImplementation]
 		public extern int Id { get; set; }
@@ -93,7 +93,7 @@ namespace Fuse.Resources.Exif
 		public extern byte[] Value { get; set; }
 	}
 
-	extern(CIL) static class ExifDotNetImpl
+	extern(DOTNET) static class ExifDotNetImpl
 	{
 		const int OrientationTagId = 274; //as defined by the exif spec www.exif.org/Exif2-2.PDF (page 16)
 

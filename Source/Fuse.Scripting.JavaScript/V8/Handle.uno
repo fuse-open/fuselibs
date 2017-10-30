@@ -14,26 +14,26 @@ namespace Fuse.Scripting.V8
 	internal extern(USE_V8) class ArrayHandle
 	{
 		public readonly byte[] Array;
-		extern(CIL) readonly GCHandle _handle;
+		extern(DOTNET) readonly GCHandle _handle;
 
 		public ArrayHandle(byte[] array)
 		{
 			Array = array;
-			if defined(CIL)
+			if defined(DOTNET)
 			{
 				_handle = GCHandle.Alloc(Array, GCHandleType.Pinned);
 			}
 
 		}
 
-		extern(CIL) ~ArrayHandle()
+		extern(DOTNET) ~ArrayHandle()
 		{
 			_handle.Free();
 		}
 
 		public IntPtr GetIntPtr()
 		{
-			if defined(CIL)
+			if defined(DOTNET)
 			{
 				return Marshal.UnsafeAddrOfPinnedArrayElement((CilArray)(object)Array, 0);
 			}
@@ -45,7 +45,7 @@ namespace Fuse.Scripting.V8
 
 		public static byte[] CopyToArray(IntPtr ptr, int length)
 		{
-			if defined(CIL)
+			if defined(DOTNET)
 			{
 				byte[] res = new byte[length];
 				Marshal.Copy(ptr, res, 0, length);
@@ -59,12 +59,12 @@ namespace Fuse.Scripting.V8
 	}
 
 	[DotNetType("System.Array")]
-	internal extern(CIL) class CilArray
+	internal extern(DOTNET) class CilArray
 	{
 	}
 
 	[DotNetType("System.Runtime.InteropServices.Marshal")]
-	internal extern(CIL) static class Marshal
+	internal extern(DOTNET) static class Marshal
 	{
 		public static extern IntPtr UnsafeAddrOfPinnedArrayElement(CilArray arr, int index);
 		public static extern void Copy(IntPtr source, byte[] destination, int start, int length);

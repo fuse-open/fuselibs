@@ -19,7 +19,7 @@ namespace Fuse.Scripting.V8
 		{
 			return Simple.Context.Create();
 		}
-		public extern(CIL) static JSContext Create(JSCallbackFinalizer callbackFinalizer, JSExternalFinalizer externalFinalizer)
+		public extern(DOTNET) static JSContext Create(JSCallbackFinalizer callbackFinalizer, JSExternalFinalizer externalFinalizer)
 		{
 			return Simple.Context.Create(callbackFinalizer, externalFinalizer);
 		}
@@ -214,7 +214,7 @@ namespace Fuse.Scripting.V8
 			var wrappedCallback = Handle.Target(data) as WrappedCallback;
 			return wrappedCallback(args, out error);
 		}
-		static extern(CIL) JSFunction CreateCallback(JSContext context, WrappedCallback callback, out JSScriptException error)
+		static extern(DOTNET) JSFunction CreateCallback(JSContext context, WrappedCallback callback, out JSScriptException error)
 		{
 			return Simple.Value.CreateCallback(context, Handle.Create(callback), CilCallback, out error);
 		}
@@ -254,13 +254,13 @@ namespace Fuse.Scripting.V8
 		public static string GetSourceLine(this JSScriptException jse, JSContext context) { return Simple.ScriptException.GetSourceLine(jse).ToStr(context); }
 
 		// Debug
-		static extern(CIL) JSDebugMessageHandler _cilMessageHandler = CilMessageHandlerImpl;
-		static extern(CIL) void CilMessageHandlerImpl(IntPtr data, JSString message)
+		static extern(DOTNET) JSDebugMessageHandler _cilMessageHandler = CilMessageHandlerImpl;
+		static extern(DOTNET) void CilMessageHandlerImpl(IntPtr data, JSString message)
 		{
 			var wrappedCallback = Handle.Target(data) as Action<JSString>;
 			wrappedCallback(message);
 		}
-		public static extern(CIL) void SetDebugMessageHandler(JSContext context, Action<JSString> messageHandler)
+		public static extern(DOTNET) void SetDebugMessageHandler(JSContext context, Action<JSString> messageHandler)
 		{
 			Simple.Debug.SetMessageHandler(context, Handle.Create(messageHandler), _cilMessageHandler);
 		}

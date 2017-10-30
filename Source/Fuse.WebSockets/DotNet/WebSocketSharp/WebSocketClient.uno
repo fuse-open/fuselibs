@@ -5,7 +5,7 @@ using Fuse.WebSocket;
 
 namespace WebSocketSharp
 {
-	internal extern(CIL) class WebSocketClient : IWebSocketClient, IDisposable
+	internal extern(DOTNET) class WebSocketClient : IWebSocketClient, IDisposable
 	{
 		WebSocketSharp.WebSocket _webSocket;
 		Action _open;

@@ -124,7 +124,7 @@ namespace Fuse.Scripting.V8.Simple
 	{
 		public static extern void Retain(JSContext context) @{ ::RetainJSContext($0); @}
 		public static extern void Release(JSContext context) @{ ::ReleaseJSContext($0); @}
-		public static extern(CIL) JSContext Create(JSCallbackFinalizer callbackFinalizer, JSExternalFinalizer externalFinalizer);
+		public static extern(DOTNET) JSContext Create(JSCallbackFinalizer callbackFinalizer, JSExternalFinalizer externalFinalizer);
 		public static extern(CPlusPlus) JSContext Create()
 		@{
 			return ::CreateJSContext(
@@ -150,7 +150,7 @@ namespace Fuse.Scripting.V8.Simple
 	[TargetSpecificImplementation]
 	extern(USE_V8) static class Debug
 	{
-		public static extern(CIL) void SetMessageHandler(JSContext context, IntPtr data, JSDebugMessageHandler messageHandler);
+		public static extern(DOTNET) void SetMessageHandler(JSContext context, IntPtr data, JSDebugMessageHandler messageHandler);
 		public static extern void SendCommand(JSContext context, string command, int length) @{ ::SendJSDebugCommand($0, (uint16_t*)$1->Ptr(), $2); @}
 		public static extern void ProcessMessages(JSContext context) @{ ::ProcessJSDebugMessages($0); @}
 	}
@@ -181,7 +181,7 @@ namespace Fuse.Scripting.V8.Simple
 		public static extern JSValue CreateDouble(double value) @{ return ::CreateJSDouble($0); @}
 		public static extern JSValue CreateBool(bool value) @{ return ::CreateJSBool($0); @}
 		public static extern JSObject CreateExternalArrayBuffer(JSContext context, IntPtr data, int byteLength) @{ return ::CreateExternalJSArrayBuffer($0, $1, $2); @}
-		public static extern(CIL) JSFunction CreateCallback(JSContext context, IntPtr data, JSCallback callback, out JSScriptException error);
+		public static extern(DOTNET) JSFunction CreateCallback(JSContext context, IntPtr data, JSCallback callback, out JSScriptException error);
 		// --------------------------------------------------------------------------
 		// String
 		public static extern JSString CreateString(JSContext context, string buffer, int length, out JSRuntimeError error) @{ return ::CreateJSString($0, (uint16_t*)$1->Ptr(), $2, (::JSRuntimeError*)$3); @}

@@ -3,7 +3,7 @@ using Uno;
 
 namespace Fuse.Text.Implementation
 {
-	extern(CIL || CPlusPlus) abstract class HarfbuzzFont : Font
+	extern(DOTNET || CPlusPlus) abstract class HarfbuzzFont : Font
 	{
 		protected IntPtr _hbFont; // hb_font_t*
 

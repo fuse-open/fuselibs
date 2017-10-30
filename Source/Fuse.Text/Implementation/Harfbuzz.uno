@@ -19,7 +19,7 @@ namespace Fuse.Text.Implementation
 	[extern((PInvoke || NATIVE) && HOST_WINDOWS) Require("LinkDirectory", "@('../harfbuzz/lib/Windows':Path)")]
 	[extern(!Android) Require("LinkLibrary", "harfbuzz")]
 	[TargetSpecificImplementation]
-	static extern(CIL || CPlusPlus || PInvoke) class Harfbuzz
+	static extern(DOTNET || CPlusPlus || PInvoke) class Harfbuzz
 	{
 		[Foreign(Language.CPlusPlus)]
 		public static IntPtr ft_font_create(IntPtr face)
