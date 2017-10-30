@@ -3,50 +3,6 @@
 		<p>This page contains a video-player, that should show the video "Big Buck Bunny".</p>
 	</InfoStack>
 	<DockPanel>
-		<Panel>
-			<Panel ux:Name="_loadingMessage" Background="#000" Opacity="0.5" Visibility="Hidden">
-				<Text TextColor="#fff" Alignment="Center">Loading...</Text>
-			</Panel>
-
-			<Panel ux:Name="_pauseMessage" Background="#000" Opacity="0.5" Visibility="Hidden">
-				<Text TextColor="#fff" Alignment="Center">Paused</Text>
-			</Panel>
-
-			<Panel ux:Name="_completedMessage" Background="#000" Opacity="0.5" Visibility="Hidden">
-				<Text TextColor="#fff" Alignment="Center">Completed</Text>
-			</Panel>
-
-			<Panel ux:Name="_errorMessage" Background="#000" Visibility="Hidden">
-				<Text TextColor="#f00" Alignment="Center">Error</Text>
-			</Panel>
-
-			<Video ux:Name="_video" Volume="0" Url="http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4" StretchMode="Uniform" Progress="{Property _slider.Value}" >
-
-				<WhilePlaying>
-					<Change _playButton.Visibility="Hidden" />
-					<Change _pauseButton.Visibility="Visible" />
-				</WhilePlaying>
-
-				<WhileLoading><Change _loadingMessage.Visibility="Visible" /></WhileLoading>
-				<WhilePaused><Change _pauseMessage.Visibility="Visible" /></WhilePaused>
-				<WhileCompleted><Change _completedMessage.Visibility="Visible" /></WhileCompleted>
-				<WhileFailed><Change _errorMessage.Visibility="Visible" /></WhileFailed>
-
-				<ProgressAnimation>
-					<Change _progressBar.Width="100%" />
-				</ProgressAnimation>
-
-			</Video>
-
-			<StackPanel Dock="Bottom">
-				<Text Value="Position: {=floor({ReadProperty _video.Position})}" />
-				<Text Value="Property-Bound duration: {= {ReadProperty _video.Duration}}" />
-				<Text Value="Duration from JS: {duration}" />
-			</StackPanel>
-		</Panel>
-
-		<JavaScript File="VideoPage.js" />
-
 		<StackPanel Dock="Bottom">
 
 			<Panel Margin="10" Height="10">
@@ -84,5 +40,50 @@
 				<StdButton Text="Update Duration Text" Clicked="{updateDurationText}" />
 			</Grid>
 		</StackPanel>
+		<Panel>
+			<Panel ux:Name="_loadingMessage" Background="#000" Opacity="0.5" Visibility="Hidden">
+				<Text TextColor="#fff" Alignment="Center">Loading...</Text>
+			</Panel>
+
+			<Panel ux:Name="_pauseMessage" Background="#000" Opacity="0.5" Visibility="Hidden">
+				<Text TextColor="#fff" Alignment="Center">Paused</Text>
+			</Panel>
+
+			<Panel ux:Name="_completedMessage" Background="#000" Opacity="0.5" Visibility="Hidden">
+				<Text TextColor="#fff" Alignment="Center">Completed</Text>
+			</Panel>
+
+			<Panel ux:Name="_errorMessage" Background="#000" Visibility="Hidden">
+				<Text TextColor="#f00" Alignment="Center">Error</Text>
+			</Panel>
+
+			<Video ux:Name="_video" Volume="0" Url="http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4" StretchMode="Uniform" Progress="{Property _slider.Value}" >
+
+				<WhilePlaying>
+					<Change _playButton.Visibility="Hidden" />
+					<Change _pauseButton.Visibility="Visible" />
+				</WhilePlaying>
+
+				<WhileLoading><Change _loadingMessage.Visibility="Visible" /></WhileLoading>
+				<WhilePaused><Change _pauseMessage.Visibility="Visible" /></WhilePaused>
+				<WhileCompleted><Change _completedMessage.Visibility="Visible" /></WhileCompleted>
+				<WhileFailed><Change _errorMessage.Visibility="Visible" /></WhileFailed>
+
+				<ProgressAnimation>
+					<Change _progressBar.Width="100%" />
+				</ProgressAnimation>
+
+			</Video>
+		</Panel>
+
+		<StackPanel Dock="Bottom">
+			<Text Value="Position: {=floor({ReadProperty _video.Position})}" />
+			<Text Value="Property-Bound duration: {= {ReadProperty _video.Duration}}" />
+			<Text Value="Duration from JS: {duration}" />
+		</StackPanel>
+
+		<JavaScript File="VideoPage.js" />
+
+
 	</DockPanel>
 </Page>
