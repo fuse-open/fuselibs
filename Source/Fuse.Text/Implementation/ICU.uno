@@ -3,9 +3,9 @@ using Uno.Compiler.ExportTargetInterop;
 
 namespace Fuse.Text.Implementation
 {
-	[extern(HOST_OSX && (PInvoke || CMake)) Require("LinkLibrary", "icucore")]
-	[extern(HOST_OSX && (PInvoke || iOS || CMake)) Require("IncludeDirectory", "@('../icu/i18n':Path)")]
-	[extern(HOST_OSX && (PInvoke || iOS || CMake)) Require("IncludeDirectory", "@('../icu/common':Path)")]
+	[extern(HOST_MAC && (PInvoke || CMake)) Require("LinkLibrary", "icucore")]
+	[extern(HOST_MAC && (PInvoke || iOS || CMake)) Require("IncludeDirectory", "@('../icu/i18n':Path)")]
+	[extern(HOST_MAC && (PInvoke || iOS || CMake)) Require("IncludeDirectory", "@('../icu/common':Path)")]
 	[extern(iOS) Require("LinkLibrary", "icuuc")]
 	[extern(iOS) Require("LinkLibrary", "icudata")]
 	[extern(iOS) Require("LinkDirectory", "@('../icu/iOS/':Path)")]
