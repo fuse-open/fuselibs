@@ -59,9 +59,6 @@ namespace Fuse.Text.Implementation
 		{
 			if (_initialized) return;
 
-			if defined(DotNet && HOST_WINDOWS)
-				DllDirectory.SetTargetSpecific();
-
 			FT_Error.Check(Init_FreeType(ref _library));
 
 			// TODO

@@ -8,14 +8,6 @@ using Uno.Threading;
 
 namespace Fuse.Scripting.V8.Simple
 {
-	[DotNetType("Fuse.Scripting.V8.Simple.DllDirectory")]
-	internal extern(USE_V8) static class DllDirectory
-	{
-		public static void SetTargetSpecific()
-		{
-		}
-	}
-
 	// -------------------------------------------------------------------------
 	// Types
 	[DotNetType("Fuse.Scripting.V8.Simple.JSType")]
