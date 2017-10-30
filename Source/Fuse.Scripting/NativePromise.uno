@@ -121,27 +121,27 @@ namespace Fuse.Scripting
 	    	{
 	    		_result = result;
 	    		if(_resolve != null)
-	    			_c.Dispatcher.Invoke(this.InternalResolve);
+	    			_c.ThreadWorker.Invoke(this.InternalResolve);
 	    	}
 
-	    	void InternalResolve()
+	    	void InternalResolve(Scripting.Context context)
     		{
     			if(_converter != null)
-    				_resolve.Call(_c, _converter(_c, _result));
+    				_resolve.Call(context, _converter(context, _result));
     			else
-    				_resolve.Call(_c, _result);
+    				_resolve.Call(context, _result);
     		}
 
 	    	void Reject(Exception reason)
 	    	{
 	    		_reason = reason;
 	    		if(_reject != null)
-	    			_c.Dispatcher.Invoke(this.InternalReject);
+	    			_c.ThreadWorker.Invoke(this.InternalReject);
 	    	}
 
-	    	void InternalReject()
+	    	void InternalReject(Scripting.Context context)
 	    	{
-	    		_reject.Call(_c, _reason.Message);
+	    		_reject.Call(context, _reason.Message);
 	    	}
 	    }
 	}

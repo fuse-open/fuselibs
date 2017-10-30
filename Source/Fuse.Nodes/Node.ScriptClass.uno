@@ -72,12 +72,12 @@ namespace Fuse
 			protected override void Resolve(IObject provider, object data)
 			{
 				_data = data;
-				_context.Dispatcher.Invoke(Update);
+				_context.ThreadWorker.Invoke(Update);
 			}
 
-			void Update()
+			void Update(Scripting.Context context)
 			{
-				_updateCallback.Call(_context, _context.Unwrap(_data));
+				_updateCallback.Call(context, context.Unwrap(_data));
 			}
 		}
 	}
