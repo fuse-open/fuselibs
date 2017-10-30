@@ -95,25 +95,25 @@ namespace Fuse.Scripting.JavaScript
 
 		object Set(Fuse.Scripting.Context context, object[] args)
 		{
-			new SetOperation(context, this, args);
+			new SetOperation(context, this, args).Perform();
 			return null;
 		}
 
 		object Add(Fuse.Scripting.Context context, object[] args)
 		{
-			new AddOperation(context, this, args);
+			new AddOperation(context, this, args).Perform();
 			return null;
 		}
 
 		object RemoveAt(Fuse.Scripting.Context context, object[] args)
 		{
-			new RemoveAtOperation(this, args);
+			new RemoveAtOperation(this, args).Perform();
 			return null;
 		}
 
 		object InsertAt(Fuse.Scripting.Context context, object[] args)
 		{
-			new InsertAtOperation(context, this, args);
+			new InsertAtOperation(context, this, args).Perform();
 			return null;
 		}
 
@@ -125,6 +125,10 @@ namespace Fuse.Scripting.JavaScript
 			{
 				Arguments = args;
 				TreeObservable = inst;
+			}
+
+			public void Perform()
+			{
 				UpdateManager.PostAction(PerformStart);
 			}
 
