@@ -32,7 +32,7 @@ namespace Fuse.Drawing
 		This also keeps the API minimal. There are no convenience functions in this class. Those are provided via higher-level classes, such as `LineSegments` or `SurfaceUtil`.
 	*/
 	
-	[Require("Assembly", "System.Drawing.dll")]
+	[Require("Assembly", "System.Drawing")]
 	[extern(DOTNET) Require("Source.Include","XliPlatform/GL.h")]
 	extern(DOTNET)
 	internal class DotNetSurface : Surface
