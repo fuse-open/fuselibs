@@ -4,8 +4,8 @@ using Fuse.Text.Implementation;
 
 namespace Fuse.Text.Implementation
 {
-	[extern(HOST_MAC && (PInvoke || iOS || CMake)) Require("Source.Include", "unicode/ubrk.h")]
-	[extern(HOST_WINDOWS && (PInvoke || MSVC)) Require("Source.Include", "unicode/ubrk.h")]
+	[extern(HOST_MAC && (PInvoke || iOS || NATIVE)) Require("Source.Include", "unicode/ubrk.h")]
+	[extern(HOST_WINDOWS && (PInvoke || NATIVE)) Require("Source.Include", "unicode/ubrk.h")]
 	static extern(USE_ICU) class UBrk
 	{
 		public static BitArray GetSoftLineBreaks(Substring text)
