@@ -12,7 +12,8 @@
     "Fuse.Controls.Native",
     "Fuse.Controls.Panels",
     "Fuse.Controls.Primitives",
-    "Fuse.Drawing.Surface"
+    "Fuse.Drawing.Surface",
+    "Fuse.iOS.TextRenderer"
   ],
   "Packages": [
     "Uno.Collections"
