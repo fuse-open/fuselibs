@@ -36,7 +36,13 @@ namespace Fuse.Triggers.Actions
 				Action();
 				
 			if (Handler != null)
-				Handler(target, new VisualEventArgs(target.FindByType<Visual>()) );
+			{
+				var visual = target.FindByType<Visual>();
+				// HACK: Users use 'args.sender' to identify which visual people
+				// for instance clicked. To restore this behavior, lie about the
+				// sender here, and pass `visual` instead.
+				Handler(visual, new VisualEventArgs(visual));
+			}
 		}
 	}
 }
