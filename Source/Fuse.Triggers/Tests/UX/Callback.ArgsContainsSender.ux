@@ -1,0 +1,20 @@
+<Panel ux:Class="UX.Callback.ArgsContainsSender" ux:Name="ExpectedSender">
+	<JavaScript>
+		var Observable = require("FuseJS/Observable");
+		var sender = Observable();
+		var callback = function (args) {
+			console.log(JSON.stringify(args));
+			sender.value = args.sender;
+		}
+		module.exports = {
+			callback: callback,
+			sender: sender
+		};
+	</JavaScript>
+
+	<Clicked>
+		<Callback Handler="{callback}"/>
+	</Clicked>
+
+	<Text ux:Name="Sender" Value="{sender}" />
+</Panel>
