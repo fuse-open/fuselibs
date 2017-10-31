@@ -97,11 +97,10 @@ namespace Fuse.Scripting.JavaScript
 			{
 				var ta = SubscriptionSubject as TreeArray;
 
-				var worker = Fuse.Reactive.JavaScript.Worker;
 				var replaceAll = new ReplaceAllOperation((Scripting.Array)ta.Raw, values);
 				replaceAll.Perform(context);
 
-				ta.ReplaceAll(values, this);
+				UpdateManager.PostAction(new ReplaceAllOnUIThreadClosure(ta, values, this).Perform);
 			}
 
 			public void ReplaceAllExclusive(IArray values)
@@ -152,6 +151,25 @@ namespace Fuse.Scripting.JavaScript
 						return _values[index];
 					}
 				}
+			}
+		}
+
+		class ReplaceAllOnUIThreadClosure
+		{
+			TreeArray _treeArray;
+			IArray _newValues;
+			ArraySubscription _exclude;
+
+			public ReplaceAllOnUIThreadClosure(TreeArray treeArray, IArray newValues, ArraySubscription exclude)
+			{
+				_treeArray = treeArray;
+				_newValues = newValues;
+				_exclude = exclude;
+			}
+
+			public void Perform()
+			{
+				_treeArray.ReplaceAll(_newValues, _exclude);
 			}
 		}
 
