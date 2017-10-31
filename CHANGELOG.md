@@ -1,5 +1,8 @@
 # Unreleased
 
+## Notifications
+- Fix regression causing iOS apps not to be accepted to the Store apparently due to use of push-notifications even though they are not used in the project.
+
 ## Navigation
 - `Navigator` blocks input to pages while trasitioning to new pages. To get the old behaviour, where input is not blocked, set `<Navigator BlockInput="Never">`.
 

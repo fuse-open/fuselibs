@@ -24,6 +24,7 @@
     "JS.uno:Source",
 
     "iOS/Impl.uno:Source",
+    "iOS/Impl.uxl:Extensions",
     "iOS/AppDelegatePushNotify.h:CHeader:iOS",
     "iOS/AppDelegatePushNotify.mm:CSource:iOS",
 
