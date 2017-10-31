@@ -7,13 +7,8 @@ namespace Fuse.Scripting.JavaScript
 {
 	class TreeObservable: TreeObject, IMirror
 	{
-		// TreeObservable requires unsafe access to the context. For more info please see this ticket:
-		// https://github.com/fusetools/fuselibs-public/issues/639
-		readonly Scripting.Context _context;
-
 		public TreeObservable(Scripting.Context context, Scripting.Object obj) : base(obj)
 		{
-			_context = context;
 			Set(context, this, obj);
 			Subscribe();
 		}
@@ -95,25 +90,25 @@ namespace Fuse.Scripting.JavaScript
 
 		object Set(Fuse.Scripting.Context context, object[] args)
 		{
-			new SetOperation(context, this, args).Perform();
+			new SetOperation(context, this, args).Perform(context);
 			return null;
 		}
 
 		object Add(Fuse.Scripting.Context context, object[] args)
 		{
-			new AddOperation(context, this, args).Perform();
+			new AddOperation(context, this, args).Perform(context);
 			return null;
 		}
 
 		object RemoveAt(Fuse.Scripting.Context context, object[] args)
 		{
-			new RemoveAtOperation(this, args).Perform();
+			new RemoveAtOperation(this, args).Perform(context);
 			return null;
 		}
 
 		object InsertAt(Fuse.Scripting.Context context, object[] args)
 		{
-			new InsertAtOperation(context, this, args).Perform();
+			new InsertAtOperation(context, this, args).Perform(context);
 			return null;
 		}
 
@@ -127,33 +122,43 @@ namespace Fuse.Scripting.JavaScript
 				TreeObservable = inst;
 			}
 
-			public void Perform()
+			public void Perform(Scripting.Context context)
 			{
-				UpdateManager.PostAction(PerformStart);
-			}
-
-			void PerformStart()
-			{
-				Perform(TreeObservable, 0);
+				Perform(context, TreeObservable, 0);
 			}
 
 			protected abstract int SpecialArgCount { get; }
 			protected abstract void Perform(object dc);
 
-			void Perform(object dc, int pos)
+			class PerformClosure
+			{
+				readonly Operation _operation;
+				readonly object _dc;
+
+				public PerformClosure(Operation operation, object dc)
+				{
+					_operation = operation;
+					_dc = dc;
+				}
+
+				public void Perform()
+				{
+					_operation.Perform(_dc);
+				}
+			}
+
+			void Perform(Scripting.Context context, object dc, int pos)
 			{
 				if (pos > Arguments.Length - SpecialArgCount)
 				{
 					// Replace entire state
-					// WARNING: UNSAFE USE OF CACHED JS CONTEXT
-					// See issue linked at definition of _context
-					TreeObservable.Set(TreeObservable._context, TreeObservable, (Scripting.Object)Arguments[0]);
+					TreeObservable.Set(context, TreeObservable, (Scripting.Object)Arguments[0]);
 					return;
 				}
 
 				if (pos == Arguments.Length - SpecialArgCount)
 				{
-					Perform(dc);
+					UpdateManager.PostAction(new PerformClosure(this, dc).Perform);
 					return;
 				}
 
@@ -161,7 +166,7 @@ namespace Fuse.Scripting.JavaScript
 				if (obj != null)
 				{
 					var key = Arguments[pos].ToString();
-					Perform(obj[key], pos+1);
+					Perform(context, obj[key], pos+1);
 					return;
 				}
 
@@ -169,7 +174,7 @@ namespace Fuse.Scripting.JavaScript
 				if (arr != null)
 				{
 					var index = Marshal.ToInt(Arguments[pos]);
-					Perform(arr[index], pos+1);
+					Perform(context, arr[index], pos+1);
 					return;
 				}
 
