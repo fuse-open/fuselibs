@@ -2,6 +2,11 @@
 
 # 1.3
 
+## 1.3.2
+
+### Callback
+- Fixed a regression where args.sender was no longer the `ux:Name` of the parent of the trigger.
+
 ## 1.3.1
 
 ### Navigation
