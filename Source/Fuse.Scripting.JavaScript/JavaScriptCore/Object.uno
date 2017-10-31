@@ -27,18 +27,24 @@ namespace Fuse.Scripting.JavaScriptCore
 		{
 			get
 			{
-				return _context.Wrap(_value.GetProperty(
-					_context._context,
-					key,
-					_context._onError));
+				object result = null;
+				using (var vm = new Context.EnterVM(_context))
+					result = _context.Wrap(_value.GetProperty(
+						_context._context,
+						key,
+						_context._onError));
+				_context.ThrowPendingException();
+				return result;
 			}
 			set
 			{
-				_value.SetProperty(
-					_context._context,
-					key,
-					_context.Unwrap(value),
-					_context._onError);
+				using (var vm = new Context.EnterVM(_context))
+					_value.SetProperty(
+						_context._context,
+						key,
+						_context.Unwrap(value),
+						_context._onError);
+				_context.ThrowPendingException();
 			}
 		}
 
@@ -72,21 +78,32 @@ namespace Fuse.Scripting.JavaScriptCore
 		{
 			var ctx = (Context)context;
 			if (name == null) throw new ArgumentException("Object.CallMethod.name");
-			var f = _value.GetProperty(
-				ctx._context,
-				name,
-				ctx._onError).GetJSObjectRef(ctx._context);
-			return ctx.Wrap(
-				f.CallAsFunction(
+
+			object result = null;
+			using (var vm = new Context.EnterVM(_context))
+			{
+				var f = _value.GetProperty(
 					ctx._context,
-					_value,
-					ctx.Unwrap(args),
-					ctx._onError));
+					name,
+					ctx._onError).GetJSObjectRef(ctx._context);
+				result = ctx.Wrap(
+					f.CallAsFunction(
+						ctx._context,
+						_value,
+						ctx.Unwrap(args),
+						ctx._onError));
+			}
+			_context.ThrowPendingException();
+			return result;
 		}
 
 		public override bool ContainsKey(string key)
 		{
-			return _value.HasProperty(_context._context, key);
+			bool result = false;
+			using (var vm = new Context.EnterVM(_context))
+				result = _value.HasProperty(_context._context, key);
+			_context.ThrowPendingException();
+			return result;
 		}
 
 		public override bool Equals(Scripting.Object o)

@@ -26,17 +26,23 @@ namespace Fuse.Scripting.JavaScriptCore
 		{
 			get
 			{
-				return _context.Wrap(_value.GetPropertyAtIndex(
-					_context._context,
-					index,
-					_context._onError));
+				object result = null;
+				using (var vm = new Context.EnterVM(_context))
+					result = _context.Wrap(_value.GetPropertyAtIndex(
+						_context._context,
+						index,
+						_context._onError));
+				_context.ThrowPendingException();
+				return result;
 			}
 			set
 			{
-				_value.SetPropertyAtIndex(_context._context,
-					index,
-					_context.Unwrap(value),
-					_context._onError);
+				using (var vm = new Context.EnterVM(_context))
+					_value.SetPropertyAtIndex(_context._context,
+						index,
+						_context.Unwrap(value),
+						_context._onError);
+				_context.ThrowPendingException();
 			}
 		}
 
@@ -44,12 +50,16 @@ namespace Fuse.Scripting.JavaScriptCore
 		{ 
 			get
 			{
-				return (int)_value.GetProperty(
-					_context._context,
-					"length",
-					_context._onError).ToNumber(
+				int result = 0;
+				using (var vm = new Context.EnterVM(_context))
+					result = (int)_value.GetProperty(
 						_context._context,
-						_context._onError);
+						"length",
+						_context._onError).ToNumber(
+							_context._context,
+							_context._onError);
+				_context.ThrowPendingException();
+				return result;
 			}
 		}
 
