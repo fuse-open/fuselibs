@@ -1,9 +1,11 @@
 using Uno;
+using Uno.Compiler;
 using Uno.Testing;
 
 using FuseTest;
 using Fuse.Controls;
 using Fuse.Resources;
+using Fuse.Resources.Exif;
 
 namespace Fuse.Controls.Primitives.Test
 {
@@ -88,6 +90,61 @@ namespace Fuse.Controls.Primitives.Test
 
 				var d = dg.DequeueAll();
 			}
+		}
+
+		static float4x4 TransformFromImageOrientationReference(ImageOrientation orientation)
+		{
+			var flip = Matrix.Scaling(1,1,1);
+			var rotation = Matrix.RotationZ(0.0f);
+
+			if (orientation.HasFlag(ImageOrientation.FlipVertical))
+				flip = Matrix.Scaling(1,-1,1);
+
+			if ((orientation & (int)0x03) == ImageOrientation.Rotate270)
+				rotation = Matrix.RotationZ(Math.PIf / 2.0f);
+			else if ((orientation & (int)0x03) == ImageOrientation.Rotate90)
+				rotation = Matrix.RotationZ(-Math.PIf / 2.0f);
+			else if ((orientation & (int)0x03) == ImageOrientation.Rotate180)
+				rotation = Matrix.RotationZ(Math.PIf);
+
+			var translateToCenter = Matrix.Translation(0.5f,0.5f,0.0f);
+			var translateBack = Matrix.Translation(-0.5f,-0.5f,0.0f);
+			return Matrix.Mul(translateBack, flip, rotation, translateToCenter);
+		}
+
+		public void TestImageOrientation(ImageOrientation orientation, [CallerFilePath] string filePath = "", [CallerLineNumber] int lineNumber = 0, [CallerMemberName] string memberName = "")
+		{
+			var tolerance = 1e-5f; // the reference-code uses trig, which is a bit inaccurate
+			var expected = TransformFromImageOrientationReference(orientation);
+			var transform = Image.TransformFromImageOrientation(orientation);
+			Assert.AreEqual(expected, transform, tolerance, filePath, lineNumber, memberName);
+
+			Assert.AreEqual(0, transform.M13);
+			Assert.AreEqual(0, transform.M14);
+
+			Assert.AreEqual(0, transform.M23);
+			Assert.AreEqual(0, transform.M24);
+
+			Assert.AreEqual(0, transform.M31);
+			Assert.AreEqual(0, transform.M32);
+			Assert.AreEqual(1, transform.M33);
+			Assert.AreEqual(0, transform.M34);
+
+			Assert.AreEqual(0, transform.M43);
+			Assert.AreEqual(1, transform.M44);
+		}
+
+		[Test]
+		public void TransformFromImageOrientation()
+		{
+			TestImageOrientation(ImageOrientation.Identity);
+			TestImageOrientation(ImageOrientation.FlipVertical);
+			TestImageOrientation(ImageOrientation.Rotate90);
+			TestImageOrientation(ImageOrientation.Rotate90 | ImageOrientation.FlipVertical);
+			TestImageOrientation(ImageOrientation.Rotate180);
+			TestImageOrientation(ImageOrientation.Rotate180 | ImageOrientation.FlipVertical);
+			TestImageOrientation(ImageOrientation.Rotate270);
+			TestImageOrientation(ImageOrientation.Rotate270 | ImageOrientation.FlipVertical);
 		}
 	}
 }

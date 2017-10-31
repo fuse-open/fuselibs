@@ -86,24 +86,38 @@ namespace Fuse.Controls
 			DrawVisualColor(dc, Color);
 		}
 
-		float4x4 TransformFromImageOrientation(ImageOrientation orientation)
+		internal static float4x4 TransformFromImageOrientation(ImageOrientation orientation)
 		{
-			var flip = Matrix.Scaling(1,1,1);
-			var rotation = Matrix.RotationZ(0.0f);
+			var transform = float4x4.Identity;
 
-			if (Source.Orientation.HasFlag(ImageOrientation.FlipVertical))
-				flip = Matrix.Scaling(1,-1,1);
+			if (orientation.HasFlag(ImageOrientation.FlipVertical))
+			{
+				transform.M22 = -1;
+				transform.M42 =  1;
+			}
 
-			if ((Source.Orientation & (int)0x03) == ImageOrientation.Rotate270)
-				rotation = Matrix.RotationZ(Math.PIf / 2.0f);
-			else if ((Source.Orientation & (int)0x03) == ImageOrientation.Rotate90)
-				rotation = Matrix.RotationZ(-Math.PIf / 2.0f);
-			else if ((Source.Orientation & (int)0x03) == ImageOrientation.Rotate180)
-				rotation = Matrix.RotationZ(Math.PIf);
+			if (orientation.HasFlag(ImageOrientation.Rotate180))
+			{
+				transform.M11 = -1;
+				transform.M22 = -transform.M22;
+				transform.M41 =  1;
+				transform.M42 =  1 - transform.M42;
+			}
 
-			var translateToCenter = Matrix.Translation(0.5f,0.5f,0.0f);
-			var translateBack = Matrix.Translation(-0.5f,-0.5f,0.0f);
-			return Matrix.Mul(translateBack, flip, rotation, translateToCenter);
+			if (orientation.HasFlag(ImageOrientation.Rotate90))
+			{
+				transform.M12 = -transform.M11;
+				transform.M11 = 0;
+
+				transform.M21 = transform.M22;
+				transform.M22 = 0;
+
+				var tmp = transform.M41;
+				transform.M41 = transform.M42;
+				transform.M42 = 1 - tmp;
+			}
+
+			return transform;
 		}
 		
 		void DrawVisualColor(DrawContext dc, float4 color)
