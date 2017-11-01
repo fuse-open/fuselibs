@@ -1,5 +1,8 @@
 # Unreleased
 
+## TextView
+- Fixed iOS issue where the return key would display "next" instead of "return".
+
 ## Navigation
 - `Navigator` blocks input to pages while trasitioning to new pages. To get the old behaviour, where input is not blocked, set `<Navigator BlockInput="Never">`.
 
