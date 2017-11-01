@@ -41,8 +41,10 @@ namespace Fuse.Reactive.Test
 				var s = (ScriptException)diagnostics[0].Exception;
 				if (s.SourceLine != null)
 					Assert.Contains("require(\"FuseJS/Pinecone\")", s.SourceLine);
-				Assert.AreEqual(3, s.LineNumber);
-				Assert.Contains("Error.RequireInvalid.ux", s.FileName);
+				if (s.LineNumber >= 0)
+					Assert.AreEqual(3, s.LineNumber);
+				if (s.FileName != null)
+					Assert.Contains("Error.RequireInvalid.ux", s.FileName);
 				Assert.Contains("module not found: FuseJS/Pinecone", s.ErrorMessage);
 			}
 		}
