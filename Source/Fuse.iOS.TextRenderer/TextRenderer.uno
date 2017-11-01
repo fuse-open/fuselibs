@@ -6,6 +6,7 @@ using OpenGL;
 using Fuse.Elements;
 using Fuse.Controls.Graphics;
 using Fuse.Controls;
+using Fuse.Drawing;
 
 namespace Fuse.iOS.Bindings
 {
@@ -263,8 +264,8 @@ namespace Fuse.iOS.Bindings
 				_texture = new texture2D(textureHandle, pixelSize, 1, Format.RGBA8888);
 			}
 
-			Blitter.Singleton.Blit(dc,where,_texture, 
-				_textLayout.PixelBounds.Position / _control.Viewport.PixelsPerPoint + _arrangePosition, pointSize);
+			var pointPosition = _textLayout.PixelBounds.Position / _control.Viewport.PixelsPerPoint;
+			Blitter.Singleton.Blit(_texture, new Rect(pointPosition, pointSize), dc.GetLocalToClipTransform(where), 1.0f, true);
 		}
 
 		static CGContextRef CGBitmapContextCreate(IntPtr textureBuffer, int width, int height, CGColorSpaceRef colorSpace)
@@ -336,27 +337,5 @@ namespace Fuse.iOS.Bindings
 		}
 
 		texture2D _texture;
-	}
-	
-	class Blitter
-	{
-		internal static Blitter Singleton = new Blitter();
-
-		public void Blit(DrawContext dc, Visual where, texture2D vt, float2 pos, float2 size)
-		{
-			draw
-			{
-				apply Fuse.Drawing.Planar.Image;
-				DrawContext: dc;
-				Visual: where;
-				Size: size;
-				Position: pos;
-				Texture: vt;
-				Invert: true;
-
-				apply Fuse.Drawing.PreMultipliedAlphaCompositing;
-				DepthTestEnabled: false;
-			};
-		}
 	}
 }

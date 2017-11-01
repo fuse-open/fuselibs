@@ -7,8 +7,14 @@
     "ProjectUrl": "https://fusetools.com"
   },
   "InternalsVisibleTo": [
-    "Fuse.Reactive",
-    "Fuse.Scripting",
+    "Fuse.Android.TextRenderer",
+    "Fuse.Controls",
+    "Fuse.Controls.Native",
+    "Fuse.Controls.Panels",
+    "Fuse.Controls.Primitives",
+    "Fuse.Drawing.Surface",
+    "Fuse.Elements",
+    "Fuse.iOS.TextRenderer"
   ],
   "Packages": [
     "Uno.Collections"

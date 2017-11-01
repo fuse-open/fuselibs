@@ -129,7 +129,7 @@ namespace Fuse.Drawing
 			var fb = FramebufferPool.Lock( src.PixelSize, Uno.Graphics.Format.RGBA8888, false );
 
 			_drawContext.PushRenderTarget(fb);
-			AndroidGraphicsDrawHelper.Singleton.DrawImageFill(tex);
+			Blitter.Singleton.Blit(tex, new Rect(float2(-1), float2(2)), float4x4.Identity, 1.0f, true);
 			Java.Object imageRef = LoadImage((int)tex.GLTextureHandle, src.PixelSize.X, src.PixelSize.Y );
 			FramebufferPool.Release(fb);
 			_drawContext.PopRenderTarget();

@@ -131,7 +131,7 @@ namespace Fuse.Drawing
 				//TODO: this is not entirely correct since _drawContext could be null now -- but it isn't
 				//in any of our use cases, but the contract certainly allows for it
 				_drawContext.PushRenderTarget(fb);
-				CoreGraphicsDrawHelper.Singleton.DrawImageFill(tex);
+				Blitter.Singleton.Blit(tex, new Rect(float2(-1), float2(2)), float4x4.Identity, 1.0f, true);
 				imageRef = LoadImagePoor(_context, src.PixelSize.X, src.PixelSize.Y );
 				FramebufferPool.Release(fb);
 				_drawContext.PopRenderTarget();

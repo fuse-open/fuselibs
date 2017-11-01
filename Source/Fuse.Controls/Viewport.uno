@@ -3,6 +3,7 @@ using Uno.Graphics;
 using Uno.UX;
 
 using Fuse.Nodes;
+using Fuse.Drawing;
 
 namespace Fuse.Elements
 {
@@ -263,16 +264,11 @@ namespace Fuse.Elements
 
 				dc.PopRenderTargetViewport();
 
-				//TODO: mvoe to static class
-				draw
-				{
-					apply Fuse.Drawing.Planar.Image;
-					DrawContext: dc;
-					Visual: this;
-					Size: ActualSize;
-					Invert: true;
-					Texture: fb.ColorBuffer;
-				};
+				Blitter.Singleton.Blit(
+					fb.ColorBuffer,
+					new Rect(float2(0, 0), ActualSize),
+					dc.GetLocalToClipTransform(this),
+					1.0f, true);
 
 				if defined(FUSELIBS_DEBUG_DRAW_RECTS)
 					DrawRectVisualizer.Capture(float2(0), ActualSize, WorldTransform, dc);

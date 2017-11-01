@@ -530,31 +530,4 @@ namespace Fuse.Drawing
 			}
 		@}
 	}
-	
-	extern(iOS||OSX)
-	class CoreGraphicsDrawHelper
-	{
-		static public CoreGraphicsDrawHelper Singleton = new CoreGraphicsDrawHelper();
-		
-		public void DrawImageFill( texture2D texture )
-		{
-			draw
-			{
-				float2[] Vertices: new []
-				{
-					float2(0, 0), float2(1, 0), float2(1, 1),
-					float2(1, 1), float2(0, 1), float2(0, 0)
-				};
-
-				float2 VertexData: vertex_attrib(Vertices);
-				VertexCount : 6;
-
-				ClipPosition: float4(VertexData*2 -1, 0,1);
-
-				DepthTestEnabled: false;
-				PixelColor: sample(texture, float2(VertexData.X,1-VertexData.Y), Uno.Graphics.SamplerState.LinearClamp);
-			};
-		}
-	}
-	
 }
