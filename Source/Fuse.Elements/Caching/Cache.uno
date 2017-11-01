@@ -3,6 +3,7 @@ using Uno.Graphics;
 using Uno.UX;
 using Uno.Collections;
 
+using Fuse.Drawing;
 using Fuse.Nodes;
 
 namespace Fuse.Elements
@@ -215,31 +216,9 @@ namespace Fuse.Elements
 		{
 			foreach (CacheTile tile in cache.CacheTiles)
 			{
-				draw
-				{
-					float2[] Vertices: new[]
-					{
-						float2(0, 0), float2(0, 1), float2(1, 1),
-						float2(0, 0), float2(1, 1), float2(1, 0)
-					};
-
-					float2 Coord: vertex_attrib(Vertices);
-					float2 TexCoord: float2(Coord.X, 1.0f - Coord.Y);
-
-					float2 Size: float2(tile.Texture.Size.X, tile.Texture.Size.Y) / dc.ViewportPixelsPerPoint;
-
-					float4 p: Vector.Transform(float4(Coord * Size, 0, 1), tile._compositMatrix);
-
-					ClipPosition: Vector.Transform(p, dc.Viewport.ViewProjectionTransform );
-
-					PixelColor: sample(tile.Texture, TexCoord, SamplerState.LinearClamp);
-
-					PixelColor: float4(prev.XYZ*opacity, prev.W*opacity);
-
-					CullFace: dc.CullFace;
-					DepthTestEnabled: false;
-					apply Fuse.Drawing.PreMultipliedAlphaCompositing;
-				};
+				var size = float2(tile.Texture.Size.X, tile.Texture.Size.Y) / dc.ViewportPixelsPerPoint;
+				var localToClipTransform = Matrix.Mul(tile._compositMatrix, dc.Viewport.ViewProjectionTransform);
+				Blitter.Singleton.Blit(tile.Texture, new Rect(float2(0), size), localToClipTransform, opacity, true, dc.CullFace);
 
 				if defined(FUSELIBS_DEBUG_DRAW_RECTS)
 					DrawRectVisualizer.Capture(float2(0), float2(tile.Texture.Size.X, tile.Texture.Size.Y), tile._compositMatrix, dc);
