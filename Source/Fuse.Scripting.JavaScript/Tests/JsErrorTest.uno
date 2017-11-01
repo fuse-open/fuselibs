@@ -24,7 +24,6 @@ namespace Fuse.Reactive.Test
 					Assert.Contains("none()", s.SourceLine);
 				Assert.AreEqual(3, s.LineNumber);
 				Assert.Contains("Error.UnknownSymbol.ux", s.FileName);
-				Assert.Contains("none is not defined", s.ErrorMessage);
 			}
 		}
 		
@@ -69,7 +68,6 @@ namespace Fuse.Reactive.Test
 						Assert.Contains("q.value.x", s.SourceLine);
 					Assert.AreEqual(6, s.LineNumber);
 					Assert.Contains("Error.ReadUndefined.ux", s.FileName);
-					Assert.Contains("Cannot read property 'x' of undefined", s.ErrorMessage);
 				}
 			}
 		}
