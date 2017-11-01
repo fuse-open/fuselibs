@@ -3,7 +3,7 @@
 		var TreeObservable = require("FuseJS/TreeObservable");
 		function Tree() { node(this); }
 		Tree.prototype = Object.create(TreeObservable.prototype);
-		let tree = new Tree();
+		var tree = new Tree();
 
 		var id = 0;
 		function node(o) {

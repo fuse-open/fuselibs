@@ -2,11 +2,11 @@
 	<JavaScript>
 		var TreeObservable = require("FuseJS/TreeObservable");
 		function Tree() {
-			let tree = this;
+			var tree = this;
 			this.wasChanged = false;
 			this.__fuse_id = 0;
 
-			let thing = this.thing = {
+			var thing = this.thing = {
 				__fuse_id: 1,
 				__fuse_requestChange: function(key, value) {
 					if(thing[key] === value) return;
