@@ -19,6 +19,9 @@ namespace Fuse.Scripting.JavaScriptCore
 		readonly JSClassRef _unoFinalizerClass;
 		readonly JSClassRef _unoCallbackClass;
 
+		int _vmDepth;
+		internal Exception _pendingException;
+
 		public Context(): base()
 		{
 			_context = JSContextRef.Create();
@@ -70,16 +73,58 @@ namespace Fuse.Scripting.JavaScriptCore
 			Dispose();
 		}
 
+		// We can't throw Uno exceptions across the JSC library boundary,
+		// so we use this to keep track of how deep into the VM we are
+		// (e.g. because of Uno->JS->Uno->JS callbacks etc) and rethrow
+		// Uno exceptions on the way out when we've fully exited the VM.
+
+		internal struct EnterVM : IDisposable
+		{
+			Context _context;
+			public EnterVM(Context context)
+			{
+				_context = context;
+				++_context._vmDepth;
+			}
+
+			public void Dispose()
+			{
+				--_context._vmDepth;
+				_context = null;
+			}
+		}
+
+		internal void ThrowPendingException()
+		{
+			if (_vmDepth > 0)
+				return;
+
+			if (_pendingException != null)
+			{
+				var e = _pendingException;
+				_pendingException = null;
+				throw new Exception("Unexpected Uno.Exception", e);
+			}
+		}
+
 		public override object Evaluate(string fileName, string code)
 		{
 			if (fileName == null) throw new ArgumentException("Context.Evaluate.fileName");
 			if (code == null) throw new ArgumentException("Context.Evaluate.code");
-			return Wrap(_context.EvaluateScript(
-				code,
-				default(JSObjectRef),
-				fileName,
-				0,
-				_onError));
+
+			object ret = null;
+			using (var vm = new EnterVM(this))
+			{
+				ret = Wrap(_context.EvaluateScript(
+					code,
+					default(JSObjectRef),
+					fileName,
+					0,
+					_onError));
+			}
+
+			ThrowPendingException();
+			return ret;
 		}
 
 		public override Scripting.Object GlobalObject
@@ -300,9 +345,16 @@ namespace Fuse.Scripting.JavaScriptCore
 				{
 					return _context.Unwrap(_callback(_context, _context.Wrap(args)));
 				}
-				catch (Scripting.Error e)
+				catch (Exception e)
 				{
-					exception = JSValueRef.MakeString(_context._context, e.Message);
+					var se = e as Scripting.Error;
+					if (se != null)
+						exception = JSValueRef.MakeString(_context._context, e.Message);
+					else
+					{
+						if (_context._pendingException == null)
+							_context._pendingException = e;
+					}
 				}
 				return default(JSValueRef);
 			}

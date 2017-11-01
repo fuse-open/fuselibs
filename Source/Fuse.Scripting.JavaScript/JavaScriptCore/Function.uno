@@ -26,21 +26,29 @@ namespace Fuse.Scripting.JavaScriptCore
 			// Ensure this function is being called from the context/vm it belongs to
 			assert context == _context;
 
-			return _context.Wrap(
-				_value.CallAsFunction(
-					_context._context,
-					default(JSObjectRef),
-					_context.Unwrap(args),
-					_context._onError));
+			object result = null;
+			using (var vm = new Context.EnterVM(_context))
+				result = _context.Wrap(
+					_value.CallAsFunction(
+						_context._context,
+						default(JSObjectRef),
+						_context.Unwrap(args),
+						_context._onError));
+			_context.ThrowPendingException();
+			return result;
 		}
 
 		public override Scripting.Object Construct(params object[] args)
 		{
-			return (Scripting.Object)_context.Wrap(
-				_value.CallAsConstructor(
-					_context._context,
-					_context.Unwrap(args),
-					_context._onError).GetJSValueRef());
+			Scripting.Object result = null;
+			using (var vm = new Context.EnterVM(_context))
+				result = (Scripting.Object)_context.Wrap(
+						_value.CallAsConstructor(
+						_context._context,
+						_context.Unwrap(args),
+						_context._onError).GetJSValueRef());
+			_context.ThrowPendingException();
+			return result;
 		}
 
 		public override bool Equals(Scripting.Function f)
