@@ -38,12 +38,11 @@ exports.adaptView = function(view, viewModule, model) {
 		}
 	}
 
-	var viewProps = Object.getOwnPropertyDescriptors(view);
-	for (var key in viewProps) {
-		if(key in model
-			&& !viewProps[key].enumerable
-			&& view[key] instanceof Observable)
-		{
+	var keys = Object.getOwnPropertyNames(view);
+	for (var key in keys) {
+		if(!(key in model)) continue;
+		var descriptor = Object.getOwnPropertyDescriptor(view, key);
+		if(!descriptor.enumerable && view[key] instanceof Observable) {
 			wrapProperty(key);
 		}
 	}

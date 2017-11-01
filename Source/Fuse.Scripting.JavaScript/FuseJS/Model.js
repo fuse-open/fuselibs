@@ -118,19 +118,23 @@ function Model(initialState, stateInitializer)
 
 		function registerProps(obj) {
 
-			var descs = Object.getOwnPropertyDescriptors(obj);
-			for (var p in descs) {
+			var keys = Object.getOwnPropertyNames(obj);
+			for (var i in keys) {
+				var p = keys[i];
 				if (p === "constructor") { continue; }
 				var value = state[p];
 				if (value instanceof Function) {
 					node[p] = wrapFunction(value);
 					state[p] = node[p];
 				}
-				else if (descs[p].get instanceof Function)
-				{
-					if (isThenable(value)) { node[p] = null; dealWithPromise(p, value); }
-					else { node[p] = wrap(p, value); }
-					propGetters[p] = descs[p].get;
+				else {
+					var descriptor = Object.getOwnPropertyDescriptor(obj, p);
+					if(descriptor.get instanceof Function)
+					{
+						if (isThenable(value)) { node[p] = null; dealWithPromise(p, value); }
+						else { node[p] = wrap(p, value); }
+						propGetters[p] = descriptor.get;
+					}
 				}
 			}
 
