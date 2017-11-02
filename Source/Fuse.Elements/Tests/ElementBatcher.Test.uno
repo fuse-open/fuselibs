@@ -58,6 +58,9 @@ namespace Fuse.Elements.Test
 		{
 			using (var rootPanel = new TestRootPanel())
 			{
+				Assert.AreNotEqual(0, ElementAtlasFramebuffer.Size.X);
+				Assert.AreNotEqual(0, ElementAtlasFramebuffer.Size.Y);
+
 				var batcher = new ElementBatcher();
 				var elements = new List<MockElement>();
 				for (int i = 0; i < 20; ++i)
