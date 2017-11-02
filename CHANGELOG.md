@@ -30,6 +30,7 @@
 
 ### WebView
 - Exported the methods goBack, goForward, reload and stop for use in FuseJS
+- Fixed regression in 1.3 that broke WebView when using URISchemeHandler
 
 ### ScrollViewPager
 - Fixed a NullReferenceError that could happen while using ScrollViewPager in preview
