@@ -49,7 +49,7 @@ namespace Fuse.WebSocket
 				_client = new SocketRocket.WebSocketClient();
 			} else if defined(Android) {
 				_client = new Neovisionaries.WebSocketClient();
-			} else if defined(CIL) {
+			} else if defined(DOTNET) {
 				_client = new WebSocketSharp.WebSocketClient();
 			} else {
 				throw new Exception("WebSocket is not supported on this platform");

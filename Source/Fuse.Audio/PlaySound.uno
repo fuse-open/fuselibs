@@ -35,13 +35,13 @@ namespace Fuse
 			get; set;
 		}
 
-		extern(!Android && !iOS && !(HOST_WINDOWS && CIL))
+		extern(!Android && !iOS && !(HOST_WINDOWS && DOTNET))
 		protected override void Perform(Node n)
 		{
 			Fuse.Diagnostics.UserWarning("Sound Effect Playback is not yet implemented for this platform", this);
 		}
 
-		extern(Android || iOS || (HOST_WINDOWS && CIL))
+		extern(Android || iOS || (HOST_WINDOWS && DOTNET))
 		protected override void Perform(Node n)
 		{
 			if(File == null) return;

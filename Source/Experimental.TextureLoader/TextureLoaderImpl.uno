@@ -9,7 +9,7 @@ namespace Experimental.TextureLoader
 		[TargetSpecificImplementation]
 		public static void JpegByteArrayToTexture2D(Buffer arr, Callback callback)
 		{
-			if defined(CIL)
+			if defined(DOTNET)
 			{
 				CilTextureLoader.LoadTexture(arr, callback.Action, "fake.jpeg");
 			}
@@ -18,7 +18,7 @@ namespace Experimental.TextureLoader
 		[TargetSpecificImplementation]
 		public static void PngByteArrayToTexture2D(Buffer arr, Callback callback)
 		{
-			if defined(CIL)
+			if defined(DOTNET)
 			{
 				CilTextureLoader.LoadTexture(arr, callback.Action, "fake.png");
 			}

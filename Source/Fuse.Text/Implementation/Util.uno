@@ -6,7 +6,7 @@ using Uno.Text;
 namespace Fuse.Text.Implementation
 {
 	[Require("Source.Include", "string.h")]
-	static extern(CIL || CPlusPlus || PInvoke) class Memory
+	static extern(DOTNET || CPlusPlus || PInvoke) class Memory
 	{
 		[Foreign(Language.CPlusPlus)]
 		public static void Copy(byte[] dst, IntPtr src, int len)
@@ -16,7 +16,7 @@ namespace Fuse.Text.Implementation
 	}
 
 	[Require("Source.Include", "string.h")]
-	static extern(CIL || CPlusPlus || PInvoke) class CString
+	static extern(DOTNET || CPlusPlus || PInvoke) class CString
 	{
 		public static string ToString(IntPtr cstr)
 		{

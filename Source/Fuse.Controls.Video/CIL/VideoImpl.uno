@@ -10,7 +10,7 @@ using Uno.Threading;
 namespace Fuse.Controls.VideoImpl.CIL
 {
 
-	extern(CIL) internal class VideoLoader
+	extern(DOTNET) internal class VideoLoader
 	{
 		class VideoPromise : Promise<IVideoPlayer>
 		{
@@ -91,7 +91,7 @@ namespace Fuse.Controls.VideoImpl.CIL
 
 	}
 
-	extern(CIL) internal class VideoPlayer : IVideoPlayer
+	extern(DOTNET) internal class VideoPlayer : IVideoPlayer
 	{
 		VideoTexture _videoTexture;
 		public VideoTexture VideoTexture
@@ -196,10 +196,10 @@ namespace Fuse.Video.Graphics.CIL
 {
 
 	[TargetSpecificImplementation, DotNetType]
-	extern(CIL) internal class VideoHandle { }
+	extern(DOTNET) internal class VideoHandle { }
 
 	[TargetSpecificImplementation, DotNetType]
-	extern(CIL) internal static class VideoImpl
+	extern(DOTNET) internal static class VideoImpl
 	{
 
 		[TargetSpecificImplementation]

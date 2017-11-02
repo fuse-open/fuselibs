@@ -30,7 +30,7 @@ public class OrientationTest
 	@}
 
 	[Test]
-	[Ignore("Only supported on dotnet, Android or iOS", "MSVC || CMake")]
+	[Ignore("Only supported on dotnet, Android or iOS", "NATIVE")]
 	public void ImageOrientationsJpgWithoutExif()
 	{
 		AssertImageOrientation(ImageOrientation.Identity, import("Assets/bird0.jpg"));
@@ -40,7 +40,7 @@ public class OrientationTest
 	}
 
 	[Test]
-	[Ignore("Only supported on dotnet, Android or iOS", "MSVC || CMake")]
+	[Ignore("Only supported on dotnet, Android or iOS", "NATIVE")]
 	public void ImageOrientationsPng() //pngs do not support exif, so we expect to get ImageOrientation.Identity
 	{
 		AssertImageOrientation(ImageOrientation.Identity, import("Assets/flower_ref.png"));
@@ -49,7 +49,7 @@ public class OrientationTest
 	}
 
 	[Test]
-	[Ignore("Only supported on dotnet, Android or iOS", "MSVC || CMake || CIL || iOS")]
+	[Ignore("Only supported on dotnet, Android or iOS", "NATIVE || DOTNET || iOS")]
 	public extern(Android) void ImageOrientationsUsingAndroidInputStream()
 	{
 		AssertImageOrientationUsingAndroidStreamApi(ImageOrientation.Identity, import("Assets/f1t.jpg"));
@@ -63,7 +63,7 @@ public class OrientationTest
 	}
 
 	[Test]
-	[Ignore("Only supported on dotnet, Android or iOS", "MSVC || CMake")]
+	[Ignore("Only supported on dotnet, Android or iOS", "NATIVE")]
 	public void ImageOrientationsTestSet1()
 	{
 		AssertImageOrientation(ImageOrientation.Identity, import("Assets/f1t.jpg"));
@@ -77,7 +77,7 @@ public class OrientationTest
 	}
 
 	[Test]
-	[Ignore("Only supported on dotnet, Android or iOS", "MSVC || CMake")]
+	[Ignore("Only supported on dotnet, Android or iOS", "NATIVE")]
 	public void ImageOrientationsTestSet2()
 	{
 		AssertImageOrientation(ImageOrientation.Identity, import("Assets/Landscape_1.jpg"));
@@ -91,7 +91,7 @@ public class OrientationTest
 	}
 
 	[Test]
-	[Ignore("Only supported on dotnet, Android or iOS", "MSVC || CMake")]
+	[Ignore("Only supported on dotnet, Android or iOS", "NATIVE")]
 	public void ImageOrientationsTestSet3()
 	{
 		AssertImageOrientation(ImageOrientation.Identity, import("Assets/Portrait_1.jpg"));

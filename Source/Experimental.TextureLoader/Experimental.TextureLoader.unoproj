@@ -8,7 +8,6 @@
     "TextureLoaderImpl.uno:Source",
     "TextureLoaderImpl.js.uxl:Extensions",
     "TextureLoaderImpl.cpp.uxl:Extensions",
-    "TextureLoaderImpl.cil.uxl:Extensions",
     "CIL/CILTextureLoader.uno:Source",
     "CIL/Uno/BufferAccessor.uno:Source"
   ]

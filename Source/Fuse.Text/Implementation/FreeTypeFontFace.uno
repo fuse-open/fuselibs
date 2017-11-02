@@ -8,10 +8,10 @@ using Uno;
 
 namespace Fuse.Text.Implementation
 {
-	extern(CIL || CPlusPlus) class FreeTypeFontFace : FontFace
+	extern(DOTNET || CPlusPlus) class FreeTypeFontFace : FontFace
 	{
 		readonly byte[] _faceBuffer;
-		extern(CIL) GCHandle _faceBufferHandle;
+		extern(DOTNET) GCHandle _faceBufferHandle;
 		protected IntPtr _ftFace;
 		readonly object _faceMutex = new object();
 		static readonly object _freeTypeMutex = new object();
@@ -19,7 +19,7 @@ namespace Fuse.Text.Implementation
 		public FreeTypeFontFace(byte[] buffer, int index, Predicate<string> stylePredicate)
 		{
 			_faceBuffer = buffer;
-			if defined(CIL)
+			if defined(DOTNET)
 			{
 				_faceBufferHandle = GCHandle.Alloc(_faceBuffer, GCHandleType.Pinned);
 			}
@@ -79,7 +79,7 @@ namespace Fuse.Text.Implementation
 		public override void Dispose()
 		{
 			base.Dispose();
-			if defined(CIL)
+			if defined(DOTNET)
 			{
 				_faceBufferHandle.Free();
 				_faceBufferHandle = default(GCHandle);
@@ -126,7 +126,7 @@ namespace Fuse.Text.Implementation
 		}
 	}
 
-	extern(CIL || CPlusPlus) class FreeTypeFont : HarfbuzzFont
+	extern(DOTNET || CPlusPlus) class FreeTypeFont : HarfbuzzFont
 	{
 		readonly int _pixelSize;
 		public override int PixelSize { get { return _pixelSize; } }

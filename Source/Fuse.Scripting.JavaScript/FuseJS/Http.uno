@@ -348,7 +348,7 @@ namespace Fuse.Reactive.FuseJS
 			{
 				if (args.Length > 0)
 				{
-					if defined(!(HOST_OSX && DOTNET)) // NOTE: Hack to disable cache for mono. They don't have support for it :(
+					if defined(!(HOST_MAC && DOTNET)) // NOTE: Hack to disable cache for mono. They don't have support for it :(
 					{
 						_req.EnableCache((bool)args[0]);
 					}

@@ -28,33 +28,4 @@
 	<Require Condition="WIN32 && X64" SharedLibrary="@('../icu/x64/icu/bin64/iculx55.dll':Path)" />
 	<Require Condition="WIN32 && X64" SharedLibrary="@('../icu/x64/icu/bin64/icutu55.dll':Path)" />
 	<Require Condition="WIN32 && X64" SharedLibrary="@('../icu/x64/icu/bin64/icuuc55.dll':Path)" />
-	<!-- Legacy -->
-	<CopyFile Condition="TARGET_MSVC" Name="../icu/x86/icu/bin/icudt55.dll" TargetName="bin/Win32/Release/icudt55.dll" />
-	<CopyFile Condition="TARGET_MSVC" Name="../icu/x86/icu/bin/icuin55.dll" TargetName="bin/Win32/Release/icuin55.dll" />
-	<CopyFile Condition="TARGET_MSVC" Name="../icu/x86/icu/bin/icuio55.dll" TargetName="bin/Win32/Release/icuio55.dll" />
-	<CopyFile Condition="TARGET_MSVC" Name="../icu/x86/icu/bin/icule55.dll" TargetName="bin/Win32/Release/icule55.dll" />
-	<CopyFile Condition="TARGET_MSVC" Name="../icu/x86/icu/bin/iculx55.dll" TargetName="bin/Win32/Release/ixulx55.dll" />
-	<CopyFile Condition="TARGET_MSVC" Name="../icu/x86/icu/bin/icutu55.dll" TargetName="bin/Win32/Release/icutu55.dll" />
-	<CopyFile Condition="TARGET_MSVC" Name="../icu/x86/icu/bin/icuuc55.dll" TargetName="bin/Win32/Release/icuuc55.dll" />
-	<CopyFile Condition="TARGET_MSVC" Name="../icu/x86/icu/bin/icudt55.dll" TargetName="bin/Win32/Debug/icudt55.dll" />
-	<CopyFile Condition="TARGET_MSVC" Name="../icu/x86/icu/bin/icuin55.dll" TargetName="bin/Win32/Debug/icuin55.dll" />
-	<CopyFile Condition="TARGET_MSVC" Name="../icu/x86/icu/bin/icuio55.dll" TargetName="bin/Win32/Debug/icuio55.dll" />
-	<CopyFile Condition="TARGET_MSVC" Name="../icu/x86/icu/bin/icule55.dll" TargetName="bin/Win32/Debug/icule55.dll" />
-	<CopyFile Condition="TARGET_MSVC" Name="../icu/x86/icu/bin/iculx55.dll" TargetName="bin/Win32/Debug/ixulx55.dll" />
-	<CopyFile Condition="TARGET_MSVC" Name="../icu/x86/icu/bin/icutu55.dll" TargetName="bin/Win32/Debug/icutu55.dll" />
-	<CopyFile Condition="TARGET_MSVC" Name="../icu/x86/icu/bin/icuuc55.dll" TargetName="bin/Win32/Debug/icuuc55.dll" />
-	<CopyFile Condition="TARGET_MSVC" Name="../icu/x64/icu/bin64/icudt55.dll" TargetName="bin/x64/Release/icudt55.dll" />
-	<CopyFile Condition="TARGET_MSVC" Name="../icu/x64/icu/bin64/icuin55.dll" TargetName="bin/x64/Release/icuin55.dll" />
-	<CopyFile Condition="TARGET_MSVC" Name="../icu/x64/icu/bin64/icuio55.dll" TargetName="bin/x64/Release/icuio55.dll" />
-	<CopyFile Condition="TARGET_MSVC" Name="../icu/x64/icu/bin64/icule55.dll" TargetName="bin/x64/Release/icule55.dll" />
-	<CopyFile Condition="TARGET_MSVC" Name="../icu/x64/icu/bin64/iculx55.dll" TargetName="bin/x64/Release/ixulx55.dll" />
-	<CopyFile Condition="TARGET_MSVC" Name="../icu/x64/icu/bin64/icutu55.dll" TargetName="bin/x64/Release/icutu55.dll" />
-	<CopyFile Condition="TARGET_MSVC" Name="../icu/x64/icu/bin64/icuuc55.dll" TargetName="bin/x64/Release/icuuc55.dll" />
-	<CopyFile Condition="TARGET_MSVC" Name="../icu/x64/icu/bin64/icudt55.dll" TargetName="bin/x64/Debug/icudt55.dll" />
-	<CopyFile Condition="TARGET_MSVC" Name="../icu/x64/icu/bin64/icuin55.dll" TargetName="bin/x64/Debug/icuin55.dll" />
-	<CopyFile Condition="TARGET_MSVC" Name="../icu/x64/icu/bin64/icuio55.dll" TargetName="bin/x64/Debug/icuio55.dll" />
-	<CopyFile Condition="TARGET_MSVC" Name="../icu/x64/icu/bin64/icule55.dll" TargetName="bin/x64/Debug/icule55.dll" />
-	<CopyFile Condition="TARGET_MSVC" Name="../icu/x64/icu/bin64/iculx55.dll" TargetName="bin/x64/Debug/ixulx55.dll" />
-	<CopyFile Condition="TARGET_MSVC" Name="../icu/x64/icu/bin64/icutu55.dll" TargetName="bin/x64/Debug/icutu55.dll" />
-	<CopyFile Condition="TARGET_MSVC" Name="../icu/x64/icu/bin64/icuuc55.dll" TargetName="bin/x64/Debug/icuuc55.dll" />
 </Extensions>

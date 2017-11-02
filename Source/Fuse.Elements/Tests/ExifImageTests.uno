@@ -30,7 +30,7 @@ public class ExifImageTests
 	}
 
 	[Test]
-	[Ignore("Only supported on dotnet, Android or iOS", "MSVC || CMake")]
+	[Ignore("Only supported on dotnet, Android or iOS", "NATIVE")]
 	public void TestOrientations()
 	{
 		AssertImageHasBeenOrientedCorrectly(import("Assets/_1.jpg"));

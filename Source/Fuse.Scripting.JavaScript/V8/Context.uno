@@ -20,11 +20,6 @@ namespace Fuse.Scripting.V8
 		internal Exception _cachedException;
 		internal bool IsDisposed { get; private set; }
 
-		static extern(CIL) Context()
-		{
-			Simple.DllDirectory.SetTargetSpecific();
-		}
-
 		extern(!CPlusPlus) Simple.JSCallbackFinalizer _handleCallbackFree;
 		extern(!CPlusPlus) Simple.JSExternalFinalizer _handleExternalFree;
 

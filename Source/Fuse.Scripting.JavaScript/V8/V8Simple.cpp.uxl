@@ -5,10 +5,6 @@
 	<Require Condition="WIN32" LinkDirectory="@('lib/Windows/$(PlatformShortName)':Path)" />
 	<Require Condition="WIN32 && X86" SharedLibrary="@('lib/Windows/x86/V8Simple.dll':Path)" />
 	<Require Condition="WIN32 && X64" SharedLibrary="@('lib/Windows/x64/V8Simple.dll':Path)" />
-	<CopyFile Condition="TARGET_MSVC" Name="lib/Windows/x86/V8Simple.dll" TargetName="bin/Win32/Debug/V8Simple.dll" />
-	<CopyFile Condition="TARGET_MSVC" Name="lib/Windows/x86/V8Simple.dll" TargetName="bin/Win32/Release/V8Simple.dll" />
-	<CopyFile Condition="TARGET_MSVC" Name="lib/Windows/x64/V8Simple.dll" TargetName="bin/x64/Debug/V8Simple.dll" />
-	<CopyFile Condition="TARGET_MSVC" Name="lib/Windows/x64/V8Simple.dll" TargetName="bin/x64/Release/V8Simple.dll" />
 	<Require IncludeDirectory="@('.':Path)" />
 	<Require LinkLibrary="V8Simple" />
 	<Require Condition="Android" JNI.SystemLibrary="log" />

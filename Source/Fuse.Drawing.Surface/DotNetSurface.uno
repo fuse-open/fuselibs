@@ -32,7 +32,7 @@ namespace Fuse.Drawing
 		This also keeps the API minimal. There are no convenience functions in this class. Those are provided via higher-level classes, such as `LineSegments` or `SurfaceUtil`.
 	*/
 	
-	[Require("Assembly", "System.Drawing.dll")]
+	[Require("Assembly", "System.Drawing")]
 	[extern(DOTNET) Require("Source.Include","XliPlatform/GL.h")]
 	extern(DOTNET)
 	internal class DotNetSurface : Surface
@@ -1194,14 +1194,14 @@ namespace Fuse.Drawing
 		}
 
 		[DotNetType("System.Runtime.InteropServices.Marshal")]
-		internal extern(CIL) static class Marshal
+		internal extern(DOTNET) static class Marshal
 		{
 			public static extern IntPtr UnsafeAddrOfPinnedArrayElement(CilArray arr, int index);
 			public static extern void Copy(IntPtr source, byte[] destination, int start, int length);
 		}
 
 		[DotNetType("System.Array")]
-		internal extern(CIL) class CilArray
+		internal extern(DOTNET) class CilArray
 		{
 		}
 

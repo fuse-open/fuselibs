@@ -8,7 +8,7 @@ namespace Fuse.Text.Implementation
 {
 	[Require("Source.Include", "ft2build.h")]
 	[Require("Source.Declaration", "#include FT_FREETYPE_H")]
-	static extern(CIL || CPlusPlus || PInvoke) class FT_Error
+	static extern(DOTNET || CPlusPlus || PInvoke) class FT_Error
 	{
 		public static void Check(int err)
 		{
@@ -42,7 +42,7 @@ namespace Fuse.Text.Implementation
 	[extern(PInvoke) Require("LinkLibrary", "z")]
 	[extern(PInvoke) Require("LinkLibrary", "png")]
 	[extern(PInvoke && OSX) Require("LinkLibrary", "bz2")]
-	static extern(CIL || CPlusPlus || PInvoke) class FreeType
+	static extern(DOTNET || CPlusPlus || PInvoke) class FreeType
 	{
 		static IntPtr _library;
 		static bool _initialized;
@@ -58,9 +58,6 @@ namespace Fuse.Text.Implementation
 		static void Init()
 		{
 			if (_initialized) return;
-
-			if defined(DotNet && HOST_WINDOWS)
-				DllDirectory.SetTargetSpecific();
 
 			FT_Error.Check(Init_FreeType(ref _library));
 

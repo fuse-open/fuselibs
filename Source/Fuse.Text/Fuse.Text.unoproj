@@ -28,8 +28,6 @@
     "GlyphAtlas.uno",
     "Implementation/BitArray.uno",
     "Implementation/CoreTextFontFace.uno",
-    "Implementation/DllDirectory.dll",
-    "Implementation/DllDirectory.uno",
     "Implementation/FreeType.uno",
     "Implementation/FreeTypeFontFace.uno",
     "Implementation/Harfbuzz.cil.uxl",
