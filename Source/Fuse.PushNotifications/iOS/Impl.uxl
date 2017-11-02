@@ -1,0 +1,3 @@
+<Extensions Backend="CPlusPlus" Condition="iOS">
+	<Define AppDelegate.PushNotificationMethods="1" />
+</Extensions>
