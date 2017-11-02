@@ -503,7 +503,7 @@ namespace Fuse.Drawing
 			}
 
 			var handle = GCHandle.Alloc(pixelData, GCHandleType.Pinned);
-			IntPtr buffer =  Marshal.UnsafeAddrOfPinnedArrayElement((CilArray)(object)pixelData, 0);
+			IntPtr buffer =  Marshal.UnsafeAddrOfPinnedArrayElement(pixelData, 0);
 
 			var image = new Bitmap(width, height, width * 4, PixelFormat.Format32bppPArgb, buffer);			
 
@@ -1196,13 +1196,8 @@ namespace Fuse.Drawing
 		[DotNetType("System.Runtime.InteropServices.Marshal")]
 		internal extern(DOTNET) static class Marshal
 		{
-			public static extern IntPtr UnsafeAddrOfPinnedArrayElement(CilArray arr, int index);
+			public static extern IntPtr UnsafeAddrOfPinnedArrayElement(Array arr, int index);
 			public static extern void Copy(IntPtr source, byte[] destination, int start, int length);
-		}
-
-		[DotNetType("System.Array")]
-		internal extern(DOTNET) class CilArray
-		{
 		}
 
 		[DotNetType("System.Drawing.Point")]

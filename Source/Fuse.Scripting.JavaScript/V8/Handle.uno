@@ -35,7 +35,7 @@ namespace Fuse.Scripting.V8
 		{
 			if defined(DOTNET)
 			{
-				return Marshal.UnsafeAddrOfPinnedArrayElement((CilArray)(object)Array, 0);
+				return Marshal.UnsafeAddrOfPinnedArrayElement(Array, 0);
 			}
 			else if defined(CPlusPlus)
 			{
@@ -58,15 +58,10 @@ namespace Fuse.Scripting.V8
 		}
 	}
 
-	[DotNetType("System.Array")]
-	internal extern(DOTNET) class CilArray
-	{
-	}
-
 	[DotNetType("System.Runtime.InteropServices.Marshal")]
 	internal extern(DOTNET) static class Marshal
 	{
-		public static extern IntPtr UnsafeAddrOfPinnedArrayElement(CilArray arr, int index);
+		public static extern IntPtr UnsafeAddrOfPinnedArrayElement(Uno.Array arr, int index);
 		public static extern void Copy(IntPtr source, byte[] destination, int start, int length);
 	}
 }
