@@ -20,6 +20,7 @@
   ],
   "Includes": [
     "iOS/Impl.uno:Source",
+    "iOS/Impl.uxl:Extensions",
     "iOS/AppDelegateLocalNotify.h:CHeader:iOS",
     "iOS/AppDelegateLocalNotify.mm:CSource:iOS",
     "Android/Impl.uno:Source",

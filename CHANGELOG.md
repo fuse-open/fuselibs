@@ -5,6 +5,9 @@
 
 ## 1.4.0
 
+### Notifications
+- Fix regression causing iOS apps not to be accepted to the Store apparently due to use of push-notifications even though they are not used in the project.
+
 ### TextInput
 - Fixed issue on android where placeholder text on a `<TextInput IsPassword="true" />` would be drawn as password dots
 
