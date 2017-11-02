@@ -64,7 +64,9 @@ namespace Fuse.Scripting.Test
 			child.customPanel.StringFuture = new Promise<string>("this is a string");
 			using (var root = TestRootPanel.CreateWithChild(child))
 			{
-				root.StepFrameJS();
+				while (string.IsNullOrEmpty(child.Properties.StringResult))
+					root.StepFrameJS();
+
 				Assert.AreEqual("this is a string", child.Properties.StringResult);
 			}
 		}
@@ -76,7 +78,10 @@ namespace Fuse.Scripting.Test
 			child.customPanel.NumberFuture = new Promise<double>(13.37);
 			using (var root = TestRootPanel.CreateWithChild(child))
 			{
-				root.StepFrameJS();
+
+				while (child.Properties.NumberResult < 0)
+					root.StepFrameJS();
+
 				Assert.AreEqual(13.37, child.Properties.NumberResult);
 			}
 		}
@@ -90,7 +95,10 @@ namespace Fuse.Scripting.Test
 			using (var root = TestRootPanel.CreateWithChild(child))
 			{
 				p.Reject(new Exception("fail"));
-				root.StepFrameJS();
+
+				while (string.IsNullOrEmpty(child.Properties.NumberError))
+					root.StepFrameJS();
+
 				Assert.AreEqual("fail", child.Properties.NumberError);
 			}
 		}
@@ -105,10 +113,15 @@ namespace Fuse.Scripting.Test
 			{
 				var o = new TestObject() { Value = "Hello, World!" };
 				p.Resolve(o);
-				root.StepFrameJS();
 
-				var obs = child.Properties.ObjectResult as Fuse.Reactive.IObservable;
-				Assert.AreNotEqual(null, obs);
+				while (!(child.Properties.ObjectResult is Fuse.Reactive.IObservable))
+					root.StepFrameJS();
+
+				var obs = (Fuse.Reactive.IObservable)child.Properties.ObjectResult;
+
+				while (obs.Length == 0)
+					root.StepFrameJS();
+
 				Assert.AreEqual(1, obs.Length);
 
 				var result = obs[0] as TestObject;
