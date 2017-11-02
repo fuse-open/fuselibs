@@ -104,6 +104,7 @@ namespace Fuse.Reactive.Test
 		}
 
 		[Test]
+		[Ignore("https://github.com/fusetools/fuselibs-public/issues/671", "Android || iOS")]
 		public void TwoWayObject()
 		{
 			var e = new UX.TreeObservable.TwoWayObject();

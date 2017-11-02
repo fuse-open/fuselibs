@@ -68,6 +68,7 @@ namespace Fuse.Controls.Primitives.Test
 		}
 
 		[Test]
+		[Ignore("https://github.com/fusetools/fuselibs-public/issues/671", "Android || iOS")]
 		public void FontSizeAffectsHeight()
 		{
 			var e = new UX.TextWrappingText();
