@@ -33,7 +33,8 @@ namespace Fuse.ImageTools.Test
 		}
 
 		[Test]
-		[Ignore("Only supported on dotnet, Android or iOS", "NATIVE")]
+		[extern(NATIVE) Ignore("Only supported on dotnet, Android or iOS")]
+		[extern(iOS) Ignore("https://github.com/fusetools/fuselibs-public/issues/674")]
 		public void CreatingAnImageFails()
 		{
 			Assert.Throws<FormatException>(MakeInvalidImage);
