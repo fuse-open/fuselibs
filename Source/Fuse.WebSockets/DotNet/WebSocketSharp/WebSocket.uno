@@ -1,16 +1,8 @@
 using Uno.Compiler.ExportTargetInterop;
+using Uno;
 
 namespace WebSocketSharp
 {
-	[DotNetType("System.EventHandler")]
-	extern(DOTNET) public class EventArgs {}
-
-	[DotNetType("System.EventHandler")]
-	extern(DOTNET) public delegate void EventHandler(object sender, EventArgs e);
-
-	[DotNetType("System.EventHandler`1")]
-	extern(DOTNET) public delegate void EventHandler<TEventArgs>(object sender, TEventArgs e);
-
 	[DotNetType("WebSocketSharp.ErrorEventArgs")]
 	extern(DOTNET) public class ErrorEventArgs
 	{
