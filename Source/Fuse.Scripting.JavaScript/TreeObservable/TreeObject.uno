@@ -78,27 +78,64 @@ namespace Fuse.Scripting.JavaScript
 			}
 		}
 
-		internal override void Set(Scripting.Context context, IMirror mirror, Scripting.Object obj)
+		class SetClosure
 		{
-			_props.Clear();
-			var k = obj.Keys;
-			for (int i = 0; i < k.Length; i++)
+			readonly TreeObject _treeObject;
+			readonly Dictionary<string, object> _newProps;
+			readonly object _rawOverride;
+			readonly bool _hasRawOverride;
+
+			public SetClosure(TreeObject treeObject, Dictionary<string, object> newProps, object rawOverride, bool hasRawOverride)
 			{
-				var s = k[i];
-				if (s == _rawHandle)
-				{
-					_rawOverride = obj[s];
-					continue;
-				}
-				_props.Add(s, mirror.Reflect(context, obj[s]));
+				_treeObject = treeObject;
+				_newProps = newProps;
+				_rawOverride = rawOverride;
+				_hasRawOverride = hasRawOverride;
 			}
 
-			var sub = Subscribers as PropertySubscription;
-			if (sub != null)
-				foreach (var p in _props)
-					sub.OnPropertyChanged(p.Key, p.Value, null);
+			// UI Thread
+			public void Perform()
+			{
+				_treeObject._props = _newProps;
+
+				if(_hasRawOverride)
+					_treeObject._rawOverride = _rawOverride;
+
+				var sub = _treeObject.Subscribers as PropertySubscription;
+				if(sub != null)
+				{
+					foreach(var prop in _newProps)
+					{
+						sub.OnPropertyChanged(prop.Key, prop.Value, null);
+					}
+				}
+			}
 		}
 
+		// JS Thread
+		internal override void Set(Scripting.Context context, IMirror mirror, Scripting.Object obj)
+		{
+			object rawOverride = null;
+			bool hasRawOverride = false;
+			var newProps = new Dictionary<string, object>();
+
+			var keys = obj.Keys;
+			for (int i = 0; i < keys.Length; i++)
+			{
+				var key = keys[i];
+				if (key == _rawHandle)
+				{
+					rawOverride = obj[key];
+					hasRawOverride = true;
+					continue;
+				}
+				newProps.Add(key, mirror.Reflect(context, obj[key]));
+			}
+
+			UpdateManager.PostAction(new SetClosure(this, newProps, rawOverride, hasRawOverride).Perform);
+		}
+
+		// UI Thread
 		internal void Set(string key, object newValue, PropertySubscription exclude)
 		{
 			if (_props.ContainsKey(key))
