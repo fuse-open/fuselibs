@@ -9,8 +9,7 @@ using FuseTest;
 
 public class ExifImageTests
 {
-	//0.01 due to JPG not being very accurate
-	const float ErrorMargin = 0.01f;
+	const float ErrorMargin = 0.15f; // JPG is not very accurate
 
 	void AssertImageHasBeenOrientedCorrectly(FileSource source, [CallerFilePath] string filePath = "", [CallerLineNumber] int lineNumber = 0)
 	{
