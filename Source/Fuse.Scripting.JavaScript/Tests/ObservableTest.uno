@@ -1093,6 +1093,7 @@ namespace Fuse.Reactive.Test
 		}
 		
 		[Test]
+		[Ignore("https://github.com/fusetools/fuselibs-public/issues/171")]
 		public void InnerDetach()
 		{
 			var p = new UX.Observable.InnerDetach();
