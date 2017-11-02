@@ -35,6 +35,7 @@ public class CommonJSmodules : TestBase
 	}
 
 	[Test]
+	[Ignore("https://github.com/fusetools/fuselibs-public/issues/679", "Android")]
 	public void Determinism()
 	{
 		using (var jsRecorder = new JsTestRecorder())
@@ -105,6 +106,7 @@ public class CommonJSmodules : TestBase
 	}
 
 	[Test]
+	[Ignore("https://github.com/fusetools/fuselibs-public/issues/679", "Android")]
 	public void Missing()
 	{
 		using (var jsRecorder = new JsTestRecorder())
