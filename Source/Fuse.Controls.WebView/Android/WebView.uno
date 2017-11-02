@@ -45,29 +45,20 @@ namespace Fuse.Android.Controls
 			_webChromeClientHandle = _webViewHandle.CreateAndSetWebChromeClient(OnProgressChanged);				
 			_webViewClientHandle = _webViewHandle.CreateAndSetWebViewClient(
 				OnPageLoaded, 
-				OnBeginLoading, 
-				OnUrlChanged,
-				MatchedURISchemeHandler
+				OnBeginloading, 
+				OnUrlChanged, 
+				OnCustomURI, 
+				schemes, 
+				HasURISchemeHandler
 			);
 			_uriSchemes = schemes;
 
 			_webViewHost.WebViewClient = this;
 		}
 		
-		public bool MatchedURISchemeHandler(string url)
+		public bool HasURISchemeHandler()
 		{
-			if(URISchemeHandler!=null){
-					return true;
-					foreach(string uri in _uriSchemes)
-					{
-						if(url.IndexOf(uri) == 0)
-						{
-							OnCustomURI(url);
-							return true;
-						}
-					}
-			}
-			return false;
+			return URISchemeHandler!=null;
 		}
 		
 		void OnCustomURI(string url)
@@ -82,7 +73,7 @@ namespace Fuse.Android.Controls
 				PageLoaded(this, EventArgs.Empty);
 		}
 		
-		void OnBeginLoading()
+		void OnBeginloading()
 		{
 			if(BeginLoading!=null)
 				BeginLoading(this, EventArgs.Empty);
@@ -182,8 +173,17 @@ namespace Fuse.Android.Controls
 		{
 			if (url == null || url== "") url = "about:blank";
 			//This extra check is needed on android since setting the Url directly doesn't trigger shouldOverrideUrlLoading
-			if(MatchedURISchemeHandler(url))
-				return;
+			if(HasURISchemeHandler())
+			{
+				foreach(string uri in _uriSchemes)
+				{
+					if(url.IndexOf(uri) == 0)
+					{
+						OnCustomURI(url);
+						return;
+					}
+				}
+			}
 			_webViewHandle.LoadUrl(url);
 			OnHistoryChanged();
 		}
