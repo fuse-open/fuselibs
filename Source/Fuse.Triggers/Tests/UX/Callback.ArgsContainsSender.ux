@@ -3,7 +3,6 @@
 		var Observable = require("FuseJS/Observable");
 		var sender = Observable();
 		var callback = function (args) {
-			console.log(JSON.stringify(args));
 			sender.value = args.sender;
 		}
 		module.exports = {
