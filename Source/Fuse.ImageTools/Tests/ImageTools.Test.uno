@@ -13,7 +13,8 @@ namespace Fuse.ImageTools.Test
 		Object _image = null;
 
 		[Test]
-		[Ignore("Only supported on dotnet, Android or iOS", "NATIVE")]
+		[extern(NATIVE) Ignore("Only supported on dotnet, Android or iOS")]
+		[extern(Android) Ignore("https://github.com/fusetools/fuselibs-public/issues/690")]
 		public void CreatingAnImageSucceeds()
 		{
 			using (var root = new TestRootPanel()){
