@@ -126,10 +126,21 @@ namespace Fuse.Elements
 
 		static void UpdateElementAtlasSize()
 		{
-			var clientSize = DisplayHelpers.DisplaySizeHint;
+			var maxTextureSize = Texture2D.MaxSize;
+			if (maxTextureSize < 1)
+				throw new Exception("zero-sized Texture2D.MaxSize");
 
-			ElementAtlasSize = int2(Math.Min((clientSize.X * 3) / 2, Texture2D.MaxSize),
-			                        Math.Min(clientSize.Y / 2, Texture2D.MaxSize));
+			var clientSize = DisplayHelpers.DisplaySizeHint;
+			if (clientSize.X < 1 ||
+			    clientSize.Y < 1)
+			{
+				ElementAtlasSize = int2(maxTextureSize);
+			}
+			else
+			{
+				ElementAtlasSize = int2(Math.Min((clientSize.X * 3) / 2, maxTextureSize),
+				                        Math.Min(clientSize.Y / 2, maxTextureSize));
+			}
 		}
 
 		static void OnResized(object sender, EventArgs args)

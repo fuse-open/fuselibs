@@ -41,7 +41,7 @@
 			<Properties
 				ux:Name="Properties"
 				StringResult="{stringResult}"
-				NumberResult="{numberResult}"
+				NumberResult="{numberResult ?? -1}"
 				ObjectResult="{objectResult}"
 				NumberError="{numberError}" />
 

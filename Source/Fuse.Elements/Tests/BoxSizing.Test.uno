@@ -3,6 +3,7 @@ using Uno.Compiler;
 using Uno.Testing;
 
 using FuseTest;
+using Fuse.Resources;
 
 namespace Fuse.Elements.Test
 {
@@ -33,6 +34,13 @@ namespace Fuse.Elements.Test
 			var p = new global::UX.ExplicitSizing();
 			using (var root = TestRootPanel.CreateWithChild(p,int2(1000)))
 			{
+				while (p.E1.Source.State != ImageSourceState.Ready ||
+				       p.E2.Source.State != ImageSourceState.Ready)
+				{
+					Uno.Threading.Thread.Sleep(10);
+					root.StepFrame();
+				}
+
 				Assert.AreEqual(float2(300,150),p.E1.ActualSize);
 				Assert.AreEqual(float2(100,50),p.E2.ActualSize);
 				
