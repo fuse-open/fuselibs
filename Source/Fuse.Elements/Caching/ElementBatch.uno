@@ -225,54 +225,60 @@ namespace Fuse.Elements
 				return;
 
 			var fb = _elementAtlas.PinAndValidateFramebuffer(dc);
-
-			if (_prevElementCount != _elements.Count)
+			try
 			{
-				_indexBufferValid = false;
-				_vertexPositionBufferValid = false;
-				_vertexTexCoordBufferValid = false;
+				if (_prevElementCount != _elements.Count)
+				{
+					_indexBufferValid = false;
+					_vertexPositionBufferValid = false;
+					_vertexTexCoordBufferValid = false;
 
-				_tempBuffer = new Buffer(_elements.Count * 4 * sizeof(float3));
+					_tempBuffer = new Buffer(_elements.Count * 4 * sizeof(float3));
+				}
+
+				if (!_indexBufferValid)
+				{
+					FillIndexBuffer();
+					_indexBufferValid = true;
+				}
+
+				if (!_vertexPositionBufferValid)
+				{
+					FillVertexPositionBuffer(dc);
+					_vertexPositionBufferValid = true;
+				}
+
+				if (!_vertexTexCoordBufferValid)
+				{
+					FillVertexTexCoordBuffer();
+					_vertexTexCoordBufferValid = true;
+				}
+
+				Texture2D tex = fb.ColorBuffer;
+				float4x4 transform = dc.GetLocalToClipTransform(_elements[0]._elm.Parent);
+				draw
+				{
+					VertexCount: _elements.Count * 6;
+					CullFace: dc.CullFace;
+					DepthTestEnabled: false;
+					apply Fuse.Drawing.PreMultipliedAlphaCompositing;
+
+					float3 Data: vertex_attrib<float3>(_positionInfo.Type, _positionInfo.Buffer, _positionInfo.BufferStride, _positionInfo.BufferOffset, IndexType.UShort, _indexBuffer);
+
+					float2 Coord: Data.XY;
+					float Opacity: Data.Z;
+					float2 TexCoord: vertex_attrib<float2>(_texCoordInfo.Type, _texCoordInfo.Buffer, _texCoordInfo.BufferStride, _texCoordInfo.BufferOffset, IndexType.UShort, _indexBuffer);
+					TexCoord: float2(prev TexCoord.X, 1.0f - prev TexCoord.Y);
+					ClipPosition: Vector.Transform(float4(Coord, 0, 1), transform);
+					ClipPosition: Opacity > 0 ? prev : float4(0, 0, 0, -1);
+					PixelColor: sample(tex, TexCoord, SamplerState.LinearClamp) * Opacity;
+				};
+			}
+			finally
+			{
+				_elementAtlas.Unpin();
 			}
 
-			if (!_indexBufferValid)
-			{
-				FillIndexBuffer();
-				_indexBufferValid = true;
-			}
-
-			if (!_vertexPositionBufferValid)
-			{
-				FillVertexPositionBuffer(dc);
-				_vertexPositionBufferValid = true;
-			}
-
-			if (!_vertexTexCoordBufferValid)
-			{
-				FillVertexTexCoordBuffer();
-				_vertexTexCoordBufferValid = true;
-			}
-
-			Texture2D tex = fb.ColorBuffer;
-			float4x4 transform = dc.GetLocalToClipTransform(_elements[0]._elm.Parent);
-			draw
-			{
-				VertexCount: _elements.Count * 6;
-				CullFace: dc.CullFace;
-				DepthTestEnabled: false;
-				apply Fuse.Drawing.PreMultipliedAlphaCompositing;
-
-				float3 Data: vertex_attrib<float3>(_positionInfo.Type, _positionInfo.Buffer, _positionInfo.BufferStride, _positionInfo.BufferOffset, IndexType.UShort, _indexBuffer);
-
-				float2 Coord: Data.XY;
-				float Opacity: Data.Z;
-				float2 TexCoord: vertex_attrib<float2>(_texCoordInfo.Type, _texCoordInfo.Buffer, _texCoordInfo.BufferStride, _texCoordInfo.BufferOffset, IndexType.UShort, _indexBuffer);
-				TexCoord: float2(prev TexCoord.X, 1.0f - prev TexCoord.Y);
-				ClipPosition: Vector.Transform(float4(Coord, 0, 1), transform);
-				ClipPosition: Opacity > 0 ? prev : float4(0, 0, 0, -1);
-				PixelColor: sample(tex, TexCoord, SamplerState.LinearClamp) * Opacity;
-			};
-			_elementAtlas.Unpin();
 			_prevElementCount = _elements.Count;
 		}
 
