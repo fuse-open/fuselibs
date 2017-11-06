@@ -16,7 +16,7 @@ namespace Fuse.Scripting.JavaScript
 	{
 		public Function Observable { get { return FuseJS.Observable; } }
 
-		internal JSContext _context;
+		JSContext _context;
 
 		static Fuse.Reactive.FuseJS.Builtins _fuseJS;
 		public static Fuse.Reactive.FuseJS.Builtins FuseJS { get { return _fuseJS; } }
