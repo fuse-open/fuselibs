@@ -46,7 +46,7 @@ namespace Fuse.Controls.Test
 				Assert.AreEqual( "Page1", p.R.Value );
 				
 				p.RouteGoto4.Pulse();
-				root.StepFrameJS();
+				root.MultiStepFrameJS(2);
 				Assert.AreEqual( 3, p.PC.ActiveIndex );
 				Assert.AreEqual( p.D, p.PC.Active );
 				Assert.AreEqual( "3", p.Q.Value );
