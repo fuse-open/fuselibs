@@ -92,7 +92,7 @@ namespace Fuse.Controls.Primitives.Test
 			}
 		}
 
-		static float4x4 TransformFromImageOrientationReference(ImageOrientation orientation)
+		static float3x3 TransformFromImageOrientationReference(ImageOrientation orientation)
 		{
 			var flip = Matrix.Scaling(1,1,1);
 			var rotation = Matrix.RotationZ(0.0f);
@@ -109,7 +109,12 @@ namespace Fuse.Controls.Primitives.Test
 
 			var translateToCenter = Matrix.Translation(0.5f,0.5f,0.0f);
 			var translateBack = Matrix.Translation(-0.5f,-0.5f,0.0f);
-			return Matrix.Mul(translateBack, flip, rotation, translateToCenter);
+			var result = Matrix.Mul(translateBack, flip, rotation, translateToCenter);
+			return float3x3(
+				result.M11, result.M12, result.M13,
+				result.M21, result.M22, result.M23,
+				result.M41, result.M42, result.M44,
+			);
 		}
 
 		public void TestImageOrientation(ImageOrientation orientation, [CallerFilePath] string filePath = "", [CallerLineNumber] int lineNumber = 0, [CallerMemberName] string memberName = "")
@@ -120,18 +125,8 @@ namespace Fuse.Controls.Primitives.Test
 			Assert.AreEqual(expected, transform, tolerance, filePath, lineNumber, memberName);
 
 			Assert.AreEqual(0, transform.M13);
-			Assert.AreEqual(0, transform.M14);
-
 			Assert.AreEqual(0, transform.M23);
-			Assert.AreEqual(0, transform.M24);
-
-			Assert.AreEqual(0, transform.M31);
-			Assert.AreEqual(0, transform.M32);
 			Assert.AreEqual(1, transform.M33);
-			Assert.AreEqual(0, transform.M34);
-
-			Assert.AreEqual(0, transform.M43);
-			Assert.AreEqual(1, transform.M44);
 		}
 
 		[Test]
