@@ -14,7 +14,7 @@ namespace Fuse.Scripting.JavaScript
 		Function _setSuperclass;
 		int _reflectionDepth;
 
-		internal Fuse.Reactive.FuseJS.Builtins FuseJS { private set; get;}
+		Fuse.Reactive.FuseJS.Builtins FuseJS { private set; internal get;}
 
 		public override Fuse.Scripting.IThreadWorker ThreadWorker
 		{
@@ -157,7 +157,7 @@ namespace Fuse.Scripting.JavaScript
 				if (inlineMethod != null)
 				{
 					var m = (Function)Evaluate(sc.Type.FullName + "." + inlineMethod.Name + " (ScriptMethod)", "(function(cl, Observable) { cl.prototype." + inlineMethod.Name + " = " + inlineMethod.Code + "; })");
-					m.Call(this, cl, ((ThreadWorker)ThreadWorker).Observable);
+					m.Call(this, cl, FuseJS.Observable);
 					continue;
 				}
 

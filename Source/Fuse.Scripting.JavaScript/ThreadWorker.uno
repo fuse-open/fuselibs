@@ -14,8 +14,6 @@ namespace Fuse.Scripting.JavaScript
 
 	class ThreadWorker: IDisposable, IThreadWorker
 	{
-		public Function Observable { get { return _context.FuseJS.Observable; } }
-
 		JSContext _context;
 
 		readonly Thread _thread;
