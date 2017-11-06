@@ -17,13 +17,5 @@ namespace Fuse.Controls.Test
 			var s = new TopFrameBackground();
 			ElementPropertyTester.All(s);
 		}
-
-		[Test]
-		public void AllLayoutTets()
-		{
-			var s = new TopFrameBackground();
-			ElementLayoutTester.All(s);
-		}
-
 	}
 }
