@@ -2,6 +2,7 @@ using Uno;
 using Uno.Collections;
 using Uno.UX;
 using Uno.Testing;
+using Uno.Threading;
 
 using Fuse.Controls;
 using Fuse.Navigation;
@@ -191,14 +192,40 @@ namespace Fuse.Reactive.Test
 			}
 		}
 
+		class GetObservableForPropertyClosure
+		{
+			public GetObservableForPropertyClosure(Visual visual, string propName)
+			{
+				if (visual == null)
+					throw new ArgumentNullException(nameof(visual));
+
+				_visual = visual;
+				_propName = propName;
+			}
+
+			readonly Visual _visual;
+			readonly string _propName;
+			ManualResetEvent _done = new ManualResetEvent(false);
+			public Scripting.Object Observable { get; private set; }
+			public Fuse.Scripting.JavaScript.ClassInstance ClassInstance;
+
+			public void Wait() { _done.WaitOne(); }
+
+			internal void Run(Scripting.Context context)
+			{
+				var classInstance = ((Fuse.Scripting.JavaScript.JSContext)context).GetExistingClassInstance(_visual);
+				var observableProperty = classInstance.GetObservableProperty(_propName);
+				Observable = (Scripting.Object)observableProperty.GetObservable(context).Raw;
+				_done.Set();
+			}
+		}
+
 		static Scripting.Object GetObservableForProperty(Visual e, string propName)
 		{
-			var context = JavaScript.Worker._context;
-			var ci = context.GetExistingClassInstance(e);
-			Assert.IsTrue(ci != null);
-			var foo = ci.GetObservableProperty(propName);
-			Assert.IsTrue(foo != null);
-			return (Scripting.Object)foo.GetObservable(context).Raw;
+			var closure = new GetObservableForPropertyClosure(e, propName);
+			JavaScript.Worker.Invoke(closure.Run);
+			closure.Wait();
+			return closure.Observable;
 		}
 
 		[Test]
