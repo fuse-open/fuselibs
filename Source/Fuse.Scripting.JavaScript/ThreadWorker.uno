@@ -73,7 +73,7 @@ namespace Fuse.Scripting.JavaScript
 
 		void RunInner()
 		{
-			_context = Fuse.Scripting.JavaScript.JSContext.Create();
+			_context = JSContext.Create();
 			UpdateManager.AddAction(CheckAndThrow);
 
 			double t = Uno.Diagnostics.Clock.GetSeconds();
