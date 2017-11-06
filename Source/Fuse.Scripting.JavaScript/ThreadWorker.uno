@@ -14,12 +14,9 @@ namespace Fuse.Scripting.JavaScript
 
 	class ThreadWorker: IDisposable, IThreadWorker
 	{
-		public Function Observable { get { return FuseJS.Observable; } }
+		public Function Observable { get { return _context.FuseJS.Observable; } }
 
 		JSContext _context;
-
-		static Fuse.Reactive.FuseJS.Builtins _fuseJS;
-		public static Fuse.Reactive.FuseJS.Builtins FuseJS { get { return _fuseJS; } }
 
 		readonly Thread _thread;
 
@@ -90,8 +87,6 @@ namespace Fuse.Scripting.JavaScript
 					throw new Exception("Could not create script context");
 				}
 				UpdateManager.AddAction(CheckAndThrow);
-
-				_fuseJS = new Fuse.Reactive.FuseJS.Builtins(_context);
 			}
 			finally
 			{
@@ -136,7 +131,7 @@ namespace Fuse.Scripting.JavaScript
 
 				try
 				{
-					_fuseJS.UpdateModules(_context);
+					_context.FuseJS.UpdateModules(_context);
 				}
 				catch (Exception e)
 				{
