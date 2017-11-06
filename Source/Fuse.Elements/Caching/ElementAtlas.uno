@@ -137,15 +137,22 @@ namespace Fuse.Elements
 		public framebuffer PinAndValidateFramebuffer(DrawContext dc)
 		{
 			var fb = _framebuffer.Pin();
-
-			if (_invalidElements > 0)
+			try
 			{
-				Rect scissorRectInClipSpace = GetScissorRectInClipSpace(dc);
-				bool drawAll = _invalidElements == _elements.Count;
-				FillFramebuffer(dc, fb, drawAll, scissorRectInClipSpace);
-			}
+				if (_invalidElements > 0)
+				{
+					Rect scissorRectInClipSpace = GetScissorRectInClipSpace(dc);
+					bool drawAll = _invalidElements == _elements.Count;
+					FillFramebuffer(dc, fb, drawAll, scissorRectInClipSpace);
+				}
 
-			return fb;
+				return fb;
+			}
+			catch (Exception e)
+			{
+				_framebuffer.Unpin();
+				throw;
+			}
 		}
 
 		public void Unpin()

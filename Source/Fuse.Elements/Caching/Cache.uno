@@ -56,12 +56,20 @@ namespace Fuse.Elements
 			if (!PinAndValidate(dc))
 				return false;
 
-			if defined(FUSELIBS_PROFILING)
-				Profiling.LogEvent("Blitting out cache", 0);
+			bool validated = false;
+			try
+			{
+				if defined(FUSELIBS_PROFILING)
+					Profiling.LogEvent("Blitting out cache", 0);
 
-			Blit(dc, _element.Opacity);
-			Unpin();
-			return true;
+				Blit(dc, _element.Opacity);
+				validated = true;
+			}
+			finally
+			{
+				Unpin(validated);
+			}
+			return validated;
 		}
 
 		internal void DrawHeuristically(DrawContext dc)
@@ -146,16 +154,30 @@ namespace Fuse.Elements
 				}
 			}
 
-			for (int i = 0; i < _cacheTiles.Length; ++i)
+			try
 			{
-				_cacheTiles[i].EnsureHasFramebuffer();
-				_cacheTiles[i]._compositMatrix = CalculateCompositMatrix(dc, _cacheTiles[i]._rect);
-
-				_cacheTiles[i]._framebuffer.Pin();
-				if (!_cacheTiles[i]._framebuffer.IsContentValid || !_isValid)
+				for (int i = 0; i < _cacheTiles.Length; ++i)
 				{
-					Repaint(dc, _cacheTiles[i]);
+					_cacheTiles[i].EnsureHasFramebuffer();
+					_cacheTiles[i]._compositMatrix = CalculateCompositMatrix(dc, _cacheTiles[i]._rect);
+
+					_cacheTiles[i]._framebuffer.Pin();
+					if (!_cacheTiles[i]._framebuffer.IsContentValid || !_isValid)
+					{
+						Repaint(dc, _cacheTiles[i]);
+					}
 				}
+			}
+			catch (Exception e)
+			{
+				// manually unpin all CacheFramebuffers
+				for (int i = 0; i < _cacheTiles.Length; ++i)
+				{
+					if (_cacheTiles[i]._framebuffer.IsPinned)
+						_cacheTiles[i]._framebuffer.Unpin(false);
+				}
+
+				throw;
 			}
 
 			_isValid = true;
@@ -163,11 +185,11 @@ namespace Fuse.Elements
 		}
 
 
-		private void Unpin()
+		private void Unpin(bool validate)
 		{
 			foreach (CacheTile tile in _cacheTiles)
 			{
-				tile._framebuffer.Unpin(true);
+				tile._framebuffer.Unpin(validate);
 			}
 		}
 
