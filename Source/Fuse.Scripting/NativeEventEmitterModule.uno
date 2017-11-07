@@ -55,7 +55,7 @@ namespace Fuse.Scripting
 		override object CreateExportsObject(Context c)
 		{
 			_context = c;
-			_this = EventEmitterModule.GetConstructor(_context).Construct(_eventNames);
+			_this = EventEmitterModule.GetConstructor(c).Construct(c, _eventNames);
 
 			AppInitialized.On(c, OnAppInitialized);
 

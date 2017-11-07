@@ -98,7 +98,7 @@ namespace Fuse.Scripting.JavaScript
 			if (sc == null) return ext;
 
 			var ctor = context.GetClass(sc);
-			var res = ctor.Construct(ext);
+			var res = ctor.Construct(context, ext);
 
 			if (so != null) so.SetScriptObject(res, context);
 			return res;

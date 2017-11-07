@@ -82,7 +82,7 @@ namespace Fuse.Scripting
 			{
 				var promise = (Function)context.GlobalObject["Promise"]; // HACK - TODO: get rid of this
 				var future = _factory(args);
-				return promise.Construct((Callback)new PromiseClosure(context.ThreadWorker, future, _converter).Run);
+				return promise.Construct(context, (Callback)new PromiseClosure(context.ThreadWorker, future, _converter).Run);
 			}
 		}
 

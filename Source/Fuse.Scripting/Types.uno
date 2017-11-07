@@ -64,7 +64,7 @@ namespace Fuse.Scripting
 			Call(context, args);
 		}
 
-		public abstract Scripting.Object Construct(params object[] args);
+		public abstract Scripting.Object Construct(Context context, params object[] args);
 		public abstract bool Equals(Function f);
 
 		public override bool Equals(object o)

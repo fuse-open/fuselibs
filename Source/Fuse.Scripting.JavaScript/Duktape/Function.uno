@@ -33,7 +33,7 @@ namespace Fuse.Scripting.Duktape
 			return _handle.GetHashCode();
 		}
 
-		public override Fuse.Scripting.Object Construct(params object[] args)
+		public override Fuse.Scripting.Object Construct(Scripting.Context context, params object[] args)
 		{
 			_ctx.DukContext.push_heapptr(_handle);
 			var argc = args.Length;

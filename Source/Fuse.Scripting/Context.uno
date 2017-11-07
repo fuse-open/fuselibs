@@ -131,7 +131,7 @@ namespace Fuse.Scripting
 		public Object NewError(params object[] args)
 		{
 			_newError = GlobalObject["Error"] as Function;
-			return _newError.Construct(args);
+			return _newError.Construct(this, args);
 		}
 
 		public abstract object Evaluate(string fileName, string code);
