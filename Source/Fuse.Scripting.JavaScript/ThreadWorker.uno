@@ -23,6 +23,8 @@ namespace Fuse.Scripting.JavaScript
 
 		public ThreadWorker()
 		{
+			Fuse.Platform.Lifecycle.Terminating += OnTerminating;
+
 			_thread = new Thread(Run);
 			if defined(DotNet)
 			{
@@ -50,8 +52,6 @@ namespace Fuse.Scripting.JavaScript
 			_terminate.Dispose();
 		}
 
-		bool _subscribedForClosing;
-
 		void Run()
 		{
 			try
@@ -76,15 +76,6 @@ namespace Fuse.Scripting.JavaScript
 					break;
 
 				if defined(CPLUSPLUS) extern "uAutoReleasePool ____pool";
-
-				if (!_subscribedForClosing)
-				{
-					if (Uno.Application.Current != null)
-					{
-						Fuse.Platform.Lifecycle.Terminating += OnTerminating;
-						_subscribedForClosing = true;
-					}
-				}
 
 				bool didAnything = false;
 
