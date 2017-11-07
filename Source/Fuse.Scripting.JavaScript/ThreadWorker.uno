@@ -14,15 +14,12 @@ namespace Fuse.Scripting.JavaScript
 
 	class ThreadWorker: IDisposable, IThreadWorker
 	{
-		JSContext _context;
-
 		readonly Thread _thread;
 
 		readonly ManualResetEvent _idle = new ManualResetEvent(true);
 		readonly ManualResetEvent _terminate = new ManualResetEvent(false);
 
 		readonly ConcurrentQueue<Action<Scripting.Context>> _queue = new ConcurrentQueue<Action<Scripting.Context>>();
-		readonly ConcurrentQueue<Exception> _exceptionQueue = new ConcurrentQueue<Exception>();
 
 		public ThreadWorker()
 		{
@@ -59,23 +56,18 @@ namespace Fuse.Scripting.JavaScript
 		{
 			try
 			{
-				RunInner();
+				using (var context = JSContext.Create())
+					RunInner(context);
 			}
 			catch(Exception e)
 			{
 				Fuse.Diagnostics.UnknownException( "ThreadWorked failed", e, this );
-				_exceptionQueue.Enqueue(e);
+				DispatchException(e);
 			}
-
-			if (_context != null)
-				_context.Dispose();
 		}
 
-		void RunInner()
+		void RunInner(JSContext context)
 		{
-			_context = Fuse.Scripting.JavaScript.JSContext.Create();
-			UpdateManager.AddAction(CheckAndThrow);
-
 			double t = Uno.Diagnostics.Clock.GetSeconds();
 
 			while (true)
@@ -102,11 +94,11 @@ namespace Fuse.Scripting.JavaScript
 					try
 					{
 						didAnything = true;
-						action(_context);
+						action(context);
 					}
 					catch (Exception e)
 					{
-						_exceptionQueue.Enqueue(e);
+						DispatchException(e);
 					}
 				}
 				else
@@ -114,11 +106,11 @@ namespace Fuse.Scripting.JavaScript
 
 				try
 				{
-					_context.FuseJS.UpdateModules(_context);
+					context.FuseJS.UpdateModules(context);
 				}
 				catch (Exception e)
 				{
-					_exceptionQueue.Enqueue(e);
+					DispatchException(e);
 				}
 
 				var t2 = Uno.Diagnostics.Clock.GetSeconds();
@@ -139,22 +131,28 @@ namespace Fuse.Scripting.JavaScript
 			_idle.WaitOne();
 		}
 
-		/*
-			Throws an exception that was generated on the thread. If there are more than one then the previous
-			ones will be reported and the last one thrown.
-		*/
-		public void CheckAndThrow()
+		class ExceptionClosure
 		{
-			Exception next = null, prev = null;
-			while (_exceptionQueue.TryDequeue(out next))
+			readonly Exception _exception;
+
+			public ExceptionClosure(Exception exception)
 			{
-				if (prev != null)
-					Fuse.Diagnostics.UnknownException("Skipped Exception", prev, this);
-				prev = next;
+				_exception = exception;
 			}
 
-			if (prev != null)
-				throw new WrapException(prev);
+			public void Run()
+			{
+				throw new WrapException(_exception);
+			}
+		}
+
+		/*
+			Dispatches an exception from the JS-thread to the UI-thread.
+		*/
+		void DispatchException(Exception e)
+		{
+			var closure = new ExceptionClosure(e);
+			UpdateManager.PostAction(closure.Run);
 		}
 
 		public void Invoke(Action<Scripting.Context> action)
