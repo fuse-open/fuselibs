@@ -10,7 +10,6 @@ namespace Fuse.Scripting
 	public interface IThreadWorker
 	{
 		void Invoke(Uno.Action<Scripting.Context> action);
-		void Invoke<T>(Uno.Action<Scripting.Context, T> action, T arg0);
 	}
 
 	public abstract class Context: Uno.IDisposable
