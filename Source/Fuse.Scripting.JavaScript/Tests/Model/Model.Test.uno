@@ -310,7 +310,6 @@ namespace Fuse.Reactive.Test
 		}
 
 		[Test]
-		//TODO: working on this this one still (found the Each one)
 		public void UseCase1()
 		{
 			var e = new UX.Model.UseCase1();
