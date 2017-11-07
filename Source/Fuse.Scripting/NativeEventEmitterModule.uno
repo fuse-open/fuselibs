@@ -124,6 +124,23 @@ namespace Fuse.Scripting
 			return new object[] { "error", context.NewError(reason) };
 		}
 
+		class ActionClosure
+		{
+			readonly Action<Context, Scripting.Object> _action;
+			readonly Scripting.Object _arg;
+
+			public ActionClosure(Action<Context, Scripting.Object> action, Scripting.Object arg)
+			{
+				_action = action;
+				_arg = arg;
+			}
+
+			public void Run(Context context)
+			{
+				_action(context, _arg);
+			}
+		}
+
 		void Dispatch(Action<Context, Scripting.Object> action, bool alwaysQueueEventBeforeInit = false)
 		{
 			lock (_mutex)
@@ -137,7 +154,8 @@ namespace Fuse.Scripting
 					return;
 				}
 			}
-			_context.ThreadWorker.Invoke<Scripting.Object>(action, _this);
+
+			_context.ThreadWorker.Invoke(new ActionClosure(action, _this).Run);
 		}
 
 		/** Connect a @NativeEvent to an event.
