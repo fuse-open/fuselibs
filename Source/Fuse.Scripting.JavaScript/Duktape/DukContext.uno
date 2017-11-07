@@ -37,7 +37,7 @@ namespace Fuse.Scripting.Duktape
 		}
 	}
 
-	public extern(USE_DUKTAPE) class Context : Fuse.Scripting.JavaScript.JSContext
+	public extern(USE_DUKTAPE) class DukContext : Fuse.Scripting.JavaScript.JSContext
 	{
 		readonly Object _globalObject;
 		internal readonly ConcurrentQueue<int> _unstash = new ConcurrentQueue<int>();
@@ -48,7 +48,7 @@ namespace Fuse.Scripting.Duktape
 
 		public override Fuse.Scripting.Object GlobalObject { get { return _globalObject; } }
 
-		public Context(): base()
+		public DukContext(): base()
 		{
 			DukContext = duktape.create_heap_default();
 
@@ -73,7 +73,7 @@ namespace Fuse.Scripting.Duktape
 			}
 		}
 
-		~Context()
+		~DukContext()
 		{
 			Dispose();
 		}
