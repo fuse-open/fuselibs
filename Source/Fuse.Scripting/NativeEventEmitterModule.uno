@@ -49,7 +49,7 @@ namespace Fuse.Scripting
 			lock (_mutex)
 				foreach (var l in _listeningCallbacks)
 					Dispatch(new OnClosure(l.Item1, l.Item2).On, true);
-			AppInitialized.On(_context.ThreadWorker, OnAppInitialized);
+			AppInitialized.On(context, OnAppInitialized);
 		}
 
 		override object CreateExportsObject(Context c)
@@ -57,12 +57,12 @@ namespace Fuse.Scripting
 			_context = c;
 			_this = EventEmitterModule.GetConstructor(_context).Construct(_eventNames);
 
-			AppInitialized.On(c.ThreadWorker, OnAppInitialized);
+			AppInitialized.On(c, OnAppInitialized);
 
 			return _this;
 		}
 
-		void OnAppInitialized()
+		void OnAppInitialized(Context c)
 		{
 			lock (_mutex)
 			{
