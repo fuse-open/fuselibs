@@ -229,7 +229,7 @@ namespace Fuse.Reactive
 		{
 			_previewStateModelId = previewStateId;
 			_model = model;
-			FileName=  "(model-script)";
+			FileName = "(model-script)";
 		}
 		
 		protected override void OnRooted()
