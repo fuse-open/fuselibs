@@ -31,6 +31,7 @@
 - `DateTimeConverterHelpers` moved to its own uno file.
 - `IMirror`'s `Reflect` now takes a `Scripting.Context`
 - IThreadWorker no longer implement IDispatcher
+- `Fuse.Scripting.JavaScript`'s `ThreadWorker` no longer blocks on construction
 
 # 1.4
 
