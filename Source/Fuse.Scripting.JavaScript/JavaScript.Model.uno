@@ -117,15 +117,23 @@ namespace Fuse.Reactive
 		
 		internal static ParsedModelExpression ParseModelExpression(IExpression exp, NameTable nt)
 		{
-			if (exp is Data) {
-				var className = ((Data)exp).Key;
-				return new ParsedModelExpression{ ClassName = className, ModuleName = className,
-					Source = exp };
-			} 
-			else if (exp is Divide)
+			var data = exp as Data;
+			if (data != null)
 			{
-				var left = ParseModelExpression(((Divide)exp).Left, nt);
-				var right = ParseModelExpression(((Divide)exp).Right, nt);
+				var className = data.Key;
+				return new ParsedModelExpression
+				{
+					ClassName = className,
+					ModuleName = className,
+					Source = exp,
+				};
+			}
+
+			var divide = exp as Divide;
+			if (divide != null)
+			{
+				var left = ParseModelExpression(divide.Left, nt);
+				var right = ParseModelExpression(divide.Right, nt);
 				
 				if (left.Args.Count > 0 || left.Dependencies.Count > 0)
 					throw new Exception( "Invalid Model path expression: " + exp);
@@ -134,12 +142,17 @@ namespace Fuse.Reactive
 				right.Source = exp;
 				return right;
 			}
-			else if (exp is Fuse.Reactive.NamedFunctionCall)
-			{
-				var nfc = (Fuse.Reactive.NamedFunctionCall)exp;
 
-				var result = new ParsedModelExpression{ ClassName = nfc.Name, ModuleName = nfc.Name,
-					Source = exp };
+			var nfc = exp as Fuse.Reactive.NamedFunctionCall;
+			if (nfc != null)
+			{
+				var result = new ParsedModelExpression
+				{
+					ClassName = nfc.Name,
+					ModuleName = nfc.Name,
+					Source = exp,
+				};
+
 				for (int i = 0; i < nfc.Arguments.Count; i++)
 				{
 					var argName = "__dep" + i;
@@ -149,7 +162,8 @@ namespace Fuse.Reactive
 
 				return result;
 			}
-			else throw new Exception("Invalid Model path expression: " + exp);
+			
+			throw new Exception("Invalid Model path expression: " + exp);
 		}
 
 		void SetupModel()
