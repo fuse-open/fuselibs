@@ -87,10 +87,7 @@ namespace Fuse.Scripting.JavaScript
 			// UI thread
 			public void Perform()
 			{
-				// HACK: This should really check if the property has ever been set.
-				// However, this requires some bigger changes to the UX compiler,
-				// so we check for the default value of the UX Property's type instead.
-				// Note that this will fail when the initial value is explicitly set to the default value of the type.
+				// HACK: https://github.com/fusetools/fuselibs-public/issues/541#issuecomment-335101235
 				if (IsDefaultValueForType(_property.GetAsObject(), _property.PropertyType))
 				{
 					_property.SetAsObject(_value, null);

@@ -310,7 +310,6 @@ namespace Fuse.Reactive.Test
 		}
 
 		[Test]
-		//TODO: working on this this one still (found the Each one)
 		public void UseCase1()
 		{
 			var e = new UX.Model.UseCase1();
@@ -414,7 +413,7 @@ namespace Fuse.Reactive.Test
 			{
 				root.StepFrameJS();
 				Assert.AreEqual( "2,3", e.oc.JoinValues() );
-				e.oc.Log.Clear(); //TODO: it's undecided what the bootstrapping messages will be still
+				Assert.AreEqual( 0, e.oc.Log.Count);
 
 				e.callAdd.Perform();
 				root.StepFrameJS();
@@ -465,9 +464,11 @@ namespace Fuse.Reactive.Test
 		}
 
 		[Test]
-		public void EmptyList() {
+		public void EmptyList()
+		{
 			var e = new UX.Model.EmptyList();
-			using (var root = TestRootPanel.CreateWithChild(e)) {
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
 				var oc = e.collector1.Children;
 				var poc = e.collector2.Children;
 				root.StepFrameJS();
@@ -486,9 +487,11 @@ namespace Fuse.Reactive.Test
 		}
 
 		[Test]
-		public void MultiCounter() {
+		public void MultiCounter()
+		{
 			var e = new UX.Model.MultiCounter();
-			using (var root = TestRootPanel.CreateWithChild(e)) {
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
 				root.StepFrameJS();
 				var oc = e.counterCollector.Children;
 				Assert.AreEqual(2, oc.Count);
@@ -531,50 +534,49 @@ namespace Fuse.Reactive.Test
 				root.StepFrameJS();
 				var children = ChildrenOfType<Visual>(e.navigator);
 				Assert.AreEqual(1, children.Count);
-				Assert.OfType<UX.Model.MainPage>(children[0]);
+				AssertOfType<UX.Model.MainPage>(children[0]);
 
 				e.pushPage.Perform();
 				root.StepFrameJS();
 
 				var childrenAfterPush = ChildrenOfType<Visual>(e.navigator);
 				Assert.AreEqual(2, childrenAfterPush.Count);
-				Assert.OfType<UX.Model.MainPage>(childrenAfterPush[0]);
-				Assert.OfType<UX.Model.DetailPage>(childrenAfterPush[1]);
+				AssertOfType<UX.Model.MainPage>(childrenAfterPush[0]);
+				AssertOfType<UX.Model.DetailPage>(childrenAfterPush[1]);
 
 				e.popPage.Perform();
 				root.StepFrameJS();
 
-				Assert.OfType<UX.Model.MainPage>(e.navigator.Active);
+				AssertOfType<UX.Model.MainPage>(e.navigator.Active);
 			}
 		}
 
-		List<T> ChildrenOfType<T>(Visual n) where T : Node
+		static List<T> ChildrenOfType<T>(Visual n) where T : Node
 		{
 			var l = new List<T>();
-			for (int i=0; i < n.Children.Count; ++i)
+			foreach (var child in n.Children)
 			{
-				var m = n.Children[i] as T;
+				var m = child as T;
 				if (m != null)
 					l.Add(m);
 			}
 			return l;
 		}
-	}
-}
 
-namespace Uno.Testing {
-	public static partial class Assert {
-		public static void OfType<T>(
+		static void AssertOfType<T>(
 			object obj,
 			[CallerFilePath] string filePath = "",
 			[CallerLineNumber] int lineNumber = 0,
 			[CallerMemberName] string memberName = "")
 		{
-			if(!(obj is T)) {
+			if(!(obj is T))
+			{
 				var expected = "object of type '" + typeof(T).FullName + "'";
 				var actual = (obj == null) ? "null" : "object of type '" + obj.GetType().FullName + "'";
 
-				Assert.ReportFailure(filePath, lineNumber, memberName, expected, actual);
+				// Temporary: `Assert.ReportFailure` is private
+				var message = "Expected " + expected + ", got " + actual;
+				Assert.Fail(message, filePath, lineNumber, memberName);
 			}
 		}
 	}
