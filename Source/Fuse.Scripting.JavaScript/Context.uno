@@ -14,6 +14,8 @@ namespace Fuse.Scripting.JavaScript
 		Function _setSuperclass;
 		int _reflectionDepth;
 
+		Fuse.Reactive.FuseJS.Builtins FuseJS { private set; internal get;}
+
 		public override Fuse.Scripting.IThreadWorker ThreadWorker
 		{
 			get
@@ -32,10 +34,18 @@ namespace Fuse.Scripting.JavaScript
 
 		internal static JSContext Create()
 		{
-			if defined(USE_JAVASCRIPTCORE) return new Fuse.Scripting.JavaScriptCore.Context();
-			else if defined(USE_V8) return new Fuse.Scripting.V8.Context();
-			else if defined(USE_DUKTAPE) return new Fuse.Scripting.Duktape.Context();
+			JSContext result;
+
+			if defined(USE_JAVASCRIPTCORE) result = new Fuse.Scripting.JavaScriptCore.Context();
+			else if defined(USE_V8) result = new Fuse.Scripting.V8.Context();
+			else if defined(USE_DUKTAPE) result = new Fuse.Scripting.Duktape.Context();
 			else throw new Exception("No JavaScript VM available for this platform");
+
+			// The reason for populating FuseJS here and not in the constructor is that if the
+			// context is not fully constructed when passed to `new Builtins` a segmentation fault
+			// occurs on (at least some) c++ backends
+			result.FuseJS = new Fuse.Reactive.FuseJS.Builtins(result);
+			return result;
 		}
 
 		public override object Wrap(object obj)
@@ -95,15 +105,15 @@ namespace Fuse.Scripting.JavaScript
 			var o = obj as Scripting.Object;
 			if (o != null)
 			{
-				if (o.InstanceOf(Fuse.Scripting.JavaScript.ThreadWorker.FuseJS.Observable))
+				if (o.InstanceOf(FuseJS.Observable))
 				{
 					return new Observable(this, (ThreadWorker)ThreadWorker, o, false);
 				}
-				else if (o.InstanceOf(Fuse.Scripting.JavaScript.ThreadWorker.FuseJS.Date))
+				else if (o.InstanceOf(FuseJS.Date))
 				{
 					return DateTimeConverterHelpers.ConvertDateToDateTime(this, o);
 				}
-				else if (o.InstanceOf(Fuse.Scripting.JavaScript.ThreadWorker.FuseJS.TreeObservable))
+				else if (o.InstanceOf(FuseJS.TreeObservable))
 				{
 					return new TreeObservable(this, o);
 				}
@@ -147,7 +157,7 @@ namespace Fuse.Scripting.JavaScript
 				if (inlineMethod != null)
 				{
 					var m = (Function)Evaluate(sc.Type.FullName + "." + inlineMethod.Name + " (ScriptMethod)", "(function(cl, Observable) { cl.prototype." + inlineMethod.Name + " = " + inlineMethod.Code + "; })");
-					m.Call(this, cl, ((ThreadWorker)ThreadWorker).Observable);
+					m.Call(this, cl, FuseJS.Observable);
 					continue;
 				}
 
