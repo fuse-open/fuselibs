@@ -60,14 +60,24 @@ namespace Fuse.Reactive.FuseJS
 				_worker = worker;
 			}
 
-			public void Invoke(Action action)
+			class ActionClosure
 			{
-				_worker.Invoke<Action>(DoIt, action);
+				readonly Action _action;
+
+				public ActionClosure(Action action)
+				{
+					_action = action;
+				}
+
+				public void Run(Context context)
+				{
+					_action(); // drop Context, because HTTP doesn't care
+				}
 			}
 
-			public void DoIt(Scripting.Context context, Action action)
+			public void Invoke(Action action)
 			{
-				action();
+				_worker.Invoke(new ActionClosure(action).Run);
 			}
 		}
 
