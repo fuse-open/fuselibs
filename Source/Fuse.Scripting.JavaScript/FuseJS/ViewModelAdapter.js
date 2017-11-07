@@ -39,7 +39,8 @@ exports.adaptView = function(view, viewModule, model) {
 	}
 
 	var keys = Object.getOwnPropertyNames(view);
-	for (var key in keys) {
+	for (var i in keys) {
+		var key = keys[i];
 		if(!(key in model)) continue;
 		var descriptor = Object.getOwnPropertyDescriptor(view, key);
 		if(!descriptor.enumerable && view[key] instanceof Observable) {
