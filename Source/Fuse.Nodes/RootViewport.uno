@@ -54,7 +54,7 @@ namespace Fuse
 			RootInternal(null);
 
 			// Hook up global layout
-			UpdateManager.AddAction(PerformLayout, UpdateStage.Layout);
+			OnInvalidateLayout();
 		}
 
 		extern(Android || iOS)
@@ -82,12 +82,16 @@ namespace Fuse
 			RootInternal(null);
 
 			// Hook up global layout
-			UpdateManager.AddAction(PerformLayout, UpdateStage.Layout);
+			OnInvalidateLayout();
+		}
+
+		protected override void OnInvalidateLayout()
+		{
+			UpdateManager.AddOnceAction(PerformLayout, UpdateStage.Layout);
 		}
 		
 		void IDisposable.Dispose()
 		{
-			UpdateManager.RemoveAction(PerformLayout, UpdateStage.Layout);
 			Children.Clear();
 		}
 
@@ -130,6 +134,7 @@ namespace Fuse
 		{
 			EstablishSize();
 			_frustumViewport.Update(this, Frustum);
+			OnInvalidateLayout();
 		}
 
 		IFrustum Frustum = new OrthographicFrustum();
