@@ -413,7 +413,7 @@ namespace Fuse.Reactive.Test
 			{
 				root.StepFrameJS();
 				Assert.AreEqual( "2,3", e.oc.JoinValues() );
-				e.oc.Log.Clear(); //TODO: it's undecided what the bootstrapping messages will be still
+				Assert.AreEqual( 0, e.oc.Log.Count);
 
 				e.callAdd.Perform();
 				root.StepFrameJS();
