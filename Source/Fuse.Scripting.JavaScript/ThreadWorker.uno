@@ -14,8 +14,6 @@ namespace Fuse.Scripting.JavaScript
 
 	class ThreadWorker: IDisposable, IThreadWorker
 	{
-		JSContext _context;
-
 		readonly Thread _thread;
 
 		readonly ManualResetEvent _idle = new ManualResetEvent(true);
@@ -58,22 +56,18 @@ namespace Fuse.Scripting.JavaScript
 		{
 			try
 			{
-				RunInner();
+				using (var context = JSContext.Create())
+					RunInner(context);
 			}
 			catch(Exception e)
 			{
 				Fuse.Diagnostics.UnknownException( "ThreadWorked failed", e, this );
 				DispatchException(e);
 			}
-
-			if (_context != null)
-				_context.Dispose();
 		}
 
-		void RunInner()
+		void RunInner(JSContext context)
 		{
-			_context = JSContext.Create();
-
 			double t = Uno.Diagnostics.Clock.GetSeconds();
 
 			while (true)
@@ -100,7 +94,7 @@ namespace Fuse.Scripting.JavaScript
 					try
 					{
 						didAnything = true;
-						action(_context);
+						action(context);
 					}
 					catch (Exception e)
 					{
@@ -112,7 +106,7 @@ namespace Fuse.Scripting.JavaScript
 
 				try
 				{
-					_context.FuseJS.UpdateModules(_context);
+					context.FuseJS.UpdateModules(context);
 				}
 				catch (Exception e)
 				{
