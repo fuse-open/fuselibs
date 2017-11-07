@@ -551,9 +551,9 @@ namespace Fuse.Reactive.Test
 		List<T> ChildrenOfType<T>(Visual n) where T : Node
 		{
 			var l = new List<T>();
-			for (int i=0; i < n.Children.Count; ++i)
+			foreach (var child in n.Children)
 			{
-				var m = n.Children[i] as T;
+				var m = child as T;
 				if (m != null)
 					l.Add(m);
 			}
