@@ -6,6 +6,7 @@ using Fuse.Scripting;
 using Uno.Testing;
 using Uno.Threading;
 using Uno.IO;
+using Uno.Text;
 
 namespace Fuse.Reactive
 {
@@ -92,10 +93,13 @@ namespace Fuse.Reactive
 			{
 				get
 				{
-					var str = string.Empty;
-					for (int i=0; i < Args.Count; ++i)
-						str += ", " + Args[i];
-					return str;
+					var builder = new StringBuilder();
+					for (int i = 0; i < Args.Count; ++i)
+					{
+						builder.Append(", ");
+						builder.Append(Args[i]);
+					}
+					return builder.ToString();
 				}
 			}
 			
