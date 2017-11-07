@@ -18,7 +18,6 @@ namespace Fuse.Scripting.JavaScript
 
 		readonly Thread _thread;
 
-		readonly ManualResetEvent _ready = new ManualResetEvent(false);
 		readonly ManualResetEvent _idle = new ManualResetEvent(true);
 		readonly ManualResetEvent _terminate = new ManualResetEvent(false);
 
@@ -38,8 +37,6 @@ namespace Fuse.Scripting.JavaScript
 			}
 
 			_thread.Start();
-			_ready.WaitOne();
-			_ready.Dispose();
 		}
 
 		void OnTerminating(Fuse.Platform.ApplicationState newState)
@@ -76,15 +73,8 @@ namespace Fuse.Scripting.JavaScript
 
 		void RunInner()
 		{
-			try
-			{
-				_context = Fuse.Scripting.JavaScript.JSContext.Create();
-				UpdateManager.AddAction(CheckAndThrow);
-			}
-			finally
-			{
-				_ready.Set();
-			}
+			_context = Fuse.Scripting.JavaScript.JSContext.Create();
+			UpdateManager.AddAction(CheckAndThrow);
 
 			double t = Uno.Diagnostics.Clock.GetSeconds();
 
