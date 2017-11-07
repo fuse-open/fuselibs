@@ -19,9 +19,9 @@ namespace Fuse.Reactive
 		}
 		
 		//Requires a NameTable that will be set first.
-        [UXAttachedPropertySetter("JavaScript.Model"), UXNameScope, UXAuxNameTable("ModelNameTable")]
-        public static void SetModel(Visual v, IExpression model)
-        {
+		[UXAttachedPropertySetter("JavaScript.Model"), UXNameScope, UXAuxNameTable("ModelNameTable")]
+		public static void SetModel(Visual v, IExpression model)
+		{
 			var md = v.Properties.Get( _modelHandle ) as ModelData;
 			if (md == null)
 			{
@@ -46,13 +46,13 @@ namespace Fuse.Reactive
 				
 			var parsed = ModelJavaScript.ParseModelExpression(md.Model, md.NameTable);
 			v.Children.Add( new ModelJavaScript(parsed, md.NameTable, null) );
-        }
+		}
 
-        static PropertyHandle _modelHandle = Properties.CreateHandle();
-        
-        [UXAttachedPropertySetterAttribute("ModelNameTable")]
-        public static void SetModelNameTable(Visual v, NameTable nt)
-        {
+		static PropertyHandle _modelHandle = Properties.CreateHandle();
+		
+		[UXAttachedPropertySetterAttribute("ModelNameTable")]
+		public static void SetModelNameTable(Visual v, NameTable nt)
+		{
 			var md = v.Properties.Get( _modelHandle ) as ModelData;
 			if (md == null)
 			{
@@ -65,17 +65,17 @@ namespace Fuse.Reactive
 			}
 			
 			Complete( md, v );
-        }
+		}
 
-        //TODO: This should probably be JavaScript.Model, Preview would need to be adjusted as well
-        [UXAttachedPropertySetter("Model"), UXNameScope]
-        public static void SetAppModel(IRootVisualProvider rootVisualProvider, IExpression model)
-        {
+		//TODO: This should probably be JavaScript.Model, Preview would need to be adjusted as well
+		[UXAttachedPropertySetter("Model"), UXNameScope]
+		public static void SetAppModel(IRootVisualProvider rootVisualProvider, IExpression model)
+		{
 			rootVisualProvider.Root.RemoveAllChildren<ModelJavaScript>();
 
 			var _appModel = ModelJavaScript.CreateFromPreviewState(rootVisualProvider.Root, model);
 			rootVisualProvider.Root.Children.Add(_appModel);
-        }
+		}
 	}
 	
 	class ModelJavaScript : JavaScript, IPreviewStateSaver
@@ -112,76 +112,76 @@ namespace Fuse.Reactive
 		}
 		
 		internal static ParsedModelExpression ParseModelExpression(IExpression exp, NameTable nt)
-        {
-            if (exp is Data) {
-                var className = ((Data)exp).Key;
-                return new ParsedModelExpression{ ClassName = className, ModuleName = className,
+		{
+			if (exp is Data) {
+				var className = ((Data)exp).Key;
+				return new ParsedModelExpression{ ClassName = className, ModuleName = className,
 					Source = exp };
-            } 
-            else if (exp is Divide)
-            {
-                var left = ParseModelExpression(((Divide)exp).Left, nt);
-                var right = ParseModelExpression(((Divide)exp).Right, nt);
-                
-                if (left.Args.Count > 0 || left.Dependencies.Count > 0)
+			} 
+			else if (exp is Divide)
+			{
+				var left = ParseModelExpression(((Divide)exp).Left, nt);
+				var right = ParseModelExpression(((Divide)exp).Right, nt);
+				
+				if (left.Args.Count > 0 || left.Dependencies.Count > 0)
 					throw new Exception( "Invalid Model path expression: " + exp);
-                
-                right.ModuleName = left.ModuleName + "/" + right.ModuleName;
-                right.Source = exp;
-                return right;
-            }
-            else if (exp is Fuse.Reactive.NamedFunctionCall)
-            {
-                var nfc = (Fuse.Reactive.NamedFunctionCall)exp;
+				
+				right.ModuleName = left.ModuleName + "/" + right.ModuleName;
+				right.Source = exp;
+				return right;
+			}
+			else if (exp is Fuse.Reactive.NamedFunctionCall)
+			{
+				var nfc = (Fuse.Reactive.NamedFunctionCall)exp;
 
-                var result = new ParsedModelExpression{ ClassName = nfc.Name, ModuleName = nfc.Name,
+				var result = new ParsedModelExpression{ ClassName = nfc.Name, ModuleName = nfc.Name,
 					Source = exp };
-                for (int i = 0; i < nfc.Arguments.Count; i++)
-                {
+				for (int i = 0; i < nfc.Arguments.Count; i++)
+				{
 					var argName = "__dep" + i;
 					var c = nfc.Arguments[i] as Constant;
-                    result.Dependencies.Add(new Dependency(argName, nfc.Arguments[i]));
+					result.Dependencies.Add(new Dependency(argName, nfc.Arguments[i]));
 					result.Args.Add( argName );
-                }
+				}
 
-                return result;
-            }
-            else throw new Exception("Invalid Model path expression: " + exp);
-        }
+				return result;
+			}
+			else throw new Exception("Invalid Model path expression: " + exp);
+		}
 
-        void SetupModel()
-        {
+		void SetupModel()
+		{
 			if (_model == null)
 			{
 				Code = "";
 				return;
 			}
 
-            //TODO: this should not be necessary. It's done because there's a UX processor error, we get
-            //the IExpression prior to it being complete
-            var module = ParseModelExpression( _model.Source, _nameTable );
-            //var module = _model;
-            
-            Dependencies.Clear();
+			//TODO: this should not be necessary. It's done because there's a UX processor error, we get
+			//the IExpression prior to it being complete
+			var module = ParseModelExpression( _model.Source, _nameTable );
+			//var module = _model;
+			
+			Dependencies.Clear();
 			for (int i=0; i < module.Dependencies.Count; ++i)
 				Dependencies.Add( module.Dependencies[i] );
 			
-            var code = "var Model = require('FuseJS/Model');\n"+
+			var code = "var Model = require('FuseJS/Model');\n"+
 					"var ViewModelAdapter = require('FuseJS/ViewModelAdapter')\n";
 					
 			code += "var self = this;\n"+
 					"var modelClass = require('" + module.ModuleName + "');\n"+
-                    "if (!(modelClass instanceof Function) && 'default' in modelClass) { modelClass = modelClass.default }\n"+
-                    "if (!(modelClass instanceof Function) && '" + module.ClassName +"' in modelClass) { modelClass = modelClass."+ module.ClassName +" }\n"+
-                    "if (!(modelClass instanceof Function)) { throw new Error('\"" + module.ModuleName + "\" does not export a class or function required to construct a Model'); }\n"+
-                    "var modelInstance = Object.create(modelClass.prototype);\n"+
+					"if (!(modelClass instanceof Function) && 'default' in modelClass) { modelClass = modelClass.default }\n"+
+					"if (!(modelClass instanceof Function) && '" + module.ClassName +"' in modelClass) { modelClass = modelClass."+ module.ClassName +" }\n"+
+					"if (!(modelClass instanceof Function)) { throw new Error('\"" + module.ModuleName + "\" does not export a class or function required to construct a Model'); }\n"+
+					"var modelInstance = Object.create(modelClass.prototype);\n"+
 					"module.exports = new Model(modelInstance, function() {\n"+
-                    "    modelClass.call(modelInstance" + module.ArgString + ");\n"+
+					"    modelClass.call(modelInstance" + module.ArgString + ");\n"+
 					"    ViewModelAdapter.adaptView(self, module, modelInstance);\n"+
-                    "    return modelInstance;\n"+
-                    "});\n";
+					"    return modelInstance;\n"+
+					"});\n";
 			Code = code;
-        }
+		}
 		
 		string _previewStateModelId; //if null then not migrated
 		
@@ -250,5 +250,5 @@ namespace Fuse.Reactive
 			_preserveModuleInstance = false;
 			DisposeModuleInstance();
 		}
-    }
+	}
 }
