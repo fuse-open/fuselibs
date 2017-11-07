@@ -27,10 +27,27 @@ namespace Fuse.Scripting
 			return _jsFunction;
 		}
 
+		class CallDiscardingResultClosure
+		{
+			readonly Scripting.Function _jsFunction;
+			readonly object[] _args;
+
+			public CallDiscardingResultClosure(Scripting.Function jsFunction, object[] args)
+			{
+				_jsFunction = jsFunction;
+				_args = args;
+			}
+
+			public void Run(Context context)
+			{
+				_jsFunction.CallDiscardingResult(context, _args);
+			}
+		}
+
 		void DispatchQueue(IThreadWorker threadWorker)
 		{
 			while (_eventArgsQueue.Count > 0 && _jsFunction != null)
-				threadWorker.Invoke<object[]>(_jsFunction.CallDiscardingResult, _eventArgsQueue.Dequeue());
+				threadWorker.Invoke(new CallDiscardingResultClosure(_jsFunction, _eventArgsQueue.Dequeue()).Run);
 		}
 
 		public void RaiseAsync(IThreadWorker threadWorker, params object[] args)
@@ -44,7 +61,7 @@ namespace Fuse.Scripting
 		internal object RaiseSync(Context context, params object[] args)
 		{
 			if (_jsFunction != null)
-				context.ThreadWorker.Invoke<object[]>(_jsFunction.CallDiscardingResult, args);
+				context.ThreadWorker.Invoke(new CallDiscardingResultClosure(_jsFunction, args).Run);
 
 			return null;
 		}
