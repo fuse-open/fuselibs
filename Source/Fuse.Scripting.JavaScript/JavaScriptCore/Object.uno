@@ -65,7 +65,7 @@ namespace Fuse.Scripting.JavaScriptCore
 			}
 		}
 
-		public override bool InstanceOf(Scripting.Function type)
+		public override bool InstanceOf(Scripting.Context context, Scripting.Function type)
 		{
 			return type is Function
 				&& _value.GetJSValueRef().IsInstanceOfConstructor(

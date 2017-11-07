@@ -80,10 +80,10 @@ namespace Fuse.Scripting.Test
 				Assert.AreEqual(25, AsInt(callResult));
 				Assert.IsTrue(
 					(((Scripting.Object)context.Evaluate("Objects instanceof", "new Date()")))
-					.InstanceOf((Scripting.Function)context.Evaluate("Objects instanceof 2", "Date")));
+					.InstanceOf(context, (Scripting.Function)context.Evaluate("Objects instanceof 2", "Date")));
 				Assert.IsFalse(
 					obj
-					.InstanceOf((Scripting.Function)context.Evaluate("Objects instanceof 3", "Date")));
+					.InstanceOf(context,(Scripting.Function)context.Evaluate("Objects instanceof 3", "Date")));
 			}
 		}
 

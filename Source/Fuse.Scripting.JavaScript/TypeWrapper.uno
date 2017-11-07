@@ -19,7 +19,7 @@ namespace Fuse.Scripting.JavaScript
 			{
 				var sobj = (Scripting.Object)obj;
 
-				if (sobj.InstanceOf(context.FuseJS.Date))
+				if (sobj.InstanceOf(context, context.FuseJS.Date))
 				{
 					return DateTimeConverterHelpers.ConvertDateToDateTime(context, sobj);
 				}

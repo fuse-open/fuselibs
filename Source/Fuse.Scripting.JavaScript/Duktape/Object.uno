@@ -33,7 +33,7 @@ namespace Fuse.Scripting.Duktape
 			return _handle.GetHashCode();
 		}
 
-		public override bool InstanceOf(Fuse.Scripting.Function type)
+		public override bool InstanceOf(Scripting.Context context, Fuse.Scripting.Function type)
 		{
 			var func = type as Function;
 			if (func == null) return false;
