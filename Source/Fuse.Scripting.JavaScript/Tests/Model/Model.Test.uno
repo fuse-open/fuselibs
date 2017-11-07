@@ -548,7 +548,7 @@ namespace Fuse.Reactive.Test
 			}
 		}
 
-		List<T> ChildrenOfType<T>(Visual n) where T : Node
+		static List<T> ChildrenOfType<T>(Visual n) where T : Node
 		{
 			var l = new List<T>();
 			foreach (var child in n.Children)
