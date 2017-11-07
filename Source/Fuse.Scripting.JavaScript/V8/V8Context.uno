@@ -9,7 +9,7 @@ namespace Fuse.Scripting.V8
 {
 	[Require("Header.Include", "include/V8Simple.h")]
 	[Require("Source.Declaration", "#undef GetMessage")]
-	public extern(USE_V8) class Context: Fuse.Scripting.JavaScript.JSContext
+	public extern(USE_V8) class V8Context: Fuse.Scripting.JavaScript.JSContext
 	{
 		internal Simple.JSContext _context;
 		extern(DEBUG_V8) Debugger _debugger;
@@ -23,7 +23,7 @@ namespace Fuse.Scripting.V8
 		extern(!CPlusPlus) Simple.JSCallbackFinalizer _handleCallbackFree;
 		extern(!CPlusPlus) Simple.JSExternalFinalizer _handleExternalFree;
 
-		public Context(): base()
+		public V8Context(): base()
 		{
 			_errorHandler = OnScriptException;
 

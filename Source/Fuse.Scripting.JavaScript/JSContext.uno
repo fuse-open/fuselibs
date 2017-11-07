@@ -36,9 +36,9 @@ namespace Fuse.Scripting.JavaScript
 		{
 			JSContext result;
 
-			if defined(USE_JAVASCRIPTCORE) result = new Fuse.Scripting.JavaScriptCore.Context();
-			else if defined(USE_V8) result = new Fuse.Scripting.V8.Context();
-			else if defined(USE_DUKTAPE) result = new Fuse.Scripting.Duktape.Context();
+			if defined(USE_JAVASCRIPTCORE) result = new Fuse.Scripting.JavaScriptCore.JSCContext();
+			else if defined(USE_V8) result = new Fuse.Scripting.V8.V8Context();
+			else if defined(USE_DUKTAPE) result = new Fuse.Scripting.Duktape.DukContext();
 			else throw new Exception("No JavaScript VM available for this platform");
 
 			// The reason for populating FuseJS here and not in the constructor is that if the

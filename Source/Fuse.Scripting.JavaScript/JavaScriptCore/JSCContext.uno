@@ -6,7 +6,7 @@ using Uno;
 namespace Fuse.Scripting.JavaScriptCore
 {
 	[Require("Header.Include", "JavaScriptCore/JavaScript.h")]
-	public extern(USE_JAVASCRIPTCORE) class Context : Fuse.Scripting.JavaScript.JSContext
+	public extern(USE_JAVASCRIPTCORE) class JSCContext : Fuse.Scripting.JavaScript.JSContext
 	{
 		internal bool _disposed;
 		internal readonly JSContextRef _context;
@@ -22,7 +22,7 @@ namespace Fuse.Scripting.JavaScriptCore
 		int _vmDepth;
 		internal Exception _pendingException;
 
-		public Context(): base()
+		public JSCContext(): base()
 		{
 			_context = JSContextRef.Create();
 
@@ -68,7 +68,7 @@ namespace Fuse.Scripting.JavaScriptCore
 			}
 		}
 
-		~Context()
+		~JSCContext()
 		{
 			Dispose();
 		}
