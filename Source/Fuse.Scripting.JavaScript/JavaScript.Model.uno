@@ -92,7 +92,7 @@ namespace Fuse.Reactive
 			{
 				get
 				{
-					var str = "";
+					var str = string.Empty;
 					for (int i=0; i < Args.Count; ++i)
 						str += ", " + Args[i];
 					return str;
@@ -153,7 +153,7 @@ namespace Fuse.Reactive
 		{
 			if (_model == null)
 			{
-				Code = "";
+				Code = string.Empty;
 				return;
 			}
 
