@@ -331,6 +331,7 @@ namespace Fuse.Scripting.Test
 		}
 
 		[Test]
+		[Ignore("https://github.com/fusetools/fuselibs-public/issues/679", "Android")]
 		public void ExceptionMessageIsMarshalledToJavaScript()
 		{
 			using (var context = Fuse.Scripting.JavaScript.JSContext.Create())
@@ -425,6 +426,7 @@ namespace Fuse.Scripting.Test
 		}
 
 		[Test]
+		[Ignore("https://github.com/fusetools/fuselibs-public/issues/679", "Android")]
 		public void CallbackExceptions()
 		{
 			using (var context = Fuse.Scripting.JavaScript.JSContext.Create())
@@ -435,6 +437,7 @@ namespace Fuse.Scripting.Test
 		}
 
 		[Test]
+		[Ignore("https://github.com/fusetools/fuselibs-public/issues/679", "Android")]
 		public void CatchingCallbackExceptions()
 		{
 			using (var context = Fuse.Scripting.JavaScript.JSContext.Create())
@@ -450,6 +453,7 @@ namespace Fuse.Scripting.Test
 		}
 
 		[Test]
+		[Ignore("https://github.com/fusetools/fuselibs-public/issues/679", "Android")]
 		public void CatchingUnoExceptions()
 		{
 			using (var context = Fuse.Scripting.JavaScript.JSContext.Create())

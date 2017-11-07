@@ -94,6 +94,8 @@ namespace Fuse.Elements.Test
 		[Test]
 		public void MoveAfterFirstDraw()
 		{
+			const float tolerance = 2.0f / 255;
+
 			var p = new UX.ElementBatcher.MoveAfterFirstDraw();
 			using (var root = TestRootPanel.CreateWithChild(p, int2(40, 110)))
 			{
@@ -101,7 +103,7 @@ namespace Fuse.Elements.Test
 
 				using (var fb = root.CaptureDraw())
 				{
-					fb.AssertSolidRectangle(float4(1, 0, 0, 1), new Recti(int2(0 + edgeMargin, 100 + edgeMargin), int2(20 - 2 * edgeMargin, 10 - 2 * edgeMargin)));
+					fb.AssertSolidRectangle(float4(1, 0, 0, 1), new Recti(int2(0 + edgeMargin, 100 + edgeMargin), int2(20 - 2 * edgeMargin, 10 - 2 * edgeMargin)), tolerance);
 				}
 
 				p._translation.X = 15;
@@ -109,7 +111,7 @@ namespace Fuse.Elements.Test
 
 				using (var fb = root.CaptureDraw())
 				{
-					fb.AssertSolidRectangle(float4(1, 0, 0, 1), new Recti(int2(15 + edgeMargin, 100 + edgeMargin), int2(20 - 2 * edgeMargin, 10 - 2 * edgeMargin)));
+					fb.AssertSolidRectangle(float4(1, 0, 0, 1), new Recti(int2(15 + edgeMargin, 100 + edgeMargin), int2(20 - 2 * edgeMargin, 10 - 2 * edgeMargin)), tolerance);
 					fb.AssertPixel(float4(0, 0, 0, 0), int2(15 - edgeMargin, 105));
 				}
 

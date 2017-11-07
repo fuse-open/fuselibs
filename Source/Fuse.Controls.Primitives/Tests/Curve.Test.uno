@@ -64,7 +64,7 @@ namespace Fuse.Controls.Primitives.Test
 				fb.AssertSolidRectangle(float4(0, 0, 0, 0), new Recti(int2(0,  0), int2(50 - 6, 100)));
 
 				// line
-				fb.AssertSolidRectangle(float4(1, 0, 0, 1), new Recti(int2(50 - 4,  0), int2(8, 100)));
+				fb.AssertSolidRectangle(float4(1, 0, 0, 1), new Recti(int2(50 - 4,  1), int2(8, 100 - 2)));
 
 				// right background
 				fb.AssertSolidRectangle(float4(0, 0, 0, 0), new Recti(int2(50 + 6,  0), int2(50 - 6, 100)));
