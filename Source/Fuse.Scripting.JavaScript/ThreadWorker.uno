@@ -23,6 +23,8 @@ namespace Fuse.Scripting.JavaScript
 
 		public ThreadWorker()
 		{
+			Fuse.Platform.Lifecycle.Terminating += OnTerminating;
+
 			_thread = new Thread(Run);
 			if defined(DotNet)
 			{
@@ -50,8 +52,6 @@ namespace Fuse.Scripting.JavaScript
 			_terminate.Dispose();
 		}
 
-		bool _subscribedForClosing;
-
 		void Run()
 		{
 			try
@@ -66,6 +66,36 @@ namespace Fuse.Scripting.JavaScript
 			}
 		}
 
+		bool RunOnce(JSContext context)
+		{
+			bool didAnything = false;
+
+			Action<Scripting.Context> action;
+			if (_queue.TryDequeue(out action))
+			{
+				try
+				{
+					didAnything = true;
+					action(context);
+				}
+				catch (Exception e)
+				{
+					DispatchException(e);
+				}
+			}
+
+			try
+			{
+				context.FuseJS.UpdateModules(context);
+			}
+			catch (Exception e)
+			{
+				DispatchException(e);
+			}
+
+			return didAnything;
+		}
+
 		void RunInner(JSContext context)
 		{
 			double t = Uno.Diagnostics.Clock.GetSeconds();
@@ -77,43 +107,12 @@ namespace Fuse.Scripting.JavaScript
 
 				if defined(CPLUSPLUS) extern "uAutoReleasePool ____pool";
 
-				if (!_subscribedForClosing)
-				{
-					if (Uno.Application.Current != null)
-					{
-						Fuse.Platform.Lifecycle.Terminating += OnTerminating;
-						_subscribedForClosing = true;
-					}
-				}
-
-				bool didAnything = false;
-
-				Action<Scripting.Context> action;
-				if (_queue.TryDequeue(out action))
-				{
-					try
-					{
-						didAnything = true;
-						action(context);
-					}
-					catch (Exception e)
-					{
-						DispatchException(e);
-					}
-				}
-				else
-					_idle.Set();
-
-				try
-				{
-					context.FuseJS.UpdateModules(context);
-				}
-				catch (Exception e)
-				{
-					DispatchException(e);
-				}
+				bool didAnything = RunOnce(context);
 
 				var t2 = Uno.Diagnostics.Clock.GetSeconds();
+
+				if (!didAnything)
+					_idle.Set();
 
 				if (!didAnything || t2-t > 5)
 				{
