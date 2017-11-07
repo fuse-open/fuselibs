@@ -156,7 +156,6 @@ namespace Fuse.Reactive
 				for (int i = 0; i < nfc.Arguments.Count; i++)
 				{
 					var argName = "__dep" + i;
-					var c = nfc.Arguments[i] as Constant;
 					result.Dependencies.Add(new Dependency(argName, nfc.Arguments[i]));
 					result.Args.Add( argName );
 				}
