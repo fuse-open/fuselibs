@@ -139,7 +139,10 @@ namespace Fuse.Reactive.FuseJS
 		internal bool UpdateModule(Scripting.Context context)
 		{
 			// NOTE: Don't use UpdateManager for this, for things to run smoothly, this needs to be a JS only thread thing.
-			return _tm != null ? _tm.Tick(context) : false;
+			if(_tm != null)
+				return _tm.Tick(context);
+
+			return false;
 		}
 		
 		class CallbackClosure
