@@ -9,11 +9,11 @@ namespace Fuse.Drawing
 
 		public void Blit(texture2D texture, Rect rect, float4x4 localToClipTransform, float opacity = 1.0f, bool flipY = false, PolygonFace cullFace = PolygonFace.None)
 		{
-			float4x4 textureTransform = float4x4.Identity;
+			float3x3 textureTransform = float3x3.Identity;
 			if (flipY)
 			{
 				textureTransform.M22 = -1;
-				textureTransform.M42 =  1;
+				textureTransform.M32 =  1;
 			}
 
 			Blit(texture, SamplerState.LinearClamp, true,
@@ -23,7 +23,7 @@ namespace Fuse.Drawing
 		}
 
 		public void Blit(Texture2D texture, SamplerState samplerState, bool preMultiplied,
-		                 Rect textureRect, float4x4 textureTransform,
+		                 Rect textureRect, float3x3 textureTransform,
 		                 Rect localRect, float4x4 localToClipTransform,
 		                 float4 color, PolygonFace cullFace = PolygonFace.None)
 		{
@@ -74,7 +74,7 @@ namespace Fuse.Drawing
 				float2 LocalVertex: localRect.Minimum + v * localRect.Size;
 				ClipPosition: Vector.Transform(LocalVertex, localToClipTransform);
 				float2 TexCoord: textureRect.Minimum + v * textureRect.Size;
-				TexCoord: Vector.TransformCoordinate(prev, textureTransform);
+				TexCoord: Vector.Transform(float3(prev, 1.0f), textureTransform).XY;
 				PixelColor: sample(texture, TexCoord, samplerState) * color;
 			};
 		}

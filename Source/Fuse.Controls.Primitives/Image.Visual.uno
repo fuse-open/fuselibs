@@ -86,22 +86,22 @@ namespace Fuse.Controls
 			DrawVisualColor(dc, Color);
 		}
 
-		internal static float4x4 TransformFromImageOrientation(ImageOrientation orientation)
+		internal static float3x3 TransformFromImageOrientation(ImageOrientation orientation)
 		{
-			var transform = float4x4.Identity;
+			var transform = float3x3.Identity;
 
 			if (orientation.HasFlag(ImageOrientation.FlipVertical))
 			{
 				transform.M22 = -1;
-				transform.M42 =  1;
+				transform.M32 =  1;
 			}
 
 			if (orientation.HasFlag(ImageOrientation.Rotate180))
 			{
 				transform.M11 = -1;
 				transform.M22 = -transform.M22;
-				transform.M41 =  1;
-				transform.M42 =  1 - transform.M42;
+				transform.M31 =  1;
+				transform.M32 =  1 - transform.M32;
 			}
 
 			if (orientation.HasFlag(ImageOrientation.Rotate90))
@@ -112,9 +112,9 @@ namespace Fuse.Controls
 				transform.M21 = transform.M22;
 				transform.M22 = 0;
 
-				var tmp = transform.M41;
-				transform.M41 = transform.M42;
-				transform.M42 = 1 - tmp;
+				var tmp = transform.M31;
+				transform.M31 = transform.M32;
+				transform.M32 = 1 - tmp;
 			}
 
 			return transform;
@@ -189,7 +189,7 @@ namespace Fuse.Controls
 
 		public void Draw(DrawContext dc, Visual element, float2 offset,
 			float2 size, float2 uvPosition, float2 uvSize,
-			float4x4 imageTransform,
+			float3x3 imageTransform,
 			Texture2D tex, ResampleMode resampleMode,
 			float4 Color )
 		{
