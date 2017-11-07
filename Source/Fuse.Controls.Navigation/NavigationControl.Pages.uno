@@ -65,7 +65,6 @@ namespace Fuse.Controls
 
 		protected string GetObjectPath( object data )
 		{
-			string path = null;
 			var obj = data as IObject;
 			if(obj == null) return null;
 
