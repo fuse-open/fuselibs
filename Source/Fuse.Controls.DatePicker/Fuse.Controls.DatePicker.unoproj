@@ -8,6 +8,7 @@
   },
   "Projects": [
     "../Fuse.Common/Fuse.Common.unoproj",
+    "../Fuse.Controls/Fuse.Controls.unoproj",
     "../Fuse.Controls.Native/Fuse.Controls.Native.unoproj",
     "../Fuse.Controls.Panels/Fuse.Controls.Panels.unoproj",
     "../Fuse.Controls.Primitives/Fuse.Controls.Primitives.unoproj",
