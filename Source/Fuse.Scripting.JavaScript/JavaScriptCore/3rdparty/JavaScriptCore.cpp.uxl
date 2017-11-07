@@ -1,4 +1,4 @@
-<Extensions Backend="CPlusPlus">
+<Extensions Backend="CPlusPlus" Condition="Android">
 	<CopyFile HeaderFile="JavaScriptCore/JavaScript.h" />
 	<CopyFile HeaderFile="JavaScriptCore/JavaScriptCore.h" />
 	<CopyFile HeaderFile="JavaScriptCore/JSBase.h" />
