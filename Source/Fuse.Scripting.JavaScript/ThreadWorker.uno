@@ -79,11 +79,6 @@ namespace Fuse.Scripting.JavaScript
 			try
 			{
 				_context = Fuse.Scripting.JavaScript.JSContext.Create();
-
-				if (_context == null)
-				{
-					throw new Exception("Could not create script context");
-				}
 				UpdateManager.AddAction(CheckAndThrow);
 			}
 			finally
