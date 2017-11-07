@@ -65,31 +65,30 @@ namespace Fuse.Scripting
 
 		protected override object CreateObject()
 		{ 
-			return (Callback)new ContextClosure(Context, _futureFactory, _resultConverter).CreatePromise;
+			return (Callback)new ContextClosure(_futureFactory, _resultConverter).CreatePromise;
 		}
 
 		class ContextClosure
 		{
-			Context _c;
 			FutureFactory<T> _factory;
 			ResultConverter<T, TJSResult> _converter;
-			public ContextClosure(Context c, FutureFactory<T> factory, ResultConverter<T, TJSResult> converter)
+			public ContextClosure(FutureFactory<T> factory, ResultConverter<T, TJSResult> converter)
 			{
-				_c = c;
 				_factory = factory;
 				_converter = converter;
 			}
+
 			internal object CreatePromise(Context context, object[] args)
 			{
-				var promise = (Function)_c.GlobalObject["Promise"]; // HACK - TODO: get rid of this
+				var promise = (Function)context.GlobalObject["Promise"]; // HACK - TODO: get rid of this
 				var future = _factory(args);
-				return promise.Construct((Callback)new PromiseClosure(_c, future, _converter).Run);
+				return promise.Construct((Callback)new PromiseClosure(context.ThreadWorker, future, _converter).Run);
 			}
 		}
 
 		class PromiseClosure
 		{
-			Context _c;
+			readonly IThreadWorker _threadWorker;
 			Future<T> _promise;
 			Function _resolve = null;
 			Function _reject = null;
@@ -97,9 +96,9 @@ namespace Fuse.Scripting
 			T _result = default(T);
 			Exception _reason;
 
-			public PromiseClosure(Context context, Future<T> promise, ResultConverter<T, TJSResult> converter)
+			public PromiseClosure(IThreadWorker threadWorker, Future<T> promise, ResultConverter<T, TJSResult> converter)
 			{
-				_c = context;
+				_threadWorker = threadWorker;
 				_promise = promise;
 				_converter = converter;
 			}
@@ -121,7 +120,7 @@ namespace Fuse.Scripting
 			{
 				_result = result;
 				if(_resolve != null)
-					_c.ThreadWorker.Invoke(this.InternalResolve);
+					_threadWorker.Invoke(this.InternalResolve);
 			}
 
 			void InternalResolve(Scripting.Context context)
@@ -136,7 +135,7 @@ namespace Fuse.Scripting
 			{
 				_reason = reason;
 				if(_reject != null)
-					_c.ThreadWorker.Invoke(this.InternalReject);
+					_threadWorker.Invoke(this.InternalReject);
 			}
 
 			void InternalReject(Scripting.Context context)
