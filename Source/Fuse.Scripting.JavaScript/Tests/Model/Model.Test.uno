@@ -464,9 +464,11 @@ namespace Fuse.Reactive.Test
 		}
 
 		[Test]
-		public void EmptyList() {
+		public void EmptyList()
+		{
 			var e = new UX.Model.EmptyList();
-			using (var root = TestRootPanel.CreateWithChild(e)) {
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
 				var oc = e.collector1.Children;
 				var poc = e.collector2.Children;
 				root.StepFrameJS();
@@ -485,9 +487,11 @@ namespace Fuse.Reactive.Test
 		}
 
 		[Test]
-		public void MultiCounter() {
+		public void MultiCounter()
+		{
 			var e = new UX.Model.MultiCounter();
-			using (var root = TestRootPanel.CreateWithChild(e)) {
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
 				root.StepFrameJS();
 				var oc = e.counterCollector.Children;
 				Assert.AreEqual(2, oc.Count);
@@ -565,7 +569,8 @@ namespace Fuse.Reactive.Test
 			[CallerLineNumber] int lineNumber = 0,
 			[CallerMemberName] string memberName = "")
 		{
-			if(!(obj is T)) {
+			if(!(obj is T))
+			{
 				var expected = "object of type '" + typeof(T).FullName + "'";
 				var actual = (obj == null) ? "null" : "object of type '" + obj.GetType().FullName + "'";
 
