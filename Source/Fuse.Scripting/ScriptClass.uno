@@ -78,7 +78,13 @@ namespace Fuse.Scripting
 	{
 		public readonly string Code;
 
+		[Obsolete("Use ScriptMethodInline(string, string) instead")]
 		public ScriptMethodInline(string name, ExecutionThread thread, string code): base(name, thread)
+		{
+			Code = code;
+		}
+
+		public ScriptMethodInline(string name, string code): base(name, ExecutionThread.JavaScript)
 		{
 			Code = code;
 		}

@@ -40,6 +40,7 @@
 - Implemented `console.error`, `console.warn` and `console.info`
 - Improved formatting for the above functions, as well as for `console.log`
 - The `ScriptMethod<T>` contstructor now throws if it's passed `ExecutionThread.MainThread` with Func, instead of failing to run it later on.
+- The `ScriptMethodInline` constructor that takes an `ExecutionThread` as an argument is now obsolete. Use the one without instead. JavaScript needs to run on the JavaScript thread anyway.
 
 
 # 1.4

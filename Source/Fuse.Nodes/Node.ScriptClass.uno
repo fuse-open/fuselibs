@@ -13,7 +13,7 @@ namespace Fuse
 			ScriptClass.Register(typeof(Node),
 				new ScriptMethod<Node>("_createWatcher", _createWatcher, ExecutionThread.JavaScript),
 				new ScriptMethod<Node>("_destroyWatcher", _destroyWatcher, ExecutionThread.JavaScript),
-				new ScriptMethodInline("findData", ExecutionThread.JavaScript, "function(key) { return Observable._getDataObserver(this, key); }"));
+				new ScriptMethodInline("findData", "function(key) { return Observable._getDataObserver(this, key); }"));
 		}
 
 		static object _createWatcher(Context c, Node n, object[] args)
