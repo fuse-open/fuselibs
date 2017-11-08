@@ -81,7 +81,7 @@ namespace Fuse.Scripting.JavaScript
 
 					var replaceAllFn = (Scripting.Function) context.Evaluate("replaceAll",
 						"(function(array, values) {" +
-							"if ('__fuse_replaceAll' in array) array.__fuse_replaceAll(values);" +
+							"if('__fuse_replaceAll' in array) array.__fuse_replaceAll(values);" +
 							"else {"+
 								"array.length = 0;"+
 								"Array.prototype.push.apply(array, values);"+

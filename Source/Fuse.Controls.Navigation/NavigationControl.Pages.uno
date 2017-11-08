@@ -34,8 +34,7 @@ namespace Fuse.Controls
 			
 			if (_pageHistory == null)
 				return;
-			
-			var obs = _pageHistory as IObservable;
+			var obs = _pageHistory as IObservableArray;
 			if (obs != null)
 			{
 				AncestorRouterPage.ChildRouterPages.Attach( obs, this );
@@ -62,6 +61,20 @@ namespace Fuse.Controls
 			ForceGoto = 1 << 0,
 			Add = 1 << 1,
 			Replace = 1 << 2,
+		}
+
+		protected string GetObjectPath( object data )
+		{
+			var obj = data as IObject;
+			if(obj == null) return null;
+
+			if(obj.ContainsKey("$path"))
+				return Marshal.ToType<string>(obj["$path"]);
+
+			if(obj.ContainsKey("$template"))
+				return Marshal.ToType<string>(obj["$template"]);
+
+			return null;
 		}
 
 		/*

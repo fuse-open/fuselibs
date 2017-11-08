@@ -42,7 +42,12 @@ namespace Fuse.Reactive
 		{
 			base.OnRooted();
 			_javaScriptCounter++;
-			SubscribeToDependenciesAndDispatchEvaluate();
+			//for migration we could preserve the _moduleInstance across rooting
+			if (_moduleInstance == null || !_moduleInstance.ReflectExports())
+				SubscribeToDependenciesAndDispatchEvaluate();
+				
+			//must be explicit set each time to preserve
+			_preserveModuleInstance = false;
 		}
 
 		protected override void OnUnrooted()
@@ -54,6 +59,7 @@ namespace Fuse.Reactive
 
 			if(--_javaScriptCounter <= 0)
 			{
+				//TODO: probably have to block this a _moduleInstance was preserved somewhere...?
 				AppInitialized.Reset();
 				// When all JavaScript nodes is unrooted, send a reset event to all global NativeModules.
 				foreach(var nm in Uno.UX.Resource.GetGlobalsOfType<NativeModule>())
@@ -72,7 +78,7 @@ namespace Fuse.Reactive
 
 		object _currentDc;
 		Uno.IDisposable _sub;
-		
+
 		internal void SetDataContext(object newDc)
 		{
 			DisposeSubscription();
@@ -81,7 +87,7 @@ namespace Fuse.Reactive
 			_currentDc = newDc;
 
 			var obs = newDc as IObservable;
-			if (obs != null) 
+			if (obs != null)
 			{
 				SetSiblingData(null);
 				_sub = new ValueForwarder(obs, this);

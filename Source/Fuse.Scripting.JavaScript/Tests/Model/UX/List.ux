@@ -1,0 +1,8 @@
+<Panel ux:Class="UX.Model.List" Model="UX/List()">
+	<FuseTest.ObservableCollector ux:Name="oc" Items="{items}"/>
+	
+	<FuseTest.Invoke Handler="{add}" ux:Name="callAdd"/>
+	<FuseTest.Invoke Handler="{shift}" ux:Name="callShift"/>
+	<FuseTest.Invoke Handler="{replace}" ux:Name="callReplace"/>
+	<FuseTest.Invoke Handler="{sort}" ux:Name="callSort"/>
+</Panel>

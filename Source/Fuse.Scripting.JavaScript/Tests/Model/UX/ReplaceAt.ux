@@ -1,0 +1,4 @@
+<Panel ux:Class="UX.Model.ReplaceAt" Model="UX/ReplaceAt">
+    <FuseTest.Invoke Handler="{replaceTodo}" ux:Name="replaceTodo"/>
+    <FuseTest.Invoke Handler="{changeFeedTheCat}" ux:Name="changeFeedTheCat"/>
+</Panel>

@@ -1,0 +1,12 @@
+<Panel ux:Class="UX.Model.AltEntry" Model="UX/AltEntry">
+	<JavaScript>
+		var common = require( "UX/AltEntryCommon" )
+		
+		exports.setB = function() {
+			common.item.set("b")
+		}
+	</JavaScript>
+	<FuseTest.DudElement StringValue="{item.value}" ux:Name="a"/>
+	
+	<FuseTest.Invoke Handler="{setB}" ux:Name="callSetB"/>
+</Panel>
