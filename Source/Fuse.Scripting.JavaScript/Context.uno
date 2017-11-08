@@ -58,7 +58,7 @@ namespace Fuse.Scripting.JavaScript
 			return TypeWrapper.Unwrap(this, obj);
 		}
 
-		public object Reflect(object obj)
+		public sealed override object Reflect(object obj)
 		{
 			var e = obj as Scripting.External;
 			if (e != null) return e.Object;

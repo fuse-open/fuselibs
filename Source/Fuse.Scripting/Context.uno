@@ -64,6 +64,8 @@ namespace Fuse.Scripting
 
 		public abstract object Wrap(object obj);
 		public abstract object Unwrap(object obj);
+		public abstract object Reflect(object obj);
+
 
 		public void Invoke(Uno.Action<Scripting.Context> action)
 		{
