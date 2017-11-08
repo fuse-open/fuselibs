@@ -18,6 +18,12 @@ namespace Fuse.Scripting
 
 		protected ScriptMember(string name)
 		{
+			if (name == null)
+				throw new ArgumentNullException(nameof(name));
+
+			if (name.Length == 0)
+				throw new ArgumentOutOfRangeException(nameof(name));
+
 			Name = name;
 		}
 	}
