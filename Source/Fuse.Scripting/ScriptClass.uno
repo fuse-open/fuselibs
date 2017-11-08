@@ -96,11 +96,17 @@ namespace Fuse.Scripting
 
 		public ScriptMethod(string name, Func<Context, T, object[], object> method, ExecutionThread thread): base(name, thread)
 		{
+			if (method == null)
+				throw new ArgumentNullException(nameof(method));
+
 			_method = method;
 		}
 
 		public ScriptMethod(string name, Action<Context, T, object[]> method, ExecutionThread thread): base(name, thread)
 		{
+			if (method == null)
+				throw new ArgumentNullException(nameof(method));
+
 			_voidMethod = method;
 		}
 
