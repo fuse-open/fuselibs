@@ -646,6 +646,37 @@ namespace Fuse.Navigation.Test
 				Assert.AreEqual( "1,2,3", p.history.Value );
 			}
 		}
+		
+		[Test]
+		public void ObjectPath()
+		{
+			var p = new UX.Router.ObjectPath();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				root.StepFrameJS();
+				
+				p.callGoto.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual( "5", GetText(p.nav.Active));
+				
+				p.push.Pulse();
+				root.StepFrame();
+				Assert.AreEqual( "!6,2.happy", GetRecursiveText(p.nav.Active));
+			
+				((ROPTwo)p.nav.Active).callPushRelative.Perform();
+				root.StepFrameJS();
+				root.StepFrame(5); //finish animation
+				Assert.AreEqual( "!6,1.joyous", GetRecursiveText(p.nav.Active));
+				
+				p.router.GoBack();
+				root.StepFrame(5);
+				Assert.AreEqual( "!6,2.happy", GetRecursiveText(p.nav.Active));
+				
+				p.router.GoBack();
+				root.StepFrame();
+				Assert.AreEqual( "5", GetText(p.nav.Active));
+			}
+		}
 	}
 }
 	

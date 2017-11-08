@@ -143,17 +143,27 @@ namespace Fuse.Navigation
 		static public RouterPageRoute ParseFlatRoute(object[] args, int pos = 0)
 		{
 			if (args.Length <= pos) return null;
-			if (args.Length <= pos+1) return new RouterPageRoute(
-				new RouterPage( args[pos] as string ), null );
-
-			var arg = args[pos+1];
-
-			if (!ValidateParameter(arg, 0)) return null;
-
+			
 			var path = args[pos] as string;
-			var parameter = Json.Stringify(arg, true);
-			return new RouterPageRoute( 
-				new RouterPage( path, parameter ), ParseFlatRoute(args, pos+2));
+			if (path != null)
+			{
+				if (args.Length <= pos+1) return new RouterPageRoute(
+					new RouterPage( args[pos] as string ), null );
+
+				var arg = args[pos+1];
+
+				if (!ValidateParameter(arg, 0)) return null;
+
+				var parameter = Json.Stringify(arg, true);
+				return new RouterPageRoute( 
+					new RouterPage( path, parameter ), ParseFlatRoute(args, pos+2));
+			}
+			else
+			{
+				return new RouterPageRoute(
+					new RouterPage( PagesMap.GetObjectPath(args[pos]), null, args[pos] ), 
+						ParseFlatRoute(args, pos+1));
+			}
 		}
 		
 		static public bool ParseNVPRoute(object value, out RouterPageRoute route)
