@@ -64,7 +64,7 @@ namespace Fuse.Triggers
 		{
 			if (args.Length != 1)
 			{
-				Fuse.Diagnostics.UserError( "Timeline.seek requires 1 argument", n );
+				Fuse.Diagnostics.UserError( "Timeline.playTo requires 1 argument", n );
 				return;
 			}
 
