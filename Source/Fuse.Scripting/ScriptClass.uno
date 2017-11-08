@@ -99,6 +99,9 @@ namespace Fuse.Scripting
 			if (method == null)
 				throw new ArgumentNullException(nameof(method));
 
+			if (Thread == ExecutionThread.MainThread)
+				throw new ArgumentException("Cannot call a non-void method asynchronously", nameof(thread));
+
 			_method = method;
 		}
 
@@ -114,12 +117,6 @@ namespace Fuse.Scripting
 		{
 			if (Thread == ExecutionThread.MainThread)
 			{
-				if (_voidMethod == null)
-				{
-					Fuse.Diagnostics.InternalError( "Cannot call a non-void method asynchronously", this );
-					return null;
-				}
-				
 				UpdateManager.PostAction(new CallClosure(_voidMethod, c, obj, args).Run);
 				return null;
 			}
