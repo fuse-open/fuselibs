@@ -11,7 +11,7 @@ namespace Fuse
 		static Node()
 		{
 			ScriptClass.Register(typeof(Node),
-				new ScriptMethod<Node>("_createWatcher", _createWatcher, ExecutionThread.JavaScript),
+				new ScriptMethod<Node>("_createWatcher", _createWatcher),
 				new ScriptMethod<Node>("_destroyWatcher", _destroyWatcher, ExecutionThread.JavaScript),
 				new ScriptMethodInline("findData", "function(key) { return Observable._getDataObserver(this, key); }"));
 		}

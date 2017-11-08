@@ -100,7 +100,7 @@ namespace Fuse.Scripting
 		readonly Func<Context, T, object[], object> _method;
 		readonly Action<Context, T, object[]> _voidMethod;
 
-		public ScriptMethod(string name, Func<Context, T, object[], object> method, ExecutionThread thread): base(name, thread)
+		ScriptMethod(string name, Func<Context, T, object[], object> method, ExecutionThread thread, bool dummy): base(name, thread)
 		{
 			if (method == null)
 				throw new ArgumentNullException(nameof(method));
@@ -109,6 +109,15 @@ namespace Fuse.Scripting
 				throw new ArgumentException("Cannot call a non-void method asynchronously", nameof(thread));
 
 			_method = method;
+		}
+
+		[Obsolete("Use ScriptMethod<T>(string, Uno.Func<Fuse.Scripting.Context, T, object[], object)>) instead")]
+		public ScriptMethod(string name, Func<Context, T, object[], object> method, ExecutionThread thread): this(name, method, thread, true)
+		{
+		}
+
+		public ScriptMethod(string name, Func<Context, T, object[], object> method): this(name, method, ExecutionThread.JavaScript, true)
+		{
 		}
 
 		public ScriptMethod(string name, Action<Context, T, object[]> method, ExecutionThread thread): base(name, thread)

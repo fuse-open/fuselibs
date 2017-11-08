@@ -10,7 +10,7 @@ namespace Fuse.Controls
 		static Video()
 		{
 			ScriptClass.Register(typeof(Video),
-				new ScriptMethod<Video>("getDuration", getDuration, ExecutionThread.JavaScript),
+				new ScriptMethod<Video>("getDuration", getDuration),
 				new ScriptMethod<Video>("resume", resume, ExecutionThread.MainThread),
 				new ScriptMethod<Video>("pause", pause, ExecutionThread.MainThread),
 				new ScriptMethod<Video>("stop", stop, ExecutionThread.MainThread));
