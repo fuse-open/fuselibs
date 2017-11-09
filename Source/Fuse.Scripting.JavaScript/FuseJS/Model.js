@@ -129,7 +129,7 @@ function Model(initialState, stateInitializer)
 				}
 				else {
 					var descriptor = Object.getOwnPropertyDescriptor(obj, p);
-					if(descriptor.get instanceof Function)
+					if (descriptor.get instanceof Function)
 					{
 						if (isThenable(value)) { node[p] = null; dealWithPromise(p, value); }
 						else { node[p] = wrap(p, value); }
@@ -142,9 +142,15 @@ function Model(initialState, stateInitializer)
 			var proto = Object.getPrototypeOf(obj);
 			if (proto && proto !== Object.prototype) { registerProps(proto); }
 		}
+
+		function hasParent() {
+			return meta.parents.length > 0;
+		}
 		
 		meta.evaluateDerivedProps = function(visited)
 		{
+			if (!hasParent()) return;
+
 			isDerivedPropsDirty = false;
 
 			if (visited.indexOf(node) !== -1) { return; }
@@ -218,14 +224,14 @@ function Model(initialState, stateInitializer)
 
 			isDirty = false;
 
-			if (meta.parents.length === 0) {
+			if (!hasParent()) {
 				// This object is no longer attached to the model tree,
 				// we got this callback as an async remnant
 				return; 
 			}
 
 			if (state instanceof Array) {
-				for (var i = 0; i < Math.min(state.length, node.length); i++) {
+				for (var i = 0; i < Math.min(state.length, node.length); i++) { 
 					if (isThenable(state[i])) { dealWithPromise(i, state[i]); }
 					if (oldValueEquals(i, state[i])) continue;
 					
@@ -242,8 +248,8 @@ function Model(initialState, stateInitializer)
 						set(i, wrap(i, state[i]))
 					}
 				}
-
-				if (state.length > node.length) {
+				
+				if (state.length > node.length) { 
 					addRange(state.slice(node.length, state.length))
 				}
 				else if (state.length < node.length) {
@@ -339,10 +345,10 @@ function Model(initialState, stateInitializer)
 			else if (value instanceof Array) {
 				var keyMeta = stateToMeta.get(value);
 
-				if (keyMeta instanceof Object && meta.node[key].__fuse_id == keyMeta.id)
-				{
-					if (!keyMeta.isClass) {
-						keyMeta.diff(visited);
+				if (keyMeta instanceof Object && meta.node[key].__fuse_id == keyMeta.id) 
+				{ 
+					if (!keyMeta.isClass) { 
+						keyMeta.diff(visited); 
 					}
 				}
 				else 
