@@ -160,20 +160,5 @@ namespace Fuse.Controls
 					return;
 			}
 		}
-
-		//TODO: Implement with callback somehow
-		static void evaluateJs(Context c, WebView view, object[] args)
-		{
-			switch(args.Length)
-			{
-				case 1:
-					view.Eval(args[0] as string);
-					return;
-				default:
-					Fuse.Diagnostics.UserError( "WebView.evaluateJs requires 1 string argument", view );
-					return;
-
-			}
-		}
 	}
 }
