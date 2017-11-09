@@ -10,6 +10,9 @@ namespace Fuse.Scripting
 		public string SourceLine { get; private set;}
 		public string JSStackTrace { get; private set;}
 
+		const int MaxSourceLineLength = 300;
+		const string SourceLineTooLongMessage = " ... source line truncated for readability ...";
+
 		public ScriptException(
 			string name,
 			string errorMessage,
@@ -54,7 +57,15 @@ namespace Fuse.Scripting
 				if (!string.IsNullOrEmpty(SourceLine))
 				{
 					stringBuilder.Append("Source line: ");
-					stringBuilder.AppendLine(SourceLine);
+					if (SourceLine.Length > MaxSourceLineLength)
+					{
+						stringBuilder.Append(SourceLine.Substring(0, MaxSourceLineLength));
+						stringBuilder.AppendLine(SourceLineTooLongMessage);
+					}
+					else
+					{
+						stringBuilder.AppendLine(SourceLine);
+					}
 				}
 				if (!string.IsNullOrEmpty(JSStackTrace))
 				{
