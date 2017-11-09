@@ -25,21 +25,72 @@ namespace Fuse.Reactive
 	{
 		public static void Init(Context c)
 		{
-			 var console = c.NewObject();
-			 console["log"] = (Callback)Log;
-			 console["dir"] = (Callback)Dir;
-			 // TODO: console["error"] Uno.Diagnostics.Debug.Log( msg + " " + ex.ToString() + obj, Uno.Diagnostics.DebugMessageType.Error,	filePath, lineNumber );
-			 c.GlobalObject["console"] = console;
+
+			var console = c.NewObject();
+			console["log"] = (Callback)Log;
+			console["warn"] = (Callback)Warn;
+			console["info"] = (Callback)Info;
+			console["error"] = (Callback)Error;
+			console["dir"] = (Callback)Dir;
+			c.GlobalObject["console"] = console;
+		}
+
+		static object LogInternal(Context context, object[] args, Uno.Diagnostics.DebugMessageType debugMessageType)
+		{
+			var formatted = Format(context, args);
+			Uno.Diagnostics.Debug.Log(formatted, debugMessageType);
+			return null;
 		}
 
 		static object Log(Context context, object[] args)
 		{
-			for (int i = 0; i < args.Length; i++)
+			return LogInternal(context, args, Uno.Diagnostics.DebugMessageType.Debug);
+		}
+
+		static object Warn(Context context, object[] args)
+		{
+			return LogInternal(context, args, Uno.Diagnostics.DebugMessageType.Warning);
+		}
+
+		static object Info(Context context, object[] args)
+		{
+			return LogInternal(context, args, Uno.Diagnostics.DebugMessageType.Information);
+		}
+
+		static object Error(Context context, object[] args)
+		{
+			return LogInternal(context, args, Uno.Diagnostics.DebugMessageType.Error);
+		}
+
+		static string Format(Context context, object[] args)
+		{
+			var sb = new StringBuilder();
+			
+			for (var i = 0; i < args.Length; ++i)
 			{
-				debug_log((args[i] != null) ? args[i].ToString() : "null");
+				if (i != 0)
+					sb.Append(" ");
+				
+				sb.Append(ToString(context, args[i]));
 			}
 
-			return null;
+			return sb.ToString();
+		}
+
+		static Function _toStringFunction;
+		static string ToString(Context context, object obj)
+		{
+			if (_toStringFunction == null)
+			{
+				_toStringFunction = (Function) context.Evaluate("fuse-builtins",
+					"(function(obj) {" +
+					"	if (obj instanceof Error) return obj.stack;" +
+					"	return '' + obj;" +
+					"})"
+				);
+			}
+
+			return _toStringFunction.Call(context, obj).ToString();
 		}
 
 		static object Dir(Context context, object[] args)
