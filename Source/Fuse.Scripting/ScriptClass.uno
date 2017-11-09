@@ -126,6 +126,7 @@ namespace Fuse.Scripting
 		{
 		}
 
+		[Obsolete("Use ScriptMethod<T>(string, Uno.Action<T)>), ScriptMethod<T>(string, Uno.Action<T, object[])>) or ScriptMethod<T>(string, Uno.Func<Fuse.Scripting.Context, T, object[], object)>) instead")]
 		public ScriptMethod(string name, Action<Context, T, object[]> method, ExecutionThread thread): base(name, thread)
 		{
 			if (method == null)
