@@ -74,7 +74,11 @@ namespace Fuse.Scripting.V8
 				{
 					var e = _cachedException;
 					_cachedException = null;
-					throw e;
+
+					if (e is ScriptException)
+						throw e;
+					else
+						throw new Exception("Unexpected Uno.Exception", e);
 				}
 			}
 		}
