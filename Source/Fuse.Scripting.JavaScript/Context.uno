@@ -73,11 +73,20 @@ namespace Fuse.Scripting.JavaScript
 				}
 			}
 
-			_reflectionDepth++;
-			var res = CreateMirror(obj);
-			_reflectionDepth--;
+			object res = null;
 
-			if (res != null) return res;
+			_reflectionDepth++;
+			try
+			{
+				res = CreateMirror(obj);
+			}
+			finally
+			{
+				_reflectionDepth--;
+			}
+
+			if (res != null)
+				return res;
 
 			return obj;
 		}
