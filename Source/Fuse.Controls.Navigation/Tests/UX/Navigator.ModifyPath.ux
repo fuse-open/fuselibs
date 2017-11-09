@@ -1,0 +1,69 @@
+<Panel ux:Class="UX.Navigator.ModifyPath">
+	<JavaScript>
+		exports.gotoOne = function() {
+			nav.modifyPath({
+				how: "Goto",
+				path: [{
+					$path: "one",
+					id: 5,
+				}]
+			})
+		}
+		
+		exports.pushTwo = function() {
+			nav.modifyPath({
+				how: "Push",
+				transition: "Bypass",
+				path: [{
+					$path: "two",
+					id: 6,
+				}]
+			})
+		}
+		
+		exports.replaceThree = function() {
+			nav.modifyPath({
+				how: "Replace",
+				style: "quick",
+				path: [{
+					$path: "three",
+					id: 7,
+				}]
+			})
+		}
+		
+		exports.goBack = function() {
+			nav.modifyPath({
+				how: "GoBack",
+			})
+		}
+		
+		exports.goBackTwo = function() {
+			nav.modifyPath({
+				how: "GoBack",
+				path: [{
+					$path: "two",
+					id: 8,
+				}]
+			})
+		}
+	</JavaScript>
+	
+	<Navigator ux:Name="nav" Transition="None">
+		<Panel ux:Template="one">
+			<Text Value="1.{id}"/>
+		</Panel>
+		<Panel ux:Template="two">
+			<Text Value="2.{id}"/>
+		</Panel>
+		<Panel ux:Template="three">
+			<Text Value="3.{id}"/>
+		</Panel>
+	</Navigator>
+	
+	<FuseTest.Invoke Handler="{gotoOne}" ux:Name="gotoOne"/>
+	<FuseTest.Invoke Handler="{pushTwo}" ux:Name="pushTwo"/>
+	<FuseTest.Invoke Handler="{replaceThree}" ux:Name="replaceThree"/>
+	<FuseTest.Invoke Handler="{goBack}" ux:Name="goBack"/>
+	<FuseTest.Invoke Handler="{goBackTwo}" ux:Name="goBackTwo"/>
+</Panel>

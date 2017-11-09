@@ -30,6 +30,7 @@
     "Fuse.Selection",
     "Fuse.Common.Test.Helpers",
     "Fuse.Controls.Navigation",
+    "Fuse.Controls.Navigation.Test",
     "Fuse.Charting",
     "Fuse.Charting.Test",
     "FuseTest",

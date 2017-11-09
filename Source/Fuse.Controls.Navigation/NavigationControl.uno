@@ -113,7 +113,7 @@ namespace Fuse.Controls
 		
 		//the outlet page on which this control resides.
 		protected Visual AncestorPage { private set; get; }
-		protected RouterPage AncestorRouterPage { private set; get; }
+		internal protected RouterPage AncestorRouterPage { private set; get; }
 
 		/* 
 			This affects the structure of navigation, in particular by associating PageData.RouterPage's
