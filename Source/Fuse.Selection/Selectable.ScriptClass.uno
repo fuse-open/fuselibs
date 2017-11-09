@@ -11,9 +11,9 @@ namespace Fuse.Selection
 		static Selectable()
 		{
 			ScriptClass.Register(typeof(Selectable),
-				new ScriptMethod<Selectable>("add", add, ExecutionThread.MainThread),
-				new ScriptMethod<Selectable>("remove", remove, ExecutionThread.MainThread),
-				new ScriptMethod<Selectable>("toggle", toggle, ExecutionThread.MainThread));
+				new ScriptMethod<Selectable>("add", add),
+				new ScriptMethod<Selectable>("remove", remove),
+				new ScriptMethod<Selectable>("toggle", toggle));
 		}
 
 		/**
@@ -21,7 +21,7 @@ namespace Fuse.Selection
 			
 			This follows the high level selection rules (such as MaxCount and Replace).
 		*/
-		static void add(Context c, Selectable s, object[] args )
+		static void add(Selectable s, object[] args )
 		{
 			if (args.Length != 0)
 			{
@@ -39,7 +39,7 @@ namespace Fuse.Selection
 			
 			If the Selectable is not currently selected then nothing is removed.
 		*/
-		static void remove(Context c, Selectable s, object[] args )
+		static void remove(Selectable s, object[] args )
 		{
 			if (args.Length != 0)
 			{
@@ -55,7 +55,7 @@ namespace Fuse.Selection
 			
 			This follows the high level selection rules (such as MaxCount/MinCount).
 		*/
-		static void toggle(Context c, Selectable s, object[] args )
+		static void toggle(Selectable s, object[] args )
 		{
 			if (args.Length != 0)
 			{

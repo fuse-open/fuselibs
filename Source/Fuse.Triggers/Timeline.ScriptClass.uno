@@ -10,15 +10,15 @@ namespace Fuse.Triggers
 		static Timeline()
 		{
 			ScriptClass.Register(typeof(Timeline),
-				new ScriptMethod<Timeline>("pause", pause, ExecutionThread.MainThread),
-				new ScriptMethod<Timeline>("pulse", pulse, ExecutionThread.MainThread),
-				new ScriptMethod<Timeline>("pulseBackward", pulseBackward, ExecutionThread.MainThread),
-				new ScriptMethod<Timeline>("pulseForward", pulseForward, ExecutionThread.MainThread),
-				new ScriptMethod<Timeline>("play", resume, ExecutionThread.MainThread),
-				new ScriptMethod<Timeline>("playTo", playTo, ExecutionThread.MainThread),
-				new ScriptMethod<Timeline>("resume", resume, ExecutionThread.MainThread),
-				new ScriptMethod<Timeline>("seek", seek, ExecutionThread.MainThread),
-				new ScriptMethod<Timeline>("stop", stop, ExecutionThread.MainThread)
+				new ScriptMethod<Timeline>("pause", pause),
+				new ScriptMethod<Timeline>("pulse", pulse),
+				new ScriptMethod<Timeline>("pulseBackward", pulseBackward),
+				new ScriptMethod<Timeline>("pulseForward", pulseForward),
+				new ScriptMethod<Timeline>("play", resume),
+				new ScriptMethod<Timeline>("playTo", playTo),
+				new ScriptMethod<Timeline>("resume", resume),
+				new ScriptMethod<Timeline>("seek", seek),
+				new ScriptMethod<Timeline>("stop", stop)
 			);
 		}
 
@@ -27,7 +27,7 @@ namespace Fuse.Triggers
 			
 			@scriptmethod pulse()
 		*/
-		static void pulse(Context c, Timeline n, object[] args)
+		static void pulse(Timeline n)
 		{
 			n.Pulse();
 		}
@@ -37,7 +37,7 @@ namespace Fuse.Triggers
 			
 			@scriptmethod pulseForward()
 		*/
-		static void pulseForward(Context c, Timeline n, object[] args)
+		static void pulseForward(Timeline n)
 		{
 			n.PulseForward();
 		}
@@ -47,7 +47,7 @@ namespace Fuse.Triggers
 			
 			@scriptmethod pulseBackward()
 		*/
-		static void pulseBackward(Context c, Timeline n, object[] args)
+		static void pulseBackward(Timeline n)
 		{
 			n.PulseBackward();
 		}
@@ -60,7 +60,7 @@ namespace Fuse.Triggers
 			
 			@param progress The relative position (0..1) to play to.
 		*/
-		static void playTo(Context c, Timeline n, object[] args)
+		static void playTo(Timeline n, object[] args)
 		{
 			if (args.Length != 1)
 			{
@@ -77,7 +77,7 @@ namespace Fuse.Triggers
 			
 			@scriptmethod stop()
 		*/
-		static void stop(Context c, Timeline n, object[] args)
+		static void stop(Timeline n)
 		{
 			n.Stop();
 		}
@@ -88,7 +88,7 @@ namespace Fuse.Triggers
 			
 			@scriptmethod resume()
 		*/
-		static void resume(Context c, Timeline n, object[] args)
+		static void resume(Timeline n)
 		{
 			n.Resume();
 		}
@@ -98,7 +98,7 @@ namespace Fuse.Triggers
 			
 			@scriptmethod pause()
 		*/
-		static void pause(Context c, Timeline n, object[] args)
+		static void pause(Timeline n)
 		{
 			n.Pause();
 		}
@@ -109,7 +109,7 @@ namespace Fuse.Triggers
 			@scriptmethod seek( progress )
 			@param progress The relative position (0..1) to seek to.
 		*/
-		static void seek(Context c, Timeline n, object[] args)
+		static void seek(Timeline n, object[] args)
 		{
 			if (args.Length != 1)
 			{

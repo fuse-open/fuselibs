@@ -10,8 +10,8 @@ namespace Fuse.Triggers
 		static Busy()
 		{
 			ScriptClass.Register(typeof(Busy), 
-				new ScriptMethod<Busy>("activate", activate, ExecutionThread.MainThread),
-				new ScriptMethod<Busy>("deactivate", deactivate, ExecutionThread.MainThread)
+				new ScriptMethod<Busy>("activate", activate),
+				new ScriptMethod<Busy>("deactivate", deactivate)
 			);
 		}
 		
@@ -22,7 +22,7 @@ namespace Fuse.Triggers
 			
 			@scriptmethod activate()
 		*/
-		static void activate(Context c, Busy b, object[] args)
+		static void activate(Busy b, object[] args)
 		{
 			if (args.Length != 0)
 			{
@@ -40,7 +40,7 @@ namespace Fuse.Triggers
 			
 			@scriptmethod deactivate()
 		*/
-		static void deactivate(Context c, Busy b, object[] args)
+		static void deactivate(Busy b, object[] args)
 		{
 			if (args.Length != 0)
 			{

@@ -10,7 +10,7 @@ namespace Fuse.Triggers
 		static State()
 		{
 			ScriptClass.Register(typeof(State),
-				new ScriptMethod<State>("goto", goto_, ExecutionThread.MainThread)
+				new ScriptMethod<State>("goto", goto_)
 			);
 		}
 			
@@ -21,7 +21,7 @@ namespace Fuse.Triggers
 			
 			@scriptmethod goto()
 		*/
-		static void goto_(Context c, State n, object[] args)
+		static void goto_(State n)
 		{
 			n.Goto();
 		}

@@ -228,7 +228,7 @@ namespace Fuse.Triggers
 		static BusyTask()
 		{
 			ScriptClass.Register(typeof(BusyTask), 
-				new ScriptMethod<BusyTask>("done", done, ExecutionThread.MainThread));
+				new ScriptMethod<BusyTask>("done", done));
 		}
 
 		/**
@@ -236,7 +236,7 @@ namespace Fuse.Triggers
 			
 			Completes a [BusyTask](/docs/fuse/triggers/busytaskmodule).
 		*/
-		static void done(Context c, BusyTask bt, object[] args)
+		static void done(BusyTask bt)
 		{
 			bt.Done();
 		}

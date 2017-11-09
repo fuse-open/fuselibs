@@ -12,7 +12,7 @@ namespace Fuse
 		{
 			ScriptClass.Register(typeof(Node),
 				new ScriptMethod<Node>("_createWatcher", _createWatcher),
-				new ScriptMethod<Node>("_destroyWatcher", _destroyWatcher, ExecutionThread.JavaScript),
+				new ScriptMethod<Node>("_destroyWatcher", _destroyWatcher),
 				new ScriptMethodInline("findData", "function(key) { return Observable._getDataObserver(this, key); }"));
 		}
 
@@ -23,13 +23,15 @@ namespace Fuse
 			return new External(new DataWatcher(n, c, callback, key));			
 		}
 
-		static void _destroyWatcher(Context c, Node n, object[] args)
+		static object _destroyWatcher(Context c, Node n, object[] args)
 		{
 			if (args[0] != null)
 			{
 				var watcher = (DataWatcher)((External)args[0]).Object;
 				watcher.Dispose();
 			}
+
+			return null;
 		}
 
 		class DataWatcher: Node.DataFinder, IDataListener

@@ -11,9 +11,9 @@ namespace Fuse.Controls
 		static NavigationControl()
 		{
 			ScriptClass.Register(typeof(NavigationControl),
-				new ScriptMethod<NavigationControl>("gotoPath", gotoPath, ExecutionThread.MainThread),
-				new ScriptMethod<NavigationControl>("seekToPath", seekToPath, ExecutionThread.MainThread),
-				new ScriptMethod<NavigationControl>("modifyPath", modifyPath, ExecutionThread.MainThread));
+				new ScriptMethod<NavigationControl>("gotoPath", gotoPath),
+				new ScriptMethod<NavigationControl>("seekToPath", seekToPath),
+				new ScriptMethod<NavigationControl>("modifyPath", modifyPath));
 		}
 		
 		/**
@@ -25,9 +25,9 @@ namespace Fuse.Controls
 			@param path the name of the path to use
 			@param parameter an optional parameter for the page
 		*/
-		static void gotoPath(Context c, NavigationControl nav, object[] args)
+		static void gotoPath(NavigationControl nav, object[] args)
 		{
-			alterPath(c, nav, args, "gotoPath", NavigationGotoMode.Transition);
+			alterPath(nav, args, "gotoPath", NavigationGotoMode.Transition);
 		}
 		
 		/**
@@ -39,12 +39,12 @@ namespace Fuse.Controls
 			@param path the name of the path to use
 			@param parameter an optional parameter for the page
 		*/
-		static void seekToPath(Context c, NavigationControl nav, object[] args)
+		static void seekToPath(NavigationControl nav, object[] args)
 		{
-			alterPath(c, nav, args, "seekToPath", NavigationGotoMode.Bypass);
+			alterPath(nav, args, "seekToPath", NavigationGotoMode.Bypass);
 		}
 		
-		static void alterPath(Context c, NavigationControl nav, object[] args, string opName,
+		static void alterPath(NavigationControl nav, object[] args, string opName,
 			NavigationGotoMode gotoMode)
 		{
 			if (args.Length < 1 || args.Length > 2)
@@ -99,7 +99,7 @@ namespace Fuse.Controls
 					- `Bypass`: A bypass transtiion that skips animation.
 				- `style`: The style of the operation, which can be used as a matching criteria in transitions.
 		*/
-		static void modifyPath(Context c, NavigationControl nav, object[] args)
+		static void modifyPath(NavigationControl nav, object[] args)
 		{
 			if (args.Length != 1)
 			{

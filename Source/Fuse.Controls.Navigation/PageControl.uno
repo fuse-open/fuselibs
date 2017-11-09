@@ -82,7 +82,7 @@ namespace Fuse.Controls
 		static PageControl()
 		{
 			ScriptClass.Register(typeof(PageControl),
-				new ScriptMethod<PageControl>("goto", gotoPage, ExecutionThread.MainThread));
+				new ScriptMethod<PageControl>("goto", gotoPage));
 		}
 
 		/**
@@ -91,13 +91,13 @@ namespace Fuse.Controls
 			@scriptmethod goto(node)
 			@param node The @Visual object of target page. Typically a `ux:Name` variable.
 		*/
-		static void gotoPage(Context c, PageControl pc, object[] args)
+		static void gotoPage(PageControl pc, object[] args)
 		{
 			var target = args[0] as Visual;
 			if (target != null) pc.Active = target;
 			else Diagnostics.UserError("PageControl.goto() : Argument must be a node object", pc);
 		}
-		
+
 		new internal Fuse.Navigation.DynamicLinearNavigation Navigation
 		{
 			get { return ((NavigationControl)this).Navigation as Fuse.Navigation.DynamicLinearNavigation; }

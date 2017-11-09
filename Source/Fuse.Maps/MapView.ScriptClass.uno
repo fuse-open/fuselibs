@@ -11,11 +11,11 @@ namespace Fuse.Controls
 		static MapView()
 		{
 			ScriptClass.Register(typeof(MapView),
-				new ScriptMethod<MapView>("setLocation", setLocation, ExecutionThread.MainThread),
-				new ScriptMethod<MapView>("setBearing", setBearing, ExecutionThread.MainThread),
-				new ScriptMethod<MapView>("setTilt", setTilt, ExecutionThread.MainThread),
-				new ScriptMethod<MapView>("setZoom", setZoom, ExecutionThread.MainThread),
-				new ScriptMethod<MapView>("setMarkers", setMarkers, ExecutionThread.MainThread));
+				new ScriptMethod<MapView>("setLocation", setLocation),
+				new ScriptMethod<MapView>("setBearing", setBearing),
+				new ScriptMethod<MapView>("setTilt", setTilt),
+				new ScriptMethod<MapView>("setZoom", setZoom),
+				new ScriptMethod<MapView>("setMarkers", setMarkers));
 		}
 
 		/** Sets the geographical location the MapView is focused on.
@@ -24,7 +24,7 @@ namespace Fuse.Controls
 			@param latitude (number) The latitude coordinate to pan to.
 			@param longitude (number) The longitude coordinate to pan to.
 		*/
-		static void setLocation(Context c, MapView view, object[] args)
+		static void setLocation(MapView view, object[] args)
 		{
 			switch(args.Length)
 			{
@@ -43,7 +43,7 @@ namespace Fuse.Controls
 			@scriptmethod setBearing(bearing)
 			@param bearing (number) The desired [Bearing](api:fuse/controls/mapview/bearing).
 		*/
-		static void setBearing(Context c, MapView view, object[] args)
+		static void setBearing(MapView view, object[] args)
 		{
 			switch(args.Length)
 			{
@@ -61,7 +61,7 @@ namespace Fuse.Controls
 			@scriptmethod setTilt(tilt)
 			@param tilt (number) The desired [Tilt](api:fuse/controls/mapview/tilt) angle.
 		*/
-		static void setTilt(Context c, MapView view, object[] args)
+		static void setTilt(MapView view, object[] args)
 		{
 			switch(args.Length)
 			{
@@ -79,7 +79,7 @@ namespace Fuse.Controls
 			@scriptmethod setZoom(zoom)
 			@param zoom (number) The desired [Zoom](api:fuse/controls/mapview/zoom) level.
 		*/
-		static void setZoom(Context c, MapView view, object[] args)
+		static void setZoom(MapView view, object[] args)
 		{
 			switch(args.Length)
 			{
@@ -120,7 +120,7 @@ namespace Fuse.Controls
 				</JavaScript>
 					
 		*/
-		static void setMarkers(Context c, MapView view, object[] args)
+		static void setMarkers(MapView view, object[] args)
 		{
 			view._markers.Clear();
 			switch(args.Length)

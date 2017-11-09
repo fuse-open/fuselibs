@@ -11,7 +11,7 @@ namespace Fuse
 		static UserEvent()
 		{
 			ScriptClass.Register(typeof(UserEvent),
-				new ScriptMethod<UserEvent>("raise", raise, ExecutionThread.MainThread)
+				new ScriptMethod<UserEvent>("raise", raise)
 			);
 		}
 
@@ -63,7 +63,7 @@ namespace Fuse
 				</JavaScript>
 			
 		**/
-		static void raise(Context c, UserEvent n, object[] args)
+		static void raise(UserEvent n, object[] args)
 		{
 			if (args.Length == 0)
 			{
