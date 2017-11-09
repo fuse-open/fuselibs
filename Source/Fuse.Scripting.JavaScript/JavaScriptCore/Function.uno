@@ -38,8 +38,11 @@ namespace Fuse.Scripting.JavaScriptCore
 			return result;
 		}
 
-		public override Scripting.Object Construct(params object[] args)
+		public override Scripting.Object Construct(Scripting.Context context, params object[] args)
 		{
+			// Ensure this function is being called from the context/vm it belongs to
+			assert context == _context;
+
 			Scripting.Object result = null;
 			using (var vm = new Context.EnterVM(_context))
 				result = (Scripting.Object)_context.Wrap(

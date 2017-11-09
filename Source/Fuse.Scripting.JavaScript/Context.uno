@@ -105,15 +105,15 @@ namespace Fuse.Scripting.JavaScript
 			var o = obj as Scripting.Object;
 			if (o != null)
 			{
-				if (o.InstanceOf(FuseJS.Observable))
+				if (o.InstanceOf(this, FuseJS.Observable))
 				{
 					return new Observable(this, (ThreadWorker)ThreadWorker, o, false);
 				}
-				else if (o.InstanceOf(FuseJS.Date))
+				else if (o.InstanceOf(this, FuseJS.Date))
 				{
 					return DateTimeConverterHelpers.ConvertDateToDateTime(this, o);
 				}
-				else if (o.InstanceOf(FuseJS.TreeObservable))
+				else if (o.InstanceOf(this, FuseJS.TreeObservable))
 				{
 					return new TreeObservable(this, o);
 				}

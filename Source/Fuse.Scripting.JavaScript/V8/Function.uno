@@ -51,7 +51,7 @@ namespace Fuse.Scripting.V8
 			return result;
 		}
 
-		public override Scripting.Object Construct(params object[] args)
+		public override Scripting.Object Construct(Scripting.Context context, params object[] args)
 		{
 			var cxt = _context._context;
 			Object result = null;

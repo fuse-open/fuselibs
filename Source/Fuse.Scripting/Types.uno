@@ -34,7 +34,7 @@ namespace Fuse.Scripting
 		/** @advanced */
 		public abstract object this[string key] { get; set; }
 		public abstract string[] Keys { get; }
-		public abstract bool InstanceOf(Function type);
+		public abstract bool InstanceOf(Context context, Function type);
 		public abstract object CallMethod(Context context, string name, params object[] args);
 		public abstract bool ContainsKey(string key);
 		public abstract bool Equals(Object o);
@@ -64,7 +64,7 @@ namespace Fuse.Scripting
 			Call(context, args);
 		}
 
-		public abstract Scripting.Object Construct(params object[] args);
+		public abstract Scripting.Object Construct(Context context, params object[] args);
 		public abstract bool Equals(Function f);
 
 		public override bool Equals(object o)

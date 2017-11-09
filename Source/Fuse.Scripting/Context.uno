@@ -10,7 +10,6 @@ namespace Fuse.Scripting
 	public interface IThreadWorker
 	{
 		void Invoke(Uno.Action<Scripting.Context> action);
-		void Invoke<T>(Uno.Action<Scripting.Context, T> action, T arg0);
 	}
 
 	public abstract class Context: Uno.IDisposable
@@ -132,7 +131,7 @@ namespace Fuse.Scripting
 		public Object NewError(params object[] args)
 		{
 			_newError = GlobalObject["Error"] as Function;
-			return _newError.Construct(args);
+			return _newError.Construct(this, args);
 		}
 
 		public abstract object Evaluate(string fileName, string code);

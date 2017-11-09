@@ -65,84 +65,83 @@ namespace Fuse.Scripting
 
 		protected override object CreateObject()
 		{ 
-			return (Callback)new ContextClosure(Context, _futureFactory, _resultConverter).CreatePromise;
+			return (Callback)new ContextClosure(_futureFactory, _resultConverter).CreatePromise;
 		}
 
 		class ContextClosure
 		{
-			Context _c;
 			FutureFactory<T> _factory;
 			ResultConverter<T, TJSResult> _converter;
-			public ContextClosure(Context c, FutureFactory<T> factory, ResultConverter<T, TJSResult> converter)
+			public ContextClosure(FutureFactory<T> factory, ResultConverter<T, TJSResult> converter)
 			{
-				_c = c;
 				_factory = factory;
 				_converter = converter;
 			}
+
 			internal object CreatePromise(Context context, object[] args)
 			{
-				var promise = (Function)_c.GlobalObject["Promise"]; // HACK - TODO: get rid of this
+				var promise = (Function)context.GlobalObject["Promise"]; // HACK - TODO: get rid of this
 				var future = _factory(args);
-				return promise.Construct((Callback)new PromiseClosure(_c, future, _converter).Run);
+				return promise.Construct(context, (Callback)new PromiseClosure(context.ThreadWorker, future, _converter).Run);
 			}
 		}
-			
-	    class PromiseClosure
-	    {
-			Context _c;
-	    	Future<T> _promise;
-	    	Function _resolve = null;
-	    	Function _reject = null;
-	    	ResultConverter<T, TJSResult> _converter;
+
+		class PromiseClosure
+		{
+			readonly IThreadWorker _threadWorker;
+			Future<T> _promise;
+			Function _resolve = null;
+			Function _reject = null;
+			ResultConverter<T, TJSResult> _converter;
 			T _result = default(T);
 			Exception _reason;
 
-	    	public PromiseClosure(Context context, Future<T> promise, ResultConverter<T, TJSResult> converter)
-	    	{
-				_c = context;
-	    		_promise = promise;
-	    		_converter = converter;
-	    	}
+			public PromiseClosure(IThreadWorker threadWorker, Future<T> promise, ResultConverter<T, TJSResult> converter)
+			{
+				_threadWorker = threadWorker;
+				_promise = promise;
+				_converter = converter;
+			}
 
-	    	public object Run(Context context, object[] args)
-	    	{
-		    	if (args.Length > 0)
-		    		_resolve = args[0] as Function;
+			public object Run(Context context, object[] args)
+			{
+				if (args.Length > 0)
+					_resolve = args[0] as Function;
 
-		    	if (args.Length > 1)
-		    		_reject = args[1] as Function;
+				if (args.Length > 1)
+					_reject = args[1] as Function;
 
-		    	_promise.Then(Resolve, Reject);
+				_promise.Then(Resolve, Reject);
 
-		    	return null;
-	    	}
+				return null;
+			}
 
-	    	void Resolve(T result)
-	    	{
-	    		_result = result;
-	    		if(_resolve != null)
-	    			_c.ThreadWorker.Invoke(this.InternalResolve);
-	    	}
+			void Resolve(T result)
+			{
+				_result = result;
+				if(_resolve != null)
+					_threadWorker.Invoke(this.InternalResolve);
+			}
 
-	    	void InternalResolve(Scripting.Context context)
-    		{
-    			if(_converter != null)
-    				_resolve.Call(context, _converter(context, _result));
-    			else
-    				_resolve.Call(context, _result);
-    		}
+			void InternalResolve(Scripting.Context context)
+			{
+				if(_converter != null)
+					_resolve.Call(context, _converter(context, _result));
+				else
+					_resolve.Call(context, _result);
+			}
 
-	    	void Reject(Exception reason)
-	    	{
-	    		_reason = reason;
-	    		if(_reject != null)
-	    			_c.ThreadWorker.Invoke(this.InternalReject);
-	    	}
+			void Reject(Exception reason)
+			{
+				_reason = reason;
+				if(_reject != null)
+					_threadWorker.Invoke(this.InternalReject);
+			}
 
-	    	void InternalReject(Scripting.Context context)
-	    	{
-	    		_reject.Call(context, _reason.Message);
-	    	}
-	    }
+			void InternalReject(Scripting.Context context)
+			{
+				_reject.Call(context, _reason.Message);
+			}
+		}
 	}
 }

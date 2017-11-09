@@ -79,7 +79,7 @@ namespace Fuse.Scripting.V8
 			}
 		}
 
-		public override bool InstanceOf(Scripting.Function type)
+		public override bool InstanceOf(Scripting.Context context, Scripting.Function type)
 		{
 			var f = type as Function;
 			return (bool)_context._instanceOf.Call(_context, this, type);

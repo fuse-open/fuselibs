@@ -49,20 +49,20 @@ namespace Fuse.Scripting
 			lock (_mutex)
 				foreach (var l in _listeningCallbacks)
 					Dispatch(new OnClosure(l.Item1, l.Item2).On, true);
-			AppInitialized.On(_context.ThreadWorker, OnAppInitialized);
+			AppInitialized.On(context, OnAppInitialized);
 		}
 
 		override object CreateExportsObject(Context c)
 		{
 			_context = c;
-			_this = EventEmitterModule.GetConstructor(_context).Construct(_eventNames);
+			_this = EventEmitterModule.GetConstructor(c).Construct(c, _eventNames);
 
-			AppInitialized.On(c.ThreadWorker, OnAppInitialized);
+			AppInitialized.On(c, OnAppInitialized);
 
 			return _this;
 		}
 
-		void OnAppInitialized()
+		void OnAppInitialized(Context c)
 		{
 			lock (_mutex)
 			{
@@ -124,6 +124,23 @@ namespace Fuse.Scripting
 			return new object[] { "error", context.NewError(reason) };
 		}
 
+		class ActionClosure
+		{
+			readonly Action<Context, Scripting.Object> _action;
+			readonly Scripting.Object _arg;
+
+			public ActionClosure(Action<Context, Scripting.Object> action, Scripting.Object arg)
+			{
+				_action = action;
+				_arg = arg;
+			}
+
+			public void Run(Context context)
+			{
+				_action(context, _arg);
+			}
+		}
+
 		void Dispatch(Action<Context, Scripting.Object> action, bool alwaysQueueEventBeforeInit = false)
 		{
 			lock (_mutex)
@@ -137,7 +154,8 @@ namespace Fuse.Scripting
 					return;
 				}
 			}
-			_context.ThreadWorker.Invoke<Scripting.Object>(action, _this);
+
+			_context.ThreadWorker.Invoke(new ActionClosure(action, _this).Run);
 		}
 
 		/** Connect a @NativeEvent to an event.

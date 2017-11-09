@@ -194,7 +194,7 @@ namespace Fuse.Scripting
 			else
 				promiseClosure.OnFutureReady(InvokeFutureFactory(c, self, args));
 
-			return promise.Construct((Callback)promiseClosure.Run);
+			return promise.Construct(c, (Callback)promiseClosure.Run);
 		}
 
 		class FutureClosure

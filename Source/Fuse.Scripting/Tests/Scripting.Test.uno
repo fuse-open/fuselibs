@@ -80,10 +80,10 @@ namespace Fuse.Scripting.Test
 				Assert.AreEqual(25, AsInt(callResult));
 				Assert.IsTrue(
 					(((Scripting.Object)context.Evaluate("Objects instanceof", "new Date()")))
-					.InstanceOf((Scripting.Function)context.Evaluate("Objects instanceof 2", "Date")));
+					.InstanceOf(context, (Scripting.Function)context.Evaluate("Objects instanceof 2", "Date")));
 				Assert.IsFalse(
 					obj
-					.InstanceOf((Scripting.Function)context.Evaluate("Objects instanceof 3", "Date")));
+					.InstanceOf(context,(Scripting.Function)context.Evaluate("Objects instanceof 3", "Date")));
 			}
 		}
 
@@ -135,7 +135,7 @@ namespace Fuse.Scripting.Test
 				var str = context.Evaluate("Functions construct", "String") as Scripting.Function;
 				Assert.IsFalse(str == null);
 				Assert.IsFalse(fun.Equals(str));
-				var obj = str.Construct(new object[] { "abc 123" });
+				var obj = str.Construct(context, new object[] { "abc 123" });
 				Assert.IsFalse(obj == null);
 				var i = obj.CallMethod(context, "indexOf", new object[] { "1" });
 				Assert.AreEqual(4, AsInt(i));
@@ -230,7 +230,7 @@ namespace Fuse.Scripting.Test
 				var f = context.Evaluate(
 					"CallbackAsConstructor",
 					"(function(f) { return new f(12, 13); })") as Scripting.Function;
-				var res = f.Construct(new object[] { new Scripting.Callback(new ContextObjectFactory().Callback) });
+				var res = f.Construct(context, new object[] { new Scripting.Callback(new ContextObjectFactory().Callback) });
 				Assert.IsTrue(res is Scripting.Object);
 				Assert.IsTrue(res.ContainsKey("x"));
 				Assert.IsTrue(res.ContainsKey("y"));

@@ -160,11 +160,6 @@ namespace Fuse.Scripting.JavaScript
 			_queue.Enqueue(action);
 		}
 
-		public void Invoke<T>(Uno.Action<Scripting.Context, T> action, T arg0)
-		{
-			Invoke(new ContextClosureOneArg<T>(action, arg0).Run);
-		}
-
 		public void Invoke(Action action)
 		{
 			Invoke(new ContextIgnoringAction(action).Run);
@@ -199,23 +194,6 @@ namespace Fuse.Scripting.JavaScript
 			public void Run(Scripting.Context context)
 			{
 				_action();
-			}
-		}
-
-		class ContextClosureOneArg<T>
-		{
-			T _arg0;
-			Uno.Action<Context, T> _action;
-
-			public ContextClosureOneArg(Uno.Action<Context, T> action, T arg0)
-			{
-				_action = action;
-				_arg0 = arg0;
-			}
-
-			public void Run(Context context)
-			{
-				_action(context, _arg0);
 			}
 		}
 	}
