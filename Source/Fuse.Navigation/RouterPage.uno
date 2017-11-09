@@ -99,13 +99,21 @@ namespace Fuse.Navigation
 		{
 			string path = null;
 			var obj = data as IObject;
-			//TODO: Until the Model is merged this shouldn't work, and it shouldn't be $template
+			//TODO: Until the Model is merged this shouldn't work, and it shouldn't be $template (adding line conflict to ensure HasObjectPath is updated)
 			//if (obj != null && obj.ContainsKey("$template")) //set implicitly by Model API
 			//	path = Marshal.ToType<string>(obj["$template"]);
 			if (obj != null && obj.ContainsKey("$path"))
 				path = Marshal.ToType<string>(obj["$path"]);
 				
 			return path;
+		}
+		
+		static public bool HasObjectPath( object data )
+		{
+			var obj = data as IObject;
+			if (obj != null && obj.ContainsKey("$path"))
+				return true;
+			return false;
 		}
 
 		public event ChildRouterPagesUpdated Updated;

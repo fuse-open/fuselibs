@@ -2,6 +2,7 @@
 
 ## Router
 - Added object support to `Router` script functions, such as `goto`, `push`, `bookmark`, etc. This mirrors the upcoming Model ability to use objects as path elements.
+- Added object support to `Modify/Push/GotoRoute` actions.
 
 ## TextView
 - Fixed iOS issue where the return key would display "next" instead of "return".

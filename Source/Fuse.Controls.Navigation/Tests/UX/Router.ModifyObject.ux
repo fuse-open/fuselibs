@@ -1,0 +1,76 @@
+<Panel ux:Class="UX.Router.ModifyObject">
+	<Router ux:Name="router"/>
+	<JavaScript>
+		var Observable = require("FuseJS/Observable")
+		
+		exports.firstPath = [{
+			$path: "two",
+			id: 7,
+		}, {
+			$path: "first",
+			title: "joyous",
+		}]
+		
+		exports.thirdPath = Observable({
+			$path: "three",
+			id: 9,
+		},{
+			$path: "second",
+			title: "bub",
+		})
+	</JavaScript>
+	<Navigator ux:Name="nav" Transition="None">
+		<Panel ux:Template="one">
+			<Text Value="{id}"/>
+		</Panel>
+		
+		<Panel ux:Template="two">
+			<Text Value="!{id}"/>
+			<PageControl>
+				<Panel ux:Name="first">
+					<WhileActive>
+						<Text Value="1.{title}"/>
+					</WhileActive>
+				</Panel>
+				<Panel ux:Name="second">
+					<WhileActive>
+						<Text Value="2.{title}"/>
+					</WhileActive>
+				</Panel>
+			</PageControl>
+		</Panel>
+		
+		<Panel ux:Template="three">
+			<Text Value="?{id}"/>
+			<PageControl>
+				<Panel ux:Name="first">
+					<WhileActive>
+						<Text Value="i.{title}"/>
+					</WhileActive>
+				</Panel>
+				<Panel ux:Name="second">
+					<WhileActive>
+						<Text Value="ii.{title}"/>
+					</WhileActive>
+				</Panel>
+			</PageControl>
+		</Panel>
+	</Navigator>
+	
+	<Timeline ux:Name="gotoR">
+		<GotoRoute Path="( '$path': 'one', id: 5)"/>
+	</Timeline>
+	<Timeline ux:Name="pushSecond">
+		<PushRoute Path="( '$path': 'two', id: 6 ), ( '$path': 'second', title: 'happy' )"/>
+	</Timeline>
+	<Timeline ux:Name="pushFirst">
+		<PushRoute Path="{firstPath}"/>
+	</Timeline>
+	<Timeline ux:Name="pushFirstBits">
+		<PushRoute Path="{firstPath[0]}, {firstPath[1]}"/>
+	</Timeline>
+	<Timeline ux:Name="pushThird">
+		<PushRoute Path="{thirdPath}"/>
+	</Timeline>
+	
+</Panel>
