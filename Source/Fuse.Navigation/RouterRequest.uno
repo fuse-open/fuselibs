@@ -280,9 +280,9 @@ namespace Fuse.Navigation
 				return false;
 			}
 
-			if (arg is Scripting.Object)
+			if (arg is IObject)
 			{
-				var obj = (Scripting.Object)arg;
+				var obj = (IObject)arg;
 				if (obj is Fuse.Reactive.IObservable)
 				{
 					Fuse.Diagnostics.UserError("Route parameter must be serializeable, cannot contain Observables.", null);		
@@ -297,16 +297,17 @@ namespace Fuse.Navigation
 				}
 			}
 
-			if (arg is Scripting.Array)
+			if (arg is IArray)
 			{
-				var arr = (Scripting.Array)arg;
+				var arr = (IArray)arg;
 				for (var i = 0; i < arr.Length; i++)
 				{
 					if (!ValidateParameter(arr[i], depth+1)) return false;
 				}
 			}
 
-			if (arg is Scripting.Function) 
+			if (arg is Scripting.Function ||
+			    arg is Reactive.IEventHandler)
 			{
 				Fuse.Diagnostics.UserError("Route parameter must be serializeable, cannot contain functions.", null);
 				return false;
