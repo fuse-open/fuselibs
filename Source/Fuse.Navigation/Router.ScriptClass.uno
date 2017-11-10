@@ -8,7 +8,7 @@ namespace Fuse.Navigation
 		{
 			ScriptClass.Register(typeof(Router),
 				new ScriptMethod<Router>("bookmark", Bookmark),
-				new ScriptMethod<Router>("getRoute", GetRoute, ExecutionThread.MainThread),
+				new ScriptMethod<Router>("getRoute", GetRoute),
 				new ScriptMethod<Router>("goBack", GoBack),
 				new ScriptMethod<Router>("goto", Goto),
 				new ScriptMethod<Router>("gotoRelative", GotoRelative),
@@ -325,41 +325,52 @@ namespace Fuse.Navigation
 					// and so on
 				})
 		*/
-		static void GetRoute(Context c, Router r, object[] args)
+		static object GetRoute(Context c, Router r, object[] args)
 		{
 			if (args.Length != 1) 
 			{
 				Diagnostics.UserError("Router.getRoute(): must provide exactly 1 argument.", r);
-				return;
+				return null;
 			}
 			var callback = args[0] as Function;
 			if (callback == null) 
 			{
 				Diagnostics.UserError("Router.getRoute(): argument must be a function.", r);
-				return;
+				return null;
 			}
 
-			var route = r.GetCurrentRoute();
-			c.Invoke(new GetRouteCallback(route, callback).Run);
+			UpdateManager.PostAction(new GetRouteCallback(c.ThreadWorker, r, callback).RunUI);
+			return null;
 		}
+
 		class GetRouteCallback
 		{
-			readonly Route _route;
+			readonly IThreadWorker _threadWorker;
+			readonly Router _router;
 			readonly Function _callback;
-			public GetRouteCallback(Route route, Function callback)
+
+			Route _route;
+
+			public GetRouteCallback(IThreadWorker threadWorker, Router router, Function callback)
 			{
-				_route = route;
+				_threadWorker = threadWorker;
+				_router = router;
 				_callback = callback;
 			}
 
-			public void Run(Scripting.Context context)
+			public void RunUI()
 			{
-				_callback.Call(context, ToArray(context));
+				_route = _router.GetCurrentRoute();
+				_threadWorker.Invoke(RunJS);
 			}
 
-			Array ToArray(Scripting.Context context)
+			public void RunJS(Scripting.Context context)
 			{
-				var route = _route;
+				_callback.Call(context, ToArray(context, _route));
+			}
+
+			static Array ToArray(Scripting.Context context, Route route)
+			{
 				var len = route.Length;
 				var arr = context.NewArray(len*2);
 				for (int i = 0; i < len; i++)
