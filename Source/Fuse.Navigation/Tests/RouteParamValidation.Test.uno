@@ -95,11 +95,13 @@ namespace Fuse.Navigation.Test
 				root.StepFrameJS();
 
 				var diagnostics = dg.DequeueAll();
-				Assert.AreEqual(2, diagnostics.Count);
-				Assert.AreEqual(DiagnosticType.UserError, diagnostics[0].Type);
-				Assert.Contains("Route parameter must be serializeable, it contains reference loops or is too large", diagnostics[0].Message);
+				Assert.AreEqual(3, diagnostics.Count);
+				Assert.AreEqual(DiagnosticType.UserWarning, diagnostics[0].Type);
+				Assert.Contains("JavaScript data model contains circular references or is too deep. Some data may not display correctly.", diagnostics[0].Message);
 				Assert.AreEqual(DiagnosticType.UserError, diagnostics[1].Type);
-				Assert.Contains("Router.goto(): invalid route provided", diagnostics[1].Message);
+				Assert.Contains("Route parameter must be serializeable, it contains reference loops or is too large", diagnostics[1].Message);
+				Assert.AreEqual(DiagnosticType.UserError, diagnostics[2].Type);
+				Assert.Contains("Router.goto(): invalid route provided", diagnostics[2].Message);
 			}
 		}
 
