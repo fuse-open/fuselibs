@@ -97,7 +97,7 @@ namespace Fuse.Navigation
 				return null;
 			}
 			
-			var node = c.Wrap(args[0]) as Node;
+			var node = args[0] as Node;
 			//null is actually okay for `where`
 			var where = RouterRequest.ParseFlatRoute(args, 1);
 			
@@ -185,7 +185,7 @@ namespace Fuse.Navigation
 				return;
 			}
 			
-			var obj = args[0] as Fuse.Scripting.Object;
+			var obj = args[0] as IObject;
 			if (obj == null)
 			{
 				Fuse.Diagnostics.UserError( "`Router.modify` should be passed an object", r );
@@ -247,7 +247,7 @@ namespace Fuse.Navigation
 				return;
 			}
 			
-			var obj = args[0] as Fuse.Scripting.Object;
+			var obj = args[0] as IObject;
 			if (obj == null)
 			{
 				Fuse.Diagnostics.UserError( "`Router.bookmark` should be passed an object", r );
@@ -271,8 +271,8 @@ namespace Fuse.Navigation
 				}
 				else if (p =="relative")
 				{
-					var node = c.Wrap(o);
-					relative = r.FindOutletUp(node as Node);
+					var node = o as Node;
+					relative = r.FindOutletUp(node);
 					if (relative == null)
 					{
 						Fuse.Diagnostics.UserError( "Could not find an outlet from the `relative` node", r );
@@ -281,7 +281,7 @@ namespace Fuse.Navigation
 				}
 				else if (p == "path")
 				{
-					var path = o as Array;
+					var path = o as IArray;
 					if (path == null)
 					{
 						Fuse.Diagnostics.UserError( "`path` should be an array", r );
