@@ -84,6 +84,26 @@ namespace Fuse.Navigation.Test
 		}
 
 		[Test]
+		public void BadParam3()
+		{
+			var p = new UX.RouteParamValidation();
+
+			using (var root = TestRootPanel.CreateWithChild(p, int2(100)))
+			using (var dg = new RecordDiagnosticGuard())
+			{
+				p.GotoTest6.Perform();
+				root.StepFrameJS();
+
+				var diagnostics = dg.DequeueAll();
+				Assert.AreEqual(2, diagnostics.Count);
+				Assert.AreEqual(DiagnosticType.UserError, diagnostics[0].Type);
+				Assert.Contains("Route parameter must be serializeable, cannot contain Observables.", diagnostics[0].Message);
+				Assert.AreEqual(DiagnosticType.UserError, diagnostics[1].Type);
+				Assert.Contains("Router.goto(): invalid route provided", diagnostics[1].Message);
+			}
+		}
+
+		[Test]
 		public void NestedObjects()
 		{
 			var p = new UX.RouteParamValidation();

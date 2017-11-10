@@ -283,12 +283,6 @@ namespace Fuse.Navigation
 			if (arg is IObject)
 			{
 				var obj = (IObject)arg;
-				if (obj is Fuse.Reactive.IObservable)
-				{
-					Fuse.Diagnostics.UserError("Route parameter must be serializeable, cannot contain Observables.", null);		
-					return false;
-				}
-
 				var keys = obj.Keys;
 				for (var i = 0; i < keys.Length; i++)
 				{
@@ -310,6 +304,12 @@ namespace Fuse.Navigation
 			    arg is Reactive.IEventHandler)
 			{
 				Fuse.Diagnostics.UserError("Route parameter must be serializeable, cannot contain functions.", null);
+				return false;
+			}
+
+			if (arg is Fuse.Reactive.IObservable)
+			{
+				Fuse.Diagnostics.UserError("Route parameter must be serializeable, cannot contain Observables.", null);
 				return false;
 			}
 
