@@ -60,7 +60,7 @@ namespace Fuse.Navigation
 					return false;
 				}
 				
-				//TODO: conver to bool form like ParseNVPRoute
+				//TODO: convert to bool form like ParseNVPRoute
 				Route = ParseFlatRoute(path);
 			}
 			else
@@ -143,20 +143,94 @@ namespace Fuse.Navigation
 		static public RouterPageRoute ParseFlatRoute(object[] args, int pos = 0)
 		{
 			if (args.Length <= pos) return null;
-			if (args.Length <= pos+1) return new RouterPageRoute(
-				new RouterPage( args[pos] as string ), null );
-
-			var arg = args[pos+1];
-
-			if (!ValidateParameter(arg, 0)) return null;
-
+			
 			var path = args[pos] as string;
-			var parameter = Json.Stringify(arg, true);
-			return new RouterPageRoute( 
-				new RouterPage( path, parameter ), ParseFlatRoute(args, pos+2));
+			if (path != null)
+			{
+				if (args.Length <= pos+1) return new RouterPageRoute(
+					new RouterPage( args[pos] as string ), null );
+
+				var arg = args[pos+1];
+
+				if (!ValidateParameter(arg, 0)) return null;
+
+				var parameter = Json.Stringify(arg, true);
+				return new RouterPageRoute( 
+					new RouterPage( path, parameter ), ParseFlatRoute(args, pos+2));
+			}
+			else
+			{
+				return new RouterPageRoute(
+					new RouterPage( PagesMap.GetObjectPath(args[pos]), null, args[pos] ), 
+						ParseFlatRoute(args, pos+1));
+			}
 		}
 		
-		static public bool ParseNVPRoute(object value, out RouterPageRoute route)
+		/**
+			This function decides whether to parse an ObjectRoute or a NVPRoute. It needs to employ a bit of trickery since the UX parser doesn't retain some syntax information, like the different between:
+				a:b, c:d
+			and
+				(a:b, c:d)
+			They both end up as the same IObject, which also exposes IArray.
+			
+			Here we'll assume if the first object, or the first element of the array, contains a path marker, then it's an object path.
+		*/
+		static internal bool ParseUXRoute(object value, out RouterPageRoute route)
+		{
+			if (IsObjectRoute(value))
+				return ParseObjectRoute(value, out route);
+			return ParseNVPRoute(value, out route);
+		}
+		
+		static bool IsObjectRoute(object value)
+		{
+			var array = value as IArray;
+			var isProperArray = array != null && !(value is IObject);
+			if (isProperArray && array.Length > 0 && PagesMap.HasObjectPath(array[0]))
+				return true;
+				
+			if (!isProperArray && PagesMap.HasObjectPath(value))
+				return true;
+				
+			return false;
+		}
+		
+		static internal bool ParseObjectRoute(object value, out RouterPageRoute route)
+		{
+			route = null;
+			
+			var array = value as IArray;
+			var isProperArray = array != null && !(value is IObject);
+			if (isProperArray)
+			{
+				for (int i = array.Length - 1; i >=0; --i)
+				{
+					if (!ParseObjectComponent(array[i], ref route))
+						return false;
+				}
+				
+				return true;
+			}
+			else
+			{
+				return ParseObjectComponent(value, ref route);
+			}
+		}
+		
+		static bool ParseObjectComponent(object value, ref RouterPageRoute route)
+		{
+			var path = PagesMap.GetObjectPath(value);
+			if (path == null)
+			{
+				Fuse.Diagnostics.UserError( "Object does not contain a $path", null);
+				return false;
+			}
+			
+			route = new RouterPageRoute( new RouterPage( path, null, value), route);
+			return true;
+		}
+		
+		static internal bool ParseNVPRoute(object value, out RouterPageRoute route)
 		{
 			route = null;
 

@@ -741,6 +741,67 @@ namespace Fuse.Navigation.Test
 			}
 		}
 		
+		[Test]
+		public void ModifyPath()
+		{
+			var p = new UX.Navigator.ModifyPath();
+			p.nav._testInterceptGoto = TestInterceptGoto;
+			ResetInterceptGoto();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				root.StepFrameJS();
+				
+				var rootPage = p.nav.AncestorRouterPage;
+				
+				p.gotoOne.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual( "1.5", GetRecursiveText(p.nav.Active));
+				Assert.AreEqual( "one", _lastPage.Path );
+				Assert.AreEqual( NavigationGotoMode.Transition, _lastGotoMode );
+				Assert.AreEqual( RoutingOperation.Goto, _lastOperation );
+				Assert.AreEqual( 1, rootPage.ChildRouterPages.Count );
+				Assert.AreEqual( _lastPage, rootPage.ChildRouterPages[0] );
+				
+				p.pushTwo.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual( "2.6", GetRecursiveText(p.nav.Active));
+				Assert.AreEqual( "two", _lastPage.Path );
+				Assert.AreEqual( NavigationGotoMode.Bypass, _lastGotoMode );
+				Assert.AreEqual( RoutingOperation.Push, _lastOperation );
+				Assert.AreEqual( 2, rootPage.ChildRouterPages.Count );
+				Assert.AreEqual( _lastPage, rootPage.ChildRouterPages[1] );
+				
+				p.replaceThree.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual( "3.7", GetRecursiveText(p.nav.Active));
+				Assert.AreEqual( "three", _lastPage.Path );
+				Assert.AreEqual( NavigationGotoMode.Transition, _lastGotoMode );
+				Assert.AreEqual( "quick", _lastOperationStyle );
+				Assert.AreEqual( RoutingOperation.Replace, _lastOperation );
+				Assert.AreEqual( 2, rootPage.ChildRouterPages.Count );
+				Assert.AreEqual( _lastPage, rootPage.ChildRouterPages[1] );
+				
+				p.goBack.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual( "1.5", GetRecursiveText(p.nav.Active));
+				Assert.AreEqual( "one", _lastPage.Path );
+				Assert.AreEqual( NavigationGotoMode.Transition, _lastGotoMode );
+				Assert.AreEqual( RoutingOperation.Pop, _lastOperation );
+				Assert.AreEqual( 1, rootPage.ChildRouterPages.Count );
+				Assert.AreEqual( _lastPage, rootPage.ChildRouterPages[0] );
+				
+				//override back page, and check a few safety special conditions
+				p.goBackTwo.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual( "2.8", GetRecursiveText(p.nav.Active));
+				Assert.AreEqual( "two", _lastPage.Path );
+				Assert.AreEqual( NavigationGotoMode.Transition, _lastGotoMode );
+				Assert.AreEqual( RoutingOperation.Pop, _lastOperation );
+				Assert.AreEqual( 1, rootPage.ChildRouterPages.Count );
+				Assert.AreEqual( _lastPage, rootPage.ChildRouterPages[0] );
+			}
+		}
+		
 		RouterPage _lastPage;
 		string _lastOperationStyle;
 		NavigationGotoMode _lastGotoMode;

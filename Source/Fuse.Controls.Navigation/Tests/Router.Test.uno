@@ -646,6 +646,72 @@ namespace Fuse.Navigation.Test
 				Assert.AreEqual( "1,2,3", p.history.Value );
 			}
 		}
+		
+		[Test]
+		public void ObjectPath()
+		{
+			var p = new UX.Router.ObjectPath();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				root.StepFrameJS();
+				
+				p.callGoto.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual( "5", GetText(p.nav.Active));
+				
+				p.push.Pulse();
+				root.StepFrame();
+				Assert.AreEqual( "!6,2.happy", GetRecursiveText(p.nav.Active));
+			
+				((ROPTwo)p.nav.Active).callPushRelative.Perform();
+				root.StepFrameJS();
+				root.StepFrame(5); //finish animation
+				Assert.AreEqual( "!6,1.joyous", GetRecursiveText(p.nav.Active));
+				
+				p.router.GoBack();
+				root.StepFrame(5);
+				Assert.AreEqual( "!6,2.happy", GetRecursiveText(p.nav.Active));
+				
+				p.router.GoBack();
+				root.StepFrame();
+				Assert.AreEqual( "5", GetText(p.nav.Active));
+			}
+		}
+		
+		[Test]
+		public void ModifyObject()
+		{
+			var p = new UX.Router.ModifyObject();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				p.gotoR.Pulse();
+				root.StepFrame();
+				Assert.AreEqual( "5", GetText(p.nav.Active));
+				
+				p.pushSecond.Pulse();
+				root.StepFrame(5); //complete animation
+				Assert.AreEqual( "!6,2.happy", GetRecursiveText(p.nav.Active));
+				
+				p.pushFirst.Pulse();
+				root.StepFrameJS();
+				root.StepFrame(5);
+				Assert.AreEqual( "!7,1.joyous", GetRecursiveText(p.nav.Active));
+				
+				p.router.GoBack();
+				root.StepFrame(5);
+				Assert.AreEqual( "!6,2.happy", GetRecursiveText(p.nav.Active));
+				
+				p.pushFirstBits.Pulse();
+				root.StepFrameJS();
+				root.StepFrame(5);
+				Assert.AreEqual( "!7,1.joyous", GetRecursiveText(p.nav.Active));
+				
+				p.pushThird.Pulse();
+				root.StepFrameJS();
+				root.StepFrame(5);
+				Assert.AreEqual( "?9,ii.bub", GetRecursiveText(p.nav.Active));
+			}
+		}
 	}
 }
 	
