@@ -97,7 +97,6 @@ namespace Fuse.Scripting
 		// legacy
 		[Obsolete]
 		public readonly ExecutionThread Thread;
-		readonly Action<Context, T, object[]> _oldVoidMethod;
 
 		readonly Func<Context, T, object[], object> _method;
 		readonly Action<T> _voidMethod;
@@ -132,7 +131,47 @@ namespace Fuse.Scripting
 			if (method == null)
 				throw new ArgumentNullException(nameof(method));
 
-			_oldVoidMethod = method;
+			_method = new LegacyMethodClosure<T>(method, thread).Run;
+		}
+
+		class LegacyMethodClosure<T>
+		{
+			readonly Action<Context, T, object[]> _action;
+			readonly ExecutionThread _thread;
+			public LegacyMethodClosure(Action<Context, T, object[]> action, ExecutionThread thread)
+			{
+				_action = action;
+				_thread = thread;
+			}
+
+			public object Run(Context c, T obj, object[] args)
+			{
+				if (_thread == ExecutionThread.MainThread)
+					UpdateManager.PostAction(new CallWithArgumentsClosure(_action, c, obj, args).Run);
+				else
+					_action(c, (T)obj, args);
+				return null;
+			}
+
+			class CallWithArgumentsClosure
+			{
+				readonly Action<Context, T, object[]> _action;
+				readonly Context _context;
+				readonly T _obj;
+				readonly object[] _args;
+				public CallWithArgumentsClosure(Action<Context, T, object[]> action, Context context, T obj, object[] args)
+				{
+					_action = action;
+					_context = context;
+					_obj = obj;
+					_args = args;
+				}
+
+				public void Run()
+				{
+					_action(_context, _obj, _args);
+				}
+			}
 		}
 
 		/** Create an argument-less ScriptMethod that will run on the UI-thread
@@ -200,17 +239,6 @@ namespace Fuse.Scripting
 
 		public override object Call(Context c, object obj, object[] args)
 		{
-			// This block is legacy code that should only need to stay around until obsolete constructors has been removed
-			if (_oldVoidMethod != null)
-			{
-				if (Thread == ExecutionThread.MainThread)
-					UpdateManager.PostAction(new CallClosure(c, _oldVoidMethod, (T)obj, args).Run);
-				else
-				{
-					_oldVoidMethod(c, (T)obj, args);
-					return null;
-				}
-			}
 
 			if (_voidMethod != null)
 			{
