@@ -1,0 +1,9 @@
+<StackPanel ux:Class="UX.LayoutPercentDependent" Orientation="Vertical" Alignment="Center" Mode="TwoPass">
+	<Panel ux:Name="c1" Width="50%" Height="10" />
+	<Image ux:Name="c2" Width="100%" File="../Assets/200x100.png" />
+	<Panel Width="400" Height="5" />
+<!--
+	https://github.com/Outracks/RealtimeStudio/issues/1632
+	<Panel ux:Name="c4" Width="110%" Height="10" />
+-->
+</StackPanel>
