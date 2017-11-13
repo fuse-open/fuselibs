@@ -111,10 +111,10 @@ namespace FuseTest
 		static Ordering()
 		{
 			ScriptClass.Register(typeof(Ordering),
-				new ScriptMethod<Ordering>("go", go, ExecutionThread.MainThread));
+				new ScriptMethod<Ordering>("go", go));
 		}
 		
-		static void go(Context c, Ordering o, object[] args)
+		static void go(Ordering o, object[] args)
 		{
 			o.AddAction( "G", Marshal.ToType<string>(args[0]));
 		}
