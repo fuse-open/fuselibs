@@ -200,28 +200,28 @@ namespace Fuse.Scripting
 
 		public override object Call(Context c, object obj, object[] args)
 		{
-			if (Thread == ExecutionThread.MainThread)
+			// This block is legacy code that should only need to stay around until obsolete constructors has been removed
+			if (_oldVoidMethod != null)
 			{
-				if (_oldVoidMethod != null)
+				if (Thread == ExecutionThread.MainThread)
 					UpdateManager.PostAction(new CallClosure(c, _oldVoidMethod, (T)obj, args).Run);
 				else
 				{
-					if (args.Length != 0)
-					{
-						var name = obj.GetType().FullName + "." + Name;
-						Fuse.Diagnostics.UserError(string.Format("{0} takes no arguments, but {1} was provided", name, args.Length), obj);
-						return null;
-					}
-
-					UpdateManager.PostAction(new CallClosure(_voidMethod, (T)obj).Run);
+					_oldVoidMethod(c, (T)obj, args);
+					return null;
 				}
-
-				return null;
 			}
 
-			if (_oldVoidMethod != null)
+			if (_voidMethod != null)
 			{
-				_oldVoidMethod(c, (T)obj, args);
+				if (args.Length != 0)
+				{
+					var name = obj.GetType().FullName + "." + Name;
+					Fuse.Diagnostics.UserError(string.Format("{0} takes no arguments, but {1} was provided", name, args.Length), obj);
+					return null;
+				}
+
+				UpdateManager.PostAction(new CallClosure(_voidMethod, (T)obj).Run);
 				return null;
 			}
 			else
