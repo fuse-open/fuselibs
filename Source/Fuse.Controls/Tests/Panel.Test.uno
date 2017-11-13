@@ -123,22 +123,6 @@ namespace Fuse.Controls.Test
 			}
 		}
 		
-		//This feature of two-pass panel layout has been removed
-		/*
-		[Test]
-		public void LayoutPercentDepend()
-		{
-			var p = new UX.LayoutPercentDepend();
-			using (var root = TestRootPanel.CreateWithChild(parent))
-			{
-				root.Layout(int2(500,500));
-				LayoutTestHelper.TestElementLayout(p, float2(100,25), float2((500-100)/2f,(500-25)/2f));
-				LayoutTestHelper.TestElementLayout(p.c2, float2(50,25), float2(50,0));
-				LayoutTestHelper.TestElementLayout(p.c3, float2(10,2.5f), float2(0)); //NOTE: height may actually be defined as 1 here
-			}
-		}
-		*/
-		
 		[Test]
 		public void LayoutOffset()
 		{
