@@ -205,7 +205,16 @@ namespace Fuse.Scripting
 				if (_oldVoidMethod != null)
 					UpdateManager.PostAction(new CallClosure(c, _oldVoidMethod, obj, args).Run);
 				else
+				{
+					if (args.Length != 0)
+					{
+						var name = obj.GetType().FullName + "." + Name;
+						Fuse.Diagnostics.UserError(string.Format("{0} takes no arguments, but {1} was provided", name, args.Length), obj);
+						return null;
+					}
+
 					UpdateManager.PostAction(new CallClosure(_voidMethod, obj).Run);
+				}
 
 				return null;
 			}
