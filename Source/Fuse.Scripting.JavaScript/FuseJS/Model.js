@@ -122,7 +122,13 @@ function Model(initialState, stateInitializer)
 			for (var i in keys) {
 				var p = keys[i];
 				if (p === "constructor") { continue; }
-				var value = state[p];
+				try {
+					var value = state[p];
+				}
+				catch(e) {
+					continue;
+				}
+
 				if (value instanceof Function) {
 					node[p] = wrapFunction(value);
 					state[p] = node[p];
