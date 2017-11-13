@@ -39,6 +39,7 @@
 - `Fuse.Scripting.JavaScript`'s `ThreadWorker` no longer blocks on construction
 - Implemented `console.error`, `console.warn` and `console.info`
 - Improved formatting for the above functions, as well as for `console.log`
+- The `ScriptMethod<T>` contstructor now throws if it's passed `ExecutionThread.MainThread` with Func, instead of failing to run it later on.
 
 
 # 1.4

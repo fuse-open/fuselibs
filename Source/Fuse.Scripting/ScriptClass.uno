@@ -18,6 +18,12 @@ namespace Fuse.Scripting
 
 		protected ScriptMember(string name)
 		{
+			if (name == null)
+				throw new ArgumentNullException(nameof(name));
+
+			if (name.Length == 0)
+				throw new ArgumentOutOfRangeException(nameof(name));
+
 			Name = name;
 		}
 	}
@@ -90,11 +96,20 @@ namespace Fuse.Scripting
 
 		public ScriptMethod(string name, Func<Context, T, object[], object> method, ExecutionThread thread): base(name, thread)
 		{
+			if (method == null)
+				throw new ArgumentNullException(nameof(method));
+
+			if (Thread == ExecutionThread.MainThread)
+				throw new ArgumentException("Cannot call a non-void method asynchronously", nameof(thread));
+
 			_method = method;
 		}
 
 		public ScriptMethod(string name, Action<Context, T, object[]> method, ExecutionThread thread): base(name, thread)
 		{
+			if (method == null)
+				throw new ArgumentNullException(nameof(method));
+
 			_voidMethod = method;
 		}
 
@@ -102,12 +117,6 @@ namespace Fuse.Scripting
 		{
 			if (Thread == ExecutionThread.MainThread)
 			{
-				if (_voidMethod == null)
-				{
-					Fuse.Diagnostics.InternalError( "Cannot call a non-void method asynchronously", this );
-					return null;
-				}
-				
 				UpdateManager.PostAction(new CallClosure(_voidMethod, c, obj, args).Run);
 				return null;
 			}

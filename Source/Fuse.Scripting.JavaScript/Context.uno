@@ -16,7 +16,7 @@ namespace Fuse.Scripting.JavaScript
 
 		Fuse.Reactive.FuseJS.Builtins FuseJS { private set; internal get;}
 
-		public override Fuse.Scripting.IThreadWorker ThreadWorker
+		public sealed override Fuse.Scripting.IThreadWorker ThreadWorker
 		{
 			get
 			{
@@ -48,12 +48,12 @@ namespace Fuse.Scripting.JavaScript
 			return result;
 		}
 
-		public override object Wrap(object obj)
+		public sealed override object Wrap(object obj)
 		{
 			return TypeWrapper.Wrap(this, obj);
 		}
 
-		public override object Unwrap(object obj)
+		public sealed override object Unwrap(object obj)
 		{
 			return TypeWrapper.Unwrap(this, obj);
 		}
@@ -73,11 +73,20 @@ namespace Fuse.Scripting.JavaScript
 				}
 			}
 
-			_reflectionDepth++;
-			var res = CreateMirror(obj);
-			_reflectionDepth--;
+			object res = null;
 
-			if (res != null) return res;
+			_reflectionDepth++;
+			try
+			{
+				res = CreateMirror(obj);
+			}
+			finally
+			{
+				_reflectionDepth--;
+			}
+
+			if (res != null)
+				return res;
 
 			return obj;
 		}
