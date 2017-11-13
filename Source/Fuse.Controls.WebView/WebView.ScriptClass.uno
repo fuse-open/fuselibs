@@ -55,17 +55,9 @@ namespace Fuse.Controls
 
 			@scriptmethod goBack()
 		*/
-		static void goBack(WebView view, object[] args)
+		static void goBack(WebView view)
 		{
-			switch(args.Length)
-			{
-				case 0:
-					view.GoBack();
-					return;
-				default:
-					Fuse.Diagnostics.UserError( "WebView.goBack does not take any arguments", view);
-					return;
-			}
+			view.GoBack();
 		}
 
 		/**
@@ -73,17 +65,9 @@ namespace Fuse.Controls
 
 			@scriptmethod goForward()
 		*/
-		static void goForward(WebView view, object[] args)
+		static void goForward(WebView view)
 		{
-			switch(args.Length)
-			{
-				case 0:
-					view.GoForward();
-					return;
-				default:
-					Fuse.Diagnostics.UserError( "WebView.goForward does not take any arguments", view);
-					return;
-			}
+			view.GoForward();
 		}
 
 		/**
@@ -91,17 +75,9 @@ namespace Fuse.Controls
 
 			@scriptmethod reload()
 		*/
-		static void reload(WebView view, object[] args)
+		static void reload(WebView view)
 		{
-			switch(args.Length)
-			{
-				case 0:
-					view.Reload();
-					return;
-				default:
-					Fuse.Diagnostics.UserError( "WebView.reload does not take any arguments", view);
-					return;
-			}
+			view.Reload();
 		}
 
 
@@ -110,17 +86,9 @@ namespace Fuse.Controls
 
 			@scriptmethod stop()
 		*/
-		static void stop(WebView view, object[] args)
+		static void stop(WebView view)
 		{
-			switch(args.Length)
-			{
-				case 0:
-					view.Stop();
-					return;
-				default:
-					Fuse.Diagnostics.UserError( "WebView.stop does not take any arguments", view);
-					return;
-			}
+			view.Stop();
 		}
 
 		/**

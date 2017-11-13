@@ -132,15 +132,10 @@ namespace Fuse.Navigation
 			
 			@scriptmethod goBack()
 		*/
-		static void GoBack(Router r, object[] args)
+		static void GoBack(Router r)
 		{
 			if (!r.IsRootingCompleted) return;
 
-			if (args.Length != 0)
-			{
-				Fuse.Diagnostics.UserError( "Router.goBack takes no parameters", r );
-				return;
-			}
 			r.GoBack();
 		}
 		

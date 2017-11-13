@@ -20,14 +20,8 @@ namespace Fuse.Triggers
 			
 			@scriptmethod check()
 		*/
-		static void check(Scrolled s, object[] args)
+		static void check(Scrolled s)
 		{
-			if (args.Length != 0)
-			{
-				Fuse.Diagnostics.UserError( "check takes no parameters", s );
-				return;
-			}
-			
 			//defer to after main layout to allow added/removed items to have an influence
 			UpdateManager.AddDeferredAction(s.Check, UpdateStage.Layout, LayoutPriority.Post);
 		}

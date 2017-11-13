@@ -21,14 +21,8 @@ namespace Fuse.Selection
 			
 			This follows the high level selection rules (such as MaxCount and Replace).
 		*/
-		static void add(Selectable s, object[] args )
+		static void add(Selectable s)
 		{
-			if (args.Length != 0)
-			{
-				Fuse.Diagnostics.UserError( "add requires 0 arguments", s );
-				return;
-			}
-			
 			s.Add();
 		}
 		
@@ -39,14 +33,8 @@ namespace Fuse.Selection
 			
 			If the Selectable is not currently selected then nothing is removed.
 		*/
-		static void remove(Selectable s, object[] args )
+		static void remove(Selectable s)
 		{
-			if (args.Length != 0)
-			{
-				Fuse.Diagnostics.UserError( "remove requires 0 arguments", s );
-				return;
-			}
-			
 			s.Remove();
 		}
 		
@@ -55,14 +43,8 @@ namespace Fuse.Selection
 			
 			This follows the high level selection rules (such as MaxCount/MinCount).
 		*/
-		static void toggle(Selectable s, object[] args )
+		static void toggle(Selectable s)
 		{
-			if (args.Length != 0)
-			{
-				Fuse.Diagnostics.UserError( "toggle requires 0 arguments", s );
-				return;
-			}
-			
 			s.Toggle();
 		}
 		

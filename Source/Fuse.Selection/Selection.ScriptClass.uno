@@ -24,14 +24,8 @@ namespace Fuse.Selection
 			
 			This does not respect restrictions, such as `MinCount`, and results in 0 items being selected.
 		*/
-		static void clear(Selection s, object[] args)
+		static void clear(Selection s)
 		{
-			if (args.Length != 0)
-			{
-				Fuse.Diagnostics.UserError( "clear requires 0 arguments", s );
-				return;
-			}
-			
 			s.Clear();
 		}
 

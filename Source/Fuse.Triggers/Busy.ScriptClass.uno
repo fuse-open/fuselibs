@@ -22,14 +22,8 @@ namespace Fuse.Triggers
 			
 			@scriptmethod activate()
 		*/
-		static void activate(Busy b, object[] args)
+		static void activate(Busy b)
 		{
-			if (args.Length != 0)
-			{
-				Fuse.Diagnostics.UserError( "Busy.activate takes no arguments", b );
-				return;
-			}
-			
 			b.IsActive = true;
 		}
 		
@@ -40,14 +34,8 @@ namespace Fuse.Triggers
 			
 			@scriptmethod deactivate()
 		*/
-		static void deactivate(Busy b, object[] args)
+		static void deactivate(Busy b)
 		{
-			if (args.Length != 0)
-			{
-				Fuse.Diagnostics.UserError( "Busy.deactivate takes no arguments", b );
-				return;
-			}
-			
 			b.IsActive = false;
 		}
 	}
