@@ -145,17 +145,17 @@ namespace Fuse.Navigation
 		In this example, `GoBack` will be used to navigate away from the first page of a `PageControl`.
 
 			<PageControl>
-				<Panel Background="#0F0" ux:Name="page1">
+				<Panel Background="#0F0" ux:Name="firstPage">
 					<Button Text="GoBack" Alignment="Center" Margin="10">
 						<Clicked>
 							<GoBack />
 						</Clicked>
 					</Button>
 				</Panel>
-				<Panel Background="#F00" ux:Name="page1">
+				<Panel Background="#F00" ux:Name="secondPage">
 					<Button Alignment="Center" Text="Go to page 1">
 						<Clicked>
-							<NavigateTo Target="page1" />
+							<NavigateTo Target="firstPage" />
 						</Clicked>
 					</Button>
 				</Panel>
