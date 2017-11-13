@@ -82,7 +82,7 @@ namespace Fuse.Navigation
 			
 			if (name == "relative")
 			{
-				Relative = ParseNode(value);
+				Relative = value as Node;
 			}
 			else if (name == "transition")
 			{
@@ -315,12 +315,6 @@ namespace Fuse.Navigation
 
 			return true;
 		}
-		
-		protected virtual Node ParseNode(object value)
-		{
-			return value as Node;
-		}
-		
 	}
 
 }

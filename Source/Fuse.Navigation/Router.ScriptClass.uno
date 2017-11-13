@@ -192,7 +192,7 @@ namespace Fuse.Navigation
 				return;
 			}
 			
-			var request = new ScriptRouterRequest();
+			var request = new RouterRequest(RouterRequest.Flags.FlatRoute);
 			
 			var keys = obj.Keys;
 			for (int i=0; i < keys.Length; ++i)
@@ -203,18 +203,6 @@ namespace Fuse.Navigation
 			}
 
 			request.MakeRequest(r);
-		}
-
-		class ScriptRouterRequest : RouterRequest
-		{
-			public ScriptRouterRequest() : base(Flags.FlatRoute)
-			{
-			}
-			
-			protected override Node ParseNode(object value)
-			{
-				return value as Node;
-			}
 		}
 
 		/**
