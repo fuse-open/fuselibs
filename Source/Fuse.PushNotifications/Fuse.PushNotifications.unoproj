@@ -8,16 +8,16 @@
   },
   "Packages": [
     "Uno.Collections",
-    "Uno.Threading",
-    "Fuse.Controls",
-    "Fuse.Elements",
-    "Fuse.Reactive",
-    "Fuse.Scripting",
-    "Fuse.Common"
+    "Uno.Threading"
   ],
   "Projects": [
     "../Experimental.TextureLoader/Experimental.TextureLoader.unoproj",
-    "../Fuse.Platform/Fuse.Platform.unoproj"
+    "../Fuse.Common/Fuse.Common.unoproj",
+    "../Fuse.Controls/Fuse.Controls.unoproj",
+    "../Fuse.Elements/Fuse.Elements.unoproj",
+    "../Fuse.Platform/Fuse.Platform.unoproj",
+    "../Fuse.Reactive/Fuse.Reactive.unoproj",
+    "../Fuse.Scripting/Fuse.Scripting.unoproj"
   ],
   "Includes": [
     "Common.uno:Source",
