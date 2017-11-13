@@ -130,23 +130,10 @@ namespace Fuse.Controls.Test
 		[Test]
 		public void LayoutAlignmentImageTest()
 		{
-			var parent = new StackPanel();
-			parent.Orientation = Orientation.Vertical;
-
-			using (var root = TestRootPanel.CreateWithChild(parent))
+			var p = new UX.LayoutAlignmentImage();
+			using (var root = TestRootPanel.CreateWithChild(p, int2(928, 722)))
 			{
-				var child1 = new Image();
-				child1.Height = 441;
-				child1.StretchMode = StretchMode.Scale9;
-				var image1Source = new TextureImageSource();
-				image1Source.Texture = texture2D.Load(import("Assets/713x441.png"));
-				image1Source.Density = 1.3f;
-				child1.Source = image1Source;
-				child1.Alignment = Alignment.HorizontalCenter;
-				parent.Children.Add(child1);
-
-				root.Layout(int2(928, 722));
-				LayoutTestHelper.TestElementLayout(child1, float2(713, 441), float2((928-713)/2f, 0));
+				LayoutTestHelper.TestElementLayout(p.child1, float2(713, 441), float2((928-713)/2f, 0));
 			}
 		}
 
