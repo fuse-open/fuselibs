@@ -37,6 +37,9 @@
 - `IMirror`'s `Reflect` now takes a `Scripting.Context`
 - IThreadWorker no longer implement IDispatcher
 - `Fuse.Scripting.JavaScript`'s `ThreadWorker` no longer blocks on construction
+- Implemented `console.error`, `console.warn` and `console.info`
+- Improved formatting for the above functions, as well as for `console.log`
+
 
 # 1.4
 
