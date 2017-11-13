@@ -203,7 +203,7 @@ namespace Fuse.Scripting
 			if (Thread == ExecutionThread.MainThread)
 			{
 				if (_oldVoidMethod != null)
-					UpdateManager.PostAction(new CallClosure(c, _oldVoidMethod, obj, args).Run);
+					UpdateManager.PostAction(new CallClosure(c, _oldVoidMethod, (T)obj, args).Run);
 				else
 				{
 					if (args.Length != 0)
@@ -213,7 +213,7 @@ namespace Fuse.Scripting
 						return null;
 					}
 
-					UpdateManager.PostAction(new CallClosure(_voidMethod, obj).Run);
+					UpdateManager.PostAction(new CallClosure(_voidMethod, (T)obj).Run);
 				}
 
 				return null;
@@ -233,10 +233,10 @@ namespace Fuse.Scripting
 		class CallClosure
 		{
 			readonly Action<T> _method;
-			readonly object _obj;
+			readonly T _obj;
 			readonly object[] _args;
 
-			public CallClosure(Action<T> method, object obj)
+			public CallClosure(Action<T> method, T obj)
 			{
 				_method = method;
 				_obj = obj;
@@ -244,7 +244,7 @@ namespace Fuse.Scripting
 
 			readonly Context _context;
 			readonly Action<Context, T, object[]> _oldMethod;
-			public CallClosure(Context context, Action<Context, T, object[]> method, object obj, object[] args)
+			public CallClosure(Context context, Action<Context, T, object[]> method, T obj, object[] args)
 			{
 				_context = context;
 				_oldMethod = method;
@@ -255,9 +255,9 @@ namespace Fuse.Scripting
 			public void Run()
 			{
 				if (_method != null)
-					_method((T)_obj);
+					_method(_obj);
 				else
-					_oldMethod(_context, (T)_obj, _args);
+					_oldMethod(_context, _obj, _args);
 			}
 		}
 
