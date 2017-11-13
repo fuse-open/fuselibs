@@ -10,8 +10,8 @@ namespace Fuse.Controls
 		static Image()
 		{
 			ScriptClass.Register(typeof(Image),
-				new ScriptMethod<Image>("reload", reload, ExecutionThread.MainThread),
-				new ScriptMethod<Image>("retry", retry, ExecutionThread.MainThread));
+				new ScriptMethod<Image>("reload", reload),
+				new ScriptMethod<Image>("retry", retry));
 		}
 		
 		/**
@@ -19,7 +19,7 @@ namespace Fuse.Controls
 			
 			@scriptmethod reload( )
 		*/
-		static void reload(Context c, Image img, object[] args)
+		static void reload(Image img, object[] args)
 		{
 			if (args.Length != 0)
 			{
@@ -37,7 +37,7 @@ namespace Fuse.Controls
 			
 			@scriptmethod retry( )
 		*/
-		static void retry(Context c, Image img, object[] args)
+		static void retry(Image img, object[] args)
 		{
 			if (args.Length != 0)
 			{

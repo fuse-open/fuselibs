@@ -58,7 +58,7 @@ namespace Fuse.Scripting.JavaScript
 			return TypeWrapper.Unwrap(this, obj);
 		}
 
-		public object Reflect(Scripting.Context context, object obj)
+		public sealed override object Reflect(object obj)
 		{
 			var e = obj as Scripting.External;
 			if (e != null) return e.Object;
@@ -89,6 +89,14 @@ namespace Fuse.Scripting.JavaScript
 				return res;
 
 			return obj;
+		}
+
+		object IMirror.Reflect(Scripting.Context context, object obj)
+		{
+			if (context != this)
+				Fuse.Diagnostics.InternalError("IMirror.Reflect with inconsistent context", this);
+
+			return Reflect(obj);
 		}
 
 		object CreateMirror(object obj)

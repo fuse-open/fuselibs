@@ -13,7 +13,7 @@ namespace Fuse.Navigation
 		static VisualNavigation()
 		{
 			ScriptClass.Register(typeof(VisualNavigation),
-				new ScriptMethod<VisualNavigation>("goto", gotoNode, ExecutionThread.MainThread));
+				new ScriptMethod<VisualNavigation>("goto", gotoNode));
 		}
 
 		/**
@@ -23,7 +23,7 @@ namespace Fuse.Navigation
 			@param node The `Visual` target for the transition. For most navigation types this must already be
 				 a child of the navigation panel.
 		*/
-		static void gotoNode(Context c, VisualNavigation nav, object[] args)
+		static void gotoNode(VisualNavigation nav, object[] args)
 		{
 			var target = args[0] as Visual;
 			if (target != null) nav.Goto(target);

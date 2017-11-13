@@ -9,10 +9,10 @@ namespace Fuse.Controls
 		static ScrollViewPager()
 		{
 			ScriptClass.Register(typeof(ScrollViewPager),
-				new ScriptMethod<ScrollViewPager>("check", check, ExecutionThread.MainThread));
+				new ScriptMethod<ScrollViewPager>("check", check));
 		}
 		
-		static void check(Context c, ScrollViewPager s, object[] args)
+		static void check(ScrollViewPager s, object[] args)
 		{
 			if (args.Length != 0)
 			{

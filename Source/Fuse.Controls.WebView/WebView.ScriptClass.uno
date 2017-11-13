@@ -15,13 +15,13 @@ namespace Fuse.Controls
 		static WebView()
 		{
 			ScriptClass.Register(typeof(WebView),
-				new ScriptMethod<WebView>("goto", setUrl, ExecutionThread.MainThread),
-				new ScriptMethod<WebView>("goBack", goBack, ExecutionThread.MainThread),
-				new ScriptMethod<WebView>("goForward", goForward, ExecutionThread.MainThread),
-				new ScriptMethod<WebView>("reload", reload, ExecutionThread.MainThread),
-				new ScriptMethod<WebView>("stop", stop, ExecutionThread.MainThread),
-				new ScriptMethod<WebView>("loadHtml", loadHtml, ExecutionThread.MainThread),
-				new ScriptMethod<WebView>("setBaseUrl", setBaseUrl, ExecutionThread.MainThread));
+				new ScriptMethod<WebView>("goto", setUrl),
+				new ScriptMethod<WebView>("goBack", goBack),
+				new ScriptMethod<WebView>("goForward", goForward),
+				new ScriptMethod<WebView>("reload", reload),
+				new ScriptMethod<WebView>("stop", stop),
+				new ScriptMethod<WebView>("loadHtml", loadHtml),
+				new ScriptMethod<WebView>("setBaseUrl", setBaseUrl));
 		}
 
 		/**
@@ -32,7 +32,7 @@ namespace Fuse.Controls
 			@param html The document to load into the WebView.
 			@param baseUrl Specifies the base URL used to resolve relative locations in the @html parameter.
 		*/
-		static void loadHtml(Context c, WebView view, object[] args)
+		static void loadHtml(WebView view, object[] args)
 		{
 
 			switch(args.Length)
@@ -55,7 +55,7 @@ namespace Fuse.Controls
 
 			@scriptmethod goBack()
 		*/
-		static void goBack(Context c, WebView view, object[] args)
+		static void goBack(WebView view, object[] args)
 		{
 			switch(args.Length)
 			{
@@ -73,7 +73,7 @@ namespace Fuse.Controls
 
 			@scriptmethod goForward()
 		*/
-		static void goForward(Context c, WebView view, object[] args)
+		static void goForward(WebView view, object[] args)
 		{
 			switch(args.Length)
 			{
@@ -91,7 +91,7 @@ namespace Fuse.Controls
 
 			@scriptmethod reload()
 		*/
-		static void reload(Context c, WebView view, object[] args)
+		static void reload(WebView view, object[] args)
 		{
 			switch(args.Length)
 			{
@@ -110,7 +110,7 @@ namespace Fuse.Controls
 
 			@scriptmethod stop()
 		*/
-		static void stop(Context c, WebView view, object[] args)
+		static void stop(WebView view, object[] args)
 		{
 			switch(args.Length)
 			{
@@ -129,7 +129,7 @@ namespace Fuse.Controls
 			@scriptmethod goto(url)
 			@param url The location to load.
 		*/
-		static void setUrl(Context c, WebView view, object[] args)
+		static void setUrl(WebView view, object[] args)
 		{
 			switch(args.Length)
 			{
@@ -148,7 +148,7 @@ namespace Fuse.Controls
 			@scriptmethod setBaseUrl(baseUrl)
 			@param baseUrl The base URL used to resolve relative locations.
 		*/
-		static void setBaseUrl(Context c, WebView view, object[] args)
+		static void setBaseUrl(WebView view, object[] args)
 		{
 			switch(args.Length)
 			{

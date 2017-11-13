@@ -32,6 +32,15 @@
 			router.goto("page5", big_object);
 		};
 
+		module.exports.goto_test6 = function () {
+			var x = {
+				hello:"w3rld",
+				number:1338,
+				o: Observable(),
+			}
+			router.goto("page4", x);
+		};
+
 		function make_deep_object(depth) {
 			var o = {};
 			var n = o;
@@ -51,6 +60,7 @@
 	<FuseTest.Invoke Handler="{goto_test3}" ux:Name="GotoTest3" />
 	<FuseTest.Invoke Handler="{goto_test4}" ux:Name="GotoTest4" />
 	<FuseTest.Invoke Handler="{goto_test5}" ux:Name="GotoTest5" />
+	<FuseTest.Invoke Handler="{goto_test6}" ux:Name="GotoTest6" />
 
 	<Navigator Dock="Fill" ux:Name="_navigator">
 		<RouterPanel router="router" ux:Template="page1" />

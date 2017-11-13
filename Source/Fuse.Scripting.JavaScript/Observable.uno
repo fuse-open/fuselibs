@@ -279,7 +279,7 @@ namespace Fuse.Scripting.JavaScript
 
 			if (op == "set")
 			{
-				UpdateManager.PostAction(new Set(this, ctx.Reflect(context, args[3]), origin).Perform);
+				UpdateManager.PostAction(new Set(this, ctx.Reflect(args[3]), origin).Perform);
 			}
 			else if (op == "clear") 
 			{
@@ -287,15 +287,15 @@ namespace Fuse.Scripting.JavaScript
 			}
 			else if (op == "newAt")
 			{
-				UpdateManager.PostAction(new NewAt(this, ToInt(args[3]), ctx.Reflect(context, args[4])).Perform);
+				UpdateManager.PostAction(new NewAt(this, ToInt(args[3]), ctx.Reflect(args[4])).Perform);
 			}
 			else if (op == "newAll") 
 			{
-				UpdateManager.PostAction(new NewAll(this, (ArrayMirror)ctx.Reflect(context, args[3]), origin).Perform);
+				UpdateManager.PostAction(new NewAll(this, (ArrayMirror)ctx.Reflect(args[3]), origin).Perform);
 			}
 			else if (op == "add") 
 			{
-				UpdateManager.PostAction(new Add(this, ctx.Reflect(context, args[3])).Perform);
+				UpdateManager.PostAction(new Add(this, ctx.Reflect(args[3])).Perform);
 			}
 			else if (op == "removeAt")
 			{
@@ -303,7 +303,7 @@ namespace Fuse.Scripting.JavaScript
 			}
 			else if (op == "insertAt")
 			{
-				UpdateManager.PostAction(new InsertAt(this, ToInt(args[3]), ctx.Reflect(context, args[4])).Perform);
+				UpdateManager.PostAction(new InsertAt(this, ToInt(args[3]), ctx.Reflect(args[4])).Perform);
 			}
 			else if (op == "removeRange")
 			{
@@ -311,7 +311,7 @@ namespace Fuse.Scripting.JavaScript
 			}
 			else if (op == "insertAll") 
 			{
-				UpdateManager.PostAction(new InsertAll(this, ToInt(args[3]), (ArrayMirror)ctx.Reflect(context, args[4])).Perform);
+				UpdateManager.PostAction(new InsertAll(this, ToInt(args[3]), (ArrayMirror)ctx.Reflect(args[4])).Perform);
 			}
 			else if (op == "failed")
 			{

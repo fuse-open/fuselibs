@@ -82,7 +82,7 @@ namespace Fuse.Navigation
 			
 			if (name == "relative")
 			{
-				Relative = ParseNode(value);
+				Relative = value as Node;
 			}
 			else if (name == "transition")
 			{
@@ -280,15 +280,9 @@ namespace Fuse.Navigation
 				return false;
 			}
 
-			if (arg is Scripting.Object)
+			if (arg is IObject)
 			{
-				var obj = (Scripting.Object)arg;
-				if (obj is Fuse.Reactive.IObservable)
-				{
-					Fuse.Diagnostics.UserError("Route parameter must be serializeable, cannot contain Observables.", null);		
-					return false;
-				}
-
+				var obj = (IObject)arg;
 				var keys = obj.Keys;
 				for (var i = 0; i < keys.Length; i++)
 				{
@@ -297,29 +291,30 @@ namespace Fuse.Navigation
 				}
 			}
 
-			if (arg is Scripting.Array)
+			if (arg is IArray)
 			{
-				var arr = (Scripting.Array)arg;
+				var arr = (IArray)arg;
 				for (var i = 0; i < arr.Length; i++)
 				{
 					if (!ValidateParameter(arr[i], depth+1)) return false;
 				}
 			}
 
-			if (arg is Scripting.Function) 
+			if (arg is Scripting.Function ||
+			    arg is Reactive.IEventHandler)
 			{
 				Fuse.Diagnostics.UserError("Route parameter must be serializeable, cannot contain functions.", null);
 				return false;
 			}
 
+			if (arg is Fuse.Reactive.IObservable)
+			{
+				Fuse.Diagnostics.UserError("Route parameter must be serializeable, cannot contain Observables.", null);
+				return false;
+			}
+
 			return true;
 		}
-		
-		protected virtual Node ParseNode(object value)
-		{
-			return value as Node;
-		}
-		
 	}
 
 }

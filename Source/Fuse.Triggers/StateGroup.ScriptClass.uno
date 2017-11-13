@@ -10,8 +10,8 @@ namespace Fuse.Triggers
 		static StateGroup()
 		{
 			ScriptClass.Register(typeof(StateGroup), 
-				new ScriptMethod<StateGroup>("goto", goto_, ExecutionThread.MainThread),
-				new ScriptMethod<StateGroup>("gotoNext", gotoNext, ExecutionThread.MainThread)
+				new ScriptMethod<StateGroup>("goto", goto_),
+				new ScriptMethod<StateGroup>("gotoNext", gotoNext)
 			);
 		}
 
@@ -20,7 +20,7 @@ namespace Fuse.Triggers
 			return o is State;
 		}
 
-		static void gotoName(Context c, StateGroup n, string name)
+		static void gotoName(StateGroup n, string name)
 		{
 			var state = n.FindObjectByName(name, StateAcceptor) as State;
 			if (state == null)
@@ -41,7 +41,7 @@ namespace Fuse.Triggers
 			@param state The state object for the target state. This must be a @State that already 
 				exists in this @StateGroup.
 		*/
-		static void goto_(Context c, StateGroup n, object[] args)
+		static void goto_(StateGroup n, object[] args)
 		{
 			if (args.Length != 1)
 			{
@@ -50,7 +50,7 @@ namespace Fuse.Triggers
 			}
 			
 			if (args[0] is string)
-				gotoName(c, n, args[0] as string);
+				gotoName(n, args[0] as string);
 			else
 				n.Goto(args[0] as State);
 		}
@@ -61,7 +61,7 @@ namespace Fuse.Triggers
 			
 			@scriptmethod gotoNext()
 		*/
-		static void gotoNext(Context c, StateGroup n, object[] args)
+		static void gotoNext(StateGroup n, object[] args)
 		{
 			n.GotoNextState();
 		}

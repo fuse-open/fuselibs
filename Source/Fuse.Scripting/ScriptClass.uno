@@ -7,9 +7,9 @@ namespace Fuse.Scripting
 {
 	public enum ExecutionThread
 	{
-		Any,
 		JavaScript,
-		MainThread
+		MainThread,
+		Any = JavaScript
 	}
 
 	public abstract class ScriptMember
@@ -78,7 +78,13 @@ namespace Fuse.Scripting
 	{
 		public readonly string Code;
 
+		[Obsolete("Use ScriptMethodInline(string, string) instead")]
 		public ScriptMethodInline(string name, ExecutionThread thread, string code): base(name, thread)
+		{
+			Code = code;
+		}
+
+		public ScriptMethodInline(string name, string code): base(name, ExecutionThread.JavaScript)
 		{
 			Code = code;
 		}
@@ -92,9 +98,10 @@ namespace Fuse.Scripting
 	public class ScriptMethod<T>: ScriptMethod
 	{
 		readonly Func<Context, T, object[], object> _method;
-		readonly Action<Context, T, object[]> _voidMethod;
+		readonly Action<Context, T, object[]> _oldVoidMethod;
+		readonly Action<T> _voidMethod;
 
-		public ScriptMethod(string name, Func<Context, T, object[], object> method, ExecutionThread thread): base(name, thread)
+		ScriptMethod(string name, Func<Context, T, object[], object> method, ExecutionThread thread, bool dummy): base(name, thread)
 		{
 			if (method == null)
 				throw new ArgumentNullException(nameof(method));
@@ -105,7 +112,35 @@ namespace Fuse.Scripting
 			_method = method;
 		}
 
+		[Obsolete("Use ScriptMethod<T>(string, Uno.Func<Fuse.Scripting.Context, T, object[], object)>) instead")]
+		public ScriptMethod(string name, Func<Context, T, object[], object> method, ExecutionThread thread): this(name, method, thread, true)
+		{
+		}
+
+		/** Create a ScriptMethod that will run on the script-thread
+
+			@param name Name of method
+			@param method The native implementation of the method
+		*/
+		public ScriptMethod(string name, Func<Context, T, object[], object> method): this(name, method, ExecutionThread.JavaScript, true)
+		{
+		}
+
+		[Obsolete("Use ScriptMethod<T>(string, Uno.Action<T)>), ScriptMethod<T>(string, Uno.Action<T, object[])>) or ScriptMethod<T>(string, Uno.Func<Fuse.Scripting.Context, T, object[], object)>) instead")]
 		public ScriptMethod(string name, Action<Context, T, object[]> method, ExecutionThread thread): base(name, thread)
+		{
+			if (method == null)
+				throw new ArgumentNullException(nameof(method));
+
+			_oldVoidMethod = method;
+		}
+
+		/** Create an argument-less ScriptMethod that will run on the UI-thread
+
+			@param name Name of method
+			@param method The native implementation of the method
+		*/
+		public ScriptMethod(string name, Action<T> method): base(name, ExecutionThread.MainThread)
 		{
 			if (method == null)
 				throw new ArgumentNullException(nameof(method));
@@ -113,17 +148,71 @@ namespace Fuse.Scripting
 			_voidMethod = method;
 		}
 
+		/** Create a ScriptMethod that will run on the UI-thread
+
+			@param name Name of method
+			@param method The native implementation of the method
+		*/
+		public ScriptMethod(string name, Action<T, object[]> method): base(name, ExecutionThread.JavaScript)
+		{
+			if (method == null)
+				throw new ArgumentNullException(nameof(method));
+
+			_method = new ArgumentMirrorClosure<T>(method).Run;
+		}
+
+		class ArgumentMirrorClosure<T>
+		{
+			readonly Action<T, object[]> _action;
+			public ArgumentMirrorClosure(Action<T, object[]> action)
+			{
+				_action = action;
+			}
+
+			public object Run(Context c, T obj, object[] args)
+			{
+				var marshalledArguments = new List<object>();
+				foreach (var arg in args)
+					marshalledArguments.Add(c.Reflect(arg));
+
+				UpdateManager.PostAction(new CallWithArgumentsClosure(_action, obj, marshalledArguments.ToArray()).Run);
+				return null;
+			}
+
+			class CallWithArgumentsClosure
+			{
+				readonly Action<T, object[]> _action;
+				readonly T _obj;
+				readonly object[] _args;
+				public CallWithArgumentsClosure(Action<T, object[]> action, T obj, object[] args)
+				{
+					_action = action;
+					_obj = obj;
+					_args = args;
+				}
+
+				public void Run()
+				{
+					_action(_obj, _args);
+				}
+			}
+		}
+
 		public override object Call(Context c, object obj, object[] args)
 		{
 			if (Thread == ExecutionThread.MainThread)
 			{
-				UpdateManager.PostAction(new CallClosure(_voidMethod, c, obj, args).Run);
+				if (_oldVoidMethod != null)
+					UpdateManager.PostAction(new CallClosure(c, _oldVoidMethod, obj, args).Run);
+				else
+					UpdateManager.PostAction(new CallClosure(_voidMethod, obj).Run);
+
 				return null;
 			}
-			
-			if (_voidMethod != null)
+
+			if (_oldVoidMethod != null)
 			{
-				_voidMethod(c, (T)obj, args);
+				_oldVoidMethod(c, (T)obj, args);
 				return null;
 			}
 			else
@@ -134,22 +223,32 @@ namespace Fuse.Scripting
 		
 		class CallClosure
 		{
-			readonly Action<Context, T, object[]> _method;
+			readonly Action<T> _method;
 			readonly object _obj;
-			readonly Context _context;
 			readonly object[] _args;
 
-			public CallClosure(Action<Context, T, object[]> method, Context c, object obj, object[] args)
+			public CallClosure(Action<T> method, object obj)
 			{
 				_method = method;
-				_context = c;
+				_obj = obj;
+			}
+
+			readonly Context _context;
+			readonly Action<Context, T, object[]> _oldMethod;
+			public CallClosure(Context context, Action<Context, T, object[]> method, object obj, object[] args)
+			{
+				_context = context;
+				_oldMethod = method;
 				_obj = obj;
 				_args = args;
 			}
 
 			public void Run()
 			{
-				_method(_context, (T)_obj, _args);
+				if (_method != null)
+					_method((T)_obj);
+				else
+					_oldMethod(_context, (T)_obj, _args);
 			}
 		}
 

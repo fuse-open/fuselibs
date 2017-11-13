@@ -10,10 +10,10 @@ namespace Fuse.Controls
 		static Video()
 		{
 			ScriptClass.Register(typeof(Video),
-				new ScriptMethod<Video>("getDuration", getDuration, ExecutionThread.JavaScript),
-				new ScriptMethod<Video>("resume", resume, ExecutionThread.MainThread),
-				new ScriptMethod<Video>("pause", pause, ExecutionThread.MainThread),
-				new ScriptMethod<Video>("stop", stop, ExecutionThread.MainThread));
+				new ScriptMethod<Video>("getDuration", getDuration),
+				new ScriptMethod<Video>("resume", resume),
+				new ScriptMethod<Video>("pause", pause),
+				new ScriptMethod<Video>("stop", stop));
 		}
 
 		object _durationMutex = new object();
@@ -45,7 +45,7 @@ namespace Fuse.Controls
 
 			@scriptmethod resume()
 		*/
-		static void resume(Context c, Video v, object[] args)
+		static void resume(Video v, object[] args)
 		{
 			if (args.Length != 0)
 				Fuse.Diagnostics.UserError("resume takes 0 arguments, but " + args.Length + " was supplied", v);
@@ -58,7 +58,7 @@ namespace Fuse.Controls
 
 			@scriptmethod pause()
 		*/
-		static void pause(Context c, Video v, object[] args)
+		static void pause(Video v, object[] args)
 		{
 			if (args.Length != 0)
 				Fuse.Diagnostics.UserError("pause takes 0 arguments, but " + args.Length + " was supplied", v);
@@ -71,7 +71,7 @@ namespace Fuse.Controls
 
 			@scriptmethod stop()
 		*/
-		static void stop(Context c, Video v, object[] args)
+		static void stop(Video v, object[] args)
 		{
 			if (args.Length != 0)
 				Fuse.Diagnostics.UserError("stop takes 0 arguments, but " + args.Length + " was supplied", v);

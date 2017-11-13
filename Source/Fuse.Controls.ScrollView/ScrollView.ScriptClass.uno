@@ -10,10 +10,10 @@ namespace Fuse.Controls
 		static ScrollViewBase()
 		{
 			ScriptClass.Register(typeof(ScrollViewBase),
-				new ScriptMethod<ScrollViewBase>("goto", goto_, ExecutionThread.MainThread),
-				new ScriptMethod<ScrollViewBase>("gotoRelative", gotoRelative, ExecutionThread.MainThread),
-				new ScriptMethod<ScrollViewBase>("seekTo", seekTo, ExecutionThread.MainThread),
-				new ScriptMethod<ScrollViewBase>("seekToRelative", seekToRelative, ExecutionThread.MainThread));
+				new ScriptMethod<ScrollViewBase>("goto", goto_),
+				new ScriptMethod<ScrollViewBase>("gotoRelative", gotoRelative),
+				new ScriptMethod<ScrollViewBase>("seekTo", seekTo),
+				new ScriptMethod<ScrollViewBase>("seekToRelative", seekToRelative));
 		}
 
 		static bool getParams(ScrollViewBase s,object[] args, string func, out float2 pos)
@@ -37,7 +37,7 @@ namespace Fuse.Controls
 			@scriptmethod goto(absolutePosition)
 			@scriptmethod goto(absoluteX, absoluteY)
 		*/
-		static void goto_(Context c, ScrollViewBase s, object[] args)
+		static void goto_(ScrollViewBase s, object[] args)
 		{
 			float2 pos;
 			if (!getParams(s, args, "goto", out pos))
@@ -51,7 +51,7 @@ namespace Fuse.Controls
 			@scriptmethod gotoRelative(relativePosition)
 			@scriptmethod gotoRelative(relativeX, relativeY)
 		*/
-		static void gotoRelative(Context c, ScrollViewBase s, object[] args)
+		static void gotoRelative(ScrollViewBase s, object[] args)
 		{
 			float2 pos;
 			if (!getParams(s, args, "gotoToRelative", out pos))
@@ -65,7 +65,7 @@ namespace Fuse.Controls
 			@scriptmethod seekTo(absolutePosition)
 			@scriptmethod seekTo(absoluteX, absoluteY)
 		*/
-		static void seekTo(Context c, ScrollViewBase s, object[] args)
+		static void seekTo(ScrollViewBase s, object[] args)
 		{
 			float2 pos;
 			if (!getParams(s, args, "seekTo", out pos))
@@ -79,7 +79,7 @@ namespace Fuse.Controls
 			@scriptmethod seekToRelative(relativePosition)
 			@scriptmethod seekToRelative(relativeX, relativeY)
 		*/
-		static void seekToRelative(Context c, ScrollViewBase s, object[] args)
+		static void seekToRelative(ScrollViewBase s, object[] args)
 		{
 			float2 pos;
 			if (!getParams(s, args, "seekToRelative", out pos))

@@ -1,0 +1,27 @@
+<Panel ux:Class="UX.ScriptMethod">
+	<JavaScript>
+		module.exports = {
+			callJSThreadMethod: function() {
+				var result = ScriptClass.jsThreadMethod(
+					"foo",
+					{"foo": "bar"},
+					["foo", "bar"],
+					function() { return "foo"; });
+				if (result !== "baz")
+					throw new Error('Unexpected result');
+			},
+			callUIThreadMethod: function() {
+				var result = ScriptClass.uiThreadMethod(
+					"foo",
+					{"foo": "bar"},
+					["foo", "bar"],
+					function() { return "foo"; });
+				if (result !== null)
+					throw new Error('Unexpected result');
+			}
+		};
+	</JavaScript>
+	<MyScriptClass ux:Name="ScriptClass" />
+	<FuseTest.Invoke ux:Name="CallJSThreadMethod" Handler="{callJSThreadMethod}" />
+	<FuseTest.Invoke ux:Name="CallUIThreadMethod" Handler="{callUIThreadMethod}" />
+</Panel>

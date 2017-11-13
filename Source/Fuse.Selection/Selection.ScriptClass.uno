@@ -11,12 +11,12 @@ namespace Fuse.Selection
 		static Selection()
 		{
 			ScriptClass.Register(typeof(Selection),
-				new ScriptMethod<Selection>("clear", clear, ExecutionThread.MainThread),
-				new ScriptMethod<Selection>("add", add, ExecutionThread.MainThread),
-				new ScriptMethod<Selection>("remove", remove, ExecutionThread.MainThread),
-				new ScriptMethod<Selection>("forceAdd", forceAdd, ExecutionThread.MainThread),
-				new ScriptMethod<Selection>("forceRemove", forceRemove, ExecutionThread.MainThread),
-				new ScriptMethod<Selection>("toggle", toggle, ExecutionThread.MainThread));
+				new ScriptMethod<Selection>("clear", clear),
+				new ScriptMethod<Selection>("add", add),
+				new ScriptMethod<Selection>("remove", remove),
+				new ScriptMethod<Selection>("forceAdd", forceAdd),
+				new ScriptMethod<Selection>("forceRemove", forceRemove),
+				new ScriptMethod<Selection>("toggle", toggle));
 		}
 		
 		/**
@@ -24,7 +24,7 @@ namespace Fuse.Selection
 			
 			This does not respect restrictions, such as `MinCount`, and results in 0 items being selected.
 		*/
-		static void clear(Context c, Selection s, object[] args)
+		static void clear(Selection s, object[] args)
 		{
 			if (args.Length != 0)
 			{
@@ -42,7 +42,7 @@ namespace Fuse.Selection
 			
 			This cannot verify that there is actually a @Selectable with this value.
 		*/
-		static void add(Context c, Selection s, object[] args)
+		static void add(Selection s, object[] args)
 		{
 			if (args.Length != 1)
 			{
@@ -60,7 +60,7 @@ namespace Fuse.Selection
 			
 			If the value is not in the selection then nothing is removed.
 		*/
-		static void remove(Context c, Selection s, object[] args)
+		static void remove(Selection s, object[] args)
 		{
 			if (args.Length != 1)
 			{
@@ -74,7 +74,7 @@ namespace Fuse.Selection
 		/**
 			Adds a string value to the selection even if it would violate the high level selection rules. A duplicate value will however not be added.
 		*/
-		static void forceAdd(Context c, Selection s, object[] args)
+		static void forceAdd(Selection s, object[] args)
 		{
 			if (args.Length != 1)
 			{
@@ -88,7 +88,7 @@ namespace Fuse.Selection
 		/**
 			Removes a string value from the selection even if it would violate the high level selection rules.
 		*/
-		static void forceRemove(Context c, Selection s, object[] args)
+		static void forceRemove(Selection s, object[] args)
 		{
 			if (args.Length != 1)
 			{
@@ -104,7 +104,7 @@ namespace Fuse.Selection
 			
 			This follows the high level selection rules (such as MaxCount/MinCount).
 		*/
-		static void toggle(Context c, Selection s, object[] args)
+		static void toggle(Selection s, object[] args)
 		{
 			if (args.Length != 1)
 			{

@@ -12,8 +12,8 @@ namespace Fuse
 		{
 			ScriptClass.Register(typeof(Visual), 
 				new ScriptProperty<Visual, string>("Parameter", getParameterProperty, ".notNull().parseJson()"),
-				new ScriptMethod<Visual>("onParameterChanged", onParameterChanged, ExecutionThread.MainThread),
-				new ScriptMethod<Visual>("bringIntoView", bringIntoView, ExecutionThread.MainThread));
+				new ScriptMethod<Visual>("onParameterChanged", onParameterChanged),
+				new ScriptMethod<Visual>("bringIntoView", bringIntoView));
 		}
 
 		class ParameterProperty: Property<string>
@@ -40,7 +40,7 @@ namespace Fuse
 			
 			@scriptmethod bringIntoView()
 		*/
-		static void bringIntoView(Context c, Visual n, object[] args)
+		static void bringIntoView(Visual n)
 		{
 			n.BringIntoView();
 		}
@@ -66,7 +66,7 @@ namespace Fuse
 			@param callback The script method to call when the parameter changes. This is guaranted to be
 				called at least once at registration time; you don't need to lookup the parameter another way.
 		*/
-		static void onParameterChanged(Context c, Visual v, object[] args)
+		static void onParameterChanged(Visual v, object[] args)
 		{
 			v.AddParameterChangedListener((Scripting.Function)args[0]);
 		}

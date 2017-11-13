@@ -10,7 +10,7 @@ namespace Fuse.Triggers
 		static Scrolled()
 		{
 			ScriptClass.Register(typeof(Scrolled),
-				new ScriptMethod<Scrolled>("check", check, ExecutionThread.MainThread));
+				new ScriptMethod<Scrolled>("check", check));
 		}
 		
 		/**
@@ -20,7 +20,7 @@ namespace Fuse.Triggers
 			
 			@scriptmethod check()
 		*/
-		static void check(Context c, Scrolled s, object[] args)
+		static void check(Scrolled s, object[] args)
 		{
 			if (args.Length != 0)
 			{

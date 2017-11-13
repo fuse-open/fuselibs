@@ -41,7 +41,7 @@ namespace Fuse.Scripting.JavaScript
 			}
 
 			_js.ScriptModule.Dependencies = deps;
-			_dc = ctx.Reflect(context, EvaluateExports(ctx));
+			_dc = ctx.Reflect(EvaluateExports(ctx));
 			UpdateManager.PostAction(SetDataContext);
 		}
 

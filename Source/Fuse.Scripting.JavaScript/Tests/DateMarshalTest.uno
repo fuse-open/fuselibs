@@ -39,14 +39,14 @@ namespace Fuse.Reactive.Test
 		static DateMarshalTestScriptClass()
 		{
 			ScriptClass.Register(typeof(DateMarshalTestScriptClass),
-				new ScriptMethod<DateMarshalTestScriptClass>("setDateTime", SetDateTime, ExecutionThread.MainThread));
+				new ScriptMethod<DateMarshalTestScriptClass>("setDateTime", SetDateTime));
 		}
 
 		public DateTime DateTime { get; set; }
 
-		static void SetDateTime(Context c, DateMarshalTestScriptClass self, object[] args)
+		static void SetDateTime(DateMarshalTestScriptClass self, object[] args)
 		{
-			self.DateTime = (DateTime)c.Wrap(args[0]);
+			self.DateTime = (DateTime)args[0];
 		}
 	}
 
