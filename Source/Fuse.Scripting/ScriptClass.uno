@@ -7,9 +7,9 @@ namespace Fuse.Scripting
 {
 	public enum ExecutionThread
 	{
-		Any,
 		JavaScript,
-		MainThread
+		MainThread,
+		Any = JavaScript
 	}
 
 	public abstract class ScriptMember
