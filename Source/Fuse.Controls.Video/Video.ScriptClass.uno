@@ -34,7 +34,10 @@ namespace Fuse.Controls
 		static object getDuration(Context c, Video v, object[] args)
 		{
 			if (args.Length != 0)
+			{
 				Fuse.Diagnostics.UserError("getDuration takes 0 arguments, but " + args.Length + " was supplied", v);
+				return null;
+			}
 
 			lock (v._durationMutex)
 				return (object)v._outDuration;
@@ -45,11 +48,8 @@ namespace Fuse.Controls
 
 			@scriptmethod resume()
 		*/
-		static void resume(Video v, object[] args)
+		static void resume(Video v)
 		{
-			if (args.Length != 0)
-				Fuse.Diagnostics.UserError("resume takes 0 arguments, but " + args.Length + " was supplied", v);
-
 			v.Resume();
 		}
 
@@ -58,11 +58,8 @@ namespace Fuse.Controls
 
 			@scriptmethod pause()
 		*/
-		static void pause(Video v, object[] args)
+		static void pause(Video v)
 		{
-			if (args.Length != 0)
-				Fuse.Diagnostics.UserError("pause takes 0 arguments, but " + args.Length + " was supplied", v);
-
 			v.Pause();
 		}
 
@@ -71,11 +68,8 @@ namespace Fuse.Controls
 
 			@scriptmethod stop()
 		*/
-		static void stop(Video v, object[] args)
+		static void stop(Video v)
 		{
-			if (args.Length != 0)
-				Fuse.Diagnostics.UserError("stop takes 0 arguments, but " + args.Length + " was supplied", v);
-
 			v.Stop();
 		}
 	}

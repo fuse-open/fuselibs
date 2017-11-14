@@ -19,14 +19,8 @@ namespace Fuse.Controls
 			
 			@scriptmethod reload( )
 		*/
-		static void reload(Image img, object[] args)
+		static void reload(Image img)
 		{
-			if (args.Length != 0)
-			{
-				Fuse.Diagnostics.UserError( "reload takes no parameters", img );
-				return;
-			}
-
 			var src = img.Source;
 			if (src != null)
 				src.Reload();
@@ -37,14 +31,8 @@ namespace Fuse.Controls
 			
 			@scriptmethod retry( )
 		*/
-		static void retry(Image img, object[] args)
+		static void retry(Image img)
 		{
-			if (args.Length != 0)
-			{
-				Fuse.Diagnostics.UserError( "retry takes no parameters", img );
-				return;
-			}
-
 			var src = img.Source;
 			if (src != null && src.State == Fuse.Resources.ImageSourceState.Failed)
 				src.Reload();

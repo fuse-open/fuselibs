@@ -61,7 +61,7 @@ namespace Fuse.Triggers
 			
 			@scriptmethod gotoNext()
 		*/
-		static void gotoNext(StateGroup n, object[] args)
+		static void gotoNext(StateGroup n)
 		{
 			n.GotoNextState();
 		}

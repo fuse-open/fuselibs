@@ -21,14 +21,8 @@ namespace Fuse.Triggers
 			
 			@scriptmethod reset()
 		*/
-		static void reset(Completed cp, object[] args)
+		static void reset(Completed cp)
 		{
-			if (args.Length != 0)
-			{
-				Fuse.Diagnostics.UserError( "Completed.reset takes no arguments", cp );
-				return;
-			}
-			
 			cp.Reset();
 		}
 	}

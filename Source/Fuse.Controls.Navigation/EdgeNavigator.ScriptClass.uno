@@ -19,14 +19,8 @@ namespace Fuse.Controls
 			
 			@scriptmethod dismiss()
 		*/
-		static void dismiss(EdgeNavigator e, object[] args)
+		static void dismiss(EdgeNavigator e)
 		{
-			if (args.Length != 0)
-			{
-				Fuse.Diagnostics.UserError( "EdgeNavigator.dismiss takes no arguments", e );
-				return;
-			}
-
 			e.Dismiss();
 		}
 		
