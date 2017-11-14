@@ -130,96 +130,36 @@ namespace Fuse.Controls.Test
 		[Test]
 		public void LayoutAlignmentImageTest()
 		{
-			var parent = new StackPanel();
-			parent.Orientation = Orientation.Vertical;
-
-			using (var root = TestRootPanel.CreateWithChild(parent))
+			var p = new UX.LayoutAlignmentImage();
+			using (var root = TestRootPanel.CreateWithChild(p, int2(928, 722)))
 			{
-				var child1 = new Image();
-				child1.Height = 441;
-				child1.StretchMode = StretchMode.Scale9;
-				var image1Source = new TextureImageSource();
-				image1Source.Texture = texture2D.Load(import("Assets/713x441.png"));
-				image1Source.Density = 1.3f;
-				child1.Source = image1Source;
-				child1.Alignment = Alignment.HorizontalCenter;
-				parent.Children.Add(child1);
-
-				root.Layout(int2(928, 722));
-				LayoutTestHelper.TestElementLayout(child1, float2(713, 441), float2((928-713)/2f, 0));
+				LayoutTestHelper.TestElementLayout(p.child1, float2(713, 441), float2((928-713)/2f, 0));
 			}
 		}
 
 		[Test]
 		public void LayoutPercentDependent()
 		{
-			var parent = new StackPanel();
-			parent.Orientation = Orientation.Vertical;
-			parent.Alignment = Alignment.Center;
-			parent.Mode = StackLayoutMode.TwoPass;
-
-			using (var root = TestRootPanel.CreateWithChild(parent))
+			var p = new UX.LayoutPercentDependent();
+			using (var root = TestRootPanel.CreateWithChild(p, int2(1000)))
 			{
-				var c1 = new Panel();
-				c1.Height = 10;
-				c1.Width = Size.Percent(50);
-				parent.Children.Add(c1);
-
-				var c2 = new Image();
-
-				c2.Width = Size.Percent(100);
-				c2.Source = new TextureImageSource{ Texture = texture2D.Load(import("Assets/200x100.png")) };
-				parent.Children.Add(c2);
-
-				var c3 = new Panel();
-				c3.Width = 400;
-				c3.Height = 5;
-				parent.Children.Add(c3);
-
-				//https://github.com/Outracks/RealtimeStudio/issues/1632
-				/*var c4 = new Panel();
-				c4.Height = 10;
-				c4.Width = Size.Percent(110);
-				parent.Children.Add(c4);*/
-
-				root.Layout(int2(1000,1000));
-
-				LayoutTestHelper.TestElementLayout(c1, float2(200,10), float2(100,0) );
-				LayoutTestHelper.TestElementLayout(c2, float2(400,200), float2(0,10) );
+				LayoutTestHelper.TestElementLayout(p.c1, float2(200,10), float2(100,0) );
+				LayoutTestHelper.TestElementLayout(p.c2, float2(400,200), float2(0,10) );
 				//LayoutTestHelper.TestElementLayout(c4, float2(440,10), float2(-20,210) );
-				LayoutTestHelper.TestElementLayout(parent, float2(400,215), float2((1000-400)/2f,(1000-215)/2f));
+				LayoutTestHelper.TestElementLayout(p, float2(400,215), float2((1000-400)/2f,(1000-215)/2f));
 			}
 		}
 		
 		[Test]
 		public void LayoutPercentFixed()
 		{
-			var parent = new StackPanel();
-			parent.Orientation = Orientation.Horizontal;
-			parent.Height = 200;
-
-			using (var root = TestRootPanel.CreateWithChild(parent))
+			var p = new UX.LayoutPercentFixed();
+			using (var root = TestRootPanel.CreateWithChild(p, int2(1000)))
 			{
-				var c1 = new Panel();
-				c1.Height = Size.Percent(10);
-				c1.Width = 50;
-				c1.Alignment = Alignment.Bottom;
-				parent.Children.Add(c1);
-
-				var c2 = new Image();
-				c2.Source = new TextureImageSource{ Texture = texture2D.Load(import("Assets/200x100.png")) };
-				parent.Children.Add(c2);
-
-				var c3 = new Panel();
-				c3.Height = Size.Percent(110);
-				c3.Width = 10;
-				parent.Children.Add(c3);
-
-				root.Layout(int2(1000,1000));
-				LayoutTestHelper.TestElementLayout(c1, float2(50,20), float2(0,180) );
-				LayoutTestHelper.TestElementLayout(c2, float2(400,200), float2(50,0) );
-				LayoutTestHelper.TestElementLayout(c3, float2(10,220), float2(450,-10) );
-				LayoutTestHelper.TestElementLayout(parent, float2(1000,200), float2(0,400));
+				LayoutTestHelper.TestElementLayout(p.c1, float2(50,20), float2(0,180) );
+				LayoutTestHelper.TestElementLayout(p.c2, float2(400,200), float2(50,0) );
+				LayoutTestHelper.TestElementLayout(p.c3, float2(10,220), float2(450,-10) );
+				LayoutTestHelper.TestElementLayout(p, float2(1000,200), float2(0,400));
 			}
 		}
 		

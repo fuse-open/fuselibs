@@ -1,7 +1,0 @@
-<Panel ux:Class='UX.LayoutPercentDepend' Alignment="Center">
-	<Panel ux:Name="c1" Width="100" Height="10"/>
-	<Image ux:Name="c2" Alignment="TopRight" Width="50%" >
-		<TextureImageSource><texture2D ux:Path="../Assets/200x100.png" /></TextureImageSource>
-	</Image>
-	<Panel ux:Name="c3" Width="10%" Height="10%" Alignment="TopLeft" />
-</Panel>

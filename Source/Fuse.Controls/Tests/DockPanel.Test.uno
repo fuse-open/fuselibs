@@ -201,31 +201,11 @@ namespace Fuse.Controls.Test
 		[Test]
 		public void DockAlignmentImageTest()
 		{
-			var parent = new DockPanel();
-
-			var child1 = new Image();
-			child1.Height = 441;
-			var image1Source = new TextureImageSource();
-			image1Source.Texture = texture2D.Load(import("Assets/713x441.png"));
-			image1Source.Density = 2;
-			child1.Source = image1Source;
-			DockPanel.SetDock(child1, Dock.Top);
-			parent.Children.Add(child1);
-
-			var child2 = new Image();
-			child2.Width = 46;
-			child2.Height = 109;
-			child2.StretchMode = StretchMode.Fill;
-			var image2Source = new TextureImageSource();
-			image2Source.Texture = texture2D.Load(import("Assets/92x218.png"));
-			child2.Source = image2Source;
-			DockPanel.SetDock(child2, Dock.Right);
-			parent.Children.Add(child2);
-
-			using (var root = TestRootPanel.CreateWithChild(parent, int2(736, 1038)))
+			var p = new UX.DockAlignmentImage();
+			using (var root = TestRootPanel.CreateWithChild(p, int2(736, 1038)))
 			{
-				LayoutTestHelper.TestElementLayout(child1, float2(736, 441), float2(0, 0), 0.0001f);
-				LayoutTestHelper.TestElementLayout(child2, float2(46, 109), float2(736-46, 441 + (1038-441-109)/2f), 0.0001f);
+				LayoutTestHelper.TestElementLayout(p.child1, float2(736, 441), float2(0, 0), 0.0001f);
+				LayoutTestHelper.TestElementLayout(p.child2, float2(46, 109), float2(736-46, 441 + (1038-441-109)/2f), 0.0001f);
 			}
 		}
 		
