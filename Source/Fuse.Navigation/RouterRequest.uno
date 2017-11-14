@@ -274,7 +274,7 @@ namespace Fuse.Navigation
 		
 		static bool ValidateParameter(object arg, int depth = 0)
 		{
-			if (depth > 50)
+			if (depth > 49)
 			{
 				Fuse.Diagnostics.UserError("Route parameter must be serializeable, it contains reference loops or is too large", null);
 				return false;
