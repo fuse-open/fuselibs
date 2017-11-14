@@ -348,32 +348,34 @@ function Model(initialState, stateInitializer)
 			else if (isThenable(value)) {
 				dealWithPromise(key, value);
 			}
-			else if (value instanceof Array) {
-				var keyMeta = stateToMeta.get(value);
-
-				if (keyMeta instanceof Object && meta.node[key].__fuse_id == keyMeta.id) 
-				{ 
-					if (!keyMeta.isClass) { 
-						keyMeta.diff(visited); 
-					}
-				}
-				else 
-				{ 
-					removeAsParentFrom(node[key]);
-					set(key, instrument({meta: meta, key: key}, [], value)); 
-				}
-			}
 			else if (value instanceof Object) {
 				var keyMeta = stateToMeta.get(value);
+				var oldValue = meta.node[key];
 
-				if (keyMeta instanceof Object && meta.node[key].__fuse_id === keyMeta.id) {
-					if (!keyMeta.isClass) {
+				var newValue;
+				if (keyMeta instanceof Object) {
+					// Value is already instrumented
+					newValue = keyMeta.node;
+				}
+				else if (value instanceof Object) {
+					newValue = instrument({meta: meta, key: key}, (value instanceof Array) ? [] : {}, value);
+				}
+				else {
+					newValue = value;
+				}
+
+				if (oldValue instanceof Object &&
+					keyMeta instanceof Object &&
+					oldValue.__fuse_id === keyMeta.id
+				)
+				{
+					if (!keyMeta.isClass) { 
 						keyMeta.diff(visited);
 					}
 				}
-				else { 
-					removeAsParentFrom(node[key]);
-					set(key, instrument({meta: meta, key: key}, {}, value));  
+				else {
+					removeAsParentFrom(oldValue);
+					set(key, newValue);
 				}
 			}
 			else if (value !== node[key])
