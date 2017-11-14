@@ -124,7 +124,14 @@ namespace Fuse.Scripting.JavaScript
 
 			public void Perform(Scripting.Context context)
 			{
-				Perform(context, TreeObservable, 0);
+				if (Arguments.Length - SpecialArgCount < 0)
+				{
+					// Replace entire state
+					TreeObservable.Set(context, TreeObservable, (Scripting.Object)Arguments[0]);
+					return;
+				}
+
+				UpdateManager.PostAction(new PerformClosure(this, TreeObservable).Perform);
 			}
 
 			protected abstract int SpecialArgCount { get; }
@@ -143,22 +150,15 @@ namespace Fuse.Scripting.JavaScript
 
 				public void Perform()
 				{
-					_operation.Perform(_dc);
+					_operation.Perform(_dc, 0);
 				}
 			}
 
-			void Perform(Scripting.Context context, object dc, int pos)
+			void Perform(object dc, int pos)
 			{
-				if (pos > Arguments.Length - SpecialArgCount)
-				{
-					// Replace entire state
-					TreeObservable.Set(context, TreeObservable, (Scripting.Object)Arguments[0]);
-					return;
-				}
-
 				if (pos == Arguments.Length - SpecialArgCount)
 				{
-					UpdateManager.PostAction(new PerformClosure(this, dc).Perform);
+					Perform(dc);
 					return;
 				}
 
@@ -166,7 +166,7 @@ namespace Fuse.Scripting.JavaScript
 				if (obj != null)
 				{
 					var key = Arguments[pos].ToString();
-					Perform(context, obj[key], pos+1);
+					Perform(obj[key], pos+1);
 					return;
 				}
 
@@ -174,7 +174,7 @@ namespace Fuse.Scripting.JavaScript
 				if (arr != null)
 				{
 					var index = Marshal.ToInt(Arguments[pos]);
-					Perform(context, arr[index], pos+1);
+					Perform(arr[index], pos+1);
 					return;
 				}
 
