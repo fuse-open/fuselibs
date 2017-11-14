@@ -300,8 +300,7 @@ namespace Fuse.Navigation
 				}
 			}
 
-			if (arg is Scripting.Function ||
-			    arg is Reactive.IEventHandler)
+			if (arg is Reactive.IEventHandler)
 			{
 				Fuse.Diagnostics.UserError("Route parameter must be serializeable, cannot contain functions.", null);
 				return false;

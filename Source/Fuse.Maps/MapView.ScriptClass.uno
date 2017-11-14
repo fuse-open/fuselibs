@@ -128,18 +128,18 @@ namespace Fuse.Controls
 				case 1:
 					if (args[0] is Fuse.Scripting.Array)
 					{
-						SetMarkersWithArray(view, args[0] as Fuse.Scripting.Array);
+						SetMarkersWithArray(view, args[0] as IArray);
 					}
 					else if(args[0] is Fuse.Scripting.Object)
 					{
-						view.AddMarker(MarkerFromObject(args[0] as Fuse.Scripting.Object));
+						view.AddMarker(MarkerFromObject(args[0] as IObject));
 					}
 					break;
 				default:
 					foreach(object ob in args)
 					{
 						if(ob is Fuse.Scripting.Object)
-							view.AddMarker(MarkerFromObject(ob as Fuse.Scripting.Object));
+							view.AddMarker(MarkerFromObject(ob as IObject));
 						else{
 							Fuse.Diagnostics.UserError( "MapView markers should follow the format { latitude:0.0, longitude:0.0, label:\"MyLabel\" }", view );
 							break;
@@ -151,17 +151,17 @@ namespace Fuse.Controls
 
 		}
 
-		static void SetMarkersWithArray(MapView view, Fuse.Scripting.Array a)
+		static void SetMarkersWithArray(MapView view, IArray a)
 		{
 			for(int i = 0; i < a.Length; i++)
 			{
-				var item = a[i] as Fuse.Scripting.Object;
+				var item = a[i] as IObject;
 				if(item!=null)
 					view.AddMarker(MarkerFromObject(item));
 			}
 		}
 
-		static MapMarker MarkerFromObject(Fuse.Scripting.Object o)
+		static MapMarker MarkerFromObject(IObject o)
 		{
 			var m = new MapMarker();
 			foreach(string key in o.Keys)
