@@ -7,14 +7,13 @@
     "ProjectUrl": "https://fusetools.com"
   },
   "Packages": [
-    "Fuse.Animations",
-    "Fuse.Designer",
-    "Fuse.Triggers",
-    "Fuse.Scripting",
-    "Fuse.Common",
-    "Fuse.Nodes",
-    "Fuse.Marshal",
     "Uno.Permissions"
+  ],
+  "Projects": [
+    "../Fuse.Triggers/Fuse.Triggers.unoproj",
+    "../Fuse.Scripting/Fuse.Scripting.unoproj",
+    "../Fuse.Nodes/Fuse.Nodes.unoproj",
+    "../Fuse.Marshal/Fuse.Marshal.unoproj"
   ],
   "Includes": [
     "Vibration.uno:Source",

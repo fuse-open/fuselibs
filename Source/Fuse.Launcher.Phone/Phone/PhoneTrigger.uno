@@ -1,10 +1,3 @@
-using Uno;
-using Uno.Collections;
-using Uno.UX;
-using Uno.Net.Http;
-using Fuse.Animations;
-using Fuse.Triggers.Actions;
-
 namespace Fuse.Triggers.Actions
 {
 	/** Calls a phone number

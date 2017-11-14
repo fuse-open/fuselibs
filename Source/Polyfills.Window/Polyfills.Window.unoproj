@@ -6,12 +6,12 @@
   "Package": {
     "ProjectUrl": "https://fusetools.com"
   },
-  "Packages": [
-    "Fuse.Scripting",
-    "Fuse.Common",
-    "Fuse.Nodes",
-    "Fuse.Storage",
-    "Fuse.WebSockets"
+  "Projects": [
+    "../Fuse.Scripting/Fuse.Scripting.unoproj",
+    "../Fuse.Common/Fuse.Common.unoproj",
+    "../Fuse.Nodes/Fuse.Nodes.unoproj",
+    "../Fuse.Storage/Fuse.Storage.unoproj",
+    "../Fuse.WebSockets/Fuse.WebSockets.unoproj"
   ],
   "IsTransitive": true,
   "Includes": [
@@ -20,4 +20,3 @@
   ]
 
 }
-

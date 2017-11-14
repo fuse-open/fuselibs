@@ -9,15 +9,12 @@
   "IsTransitive":true,
   "Packages": [
     "Uno.Collections",
-    "Uno.Permissions",
-    "Fuse",
-    "Fuse.iOS.LocationPermissions",
-    "Fuse.Common",
-    "Fuse.Marshal",
-    "Fuse.Nodes",
-    "Fuse.ImageTools"
+    "Uno.Permissions"
   ],
-  "Projects": [],
+  "Projects": [
+    "../Fuse.ImageTools/Fuse.ImageTools.unoproj",
+    "../Fuse/Fuse.unoproj"
+  ],
   "Includes": [
     "MapMarker.uno:Source",
     "MapView.uno:Source",

@@ -8,17 +8,14 @@
   },
   "Packages": [
     "Uno.Net.Http",
-    "Uno.Permissions",
-    "UnoCore",
-    "Fuse.Platform",
-    "Fuse.Animations",
-    "Fuse.Designer",
-    "Fuse.Triggers",
-    "Fuse.Common",
-    "Fuse.Nodes",
-    "Fuse.Scripting",
-    "Fuse.Android",
-    "Fuse.iOS"
+    "Uno.Permissions"
+  ],
+  "Projects": [
+    "../Fuse.Triggers/Fuse.Triggers.unoproj",
+    "../Fuse.Nodes/Fuse.Nodes.unoproj",
+    "../Fuse.Scripting/Fuse.Scripting.unoproj",
+    "../Fuse.Android/Fuse.Android.unoproj",
+    "../Fuse.iOS/Fuse.iOS.unoproj"
   ],
   "Includes": [
     "Phone/PhoneLauncher.uno",

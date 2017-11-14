@@ -1,12 +1,7 @@
-using Uno;
-using Uno.Text;
-using Uno.IO;
-using Uno.Collections;
 using Uno.Compiler.ExportTargetInterop;
 using Uno.Permissions;
-using Uno.Net.Http;
-using Fuse.iOS.Bindings;
 using Fuse.Android.Bindings;
+using Fuse.iOS.Bindings;
 
 namespace Fuse.LauncherImpl
 {

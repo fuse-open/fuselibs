@@ -1,6 +1,5 @@
 using Uno.UX;
 using Fuse.Scripting;
-using Uno.Collections;
 
 namespace Fuse.Reactive.FuseJS
 {

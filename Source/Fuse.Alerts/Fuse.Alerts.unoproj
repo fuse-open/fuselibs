@@ -8,10 +8,11 @@
   },
   "Packages": [
     "Uno.Collections",
-    "Uno.Threading",
-    "Fuse.Scripting"
+    "Uno.Threading"
   ],
-  "Projects": [],
+  "Projects": [
+    "../Fuse.Scripting/Fuse.Scripting.unoproj"
+  ],
   "Includes": [
     "*"
   ]

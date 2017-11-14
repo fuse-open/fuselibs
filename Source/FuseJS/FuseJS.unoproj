@@ -10,18 +10,18 @@
   "Packages": [
     "Uno.Collections",
     "Uno.Net.Http",
-    "Uno.Threading",
-    "Fuse.Common",
-    "Fuse.Nodes",
-    "Fuse.Platform",
-    "Fuse.Reactive",
-    "Fuse.Scripting",
-    "Fuse.Storage",
-    "Fuse.Android",
-    "Fuse.iOS",
-    "Fuse.UserEvents",
+    "Uno.Threading"
   ],
   "Projects": [
+    "../Fuse.Common/Fuse.Common.unoproj",
+    "../Fuse.Nodes/Fuse.Nodes.unoproj",
+    "../Fuse.Platform/Fuse.Platform.unoproj",
+    "../Fuse.Reactive/Fuse.Reactive.unoproj",
+    "../Fuse.Scripting/Fuse.Scripting.unoproj",
+    "../Fuse.Storage/Fuse.Storage.unoproj",
+    "../Fuse.Android/Fuse.Android.unoproj",
+    "../Fuse.iOS/Fuse.iOS.unoproj",
+    "../Fuse.UserEvents/Fuse.UserEvents.unoproj",
     "../Polyfills.Window/Polyfills.Window.unoproj",
   ],
   "Includes": [
