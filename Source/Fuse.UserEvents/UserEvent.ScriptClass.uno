@@ -77,7 +77,7 @@ namespace Fuse
 				return;
 			}
 			
-			var so = args[0] as Scripting.Object;
+			var so = args[0] as IObject;
 			if (so == null)
 			{
 				Fuse.Diagnostics.UserError( "Raise must be called with a JavaScript object to define name/value pairs", 
