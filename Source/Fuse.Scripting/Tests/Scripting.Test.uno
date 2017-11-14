@@ -653,7 +653,7 @@ namespace Fuse.Scripting.Test
 				}
 
 				// We have to copy on iOS < 10
-				if defined(!iOS)
+				if defined(!iOS && !(Android && USE_JAVASCRIPTCORE))
 				{
 					var identity = context.Evaluate(
 						"Buffers 5",
