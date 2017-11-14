@@ -85,10 +85,7 @@ namespace Fuse.Scripting.JavaScript
 				_reflectionDepth--;
 			}
 
-			if (res != null)
-				return res;
-
-			return obj;
+			return res;
 		}
 
 		object IMirror.Reflect(Scripting.Context context, object obj)
@@ -140,7 +137,7 @@ namespace Fuse.Scripting.JavaScript
 				}
 			}
 
-			return null;
+			return obj;
 		}
 
 		internal Function GetClass(ScriptClass sc)
