@@ -20,7 +20,7 @@ namespace Fuse.Reactive.FuseJS
 
 		public override void Evaluate(Context c, ModuleResult result)
 		{
-			result.Object["exports"] = new FunctionClosure(c, CreateClient).Callback;
+			result.Object["exports"] = (Callback)CreateClient;
 		}
 
 		object CreateClient(Context context, object[] args)
@@ -28,30 +28,6 @@ namespace Fuse.Reactive.FuseJS
 			return new FuseJSHttpClient(context).Obj;
 		}
 		
-		class FunctionClosure
-		{
-			// This caching of Context is suspect. Please see the issue below for context
-			// https://github.com/fusetools/fuselibs-public/issues/641
-			Context _context;
-			Func<Context, object[], object> _callback;
-
-			public FunctionClosure(Context context, Func<Context, object[], object> callback)
-			{
-				_context = context;
-				_callback = callback;
-			}
-
-			object function(Context context, object[] args)
-			{
-				return _callback(_context, args);
-			}
-
-			public Callback Callback
-			{
-				get { return (Callback)this.function; }
-			}
-		}
-
 		class HttpJSDispatcher : Uno.Threading.IDispatcher
 		{
 			Scripting.IThreadWorker _worker;
