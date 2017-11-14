@@ -13,28 +13,43 @@ namespace Fuse.Reactive
 		The parameter can be ommited
 	*/
 	[UXFunction("parameter")]
-	public sealed class Parameter: UnaryOperator
+	public sealed class Parameter: Expression
 	{
+		Expression Visual;
+		
 		[UXConstructor]
-		public Parameter([UXParameter("Operand")] Fuse.Reactive.Expression visual): base(visual) {} 
+		public Parameter([UXParameter("Operand")] Fuse.Reactive.Expression visual)
+		{
+			Visual = visual;
+		}
 		
 		public override IDisposable Subscribe(IContext context, IListener listener)
 		{
-			return new ParameterSubscription(this, context, listener);
+			return new Subscription(this, context, listener);
 		}
 
-		class ParameterSubscription: Subscription
+		class Subscription: InnerListener
 		{
 			Parameter _parameter;
-			public ParameterSubscription(Parameter parameter, IContext context, IListener listener): base(parameter, listener)
+			IListener _listener;
+			IDisposable _sub;
+			
+			public Subscription(Parameter parameter, IContext context, IListener listener)
 			{
 				_parameter = parameter;
-				Init(context);
+				_listener = listener;
+				_sub = _parameter.Visual.Subscribe(context, this);
 			}
 
 			public override void Dispose()
 			{
 				UnsubscribeVisual();
+				_listener = null;
+				if (_sub != null)
+				{
+					_sub.Dispose();
+					_sub = null;
+				}
 				base.Dispose();
 			}
 
@@ -49,7 +64,7 @@ namespace Fuse.Reactive
 
 			Visual _visual;
 
-			protected override void OnNewOperand(object obj)
+			protected override void OnNewData(IExpression source, object obj)
 			{
 				ClearDiagnostic();
 
@@ -67,6 +82,13 @@ namespace Fuse.Reactive
 				}
 
 				OnParameterChanged(null, null);
+			}
+			
+			protected override void OnLostData(IExpression source)
+			{
+				ClearDiagnostic();
+				UnsubscribeVisual();
+				_listener.OnLostData(_parameter);
 			}
 
 			void OnParameterChanged(object sender, EventArgs args)
@@ -87,7 +109,7 @@ namespace Fuse.Reactive
 					return;
 				}
 
-				PushNewData(data);
+				_listener.OnNewData(_parameter,data);
 			}
 		}
 	}
