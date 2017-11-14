@@ -1,0 +1,14 @@
+<Panel ux:Class="UX.Let.Explicit">
+	<Let ux:Name="a" Value="{= 2 }"/>
+	<FuseTest.DudElement Value="{Property a.Value}" ux:Name="d"/>
+	<FuseTest.DudElement Value="{a}" ux:Name="e"/>
+
+	<Timeline ux:Name="set">
+		<Set a.Value="{= 4 }"/>
+	</Timeline>
+	
+	<Let ux:Name="b" Expression="7"/>
+	<FuseTest.DudElement Value="{Property b.Value}" ux:Name="f"/>
+	<FuseTest.DudElement Value="{b}" ux:Name="g"/>
+	
+</Panel>
