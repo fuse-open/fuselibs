@@ -46,7 +46,7 @@ namespace Fuse.Reactive.Test
 					Assert.AreEqual(3, s.LineNumber);
 				if (s.FileName != null)
 					Assert.Contains("Error.RequireInvalid.ux", s.FileName);
-				Assert.Contains("module not found: FuseJS/Pinecone", s.ErrorMessage);
+				Assert.Contains("module not found: FuseJS/Pinecone", s.Message);
 			}
 		}
 		
@@ -94,7 +94,7 @@ namespace Fuse.Reactive.Test
 				Assert.AreEqual(12, s.LineNumber);
 				Assert.Contains("Error.OnValueChanged.ux", s.FileName);
 				//it's uncertain how stable these error messages are
-				Assert.Contains("Cannot read property '0' of undefined", s.ErrorMessage);
+				Assert.Contains("Cannot read property '0' of undefined", s.Message);
 			}
 		}
 	}

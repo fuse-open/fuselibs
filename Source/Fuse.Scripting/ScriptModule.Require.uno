@@ -80,7 +80,7 @@ namespace Fuse.Scripting
 
 						if (!e.Message.Contains(ModuleContainsAnErrorMessage))
 						{
-							Diagnostics.UserError("JavaScript error in " + path + " line " + e.LineNumber + ". " + e.ErrorMessage, this);
+							Diagnostics.UserError("JavaScript error in " + path + " line " + e.LineNumber + ". " + e.Message, this);
 							_lastErrorPath = path;
 						}
 						throw new Error(ModuleContainsAnErrorMessage + id);
