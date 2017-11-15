@@ -8,10 +8,13 @@ namespace Fuse.Scripting
 		public string FileName { get; private set;}
 		public int LineNumber { get; private set;}
 		public string SourceLine { get; private set;}
-		public string JSStackTrace { get; private set;}
+		public string ScriptStackTrace { get; private set; }
 
 		[Obsolete("Use ScriptException.Message instead")]
 		public string ErrorMessage { get { return Message; } }
+
+		[Obsolete("Use ScriptException.ScriptStackTrace instead")]
+		public string JSStackTrace { get { return ScriptStackTrace; } }
 
 		const int MaxSourceLineLength = 300;
 		const string SourceLineTooLongMessage = " ... source line truncated for readability ...";
@@ -28,7 +31,7 @@ namespace Fuse.Scripting
 			FileName = fileName;
 			LineNumber = lineNumber;
 			SourceLine = sourceLine;
-			JSStackTrace = stackTrace;
+			ScriptStackTrace = stackTrace;
 		}
 
 		public override string ToString()
@@ -62,10 +65,10 @@ namespace Fuse.Scripting
 					stringBuilder.AppendLine(SourceLine);
 				}
 			}
-			if (!string.IsNullOrEmpty(JSStackTrace))
+			if (!string.IsNullOrEmpty(ScriptStackTrace))
 			{
-				stringBuilder.Append("JS stack trace: ");
-				stringBuilder.AppendLine(JSStackTrace);
+				stringBuilder.Append("Script stack trace: ");
+				stringBuilder.AppendLine(ScriptStackTrace);
 			}
 			return base.ToString() + "\n" + stringBuilder.ToString();
 		}
