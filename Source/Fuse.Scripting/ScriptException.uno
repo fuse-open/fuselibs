@@ -7,7 +7,6 @@ namespace Fuse.Scripting
 		public string Name { get; private set;}
 		public string FileName { get; private set;}
 		public int LineNumber { get; private set;}
-		public string SourceLine { get; private set;}
 		public string ScriptStackTrace { get; private set; }
 
 		[Obsolete("Use ScriptException.Message instead")]
@@ -16,21 +15,19 @@ namespace Fuse.Scripting
 		[Obsolete("Use ScriptException.ScriptStackTrace instead")]
 		public string JSStackTrace { get { return ScriptStackTrace; } }
 
-		const int MaxSourceLineLength = 300;
-		const string SourceLineTooLongMessage = " ... source line truncated for readability ...";
+		[Obsolete]
+		public string SourceLine { get { return null; } }
 
 		public ScriptException(
 			string name,
 			string message,
 			string fileName,
 			int lineNumber,
-			string sourceLine,
 			string stackTrace) : base(message)
 		{
 			Name = name;
 			FileName = fileName;
 			LineNumber = lineNumber;
-			SourceLine = sourceLine;
 			ScriptStackTrace = stackTrace;
 		}
 
@@ -51,19 +48,6 @@ namespace Fuse.Scripting
 			{
 				stringBuilder.Append("Line number: ");
 				stringBuilder.AppendLine(LineNumber.ToString());
-			}
-			if (!string.IsNullOrEmpty(SourceLine))
-			{
-				stringBuilder.Append("Source line: ");
-				if (SourceLine.Length > MaxSourceLineLength)
-				{
-					stringBuilder.Append(SourceLine.Substring(0, MaxSourceLineLength));
-					stringBuilder.AppendLine(SourceLineTooLongMessage);
-				}
-				else
-				{
-					stringBuilder.AppendLine(SourceLine);
-				}
 			}
 			if (!string.IsNullOrEmpty(ScriptStackTrace))
 			{

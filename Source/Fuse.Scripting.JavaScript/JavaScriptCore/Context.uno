@@ -177,7 +177,7 @@ namespace Fuse.Scripting.JavaScriptCore
 			{
 				message = wrapped != null ? wrapped.ToString() : message;
 			}
-			throw new ScriptException(name, message, file, lineNumber, null, stack);
+			throw new ScriptException(name, message, file, lineNumber, stack);
 		}
 
 		internal object Wrap(JSValueRef value)

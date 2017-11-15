@@ -47,6 +47,7 @@
 - `ScriptException.Message` no longer includes all details about the script-exception, only the message itself. If you want the extra information, use `ScriptException.ToString()`, or check the specific fields.
 - `Fuse.IScriptException` has been marked as obsolete. This was previously unused.
 - `ScriptException.JSStackTrace` has been marked as obsolete, use `ScriptException.ScriptStackTrace` instead.
+- `ScriptException.SourceLine` has been marked as obsolete, and consistently returns null now. The latter was always the case except for when using V8 before. The same information can be deduced from the project files and FileName + LineNumber fields.
 
 
 # 1.4
