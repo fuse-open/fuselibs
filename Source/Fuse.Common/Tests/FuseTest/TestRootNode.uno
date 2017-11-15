@@ -450,6 +450,11 @@ namespace FuseTest
 			_modules.Add( new T() );
 		}
 		static List<object> _modules;
+
+		public IDisposable RetainJavaScript()
+		{
+			return Fuse.Reactive.JavaScript.RetainJavaScript();
+		}
 	}
 
 	/**	

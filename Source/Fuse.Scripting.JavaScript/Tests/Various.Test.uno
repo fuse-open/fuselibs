@@ -103,8 +103,11 @@ namespace Fuse.Reactive.Test
 			{
 				//just not throwing is good enough
 				root.StepFrameJS();
-				e.Parent.Remove(e);
-				root.StepFrameJS();
+				using (var js = root.RetainJavaScript())
+				{
+					e.Parent.Remove(e);
+					root.StepFrameJS();
+				}
 			}
 		}
 
@@ -257,19 +260,22 @@ namespace Fuse.Reactive.Test
 				root.StepFrameJS();
 				Assert.AreEqual(3, getSubscriberCount.Count);
 
-				// Unroot everything
-				root.Children.Remove(e);
-				root.StepFrameJS();
+				using (var js = root.RetainJavaScript())
+				{
+					// Unroot everything
+					root.Children.Remove(e);
+					root.StepFrameJS();
 
-				// Should now have zero subscribers - none from JS, none 
-				// from the implicit property backing
-				JavaScript.Worker.Invoke(getSubscriberCount.Run);
-				root.StepFrameJS();
-				Assert.AreEqual(0, getSubscriberCount.Count);
+					// Should now have zero subscribers - none from JS, none 
+					// from the implicit property backing
+					JavaScript.Worker.Invoke(getSubscriberCount.Run);
+					root.StepFrameJS();
+					Assert.AreEqual(0, getSubscriberCount.Count);
 
-				// Add it back
-				root.Children.Add(e);
-				root.StepFrameJS();
+					// Add it back
+					root.Children.Add(e);
+					root.StepFrameJS();
+				}
 
 				Assert.IsTrue(e.IsRootingCompleted);
 

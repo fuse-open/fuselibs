@@ -1,4 +1,4 @@
-//using Uno;
+using Uno;
 using Uno.UX;
 using Uno.Collections;
 using Uno.Compiler;
@@ -22,7 +22,7 @@ namespace Fuse.Reactive
 	public partial class JavaScript: Behavior, IModuleProvider, ValueForwarder.IValueListener, Node.ISiblingDataProvider, IContext
 	{
 		static int _javaScriptCounter;
-		static internal readonly Fuse.Scripting.JavaScript.ThreadWorker Worker;
+		static internal Fuse.Scripting.JavaScript.ThreadWorker Worker { get; private set; }
 
 		internal readonly NameTable _nameTable;
 		Fuse.Scripting.JavaScript.RootableScriptModule _scriptModule;
@@ -36,6 +36,44 @@ namespace Fuse.Reactive
 
 			_nameTable = nameTable;
 			_scriptModule = new Fuse.Scripting.JavaScript.RootableScriptModule(Worker, nameTable);
+		}
+
+		class Guard : IDisposable
+		{
+			public Guard()
+			{
+				if (JavaScript._javaScriptCounter <= 0)
+					throw new Exception("cannot retain a non-existent worker!");
+
+				JavaScript._javaScriptCounter++;
+			}
+
+			void IDisposable.Dispose()
+			{
+				JavaScript.ReleaseJavaScript();
+			}
+		}
+
+		static internal IDisposable RetainJavaScript()
+		{
+			return new Guard();
+		}
+
+		static void ReleaseJavaScript()
+		{
+			if(--_javaScriptCounter <= 0)
+			{
+				AppInitialized.Reset();
+				// When all JavaScript nodes is unrooted, send a reset event to all global NativeModules.
+				foreach(var nm in Uno.UX.Resource.GetGlobalsOfType<NativeModule>())
+				{
+					nm.InternalReset();
+				}
+
+				Worker.Dispose();
+				Worker = null;
+			}
+
 		}
 
 		protected override void OnRooted()
@@ -52,27 +90,19 @@ namespace Fuse.Reactive
 
 			DisposeModuleInstance();
 
-			if(--_javaScriptCounter <= 0)
-			{
-				AppInitialized.Reset();
-				// When all JavaScript nodes is unrooted, send a reset event to all global NativeModules.
-				foreach(var nm in Uno.UX.Resource.GetGlobalsOfType<NativeModule>())
-				{
-					nm.InternalReset();
-				}
-			}
+			ReleaseJavaScript();
 			base.OnUnrooted();
 		}
 
 		Module IModuleProvider.GetModule()
 		{
-			if (IsRootingCompleted) throw new Uno.Exception("Cannot require() a rooted module");
+			if (IsRootingCompleted) throw new Exception("Cannot require() a rooted module");
 			return _scriptModule;
 		}
 
 		object _currentDc;
-		Uno.IDisposable _sub;
-		
+		IDisposable _sub;
+
 		internal void SetDataContext(object newDc)
 		{
 			DisposeSubscription();

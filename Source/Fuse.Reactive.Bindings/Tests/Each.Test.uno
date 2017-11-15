@@ -273,11 +273,15 @@ namespace Fuse.Reactive.Test
 				Assert.AreEqual( "r2,r3", GetText(e.C) );
 
 				//try rerooting to ensure sanity
-				root.Children.Remove(e);
-				Assert.AreEqual( 1, e.C.Children.Count ); //Each only
-				root.StepFrameJS();
-				root.Children.Add(e);
-				root.StepFrameJS();
+				using (var js = root.RetainJavaScript())
+				{
+					root.Children.Remove(e);
+					Assert.AreEqual( 1, e.C.Children.Count ); //Each only
+					root.StepFrameJS();
+					root.Children.Add(e);
+					root.StepFrameJS();
+				}
+
 				Assert.AreEqual( "1,2", GetText(e.C) );
 			}
 		}
