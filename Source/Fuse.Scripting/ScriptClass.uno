@@ -64,11 +64,8 @@ namespace Fuse.Scripting
 
 	public abstract class ScriptMethod: ScriptMember
 	{
-		public readonly ExecutionThread Thread;
-
-		protected ScriptMethod(string name, ExecutionThread thread): base(name)
+		protected ScriptMethod(string name): base(name)
 		{
-			Thread = thread;
 		}
 
 		public abstract object Call(Context c, object obj, object[] args);
@@ -79,12 +76,12 @@ namespace Fuse.Scripting
 		public readonly string Code;
 
 		[Obsolete("Use ScriptMethodInline(string, string) instead")]
-		public ScriptMethodInline(string name, ExecutionThread thread, string code): base(name, thread)
+		public ScriptMethodInline(string name, ExecutionThread thread, string code): base(name)
 		{
 			Code = code;
 		}
 
-		public ScriptMethodInline(string name, string code): base(name, ExecutionThread.JavaScript)
+		public ScriptMethodInline(string name, string code): base(name)
 		{
 			Code = code;
 		}
@@ -97,24 +94,20 @@ namespace Fuse.Scripting
 
 	public class ScriptMethod<T>: ScriptMethod
 	{
+		// legacy
+		[Obsolete]
+		public readonly ExecutionThread Thread;
+
 		readonly Func<Context, T, object[], object> _method;
-		readonly Action<Context, T, object[]> _oldVoidMethod;
 		readonly Action<T> _voidMethod;
 
-		ScriptMethod(string name, Func<Context, T, object[], object> method, ExecutionThread thread, bool dummy): base(name, thread)
+		[Obsolete("Use ScriptMethod<T>(string, Uno.Func<Fuse.Scripting.Context, T, object[], object)>) instead")]
+		public ScriptMethod(string name, Func<Context, T, object[], object> method, ExecutionThread thread): this(name, method)
 		{
-			if (method == null)
-				throw new ArgumentNullException(nameof(method));
-
-			if (Thread == ExecutionThread.MainThread)
+			if (thread == ExecutionThread.MainThread)
 				throw new ArgumentException("Cannot call a non-void method asynchronously", nameof(thread));
 
-			_method = method;
-		}
-
-		[Obsolete("Use ScriptMethod<T>(string, Uno.Func<Fuse.Scripting.Context, T, object[], object)>) instead")]
-		public ScriptMethod(string name, Func<Context, T, object[], object> method, ExecutionThread thread): this(name, method, thread, true)
-		{
+			Thread = thread;
 		}
 
 		/** Create a ScriptMethod that will run on the script-thread
@@ -122,17 +115,63 @@ namespace Fuse.Scripting
 			@param name Name of method
 			@param method The native implementation of the method
 		*/
-		public ScriptMethod(string name, Func<Context, T, object[], object> method): this(name, method, ExecutionThread.JavaScript, true)
-		{
-		}
-
-		[Obsolete("Use ScriptMethod<T>(string, Uno.Action<T)>), ScriptMethod<T>(string, Uno.Action<T, object[])>) or ScriptMethod<T>(string, Uno.Func<Fuse.Scripting.Context, T, object[], object)>) instead")]
-		public ScriptMethod(string name, Action<Context, T, object[]> method, ExecutionThread thread): base(name, thread)
+		public ScriptMethod(string name, Func<Context, T, object[], object> method): base(name)
 		{
 			if (method == null)
 				throw new ArgumentNullException(nameof(method));
 
-			_oldVoidMethod = method;
+			_method = method;
+		}
+
+		[Obsolete("Use ScriptMethod<T>(string, Uno.Action<T)>), ScriptMethod<T>(string, Uno.Action<T, object[])>) or ScriptMethod<T>(string, Uno.Func<Fuse.Scripting.Context, T, object[], object)>) instead")]
+		public ScriptMethod(string name, Action<Context, T, object[]> method, ExecutionThread thread): base(name)
+		{
+			Thread = thread;
+
+			if (method == null)
+				throw new ArgumentNullException(nameof(method));
+
+			_method = new LegacyMethodClosure<T>(method, thread).Run;
+		}
+
+		class LegacyMethodClosure<T>
+		{
+			readonly Action<Context, T, object[]> _action;
+			readonly ExecutionThread _thread;
+			public LegacyMethodClosure(Action<Context, T, object[]> action, ExecutionThread thread)
+			{
+				_action = action;
+				_thread = thread;
+			}
+
+			public object Run(Context c, T obj, object[] args)
+			{
+				if (_thread == ExecutionThread.MainThread)
+					UpdateManager.PostAction(new CallWithArgumentsClosure(_action, c, obj, args).Run);
+				else
+					_action(c, (T)obj, args);
+				return null;
+			}
+
+			class CallWithArgumentsClosure
+			{
+				readonly Action<Context, T, object[]> _action;
+				readonly Context _context;
+				readonly T _obj;
+				readonly object[] _args;
+				public CallWithArgumentsClosure(Action<Context, T, object[]> action, Context context, T obj, object[] args)
+				{
+					_action = action;
+					_context = context;
+					_obj = obj;
+					_args = args;
+				}
+
+				public void Run()
+				{
+					_action(_context, _obj, _args);
+				}
+			}
 		}
 
 		/** Create an argument-less ScriptMethod that will run on the UI-thread
@@ -140,7 +179,7 @@ namespace Fuse.Scripting
 			@param name Name of method
 			@param method The native implementation of the method
 		*/
-		public ScriptMethod(string name, Action<T> method): base(name, ExecutionThread.MainThread)
+		public ScriptMethod(string name, Action<T> method): base(name)
 		{
 			if (method == null)
 				throw new ArgumentNullException(nameof(method));
@@ -153,7 +192,7 @@ namespace Fuse.Scripting
 			@param name Name of method
 			@param method The native implementation of the method
 		*/
-		public ScriptMethod(string name, Action<T, object[]> method): base(name, ExecutionThread.JavaScript)
+		public ScriptMethod(string name, Action<T, object[]> method): base(name)
 		{
 			if (method == null)
 				throw new ArgumentNullException(nameof(method));
@@ -200,28 +239,17 @@ namespace Fuse.Scripting
 
 		public override object Call(Context c, object obj, object[] args)
 		{
-			if (Thread == ExecutionThread.MainThread)
-			{
-				if (_oldVoidMethod != null)
-					UpdateManager.PostAction(new CallClosure(c, _oldVoidMethod, obj, args).Run);
-				else
-				{
-					if (args.Length != 0)
-					{
-						var name = obj.GetType().FullName + "." + Name;
-						Fuse.Diagnostics.UserError(string.Format("{0} takes no arguments, but {1} was provided", name, args.Length), obj);
-						return null;
-					}
 
-					UpdateManager.PostAction(new CallClosure(_voidMethod, obj).Run);
+			if (_voidMethod != null)
+			{
+				if (args.Length != 0)
+				{
+					var name = obj.GetType().FullName + "." + Name;
+					Fuse.Diagnostics.UserError(string.Format("{0} takes no arguments, but {1} was provided", name, args.Length), obj);
+					return null;
 				}
 
-				return null;
-			}
-
-			if (_oldVoidMethod != null)
-			{
-				_oldVoidMethod(c, (T)obj, args);
+				UpdateManager.PostAction(new CallClosure(_voidMethod, (T)obj).Run);
 				return null;
 			}
 			else
@@ -233,10 +261,10 @@ namespace Fuse.Scripting
 		class CallClosure
 		{
 			readonly Action<T> _method;
-			readonly object _obj;
+			readonly T _obj;
 			readonly object[] _args;
 
-			public CallClosure(Action<T> method, object obj)
+			public CallClosure(Action<T> method, T obj)
 			{
 				_method = method;
 				_obj = obj;
@@ -244,7 +272,7 @@ namespace Fuse.Scripting
 
 			readonly Context _context;
 			readonly Action<Context, T, object[]> _oldMethod;
-			public CallClosure(Context context, Action<Context, T, object[]> method, object obj, object[] args)
+			public CallClosure(Context context, Action<Context, T, object[]> method, T obj, object[] args)
 			{
 				_context = context;
 				_oldMethod = method;
@@ -255,9 +283,9 @@ namespace Fuse.Scripting
 			public void Run()
 			{
 				if (_method != null)
-					_method((T)_obj);
+					_method(_obj);
 				else
-					_oldMethod(_context, (T)_obj, _args);
+					_oldMethod(_context, _obj, _args);
 			}
 		}
 
@@ -268,6 +296,7 @@ namespace Fuse.Scripting
 		public delegate Future<TResult> FutureFactory<TSelf,TResult>(Context context, TSelf self, object[] args);
 		public delegate TJSResult ResultConverter<TResult,TJSResult>(Context context, TResult result);
 
+		public readonly ExecutionThread Thread;
 		FutureFactory<TSelf,TResult> _futureFactory;
 		ResultConverter<TResult,TJSResult> _resultConverter;
 
@@ -275,8 +304,9 @@ namespace Fuse.Scripting
 			string name,
 			ExecutionThread thread,
 			FutureFactory<TSelf,TResult> futureFactory,
-			ResultConverter<TResult,TJSResult> resultConverter = null) : base(name, thread)
+			ResultConverter<TResult,TJSResult> resultConverter = null) : base(name)
 		{
+			Thread = thread;
 			_futureFactory = futureFactory;
 			_resultConverter = resultConverter;
 		}
