@@ -1,7 +1,4 @@
 using Uno;
-using Uno.Text;
-using Uno.IO;
-using Uno.Collections;
 using Uno.Compiler.ExportTargetInterop;
 using Uno.Permissions;
 using Uno.Net.Http;

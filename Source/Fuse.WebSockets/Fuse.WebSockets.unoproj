@@ -6,10 +6,10 @@
   },
   "Description": "A client for the WebSocket protocol",
   "Publisher": "Fusetools AS",
-  "Packages": [
-    "Fuse.Common",
-    "Fuse.Scripting",
-    "Fuse.Reactive"
+  "Projects": [
+    "../Fuse.Common/Fuse.Common.unoproj",
+    "../Fuse.Scripting/Fuse.Scripting.unoproj",
+    "../Fuse.Reactive/Fuse.Reactive.unoproj"
   ],
   "Includes": [
     "WebSocketClient.uno",

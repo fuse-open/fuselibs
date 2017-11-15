@@ -9,8 +9,10 @@
   },
   "Packages": [
     "Uno.Threading",
-    "Uno.Permissions",
-    "Fuse"
+    "Uno.Permissions"
+  ],
+  "Projects": [
+    "../Fuse/Fuse.unoproj"
   ],
   "Includes": [
     "*",

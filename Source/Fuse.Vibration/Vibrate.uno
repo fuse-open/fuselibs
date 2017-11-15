@@ -1,7 +1,4 @@
-using Uno;
-using Uno.Collections;
 using Uno.UX;
-using Fuse.Animations;
 using Fuse.Triggers.Actions;
 
 namespace Fuse.Vibration

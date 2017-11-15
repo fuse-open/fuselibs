@@ -9,16 +9,7 @@
   "IsTransitive": true,
   "Packages": [
     "Uno.Net.Http",
-    "Uno.Permissions",
-    "UnoCore",
-    "Fuse.Platform",
-    "Fuse.Animations",
-    "Fuse.Designer",
-    "Fuse.Triggers",
-    "Fuse.Common",
-    "Fuse.Nodes",
-    "Fuse.Marshal",
-    "Fuse.Scripting"
+    "Uno.Permissions"
   ],
   "Projects": [
     "../Fuse.Launcher.Email/Fuse.Launcher.Email.unoproj",
