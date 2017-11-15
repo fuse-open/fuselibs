@@ -38,6 +38,41 @@ namespace Fuse.Reactive
 			_scriptModule = new Fuse.Scripting.JavaScript.RootableScriptModule(Worker, nameTable);
 		}
 
+		class Guard : IDisposable
+		{
+			public Guard()
+			{
+				if (JavaScript._javaScriptCounter <= 0)
+					throw new Exception("cannot retain a non-existent worker!");
+
+				JavaScript._javaScriptCounter++;
+			}
+
+			void IDisposable.Dispose()
+			{
+				JavaScript.ReleaseJavaScript();
+			}
+		}
+
+		static internal IDisposable RetainJavaScript()
+		{
+			return new Guard();
+		}
+
+		static void ReleaseJavaScript()
+		{
+			if(--_javaScriptCounter <= 0)
+			{
+				AppInitialized.Reset();
+				// When all JavaScript nodes is unrooted, send a reset event to all global NativeModules.
+				foreach(var nm in Uno.UX.Resource.GetGlobalsOfType<NativeModule>())
+				{
+					nm.InternalReset();
+				}
+			}
+
+		}
+
 		protected override void OnRooted()
 		{
 			base.OnRooted();
@@ -52,15 +87,7 @@ namespace Fuse.Reactive
 
 			DisposeModuleInstance();
 
-			if(--_javaScriptCounter <= 0)
-			{
-				AppInitialized.Reset();
-				// When all JavaScript nodes is unrooted, send a reset event to all global NativeModules.
-				foreach(var nm in Uno.UX.Resource.GetGlobalsOfType<NativeModule>())
-				{
-					nm.InternalReset();
-				}
-			}
+			ReleaseJavaScript();
 			base.OnUnrooted();
 		}
 
