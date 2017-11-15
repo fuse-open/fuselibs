@@ -22,7 +22,7 @@ namespace Fuse.Reactive
 	public partial class JavaScript: Behavior, IModuleProvider, ValueForwarder.IValueListener, Node.ISiblingDataProvider, IContext
 	{
 		static int _javaScriptCounter;
-		static internal readonly Fuse.Scripting.JavaScript.ThreadWorker Worker;
+		static internal Fuse.Scripting.JavaScript.ThreadWorker Worker { get; private set; }
 
 		internal readonly NameTable _nameTable;
 		Fuse.Scripting.JavaScript.RootableScriptModule _scriptModule;
@@ -69,6 +69,9 @@ namespace Fuse.Reactive
 				{
 					nm.InternalReset();
 				}
+
+				Worker.Dispose();
+				Worker = null;
 			}
 
 		}
