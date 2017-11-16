@@ -1,5 +1,6 @@
 var TreeObservable = require("FuseJS/TreeObservable")
 
+require("Polyfills/Window");
 require("3rdparty/zone.min")
 require("FuseJS/Internal/ZonePatches");
 
