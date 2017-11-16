@@ -108,6 +108,9 @@ namespace Fuse.Reactive.Bindings.Test
 				Assert.AreEqual( 9, p.tb.Value );
 				Assert.AreEqual( 2, p.tc.Value );
 				Assert.AreEqual( 8, p.td.Value );
+				Assert.AreEqual( false, p.hc.ObjectValue );
+				Assert.AreEqual( true, p.nc.ObjectValue );
+				Assert.AreEqual( true, p.nd.ObjectValue );
 				
 				p.a.Value = 12;
 				p.c.Value = p.b.Value;
@@ -115,6 +118,19 @@ namespace Fuse.Reactive.Bindings.Test
 				Assert.AreEqual( 12, p.ta.Value );
 				Assert.AreEqual( 9, p.tb.Value );
 				Assert.AreEqual( 3, p.td.Value );
+				Assert.AreEqual( true, p.hc.ObjectValue );
+				Assert.AreEqual( false, p.nc.ObjectValue );
+				Assert.AreEqual( false, p.nd.ObjectValue );
+			}
+		}
+		
+		[Test]
+		public void HasValue()
+		{
+			var p  = new UX.Expression.HasValue();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				Assert.AreEqual( true, p.ha.BoolValue ); //it's null, but there
 			}
 		}
 	}

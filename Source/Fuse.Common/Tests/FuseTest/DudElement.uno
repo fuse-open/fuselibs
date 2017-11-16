@@ -51,6 +51,12 @@ namespace FuseTest
 			set { _value = value; }
 		}
 		
+		public bool BoolValue
+		{
+			get { return (bool)_value; }
+			set { _value = value; }
+		}
+		
 		public object UseValue 
 		{
 			get { return _value; }

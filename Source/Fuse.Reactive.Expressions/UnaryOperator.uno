@@ -18,6 +18,8 @@ namespace Fuse.Reactive
 			return Subscription.Create(this, context, listener);
 		}
 
+		protected virtual bool IsOperandOptional { get { return false; } }
+		
 		protected virtual object Compute(object operand)
 		{
 			throw new Exception(GetType().FullName + " does not implement the required methods");
@@ -28,10 +30,17 @@ namespace Fuse.Reactive
 			listener.OnNewData(this, Compute(operand));
 		}
 		
+		protected virtual void OnLostOperand(IListener listener)
+		{
+			listener.OnLostData(this);
+		}
+		
 		protected class Subscription: InnerListener
 		{
 			UnaryOperator _uo;
 			IListener _listener;
+			object _value;
+			bool _hasValue, _hasData;
 
 			IDisposable _operandSub;
 			protected Subscription(UnaryOperator uo, IListener listener)
@@ -52,6 +61,7 @@ namespace Fuse.Reactive
 			protected void Init(IContext context)
 			{
 				_operandSub = _uo.Operand.Subscribe(context, this);
+				UpdateOperands();
 			}
 
 			public override void Dispose()
@@ -63,21 +73,32 @@ namespace Fuse.Reactive
 
 			protected override void OnNewData(IExpression source, object value)
 			{
-				OnNewOperand(value);
+				if (source == _uo.Operand) { _hasValue = true; _value = value; }
+				UpdateOperands();
 			}
 			
 			protected override void OnLostData(IExpression source)
 			{
-				_listener.OnLostData( _uo );
+				if (source == _uo.Operand) { _hasValue = false; _value = null; }
+				UpdateOperands();
 			}
-
-			protected virtual void OnNewOperand(object value)
+			
+			void UpdateOperands()
 			{
 				ClearDiagnostic();
 
 				try
 				{
-					_uo.OnNewOperand(_listener, value);
+					if ( (_hasValue || _uo.IsOperandOptional) )
+					{
+						_hasData = true;
+						_uo.OnNewOperand(_listener, _value);
+					}
+					else if (_hasData)
+					{
+						_hasData = false;
+						_uo.OnLostOperand(_listener);
+					}
 				}
 				catch (MarshalException me)
 				{
