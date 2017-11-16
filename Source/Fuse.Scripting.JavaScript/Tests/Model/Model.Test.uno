@@ -16,8 +16,10 @@ namespace Fuse.Reactive.Test
 			new global::Fuse.Reactive.FuseJS.DiagnosticsImplModule();
 			new global::Fuse.Reactive.FuseJS.Http();
 			new global::Fuse.Reactive.FuseJS.TimerModule();
+			new global::Fuse.Storage.StorageModule();
 			new global::Fuse.Drawing.BrushConverter();
 			new global::Fuse.Triggers.BusyTaskModule();
+			new global::Fuse.WebSocket.WebSocketClientModule();
 			new global::Polyfills.Window.WindowModule();
 			new global::FuseJS.Globals();
 			new global::FuseJS.Lifecycle();
