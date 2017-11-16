@@ -1,0 +1,4 @@
+<Panel ux:Class="UX.Model.Test1" Model="UX/Test1">
+    <Switch ux:Name="mySwitch" Value="{isSet}" />
+    <Switch ux:Name="myFlippedSwitch" Value="{flipped}" />
+</Panel>

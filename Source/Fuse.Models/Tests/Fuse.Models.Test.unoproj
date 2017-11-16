@@ -24,7 +24,7 @@
     "Uno.Threading"
   ],
   "Projects": [
-    "../../../Fuse.Common/Tests/FuseTest/FuseTest.unoproj"
+    "../../Fuse.Common/Tests/FuseTest/FuseTest.unoproj"
   ],
   "Includes": [
     "*",

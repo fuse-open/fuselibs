@@ -7,7 +7,7 @@ using Fuse.Navigation;
 
 using FuseTest;
 
-namespace Fuse.Reactive.Test
+namespace Fuse.Models.Test
 {
 	public class ModelTest : TestBase
 	{

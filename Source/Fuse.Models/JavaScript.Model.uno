@@ -2,16 +2,15 @@ using Uno;
 using Uno.UX;
 using Uno.Collections;
 using Uno.Compiler;
-using Fuse.Scripting;
-using Uno.Testing;
-using Uno.Threading;
 using Uno.IO;
 using Uno.Text;
+using Fuse;
+using Fuse.Reactive;
+using Fuse.Scripting;
 
-namespace Fuse.Reactive
+namespace Fuse.Models
 {
-	//the attached properties need to be in a public class.
-	public partial class JavaScript
+	public class ModelJavaScript : JavaScript, IPreviewStateSaver
 	{
 		class ModelData
 		{
@@ -77,17 +76,14 @@ namespace Fuse.Reactive
 			var _appModel = ModelJavaScript.CreateFromPreviewState(rootVisualProvider.Root, model);
 			rootVisualProvider.Root.Children.Add(_appModel);
 		}
-	}
-	
-	class ModelJavaScript : JavaScript, IPreviewStateSaver
-	{
+
 		internal class ParsedModelExpression
 		{
 			public IExpression Source;
 			public string ModuleName;
 			public string ClassName;
 			public List<string> Args = new List<string>();
-			public List<Dependency> Dependencies = new List<Dependency>();
+			public List<JavaScript.Dependency> Dependencies = new List<JavaScript.Dependency>();
 			
 			public string ArgString
 			{
@@ -156,7 +152,7 @@ namespace Fuse.Reactive
 				for (int i = 0; i < nfc.Arguments.Count; i++)
 				{
 					var argName = "__dep" + i;
-					result.Dependencies.Add(new Dependency(argName, nfc.Arguments[i]));
+					result.Dependencies.Add(new JavaScript.Dependency(argName, nfc.Arguments[i]));
 					result.Args.Add( argName );
 				}
 
@@ -182,8 +178,8 @@ namespace Fuse.Reactive
 			for (int i=0; i < module.Dependencies.Count; ++i)
 				Dependencies.Add( module.Dependencies[i] );
 			
-			var code = "var Model = require('FuseJS/Model');\n"+
-					"var ViewModelAdapter = require('FuseJS/ViewModelAdapter')\n";
+			var code = "var Model = require('FuseJS/Internal/Model');\n"+
+					"var ViewModelAdapter = require('FuseJS/Internal/ViewModelAdapter')\n";
 					
 			code += "var self = this;\n"+
 					"var modelClass = require('" + module.ModuleName + "');\n"+

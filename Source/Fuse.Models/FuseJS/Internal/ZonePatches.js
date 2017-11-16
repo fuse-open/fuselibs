@@ -1,3 +1,5 @@
+require("./zone.min");
+
 var EventEmitter = require("FuseJS/EventEmitter");
 
 Zone.__load_patch("FuseJS/EventEmitter", function(global, Zone, api) {
