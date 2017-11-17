@@ -4,20 +4,22 @@ using Uno.Collections;
 
 namespace Fuse.Reactive
 {
-	[UXFunction("hasValue")]
+	[UXFunction("isDefined")]
 	/** 
-		Test is a value is available, returning `true` or `false`. This can be used to check if a value is available yet in the data context.
+		Test if a value is defined the context, returning `true` or `false`. 
 		
-		If the value exists but is null then `true` will still be returned.
+		This can be used to check if a value is available yet in the data context, for example `isDefined({a})`.
+		
+		If the value exists but is null then `true` will still be returned. Consider using `isNull` if you wish to exclude null as well.
 		
 		@advanced
 	*/
-	public sealed class HasValue: Expression
+	public sealed class IsDefined: Expression
 	{
 		public Expression Operand { get; private set; }
 		
 		[UXConstructor]
-		public HasValue([UXParameter("Operand")] Expression operand)
+		public IsDefined([UXParameter("Operand")] Expression operand)
 		{
 			Operand = operand;
 		}
@@ -29,18 +31,18 @@ namespace Fuse.Reactive
 
 		class Subscription: InnerListener
 		{
-			readonly HasValue _hv;
+			readonly IsDefined _hv;
 			IDisposable _opSub;
 			IListener _listener;
 			bool _hasValue;
 
-			protected Subscription(HasValue hv, IListener listener)
+			protected Subscription(IsDefined hv, IListener listener)
 			{
 				_hv = hv;
 				_listener = listener;
 			}
 
-			public static Subscription Create(HasValue hv, IContext context, IListener listener)
+			public static Subscription Create(IsDefined hv, IContext context, IListener listener)
 			{
 				var res = new Subscription(hv, listener);
 				res.Init(context);
@@ -88,7 +90,7 @@ namespace Fuse.Reactive
 	}
 	
 	[UXFunction("isNull")]
-	/** Returns true if the value exists and is non-null, false otherwise.
+	/** Returns false if the value exists and is non-null, true otherwise.
 	
 		This is the same condition used in the NullCoalesce operator:
 		

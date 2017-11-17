@@ -73,13 +73,21 @@ namespace Fuse.Reactive
 
 			protected override void OnNewData(IExpression source, object value)
 			{
-				if (source == _uo.Operand) { _hasValue = true; _value = value; }
+				if (source == _uo.Operand) 
+				{ 
+					_hasValue = true; 
+					_value = value;
+				}
 				UpdateOperands();
 			}
 			
 			protected override void OnLostData(IExpression source)
 			{
-				if (source == _uo.Operand) { _hasValue = false; _value = null; }
+				if (source == _uo.Operand) 
+				{ 
+					_hasValue = false; 
+					_value = null; 
+				}
 				UpdateOperands();
 			}
 			
@@ -89,7 +97,7 @@ namespace Fuse.Reactive
 
 				try
 				{
-					if ( (_hasValue || _uo.IsOperandOptional) )
+					if (_hasValue || _uo.IsOperandOptional)
 					{
 						_hasData = true;
 						_uo.OnNewOperand(_listener, _value);
