@@ -1,7 +1,7 @@
 # Unreleased
 
 ## Expressions
-- Added `hasValue` to check if a value is known in the context
+- Added `isDefined` to check if a value is known in the context
 - Added `isNull` to check if a value is null or doesn't exist
 
 ## Router
