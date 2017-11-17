@@ -46,7 +46,7 @@ namespace Fuse.Controls
 			}
 				
 			_curPageIndex = -1;
-			FullUpdatePages(UpdateFlags.ForceGoto);
+			FullUpdatePages(UpdateFlags.ForceGoto | UpdateFlags.Bypass);
 		}
 		
 		void OnPageHistoryUnrooted()
@@ -62,6 +62,7 @@ namespace Fuse.Controls
 			ForceGoto = 1 << 0,
 			Add = 1 << 1,
 			Replace = 1 << 2,
+			Bypass = 1 << 3,
 		}
 
 		/*
@@ -82,7 +83,7 @@ namespace Fuse.Controls
 			else if (flags.HasFlag(UpdateFlags.Replace))
 				op = RoutingOperation.Replace;
 				
-			var trans = NavigationGotoMode.Transition;
+			var trans = flags.HasFlag(UpdateFlags.Bypass) ? NavigationGotoMode.Bypass : NavigationGotoMode.Transition;
 			
 			RouterPage rPage;
 			if (pageNdx >= AncestorRouterPage.ChildRouterPages.Count)

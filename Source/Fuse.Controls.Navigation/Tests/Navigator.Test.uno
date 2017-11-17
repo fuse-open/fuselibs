@@ -686,13 +686,14 @@ namespace Fuse.Navigation.Test
 			{
 				root.StepFrameJS();
 				Assert.AreEqual( "one", _lastPage.Path );
-				Assert.AreEqual( NavigationGotoMode.Transition, _lastGotoMode );
+				Assert.AreEqual( NavigationGotoMode.Bypass, _lastGotoMode );
 				Assert.AreEqual( RoutingOperation.Goto, _lastOperation );
 				Assert.AreEqual( "dog", p.one.v.Value );
 				
 				p.callPushTwo.Perform();
 				root.StepFrameJS();
 				Assert.AreEqual( "two", _lastPage.Path );
+				Assert.AreEqual( NavigationGotoMode.Transition, _lastGotoMode );
 				Assert.AreEqual( RoutingOperation.Push, _lastOperation );
 				Assert.AreEqual( "cat", p.two.v.Value );
 				
@@ -725,7 +726,7 @@ namespace Fuse.Navigation.Test
 			{
 				root.StepFrameJS();
 				Assert.AreEqual( "two", _lastPage.Path );
-				Assert.AreEqual( NavigationGotoMode.Transition, _lastGotoMode );
+				Assert.AreEqual( NavigationGotoMode.Bypass, _lastGotoMode );
 				Assert.AreEqual( RoutingOperation.Goto, _lastOperation );
 				
 				ResetInterceptGoto();
@@ -738,6 +739,21 @@ namespace Fuse.Navigation.Test
 				//Assert.AreEqual( RoutingResult.NoChange, _lastResult );
 				
 				//thus not much point in testing more now since you can't have inert changes :(
+			}
+		}
+		
+		[Test]
+		public void PagesBypass()
+		{
+			var p = new UX.Navigator.PagesBypass();
+			p.theNav._testInterceptGoto = TestInterceptGoto;
+			ResetInterceptGoto();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				root.StepFrameJS();
+				Assert.AreEqual( "one", _lastPage.Path );
+				Assert.AreEqual( NavigationGotoMode.Bypass, _lastGotoMode );
+				Assert.AreEqual( RoutingOperation.Goto, _lastOperation );
 			}
 		}
 		
