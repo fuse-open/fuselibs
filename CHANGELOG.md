@@ -1,5 +1,9 @@
 # Unreleased
 
+## Expressions
+- Added `isDefined` to check if a value is known in the context
+- Added `isNull` to check if a value is null or doesn't exist
+
 ## Router
 - Added object support to `Router` script functions, such as `goto`, `push`, `bookmark`, etc. This mirrors the upcoming Model ability to use objects as path elements.
 - Added object support to `Modify/Push/GotoRoute` actions.

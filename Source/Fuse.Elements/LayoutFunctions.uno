@@ -4,38 +4,39 @@ using Fuse.Reactive;
 
 namespace Fuse.Elements
 {
-	public abstract class LayoutFunction: UnaryOperator
+	public abstract class LayoutFunction: Fuse.Reactive.Expression
 	{
-		protected LayoutFunction(Reactive.Expression element): base(element)
+		Fuse.Reactive.Expression Element;
+		protected LayoutFunction(Reactive.Expression element)
 		{
+			Element = element;
 		}
 
 		public override IDisposable Subscribe(IContext dc, IListener listener)
 		{
-			return new LayoutSubscription(this, dc, listener);
+			return new Subscription(this, dc, listener);
 		}
 
 		protected abstract object GetValue(PlacedArgs args);
 		protected abstract object GetCurrentValue(Element elm);
 
-		class LayoutSubscription: Subscription
+		class Subscription: InnerListener
 		{
 			LayoutFunction _lf;
+			IListener _listener;
+			IDisposable _sub;
 
-			public LayoutSubscription(LayoutFunction lf, IContext context, IListener listener): base(lf, listener)
+			public Subscription(LayoutFunction lf, IContext context, IListener listener)
 			{
 				_lf = lf;
-				Init(context);
+				_listener = listener;
+				_sub = _lf.Element.Subscribe(context, this);
 			}
 
 			Element _element;
-			protected override void OnNewOperand(object elmObj)
+			protected override void OnNewData(IExpression source, object elmObj)
 			{
-				if (_element != null)
-				{
-					_element.Placed -= OnPlaced;
-					_element = null;
-				}
+				UnsubscribeElement();
 
 				_element = elmObj as Element;
 
@@ -43,21 +44,40 @@ namespace Fuse.Elements
 				{
 					_element.Placed += OnPlaced;
 					if (_element.HasMarginBox)
-						PushNewData(_lf.GetCurrentValue(_element));
+						_listener.OnNewData(_lf, _lf.GetCurrentValue(_element));
 				}
+			}
+			
+			protected override void OnLostData(IExpression source)
+			{
+				UnsubscribeElement();
+				_listener.OnLostData(_lf);
 			}
 
 			void OnPlaced(object sender, PlacedArgs args)
 			{
-				PushNewData(_lf.GetValue(args));
+				_listener.OnNewData(_lf, _lf.GetValue(args));
 			}
 
+			void UnsubscribeElement()
+			{
+				if (_element != null) 
+				{
+					_element.Placed -= OnPlaced;
+					_element = null;
+				}
+			}
+				
 			public override void Dispose()
 			{
 				base.Dispose();
 				_lf = null;
-				if (_element != null) 
-					_element.Placed -= OnPlaced;
+				UnsubscribeElement();
+				if (_sub != null)
+				{
+					_sub.Dispose();
+					_sub = null;
+				}
 			}
 		}
 	}

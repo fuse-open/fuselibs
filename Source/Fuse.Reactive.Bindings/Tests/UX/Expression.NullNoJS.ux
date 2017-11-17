@@ -8,4 +8,8 @@
 	
 	<FuseTest.DudElement Value="{Property b.Value}.two" ux:Name="tc"/>
 	<FuseTest.DudElement Value="{Property c.Value}.three ?? 8" ux:Name="td"/>
+	<FuseTest.DudElement ObjectValue="isDefined({Property c.Value}.one)" ux:Name="hc"/>
+	
+	<FuseTest.DudElement ObjectValue="isNull({Property c.Value})" ux:Name="nc" />
+	<FuseTest.DudElement ObjectValue="isNull({Property c.Value}.one)" ux:Name="nd" />
 </Panel>
