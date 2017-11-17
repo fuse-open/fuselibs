@@ -131,7 +131,7 @@ namespace Fuse.Navigation
 		
 		internal protected IList<PageData> Pages { get { return _pages; } }
 		
-		protected PageData GetPageData( Visual page ) 
+		internal PageData GetPageData( Visual page ) 
 		{
 			if (page == null)
 				return null;

@@ -113,7 +113,8 @@ namespace Fuse.Controls
 		
 		//the outlet page on which this control resides.
 		protected Visual AncestorPage { private set; get; }
-		internal protected RouterPage AncestorRouterPage { private set; get; }
+
+		internal RouterPage AncestorRouterPage { private set; get; }
 
 		/* 
 			This affects the structure of navigation, in particular by associating PageData.RouterPage's
@@ -307,7 +308,7 @@ namespace Fuse.Controls
 			to get the derived classes compiling and overriding parts of the interface. So the derived
 			classes simply implement the entire interaace and call this function.
 		*/
-		protected OutletType RouterOutletType
+		internal OutletType RouterOutletType
 		{
 			get
 			{
@@ -317,7 +318,7 @@ namespace Fuse.Controls
 			}
 		}
 		
-		internal class ControlPageData
+		public class ControlPageData
 		{
 			public Trigger Enter, Exit, Inactive, Removing;
 			

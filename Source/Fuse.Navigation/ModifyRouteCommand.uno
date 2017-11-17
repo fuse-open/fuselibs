@@ -115,7 +115,7 @@ namespace Fuse.Navigation
 			}
 		}
 		
-		protected abstract bool ProcessArguments(RouterRequest request, Argument[] args);
+		internal abstract bool ProcessArguments(RouterRequest request, Argument[] args);
 		
 		protected class ArgumentArrayAdapter : IArray
 		{
@@ -148,7 +148,7 @@ namespace Fuse.Navigation
 	[UXFunction("modifyRoute")]
 	public sealed class ModifyRouteCommand : RouteModificationCommand
 	{
-		protected override bool ProcessArguments(RouterRequest request, Argument[] args)
+		internal override bool ProcessArguments(RouterRequest request, Argument[] args)
 		{
 			for (int i=0; i < args.Length; ++i)
 			{
@@ -177,7 +177,7 @@ namespace Fuse.Navigation
 	[UXFunction("gotoRoute")]
 	public sealed class GotoRouteCommand : RouteModificationCommand
 	{
-		protected override bool ProcessArguments(RouterRequest request, Argument[] args)
+		internal override bool ProcessArguments(RouterRequest request, Argument[] args)
 		{
 			return request.AddHow( ModifyRouteHow.Goto ) &&
 				request.AddPath( new ArgumentArrayAdapter(args) );
@@ -192,7 +192,7 @@ namespace Fuse.Navigation
 	[UXFunction("pushRoute")]
 	public sealed class PushRouteCommand : RouteModificationCommand
 	{
-		protected override bool ProcessArguments(RouterRequest request, Argument[] args)
+		internal override bool ProcessArguments(RouterRequest request, Argument[] args)
 		{
 			return request.AddHow( ModifyRouteHow.Push ) &&
 				request.AddPath( new ArgumentArrayAdapter(args) );
