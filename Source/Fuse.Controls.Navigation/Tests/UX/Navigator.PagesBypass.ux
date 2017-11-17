@@ -1,0 +1,15 @@
+<Panel ux:Class="UX.Navigator.PagesBypass">
+	<JavaScript>
+		var Observable = require("FuseJS/Observable")
+			
+		exports.pages = Observable()
+		exports.pages.add( {
+			$path: "one"
+		})
+	</JavaScript>
+		
+	<Navigator Pages="{pages}" ux:Name="theNav">
+		<Page ux:Template="one"/>
+		<Page ux:Template="two"/>
+	</Navigator>
+</Panel>
