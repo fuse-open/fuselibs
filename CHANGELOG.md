@@ -47,6 +47,11 @@
 - The `ScriptMethodInline` constructor that takes an `ExecutionThread` as an argument is now obsolete. Use the one without instead. JavaScript needs to run on the JavaScript thread anyway.
 - The `ScriptMethod<T>` contstructor that takes `Func` and `ExecutionThread` as arguments is now obsolete. Use the one without instead.
 - Calling script-methods that doesn't take any arguments should now consistently give an error. This was already the case for many functions. This is intended to ensure user-code is forward-compatible.
+- `ScriptException.ErrorMessage` has been marked as obsolete, use `ScriptException.Message` instead.
+- `ScriptException.Message` no longer includes all details about the script-exception, only the message itself. If you want the extra information, use `ScriptException.ToString()`, or check the specific fields.
+- `Fuse.IScriptException` has been marked as obsolete. This was previously unused.
+- `ScriptException.JSStackTrace` has been marked as obsolete, use `ScriptException.ScriptStackTrace` instead.
+- `ScriptException.SourceLine` has been marked as obsolete, and consistently returns null now. The latter was always the case except for when using V8 before. The same information can be deduced from the project files and FileName + LineNumber fields.
 
 
 # 1.4

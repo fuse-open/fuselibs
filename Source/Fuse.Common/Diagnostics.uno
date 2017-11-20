@@ -97,6 +97,7 @@ namespace Fuse
 		}
 	}
 
+	[Obsolete]
 	public interface IScriptException
 	{
 		string FileName { get; }

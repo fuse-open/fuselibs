@@ -100,7 +100,6 @@ namespace Fuse.Scripting.V8
 				e.GetMessage(_context),
 				e.GetFileName(_context),
 				e.GetLineNumber(),
-				e.GetSourceLine(_context),
 				e.GetStackTrace(_context));
 			if (_vmDepth == 0)
 				throw se;

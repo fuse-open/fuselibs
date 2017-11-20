@@ -282,7 +282,7 @@ namespace Fuse.Scripting.Duktape
 			{
 				message = DukContext.safe_to_string(index);
 			}
-			return new ScriptException(name, message, fileName, lineNumber, null, stack);
+			return new ScriptException(name, message, fileName, lineNumber, stack);
 		}
 
 		internal void CheckError(int errorCode)
