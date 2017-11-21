@@ -141,5 +141,33 @@ namespace Fuse.Controls.Primitives.Test
 			TestImageOrientation(ImageOrientation.Rotate270);
 			TestImageOrientation(ImageOrientation.Rotate270 | ImageOrientation.FlipVertical);
 		}
+		
+		[Test]
+		public void MultiDensityBasic()
+		{
+			var p = new UX.Image.MultiDensityBasic();
+			//force the density match since the actual code path still involves a static reference to AppBase
+			p.ms.MatchDensity = 1;
+			using (var root = TestRootPanel.CreateWithChildDensity(p, int2(500), 1))
+			{
+				Assert.AreEqual(float2(100,100), p.img.ActualSize);
+				root.Children.Remove(p);
+			}
+			
+			p.ms.MatchDensity = 2;
+			using (var root = TestRootPanel.CreateWithChildDensity(p, int2(500), 2))
+			{
+				Assert.AreEqual(float2(100,50), p.img.ActualSize);
+				root.Children.Remove(p);
+			}
+			
+			p.ms.MatchDensity = 4;
+			using (var root = TestRootPanel.CreateWithChildDensity(p, int2(500), 4))
+			{
+				Assert.AreEqual(float2(50,100), p.img.ActualSize);
+				root.Children.Remove(p);
+			}
+		}
+		
 	}
 }

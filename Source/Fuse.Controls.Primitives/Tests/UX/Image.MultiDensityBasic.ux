@@ -1,0 +1,9 @@
+<Panel ux:Class="UX.Image.MultiDensityBasic">
+	<Image Alignment="TopLeft" ux:Name="img">
+		<MultiDensityImageSource ux:Name="ms">
+			<FileImageSource File="Assets/red_100x100.png" Density="1"/>
+			<FileImageSource File="Assets/green_200x100.png" Density="2"/>
+			<FileImageSource File="Assets/blue_200x400.png" Density="4"/>
+		</MultiDensityImageSource>
+	</Image>
+</Panel>
