@@ -105,7 +105,7 @@ namespace Fuse.Animations
 		public bool WrapStep()
 		{
 			//if target is not a wrapping location then treat as normal step
-			if (IsProgress || (Target > 0 && Target < 1))
+			if (IsProgress || (Target > 0 && Target < Duration))
 			{
 				return Step();
 			}
