@@ -47,7 +47,7 @@ namespace Fuse.Controls
 				</JavaScript>
 
 				<NativeViewHost>
-					<TimePicker Value="{someTime}" Is24HourTimeView="true" />
+					<TimePicker Value="{someTime}" Is24HourView="true" />
 				</NativeViewHost>
 
 				<Button Text="Time to get cracking!" Clicked="{timeToGetCracking}" Margin="5" />
