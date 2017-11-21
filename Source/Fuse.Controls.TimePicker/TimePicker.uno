@@ -13,55 +13,59 @@ namespace Fuse.Controls
 
 	interface ITimePickerView
 	{
-		DateTime Value { get; set; }
-		bool Is24HourView { get; set; }
+		DateTime Value { set; }
+		bool Is24HourView { set; }
 
 		void OnRooted();
 		void OnUnrooted();
 	}
 
-	interface ITimePickerHost
-	{
-		void OnValueChanged();
-	}
-
-	public abstract partial class TimePickerBase : Panel, ITimePickerHost
+	public abstract partial class TimePickerBase : Panel
 	{
 		static Selector _valueName = "Value";
 
+		DateTime _value = DateTime.UtcNow;
 		[UXOriginSetter("SetValue")]
 		/**
 			Gets or sets the current time value selected by the `TimePicker`.
 		*/
 		public DateTime Value
 		{
-			get
-			{
-				var tpv = TimePickerView;
-				return tpv != null
-					? tpv.Value
-					: DateTime.UtcNow;
-			}
+			get { return _value; }
 			set { SetValue(value, this); }
 		}
 
 		public void SetValue(DateTime value, IPropertyListener origin)
 		{
+			UpdateValue(value, origin);
+
 			var tpv = TimePickerView;
-			if (tpv != null && tpv.Value != value)
-			{
+			if (tpv != null)
 				tpv.Value = value;
+		}
+
+		void UpdateValue(DateTime value, IPropertyListener origin)
+		{
+			if (value != _value)
+			{
+				_value = value;
 				OnValueChanged(origin);
 			}
 		}
 
-		internal void OnValueChanged(IPropertyListener origin)
+		void OnValueChanged(IPropertyListener origin)
 		{
 			OnPropertyChanged(_valueName, origin);
 		}
 
+		internal void OnNativeViewValueChanged(DateTime newValue)
+		{
+			UpdateValue(newValue, this);
+		}
+
 		static Selector _is24HourViewName = "Is24HourView";
 
+		bool _is24HourView;
 		[UXOriginSetter("SetIs24HourView")]
 		/**
 			Used to toggle 24-hour or am/pm view. Default is false (am/pm).
@@ -70,27 +74,24 @@ namespace Fuse.Controls
 		*/
 		public bool Is24HourView
 		{
-			get
-			{
-				var tpv = TimePickerView;
-				return tpv != null
-					? tpv.Is24HourView
-					: false;
-			}
+			get { return _is24HourView; }
 			set { SetIs24HourView(value, this); }
 		}
 
 		public void SetIs24HourView(bool value, IPropertyListener origin)
 		{
-			var tpv = TimePickerView;
-			if (tpv != null && tpv.Is24HourView != value)
+			if (value != _is24HourView)
 			{
-				tpv.Is24HourView = value;
+				_is24HourView = value;
 				OnIs24HourViewChanged(origin);
 			}
+
+			var tpv = TimePickerView;
+			if (tpv != null)
+				tpv.Is24HourView = value;
 		}
 
-		internal void OnIs24HourViewChanged(IPropertyListener origin)
+		void OnIs24HourViewChanged(IPropertyListener origin)
 		{
 			OnPropertyChanged(_is24HourViewName, origin);
 		}
@@ -98,11 +99,6 @@ namespace Fuse.Controls
 		ITimePickerView TimePickerView
 		{
 			get { return (ITimePickerView)NativeView; }
-		}
-
-		void ITimePickerHost.OnValueChanged()
-		{
-			OnValueChanged(this);
 		}
 
 		protected override void OnRooted()
