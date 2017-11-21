@@ -78,7 +78,13 @@ namespace FuseTest
 		static public TestRootPanel CreateWithChild(Node child, int2 layoutSize,
 			CreateFlags flags = CreateFlags.None)
 		{
-			var root = new TestRootPanel();
+			return CreateWithChildImpl(child, layoutSize, flags, 1);
+		}
+		
+		static TestRootPanel CreateWithChildImpl(Node child, int2 layoutSize,
+			CreateFlags flags, int density)
+		{
+			var root = new TestRootPanel(false, density);
 			root.Children.Add(child);
 			root.Layout(layoutSize);
 			if (!flags.HasFlag(CreateFlags.NoIncrement))
@@ -86,6 +92,11 @@ namespace FuseTest
 			return root;
 		}
 
+		static public TestRootPanel CreateWithChildDensity(Node child, int2 layoutSize, int density)
+		{
+			return CreateWithChildImpl(child, layoutSize, CreateFlags.None, density);
+		}
+		
 		/**
 			Call this version if layout size is not important, but don't test anything where it is
 			important then!
@@ -93,7 +104,7 @@ namespace FuseTest
 		static public TestRootPanel CreateWithChild(Node child,
 			CreateFlags flags = CreateFlags.None)
 		{
-			return CreateWithChild(child, int2(800,600), flags);
+			return CreateWithChildImpl(child, int2(800,600), flags, 1);
 		}
 		
 		public new void Layout( float2 clientSizeInPoint )
