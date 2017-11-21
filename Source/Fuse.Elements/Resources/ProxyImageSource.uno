@@ -74,7 +74,7 @@ namespace Fuse.Resources
 					return float2(0);
 					
 				var ps = _impl.PixelSize;
-				return float2(ps.X, ps.Y) / _density;
+				return float2(ps.X, ps.Y) / Density;
 			}
 		}
 		
