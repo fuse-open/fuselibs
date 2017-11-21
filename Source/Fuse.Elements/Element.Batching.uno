@@ -63,7 +63,10 @@ namespace Fuse.Elements
 			{
 				// get rid of old element batcher
 				if (_elementBatcher != null)
+				{
+					_elementBatcher.Dispose();
 					_elementBatcher = null;
+				}
 
 				for (var i = 0; i < zOrder.Length; i++) 
 				{
