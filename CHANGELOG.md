@@ -1,5 +1,8 @@
 # Unreleased
 
+## Multi-density image sources
+- Fixed an issue where the desired size of a multi-density source ended up as the pixel size of the selected image source. The effect was that images rendered on a high-density screen, would appear larger than on a low density screen.
+
 ## Timeline
 - Fixed an issue where `PlayMode="Wrap"` would not loop if the duration was less than 1 second
 
