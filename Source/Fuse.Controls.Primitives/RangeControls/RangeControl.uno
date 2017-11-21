@@ -243,7 +243,7 @@ namespace Fuse.Controls
 
 		void IRangeViewHost.OnProgressChanged(double newProgress)
 		{
-			SetValue(ValueFromRelative(newProgress), null);	
+			SetValue(ValueFromRelative(newProgress), RangeView);
 		}
 		
 		double IRangeViewHost.RelativeUserStep
