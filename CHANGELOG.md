@@ -1,5 +1,8 @@
 # Unreleased
 
+## Timeline
+- Fixed an issue where `PlayMode="Wrap"` would not loop if the duration was less than 1 second
+
 ## Expressions
 - Added `isDefined` to check if a value is known in the context
 - Added `isNull` to check if a value is null or doesn't exist

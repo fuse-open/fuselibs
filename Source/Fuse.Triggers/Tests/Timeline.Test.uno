@@ -293,6 +293,25 @@ namespace Fuse.Triggers.Test
 			}
 		}
 		
+		[Test]
+		//test a wrap with duration < 1
+		public void WrapLowDuration()
+		{
+			var p = new UX.Timeline.WrapLowDuration();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				var time = p.tl.Progress * p.nt.Duration; //will have animated a bit already
+				var step = 0.11;
+				
+				for (double i=0; i < 3.0; i += step)
+				{
+					root.StepFrame((float)step);
+					time += step;
+					Assert.AreEqual( Math.Fract(time/p.nt.Duration), p.tl.Progress );
+				}
+			}
+		}
+		
 		double ExpectedProgress( double time, Timeline t, double duration )
 		{
 			return Math.Mod(time * t.TimeMultiplier / duration + t.InitialProgress, 1);
