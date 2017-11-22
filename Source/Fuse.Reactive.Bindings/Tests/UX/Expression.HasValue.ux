@@ -1,4 +1,0 @@
-<Panel ux:Class="UX.Expression.HasValue">
-	<FuseTest.Data ux:Name="a"/>
-	<FuseTest.DudElement BoolValue="isDefined({Property a.Value})" ux:Name="ha"/>
-</Panel>

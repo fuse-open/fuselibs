@@ -106,6 +106,15 @@ namespace Fuse.Reactive
 				_hasIndex = true;
 				ResultChanged();
 			}
+			
+			void ValueForwarder.IValueListener.LostValue()
+			{
+				//TODO: https://github.com/fusetools/fuselibs-public/issues/783
+				//_hasIndex = false;
+				_index = null;
+				_hasIndex = true;
+				ResultChanged();
+			}
 
 			void DisposeIndexSub()
 			{

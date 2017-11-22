@@ -1,0 +1,20 @@
+<Panel ux:Class="UX.Expression.IsDefined">
+	<JavaScript>
+		var Observable = require("FuseJS/Observable")
+		
+		exports.c = Observable()
+		exports.d = Observable(1)
+		
+		exports.flip = function() {
+			exports.c.value = 2
+			exports.d.clear()
+		}
+	</JavaScript>
+	<FuseTest.Data ux:Name="a"/>
+	<FuseTest.DudElement BoolValue="isDefined({Property a.Value})" ux:Name="ha"/>
+	<FuseTest.DudElement BoolValue="isDefined({b})" ux:Name="hb"/>
+	<FuseTest.DudElement BoolValue="isDefined({c})" ux:Name="hc"/>
+	<FuseTest.DudElement BoolValue="isDefined({d})" ux:Name="hd"/>
+	
+	<FuseTest.Invoke Handler="{flip}" ux:Name="callFlip"/>
+</Panel>

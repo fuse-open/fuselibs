@@ -98,6 +98,11 @@ namespace Fuse.Reactive
 		{
 			SetSiblingData(data);
 		}
+		
+		void ValueForwarder.IValueListener.LostValue()
+		{
+			SetSiblingData(null);
+		}
 
 		object _siblingData;
 		void SetSiblingData(object data)

@@ -125,12 +125,22 @@ namespace Fuse.Reactive.Bindings.Test
 		}
 		
 		[Test]
-		public void HasValue()
+		public void IsDefined()
 		{
-			var p  = new UX.Expression.HasValue();
+			var p  = new UX.Expression.IsDefined();
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
 				Assert.AreEqual( true, p.ha.BoolValue ); //it's null, but there
+				Assert.AreEqual( false, p.hb.BoolValue );
+				
+				root.StepFrameJS();
+				Assert.AreEqual( false, p.hc.BoolValue );
+				Assert.AreEqual( true, p.hd.BoolValue );
+				
+				p.callFlip.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual( true, p.hc.BoolValue );
+				Assert.AreEqual( false, p.hd.BoolValue );
 			}
 		}
 	}

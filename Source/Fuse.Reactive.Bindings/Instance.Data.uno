@@ -160,6 +160,11 @@ namespace Fuse.Reactive
 				for (int i=0; i < _target.Nodes.Count; ++i)
 					_target.Nodes[i].BroadcastDataChange(oldData, newData);
 			}
+			
+			protected override void LostData()
+			{
+				PushData(null);
+			}
 		}
 	}
 }
