@@ -50,7 +50,7 @@ namespace Fuse.Controls
 		static Selector _valueXName = "ValueX";
 		static Selector _valueYName = "ValueY";
 
-		public void SetValue(float2 value, IPropertyListener origin)
+		public void SetValue(float2 value, IPropertyOrigin origin)
 		{
 			var v = ClampToRange(value);
 
@@ -100,7 +100,7 @@ namespace Fuse.Controls
 			SetValue(Value, null);
 		}
 
-		void OnValueChanged(float2 value, IPropertyListener origin)
+		void OnValueChanged(float2 value, IPropertyOrigin origin)
 		{
 			OnPropertyChanged(_valueName, origin);
 			OnPropertyChanged(_valueXName, origin);
@@ -137,7 +137,7 @@ namespace Fuse.Controls
 			set { Value = float2(value,Value.Y); }
 		}
 
-		public void SetValueX(float value, IPropertyListener origin)
+		public void SetValueX(float value, IPropertyOrigin origin)
 		{
 			SetValue(float2(value,Value.Y),origin);
 		}
@@ -149,7 +149,7 @@ namespace Fuse.Controls
 			set { Value = float2(Value.X,value); }
 		}
 
-		public void SetValueY(float value, IPropertyListener origin)
+		public void SetValueY(float value, IPropertyOrigin origin)
 		{
 			SetValue(float2(Value.X,value),origin);
 		}

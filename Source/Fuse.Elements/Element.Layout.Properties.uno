@@ -187,7 +187,7 @@ namespace Fuse.Elements
 			set { SetVisibility(value, this); }
 		}
 
-		public void SetVisibility(Visibility value, IPropertyListener origin)
+		public void SetVisibility(Visibility value, IPropertyOrigin origin)
 		{
 			var old = _visibility;
 			_visibility = value;
@@ -195,7 +195,7 @@ namespace Fuse.Elements
 		}
 		
 		static Selector _visibilityName = "Visibility";
-		void OnVisibilityChanged(Visibility oldVisibility, IPropertyListener origin)
+		void OnVisibilityChanged(Visibility oldVisibility, IPropertyOrigin origin)
 		{
 			OnPropertyChanged(_visibilityName, origin);
 			OnLocalVisibleChanged();

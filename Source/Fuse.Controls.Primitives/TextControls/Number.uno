@@ -71,7 +71,7 @@ namespace Fuse.Controls
 		static Selector _valueName = "Value";
 		public event ValueChangedHandler<float> ValueChanged;
 		
-		void OnValueChanged(float n, IPropertyListener origin)
+		void OnValueChanged(float n, IPropertyOrigin origin)
 		{
 			OnPropertyChanged(_valueName);
 			if (ValueChanged != null)

@@ -43,7 +43,7 @@ namespace Fuse.Elements
 			set { SetHitTestMode(value, this); }
 		}
 
-		public void SetHitTestMode(HitTestMode value, IPropertyListener origin)
+		public void SetHitTestMode(HitTestMode value, IPropertyOrigin origin)
 		{
 			Set(FastProperty1.HitTestMode, value, DefaultHitTestMode);
 			InvalidateHitTestBounds();

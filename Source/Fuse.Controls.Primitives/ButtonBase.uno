@@ -33,7 +33,7 @@ namespace Fuse.Controls
 			set { SetText(value, null); }
 		}
 
-		public void SetText(string value, IPropertyListener origin)
+		public void SetText(string value, IPropertyOrigin origin)
 		{
 			if (value != _text)
 			{

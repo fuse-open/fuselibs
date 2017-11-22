@@ -22,7 +22,7 @@ namespace Fuse
 			public override PropertyObject Object { get { return _visual; } }
 			public override bool SupportsOriginSetter { get { return false; } }
 			public override string Get(PropertyObject obj) { return _visual.Parameter; } 
-			public override void Set(PropertyObject obj, string value, IPropertyListener origin) { _visual.Parameter = value; }
+			public override void Set(PropertyObject obj, string value, IPropertyOrigin origin) { _visual.Parameter = value; }
 			static Selector _name = "Parameter";
 			public ParameterProperty(Visual visual): base(_name) { _visual = visual; }
 		}

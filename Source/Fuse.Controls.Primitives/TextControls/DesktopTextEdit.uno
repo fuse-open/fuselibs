@@ -120,7 +120,7 @@ namespace Fuse.Controls
 			}
 		}
 
-		protected override void OnValueChanged(IPropertyListener origin)
+		protected override void OnValueChanged(IPropertyOrigin origin)
 		{
 			base.OnValueChanged(origin);
 			UpdateValue(Value);

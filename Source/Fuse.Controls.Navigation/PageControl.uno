@@ -412,7 +412,7 @@ namespace Fuse.Controls
 			get { return Navigation.DesiredActiveIndex; }
 			set { Navigation.DesiredActiveIndex = value; }
 		}
-		public void SetActiveIndex(int value, IPropertyListener origin)
+		public void SetActiveIndex(int value, IPropertyOrigin origin)
 		{
 			Navigation.DesiredActiveIndex = value;
 		}

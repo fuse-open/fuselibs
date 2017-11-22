@@ -42,7 +42,7 @@ namespace Fuse.Reactive
 
 		@remarks Docs/DataBindingRemarks.md
 	*/
-	public class DataBinding: ExpressionBinding, IObserver, INameListener, IPropertyListener
+	public class DataBinding: ExpressionBinding, IObserver, INameListener, IPropertyOrigin, IPropertyListener
 	{
 		[UXValueBindingTarget]
 		public Uno.UX.Property Target { get; private set; }

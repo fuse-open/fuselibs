@@ -46,7 +46,7 @@ namespace Fuse.Controls
 			set { SetValue(value, this); }
 		}
 
-		public void SetValue(DateTime value, IPropertyListener origin)
+		public void SetValue(DateTime value, IPropertyOrigin origin)
 		{
 			var dpv = DatePickerView;
 			if (dpv != null && dpv.Value != value)
@@ -56,7 +56,7 @@ namespace Fuse.Controls
 			}
 		}
 
-		internal void OnValueChanged(IPropertyListener origin)
+		internal void OnValueChanged(IPropertyOrigin origin)
 		{
 			OnPropertyChanged(_valueName, origin);
 		}
@@ -79,7 +79,7 @@ namespace Fuse.Controls
 			set { SetMinValue(value, this); }
 		}
 
-		public void SetMinValue(DateTime value, IPropertyListener origin)
+		public void SetMinValue(DateTime value, IPropertyOrigin origin)
 		{
 			var dpv = DatePickerView;
 			if (dpv != null && dpv.MinValue != value)
@@ -89,7 +89,7 @@ namespace Fuse.Controls
 			}
 		}
 
-		internal void OnMinValueChanged(IPropertyListener origin)
+		internal void OnMinValueChanged(IPropertyOrigin origin)
 		{
 			OnPropertyChanged(_minValueName, origin);
 		}
@@ -112,7 +112,7 @@ namespace Fuse.Controls
 			set { SetMaxValue(value, this); }
 		}
 
-		public void SetMaxValue(DateTime value, IPropertyListener origin)
+		public void SetMaxValue(DateTime value, IPropertyOrigin origin)
 		{
 			var dpv = DatePickerView;
 			if (dpv != null && dpv.MaxValue != value)
@@ -122,7 +122,7 @@ namespace Fuse.Controls
 			}
 		}
 
-		internal void OnMaxValueChanged(IPropertyListener origin)
+		internal void OnMaxValueChanged(IPropertyOrigin origin)
 		{
 			OnPropertyChanged(_maxValueName, origin);
 		}

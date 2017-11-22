@@ -373,7 +373,7 @@ namespace Fuse.Controls
 
 		static Selector _urlName = "Url";
 
-		public void SetUrl(string value, IPropertyListener origin)
+		public void SetUrl(string value, IPropertyOrigin origin)
 		{
 			OnPropertyChanged(_urlName, origin);
 			WebViewClient.Url = value;

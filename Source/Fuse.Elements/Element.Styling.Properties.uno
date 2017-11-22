@@ -38,7 +38,7 @@ namespace Fuse.Elements
 			set { SetOpacity(value, this); }
 		}
 
-		public void SetOpacity(float value, IPropertyListener origin)
+		public void SetOpacity(float value, IPropertyOrigin origin)
 		{
 			if (Opacity != value)
 			{
@@ -46,7 +46,7 @@ namespace Fuse.Elements
 				OnOpacityChanged(origin);
 			}
 		}
-		void OnOpacityChanged(IPropertyListener origin)
+		void OnOpacityChanged(IPropertyOrigin origin)
 		{
 			OnPropertyChanged(_opacityName, origin);
 			InvalidateVisualComposition();

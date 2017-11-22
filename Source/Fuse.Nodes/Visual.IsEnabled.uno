@@ -40,7 +40,7 @@ namespace Fuse
 			}
 		}
 
-		void OnIsEnabledChanged(IPropertyListener origin)
+		void OnIsEnabledChanged(IPropertyOrigin origin)
 		{
 			OnPropertyChanged(_isEnabledName, origin);
 		}

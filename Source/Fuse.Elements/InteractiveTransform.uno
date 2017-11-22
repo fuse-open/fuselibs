@@ -14,7 +14,7 @@ namespace Fuse.Elements
 		}
 		
 		static Selector _zoomFactorName = "ZoomFactor";
-		public void SetZoomFactor(float value, IPropertyListener origin)
+		public void SetZoomFactor(float value, IPropertyOrigin origin)
 		{
 			if (_zoomFactor != value)
 			{
@@ -34,7 +34,7 @@ namespace Fuse.Elements
 		}
 
 		static Selector _rotationName = "Rotation";
-		public void SetRotation(float value, IPropertyListener origin)
+		public void SetRotation(float value, IPropertyOrigin origin)
 		{
 			if (_rotation != value)
 			{
@@ -53,7 +53,7 @@ namespace Fuse.Elements
 		}
 
 		static Selector _translationName = "Translation";
-		public void SetTranslation(float2 value, IPropertyListener origin)
+		public void SetTranslation(float2 value, IPropertyOrigin origin)
 		{
 			if (_translation != value)
 			{

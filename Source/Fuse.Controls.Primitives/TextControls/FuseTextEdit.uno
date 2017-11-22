@@ -84,7 +84,7 @@ namespace Fuse.Controls
 			return new CaretContext(positionedRuns, Value);
 		}
 
-		protected override void OnValueChanged(IPropertyListener origin)
+		protected override void OnValueChanged(IPropertyOrigin origin)
 		{
 			_isSelecting = false;
 			base.OnValueChanged(origin);

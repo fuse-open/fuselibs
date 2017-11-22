@@ -18,7 +18,7 @@ namespace Fuse.Drawing
 		Outside,
 	}
 
-	public class Stroke: PropertyObject, IPropertyListener
+	public class Stroke: PropertyObject, IPropertyOrigin, IPropertyListener
 	{
 		//https://github.com/fusetools/fuselibs/issues/3655
 		static Selector _shadingName = "Shading";
@@ -75,7 +75,7 @@ namespace Fuse.Drawing
 				SetColor(value, this);
 			}
 		}
-		public void SetColor(float4 color, IPropertyListener origin)
+		public void SetColor(float4 color, IPropertyOrigin origin)
 		{
 			if (color != Color)
 			{

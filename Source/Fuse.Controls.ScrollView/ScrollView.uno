@@ -16,12 +16,12 @@ namespace Fuse.Controls
 		//this much was adjusted due to layout change, not "scrolling"
 		public float2 ArrangeOffset { get; private set; }
 		
-		public IPropertyListener Origin { get; private set; }
+		public IPropertyOrigin Origin { get; private set; }
 		
 		public float2 RelativeScrollPosition { get; private set; }
 		
 		public ScrollPositionChangedArgs( float2 scrollPos, float2 arrangeOffset, bool isAdjustment,
-			IPropertyListener origin, float2 relativeScrollPos) 
+			IPropertyOrigin origin, float2 relativeScrollPos)
 			: base(scrollPos)
 		{
 			this.ArrangeOffset = arrangeOffset;
@@ -262,7 +262,7 @@ namespace Fuse.Controls
 			}
 		}
 		
-		void OnScrollPropertyChanged(Selector name, IPropertyListener origin)
+		void OnScrollPropertyChanged(Selector name, IPropertyOrigin origin)
 		{
 			InvalidateLayout();
 			OnPropertyChanged(name, origin);
@@ -284,17 +284,17 @@ namespace Fuse.Controls
 		//this must be stored so we are aware of relative changes due to layout
 		float2 _previousRelative = float2(Float.PositiveInfinity);
 		
-		public void SetScrollPosition(float2 position, IPropertyListener origin)
+		public void SetScrollPosition(float2 position, IPropertyOrigin origin)
 		{
 			SetScrollPositionImpl(position, float2(0), false, origin);
 		}
 		
-		void SetScrollPosition(float2 position, float2 arrangeOffset, IPropertyListener origin)
+		void SetScrollPosition(float2 position, float2 arrangeOffset, IPropertyOrigin origin)
 		{
 			SetScrollPositionImpl(position, arrangeOffset, true, origin);
 		}
 		
-		void SetScrollPositionImpl(float2 position, float2 arrangeOffset, bool adjustment, IPropertyListener origin)
+		void SetScrollPositionImpl(float2 position, float2 arrangeOffset, bool adjustment, IPropertyOrigin origin)
 		{
 			bool changed = false;
 			
@@ -433,7 +433,7 @@ namespace Fuse.Controls
 		public event ScrollPositionChangedHandler ScrollPositionChanged;
 
 		internal static Selector ScrollPositionName = "ScrollPosition";
-		void OnScrollPositionChanged(float2 arrangeOffset, bool adjustment, IPropertyListener origin)
+		void OnScrollPositionChanged(float2 arrangeOffset, bool adjustment, IPropertyOrigin origin)
 		{
 			OnPropertyChanged(ScrollPositionName, origin);
 

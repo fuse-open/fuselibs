@@ -288,8 +288,8 @@ namespace Fuse.Triggers
 		//to work correctly on Progress. This overrides the sender during setting.
 		//mortoray: I'm not very happy with the solution though, since there is no guarantee the
 		//progress update must be synchronous.
-		IPropertyListener _progressOrigin;
-		public void SetProgress(double value, IPropertyListener origin)
+		IPropertyOrigin _progressOrigin;
+		public void SetProgress(double value, IPropertyOrigin origin)
 		{
 			if (origin != this)
 			{
@@ -304,7 +304,7 @@ namespace Fuse.Triggers
 
 		protected override void OnProgressChanged()
 		{
-			var sender = _progressOrigin ?? this as IPropertyListener;
+			var sender = _progressOrigin ?? this as IPropertyOrigin;
 			OnPropertyChanged(_progressName, sender);
 			if (ProgressChanged != null)
 				ProgressChanged(sender, new ValueChangedArgs<double>(Progress));

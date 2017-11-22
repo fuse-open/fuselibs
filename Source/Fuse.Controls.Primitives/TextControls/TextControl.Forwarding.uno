@@ -38,7 +38,7 @@ namespace Fuse.Controls
 			tv.TextTruncation = TextTruncation;
 		}
 
-		protected virtual void OnValueChanged(IPropertyListener origin)
+		protected virtual void OnValueChanged(IPropertyOrigin origin)
 		{
 			OnPropertyChanged(ValuePropertyName, origin);
 			InvalidateLayout();
@@ -112,7 +112,7 @@ namespace Fuse.Controls
 			InvalidateRenderer();
 		}
 
-		protected virtual void OnColorChanged(IPropertyListener origin)
+		protected virtual void OnColorChanged(IPropertyOrigin origin)
 		{
 			OnPropertyChanged(ColorPropertyName, origin);
 			OnPropertyChanged(TextColorPropertyName, origin);

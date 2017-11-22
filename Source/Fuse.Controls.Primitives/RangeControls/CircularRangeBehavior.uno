@@ -336,7 +336,7 @@ namespace Fuse.Gestures
 			}
 		}
 		
-		public void SetDegreesValue(float value, IPropertyListener origin)
+		public void SetDegreesValue(float value, IPropertyOrigin origin)
 		{
 			DegreesValue = value;
 			//TODO: incomplete for 2-way binding (waiting for better solution)

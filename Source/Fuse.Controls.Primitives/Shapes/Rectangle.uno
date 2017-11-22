@@ -70,7 +70,7 @@ namespace Fuse.Controls
 		}
 		
 		public static readonly Selector CornerRadiusPropertyName = "CornerRadius";
-		public void SetCornerRadius(float4 value, IPropertyListener origin)
+		public void SetCornerRadius(float4 value, IPropertyOrigin origin)
 		{
 			if (_cornerRadius != value)
 			{

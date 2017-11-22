@@ -222,7 +222,7 @@ namespace Fuse.Controls
 		public Router_PrepareProgress_Property(Router obj) : base("PrepareProgress") { _obj = obj; }
 		public override global::Uno.UX.PropertyObject Object { get { return _obj; } }
 		public override double Get(PropertyObject obj) { return ((Router)obj).PrepareProgress; }
-		public override void Set(PropertyObject obj, double v, global::Uno.UX.IPropertyListener origin) { ((Router)obj).PrepareProgress = v; }
+		public override void Set(PropertyObject obj, double v, global::Uno.UX.IPropertyOrigin origin) { ((Router)obj).PrepareProgress = v; }
 		public override bool SupportsOriginSetter { get { return false; } }
 	}
 }

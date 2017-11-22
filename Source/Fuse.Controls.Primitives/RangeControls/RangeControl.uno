@@ -129,7 +129,7 @@ namespace Fuse.Controls
 			}
 		}
 
-		public void SetValue(double value, IPropertyListener origin)
+		public void SetValue(double value, IPropertyOrigin origin)
 		{
 			var v = ClampToRange(value);
 
@@ -196,7 +196,7 @@ namespace Fuse.Controls
 			OnProgressChanged();
 		}
 
-		void OnValueChanged(double value, IPropertyListener origin)
+		void OnValueChanged(double value, IPropertyOrigin origin)
 		{
 			OnPropertyChanged(_valueName, origin);
 
