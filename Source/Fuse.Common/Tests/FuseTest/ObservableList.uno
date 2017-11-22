@@ -61,20 +61,20 @@ namespace FuseTest
 				Source.Unsubscribe(Observer);
 			}
 			
-			public void ClearExclusive() { Fuse.Diagnostics.InternalError( "Unsupported", this ); }
-			public void SetExclusive(object newValue) { Fuse.Diagnostics.InternalError( "Unsupported", this ); }
-			public void ReplaceAllExclusive(IArray values) { Source.ReplaceAllExclusive(values); }
+			void ISubscription.ClearExclusive() { Fuse.Diagnostics.InternalError( "Unsupported", this ); }
+			void ISubscription.SetExclusive(object newValue) { Fuse.Diagnostics.InternalError( "Unsupported", this ); }
+			void ISubscription.ReplaceAllExclusive(IArray values) { Source.ReplaceAllExclusive(values); }
 
-			public void ClearExclusive(Fuse.Scripting.Context context) { Fuse.Diagnostics.InternalError( "Unsupported", this ); }
-			public void SetExclusive(Fuse.Scripting.Context context, object newValue) { Fuse.Diagnostics.InternalError( "Unsupported", this ); }
-			public void ReplaceAllExclusive(Fuse.Scripting.Context context, IArray values) { Source.ReplaceAllExclusive(values); }
+			void ISubscription.ClearExclusive(Fuse.Scripting.Context context) { Fuse.Diagnostics.InternalError( "Unsupported", this ); }
+			void ISubscription.SetExclusive(Fuse.Scripting.Context context, object newValue) { Fuse.Diagnostics.InternalError( "Unsupported", this ); }
+			void ISubscription.ReplaceAllExclusive(Fuse.Scripting.Context context, IArray values) { Source.ReplaceAllExclusive(values); }
 		}
 		
 		class ReadOnlySubscription : Subscription
 		{
-			public void ClearExclusive() { Fuse.Diagnostics.InternalError( "ReadOnly array", this ); }
-			public void SetExclusive(object newValue) { Fuse.Diagnostics.InternalError( "ReadOnly array", this ); }
-			public void ReplaceAllExclusive(IArray values) { Fuse.Diagnostics.InternalError( "ReadOnly array", this ); }
+			void ISubscription.ClearExclusive() { Fuse.Diagnostics.InternalError( "ReadOnly array", this ); }
+			void ISubscription.SetExclusive(object newValue) { Fuse.Diagnostics.InternalError( "ReadOnly array", this ); }
+			void ISubscription.ReplaceAllExclusive(IArray values) { Fuse.Diagnostics.InternalError( "ReadOnly array", this ); }
 		}
 		
 		virtual protected void OnSubscription() { }
