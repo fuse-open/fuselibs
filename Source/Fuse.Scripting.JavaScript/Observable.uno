@@ -123,7 +123,7 @@ namespace Fuse.Scripting.JavaScript
 				op.Perform(context);
 			}
 
-			public void SetExclusive(object newValue)
+			void ISubscription.SetExclusive(object newValue)
 			{
 				ClearDiagnostic();
 
@@ -162,7 +162,7 @@ namespace Fuse.Scripting.JavaScript
 				}
 			}
 
-			public void ReplaceAllExclusive(IArray newValues)
+			void ISubscription.ReplaceAllExclusive(IArray newValues)
 			{
 				var arr = new object[newValues.Length];
 				for (int i = 0; i < arr.Length; i++)
@@ -206,7 +206,7 @@ namespace Fuse.Scripting.JavaScript
 				op.Perform(context);
 			}
 
-			public void ClearExclusive()
+			void ISubscription.ClearExclusive()
 			{
 				var op = new ClearExclusiveOperation(_om.Object, _origin);
 				_om._worker.Invoke(op.Perform);
@@ -231,6 +231,11 @@ namespace Fuse.Scripting.JavaScript
 			operations).
 		*/
 		public ISubscription Subscribe(IObserver observer)
+		{
+			return SubscribeInternal(observer);
+		}
+
+		internal Subscription SubscribeInternal(IObserver observer)
 		{
 			return new Subscription(this, observer);
 		}

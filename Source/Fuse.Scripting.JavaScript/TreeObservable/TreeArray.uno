@@ -103,7 +103,7 @@ namespace Fuse.Scripting.JavaScript
 				UpdateManager.PostAction(new ReplaceAllOnUIThreadClosure(ta, values, this).Perform);
 			}
 
-			public void ReplaceAllExclusive(IArray values)
+			void ReplaceAllExclusive(IArray values)
 			{
 				var ta = SubscriptionSubject as TreeArray;
 
@@ -114,7 +114,7 @@ namespace Fuse.Scripting.JavaScript
 				ta.ReplaceAll(values, this);
 			}
 
-			public void ClearExclusive()
+			void ISubscription.ClearExclusive()
 			{
 				ReplaceAllExclusive(new SimpleArray());
 			}
@@ -124,7 +124,7 @@ namespace Fuse.Scripting.JavaScript
 				ReplaceAllExclusive(context, new SimpleArray());
 			}
 
-			public void SetExclusive(object newValue)
+			void ISubscription.SetExclusive(object newValue)
 			{
 				ReplaceAllExclusive(new SimpleArray(newValue));
 			}
@@ -132,6 +132,11 @@ namespace Fuse.Scripting.JavaScript
 			public void SetExclusive(Scripting.Context context, object newValue)
 			{
 				ReplaceAllExclusive(context, new SimpleArray(newValue));
+			}
+
+			void ISubscription.ReplaceAllExclusive(IArray values)
+			{
+				ReplaceAllExclusive(values);
 			}
 
 			class SimpleArray : IArray
