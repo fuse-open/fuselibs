@@ -38,7 +38,7 @@ namespace Fuse.Scripting
 
 			static string _lastErrorPath;
 
-			public object Require(Context context, string id)
+			object Require(Context context, string id)
 			{
 				bool isFile;
 				var path = _m.ComputePath(id, out isFile);
