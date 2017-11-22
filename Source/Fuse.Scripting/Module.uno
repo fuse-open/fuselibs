@@ -8,7 +8,7 @@ namespace Fuse.Scripting
 	{
 		public object EvaluateExports(Context c, string id)
 		{
-			var r = Evaluate(c, id).Object["exports"];
+			var r = Evaluate(c, id).GetObject(c)["exports"];
 			return r;
 		}
 

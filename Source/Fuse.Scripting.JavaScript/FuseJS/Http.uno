@@ -20,7 +20,7 @@ namespace Fuse.Reactive.FuseJS
 
 		public override void Evaluate(Context c, ModuleResult result)
 		{
-			result.Object["exports"] = (Callback)CreateClient;
+			result.GetObject(c)["exports"] = (Callback)CreateClient;
 		}
 
 		object CreateClient(Context context, object[] args)

@@ -64,7 +64,7 @@ namespace Fuse.Scripting
 
 		protected virtual string GenerateArgs(Context c, ModuleResult result, List<object> args)
 		{
-			var module = result.Object;
+			var module = result.GetObject(c);
 
 			var rt = GenerateRequireTable(c);
 

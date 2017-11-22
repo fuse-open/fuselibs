@@ -72,7 +72,7 @@ namespace Fuse.Scripting.JavaScript
 			EvaluateModule(context);
 
 			if (_moduleResult != null)
-				return _moduleResult.Object["exports"];
+				return _moduleResult.GetObject(context)["exports"];
 
 			return null;
 		}

@@ -33,12 +33,12 @@ namespace Fuse.Scripting
 				var id = args[0] as string;
 				if (id == null) throw new Error("require(): argument must be a string");
 
-				return Require(id);
+				return Require(context, id);
 			}
 
 			static string _lastErrorPath;
 
-			public object Require(string id)
+			public object Require(Context context, string id)
 			{
 				bool isFile;
 				var path = _m.ComputePath(id, out isFile);
@@ -91,9 +91,7 @@ namespace Fuse.Scripting
 					module.AddDependency(_dependant.Invalidate);
 				}
 
-				
-
-				return module.Object["exports"];
+				return module.GetObject(context)["exports"];
 			}
 		}
 
