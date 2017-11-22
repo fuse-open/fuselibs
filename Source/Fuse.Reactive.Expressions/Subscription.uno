@@ -97,6 +97,11 @@ namespace Fuse.Reactive
 			{
 				_listener.OnNewData(_source, newValue);
 			}
+			
+			protected override void LostData()
+			{
+				_listener.OnLostData(_source);
+			}
 		}
 	}
 }

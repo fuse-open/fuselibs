@@ -1,5 +1,8 @@
 # Unreleased
 
+## Observables and bindings
+- Fixed an issue where missing data was propagated as null. This will affect Observable's that contain zero data, and may have resulted in some bindings showing old/incorrect data.
+
 ## Multi-density image sources
 - Fixed an issue where the desired size of a multi-density source ended up as the pixel size of the selected image source. The effect was that images rendered on a high-density screen, would appear larger than on a low density screen.
 

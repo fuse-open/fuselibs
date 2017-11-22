@@ -74,6 +74,11 @@ namespace Fuse.Reactive
 		{
 			SetSubtreeData(value);
 		}
+		
+		void ValueForwarder.IValueListener.LostValue()
+		{
+			SetSubtreeData(null);
+		}
 
 		void SetSubtreeData(object value)
 		{
