@@ -22,7 +22,10 @@ namespace Fuse.Scripting
 			return _object;
 		}
 
+		[Obsolete("Use GetExports(Context)")]
 		public object Exports { get { return _object["exports"]; } }
+
+		public object GetExports(Context c) { return _object["exports"]; }
 
 		public ScriptException Error { get; internal set; }
 
