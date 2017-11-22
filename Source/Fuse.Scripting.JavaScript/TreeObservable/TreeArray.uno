@@ -93,7 +93,7 @@ namespace Fuse.Scripting.JavaScript
 			}
 
 
-			void ReplaceAllExclusive(Scripting.Context context, IArray values)
+			public void ReplaceAllExclusive(Scripting.Context context, IArray values)
 			{
 				var ta = SubscriptionSubject as TreeArray;
 
@@ -119,7 +119,7 @@ namespace Fuse.Scripting.JavaScript
 				ReplaceAllExclusive(new SimpleArray());
 			}
 
-			void ISubscription.ClearExclusive(Scripting.Context context)
+			public void ClearExclusive(Scripting.Context context)
 			{
 				ReplaceAllExclusive(context, new SimpleArray());
 			}
@@ -129,14 +129,9 @@ namespace Fuse.Scripting.JavaScript
 				ReplaceAllExclusive(new SimpleArray(newValue));
 			}
 
-			void ISubscription.SetExclusive(Scripting.Context context, object newValue)
+			public void SetExclusive(Scripting.Context context, object newValue)
 			{
 				ReplaceAllExclusive(context, new SimpleArray(newValue));
-			}
-
-			void ISubscription.ReplaceAllExclusive(Scripting.Context context, IArray values)
-			{
-				ReplaceAllExclusive(context, values);
 			}
 
 			void ISubscription.ReplaceAllExclusive(IArray values)

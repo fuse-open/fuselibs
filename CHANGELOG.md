@@ -32,7 +32,7 @@
 - `Fuse.Scripting`'s `Object` type has a `CallMethod` method, this now takes a `Scripting.Context`. This guarentees that it can only occur on the VM thread.
 - IMirror is no longer implemented by ThreadWorker. This functionality has been moved to the context
 - Moved `ArrayMirror`, `ClassInstance`, `ModuleInstance`, `ObjectMirror`, `Observable`, `ObservableProperty`, `RootableScriptModule` & `ThreadWorker` to the `Fuse.Scripting.JavaScript` namespace
-- Removed the `CanEvaluate` method and instead rely on the passing of the `Scripting.Context` to know if we are on the VM thread or not. This required adding some methods to the `ISubscription` which take the `Scripting.Context`
+- Removed the `CanEvaluate` method and instead rely on the passing of the `Scripting.Context` to know if we are on the VM thread or not.
 - The 'wrapping' functionality has been moved from the `ThreadWorker` to a standalone static class called `TypeWrapper`. The `IThreadWorker` no longer provides `Wrap` & `UnWrap`
 - `ThreadWorker.ScriptClass` functionality moved to context. We will likely want to factor this out to a helper class however for now the major benefit is that `ThreadWorker` no longer owns these features.
 - Remove the public `Context` property from the `ThreadWorker`. Sadly the context is still available via the internal field so that the tests can work. This will need to be fixed.

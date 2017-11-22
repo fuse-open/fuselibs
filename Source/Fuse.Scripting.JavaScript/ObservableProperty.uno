@@ -50,10 +50,10 @@ namespace Fuse.Scripting.JavaScript
 			return _observable;
 		}
 
-		ISubscription _subscription;
+		Observable.Subscription _subscription;
 		void Subscribe(Scripting.Context context)
 		{
-			_subscription = _observable.Subscribe(this);
+			_subscription = (Observable.Subscription)_observable.Subscribe(this);
 			PushValue(context, _property.GetAsObject());
 			_property.AddListener(this);
 		}

@@ -64,10 +64,6 @@ namespace FuseTest
 			void ISubscription.ClearExclusive() { Fuse.Diagnostics.InternalError( "Unsupported", this ); }
 			void ISubscription.SetExclusive(object newValue) { Fuse.Diagnostics.InternalError( "Unsupported", this ); }
 			void ISubscription.ReplaceAllExclusive(IArray values) { Source.ReplaceAllExclusive(values); }
-
-			void ISubscription.ClearExclusive(Fuse.Scripting.Context context) { Fuse.Diagnostics.InternalError( "Unsupported", this ); }
-			void ISubscription.SetExclusive(Fuse.Scripting.Context context, object newValue) { Fuse.Diagnostics.InternalError( "Unsupported", this ); }
-			void ISubscription.ReplaceAllExclusive(Fuse.Scripting.Context context, IArray values) { Source.ReplaceAllExclusive(values); }
 		}
 		
 		class ReadOnlySubscription : Subscription
