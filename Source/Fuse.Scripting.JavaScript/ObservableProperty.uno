@@ -53,7 +53,7 @@ namespace Fuse.Scripting.JavaScript
 		Observable.Subscription _subscription;
 		void Subscribe(Scripting.Context context)
 		{
-			_subscription = (Observable.Subscription)_observable.Subscribe(this);
+			_subscription = _observable.SubscribeInternal(this);
 			PushValue(context, _property.GetAsObject());
 			_property.AddListener(this);
 		}

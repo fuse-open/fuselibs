@@ -232,6 +232,11 @@ namespace Fuse.Scripting.JavaScript
 		*/
 		public ISubscription Subscribe(IObserver observer)
 		{
+			return SubscribeInternal(observer);
+		}
+
+		internal Subscription SubscribeInternal(IObserver observer)
+		{
 			return new Subscription(this, observer);
 		}
 
