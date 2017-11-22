@@ -109,7 +109,7 @@ namespace Fuse.Scripting.JavaScript
 				}
 			}
 
-			public void SetExclusive(Scripting.Context context, object newValue)
+			void ISubscription.SetExclusive(Scripting.Context context, object newValue)
 			{
 				ClearDiagnostic();
 
@@ -123,7 +123,7 @@ namespace Fuse.Scripting.JavaScript
 				op.Perform(context);
 			}
 
-			public void SetExclusive(object newValue)
+			void ISubscription.SetExclusive(object newValue)
 			{
 				ClearDiagnostic();
 
@@ -162,7 +162,7 @@ namespace Fuse.Scripting.JavaScript
 				}
 			}
 
-			public void ReplaceAllExclusive(IArray newValues)
+			void ISubscription.ReplaceAllExclusive(IArray newValues)
 			{
 				var arr = new object[newValues.Length];
 				for (int i = 0; i < arr.Length; i++)
@@ -172,7 +172,7 @@ namespace Fuse.Scripting.JavaScript
 				_om._worker.Invoke(op.Perform);
 			}
 
-			public void ReplaceAllExclusive(Scripting.Context context, IArray newValues)
+			void ISubscription.ReplaceAllExclusive(Scripting.Context context, IArray newValues)
 			{
 				var arr = new object[newValues.Length];
 				for (int i = 0; i < arr.Length; i++)
@@ -200,13 +200,13 @@ namespace Fuse.Scripting.JavaScript
 				}
 			}
 
-			public void ClearExclusive(Scripting.Context context)
+			void ISubscription.ClearExclusive(Scripting.Context context)
 			{
 				var op = new ClearExclusiveOperation(_om.Object, _origin);
 				op.Perform(context);
 			}
 
-			public void ClearExclusive()
+			void ISubscription.ClearExclusive()
 			{
 				var op = new ClearExclusiveOperation(_om.Object, _origin);
 				_om._worker.Invoke(op.Perform);
