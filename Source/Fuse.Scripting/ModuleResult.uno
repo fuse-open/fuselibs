@@ -14,6 +14,7 @@ namespace Fuse.Scripting
 		public readonly Module Module;
 
 		readonly Scripting.Object _object;
+		[Obsolete("Use GetObject(Context) instead")]
 		public Scripting.Object Object { get { return _object; } }
 
 		public Scripting.Object GetObject(Context c)

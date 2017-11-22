@@ -58,6 +58,7 @@
 - `Fuse.IScriptException` has been marked as obsolete. This was previously unused.
 - `ScriptException.JSStackTrace` has been marked as obsolete, use `ScriptException.ScriptStackTrace` instead.
 - `ScriptException.SourceLine` has been marked as obsolete, and consistently returns null now. The latter was always the case except for when using V8 before. The same information can be deduced from the project files and FileName + LineNumber fields.
+- `ModuleResult.Object` has been marked as obsolete. Use `ModuleResult.GetObject(Context)` instead.
 
 
 # 1.4
