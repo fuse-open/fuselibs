@@ -244,7 +244,7 @@ namespace Fuse.Navigation
 			}
 			set { SetActiveIndex(value, null); }
 		}
-		public void SetActiveIndex(int value, IPropertyListener origin)
+		public void SetActiveIndex(int value, IPropertyOrigin origin)
 		{
 			if (value == ActiveIndex)
 				return;

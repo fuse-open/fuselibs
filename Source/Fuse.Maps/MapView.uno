@@ -450,7 +450,7 @@ namespace Fuse.Controls
 			set { SetTilt(value, this);	}
 		}
 
-		public void SetTilt(double value, IPropertyListener origin)
+		public void SetTilt(double value, IPropertyOrigin origin)
 		{
 			_cameraState.Tilt = value;
 			UpdateCameraNextFrame();
@@ -467,7 +467,7 @@ namespace Fuse.Controls
 			set { SetBearing(value, this);	}
 		}
 
-		public void SetBearing(double value, IPropertyListener origin)
+		public void SetBearing(double value, IPropertyOrigin origin)
 		{
 			_cameraState.Bearing = value;
 			UpdateCameraNextFrame();
@@ -484,7 +484,7 @@ namespace Fuse.Controls
 			set { SetZoom(value, this);	}
 		}
 
-		public void SetZoom(double value, IPropertyListener origin)
+		public void SetZoom(double value, IPropertyOrigin origin)
 		{
 			_cameraState.Zoom = value;
 			UpdateCameraNextFrame();
@@ -504,7 +504,7 @@ namespace Fuse.Controls
 			set { SetLatitude(value, this);	}
 		}
 
-		public void SetLatitude(double value, IPropertyListener origin)
+		public void SetLatitude(double value, IPropertyOrigin origin)
 		{
 			_cameraState.Latitude = value;
 			UpdateCameraNextFrame();
@@ -521,7 +521,7 @@ namespace Fuse.Controls
 			set { SetLongitude(value, this);	}
 		}
 
-		public void SetLongitude(double value, IPropertyListener origin)
+		public void SetLongitude(double value, IPropertyOrigin origin)
 		{
 			_cameraState.Longitude = value;
 			UpdateCameraNextFrame();

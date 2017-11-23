@@ -34,7 +34,7 @@ namespace Fuse.Drawing
 			}
 		}
 
-		public void SetColor(float4 c, IPropertyListener origin)
+		public void SetColor(float4 c, IPropertyOrigin origin)
 		{
 			if (_color != c)
 			{

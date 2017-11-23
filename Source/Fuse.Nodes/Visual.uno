@@ -32,7 +32,7 @@ namespace Fuse
 
 		Visuals can have input focus if the `Focus.IsFocusable` property is set to `true`. 
 	*/
-	public abstract partial class Visual : Node, IList<Node>, IPropertyListener, ITemplateSource, IEnumerable<Visual>
+	public abstract partial class Visual : Node, IList<Node>, IPropertyOrigin, IPropertyListener, ITemplateSource, IEnumerable<Visual>
 	{
 		public abstract void Draw(DrawContext dc);
 

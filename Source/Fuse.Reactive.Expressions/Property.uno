@@ -22,7 +22,7 @@ namespace Fuse.Reactive
 			return new Subscription(this, obj, Accessor, listener);
 		}
 
-		class Subscription: IPropertyListener, IWriteable
+		class Subscription: IPropertyOrigin, IPropertyListener, IWriteable
 		{
 			Property _prop;
 			PropertyObject _object;

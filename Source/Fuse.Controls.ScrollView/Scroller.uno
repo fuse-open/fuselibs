@@ -18,7 +18,7 @@ namespace Fuse.Gestures
 		@advanced
 		@deprecated 2017-03-04
 	*/
-	public class Scroller : Behavior, IPropertyListener, IGesture
+	public class Scroller : Behavior, IPropertyOrigin, IPropertyListener, IGesture
 	{
 		//to avoid warning on deprecated public ctor
 		internal Scroller(bool ignore) { }

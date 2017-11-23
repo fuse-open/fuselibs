@@ -16,10 +16,8 @@ namespace Fuse.Gestures.Internal
 		Vector,
 	}
 
-	class SwipeRegion: PropertyObject, IPropertyListener
+	class SwipeRegion: PropertyObject, IPropertyOrigin
 	{
-		void IPropertyListener.OnPropertyChanged(PropertyObject obj, Selector prop) { }
-
 		const float _zeroTolerance = 1e-05f;
 
 		bool _isEnabled = true;
@@ -136,7 +134,7 @@ namespace Fuse.Gestures.Internal
 			set { SetIsActive(value, this); }
 		}
 		
-		public void SetIsActive(bool value, IPropertyListener origin)
+		public void SetIsActive(bool value, IPropertyOrigin origin)
 		{
 			if (value == _isActive)
 				return;

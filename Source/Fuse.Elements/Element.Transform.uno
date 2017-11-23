@@ -131,7 +131,7 @@ namespace Fuse.Elements
 			set { SetExplicitTransformOrigin(value, this); }
 		}
 		
-		public void SetExplicitTransformOrigin(Size2 value, IPropertyListener origin)
+		public void SetExplicitTransformOrigin(Size2 value, IPropertyOrigin origin)
 		{
 			var to = TransformOrigin as ExplicitTransformOrigin;
 			if (to == null)

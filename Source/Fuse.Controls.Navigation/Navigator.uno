@@ -814,7 +814,7 @@ namespace Fuse.Controls
 		public Element_Opacity_Property(Element obj) : base("Opacity") { _obj = obj; }
 		public override global::Uno.UX.PropertyObject Object { get { return _obj; } }
 		public override float Get(PropertyObject obj) { return ((Element)obj).Opacity; }
-		public override void Set(PropertyObject obj, float v, global::Uno.UX.IPropertyListener origin) { ((Element)obj).SetOpacity(v, origin); }
+		public override void Set(PropertyObject obj, float v, global::Uno.UX.IPropertyOrigin origin) { ((Element)obj).SetOpacity(v, origin); }
 		public override bool SupportsOriginSetter { get { return true; } }
 	}
 	

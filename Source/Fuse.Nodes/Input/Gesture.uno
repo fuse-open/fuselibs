@@ -136,7 +136,7 @@ namespace Fuse.Input
 		@experimental
 		@advanced
 	*/
-	public class Gesture : IPropertyListener
+	public class Gesture : IPropertyOrigin
 	{
 		internal readonly IGesture Handler;
 		internal readonly GestureType Type;
@@ -311,9 +311,6 @@ namespace Fuse.Input
 			Cancel();
 			Gestures.Remove(Handler);
 		}
-		
-		//This interface is expose to allow this gesure to be the source of changes
-		void IPropertyListener.OnPropertyChanged(PropertyObject obj, Selector sel) {}
 		
 		/* How far away from the intended vector direction a position can be before it's no longer considered part of that gesture. 44 being the Apple minimum for tappable regions, so it also seems reasonable as a constraint people can stay within.*/
 		const float _vectorOffsetThreshold = 44;

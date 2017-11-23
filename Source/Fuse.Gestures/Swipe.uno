@@ -52,7 +52,7 @@ namespace Fuse.Gestures
 		@remarks Docs/SwipeGesture/Remarks.md
 		@examples Docs/SwipeGesture/Examples.md
 	*/
-	public class SwipeGesture : Behavior, IPropertyListener
+	public class SwipeGesture : Behavior, IPropertyOrigin, IPropertyListener
 	{
 		public SwipeGesture()
 		{
@@ -276,12 +276,12 @@ namespace Fuse.Gestures
 			set { SetIsActive(value, this); }
 		}
 		
-		public void SetIsActive(bool value, IPropertyListener origin)
+		public void SetIsActive(bool value, IPropertyOrigin origin)
 		{
 			SetActive(value, origin);
 		}
 		
-		internal void SetActive(bool value, IPropertyListener origin, bool bypass = false)
+		internal void SetActive(bool value, IPropertyOrigin origin, bool bypass = false)
 		{
 			if (_swiper == null)
 				_region.SetIsActive(value, origin);

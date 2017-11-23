@@ -51,7 +51,7 @@ namespace Fuse.Controls
 			get { return _value; }
 			set { SetValue(value, this); }
 		}
-		public void SetValue(bool value, IPropertyListener origin)
+		public void SetValue(bool value, IPropertyOrigin origin)
 		{
 			if (_value != value)
 			{
@@ -84,7 +84,7 @@ namespace Fuse.Controls
 			}
 		}
 
-		protected virtual void OnValueChanged(bool value, IPropertyListener origin)
+		protected virtual void OnValueChanged(bool value, IPropertyOrigin origin)
 		{
 			if (ValueChanged != null)
 				ValueChanged(this, new BoolChangedArgs(value));

@@ -33,7 +33,7 @@ namespace Fuse.Animations
 			</Panel>
 	*/
 	[UXAutoGeneric("RangeAdapter","Source")]
-	public sealed class RangeAdapter<T> : Behavior, IPropertyListener
+	public sealed class RangeAdapter<T> : Behavior, IPropertyOrigin, IPropertyListener
 	{
 		public Property<T> Source { get; private set; }
 		
@@ -55,7 +55,7 @@ namespace Fuse.Animations
 			set { SetValue(value, this); }
 		}
 		
-		public void SetValue(T value, IPropertyListener origin)
+		public void SetValue(T value, IPropertyOrigin origin)
 		{
 			Source.Set( In(value), origin );
 		}

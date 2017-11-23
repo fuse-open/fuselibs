@@ -275,7 +275,7 @@ namespace Fuse.Selection
 			}
 			set { SetValue(value, null); }
 		}
-		public void SetValue(string value, IPropertyListener origin)
+		public void SetValue(string value, IPropertyOrigin origin)
 		{
 			if (value == Value)
 				return;

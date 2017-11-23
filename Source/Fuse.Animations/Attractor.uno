@@ -23,7 +23,7 @@ namespace Fuse.Animations
 
 			</Panel>
 	*/
-	public class Attractor<T> : Behavior, IPropertyListener
+	public class Attractor<T> : Behavior, IPropertyOrigin, IPropertyListener
 	{
 		internal Attractor() { }
 

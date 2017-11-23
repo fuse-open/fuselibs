@@ -48,8 +48,7 @@ namespace Fuse.Controls
 		
 		It is undefined what happens if the different ways of specifying a stroke are combined.
 	*/
-	public abstract partial class Shape : LayoutControl, ISurfaceDrawable, IPropertyListener,
-		IDrawObjectWatcherFeedback
+	public abstract partial class Shape : LayoutControl, ISurfaceDrawable, IDrawObjectWatcherFeedback
 	{
 		/**
 			The color of the `Shape`
@@ -70,7 +69,7 @@ namespace Fuse.Controls
 				SetColor(value, this);
 			}
 		}
-		public void SetColor(float4 value, IPropertyListener origin)
+		public void SetColor(float4 value, IPropertyOrigin origin)
 		{
 			if (Color != value)
 			{
@@ -79,14 +78,14 @@ namespace Fuse.Controls
 		}
 
 		public static readonly Selector ColorPropertyName = "Color";
-		void OnColorChanged(float4 value, IPropertyListener origin)
+		void OnColorChanged(float4 value, IPropertyOrigin origin)
 		{
 			if (!(Fill is SolidColor))
 	 			Fill = new SolidColor(value);
 	 		else
 	 			((SolidColor)Fill).Color = value;
 
-			OnPropertyChanged(ColorPropertyName, origin as IPropertyListener);
+			OnPropertyChanged(ColorPropertyName, origin);
 		}
 
 		/** The `Fill` property sets a single fill on the `Shape` */

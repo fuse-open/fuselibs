@@ -23,7 +23,7 @@ namespace Fuse.Scripting.JavaScript
 
 		This prevents leakage of strong references to observables on the JS side.
 	*/
-	class ObservableProperty: IObserver, IPropertyListener
+	class ObservableProperty: IObserver, IPropertyOrigin, IPropertyListener
 	{
 		protected readonly ThreadWorker _worker;
 		Uno.UX.Property _property;

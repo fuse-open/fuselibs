@@ -208,7 +208,7 @@ namespace Fuse.Animations
 	{
 		object GetPropertyObject();
 	}
-	abstract class MasterProperty<T> : MasterBase<T>, MasterPropertyGet, IPropertyListener
+	abstract class MasterProperty<T> : MasterBase<T>, MasterPropertyGet, IPropertyOrigin, IPropertyListener
 	{
 		internal Uno.UX.Property<T> Property;
 		public object GetPropertyObject() { return Property; }

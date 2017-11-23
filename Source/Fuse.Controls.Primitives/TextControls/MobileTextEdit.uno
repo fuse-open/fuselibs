@@ -89,7 +89,7 @@ namespace Fuse.Controls
 			NativeView = null;
 		}
 
-		protected override void OnValueChanged(IPropertyListener origin)
+		protected override void OnValueChanged(IPropertyOrigin origin)
 		{
 			base.OnValueChanged(origin);
 		}

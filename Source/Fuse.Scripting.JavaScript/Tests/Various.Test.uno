@@ -515,7 +515,7 @@ namespace Fuse.Reactive.Test
 				}
 			}
 
-			public void SetTest(MyEnum value, IPropertyListener origin)
+			public void SetTest(MyEnum value, IPropertyOrigin origin)
 			{
 				_test = value;
 				OnPropertyChanged(TestName, origin);

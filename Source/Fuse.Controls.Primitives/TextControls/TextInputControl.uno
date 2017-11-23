@@ -81,7 +81,7 @@ namespace Fuse.Controls
 			set { SetValue(value, this); }
 		}
 		
-		public void SetValue(string v, IPropertyListener origin) 
+		public void SetValue(string v, IPropertyOrigin origin)
 		{ 
 			_editor.SetValue(v, origin); 
 			

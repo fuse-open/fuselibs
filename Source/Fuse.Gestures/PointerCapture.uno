@@ -17,7 +17,7 @@ namespace Fuse.Gestures
 		
 		@experimental It's unsure if the default properties/behaviour make sense. We'll have to complete more combined gestures first.
 	*/
-	public class PointerCapture : Behavior, IGesture, IPropertyListener
+	public class PointerCapture : Behavior, IGesture, IPropertyOrigin
 	{
 		PointerCaptureOn _on = PointerCaptureOn.None;
 		public PointerCaptureOn On
@@ -41,7 +41,7 @@ namespace Fuse.Gestures
 			set { SetIsActive(value, this); }
 		}
 		
-		public void SetIsActive(bool value, IPropertyListener origin)
+		public void SetIsActive(bool value, IPropertyOrigin origin)
 		{
 			if (value == _isActive)
 				return;
@@ -105,7 +105,5 @@ namespace Fuse.Gestures
 		{
 			SetIsActive(false, _gesture);
 		}
-		
-		void IPropertyListener.OnPropertyChanged(PropertyObject obj, Selector value) {}
 	}
 }

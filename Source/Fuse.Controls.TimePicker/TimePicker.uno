@@ -45,7 +45,7 @@ namespace Fuse.Controls
 			set { SetValue(value, this); }
 		}
 
-		public void SetValue(DateTime value, IPropertyListener origin)
+		public void SetValue(DateTime value, IPropertyOrigin origin)
 		{
 			var tpv = TimePickerView;
 			if (tpv != null && tpv.Value != value)
@@ -55,7 +55,7 @@ namespace Fuse.Controls
 			}
 		}
 
-		internal void OnValueChanged(IPropertyListener origin)
+		internal void OnValueChanged(IPropertyOrigin origin)
 		{
 			OnPropertyChanged(_valueName, origin);
 		}
@@ -80,7 +80,7 @@ namespace Fuse.Controls
 			set { SetIs24HourView(value, this); }
 		}
 
-		public void SetIs24HourView(bool value, IPropertyListener origin)
+		public void SetIs24HourView(bool value, IPropertyOrigin origin)
 		{
 			var tpv = TimePickerView;
 			if (tpv != null && tpv.Is24HourView != value)
@@ -90,7 +90,7 @@ namespace Fuse.Controls
 			}
 		}
 
-		internal void OnIs24HourViewChanged(IPropertyListener origin)
+		internal void OnIs24HourViewChanged(IPropertyOrigin origin)
 		{
 			OnPropertyChanged(_is24HourViewName, origin);
 		}

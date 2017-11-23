@@ -40,7 +40,7 @@ namespace Fuse.Controls
 			set { SetColor(value, this); }
 		}
 
-		public void SetColor(float4 value, IPropertyListener origin)
+		public void SetColor(float4 value, IPropertyOrigin origin)
 		{
 			if (Color != value)
 			{
@@ -51,9 +51,9 @@ namespace Fuse.Controls
 
 		public static readonly Selector ColorPropertyName = "Color";
 
-		void OnColorChanged(float4 value, IPropertyListener origin)
+		void OnColorChanged(float4 value, IPropertyOrigin origin)
 		{
-			OnPropertyChanged(ColorPropertyName, origin as IPropertyListener);
+			OnPropertyChanged(ColorPropertyName, origin);
 
 			if (!(Background is SolidColor))
 	 			Background = new SolidColor(value);

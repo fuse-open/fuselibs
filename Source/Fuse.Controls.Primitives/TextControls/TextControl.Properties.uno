@@ -29,7 +29,7 @@ namespace Fuse.Controls
 			set { SetValue(value, this); }
 		}
 
-		public void SetValue(string value, IPropertyListener origin)
+		public void SetValue(string value, IPropertyOrigin origin)
 		{
 			var newValue = value ?? "";
 			bool forced = EnforceMaxLength(ref newValue);
@@ -190,7 +190,7 @@ namespace Fuse.Controls
 				SetColor(value, this);
 			}
 		}
-		public void SetColor(float4 color, IPropertyListener origin)
+		public void SetColor(float4 color, IPropertyOrigin origin)
 		{
 			if (_color != color)
 			{

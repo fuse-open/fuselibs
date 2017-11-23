@@ -506,7 +506,7 @@ namespace Fuse.Controls
 			Playback = playback;
 		}
 
-		public void SetProgress(double value, IPropertyListener origin)
+		public void SetProgress(double value, IPropertyOrigin origin)
 		{
 			if (origin != this)
 			{
