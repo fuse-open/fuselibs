@@ -91,7 +91,7 @@ namespace Fuse.Scripting
 					module.AddDependency(_dependant.Invalidate);
 				}
 
-				return module.GetObject(context)["exports"];
+				return module.GetExports(context);
 			}
 		}
 
