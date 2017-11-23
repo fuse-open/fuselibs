@@ -3,6 +3,12 @@
 
 # 1.4
 
+## 1.4.1
+
+### Expressions
+- Fixed an issue where toUpper and toLower would crash on null intput. Now they propagate null instead.
+
+
 ## 1.4.0
 
 ### Notifications
