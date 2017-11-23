@@ -72,7 +72,7 @@ namespace Fuse.Scripting.JavaScript
 			EvaluateModule(context);
 
 			if (_moduleResult != null)
-				return _moduleResult.Object["exports"];
+				return _moduleResult.GetExports(context);
 
 			return null;
 		}
@@ -103,6 +103,8 @@ namespace Fuse.Scripting.JavaScript
 					// Don't report chain-errors of already reported errors
 					if (!se.Message.Contains(ScriptModule.ModuleContainsAnErrorMessage))
 						_diagnostic.SetDiagnostic(se);
+
+					newModuleResult.Dispose();
 				}
 			}
 		}

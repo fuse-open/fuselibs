@@ -12,8 +12,20 @@ namespace Fuse.Scripting
 		public readonly Context Context;
 		public readonly string Id;
 		public readonly Module Module;
-		public readonly Scripting.Object Object;
-		public object Exports { get { return Object["exports"]; } }
+
+		readonly Scripting.Object _object;
+		[Obsolete("Use GetObject(Context) instead")]
+		public Scripting.Object Object { get { return _object; } }
+
+		public Scripting.Object GetObject(Context c)
+		{
+			return _object;
+		}
+
+		[Obsolete("Use GetExports(Context)")]
+		public object Exports { get { return _object["exports"]; } }
+
+		public object GetExports(Context c) { return _object["exports"]; }
 
 		public ScriptException Error { get; internal set; }
 
@@ -24,7 +36,7 @@ namespace Fuse.Scripting
 		{
 			Context = context;
 			Module = mod;
-			Object = obj;
+			_object = obj;
 			Id = id;
 
 			// Watch global key for changes
@@ -106,9 +118,9 @@ namespace Fuse.Scripting
 
 		void OnDisposed(Scripting.Context context)
 		{
-			if (Object.ContainsKey("disposed"))
+			if (_object.ContainsKey("disposed"))
 			{
-				var disposed = Object["disposed"] as Scripting.Array;
+				var disposed = _object["disposed"] as Scripting.Array;
 				if (disposed != null)
 				{
 					for (int i = 0; i < disposed.Length; i++)

@@ -29,7 +29,7 @@ namespace Fuse.Scripting
 
 		public override void Evaluate(Context c, ModuleResult result)
 		{
-			var module = result.Object;
+			var module = result.GetObject(c);
 			if (module != null)
 			{
 				var obj = module["exports"] as Scripting.Object;
