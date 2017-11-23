@@ -382,10 +382,7 @@ namespace Fuse.Controls
 		protected override void DrawWithChildren(DrawContext dc)
 		{
 			if (!_inBackground)
-			{
 				base.DrawWithChildren(dc);
-				((AppBase)Fuse.AppBase.Current).DrawSelection(dc);
-			}
 		}
 
 		protected override VisualBounds CalcRenderBounds()
