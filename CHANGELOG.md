@@ -1,12 +1,13 @@
 # Unreleased
 
+## Let
+- Introduced an experimental `Let` feature that allows creating expression aliases and local variables in UX
+
 ## Timer
 - Fixed issue where creating a repeating `Timer` with 0 delay in JavaScript would not prevent the worker thread to become idle.
 
 ## RangeControl
 - `RangeControl.Value` and `RangeControl2D.Value` are not longer clamped to the `Range` of the control. This fixes issues where the `Value` was incorrectly modified when the range and value were both data bound. The user behaviors `LinearRangeBehavior` and `CircularRangeBehavior` will both however clamp to the range -- the user cannot select outside the range.
-## Let
-- Introduced an experiment `Let` feature that allows creating expression aliases and local variables in UX
 
 ## Observables and bindings
 - Fixed an issue where missing data was propagated as null. This will affect Observable's that contain zero data, and may have resulted in some bindings showing old/incorrect data.

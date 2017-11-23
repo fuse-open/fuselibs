@@ -9,7 +9,7 @@ namespace Fuse.Reactive
 		
 		To introduce a new value:
 		
-			<Let Value="5" ux:Name="a"/>
+			<Let ux:Name="a" Value="5"/>
 			
 		The value is now part of the data context:
 		
@@ -20,9 +20,9 @@ namespace Fuse.Reactive
 			<Slider Value="{Property a.Value}"/>
 			
 		
-		If you are using an expression it's recommended now to use `Expression` instead of value:
+		If you are using an expression it's recommended now to use `Expression` instead of `Value`:
 		
-			<Let Expression="{pos} + 5" ux:Name="p"/>
+			<Let ux:Name="p" Expression="{pos} + 5"/>
 			
 		This ensures proper propagation of undefined values.  (This is part of the reason this is an experimental API, since we don't really want to distinguish between Expression and Value, but have no choice at the moment).
 		
