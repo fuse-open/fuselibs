@@ -1,0 +1,4 @@
+<Panel ux:Class="UX.StringFunctions.ToLower">
+	<FuseTest.Value ux:Name="NullInput" />
+	<FuseTest.Value String="{= toLower({Property NullInput.String}) }" ux:Name="NullResult"/>
+</Panel>

@@ -1,0 +1,4 @@
+<Panel ux:Class="UX.StringFunctions.ToUpper">
+	<FuseTest.Value ux:Name="NullInput" />
+	<FuseTest.Value String="{= toUpper({Property NullInput.String}) }" ux:Name="NullResult"/>
+</Panel>
