@@ -11,18 +11,25 @@ namespace Fuse.Controls.Native.Android
 	extern(!Android) class DatePickerView
 	{
 		[UXConstructor]
-		public DatePickerView([UXParameter("Host")]IDatePickerHost host) { }
+		public DatePickerView([UXParameter("Host")]DatePicker host) { }
 	}
 
 	extern(Android) class DatePickerView : LeafView, IDatePickerView
 	{
-		IDatePickerHost _host;
+		DatePicker _host;
 
 		[UXConstructor]
-		public DatePickerView([UXParameter("Host")]IDatePickerHost host) : base(Create())
+		public DatePickerView([UXParameter("Host")]DatePicker host) : base(Create())
 		{
 			_host = host;
+
 			Init(Handle);
+
+			// The native control might reject values outside of the min/max range, so make sure we set min/max first
+			MinValue = _host.MinValue;
+			MaxValue = _host.MaxValue;
+			Value = _host.Value;
+
 			UpdatePollValueCache();
 		}
 
@@ -57,7 +64,7 @@ namespace Fuse.Controls.Native.Android
 		{
 			if (Value != _pollValueCache)
 			{
-				OnValueChanged();
+				OnValueChanged(Value);
 				UpdatePollValueCache();
 			}
 		}
@@ -115,33 +122,19 @@ namespace Fuse.Controls.Native.Android
 			UpdateManager.RemoveAction(Update);
 		}
 
-		DateTime _minValue;
+		void OnValueChanged(DateTime value)
+		{
+			_host.OnNativeViewValueChanged(value);
+		}
+
 		public DateTime MinValue
 		{
-			get { return _minValue; }
-			set
-			{
-				_minValue = value;
-
-				SetMinValue(Handle, DateTimeConverterHelpers.ConvertDateTimeToMsSince1970InUtc(_minValue));
-			}
+			set { SetMinValue(Handle, DateTimeConverterHelpers.ConvertDateTimeToMsSince1970InUtc(value)); }
 		}
 
-		DateTime _maxValue;
 		public DateTime MaxValue
 		{
-			get { return _maxValue; }
-			set
-			{
-				_maxValue = value;
-
-				SetMaxValue(Handle, DateTimeConverterHelpers.ConvertDateTimeToMsSince1970InUtc(_maxValue));
-			}
-		}
-
-		void OnValueChanged()
-		{
-			_host.OnValueChanged();
+			set { SetMaxValue(Handle, DateTimeConverterHelpers.ConvertDateTimeToMsSince1970InUtc(value)); }
 		}
 
 		[Foreign(Language.Java)]

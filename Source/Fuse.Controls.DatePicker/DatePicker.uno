@@ -13,45 +13,43 @@ namespace Fuse.Controls
 
 	interface IDatePickerView
 	{
-		DateTime Value { get; set; }
-		DateTime MinValue { get; set; }
-		DateTime MaxValue { get; set; }
+		DateTime Value { set; }
+		DateTime MinValue { set; }
+		DateTime MaxValue { set; }
 
 		void OnRooted();
 		void OnUnrooted();
 	}
 
-	interface IDatePickerHost
-	{
-		void OnValueChanged();
-	}
-
-	public abstract partial class DatePickerBase : Panel, IDatePickerHost
+	public abstract partial class DatePickerBase : Panel
 	{
 		static Selector _valueName = "Value";
 
+		DateTime _value = DateTime.UtcNow;
 		[UXOriginSetter("SetValue")]
 		/**
 			Gets or sets the current date value selected by the `DatePicker`. Must not be outside of the range specified by `MinValue` and `MaxValue` if these have been set.
 		*/
 		public DateTime Value
 		{
-			get
-			{
-				var dpv = DatePickerView;
-				return dpv != null
-					? dpv.Value
-					: DateTime.UtcNow;
-			}
+			get { return _value; }
 			set { SetValue(value, this); }
 		}
 
 		public void SetValue(DateTime value, IPropertyListener origin)
 		{
+			UpdateValue(value, origin);
+
 			var dpv = DatePickerView;
-			if (dpv != null && dpv.Value != value)
-			{
+			if (dpv != null)
 				dpv.Value = value;
+		}
+
+		void UpdateValue(DateTime value, IPropertyListener origin)
+		{
+			if (value != _value)
+			{
+				_value = value;
 				OnValueChanged(origin);
 			}
 		}
@@ -61,32 +59,35 @@ namespace Fuse.Controls
 			OnPropertyChanged(_valueName, origin);
 		}
 
+		internal void OnNativeViewValueChanged(DateTime newValue)
+		{
+			UpdateValue(newValue, this);
+		}
+
 		static Selector _minValueName = "MinValue";
 
+		DateTime _minValue;
 		[UXOriginSetter("SetMinValue")]
 		/**
 			Gets or sets the minimum date value that can be selected by the `DatePicker`. Must not be higher than `MaxValue` if it has been specified.
 		*/
 		public DateTime MinValue
 		{
-			get
-			{
-				var dpv = DatePickerView;
-				return dpv != null
-					? dpv.MinValue
-					: DateTime.UtcNow;
-			}
+			get { return _minValue; }
 			set { SetMinValue(value, this); }
 		}
 
 		public void SetMinValue(DateTime value, IPropertyListener origin)
 		{
-			var dpv = DatePickerView;
-			if (dpv != null && dpv.MinValue != value)
+			if (value != _minValue)
 			{
-				dpv.MinValue = value;
+				_minValue = value;
 				OnMinValueChanged(origin);
 			}
+
+			var dpv = DatePickerView;
+			if (dpv != null)
+				dpv.MinValue = value;
 		}
 
 		internal void OnMinValueChanged(IPropertyListener origin)
@@ -96,30 +97,28 @@ namespace Fuse.Controls
 
 		static Selector _maxValueName = "MaxValue";
 
+		DateTime _maxValue;
 		[UXOriginSetter("SetMaxValue")]
 		/**
 			Gets or sets the maximum date value that can be selected by the `DatePicker`. Must not be lower than `MinValue` if it has been specified.
 		*/
 		public DateTime MaxValue
 		{
-			get
-			{
-				var dpv = DatePickerView;
-				return dpv != null
-					? dpv.MaxValue
-					: DateTime.UtcNow;
-			}
+			get { return _maxValue; }
 			set { SetMaxValue(value, this); }
 		}
 
 		public void SetMaxValue(DateTime value, IPropertyListener origin)
 		{
-			var dpv = DatePickerView;
-			if (dpv != null && dpv.MaxValue != value)
+			if (value != _maxValue)
 			{
-				dpv.MaxValue = value;
+				_maxValue = value;
 				OnMaxValueChanged(origin);
 			}
+
+			var dpv = DatePickerView;
+			if (dpv != null)
+				dpv.MaxValue = value;
 		}
 
 		internal void OnMaxValueChanged(IPropertyListener origin)
@@ -130,11 +129,6 @@ namespace Fuse.Controls
 		IDatePickerView DatePickerView
 		{
 			get { return (IDatePickerView)NativeView; }
-		}
-
-		void IDatePickerHost.OnValueChanged()
-		{
-			OnValueChanged(this);
 		}
 
 		protected override void OnRooted()
