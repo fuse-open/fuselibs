@@ -1,0 +1,27 @@
+<Panel ux:Class="UX.TimerTest">
+	<int ux:Dependency="Delay" />
+	<int ux:Dependency="Iterations" />
+	<bool ux:Dependency="Repeat" />
+
+	<Panel ux:Class="IterationCount">
+		<int ux:Property="Value" />
+	</Panel>
+
+	<IterationCount Value="{iterationCount}" ux:Name="IterationCount" />
+
+	<JavaScript>
+		var Observable = require("FuseJS/Observable");
+		var Timer = require("FuseJS/Timer")
+		var iterationCount = Observable(0)
+		var id = Timer.create(function() {
+			iterationCount.value = iterationCount.value + 1
+			if (iterationCount.value == Iterations) {
+				Timer.delete(id)
+			}
+		}, Delay, Repeat)
+
+		module.exports = {
+			iterationCount: iterationCount
+		}
+	</JavaScript>
+</Panel>
