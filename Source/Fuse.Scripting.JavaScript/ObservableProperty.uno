@@ -87,7 +87,6 @@ namespace Fuse.Scripting.JavaScript
 			// UI thread
 			public void Perform()
 			{
-				// HACK: https://github.com/fusetools/fuselibs-public/issues/541#issuecomment-335101235
 				if (IsDefaultValueForType(_property.GetAsObject(), _property.PropertyType))
 				{
 					_property.SetAsObject(_value, null);
@@ -95,37 +94,47 @@ namespace Fuse.Scripting.JavaScript
 				}
 			}
 
+			/*
+				!! This is a temporary workaround !!
+
+				What we actually want to check here is wether a given ux:Property has been set at all.
+				The UX compiler doesn't (yet) produce code that keeps track of this,
+				so we compare the value against `default(T)` as a temporary heuristic until that feature has landed.
+				Since we may only evaluate `default(T)` at compile time, we would in theory need to compare against
+				the default value of every single value type ever (reference types always have a default value of null).
+
+				However, we only perform this check if there is a conflict with a value coming from JavaScript.
+				Since the value is coming from JavaScript, it needs to be marshalled to a corresponding Uno type.
+				If it cannot be marshalled, the UX value "wins" by default.
+
+				Therefore, we only need to compare against default values
+				for value types that are known to be handled by `Marshal.TryConvertTo`.
+
+				https://github.com/fusetools/fuselibs-public/issues/541#issuecomment-335101235
+			*/
 			static bool IsDefaultValueForType(object value, Uno.Type t)
 			{
-				return (!t.IsValueType && value == null)
-					|| IsDefault<bool>(value, t)
-					|| IsDefault<byte>(value, t)
-					|| IsDefault<sbyte>(value, t)
-					|| IsDefault<char>(value, t)
-					|| IsDefault<short>(value, t)
-					|| IsDefault<ushort>(value, t)
+				if (value == null)
+					return true;
+
+				if (t.IsEnum)
+					return (int)value == 0;
+
+				return IsDefault<bool>(value, t)
 					|| IsDefault<int>(value, t)
-					|| IsDefault<uint>(value, t)
-					|| IsDefault<long>(value, t)
-					|| IsDefault<ulong>(value, t)
 					|| IsDefault<float>(value, t)
 					|| IsDefault<double>(value, t)
-					|| IsDefault<int2>(value, t)
-					|| IsDefault<int3>(value, t)
-					|| IsDefault<int4>(value, t)
-					|| IsDefault<byte2>(value, t)
-					|| IsDefault<byte4>(value, t)
 					|| IsDefault<float2>(value, t)
 					|| IsDefault<float3>(value, t)
 					|| IsDefault<float4>(value, t)
 					|| IsDefault<Size>(value, t)
-					|| IsDefault<Size2>(value, t);
+					|| IsDefault<Size2>(value, t)
+					|| IsDefault<Selector>(value, t);
 			}
 
 			static bool IsDefault<T>(object value, Uno.Type t)
 			{
-				if (typeof(T) != t) return false;
-				return value.Equals(default(T));
+				return t == typeof(T) && value.Equals(default(T));
 			}
 		}
 
