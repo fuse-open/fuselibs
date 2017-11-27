@@ -229,7 +229,11 @@ namespace Fuse.Controls
 		
 		internal double ValueToRelative(double value)
 		{
-			return (value - Minimum) / (Maximum - Minimum);
+			var range = Maximum - Minimum;
+			var q = (value - Minimum) / (Maximum - Minimum);
+			//if (range == 0 || double.IsInfinity(q))
+			//	return 0;
+			return q;
 		}
 		
 		internal double StepValueToRelative( double value )

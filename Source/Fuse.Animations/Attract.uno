@@ -96,12 +96,19 @@ namespace Fuse.Animations
 			void OnValueUpdate3(float3 value) { OnValueUpdate(value); }
 			void OnValueUpdate2(float2 value) { OnValueUpdate(value); }
 			void OnValueUpdate1(float value) { OnValueUpdate(value); }
+
+			//these must be filtered out since they'll permanently break the simulation
+			bool BadValue( float4 value ) 
+			{
+				var q = value.X + value.Y + value.Z + value.W;
+				return float.IsInfinity(q) || float.IsNaN(q);
+			}
 			
 			protected override void OnNewData( IExpression source, object oValue )
 			{
 				var value = float4(0);
 				int size = 0;
-				if (!Marshal.TryToZeroFloat4(oValue, out value, out size))
+				if (!Marshal.TryToZeroFloat4(oValue, out value, out size) || BadValue(value))
 				{
 					//invalid values can simply discard the simulation (forcing a new one to be created when
 					//a good value arrives)
