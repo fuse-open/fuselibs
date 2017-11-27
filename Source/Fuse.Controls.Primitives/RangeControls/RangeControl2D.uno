@@ -52,12 +52,10 @@ namespace Fuse.Controls
 
 		public void SetValue(float2 value, IPropertyListener origin)
 		{
-			var v = ClampToRange(value);
-
-			if (v != _value)
+			if (value != _value)
 			{
-				_value = v;
-				OnValueChanged(v, origin);
+				_value = value;
+				OnValueChanged(value, origin);
 			}
 		}
 
@@ -84,20 +82,12 @@ namespace Fuse.Controls
 			set { UserStep = ValueFromRelative(value); }
 		}
 
-		float2 ClampToRange(float2 v)
-		{
-			return Math.Min(Math.Max(Minimum, v), Maximum);
-		}
-
 		public event ValueChangedHandler<float2> ValueChanged;
 		public event ValueChangedHandler<float> ValueXChanged;
 		public event ValueChangedHandler<float> ValueYChanged;
 		
 		void OnRangeChanged()
 		{
-			// Makes sure value is still clamped to range, and raises ValueChanged if this
-			// leads to a change
-			SetValue(Value, null);
 		}
 
 		void OnValueChanged(float2 value, IPropertyListener origin)

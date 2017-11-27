@@ -1,5 +1,8 @@
 # Unreleased
 
+## RangeControl
+- `RangeControl.Value` and `RangeControl2D.Value` are not longer clamped to the `Range` of the control. This fixes issues where the `Value` was incorrectly modified when the range and value were both data bound. The user behaviors `LinearRangeBehavior` and `CircularRangeBehavior` will both however clamp to the range -- the user cannot select outside the range.
+
 ## Observables and bindings
 - Fixed an issue where missing data was propagated as null. This will affect Observable's that contain zero data, and may have resulted in some bindings showing old/incorrect data.
 

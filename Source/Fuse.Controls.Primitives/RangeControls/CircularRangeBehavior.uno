@@ -291,7 +291,10 @@ namespace Fuse.Gestures
 			if (step.Y > _zeroTolerance)
 				xRad = Math.Round(xRad/step.Y) * step.Y;
 			
-			ControlRelativeValue = new double2(rel,xRad);
+			//clamp as user can't select outside acceptable range
+			ControlRelativeValue = new double2(
+				Math.Clamp(rel,0,1),
+				Math.Clamp(xRad,0,1));
 		}
 		
 		double CurrentRadius

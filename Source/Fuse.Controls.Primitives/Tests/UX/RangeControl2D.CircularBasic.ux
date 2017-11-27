@@ -1,0 +1,5 @@
+<RangeControl2D ux:Class="UX.RangeControl2D.CircularBasic" Minimum="0,100" Maximum="120,200" Value="90,150" ux:Name="rc" HitTestMode="LocalBounds">
+	<CircularRangeBehavior ux:Name="crb" 
+		StartAngleDegrees="90" EndAngleDegrees="270"
+		MinimumRadius="0.5" MaximumRadius="1"/>
+</RangeControl2D>
