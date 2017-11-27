@@ -231,8 +231,9 @@ namespace Fuse.Controls
 		{
 			var range = Maximum - Minimum;
 			var q = (value - Minimum) / (Maximum - Minimum);
-			//if (range == 0 || double.IsInfinity(q))
-			//	return 0;
+			//this would most likely happen if the range and values are data bound, thus likely a temporary condition
+			if (range == 0 || double.IsInfinity(q))
+				return 0;
 			return q;
 		}
 		
