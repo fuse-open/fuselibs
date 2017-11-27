@@ -149,7 +149,7 @@ namespace Fuse.Gestures
 			var step = Control.RelativeUserStep;
 			var r = PositionToValue(pos);
 			var q = step > 0 ? Math.Round(r/step) * step : r;
-			Control.RelativeValue = q;
+			Control.RelativeValue = Math.Clamp(q,0,1);
 		}
 
 		double PositionToValue(float2 pos)

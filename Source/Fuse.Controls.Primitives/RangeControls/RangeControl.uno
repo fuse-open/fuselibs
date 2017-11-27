@@ -45,6 +45,8 @@ namespace Fuse.Controls
 		/** Minimum value of the RangeControl. Defaults to 0
 
 			This is the left/top value of the RangeControl and may be a value larger than Maximum.
+			
+			@see Range
 		*/
 		public double Minimum
 		{
@@ -64,6 +66,8 @@ namespace Fuse.Controls
 			Maximum value of the RangeControl. Defaults to 100 
 		
 			This is the bottom/right value of the RangeControl and may be a value smaller than Minimum.
+			
+			@see Range
 		*/
 		public double Maximum
 		{
@@ -82,6 +86,10 @@ namespace Fuse.Controls
 			The range of values covered by the control.
 			
 			This maps to `Minimum, Maximum`.
+			
+			This range is not enforced by the `RangeControl`, the actual `Value` may be programmatically set outside the desired range. This is required to support bound values correctly where the order of  setting `Range` and `Value` is undefined. 
+			
+			The standard range behaviours @LinearRangeBehavior and @CircularRangeBehavior will clamp the user's selection to the range.
 		*/
 		public float2 Range
 		{
@@ -93,15 +101,6 @@ namespace Fuse.Controls
 			}
 		}
 
-		double EffectiveMinimum
-		{
-			get { return Minimum < Maximum ? Minimum : Maximum; }
-		}
-		double EffectiveMaximum
-		{
-			get { return Minimum < Maximum ? Maximum : Minimum; }
-		}
-		
 		double _value = 0.0;
 		[UXOriginSetter("SetValue")]
 		/**
@@ -131,12 +130,10 @@ namespace Fuse.Controls
 
 		public void SetValue(double value, IPropertyListener origin)
 		{
-			var v = ClampToRange(value);
-
-			if (v != _value)
+			if (value != _value)
 			{
-				_value = v;
-				OnValueChanged(v, origin);
+				_value = value;
+				OnValueChanged(value, origin);
 			}
 
 			var rv = RangeView;
@@ -175,11 +172,6 @@ namespace Fuse.Controls
 			set { UserStep = StepValueFromRelative(value); }
 		}
 
-		double ClampToRange(double v)
-		{
-			return Math.Min(Math.Max(EffectiveMinimum, v), EffectiveMaximum);
-		}
-
 		public event ValueChangedHandler<double> ValueChanged;
 		
 		public event ValueChangedHandler<double> ProgressChanged
@@ -190,9 +182,6 @@ namespace Fuse.Controls
 
 		void OnRangeChanged()
 		{
-			// Makes sure value is still clamped to range, and raises ValueChanged if this
-			// leads to a change
-			SetValue(Value, null);
 			OnProgressChanged();
 		}
 

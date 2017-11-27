@@ -99,5 +99,23 @@ namespace Fuse.Gestures.Test
 			}
 		}
 		
+		[Test]
+		//values can be outside range, but user can't select them
+		public void RangeValue()
+		{
+			var p = new UX.RangeControl.RangeValue();
+			using (var root = TestRootPanel.CreateWithChild(p,int2(300)))
+			{
+				Assert.AreEqual(150, p.rc.Value);
+				
+				root.PointerSwipe( float2(150,150), float2(250,150) );
+				Assert.AreEqual(100, p.rc.Value);
+				
+				p.rc.Value = -50;
+				root.PumpDeferred();
+				Assert.AreEqual(-50, p.rc.Value);
+			}
+		}
+		
 	}
 }

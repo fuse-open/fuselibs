@@ -1,0 +1,5 @@
+<Panel ux:Class="UX.RangeControl.RangeValue" Padding="100">
+	<RangeControl Minimum="0" Maximum="100" Value="150" ux:Name="rc" HitTestMode="LocalBounds">
+		<LinearRangeBehavior ux:Name="LRB"/>
+	</RangeControl>
+</Panel>
