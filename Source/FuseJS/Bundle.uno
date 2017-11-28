@@ -81,10 +81,9 @@ namespace FuseJS
 			```
 			var Bundle = require("FuseJS/Bundle");
 			
-			Bundle.list()
-				.then(function(list) {
-					//list is an array of paths, such as "assets/image.jpg"
-				})
+			Bundle.list().then(function(list) {
+				//list is an array of paths, such as "assets/image.jpg"
+			});
 			```
 		*/
 		public static Future<IEnumerable<BundleFile>> GetList(object[] args = null)
