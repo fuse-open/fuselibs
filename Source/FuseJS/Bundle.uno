@@ -46,11 +46,9 @@ namespace FuseJS
 			var ImageTools = require("FuseJS/ImageTools");
 			var imageUrlToDisplay = Observable();
 			
-			Bundle.readBuffer('assets/image.jpg')
-				.then(function(buffer) {
-					//Do something with the image data here
-				})
-			}
+			Bundle.readBuffer("assets/image.jpg").then(function(buffer) {
+				//Do something with the image data here
+			});
 			```
 		*/
 		public static Future<byte[]> ReadBuffer(object[] args)
@@ -81,11 +79,9 @@ namespace FuseJS
 			```
 			var Bundle = require("FuseJS/Bundle");
 			
-			Bundle.list()
-				.then(function(list) {
-					//list is an array of paths, such as "assets/image.jpg"
-				})
-			}
+			Bundle.list().then(function(list) {
+				//list is an array of paths, such as "assets/image.jpg"
+			});
 			```
 		*/
 		public static Future<IEnumerable<BundleFile>> GetList(object[] args = null)
@@ -132,10 +128,9 @@ namespace FuseJS
 			var Observable = require("FuseJS/Observable");
 			var urlForWebView = Observable();
 			
-			Bundle.extract('assets/site/page.html', FileSystem.dataDirectory + 'site/page.html')
-				.then(function(resultPath){
-					urlForWebView.value = "file://"+resultPath;
-				})
+			Bundle.extract("assets/site/page.html", FileSystem.dataDirectory + "site/page.html").then(function(resultPath) {
+				urlForWebView.value = "file://" + resultPath;
+			});
 			```
 		*/
 		public static Future<string> Extract(object[] args)
@@ -162,12 +157,11 @@ namespace FuseJS
 			```
 			var Bundle = require("FuseJS/Bundle");
 			
-			Bundle.read("someData.json")
-				.then(function(contents) {
-					console.log(contents);
-				}, function(error) {
-					console.log("Error!", error);
-				});
+			Bundle.read("someData.json").then(function(contents) {
+				console.log(contents);
+			}, function(error) {
+				console.log("Error!", error);
+			});
 			```
 		*/
 		public static Future<string> ReadAsync(object[] args)
