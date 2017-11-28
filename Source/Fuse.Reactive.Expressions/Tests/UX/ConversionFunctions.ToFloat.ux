@@ -1,0 +1,9 @@
+<Panel ux:Class="UX.ConversionFunctions.ToFloat">
+	<FuseTest.DudElement ObjectValue="float( '4' )" ux:Name="f1"/>
+	<FuseTest.DudElement ObjectValue="float( (2,3) )" ux:Name="f2"/>
+	<FuseTest.DudElement ObjectValue="float( (4,2,3) )" ux:Name="f3"/>
+	<FuseTest.DudElement ObjectValue="float( (4,5,2,3) )" ux:Name="f4"/>
+	
+	<FuseTest.Value String="8" ux:Name="v"/>
+	<FuseTest.DudElement BoolValue="isDefined(float({Property v.Object}))" ux:Name="b"/>
+</Panel>

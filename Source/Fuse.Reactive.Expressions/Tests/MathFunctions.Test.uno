@@ -226,6 +226,6 @@ namespace Fuse.Reactive.Test
 				Assert.AreEqual(float4(10,10,20,15), p.clamp.Float4);
 			}
 		}
-		
+	
 	}
 }

@@ -1,5 +1,8 @@
 # Unreleased
 
+## Conversions
+- Added `float()` expression to force conversion to float values
+
 ## Let
 - Introduced an experimental `Let` feature that allows creating expression aliases and local variables in UX
 
