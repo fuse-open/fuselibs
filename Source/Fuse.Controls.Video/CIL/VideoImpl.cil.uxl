@@ -1,9 +1,9 @@
 <Extensions Backend="CIL">
 
 	<Require Assembly="Lib/Fuse.Video.CILInterface.dll" />
-	<Require Assembly="Lib/Fuse.Video.Mono.dll" />
-	<Require Assembly="Lib/Fuse.Video.WPF.dll" />
-	<Require Assembly="Lib/DirectShowLib.dll" />
+	<Require Assembly="Lib/Fuse.Video.Mono.dll" Condition="!HOST_WIN32" />
+	<Require Assembly="Lib/Fuse.Video.WPF.dll" Condition="HOST_WIN32" />
+	<Require Assembly="Lib/DirectShowLib.dll" Condition="HOST_WIN32" />
 	<Require Assembly="Lib/Fuse.Video.CIL.dll" />
 	
 </Extensions>
