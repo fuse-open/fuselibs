@@ -85,7 +85,6 @@ namespace FuseJS
 				.then(function(list) {
 					//list is an array of paths, such as "assets/image.jpg"
 				})
-			}
 			```
 		*/
 		public static Future<IEnumerable<BundleFile>> GetList(object[] args = null)
