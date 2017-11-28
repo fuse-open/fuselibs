@@ -1,0 +1,15 @@
+<Panel ux:Class="UX.Let.TwoWayProperty">
+	<Panel ux:Class="TWPInner">
+		<string ux:Property="title"/>
+		<Let ux:Name="lTitle" Value="{Property this.title}"/>
+		<Text Value="{lTitle}" ux:Name="t"/>
+		<Text Value="{Property this.title}" ux:Name="pt"/>
+		
+		<Timeline ux:Name="set">
+			<Set lTitle.Value="{= 'flip' }"/>
+		</Timeline>
+	</Panel>
+	
+	<Let ux:Name="outer" Value=" 'init' "/>
+	<TWPInner title="{outer}" ux:Name="inner"/>
+</Panel>

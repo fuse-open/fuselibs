@@ -1,0 +1,32 @@
+<Panel ux:Class="UX.Let.Observable">
+	<JavaScript>
+		var Observable = require("FuseJS/Observable")
+		
+		exports.oInt = Observable(2)
+		exports.oArray = Observable(1,2,3)
+		
+		exports.step1 = function() {
+			exports.oInt.value = 3
+			exports.oArray.add(4)
+		}
+	</JavaScript>
+	
+	<Let ux:Name="pInt" Value="{oInt}"/>
+	<Let ux:Name="pArray" Value="{oArray}"/>
+	
+	<FuseTest.DudElement Value="{pInt}" ux:Name="d"/>
+	<FuseTest.DudElement Value="{Property pInt.Value}" ux:Name="dp"/>
+	
+	<Panel ux:Name="e">
+		<Each Items="{pArray}">
+			<FuseTest.DudElement Value="{}"/>
+		</Each>
+	</Panel>
+	<Panel ux:Name="ep">
+		<Each Items="{Property pArray.Value}">
+			<FuseTest.DudElement Value="{}"/>
+		</Each>
+	</Panel>
+
+	<FuseTest.Invoke Handler="{step1}" ux:Name="callStep1"/>
+</Panel>

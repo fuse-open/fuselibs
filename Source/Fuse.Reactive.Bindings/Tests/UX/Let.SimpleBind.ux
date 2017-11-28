@@ -1,0 +1,6 @@
+<Panel ux:Class="UX.Let.SimpleBind">
+	<Let ux:Name="a" Value="{Property slider.Value} + 1"/>
+	<Slider ux:Name="slider" Minimum="0" Maximum="100" Value="50"/>
+	
+	<FuseTest.DudElement Value="{Property a.Value}" ux:Name="d"/>
+</Panel>

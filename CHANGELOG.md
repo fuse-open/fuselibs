@@ -1,5 +1,8 @@
 # Unreleased
 
+## Let
+- Introduced an experimental `Let` feature that allows creating expression aliases and local variables in UX
+
 ## Timer
 - Fixed issue where creating a repeating `Timer` with 0 delay in JavaScript would not prevent the worker thread to become idle.
 

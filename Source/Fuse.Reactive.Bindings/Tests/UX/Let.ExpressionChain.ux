@@ -1,0 +1,11 @@
+<Panel ux:Class="UX.Let.ExpressionChain">
+	<Let ux:Name="a" Value="{= 2 }"/>
+	<Let ux:Name="b" Value="{= 3 }"/>
+	<Let ux:Name="c" Value="{a} + {b}"/>
+	
+	<FuseTest.DudElement Value="{c}" ux:Name="oc"/>
+	
+	<Timeline ux:Name="set">
+		<Set a.Value="{= 4 }"/>
+	</Timeline>
+</Panel>
