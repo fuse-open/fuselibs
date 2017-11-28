@@ -10,9 +10,10 @@ namespace Fuse.Reactive
 		{
 		}
 
-		protected override object Compute(object name, object value)
+		protected override bool Compute(object name, object value, out object result)
 		{
-			return new Fuse.NameValuePair(name.ToString(), value);
+			result = new Fuse.NameValuePair(name.ToString(), value);
+			return true;
 		}
 	}
 }

@@ -8,9 +8,10 @@ namespace Fuse.Reactive
 	{
 		[UXConstructor]
 		public Min([UXParameter("Left")] Expression left, [UXParameter("Right")] Expression right): base(left, right) {}
-		protected override object Compute(object left, object right)
+		protected override bool Compute(object left, object right, out object result)
 		{
-			return Marshal.Min(left, right);
+			result = Marshal.Min(left, right);
+			return true;
 		}
 
 		public override string ToString()
@@ -24,9 +25,10 @@ namespace Fuse.Reactive
 	{
 		[UXConstructor]
 		public Max([UXParameter("Left")] Expression left, [UXParameter("Right")] Expression right): base(left, right) {}
-		protected override object Compute(object left, object right)
+		protected override bool Compute(object left, object right, out object result)
 		{
-			return Marshal.Max(left, right);
+			result = Marshal.Max(left, right);
+			return true;
 		}
 
 		public override string ToString()
@@ -40,9 +42,10 @@ namespace Fuse.Reactive
 	{
 		[UXConstructor]
 		public Mod([UXParameter("Left")] Expression left, [UXParameter("Right")] Expression right): base(left, right) {}
-		protected override object Compute(object left, object right)
+		protected override bool Compute(object left, object right, out object result)
 		{
-			return Math.Mod( Marshal.ToFloat(left), Marshal.ToFloat(right) );
+			result = Math.Mod( Marshal.ToFloat(left), Marshal.ToFloat(right) );
+			return true;
 		}
 
 		public override string ToString()
@@ -57,14 +60,16 @@ namespace Fuse.Reactive
 	{
 		[UXConstructor]
 		public Even([UXParameter("Operand")] Expression operand): base(operand) {}
-		protected override object Compute(object operand)
+		protected override bool Compute(object operand, out object result)
 		{
+			result = null;
 			float v = 0;
 			if (!Marshal.TryToType<float>(operand, out v))
-				return null;
+				return false;
 				
 			var q = (int)Math.Round(v);
-			return q % 2 == 0;
+			result = q % 2 == 0;
+			return true;
 		}
 
 		public override string ToString()
@@ -79,14 +84,16 @@ namespace Fuse.Reactive
 	{
 		[UXConstructor]
 		public Odd([UXParameter("Operand")] Expression operand): base(operand) {}
-		protected override object Compute(object operand)
+		protected override bool Compute(object operand, out object result)
 		{
+			result = null;
 			float v = 0;
 			if (!Marshal.TryToType<float>(operand, out v))
-				return null;
+				return false;
 				
 			var q = (int)Math.Round(v);
-			return q % 2 != 0;
+			result = q % 2 != 0;
+			return true;
 		}
 
 		public override string ToString()
@@ -113,19 +120,21 @@ namespace Fuse.Reactive
 	{
 		[UXConstructor]
 		public Alternate([UXParameter("Left")] Expression left, [UXParameter("Right")] Expression right): base(left, right) {}
-		protected override object Compute(object left, object right)
+		protected override bool Compute(object left, object right, out object result)
 		{
+			result = null;
 			float fvalue = 0;
 			float fgroup = 0;
 			if (!Marshal.TryToType<float>(left, out fvalue) ||
 				!Marshal.TryToType<float>(right, out fgroup))
-				return null;
+				return false;
 			var value = (int)Math.Round(fvalue);
 			var group = (int)Math.Round(fgroup);
 			var b = value >= 0 ? 
 				(value % (group*2)) < group: 
 				( -(value+1) % (group*2)) >= group;
-			return b;
+			result = b;
+			return true;
 		}
 
 		public override string ToString()
@@ -152,8 +161,9 @@ namespace Fuse.Reactive
 			_name = name;
 			_op = op;
 		}
-		protected override object Compute(object operand)
+		protected override bool Compute(object operand, out object result)
 		{
+			result = null;
 			float4 v;
 			int size;
 			if (Marshal.TryToZeroFloat4(operand, out v, out size))
@@ -161,17 +171,21 @@ namespace Fuse.Reactive
 				switch (size)
 				{
 					case 1:
-						return _op(v[0]);
+						result = (float)_op(v[0]);
+						return true;
 					case 2:
-						return float2((float)_op(v[0]),(float)_op(v[1]));
+						result = float2((float)_op(v[0]),(float)_op(v[1]));
+						return true;
 					case 3:
-						return float3((float)_op(v[0]),(float)_op(v[1]),(float)_op(v[2]));
+						result = float3((float)_op(v[0]),(float)_op(v[1]),(float)_op(v[2]));
+						return true;
 					case 4:
-						return float4((float)_op(v[0]),(float)_op(v[1]),(float)_op(v[2]),(float)_op(v[3]));
+						result = float4((float)_op(v[0]),(float)_op(v[1]),(float)_op(v[2]),(float)_op(v[3]));
+						return true;
 				}
 			}
 				
-			return null;
+			return false;
 		}
 		public override string ToString()
 		{
@@ -193,14 +207,17 @@ namespace Fuse.Reactive
 			_name = name;
 			_op = op;
 		}
-		protected override object Compute(object left, object right)
+		protected override bool Compute(object left, object right, out object result)
 		{
+			result = null;
+			
 			double lv = 0;
 			double rv = 0;
 			if (!Marshal.TryToType<double>(left, out lv) ||
 				!Marshal.TryToType<double>(right, out rv))
-				return null;
-			return _op(lv, rv);
+				return false;
+			result = _op(lv, rv);
+			return true;
 		}
 		public override string ToString()
 		{
@@ -420,30 +437,35 @@ namespace Fuse.Reactive
 			[UXParameter("Third")] Expression third) : 
 			base(first, second, third) 
 		{ }
-		protected override object Compute(object a, object b, object t)
+		protected override bool Compute(object a, object b, object t, out object result)
 		{
+			result = null;
 			float4 av = float4(0), bv = float4(0);
 			int asize = 0, bsize = 0;
 			float tv = 0;
 			if (!Marshal.TryToZeroFloat4(a, out av, out asize) ||	
 				!Marshal.TryToZeroFloat4(b, out bv, out bsize) ||
 				!Marshal.TryToType<float>(t, out tv))
-				return null;
+				return false;
 			int size = Math.Max(asize, bsize);
 			
 			switch (size)
 			{
 				case 1:
-					return Math.Lerp(av.X, bv.X, tv);
+					result = Math.Lerp(av.X, bv.X, tv);
+					return true;
 				case 2:
-					return Math.Lerp(av.XY, bv.XY, tv);
+					result = Math.Lerp(av.XY, bv.XY, tv);
+					return true;
 				case 3:
-					return Math.Lerp(av.XYZ, bv.XYZ, tv);
+					result = Math.Lerp(av.XYZ, bv.XYZ, tv);
+					return true;
 				case 4:
-					return Math.Lerp(av, bv, tv);
+					result = Math.Lerp(av, bv, tv);
+					return true;
 			}
 				
-			return null;
+			return false;
 		}
 		public override string ToString()
 		{
@@ -472,26 +494,29 @@ namespace Fuse.Reactive
 			[UXParameter("Third")] Expression third) : 
 			base(first, second, third) 
 		{ }
-		protected override object Compute(object a, object mn, object mx)
+		protected override bool Compute(object a, object mn, object mx, out object result)
 		{
+			result = null;
 			float4 av = float4(0);
 			float mxv = 0, mnv = 0;
 			int size = 0;
 			if (!Marshal.TryToZeroFloat4(a, out av, out size) ||
 				!Marshal.TryToType<float>(mn, out mnv) ||
 				!Marshal.TryToType<float>(mx, out mxv))
-				return null;
+				return false;
 			
 			if (size == 1)
-				return Math.Clamp(av.X, mnv, mxv);
-			if (size == 2)
-				return Math.Clamp(av.XY, mnv, mxv);
-			if (size == 3)
-				return Math.Clamp(av.XYZ, mnv, mxv);
-			if (size == 4)
-				return Math.Clamp(av, mnv, mxv);
+				result = Math.Clamp(av.X, mnv, mxv);
+			else if (size == 2)
+				result = Math.Clamp(av.XY, mnv, mxv);
+			else if (size == 3)
+				result = Math.Clamp(av.XYZ, mnv, mxv);
+			else if (size == 4)
+				result = Math.Clamp(av, mnv, mxv);
+			else
+				return false;
 				
-			return null;
+			return true;
 		}
 		public override string ToString()
 		{

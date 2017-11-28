@@ -30,7 +30,7 @@ namespace Fuse.Reactive
 		protected virtual bool IsThirdOptional { get { return false; } }
 		protected virtual bool IsFourthOptional { get { return false; } }
 
-		protected abstract object Compute(object first, object second, object third, object fourth);
+		protected abstract bool Compute(object first, object second, object third, object fourth, out object result);
 
 		class Subscription: InnerListener
 		{
@@ -96,8 +96,17 @@ namespace Fuse.Reactive
 				{
 					if ((_hasFirst || _qo.IsFirstOptional) && (_hasSecond || _qo.IsSecondOptional) && (_hasThird || _qo.IsThirdOptional) && (_hasFourth || _qo.IsFourthOptional))
 					{
-						_hasData = true;
-						_listener.OnNewData(_qo, _qo.Compute(_first, _second, _third, _fourth));
+						object result;
+						if (_qo.Compute(_first, _second, _third, _fourth, out result))
+						{
+							_hasData = true;
+							_listener.OnNewData(_qo, result);
+						}
+						else if (_hasData)
+						{
+							_hasData = false;
+							_listener.OnLostData(_qo);
+						}
 					}
 					else if (_hasData)
 					{

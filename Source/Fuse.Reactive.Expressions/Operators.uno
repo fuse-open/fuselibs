@@ -20,9 +20,10 @@ namespace Fuse.Reactive
 	{
 		[UXConstructor]
 		public Add([UXParameter("Left")] Expression left, [UXParameter("Right")] Expression right): base(left, right) {}
-		protected override object Compute(object left, object right)
+		protected override bool Compute(object left, object right, out object result)
 		{
-			return Marshal.Add(left, right);
+			result = Marshal.Add(left, right);
+			return true;
 		}
 
 		public override string Symbol { get { return "+"; } } 
@@ -32,9 +33,10 @@ namespace Fuse.Reactive
 	{
 		[UXConstructor]
 		public Subtract([UXParameter("Left")] Expression left, [UXParameter("Right")] Expression right): base(left, right) {}
-		protected override object Compute(object left, object right)
+		protected override bool Compute(object left, object right, out object result)
 		{
-			return Marshal.Subtract(left, right);
+			result = Marshal.Subtract(left, right);
+			return true;
 		}
 
 		public override string Symbol { get { return "-"; } } 
@@ -44,9 +46,10 @@ namespace Fuse.Reactive
 	{
 		[UXConstructor]
 		public Multiply([UXParameter("Left")] Expression left, [UXParameter("Right")] Expression right): base(left, right) {}
-		protected override object Compute(object left, object right)
+		protected override bool Compute(object left, object right, out object result)
 		{
-			return Marshal.Multiply(left, right);
+			result = Marshal.Multiply(left, right);
+			return true;
 		}
 
 		public override string Symbol { get { return "*"; } } 
@@ -56,9 +59,10 @@ namespace Fuse.Reactive
 	{
 		[UXConstructor]
 		public Divide([UXParameter("Left")] Expression left, [UXParameter("Right")] Expression right): base(left, right) {}
-		protected override object Compute(object left, object right)
+		protected override bool Compute(object left, object right, out object result)
 		{
-			return Marshal.Divide(left, right);
+			result = Marshal.Divide(left, right);
+			return true;
 		}
 
 		public override string Symbol { get { return "/"; } } 
@@ -70,11 +74,12 @@ namespace Fuse.Reactive
 		public Conditional([UXParameter("Condition")] Expression condition, [UXParameter("TrueValue")] Expression trueValue, [UXParameter("FalseValue")] Expression falseValue)
 			: base(condition, trueValue, falseValue) {}
 
-		protected override object Compute(object cond, object trueVal, object falseVal)
+		protected override bool Compute(object cond, object trueVal, object falseVal, out object result)
 		{
-			if (cond == null) return null;
-			if ((bool)Marshal.ToBool(cond)) return trueVal;
-			return falseVal;
+			result = null;
+			if (cond == null) return false;
+			result = ((bool)Marshal.ToBool(cond)) ? trueVal : falseVal;
+			return true;
 		}
 
 		protected override bool IsThirdOptional { get { return true; } }
@@ -89,9 +94,10 @@ namespace Fuse.Reactive
 	{
 		[UXConstructor]
 		public LessThan([UXParameter("Left")] Expression left, [UXParameter("Right")] Expression right): base(left, right) {}
-		protected override object Compute(object left, object right)
+		protected override bool Compute(object left, object right, out object result)
 		{
-			return Marshal.LessThan(left, right);
+			result = Marshal.LessThan(left, right);
+			return true;
 		}
 
 		public override string Symbol { get { return "<"; } } 
@@ -101,9 +107,10 @@ namespace Fuse.Reactive
 	{
 		[UXConstructor]
 		public GreaterThan([UXParameter("Left")] Expression left, [UXParameter("Right")] Expression right): base(left, right) {}
-		protected override object Compute(object left, object right)
+		protected override bool Compute(object left, object right, out object result)
 		{
-			return Marshal.GreaterThan(left, right);
+			result = Marshal.GreaterThan(left, right);
+			return true;
 		}
 
 		public override string Symbol { get { return ">"; } } 
@@ -113,10 +120,12 @@ namespace Fuse.Reactive
 	{
 		[UXConstructor]
 		public GreaterOrEqual([UXParameter("Left")] Expression left, [UXParameter("Right")] Expression right): base(left, right) {}
-		protected override object Compute(object left, object right)
+		protected override bool Compute(object left, object right, out object result)
 		{
-			if (left == null || right == null) return null;
-			return (bool)Marshal.GreaterThan(left, right) || (bool)Marshal.EqualTo(left, right);
+			result = null;
+			if (left == null || right == null) return false;
+			result = (bool)Marshal.GreaterThan(left, right) || (bool)Marshal.EqualTo(left, right);
+			return true;
 		}
 
 		public override string Symbol { get { return ">="; } } 
@@ -126,10 +135,12 @@ namespace Fuse.Reactive
 	{
 		[UXConstructor]
 		public LessOrEqual([UXParameter("Left")] Expression left, [UXParameter("Right")] Expression right): base(left, right) {}
-		protected override object Compute(object left, object right)
+		protected override bool Compute(object left, object right, out object result)
 		{
-			if (left == null || right == null) return null;
-			return (bool)Marshal.LessThan(left, right) || (bool)Marshal.EqualTo(left, right);
+			result = null;
+			if (left == null || right == null) return false;
+			result = (bool)Marshal.LessThan(left, right) || (bool)Marshal.EqualTo(left, right);
+			return true;
 		}
 
 		public override string Symbol { get { return "<="; } } 
@@ -139,9 +150,10 @@ namespace Fuse.Reactive
 	{
 		[UXConstructor]
 		public Equal([UXParameter("Left")] Expression left, [UXParameter("Right")] Expression right): base(left, right) {}
-		protected override object Compute(object left, object right)
+		protected override bool Compute(object left, object right, out object result)
 		{
-			return Marshal.EqualTo(left, right);
+			result = Marshal.EqualTo(left, right);
+			return true;
 		}
 
 		public override string Symbol { get { return "=="; } } 
@@ -151,10 +163,12 @@ namespace Fuse.Reactive
 	{
 		[UXConstructor]
 		public NotEqual([UXParameter("Left")] Expression left, [UXParameter("Right")] Expression right): base(left, right) {}
-		protected override object Compute(object left, object right)
+		protected override bool Compute(object left, object right, out object result)
 		{
-			if (left == null || right == null) return null;
-			return !(bool)Marshal.EqualTo(left, right);
+			result = null;
+			if (left == null || right == null) return false;
+			result = !(bool)Marshal.EqualTo(left, right);
+			return true;
 		}
 
 		public override string Symbol { get { return "!="; } } 
@@ -164,10 +178,12 @@ namespace Fuse.Reactive
 	{
 		[UXConstructor]
 		public LogicalAnd([UXParameter("Left")] Expression left, [UXParameter("Right")] Expression right): base(left, right) {}
-		protected override object Compute(object left, object right)
+		protected override bool Compute(object left, object right, out object result)
 		{
-			if (left == null || right == null) return null;
-			return (bool)Marshal.ToBool(left) && (bool)Marshal.ToBool(right);
+			result = null;
+			if (left == null || right == null) return false;
+			result = (bool)Marshal.ToBool(left) && (bool)Marshal.ToBool(right);
+			return true;
 		}
 
 		public override string Symbol { get { return "&&"; } } 
@@ -177,10 +193,12 @@ namespace Fuse.Reactive
 	{
 		[UXConstructor]
 		public LogicalOr([UXParameter("Left")] Expression left, [UXParameter("Right")] Expression right): base(left, right) {}
-		protected override object Compute(object left, object right)
+		protected override bool Compute(object left, object right, out object result)
 		{
-			if (left == null || right == null) return null;
-			return (bool)Marshal.ToBool(left) || (bool)Marshal.ToBool(right);
+			result = null;
+			if (left == null || right == null) return false;
+			result = (bool)Marshal.ToBool(left) || (bool)Marshal.ToBool(right);
+			return true;
 		}
 
 		public override string Symbol { get { return "||"; } } 

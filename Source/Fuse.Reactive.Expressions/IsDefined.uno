@@ -104,9 +104,10 @@ namespace Fuse.Reactive
 	{
 		[UXConstructor]
 		public IsNull([UXParameter("Operand")] Expression operand): base(operand) {}
-		protected override object Compute(object operand)
+		protected override bool Compute(object operand, out object result)
 		{
-			return operand == null;
+			result = operand == null;
+			return true;
 		}
 
 		public override string ToString()
