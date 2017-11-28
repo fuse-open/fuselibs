@@ -16,4 +16,23 @@ namespace Fuse.Reactive
 			return v;
 		}
 	}
+	
+	[UXFunction("string")]
+	/** Forces conversion to a string value. */
+	public sealed class ToString : UnaryOperator
+	{
+		[UXConstructor]
+		public ToString([UXParameter("Operand")] Expression operand)
+			: base(operand) { }
+			
+		protected override bool Compute(object operand, out object result)
+		{
+			result = null;
+			if (operand == null)
+				return false;
+				
+			result = operand.ToString();
+			return true;
+		}
+	}
 }

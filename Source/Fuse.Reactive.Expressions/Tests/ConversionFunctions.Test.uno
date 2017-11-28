@@ -39,5 +39,40 @@ namespace Fuse.Reactive.Test
 				Assert.Contains( "Failed to compute", d[0].Message );
 			}
 		}
+		
+		[Test]
+		public void ToString()
+		{
+			var p = new UX.ConversionFunctions.ToString();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				Assert.AreEqual( "hiya", p.s1.UseValue );
+				Assert.AreEqual( "2", p.s2.UseValue );
+			}
+		}
+		
+		[Test]
+		public void FailString()
+		{
+			var p = new UX.ConversionFunctions.FailString();
+			using (var dg = new RecordDiagnosticGuard())
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				Assert.IsFalse( p.b.BoolValue );
+				
+				p.v.String = "abc";
+				root.PumpDeferred();
+				Assert.IsTrue( p.b.BoolValue );
+				
+ 				p.v.String = null;
+ 				root.PumpDeferred();
+ 				Assert.IsFalse( p.b.BoolValue );
+				
+				var d = dg.DequeueAll();
+				Assert.IsTrue( d.Count ==2 || d.Count == 3); //don't want to be too strict yet, reporting is not perfect
+				Assert.Contains( "Failed to compute", d[0].Message );
+				Assert.Contains( "Failed to compute", d[1].Message );
+			}
+		}
 	}
 }
