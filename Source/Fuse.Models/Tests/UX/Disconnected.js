@@ -11,7 +11,7 @@ class Inner {
 var cur = new Inner(5)
 var next = new Inner(10)
 
-export class Disconnected {
+export default class Disconnected {
 	constructor() {
 		this.inner = cur
 	}

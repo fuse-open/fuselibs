@@ -1,4 +1,4 @@
-export class ListOrder {
+export default class ListOrder {
 	constructor() { 
 		this.items = [ 2, 3 ]
 		

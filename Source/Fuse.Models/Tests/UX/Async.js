@@ -1,5 +1,5 @@
 
-export class Async {
+export default class Async {
 	constructor() {
 		this.foo = 10;
 	}

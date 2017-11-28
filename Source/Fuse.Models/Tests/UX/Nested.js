@@ -8,7 +8,7 @@ class Inner {
 	}
 }
 
-export class Nested {
+export default class Nested {
 	constructor() { 
 		this.a = new Inner(1)
 		this.b = new Inner(2)

@@ -23,7 +23,7 @@ class TodoList {
 	}
 }
 
-export class ReplaceAt {
+export default class ReplaceAt {
 	constructor() {
 		this.todoList = new TodoList()
 		this.feedTheCat = feedTheCat = this.todoList.todos[1]

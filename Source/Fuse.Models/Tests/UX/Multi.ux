@@ -1,11 +1,18 @@
-<Panel ux:Class="UX.Model.Multi" Model="UX/Multi(1)">
-	<FuseTest.DudElement Value="{value}" ux:Name="a"/>
+<Panel ux:Class="UX.Model.Multi">
+
+	<Panel ux:Class="_Inner" Model="UX/Multi">
+		<float ux:Property="Value" />
+	</Panel>
+
+	<_Inner Value="1">
+		<FuseTest.DudElement Value="{value}" ux:Name="a"/>
+	</_Inner>
 	
-	<Panel Model="UX/Multi(2)">
+	<_Inner Value="2">
 		<FuseTest.DudElement Value="{value}" ux:Name="b"/>
-	</Panel>
+	</_Inner>
 	
-	<Panel Model="UX/Multi(3)">
+	<_Inner Value="3">
 		<FuseTest.DudElement Value="{value}" ux:Name="c"/>
-	</Panel>
+	</_Inner>
 </Panel>

@@ -1,4 +1,4 @@
-export class Loop {
+export default class Loop {
 	constructor() {
 		this.next = this
 		this.value = "%"

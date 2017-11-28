@@ -1,4 +1,4 @@
-export class Function {
+export default class Function {
 	constructor() {
 		this.count = 3
 	}

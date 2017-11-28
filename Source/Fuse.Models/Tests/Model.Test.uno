@@ -251,7 +251,7 @@ namespace Fuse.Models.Test
 		}
 
 		[Test]
-		public void MultiBasic()
+		public void Multi()
 		{
 			var e = new UX.Model.Multi();
 			using (var root = TestRootPanel.CreateWithChild(e))

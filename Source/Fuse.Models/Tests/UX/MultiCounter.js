@@ -1,6 +1,6 @@
 import Counter from "./MultiCounter_Counter"
 
-export class MultiCounter {
+export default class MultiCounter {
 	constructor() {
 		this.counters = [ new Counter() ];
 	}

@@ -1,6 +1,6 @@
 var instCount = 0
 
-export class Bind {
+export default class Bind {
 	constructor(view) {
 		this.id = instCount++
 		this.Load = 5

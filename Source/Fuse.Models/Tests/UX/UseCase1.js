@@ -4,7 +4,7 @@ class Item {
 	}
 }
 
-export class UseCase1 {
+export default class UseCase1 {
 	constructor() {
 		this.items = [ "one", "two", "three", "four", "five" ].map( n => new Item(n) )
 		this.sel = [ this.items[4] ]

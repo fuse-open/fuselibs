@@ -12,7 +12,7 @@ class Inner {
 	}
 }
 
-export class NestedAccessor {
+export default class NestedAccessor {
 	constructor() {
 		this.inner = new Inner()
 	}

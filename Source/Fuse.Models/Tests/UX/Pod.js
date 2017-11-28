@@ -1,4 +1,4 @@
-export class Pod {
+export default class Pod {
 	constructor() {
 		this.data = {
 			value: "a",
