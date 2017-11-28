@@ -127,7 +127,23 @@ For Android we can use exactly the same `'aps'` entry or the alternatively the f
 
 The `notification` entry is the standard Google way of doing this but we felt that it wouldn't hurt to support the Apple way too.
 
-> The current implementation only guarantees the `title` and `body` entries will work. We also always use your app's icon as the notification icon. This is an area we will extend as Fuse matures. If you have specific requests, be sure to let us know!
+> The current implementation only guarantees the `title` and `body` entries will work. This is an area we will extend as Fuse matures. If you have specific requests, be sure to let us know!
+
+## Notification icons
+
+On iOS, we always use your app's icon as the notification icon. On Android, notification icons can be specified in `.unoproj` file, in a way similar to [Android.Icons](/docs/basics/uno-projects#android-icons):
+
+    {
+        "Android": {
+            "NotificationIcon": {
+                "LDPI": "ldpi.png",
+                "MDPI": "mdpi.png",
+                "HDPI": "hdpi.png",
+                "XHDPI": "xhdpi.png",
+                "XXHDPI": "xxhdpi.png",
+                "XXXHDPI": "xxxhdpi.png"
+        }
+    }
 
 ## Message size limits
 
