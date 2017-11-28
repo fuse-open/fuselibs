@@ -1,0 +1,22 @@
+<Panel ux:Class="UX.With.Observable">
+	<JavaScript>
+		var Observable = require("FuseJS/Observable")
+		
+		exports.data = Observable({
+			one: "Un",
+			two: "Deux",
+		})
+		
+		exports.next = function() {
+			exports.data.value = {
+				one: "i",
+				two: "ii",
+			}
+		}
+	</JavaScript>
+	<With Data="{data}">
+		<Text Value="{one}"/>
+		<Text Value="{two}"/>
+	</With>
+	<FuseTest.Invoke Handler="{next}" ux:Name="callNext"/>
+</Panel>

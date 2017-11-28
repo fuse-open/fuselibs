@@ -1,0 +1,12 @@
+<Panel ux:Class="UX.With.Order">
+	<JavaScript>
+		exports.one = "A"
+		exports.two = "B"
+	</JavaScript>
+	<With Data="{one}">
+		<Text Value="{}"/>
+	</With>
+	<With Data="{two}">
+		<Text Value="{}"/>
+	</With>
+</Panel>

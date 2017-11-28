@@ -1,0 +1,12 @@
+<Panel ux:Class="UX.With.Basic">
+	<JavaScript>
+		exports.data = {
+			one: "Un",
+			two: "Deux",
+		}
+	</JavaScript>
+	<With Data="{data}">
+		<Text Value="{one}"/>
+		<Text Value="{two}"/>
+	</With>
+</Panel>
