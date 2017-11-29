@@ -1,0 +1,3 @@
+node: "https://nodejs.org/dist/v8.9.1/node-v8.9.1-darwin-x64.tar.gz" if MAC
+node: "https://nodejs.org/dist/v8.9.1/node-v8.9.1-win-x64.zip" if WIN32 && X64
+node: "https://nodejs.org/dist/v8.9.1/node-v8.9.1-win-x86.zip" if WIN32 && X86
