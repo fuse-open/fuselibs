@@ -144,6 +144,8 @@ namespace Fuse.Scripting.JavaScript
 
 		void PushValue(Scripting.Context context, object val)
 		{
+			if (_subscription == null) return;
+
 			if (val != null)
 			{
 				_subscription.SetExclusive(context, val);
