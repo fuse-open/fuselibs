@@ -82,7 +82,9 @@ namespace Fuse.Models
 				Code = string.Empty;
 				return;
 			}
-			
+
+			ZoneJS.Initialize();
+
 			var code = 
 					"var Model = require('FuseJS/Internal/Model');\n"+
 					"var ViewModelAdapter = require('FuseJS/Internal/ViewModelAdapter')\n"+

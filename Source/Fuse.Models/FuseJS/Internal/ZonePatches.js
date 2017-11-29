@@ -1,4 +1,4 @@
-require("./zone.min");
+require("FuseJS/Internal/ZoneJS");
 
 var EventEmitter = require("FuseJS/EventEmitter");
 
