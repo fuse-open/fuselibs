@@ -75,5 +75,16 @@ namespace Fuse.Controls.Test
 				Assert.AreEqual( "😀", p.T.Value );
 			}
 		}
+		
+		[Test]
+		public void EachOrder()
+		{
+			var p = new UX.NodeGroup.EachOrder();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				root.StepFrameJS();
+				Assert.AreEqual("1a,1b,1c,2a,2b,2c,3a,3b,3c", GetText(p));
+			}
+		}
 	}
 }

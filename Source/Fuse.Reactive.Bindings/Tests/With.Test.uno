@@ -45,5 +45,18 @@ namespace Fuse.Test
 				Assert.AreEqual("A,B", GetText(p));
 			}
 		}
+		
+		[Test]
+		//https://github.com/fusetools/fuselibs-public/issues/803
+		public void EachOrder()
+		{
+			var p = new UX.With.EachOrder();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				root.StepFrameJS();
+				Assert.AreEqual("1,2,3,4", GetText(p));
+				Assert.AreEqual("1,-1,2,-2,3,-3,4,-4", GetText(p.s));
+			}
+		}
 	}
 }

@@ -1,0 +1,26 @@
+<Panel ux:Class="UX.With.EachOrder">
+    <JavaScript>
+		exports.items = [1,2,3,4]
+    </JavaScript>
+	<Each Items="{items}">
+		<With Data="{}">
+			<Text Value="{}" />
+		</With>
+	</Each>
+	
+	<!-- invovles a few other items that were involved in the original bug -->
+	<Panel ux:Name="s">
+		<Each Items="{items}">
+			<With Data="{}">
+				<WhileFalse>
+					<Text Value="{}" />
+				</WhileFalse>
+			</With>
+			<With Data="{}">
+				<Instance>
+					<Text Value="-{}" />
+				</Instance>
+			</With>
+		</Each>
+	</Panel>
+</Panel>
