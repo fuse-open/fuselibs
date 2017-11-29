@@ -71,6 +71,10 @@ namespace Fuse.Drawing
 					case 'v':
 					case 'a':
 					case 'A':
+					case 'q':
+					case 'Q':
+					case 't':
+					case 'T':
 						StartNewToken(i - 1, i, true);
 						StartNewToken(i, i + 1);
 						break;
@@ -110,8 +114,8 @@ namespace Fuse.Drawing
 			}
 		}
 
-		float2 _prevControlB;
-		bool _hasPrevControlB;
+		float2 _prevControl;
+		bool _hasPrevControlC, _hasPrevControlQ;
 		void Execute(char c, char prev)
 		{
 			//implied lineTo following move
@@ -140,7 +144,7 @@ namespace Fuse.Drawing
 				{
 					var b = ReadFloat2();
 					var pt = ReadFloat2();
-					var a = _hasPrevControlB ? (_segments.CurPos - _prevControlB) + _segments.CurPos : _segments.CurPos;
+					var a = _hasPrevControlC ? (_segments.CurPos - _prevControl) + _segments.CurPos : _segments.CurPos;
 					_segments.BezierCurveTo(pt, a, b);
 					break;
 				}
@@ -166,6 +170,22 @@ namespace Fuse.Drawing
 					_segments.EllipticArcTo(pt, r, xAngle, large, sweep);
 					break;
 				}
+				case 'Q':
+				{
+					var ctl = ReadFloat2();
+					var end = ReadFloat2();
+					_prevControl = ctl;
+					_segments.QuadraticCurveTo(end, ctl);
+					break;
+				}
+				case 'T':
+				{
+					var ctl = _hasPrevControlQ ? (_segments.CurPos - _prevControl) + _segments.CurPos : _segments.CurPos;
+					var end = ReadFloat2();
+					_segments.QuadraticCurveTo(end, ctl);
+					_prevControl = ctl;
+					break;
+				}
 
 				case 'm':
 					_segments.MoveToRel(ReadFloat2());
@@ -182,7 +202,7 @@ namespace Fuse.Drawing
 				{
 					var b = ReadFloat2();
 					var pt = ReadFloat2();
-					var a = _hasPrevControlB ? -(_prevControlB - _segments.CurPos) : float2(0);
+					var a = _hasPrevControlC ? -(_prevControl - _segments.CurPos) : float2(0);
 					_segments.BezierCurveTo(pt, a, b);
 					break;
 				}
@@ -208,16 +228,36 @@ namespace Fuse.Drawing
 					_segments.EllipticArcToRel(pt, r, xAngle, large, sweep);
 					break;
 				}
+				case 'q':
+				{
+					var ctl = ReadFloat2();
+					var end = ReadFloat2();
+					_prevControl = ctl + _segments.CurPos;
+					_segments.QuadraticCurveToRel(end, ctl);
+					break;
+				}
+				case 't':
+				{
+					var end = ReadFloat2();
+					var ctl = _hasPrevControlQ ? (_segments.CurPos - _prevControl) : float2(0);
+					_prevControl = ctl + _segments.CurPos;
+					_segments.QuadraticCurveToRel(end,ctl);
+					break;
+				}
 			}
 			
-			if (c == 's' || c =='c' || c == 'S' || c == 'C')
+			_hasPrevControlC = false;
+			_hasPrevControlQ = false;
+			
+			if (c == 'q' || c == 'Q' || c == 't' || c == 'T')
 			{
-				_prevControlB = _segments.Last.B;
-				_hasPrevControlB = true;
+				//value set in switch
+				_hasPrevControlQ = true;
 			}
-			else
+			else if (c == 's' || c =='c' || c == 'S' || c == 'C')
 			{
-				_hasPrevControlB = false;
+				_prevControl = _segments.Last.B;
+				_hasPrevControlC = true;
 			}
 		}
 

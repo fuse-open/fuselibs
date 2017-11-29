@@ -102,8 +102,16 @@ namespace Fuse.Drawing
 			const float zeroTolerance = 1e-05f;
 			if (Math.Abs(a) < zeroTolerance)
 			{
-				//technically if -c/b is within 0<t<1 we have a min/max, but it's within
-				//the bounding box of the endpoints so we don't need to identify that
+				if (Math.Abs(b) > zeroTolerance)
+				{
+					//if -c/b is within 0<t<1 we have a min/max as well
+					var cb = -c/b;
+					if (cb > 0 && cb < 1) {
+						return float2(cb,cb);
+					}
+				}
+
+				//otherwise the min/max is not within the bounds
 				return float2(0,1);
 			}
 			
