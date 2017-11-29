@@ -27,7 +27,15 @@ namespace Fuse.Reactive
 		protected virtual bool IsSecondOptional { get { return false; } }
 		protected virtual bool IsThirdOptional { get { return false; } }
 
-		protected abstract bool Compute(object first, object second, object third, out object result);
+		protected virtual bool Compute(object first, object second, object third, out object result)
+		{
+			Fuse.Diagnostics.Deprecated( " No `Compute`, or a deprecated form, overriden. Migrate your code to override the one with `bool` return. ", this );
+			result = Compute(first, second, third);
+			return true;
+		}
+		
+		/** @deprecated Override the other `Compute` function. 2017-11-29 */
+		protected virtual object Compute(object first, object second, object third) { return null; }
 
 		class Subscription: InnerListener
 		{
