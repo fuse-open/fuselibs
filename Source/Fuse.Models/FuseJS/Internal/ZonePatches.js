@@ -3,7 +3,7 @@ require("FuseJS/Internal/ZoneJS");
 var EventEmitter = require("FuseJS/EventEmitter");
 
 Zone.__load_patch("FuseJS/EventEmitter", function(global, Zone, api) {
-	const patchedPrototype = api.patchEventTarget(global, [EventEmitter.prototype], {
+	var patchedPrototype = api.patchEventTarget(global, [EventEmitter.prototype], {
 		useGlobalCallback: false,
 		addEventListenerFnName: "addListener",
 		removeEventListenerFnName: "removeListener",
