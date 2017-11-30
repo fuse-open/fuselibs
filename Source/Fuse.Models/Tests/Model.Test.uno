@@ -536,20 +536,20 @@ namespace Fuse.Models.Test
 				root.StepFrameJS();
 				var children = ChildrenOfType<Visual>(e.navigator);
 				Assert.AreEqual(1, children.Count);
-				AssertOfType<UX.Model.MainPage>(children[0]);
+				Assert.OfType<UX.Model.MainPage>(children[0]);
 
 				e.pushPage.Perform();
 				root.StepFrameJS();
 
 				var childrenAfterPush = ChildrenOfType<Visual>(e.navigator);
 				Assert.AreEqual(2, childrenAfterPush.Count);
-				AssertOfType<UX.Model.MainPage>(childrenAfterPush[0]);
-				AssertOfType<UX.Model.DetailPage>(childrenAfterPush[1]);
+				Assert.OfType<UX.Model.MainPage>(childrenAfterPush[0]);
+				Assert.OfType<UX.Model.DetailPage>(childrenAfterPush[1]);
 
 				e.popPage.Perform();
 				root.StepFrameJS();
 
-				AssertOfType<UX.Model.MainPage>(e.navigator.Active);
+				Assert.OfType<UX.Model.MainPage>(e.navigator.Active);
 			}
 		}
 
@@ -563,23 +563,6 @@ namespace Fuse.Models.Test
 					l.Add(m);
 			}
 			return l;
-		}
-
-		static void AssertOfType<T>(
-			object obj,
-			[CallerFilePath] string filePath = "",
-			[CallerLineNumber] int lineNumber = 0,
-			[CallerMemberName] string memberName = "")
-		{
-			if(!(obj is T))
-			{
-				var expected = "object of type '" + typeof(T).FullName + "'";
-				var actual = (obj == null) ? "null" : "object of type '" + obj.GetType().FullName + "'";
-
-				// Temporary: `Assert.ReportFailure` is private
-				var message = "Expected " + expected + ", got " + actual;
-				Assert.Fail(message, filePath, lineNumber, memberName);
-			}
 		}
 	}
 }
