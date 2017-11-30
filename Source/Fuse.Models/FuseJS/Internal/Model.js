@@ -6,7 +6,7 @@ require("./ZonePatches");
 var rootZone = Zone.current;
 
 function shouldEmitProperty(key) {
-	return !key.startsWith("__fuse_");
+	return !key.startsWith("_");
 }
 
 function isThenable(thing) {
