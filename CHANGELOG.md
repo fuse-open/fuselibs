@@ -8,6 +8,9 @@
 ### Expressions
 - Fixed an issue where toUpper and toLower would crash on null intput. Now they propagate null instead.
 
+### DatePicker/TimePicker
+- Fixed an issue where some properties (for example `TimePicker.Is24HourView`) wouldn't work when set from UX.
+- Fixed a documentation issue with `TimePicker` where the code example used the wrong name for the `Is24HourView` property.
 
 ## 1.4.0
 
