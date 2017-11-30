@@ -20,14 +20,32 @@ namespace Fuse.Reactive
 
 		protected virtual bool IsOperandOptional { get { return false; } }
 		
-		protected virtual object Compute(object operand)
+		/**
+			@param result the result of the computation
+			@return true if the value could be computed, false otherwise
+		*/
+		protected virtual bool Compute(object operand, out object result)
 		{
-			throw new Exception(GetType().FullName + " does not implement the required methods");
+			Fuse.Diagnostics.Deprecated( " No `Compute`, or a deprecated form, overriden. Migrate your code to override the one with `bool` return. ", this );
+			result = Compute(operand);
+			return true;
 		}
+		
+		/** @deprecated Override the other `Compute` function. 2017-11-29 */
+		protected virtual object Compute(object operand) { return null; }
 
 		protected virtual void OnNewOperand(IListener listener, object operand)
 		{
-			listener.OnNewData(this, Compute(operand));
+			object result;
+			if (Compute(operand, out result))
+			{
+				listener.OnNewData(this, result);
+			}
+			else
+			{
+				Fuse.Diagnostics.UserWarning( "Failed to compute value: " + operand, this );
+				listener.OnLostData(this);
+			}
 		}
 		
 		protected virtual void OnLostOperand(IListener listener)
@@ -124,9 +142,10 @@ namespace Fuse.Reactive
 	public sealed class Negate: UnaryOperator
 	{
 		public Negate([UXParameter("Operand")] Expression operand): base(operand) {}
-		protected override object Compute(object operand)
+		protected override bool Compute(object operand, out object result)
 		{
-			return Marshal.Multiply(operand, -1);
+			result = Marshal.Multiply(operand, -1);
+			return true;
 		}
 	}
 }

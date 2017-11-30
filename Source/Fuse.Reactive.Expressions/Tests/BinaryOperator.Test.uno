@@ -52,9 +52,10 @@ namespace Fuse.Reactive.Test
 			: base(left, right)
 		{}
 			
-		protected override object Compute(object left, object right)
+		protected override bool Compute(object left, object right, out object result)
 		{
-			return left.ToString() + right.ToString();
+			result = left.ToString() + right.ToString();
+			return true;
 		}
 	}
 	
@@ -68,9 +69,10 @@ namespace Fuse.Reactive.Test
 			
 		protected override bool IsRightOptional { get { return true; } }
 		
-		protected override object Compute(object left, object right)
+		protected override bool Compute(object left, object right, out object result)
 		{
-			return left.ToString() + (right == null ? "+" : right.ToString());
+			result = left.ToString() + (right == null ? "+" : right.ToString());
+			return true;
 		}
 	}
 	
@@ -85,9 +87,10 @@ namespace Fuse.Reactive.Test
 		protected override bool IsLeftOptional { get { return true; } }
 		protected override bool IsRightOptional { get { return true; } }
 		
-		protected override object Compute(object left, object right)
+		protected override bool Compute(object left, object right, out object result)
 		{
-			return (left == null ? "+" : left.ToString()) + (right == null ? "+" : right.ToString());
+			result = (left == null ? "+" : left.ToString()) + (right == null ? "+" : right.ToString());
+			return true;
 		}
 		
 		protected override void OnLostOperands(IListener listener)

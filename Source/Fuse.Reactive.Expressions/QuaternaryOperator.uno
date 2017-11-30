@@ -30,7 +30,15 @@ namespace Fuse.Reactive
 		protected virtual bool IsThirdOptional { get { return false; } }
 		protected virtual bool IsFourthOptional { get { return false; } }
 
-		protected abstract object Compute(object first, object second, object third, object fourth);
+		protected virtual bool Compute(object first, object second, object third, object fourth, out object result)
+		{
+			Fuse.Diagnostics.Deprecated( " No `Compute`, or a deprecated form, overriden. Migrate your code to override the one with `bool` return. ", this );
+			result = Compute(first, second, third, fourth);
+			return true;
+		}
+		
+		/** @deprecated Override the other `Compute` function. 2017-11-29 */
+		protected virtual object Compute(object first, object second, object third, object fourth) { return null; }
 
 		class Subscription: InnerListener
 		{
@@ -96,8 +104,17 @@ namespace Fuse.Reactive
 				{
 					if ((_hasFirst || _qo.IsFirstOptional) && (_hasSecond || _qo.IsSecondOptional) && (_hasThird || _qo.IsThirdOptional) && (_hasFourth || _qo.IsFourthOptional))
 					{
-						_hasData = true;
-						_listener.OnNewData(_qo, _qo.Compute(_first, _second, _third, _fourth));
+						object result;
+						if (_qo.Compute(_first, _second, _third, _fourth, out result))
+						{
+							_hasData = true;
+							_listener.OnNewData(_qo, result);
+						}
+						else if (_hasData)
+						{
+							_hasData = false;
+							_listener.OnLostData(_qo);
+						}
 					}
 					else if (_hasData)
 					{

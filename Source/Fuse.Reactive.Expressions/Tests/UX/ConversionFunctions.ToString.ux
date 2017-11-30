@@ -1,0 +1,4 @@
+<Panel ux:Class="UX.ConversionFunctions.ToString">
+	<FuseTest.DudElement ObjectValue="string( 'hiya' )" ux:Name="s1"/>
+	<FuseTest.DudElement ObjectValue="string( 2 )" ux:Name="s2"/>
+</Panel>

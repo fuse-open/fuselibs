@@ -59,5 +59,11 @@ namespace FuseTest
 			get { return Marshal.ToType<bool>(Object); }
 			set { Object = value; }
 		}
+		
+		public string String
+		{
+			get { return Marshal.ToType<string>(Object); }
+			set { Object = value; }
+		}
 	}
 }

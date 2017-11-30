@@ -1,0 +1,4 @@
+<Panel ux:Class="UX.ConversionFunctions.FailFloat">
+	<FuseTest.Value String="8" ux:Name="v"/>
+	<FuseTest.DudElement BoolValue="isDefined(float({Property v.Object}))" ux:Name="b"/>
+</Panel>

@@ -75,12 +75,13 @@ namespace Fuse.Reactive.Test
 			: base(first, second, third, fourth)
 		{}
 			
-		protected override object Compute(object first, object second, object third, object fourth)
+		protected override bool Compute(object first, object second, object third, object fourth, out object result)
 		{
-			return (first == null ? "*" : first.ToString()) +
+			result = (first == null ? "*" : first.ToString()) +
 				(second == null ? "*" : second.ToString()) +
 				(third == null ? "*" : third.ToString()) +
 				(fourth == null ? "*" : fourth.ToString());
+			return true;
 		}
 	}
 	

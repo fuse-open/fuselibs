@@ -27,14 +27,23 @@ namespace Fuse.Reactive
 		protected virtual bool IsLeftOptional { get { return false; } }
 		protected virtual bool IsRightOptional { get { return false; } }
 
-		protected virtual object Compute(object left, object right)
+		protected virtual bool Compute(object left, object right, out object result)
 		{
-			throw new Exception(GetType().FullName + " does not implement the required methods");
+			Fuse.Diagnostics.Deprecated( " No `Compute`, or a deprecated form, overriden. Migrate your code to override the one with `bool` return. ", this );
+			result = Compute(left, right);
+			return true;
 		}
-
+		
+		/** @deprecated Override the other `Compute` function. 2017-11-29 */
+		protected virtual object Compute(object left, object right) { return null; }
+		
 		protected virtual void OnNewOperands(IListener listener, object left, object right)
 		{
-			listener.OnNewData(this, Compute(left, right));
+			object result;
+			if (Compute(left, right, out result))
+				listener.OnNewData(this, result);
+			else
+				listener.OnLostData(this);
 		}
 		
 		protected virtual void OnLostOperands(IListener listener)
