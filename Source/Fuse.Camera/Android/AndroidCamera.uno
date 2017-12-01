@@ -96,7 +96,11 @@ namespace Fuse.Camera
 			{
 				case android.app.Activity.RESULT_OK:
 					Image p = (Image)photo;
-					p.correctOrientationFromExif();
+					try{
+						p.correctOrientationFromExif();
+					}catch(Exception e){
+						// Still allow the picture through: It's been created but possibly with wrong orientation
+					}
 					onComplete.run(p.getFilePath());
 					return;
 				case android.app.Activity.RESULT_CANCELED:

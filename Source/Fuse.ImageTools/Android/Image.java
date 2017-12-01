@@ -1,20 +1,18 @@
 package com.fusetools.camera;
 
-import android.app.Activity;
-import android.content.Intent;
+import android.app.ActivityManager;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
-import android.media.ThumbnailUtils;
 import android.media.ExifInterface;
 import android.net.Uri;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.util.Base64;
 
+import com.fuse.Activity;
+
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.ByteArrayOutputStream;
 
 
 public class Image {
@@ -92,6 +90,17 @@ public class Image {
 					return;
 		
 			}
+			// Check if we have space to decompress twice in memory
+			int sizeInMb2X = (getWidth() * getHeight() * 4 * 2) / 1000;
+			ActivityManager.MemoryInfo mi = new ActivityManager.MemoryInfo();
+			ActivityManager activityManager = (ActivityManager)com.fuse.Activity.getRootActivity().getSystemService(Context.ACTIVITY_SERVICE);
+			activityManager.getMemoryInfo(mi);
+			long availableMemMb = mi.availMem / 1048576L;
+			if(sizeInMb2X > availableMemMb){
+				Log.w(TAG, "Not enough memory to rotate image, result may be unexpected.");
+				throw new Exception("Not enough memory to rotate image");
+			}
+			
 			Bitmap bmp = getBitmap();
 			out = rotateImage(bmp, angle);
 			bmp.recycle();
