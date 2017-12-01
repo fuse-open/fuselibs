@@ -434,6 +434,7 @@ which will stop push notifications registering (and potentially asking for permi
 - Added `<MapMarker Tapped="{myHandler}"/>` to retain the data context for each tapped marker.
 - Added `<MapView AllowScroll="false"/>` to disable the user panning and scrolling around.
 - Fixed a bug causing crashes on iPhone 5s devices when using `ShowMyLocation="true"`
+- Added a barebones map support in desktop targets, using OSM tiles.
 
 ### WebView
 - Added `<WebView ScrollEnabled="false"/>` to disable the user panning and scrolling around.

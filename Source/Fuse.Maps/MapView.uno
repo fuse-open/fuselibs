@@ -172,16 +172,13 @@ namespace Fuse.Controls
 
 		MapConfig _mapConfig;
 		MapCameraState _cameraState;
+		extern(!MOBILE) OSMMapTile map;
 		public MapView()
 		{
 			if defined(!MOBILE)
 			{
-				Background = new Fuse.Drawing.SolidColor(float4(0.6f,0.6f,0.6f,1.0f));
-				var t = new Fuse.Controls.Text();
-				t.Alignment = Alignment.Center;
-				t.SetValue("MapView requires a mobile target.", this);
-				t.TextAlignment = TextAlignment.Center;
-				Children.Add(t);
+				map = new OSMMapTile();
+				Children.Add(map);
 			}
 			_cameraState = new MapCameraState();
 			_mapConfig = new MapConfig();
@@ -241,9 +238,16 @@ namespace Fuse.Controls
 		bool _willUpdateCameraNextFrame;
 		internal void UpdateCameraNextFrame()
 		{
-			if(!MapIsReady || _willUpdateCameraNextFrame) return;
-			UpdateManager.PerformNextFrame(ApplyCameraState, UpdateStage.Primary);
-			_willUpdateCameraNextFrame = true;
+			if defined(!MOBILE)
+			{
+				map.UpdateMap();
+			}
+			else
+			{
+				if(!MapIsReady || _willUpdateCameraNextFrame) return;
+				UpdateManager.PerformNextFrame(ApplyCameraState, UpdateStage.Primary);
+				_willUpdateCameraNextFrame = true;
+			}
 		}
 
 		void ApplyCameraState()
