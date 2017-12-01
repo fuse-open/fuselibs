@@ -12,19 +12,22 @@ namespace Fuse.Controls.Native.iOS
 	extern(!iOS) class TimePickerView
 	{
 		[UXConstructor]
-		public TimePickerView([UXParameter("Host")]ITimePickerHost host) { }
+		public TimePickerView([UXParameter("Host")]TimePicker host) { }
 	}
 
 	[Require("Source.Include", "UIKit/UIKit.h")]
 	extern(iOS) class TimePickerView : LeafView, ITimePickerView
 	{
-		ITimePickerHost _host;
+		TimePicker _host;
 		IDisposable _valueChangedEvent;
 
 		[UXConstructor]
-		public TimePickerView([UXParameter("Host")]ITimePickerHost host) : base(Create())
+		public TimePickerView([UXParameter("Host")]TimePicker host) : base(Create())
 		{
 			_host = host;
+
+			Value = _host.Value;
+
 			_valueChangedEvent = UIControlEvent.AddValueChangedCallback(Handle, OnValueChanged);
 		}
 
@@ -38,7 +41,7 @@ namespace Fuse.Controls.Native.iOS
 
 		void OnValueChanged(ObjC.Object sender, ObjC.Object args)
 		{
-			_host.OnValueChanged();
+			_host.OnNativeViewValueChanged(Value);
 		}
 
 		public DateTime Value
@@ -50,7 +53,6 @@ namespace Fuse.Controls.Native.iOS
 		// Dummy prop, as the iOS API doesn't provide an explicit API for this.
 		public bool Is24HourView
 		{
-			get { return false; }
 			set {
 				// Do nothing
 			}

@@ -12,19 +12,25 @@ namespace Fuse.Controls.Native.iOS
 	extern(!iOS) class DatePickerView
 	{
 		[UXConstructor]
-		public DatePickerView([UXParameter("Host")]IDatePickerHost host) { }
+		public DatePickerView([UXParameter("Host")]DatePicker host) { }
 	}
 
 	[Require("Source.Include", "UIKit/UIKit.h")]
 	extern(iOS) class DatePickerView : LeafView, IDatePickerView
 	{
-		IDatePickerHost _host;
+		DatePicker _host;
 		IDisposable _valueChangedEvent;
 
 		[UXConstructor]
-		public DatePickerView([UXParameter("Host")]IDatePickerHost host) : base(Create())
+		public DatePickerView([UXParameter("Host")]DatePicker host) : base(Create())
 		{
 			_host = host;
+
+			// The native control might reject values outside of the min/max range, so make sure we set min/max first
+			MinValue = _host.Value;
+			MaxValue = _host.Value;
+			Value = _host.Value;
+
 			_valueChangedEvent = UIControlEvent.AddValueChangedCallback(Handle, OnValueChanged);
 		}
 
@@ -38,7 +44,7 @@ namespace Fuse.Controls.Native.iOS
 
 		void OnValueChanged(ObjC.Object sender, ObjC.Object args)
 		{
-			_host.OnValueChanged();
+			_host.OnNativeViewValueChanged(Value);
 		}
 
 		public DateTime Value
@@ -49,13 +55,11 @@ namespace Fuse.Controls.Native.iOS
 
 		public DateTime MinValue
 		{
-			get { return DateTimeConverterHelpers.ConvertNSDateToDateTime(DateTimeConverterHelpers.ReconstructUtcDate(GetMinValue(Handle))); }
 			set { SetMinValue(Handle, DateTimeConverterHelpers.ReconstructUtcDate(DateTimeConverterHelpers.ConvertDateTimeToNSDate(value))); }
 		}
 
 		public DateTime MaxValue
 		{
-			get { return DateTimeConverterHelpers.ConvertNSDateToDateTime(DateTimeConverterHelpers.ReconstructUtcDate(GetMaxValue(Handle))); }
 			set { SetMaxValue(Handle, DateTimeConverterHelpers.ReconstructUtcDate(DateTimeConverterHelpers.ConvertDateTimeToNSDate(value))); }
 		}
 
@@ -107,27 +111,11 @@ namespace Fuse.Controls.Native.iOS
 		@}
 
 		[Foreign(Language.ObjC)]
-		ObjC.Object GetMinValue(ObjC.Object datePickerHandle)
-		@{
-			UIDatePicker *dp = (UIDatePicker *)datePickerHandle;
-
-			return [dp minimumDate];
-		@}
-
-		[Foreign(Language.ObjC)]
 		void SetMaxValue(ObjC.Object datePickerHandle, ObjC.Object date)
 		@{
 			UIDatePicker *dp = (UIDatePicker *)datePickerHandle;
 
 			[dp setMaximumDate:date];
-		@}
-
-		[Foreign(Language.ObjC)]
-		ObjC.Object GetMaxValue(ObjC.Object datePickerHandle)
-		@{
-			UIDatePicker *dp = (UIDatePicker *)datePickerHandle;
-
-			return [dp maximumDate];
 		@}
 	}
 

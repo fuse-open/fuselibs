@@ -11,17 +11,20 @@ namespace Fuse.Controls.Native.Android
 	extern(!Android) class TimePickerView
 	{
 		[UXConstructor]
-		public TimePickerView([UXParameter("Host")]ITimePickerHost host) { }
+		public TimePickerView([UXParameter("Host")]TimePicker host) { }
 	}
 
 	extern(Android) class TimePickerView : LeafView, ITimePickerView
 	{
-		ITimePickerHost _host;
+		TimePicker _host;
 
 		[UXConstructor]
-		public TimePickerView([UXParameter("Host")]ITimePickerHost host) : base(Create())
+		public TimePickerView([UXParameter("Host")]TimePicker host) : base(Create())
 		{
 			_host = host;
+
+			Value = _host.Value;
+			Is24HourView = _host.Is24HourView;
 
 			// onTimeChanged is extremely inconsistent, esp. when using the now-default clock mode, so
 			//  let's just skip trying to use it altogether and go for a polling-based approach instead.
@@ -59,7 +62,7 @@ namespace Fuse.Controls.Native.Android
 		{
 			if (Value != _pollValueCache)
 			{
-				OnValueChanged();
+				OnValueChanged(Value);
 				UpdatePollValueCache();
 			}
 		}
@@ -74,15 +77,14 @@ namespace Fuse.Controls.Native.Android
 			UpdateManager.RemoveAction(PollViewValue);
 		}
 
-		public bool Is24HourView
+		void OnValueChanged(DateTime value)
 		{
-			get { return GetIs24HourView(Handle); }
-			set { SetIs24HourView(Handle, value); }
+			_host.OnNativeViewValueChanged(value);
 		}
 
-		void OnValueChanged()
+		public bool Is24HourView
 		{
-			_host.OnValueChanged();
+			set { SetIs24HourView(Handle, value); }
 		}
 
 		[Foreign(Language.Java)]
@@ -150,14 +152,6 @@ namespace Fuse.Controls.Native.Android
 			android.widget.TimePicker timePicker = (android.widget.TimePicker)timePickerHandle;
 
 			timePicker.setIs24HourView(value);
-		@}
-
-		[Foreign(Language.Java)]
-		bool GetIs24HourView(Java.Object timePickerHandle)
-		@{
-			android.widget.TimePicker timePicker = (android.widget.TimePicker)timePickerHandle;
-
-			return timePicker.is24HourView();
 		@}
 	}
 }
