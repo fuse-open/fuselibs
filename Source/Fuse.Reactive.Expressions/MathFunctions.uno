@@ -161,7 +161,7 @@ namespace Fuse.Reactive
 			_name = name;
 			_op = op;
 		}
-		protected override bool Compute(object operand, out object result)
+		protected sealed override bool Compute(object operand, out object result)
 		{
 			result = null;
 			float4 v;
@@ -207,7 +207,7 @@ namespace Fuse.Reactive
 			_name = name;
 			_op = op;
 		}
-		protected override bool Compute(object left, object right, out object result)
+		protected sealed override bool Compute(object left, object right, out object result)
 		{
 			result = null;
 			
