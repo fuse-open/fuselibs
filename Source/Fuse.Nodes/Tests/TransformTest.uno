@@ -12,7 +12,7 @@ namespace Fuse.Test
 	public class TransformTest : TestBase
 	{
 		[Test]
-		public void WorldInvalidate()
+		public void WorldTransform()
 		{
 			var tn = new UX.TransformTestNode();
 			using (var root = TestRootPanel.CreateWithChild(tn))
@@ -136,6 +136,90 @@ namespace Fuse.Test
 				Assert.AreEqual( 20, p.P4.WorldTransform.M41 );
 				Assert.AreEqual( 20, p.P6.WorldTransform.M41 ); //trouble point for issue 1881
 			}
+		}
+		
+		[Test]
+		//a few rooting situations for the world transform
+		public void WorldTransformInvalidated()
+		{
+			var p = new UX.Transform.WorldTransformInvalidated();
+			using (var root = TestRootPanel.CreateWithChild(p,int2(100,50)))
+			{
+				Assert.AreEqual( 90, p.a.WorldTransform.M41 );
+				Assert.AreEqual( 40, p.a.WorldTransform.M42 );
+				
+				p.w.Value = true;
+				root.StepFrame();
+				Assert.AreEqual( 90, p.c.WorldTransform.M41 );
+				Assert.AreEqual( 40, p.c.WorldTransform.M42 );
+				
+				p.w.Value = false;
+				root.StepFrame();
+				p.d.Width = 5;
+				p.d.Height = 5;
+				
+				p.w.Value = true;
+				root.StepFrame();
+				Assert.AreEqual( 95, p.c.WorldTransform.M41 );
+				Assert.AreEqual( 45, p.c.WorldTransform.M42 );
+			}
+		}
+		
+		[Test]
+		//ensure that world transforms are properly invalidated/updated in rooting. This uses
+		//a custom Behavior as no existing behavior would get the same setup to directly test this
+		public void ExplicitWTI()
+		{
+			var p = new UX.Transform.ExplicitWTI();
+			using (var root = TestRootPanel.CreateWithChild(p,int2(100)))
+			{
+				Assert.AreEqual( 10, p.a.Transform.M41 );
+				Assert.AreEqual( 20, p.a.Transform.M42 );
+				
+				p.w.Value = true;
+				root.StepFrame();
+				Assert.AreEqual( 20, p.b.Transform.M41 );
+				Assert.AreEqual( 10, p.b.Transform.M42 );
+				
+				for (int i=0; i < 3; ++i) 
+				{
+					//unroot then root again to ensure cleanup is working
+					p.w.Value = false;
+					root.StepFrame();
+					p.q.X += 5;
+					p.q.Y += 5;
+					
+					p.w.Value = true;
+					root.StepFrame();
+					Assert.AreEqual( p.q.X, p.b.Transform.M41 );
+					Assert.AreEqual( p.q.Y, p.b.Transform.M42 );
+				}
+			}
+		}
+	}
+	
+	public class WorldTransformListener : Behavior
+	{
+		public Visual Target { get; set; }
+		
+		public float4x4 Transform;
+		
+		protected override void OnRooted()
+		{
+			base.OnRooted();
+			Target.WorldTransformInvalidated += OnInvalidated;
+			Transform = Target.WorldTransform;
+		}
+		
+		protected override void OnUnrooted()
+		{
+			Target.WorldTransformInvalidated += OnInvalidated;
+			base.OnUnrooted();
+		}
+		
+		void OnInvalidated(object s, object args)
+		{
+			Transform = Target.WorldTransform;
 		}
 	}
 }

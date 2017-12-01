@@ -144,7 +144,7 @@ namespace Fuse.Elements
 			if (elm == null)
 				return false;
 
-			var flat = elm.AreChildrenFlat && elm.IsLocalFlat;
+			var flat = elm.IsFlat;
 			if (!flat)
 				return false;
 

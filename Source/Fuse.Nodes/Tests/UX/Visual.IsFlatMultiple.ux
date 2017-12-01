@@ -1,0 +1,22 @@
+<Panel ux:Class="UX.Visual.IsFlatMultiple">
+	<Panel ux:Name="A">
+		<Panel ux:Name="B">
+			<Rotation/>
+			<Rotation ux:Name="RB"/>
+			<Shear/>
+			<Translation ux:Name="TB"/>
+		</Panel>
+		<Instance>
+			<Panel ux:Name="C">
+				<Rotation ux:Name="RC"/>
+				<Translation Z="1" ux:Name="TC"/>
+			</Panel>
+		</Instance>
+		<Deferred>
+			<Panel ux:Name="D">
+				<Rotation ux:Name="RD"/>
+				<Translation Z="1" ux:Name="TD"/>
+			</Panel>
+		</Deferred>
+	</Panel>
+</Panel>

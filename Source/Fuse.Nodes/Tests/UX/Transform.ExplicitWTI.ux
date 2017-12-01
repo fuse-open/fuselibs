@@ -1,0 +1,15 @@
+<Panel ux:Class="UX.Transform.ExplicitWTI">
+	<!-- this roots prior to "b", attaching a WTI listener -->
+	<Fuse.Test.WorldTransformListener ux:Name="a" Target="c"/>
+	<Fuse.Test.WorldTransformListener ux:Name="b" Target="d"/>
+	
+	<Panel X="10" Y="20">
+		<Panel ux:Name="c"/>
+	</Panel>
+	
+	<WhileTrue ux:Name="w">
+		<Panel X="20" Y="10" ux:Name="q">
+			<Panel ux:Name="d"/>
+		</Panel>
+	</WhileTrue>
+</Panel>

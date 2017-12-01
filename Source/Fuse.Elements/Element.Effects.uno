@@ -96,7 +96,7 @@ namespace Fuse.Elements
 			if (Opacity <= 0.0f)
 				return;
 
-			var flat = AreChildrenFlat && IsLocalFlat;
+			var flat = IsFlat;
 			if (Opacity >= 1.0f)
 			{
 				if (flat)

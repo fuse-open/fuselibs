@@ -102,6 +102,7 @@ namespace Fuse
 			UpdateIsContextEnabledCache();
 			UpdateIsVisibleCache();
 			UpdateContextSnapToPixelsCache();
+			FlatRooted();
 			WTIRooted();
 
 			OnRootedPreChildren();
@@ -156,6 +157,7 @@ namespace Fuse
 			}
 
 			WTIUnrooted();
+			FlatUnrooted();
 
 			ConcludePendingRemove();
 		}
