@@ -51,6 +51,31 @@ namespace Fuse.Reactive.Test
 				Assert.AreEqual( "xyz", p.d.ObjectValue );
 			}
 		}
+		
+		[Test]
+		public void Error()
+		{
+			var p = new UX.TernaryOperator.Error();
+			using (var dg = new RecordDiagnosticGuard())
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				Assert.IsFalse( p.iq.BoolValue );
+				
+				p.c.Value = 'a';
+				root.PumpDeferred();
+				
+				var d = dg.DequeueAll();
+				Assert.IsTrue( d.Count == 1 || d.Count == 2 ); //TODO: there is a double OnNewData somewhere, not relevant to this feature though!
+				Assert.Contains( "Failed to compute", d[0].Message );
+
+				Assert.IsFalse( p.iq.BoolValue );
+				
+				p.c.Value = 0.5;
+				root.PumpDeferred();
+				Assert.IsTrue( p.iq.BoolValue );
+				Assert.AreEqual( 1.5f, p.q.Value );
+			}
+		}
 	}
 	
 	[UXFunction("_terJoin")]

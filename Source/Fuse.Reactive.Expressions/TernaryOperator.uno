@@ -89,6 +89,15 @@ namespace Fuse.Reactive
 				UpdateOperands();
 			}
 			
+			void ClearData()
+			{
+				if (_hasData)
+				{
+					_hasData = false;
+					_listener.OnLostData(_to);
+				}
+			}
+			
 			void UpdateOperands()
 			{
 				ClearDiagnostic();
@@ -104,16 +113,16 @@ namespace Fuse.Reactive
 							_hasData = true;
 							_listener.OnNewData(_to, result);
 						} 
-						else if (_hasData)
+						else
 						{
-							_hasData = false;
-							_listener.OnLostData(_to);
+							Fuse.Diagnostics.UserWarning( "Failed to compute value for (" +
+								_first +", " + _second + ", " + _third, _to );
+							ClearData();
 						}
 					}
 					else if (_hasData)
 					{
-						_hasData = false;
-						_listener.OnLostData(_to);
+						ClearData();
 					}
 				}
 				catch (MarshalException me)

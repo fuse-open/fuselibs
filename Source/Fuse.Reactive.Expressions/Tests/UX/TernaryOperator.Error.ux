@@ -1,0 +1,8 @@
+<Panel ux:Class="UX.TernaryOperator.Error">
+	<Let ux:Name="a" Value="{= 1 }"/>
+	<Let ux:Name="b" Value="{= 2 }"/>
+	<Let ux:Name="c"/>
+	
+	<FuseTest.DudElement Value="lerp({a},{b},{c})" ux:Name="q"/>
+	<FuseTest.DudElement BoolValue="isDefined(lerp({a},{b},{c}))" ux:Name="iq"/>
+</Panel>
