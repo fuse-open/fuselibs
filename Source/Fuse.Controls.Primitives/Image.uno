@@ -159,6 +159,12 @@ namespace Fuse.Controls
 			set { _container.Url = value; }
 		}
 
+		public float2 TextureOffset
+		{
+			get { return _container.Offset; }
+			set { _container.Offset = value; }
+		}
+
 		/**
 			Specifies the density of the image in relation to layout; the number of image pixels per logical point.
 		*/

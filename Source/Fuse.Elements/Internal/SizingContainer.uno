@@ -4,6 +4,14 @@ using Fuse.Elements;
 
 namespace Fuse.Internal
 {
+	public struct SizingInfo
+	{
+		public float2 scale;
+		public float2 origin;
+		public float2 size;
+		public float4 clip;
+	}
+
 	internal class SizingContainer
 	{
 		public StretchMode stretchMode = StretchMode.Uniform;
@@ -43,13 +51,41 @@ namespace Fuse.Internal
 			return true;
 		}
 
+		public float2 offset;
+		public bool SetOffset(float2 newOffset)
+		{
+			if(offset == newOffset) 
+				return false;
+			offset = newOffset;
+			return true;
+		}
+
 		//set prior to calling CalcSize
 		public float4 padding;
 		public float absoluteZoom = 1;
 		public bool snapToPixels;
+		public bool SetSnapToPixels(bool newValue)
+		{
+			if(newValue == snapToPixels) 
+				return false;
+			snapToPixels = newValue;
+			return true;
+		}
 
 		float PaddingWidth { get { return padding[0] + padding[2]; } }
 		float PaddingHeight { get { return padding[1] + padding[3]; } }
+
+		public SizingInfo Calc(float2 availableSize, float2 sourceSize, int2 sourcePixelSize)
+		{
+			SizingInfo output;
+			var desiredSize = CalcContentSize(sourceSize, sourcePixelSize);
+			output.scale = CalcScale(availableSize, desiredSize);
+			output.size = desiredSize * output.scale;
+			output.origin = CalcOrigin(availableSize, output.size);
+			output.clip = CalcClip(availableSize, ref output.origin, ref output.size);
+
+			return output;
+		}
 
 		public float2 CalcScale( float2 availableSize, float2 desiredSize )
 		{
@@ -230,7 +266,7 @@ namespace Fuse.Internal
 		}
 
 		public float4 CalcClip( float2 availableSize, ref float2 origin, ref float2 contentActualSize )
-		{
+		{	
 			//cases where everything is outside clip region
 			if (origin.X > availableSize.X ||
 				origin.X + contentActualSize.X < 0 ||
@@ -242,8 +278,8 @@ namespace Fuse.Internal
 				return float4(0,0,1,1);
 			}
 
-			float2 tl = Math.Max( float2(0), (padding.XY-origin) / contentActualSize );
-			float2 br = Math.Min( float2(1), (availableSize - origin - padding.ZW) / contentActualSize );
+			float2 tl = Math.Max( float2(0), (padding.XY - origin) / contentActualSize ) - offset;
+			float2 br = Math.Min( float2(1), (availableSize - origin - padding.ZW) / contentActualSize ) - offset;
 
 			var dx = padding.X - origin.X;
 			if (dx > 0)
@@ -270,7 +306,6 @@ namespace Fuse.Internal
 			{
 				contentActualSize.Y -= dy;
 			}
-
 			return float4( tl.X, tl.Y, br.X, br.Y );
 		}
 

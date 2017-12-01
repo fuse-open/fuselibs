@@ -316,6 +316,26 @@ namespace Fuse.Internal
 			}
 		}
 
+		public float2 Offset
+		{
+			get { return Sizing.offset; }
+			set 
+			{ 
+				if(Sizing.SetOffset(value))
+					OnSizingChanged(); 
+			}
+		}
+
+		public bool SnapToPixels
+		{
+			get { return Sizing.snapToPixels; }
+			set 
+			{ 
+				if(Sizing.SetSnapToPixels(value))
+					OnSizingChanged(); 
+			}
+		}
+
 		void OnSizingChanged()
 		{
 			OnParamChanged();
