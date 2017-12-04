@@ -4,6 +4,9 @@ using Uno.Collections;
 
 namespace Fuse.Reactive
 {
+	/* This class is part of a set of classes: UnaryOperator, BinaryOperator, TernaryOperator, QuaternaryOperator.
+		If you modify one you'll likely need to modify all four. */
+		
 	/** Optimized base class for reactive functions/operators that take a two arguments/operands. 
 
 		Subclasses must override etiher `Compute` for pure/synchronous functions, or `OnNewOperands` to 
@@ -36,14 +39,19 @@ namespace Fuse.Reactive
 		
 		/** @deprecated Override the other `Compute` function. 2017-11-29 */
 		protected virtual object Compute(object left, object right) { return null; }
-		
-		protected virtual void OnNewOperands(IListener listener, object left, object right)
+
+		/* TODO: This shouldn't exist, it should follow the same pattern as Ternary/QuaternaryOperator. It's still internal now due to `DelayFunction` incorrectly deriving from a `BinaryOperator` 
+		https://github.com/fusetools/fuselibs-public/issues/829 */
+		internal virtual bool OnNewOperands(IListener listener, object left, object right)
 		{
 			object result;
 			if (Compute(left, right, out result))
+			{
 				listener.OnNewData(this, result);
+				return true;
+			}
 			else
-				listener.OnLostData(this);
+				return false;
 		}
 		
 		protected virtual void OnLostOperands(IListener listener)
@@ -100,6 +108,15 @@ namespace Fuse.Reactive
 				UpdateOperands();
 			}
 			
+			void ClearData()
+			{
+				if (_hasData)
+				{
+					_hasData = false;
+					_listener.OnLostData(_bo);
+				}
+			}
+			
 			void UpdateOperands()
 			{
 				ClearDiagnostic();
@@ -108,13 +125,21 @@ namespace Fuse.Reactive
 				{
 					if ((_hasLeft || _bo.IsLeftOptional) && (_hasRight || _bo.IsRightOptional))
 					{
-						_hasData = true;
-						_bo.OnNewOperands(_listener, _left, _right);
+						//see OnNewOperands for why this structure is weird compared to Ternary/QuaternaryOperator
+						if (_bo.OnNewOperands(_listener, _left, _right))
+						{
+							_hasData = true;
+						}
+						else
+						{
+							Fuse.Diagnostics.UserWarning( "Failed to compute value for (" +
+								_left + ", " + _right, _bo );
+							ClearData();
+						}
 					}
 					else if (_hasData)
 					{
-						_hasData = false;
-						_bo.OnLostOperands(_listener);
+						ClearData();
 					}
 				}
 				catch (MarshalException me)

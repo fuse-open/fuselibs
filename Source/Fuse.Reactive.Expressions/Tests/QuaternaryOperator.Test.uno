@@ -64,6 +64,30 @@ namespace Fuse.Reactive.Test
 				Assert.AreEqual( "xyzw", p.e.ObjectValue );
 			}
 		}
+		
+		[Test]
+		public void Error()
+		{
+			var p = new UX.QuaternaryOperator.Error();
+			using (var dg = new RecordDiagnosticGuard())
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				Assert.IsFalse( p.iq.BoolValue );
+				
+				p.d.Value = "triggerBad";
+				
+				var d = dg.DequeueAll();
+				Assert.IsTrue( d.Count == 1 || d.Count == 2 ); //TODO: there is a double OnNewData somewhere, not relevant to this feature though!
+				Assert.Contains( "Failed to compute", d[0].Message );
+
+				Assert.IsFalse( p.iq.BoolValue );
+		
+				p.d.Value = 4;
+				root.PumpDeferred();
+				Assert.IsTrue( p.iq.BoolValue );
+				Assert.AreEqual( "1234", p.q.StringValue );
+			}
+		}
 	}
 	
 	[UXFunction("_quaJoin")]
@@ -77,6 +101,13 @@ namespace Fuse.Reactive.Test
 			
 		protected override bool Compute(object first, object second, object third, object fourth, out object result)
 		{
+			//special case for Error test (as we had no actual QuaternaryOperator's to test)
+			if (fourth == "triggerBad")
+			{
+				result = null;
+				return false;
+			}
+				
 			result = (first == null ? "*" : first.ToString()) +
 				(second == null ? "*" : second.ToString()) +
 				(third == null ? "*" : third.ToString()) +

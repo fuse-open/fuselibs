@@ -62,7 +62,7 @@ namespace FuseTest
 			Diagnostics.DiagnosticReported -= OnDiagnostic;
 
 			if (_diagnosticsQueue.Count > 0)
-				throw new Exception("Unchecked, queued Diagnostics!");
+				throw new Exception("Unchecked, queued Diagnostics! Count="  + _diagnosticsQueue.Count);
 		}
 	}
 

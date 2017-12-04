@@ -117,4 +117,88 @@ namespace Fuse.Reactive
 		
 		protected override bool IsOperandOptional { get { return true; } }
 	}
+	
+	[UXFunction("nonNull")]
+	/** Returns the value if it isn't null otherwise doesn't evaluate.
+	
+		This is a special use function in cases where you need to deal temporarily with null values that later become non-null. Instead of the null creating errors in an expression chain, this causes the expression to not evaluate at all.
+		
+		@advanced
+	*/
+	public sealed class NonNull : Expression
+	{
+		public Expression Operand { get; private set; }
+		
+		[UXConstructor]
+		public NonNull([UXParameter("Operand")] Expression operand)
+		{
+			Operand = operand;
+		}
+
+		public override IDisposable Subscribe(IContext context, IListener listener)
+		{
+			return Subscription.Create(this, context, listener);
+		}
+
+		class Subscription: InnerListener
+		{
+			readonly NonNull _hv;
+			IDisposable _opSub;
+			IListener _listener;
+			bool _hasValue;
+
+			protected Subscription(NonNull hv, IListener listener)
+			{
+				_hv = hv;
+				_listener = listener;
+			}
+
+			public static Subscription Create(NonNull hv, IContext context, IListener listener)
+			{
+				var res = new Subscription(hv, listener);
+				res.Init(context);
+				return res;
+			}
+			
+			protected void Init(IContext context)
+			{
+				_opSub = _hv.Operand.Subscribe(context, this);
+				if (!_hasValue)
+					UpdateData(null);
+			}
+
+			protected override void OnNewData(IExpression source, object value)
+			{	
+				_hasValue = true;
+				UpdateData(value);
+			}
+			
+			protected override void OnLostData(IExpression source)
+			{
+				_hasValue = false;
+				UpdateData(null);
+			}
+			
+			void UpdateData(object value)
+			{
+				if (value != null)
+					_listener.OnNewData( _hv, value );
+				else
+					_listener.OnLostData( _hv );
+			}
+
+			public override void Dispose()
+			{
+				base.Dispose();
+
+				if (_opSub != null)
+				{
+					_opSub.Dispose();
+					_opSub = null;
+				}
+				_listener = null;
+			}
+		}
+	}
+	
 }

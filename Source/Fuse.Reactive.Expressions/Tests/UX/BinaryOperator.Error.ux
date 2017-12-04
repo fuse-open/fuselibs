@@ -1,0 +1,7 @@
+<Panel ux:Class="UX.BinaryOperator.Error">
+	<Let ux:Name="a" Value="{= 1 }"/>
+	<Let ux:Name="b"/>
+	
+	<FuseTest.DudElement StringValue="{= _binJoin({a},{b}) }" ux:Name="q"/>
+	<FuseTest.DudElement BoolValue="isDefined(_binJoin({a},{b}))" ux:Name="iq"/>
+</Panel>

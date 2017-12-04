@@ -1,0 +1,9 @@
+<Panel ux:Class="UX.QuaternaryOperator.Error">
+	<Let ux:Name="a" Value="{= 1 }"/>
+	<Let ux:Name="b" Value="{= 2 }"/>
+	<Let ux:Name="c" Value="{= 3 }"/>
+	<Let ux:Name="d"/>
+	
+	<FuseTest.DudElement StringValue="{= _quaJoin({a},{b},{c},{d}) }" ux:Name="q"/>
+	<FuseTest.DudElement BoolValue="isDefined(_quaJoin({a},{b},{c},{d}))" ux:Name="iq"/>
+</Panel>
