@@ -5,14 +5,17 @@ using Fuse.Reactive;
 namespace Fuse.Motion
 {
 	[UXFunction("delay")]
+	// TODO: Should not derive from BinaryOperator
+	// https://github.com/fusetools/fuselibs-public/issues/829
 	public class DelayFunction: BinaryOperator
 	{
 		[UXConstructor]
 		public DelayFunction([UXParameter("Value")] Expression value, [UXParameter("Delay")] Expression delay): base(value, delay) {}
 
-		protected override void OnNewOperands(IListener listener, object value, object delay)
+		internal override bool OnNewOperands(IListener listener, object value, object delay)
 		{
 			Timer.Wait(Marshal.ToDouble(delay), new SetClosure(this, listener, value).Run);
+			return true;
 		}
 
 		class SetClosure

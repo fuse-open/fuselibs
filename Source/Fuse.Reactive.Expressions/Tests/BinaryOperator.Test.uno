@@ -42,6 +42,31 @@ namespace Fuse.Reactive.Test
 				Assert.AreEqual( "xy", p.e.StringValue );
 			}
 		}
+		
+		[Test]
+		public void Error()
+		{
+			var p = new UX.BinaryOperator.Error();
+			using (var dg = new RecordDiagnosticGuard())
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				Assert.IsFalse( p.iq.BoolValue );
+				
+				p.b.Value = "triggerBad";
+				root.PumpDeferred();
+				
+				var d = dg.DequeueAll();
+				Assert.IsTrue( d.Count == 1 || d.Count == 2 ); //TODO: there is a double OnNewData somewhere, not relevant to this feature though!
+				Assert.Contains( "Failed to compute", d[0].Message );
+
+				Assert.IsFalse( p.iq.BoolValue );
+				
+				p.b.Value = 2;
+				root.PumpDeferred();
+				Assert.IsTrue( p.iq.BoolValue );
+				Assert.AreEqual( "12", p.q.StringValue );
+			}
+		}
 	}
 	
 	[UXFunction("_binJoin")]
@@ -53,7 +78,14 @@ namespace Fuse.Reactive.Test
 		{}
 			
 		protected override bool Compute(object left, object right, out object result)
-		{
+		{	
+			//for Error test
+			if (right == "triggerBad")
+			{
+				result = null;
+				return false;
+			}
+			
 			result = left.ToString() + right.ToString();
 			return true;
 		}
