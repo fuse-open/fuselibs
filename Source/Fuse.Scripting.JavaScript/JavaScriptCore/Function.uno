@@ -18,7 +18,7 @@ namespace Fuse.Scripting.JavaScriptCore
 		~Function()
 		{
 			if (!_context._disposed)
-				_value.GetJSValueRef().Unprotect(_context._context);
+				_value.GetJSValueRef().DeferedUnprotect();
 		}
 
 		public override object Call(Scripting.Context context, params object[] args)

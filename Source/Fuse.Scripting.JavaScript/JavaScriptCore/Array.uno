@@ -19,7 +19,7 @@ namespace Fuse.Scripting.JavaScriptCore
 		~Array()
 		{
 			if (!_context._disposed)
-				_value.GetJSValueRef().Unprotect(_context._context);
+				_value.GetJSValueRef().DeferedUnprotect();
 		}
 
 		public override object this[int index]

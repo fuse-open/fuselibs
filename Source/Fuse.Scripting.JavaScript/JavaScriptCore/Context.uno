@@ -61,10 +61,10 @@ namespace Fuse.Scripting.JavaScriptCore
 				_disposed = true;
 				_onError = null;
 
-				_functionType.GetJSValueRef().Unprotect(_context);
-				_arrayType.GetJSValueRef().Unprotect(_context);
-				_arrayBufferType.GetJSValueRef().Unprotect(_context);
-				_byteArrayType.GetJSValueRef().Unprotect(_context);
+				_functionType.GetJSValueRef().DeferedUnprotect();
+				_arrayType.GetJSValueRef().DeferedUnprotect();
+				_arrayBufferType.GetJSValueRef().DeferedUnprotect();
+				_byteArrayType.GetJSValueRef().DeferedUnprotect();
 
 				_unoFinalizerClass.Dispose();
 				_unoCallbackClass.Dispose();

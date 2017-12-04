@@ -25,6 +25,17 @@ namespace Fuse.Scripting.JavaScriptCore
 			::JSValueUnprotect($0, *$$);
 		@}
 
+		public void DeferedUnprotect()
+		{
+			Fuse.Reactive.JavaScript.Worker.Invoke(DeferedUnprotectInner);
+		}
+
+		void DeferedUnprotectInner(Fuse.Scripting.Context ctx)
+		{
+			var ctxRef = ((Context)ctx)._context;
+			Unprotect(ctxRef);
+		}
+
 		public JSObjectRef GetJSObjectRef(JSContextRef ctx)
 		{
 			assert IsObject(ctx);
