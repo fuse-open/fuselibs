@@ -4,6 +4,9 @@ using Uno.Collections;
 
 namespace Fuse.Reactive
 {
+	/* This class is part of a set of classes: UnaryOperator, BinaryOperator, TernaryOperator, QuaternaryOperator.
+		If you modify one you'll likely need to modify all four. */
+		
 	/** Optimized base class for reactive functions/operators that take a four arguments/operands. */
 	public abstract class QuaternaryOperator: Expression
 	{
@@ -96,6 +99,15 @@ namespace Fuse.Reactive
 				UpdateOperands();
 			}
 
+			void ClearData()
+			{
+				if (_hasData)
+				{
+					_hasData = false;
+					_listener.OnLostData(_qo);
+				}
+			}
+			
 			void UpdateOperands()
 			{
 				ClearDiagnostic();
@@ -110,16 +122,17 @@ namespace Fuse.Reactive
 							_hasData = true;
 							_listener.OnNewData(_qo, result);
 						}
-						else if (_hasData)
+						else
 						{
+							Fuse.Diagnostics.UserWarning( "Failed to compute value for (" +
+								_first + ", " + _second + ", " + _third + ", " + _fourth, _qo );
 							_hasData = false;
-							_listener.OnLostData(_qo);
+							ClearData();
 						}
 					}
-					else if (_hasData)
+					else
 					{
-						_hasData = false;
-						_listener.OnLostData(_qo);
+						ClearData();
 					}
 				}
 				catch (MarshalException me)

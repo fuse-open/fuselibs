@@ -4,6 +4,9 @@ using Uno.Collections;
 
 namespace Fuse.Reactive
 {
+	/* This class is part of a set of classes: UnaryOperator, BinaryOperator, TernaryOperator, QuaternaryOperator.
+		If you modify one you'll likely need to modify all four. */
+		
 	/** Optimized base class for reactive functions/operators that take a three arguments/operands. */
 	public abstract class TernaryOperator: Expression
 	{
@@ -120,7 +123,7 @@ namespace Fuse.Reactive
 							ClearData();
 						}
 					}
-					else if (_hasData)
+					else
 					{
 						ClearData();
 					}
