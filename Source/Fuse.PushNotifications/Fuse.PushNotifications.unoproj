@@ -2,7 +2,7 @@
   "Copyright": "Copyright (c) Fusetools AS 2017",
   "Description": "Support for Push Notifications On Mobile",
   "Publisher": "Fusetools AS",
-  "Version": "1.4.0-rc4",
+  "Version": "1.4.1",
   "Package": {
     "ProjectUrl": "https://fusetools.com"
   },
@@ -24,6 +24,7 @@
     "JS.uno:Source",
 
     "iOS/Impl.uno:Source",
+    "iOS/Impl.uxl:Extensions",
     "iOS/AppDelegatePushNotify.h:CHeader:iOS",
     "iOS/AppDelegatePushNotify.mm:CSource:iOS",
 

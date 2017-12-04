@@ -80,7 +80,19 @@
 
 # 1.4
 
+## 1.4.1
+
+### Expressions
+- Fixed an issue where toUpper and toLower would crash on null intput. Now they propagate null instead.
+
+### DatePicker/TimePicker
+- Fixed an issue where some properties (for example `TimePicker.Is24HourView`) wouldn't work when set from UX.
+- Fixed a documentation issue with `TimePicker` where the code example used the wrong name for the `Is24HourView` property.
+
 ## 1.4.0
+
+### Notifications
+- Fix regression causing iOS apps not to be accepted to the Store apparently due to use of push-notifications even though they are not used in the project.
 
 ### TextInput
 - Fixed issue on android where placeholder text on a `<TextInput IsPassword="true" />` would be drawn as password dots
@@ -104,6 +116,7 @@
 
 ### WebView
 - Exported the methods goBack, goForward, reload and stop for use in FuseJS
+- Fixed regression in 1.3 that broke WebView when using URISchemeHandler
 
 ### ScrollViewPager
 - Fixed a NullReferenceError that could happen while using ScrollViewPager in preview
