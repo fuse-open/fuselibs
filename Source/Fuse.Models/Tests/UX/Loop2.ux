@@ -1,0 +1,9 @@
+<Panel ux:Class="UX.Model.Loop2" Model="UX/Loop2">
+	<Navigator DefaultPath="Home" Pages="{pages}">
+		<PageControl Interaction="None" ux:Name="Home" Pages="{homePages}" ActiveIndex="{pageIndex}">
+			<Page ux:Template="Flights">
+				<Text Value="Q{pageIndex}"/>
+			</Page>
+		</PageControl>
+	</Navigator>
+</Panel>

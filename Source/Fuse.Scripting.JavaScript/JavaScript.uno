@@ -42,7 +42,12 @@ namespace Fuse.Reactive
 		{
 			base.OnRooted();
 			_javaScriptCounter++;
-			SubscribeToDependenciesAndDispatchEvaluate();
+			//for migration we could preserve the _moduleInstance across rooting
+			if (_moduleInstance == null || !_moduleInstance.ReflectExports())
+				SubscribeToDependenciesAndDispatchEvaluate();
+
+			//must be explicit set each time to preserve
+			_preserveModuleInstance = false;
 		}
 
 		protected override void OnUnrooted()
@@ -72,7 +77,7 @@ namespace Fuse.Reactive
 
 		object _currentDc;
 		Uno.IDisposable _sub;
-		
+
 		internal void SetDataContext(object newDc)
 		{
 			DisposeSubscription();
@@ -81,7 +86,7 @@ namespace Fuse.Reactive
 			_currentDc = newDc;
 
 			var obs = newDc as IObservable;
-			if (obs != null) 
+			if (obs != null)
 			{
 				SetSiblingData(null);
 				_sub = new ValueForwarder(obs, this);
@@ -98,7 +103,7 @@ namespace Fuse.Reactive
 		{
 			SetSiblingData(data);
 		}
-		
+
 		void ValueForwarder.IValueListener.LostValue()
 		{
 			SetSiblingData(null);

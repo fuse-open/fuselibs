@@ -32,6 +32,7 @@
     "Fuse.Scripting.Test",
     "Fuse.Testing",
     "FuseTest",
+    "Fuse.Models",
   ],
   "Includes": [
     "*",
@@ -39,6 +40,7 @@
     "3rdparty/es6-promise.min.js:File",
     "FuseJS/setTimeout.js:File",
     "FuseJS/Observable.js:File",
+    "FuseJS/TreeObservable.js:Bundle",
     "FuseJS/EventEmitter.js:Bundle",
     "JavaScriptEngine.cil.uxl:Extensions",
     "JavaScriptEngine.cpp.uxl:Extensions",

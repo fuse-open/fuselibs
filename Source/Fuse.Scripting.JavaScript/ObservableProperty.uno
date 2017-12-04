@@ -40,14 +40,102 @@ namespace Fuse.Scripting.JavaScript
 
 		Observable _observable;
 
+		// JS thread
 		internal Observable GetObservable(Scripting.Context context)
 		{
 			if (_observable == null)
 			{
 				_observable = Observable.Create(context, _worker);
+				_observable.Object["_defaultValueCallback"] = (Scripting.Callback)DefaultValueCallback;
 				Subscribe(context);
 			}
 			return _observable;
+		}
+
+		// JS thread
+		object DefaultValueCallback(Scripting.Context context, object[] args)
+		{
+			var value = args[0];
+
+			object marshalledValue;
+			if (!Marshal.TryConvertTo(_property.PropertyType, value, out marshalledValue))
+			{
+				return null;
+			}
+
+			var resolveClosure = new ResolveDefaultValueClosure(this, marshalledValue);
+			UpdateManager.PostAction(resolveClosure.Perform);
+
+			return null;
+		}
+
+		internal class ResolveDefaultValueClosure
+		{
+			readonly Uno.UX.Property _property;
+			readonly ISubscription _subscription;
+			readonly object _value;
+			readonly Uno.Action<object> _pushValueOnJSThread;
+
+			public ResolveDefaultValueClosure(ObservableProperty op, object value)
+			{
+				_property = op._property;
+				_subscription = op._subscription;
+				_pushValueOnJSThread = op.PushValueOnJSThread;
+				_value = value;
+			}
+
+			// UI thread
+			public void Perform()
+			{
+				if (IsDefaultValueForType(_property.GetAsObject(), _property.PropertyType))
+				{
+					_property.SetAsObject(_value, null);
+					_pushValueOnJSThread(_value);
+				}
+			}
+
+			/*
+				!! This is a temporary workaround !!
+
+				What we actually want to check here is wether a given ux:Property has been set at all.
+				The UX compiler doesn't (yet) produce code that keeps track of this,
+				so we compare the value against `default(T)` as a temporary heuristic until that feature has landed.
+				Since we may only evaluate `default(T)` at compile time, we would in theory need to compare against
+				the default value of every single value type ever (reference types always have a default value of null).
+
+				However, we only perform this check if there is a conflict with a value coming from JavaScript.
+				Since the value is coming from JavaScript, it needs to be marshalled to a corresponding Uno type.
+				If it cannot be marshalled, the UX value "wins" by default.
+
+				Therefore, we only need to compare against default values
+				for value types that are known to be handled by `Marshal.TryConvertTo`.
+
+				https://github.com/fusetools/fuselibs-public/issues/541#issuecomment-335101235
+			*/
+			static bool IsDefaultValueForType(object value, Uno.Type t)
+			{
+				if (value == null)
+					return true;
+
+				if (t.IsEnum)
+					return (int)value == 0;
+
+				return IsDefault<bool>(value, t)
+					|| IsDefault<int>(value, t)
+					|| IsDefault<float>(value, t)
+					|| IsDefault<double>(value, t)
+					|| IsDefault<float2>(value, t)
+					|| IsDefault<float3>(value, t)
+					|| IsDefault<float4>(value, t)
+					|| IsDefault<Size>(value, t)
+					|| IsDefault<Size2>(value, t)
+					|| IsDefault<Selector>(value, t);
+			}
+
+			static bool IsDefault<T>(object value, Uno.Type t)
+			{
+				return t == typeof(T) && value.Equals(default(T));
+			}
 		}
 
 		Observable.Subscription _subscription;
@@ -121,8 +209,12 @@ namespace Fuse.Scripting.JavaScript
 			if (prop != _property.Name) return;
 			if (obj != _property.Object) return;
 			if (_subscription == null) return;
+			PushValueOnJSThread(_property.GetAsObject());
+		}
 
-			_worker.Invoke(new PushCapture(PushValue, _property.GetAsObject()).Run);
+		void PushValueOnJSThread(object value)
+		{
+			_worker.Invoke(new PushCapture(PushValue, value).Run);
 		}
 
 		class PushCapture

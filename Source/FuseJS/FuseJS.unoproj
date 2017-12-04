@@ -23,6 +23,7 @@
     "../Fuse.iOS/Fuse.iOS.unoproj",
     "../Fuse.UserEvents/Fuse.UserEvents.unoproj",
     "../Polyfills.Window/Polyfills.Window.unoproj",
+    "../Fuse.Models/Fuse.Models.unoproj",
   ],
   "Includes": [
     "Globals.uno:Source",

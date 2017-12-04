@@ -41,7 +41,8 @@
     "Fuse.Common.Pointer.Test",
     "FuseTest",
     "Fuse.Common.Test",
-    "Fuse.Nodes.Test"
+    "Fuse.Nodes.Test",
+    "Fuse.Models",
   ],
   "Packages": [
     "Uno.Collections",

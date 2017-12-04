@@ -27,8 +27,11 @@ namespace Fuse.Scripting.JavaScript
 
 		void EnsureClassInstanceRooted(Scripting.Context c)
 		{
-			if (_classInstance == null) _classInstance = ((JSContext)c).GetClassInstance(_names);
-			_classInstance.EnsureRooted(c);
+			if (_names != null)
+			{
+				if (_classInstance == null) _classInstance = ((JSContext)c).GetClassInstance(_names);
+				_classInstance.EnsureRooted(c);
+			}
 		}
 
 		internal Dictionary<string, object> Dependencies;
@@ -53,7 +56,10 @@ namespace Fuse.Scripting.JavaScript
 
 		protected override void CallModuleFunc(Context context, Function moduleFunc, object[] args)
 		{
-			_classInstance.CallMethod(context, moduleFunc, args);
+			if (_classInstance != null)
+				_classInstance.CallMethod(context, moduleFunc, args);
+			else
+				moduleFunc.Call(context, args);
 		}
 	}
 }

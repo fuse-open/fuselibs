@@ -99,9 +99,8 @@ namespace Fuse.Navigation
 		{
 			string path = null;
 			var obj = data as IObject;
-			//TODO: Until the Model is merged this shouldn't work, and it shouldn't be $template (adding line conflict to ensure HasObjectPath is updated)
-			//if (obj != null && obj.ContainsKey("$template")) //set implicitly by Model API
-			//	path = Marshal.ToType<string>(obj["$template"]);
+			if (obj != null && obj.ContainsKey("$__fuse_classname")) //set implicitly by Model API
+				path = Marshal.ToType<string>(obj["$__fuse_classname"]);
 			if (obj != null && obj.ContainsKey("$path"))
 				path = Marshal.ToType<string>(obj["$path"]);
 				
