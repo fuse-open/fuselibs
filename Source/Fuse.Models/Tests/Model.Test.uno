@@ -553,6 +553,23 @@ namespace Fuse.Models.Test
 			}
 		}
 
+		[Test]
+		public void NonPrototypeMethod()
+		{
+			var e = new UX.Model.NonPrototypeMethod();
+			using(var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.StepFrameJS();
+				
+				for(var i = 0; i < 5; ++i)
+				{
+					Assert.AreEqual(i, e.v.Value);
+					e.increment.Perform();
+					root.StepFrameJS();
+				}
+			}
+		}
+
 		static List<T> ChildrenOfType<T>(Visual n) where T : Node
 		{
 			var l = new List<T>();
