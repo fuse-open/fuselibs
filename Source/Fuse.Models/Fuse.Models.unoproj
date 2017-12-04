@@ -21,6 +21,5 @@
     "FuseJS/Internal/ZonePatches.js:Bundle",
     "FuseJS/Internal/Model.js:Bundle",
     "FuseJS/Internal/ViewModelAdapter.js:Bundle",
-    "FuseJS/DI.js:Bundle",
   ]
 }
