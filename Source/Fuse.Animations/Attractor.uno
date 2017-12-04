@@ -35,7 +35,9 @@ namespace Fuse.Animations
 		[UXConstructor]
 		public Attractor([UXParameter("Target")] Property<T> target)
 		{
-			if (target == null) throw new ArgumentNullException("target");
+			if (target == null)
+				throw new ArgumentNullException(nameof(target));
+
 			Target = target;
 		}
 

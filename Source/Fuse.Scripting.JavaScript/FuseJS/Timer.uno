@@ -153,8 +153,11 @@ namespace Fuse.Reactive.FuseJS
 
 			public CallbackClosure(Context context, Scripting.Function func, object[] args)
 			{
-				if(func == null) throw new Uno.ArgumentNullException("func");
-				if(args == null) throw new Uno.ArgumentNullException("args");
+				if (func == null)
+					throw new Uno.ArgumentNullException(nameof(func));
+
+				if (args == null)
+					throw new Uno.ArgumentNullException(nameof(args));
 
 				_context = context;
 				_func = func;

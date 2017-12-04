@@ -21,9 +21,9 @@ namespace Uno.Collections
 				throw new Exception( "Supports only one subscription" );
 				
 			if (added == null)
-				throw new ArgumentNullException("added");
+				throw new ArgumentNullException(nameof(added));
 			if (removed == null)
-				throw new ArgumentNullException("removed");
+				throw new ArgumentNullException(nameof(removed));
 
 			_added = added;
 			_removed = removed;

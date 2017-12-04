@@ -167,7 +167,7 @@ namespace Fuse
 		public VisualEventArgs(Visual visual)
 		{
 			if (visual == null)
-				throw new ArgumentNullException("visual");
+				throw new ArgumentNullException(nameof(visual));
 
 			Visual = visual;
 		}

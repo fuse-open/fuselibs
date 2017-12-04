@@ -60,7 +60,8 @@ namespace Fuse.Triggers.Actions
 		public Set([UXParameter("Target")] Property<T> target)
 		{
 			if (target == null)
-				throw new ArgumentNullException("target");
+				throw new ArgumentNullException(nameof(target));
+
 			Target = target;
 		}
 		
