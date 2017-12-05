@@ -1,5 +1,7 @@
 # Unreleased
 
+## With/NodeGroup/Each
+- Fixed a defect in `NodeGroup` that would cause some nodes to be inserted in the wrong order, in particular if using combinations of `Each`, `With`, triggers, and `Defer`.
 
 # 1.4
 

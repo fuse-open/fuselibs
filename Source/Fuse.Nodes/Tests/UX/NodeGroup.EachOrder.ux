@@ -1,0 +1,12 @@
+<Panel ux:Class="UX.NodeGroup.EachOrder">
+	<JavaScript>
+		exports.items = [1,2,3]
+	</JavaScript>
+	<Each Items="{items}">
+		<NodeGroup IsActive="true">
+			<Text Value="{}a"/>
+			<Text Value="{}b"/>
+			<Text Value="{}c"/>
+		</NodeGroup>
+	</Each>
+</Panel>

@@ -200,7 +200,7 @@ namespace Fuse
 		{
 			if (_added == null || _added.Count == 0)
 				return this;
-			return _added[_added.Count-1];
+			return _added[_added.Count-1].GetLastNodeInGroup();
 		}
 	}
 }

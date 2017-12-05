@@ -232,6 +232,13 @@ namespace Fuse
 			}
 			_addedNodes = null;
 		}
+		
+		internal override Node GetLastNodeInGroup()
+		{
+			if (_addedNodes == null || _addedNodes.Length == 0)
+				return this;
+			return _addedNodes[_addedNodes.Length-1].GetLastNodeInGroup();
+		}
 	}
 
 	/**

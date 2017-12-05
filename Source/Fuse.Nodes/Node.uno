@@ -127,6 +127,10 @@ namespace Fuse
 		/** 
 			Allows a way for things that insert nodes (like `Each`) to determine the end of the
 			group of nodes further inserted by that node (such as a combination with `Match` or `Deferred`)
+			
+			If this node forms a group it should perform a recursive call to `GetLastNodeInGroup` on the final Node in its local group.  Higher level calls are expected to get the final node in the full chain, not just the local node.
+			
+			Node's that don't form a group, or where the group terminates, should return `this`.
 		*/
 		internal virtual Node GetLastNodeInGroup()
 		{
