@@ -30,6 +30,30 @@ namespace Fuse.Reactive.Bindings.Test
 			}
 		}
 	
+		[Test]
+		public void Item()
+		{
+			var e = new UX.Instance.Item();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.StepFrameJS();
+				
+				Assert.AreEqual( "F2", GetText(e.a));
+				Assert.AreEqual( "O3", GetText(e.b));
+				
+				e.callNext.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual( "T4", GetText(e.b));
+				
+				e.callClear.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual( "", GetText(e.b));
+				
+				e.callDefault.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual( "D5", GetText(e.b));
+			}
+		}
 	}
 	
 	public class RootInstantiator : Instantiator

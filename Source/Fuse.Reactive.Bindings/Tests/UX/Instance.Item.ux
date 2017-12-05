@@ -1,0 +1,51 @@
+<Panel ux:Class="UX.Instance.Item">
+	<JavaScript>
+		var Observable = require("FuseJS/Observable")
+		
+		exports.fixed = {
+			type: "fixed",
+			value: 2,
+		}
+		
+		exports.variable = Observable({
+			type: "one",
+			value: 3,
+		})
+		
+		exports.next = function() {
+			exports.variable.value = {
+				type: "two",
+				value: 4,
+			}
+		}
+		
+		exports.clear = function() {
+			exports.variable.clear()
+		}
+		
+		exports.default = function() {
+			exports.variable.value = {
+				value: 5,
+			}
+		}
+	</JavaScript>
+	
+	<Panel ux:Name="a">
+		<Instance Item="{fixed}">
+			<Text Value="F{value}"/>
+		</Instance>
+	</Panel>
+	
+	<Panel ux:Name="b">
+		<Instance Item="{variable}" MatchKey="type">
+			<Text Value="O{value}" ux:Template="one"/>
+			<Text Value="T{value}" ux:Template="two"/>
+			<Text Value="D{value}" ux:DefaultTemplate="true"/>
+		</Instance>
+	</Panel>
+	
+	
+	<FuseTest.Invoke Handler="{next}" ux:Name="callNext"/>
+	<FuseTest.Invoke Handler="{clear}" ux:Name="callClear"/>
+	<FuseTest.Invoke Handler="{default}" ux:Name="callDefault"/>
+</Panel>
