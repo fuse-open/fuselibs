@@ -8,11 +8,11 @@ namespace Fuse.Storage
 	{
 		public static bool Write(string filename, string value)
 		{
-			if(filename == null)
-				throw new ArgumentNullException("filename");
+			if (filename == null)
+				throw new ArgumentNullException(nameof(filename));
 
-			if(value == null)
-				throw new ArgumentNullException("value");
+			if (value == null)
+				throw new ArgumentNullException(nameof(value));
 
 			var filepath = Path.Combine(Directory.GetUserDirectory(UserDirectory.Data), filename);
 			CreateFile(filepath);
@@ -29,8 +29,8 @@ namespace Fuse.Storage
 
 		public static bool TryRead(string filename, out string content)
 		{
-			if(filename == null)
-				throw new ArgumentNullException("filename");
+			if (filename == null)
+				throw new ArgumentNullException(nameof(filename));
 
 			var filepath = Path.Combine(Directory.GetUserDirectory(UserDirectory.Data), filename);
 			if (!File.Exists(filepath))
@@ -54,8 +54,8 @@ namespace Fuse.Storage
 
 		public static bool Delete(string filename)
 		{
-			if(filename == null)
-				throw new ArgumentNullException("filename");
+			if (filename == null)
+				throw new ArgumentNullException(nameof(filename));
 			
 			var filepath = Path.Combine(Directory.GetUserDirectory(UserDirectory.Data), filename);
 			if(!File.Exists(filepath)) return false;

@@ -903,7 +903,7 @@ namespace Fuse.FileSystem
 			where T : class
 		{
 			if (args == null)
-				throw new ArgumentNullException("args");
+				throw new ArgumentNullException(nameof(args));
 
 			var val = args.Length > index ? args[index] as T : null;
 			if (val == null)
@@ -917,7 +917,7 @@ namespace Fuse.FileSystem
 		private static string GetPathFromArgs(object[] args)
 		{
 			if (args == null)
-				throw new ArgumentNullException("args");
+				throw new ArgumentNullException(nameof(args));
 
 			var filename = args.Length > 0 ? args[0] as string : null;
 			if (filename == null)

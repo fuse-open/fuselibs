@@ -192,7 +192,10 @@ namespace Fuse.Navigation
 		public PageResourceBinding([UXParameter("Target")] Property<T> target, [UXParameter("Key")] string key)
 		{
 			Fuse.Diagnostics.Deprecated("PageResourceBinding has been deprecated. Use DataBinding instead", this);
-			if (target == null) throw new ArgumentNullException("target");
+
+			if (target == null)
+				throw new ArgumentNullException(nameof(target));
+
 			Target = target;
 			Key = key;
 		}

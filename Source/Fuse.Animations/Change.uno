@@ -62,8 +62,9 @@ namespace Fuse.Animations
 		[UXConstructor]
 		public Change([UXParameter("Target")] Property<T> target)
 		{
-			if (target == null) 
-				throw new ArgumentNullException("target");
+			if (target == null)
+				throw new ArgumentNullException(nameof(target));
+
 			Target = target;
 
 			if (IsContinuous)

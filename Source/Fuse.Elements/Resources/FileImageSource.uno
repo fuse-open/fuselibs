@@ -151,8 +151,8 @@ namespace Fuse.Resources
 
 		public FileImageSourceImpl(FileSource file)
 		{
-			if(file == null)
-				throw new ArgumentNullException("bundleFile");
+			if (file == null)
+				throw new ArgumentNullException(nameof(file));
 
 			_file = file;
 			_file.DataChanged += OnDataChanged;
