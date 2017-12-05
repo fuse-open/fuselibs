@@ -1,0 +1,4 @@
+<Panel ux:Class="UX.Model.NonPrototypeMethod" Model="UX/NonPrototypeMethod">
+	<FuseTest.DudElement ux:Name="v" Value="{value}" />
+	<FuseTest.Invoke ux:Name="increment" Handler="{increment}" />
+</Panel>
