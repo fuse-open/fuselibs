@@ -59,8 +59,6 @@ namespace Fuse.Desktop
 				for (int i = 0; i < zOrder.Length; i++)
 					zOrder[i].Draw(_dc);
 
-				AppBase.Current.DrawSelection(_dc);
-
 				if defined(FUSELIBS_DEBUG_DRAW_RECTS)
 					DrawRectVisualizer.EndFrameAndVisualize(_dc);
 

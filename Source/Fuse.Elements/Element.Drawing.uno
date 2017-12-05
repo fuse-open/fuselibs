@@ -116,10 +116,5 @@ namespace Fuse.Elements
 				Fuse.Profiling.EndRegion(Uno.Diagnostics.Clock.GetSeconds() - t);
 			}
 		}
-
-		public override void DrawSelection(DrawContext dc)
-		{
-			DrawLocalSelectionRect(dc, new Rect(float2(0, 0), ActualSize));
-		}
 	}
 }

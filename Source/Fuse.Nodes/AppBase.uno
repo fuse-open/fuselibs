@@ -62,8 +62,6 @@ namespace Fuse
 				Fuse.Platform.AppEvents.LowMemoryWarning += OnLowMemory;
 			}
 
-			Fuse.Preview.SelectionManager.SelectionChanged += OnSelectionChanged;
-
 			if defined(FUSELIBS_PROFILING)
 			{
 				string hostname;
@@ -111,28 +109,6 @@ namespace Fuse
 			}
 		}
 		
-		void OnSelectionChanged(object sender, EventArgs args)
-		{
-			_selection.Clear();
-
-			RootViewport.VisitSubtree(FindSelection);
-
-			InvalidateSelection();
-		}
-
-		List<Visual> _selection = new List<Visual>();
-
-		void FindSelection(Node n)
-		{
-			var v = n as Visual;
-			if (v == null) return;
-
-			if (Fuse.Preview.SelectionManager.IsSelected(v))
-			{
-				_selection.Add(v);
-			}
-		}
-
 		void InvalidateGraphicsView(Node n)
 		{
 			var v = n as Visual;
@@ -146,34 +122,6 @@ namespace Fuse
 				return;
 
 			v.InvalidateVisual();
-		}
-
-		bool _isInvalidateSelectionScheduled;
-		void DoInvalidateSelection()
-		{
-			RootViewport.VisitSubtree(InvalidateGraphicsView);
-			_isInvalidateSelectionScheduled = false;
-		}
-
-		public void InvalidateSelection()
-		{
-			if (_isInvalidateSelectionScheduled)
-				return;
-
-			UpdateManager.AddOnceAction(DoInvalidateSelection);
-			_isInvalidateSelectionScheduled = true;
-		}
-
-		/** Draws the Fuse selection indicator. Do not call this method in user code. */
-		public void DrawSelection(DrawContext dc)
-		{
-			if (_selection.Count > 0)
-			{
-				foreach (var n in _selection)
-					n.DrawSelection(dc);
-
-				InvalidateSelection();
-			}
 		}
 
 		void OnEnteringBackground(Fuse.Platform.ApplicationState s)

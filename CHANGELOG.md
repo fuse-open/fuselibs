@@ -5,6 +5,15 @@
 - Changed operators / functions to report warnings if they are provided with invalid arguments. This should help locate errors in code that were previously silent and just didn't evaluate, or evaluated wrong.  Consider using the `??` operator, and the `isNull`, `isDefined` and `nonNull` functions to deal with non-data scenarios.
 - Removed `protected` from `BinaryOperator.OnNewOperands`. This was intended to be `internal` as there is no correct way to overload it. If you happened to use it we can provide a different base-class to use for you.
 
+## Fuse.Preview Selection
+- Removed the following APIs, that were never meant to be exposed to user-code:
+  * `Fuse.Visual.DrawLocalSelection(DrawContext, Rect)`
+  * `Fuse.Visual.DrawSelection(DrawContext)`
+  * `Fuse.AppBase.InvalidateSelection()`
+  * `Fuse.App.DrawSelection(DrawContext)`
+  * `Fuse.Preview.SelectionManager`
+  * `Fuse.Preview.ISelection`
+
 ## Conversions
 - Added `float()` expression to force conversion to float values
 - Added `string()` expression to force conversion to string values
