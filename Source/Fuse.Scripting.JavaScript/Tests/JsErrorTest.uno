@@ -26,7 +26,7 @@ namespace Fuse.Reactive.Test
 		}
 		
 		[Test]
-		[Ignore("https://github.com/fusetools/fuselibs-public/issues/679", "Android")]
+		[Ignore("https://github.com/fusetools/fuselibs-public/issues/679", "Android && USE_V8")]
 		public void RequireInvalid()
 		{
 			using (var dg = new RecordDiagnosticGuard())
