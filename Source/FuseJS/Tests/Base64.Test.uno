@@ -2,6 +2,7 @@ using Uno;
 using Uno.IO;
 using Uno.Testing;
 using Fuse.Scripting;
+using Fuse.Scripting.JavaScript.Test;
 using FuseTest;
 
 namespace FuseJS.Test
@@ -11,16 +12,16 @@ namespace FuseJS.Test
 		[Test]
 		public void JavaScriptTests()
 		{
-			new FuseJS.Base64();
-			using (var jsRecorder = new JsTestRecorder())
-			{
-				var context = jsRecorder.Begin();
-				var moduleResult = new FileModule(import("Base64Tests.js")).Evaluate(context, "Base64Tests");
-				if (moduleResult.Error != null)
-					throw moduleResult.Error;
+			var test = new JSTest(JavaScriptTestsInner);
+			test.WaitOnResults();
+		}
 
-				jsRecorder.End();
-			}
+		void JavaScriptTestsInner(Fuse.Scripting.Context context)
+		{
+			new FuseJS.Base64();
+			var moduleResult = new FileModule(import("Base64Tests.js")).Evaluate(context, "Base64Tests");
+			if (moduleResult.Error != null)
+				throw moduleResult.Error;
 		}
 	}
 }
