@@ -5,7 +5,7 @@ using Fuse.Scripting;
 using Fuse.Scripting.JavaScript.Test;
 using FuseTest;
 
-public class JsTest : TestBase
+public class EnvironmentTest : TestBase
 {
 	[Test]
 	public void Environment()
