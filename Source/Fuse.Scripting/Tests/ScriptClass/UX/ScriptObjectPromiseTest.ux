@@ -1,0 +1,31 @@
+<Panel ux:Class="UX.ScriptObjectPromiseTests">
+	<Panel ux:Class="UX.ObjectBasicTest">
+		<Fuse.Scripting.Test.CustomObjectPanel ux:Name="customObjectPanel" >
+
+			<JavaScript>
+				var Observable = require("FuseJS/Observable");
+
+				var objectResult = Observable();
+
+				customObjectPanel.getObject()
+					.then(function (result) {
+						objectResult.value = result;
+					});
+
+				module.exports = {
+					objectResult: objectResult
+				};
+
+			</JavaScript>
+
+			<ObjectProperties
+				ux:Name="ObjectProperties"
+				ObjectResult="{objectResult}" />
+
+			<Panel ux:Class="ObjectProperties">
+				<object ux:Property="ObjectResult" />
+			</Panel>
+
+		</Fuse.Scripting.Test.CustomObjectPanel>
+	</Panel>
+</Panel>

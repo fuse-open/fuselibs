@@ -1,0 +1,31 @@
+<Panel ux:Class="UX.ScriptStringPromiseTests">
+	<Panel ux:Class="UX.StringBasicTest">
+		<Fuse.Scripting.Test.CustomStringPanel ux:Name="customStringPanel" >
+
+			<JavaScript>
+				var Observable = require("FuseJS/Observable");
+
+				var stringResult = Observable();
+
+				customStringPanel.getString()
+					.then(function (result) {
+						stringResult.value = result;
+					});
+
+				module.exports = {
+					stringResult: stringResult,
+				};
+
+			</JavaScript>
+
+			<StringProperties
+				ux:Name="StringProperties"
+				StringResult="{stringResult}" />
+
+			<Panel ux:Class="StringProperties">
+				<string ux:Property="StringResult" />
+			</Panel>
+
+		</Fuse.Scripting.Test.CustomStringPanel>
+	</Panel>
+</Panel>
