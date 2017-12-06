@@ -11,8 +11,7 @@ public class CommonJSmodules : TestBase
 	[Test]
 	public void Absolute()
 	{
-		var test = new JSTest(AbsoluteInner);
-		test.WaitOnResults();
+		JSTest.RunTest(AbsoluteInner);
 	}
 
 	void AbsoluteInner(Fuse.Scripting.Context context)
@@ -24,8 +23,7 @@ public class CommonJSmodules : TestBase
 	[Test]
 	public void Cyclic()
 	{
-		var test = new JSTest(CyclicInner);
-		test.WaitOnResults();
+		JSTest.RunTest(CyclicInner);
 	}
 
 	void CyclicInner(Fuse.Scripting.Context context)
@@ -39,8 +37,7 @@ public class CommonJSmodules : TestBase
 	[Ignore("https://github.com/fusetools/fuselibs-public/issues/679", "Android && USE_V8")]
 	public void Determinism()
 	{
-		var test = new JSTest(DeterminismInner);
-		test.WaitOnResults();
+		JSTest.RunTest(DeterminismInner);
 	}
 
 	void DeterminismInner(Fuse.Scripting.Context context)
@@ -53,8 +50,7 @@ public class CommonJSmodules : TestBase
 	[Test]
 	public void RequireDirectory()
 	{
-		var test = new JSTest(RequireDirectoryInner);
-		test.WaitOnResults();
+		JSTest.RunTest(RequireDirectoryInner);
 	}
 
 	void RequireDirectoryInner(Fuse.Scripting.Context context)
@@ -67,8 +63,7 @@ public class CommonJSmodules : TestBase
 	[Test]
 	public void DoubleEvaluate()
 	{
-		var test = new JSTest(DoubleEvaluateInner);
-		test.WaitOnResults();
+		JSTest.RunTest(DoubleEvaluateInner);
 	}
 
 	void DoubleEvaluateInner(Fuse.Scripting.Context context)
@@ -81,8 +76,7 @@ public class CommonJSmodules : TestBase
 	[Test]
 	public void ExactExports()
 	{
-		var test = new JSTest(ExactExportsInner);
-		test.WaitOnResults();
+		JSTest.RunTest(ExactExportsInner);
 	}
 
 
@@ -96,8 +90,7 @@ public class CommonJSmodules : TestBase
 	[Test]
 	public void Method()
 	{
-		var test = new JSTest(MethodInner);
-		test.WaitOnResults();
+		JSTest.RunTest(MethodInner);
 	}
 
 	void MethodInner(Fuse.Scripting.Context context)
@@ -111,8 +104,7 @@ public class CommonJSmodules : TestBase
 	[Ignore("https://github.com/fusetools/fuselibs-public/issues/679", "Android && USE_V8")]
 	public void Missing()
 	{
-		var test = new JSTest(MissingInner);
-		test.WaitOnResults();
+		JSTest.RunTest(MissingInner);
 	}
 
 	void MissingInner(Fuse.Scripting.Context context)
@@ -125,8 +117,7 @@ public class CommonJSmodules : TestBase
 	[Test]
 	public void Monkeys()
 	{
-		var test = new JSTest(MonkeysInner);
-		test.WaitOnResults();
+		JSTest.RunTest(MonkeysInner);
 	}
 
 	void MonkeysInner(Fuse.Scripting.Context context)
@@ -139,8 +130,7 @@ public class CommonJSmodules : TestBase
 	[Test]
 	public void Nested()
 	{
-		var test = new JSTest(NestedInner);
-		test.WaitOnResults();
+		JSTest.RunTest(NestedInner);
 	}
 
 	void NestedInner(Fuse.Scripting.Context context)
@@ -153,8 +143,7 @@ public class CommonJSmodules : TestBase
 	[Test]
 	public void Relative()
 	{
-		var test = new JSTest(RelativeInner);
-		test.WaitOnResults();
+		JSTest.RunTest(RelativeInner);
 	}
 
 	void RelativeInner(Fuse.Scripting.Context context)
@@ -167,8 +156,7 @@ public class CommonJSmodules : TestBase
 	[Test]
 	public void Transitive()
 	{
-		var test = new JSTest(TransitiveInner);
-		test.WaitOnResults();
+		JSTest.RunTest(TransitiveInner);
 	}
 
 	void TransitiveInner(Fuse.Scripting.Context context)

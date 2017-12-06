@@ -12,8 +12,7 @@ namespace FuseJS.Test
 		[Test]
 		public void JavaScriptTests()
 		{
-			var test = new JSTest(JavaScriptTestsInner);
-			test.WaitOnResults();
+			JSTest.RunTest(JavaScriptTestsInner);
 		}
 
 		void JavaScriptTestsInner(Fuse.Scripting.Context context)

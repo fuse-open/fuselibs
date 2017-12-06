@@ -24,8 +24,7 @@ namespace Fuse.Scripting.Test
 		[Test]
 		public void Primitives()
 		{
-			var test = new JSTest(PrimitivesInner);
-			test.WaitOnResults();
+			JSTest.RunTest(PrimitivesInner);
 		}
 
 		void PrimitivesInner(Fuse.Scripting.Context context)
@@ -55,8 +54,7 @@ namespace Fuse.Scripting.Test
 		[Test]
 		public void Objects()
 		{
-			var test = new JSTest(ObjectsInner);
-			test.WaitOnResults();
+			JSTest.RunTest(ObjectsInner);
 		}
 
 		void ObjectsInner(Fuse.Scripting.Context context)
@@ -97,8 +95,7 @@ namespace Fuse.Scripting.Test
 		[Test]
 		public void NonStringKeys()
 		{
-			var test = new JSTest(NonStringKeysInner);
-			test.WaitOnResults();
+			JSTest.RunTest(NonStringKeysInner);
 		}
 
 		void NonStringKeysInner(Fuse.Scripting.Context context)
@@ -117,8 +114,7 @@ namespace Fuse.Scripting.Test
 		[Test]
 		public void Arrays()
 		{
-			var test = new JSTest(ArraysInner);
-			test.WaitOnResults();
+			JSTest.RunTest(ArraysInner);
 		}
 
 		void ArraysInner(Fuse.Scripting.Context context)
@@ -137,8 +133,7 @@ namespace Fuse.Scripting.Test
 		[Test]
 		public void Functions()
 		{
-			var test = new JSTest(FunctionsInner);
-			test.WaitOnResults();
+			JSTest.RunTest(FunctionsInner);
 		}
 
 		void FunctionsInner(Fuse.Scripting.Context context)
@@ -172,8 +167,7 @@ namespace Fuse.Scripting.Test
 		[Test]
 		public void Callbacks()
 		{
-			var test = new JSTest(CallbacksInner);
-			test.WaitOnResults();
+			JSTest.RunTest(CallbacksInner);
 		}
 
 		void CallbacksInner(Fuse.Scripting.Context context)
@@ -244,8 +238,7 @@ namespace Fuse.Scripting.Test
 		[Test]
 		public void CallbackAsConstructor()
 		{
-			var test = new JSTest(CallbackAsConstructorInner);
-			test.WaitOnResults();
+			JSTest.RunTest(CallbackAsConstructorInner);
 		}
 
 		void CallbackAsConstructorInner(Fuse.Scripting.Context context)
@@ -332,8 +325,7 @@ namespace Fuse.Scripting.Test
 		[Test]
 		public void Errors()
 		{
-			var test = new JSTest(ErrorsInner);
-			test.WaitOnResults();
+			JSTest.RunTest(ErrorsInner);
 		}
 
 		void ErrorsInner(Fuse.Scripting.Context context)
@@ -359,8 +351,7 @@ namespace Fuse.Scripting.Test
 		[Ignore("https://github.com/fusetools/fuselibs-public/issues/679", "Android && USE_V8")]
 		public void ExceptionMessageIsMarshalledToJavaScript()
 		{
-			var test = new JSTest(ExceptionMessageIsMarshalledToJavaScriptInner);
-			test.WaitOnResults();
+			JSTest.RunTest(ExceptionMessageIsMarshalledToJavaScriptInner);
 		}
 
 		void ExceptionMessageIsMarshalledToJavaScriptInner(Fuse.Scripting.Context context)
@@ -409,8 +400,7 @@ namespace Fuse.Scripting.Test
 		[Test]
 		public void Unicode1()
 		{
-			var test = new JSTest(Unicode1Inner);
-			test.WaitOnResults();
+			JSTest.RunTest(Unicode1Inner);
 		}
 
 		void Unicode1Inner(Fuse.Scripting.Context context)
@@ -425,8 +415,7 @@ namespace Fuse.Scripting.Test
 		[Test]
 		public void Unicode2()
 		{
-			var test = new JSTest(Unicode2Inner);
-			test.WaitOnResults();
+			JSTest.RunTest(Unicode2Inner);
 		}
 
 		void Unicode2Inner(Fuse.Scripting.Context context)
@@ -442,8 +431,7 @@ namespace Fuse.Scripting.Test
 		[Test]
 		public void StringHomomorphism()
 		{
-			var test = new JSTest(StringHomomorphismInner);
-			test.WaitOnResults();
+			JSTest.RunTest(StringHomomorphismInner);
 		}
 
 		void StringHomomorphismInner(Fuse.Scripting.Context context)
@@ -466,8 +454,7 @@ namespace Fuse.Scripting.Test
 		[Ignore("https://github.com/fusetools/fuselibs-public/issues/679", "Android && USE_V8")]
 		public void CallbackExceptions()
 		{
-			var test = new JSTest(CallbackExceptionsInner);
-			test.WaitOnResults();
+			JSTest.RunTest(CallbackExceptionsInner);
 		}
 
 		void CallbackExceptionsInner(Fuse.Scripting.Context context)
@@ -480,8 +467,7 @@ namespace Fuse.Scripting.Test
 		[Ignore("https://github.com/fusetools/fuselibs-public/issues/679", "Android && USE_V8")]
 		public void CatchingCallbackExceptions()
 		{
-			var test = new JSTest(CatchingCallbackExceptionsInner);
-			test.WaitOnResults();
+			JSTest.RunTest(CatchingCallbackExceptionsInner);
 		}
 
 		void CatchingCallbackExceptionsInner(Fuse.Scripting.Context context)
@@ -499,8 +485,7 @@ namespace Fuse.Scripting.Test
 		[Ignore("https://github.com/fusetools/fuselibs-public/issues/679", "Android && USE_V8")]
 		public void CatchingUnoExceptions()
 		{
-			var test = new JSTest(CatchingUnoExceptionsInner);
-			test.WaitOnResults();
+			JSTest.RunTest(CatchingUnoExceptionsInner);
 		}
 
 		void CatchingUnoExceptionsInner(Fuse.Scripting.Context context)
@@ -521,8 +506,7 @@ namespace Fuse.Scripting.Test
 		[Test]
 		public void External()
 		{
-			var test = new JSTest(ExternalInner);
-			test.WaitOnResults();
+			JSTest.RunTest(ExternalInner);
 		}
 
 		void ExternalInner(Fuse.Scripting.Context context)
@@ -551,8 +535,7 @@ namespace Fuse.Scripting.Test
 		[Test]
 		public void ExternalSameObject()
 		{
-			var test = new JSTest(ExternalSameObjectInner);
-			test.WaitOnResults();
+			JSTest.RunTest(ExternalSameObjectInner);
 		}
 
 		void ExternalSameObjectInner(Fuse.Scripting.Context context)
@@ -586,8 +569,7 @@ namespace Fuse.Scripting.Test
 		[Test]
 		public void Memory()
 		{
-			var test = new JSTest(MemoryInner);
-			test.WaitOnResults();
+			JSTest.RunTest(MemoryInner);
 		}
 
 		void MemoryInner(Fuse.Scripting.Context context)
@@ -602,8 +584,7 @@ namespace Fuse.Scripting.Test
 		[Test]
 		public void Memory2()
 		{
-			var test = new JSTest(Memory2Inner);
-			test.WaitOnResults();
+			JSTest.RunTest(Memory2Inner);
 		}
 
 		void Memory2Inner(Fuse.Scripting.Context context)
@@ -620,8 +601,7 @@ namespace Fuse.Scripting.Test
 		[Test]
 		public void ArrayBufferSupport()
 		{
-			var test = new JSTest(ArrayBufferSupportInner);
-			test.WaitOnResults();
+			JSTest.RunTest(ArrayBufferSupportInner);
 				
 		}
 
@@ -653,8 +633,7 @@ namespace Fuse.Scripting.Test
 		[Test]
 		public void Buffers()
 		{
-			var test = new JSTest(BuffersInner);
-			test.WaitOnResults();
+			JSTest.RunTest(BuffersInner);
 		}
 
 		void BuffersInner(Fuse.Scripting.Context context)
@@ -729,8 +708,7 @@ namespace Fuse.Scripting.Test
 		[Test]
 		public void StringObjects()
 		{
-			var test = new JSTest(StringObjectsInner);
-			test.WaitOnResults();
+			JSTest.RunTest(StringObjectsInner);
 		}
 
 		void StringObjectsInner(Fuse.Scripting.Context context)
@@ -745,8 +723,7 @@ namespace Fuse.Scripting.Test
 		[Test]
 		public void ArrayObjects()
 		{
-			var test = new JSTest(ArrayObjectsInner);
-			test.WaitOnResults();
+			JSTest.RunTest(ArrayObjectsInner);
 		}
 
 		void ArrayObjectsInner(Fuse.Scripting.Context context)
@@ -764,8 +741,7 @@ namespace Fuse.Scripting.Test
 		[Test]
 		public void NumberObjects()
 		{
-			var test = new JSTest(NumberObjectsInner);
-			test.WaitOnResults();
+			JSTest.RunTest(NumberObjectsInner);
 		}
 
 		void NumberObjectsInner(Fuse.Scripting.Context context)
@@ -780,8 +756,7 @@ namespace Fuse.Scripting.Test
 		[Test]
 		public void BooleanObjects()
 		{
-			var test = new JSTest(BooleanObjectsInner);
-			test.WaitOnResults();
+			JSTest.RunTest(BooleanObjectsInner);
 		}
 
 		void BooleanObjectsInner(Fuse.Scripting.Context context)

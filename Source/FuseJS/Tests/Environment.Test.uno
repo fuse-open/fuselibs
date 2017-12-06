@@ -10,8 +10,7 @@ public class JsTest : TestBase
 	[Test]
 	public void Environment()
 	{
-		var test = new JSTest(EnvironmentInner);
-		test.WaitOnResults();
+		JSTest.RunTest(EnvironmentInner);
 	}
 
 	void EnvironmentInner(Fuse.Scripting.Context context)

@@ -19,7 +19,7 @@ namespace Fuse.Scripting.JavaScript.Test
 		readonly Action<Fuse.Scripting.Context> _test;
 		readonly List<Exception> _failures = new List<Exception>();
 
-		public JSTest(Action<Fuse.Scripting.Context> test)
+		JSTest(Action<Fuse.Scripting.Context> test)
 		{
 			Fuse.Reactive.JavaScript.EnsureVMStarted();
 			_test = test;
@@ -62,7 +62,7 @@ namespace Fuse.Scripting.JavaScript.Test
 			_testComplete.Set();
 		}
 
-		public void WaitOnResults()
+		void WaitOnResults()
 		{
 			_testComplete.WaitOne();
 
@@ -70,6 +70,12 @@ namespace Fuse.Scripting.JavaScript.Test
 			{
 				throw f;
 			}
+		}
+
+		public static void RunTest(Action<Fuse.Scripting.Context> method)
+		{
+			var test = new JSTest(method);
+			test.WaitOnResults();
 		}
 	}
 }
