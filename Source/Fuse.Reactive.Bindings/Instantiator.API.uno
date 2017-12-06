@@ -314,7 +314,7 @@ namespace Fuse.Reactive
 			RefreshItems();
 		}
 		
-		class CountItem { }
+		internal class CountItem { }
 		
 		int _count;
 		/** @hide */

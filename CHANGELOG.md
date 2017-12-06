@@ -1,5 +1,8 @@
 # Unreleased
 
+## Instance
+- Added `Instance.Item` to work similar to an `Each` with a single data item
+
 ## Expression Functions
 - Added `nonNull` for special evaluation handling for temporary null values. This may be useful in migrating code that is now producing many incompatbile argument warnings.
 - Changed operators / functions to report warnings if they are provided with invalid arguments. This should help locate errors in code that were previously silent and just didn't evaluate, or evaluated wrong.  Consider using the `??` operator, and the `isNull`, `isDefined` and `nonNull` functions to deal with non-data scenarios.
