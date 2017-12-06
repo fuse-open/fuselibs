@@ -15,7 +15,7 @@
 			router.goto("foo", {param: 400, bar:"yeah"})
 		}
 
-		module.exports = { step1, step2, step3 }
+		module.exports = { step1: step1, step2: step2, step3: step3 };
 
 	</JavaScript>
 	<Navigator>

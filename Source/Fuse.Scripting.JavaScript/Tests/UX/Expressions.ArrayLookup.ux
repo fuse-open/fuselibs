@@ -14,7 +14,7 @@
 		function illegalIndex() { index.value = "foo"; }
 		function changeObj() { obj.value = { col : { foo: "FOO HAS CHANGED", bar : "BAR HAS CHANGED" }}}
 
-		module.exports = { obs, arr, index, inc, dec, obj, bar, changeObj };
+		module.exports = { obs: obs, arr: arr, index: index, inc: inc, dec: dec, obj: obj, bar: bar, changeObj: changeObj };
 	</JavaScript>
 	<Text ux:Name="t1" Value="Hello {obs[index/2]} : {arr[(index+1)/2]}!" />
 	<Text ux:Name="t2" Value="{obj.col['foo']}" />

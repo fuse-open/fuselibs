@@ -11,7 +11,7 @@
 		var img = Observable("test");
 		var empty = Observable();
 
-		module.exports = { foo, username: "John Doe", img, empty };
+		module.exports = { foo: foo, username: "John Doe", img: img, empty: empty };
 	</JavaScript>
 
 	<float4 ux:Global="Lol" ux:Value="#f0f" />
