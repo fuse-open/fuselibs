@@ -35,8 +35,8 @@
     "Fuse.Models",
   ],
   "Includes": [
-    "*",
-    "*/*",
+    "**.uno:Source",
+    "**.uxl:Extensions",
     "3rdparty/es6-promise.min.js:File",
     "FuseJS/setTimeout.js:File",
     "FuseJS/Observable.js:File",

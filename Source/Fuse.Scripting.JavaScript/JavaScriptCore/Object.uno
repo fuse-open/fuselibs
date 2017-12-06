@@ -20,7 +20,7 @@ namespace Fuse.Scripting.JavaScriptCore
 		~Object()
 		{
 			if (!_context._disposed)
-				_value.GetJSValueRef().Unprotect(_context._context);
+				_value.GetJSValueRef().DeferedUnprotect();
 		}
 
 		public override object this[string key]

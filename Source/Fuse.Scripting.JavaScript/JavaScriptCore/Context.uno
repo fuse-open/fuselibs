@@ -5,6 +5,11 @@ using Uno;
 
 namespace Fuse.Scripting.JavaScriptCore
 {
+	[extern(Android) Require("Gradle.Dependency.Compile", "org.webkit:android-jsc:r174650")]
+	[extern(Android) Require("LinkLibrary", "jsc")]
+	[extern(Android) Require("IncludeDirectory", "@(PACKAGE_DIR:Path)/3rdparty/JavaScriptCore/Headers")]
+	[extern(Android) Require("LinkDirectory", "@(OutputDirectory:Path)/app/build/intermediates/exploded-aar/org.webkit/android-jsc/r174650/jni/${ANDROID_ABI}")]
+	[extern(iOS) Require("Xcode.Framework", "JavaScriptCore")]
 	[Require("Header.Include", "JavaScriptCore/JavaScript.h")]
 	public extern(USE_JAVASCRIPTCORE) class Context : Fuse.Scripting.JavaScript.JSContext
 	{
@@ -56,10 +61,10 @@ namespace Fuse.Scripting.JavaScriptCore
 				_disposed = true;
 				_onError = null;
 
-				_functionType.GetJSValueRef().Unprotect(_context);
-				_arrayType.GetJSValueRef().Unprotect(_context);
-				_arrayBufferType.GetJSValueRef().Unprotect(_context);
-				_byteArrayType.GetJSValueRef().Unprotect(_context);
+				_functionType.GetJSValueRef().DeferedUnprotect();
+				_arrayType.GetJSValueRef().DeferedUnprotect();
+				_arrayBufferType.GetJSValueRef().DeferedUnprotect();
+				_byteArrayType.GetJSValueRef().DeferedUnprotect();
 
 				_unoFinalizerClass.Dispose();
 				_unoCallbackClass.Dispose();

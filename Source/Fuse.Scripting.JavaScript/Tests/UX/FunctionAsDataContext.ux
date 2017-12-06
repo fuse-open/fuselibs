@@ -10,7 +10,7 @@
 		function test1() { console.log('test1');}
 
 		module.exports = {
-			handler,test1, ok
+			handler: handler, test1: test1, ok: ok
 		};  
   </JavaScript>
 

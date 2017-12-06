@@ -2,6 +2,8 @@ using Uno;
 using Uno.IO;
 using Uno.Testing;
 using Fuse.Scripting;
+using Fuse.Scripting.Test;
+using Fuse.Scripting.JavaScript.Test;
 using FuseTest;
 
 public class CommonJSmodules : TestBase
@@ -9,170 +11,158 @@ public class CommonJSmodules : TestBase
 	[Test]
 	public void Absolute()
 	{
-		using (var jsRecorder = new JsTestRecorder())
-		{
-			var context = jsRecorder.Begin();
-			var moduleResult = new FileModule(import("absolute/main.js")).Evaluate(context, "main");
-			if (moduleResult.Error != null)
-				throw moduleResult.Error;
-
-			jsRecorder.End();
-		}
+		JSTest.RunTest(AbsoluteInner);
 	}
+
+	void AbsoluteInner(Fuse.Scripting.Context context)
+	{
+		var moduleResult = new FileModule(import("absolute/main.js")).Evaluate(context, "main");
+		if (moduleResult.Error != null)
+			throw moduleResult.Error;	}
 
 	[Test]
 	public void Cyclic()
 	{
-		using (var jsRecorder = new JsTestRecorder())
-		{
-			var context = jsRecorder.Begin();
-			var moduleResult = new FileModule(import("cyclic/main.js")).Evaluate(context, "main");
-			if (moduleResult.Error != null)
-				throw moduleResult.Error;
+		JSTest.RunTest(CyclicInner);
+	}
 
-			jsRecorder.End();
-		}
+	void CyclicInner(Fuse.Scripting.Context context)
+	{
+		var moduleResult = new FileModule(import("cyclic/main.js")).Evaluate(context, "main");
+		if (moduleResult.Error != null)
+			throw moduleResult.Error;
 	}
 
 	[Test]
-	[Ignore("https://github.com/fusetools/fuselibs-public/issues/679", "Android")]
+	[Ignore("https://github.com/fusetools/fuselibs-public/issues/679", "Android && USE_V8")]
 	public void Determinism()
 	{
-		using (var jsRecorder = new JsTestRecorder())
-		{
-			var context = jsRecorder.Begin();
-			var moduleResult = new FileModule(import("determinism/main.js")).Evaluate(context, "main");
-			if (moduleResult.Error != null)
-				throw moduleResult.Error;
+		JSTest.RunTest(DeterminismInner);
+	}
 
-			jsRecorder.End();
-		}
+	void DeterminismInner(Fuse.Scripting.Context context)
+	{
+		var moduleResult = new FileModule(import("determinism/main.js")).Evaluate(context, "main");
+		if (moduleResult.Error != null)
+			throw moduleResult.Error;
 	}
 
 	[Test]
 	public void RequireDirectory()
 	{
-		using (var jsRecorder = new JsTestRecorder())
-		{
-			var context = jsRecorder.Begin();
-			var moduleResult = new FileModule(import("directory/main.js")).Evaluate(context, "main");
-			if (moduleResult.Error != null)
-				throw moduleResult.Error;
+		JSTest.RunTest(RequireDirectoryInner);
+	}
 
-			jsRecorder.End();
-		}
+	void RequireDirectoryInner(Fuse.Scripting.Context context)
+	{
+		var moduleResult = new FileModule(import("directory/main.js")).Evaluate(context, "main");
+		if (moduleResult.Error != null)
+			throw moduleResult.Error;
 	}
 
 	[Test]
 	public void DoubleEvaluate()
 	{
-		using (var jsRecorder = new JsTestRecorder())
-		{
-			var context = jsRecorder.Begin();
-			var moduleResult = new FileModule(import("doubleEvaluate/main.js")).Evaluate(context, "main");
-			if (moduleResult.Error != null)
-				throw moduleResult.Error;
+		JSTest.RunTest(DoubleEvaluateInner);
+	}
 
-			jsRecorder.End();
-		}
+	void DoubleEvaluateInner(Fuse.Scripting.Context context)
+	{
+		var moduleResult = new FileModule(import("doubleEvaluate/main.js")).Evaluate(context, "main");
+		if (moduleResult.Error != null)
+			throw moduleResult.Error;
 	}
 
 	[Test]
 	public void ExactExports()
 	{
-		using (var jsRecorder = new JsTestRecorder())
-		{
-			var context = jsRecorder.Begin();
-			var moduleResult = new FileModule(import("exactExports/main.js")).Evaluate(context, "main");
-			if (moduleResult.Error != null)
-				throw moduleResult.Error;
+		JSTest.RunTest(ExactExportsInner);
+	}
 
-			jsRecorder.End();
-		}
+
+	void ExactExportsInner(Fuse.Scripting.Context context)
+	{
+		var moduleResult = new FileModule(import("exactExports/main.js")).Evaluate(context, "main");
+		if (moduleResult.Error != null)
+			throw moduleResult.Error;
 	}
 
 	[Test]
 	public void Method()
 	{
-		using (var jsRecorder = new JsTestRecorder())
-		{
-			var context = jsRecorder.Begin();
-			var moduleResult = new FileModule(import("method/main.js")).Evaluate(context, "main");
-			if (moduleResult.Error != null)
-				throw moduleResult.Error;
+		JSTest.RunTest(MethodInner);
+	}
 
-			jsRecorder.End();
-		}
+	void MethodInner(Fuse.Scripting.Context context)
+	{
+		var moduleResult = new FileModule(import("method/main.js")).Evaluate(context, "main");
+		if (moduleResult.Error != null)
+			throw moduleResult.Error;
 	}
 
 	[Test]
-	[Ignore("https://github.com/fusetools/fuselibs-public/issues/679", "Android")]
+	[Ignore("https://github.com/fusetools/fuselibs-public/issues/679", "Android && USE_V8")]
 	public void Missing()
 	{
-		using (var jsRecorder = new JsTestRecorder())
-		{
-			var context = jsRecorder.Begin();
-			var moduleResult = new FileModule(import("missing/main.js")).Evaluate(context, "main");
-			if (moduleResult.Error != null)
-				throw moduleResult.Error;
+		JSTest.RunTest(MissingInner);
+	}
 
-			jsRecorder.End();
-		}
+	void MissingInner(Fuse.Scripting.Context context)
+	{
+		var moduleResult = new FileModule(import("missing/main.js")).Evaluate(context, "main");
+		if (moduleResult.Error != null)
+			throw moduleResult.Error;
 	}
 
 	[Test]
 	public void Monkeys()
 	{
-		using (var jsRecorder = new JsTestRecorder())
-		{
-			var context = jsRecorder.Begin();
-			var moduleResult = new FileModule(import("monkeys/main.js")).Evaluate(context, "main");
-			if (moduleResult.Error != null)
-				throw moduleResult.Error;
+		JSTest.RunTest(MonkeysInner);
+	}
 
-			jsRecorder.End();
-		}
+	void MonkeysInner(Fuse.Scripting.Context context)
+	{
+		var moduleResult = new FileModule(import("monkeys/main.js")).Evaluate(context, "main");
+		if (moduleResult.Error != null)
+			throw moduleResult.Error;
 	}
 
 	[Test]
 	public void Nested()
 	{
-		using (var jsRecorder = new JsTestRecorder())
-		{
-			var context = jsRecorder.Begin();
-			var moduleResult = new FileModule(import("nested/main.js")).Evaluate(context, "main");
-			if (moduleResult.Error != null)
-				throw moduleResult.Error;
+		JSTest.RunTest(NestedInner);
+	}
 
-			jsRecorder.End();
-		}
+	void NestedInner(Fuse.Scripting.Context context)
+	{
+		var moduleResult = new FileModule(import("nested/main.js")).Evaluate(context, "main");
+		if (moduleResult.Error != null)
+			throw moduleResult.Error;
 	}
 
 	[Test]
 	public void Relative()
 	{
-		using (var jsRecorder = new JsTestRecorder())
-		{
-			var context = jsRecorder.Begin();
-			var moduleResult = new FileModule(import("relative/main.js")).Evaluate(context, "main");
-			if (moduleResult.Error != null)
-				throw moduleResult.Error;
+		JSTest.RunTest(RelativeInner);
+	}
 
-			jsRecorder.End();
-		}
+	void RelativeInner(Fuse.Scripting.Context context)
+	{
+		var moduleResult = new FileModule(import("relative/main.js")).Evaluate(context, "main");
+		if (moduleResult.Error != null)
+			throw moduleResult.Error;
 	}
 
 	[Test]
 	public void Transitive()
 	{
-		using (var jsRecorder = new JsTestRecorder())
-		{
-			var context = jsRecorder.Begin();
-			var moduleResult = new FileModule(import("transitive/main.js")).Evaluate(context, "main");
-			if (moduleResult.Error != null)
-				throw moduleResult.Error;
+		JSTest.RunTest(TransitiveInner);
+	}
 
-			jsRecorder.End();
-		}
+	void TransitiveInner(Fuse.Scripting.Context context)
+	{
+		var moduleResult = new FileModule(import("transitive/main.js")).Evaluate(context, "main");
+		if (moduleResult.Error != null)
+			throw moduleResult.Error;
 	}
 }
