@@ -57,6 +57,22 @@
     "Duktape/duk_config.h:File",
     "Duktape/duktape.c:File",
     "Duktape/duktape.h:File",
-    "Duktape/duktape_helpers.h:File"
+    "Duktape/duktape_helpers.h:File",
+
+    "JavaScriptCore/3rdparty/JavaScriptCore/JSBase.h:File",
+    "JavaScriptCore/3rdparty/JavaScriptCore/JSContext.h:File",
+    "JavaScriptCore/3rdparty/JavaScriptCore/JSContextRef.h:File",
+    "JavaScriptCore/3rdparty/JavaScriptCore/JSExport.h:File",
+    "JavaScriptCore/3rdparty/JavaScriptCore/JSManagedValue.h:File",
+    "JavaScriptCore/3rdparty/JavaScriptCore/JSObjectRef.h:File",
+    "JavaScriptCore/3rdparty/JavaScriptCore/JSStringRef.h:File",
+    "JavaScriptCore/3rdparty/JavaScriptCore/JSStringRefCF.h:File",
+    "JavaScriptCore/3rdparty/JavaScriptCore/JSTypedArray.h:File",
+    "JavaScriptCore/3rdparty/JavaScriptCore/JSValue.h:File",
+    "JavaScriptCore/3rdparty/JavaScriptCore/JSValueRef.h:File",
+    "JavaScriptCore/3rdparty/JavaScriptCore/JSVirtualMachine.h:File",
+    "JavaScriptCore/3rdparty/JavaScriptCore/JavaScript.h:File",
+    "JavaScriptCore/3rdparty/JavaScriptCore/JavaScriptCore.h:File",
+    "JavaScriptCore/3rdparty/JavaScriptCore/WebKitAvailability.h:File"
   ]
 }
