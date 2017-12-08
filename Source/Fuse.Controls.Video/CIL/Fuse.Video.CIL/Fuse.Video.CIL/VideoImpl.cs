@@ -30,38 +30,35 @@ namespace Fuse.Video.Graphics.CIL
 			var path = dir + Path.DirectorySeparatorChar + name;
 			File.WriteAllBytes(path, data);
 
-			if (Outracks.Diagnostics.Platform.OperatingSystem == Outracks.Diagnostics.OS.Mac)
+			#if CONFIG_MAC
 				return CreateFromUrl ("file://" + path, loaded, error);
-			
-			var handle = CreateFromFile(path, loaded, error);
+			#else
+				var handle = CreateFromFile(path, loaded, error);
 
-			return new VideoHandle(handle.Video, path);
-		}
+				return new VideoHandle(handle.Video, path);
+			#endif
+        }
 
 		public static VideoHandle CreateFromFile(string fileName, Action loaded, Action<string> error)
 		{
-			switch (Outracks.Diagnostics.Platform.OperatingSystem)
-			{
-				case Outracks.Diagnostics.OS.Windows: return new VideoHandle(WPF.VideoImpl.FromFile(fileName, loaded, error));
-				case Outracks.Diagnostics.OS.Mac: return new VideoHandle(Mono.MonoImpl.FromFile(fileName, loaded, error));
-				case Outracks.Diagnostics.OS.X11:
-				case Outracks.Diagnostics.OS.Other:
-					throw new NotSupportedException("Platform not supported");
-			}
-			throw new NotSupportedException("Platform not supported");
+			#if CONFIG_WIN
+				return new VideoHandle(WPF.VideoImpl.FromFile(fileName, loaded, error));
+			#elif CONFIG_MAC
+				return new VideoHandle(Mono.MonoImpl.FromFile(fileName, loaded, error));
+			#else
+				throw new NotSupportedException("Platform not supported");
+			#endif
 		}
 
 		public static VideoHandle CreateFromUrl(string url, Action loaded, Action<string> error)
 		{
-			switch (Outracks.Diagnostics.Platform.OperatingSystem)
-			{
-				case Outracks.Diagnostics.OS.Windows: return new VideoHandle(WPF.VideoImpl.FromUrl(url, loaded, error));
-				case Outracks.Diagnostics.OS.Mac: return new VideoHandle(Mono.MonoImpl.FromUrl(url, loaded, error));
-				case Outracks.Diagnostics.OS.X11:
-				case Outracks.Diagnostics.OS.Other:
-					throw new NotSupportedException("Platform not supported");
-			}
-			throw new NotSupportedException("Platform not supported");
+			#if CONFIG_WIN
+				return new VideoHandle(WPF.VideoImpl.FromUrl(url, loaded, error));
+			#elif CONFIG_MAC
+				return new VideoHandle(Mono.MonoImpl.FromUrl(url, loaded, error));
+			#else
+				throw new NotSupportedException("Platform not supported");
+			#endif
 		}
 
 		public static double GetPosition(VideoHandle handle)

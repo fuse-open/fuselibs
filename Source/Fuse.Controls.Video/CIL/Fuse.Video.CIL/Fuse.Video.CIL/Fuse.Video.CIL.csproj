@@ -13,15 +13,6 @@
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>..\..\Lib\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
@@ -30,8 +21,25 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Win|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\Lib\Win\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;CONFIG_WIN</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Mac|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\Lib\Mac\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;CONFIG_MAC</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Platform.cs" />
     <Compile Include="VideoImpl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -40,11 +48,11 @@
       <Project>{6e7c72e6-8cee-434b-8f3f-35e899d35307}</Project>
       <Name>Fuse.Video.CILInterface</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Fuse.Video.Mono\Fuse.Video.Mono.csproj">
+    <ProjectReference Include="..\Fuse.Video.Mono\Fuse.Video.Mono.csproj" Condition="'$(Configuration)'=='Mac'">
       <Project>{65E6ED7E-981A-4895-86C2-D1CB405BE38D}</Project>
       <Name>Fuse.Video.Mono</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Fuse.Video.WPF\Fuse.Video.WPF.csproj">
+    <ProjectReference Include="..\Fuse.Video.WPF\Fuse.Video.WPF.csproj" Condition="'$(Configuration)'=='Win'">
       <Project>{276ac04f-9bf3-4d4b-abf0-a74d19607a91}</Project>
       <Name>Fuse.Video.WPF</Name>
     </ProjectReference>

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.27004.2010
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fuse.Video.CIL", "Fuse.Video.CIL\Fuse.Video.CIL.csproj", "{055889C1-83C1-4D21-BC1D-1F4D8F825D7A}"
 EndProject
@@ -13,28 +13,40 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fuse.Video.CILInterface", "
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
+		Mac|Any CPU = Mac|Any CPU
 		Release|Any CPU = Release|Any CPU
+		Win|Any CPU = Win|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{055889C1-83C1-4D21-BC1D-1F4D8F825D7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{055889C1-83C1-4D21-BC1D-1F4D8F825D7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{055889C1-83C1-4D21-BC1D-1F4D8F825D7A}.Mac|Any CPU.ActiveCfg = Mac|Any CPU
+		{055889C1-83C1-4D21-BC1D-1F4D8F825D7A}.Mac|Any CPU.Build.0 = Mac|Any CPU
 		{055889C1-83C1-4D21-BC1D-1F4D8F825D7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{055889C1-83C1-4D21-BC1D-1F4D8F825D7A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{65E6ED7E-981A-4895-86C2-D1CB405BE38D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{65E6ED7E-981A-4895-86C2-D1CB405BE38D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{055889C1-83C1-4D21-BC1D-1F4D8F825D7A}.Win|Any CPU.ActiveCfg = Win|Any CPU
+		{055889C1-83C1-4D21-BC1D-1F4D8F825D7A}.Win|Any CPU.Build.0 = Win|Any CPU
+		{65E6ED7E-981A-4895-86C2-D1CB405BE38D}.Mac|Any CPU.ActiveCfg = Mac|Any CPU
+		{65E6ED7E-981A-4895-86C2-D1CB405BE38D}.Mac|Any CPU.Build.0 = Mac|Any CPU
 		{65E6ED7E-981A-4895-86C2-D1CB405BE38D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{65E6ED7E-981A-4895-86C2-D1CB405BE38D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{276AC04F-9BF3-4D4B-ABF0-A74D19607A91}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{276AC04F-9BF3-4D4B-ABF0-A74D19607A91}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65E6ED7E-981A-4895-86C2-D1CB405BE38D}.Win|Any CPU.ActiveCfg = Win|Any CPU
+		{65E6ED7E-981A-4895-86C2-D1CB405BE38D}.Win|Any CPU.Build.0 = Win|Any CPU
+		{276AC04F-9BF3-4D4B-ABF0-A74D19607A91}.Mac|Any CPU.ActiveCfg = Mac|Any CPU
+		{276AC04F-9BF3-4D4B-ABF0-A74D19607A91}.Mac|Any CPU.Build.0 = Mac|Any CPU
 		{276AC04F-9BF3-4D4B-ABF0-A74D19607A91}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{276AC04F-9BF3-4D4B-ABF0-A74D19607A91}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6E7C72E6-8CEE-434B-8F3F-35E899D35307}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6E7C72E6-8CEE-434B-8F3F-35E899D35307}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{276AC04F-9BF3-4D4B-ABF0-A74D19607A91}.Win|Any CPU.ActiveCfg = Win|Any CPU
+		{276AC04F-9BF3-4D4B-ABF0-A74D19607A91}.Win|Any CPU.Build.0 = Win|Any CPU
+		{6E7C72E6-8CEE-434B-8F3F-35E899D35307}.Mac|Any CPU.ActiveCfg = Mac|Any CPU
+		{6E7C72E6-8CEE-434B-8F3F-35E899D35307}.Mac|Any CPU.Build.0 = Mac|Any CPU
 		{6E7C72E6-8CEE-434B-8F3F-35E899D35307}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6E7C72E6-8CEE-434B-8F3F-35E899D35307}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E7C72E6-8CEE-434B-8F3F-35E899D35307}.Win|Any CPU.ActiveCfg = Win|Any CPU
+		{6E7C72E6-8CEE-434B-8F3F-35E899D35307}.Win|Any CPU.Build.0 = Win|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B4713684-1F5B-4568-8145-876F3B730CBE}
 	EndGlobalSection
 EndGlobal
