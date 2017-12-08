@@ -300,6 +300,9 @@ function Model(initialState, stateInitializer)
 			var oldMeta = idToMeta.get(node.__fuse_id);
 			if (oldMeta instanceof Object) {
 				var thisIndex = oldMeta.parents.findIndex(function(x) { return x.meta == meta });
+				if (thisIndex == -1) {
+					throw new Error("Internal error: Attempted to detach child that is not attached to us");
+				}
 				oldMeta.parents.splice(thisIndex, 1);
 				oldMeta.invalidatePath();
 
