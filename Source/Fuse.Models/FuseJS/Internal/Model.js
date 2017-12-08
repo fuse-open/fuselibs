@@ -354,8 +354,8 @@ function Model(initialState, stateInitializer)
 
 				var newValue;
 				if (keyMeta instanceof Object) {
-					// Value is already instrumented
-					newValue = keyMeta.node;
+					// Value is already instrumented, but re-instrument to add as parent
+					newValue = instrument({meta: meta, key: key}, keyMeta, value);
 				}
 				else if (value instanceof Object) {
 					newValue = instrument({meta: meta, key: key}, (value instanceof Array) ? [] : {}, value);
