@@ -188,14 +188,8 @@ namespace Fuse.Navigation
 			}
 			
 			var request = new RouterRequest(RouterRequest.Flags.FlatRoute);
-			
-			var keys = obj.Keys;
-			for (int i=0; i < keys.Length; ++i)
-			{
-				var key = keys[i];
-				if (!request.AddArgument(key, obj[key]))
-					return;
-			}
+			if (!request.AddArguments(obj))
+				return;
 
 			request.MakeRequest(r);
 		}

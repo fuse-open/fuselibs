@@ -2,6 +2,7 @@
 
 ## Navigation
 - Fixed an issue with `Navigator.Pages` not registering pages correctly in certain initialization orders
+- Added `$navigationRequest` to `Navigation.Pages` objects. This can be used to fine-tune the navigation.
 
 ## Instance
 - Added `Instance.Item` to work similar to an `Each` with a single data item

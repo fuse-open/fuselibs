@@ -19,6 +19,19 @@ namespace Fuse.Navigation
 		public string Style;
 		public string Bookmark;
 		
+		//not supported in most cases, as `How` overrides/decides
+		RoutingOperation _operation;
+		public RoutingOperation Operation
+		{
+			get { return _operation; }
+			set
+			{
+				_operation = value;
+				HasOperation = true;
+			}
+		}
+		public bool HasOperation;
+		
 		[Flags]
 		public enum Flags
 		{
@@ -41,6 +54,7 @@ namespace Fuse.Navigation
 			Relative = null;
 			Transition = NavigationGotoMode.Transition;
 			Style = "";
+			HasOperation = false;
 		}
 		
 		public bool AddHow( ModifyRouteHow how ) 
@@ -72,36 +86,83 @@ namespace Fuse.Navigation
 			return true;
 		}
 		
-		public bool AddArgument(string name, object value)
+		[Flags]
+		public enum Fields
 		{
-			if (name == "how")
+			How = 1 << 0,
+			Route = 1 << 1,
+			Relative = 1 << 2,
+			Transition = 1 << 3,
+			Style = 1 << 4,
+			Bookmark = 1 << 5,
+			Path = 1 << 6,
+			Operation = 1 << 7,
+			
+			Standard = How | Route | Relative | Transition | Style | Bookmark | Path,
+		}
+		public bool AddArgument(string name, object value, Fields allow = Fields.Standard)
+		{
+			if (name == "how" && allow.HasFlag(Fields.How))
 				return AddHow(Marshal.ToType<ModifyRouteHow>(value));
 
-			if (name == "path")
+			if (name == "path" && allow.HasFlag(Fields.Path))
 				return AddPath( value );
 			
-			if (name == "relative")
+			if (name == "relative" && allow.HasFlag(Fields.Relative))
 			{
 				Relative = value as Node;
 			}
-			else if (name == "transition")
+			else if (name == "transition" && allow.HasFlag(Fields.Transition))
 			{
-				Transition = Marshal.ToType<NavigationGotoMode>(value);
+				NavigationGotoMode v;
+				if (!Marshal.TryToType<NavigationGotoMode>(value, out v))
+				{
+					Fuse.Diagnostics.UserError( "Invalid transition value", this );
+					return false;
+				} 
+				else
+				{
+					Transition = v;
+				}
 			}
-			else if (name == "bookmark")
+			else if (name == "bookmark" && allow.HasFlag(Fields.Bookmark))
 			{
 				Bookmark = Marshal.ToType<string>(value);
 			}
-			else if (name == "style")
+			else if (name == "style" && allow.HasFlag(Fields.Style))
 			{
 				Style = Marshal.ToType<string>(value);
 			}
+			else if (name == "operation" && allow.HasFlag(Fields.Operation))
+			{
+				RoutingOperation v;
+				if (!Marshal.TryToType<RoutingOperation>(value, out v))
+				{
+					Fuse.Diagnostics.UserError( "Invalid operation value", this );
+					return false;
+				}
+				else
+				{
+					Operation = v;
+				}
+			}
 			else
 			{
-				Fuse.Diagnostics.UserError( "Unrecognized argument: " + name, this );
+				Fuse.Diagnostics.UserError( "Unrecognized or unsupported argument: " + name, this );
 				return false;
 			}
 			
+			return true;
+		}
+		
+		public bool AddArguments(IObject obj, Fields allow = Fields.Standard)
+		{
+			var keys = obj.Keys;
+			for (var i = 0; i < keys.Length; i++)
+			{
+				if (!AddArgument(keys[i], obj[keys[i]], allow))
+					return false;
+			}
 			return true;
 		}
 		
