@@ -40,6 +40,9 @@ namespace Fuse.Scripting
 		public abstract bool InstanceOf(Function type);
 
 		public abstract object CallMethod(Context context, string name, params object[] args);
+		[Obsolete("use CallMethod(Context, Function) instead")]
+		public abstract object CallMethod(string name, params object[] args);
+
 		public abstract bool ContainsKey(string key);
 		public abstract bool Equals(Object o);
 
