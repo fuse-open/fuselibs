@@ -68,6 +68,9 @@ namespace Fuse.Scripting
 		}
 
 		public abstract Scripting.Object Construct(Context context, params object[] args);
+		[Obsolete("use Construct(Context, params object[]) instead")]
+		public abstract Scripting.Object Construct(params object[] args);
+
 		public abstract bool Equals(Function f);
 
 		public override bool Equals(object o)

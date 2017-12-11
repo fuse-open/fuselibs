@@ -48,7 +48,8 @@ namespace Fuse.Scripting.JavaScriptCore
 		public override Scripting.Object Construct(Scripting.Context context, params object[] args)
 		{
 			// Ensure this function is being called from the context/vm it belongs to
-			assert context == _context;
+			if (context != _context)
+				throw new ArgumentException("Inconsistent context", nameof(context));
 
 			Scripting.Object result = null;
 			using (var vm = new Context.EnterVM(_context))
@@ -59,6 +60,11 @@ namespace Fuse.Scripting.JavaScriptCore
 						_context._onError).GetJSValueRef());
 			_context.ThrowPendingException();
 			return result;
+		}
+
+		public override Scripting.Object Construct(params object[] args)
+		{
+			return Construct(_context, args);
 		}
 
 		public override bool Equals(Scripting.Function f)
