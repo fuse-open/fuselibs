@@ -31,7 +31,10 @@ namespace Fuse.Scripting.V8
 
 		public override object Call(Scripting.Context context, params object[] args)
 		{
-			var cxt = ((Context)context)._context;
+			if (context != _context)
+				throw new ArgumentException("Inconsistent context", nameof(context));
+
+			var cxt = _context._context;
 			object result = null;
 			using (var pool = new AutoReleasePool(cxt))
 			using (var vm = new Context.EnterVM(_context))
@@ -49,6 +52,11 @@ namespace Fuse.Scripting.V8
 			}
 			_context.ThrowPendingExceptions();
 			return result;
+		}
+
+		public override object Call(params object[] args)
+		{
+			return Call(_context, args);
 		}
 
 		public override Scripting.Object Construct(Scripting.Context context, params object[] args)

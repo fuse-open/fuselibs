@@ -1,4 +1,4 @@
-
+using Uno;
 
 namespace Fuse.Scripting
 {
@@ -58,6 +58,9 @@ namespace Fuse.Scripting
 	public abstract class Function
 	{
 		public abstract object Call(Context context, params object[] args);
+
+		[Obsolete("use Call(Context, params object[]) instead")]
+		public abstract object Call(params object[] args);
 
 		internal void CallDiscardingResult(Context context, params object[] args)
 		{
