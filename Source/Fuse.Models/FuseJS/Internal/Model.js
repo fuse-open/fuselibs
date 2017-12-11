@@ -33,7 +33,9 @@ function Model(initialState, stateInitializer)
 		var meta = stateToMeta.get(state);
 
 		if (meta instanceof Object) {
-			if (parentMeta !== null) { meta.parents.push(parentMeta); }
+			if (parentMeta != null) {
+				attachChild(parentMeta, meta);
+			}
 			return meta.node;
 		}
 
@@ -293,6 +295,19 @@ function Model(initialState, stateInitializer)
 			else {
 				return node[key] === newValue;
 			}
+		}
+
+		function attachChild(parentMeta, childMeta) {
+			if (childMeta.parents.some(function(parent) {
+				return parent
+					&& parent.key === parentMeta.key
+					&& parent.meta === parentMeta.meta
+			})) {
+				// Already a parent
+				return;
+			}
+
+			childMeta.parents.push(parentMeta);
 		}
 
 		function removeAsParentFrom(node) {
