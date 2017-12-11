@@ -28,7 +28,7 @@ namespace Fuse.Scripting.Duktape
 				{
 					args[i] = jsArgs[i];
 				}
-				_context.Push(_callback(args));
+				_context.Push(_callback(_context, args));
 			}
 			catch (Scripting.Error e)
 			{
