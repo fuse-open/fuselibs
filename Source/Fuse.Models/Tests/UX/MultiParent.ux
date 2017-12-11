@@ -1,0 +1,12 @@
+<Panel ux:Class="UX.Model.MultiParent" Model="UX/MultiParent">
+	<Panel ux:Name="listParent">
+		<Each Items="{list}">
+			<Text Value="{value}" />
+		</Each>
+	</Panel>
+	<FuseTest.DudElement ux:Name="field" Value="{field.value}" />
+
+	<FuseTest.Invoke ux:Name="step1" Handler="{step1}" />
+	<FuseTest.Invoke ux:Name="step2" Handler="{step2}" />
+	<FuseTest.Invoke ux:Name="step3" Handler="{step3}" />
+</Panel>

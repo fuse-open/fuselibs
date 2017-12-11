@@ -570,6 +570,35 @@ namespace Fuse.Models.Test
 			}
 		}
 
+		[Test]
+		public void MultiParent()
+		{
+			var e = new UX.Model.MultiParent();
+			using(var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.StepFrameJS();
+
+				Assert.AreEqual("1337", GetRecursiveText(e.listParent));
+
+				e.step1.Perform();
+				root.StepFrameJS();
+
+				Assert.AreEqual("1337", GetRecursiveText(e.listParent));
+				Assert.AreEqual(1337, e.field.Value);
+
+				e.step2.Perform();
+				root.StepFrameJS();
+
+				Assert.AreEqual("1337", GetRecursiveText(e.listParent));
+				Assert.AreEqual(0, e.field.Value);
+
+				e.step3.Perform();
+				root.StepFrameJS();
+
+				Assert.AreEqual("1337,123", GetRecursiveText(e.listParent));
+			}
+		}
+
 		static List<T> ChildrenOfType<T>(Visual n) where T : Node
 		{
 			var l = new List<T>();
