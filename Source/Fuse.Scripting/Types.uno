@@ -1,4 +1,4 @@
-
+using Uno;
 
 namespace Fuse.Scripting
 {
@@ -34,8 +34,15 @@ namespace Fuse.Scripting
 		/** @advanced */
 		public abstract object this[string key] { get; set; }
 		public abstract string[] Keys { get; }
+
 		public abstract bool InstanceOf(Context context, Function type);
+		[Obsolete("use InstanceOf(Context, Function) instead")]
+		public abstract bool InstanceOf(Function type);
+
 		public abstract object CallMethod(Context context, string name, params object[] args);
+		[Obsolete("use CallMethod(Context, Function) instead")]
+		public abstract object CallMethod(string name, params object[] args);
+
 		public abstract bool ContainsKey(string key);
 		public abstract bool Equals(Object o);
 
@@ -59,12 +66,18 @@ namespace Fuse.Scripting
 	{
 		public abstract object Call(Context context, params object[] args);
 
+		[Obsolete("use Call(Context, params object[]) instead")]
+		public abstract object Call(params object[] args);
+
 		internal void CallDiscardingResult(Context context, params object[] args)
 		{
 			Call(context, args);
 		}
 
 		public abstract Scripting.Object Construct(Context context, params object[] args);
+		[Obsolete("use Construct(Context, params object[]) instead")]
+		public abstract Scripting.Object Construct(params object[] args);
+
 		public abstract bool Equals(Function f);
 
 		public override bool Equals(object o)

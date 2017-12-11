@@ -81,12 +81,23 @@ namespace Fuse.Scripting.V8
 
 		public override bool InstanceOf(Scripting.Context context, Scripting.Function type)
 		{
+			if (context != _context)
+				throw new ArgumentException("Inconsistent context", nameof(context));
+
 			var f = type as Function;
 			return (bool)_context._instanceOf.Call(_context, this, type);
 		}
 
+		public override bool InstanceOf(Scripting.Function type)
+		{
+			return InstanceOf(_context, type);
+		}
+
 		public override object CallMethod(Scripting.Context context, string name, params object[] args)
 		{
+			if (context != _context)
+				throw new ArgumentException("Inconsistent context", nameof(context));
+
 			var cxt = _context._context;
 			object result = null;
 			using (var pool = new AutoReleasePool(cxt))
@@ -101,6 +112,11 @@ namespace Fuse.Scripting.V8
 			}
 			_context.ThrowPendingExceptions();
 			return result;
+		}
+
+		public override object CallMethod(string name, params object[] args)
+		{
+			return CallMethod(_context, name, args);
 		}
 
 		public override bool ContainsKey(string key)

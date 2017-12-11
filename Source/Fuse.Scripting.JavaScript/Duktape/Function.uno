@@ -35,6 +35,9 @@ namespace Fuse.Scripting.Duktape
 
 		public override Fuse.Scripting.Object Construct(Scripting.Context context, params object[] args)
 		{
+			if (context != _ctx)
+				throw new ArgumentException("Inconsistent context", nameof(context));
+
 			_ctx.DukContext.push_heapptr(_handle);
 			var argc = args.Length;
 			for (int i = 0; i < argc; i++)
@@ -47,8 +50,16 @@ namespace Fuse.Scripting.Duktape
 			return (Object)returnValue;
 		}
 
+		public override Fuse.Scripting.Object Construct(params object[] args)
+		{
+			return Construct(_ctx, args);
+		}
+
 		public override object Call(Scripting.Context context, params object[] args)
 		{
+			if (context != _ctx)
+				throw new ArgumentException("Inconsistent context", nameof(context));
+
 			_ctx.DukContext.push_heapptr(_handle);
 
 			var argc = args.Length;
@@ -62,6 +73,11 @@ namespace Fuse.Scripting.Duktape
 			var returnValue = _ctx.IndexToObject(-1);
 			_ctx.DukContext.pop();
 			return returnValue;
+		}
+
+		public override object Call(params object[] args)
+		{
+			return Call(_ctx, args);
 		}
 	}
 }

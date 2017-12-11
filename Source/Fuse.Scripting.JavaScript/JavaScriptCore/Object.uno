@@ -67,6 +67,9 @@ namespace Fuse.Scripting.JavaScriptCore
 
 		public override bool InstanceOf(Scripting.Context context, Scripting.Function type)
 		{
+			if (context != _context)
+				throw new ArgumentException("Inconsistent context", nameof(context));
+
 			return type is Function
 				&& _value.GetJSValueRef().IsInstanceOfConstructor(
 					_context._context,
@@ -74,27 +77,40 @@ namespace Fuse.Scripting.JavaScriptCore
 					_context._onError);
 		}
 
+		public override bool InstanceOf(Scripting.Function type)
+		{
+			return InstanceOf(_context, type);
+		}
+
 		public override object CallMethod(Scripting.Context context, string name, params object[] args)
 		{
-			var ctx = (Context)context;
-			if (name == null) throw new ArgumentException("Object.CallMethod.name");
+			if (context != _context)
+				throw new ArgumentException("Inconsistent context", nameof(context));
+
+			if (name == null)
+				throw new ArgumentNullException(nameof(name));
 
 			object result = null;
 			using (var vm = new Context.EnterVM(_context))
 			{
 				var f = _value.GetProperty(
-					ctx._context,
+					_context._context,
 					name,
-					ctx._onError).GetJSObjectRef(ctx._context);
-				result = ctx.Wrap(
+					_context._onError).GetJSObjectRef(_context._context);
+				result = _context.Wrap(
 					f.CallAsFunction(
-						ctx._context,
+						_context._context,
 						_value,
-						ctx.Unwrap(args),
-						ctx._onError));
+						_context.Unwrap(args),
+						_context._onError));
 			}
 			_context.ThrowPendingException();
 			return result;
+		}
+
+		public override object CallMethod(string name, params object[] args)
+		{
+			return CallMethod(_context, name, args);
 		}
 
 		public override bool ContainsKey(string key)
