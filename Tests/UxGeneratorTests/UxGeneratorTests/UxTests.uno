@@ -40,7 +40,7 @@ public class UxTests
     public void AppearanceAndFills()
     {
         var panel = new AppearanceAndFills();
-        var rectangle = panel.FirstVisualChild as Fuse.Controls.Rectangle;
+        var rectangle = panel.FirstChild<Visual>() as Fuse.Controls.Rectangle;
 
         Assert.IsTrue(rectangle != null);
         Assert.AreEqual(1, rectangle.Fills.Count);
