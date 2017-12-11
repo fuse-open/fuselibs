@@ -111,7 +111,7 @@ function Model(initialState, stateInitializer)
 				meta.promises[key] = prom;
 				prom.then(function(result) {
 					if (meta.promises[key] === prom) {
-						removeAsParentFrom(node[key])
+						removeAsParentFrom(key, node[key])
 						set(key, wrap(key, result));
 					}
 				})
@@ -252,7 +252,7 @@ function Model(initialState, stateInitializer)
 						i--;
 					}
 					else {
-						removeAsParentFrom(node[i]);
+						removeAsParentFrom(i, node[i]);
 						set(i, wrap(i, state[i]))
 					}
 				}
@@ -297,12 +297,17 @@ function Model(initialState, stateInitializer)
 			}
 		}
 
+		function isSameParentMeta(a, b) {
+			return a && b
+				&& a.meta === b.meta
+				&& (""+a.key) === (""+b.key);
+				// All object properties are strings (even array indices), however,
+				// array indices will masquerade as numbers in some cases (but not all cases).
+				// Therefore, we compare the keys as strings.
+		}
+
 		function attachChild(parentMeta, childMeta) {
-			if (childMeta.parents.some(function(parent) {
-				return parent
-					&& parent.key === parentMeta.key
-					&& parent.meta === parentMeta.meta
-			})) {
+			if (childMeta.parents.some(function(x) { return isSameParentMeta(x, parentMeta) })) {
 				// Already a parent
 				return;
 			}
@@ -310,11 +315,12 @@ function Model(initialState, stateInitializer)
 			childMeta.parents.push(parentMeta);
 		}
 
-		function removeAsParentFrom(node) {
+		function removeAsParentFrom(key, node) {
 			if (!(node instanceof Object)) { return; }
 			var oldMeta = idToMeta.get(node.__fuse_id);
 			if (oldMeta instanceof Object) {
-				var thisIndex = oldMeta.parents.findIndex(function(x) { return x.meta == meta });
+				var parentMetaToDelete = {key:key, meta:meta};
+				var thisIndex = oldMeta.parents.findIndex(function(x) { return isSameParentMeta(x, parentMetaToDelete) });
 				if (thisIndex == -1) {
 					throw new Error("Internal error: Attempted to detach child that is not attached to us");
 				}
@@ -392,7 +398,7 @@ function Model(initialState, stateInitializer)
 					}
 				}
 				else {
-					removeAsParentFrom(oldValue);
+					removeAsParentFrom(key, oldValue);
 					set(key, newValue);
 				}
 			}
@@ -437,7 +443,7 @@ function Model(initialState, stateInitializer)
 
 		function removeRange(index, count) {
 			for (var i = 0; i < count; i++) {
-				removeAsParentFrom(node[index+i]);
+				removeAsParentFrom(index+i, node[index+i]);
 			}
 			node.splice(index, count);
 			var removePath = getPath().concat(index);
