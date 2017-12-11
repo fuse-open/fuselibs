@@ -35,6 +35,9 @@ namespace Fuse.Scripting.Duktape
 
 		public override bool InstanceOf(Scripting.Context context, Fuse.Scripting.Function type)
 		{
+			if (context != _ctx)
+				throw new ArgumentException("Inconsistent context", nameof(context));
+
 			var func = type as Function;
 			if (func == null) return false;
 			var objIndex = _ctx.DukContext.push_heapptr(_handle);
@@ -42,6 +45,11 @@ namespace Fuse.Scripting.Duktape
 			var result = _ctx.DukContext.instanceof(objIndex, typeIndex);
 			_ctx.DukContext.pop_2();
 			return result;
+		}
+
+		public override bool InstanceOf(Fuse.Scripting.Function type)
+		{
+			return InstanceOf(_ctx, type);
 		}
 
 		public override object this[string key]

@@ -67,11 +67,19 @@ namespace Fuse.Scripting.JavaScriptCore
 
 		public override bool InstanceOf(Scripting.Context context, Scripting.Function type)
 		{
+			if (context != _context)
+				throw new ArgumentException("Inconsistent context", nameof(context));
+
 			return type is Function
 				&& _value.GetJSValueRef().IsInstanceOfConstructor(
 					_context._context,
 					((Function)type)._value,
 					_context._onError);
+		}
+
+		public override bool InstanceOf(Scripting.Function type)
+		{
+			return InstanceOf(_context, type);
 		}
 
 		public override object CallMethod(Scripting.Context context, string name, params object[] args)
