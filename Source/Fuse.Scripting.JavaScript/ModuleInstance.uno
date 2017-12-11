@@ -47,7 +47,7 @@ namespace Fuse.Scripting.JavaScript
 
 		void ReflectExportsJS(Scripting.Context context)
 		{
-			_dc = ((JSContext)context).Reflect(_moduleResult == null ? null : _moduleResult.Object["exports"] );
+			_dc = ((JSContext)context).Reflect(_moduleResult == null ? null : _moduleResult.GetExports(context));
 			UpdateManager.PostAction(SetDataContext);
 		}
 
