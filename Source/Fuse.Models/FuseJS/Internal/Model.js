@@ -33,7 +33,9 @@ function Model(initialState, stateInitializer)
 		var meta = stateToMeta.get(state);
 
 		if (meta instanceof Object) {
-			if (parentMeta !== null) { meta.parents.push(parentMeta); }
+			if (parentMeta != null) {
+				attachChild(parentMeta, meta);
+			}
 			return meta.node;
 		}
 
@@ -109,7 +111,7 @@ function Model(initialState, stateInitializer)
 				meta.promises[key] = prom;
 				prom.then(function(result) {
 					if (meta.promises[key] === prom) {
-						removeAsParentFrom(node[key])
+						removeAsParentFrom(key, node[key])
 						set(key, wrap(key, result));
 					}
 				})
@@ -250,7 +252,7 @@ function Model(initialState, stateInitializer)
 						i--;
 					}
 					else {
-						removeAsParentFrom(node[i]);
+						removeAsParentFrom(i, node[i]);
 						set(i, wrap(i, state[i]))
 					}
 				}
@@ -295,11 +297,33 @@ function Model(initialState, stateInitializer)
 			}
 		}
 
-		function removeAsParentFrom(node) {
+		function isSameParentMeta(a, b) {
+			return a && b
+				&& a.meta === b.meta
+				&& (""+a.key) === (""+b.key);
+				// All object properties are strings (even array indices), however,
+				// array indices will masquerade as numbers in some cases (but not all cases).
+				// Therefore, we compare the keys as strings.
+		}
+
+		function attachChild(parentMeta, childMeta) {
+			if (childMeta.parents.some(function(x) { return isSameParentMeta(x, parentMeta) })) {
+				// Already a parent
+				return;
+			}
+
+			childMeta.parents.push(parentMeta);
+		}
+
+		function removeAsParentFrom(key, node) {
 			if (!(node instanceof Object)) { return; }
 			var oldMeta = idToMeta.get(node.__fuse_id);
 			if (oldMeta instanceof Object) {
-				var thisIndex = oldMeta.parents.findIndex(function(x) { return x.meta == meta });
+				var parentMetaToDelete = {key:key, meta:meta};
+				var thisIndex = oldMeta.parents.findIndex(function(x) { return isSameParentMeta(x, parentMetaToDelete) });
+				if (thisIndex == -1) {
+					throw new Error("Internal error: Attempted to detach child that is not attached to us");
+				}
 				oldMeta.parents.splice(thisIndex, 1);
 				oldMeta.invalidatePath();
 
@@ -354,8 +378,8 @@ function Model(initialState, stateInitializer)
 
 				var newValue;
 				if (keyMeta instanceof Object) {
-					// Value is already instrumented
-					newValue = keyMeta.node;
+					// Value is already instrumented, but re-instrument to add as parent
+					newValue = instrument({meta: meta, key: key}, keyMeta, value);
 				}
 				else if (value instanceof Object) {
 					newValue = instrument({meta: meta, key: key}, (value instanceof Array) ? [] : {}, value);
@@ -374,7 +398,7 @@ function Model(initialState, stateInitializer)
 					}
 				}
 				else {
-					removeAsParentFrom(oldValue);
+					removeAsParentFrom(key, oldValue);
 					set(key, newValue);
 				}
 			}
@@ -419,7 +443,7 @@ function Model(initialState, stateInitializer)
 
 		function removeRange(index, count) {
 			for (var i = 0; i < count; i++) {
-				removeAsParentFrom(node[index+i]);
+				removeAsParentFrom(index+i, node[index+i]);
 			}
 			node.splice(index, count);
 			var removePath = getPath().concat(index);
