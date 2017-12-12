@@ -6,7 +6,6 @@ using Fuse.Resources;
 
 namespace Fuse
 {
-	[extern(ANDROID) Require("Source.Include", "Uno/Graphics/GLHelper.h")]
 	public static class FramebufferPool
 	{
 		static FramebufferPoolImpl framebufferPool;
@@ -57,7 +56,7 @@ namespace Fuse
 		}
 	}
 
-
+	[extern(ANDROID) Require("Source.Include", "Uno/Graphics/GLHelper.h")]
 	internal class FramebufferPoolImpl : ISoftDisposable
 	{
 		public FramebufferPoolImpl()
