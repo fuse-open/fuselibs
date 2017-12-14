@@ -7,16 +7,13 @@ namespace Fuse.Reactive
 	public sealed class Min: BinaryOperator
 	{
 		[UXConstructor]
-		public Min([UXParameter("Left")] Expression left, [UXParameter("Right")] Expression right): base(left, right) {}
+		public Min([UXParameter("Left")] Expression left, [UXParameter("Right")] Expression right): 
+			base(left, right, "min") {}
+			
 		protected override bool Compute(object left, object right, out object result)
 		{
 			result = Marshal.Min(left, right);
 			return true;
-		}
-
-		public override string ToString()
-		{
-			return "min(" + Left + ", " + Right + ")";
 		}
 	}
 
@@ -24,16 +21,13 @@ namespace Fuse.Reactive
 	public sealed class Max: BinaryOperator
 	{
 		[UXConstructor]
-		public Max([UXParameter("Left")] Expression left, [UXParameter("Right")] Expression right): base(left, right) {}
+		public Max([UXParameter("Left")] Expression left, [UXParameter("Right")] Expression right) : 
+			base(left, right, "max") {}
+			
 		protected override bool Compute(object left, object right, out object result)
 		{
 			result = Marshal.Max(left, right);
 			return true;
-		}
-
-		public override string ToString()
-		{
-			return "max(" + Left + ", " + Right + ")";
 		}
 	}
 	
@@ -41,16 +35,13 @@ namespace Fuse.Reactive
 	public sealed class Mod : BinaryOperator
 	{
 		[UXConstructor]
-		public Mod([UXParameter("Left")] Expression left, [UXParameter("Right")] Expression right): base(left, right) {}
+		public Mod([UXParameter("Left")] Expression left, [UXParameter("Right")] Expression right) : 
+			base(left, right, "mod") {}
+			
 		protected override bool Compute(object left, object right, out object result)
 		{
 			result = Math.Mod( Marshal.ToFloat(left), Marshal.ToFloat(right) );
 			return true;
-		}
-
-		public override string ToString()
-		{
-			return "mod(" + Left + ", " + Right + ")";
 		}
 	}
 
@@ -59,7 +50,7 @@ namespace Fuse.Reactive
 	public sealed class Even : UnaryOperator
 	{
 		[UXConstructor]
-		public Even([UXParameter("Operand")] Expression operand): base(operand) {}
+		public Even([UXParameter("Operand")] Expression operand): base(operand, "even") {}
 		protected override bool Compute(object operand, out object result)
 		{
 			result = null;
@@ -71,11 +62,6 @@ namespace Fuse.Reactive
 			result = q % 2 == 0;
 			return true;
 		}
-
-		public override string ToString()
-		{
-			return "even(" + Operand +  ")";
-		}
 	}
 	
 	[UXFunction("odd")]
@@ -83,7 +69,7 @@ namespace Fuse.Reactive
 	public sealed class Odd : UnaryOperator
 	{
 		[UXConstructor]
-		public Odd([UXParameter("Operand")] Expression operand): base(operand) {}
+		public Odd([UXParameter("Operand")] Expression operand): base(operand, "odd") {}
 		protected override bool Compute(object operand, out object result)
 		{
 			result = null;
@@ -94,11 +80,6 @@ namespace Fuse.Reactive
 			var q = (int)Math.Round(v);
 			result = q % 2 != 0;
 			return true;
-		}
-
-		public override string ToString()
-		{
-			return "odd(" + Operand +  ")";
 		}
 	}
 
@@ -119,7 +100,9 @@ namespace Fuse.Reactive
 	public sealed class Alternate : BinaryOperator
 	{
 		[UXConstructor]
-		public Alternate([UXParameter("Left")] Expression left, [UXParameter("Right")] Expression right): base(left, right) {}
+		public Alternate([UXParameter("Left")] Expression left, [UXParameter("Right")] Expression right) : 
+			base(left, right, "alternate") {}
+			
 		protected override bool Compute(object left, object right, out object result)
 		{
 			result = null;
@@ -136,11 +119,6 @@ namespace Fuse.Reactive
 			result = b;
 			return true;
 		}
-
-		public override string ToString()
-		{
-			return "alternate(" + Left + ", " + Right + ")";
-		}
 	}
 
 	/** 
@@ -153,12 +131,10 @@ namespace Fuse.Reactive
 	public abstract class UnaryFloatOperator : UnaryOperator
 	{
 		internal delegate double FloatOp(double value);
-		string _name;
 		FloatOp _op;
 		internal UnaryFloatOperator(Expression operand, string name, FloatOp op) : 
-			base(operand) 
+			base(operand, name)
 		{
-			_name = name;
 			_op = op;
 		}
 		protected sealed override bool Compute(object operand, out object result)
@@ -187,10 +163,6 @@ namespace Fuse.Reactive
 				
 			return false;
 		}
-		public override string ToString()
-		{
-			return _name + "(" + Operand +  ")";
-		}
 	}
 
 	/**
@@ -199,14 +171,13 @@ namespace Fuse.Reactive
 	public abstract class BinaryFloatOperator : BinaryOperator
 	{
 		internal delegate double FloatOp(double a, double b);
-		string _name;
 		FloatOp _op;
 		internal BinaryFloatOperator(Expression left, Expression right, string name, FloatOp op) : 
-			base(left, right) 
+			base(left, right, name) 
 		{
-			_name = name;
 			_op = op;
 		}
+		
 		protected sealed override bool Compute(object left, object right, out object result)
 		{
 			result = null;
@@ -218,10 +189,6 @@ namespace Fuse.Reactive
 				return false;
 			result = _op(lv, rv);
 			return true;
-		}
-		public override string ToString()
-		{
-			return _name + "(" + Left + "," + Right +  ")";
 		}
 	}
 	
@@ -435,7 +402,7 @@ namespace Fuse.Reactive
 		public Lerp([UXParameter("First")] Expression first, 
 			[UXParameter("Second")] Expression second, 
 			[UXParameter("Third")] Expression third) : 
-			base(first, second, third) 
+			base(first, second, third, Flags.None)
 		{ }
 		protected override bool Compute(object a, object b, object t, out object result)
 		{
@@ -492,7 +459,7 @@ namespace Fuse.Reactive
 		public Clamp([UXParameter("First")] Expression first, 
 			[UXParameter("Second")] Expression second, 
 			[UXParameter("Third")] Expression third) : 
-			base(first, second, third) 
+			base(first, second, third, Flags.None) 
 		{ }
 		protected override bool Compute(object a, object mn, object mx, out object result)
 		{

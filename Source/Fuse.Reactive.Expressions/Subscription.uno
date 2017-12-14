@@ -3,13 +3,18 @@ using Uno.Collections;
 
 namespace Fuse.Reactive
 {
-	/** Appropriate base clase for expression operand subscriptions. 
+	/** Using this class directly is unusual. `ComputeExpression` is the preferred option for functions, and `ExpressionListener` for when that doesn't apply.
+	
+		Relying on this behaviour is bad. The Observable support was only intended for bindings. All other 
+		values should use IExpression's facilities. The unintended support may be removed in the future.
 
 		Implements `IListener`, and forward incoming values to the protected `OnNewData` method.
 		If the incoming value is an observable, a subscription is created and the value of that observable
 		is forwarded to the `OnNewData` method instead.
 
-		Extenders should override `OnNewData()` and `Dispose()`.
+		Extenders should override `OnNewData()`, `OnLostData` and `Dispose()`.
+		
+		@hide
 	*/
 	public abstract class InnerListener: IDisposable, IListener
 	{
@@ -18,7 +23,7 @@ namespace Fuse.Reactive
 
 		IDisposable _diag;
 
-		public void SetDiagnostic(string message, IExpression source)
+		public void SetDiagnostic(string message, object source)
 		{
 			ClearDiagnostic();
 			_diag = Diagnostics.ReportTemporalUserWarning(message, source);

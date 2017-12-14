@@ -24,7 +24,7 @@ namespace Fuse.Reactive
 	class Array: IArray
 	{
 		object[] _items;
-		public Array(VarArgFunction.Argument[] args)
+		public Array(Expression.Argument[] args)
 		{
 			_items = new object[args.Length];
 			for (var i = 0; i < args.Length; i++)

@@ -84,9 +84,14 @@ namespace Fuse.Reactive.Test
 		[UXConstructor]
 		public TerJoin([UXParameter("First")] Expression first, [UXParameter("Second")] Expression second,
 			[UXParameter("Third")] Expression third)
-			: base(first, second, third)
+			: base(first, second, third, Flags.None)
 		{}
 			
+		protected TerJoin([UXParameter("First")] Expression first, [UXParameter("Second")] Expression second,
+			[UXParameter("Third")] Expression third, Flags flags)
+			: base(first, second, third, flags)
+		{}
+		
 		protected override bool Compute(object first, object second, object third, out object result)
 		{
 			result = (first == null ? "*" : first.ToString()) +
@@ -102,10 +107,8 @@ namespace Fuse.Reactive.Test
 		[UXConstructor]
 		public TerJoin1([UXParameter("First")] Expression first, [UXParameter("Second")] Expression second,
 			[UXParameter("Third")] Expression third)
-			: base(first, second, third)
+			: base(first, second, third, Flags.Optional0)
 		{}
-			
-		protected override bool IsFirstOptional { get { return true; } }
 	}
 	
 	[UXFunction("_terJoin2")]
@@ -114,10 +117,8 @@ namespace Fuse.Reactive.Test
 		[UXConstructor]
 		public TerJoin2([UXParameter("First")] Expression first, [UXParameter("Second")] Expression second,
 			[UXParameter("Third")] Expression third)
-			: base(first, second, third)
+			: base(first, second, third, Flags.Optional1)
 		{}
-			
-		protected override bool IsSecondOptional { get { return true; } }
 	}
 	
 	[UXFunction("_terJoin3")]
@@ -126,10 +127,8 @@ namespace Fuse.Reactive.Test
 		[UXConstructor]
 		public TerJoin3([UXParameter("First")] Expression first, [UXParameter("Second")] Expression second,
 			[UXParameter("Third")] Expression third)
-			: base(first, second, third)
+			: base(first, second, third, Flags.Optional2)
 		{}
-			
-		protected override bool IsThirdOptional { get { return true; } }
 	}
 	
 }

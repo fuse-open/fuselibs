@@ -14,78 +14,19 @@ namespace Fuse.Reactive
 		
 		@advanced
 	*/
-	public sealed class IsDefined: Expression
+	public sealed class IsDefined: ComputeExpression
 	{
-		public Expression Operand { get; private set; }
+		public Expression Operand { get { return GetArgument(0); } }
 		
 		[UXConstructor]
 		public IsDefined([UXParameter("Operand")] Expression operand)
+			: base( new Expression[]{ operand }, Flags.OmitComputeWarning | Flags.AllOptional )
+		{ }
+
+		protected sealed override bool Compute(Expression.Argument[] args, out object result)
 		{
-			Operand = operand;
-		}
-
-		public override IDisposable Subscribe(IContext context, IListener listener)
-		{
-			return Subscription.Create(this, context, listener);
-		}
-
-		class Subscription: InnerListener
-		{
-			readonly IsDefined _hv;
-			IDisposable _opSub;
-			IListener _listener;
-			bool _hasValue;
-
-			protected Subscription(IsDefined hv, IListener listener)
-			{
-				_hv = hv;
-				_listener = listener;
-			}
-
-			public static Subscription Create(IsDefined hv, IContext context, IListener listener)
-			{
-				var res = new Subscription(hv, listener);
-				res.Init(context);
-				return res;
-			}
-			
-			protected void Init(IContext context)
-			{
-				_opSub = _hv.Operand.Subscribe(context, this);
-				if (!_hasValue)
-					_listener.OnNewData( _hv, false );
-			}
-
-			protected override void OnNewData(IExpression source, object value)
-			{
-				UpdateData(true);
-			}
-			
-			protected override void OnLostData(IExpression source)
-			{
-				UpdateData(false);
-			}
-			
-			void UpdateData(bool has)
-			{
-				if (_hasValue == has)
-					return;
-					
-				_listener.OnNewData( _hv, has );
-				_hasValue = has;
-			}
-
-			public override void Dispose()
-			{
-				base.Dispose();
-
-				if (_opSub != null)
-				{
-					_opSub.Dispose();
-					_opSub = null;
-				}
-				_listener = null;
-			}
+			result = args[0].HasValue;
+			return true;
 		}
 	}
 	
@@ -103,19 +44,13 @@ namespace Fuse.Reactive
 	public sealed class IsNull : UnaryOperator
 	{
 		[UXConstructor]
-		public IsNull([UXParameter("Operand")] Expression operand): base(operand) {}
+		public IsNull([UXParameter("Operand")] Expression operand)
+			: base(operand, "isNull", Flags.Optional0) {}
 		protected override bool Compute(object operand, out object result)
 		{
 			result = operand == null;
 			return true;
 		}
-
-		public override string ToString()
-		{
-			return "isNull(" + Operand +  ")";
-		}
-		
-		protected override bool IsOperandOptional { get { return true; } }
 	}
 	
 	[UXFunction("nonNull")]
@@ -125,79 +60,19 @@ namespace Fuse.Reactive
 		
 		@advanced
 	*/
-	public sealed class NonNull : Expression
+	public sealed class NonNull : ComputeExpression
 	{
-		public Expression Operand { get; private set; }
+		public Expression Operand { get { return GetArgument(0); } }
 		
 		[UXConstructor]
 		public NonNull([UXParameter("Operand")] Expression operand)
+			: base( new Expression[]{ operand }, Flags.OmitComputeWarning )
+		{ }
+		
+		protected override bool Compute(Expression.Argument[] args, out object result)
 		{
-			Operand = operand;
-		}
-
-		public override IDisposable Subscribe(IContext context, IListener listener)
-		{
-			return Subscription.Create(this, context, listener);
-		}
-
-		class Subscription: InnerListener
-		{
-			readonly NonNull _hv;
-			IDisposable _opSub;
-			IListener _listener;
-			bool _hasValue;
-
-			protected Subscription(NonNull hv, IListener listener)
-			{
-				_hv = hv;
-				_listener = listener;
-			}
-
-			public static Subscription Create(NonNull hv, IContext context, IListener listener)
-			{
-				var res = new Subscription(hv, listener);
-				res.Init(context);
-				return res;
-			}
-			
-			protected void Init(IContext context)
-			{
-				_opSub = _hv.Operand.Subscribe(context, this);
-				if (!_hasValue)
-					UpdateData(null);
-			}
-
-			protected override void OnNewData(IExpression source, object value)
-			{	
-				_hasValue = true;
-				UpdateData(value);
-			}
-			
-			protected override void OnLostData(IExpression source)
-			{
-				_hasValue = false;
-				UpdateData(null);
-			}
-			
-			void UpdateData(object value)
-			{
-				if (value != null)
-					_listener.OnNewData( _hv, value );
-				else
-					_listener.OnLostData( _hv );
-			}
-
-			public override void Dispose()
-			{
-				base.Dispose();
-
-				if (_opSub != null)
-				{
-					_opSub.Dispose();
-					_opSub = null;
-				}
-				_listener = null;
-			}
+			result = args[0].Value;
+			return args[0].Value != null;
 		}
 	}
 	

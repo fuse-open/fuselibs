@@ -6,7 +6,7 @@ namespace Fuse.Reactive
 	public sealed class NameValuePair: BinaryOperator
 	{
 		[UXConstructor]
-		public NameValuePair([UXParameter("Name")] Expression name, [UXParameter("Value")] Expression value) : base(name, value)
+		public NameValuePair([UXParameter("Name")] Expression name, [UXParameter("Value")] Expression value) : base(name, value, Flags.None)
 		{
 		}
 

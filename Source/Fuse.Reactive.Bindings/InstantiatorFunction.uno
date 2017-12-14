@@ -36,7 +36,9 @@ namespace Fuse.Reactive
 			}
 			
 			var node = Arguments.Count > 0 ? Arguments[0] : null;
-			return new InstantiatorSubscription(this, _item, listener, context, node );
+			var ins = new InstantiatorSubscription(this, _item, listener, context, node );
+			ins.Init(context);
+			return ins;
 		}
 		
 		class InstantiatorSubscription : InnerListener
@@ -63,8 +65,10 @@ namespace Fuse.Reactive
 				_item = item;
 				_listener = listener;
 				_context = context;
-				
-				
+			}
+			
+			public void Init(IContext context)
+			{
 				if (_node == null)	
 					OnNewNode(null);
 				else

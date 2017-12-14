@@ -96,9 +96,14 @@ namespace Fuse.Reactive.Test
 		[UXConstructor]
 		public QuaJoin([UXParameter("First")] Expression first, [UXParameter("Second")] Expression second,
 			[UXParameter("Third")] Expression third, [UXParameter("Fourth")] Expression fourth)
-			: base(first, second, third, fourth)
+			: base(first, second, third, fourth, Flags.None)
 		{}
 			
+		protected QuaJoin([UXParameter("First")] Expression first, [UXParameter("Second")] Expression second,
+			[UXParameter("Third")] Expression third, [UXParameter("Fourth")] Expression fourth, Flags flags)
+			: base(first, second, third, fourth, flags)
+		{}
+		
 		protected override bool Compute(object first, object second, object third, object fourth, out object result)
 		{
 			//special case for Error test (as we had no actual QuaternaryOperator's to test)
@@ -122,10 +127,8 @@ namespace Fuse.Reactive.Test
 		[UXConstructor]
 		public QuaJoin1([UXParameter("First")] Expression first, [UXParameter("Second")] Expression second,
 			[UXParameter("Third")] Expression third, [UXParameter("Fourth")] Expression fourth)
-			: base(first, second, third, fourth)
+			: base(first, second, third, fourth, Flags.Optional0)
 		{}
-			
-		protected override bool IsFirstOptional { get { return true; } }
 	}
 	
 	[UXFunction("_quaJoin2")]
@@ -134,10 +137,8 @@ namespace Fuse.Reactive.Test
 		[UXConstructor]
 		public QuaJoin2([UXParameter("First")] Expression first, [UXParameter("Second")] Expression second,
 			[UXParameter("Third")] Expression third, [UXParameter("Fourth")] Expression fourth)
-			: base(first, second, third, fourth)
+			: base(first, second, third, fourth, Flags.Optional1)
 		{}
-			
-		protected override bool IsSecondOptional { get { return true; } }
 	}
 
 	[UXFunction("_quaJoin3")]
@@ -146,10 +147,8 @@ namespace Fuse.Reactive.Test
 		[UXConstructor]
 		public QuaJoin3([UXParameter("First")] Expression first, [UXParameter("Second")] Expression second,
 			[UXParameter("Third")] Expression third, [UXParameter("Fourth")] Expression fourth)
-			: base(first, second, third, fourth)
+			: base(first, second, third, fourth, Flags.Optional2)
 		{}
-			
-		protected override bool IsThirdOptional { get { return true; } }
 	}
 
 	[UXFunction("_quaJoin4")]
@@ -158,9 +157,7 @@ namespace Fuse.Reactive.Test
 		[UXConstructor]
 		public QuaJoin4([UXParameter("First")] Expression first, [UXParameter("Second")] Expression second,
 			[UXParameter("Third")] Expression third, [UXParameter("Fourth")] Expression fourth)
-			: base(first, second, third, fourth)
+			: base(first, second, third, fourth, Flags.Optional3)
 		{}
-			
-		protected override bool IsFourthOptional { get { return true; } }
 	}
 }

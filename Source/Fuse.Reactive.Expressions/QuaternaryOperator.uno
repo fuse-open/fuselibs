@@ -4,30 +4,30 @@ using Uno.Collections;
 
 namespace Fuse.Reactive
 {
-	/* This class is part of a set of classes: UnaryOperator, BinaryOperator, TernaryOperator, QuaternaryOperator.
-		If you modify one you'll likely need to modify all four. */
-		
-	/** Optimized base class for reactive functions/operators that take a four arguments/operands. */
-	public abstract class QuaternaryOperator: Expression
+	/** Base class for reactive functions/operators that take four arguments/operands. */
+	public abstract class QuaternaryOperator: ComputeExpression
 	{
-		public Expression First { get; private set; }
-		public Expression Second { get; private set; }
-		public Expression Third { get; private set; }
-		public Expression Fourth { get; private set; }
+		public Expression First { get { return GetArgument(0); } }
+		public Expression Second { get { return GetArgument(1); } }
+		public Expression Third { get { return GetArgument(2); } }
+		public Expression Fourth { get { return GetArgument(3); } }
 
-		protected QuaternaryOperator(Expression first, Expression second, Expression third, Expression fourth)
+		protected QuaternaryOperator(Expression first, Expression second, Expression third, Expression fourth,
+			Flags flags = Flags.DeprecatedVirtualFlags )
+			: base( new Expression[]{ first, second, third, fourth}, flags )
 		{
-			First = first;
-			Second = second;
-			Third = third;
-			Fourth = fourth;
 		}
 
-		public override IDisposable Subscribe(IContext context, IListener listener)
+		internal override Flags GetFlags()
 		{
-			return Subscription.Create(this, context, listener);
+			return Flags.None |
+				(IsFirstOptional ? Flags.Optional0 : Flags.None) |
+				(IsSecondOptional ? Flags.Optional1 : Flags.None) |
+				(IsThirdOptional ? Flags.Optional2 : Flags.None) |
+				(IsFourthOptional ? Flags.Optional3 : Flags.None);
 		}
-
+		
+		/**  DEPRECATED: 2017-12-14  Use flags in constructor instead. These virtuals are only used if DeprecatedVirtualFlags specified, and only at initialization of subscription. */
 		protected virtual bool IsFirstOptional { get { return false; } }
 		protected virtual bool IsSecondOptional { get { return false; } }
 		protected virtual bool IsThirdOptional { get { return false; } }
@@ -42,131 +42,10 @@ namespace Fuse.Reactive
 		
 		/** @deprecated Override the other `Compute` function. 2017-11-29 */
 		protected virtual object Compute(object first, object second, object third, object fourth) { return null; }
-
-		class Subscription: InnerListener
+		
+		protected override sealed bool Compute(Argument[] args, out object result)
 		{
-			readonly QuaternaryOperator _qo;
-			object _first, _second, _third, _fourth;
-			bool _hasFirst, _hasSecond, _hasThird, _hasFourth;
-			bool _hasData;
-
-			IDisposable _firstSub;
-			IDisposable _secondSub;
-			IDisposable _thirdSub;
-			IDisposable _fourthSub;
-
-			IListener _listener;
-			
-			protected Subscription(QuaternaryOperator qo, IListener listener)
-			{
-				_qo = qo;
-				_listener = listener;
-			}
-
-			public static Subscription Create(QuaternaryOperator qo, IContext context, IListener listener)
-			{
-				var res = new Subscription(qo, listener);
-				res.Init(context);
-				return res;
-			}
-
-			/** Must be called by subclasses at the end of constructor, or when fully initialized.
-				This avoids race condition if subscriptions call back synchronously. */
-			protected void Init(IContext context)
-			{
-				_firstSub = _qo.First.Subscribe(context, this);
-				_secondSub = _qo.Second.Subscribe(context, this);
-				_thirdSub = _qo.Third.Subscribe(context, this);
-				_fourthSub = _qo.Fourth.Subscribe(context, this);
-				UpdateOperands(); //in case all optional
-			}
-
-			protected override void OnNewData(IExpression source, object value)
-			{
-				if (source == _qo.First) { _hasFirst = true; _first = value; }
-				if (source == _qo.Second) { _hasSecond = true; _second = value; }
-				if (source == _qo.Third) { _hasThird = true; _third = value; }
-				if (source == _qo.Fourth) { _hasFourth = true; _fourth = value; }
-				UpdateOperands();
-			}
-			
-			protected override void OnLostData(IExpression source)
-			{
-				if (source == _qo.First) { _hasFirst = false; _first = null; }
-				if (source == _qo.Second) { _hasSecond = false; _second = null; }
-				if (source == _qo.Third) { _hasThird = false; _third = null; }
-				if (source == _qo.Fourth) { _hasFourth = false; _fourth = null; }
-				UpdateOperands();
-			}
-
-			void ClearData()
-			{
-				if (_hasData)
-				{
-					_hasData = false;
-					_listener.OnLostData(_qo);
-				}
-			}
-			
-			void UpdateOperands()
-			{
-				ClearDiagnostic();
-				
-				try
-				{
-					if ((_hasFirst || _qo.IsFirstOptional) && (_hasSecond || _qo.IsSecondOptional) && (_hasThird || _qo.IsThirdOptional) && (_hasFourth || _qo.IsFourthOptional))
-					{
-						object result;
-						if (_qo.Compute(_first, _second, _third, _fourth, out result))
-						{
-							_hasData = true;
-							_listener.OnNewData(_qo, result);
-						}
-						else
-						{
-							Fuse.Diagnostics.UserWarning( "Failed to compute value for (" +
-								_first + ", " + _second + ", " + _third + ", " + _fourth, _qo );
-							_hasData = false;
-							ClearData();
-						}
-					}
-					else
-					{
-						ClearData();
-					}
-				}
-				catch (MarshalException me)
-				{
-					SetDiagnostic(me.Message, _qo);
-				}
-			}
-
-			public override void Dispose()
-			{
-				base.Dispose();
-
-				if (_firstSub != null)
-				{
-					_firstSub.Dispose();
-					_firstSub = null;
-				}
-				if (_secondSub != null)
-				{
-					_secondSub.Dispose();
-					_secondSub = null;
-				}
-				if (_thirdSub != null)
-				{
-					_thirdSub.Dispose();
-					_thirdSub = null;
-				}
-				if (_fourthSub != null)
-				{
-					_fourthSub.Dispose();
-					_fourthSub = null;
-				}
-				_listener = null;
-			}
+			return Compute(args[0].Value, args[1].Value, args[2].Value, args[3].Value, out result);
 		}
 	}
 }

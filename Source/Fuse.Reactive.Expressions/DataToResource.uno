@@ -30,27 +30,29 @@ namespace Fuse.Reactive
 		
 		@see Fuse.Resources.ResourceBinding
 	*/
-	public class DataToResource: Reactive.UnaryOperator
+	public class DataToResource: Expression
 	{
+		Expression _data;
 		[UXConstructor]
-		public DataToResource([UXParameter("Data")] Expression data): base(data)
+		public DataToResource([UXParameter("Data")] Expression data)
 		{
-
+			_data = data;
 		}
 
 		public override IDisposable Subscribe(IContext context, IListener listener)
 		{
-			return new DataToResourceSubscription(this, context, listener);
+			var dtr = new DataToResourceSubscription(this, context, listener);
+			dtr.Init(context);
+			return dtr;
 		}
 
-		class DataToResourceSubscription: Subscription
+		class DataToResourceSubscription: ExpressionListener
 		{
 			Node _node;
-			public DataToResourceSubscription(DataToResource dtr, IContext context, IListener listener): base(dtr, listener)
+			public DataToResourceSubscription(DataToResource dtr, IContext context, IListener listener): 
+				base(dtr, listener, new Expression[]{ dtr._data }, Flags.None)
 			{
 				_node = context.Node;
-				OnChanged();
-				Init(context);
 			}
 
 			public override void Dispose()
@@ -62,10 +64,10 @@ namespace Fuse.Reactive
 
 			string _key;
 
-			protected override void OnNewData(IExpression source, object value)
+			protected override void OnArguments(Argument[] args)
 			{
 				Unsubscribe();
-				_key = value as string;
+				_key = args[0].Value as string;
 				Subscribe();
 				OnChanged();
 			}
@@ -84,12 +86,11 @@ namespace Fuse.Reactive
 
 			void OnChanged()
 			{
-				if (_key == null) return;
-				if (_node == null) return;
-
-				object v;
-				if (_node.TryGetResource(_key, null, out v))
-					PushNewData(v);
+				object v = null;
+				if (_key != null && _node != null && _node.TryGetResource(_key, null, out v))
+					SetData(v);
+				else
+					ClearData();
 			}
 		}
 	}
