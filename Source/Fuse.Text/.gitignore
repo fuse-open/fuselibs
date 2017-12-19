@@ -1,4 +1,7 @@
-harfbuzz/lib/*/
+harfbuzz/lib/Android/
+harfbuzz/lib/iOS/
+harfbuzz/lib/OSX/
+harfbuzz/lib/Windows/
 icu/x86
 icu/x64
 icu/iOS

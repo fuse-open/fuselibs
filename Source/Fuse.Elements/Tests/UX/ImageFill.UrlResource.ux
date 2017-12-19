@@ -1,4 +1,4 @@
 <Rectangle ux:Class="UX.ImageFill.UrlResource">
 	<WhileLoading ux:Name="W"/>
-	<ImageFill Url="https://az664292.vo.msecnd.net/files/v10sEyIn1INgh4nn-fuselibs_unittest_green.png" MemoryPolicy="UnloadUnused"  StretchMode="PixelPrecise" ux:Name="IF"/>
+	<ImageFill Url="https://files.fusetools.com/tooling/HlbWfEK6rfwk-fuselibs_unittest_green.png" MemoryPolicy="UnloadUnused"  StretchMode="PixelPrecise" ux:Name="IF"/>
 </Rectangle>
