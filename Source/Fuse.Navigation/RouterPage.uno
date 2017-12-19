@@ -91,6 +91,14 @@ namespace Fuse.Navigation
 			if (router != null)
 				router.OnHistoryChanged();
 		}
+		
+		static public IObject GetNavigationRequest( object data )
+		{
+			var obj = data as IObject;
+			if (obj == null || !obj.ContainsKey( "$navigationRequest" ) )
+				return null;
+			return obj["$navigationRequest"] as IObject;
+		}
 	}
 	
 	class PagesMap : ObserverMap<RouterPage>
@@ -110,7 +118,7 @@ namespace Fuse.Navigation
 		static public bool HasObjectPath( object data )
 		{
 			var obj = data as IObject;
-			if (obj != null && obj.ContainsKey("$path"))
+			if (obj != null && (obj.ContainsKey("$path") || obj.ContainsKey("$__fuse_classname")))
 				return true;
 			return false;
 		}

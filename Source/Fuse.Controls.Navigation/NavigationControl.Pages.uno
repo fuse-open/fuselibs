@@ -13,6 +13,12 @@ namespace Fuse.Controls
 			It should be bound to a JavaScript observable array. The highest index page will always be the active page for the control. As pages are added/removed from this array the navigation state will change.
 			
 			The items in the array are objects, either explicitly created or via the Model feature. They should contain the the `$path` property which specifies the path to use. The object itself will be added to the data context for the page, allowing lookups from within the object.
+			
+			The `$navigationRequest` property may be used to fine-tune how transitions to the pages performed. Without this property the control will infer the type of transition based on how the array has been modified. The properties are a subset of those offered by `modifyPath`:
+			
+				- `transition`: Either `Bypass` or `Transition`
+				- `style`: The style of the operation, which can be used as a matching criteria in transitions.
+				- `operation`: `Pop`, `Replace`, `Push` or `Goto`
 		*/
 		public IArray PageHistory
 		{
@@ -74,18 +80,19 @@ namespace Fuse.Controls
 		{
 			int pageNdx = _pageHistory.Length - 1;
 				
-			var op = pageNdx < _curPageIndex ? RoutingOperation.Pop :
+			var rr = new RouterRequest();
+			rr.Operation = pageNdx < _curPageIndex ? RoutingOperation.Pop :
 				pageNdx == _curPageIndex ? RoutingOperation.Replace :
 				pageNdx > 0 ? RoutingOperation.Push : 
 				RoutingOperation.Goto;
 			if (flags.HasFlag(UpdateFlags.ForceGoto))
-				op = RoutingOperation.Goto;
+				rr.Operation = RoutingOperation.Goto;
 			else if (flags.HasFlag(UpdateFlags.Add))
-				op = pageNdx > 0 ? RoutingOperation.Push : RoutingOperation.Goto;
+				rr.Operation = pageNdx > 0 ? RoutingOperation.Push : RoutingOperation.Goto;
 			else if (flags.HasFlag(UpdateFlags.Replace))
-				op = RoutingOperation.Replace;
+				rr.Operation = RoutingOperation.Replace;
 				
-			var trans = flags.HasFlag(UpdateFlags.Bypass) ? NavigationGotoMode.Bypass : NavigationGotoMode.Transition;
+			rr.Transition = flags.HasFlag(UpdateFlags.Bypass) ? NavigationGotoMode.Bypass : NavigationGotoMode.Transition;
 			
 			RouterPage rPage;
 			if (pageNdx >= AncestorRouterPage.ChildRouterPages.Count)
@@ -104,8 +111,20 @@ namespace Fuse.Controls
 				rPage = RouterPage.CreateDefault();
 			}
 			
+			//adapt request
+			IObject navRequest = RouterPage.GetNavigationRequest( rPage.Context );
+			if (navRequest != null)
+			{
+				if (!rr.AddArguments(navRequest, RouterRequest.Fields.Transition | 	
+					RouterRequest.Fields.Style | RouterRequest.Fields.Operation))
+				{
+					Fuse.Diagnostics.UserError( "Invalid $navigationRequest, visual result may not match expectation", this );
+					//continue anyway since the resulting state is still valid
+				}
+			}
+			
 			Visual ignore;
-			((IRouterOutlet)this).Goto( rPage, trans, op, "", out ignore );
+			((IRouterOutlet)this).Goto( rPage, rr.Transition, rr.Operation, rr.Style, out ignore );
 			
 			_curPageIndex = pageNdx;
 		}

@@ -818,6 +818,25 @@ namespace Fuse.Navigation.Test
 			}
 		}
 		
+		[Test]
+		public void NavigationRequest()
+		{
+			var p = new UX.Navigator.PagesNavigationRequest();
+			p.nav._testInterceptGoto = TestInterceptGoto;
+			ResetInterceptGoto();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				root.StepFrameJS();
+				
+				p.callNext.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual( "three", _lastPage.Path );
+				Assert.AreEqual( NavigationGotoMode.Bypass, _lastGotoMode );
+				Assert.AreEqual( RoutingOperation.Pop, _lastOperation );
+				Assert.AreEqual( "flashy", _lastOperationStyle );
+			}
+		}
+		
 		RouterPage _lastPage;
 		string _lastOperationStyle;
 		NavigationGotoMode _lastGotoMode;

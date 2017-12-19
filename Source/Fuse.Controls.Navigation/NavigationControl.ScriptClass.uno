@@ -116,19 +116,11 @@ namespace Fuse.Controls
 
 			//reusing RouterRequest to ensure same meaning and defaults on supported arguments
 			var rr = new RouterRequest(RouterRequest.Flags.FlatRoute);
-			var keys = obj.Keys;
-			for (int i=0; i < keys.Length; ++i)
+			if (!rr.AddArguments(obj, RouterRequest.Fields.How | RouterRequest.Fields.Transition |	
+				RouterRequest.Fields.Style | RouterRequest.Fields.Path))
 			{
-				var key = keys[i];
-				if (key == "how" || key == "transition" || key == "style" || key == "path")
-				{
-					rr.AddArgument(key, obj[key]);
-				}
-				else
-				{
-					Fuse.Diagnostics.UserError( "`modifyPath` unrecognized argument: " + key, nav );
-					return;
-				}
+				Fuse.Diagnostics.UserError( "`modifyPath` unrecognized arguments", nav );
+				return;
 			}
 			
 			if (rr.Route != null && rr.Route.SubRoute != null)
