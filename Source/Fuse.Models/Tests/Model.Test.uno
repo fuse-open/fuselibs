@@ -9,27 +9,8 @@ using FuseTest;
 
 namespace Fuse.Models.Test
 {
-	public class ModelTest : TestBase
+	public class ModelTest : ModelTestBase
 	{
-		static ModelTest()
-		{
-			new global::Fuse.Reactive.FuseJS.DiagnosticsImplModule();
-			new global::Fuse.Reactive.FuseJS.Http();
-			new global::Fuse.Reactive.FuseJS.TimerModule();
-			new global::Fuse.Storage.StorageModule();
-			new global::Fuse.Drawing.BrushConverter();
-			new global::Fuse.Triggers.BusyTaskModule();
-			new global::Fuse.WebSocket.WebSocketClientModule();
-			new global::Polyfills.Window.WindowModule();
-			new global::FuseJS.Globals();
-			new global::FuseJS.Lifecycle();
-			new global::FuseJS.Environment();
-			new global::FuseJS.Base64();
-			new global::FuseJS.Bundle();
-			new global::FuseJS.FileReaderImpl();
-			new global::FuseJS.UserEvents();
-		}
-
 		[Test]
 		public void ReplaceAt() 
 		{

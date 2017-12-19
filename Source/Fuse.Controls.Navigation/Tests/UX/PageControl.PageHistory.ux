@@ -1,0 +1,17 @@
+<Panel ux:Class="UX.PageControl.PageHistory">
+	<JavaScript>
+		var Observable = require("FuseJS/Observable")
+		
+		exports.pageHistory = Observable({
+			$path: "c",
+		},{
+			$path: "b",
+		})
+	</JavaScript>
+	<!-- should work without router/outlet -->
+	<PageControl ux:Name="pc" PageHistory="{pageHistory}" IsRouterOutlet="false">
+		<Panel ux:Name="a"/>
+		<Panel ux:Name="b"/>
+		<Panel ux:Name="c"/>
+	</PageControl>
+</Panel>

@@ -195,5 +195,10 @@ namespace FuseTest
 		{
 			get { return Fuse.Input.Gesture.HardCaptureSignificanceThreshold; }
 		}
+		
+		protected void RequireModule<T>() where T : new()
+		{
+			TestRootPanel.RequireModule<T>();
+		}
 	}
 }

@@ -394,5 +394,16 @@ namespace Fuse.Controls.Test
 				Assert.AreEqual( 5, FuseTest.InstanceCounter.Count );
 			}
 		}
+		
+		[Test]
+		public void PageHistory()
+		{
+			var p = new UX.PageControl.PageHistory();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				root.StepFrameJS();
+				Assert.AreEqual( p.b, p.pc.Active );
+			}
+		}
 	}
 }

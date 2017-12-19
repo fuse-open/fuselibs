@@ -1,0 +1,14 @@
+<Panel ux:Class="UX.NavigatorModel.Nested" Model="UX/NavigatorModel.Nested">
+	<Navigator Pages="{pages}">
+		<Page ux:Template="SomePage">
+			<DockPanel>
+				<Text Value="{title}" Dock="Top"/>
+				<Navigator Pages="{innerPages}" IsRouterOutlet="false">
+					<Page ux:Template="InnerPage">
+						<Text Alignment="Top" Value="{title}"/>
+					</Page>
+				</Navigator>
+			</DockPanel>
+		</Page>
+	</Navigator>
+</Panel>

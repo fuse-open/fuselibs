@@ -1,24 +1,8 @@
 {
   "Packages": [
-    "Fuse.Animations",
-    "Fuse.Controls",
-    "Fuse.Controls.Panels",
-    "Fuse.Controls.Primitives",
-    "Fuse.Controls.ScrollView",
-    "Fuse.Drawing",
-    "Fuse.Drawing.Primitives",
-    "Fuse.Elements",
-    "Fuse.Reactive",
-    "Fuse.Scripting.JavaScript",
-    "Fuse.Reactive.Bindings",
-    "Fuse.Reactive.Expressions",
-    "Fuse.Marshal",
-    "Fuse.Scripting",
-    "Fuse.Triggers",
-    "Fuse.Common",
-    "Fuse.Nodes",
+    "Fuse",
+    "FuseJS",
     "Uno.Testing",
-    "Uno.Threading"
   ],
   "Includes": [
     "*",
