@@ -11,7 +11,7 @@ env:
 install:
   - sudo easy_install pip
   - pip install six
-  - wget https://az664292.vo.msecnd.net/files/9Wz3GRnbPRghC2nt-Mono.zip -O mono.zip &&
+  - wget https://files.fusetools.com/tooling/maYCJ8Vs0bD0-Mono.zip -O mono.zip &&
     unzip -d mono mono.zip &&
     export PATH=$PATH:$PWD/mono/bin
   - Stuff/stuff install Stuff
