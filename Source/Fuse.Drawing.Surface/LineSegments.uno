@@ -121,5 +121,17 @@ namespace Fuse.Drawing
 		{
 			EllipticArcTo( pt + _curPos, radius, xAngle, large, sweep );
 		}
+		
+		public void QuadraticCurveTo( float2 pt, float2 control )
+		{
+			var c1 = _curPos + 2.0f/3.0f * (control - _curPos);
+			var c2 = pt + 2.0f/3.0f * (control - pt);
+			BezierCurveTo( pt, c1, c2 );
+		}
+		
+		public void QuadraticCurveToRel( float2 pt, float2 control )
+		{
+			QuadraticCurveTo( pt + _curPos, control + _curPos );
+		}
 	}
 }

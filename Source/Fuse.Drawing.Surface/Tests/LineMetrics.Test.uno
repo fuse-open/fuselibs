@@ -33,6 +33,18 @@ namespace Fuse.Test
 			list.BezierCurveTo( float2(100,100), float2(50,-100), float2(50,200) );
 			Assert.AreEqual(float4(0, -20.71068f, 100, 120.710724f), n(LineMetrics.GetBounds(list.Segments)),
 				1e-4f);
+
+			list.Clear();
+			LineParser.ParseSVGPath( "M100,200 C100,100 250,100 250,200", list.Segments );
+			Assert.AreEqual(float4(100, 125, 250, 200), n(LineMetrics.GetBounds(list.Segments)));
+			
+			list.Clear();
+			LineParser.ParseSVGPath( "Q 50 20, 100 80", list.Segments );
+			Assert.AreEqual(float4(0,0,100,80),  n(LineMetrics.GetBounds(list.Segments)));
+			
+			list.Clear();
+			LineParser.ParseSVGPath( "M10 80 Q 52.5 10, 95 80 T 180 80", list.Segments );
+			Assert.AreEqual(float4(10,45,180,115),  n(LineMetrics.GetBounds(list.Segments)));
 		}
 		
 		[Test]

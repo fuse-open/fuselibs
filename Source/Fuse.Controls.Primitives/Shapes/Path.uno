@@ -8,11 +8,16 @@ using Fuse.Internal;
 
 namespace Fuse.Controls
 {
+	/**
+		Determines how the bounds of a path are calculated for fitting into an element.
+	*/
 	public enum FitMode
 	{
+		/** The bounds are taken as 0,0 for the top-left to the maximum bounds of `Data`. Use this is you have positioned your drawing relative to the top-left origin and would like to keep that space. */
 		GeometryMaximum,
+		/** The bounds of the drawing are the minimum size required to fully contain the shape specified in `Data`. Thus only relative values in the Data matter.  Use this when stretching your image to fill the `Path` element.*/
 		ShrinkToGeometry,
-		/** Explicit extents set by the `Extents` property */
+		/** Explicit extents set by the `Extents` property. Those extents are considered the canvas size for all `Data` points. Use this when layering multiple paths on the same canvas to preserve their relative positions and sizes. */
 		Extents,
 	}
 
@@ -20,6 +25,15 @@ namespace Fuse.Controls
 	{
 		List<LineSegment> _segments = new List<LineSegment>();
 		string _data;
+		/**
+			A string contained the SVG formatted path data. As specified by SVG 1.1.
+			
+			The following draws a rectangle with a blue stroke:
+			
+				<Path Data="M 100 100 L 300 100 L 200 300 z" StrokeColor="#008" StrokeWidth="2"/>
+
+			The size of the resulting shape depends on `FitMode`.
+		*/
 		public string Data
 		{
 			get { return _data; } //TODO
@@ -37,6 +51,9 @@ namespace Fuse.Controls
 		SizingContainer sizing = new SizingContainer();
 		internal SizingContainer Sizing { get { return sizing; } }
 		
+		/**
+			How are the bounds, calculated by `Data` and `FitMode`, stretched to fill the available area in `Path`
+		*/
 		public StretchMode StretchMode
 		{
 			get { return sizing.stretchMode; }
@@ -47,6 +64,9 @@ namespace Fuse.Controls
 			}
 		}
 		
+		/** 
+			Whether stretching, shrinking, or both are allowed.
+		*/
 		public StretchDirection StretchDirection
 		{
 			get { return sizing.stretchDirection; }
@@ -57,6 +77,9 @@ namespace Fuse.Controls
 			}
 		}
 
+		/** 
+			For images that are not stretched to fill the bounds of `Path`, how are they aligned.
+		*/
 		public Fuse.Elements.Alignment ContentAlignment
 		{
 			get { return sizing.align; }
@@ -68,6 +91,9 @@ namespace Fuse.Controls
 		}
 
 		FillRule _fillRule;
+		/**
+			Which regions of the polygon are filled by the brushes.
+		*/
 		public FillRule FillRule
 		{
 			get { return _fillRule; }
@@ -79,6 +105,9 @@ namespace Fuse.Controls
 		}		
 		
 		FitMode _fitMode = FitMode.ShrinkToGeometry;
+		/**
+			How are the bounds of the image calculated from the `Data`, and how is the image fit into those bounds.
+		*/
 		public FitMode FitMode
 		{
 			get { return _fitMode; }
@@ -99,6 +128,11 @@ namespace Fuse.Controls
 		}
 		
 		float4 _extents;
+		/**
+			Sets explicit extents to use instead of calculating the bounds of `Data`.
+			
+			Setting this implicitly sets `FitMode == Extents`
+		*/
 		public float4 Extents
 		{
 			get { return _extents; }
