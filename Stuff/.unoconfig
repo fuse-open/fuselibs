@@ -3,3 +3,11 @@ Packages.SourcePaths += ../Source
 Packages.LockFiles += [
     uno.packages
 ]
+
+Tools.Node: node/node-v8.9.1-win-x64/node.exe if WIN32 && X64
+Tools.Node: node/node-v8.9.1-win-x86/node.exe if WIN32 && X86
+Tools.Node: node/node-v8.9.1-darwin-x64/bin/node if MAC
+
+Tools.NPM: node/node-v8.9.1-win-x64/npm.cmd if WIN32 && X64
+Tools.NPM: node/node-v8.9.1-win-x86/npm.cmd if WIN32 && X86
+Tools.NPM: node/node-v8.9.1-darwin-x64/bin/npm if MAC
