@@ -20,14 +20,18 @@ namespace Fuse.Controls
 			set
 			{
 				_pageHistory = value;
-				OnPageHistoryChanged();
+				if (IsRootingCompleted)
+				{
+					OnPageHistoryChanged();
+					FullUpdatePages(UpdateFlags.ForceGoto | UpdateFlags.Bypass);
+				}
 			}
 		}
 		
 		int _curPageIndex = -1;
 		void OnPageHistoryChanged()
 		{
-			if (AncestorRouterPage == null || !IsRootingStarted)
+			if (AncestorRouterPage == null)
 				return;
 				
 			AncestorRouterPage.ChildRouterPages.Detach();
@@ -45,7 +49,6 @@ namespace Fuse.Controls
 			}
 				
 			_curPageIndex = -1;
-			FullUpdatePages(UpdateFlags.ForceGoto | UpdateFlags.Bypass);
 		}
 		
 		void OnPageHistoryUnrooted()

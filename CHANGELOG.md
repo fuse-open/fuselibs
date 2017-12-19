@@ -1,5 +1,8 @@
 # Unreleased
 
+## Navigation
+- Fixed an issue with `Navigator.Pages` not registering pages correctly in certain initialization orders
+
 ## Instance
 - Added `Instance.Item` to work similar to an `Each` with a single data item
 

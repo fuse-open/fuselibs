@@ -9,5 +9,6 @@
   ],
   "Includes": [
     "*",
+    "*.js:FuseJS",
   ]
 }

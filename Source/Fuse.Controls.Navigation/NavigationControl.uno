@@ -142,7 +142,12 @@ namespace Fuse.Controls
 					else
 						this.AncestorRouterPage = RouterPage.CreateDefault();
 				}
+			} 
+			else
+			{
+				this.AncestorRouterPage = RouterPage.CreateDefault();
 			}
+			
 		}
 		
 		protected override void OnRooted()
