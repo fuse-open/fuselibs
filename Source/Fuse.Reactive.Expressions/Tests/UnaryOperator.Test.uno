@@ -31,6 +31,17 @@ namespace Fuse.Reactive.Test
 				}
 			}
 		}
+		
+		public void Basic()
+		{
+			var p = new UX.UnaryOperator.Basic();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				Assert.AreEqual( "[ab]", p.a.StringValue);
+				Assert.AreEqual( "x", p.b.StringValue);
+				Assert.AreEqual( "[hi]", p.c.StringValue);
+			}
+		}
 	}
 	
 	[UXFunction("_unDep")]
@@ -51,6 +62,22 @@ namespace Fuse.Reactive.Test
 		protected override void OnLostOperand(IListener listener)
 		{
 			listener.OnNewData(this, "lost");
+		}
+	}
+
+	
+	[UXFunction("_unJoin")]
+	class UnJoin : UnaryOperator
+	{
+		[UXConstructor]
+		public UnJoin([UXParameter("Operand")] Expression operand)
+			: base(operand, "_unJoin")
+		{}
+		
+		protected override bool Compute(object op, out object result)
+		{	
+			result = "[" + op.ToString() + "]";
+			return true;
 		}
 	}
 	
