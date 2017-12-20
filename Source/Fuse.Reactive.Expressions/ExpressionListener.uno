@@ -155,6 +155,9 @@ namespace Fuse.Reactive
 		bool _hasData;
 		object _curData;
 		Expression _source;
+		
+		//exposed for deprecated code paths
+		internal IListener Listener { get { return _listener; } }
 
 		protected ExpressionListener( Expression source, IListener listener, Expression[] args, Flags flags = Flags.None) :
 			base( args, flags, source )
@@ -176,8 +179,10 @@ namespace Fuse.Reactive
 			base.Dispose();
 		}
 		
-		/** The output will be cleared, set to a lost data state */
-		internal override sealed void OnClearData()
+		/** The output will be cleared, set to a lost data state.
+			This is meant to be sealed, but is not in order to support DeprecatedVirtualUnary.
+		*/
+		internal override /*sealed*/ void OnClearData()
 		{
 			ClearData();
 		}
@@ -230,6 +235,7 @@ namespace Fuse.Reactive
 			
 			/** @deprecated 2017-12-14 This is strictly for compatibility with deprecated constructors */
 			DeprecatedVirtualFlags = 1 << 10,
+			DeprecatedVirtualUnary = 1 << 11,
 		}
 		
 		Expression[] _args;
@@ -250,6 +256,14 @@ namespace Fuse.Reactive
 			{
 				//DEPRECATED: 2017-12-14
 				Fuse.Diagnostics.Deprecated( "This constructor and use of the Is*Optional virtuals is deprecated. Pass the optionals as flags to the constructor, or specifiy Flags.None to avoid the message", this );
+			}
+			if (_flags.HasFlag( Flags.DeprecatedVirtualUnary) )
+			{
+				if (!(this is UnaryOperator) || args.Length != 1)
+					throw new Exception( "DeprecatedVirtualUnary supported only on UnaryOperator with 1 argument" );
+					
+				//DEPRECATED: 2017-12-14
+				Fuse.Diagnostics.Deprecated( "Overiding the UnaryOperator.OnNewOperand/OnLostData is deprecated. Implement `Compute` and call the other constructor, or pass Flags.None, or implement an `Expression` and `ExpressionListener` if you need the behavior (rare).", this );
 			}
 		}
 
@@ -320,6 +334,12 @@ namespace Fuse.Reactive
 
 			protected override void OnArguments(Expression.Argument[] args)
 			{
+				if (_expr._flags.HasFlag( ComputeExpression.Flags.DeprecatedVirtualUnary) )
+				{
+					((UnaryOperator)_expr).InternalOnNewOperand( Listener, args[0].Value );
+					return;
+				}
+				
 				object result;
 				if (_expr.Compute(args, out result))
 				{
@@ -334,15 +354,23 @@ namespace Fuse.Reactive
 						{
 							if (i > 0)
 								msg += ",";
-							if (args[i].HasValue)
+							if (args[i].HasValue)	
 								msg += args[i].Value;
 							else
 								msg += "undefined";
 						}
 						Fuse.Diagnostics.UserWarning( msg, _expr );
 					}
-					ClearData();
+					OnClearData();
 				}
+			}
+			
+			internal override void OnClearData()
+			{
+				if (_expr._flags.HasFlag( ComputeExpression.Flags.DeprecatedVirtualUnary) )
+					((UnaryOperator)_expr).InternalOnLostOperand( Listener );
+				else
+					base.OnClearData();
 			}
 		}
 	}

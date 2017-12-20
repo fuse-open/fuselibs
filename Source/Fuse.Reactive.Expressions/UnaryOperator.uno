@@ -8,7 +8,7 @@ namespace Fuse.Reactive
 	public abstract class UnaryOperator: ComputeExpression
 	{
 		public Expression Operand { get { return GetArgument(0); } }
-		protected UnaryOperator(Expression operand, Flags flags = Flags.DeprecatedVirtualFlags )
+		protected UnaryOperator(Expression operand, Flags flags = Flags.DeprecatedVirtualFlags | Flags.DeprecatedVirtualUnary )
 			: base( new Expression[]{ operand }, flags )
 		{ }
 			
@@ -41,6 +41,31 @@ namespace Fuse.Reactive
 		{
 			return Compute(args[0].Value, out result);
 		}
+		
+		/** @deprecated Override `Compute` or don't derive from `UnaryOperator` if you need argument tracking (which is rare). The typical base would be `Expression` and create a `Subscription` derived from `ExpressionListener`. 2017-12-14 */
+		protected virtual void OnNewOperand(IListener listener, object operand)
+		{
+			object result;
+			if (Compute(operand, out result))
+			{
+				listener.OnNewData(this, result);
+			}
+			else
+			{
+				Fuse.Diagnostics.UserWarning( "Failed to compute value: " + operand, this );
+				listener.OnLostData(this);
+			}
+		}
+		internal void InternalOnNewOperand(IListener listener, object operand) 
+		{ OnNewOperand(listener, operand); }
+
+		/** @deprecated Override `Compute` or don't derive from `UnaryOperator` if you need argument tracking (which is rare). The typical base would be `Expression` and create a `Subscription` derived from `ExpressionListener`. 2017-12-14 */
+		protected virtual void OnLostOperand(IListener listener)
+		{
+			listener.OnLostData(this);
+		}		
+		internal void InternalOnLostOperand(IListener listener)
+		{ OnLostOperand(listener); }
 	}
 
 	public sealed class Negate: UnaryOperator
