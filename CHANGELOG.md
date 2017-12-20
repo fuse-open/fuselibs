@@ -1,12 +1,13 @@
 # Unreleased
 
-## Navigation
-- Fixed an issue with `Navigator.Pages` not registering pages correctly in certain initialization orders
-- Added `$navigationRequest` to `Navigation.Pages` objects. This can be used to fine-tune the navigation.
 ## Expressions
 - Deprecated `UnaryOperator.OnNewOperand` and `OnLostOperand`.  These are part of a broken pattern of using unary expressions (and were not present on Binary/Ternary/QuaternaryOperator). You generally shouldn't need this, and should implement `Compute` instead. In the rare cases you need the vrituals you'll need to extend Expression and implement `Subscribe`, using `ExpressionListener` as a way to capture the correct functionality.
 - Moved `VarArgFunction.Argument` to `Expression.Argument`. It's in a base class so still has visibility in `VarArgFunction`.
 - `VarArgFunction.Subscription.OnNewData` and `OnLostData` have been sealed. They should not have been open for overriding before as it conflicts with the inner workings on the class. Only the `OnNewPartialArguments` and `OnNewArguments` should be overridden.
+
+## Navigation
+- Fixed an issue with `Navigator.Pages` not registering pages correctly in certain initialization orders
+- Added `$navigationRequest` to `Navigation.Pages` objects. This can be used to fine-tune the navigation.
 
 ## Instance
 - Added `Instance.Item` to work similar to an `Each` with a single data item
