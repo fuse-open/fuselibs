@@ -74,10 +74,15 @@ namespace Fuse.Reactive.Test
 	{
 		[UXConstructor]
 		public BinJoin([UXParameter("Left")] Expression left, [UXParameter("Right")] Expression right)
-			: base(left, right)
+			: base(left, right, Flags.None)
 		{}
 			
-		protected override bool Compute(object left, object right, out object result)
+		protected BinJoin([UXParameter("Left")] Expression left, [UXParameter("Right")] Expression right,
+			Flags flags)
+			: base(left, right, flags)
+		{}
+		
+		protected override bool TryCompute(object left, object right, out object result)
 		{	
 			//for Error test
 			if (right == "triggerBad")
@@ -96,12 +101,10 @@ namespace Fuse.Reactive.Test
 	{
 		[UXConstructor]
 		public BinJoinR([UXParameter("Left")] Expression left, [UXParameter("Right")] Expression right)
-			: base(left, right)
+			: base(left, right, Flags.Optional1)
 		{}
 			
-		protected override bool IsRightOptional { get { return true; } }
-		
-		protected override bool Compute(object left, object right, out object result)
+		protected override bool TryCompute(object left, object right, out object result)
 		{
 			result = left.ToString() + (right == null ? "+" : right.ToString());
 			return true;
@@ -113,21 +116,13 @@ namespace Fuse.Reactive.Test
 	{
 		[UXConstructor]
 		public BinJoinLR([UXParameter("Left")] Expression left, [UXParameter("Right")] Expression right)
-			: base(left, right)
+			: base(left, right, Flags.Optional0 | Flags.Optional1)
 		{}
-			
-		protected override bool IsLeftOptional { get { return true; } }
-		protected override bool IsRightOptional { get { return true; } }
 		
-		protected override bool Compute(object left, object right, out object result)
+		protected override bool TryCompute(object left, object right, out object result)
 		{
 			result = (left == null ? "+" : left.ToString()) + (right == null ? "+" : right.ToString());
 			return true;
-		}
-		
-		protected override void OnLostOperands(IListener listener)
-		{
-			Fuse.Diagnostics.InternalError( "shouldn't happen since both are optional" );
 		}
 	}
 }

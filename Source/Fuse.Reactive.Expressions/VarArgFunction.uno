@@ -10,34 +10,6 @@ namespace Fuse.Reactive
 	*/
 	public abstract class VarArgFunction: Expression
 	{
-		//UNO: https://github.com/fusetools/uno/issues/1292  This is meant to be `protected internal`
-		/** Holds information about an argument to a `VarArgFunction`. 
-			@hide */
-		public class Argument 
-		{
-			internal IDisposable Subscription;
-
-			/** The current value of the argument. If `HasValue` is `false`, `null` is returned. */
-			public object Value { get; internal set; }
-
-			/** Whether or not this argument has yielded a value yet. 
-				This can only return false if `OnNewPartialArguments` was overridden.
-			*/
-			public bool HasValue { get; internal set; }
-			
-			internal void Dispose()
-			{
-				if (Subscription != null)
-				{
-					Subscription.Dispose();
-					Subscription = null;
-				}
-
-				Value = null;
-				HasValue = false;
-			}
-		}
-
 		List<Expression> _args = new List<Expression>();
 		public IList<Expression> Arguments { get { return _args; } }
 		
@@ -55,89 +27,69 @@ namespace Fuse.Reactive
 			return q;
 		}
 		
-		protected abstract class Subscription: InnerListener
+		protected abstract class Subscription: ExpressionSubscriber
 		{
 			VarArgFunction _func;
-			Argument[] _arguments;
 			IContext _context;
 
-			/** Be sure to call "Init" after done initializing */
+			/** @deprecated Use constructor without context and call Init(context) instead 2017-12-15 */
+			[Obsolete]
 			protected Subscription(VarArgFunction func, IContext context)
+				: base( func.Arguments.ToArray(), Flags.AllOptional )
 			{
 				_func = func;
-				_arguments = new Argument[func.Arguments.Count];
 				_context = context;
-
-				for (var i = 0; i < func.Arguments.Count; i++)
-					_arguments[i] = new Argument();
 			}
 			
+			/** Be sure to call "Init" after done initializing */
+			protected Subscription(VarArgFunction func)
+				: base( func.Arguments.ToArray(), Flags.AllOptional )
+			{
+				_func = func;
+			}
+			
+			//TODO: deprecate
+			/** @deprecated Use Init(context) instead 2017-12-15 */
+			[Obsolete]
 			protected void Init()
 			{
-				// First create argument objects, *then* subscribe. Otherwise we
-				// get callbacks before we're fully initialized.
-				for (var i = 0; i < _func.Arguments.Count; i++)
-					_arguments[i].Subscription = _func.Arguments[i].Subscribe(_context, this);
-					
-				// To cover the case where the function has zero arguments, and also when
-				// having no arugments ready is a valid case
-				PushData();
-			}
-
-			protected override void OnNewData(IExpression source, object value)
-			{
-				for (var i = 0; i < _func.Arguments.Count; i++)
-				{
-					if (_func.Arguments[i] == source)
-					{
-						_arguments[i].Value = value;
-						_arguments[i].HasValue = true;
-					}
-				}
-
-				PushData();
+				base.Init(_context);
 			}
 			
-			protected override void OnLostData(IExpression source)
+			//Not abstract for compatibility reasons, but should be
+			internal override void OnClearData()
 			{
-				for (var i = 0; i < _func.Arguments.Count; i++)
-				{
-					if (_func.Arguments[i] == source)
-					{
-						_arguments[i].Value = null;
-						_arguments[i].HasValue = false;
-					}
-				}
-
-				PushData();
+				ClearData();
 			}
-
-			void PushData()
+			
+			protected virtual void ClearData()
+			{
+				//default implementation deprecated 2017-12-15
+				Fuse.Diagnostics.UserError( "VarArgFunction.Subscription.ClearData() should be implemented", this );
+			}
+			
+			protected override sealed void OnArguments(Expression.Argument[] args)
 			{
 				var all = true;
-				for (var i = 0; i < _arguments.Length; i++)
+				for (var i = 0; i < args.Length; i++)
 				{
-					if (!_arguments[i].HasValue) 
+					if (!args[i].HasValue) 
 					{
 						all = false;
 						break;
 					}
 				}
 									
-				OnNewPartialArguments(_arguments);
+				OnNewPartialArguments(args);
 				if (all)
-					OnNewArguments(_arguments);
+					OnNewArguments(args);
 			}
 
 			public override void Dispose()
 			{
 				base.Dispose();
-
-				for (var i = 0; i < _arguments.Length; i++)
-					_arguments[i].Dispose();
-				
 				_func = null;
-				_arguments = null;
+				_context = null;
 			}
 			
 			protected virtual void OnNewPartialArguments(Argument[] args) { }
@@ -153,7 +105,9 @@ namespace Fuse.Reactive
 	{
 		public override IDisposable Subscribe(IContext context, IListener listener)
 		{
-			return new SimpleSubscription(this, context, listener);
+			var ss = new SimpleSubscription(this, listener);
+			ss.Init(context);
+			return ss;
 		}
 
 		/** Called when arguments should be checked for a condition that might yield a new value to the listener.
@@ -191,14 +145,13 @@ namespace Fuse.Reactive
 			IListener _listener;
 			SimpleVarArgFunction _func;
 
-			public SimpleSubscription(SimpleVarArgFunction func, IContext context, IListener listener)
-				: base(func, context)
+			public SimpleSubscription(SimpleVarArgFunction func, IListener listener)
+				: base(func)
 			{
 				_func = func;
 				_listener = listener;
-				Init();
 			}
-
+			
 			protected override void OnNewPartialArguments(Argument[] args) 
 			{ 
 				_func.OnNewPartialArguments(args, _listener);

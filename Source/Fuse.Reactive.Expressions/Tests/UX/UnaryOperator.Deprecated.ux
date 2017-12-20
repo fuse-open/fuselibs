@@ -1,0 +1,5 @@
+<Panel ux:Class="UX.UnaryOperator.Deprecated">
+	<Let ux:Name="a" Value="( one: 'abc', two: 'def') "/>
+	<FuseTest.DudElement ObjectValue="_unDep({a}.one)" ux:Name="d1"/>
+	<FuseTest.DudElement ObjectValue="_unDep({a})" ux:Name="d2"/>
+</Panel>

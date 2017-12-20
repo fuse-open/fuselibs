@@ -6,11 +6,11 @@ namespace Fuse.Reactive
 	public sealed class NameValuePair: BinaryOperator
 	{
 		[UXConstructor]
-		public NameValuePair([UXParameter("Name")] Expression name, [UXParameter("Value")] Expression value) : base(name, value)
+		public NameValuePair([UXParameter("Name")] Expression name, [UXParameter("Value")] Expression value) : base(name, value, Flags.None)
 		{
 		}
 
-		protected override bool Compute(object name, object value, out object result)
+		protected override bool TryCompute(object name, object value, out object result)
 		{
 			result = new Fuse.NameValuePair(name.ToString(), value);
 			return true;

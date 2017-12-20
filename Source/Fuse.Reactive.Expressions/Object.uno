@@ -25,7 +25,7 @@ namespace Fuse.Reactive
 	{
 		readonly Dictionary<string, object> _dict = new Dictionary<string, object>();
 
-		public ArrayObject(VarArgFunction.Argument[] args): base(args)
+		public ArrayObject(Expression.Argument[] args): base(args)
 		{
 			for (var i = 0; i < args.Length; i++)
 			{

@@ -8,6 +8,35 @@ namespace Fuse.Reactive
 	{
 		/** See `IExpression.Subscribe` for docs.	*/
 		public abstract IDisposable Subscribe(IContext context, IListener listener);
+		
+		/** Holds information about an argument to an Expression 
+			@advanced */
+		public class Argument 
+		{
+			internal IExpression Source;
+			internal IDisposable Subscription;
+
+			/** The current value of the argument. If `HasValue` is `false`, `null` is returned. */
+			public object Value { get; internal set; }
+
+			/** Whether or not this argument has yielded a value yet. 
+				This can only return false if `OnNewPartialArguments` was overridden.
+			*/
+			public bool HasValue { get; internal set; }
+			
+			internal void Dispose()
+			{
+				if (Subscription != null)
+				{
+					Subscription.Dispose();
+					Subscription = null;
+				}
+
+				Value = null;
+				HasValue = false;
+			}
+		}
+		
 	}
 
 	public abstract class ConstantExpression: Expression

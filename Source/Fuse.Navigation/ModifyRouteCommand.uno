@@ -57,6 +57,7 @@ namespace Fuse.Navigation
 					return;
 					
 				_innerSub = new InnerSubscription(this);
+				_innerSub.Init(_context);
 			}
 
 			//TODO: Remove these, perhaps this class doesn't need to be an InnerListener?
@@ -70,10 +71,9 @@ namespace Fuse.Navigation
 			bool _triggered;
 			
 			public InnerSubscription(OuterSubscription outSub)
-				: base(outSub._expr, outSub._context) 
+				: base(outSub._expr)
 			{
 				_outSub = outSub;
-				Init();
 			}
 			
 			protected override void OnNewArguments(Argument[] args)

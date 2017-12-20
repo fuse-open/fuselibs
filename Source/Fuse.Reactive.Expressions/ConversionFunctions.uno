@@ -23,9 +23,9 @@ namespace Fuse.Reactive
 	{
 		[UXConstructor]
 		public ToString([UXParameter("Operand")] Expression operand)
-			: base(operand) { }
+			: base(operand, "string") { }
 			
-		protected override bool Compute(object operand, out object result)
+		protected override bool TryCompute(object operand, out object result)
 		{
 			result = null;
 			if (operand == null)
