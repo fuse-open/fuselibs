@@ -23,7 +23,7 @@ namespace Fuse.Reactive
 			: base( new Expression[]{ operand }, Flags.OmitComputeWarning | Flags.AllOptional )
 		{ }
 
-		protected sealed override bool Compute(Expression.Argument[] args, out object result)
+		protected sealed override bool TryCompute(Expression.Argument[] args, out object result)
 		{
 			result = args[0].HasValue;
 			return true;
@@ -46,7 +46,7 @@ namespace Fuse.Reactive
 		[UXConstructor]
 		public IsNull([UXParameter("Operand")] Expression operand)
 			: base(operand, "isNull", Flags.Optional0) {}
-		protected override bool Compute(object operand, out object result)
+		protected override bool TryCompute(object operand, out object result)
 		{
 			result = operand == null;
 			return true;
@@ -69,7 +69,7 @@ namespace Fuse.Reactive
 			: base( new Expression[]{ operand }, Flags.OmitComputeWarning )
 		{ }
 		
-		protected override bool Compute(Expression.Argument[] args, out object result)
+		protected override bool TryCompute(Expression.Argument[] args, out object result)
 		{
 			result = args[0].Value;
 			return args[0].Value != null;

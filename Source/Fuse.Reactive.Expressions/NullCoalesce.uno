@@ -10,7 +10,7 @@ namespace Fuse.Reactive
 			: base( new Expression[]{left, right}, Flags.OmitComputeWarning | Flags.AllOptional)
 		{}
 
-		protected override bool Compute(Expression.Argument[] args, out object result)
+		protected override bool TryCompute(Expression.Argument[] args, out object result)
 		{
 			if (args[0].HasValue && args[0].Value != null)
 			{

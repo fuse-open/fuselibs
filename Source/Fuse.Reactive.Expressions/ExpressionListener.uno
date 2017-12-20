@@ -313,7 +313,7 @@ namespace Fuse.Reactive
 			
 			The length of `args` is guaranteed to be same length as the constructor `args` argument.
 		*/
-		protected abstract bool Compute(Expression.Argument[] args, out object result);
+		protected abstract bool TryCompute(Expression.Argument[] args, out object result);
 		
 		public sealed override IDisposable Subscribe(IContext context, IListener listener)
 		{
@@ -341,7 +341,7 @@ namespace Fuse.Reactive
 				}
 				
 				object result;
-				if (_expr.Compute(args, out result))
+				if (_expr.TryCompute(args, out result))
 				{
 					SetData( result );
 				}

@@ -30,19 +30,19 @@ namespace Fuse.Reactive
 		protected virtual bool IsLeftOptional { get { return false; } }
 		protected virtual bool IsRightOptional { get { return false; } }
 
-		protected virtual bool Compute(object left, object right, out object result)
+		protected virtual bool TryCompute(object left, object right, out object result)
 		{
-			Fuse.Diagnostics.Deprecated( " No `Compute`, or a deprecated form, overriden. Migrate your code to override the one with `bool` return. ", this );
+			Fuse.Diagnostics.Deprecated( " No `TryCompute`, or a deprecated form, overriden. Migrate your code to override the one with `bool` return. ", this );
 			result = Compute(left, right);
 			return true;
 		}
 		
-		/** @deprecated Override the other `Compute` function. 2017-11-29 */
+		/** @deprecated Override the `TryCompute` function. 2017-11-29 */
 		protected virtual object Compute(object left, object right) { return null; }
 
-		protected override sealed bool Compute(Argument[] args, out object result)
+		protected override sealed bool TryCompute(Argument[] args, out object result)
 		{
-			return Compute(args[0].Value, args[1].Value, out result);
+			return TryCompute(args[0].Value, args[1].Value, out result);
 		}
 	}
 }

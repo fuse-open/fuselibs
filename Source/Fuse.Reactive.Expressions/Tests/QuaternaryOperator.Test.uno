@@ -104,7 +104,7 @@ namespace Fuse.Reactive.Test
 			: base(first, second, third, fourth, flags)
 		{}
 		
-		protected override bool Compute(object first, object second, object third, object fourth, out object result)
+		protected override bool TryCompute(object first, object second, object third, object fourth, out object result)
 		{
 			//special case for Error test (as we had no actual QuaternaryOperator's to test)
 			if (fourth == "triggerBad")

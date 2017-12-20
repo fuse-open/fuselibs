@@ -27,26 +27,26 @@ namespace Fuse.Reactive
 			@param result the result of the computation
 			@return true if the value could be computed, false otherwise
 		*/
-		protected virtual bool Compute(object operand, out object result)
+		protected virtual bool TryCompute(object operand, out object result)
 		{
-			Fuse.Diagnostics.Deprecated( " No `Compute`, or a deprecated form, overriden. Migrate your code to override the one with `bool` return. ", this );
+			Fuse.Diagnostics.Deprecated( " No `TryCompute`, or a deprecated form, overriden. Migrate your code to override the one with `bool` return. ", this );
 			result = Compute(operand);
 			return true;
 		}
 		
-		/** @deprecated Override the other `Compute` function. 2017-11-29 */
+		/** @deprecated Override `TryCompute` function. 2017-11-29 */
 		protected virtual object Compute(object operand) { return null; }
 
-		protected override sealed bool Compute(Argument[] args, out object result)
+		protected override sealed bool TryCompute(Argument[] args, out object result)
 		{
-			return Compute(args[0].Value, out result);
+			return TryCompute(args[0].Value, out result);
 		}
 		
-		/** @deprecated Override `Compute` or don't derive from `UnaryOperator` if you need argument tracking (which is rare). The typical base would be `Expression` and create a `Subscription` derived from `ExpressionListener`. 2017-12-14 */
+		/** @deprecated Override `TryCompute` or don't derive from `UnaryOperator` if you need argument tracking (which is rare). The typical base would be `Expression` and create a `Subscription` derived from `ExpressionListener`. 2017-12-14 */
 		protected virtual void OnNewOperand(IListener listener, object operand)
 		{
 			object result;
-			if (Compute(operand, out result))
+			if (TryCompute(operand, out result))
 			{
 				listener.OnNewData(this, result);
 			}
@@ -71,7 +71,7 @@ namespace Fuse.Reactive
 	public sealed class Negate: UnaryOperator
 	{
 		public Negate([UXParameter("Operand")] Expression operand): base(operand) {}
-		protected override bool Compute(object operand, out object result)
+		protected override bool TryCompute(object operand, out object result)
 		{
 			result = Marshal.Multiply(operand, -1);
 			return true;

@@ -74,7 +74,7 @@ namespace Fuse.Reactive.Test
 			: base(operand, "_unJoin")
 		{}
 		
-		protected override bool Compute(object op, out object result)
+		protected override bool TryCompute(object op, out object result)
 		{	
 			result = "[" + op.ToString() + "]";
 			return true;

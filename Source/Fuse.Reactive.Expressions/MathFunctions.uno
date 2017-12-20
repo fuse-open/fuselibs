@@ -10,7 +10,7 @@ namespace Fuse.Reactive
 		public Min([UXParameter("Left")] Expression left, [UXParameter("Right")] Expression right): 
 			base(left, right, "min") {}
 			
-		protected override bool Compute(object left, object right, out object result)
+		protected override bool TryCompute(object left, object right, out object result)
 		{
 			result = Marshal.Min(left, right);
 			return true;
@@ -24,7 +24,7 @@ namespace Fuse.Reactive
 		public Max([UXParameter("Left")] Expression left, [UXParameter("Right")] Expression right) : 
 			base(left, right, "max") {}
 			
-		protected override bool Compute(object left, object right, out object result)
+		protected override bool TryCompute(object left, object right, out object result)
 		{
 			result = Marshal.Max(left, right);
 			return true;
@@ -38,7 +38,7 @@ namespace Fuse.Reactive
 		public Mod([UXParameter("Left")] Expression left, [UXParameter("Right")] Expression right) : 
 			base(left, right, "mod") {}
 			
-		protected override bool Compute(object left, object right, out object result)
+		protected override bool TryCompute(object left, object right, out object result)
 		{
 			result = Math.Mod( Marshal.ToFloat(left), Marshal.ToFloat(right) );
 			return true;
@@ -51,7 +51,7 @@ namespace Fuse.Reactive
 	{
 		[UXConstructor]
 		public Even([UXParameter("Operand")] Expression operand): base(operand, "even") {}
-		protected override bool Compute(object operand, out object result)
+		protected override bool TryCompute(object operand, out object result)
 		{
 			result = null;
 			float v = 0;
@@ -70,7 +70,7 @@ namespace Fuse.Reactive
 	{
 		[UXConstructor]
 		public Odd([UXParameter("Operand")] Expression operand): base(operand, "odd") {}
-		protected override bool Compute(object operand, out object result)
+		protected override bool TryCompute(object operand, out object result)
 		{
 			result = null;
 			float v = 0;
@@ -103,7 +103,7 @@ namespace Fuse.Reactive
 		public Alternate([UXParameter("Left")] Expression left, [UXParameter("Right")] Expression right) : 
 			base(left, right, "alternate") {}
 			
-		protected override bool Compute(object left, object right, out object result)
+		protected override bool TryCompute(object left, object right, out object result)
 		{
 			result = null;
 			float fvalue = 0;
@@ -137,7 +137,7 @@ namespace Fuse.Reactive
 		{
 			_op = op;
 		}
-		protected sealed override bool Compute(object operand, out object result)
+		protected sealed override bool TryCompute(object operand, out object result)
 		{
 			result = null;
 			float4 v;
@@ -178,7 +178,7 @@ namespace Fuse.Reactive
 			_op = op;
 		}
 		
-		protected sealed override bool Compute(object left, object right, out object result)
+		protected sealed override bool TryCompute(object left, object right, out object result)
 		{
 			result = null;
 			
@@ -404,7 +404,7 @@ namespace Fuse.Reactive
 			[UXParameter("Third")] Expression third) : 
 			base(first, second, third, Flags.None)
 		{ }
-		protected override bool Compute(object a, object b, object t, out object result)
+		protected override bool TryCompute(object a, object b, object t, out object result)
 		{
 			result = null;
 			float4 av = float4(0), bv = float4(0);
@@ -461,7 +461,7 @@ namespace Fuse.Reactive
 			[UXParameter("Third")] Expression third) : 
 			base(first, second, third, Flags.None) 
 		{ }
-		protected override bool Compute(object a, object mn, object mx, out object result)
+		protected override bool TryCompute(object a, object mn, object mx, out object result)
 		{
 			result = null;
 			float4 av = float4(0);
