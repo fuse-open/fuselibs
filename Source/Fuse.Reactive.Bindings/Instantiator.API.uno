@@ -106,7 +106,6 @@ namespace Fuse.Reactive
 			set { _reuse = value; }
 		}
 		
-		InstanceIdentity _identity = InstanceIdentity.None;
 		/**
 			Reuses existing nodes if the new objects match the old ones.
 			
@@ -118,11 +117,10 @@ namespace Fuse.Reactive
 		*/
 		public InstanceIdentity Identity
 		{
-			get { return _identity; }
-			set { _identity = value; }
+			get { return _watcher.Identity; }
+			set { _watcher.Identity = value; }
 		}
 		
-		string _identityKey = null;
 		/**
 			If specified will reuse existing items if a new item is created that has the same id.
 			
@@ -137,12 +135,8 @@ namespace Fuse.Reactive
 		*/
 		public string IdentityKey
 		{
-			get { return _identityKey; }
-			set 
-			{ 
-				_identityKey = value; 
-				Identity = InstanceIdentity.Key;
-			}
+			get { return _watcher.IdentityKey; }
+			set { _watcher.IdentityKey = value; }
 		}
 		
 		float _deferredPriority = 0;
@@ -204,7 +198,7 @@ namespace Fuse.Reactive
 				if (IsRootingCompleted)
 				{
 					_templateSource = _weakTemplateSource;
-					Repopulate();
+					RecreateTemplates();
 				}
 			}
 		}
@@ -224,129 +218,29 @@ namespace Fuse.Reactive
 			get; set;
 		}
 		
-		int _offset = 0;
 		internal int Offset
 		{
-			get { return _offset; }
-			set
-			{
-				if (_offset == value)
-					return;
-					
-				if (value < 0)
-				{
-					Fuse.Diagnostics.UserError( "Offset cannot be less than 0", this );
-					value = 0;
-				}
-				
-				if (!IsRootingCompleted)
-				{
-					_offset = value;
-					return;
-				}
-				
-				//slide the window in both directions as necessary
-				var dataCount = GetDataCount();
-				while (_offset < value)
-				{
-					if (_offset < dataCount)
-						RemoveAt(_offset);
-						
-					_offset++;
-					var end = _offset + Limit - 1;
-					if (HasLimit && end < dataCount)
-						InsertNew(end);
-				}
-				
-				while (_offset > value)
-				{
-					var end = _offset + Limit - 1;
-					if (HasLimit && end < dataCount)
-						RemoveAt(_offset + Limit - 1);
-						
-					_offset--;
-					if (_offset < dataCount)
-						InsertNew(_offset);
-				}
-			}
+			get { return _watcher.Offset; }
+			set { _watcher.Offset = value; }
 		}
 		
-		int _limit = 0;
-		bool _hasLimit;
 		internal int Limit
 		{
-			get { return _limit; }
-			set
-			{
-				if (_hasLimit && _limit == value)
-					return;
-					
-				if (value < 0)
-				{
-					Fuse.Diagnostics.UserError( "Limit cannot be less than 0", this );
-					value = 0;
-				}
-				
-				_hasLimit = true;
-				_limit = value;
-				if (IsRootingCompleted)
-					TrimAndPad();
-			}
+			get { return _watcher.Limit; }
+			set { _watcher.Limit = value; }
 		}
 		
-		internal bool HasLimit { get { return _hasLimit; } }
-
-		object _items;
+		internal bool HasLimit { get { return _watcher.HasLimit; } }
+		
 		/** @hide */
-		protected object GetItems() { return _items; }
+		protected object GetItems() { return _watcher.GetItems(); }
 		/** @hide */
-		protected void SetItems( object value )
-		{
-			_items = value;
-			if (!IsRootingCompleted) return;
-			RefreshItems();
-		}
+		protected void SetItems( object value ) { _watcher.SetItems(value); }
 		/** Call to set the items during the OnRooted override (post base.OnRooted call)
 			@hide */
-		protected void SetItemsDerivedRooting( object value )
-		{
-			_items = value;
-			RefreshItems();
-		}
+		protected void SetItemsDerivedRooting( object value ) { _watcher.SetItemsDerivedRooting(value); }
 		
-		internal class CountItem { }
-		
-		int _count;
-		/** @hide */
-		protected internal int Count
-		{
-			get { return _count; }
-			set
-			{
-				if (_count == value)
-					return;
-					
-				_count = value;
-				var items = new object[_count];
-				for (int i=0; i < _count; ++i)
-					items[i] = new CountItem();
-				SetItems( items );
-			}
-		}
-
-		void RefreshItems()
-		{
-			DisposeItemsSubscription();	
-
-			Repopulate();
-
-			var obs = _items as IObservableArray;
-			if (obs != null)
-			{
-				StartListeningItems();
-				_itemsSubscription = obs.Subscribe(this);
-			}
-		}
+		internal class NoContextItem { }
 		
 		string _matchKey;
 
@@ -382,8 +276,7 @@ namespace Fuse.Reactive
 				if (_matchKey != value)
 				{
 					_matchKey = value;
-					if (IsRootingCompleted)
-						RefreshItems();
+					RecreateTemplates();
 				}
 			}
 		}

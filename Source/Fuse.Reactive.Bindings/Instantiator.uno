@@ -62,59 +62,43 @@ namespace Fuse.Reactive
 		provided derived classes instead: @Each or @Instance.
 	*/
 	[UXContentMode("Template")]
-	public partial class Instantiator: Behavior, IObserver, Node.ISubtreeDataProvider, IDeferred
+	public partial class Instantiator: Behavior, Node.ISubtreeDataProvider, IDeferred,
+		ItemsWindowList<WindowItem>.IListener
 	{
 		/** @hide */
 		protected internal Instantiator(IList<Template> templates)
 		{
 			_templates = templates;
+			_watcher = new ItemsWindowList<WindowItem>(this);
 		}
 
 		/** @hide */
 		protected internal Instantiator()
 		{
+			_watcher = new ItemsWindowList<WindowItem>(this);
 		}
 
 		void OnTemplatesChanged(Template factory)
 		{
 			if (!IsRootingCompleted) return;
-			Repopulate();
+			RecreateTemplates();
 		}
 
 		protected override void OnRooted()
 		{
 			base.OnRooted();
-			RefreshItems();
+			_watcher.Rooted();
 			
 			if (_rootTemplates != null)
 				_rootTemplates.Subscribe(OnTemplatesChanged, OnTemplatesChanged);
 			_templateSource = _weakTemplateSource;
 		}
 
-		IDisposable _itemsSubscription;
-		void DisposeItemsSubscription()
-		{
-			_isListeningItems = false;
-			if (_itemsSubscription != null)
-			{
-				_isListeningItems = false;
-				_itemsSubscription.Dispose();
-				_itemsSubscription = null;
-			}
-		}
-		bool _isListeningItems;
-		bool IsListeningItems { get { return _isListeningItems; } }
-		void StartListeningItems()
-		{
-			_isListeningItems = true;
-		}
 
 		protected override void OnUnrooted()
 		{
-			DisposeItemsSubscription();
-
-			RemoveAll();
-			RemovePendingAvailableItems();
+			_watcher.Unrooted();
+			RemoveAvailableItems();
 
 			if (_rootTemplates != null)
 				_rootTemplates.Unsubscribe();
@@ -123,21 +107,15 @@ namespace Fuse.Reactive
 			_completedRemove = null;
 			base.OnUnrooted();
 		}
-		
-		int CalcOffsetLimitCountOf( int length )
-		{
-			var q = Math.Max( 0, length - Offset );
-			return HasLimit ? Math.Min( Limit, q ) : q;
-		}
 
 		BusyTask _busyTask;
-		void SetValid()
+		void ItemsWindowList<WindowItem>.IListener.SetValid()
 		{
 			if (Parent != null)
 				BusyTask.SetBusy(Parent, ref _busyTask, BusyTaskActivity.None );
 		}
 
-		void SetFailed(string message)
+		void ItemsWindowList<WindowItem>.IListener.SetFailed(string message)
 		{
 			if (Parent != null)
 				BusyTask.SetBusy(Parent, ref _busyTask, BusyTaskActivity.Failed, message );
@@ -160,8 +138,13 @@ namespace Fuse.Reactive
  		
 		internal override Node GetLastNodeInGroup()
 		{
-			return GetLastNodeFromIndex(_windowItems.Count -1);
+			return GetLastNodeFromIndex(_watcher.WindowItemCount -1);
 		}
-		
+
+		extern (UNO_TEST) static internal int InsertCount 
+		{ 
+			get { return ItemsWindowList<WindowItem>.InsertCount; } 
+			set { ItemsWindowList<WindowItem>.InsertCount = value; }
+		}
 	}
 }

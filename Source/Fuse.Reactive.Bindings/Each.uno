@@ -166,11 +166,25 @@ namespace Fuse.Reactive
 			}
 		}
 
+		int _count;
+		bool _hasCount;
 		/** The number of items to create. If `Items` is set, this property is ignored. */
-		new public int Count
+		public int Count
 		{
-			get { return base.Count; }
-			set { base.Count = value; }
+			get { return _count; }
+			set 
+			{ 
+				if (_hasCount && _count == value)
+					return;
+					
+				_count = value;
+				_hasCount = true;
+				
+				var items = new object[_count];
+				for (int i=0; i < _count; ++i)
+					items[i] = new NoContextItem();
+				SetItems( items );
+			}
 		}
 
 		/**

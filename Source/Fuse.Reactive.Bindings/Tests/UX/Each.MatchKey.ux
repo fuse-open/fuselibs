@@ -1,0 +1,27 @@
+<Panel ux:Class="UX.Each.MatchKey">
+	<JavaScript>
+		var Observable = require("FuseJS/Observable")
+
+		var count = 0
+		function Item() {
+			this.set = (count%2==0) ? "one" : "two"
+			this.alt =  (count%2==1) ? "alpha" : "beta"
+			this.value = count++
+		}
+		
+		exports.items = Observable()
+		for (var i=0; i < 5; ++i) {
+			exports.items.add( new Item() )
+		}
+	</JavaScript>
+
+	<StackPanel ux:Name="s">
+		<Each Items="{items}" ux:Name="each" MatchKey="set">
+			<FuseTest.DudElement ux:Template="one" StringValue="O{value}"/>
+			<FuseTest.DudElement ux:Template="two" StringValue="T{value}"/>
+			
+			<FuseTest.DudElement ux:Template="alpha" StringValue="A{value}"/>
+			<FuseTest.DudElement ux:Template="beta" StringValue="B{value}"/>
+		</Each>
+	</StackPanel>
+</Panel>

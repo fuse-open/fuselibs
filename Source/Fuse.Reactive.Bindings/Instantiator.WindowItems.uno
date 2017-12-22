@@ -12,12 +12,12 @@ namespace Fuse.Reactive
 	{
 		Node GetLastNodeFromIndex(int windowIndex)
 		{
-			if (windowIndex >= _windowItems.Count)
-				windowIndex = _windowItems.Count - 1;
+			if (windowIndex >= _watcher.WindowItemCount)
+				windowIndex = _watcher.WindowItemCount - 1;
 				
 			while (windowIndex >= 0)
 			{
-				var lastList = _windowItems[windowIndex].Nodes;
+				var lastList = _watcher.GetWindowItem(windowIndex).Nodes;
 				if (lastList != null && lastList.Count != 0)
 					return lastList[lastList.Count-1].GetLastNodeInGroup();
 
@@ -28,34 +28,16 @@ namespace Fuse.Reactive
 			return this;
 		}
 		bool _pendingNew;
-
-		// Used to test that Instance internals behaves correctly
-		// in light of https://github.com/fusetools/fuselibs-public/issues/227
-		extern (UNO_TEST) internal static int InsertCount;
-		
-		/** Inserts a new item into the _windowItems. The actual creation of the objects may be deferred. */
-		void InsertNew(int dataIndex)
-		{
-			if defined (UNO_TEST) InsertCount++; 
-
-			if (dataIndex < Offset ||
-				(HasLimit && (dataIndex - Offset) >= Limit))
-				return;
-				
-			var windowIndex = DataToWindowIndex(dataIndex);
-			if ( windowIndex > _windowItems.Count || windowIndex < 0)
-				return;		
-
-			var data = GetData(dataIndex);
-			InsertNewWindowItem( windowIndex, data );
-		}
 		
 		/** Inserts a new window item associated with the given data */
-		void InsertNewWindowItem( int windowIndex, object data )
+		void ItemsWindowList<WindowItem>.IListener.AddedWindowItem( int windowIndex, WindowItem wi )
 		{
-			var wi = new WindowItem{ Data = data };
-			_windowItems.Insert( windowIndex, wi );
-			
+			PrepareWindowItem( windowIndex, wi );
+			OnUpdatedWindowItems();
+		}
+		
+		void PrepareWindowItem( int windowIndex, WindowItem wi )
+		{
 			if (Defer == InstanceDefer.Immediate)
 			{
 				CompleteWindowItem(wi, windowIndex);
@@ -68,8 +50,6 @@ namespace Fuse.Reactive
 					UpdateManager.AddDeferredAction(CompleteWindowItemsAction);
 				_pendingNew = true;
 			}
-			
-			OnUpdatedWindowItems();
 		}
 		
 		bool IDeferred.Perform()
@@ -91,9 +71,9 @@ namespace Fuse.Reactive
 				return false;
 				
 			bool first = true;
-			for (int i=0; i < _windowItems.Count; ++i)
+			for (int i=0; i < _watcher.WindowItemCount; ++i)
 			{
-				var wi = _windowItems[i];
+				var wi = _watcher.GetWindowItem(i);
 				if (wi.Nodes == null)
 				{
 					if (!first && one)
@@ -105,7 +85,7 @@ namespace Fuse.Reactive
 			}
 
 			//remove whatever is leftover
-			RemovePendingAvailableItems();
+			RemoveAvailableItems();
 			return false;
 		}
 		
@@ -141,7 +121,7 @@ namespace Fuse.Reactive
 			// Priority 2 - use the local templates collection and look for a matching key (if set)
 			if (useTemplate == null)
 			{
-				var key = GetDataKey(data, MatchKey) as string;
+				var key = _watcher.GetDataKey(data, MatchKey) as string;
 				//match Order in FindTemplate (latest is preferred)
 				for (int i=Templates.Count-1; i>=0; --i) {
 					var f = Templates[i];
@@ -165,9 +145,7 @@ namespace Fuse.Reactive
 		
 		void CompleteWindowItem(WindowItem wi, int windowIndex)
 		{
-			wi.Id = GetDataId(wi.Data);
-			
-			var match = GetDataTemplate(wi.Data);
+			var match = GetDataTemplate(wi.CurrentData);
 			var reuse = AddMatchingTemplates(wi, match);
 			
 			if ( (wi.Template.All && Templates.Count != wi.Nodes.Count) ||
@@ -187,36 +165,6 @@ namespace Fuse.Reactive
 				Parent.InsertNodesAfter( lastNode, wi.Nodes.GetEnumerator() );
 		}
 		
-		/**
-			Replaces the data for the current item if it has an id and template match.
-		
-			@return true if the replacement was successful, false otherwise
-		*/
-		bool TryUpdateAt(int dataIndex, object newData)
-		{
-			if (Identity == InstanceIdentity.None)
-				return false;
-			
-			var windowIndex = DataToWindowIndex(dataIndex);
-			if (windowIndex < 0 || windowIndex >= _windowItems.Count)
-				return false;
-				
-			var wi = _windowItems[windowIndex];
-			var newId = GetDataId(newData);
-			if (wi.Id == null || !Object.Equals(wi.Id, newId))
-				return false;
-				
-			var tpl = GetDataTemplate(newData);
-			if (!wi.Template.Matches(tpl))
-				return false;
-
-				
-			var oldData = wi.CurrentData;
-			wi.Data = newData;
-			UpdateData(wi, oldData);
-			return true;
-		}
-
 		/* `null` for the template indicates to use all templates, otherwise a specific one will be used. 
 			
 			@return true if reusing existing nodes, false if new nodes
@@ -250,9 +198,21 @@ namespace Fuse.Reactive
 				AddTemplate(item, f.Template);
 			}
 
-			UpdateData(item, oldData);
+			PrepareDataContext(item);
+			//TODO: It's questionalbe that the below is required, surely rooting should be enough for DataContext changes?  It doesn't appear to be an issue in the Instantiaor though.
+			BroadcastDataChange(item, oldData);
  			item.Template = f;
  			return reuse;
+ 		}
+ 		
+ 		void PrepareDataContext(WindowItem wi)
+ 		{
+			for (int i=0; i < wi.Nodes.Count; ++i)
+			{
+				var n = wi.Nodes[i];
+				n.OverrideContextParent = this;
+				_dataMap[n] = wi;
+			}
  		}
  		
  		void AddTemplate(WindowItem item, Template f)
@@ -318,197 +278,145 @@ namespace Fuse.Reactive
 			}
 		}
 		
-		void CompleteNodeAction()
+		void ScheduleRemoveAvailableItems()
 		{
 			if (Reuse == InstanceReuse.Frame)
 			{
 				if (!_pendingAvailableItems)
 				{
-					UpdateManager.AddDeferredAction(RemovePendingAvailableItemsAction);
+					UpdateManager.AddDeferredAction(RemoveAvailableItemsAction);
 					_pendingAvailableItems = true;
 				}
 			}
 			//we must nonetheless keep the nodes around until any pending new nodes have resolved
 			else if (!_pendingNew)
 			{
-				RemovePendingAvailableItems();
+				RemoveAvailableItems();
 			}
 		}
 		
-		void RemovePendingAvailableItemsAction()
+		void RemoveAvailableItemsAction()
 		{
 			//The pendingNew handler will have to clear the remaining nodes
 			if (!_pendingNew)	
-				RemovePendingAvailableItems();
+				RemoveAvailableItems();
 			_pendingAvailableItems = false;
 		}
 		
-		void RemovePendingAvailableItems()
+		void RemoveAvailableItems()
 		{
 			if (_availableItems != null)
 			{
 				for (int i=0; i < _availableItems.Count; ++i)
-				{	
-					var av = _availableItems[i];
-					if (av.Nodes == null)
-						continue;
-					for (int n=0; n < av.Nodes.Count; ++n)
-						RemoveFromParent(av.Nodes[n]);
-					av.Unlink();
-				}
+					DisposeWindowItem(_availableItems[i]);
 				_availableItems.Clear();
 			}
 			
 			if (_availableItemsById != null)
 			{
 				foreach (var kvp in _availableItemsById)
-				{
-					if (kvp.Value.Nodes == null)
-						continue;
-					for (int n=0; n < kvp.Value.Nodes.Count; ++n)
-						RemoveFromParent(kvp.Value.Nodes[n]);
-					kvp.Value.Unlink();
-				}
+					DisposeWindowItem(kvp.Value);
 				_availableItemsById.Clear();
 			}
 			
 			_pendingNew = false;
 		}
 		
-		void RemoveWindowItem(WindowItem wi)
+		void DisposeWindowItem( WindowItem wi)
+		{
+			CleanupWindowItem(wi);
+			wi.Dispose();
+		}
+		
+		void CleanupWindowItem( WindowItem wi )
+		{
+			if (wi.Nodes != null)
+			{
+				for (int n=0; n < wi.Nodes.Count; ++n)
+					RemoveFromParent(wi.Nodes[n]);
+				wi.Nodes = null;
+			}
+		}
+
+		/* A removed item is added to the  list of available nodes and can be reused by a new incoming item. The available nodes are kept as children of the parent, they are not removed. */
+		void ItemsWindowList<WindowItem>.IListener.RemovedWindowItem(WindowItem wi)
 		{
 			if (wi.Nodes == null || wi.Nodes.Count == 0)
 				return;
 			
+			bool generic = wi.Id == null;
 			if (wi.Id != null)
 			{
 				if (_availableItemsById == null)	
 					_availableItemsById = new Dictionary<object,WindowItem>();
 
 				if (_availableItemsById.ContainsKey(wi.Id))
-					wi.Id = null; //clear id on duplicates for simplicity (will end up being added to _availableItems)
+					generic = true;
 				else
 					_availableItemsById[wi.Id] = wi;
 			}
 			
-			//not an `else`, since Id can change above
-			if (wi.Id == null)
+			if (generic)
 			{
 				if (_availableItems == null)
 					_availableItems = new ObjectList<WindowItem>();
 				_availableItems.Add( wi );
 			}
-		}
-		
-		int DataToWindowIndex(int dataIndex)
-		{
-			return dataIndex - Offset;
-		}
-	
-		void RemoveAt(int dataIndex)
-		{
-			var windowIndex = DataToWindowIndex(dataIndex);
-			if ( windowIndex < 0 || windowIndex >= _windowItems.Count)
-				return;
 			
-			RemoveWindowItem(_windowItems[windowIndex]);
-			_windowItems.RemoveAt(windowIndex);
-		
- 			SetValid();		
+			ScheduleRemoveAvailableItems();
 			OnUpdatedWindowItems();
 		}
 		
-		void RemoveLastActive()
+		void RecreateTemplates()
 		{
-			RemoveAt(Offset + _windowItems.Count - 1);
+			for (int i = 0; i < _watcher.WindowItemCount; i++)
+				CleanupWindowItem( _watcher.GetWindowItem(i) );
+				
+			for (int i = 0; i < _watcher.WindowItemCount; i++)
+				PrepareWindowItem( i, _watcher.GetWindowItem(i) );
+			
+			ScheduleRemoveAvailableItems();
 		}
 		
-		void Append()
-		{
-			InsertNew(Offset + _windowItems.Count);
-		}
-
-		/** Removes all items from _windowItems */
-		void RemoveAll()
-		{
-			if (_windowItems.Count == 0) return;
-
-			for (int i=0; i < _windowItems.Count; ++i)
-			{
-				var wi = _windowItems[i];
-				RemoveWindowItem(wi);
-			}
-			_windowItems.Clear();
-			OnUpdatedWindowItems();
-		}
-		
-		void Repopulate()
-		{
-			RemoveAll();
-
-			var e = _items as object[];
-			if (e != null) 
-			{
-				for (int i = 0; i < e.Length; i++) InsertNew(i);
-			}
-			else
-			{
-				var a = _items as IArray;
-				if (a != null) 
-				{
-					for (int i = 0; i < a.Length; i++) InsertNew(i);
-				}
-			}
-
-			CompleteActionGood();
-		}
-		
-
-		class WindowItem
+		class WindowItem : WindowListItem
 		{
 			/* Will be null if the nodes haven't been created. This is distinct from being non-null but having a
 			count of zero. */
 			public List<Node> Nodes; 
 			//which templates were used to create the item
 			public TemplateMatch Template;
-			//the raw data associated with the item
-			public object Data;
-			//non-null if `Data` as an Observable
-			public ObservableLink DataLink;
-			//logical identifier used for matching, null if none
-			public object Id;
-			
-			public WindowItem()
-			{
-			}
-			
-			public object CurrentData
-			{
-				get
-				{
-					return DataLink != null ? DataLink.Data : Data;
-				}
-			}
-			
-			//cleans up the memory link from DataLink to Each by fixating the current data.
-			public void Unlink()
-			{
-				if (DataLink != null)
-				{
-					Data = DataLink.Data;
-					DataLink.Dispose();
-					DataLink = null;
-				}
-			}
 		}
 		
-		/**
-			A list of all items which have been added to the Instantiator. This only includes the items
-			within the range of Offset+Limit.
-			
-			This list should only be modified via the InsertNew, RemoveAt, and RemoveAll functions.
-		*/
-		ObjectList<WindowItem> _windowItems = new ObjectList<WindowItem>();
+		void ItemsWindowList<WindowItem>.IListener.OnCurrentDataChanged(WindowItem wi, object oldData)
+		{
+			//check for new template
+			var tpl = GetDataTemplate(wi.CurrentData);
+			if (!tpl.Matches( wi.Template) )
+			{
+				var index = _watcher.GetWindowItemIndex(wi);
+				if (index == -1)
+				{
+					Fuse.Diagnostics.InternalError( "Invalid WindowItem updated", this );
+					return;
+				}
+				
+				CleanupWindowItem(wi);
+				PrepareWindowItem(index, wi);
+				return;
+			}
+			BroadcastDataChange(wi, oldData);
+		}
+		
+		void BroadcastDataChange(WindowItem wi, object oldData)
+		{
+			if (wi.Nodes == null)
+				return;
+				
+			for (int i=0; i < wi.Nodes.Count; ++i)
+				wi.Nodes[i].BroadcastDataChange(oldData, wi.CurrentData);
+		}
+		
+		ItemsWindowList<WindowItem> _watcher;
 		
 		internal event Action UpdatedWindowItems;
 		bool _pendingUpdateWindowItems;
@@ -529,28 +437,6 @@ namespace Fuse.Reactive
 			_pendingUpdateWindowItems = false;
 		}
 
-		internal int WindowItemsCount { get { return _windowItems.Count; } }
-		
-		/**
-			Matches the length of active items to the desired length based on `Offset` and `Limit`.
-			This will add missing items and remove excess items.
-		*/
-		void TrimAndPad()
-		{
-			//trim excess
-			if (HasLimit)
-			{
-				for (int i=_windowItems.Count - _limit; i > 0; --i)
-					RemoveLastActive();
-			}
-				
-			//add new
-			var dataCount = GetDataCount();
-			var add = HasLimit ?
-				Math.Min(_limit - _windowItems.Count, dataCount - (Offset + _windowItems.Count)) : 
-				(dataCount - (Offset + _windowItems.Count));
-			for (int i=0; i < add; ++i)
-				Append();
-		}
+		internal int WindowItemsCount { get { return _watcher.WindowItemCount; } }
 	}
 }
