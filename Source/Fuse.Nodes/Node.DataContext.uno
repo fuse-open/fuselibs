@@ -114,11 +114,9 @@ namespace Fuse
 					OnDataChanged(newKeys[i], newObj[newKeys[i]]);
 				}
 			}
-			else if (newData != null)
-			{
+			if (newData != null)
 				OnDataChanged("", newData);
-			}
-
+ 
 			var oldObj = oldData as IObject;
 			if (oldObj != null)
 			{
@@ -129,11 +127,8 @@ namespace Fuse
 					OnDataChanged(keys[i], null);
 				}
 			}
-			else if (oldData != null)
-			{
-				if (newKeys != null)
-					OnDataChanged("", null);
-			}
+			if (oldData != null && newData == null)
+				OnDataChanged("", null);
 		}
 
 		static bool Contains(string[] strs, string s)
