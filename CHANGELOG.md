@@ -12,6 +12,8 @@
 
 ## Selection
 - Fixed the ordering of events so that `SelectionChanged` is emitted after the bound value is updated
+## Instantiator
+- Improved the internals of `Instantiator` (the base for `Each` and `Instance`). This also fixed a few corner cases with templates not updating, but should otherwise not affect user code.
 
 ## Expressions
 - Deprecated `UnaryOperator.OnNewOperand` and `OnLostOperand`.  These are part of a broken pattern of using unary expressions (and were not present on Binary/Ternary/QuaternaryOperator). You generally shouldn't need this, and should implement `Compute` instead. In the rare cases you need the vrituals you'll need to extend Expression and implement `Subscribe`, using `ExpressionListener` as a way to capture the correct functionality.
