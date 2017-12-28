@@ -49,7 +49,36 @@ namespace Fuse.Reactive
 		/** Use the object itself as the matching key. Suitable for when the object is a plain string or number. */
 		Object,
 	}
+
+	/* `WindowItem` and `TemplateMatch` are meant to be private to `Instantiator`.  They've been
+		outside to solve a  build error on DotNet/Windows shown on AppVeyor 
+		(not reproducible on DotNet/OSX) 
+		UNO: https://github.com/fusetools/uno/issues/1503
+	*/
+	class WindowItem : WindowListItem
+	{
+		/* Will be null if the nodes haven't been created. This is distinct from being non-null but having a
+		count of zero. */
+		public List<Node> Nodes; 
+		//which templates were used to create the item
+		public TemplateMatch Template;
+	}
 	
+	struct TemplateMatch
+	{
+		//if true then all templates used and `Template` is ignored
+		public bool All;
+		//the specific Template to use
+		public Template Template;
+		
+		public bool Matches(TemplateMatch b) 
+		{
+			if (All != b.All)
+				return false;
+			return Template == b.Template;
+		}
+	}
+		
 	/* (rough overview of inner workings, as of 2017-12-28)
 	
 		Instantiator instantiates one or more templates for a collection of items.
@@ -501,20 +530,6 @@ namespace Fuse.Reactive
 			return false;
 		}
 		
-		struct TemplateMatch
-		{
-			//if true then all templates used and `Template` is ignored
-			public bool All;
-			//the specific Template to use
-			public Template Template;
-			
-			public bool Matches(TemplateMatch b) 
-			{
-				if (All != b.All)
-					return false;
-				return Template == b.Template;
-			}
-		}
 		
 		TemplateMatch GetDataTemplate(object data)
 		{
@@ -783,15 +798,6 @@ namespace Fuse.Reactive
 				PrepareWindowItem( i, _watcher.GetWindowItem(i) );
 			
 			ScheduleRemoveAvailableItems();
-		}
-		
-		class WindowItem : WindowListItem
-		{
-			/* Will be null if the nodes haven't been created. This is distinct from being non-null but having a
-			count of zero. */
-			public List<Node> Nodes; 
-			//which templates were used to create the item
-			public TemplateMatch Template;
 		}
 		
 		void ItemsWindowList<WindowItem>.IListener.OnCurrentDataChanged(WindowItem wi, object oldData)
