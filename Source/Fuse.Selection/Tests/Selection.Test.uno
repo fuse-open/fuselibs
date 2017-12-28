@@ -305,5 +305,30 @@ namespace Fuse.Gestures.Test
 				}
 			}
 		}
+		
+		[Test]
+		//ensure event emitted after values change
+		//https://github.com/fusetools/fuselibs-public/issues/885
+		public void EventOrder()
+		{
+			var p = new UX.Selection.EventOrder();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				root.StepFrameJS();
+				Assert.AreEqual( "", p.r.Value );
+				
+				p.sa.Add();
+				root.StepFrameJS();
+				Assert.AreEqual( "A", p.r.Value );
+				
+				p.sb.Add();
+				root.StepFrameJS();
+				Assert.AreEqual( "AB", p.r.Value );
+				
+				p.sa.Remove();
+				root.StepFrameJS();
+				Assert.AreEqual( "B", p.r.Value );
+			}
+		}
 	}
 }

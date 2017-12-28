@@ -349,16 +349,16 @@ namespace Fuse.Selection
 		
 		void OnSelectionChanged(How how)
 		{
-			OnPropertyChanged(ValueName);
-			if (SelectionChanged != null)
-				SelectionChanged(this, EventArgs.Empty);
-				
 			if (how == How.API && _subscription != null)
 			{
 				var sub = _subscription as ISubscription;
 				if (sub != null) sub.ReplaceAllExclusive( new ListWrapper(_values) );
 				else Diagnostics.UserWarning("Selection changed, but the bound collection is not writeable.", this);
 			}
+			
+			OnPropertyChanged(ValueName);
+			if (SelectionChanged != null)
+				SelectionChanged(this, EventArgs.Empty);
 		}
 		
 		/*
