@@ -1,0 +1,6 @@
+<Panel ux:Class="UX.Instance.ItemNull">
+	<Let ux:Name="a"/>
+	<Instance Item="{a}">
+		<FuseTest.DudElement StringValue=":{a}:"/>
+	</Instance>
+</Panel>

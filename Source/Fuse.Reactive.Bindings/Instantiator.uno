@@ -533,6 +533,10 @@ namespace Fuse.Reactive
 		
 		TemplateMatch GetDataTemplate(object data)
 		{
+			//if there is no data then nothing should be instantiated
+			if (data == null)
+				return  new TemplateMatch{ All = false, Template = null };
+			
 			// Algorithm for picking matching the right template
 			Template useTemplate = null;
 			Template defaultTemplate = null;
