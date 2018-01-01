@@ -1,0 +1,27 @@
+<Panel ux:Class="UX.MathFunctions.MarshalFunctions">
+	<Let Value="float( (10,20) )" ux:Name="a2"/>
+	<Let Value="float( (3,7) )" ux:Name="b2"/>
+	
+	<Let Value="float(10)" ux:Name="a"/>
+	<Let Value="float(5)" ux:Name="b"/>
+	
+	<Let Value=" 1 == 0 " ux:Name="f"/>
+	<Let Value=" 1 == 1 " ux:Name="t"/>
+	
+	<FuseTest.Value Object="{a2} + {b2}" ux:Name="add"/>
+	<FuseTest.Value Object="{a2} - {b2}" ux:Name="sub"/>
+	<FuseTest.Value Object="{a2} * {b2}" ux:Name="mul"/>
+	<FuseTest.Value Object="{a2} / {b2}" ux:Name="div"/>
+	<FuseTest.Value Object="min({a},{b})" ux:Name="min"/>
+	<FuseTest.Value Object="max({a}, {b})" ux:Name="max"/>
+	
+	<FuseTest.Value Object="{a} &lt; {b}" ux:Name="lt"/>
+	<FuseTest.Value Object="{a} &gt; {b}" ux:Name="gt"/>
+	<FuseTest.Value Object="{a} &lt;= {b}" ux:Name="lte"/>
+	<FuseTest.Value Object="{a} &gt;= {b}" ux:Name="gte"/>
+	<FuseTest.Value Object="{a} == {b}" ux:Name="eq"/>
+	<FuseTest.Value Object="{a} != {b}" ux:Name="neq"/>
+	
+	<FuseTest.Value Object="{t} &amp;&amp; {f}" ux:Name="and"/>
+	<FuseTest.Value Object="{t} || {f}" ux:Name="or"/>
+</Panel>

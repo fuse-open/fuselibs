@@ -226,6 +226,46 @@ namespace Fuse.Reactive.Test
 				Assert.AreEqual(float4(10,10,20,15), p.clamp.Float4);
 			}
 		}
+		
+		[Test]
+		public void Add()
+		{
+			var p = new UX.MathFunctions.Add();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				Assert.AreEqual( 13.0, p.c.Object ); //this is expecting a double
+				Assert.AreEqual( float2(13,27), p.c2.Object );
+				Assert.AreEqual( float3(13,27,35), p.c3.Object );
+				Assert.AreEqual( float4(13,27,35,46), p.c4.Object );
+			}
+		}
+		
+		[Test]
+		//functions where the conversion was being handled by the Marshal class. This is just a base sanity check
+		public void MarshalFunctions()
+		{
+			var p = new UX.MathFunctions.MarshalFunctions();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				Assert.AreEqual( float2(13,27), p.add.Object );
+				Assert.AreEqual( float2(7,13), p.sub.Object );
+				Assert.AreEqual( float2(30,140), p.mul.Object );
+				Assert.AreEqual( float2(10f/3, 20f/7), p.div.Object );
+				
+				Assert.AreEqual( 5.0, p.min.Object );
+				Assert.AreEqual( 10.0, p.max.Object );
+			
+				Assert.AreEqual( false, p.lt.Object );
+				Assert.AreEqual( true, p.gt.Object );
+				Assert.AreEqual( false, p.lte.Object );
+				Assert.AreEqual( true, p.gte.Object );
+				Assert.AreEqual( false, p.eq.Object );
+				Assert.AreEqual( true, p.neq.Object );
+				
+				Assert.AreEqual( false, p.and.Object );
+				Assert.AreEqual( true, p.or.Object );
+			}
+		}
 	
 	}
 }
