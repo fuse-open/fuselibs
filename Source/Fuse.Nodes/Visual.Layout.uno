@@ -81,6 +81,17 @@ namespace Fuse
 	}
 
 	public delegate void RequestBringIntoViewHandler(object sender, RequestBringIntoViewArgs args);
+	
+	sealed class LostMarginBoxArgs : EventArgs
+	{
+		public Visual Visual { get; private set; }
+		public LostMarginBoxArgs(Visual elm)
+		{
+			Visual = elm;
+		}
+	}
+	
+	delegate void LostMarginBoxHandler(object sender, LostMarginBoxArgs args);
 
 	public abstract partial class Visual
 	{
@@ -408,6 +419,18 @@ namespace Fuse
 		bool _hasMarginBox = false;
 		
 		internal bool HasMarginBox { get { return _hasMarginBox; } }
+		
+		//emitted when HasMarginBox transitions to "false"
+		internal event LostMarginBoxHandler LostMarginBox;
+		internal void ClearMarginBox()
+		{
+			if (!_hasMarginBox)
+				return;
+				
+			_hasMarginBox = true;
+			if (LostMarginBox != null)
+				LostMarginBox( this, new LostMarginBoxArgs(this) );
+		}
 		
 		void RearrangeMarginBox()
 		{
