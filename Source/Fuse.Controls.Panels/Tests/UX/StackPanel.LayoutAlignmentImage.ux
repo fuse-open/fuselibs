@@ -1,3 +1,3 @@
-<StackPanel ux:Class="UX.LayoutAlignmentImage" Orientation="Vertical">
+<StackPanel ux:Class="UX.StackPanel.LayoutAlignmentImage" Orientation="Vertical">
 	<Image ux:Name="child1" Height="441" StretchMode="Scale9" File="../Assets/713x441.png" Density="1.3" Alignment="HorizontalCenter" />
 </StackPanel>

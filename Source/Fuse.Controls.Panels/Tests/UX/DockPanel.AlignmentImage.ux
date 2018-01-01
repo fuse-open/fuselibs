@@ -1,4 +1,4 @@
-<DockPanel ux:Class="UX.DockAlignmentImage">
+<DockPanel ux:Class="UX.DockPanel.AlignmentImage">
 	<Image ux:Name="child1" Height="441" File="../Assets/713x441.png" Dock="Top" />
 	<Image ux:Name="child2" Width="46" Height="109" StretchMode="Fill" File="../Assets/92x218.png" Dock="Right" />
 </DockPanel>

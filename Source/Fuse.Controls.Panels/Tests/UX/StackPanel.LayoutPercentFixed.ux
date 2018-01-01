@@ -1,4 +1,4 @@
-<StackPanel ux:Class="UX.LayoutPercentFixed" Orientation="Horizontal" Height="200">
+<StackPanel ux:Class="UX.StackPanel.LayoutPercentFixed" Orientation="Horizontal" Height="200">
 	<Panel ux:Name="c1" Width="50" Height="10%" Alignment="Bottom" />
 	<Image ux:Name="c2" File="../Assets/200x100.png" />
 	<Panel ux:Name="c3" Width="10" Height="110%" />

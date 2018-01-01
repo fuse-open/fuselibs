@@ -1,4 +1,4 @@
-<Panel ux:Class="UX.Issue1252">
+<Panel ux:Class="UX.StackPanel.Issue1252">
     <StackPanel Alignment="VerticalCenter" Width="75%" ItemSpacing="20" ux:Name="E1">
         <Panel Background="#fc0" Height="40" Opacity="0.5" ux:Name="E2"/>
         <Panel Background="#0cf" Height="40" Opacity="0.5" ux:Name="E3"/>

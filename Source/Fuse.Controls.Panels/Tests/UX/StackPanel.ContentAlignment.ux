@@ -1,4 +1,4 @@
-<Panel ux:Class="UX.ContentAlignment">
+<Panel ux:Class="UX.StackPanel.ContentAlignment">
 	<StackPanel SnapToPixels="true" Alignment="BottomRight" Padding="10,20,30,40">
 		<Rectangle SnapToPixels="true" Width="50" Height="50" ux:Name="RA0"/>
 		<Rectangle SnapToPixels="true" Width="50" Height="50" ux:Name="RA1"/>
