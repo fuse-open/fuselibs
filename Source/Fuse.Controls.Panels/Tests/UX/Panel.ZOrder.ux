@@ -1,4 +1,4 @@
-<Panel ux:Class="UX.ZOrderTest">
+<Panel ux:Class="UX.Panel.ZOrderTest">
 	<Panel Layer="Background" ux:Name="B1"/>
 	<Panel Layer="Overlay" ux:Name="O1"/>
 	<Panel ux:Name="S1"/>

@@ -1,4 +1,4 @@
-<Panel ux:Class='UX.InvalidateDepend'>
+<Panel ux:Class='UX.Panel.InvalidateDepend'>
 	<Element ux:Class="Dummy"/>
 	
 	<Panel Alignment="TopRight" Width="100" Height="100" ux:Name="P1">
