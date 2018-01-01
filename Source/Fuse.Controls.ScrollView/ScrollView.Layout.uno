@@ -188,8 +188,7 @@ namespace Fuse.Controls
 			}
 			align = hAlign | vAlign;
 			
-			nlp.RetainMaxXY(!setWidth, !setHeight);
-			nlp.RetainXY(!setWidth, !setHeight);
+			nlp.RetainAxesXY(!setWidth, !setHeight);
 				
 			var sz = Content.ArrangeMarginBox(Padding.XY, nlp);
 			Layouts.Layout.AdjustAlignBox(Content, sz, float4(Padding.XY,lp.Size-Padding.ZW),

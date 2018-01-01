@@ -236,6 +236,28 @@ namespace Fuse.Controls.Test
 			}
 		}
 		
+		[Test]
+		public void MaxSize()
+		{
+			var p = new UX.StackPanel.MaxSize();
+			using (var root = TestRootPanel.CreateWithChild(p,int2(400,200)))
+			{
+				Assert.AreEqual(float2(400,10), p.a.ActualSize);
+				Assert.AreEqual(float2(400,100), p.w.ActualSize);
+				
+				Assert.AreEqual(float2(0,0), p.b1.ActualPosition);
+				Assert.AreEqual(float2(200,0), p.b2.ActualPosition);
+				Assert.AreEqual(float2(0,50), p.b3.ActualPosition);
+				Assert.AreEqual(float2(200,50), p.b4.ActualPosition);
+				
+				Assert.AreEqual(float2(800,50), p.h.ActualSize);
+				Assert.AreEqual(float2(0,0), p.h1.ActualPosition);
+				Assert.AreEqual(float2(200,0), p.h2.ActualPosition);
+				Assert.AreEqual(float2(400,0), p.h3.ActualPosition);
+				Assert.AreEqual(float2(600,0), p.h4.ActualPosition);
+			}
+		}
+		
 		//region Private Methods
 		
 		private Panel GetChildForStackPanel(float4 margin, float width, float height)

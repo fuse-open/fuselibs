@@ -18,10 +18,15 @@ namespace FuseTest
 				return float2( lp.X, Area/lp.X );
 			else if (lp.HasY)
 				return float2( Area/lp.Y, lp.Y );
+				
+			var maxX = float2( lp.MaxX, Area/lp.MaxX);
+			var maxY = float2( Area/lp.MaxY, lp.MaxY);
+			if (lp.HasMaxX && lp.HasMaxY)
+				return lp.MaxX < lp.MaxY ? maxX : maxY;
 			else if (lp.HasMaxX)
-				return float2( lp.MaxX, Area/lp.MaxX);
+				return maxX;
 			else if (lp.HasMaxY)
-				return float2( Area/lp.MaxY, lp.MaxY);
+				return maxY;
 
 			return float2(Math.Sqrt(Area));
 		}
