@@ -296,5 +296,32 @@ namespace Fuse.Controls.Test
 					Assert.AreEqual(order[i], p.GetZOrderChild(i));
 			}
 		}
+		
+		[Test]
+		public void MinSequence()
+		{
+			var p = new UX.Panel.MinSequence();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+ 				Assert.AreEqual( float2(75,20), p.c1.ActualSize);
+ 				Assert.AreEqual( float2(75,20), p.c2.ActualSize);
+ 				Assert.AreEqual( float2(75,20), p.c3.ActualSize);
+ 				Assert.AreEqual( float2(75,20), p.c4.ActualSize);
+ 				Assert.AreEqual( float2(75,20), p.c5.ActualSize);
+ 				
+				Assert.AreEqual( float2(75,20), p.a.ActualSize );
+ 				Assert.AreEqual( float2(75,20), p.d.ActualSize);
+			}
+		}
+		
+		[Test]
+		public void MinAspect()
+		{
+			var p = new UX.Panel.MinAspect();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				Assert.AreEqual( float2(20,20), p.a.ActualSize );
+			}
+		}
 	}
 }

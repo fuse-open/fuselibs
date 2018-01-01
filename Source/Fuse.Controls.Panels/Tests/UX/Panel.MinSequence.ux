@@ -1,0 +1,25 @@
+<Panel ux:Class="UX.Panel.MinSequence">
+	<Panel Alignment="TopLeft" MinHeight="20" ux:Name="c1">
+		<Panel MinWidth="50" ux:Name="c2">
+			<Panel MinWidth="75" ux:Name="c3">
+				<Panel MinHeight="10" ux:Name="c4">
+					<Panel ux:Name="c5"/>
+				</Panel>
+			</Panel>
+		</Panel>
+	</Panel>
+	
+	<Panel Alignment="Center" MinHeight="10">
+		<Panel MinWidth="75">
+			<Panel MinWidth="50">
+				<Panel MinHeight="20">
+					<Panel ux:Name="d"/>
+				</Panel>
+			</Panel>
+		</Panel>
+	</Panel>
+	<Panel Alignment="TopLeft" MinHeight="20" MinWidth="50">
+		<Panel MinHeight="10" MinWidth="75" ux:Name="a"/>
+	</Panel>
+	
+</Panel>

@@ -1,0 +1,7 @@
+<Panel ux:Class="UX.Panel.MinAspect">
+	<Panel Alignment="TopLeft" MinHeight="20">
+		<Panel MinHeight="10">
+			<Panel BoxSizing="FillAspect" ux:Name="a"/>
+		</Panel>
+	</Panel>
+</Panel>
