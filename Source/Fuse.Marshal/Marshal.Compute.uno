@@ -43,147 +43,238 @@ namespace Fuse
 			return a;
 		}
 
-		public static object Add(object a, object b)
+		public static bool TryAdd(object a, object b, out object result)
 		{
-			if (a == null || b == null) return null;
+			result = null;
+			if (a == null || b == null) return false;
 			a = TryConvertArrayToVector(a);
 			var ta = a.GetType();
 			var tb = b.GetType();
 
+			//TODO: doesn't the _computer handle this?
 			if (ta == typeof(string) || tb == typeof(string))
-				return a.ToString() + b.ToString();
+			{
+				result = a.ToString() + b.ToString();
+				return true;
+			}
 			
 			var t = DominantType(ta, tb);
 
 			Computer c;
 			if (_computers.TryGetValue(t, out c)) 
-				return c.Add(a, b);
+				return c.TryAdd(a, b, out result);
+			return false;
+		}
 			
-			throw new ComputeException("Add", a, b);
+		public static object Add(object a, object b)
+		{
+			object result = null;
+			if (!TryAdd(a,b,out result))
+				throw new ComputeException("Add", a, b);
+			return result;
 		}
 
+		public static bool TrySubtract(object a, object b, out object result)
+		{
+			result = null;
+			if (a == null || b == null) return false;
+			a = TryConvertArrayToVector(a);
+			var t = DominantType(a.GetType(), b.GetType());
+
+			Computer c;
+			if (_computers.TryGetValue(t, out c)) 
+				return c.TrySubtract(a, b, out result);
+			return false;
+		}
+			
 		public static object Subtract(object a, object b)
 		{
-			if (a == null || b == null) return null;
+			object result = null;
+			if (!TrySubtract(a,b,out result))
+				throw new ComputeException("Subtract", a, b);
+			return result;
+		}
+
+		public static bool TryMultiply(object a, object b, out object result)
+		{
+			result = null;
+			if (a == null || b == null) return false;
 			a = TryConvertArrayToVector(a);
 			var t = DominantType(a.GetType(), b.GetType());
 
 			Computer c;
 			if (_computers.TryGetValue(t, out c)) 
-				return c.Subtract(a, b);
-			
-			throw new ComputeException("Subtract", a, b);
+				return c.TryMultiply(a, b, out result);
+			return false;
 		}
-
+			
 		public static object Multiply(object a, object b)
 		{
-			if (a == null || b == null) return null;
+			object result;
+			if (!TryMultiply(a,b,out result))
+				throw new ComputeException("Multiply", a, b);
+			return result;
+		}
+
+		public static bool TryDivide(object a, object b, out object result)
+		{
+			result = null;
+			if (a == null || b == null) return false;
 			a = TryConvertArrayToVector(a);
 			var t = DominantType(a.GetType(), b.GetType());
 
 			Computer c;
 			if (_computers.TryGetValue(t, out c)) 
-				return c.Multiply(a, b);
-			
-			throw new ComputeException("Multiply", a, b);
+				return c.TryDivide(a, b, out result);
+			return true;
 		}
-
+			
 		public static object Divide(object a, object b)
 		{
-			if (a == null || b == null) return null;
-			a = TryConvertArrayToVector(a);
+			object result;
+			if (!TryDivide(a,b,out result))
+				throw new ComputeException("Divide", a, b);
+			return result;
+		}
+
+		public static bool TryLessThan(object a, object b, out bool result)
+		{
+			result = false;
+			if (a == null || b == null) return false;
 			var t = DominantType(a.GetType(), b.GetType());
 
 			Computer c;
 			if (_computers.TryGetValue(t, out c)) 
-				return c.Divide(a, b);
-			
-			throw new ComputeException("Divide", a, b);
+				return c.TryLessThan(a, b, out result);
+			return true;
 		}
-
+		
 		public static object LessThan(object a, object b)
 		{
-			if (a == null || b == null) return null;
+			bool result;
+			if (!TryLessThan(a,b, out result))
+				throw new ComputeException("LessThan", a, b);
+			return result;
+		}
+			
+		public static bool TryLessOrEqual(object a, object b, out bool result)
+		{
+			result = false;
+			if (a == null || b == null) return false;
 			var t = DominantType(a.GetType(), b.GetType());
 
 			Computer c;
 			if (_computers.TryGetValue(t, out c)) 
-				return c.LessThan(a, b);
-			
-			throw new ComputeException("LessThan", a, b);
+				return c.TryLessOrEqual(a, b, out result);
+			return true;
 		}
-
+		
 		public static object LessOrEqual(object a, object b)
 		{
-			if (a == null || b == null) return null;
+			bool result;
+			if (!TryLessOrEqual(a,b, out result))
+				throw new ComputeException("LessOrEqual", a, b);
+			return result;
+		}
+
+		public static bool TryGreaterThan(object a, object b, out bool result)
+		{
+			result = false;
+			if (a == null || b == null) return false;
 			var t = DominantType(a.GetType(), b.GetType());
 
 			Computer c;
 			if (_computers.TryGetValue(t, out c)) 
-				return c.LessOrEqual(a, b);
-			
-			throw new ComputeException("LessOrEqual", a, b);
+				return c.TryGreaterThan(a, b, out result);
+			return true;
 		}
-
-
+		
 		public static object GreaterThan(object a, object b)
 		{
-			if (a == null || b == null) return null;
+			bool result;
+			if (!TryGreaterThan(a,b, out result))
+				throw new ComputeException("GreaterThan", a, b);
+			return result;
+		}
+
+		public static bool TryGreaterOrEqual(object a, object b, out bool result)
+		{
+			result = false;
+			if (a == null || b == null) return false;
 			var t = DominantType(a.GetType(), b.GetType());
 
 			Computer c;
 			if (_computers.TryGetValue(t, out c)) 
-				return c.GreaterThan(a, b);
-			
-			throw new ComputeException("GreaterThan", a, b);
+				return c.TryGreaterOrEqual(a, b, out result);
+			return true;
 		}
-
+		
 		public static object GreaterOrEqual(object a, object b)
 		{
-			if (a == null || b == null) return null;
+			bool result;
+			if (!TryGreaterOrEqual(a,b, out result))
+				throw new ComputeException("GreaterOrEqual", a, b);
+			return result;
+		}
+		
+		public static bool TryEqualTo(object a, object b, out bool result)
+		{
+			result = false;
+			if (a == null || b == null) return false;
 			var t = DominantType(a.GetType(), b.GetType());
 
 			Computer c;
 			if (_computers.TryGetValue(t, out c)) 
-				return c.GreaterOrEqual(a, b);
-			
-			throw new ComputeException("GreaterOrEqual", a, b);
+				return c.TryEqualTo(a, b, out result);
+			return true;
 		}
-
+		
 		public static object EqualTo(object a, object b)
 		{
-			if (a == null || b == null) return null;
+			bool result;
+			if (!TryEqualTo(a,b, out result))
+				throw new ComputeException("Equal", a, b);
+			return result;
+		}
+		
+		public static bool TryMin(object a, object b, out object result)
+		{
+			result = null;
+			if (a == null || b == null) return false;
 			var t = DominantType(a.GetType(), b.GetType());
 
 			Computer c;
 			if (_computers.TryGetValue(t, out c)) 
-				return c.EqualTo(a, b);
-			
-			throw new ComputeException("EqualTo", a, b);
+				return c.TryMin(a, b, out result);
+			return true;
 		}
 
 		public static object Min(object a, object b)
 		{
-			if (a == null || b == null) return null;
-			var t = DominantType(a.GetType(), b.GetType());
-
-			Computer c;
-			if (_computers.TryGetValue(t, out c)) 
-				return c.Min(a, b);
-			
-			throw new ComputeException("Min", a, b);
+			object result;
+			if (!TryMin(a,b,out result))
+				throw new ComputeException("Min", a, b);
+			return result;
 		}
 
-		public static object Max(object a, object b)
+		public static bool TryMax(object a, object b, out object result)
 		{
-			if (a == null || b == null) return null;
+			result = null;
+			if (a == null || b == null) return false;
 			var t = DominantType(a.GetType(), b.GetType());
 
 			Computer c;
 			if (_computers.TryGetValue(t, out c)) 
-				return c.Max(a, b);
+				return c.TryMax(a, b, out result);
+			return true;
+		}
 			
-			throw new ComputeException("Max", a, b);
+		public static object Max(object a, object b)
+		{
+			object result;
+			if (!TryMax(a,b,out result))
+				throw new ComputeException("Max", a, b);
+			return result;
 		}
 	}
 }
