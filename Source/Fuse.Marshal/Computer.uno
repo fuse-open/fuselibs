@@ -24,6 +24,54 @@ namespace Fuse
 		public abstract bool TryEqualTo(object a, object b, out bool result);
 		public abstract bool TryMin(object a, object b, out object result);
 		public abstract bool TryMax(object a, object b, out object result);
+		
+		public enum TypeOp
+		{
+			Add,
+			Subtract,
+			Multiply,
+			Divide,
+			Min,
+			Max,
+		}
+		public bool TryOp( TypeOp op, object a, object b, out object result )
+		{
+			switch (op)
+			{
+				case TypeOp.Add: return TryAdd(a,b, out result);
+				case TypeOp.Subtract: return TrySubtract(a,b, out result);
+				case TypeOp.Multiply: return TryMultiply(a,b, out result);
+				case TypeOp.Divide: return TryDivide(a,b, out result);
+				case TypeOp.Min: return TryMin(a,b, out result);
+				case TypeOp.Max: return TryMax(a,b, out result);
+			}
+			
+			result = null;
+			return false;
+		}
+		
+		public enum BoolOp
+		{
+			LessThan,
+			LessOrEqual,
+			GreaterThan,
+			GreaterOrEqual,
+			EqualTo,
+		}
+		public bool TryOp( BoolOp op, object a, object b, out bool result )
+		{
+			switch (op)
+			{
+				case BoolOp.LessThan: return TryLessThan(a,b,out result);
+				case BoolOp.LessOrEqual: return TryLessOrEqual(a,b,out result);
+				case BoolOp.GreaterThan: return TryGreaterThan(a,b,out result);
+				case BoolOp.GreaterOrEqual: return TryGreaterOrEqual(a,b,out result);
+				case BoolOp.EqualTo: return TryEqualTo(a,b,out result);
+			}
+			
+			result = false;
+			return false;
+		}
 	}
 
 	abstract class Computer<T>: Computer
