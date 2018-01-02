@@ -53,5 +53,16 @@ namespace Fuse.Reactive.Expressions.Test
 				Assert.AreEqual( "a3", p.num.Object );
 			}
 		}
+		
+		[Test]
+		public void Concat()
+		{
+			var p = new UX.StringFunctions.Concat();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				Assert.AreEqual( "1-2", p.txt.Value );
+				Assert.AreEqual( "23", p.obj.Object );
+			}
+		}
 	}
 }

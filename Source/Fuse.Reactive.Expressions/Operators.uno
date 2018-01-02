@@ -23,6 +23,29 @@ namespace Fuse.Reactive
 		}
 	}
 
+	public sealed class Concat : InfixOperator
+	{
+		[UXConstructor]
+		public Concat([UXParameter("Left")] Expression left, [UXParameter("Right")] Expression right) : 
+			base(left, right, "++") {}
+		protected override bool TryCompute(object left, object right, out object result)
+		{
+			return TryComputeImpl(left, right, out result);
+		}
+		
+		static internal bool TryComputeImpl(object left, object right, out object result)
+		{
+			result = null;
+			string a = null, b = null;
+			if (!Marshal.TryToType<string>(left, out a) ||
+				!Marshal.TryToType<string>(right, out b))
+				return false;
+				
+			result = a + b;
+			return true;
+		}
+	}
+	
 	public sealed class Add: InfixOperator
 	{
 		[UXConstructor]
@@ -30,6 +53,11 @@ namespace Fuse.Reactive
 			base(left, right, "+") {}
 		protected override bool TryCompute(object left, object right, out object result)
 		{
+			//Workaround for UX emitting `Add` instead of `Concat`
+			//https://github.com/fusetools/fuselibs-public/issues/897
+			if (left is string || right is string)
+				return Concat.TryComputeImpl(left, right, out result);
+				
 			return Marshal.TryAdd(left, right, out result);
 		}
 	}
