@@ -130,7 +130,7 @@ namespace Fuse.Controls.Test
 		[Test]
 		public void LayoutAlignmentImageTest()
 		{
-			var p = new UX.LayoutAlignmentImage();
+			var p = new UX.StackPanel.LayoutAlignmentImage();
 			using (var root = TestRootPanel.CreateWithChild(p, int2(928, 722)))
 			{
 				LayoutTestHelper.TestElementLayout(p.child1, float2(713, 441), float2((928-713)/2f, 0));
@@ -140,7 +140,7 @@ namespace Fuse.Controls.Test
 		[Test]
 		public void LayoutPercentDependent()
 		{
-			var p = new UX.LayoutPercentDependent();
+			var p = new UX.StackPanel.LayoutPercentDependent();
 			using (var root = TestRootPanel.CreateWithChild(p, int2(1000)))
 			{
 				LayoutTestHelper.TestElementLayout(p.c1, float2(200,10), float2(100,0) );
@@ -153,7 +153,7 @@ namespace Fuse.Controls.Test
 		[Test]
 		public void LayoutPercentFixed()
 		{
-			var p = new UX.LayoutPercentFixed();
+			var p = new UX.StackPanel.LayoutPercentFixed();
 			using (var root = TestRootPanel.CreateWithChild(p, int2(1000)))
 			{
 				LayoutTestHelper.TestElementLayout(p.c1, float2(50,20), float2(0,180) );
@@ -166,7 +166,7 @@ namespace Fuse.Controls.Test
 		[Test]
 		public void SecondPassAndResizeRequired()
 		{
-			var p = new UX.SecondPassAndResizeRequired();
+			var p = new UX.StackPanel.SecondPassAndResizeRequired();
 			using (var root = TestRootPanel.CreateWithChild(p, int2(500,1000)))
 			{
 				LayoutTestHelper.TestElementLayout(p, float2(80,625), float2((500-80)/2f,(1000-625)/2f));
@@ -180,7 +180,7 @@ namespace Fuse.Controls.Test
 		public void ContentAlignment()
 		{
 			//using non-1 density to ensure ContentAlignment optimizations are valid (AdjustMarginBoxPosition)
-			var p = new UX.ContentAlignment();
+			var p = new UX.StackPanel.ContentAlignment();
 			using (var root = new TestRootPanel(false, 0.75f))
 			{
 				root.Children.Add(p);
@@ -207,7 +207,7 @@ namespace Fuse.Controls.Test
 		[Test]
 		public void Issue1252()
 		{
-			var p = new UX.Issue1252();
+			var p = new UX.StackPanel.Issue1252();
 
 			using (var root = TestRootPanel.CreateWithChild(p, int2(1000)))
 			{
@@ -225,7 +225,7 @@ namespace Fuse.Controls.Test
 		{
 			using (var root = new TestRootPanel())
 			{
-				var p = new UX.StackLayoutCompat();
+				var p = new UX.StackPanel.StackLayoutCompat();
 				root.Children.Add(p);
 
 				root.Layout(int2(100,1000));
@@ -233,6 +233,28 @@ namespace Fuse.Controls.Test
 
 				root.Layout(int2(200,1000));
 				Assert.AreEqual(float2(160,80),p.I1.ActualSize);
+			}
+		}
+		
+		[Test]
+		public void MaxSize()
+		{
+			var p = new UX.StackPanel.MaxSize();
+			using (var root = TestRootPanel.CreateWithChild(p,int2(400,200)))
+			{
+				Assert.AreEqual(float2(400,10), p.a.ActualSize);
+				Assert.AreEqual(float2(400,100), p.w.ActualSize);
+				
+				Assert.AreEqual(float2(0,0), p.b1.ActualPosition);
+				Assert.AreEqual(float2(200,0), p.b2.ActualPosition);
+				Assert.AreEqual(float2(0,50), p.b3.ActualPosition);
+				Assert.AreEqual(float2(200,50), p.b4.ActualPosition);
+				
+				Assert.AreEqual(float2(800,50), p.h.ActualSize);
+				Assert.AreEqual(float2(0,0), p.h1.ActualPosition);
+				Assert.AreEqual(float2(200,0), p.h2.ActualPosition);
+				Assert.AreEqual(float2(400,0), p.h3.ActualPosition);
+				Assert.AreEqual(float2(600,0), p.h4.ActualPosition);
 			}
 		}
 		

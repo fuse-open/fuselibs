@@ -1,4 +1,4 @@
-<DockPanel ux:Class="UX.DockRelative">
+<DockPanel ux:Class="UX.DockPanel.Relative">
 	<Panel Dock="Top" Height="10%" ux:Name="P1"/>
 	<Panel Dock="Bottom" Height="20%" ux:Name="P2"/>
 	<Panel Dock="Left" Width="10%" ux:Name="P3"/>

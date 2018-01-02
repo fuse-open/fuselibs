@@ -1,4 +1,4 @@
-<StackPanel ux:Class="UX.LayoutPercentDependent" Orientation="Vertical" Alignment="Center" Mode="TwoPass">
+<StackPanel ux:Class="UX.StackPanel.LayoutPercentDependent" Orientation="Vertical" Alignment="Center" Mode="TwoPass">
 	<Panel ux:Name="c1" Width="50%" Height="10" />
 	<Image ux:Name="c2" Width="100%" File="../Assets/200x100.png" />
 	<Panel Width="400" Height="5" />

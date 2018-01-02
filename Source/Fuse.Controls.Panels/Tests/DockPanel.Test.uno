@@ -201,7 +201,7 @@ namespace Fuse.Controls.Test
 		[Test]
 		public void DockAlignmentImageTest()
 		{
-			var p = new UX.DockAlignmentImage();
+			var p = new UX.DockPanel.AlignmentImage();
 			using (var root = TestRootPanel.CreateWithChild(p, int2(736, 1038)))
 			{
 				LayoutTestHelper.TestElementLayout(p.child1, float2(736, 441), float2(0, 0), 0.0001f);
@@ -212,7 +212,7 @@ namespace Fuse.Controls.Test
 		[Test]
 		public void DockMultiFill()
 		{
-			var p = new UX.DockMultiFillTest();
+			var p = new UX.DockPanel.MultiFill();
 			using (var root = TestRootPanel.CreateWithChild(p, int2(1000, 1000)))
 			{
 				Assert.AreEqual( float2(50,50), p.TheStar.ActualSize );
@@ -225,7 +225,7 @@ namespace Fuse.Controls.Test
 		[Test]
 		public void DockRelative()
 		{
-			var p = new UX.DockRelative();
+			var p = new UX.DockPanel.Relative();
 			using (var root = TestRootPanel.CreateWithChild(p, int2(1000, 500)))
 			{
 				Assert.AreEqual(float2(1000,50),p.P1.ActualSize);
@@ -241,7 +241,7 @@ namespace Fuse.Controls.Test
 		[Test]
 		public void DockRelativeStack()
 		{
-			var p = new UX.DockRelativeStack();
+			var p = new UX.DockPanel.RelativeStack();
 			using (var root = TestRootPanel.CreateWithChild(p, int2(1000, 500)))
 			{
 				Assert.AreEqual(float2(990,100),p.P1.ActualSize); //this is odd, but at the moment 100 is the expected heighg
@@ -249,6 +249,20 @@ namespace Fuse.Controls.Test
 
 				Assert.AreEqual(float2(160,80),p.P2.ActualSize);
 				Assert.AreEqual(float2(10,10),p.P2.ActualPosition);
+			}
+		}
+		
+		[Test] 
+		public void Max()
+		{
+			var p = new UX.DockPanel.Max();
+			using (var root = TestRootPanel.CreateWithChild(p,int2(1000)))
+			{
+				Assert.AreEqual( float2(50,100), p.a1.ActualSize );
+				Assert.AreEqual( float2(50,120), p.d1.ActualSize );
+				
+				Assert.AreEqual( float2(100,50), p.a2.ActualSize );
+				Assert.AreEqual( float2(120,50), p.d2.ActualSize );
 			}
 		}
 		

@@ -1,5 +1,8 @@
 # Unreleased
 
+## StackPanel
+- Fixed the invalid propagation of MaxWidth/MaxHeight in a StackPanel to its children
+
 ## Data Context
 - Resolved a situation with nested context binding `{}`, such as `With` and `Instance`, where the data would not correctly update
 

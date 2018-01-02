@@ -1,0 +1,12 @@
+<Panel ux:Class="UX.DockPanel.Max">
+	<DockPanel Alignment="BottomLeft" MaxWidth="50" ux:Name="d1">
+		<FuseTest.AreaElement Dock="Bottom" Area="5000" ux:Name="a1"/>
+		<Panel Height="20"/>
+	</DockPanel>
+	
+	<DockPanel Alignment="TopRight" MaxHeight="50" ux:Name="d2">
+		<FuseTest.AreaElement Dock="Left" Area="5000" ux:Name="a2"/>
+		<Panel Width="20"/>
+	</DockPanel>
+	
+</Panel>

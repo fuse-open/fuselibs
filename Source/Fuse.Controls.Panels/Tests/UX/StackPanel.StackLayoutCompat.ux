@@ -1,0 +1,3 @@
+<StackPanel ux:Class="UX.StackPanel.StackLayoutCompat" Alignment="Center" Padding="10">
+	<Image Margin="10" File="../Assets/200x100.png" ux:Name="I1"/>
+</StackPanel>

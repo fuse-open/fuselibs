@@ -194,6 +194,17 @@ namespace Fuse
 			RemoveSize( size.XY + size.ZW );
 		}
 		
+		public void RetainAxesXY( bool x, bool y )
+		{
+			RetainXY(x,y);
+			RetainMaxXY(x,y);
+		}
+		
+		/**
+			Retains or discards the X/Y information.
+			
+			Be careful when using this, it is typically used in combination with RetainMaxXY (or RetainAxesXY in combination), or with a ConstrainMax. The layout must consider how it affects not just the X/Y values, but also the Min/Max XY values.
+		*/
 		public void RetainXY( bool x, bool y )
 		{
 			if (!x)

@@ -93,7 +93,7 @@ namespace Fuse.Layouts
 
 			var vert = orientation == Orientation.Vertical;
 			var nlp = lp.CloneAndDerive();
-			nlp.RetainXY(vert, !vert);
+			nlp.RetainAxesXY(vert, !vert);
 
 			var size = GetElementsSize(container, nlp);
 			
@@ -195,12 +195,12 @@ namespace Fuse.Layouts
 			float2 axis;
 			if (orientation == Orientation.Vertical)
 			{
-				nlp.RetainXY(true,false);
+				nlp.RetainAxesXY(true,false);
 				axis = float2(0,1);
 			}
 			else
 			{
-				nlp.RetainXY(false, true);
+				nlp.RetainAxesXY(false, true);
 				axis = float2(1,0);
 			}
 

@@ -1,4 +1,4 @@
-<DockPanel Alignment="Center" ux:Class="UX.DockMultiFillTest">
+<DockPanel Alignment="Center" ux:Class="UX.DockPanel.MultiFill">
 	<Panel Width="10" Background="Blue" DockPanel.Dock="Left"/>
 	<Panel Width="10" Background="Red" DockPanel.Dock="Right"/>
 	<Circle Width="50" ux:Name="TheStar">
