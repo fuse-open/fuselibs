@@ -1,5 +1,8 @@
 # Unreleased
 
+## Data Context
+- Resolved a situation with nested context binding `{}`, such as `With` and `Instance`, where the data would not correctly update
+
 ## Selection
 - Fixed the ordering of events so that `SelectionChanged` is emitted after the bound value is updated
 
