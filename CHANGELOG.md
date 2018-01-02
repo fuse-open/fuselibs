@@ -1,5 +1,8 @@
 # Unreleased
 
+## Element
+- Fixed an incorrect cascade of `MinWidth` / `MinHeight`. This could only be noticed in certain scenarios using `BoxSizing="FillAspect"`.
+
 ## StackPanel
 - Fixed the invalid propagation of MaxWidth/MaxHeight in a StackPanel to its children
 
@@ -8,8 +11,6 @@
 
 ## Selection
 - Fixed the ordering of events so that `SelectionChanged` is emitted after the bound value is updated
-## Element
-- Fixed an incorrect cascade of `MinWidth` / `MinHeight`. This could only be noticed in certain scenarios using `BoxSizing="FillAspect"`.
 
 ## Expressions
 - Deprecated `UnaryOperator.OnNewOperand` and `OnLostOperand`.  These are part of a broken pattern of using unary expressions (and were not present on Binary/Ternary/QuaternaryOperator). You generally shouldn't need this, and should implement `Compute` instead. In the rare cases you need the vrituals you'll need to extend Expression and implement `Subscribe`, using `ExpressionListener` as a way to capture the correct functionality.
