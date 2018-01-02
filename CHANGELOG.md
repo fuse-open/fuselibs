@@ -1,5 +1,8 @@
 # Unreleased
 
+## Element
+- Fixed an incorrect cascade of `MinWidth` / `MinHeight`. This could only be noticed in certain scenarios using `BoxSizing="FillAspect"`.
+
 ## StackPanel
 - Fixed the invalid propagation of MaxWidth/MaxHeight in a StackPanel to its children
 

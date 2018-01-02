@@ -1,4 +1,4 @@
-<Panel ux:Class="UX.RemovingAnimationRoot">
+<Panel ux:Class="UX.Panel.RemovingAnimationRoot">
 	<Panel ux:Name="A">
 		<WhileTrue ux:Name="outerPanel" Value="true">
 			<DockPanel ux:Name="B">

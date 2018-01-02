@@ -1,4 +1,4 @@
-<Panel ux:Class='UX.MaxWidthHeight'>
+<Panel ux:Class='UX.Panel.MaxWidthHeight'>
 	<Panel Alignment="Center" Width="200" Height="400">
 		<Panel Width="500" ux:Name="P1"/>
 		<Panel Height="600" ux:Name="P2"/>

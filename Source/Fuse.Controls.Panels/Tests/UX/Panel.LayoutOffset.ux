@@ -1,4 +1,4 @@
-<Panel ux:Class='UX.LayoutOffset'>
+<Panel ux:Class='UX.Panel.LayoutOffset'>
 	<Rectangle Width="10" Height="10" Offset="2,3" ux:Name="r1" Alignment="TopLeft"/>
 	<Rectangle Alignment="BottomRight" Width="10" Height="10" Offset="-3,-4" ux:Name="r2"/>
 	<Rectangle Alignment="Center" Width="10" Height="10" Offset="25%,25%" ux:Name="r3"/>

@@ -1,4 +1,4 @@
-<Panel ux:Class="UX.ElementAnchor">
+<Panel ux:Class="UX.Panel.ElementAnchor">
 	<Rectangle Width="50" Height="30" Anchor="100%,50%" ux:Name="r1"/>
 	<Rectangle Width="20" Height="10" Anchor="30%,80%" Alignment="BottomLeft" ux:Name="r2"/>
 </Panel>

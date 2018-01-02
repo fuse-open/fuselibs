@@ -126,7 +126,7 @@ namespace Fuse.Controls.Test
 		[Test]
 		public void LayoutOffset()
 		{
-			var p = new UX.LayoutOffset();
+			var p = new UX.Panel.LayoutOffset();
 			using (var root = TestRootPanel.CreateWithChild(p, int2(1000,400)))
 			{
 				LayoutTestHelper.TestElementLayout(p.r1, float2(10,10), float2(2,3) );
@@ -138,7 +138,7 @@ namespace Fuse.Controls.Test
 		[Test]
 		public void ElementAnchor()
 		{
-			var p = new UX.ElementAnchor();
+			var p = new UX.Panel.ElementAnchor();
 			using (var root = TestRootPanel.CreateWithChild(p, int2(400,1000)))
 			{
 				LayoutTestHelper.TestElementLayout(p.r1, float2(50,30), float2(150,500-15));
@@ -149,7 +149,7 @@ namespace Fuse.Controls.Test
 		[Test]
 		public void MaxWidthHeight()
 		{
-			var p = new UX.MaxWidthHeight();
+			var p = new UX.Panel.MaxWidthHeight();
 			using (var root = TestRootPanel.CreateWithChild(p, int2(1000)))
 			{
 				Assert.AreEqual(float2(500,400), p.P1.ActualSize);
@@ -165,7 +165,7 @@ namespace Fuse.Controls.Test
 		[Test]
 		public void InvalidateDepend()
 		{
-			var p = new UX.InvalidateDepend();
+			var p = new UX.Panel.InvalidateDepend();
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
 				root.Layout(int2(1000));
@@ -230,7 +230,7 @@ namespace Fuse.Controls.Test
 		[Test]
 		public void Issue1063()
 		{
-			var p = new UX.RemovingAnimationRoot();
+			var p = new UX.Panel.RemovingAnimationRoot();
 			using (var root = TestRootPanel.CreateWithChild(p, int2(1000)))
 			{
 				root.IncrementFrame();
@@ -282,7 +282,7 @@ namespace Fuse.Controls.Test
 		[Test]
 		public void ZOrder()
 		{
-			var p = new UX.ZOrderTest();
+			var p = new UX.Panel.ZOrderTest();
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
 				var order = new Panel[]{ p.B2, p.B1, p.S2, p.S1, p.S3, p.O2, p.O1 };
@@ -294,6 +294,33 @@ namespace Fuse.Controls.Test
 				order = new Panel[]{ p.B2, p.B1, p.S2, p.S3, p.S1, p.O1, p.O2 };
 				for (int i=0; i < p.VisualChildCount ; i++)
 					Assert.AreEqual(order[i], p.GetZOrderChild(i));
+			}
+		}
+		
+		[Test]
+		public void MinSequence()
+		{
+			var p = new UX.Panel.MinSequence();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+ 				Assert.AreEqual( float2(75,20), p.c1.ActualSize);
+ 				Assert.AreEqual( float2(75,20), p.c2.ActualSize);
+ 				Assert.AreEqual( float2(75,20), p.c3.ActualSize);
+ 				Assert.AreEqual( float2(75,20), p.c4.ActualSize);
+ 				Assert.AreEqual( float2(75,20), p.c5.ActualSize);
+ 				
+				Assert.AreEqual( float2(75,20), p.a.ActualSize );
+ 				Assert.AreEqual( float2(75,20), p.d.ActualSize);
+			}
+		}
+		
+		[Test]
+		public void MinAspect()
+		{
+			var p = new UX.Panel.MinAspect();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				Assert.AreEqual( float2(20,20), p.a.ActualSize );
 			}
 		}
 	}

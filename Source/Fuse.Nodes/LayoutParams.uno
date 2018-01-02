@@ -297,7 +297,7 @@ namespace Fuse
 		public void ConstrainMinX( float min )
 		{
 			if (HasMinX)
-				_minSize.X = Math.Min(_minSize.X,min);
+				_minSize.X = Math.Max(_minSize.X,min);
 			else
 				_minSize.X = min;
 			SetFlag(Flags.MinX,true);
@@ -306,7 +306,7 @@ namespace Fuse
 		public void ConstrainMinY( float min )
 		{
 			if (HasMinY)
-				_minSize.Y = Math.Min(_minSize.Y,min);
+				_minSize.Y = Math.Max(_minSize.Y,min);
 			else
 				_minSize.Y = min;
 			SetFlag(Flags.MinY,true);
@@ -451,6 +451,17 @@ namespace Fuse
 			else
 				s += "*";
 	
+			s += "] Min=[";
+			if (HasMinX)
+				s += _minSize.X;
+			else
+				s += "*";
+			s += ",";
+			if (HasMinY)
+				s += _minSize.Y;
+			else
+				s += "*";
+				
 			s += "] Rel=[";
 			if (HasRelativeX)
 				s += RelativeX;

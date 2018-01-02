@@ -15,6 +15,7 @@
     "Fuse.Controls.Navigation",
     "Fuse.Controls.Navigation.Test",
     "Fuse.Controls.Panels",
+    "Fuse.Controls.Panels.Test",
     "Fuse.Controls.Primitives",
     "Fuse.Controls.ScrollView",
     "Fuse.Controls.Test",
