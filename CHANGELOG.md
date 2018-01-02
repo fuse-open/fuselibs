@@ -1,9 +1,10 @@
 # Unreleased
 
-## Selection
-- Fixed the ordering of events so that `SelectionChanged` is emitted after the bound value is updated
 ## Data Context
 - Resolved a situation with nested context binding `{}`, such as `With` and `Instance`, where the data would not correctly update
+
+## Selection
+- Fixed the ordering of events so that `SelectionChanged` is emitted after the bound value is updated
 
 ## Expressions
 - Deprecated `UnaryOperator.OnNewOperand` and `OnLostOperand`.  These are part of a broken pattern of using unary expressions (and were not present on Binary/Ternary/QuaternaryOperator). You generally shouldn't need this, and should implement `Compute` instead. In the rare cases you need the vrituals you'll need to extend Expression and implement `Subscribe`, using `ExpressionListener` as a way to capture the correct functionality.
