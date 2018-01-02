@@ -341,20 +341,30 @@ namespace Fuse
 		
 		public static bool TryToSize2(object o, out Size2 result)
 		{
+			int ignore;
+			return TryToSize2(o, out result, out ignore);
+		}
+		
+		/** Convert to a Size type up to Size2 returning the count of the elements provided in the input. */
+		public static bool TryToSize2(object o, out Size2 result, out int count)
+		{
 			result = new Size2();
+			count = 0;
 			
 			if (o is Size2) 
 			{
 				result = (Size2) o;
+				count = 2;
 				return true;
 			}
 			if (o is Size)
 			{
 				result = new Size2((Size)o, (Size)o);
+				count = 1;
 				return true;
 			}
 			if (o is string) 
-				return TryStringToSize2((string)o, out result);
+				return TryStringToSize2((string)o, out result, out count);
 			
 			if (o is IArray)
 			{
@@ -367,19 +377,26 @@ namespace Fuse
 					return false;
 					
 				result = new Size2(a,b);
+				count = 2;
 				return true;
 			}
 			
-			float2 v;
-			if (!TryToType<float2>(o,out v))
+			float4 v;
+			int vc;
+			if (!TryToZeroFloat4(o, out v, out vc) || vc < 1 || vc > 2)
 				return false;
-			result = new Size2(v.X, v.Y);
+			if (vc == 1)
+				result = new Size2(v.X, v.X);
+			else
+				result = new Size2(v.X, v.Y);
+			count = vc;
 			return true;
 		}
-		
-		static bool TryStringToSize2(string o, out Size2 result)
+
+		static bool TryStringToSize2(string o, out Size2 result, out int count)
 		{
 			result = new Size2();
+			count = 0;
 			
 			if (o.Contains(","))
 			{
@@ -393,6 +410,7 @@ namespace Fuse
 					!TryStringToSize(p[1], out b))
 					return false;
 				result = new Size2(a,b);
+				count = 2;
 				return true;
 			}
 			else
@@ -401,6 +419,7 @@ namespace Fuse
 				if (!TryStringToSize(o, out a))
 					return false;
 				result = new Size2(a,a);
+				count = 1;
 				return true;
 			}
 		}
