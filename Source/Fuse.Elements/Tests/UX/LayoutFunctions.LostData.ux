@@ -1,0 +1,8 @@
+<Panel ux:Class="UX.LayoutFunctions.LostData">
+	<WhileTrue ux:Name="wt">
+		<Panel ux:Name="q" Width="10" Height="20"/>
+	</WhileTrue>
+	
+	<FuseTest.DudElement Value="width(q) ?? -1" ux:Name="dw"/>
+	<FuseTest.DudElement Value="height(q) ?? -1" ux:Name="dh"/>
+</Panel>

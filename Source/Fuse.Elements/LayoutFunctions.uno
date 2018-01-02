@@ -43,6 +43,7 @@ namespace Fuse.Elements
 				if (_element != null)
 				{
 					_element.Placed += OnPlaced;
+					_element.LostMarginBox += OnLostMarginBox;
 					if (_element.HasMarginBox)
 						_listener.OnNewData(_lf, _lf.GetCurrentValue(_element));
 				}
@@ -58,12 +59,18 @@ namespace Fuse.Elements
 			{
 				_listener.OnNewData(_lf, _lf.GetValue(args));
 			}
+			
+			void OnLostMarginBox(object sender, LostMarginBoxArgs args)
+			{
+				_listener.OnLostData(_lf);
+			}
 
 			void UnsubscribeElement()
 			{
 				if (_element != null) 
 				{
 					_element.Placed -= OnPlaced;
+					_element.LostMarginBox -= OnLostMarginBox;
 					_element = null;
 				}
 			}

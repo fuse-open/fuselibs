@@ -122,10 +122,8 @@ namespace Fuse
 			}
 
 			//this forces an invalidation now that we're rooted (ensures no old stale value is there)
-			_layoutDirty = InvalidateLayoutReason.NothingChanged;
-			_hasMarginBox = false;
+			ClearLayout();
 			InvalidateLayout();
-			_ambLayoutParams.Reset();
 
 			_viewport = FindViewport();
 			RootResources();
@@ -141,6 +139,8 @@ namespace Fuse
 			UnrootResources();
 			_viewport = null;
 
+			ClearLayout();
+			
 			ResetParameterListeners();
 
 			if (Input.Focus.FocusedVisual == this)
@@ -158,6 +158,13 @@ namespace Fuse
 			WTIUnrooted();
 
 			ConcludePendingRemove();
+		}
+		
+		void ClearLayout()
+		{
+			_layoutDirty = InvalidateLayoutReason.NothingChanged;
+			ClearMarginBox();
+			_ambLayoutParams.Reset();
 		}
 
 		public override void VisitSubtree(Action<Node> action)
