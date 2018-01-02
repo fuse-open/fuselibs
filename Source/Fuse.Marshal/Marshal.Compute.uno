@@ -65,7 +65,9 @@ namespace Fuse
 				return c.TryAdd(a, b, out result);
 			return false;
 		}
-			
+		
+		[Obsolete]
+		/** @deprecated Use TryAdd instead. 2018-01-02*/
 		public static object Add(object a, object b)
 		{
 			object result = null;
@@ -87,6 +89,8 @@ namespace Fuse
 			return false;
 		}
 			
+		[Obsolete]
+		/** @deprecated Use TrySubtract instead. 2018-01-02 */
 		public static object Subtract(object a, object b)
 		{
 			object result = null;
@@ -108,6 +112,8 @@ namespace Fuse
 			return false;
 		}
 			
+		[Obsolete]
+		/** @deprecated Use TryMultiply instead. 2018-01-02 */
 		public static object Multiply(object a, object b)
 		{
 			object result;
@@ -129,6 +135,8 @@ namespace Fuse
 			return true;
 		}
 			
+		[Obsolete]
+		/** @deprecated Use TryDivide instead. 2018-01-02 */
 		public static object Divide(object a, object b)
 		{
 			object result;
@@ -149,6 +157,8 @@ namespace Fuse
 			return true;
 		}
 		
+		[Obsolete]
+		/** @deprecated Use TryLessThan instead. 2018-01-02 */
 		public static object LessThan(object a, object b)
 		{
 			bool result;
@@ -169,6 +179,8 @@ namespace Fuse
 			return true;
 		}
 		
+		[Obsolete]
+		/** @deprecated Use TryLessOrEqual instead. 2018-01-02 */
 		public static object LessOrEqual(object a, object b)
 		{
 			bool result;
@@ -189,6 +201,8 @@ namespace Fuse
 			return true;
 		}
 		
+		[Obsolete]
+		/** @deprecated Use TryGreaterThan instead. 2018-01-02 */
 		public static object GreaterThan(object a, object b)
 		{
 			bool result;
@@ -209,6 +223,8 @@ namespace Fuse
 			return true;
 		}
 		
+		[Obsolete]
+		/** @deprecated Use TryGreaterOrEqual instead. 2018-01-02 */
 		public static object GreaterOrEqual(object a, object b)
 		{
 			bool result;
@@ -229,6 +245,8 @@ namespace Fuse
 			return true;
 		}
 		
+		[Obsolete]
+		/** @deprecated Use TryEqualTo instead. 2018-01-02 */
 		public static object EqualTo(object a, object b)
 		{
 			bool result;
@@ -249,6 +267,8 @@ namespace Fuse
 			return true;
 		}
 
+		[Obsolete]
+		/** @deprecated Use TryMin instead. 2018-01-02 */
 		public static object Min(object a, object b)
 		{
 			object result;
@@ -269,6 +289,8 @@ namespace Fuse
 			return true;
 		}
 			
+		[Obsolete]
+		/** @deprecated Use TryMax instead. 2018-01-02 */
 		public static object Max(object a, object b)
 		{
 			object result;

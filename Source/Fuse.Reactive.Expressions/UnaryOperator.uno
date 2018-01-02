@@ -73,8 +73,7 @@ namespace Fuse.Reactive
 		public Negate([UXParameter("Operand")] Expression operand): base(operand) {}
 		protected override bool TryCompute(object operand, out object result)
 		{
-			result = Marshal.Multiply(operand, -1);
-			return true;
+			return Marshal.TryMultiply(operand, -1, out result);
 		}
 	}
 }

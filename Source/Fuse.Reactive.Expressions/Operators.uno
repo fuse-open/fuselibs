@@ -30,8 +30,7 @@ namespace Fuse.Reactive
 			base(left, right, "+") {}
 		protected override bool TryCompute(object left, object right, out object result)
 		{
-			result = Marshal.Add(left, right);
-			return true;
+			return Marshal.TryAdd(left, right, out result);
 		}
 	}
 
@@ -42,8 +41,7 @@ namespace Fuse.Reactive
 			base(left, right, "-") {}
 		protected override bool TryCompute(object left, object right, out object result)
 		{
-			result = Marshal.Subtract(left, right);
-			return true;
+			return Marshal.TrySubtract(left, right, out result);
 		}
 	}
 
@@ -54,8 +52,7 @@ namespace Fuse.Reactive
 			base(left, right, "*") {}
 		protected override bool TryCompute(object left, object right, out object result)
 		{
-			result = Marshal.Multiply(left, right);
-			return true;
+			return Marshal.TryMultiply(left, right, out result);
 		}
 	}
 
@@ -66,8 +63,7 @@ namespace Fuse.Reactive
 			base(left, right,"/") {}
 		protected override bool TryCompute(object left, object right, out object result)
 		{
-			result = Marshal.Divide(left, right);
-			return true;
+			return Marshal.TryDivide(left, right, out result);
 		}
 	}
 
@@ -98,8 +94,10 @@ namespace Fuse.Reactive
 			base(left, right,"<") {}
 		protected override bool TryCompute(object left, object right, out object result)
 		{
-			result = Marshal.LessThan(left, right);
-			return true;
+			bool v = false;
+			var r = Marshal.TryLessThan(left, right, out v);
+			result = v;
+			return r;
 		}
 	}
 
@@ -110,8 +108,10 @@ namespace Fuse.Reactive
 			base(left, right, ">") {}
 		protected override bool TryCompute(object left, object right, out object result)
 		{
-			result = Marshal.GreaterThan(left, right);
-			return true;
+			bool v = false;
+			var r = Marshal.TryGreaterThan(left, right, out v);
+			result = v;
+			return r;
 		}
 	}
 
@@ -122,10 +122,10 @@ namespace Fuse.Reactive
 			: base(left, right,">=") {}
 		protected override bool TryCompute(object left, object right, out object result)
 		{
-			result = null;
-			if (left == null || right == null) return false;
-			result = (bool)Marshal.GreaterThan(left, right) || (bool)Marshal.EqualTo(left, right);
-			return true;
+			bool v = false;
+			var r = Marshal.TryGreaterOrEqual(left, right, out v);
+			result = v;
+			return r;
 		}
 	}
 
@@ -136,10 +136,10 @@ namespace Fuse.Reactive
 			base(left, right,"<=") {}
 		protected override bool TryCompute(object left, object right, out object result)
 		{
-			result = null;
-			if (left == null || right == null) return false;
-			result = (bool)Marshal.LessThan(left, right) || (bool)Marshal.EqualTo(left, right);
-			return true;
+			bool v = false;
+			var r = Marshal.TryLessOrEqual(left, right, out v);
+			result = v;
+			return r;
 		}
 	}
 
@@ -150,8 +150,10 @@ namespace Fuse.Reactive
 			base(left, right,"==") {}
 		protected override bool TryCompute(object left, object right, out object result)
 		{
-			result = Marshal.EqualTo(left, right);
-			return true;
+			bool v = false;
+			var r = Marshal.TryEqualTo(left, right, out v);
+			result = v;
+			return r;
 		}
 	}
 
@@ -162,9 +164,13 @@ namespace Fuse.Reactive
 			base(left, right, "!=") {}
 		protected override bool TryCompute(object left, object right, out object result)
 		{
-			result = null;
-			if (left == null || right == null) return false;
-			result = !(bool)Marshal.EqualTo(left, right);
+			bool v;
+			if (!Marshal.TryEqualTo(left, right, out v))
+			{
+				result = false;
+				return false;
+			}
+			result = !v;
 			return true;
 		}
 	}
