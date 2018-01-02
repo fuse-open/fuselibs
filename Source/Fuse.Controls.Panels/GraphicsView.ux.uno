@@ -268,12 +268,20 @@ namespace Fuse.Controls
 			}
 		}
 
-		public float2 Size
+		[Obsolete]
+		/** Deprecated use ActualSize instead. 2018-01-02 */
+		public new float2 Size
 		{
 			get { return ActualSize; }
 		}
 
+		[Obsolete]
+		/** Deprecated use ActualPixelSize instead. 2018-01-02 */
 		public float2 PixelSize
+		{
+			get { return ActualPixelSize; }
+		}
+		public float2 ActualPixelSize
 		{
 			get { return ActualSize * PixelsPerPoint; }
 		}

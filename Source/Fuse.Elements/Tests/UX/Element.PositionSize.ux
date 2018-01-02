@@ -1,0 +1,4 @@
+<Panel ux:Class="UX.Element.PositionSize">
+	<Panel Position="20,30%" Size="40pt,50px" ux:Name="a"/>
+	<Panel X="2px" Y="3" Width="4%" Height="5pt" ux:Name="b"/>
+</Panel>

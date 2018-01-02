@@ -50,7 +50,7 @@ namespace Fuse.Controls.Primitives
 		}
 
 		float _size;
-		public float Size
+		public float ShadowSize
 		{
 			get { return _size; }
 			set
