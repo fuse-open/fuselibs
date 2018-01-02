@@ -167,6 +167,8 @@ namespace Fuse.Reactive.Test
 			using (var root = TestRootPanel.CreateWithChild(e))
 			{
 				root.StepFrameJS();
+				e.wt.Value = true;
+				root.StepFrameJS();
 
 				Assert.AreEqual("correct", e.t1.Value);
 				Assert.AreEqual("correct", e.t2.Value);
