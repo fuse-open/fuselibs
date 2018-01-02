@@ -301,36 +301,111 @@ namespace Fuse
 
 		public static Size ToSize(object o)
 		{
-			if (o is Size) return (Size)o;
-			else if (o is Size2) return ((Size2)o).X;
-			else if (o is string) return StringToSize((string)o);
-			else return ToFloat(o);
+			Size a = new Size();
+			if (!TryToSize(o, out a))
+				throw new MarshalException(o, typeof(Size));
+			return a;
+		}
+			
+		public static bool TryToSize(object o, out Size result)
+		{
+			result = new Size();
+			
+			if (o is Size) 
+			{
+				result = (Size)o;
+				return true;
+			}
+			if (o is Size2) 
+			{
+				result = ((Size2)o).X;
+				return true;
+			}
+			if (o is string)
+				return TryStringToSize((string)o, out result);
+				
+			float v;
+			if (!TryToFloat(o, out v))
+				return false;
+			result = new Size(v, Unit.Unspecified);
+			return true;
 		}
 
 		public static Size2 ToSize2(object o)
 		{
-			if (o is Size2) return (Size2) o;
-			else if (o is Size) return new Size2((Size)o, (Size)o);
-			else if (o is string) return StringToSize2((string)o);
-			else if (o is IArray) return ToSize2(ToVector((IArray)o));
-			else return new Size2(ToFloat2(o).X, ToFloat2(o).Y);
+			Size2 a = new Size2();
+			if (!TryToSize2(o, out a))
+				throw new MarshalException(o, typeof(Size2));
+			return a;
 		}
-
-		static Size2 StringToSize2(string o)
+		
+		public static bool TryToSize2(object o, out Size2 result)
 		{
+			result = new Size2();
+			
+			if (o is Size2) 
+			{
+				result = (Size2) o;
+				return true;
+			}
+			if (o is Size)
+			{
+				result = new Size2((Size)o, (Size)o);
+				return true;
+			}
+			if (o is string) 
+				return TryStringToSize2((string)o, out result);
+			
+			if (o is IArray)
+			{
+				var arr = (IArray)o;
+				if (arr.Length != 2)
+					return false;
+				Size a = new Size();
+				Size b = new Size();
+				if (!TryToSize(arr[0], out a) || !TryToSize(arr[1], out b))
+					return false;
+					
+				result = new Size2(a,b);
+				return true;
+			}
+			
+			float2 v;
+			if (!TryToType<float2>(o,out v))
+				return false;
+			result = new Size2(v.X, v.Y);
+			return true;
+		}
+		
+		static bool TryStringToSize2(string o, out Size2 result)
+		{
+			result = new Size2();
+			
 			if (o.Contains(","))
 			{
 				var p = o.Split(',');
-				return new Size2(StringToSize(p[0]), StringToSize(p[1]));
+				if (p.Length !=2)
+					return false;
+					
+				Size a = new Size();
+				Size b = new Size();
+				if (!TryStringToSize(p[0], out a) ||
+					!TryStringToSize(p[1], out b))
+					return false;
+				result = new Size2(a,b);
+				return true;
 			}
 			else
 			{
-				var s = StringToSize(o);
-				return new Size2(s, s);
+				Size a;
+				if (!TryStringToSize(o, out a))
+					return false;
+				result = new Size2(a,a);
+				return true;
 			}
 		}
 
-		static Size StringToSize(string o)
+		static bool TryStringToSize(string o, out Size result)
 		{
 			var s = o.Trim();
 			var unit = Unit.Unspecified;
@@ -341,10 +416,12 @@ namespace Fuse
 			float v;
 			if (!float.TryParse(s, out v))
 			{
-				throw new MarshalException(o, typeof(Size));
+				result = new Size();
+				return false;
 			}
 
-			return new Size(v, unit);
+			result = new Size(v, unit);
+			return true;
 		}
 	}
 }

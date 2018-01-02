@@ -74,5 +74,34 @@ namespace Fuse.Reactive.Test
 				Assert.Contains( "Failed to compute", d[1].Message );
 			}
 		}
+		
+		[Test]
+		//doesn't use the conversion operators but implicitly uses the size conversion code
+		public void BasicSize()
+		{
+			var p = new UX.ConversionFunctions.SizeBasic();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				root.StepFrameJS();
+				
+				Assert.AreEqual( new Size(10, Unit.Unspecified), p.s1.SizeValue );
+				Assert.AreEqual( new Size(10, Unit.Points), p.s2.SizeValue);
+				Assert.AreEqual( new Size(10, Unit.Percent), p.s3.SizeValue);
+				Assert.AreEqual( new Size(10, Unit.Pixels), p.s4.SizeValue);
+				
+				Assert.AreEqual( new Size2(new Size(10, Unit.Unspecified),
+					new Size(10, Unit.Unspecified)), p.ss1.Size2Value );
+				Assert.AreEqual( new Size2(new Size(10, Unit.Points),
+					new Size(20, Unit.Pixels)), p.ss2.Size2Value );
+				Assert.AreEqual( new Size2(new Size(20, Unit.Unspecified),
+					new Size(30, Unit.Percent)), p.ss3.Size2Value );
+				Assert.AreEqual( new Size2(new Size(50, Unit.Unspecified),
+					new Size(60, Unit.Unspecified)), p.ss4.Size2Value );
+					
+				Assert.AreEqual( new Size(10, Unit.Unspecified), p.a1.SizeValue );
+				Assert.AreEqual( new Size2(new Size(20, Unit.Unspecified),
+					new Size(30, Unit.Percent)), p.a2.Size2Value );
+			}
+		}
 	}
 }

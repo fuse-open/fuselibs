@@ -35,4 +35,22 @@ namespace Fuse.Reactive
 			return true;
 		}
 	}
+	
+	[UXFunction("size")]
+	/** Forces conversion to a Size or Size2 depending on input size. */
+	public sealed class ToSize : UnaryOperator
+	{
+		[UXConstructor]
+		public ToSize([UXParameter("Operand")] Expression operand)
+			: base(operand, "size") { }
+			
+		protected override bool TryCompute(object operand, out object result)
+		{
+			result = null;
+			if (operand == null)
+				return false;
+				
+			return false;
+		}
+	}
 }
