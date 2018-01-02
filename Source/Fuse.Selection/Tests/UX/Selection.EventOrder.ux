@@ -1,0 +1,22 @@
+<Panel ux:Class="UX.Selection.EventOrder">
+	<JavaScript>
+		var Observable = require("FuseJS/Observable")
+		
+		exports.selected = Observable()
+		exports.result = Observable()
+		
+		exports.onChanged = function() {
+			var q = "";
+			for (var i=0; i < exports.selected.length; ++i) {
+				q += exports.selected.getAt(i)
+			}
+			exports.result.value = q
+		}
+	</JavaScript>
+	<Selection ux:Name="TS" Values="{selected}" SelectionChanged="{onChanged}"/>
+
+	<Selectable Value="A" ux:Name="sa"/>
+	<Selectable Value="B" ux:Name="sb"/>
+	
+	<Text Value="{result}" ux:Name="r"/>
+</Panel>
