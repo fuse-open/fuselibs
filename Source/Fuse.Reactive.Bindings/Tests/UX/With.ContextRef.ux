@@ -1,0 +1,21 @@
+<Panel ux:Class="UX.With.ContextRef">
+	<JavaScript>
+		var Observable = require("FuseJS/Observable")
+		
+		exports.items = Observable({
+			data: { value: "A" },
+			value: "Z",
+		}, {
+			/* no `data` */
+			value: "Z",
+		})
+	</JavaScript>
+	
+	<Each Items="{items}">
+		<With Data="{data}">
+			<Instance Item="{}">
+				<Text Value="{value}"/>
+			</Instance>
+		</With>
+	</Each>
+</Panel>
