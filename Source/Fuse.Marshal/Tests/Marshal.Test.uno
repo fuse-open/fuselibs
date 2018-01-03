@@ -169,6 +169,7 @@ namespace Fuse
 			Assert.AreEqual(r*Marshal.ToFloat4(v), Marshal.ToFloat4(Marshal.Multiply(vr, v)));
 			Assert.AreEqual(r/Marshal.ToFloat4(v), Marshal.ToFloat4(Marshal.Divide(vr, v)));
 
+			//It's somewhat questionable that a float4 can convert to a Size/Size2, but alas, it was supported before :(
 			Assert.AreEqual(new Size2(r.X, r.Y), Marshal.ToSize2(v));
 			Assert.AreEqual(new Size(r.X, Unit.Unspecified), Marshal.ToSize(v));
 

@@ -369,7 +369,7 @@ namespace Fuse
 			if (o is IArray)
 			{
 				var arr = (IArray)o;
-				if (arr.Length != 2)
+				if (arr.Length < 2) // See not below on TryToZeroFloat about why we can't do != 2 here
 					return false;
 				Size a = new Size();
 				Size b = new Size();
@@ -383,7 +383,8 @@ namespace Fuse
 			
 			float4 v;
 			int vc;
-			if (!TryToZeroFloat4(o, out v, out vc) || vc < 1 || vc > 2)
+			//ideally we'd also fail if `vc > 2`, but there's a strange check in `MarshalTest.TestVector` expecting long values to convert to Size/Size2 !
+			if (!TryToZeroFloat4(o, out v, out vc) || vc < 1)
 				return false;
 			if (vc == 1)
 				result = new Size2(v.X, v.X);
