@@ -54,6 +54,28 @@ namespace Fuse.Reactive.Bindings.Test
 				Assert.AreEqual( "D5", GetText(e.b));
 			}
 		}
+		
+		[Test]
+		public void ItemNull()
+		{
+			var e = new UX.Instance.ItemNull();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				Assert.AreEqual(null, e.FirstChild<DudElement>() );
+				
+				e.a.Value = null;
+				root.PumpDeferred();
+				Assert.AreEqual(null, e.FirstChild<DudElement>() );
+				
+				e.a.Value = "X";
+				root.PumpDeferred();
+				Assert.AreEqual( ":X:", GetDudZ(e));
+				
+				e.a.Value = null;
+				root.PumpDeferred();
+				Assert.AreEqual(null, e.FirstChild<DudElement>() );
+			}
+		}
 	}
 	
 	public class RootInstantiator : Instantiator

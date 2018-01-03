@@ -16,8 +16,6 @@ namespace Fuse.Reactive
 			Item = new NoContextItem();
 		}
 
-		LinkObserver _subscription;
-		
 		object _item;
 		/**
 			A data context for the instantiated item.
@@ -39,51 +37,8 @@ namespace Fuse.Reactive
 			{
 				if (_item == value)
 					return;
-		
-				if (_subscription != null)
-				{
-					_subscription.Dispose();
-					_subscription = null;
-				}
-				
 				_item = value;
-				
-				var obs = _item as IObservable;
-				if (obs != null)
-					_subscription = new LinkObserver(this, obs);
-				else
-					SetItems( new object[]{ _item } );
-			}
-		}
-		
-		//Observable's must be handled by `Instance` since `Each` does not apply template selection to 
-		//Observable's stored in the list, only the high-level data type. Ideally it'd be changed there, but
-		//that provided to be a much more complicated problem
-		class LinkObserver : ValueObserver
-		{
-			Instance _instance;
-			
-			public LinkObserver( Instance instance, IObservable data )
-			{
-				_instance = instance;
-				Subscribe(data);
-			}
-			
-			public override void Dispose()
-			{
-				_instance = null;
-				base.Dispose();
-			}
-			
-			protected override void PushData(object newValue)
-			{
-				if (_instance == null) return;
-				_instance.SetItems( new object[]{ newValue} );
-			}
-			
-			protected override void LostData()
-			{
-				PushData(null);
+				SetItems( new object[]{ _item } );
 			}
 		}
 	}

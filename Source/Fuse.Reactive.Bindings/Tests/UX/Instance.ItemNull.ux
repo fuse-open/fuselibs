@@ -1,0 +1,8 @@
+<Panel ux:Class="UX.Instance.ItemNull">
+	<Let ux:Name="a"/>
+	<Instance Item="{a}">
+		<!-- nonNull is required since when `a` is set to `null` there's no guarantee that the instance clears
+		the item prior to the binding getting an update. -->
+		<FuseTest.DudElement StringValue=":{= nonNull({a}) }:"/>
+	</Instance>
+</Panel>

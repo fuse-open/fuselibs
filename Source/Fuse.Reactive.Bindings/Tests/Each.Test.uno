@@ -861,5 +861,33 @@ namespace Fuse.Reactive.Test
 				Assert.AreEqual( "*-2", GetDudZ(e));
 			}
 		}
+		
+		[Test]
+		//templates for missing/null items should not be created
+		public void Null()
+		{
+			var e = new UX.Each.Null();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.StepFrameJS();
+				Assert.AreEqual( null, e.FirstChild<DudElement>() );
+				
+				e.callSecond.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual( "A2", GetDudZ(e) );
+				
+				e.callClear.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual( null, e.FirstChild<DudElement>() );
+				
+				e.callBoth.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual( "A3,B4", GetDudZ(e) );
+				
+				e.callClear.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual( null, e.FirstChild<DudElement>() );
+			}
+		}
 	}
 }
