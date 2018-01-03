@@ -147,8 +147,20 @@ namespace Fuse
 		static Dictionary<string, List<IDataListener>> _dataListeners 
 			= new Dictionary<string, List<IDataListener>>();
 
+		bool CheckDataKey( string key )
+		{
+			if (key == null)
+			{
+				Fuse.Diagnostics.InternalError( "null provided as DataContext key" );
+				return false;
+			}
+			return true;
+		}
+		
 		public void OnDataChanged(string key, object newValue)
 		{
+			if (!CheckDataKey(key)) return;
+				
 			List<IDataListener> listeners;
 			if (_dataListeners.TryGetValue(key, out listeners))
 			{
@@ -159,6 +171,8 @@ namespace Fuse
 		
 		public void AddDataListener(string key, IDataListener listener)
 		{
+			if (!CheckDataKey(key)) return;
+				
 			List<IDataListener> listeners;
 			if (!_dataListeners.TryGetValue(key, out listeners))
 			{
@@ -170,6 +184,8 @@ namespace Fuse
 
 		public void RemoveDataListener(string key, IDataListener listener)
 		{
+			if (!CheckDataKey(key)) return;
+				
 			_dataListeners[key].Remove(listener);
 		}
 	}

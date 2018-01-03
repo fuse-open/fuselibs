@@ -45,14 +45,14 @@ namespace Fuse.Reactive
 			if (_value is IObservable)
 			{
 				_observable = null;
-				OnDataChanged( Name, _value );
+				DataChanged( _value );
 			}
 			else
 			{
 				if (_observable == null)
 				{
 					_observable = new LetObservable(this);
-					OnDataChanged( Name, _observable );
+					DataChanged( _observable );
 				}
 				else if (_hasValue)
 				{
@@ -63,6 +63,19 @@ namespace Fuse.Reactive
 					_observable.UpdateClear();
 				}
 			}
+		}
+		
+		void DataChanged( object newValue )
+		{
+			// it's possible to arrive here prior to `Name` being set since property order is not guaranteed in the UX compiler
+			if (Name == null)
+			{
+				if (IsRootingStarted)
+					Fuse.Diagnostics.UserWarning( "Missing a `Name` for Let", this );
+				return;
+			}
+				
+			OnDataChanged( Name, newValue );
 		}
 		
 		internal void ResetObjectValue()
@@ -97,7 +110,7 @@ namespace Fuse.Reactive
 		{
 			_observable = null;
 			//TODO: https://github.com/fusetools/fuselibs-public/issues/789
-			OnDataChanged( Name, null );
+			DataChanged( null );
 			base.OnUnrooted();
 		}		
 		
@@ -306,4 +319,28 @@ namespace Fuse.Reactive
 			ResetObjectValue();
 		}
 	}
+	
+	public abstract class LetType<T> : LetBase
+	{
+		[UXOriginSetter("SetValue")]
+		public T Value
+		{
+			get 
+			{ 
+				//need marshalling since two-way bindings might set a non-T, but compatible value
+				T result = default(T);
+				if (HasValue && Marshal.TryToType<T>( ObjectValue, out result))
+					return result;
+				return default(T); 
+			}
+			set { SetValue(value, this); }
+		}
+		
+		public void SetValue( T value, IPropertyListener origin )
+		{
+			SetObjectValue(value, origin);
+		}
+	}
+	
+	public class LetFloat : LetType<float> { }
 }

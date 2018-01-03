@@ -133,5 +133,46 @@ namespace Fuse.Test
 				Assert.AreEqual( true, p.hd.BoolValue );
 			}
 		}
+		
+		[Test]
+		//tests many of the expected binding scenarios for Let...
+		public void Float()
+		{
+			var p = new UX.Let.Float();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				Assert.AreEqual( 2, p.ao.Value );
+				Assert.AreEqual( 2, p.bo.Value );
+				
+				p.wt.Value = true;
+				root.StepFrame();
+				Assert.AreEqual( 5, p.ao.Value );
+				Assert.AreEqual( 5, p.bo.Value );
+				
+				p.wt.Value = false;
+				root.StepFrame();
+				Assert.AreEqual( 2, p.ao.Value );
+				Assert.AreEqual( 2, p.bo.Value );
+				
+				p.tl.PulseForward();
+				root.StepFrame();
+				Assert.AreEqual( 3, p.ao.Value );
+				Assert.AreEqual( 3, p.bo.Value );
+				
+				//slider binding
+				for (int i=0; i < 3; ++i)
+				{
+					Assert.AreEqual( 50 + i, p.sl.Value );
+					Assert.AreEqual( 50 + i, p.sv.Value );
+					p.sl.Value = -10 + i;
+					root.PumpDeferred();
+					Assert.AreEqual( -10 + i, p.sv.Value );
+					Assert.AreEqual( -10 + i, p.sl.Value );
+					
+					p.sv.Value = 50 + (i+1);
+					root.PumpDeferred();
+				}
+			}
+		}
 	}
 }
