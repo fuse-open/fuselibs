@@ -1,0 +1,13 @@
+<Panel ux:Class="UX.Let.Conversion">
+	<LetFloat Value="10"  ux:Name="a"/>
+	<LetString Value="20" ux:Name="b"/>
+	<LetSize Value="{a}" ux:Name="x"/>
+	<LetSize Value="{b} * 1pt" ux:Name="y"/>
+	
+	<LetFloat2 Value="0.2,0.3" ux:Name="c"/>
+<!-- 	<LetSize2 Value="size({c}) * 100%" ux:Name="s1"/> -->
+	<LetSize2 Value="{x},{y}" ux:Name="s2"/>
+	
+	<Panel Offset="{s1}" ux:Name="p1"/>
+	<Panel Offset="{s2}" ux:Name="p2"/>
+</Panel>

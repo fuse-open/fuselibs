@@ -1,0 +1,7 @@
+<Panel ux:Class="UX.Let.Float3">
+	<LetFloat3 Value="10,20,30" ux:Name="a"/>
+	<LetFloat3 Value="{a}" ux:Name="b"/>
+	<LetFloat3 Value="{a}" ux:Name="c"/>
+	
+	<FuseTest.DudElement Float3Value="{b}" ux:Name="db"/>
+</Panel>

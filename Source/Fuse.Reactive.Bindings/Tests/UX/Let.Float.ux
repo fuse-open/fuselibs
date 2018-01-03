@@ -1,0 +1,19 @@
+<Panel ux:Class="UX.Let.Float">
+	<LetFloat Value="2" ux:Name="a"/>
+	<FuseTest.DudElement Value="{a}" ux:Name="ao"/>
+	
+	<!-- Creates a two-way binding with {a} -->
+	<LetFloat Value="{a}"  ux:Name="b"/>
+	<FuseTest.DudElement Value="{b}" ux:Name="bo"/>
+	
+	<WhileTrue ux:Name="wt">
+		<Change a.Value="5"/>
+	</WhileTrue>
+	
+	<Timeline ux:Name="tl">
+		<Set b.Value="3"/>
+	</Timeline>
+	
+	<LetFloat Value="50" ux:Name="sv"/>
+	<Slider Value="{sv}" ux:Name="sl" Minimum="-50" Maximum="50"/>
+</Panel>

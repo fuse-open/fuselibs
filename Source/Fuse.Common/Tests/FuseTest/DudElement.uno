@@ -14,10 +14,35 @@ namespace FuseTest
 	{
 		//only one backing value to prevent tests from seeing different values
 		object _value;
-		
+
+		// avoid using this one now, use `FloatValue` for clarity
 		public float Value 
 		{ 
 			get { return (float)_value; }
+			set { _value = value; }
+		}
+		
+		public float FloatValue
+		{
+			get { return (float)_value; }
+			set { _value = value; }
+		}
+		
+		public float2 Float2Value
+		{
+			get { return (float2)_value; }
+			set { _value = value; }
+		}
+		
+		public float3 Float3Value
+		{
+			get { return (float3)_value; }
+			set { _value = value; }
+		}
+		
+		public float4 Float4Value
+		{
+			get { return (float4)_value; }
 			set { _value = value; }
 		}
 		
