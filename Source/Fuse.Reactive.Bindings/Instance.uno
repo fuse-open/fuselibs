@@ -5,15 +5,15 @@ using Fuse.Triggers;
 
 namespace Fuse.Reactive
 {
-	/** Creates and inserts an instance of the given template(s). 
+	/** Creates and inserts an instance of the given template(s).  The templates are only created when the node is rooted.
 	
-		You may optionally assing an `Item` to the instance, making this function similar to `Each` with a single item.
+		You may optionally assign an `Item` to the instance, making this function similar to `Each` with a single item.
 	*/
 	public class Instance: Instantiator
 	{
 		public Instance() 
 		{
-			Item = new CountItem();
+			Item = new NoContextItem();
 		}
 
 		LinkObserver _subscription;

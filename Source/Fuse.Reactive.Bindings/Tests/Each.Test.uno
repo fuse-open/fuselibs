@@ -815,5 +815,51 @@ namespace Fuse.Reactive.Test
 				Assert.AreEqual(50*2+1, e.grid.Children.Count);
 			}
 		}
+		
+		[Test]
+		public void MatchKey()
+		{
+			var e = new UX.Each.MatchKey();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.StepFrameJS();
+				
+				Assert.AreEqual( "O4,T3,O2,T1,O0", GetDudZ(e.s) );
+				
+				e.each.MatchKey = "alt";
+				root.PumpDeferred();
+				Assert.AreEqual( "B4,A3,B2,A1,B0", GetDudZ(e.s) );
+			}
+		}
+		
+		[Test]
+		public void ObservableMatchKey()
+		{
+			var e = new UX.Each.ObservableMatchKey();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.StepFrameJS(1);
+				Assert.AreEqual( "A3,B2,A1", GetDudZ(e));
+				
+				e.callUpdate.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual( "A3,C4,A1", GetDudZ(e));
+			}
+		}
+		
+		[Test]
+		public void ObservableChange()
+		{
+			var e = new UX.Each.ObservableChange();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.StepFrameJS();
+				Assert.AreEqual( "1-*", GetDudZ(e));
+				
+				e.callUpdate.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual( "*-2", GetDudZ(e));
+			}
+		}
 	}
 }

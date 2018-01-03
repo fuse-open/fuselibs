@@ -15,6 +15,16 @@ namespace Fuse.Reactive
 
 		public IObservable Observable { get { return _obs; } }
 
+		protected object Value
+		{
+			get 
+			{ 
+				if (_obs == null) return null;
+				if (_obs.Length == 0) return null;
+				return _obs[0];
+			}
+		}
+
 		/** Calling this method will push the current `value[0]` if available, and then
 			subscribe to changes.
 		*/
@@ -25,6 +35,12 @@ namespace Fuse.Reactive
 			_obsSub = obs.Subscribe(this);
 		}
 
+		protected void SubscribeNoPush(IObservable obs)
+		{
+			_obs = obs;
+			_obsSub = obs.Subscribe(this);
+		}
+		
 		protected void Unsubscribe()
 		{
 			if (_obsSub != null) _obsSub.Dispose();

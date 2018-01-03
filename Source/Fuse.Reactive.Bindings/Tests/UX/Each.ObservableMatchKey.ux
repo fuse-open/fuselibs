@@ -1,0 +1,21 @@
+<Panel ux:Class="UX.Each.ObservableMatchKey">
+	<JavaScript>
+		var Observable = require("FuseJS/Observable")
+		
+		exports.items = Observable()
+		exports.items.add( Observable( { v: 1, tpl: "one" } ) )
+		exports.items.add( Observable( { v: 2, tpl: "two" } ) )
+		exports.items.add( Observable( { v: 3, tpl: "one" } ) )
+		
+		exports.update = function() {
+			exports.items.getAt(1).value = { v: 4, tpl: "three" }
+		}
+	</JavaScript>
+	<Each Items="{items}" MatchKey="tpl">
+		<FuseTest.DudElement StringValue="A{v}" ux:Template="one"/>
+		<FuseTest.DudElement StringValue="B{v}" ux:Template="two"/>
+		<FuseTest.DudElement StringValue="C{v}" ux:Template="three"/>
+	</Each>
+	
+	<FuseTest.Invoke Handler="{update}" ux:Name="callUpdate"/>
+</Panel>
