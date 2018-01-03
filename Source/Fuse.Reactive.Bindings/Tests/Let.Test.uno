@@ -1,5 +1,6 @@
 using Uno;
 using Uno.Testing;
+using Uno.UX;
 
 using Fuse;
 
@@ -172,6 +173,138 @@ namespace Fuse.Test
 					p.sv.Value = 50 + (i+1);
 					root.PumpDeferred();
 				}
+			}
+		}
+		
+		[Test]
+		public void String()
+		{
+			var p = new UX.Let.String();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				Assert.AreEqual( "abc", p.ta.Value );
+				Assert.AreEqual( "*", p.dn.StringValue );
+				Assert.AreEqual( "", p.de.StringValue );
+				
+				p.ta.Value = "def";
+				root.PumpDeferred();
+				Assert.AreEqual( "def", p.a.Value );
+				
+			}
+		}
+		
+		[Test]
+		public void Float2()
+		{
+			var p = new UX.Let.Float2();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				Assert.AreEqual( float2(10,20), p.rc.Value );
+				Assert.AreEqual( float2(10,20), p.b.Value );
+				Assert.AreEqual( float2(10,20), p.db.ObjectValue );
+				
+				p.rc.Value = float2(-10,5);
+				root.PumpDeferred();
+				Assert.AreEqual( float2(-10,5), p.a.Value );
+				Assert.AreEqual( float2(-10,5), p.b.Value );
+				Assert.AreEqual( float2(-10,5), p.db.ObjectValue );
+			}
+		}
+		
+		[Test]
+		public void Float3()
+		{
+			var p = new UX.Let.Float3();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				Assert.AreEqual( float3(10,20,30), p.c.Value );
+				Assert.AreEqual( float3(10,20,30), p.b.Value );
+				Assert.AreEqual( float3(10,20,30), p.db.ObjectValue );
+				
+				p.c.Value = float3(-10,5,1);
+				root.PumpDeferred();
+				Assert.AreEqual( float3(-10,5,1), p.a.Value );
+				Assert.AreEqual( float3(-10,5,1), p.b.Value );
+				Assert.AreEqual( float3(-10,5,1), p.db.ObjectValue );
+			}
+		}
+		
+		[Test]
+		public void Float4()
+		{
+			var p = new UX.Let.Float4();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				Assert.AreEqual( float4(10,20,30,40), p.c.Value );
+				Assert.AreEqual( float4(10,20,30,40), p.b.Value );
+				Assert.AreEqual( float4(10,20,30,40), p.db.ObjectValue );
+				
+				p.c.Value = float4(-10,5,0,1);
+				root.PumpDeferred();
+				Assert.AreEqual( float4(-10,5,0,1), p.a.Value );
+				Assert.AreEqual( float4(-10,5,0,1), p.b.Value );
+				Assert.AreEqual( float4(-10,5,0,1), p.db.ObjectValue );
+			}
+		}
+		
+		[Test]
+		public void Bool()
+		{
+			var p = new UX.Let.Bool();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				Assert.AreEqual(false, p.da.BoolValue);
+				Assert.AreEqual(false, p.t.Value);
+				Assert.AreEqual("f", p.ds.StringValue);
+				
+				p.t.Value = true;
+				root.PumpDeferred();
+				Assert.AreEqual(true, p.da.BoolValue);
+				Assert.AreEqual(true, p.a.Value);
+				Assert.AreEqual("t", p.ds.StringValue);
+			}
+		}
+		
+		[Test]
+		public void Size()
+		{
+			var p = new UX.Let.Size();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				Assert.AreEqual( new Size(10, Unit.Unspecified), p.p.X );
+				Assert.AreEqual( new Size(20, Unit.Percent), p.p.Y );
+				Assert.AreEqual( new Size2( new Size(10, Unit.Unspecified), new Size(20,Unit.Percent)), p.p.Offset );
+			}
+		}
+		
+		[Test]
+		//an overly complex chain of conversions and types
+		public void Conversion()
+		{
+			var p = new UX.Let.Conversion();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				//TODO: Once the "size" function is merged from https://github.com/fusetools/fuselibs-public/pull/905
+				//Assert.AreEqual( new Size2( new Size(20, Unit.Percent), new Size(30,Unit.Percent)), p.p1.Offset );
+				Assert.AreEqual( new Size2( new Size(10, Unit.Unspecified), new Size(20,Unit.Points)), p.p2.Offset );
+			}
+		}
+		
+		[Test]
+		//ensures the LetType works with ux:Property (as Let does)
+		public void Property()
+		{
+			var p = new UX.Let.Property();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				Assert.AreEqual( "title", p.lp.sc.Value );
+				Assert.AreEqual( float2(10,20), p.lp.rc.Value );
+				
+				p.lp.sc.Value = "bye";
+				p.lp.rc.Value = float2(5,10);
+				root.PumpDeferred();
+				Assert.AreEqual( "bye", p.ss.Value );
+				Assert.AreEqual( float2(5,10), p.sf2.Value );
 			}
 		}
 	}

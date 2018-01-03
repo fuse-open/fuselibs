@@ -250,6 +250,10 @@ namespace Fuse.Reactive
 			
 		This ensures proper propagation of undefined values.  (This is part of the reason this is an experimental API, since we don't really want to distinguish between Expression and Value, but have no choice at the moment).
 		
+		## LetType
+		
+		If you are creating a value of a specific type, and/or need to use `Change` or other animators, consider using one of the @LetType classes instead, such as @LetFloat or @LetString. They have a cleaner conversion mechanism, leading to fewer surprises.
+		
 		@experimental
 		Experimental since there are some fine details about handling observables, nulls, and expressions that aren't quite defined and might subtlely alter the behaviour. For typical use-cases it should be okay though.
 	*/
@@ -319,7 +323,27 @@ namespace Fuse.Reactive
 			ResetObjectValue();
 		}
 	}
-	
+
+	/** 
+		Provides a bindable value for use in UX. This assists in combining animations and transitions in the UX without needing to use JavaScript intermediates. It is not meant to store application state, being intended only for UI level changes and effects.
+		
+		Unlike @Let this enforces a specific value type and is suitable for use with `Change`, `Set`, and other property bindings.
+		
+		These values are two-way bindable (like Observables), for example:
+		
+			<LetString Value="hello" ux:Name="a"/>
+			<TextInput Value="{a}"/>
+			<Text Value="{a}"/>
+			
+		Typing in the `TextInput` will modify the value of `a` and update the `Text` value.
+		
+		## Available types
+		
+		[subclass Fuse.Reactive.LetType]
+		
+		@see Let
+		@experimental Though is is based on the `Let` feature, which is experimental. The `LetType` classes are more predictable and have less conversion issues. It's unlikely the semantics will change -- but will remain experimental so long as `Let` is experimental.
+	*/
 	public abstract class LetType<T> : LetBase
 	{
 		[UXOriginSetter("SetValue")]
@@ -341,6 +365,21 @@ namespace Fuse.Reactive
 			SetObjectValue(value, origin);
 		}
 	}
-	
+
+	/** A @LetType that specifies a `float` value. */
 	public class LetFloat : LetType<float> { }
+	/** A @LetType that specifies a `float2` value. */
+	public class LetFloat2 : LetType<float2> { }
+	/** A @LetType that specifies a `float3` value. */
+	public class LetFloat3 : LetType<float3> { }
+	/** A @LetType that specifies a `float4` value. */
+	public class LetFloat4 : LetType<float4> { }
+	/** A @LetType that specifies a `string` value. */
+	public class LetString : LetType<string> { }
+	/** A @LetType that specifies a `bool` value. */
+	public class LetBool : LetType<bool> { }
+	/** A @LetType that specifies a `Size` value. */
+	public class LetSize : LetType<Size> { }
+	/** A @LetType that specifies a `Size2` value. */
+	public class LetSize2 : LetType<Size2> { }
 }

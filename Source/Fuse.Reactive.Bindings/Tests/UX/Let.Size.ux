@@ -1,0 +1,7 @@
+<Panel ux:Class="UX.Let.Size">
+	<LetSize Value="10" ux:Name="x"/>
+	<LetSize Value="20%" ux:Name="y"/>
+	<LetSize2 Value="{x},{y}" ux:Name="s2"/>
+	
+	<Panel Offset="{s2}" X="{x}" Y="{y}" ux:Name="p"/>
+</Panel>

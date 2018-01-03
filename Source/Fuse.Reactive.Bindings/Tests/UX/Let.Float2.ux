@@ -1,0 +1,8 @@
+<Panel ux:Class="UX.Let.Float2">
+	<LetFloat2 Value="10,20" ux:Name="a"/>
+	<LetFloat2 Value="{a}" ux:Name="b"/>
+	
+	<RangeControl2D Value="{a}" ux:Name="rc"/>
+	
+	<FuseTest.DudElement Float2Value="{b}" ux:Name="db"/>
+</Panel>

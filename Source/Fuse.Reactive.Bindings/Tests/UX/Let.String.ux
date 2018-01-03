@@ -1,0 +1,10 @@
+<Panel ux:Class="UX.Let.String">
+	<LetString Value="abc" ux:Name="a"/>
+	
+	<TextInput Value="{a}" ux:Name="ta"/>
+	
+	<LetString ux:Name="n"/>
+	<LetString Value="" ux:Name="e"/>
+	<FuseTest.DudElement StringValue="{= {n} ?? '*' }" ux:Name="dn"/>
+	<FuseTest.DudElement StringValue="{= {e} ?? '*' }" ux:Name="de"/>
+</Panel>
