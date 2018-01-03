@@ -41,5 +41,28 @@ namespace Fuse.Reactive.Expressions.Test
 				Assert.Contains("Failed to compute value", diagnostics[1].Message);
 			}
 		}
+		
+		[Test]
+		//basic test for types handled by Marshal
+		public void Marshal()
+		{
+			var p = new UX.StringFunctions.Marshal();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				Assert.AreEqual( "ab", p.str.Object );
+				Assert.AreEqual( "a3", p.num.Object );
+			}
+		}
+		
+		[Test]
+		public void Concat()
+		{
+			var p = new UX.StringFunctions.Concat();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				Assert.AreEqual( "1-2", p.txt.Value );
+				Assert.AreEqual( "23", p.obj.Object );
+			}
+		}
 	}
 }

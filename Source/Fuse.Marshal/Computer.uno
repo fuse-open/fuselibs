@@ -13,122 +13,273 @@ namespace Fuse
 
 	abstract class Computer
 	{
-		public abstract object Add(object a, object b);
-		public abstract object Subtract(object a, object b);
-		public abstract object Multiply(object a, object b);
-		public abstract object Divide(object a, object b);
-		public abstract bool LessThan(object a, object b);
-		public abstract bool LessOrEqual(object a, object b);
-		public abstract bool GreaterThan(object a, object b);
-		public abstract bool GreaterOrEqual(object a, object b);
-		public abstract bool EqualTo(object a, object b);
-		public abstract object Min(object a, object b);
-		public abstract object Max(object a, object b);
+		public enum TypeOp
+		{
+			Add,
+			Subtract,
+			Multiply,
+			Divide,
+			Min,
+			Max,
+		}
+		public abstract bool TryOp( TypeOp op, object a, object b, out object result );
+		
+		public enum BoolOp
+		{
+			LessThan,
+			LessOrEqual,
+			GreaterThan,
+			GreaterOrEqual,
+			EqualTo,
+		}
+		public abstract bool TryOp( BoolOp op, object a, object b, out bool result );
 	}
 
 	abstract class Computer<T>: Computer
 	{
-		public abstract T Convert(object o);
-		public sealed override object Add(object a, object b) { return Add(Convert(a), Convert(b)); }
-		public sealed override object Subtract(object a, object b) { return Subtract(Convert(a), Convert(b)); }
-		public sealed override object Multiply(object a, object b) { return Multiply(Convert(a), Convert(b)); }
-		public sealed override object Divide(object a, object b) { return Divide(Convert(a), Convert(b)); }
-		public sealed override bool LessThan(object a, object b) { return LessThan(Convert(a), Convert(b)); }
-		public sealed override bool LessOrEqual(object a, object b) { return LessOrEqual(Convert(a), Convert(b)); }
-		public sealed override bool GreaterThan(object a, object b) { return GreaterThan(Convert(a), Convert(b)); }
-		public sealed override bool GreaterOrEqual(object a, object b) { return GreaterOrEqual(Convert(a), Convert(b)); }
-		public sealed override bool EqualTo(object a, object b) { return EqualTo(Convert(a), Convert(b)); }
-		public sealed override object Min(object a, object b) { return Min(Convert(a), Convert(b)); }
-		public sealed override object Max(object a, object b) { return Max(Convert(a), Convert(b)); }
-		public virtual T Add(T a, T b) { throw new ComputeException("Add", a, b); }
-		public virtual T Subtract(T a, T b) { throw new ComputeException("Subtract", a, b); }
-		public virtual T Multiply(T a, T b) { throw new ComputeException("Multiply", a, b); }
-		public virtual T Divide(T a, T b) { throw new ComputeException("Divide", a, b); }
-		public virtual bool LessThan(T a, T b) { throw new ComputeException("LessThan", a, b); }
-		public virtual bool LessOrEqual(T a, T b) { throw new ComputeException("LessOrEqual", a, b); }
-		public virtual bool GreaterThan(T a, T b) { throw new ComputeException("GreaterThan", a, b); }
-		public virtual bool GreaterOrEqual(T a, T b) { throw new ComputeException("GreaterOrEqual", a, b); }
-		public virtual bool EqualTo(T a, T b) { throw new ComputeException("EqualTo", a, b); }
-		public virtual T Min(T a, T b) { throw new ComputeException("Min", a, b); }
-		public virtual T Max(T a, T b) { throw new ComputeException("Max", a, b); }
+		public override bool TryOp( TypeOp op, object a, object b, out object result )
+		{
+			T ma = default(T);
+			T mb = default(T);
+			T tr = default(T);
+			if (!Marshal.TryToType<T>(a, out ma) ||
+				!Marshal.TryToType<T>(b, out mb) ||
+				!TryOpImpl(op, ma, mb, out tr))
+			{
+				result = default(T);
+				return false;
+			}
+			result = tr;
+			return true;
+		}
+		
+		protected abstract bool TryOpImpl( TypeOp op, T a, T b, out T result );
+		
+		public bool TryConvert(object o, out T result)
+		{
+			return Marshal.TryToType<T>(o, out result);
+		}
+
+		public override bool TryOp( BoolOp op, object a, object b, out bool result)
+		{ 
+			T ma = default(T);
+			T mb = default(T);
+			result = false;
+			if (!Marshal.TryToType<T>(a, out ma) ||
+				!Marshal.TryToType<T>(b, out mb))
+				return false;
+			return TryOpImpl(op, ma,mb, out result);
+		}
+		
+		protected abstract bool TryOpImpl( BoolOp op, T a, T b, out bool result );
 	}
 
 	class StringComputer: Computer<string>
 	{
-		public override string Convert(object obj) { return obj.ToString(); }
-		public override string Add(string a, string b) { return a+b; }
-		public override bool EqualTo(string a, string b) { return a==b; }
+		protected override bool TryOpImpl( TypeOp op, string a, string b, out string result )
+		{
+			switch(op)
+			{
+				case TypeOp.Add: result = a + b; return true;
+			}
+			
+			result = null;
+			return false;
+		}
+		
+		protected override bool TryOpImpl( BoolOp op, string a, string b, out bool result )
+		{
+			switch(op)
+			{
+				case BoolOp.EqualTo: result = a == b; return true;
+			}
+			
+			result = false;
+			return false;
+		}
 	}
 
 	class NumberComputer: Computer<double>
 	{
-		public override double Convert(object obj) { return Marshal.ToDouble(obj); }
-		public override double Add(double a, double b) { return a+b; }
-		public override double Subtract(double a, double b) { return a-b; }
-		public override double Multiply(double a, double b) { return a*b; }
-		public override double Divide(double a, double b) { return a/b; }
-		public override bool LessThan(double a, double b) { return a<b; }
-		public override bool LessOrEqual(double a, double b) { return a<=b; }
-		public override bool GreaterThan(double a, double b) { return a>b; }
-		public override bool GreaterOrEqual(double a, double b) { return a>=b; }
-		public override bool EqualTo(double a, double b) { return a==b; }
-		public override double Min(double a, double b) { return Math.Min(a, b); }
-		public override double Max(double a, double b) { return Math.Max(a, b); }
+		protected override bool TryOpImpl( TypeOp op, double a, double b, out double result )
+		{
+			switch(op)
+			{
+				case TypeOp.Add: result = a + b; return true;
+				case TypeOp.Subtract: result = a - b; return true;
+				case TypeOp.Multiply: result = a * b; return true;
+				case TypeOp.Divide: result = a/b; return true;
+				case TypeOp.Min: result = Math.Min(a,b); return true;
+				case TypeOp.Max: result = Math.Max(a,b); return true;
+			}
+			
+			result = 0;
+			return false;
+		}
+		
+		protected override bool TryOpImpl( BoolOp op, double a, double b, out bool result )
+		{
+			switch(op)
+			{
+				case BoolOp.EqualTo: result = a == b; return true;
+				case BoolOp.LessThan: result = a < b; return true;
+				case BoolOp.LessOrEqual: result = a <= b; return true;
+				case BoolOp.GreaterThan: result = a > b; return true;
+				case BoolOp.GreaterOrEqual: result = a >= b; return true;
+			}
+			
+			result = false;
+			return false;
+		}
 	}
 
 	class SizeComputer: Computer<Size>
 	{
-		public override Size Convert(object obj) { return Marshal.ToSize(obj); }
-		public override Size Add(Size a, Size b) { return a+b; }
-		public override Size Subtract(Size a, Size b) { return a-b; }
-		public override Size Multiply(Size a, Size b) { return a*b; }
-		public override Size Divide(Size a, Size b) { return a/b; }
-		public override bool LessThan(Size a, Size b) { return a.Value < b.Value; }
-		public override bool LessOrEqual(Size a, Size b) { return a.Value <= b.Value; }
-		public override bool GreaterThan(Size a, Size b) { return a.Value > b.Value; }
-		public override bool GreaterOrEqual(Size a, Size b) { return a.Value >= b.Value; }
-		public override bool EqualTo(Size a, Size b) { return a==b; }
-		public override Size Min(Size a, Size b) { return new Size(Math.Min(a.Value, b.Value), Size.Combine(a.Unit, b.Unit)); }
-		public override Size Max(Size a, Size b) { return new Size(Math.Max(a.Value, b.Value), Size.Combine(a.Unit, b.Unit)); }
+		protected override bool TryOpImpl( TypeOp op, Size a, Size b, out Size result )
+		{
+			switch(op)
+			{
+				case TypeOp.Add: result = a + b; return true;
+				case TypeOp.Subtract: result = a - b; return true;
+				case TypeOp.Multiply: result = a * b; return true;
+				case TypeOp.Divide: result = a/b; return true;
+				case TypeOp.Min: 
+					result = new Size(Math.Min(a.Value, b.Value), Size.Combine(a.Unit, b.Unit)); 
+					return true;
+				case TypeOp.Max:
+					result = new Size(Math.Max(a.Value, b.Value), Size.Combine(a.Unit, b.Unit)); 
+					return true;
+			}
+			
+			result =  new Size();
+			return false;
+		}
+	
+		protected override bool TryOpImpl( BoolOp op, Size a, Size b, out bool result )
+		{
+			switch(op)
+			{
+				case BoolOp.EqualTo: result = a == b; return true;
+				case BoolOp.LessThan: result = a.Value < b.Value; return true;
+				case BoolOp.LessOrEqual: result = a.Value <= b.Value; return true;
+				case BoolOp.GreaterThan: result = a.Value > b.Value; return true;
+				case BoolOp.GreaterOrEqual: result = a.Value >= b.Value; return true;
+			}
+			
+			result = false;
+			return false;
+		}
 	}
 
 	class Size2Computer: Computer<Size2>
 	{
-		public override Size2 Convert(object obj) { return Marshal.ToSize2(obj); }
-		public override Size2 Add(Size2 a, Size2 b) { return a+b; }
-		public override Size2 Subtract(Size2 a, Size2 b) { return a-b; }
-		public override Size2 Multiply(Size2 a, Size2 b) { return a*b; }
-		public override Size2 Divide(Size2 a, Size2 b) { return a/b; }
-		public override bool EqualTo(Size2 a, Size2 b) { return a==b; }
+		protected override bool TryOpImpl( TypeOp op, Size2 a, Size2 b, out Size2 result )
+		{
+			switch(op)
+			{
+				case TypeOp.Add: result = a + b; return true;
+				case TypeOp.Subtract: result = a - b; return true;
+				case TypeOp.Multiply: result = a * b; return true;
+				case TypeOp.Divide: result = a/b; return true;
+			}
+			
+			result = new Size2();
+			return false;
+		}
+		
+		protected override bool TryOpImpl( BoolOp op, Size2 a, Size2 b, out bool result )
+		{
+			switch(op)
+			{
+				case BoolOp.EqualTo: result = a == b; return true;
+			}
+			
+			result = false;
+			return false;
+		}
 	}
 
 	class Float2Computer: Computer<float2>
 	{
-		public override float2 Convert(object obj) { return Marshal.ToFloat2(obj); }
-		public override float2 Add(float2 a, float2 b) { return a+b; }
-		public override float2 Subtract(float2 a, float2 b) { return a-b; }
-		public override float2 Multiply(float2 a, float2 b) { return a*b; }
-		public override float2 Divide(float2 a, float2 b) { return a/b; }
-		public override bool EqualTo(float2 a, float2 b) { return a==b; }
+		protected override bool TryOpImpl( TypeOp op, float2 a, float2 b, out float2 result )
+		{
+			switch(op)
+			{
+				case TypeOp.Add: result = a + b; return true;
+				case TypeOp.Subtract: result = a - b; return true;
+				case TypeOp.Multiply: result = a * b; return true;
+				case TypeOp.Divide: result = a/b; return true;
+			}
+			
+			result = float2(0);
+			return false;
+		}
+		
+		protected override bool TryOpImpl( BoolOp op, float2 a, float2 b, out bool result )
+		{
+			switch(op)
+			{
+				case BoolOp.EqualTo: result = a == b; return true;
+			}
+			
+			result = false;
+			return false;
+		}
 	}
 
 	class Float3Computer: Computer<float3>
 	{
-		public override float3 Convert(object obj) { return Marshal.ToFloat3(obj); }
-		public override float3 Add(float3 a, float3 b) { return a+b; }
-		public override float3 Subtract(float3 a, float3 b) { return a-b; }
-		public override float3 Multiply(float3 a, float3 b) { return a*b; }
-		public override float3 Divide(float3 a, float3 b) { return a/b; }
-		public override bool EqualTo(float3 a, float3 b) { return a==b; }
+		protected override bool TryOpImpl( TypeOp op, float3 a, float3 b, out float3 result )
+		{
+			switch(op)
+			{
+				case TypeOp.Add: result = a + b; return true;
+				case TypeOp.Subtract: result = a - b; return true;
+				case TypeOp.Multiply: result = a * b; return true;
+				case TypeOp.Divide: result = a/b; return true;
+			}
+			
+			result = float3(0);
+			return false;
+		}
+		
+		protected override bool TryOpImpl( BoolOp op, float3 a, float3 b, out bool result )
+		{
+			switch(op)
+			{
+				case BoolOp.EqualTo: result = a == b; return true;
+			}
+			
+			result = false;
+			return false;
+		}
 	}
 
 	class Float4Computer: Computer<float4>
 	{
-		public override float4 Convert(object obj) { return Marshal.ToFloat4(obj); }
-		public override float4 Add(float4 a, float4 b) { return a+b; }
-		public override float4 Subtract(float4 a, float4 b) { return a-b; }
-		public override float4 Multiply(float4 a, float4 b) { return a*b; }
-		public override float4 Divide(float4 a, float4 b) { return a/b; }
-		public override bool EqualTo(float4 a, float4 b) { return a==b; }
+		protected override bool TryOpImpl( TypeOp op, float4 a, float4 b, out float4 result )
+		{
+			switch(op)
+			{
+				case TypeOp.Add: result = a + b; return true;
+				case TypeOp.Subtract: result = a - b; return true;
+				case TypeOp.Multiply: result = a * b; return true;
+				case TypeOp.Divide: result = a/b; return true;
+			}
+			
+			result = float4(0);
+			return false;
+		}
+		
+		protected override bool TryOpImpl( BoolOp op, float4 a, float4 b, out bool result )
+		{
+			switch(op)
+			{
+				case BoolOp.EqualTo: result = a == b; return true;
+			}
+			
+			result = false;
+			return false;
+		}
 	}
 }

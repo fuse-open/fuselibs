@@ -12,8 +12,7 @@ namespace Fuse.Reactive
 			
 		protected override bool TryCompute(object left, object right, out object result)
 		{
-			result = Marshal.Min(left, right);
-			return true;
+			return Marshal.TryMin(left, right, out result);
 		}
 	}
 
@@ -26,8 +25,7 @@ namespace Fuse.Reactive
 			
 		protected override bool TryCompute(object left, object right, out object result)
 		{
-			result = Marshal.Max(left, right);
-			return true;
+			return Marshal.TryMax(left, right, out result);
 		}
 	}
 	

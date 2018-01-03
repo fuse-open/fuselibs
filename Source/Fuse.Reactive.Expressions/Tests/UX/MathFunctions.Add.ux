@@ -1,0 +1,17 @@
+<Panel ux:Class="UX.MathFunctions.Add">
+	<FuseTest.Value Integer="10" ux:Name="a"/>
+	<FuseTest.Value Integer="3" ux:Name="b"/>
+	<FuseTest.Value Object="{Property a.Object} + {Property b.Object}" ux:Name="c"/>
+	
+	<Let Value="float( (10,20) )" ux:Name="a2"/>
+	<Let Value="float( (3,7) )" ux:Name="b2"/>
+	<FuseTest.Value Object="{a2} + {b2}" ux:Name="c2"/>
+	
+	<Let Value="float( (10,20,30) )" ux:Name="a3"/>
+	<Let Value="float( (3,7,5) )" ux:Name="b3"/>
+	<FuseTest.Value Object="{a3} + {b3}" ux:Name="c3"/>
+	
+	<Let Value="float( (10,20,30,40) )" ux:Name="a4"/>
+	<Let Value="float( (3,7,5,6) )" ux:Name="b4"/>
+	<FuseTest.Value Object="{a4} + {b4}" ux:Name="c4"/>
+</Panel>
