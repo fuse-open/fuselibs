@@ -1,10 +1,11 @@
 # Unreleased
 
+## Let
+- Added specific type version of `Let`, such as `LetFloat` and `LetString`. This improve the ability to connect pieces of the UX together and do animation/transitions in UX without using JavaScript.
+
 ## Instantiator
 - Improved the internals of `Instantiator` (the base for `Each` and `Instance`). This also fixed a few corner cases with templates not updating, but should otherwise not affect user code.
 - Fixed the creation of templates in `Each` / `Instance` when the data context is null/non-extant. It will now not instantiate the templates are all. This prevents some kinds of binding defects and improves efficiency with default templates.
-## Let
-- Added specific type version of `Let`, such as `LetFloat` and `LetString`. This improve the ability to connect pieces of the UX together and do animation/transitions in UX without using JavaScript.
 
 ## Element
 - Fixed an incorrect cascade of `MinWidth` / `MinHeight`. This could only be noticed in certain scenarios using `BoxSizing="FillAspect"`.
