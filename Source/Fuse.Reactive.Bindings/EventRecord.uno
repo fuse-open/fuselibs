@@ -21,7 +21,7 @@ namespace Fuse.Reactive
 
 			if (_node != null)
 			{
-				_data = _node.GetFirstData();
+				_node.TryGetFirstData( out _data ); //okay as null if not found
 				if (_node.Name != null) _sender = _node.Name;
 			}
 
