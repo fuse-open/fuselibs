@@ -1,5 +1,8 @@
 # Unreleased
 
+## ImageSource
+- Added `Transform` property. Useful for ImageSources that requires a transform to be displayed correctly (For example photos caputred with front faceing camera)
+
 ## Let
 - Added specific type version of `Let`, such as `LetFloat` and `LetString`. This improve the ability to connect pieces of the UX together and do animation/transitions in UX without using JavaScript.
 
