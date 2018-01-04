@@ -7,7 +7,7 @@ namespace Fuse.Elements
 {
 	public abstract partial class Element
 	{
-		Size _width = Size.Auto;
+		Size _width = Uno.UX.Size.Auto;
 		/** The width of the `Element`.
 
 			Used to ensure an element will have a specific width on-screen.
@@ -29,7 +29,7 @@ namespace Fuse.Elements
 			}
 		}
 
-		Size _height = Size.Auto;
+		Size _height = Uno.UX.Size.Auto;
 		/** The height of the `Element`.
 
 			Used to ensure an element will have a specific height on-screen.
@@ -50,6 +50,22 @@ namespace Fuse.Elements
 				}
 			}
 		}
+		
+		/** The combined `Width` and `Height` of the element.
+		
+			If using this property avoid using `Width` or `Height` properties, as this is an combined alias for those properties. Choose the property that works easier for your desired bindined, expressions and animations.
+		
+			See @Layout for more details.
+		*/
+		public Size2 Size
+		{
+			get { return new Size2(Width, Height); }
+			set
+			{
+				Width = value.X;
+				Height = value.Y;
+			}
+		}
 
 		/** The minimum width of the `Element`.
 
@@ -61,12 +77,12 @@ namespace Fuse.Elements
 		*/
 		public Size MinWidth
 		{
-			get { return Get(FastProperty1.MinWidth, Size.Auto); }
+			get { return Get(FastProperty1.MinWidth, Uno.UX.Size.Auto); }
 			set 
 			{ 
 				if (MinWidth != value)
 				{
-					Set(FastProperty1.MinWidth, value, Size.Auto); 
+					Set(FastProperty1.MinWidth, value, Uno.UX.Size.Auto); 
 					InvalidateLayout();
 				}
 			}
@@ -82,12 +98,12 @@ namespace Fuse.Elements
 		*/
 		public Size MinHeight
 		{
-			get { return Get(FastProperty1.MinHeight, Size.Auto); }
+			get { return Get(FastProperty1.MinHeight, Uno.UX.Size.Auto); }
 			set 
 			{ 
 				if (MinHeight != value)
 				{
-					Set(FastProperty1.MinHeight, value, Size.Auto); 
+					Set(FastProperty1.MinHeight, value, Uno.UX.Size.Auto); 
 					InvalidateLayout();
 				}
 			}
@@ -103,12 +119,12 @@ namespace Fuse.Elements
 		*/
 		public Size MaxWidth
 		{
-			get { return Get(FastProperty1.MaxWidth, Size.Auto); }
+			get { return Get(FastProperty1.MaxWidth, Uno.UX.Size.Auto); }
 			set 
 			{ 
 				if (MaxWidth != value)
 				{
-					Set(FastProperty1.MaxWidth, value, Size.Auto); 
+					Set(FastProperty1.MaxWidth, value, Uno.UX.Size.Auto); 
 					InvalidateLayout();
 				}
 			}
@@ -124,12 +140,12 @@ namespace Fuse.Elements
 		*/
 		public Size MaxHeight
 		{
-			get { return Get(FastProperty1.MaxHeight, Size.Auto); }
+			get { return Get(FastProperty1.MaxHeight, Uno.UX.Size.Auto); }
 			set 
 			{ 
 				if (MaxHeight != value)
 				{
-					Set(FastProperty1.MaxHeight, value, Size.Auto); 
+					Set(FastProperty1.MaxHeight, value, Uno.UX.Size.Auto); 
 					InvalidateLayout();
 				}
 			}
@@ -312,12 +328,12 @@ namespace Fuse.Elements
 		*/
 		public Size X
 		{
-			get { return Get(FastProperty1.X, Size.Auto); }
+			get { return Get(FastProperty1.X, Uno.UX.Size.Auto); }
 			set 
 			{
 				if (X != value)
 				{
-					Set(FastProperty1.X, value, Size.Auto);
+					Set(FastProperty1.X, value, Uno.UX.Size.Auto);
 					InvalidateLayout();	
 				} 
 			}
@@ -329,14 +345,28 @@ namespace Fuse.Elements
 		*/
 		public Size Y
 		{
-			get { return Get(FastProperty1.Y, Size.Auto); }
+			get { return Get(FastProperty1.Y, Uno.UX.Size.Auto); }
 			set 
 			{
 				if (Y != value)
 				{
-					Set(FastProperty1.Y, value, Size.Auto);
+					Set(FastProperty1.Y, value, Uno.UX.Size.Auto);
 					InvalidateLayout();	
 				} 
+			}
+		}
+		
+		/** The combined `X` and `Y` position of the element.
+		
+			If using this property avoid using `X` or `Y` properties, as this is an combined alias for those properties. Choose the property that works easier for your desired bindined, expressions and animations.
+		*/
+		public Size2 Position
+		{
+			get { return new Size2(X, Y); }
+			set
+			{
+				X = value.X;
+				Y = value.Y;
 			}
 		}
 

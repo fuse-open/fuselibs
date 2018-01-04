@@ -10,6 +10,7 @@
 ## Element
 - Fixed an incorrect cascade of `MinWidth` / `MinHeight`. This could only be noticed in certain scenarios using `BoxSizing="FillAspect"`.
 - Fixed the `width`, `height`, `x`, and `y` functions to support an element losing its layout. They become undefined in this case, thus allowing a syntax like `width(element) ?? 50`
+- Added `Position` and `Size` to `Element` as an alternate way to control the layout. This is useful for some animation and binding situations.
 
 ## StackPanel
 - Fixed the invalid propagation of MaxWidth/MaxHeight in a StackPanel to its children
@@ -25,6 +26,7 @@
 - Moved `VarArgFunction.Argument` to `Expression.Argument`. It's in a base class so still has visibility in `VarArgFunction`.
 - `VarArgFunction.Subscription.OnNewData` and `OnLostData` have been sealed. They should not have been open for overriding before as it conflicts with the inner workings on the class. Only the `OnNewPartialArguments` and `OnNewArguments` should be overridden.
 - Improved error handling on several operators and math functions. Instead of exceptions these should produce the standard conversion/computation warnings for invalid types.
+- Added `size()` function to force conversion to a `Size` or `Size2` type. Useful when dealing with unknown types and some operators that would otherwise result in the undesired conversion.
 
 ## Navigation
 - Fixed an issue with `Navigator.Pages` not registering pages correctly in certain initialization orders

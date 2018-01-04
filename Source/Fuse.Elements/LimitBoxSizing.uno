@@ -63,12 +63,12 @@ namespace Fuse.Elements
 		*/
 		public Size LimitHeight
 		{
-			get { return Get(FastProperty1.LimitHeight, Size.Auto); }
+			get { return Get(FastProperty1.LimitHeight, Uno.UX.Size.Auto); }
 			set 
 			{ 
 				if (LimitHeight != value)
 				{
-					Set(FastProperty1.LimitHeight, value, Size.Auto); 
+					Set(FastProperty1.LimitHeight, value, Uno.UX.Size.Auto); 
 					InvalidateLayout();
 				}
 			}
@@ -81,12 +81,12 @@ namespace Fuse.Elements
 		*/
 		public Size LimitWidth
 		{
-			get { return Get(FastProperty1.LimitWidth, Size.Auto); }
+			get { return Get(FastProperty1.LimitWidth, Uno.UX.Size.Auto); }
 			set 
 			{ 
 				if (LimitWidth != value )
 				{
-					Set(FastProperty1.LimitWidth, value, Size.Auto); 
+					Set(FastProperty1.LimitWidth, value, Uno.UX.Size.Auto); 
 					InvalidateLayout();
 				}
 			}

@@ -1,4 +1,5 @@
 using Uno;
+using Uno.UX;
 
 using Fuse;
 using Fuse.Controls;
@@ -79,6 +80,18 @@ namespace FuseTest
 		public bool BoolValue
 		{
 			get { return (bool)_value; }
+			set { _value = value; }
+		}
+		
+		public Size SizeValue
+		{
+			get { return (Size)_value; }
+			set { _value = value; }
+		}
+		
+		public Size2 Size2Value
+		{
+			get { return (Size2)_value; }
 			set { _value = value; }
 		}
 		
