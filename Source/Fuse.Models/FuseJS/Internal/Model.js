@@ -404,8 +404,8 @@ function Model(initialState, stateInitializer)
 		}
 
 		var cachedPath = null;
-		function getPath() {
-			if (cachedPath === null) { cachedPath = computePath(); }
+		function getPath(visited) {
+			if (cachedPath === null) { cachedPath = computePath(visited); }
 			return cachedPath;
 		} 
 		
@@ -413,16 +413,26 @@ function Model(initialState, stateInitializer)
 		meta.invalidatePath = function() { cachedPath = null; }
 
 		// Finds a valid path to the root TreeObservable, if any
-		function computePath()
+		function computePath(visited)
 		{
+			visited = visited || new Set();
+
+			if (meta.parents.indexOf(null) >= 0) {
+				// We are the root node
+				return [];
+			}
+			
 			for (var i = 0; i < meta.parents.length; i++) {
-				if (meta.parents[i] === null) { return [] }
-				else 
-				{
-					var arr = meta.parents[i].meta.getPath();
-					if (arr instanceof Array) {
-						return arr.concat(meta.parents[i].key);
-					}	
+				var parent = meta.parents[i];
+
+				if(visited.has(parent.meta))
+					continue;
+
+				visited.add(parent.meta);
+				
+				var arr = parent.meta.getPath(visited);
+				if (arr instanceof Array) {
+					return arr.concat(parent.key);
 				}
 			}
 		}
