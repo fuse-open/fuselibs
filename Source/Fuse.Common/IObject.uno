@@ -11,6 +11,8 @@ namespace Fuse
 
 		If the object also supports `Fuse.Reactive.IObservableArray, consumers can subscribe to the
 		array to receive change notifications.
+		
+		@deprecated This is part of an incomplete public API that should likely be internal. There is no complete/safe way to use just this interface. 2018-01-10
 	*/
 	public interface IArray
 	{
@@ -31,6 +33,8 @@ namespace Fuse
 
 		If the object also supports `Fuse.Reactive.IObservableObject`, consumers can subscribe
 		to receive change notifications.
+		
+		@deprecated This is part of an incomplete public API that should likely be internal. There is no complete/safe way to use just this interface. 2018-01-10
 	*/
 	public interface IObject
 	{

@@ -34,6 +34,7 @@
     "Fuse.Navigation",
     "Fuse.Reactive.Bindings",
     "Fuse.Scripting.JavaScript",
+    "Fuse.Scripting.JavaScript.Test",
     "Fuse.Selection",
     "Fuse.Testing",
     "Fuse.Text",
