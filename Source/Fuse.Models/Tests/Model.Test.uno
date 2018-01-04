@@ -580,6 +580,24 @@ namespace Fuse.Models.Test
 			}
 		}
 
+		[Test]
+		public void ThrowFromGetter()
+		{
+			using (var dg = new RecordDiagnosticGuard())
+			{
+				var e = new UX.Model.ThrowFromGetter();
+				using (var root = TestRootPanel.CreateWithChild(e))
+				{
+					root.StepFrameJS();
+				}
+
+				var diagnostics = dg.DequeueAll();
+				Assert.AreEqual(1, diagnostics.Count);
+				var se = (Fuse.Scripting.ScriptException) diagnostics[0].Exception;
+				Assert.Contains("THROWN_FROM_GETTER", se.Message);
+			}
+		}
+
 		static List<T> ChildrenOfType<T>(Visual n) where T : Node
 		{
 			var l = new List<T>();
