@@ -19,8 +19,8 @@ namespace Fuse.Elements.Test
 				Assert.AreEqual( new Size(40, Unit.Points), p.a.Width );
 				Assert.AreEqual( new Size(50, Unit.Pixels), p.a.Height );
 				
-				Assert.AreEqual( new Size2( new Size(2, Unit.Pixels), new Size(3, Unit.Unspecified)), p.b.Position );
-				Assert.AreEqual( new Size2( new Size(4, Unit.Percent), new Size(5, Unit.Points)), p.b.Size );
+				Assert.AreEqual( new Size2( new Size(2, Unit.Pixels), new Size(3, Unit.Unspecified)), p.b.XY );
+				Assert.AreEqual( new Size2( new Size(4, Unit.Percent), new Size(5, Unit.Points)), p.b.WidthHeight );
 			}
 		}
 	}

@@ -129,7 +129,7 @@ namespace Fuse.Controls
 				_size = value;
 
 				if (_rectangle != null)
-					_rectangle.Size = _size;
+					_rectangle.ShadowSize = _size;
 
 				if (_dropShadow != null)
 					_dropShadow.Size = _size;
