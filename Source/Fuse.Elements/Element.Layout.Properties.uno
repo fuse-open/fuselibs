@@ -51,22 +51,6 @@ namespace Fuse.Elements
 			}
 		}
 		
-		/** The combined `Width` and `Height` of the element.
-		
-			If using this property avoid using `Width` or `Height` properties, as this is an combined alias for those properties. Choose the property that works easier for your desired bindined, expressions and animations.
-		
-			See @Layout for more details.
-		*/
-		public Size2 WidthHeight
-		{
-			get { return new Size2(Width, Height); }
-			set
-			{
-				Width = value.X;
-				Height = value.Y;
-			}
-		}
-
 		/** The minimum width of the `Element`.
 
 			Used to ensure an element will have at least the given width on-screen.
@@ -356,20 +340,6 @@ namespace Fuse.Elements
 			}
 		}
 		
-		/** The combined `X` and `Y` position of the element.
-		
-			If using this property avoid using `X` or `Y` properties, as this is an combined alias for those properties. Choose the property that works easier for your desired bindined, expressions and animations.
-		*/
-		public Size2 XY
-		{
-			get { return new Size2(X, Y); }
-			set
-			{
-				X = value.X;
-				Y = value.Y;
-			}
-		}
-
 		static readonly Selector _clipToBoundsName = "ClipToBounds";
 
 		/** Clips the child elements to the bounds of this element visually.
