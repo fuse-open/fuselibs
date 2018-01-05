@@ -132,12 +132,13 @@ namespace Fuse.Controls
 			}
 			else
 			{
-				var imageTransform = TransformFromImageOrientation(Source.Orientation);
+				var sourceTransform = Source.Transform;
+				var orientationTransform = TransformFromImageOrientation(Source.Orientation);
 
 				ImageElementDraw.Impl.
 					Draw(dc, this, _drawOrigin, _drawSize,
 						_uvClip.XY, _uvClip.ZW - _uvClip.XY,
-						 imageTransform,
+						Matrix.Mul(sourceTransform, orientationTransform),
 						tex, Container.ResampleMode,
 						color);
 			}

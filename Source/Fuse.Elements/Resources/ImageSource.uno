@@ -153,6 +153,7 @@ namespace Fuse.Resources
 		public abstract int2 PixelSize { get; }
 		public abstract ImageSourceState State { get; }
 		public abstract texture2D GetTexture();
+		public virtual float3x3 Transform { get { return float3x3.Identity; } }
 		public virtual void Reload() {}
 
 		//We can't use just `Density` here: https://stackoverflow.com/questions/82437/why-is-it-impossible-to-override-a-getter-only-property-and-add-a-setter
