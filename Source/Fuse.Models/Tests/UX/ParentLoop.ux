@@ -1,0 +1,5 @@
+<Panel ux:Class="UX.Model.ParentLoop" Model="UX/ParentLoop">
+	<FuseTest.Invoke ux:Name="detachCycle" Handler="{detachCycle}" />
+	<FuseTest.Invoke ux:Name="attachCycle" Handler="{attachCycle}" />
+	<FuseTest.Invoke ux:Name="changeCycleData" Handler="{changeCycleData}" />
+</Panel>

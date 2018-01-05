@@ -598,6 +598,25 @@ namespace Fuse.Models.Test
 			}
 		}
 
+		[Test]
+		public void ParentLoop()
+		{
+			var e = new UX.Model.ParentLoop();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				e.detachCycle.Perform();
+				root.StepFrameJS();
+
+				e.attachCycle.Perform();
+				root.StepFrameJS();
+				
+				e.changeCycleData.Perform();
+				root.StepFrameJS();
+
+				// There are no assertions, since failure is triggered by a stack overflow in the JavaScript VM
+			}
+		}
+
 		static List<T> ChildrenOfType<T>(Visual n) where T : Node
 		{
 			var l = new List<T>();
