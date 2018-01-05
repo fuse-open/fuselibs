@@ -391,6 +391,8 @@ namespace Fuse.Platform
 		[Foreign(Language.Java)]
 		static void SetAsRootView(Java.Object view)
 		@{
+			@{Fuse.Platform.SystemUI.OnCreate():Call()};
+
 			final View uview = (View)view;
 			com.fuse.Activity.getRootActivity().runOnUiThread(new Runnable() { public void run() {
 				if (uview==null)
