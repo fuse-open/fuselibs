@@ -57,7 +57,7 @@ namespace Fuse.Elements
 		
 			See @Layout for more details.
 		*/
-		public Size2 WidthHeight
+		public Size2 Size
 		{
 			get { return new Size2(Width, Height); }
 			set
@@ -360,7 +360,7 @@ namespace Fuse.Elements
 		
 			If using this property avoid using `X` or `Y` properties, as this is an combined alias for those properties. Choose the property that works easier for your desired bindined, expressions and animations.
 		*/
-		public Size2 XY
+		public Size2 Position
 		{
 			get { return new Size2(X, Y); }
 			set
