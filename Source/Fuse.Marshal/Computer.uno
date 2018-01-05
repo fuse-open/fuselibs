@@ -133,6 +133,28 @@ namespace Fuse
 		}
 	}
 
+	class BoolComputer: Computer<bool>
+	{
+		protected override bool TryOpImpl( TypeOp op, bool a, bool b, out bool result )
+		{
+			result = false;
+			return false;
+		}
+
+		protected override bool TryOpImpl( BoolOp op, bool a, bool b, out bool result )
+		{
+			switch(op)
+			{
+				case BoolOp.EqualTo:
+					result = a == b;
+					return true;
+			}
+
+			result = false;
+			return false;
+		}
+	}
+
 	class SizeComputer: Computer<Size>
 	{
 		protected override bool TryOpImpl( TypeOp op, Size a, Size b, out Size result )
