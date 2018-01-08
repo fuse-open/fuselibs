@@ -123,6 +123,7 @@ namespace Fuse.Controls.Native
 	public interface IScrollViewHost
 	{
 		float PixelsPerPoint { get; }
+		float2 ContentSize { get; }
 		void OnScrollPositionChanged(float2 newScrollPosition);
 	}
 
