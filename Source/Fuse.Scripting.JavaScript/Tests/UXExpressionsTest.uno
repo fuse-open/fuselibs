@@ -180,6 +180,8 @@ namespace Fuse.Reactive.Test
 
 				e.N = "Lol";
 				Assert.AreEqual("Hola, LOL! You have 2-ish new fruits!", e.t2.Value);
+
+				Assert.AreEqual("Boolean operators: True, True, True, False, False, False", e.t4.Value);
 			}
 		}
 

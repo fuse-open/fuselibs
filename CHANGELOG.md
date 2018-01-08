@@ -1,5 +1,8 @@
 # Unreleased
 
+## Expressions
+- Added support for boolean `==` and `!=` expressions, which can be used for things like negating expressions.
+
 ## Let
 - Added specific type version of `Let`, such as `LetFloat` and `LetString`. This improve the ability to connect pieces of the UX together and do animation/transitions in UX without using JavaScript.
 

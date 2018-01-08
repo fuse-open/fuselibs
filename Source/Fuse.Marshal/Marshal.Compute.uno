@@ -19,6 +19,7 @@ namespace Fuse
 			_computers.Add(typeof(uint), number);
 			_computers.Add(typeof(ushort), number);
 			_computers.Add(typeof(byte), number);
+			_computers.Add(typeof(bool), new BoolComputer());
 
 			_computers.Add(typeof(Size), new SizeComputer());
 			_computers.Add(typeof(Size2), new Size2Computer());

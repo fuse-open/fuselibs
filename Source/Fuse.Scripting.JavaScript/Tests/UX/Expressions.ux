@@ -10,8 +10,10 @@
 		var foo = Observable(100);
 		var img = Observable("test");
 		var empty = Observable();
+		var truth = Observable(true);
+		var falsehood = Observable(false);
 
-		module.exports = { foo: foo, username: "John Doe", img: img, empty: empty };
+		module.exports = { foo: foo, username: "John Doe", img: img, empty: empty, truth: truth, falsehood: falsehood };
 	</JavaScript>
 
 	<float4 ux:Global="Lol" ux:Value="#f0f" />
@@ -33,6 +35,7 @@
 	<Text ux:Name="t1" Value="Hello, {= toLower({username})}! You have {foo} new messages!" />
 	<Text ux:Name="t2">Hola, {= toUpper({Property N})}! You have {= '' + {foo} / 50 + '-ish'} new fruits!</Text>
 	<Text ux:Name="t3">Hola, {empty}!</Text>
+	<Text ux:Name="t4">Boolean operators: {= {truth} != {falsehood} }, {= {truth} == true }, {= true == true }, {= {truth} == {falsehood} }, {= true == false }, {= {truth} == false }</Text>
 
 	<!-- tests for x() and y() -->
 	<Panel ux:Name="p9" Margin="50,60" />
