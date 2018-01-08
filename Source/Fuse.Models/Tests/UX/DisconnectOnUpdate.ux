@@ -1,0 +1,4 @@
+<Panel ux:Class="UX.Model.DisconnectOnUpdate" Model="UX/DisconnectOnUpdate">
+	<FuseTest.Invoke ux:Name="step1" Handler="{step1}" />
+	<FuseTest.Invoke ux:Name="step2" Handler="{step2}" />
+</Panel>
