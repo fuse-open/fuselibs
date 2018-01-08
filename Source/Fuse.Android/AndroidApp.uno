@@ -37,8 +37,6 @@ namespace Fuse
 
 		public App()
 		{
-			Fuse.Platform.SystemUI.OnCreate();
-
 			Fuse.Android.StatusBarConfig.SetStatusBarColor(float4(0));
 
 			Fuse.Controls.TextControl.TextRendererFactory = Fuse.Android.TextRenderer.Create;
