@@ -1,5 +1,8 @@
 # Unreleased
 
+### ScrollView
+- Fixed bug where ScrollView's inside a NativeViewHost would scroll to fast
+
 
 # 1.6
 
