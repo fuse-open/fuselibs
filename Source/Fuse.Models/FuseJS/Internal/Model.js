@@ -363,44 +363,56 @@ function Model(initialState, stateInitializer)
 					state[key] = wrapFunction(value)
 					set(key, state[key]);
 				}
+				return;
 			}
-			else if (isThenable(value)) {
+
+			if (isThenable(value)) {
 				dealWithPromise(key, value);
+				return;
 			}
-			else if (value instanceof Object) {
-				var keyMeta = stateToMeta.get(value);
-				var oldValue = meta.node[key];
 
-				var newValue;
-				if (keyMeta instanceof Object) {
-					// Value is already instrumented, but re-instrument to add as parent
-					newValue = instrument({meta: meta, key: key}, keyMeta, value);
-				}
-				else if (value instanceof Object) {
-					newValue = instrument({meta: meta, key: key}, (value instanceof Array) ? [] : {}, value);
-				}
-				else {
-					newValue = value;
-				}
+			var oldNode = meta.node[key];
 
-				if (oldValue instanceof Object &&
-					keyMeta instanceof Object &&
-					oldValue.__fuse_id === keyMeta.id
-				)
-				{
-					if (!keyMeta.isClass) { 
-						keyMeta.diff(visited);
-					}
-				}
-				else {
-					removeAsParentFrom(key, oldValue);
-					set(key, newValue);
-				}
-			}
-			else if (value !== node[key])
+			if(!(value instanceof Object))
 			{
-				set(key, value);
+				// We're dealing with a primitive value
+
+				if (oldNode instanceof Object)
+					removeAsParentFrom(key, oldNode);
+
+				if (value !== oldNode)
+					set(key, value);
+
+				return;
 			}
+
+			var newNode;
+			var newValueMeta = stateToMeta.get(value);
+			if (newValueMeta instanceof Object)
+			{
+				if (oldNode instanceof Object && newValueMeta.id === oldNode.__fuse_id)
+				{
+					// The object has not changed since the last diff
+					if (!newValueMeta.isClass) {
+						// If it's a plain object (no methods that could trigger change detection),
+						// perform change detection on its behalf
+						newValueMeta.diff(visited);
+					}
+					return;
+				}
+
+				// Value is already instrumented, but re-instrument to add as parent
+				newNode = instrument({meta: meta, key: key}, newValueMeta.node, value);
+			}
+			else {
+				// This is an object we haven't seen before, so instrument it
+				newNode = instrument({meta: meta, key: key}, (value instanceof Array) ? [] : {}, value);
+			}
+
+			if (oldNode instanceof Object)
+				removeAsParentFrom(key, oldNode);
+
+			set(key, newNode);
 		}
 
 		var cachedPath = null;
