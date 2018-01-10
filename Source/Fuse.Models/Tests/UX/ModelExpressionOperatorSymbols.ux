@@ -1,0 +1,3 @@
+<Panel ux:Class="UX.Model.ModelExpressionOperatorSymbols" Model="UX/ModelExpressionOperatorSymbols._-_+_">
+	<FuseTest.DudElement ux:Name="itWorks" StringValue="{itWorks}" />
+</Panel>
