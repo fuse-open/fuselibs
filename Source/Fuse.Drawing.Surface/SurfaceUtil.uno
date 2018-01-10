@@ -205,5 +205,11 @@ namespace Fuse.Drawing
 				return true;
 			return false;
 		}		
+		
+		static public float2 BezierCurveDerivative( float2 p0, float2 p1, float2 p2, float2 p3, float t )
+		{
+			var t2 = t * t;
+			return 3 * (-(p0-3*p1-p3+3*p2)*t2  + 2*(p0-2*p1+p2)*t - p0 + p1);
+		}
 	}
 }
