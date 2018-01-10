@@ -21,7 +21,7 @@ namespace Fuse.Controls
 		Extents,
 	}
 
-	public partial class Path : Shape
+	public partial class Path : SegmentedShape
 	{
 		List<LineSegment> _segments = new List<LineSegment>();
 		string _data;

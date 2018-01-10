@@ -1,0 +1,9 @@
+<Panel ux:Class="UX.Path.Segment" Color="#FFF">
+	<!-- full circle with a break at the top -->
+	<Path Data="m 177.14285,98.076477 c 48.91665,-2e-6 88.57143,39.654773 88.57143,88.571423 0,48.91665 -39.65478,88.57143 -88.57143,88.57143 -48.91665,0 -88.571426,-39.65478 -88.571424,-88.57143 2e-6,-48.91665 39.654774,-88.571422 88.571424,-88.571423"
+		PathStart="0.24" PathEnd="0.76" StrokeWidth="5" StrokeColor="#000" ux:Name="thePath"/>
+
+	<LetFloat ux:Name="dist" Value="0.5"/>
+	<FuseTest.DudElement Float2Value="pathPointAtDistance(thePath, {dist})" ux:Name="p5"/>
+	<FuseTest.DudElement FloatValue="pathTangentAngleAtDistance(thePath, {dist})" ux:Name="ta5"/>
+</Panel>

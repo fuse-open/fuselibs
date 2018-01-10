@@ -195,7 +195,11 @@ namespace Fuse.Reactive
 				_curData = null;
 				_listener.OnLostData(_source);
 			}
+			
+			OnDataCleared();
 		}
+		
+		protected virtual void OnDataCleared() { }
 		
 		/** The output is set to the given value. */
 		protected void SetData(object value)

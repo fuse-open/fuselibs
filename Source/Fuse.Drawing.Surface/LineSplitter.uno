@@ -75,14 +75,13 @@ namespace Fuse.Drawing
 		}
 		
 		/**
-			Expects:	
+			Requires:	
 				- start in (0,1)
 				- end >= start
 				- (end-start) <= 1
 		*/
 		public void SplitTime( float start, float end, IList<LineSegment> to )
 		{
-			//TODO: move shape splitting logic that deals with out-of-bounds to here
 			if (start < 0 || start > 1 || (end < start) || (end-start) > 1)
 				throw new Exception( "Invalid SplitTime arguments" );
 			
