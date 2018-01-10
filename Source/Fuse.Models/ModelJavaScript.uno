@@ -109,8 +109,26 @@ namespace Fuse.Models
 				return o.ModuleName == ModuleName &&
 					o.ClassName == ClassName;
 			}
+
+			internal void AssertIsPartial()
+			{
+				if (Args.Count > 0 || Dependencies.Count > 0)
+					throw new Exception( "Invalid Model path expression: " + Source);
+			}
 		}
-		
+
+		internal static ParsedModelExpression ParseBinaryOp(string symbol, BinaryOperator op, NameTable nt)
+		{
+			var left = ParseModelExpression(op.Left, nt);
+			var right = ParseModelExpression(op.Right, nt);
+
+			left.AssertIsPartial();
+
+			right.ModuleName = left.ModuleName + symbol + right.ModuleName;
+			right.Source = op;
+			return right;
+		}
+
 		internal static ParsedModelExpression ParseModelExpression(IExpression exp, NameTable nt)
 		{
 			var data = exp as Data;
@@ -127,16 +145,28 @@ namespace Fuse.Models
 
 			var divide = exp as Divide;
 			if (divide != null)
+				return ParseBinaryOp("/", divide, nt);
+
+			var multiply = exp as Multiply;
+			if (multiply != null)
+				return ParseBinaryOp("*", multiply, nt);
+
+			var subtract = exp as Subtract;
+			if(subtract != null)
+				return ParseBinaryOp("-", subtract, nt);
+
+			var addition = exp as Add;
+			if(addition != null)
+				return ParseBinaryOp("+", addition, nt);
+
+			var member = exp as Member;
+			if (member != null)
 			{
-				var left = ParseModelExpression(divide.Left, nt);
-				var right = ParseModelExpression(divide.Right, nt);
-				
-				if (left.Args.Count > 0 || left.Dependencies.Count > 0)
-					throw new Exception( "Invalid Model path expression: " + exp);
-				
-				right.ModuleName = left.ModuleName + "/" + right.ModuleName;
-				right.Source = exp;
-				return right;
+				var res = ParseModelExpression(member.BaseObject, nt);
+				res.Source = member;
+				res.ModuleName += "." + member.Name;
+				res.AssertIsPartial();
+				return res;
 			}
 
 			var nfc = exp as Fuse.Reactive.NamedFunctionCall;

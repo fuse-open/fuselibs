@@ -7,7 +7,7 @@ namespace Fuse.Reactive
 	/** Represents a reactive object-member look-up operation. */
 	public sealed class Member: Expression
 	{
-		Expression BaseObject { get; private set; }
+		internal Expression BaseObject { get; private set; }
 		public string Name { get; private set; }
 		[UXConstructor]
 		//It's unclear why this has to have the name "Object" here... "BaseObject" causes UX compile erorrs on bindings like {some.key}
