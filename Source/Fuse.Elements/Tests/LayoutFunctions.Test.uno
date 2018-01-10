@@ -50,5 +50,18 @@ namespace Fuse.Elements.Test
 				}
 			}
 		}
+		
+		[Test]
+		public void Alternates()
+		{
+			var p = new global::UX.LayoutFunctions.Alternates();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				Assert.AreEqual(2,p.xa.Value);
+				Assert.AreEqual(3,p.xb.Value);
+				Assert.AreEqual(4,p.yb.Value);
+				Assert.AreEqual(6,p.yc.Value);
+			}
+		}
 	}
 }

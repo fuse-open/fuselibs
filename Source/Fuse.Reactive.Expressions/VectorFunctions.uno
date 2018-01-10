@@ -46,4 +46,49 @@ namespace Fuse.Reactive
 			return sb.ToString();
 		}
 	}
+
+	/**
+		Returns the `Z` value of a `float3` or `float4` value.
+	*/
+	[UXFunction("z" )]
+	public sealed class VectorZ : UnaryOperator
+	{
+		[UXConstructor]
+		public VectorZ([UXParameter("Operand")] Expression operand) : 
+			base(operand, "z") {}
+		protected override bool TryCompute(object operand, out object result)
+		{
+			result = null;
+			var v = float4(0);
+			int size;
+			if (!Marshal.TryToZeroFloat4(operand, out v, out size) || size < 3)
+				return false;
+				
+			result = v.Z;
+			return true;
+		}
+	}
+	
+	[UXFunction("w" )]
+	/**
+		Returns the `W` value of a `float4` value.
+	*/
+	public sealed class VectorW : UnaryOperator
+	{
+		[UXConstructor]
+		public VectorW([UXParameter("Operand")] Expression operand) : 
+			base(operand, "w") {}
+		protected override bool TryCompute(object operand, out object result)
+		{
+			result = null;
+			var v = float4(0);
+			int size;
+			if (!Marshal.TryToZeroFloat4(operand, out v, out size) || size < 4)
+				return false;
+				
+			result = v.W;
+			return true;
+		}
+	}
+	
 }

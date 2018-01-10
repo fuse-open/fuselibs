@@ -13,6 +13,8 @@ namespace Fuse.Reactive
 		List<Expression> _args = new List<Expression>();
 		public IList<Expression> Arguments { get { return _args; } }
 		
+		public VarArgFunction() { }
+		
 		/** Can be called by `ToString` with a function name to do standard formatting of the arguments */
 		protected string FormatString(string funcName)
 		{
