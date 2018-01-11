@@ -40,6 +40,11 @@ namespace Fuse.Drawing
 		public float2 A,B;
 		public LineSegmentFlags Flags;
 		public LineSegmentType Type;
+	
+		internal string Format()
+		{
+			return Type + " A:" + A + " B:" + B + " To:" + To + " " + Flags;
+		}
 		
 		public bool HasTo 
 		{

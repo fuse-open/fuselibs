@@ -18,7 +18,7 @@ namespace Fuse.Drawing
 		
 		public LineSplitter(IList<LineSegment> segments)
 		{
-			//writing proper elliptic arc splitting is difficult due to SVG sizing rules, so get rid of them and use bezier's instead (TODO: optimize to just use `segments` fi there are no arcs, which is incredibly common for SVG data)
+			//writing proper elliptic arc splitting is difficult due to SVG sizing rules, so get rid of them and use bezier's instead (OPT: optimize to just use `segments` fi there are no arcs, which is incredibly common for SVG data)
 			_segments = new List<LineSegment>();
 			var from = float2(0);
 			for (int i=0; i < segments.Count; ++i)
@@ -82,7 +82,11 @@ namespace Fuse.Drawing
 		*/
 		public void SplitTime( float start, float end, IList<LineSegment> to )
 		{
-			bool hasMove = false; //tODO: should probably be hasLocation
+			//TODO: move shape splitting logic that deals with out-of-bounds to here
+			if (start < 0 || start > 1 || (end < start) || (end-start) > 1)
+				throw new Exception( "Invalid SplitTime arguments" );
+			
+			bool hasLocation = false;
 			
 			//the outer loop allows an overlap over the end of the curve
 			while (end > 0) 
@@ -98,9 +102,9 @@ namespace Fuse.Drawing
 						continue;
 						
 					if (seg.Type == LineSegmentType.Move)
-						hasMove = true;
+						hasLocation = true;
 					else if (seg.Type == LineSegmentType.Close)
-						hasMove = false;
+						hasLocation = false;
 						
 					var lastPos = i > 0 ? _segments[i-1].To : float2(0);
 					bool fullStart = start <= lsi.StartT;
@@ -112,10 +116,10 @@ namespace Fuse.Drawing
 					}
 					else if (fullStart && fullEnd) //full segment
 					{
-						if (!hasMove)
+						if (!hasLocation)
 						{
 							to.Add( new LineSegment{ To = lastPos, Type = LineSegmentType.Move } );
-							hasMove = true;
+							hasLocation = true;
 						}
 						to.Add(seg);
 					}
@@ -133,7 +137,7 @@ namespace Fuse.Drawing
 						{
 							// move to start of segment
 							to.Add( new LineSegment{ To = left.To, Type = LineSegmentType.Move } );
-							hasMove = true;
+							hasLocation = true;
 							
 							if (fullEnd)
 							{
