@@ -70,7 +70,8 @@ namespace Fuse.Controls.Native.iOS
 
 		internal protected override void OnSizeChanged()
 		{
-			SetContentSize(Handle, Size.X, Size.Y);
+			var contentSize = _host.ContentSize;
+			SetContentSize(Handle, contentSize.X, contentSize.Y);
 		}
 
 		[Foreign(Language.ObjC)]

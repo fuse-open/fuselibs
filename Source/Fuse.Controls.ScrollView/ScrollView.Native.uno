@@ -1,5 +1,5 @@
 using Uno;
-
+using Uno.Collections;
 using Fuse.Elements;
 using Fuse.Controls.Native;
 
@@ -20,6 +20,15 @@ namespace Fuse.Controls
 		void IScrollViewHost.OnScrollPositionChanged(float2 newScrollPosition)
 		{
 			SetScrollPosition(newScrollPosition, null);
+		}
+
+		float2 IScrollViewHost.ContentSize
+		{
+			get
+			{
+				var content = Children.FirstOrDefault() as Element;
+				return content != null ? content.ActualSize : float2(0.0f);
+			}
 		}
 
 		internal sealed override void CompensateForScrollView(ref float4x4 t)
