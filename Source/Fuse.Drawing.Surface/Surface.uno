@@ -132,19 +132,8 @@ namespace Fuse.Drawing
 			PushTransform(m);
 			DrawLocal(drawable);
  			End();
- 			
-			draw Fuse.Drawing.Planar.Image
-			{
-				DrawContext: dc;
-				Visual: elm;
-				Size: (float2)pixelSize / pixelsPerPoint;
-				Position: bounds.AxisMin.XY;
-				Texture: fb.ColorBuffer;
-				Invert: true;
-				
-				apply Fuse.Drawing.PreMultipliedAlphaCompositing;
-			};
-			
+
+			Blitter.Singleton.Blit(fb.ColorBuffer, new Rect(bounds.AxisMin.XY, (float2)pixelSize / pixelsPerPoint), dc.GetLocalToClipTransform(elm), 1.0f, true);
 			FramebufferPool.Release(fb);
 		}
 		
