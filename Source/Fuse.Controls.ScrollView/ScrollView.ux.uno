@@ -60,7 +60,8 @@ namespace Fuse.Controls
 		protected override void OnRooted()
 		{
 			base.OnRooted();
-			Children.Add(new Scroller(true/*for internal ctor*/));
+			if (VisualContext != VisualContext.Native)
+				Children.Add(new Scroller(true/*for internal ctor*/));
 			Children.Add(new DefaultTrigger(this));
 		}
 
