@@ -34,6 +34,9 @@ namespace Fuse.Controls
 		}
 		void SetBackground(Brush value)
 		{
+			if (value != null && !(value is ISolidColor))
+				Fuse.Diagnostics.Deprecated("Background must be a solid color", this);
+
 			UnrootBackground();
 			_background = value;
 			RootBackground();
