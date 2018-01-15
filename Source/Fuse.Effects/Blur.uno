@@ -1,6 +1,7 @@
 using Uno;
 using Uno.Graphics;
 using Uno.UX;
+using Fuse.Drawing;
 using Fuse.Elements;
 using Fuse.Nodes;
 
@@ -57,18 +58,7 @@ namespace Fuse.Effects
 			var blur = EffectHelpers.Instance.Blur(original.ColorBuffer, dc, Sigma * Element.AbsoluteZoom);
 			FramebufferPool.Release(original);
 
-			draw Fuse.Drawing.Planar.Image
-			{
-				DrawContext: dc;
-				Visual: Element;
-				Position: elementRect.Minimum - Padding;
-				Invert: true;
-				Size: paddedRect.Size;
-				Texture: blur.ColorBuffer;
-
-				apply Fuse.Drawing.PreMultipliedAlphaCompositing;
-				DepthTestEnabled: false;
-			};
+			Blitter.Singleton.Blit(blur.ColorBuffer, new Rect(elementRect.Minimum - Padding, paddedRect.Size), dc.GetLocalToClipTransform(Element), 1.0f, true);
 
 			if defined(FUSELIBS_DEBUG_DRAW_RECTS)
 				DrawRectVisualizer.Capture(elementRect.Minimum - Padding, paddedRect.Size, Element.WorldTransform, dc);

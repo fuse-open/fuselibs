@@ -13,6 +13,7 @@
     "Fuse.Controls.Panels",
     "Fuse.Controls.Primitives",
     "Fuse.Drawing.Surface",
+    "Fuse.Effects",
     "Fuse.Elements",
     "Fuse.iOS.TextRenderer"
   ],
