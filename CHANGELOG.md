@@ -1,7 +1,8 @@
 # Unreleased
 
 ## Expressions
-- Added support for boolean `==` and `!=` expressions, which can be used for things like negating expressions.
+- Added support for boolean `==` and `!=` expressions, which can be used for things like negating boolean expressions.
+- Fixed negation operator (`-`, eg. `-someValue`).
 
 ### DatePicker/TimePicker
 - Fixed an Uno reflection bug that caused these pickers to crash in preview.
