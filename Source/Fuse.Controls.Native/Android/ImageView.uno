@@ -141,13 +141,14 @@ namespace Fuse.Controls.Native.Android
 
 		public void UpdateImageTransform(float density, float2 origin, float2 scale, float2 drawSize)
 		{
-			SetImageSize(drawSize * density);
-			SetImageMatrix(
+			var imagePos = (int2)Math.Ceil(origin * density);
+			var imageScale = scale * density;
+			UpdateImageTransform(
 				_imageView,
-				origin.X * density,
-				origin.Y * density,
-				scale.X * density,
-				scale.Y * density);
+				imagePos.X,
+				imagePos.Y,
+				imageScale.X,
+				imageScale.Y);
 		}
 
 		IDisposable _imageHandle;
@@ -224,21 +225,8 @@ namespace Fuse.Controls.Native.Android
 			wh.set(1, imageView.getMeasuredHeight());
 		@}
 
-		void SetImageSize(float2 size)
-		{
-			var wh = new int[]{ (int)size.X, (int)size.Y };
-			SetImageSize(_imageView, wh);
-		}
-
 		[Foreign(Language.Java)]
-		static void SetImageSize(Java.Object handle, int[] wh)
-		@{
-			android.widget.ImageView imageView = (android.widget.ImageView)handle;
-			imageView.setLayoutParams(new android.widget.RelativeLayout.LayoutParams(wh.get(0), wh.get(1)));
-		@}
-
-		[Foreign(Language.Java)]
-		static void SetImageMatrix(Java.Object handle, float x, float y, float scaleX, float scaleY)
+		static void UpdateImageTransform(Java.Object handle, float x, float y, float scaleX, float scaleY)
 		@{
 			android.widget.ImageView imageView = (android.widget.ImageView)handle;
 			float[] m = new float[]
@@ -278,24 +266,24 @@ namespace Fuse.Controls.Native.Android
 		[Foreign(Language.Java)]
 		static Java.Object Create(Java.Object container)
 		@{
-			android.widget.RelativeLayout relativeLayout = (android.widget.RelativeLayout)container;
+			android.widget.FrameLayout frameLayout = (android.widget.FrameLayout)container;
 			android.widget.ImageView imageView = new android.widget.ImageView(com.fuse.Activity.getRootActivity());
 			imageView.setScaleType(android.widget.ImageView.ScaleType.MATRIX);
-			imageView.setLayoutParams(new android.widget.RelativeLayout.LayoutParams(android.view.ViewGroup.LayoutParams.MATCH_PARENT, android.view.ViewGroup.LayoutParams.MATCH_PARENT));
-			relativeLayout.addView(imageView);
+			imageView.setLayoutParams(new android.widget.FrameLayout.LayoutParams(android.view.ViewGroup.LayoutParams.MATCH_PARENT, android.view.ViewGroup.LayoutParams.MATCH_PARENT));
+			frameLayout.addView(imageView);
 			return imageView;
 		@}
 
 		[Foreign(Language.Java)]
 		static Java.Object CreateContainer()
 		@{
-			android.widget.RelativeLayout relativeLayout = new android.widget.RelativeLayout(com.fuse.Activity.getRootActivity());
-			relativeLayout.setFocusable(true);
-			relativeLayout.setFocusableInTouchMode(true);
-			relativeLayout.setClipToPadding(true);
-			relativeLayout.setClipChildren(true);
-			relativeLayout.setLayoutParams(new android.widget.RelativeLayout.LayoutParams(android.view.ViewGroup.LayoutParams.MATCH_PARENT, android.view.ViewGroup.LayoutParams.MATCH_PARENT));
-			return relativeLayout;
+			android.widget.FrameLayout frameLayout = new android.widget.FrameLayout(com.fuse.Activity.getRootActivity());
+			frameLayout.setFocusable(true);
+			frameLayout.setFocusableInTouchMode(true);
+			frameLayout.setClipToPadding(true);
+			frameLayout.setClipChildren(true);
+			frameLayout.setLayoutParams(new android.widget.FrameLayout.LayoutParams(android.view.ViewGroup.LayoutParams.MATCH_PARENT, android.view.ViewGroup.LayoutParams.MATCH_PARENT));
+			return frameLayout;
 		@}
 
 	}
