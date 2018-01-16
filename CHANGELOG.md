@@ -2,10 +2,12 @@
 
 ## Expressions
 - Added support for boolean `==` and `!=` expressions, which can be used for things like negating boolean expressions.
+- Added support for the logical not operator. This means you can do "!someBoolean" to logically negate it.
 - Fixed negation operator (`-`, eg. `-someValue`).
 
 ### DatePicker/TimePicker
 - Fixed an Uno reflection bug that caused these pickers to crash in preview.
+
 ### ScrollView
 - Fixed bug where ScrollView's inside a NativeViewHost would scroll to fast
 - Fixed bug where the scrolling indicator in a native ScrollView would not show on iOS

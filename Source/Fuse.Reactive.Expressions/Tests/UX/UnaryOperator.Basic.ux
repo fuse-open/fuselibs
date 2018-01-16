@@ -1,7 +1,14 @@
 <Panel ux:Class="UX.UnaryOperator.Basic">
 	<FuseTest.Data Value=" 'hi' " ux:Name="v"/>
+	<FuseTest.Data StringValue="{= true }" ux:Name="truth"/>
+	<FuseTest.Data StringValue="{= false }" ux:Name="falsehood"/>
 	
 	<FuseTest.DudElement StringValue="{= _unJoin('ab') }" ux:Name="a"/>
 	<FuseTest.DudElement StringValue="{= _unJoin({none}) ?? 'x' }" ux:Name="b"/>
 	<FuseTest.DudElement StringValue="{= _unJoin({v}) }" ux:Name="c"/>
+
+	<FuseTest.DudElement BoolValue="{truth}" ux:Name="d"/>
+	<FuseTest.DudElement BoolValue="!{truth}" ux:Name="e"/>
+	<FuseTest.DudElement BoolValue="{falsehood}" ux:Name="f"/>
+	<FuseTest.DudElement BoolValue="!{falsehood}" ux:Name="g"/>
 </Panel>
