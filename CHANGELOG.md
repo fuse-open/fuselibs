@@ -1,12 +1,13 @@
 # Unreleased
 
-
 # 1.6
 
 ## 1.6.1
 
 ### Fuse.Scripting
 - Restore accidentally broken NativeEvent.RaiseAsync() API.
+## Navigator
+- Fixed the invalid reuse of an existing page if the context does not match
 
 ## 1.6.0
 
