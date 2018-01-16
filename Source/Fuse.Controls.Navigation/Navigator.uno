@@ -218,7 +218,7 @@ namespace Fuse.Controls
 					return new PrepareResult{ Page = curPage, Routing = RoutingResult.NoChange };
 					
 				// https://github.com/fusetools/fuselibs/issues/2982
-				var compat = CompatibleParameter(routerPage.Parameter, curPage.RouterPage.Parameter);
+				var compat = CompatibleParameter(routerPage.Parameter, curPage.RouterPage.Parameter) && routerPage.Context == curPage.RouterPage.Context;
 					
 				//reusable page with parameter change
 				var reuse = operation == RoutingOperation.Goto && IsReuseLevel(curPageVisual, ReuseType.Any);

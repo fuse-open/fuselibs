@@ -196,9 +196,12 @@ namespace Fuse.Controls
 				return RoutingResult.Change;
 				
 			pageVisual = useVisual;
-			if (useVisual.Parameter == routerPage.Parameter)
+			var pageData = PageData.GetOrCreate(pageVisual);
+			if (useVisual.Parameter == routerPage.Parameter &&
+				routerPage.Context == pageData.Context)
 				return RoutingResult.NoChange;
 				
+			//TODO: Navigator only returns MinorChange here, never Change
 			return CompatibleParameter(useVisual.Parameter, routerPage.Parameter) ?
 				RoutingResult.MinorChange : RoutingResult.Change;
 		}
@@ -213,8 +216,10 @@ namespace Fuse.Controls
 				return RoutingResult.Invalid;
 
 			pageVisual = useVisual;
-			bool same = useVisual.Parameter == routerPage.Parameter;
-			PageData.GetOrCreate(useVisual).AttachRouterPage(routerPage);
+			var pageData = PageData.GetOrCreate(useVisual);
+			bool same = useVisual.Parameter == routerPage.Parameter &&
+				pageData.Context == routerPage.Context;
+			pageData.AttachRouterPage(routerPage);
 			if (useVisual == Active) 
 				return same ? RoutingResult.NoChange : RoutingResult.MinorChange;
 			

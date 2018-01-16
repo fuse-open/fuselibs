@@ -29,7 +29,7 @@
 			<PageControl>
 				<Panel ux:Name="first">
 					<WhileActive>
-						<Text Value="1.{title}"/>
+						<Text Value="1.{= {title} ?? 'nope' }"/>
 					</WhileActive>
 				</Panel>
 				<Panel ux:Name="second">
