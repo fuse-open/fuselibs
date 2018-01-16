@@ -344,9 +344,11 @@ namespace Fuse.Controls.VideoImpl
 				return;
 
 			if (Control.StretchMode == StretchMode.Scale9)
+			{
+				Fuse.Diagnostics.Deprecated("StretchMode.Scale9 is deprecated for video-visual", this);
 				Scale9Rectangle.Impl.
 					Draw(dc, this, ActualSize, GetSize(), texture, Control.Scale9Margin);
-
+			}
 			else
 			{
 				var rotation = _videoService.RotationDegrees / 90;
