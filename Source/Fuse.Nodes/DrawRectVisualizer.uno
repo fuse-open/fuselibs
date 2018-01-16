@@ -148,8 +148,8 @@ namespace Fuse.Nodes
 				BlendSrcRgb: BlendOperand.SrcAlpha;
 				BlendDstRgb: BlendOperand.OneMinusSrcAlpha;
 
-				BlendSrcAlpha: BlendOperand.Zero;
-				BlendDstAlpha: BlendOperand.DstAlpha;
+				BlendSrcAlpha: BlendOperand.One;
+				BlendDstAlpha: BlendOperand.OneMinusSrcAlpha;
 			};
 
 			// Draw rects
