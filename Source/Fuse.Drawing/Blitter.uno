@@ -86,5 +86,39 @@ namespace Fuse.Drawing
 				PixelColor: sample(texture, TexCoord, samplerState) * color;
 			};
 		}
+
+		public void Fill(Rect localRect, float4x4 localToClipTransform, float4 color)
+		{
+			color = float4(color.XYZ * color.W, color.W);
+
+			var positionTranslation = Matrix.Translation(localRect.Minimum.X, localRect.Minimum.Y, 0);
+			var positionScaling = Matrix.Scaling(localRect.Size.X, localRect.Size.Y, 1);
+			var positionMatrix = Matrix.Mul(Matrix.Mul(positionScaling, positionTranslation), localToClipTransform);
+
+			draw
+			{
+				BlendEnabled: true;
+				BlendSrcRgb: BlendOperand.One;
+				BlendDstRgb: BlendOperand.OneMinusSrcAlpha;
+				BlendSrcAlpha: BlendOperand.OneMinusDstAlpha;
+				BlendDstAlpha: BlendOperand.One;
+
+				CullFace : PolygonFace.None;
+				DepthTestEnabled: false;
+				float2[] verts: readonly new float2[] {
+
+					float2(0,0),
+					float2(1,0),
+					float2(1,1),
+					float2(0,0),
+					float2(1,1),
+					float2(0,1)
+				};
+
+				float2 v: vertex_attrib(verts);
+				ClipPosition: Vector.Transform(v, positionMatrix);
+				PixelColor: color;
+			};
+		}
 	}
 }
