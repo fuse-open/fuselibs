@@ -3,10 +3,10 @@ using Uno.Graphics;
 using Uno.Collections;
 using Uno.Compiler.ExportTargetInterop;
 using OpenGL;
-using Fuse.Elements;
+using Fuse.Common;
 using Fuse.Controls.Graphics;
 using Fuse.Controls;
-using Fuse.Drawing;
+using Fuse.Elements;
 
 namespace Fuse.iOS.Bindings
 {

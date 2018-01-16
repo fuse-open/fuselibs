@@ -1,7 +1,7 @@
 using Uno;
 using Uno.Graphics;
 
-namespace Fuse.Drawing
+namespace Fuse.Common
 {
 	class Blitter
 	{

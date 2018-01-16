@@ -3,7 +3,7 @@ using Uno.Graphics;
 using Uno.UX;
 using Uno.Collections;
 
-using Fuse.Drawing;
+using Fuse.Common;
 using Fuse.Nodes;
 
 namespace Fuse.Elements

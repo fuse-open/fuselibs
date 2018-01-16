@@ -2,9 +2,9 @@ using Uno;
 using Uno.Graphics;
 using OpenGL;
 using Fuse.Elements;
+using Fuse.Common;
 using Fuse.Controls;
 using Fuse.Controls.Graphics;
-using Fuse.Drawing;
 using Fuse.Resources;
 using Uno.Compiler.ExportTargetInterop;
 

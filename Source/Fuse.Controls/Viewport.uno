@@ -2,8 +2,8 @@ using Uno;
 using Uno.Graphics;
 using Uno.UX;
 
+using Fuse.Common;
 using Fuse.Nodes;
-using Fuse.Drawing;
 
 namespace Fuse.Elements
 {

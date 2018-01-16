@@ -8,6 +8,7 @@ using OpenGL;
 using Fuse.Resources;
 
 using Fuse.Elements;
+using Fuse.Common;
 
 namespace Fuse.Drawing
 {

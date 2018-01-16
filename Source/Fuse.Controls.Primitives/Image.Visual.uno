@@ -1,6 +1,7 @@
 using Uno;
 using Uno.Graphics;
 
+using Fuse.Common;
 using Fuse.Drawing;
 using Fuse.Internal;
 using Fuse.Elements;

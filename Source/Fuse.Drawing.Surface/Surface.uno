@@ -1,6 +1,7 @@
 using Uno;
 using Uno.Collections;
 
+using Fuse.Common;
 using Fuse.Elements;
 
 namespace Fuse.Drawing
