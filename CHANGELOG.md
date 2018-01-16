@@ -1,5 +1,8 @@
 # Unreleased
 
+### Image
+- Fixed issue where `<Image />` inside a `<NativeViewHost />` on android could display incorrectly
+
 ### ScrollView
 - Fixed bug where ScrollView's inside a NativeViewHost would scroll to fast
 - Fixed bug where the scrolling indicator in a native ScrollView would not show on iOS
