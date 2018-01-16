@@ -1,4 +1,6 @@
 using Uno;
+
+using Fuse.Common;
 using Fuse.Controls.FallbackTextRenderer;
 using Fuse.Elements;
 
@@ -84,9 +86,11 @@ namespace Fuse.Controls.FallbackTextEdit
 								var endPos = intersection.End.Char < wrappedLine.LineTextEndOffset ?
 									wrappedLine.PosToBounds(_wrapInfo, intersection.End.Char - wrappedLine.LineTextStartOffset) :
 									wrappedLine.LineWidth;
-								Fuse.Elements.Internal.ElementDraw.Impl.Rectangle(dc, this,
-									Math.Floor(float2(_offset.X + x + startPos, _offset.Y + selectionY)), 
-									float2(endPos - startPos, _wrapInfo.LineHeight), _selectionColor );
+
+								var localRect = new Rect(
+									Math.Floor(float2(_offset.X + x + startPos, _offset.Y + selectionY)),
+									float2(endPos - startPos, _wrapInfo.LineHeight));
+								Blitter.Singleton.Fill(localRect, dc.GetLocalToClipTransform(this), _selectionColor);
 							}
 						}
 
