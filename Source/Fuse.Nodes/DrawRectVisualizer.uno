@@ -2,6 +2,8 @@ using Uno;
 using Uno.Collections;
 using Uno.Graphics;
 
+using Fuse.Common;
+
 namespace Fuse.Nodes
 {
 	/*
@@ -127,30 +129,7 @@ namespace Fuse.Nodes
 				return;
 
 			// Darken original rendering by drawing a semi-transparent rect on top of it
-			draw
-			{
-				float2[] Vertices: new[]
-				{
-					float2(0, 0), float2(0, 1), float2(1, 1),
-					float2(0, 0), float2(1, 1), float2(1, 0)
-				};
-
-				float2 Coord: vertex_attrib(Vertices);
-
-				ClipPosition: float4(Coord * 2 - 1, 0, 1);
-
-				PixelColor: float4(0, 0, 0, 0.5f);
-
-				CullFace : PolygonFace.None;
-				DepthTestEnabled: false;
-
-				BlendEnabled: true;
-				BlendSrcRgb: BlendOperand.SrcAlpha;
-				BlendDstRgb: BlendOperand.OneMinusSrcAlpha;
-
-				BlendSrcAlpha: BlendOperand.One;
-				BlendDstAlpha: BlendOperand.OneMinusSrcAlpha;
-			};
+			Blitter.Singleton.Fill(new Rect(float2(-1, -1), float2(2, 2)), float4x4.Identity, float4(0, 0, 0, 0.5f));
 
 			// Draw rects
 			foreach(var r in _drawRects)
