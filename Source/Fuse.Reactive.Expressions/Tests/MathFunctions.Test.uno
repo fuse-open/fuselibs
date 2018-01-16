@@ -239,6 +239,17 @@ namespace Fuse.Reactive.Test
 				Assert.AreEqual( float4(13,27,35,46), p.c4.Object );
 			}
 		}
+
+		[Test]
+		public void Negate()
+		{
+			var p = new UX.MathFunctions.Negate();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				Assert.AreEqual( -10.0, p.b.Object ); //this is expecting a double
+				Assert.AreEqual( 20.0, p.b2.Object );
+			}
+		}
 		
 		[Test]
 		//functions where the conversion was being handled by the Marshal class. This is just a base sanity check

@@ -70,7 +70,8 @@ namespace Fuse.Reactive
 
 	public sealed class Negate: UnaryOperator
 	{
-		public Negate([UXParameter("Operand")] Expression operand): base(operand) {}
+		[UXConstructor]
+		public Negate([UXParameter("Operand")] Expression operand): base(operand, Flags.None) {}
 		protected override bool TryCompute(object operand, out object result)
 		{
 			return Marshal.TryMultiply(operand, -1, out result);
