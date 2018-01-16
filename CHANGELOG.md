@@ -1,5 +1,10 @@
 # Unreleased
 
+
+# 1.6
+
+## 1.6.1
+
 ### Image
 - Fixed issue where `<Image />` inside a `<NativeViewHost />` on android could display incorrectly
 
@@ -7,9 +12,6 @@
 - Fixed bug where ScrollView's inside a NativeViewHost would scroll to fast
 - Fixed bug where the scrolling indicator in a native ScrollView would not show on iOS
 - Added `ContentSize` property on the `Fuse.Controls.Native.IScrollViewHost` interface. Needed by iOS to layout the native scrollview correctly
-
-
-# 1.6
 
 ## 1.6.0
 
