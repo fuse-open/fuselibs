@@ -40,6 +40,11 @@ namespace Fuse.Reactive.Test
 				Assert.AreEqual( "[ab]", p.a.StringValue);
 				Assert.AreEqual( "x", p.b.StringValue);
 				Assert.AreEqual( "[hi]", p.c.StringValue);
+
+				Assert.AreEqual(true, p.d.BoolValue);
+				Assert.AreEqual(false, p.e.BoolValue);
+				Assert.AreEqual(false, p.f.BoolValue);
+				Assert.AreEqual(true, p.g.BoolValue);
 			}
 		}
 	}

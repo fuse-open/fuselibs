@@ -77,4 +77,22 @@ namespace Fuse.Reactive
 			return Marshal.TryMultiply(operand, -1, out result);
 		}
 	}
+
+	public sealed class LogicalNot: UnaryOperator
+	{
+		[UXConstructor]
+		public LogicalNot([UXParameter("Operand")] Expression operand): base(operand) {}
+
+		protected override bool TryCompute(object operand, out object result)
+		{
+			bool areEqual;
+			if (!Marshal.TryEqualTo(operand, true, out areEqual))
+			{
+				result = false;
+				return false;
+			}
+			result = !areEqual;
+			return true;
+		}
+	}
 }
