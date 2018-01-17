@@ -1,0 +1,16 @@
+<Panel ux:Class="UX.DataSubscription.Cascade">
+	<JavaScript>
+		exports.a = "1"
+		exports.b = "B"
+	</JavaScript>
+	<Text Value="{a}" ux:Name="a1"/>
+	<Text Value="{b}" ux:Name="b1"/>
+	
+	<Panel>
+		<JavaScript>
+			exports.a = "2"
+		</JavaScript>
+		<Text Value="{a}" ux:Name="a2"/>
+		<Text Value="{b}" ux:Name="b2"/>
+	</Panel>
+</Panel>

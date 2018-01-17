@@ -34,14 +34,17 @@ namespace Fuse
 			return null;
 		}
 
-		class DataWatcher: Node.DataFinder, IDataListener
+		class DataWatcher: IDataListener
 		{
 			Node _node;
 			Scripting.Context _context;
 			Scripting.Function _updateCallback;
+			NodeDataSubscription _dataSub;
+			string _key;
 
-			public DataWatcher(Node node, Scripting.Context context, Scripting.Function updateCallback, string key): base(key)
+			public DataWatcher(Node node, Scripting.Context context, Scripting.Function updateCallback, string key)
 			{
+				_key = key;
 				_node = node;
 				_context = context;
 				_updateCallback = updateCallback;
@@ -51,29 +54,24 @@ namespace Fuse
 
 			void Subscribe()
 			{
-				_node.EnumerateData(this);
-				_node.AddDataListener(Key, this);
-			}
-
-			void Unsubscribe()
-			{
-				_node.RemoveDataListener(Key, this);
-			}
-
-			void IDataListener.OnDataChanged()
-			{
-				_node.EnumerateData(this);
+				_dataSub = _node.SubscribeData(_key, this);
+				if (_dataSub.HasData)
+					((IDataListener)this).OnDataChanged();
 			}
 
 			public void Dispose()
 			{
-				UpdateManager.PostAction(Unsubscribe);
+				if (_dataSub != null)
+				{
+					_dataSub.Dispose();
+					_dataSub = null;
+				}
 			}
 
 			object _data;
-			protected override void Resolve(IObject provider, object data)
+			void IDataListener.OnDataChanged()
 			{
-				_data = data;
+				_data = _dataSub.Data;
 				_context.ThreadWorker.Invoke(Update);
 			}
 

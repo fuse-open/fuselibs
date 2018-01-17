@@ -3,21 +3,23 @@ using Uno.Collections;
 
 namespace Fuse.Reactive
 {
-	class DataSubscription: Node.DataFinder, IDisposable, Node.IDataListener, IPropertyObserver, IWriteable
+	class DataSubscription: IDisposable, Node.IDataListener, IPropertyObserver, IWriteable
 	{
 		IExpression _source;
 		Node _origin;
 		IListener _listener;
 		IDisposable _diag;
+		string _key;
+		Node.NodeDataSubscription _dataSub;
 
-		public DataSubscription(IExpression source, Node origin, string key, IListener listener): base(key)
+		public DataSubscription(IExpression source, Node origin, string key, IListener listener)
 		{
+			_key = key;
 			_source = source;
 			_origin = origin;
 			_listener = listener;
 
-			_origin.AddDataListener(key, this);
-
+			_dataSub = _origin.SubscribeData(key, this);
 			FindData();
 		}
 
@@ -26,15 +28,23 @@ namespace Fuse.Reactive
 
 		void FindData()
 		{
-			if (_origin == null) return;
+			if (_dataSub == null) return;
 
 			ClearDiagnostic();
+			DisposeSubscription();
 			_isResolved = false;
-			_origin.EnumerateData(this); 
-
-			if (!_isResolved)
+			
+			if (_dataSub.HasData)
 			{
-				_diag = Diagnostics.ReportTemporalUserWarning("{" + Key + "} not found in data context", _origin);
+				var obs = _dataSub.Provider as IObservableObject;
+				if (obs != null)
+					_sub = obs.Subscribe(this);
+
+				ResolveInner(_dataSub.Data);
+			}
+			else
+			{
+				_diag = Diagnostics.ReportTemporalUserWarning("{" + _key + "} not found in data context", _origin);
 				if (_hasData)
 				{
 					_listener.OnLostData(_source);
@@ -60,7 +70,7 @@ namespace Fuse.Reactive
 			var w = _sub as IPropertySubscription;
 			if (w != null)
 			{
-				if (w.TrySetExclusive(Key, newValue))
+				if (w.TrySetExclusive(_key, newValue))
 				{
 					_currentData = newValue;
 					return true;
@@ -70,21 +80,10 @@ namespace Fuse.Reactive
 			return false;
 		}
 
-		protected override void Resolve(IObject provider, object data)
-		{
-			DisposeSubscription();
-
-			var obs = provider as IObservableObject;
-			if (obs != null)
-				_sub = obs.Subscribe(this);
-
-			ResolveInner(data);
-		}
-
 		void IPropertyObserver.OnPropertyChanged(IDisposable sub, string propertyName, object newValue)
 		{
 			if (sub != _sub) return;
-			if (propertyName != Key) return;
+			if (propertyName != _key) return;
 			ResolveInner(newValue);
 		}
 
@@ -103,10 +102,15 @@ namespace Fuse.Reactive
 		{
 			DisposeSubscription();
 			ClearDiagnostic();
-			_origin.RemoveDataListener(Key, this);
+			_origin.RemoveDataListener(_key, this);
 			_origin = null;
 			_source = null;
 			_listener = null;
+			if (_dataSub != null)
+			{
+				_dataSub.Dispose();
+				_dataSub =  null;
+			}
 		}
 
 		void Node.IDataListener.OnDataChanged()
