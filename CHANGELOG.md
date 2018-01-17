@@ -3,7 +3,7 @@
 
 # 1.6
 
-## 1.6.1
+## 1.6.0
 
 ### Image
 - Fixed issue where `<Image />` inside a `<NativeViewHost />` on android could display incorrectly
@@ -12,8 +12,6 @@
 - Fixed bug where ScrollView's inside a NativeViewHost would scroll to fast
 - Fixed bug where the scrolling indicator in a native ScrollView would not show on iOS
 - Added `ContentSize` property on the `Fuse.Controls.Native.IScrollViewHost` interface. Needed by iOS to layout the native scrollview correctly
-
-## 1.6.0
 
 ### Let
 - Added specific type version of `Let`, such as `LetFloat` and `LetString`. This improve the ability to connect pieces of the UX together and do animation/transitions in UX without using JavaScript.
