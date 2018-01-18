@@ -567,95 +567,14 @@ namespace Fuse.Drawing
 			return rightMin + (valueScaled * rightSpan);
 		}
 
-		/* identify the start and end of the gradient, along with the start of bounds and end of bounds
+		/**
+			A Clamped WrapMode for ColorBlend is not supported (despite being in the docs). We workaround by duplicating the start/end colors and extending the start/end points to cover the entire drawing region.
+			
+			This is done quite roughly now and assume the input is reasonably sane (not some/both points for outside of the rectangle, or of tiny distance).  It relies on DotNet donig the trimming of excessive start/end lines on its own (the calc here will almost always produce a line that is excessively long).
 		*/
-		static float4 CalcGradientPoints(RectangleF bounds, float startX, float startY, float endX, float endY) 
+		static ColorBlend CreateColorBlend(LinearGradient lg, RectangleF bounds, float2 inStart, float2 inEnd,
+			out float2 gStart, out float2 gEnd)
 		{
-			var finalBoundX = bounds.X + bounds.Width;
-			var finalBoundY = bounds.Y + bounds.Height;
-
-			var xDiff = endX - startX;
-			var yDiff = endY - startY;
-
-			// this is the "best case" gradient of the line
-			// in the cases where the diff is not best case, we adjust it
-			// accordingly 
-			var finalBoundDiff = xDiff / yDiff;
-
-			// this is the point the gradient _should_ start at
-			// Sometimes it may not if the gradient only goes in one direction, or equally in two directions
-			var startBoundPoint = - ( (finalBoundDiff * bounds.X) - bounds.Y  );
-			var endBoundPoint = - ( (finalBoundDiff * (bounds.X + bounds.Width)) - (bounds.Y + bounds.Height));
-
-
-			// when our gradient only changes in the y
-			if (Math.Round(xDiff) == 0)
-			{
-				finalBoundDiff = 0;
-				startBoundPoint = bounds.Y;
-				endBoundPoint = bounds.Y + bounds.Height;
-			} 
-			// when our gradient only changes in the x
-			else if (Math.Round(yDiff) == 0)
-			{
-				finalBoundDiff = 0;
-				startBoundPoint = bounds.X;
-				endBoundPoint = bounds.X + bounds.Width;
-			}
-			// when our gradient goes equally in X and Y
-			else if (Math.Round(finalBoundDiff) == 1) 
-			{
-				finalBoundDiff = 0;
-
-				// this should not matter, but accounts for rounding errors that may occur
-				if (yDiff <= xDiff)
-				{
-					startBoundPoint = startY;
-					endBoundPoint = endY;
-				}
-				else 
-				{
-					startBoundPoint = startX;
-					startBoundPoint = endX;
-				}
-			}
-			else 
-			{
-				// catch either bound point being 0 - default to X
-				if (startBoundPoint == 0)
-				{
-					startBoundPoint = startX;
-				}
-
-				if (endBoundPoint == 0)
-				{
-					endBoundPoint = endX;
-				}	
-			}
-
-
-			var gradientStartPoint = - ( (finalBoundDiff * startX) - startY);
-			var gradientEndPoint = - ( (finalBoundDiff * endX) - endY);
-
-			// when we failed to calculate the right gradient start point
-			if (gradientStartPoint == 0)
-			{
-				gradientStartPoint = xDiff == 0 ? startY : startX;
-			} 
-
-			if (gradientEndPoint == 0)
-			{
-				gradientEndPoint = xDiff == 0 ? endY : endX;
-			}
-
-			return float4(gradientStartPoint, gradientEndPoint, startBoundPoint, endBoundPoint);
-		}
-
-		static ColorBlend CreateColorBlend(LinearGradient lg, RectangleF bounds, float startX, float startY, float endX, float endY)
-		{
-
-			var calculatedPoints = CalcGradientPoints(bounds, startX, startY, endX, endY);
-
 			var stops = lg.SortedStops;
 
 			// we have 2 extra points, one at each end. This enables clamping
@@ -674,6 +593,22 @@ namespace Fuse.Drawing
 			colors[numberOfColorPoints - 1] = endColor;
 			offsets[numberOfColorPoints - 1] = 1.0f;
 
+			var inVec = Vector.Normalize(inEnd - inStart);
+			var inLen = Vector.Length(inEnd - inStart);
+			//safety
+			if (inLen < 0.1f) {
+				inVec = inEnd - inStart; //this affects only gStart/gEnd so okay to be incorrect in nonsense case
+				inLen = 1;
+			}
+
+			var minLen = Vector.Length( float2(bounds.Width, bounds.Height) );
+			//extra length needed to extend line to cover whole region
+			var extraLen = Math.Max(minLen - inLen,0);
+			var exOff = extraLen / inLen;
+			var exLen = inLen * exOff;
+			//the 0/1 input offsets as offsets in the adjusted line
+			var inOffStart = exOff / (1 + 2 * exOff);
+			var inOffEnd = (1+exOff) / (1 + 2 * exOff);
 
 			for (int i=0; i < stops.Length; ++i)
 			{
@@ -682,16 +617,12 @@ namespace Fuse.Drawing
 				// our indexes in the storing array are offset by 1
 				// since we have manually filled the first spot
 				colors[i + 1] = ColorFromFloat4(stop.Color);
-				offsets[i + 1] = stop.Offset;
-
-				// map the point between the two gradient coordinates
-				var mappedPoint = mapPoint(stop.Offset, 0, 1, calculatedPoints.X, calculatedPoints.Y);
-				// then map it onto the entire line of the path bounds
-				var backMapped = mapPoint(mappedPoint, calculatedPoints.Z, calculatedPoints.W, 0, 1);
-
-				offsets[i + 1] = backMapped;
+				offsets[i + 1] = inOffStart + (stop.Offset * (inOffEnd-inOffStart));
 			}
 
+			gStart = inStart - inVec * exLen;
+			gEnd = inEnd + inVec * exLen;
+			
 			ColorBlend blend = new ColorBlend();
 			blend.Positions = offsets; 
 			blend.Colors = colors; 
@@ -779,11 +710,14 @@ namespace Fuse.Drawing
 				return;
 
 			var state = graphics.Save();
-			ColorBlend blend = CreateColorBlend(lg, bounds, startX, startY, endX, endY);
+			var gStart = float2(0);
+			var gEnd = float2(0);
+			ColorBlend blend = CreateColorBlend(lg, bounds, float2(startX, startY), float2(endX, endY),
+				out gStart, out gEnd);
 
 			var brush = new LinearGradientBrush(
-				new PointF(bounds.X, bounds.Y),
-				new PointF(bounds.X + bounds.Width, bounds.Y + bounds.Height),
+				new PointF(gStart.X, gStart.Y),
+				new PointF(gEnd.X, gEnd.Y),
 				DotNetNative.Color.Black,
 				DotNetNative.Color.Black
 			);
@@ -826,27 +760,13 @@ namespace Fuse.Drawing
 			if (bounds.IsEmpty)
 				return;
 
-			var blend = CreateColorBlend(lg, bounds, startX, startY, endX, endY);
-
-			var startPoint = new PointF(bounds.X, bounds.Y);
-			var endPoint = new PointF(bounds.X + bounds.Width, bounds.Y + bounds.Height);
-
-			// when our gradient is only in the Y 
-			if (startX == endX)
-			{
-				startPoint = new PointF(0, bounds.Y);
-				endPoint = new PointF(0, bounds.Y + bounds.Height);
-			} 
-			// when our gradient is only in the X
-			else if (startY == endY)
-			{
-				startPoint = new PointF(bounds.X, 0);
-				endPoint = new PointF(bounds.X + bounds.Width, 0);
-			}
+			var gStart = float2(0);
+			var gEnd = float2(0);
+			var blend = CreateColorBlend(lg, bounds, float2(startX, startY), float2(endX, endY), out gStart, out gEnd);
 
 			var brush = new LinearGradientBrush(
-				startPoint,
-				endPoint,
+				new PointF(gStart.X, gStart.Y),
+				new PointF(gEnd.X, gEnd.Y),
 				DotNetNative.Color.Black,
 				DotNetNative.Color.Black
 			);
