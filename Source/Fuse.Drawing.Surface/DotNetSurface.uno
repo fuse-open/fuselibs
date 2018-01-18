@@ -598,7 +598,7 @@ namespace Fuse.Drawing
 			var inLen = Vector.Length(inEnd - inStart);
 			//safety
 			if (inLen < 0.1f) {
-				inVec = inEnd - inStart; //this affects only gStart/gEnd so okay to be incorrect in nonsense case
+				inVec = float2(1); //this affects only gStart/gEnd so okay to be incorrect in nonsense case
 				inLen = 1;
 			}
 
