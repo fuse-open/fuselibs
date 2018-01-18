@@ -4,8 +4,8 @@ using Uno.Compiler.ExportTargetInterop;
 
 using OpenGL;
 
+using Fuse.Common;
 using Fuse.Elements;
-using Fuse.Drawing;
 using Fuse.Drawing.Primitives;
 
 namespace Fuse.Drawing

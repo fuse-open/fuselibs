@@ -4,6 +4,7 @@ using Uno.Compiler.ExportTargetInterop;
 
 using OpenGL;
 
+using Fuse.Common;
 using Fuse.Drawing.Primitives;
 
 namespace Fuse.Drawing

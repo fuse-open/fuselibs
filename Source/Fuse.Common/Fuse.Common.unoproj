@@ -9,6 +9,7 @@
   "InternalsVisibleTo": [
     "Fuse.Views",
     "Fuse.Android",
+    "Fuse.Android.TextRenderer",
     "Fuse.Animations",
     "Fuse.Common.Test",
     "Fuse.Controls.Native",
@@ -21,6 +22,7 @@
     "Fuse.Desktop",
     "Fuse.Drawing.Surface",
     "Fuse.Drawing.Surface.Test",
+    "Fuse.Effects",
     "Fuse.Elements.Test",
     "Fuse.Elements",
     "Fuse.Nodes",

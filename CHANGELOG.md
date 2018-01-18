@@ -16,6 +16,12 @@
 - Fixed bug where the scrolling indicator in a native ScrollView would not show on iOS
 - Added `ContentSize` property on the `Fuse.Controls.Native.IScrollViewHost` interface. Needed by iOS to layout the native scrollview correctly
 
+## Control
+- Setting the `Background` property to something else than SolidColor or StaticSolidColor has been deprecated, and gives a warning. Support for this will be removed in an upcoming release.
+
+## Video
+- Setting the `StretchMode` property to `Scale9` on VideoVisual has been depecated, and gives a warning. Support for this will be removed in an upcoming release.
+
 
 # 1.6
 

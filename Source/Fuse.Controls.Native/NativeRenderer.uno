@@ -1,7 +1,7 @@
 using Uno;
 using Uno.Compiler.ExportTargetInterop;
 using Uno.Graphics;
-using Fuse.Drawing;
+using Fuse.Common;
 using OpenGL;
 
 namespace Fuse.Controls.Native

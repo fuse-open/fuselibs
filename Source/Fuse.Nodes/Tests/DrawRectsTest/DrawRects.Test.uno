@@ -14,6 +14,8 @@ namespace DrawRectsTest
 
 	public class DrawRectsTest : TestBase
 	{
+		static float4 DarkeningRectColor = float4(0, 0, 0, 0.5f);
+
 		[Test]
 		public void EmptyPanelIsBlack()
 		{
@@ -26,7 +28,7 @@ namespace DrawRectsTest
 				using (var fb = root.CaptureDraw())
 				{
 					// Test a "random" pixel (center)
-					fb.AssertPixel(float4(0), int2(50, 50));
+					fb.AssertPixel(DarkeningRectColor, int2(50, 50), 1.5f / 255);
 				}
 			}
 			finally
@@ -47,7 +49,7 @@ namespace DrawRectsTest
 				using (var fb = root.CaptureDraw())
 				{
 					// Test pixel outside of element to ensure it's laid out how we expect
-					fb.AssertPixel(float4(0), int2(5, 5));
+					fb.AssertPixel(DarkeningRectColor, int2(5, 5), 1.5f / 255);
 
 					TestForDrawRects(fb, new Recti(10, 10, 90, 90), 1, float4(1));
 				}
@@ -70,7 +72,7 @@ namespace DrawRectsTest
 				using (var fb = root.CaptureDraw())
 				{
 					// Test pixel outside of element to ensure it's laid out how we expect
-					fb.AssertPixel(float4(0), int2(5, 5));
+					fb.AssertPixel(DarkeningRectColor, int2(5, 5), 1.5f / 255);
 
 					TestForDrawRects(fb, new Recti(10, 10, 90, 90), 1, float4(1));
 				}
@@ -93,7 +95,7 @@ namespace DrawRectsTest
 				using (var fb = root.CaptureDraw())
 				{
 					// Test pixel outside of element to ensure it's laid out how we expect
-					fb.AssertPixel(float4(0), int2(5, 5));
+					fb.AssertPixel(DarkeningRectColor, int2(5, 5), 1.5f / 255);
 
 					TestForDrawRects(fb, new Recti(10, 10, 90, 90), 1, float4(0, 1, 0, 1));
 				}
@@ -116,7 +118,7 @@ namespace DrawRectsTest
 				using (var fb = root.CaptureDraw())
 				{
 					// Test pixel outside of element to ensure it's laid out how we expect
-					fb.AssertPixel(float4(0), int2(5, 5));
+					fb.AssertPixel(DarkeningRectColor, int2(5, 5), 1.5f / 255);
 
 					TestForDrawRects(fb, new Recti(60, 10, 140, 90), 1, float4(0), float4(1));
 				}
@@ -139,7 +141,7 @@ namespace DrawRectsTest
 				using (var fb = root.CaptureDraw())
 				{
 					// Test pixel outside of element to ensure it's laid out how we expect
-					fb.AssertPixel(float4(0), int2(5, 5));
+					fb.AssertPixel(DarkeningRectColor, int2(5, 5), 1.5f / 255);
 
 					TestForDrawRects(fb, new Recti(10, 10, 90, 90), 1, float4(0, 0, 1, 1));
 				}
@@ -162,7 +164,7 @@ namespace DrawRectsTest
 				using (var fb = root.CaptureDraw())
 				{
 					// Test pixel outside of element to ensure it's laid out how we expect
-					fb.AssertPixel(float4(0), int2(5, 5));
+					fb.AssertPixel(DarkeningRectColor, int2(5, 5), 1.5f / 255);
 
 					TestForDrawRects(fb, new Recti(10, 10, 90, 90), 1, float4(1));
 				}
@@ -185,7 +187,7 @@ namespace DrawRectsTest
 				using (var fb = root.CaptureDraw())
 				{
 					// Test pixel outside of element to ensure it's laid out how we expect
-					fb.AssertPixel(float4(0), int2(5, 5));
+					fb.AssertPixel(DarkeningRectColor, int2(5, 5), 1.5f / 255);
 
 					TestForDrawRects(fb, new Recti(10, 10, 90, 90), 1, float4(1));
 				}
@@ -208,7 +210,7 @@ namespace DrawRectsTest
 				using (var fb = root.CaptureDraw())
 				{
 					// Test pixel outside of element to ensure it's laid out how we expect
-					fb.AssertPixel(float4(0), int2(5, 5));
+					fb.AssertPixel(DarkeningRectColor, int2(5, 5), 1.5f / 255);
 
 					TestForDrawRects(fb, new Recti(10, 10, 90, 90), 2, float4(1));
 				}
@@ -231,7 +233,7 @@ namespace DrawRectsTest
 				using (var fb = root.CaptureDraw())
 				{
 					// Test pixel outside of element to ensure it's laid out how we expect
-					fb.AssertPixel(float4(0), int2(5, 5));
+					fb.AssertPixel(DarkeningRectColor, int2(5, 5), 1.5f / 255);
 
 					TestForDrawRects(fb, new Recti(10, 10, 90, 90), 1, float4(1));
 				}
@@ -254,7 +256,7 @@ namespace DrawRectsTest
 				using (var fb = root.CaptureDraw())
 				{
 					// Test pixel outside of element to ensure it's laid out how we expect
-					fb.AssertPixel(float4(0), int2(5, 5));
+					fb.AssertPixel(DarkeningRectColor, int2(5, 5), 1.5f / 255);
 
 					TestForDrawRects(fb, new Recti(10, 10, 90, 90), 1, float4(1));
 				}
@@ -277,7 +279,7 @@ namespace DrawRectsTest
 				using (var fb = root.CaptureDraw())
 				{
 					// Test pixel outside of element to ensure it's laid out how we expect
-					fb.AssertPixel(float4(0), int2(5, 5));
+					fb.AssertPixel(DarkeningRectColor, int2(5, 5), 1.5f / 255);
 
 					TestForDrawRects(fb, new Recti(10, 10, 90, 90), 1, float4(1));
 				}
@@ -300,7 +302,7 @@ namespace DrawRectsTest
 				using (var fb = root.CaptureDraw())
 				{
 					// Test pixel outside of element to ensure it's laid out how we expect
-					fb.AssertPixel(float4(0), int2(5, 5));
+					fb.AssertPixel(DarkeningRectColor, int2(5, 5), 1.5f / 255);
 
 					TestForDrawRects(fb, new Recti(10, 10, 90, 90), 1, float4(1));
 				}
@@ -323,7 +325,7 @@ namespace DrawRectsTest
 				using (var fb = root.CaptureDraw())
 				{
 					// Test pixel outside of element to ensure it's laid out how we expect
-					fb.AssertPixel(float4(0), int2(5, 5));
+					fb.AssertPixel(DarkeningRectColor, int2(5, 5), 1.5f / 255);
 
 					TestForDrawRects(fb, new Recti(60, 10, 140, 90), 1, float4(1));
 				}
@@ -382,7 +384,7 @@ namespace DrawRectsTest
 					using (var fb = root.CaptureDraw())
 					{
 						// Test pixel outside of element to ensure it's laid out how we expect
-						fb.AssertPixel(float4(0), int2(5, 5));
+						fb.AssertPixel(DarkeningRectColor, int2(5, 5), 1.5f / 255);
 
 						TestForDrawRects(fb, new Recti(60, 10, 140, 90), 1, float4(float3(0.92f), 1));
 					}
@@ -406,7 +408,7 @@ namespace DrawRectsTest
 				using (var fb = root.CaptureDraw())
 				{
 					// Test pixel outside of element to ensure it's laid out how we expect
-					fb.AssertPixel(float4(0), int2(5, 5));
+					fb.AssertPixel(DarkeningRectColor, int2(5, 5), 1.5f / 255);
 
 					TestForDrawRects(fb, new Recti(10, 10, 190, 90), 1, float4(1));
 				}
@@ -449,7 +451,7 @@ namespace DrawRectsTest
 					using (var fb = root.CaptureDraw())
 					{
 						// Test pixel outside of element to ensure it's laid out how we expect
-						fb.AssertPixel(float4(0), int2(5, 5));
+						fb.AssertPixel(DarkeningRectColor, int2(5, 5), 1.5f / 255);
 
 						TestForDrawRects(fb, new Recti(10, 10, 190, 90), 1, float4(float3(0.92f), 1));
 					}
@@ -472,9 +474,8 @@ namespace DrawRectsTest
 			float eps = 5.0f / 255.0f;
 
 			// Darken incoming color to simulate darkened rect drawn before the draw rects
-			float4 darkeningRectColor = float4(0, 0, 0, 0.5f);
-			float4 darkenedCornerColor = float4(darkeningRectColor.XYZ * darkeningRectColor.W + drawnCornerColor.XYZ * (1.0f - darkeningRectColor.W), drawnCornerColor.W);
-			float4 darkenedCenterColor = float4(darkeningRectColor.XYZ * darkeningRectColor.W + drawnCenterColor.XYZ * (1.0f - darkeningRectColor.W), drawnCenterColor.W);
+			float4 darkenedCornerColor = float4(DarkeningRectColor.XYZ * DarkeningRectColor.W + drawnCornerColor.XYZ * (1.0f - DarkeningRectColor.W), DarkeningRectColor.W + drawnCornerColor.W);
+			float4 darkenedCenterColor = float4(DarkeningRectColor.XYZ * DarkeningRectColor.W + drawnCenterColor.XYZ * (1.0f - DarkeningRectColor.W), DarkeningRectColor.W + drawnCenterColor.W);
 
 			// Calculate the colors of the rendered draw rect
 			var leftTopColor = float4(0, 0, 0, 1);

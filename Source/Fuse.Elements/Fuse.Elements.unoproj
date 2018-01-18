@@ -55,7 +55,6 @@
     "Caching/ElementBatcher.uno:Source",
     "Caching/ElementBatch.uno:Source",
     "Drawing/ImageFill.uno:Source",
-    "Drawing/Rectangle.uno:Source",
     "Drawing/Scale9Rectangle.uno:Source",
     "Effects/Effect.uno:Source",
     "Element.Actions.uno:Source",
