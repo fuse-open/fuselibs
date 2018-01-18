@@ -1,8 +1,5 @@
 # Unreleased
 
-## LinearGradient
-- Fixes invalid gradients in desktop preview (DotNet targets)
-
 ## Expressions
 - Added support for boolean `==` and `!=` expressions, which can be used for things like negating boolean expressions.
 - Added support for the logical not operator. This means you can do "!someBoolean" to logically negate it.
