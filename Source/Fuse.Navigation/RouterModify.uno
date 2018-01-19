@@ -9,7 +9,7 @@ namespace Fuse.Navigation
 	/**
 		Performs a transition on the router with extended options.
 
-		> Note: there is also a JavaScript interface for [Router.modify](api:fuse/navigation/router/modify_eca3d620).
+		> Note: there is also a JavaScript interface for [Router.modify](api:fuse/navigation/router/modify_0f0d575d).
 
 		Basic use requires setting the property `Bookmark` to specify the route to navigate to,
 		and the `How` property to specify what navigation action will be used, most frequently `Push` or `Goto`.
