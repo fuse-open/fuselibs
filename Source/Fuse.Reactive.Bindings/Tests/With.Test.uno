@@ -1,7 +1,8 @@
 using Uno;
+using Uno.UX;
 using Uno.Testing;
 
-using Fuse;
+using Fuse.Reactive;
 
 using FuseTest;
 
@@ -19,6 +20,30 @@ namespace Fuse.Test
 			{
 				root.StepFrameJS();
 				Assert.AreEqual("Hello", GetText(p));
+			}
+		}
+		
+		[Test]
+		public void Basic()
+		{
+			var p = new UX.With.Basic();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				root.StepFrameJS();
+				Assert.AreEqual( "Text", p.txt.Value );
+			}
+		}
+		
+		[Test]
+		[Ignore("Requires some reactive refactoring before it can be fixed")]
+		public void ContextRef()
+		{
+			var p = new UX.With.ContextRef();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				root.StepFrameJS();
+				//in the second item there is no data yet, it should not resovle to the `value` in the Each item
+				Assert.AreEqual("A", GetText(p));
 			}
 		}
 	}

@@ -1,0 +1,6 @@
+<Panel ux:Class="UX.DataSubscription.Minimal">
+	<JavaScript>
+		exports.a = "hi"
+	</JavaScript>
+	<Text Value="{a}" ux:Name="txt"/>
+</Panel>

@@ -837,6 +837,26 @@ namespace Fuse.Navigation.Test
 			}
 		}
 		
+		[Test]
+		//different context's should be treated like different parameters
+		public void ContextNoReuse()
+		{
+			var p = new UX.Navigator.ContextNoReuse();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				root.StepFrameJS();
+				Assert.AreEqual( "dog", GetRecursiveText(p.theNav));
+				
+				p.callPushTwo.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual( "dog,cat", GetRecursiveText(p.theNav));
+				
+				p.callReplaceThree.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual( "dog,weasel", GetRecursiveText(p.theNav));
+			}
+		}
+		
 		RouterPage _lastPage;
 		string _lastOperationStyle;
 		NavigationGotoMode _lastGotoMode;

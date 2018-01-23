@@ -1,7 +1,13 @@
 # Unreleased
 
+## Node Data Context
+- Deprecated and removed several functions which were not meant to be public. The deprecated ones will be removed shortly, as the current interface cannot be supported in the future.   `ISiblingDataProvider`, `ISubtreeDataProvider`, `IDataEnumerator`, `Node.GetFirstData`, `Node.EnumerateData`, `Node.BroadcastDataChange`, `Node.IDataListenere`, `Node.OnDataChanged`, `Node.AddDataListener`, `Node.RemoveDataListener`, `IObject`, `IArray`
+
 ## LinearGradient
 - Fixes invalid gradients in desktop preview (DotNet targets)
+
+## Navigator
+- Fixed the invalid reuse of an existing page if the context does not match
 
 ## Expressions
 - Added support for boolean `==` and `!=` expressions, which can be used for things like negating boolean expressions.

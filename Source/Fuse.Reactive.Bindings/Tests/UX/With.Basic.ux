@@ -1,0 +1,8 @@
+<Panel ux:Class="UX.With.Basic">
+	<JavaScript>
+		exports.menu = { type: "Text" }
+	</JavaScript>
+	<With Data="{menu}">
+		<Text Value="{type}" ux:Name="txt"/>
+	</With>
+</Panel>

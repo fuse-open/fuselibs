@@ -91,7 +91,7 @@ namespace Fuse.Reactive
 
 
 	/**
-		Deprecated.
+		Deprecated (< 2017-01-01)
 		@see With
 	*/
 	public class Select : With

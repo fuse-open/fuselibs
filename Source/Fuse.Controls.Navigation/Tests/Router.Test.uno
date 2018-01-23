@@ -685,7 +685,7 @@ namespace Fuse.Navigation.Test
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
 				p.gotoR.Pulse();
-				root.StepFrame();
+				root.StepFrameJS();
 				Assert.AreEqual( "5", GetText(p.nav.Active));
 				
 				p.pushSecond.Pulse();
