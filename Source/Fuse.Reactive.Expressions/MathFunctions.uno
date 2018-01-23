@@ -256,6 +256,32 @@ namespace Fuse.Reactive
 		public Atan2([UXParameter("Left")] Expression left, [UXParameter("Left")] Expression right)
 			: base(left, right, "atan2", Math.Atan2) {}
 	}
+	
+	/**
+		The inverse trigonometric tangent of the input components. Like `atan2` but uses the input vector for the X and Y values.
+		
+			atanVector( v ) == atan2( v.Y, v.X )
+	*/
+	[UXFunction("atanVector")]
+	public sealed class AtanVector : UnaryOperator
+	{
+		[UXConstructor]
+		public AtanVector([UXParameter("Operand")] Expression operand)
+			: base(operand, "atanVector")
+		{ }
+		
+		protected sealed override bool TryCompute(object operand, out object result)
+		{
+			result = null;
+			var v = float2(0);
+			if (!Marshal.TryToType<float2>(operand, out v))
+				return false;
+				
+			result = Math.Atan2(v.Y, v.X);
+			return true;
+		}
+	}
+	
 
 	[UXFunction("abs")]
 	public sealed class Abs : UnaryFloatOperator
