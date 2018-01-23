@@ -181,7 +181,7 @@ namespace Fuse.Drawing
 				if (length < 1e-5)
 				{
 					accumZero += length;
-					//TODO: need accumStart?
+					//accumStart might be needed, but I don't have a test case showing any problems
 					continue;
 				}
 					

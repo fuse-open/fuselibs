@@ -53,7 +53,7 @@ namespace Fuse.Controls
 				var ss = args[0].Value as SegmentedShape;
 				if (ss == null)
 				{
-					Fuse.Diagnostics.UserError( _name + " requires a SegmentedShape as first argument", this );
+					Fuse.Diagnostics.UserError( _expr._name + " requires a SegmentedShape as first argument", this );
 					ClearData();
 					return;
 				}

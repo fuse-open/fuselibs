@@ -145,6 +145,7 @@
 			<UpdatePage/>
 			<FrozenPanelPage/>
 			<OpacityPage/>
+			<PartialPaths/>
 			<Android>
 				<WebViewPage/>
 				<DatePickerPage/>
