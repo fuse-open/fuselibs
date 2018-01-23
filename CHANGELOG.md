@@ -34,7 +34,7 @@
 - Fixed the ordering of events so that `SelectionChanged` is emitted after the bound value is updated
 
 ### Expressions
-- Deprecated `UnaryOperator.OnNewOperand` and `OnLostOperand`.  These are part of a broken pattern of using unary expressions (and were not present on Binary/Ternary/QuaternaryOperator). You generally shouldn't need this, and should implement `Compute` instead. In the rare cases you need the vrituals you'll need to extend Expression and implement `Subscribe`, using `ExpressionListener` as a way to capture the correct functionality.
+- Deprecated `UnaryOperator.OnNewOperand` and `OnLostOperand`.  These are part of a broken pattern of using unary expressions (and were not present on Binary/Ternary/QuaternaryOperator). You generally shouldn't need this, and should implement `Compute` instead. In the rare cases you need the virtuals you'll need to extend Expression and implement `Subscribe`, using `ExpressionListener` as a way to capture the correct functionality.
 - Moved `VarArgFunction.Argument` to `Expression.Argument`. It's in a base class so still has visibility in `VarArgFunction`.
 - `VarArgFunction.Subscription.OnNewData` and `OnLostData` have been sealed. They should not have been open for overriding before as it conflicts with the inner workings on the class. Only the `OnNewPartialArguments` and `OnNewArguments` should be overridden.
 - Improved error handling on several operators and math functions. Instead of exceptions these should produce the standard conversion/computation warnings for invalid types.
@@ -48,7 +48,7 @@
 - Added `Instance.Item` to work similar to an `Each` with a single data item
 
 ### Expression Functions
-- Added `nonNull` for special evaluation handling for temporary null values. This may be useful in migrating code that is now producing many incompatbile argument warnings.
+- Added `nonNull` for special evaluation handling for temporary null values. This may be useful in migrating code that is now producing many incompatible argument warnings.
 - Changed operators / functions to report warnings if they are provided with invalid arguments. This should help locate errors in code that were previously silent and just didn't evaluate, or evaluated wrong.  Consider using the `??` operator, and the `isNull`, `isDefined` and `nonNull` functions to deal with non-data scenarios.
 - Removed `protected` from `BinaryOperator.OnNewOperands`. This was intended to be `internal` as there is no correct way to overload it. If you happened to use it we can provide a different base-class to use for you.
 
@@ -96,7 +96,7 @@
 - Fixed iOS issue where the return key would display "next" instead of "return".
 
 ### Navigation
-- `Navigator` blocks input to pages while trasitioning to new pages. To get the old behaviour, where input is not blocked, set `<Navigator BlockInput="Never">`.
+- `Navigator` blocks input to pages while transitioning to new pages. To get the old behaviour, where input is not blocked, set `<Navigator BlockInput="Never">`.
 
 ### Fuse.Reactive
 - Added `OnLostData` to the `IListener` interface. This is needed to properly deal with changes in context in
@@ -111,8 +111,8 @@
 - Fixed a bug where `IsFrozen` would ignore `Panel.Opacity`.
 
 ### Scripting
-- `Fuse.Scripting`'s `Function` type has a `Call` method, this now takes a `Scripting.Context`. This guarentees that it can only occur on the VM thread.
-- `Fuse.Scripting`'s `Object` type has a `CallMethod` method, this now takes a `Scripting.Context`. This guarentees that it can only occur on the VM thread.
+- `Fuse.Scripting`'s `Function` type has a `Call` method, this now takes a `Scripting.Context`. This guarantees that it can only occur on the VM thread.
+- `Fuse.Scripting`'s `Object` type has a `CallMethod` method, this now takes a `Scripting.Context`. This guarantees that it can only occur on the VM thread.
 - IMirror is no longer implemented by ThreadWorker. This functionality has been moved to the context
 - Moved `ArrayMirror`, `ClassInstance`, `ModuleInstance`, `ObjectMirror`, `Observable`, `ObservableProperty`, `RootableScriptModule` & `ThreadWorker` to the `Fuse.Scripting.JavaScript` namespace
 - Removed the `CanEvaluate` method and instead rely on the passing of the `Scripting.Context` to know if we are on the VM thread or not.
@@ -126,9 +126,9 @@
 - `Fuse.Scripting.JavaScript`'s `ThreadWorker` no longer blocks on construction
 - Implemented `console.error`, `console.warn` and `console.info`
 - Improved formatting for the above functions, as well as for `console.log`
-- The `ScriptMethod<T>` contstructor now throws if it's passed `ExecutionThread.MainThread` with Func, instead of failing to run it later on.
+- The `ScriptMethod<T>` constructor now throws if it's passed `ExecutionThread.MainThread` with Func, instead of failing to run it later on.
 - The `ScriptMethodInline` constructor that takes an `ExecutionThread` as an argument is now obsolete. Use the one without instead. JavaScript needs to run on the JavaScript thread anyway.
-- The `ScriptMethod<T>` contstructor that takes `Func` and `ExecutionThread` as arguments is now obsolete. Use the one without instead.
+- The `ScriptMethod<T>` constructor that takes `Func` and `ExecutionThread` as arguments is now obsolete. Use the one without instead.
 - Calling script-methods that doesn't take any arguments should now consistently give an error. This was already the case for many functions. This is intended to ensure user-code is forward-compatible.
 - `ScriptException.ErrorMessage` has been marked as obsolete, use `ScriptException.Message` instead.
 - `ScriptException.Message` no longer includes all details about the script-exception, only the message itself. If you want the extra information, use `ScriptException.ToString()`, or check the specific fields.
