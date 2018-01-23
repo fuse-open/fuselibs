@@ -5,12 +5,7 @@ cd "`dirname "$SELF"`" || exit 1
 PATH="Stuff:$PATH"
 OUT="upload"
 
-# Detect version
-if [ -n "$RELEASE_VERSION" ]; then
-    VERSION="$RELEASE_VERSION"
-else
-    VERSION=$(cat VERSION.txt)"-local"
-fi
+VERSION=$(cat VERSION.txt)
 
 # Detect revision
 if [ -n "$BUILD_VCS_NUMBER" ]; then
@@ -28,13 +23,16 @@ fi
 # use commit SHA as prerelease suffix
 case $BRANCH in
 release-*)
-    SUFFIX=
+    UNO_SUFFIX=
+    STUFF_SUFFIX="--suffix=-$VERSION"
     ;;
 master)
-    SUFFIX="--suffix=master-$REVISION"
+    UNO_SUFFIX="--suffix=master-$REVISION"
+    STUFF_SUFFIX="--suffix=-$VERSION-master-$REVISION"
     ;;
 *)
-    SUFFIX="--suffix=dev-$REVISION"
+    UNO_SUFFIX="--suffix=dev-$REVISION"
+    STUFF_SUFFIX="--suffix=-$VERSION-dev-$REVISION"
     ;;
 esac
 
@@ -49,18 +47,18 @@ for f in Source/*; do
     if [ -f "$project" ]; then
         uno pack "$project" \
             --out-dir="$OUT" \
-            $SUFFIX
+            $UNO_SUFFIX
     fi
 done
 
 stuff pack ProjectTemplates \
     --name=ProjectTemplates \
-    --suffix=-$VERSION \
+    $STUFF_SUFFIX \
     --output-dir=ProjectTemplatesUpload
 
 stuff pack Tests/AutomaticTestApp \
     --name=AutomaticTestApp \
-    --suffix=-$VERSION \
+    $STUFF_SUFFIX \
     --output-dir=AutomaticTestAppUpload
 
 # Build standalone release
