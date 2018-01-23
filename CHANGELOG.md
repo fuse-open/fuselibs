@@ -7,6 +7,8 @@
 - Added support for boolean `==` and `!=` expressions, which can be used for things like negating boolean expressions.
 - Added support for the logical not operator. This means you can do "!someBoolean" to logically negate it.
 - Fixed negation operator (`-`, eg. `-someValue`).
+- Added vector accessors `x(v)`, `y(v)`, `z(v)`, `w(v)` to access the component values of float/2/3/4 values. (Note: `x` and `y` have an overloaded meaning now, also providing Element position).
+- Added `atanVector` to compute arc-tangent from a `float2` input
 
 ### DatePicker/TimePicker
 - Fixed an Uno reflection bug that caused these pickers to crash in preview.
@@ -23,8 +25,6 @@
 - Setting the `StretchMode` property to `Scale9` on VideoVisual has been depecated, and gives a warning. Support for this will be removed in an upcoming release.
 - Added support for boolean `==` and `!=` expressions, which can be used for things like negating expressions.
 - Removed `protected` constructor for `LayoutFunction`, this was not meant to be public. Sealed the derived classes, they were not meant to be extendable.
-- Added vector accessors `x(v)`, `y(v)`, `z(v)`, `w(v)` to access the component values of float/2/3/4 values. (Note: `x` and `y` have an overloaded meaning now, also providing Element position).
-- Added `atanVector` to compute arc-tangent from a `float2` input
 
 
 # 1.6
