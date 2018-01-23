@@ -72,4 +72,40 @@ namespace Fuse.Triggers
 			base.OnUnrooted();
 		}
 	}
+
+	/**
+		Triggers if run on Desktop
+
+		## Example
+
+		This example sets a panel's background color to green if the app is
+		running on Desktop. If the app is ran on another platform, it will be
+		red:
+
+			<Panel ux:Name="panel" Background="#F00" >
+				<Desktop>
+					<Change panel.Background="#0F0" />
+				</Desktop>
+			</Panel>
+	*/
+	public class Desktop: Trigger
+	{
+		protected override void OnRooted()
+		{
+			base.OnRooted();
+			if defined(!Android && !iOS)
+			{
+				Activate();
+			}
+		}
+
+		protected override void OnUnrooted()
+		{
+			if defined(!Android && !iOS)
+			{
+				Deactivate();
+			}
+			base.OnUnrooted();
+		}
+	}
 }
