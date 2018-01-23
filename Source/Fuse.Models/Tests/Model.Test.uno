@@ -25,6 +25,22 @@ namespace Fuse.Models.Test
 			}
 		}
 
+		public void ArrayParentMeta()
+		{
+			var e = new UX.Model.ArrayParentMeta();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.StepFrameJS();
+				Assert.AreEqual("foo,bar,baz", GetRecursiveText(e));
+				e.step1.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual("foo,baz", GetRecursiveText(e));
+				e.step2.Perform();
+				root.StepFrameJS(); // Throws if test fails
+				Assert.AreEqual("baz,baz", GetRecursiveText(e));
+			}
+		}
+
 		[Test]
 		public void ReplaceAt() 
 		{
