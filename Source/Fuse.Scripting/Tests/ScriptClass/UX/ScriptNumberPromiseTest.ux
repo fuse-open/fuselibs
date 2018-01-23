@@ -1,0 +1,38 @@
+<Panel ux:Class="UX.ScriptNumberPromiseTests">
+	<Panel ux:Class="UX.NumberBasicTest">
+		<Fuse.Scripting.Test.CustomNumberPanel ux:Name="customNumberPanel" >
+
+			<JavaScript>
+				var Observable = require("FuseJS/Observable");
+
+				var numberResult = Observable();
+				var numberError = Observable();
+
+				customNumberPanel.getNumber()
+					.then(function (result) {
+						numberResult.value = result;
+					})
+					.catch(function (err) {
+						numberError.value = err;
+					});
+
+				module.exports = {
+					numberResult: numberResult,
+					numberError: numberError
+				};
+
+			</JavaScript>
+
+			<NumberProperties
+				ux:Name="NumberProperties"
+				NumberResult="{numberResult ?? -1}"
+				NumberError="{numberError}" />
+
+			<Panel ux:Class="NumberProperties">
+				<double ux:Property="NumberResult" />
+				<string ux:Property="NumberError" />
+			</Panel>
+
+		</Fuse.Scripting.Test.CustomNumberPanel>
+	</Panel>
+</Panel>
