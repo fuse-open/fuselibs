@@ -12,6 +12,20 @@ namespace Fuse.Models.Test
 	public class ModelTest : ModelTestBase
 	{
 		[Test]
+		public void NestedArray()
+		{
+			var e = new UX.Model.NestedArray();
+			using(var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.StepFrameJS();
+				Assert.AreEqual("", GetRecursiveText(e));
+				e.push.Perform(); // Throws if test fails
+				root.StepFrameJS();
+				Assert.AreEqual("0,1,2", GetRecursiveText(e));
+			}
+		}
+
+		[Test]
 		public void ReplaceAt() 
 		{
 			var e = new UX.Model.ReplaceAt();
