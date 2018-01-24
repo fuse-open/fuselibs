@@ -29,7 +29,6 @@
 
 ## Video
 - Setting the `StretchMode` property to `Scale9` on VideoVisual has been depecated, and gives a warning. Support for this will be removed in an upcoming release.
-- Added support for boolean `==` and `!=` expressions, which can be used for things like negating expressions.
 - Removed `protected` constructor for `LayoutFunction`, this was not meant to be public. Sealed the derived classes, they were not meant to be extendable.
 
 
