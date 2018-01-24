@@ -139,6 +139,7 @@ namespace Fuse.Text
 
 		public void Draw(float4 color, float4x4 pixelToClipSpaceMatrix)
 		{
+			color = float4(color.XYZ * color.W, color.W);
 			lock (_glyphAtlasMutex)
 			{
 				var batches = GetBatches();
