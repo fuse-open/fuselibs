@@ -467,7 +467,7 @@ function Model(initialState, stateInitializer)
 			node.splice(index, 0, null);
 			node[index] = item = wrap(index, item)
 			
-			TreeObservable.insertAt.apply(store, getPath().concat(index, item));
+			TreeObservable.insertAt.apply(store, getPath().concat([index, item]));
 			changesDetected++;
 		}
 
@@ -476,7 +476,7 @@ function Model(initialState, stateInitializer)
 				var index = node.length;
 				node.push(null);
 				node[index] = item = wrap(index, item);
-				TreeObservable.add.apply(store, getPath().concat(item));
+				TreeObservable.add.apply(store, getPath().concat([item]));
 			}
 			
 			changesDetected++;
