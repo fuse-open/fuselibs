@@ -18,6 +18,7 @@ namespace Fuse.iOS.Bindings
 		float2 _layoutSize;
 		ObjC.Object _textColor; // UIColor*
 		ObjC.Object _style; // NSMutableParagraphStyle*
+		public float TextOpacity;
 		
 		public ObjC.Object LayoutManager; // NSLayoutManager*
 		public ObjC.Object TextContainer; // NSTextContainer*
@@ -47,7 +48,9 @@ namespace Fuse.iOS.Bindings
 
 			_font = Fuse.Controls.Native.iOS.FontCache.Get(control.Font.Descriptors[0], control.FontSize * control.Viewport.PixelsPerPoint);
 
-			_textColor = ToUIColor(control.TextColor);
+			//iOS Text rendering fails to apply opacity to emoji, therefore we apply opacity on our own
+			_textColor = ToUIColor(float4(control.TextColor.XYZ,1));
+			TextOpacity = control.TextColor.W;
 
 			ClearTextContainers(LayoutManager);
 
@@ -265,7 +268,7 @@ namespace Fuse.iOS.Bindings
 			}
 
 			var pointPosition = _textLayout.PixelBounds.Position / _control.Viewport.PixelsPerPoint;
-			Blitter.Singleton.Blit(_texture, new Rect(pointPosition, pointSize), dc.GetLocalToClipTransform(where), 1.0f, true);
+			Blitter.Singleton.Blit(_texture, new Rect(pointPosition, pointSize), dc.GetLocalToClipTransform(where), _textLayout.TextOpacity, true);
 		}
 
 		static CGContextRef CGBitmapContextCreate(IntPtr textureBuffer, int width, int height, CGColorSpaceRef colorSpace)
