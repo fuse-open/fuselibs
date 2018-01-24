@@ -1,0 +1,44 @@
+<Page Title="Opacity" ux:Class="OpacityPage">
+	<InfoStack ux:Key="Info">
+		<p>Test application opacity of objects and text colors.</p>
+		<p>Elements along each line should have the same approximate opacity.</p>
+	</InfoStack>
+	<ScrollView>
+		<NodeGroup ux:Class="OPTest">
+			<string ux:Property="Label"/>
+			<float4 ux:Property="Color"/>
+			
+			<Star Width="30" Height="30" StrokeWidth="2" StrokeColor="{Property this.Color}"/>
+			<Text Value="{Property this.Label}" Color="{Property this.Color}" FontSize="20"/>
+			<Rectangle Color="{Property this.Color}"/>
+			<Image Color="{Property this.Color}" File="../Assets/white.png"/>
+			<Rectangle>
+				<ImageFill Color="{Property this.Color}" File="../Assets/white.png"/>
+			</Rectangle>
+			<Circle Color="( x({Property this.Color}), y({Property this.Color}), z({Property this.Color}), 1 )"
+				Opacity="w({Property this.Color})"/>
+		</NodeGroup>
+				
+		<StackPanel ItemSpacing="10">
+			<Grid Columns="auto,auto,30,30,30,30" Color="Black" CellSpacing="10" Padding="10">
+				<OPTest Label="25% White on Black 😀" Color="#FFF4"/>
+				<OPTest Label="50% White on Black 😀" Color="#FFF8"/>
+				<OPTest Label="100% White on Black 😀" Color="#FFFF"/>
+				
+				<OPTest Label="25% Green on Black 😀" Color="#0F04"/>
+				<OPTest Label="50% Green on Black 😀" Color="#0F08"/>
+				<OPTest Label="100% Green on Black 😀" Color="#0F0F"/>
+			</Grid>
+			
+			<Grid Columns="auto,auto,30,30,30,30" Color="White" Padding="10" CellSpacing="10">
+				<OPTest Label="25% Black on White 😀" Color="#0004"/>
+				<OPTest Label="50% Black on White 😀" Color="#0008"/>
+				<OPTest Label="100% Black on White 😀" Color="#000F"/>
+				
+				<OPTest Label="25% Red on White 😀" Color="#F004"/>
+				<OPTest Label="50% Red on White 😀" Color="#F008"/>
+				<OPTest Label="100% Red on White 😀" Color="#F00F"/>
+			</Grid>
+		</StackPanel>
+	</ScrollView>
+</Page>

@@ -144,6 +144,7 @@
 			<ScrollViewPagerPage/>
 			<UpdatePage/>
 			<FrozenPanelPage/>
+			<OpacityPage/>
 			<Android>
 				<WebViewPage/>
 				<DatePickerPage/>
