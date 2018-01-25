@@ -1,0 +1,16 @@
+<Panel ux:Class="UX.PageControl.ActiveStringBinding">
+	<JavaScript>
+		exports.activePage = "222";
+		exports.pageData = [ 
+			{ "pageName": "111" },
+			{ "pageName": "222" },
+			{ "pageName": "333" } 
+		];
+	</JavaScript>
+
+	<PageControl Active="{activePage}" ux:Name="pc">
+		<Each Items="{pageData}">
+			<Page Name="{pageName}"/>
+		</Each>
+	</PageControl>
+</Panel>
