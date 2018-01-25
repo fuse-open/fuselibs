@@ -712,6 +712,33 @@ namespace Fuse.Navigation.Test
 				Assert.AreEqual( "?9,ii.bub", GetRecursiveText(p.nav.Active));
 			}
 		}
+		
+		[Test]
+		//Based on https://github.com/fusetools/fuselibs-public/issues/939
+		public void DoublePushGoBack()
+		{
+			var p = new UX.Router.DoublePushGoBack();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				root.StepFrameJS();
+				Assert.AreEqual( "one", SafeFormat(p.router.GetHistoryRoute(0)) );
+				Assert.AreEqual( null, p.router.GetHistoryRoute(1) );
+				
+				p.callPush.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual( "two?{}", SafeFormat(p.router.GetHistoryRoute(0)) );
+				Assert.AreEqual( "two?{}", SafeFormat(p.router.GetHistoryRoute(1)) );
+				Assert.AreEqual( "one", SafeFormat(p.router.GetHistoryRoute(2)) );
+				Assert.AreEqual( null, p.router.GetHistoryRoute(3) );
+				
+				p.callGoBack.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual( "two?{}", SafeFormat(p.router.GetHistoryRoute(0)) );
+				Assert.AreEqual( "one", SafeFormat(p.router.GetHistoryRoute(1)) );
+				Assert.AreEqual( null, p.router.GetHistoryRoute(2) );
+			}
+		}
+		
 	}
 }
 	
