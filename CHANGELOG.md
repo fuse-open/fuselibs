@@ -16,9 +16,6 @@
 - Added vector accessors `x(v)`, `y(v)`, `z(v)`, `w(v)` to access the component values of float/2/3/4 values. (Note: `x` and `y` have an overloaded meaning now, also providing Element position).
 - Added `atanVector` to compute arc-tangent from a `float2` input
 
-### DatePicker/TimePicker
-- Fixed an Uno reflection bug that caused these pickers to crash in preview.
-
 ### ScrollView
 - Fixed bug where ScrollView's inside a NativeViewHost would scroll to fast
 - Fixed bug where the scrolling indicator in a native ScrollView would not show on iOS
