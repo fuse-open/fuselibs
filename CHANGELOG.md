@@ -14,6 +14,7 @@
 - Added `ContentSize` property on the `Fuse.Controls.Native.IScrollViewHost` interface. Needed by iOS to layout the native scrollview correctly
 
 ### Let
+- Introduced an experimental `Let` feature that allows creating expression aliases and local variables in UX
 - Added specific type version of `Let`, such as `LetFloat` and `LetString`. This improve the ability to connect pieces of the UX together and do animation/transitions in UX without using JavaScript.
 
 ### Instantiator
@@ -64,9 +65,6 @@
 ### Conversions
 - Added `float()` expression to force conversion to float values
 - Added `string()` expression to force conversion to string values
-
-### Let
-- Introduced an experimental `Let` feature that allows creating expression aliases and local variables in UX
 
 ### Timer
 - Fixed issue where creating a repeating `Timer` with 0 delay in JavaScript would not prevent the worker thread to become idle.
