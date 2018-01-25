@@ -139,6 +139,7 @@ namespace Fuse.Text
 
 		public void Draw(float4 color, float4x4 pixelToClipSpaceMatrix)
 		{
+			color = float4(color.XYZ * color.W, color.W);
 			lock (_glyphAtlasMutex)
 			{
 				var batches = GetBatches();
@@ -176,7 +177,7 @@ namespace Fuse.Text
 
 						ClipPosition: Vector.Transform(float4(Position, 0, 1), pixelToClipSpaceMatrix);
 						float4 sampleColor: sample(texture, TexCoord, SamplerState.LinearClamp);
-						PixelColor: grayScale ? color * float4(sampleColor.X) : sampleColor;
+						PixelColor: grayScale ? color * float4(sampleColor.X) : sampleColor * color.W;
 					};
 				}
 			}
