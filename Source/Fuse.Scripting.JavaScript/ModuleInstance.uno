@@ -26,17 +26,19 @@ namespace Fuse.Scripting.JavaScript
 		{
 			var ctx = (JSContext)context;
 
-			var deps = new Dictionary<string, object>();
+			var deps = new Dictionary<string, Dependency>();
 			foreach (var key in _deps.Keys)
 			{
-				deps[key] = ctx.Unwrap(_deps[key]);
+				deps[key] = new Dependency{ Type = DependencyType.Explicit,
+					Value = ctx.Unwrap(_deps[key]) };
 			}
 
 			var nt = _js._nameTable;
 			while (nt != null)
 			{
 				for (int i = 0; i < nt.Entries.Length; ++i)
-					deps.Add(nt.Entries[i], ctx.Unwrap(nt.Objects[i]));
+					deps.Add(nt.Entries[i], new Dependency{ Type = DependencyType.Name,
+						Value = ctx.Unwrap(nt.Objects[i]) });
 				nt = nt.ParentTable;
 			}
 
