@@ -108,6 +108,9 @@
 ### Fuse.Panel
 - Fixed a bug where `IsFrozen` would ignore `Panel.Opacity`.
 
+### Fuse.Controls.DatePicker/Fuse.Controls.TimePicker
+- Fixed an Uno reflection bug that caused these pickers to crash in preview.
+
 ### Scripting
 - `Fuse.Scripting`'s `Function` type has a `Call` method, this now takes a `Scripting.Context`. This guarantees that it can only occur on the VM thread.
 - `Fuse.Scripting`'s `Object` type has a `CallMethod` method, this now takes a `Scripting.Context`. This guarantees that it can only occur on the VM thread.
