@@ -19,7 +19,10 @@ namespace Fuse.Reactive.Test
 
 			void IScriptEvent.Serialize(IEventSerializer s)
 			{
-				s.AddObject("dataContext", Node.GetFirstData());
+				object data;
+				if (!Node.TryGetFirstData(out data))
+					throw new Exception( "Missing data" );
+				s.AddObject("dataContext", data);
 			}
 		}
 

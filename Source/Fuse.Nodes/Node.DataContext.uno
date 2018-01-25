@@ -34,79 +34,53 @@ namespace Fuse
 			bool NextData(object data);
 		}
 
-		internal class FirstDataFinder: IDataEnumerator
+		/** @hide Refer to ISibilingDataProvider note */
+		public enum ContextDataResult
 		{
-			readonly string _key;
-			public string Key { get { return _key; } }
-			public bool HasData { get; private set; }
-			public object Data { get; private set; }
-			public IObject Provider { get; private set; }
-			
-			public FirstDataFinder(string key) { _key = key; }
-			public bool NextData(object data)
-			{
-				if (_key == "")
-				{
-					Resolve(null, data);
-					return false;
-				}
-				else
-				{
-					var obj = data as IObject;
-					if (obj != null)
-					{
-						if (obj.ContainsKey(_key))
-						{
-							Resolve(obj, obj[_key]);
-							return false;
-						}
-					}
-				}
-
-				return true; // keep looking 
-			}
-			void Resolve(IObject provider, object data)
-			{
-				Provider = provider;
-				Data = data;
-				HasData = true;
-			}
-			
-			public void Reset()
-			{
-				HasData = false;
-				Data = null;
-				Provider = null;
-			}
-		}
-		
-		/** @deprecated Was not meant tob e part of the public API 2018-01-09 */
-		[Obsolete]
-		public object GetFirstData()
-		{
-			object r = null;
-			TryGetFirstData(out r);
-			return r;
+			Has,
+			Cascade,
+			Lost,
 		}
 		
 		internal bool TryGetFirstData(out object result)
 		{
-			var den = new FirstDataFinder( "" );
-			EnumerateData(den);
-			result = den.Data;
-			return den.HasData;
+			IObject providerIgnore = null;
+			return TryFindData( "", out result, out providerIgnore );
 		}
 
-		/** @deprecated Was not meant to be part of the public API and cannot be supported in the future. 2018-01-09 (likely gone soon) */
-		[Obsolete]
-		public void EnumerateData(IDataEnumerator e)
+		bool AcquireData(object data, string key, out object result, out IObject provider)
 		{
-			EnumerateDataImpl(e);
+			result = null;
+			provider = null;
+			
+			if (key == "")
+			{
+				result = data;
+				return true;
+			}
+			else
+			{
+				var obj = data as IObject;
+				if (obj != null)
+				{
+					if (obj.ContainsKey(key))
+					{
+						result = obj[key];
+						provider = obj;
+						return true;
+					}
+				}
+			}
+
+			return false;
 		}
 		
 		/* New functionality should not be built assuming enumeration is possible. It is likely we'll move towards a system that doesn't require such walking of the tree, where walking could be expensive. This form is kept now only as the least effort migration path. */
-		void EnumerateDataImpl(IDataEnumerator e)
+		bool TryFindData(string key, out object result, out IObject provider)
 		{
+			result = null;
+			provider = null;
+			
 			var n = this;
 
 			while (n != null)
@@ -118,7 +92,8 @@ namespace Fuse
 					if (subdp != null) 
 					{
 						var data = subdp.GetData(n);
-						if (data != null && !e.NextData(data)) return;
+						if (data != null && AcquireData(data, key, out result, out provider))
+							return true;
 					}
 				}
 
@@ -131,13 +106,16 @@ namespace Fuse
 						if (sdp != null)
 						{
 							var data = sdp.Data;
-							if (data != null && !e.NextData(data)) return;
+							if (data != null && AcquireData(data, key, out result, out provider))
+								return true;
 						}
 					}
 				}
 
 				n = n.ContextParent;
 			}
+			
+			return false;
 		}
 		
 		internal protected void BroadcastDataChange(object oldData, object newData)
@@ -256,27 +234,30 @@ namespace Fuse
 		*/
 		internal sealed class NodeDataSubscription : IDataListener, IDisposable
 		{
-			FirstDataFinder _dataFinder;
+			string _key;
+			bool _hasData;
+			object _data;
+			IObject _provider;
 			
 			/** `true` if there is data, `false` otherwise */
-			public bool HasData { get { return _dataFinder.HasData; } }
+			public bool HasData { get { return _hasData; } }
 			/** The data which has been found. This will be `null` if `HasData == false`. It may be `null` even if `HasData == true`, indicating it found a null */
-			public object Data { get { return _dataFinder.Data; } }
+			public object Data { get { return _data; } }
 			/** The providing object for the data */
-			public IObject Provider { get { return _dataFinder.Provider; } }
+			public IObject Provider { get { return _provider; } }
 			
 			Node _origin;
 			IDataListener _listener;
 			
 			internal NodeDataSubscription(Node origin, string key, IDataListener listener)
 			{
-				_dataFinder = new FirstDataFinder(key);
+				_key = key;
 				_origin = origin;
-				_origin.EnumerateDataImpl(_dataFinder);
+				_hasData = _origin.TryFindData( _key, out _data, out _provider );
 				_listener = listener;
 				
 				if (_listener != null)	
-					_origin.AddDataListener( _dataFinder.Key, this );
+					_origin.AddDataListener( _key, this );
 			}
 			
 			void IDataListener.OnDataChanged()
@@ -284,8 +265,7 @@ namespace Fuse
 				if (_origin == null)
 					return;
 					
-				_dataFinder.Reset();
-				_origin.EnumerateDataImpl(_dataFinder);
+				_hasData = _origin.TryFindData( _key, out _data, out _provider );
 				if (_listener != null)
 					_listener.OnDataChanged();
 			}
@@ -293,11 +273,13 @@ namespace Fuse
 			public void Dispose()
 			{
 				if (_listener != null)	
-					_origin.RemoveDataListener( _dataFinder.Key, this );
+					_origin.RemoveDataListener( _key, this );
 					
-				_dataFinder = null;
 				_origin = null;
 				_listener = null;
+				_hasData = false;
+				_data = null;
+				_provider = null;
 			}
 		}
 	}
