@@ -13,7 +13,7 @@
 	
 	<Each Items="{items}">
 		<With Data="{data}">
-			<Instance Item="{}">
+			<Instance Item="data()">
 				<Text Value="{value}"/>
 			</Instance>
 		</With>

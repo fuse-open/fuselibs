@@ -102,7 +102,6 @@ namespace Fuse.Reactive
 		{
 			DisposeSubscription();
 			ClearDiagnostic();
-			_origin.RemoveDataListener(_key, this);
 			_origin = null;
 			_source = null;
 			_listener = null;

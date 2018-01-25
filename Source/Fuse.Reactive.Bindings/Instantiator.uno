@@ -435,20 +435,23 @@ namespace Fuse.Reactive
 
 		internal int DataCount { get { return _watcher.GetDataCount(); } }
 		
-		object Node.ISubtreeDataProvider.GetData(Node n)
+		ContextDataResult ISubtreeDataProvider.TryGetDataProvider( Node n, DataType type, out object provider )
 		{
+			provider = null;
+			
 			WindowItem v;
 			if (_dataMap.TryGetValue(n, out v))
 			{
 				//https://github.com/fusetools/fuselibs/issues/3312
 				//`Count` does not introduce data items
 				if (v.Data is NoContextItem)
-					return null;
+					return ContextDataResult.Continue;
 					
-				return v.CurrentData;
+				provider = v.CurrentData;
+				return type == DataType.Prime ? ContextDataResult.NullProvider : ContextDataResult.Continue;
 			}
 
-			return null;
+			return ContextDataResult.Continue;
 		}
 		
 		Node GetLastNodeFromIndex(int windowIndex)

@@ -10,9 +10,10 @@ namespace Fuse.Reactive.Test
 {
 	public class SynchronusDataSource: Node, Node.ISiblingDataProvider, IObject
 	{
-		object ISiblingDataProvider.Data
+		ContextDataResult ISiblingDataProvider.TryGetDataProvider( DataType type, out object provider )
 		{
-			get { return this; }
+			provider = this;
+			return ContextDataResult.Continue;
 		}
 
 		string[] IObject.Keys

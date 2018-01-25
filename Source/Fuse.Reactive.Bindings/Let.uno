@@ -114,9 +114,10 @@ namespace Fuse.Reactive
 			base.OnUnrooted();
 		}		
 		
-		object Node.ISiblingDataProvider.Data
+		ContextDataResult ISiblingDataProvider.TryGetDataProvider( DataType type, out object provider )
 		{
-			get { return this; }
+			provider = type != DataType.Key ? null : this;
+			return ContextDataResult.Continue;
 		}
 		
 		bool IObject.ContainsKey(string key)
