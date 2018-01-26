@@ -3,6 +3,11 @@
 
 # 1.6
 
+## 1.6.1
+
+### Fuse.Scripting
+- Restore accidentally broken NativeEvent.RaiseAsync() API.
+
 ## 1.6.0
 
 ### Image
