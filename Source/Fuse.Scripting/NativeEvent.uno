@@ -50,6 +50,15 @@ namespace Fuse.Scripting
 				threadWorker.Invoke(new CallDiscardingResultClosure(_jsFunction, _eventArgsQueue.Dequeue()).Run);
 		}
 
+		[Obsolete("Use `RaiseAsync(IThreadWorker, params object[])` instead")]
+		public void RaiseAsync(params object[] args)
+		{
+			if(Context != null || _queueEventsBeforeEvaluation)
+				_eventArgsQueue.Enqueue(args);
+
+			DispatchQueue(Context.ThreadWorker);
+		}
+
 		public void RaiseAsync(IThreadWorker threadWorker, params object[] args)
 		{
 			if(Context != null || _queueEventsBeforeEvaluation)
