@@ -1,7 +1,3 @@
-using Uno;
-using Uno.UX;
-using Uno.Content.Models;
-
 namespace Fuse.Drawing.Primitives
 {
 	public block Quad
