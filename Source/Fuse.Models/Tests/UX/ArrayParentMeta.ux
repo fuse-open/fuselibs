@@ -1,0 +1,8 @@
+<Panel ux:Class="UX.Model.ArrayParentMeta" Model="UX/ArrayParentMeta">
+	<Each Items="{array}">
+		<Text Value="{str}" />
+	</Each>
+
+	<FuseTest.Invoke ux:Name="step1" Handler="{step1}" />
+	<FuseTest.Invoke ux:Name="step2" Handler="{step2}" />
+</Panel>
