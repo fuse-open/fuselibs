@@ -436,11 +436,29 @@ function Model(initialState, stateInitializer)
 			TreeObservable.set.apply(store, argPath);
 		}
 
+		function updateArrayParentIndices(start, offset) {
+			// Updates the indices of parent references after removing or inserting elements in the middle of an array
+			for(var i = start; i < node.length; ++i) {
+				var itemNode = node[i];
+				if (!(itemNode instanceof Object)) {
+					continue;
+				}
+				var itemMeta = idToMeta.get(itemNode.__fuse_id);
+				var parentMeta = itemMeta.parents.find(function(x) {
+					return isSameParentMeta(x, { key: (i - offset), meta: meta });
+				});
+				parentMeta.key = parseInt(parentMeta.key) + offset;
+				itemMeta.invalidatePath();
+			}
+		}
+
 		function removeRange(index, count) {
 			for (var i = 0; i < count; i++) {
 				removeAsParentFrom(index+i, node[index+i]);
 			}
 			node.splice(index, count);
+			updateArrayParentIndices(index, -count);
+
 			var removePath = getPath().concat(index);
 			for (var i = 0; i < count; i++) {
 				TreeObservable.removeAt.apply(store, removePath);
@@ -467,6 +485,8 @@ function Model(initialState, stateInitializer)
 			node.splice(index, 0, null);
 			node[index] = item = wrap(index, item)
 			
+			updateArrayParentIndices(index+1, 1);
+
 			TreeObservable.insertAt.apply(store, getPath().concat([index, item]));
 			changesDetected++;
 		}
