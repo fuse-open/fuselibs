@@ -248,7 +248,7 @@ namespace Fuse
 			if (key == "")
 			{
 				//DEPRECATED: 2018-01-30
-				//Fuse.Diagnostics.UserError( "Binding to an empty key, `{}`, are deprecated due to ambiguity. Use the `data()` expression instead.", this);
+				Fuse.Diagnostics.UserError( "Binding to an empty key, `{}`, is deprecated due to ambiguity. Use the `data()` expression instead.", this);
 			}
 				
 			var dw = new NodeDataSubscription(this, DataType.Key, key, listener);

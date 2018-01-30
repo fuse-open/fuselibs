@@ -25,7 +25,7 @@ namespace Fuse.Controls
 				</JavaScript>
 				<PageControl ux:Name="nav">
 					<Each Items="{pages}">
-						<Page Color="{}">
+						<Page Color="data()">
 							
 						</Page>
 					</Each>

@@ -36,7 +36,7 @@
 	</JavaScript>
 
 	<Each Items="{tree.foo}">
-		<Text Value="{}" />
+		<Text Value="{= data() }" />
 	</Each>
 
 	<FuseTest.Invoke ux:Name="setElement" Handler="{setElement}" />

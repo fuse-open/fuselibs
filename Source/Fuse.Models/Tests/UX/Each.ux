@@ -1,7 +1,7 @@
 <Panel ux:Class="UX.Model.Each" Model="UX/Each">
 	<Panel ux:Name="a">
 		<Each Items="{simple}">
-			<FuseTest.DudElement StringValue="{}"/>
+			<FuseTest.DudElement StringValue="{= data() }"/>
 		</Each>
 	</Panel>
 	
