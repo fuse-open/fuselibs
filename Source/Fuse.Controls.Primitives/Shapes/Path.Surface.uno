@@ -7,11 +7,11 @@ namespace Fuse.Controls
 {
 	public partial class Path
 	{
-		protected override SurfacePath CreateSurfacePath(Surface surface)
+		internal override IList<LineSegment> GetSegments()
 		{
 			var pos = CalcPositioning();
-			
 			var list = new List<LineSegment>();
+			
 			for (int i=0; i < _segments.Count; ++i )
 			{
 				var seg = _segments[i];
@@ -21,7 +21,7 @@ namespace Fuse.Controls
 				list.Add(seg);
 			}
 			
-			return surface.CreatePath(list, FillRule);
+			return list;
 		}
 	}
 }

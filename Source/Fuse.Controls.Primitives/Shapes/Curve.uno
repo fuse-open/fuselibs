@@ -239,7 +239,7 @@ namespace Fuse.Controls
 				</Curve>
 			</Panel>
 	*/
-	public class Curve : Shape, IPropertyListener
+	public class Curve : SegmentedShape, IPropertyListener
 	{
 		List<CurvePoint> _points = new List<CurvePoint>();
 		
@@ -485,7 +485,7 @@ namespace Fuse.Controls
 		
 		internal IList<LineSegment> TestLineSegments { get { return GetSegments(); } }
 		
-		IList<LineSegment> GetSegments()
+		internal override IList<LineSegment> GetSegments()
 		{
 			//if cached return that, or if not enough to draw return the empty path
 			if (_segments.Count >0 || _points.Count < 2)
@@ -546,15 +546,9 @@ namespace Fuse.Controls
 			return _segments.Segments;
 		}
 		
-		protected override SurfacePath CreateSurfacePath(Surface surface)
-		{
-			return surface.CreatePath( GetSegments() );
-		}
-		
 		override protected Rect CalcShapeExtents()
 		{
 			return LineMetrics.GetBounds( GetSegments() );
 		}
-		
 	}
 }

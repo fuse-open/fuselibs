@@ -1,0 +1,67 @@
+<Page Title="Partial Paths" ux:Class="PartialPaths">
+	<InfoStack ux:Key="Info">
+		<p>This tests the drawing of partial curves and paths.</p>
+		<p>The first drawing is a kind of bloom shape, or gear with rounded teeth.</p>
+		<li>The black path is half the length of the shape.</li>
+		<li>It traces along the path at a constant speed.</li>
+		<li>The purple path is centered on the path not covered by the black area.</li>
+		<li>The purple plath length osciallates between empty and full coverage of the empty area: it never overlaps the black path.</li>
+
+		<p>The second drawing is a slowly oscillating path.</p>
+		<li>The background should be gray.</li>
+		<li>A black line, about 70% of the length, moves through the gray background.</li>
+		<li>The arrowhead points in the direction of the line at that point.</li>
+	</InfoStack>
+	<WhileActive>
+		<Timeline PlayMode="Wrap" ux:Name="timer1">
+			<Nothing Duration="2"/>
+		</Timeline>
+		<Cycle Target="altTimer.Value" Low="0" High="1" Frequency="0.47"/>
+		<Cycle Target="fastTimer.Value" Low="0" High="1" Frequency="1.1" Waveform="Sawtooth"/>
+		<Cycle Target="slowTimer.Value" Low="0" High="1" Frequency="0.1"/>
+	</WhileActive>
+	<Let ux:Name="start" Value="{Property timer1.Progress}"/>
+	<LetFloat ux:Name="altTimer" Value="0"/>
+	<Let ux:Name="alt" Value="{altTimer} / 4"/>
+	<LetFloat ux:Name="fastTimer" Value="0"/>
+	<LetFloat ux:Name="slowTimer" Value="0"/>
+	
+	<Grid ColumnCount="1">
+		<Panel Margin="5">
+			<Path Data="{= pathBloom }" 
+				PathStart="{start}" PathLength="0.5" 
+				StrokeWidth="5" StrokeColor="#000"/>
+			<Path Data="{= pathBloom }" 
+				PathStart="{start} + 0.75 - {alt}" PathEnd="{start} + 0.75 + {alt}"
+				StrokeWidth="5" StrokeColor="#808"/>
+
+		</Panel>
+		
+		<Panel Margin="0,15">
+			<Let ux:Name="endPos" Value="pathPointAtDistance(curve, {fastTimer} - 0.3)"/>
+			<Let ux:Name="headPos" Value="pathPointAtDistance(curve, {fastTimer})"/>
+			<Let ux:Name="headAngle" Value="pathTangentAngleAtDistance(curve, {fastTimer} + 0.7)"/>
+			<Text Value="➤" Alignment="TopLeft" Anchor="50%, 50%" FontSize="50"
+				TextColor="#800">
+				<Translation XY="{endPos}"/>
+				<Rotation Angle="{headAngle}"/>
+			</Text>
+			<Curve StrokeWidth="5" StrokeColor="#000" Style="Smooth" PathStart="{fastTimer}" PathLength="0.7"
+				ux:Name="curve">
+				<CurvePoint X="-0.05" Y="0.5"/>
+				<CurvePoint X="0.5" Y="{slowTimer}"/>
+				<CurvePoint X="1.05" Y="0.5"/>
+			</Curve>
+			<Curve StrokeWidth="30" StrokeColor="#AAA" Style="Smooth">
+				<CurvePoint X="-0.05" Y="0.5"/>
+				<CurvePoint X="0.5" Y="{slowTimer}"/>
+				<CurvePoint X="1.05" Y="0.5"/>
+			</Curve>
+		</Panel>
+	</Grid>
+	<FpsMeter/>
+	
+	<string ux:Global="pathBloom" ux:Value="m 312.625,409.9375 c -1.01085,-0.0195 -2.0064,0.0594 -2.96875,0.24023 -7.69883,1.44673 -15.08737,9.68877 -13.04102,20.57813 0.043,0.22874 0.10392,0.4614 0.16211,0.69336 a 50.061152,50.061152 0 0 0 -4.41211,2.9043 c -0.2774,-0.22731 -0.55938,-0.43845 -0.84375,-0.63282 -4.57337,-3.12658 -9.48902,-3.8267 -13.81445,-2.9375 -4.32515,0.88932 -8.06087,3.3682 -10.27148,6.60157 -4.42095,6.46701 -3.81696,17.5186 5.33007,23.77148 0.29082,0.19881 0.59773,0.38688 0.91797,0.56641 a 50.061152,50.061152 0 0 0 -1.05664,4.96484 c -0.46907,0.0355 -0.92848,0.0856 -1.36718,0.16797 -10.88936,2.04626 -15.88625,11.92394 -14.43946,19.62305 1.44673,7.69883 9.68876,15.08737 20.57813,13.04101 0.35933,-0.0675 0.7228,-0.15714 1.08984,-0.26172 a 50.061152,50.061152 0 0 0 2.71875,4.27735 c -0.30429,0.35452 -0.59345,0.71203 -0.84375,1.07812 -6.25317,9.14702 -2.80083,19.66471 3.66602,24.08594 6.46701,4.42094 17.5186,3.81889 23.77148,-5.32813 0.14002,-0.20481 0.27,-0.42688 0.40039,-0.64648 a 50.061152,50.061152 0 0 0 5.16211,1.17969 c 0.0347,0.33017 0.0777,0.65446 0.13672,0.96875 2.04626,10.88936 11.92226,15.88791 19.62109,14.4414 7.69883,-1.44673 15.08738,-9.68876 13.04102,-20.57812 -0.0168,-0.0896 -0.0452,-0.18134 -0.0644,-0.27149 a 50.061152,50.061152 0 0 0 4.75781,-2.99414 c 0.13365,0.10002 0.26517,0.20836 0.40039,0.30078 9.14702,6.25288 19.665,2.80278 24.08594,-3.66406 4.40341,-6.44138 3.82068,-17.43112 -5.22266,-23.69726 a 50.061152,50.061152 0 0 0 1.25586,-5.75391 c 0.0459,-0.008 0.095,-0.011 0.14062,-0.0195 10.88937,-2.04629 15.88624,-11.92199 14.43946,-19.6211 -1.44089,-7.6677 -9.62138,-15.02668 -20.44531,-13.06445 a 50.061152,50.061152 0 0 0 -3.20313,-4.92969 c 0.0334,-0.0473 0.073,-0.0932 0.10547,-0.14062 6.25317,-9.14703 2.80474,-19.665 -3.66211,-24.08594 -3.23337,-2.21048 -7.61376,-3.16512 -11.9668,-2.42383 l 0,-0.002 c -4.35304,0.74145 -8.68005,3.18025 -11.80664,7.75391 -0.0353,0.0516 -0.0669,0.10954 -0.10156,0.16211 a 50.061152,50.061152 0 0 0 -5.52148,-1.12696 c -0.0252,-0.17991 -0.0433,-0.36417 -0.0762,-0.53906 -1.79048,-9.5282 -9.57637,-14.54546 -16.65234,-14.68164 z"/>
+
+	
+</Page>

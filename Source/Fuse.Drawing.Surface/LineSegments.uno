@@ -8,6 +8,7 @@ namespace Fuse.Drawing
 	*/
 	public class LineSegments
 	{
+		/** Meant to be read-only: do not modify this list directly. */
 		public IList<LineSegment> Segments { get; private set; }
 		
 		float2 _curPos;
@@ -20,6 +21,11 @@ namespace Fuse.Drawing
 		public float2 CurPos
 		{
 			get { return _curPos; }
+		}
+		
+		public float2 StartPos
+		{
+			get { return Segments.Count > 0 ? Segments[0].To : float2(0); }
 		}
 		
 		public void Clear()
@@ -43,7 +49,7 @@ namespace Fuse.Drawing
 		{
 			Segments = segments;
 			if (segments.Count > 0)
-				_curPos = segments[segments.Count].To;
+				_curPos = segments[segments.Count-1].To;
 		}
 		
 		void Add( LineSegment seg )

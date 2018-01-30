@@ -1,0 +1,9 @@
+<Panel ux:Class="UX.Path.MeasureMode" Color="#FFF">
+	<Path Data="m 0,0 l 100,0 l 300,0"
+		PathStart="0.24" PathEnd="0.76" StrokeWidth="5" StrokeColor="#000" ux:Name="thePath"
+		PathMeasureMode="Time" Extents="0,0,400,400"/>
+
+	<LetFloat ux:Name="dist" Value="0.5"/>
+	<FuseTest.DudElement Float2Value="pathPointAtTime(thePath, {dist})" ux:Name="p5"/>
+	<FuseTest.DudElement FloatValue="pathTangentAngleAtTime(thePath, {dist})" ux:Name="ta5"/>
+</Panel>

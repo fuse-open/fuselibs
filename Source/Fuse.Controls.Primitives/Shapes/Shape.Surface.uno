@@ -121,8 +121,8 @@ namespace Fuse.Controls
 			_surfacePathDirty = false;
 			return _surfacePath;
 		}
-
-		/** Creates the path used to draw this shape in a  Surface */
+		
+		/** Creates the path used to draw this shape in a  Surface.*/
 		protected abstract SurfacePath CreateSurfacePath(Surface surface);
 	}
 }

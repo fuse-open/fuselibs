@@ -99,6 +99,16 @@ namespace Fuse
 			get { return DegreesZ; }
 			set { DegreesZ = value; }
 		}
+		
+		/** The rotation in radians.
+			This controls the rotation on Z-axis, i.e. the only meaningful axis of rotation
+			for 2D graphics. Same as @AngleZ.
+		*/
+		public float Angle
+		{
+			get { return AngleZ; }
+			set { AngleZ = value; }
+		}
 
 		/** The rotation in degrees on the Z-axis.
 			Same as @Degrees.
@@ -106,12 +116,17 @@ namespace Fuse
 		public float DegreesZ
 		{
 			get { return Math.RadiansToDegrees(_euler.Z); }
+			set { AngleZ = Math.DegreesToRadians(value); }
+		}
+		
+		public float AngleZ
+		{
+			get { return _euler.Z; }
 			set
 			{
-				var r = Math.DegreesToRadians(value);
-				if (_euler.Z != r)
+				if (_euler.Z != value)
 				{
-					_euler.Z = r;
+					_euler.Z = value;
 					OnMatrixChanged();
 				}
 			}
@@ -123,26 +138,36 @@ namespace Fuse
 		public float DegreesY
 		{
 			get { return Math.RadiansToDegrees(_euler.Y); }
+			set { AngleY = Math.DegreesToRadians(value); }
+		}
+
+		public float AngleY
+		{
+			get {return _euler.Y; }
 			set
 			{
-				var r = Math.DegreesToRadians(value);
-				if (_euler.Y != r)
+				if (_euler.Y != value)
 				{
-					_euler.Y = r;
+					_euler.Y = value;
 					OnMatrixChanged();
 				}
 			}
 		}
-
+		
 		public float DegreesX
 		{
 			get { return Math.RadiansToDegrees(_euler.X); }
+			set { AngleX = Math.DegreesToRadians(value); }
+		}
+		
+		public float AngleX
+		{
+			get { return _euler.X; }
 			set
 			{
-				var r = Math.DegreesToRadians(value);
-				if (_euler.X != r)
+				if (_euler.X != value)
 				{
-					_euler.X = r;
+					_euler.X = value;
 					OnMatrixChanged();
 				}
 			}
