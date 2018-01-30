@@ -49,7 +49,7 @@ namespace Fuse.Reactive.Test
 				e.Run.Perform();
 				root.StepFrameJS();
 
-				Assert.AreEqual("\"bar\"", e.Text.Value);
+				Assert.AreEqual("\"bar\"-bar", e.Text.Value);
 			}
 		}
 		

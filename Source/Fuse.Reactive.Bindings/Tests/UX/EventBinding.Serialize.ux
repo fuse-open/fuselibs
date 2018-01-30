@@ -4,11 +4,18 @@
 		var result = Observable("nothing");
 		module.exports = {
 			result: result,
-			foo: "bar",
-			run: function(args) { result.value = "dataContext" in args ? JSON.stringify(args.dataContext.foo) : "ERROR"; }
+			ctx: {
+				foo: "bar",
+			},
+			run: function(args) { 
+				result.value = "dataContext" in args ? JSON.stringify(args.dataContext.foo) : "ERROR";
+				result.value += "-" + args.data.foo
+			}
 		};
 	</JavaScript>
 
-	<Fuse.Reactive.Test.EventBindingTest.DummyBehavior ux:Name="Run" Handler="{run}" />
+	<With Data="{ctx}">
+		<Fuse.Reactive.Test.EventBindingTest.DummyBehavior ux:Name="Run" Handler="{run}" />
+	</With>
 	<Text ux:Name="Text" Value="{result}" />
 </Panel>

@@ -44,7 +44,7 @@ namespace Fuse
 		internal bool TryGetFirstData(out object result)
 		{
 			IObject providerIgnore = null;
-			return TryFindData( DataType.Key, "", out result, out providerIgnore );
+			return TryFindData( DataType.Prime, null, out result, out providerIgnore );
 		}
 
 		bool AcquireData(DataType type, string key, object data, out object result, out IObject provider)
