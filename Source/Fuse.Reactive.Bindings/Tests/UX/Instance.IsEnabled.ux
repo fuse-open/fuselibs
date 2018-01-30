@@ -1,0 +1,25 @@
+<Panel ux:Class="UX.Instance.IsEnabled">
+	<Panel ux:Name="a">
+		<Instance IsEnabled="false" ux:Name="ia">
+			<Text Value="boop"/>
+		</Instance>
+	</Panel>
+	
+	<JavaScript>
+		var Observable = require("FuseJS/Observable")
+		exports.show = Observable(false)
+		exports.doShow = function() {
+			exports.show.value = true
+		}
+	</JavaScript>
+	<FuseTest.Invoke Handler="{doShow}" ux:Name="callShow"/>
+	<Panel ux:Name="b">
+		<Instance IsEnabled="{show} ?? false">
+			<Text Value="beep"/>
+		</Instance>
+		<!-- extra use-case ensuring we can stay false until binding is completed -->
+		<Instance IsEnabled="{noshow} ?? false">
+			<Text Value="beep"/>
+		</Instance>
+	</Panel>
+</Panel>

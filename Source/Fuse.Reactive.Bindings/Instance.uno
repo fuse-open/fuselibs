@@ -38,8 +38,39 @@ namespace Fuse.Reactive
 				if (_item == value)
 					return;
 				_item = value;
-				SetItems( new object[]{ _item } );
+				UpdateItems();
 			}
 		}
+		
+		void UpdateItems()
+		{
+			if (IsEnabled)
+				SetItems( new object[]{ _item } );
+			else
+				SetItems( new object[]{} );
+		}
+		
+		bool _isEnabled = true;
+		/**
+			Provides conditional creation of the desired object.
+			
+			When `true`, the default, the desired templates will be created. When `false` nothing will be created.
+			
+			Ensure that when attaching to a binding, or other delayed or async expression, that you force an unknown value to `false`. As the default is `true`, a delayed, or lost value, would otherwise end up being `true` and may temporarily instance the templates.
+			
+				<Instance IsEnabled="{jsVar} ?? false">
+		*/
+		public bool IsEnabled
+		{
+			get { return _isEnabled; }
+			set
+			{
+				if (_isEnabled == value) 
+					return;
+				_isEnabled = value;
+				UpdateItems();
+			}
+		}
+		
 	}
 }
