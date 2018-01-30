@@ -17,7 +17,7 @@
 	<FuseTest.Invoke Handler="{decrement}" ux:Name="decrement"/>
 	<StackPanel ux:Name="S">
 		<Each Items="{numbers}">
-			<Text Value="{}"/>
+			<Text Value="{= data() }"/>
 		</Each>
 	</StackPanel>
 

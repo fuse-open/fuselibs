@@ -176,17 +176,19 @@ namespace Fuse.Controls
 			FullUpdatePages();
 		}
 		
-		object Node.ISubtreeDataProvider.GetData(Node n)
+		ContextDataResult ISubtreeDataProvider.TryGetDataProvider( Node n, DataType type, out object provider )
 		{
+			provider = null;
 			var v = n as Visual;
 			if (v == null)
-				return null;
+				return ContextDataResult.Continue;
 				
 			var pd = PageData.Get(v);
 			if (pd == null)
-				return null;
+				return ContextDataResult.Continue;
 			
-			return pd.Context;
+			provider = pd.Context;
+			return type == DataType.Prime ? ContextDataResult.NullProvider : ContextDataResult.Continue;
 		}
 	}
 	

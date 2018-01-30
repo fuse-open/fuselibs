@@ -3,6 +3,6 @@
 	<!-- Also just Value="1,2,3,4,5" should work -->
 	<!-- <Let ux:Name="arr" Value="{= 1,2,3,4,5 }"/> -->
 	<Each Items="{arr}">
-		<FuseTest.DudElement StringValue="{}"/>
+		<FuseTest.DudElement StringValue="{= data() }"/>
 	</Each>
 </Panel>

@@ -33,12 +33,12 @@ Similarly, you can bind to collections:
 		</JavaScript>
 		<StackPanel>
 			<Each Items="{data}">
-				<Text Value="{}" />
+				<Text Value="{= data () }" />
 			</Each>
 		</StackPanel>
 	</App>
 
-This will predictably list out the text strings 1, 2 and 3. When binding the `Text Value` `{}` means _this data context_. Typically, you will bind to more complex data sources, so each element will have something interesting to bind to:
+This will predictably list out the text strings 1, 2 and 3. When binding the `Text Value` `{= data()}` means _the prime data context_, in this case the enumerated item from `Each`. Typically, you will bind to more complex data sources, so each element will have something interesting to bind to:
 
 	<App>
 		<JavaScript>

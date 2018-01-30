@@ -4,7 +4,7 @@
 		exports.menu = Observable({ type: "Text", value: "Hello" })
 	</JavaScript>
 	<With Data="{menu}">
-		<Instance Item="{}" MatchKey="type">
+		<Instance Item="{= data()}" MatchKey="type">
 			<Text ux:Template="Text" Value="{value}"/>
 		</Instance>
 	</With>

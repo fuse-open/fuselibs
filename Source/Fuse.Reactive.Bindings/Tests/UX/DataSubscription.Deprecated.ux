@@ -1,0 +1,34 @@
+<Panel ux:Class="UX.DataSubscription.Deprecated">
+	<JavaScript>
+		exports.one = 1
+		exports.two = {
+			value: 2,
+		}
+		exports.items = [ 3,4]
+	</JavaScript>
+	<Panel>
+		<JavaScript>
+			module.exports = "hi"
+		</JavaScript>
+		<!-- This has no replacement, but we doesn't have a legitimate use-case either -->
+		<Text Value="{}" ux:Name="a"/>
+	</Panel>
+	
+	<Panel ux:Name="b">
+		<With Data="{one}">
+			<Text Value="{}"/>
+		</With>
+	</Panel>
+	
+	<Panel ux:Name="c">
+		<Instance Item="{two.value}">
+			<Text Value="{}"/>
+		</Instance>
+	</Panel>
+	
+	<Panel ux:Name="d">
+		<Each Items="{items}">
+			<Text Value="{}"/>
+		</Each>
+	</Panel>
+</Panel>

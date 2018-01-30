@@ -7,7 +7,7 @@
 	<StackPanel ux:Class="WithTemplate">
 		<Each Items="{obs}">
 			<Each Count="1" TemplateSource="this" TemplateKey="irrelevant">
-				<Text Value="{}"/>
+				<Text Value="{= data() }"/>
 			</Each>
 		</Each>
 	</StackPanel>

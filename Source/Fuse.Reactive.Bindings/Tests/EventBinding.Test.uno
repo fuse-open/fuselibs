@@ -19,7 +19,10 @@ namespace Fuse.Reactive.Test
 
 			void IScriptEvent.Serialize(IEventSerializer s)
 			{
-				s.AddObject("dataContext", Node.GetFirstData());
+				object data;
+				if (!Node.TryGetPrimeDataContext(out data))
+					throw new Exception( "Missing data" );
+				s.AddObject("dataContext", data);
 			}
 		}
 
@@ -39,14 +42,32 @@ namespace Fuse.Reactive.Test
 		[Test]
 		public void SerializeObject()
 		{
-			var e = new UX.EventBinding();
+			var e = new UX.EventBinding.Serialize();
 			using (var root = TestRootPanel.CreateWithChild(e))
 			{
 				root.StepFrameJS();
 				e.Run.Perform();
 				root.StepFrameJS();
 
-				Assert.AreEqual("\"bar\"", e.Text.Value);
+				Assert.AreEqual("\"bar\"-bar", e.Text.Value);
+			}
+		}
+		
+		[Test]
+		public void StandardData()
+		{
+			var e = new UX.EventBinding.Data();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.StepFrameJS();
+				
+				e.goWith.Perform();
+				e.c.FirstChild<FuseTest.Invoke>().Perform();
+				for (var c = e.a.FirstChild<Panel>(); c != null; c = c .NextSibling<Panel>()) 
+					c.FirstChild<FuseTest.Invoke>().Perform();
+				root.StepFrameJS();
+				
+				Assert.AreEqual( "si-la-one-two-", e.r.StringValue );
 			}
 		}
 	}

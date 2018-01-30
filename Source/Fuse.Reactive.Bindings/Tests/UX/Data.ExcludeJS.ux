@@ -1,0 +1,15 @@
+<Panel ux:Class="UX.Data.ExcludeJS">
+	<JavaScript>
+		exports.one = {
+			a: "hi",
+		}
+	</JavaScript>
+	<With Data="{one}">
+		<Panel>
+			<JavaScript>
+				exports.a = "bye"
+			</JavaScript>
+			<Text Value="{= data().a }"/>
+		</Panel>
+	</With>
+</Panel>

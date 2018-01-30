@@ -122,9 +122,10 @@ namespace Fuse.Reactive
 			if (Parent != null) Parent.BroadcastDataChange(oldSiblingData, data);
 		}
 
-		object Node.ISiblingDataProvider.Data
+		ContextDataResult ISiblingDataProvider.TryGetDataProvider( DataType type, out object provider )
 		{
-			get { return _siblingData; }
+			provider = type == DataType.Key ? _siblingData : null;
+			return ContextDataResult.Continue;
 		}
 
 		void DisposeSubscription()

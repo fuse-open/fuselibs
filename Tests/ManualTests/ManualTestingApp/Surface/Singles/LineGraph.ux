@@ -65,12 +65,12 @@
 					</LinearGradient>
 				</Stroke>
 				<Each Items="{points}">
-					<CurvePoint At="{}"/>
+					<CurvePoint At="data()"/>
 				</Each>
 			</Curve>
 			<Curve Extrude="Bottom" Color="#AFF8" ux:Name="lineGraphFill">
 				<Each Items="{points}">
-					<CurvePoint At="{}"/>
+					<CurvePoint At="data()"/>
 				</Each>
 			</Curve>
 			

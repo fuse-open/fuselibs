@@ -19,12 +19,12 @@
 	
 	<Panel ux:Name="e">
 		<Each Items="{pArray}">
-			<FuseTest.DudElement Value="{}"/>
+			<FuseTest.DudElement Value="{= data()}"/>
 		</Each>
 	</Panel>
 	<Panel ux:Name="ep">
 		<Each Items="{Property pArray.Value}">
-			<FuseTest.DudElement Value="{}"/>
+			<FuseTest.DudElement Value="{= data()}"/>
 		</Each>
 	</Panel>
 

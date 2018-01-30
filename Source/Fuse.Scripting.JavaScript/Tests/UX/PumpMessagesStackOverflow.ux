@@ -23,6 +23,6 @@
 
 	<TextInput Value="{foo}" />
 	<Each Items="{bar}">
-		<Text Value="{}" />
+		<Text Value="{= data() }" />
 	</Each>
 </Panel>

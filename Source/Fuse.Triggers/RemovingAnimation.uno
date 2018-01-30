@@ -30,7 +30,7 @@ namespace Fuse.Triggers
 						<Rectangle Height="1" Alignment="Bottom">
 							<Stroke Color="#DDD" />
 						</Rectangle>
-						<Text Margin="10" Value="{}" />
+						<Text Margin="10" Value="data()" />
 						<RemovingAnimation>
 							<Move RelativeTo="Size" X="-1" Duration="0.4" Easing="CircularOut" />
 						</RemovingAnimation>

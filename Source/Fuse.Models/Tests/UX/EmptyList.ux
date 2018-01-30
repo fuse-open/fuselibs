@@ -6,12 +6,12 @@
     <FuseTest.Invoke Handler="{emptyPromise}" ux:Name="callEmptyPromise" />
     <StackPanel ux:Name="collector1">
         <Each Items="{items}">
-            <Text Value="{}" />
+            <Text Value="{= data() }" />
         </Each>
     </StackPanel>
     <StackPanel ux:Name="collector2">
         <Each Items="{promisedItems}">
-            <Text Value="{}" />
+            <Text Value="{= data() }" />
         </Each>
     </StackPanel>
 </Panel>

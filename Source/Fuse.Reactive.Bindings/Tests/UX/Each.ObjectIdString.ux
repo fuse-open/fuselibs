@@ -17,7 +17,7 @@
 	</JavaScript>
 	<StackPanel ux:Name="s">
 		<Each Items="{items}" Offset="0" Limit="5" ux:Name="e" Identity="Object">
-			<FuseTest.DudElement StringValue="{}" Height="10">
+			<FuseTest.DudElement StringValue="{= data() }" Height="10">
 				<RemovingAnimation>
 					<Nothing Duration="1"/>
 				</RemovingAnimation>

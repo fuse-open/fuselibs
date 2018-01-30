@@ -22,7 +22,7 @@
 			<Text Value="fail"/>
 		</WhileFailed>
 		<Each Items="{items}">
-			<Text Value="{}"/>
+			<Text Value="{= data() }"/>
 		</Each>
 	</StackPanel>
 	

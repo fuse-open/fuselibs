@@ -13,7 +13,7 @@
 	</JavaScript>
 	<StackPanel ux:Name="s">
 		<Each Items="{items}" Reuse="Frame">
-			<FuseTest.DudElement Value="{}"/>
+			<FuseTest.DudElement Value="{= data()}"/>
 		</Each>
 	</StackPanel>
 	

@@ -35,7 +35,6 @@ namespace Fuse.Test
 		}
 		
 		[Test]
-		[Ignore("Requires some reactive refactoring before it can be fixed")]
 		public void ContextRef()
 		{
 			var p = new UX.With.ContextRef();
