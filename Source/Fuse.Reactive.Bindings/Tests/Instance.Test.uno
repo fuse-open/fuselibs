@@ -107,7 +107,17 @@ namespace Fuse.Reactive.Bindings.Test
 				e.callH.Perform();
 				root.StepFrameJS();
 				
-				Assert.AreEqual("A,H,X", GetText(e));
+				Assert.AreEqual("A,H,h,X", GetText(e));
+			}
+		}
+		
+		[Test]
+		public void Defaults()
+		{
+			var e = new UX.Instance.Defaults();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				Assert.AreEqual( "B,D,G,H", GetText(e));
 			}
 		}
 	}
