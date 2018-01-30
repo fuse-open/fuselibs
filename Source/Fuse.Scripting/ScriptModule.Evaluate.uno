@@ -7,6 +7,18 @@ using Uno.IO;
 
 namespace Fuse.Scripting
 {
+	enum DependencyType
+	{
+		Explicit,
+		Name,
+	}
+
+	struct Dependency
+	{
+		public DependencyType Type;
+		public object Value;
+	}
+	
 	public partial class ScriptModule
 	{
 		string GetEffectiveCode()
@@ -57,12 +69,12 @@ namespace Fuse.Scripting
 			CallModuleFunc(c, moduleFunc, args.ToArray());
 		}
 
-		protected virtual Dictionary<string, object> GenerateRequireTable(Context c)
+		internal virtual Dictionary<string, Dependency> GenerateRequireTable(Context c)
 		{
 			return null;
 		}
 
-		protected virtual string GenerateArgs(Context c, ModuleResult result, List<object> args)
+		internal virtual string GenerateArgs(Context c, ModuleResult result, List<object> args)
 		{
 			var module = result.GetObject(c);
 
@@ -75,7 +87,7 @@ namespace Fuse.Scripting
 			return "module, exports, require";
 		}
 
-		protected virtual void CallModuleFunc(Context context, Function moduleFunc, object[] args)
+		internal virtual void CallModuleFunc(Context context, Function moduleFunc, object[] args)
 		{
 			moduleFunc.Call(context, args);
 		}

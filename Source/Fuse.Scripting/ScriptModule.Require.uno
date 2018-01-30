@@ -16,9 +16,9 @@ namespace Fuse.Scripting
 			readonly Context _c;
 			readonly ModuleResult _dependant;
 			readonly ScriptModule _m;
-			readonly Dictionary<string, object> _rt;
+			readonly Dictionary<string, Dependency> _rt;
 
-			public RequireContext(Context c, ScriptModule m, ModuleResult dependant, Dictionary<string, object> rt)
+			public RequireContext(Context c, ScriptModule m, ModuleResult dependant, Dictionary<string, Dependency> rt)
 			{
 				_c = c;
 				_m = m;
@@ -53,8 +53,8 @@ namespace Fuse.Scripting
 						if (_rt == null)
 							throw new Error( "require(): unable to resolve ux: prefixes: " + id );
 							
-						object res;
-						if (_rt.TryGetValue(id.Substring(uxPrefix.Length), out res)) return res;
+						Dependency res;
+						if (_rt.TryGetValue(id.Substring(uxPrefix.Length), out res)) return res.Value;
 						
 						throw new Error("require(): ux name not found: " + id);
 					}

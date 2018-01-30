@@ -1,0 +1,12 @@
+<Panel ux:Class="UX.JavaScript.Names">
+	<JavaScript Names="Require">
+		exports.go = function() {
+			require("ux:2").pulse()
+		}
+	</JavaScript>
+	<FuseTest.Invoke Handler="{go}" ux:Name="callGo"/>
+	<Timeline Name="2">
+		<Set text.Value="yes"/>
+	</Timeline>
+	<Text Value="nope" ux:Name="text"/>
+</Panel>

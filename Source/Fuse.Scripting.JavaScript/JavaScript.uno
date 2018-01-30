@@ -172,5 +172,17 @@ namespace Fuse.Reactive
 			get { return _scriptModule.FileName; }
 			set { _scriptModule.FileName = value; }
 		}
+		
+		/** 
+			Limits the names injected directly into the JavaScript code namespace.
+			
+			It is recommend you use `Names="Require"` for a cleaner JavaScript namespace and to avoid any potential issues with invalid JavaScript symbol names.  Named items from UX can be accessed via `require("ux:Name")`
+		*/
+		public Fuse.Scripting.JavaScript.ScriptModuleNames Names
+		{
+			get { return _scriptModule.ModuleNames; }
+			set { _scriptModule.ModuleNames = value; }
+		}
+		
 	}
 }

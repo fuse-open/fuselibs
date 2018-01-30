@@ -7,12 +7,27 @@ using Uno.Threading;
 
 namespace Fuse.Scripting.JavaScript
 {
+	public enum ScriptModuleNames
+	{
+		/** All names are injected with the same name they have in UX. */
+		InjectAll,
+		/** UX names are not injected but still available via `require("ux:name")` */
+		Require,
+	}
+	
 	class RootableScriptModule: ScriptModule
 	{
 		readonly ThreadWorker _worker;
 		readonly NameTable _names;
 		ClassInstance _classInstance;
 
+		ScriptModuleNames _moduleNames = ScriptModuleNames.InjectAll;
+		public ScriptModuleNames ModuleNames
+		{
+			get { return _moduleNames; }
+			set { _moduleNames = value; }
+		}
+		
 		public RootableScriptModule(ThreadWorker worker, NameTable names)
 		{
 			_worker = worker;
@@ -34,27 +49,30 @@ namespace Fuse.Scripting.JavaScript
 			}
 		}
 
-		internal Dictionary<string, object> Dependencies;
+		internal Dictionary<string, Dependency> Dependencies;
 
-		protected override Dictionary<string, object> GenerateRequireTable(Scripting.Context c)
+		internal override Dictionary<string, Dependency> GenerateRequireTable(Scripting.Context c)
 		{
 			return Dependencies;
 		}
 
-		protected override string GenerateArgs(Scripting.Context c, ModuleResult result, List<object> args)
+		internal override string GenerateArgs(Scripting.Context c, ModuleResult result, List<object> args)
 		{
 			var argsString = base.GenerateArgs(c, result, args);
 
 			foreach (var dep in Dependencies) 
 			{
+				if (dep.Value.Type == DependencyType.Name && ModuleNames != ScriptModuleNames.InjectAll)
+					continue;
+					
 				argsString += ", " + dep.Key;
-				args.Add(dep.Value);
+				args.Add(dep.Value.Value);
 			}
 
 			return argsString;
 		}
 
-		protected override void CallModuleFunc(Context context, Function moduleFunc, object[] args)
+		internal override void CallModuleFunc(Context context, Function moduleFunc, object[] args)
 		{
 			if (_classInstance != null)
 				_classInstance.CallMethod(context, moduleFunc, args);
