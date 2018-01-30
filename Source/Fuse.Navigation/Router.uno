@@ -426,8 +426,8 @@ namespace Fuse.Navigation
 				return null;
 			
 			//pushing/goto up to the leaf route can reuse existing matching pages
-			bool leafPush = r.SubRoute == null && operation == RoutingOperation.Push;
-			bool reusePage = canReuse && didTransition == RoutingResult.NoChange && !leafPush;
+			bool leafOp = r.SubRoute == null && operation != RoutingOperation.Goto;
+			bool reusePage = canReuse && didTransition == RoutingResult.NoChange && !leafOp;
 			if (reusePage)
 				page = outlet.GetCurrent(out pageVisual);
 			

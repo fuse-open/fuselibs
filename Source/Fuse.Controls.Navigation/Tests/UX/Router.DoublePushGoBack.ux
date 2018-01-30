@@ -1,0 +1,20 @@
+<Panel ux:Class="UX.Router.DoublePushGoBack">
+	<JavaScript>
+		exports.push = function() {
+			router.push("two", {})
+			router.push("two", {})
+		}
+	
+		exports.goBack = function() {
+			router.goBack()
+		}
+	</JavaScript>
+	<Router ux:Name="router" />
+	<Navigator DefaultPath="one">
+		<Panel ux:Template="one" />
+		<Panel ux:Template="two" />
+	</Navigator>
+
+	<FuseTest.Invoke Handler="{push}" ux:Name="callPush"/>
+	<FuseTest.Invoke Handler="{goBack}" ux:Name="callGoBack"/>
+</Panel>
