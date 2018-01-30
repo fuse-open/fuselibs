@@ -37,6 +37,27 @@
 				<Text>Vendor:</Text><ValueText ux:Name="_glesVendorText"/>
 				<Text>Renderer:</Text><ValueText ux:Name="_glesRendererText"/>
 			</Grid>
+			
+			<h2>Platform</h2>
+			<Panel ux:Class="PlatformCheck" Margin="5,2">
+				<string ux:Property="Label"/>
+				<bool ux:Property="Value"/>
+				<Text Value="{Property this.Label}" Color="{Property this.Value} ? #000 : #888"/>
+				<WhileFalse Value="{Property this.Value}">
+					<Rectangle Layer="Overlay" Alignment="VerticalCenter" Height="2" 
+						Color="{Property this.Value} ? #000 : #888"/>
+				</WhileFalse>
+			</Panel>
+			
+			<Grid ColumnCount="3" Alignment="Center">
+				<PlatformCheck Label="Mobile" Value="isMobile()"/>
+				<PlatformCheck Label="iOS" Value="isIOS()"/>
+				<PlatformCheck Label="Android" Value="isAndroid()"/>
+				<PlatformCheck Label="Desktop" Value="isDesktop()"/>
+				<PlatformCheck Label="Windows" Value="isWindows()"/>
+				<PlatformCheck Label="OSX" Value="isOSX()"/>
+			</Grid>
+			
 			<DropShadow/>
 		</StackPanel>
 	</ScrollView>
