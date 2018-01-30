@@ -1,4 +1,4 @@
-<Panel ux:Class="UX.EventBinding">
+<Panel ux:Class="UX.EventBinding.Serialize">
 	<JavaScript>
 		var Observable = require("FuseJS/Observable");
 		var result = Observable("nothing");

@@ -42,7 +42,7 @@ namespace Fuse.Reactive.Test
 		[Test]
 		public void SerializeObject()
 		{
-			var e = new UX.EventBinding();
+			var e = new UX.EventBinding.Serialize();
 			using (var root = TestRootPanel.CreateWithChild(e))
 			{
 				root.StepFrameJS();
@@ -50,6 +50,24 @@ namespace Fuse.Reactive.Test
 				root.StepFrameJS();
 
 				Assert.AreEqual("\"bar\"", e.Text.Value);
+			}
+		}
+		
+		[Test]
+		public void StandardData()
+		{
+			var e = new UX.EventBinding.Data();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.StepFrameJS();
+				
+				e.goWith.Perform();
+				e.c.FirstChild<FuseTest.Invoke>().Perform();
+				for (var c = e.a.FirstChild<Panel>(); c != null; c = c .NextSibling<Panel>()) 
+					c.FirstChild<FuseTest.Invoke>().Perform();
+				root.StepFrameJS();
+				
+				Assert.AreEqual( "si-la-one-two-", e.r.StringValue );
 			}
 		}
 	}

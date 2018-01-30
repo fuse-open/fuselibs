@@ -1,0 +1,51 @@
+<Panel ux:Class="UX.EventBinding.Data">
+	<JavaScript>
+		var Observable = require("FuseJS/Observable")
+		
+		exports.single = {
+			pep: "si"
+		}
+		
+		exports.items = Observable({
+			value: "one",
+		}, {
+			value: "two",
+		})
+		
+		exports.item = {
+			co: "la",
+		}
+		
+		exports.result = Observable("")
+		
+		exports.goEach = function(args) {
+			exports.result.value += args.data.value + "-"
+		}
+		exports.goWith = function(args) {
+			exports.result.value += args.data.pep + "-"
+		}
+		exports.goInstance = function(args) {
+			exports.result.value += args.data.co + "-"
+		}
+	</JavaScript>
+	
+	<Panel ux:Name="a">
+		<Each Items="{items}">
+			<Panel>
+				<FuseTest.Invoke Handler="{goEach}"/>
+			</Panel>
+		</Each>
+	</Panel>
+	
+	<With Data="{single}">
+		<FuseTest.Invoke Handler="{goWith}" ux:Name="goWith"/>
+	</With>
+	
+	<Panel ux:Name="c">
+		<Instance Item="{item}">
+			<FuseTest.Invoke Handler="{goInstance}"/>
+		</Instance>
+	</Panel>
+	
+	<FuseTest.DudElement StringValue="{result}" ux:Name="r"/>
+</Panel>
