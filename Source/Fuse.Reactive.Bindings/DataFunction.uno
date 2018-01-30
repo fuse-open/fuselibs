@@ -6,7 +6,16 @@ namespace Fuse.Reactive
 	/**
 		Binds to the prime context data of this node.
 		
-		Behavior's like @With, @Each, and @Instance introduce a prime data context for their children.  @JavaScript and the `Model` tag do not introduce a prime data context.
+		Behaviors like @With, @Each, and @Instance introduce a prime data context for their children.  @JavaScript and the `Model` tag do not introduce a prime data context.
+		
+		Use `data()` when you wish to bind directly to the prime data context. This is for when your data contains a simple value rather than a data structure.
+		
+			<JavaScript>
+				exports.items = Observable(1,2,3)
+			</JavaScript>
+			<Each Items="{items}">
+				<Text Value="{= data() }"/>
+			</Each>
 	*/
 	[UXFunction("data")]
 	public class DataFunction : Expression

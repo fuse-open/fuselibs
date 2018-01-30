@@ -8,7 +8,7 @@ namespace Fuse
 		/** When implemented by a `Node`, it indicates that the node provides data for its siblings. 
 			@hide
 		*/
-		//these, and the next interface, are not meant to be public
+		//these, and the next interface, and associated types, are not meant to be public
 		//UNO: https://github.com/fusetools/uno/issues/1524
 		public interface ISiblingDataProvider
 		{
@@ -26,7 +26,9 @@ namespace Fuse
 		/** @hide */
 		public enum DataType
 		{
+			/** A string key in the context */
 			Key,
+			/** A prime data context */
 			Prime,
 		}
 
@@ -41,7 +43,7 @@ namespace Fuse
 			NullProvider,
 		}
 		
-		internal bool TryGetFirstData(out object result)
+		internal bool TryGetPrimeDataContext(out object result)
 		{
 			IObject providerIgnore = null;
 			return TryFindData( DataType.Prime, null, out result, out providerIgnore );
