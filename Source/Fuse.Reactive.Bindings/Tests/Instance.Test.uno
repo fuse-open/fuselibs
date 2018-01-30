@@ -93,6 +93,23 @@ namespace Fuse.Reactive.Bindings.Test
 				Assert.AreEqual( "beep", GetText(e.b));
 			}
 		}
+		
+		[Test]
+		public void Match()
+		{
+			var e = new UX.Instance.Match();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				Assert.AreEqual("D,X", GetText(e));
+				
+				e.ma.Match = "a";
+				e.mb.Match = "q";
+				e.callH.Perform();
+				root.StepFrameJS();
+				
+				Assert.AreEqual("A,H,X", GetText(e));
+			}
+		}
 	}
 	
 	public class RootInstantiator : Instantiator

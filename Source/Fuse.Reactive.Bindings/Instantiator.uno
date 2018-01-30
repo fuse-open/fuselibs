@@ -338,6 +338,7 @@ namespace Fuse.Reactive
 		ITemplateSource _weakTemplateSource;
 		ITemplateSource _templateSource; //captured at rooting time
 		
+		string _templateKey = null;
 		/** Specifies a template key that is used to look up in the @TemplateSource to find an override of the default
 			`Templates` provided in this object.
 
@@ -346,7 +347,15 @@ namespace Fuse.Reactive
 		*/
 		public string TemplateKey
 		{
-			get; set;
+			get { return _templateKey; }
+			set 
+			{
+				if (_templateKey != value)
+				{
+					_templateKey = value;
+					RecreateTemplates();
+				}
+			}
 		}
 		
 		internal int Offset
@@ -408,6 +417,20 @@ namespace Fuse.Reactive
 				if (_matchKey != value)
 				{
 					_matchKey = value;
+					RecreateTemplates();
+				}
+			}
+		}
+		
+		string _match;
+		public string Match
+		{
+			get { return _match; }
+			set
+			{
+				if (_match != value)
+				{
+					_match = value;
 					RecreateTemplates();
 				}
 			}
@@ -555,7 +578,8 @@ namespace Fuse.Reactive
 			// Priority 2 - use the local templates collection and look for a matching key (if set)
 			if (useTemplate == null)
 			{
-				var key = _watcher.GetDataKey(data, MatchKey) as string;
+				string key = Match ?? _watcher.GetDataKey(data, MatchKey) as string;
+					
 				//match Order in FindTemplate (latest is preferred)
 				for (int i=Templates.Count-1; i>=0; --i) {
 					var f = Templates[i];
@@ -568,7 +592,7 @@ namespace Fuse.Reactive
 			// Priority 3 - Use the default template or all templates if no match specified
 			if (useTemplate == null)
 			{
-				if (MatchKey != null || defaultTemplate != null)
+				if (MatchKey != null || Match != null || defaultTemplate != null)
 					useTemplate = defaultTemplate; //may still be null
 				else
 					return new TemplateMatch{ All = true, Template = null }; //only unspecified can use complete list
