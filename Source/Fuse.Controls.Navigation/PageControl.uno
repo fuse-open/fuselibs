@@ -257,7 +257,7 @@ namespace Fuse.Controls
 			if (Active == null)
 				return new RouterPage( "" );
 			else
-				return PageData.Get(Active).RouterPage;
+				return PageData.GetOrCreate(Active).RouterPage;
 		}
 		
 		internal NavigationControlInactiveState _inactive = NavigationControlInactiveState.Collapsed;

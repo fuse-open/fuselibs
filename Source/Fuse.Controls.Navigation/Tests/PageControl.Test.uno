@@ -405,5 +405,16 @@ namespace Fuse.Controls.Test
 				Assert.AreEqual( p.b, p.pc.Active );
 			}
 		}
+		
+		[Test]
+		public void ActiveStringBinding()
+		{
+			var p = new UX.PageControl.ActiveStringBinding();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				root.StepFrameJS();
+				Assert.AreEqual( "222", ((string)p.pc.Active.Name) );
+			}
+		}
 	}
 }
