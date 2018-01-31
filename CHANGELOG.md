@@ -4,10 +4,12 @@
 
 ## 1.6.1
 
+### Navigator
+- Fixed the invalid reuse of an existing page if the context does not match
+
 ### Fuse.Scripting
 - Restore accidentally broken NativeEvent.RaiseAsync() API.
-## Navigator
-- Fixed the invalid reuse of an existing page if the context does not match
+- Rolled back NativeProperty constructor API to the pre-1.6 state. Code updated to 1.6 needs to be rolled back as well.
 
 ## 1.6.0
 

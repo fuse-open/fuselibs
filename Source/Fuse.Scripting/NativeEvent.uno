@@ -16,10 +16,10 @@ namespace Fuse.Scripting
 			_queueEventsBeforeEvaluation = queueEventsBeforeHandlerIsSet;
 		}
 
-		protected override void SetProperty(Context context, Scripting.Function function)
+		protected override void SetProperty(Scripting.Function function)
 		{
 			_jsFunction = function;
-			DispatchQueue(context.ThreadWorker);
+			DispatchQueue(Context.ThreadWorker);
 		}
 
 		protected override Scripting.Function GetProperty()
