@@ -7,6 +7,7 @@
 
 ### Fuse.Scripting
 - Restore accidentally broken NativeEvent.RaiseAsync() API.
+- Rolled back NativeProperty constructor API to the pre-1.6 state. Code updated to 1.6 needs to be rolled back as well.
 
 ## 1.6.0
 
