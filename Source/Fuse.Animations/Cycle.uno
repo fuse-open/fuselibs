@@ -15,6 +15,15 @@ namespace Fuse.Animations
 		/** The value switches between Low and High */
 		Square,
 	}
+
+	/** How the state is restored when the animator is played backwards */
+	public enum CycleRestore
+	{
+		/** Plays backwards towards the resting state */
+		Backward,
+		/** Plays forward towards the resting state */
+		Forward,
+	}
 	
 	[UXAutoGeneric("Cycle","Target")]
 	/** 
@@ -113,6 +122,16 @@ namespace Fuse.Animations
 		{
 			get { return _waveform; }
 			set { _waveform = value; }
+		}
+		
+		CycleRestore _restore = CycleRestore.Backward;
+		/**
+			How to return the value to the original/rest state when being played backwards/deactivated.
+		*/
+		public CycleRestore Restore
+		{
+			get { return _restore; }
+			set { _restore = value; }
 		}
 		
 		internal override AnimatorState CreateState(CreateStateParams p)
@@ -255,13 +274,17 @@ namespace Fuse.Animations
 		{
 			if (mixHandle == null)
 			{
-				debug_log "Invalid seek";
+				Fuse.Diagnostics.InternalError( "invalid seek", this );
 				return true;
 			}
 
 			bool done = false;
 			var oldProgress = progress;
-			progress = progress + interval * (interval < 0 ? Animator.FrequencyBack : Animator.Frequency);
+			
+			var freq = interval < 0 ? Animator.FrequencyBack : Animator.Frequency;
+			if (dir == SeekDirection.Backward && Animator.Restore == CycleRestore.Forward)
+				interval = Math.Abs(interval);
+			progress = progress + interval * freq;
 			if (on)
 			{
 				progress = Math.Mod( progress, 1 );
