@@ -3,6 +3,8 @@ using Uno.Compiler.ExportTargetInterop;
 
 namespace Fuse.Controls
 {
+	[Obsolete]
+	/** @Deprecated */
 	public sealed class RightFrameBackground : Control
 	{
 		public RightFrameBackground()

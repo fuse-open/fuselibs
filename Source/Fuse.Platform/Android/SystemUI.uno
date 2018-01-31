@@ -23,6 +23,39 @@ namespace Fuse.Platform
 		static public Rect TopFrame { get { return GetStatusBarFrame(); } }
 		static public Rect BottomFrame { public get; private set; }
 
+		static public event Action MarginsChanged;
+		
+		static public float4 DeviceMargins
+		{
+			get
+			{
+				var top = TopFrame.Height;
+				var bottom = BottomFrame.Height;
+				return float4(0,top,0,bottom) / Density;
+			}
+		}
+		
+		static public float4 SafeMargins
+		{
+			get
+			{
+				var top = TopFrame.Height;
+				var bottom = BottomFrame.Height;
+				return float4(0,top,0,bottom) / Density;
+			}
+		}
+		
+		static public float4 StaticMargins
+		{
+			get
+			{
+				var top = TopFrame.Height;
+				var bottom = _staticBottomFrameSize;
+				return float4(0,top,0,bottom) / Density; 
+			}
+		}
+		
+		
 		static Java.Object _keyboardListener; //ViewTreeObserver.OnGlobalLayoutListener
 		static Java.Object SuperLayout; //FrameLayout
 		static Java.Object RootLayout; //FrameLayout
@@ -37,6 +70,7 @@ namespace Fuse.Platform
 		static int _systemUIState;
 		static int _topFrameSize;
 		static int _bottomFrameSize;
+		static int _staticBottomFrameSize;
 
 		//------------------------------------------------------------
 		// Taken from platform2 display
@@ -201,7 +235,7 @@ namespace Fuse.Platform
 			}
 			return (float)result;
 		@}
-
+		
 		[Foreign(Language.Java)]
 		static public void ShowStatusBar()
 		@{
@@ -300,6 +334,9 @@ namespace Fuse.Platform
 
 		static void OnWillResize(SystemUIWillResizeEventArgs args)
 		{
+			if (MarginsChanged != null)
+				MarginsChanged();
+				
 			if (args.ID==SystemUIID.TopFrame) {
 				EventHandler<SystemUIWillResizeEventArgs> handler = TopFrameWillResize;
 				if (handler != null)
@@ -585,6 +622,9 @@ namespace Fuse.Platform
 				resizeReason = SystemUIResizeReason.WillChangeFrame;
 			}
 			_bottomFrameSize = height;
+			//TODO: There must be a proper way to do this. This horrible check is inhereted from the BottomFrameBackground to detect a keyboard size
+			if (height < 150)
+				_staticBottomFrameSize = height;
 
 			// make the event args
 			SystemUIWillResizeEventArgs args = new SystemUIWillResizeEventArgs(SystemUIID.BottomFrame, resizeReason, endFrame, startFrame, 1, 0);
@@ -634,5 +674,43 @@ namespace Fuse.Platform
 			float h = (int)GetRealDisplayHeight();
 			return float2(w, h);
 		}
+		
+
+		static public int APILevel { get { return GetAPILevel(); } }
+		static public int3 OSVersion
+		{
+			get
+			{
+				int major = 0;
+				int minor = 0;
+				int revision = 0;
+				try {
+					var ver = GetOSVersion();
+					string[] parts = ver.Split( new []{'.'});
+					if (parts.Length > 0)
+						Int.TryParse( parts[0], out major );
+					if (parts.Length > 1)
+						Int.TryParse( parts[1], out minor );
+					if (parts.Length > 2)
+						Int.TryParse( parts[2], out revision );
+				} catch( Exception ex ) {
+					//safe to ignore, may have partial results in major/minor, which is good
+				}
+				return int3(major, minor, revision);
+			}
+		}
+		
+		[Foreign(Language.Java)]
+		static int GetAPILevel()
+		@{
+			return android.os.Build.VERSION.SDK_INT;
+		@}
+		
+		[Foreign(Language.Java)]
+		static string GetOSVersion()
+		@{
+			return android.os.Build.VERSION.RELEASE;
+		@}
+		
 	}
 }

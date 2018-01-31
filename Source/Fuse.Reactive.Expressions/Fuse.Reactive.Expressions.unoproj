@@ -19,10 +19,12 @@
     "../Fuse.Marshal/Fuse.Marshal.unoproj",
     "../Fuse.Nodes/Fuse.Nodes.unoproj",
     "../Fuse.Reactive/Fuse.Reactive.unoproj",
+    "../Fuse.Platform/Fuse.Platform.unoproj",
   ],
   "InternalsVisibleTo": [
     "Fuse.Scripting.Test",
     "Fuse.Common.Test.Helpers",
+    "Fuse.Controls.Panels",
     "Fuse.Controls.Primitives",
     "Fuse.Expressions.Test",
     "Fuse.Motion",

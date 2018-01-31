@@ -31,10 +31,12 @@ namespace Fuse
 			[[root layer] setAnchorPoint: { 0.0f, 0.0f }];
 			@{Fuse.Platform.SystemUI.RootView:Set(root)};
 			[root sizeToFit];
-			root.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+			root.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
+			
 			return root;
 		@}
 
+		
 		static float4 _clearColor = float4(1f);
 		public static float4 ClearColor
 		{

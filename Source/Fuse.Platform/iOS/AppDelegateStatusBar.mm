@@ -18,6 +18,12 @@
 	@{Fuse.Platform.SystemUI._statusBarWillChangeFrame(Uno.Platform.iOS.uCGRect, double):Call(frame, 0)};
 }
 
+- (void)application:(UIApplication *)application didChangeStatusBarFrame:(CGRect)frame
+{
+	uAutoReleasePool pool;
+	@{Fuse.Platform.SystemUI._statusBarDidChangeFrame(Uno.Platform.iOS.uCGRect):Call(frame)};
+}
+
 - (BOOL)prefersStatusBarHidden
 {
 	uAutoReleasePool pool;

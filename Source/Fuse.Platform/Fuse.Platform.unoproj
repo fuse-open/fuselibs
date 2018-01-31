@@ -7,13 +7,15 @@
     "ProjectUrl": "https://fusetools.com"
   },
   "InternalsVisibleTo": [
-    "Fuse.Controls.WebView",
-    "Fuse.Controls.Panels",
-    "Fuse.Elements",
-    "Fuse.Triggers",
-    "Fuse.iOS",
+    "Fuse.Android",
     "Fuse.Common",
+    "Fuse.Controls.Panels",
+    "Fuse.Controls.WebView",
+    "Fuse.Elements",
+    "Fuse.iOS",
     "Fuse.Nodes",
+    "Fuse.Reactive.Expressions",
+    "Fuse.Triggers",
   ],
   "Includes": [
     "AppAlerts.uno:Source",
