@@ -10,15 +10,16 @@ using Fuse.Triggers;
 
 namespace Fuse.Controls
 {
-	public partial class EdgeNavigator : Panel
+	public partial class EdgeNavigator : NavigationControl, IRouterOutlet
 	{
-		EdgeNavigation _navigation = new EdgeNavigation();
+		EdgeNavigation _edgeNavigation = new EdgeNavigation();
 
 		public EdgeNavigator()
 		{
-			ClipToBounds = true;
+			IsRouterOutlet = false; //backwards compatibility, this wasn't an outlet before but typically used within a Router
+			HitTestMode = HitTestMode.LocalBounds | HitTestMode.Children;
 			
-			Children.Add(_navigation);
+			SetNavigation(_edgeNavigation);
 			
 			var q = new Tapped(OnTapped);
 			Children.Add(q);
@@ -26,46 +27,23 @@ namespace Fuse.Controls
 		
 		public Fuse.Navigation.VisualNavigation Navigation
 		{	
-			get { return _navigation; }
+			get { return base.Navigation; }
 		}
 		
-		public Visual Active
-		{
-			get { return _navigation.Active; }
-			set { _navigation.Active = value; }
-		}
-
 		protected override void OnRooted()
 		{
 			base.OnRooted();
-			
-			for (int i=0; i < _navigation.Pages.Count; ++i)
-				UpdateChild(_navigation.Pages[i].Visual);
+			RootActivePage();
 		}
 		
 		protected override void OnUnrooted()
 		{
-			for (int i=0; i < _navigation.Pages.Count; ++i)
-				CleanupChild(_navigation.Pages[i].Visual);
-				
+			UnrootActivePage();
 			base.OnUnrooted();
 		}
 		
-		protected override void OnChildAdded(Node o)
+		protected override void CreateTriggers(Element elm, ControlPageData pd)
 		{
-			base.OnChildAdded(o);
-			if (IsRootingCompleted && Fuse.Navigation.Navigation.IsPage(o))
-				UpdateChild(o);
-		}
-		
-		void UpdateChild(Node o)
-		{
-			var elm = o as Element;
-			if (elm == null)
-				return;
-				
-			var pd = GetControlPageData(elm);
-			CleanupChild(pd,elm);
 			var e = EdgeNavigation.GetEdge(elm);
 			switch(e)
 			{
@@ -86,24 +64,6 @@ namespace Fuse.Controls
 			}
 		}
 
-		protected override void OnChildRemoved(Node o)
-		{
-			base.OnChildRemoved(o);
-			if (IsRootingCompleted)
-				CleanupChild(o);
-		}
-		
-		void CleanupChild(Node o)
-		{
-			var elm = o as Element;
-			if (elm != null) 
-			{
-				var pd = GetControlPageData(elm, false);
-				if (pd != null)
-					CleanupChild(pd,elm);
-			}
-		}
-
 		void SetupEdge(ControlPageData pd, Element elm,float2 rel, Alignment align)
 		{
 			elm.Alignment = align;
@@ -117,29 +77,19 @@ namespace Fuse.Controls
 			enter.Animators.Add(move);
 			
 			pd.Enter = enter;
-			elm.Children.Add(enter);
 		}
 
-		void CleanupChild(ControlPageData pd, Visual elm)
-		{
-			if (pd.Enter != null)
-			{
-				elm.Children.Remove(pd.Enter);
-				pd.Enter = null;
-			}
-		}
-		
 		//very ugly way to get dismiss region, TODO: wrap better?
 		void OnTapped(object s, TappedArgs args)
 		{
-			if (_navigation.IsDismissPoint(args.WindowPoint))
+			if (_edgeNavigation.IsDismissPoint(args.WindowPoint))
 				Dismiss();
 		}
 		
 		void Dismiss()
 		{
-			if (_navigation.IsAnyPanelActive() )
-				_navigation.Goto(null, NavigationGotoMode.Transition);
+			if (_edgeNavigation.IsAnyPanelActive() )
+				_edgeNavigation.Goto(null, NavigationGotoMode.Transition);
 		}
 		
 		void GotoEdge(NavigationEdge edge)
@@ -149,30 +99,44 @@ namespace Fuse.Controls
 				var e = EdgeNavigation.GetEdge(elm);
 				if (e != edge)
 					continue;
-				_navigation.Goto(elm, NavigationGotoMode.Transition);
+				_edgeNavigation.Goto(elm, NavigationGotoMode.Transition);
 				break;
 			}
 		}
 		
 		static readonly PropertyHandle _controlPageDataProperty = Fuse.Properties.CreateHandle();
 	
-		class ControlPageData
-		{
-			public Trigger Enter;
+		OutletType IRouterOutlet.Type 
+		{ 
+			get { return RouterOutletType; }
 		}
 		
-		static ControlPageData GetControlPageData(Element elm, bool create = true)
+		void IRouterOutlet.PartialPrepareGoto(double progress)
 		{
-			var pd = PageData.GetOrCreate(elm, create);
-			if (pd == null) //could only happen if create == false
-				return null;
-				
-			if (pd.ControlPageData != null || !create)
-				return (ControlPageData)pd.ControlPageData;
-				
-			var cpd = new ControlPageData();
-			pd.ControlPageData = cpd;
-			return cpd;
+		}
+		
+		void IRouterOutlet.CancelPrepare()
+		{
+		}
+		
+		RoutingResult IRouterOutlet.CompareCurrent(RouterPage routerPage, out Visual pageVisual)
+		{
+			return CommonNavigation.CompareCurrent(this, Active, routerPage, out pageVisual);
+		}
+		
+		RoutingResult IRouterOutlet.Goto(RouterPage routerPage, NavigationGotoMode gotoMode, 
+			RoutingOperation operation, string operationStyle, out Visual pageVisual)
+		{
+			return CommonNavigation.Goto(this, routerPage, gotoMode, operation, operationStyle, out pageVisual);
+		}
+		
+		RouterPage IRouterOutlet.GetCurrent(out Visual pageVisual)
+		{
+			pageVisual = Active;
+			if (Active == null)
+				return new RouterPage( "" );
+			else
+				return PageData.GetOrCreate(Active).RouterPage;
 		}
 		
 	}

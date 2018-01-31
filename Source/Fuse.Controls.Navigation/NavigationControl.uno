@@ -187,7 +187,7 @@ namespace Fuse.Controls
 				
 			var cpd = GetControlPageData(c);
 			UpdateProgress(c, Navigation.GetPageState(c), cpd);
-
+			
 			if ( (cpd.Enter == null || cpd.Exit == null || cpd.Inactive == null || cpd.Removing == null) )
 			{
 				CleanupTriggers(c, cpd); //in case partially null
@@ -243,7 +243,7 @@ namespace Fuse.Controls
 			base.OnUnrooted();
 		}
 		
-		void CleanupTriggers(Element page, ControlPageData data)
+		virtual void CleanupTriggers(Element page, ControlPageData data)
 		{
 			if (data.Enter != null)
 			{
@@ -469,6 +469,53 @@ namespace Fuse.Controls
 			var current = (this as IRouterOutlet).GetCurrent(out ignore);
 			if (pages.Count == 0 && current != null)
 				pages.Add(current);
+		}
+
+		// common to PageControl and EdgeNavigator (unclear how to merge into Navigator)
+		internal void RootActivePage()
+		{
+			var pages = AncestorRouterPage != null ? AncestorRouterPage.ChildRouterPages : null;
+			if (pages != null && pages.Count > 0)
+			{ 
+				Visual ignore;
+				((IRouterOutlet)this).Goto( pages[pages.Count-1], NavigationGotoMode.Bypass, 
+					RoutingOperation.Goto, "", out ignore );
+			}
+			else
+			{
+				OnActivePageChanged(this, Navigation.Active);
+			}
+
+			Navigation.ActivePageChanged += OnActivePageChanged;
+		}
+		
+		internal void UnrootActivePage()
+		{
+			Navigation.ActivePageChanged -= OnActivePageChanged;
+		}
+		
+		void OnActivePageChanged(object sender, Visual active)
+		{
+			if (AncestorRouterPage != null)
+			{
+				Visual ignore;
+				var current = (this as IRouterOutlet).GetCurrent(out ignore);
+				var pages = AncestorRouterPage.ChildRouterPages;
+				var changed = false;
+				if (pages.Count == 0)
+				{
+					pages.Add( current );
+					changed = true;
+				}
+				else if (pages[pages.Count -1] != current) 
+				{
+					pages[pages.Count-1] = current;
+					changed = true;
+				}
+
+				if (changed)
+					RouterPage.BubbleHistoryChanged(this);
+			}
 		}
 	}
 }
