@@ -28,6 +28,14 @@ namespace Fuse.Models
 			OnModelDataChanged(md, v);
 		}
 		
+		[UXAttachedPropertySetter("ModelNameTable")]
+		public static void SetModelNameTable(Visual v, NameTable nt)
+		{
+			var md = GetOrCreateModelData(v);
+			md.NameTable = nt;
+			OnModelDataChanged(md, v);
+		}
+
 		static void OnModelDataChanged(ModelData md, Visual v)
 		{
 			v.RemoveAllChildren<ModelJavaScript>();
@@ -37,14 +45,6 @@ namespace Fuse.Models
 				return;
 			
 			v.Children.Add( new ModelJavaScript(md.NameTable, md.ModulePath, null) );
-		}
-		
-		[UXAttachedPropertySetter("ModelNameTable")]
-		public static void SetModelNameTable(Visual v, NameTable nt)
-		{
-			var md = GetOrCreateModelData(v);
-			md.NameTable = nt;
-			OnModelDataChanged(md, v);
 		}
 
 		static ModelData GetOrCreateModelData(Visual v)
