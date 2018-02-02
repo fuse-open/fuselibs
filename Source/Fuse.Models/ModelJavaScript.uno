@@ -25,10 +25,10 @@ namespace Fuse.Models
 		{
 			var md = GetOrCreateModelData(v);
 			md.ModulePath = modulePath;
-			Complete( md, v );
+			OnModelDataChanged(md, v);
 		}
 		
-		static void Complete( ModelData md, Visual v )
+		static void OnModelDataChanged(ModelData md, Visual v)
 		{
 			v.RemoveAllChildren<ModelJavaScript>();
 			
@@ -44,7 +44,7 @@ namespace Fuse.Models
 		{
 			var md = GetOrCreateModelData(v);
 			md.NameTable = nt;
-			Complete( md, v );
+			OnModelDataChanged(md, v);
 		}
 
 		static ModelData GetOrCreateModelData(Visual v)
