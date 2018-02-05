@@ -1,0 +1,8 @@
+<Panel ux:Class="UX.Model.NestedArray" Model="UX/NestedArray">
+	<Each Items="{array}">
+		<Each Items="{}">
+			<Text Value="{}" />
+		</Each>
+	</Each>
+	<FuseTest.Invoke ux:Name="push" Handler="{push}" />
+</Panel>

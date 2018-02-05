@@ -261,7 +261,7 @@ namespace Fuse.GeoLocation
 			user to use location services whenever the app is
 			running.
 		*/
-		void SetAuthorizationRequest(Scripting.Context context, int value)
+		void SetAuthorizationRequest(int value)
 		{
 			_locationTracker.AuthorizationType = (GeoLocationAuthorizationType)value;
 		}

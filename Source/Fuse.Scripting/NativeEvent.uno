@@ -16,10 +16,10 @@ namespace Fuse.Scripting
 			_queueEventsBeforeEvaluation = queueEventsBeforeHandlerIsSet;
 		}
 
-		protected override void SetProperty(Context context, Scripting.Function function)
+		protected override void SetProperty(Scripting.Function function)
 		{
 			_jsFunction = function;
-			DispatchQueue(context.ThreadWorker);
+			DispatchQueue(Context.ThreadWorker);
 		}
 
 		protected override Scripting.Function GetProperty()
@@ -48,6 +48,15 @@ namespace Fuse.Scripting
 		{
 			while (_eventArgsQueue.Count > 0 && _jsFunction != null)
 				threadWorker.Invoke(new CallDiscardingResultClosure(_jsFunction, _eventArgsQueue.Dequeue()).Run);
+		}
+
+		[Obsolete("Use `RaiseAsync(IThreadWorker, params object[])` instead")]
+		public void RaiseAsync(params object[] args)
+		{
+			if(Context != null || _queueEventsBeforeEvaluation)
+				_eventArgsQueue.Enqueue(args);
+
+			DispatchQueue(Context.ThreadWorker);
 		}
 
 		public void RaiseAsync(IThreadWorker threadWorker, params object[] args)

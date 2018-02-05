@@ -2,7 +2,7 @@
   "Copyright": "Copyright (c) Fusetools AS 2017",
   "Description": "Browser window polyfill",
   "Publisher": "Fusetools AS",
-  "Version": "1.6.0-rc1",
+  "Version": "1.6.0",
   "Package": {
     "ProjectUrl": "https://fusetools.com"
   },
