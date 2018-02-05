@@ -25,6 +25,7 @@ namespace Fuse.Models.Test
 			}
 		}
 
+		[Test]
 		public void ArrayParentMeta()
 		{
 			var e = new UX.Model.ArrayParentMeta();
