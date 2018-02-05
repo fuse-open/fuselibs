@@ -12,6 +12,7 @@ namespace Fuse.Models.Test
 	public class ModelTest : ModelTestBase
 	{
 		[Test]
+		[Ignore("https://github.com/fusetools/fuselibs-public/issues/1006")]
 		public void NestedArray()
 		{
 			var e = new UX.Model.NestedArray();
