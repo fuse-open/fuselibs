@@ -20,11 +20,12 @@ namespace Fuse.Scripting
 
 			ModuleObject = obj;
 			Context = context;
-			var member = CreateObject();
+
+			var member = CreateObject(context);
 			if(member != null)
 				ModuleObject[Name] = member;
 		}
 
-		protected abstract object CreateObject();
+		protected abstract object CreateObject(Context context);
 	}
 }

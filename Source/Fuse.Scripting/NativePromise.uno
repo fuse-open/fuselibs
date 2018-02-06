@@ -63,7 +63,7 @@ namespace Fuse.Scripting
 			_resultConverter = resultConverter;
 		}
 
-		protected override object CreateObject()
+		protected override object CreateObject(Context context)
 		{ 
 			return (Callback)new ContextClosure(_futureFactory, _resultConverter).CreatePromise;
 		}
