@@ -7,6 +7,7 @@ namespace Fuse.Scripting
 	{
 		protected string Name { get; private set; }
 		public Context Context { get; private set; }
+		public IThreadWorker ThreadWorker { get; private set; }
 		protected Object ModuleObject { get; private set; }
 		protected internal NativeMember(string name) { Name = name; }
 
@@ -20,6 +21,7 @@ namespace Fuse.Scripting
 
 			ModuleObject = obj;
 			Context = context;
+			ThreadWorker = context.ThreadWorker;
 
 			var member = CreateObject(context);
 			if(member != null)
