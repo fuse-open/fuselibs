@@ -12,6 +12,12 @@ namespace Fuse.Scripting
 
 		internal void Create(Object obj, Context context)
 		{
+			if (obj == null)
+				throw new ArgumentNullException(nameof(obj));
+
+			if (context == null)
+				throw new ArgumentNullException(nameof(context));
+
 			ModuleObject = obj;
 			Context = context;
 			var member = CreateObject();
