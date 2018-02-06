@@ -11,11 +11,6 @@ namespace Fuse.Scripting
 
 		protected override object CreateObject()
 		{
-			return CreateCallback();
-		}
-
-		internal Callback CreateCallback()
-		{
 			return (Callback)(new NativeFunctionClosure(_nativeCallback, Context).Callback);
 		}
 
