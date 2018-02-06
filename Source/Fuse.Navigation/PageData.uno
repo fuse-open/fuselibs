@@ -45,8 +45,8 @@ namespace Fuse.Navigation
 			}
 			
 			this.RouterPage = rp;
-			visual.Prepare(rp.Parameter);
 			UpdateContextData( visual, rp.Context );
+			visual.Prepare(rp.Parameter);
 			
 			if (RouterPageChanged != null)
 				RouterPageChanged( this, rp );
