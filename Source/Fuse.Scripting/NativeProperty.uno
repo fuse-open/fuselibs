@@ -56,7 +56,7 @@ namespace Fuse.Scripting
 				_getHandler = GetProperty;
 
 			if(_valueConverter != null)
-				return _valueConverter(Context, _getHandler());
+				return _valueConverter(context, _getHandler());
 			
 			return _getHandler();
 		}
