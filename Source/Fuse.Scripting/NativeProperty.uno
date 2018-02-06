@@ -30,12 +30,12 @@ namespace Fuse.Scripting
 			_valueConverter = valueConverter;
 		}
 
-		protected override object CreateObject()
+		protected override object CreateObject(Context context)
 		{
 			if(_isReadonly)
-				Context.ObjectDefineProperty(ModuleObject, Name, _readonlyValue);
+				context.ObjectDefineProperty(ModuleObject, Name, _readonlyValue);
 			else
-				Context.ObjectDefineProperty(ModuleObject, Name, (Callback)GetProperty, (Callback)SetProperty);
+				context.ObjectDefineProperty(ModuleObject, Name, (Callback)GetProperty, (Callback)SetProperty);
 
 			return null;
 		}
@@ -56,7 +56,7 @@ namespace Fuse.Scripting
 				_getHandler = GetProperty;
 
 			if(_valueConverter != null)
-				return _valueConverter(Context, _getHandler());
+				return _valueConverter(context, _getHandler());
 			
 			return _getHandler();
 		}

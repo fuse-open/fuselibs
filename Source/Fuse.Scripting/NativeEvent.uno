@@ -19,7 +19,7 @@ namespace Fuse.Scripting
 		protected override void SetProperty(Scripting.Function function)
 		{
 			_jsFunction = function;
-			DispatchQueue(Context.ThreadWorker);
+			DispatchQueue(ThreadWorker);
 		}
 
 		protected override Scripting.Function GetProperty()
@@ -61,7 +61,7 @@ namespace Fuse.Scripting
 
 		public void RaiseAsync(IThreadWorker threadWorker, params object[] args)
 		{
-			if(Context != null || _queueEventsBeforeEvaluation)
+			if (ThreadWorker != null || _queueEventsBeforeEvaluation)
 				_eventArgsQueue.Enqueue(args);
 
 			DispatchQueue(threadWorker);

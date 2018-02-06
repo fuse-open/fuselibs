@@ -1,5 +1,8 @@
 # Unreleased
 
+## Fuse.Scripting
+- Marked `NativeMember.Context` as Obsolete. Either use passed-down `Context`, or dispatch to `ThreadWorker` instead.
+
 ## Node Data Context
 - Deprecated and removed several functions which were not meant to be public. The deprecated ones will be removed shortly, as the current interface cannot be supported in the future.   `ISiblingDataProvider`, `ISubtreeDataProvider`, `IDataEnumerator`, `Node.GetFirstData`, `Node.EnumerateData`, `Node.BroadcastDataChange`, `Node.IDataListenere`, `Node.OnDataChanged`, `Node.AddDataListener`, `Node.RemoveDataListener`, `IObject`, `IArray`
 

@@ -9,14 +9,9 @@ namespace Fuse.Scripting
 	{
 		NativeCallback _nativeCallback;
 
-		protected override object CreateObject()
+		protected override object CreateObject(Context context)
 		{
-			return CreateCallback();
-		}
-
-		internal Callback CreateCallback()
-		{
-			return (Callback)(new NativeFunctionClosure(_nativeCallback, Context).Callback);
+			return (Callback)(new NativeFunctionClosure(_nativeCallback, context).Callback);
 		}
 
 		public NativeFunction(string name, NativeCallback callback): base(name)
