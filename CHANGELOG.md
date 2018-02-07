@@ -5,7 +5,26 @@
 
 ### 1.7.0
 
+## PageControl
+- Fixed a crash resulting from adding dynamic pages and binding by name
+
+## Partial Curves
+- Added support for drawing partial curves to `Path` and `Curve`. Refer to the `PathStart`, `PathLength` and `PathEnd` properties.
+- Added the path expressions `pathPointAtDistance` and `pathTangentAngleAtDistance` for locating an offset along a `Path` or `Curve` and the heading.
+
+## Router
+- Fixed `goBack` to properly modify the route with two duplicate routes in the history## JavaScript 
+- Several functions in `ScriptModule` and related classes have been marked `internal`. These were never meant to be part of the public API.
+- Added `JavaScript.Names` with option `Require` to prevent injecting names into the JavaScript code namespace
+
+## TextColor Opacity
+- Fixed a failure to render translucent `TextColor` correctly
+- Fixed the rendering of opaque emoji when `TextColor` is translucent (they will not also be translucent, though still  use the font coloring)
+
 ### Node Data Context
+- Removed some deprecated methods and classes from `Node`: `IDataListener`, `OnDataChanged`. These were not meant to be public.
+- Deprecated `{}` in favour of the new `data()` function. `{}` had unusual binding rules and would often not bind to the intended context. `data()` always binds to the prime data context, it's unambiguous and predictable.
+- Fixed the object provided to JavaScript callbacks in `args.data`. It will now always be the prime data context, not just the next contextual data.
 - Deprecated and removed several functions which were not meant to be public. The deprecated ones will be removed shortly, as the current interface cannot be supported in the future.   `ISiblingDataProvider`, `ISubtreeDataProvider`, `IDataEnumerator`, `Node.GetFirstData`, `Node.EnumerateData`, `Node.BroadcastDataChange`, `Node.IDataListenere`, `Node.OnDataChanged`, `Node.AddDataListener`, `Node.RemoveDataListener`, `IObject`, `IArray`
 
 ### LinearGradient
