@@ -5,27 +5,27 @@ using Fuse.Platform;
 
 namespace Fuse.Platform
 {
-	public enum SystemUIID
+	enum SystemUIID
 	{
 		TopFrame,
 		BottomFrame,
 	}
 
-	public enum SystemUIResizeReason
+	enum SystemUIResizeReason
 	{
 		WillShow,
 		WillChangeFrame,
 		WillHide,
 	}
 
-	internal enum SysUIState // was SystemUI.UIState
+	enum SysUIState // was SystemUI.UIState
 	{
 		Normal = 0,
 		StatusBarHidden = 1,
 		Fullscreen = 2,
 	}
 
-	public class SystemUIWillResizeEventArgs : EventArgs
+	class SystemUIWillResizeEventArgs : EventArgs
 	{
 		public SystemUIID ID { get; private set; }
 		public SystemUIResizeReason ResizeReason { get; private set; }

@@ -26,7 +26,7 @@ namespace Fuse.Platform
 	[Require("Source.Include", "@{Uno.Platform.iOS.Application:Include}")]
 	[Require("Source.Include", "Uno-iOS/AppDelegate.h")]
 	[Require("Source.Include", "AppDelegateSoftKeyboard.h")]
-	public static extern(iOS) class SystemUI
+	static extern(iOS) class SystemUI
 	{
 		static public event EventHandler<SystemUIWillResizeEventArgs> TopFrameWillResize;
 		static public event EventHandler<SystemUIWillResizeEventArgs> BottomFrameWillResize;

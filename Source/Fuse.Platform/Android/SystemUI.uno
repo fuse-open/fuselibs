@@ -15,7 +15,7 @@ namespace Fuse.Platform
 		"android.view.WindowManager", "android.widget.FrameLayout",
 		"java.lang.reflect.Method")]
 
-	public static extern(android) class SystemUI
+	static extern(android) class SystemUI
 	{
 		static public event EventHandler<SystemUIWillResizeEventArgs> TopFrameWillResize;
 		static public event EventHandler<SystemUIWillResizeEventArgs> BottomFrameWillResize;
