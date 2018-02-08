@@ -23,21 +23,20 @@ namespace Fuse.Models
 		[UXAttachedPropertySetter("JavaScript.Model"), UXAuxNameTable("ModelNameTable")]
 		public static void SetModel(Visual v, string modulePath)
 		{
-			var md = v.Properties.Get( _modelHandle ) as ModelData;
-			if (md == null)
-			{
-				md = new ModelData { ModulePath = modulePath };
-				v.Properties.Set( _modelHandle, md );
-			}
-			else
-			{
-				md.ModulePath = modulePath;
-			}
-			
-			Complete( md, v );
+			var md = GetOrCreateModelData(v);
+			md.ModulePath = modulePath;
+			OnModelDataChanged(md, v);
 		}
 		
-		static void Complete( ModelData md, Visual v )
+		[UXAttachedPropertySetter("ModelNameTable")]
+		public static void SetModelNameTable(Visual v, NameTable nt)
+		{
+			var md = GetOrCreateModelData(v);
+			md.NameTable = nt;
+			OnModelDataChanged(md, v);
+		}
+
+		static void OnModelDataChanged(ModelData md, Visual v)
 		{
 			v.RemoveAllChildren<ModelJavaScript>();
 			
@@ -47,22 +46,16 @@ namespace Fuse.Models
 			
 			v.Children.Add( new ModelJavaScript(md.NameTable, md.ModulePath, null) );
 		}
-		
-		[UXAttachedPropertySetter("ModelNameTable")]
-		public static void SetModelNameTable(Visual v, NameTable nt)
+
+		static ModelData GetOrCreateModelData(Visual v)
 		{
-			var md = v.Properties.Get( _modelHandle ) as ModelData;
+			var md = v.Properties.Get(_modelHandle) as ModelData;
 			if (md == null)
 			{
-				md = new ModelData{ NameTable = nt };
-				v.Properties.Set( _modelHandle, md );
+				md = new ModelData();
+				v.Properties.Set(_modelHandle, md);
 			}
-			else
-			{
-				md.NameTable = nt;
-			}
-			
-			Complete( md, v );
+			return md;
 		}
 
 		//TODO: This should probably be JavaScript.Model, Preview would need to be adjusted as well
