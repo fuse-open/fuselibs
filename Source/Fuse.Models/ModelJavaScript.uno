@@ -27,6 +27,12 @@ namespace Fuse.Models
 			md.ModulePath = modulePath;
 			OnModelDataChanged(md, v);
 		}
+
+		[UXAttachedPropertyGetter("JavaScript.Model")]
+		public static string GetModel(Visual v)
+		{
+			return GetOrCreateModelData(v).ModulePath;
+		}
 		
 		[UXAttachedPropertySetter("ModelNameTable")]
 		public static void SetModelNameTable(Visual v, NameTable nt)
@@ -34,6 +40,12 @@ namespace Fuse.Models
 			var md = GetOrCreateModelData(v);
 			md.NameTable = nt;
 			OnModelDataChanged(md, v);
+		}
+
+		[UXAttachedPropertyGetter("ModelNameTable")]
+		public static NameTable GetModelNameTable(Visual v)
+		{
+			return GetOrCreateModelData(v).NameTable;
 		}
 
 		static void OnModelDataChanged(ModelData md, Visual v)
