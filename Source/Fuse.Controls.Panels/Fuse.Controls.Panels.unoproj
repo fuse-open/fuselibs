@@ -39,6 +39,7 @@
     "../Fuse.Motion/Fuse.Motion.unoproj",
     "../Fuse.Navigation/Fuse.Navigation.unoproj",
     "../Fuse.Reactive/Fuse.Reactive.unoproj",
+    "../Fuse.Reactive.Bindings/Fuse.Reactive.Bindings.unoproj",
     "../Fuse.Reactive.Expressions/Fuse.Reactive.Expressions.unoproj",
     "../Fuse.Scripting/Fuse.Scripting.unoproj",
     "../Fuse.Triggers/Fuse.Triggers.unoproj",

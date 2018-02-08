@@ -97,6 +97,15 @@ namespace Fuse.Reactive
 			return rv;
 		}
 		
+		public static WindowCaps AttachFrom(Node node)
+		{
+			var rv = node.GetNearestAncestorOfType<RootViewport>();
+			if (rv == null)
+				throw new Exception( "No RootViewport found" );
+				
+			return Attach(rv);
+		}
+		
 		public void Detach()
 		{
 			if (--_attachCount == 0)
