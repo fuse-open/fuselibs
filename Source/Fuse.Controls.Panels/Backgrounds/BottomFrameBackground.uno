@@ -78,10 +78,10 @@ namespace Fuse.Controls
 
 		protected override void OnUnrooted()
 		{
-			base.OnUnrooted();
 			_caps.RemovePropertyListener(this);
 			_caps.Detach();
 			_caps = null;
+			base.OnUnrooted();
 		}
 
 		float _height;
