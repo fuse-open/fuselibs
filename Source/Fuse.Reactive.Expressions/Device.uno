@@ -11,12 +11,12 @@ namespace Fuse.Reactive
 		
 		internal CapsObject() { }
 		
-		bool IObject.ContainsKey(string key)
+		public bool ContainsKey(string key)
 		{
 			return _props.ContainsKey(key);
 		}
 		
-		object IObject.this[string key]
+		public object this[string key]
 		{
 			get { return GetValue(key); }
 		}
@@ -28,7 +28,7 @@ namespace Fuse.Reactive
 			return null;
 		}
 		
-		string[] IObject.Keys
+		public string[] Keys
 		{
 			get { return _props.Keys.ToArray<string>(); }
 		}

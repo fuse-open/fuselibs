@@ -115,13 +115,13 @@ namespace Fuse.Reactive
 			}
 		}
 
-		static Selector NameWidth = "width";
-		static Selector NameHeight = "height";
-		static Selector NameSize = "size";
+		static public Selector NameWidth = "width";
+		static public Selector NameHeight = "height";
+		static public Selector NameSize = "size";
 		
-		static Selector NameSafeMargins = "safeMargins";
-		static Selector NameDeviceMargins = "deviceMargins";
-		static Selector NameStaticMargins = "staticMargins";
+		static public Selector NameSafeMargins = "safeMargins";
+		static public Selector NameDeviceMargins = "deviceMargins";
+		static public Selector NameStaticMargins = "staticMargins";
 		
 		WindowCaps( RootViewport rv )
 		{
