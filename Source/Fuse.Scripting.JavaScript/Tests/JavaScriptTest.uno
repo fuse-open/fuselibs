@@ -23,10 +23,13 @@ namespace Fuse.Reactive.Test
 			}
 		}
 		
+		// NOTE: This test is excluded on MSVC since the compiler used for that target apparently
+		// don't properly support unicode symbols. We're not using the [Ignore] attribute here
+		// since that won't exclude the test during compilation.
 		[Test]
 		//future-proofing any cleanup of exported names (this uses unusual, but valid JS names)
 		//refer to https://github.com/fusetools/fuselibs-public/issues/972
-		public void ExoticNames()
+		extern(!MSVC) public void ExoticNames()
 		{
 			var j = new UX.JavaScript.ExoticNames();
 			using (var root = TestRootPanel.CreateWithChild(j))
