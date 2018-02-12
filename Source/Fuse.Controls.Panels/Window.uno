@@ -119,6 +119,9 @@ namespace Fuse.Reactive
 		static public Selector NameHeight = "height";
 		static public Selector NameSize = "size";
 		
+		static public Selector NamePixelsPerPoint = "pixelsPerPoint";
+		static public Selector NamePixelsPerOSPoint = "pixelsPerOSPoint";
+		
 		static public Selector NameSafeMargins = "safeMargins";
 		static public Selector NameDeviceMargins = "deviceMargins";
 		static public Selector NameStaticMargins = "staticMargins";
@@ -131,6 +134,9 @@ namespace Fuse.Reactive
 			
 			SystemUI.MarginsChanged += OnMarginsChanged;
 			UpdateMargins();
+			
+			ChangeProperty(NamePixelsPerPoint, _rootViewport.PixelsPerPoint);
+			ChangeProperty(NamePixelsPerOSPoint, _rootViewport.PixelsPerOSPoint);
 		}
 		
 		void Unroot()

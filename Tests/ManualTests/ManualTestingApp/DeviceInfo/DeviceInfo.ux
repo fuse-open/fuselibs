@@ -27,8 +27,9 @@
 
 			<h2>Display</h2>
 			<Grid Alignment="Top" Columns="auto,auto" DefaultRow="auto" CellSpacing="5">
-				<Text>Resolution:</Text><ValueText ux:Name="_resolutionText"/>
-				<Text>Density:</Text><ValueText ux:Name="_densityText"/>
+				<Text>Resolution:</Text><ValueText 
+					Value="{= window().width * window().pixelsPerPoint } x {= window().height * window().pixelsPerPoint }"/>
+				<Text>Density:</Text><ValueText Value="{= window().pixelsPerPoint } Fuse, {= window().pixelsPerOSPoint } Native"/>
 			</Grid>
 
 			<h2>OpenGL ES Driver</h2>
@@ -57,6 +58,13 @@
 				<PlatformCheck Label="Windows" Value="isWindows()"/>
 				<PlatformCheck Label="OSX" Value="isOSX()"/>
 			</Grid>
+			
+			<WhileTrue Value="isDefined({osVersion})">
+				<Text Value="OS Version: {osVersion}"/>
+			</WhileTrue>
+			<WhileTrue Value="isDefined({apiLevel})">
+				<Text Value="API Level: {apiLevel}"/>
+			</WhileTrue>
 			
 			<DropShadow/>
 		</StackPanel>
