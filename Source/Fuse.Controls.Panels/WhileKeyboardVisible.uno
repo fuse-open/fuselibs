@@ -58,5 +58,28 @@ namespace Fuse.Triggers
 
 			SetActive(safe.W > stat.W);
 		}
+
+		/** @deprecated 2018-02-12 Utterly broken, kept just to emit a deprecation message */
+		class RelativeToKeyboardMode: ITranslationMode
+		{
+			bool _notice = false;
+			public float3 GetAbsVector(Translation t)
+			{
+				if (!_notice)
+				{
+					Fuse.Diagnostics.Deprecated( "`Keyboard` RelativeTo has been deprecated. Use `window()` margins instead", this );
+					_notice = true;
+				}
+				float height = SystemUI.SafeMargins.W - SystemUI.StaticMargins.W;
+				return t.Vector * float3(0, height, 0);
+			}
+			//TODO: events for keyboard?
+			public object Subscribe(ITransformRelative transform) { return null; }
+			public void Unsubscribe(ITransformRelative transform, object sub)  { }
+		}
+
+		[UXGlobalResource("Keyboard")]
+		/** @deprecated 2018-02-12 Severely buggy and has no known use-case. Use `window()` margins instead. */
+		public static readonly ITranslationMode Keyboard = new RelativeToKeyboardMode();		
 	}
 }
