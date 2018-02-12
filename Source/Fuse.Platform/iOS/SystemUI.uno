@@ -246,6 +246,8 @@ namespace Fuse.Platform
 			return float4(0);
 		}
 		
+		//TODO: https://github.com/fusetools/fuselibs-public/issues/1015
+		//we also need to listen for safeAreInsets changes and call MarginsChanged
 		[Foreign(Language.ObjC)]
 		static void GetSafeArea(out float l, out float t, out float r, out float b)
 		@{
@@ -272,6 +274,9 @@ namespace Fuse.Platform
 		
 		static void uKeyboardWillChangeFrame (Uno.Platform.iOS.uCGRect frameBegin, Uno.Platform.iOS.uCGRect frameEnd, double animationDuration, int animationCurve, Fuse.Platform.SystemUIResizeReason reason)
 		{
+			_bottomFrame = Uno.Platform.iOS.Support.CGRectToUnoRect(
+				Uno.Platform.iOS.Support.Pre_iOS8_HandleDeviceOrientation_Rect(frameEnd, null),
+				1);
 			OnWillResize();
 		}
 

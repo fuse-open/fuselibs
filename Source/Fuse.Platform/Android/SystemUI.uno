@@ -26,9 +26,8 @@ namespace Fuse.Platform
 		{
 			get
 			{
-				var top = TopFrame.Height;
-				var bottom = BottomFrame.Height;
-				return float4(0,top,0,bottom) / Density;
+				//TODO: https://github.com/fusetools/fuselibs-public/issues/1014
+				return float4(0);
 			}
 		}
 		

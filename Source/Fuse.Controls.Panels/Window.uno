@@ -14,7 +14,7 @@ namespace Fuse.Reactive
 			-  `size` (float2): the combined width and height of the window
 			- `safeMargins` (float4): Margins needed on the content of the window to exclude it from all device UI and reserved areas.
 			- `staticMargins` (float4): Like `safeMargins` but does not adjust for popup controls like the soft keyboard.
-			- `deviceMargins` (float4): The margins the device reports as not being complete safe for drawing as something may obstruct the view (such as the rounded corners of an iPhone X)
+			- `deviceMargins` (float4): (Experimental) The margins the device reports as not being complete safe for drawing as something may obstruct the view (such as the rounded corners of an iPhone X)
 
 		Drawing anythng but a background (image or brush fill) in the gradient areas is not recommended as it may be obscured by the system UI or the hardware.
 	*/
@@ -129,15 +129,13 @@ namespace Fuse.Reactive
 			_rootViewport.Resized += OnResizedRV;
 			OnResized();
 			
-			if defined(iOS || Android)
-				SystemUI.MarginsChanged += OnMarginsChanged;
+			SystemUI.MarginsChanged += OnMarginsChanged;
 			UpdateMargins();
 		}
 		
 		void Unroot()
 		{
-			if defined(iOS || Android)
-				SystemUI.MarginsChanged -= OnMarginsChanged;
+			SystemUI.MarginsChanged -= OnMarginsChanged;
 		}
 		
 		void OnResizedRV(float2 ignore) { OnResized(); }
@@ -157,12 +155,9 @@ namespace Fuse.Reactive
 		void UpdateMargins()
 		{
 			var osToFuse = _rootViewport.PixelsPerOSPoint / _rootViewport.PixelsPerPoint;
-			if defined(iOS || Android)
-			{
-				ChangeProperty(NameDeviceMargins, SystemUI.DeviceMargins * osToFuse);
-				ChangeProperty(NameSafeMargins, SystemUI.SafeMargins * osToFuse);
-				ChangeProperty(NameStaticMargins, SystemUI.StaticMargins * osToFuse);
-			}
+			ChangeProperty(NameDeviceMargins, SystemUI.DeviceMargins * osToFuse);
+			ChangeProperty(NameSafeMargins, SystemUI.SafeMargins * osToFuse);
+			ChangeProperty(NameStaticMargins, SystemUI.StaticMargins * osToFuse);
 		}
 	}
 }
