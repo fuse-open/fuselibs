@@ -1,7 +1,6 @@
 #include <Uno/Uno.h>
 
 @{Fuse.Platform.SystemUI:IncludeDirective}
-@{Fuse.Platform.SystemUIWillResizeEventArgs:IncludeDirective}
 @{ObjC.Object:IncludeDirective}
 
 #include <AppDelegateSoftKeyboard.h>

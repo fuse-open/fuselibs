@@ -29,15 +29,6 @@ namespace Fuse.Platform
 	[Require("Source.Include","objc/message.h")]
 	static extern(iOS) class SystemUI
 	{
-		[Obsolete]
-		static public event EventHandler<SystemUIWillResizeEventArgs> TopFrameWillResize;
-		[Obsolete]
-		static public event EventHandler<SystemUIWillResizeEventArgs> BottomFrameWillResize;
-
-		[Obsolete]
-		static public Rect TopFrame { get { return GetStatusBarFrame(); } }
-		[Obsolete]
-		static public Rect BottomFrame { get { return _bottomFrame; } }
 		static Rect _bottomFrame;
 
 		static public Rect Frame { get; private set; }
@@ -225,21 +216,10 @@ namespace Fuse.Platform
 
 		@}
 
-		static void OnWillResize(SystemUIWillResizeEventArgs args)
+		static void OnWillResize()
 		{
 			if (MarginsChanged != null)
 				MarginsChanged();
-				
-			if (args.ID==SystemUIID.TopFrame) {
-				EventHandler<SystemUIWillResizeEventArgs> handler = TopFrameWillResize;
-				if (handler != null)
-					handler(null, args);
-			} else {
-				_bottomFrame = args.EndFrame;
-				EventHandler<SystemUIWillResizeEventArgs> handler = BottomFrameWillResize;
-				if (handler != null)
-					handler(null, args);
-			}
 		}
 
 		static Rect GetStatusBarFrame()
@@ -283,75 +263,16 @@ namespace Fuse.Platform
 		{
 			if (Lifecycle.State == ApplicationState.Uninitialized)
 				return;
-
-			var density = 1;//Uno.Platform.Displays.MainDisplay.Density;
-
-			Rect startFrame = Uno.Platform.iOS.Support.CGRectToUnoRect(
-				Uno.Platform.iOS.Support.Pre_iOS8_HandleDeviceOrientation_Rect(
-					extern<Uno.Platform.iOS.uCGRect>"[UIApplication sharedApplication].statusBarFrame", null),
-				density);
-
-			Rect endFrame = Uno.Platform.iOS.Support.CGRectToUnoRect(
-				Uno.Platform.iOS.Support.Pre_iOS8_HandleDeviceOrientation_Rect(_endFrame, null),
-				density);
-
-			Fuse.Platform.SystemUIResizeReason reason;
-
-			if (startFrame.Height == 0)
-				reason = Fuse.Platform.SystemUIResizeReason.WillShow;
-			else if (endFrame.Height == 0)
-				reason = Fuse.Platform.SystemUIResizeReason.WillHide;
-			else
-				reason = Fuse.Platform.SystemUIResizeReason.WillChangeFrame;
-
-			var args = new SystemUIWillResizeEventArgs(SystemUIID.TopFrame, reason, endFrame, startFrame, animationDuration, 1);
-
-			OnWillResize(args);
+			OnWillResize();
 		}
 
 		static void _statusBarDidChangeFrame(Uno.Platform.iOS.uCGRect _endFrame)
 		{
-// 			Rect rootFrame = Uno.Platform.iOS.Support.CGRectToUnoRect(
-// 				Uno.Platform.iOS.Support.Pre_iOS8_HandleDeviceOrientation_Rect(
-// 					extern<Uno.Platform.iOS.uCGRect>"[UIApplication sharedApplication].keyWindow.rootViewController.view.frame", null),
-// 				1);
-// 			debug_log rootFrame;
-// 				
-// 			var height = TopFrame.Height;
-// 			Rect endFrame = Uno.Platform.iOS.Support.CGRectToUnoRect(
-// 				Uno.Platform.iOS.Support.Pre_iOS8_HandleDeviceOrientation_Rect(_endFrame, null),
-// 				1);
-// 			debug_log "EndFrameHeight: " + height + "/" + endFrame.Height;
-// 			AdjustRootViewPosition( height > inCallStatusThreshold, height - inCallStatusThreshold);
 		}
 		
-// 		const int inCallStatusThreshold = 20;
-// 		[Foreign(Language.ObjC)]
-// 		static void AdjustRootViewPosition( bool inCall, float adjust )
-// 		@{
-// 			UIView* view = [UIApplication sharedApplication].keyWindow.rootViewController.view;
-// 			CGRect frame = view.frame;
-// 			frame.origin.x = 0;
-// 			frame.origin.y = 0;
-// 			[view setFrame: frame];
-// 		@}
-		
-
 		static void uKeyboardWillChangeFrame (Uno.Platform.iOS.uCGRect frameBegin, Uno.Platform.iOS.uCGRect frameEnd, double animationDuration, int animationCurve, Fuse.Platform.SystemUIResizeReason reason)
 		{
-			var density = 1;//Uno.Platform.Displays.MainDisplay.Density;
-
-			Rect startFrame = Uno.Platform.iOS.Support.CGRectToUnoRect(
-				Uno.Platform.iOS.Support.Pre_iOS8_HandleDeviceOrientation_Rect(frameBegin, null),
-				density);
-
-			Rect endFrame = Uno.Platform.iOS.Support.CGRectToUnoRect(
-				Uno.Platform.iOS.Support.Pre_iOS8_HandleDeviceOrientation_Rect(frameEnd, null),
-				density);
-
-			var args = new SystemUIWillResizeEventArgs(SystemUIID.BottomFrame, reason, endFrame, startFrame, animationDuration, 1);
-
-			OnWillResize(args);
+			OnWillResize();
 		}
 
 		//------------------------------------------------------------

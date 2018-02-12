@@ -17,11 +17,8 @@ namespace Fuse.Platform
 
 	static extern(android) class SystemUI
 	{
-		static public event EventHandler<SystemUIWillResizeEventArgs> TopFrameWillResize;
-		static public event EventHandler<SystemUIWillResizeEventArgs> BottomFrameWillResize;
-
-		static public Rect TopFrame { get { return GetStatusBarFrame(); } }
-		static public Rect BottomFrame { public get; private set; }
+		static Rect TopFrame { get { return GetStatusBarFrame(); } }
+		static  Rect BottomFrame { get { return GetBottomBarFrame(); } }
 
 		static public event Action MarginsChanged;
 		
@@ -332,21 +329,17 @@ namespace Fuse.Platform
 			return new Rect(float2(0, 0), float2(dispSize.X, height));
 		}
 
-		static void OnWillResize(SystemUIWillResizeEventArgs args)
+		static extern(Android) Rect GetBottomBarFrame()
+		{
+			var dispSize = _GetRootDisplaySize();
+			var height = _bottomFrameSize;
+			return new Rect(float2(0, 0), float2(dispSize.X, height));
+		}
+		
+		static void OnWillResize()
 		{
 			if (MarginsChanged != null)
 				MarginsChanged();
-				
-			if (args.ID==SystemUIID.TopFrame) {
-				EventHandler<SystemUIWillResizeEventArgs> handler = TopFrameWillResize;
-				if (handler != null)
-					handler(null, args);
-			} else {
-				BottomFrame = args.EndFrame;
-				EventHandler<SystemUIWillResizeEventArgs> handler = BottomFrameWillResize;
-				if (handler != null)
-					handler(null, args);
-			}
 		}
 
 		//======================================================================
@@ -614,56 +607,20 @@ namespace Fuse.Platform
 			Rect startFrame = new Rect(start_pos, start_size);
 			Rect endFrame = new Rect(end_pos, end_size);
 
-			if (_bottomFrameSize==0 && height>0) {
-				resizeReason = SystemUIResizeReason.WillShow;
-			} else if (_bottomFrameSize>0 && height==0) {
-				resizeReason = SystemUIResizeReason.WillHide;
-			} else if (_bottomFrameSize>0 && height > 0 && height != _bottomFrameSize) {
-				resizeReason = SystemUIResizeReason.WillChangeFrame;
-			}
 			_bottomFrameSize = height;
 			//TODO: There must be a proper way to do this. This horrible check is inhereted from the BottomFrameBackground to detect a keyboard size
 			if (height < 150)
 				_staticBottomFrameSize = height;
 
-			// make the event args
-			SystemUIWillResizeEventArgs args = new SystemUIWillResizeEventArgs(SystemUIID.BottomFrame, resizeReason, endFrame, startFrame, 1, 0);
-
-			//Make the call
-			SystemUI.OnWillResize(args);
+			SystemUI.OnWillResize();
 		}
 
 		static void cppOnTopFrameChanged (int height)
 		{
 			if (_topFrameSize != height)
 			{
-				SystemUIResizeReason resizeReason = SystemUIResizeReason.WillChangeFrame;
-
-				float2 size = _GetRootDisplaySize();
-
-				float2 start_pos = float2(0, size.Y - _topFrameSize);
-				float2 start_size = float2(size.X, _topFrameSize);
-
-				float2 end_pos = float2(0, size.Y - height);
-				float2 end_size = float2(size.X, height);
-
-				Rect startFrame = new Rect(start_pos, start_size);
-				Rect endFrame = new Rect(end_pos, end_size);
-
-				if (_topFrameSize==0 && height>0) {
-					resizeReason = SystemUIResizeReason.WillShow;
-				} else if (_topFrameSize>0 && height==0) {
-					resizeReason = SystemUIResizeReason.WillHide;
-				} else if (_topFrameSize>0 && height > 0 && height != _topFrameSize) {
-					resizeReason = SystemUIResizeReason.WillChangeFrame;
-				}
 				_topFrameSize = height;
-
-				// make the event args
-				SystemUIWillResizeEventArgs args = new SystemUIWillResizeEventArgs(SystemUIID.TopFrame, resizeReason, endFrame, startFrame, 1, 0);
-
-				//Make the call
-				OnWillResize(args);
+				OnWillResize();
 			}
 		}
 
