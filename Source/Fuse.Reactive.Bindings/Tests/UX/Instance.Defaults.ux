@@ -1,0 +1,21 @@
+<Panel ux:Class="UX.Instance.Defaults">
+	<Instance>
+		<Text Value="A" ux:Template="a"/>
+		<Text Value="B" ux:DefaultTemplate="true"/>
+	</Instance>
+	
+	<Instance Defaults="Default">
+		<Text Value="C" ux:Template="a"/>
+		<Text Value="D" ux:DefaultTemplate="true"/>
+	</Instance>
+
+	<Instance Defaults="None">
+		<Text Value="E" ux:Template="a"/>
+		<Text Value="F" ux:DefaultTemplate="true"/>
+	</Instance>
+	
+	<Instance>
+		<Text Value="G" ux:Template="a"/>
+		<Text Value="H" ux:Template="a"/>
+	</Instance>
+</Panel>

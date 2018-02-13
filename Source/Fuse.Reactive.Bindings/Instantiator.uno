@@ -49,6 +49,21 @@ namespace Fuse.Reactive
 		/** Use the object itself as the matching key. Suitable for when the object is a plain string or number. */
 		Object,
 	}
+	
+	/**
+		Which templates are instantiating when no specific match is found.
+		
+		@see Instantiator.Defaults
+	*/
+	public enum InstanceDefaults
+	{
+		/** The standard strategy is used: if no matching specifiers use all templates, or the ones marked default if they exist */
+		Standard,
+		/** Only ones marked default will be used as defaults */
+		Default,
+		/** No defaults will be used */
+		None,
+	}
 
 	/* `WindowItem` and `TemplateMatch` are meant to be private to `Instantiator`.  They've been
 		outside to solve a  build error on DotNet/Windows shown on AppVeyor 
@@ -284,9 +299,9 @@ namespace Fuse.Reactive
 		
 		/** Specifies a visual that contains templates that can override the default `Templates` provided in this object.
 
-			If specified together with @TemplateKey, this instantiator will prefer to pick template from the
+			If specified together with `TemplateKey`, this instantiator will prefer to pick template from the
 			specified `TemplateSource` that matches the `TemplateKey` property. If no match is found, it falls back
-			to using the regular list of `Templates`.
+			to using the regular list of `Templates`.  Refer to `Defaults`.
 
 			This property is useful if you are creating a component and want to allow certain templates inside the
 			component to be overridden by the user.
@@ -338,6 +353,7 @@ namespace Fuse.Reactive
 		ITemplateSource _weakTemplateSource;
 		ITemplateSource _templateSource; //captured at rooting time
 		
+		string _templateKey = null;
 		/** Specifies a template key that is used to look up in the @TemplateSource to find an override of the default
 			`Templates` provided in this object.
 
@@ -346,7 +362,15 @@ namespace Fuse.Reactive
 		*/
 		public string TemplateKey
 		{
-			get; set;
+			get { return _templateKey; }
+			set 
+			{
+				if (_templateKey != value)
+				{
+					_templateKey = value;
+					RecreateTemplates();
+				}
+			}
 		}
 		
 		internal int Offset
@@ -408,6 +432,63 @@ namespace Fuse.Reactive
 				if (_matchKey != value)
 				{
 					_matchKey = value;
+					RecreateTemplates();
+				}
+			}
+		}
+		
+		string _match;
+		/**
+			The template which should be instantiated.
+			
+			Unset by default, meaning all templates will be instantiated (assuming MatchKey, and TemplateKey are also unset).
+			
+			If you intend on using a binding, or expression, for this value it is recommend to set `Defaults` as well. This avoids an momentary creation of the defaults while the binding has not yet resolved.
+			
+				<Instance Match="{type}" Defaults="None">
+					<Panel ux:Template="side"/>
+					<Panel ux:Template="fore"/>
+				</Instance>
+
+			`{type}` may resolve to an async JavaScript variable, meaning it won't produce an immediate value. This will result in `Match` not yet having a value, thus all templates would be instantiated by default. `Defaults="None"` prevents this behaviour.
+		*/
+		public string Match
+		{
+			get { return _match; }
+			set
+			{
+				if (_match != value)
+				{
+					_match = value;
+					RecreateTemplates();
+				}
+			}
+		}
+		
+		InstanceDefaults _defaults = InstanceDefaults.Standard;
+		/**
+			Which templates are instantiating when nothing else matches.
+			
+			It is recommend to specified `Defaults="Default"` or `Defaults="None"` when using an expression, or binding, for the matching fields. This avoids an issue where the field may be momentarily unset, resulting in all templates being instantiated.
+			
+			The default is `Standard`: if none of `Match`, `MatchKey` or `TemplateKey` are specified the default will be created. If there is no explicitly marked default then all templates are instantiated.
+			
+			A default template is marked wtih `ux:DefaultTemplate="true"`
+			
+				<Each Items="{items}" MatchKey="{type}">
+					<FrontCard ux:Template="front"/>
+					<BackCard ux:Template="back"/>
+					<DefaultCard ux:DefaultTemplate="true"/>
+				</Each>
+		*/
+		public InstanceDefaults Defaults
+		{
+			get { return _defaults; }
+			set 
+			{
+				if (_defaults != value)
+				{
+					_defaults = value;
 					RecreateTemplates();
 				}
 			}
@@ -555,7 +636,8 @@ namespace Fuse.Reactive
 			// Priority 2 - use the local templates collection and look for a matching key (if set)
 			if (useTemplate == null)
 			{
-				var key = _watcher.GetDataKey(data, MatchKey) as string;
+				string key = Match ?? _watcher.GetDataKey(data, MatchKey) as string;
+					
 				//match Order in FindTemplate (latest is preferred)
 				for (int i=Templates.Count-1; i>=0; --i) {
 					var f = Templates[i];
@@ -566,9 +648,11 @@ namespace Fuse.Reactive
 			}
 
 			// Priority 3 - Use the default template or all templates if no match specified
-			if (useTemplate == null)
+			if (useTemplate == null && Defaults != InstanceDefaults.None)
 			{
-				if (MatchKey != null || defaultTemplate != null)
+				if (Defaults == InstanceDefaults.Default)
+					useTemplate = defaultTemplate; //may still be null
+				else if (MatchKey != null || Match != null || defaultTemplate != null)
 					useTemplate = defaultTemplate; //may still be null
 				else
 					return new TemplateMatch{ All = true, Template = null }; //only unspecified can use complete list

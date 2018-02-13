@@ -76,6 +76,50 @@ namespace Fuse.Reactive.Bindings.Test
 				Assert.AreEqual(null, e.FirstChild<DudElement>() );
 			}
 		}
+		
+		[Test]
+		public void IsEnabled()
+		{
+			var e = new UX.Instance.IsEnabled();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				Assert.AreEqual( "", GetText(e.a));
+				Assert.AreEqual( "", GetText(e.b));
+				
+				e.callShow.Perform();
+				e.ia.IsEnabled = true;
+				root.StepFrameJS();
+				Assert.AreEqual( "boop", GetText(e.a));
+				Assert.AreEqual( "beep", GetText(e.b));
+			}
+		}
+		
+		[Test]
+		public void Match()
+		{
+			var e = new UX.Instance.Match();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				Assert.AreEqual("D,X", GetText(e));
+				
+				e.ma.Match = "a";
+				e.mb.Match = "q";
+				e.callH.Perform();
+				root.StepFrameJS();
+				
+				Assert.AreEqual("A,H,h,X", GetText(e));
+			}
+		}
+		
+		[Test]
+		public void Defaults()
+		{
+			var e = new UX.Instance.Defaults();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				Assert.AreEqual( "B,D,G,H", GetText(e));
+			}
+		}
 	}
 	
 	public class RootInstantiator : Instantiator

@@ -1,0 +1,35 @@
+<Panel ux:Class="UX.Instance.Match">
+	<Instance ux:Name="ma" Match="none">
+		<Text Value="A" ux:Template="a"/>
+		<Text Value="B" ux:Template="b"/>
+		<Text Value="D" ux:DefaultTemplate="true"/>
+	</Instance>
+	
+	<JavaScript>
+		var Observable = require("FuseJS/Observable")
+		exports.match = Observable()
+		exports.callH = function() {
+			exports.match.value = 'h'
+		}
+	</JavaScript>
+	<FuseTest.Invoke Handler="{callH}" ux:Name="callH"/>
+	<Instance Match="{= {match} ?? '' }">
+		<Text Value="G" ux:Template="g"/>
+		<Text Value="H" ux:Template="h"/>
+		<Text Value="I" ux:Template="i"/>
+	</Instance>
+	<!-- alternate, cleaner approach -->
+	<Instance Match="{match}" Defaults="Default">
+		<Text Value="g" ux:Template="g"/>
+		<Text Value="h" ux:Template="h"/>
+		<Text Value="i" ux:Template="i"/>
+	</Instance>
+	
+	
+	<Instance ux:Name="mb" Match="">
+		<Text Value="W" ux:Template="w"/>
+		<Text Value="X" ux:DefaultTemplate="true"/>
+	</Instance>
+
+	
+</Panel>

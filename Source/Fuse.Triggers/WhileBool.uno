@@ -81,6 +81,10 @@ namespace Fuse.Triggers
 					<Change loginButton.Opacity="0" Duration="0.3" />
 				</WhileTrue>
 			</StackPanel>
+			
+		## Instance
+		
+		The children of `WhileTrue` are created whether the `Value` is true or false; this is the standard behavior of all triggers. If you need to prevent item creation when the value is false, consider using an `Instance` instead and bind to the `IsEnabled` property.
 	*/
 	public class WhileTrue : WhileBool
 	{
