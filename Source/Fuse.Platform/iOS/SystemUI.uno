@@ -224,11 +224,10 @@ namespace Fuse.Platform
 
 		static Rect GetStatusBarFrame()
 		{
-			var density = 1;//Uno.Platform.Displays.MainDisplay.Density;
 			return Uno.Platform.iOS.Support.CGRectToUnoRect(
 				Uno.Platform.iOS.Support.Pre_iOS8_HandleDeviceOrientation_Rect(
 					extern<Uno.Platform.iOS.uCGRect>"[UIApplication sharedApplication].statusBarFrame", null),
-				density);
+				1);
 		}
 		
 		static float4 GetSafeFrame()
@@ -237,10 +236,9 @@ namespace Fuse.Platform
 			GetOSVersion(out major, out minor, out revision);
 			if (major >= 11) 
 			{
-				var density = Uno.Platform.Displays.MainDisplay.Density;
 				float l, t, r, b;
 				GetSafeArea( out l, out t, out r, out b );
-				return float4(l,t,r,b);// / density;
+				return float4(l,t,r,b);
 			}
 			
 			return float4(0);
@@ -253,12 +251,16 @@ namespace Fuse.Platform
 		@{
 			UIView* view = [UIApplication sharedApplication].keyWindow.rootViewController.view;
 
+		#if defined(__IPHONE_11_0) && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_11_0
 			//Only on iOS11, taken care of in the GetSafeFrame code (we don't use @available in order to support older XCode version)
 			UIEdgeInsets insets = view.safeAreaInsets;
 			*l = insets.left;
 			*t = insets.top;
 			*r = insets.right;
 			*b = insets.bottom;
+		#else
+			*l = *t = *r = *b = 0;
+		#endif
 		@}
 
 		static void _statusBarWillChangeFrame(Uno.Platform.iOS.uCGRect _endFrame, double animationDuration)
@@ -286,10 +288,9 @@ namespace Fuse.Platform
 		static Rect uStatusBarFrame()
 		{
 			uCGRect frame = extern<uCGRect>"[UIApplication sharedApplication].statusBarFrame";
-			var scale = 1;//Uno.Platform.Displays.MainDisplay.Density;
 			return Uno.Platform.iOS.Support.CGRectToUnoRect(
 				Uno.Platform.iOS.Support.Pre_iOS8_HandleDeviceOrientation_Rect(frame, null),
-				scale);
+				1);
 		}
 
 		static StatusBarStyle _style = StatusBarStyle.Dark;

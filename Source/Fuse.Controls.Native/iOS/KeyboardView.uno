@@ -76,4 +76,5 @@ namespace Fuse.Controls.Native.iOS
 				FocusHelpers.ResignFirstResponder(_handle);
 		}
 	}
+	
 }
