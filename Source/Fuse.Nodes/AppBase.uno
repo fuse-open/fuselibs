@@ -138,14 +138,22 @@ namespace Fuse
 			You can subscribe to this event to handle exceptions that were otherwise
 			unhandled by the @App, to avoid crashing the app. If the `IsHandled`
 			property of the @UnhandledExceptionArgs object is set to `true` by a handler,
-			the app will not crash, but resume execution. */
+			the app will not crash, but resume execution.
+
+			@hide
+
+			*/
 		public event UnhandledExceptionHandler UnhandledException;
 
 		/** Notfies the @App about an unhandled exception within a subsystem of the app. 
 			If implementing a subsystems (such as separate threads) where exceptions can be
 			thrown out of the app, you can catch such otherwise unhandled exceptions and report them
 			to this method, to allow users to use the @UnhandledException event to deal with
-			such exceptions instead of crashing the @App. */
+			such exceptions instead of crashing the @App.
+
+			@hide
+
+			*/
 		public void OnUnhandledException(Exception e, bool propagate = true)
 		{
 			//don't use Fuse.Diagnostics.UnknownException, that assumes a sane error path, but
