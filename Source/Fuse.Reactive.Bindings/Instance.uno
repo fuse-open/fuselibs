@@ -71,6 +71,5 @@ namespace Fuse.Reactive
 				UpdateItems();
 			}
 		}
-		
 	}
 }

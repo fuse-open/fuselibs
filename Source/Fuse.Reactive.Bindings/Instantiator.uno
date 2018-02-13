@@ -360,7 +360,7 @@ namespace Fuse.Reactive
 			This property, along with the templates in the @TemplateSource, must be set prior to
 			rooting to take effect.
 		*/
- 		public string TemplateKey
+		public string TemplateKey
 		{
 			get { return _templateKey; }
 			set 
