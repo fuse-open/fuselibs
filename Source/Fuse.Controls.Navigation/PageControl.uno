@@ -120,14 +120,14 @@ namespace Fuse.Controls
 		protected override void OnRooted()
 		{
 			base.OnRooted();
-			OnPagesChanged();
+			_pages.Rooted(this);
 			RootActivePage();
 		}
 		
 		protected override void OnUnrooted()
 		{
 			UnrootActivePage();
-			OnPagesUnrooted();
+			_pages.Unrooted();
 			base.OnUnrooted();
 		}
 		
@@ -338,6 +338,19 @@ namespace Fuse.Controls
 		float2 ISeekableNavigation.SeekRange { get { return Navigation.SeekRange; } }
 		void ISeekableNavigation.Seek(UpdateSeekArgs args) { (Navigation as ISeekableNavigation).Seek(args); }
 		void ISeekableNavigation.EndSeek(EndSeekArgs args) { (Navigation as ISeekableNavigation).EndSeek(args); }
+		
+		
+		CommonNavigationPages _pages = new CommonNavigationPages();
+		/**
+			Provides a list of models that define the pages for the page control. The pages have the same structure as `Navigator.Pages` -- but here they do not define a history. To control what is the current page bind to `ActiveIndex`.
+			
+			The items in the array are objects, either explicitly created or via the Model feature. They should contain the the `$path` property which specifies the path to use. The object itself will be added to the data context for the page, allowing lookups from within the object.
+		*/
+		public IArray Pages
+		{
+			get { return _pages.Pages; }
+			set { _pages.Pages = value; }
+		}
 	}
 
 }
