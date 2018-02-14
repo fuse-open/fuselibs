@@ -1,0 +1,28 @@
+<Panel ux:Class="UX.EdgeNavigator.ModelPages" Model="UX/EdgeNavigator.ModelPages.State">
+	<Router/>
+	<ClientPanel>
+		<EdgeNavigator Color="#FFF" IsRouterOutlet="true" Pages="{pages}" PageHistory="{pageHistory}"
+			ux:Name="nav">
+			<StackPanel Edge="Left" Color="#ADA" ux:Template="left">
+				<Text Value="{title}"/>
+				<Button Text="Clear">
+					<Clicked>
+						<GotoRoute Path=" 'main' "/>
+					</Clicked>
+				</Button>
+			</StackPanel>
+			
+			<Panel Edge="Right" Color="#ADA" ux:Template="RightPage">
+				<Text Value="{title}"/>
+			</Panel>
+
+			<Panel ux:Template="main" Color="#ABA">
+			</Panel>
+			
+		</EdgeNavigator>
+	</ClientPanel>
+	
+	<FuseTest.Invoke Handler="{goLeft}" ux:Name="{callGoLeft}"/>
+	<FuseTest.Invoke Handler="{goRight}" ux:Name="{callGoRight}"/>
+	<Text Value="{currentTitle}" ux:Name="title"/>
+</Panel>
