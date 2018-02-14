@@ -512,7 +512,7 @@ namespace Fuse.Controls
 					pages[pages.Count-1] = current;
 					changed = true;
 				}
-
+	
 				if (changed)
 					RouterPage.BubbleHistoryChanged(this);
 			}

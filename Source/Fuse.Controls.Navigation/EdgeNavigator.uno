@@ -33,12 +33,14 @@ namespace Fuse.Controls
 		protected override void OnRooted()
 		{
 			base.OnRooted();
+			_pages.Rooted(this);
 			RootActivePage();
 		}
 		
 		protected override void OnUnrooted()
 		{
 			UnrootActivePage();
+			_pages.Unrooted();
 			base.OnUnrooted();
 		}
 		
@@ -137,6 +139,18 @@ namespace Fuse.Controls
 				return new RouterPage( "" );
 			else
 				return PageData.GetOrCreate(Active).RouterPage;
+		}
+
+		CommonNavigationPages _pages = new CommonNavigationPages();
+		/**
+			Provides a list of models that define the pages for the EdgeNavigator. The pages have the same structure as `PageControl.Pages`.
+			
+			The items in the array are objects, either explicitly created or via the Model feature. They should contain the the `$path` property which specifies the path to use. The object itself will be added to the data context for the page, allowing lookups from within the object.
+		*/
+		public IArray Pages
+		{
+			get { return _pages.Pages; }
+			set { _pages.Pages = value; }
 		}
 		
 	}
