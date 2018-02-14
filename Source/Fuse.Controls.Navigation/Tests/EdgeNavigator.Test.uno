@@ -27,7 +27,20 @@ namespace Fuse.Controls.Test
 				
 				root.PointerPress( float2(500));
 				root.PointerRelease();
-				root.StepFrameJS(5);
+				root.StepFrame(5);
+				root.StepFrameJS();
+				Assert.AreEqual( "Main", p.title.Value );
+				Assert.AreEqual( "main", (string)p.nav.Active.Name );
+				
+				root.PointerSwipe( float2(999,100), float2(900,100) );
+				root.StepFrame(5);
+				root.StepFrameJS();
+				Assert.AreEqual( "Right", p.title.Value );
+				Assert.AreEqual( "RightPage", (string)p.nav.Active.Name );
+				
+				p.goBack.Pulse();
+				root.StepFrame(5);
+				root.StepFrameJS();
 				Assert.AreEqual( "Main", p.title.Value );
 				Assert.AreEqual( "main", (string)p.nav.Active.Name );
 			}

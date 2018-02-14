@@ -5,11 +5,6 @@
 			ux:Name="nav">
 			<StackPanel Edge="Left" Color="#ADA" ux:Template="left">
 				<Text Value="{title}"/>
-				<Button Text="Clear">
-					<Clicked>
-						<GotoRoute Path=" 'main' "/>
-					</Clicked>
-				</Button>
 			</StackPanel>
 			
 			<Panel Edge="Right" Color="#ADA" ux:Template="RightPage">
@@ -20,9 +15,16 @@
 			</Panel>
 			
 		</EdgeNavigator>
+		
+		<Panel Navigation="nav">
+			<Timeline ux:Name="goBack">
+				<GoBack/>
+			</Timeline>
+		</Panel>
 	</ClientPanel>
 	
 	<FuseTest.Invoke Handler="{goLeft}" ux:Name="{callGoLeft}"/>
 	<FuseTest.Invoke Handler="{goRight}" ux:Name="{callGoRight}"/>
 	<Text Value="{currentTitle}" ux:Name="title"/>
+	
 </Panel>

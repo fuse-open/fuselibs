@@ -10,6 +10,49 @@ using Fuse.Triggers;
 
 namespace Fuse.Controls
 {
+	/**
+		 A navigation control for panels that slide in from the sides of the display.
+		 
+		 Add an `Edge` property to the children to define on which edge they attach. The user can swipe from that side to reveal the panel.
+		 
+		 Use a `GoBack` inside this navigation to dismiss side-panels from UX, or use the `dismiss` method from JavaScript.
+		 
+		## Model
+		
+		The EdgeNavigator can be bound to a model with the `Pages` property. For example:
+			
+			<EdgeNavigator Pages="{pages}">
+				<Panel Edge="Left" ux:Template="left"/>
+				<Panel Edge="Right" ux:Template="right"/>
+				<Panel ux:Template="main"/>
+			</EdgeNavigator>
+			
+		Then in your main model state you define `pages`
+		
+			export default class MainState {
+				constructor() {
+					this.pages = [ new LeftPage(), new RightPage(), new MainPage() ]
+				}
+			}
+			
+			class LeftPage {
+				constructor() {
+					this.$path = "left"
+				}
+			}
+			
+			class RightPage {
+				constructor() {
+					this.$path = "right"
+				}
+			}
+			
+			class MainPage {
+				constructor() {
+					this.$path = "main"
+				}
+			}
+	*/
 	public partial class EdgeNavigator : NavigationControl, IRouterOutlet
 	{
 		EdgeNavigation _edgeNavigation = new EdgeNavigation();
