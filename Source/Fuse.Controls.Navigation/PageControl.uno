@@ -120,27 +120,14 @@ namespace Fuse.Controls
 		protected override void OnRooted()
 		{
 			base.OnRooted();
-
-			OnPagesChanged();
-			
-			var pages = AncestorRouterPage != null ? AncestorRouterPage.ChildRouterPages : null;
-			if (pages != null && pages.Count > 0)
-			{ 
-				Visual ignore;
-				((IRouterOutlet)this).Goto( pages[pages.Count-1], NavigationGotoMode.Bypass, 
-					RoutingOperation.Goto, "", out ignore );
-			}
-			else
-			{
-				OnActivePageChanged(this, Navigation.Active);
-			}
-
-			Navigation.ActivePageChanged += OnActivePageChanged;
+			_pages.Rooted(this);
+			RootActivePage();
 		}
 		
 		protected override void OnUnrooted()
 		{
-			OnPagesUnrooted();
+			UnrootActivePage();
+			_pages.Unrooted();
 			base.OnUnrooted();
 		}
 		
@@ -164,91 +151,15 @@ namespace Fuse.Controls
 		{
 		}
 		
-		Visual FindPath(string path)
-		{
-			Visual useVisual = null;
-			for (var n = FirstChild<Visual>(); n != null; n = n.NextSibling<Visual>())
-			{
-				if ((string)n.Name == path)
-				{
-					useVisual = n;
-					break;
-				}
-			}
-			
-			if (!Fuse.Navigation.Navigation.IsPage(useVisual))
-			{
-				Diagnostics.InternalError("Can not navigate to '" + path + "', not found!", this);
-				return null;
-			}
-			
-			return useVisual;
-		}
-		
 		RoutingResult IRouterOutlet.CompareCurrent(RouterPage routerPage, out Visual pageVisual)
 		{
-			pageVisual = null;
-			var useVisual = FindPath(routerPage.Path);
-			if (useVisual == null)
-				return RoutingResult.Invalid;
-				
-			if (Active != useVisual)
-				return RoutingResult.Change;
-				
-			pageVisual = useVisual;
-			var pageData = PageData.GetOrCreate(pageVisual);
-			if (useVisual.Parameter == routerPage.Parameter &&
-				routerPage.Context == pageData.Context)
-				return RoutingResult.NoChange;
-				
-			//TODO: Navigator only returns MinorChange here, never Change
-			return CompatibleParameter(useVisual.Parameter, routerPage.Parameter) ?
-				RoutingResult.MinorChange : RoutingResult.Change;
+			return CommonNavigation.CompareCurrent(this, Active, routerPage, out pageVisual);
 		}
 		
 		RoutingResult IRouterOutlet.Goto(RouterPage routerPage, NavigationGotoMode gotoMode, 
 			RoutingOperation operation, string operationStyle, out Visual pageVisual)
 		{
-			pageVisual = null;
-			
-			var useVisual = FindPath(routerPage.Path);
-			if (useVisual == null)
-				return RoutingResult.Invalid;
-
-			pageVisual = useVisual;
-			var pageData = PageData.GetOrCreate(useVisual);
-			bool same = useVisual.Parameter == routerPage.Parameter &&
-				pageData.Context == routerPage.Context;
-			pageData.AttachRouterPage(routerPage);
-			if (useVisual == Active) 
-				return same ? RoutingResult.NoChange : RoutingResult.MinorChange;
-			
-			Navigation.Goto(useVisual, gotoMode);
-			return RoutingResult.Change;
-		}
-		
-		void OnActivePageChanged(object sender, Visual active)
-		{
-			if (AncestorRouterPage != null)
-			{
-				Visual ignore;
-				var current = (this as IRouterOutlet).GetCurrent(out ignore);
-				var pages = AncestorRouterPage.ChildRouterPages;
-				var changed = false;
-				if (pages.Count == 0)
-				{
-					pages.Add( current );
-					changed = true;
-				}
-				else if (pages[pages.Count -1] != current) 
-				{
-					pages[pages.Count-1] = current;
-					changed = true;
-				}
-
-				if (changed)
-					RouterPage.BubbleHistoryChanged(this);
-			}
+			return CommonNavigation.Goto(this, routerPage, gotoMode, operation, operationStyle, out pageVisual);
 		}
 		
 		RouterPage IRouterOutlet.GetCurrent(out Visual pageVisual)
@@ -427,6 +338,19 @@ namespace Fuse.Controls
 		float2 ISeekableNavigation.SeekRange { get { return Navigation.SeekRange; } }
 		void ISeekableNavigation.Seek(UpdateSeekArgs args) { (Navigation as ISeekableNavigation).Seek(args); }
 		void ISeekableNavigation.EndSeek(EndSeekArgs args) { (Navigation as ISeekableNavigation).EndSeek(args); }
+		
+		
+		CommonNavigationPages _pages = new CommonNavigationPages();
+		/**
+			Provides a list of models that define the pages for the page control. The pages have the same structure as `Navigator.Pages` -- but here they do not define a history. To control what is the current page bind to `ActiveIndex`.
+			
+			The items in the array are objects, either explicitly created or via the Model feature. They should contain the the `$path` property which specifies the path to use. The object itself will be added to the data context for the page, allowing lookups from within the object.
+		*/
+		public IArray Pages
+		{
+			get { return _pages.Pages; }
+			set { _pages.Pages = value; }
+		}
 	}
 
 }

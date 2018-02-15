@@ -6,14 +6,14 @@ using Fuse.Navigation;
 
 namespace Fuse.Controls
 {
-	public partial class PageControl
+	class CommonNavigationPages
 	{	
 		/* Maps the bound objects to AddedPage and tracks updates on the source data */
 		class PagesMap : ObserverMap<AddedPage>
 		{
-			PageControl PageControl;
+			CommonNavigationPages PageControl;
 
-			public void Attach( PageControl pageControl, IArray obs )
+			public void Attach( CommonNavigationPages pageControl, IArray obs )
 			{
 				PageControl = pageControl;
 				base.Attach( obs );
@@ -44,11 +44,6 @@ namespace Fuse.Controls
 		PagesMap _pagesMap = new PagesMap();
 
 		IArray _pages;
-		/**
-			Provides a list of models that define the pages for the page control. The pages have the same structure as `Navigator.Pages` -- but here they do not define a history. To control what is the current page bind to `ActiveIndex`.
-			
-			The items in the array are objects, either explicitly created or via the Model feature. They should contain the the `$path` property which specifies the path to use. The object itself will be added to the data context for the page, allowing lookups from within the object.
-		*/
 		public IArray Pages
 		{
 			get { return _pages; }
@@ -59,9 +54,16 @@ namespace Fuse.Controls
 			}
 		}
 
+		NavigationControl _parent;
+		public void Rooted(NavigationControl parent)
+		{	
+			_parent = parent;
+			OnPagesChanged();
+		}
+		
 		void OnPagesChanged()
 		{
-			if (!IsRootingStarted)
+			if (_parent == null)
 				return;
 
 			_pagesMap.Detach();
@@ -77,9 +79,10 @@ namespace Fuse.Controls
 			}
 		}
 		
-		void OnPagesUnrooted()
+		public void Unrooted()
 		{
 			_pagesMap.Detach();
+			_parent = null;
 		}
 
 		class AddedPage
@@ -117,7 +120,7 @@ namespace Fuse.Controls
 					continue;
 				}
 
-				var f = FindTemplate(mp.Template);
+				var f = _parent.FindTemplate(mp.Template);
 				if (f == null)
 				{
 					Fuse.Diagnostics.UserError( "No matching template path: " + mp.Template, this );
@@ -145,7 +148,7 @@ namespace Fuse.Controls
 				
 			//remaining are no longer used
 			for (int i=0; i < _addedPages.Count; ++i)
-				BeginRemoveChild( _addedPages[i].Visual );
+				_parent.BeginRemoveChild( _addedPages[i].Visual );
 				
 			//create a new list of used pages
 			_addedPages.Clear();
@@ -160,7 +163,8 @@ namespace Fuse.Controls
 				ta[vc++] = _pagesMap[i].Visual;
 				_addedPages.Add( _pagesMap[i] );
 			}
-			InsertOrMoveNodesAfter( (Node)Navigation, ((IEnumerable<Node>)ta).GetEnumerator() );
+			_parent.InsertOrMoveNodesAfter( (Node)_parent.Navigation, 
+				((IEnumerable<Node>)ta).GetEnumerator() );
 		}
 	}
 }

@@ -56,8 +56,7 @@ namespace Fuse.Navigation
 				else
 					sw.Value.Disable();
 			}
-			_active = element;
-			OnActiveChanged(_active);
+			CheckProgress();
 		}
 		
 		public override void Toggle(Visual page)
@@ -171,7 +170,11 @@ namespace Fuse.Navigation
 			{
 				return;
 			}
-
+			CheckProgress();
+		}
+		
+		void CheckProgress()
+		{
 			//determine active page (undefined if multiple open)
 			Visual maxPage = null;
 			_maxProgress = 0;
