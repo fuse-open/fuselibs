@@ -5,54 +5,56 @@ using Fuse.Platform;
 
 namespace Fuse.Platform
 {
-	public enum SystemUIID
-	{
-		TopFrame,
-		BottomFrame,
-	}
-
-	public enum SystemUIResizeReason
+	enum SystemUIResizeReason
 	{
 		WillShow,
 		WillChangeFrame,
 		WillHide,
 	}
 
-	internal enum SysUIState // was SystemUI.UIState
+	enum SysUIState // was SystemUI.UIState
 	{
 		Normal = 0,
 		StatusBarHidden = 1,
 		Fullscreen = 2,
 	}
 
-	public class SystemUIWillResizeEventArgs : EventArgs
+	/**
+		Abstract system details about the UI of the target device.
+		
+		This desktop version serves as the documentation for what is expected from the platform backends.
+	*/
+	static extern(!iOS && !Android) class SystemUI
 	{
-		public SystemUIID ID { get; private set; }
-		public SystemUIResizeReason ResizeReason { get; private set; }
-		public Rect StartFrame { get; private set; }
-		public Rect EndFrame { get; private set; }
-		public bool IsAnimated { get; private set; }
-		public double AnimationDuration { get; private set; }
-		public int AnimationCurve { get; private set; }
-
-
-		public SystemUIWillResizeEventArgs(
-			   SystemUIID id,
-			   SystemUIResizeReason resizeReason,
-			   Rect endFrame, Rect startFrame = new Rect(),
-			   double animationDuration = 0, int animationCurve = 0)
+		/**
+			Emitted whenever one of the `...Margins` property changes.
+		*/
+		static public event Action MarginsChanged;
+		
+		/**
+			The margins the device reports as not being complete safe for drawing as something may obstruct the view, such as rounded corners or bevels.
+			
+			The units are the natural units of the native SDK, such that Viewport.PointsPerOSPoint would translate into Fuse points.
+		*/
+		static public float4 DeviceMargins
 		{
-			ID = id;
-			ResizeReason = resizeReason;
-			StartFrame = startFrame;
-			EndFrame = endFrame;
+			get { return float4(0); }
+		}
+		
+		/**
+			Margins that completely exclude all system controls, device margins, or anything else which makes the area unsafe for drawing.
+		*/
+		static public float4 SafeMargins
+		{
+			get { return float4(0); }
+		}
 
-			if (animationDuration != 0)
-			{
-				IsAnimated = true;
-				AnimationDuration = animationDuration;
-				AnimationCurve = animationCurve;
-			}
+		/**
+			Like `SafeMargins` but does not include areas which are dynamically allocated for controls, such as a popup keyboard.
+		*/
+		static public float4 StaticMargins
+		{
+			get { return float4(0); }
 		}
 	}
 }

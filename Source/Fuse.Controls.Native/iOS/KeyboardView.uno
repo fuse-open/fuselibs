@@ -75,8 +75,6 @@ namespace Fuse.Controls.Native.iOS
 			if (FocusHelpers.IsFirstResponder(_handle))
 				FocusHelpers.ResignFirstResponder(_handle);
 		}
-
-
 	}
-
+	
 }

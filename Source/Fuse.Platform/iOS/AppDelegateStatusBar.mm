@@ -1,7 +1,6 @@
 #include <Uno/Uno.h>
 
 @{Fuse.Platform.SystemUI:IncludeDirective}
-@{Fuse.Platform.SystemUIWillResizeEventArgs:IncludeDirective}
 @{ObjC.Object:IncludeDirective}
 @{Uno.Platform.iOS.Support:IncludeDirective}
 @{Fuse.Platform.SystemUI:IncludeDirective}
@@ -16,6 +15,12 @@
 {
 	uAutoReleasePool pool;
 	@{Fuse.Platform.SystemUI._statusBarWillChangeFrame(Uno.Platform.iOS.uCGRect, double):Call(frame, 0)};
+}
+
+- (void)application:(UIApplication *)application didChangeStatusBarFrame:(CGRect)frame
+{
+	uAutoReleasePool pool;
+	@{Fuse.Platform.SystemUI._statusBarDidChangeFrame(Uno.Platform.iOS.uCGRect):Call(frame)};
 }
 
 - (BOOL)prefersStatusBarHidden

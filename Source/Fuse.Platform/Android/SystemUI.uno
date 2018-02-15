@@ -15,14 +15,43 @@ namespace Fuse.Platform
 		"android.view.WindowManager", "android.widget.FrameLayout",
 		"java.lang.reflect.Method")]
 
-	public static extern(android) class SystemUI
+	static extern(android) class SystemUI
 	{
-		static public event EventHandler<SystemUIWillResizeEventArgs> TopFrameWillResize;
-		static public event EventHandler<SystemUIWillResizeEventArgs> BottomFrameWillResize;
+		static Rect TopFrame { get { return GetStatusBarFrame(); } }
+		static  Rect BottomFrame { get { return GetBottomBarFrame(); } }
 
-		static public Rect TopFrame { get { return GetStatusBarFrame(); } }
-		static public Rect BottomFrame { public get; private set; }
-
+		static public event Action MarginsChanged;
+		
+		static public float4 DeviceMargins
+		{
+			get
+			{
+				//TODO: https://github.com/fusetools/fuselibs-public/issues/1014
+				return float4(0);
+			}
+		}
+		
+		static public float4 SafeMargins
+		{
+			get
+			{
+				var top = TopFrame.Height;
+				var bottom = BottomFrame.Height;
+				return float4(0,top,0,bottom) / Density;
+			}
+		}
+		
+		static public float4 StaticMargins
+		{
+			get
+			{
+				var top = TopFrame.Height;
+				var bottom = _staticBottomFrameSize;
+				return float4(0,top,0,bottom) / Density; 
+			}
+		}
+		
+		
 		static Java.Object _keyboardListener; //ViewTreeObserver.OnGlobalLayoutListener
 		static Java.Object SuperLayout; //FrameLayout
 		static Java.Object RootLayout; //FrameLayout
@@ -37,6 +66,7 @@ namespace Fuse.Platform
 		static int _systemUIState;
 		static int _topFrameSize;
 		static int _bottomFrameSize;
+		static int _staticBottomFrameSize;
 
 		//------------------------------------------------------------
 		// Taken from platform2 display
@@ -201,7 +231,7 @@ namespace Fuse.Platform
 			}
 			return (float)result;
 		@}
-
+		
 		[Foreign(Language.Java)]
 		static public void ShowStatusBar()
 		@{
@@ -298,18 +328,17 @@ namespace Fuse.Platform
 			return new Rect(float2(0, 0), float2(dispSize.X, height));
 		}
 
-		static void OnWillResize(SystemUIWillResizeEventArgs args)
+		static extern(Android) Rect GetBottomBarFrame()
 		{
-			if (args.ID==SystemUIID.TopFrame) {
-				EventHandler<SystemUIWillResizeEventArgs> handler = TopFrameWillResize;
-				if (handler != null)
-					handler(null, args);
-			} else {
-				BottomFrame = args.EndFrame;
-				EventHandler<SystemUIWillResizeEventArgs> handler = BottomFrameWillResize;
-				if (handler != null)
-					handler(null, args);
-			}
+			var dispSize = _GetRootDisplaySize();
+			var height = _bottomFrameSize;
+			return new Rect(float2(0, 0), float2(dispSize.X, height));
+		}
+		
+		static void OnWillResize()
+		{
+			if (MarginsChanged != null)
+				MarginsChanged();
 		}
 
 		//======================================================================
@@ -577,53 +606,20 @@ namespace Fuse.Platform
 			Rect startFrame = new Rect(start_pos, start_size);
 			Rect endFrame = new Rect(end_pos, end_size);
 
-			if (_bottomFrameSize==0 && height>0) {
-				resizeReason = SystemUIResizeReason.WillShow;
-			} else if (_bottomFrameSize>0 && height==0) {
-				resizeReason = SystemUIResizeReason.WillHide;
-			} else if (_bottomFrameSize>0 && height > 0 && height != _bottomFrameSize) {
-				resizeReason = SystemUIResizeReason.WillChangeFrame;
-			}
 			_bottomFrameSize = height;
+			//TODO: There must be a proper way to do this. This horrible check is inhereted from the BottomFrameBackground to detect a keyboard size
+			if (height < 150)
+				_staticBottomFrameSize = height;
 
-			// make the event args
-			SystemUIWillResizeEventArgs args = new SystemUIWillResizeEventArgs(SystemUIID.BottomFrame, resizeReason, endFrame, startFrame, 1, 0);
-
-			//Make the call
-			SystemUI.OnWillResize(args);
+			SystemUI.OnWillResize();
 		}
 
 		static void cppOnTopFrameChanged (int height)
 		{
 			if (_topFrameSize != height)
 			{
-				SystemUIResizeReason resizeReason = SystemUIResizeReason.WillChangeFrame;
-
-				float2 size = _GetRootDisplaySize();
-
-				float2 start_pos = float2(0, size.Y - _topFrameSize);
-				float2 start_size = float2(size.X, _topFrameSize);
-
-				float2 end_pos = float2(0, size.Y - height);
-				float2 end_size = float2(size.X, height);
-
-				Rect startFrame = new Rect(start_pos, start_size);
-				Rect endFrame = new Rect(end_pos, end_size);
-
-				if (_topFrameSize==0 && height>0) {
-					resizeReason = SystemUIResizeReason.WillShow;
-				} else if (_topFrameSize>0 && height==0) {
-					resizeReason = SystemUIResizeReason.WillHide;
-				} else if (_topFrameSize>0 && height > 0 && height != _topFrameSize) {
-					resizeReason = SystemUIResizeReason.WillChangeFrame;
-				}
 				_topFrameSize = height;
-
-				// make the event args
-				SystemUIWillResizeEventArgs args = new SystemUIWillResizeEventArgs(SystemUIID.TopFrame, resizeReason, endFrame, startFrame, 1, 0);
-
-				//Make the call
-				OnWillResize(args);
+				OnWillResize();
 			}
 		}
 
@@ -634,5 +630,43 @@ namespace Fuse.Platform
 			float h = (int)GetRealDisplayHeight();
 			return float2(w, h);
 		}
+		
+
+		static public int APILevel { get { return GetAPILevel(); } }
+		static public int3 OSVersion
+		{
+			get
+			{
+				int major = 0;
+				int minor = 0;
+				int revision = 0;
+				try {
+					var ver = GetOSVersion();
+					string[] parts = ver.Split( new []{'.'});
+					if (parts.Length > 0)
+						Int.TryParse( parts[0], out major );
+					if (parts.Length > 1)
+						Int.TryParse( parts[1], out minor );
+					if (parts.Length > 2)
+						Int.TryParse( parts[2], out revision );
+				} catch( Exception ex ) {
+					//safe to ignore, may have partial results in major/minor, which is good
+				}
+				return int3(major, minor, revision);
+			}
+		}
+		
+		[Foreign(Language.Java)]
+		static int GetAPILevel()
+		@{
+			return android.os.Build.VERSION.SDK_INT;
+		@}
+		
+		[Foreign(Language.Java)]
+		static string GetOSVersion()
+		@{
+			return android.os.Build.VERSION.RELEASE;
+		@}
+		
 	}
 }

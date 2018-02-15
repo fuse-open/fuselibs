@@ -56,6 +56,24 @@
 - (void)insertText:(NSString *)text {}
 - (void)deleteBackward {}
 - (BOOL)hasText { return NO; }
+
+/**
+	This is a patch to avoid the screen being shifted down when the in-call display is visible. There appears to be no proper way to disable this shifting on iOS, though some of the native controls do accomodate it.
+	
+	Things tested, in case somebody wants to check again:
+	- [root layer] setContentsGravity, setPosition,
+	- root.autoResizingMask = UIViewAutoresizingNone
+	- uAppDelegate.extendedLayoutIncludesOpaqueBars, viewRespectsSystemMinimumLayoutMargins, automaticallyAdjustsScrollViewInsets
+	- navigationController.automaticallyAdjustsScrollViewInsets, extendedLayoutIncludesOpaqueBars, viewRespectsSystemMinimumLayoutMargins
+	- Delegate.setView, view.preservesSuperviewLayoutMargins
+	
+	The reason a fix is needed because the OS both pushes the view down as well as increasing the top-frame size, thus creating an extra empty area for our app (since it adjusts the status bar size).
+*/
+- (void)setFrame:(CGRect)frame;
+{
+	frame.origin.y = 0;
+	[super setFrame:frame];
+}
 @end
 
 @implementation SizeControl

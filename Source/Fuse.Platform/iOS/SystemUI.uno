@@ -26,16 +26,42 @@ namespace Fuse.Platform
 	[Require("Source.Include", "@{Uno.Platform.iOS.Application:Include}")]
 	[Require("Source.Include", "Uno-iOS/AppDelegate.h")]
 	[Require("Source.Include", "AppDelegateSoftKeyboard.h")]
-	public static extern(iOS) class SystemUI
+	[Require("Source.Include","objc/message.h")]
+	static extern(iOS) class SystemUI
 	{
-		static public event EventHandler<SystemUIWillResizeEventArgs> TopFrameWillResize;
-		static public event EventHandler<SystemUIWillResizeEventArgs> BottomFrameWillResize;
-
-		static public Rect TopFrame { get { return GetStatusBarFrame(); } }
-		static public Rect BottomFrame { public get; private set; }
+		static Rect _bottomFrame;
 
 		static public Rect Frame { get; private set; }
 
+		static public float4 DeviceMargins 
+		{ 
+			get 
+			{
+				return GetSafeFrame();
+			}
+		}
+		static public float4 SafeMargins 
+		{ 
+			get
+			{
+				float4 sf = GetSafeFrame();
+				sf.Y = Math.Max(sf.Y, GetStatusBarFrame().Height);
+				sf.W = Math.Max(sf.W, _bottomFrame.Height);
+				return sf;
+			}
+		}
+		static public float4 StaticMargins 
+		{ 
+			get
+			{
+				float4 sm = GetSafeFrame();
+				sm.Y = Math.Max(sm.Y, GetStatusBarFrame().Height);
+				return sm;
+			}
+		}
+		
+		static public event Action MarginsChanged;
+		
 		// @property (nonatomic, setter=uSetStatusBarAnimation:) UIStatusBarAnimation uStatusBarAnimation;
 		public static StatusBarAnimation uStatusBarAnimation { get; set; }
 
@@ -143,10 +169,39 @@ namespace Fuse.Platform
 			return $0;
 		@}
 
+		static public int3 OSVersion
+		{
+			get
+			{
+				int m,n,r;
+				GetOSVersion(out m, out n, out r);
+				return int3(m,n,r);
+			}
+		}
+		
+		[Foreign(Language.ObjC)]
+		static void GetOSVersion( out int major, out int minor, out int revision )
+		@{
+			if (NSFoundationVersionNumber < NSFoundationVersionNumber_iOS_8_0)
+			{
+				//we don't really need specifics before this point
+				*major = (int)NSFoundationVersionNumber;
+				*minor = ((int)NSFoundationVersionNumber * 10) % 10;
+				*revision = 0;
+			}
+			else
+			{
+				NSOperatingSystemVersion ver = [[NSProcessInfo processInfo] operatingSystemVersion];
+				*major = ver.majorVersion;
+				*minor = ver.minorVersion;
+				*revision = ver.patchVersion;
+			}
+		@}
+
 		static public bool IsBottomFrameVisible
 		{
 			//{TODO} need better metric than this
-			get { return (BottomFrame.Top - BottomFrame.Bottom) > 0; }
+			get { return (_bottomFrame.Top - _bottomFrame.Bottom) > 0; }
 		}
 
 		public static ObjC.Object RootView
@@ -161,74 +216,70 @@ namespace Fuse.Platform
 
 		@}
 
-		static void OnWillResize(SystemUIWillResizeEventArgs args)
+		static void OnWillResize()
 		{
-			if (args.ID==SystemUIID.TopFrame) {
-				EventHandler<SystemUIWillResizeEventArgs> handler = TopFrameWillResize;
-				if (handler != null)
-					handler(null, args);
-			} else {
-				BottomFrame = args.EndFrame;
-				EventHandler<SystemUIWillResizeEventArgs> handler = BottomFrameWillResize;
-				if (handler != null)
-					handler(null, args);
-			}
+			if (MarginsChanged != null)
+				MarginsChanged();
 		}
 
 		static Rect GetStatusBarFrame()
 		{
-			var density = Uno.Platform.Displays.MainDisplay.Density;
 			return Uno.Platform.iOS.Support.CGRectToUnoRect(
 				Uno.Platform.iOS.Support.Pre_iOS8_HandleDeviceOrientation_Rect(
 					extern<Uno.Platform.iOS.uCGRect>"[UIApplication sharedApplication].statusBarFrame", null),
-				density);
+				1);
 		}
+		
+		static float4 GetSafeFrame()
+		{
+			int major, minor, revision;
+			GetOSVersion(out major, out minor, out revision);
+			if (major >= 11) 
+			{
+				float l, t, r, b;
+				GetSafeArea( out l, out t, out r, out b );
+				return float4(l,t,r,b);
+			}
+			
+			return float4(0);
+		}
+		
+		//TODO: https://github.com/fusetools/fuselibs-public/issues/1015
+		//we also need to listen for safeAreInsets changes and call MarginsChanged
+		[Foreign(Language.ObjC)]
+		static void GetSafeArea(out float l, out float t, out float r, out float b)
+		@{
+			UIView* view = [UIApplication sharedApplication].keyWindow.rootViewController.view;
+
+		#if defined(__IPHONE_11_0) && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_11_0
+			//Only on iOS11, taken care of in the GetSafeFrame code (we don't use @available in order to support older XCode version)
+			UIEdgeInsets insets = view.safeAreaInsets;
+			*l = insets.left;
+			*t = insets.top;
+			*r = insets.right;
+			*b = insets.bottom;
+		#else
+			*l = *t = *r = *b = 0;
+		#endif
+		@}
 
 		static void _statusBarWillChangeFrame(Uno.Platform.iOS.uCGRect _endFrame, double animationDuration)
 		{
 			if (Lifecycle.State == ApplicationState.Uninitialized)
 				return;
-
-			var density = Uno.Platform.Displays.MainDisplay.Density;
-
-			Rect startFrame = Uno.Platform.iOS.Support.CGRectToUnoRect(
-				Uno.Platform.iOS.Support.Pre_iOS8_HandleDeviceOrientation_Rect(
-					extern<Uno.Platform.iOS.uCGRect>"[UIApplication sharedApplication].statusBarFrame", null),
-				density);
-
-			Rect endFrame = Uno.Platform.iOS.Support.CGRectToUnoRect(
-				Uno.Platform.iOS.Support.Pre_iOS8_HandleDeviceOrientation_Rect(_endFrame, null),
-				density);
-
-			Fuse.Platform.SystemUIResizeReason reason;
-
-			if (startFrame.Height == 0)
-				reason = Fuse.Platform.SystemUIResizeReason.WillShow;
-			else if (endFrame.Height == 0)
-				reason = Fuse.Platform.SystemUIResizeReason.WillHide;
-			else
-				reason = Fuse.Platform.SystemUIResizeReason.WillChangeFrame;
-
-			var args = new SystemUIWillResizeEventArgs(SystemUIID.TopFrame, reason, endFrame, startFrame, animationDuration, 1);
-
-			OnWillResize(args);
+			OnWillResize();
 		}
 
+		static void _statusBarDidChangeFrame(Uno.Platform.iOS.uCGRect _endFrame)
+		{
+		}
+		
 		static void uKeyboardWillChangeFrame (Uno.Platform.iOS.uCGRect frameBegin, Uno.Platform.iOS.uCGRect frameEnd, double animationDuration, int animationCurve, Fuse.Platform.SystemUIResizeReason reason)
 		{
-			var density = Uno.Platform.Displays.MainDisplay.Density;
-
-			Rect startFrame = Uno.Platform.iOS.Support.CGRectToUnoRect(
-				Uno.Platform.iOS.Support.Pre_iOS8_HandleDeviceOrientation_Rect(frameBegin, null),
-				density);
-
-			Rect endFrame = Uno.Platform.iOS.Support.CGRectToUnoRect(
+			_bottomFrame = Uno.Platform.iOS.Support.CGRectToUnoRect(
 				Uno.Platform.iOS.Support.Pre_iOS8_HandleDeviceOrientation_Rect(frameEnd, null),
-				density);
-
-			var args = new SystemUIWillResizeEventArgs(SystemUIID.BottomFrame, reason, endFrame, startFrame, animationDuration, 1);
-
-			OnWillResize(args);
+				1);
+			OnWillResize();
 		}
 
 		//------------------------------------------------------------
@@ -237,10 +288,9 @@ namespace Fuse.Platform
 		static Rect uStatusBarFrame()
 		{
 			uCGRect frame = extern<uCGRect>"[UIApplication sharedApplication].statusBarFrame";
-			var scale = Uno.Platform.Displays.MainDisplay.Density;
 			return Uno.Platform.iOS.Support.CGRectToUnoRect(
 				Uno.Platform.iOS.Support.Pre_iOS8_HandleDeviceOrientation_Rect(frame, null),
-				scale);
+				1);
 		}
 
 		static StatusBarStyle _style = StatusBarStyle.Dark;

@@ -7,15 +7,6 @@ public partial class DeviceInfo
 	{
 		InitializeUX();
 
-		if defined(MOBILE)
-		{
-			var display = Uno.Platform.Displays.MainDisplay;
-			var size = Fuse.Platform.SystemUI.Frame.Size;
-			var density = display.Density;
-			_resolutionText.Value = size.X.ToString() + " x " + size.Y.ToString();
-			_densityText.Value = density.ToString();
-		}
-
 		_fuselibsVersionNumberText.Value = string.Format("{0}.{1}.{2}", Fuse.Version.Major, Fuse.Version.Minor, Fuse.Version.Patch);
 		_fuselibsFullVersionText.Value = Fuse.Version.String;
 

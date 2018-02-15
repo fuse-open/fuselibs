@@ -27,8 +27,9 @@
 
 			<h2>Display</h2>
 			<Grid Alignment="Top" Columns="auto,auto" DefaultRow="auto" CellSpacing="5">
-				<Text>Resolution:</Text><ValueText ux:Name="_resolutionText"/>
-				<Text>Density:</Text><ValueText ux:Name="_densityText"/>
+				<Text>Resolution:</Text><ValueText 
+					Value="{= window().width * window().pixelsPerPoint } x {= window().height * window().pixelsPerPoint }"/>
+				<Text>Density:</Text><ValueText Value="{= window().pixelsPerPoint } Fuse, {= window().pixelsPerOSPoint } Native"/>
 			</Grid>
 
 			<h2>OpenGL ES Driver</h2>
@@ -37,6 +38,34 @@
 				<Text>Vendor:</Text><ValueText ux:Name="_glesVendorText"/>
 				<Text>Renderer:</Text><ValueText ux:Name="_glesRendererText"/>
 			</Grid>
+			
+			<h2>Platform</h2>
+			<Panel ux:Class="PlatformCheck" Margin="5,2">
+				<string ux:Property="Label"/>
+				<bool ux:Property="Value"/>
+				<Text Value="{Property this.Label}" Color="{Property this.Value} ? #000 : #888"/>
+				<WhileFalse Value="{Property this.Value}">
+					<Rectangle Layer="Overlay" Alignment="VerticalCenter" Height="2" 
+						Color="{Property this.Value} ? #000 : #888"/>
+				</WhileFalse>
+			</Panel>
+			
+			<Grid ColumnCount="3" Alignment="Center">
+				<PlatformCheck Label="Mobile" Value="isMobile()"/>
+				<PlatformCheck Label="iOS" Value="isIOS()"/>
+				<PlatformCheck Label="Android" Value="isAndroid()"/>
+				<PlatformCheck Label="Desktop" Value="isDesktop()"/>
+				<PlatformCheck Label="Windows" Value="isWindows()"/>
+				<PlatformCheck Label="OSX" Value="isOSX()"/>
+			</Grid>
+			
+			<WhileTrue Value="isDefined({osVersion})">
+				<Text Value="OS Version: {osVersion}"/>
+			</WhileTrue>
+			<WhileTrue Value="isDefined({apiLevel})">
+				<Text Value="API Level: {apiLevel}"/>
+			</WhileTrue>
+			
 			<DropShadow/>
 		</StackPanel>
 	</ScrollView>

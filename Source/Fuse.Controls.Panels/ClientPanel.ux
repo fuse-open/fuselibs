@@ -1,4 +1,2 @@
-<DockPanel ux:Class="Fuse.Controls.ClientPanel">
-	<TopFrameBackground Dock="Top"/>
-	<BottomFrameBackground Dock="Bottom"/>
+<DockPanel ux:Class="Fuse.Controls.ClientPanel" Padding="window().safeMargins">
 </DockPanel>

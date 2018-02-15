@@ -1,7 +1,10 @@
 using Uno;
+using Uno.UX;
 
 using Fuse.Elements;
 using Fuse.Platform;
+using Fuse.Reactive;
+
 using Uno.Compiler.ExportTargetInterop;
 
 namespace Fuse.Controls
@@ -27,36 +30,36 @@ namespace Fuse.Controls
 
 	public class TopFrameBackground: Control
 	{
+		WindowCaps _caps;
+		
 		protected override void OnRooted()
 		{
 			base.OnRooted();
-			if defined(iOS || Android)
-				SystemUI.TopFrameWillResize += OnFrameResized;
+			_caps = WindowCaps.AttachFrom(this);
+			_caps.AddPropertyListener(this);
 		}
 
 		protected override void OnUnrooted()
 		{
 			base.OnUnrooted();
-			if defined(iOS || Android)
-				SystemUI.TopFrameWillResize -= OnFrameResized;
+			_caps.RemovePropertyListener(this);
+			_caps.Detach();
+			_caps = null;
 		}
 
-		extern(ANDROID || IOS)
-		private void OnFrameResized(object sender, SystemUIWillResizeEventArgs args)
+		public override void OnPropertyChanged(PropertyObject sender, Selector name)
 		{
-			InvalidateLayout();
+			base.OnPropertyChanged(sender, name);
+			if (sender == _caps && name == WindowCaps.NameSafeMargins)
+				InvalidateLayout();
 		}
 
 		protected override float2 GetContentSize(LayoutParams lp)
 		{
-			if defined(iOS || Android)
-			{
-				var pixelsPerPoint = 1.0f;
-				if (AppBase.Current != null)
-					pixelsPerPoint = AppBase.Current.PixelsPerPoint;
-				return SystemUI.TopFrame.Size / pixelsPerPoint;
-			}
-			return float2(0,0);
+			var v = float4(0);
+			if (!Marshal.TryToType<float4>(_caps[WindowCaps.NameSafeMargins], out v))
+				return float2(0);
+			return float2(0,v.Y);
 		}
 	}
 
