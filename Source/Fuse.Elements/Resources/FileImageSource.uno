@@ -202,7 +202,7 @@ namespace Fuse.Resources
 			catch (Exception e)
 			{
 				Cleanup(CleanupReason.Failed);
-				OnError("BundleFileImageSource-failed-conversion", e);
+				OnError("Loading image from file failed. " + e.Message, e);
 			}
 		}
 
@@ -236,7 +236,7 @@ namespace Fuse.Resources
 		{
 			_loading = false;
 			Cleanup(CleanupReason.Failed);
-			OnError("BundleFileImageSource-failed-conversion", e);
+			OnError("Loading image from file failed. " + e.Message, e);
 		}
 
 		//NOTE: a copy from HttpImageSource.BackgroundLoad with minor changes
