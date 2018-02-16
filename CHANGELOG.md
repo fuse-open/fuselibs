@@ -7,15 +7,40 @@
 - Marked `NativeMember.Context` as Obsolete. Either use passed-down `Context`, or dispatch to `ThreadWorker` instead.
 
 ## Node Data Context
+
+# 1.7
+
+### 1.7.0
+
+## PageControl
+- Fixed a crash resulting from adding dynamic pages and binding by name
+
+## Partial Curves
+- Added support for drawing partial curves to `Path` and `Curve`. Refer to the `PathStart`, `PathLength` and `PathEnd` properties.
+- Added the path expressions `pathPointAtDistance` and `pathTangentAngleAtDistance` for locating an offset along a `Path` or `Curve` and the heading.
+
+## Router
+- Fixed `goBack` to properly modify the route with two duplicate routes in the history## JavaScript 
+- Several functions in `ScriptModule` and related classes have been marked `internal`. These were never meant to be part of the public API.
+- Added `JavaScript.Names` with option `Require` to prevent injecting names into the JavaScript code namespace
+
+## TextColor Opacity
+- Fixed a failure to render translucent `TextColor` correctly
+- Fixed the rendering of opaque emoji when `TextColor` is translucent (they will not also be translucent, though still  use the font coloring)
+
+### Node Data Context
+- Removed some deprecated methods and classes from `Node`: `IDataListener`, `OnDataChanged`. These were not meant to be public.
+- Deprecated `{}` in favour of the new `data()` function. `{}` had unusual binding rules and would often not bind to the intended context. `data()` always binds to the prime data context, it's unambiguous and predictable.
+- Fixed the object provided to JavaScript callbacks in `args.data`. It will now always be the prime data context, not just the next contextual data.
 - Deprecated and removed several functions which were not meant to be public. The deprecated ones will be removed shortly, as the current interface cannot be supported in the future.   `ISiblingDataProvider`, `ISubtreeDataProvider`, `IDataEnumerator`, `Node.GetFirstData`, `Node.EnumerateData`, `Node.BroadcastDataChange`, `Node.IDataListenere`, `Node.OnDataChanged`, `Node.AddDataListener`, `Node.RemoveDataListener`, `IObject`, `IArray`
 
-## LinearGradient
+### LinearGradient
 - Fixes invalid gradients in desktop preview (DotNet targets)
 
-## Navigator
+### Navigator
 - Fixed the invalid reuse of an existing page if the context does not match
 
-## Expressions
+### Expressions
 - Added support for boolean `==` and `!=` expressions, which can be used for things like negating boolean expressions.
 - Added support for the logical not operator. This means you can do "!someBoolean" to logically negate it.
 - Fixed negation operator (`-`, eg. `-someValue`).
@@ -32,10 +57,10 @@
 - Fixed bug where the scrolling indicator in a native ScrollView would not show on iOS
 - Added `ContentSize` property on the `Fuse.Controls.Native.IScrollViewHost` interface. Needed by iOS to layout the native scrollview correctly
 
-## Control
+### Control
 - Setting the `Background` property to something else than SolidColor or StaticSolidColor has been deprecated, and gives a warning. Support for this will be removed in an upcoming release.
 
-## Video
+### Video
 - Setting the `StretchMode` property to `Scale9` on VideoVisual has been depecated, and gives a warning. Support for this will be removed in an upcoming release.
 - Removed `protected` constructor for `LayoutFunction`, this was not meant to be public. Sealed the derived classes, they were not meant to be extendable.
 
@@ -451,7 +476,7 @@ which will stop push notifications registering (and potentially asking for permi
 - Optimized redundant OpenGL rendertarget operations. Gives speedups on some platforms.
 - Optimized invalidation strategy for transforms, to avoid subtree traversion. This improves performance generally when animating large subtrees (e.g. scrollviews).
 - Backwards incompatible optimization change: The `protected virtual void Visual.OnInvalidateWorldTransform()` method was removed. The contract of this method was very expensive to implement as it had to be called on all nodes, just in case it was overridden somewhere. If you have custom Uno code relying on this method (unlikely), then please rewrite to explicitly subscribe to the `Visual.WorldTransformInvalidated` event instead, like so: Override `OnRooted` and do `WorldTransformInvalidated += OnInvalidateWorldTransform;`, Override `OnUnrooted` and to `WorldTransformInvalidated -= OnInvalidateWorldTransform;`, then rewrite `protected override void OnInvalidateWorldTransform()` to `void OnInvalidateWorldTransform(object sender, EventArgs args)`
-- To improve rendering speed, Fuse no longer checks for OpenGL errors in release builds in some performance-critical code paths  
+- To improve rendering speed, Fuse no longer checks for OpenGL errors in release builds in some performance-critical code paths
 - Improved perceived ScrollView performance by preventing caching while pointers are pressed on them, avoiding inconsistent framerates.
 - Fixed a bug which prevented elements like `Image` to use fast-track rendering in trivial cases with opacity (avoids render to texture).
 - Optimized how bounding boxes are calculated (improves layout and rendering performance).
@@ -464,9 +489,9 @@ which will stop push notifications registering (and potentially asking for permi
 - Added the `attract` feature, which was previously only in premiumlibs. This provides a much simpler syntax for animation than the `Attractor` behavior.
 
 ### Gesture
-- The experimental `IGesture` interface has changed. 
+- The experimental `IGesture` interface has changed.
   * The `Significance`, `Priority` and `PriotityAdjustment` have been merged into the single `GetPriority` function.
-  * `OnCapture` is changed to `OnCaptureChanged` and provides the previous capture state 
+  * `OnCapture` is changed to `OnCaptureChanged` and provides the previous capture state
 - `Clicked`, `DoubleClicked`, `Tapped`, `DoubleTapped`, and `LongPressed` have been corrected to only detect the primary "first" pointer press. If you'd like to accept any pointer index add `PointerIndex="Any"` to the gesture.
     <Clicked PointerIndex="Any"/>
 - `SwipeGesture`, `ScrollView`, `LinearRangeBehaviour` (`Slider`), `CircularRangeBehaviour`, `Clicked`, `Tapped`, `DoubleClicked`, `DoubleTapped`, `LongPressed`, `WhilePressed` all use the gesture system now. They have a `GesturePriority` property which can be used to adjust relative priorities -- though mostly the defaults should be fine.
@@ -512,7 +537,7 @@ which will stop push notifications registering (and potentially asking for permi
 - Fixed a crash in the rooting of certain tree structures using any of the Navigation triggers such as `WhileActive`
 
 ### Fuse.ImageTools
-- Fixed bug preventing handling of `KEEP_ASPECT` resize mode on Android when using ImageTools.resize 
+- Fixed bug preventing handling of `KEEP_ASPECT` resize mode on Android when using ImageTools.resize
 
 ### Fuse.Camera
 - iOS: Fixed crash when using Fuse.Camera alongside `<iOS.StatusBarConfig IsVisible="false" />`
@@ -547,7 +572,7 @@ which will stop push notifications registering (and potentially asking for permi
 - Fuse.Input.Gesture now only has an internal constructor. This means that external code can't instantiate it. But before, they already couldn't do so in a *meaningful* way, so this shouldn't really affect any applications.
 
 ### Native TextInput
-- Fixed issue where focusing a `<TextInput />` or `<TextView />` by tapping it would not update the caret position accordingly. 
+- Fixed issue where focusing a `<TextInput />` or `<TextView />` by tapping it would not update the caret position accordingly.
 
 ### Route Navigation Triggers
 - `Activated`, `Deactivated`, `WhileActive`, `WhileInactve` have all been fixed when used inside nested navigation. Previously they would only consider the local navigation, not the entire tree. If the old behavior is still desired you can set the `Path="Local"` option on the navigation.
@@ -665,7 +690,7 @@ This release only upgraded Uno.
 - A new static Uno class has been introduced, called `Fuse.Version`. It contains fields for the major, minor and patch-version, as well as a string with the full version number.
 
 ### Native
-- Add implementation for `android.view.TextureView` to better support multiple `<GraphicsView />`'s and `<NativeViewHost />`'s on Android. 
+- Add implementation for `android.view.TextureView` to better support multiple `<GraphicsView />`'s and `<NativeViewHost />`'s on Android.
 
 ### Container
 - In order to fix a memory leak in `Container` the pre-rooting structure was changed. Children of the container will not be children of the `Subtree` until rooted. It is not believed this will have any noticable effect; other features, like Trigger, also work this way.
