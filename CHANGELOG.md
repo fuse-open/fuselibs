@@ -1,5 +1,8 @@
 # Unreleased
 
+## Image loading errors
+- Added more info to the messages reported on failure during image loading.
+
 ## Fuse.Scripting
 - Marked `NativeMember.Context` as Obsolete. Either use passed-down `Context`, or dispatch to `ThreadWorker` instead.
 

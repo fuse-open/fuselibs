@@ -115,7 +115,7 @@ namespace Fuse.Resources
 			}
 			catch( Exception e )
 			{
-				Fail("HttpImageSource-failed-request", e);
+				Fail("Loading image from '" + Url + "' failed. " + e.Message, e);
 			}
 		}
 
@@ -128,7 +128,7 @@ namespace Fuse.Resources
 		void FailureCallback(Exception e)
 		{
 			_loading = false;
-			Fail( "HttpImageSource-failed-conversion", e);
+			Fail("Loading image from HTTP failed. " + e.Message, e);
 		}
 
 		ImageOrientation _orientation = ImageOrientation.Identity;
@@ -141,7 +141,7 @@ namespace Fuse.Resources
 		{
 			if (response.StatusCode != 200)
 			{
-				Fail("HttpImageSource-failed-status: " + response.StatusCode + " " +
+				Fail("Loading image from HTTP failed with HTTP Status: " + response.StatusCode + " " +
 					response.ReasonPhrase);
 				return;
 			}
@@ -211,7 +211,7 @@ namespace Fuse.Resources
 
 		void LoadFailed( string reason )
 		{
-			Fail("HttpImageSource-protocol-failure for url '" + Url + "' : " + reason);
+			Fail("Loading image from '" + Url + "' failed: " + reason);
 		}
 
 		void Fail( string msg, Exception e = null )

@@ -462,7 +462,7 @@ namespace Fuse.Reactive.Test
 
 					var diagnostics = dg.DequeueAll();
 					Assert.AreEqual(1, diagnostics.Count);
-					Assert.Contains("BundleFileImageSource-failed-conversion", diagnostics[0].Message);
+					Assert.Contains("Loading image from file failed.", diagnostics[0].Message);
 				}
 			}
 		}
