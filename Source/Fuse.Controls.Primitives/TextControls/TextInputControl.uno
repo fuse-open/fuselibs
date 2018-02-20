@@ -26,9 +26,9 @@ namespace Fuse.Controls
 	public abstract class TextInputControl: LayoutControl, IValue<string>
 	{
 		readonly TextEdit _editor;
-		protected internal TextEdit Editor { get { return _editor; } }
+		internal TextEdit Editor { get { return _editor; } }
 
-		protected internal TextInputControl(TextEdit editor)
+		internal TextInputControl(TextEdit editor)
 		{
 			Focus.SetIsFocusable(this, true);
 			Focus.SetDelegator(this, FocusDelegator);
