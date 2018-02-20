@@ -6,11 +6,9 @@
 #include <Uno-iOS/AppDelegate.h>
 #include <Uno-iOS/Uno-iOS.h>
 
-@(AppDelegate.HeaderFile.Declaration:Join())
-
 @{Uno.Rect:IncludeDirective}
 
-@interface uAppDelegate (SoftKeyboard)
+@interface uKeyboardContext : NSObject
 - (void)uKeyboardWillChangeFrame:(NSNotification *)notification;
 @end
 

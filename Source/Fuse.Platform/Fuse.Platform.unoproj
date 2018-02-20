@@ -26,8 +26,8 @@
     "Android/SystemUI.uno:Source",
     "iOS/SystemUI.uno:Source",
     "iOS/SystemUI.ios.uxl:Extensions",
-    "iOS/AppDelegateSoftKeyboard.h:File",
-    "iOS/AppDelegateSoftKeyboard.mm:File",
+    "iOS/KeyboardContext.h:File",
+    "iOS/KeyboardContext.mm:File",
     "iOS/AppDelegateStatusBar.h:File",
     "iOS/AppDelegateStatusBar.mm:File"
   ]

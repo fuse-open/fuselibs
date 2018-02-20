@@ -25,8 +25,8 @@ namespace Fuse.Platform
 	[Require("Source.Include", "@{Uno.Platform.iOSDisplay:Include}")]
 	[Require("Source.Include", "@{Uno.Platform.iOS.Application:Include}")]
 	[Require("Source.Include", "Uno-iOS/AppDelegate.h")]
-	[Require("Source.Include", "AppDelegateSoftKeyboard.h")]
 	[Require("Source.Include","objc/message.h")]
+	[Require("Source.Include", "KeyboardContext.h")]
 	static extern(iOS) class SystemUI
 	{
 		static Rect _bottomFrame;
@@ -82,41 +82,49 @@ namespace Fuse.Platform
 		{
 			((Uno.Platform.iOSDisplay)Uno.Platform.Displays.MainDisplay).FrameChanged += OnFrameChanged;
 			OnFrameChanged(null, null);
-			EnableKeyboardResizeNotifications();
+			EnableKeyboardResizeNotifications(_keyboardContext);
 		}
 
 		static public void OnDestroy()
 		{
-			DisableKeyboardResizeNotifications();
+			DisableKeyboardResizeNotifications(_keyboardContext);
 		}
 
+		static ObjC.Object _keyboardContext = NewKeyboardContext();
+
 		[Foreign(Language.ObjC)]
-		static void EnableKeyboardResizeNotifications()
+		static ObjC.Object NewKeyboardContext()
 		@{
-			uAppDelegate* _delegate = (uAppDelegate*)[UIApplication sharedApplication].delegate;
+			return [[uKeyboardContext alloc] init];
+		@}
+
+		[Foreign(Language.ObjC)]
+		static void EnableKeyboardResizeNotifications(ObjC.Object keyboardContext)
+		@{
+			uKeyboardContext* ctx = (uKeyboardContext*)keyboardContext;
 
 			[[NSNotificationCenter defaultCenter]
-			 addObserver:_delegate selector:@selector(uKeyboardWillChangeFrame:)
+			 addObserver:ctx selector:@selector(uKeyboardWillChangeFrame:)
 			 name:UIKeyboardWillShowNotification object:nil];
 			
 			[[NSNotificationCenter defaultCenter]
-			 addObserver:_delegate
+			 addObserver:ctx
 			 selector:@selector(uKeyboardWillChangeFrame:)
 			 name:UIKeyboardWillHideNotification object:nil];
 		@}
 
 		
 		[Foreign(Language.ObjC)]
-		static void DisableKeyboardResizeNotifications()
+		static void DisableKeyboardResizeNotifications(ObjC.Object keyboardContext)
 		@{
-			uAppDelegate* _delegate = (uAppDelegate*)[UIApplication sharedApplication].delegate;
-			
+			uKeyboardContext* ctx = (uKeyboardContext*)keyboardContext;
+
 			[[NSNotificationCenter defaultCenter]
-			 removeObserver:_delegate
+			 removeObserver:ctx
 			 name:UIKeyboardWillShowNotification object:nil];
 			
 			[[NSNotificationCenter defaultCenter]
-			 removeObserver:_delegate
+			 removeObserver:ctx
 			 name:UIKeyboardWillHideNotification object:nil];
 		@}
 
