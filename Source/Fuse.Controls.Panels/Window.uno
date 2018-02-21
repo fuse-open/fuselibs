@@ -17,6 +17,9 @@ namespace Fuse.Reactive
 			- `deviceMargins` (float4): (Experimental) The margins the device reports as not being complete safe for drawing as something may obstruct the view (such as the rounded corners of an iPhone X)
 
 		Drawing anythng but a background (image or brush fill) in the gradient areas is not recommended as it may be obscured by the system UI or the hardware.
+		
+		
+		Refer to @SafeEdgePanel and [Safe Layout](Docs/SafeLayout) for more information about safe layouts and device margins.
 	*/
 	[UXFunction("window")]
 	public class WindowFunction : Fuse.Reactive.Expression
