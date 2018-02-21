@@ -199,17 +199,9 @@ namespace Fuse.Models
 			FileName = "(model-script)";
 		}
 		
-		protected override void OnRooted()
+		protected override void OnBeforeSubscribeToDependenciesAndDispatchEvaluate()
 		{
-			// TODO: Doing anything prior to base.OnRooted is questionable.
-			// The UX compiler cannot guarantee a valid expression tree until
-			// rooting time, so we need to parse the arguments at root time.
-			// This is fine, however, since we are a subclass of JavaScript,
-			// we need to do this setup before JavaScript can initialize itself,
-			// which happens at rooting time as well.
 			SetupModel();
-
-			base.OnRooted();
 			
 			if (_previewStateModelId != null)
 			{
@@ -217,11 +209,6 @@ namespace Fuse.Models
 				if (previewState != null)
 					previewState.AddSaver(this);
 			}
-		}
-		
-		protected override void OnUnrooted()
-		{
-			base.OnUnrooted();
 		}
 		
 		void IPreviewStateSaver.Save(PreviewStateData data)
