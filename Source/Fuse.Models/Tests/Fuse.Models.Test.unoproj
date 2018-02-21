@@ -1,6 +1,7 @@
 {
   "Packages": [
     "Fuse.Controls",
+    "Fuse.Controls.ScrollView",
     "Fuse.Controls.Panels",
     "Fuse.Controls.Primitives",
     "Fuse.Controls.Navigation",

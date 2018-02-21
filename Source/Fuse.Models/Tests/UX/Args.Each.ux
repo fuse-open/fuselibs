@@ -1,0 +1,12 @@
+<Panel ux:Class="UX.Model.Args.Each" Model="UX/Args.Each.Outer">
+	<StackPanel>
+		<Each Items="{items}">
+			<Panel ux:Name="p" Model="UX/Args.Each.Inner" ModelArgs="{id}, {onNewInnerInstance}">
+				<Text Value="{message}" />
+			</Panel>
+		</Each>
+	</StackPanel>
+
+	<FuseTest.DudElement ux:Name="innerInstanceCount" Value="{innerInstanceCount}" />
+	<FuseTest.DudElement ux:Name="outerInstanceCount" Value="{outerInstanceCount}" />
+</Panel>

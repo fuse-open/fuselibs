@@ -1,0 +1,7 @@
+<Panel ux:Class="UX.Model.Args.Single"
+	Model="UX/Args.Single.js"
+	ModelArgs="{ReadProperty input.Value}">
+	<Text ux:Name="input" Value="hello" />
+	<FuseTest.DudElement ux:Name="output" StringValue="{value}" />
+	<FuseTest.DudElement ux:Name="instanceCount" Value="{instanceCount}" />
+</Panel>
