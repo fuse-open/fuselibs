@@ -13,7 +13,7 @@ namespace Fuse.Models.Test
 	{
 
 		[Test]
-		public void Args_Each()
+		public void ArgsEach()
 		{
 			var e = new UX.Model.Args.Each();
 			using (var root = TestRootPanel.CreateWithChild(e))
@@ -26,7 +26,7 @@ namespace Fuse.Models.Test
 		}
 
 		[Test]
-		public void Args_ScrollView()
+		public void ArgsScrollView()
 		{
 			var e = new UX.Model.Args.ScrollView();
 			using (var root = TestRootPanel.CreateWithChild(e))
@@ -42,7 +42,7 @@ namespace Fuse.Models.Test
 		}
 
 		[Test]
-		public void Args_Single()
+		public void ArgsSingle()
 		{
 			var e = new UX.Model.Args.Single();
 			using (var root = TestRootPanel.CreateWithChild(e))
