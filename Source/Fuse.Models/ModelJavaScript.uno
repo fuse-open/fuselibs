@@ -56,7 +56,7 @@ namespace Fuse.Models
 			if (md.NameTable == null || md.ModulePath == null)
 				return;
 			
-			v.Children.Add( new ModelJavaScript(md.NameTable, md.ModulePath, null) );
+			v.Children.Add(new ModelJavaScript(md));
 		}
 
 		static ModelData GetOrCreateModelData(Visual v)
@@ -126,16 +126,21 @@ namespace Fuse.Models
 			}
 			
 			//app-level model does not have a nametable otherwise migration would not be possible
-			var js = new ModelJavaScript(null, modulePath, previewStateId);
-			return js;
+			var md = new ModelData
+			{
+				ModulePath = modulePath
+			};
+			
+			return new ModelJavaScript(md, previewStateId);
 		}
 		
 		string _modulePath;
-		internal ModelJavaScript(NameTable nt, string modulePath, string previewStateId)
-			: base(nt)
+
+		private ModelJavaScript(ModelData md, string previewStateId = null)
+			: base(md.NameTable)
 		{
 			_previewStateModelId = previewStateId;
-			_modulePath = modulePath;
+			_modulePath = md.ModulePath;
 			FileName = "(model-script)";
 			SetupModel();
 		}
