@@ -3,6 +3,11 @@
 
 # 1.7
 
+### 1.7.1
+
+# Fuse.Nodes
+- Fixed a bug where triggering `onParameterChanged` on an element would lead to a crash.
+
 ### 1.7.0
 
 ## PageControl

@@ -68,7 +68,9 @@ namespace Fuse
 		*/
 		static void onParameterChanged(Visual v, object[] args)
 		{
-			v.AddParameterChangedListener((Scripting.Function)args[0]);
+			var functionMirror = args[0] as Fuse.Scripting.IFunctionMirror;
+			if (functionMirror != null)
+				v.AddParameterChangedListener(functionMirror.Function);
 		}
 	}
 }
