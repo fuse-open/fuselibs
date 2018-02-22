@@ -40,7 +40,7 @@ namespace Fuse.Models.Test
 		public void ArgsScrollView()
 		{
 			var e = new UX.Model.Args.ScrollView();
-			using (var root = TestRootPanel.CreateWithChild(e))
+			using (var root = TestRootPanel.CreateWithChild(e, int2(200)))
 			{
 				root.StepFrameJS();
 				Assert.AreEqual(0, e.scrollView.ScrollPosition.Y);
