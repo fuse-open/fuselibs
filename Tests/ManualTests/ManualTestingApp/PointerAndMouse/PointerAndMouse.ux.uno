@@ -14,12 +14,20 @@ public partial class PointerAndMouse
         _random = new Random(1337);
     }
 
+    float4 RandomColor()
+    {
+        return float4(
+            (float)_random.NextDouble(),
+            (float)_random.NextDouble(),
+            (float)_random.NextDouble(),
+            (float)_random.NextDouble());
+    }
 
     void Button1_Click(object sender, PointerEventArgs args)
     {
         if (args.IsPrimary)
         {
-            Button1Color.Color = _random.NextFloat4();
+            Button1Color.Color = RandomColor();
         }
     }
 
@@ -27,7 +35,7 @@ public partial class PointerAndMouse
     {
         if (!args.IsPrimary)
         {
-            Button2Color.Color = _random.NextFloat4();
+            Button2Color.Color = RandomColor();
         }
     }
 
