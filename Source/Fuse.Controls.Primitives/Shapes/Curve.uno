@@ -132,7 +132,7 @@ namespace Fuse.Controls
 		public bool HasTangentIn { get { return _has.HasFlag(HasFlags.TangentIn); } }
 		
 		/** 
-			The direction and strenght of the tangent leading out of this point.
+			The direction and strength of the tangent leading out of this point.
 		*/
 		public float2 TangentOut
 		{

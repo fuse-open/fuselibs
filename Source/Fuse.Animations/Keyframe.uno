@@ -111,6 +111,9 @@ namespace Fuse.Animations
 		
 		double _timeDelta;
 		bool _hasTimeDelta;
+		/**
+			The time at which this value is reached, specified in seconds since the last `Keyframe`.
+		*/
 		public double TimeDelta
 		{
 			get { return _timeDelta; }
@@ -123,6 +126,9 @@ namespace Fuse.Animations
 		
 		double _time;
 		bool _hasTime;
+		/**
+			The time at which this value is reached, specified in seconds since the start of the timeline.
+		*/
 		public double Time
 		{
 			get { return _time; }
@@ -135,6 +141,9 @@ namespace Fuse.Animations
 		
 		float4 _tangentIn, _tangentOut;
 		bool _hasTangentIn, _hasTangentOut;
+		/**
+			The direction and strength of the tangent leading into this point.
+		*/
 		public float4 TangentIn 
 		{ 
 			get { return _tangentIn; } 
@@ -145,6 +154,9 @@ namespace Fuse.Animations
 			}
 		}
 		
+		/** 
+			The direction and strength of the tangent leading out of this point.
+		*/
 		public float4 TangentOut 
 		{ 
 			get { return _tangentOut; } 
@@ -155,19 +167,18 @@ namespace Fuse.Animations
 			}
 		}
 		
-		/* Undecided
+		/**
+			Use the same value for both TangentIn and TangentOut
+		*/
 		public float4 Tangent
 		{
 			get { return _tangentOut; }
 			set
 			{
-				_tangentOut = value;
-				_hasTangentOut = true;
-				_tangentIn = -value;
-				_hasTangentIn = true;
+				TangentIn = value;
+				TangentOut = value;
 			}
 		}
-		*/
 		
 		static internal double CompleteFrames( IList<Keyframe> frames,
 			float tension, float bias, float continuity )
