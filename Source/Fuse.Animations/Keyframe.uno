@@ -1,4 +1,5 @@
 using Uno;
+using Uno.UX;
 using Uno.Collections;
 
 using Fuse.Internal;
@@ -32,9 +33,12 @@ namespace Fuse.Animations
 			</Page>
 
 		This time we use `TimeDelta` instead of time. With `TimeDelta` we can specify time as a relative term instead of absolute. This means that the order of the @Keyframes matter, but it lets us reason about the keyframes in terms of their duration instead of their absolute time on the timeline.
+		
+		Note: Despite being a `PropertyObject` the properties in this class are not reactive.
+		
 	@mount Animation
 	*/
-	public class Keyframe
+	public class Keyframe : PropertyObject
 	{
 		float4 _value;
 		public float4 Value

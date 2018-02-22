@@ -1,0 +1,11 @@
+<Panel ux:Class="UX.Keyframe.Expression">
+	<double ux:Global="AnimTime" ux:Value="2.0" />
+	<Panel Width="300" Height="200" ux:Name="p">
+		<Timeline ux:Name="t">
+			<Change Target="p.Width" KeyframeInterpolation="Linear">
+				<Keyframe Value="400" Time="AnimTime / 2" />
+				<Keyframe Value="200" Time="AnimTime" />
+			</Change>
+		</Timeline>
+	</Panel>
+</Panel>
