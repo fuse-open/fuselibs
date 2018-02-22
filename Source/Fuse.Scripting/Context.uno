@@ -14,7 +14,7 @@ namespace Fuse.Scripting
 
 	public abstract class Context: Uno.IDisposable
 	{
-		ConcurrentDictionary<string, ModuleResult> _moduleResults = new ConcurrentDictionary<string, ModuleResult>();
+		IDictionary<string, ModuleResult> _moduleResults = new ConcurrentDictionary<string, ModuleResult>();
 
 		public void RegisterGlobalModuleResult(ModuleResult result)
 		{
