@@ -78,6 +78,13 @@ namespace Fuse.Gestures
 				_region.IsInterruptible = Type != SwipeType.Simple;
 				_region.RevertActive = Type != SwipeType.Active;
 				_region.AutoTrigger = Type == SwipeType.Auto;
+				
+				//Active type has automatic completed when the halfway mark is reached (unless overridden)
+				if (_type == SwipeType.Active && !_hasThreshold)
+				{
+					_region.ActivationThreshold = 0.5f;
+					_region.DeactivationThreshold = 0.5f;
+				}
 			}
 		}
 		
@@ -225,6 +232,25 @@ namespace Fuse.Gestures
 		{
 			get { return _region.GesturePriority; }
 			set { _region.GesturePriority = value; }
+		}
+		
+		bool _hasThreshold;
+		/**
+			The relative distance that must be travelled before the gesture automatically completes.
+			
+			The default when Type != Active is `1`, meaning the user must travel, or swipe with enough velocity, to cover the full distance. When `Type == Active` the default is `0.5`, meaning the panel will automatically open/close when the half-way point is reached.
+			
+			A separate value for activation and deactivating can be specified. The first value of the `float2` is the activation threshold, and the second value the deactivation threshold.
+		*/
+		public float2 Threshold 
+		{
+			get { return float2(_region.ActivationThreshold, 1-_region.DeactivationThreshold); }
+			set
+			{
+				_hasThreshold = true;
+				_region.ActivationThreshold = value[0];
+				_region.DeactivationThreshold = 1-value[1];
+			}
 		}
 		
 		protected override void OnRooted()

@@ -481,6 +481,58 @@ namespace Fuse.Gestures.Test
 				Assert.AreEqual(oldPos, p.SV.ScrollPosition.Y);
 			}
 		}
+		
+		[Test]
+		public void Threshold()
+		{
+			var p = new UX.Swipe.Threshold();
+			using (var root = TestRootPanel.CreateWithChild(p,int2(1000)))
+			{
+				SlowSlide( root, p.Anim, float2(500,200), float2(0,1), 0.7f );
+				Assert.AreEqual( 0, p.Anim.Progress );
+				Assert.AreEqual( 0, p.SwipeActive.PerformedCount );
+				Assert.AreEqual( 0, p.SwipeInactive.PerformedCount );
+				Assert.AreEqual( 1, p.SwipeCancelled.PerformedCount );
+				
+				SlowSlide( root, p.Anim, float2(500,200), float2(0,1), 0.8f );
+				Assert.AreEqual( 1, p.Anim.Progress );
+				Assert.AreEqual( 1, p.SwipeActive.PerformedCount );
+				Assert.AreEqual( 0, p.SwipeInactive.PerformedCount );
+				Assert.AreEqual( 1, p.SwipeCancelled.PerformedCount );
+				
+				SlowSlide( root, p.Anim, float2(500,200), float2(0,1), -0.35f );
+				Assert.AreEqual( 1, p.Anim.Progress );
+				Assert.AreEqual( 1, p.SwipeActive.PerformedCount );
+				Assert.AreEqual( 0, p.SwipeInactive.PerformedCount );
+				Assert.AreEqual( 2, p.SwipeCancelled.PerformedCount );
+				
+				SlowSlide( root, p.Anim, float2(500,200), float2(0,1), -0.45f );
+				Assert.AreEqual( 0, p.Anim.Progress );
+				Assert.AreEqual( 1, p.SwipeActive.PerformedCount );
+				Assert.AreEqual( 1, p.SwipeInactive.PerformedCount );
+				Assert.AreEqual( 2, p.SwipeCancelled.PerformedCount );
+			}
+		}
+		
+		/* slides a relative amount along the gesture accounting for the capture delay */
+		void SlowSlide( TestRootPanel root, SwipingAnimation anim, float2 from, float2 dir, float rel )
+		{
+			var length = anim.Source.Length;
+			
+			root.PointerPress( from );
+			
+			//slide a bit, then capture progress to account for capture threshold
+			var bit = from + dir * 10 * Math.Sign(rel);
+			root.PointerSlide( from, bit, 60 ); //lower than speed threshold
+			
+			var b = (float)anim.Progress;
+			var relOff = rel > 0 ? (rel-b) : (rel-(1-b));
+			var end = bit + dir * relOff * length;
+			root.PointerSlide( bit, end, 60);
+			
+			root.PointerRelease( end );
+			root.StepFrame(5);
+		}
 	}
 	
 	class DeferAction : TriggerAction
