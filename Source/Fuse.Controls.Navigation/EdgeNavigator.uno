@@ -68,8 +68,8 @@ namespace Fuse.Controls
 			Children.Add(q);
 		}
 		
-		public Fuse.Navigation.VisualNavigation Navigation
-		{	
+		public new Fuse.Navigation.VisualNavigation Navigation
+		{
 			get { return base.Navigation; }
 		}
 		
