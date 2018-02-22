@@ -58,5 +58,6 @@
 		<Pages.Orientation/>
 		<Pages.Bounds/>
 		<Pages.Resources/>
+		<Pages.CapJoin/>
 	</PageControl>
 </ClientPanel>
