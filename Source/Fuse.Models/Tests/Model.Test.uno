@@ -11,6 +11,17 @@ namespace Fuse.Models.Test
 {
 	public class ModelTest : ModelTestBase
 	{
+		[Test]
+		public void ArgsSingleVectorArg()
+		{
+			var e = new UX.Model.Args.SingleVectorArg();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.StepFrameJS();
+				var extObjVec = (Fuse.Scripting.External) e.result.ObjectValue;
+				Assert.AreEqual(e.vec, extObjVec.Object);
+			}
+		}
 
 		[Test]
 		public void ArgsEach()
