@@ -222,8 +222,6 @@ namespace Fuse.Drawing
 		*/
 		public override void StrokePath( SurfacePath path, Stroke stroke )
 		{
-			// TODO: this is definitely wrong, just doing this for now so I can see it show up
-
 			VerifyBegun();
 			var actualPath = (DotNetCanvasPath)path;
 
@@ -234,7 +232,7 @@ namespace Fuse.Drawing
 			DotNetHelpers.SetEOFill(graphicsPath, eoFill);
 
 			var fill = stroke.Brush;
-
+			var strokeWidth = stroke.Width * _pixelsPerPoint;
 
 			var solidColor = fill as ISolidColor;
 			if (solidColor != null)
@@ -243,7 +241,7 @@ namespace Fuse.Drawing
 					_graphics, 
 					graphicsPath, 
 					DotNetHelpers.ColorFromFloat4(solidColor.Color), 
-					stroke.Width, 
+					strokeWidth, 
 					stroke.LineJoinMiterLimit, 
 					stroke.LineJoin,
 					stroke.LineCap
@@ -264,7 +262,7 @@ namespace Fuse.Drawing
 					ends[1], 
 					ends[2], 
 					ends[3], 
-					stroke.Width, 
+					strokeWidth, 
 					stroke.LineJoinMiterLimit,
 					stroke.LineJoin,
 					stroke.LineCap
@@ -310,7 +308,7 @@ namespace Fuse.Drawing
 					_graphics, graphicsPath, 
 					newImage,
 					pixelOrigin.X, pixelOrigin.Y,
-					stroke.Width, 
+					strokeWidth, 
 					stroke.LineJoinMiterLimit,
 					stroke.LineJoin,
 					stroke.LineCap
