@@ -630,6 +630,15 @@ namespace Fuse.Drawing
 			return blend;
 		}
 
+		static bool IsStrokeBoundsZero( RectangleF bounds, float width ) 
+		{
+			//It's not clear where they come from, but they are valid bounds at a high-level, but DotNet
+			//tends to fault on them.
+			if (bounds.Width == 0 && bounds.Height == 0) 
+				return width == 0; //all exact seems correct, near-zero works in DotNet
+			return false;
+		}
+		
 		/** Strokes a path with a solid color and the given settings
 
 			Does nothing if the path has no width or height
@@ -642,9 +651,7 @@ namespace Fuse.Drawing
 		)
 		{
 			var bounds = path.GetBounds();
-			//It's not clear where they come from, but they are valid bounds at a high-level, but DotNet
-			//tends to fault on them.
-			if (bounds.IsEmpty)
+			if (IsStrokeBoundsZero( bounds, width ))
 				return;
 			bounds.Inflate(width, width);
 
@@ -671,7 +678,7 @@ namespace Fuse.Drawing
 		)
 		{
 			var bounds = path.GetBounds();
-			if (bounds.IsEmpty)
+			if (IsStrokeBoundsZero( bounds, width ))
 				return;
 			bounds.Inflate(width, width);
 
@@ -707,7 +714,7 @@ namespace Fuse.Drawing
 		)
 		{
 			var bounds = path.GetBounds();
-			if (bounds.IsEmpty)
+			if (IsStrokeBoundsZero( bounds, width ))
 				return;
 			bounds.Inflate(width, width);
 
