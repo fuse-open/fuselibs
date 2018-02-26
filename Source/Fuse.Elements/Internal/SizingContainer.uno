@@ -123,9 +123,14 @@ namespace Fuse.Internal
 			}
 			else
 			{
+				//in the < zeroTolerance case the result is actually infinity, but that would produce odd results
+				//we use 0 instead, which will result in nothing drawn in most cases. Some cases below however
+				//can deal with infinity and have their own logic.
+				var zeroX = desiredSize.X < zeroTolerance;
+				var zeroY = desiredSize.Y < zeroTolerance;
 				float2 s = float2(
-					desiredSize.X < zeroTolerance ? 0f : d.X / desiredSize.X,
-					desiredSize.Y < zeroTolerance ? 0f : d.Y / desiredSize.Y
+					zeroX ? 0f : d.X / desiredSize.X,
+					zeroY ? 0f : d.Y / desiredSize.Y
 					);
 				switch( stretchMode )
 				{
@@ -148,6 +153,9 @@ namespace Fuse.Internal
 					{
 						var sm = autoWidth ? s.Y :
 							autoHeight ? s.X :
+							//as `Min` is used below, and zeroX/Y imply infinite scale, we can special case here to get correct values
+							zeroX ? s.Y : 
+							zeroY ? s.X :
 							Math.Min( s.X, s.Y );
 						scale = float2(sm);
 						break;
