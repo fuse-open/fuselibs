@@ -1,0 +1,14 @@
+<Panel ux:Class="UX.Swipe.Threshold" HitTestMode="LocalBounds">
+	<SwipeGesture Direction="Down" Length="100" ux:Name="SG" Threshold="0.75,0.4" Type="Active"/>
+	<SwipingAnimation Source="SG" ux:Name="Anim"/>
+
+	<Swiped Source="SG">
+		<FuseTest.CountAction ux:Name="SwipeActive"/>
+	</Swiped>
+	<Swiped Source="SG" How="ToInactive">
+		<FuseTest.CountAction ux:Name="SwipeInactive"/>
+	</Swiped>
+	<Swiped Source="SG" How="Cancelled">
+		<FuseTest.CountAction ux:Name="SwipeCancelled"/>
+	</Swiped>
+</Panel>

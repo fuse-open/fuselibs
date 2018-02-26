@@ -200,8 +200,8 @@ namespace Fuse.Gestures.Internal
 		public Element LengthElement;
 
 		//at which point does the panel finish opening/closing automatically
-		public float ActivationThreshold = 0.5f;
-		public float DeactivationThreshold = 0.5f;
+		public float ActivationThreshold = 1f;
+		public float DeactivationThreshold = 0f;
 
 		//can an active transition be interrupted by the user
 		public bool IsInterruptible = true;
@@ -600,9 +600,9 @@ namespace Fuse.Gestures.Internal
 			else if (v > _velocityThreshold)
 				on = true;
 			else if (pdiff >= 0)
-				on = _pointerRegion.Progress > _pointerRegion.ActivationThreshold;
+				on = _pointerRegion.Progress >= _pointerRegion.ActivationThreshold;
 			else
-				on = !(_pointerRegion.Progress < _pointerRegion.DeactivationThreshold);
+				on = !(_pointerRegion.Progress <= _pointerRegion.DeactivationThreshold);
 
 			SetActivation(_pointerRegion, on, false);
 			return GestureRequest.Cancel;
