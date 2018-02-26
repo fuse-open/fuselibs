@@ -886,8 +886,8 @@ namespace Fuse.Layouts
 				if (rowData == null)
 					continue;
 					
-				var sizeMatch = (EffectiveMetric(rowData.Metric,expandHeight) == Metric.Proportion && !hasFirstVertSize)
-					|| (EffectiveMetric(colData.Metric,expandWidth) == Metric.Proportion && !hasFirstHorzSize);
+				var sizeMatch = (EffectiveMetric(rowData.Metric,expandWidth) == Metric.Proportion && !hasFirstVertSize)
+					|| (EffectiveMetric(colData.Metric,expandHeight) == Metric.Proportion && !hasFirstHorzSize);
 				if (sizeMatch != secondPass)
 					continue;
 				
