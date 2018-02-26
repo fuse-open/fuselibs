@@ -425,7 +425,6 @@ namespace Fuse.Drawing
 				switch (seg.Type)
 				{
 					case LineSegmentType.Move:
-						path.CloseFigure();
 						prevPoint = to;
 						break;
 						
@@ -643,9 +642,11 @@ namespace Fuse.Drawing
 		)
 		{
 			var bounds = path.GetBounds();
-			bounds.Inflate(width, width);
+			//It's not clear where they come from, but they are valid bounds at a high-level, but DotNet
+			//tends to fault on them.
 			if (bounds.IsEmpty)
 				return;
+			bounds.Inflate(width, width);
 
 			SolidBrush brush = new SolidBrush(color);
 			Pen pen = new Pen(brush, width);
@@ -670,9 +671,9 @@ namespace Fuse.Drawing
 		)
 		{
 			var bounds = path.GetBounds();
-			bounds.Inflate(width, width);
 			if (bounds.IsEmpty)
 				return;
+			bounds.Inflate(width, width);
 
 			var brush = new TextureBrush(image, DotNetWrapMode.Tile);
 			
@@ -706,9 +707,9 @@ namespace Fuse.Drawing
 		)
 		{
 			var bounds = path.GetBounds();
-			bounds.Inflate(width, width);
 			if (bounds.IsEmpty)
 				return;
+			bounds.Inflate(width, width);
 
 			var state = graphics.Save();
 			var gStart = float2(0);
