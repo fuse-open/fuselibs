@@ -59,5 +59,6 @@
 		<Pages.Bounds/>
 		<Pages.Resources/>
 		<Pages.CapJoin/>
+		<Pages.Partial/>
 	</PageControl>
 </ClientPanel>

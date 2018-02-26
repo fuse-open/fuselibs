@@ -132,6 +132,16 @@ namespace Fuse.Test
 			Assert.AreEqual( float2(10,20), o );
 			Assert.AreEqual( float2(60,40), s );
 		}
+		
+		[Test]
+		//Uniform is properly defined when a desired dimension is zero
+		public void CalcZeroUniform()
+		{
+			var sc = new Internal.SizingContainer();
+			sc.SetStretchMode( StretchMode.Uniform );
+			Assert.AreEqual( float2(10,10), sc.CalcScale( float2(100,10), float2(10, 0) ) );
+			Assert.AreEqual( float2(5,5), sc.CalcScale( float2(20,50), float2(0, 10) ) );
+		}
 	}
 
 }

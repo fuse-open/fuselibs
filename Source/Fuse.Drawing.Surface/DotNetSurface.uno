@@ -222,8 +222,6 @@ namespace Fuse.Drawing
 		*/
 		public override void StrokePath( SurfacePath path, Stroke stroke )
 		{
-			// TODO: this is definitely wrong, just doing this for now so I can see it show up
-
 			VerifyBegun();
 			var actualPath = (DotNetCanvasPath)path;
 
@@ -234,7 +232,7 @@ namespace Fuse.Drawing
 			DotNetHelpers.SetEOFill(graphicsPath, eoFill);
 
 			var fill = stroke.Brush;
-
+			var strokeWidth = stroke.Width * _pixelsPerPoint;
 
 			var solidColor = fill as ISolidColor;
 			if (solidColor != null)
@@ -243,7 +241,7 @@ namespace Fuse.Drawing
 					_graphics, 
 					graphicsPath, 
 					DotNetHelpers.ColorFromFloat4(solidColor.Color), 
-					stroke.Width, 
+					strokeWidth, 
 					stroke.LineJoinMiterLimit, 
 					stroke.LineJoin,
 					stroke.LineCap
@@ -264,7 +262,7 @@ namespace Fuse.Drawing
 					ends[1], 
 					ends[2], 
 					ends[3], 
-					stroke.Width, 
+					strokeWidth, 
 					stroke.LineJoinMiterLimit,
 					stroke.LineJoin,
 					stroke.LineCap
@@ -310,7 +308,7 @@ namespace Fuse.Drawing
 					_graphics, graphicsPath, 
 					newImage,
 					pixelOrigin.X, pixelOrigin.Y,
-					stroke.Width, 
+					strokeWidth, 
 					stroke.LineJoinMiterLimit,
 					stroke.LineJoin,
 					stroke.LineCap
@@ -425,7 +423,6 @@ namespace Fuse.Drawing
 				switch (seg.Type)
 				{
 					case LineSegmentType.Move:
-						path.CloseFigure();
 						prevPoint = to;
 						break;
 						
@@ -631,6 +628,15 @@ namespace Fuse.Drawing
 			return blend;
 		}
 
+		static bool IsStrokeBoundsZero( RectangleF bounds, float width ) 
+		{
+			//It's not clear where they come from, but they are valid bounds at a high-level, but DotNet
+			//tends to fault on them.
+			if (bounds.Width == 0 && bounds.Height == 0) 
+				return width == 0; //all exact seems correct, near-zero works in DotNet
+			return false;
+		}
+		
 		/** Strokes a path with a solid color and the given settings
 
 			Does nothing if the path has no width or height
@@ -643,9 +649,9 @@ namespace Fuse.Drawing
 		)
 		{
 			var bounds = path.GetBounds();
-			bounds.Inflate(width, width);
-			if (bounds.IsEmpty)
+			if (IsStrokeBoundsZero( bounds, width ))
 				return;
+			bounds.Inflate(width, width);
 
 			SolidBrush brush = new SolidBrush(color);
 			Pen pen = new Pen(brush, width);
@@ -670,9 +676,9 @@ namespace Fuse.Drawing
 		)
 		{
 			var bounds = path.GetBounds();
-			bounds.Inflate(width, width);
-			if (bounds.IsEmpty)
+			if (IsStrokeBoundsZero( bounds, width ))
 				return;
+			bounds.Inflate(width, width);
 
 			var brush = new TextureBrush(image, DotNetWrapMode.Tile);
 			
@@ -706,9 +712,9 @@ namespace Fuse.Drawing
 		)
 		{
 			var bounds = path.GetBounds();
-			bounds.Inflate(width, width);
-			if (bounds.IsEmpty)
+			if (IsStrokeBoundsZero( bounds, width ))
 				return;
+			bounds.Inflate(width, width);
 
 			var state = graphics.Save();
 			var gStart = float2(0);
