@@ -1,0 +1,9 @@
+<Panel ux:Class="UX.Model.Args.SingleVectorArg" xmlns:r="Fuse.Reactive">
+	<string ux:AutoBind="false" ux:Name="fooStr" ux:Value="foo" />
+	<r:Vector ux:Name="vec" ux:AutoBind="false">
+		<r:Constant ux:Binding="Arguments" Value="fooStr" />
+	</r:Vector>
+	<Panel Model="UX/Args.SingleVectorArg" ModelArgs="vec">
+		<FuseTest.DudElement ux:Name="result" ObjectValue="{result}" />
+	</Panel>
+</Panel>

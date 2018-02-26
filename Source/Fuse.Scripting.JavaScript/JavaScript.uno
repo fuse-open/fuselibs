@@ -43,10 +43,15 @@ namespace Fuse.Reactive
 			_scriptModule = new Fuse.Scripting.JavaScript.RootableScriptModule(Worker, nameTable);
 		}
 
+		protected virtual void OnBeforeSubscribeToDependenciesAndDispatchEvaluate() {}
+
 		protected override void OnRooted()
 		{
 			base.OnRooted();
 			_javaScriptCounter++;
+
+			OnBeforeSubscribeToDependenciesAndDispatchEvaluate();
+
 			//for migration we could preserve the _moduleInstance across rooting
 			if (_moduleInstance == null || !_moduleInstance.ReflectExports())
 				SubscribeToDependenciesAndDispatchEvaluate();

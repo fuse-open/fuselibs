@@ -1,0 +1,8 @@
+<Panel ux:Class="UX.Model.Args.ScrollView" Model="UX/Args.ScrollView" ModelArgs="scrollView">
+	<ScrollView ux:Name="scrollView">
+		<Panel Height="4000" />
+	</ScrollView>
+
+	<FuseTest.Invoke ux:Name="doScroll" Handler="{doScroll}" />
+	<FuseTest.DudElement ux:Name="instanceCount" Value="{instanceCount}" />
+</Panel>

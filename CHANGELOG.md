@@ -6,6 +6,9 @@
 ## Fuse.Scripting
 - Marked `NativeMember.Context` as Obsolete. Either use passed-down `Context`, or dispatch to `ThreadWorker` instead.
 
+## FuseJS
+- Added support for passing arguments from UX to the model constructor using the `ModelArgs` attribute.
+
 ## Node Data Context
 
 # 1.7

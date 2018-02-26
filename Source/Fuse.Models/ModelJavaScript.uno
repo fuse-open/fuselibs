@@ -16,6 +16,8 @@ namespace Fuse.Models
 		{
 			public string ModulePath;
 			public NameTable NameTable;
+			public IExpression Arguments;
+			public bool HasArguments = false;
 		}
 		static PropertyHandle _modelHandle = Properties.CreateHandle();
 		
@@ -46,6 +48,21 @@ namespace Fuse.Models
 		public static NameTable GetModelNameTable(Visual v)
 		{
 			return GetOrCreateModelData(v).NameTable;
+		}
+
+		[UXAttachedPropertySetter("ModelArgs")]
+		public static void SetModelArgs(Visual v, IExpression args)
+		{
+			var md = GetOrCreateModelData(v);
+			md.Arguments = args;
+			md.HasArguments = true;
+			OnModelDataChanged(md, v);
+		}
+
+		[UXAttachedPropertyGetter("ModelArgs")]
+		public static IExpression GetModelArgs(Visual v)
+		{
+			return GetOrCreateModelData(v).Arguments;
 		}
 
 		static void OnModelDataChanged(ModelData md, Visual v)
@@ -80,6 +97,39 @@ namespace Fuse.Models
 			rootVisualProvider.Root.Children.Add(appModel);
 		}
 
+		static IExpression[] UnpackArgs(IExpression argsExpr)
+		{
+			var vector = argsExpr as Reactive.Vector;
+			if (vector != null)
+			{
+				var vectorArgs = vector.Arguments;
+				var outputArgs = new IExpression[vectorArgs.Count];
+				for (var i = 0; i < vectorArgs.Count; ++i)
+					outputArgs[i] = vectorArgs[i];
+
+				return outputArgs;
+			}
+			
+			return new[] { argsExpr };
+		}
+
+		string GenerateArgsStringAndPopulateDependencies()
+		{
+			var argsString = "";
+			if (!_hasArgs)
+				return argsString;
+
+			var args = UnpackArgs(_args);
+			for (var i = 0; i < args.Length; ++i)
+			{
+				var depName = "__modelArg" + i;
+				argsString += ", " + depName;
+				Dependencies.Add(new Dependency(depName, args[i]));
+			}
+
+			return argsString;
+		}
+
 		void SetupModel()
 		{
 			if (_modulePath == null)
@@ -90,6 +140,7 @@ namespace Fuse.Models
 
 			ZoneJS.Initialize();
 
+			var argsString = GenerateArgsStringAndPopulateDependencies();
 			var code = 
 					"var Model = require('FuseJS/Internal/Model');\n"+
 					"var ViewModelAdapter = require('FuseJS/Internal/ViewModelAdapter')\n"+
@@ -99,7 +150,7 @@ namespace Fuse.Models
 					"if (!(modelClass instanceof Function)) { throw new Error('\"" + _modulePath + "\" does not export a class or function required to construct a Model'); }\n"+
 					"var modelInstance = Object.create(modelClass.prototype);\n"+
 					"module.exports = new Model(modelInstance, function() {\n"+
-					"    modelClass.call(modelInstance);\n"+
+					"    modelClass.call(modelInstance" + argsString + ");\n"+
 					"    ViewModelAdapter.adaptView(self, module, modelInstance);\n"+
 					"    return modelInstance;\n"+
 					"});\n";
@@ -135,19 +186,22 @@ namespace Fuse.Models
 		}
 		
 		string _modulePath;
+		IExpression _args;
+		bool _hasArgs;
 
 		private ModelJavaScript(ModelData md, string previewStateId = null)
 			: base(md.NameTable)
 		{
 			_previewStateModelId = previewStateId;
 			_modulePath = md.ModulePath;
+			_args = md.Arguments;
+			_hasArgs = md.HasArguments;
 			FileName = "(model-script)";
-			SetupModel();
 		}
 		
-		protected override void OnRooted()
+		protected override void OnBeforeSubscribeToDependenciesAndDispatchEvaluate()
 		{
-			base.OnRooted();
+			SetupModel();
 			
 			if (_previewStateModelId != null)
 			{
@@ -155,11 +209,6 @@ namespace Fuse.Models
 				if (previewState != null)
 					previewState.AddSaver(this);
 			}
-		}
-		
-		protected override void OnUnrooted()
-		{
-			base.OnUnrooted();
 		}
 		
 		void IPreviewStateSaver.Save(PreviewStateData data)

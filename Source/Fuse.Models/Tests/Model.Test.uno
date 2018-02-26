@@ -12,6 +12,64 @@ namespace Fuse.Models.Test
 	public class ModelTest : ModelTestBase
 	{
 		[Test]
+		public void ArgsSingleVectorArg()
+		{
+			var e = new UX.Model.Args.SingleVectorArg();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.StepFrameJS();
+				var extObjVec = (Fuse.Scripting.External) e.result.ObjectValue;
+				Assert.AreEqual(e.vec, extObjVec.Object);
+			}
+		}
+
+		[Test]
+		public void ArgsEach()
+		{
+			var e = new UX.Model.Args.Each();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.StepFrameJS();
+				Assert.AreEqual("(foo),(bar),(baz)", GetRecursiveText(e));
+				Assert.AreEqual(3, e.innerInstanceCount.Value);
+				Assert.AreEqual(1, e.outerInstanceCount.Value);
+			}
+		}
+
+		[Test]
+		public void ArgsScrollView()
+		{
+			var e = new UX.Model.Args.ScrollView();
+			using (var root = TestRootPanel.CreateWithChild(e, int2(200)))
+			{
+				root.StepFrameJS();
+				Assert.AreEqual(0, e.scrollView.ScrollPosition.Y);
+
+				e.doScroll.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual(1337, e.scrollView.ScrollPosition.Y);
+				Assert.AreEqual(1, e.instanceCount.Value);
+			}
+		}
+
+		[Test]
+		public void ArgsSingle()
+		{
+			var e = new UX.Model.Args.Single();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.StepFrameJS();
+				Assert.AreEqual("hello!", e.output.StringValue);
+				Assert.AreEqual(1, e.instanceCount.Value);
+
+				e.input.Value = "goodbye";
+				root.StepFrameJS();
+				Assert.AreEqual("goodbye!", e.output.StringValue);
+				Assert.AreEqual(2, e.instanceCount.Value);
+			}
+		}
+		
+		[Test]
 		public void NestedArray()
 		{
 			var e = new UX.Model.NestedArray();
