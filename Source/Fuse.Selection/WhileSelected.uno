@@ -10,6 +10,8 @@ namespace Fuse.Selection
 		
 		This attaches to the first @Selectable node that is an ancestor of this one.
 		
+		Consider also the `isSelected()` function for use in expressions.
+		
 		@examples Docs/example.md
 	*/
 	public class WhileSelected : WhileTrigger, IPropertyListener

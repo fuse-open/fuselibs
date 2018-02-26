@@ -22,12 +22,20 @@ namespace Fuse.Gestures.Test
 				root.StepFrame();
 				Assert.AreEqual("one", p.TS.Value);
 				Assert.AreEqual(float4(1), p.I1.Color);
+				Assert.AreEqual(true, p.si1.BoolValue);
+				Assert.AreEqual(true, p.I1.s.BoolValue);
+				Assert.AreEqual(false, p.si2.BoolValue);
+				Assert.AreEqual(false, p.I2.s.BoolValue);
 
 				p.I2.SelAct.Pulse();
 				root.StepFrame();
 				Assert.AreEqual("two", p.TS.Value);
 				Assert.AreEqual(float4(0), p.I1.Color);
 				Assert.AreEqual(float4(1), p.I2.Color);
+				Assert.AreEqual(false, p.si1.BoolValue);
+				Assert.AreEqual(false, p.I1.s.BoolValue);
+				Assert.AreEqual(true, p.si2.BoolValue);
+				Assert.AreEqual(true, p.I2.s.BoolValue);
 			}
 		}
 		

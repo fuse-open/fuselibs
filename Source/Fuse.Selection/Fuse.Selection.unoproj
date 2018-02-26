@@ -15,9 +15,10 @@
   "Projects": [
     "../Fuse.Common/Fuse.Common.unoproj",
     "../Fuse.Marshal/Fuse.Marshal.unoproj",
-    "../Fuse.Scripting/Fuse.Scripting.unoproj",
-    "../Fuse.Reactive/Fuse.Reactive.unoproj",
     "../Fuse.Nodes/Fuse.Nodes.unoproj",
+    "../Fuse.Reactive.Expressions/Fuse.Reactive.Expressions.unoproj",
+    "../Fuse.Reactive/Fuse.Reactive.unoproj",
+    "../Fuse.Scripting/Fuse.Scripting.unoproj",
     "../Fuse.Triggers/Fuse.Triggers.unoproj",
   ],
   "Includes": [
