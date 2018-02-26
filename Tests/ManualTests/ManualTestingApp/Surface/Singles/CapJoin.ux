@@ -1,0 +1,27 @@
+<TestPage ux:Class="Pages.CapJoin" Title="Cap &amp; Join">
+	<InfoStack ux:Key="Info">
+		<p>Displays some lines with different joins and caps. Pay attention to the corner vertex and the ends of the stroke.</p>
+	</InfoStack>
+	
+	<DockPanel>
+		<ScrollView>
+			<StackPanel ItemSpacing="40" Margin="30" MaxWidth="250">
+				<Rectangle Layer="Overlay" Width="1" Alignment="Right" Color="#AAA"/>
+				
+				<Path Data="M0,0 L0,100 100,100">
+					<Text Alignment="Center" Value="Square Corner&#xA;Square end on line" TextWrapping="Wrap"/>
+					<Stroke Width="20" Color="#000" LineCap="Butt" LineJoin="Miter" Alignment="Center"
+						LineJoinMiterLimit="2"/>
+				</Path>
+				<Path Data="M0,0 L0,100 100,100">
+					<Text Alignment="Center" Value="Bevelled Corner&#xA;Square ends over border" TextWrapping="Wrap"/>
+					<Stroke Width="20" Color="#000" LineCap="Square" LineJoin="Bevel" Alignment="Center"/>
+				</Path>
+				<Path Data="M0,0 L0,100 100,100">
+					<Text Alignment="Center" Value="Round Corner&#xA;Round ends over border" TextWrapping="Wrap"/>
+					<Stroke Width="20" Color="#000" LineCap="Round" LineJoin="Round" Alignment="Center"/>
+				</Path>
+			</StackPanel>
+		</ScrollView>
+	</DockPanel>
+</TestPage>

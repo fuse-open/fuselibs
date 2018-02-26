@@ -330,11 +330,17 @@ namespace Fuse.Drawing
 		static Java.Object CreateStrokedPaint(float width,
 			int fjoin, int fcap, float miterLimit)
 		@{
+			//supported by test SurfaceTest.EnumChecks
+			Paint.Join[] joinMap = { Paint.Join.MITER, Paint.Join.ROUND, Paint.Join.BEVEL };
+			Paint.Join join = joinMap[Math.max(0,Math.min(2,fjoin))];
+			Paint.Cap[] capMap = { Paint.Cap.BUTT, Paint.Cap.ROUND, Paint.Cap.SQUARE };
+			Paint.Cap cap = capMap[Math.max(0,Math.min(2,fcap))];
+			
 			Paint paint = new Paint();
 
 			paint.setStrokeMiter(miterLimit);
-			paint.setStrokeCap(Paint.Cap.BUTT);
-			paint.setStrokeJoin(Paint.Join.MITER);
+			paint.setStrokeCap(cap);
+			paint.setStrokeJoin(join);
 			paint.setStyle(Paint.Style.STROKE);
 			paint.setStrokeWidth(width);
 			paint.setFlags(Paint.ANTI_ALIAS_FLAG);
