@@ -1,4 +1,5 @@
 using Uno;
+using Uno.UX;
 using Uno.Collections;
 
 using Fuse.Internal;
@@ -32,9 +33,12 @@ namespace Fuse.Animations
 			</Page>
 
 		This time we use `TimeDelta` instead of time. With `TimeDelta` we can specify time as a relative term instead of absolute. This means that the order of the @Keyframes matter, but it lets us reason about the keyframes in terms of their duration instead of their absolute time on the timeline.
+		
+		Note: Despite being a `PropertyObject` the properties in this class are not reactive.
+		
 	@mount Animation
 	*/
-	public class Keyframe
+	public class Keyframe : PropertyObject
 	{
 		float4 _value;
 		public float4 Value
@@ -107,6 +111,9 @@ namespace Fuse.Animations
 		
 		double _timeDelta;
 		bool _hasTimeDelta;
+		/**
+			The time at which this value is reached, specified in seconds since the last `Keyframe`.
+		*/
 		public double TimeDelta
 		{
 			get { return _timeDelta; }
@@ -119,6 +126,9 @@ namespace Fuse.Animations
 		
 		double _time;
 		bool _hasTime;
+		/**
+			The time at which this value is reached, specified in seconds since the start of the timeline.
+		*/
 		public double Time
 		{
 			get { return _time; }
@@ -131,6 +141,9 @@ namespace Fuse.Animations
 		
 		float4 _tangentIn, _tangentOut;
 		bool _hasTangentIn, _hasTangentOut;
+		/**
+			The direction and strength of the tangent leading into this point.
+		*/
 		public float4 TangentIn 
 		{ 
 			get { return _tangentIn; } 
@@ -141,6 +154,9 @@ namespace Fuse.Animations
 			}
 		}
 		
+		/** 
+			The direction and strength of the tangent leading out of this point.
+		*/
 		public float4 TangentOut 
 		{ 
 			get { return _tangentOut; } 
@@ -151,19 +167,18 @@ namespace Fuse.Animations
 			}
 		}
 		
-		/* Undecided
+		/**
+			Use the same value for both TangentIn and TangentOut
+		*/
 		public float4 Tangent
 		{
 			get { return _tangentOut; }
 			set
 			{
-				_tangentOut = value;
-				_hasTangentOut = true;
-				_tangentIn = -value;
-				_hasTangentIn = true;
+				TangentIn = value;
+				TangentOut = value;
 			}
 		}
-		*/
 		
 		static internal double CompleteFrames( IList<Keyframe> frames,
 			float tension, float bias, float continuity )
