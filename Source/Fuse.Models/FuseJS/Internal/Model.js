@@ -350,7 +350,11 @@ function Model(initialState, stateInitializer)
 
 			if (changeAccepted) {
 				state[key] = value;
-				setInternal(meta.getPath(), key, value);
+				var path = meta.getPath();
+				if (!path) {
+					return; // No longer attached to the model graph
+				}
+				setInternal(path, key, value);
 			}
 
 			meta.diff(new Set());
@@ -452,6 +456,9 @@ function Model(initialState, stateInitializer)
 		function set(key, value, omitStateChange)
 		{
 			var path = getPath();
+			if (!path) {
+				return; // No longer attached to the model graph
+			}
 			if (!setInternal(path, key, value, omitStateChange)) { return; }
 
 			var argPath = path.concat(key, value instanceof Array ? [value] : value);
@@ -480,7 +487,10 @@ function Model(initialState, stateInitializer)
 			}
 			node.splice(index, count);
 			updateArrayParentIndices(index, -count);
-
+			var path = getPath();
+			if(!path) {
+				return; // No longer attached to the model graph
+			}
 			var removePath = getPath().concat(index);
 			for (var i = 0; i < count; i++) {
 				TreeObservable.removeAt.apply(store, removePath);
@@ -509,7 +519,12 @@ function Model(initialState, stateInitializer)
 			
 			updateArrayParentIndices(index+1, 1);
 
-			TreeObservable.insertAt.apply(store, getPath().concat([index, item]));
+			var path =  getPath();
+			if(!path) {
+				return; // No longer attached to the model graph
+			}
+
+			TreeObservable.insertAt.apply(store, path.concat([index, item]));
 			changesDetected++;
 		}
 
