@@ -421,7 +421,7 @@ function Model(initialState, stateInitializer)
 
 		var cachedPath = null;
 		function getPath(visited) {
-			if (cachedPath === null) { cachedPath = computePath(visited); }
+			if (cachedPath == null) { cachedPath = computePath(visited); }
 			return cachedPath;
 		} 
 		
