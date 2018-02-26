@@ -58,6 +58,12 @@ namespace FuseTest
 
 			//force things to clean (LowMemory should do most items)
 			CleanLowMemory();
+			
+			//restore margins to defaults
+			if( !defined(iOS||Android))
+			{
+				Fuse.Platform.SystemUI.SetMargins( float4(0), float4(0), float4(0) );
+			}
 		}
 		
 		public void CleanLowMemory()
@@ -461,6 +467,11 @@ namespace FuseTest
 			_modules.Add( new T() );
 		}
 		static List<object> _modules;
+		
+		extern(!iOS && !Android) public void SetSafeMargins( float4 margins ) 
+		{
+			Fuse.Platform.SystemUI.SetMargins( float4(0), margins, margins );
+		}
 	}
 
 	/**	

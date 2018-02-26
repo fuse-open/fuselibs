@@ -31,6 +31,10 @@ namespace Fuse.Platform
 		*/
 		static public event Action MarginsChanged;
 		
+		static float4 _deviceMargins = float4(0);
+		static float4 _safeMargins = float4(0);
+		static float4 _staticMargins = float4(0);
+		
 		/**
 			The margins the device reports as not being complete safe for drawing as something may obstruct the view, such as rounded corners or bevels.
 			
@@ -38,7 +42,7 @@ namespace Fuse.Platform
 		*/
 		static public float4 DeviceMargins
 		{
-			get { return float4(0); }
+			get { return _deviceMargins; }
 		}
 		
 		/**
@@ -46,7 +50,7 @@ namespace Fuse.Platform
 		*/
 		static public float4 SafeMargins
 		{
-			get { return float4(0); }
+			get { return _safeMargins; }
 		}
 
 		/**
@@ -54,7 +58,18 @@ namespace Fuse.Platform
 		*/
 		static public float4 StaticMargins
 		{
-			get { return float4(0); }
+			get { return _staticMargins; }
+		}
+		
+		
+		extern(UNO_TEST) static internal void SetMargins( float4 device, float4 safe, float4 static_ )
+		{
+			_deviceMargins = device;
+			_safeMargins = safe;
+			_staticMargins = static_;
+			
+			if (MarginsChanged != null)
+				MarginsChanged();
 		}
 	}
 }

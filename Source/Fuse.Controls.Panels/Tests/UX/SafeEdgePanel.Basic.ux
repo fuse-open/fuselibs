@@ -1,0 +1,5 @@
+<Panel ux:Class="UX.SafeEdgePanel.Basic">
+	<SafeEdgePanel ux:Name="a" PadEdges="LeftTopRight"/>
+	<SafeEdgePanel ux:Name="b" PadEdges="RightBottom" ExtraPadding="0,0,10,5"/>
+	<SafeEdgePanel ux:Name="c" PadEdges="LeftBottom" MinEdgePadding="5"/>
+</Panel>
