@@ -1,0 +1,8 @@
+<Panel ux:Class="UX.Grid.Issue1019">
+	<StackPanel>
+		<Grid Columns="auto,1*" ux:Name="g">
+			<Panel Width="50"/>
+			<FuseTest.FlowAreaElement CellSize="50,50" Length="7" ux:Name="T1"/>
+		</Grid>
+	</StackPanel>
+</Panel>
