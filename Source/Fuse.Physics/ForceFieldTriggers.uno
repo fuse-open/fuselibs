@@ -16,7 +16,7 @@ namespace Fuse.Physics
 			}
 		}
 
-		protected internal abstract void SetForce(Body n, float force);
+		internal abstract void SetForce(Body n, float force);
 	}
 
 	public class ForceFieldEventArgs : EventArgs
@@ -39,7 +39,7 @@ namespace Fuse.Physics
 	{
 		public event ForceFieldEventHandler Handler;
 
-		protected internal void OnTriggered(Body body)
+		internal void OnTriggered(Body body)
 		{
 			Pulse();
 			if (Handler != null)
@@ -80,7 +80,7 @@ namespace Fuse.Physics
 
 		float _oldForce;
 
-		protected internal override void SetForce(Body body, float force)
+		internal override void SetForce(Body body, float force)
 		{
 			if (_oldForce <= Threshold && force > Threshold) OnTriggered(body);
 			_oldForce = force;
@@ -117,7 +117,7 @@ namespace Fuse.Physics
 
 		float _oldForce;
 
-		protected internal override void SetForce(Body body, float force)
+		internal override void SetForce(Body body, float force)
 		{
 			if (_oldForce > Threshold && force <= Threshold) OnTriggered(body);
 			_oldForce = force;
@@ -170,7 +170,7 @@ namespace Fuse.Physics
 			To = 1;
 		}
 
-		protected internal override void SetForce(Body body, float force)
+		internal override void SetForce(Body body, float force)
 		{
 			var f = Math.Clamp((force - From) / (To-From), 0, 1);
 			Seek(f, Fuse.Animations.AnimationVariant.Forward);	

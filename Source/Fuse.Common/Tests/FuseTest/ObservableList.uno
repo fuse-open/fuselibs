@@ -82,7 +82,7 @@ namespace FuseTest
 			get { return _observers != null && _observers.Count > 0; }
 		}
 		
-		virtual protected void OnSubscribe(IObserver observer)
+		virtual void OnSubscribe(IObserver observer)
 		{
 			observer.OnNewAll(this);
 		}
@@ -250,7 +250,7 @@ namespace FuseTest
 			_value = initialValue;
 		}
 		
-		protected override void OnSubscribe(IObserver observer)
+		override void OnSubscribe(IObserver observer)
 		{
 			observer.OnSet(_value);
 		}

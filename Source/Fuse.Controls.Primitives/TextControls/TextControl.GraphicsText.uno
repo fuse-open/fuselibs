@@ -29,7 +29,7 @@ namespace Fuse.Controls
 			get { return Color; }
 		}
 
-		internal protected ITextRenderer _textRenderer;
+		internal ITextRenderer _textRenderer;
 
 		protected override void OnRooted()
 		{
