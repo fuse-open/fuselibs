@@ -3,7 +3,6 @@ using Uno.UX;
 
 using Fuse.Elements;
 using Fuse.Drawing;
-using Fuse.Controls.Native;
 
 namespace Fuse.Controls
 {
@@ -59,56 +58,14 @@ namespace Fuse.Controls
 	{
 		internal float Radius
 		{
-			get 
-			{ 
-				return Math.Min(ActualSize.X, ActualSize.Y) * 0.5f; 
-			}
-		}
-
-		ICircleView NativeCircle
-		{
-			get { return NativeView as ICircleView; }
-		}
-
-		protected override IView CreateNativeView()
-		{
-			if defined(Android)
+			get
 			{
-				return new Fuse.Controls.Native.Android.Circle();
-			}
-			else if defined (iOS)
-			{
-				return new Fuse.Controls.Native.iOS.Circle();
-			}
-			else return base.CreateNativeView();
-		}
-
-		protected override void PushPropertiesToNativeView()
-		{
-			base.PushPropertiesToNativeView();
-			UpdateNativeCircle();			
-		}
-
-		protected override void InvalidateSurfacePath()
-		{
-			base.InvalidateSurfacePath();
-			UpdateNativeCircle();
-		}
-		
-		void UpdateNativeCircle()
-		{
-			var nc = NativeCircle;
-			if (nc != null)
-			{
-				nc.UseAngle = UseAngle;
-				nc.StartAngleDegrees = StartAngleDegrees;
-				nc.EndAngleDegrees = EndAngleDegrees;
-				nc.EffectiveEndAngleDegrees = EffectiveEndAngleDegrees;
+				return Math.Min(ActualSize.X, ActualSize.Y) * 0.5f;
 			}
 		}
 
-		protected override bool NeedSurface 
-		{ 
+		protected override bool NeedSurface
+		{
 			get { return VisualContext != VisualContext.Graphics; }
 		}
 		
