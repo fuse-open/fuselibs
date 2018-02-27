@@ -10,10 +10,15 @@
 		<Timeline ux:Name="SelAct">
 			<ToggleSelection/>
 		</Timeline>
+		<FuseTest.DudElement BoolValue="isSelected()" ux:Name="s"/>
 	</Panel>
 
+	<FuseTest.DudElement BoolValue="isSelected(I1)" ux:Name="si1"/>
+	<FuseTest.DudElement BoolValue="isSelected(I2)" ux:Name="si2"/>
+	
 	<RBMyItem Value="one" ux:Name="I1"/>
 	<RBMyItem Value="two" ux:Name="I2"/>
 	<RBMyItem Value="three" ux:Name="I3"/>
 	<RBMyItem Value="four" ux:Name="I4"/>
+	
 </Panel>
