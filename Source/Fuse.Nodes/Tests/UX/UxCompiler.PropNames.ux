@@ -1,0 +1,8 @@
+<Panel ux:Class="UX.UxCompiler.PropNames">
+	<Panel ux:Class="UCPNComp">
+		<string ux:Property="X"/>
+		<Text Value="{Property this.X}" ux:Name="t"/>
+	</Panel>
+	
+	<UCPNComp X="Hello" ux:Name="a"/>
+</Panel>
