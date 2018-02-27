@@ -2,7 +2,6 @@ using Uno;
 using Uno.UX;
 
 using Fuse.Drawing;
-using Fuse.Controls.Native;
 
 namespace Fuse.Controls
 {
@@ -27,19 +26,6 @@ namespace Fuse.Controls
 	*/
 	public partial class Ellipse : EllipticalShape
 	{
-		protected override IView CreateNativeView()
-		{
-			if defined(Android)
-			{
-				return new Fuse.Controls.Native.Android.Ellipse();
-			}
-			else if defined (iOS)
-			{
-				return new Fuse.Controls.Native.iOS.Ellipse();
-			}
-			else return base.CreateNativeView();
-		}
-		
 		protected override SurfacePath CreateSurfacePath(Surface surface)
 		{
 			return CreateEllipticalPath( surface, ActualSize/2, ActualSize/2 );

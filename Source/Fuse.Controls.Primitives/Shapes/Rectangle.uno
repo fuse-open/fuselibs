@@ -2,7 +2,6 @@ using Uno;
 using Uno.UX;
 
 using Fuse.Drawing;
-using Fuse.Controls.Native;
 
 namespace Fuse.Controls
 {
@@ -75,41 +74,8 @@ namespace Fuse.Controls
 			if (_cornerRadius != value)
 			{
 				_cornerRadius = value;
-				var nr = NativeRect;
-				if (nr != null)
-				{
-					nr.CornerRadius = CornerRadius;
-				}
 				OnPropertyChanged(CornerRadiusPropertyName, origin);
 				InvalidateSurfacePath();
-			}
-		}
-
-		IRectangleView NativeRect
-		{
-			get { return NativeView as IRectangleView; }
-		}
-
-		protected override IView CreateNativeView()
-		{
-			if defined(Android)
-			{
-				return new Fuse.Controls.Native.Android.Rectangle();
-			}
-			else if defined (iOS)
-			{
-				return new Fuse.Controls.Native.iOS.Rectangle();
-			}
-			else return base.CreateNativeView();
-		}
-
-		protected override void PushPropertiesToNativeView()
-		{
-			base.PushPropertiesToNativeView();
-			var nr = NativeRect;
-			if (nr != null)
-			{
-				nr.CornerRadius = CornerRadius;
 			}
 		}
 	}
