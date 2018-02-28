@@ -156,8 +156,10 @@ function Model(initialState, stateInitializer)
 
 			isDerivedPropsDirty = false;
 
-			if (visited.indexOf(node) !== -1) { return; }
-			visited.push(node);
+			if (visited.has(node)) {
+				return;
+			}
+			visited.add(node);
 
 			for (var p in propGetters) {
 				evaluatingDerivedProps++;
@@ -278,7 +280,7 @@ function Model(initialState, stateInitializer)
 			if (isDerivedPropsDirty) { return; }
 			isDerivedPropsDirty = true;
 			rootZone.run(function() {
-				setTimeout(function() { meta.evaluateDerivedProps([]) }, 0)
+				setTimeout(function() { meta.evaluateDerivedProps(new Set()) }, 0)
 			});
 		}
 
