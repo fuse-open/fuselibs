@@ -57,6 +57,7 @@ namespace Fuse.Controls
 		public void BackgroundChanged(Element e, Brush background) {}
 		public void ZOrderChanged(Element e, Visual[] zorder) {}
 		public void HitTestModeChanged(Element e, bool enabled) {}
+		public void RenderBoundsChanged(Element e) {}
 		public bool Measure(Element e, LayoutParams lp, out float2 size) { size = float2(0.0f); return false; }
 
 	}
@@ -180,6 +181,8 @@ namespace Fuse.Controls
 		void ITreeRenderer.ClipToBoundsChanged(Element e, bool clipToBounds) { GetTreeRenderer(e).ClipToBoundsChanged(e, clipToBounds); }
 
 		void ITreeRenderer.HitTestModeChanged(Element e, bool enabled) { GetTreeRenderer(e).HitTestModeChanged(e, enabled); }
+
+		void ITreeRenderer.RenderBoundsChanged(Element e) { GetTreeRenderer(e).RenderBoundsChanged(e); }
 
 		void ITreeRenderer.ZOrderChanged(Element e, Visual[] zorder) { /*GetTreeRenderer(e).ZOrderChanged(e, zorder);*/ }
 

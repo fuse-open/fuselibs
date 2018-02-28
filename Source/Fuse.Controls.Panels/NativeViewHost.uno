@@ -271,6 +271,8 @@ namespace Fuse.Controls
 
 		void ITreeRenderer.ZOrderChanged(Element e, Visual[] zorder) { _nativeRenderer.ZOrderChanged(e, zorder); }
 
+		void ITreeRenderer.RenderBoundsChanged(Element e) { _nativeRenderer.RenderBoundsChanged(e); }
+
 		void ITreeRenderer.TransformChanged(Element e)
 		{
 			if (e == this)
