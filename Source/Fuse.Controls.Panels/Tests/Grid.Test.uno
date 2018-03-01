@@ -766,6 +766,19 @@ namespace Fuse.Controls.Test
 			
 		}
 		
+		[Test]
+		public void Issue842_1()
+		{
+			var p = new UX.Grid.Issue842_1();
+			using (var root = TestRootPanel.CreateWithChild(p,int2(1000)))
+			{
+				Assert.AreEqual( float2(100,100), p.t1.ActualSize );
+				Assert.AreEqual( float2(100,50), p.t2.ActualSize );
+				Assert.AreEqual( float2(100,150), p.g.ActualSize );
+				Assert.AreEqual( float2(100,150), p.s.ActualSize );
+			}
+		}
+		
 		//region Private Methods
 
 		private Panel CreateCell(Grid parent, int row, int column)

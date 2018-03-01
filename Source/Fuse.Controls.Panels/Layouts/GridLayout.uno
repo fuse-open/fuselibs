@@ -933,8 +933,9 @@ namespace Fuse.Layouts
 			
 			var fillHorizontal = lp.HasX;
 			var fillVertical = lp.HasY;
-			var availableWidth = lp.X - effectiveCellSpacing * Math.Max(0,_columns.Count-1);
-			var availableHeight = lp.Y - effectiveCellSpacing * Math.Max(0,_rows.Count-1);
+			var lpAvail = lp.GetAvailableSize();
+			var availableWidth = lpAvail.X - effectiveCellSpacing * Math.Max(0,_columns.Count-1);
+			var availableHeight = lpAvail.Y - effectiveCellSpacing * Math.Max(0,_rows.Count-1);
 
 			//ideally these would be related to the logical layout parameters, but that isn't really possible,
 			//thus they are just taken from the layout fill properties
