@@ -3,6 +3,12 @@ var TreeObservable = require("FuseJS/TreeObservable")
 require("Polyfills/Window");
 require("./ZonePatches");
 
+// Polyfill for the ES6 Set type
+var Set = window.Set;
+if(!(Set instanceof Function)) {
+	Set = require("./ArraySet");
+}
+
 var rootZone = Zone.current;
 
 function shouldEmitProperty(key) {
