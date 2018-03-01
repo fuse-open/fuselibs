@@ -584,11 +584,6 @@ namespace Fuse.Controls.Test
 				Assert.AreEqual(float2(125,300), p.T3.ActualSize);
 				Assert.AreEqual(float2(125,300), p.T4.ActualSize);
 				
-				Assert.AreEqual(float2(300,100), p.G2.ActualSize);
-				Assert.AreEqual(float2(100,100), p.C1.ActualSize);
-				Assert.AreEqual(float2(100,100), p.C2.ActualSize);
-				Assert.AreEqual(float2(100,100), p.C3.ActualSize);
-				
 				Assert.AreEqual(float2(300,125), p.L1.ActualSize);
 				Assert.AreEqual(float2(300,125), p.L2.ActualSize);
 				Assert.AreEqual(float2(300,125), p.L3.ActualSize);
@@ -600,12 +595,17 @@ namespace Fuse.Controls.Test
 		public void GridDefaultRow()
 		{
 			var p = new UX.Grid.DefaultRow();
+			using (var dg = new RecordDiagnosticGuard())
 			using (var root = TestRootPanel.CreateWithChild(p,int2(300,300)))
 			{
+				var diagnostics = dg.DequeueAll();
+				Assert.AreEqual(1, diagnostics.Count);
+				Assert.Contains("incompatible", diagnostics[0].Message);
+				
 				//https://github.com/fusetools/fuselibs/issues/3286
 				//specifically set DefaultRow afterwards to trigger the defect
 				p.G1.DefaultRow = "auto";
-				root.IncrementFrame();
+				root.StepFrame();
 				Assert.AreEqual(float2(300,10), p.T1.ActualSize);
 				Assert.AreEqual(float2(300,20), p.T2.ActualSize);
 				Assert.AreEqual(float2(300,30), p.T3.ActualSize);
@@ -771,6 +771,19 @@ namespace Fuse.Controls.Test
 		{
 			var p = new UX.Grid.Issue842_1();
 			using (var root = TestRootPanel.CreateWithChild(p,int2(1000)))
+			{
+				Assert.AreEqual( float2(100,100), p.t1.ActualSize );
+				Assert.AreEqual( float2(100,50), p.t2.ActualSize );
+				Assert.AreEqual( float2(100,150), p.g.ActualSize );
+				Assert.AreEqual( float2(100,150), p.s.ActualSize );
+			}
+		}
+		
+		[Test]
+		public void Issue842_2()
+		{
+			var p = new UX.Grid.Issue842_2();
+			using (var root = TestRootPanel.CreateWithChild(p,int2(100,1000)))
 			{
 				Assert.AreEqual( float2(100,100), p.t1.ActualSize );
 				Assert.AreEqual( float2(100,50), p.t2.ActualSize );

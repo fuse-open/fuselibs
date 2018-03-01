@@ -992,7 +992,36 @@ namespace Fuse.Layouts
 			float totalWidth = CalcTotalExtentAndOffset(_columns, effectiveCellSpacing);
 			float totalHeight = CalcTotalExtentAndOffset(_rows, effectiveCellSpacing);
 
+			CheckMeasureSettings(lp.HasX, lp.HasY);
 			return float2(totalWidth, totalHeight);
+		}
+		
+		bool _checkMeasureWarning;
+		/*
+			Checks the limitations as noted on Metric.Default
+		*/
+		void CheckMeasureSettings(bool hasX, bool hasY)
+		{
+			bool bad = false;
+			if (HasDefaultMetric(_rows) && !hasY && _rows.Count > 1)
+				bad = true;
+			if (HasDefaultMetric(_columns) && !hasX && _columns.Count > 1)
+				bad = true;
+				
+			if (bad && !_checkMeasureWarning)
+			{
+				_checkMeasureWarning = true;
+				Fuse.Diagnostics.UserError( "A grid is using incompatible layout parameters which may result in incorrect layout. A grid using `Default` row or column sizing must have only one row or column, or have a known size. Add a `DefaultRow` or `DefaultColumn` to get the desired sizing.", this );
+			}
+		}
+		
+		bool HasDefaultMetric<T>( IList<T> list ) where T : DefinitionBase
+		{
+			for (int i=0; i < list.Count; ++i) {
+				if (list[i].Metric == Metric.Default)
+					return true;
+			}
+			return false;
 		}
 
 		Alignment EffectiveContentAlignment

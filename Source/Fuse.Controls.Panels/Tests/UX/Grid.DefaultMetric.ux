@@ -8,15 +8,6 @@
 		</Grid>
 	</DockPanel>
 
-	<!-- This is really undefined, it demonstrates how screwed up the "default" Metric is when
-		both dimension's size is undefined -->
-	<Grid Alignment="Center" ColumnCount="3" ux:Name="G2">
-		<FuseTest.FlowAreaElement CellSize="75,50" Length="4" ux:Name="C1"/>
-		<FuseTest.FlowAreaElement CellSize="100,100" Length="1" ux:Name="C2"/>
-		<FuseTest.FlowAreaElement CellSize="50,50" Length="1" ux:Name="C3"/>
-	</Grid>
-	
-	
 	<DockPanel>
 		<Grid Dock="Left" RowCount="4" ChildOrder="ColumnMajor" ux:Name="G3">
 			<FuseTest.FlowAreaElement CellSize="100,100" Length="2" ux:Name="L1"/>
