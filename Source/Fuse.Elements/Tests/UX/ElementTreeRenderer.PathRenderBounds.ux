@@ -1,0 +1,3 @@
+<Fuse.Elements.Test.TreeRendererPanel ux:Class="UX.ElementTreeRenderer.PathRenderBounds">
+	<Path ux:Name="a"/>
+</Fuse.Elements.Test.TreeRendererPanel>
