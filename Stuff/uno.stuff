@@ -1,5 +1,5 @@
 if WIN32 {
-    /* 2.95MB */ bin: "https://files.fusetools.com/tooling/lSQFwnUwWaRV-uno-1.7.0+6543-master-93582f8-win32.zip"
+    /* 2.95MB */ bin: "https://files.fusetools.com/tooling/Mx0qXdXD3peL-uno-1.8.0-rc1-win32.zip"
 } else if MAC {
-    /* 6.26MB */ bin: "https://files.fusetools.com/tooling/pXxjKoge7lmO-uno-1.7.0+6543-master-93582f8-macOS.zip"
+    /* 6.26MB */ bin: "https://files.fusetools.com/tooling/NUGtpG4DE1xD-uno-1.8.0-rc1-macOS.zip"
 }
