@@ -1,15 +1,83 @@
 # Unreleased
 
-## Image loading errors
+
+# 1.8
+
+## 1.8.0
+
+### Path
+- Fixed bug where setting `Data` on a `Path` could end up not rendering inside a `NativeViewHost` on iOS
+
+### Vector Drawing
+- Fixed a defect in partial line drawing in Preview that resulted in a spurious line being drawn. This happened when the partial curve overlapped the end of the path data.
+- Fixed a defect that prevented a single-segment, horizontal or vertical, line from rendering in `Path` with `StretchMode="Uniform"` (the default `StretchMode`).
+- Fixed a defect that prevented a `Path` with a single horizontal or vertical line from rendering in Preview (DotNet).
+- Fixed the width of strokes in Preview (DotNet). They were too small on devices with a density other than `1`.
+
+### Grid
+- Fixed a `Grid` defect that resulted in some cells not calculating the correct layout size.
+- `Grid` now detects a common invalid configuration and emits an error. This may trigger on projects that currently work, but are relying on undefined/broken behavior.
+
+### Instance / Each
+- Added `IsEnabled` to allow conditional instantion of templates in `Instance`
+- Added `Match` to pick a specific template
+- Added `Defaults` to limit default instances, useful when using bindings to match criteria
+
+### EdgeNavigator
+- Improved the JavaScript model and object support on `EdgeNavigator`.
+	- `EdgeNavigator.Pages` functions like `PageControl.Pages`, binding model data to templated pages.
+	- Set `IsRouterOutlet="true"`  to enable `Router` functionality.
+
+### Internal APIs
+- The following `protected internal` members have been made just `internal`, as they refer to `internal` types and weren't meant to be available to derived types:
+    * `Fuse.Controls.TextInputControl.Editor`
+    * `Fuse.Controls.TextInputControl.TextInputControl(TextEdit)`
+    * `Fuse.Physics.ForceFieldTrigger.SetForce(Body, float)`
+    * `Fuse.Physics.ForceFieldEventTrigger.OnTriggered(Body)`
+    * `Fuse.Controls.TextControl._textRenderer`
+
+### SafeEdgePanel
+- Added `SafeEdgePanel` to assist in creating iPhone X capable layouts.
+
+### Grid
+- Fixed a defect in the default metric mode of `Grid` that could result in incorrect layout calculations, in particular if putting a `Grid` inside a `StackPanel` with `auto` columns.
+
+### Selection
+- Added `isSelected` function for determine selection status within an expression
+
+### Stroke
+- Fixed Android strokes to use the correct cap and join instead of always being Butt and Bevel.
+
+### Element
+- Added `Size` and `Height` to `Element` as an alternate way to control the layout. This is useful for some animation and binding situations.
+
+### Cycle
+- Added `Restore` option `Forward` to allow animating forward to return to rest state
+
+### Device and window()
+- Marked several types internal that should not have been public: `SystemUI` and related types
+- Changed `ClientPanel` to use `Padding` instead of panels.
+- Added `window()` function to get device UI borders: `safeMargins`, `staticMargins` and experimental `deviceMargins`. This will allow developing for devices with extended border areas such as the iPhone X
+- Added `Device` global to query platform details, such as `Device.isIOS` and `Device.isAndroid`
+- Removed the `RelativeToKeyboardMode` relative translation. This was undocumented and did not appear to work correctly, or do something useful. To move relative to device controls you can now use `window().safeMargins` and `window().staticMargins`
+
+### Keyframe
+- Fixed `Keyframe` to allow expressions on the property values.
+
+### SwipeGesture
+- A `Simple` or `Auto` `SwipeGesture` will no longer automatically activate at the halfway point, whereas a `Active` gesture will.  To get the old default behavior, which is considered a defect, use `Threshold="0.5"`.
+- Added a `SwipeGesture.Threshold` to configure the automatic activation distnace.
+
+### Image loading errors
 - Added more info to the messages reported on failure during image loading.
 
-## Fuse.Scripting
+### Fuse.Scripting
 - Marked `NativeMember.Context` as Obsolete. Either use passed-down `Context`, or dispatch to `ThreadWorker` instead.
 
-## FuseJS
+### FuseJS
 - Added support for passing arguments from UX to the model constructor using the `ModelArgs` attribute.
 
-## Node Data Context
+### Node Data Context
 
 # 1.7
 
