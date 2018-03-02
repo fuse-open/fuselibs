@@ -3,7 +3,7 @@
   "Description": "Audio playback support",
   "Publisher": "Fusetools AS",
   "Title": "Fuse.Audio",
-  "Version": "1.7.0-rc1",
+  "Version": "1.8.0-rc1",
   "Package": {
     "ProjectUrl": "https://fusetools.com"
   },
