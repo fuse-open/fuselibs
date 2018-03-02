@@ -1,0 +1,6 @@
+<Panel ux:Class="UX.Model.UpdateDisconnectedAfterPromise" Model="UX/UpdateDisconnectedAfterPromise">
+	<FuseTest.Invoke ux:Name="resolvePromise" Handler="{resolvePromise}" />
+	<FuseTest.Invoke ux:Name="disconnect" Handler="{disconnect}" />
+	<FuseTest.Invoke ux:Name="connect" Handler="{connect}" />
+	<FuseTest.DudElement ux:Name="promisedValue" StringValue="{thing.promise}" />
+</Panel>

@@ -12,6 +12,26 @@ namespace Fuse.Models.Test
 	public class ModelTest : ModelTestBase
 	{
 		[Test]
+		public void UpdateDisconnectedAfterPromise()
+		{
+			var e = new UX.Model.UpdateDisconnectedAfterPromise();
+			using (var root = TestRootPanel.CreateWithChild(e))
+			{
+				root.StepFrameJS();
+
+				e.disconnect.Perform();
+				root.StepFrameJS();
+				
+				e.resolvePromise.Perform();
+				root.StepFrameJS();
+				
+				e.connect.Perform();
+				root.StepFrameJS();
+				Assert.AreEqual("foo", e.promisedValue.StringValue);
+			}
+		}
+
+		[Test]
 		public void ArgsSingleVectorArg()
 		{
 			var e = new UX.Model.Args.SingleVectorArg();
