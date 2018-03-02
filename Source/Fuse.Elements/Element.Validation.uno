@@ -45,7 +45,22 @@ namespace Fuse.Elements
 			if (ElementBatchEntry != null)
 				ElementBatchEntry.InvalidateRenderBounds();
 
+			if (!_hasNotifiedRenderBoundsChanged)
+			{
+				UpdateManager.AddDeferredAction(NotifyRenderBoundsChanged, UpdateStage.Layout, LayoutPriority.Post);
+				_hasNotifiedRenderBoundsChanged = true;
+			}
+
 			return false;
+		}
+
+		bool _hasNotifiedRenderBoundsChanged = false;
+		void NotifyRenderBoundsChanged()
+		{
+			var t = TreeRenderer;
+			if (t != null)
+				t.RenderBoundsChanged(this);
+			_hasNotifiedRenderBoundsChanged = false;
 		}
 
 		void OnInvalidateRenderBoundsWithEffects()

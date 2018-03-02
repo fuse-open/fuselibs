@@ -140,6 +140,8 @@ namespace Fuse.Controls
 			_elements[e].UpdateViewRect(actualPosition.X, actualPosition.Y, actualSize.X, actualSize.Y);
 		}
 
+		void ITreeRenderer.RenderBoundsChanged(Element e) {}
+
 		void ITreeRenderer.IsVisibleChanged(Element e, bool isVisible)
 		{
 			_elements[e].SetIsVisible(isVisible);

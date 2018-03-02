@@ -20,6 +20,7 @@ namespace Fuse.Elements
 		void ClipToBoundsChanged(Element e, bool clipToBounds);
 		void ZOrderChanged(Element e, Visual[] zorder);
 		void HitTestModeChanged(Element e, bool enabled);
+		void RenderBoundsChanged(Element e);
 		bool Measure(Element e, LayoutParams lp, out float2 size);
 	}
 

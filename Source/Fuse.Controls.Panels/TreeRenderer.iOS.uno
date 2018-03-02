@@ -84,6 +84,13 @@ namespace Fuse.Controls
 			viewHandle.SetTransform(transform);
 		}
 
+		void ITreeRenderer.RenderBoundsChanged(Element e)
+		{
+			var viewHandle = _elements[e];
+			if (viewHandle.NeedsRenderBounds)
+				viewHandle.SetSizeAndVisualBounds(e.ActualSize, e.RenderBoundsWithoutEffects);
+		}
+
 		void ITreeRenderer.Placed(Element e)
 		{
 			var viewHandle = _elements[e];
