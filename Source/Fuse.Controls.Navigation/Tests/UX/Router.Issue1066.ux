@@ -1,0 +1,11 @@
+<Panel ux:Class="UX.Router.Issue1066">
+	<Router ux:Name="router"/>
+
+	<Navigator DefaultPath="home">
+		<Page ux:Template="home">
+			<PageControl>
+				<Page/>
+			</PageControl>	
+		</Page>
+	</Navigator>
+</Panel>
