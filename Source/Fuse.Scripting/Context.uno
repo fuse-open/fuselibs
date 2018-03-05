@@ -12,6 +12,11 @@ namespace Fuse.Scripting
 		void Invoke(Uno.Action<Scripting.Context> action);
 	}
 
+	internal interface IFunctionMirror
+	{
+		Function Function { get; }
+	}
+
 	public abstract class Context: Uno.IDisposable
 	{
 		IDictionary<string, ModuleResult> _moduleResults = new ConcurrentDictionary<string, ModuleResult>();

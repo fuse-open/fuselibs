@@ -2,12 +2,13 @@
   "Copyright": "Copyright (c) Fusetools AS 2017",
   "Description": "Abstract scripting framework",
   "Publisher": "Fusetools AS",
-  "Version": "1.7.0-rc1",
+  "Version": "1.7.3",
   "Package": {
     "ProjectUrl": "https://fusetools.com"
   },
   "InternalsVisibleTo": [
-    "Fuse.Scripting.JavaScript"
+    "Fuse.Scripting.JavaScript",
+    "Fuse.Nodes"
   ],
   "Packages": [
     "Uno.Collections",

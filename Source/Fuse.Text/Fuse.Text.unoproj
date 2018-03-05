@@ -1,7 +1,7 @@
 {
   "Copyright": "Copyright (c) Fusetools AS 2017",
   "Publisher": "Fusetools AS",
-  "Version": "1.7.0-rc1",
+  "Version": "1.7.3",
   "Package": {
     "ProjectUrl": "https://fusetools.com"
   },
