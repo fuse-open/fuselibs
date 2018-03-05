@@ -102,7 +102,7 @@ function Model(initialState, stateInitializer)
 
 		var propGetters = {}
 
-		if (!(state instanceof Array)) {
+		if ( ! (state instanceof Array || state instanceof Function)) {
 			registerProps(state);
 		}
 
@@ -471,7 +471,7 @@ function Model(initialState, stateInitializer)
 			// Updates the indices of parent references after removing or inserting elements in the middle of an array
 			for(var i = start; i < node.length; ++i) {
 				var itemNode = node[i];
-				if (!(itemNode instanceof Object)) {
+				if (itemNode instanceof Function || !(itemNode instanceof Object)) {
 					continue;
 				}
 				var itemMeta = idToMeta.get(itemNode.__fuse_id);
