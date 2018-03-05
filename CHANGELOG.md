@@ -3,6 +3,8 @@
 
 # 1.7
 
+### 1.7.3
+
 # Router
 - Fixed a crash in `Router.GoUp` that could be seen when pressing the back button at the root page of navigation.
 
