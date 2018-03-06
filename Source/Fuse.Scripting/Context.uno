@@ -10,6 +10,9 @@ namespace Fuse.Scripting
 	public interface IThreadWorker
 	{
 		void Invoke(Uno.Action<Scripting.Context> action);
+
+		[Obsolete("Use Invoke(Action<Context>) instead")]
+		void Invoke(Uno.Action action);
 	}
 
 	internal interface IFunctionMirror
@@ -71,8 +74,13 @@ namespace Fuse.Scripting
 		public abstract object Unwrap(object obj);
 		public abstract object Reflect(object obj);
 
-
 		public void Invoke(Uno.Action<Scripting.Context> action)
+		{
+			ThreadWorker.Invoke(action);
+		}
+
+		[Obsolete("Use Invoke(Action<Context>) instead")]
+		public void Invoke(Uno.Action action)
 		{
 			ThreadWorker.Invoke(action);
 		}
