@@ -3,7 +3,7 @@
   "Description": "Native Camera support",
   "Publisher": "Fusetools AS",
   "Title": "Fuse.Camera",
-  "Version": "1.7.3",
+  "Version": "1.7.4",
   "Package": {
     "ProjectUrl": "https://fusetools.com"
   },
