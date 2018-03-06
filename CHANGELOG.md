@@ -3,6 +3,13 @@
 
 # 1.7
 
+## 1.7.4
+
+### Restored missing bug-fixes
+- There were a few bug-fixes from 1.6 that somehow missed 1.7. Those have now been restored. In particular:
+  * Added back removed API `Context.Invoke(Action ...)`.
+  * Fixed a NullReferenceException in `NativeEvent.RaiseAsync(params object[])`.
+
 ## 1.7.3
 
 ### Router
