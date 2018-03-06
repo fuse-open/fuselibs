@@ -119,5 +119,18 @@ namespace Fuse.Test
 				Assert.AreEqual(2, p.ParentB.Children.Count);
 			}
 		}
+
+		[Test]
+		public void OnParameterChanged()
+		{
+			var p = new UX.Visual.OnParameterChanged();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				Assert.AreEqual(null, p.CurrentParameter.StringValue);
+				p.Parameter = "{ \"foo\" : \"bar\" }";
+				root.StepFrameJS();
+				Assert.AreEqual("{\"foo\":\"bar\"}", p.CurrentParameter.StringValue);
+			}
+		}
 	}
 }

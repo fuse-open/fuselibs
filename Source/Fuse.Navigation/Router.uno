@@ -275,6 +275,9 @@ namespace Fuse.Navigation
 		void GoUp()
 		{
 			var cur = GetCurrentRouterPageRoute();
+			if (cur == null) 
+				return;
+				
 			var up = cur.Up();
 			if (up == cur) 
 			{
