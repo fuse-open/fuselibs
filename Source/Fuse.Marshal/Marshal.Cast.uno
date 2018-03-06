@@ -244,6 +244,26 @@ namespace Fuse
 			return false;
 		}
 		
+		/**
+			Converts a float3, float4 or equivalently convertible type to a float4. This  uses color conversion rules: it sets the alpha component to 1 if not specified.
+			
+			@return true if converted successfully, false if no suitable conversion exists. `null` cannot be converted and will return false;
+			@param value the result value
+		*/
+		public static bool TryToColorFloat4(object o, out float4 value)
+		{
+			value = float4(0);
+			int size = 0;
+			if (!TryToZeroFloat4(o, out value, out size))
+				return false;
+			if (size != 4 && size !=3)
+				return false;
+				
+			if (size == 3)
+				value[3] = 1;
+				
+			return true;
+		}
 
 		public static float3 ToFloat3(object o)
 		{
