@@ -3,31 +3,38 @@
 
 # 1.7
 
-### 1.7.3
+## 1.7.4
 
-# Router
+### Restored missing bug-fixes
+- There were a few bug-fixes from 1.6 that somehow missed 1.7. Those have now been restored. In particular:
+  * Added back removed API `Context.Invoke(Action ...)`.
+  * Fixed a NullReferenceException in `NativeEvent.RaiseAsync(params object[])`.
+
+## 1.7.3
+
+### Router
 - Fixed a crash in `Router.GoUp` that could be seen when pressing the back button at the root page of navigation.
 
-### 1.7.1
+## 1.7.1
 
-# Fuse.Nodes
+### Fuse.Nodes
 - Fixed a bug where triggering `onParameterChanged` on an element would lead to a crash.
 
-### 1.7.0
+## 1.7.0
 
-## PageControl
+### PageControl
 - Fixed a crash resulting from adding dynamic pages and binding by name
 
-## Partial Curves
+### Partial Curves
 - Added support for drawing partial curves to `Path` and `Curve`. Refer to the `PathStart`, `PathLength` and `PathEnd` properties.
 - Added the path expressions `pathPointAtDistance` and `pathTangentAngleAtDistance` for locating an offset along a `Path` or `Curve` and the heading.
 
-## Router
+### Router
 - Fixed `goBack` to properly modify the route with two duplicate routes in the history## JavaScript 
 - Several functions in `ScriptModule` and related classes have been marked `internal`. These were never meant to be part of the public API.
 - Added `JavaScript.Names` with option `Require` to prevent injecting names into the JavaScript code namespace
 
-## TextColor Opacity
+### TextColor Opacity
 - Fixed a failure to render translucent `TextColor` correctly
 - Fixed the rendering of opaque emoji when `TextColor` is translucent (they will not also be translucent, though still  use the font coloring)
 
@@ -70,6 +77,7 @@
 ### Fuse.Scripting
 - Restore accidentally broken NativeEvent.RaiseAsync() API.
 - Rolled back NativeProperty constructor API to the pre-1.6 state. Code updated to 1.6 needs to be rolled back as well.
+- Previous changes resulted in a breaking change we would rather avoid so we reintroduce `Invoke(Action ..)` so we can take it through the usual deprecation cycle.
 
 ## 1.6.0
 
