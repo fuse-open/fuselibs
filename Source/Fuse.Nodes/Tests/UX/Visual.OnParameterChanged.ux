@@ -1,0 +1,12 @@
+<Panel ux:Class="UX.Visual.OnParameterChanged">
+	<JavaScript>
+		var Observable = require("FuseJS/Observable")
+		var currentParameter = Observable();
+		this.onParameterChanged(function(args) {
+			currentParameter.value = JSON.stringify(args);
+		})
+		module.exports = { currentParameter : currentParameter };
+	</JavaScript>
+
+	<FuseTest.DudElement ux:Name="CurrentParameter" StringValue="{currentParameter}" />
+</Panel>

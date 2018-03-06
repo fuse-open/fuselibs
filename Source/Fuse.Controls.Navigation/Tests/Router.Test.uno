@@ -739,6 +739,18 @@ namespace Fuse.Navigation.Test
 			}
 		}
 		
+		[Test]
+		//Crash in https://github.com/fusetools/fuselibs-public/issues/1066
+		public void Issue1066()
+		{
+			var p = new UX.Router.Issue1066();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				p.router.GoBack();
+				p.router.GoBack(); //shouldn't crash
+			}
+		}
+		
 	}
 }
 	

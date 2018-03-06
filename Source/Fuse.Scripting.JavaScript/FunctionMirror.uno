@@ -7,7 +7,7 @@ using Fuse.Reactive;
 
 namespace Fuse.Scripting
 {
-	class FunctionMirror: DiagnosticSubject, IEventHandler, IRaw
+	class FunctionMirror: DiagnosticSubject, IFunctionMirror, IEventHandler, IRaw
 	{
 		readonly Function _func;
 
@@ -18,6 +18,8 @@ namespace Fuse.Scripting
 		{
 			_func = func;
 		}
+
+		Function IFunctionMirror.Function { get { return _func; } }
 
 		class CallClosure
 		{
