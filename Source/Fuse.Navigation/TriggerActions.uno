@@ -1,7 +1,6 @@
+using Uno;
 using Uno.UX;
-using Fuse;
-using Fuse.Elements;
-using Fuse.Triggers;
+
 using Fuse.Triggers.Actions;
 
 namespace Fuse.Navigation
@@ -105,14 +104,29 @@ namespace Fuse.Navigation
 				</Panel>
 			</DockPanel>
 	*/
-	public class NavigateToggle : NavigationTriggerAction
+	public class NavigateToggle : TriggerAction
 	{
+		INavigation _context;
+		[Obsolete]
+		/** @deprecated 2018-03-06 */
+		public INavigation NavigationContext 
+		{ 
+			get { return _context; }
+			set 
+			{
+				_context = value;
+				Fuse.Diagnostics.Deprecated( "NavigateToggle.NavigationContext is no longer supported as it isn't needed", this );
+			}
+		}
+	
 		/** The item to have its navigated state toggled. */
 		public Visual Target { get; set; }
 
-		protected override void Perform(INavigation ctx, Node n)
+		protected override void Perform(Node n)
 		{
-			var page = Navigation.TryFindPage((Node)Target ?? n);
+			INavigation ctx;
+			Visual ignore;
+			var page = Navigation.TryFindPage((Node)Target ?? n, out ctx, out ignore);
 			if (page != null)
 				ctx.Toggle(page);
 			else

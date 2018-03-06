@@ -45,5 +45,23 @@ namespace Fuse.Controls.Test
 				Assert.AreEqual( "main", (string)p.nav.Active.Name );
 			}
 		}
+		
+		[Test]
+		public void NavigateToggle()
+		{
+			var p = new UX.EdgeNavigator.NavigateToggle();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				Assert.AreEqual( p.main, p.nav.Active );
+				
+				p.toggleLeft.Pulse();
+				root.StepFrame(5);
+				Assert.AreEqual( p.left, p.nav.Active );
+				
+				p.toggleElse.Pulse();
+				root.StepFrame(5);
+				Assert.AreEqual( p.main, p.nav.Active );
+			}
+		}
 	}
 }
