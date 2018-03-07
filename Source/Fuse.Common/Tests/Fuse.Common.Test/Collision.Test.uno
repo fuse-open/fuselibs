@@ -26,6 +26,11 @@ namespace Fuse.Test
 			Assert.IsFalse( Collision.LineLineIntersection(
 				float2(2,4), float2(2,3),
 				float2(2,5), float2(2,3), out r ));
+				
+			Assert.IsTrue( Collision.LineLineIntersection(
+				float2(0), float2(1,-1),
+				float2(5), float2(1,1), out r ));
+			Assert.AreEqual( float2(0), r, 1e-4f );
 		}
 	}
 }
