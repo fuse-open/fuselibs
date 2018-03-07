@@ -1,0 +1,21 @@
+<Panel ux:Class="UX.EdgeNavigator.NavigateToggle">
+	<Panel>
+		<EdgeNavigator ux:Name="nav">
+			<StackPanel Edge="Left" ux:Name="left">
+				<Timeline ux:Name="toggleLeft">
+					<NavigateToggle/>
+				</Timeline>
+			</StackPanel>
+			
+			<Panel ux:Name="main"/>
+			
+		</EdgeNavigator>
+	</Panel>
+	
+	<Panel>
+		<Timeline ux:Name="toggleElse">
+			<NavigateToggle Target="left"/>
+		</Timeline>
+	</Panel>
+	
+</Panel>
