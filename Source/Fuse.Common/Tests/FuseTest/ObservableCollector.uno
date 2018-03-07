@@ -27,6 +27,7 @@ namespace FuseTest
 		bool _listening;
 		IObservableArray _items;
 		Uno.IDisposable _subscription;
+		ISubscription _writeBackSubscription;
 
 		public enum LogType
 		{
@@ -70,7 +71,30 @@ namespace FuseTest
 		{	
 			get { return _values[index]; }
 		}
-		
+
+		public void ClearExclusive()
+		{
+			GetWriteBackSubscription().ClearExclusive();
+		}
+
+		public void SetExclusive(object newValue)
+		{
+			GetWriteBackSubscription().SetExclusive(newValue);
+		}
+
+		public void ReplaceAllExclusive(IArray newValues)
+		{
+			GetWriteBackSubscription().ReplaceAllExclusive(newValues);
+		}
+
+		ISubscription GetWriteBackSubscription()
+		{
+			if (_writeBackSubscription == null)
+				throw new Uno.InvalidOperationException("Subscription does not support write-back");
+
+			return _writeBackSubscription;
+		}
+
 		void OnItemsChanged()
 		{	
 			if (!IsRootingStarted) 
@@ -79,7 +103,9 @@ namespace FuseTest
 			if (_items == null)
 				return;
 			OnNewAll(_items);
-			_subscription = (Uno.IDisposable)_items.Subscribe(this);
+			_subscription = _items.Subscribe(this);
+			_writeBackSubscription = _subscription as ISubscription;
+
 		}
 		
 		void CleanSubscription()
@@ -88,6 +114,7 @@ namespace FuseTest
 			{
 				_subscription.Dispose();
 				_subscription = null;
+				_writeBackSubscription = null;
 			}
 		}
 		
