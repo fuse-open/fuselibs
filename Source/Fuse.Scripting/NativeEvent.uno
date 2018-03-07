@@ -56,7 +56,7 @@ namespace Fuse.Scripting
 			if(Context != null || _queueEventsBeforeEvaluation)
 				_eventArgsQueue.Enqueue(args);
 
-			DispatchQueue(Context.ThreadWorker);
+			DispatchQueue(Context != null ? Context.ThreadWorker : null);
 		}
 
 		public void RaiseAsync(IThreadWorker threadWorker, params object[] args)

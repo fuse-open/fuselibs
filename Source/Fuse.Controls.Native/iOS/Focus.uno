@@ -29,17 +29,19 @@ namespace Fuse.Controls.Native.iOS
 
 		public static void RaiseFocusGained(ObjC.Object handle)
 		{
-			if (_listeners.ContainsKey(handle))
+			INativeFocusListener listener;
+			if (_listeners.TryGetValue(handle, out listener))
 			{
-				_listeners[handle].FocusGained();
+				listener.FocusGained();
 			}
 		}
 
 		public static void RaiseFocusLost(ObjC.Object handle)
 		{
-			if (_listeners.ContainsKey(handle))
+			INativeFocusListener listener;
+			if (_listeners.TryGetValue(handle, out listener))
 			{
-				_listeners[handle].FocusLost();
+				listener.FocusLost();
 			}
 		}
 	}
