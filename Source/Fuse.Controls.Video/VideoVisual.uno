@@ -362,9 +362,26 @@ namespace Fuse.Controls.VideoImpl
 	{
 		static public VideoDrawElement Impl = new VideoDrawElement();
 
+		static readonly float3x3[] Transforms = new float3x3[4];
+
+		static VideoDrawElement()
+		{
+			var t = float3x3.Identity;
+			t.M11 = t.M22 = Math.Cos(Math.PIf / 2.0f);
+			t.M21 = Math.Sin(Math.PIf / 2.0f);
+			t.M12 = -t.M21;
+			t.M32 = 1.0f;
+
+			Transforms[0] = float3x3.Identity;
+			Transforms[1] = t;
+			Transforms[2] = Matrix.Mul(t, t);
+			Transforms[3] = Matrix.Mul(Matrix.Mul(t, t), t);
+		}
+
 		public void Draw(DrawContext dc, Visual element, float2 offset, float2 size,
 			float2 uvPosition, float2 uvSize, VideoTexture tex, int rotation)
 		{
+			var transform = Transforms[rotation];
 			draw
 			{
 				apply Fuse.Drawing.Planar.Rectangle;
@@ -375,14 +392,7 @@ namespace Fuse.Controls.VideoImpl
 				Position: offset;
 
 				TexCoord: VertexData * uvSize + uvPosition;
-				TexCoord:
-				{
-					var p = prev.XY;
-					if (rotation == 1) return float2(p.Y, 1.0f - p.X);
-					else if (rotation == 2) return float2(1.0f - p.X, 1.0f - p.Y);
-					else if (rotation == 3) return float2(1.0f - p.Y, p.X);
-					else return p;
-				};
+				TexCoord: Vector.Transform(float3(prev.XY, 1.0f), transform).XY;
 
 				PixelColor: float4(sample(tex, TexCoord, SamplerState.LinearClamp).XYZ, 1.0f);
 			};
