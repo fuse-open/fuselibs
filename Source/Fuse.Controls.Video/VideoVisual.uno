@@ -288,15 +288,6 @@ namespace Fuse.Controls.VideoImpl
 			Fuse.Triggers.WhilePaused.SetState(Control, false);
 		}
 
-		bool FlipSize
-		{
-			get
-			{
-				var degrees = _videoService.RotationDegrees;
-				return degrees == 90 || degrees == 270;
-			}
-		}
-
 		public sealed override float2 GetMarginSize( LayoutParams lp)
 		{
 			_sizing.snapToPixels = Control.SnapToPixels;
@@ -307,10 +298,7 @@ namespace Fuse.Controls.VideoImpl
 
 		float2 GetSize()
 		{
-			var size = (float2)_videoService.Size;
-			if (FlipSize)
-				size = float2(size.Y, size.X);
-			return size;
+			return (float2)_videoService.Size;
 		}
 
 		float2 _origin;
