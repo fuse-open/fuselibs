@@ -126,6 +126,7 @@
 			<ColumnsReload/>
 			<TextInputActionPage/>
 			<VideoPage/>
+			<VideoOrientationPage/>
 			<ExifPage/>
 			<CameraPage/>
 			<SharingPage/>

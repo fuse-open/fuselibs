@@ -1,0 +1,55 @@
+<Page Title="Video Orientation" ux:Class="VideoOrientationPage">
+	<InfoStack ux:Key="Info">
+		<p>This page contains a several video players that should show the video "Big Buck Bunny" at different orientations. The Video's orientation should match the preview image's orientation.</p>
+	</InfoStack>
+	<JavaScript>
+		function TestClip(preview,video) {
+			this.preview = preview;
+			this.video = video;
+		}
+		var clips = [
+			new TestClip("Assets/video/preview_0.png","Assets/video/big_buck_bunny_0.mp4"),
+			new TestClip("Assets/video/preview_90.png","Assets/video/big_buck_bunny_90.mp4"),
+			new TestClip("Assets/video/preview_180.png","Assets/video/big_buck_bunny_180.mp4"),
+			new TestClip("Assets/video/preview_270.png","Assets/video/big_buck_bunny_270.mp4"),
+		];
+		module.exports = {
+			clips:clips
+		}
+	</JavaScript>
+	<WhileActive>
+		<ScrollView>
+			<StackPanel>
+				<Each Items="{clips}">
+					<StackPanel Margin="4">
+						<Grid Columns="1*,1*" Margin="4">
+							<StackPanel Alignment="Center">
+								<Text Value="Preview" Alignment="Center" Margin="2" />
+								<Image File="{preview}" />
+							</StackPanel>
+							<StackPanel Alignment="Center">
+								<Text Value="Video" Alignment="Center" />
+								<Video File="{video}" ux:Name="_video" />
+							</StackPanel>
+						</Grid>
+						<Grid Columns="1*,1*" Margin="4">
+							<StdButton Text="Play">
+								<Clicked>
+									<Play Target="_video" />
+								</Clicked>
+							</StdButton>
+							<StdButton Text="Stop">
+								<Clicked>
+									<Stop Target="_video" />
+								</Clicked>
+							</StdButton>
+						</Grid>
+						<Rectangle Layer="Background">
+							<Stroke Color="#000" />
+						</Rectangle>
+					</StackPanel>
+				</Each>
+			</StackPanel>
+		</ScrollView>
+	</WhileActive>
+</Page>

@@ -29,5 +29,6 @@
     "UserEvents/Contacts.ux",
     "UserEvents/MessagesPage.ux",
     "UserEvents/PopupNotices.ux",
+    "Assets/video/*:Bundle",
   ]
 }
