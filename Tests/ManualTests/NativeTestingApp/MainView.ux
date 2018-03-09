@@ -98,6 +98,9 @@
 				<TestPage>
 					<ImagePage />
 				</TestPage>
+				<TestPage>
+					<NativeScrollView />
+				</TestPage>
 			</Panel>
 		</ClientPanel>
 	</NativeViewHost>

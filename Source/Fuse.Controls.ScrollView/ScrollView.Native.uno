@@ -36,5 +36,15 @@ namespace Fuse.Controls
 			t.M41 = t.M41 + ScrollPosition.X;
 			t.M42 = t.M42 + ScrollPosition.Y;
 		}
+
+		protected override void PushPropertiesToNativeView()
+		{
+			base.PushPropertiesToNativeView();
+			var nsv = NativeScrollView;
+			if (nsv != null)
+			{
+				nsv.AllowedScrollDirections = AllowedScrollDirections;
+			}
+		}
 	}
 }

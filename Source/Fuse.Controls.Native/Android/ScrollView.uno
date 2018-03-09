@@ -12,15 +12,13 @@ namespace Fuse.Controls.Native.Android
 
 	extern(Android) public class ScrollView : View, IScrollView
 	{
-		readonly Java.Object _callbackHandle;
-
 		IScrollViewHost _host;
 
 		[UXConstructor]
 		public ScrollView([UXParameter("Host")]IScrollViewHost host) : base(Create())
 		{
 			_host = host;
-			_callbackHandle = AddCallback(Handle);
+			InstallCallback(NativeHandle, OnScrollChanged);
 		}
 
 		public override void Dispose()
@@ -32,24 +30,32 @@ namespace Fuse.Controls.Native.Android
 		[Foreign(Language.Java)]
 		static Java.Object Create()
 		@{
-			return new com.fuse.android.views.VerticalScrollView(com.fuse.Activity.getRootActivity());
+			return new com.fuse.android.views.FuseScrollView(com.fuse.Activity.getRootActivity());
 		@}
 
 		[Foreign(Language.Java)]
-		Java.Object AddCallback(Java.Object handle)
+		void InstallCallback(Java.Object handle, Action<int, int, int, int> callback)
 		@{
-			com.fuse.android.views.IScroll iscroll = new com.fuse.android.views.IScroll() {
-				public void OnScrollChanged(int x, int y, int oldX, int oldY) {
-					@{global::Fuse.Controls.Native.Android.ScrollView:Of(_this).OnScrollChanged(int,int,int,int):Call(x, y, oldX, oldY)};
-				}
-			};
-			((com.fuse.android.views.VerticalScrollView)handle).SetIScroll(iscroll);
-			return iscroll;
+			((com.fuse.android.views.FuseScrollView)handle).setScrollEventHandler(
+				new com.fuse.android.views.ScrollEventHandler() {
+					public void onScrollChanged(int x, int y, int oldX, int oldY) {
+						callback.run(x, y, oldX, oldY);
+					}
+				});
+		@}
+
+		[Foreign(Language.Java)]
+		void SetIsHorizontal(Java.Object handle, bool isHorizontal)
+		@{
+			((com.fuse.android.views.FuseScrollView)handle).setIsHorizontal(isHorizontal);
 		@}
 
 		public ScrollDirections AllowedScrollDirections
 		{
-			set { }
+			set
+			{
+				SetIsHorizontal(NativeHandle, value.HasFlag(ScrollDirections.Horizontal));
+			}
 		}
 
 		public float2 ScrollPosition
@@ -78,7 +84,7 @@ namespace Fuse.Controls.Native.Android
 		[Foreign(Language.Java)]
 		static void SetScrollPosition(Java.Object handle, int x, int y)
 		@{
-			android.widget.ScrollView sv = (android.widget.ScrollView)handle;
+			android.view.View sv = (android.view.View)handle;
 			sv.setScrollX(x);
 			sv.setScrollY(y);
 		@}

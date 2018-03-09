@@ -1,0 +1,34 @@
+<Page ux:Class="NativeScrollView" Title="Native scrollviews">
+	<InfoStack ux:Key="Info">
+		<p>Test Vertical and Horizontal native ScrollView</p>
+		<ul>
+			<li>The first ScrollView should scroll vertically and the second horizontally</li>
+		</ul>
+	</InfoStack>
+	<Grid Columns="1*" Rows="1*,1*">
+		<ScrollView AllowedScrollDirections="Vertical">
+			<StackPanel Orientation="Vertical">
+				<Each Count="20">
+					<Panel Margin="4" Padding="20">
+						<Text Alignment="Center" Value="VERTICAL" />
+						<Rectangle Layer="Background" CornerRadius="8">
+							<Stroke Color="#000" />
+						</Rectangle>
+					</Panel>
+				</Each>
+			</StackPanel>
+		</ScrollView>
+		<ScrollView AllowedScrollDirections="Horizontal">
+			<StackPanel Orientation="Horizontal">
+				<Each Count="20">
+					<Panel Margin="4" Padding="20">
+						<Text Alignment="Center" Value="HORIZONTAL" />
+						<Rectangle Layer="Background" CornerRadius="8">
+							<Stroke Color="#000" />
+						</Rectangle>
+					</Panel>
+				</Each>
+			</StackPanel>
+		</ScrollView>
+	</Grid>
+</Page>
