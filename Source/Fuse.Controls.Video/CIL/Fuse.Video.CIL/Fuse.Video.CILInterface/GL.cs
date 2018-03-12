@@ -1,23 +1,13 @@
 ﻿using System;
-using System.Runtime.InteropServices;
 
-namespace OpenGL
+namespace Fuse.Video.CILInterface
 {
-	public class GL
+	public interface IGL
 	{
-		[DllImport("opengl32.dll", EntryPoint = "glGenTextures", ExactSpelling = true)]
-		public extern static void GenTextures(Int32 n, [OutAttribute] UInt32[] textures);
+		void BindTexture(int target, int texture);
 
-		[DllImport("opengl32.dll", EntryPoint = "glBindTexture", ExactSpelling = true)]
-		public extern static void BindTexture(TextureTarget target, UInt32 texture);
+		void TexImage2D(int target, int level, int internalFormat, int width, int height, int border, int format, int type, IntPtr data);
 
-		[DllImport("opengl32.dll", EntryPoint = "glTexImage2D", ExactSpelling = true)]
-		public extern static void TexImage2D(TextureTarget target, Int32 level, PixelInternalFormat internalFormat, Int32 width, Int32 height, Int32 border, PixelFormat format, PixelType type, IntPtr data);
-
-		[DllImport("opengl32.dll", EntryPoint = "glTexSubImage2D", ExactSpelling = true)]
-		public extern static void TexSubImage2D(TextureTarget target, Int32 level, Int32 xoffset, Int32 yoffset, Int32 width, Int32 height, PixelFormat format, PixelType type, IntPtr pixels);
-
-		[DllImport("opengl32.dll", EntryPoint = "glDeleteTextures", ExactSpelling = true)]
-		public extern static void DeleteTextures(Int32 n, UInt32[] textures);
+		void TexSubImage2D(int target, int level, int xoffset, int yoffset, int width, int height, int format, int type, IntPtr pixels);
 	}
 }

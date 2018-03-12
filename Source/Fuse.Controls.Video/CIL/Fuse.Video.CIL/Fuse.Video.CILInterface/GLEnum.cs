@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OpenGL
+namespace Fuse.Video.CILInterface
 {
 	public enum TextureTarget : int
 	{

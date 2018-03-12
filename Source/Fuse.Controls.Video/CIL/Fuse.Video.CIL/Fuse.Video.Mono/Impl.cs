@@ -1,14 +1,22 @@
 ﻿using System;
+using Fuse.Video.CILInterface;
 
 namespace Fuse.Video.Mono
 {
 	public class MonoImpl : CILInterface.IVideo
 	{
+		static IGL _gl;
+
 		readonly VideoHandle _handle;
 
 		MonoImpl(string uri, Action loaded, Action<string> error)
 		{
-			_handle = VideoImpl.Create(uri, loaded, error);
+			_handle = VideoImpl.Create(_gl, uri, loaded, error);
+		}
+
+		public static void SetOpenGL(IGL gl)
+		{
+			_gl = gl;
 		}
 
 		public static MonoImpl FromFile(string fileName, Action loaded, Action<string> error)

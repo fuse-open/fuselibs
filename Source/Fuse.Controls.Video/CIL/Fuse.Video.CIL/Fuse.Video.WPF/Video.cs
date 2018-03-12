@@ -1,29 +1,33 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Fuse.Video.CILInterface;
 using System.Runtime.InteropServices;
 using System.Windows;
+using PixelFormat = Fuse.Video.CILInterface.PixelFormat;
 
 namespace Fuse.Video.WPF
 {
 
 	public static class VideoImpl
 	{
+		static IGL _gl;
+
+		public static void SetOpenGL(IGL gl)
+		{
+			_gl = gl;
+		}
+
 		public static IVideo FromUrl(string url, Action loaded, Action<string> error)
 		{
-			var video = new Video();
+			var video = new Video(_gl);
 			video.LoadUrl(url, loaded, error);
 			return video;
 		}
 
 		public static IVideo FromFile(string fileName, Action loaded, Action<string> error)
 		{
-			var video = new Video();
+			var video = new Video(_gl);
 			video.LoadFile(fileName, loaded, error);
 			return video;
 		}
@@ -31,11 +35,13 @@ namespace Fuse.Video.WPF
 
 	class Video : CILInterface.IVideo, IDisposable
 	{
+		readonly IGL _gl;
 		readonly MediaPlayer _mediaPlayer;
 		readonly DrawingVisual _drawingVisual;
 
-		public Video()
+		public Video(IGL gl)
 		{
+			_gl = gl;
 			_mediaPlayer = new MediaPlayer();
 			_mediaPlayer.MediaOpened += OnMediaOpened;
 			_mediaPlayer.MediaFailed += OnMediaFailed;
@@ -150,6 +156,7 @@ namespace Fuse.Video.WPF
 
 		int _widthCache = -1;
 		int _heightCache = -1;
+		int _lastTextureHandle = -1;
 
 		public void UpdateTexture(int textureHandle)
 		{
@@ -177,35 +184,37 @@ namespace Fuse.Video.WPF
 					
 					_renderTargetBitmap.CopyPixels(Int32Rect.Empty, pixelBufferPtr, size, stride);
 
-					OpenGL.GL.BindTexture(OpenGL.TextureTarget.Texture2D, (uint)textureHandle);
 
-					if (_widthCache != Width || _heightCache != Height)
+					_gl.BindTexture((int)TextureTarget.Texture2D, (int)textureHandle);
+
+					if (_widthCache != Width || _heightCache != Height || _lastTextureHandle != textureHandle)
 					{
 						_widthCache = Width;
 						_heightCache = Height;
+						_lastTextureHandle = textureHandle;
 
-						OpenGL.GL.TexImage2D(
-							OpenGL.TextureTarget.Texture2D,
+						_gl.TexImage2D(
+							(int)TextureTarget.Texture2D,
 							0,
-							OpenGL.PixelInternalFormat.Rgba,
+							(int)PixelFormat.Bgra,
 							Width,
 							Height,
 							0,
-							OpenGL.PixelFormat.Bgra,
-							OpenGL.PixelType.UnsignedByte,
+							(int)PixelFormat.Bgra,
+							(int)PixelType.UnsignedByte,
 							pixelBufferPtr);
 					}
 					else
 					{
-						OpenGL.GL.TexSubImage2D(
-							OpenGL.TextureTarget.Texture2D,
+						_gl.TexSubImage2D(
+							(int)TextureTarget.Texture2D,
 							0,
 							0,
 							0,
 							Width,
 							Height,
-							OpenGL.PixelFormat.Bgra,
-							OpenGL.PixelType.UnsignedByte,
+							(int)PixelFormat.Bgra,
+							(int)PixelType.UnsignedByte,
 							pixelBufferPtr);
 					}
 				}

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using OpenTK.Graphics.OpenGL;
-using System.Drawing;
+using Fuse.Video.CILInterface;
 
 namespace Fuse.Video.Mono
 {
@@ -27,10 +26,12 @@ namespace Fuse.Video.Mono
 			get { return (int)PixelBufferImpl.CVPixelBufferGetHeight(_handle); }
 		}
 
+		private readonly IGL _gl;
 		readonly IntPtr _handle;
 
-		public PixelBuffer(IntPtr handle)
+		public PixelBuffer(IGL gl, IntPtr handle)
 		{
+			_gl = gl;
 			_handle = handle;
 			if (_handle == IntPtr.Zero)
 				throw new ArgumentNullException();
@@ -101,33 +102,33 @@ namespace Fuse.Video.Mono
 
 			var pinnedArray = GCHandle.Alloc (handle.Pixels, GCHandleType.Pinned);
 
-			GL.BindTexture(TextureTarget.Texture2D, textureName);
+			_gl.BindTexture((int)TextureTarget.Texture2D, (int)textureName);
 			if (width != handle.WidthCache || height != handle.HeightCache)
 			{
 				handle.WidthCache = width;
 				handle.HeightCache = height;
-				GL.TexImage2D(
-					TextureTarget.Texture2D,
+				_gl.TexImage2D(
+					(int)TextureTarget.Texture2D,
 					0,
-					PixelInternalFormat.Rgba,
+					(int)PixelInternalFormat.Rgba,
 					width,
 					height,
 					0,
-					PixelFormat.Bgra,
-					PixelType.UnsignedByte,
+					(int)PixelFormat.Bgra,
+					(int)PixelType.UnsignedByte,
 					pinnedArray.AddrOfPinnedObject());
 			}
 			else
 			{
-				GL.TexSubImage2D(
-					TextureTarget.Texture2D,
+				_gl.TexSubImage2D(
+					(int)TextureTarget.Texture2D,
 					0,
 					0,
 					0,
 					width,
 					height,
-					PixelFormat.Bgra,
-					PixelType.UnsignedByte,
+					(int)PixelFormat.Bgra,
+					(int)PixelType.UnsignedByte,
 					pinnedArray.AddrOfPinnedObject());
 			}
 
