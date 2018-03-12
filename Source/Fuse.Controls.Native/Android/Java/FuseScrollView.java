@@ -15,6 +15,8 @@ public class FuseScrollView extends FrameLayout implements ScrollEventHandler {
 	public FuseScrollView(android.content.Context context) {
 		super(context);
 		_currentScrollView = _verticalScrollView = new VerticalScrollView(context);
+		_currentScrollView.setClipChildren(false);
+		_currentScrollView.setClipToPadding(false);
 		_verticalScrollView.setScrollEventHandler(this);
 		addView(_currentScrollView);
 	}
@@ -43,6 +45,8 @@ public class FuseScrollView extends FrameLayout implements ScrollEventHandler {
 			if (_horizontalScrollView == null) {
 				_horizontalScrollView = new HorizontalScrollView(getContext());
 				_horizontalScrollView.setScrollEventHandler(this);
+				_horizontalScrollView.setClipChildren(false);
+				_horizontalScrollView.setClipToPadding(false);
 			}
 			_currentScrollView = _horizontalScrollView;
 		} else {
