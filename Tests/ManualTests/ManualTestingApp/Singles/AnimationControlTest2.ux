@@ -37,7 +37,7 @@
 				</LinearGradient>
 			</Rectangle>
 			
-			<Grid>
+			<Grid Columns="1*">
 				<Text Alignment="Center" FontSize="30" Visibility="Hidden" ux:Name="Label1">1</Text>
 				<Text Alignment="Center" FontSize="30" Visibility="Hidden" ux:Name="Label2">2</Text>
 				<Text Alignment="Center" FontSize="30" Visibility="Hidden" ux:Name="Label3">3</Text>

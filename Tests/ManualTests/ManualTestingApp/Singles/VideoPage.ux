@@ -26,9 +26,9 @@
 				</ProgressAnimation>
 			</Slider>
 
-			<Grid Rows="auto" ColumnCount="2">
+			<Grid DefaultRow="auto" ColumnCount="2">
 				<StdButton ux:Name="_playButton" Text="Play">
-					<Clicked><Resume Target="_video" /></Clicked>
+					<Clicked><Play Target="_video" /></Clicked>
 				</StdButton>
 				<StdButton ux:Name="_pauseButton" Text="Pause" Visibility="Hidden">
 					<Clicked><Pause Target="_video" /></Clicked>

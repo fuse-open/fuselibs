@@ -10,7 +10,7 @@
 		</StackPanel>
 	</ScrollView>
 	<WhileActive>
-		<Callback Direction="Forward" Handler="EnableBack"/>
-		<Callback Direction="Backward" Handler="DisableBack"/>
+		<Callback When="Forward" Handler="EnableBack"/>
+		<Callback When="Backward" Handler="DisableBack"/>
 	</WhileActive>
 </Page>
