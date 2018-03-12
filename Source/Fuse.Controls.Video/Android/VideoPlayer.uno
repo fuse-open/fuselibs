@@ -174,9 +174,10 @@ namespace Fuse.Controls.VideoImpl.Android
 			}
 		}
 
+		int _rotationDegrees = 0;
 		public int RotationDegrees
 		{
-			get { return GetOrientation(_handle); }
+			get { return _rotationDegrees; }
 		}
 
 		float _volume = 1.0f;
@@ -196,6 +197,8 @@ namespace Fuse.Controls.VideoImpl.Android
 
 		readonly VideoTexture _videoTexture;
 
+		string _dataSourcePath;
+
 		public MediaPlayer()
 		{
 			var glHandle = GL.CreateTexture();
@@ -203,18 +206,52 @@ namespace Fuse.Controls.VideoImpl.Android
 			_surfaceTexture = CreateSurfaceTexture((int)glHandle);
 			_surface = CreateSurface(_surfaceTexture);
 			_handle = CreateMediaPlayer(_surface);
+			_dataSourcePath = null;
 
 			Fuse.Platform.Lifecycle.EnteringBackground += OnEnteringBackground;
 		}
 
 		[Foreign(Language.Java)]
-		static int GetOrientation(Java.Object handle)
+		static int GetOrientation(Java.Object handle, string dataSorucePath)
 		@{
+			/*
+				Nasty code to check for rotation metadata on a video
+
+				This code probes for orientation as the soruce might not have it.
+			*/
+			if (dataSorucePath != null)
+			{
+				try
+				{
+					android.media.MediaMetadataRetriever mmr = new android.media.MediaMetadataRetriever();
+					mmr.setDataSource(dataSorucePath);
+					String rotation = mmr.extractMetadata(android.media.MediaMetadataRetriever.METADATA_KEY_VIDEO_ROTATION);
+					if (rotation != null) {
+						return java.lang.Integer.parseInt(rotation);
+					}
+				}
+				catch(Exception e) { /* We do not care if this fails */ }
+
+				try
+				{
+					android.content.res.AssetFileDescriptor afd = com.fuse.Activity.getRootActivity()
+						.getAssets()
+						.openFd(dataSorucePath);
+
+					android.media.MediaMetadataRetriever mmr = new android.media.MediaMetadataRetriever();
+					mmr.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
+					String rotation = mmr.extractMetadata(android.media.MediaMetadataRetriever.METADATA_KEY_VIDEO_ROTATION);
+					if (rotation != null) {
+						return java.lang.Integer.parseInt(rotation);
+					}
+				}
+				catch (Exception e) { /* We do not care if this fails */ }
+			}
+
 			if (android.os.Build.VERSION.SDK_INT < 19) // we need API level 19 to call MediaPlayer.TrackInfo.getFormat()
 				return 0;
 
 			android.media.MediaPlayer player = (android.media.MediaPlayer)handle;
-			int degrees = 0;
 			android.media.MediaPlayer.TrackInfo[] tracks = player.getTrackInfo();
 			for (int i = 0; i < tracks.length; i++)
 			{
@@ -226,13 +263,12 @@ namespace Fuse.Controls.VideoImpl.Android
 					{
 						if (format.getFeatureEnabled(android.media.MediaFormat.KEY_ROTATION))
 						{
-							degrees = format.getInteger(android.media.MediaFormat.KEY_ROTATION);
-							break;
+							return format.getInteger(android.media.MediaFormat.KEY_ROTATION);
 						}
 					}
 				}
 			}
-			return degrees;
+			return 0;
 		@}
 
 		[Foreign(Language.Java)]
@@ -343,11 +379,13 @@ namespace Fuse.Controls.VideoImpl.Android
 
 		public void LoadAsync(BundleFile file)
 		{
+			_dataSourcePath = file.BundlePath;
 			LoadAsyncAsset(_handle, file.BundlePath);
 		}
 
 		public void LoadAsync(string url)
 		{
+			_dataSourcePath = url;
 			LoadAsyncUrl(_handle, url);
 		}
 
@@ -471,6 +509,7 @@ namespace Fuse.Controls.VideoImpl.Android
 
 		void OnPrepared()
 		{
+			_rotationDegrees = GetOrientation(_handle, _dataSourcePath);
 			if (Prepared != null)
 				Prepared(this, EventArgs.Empty);
 		}
