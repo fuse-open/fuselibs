@@ -266,6 +266,16 @@ namespace Fuse.Controls.Test
 			}
 		}
 		
+		[Test]
+		public void Issue1082()
+		{
+			var p = new UX.DockPanel.Issue1082();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				Assert.AreEqual(0,p.ip.GetContentSizeCount);
+			}
+		}
+		
 
 		private void TestElementDockLayout(TestRootPanel root, Element element, Fuse.Layouts.Dock dock,
 			int2 rootSize, float2 expectActualSize, float2 expectActualPosition,
