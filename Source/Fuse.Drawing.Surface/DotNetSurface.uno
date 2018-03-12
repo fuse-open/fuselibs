@@ -424,6 +424,7 @@ namespace Fuse.Drawing
 				{
 					case LineSegmentType.Move:
 						prevPoint = to;
+						path.StartFigure();
 						break;
 						
 					case LineSegmentType.Straight:
