@@ -2,7 +2,6 @@
   "Copyright": "Copyright (c) Fusetools AS 2017",
   "Description": "Library for selection behavior",
   "Publisher": "Fusetools AS",
-  "Version": "1.8.0-rc1",
   "Package": {
     "ProjectUrl": "https://fusetools.com"
   },
