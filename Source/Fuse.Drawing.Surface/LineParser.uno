@@ -116,6 +116,7 @@ namespace Fuse.Drawing
 
 		float2 _prevControl;
 		bool _hasPrevControlC, _hasPrevControlQ;
+		bool _hasCurrentPoint;
 		void Execute(char c, char prev)
 		{
 			//implied lineTo following move
@@ -126,6 +127,15 @@ namespace Fuse.Drawing
 				else if (c == 'M')
 					c = 'L';
 			}
+			
+			if (!_hasCurrentPoint && c != 'm' && c != 'M')
+			{
+				Fuse.Diagnostics.UserError( "Path data must start with a move 'M' or 'm' operation: " 
+					+ _data, this );
+				//behavior is undefined at this point (nothing will crash, just may not draw anything valid)
+				
+			}
+			_hasCurrentPoint = true;
 			
 			switch (c)
 			{
