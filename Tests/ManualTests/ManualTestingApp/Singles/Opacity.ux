@@ -20,7 +20,8 @@
 		</NodeGroup>
 				
 		<StackPanel ItemSpacing="10">
-			<Grid Columns="auto,auto,30,30,30,30" Color="Black" CellSpacing="10" Padding="10">
+			<Grid Columns="auto,auto,30,30,30,30" Color="Black" CellSpacing="10" Padding="10"
+				DefaultRow="auto">
 				<OPTest Label="25% White on Black 😀" Color="#FFF4"/>
 				<OPTest Label="50% White on Black 😀" Color="#FFF8"/>
 				<OPTest Label="100% White on Black 😀" Color="#FFFF"/>
@@ -30,7 +31,8 @@
 				<OPTest Label="100% Green on Black 😀" Color="#0F0F"/>
 			</Grid>
 			
-			<Grid Columns="auto,auto,30,30,30,30" Color="White" Padding="10" CellSpacing="10">
+			<Grid Columns="auto,auto,30,30,30,30" Color="White" Padding="10" CellSpacing="10"
+				DefaultRow="auto">
 				<OPTest Label="25% Black on White 😀" Color="#0004"/>
 				<OPTest Label="50% Black on White 😀" Color="#0008"/>
 				<OPTest Label="100% Black on White 😀" Color="#000F"/>

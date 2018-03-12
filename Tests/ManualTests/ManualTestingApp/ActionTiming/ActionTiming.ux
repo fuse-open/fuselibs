@@ -43,11 +43,11 @@
 				<Track Expect="2" Status="Status2" Delay="2"/>
 
 				<!-- triggers when backward starts -->
-				<Track Expect="2" Status="Status6" Direction="Backward"/>
+				<Track Expect="2" Status="Status6" When="Backward"/>
 				
-				<Track Expect="5" Status="Status5" Direction="Backward" AtProgress="0"/>
-				<Track Expect="3.5" Status="Status4" AtProgress="0.5" Direction="Backward"/>
-				<Track Expect="2" Status="Status3" Delay="3" Direction="Backward"/>
+				<Track Expect="5" Status="Status5" When="Backward" AtProgress="0"/>
+				<Track Expect="3.5" Status="Status4" AtProgress="0.5" When="Backward"/>
+				<Track Expect="2" Status="Status3" Delay="3" When="Backward"/>
 			</WhileTrue>
 
 			
@@ -72,10 +72,10 @@
 
 				<!-- triggers when backward starts -->
 				
-				<Track Expect="3" Status="StatusB6" Direction="Backward"/>
+				<Track Expect="3" Status="StatusB6" When="Backward"/>
 				
-				<Track Expect="6" Status="StatusB5" Direction="Backward" AtProgress="0"/>
-				<Track Expect="4.5" Status="StatusB4" AtProgress="0.5" Direction="Backward"/>
+				<Track Expect="6" Status="StatusB5" When="Backward" AtProgress="0"/>
+				<Track Expect="4.5" Status="StatusB4" AtProgress="0.5" When="Backward"/>
 			</WhileTrue>
 			
 		</StackPanel>

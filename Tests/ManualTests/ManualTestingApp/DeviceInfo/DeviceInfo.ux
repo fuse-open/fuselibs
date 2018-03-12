@@ -50,7 +50,7 @@
 				</WhileFalse>
 			</Panel>
 			
-			<Grid ColumnCount="3" Alignment="Center">
+			<Grid Columns="auto,auto,auto" Alignment="Center" DefaultRow="auto">
 				<PlatformCheck Label="Mobile" Value="isMobile()"/>
 				<PlatformCheck Label="iOS" Value="isIOS()"/>
 				<PlatformCheck Label="Android" Value="isAndroid()"/>

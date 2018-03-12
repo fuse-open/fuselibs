@@ -123,7 +123,7 @@ namespace Fuse.Layouts
 				var d = GetDock(c);
 				var horz =  d== Dock.Left || d == Dock.Right;
 				nlp.SetSize(availableSize,!horz,horz);
-				var desiredSize = c.GetMarginSize( nlp );
+				var desiredSize = d != Dock.Fill ? c.GetMarginSize( nlp ) : float2(0);
 
 				switch (d)
 				{

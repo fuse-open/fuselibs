@@ -70,13 +70,18 @@
 			<Image File="../Assets/small_icons_27/arrowright.png" Alignment="Right" Color="0,0.3,0.3,1"/>
 			
 			<Panel ux:Name="Numbers">
-				<Number Alignment="Center" ux:Name="LeftNum" Value="0" Opacity="0">
+				<Panel ux:Class="SLPNumber" Value="0">
+					<float ux:Property="Value"/>
+					<Text Value="{Property this.Value}"/>
+				</Panel>
+				
+				<SLPNumber Alignment="Center" ux:Name="LeftNum" Value="0" Opacity="0">
 					<Translation X="-100"/>
-				</Number>
-				<Number Alignment="Center" ux:Name="MidNum" Value="1" Opacity="1"/>
-				<Number Alignment="Center" ux:Name="RightNum" Value="2" Opacity="0">
+				</SLPNumber>
+				<SLPNumber Alignment="Center" ux:Name="MidNum" Value="1" Opacity="1"/>
+				<SLPNumber Alignment="Center" ux:Name="RightNum" Value="2" Opacity="0">
 					<Translation X="100"/>
-				</Number>
+				</SLPNumber>
 			</Panel>
 			
 			<SwipeGesture Direction="Left" ux:Name="NumSwipeLeft"/>
