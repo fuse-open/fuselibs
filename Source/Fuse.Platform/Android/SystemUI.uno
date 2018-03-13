@@ -71,7 +71,12 @@ namespace Fuse.Platform
 		//------------------------------------------------------------
 		// Taken from platform2 display
 
-		static public float Density { get; private set; }
+		static float _density = 1;
+		static public float Density 
+		{ 
+			get { return _density; } 
+			private set { _density = value; }
+		}
 		static private Rect _frame;
 		static public Rect Frame
 		{
