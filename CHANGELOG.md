@@ -16,6 +16,7 @@
 - Fixed a defect that prevented a single-segment, horizontal or vertical, line from rendering in `Path` with `StretchMode="Uniform"` (the default `StretchMode`).
 - Fixed a defect that prevented a `Path` with a single horizontal or vertical line from rendering in Preview (DotNet).
 - Fixed the width of strokes in Preview (DotNet). They were too small on devices with a density other than `1`.
+- Fixed a Preview/DotNet rendering defect that resulted from unclosed paths in `Path.Data`.
 
 ### Grid
 - Fixed a `Grid` defect that resulted in some cells not calculating the correct layout size.
