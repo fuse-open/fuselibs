@@ -2,7 +2,6 @@
   "Description": "Library for data caching",
   "Publisher": "Fusetools AS",
   "Copyright": "Copyright (c) Fusetools AS 2017",
-  "Version": "1.8.0-rc1",
   "Package": {
     "ProjectUrl": "https://fusetools.com"
   },
