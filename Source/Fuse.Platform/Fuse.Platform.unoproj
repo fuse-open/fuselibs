@@ -8,6 +8,7 @@
   "InternalsVisibleTo": [
     "Fuse.Android",
     "Fuse.Common",
+    "Fuse.Controls.Native",
     "Fuse.Controls.Panels",
     "Fuse.Controls.WebView",
     "Fuse.Elements",
