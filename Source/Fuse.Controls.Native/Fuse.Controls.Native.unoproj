@@ -21,13 +21,14 @@
     "Uno.Threading",
   ],
   "Projects": [
-    "../Fuse.Drawing.Surface/Fuse.Drawing.Surface.unoproj",
+    "../Fuse.Common/Fuse.Common.unoproj",
     "../Fuse.Drawing/Fuse.Drawing.unoproj",
     "../Fuse.Drawing.Planar/Fuse.Drawing.Planar.unoproj",
-    "../Fuse.Triggers/Fuse.Triggers.unoproj",
+    "../Fuse.Drawing.Surface/Fuse.Drawing.Surface.unoproj",
     "../Fuse.Elements/Fuse.Elements.unoproj",
     "../Fuse.Nodes/Fuse.Nodes.unoproj",
-    "../Fuse.Common/Fuse.Common.unoproj",
+    "../Fuse.Platform/Fuse.Platform.unoproj",
+    "../Fuse.Triggers/Fuse.Triggers.unoproj",
   ],
   "Includes": [
     "*",
