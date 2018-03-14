@@ -12,6 +12,13 @@ namespace Fuse.Navigation
 		/** Does nothing. */
 		None
 	}
+	
+	/** @deprecated */
+	public enum RouterGoBackBehavior
+	{
+		GoBack,
+		GoBackAndUp,
+	}
 
 	public enum ModifyRouteHow
 	{
@@ -249,6 +256,23 @@ namespace Fuse.Navigation
 		
 		internal Dictionary<string,RouterPageRoute> Bookmarks = new Dictionary<string,RouterPageRoute>();
 		
+		
+		RouterGoBackBehavior _goBackBehavior = RouterGoBackBehavior.GoBack;
+		/** 
+			@deprecated Exists only to get back deprecated GoUp behavior 2018-03-14 
+			@advanced
+		*/
+		public RouterGoBackBehavior GoBackBehavior
+		{
+			get { return _goBackBehavior; }
+			set 
+			{ 
+				_goBackBehavior = value; 
+				if (value == RouterGoBackBehavior.GoBackAndUp)
+					Fuse.Diagnostics.Deprecated( "Up behavior is deprecated as it isn't well defined.", this );
+			}
+		}
+		
 		/** Goes back to the previous page in the navigation history, or up one level in the route if the history is empty.
 			
 			If the navigation history is nonempty, this pops the previous item from the history and makes
@@ -259,8 +283,13 @@ namespace Fuse.Navigation
 		*/
 		public void GoBack()
 		{
-			if (CanGoBack) Pop();
-			else GoUp();
+			if (CanGoBack) 
+				Pop();
+			else
+			{
+				if (GoBackBehavior == RouterGoBackBehavior.GoBackAndUp)
+					GoUp();
+			}
 		}
 
 		public bool CanGoBack
