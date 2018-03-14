@@ -36,6 +36,12 @@ namespace Fuse
 		public readonly int LineNumber;
 		public readonly string MemberName;
 		public readonly Exception Exception;
+		
+		//The "Near" information is the most recent known position in the user's code (UX) where the 
+		//diagnostics originates. It maybe null.
+		public readonly object NearObject;
+		public readonly object NearLineNumber;
+		public readonly object NearFileName;
 
 		internal bool IsTemporalWarning;
 		
@@ -74,6 +80,17 @@ namespace Fuse
 			MemberName = memberName;
 			//diagnostics only care about the source exception
 			Exception = WrapException.Unwrap(exception);
+
+			// capture Near information at creation in case it changes (like unrooting) prior to being displayed
+			var sl = SourceObject as ISourceLocation;
+			if (sl != null)
+				sl = sl.SourceNearest;
+			if (sl != null)
+			{
+				NearObject = sl;
+				NearLineNumber = sl.SourceLineNumber;
+				NearFileName = sl.SourceFileName;
+			}
 		}
 
 		public override string ToString()
@@ -107,14 +124,11 @@ namespace Fuse
 			if (SourceObject != null)
 				msg += "\n\tObject: " + SourceObject;
 
-			var sl = SourceObject as ISourceLocation;
-			if (sl != null)
-				sl = sl.SourceNearest;
-			if (sl != null)
+			if (NearObject != null)
 			{
-				if (sl != SourceObject)
-					msg += "\n\tNear: " + sl;
-				msg += " (" + sl.SourceFileName + ":" + sl.SourceLineNumber +")";
+				if (NearObject != SourceObject)
+					msg += "\n\tNear: " + NearObject;
+				msg += " (" + NearFileName + ":" + NearLineNumber +")";
 			}
 				
 			if defined(DEBUG)
