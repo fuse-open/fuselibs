@@ -8,7 +8,7 @@ using Fuse.Elements;
 
 namespace Fuse.Layouts
 {
-	public abstract class Layout : PropertyObject
+	public abstract class Layout : PropertyObject, ISourceLocation
 	{
 		/**
 			Don't allow user layout's yet as the API here is not completely stable, nor easy to use.
@@ -220,6 +220,25 @@ namespace Fuse.Layouts
 				return range[1] - sz;
 			else
 				return range[0];
+		}
+		
+		[UXLineNumber]
+		/** @hide */
+		public int SourceLineNumber { get; set; }
+		[UXSourceFileName]
+		/** @hide */
+		public string SourceFileName { get; set; }
+		
+		ISourceLocation ISourceLocation.SourceNearest
+		{
+			get
+			{
+				if (SourceFileName != null)
+					return this;
+				if (Container != null)
+					return ((ISourceLocation)Container).SourceNearest;
+				return null;
+			}
 		}
 	}
 

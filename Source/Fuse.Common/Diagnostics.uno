@@ -15,6 +15,15 @@ namespace Fuse
 		PerformanceWarning,
 	}
 	
+	/** @hide */
+	public interface ISourceLocation
+	{
+		int SourceLineNumber { get; }
+		string SourceFileName { get; }
+		/* Return the nearest ISourceLocation that is known. This should walk up the tree of nodes until a UX source node is found. */
+		ISourceLocation SourceNearest { get; }
+	}
+	
 	/**
 		Assume that any of these properties can be null (except Type).
 	*/
@@ -69,17 +78,25 @@ namespace Fuse
 
 		public override string ToString()
 		{
+			return Format(true);
+		}
+		
+		internal string Format( bool withType )
+		{
 			var msg = string.Empty;
 
-			//use "friendlier" output for some types
-			switch (Type)
+			if (withType)
 			{
-				case DiagnosticType.UserSuccess: msg += "Success"; break;
-				case DiagnosticType.UserError: msg += "Error"; break;
-				case DiagnosticType.UserWarning: msg += "Warning"; break;
-				default: msg += Type; break;
+				//use "friendlier" output for some types
+				switch (Type)
+				{
+					case DiagnosticType.UserSuccess: msg += "Success"; break;
+					case DiagnosticType.UserError: msg += "Error"; break;
+					case DiagnosticType.UserWarning: msg += "Warning"; break;
+					default: msg += Type; break;
+				}
+				msg += ": ";
 			}
-			msg += ": ";
 
 			if (Message != null)
 				msg += Message;
@@ -88,10 +105,23 @@ namespace Fuse
 				msg += ": " + Exception.Message;
 
 			if (SourceObject != null)
-				msg += " in " + SourceObject;
+				msg += "\n\tObject: " + SourceObject;
 
-			if (FilePath != null)
-				msg += "<" + FilePath + ":" + LineNumber +">";
+			var sl = SourceObject as ISourceLocation;
+			if (sl != null)
+				sl = sl.SourceNearest;
+			if (sl != null)
+			{
+				if (sl != SourceObject)
+					msg += "\n\tNear: " + sl;
+				msg += " (" + sl.SourceFileName + ":" + sl.SourceLineNumber +")";
+			}
+				
+			if defined(DEBUG)
+			{
+				if (FilePath != null)
+					msg += "\n\tFuse: " + FilePath + ":" + LineNumber;
+			}
 
 			return msg;
 		}
@@ -142,7 +172,7 @@ namespace Fuse
 			if (DiagnosticReported != null)
 				DiagnosticReported(d);
 			else
-				Uno.Diagnostics.Debug.Log(d.ToString(), d.UnoType);
+				Uno.Diagnostics.Debug.Log(d.Format(false), d.UnoType);
 		}
 
 		class Temporal: IDisposable
