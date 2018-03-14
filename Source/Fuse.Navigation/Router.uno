@@ -157,11 +157,23 @@ namespace Fuse.Navigation
 			set { _isMasterRouter = value; }
 		}
 
+		public delegate void BackAtRootPressedHandler(object sender,EventArgs args);
+		/**
+			Raised when the user pressed the back button (hardware or simulated) and there is no back page (root of navigation stack).
+		*/
+		public event BackAtRootPressedHandler BackAtRootPressed;
 		void OnKeyPressed(object sender, Fuse.Input.KeyEventArgs args)
 		{
 			if (args.Key == Uno.Platform.Key.BackButton)
 			{
-				if (BackButtonAction == BackButtonAction.GoBack) GoBack();
+				if (BackButtonAction == BackButtonAction.GoBack) 
+				{
+					if (!GoBack())
+					{
+						if (BackAtRootPressed != null)
+							BackAtRootPressed(this, new EventArgs());
+					}
+				}
 			}
 		}
 
@@ -281,16 +293,21 @@ namespace Fuse.Navigation
 			If the navigation history is empty, this method goes to a route one level above the current
 			route. If the current route is already a top level route, this method does nothing. 
 		*/
-		public void GoBack()
+		public bool GoBack()
 		{
 			if (CanGoBack) 
-				Pop();
-			else
 			{
-				if (GoBackBehavior == RouterGoBackBehavior.GoBackAndUp)
-					GoUp();
+				Pop();
+				return true;
 			}
+			else if (GoBackBehavior == RouterGoBackBehavior.GoBackAndUp)
+			{
+				return GoUp();
+			}
+			
+			return false;
 		}
+		public void IBaseNavigation.GoBack() { GoBack(); }
 
 		public bool CanGoBack
 		{
@@ -301,27 +318,20 @@ namespace Fuse.Navigation
 			}
 		}
 		
-		void GoUp()
+		bool GoUp()
 		{
 			var cur = GetCurrentRouterPageRoute();
 			if (cur == null) 
-				return;
+				return false;
 				
 			var up = cur.Up();
-			if (up == cur) 
-			{
-				OnUpFromRoot();
-			}
-			else 
+			if (up != cur) 
 			{
 				SetRoute(up, NavigationGotoMode.Transition, RoutingOperation.Pop, "");
+				return true;
 			}
-		}
-
-		void OnUpFromRoot()
-		{
-			// TODO: Raise event(?) to notify that the user has performed a GoBack
-			// while already at root level. This should usually leave the app.
+			
+			return false;
 		}
 
 		void Pop()
