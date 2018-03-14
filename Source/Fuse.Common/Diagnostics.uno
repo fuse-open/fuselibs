@@ -122,7 +122,7 @@ namespace Fuse
 				msg += ": " + Exception.Message;
 
 			if (SourceObject != null)
-				msg += "\n\tObject: " + SourceObject;
+				msg += "\n\tIn: " + SourceObject;
 
 			if (NearObject != null)
 			{
