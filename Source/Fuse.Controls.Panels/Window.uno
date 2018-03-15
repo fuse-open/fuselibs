@@ -19,7 +19,7 @@ namespace Fuse.Reactive
 		Drawing anythng but a background (image or brush fill) in the gradient areas is not recommended as it may be obscured by the system UI or the hardware.
 		
 		
-		Refer to @SafeEdgePanel and [Safe Layout](Docs/SafeLayout) for more information about safe layouts and device margins.
+		Refer to @SafeEdgePanel and [Safe Layout](articles:layout/safe-layout.md) for more information about safe layouts and device margins.
 	*/
 	[UXFunction("window")]
 	public class WindowFunction : Fuse.Reactive.Expression
