@@ -53,7 +53,7 @@ namespace Fuse.Triggers
 		protected override void OnRooted()
 		{
 			base.OnRooted();
-			//https://github.com/fusetools/fuselibs/issues/1697
+			//https://github.com/fusetools/fuselibs-private/issues/1697
 			//delay a frame to avoid first frame delay stutter
 			BypassActivate();
 			if (DelayFrame)

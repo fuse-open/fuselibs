@@ -499,7 +499,7 @@ namespace Fuse.Triggers
 			{
 				//TODO: like GoProgress should this also delay? mortoray: my branch is meant to address
 				//such lag, so possibly not
-				//ref: https://github.com/fusetools/fuselibs/issues/2652
+				//ref: https://github.com/fusetools/fuselibs-private/issues/2652
 				PlayTo(p, d);
 			}
 			else if (args.Mode == NavigationMode.Seek)

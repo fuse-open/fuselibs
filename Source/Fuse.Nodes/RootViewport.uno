@@ -181,7 +181,7 @@ namespace Fuse
 			var pixelSize = (float2)Application.Current.GraphicsController.Backbuffer.Size;
 
 			//workaround for empty size on some platforms while minimized
-			//https://github.com/fusetools/fuselibs/issues/1772
+			//https://github.com/fusetools/fuselibs-private/issues/1772
 			if (osPointSize.X < 1 || osPointSize.Y < 1)
 			{
 				_pixelSize = float2(0);

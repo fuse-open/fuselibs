@@ -16,7 +16,7 @@ namespace Fuse.Reactive
 		internal EventRecord(IScriptEvent args, object sender)
 		{
 			//data must be captured node since the node could be unrooted/changed prior to `Call`
-			//https://github.com/fusetools/fuselibs/issues/1995
+			//https://github.com/fusetools/fuselibs-private/issues/1995
 			_node = sender as Node;
 
 			if (_node != null)

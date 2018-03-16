@@ -221,7 +221,7 @@ namespace Fuse.Triggers.Test
 				//the pulse turnaround could take 1 frame, it's uncertain if this an issue (the 2* is because
 				//or stepping may not line up precisely, thus 1-frame delayed as well)
 				//NOTE: This is probably an issue, since a pulse trigger takes longer than expected
-				//https://github.com/fusetools/fuselibs/issues/2005
+				//https://github.com/fusetools/fuselibs-private/issues/2005
 				var tolerance = 2*root.StepIncrement + _zeroTolerance;
 				Assert.AreEqual(0.5f,TriggerProgress(p.T1), tolerance);
 				Assert.AreEqual(0.5f,TriggerProgress(p.T2), tolerance);
@@ -461,7 +461,7 @@ namespace Fuse.Triggers.Test
 		[Test]
 		/**
 			Tests situations where an action has a delay beyond the end of the natural duration.
-			https://github.com/fusetools/fuselibs/issues/2472
+			https://github.com/fusetools/fuselibs-private/issues/2472
 			
 			The test here works with the actual playback, not just checking the duration, to ensure it matches the logical expectation, not the implementation detail.
 		*/

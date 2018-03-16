@@ -9,7 +9,7 @@ namespace Fuse.Animations
 	}
 
 	/*
-		TODO: https://github.com/fusetools/fuselibs/issues/1344
+		TODO: https://github.com/fusetools/fuselibs-private/issues/1344
 		This is really meant to have the `Value` as just a `double`, not a generic. In particular for
 		the Source/ValueRange properties.
 	*/

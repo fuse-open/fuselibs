@@ -236,7 +236,7 @@ namespace Fuse.Navigation
 		bool _startedSeek;
 		void IGesture.OnCaptureChanged(PointerEventArgs args, CaptureType how, CaptureType prev)
 		{
-			//always reset coords to avoid jump (https://github.com/fusetools/fuselibs/issues/1175)
+			//always reset coords to avoid jump (https://github.com/fusetools/fuselibs-private/issues/1175)
 			_startCoord = _currentCoord = args.WindowPoint;
 			_prevDistance = 0;
 			_startTime = Time.FrameTime;

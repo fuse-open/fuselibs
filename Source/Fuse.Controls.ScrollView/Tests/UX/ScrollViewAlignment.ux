@@ -1,5 +1,5 @@
 <Panel ux:Class="UX.ScrollViewAlignment">
-	<!-- Note not padding is tested yet: https://github.com/fusetools/fuselibs/issues/1765 -->
+	<!-- Note not padding is tested yet: https://github.com/fusetools/fuselibs-private/issues/1765 -->
 	<ScrollView ux:Name="SV1">
 		<StackContent Alignment="Bottom" ux:Name="C1"/>
 	</ScrollView>

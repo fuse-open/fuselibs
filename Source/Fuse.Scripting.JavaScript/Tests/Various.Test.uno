@@ -348,7 +348,7 @@ namespace Fuse.Reactive.Test
 		}
 
 		[Test]
-		/* Tests https://github.com/fusetools/fuselibs/issues/2398 */
+		/* Tests https://github.com/fusetools/fuselibs-private/issues/2398 */
 		public void Issue2398()
 		{
 			var e = new UX.Issue2398();
@@ -468,7 +468,7 @@ namespace Fuse.Reactive.Test
 		}
 
 		[Test]
-		[Ignore("https://github.com/fusetools/fuselibs/issues/2809")]
+		[Ignore("https://github.com/fusetools/fuselibs-private/issues/2809")]
 		public void PumpMessagesStackOverflow()
 		{
 			var e = new UX.PumpMessagesStackOverflow();

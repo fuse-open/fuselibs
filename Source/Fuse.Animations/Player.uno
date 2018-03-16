@@ -59,7 +59,7 @@ namespace Fuse.Animations
 		{
 			Source = Current;
 			//If currently animating then the current frame must still be considerd for animation
-			//this is important for issues like  https://github.com/fusetools/fuselibs/issues/788
+			//this is important for issues like  https://github.com/fusetools/fuselibs-private/issues/788
 			//the time check is to avoid double stepping if animation already done this frame
 			if (isAnimating && _stepTime < Time.FrameTime)
 				SourceTime = Time.FrameTime - (Time.FrameInterval * _timeMultiplier);

@@ -219,7 +219,7 @@ namespace Fuse.Reactive.Test
 		}
 
 		[Test]
-		[Ignore("https://github.com/fusetools/fuselibs/issues/3854")]
+		[Ignore("https://github.com/fusetools/fuselibs-private/issues/3854")]
 		public void DelayFunction()
 		{
 			var e = new UX.Expressions();

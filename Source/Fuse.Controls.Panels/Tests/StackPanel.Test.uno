@@ -221,7 +221,7 @@ namespace Fuse.Controls.Test
 		}
 		
 		[Test]
-		public void StackLayoutCompat() //https://github.com/fusetools/fuselibs/issues/1484
+		public void StackLayoutCompat() //https://github.com/fusetools/fuselibs-private/issues/1484
 		{
 			using (var root = new TestRootPanel())
 			{

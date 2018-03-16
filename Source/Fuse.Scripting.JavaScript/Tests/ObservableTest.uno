@@ -100,7 +100,7 @@ namespace Fuse.Reactive.Test
 		}
 		
 		[Test]
-		//catches https://github.com/fusetools/fuselibs/issues/3371
+		//catches https://github.com/fusetools/fuselibs-private/issues/3371
 		public void RefreshAll()
 		{
 			var p = new UX.Observable.RefreshAll();
@@ -1081,7 +1081,7 @@ namespace Fuse.Reactive.Test
 		}
 		
 		[Test]
-		//tests the originally reported problem in https://github.com/fusetools/fuselibs/issues/3695
+		//tests the originally reported problem in https://github.com/fusetools/fuselibs-private/issues/3695
 		public void Parameter()
 		{
 			var p = new UX.Observable.Parameter();

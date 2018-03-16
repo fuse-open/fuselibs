@@ -185,7 +185,7 @@ namespace Fuse.Controls
 
 		//TODO: This defniitely needs to be cached if the path itself has not changed (it is called often enough
 		//to make a difference)
-		//https://github.com/fusetools/fuselibs/issues/3718
+		//https://github.com/fusetools/fuselibs-private/issues/3718
 		Rect CalcNaturalExtents()
 		{
 			return LineMetrics.GetBounds(_segments);

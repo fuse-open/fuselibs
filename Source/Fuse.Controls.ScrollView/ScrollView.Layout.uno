@@ -81,7 +81,7 @@ namespace Fuse.Controls
 				var diff = newOffset - oldOffset;
 				//gestures need the "diff" to offset their scrolling interaction
 				//don't exceed min/max though as to not trigger any ends animation
-				//https://github.com/fusetools/fuselibs/issues/2891
+				//https://github.com/fusetools/fuselibs-private/issues/2891
 				//var nsp = Math.Min( MaxScroll, Math.Max( MinScroll, ScrollPosition + diff ) );
 				var nsp = ScrollPosition + diff;
 				var ndiff = nsp - ScrollPosition;

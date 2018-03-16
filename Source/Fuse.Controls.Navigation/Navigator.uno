@@ -217,7 +217,7 @@ namespace Fuse.Controls
 					routerPage.Context == curPage.RouterPage.Context)
 					return new PrepareResult{ Page = curPage, Routing = RoutingResult.NoChange };
 					
-				// https://github.com/fusetools/fuselibs/issues/2982
+				// https://github.com/fusetools/fuselibs-private/issues/2982
 				var compat = CommonNavigation.CompatibleParameter(routerPage.Parameter, curPage.RouterPage.Parameter) && routerPage.Context == curPage.RouterPage.Context;
 					
 				//reusable page with parameter change
@@ -251,7 +251,7 @@ namespace Fuse.Controls
 			}
 			
 			Visual useVisual = null;
-			if (routerPage.Path == null) //this is a valid path element  https://github.com/fusetools/fuselibs/issues/1869
+			if (routerPage.Path == null) //this is a valid path element  https://github.com/fusetools/fuselibs-private/issues/1869
 			{
 				useVisual = null;
 			}

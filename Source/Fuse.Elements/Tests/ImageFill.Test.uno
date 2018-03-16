@@ -40,7 +40,7 @@ namespace Fuse.Elements.Test
 		
 		[Test]
 		//tests a variation that changes the resource, this caused the leak in 
-		//https://github.com/fusetools/fuselibs/issues/3502
+		//https://github.com/fusetools/fuselibs-private/issues/3502
 		public void ResourceReplace()
 		{
 			var p = new global::UX.ImageFill.ResourceReplace();
@@ -92,7 +92,7 @@ namespace Fuse.Elements.Test
 		}
 		
 		[Test]
-		[Ignore("https://github.com/fusetools/fuselibs/issues/3511")]
+		[Ignore("https://github.com/fusetools/fuselibs-private/issues/3511")]
 		public void Calibrate()
 		{
 			var p = new global::UX.ImageFill.Calibrate();
@@ -139,7 +139,7 @@ namespace Fuse.Elements.Test
 		
 		[Test]
 		//Loading is immediately set, not waiting until first draw
-		//https://github.com/fusetools/fuselibs/issues/3514
+		//https://github.com/fusetools/fuselibs-private/issues/3514
 		public void Loading()
 		{
 			var p = new global::UX.ImageFill.Loading();

@@ -28,7 +28,7 @@
 			<h2 ColumnSpan="2">Single Line</h2>
 			<Indicator ux:Name="IndSingle"/>
 			<StdTextInput ux:Name="SingleInput" Value="Scroll page up/down while editing">
-			<!-- TODO:https://github.com/fusetools/fuselibs/issues/1465
+			<!-- TODO:https://github.com/fusetools/fuselibs-private/issues/1465
 				TextAlignment="Center" -->
 				<WhileFocusWithin><Change IndSingle.Value="true"/></WhileFocusWithin>
 			</StdTextInput>
@@ -37,7 +37,7 @@
 			<Indicator ux:Name="IndPassword"/>
 			<StdTextInput ux:Name="PasswordInput" IsPassword="true" PlaceholderText="Password"
 				Background="#FFc">
-				<!-- TODO: https://github.com/fusetools/fuselibs/issues/1387
+				<!-- TODO: https://github.com/fusetools/fuselibs-private/issues/1387
 					Alignment="Right" -->
 				<WhileFocusWithin><Change IndPassword.Value="true"/></WhileFocusWithin>
 			</StdTextInput>

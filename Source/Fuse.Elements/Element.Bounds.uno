@@ -64,7 +64,7 @@ namespace Fuse.Elements
 
 		//how much of a pixel must be covered by a virtual pixel/bound to be considered as covering that pixel
 		//otherwise Floor/Ceil could round incorrectly on near exact values due to precision
-		//refer to: https://github.com/fusetools/fuselibs/issues/735
+		//refer to: https://github.com/fusetools/fuselibs-private/issues/735
 		const float pixelEpsilon = 0.005f;
 		
 		internal Recti GetViewportInvertPixelRect(DrawContext dc, Rect localRegion)

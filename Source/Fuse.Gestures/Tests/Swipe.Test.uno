@@ -49,7 +49,7 @@ namespace Fuse.Gestures.Test
 				Assert.AreEqual(1, p.SwipeInactive.PerformedCount);
 				
 				//swipe to full and release 
-				//https://github.com/fusetools/fuselibs/issues/1655
+				//https://github.com/fusetools/fuselibs-private/issues/1655
 				root.PointerSwipe( float2(500,200), float2(200,200), 500 );
 				//shouldn't need to stabilize
 				

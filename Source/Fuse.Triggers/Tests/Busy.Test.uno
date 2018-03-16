@@ -409,7 +409,7 @@ namespace Fuse.Triggers.Test
 		}
 		
 		[Test]
-		//minimal test for https://github.com/fusetools/fuselibs/issues/3532
+		//minimal test for https://github.com/fusetools/fuselibs-private/issues/3532
 		public void Removed()
 		{
 			var p = new UX.Busy.Removed();

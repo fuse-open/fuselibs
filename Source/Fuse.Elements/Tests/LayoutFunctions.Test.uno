@@ -9,7 +9,7 @@ namespace Fuse.Elements.Test
 	public class LayoutFunctionsTest : TestBase
 	{
 		[Test]
-		//https://github.com/fusetools/fuselibs/issues/4189
+		//https://github.com/fusetools/fuselibs-private/issues/4189
 		public void Issue4189()
 		{
 			var p = new global::UX.LayoutFunctions.Issue4189();

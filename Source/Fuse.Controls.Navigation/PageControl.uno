@@ -105,7 +105,7 @@ namespace Fuse.Controls
 		
 		public PageControl()
 		{
-			//https://github.com/fusetools/fuselibs/issues/1548
+			//https://github.com/fusetools/fuselibs-private/issues/1548
 			HitTestMode = HitTestMode.LocalBounds | HitTestMode.Children;
 			
 			//defaults for NavigationControl

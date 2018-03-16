@@ -13,7 +13,7 @@ namespace Fuse.Reactive.Test
 		public void BehaviorDataContext()
 		{
 			// Tests that nodes get correct data context even if injected elsewhere in the tree
-			// ref https://github.com/fusetools/fuselibs/issues/3211
+			// ref https://github.com/fusetools/fuselibs-private/issues/3211
 
 			var e = new UX.DataBinding.BehaviorDataContext();
 			using (var root = TestRootPanel.CreateWithChild(e))
@@ -127,7 +127,7 @@ namespace Fuse.Reactive.Test
 				Assert.AreEqual( p.A, p.Bind.Visual );
 				Assert.AreEqual( p.B, p.Bind.Trigger );
 				
-				//https://github.com/fusetools/fuselibs/issues/3538
+				//https://github.com/fusetools/fuselibs-private/issues/3538
 				//Assert.AreEqual( p.C, p.SBind.Node );
 				Assert.AreEqual( p.B, p.SBind.Trigger );
 			}

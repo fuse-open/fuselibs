@@ -42,7 +42,7 @@ namespace Fuse.Reactive.Bindings.Test
 		}
 		
 		[Test]
-		[Ignore("https://github.com/fusetools/fuselibs/issues/3806")]
+		[Ignore("https://github.com/fusetools/fuselibs-private/issues/3806")]
 		public void Anchor()
 		{
 			var p = new UX.Expression.Anchor();
