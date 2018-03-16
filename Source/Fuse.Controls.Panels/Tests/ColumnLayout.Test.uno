@@ -23,6 +23,8 @@ namespace Fuse.Controls.Test
 				Assert.AreEqual(float2(55,0), p.P2.ActualPosition);
 				Assert.AreEqual(float2(0,55), p.P3.ActualPosition);
 				Assert.AreEqual(float2(0,120), p.P4.ActualPosition);
+				Assert.AreEqual(2, p.L.SourceLineNumber);
+				Assert.AreEqual("UX/ColumnLayout1.ux", p.L.SourceFileName);
 			}
 		}
 		
@@ -39,6 +41,8 @@ namespace Fuse.Controls.Test
 				Assert.AreEqual(float2(0,75), p.P4.ActualPosition);
 				Assert.AreEqual(float2(90,75), p.P5.ActualPosition);
 				Assert.AreEqual(float2(100,0), p.P6.ActualPosition);
+				Assert.AreEqual(2, p.L.SourceLineNumber);
+				Assert.AreEqual("UX/ColumnLayout2.ux", p.L.SourceFileName);
 			}
 		}
 		
@@ -55,6 +59,8 @@ namespace Fuse.Controls.Test
 				Assert.AreEqual(float2(100,0), p.P2.ActualPosition);
 				Assert.AreEqual(float2(0,50), p.P3.ActualPosition);
 				Assert.AreEqual(float2(100,50), p.P4.ActualPosition);
+				Assert.AreEqual(2, p.L.SourceLineNumber);
+				Assert.AreEqual("UX/ColumnLayout3.ux", p.L.SourceFileName);
 			}
 		}
 		
@@ -66,6 +72,8 @@ namespace Fuse.Controls.Test
 			{
 				Assert.AreEqual(2,p.L.ColumnCount);
 				Assert.AreEqual(50,p.L.ColumnSize);
+				Assert.AreEqual(2, p.L.SourceLineNumber);
+				Assert.AreEqual("UX/ColumnLayout4.ux", p.L.SourceFileName);
 			}
 		}
 		
@@ -82,6 +90,8 @@ namespace Fuse.Controls.Test
 				Assert.AreEqual(float2(100,0), p.P2.ActualPosition);
 				Assert.AreEqual(float2(0,50), p.P3.ActualPosition);
 				Assert.AreEqual(float2(100,50), p.P4.ActualPosition);
+				Assert.AreEqual(2, p.L.SourceLineNumber);
+				Assert.AreEqual("UX/ColumnLayout5.ux", p.L.SourceFileName);
 			}
 		}
 		
