@@ -4,7 +4,7 @@ using Uno.Collections;
 
 namespace Fuse.Reactive
 {
-	public abstract class Expression: IExpression
+	public abstract class Expression: IExpression, ISourceLocation
 	{
 		/** See `IExpression.Subscribe` for docs.	*/
 		public abstract IDisposable Subscribe(IContext context, IListener listener);
@@ -37,6 +37,14 @@ namespace Fuse.Reactive
 			}
 		}
 		
+		[UXLineNumber]
+		/** @hide */
+		public int SourceLineNumber { get; set; }
+		[UXSourceFileName]
+		/** @hide */
+		public string SourceFileName { get; set; }
+		
+		ISourceLocation ISourceLocation.SourceNearest { get { return this; } }
 	}
 
 	public abstract class ConstantExpression: Expression

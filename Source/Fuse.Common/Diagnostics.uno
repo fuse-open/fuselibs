@@ -15,6 +15,15 @@ namespace Fuse
 		PerformanceWarning,
 	}
 	
+	/** @hide */
+	public interface ISourceLocation
+	{
+		int SourceLineNumber { get; }
+		string SourceFileName { get; }
+		/* Return the nearest ISourceLocation that is known. This should walk up the tree of nodes until a UX source node is found. */
+		ISourceLocation SourceNearest { get; }
+	}
+	
 	/**
 		Assume that any of these properties can be null (except Type).
 	*/
@@ -27,6 +36,12 @@ namespace Fuse
 		public readonly int LineNumber;
 		public readonly string MemberName;
 		public readonly Exception Exception;
+		
+		//The "Near" information is the most recent known position in the user's code (UX) where the 
+		//diagnostics originates. It maybe null.
+		public readonly object NearObject;
+		public readonly object NearLineNumber;
+		public readonly object NearFileName;
 
 		internal bool IsTemporalWarning;
 		
@@ -65,21 +80,40 @@ namespace Fuse
 			MemberName = memberName;
 			//diagnostics only care about the source exception
 			Exception = WrapException.Unwrap(exception);
+
+			// capture Near information at creation in case it changes (like unrooting) prior to being displayed
+			var sl = SourceObject as ISourceLocation;
+			if (sl != null)
+				sl = sl.SourceNearest;
+			if (sl != null)
+			{
+				NearObject = sl;
+				NearLineNumber = sl.SourceLineNumber;
+				NearFileName = sl.SourceFileName;
+			}
 		}
 
 		public override string ToString()
 		{
+			return Format(true);
+		}
+		
+		internal string Format( bool withType )
+		{
 			var msg = string.Empty;
 
-			//use "friendlier" output for some types
-			switch (Type)
+			if (withType)
 			{
-				case DiagnosticType.UserSuccess: msg += "Success"; break;
-				case DiagnosticType.UserError: msg += "Error"; break;
-				case DiagnosticType.UserWarning: msg += "Warning"; break;
-				default: msg += Type; break;
+				//use "friendlier" output for some types
+				switch (Type)
+				{
+					case DiagnosticType.UserSuccess: msg += "Success"; break;
+					case DiagnosticType.UserError: msg += "Error"; break;
+					case DiagnosticType.UserWarning: msg += "Warning"; break;
+					default: msg += Type; break;
+				}
+				msg += ": ";
 			}
-			msg += ": ";
 
 			if (Message != null)
 				msg += Message;
@@ -88,10 +122,20 @@ namespace Fuse
 				msg += ": " + Exception.Message;
 
 			if (SourceObject != null)
-				msg += " in " + SourceObject;
+				msg += "\n\tIn: " + SourceObject;
 
-			if (FilePath != null)
-				msg += "<" + FilePath + ":" + LineNumber +">";
+			if (NearObject != null)
+			{
+				if (NearObject != SourceObject)
+					msg += "\n\tNear: " + NearObject;
+				msg += " (" + NearFileName + ":" + NearLineNumber +")";
+			}
+				
+			if defined(DEBUG)
+			{
+				if (FilePath != null)
+					msg += "\n\tFuse: " + FilePath + ":" + LineNumber;
+			}
 
 			return msg;
 		}
@@ -142,7 +186,7 @@ namespace Fuse
 			if (DiagnosticReported != null)
 				DiagnosticReported(d);
 			else
-				Uno.Diagnostics.Debug.Log(d.ToString(), d.UnoType);
+				Uno.Diagnostics.Debug.Log(d.Format(false), d.UnoType);
 		}
 
 		class Temporal: IDisposable

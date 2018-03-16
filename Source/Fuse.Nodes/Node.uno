@@ -19,7 +19,8 @@ namespace Fuse
 
 		@remarks Docs/RootedRemarks.md
 	*/
-	public abstract partial class Node: PropertyObject, IList<Binding>, Scripting.IScriptObject, IProperties, INotifyUnrooted
+	public abstract partial class Node: PropertyObject, IList<Binding>, Scripting.IScriptObject, IProperties,
+		INotifyUnrooted, ISourceLocation
 	{
 		Scripting.Context _scriptContext;
 		object _scriptObject;
@@ -172,6 +173,25 @@ namespace Fuse
 				current = current.Parent;
 			}
 			return null;
+		}
+		
+		[UXLineNumber]
+		/** @hide */
+		public int SourceLineNumber { get; set; }
+		[UXSourceFileName]
+		/** @hide */
+		public string SourceFileName { get; set; }
+		
+		ISourceLocation ISourceLocation.SourceNearest
+		{
+			get
+			{
+				if (SourceFileName != null)
+					return this;
+				if (Parent != null)
+					return ((ISourceLocation)Parent).SourceNearest;
+				return null;
+			}
 		}
 	}
 }
