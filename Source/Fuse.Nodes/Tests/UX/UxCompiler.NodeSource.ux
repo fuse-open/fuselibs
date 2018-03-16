@@ -1,0 +1,5 @@
+<Panel ux:Class="UX.UxCompiler.NodeSource">
+	<Panel ux:Name="P1" />
+	<Panel ux:Name="P2" />
+	<Panel ux:Name="P3" />
+</Panel>
