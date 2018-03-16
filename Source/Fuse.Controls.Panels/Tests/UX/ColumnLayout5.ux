@@ -1,5 +1,5 @@
 <Panel ux:Class="UX.ColumnLayout5" Alignment="HorizontalCenter" MaxWidth="250">
-	<ColumnLayout ColumnSize="100"/>
+	<ColumnLayout ColumnSize="100" ux:Name="L"/>
 	<Panel Height="50" ux:Name="P1"/>
 	<Panel Height="50" ux:Name="P2"/>
 	<Panel Height="50" ux:Name="P3"/>
