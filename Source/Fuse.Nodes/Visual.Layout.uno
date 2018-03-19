@@ -267,7 +267,7 @@ namespace Fuse
 		internal float2 InternSnap(float2 p) { return Snap(p); }
 		protected float2 Snap(float2 p)
 		{
-			var s = Math.Round(p * AbsoluteZoom) / AbsoluteZoom;
+			var s = Math.Floor(p * AbsoluteZoom + 0.5f) / AbsoluteZoom;
 			return s;
 		}
 		

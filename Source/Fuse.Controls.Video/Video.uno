@@ -447,7 +447,7 @@ namespace Fuse.Controls
 		}
 
 		/*** The position of the video in seconds */
-		public double Position
+		public new double Position
 		{
 			get { return Playback != null ? Playback.Position : 0.0; }
 			set { if (Playback != null) Playback.Position = value; }

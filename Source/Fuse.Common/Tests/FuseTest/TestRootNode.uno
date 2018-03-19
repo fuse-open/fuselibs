@@ -138,12 +138,12 @@ namespace FuseTest
 
 		public float2 SnapToPixelsPos(float2 p)
 		{
-			return Math.Round(p * this.AbsoluteZoom) / this.AbsoluteZoom;
+			return Math.Floor(p * this.AbsoluteZoom + 0.5f) / this.AbsoluteZoom;
 		}
 
 		public float SnapToPixelsPos(float p)
 		{
-			return Math.Round(p * this.AbsoluteZoom) / this.AbsoluteZoom;
+			return Math.Floor(p * this.AbsoluteZoom + 0.5f) / this.AbsoluteZoom;
 		}
 
 		public float2 SnapToPixelsSize(float2 p)

@@ -335,7 +335,7 @@ namespace Fuse.Controls
 		void DrawCaret(DrawContext dc)
 		{
 			var caretContext = CreateCaretContext();
-			var caretPosition = Math.Round(caretContext.GetVisualPosition(_caretIndex)) / Viewport.PixelsPerPoint;
+			var caretPosition = Math.Floor(caretContext.GetVisualPosition(_caretIndex) + 0.5f) / Viewport.PixelsPerPoint;
 			var caretSize = float2(1, TextRenderer.Font.Value.LineHeight) / Viewport.PixelsPerPoint;
 			var caretRect = new Rect(caretPosition, caretSize);
 
@@ -360,8 +360,8 @@ namespace Fuse.Controls
 
 			foreach (var rect in selectionRects)
 			{
-				var pos = Math.Round(rect.Position / Viewport.PixelsPerPoint);
-				var size = Math.Round(rect.Size / Viewport.PixelsPerPoint);
+				var pos = Math.Floor(rect.Position / Viewport.PixelsPerPoint + 0.5f);
+				var size = Math.Floor(rect.Size / Viewport.PixelsPerPoint + 0.5f);
 				Fuse.Drawing.Primitives.Rectangle.Singleton.Fill(dc, this, size, float4(0), _selectionBrush, pos);
 			}
 		}

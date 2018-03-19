@@ -90,7 +90,6 @@ namespace Fuse.Drawing
 		*/
 		static public float2 AdjustedOffsets( float2 start, float2 end, ref float2 adjStart, ref float2 adjEnd )
 		{
-			var inLen = Vector.Distance(start,end);
 			var dir = end - start;
 			//distance along input line
 			float tAS = 0, tAE = 0;
