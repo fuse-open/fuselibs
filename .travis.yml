@@ -1,5 +1,7 @@
 os: osx
 
+osx_image: xcode9.2
+
 language: cpp
 
 compiler: clang
