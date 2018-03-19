@@ -23,8 +23,12 @@ namespace Fuse.Layouts
 			get { return _itemHeight; }
 			set
 			{
-				_itemHeight = value;
-				_hasItemHeight = true;
+				if (!_hasItemHeight || _itemHeight != value)
+				{
+					_itemHeight = value;
+					_hasItemHeight = true;
+					InvalidateLayout();
+				}
 			}
 		}
 
@@ -35,8 +39,12 @@ namespace Fuse.Layouts
 			get { return _itemWidth; }
 			set
 			{
-				_itemWidth = value;
-				_hasItemWidth = true;
+				if (!_hasItemWidth || _itemWidth != value)
+				{
+					_itemWidth = value;
+					_hasItemWidth = true;
+					InvalidateLayout();
+				}
 			}
 		}
 
@@ -46,7 +54,11 @@ namespace Fuse.Layouts
 			get { return _orientation; }
 			set
 			{
-				_orientation = value;
+				if (_orientation != value)
+				{
+					_orientation = value;
+					InvalidateLayout();
+				}
 			}
 		}
 		
@@ -61,7 +73,11 @@ namespace Fuse.Layouts
 			get { return _flowDirection; }
 			set
 			{
-				_flowDirection = value;
+				if (_flowDirection != value)
+				{
+					_flowDirection = value;
+					InvalidateLayout();
+				}
 			}
 		}
 
