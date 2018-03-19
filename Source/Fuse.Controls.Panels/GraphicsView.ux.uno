@@ -273,7 +273,7 @@ namespace Fuse.Controls
 
 		[Obsolete]
 		/** Deprecated use ActualSize instead. 2018-01-02 */
-		public float2 Size
+		public new float2 Size
 		{
 			get { return ActualSize; }
 		}
