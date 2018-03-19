@@ -86,7 +86,7 @@ namespace Fuse.Test
 		
 		[Test]
 		/*
-			Tests an invalidation issue https://github.com/fusetools/fuselibs/issues/2318
+			Tests an invalidation issue https://github.com/fusetools/fuselibs-private/issues/2318
 		*/
 		public void HitTestBounds2318()
 		{

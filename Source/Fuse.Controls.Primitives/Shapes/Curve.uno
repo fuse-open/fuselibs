@@ -27,7 +27,7 @@ namespace Fuse.Controls
 
 	//TODO: This should not be a `Node` sinec it's too heavy of an object
 	//it only needs to be a `PropertyObject`, but until `Each` supports non-node types we need to use `Node`
-	//https://github.com/fusetools/fuselibs/issues/3676
+	//https://github.com/fusetools/fuselibs-private/issues/3676
 	/**
 		Defines a point inside a @Curve
 		

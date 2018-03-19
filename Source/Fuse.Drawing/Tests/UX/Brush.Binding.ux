@@ -7,6 +7,6 @@
 	<Rectangle Fill="{a}" ux:Name="A"/>
 	<Rectangle Fill="{b}" ux:Name="B"/>
 	<!-- just ensures it doesn't crash horribly -->
-	<!-- TODO: https://github.com/fusetools/fuselibs/issues/3540 -->
+	<!-- TODO: https://github.com/fusetools/fuselibs-private/issues/3540 -->
 <!-- 	<Rectangle Fill="{g}" ux:Name="G"/> -->
 </Panel>

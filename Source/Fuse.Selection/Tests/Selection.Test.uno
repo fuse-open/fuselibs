@@ -276,7 +276,7 @@ namespace Fuse.Gestures.Test
 				var three = root.FindNodeByName("three") as Visual;
 				Assert.IsFalse(three == null);
 				
-				//https://github.com/fusetools/fuselibs/issues/3385
+				//https://github.com/fusetools/fuselibs-private/issues/3385
 				//this has been switch to a 0-duration animator for now
 				Assert.AreEqual(1,TriggerProgress(two.FirstChild<WhileSelected>()));
 				Assert.AreEqual(0,TriggerProgress(one.FirstChild<WhileSelected>()));

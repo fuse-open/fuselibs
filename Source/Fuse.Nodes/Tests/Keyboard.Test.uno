@@ -18,7 +18,7 @@ namespace Fuse.Test
 			using (var trp = new TestRootSingletonsGuard(root))
 			{
 				//should not crash
-				//https://github.com/fusetools/fuselibs/issues/2948
+				//https://github.com/fusetools/fuselibs-private/issues/2948
 				Keyboard.RaiseKeyPressed(Uno.Platform.Key.Left, false, false, false, false);
 				Assert.AreEqual(root.RootViewport, keyGlobal.LastKeyPressedArgs.Visual);
 				Assert.AreEqual(null, keyB.LastKeyPressedArgs);

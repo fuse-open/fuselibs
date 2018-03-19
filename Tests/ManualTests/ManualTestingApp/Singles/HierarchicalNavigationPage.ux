@@ -32,8 +32,8 @@
 				</WhileCanGoForward>
 			</StdButton>
 		</WrapPanel>
-		<!-- TODO: https://github.com/fusetools/fuselibs/issues/1203 -->
-		<!-- TODO: https://github.com/fusetools/fuselibs/issues/1204 -->
+		<!-- TODO: https://github.com/fusetools/fuselibs-private/issues/1203 -->
+		<!-- TODO: https://github.com/fusetools/fuselibs-private/issues/1204 -->
 		<PageIndicator Dock="Top" Navigation="Navi" Margin="0,3,0,6">
 			<StackPanel ux:Template="Dot" Orientation="Horizontal">
 				<Panel Margin="5,0,0,0">

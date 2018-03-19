@@ -102,7 +102,7 @@ namespace Fuse.Controls
 
 			if (_textRenderer != null)
 			{
-				//Refer https://github.com/fusetools/fuselibs/issues/1766
+				//Refer https://github.com/fusetools/fuselibs-private/issues/1766
 				//local visuals do not include padding
 				_textRenderer.Arrange(float2(0), lp.Size);
 			}

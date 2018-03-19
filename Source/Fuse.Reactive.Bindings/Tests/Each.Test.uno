@@ -168,7 +168,7 @@ namespace Fuse.Reactive.Test
 		}
 		
 		[Test]
-		//variation on https://github.com/fusetools/fuselibs/issues/2802
+		//variation on https://github.com/fusetools/fuselibs-private/issues/2802
 		public void EachEach()
 		{
 			var e = new UX.Each.Each();
@@ -526,7 +526,7 @@ namespace Fuse.Reactive.Test
 		
 		[Test]
 		//there's no way to test this feature yet
-		[Ignore("https://github.com/fusetools/fuselibs/issues/4199")]
+		[Ignore("https://github.com/fusetools/fuselibs-private/issues/4199")]
 		public void FunctionDefault()
 		{
 			var e = new UX.Each.Function.Default();

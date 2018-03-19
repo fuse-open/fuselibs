@@ -74,7 +74,7 @@ namespace Fuse
 				return;
 				
 			//refer to the issue, this needs to be fixed better
-			//https://github.com/fusetools/fuselibs/issues/1966
+			//https://github.com/fusetools/fuselibs-private/issues/1966
 			if (child.HasBit(FastProperty1.PendingRemove))
 				return;
 			

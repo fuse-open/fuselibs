@@ -55,7 +55,7 @@ namespace Fuse.Navigation
 			}
 
 			//defer setup until watched node is rooted
-			//https://github.com/fusetools/fuselibs/issues/1879
+			//https://github.com/fusetools/fuselibs-private/issues/1879
 			if (!Page.IsRootingStarted)
 			{
 				Page.RootingCompleted += OnPageRootingCompleted;

@@ -115,7 +115,7 @@ namespace Fuse.Navigation.Test
 		
 		[Test]
 		/*
-			https://github.com/fusetools/fuselibs/issues/1804
+			https://github.com/fusetools/fuselibs-private/issues/1804
 			Ensure changed messages aren't published needlessly
 		*/
 		public void Stability()
@@ -282,7 +282,7 @@ namespace Fuse.Navigation.Test
 		}
 		
 		[Test]
-		//https://github.com/fusetools/fuselibs/issues/3761
+		//https://github.com/fusetools/fuselibs-private/issues/3761
 		public void RootScale()
 		{
 			var p = new UX.Navigation.Scale();

@@ -15,10 +15,10 @@ namespace Fuse.Controls
 	*/
 	public partial class Arc : EllipticalShape
 	{
-		//https://github.com/fusetools/fuselibs/issues/3877
+		//https://github.com/fusetools/fuselibs-private/issues/3877
 		/*protected override IView CreateNativeView()
 		{
-			//https://github.com/fusetools/fuselibs/issues/3877
+			//https://github.com/fusetools/fuselibs-private/issues/3877
 			if defined(Android)
 			{
 				return new Fuse.Controls.Native.Android.Ellipse();

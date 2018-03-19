@@ -6,7 +6,7 @@ using Fuse.Reactive;
 namespace Fuse.Reactive
 {
 	/* The use of VarArg is a workaround to 
-	https://github.com/fusetools/fuselibs/issues/4199 */
+	https://github.com/fusetools/fuselibs-private/issues/4199 */
 	
 	/** Common base for functions that work with an item in an instantiator */
 	public abstract class InstantiatorFunction : VarArgFunction

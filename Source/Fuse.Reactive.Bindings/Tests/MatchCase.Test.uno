@@ -66,7 +66,7 @@ namespace Fuse.Reactive.Test
 		}
 		
 		[Test]
-		/** https://github.com/fusetools/fuselibs/issues/2802 */
+		/** https://github.com/fusetools/fuselibs-private/issues/2802 */
 		public void MatchEachOrder()
 		{
 			var e = new UX.MatchEachOrder();

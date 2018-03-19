@@ -61,7 +61,7 @@ namespace Fuse.Gestures
 				throw new Exception( "Scroller can only be used in a ScrollView" );
 
 			_scrollable.AddPropertyListener(this);
-			//Set in ugly fashion, required by https://github.com/fusetools/fuselibs/issues/870
+			//Set in ugly fashion, required by https://github.com/fusetools/fuselibs-private/issues/870
 			//previously the ScrollView would just listen for added children, but this appears safer
 			_scrollable._scroller = this; 
 			_scrollable.RequestBringIntoView += OnRequestBringIntoView;

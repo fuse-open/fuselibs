@@ -60,7 +60,7 @@ namespace Fuse.Elements.Test
 		[Test]
 		public void DockMargin()
 		{
-			//https://github.com/fusetools/fuselibs/issues/1473
+			//https://github.com/fusetools/fuselibs-private/issues/1473
 			var p = new global::UX.DockAspect();
 			using (var root = new TestRootPanel())
 			{

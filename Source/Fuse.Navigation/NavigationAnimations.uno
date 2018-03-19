@@ -92,12 +92,12 @@ namespace Fuse.Navigation
 		double _delayProgress;
 		internal void GoProgress(double p, AnimationVariant variant, NavigationArgs state)
 		{
-			//https://github.com/fusetools/fuselibs/issues/1622
+			//https://github.com/fusetools/fuselibs-private/issues/1622
 			//do not optimize a check of if (p == Progress) return;
 
 			if (state.Mode == NavigationMode.Switch)
 			{
-				//a fix of https://github.com/fusetools/fuselibs/issues/2652
+				//a fix of https://github.com/fusetools/fuselibs-private/issues/2652
 				//PlayTo(p, variant);
 				_delayVariant = variant;
 				_delayProgress = p;

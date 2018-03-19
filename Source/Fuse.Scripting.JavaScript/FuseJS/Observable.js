@@ -413,7 +413,7 @@ Observable.prototype.onValueChanged = function(module, callback) {
 	}
 	
 	var subscriber = function(obs, cmd, origin, value) { 
-		//for simplicity just update the value always, see https://github.com/fusetools/fuselibs/issues/3556
+		//for simplicity just update the value always, see https://github.com/fusetools/fuselibs-private/issues/3556
 		callback(obs.value);
 	};
 	

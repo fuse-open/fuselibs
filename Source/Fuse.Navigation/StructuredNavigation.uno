@@ -51,11 +51,11 @@ namespace Fuse.Navigation
 		{
 			base.OnRooted();
 			//there's no real way to fix this "correctly" due to how HierarchicalNavigation works
-			//https://github.com/fusetools/fuselibs/issues/1701
+			//https://github.com/fusetools/fuselibs-private/issues/1701
 			if (_active != null && _active.Parent != null && Parent != _active.Parent)
 				SetActive(null);
 
-			// https://github.com/fusetools/fuselibs/issues/3427
+			// https://github.com/fusetools/fuselibs-private/issues/3427
 			if (_active != null && !Parent.Children.Contains(_active))
 				SetActive(null);
 				
@@ -111,7 +111,7 @@ namespace Fuse.Navigation
 
 		public void GotoImpl(Visual element, NavigationGotoMode mode)
 		{
-			//https://github.com/fusetools/fuselibs/issues/1701
+			//https://github.com/fusetools/fuselibs-private/issues/1701
 			if (element.Parent != null && element.Parent != Parent)
 			{
 				Fuse.Diagnostics.UserError( "Attempting to navigate to element with different parent", element );
