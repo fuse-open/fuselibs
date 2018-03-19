@@ -1,0 +1,33 @@
+{
+  "Packages": [
+    "Fuse",
+    "FuseJS",
+    "Fuse.ImageTools",
+    "Fuse.Camera",
+    "Fuse.CameraRoll",
+    "Fuse.Maps",
+    "Fuse.Audio",
+    "Fuse.Share",
+    "Fuse.Launcher"
+  ],
+  "Projects": [
+    "UnoComponents.unoproj",
+  ],
+  "Includes": [
+    "InfoPanel.ux:UX",
+    "MainView.ux:UX",
+    "Multitouch/*",
+    "MaskEffects/MaskEffects.ux:UX",
+    "DuotoneEffect/DuotoneEffectsPage.ux:UX",
+    "PixelAlignment/PixelAlignment.ux:UX",
+    "Singles/*.ux",
+    "Surface/Components/TestPage.ux",
+    "Surface/Singles/SurfaceMisc.ux",
+    "NativeTestApp.ux:UX",
+    "TodoList/TodoListPage.ux:UX",
+    "UserEvents/Chat.ux",
+    "UserEvents/Contacts.ux",
+    "UserEvents/MessagesPage.ux",
+    "UserEvents/PopupNotices.ux",
+  ]
+}
