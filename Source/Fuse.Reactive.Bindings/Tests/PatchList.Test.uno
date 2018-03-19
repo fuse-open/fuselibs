@@ -102,8 +102,8 @@ namespace Fuse.Reactive.Internal.Test
 			//was set to a really high number to test, no errors found, so just back to a low value
 			for (int i=0; i < 100; ++i)
 			{
-				var from = ShuffledList( rand.NextInt(50) );
-				var to = ShuffledList( rand.NextInt(50) );
+				var from = ShuffledList( rand.Next(50) );
+				var to = ShuffledList( rand.Next(50) );
 				Check( from, to, PatchAlgorithm.Simple, -1 );
 			}
 		}
@@ -116,7 +116,7 @@ namespace Fuse.Reactive.Internal.Test
 				
 			for (int i=count-1; i > 0; --i)
 			{
-				var swap = rand.NextInt(i);
+				var swap = rand.Next(i);
 				var t = list[i];
 				list[i] = list[swap];
 				list[swap] = t;
