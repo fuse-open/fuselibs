@@ -37,7 +37,7 @@ namespace Fuse.Controls
 	/**
 		`SafeEdgePanel` compensates for space taken up by the on-screen keyboard, status bar, and other OS-specific elements on the edges of the screen.  It should be used for any panel that touches any edge of the screen.
 		
-		@remarks Docs/SafeLayout.md
+		See the article on [Safe Layout](articles:layout/safe-layout.md) for more details.
 	*/
 	public class SafeEdgePanel : Panel
 	{

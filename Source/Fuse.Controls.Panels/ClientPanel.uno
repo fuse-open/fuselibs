@@ -6,7 +6,7 @@ namespace Fuse.Controls
 		
 		This is no longer suitable for some devices and you should consider using @SafeEdgePanel instead.
 		
-		@remarks Docs/SafeLayout.md
+		See the article on [Safe Layout](articles:layout/safe-layout.md) for more details.
 	*/
 	public partial class ClientPanel
 	{
