@@ -79,7 +79,7 @@ namespace Fuse.Internal
 
 					/* em: I don't see value in this unless you turned off interpolation on drawing as well
 					//try an integer multiple
-					var iScale = (int)(Math.Round(scale.X));
+					var iScale = (int)(Math.Floor(scale.X + 0.5f));
 					var near = float2(pixelSize.X,pixelSize.Y) * iScale / absoluteZoom;
 					scale = size/exact - iScale;
 					if ( scale.X  > -0.25f && scale.X < 0.5f)
@@ -99,7 +99,7 @@ namespace Fuse.Internal
 		
 		float2 SnapSize( float2 sz )
 		{
-			return Math.Round(sz* absoluteZoom) / absoluteZoom;
+			return Math.Floor(sz * absoluteZoom + 0.5f) / absoluteZoom;
 		}
 		
 		float2 CalcScale( float2 availableSize, float2 desiredSize,
