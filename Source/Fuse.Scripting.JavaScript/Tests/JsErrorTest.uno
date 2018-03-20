@@ -70,7 +70,7 @@ namespace Fuse.Reactive.Test
 		}
 		
 		[Test]
-		[Ignore("https://github.com/fusetools/fuselibs/issues/2855")]
+		[Ignore("https://github.com/fusetools/fuselibs-private/issues/2855")]
 		/* Tests a particularly tricky place for an exception in JavaScript. */
 		public void OnValueChanged()
 		{

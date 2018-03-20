@@ -50,7 +50,7 @@
 				</WhileFalse>
 			</Panel>
 			
-			<Grid ColumnCount="3" Alignment="Center">
+			<Grid Columns="auto,auto,auto" Alignment="Center" DefaultRow="auto">
 				<PlatformCheck Label="Mobile" Value="isMobile()"/>
 				<PlatformCheck Label="iOS" Value="isIOS()"/>
 				<PlatformCheck Label="Android" Value="isAndroid()"/>
@@ -59,11 +59,11 @@
 				<PlatformCheck Label="OSX" Value="isOSX()"/>
 			</Grid>
 			
-			<WhileTrue Value="isDefined({osVersion})">
-				<Text Value="OS Version: {osVersion}"/>
+			<WhileTrue Value="isDefined({=Device.osVersion})">
+				<Text Value="OS Version: {=Device.osVersion}"/>
 			</WhileTrue>
-			<WhileTrue Value="isDefined({apiLevel})">
-				<Text Value="API Level: {apiLevel}"/>
+			<WhileTrue Value="isDefined({=Device.apiLevel})">
+				<Text Value="API Level: {=Device.apiLevel}"/>
 			</WhileTrue>
 			
 			<DropShadow/>

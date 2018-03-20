@@ -455,7 +455,7 @@ namespace Fuse.FileSystem.Test
 			var rng = new Random(123456);
 			string path = null;
 			do {
-				path = Path.Combine(Directory.GetUserDirectory(UserDirectory.Data), "testfile-" + rng.NextInt());
+				path = Path.Combine(Directory.GetUserDirectory(UserDirectory.Data), "testfile-" + rng.Next());
 			} while (File.Exists(path));
 
 			return path;

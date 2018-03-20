@@ -535,7 +535,7 @@ namespace Fuse.Controls.Test
 		public void Issue2964()
 		{
 			var g = new Grid();
-			//https://github.com/fusetools/fuselibs/issues/2694
+			//https://github.com/fusetools/fuselibs-private/issues/2694
 			g.Rows = null;
 			g.Columns = null;
 		}
@@ -602,7 +602,7 @@ namespace Fuse.Controls.Test
 				Assert.AreEqual(1, diagnostics.Count);
 				Assert.Contains("incompatible", diagnostics[0].Message);
 				
-				//https://github.com/fusetools/fuselibs/issues/3286
+				//https://github.com/fusetools/fuselibs-private/issues/3286
 				//specifically set DefaultRow afterwards to trigger the defect
 				p.G1.DefaultRow = "auto";
 				root.StepFrame();

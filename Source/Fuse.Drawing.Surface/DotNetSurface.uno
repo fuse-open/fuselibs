@@ -32,6 +32,94 @@ namespace Fuse.Drawing
 		
 		This also keeps the API minimal. There are no convenience functions in this class. Those are provided via higher-level classes, such as `LineSegments` or `SurfaceUtil`.
 	*/
+
+	static internal class DotNetUtil
+	{
+		/** 
+			Calculates end points needed to extend the start/end over the entire cover region. This is a utility function for CreateColorBlend that needs to workaround DotNet not supporting clamped gradients.
+		*/
+		static public float4 AdjustedEndPoints( float4 area, float2 start, float2 end )
+		{
+			var unit = Vector.Normalize(end - start);
+			var normal = float2(unit.Y,-unit.X);
+			var isSlopeNeg = unit.X * (-unit.Y) < 0;
+			
+			float2 cornerA, cornerB;
+			if (isSlopeNeg)
+			{
+				cornerA = area.XY;
+				cornerB = area.ZW;
+			}
+			else
+			{
+				cornerA = area.XW;
+				cornerB = area.ZY;
+			}
+			
+			//swap corners if the input strat/end is more oriented from B->A than A->B
+			//this could be logically be done with an angle copmarison on `unit`, but it's sensitive to the
+			//hard-condition of `isSlopeNeg`
+			if (Vector.Distance(end,cornerA) + Vector.Distance(start,cornerB) < 
+				Vector.Distance(end,cornerB) + Vector.Distance(start,cornerA))
+			{
+				var t = cornerA;
+				cornerA = cornerB;
+				cornerB = t;
+			}
+			
+			var ca = float2(0);
+			var cb = float2(0);
+			if (!Collision.LineLineIntersection(cornerA, normal, start, unit, out ca) ||
+				!Collision.LineLineIntersection(cornerB, normal, start, unit, out cb) )
+			{
+				//something funny with the input, sane fallback
+				return float4( start.X, start.Y, end.X, end.Y );
+			}
+			
+			return float4( ca.X, ca.Y, cb.X, cb.Y );
+		}
+		
+		/**
+			Calculate the adjusted offsets of points along a line given new endpoints of that line.
+			
+			If adjStart or adjEnd are already on the line it will use the input start/end as the endpoints instead.
+			
+			Returns a float2 (r) that can be used to calculate the adjusted offset on (p):
+			
+				(p * r[0]) + r[1]
+		*/
+		static public float2 AdjustedOffsets( float2 start, float2 end, ref float2 adjStart, ref float2 adjEnd )
+		{
+			var dir = end - start;
+			//distance along input line
+			float tAS = 0, tAE = 0;
+			if (Math.Abs(dir.X) > Math.Abs(dir.Y))
+			{
+				tAS = (adjStart.X - start.X) / dir.X;
+				tAE = (adjEnd.X - start.X) / dir.X;
+			}
+			else
+			{
+				tAS = (adjStart.Y - start.Y) / dir.Y;
+				tAE = (adjEnd.Y - start.Y) / dir.Y;
+			}
+			
+			if (tAS > 0)
+			{
+				adjStart = start;
+				tAS = 0;
+			}
+			if (tAE < 1)
+			{
+				adjEnd = end;
+				tAE = 1;
+			}
+			
+			var tLen = tAE - tAS;
+			
+			return float2( 1f / tLen, -tAS / tLen );
+		}
+	}
 	
 	[Require("Assembly", "System.Drawing")]
 	[extern(DOTNET) Require("Source.Include","XliPlatform/GL.h")]
@@ -47,7 +135,6 @@ namespace Fuse.Drawing
 		Bitmap _bitmap;
 		DotNetGraphics _graphics;
 		List<DotNetNative.Matrix> _transformStates = new List<DotNetNative.Matrix>();
-
 
 		public DotNetSurface()
 		{
@@ -591,22 +678,12 @@ namespace Fuse.Drawing
 			colors[numberOfColorPoints - 1] = endColor;
 			offsets[numberOfColorPoints - 1] = 1.0f;
 
-			var inVec = Vector.Normalize(inEnd - inStart);
-			var inLen = Vector.Length(inEnd - inStart);
-			//safety
-			if (inLen < 0.1f) {
-				inVec = float2(1); //this affects only gStart/gEnd so okay to be incorrect in nonsense case
-				inLen = 1;
-			}
-
-			var minLen = Vector.Length( float2(bounds.Width, bounds.Height) );
-			//extra length needed to extend line to cover whole region
-			var extraLen = Math.Max(minLen - inLen,0);
-			var exOff = extraLen / inLen;
-			var exLen = inLen * exOff;
-			//the 0/1 input offsets as offsets in the adjusted line
-			var inOffStart = exOff / (1 + 2 * exOff);
-			var inOffEnd = (1+exOff) / (1 + 2 * exOff);
+			var newEnds = DotNetUtil.AdjustedEndPoints( 
+				float4( bounds.X, bounds.Y, bounds.X + bounds.Width, bounds.Y + bounds.Height ),
+				inStart, inEnd );
+			gStart = newEnds.XY;
+			gEnd = newEnds.ZW;
+			var adjust = DotNetUtil.AdjustedOffsets( inStart, inEnd, ref gStart, ref gEnd );
 
 			for (int i=0; i < stops.Length; ++i)
 			{
@@ -615,11 +692,8 @@ namespace Fuse.Drawing
 				// our indexes in the storing array are offset by 1
 				// since we have manually filled the first spot
 				colors[i + 1] = ColorFromFloat4(stop.Color);
-				offsets[i + 1] = inOffStart + (stop.Offset * (inOffEnd-inOffStart));
+				offsets[i + 1] = stop.Offset * adjust[0] + adjust[1];
 			}
-
-			gStart = inStart - inVec * exLen;
-			gEnd = inEnd + inVec * exLen;
 			
 			ColorBlend blend = new ColorBlend();
 			blend.Positions = offsets; 

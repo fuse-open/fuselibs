@@ -27,7 +27,7 @@ namespace Fuse.Controls.Test
 			}
 		}
 		
-		//https://github.com/fusetools/fuselibs/issues/1506
+		//https://github.com/fusetools/fuselibs-private/issues/1506
 		[Test]
 		public void ContentResize()
 		{

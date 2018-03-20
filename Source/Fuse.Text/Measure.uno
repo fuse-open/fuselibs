@@ -20,7 +20,7 @@ namespace Fuse.Text
 					lineMeasure += run.Measure();
 				float x = lineMeasure.X;
 				maxX = Math.Max(maxX, x);
-				y = Math.Round(y + font.LineHeight + lineSpacing + lineMeasure.Y);
+				y = Math.Floor(y + font.LineHeight + lineSpacing + lineMeasure.Y + 0.5f);
 			}
 			return float2(maxX, y);
 		}

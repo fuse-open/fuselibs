@@ -5,7 +5,7 @@
 		</Panel>
 	</Panel>
 	
-	<!-- forward references, https://github.com/fusetools/fuselibs/issues/1881 -->
+	<!-- forward references, https://github.com/fusetools/fuselibs-private/issues/1881 -->
 	<Panel ux:Name="P4">
 		<Translation Vector="1" RelativeTo="Size" RelativeNode="P2"/>
 	</Panel>

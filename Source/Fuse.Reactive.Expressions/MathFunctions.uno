@@ -56,7 +56,7 @@ namespace Fuse.Reactive
 			if (!Marshal.TryToType<float>(operand, out v))
 				return false;
 				
-			var q = (int)Math.Round(v);
+			var q = (int)Math.Floor(v + 0.5f);
 			result = q % 2 == 0;
 			return true;
 		}
@@ -75,7 +75,7 @@ namespace Fuse.Reactive
 			if (!Marshal.TryToType<float>(operand, out v))
 				return false;
 				
-			var q = (int)Math.Round(v);
+			var q = (int)Math.Floor(v + 0.5f);
 			result = q % 2 != 0;
 			return true;
 		}
@@ -109,8 +109,8 @@ namespace Fuse.Reactive
 			if (!Marshal.TryToType<float>(left, out fvalue) ||
 				!Marshal.TryToType<float>(right, out fgroup))
 				return false;
-			var value = (int)Math.Round(fvalue);
-			var group = (int)Math.Round(fgroup);
+			var value = (int)Math.Floor(fvalue + 0.5f);
+			var group = (int)Math.Floor(fgroup + 0.5f);
 			var b = value >= 0 ? 
 				(value % (group*2)) < group: 
 				( -(value+1) % (group*2)) >= group;

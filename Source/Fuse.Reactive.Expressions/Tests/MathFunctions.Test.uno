@@ -109,7 +109,7 @@ namespace Fuse.Reactive.Test
 					Assert.AreEqual( Math.Exp2(v), p.exp2.Float );
 					Assert.AreEqual( Math.Fract(v), p.fract.Float );
 					Assert.AreEqual( Math.Sign(v), p.sign.Float );
-					Assert.AreEqual( Math.Round(v), p.round.Float );
+					Assert.AreEqual( Math.Floor(v + 0.5f), p.round.Float );
 					Assert.AreEqual( Trunc.Op(v), p.trunc.Float );
 					//some have special exceptions where the Inf/NaN value doesn't compare right on some platforms
 					if (v > 0)

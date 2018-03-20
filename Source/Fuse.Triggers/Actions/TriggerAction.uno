@@ -27,7 +27,7 @@ namespace Fuse.Triggers.Actions
 
 		[subclass Fuse.Triggers.Actions.TriggerAction]
 	*/
-	public abstract class TriggerAction: PropertyObject
+	public abstract class TriggerAction: PropertyObject, ISourceLocation
 	{
 		TriggerWhen _when = TriggerWhen.Forward;
 		public TriggerWhen When
@@ -128,6 +128,19 @@ namespace Fuse.Triggers.Actions
 		}
 		
 		protected virtual void OnUnrooted() { }
+		
+		[UXLineNumber]
+		/** @hide */
+		public int SourceLineNumber { get; set; }
+		[UXSourceFileName]
+		/** @hide */
+		public string SourceFileName { get; set; }
+		
+		ISourceLocation ISourceLocation.SourceNearest
+		{
+			get { return this; }
+		}
+		
 	}
 
 }

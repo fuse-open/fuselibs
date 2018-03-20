@@ -139,7 +139,7 @@ namespace Fuse.Controls.FallbackTextRenderer
 				height += _wrapInfo.LineHeight;
 			}
 
-			//TODO: https://github.com/fusetools/fuselibs/issues/1386
+			//TODO: https://github.com/fusetools/fuselibs-private/issues/1386
 			_textBounds = new Rect(float2(minX,0),float2(maxX, height));
 			_maxTextLength = maxTextLength;
 		}

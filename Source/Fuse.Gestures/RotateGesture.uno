@@ -73,7 +73,7 @@ namespace Fuse.Gestures
 			var q = _startRotation + angle;
 			if (Step > 0)
 			{
-				var s = Math.Round(q/Step) * Step;
+				var s = Math.Floor(q / Step + 0.5f) * Step;
 				Region.MoveTo(float2(s,0));
 				CheckNeedUpdate();
 			}

@@ -294,6 +294,10 @@ namespace FuseVideoImpl
 				auto t = track.preferredTransform;
 				auto angle = atan2((double)t.b, (double)t.a);
 				auto d = angle * 180.0 / M_PI;
+				if (d < 0)
+				{
+					d = 360.0 + d;
+				}
 				degrees = (int)d;
 				break;
 			}

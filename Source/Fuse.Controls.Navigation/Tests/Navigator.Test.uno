@@ -218,7 +218,7 @@ namespace Fuse.Navigation.Test
 		}
 		
 		[Test]
-		//https://github.com/fusetools/fuselibs/issues/2982
+		//https://github.com/fusetools/fuselibs-private/issues/2982
 		public void EmptyParameter()
 		{
 			var p = new UX.Navigator.EmptyParameter();
@@ -321,7 +321,7 @@ namespace Fuse.Navigation.Test
 		}
 		
 		[Test]
-		// https://github.com/fusetools/fuselibs/issues/4256
+		// https://github.com/fusetools/fuselibs-private/issues/4256
 		public void RootingCache1()
 		{
 			var p =  new UX.Navigator.RootingCache();

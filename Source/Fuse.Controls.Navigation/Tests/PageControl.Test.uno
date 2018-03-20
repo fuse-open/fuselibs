@@ -89,7 +89,7 @@ namespace Fuse.Controls.Test
 					(p as INavigation).PageProgress,
 					root.StepIncrement * speed / 1000 + ZeroTolerance);
 					
-				//trying to check jitter https://github.com/fusetools/fuselibs/issues/3597
+				//trying to check jitter https://github.com/fusetools/fuselibs-private/issues/3597
 				//the test doesn't produce "actual" jitter though, but it does detect the extra calls to progress changed
 				Assert.IsTrue(_absChangedSum < 0.25);
 				Assert.IsTrue(_progressCount < (250/*dist*/ / speed / root.StepIncrement + 1) );

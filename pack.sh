@@ -38,7 +38,7 @@ esac
 
 stuff install Stuff
 bash Stuff/Devtools/update-version-numbers.sh --verify
-uno doctor --configuration=Release
+uno doctor --configuration=Release --build-number=$VERSION
 
 # Make packages
 for f in Source/*; do

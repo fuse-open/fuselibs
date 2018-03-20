@@ -192,7 +192,7 @@ namespace Fuse.Navigation.Test
 		}
 		
 		[Test]
-		//https://github.com/fusetools/fuselibs/issues/3689
+		//https://github.com/fusetools/fuselibs-private/issues/3689
 		public void RelativeNonCurrent()
 		{
 			var p = new UX.Router.RelativeNonCurrent();

@@ -1,5 +1,5 @@
 <Panel ux:Class="UX.Observable.InnerDetach">
-	<!-- This is the actual issue reported in https://github.com/fusetools/fuselibs/issues/3703 -->
+	<!-- This is the actual issue reported in https://github.com/fusetools/fuselibs-private/issues/3703 -->
 	<Panel>
 		<JavaScript>
 			var Observable = require('FuseJS/Observable');

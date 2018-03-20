@@ -59,7 +59,7 @@ namespace Fuse.Triggers.Test
 		}
 
 		[Test]
-		[Ignore("https://github.com/fusetools/fuselibs/issues/1751")]
+		[Ignore("https://github.com/fusetools/fuselibs-private/issues/1751")]
 		public void Tapped()
 		{
 			using (var root = CreateRoot())

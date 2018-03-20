@@ -1,0 +1,5 @@
+<Panel ux:Class="UX.ExpressionSources">
+	<FuseTest.Value Integer="1" ux:Name="a"/>
+	<FuseTest.Value Float="0.5" ux:Name="b"/>
+	<FuseTest.Value Object="sin({Property a.Object}) + cos({Property b.Object})" ux:Name="V"/>
+</Panel>

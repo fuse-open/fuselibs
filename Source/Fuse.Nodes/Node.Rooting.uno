@@ -99,7 +99,7 @@ namespace Fuse
 			
 		void RootInternalImpl(Visual parent)
 		{
-			//to help detect errors like https://github.com/fusetools/fuselibs/issues/2244
+			//to help detect errors like https://github.com/fusetools/fuselibs-private/issues/2244
 			if (_rootStage != RootStage.Unrooted)
 				throw new Exception( "Incomplete or duplicate rooting: " + this + "/" + Name );
 
@@ -126,7 +126,7 @@ namespace Fuse
 			if (RootingCompleted != null)
 				RootingCompleted();
 
-			//to help detect errors like https://github.com/fusetools/fuselibs/issues/2244
+			//to help detect errors like https://github.com/fusetools/fuselibs-private/issues/2244
 			if (_rootStage != RootStage.Completed)
 				throw new Exception( "Invalid RootStage post rooting: " + this + "/" + Name );
 		}

@@ -85,9 +85,15 @@ namespace Fuse
 			OnInvalidateLayout();
 		}
 
+		internal virtual bool IsViewportReady
+		{
+			get { return true; }
+		}
+		
 		protected override void OnInvalidateLayout()
 		{
-			UpdateManager.AddOnceAction(PerformLayout, UpdateStage.Layout);
+			if (IsViewportReady)
+				UpdateManager.AddOnceAction(PerformLayout, UpdateStage.Layout);
 		}
 		
 		void IDisposable.Dispose()
@@ -175,7 +181,7 @@ namespace Fuse
 			var pixelSize = (float2)Application.Current.GraphicsController.Backbuffer.Size;
 
 			//workaround for empty size on some platforms while minimized
-			//https://github.com/fusetools/fuselibs/issues/1772
+			//https://github.com/fusetools/fuselibs-private/issues/1772
 			if (osPointSize.X < 1 || osPointSize.Y < 1)
 			{
 				_pixelSize = float2(0);

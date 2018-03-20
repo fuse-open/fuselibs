@@ -119,7 +119,7 @@ namespace Fuse.Controls.ScrollViewTest
 		[Test]
 		public void ScrollIssue1595()
 		{
-			//https://github.com/fusetools/fuselibs/issues/1595
+			//https://github.com/fusetools/fuselibs-private/issues/1595
 			var p = new UX.ScrollIssue1595();
 			using (var root = TestRootPanel.CreateWithChild(p, int2(200, 500)))
 			{
@@ -287,7 +287,7 @@ namespace Fuse.Controls.ScrollViewTest
 				sv.T.Children.Insert(0,sv.P1);
 				root.StepFrame(5);
 				//50 is as far as it should go to be in range, see:
-				//https://github.com/fusetools/fuselibs/issues/2891
+				//https://github.com/fusetools/fuselibs-private/issues/2891
 				//tolerance needed due to tolerance check in `ScrollView.SetScrolPositionImpl`
 				Assert.AreEqual( 50, sv.S.ScrollPosition.Y, 1e-3 );
 

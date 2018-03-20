@@ -1,5 +1,5 @@
 <Panel ux:Class="UX.ColumnLayout1">
-	<ColumnLayout ColumnCount="2" ColumnSpacing="10" ItemSpacing="5"/>
+	<ColumnLayout ColumnCount="2" ColumnSpacing="10" ItemSpacing="5" ux:Name="L"/>
 	<Panel Height="50" ux:Name="P1"/>
 	<Panel Height="170" ux:Name="P2"/>
 	<Panel Height="60" ux:Name="P3"/>

@@ -20,7 +20,7 @@ namespace Fuse.Drawing
 
 	public class Stroke: PropertyObject, IPropertyListener
 	{
-		//https://github.com/fusetools/fuselibs/issues/3655
+		//https://github.com/fusetools/fuselibs-private/issues/3655
 		static Selector _shadingName = "Shading";
 		void IPropertyListener.OnPropertyChanged(PropertyObject obj, Selector prop)
 		{

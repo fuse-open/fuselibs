@@ -175,8 +175,7 @@ namespace Fuse.Controls.Native
 		@{
 			java.lang.Object handle = @{Fuse.Controls.Native.ViewHandle:Of(_this).NativeHandle:Get()};
 			return handle instanceof com.fuse.android.views.ViewGroup ||
-				handle instanceof com.fuse.android.views.HorizontalScrollView ||
-				handle instanceof com.fuse.android.views.VerticalScrollView;
+				handle instanceof com.fuse.android.views.FuseScrollView;
 		@}
 
 		[Foreign(Language.Java)]

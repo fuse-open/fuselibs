@@ -178,13 +178,13 @@ namespace Fuse.Test
 			{
 				var d1 = new Dummy();
 				var d2 = new Dummy();
-				var n = r.NextInt(refList.Count);
+				var n = r.Next(refList.Count);
 				refList.Insert(n, d1);
 				ol.Insert(n, d1);
 				refList.Add(d2);
 				ol.Add(d2);
 				
-				n = r.NextInt(refList.Count);
+				n = r.Next(refList.Count);
 				refList.RemoveAt(n);
 				ol.RemoveAt(n);
 			}
@@ -278,7 +278,7 @@ namespace Fuse.Test
 			using (var iter = l.GetEnumeratorVersionedStruct())
 			{
 				for (int i=0; i < 20; ++i)
-					l.RemoveAt( r.NextInt(l.Count));
+					l.RemoveAt( r.Next(l.Count));
 					
 				//iter still sees the list prior to the removed items
 				while (iter.MoveNext())

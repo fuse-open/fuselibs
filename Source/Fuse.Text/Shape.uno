@@ -48,14 +48,14 @@ namespace Fuse.Text
 					positionedRuns.Add(new PositionedRun(srun, lineMeasure, runMeasure));
 					lineMeasure += runMeasure;
 				}
-				float x = Math.Round(alignment * (pixelWidth - lineMeasure.X));
+				float x = Math.Floor(alignment * (pixelWidth - lineMeasure.X) + 0.5f);
 				var pos = float2(x, y);
 
 				for (int i = 0; i < positionedRuns.Count; ++i)
 					positionedRuns[i] = PositionedRun.Translate(positionedRuns[i], pos);
 				result.Add(positionedRuns);
 
-				y = Math.Round(y + font.LineHeight + lineSpacing + lineMeasure.Y);
+				y = Math.Floor(y + font.LineHeight + lineSpacing + lineMeasure.Y + 0.5f);
 			}
 			return result;
 		}

@@ -328,7 +328,7 @@ namespace Fuse.Android
 			var position = (float2)_textLayout.PixelBounds.Position / _control.Viewport.PixelsPerPoint
 				+ dposition;
 			//align oversize correctly in container
-			//TODO: https://github.com/fusetools/fuselibs/issues/780
+			//TODO: https://github.com/fusetools/fuselibs-private/issues/780
 			//there is simply no point unless that issue is fixed
 			/*if (pointSize.X > size.X)
 			{

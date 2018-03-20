@@ -2,13 +2,13 @@
   "Description": "This package is part of Fuse",
   "Publisher": "Fusetools AS",
   "Copyright": "Copyright (c) Fusetools AS 2017",
-  "Version": "1.8.0-rc1",
   "Package": {
     "ProjectUrl": "https://fusetools.com"
   },
   "InternalsVisibleTo": [
     "Fuse.Android",
     "Fuse.Common",
+    "Fuse.Controls.Native",
     "Fuse.Controls.Panels",
     "Fuse.Controls.WebView",
     "Fuse.Elements",

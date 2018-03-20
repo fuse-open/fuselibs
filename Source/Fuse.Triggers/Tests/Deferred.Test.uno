@@ -65,7 +65,7 @@ namespace Fuse.Test
 		}
 		
 		[Test]
-		//https://github.com/fusetools/fuselibs/issues/2806
+		//https://github.com/fusetools/fuselibs-private/issues/2806
 		public void Unroot()
 		{
 			var p = new UX.DeferredUnroot();

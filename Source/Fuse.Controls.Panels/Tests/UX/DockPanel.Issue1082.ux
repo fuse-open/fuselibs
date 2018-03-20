@@ -1,0 +1,5 @@
+<Panel ux:Class="UX.DockPanel.Issue1082">
+	<DockPanel>
+		<FuseTest.InterceptPanel ux:Name="ip"/>
+	</DockPanel>
+</Panel>

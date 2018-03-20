@@ -39,7 +39,7 @@ namespace Fuse.Test
 			Assert.AreEqual(float4(100, 125, 250, 200), n(LineMetrics.GetBounds(list.Segments)));
 			
 			list.Clear();
-			LineParser.ParseSVGPath( "Q 50 20, 100 80", list.Segments );
+			LineParser.ParseSVGPath( "M0,0 Q 50 20, 100 80", list.Segments );
 			Assert.AreEqual(float4(0,0,100,80),  n(LineMetrics.GetBounds(list.Segments)));
 			
 			list.Clear();

@@ -56,7 +56,7 @@ namespace Fuse.Triggers.Test
 		}
 		
 		[Test]
-		//a timing issue found in https://github.com/fusetools/fuselibs/issues/3489
+		//a timing issue found in https://github.com/fusetools/fuselibs-private/issues/3489
 		public void EmptyTiming()
 		{
 			var p = new UX.StateGroup.EmptyTiming();

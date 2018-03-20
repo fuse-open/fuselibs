@@ -28,7 +28,7 @@ namespace Fuse.Controls.FallbackTextRenderer
 					return 0.0f;
 
 				case TextAlignment.Center:
-					return Math.Round((boundsWidth - LineWidth) / 2.0f * absoluteZoom) / absoluteZoom;
+					return Math.Floor((boundsWidth - LineWidth) / 2.0f * absoluteZoom + 0.5f) / absoluteZoom;
 
 				case TextAlignment.Right:
 					return boundsWidth - LineWidth;
