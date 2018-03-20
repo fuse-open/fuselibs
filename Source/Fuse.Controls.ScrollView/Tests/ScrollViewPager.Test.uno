@@ -20,6 +20,7 @@ namespace Fuse.Controls.ScrollViewTest
 		}
 		
 		[Test]
+		[Ignore("https://github.com/fusetools/fuselibs-public/issues/1125")]
 		//This is only a sanity test. If changes are made to ScrollViewPager/ScrollView manual testing is 
 		//required. This will catch things that completely break the functionality
 		public void Basic()
