@@ -2,7 +2,7 @@
   "Copyright": "Copyright (c) Fusetools AS 2017",
   "Description": "Library of user interface effects",
   "Publisher": "Fusetools AS",
-  "Version": "1.8.0-rc2",
+  "Version": "1.8.0",
   "Package": {
     "ProjectUrl": "https://fusetools.com"
   },
