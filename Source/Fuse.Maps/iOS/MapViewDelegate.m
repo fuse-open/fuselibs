@@ -343,7 +343,7 @@
 		double centerPixelY = [self latitudeToPixelSpaceY:centerCoordinate.latitude];
 
 		// determine the scale value from the zoom level
-		NSInteger zoomExponent = 20 - zoomLevel;
+		NSInteger zoomExponent = log2(MKMapSizeWorld.width / 256) - zoomLevel;
 		double zoomScale = pow(2, zoomExponent);
 
 		// scale the map’s size in pixel space
@@ -375,7 +375,7 @@
 		z = MAX(2.0, MIN(z, 21));
 		CLLocationCoordinate2D newCenter = CLLocationCoordinate2DMake(lat, lng);
 		MKCoordinateSpan span = [self coordinateSpanWithMapView:_mapView centerCoordinate:newCenter andZoomLevel:z];
-	[_mapView setRegion:MKCoordinateRegionMake(newCenter, span)];
+	[_mapView setRegion:MKCoordinateRegionMake(newCenter, span) animated: true];
 	}
 
 	-(double)getZoomLevel
@@ -384,10 +384,10 @@
 		double density = [[UIScreen mainScreen] scale];
 		CGFloat mapWidthInPixels = _mapView.bounds.size.width * density;
 		double zoomScale = longitudeDelta * MERCATOR_RADIUS * M_PI / (180.0 * mapWidthInPixels);
-		double zoomer = 19.0 - log2(zoomScale);
+		double zoomer = log2(MKMapSizeWorld.width / 256) - log2(zoomScale);
 		if ( zoomer < 0.0 ) zoomer = 0.0;
 
-		return zoomer+2.0;
+		return zoomer-(0.5/750)*mapWidthInPixels;
 	}
 
 @end
