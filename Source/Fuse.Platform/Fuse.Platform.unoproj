@@ -7,6 +7,7 @@
     "ProjectUrl": "https://fusetools.com"
   },
   "InternalsVisibleTo": [
+    "Fuse.Views",
     "Fuse.Android",
     "Fuse.Common",
     "Fuse.Controls.Panels",
