@@ -1,0 +1,5 @@
+<Panel ux:Class="UX.Visual.LayoutRoleChange">
+	<Panel ux:Name="a" Alignment="Top">
+		<Panel Height="50" Width="50" ux:Name="b"/>
+	</Panel>
+</Panel>

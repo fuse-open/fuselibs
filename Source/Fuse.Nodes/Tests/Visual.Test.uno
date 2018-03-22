@@ -132,5 +132,25 @@ namespace Fuse.Test
 				Assert.AreEqual("{\"foo\":\"bar\"}", p.CurrentParameter.StringValue);
 			}
 		}
+		
+		[Test]
+		public void LayoutRoleChange()
+		{
+			var p = new UX.Visual.LayoutRoleChange();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				Assert.AreEqual(InvalidateLayoutReason.NothingChanged,p.a.LayoutDirty);
+				Assert.AreEqual(InvalidateLayoutReason.NothingChanged,p.b.LayoutDirty);
+				
+				p.b.LayoutRole = LayoutRole.Inert;
+				Assert.AreEqual(InvalidateLayoutReason.MarginBoxChanged,p.a.LayoutDirty);
+				Assert.AreEqual(InvalidateLayoutReason.MarginBoxChanged,p.b.LayoutDirty);
+				root.StepFrame();
+				
+				p.b.LayoutRole = LayoutRole.Inert;
+				Assert.AreEqual(InvalidateLayoutReason.NothingChanged,p.a.LayoutDirty);
+				Assert.AreEqual(InvalidateLayoutReason.NothingChanged,p.b.LayoutDirty);
+			}
+		}
 	}
 }

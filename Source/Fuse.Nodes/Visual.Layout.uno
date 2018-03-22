@@ -142,6 +142,10 @@ namespace Fuse
 			}
 			set
 			{
+				object v;
+				if (Properties.TryGet(_layoutRoleProperty, out v) && (LayoutRole)v == value)
+					return;
+					
 				Properties.Set(_layoutRoleProperty, value);
 				InvalidateLayout();
 			}
