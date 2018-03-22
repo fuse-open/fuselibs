@@ -12,6 +12,13 @@ namespace Fuse.Navigation
 		/** Does nothing. */
 		None
 	}
+	
+	/** @deprecated */
+	public enum RouterGoBackBehavior
+	{
+		GoBack,
+		GoBackAndUp,
+	}
 
 	public enum ModifyRouteHow
 	{
@@ -150,11 +157,23 @@ namespace Fuse.Navigation
 			set { _isMasterRouter = value; }
 		}
 
+		public delegate void BackAtRootPressedHandler(object sender,EventArgs args);
+		/**
+			Raised when the user pressed the back button (hardware or simulated) and there is no back page (root of navigation stack).
+		*/
+		public event BackAtRootPressedHandler BackAtRootPressed;
 		void OnKeyPressed(object sender, Fuse.Input.KeyEventArgs args)
 		{
 			if (args.Key == Uno.Platform.Key.BackButton)
 			{
-				if (BackButtonAction == BackButtonAction.GoBack) GoBack();
+				if (BackButtonAction == BackButtonAction.GoBack) 
+				{
+					if (!GoBack())
+					{
+						if (BackAtRootPressed != null)
+							BackAtRootPressed(this, new EventArgs());
+					}
+				}
 			}
 		}
 
@@ -249,6 +268,23 @@ namespace Fuse.Navigation
 		
 		internal Dictionary<string,RouterPageRoute> Bookmarks = new Dictionary<string,RouterPageRoute>();
 		
+		
+		RouterGoBackBehavior _goBackBehavior = RouterGoBackBehavior.GoBack;
+		/** 
+			@deprecated Exists only to get back deprecated GoUp behavior 2018-03-14 
+			@advanced
+		*/
+		public RouterGoBackBehavior GoBackBehavior
+		{
+			get { return _goBackBehavior; }
+			set 
+			{ 
+				_goBackBehavior = value; 
+				if (value == RouterGoBackBehavior.GoBackAndUp)
+					Fuse.Diagnostics.Deprecated( "Up behavior is deprecated as it isn't well defined.", this );
+			}
+		}
+		
 		/** Goes back to the previous page in the navigation history, or up one level in the route if the history is empty.
 			
 			If the navigation history is nonempty, this pops the previous item from the history and makes
@@ -257,11 +293,21 @@ namespace Fuse.Navigation
 			If the navigation history is empty, this method goes to a route one level above the current
 			route. If the current route is already a top level route, this method does nothing. 
 		*/
-		public void GoBack()
+		public bool GoBack()
 		{
-			if (CanGoBack) Pop();
-			else GoUp();
+			if (CanGoBack) 
+			{
+				Pop();
+				return true;
+			}
+			else if (GoBackBehavior == RouterGoBackBehavior.GoBackAndUp)
+			{
+				return GoUp();
+			}
+			
+			return false;
 		}
+		public void IBaseNavigation.GoBack() { GoBack(); }
 
 		public bool CanGoBack
 		{
@@ -272,27 +318,20 @@ namespace Fuse.Navigation
 			}
 		}
 		
-		void GoUp()
+		bool GoUp()
 		{
 			var cur = GetCurrentRouterPageRoute();
 			if (cur == null) 
-				return;
+				return false;
 				
 			var up = cur.Up();
-			if (up == cur) 
-			{
-				OnUpFromRoot();
-			}
-			else 
+			if (up != cur) 
 			{
 				SetRoute(up, NavigationGotoMode.Transition, RoutingOperation.Pop, "");
+				return true;
 			}
-		}
-
-		void OnUpFromRoot()
-		{
-			// TODO: Raise event(?) to notify that the user has performed a GoBack
-			// while already at root level. This should usually leave the app.
+			
+			return false;
 		}
 
 		void Pop()
