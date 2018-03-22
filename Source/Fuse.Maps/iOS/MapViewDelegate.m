@@ -375,7 +375,7 @@
 		z = MAX(2.0, MIN(z, 21));
 		CLLocationCoordinate2D newCenter = CLLocationCoordinate2DMake(lat, lng);
 		MKCoordinateSpan span = [self coordinateSpanWithMapView:_mapView centerCoordinate:newCenter andZoomLevel:z];
-	[_mapView setRegion:MKCoordinateRegionMake(newCenter, span) animated: true];
+	[_mapView setRegion:MKCoordinateRegionMake(newCenter, span)];
 	}
 
 	-(double)getZoomLevel
