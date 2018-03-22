@@ -170,9 +170,12 @@
 
 	-(void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view
 	{
-		if(markerSelectBlock){
-			FusePinAnnotation* a = [view annotation];
-			markerSelectBlock(a.markerID, a.title);
+		id annotation = view.annotation;
+        	if (![annotation isKindOfClass:[MKUserLocation class]]) {
+			if(markerSelectBlock){
+				FusePinAnnotation* a = [view annotation];
+				markerSelectBlock(a.markerID, a.title);
+			}
 		}
 	}
 
@@ -285,6 +288,9 @@
 	}
 	-(MKAnnotationView *)mapView:(MKMapView *)theMapView viewForAnnotation:(id <MKAnnotation>)annotation
 	{
+		if ([annotation isKindOfClass:[MKUserLocation class]])
+            		return nil;  //return nil to use default blue dot view
+        
 		static NSString *SFAnnotationIdentifier = @"SFAnnotationIdentifier";
 		NSString* identifier = SFAnnotationIdentifier;
 		
