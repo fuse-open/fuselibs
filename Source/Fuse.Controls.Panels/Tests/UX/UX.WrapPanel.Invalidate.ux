@@ -1,0 +1,6 @@
+<Panel ux:Class="UX.WrapPanel.Invalidate">
+	<WrapPanel ItemHeight="50" ItemWidth="50" Orientation="Horizontal" ux:Name="wp">
+		<Panel ux:Name="p1"/>
+		<Panel ux:Name="p2"/>
+	</WrapPanel>
+</Panel>

@@ -331,6 +331,27 @@ namespace Fuse.Controls.Panels.Test
 				Assert.AreEqual( float4(20,100,20,100), ActualPositionSize(p.RR4));
 			}
 		}
+		
+		[Test]
+		public void Invalidate()
+		{
+			var p = new UX.WrapPanel.Invalidate();
+			using (var root = TestRootPanel.CreateWithChild(p,int2(1000)))
+			{
+				Assert.AreEqual( float2(50,50), p.p1.ActualSize );
+				Assert.AreEqual( float2(50,0), p.p2.ActualPosition );
+				
+				p.wp.ItemHeight = 40;
+				root.StepFrame();
+				Assert.AreEqual( float2(50,40), p.p1.ActualSize );
+				Assert.AreEqual( float2(50,0), p.p2.ActualPosition );
+				
+				p.wp.Orientation = Orientation.Vertical;
+				root.StepFrame();
+				Assert.AreEqual( float2(50,40), p.p1.ActualSize );
+				Assert.AreEqual( float2(0,40), p.p2.ActualPosition );
+			}
+		}
 
 	}
 }
