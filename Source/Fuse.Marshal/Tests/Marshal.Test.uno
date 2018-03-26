@@ -118,24 +118,52 @@ namespace Fuse
 			Assert.AreEqual(Unit.Pixels, y.Unit);
 		}
 
+		object CheckMarshalAdd(object a, object b)
+		{
+			object result;
+			Assert.IsTrue(Marshal.TryAdd(a,b, out result));
+			return result;
+		}
+		
+		object CheckMarshalSubtract(object a, object b)
+		{
+			object result;
+			Assert.IsTrue(Marshal.TrySubtract(a,b, out result));
+			return result;
+		}
+		
+		object CheckMarshalMultiply(object a, object b)
+		{
+			object result;
+			Assert.IsTrue(Marshal.TryMultiply(a,b, out result));
+			return result;
+		}
+
+		object CheckMarshalDivide(object a, object b)
+		{
+			object result;
+			Assert.IsTrue(Marshal.TryDivide(a,b, out result));
+			return result;
+		}
+		
 		// Expects the incoming value to be an equivalent of double 13.0
 		void TestScalar(object v)
 		{
-			Assert.AreEqual(13.0+51, Marshal.ToDouble(Marshal.Add(v, 51.0f)));
-			Assert.AreEqual(13.0+51, Marshal.ToDouble(Marshal.Add(v, 51.0)));
-			Assert.AreEqual(13.0+51, Marshal.ToDouble(Marshal.Add(v, 51)));
+			Assert.AreEqual(13.0+51, Marshal.ToDouble(CheckMarshalAdd(v, 51.0f)));
+			Assert.AreEqual(13.0+51, Marshal.ToDouble(CheckMarshalAdd(v, 51.0)));
+			Assert.AreEqual(13.0+51, Marshal.ToDouble(CheckMarshalAdd(v, 51)));
 
-			Assert.AreEqual(13.0-51.0, Marshal.ToDouble(Marshal.Subtract(v, 51.0f)));
-			Assert.AreEqual(13.0-51.0, Marshal.ToDouble(Marshal.Subtract(v, 51.0)));
-			Assert.AreEqual(13.0-51.0, Marshal.ToDouble(Marshal.Subtract(v, 51)));
+			Assert.AreEqual(13.0-51.0, Marshal.ToDouble(CheckMarshalSubtract(v, 51.0f)));
+			Assert.AreEqual(13.0-51.0, Marshal.ToDouble(CheckMarshalSubtract(v, 51.0)));
+			Assert.AreEqual(13.0-51.0, Marshal.ToDouble(CheckMarshalSubtract(v, 51)));
 
-			Assert.AreEqual(13.0*51.0, Marshal.ToDouble(Marshal.Multiply(v, 51.0f)));
-			Assert.AreEqual(13.0*51.0, Marshal.ToDouble(Marshal.Multiply(v, 51.0)));
-			Assert.AreEqual(13.0*51.0, Marshal.ToDouble(Marshal.Multiply(v, 51)));
+			Assert.AreEqual(13.0*51.0, Marshal.ToDouble(CheckMarshalMultiply(v, 51.0f)));
+			Assert.AreEqual(13.0*51.0, Marshal.ToDouble(CheckMarshalMultiply(v, 51.0)));
+			Assert.AreEqual(13.0*51.0, Marshal.ToDouble(CheckMarshalMultiply(v, 51)));
 
-			Assert.AreEqual(13.0/51.0, Marshal.ToDouble(Marshal.Divide(v, 51.0f)));
-			Assert.AreEqual(13.0/51.0, Marshal.ToDouble(Marshal.Divide(v, 51.0)));
-			Assert.AreEqual(13.0/51.0, Marshal.ToDouble(Marshal.Divide(v, 51)));
+			Assert.AreEqual(13.0/51.0, Marshal.ToDouble(CheckMarshalDivide(v, 51.0f)));
+			Assert.AreEqual(13.0/51.0, Marshal.ToDouble(CheckMarshalDivide(v, 51.0)));
+			Assert.AreEqual(13.0/51.0, Marshal.ToDouble(CheckMarshalDivide(v, 51)));
 		}
 
 		// Expects the incoming value to be equivalent of the given reference vector
@@ -143,36 +171,48 @@ namespace Fuse
 		{
 			var f = float4(8, 1, 3, 4);
 			var k = f;
-			Assert.AreEqual(f+r, Marshal.ToFloat4(Marshal.Add(k, v)));
-			Assert.AreEqual(f-r, Marshal.ToFloat4(Marshal.Subtract(k, v)));
-			Assert.AreEqual(f*r, Marshal.ToFloat4(Marshal.Multiply(k, v)));
-			Assert.AreEqual(f/r, Marshal.ToFloat4(Marshal.Divide(k, v)));
+			Assert.AreEqual(f+r, Marshal.ToFloat4(CheckMarshalAdd(k, v)));
+			Assert.AreEqual(f-r, Marshal.ToFloat4(CheckMarshalSubtract(k, v)));
+			Assert.AreEqual(f*r, Marshal.ToFloat4(CheckMarshalMultiply(k, v)));
+			Assert.AreEqual(f/r, Marshal.ToFloat4(CheckMarshalDivide(k, v)));
 
-			Assert.AreEqual((f+r).XYZ, Marshal.ToFloat3(Marshal.Add(k, v)));
-			Assert.AreEqual((f-r).XYZ, Marshal.ToFloat3(Marshal.Subtract(k, v)));
-			Assert.AreEqual((f*r).XYZ, Marshal.ToFloat3(Marshal.Multiply(k, v)));
-			Assert.AreEqual((f/r).XYZ, Marshal.ToFloat3(Marshal.Divide(k, v)));
+			Assert.AreEqual((f+r).XYZ, Marshal.ToFloat3(CheckMarshalAdd(k, v)));
+			Assert.AreEqual((f-r).XYZ, Marshal.ToFloat3(CheckMarshalSubtract(k, v)));
+			Assert.AreEqual((f*r).XYZ, Marshal.ToFloat3(CheckMarshalMultiply(k, v)));
+			Assert.AreEqual((f/r).XYZ, Marshal.ToFloat3(CheckMarshalDivide(k, v)));
 
-			Assert.AreEqual((f+r).XY, Marshal.ToFloat2(Marshal.Add(k, v)));
-			Assert.AreEqual((f-r).XY, Marshal.ToFloat2(Marshal.Subtract(k, v)));
-			Assert.AreEqual((f*r).XY, Marshal.ToFloat2(Marshal.Multiply(k, v)));
-			Assert.AreEqual((f/r).XY, Marshal.ToFloat2(Marshal.Divide(k, v)));
+			Assert.AreEqual((f+r).XY, Marshal.ToFloat2(CheckMarshalAdd(k, v)));
+			Assert.AreEqual((f-r).XY, Marshal.ToFloat2(CheckMarshalSubtract(k, v)));
+			Assert.AreEqual((f*r).XY, Marshal.ToFloat2(CheckMarshalMultiply(k, v)));
+			Assert.AreEqual((f/r).XY, Marshal.ToFloat2(CheckMarshalDivide(k, v)));
 
-			Assert.AreEqual((f+r).X, Marshal.ToFloat(Marshal.Add(k, v)));
-			Assert.AreEqual((f-r).X, Marshal.ToFloat(Marshal.Subtract(k, v)));
-			Assert.AreEqual((f*r).X, Marshal.ToFloat(Marshal.Multiply(k, v)));
-			Assert.AreEqual((f/r).X, Marshal.ToFloat(Marshal.Divide(k, v)));
+			Assert.AreEqual((f+r).X, Marshal.ToFloat(CheckMarshalAdd(k, v)));
+			Assert.AreEqual((f-r).X, Marshal.ToFloat(CheckMarshalSubtract(k, v)));
+			Assert.AreEqual((f*r).X, Marshal.ToFloat(CheckMarshalMultiply(k, v)));
+			Assert.AreEqual((f/r).X, Marshal.ToFloat(CheckMarshalDivide(k, v)));
 
 			var vr = r;
-			Assert.AreEqual(r+Marshal.ToFloat4(v), Marshal.ToFloat4(Marshal.Add(vr, v)));
-			Assert.AreEqual(r-Marshal.ToFloat4(v), Marshal.ToFloat4(Marshal.Subtract(vr, v)));
-			Assert.AreEqual(r*Marshal.ToFloat4(v), Marshal.ToFloat4(Marshal.Multiply(vr, v)));
-			Assert.AreEqual(r/Marshal.ToFloat4(v), Marshal.ToFloat4(Marshal.Divide(vr, v)));
+			Assert.AreEqual(r+Marshal.ToFloat4(v), Marshal.ToFloat4(CheckMarshalAdd(vr, v)));
+			Assert.AreEqual(r-Marshal.ToFloat4(v), Marshal.ToFloat4(CheckMarshalSubtract(vr, v)));
+			Assert.AreEqual(r*Marshal.ToFloat4(v), Marshal.ToFloat4(CheckMarshalMultiply(vr, v)));
+			Assert.AreEqual(r/Marshal.ToFloat4(v), Marshal.ToFloat4(CheckMarshalDivide(vr, v)));
 
 			//It's somewhat questionable that a float4 can convert to a Size/Size2, but alas, it was supported before :(
 			Assert.AreEqual(new Size2(r.X, r.Y), Marshal.ToSize2(v));
 			Assert.AreEqual(new Size(r.X, Unit.Unspecified), Marshal.ToSize(v));
 
+		}
+		
+		[Test]
+		[Obsolete]
+		public void Deprecated()
+		{
+			Assert.AreEqual( 8.0, Marshal.Add(3.0,5.0));
+			Assert.AreEqual( -2.0, Marshal.Subtract(3.0,5.0));
+			Assert.AreEqual( 15.0, Marshal.Multiply(3.0,5.0));
+			Assert.AreEqual( 0.6, Marshal.Divide(3.0,5.0));
+			Assert.AreEqual( 3.0, Marshal.Min(3.0,5.0));
+			Assert.AreEqual( 5.0, Marshal.Max(3.0,5.0));
 		}
 
 		[Test]
