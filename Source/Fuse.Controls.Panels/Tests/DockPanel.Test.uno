@@ -276,6 +276,27 @@ namespace Fuse.Controls.Test
 			}
 		}
 		
+		[Test]
+		//checks source of https://github.com/fusetools/fuselibs-public/issues/833
+		public void RelativeSize()
+		{
+			var p = new UX.DockPanel.RelativeSize();
+			using (var root = TestRootPanel.CreateWithChild(p,int2(1000)))
+			{
+				Assert.AreEqual(float2(80,400),p.left.ActualSize);
+				Assert.AreEqual(float2(0,0),p.left.ActualPosition);
+				Assert.AreEqual(float2(80,400),p.right.ActualSize);
+				Assert.AreEqual(float2(320,0),p.right.ActualPosition);
+				
+				p.dp.Width = 200;
+				root.StepFrame();
+				Assert.AreEqual(float2(40,400),p.left.ActualSize);
+				Assert.AreEqual(float2(0,0),p.left.ActualPosition);
+				Assert.AreEqual(float2(40,400),p.right.ActualSize);
+				Assert.AreEqual(float2(160,0),p.right.ActualPosition);
+			}
+		}
+		
 
 		private void TestElementDockLayout(TestRootPanel root, Element element, Fuse.Layouts.Dock dock,
 			int2 rootSize, float2 expectActualSize, float2 expectActualPosition,
