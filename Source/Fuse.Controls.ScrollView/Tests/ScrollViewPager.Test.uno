@@ -8,19 +8,24 @@ namespace Fuse.Controls.ScrollViewTest
 {
 	public class ScrollViewPagerTest : TestBase
 	{
-		void WaitIdle( TestRootPanel root, ScrollViewPager svp )
+		void WaitIdle( TestRootPanel root, ScrollViewPager svp, string where )
 		{
+			var start = Uno.Diagnostics.Clock.GetSeconds();
 			while (true) 
 			{
 				root.StepFrameJS();
 				//-1 since frame index increment happens after all activity
 				if (svp.LastActivityFrame < UpdateManager.FrameIndex-1)
 					return;
+					
+				var elapsed = Uno.Diagnostics.Clock.GetSeconds() - start;
+				if (elapsed > 1.0) {
+					throw new Exception( "Waiting too long for idle: " + where );
+				}
 			}
 		}
 		
 		[Test]
-		[Ignore("https://github.com/fusetools/fuselibs-public/issues/1125")]
 		//This is only a sanity test. If changes are made to ScrollViewPager/ScrollView manual testing is 
 		//required. This will catch things that completely break the functionality
 		public void Basic()
@@ -31,7 +36,7 @@ namespace Fuse.Controls.ScrollViewTest
 				p.svp.ReachedEnd += OnReachedEnd;
 				p.svp.ReachedStart += OnReachedStart;
 				
-				WaitIdle(root, p.svp);
+				WaitIdle(root, p.svp, "init");
 				Assert.AreEqual(9, p.theEach.Limit);
 				Assert.AreEqual("8,7,6,5,4,3,2,1,0", GetDudZ(p.s));
 				
@@ -41,7 +46,7 @@ namespace Fuse.Controls.ScrollViewTest
 				_countReachedStart = 0;
 				
 				p.scroll.Goto(float2(0,300));
-				WaitIdle(root, p.svp);
+				WaitIdle(root, p.svp, "goto 300");
 				Assert.AreEqual(9, p.theEach.Limit);
 				Assert.AreEqual("8,7,6,5,4,3,2,1,0", GetDudZ(p.s));
 				Assert.AreEqual(0, p.theEach.Offset);
@@ -54,7 +59,7 @@ namespace Fuse.Controls.ScrollViewTest
 				for (int i=0; i < 4; ++i, offset +=3 )
 				{
 					p.scroll.Goto(float2(0,600));
-					WaitIdle(root, p.svp);
+					WaitIdle(root, p.svp, "goto 600 #" + i);
 					Assert.AreEqual(9, p.theEach.Limit);
 					Assert.AreEqual(offset, p.theEach.Offset);
 					if (i ==0) 
@@ -69,7 +74,7 @@ namespace Fuse.Controls.ScrollViewTest
 				
 				//reach the end
 				p.scroll.Goto(float2(0,600));
-				WaitIdle(root,p.svp);
+				WaitIdle(root,p.svp, "goto 600-end");
 				Assert.AreEqual(9, p.theEach.Limit);
 				Assert.AreEqual(12, p.theEach.Offset); //max offset
 				
@@ -80,7 +85,7 @@ namespace Fuse.Controls.ScrollViewTest
 				while( p.scroll.ScrollPosition.Y > 0 )
 				{
 					p.scroll.Goto(float2(0,0));
-					WaitIdle(root,p.svp);
+					WaitIdle(root,p.svp, "scroll start: " + p.scroll.ScrollPosition.Y);
 				}
 				Assert.AreEqual("8,7,6,5,4,3,2,1,0", GetDudZ(p.s));
 				Assert.AreEqual(0, p.theEach.Offset);
