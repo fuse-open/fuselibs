@@ -215,7 +215,7 @@ namespace Fuse.Elements
 			_gmsCount = Math.Min( _gmsMax, _gmsCount+1);
 			_gmsCache[n] = new GMSCacheItem
 			{
-				layoutParams = lp.CloneAndDerive(),
+				layoutParams = lp.Clone(),
 				result = sz,
 			};
 			

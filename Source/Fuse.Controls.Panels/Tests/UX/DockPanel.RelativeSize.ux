@@ -1,0 +1,6 @@
+<Panel ux:Class="UX.DockPanel.RelativeSize">
+	<DockPanel Width="400" Height="400" Color="#AAA" ux:Name="dp">
+		<Panel Dock="Left" Width="20%" Color="#080" ux:Name="left"/>
+		<Panel Dock="Right" Width="20%" Color="#080" ux:Name="right"	/>
+	</DockPanel>
+</Panel>
