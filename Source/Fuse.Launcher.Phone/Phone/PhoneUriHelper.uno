@@ -9,7 +9,7 @@ namespace Fuse
 		{
 			var builder = new StringBuilder();
 			builder.Append("tel:");
-			builder.Append(Uri.Encode(phoneNumber));
+			builder.Append(Uri.EscapeDataString(phoneNumber));
 			return builder.ToString();
 		}
 	}
