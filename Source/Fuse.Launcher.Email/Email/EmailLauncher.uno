@@ -46,14 +46,14 @@ namespace Fuse.LauncherImpl
 			{
 				builder.Append("&");
 				builder.Append("subject=");
-				builder.Append(Uri.Encode(subject));
+				builder.Append(Uri.EscapeDataString(subject));
 			}
 
 			if(!String.IsNullOrEmpty(message))
 			{
 				builder.Append("&");
 				builder.Append("body=");
-				builder.Append(Uri.Encode(message));
+				builder.Append(Uri.EscapeDataString(message));
 			}
 			//mailto:foo@example.com?cc=bar@example.com&subject=Greetings%20from%20Cupertino!&body=Wish%20you%20were%20here!
 
