@@ -3,7 +3,7 @@
     <JavaScript>
         var fw = require('/framework.js');
         fw.testStarted("HttpJson");
-        fetch('http://uno-http-test.azurewebsites.net/cors/json').then(function(result) {
+        fetch('http://s3-eu-west-1.amazonaws.com/fuselibs-testing/test-data.json').then(function(result) {
             result.json().then(function(parsed) {
                 fw.assertEqual(parsed.breakfast_menu.food[0].name, "Belgian Waffles");
                 router.goto("webSocket");
