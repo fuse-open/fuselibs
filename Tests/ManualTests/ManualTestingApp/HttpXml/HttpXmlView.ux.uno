@@ -9,7 +9,7 @@ using Uno.Net.Http;
 
 public partial class HttpXmlView 
 {
-    private const string _xmlExampleUrl = "http://uno-http-test.azurewebsites.net/cors/xml";
+    private const string _xmlExampleUrl = "http://s3-eu-west-1.amazonaws.com/fuselibs-testing/test-data.xml";
 
 	void OnActive(object sender, object args)
 	{
