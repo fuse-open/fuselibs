@@ -51,11 +51,6 @@ for f in Source/*; do
     fi
 done
 
-stuff pack ProjectTemplates \
-    --name=ProjectTemplates \
-    $STUFF_SUFFIX \
-    --output-dir=ProjectTemplatesUpload
-
 stuff pack Tests/AutomaticTestApp \
     --name=AutomaticTestApp \
     $STUFF_SUFFIX \
