@@ -10,7 +10,7 @@ env:
 install:
   - sudo easy_install pip
   - pip install six
-  - Stuff/stuff install Stuff
+  - nuget install -ConfigFile Stuff/NuGet.config -OutputDirectory Stuff -ExcludeVersion Stuff/packages.config
 
 before_script:
   - ulimit -c unlimited -S
