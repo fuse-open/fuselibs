@@ -797,6 +797,9 @@ namespace Fuse.Drawing
 			ColorBlend blend = CreateColorBlend(lg, bounds, float2(startX, startY), float2(endX, endY),
 				out gStart, out gEnd);
 
+			if (Vector.Dot(gStart, gEnd) < 1e-10)
+				return;
+
 			var brush = new LinearGradientBrush(
 				new PointF(gStart.X, gStart.Y),
 				new PointF(gEnd.X, gEnd.Y),
