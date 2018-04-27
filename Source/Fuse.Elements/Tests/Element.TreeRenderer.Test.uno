@@ -13,6 +13,7 @@ namespace Fuse.Elements.Test
 	public class ElementTreeRendererTest : TestBase
 	{
 		[Test]
+		[Ignore("Needs a Surface backend", "HOST_WINDOWS && NATIVE")]
 		//https://github.com/fusetools/fuselibs-public/issues/1005
 		public void PathDataChanged()
 		{
