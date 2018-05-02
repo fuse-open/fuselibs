@@ -142,7 +142,7 @@ namespace Fuse.Share
 
 			if defined(android || iOS)
 			{
-				var description = args.Length>1 ? "" + args[1] : "";
+				var description = args.Length>1 ? "" + args[2] : "";
 				if defined(android)
 				{
 					AndroidShareImpl.ShareFile("file://" + path, type, description);
@@ -151,7 +151,7 @@ namespace Fuse.Share
 				else if defined(iOS)
 				{
 					float2 position = float2(0);
-					if (args.Length > 2 && TryGetPosition(args[2], out position))
+					if (args.Length > 2 && TryGetPosition(args[3], out position))
 						iOSShareImpl.ShareFile("file://" + path, type, description, position);
 					else
 						iOSShareImpl.ShareFile("file://" + path, type, description);
