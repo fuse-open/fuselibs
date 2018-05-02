@@ -39,13 +39,15 @@ namespace Fuse.Share
 		[Foreign(Language.ObjC)]
 		static ObjC.Object NewShareTextActivity(string text, string description)
 		@{
-			return [[UIActivityViewController alloc] initWithActivityItems:@[text] applicationActivities:nil];
+			NSArray* sharedObjects=@[text, description];
+			return [[UIActivityViewController alloc] initWithActivityItems:sharedObjects applicationActivities:nil];
 		@}
 
 		[Foreign(Language.ObjC)]
 		static ObjC.Object NewShareFileActivity(string path, string mimeType, string description)
 		@{
-			return [[UIActivityViewController alloc] initWithActivityItems:@[[NSURL URLWithString:path]] applicationActivities:nil];
+			NSArray* sharedObjects=@[[NSURL URLWithString:path], description];
+			return [[UIActivityViewController alloc] initWithActivityItems:sharedObjects applicationActivities:nil];
 		@}
 
 		[Foreign(Language.ObjC)]
