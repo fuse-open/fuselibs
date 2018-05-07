@@ -29,7 +29,7 @@ Note that templates and non-templates can be mixed within one `Navigator`.
 
 Navigator comes with a set of default transitions that match the behavior of
 [`push()`](/docs/fuse/navigation/router/push_0f0d575d),
-[`goBack()`](/docs/fuse/navigation/router/goback_0f0d575d) and
+[`goBack()`](/docs/fuse/navigation/router/goback_c0e37bee) and
 [`goto()`](/docs/fuse/navigation/router/goto_0f0d575d).
 
 To have complete control over page transitions use the @PageView class. It works just like a `Navigator` but has no standard transitions or state changes.
