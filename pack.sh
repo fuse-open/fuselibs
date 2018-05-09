@@ -46,6 +46,7 @@ for f in Source/*; do
     project=$f/$name.unoproj
     if [ -f "$project" ]; then
         uno pack "$project" \
+            --version=$VERSION \
             --out-dir="$OUT" \
             $UNO_SUFFIX
     fi
