@@ -66,7 +66,6 @@ cp -Rf Source/build \
     Stuff/.unopath \
     Stuff/uno \
     Stuff/uno.exe \
-    Stuff/uno.stuff \
     Stuff/stuff \
     Stuff/stuff.exe \
     release
