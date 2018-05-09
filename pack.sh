@@ -46,6 +46,7 @@ for f in Source/*; do
     project=$f/$name.unoproj
     if [ -f "$project" ]; then
         uno pack "$project" \
+            --version=$VERSION \
             --out-dir="$OUT" \
             $UNO_SUFFIX
     fi
@@ -66,7 +67,6 @@ cp -Rf Source/build \
     Stuff/.unopath \
     Stuff/uno \
     Stuff/uno.exe \
-    Stuff/uno.stuff \
     Stuff/stuff \
     Stuff/stuff.exe \
     release
