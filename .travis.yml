@@ -1,10 +1,7 @@
 os: osx
-
 osx_image: xcode9.2
-
-language: cpp
-
-compiler: clang
+language: csharp
+mono: 5.4.1
 
 env:
   global:
@@ -13,10 +10,7 @@ env:
 install:
   - sudo easy_install pip
   - pip install six
-  - wget https://files.fusetools.com/tooling/eTVvQ6T4pMUK-Mono.zip -O mono.zip &&
-    unzip -d mono mono.zip &&
-    export PATH=$PATH:$PWD/mono/bin
-  - Stuff/stuff install Stuff
+  - nuget install -ConfigFile Stuff/NuGet.config -OutputDirectory Stuff -ExcludeVersion Stuff/packages.config
 
 before_script:
   - ulimit -c unlimited -S

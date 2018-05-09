@@ -1,7 +1,7 @@
 version: '{build}'
 
 install:
-  - Stuff\stuff install Stuff
+  - nuget install -ConfigFile Stuff\NuGet.config -OutputDirectory Stuff -ExcludeVersion Stuff\packages.config
   - ps: Invoke-WebRequest https://files.fusetools.com/tooling/iyVp8kwQ0vLn-mesa-17.2.3.500.zip -OutFile mesa.zip
   - ps: Expand-Archive mesa.zip mesa
 
