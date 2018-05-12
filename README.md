@@ -1,5 +1,6 @@
 # Fuselibs
-[![TeamCity](https://tc.outracks.com/app/rest/builds/buildType:%28id:FuselibsPublic_Trigger%29/statusIcon)](https://tc.outracks.com/project.html?projectId=FuselibsPublic)
+[![Tracis CI Build Status](https://travis-ci.org/fusetools/fuselibs-public.svg?branch=master)](https://travis-ci.org/fusetools/fuselibs-public)
+[![AppVeyor Build status](https://ci.appveyor.com/api/projects/status/an47qhe561v31jga/branch/master?svg=true)](https://ci.appveyor.com/project/fusetools/fuselibs-public/branch/master)
 [![license: MIT](https://img.shields.io/github/license/fusetools/fuselibs-public.svg)](LICENSE.txt)
 [![Slack](https://img.shields.io/badge/chat-on%20slack-blue.svg)](https://fusecommunity.slack.com/messages/fuselibs)
 
