@@ -1,0 +1,30 @@
+<RangeControl ux:Class="Alive.Slider" Focus.IsFocusable="true" HitTestMode="LocalBounds" ClipToBounds="false">
+	<LinearRangeBehavior />
+
+	<ProgressAnimation>
+		<Move Target="thumb" X="width(background)" />
+		<Change activeTrack.Width="100%" />
+	</ProgressAnimation>
+
+	<WhilePressed>
+		<Scale Target="thumbFocusCircle" Factor="4" Duration="0.2" Easing="ExponentialOut" EasingBack="ExponentialIn" DelayBack="0" />
+		<Change thumbFocusCircle.Opacity="1" Duration="0.1" Easing="ExponentialOut" DelayBack="0" DurationBack=".23" />
+		<Scale Target="thumbIdleCircle" Factor="0" Duration="0.3" Easing="ExponentialOut" EasingBack="ExponentialIn" DelayBack="0" />
+		<Change thumbShadow.Color="#0000" Duration="0.15" DelayBack="0" />
+	</WhilePressed>
+
+	<Circle ux:Name="thumb" Alignment="CenterLeft" HitTestMode="LocalBounds" Anchor="50%,50%" Offset="16,0">
+		<Circle ux:Name="thumbIdleCircle" Color="{Resource Alive.SliderThumbColor}" Width="33" Height="33" Alignment="Center">
+			<Shadow ux:Name="thumbShadow" Distance="3" Size="9" Color="withOpacity({Resource Alive.SliderThumbShadowColor}, .4)" />
+		</Circle>
+		<Circle ux:Name="thumbSmallCircle" Color="{Resource Alive.SliderThumbColor}" Width="7" Height="7" Alignment="Center" />
+		<Circle ux:Name="thumbFocusCircle" Opacity="0" Width="96" Height="96" Color="transparentize({Resource Alive.AccentColor}, 0.5)">
+			<Scaling ux:Name="thumbFocusCircleScaling" Factor="1/4" />
+		</Circle>
+	</Circle>
+
+	<Rectangle ux:Name="background" Height="3" Margin="16,0" CornerRadius="2">
+		<Rectangle ux:Name="activeTrack" CornerRadius="2" Color="{Resource Alive.AccentColor}" Alignment="Left" Width="0%" />
+		<Rectangle ux:Name="inactiveTrack" CornerRadius="2" Margin="2,0,0,0" Color="{Resource Alive.AccentColor}" Opacity="0.2" />
+	</Rectangle>
+</RangeControl>

@@ -1,0 +1,1 @@
+<Rectangle ux:Class="Alive.ColorBadge" Width="27" Height="2.5" Color="{Resource Alive.AccentColor}" Margin="0,0,0,8" Alignment="Left" />

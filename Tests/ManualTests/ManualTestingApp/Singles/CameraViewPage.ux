@@ -1,0 +1,17 @@
+<Page Title="CameraView" ux:Class="CameraViewPage">
+	<InfoStack ux:Key="Info">
+		<ul>
+			<li>The camera preview works on Android/iOS</li>
+			<li>There is a fallback on other platforms</li>
+		</ul>
+	</InfoStack>
+	<DockPanel>
+		<Panel>
+			<NativeViewHost>
+				<CameraView ux:Name="cameraView">
+				</CameraView>
+			</NativeViewHost>
+		</Panel>
+	</DockPanel>
+    <FpsMeter/>
+</Page>

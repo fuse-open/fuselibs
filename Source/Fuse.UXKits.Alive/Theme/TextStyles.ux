@@ -1,0 +1,12 @@
+<Panel ux:Class="Alive.TextStyles">
+	<SystemFont Family="helvetica" Style="Normal" Weight="Normal" ux:Global="Alive.RegularFont" />
+	<SystemFont Family="helvetica" Style="Normal" Weight="Bold" ux:Global="Alive.BoldFont" />
+	<SystemFont Family="helvetica" Style="Normal" Weight="Medium" ux:Global="Alive.MediumFont" />
+
+	<Text ux:Class="Alive.Body" Font="Alive.RegularFont" FontSize="15" Color="{Resource Alive.BodyTextColor}" TextWrapping="Wrap"/>
+	<Text ux:Class="Alive.BodyBold" Font="Alive.BoldFont" FontSize="15" Color="{Resource Alive.BodyTextColor}" TextWrapping="Wrap"/>
+	<Text ux:Class="Alive.Title" Font="Alive.BoldFont" FontSize="20" Color="{Resource Alive.TitleTextColor}" />
+	<Text ux:Class="Alive.NavBarTitle" Font="Alive.BoldFont" FontSize="16" Color="{Resource Alive.TitleTextColor}" />
+	<Text ux:Class="Alive.Subtitle" Font="Alive.RegularFont" FontSize="16" Color="{Resource Alive.TitleTextColor}" />
+	<Text ux:Class="Alive.ButtonText" Font="Alive.BoldFont" FontSize="15" Color="{Resource Alive.TitleTextColor}" />
+</Panel>

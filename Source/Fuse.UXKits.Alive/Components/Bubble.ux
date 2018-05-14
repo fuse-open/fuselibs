@@ -1,0 +1,1 @@
+<Circle ux:Class="Alive.Bubble" Width="48" Height="48" Color="#eee" StrokeWidth="2" StrokeColor="{Resource Alive.BubbleStrokeColor}" />

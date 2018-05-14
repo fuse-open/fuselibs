@@ -1,0 +1,32 @@
+<Panel ux:Class="Alive.TabBar" Color="{Resource Alive.SecondaryBackgroundColor}" Height="47">
+	<INavigation ux:Dependency="Navigation" />
+
+	<ScrollView AllowedScrollDirections="Horizontal" LayoutMode="PreserveScrollPosition">
+		<ScrollViewMotion Overflow="Clamp" />
+		<Panel>
+			<Rectangle ux:Name="indicator" ux:Binding="Children" Color="{Resource Alive.AccentColor}" Height="3" Alignment="Bottom">
+				<LayoutAnimation>
+					<Move RelativeTo="PositionChange" X="1" Duration="0.15" Easing="CubicInOut" />
+					<Resize RelativeTo="SizeChange" Vector="1" Duration="0.15" Easing="CubicInOut" />
+				</LayoutAnimation>
+			</Rectangle>
+			<PageIndicator ContentAlignment="Left" Navigation="Navigation" Margin="20,0" ItemSpacing="25">
+				<Panel ux:Template="Dot" HitTestMode="LocalBounds">
+					<Clicked>
+						<NavigateTo Target="{Page Visual}" />
+					</Clicked>
+					<Panel Alignment="HorizontalCenter">
+						<Panel ux:Name="button">
+							<Alive.ButtonText ux:Name="labelText" Value="{Page Label}" Alignment="Center" Margin="5,0" Opacity="0.5" />
+						</Panel>
+					</Panel>
+					<WhileActive Threshold="0.5">
+						<Change indicator.LayoutMaster="button" />
+						<Change labelText.Opacity="1" Duration=".1" />
+						<BringIntoView />
+					</WhileActive>
+				</Panel>
+			</PageIndicator>
+		</Panel>
+	</ScrollView>
+</Panel>

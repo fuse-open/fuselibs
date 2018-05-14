@@ -1,0 +1,5 @@
+<Fuse.Controls.PhotoPreviewBase ux:Class="Fuse.Controls.PhotoPreview">
+	<CameraView ux:Dependency="CameraView" />
+	<Fuse.Controls.iOS.PhotoPreview ux:Template="iOSAppearance" ux:Condition="iOS" Host="this" CameraView="CameraView" />
+	<Fuse.Controls.Android.PhotoPreview ux:Template="AndroidAppearance" ux:Condition="Android" Host="this" CameraView="CameraView" />
+</Fuse.Controls.PhotoPreviewBase>

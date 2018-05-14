@@ -1,0 +1,60 @@
+<ux:Resources>
+
+	<!-- Palette -->
+	<float4 ux:Global="Alive.Gray100" ux:Value="#f0f0f1"/>
+	<float4 ux:Global="Alive.Gray200" ux:Value="#e7e7e9"/>
+	<float4 ux:Global="Alive.Gray300" ux:Value="#cececf"/>
+	<float4 ux:Global="Alive.Gray400" ux:Value="#bababd"/>
+	<float4 ux:Global="Alive.Gray500" ux:Value="#aaaaad"/>
+	<float4 ux:Global="Alive.Gray600" ux:Value="#999aa0"/>
+
+	<float4 ux:Global="Alive.Gradient1.StartColor" ux:Value="#CF566B" />
+	<float4 ux:Global="Alive.Gradient1.EndColor" ux:Value="#F59579" />
+	<float4 ux:Global="Alive.Gradient2.StartColor" ux:Value="#5B76DA" />
+	<float4 ux:Global="Alive.Gradient2.EndColor" ux:Value="#80B3F9" />
+	<float4 ux:Global="Alive.Gradient3.StartColor" ux:Value="#55577D" />
+	<float4 ux:Global="Alive.Gradient3.EndColor" ux:Value="#3D3E66" />
+
+
+	<!-- Light -->
+	<float4 ux:Global="Alive.Light.Blue" ux:Value="#8184f9"/>
+	<float4 ux:Global="Alive.Light.Orange" ux:Value="#f9ad81"/>
+	<float4 ux:Global="Alive.Light.Green" ux:Value="#3fd4b1"/>
+	<float4 ux:Global="Alive.Light.Purple" ux:Value="#799ff6"/>
+	<float4 ux:Global="Alive.Light.Yellow" ux:Value="#f9d471"/>
+	<float4 ux:Global="Alive.Light.Red" ux:Value="#ee486b"/>
+	<float4 ux:Global="Alive.Light.AccentColor" ux:Value="Alive.Light.Red" />
+	<float4 ux:Global="Alive.Light.BodyTextColor" ux:Value="#2d2f3b"/>
+	<float4 ux:Global="Alive.Light.TitleTextColor" ux:Value="#1d1f2a"/>
+	<float4 ux:Global="Alive.Light.CardBackgroundColor" ux:Value="#fff" />
+	<float4 ux:Global="Alive.Light.CardShadowColor" ux:Value="0,0,0, 0.15" />
+	<float4 ux:Global="Alive.Light.PrimaryBackgroundColor" ux:Value="Alive.Gray100" />
+	<float4 ux:Global="Alive.Light.SecondaryBackgroundColor" ux:Value="#fff" />
+	<float4 ux:Global="Alive.Light.PageIndicatorDotColor" ux:Value="#0007" />
+	<float4 ux:Global="Alive.Light.DrawerBackgroundColor" ux:Value="Alive.Gray200" />
+	<float4 ux:Global="Alive.Light.InactiveSwitchBackgroundColor" ux:Value="#fff" />
+	<float4 ux:Global="Alive.Light.BubbleStrokeColor" ux:Value="#fff" />
+	<float4 ux:Global="Alive.Light.ListViewItemColor" ux:Value="Alive.Gray100" />
+	<float4 ux:Global="Alive.Light.ListViewItemAlternateColor" ux:Value="Alive.Gray200" />
+	
+	<!-- Dark -->
+	<float4 ux:Global="Alive.Dark.Red" ux:Value="#dc5b71"/>
+	<float4 ux:Global="Alive.Dark.Blue" ux:Value="#8184f9"/>
+	<float4 ux:Global="Alive.Dark.Orange" ux:Value="#f9ad81"/>
+	<float4 ux:Global="Alive.Dark.Green" ux:Value="#3fd4b1"/>
+	<float4 ux:Global="Alive.Dark.Purple" ux:Value="#799ff6"/>
+	<float4 ux:Global="Alive.Dark.Yellow" ux:Value="#f9d471"/>
+	<float4 ux:Global="Alive.Dark.AccentColor" ux:Value="Alive.Dark.Red" />
+	<float4 ux:Global="Alive.Dark.BodyTextColor" ux:Value="#fafafa"/>
+	<float4 ux:Global="Alive.Dark.TitleTextColor" ux:Value="#fafafa"/>
+	<float4 ux:Global="Alive.Dark.CardBackgroundColor" ux:Value="#1F202D" />
+	<float4 ux:Global="Alive.Dark.CardShadowColor" ux:Value="0,0,0, .4" />
+	<float4 ux:Global="Alive.Dark.PrimaryBackgroundColor" ux:Value="#1F212D" />
+	<float4 ux:Global="Alive.Dark.SecondaryBackgroundColor" ux:Value="#373944" />
+	<float4 ux:Global="Alive.Dark.PageIndicatorDotColor" ux:Value="#fff7" />
+	<float4 ux:Global="Alive.Dark.DrawerBackgroundColor" ux:Value="#13151E" />
+	<float4 ux:Global="Alive.Dark.InactiveSwitchBackgroundColor" ux:Value="Alive.Gray200" />
+	<float4 ux:Global="Alive.Dark.BubbleStrokeColor" ux:Value="#fff" />
+	<float4 ux:Global="Alive.Dark.ListViewItemColor" ux:Value="#1D1F2B" />
+	<float4 ux:Global="Alive.Dark.ListViewItemAlternateColor" ux:Value="#1F222E" />
+</ux:Resources>

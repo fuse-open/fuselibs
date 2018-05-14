@@ -1,0 +1,9 @@
+<Panel ux:Class="Fuse.Views.Test.UX.ExportTest">
+
+	<ExportedViews>
+		<Fuse.Views.Test.UX.MyExportedView ux:Template="MyExportedView" />
+	</ExportedViews>
+
+	<Panel ux:Class="Fuse.Views.Test.UX.MyExportedView" />
+
+</Panel>

@@ -1,0 +1,46 @@
+<Container ux:Class="Alive.Drawer" Color="{Resource Alive.DrawerBackgroundColor}" Subtree="navPanel" HideButton="false">
+	<JavaScript>
+		var Observable = require("FuseJS/Observable");
+		var isOpen = Observable(false);
+
+		this.close = function() { isOpen.value = false; };
+		this.open = function() { isOpen.value = true; }
+		
+		module.exports = {
+			isOpen: isOpen,
+			close: this.close,
+			open: this.open
+		};
+	</JavaScript>
+
+	<bool ux:Property="HideButton" />
+	<Panel ux:Dependency="Menu"/>
+	<Panel ux:Name="navPanel" ux:Binding="Children" Color="White">
+
+		<Shadow ux:Name="shadow" Angle="0" />
+	</Panel>
+
+	<Circle ux:Name="menuBtn" Clicked="{open}" Color="White" Width="45" Height="45" Margin="0,0,0,20" Alignment="Bottom">
+		<StackPanel ItemSpacing="4" Alignment="Center">
+			<Rectangle Width="14" Height="2" Color="#cfd7e6"/>
+			<Rectangle Width="14" Height="2" Color="#cfd7e6"/>
+		</StackPanel>
+		<Shadow Size="12" Distance="3" Angle="90" Color="0,0,0, 0.19" />
+		<WhileTrue Value="{ReadProperty HideButton} || {isOpen}">
+			<Change menuBtn.Opacity="0" Duration="0.2" Easing="QuadraticInOut"/>
+			<Scale Target="menuBtn" Factor="0" Duration="0.2" Easing="QuadraticInOut" />
+		</WhileTrue>
+	</Circle>
+
+	<WhileTrue Value="{isOpen}">
+		<Panel Clicked="{close}" HitTestMode="LocalBounds" />
+	</WhileTrue>
+	<Panel ux:Binding="Children" Alignment="CenterLeft" Width="200" Children="Menu"/>
+	<WhileTrue Value="{isOpen}">
+		<Move Target="navPanel" RelativeTo="Size" X="0.4" Duration="0.2" Easing="QuadraticInOut"/>
+		<Scale Target="navPanel" Factor="0.7" Duration="0.2" Easing="QuadraticInOut"/>
+		<Change shadow.Distance="25"/>
+		<Change shadow.Size="25"/>
+	</WhileTrue>
+
+</Container>

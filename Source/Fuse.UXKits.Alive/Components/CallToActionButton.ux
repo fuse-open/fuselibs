@@ -1,0 +1,22 @@
+<Rectangle ux:Class="Alive.CallToActionButton" Height="50" MinWidth="100" Color="{Resource Alive.AccentColor}" CornerRadius="56" Glow="false">
+	<string ux:Property="Text" />
+	<bool ux:Property="Glow" />
+
+	<WhileTrue Value="{ReadProperty Glow}">
+		<Shadow ux:Name="shadow" Distance="4" Size="12" Color="transparentize({SnapshotProperty Color}, .4)" />
+		<WhilePressed>
+			<Change shadow.Size="0" DurationBack=".15" Easing="CubicInOut" />
+			<Change shadow.Distance="0" DurationBack=".15" Easing="CubicInOut" />
+		</WhilePressed>
+	</WhileTrue>
+
+	<WhilePressed>
+		<Change this.Color="0,0,0,1" MixOp="Weight" Weight=".15" DurationBack=".18" Easing="CubicInOut" />
+		<Scale Factor="0.94" DurationBack=".15" Easing="CubicInOut" />
+	</WhilePressed>
+
+	<Panel>
+		<Alive.DarkTheme />
+		<Alive.ButtonText Alignment="Center" Value="{ReadProperty Text}" />
+	</Panel>
+</Rectangle>

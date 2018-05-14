@@ -1,0 +1,63 @@
+<StackPanel ux:Class="Alive.ListView" IsAnimated="true">
+	<object ux:Property="Items" />
+	<bool ux:Property="IsAnimated" />
+	<JavaScript>
+		var Observable = require("FuseJS/Observable");
+		var items = this.Items.inner().map(function(item) {
+			return {
+				__Alive_ListView_item: item,
+				__Alive_ListView_index: Observable(1)
+			}
+		});
+
+		function recalculateIndices() {
+			for(var i = 0; i < items.length; ++i) {
+				items.getAt(i).__Alive_ListView_index.value = i;
+			}
+		}
+
+		items.addSubscriber(recalculateIndices);
+		module.disposed.push(function() {
+			items.removeSubscriber(recalculateIndices)
+		});
+
+		exports.__Alive_ListView_items = items;
+	</JavaScript>
+
+	<Each Items="{__Alive_ListView_items}">
+		<Panel ux:Name="itemPanel">
+			<With Data="{__Alive_ListView_item}">
+				<Instance TemplateSource="this" TemplateKey="Item" />
+			</With>
+
+			<WhileTrue Value="{ReadProperty IsAnimated}">
+
+				<Attractor
+					Target="bg.Color"
+					Value="(
+						(mod({__Alive_ListView_index}, 2) == 0)
+							? {Resource Alive.ListViewItemColor}
+							: {Resource Alive.ListViewItemAlternateColor}
+					)"
+					Easing="CubicIn"
+					Unit="Normalized"
+					Duration="1"
+					DurationExp="0"
+				/>
+
+				<LayoutAnimation>
+					<Move Y="1" RelativeTo="PositionChange" Duration="0.3" Easing="CircularInOut" />
+					<Resize Y="1" RelativeTo="SizeChange" Duration="0.3" Easing="CircularInOut" />
+				</LayoutAnimation>
+				<RemovingAnimation>
+					<Move Y="-1" RelativeTo="Size" Delay="0.5" Duration="0.3" Easing="CircularInOut" />
+				</RemovingAnimation>
+				<AddingAnimation>
+					<Change itemPanel.Opacity="0" Duration=".4" Easing="CubicInOut" />
+				</AddingAnimation>
+			</WhileTrue>
+
+			<Rectangle ux:Name="bg" Layer="Background" />
+		</Panel>
+	</Each>
+</StackPanel>

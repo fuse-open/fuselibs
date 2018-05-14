@@ -1,0 +1,8 @@
+<Panel ux:Class="UX.DataSeries.Array" xmlns:c="Fuse.Charting">
+	<JavaScript>
+		exports.one = [3,1,2]
+	</JavaScript>
+	<c:PlotBehavior ux:Name="P">
+		<c:DataSeries Data="{one}" ux:Name="D1"/>
+	</c:PlotBehavior>
+</Panel>

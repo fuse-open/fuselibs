@@ -1,0 +1,34 @@
+<ToggleControl ux:Class="Alive.Switch" Focus.IsFocusable="true" Width="80" Height="40" HitTestMode="LocalBounds">
+	<SwipeGesture ux:Name="swipe" Direction="Right" Length="40" Type="Active" IsActive="{Property Value}"  />
+
+	<Tapped>
+		<Toggle Target="this" />
+	</Tapped>
+
+	<InnerSwitch />
+	<Rectangle ux:Name="inner" ux:InnerClass="InnerSwitch" Progress="0">
+		<float ux:Property="Progress" />
+
+		<SwipingAnimation Source="swipe">
+			<Move Target="thumb" X="40" />
+			<Change inner.Progress="1" />
+		</SwipingAnimation>
+
+		<Circle ux:Name="thumb" Alignment="Left" Margin="4" Width="32" Height="32"
+			Color="
+				mix({Resource Alive.InactiveSwitchThumbColor},
+					{Resource Alive.ActiveSwitchThumbColor},
+					{ReadProperty inner.Progress})">
+
+			<Shadow Size="4" Distance="1" Color="0,0,0, 0.17" />
+		</Circle>
+		<Rectangle ux:Name="bg" Layer="Background" CornerRadius="200" Opacity="0.75"
+			Color="
+				mix({Resource Alive.InactiveSwitchBackgroundColor},
+					{Resource Alive.ActiveSwitchBackgroundColor},
+					{ReadProperty inner.Progress})">
+
+			<Stroke  ux:Name="bgStroke" Width="1" Color="0,0,0, 0.1" />
+		</Rectangle>
+	</Rectangle>
+</ToggleControl>

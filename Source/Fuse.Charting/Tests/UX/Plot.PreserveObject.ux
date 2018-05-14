@@ -1,0 +1,22 @@
+<Panel ux:Class="UX.Plot.PreserveObject" xmlns:c="Fuse.Charting">
+	<JavaScript>
+		var Observable = require("FuseJS/Observable")
+		exports.values = Observable()
+		for (var i=0;i<20; ++i) {
+			exports.values.add( { value: i, label: "#" + i } )
+		}
+	</JavaScript>
+	<c:Plot ux:Name="plot" DataOffset="5" DataLimit="10">
+		<c:DataSeries Data="{values}"/>
+		
+		<Panel ux:Name="B">
+			<c:PlotData>
+				<Text Value="{Plot data.source.y}"/>
+			</c:PlotData>
+		</Panel>
+		
+		<c:PlotAxis Axis="X" ux:Name="C">
+			<Text ux:Template="Label" Value="{Plot axis.label}"/>
+		</c:PlotAxis>
+	</c:Plot>
+</Panel>

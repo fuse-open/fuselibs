@@ -1,0 +1,67 @@
+<Container ux:Class="Alive.SwipeActionPanel" Subtree="inner"
+	ButtonText="Remove"
+	ConfirmationText="Removed!"
+	GradientStartColor="#F59579"
+	GradientEndColor="#CF566B"
+	StayOpen="false">
+
+	<string ux:Property="ButtonText" />
+	<string ux:Property="ConfirmationText" />
+	<float4 ux:Property="GradientStartColor" />
+	<float4 ux:Property="GradientEndColor" />
+	<bool ux:Property="StayOpen" />
+
+	<OnUserEvent ux:Class="Alive.SwipeActionConfirmed" EventName="Alive.SwipeActionConfirmed" />
+
+	<Panel ux:Binding="Children" ux:Name="rootPanel" ClipToBounds="false" HitTestMode="LocalBoundsAndChildren">
+		<UserEvent ux:Name="Alive.SwipeActionConfirmed" />
+
+		<SwipeGesture ux:Name="swipe" Direction="Left" LengthNode="button" Type="Active" />
+
+		<SwipingAnimation Source="swipe">
+			<Move Target="inner" X="-1" RelativeTo="Size" RelativeNode="button" />
+			<Move Target="button" X="-1" RelativeTo="Size" RelativeNode="button" />
+		</SwipingAnimation>
+
+		<Panel ux:Name="confirmation" Layer="Background" Width="125%" Alignment="Left">
+			<Alive.DarkTheme />
+
+			<Translation X="1" RelativeTo="ParentSize" />
+
+			<Panel Width="80%" Alignment="Right">
+				<Alive.Title ux:Name="confirmationText" Value="{ReadProperty ConfirmationText}" Alignment="Center" TextAlignment="Center" Opacity="0">
+					<Scaling ux:Name="confirmationTextScaling" Factor=".5" />
+				</Alive.Title>
+			</Panel>
+			<Rectangle ux:Name="bg">
+				<LinearGradient AngleDegrees="0">
+					<GradientStop Offset="0" Color="{ReadProperty GradientStartColor}" />
+					<GradientStop Offset="1" Color="{ReadProperty GradientEndColor}" />
+				</LinearGradient>
+			</Rectangle>
+		</Panel>
+
+		<Rectangle ux:Name="button" Layer="Background" Alignment="Right" Offset="1,0" HitTestMode="LocalBounds" Color="{ReadProperty GradientStartColor}">
+			<Alive.DarkTheme />
+			<Translation X="1" RelativeTo="Size" />
+			<Alive.Body Alignment="VerticalCenter" Margin="20,0" TextAlignment="Right" Color="White" Value="{ReadProperty ButtonText}" />
+			<Clicked>
+				<RaiseUserEvent EventName="Alive.SwipeActionConfirmed" Delay="0" />
+				<SetSwipeActive Target="swipe" Value="{ReadProperty StayOpen}" Delay=".55" />
+				<Set confirmAnimation.TargetProgress="1" Delay="0" />
+			</Clicked>
+		</Rectangle>
+
+		<Timeline ux:Name="confirmAnimation">
+			<Move Target="button" X="-1.25" RelativeTo="ParentSize" Duration=".3" Easing="CubicInOut" />
+			<Move Target="inner" X="-1.25" RelativeTo="ParentSize" Duration=".3" Easing="CubicInOut" />
+			<Move Target="confirmation" X="-1.25" RelativeTo="ParentSize" Duration=".3" Easing="CubicInOut" />
+
+			<Change confirmationTextScaling.Factor="1" Delay=".2" Duration=".4" Easing="ExponentialOut" />
+			<Change confirmationText.Opacity="1" Delay=".2" Duration=".3" Easing="CubicOut" />
+			<Set confirmAnimation.TargetProgress="({ReadProperty StayOpen} ? 1 : 0)" Delay=".55" />
+		</Timeline>
+
+		<Panel ux:Name="inner" ClipToBounds="true" />
+	</Panel>
+</Container>

@@ -1,0 +1,296 @@
+<App Background="#000">
+	<iOS.StatusBarConfig Style="Light" />
+	<Router ux:Name="router" />
+
+	<ClientPanel>
+		<Navigator DefaultPath="CameraPage">
+			<CameraPage ux:Template="CameraPage" router="router" />
+			<VideoPage ux:Template="VideoPage" router="router" />
+			<ImagePage ux:Template="ImagePage" router="router" />
+		</Navigator>
+	</ClientPanel>
+
+	<Page ux:Class="CameraPage">
+		<Router ux:Dependency="router" />
+		<DockPanel>
+			<JavaScript>
+				var Observable = require("FuseJS/Observable");
+				var Camera = _camera;
+
+				var captureMode = Observable();
+				var flashMode = Observable();
+
+				var capturedPhotos = Observable();
+
+				function getCameraInfo() {
+					Camera.getCameraInfo()
+						.then(function(info) {
+							console.log("captureMode: " + info[Camera.INFO_CAPTURE_MODE]);
+							console.log("flashMode: " + info[Camera.INFO_FLASH_MODE]);
+							console.log("cameraFacing: " + info[Camera.INFO_CAMERA_FACING]);
+							console.log("supportedFlashModes: " + info[Camera.INFO_SUPPORTED_FLASH_MODES].join());
+
+							captureMode.value = info[Camera.INFO_CAPTURE_MODE];
+							flashMode.value = info[Camera.INFO_FLASH_MODE];
+
+							if (Camera.INFO_PHOTO_RESOLUTIONS in info) {
+								var availableResolutions = info[Camera.INFO_PHOTO_RESOLUTIONS];
+								availableResolutions.forEach(function(e) {
+									console.log(e.width + "x" + e.height);
+								});
+								photoResolution = availableResolutions[Math.floor(availableResolutions.length * 0.4)];
+
+								var options = {};
+								options[Camera.OPTION_PHOTO_RESOLUTION] = photoResolution;
+
+								Camera.setPhotoOptions(options)
+									.then(function() {
+										console.log("New photo options set: " + JSON.stringify(options));
+									})
+									.catch(function(error) {
+										console.log("Failed to set photo options: " + error);
+									});
+							}
+						})
+						.catch(function(err) {
+							console.log("Failed to get camera info: " + err);
+						});
+				}
+				getCameraInfo();
+
+				function nextFlashMode() {
+					if (flashMode.value == Camera.FLASH_MODE_AUTO) return Camera.FLASH_MODE_ON;
+					else if (flashMode.value == Camera.FLASH_MODE_ON) return Camera.FLASH_MODE_OFF;
+					else if (flashMode.value == Camera.FLASH_MODE_OFF) return Camera.FLASH_MODE_AUTO;
+					else throw "Invalid flash mode";
+				}
+
+				function setCaptureMode(cm) {
+					Camera.setCaptureMode(cm)
+						.then(function(mode) {
+							captureMode.value = mode;
+							console.log("Capture mode set to: " + mode);
+						})
+						.catch(function(err) {
+							console.log("Failed to set capture mode: " + err);
+						});
+				}
+
+				function capturePhoto() {
+					Camera.capturePhoto()
+						.then(function (photo) {
+							var sizehint = {
+								width: 64,
+								height: 64
+							};
+							Promise.all([photo.save(), photo.saveThumbnail(sizehint)])
+								.then(function(result) {
+									var photoFilePath = result[0];
+									var thumbnailFilePath = result[1];
+									console.log("Photo saved to: " + photoFilePath + ", thumbnail saved to: " + thumbnailFilePath);
+									capturedPhotos.add({
+										photoFilePath: photoFilePath,
+										thumbnailFilePath: thumbnailFilePath
+									});
+									photo.release();
+								})
+								.catch(function(error) {
+									console.log("Failed to save photo: " + error);
+									photo.release();
+								});
+
+						})
+						.catch(function (error) {
+							console.log("Failed to capture photo: " + error);
+						});
+				}
+
+				var isRecording = Observable(false);
+				var recordingSession = null;
+
+				function startRecording() {
+					isRecording.value = true;
+					Camera.startRecording()
+						.then(function (session) {
+							recordingSession = session;
+						})
+						.catch(function (error) {
+							console.log("Failed to start recording: " + error);
+							isRecording.value = false;
+						});
+				}
+
+				function stopRecording() {
+					isRecording.value = false;
+					recordingSession.stop()
+						.then(function (recording) {
+							router.push("VideoPage", recording.filePath());
+						})
+						.catch(function (error) {
+							console.log("Failed to stop recording: " + error);
+						});
+					recordingSession = null;
+				}
+
+				var cameraBack = true;
+				function flipCameraFacing() {
+					var front = Camera.CAMERA_FACING_FRONT;
+					var back = Camera.CAMERA_FACING_BACK;
+					Camera.setCameraFacing(cameraBack ? front : back)
+						.then(function (newFacing) {
+							cameraBack = newFacing == back;
+							getCameraInfo();
+							console.log("Camera facing set to: " + (newFacing == back ? "back" : "front"));
+						})
+						.catch(function (err) {
+							console.log("Failed to set camera facing: " + err);
+						});
+				}
+
+				function changeFlashMode() {
+					Camera.setFlashMode(nextFlashMode())
+						.then(function(newFlashMode) {
+							flashMode.value = newFlashMode;
+							console.log("Flash mode set to: " + flashMode.value);
+						})
+						.catch(function(err) {
+							console.log("Failed to set flash mode: " + err);
+						});
+				}
+
+				function thumbnailClicked(args) {
+					router.push("ImagePage", args.data.photoFilePath);
+				}
+
+				module.exports = {
+					captureMode: captureMode,
+					setCaptureModePhoto: function () { setCaptureMode(Camera.CAPTURE_MODE_PHOTO); },
+					setCaptureModeVideo: function () { setCaptureMode(Camera.CAPTURE_MODE_VIDEO); },
+					capturePhoto: capturePhoto,
+					startRecording: startRecording,
+					stopRecording: stopRecording,
+					isRecording: isRecording,
+					flipCameraFacing: flipCameraFacing,
+					flashMode: flashMode,
+					changeFlashMode: changeFlashMode,
+					capturedPhotos: capturedPhotos,
+					thumbnailClicked: thumbnailClicked,
+				}
+			</JavaScript>
+
+			<Panel Dock="Top">
+				<Panel Alignment="Right" Padding="14" HitTestMode="LocalBoundsAndChildren" Clicked="{changeFlashMode}">
+					<FlashMode Mode="{flashMode}" />
+				</Panel>
+			</Panel>
+
+			<DockPanel Dock="Bottom" Padding="8">
+				<StackPanel Dock="Top">
+					<ScrollView AllowedScrollDirections="Horizontal" Padding="8,0,8,0">
+						<StackPanel Height="48" Width="48" Orientation="Horizontal" ItemSpacing="4">
+							<Each Items="{capturedPhotos}">
+								<Image File="{thumbnailFilePath}" StretchMode="UniformToFill" BoxSizing="FillAspect" Aspect="1" Clicked="{thumbnailClicked}" />
+							</Each>
+						</StackPanel>
+					</ScrollView>
+					<CaptureMode Width="72%" Margin="8" Mode="{captureMode}" />
+				</StackPanel>
+				<Grid Dock="Fill" Columns="1*,1*,1*" >
+					<Panel Grid.Column="1">
+						<Match Value="{captureMode}">
+							<Case String="photo">
+								<CapturePhotoButton Clicked="{capturePhoto}" />
+							</Case>
+							<Case String="video">
+								<CaptureVideoButton />
+							</Case>
+						</Match>
+					</Panel>
+					<RotateIcon Grid.Column="2" Alignment="Center" Clicked="{flipCameraFacing}">
+						<Clicked>
+							<Scale Factor="0.8" Duration="0.15" Easing="ExponentialIn" EasingBack="BounceIn" DurationBack="0.35" />
+						</Clicked>
+					</RotateIcon>
+				</Grid>
+
+			</DockPanel>
+			<Panel Dock="Fill">
+				<CameraView.PhotoLoaded PhotoCaptureImageSource="_photoCaptureImageSource">
+					<Set _cameraPreview.Visibility="Visible" />
+					<Set _nativeViewHost.Visibility="Hidden" />
+				</CameraView.PhotoLoaded>
+				<Panel ux:Name="_cameraPreview" Visibility="Hidden">
+					<Panel HitTestMode="LocalBoundsAndChildren" Alignment="Bottom" Width="72%" Margin="0,0,0,8">
+						<Rectangle Layer="Background" CornerRadius="8" Opacity="0.65">
+							<SolidColor Color="#fff" />
+						</Rectangle>
+						<Clicked>
+							<Set _cameraPreview.Visibility="Hidden" />
+							<Set _nativeViewHost.Visibility="Visible" />
+						</Clicked>
+						<Text Value="DISMISS" Margin="4" TextColor="#000" Alignment="Center" />
+					</Panel>
+					<Image StretchMode="UniformToFill">
+						<CameraView.PhotoCaptureImageSource CameraView="_camera" ux:Name="_photoCaptureImageSource"  />
+					</Image>
+				</Panel>
+				<NativeViewHost ux:Name="_nativeViewHost">
+					<CameraView ux:Name="_camera" PreviewStretchMode="UniformToFill" ClipToBounds="true" />
+				</NativeViewHost>
+			</Panel>
+		</DockPanel>
+	</Page>
+
+	<Panel ux:Class="BackButton" Padding="8" Margin="4" HitTestMode="LocalBoundsAndChildren">
+		<Text Alignment="Center" TextColor="#000" Value="GO BACK" FontSize="20" />
+		<Rectangle Layer="Background" CornerRadius="8">
+			<SolidColor Color="#bbb" />
+			<Stroke Color="#000" />
+		</Rectangle>
+	</Panel>
+
+	<Page ux:Class="VideoPage">
+		<Router ux:Dependency="router" />
+		<JavaScript>
+			var Observable = require("FuseJS/Observable");
+
+			var videoFilePath = Observable();
+
+			this.Parameter.onValueChanged(module, function(param) {
+				videoFilePath.value = param;
+			});
+
+			module.exports = {
+				videoFilePath: videoFilePath,
+				goBack: function() {
+					router.goBack();
+				}
+			};
+		</JavaScript>
+		<BackButton Clicked="{goBack}" Alignment="Bottom" />
+		<Video File="{videoFilePath}" AutoPlay="true" IsLooping="true" />
+	</Page>
+
+	<Page ux:Class="ImagePage">
+		<Router ux:Dependency="router" />
+		<JavaScript>
+			var Observable = require("FuseJS/Observable");
+
+			var imageFilePath = Observable();
+
+			this.Parameter.onValueChanged(module, function(param) {
+				imageFilePath.value = param;
+			});
+
+			module.exports = {
+				imageFilePath: imageFilePath,
+				goBack: function() {
+					router.goBack();
+				}
+			};
+		</JavaScript>
+		<BackButton Clicked="{goBack}" Alignment="Bottom" />
+		<Image File="{imageFilePath}" />
+	</Page>
+
+</App>

@@ -147,6 +147,7 @@
 			<FrozenPanelPage/>
 			<OpacityPage/>
 			<PartialPaths/>
+			<CameraViewPage/>
 			<Android>
 				<WebViewPage/>
 				<DatePickerPage/>

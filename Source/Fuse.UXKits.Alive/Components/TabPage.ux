@@ -1,0 +1,4 @@
+<Alive.Page ux:Class="Alive.TabPage">
+	<string ux:Property="Label" />
+	<ResourceString Key="Label" Value="{ReadProperty Label}" />
+</Alive.Page>

@@ -1,0 +1,8 @@
+<Panel ux:Class="Alive.ActionButton">
+	<Circle Width="41" Height="41" Color="{Resource Alive.AccentColor}">
+		<Alive.Icon Value="&#xEA43;" Color="White" Alignment="Center"/>
+		<Circle Opacity="0.5" Margin="1">
+			<Shadow Distance="6" Size="8" Angle="90" Color="{Resource Alive.AccentColor}" />
+		</Circle>
+	</Circle>
+</Panel>

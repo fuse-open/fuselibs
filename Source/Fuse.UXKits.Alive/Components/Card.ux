@@ -1,0 +1,8 @@
+<Rectangle ux:Class="Alive.ThemedCard" CornerRadius="4">
+	<Alive.ThemedCard ux:Class="Alive.Card">
+		<Alive.LightTheme />
+	</Alive.ThemedCard>
+	<Rectangle Layer="Underlay" CornerRadius="4" Margin="0,1" Color="{Resource Alive.CardBackgroundColor}">
+		<Shadow Size="7" Angle="90" Color="{Resource Alive.CardShadowColor}" />
+	</Rectangle>
+</Rectangle>

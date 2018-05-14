@@ -1,0 +1,21 @@
+<CameraViewBase ux:Class="Fuse.Controls.CameraView">
+	<Fuse.Controls.Android.CameraView ux:Condition="Android" ux:Template="AndroidAppearance" Host="this" />
+	<Fuse.Controls.iOS.CameraView ux:Condition="iOS" ux:Template="iOSAppearance" Host="this" />
+	<Panel ux:Template="GraphicsAppearance">
+		<iOS>
+			<Text FontSize="28" Alignment="VerticalCenter" TextAlignment="Center" TextWrapping="Wrap" Value="CameraView is a native view, use inside &lt;NativeViewHost /&gt;" TextColor="#000" />
+		</iOS>
+		<Android>
+			<Text FontSize="28" Alignment="VerticalCenter" TextAlignment="Center" TextWrapping="Wrap" Value="CameraView is a native view, use inside &lt;NativeViewHost /&gt;" TextColor="#000" />
+		</Android>
+		<Panel>
+			<Panel ux:Template="GraphicsAppearance">
+				<Text FontSize="28" Alignment="VerticalCenter" TextAlignment="Center" TextWrapping="Wrap" Value="CameraView is only supported on iOS and Android" TextColor="#000" />
+			</Panel>
+		</Panel>
+		<Rectangle>
+			<Stroke Color="#000" />
+			<SolidColor Color="#eee" />
+		</Rectangle>
+	</Panel>
+</CameraViewBase>

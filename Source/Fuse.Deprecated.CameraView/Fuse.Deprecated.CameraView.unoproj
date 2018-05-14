@@ -1,0 +1,19 @@
+{
+  "Copyright": "Copyright (c) Fusetools AS 2017",
+  "Publisher": "Fusetools AS",
+  "Title": "Fuse.Deprecated.CameraView",
+  "Packages": [
+    "Fuse",
+    "FuseJS",
+    "Fuse.ImageTools",
+    "Uno.Threading",
+    "Uno.Permissions"
+  ],
+  "Includes": [
+    "*",
+    "iOS/UCameraView.h:ObjCHeader:iOS",
+    "iOS/UCameraView.mm:ObjCSource:iOS",
+    "Android/AndroidCameraView.java:Java:Android",
+    "Android/AndroidOrientationHelpers.java:Java:Android"
+  ]
+}

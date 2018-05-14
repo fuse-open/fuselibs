@@ -1,0 +1,11 @@
+<Alive.TabPage ux:Class="Alive.PartialTabPage" MaxWidth="85%" Margin="20,10" ClipToBounds="false">
+	<EnteringAnimation Scale="0.5">
+		<Move X="-2" RelativeTo="Size" />
+	</EnteringAnimation>
+
+	<ExitingAnimation Scale="0.5">
+		<Move X="2" RelativeTo="Size" />
+	</ExitingAnimation>
+
+	<Transition />
+</Alive.TabPage>

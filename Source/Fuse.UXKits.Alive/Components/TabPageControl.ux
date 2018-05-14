@@ -1,0 +1,9 @@
+<Container ux:Class="Alive.TabPageControl" Subtree="pc">
+	<DockPanel ux:Binding="Children">
+		<Alive.TabBar Navigation="pc" Dock="Top" />
+
+		<PageControl ux:Name="pc" ux:Binding="Children" InactiveState="Unchanged">
+			<NavigationMotion GotoDuration="0.185" />
+		</PageControl>
+	</DockPanel>
+</Container>

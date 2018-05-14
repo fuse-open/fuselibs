@@ -1,0 +1,28 @@
+<Container ux:Class="Alive.Carousel" Height="250" Subtree="pageControl">
+	<Panel ux:Class="Alive.CarouselPage" Margin="15" Padding="5" MaxWidth="400">
+		<EnteringAnimation Scale=".5">
+			<Move X="-1" RelativeTo="Size" Duration="1" Easing="SinusoidalOut" />
+			<Scale Factor=".6" Easing="CubicOut" Duration="1" />
+		</EnteringAnimation>
+		<ExitingAnimation Scale=".5">
+			<Move X="1" RelativeTo="Size" Duration="1" Easing="SinusoidalOut" />
+			<Scale Factor=".6" Easing="CubicOut" Duration="1" />
+		</ExitingAnimation>
+		<DeactivatingAnimation Scale=".5">
+			<Change this.ZOffset="-1" Duration=".5" />
+			<Change this.Opacity="0" Duration="1" Easing="QuadraticInOut" />
+		</DeactivatingAnimation>
+	</Panel>
+
+	<DockPanel ux:Binding="Children">
+		<PageControl ux:Name="pageControl" Transition="None" InactiveState="Unchanged" ClipToBounds="false" />
+		<PageIndicator Dock="Bottom" Navigation="pageControl" Alignment="Center" Height="20" Margin="0,0,0,15" ItemSpacing="10">
+			<Circle ux:Template="Dot" ux:Name="dot" Width="6" Height="6" Color="{Resource Alive.PageIndicatorDotColor}">
+				<DeactivatingAnimation>
+					<Scale Factor=".66" />
+					<Change dot.Opacity=".5" />
+				</DeactivatingAnimation>
+			</Circle>
+		</PageIndicator>
+	</DockPanel>
+</Container>

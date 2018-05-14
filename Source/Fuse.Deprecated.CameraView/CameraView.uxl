@@ -1,0 +1,6 @@
+<Extensions Backend="CPlusPlus" Condition="Android">
+	<Require AndroidManifest.Permission="android.permission.CAMERA" />
+	<Require AndroidManifest.Permission="android.permission.AUDIO" />
+	<Require AndroidManifest.Permission="android.permission.RECORD_AUDIO" />
+	<Require AndroidManifest.Permission="android.permission.WRITE_EXTERNAL_STORAGE" />
+</Extensions>

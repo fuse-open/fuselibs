@@ -1,0 +1,26 @@
+{
+  "Copyright": "Copyright (c) Fusetools AS 2017",
+  "Publisher": "Fusetools AS",
+  "Title": "Fuse.Controls.CameraView",
+  "Packages": [
+    "Fuse",
+    "FuseJS",
+    "Fuse.ImageTools",
+    "Uno.Threading",
+    "Uno.Permissions"
+  ],
+  "Includes": [
+    "*",
+    "iOS/CameraPreview.h:ObjCHeader:iOS",
+    "iOS/CameraPreview.m:ObjCSource:iOS",
+    "iOS/CameraViewImpl.h:ObjCHeader:iOS",
+    "iOS/CameraViewImpl.mm:ObjCSource:iOS",
+    "iOS/RecordingSession.h:ObjCHeader:iOS",
+    "iOS/RecordingSession.mm:ObjCSource:iOS",
+    "Android/CameraImpl.java:Java:Android",
+    "Android/IPictureCallback.java:Java:Android",
+    "Android/RecordingSession.java:Java:Android",
+    "Android/IStartRecordingSession.java:Java:Android",
+    "Android/IStopRecordingSession.java:Java:Android"
+  ]
+}

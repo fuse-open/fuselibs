@@ -1,0 +1,98 @@
+<ux:Resources>
+	<float4 ux:Global="Alive.Blue" ux:Value="Alive.Light.Blue"/>
+	<float4 ux:Global="Alive.Orange" ux:Value="Alive.Light.Orange"/>
+	<float4 ux:Global="Alive.Green" ux:Value="Alive.Light.Green"/>
+	<float4 ux:Global="Alive.Purple" ux:Value="Alive.Light.Purple"/>
+	<float4 ux:Global="Alive.Yellow" ux:Value="Alive.Light.Yellow"/>
+	<float4 ux:Global="Alive.Red" ux:Value="Alive.Light.Red"/>
+	<float4 ux:Global="Alive.AccentColor" ux:Value="Alive.Light.AccentColor" />
+	<float4 ux:Global="Alive.TitleTextColor" ux:Value="Alive.Light.TitleTextColor"/>
+	<float4 ux:Global="Alive.BodyTextColor" ux:Value="Alive.Light.BodyTextColor"/>
+	<float4 ux:Global="Alive.PrimaryBackgroundColor" ux:Value="Alive.Light.PrimaryBackgroundColor" />
+	<float4 ux:Global="Alive.SecondaryBackgroundColor" ux:Value="Alive.Light.SecondaryBackgroundColor" />
+	<float4 ux:Global="Alive.CardBackgroundColor" ux:Value="Alive.Light.CardBackgroundColor" />
+	<float4 ux:Global="Alive.CardShadowColor" ux:Value="Alive.Light.CardShadowColor" />
+	<float4 ux:Global="Alive.PageIndicatorDotColor" ux:Value="Alive.Light.PageIndicatorDotColor" />
+	<float4 ux:Global="Alive.DrawerBackgroundColor" ux:Value="Alive.Light.DrawerBackgroundColor" />
+	<float4 ux:Global="Alive.SliderThumbColor" ux:Value="Alive.AccentColor" />
+	<float4 ux:Global="Alive.SliderThumbShadowColor" ux:Value="Alive.AccentColor" />
+
+	<float4 ux:Global="Alive.InactiveSwitchThumbColor" ux:Value="Alive.AccentColor" />
+	<float4 ux:Global="Alive.InactiveSwitchBackgroundColor" ux:Value="Alive.Light.InactiveSwitchBackgroundColor" />
+	<float4 ux:Global="Alive.ActiveSwitchThumbColor" ux:Value="White" />
+	<float4 ux:Global="Alive.ActiveSwitchBackgroundColor" ux:Value="Alive.AccentColor" />
+
+	<float4 ux:Global="Alive.BubbleStrokeColor" ux:Value="Alive.Light.BubbleStrokeColor" />
+
+	<float4 ux:Global="Alive.ListViewItemColor" ux:Value="Alive.Light.ListViewItemColor" />
+	<float4 ux:Global="Alive.ListViewItemAlternateColor" ux:Value="Alive.Light.ListViewItemAlternateColor" />
+
+	<WhileTrue ux:Class="Alive.ThemeBase" Value="true" />
+
+	<Alive.ThemeBase ux:Class="Alive.LightTheme">
+		<ResourceFloat4 Key="Alive.AccentColor" Value="{Resource Alive.Light.AccentColor}" />
+		
+		<float4 ux:Key="Alive.Blue" ux:Value="Alive.Light.Blue"/>
+		<float4 ux:Key="Alive.Orange" ux:Value="Alive.Light.Orange"/>
+		<float4 ux:Key="Alive.Green" ux:Value="Alive.Light.Green"/>
+		<float4 ux:Key="Alive.Purple" ux:Value="Alive.Light.Purple"/>
+		<float4 ux:Key="Alive.Yellow" ux:Value="Alive.Light.Yellow"/>
+		<float4 ux:Key="Alive.Red" ux:Value="Alive.Light.Red"/>
+		<float4 ux:Key="Alive.TitleTextColor" ux:Value="Alive.Light.TitleTextColor"/>
+		<float4 ux:Key="Alive.BodyTextColor" ux:Value="Alive.Light.BodyTextColor"/>
+		<float4 ux:Key="Alive.PrimaryBackgroundColor" ux:Value="Alive.Light.PrimaryBackgroundColor" />
+		<float4 ux:Key="Alive.SecondaryBackgroundColor" ux:Value="Alive.Light.SecondaryBackgroundColor" />
+		<float4 ux:Key="Alive.IconColor" ux:Value="Alive.Light.Red"/>
+		<float4 ux:Key="Alive.CardBackgroundColor" ux:Value="Alive.Light.CardBackgroundColor" />
+		<float4 ux:Key="Alive.CardShadowColor" ux:Value="Alive.Light.CardShadowColor" />
+		<float4 ux:Key="Alive.PageIndicatorDotColor" ux:Value="Alive.Light.PageIndicatorDotColor" />
+		<float4 ux:Key="Alive.DrawerBackgroundColor" ux:Value="Alive.Light.DrawerBackgroundColor" />
+
+		<ResourceFloat4 Key="Alive.SliderThumbColor" Value="{Resource Alive.AccentColor}" />
+		<ResourceFloat4 Key="Alive.SliderThumbColor" Value="{Resource Alive.AccentColor}" />
+		<ResourceFloat4 Key="Alive.SliderThumbShadowColor" Value="{Resource Alive.AccentColor}" />
+
+		<ResourceFloat4 Key="Alive.InactiveSwitchThumbColor" Value="{Resource Alive.AccentColor}" />
+		<float4 ux:Key="Alive.InactiveSwitchBackgroundColor" ux:Value="Alive.Light.InactiveSwitchBackgroundColor" />
+
+		<float4 ux:Key="Alive.ActiveSwitchThumbColor" ux:Value="#fff" />
+		<ResourceFloat4 Key="Alive.ActiveSwitchBackgroundColor" Value="{Resource Alive.AccentColor}" />
+
+		<float4 ux:Key="Alive.BubbleStrokeColor" ux:Value="Alive.Light.BubbleStrokeColor" />
+
+		<float4 ux:Key="Alive.ListViewItemColor" ux:Value="Alive.Light.ListViewItemColor" />
+		<float4 ux:Key="Alive.ListViewItemAlternateColor" ux:Value="Alive.Light.ListViewItemAlternateColor" />
+	</Alive.ThemeBase>
+
+	<Alive.ThemeBase ux:Class="Alive.DarkTheme">
+		<ResourceFloat4 Key="Alive.AccentColor" Value="{Resource Alive.Dark.AccentColor}" />
+		
+		<float4 ux:Key="Alive.Blue" ux:Value="Alive.Dark.Blue"/>
+		<float4 ux:Key="Alive.Orange" ux:Value="Alive.Dark.Orange"/>
+		<float4 ux:Key="Alive.Green" ux:Value="Alive.Dark.Green"/>
+		<float4 ux:Key="Alive.Purple" ux:Value="Alive.Dark.Purple"/>
+		<float4 ux:Key="Alive.Yellow" ux:Value="Alive.Dark.Yellow"/>
+		<float4 ux:Key="Alive.Red" ux:Value="Alive.Dark.Red"/>
+		<float4 ux:Key="Alive.TitleTextColor" ux:Value="Alive.Dark.TitleTextColor"/>
+		<float4 ux:Key="Alive.BodyTextColor" ux:Value="Alive.Dark.BodyTextColor"/>
+		<float4 ux:Key="Alive.PrimaryBackgroundColor" ux:Value="Alive.Dark.PrimaryBackgroundColor" />
+		<float4 ux:Key="Alive.SecondaryBackgroundColor" ux:Value="Alive.Dark.SecondaryBackgroundColor" />
+		<float4 ux:Key="Alive.CardBackgroundColor" ux:Value="Alive.Dark.CardBackgroundColor" />
+		<float4 ux:Key="Alive.CardShadowColor" ux:Value="Alive.Dark.CardShadowColor" />
+		<float4 ux:Key="Alive.PageIndicatorDotColor" ux:Value="Alive.Dark.PageIndicatorDotColor" />
+		<float4 ux:Key="Alive.DrawerBackgroundColor" ux:Value="Alive.Dark.DrawerBackgroundColor" />
+		<float4 ux:Key="Alive.SliderThumbColor" ux:Value="#fff" />
+		<float4 ux:Key="Alive.SliderThumbShadowColor" ux:Value="#0004" />
+
+		<float4 ux:Key="Alive.InactiveSwitchThumbColor" ux:Value="White" />
+		<float4 ux:Key="Alive.InactiveSwitchBackgroundColor" ux:Value="Alive.Dark.InactiveSwitchBackgroundColor" />
+		<ResourceFloat4 Key="Alive.ActiveSwitchThumbColor" Value="{Resource Alive.AccentColor}" />
+		<ResourceFloat4 Key="Alive.ActiveSwitchBackgroundColor" Value="{Resource Alive.AccentColor}" />
+
+		<float4 ux:Key="Alive.BubbleStrokeColor" ux:Value="Alive.Dark.BubbleStrokeColor" />
+
+		<float4 ux:Key="Alive.ListViewItemColor" ux:Value="Alive.Dark.ListViewItemColor" />
+		<float4 ux:Key="Alive.ListViewItemAlternateColor" ux:Value="Alive.Dark.ListViewItemAlternateColor" />
+	</Alive.ThemeBase>
+
+</ux:Resources>

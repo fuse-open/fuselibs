@@ -1,0 +1,23 @@
+{
+  "Copyright": "Copyright (c) Fusetools AS 2017",
+  "Publisher": "Fusetools AS",
+  "Package": {
+    "ProjectUrl": "https://fusetools.com"
+  },
+  "Packages": [
+    "Fuse",
+    "FuseJS"
+  ],
+  "Projects": [
+    "../Fuse.Charting/Fuse.Charting.unoproj"
+  ],
+  "Includes": [
+    "Components/**.ux",
+    "Docs/**.uno",
+    "Docs/**.md:File",
+    "Theme/**.ux",
+    "Icons/aliveicons.ttf",
+    "Icons/*.ux",
+    "UXFunctions/**.uno:Source"
+  ]
+}
