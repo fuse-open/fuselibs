@@ -55,7 +55,7 @@ All data types, type members and enum literals can have a markdown comment block
 		Goo
 	}
 	
-The first line of a doc comment is generally a TL;DR/short description of what the class does. This will be used in "class lists" such as [this one](https://www.fusetools.com/docs/fuse/triggers/trigger) (this list also serves as a great example for how concise these should be).
+The first line of a doc comment is generally a TL;DR/short description of what the class does. This will be used in "class lists" such as [this one](https://fuse-open.github.io/docs/fuse/triggers/trigger) (this list also serves as a great example for how concise these should be).
 
 When adding examples, include a header and a short description, and try to place them at the end of the text. Example:
 

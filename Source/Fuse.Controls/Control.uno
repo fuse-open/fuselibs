@@ -32,7 +32,7 @@ namespace Fuse.Controls
 		You can create your own UI controls in two ways:
 
 		* Extend an existing control in UX markup using @ux:Class
-		* Creating [custom UX wrappers for native controls](https://www.fusetools.com/docs/native-interop/native-ux-components)
+		* Creating [custom UX wrappers for native controls](https://fuse-open.github.io/docs/native-interop/native-ux-components)
 
 	*/	
 	public abstract partial class Control: Element
