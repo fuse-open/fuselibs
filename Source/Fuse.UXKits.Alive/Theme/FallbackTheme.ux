@@ -1,0 +1,4 @@
+<Alive.LightTheme ux:Class="Alive.FallbackTheme">
+	<float4 ux:Key="Alive.Dark.AccentColor" ux:Value="Alive.Dark.Red" />
+	<float4 ux:Key="Alive.Light.AccentColor" ux:Value="Alive.Light.Red" />
+</Alive.LightTheme>

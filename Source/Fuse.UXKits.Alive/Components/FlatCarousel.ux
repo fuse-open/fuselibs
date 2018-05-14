@@ -1,0 +1,37 @@
+<Container ux:Class="Alive.FlatCarousel" Subtree="pageControl" Height="230">
+	<Alive.DarkTheme />
+
+	<Panel ux:Class="Alive.FlatCarouselPage" ClipToBounds="true">
+		<string ux:Property="Title" />
+		<string ux:Property="Subtitle" />
+
+		<Panel ux:Name="foreground" Layer="Overlay" Margin="30,40">
+			<Instance TemplateSource="this" TemplateKey="Content">
+				<StackPanel Alignment="BottomLeft">
+					<Alive.Title Value="{ReadProperty Title}" TextWrapping="Wrap" />
+					<WhileString Test="IsNotEmpty" Value="{ReadProperty Subtitle}">
+						<Alive.Body Value="{ReadProperty Subtitle}" />
+					</WhileString>
+				</StackPanel>
+			</Instance>
+		</Panel>
+		<Alive.ContentGradient />
+	</Panel>
+
+	<Panel ux:Binding="Children">
+		<PageIndicator Layer="Overlay" Alignment="BottomLeft" Margin="20,10" Navigation="pageControl">
+			<Rectangle ux:Template="Dot" HitTestMode="LocalBounds">
+				<Circle ux:Name="dot" Width="4" Height="4" Margin="10,10" Color="#fff">
+					<DeactivatingAnimation>
+						<Change dot.Color="#fff4" Easing="CubicInOut" />
+					</DeactivatingAnimation>
+				</Circle>
+				<Clicked>
+					<NavigateTo Target="{Page Visual}" />
+				</Clicked>
+			</Rectangle>
+		</PageIndicator>
+
+		<PageControl ux:Name="pageControl" />
+	</Panel>
+</Container>

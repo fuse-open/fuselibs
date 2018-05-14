@@ -1,0 +1,26 @@
+<Panel ux:Class="UX.PlotData.Series" xmlns:c="Fuse.Charting">
+	<JavaScript>
+		var Observable = require("FuseJS/Observable")
+		exports.values0 = Observable( 0, 0, 0, 0, 0 )
+		exports.values1 = Observable( 1, 2, 3, 4, 5 )
+		exports.values2 = Observable( 9, 8, 7, 6, 5 )
+	</JavaScript>
+	<c:Plot>
+		<c:DataSeries Data="{values0}"/>
+		<c:DataSeries Data="{values1}"/>
+		<c:DataSeries Data="{values2}" ux:Name="seriesTwo"/>
+		
+		<Panel ux:Name="B">
+			<c:PlotData SeriesIndex="1">
+				<Text Value="{Plot data.source.y}"/>
+			</c:PlotData>
+		</Panel>
+		
+		<Panel ux:Name="C">
+			<c:PlotData Series="seriesTwo">
+				<Text Value="{Plot data.source.y}"/>
+			</c:PlotData>
+		</Panel>
+		
+	</c:Plot>
+</Panel>

@@ -1,0 +1,44 @@
+<Panel ux:Class="UX.PlotBar.PlacementVert" xmlns:c="Fuse.Charting">
+	<JavaScript>
+		var Observable = require("FuseJS/Observable")
+		exports.data1 = Observable(1,2,3)
+		exports.data2 = Observable(-1,-2,-3)
+		exports.data3 = Observable(-1,2,-3)
+		
+		function val(y,z) {
+			return { y: y, z: z }
+		}
+		exports.data4 = Observable( val(3,1), val(-2,-4), val(-2,1) )
+	</JavaScript>
+	
+	<c:Plot ux:Name="A" YRange="0,4" Orientation="Vertical">
+		<c:DataSeries Data="{data1}"/>
+		<c:PlotData>
+			<c:PlotBar/>
+		</c:PlotData>
+	</c:Plot>
+	<c:Plot ux:Name="B" YRange="-4,0" Orientation="Vertical">
+		<c:DataSeries Data="{data2}"/>
+		<c:PlotData>
+			<c:PlotBar/>
+		</c:PlotData>
+	</c:Plot>
+	<c:Plot ux:Name="C" YRange="-6,4" Orientation="Vertical">
+		<c:DataSeries Data="{data3}"/>
+		<c:PlotData>
+			<c:PlotBar/>
+		</c:PlotData>
+	</c:Plot>
+	<c:Plot ux:Name="D" YRange="-6,4" ZAxisMetric="MergeRange" Orientation="Vertical">
+		<c:DataSeries Data="{data4}"/>
+		<c:PlotData>
+			<c:PlotBar Style="Range"/>
+		</c:PlotData>
+	</c:Plot>
+	<c:Plot ux:Name="E" Orientation="Vertical">
+		<c:DataSeries Data="{data1}"/>
+		<c:PlotData>
+			<c:PlotBar Style="Full"/>
+		</c:PlotData>
+	</c:Plot>
+</Panel>

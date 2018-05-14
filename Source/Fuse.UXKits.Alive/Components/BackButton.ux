@@ -1,0 +1,6 @@
+<Panel ux:Class="Alive.BackButton" HitTestMode="LocalBounds" Width="28" Height="28">
+	<Alive.Icon Value="&#xEA4A;" Size="28">
+		<Translation XY="-.5" />
+		<Rotation Degrees="-90" />
+	</Alive.Icon>
+</Panel>

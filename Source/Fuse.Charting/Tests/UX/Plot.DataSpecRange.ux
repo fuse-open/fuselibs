@@ -1,0 +1,24 @@
+<Panel ux:Class="UX.Plot.DataSpecRange" xmlns:c="Fuse.Charting">
+	<JavaScript>
+		var Observable = require("FuseJS/Observable")
+		exports.values = Observable()
+		function Item(y,z,w) {
+			return { y: y, z: z, w: w }
+		}
+
+		exports.values.replaceAll([
+			Item( 14, 4, 19 ),
+			Item( 15, 5, 20 ),
+			Item( 25, 7, 10 ),
+			Item( 5, 8, 30 ),
+			Item( 5, 5, 40 ),
+		])
+	</JavaScript>
+	<c:Plot ux:Name="plot" DataOffset="1" DataLimit="3"
+		XAxisMetric="Count" WAxisMetric="MergeRange"
+		YAxisSteps="7" YRange="10,20"
+		>
+		<c:DataSeries Data="{values}"/>
+		
+	</c:Plot>
+</Panel>

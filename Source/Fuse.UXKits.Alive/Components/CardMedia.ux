@@ -1,0 +1,3 @@
+<Rectangle ux:Class="Alive.CardMedia" MinHeight="100" CornerRadius="4,4,0,0">
+	<Alive.DarkTheme />
+</Rectangle>

@@ -1,0 +1,12 @@
+<Panel ux:Class="Fuse.Views.Test.UX.SetDataJson">
+	<Panel ux:Class="Fuse.Views.Text.UX.Item">
+		<Text ux:Name="Text" Value="{text}" />
+		<Slider ux:Name="Slider" Value="{slider}" />
+		<Switch ux:Name="Switch" Value="{switch}" />
+	</Panel>
+
+	<Each Items="{data}">
+		<Fuse.Views.Text.UX.Item />
+	</Each>
+
+</Panel>

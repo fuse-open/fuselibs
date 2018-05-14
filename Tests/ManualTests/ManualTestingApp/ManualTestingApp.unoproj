@@ -5,6 +5,7 @@
     "Fuse.ImageTools",
     "Fuse.Camera",
     "Fuse.CameraRoll",
+    "Fuse.Controls.CameraView",
     "Fuse.Maps",
     "Fuse.Audio",
     "Fuse.Share",

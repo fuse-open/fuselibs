@@ -1,0 +1,8 @@
+<ScrollingAnimation ux:Class="Alive.StickyHeaderAnimation"
+	From="y({ReadProperty this.Parent})"
+	To="y({ReadProperty this.Parent}) + height({ReadProperty this.Parent}) - height(Header)">
+	
+	<Visual ux:Dependency="Header" />
+
+	<Move Target="Header" Y="height({ReadProperty this.Parent}) - height(Header)" />
+</ScrollingAnimation>

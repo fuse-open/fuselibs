@@ -1,0 +1,14 @@
+<Panel ux:Class="UX.PlotAxis.ScreenIndex" xmlns:c="Fuse.Charting">
+	<JavaScript>
+		exports.data = [1,2,3,4,5,6,7,8,9,10]
+	</JavaScript>
+	<c:Plot DataOffset="3" DataLimit="4" ux:Name="P">
+		<c:DataSeries Data="{data}"/>
+		
+		<Panel ux:Name="X">
+			<c:PlotAxisData Axis="X" ux:Name="XL">
+				<Text Value="{Plot axis.screenIndex}"/>
+			</c:PlotAxisData>
+		</Panel>
+	</c:Plot>
+</Panel>

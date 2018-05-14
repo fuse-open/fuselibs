@@ -1,0 +1,6 @@
+<Rectangle ux:Class="Alive.ContentGradient" Alignment="Bottom" Height="150">
+	<LinearGradient>
+		<GradientStop Offset="0" Color="0.109, 0.117, 0.161, 0" />
+		<GradientStop Offset="1" Color="0.109, 0.117, 0.161, 0.3" />
+	</LinearGradient>
+</Rectangle>

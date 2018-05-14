@@ -1,0 +1,3 @@
+<Text ux:Class="Alive.Icon" Color="{Resource Alive.BodyTextColor}" Font="Alive.IconFont" FontSize="{ReadProperty Size}" Size="20">
+	<float ux:Property="Size" />
+</Text>

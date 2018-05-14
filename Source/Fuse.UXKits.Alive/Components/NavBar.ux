@@ -1,0 +1,7 @@
+<Container ux:Class="Alive.NavBar" Subtree="inner">
+	<Alive.DarkTheme />
+	<StackPanel ux:Binding="Children" Color="{Resource Alive.AccentColor}">
+		<StatusBarBackground />
+		<DockPanel ux:Name="inner" Height="54" />
+	</StackPanel>
+</Container>

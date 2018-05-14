@@ -1,0 +1,7 @@
+<DockPanel ux:Class="Alive.IconLabel" Text="Default Label" IconSize="20">
+	<string ux:Property="Text" />
+	<int ux:Property="IconSize" />
+	<string ux:Property="Icon" />
+	<Alive.Icon Value="{ReadProperty Icon}" Color="{Resource Alive.BodyTextColor}" Dock="Left" Alignment="VerticalCenter" Size="{ReadProperty IconSize}"/>
+	<Alive.ButtonText Value="{ReadProperty Text}" Alignment="VerticalCenter" Margin="10,0,0,0"/>
+</DockPanel>

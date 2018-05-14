@@ -1,0 +1,15 @@
+<Panel ux:Class="UX.Plot.DataLimit" xmlns:c="Fuse.Charting">
+	<JavaScript>
+		var Observable = require("FuseJS/Observable")
+		exports.values = Observable(0,1,2,3,4,5,6,7,8,9)
+	</JavaScript>
+	<c:Plot ux:Name="plot" DataLimit="8">
+		<c:DataSeries Data="{values}"/>
+		
+		<Panel ux:Name="B">
+			<c:PlotData>
+				<Text Value="{Plot data.source.y}"/>
+			</c:PlotData>
+		</Panel>
+	</c:Plot>
+</Panel>

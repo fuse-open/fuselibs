@@ -1,0 +1,8 @@
+<Panel ux:Class="Alive.TitlePanel" Color="{Resource Alive.SecondaryBackgroundColor}">
+	<string ux:Property="Title" />
+	<string ux:Property="Subtitle" />
+	<StackPanel Margin="30">
+		<Alive.Title Value="{ReadProperty Title}" />
+		<Alive.Subtitle Value="{ReadProperty Subtitle}" />
+	</StackPanel>
+</Panel>

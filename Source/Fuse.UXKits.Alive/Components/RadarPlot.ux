@@ -1,0 +1,25 @@
+<Fuse.Charting.Plot ux:Class="Alive.RadarPlot" xmlns:c="Fuse.Charting" BoxSizing="FillAspect" Aspect="1" Margin="45">
+	<AttractorConfig ux:Global="Alive.ElasticAttractor" Unit="Normalized" Type="Elastic" />
+	<c:PlotData>
+		<c:PlotPoint Style="Angular" PointAnchor="Center" Attractor="Alive.ElasticAttractor">
+			<Rectangle Color="{Resource Alive.AccentColor}" Height="14" CornerRadius="200" MaxWidth="80" StrokeAlignment="Outside" StrokeWidth="1" StrokeColor="{Resource Alive.PrimaryBackgroundColor}">
+				<Text Value="{Plot data.source.y}" FontSize="9" Color="#fff" TextAlignment="Center" Alignment="Center" Margin="5,0" />
+			</Rectangle>
+		</c:PlotPoint>
+
+		<c:PlotPoint Style="AngularFull" PointAnchor="Center" PointOffset=".2">
+			<Alive.Body Value="{Plot data.label}" FontSize="12" Margin="10,0" Alignment="Center" Opacity=".5" />
+		</c:PlotPoint>
+	</c:PlotData>
+
+	<Curve Style="Straight" Close="Auto" StrokeWidth="1" StrokeColor="{Resource Alive.AccentColor}" Color="withOpacity({Resource Alive.AccentColor}, 0.2)" Opacity=".5">
+		<c:PlotData>
+			<c:PlotCurvePoint Style="Angular" Attractor="Alive.ElasticAttractor" />
+		</c:PlotData>
+	</Curve>
+
+	<Rectangle>
+		<c:PlotTicks Style="Angular" StrokeWidth="1" StrokeColor="{Resource Alive.SecondaryBackgroundColor}" />
+		<RegularPolygon Sides="6" StrokeWidth="1" StrokeColor="{Resource Alive.SecondaryBackgroundColor}" />
+	</Rectangle>
+</Fuse.Charting.Plot>

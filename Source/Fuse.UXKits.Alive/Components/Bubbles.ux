@@ -1,0 +1,1 @@
+<StackPanel ux:Class="Alive.Bubbles" Orientation="Horizontal" ItemSpacing="-10" Alignment="HorizontalCenter" />

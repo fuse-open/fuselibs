@@ -1,0 +1,22 @@
+<Panel ux:Class="UX.PlotData.Basic" xmlns:c="Fuse.Charting">
+	<JavaScript>
+		var Observable = require("FuseJS/Observable")
+		exports.values = Observable( 10, 20, 30, 40, 50 )
+	</JavaScript>
+	<c:Plot>
+		<c:DataSeries Data="{values}"/>
+		
+		<Panel ux:Name="B">
+			<c:PlotData>
+				<c:PlotBar/>
+			</c:PlotData>
+		</Panel>
+		
+		<Curve ux:Name="C">
+			<c:PlotData>
+				<c:PlotCurvePoint/>
+			</c:PlotData>
+		</Curve>
+		
+	</c:Plot>
+</Panel>

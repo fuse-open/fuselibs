@@ -1,0 +1,14 @@
+<Panel ux:Class="UX.PlotArea.Basic" xmlns:c="Fuse.Charting">
+	<JavaScript>
+		var Observable = require("FuseJS/Observable")
+		exports.values = Observable()
+		for (var i=0;i<200; ++i) {
+			exports.values.add( { value: i, label: "#" + i } )
+		}
+	</JavaScript>
+	<c:Plot ux:Name="Plot" DataLimit="50">
+		<c:DataSeries Data="{values}"/>
+
+		<c:PlotArea XStepSize="200" YStepSize="50"/>
+	</c:Plot>
+</Panel>

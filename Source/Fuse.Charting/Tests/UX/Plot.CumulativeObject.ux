@@ -1,0 +1,31 @@
+<Panel ux:Class="UX.Plot.CumulativeObject" xmlns:c="Fuse.Charting">
+	<JavaScript>
+		var Observable = require("FuseJS/Observable")
+		
+		function Item(val, color, text) {
+			this.value = val
+			this.color = color
+			this.text = text
+		}
+		
+		exports.values = Observable(
+			new Item(1,[1,0,0],"un"),
+			new Item(2,[0,1,0],"deux"),
+			new Item(3,[0,0,1],"trois"),
+			new Item(4,[0.5,0.5,0.5],"quatre"))
+	</JavaScript>
+	<c:Plot ux:Name="plot" DataLimit="50">
+		<c:DataSeries Data="{values}"/>
+		
+		<Panel ux:Name="B">
+			<c:PlotData>
+				<RangeControl Value="{Plot data.weight.y}"
+					Maximum="{Plot data.cumulativeWeight.y}" Color="{Plot data.object}.color"
+					Minimum="0"/>
+				<Text Value="{{Plot data.object}.text}"/>
+			</c:PlotData>
+		</Panel>
+	</c:Plot>
+	
+	<FuseTest.Invoke Handler="{next}" ux:Name="CallNext"/>
+</Panel>

@@ -1,0 +1,42 @@
+<Fuse.Deprecated.CameraViewBase ux:Class="Fuse.Deprecated.CameraView" ux:Name="self">
+	<Panel ux:Template="GraphicsAppearance" Margin="4" Background="#eee" Padding="30">
+		<Text Value="CameraView is only available on iOS or Android!" Alignment="Center" TextWrapping="Wrap" />
+		<Rectangle Layer="Background">
+			<Stroke Color="#000" />
+		</Rectangle>
+	</Panel>
+	<Fuse.Deprecated.iOS.CameraView ux:Condition="iOS" ux:Template="iOSAppearance" Host="self" />
+	<Fuse.Deprecated.Android.CameraView ux:Condition="Android" ux:Template="AndroidAppearance" Host="self" />
+
+
+	<Match Value="{Property self.CameraDirectionAsString}">
+		<Case String="Front">
+			<WhileFalse Value="{Camera hasFront}">
+				<Panel Background="#eee" Padding="30">
+					<Text Value="This device does not have a front camera." Alignment="Center" TextWrapping="Wrap" />
+					<Rectangle Layer="Background">
+						<Stroke Color="#000" />
+					</Rectangle>
+				</Panel>
+			</WhileFalse> 
+		</Case>
+		<Case String="Back">
+			<WhileFalse Value="{Camera hasBack}">
+				<Panel Background="#eee" Padding="30">
+					<Text Value="This device does not have a back camera." Alignment="Center" TextWrapping="Wrap" />
+					<Rectangle Layer="Background">
+						<Stroke Color="#000" />
+					</Rectangle>
+				</Panel>
+			</WhileFalse>
+		</Case>
+		<Case String="None">
+			<Panel Background="#eee" Padding="30">
+				<Text Value="No camera available on this device." Alignment="Center" TextWrapping="Wrap" />
+				<Rectangle Layer="Background">
+					<Stroke Color="#000" />
+				</Rectangle>
+			</Panel>
+		</Case>
+	</Match>
+</Fuse.Deprecated.CameraViewBase>

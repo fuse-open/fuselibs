@@ -1,0 +1,54 @@
+<Container ux:Class="Alive.MediaScroller" ux:Name="self" Subtree="content">
+	<Element ux:Dependency="Media" />
+
+	<Panel ux:Binding="Children">
+		<float4 ux:Property="TopBarColor" />
+		<Panel ux:Name="topPanel" Alignment="Top" ClipToBounds="false">
+			<Alive.DarkTheme />
+
+			<Panel ux:Name="topBarPanel" Alignment="Top">
+				<Instance TemplateSource="self" TemplateKey="TopBar">
+					<StatusBarBackground />
+				</Instance>
+			</Panel>
+
+			<Panel ux:Name="mediaAndOverlay" ClipToBounds="false" HitTestMode="Children">
+				<Panel ux:Name="bottomBar" Alignment="Bottom">
+					<Instance TemplateSource="self" TemplateKey="BottomBar" />
+				</Panel>
+
+				<Rectangle ux:Name="fadeOverlay" Color="{ReadProperty self.TopBarColor}" Opacity="0" HitTestMode="None" />
+
+				<Panel ux:Name="mediaOverlay" Alignment="Bottom">
+					<Instance TemplateSource="self" TemplateKey="MediaOverlay" />
+				</Panel>
+
+				<Panel ux:Name="mediaPanel" Children="Media" ExplicitTransformOrigin="50%,0%" />
+			</Panel>
+		</Panel>
+
+		<DockPanel>
+			<ScrollView ux:Name="scrollView" LayoutMode="PreserveScrollPosition" HitTestMode="LocalBoundsAndChildren">
+				<ScrollViewMotion ux:Name="scrollViewMotion" OverflowExtent="150" />
+
+				<StackPanel>
+					<Panel Height="height(topBarPanel)" />
+					<StackPanel ux:Name="content">
+						<Panel Height="height(mediaPanel) - height(topBarPanel)" />
+					</StackPanel>
+				</StackPanel>
+
+				<ScrollingAnimation From="0" To="height(mediaPanel) - height(topBarPanel)">
+					<Move Target="mediaAndOverlay" Y="0 - height(mediaAndOverlay) + height(topBarPanel)" />
+					<Move Target="bottomBar" />
+					<Change fadeOverlay.Opacity="1" Easing="Linear" />
+				</ScrollingAnimation>
+				<ScrollingAnimation Range="SnapMin">
+					<Scale Target="mediaPanel" Factor="(150 + height(mediaPanel)) / height(mediaPanel)" />
+					<Move Target="bottomBar" Y="150" />
+					<Move Target="mediaOverlay" Y="150" />
+				</ScrollingAnimation>
+			</ScrollView>
+		</DockPanel>
+	</Panel>
+</Container>

@@ -1,0 +1,3 @@
+<ScrollingAnimation ux:Class="Alive.StickingAnimation" From="y({ReadProperty Parent})" To="y({ReadProperty Parent}) + {ReadProperty Distance}" Distance="30">
+	<float ux:Property="Distance" />
+</ScrollingAnimation>

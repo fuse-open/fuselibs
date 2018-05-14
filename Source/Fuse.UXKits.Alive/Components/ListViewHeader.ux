@@ -1,0 +1,5 @@
+<Rectangle ux:Class="Alive.ListViewHeader">
+  <string ux:Property="Text"/>
+  <Alive.DarkTheme/>
+  <Alive.BodyBold Value="{ReadProperty Text}" Margin="25,20" />
+</Rectangle>

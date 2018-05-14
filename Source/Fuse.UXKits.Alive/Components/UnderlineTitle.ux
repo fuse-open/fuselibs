@@ -1,0 +1,9 @@
+<Panel ux:Class="Alive.UnderlineTitle" Margin="0,20">
+	<string ux:Property="Text" />
+
+	<Panel Alignment="BottomCenter">
+		<Alive.BodyBold TextAlignment="Center" Value="{ReadProperty Text}" Margin="0,0,0,10" />
+		<Rectangle Alignment="Bottom" Layer="Background" Height="1.5" Color="Alive.Dark.Orange" />
+	</Panel>
+	<Rectangle Alignment="BottomLeft" Width="50%" Color="#fff6" Height="1.5" />
+</Panel>

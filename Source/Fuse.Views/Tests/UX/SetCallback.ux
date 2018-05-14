@@ -1,0 +1,5 @@
+<Panel ux:Class="Fuse.Views.Test.UX.SetCallback">
+	<Button Text="TestButton">
+		<Clicked Handler="{run}" />
+	</Button>
+</Panel>

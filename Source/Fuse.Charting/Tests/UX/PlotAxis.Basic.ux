@@ -1,0 +1,29 @@
+<Panel ux:Class="UX.PlotAxis.Basic" xmlns:c="Fuse.Charting">
+	<JavaScript>
+		var Observable = require("FuseJS/Observable")
+		
+		function Item( value, label ) {
+			this.value = value
+			this.label = label
+		}
+		
+		exports.values = Observable(
+			new Item( 11, "one" ),
+			new Item( 22, "two" ),
+			new Item( 33, "three" ),
+			new Item( 44, "four" ),
+			new Item( 55, "five" )
+		)
+	</JavaScript>
+	<c:Plot>
+		<c:DataSeries Data="{values}"/>
+		
+		<c:PlotAxis Axis="X" Alignment="Bottom" ux:Name="XL">
+			<Text ux:Template="Label" Value="{Plot axis.label}" Height="20"/>
+		</c:PlotAxis>
+		
+		<c:PlotAxis Axis="Y" Alignment="Left" ux:Name="YL">
+			<Text ux:Template="Label" Value="{Plot axis.value}" Width="100"/>
+		</c:PlotAxis>
+	</c:Plot>
+</Panel>

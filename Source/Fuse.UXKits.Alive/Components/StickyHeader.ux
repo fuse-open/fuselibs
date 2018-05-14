@@ -1,0 +1,5 @@
+<StackPanel ux:Class="Alive.StickyHeader">
+	<Visual ux:Dependency="Header" />
+	<Panel ux:Name="header" Children="Header" />
+	<Alive.StickyHeaderAnimation Header="header" />
+</StackPanel>

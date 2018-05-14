@@ -1,0 +1,3 @@
+<Panel ux:Class="Fuse.Views.Test.UX.SetDataString">
+	<Text ux:Name="Text" Value="{text}" />
+</Panel>
