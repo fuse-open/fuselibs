@@ -4,8 +4,8 @@
 [![license: MIT](https://img.shields.io/github/license/fuse-open/fuselibs.svg)](LICENSE.txt)
 [![Slack](https://img.shields.io/badge/chat-on%20slack-blue.svg)](https://fusecommunity.slack.com/messages/fuselibs)
 
-Fuselibs is the [Uno](https://www.fusetools.com/docs/uno/uno-lang)-libraries that provide
-the UI framework used in [Fuse](https://www.fusetools.com/) apps.
+Fuselibs is a collection of [Uno](https://fuse-open.github.io/docs/uno/uno-lang) libraries that provide
+the UI framework used to build [Fuse](https://fuse-open.github.io/) apps.
 
 
 ## Requirements
@@ -60,7 +60,7 @@ conduct, and the process for submitting pull requests to us.
 
 ### Reporting issues
 
-Please report issues [here](https://github.com/fusetools/fuselibs-public/issues).
+Please report issues [here](https://github.com/fuse-open/fuselibs/issues).
 
 ## What's this "Stuff" thing?
 
