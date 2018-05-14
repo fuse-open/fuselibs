@@ -1,7 +1,7 @@
 # Fuselibs
-[![Tracis CI Build Status](https://travis-ci.org/fusetools/fuselibs-public.svg?branch=master)](https://travis-ci.org/fusetools/fuselibs-public)
+[![Travis CI Build Status](https://travis-ci.org/fuse-open/fuselibs.svg?branch=master)](https://travis-ci.org/fuse-open/fuselibs)
 [![AppVeyor Build status](https://ci.appveyor.com/api/projects/status/an47qhe561v31jga/branch/master?svg=true)](https://ci.appveyor.com/project/fusetools/fuselibs-public/branch/master)
-[![license: MIT](https://img.shields.io/github/license/fusetools/fuselibs-public.svg)](LICENSE.txt)
+[![license: MIT](https://img.shields.io/github/license/fuse-open/fuselibs.svg)](LICENSE.txt)
 [![Slack](https://img.shields.io/badge/chat-on%20slack-blue.svg)](https://fusecommunity.slack.com/messages/fuselibs)
 
 Fuselibs is the [Uno](https://www.fusetools.com/docs/uno/uno-lang)-libraries that provide
