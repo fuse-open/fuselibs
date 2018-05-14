@@ -3,7 +3,7 @@
   "Description": "MapView",
   "Publisher": "Fusetools AS",
   "Package": {
-    "ProjectUrl": "https://fusetools.com"
+    "ProjectUrl": "https://fuse-open.github.io"
   },
   "IsTransitive":true,
   "Packages": [

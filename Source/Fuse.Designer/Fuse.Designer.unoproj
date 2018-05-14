@@ -3,7 +3,7 @@
   "Description": "Attributes and classes for building Fuse Designer-friendly components",
   "Publisher": "Fusetools AS",
   "Package": {
-    "ProjectUrl": "https://fusetools.com"
+    "ProjectUrl": "https://fuse-open.github.io"
   },
   "InternalsVisibleTo": [
     "Fuse.Elements"
