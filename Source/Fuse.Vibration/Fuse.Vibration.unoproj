@@ -3,7 +3,7 @@
   "Description": "Native Vibration",
   "Publisher": "Fusetools AS",
   "Package": {
-    "ProjectUrl": "https://fusetools.com"
+    "ProjectUrl": "https://fuse-open.github.io"
   },
   "Packages": [
     "Uno.Permissions"

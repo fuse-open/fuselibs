@@ -20,7 +20,7 @@ namespace Fuse.Reactive.FuseJS
 				console.log("Launched with URI", uri);
 			});
 
-			InterApp.launchUri("https://www.fusetools.com/");
+			InterApp.launchUri("https://fuse-open.github.io/");
 
 		In the above example we're using the @EventEmitter `on` method to listen to the `"receivedUri"` event.
 

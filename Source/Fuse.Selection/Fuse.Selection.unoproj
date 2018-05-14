@@ -3,7 +3,7 @@
   "Description": "Library for selection behavior",
   "Publisher": "Fusetools AS",
   "Package": {
-    "ProjectUrl": "https://fusetools.com"
+    "ProjectUrl": "https://fuse-open.github.io"
   },
   "InternalsVisibleTo": [
     "Fuse.Selection.Test",

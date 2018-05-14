@@ -3,7 +3,7 @@
   "Description": "Library for control motion and simulated physics for UI",
   "Publisher": "Fusetools AS",
   "Package": {
-    "ProjectUrl": "https://fusetools.com"
+    "ProjectUrl": "https://fuse-open.github.io"
   },
   "Projects": [
     "../Fuse.Common/Fuse.Common.unoproj",

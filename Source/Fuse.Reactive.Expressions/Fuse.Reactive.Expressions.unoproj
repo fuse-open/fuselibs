@@ -4,7 +4,7 @@
   "Publisher": "Fusetools AS",
   "IsTransitive": true,
   "Package": {
-    "ProjectUrl": "https://fusetools.com"
+    "ProjectUrl": "https://fuse-open.github.io"
   },
   "Packages": [
     "Uno.Collections",

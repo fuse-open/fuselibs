@@ -3,7 +3,7 @@
   "Description": "Library of common input gesture recognizers",
   "Publisher": "Fusetools AS",
   "Package": {
-    "ProjectUrl": "https://fusetools.com"
+    "ProjectUrl": "https://fuse-open.github.io"
   },
   "InternalsVisibleTo": [
     "Fuse.BasicTheme",

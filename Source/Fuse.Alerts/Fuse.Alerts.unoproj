@@ -3,7 +3,7 @@
   "Description": "Native alerts and simple dialogs for mobile targets",
   "Publisher": "Fusetools AS",
   "Package": {
-    "ProjectUrl": "https://fusetools.com"
+    "ProjectUrl": "https://fuse-open.github.io"
   },
   "Packages": [
     "Uno.Collections",

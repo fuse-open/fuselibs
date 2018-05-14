@@ -3,7 +3,7 @@
   "Publisher": "Fusetools AS",
   "Copyright": "Copyright (c) Fusetools AS 2017",
   "Package": {
-    "ProjectUrl": "https://fusetools.com"
+    "ProjectUrl": "https://fuse-open.github.io"
   },
   "Projects": [
     "../Fuse.Animations/Fuse.Animations.unoproj",

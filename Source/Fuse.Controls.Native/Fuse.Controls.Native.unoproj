@@ -3,7 +3,7 @@
   "Description": "Abstraction over platform-specific native controls",
   "Publisher": "Fusetools AS",
   "Package": {
-    "ProjectUrl": "https://fusetools.com"
+    "ProjectUrl": "https://fuse-open.github.io"
   },
   "InternalsVisibleTo": [
     "Fuse.Android",

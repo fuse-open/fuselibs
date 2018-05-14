@@ -3,7 +3,7 @@
   "Description": "Abstract scripting framework",
   "Publisher": "Fusetools AS",
   "Package": {
-    "ProjectUrl": "https://fusetools.com"
+    "ProjectUrl": "https://fuse-open.github.io"
   },
   "InternalsVisibleTo": [
     "Fuse.Scripting.JavaScript",

@@ -4,7 +4,7 @@
   "Publisher": "Fusetools AS",
   "Title": "Fuse.ImageTools",
   "Package": {
-    "ProjectUrl": "https://fusetools.com"
+    "ProjectUrl": "https://fuse-open.github.io"
   },
   "InternalsVisibleTo":[
     "Fuse.Camera",

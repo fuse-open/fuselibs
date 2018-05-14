@@ -3,7 +3,7 @@
   "Description": "Browser window polyfill",
   "Publisher": "Fusetools AS",
   "Package": {
-    "ProjectUrl": "https://fusetools.com"
+    "ProjectUrl": "https://fuse-open.github.io"
   },
   "Projects": [
     "../Fuse.Scripting/Fuse.Scripting.unoproj",
