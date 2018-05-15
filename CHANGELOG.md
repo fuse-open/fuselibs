@@ -1,5 +1,52 @@
 # Unreleased
 
+# 1.9
+
+## 1.9.0
+
+### Android Layout
+- Fixed an issue causing an empty (`Size` = 0) layout to be performed on Android during app startup.
+
+### ScrollView
+- Implement support for horizontal scrolling in ScrollViews inside a `NativeViewHost` on Android
+
+### Color Expressions
+- Added the functions `darken`, `lighten`, `saturate`, `desaturate`, `scaleSaturation`, `scaleLightness` and `adjustHue` for improved color  handling in UX expressions.
+- Added the functions `rgbaToHsla` and `hslaToRgba` for color conversions in UX expressions.
+
+### Diagnostics
+- Improved diagnostics to provide UX source location on several kinds of errors.
+
+### DotNet/Preview Gradients
+- Gradient rendering in preview previously had some limitations in the ranges of `StartPoint` and `EndPoint` it could accept. This has been fixed: points inside and outside of the element render correctly now.
+
+### EdgeNavigator
+- Changed `NavigateToggle` to work without a `NavigationContext` and remove some potential errors.
+
+### LayoutMaster
+- Fixed a redundant layout invalidation when `Element.LayoutMaster` is changed. This would result in broken `LayoutAnimation` as multiple layouts could be triggered by a `Change`.
+
+### Layout
+- Fixed invalid layout caching when a relative container size changed. This affected `ScrollView` and `DockPanel`, in particular it may have resulted in stale sizes when the keyboard appeared, or orientation changed.
+
+### MapView
+- Fixed a crash when tapping the user's current location on iOS.
+- Fixed incorrect zoom factor changes when the location changed on iOS.
+
+### Router
+- Deprecated the `GoUp` behavior which causes unexpected behavior and defects. This fixes an issue of pressing the hardware back button at the root state (on Android).  The old behavior can be had by setting `GoBackBehavior="GoBackAndUp"` on the router, but be aware it is deprecated and will be removed.
+- Added `Router.BackAtRootPressed` to allow intercepting a back button action on the root page.
+
+### Video
+- Fixed issue where `Video` on Android could end up not finding the rotation metadata on its video source
+- Fixed issue where `Video` on iOS could render incorrect on some rotations
+- Removed size flip in `VideoVisual`, looks like this used to work due to bug dependency. But the native video players flip the size themselves.
+- Add `VideoOrientationPage` to ManualTestApp, this page tests video with mp4 files with different rotations in their metadata section.
+- Use proper transforms for rotation in the video rendering code
+
+## WrapPanel / WrapLayout
+- Fixed `WrapPanel` to update its layout when a layout property changes.
+
 
 # 1.8
 
