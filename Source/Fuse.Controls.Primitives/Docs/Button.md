@@ -21,4 +21,4 @@ In Fuse, pretty much anything can easily be made clickable using @Clicked (and t
 		</Rectangle>
 	</App>
 
-When you click the rectangle the `Message` output will show up in the [Monitor](https://www.fusetools.com/learn/guides/preview-and-export-monitor) if you are running in preview mode. It will also show up in the standard device logs or, if you started the preview process from the commandline, in the standard console.
+When you click the rectangle the `Message` output will show up in the Monitor if you are running in preview mode. It will also show up in the standard device logs or, if you started the preview process from the commandline, in the standard console.
