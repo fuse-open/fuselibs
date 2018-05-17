@@ -7,7 +7,7 @@ namespace Fuse.Reactive
 		behaviour and means to simplify higher-level code.
 		
 		NOTE: The use of InnerListener is questionable but unavoidable at this time.
-		https://github.com/fusetools/fuselibs-public/issues/785
+		https://github.com/fuse-open/fuselibs/issues/785
 		
 		@hide
 	*/

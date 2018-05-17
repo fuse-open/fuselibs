@@ -10,7 +10,7 @@ namespace Fuse.Navigation.Test
 	public class NavigatorModelTest : ModelTestBase
 	{
 		[Test]
-		//from Issue https://github.com/fusetools/fuselibs-public/issues/880
+		//from Issue https://github.com/fuse-open/fuselibs/issues/880
 		//data for inner is syncrhonously available, and IsRouterOutlet=false
 		public void NestedModel()
 		{

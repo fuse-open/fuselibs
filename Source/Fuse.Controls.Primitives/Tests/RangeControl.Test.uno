@@ -85,7 +85,7 @@ namespace Fuse.Gestures.Test
 		}
 		
 		[Test]
-		//https://github.com/fusetools/fuselibs-public/issues/578
+		//https://github.com/fuse-open/fuselibs/issues/578
 		public void LinearRangeBounds()
 		{
 			var p = new UX.RangeControl.LinearRangeBounds();

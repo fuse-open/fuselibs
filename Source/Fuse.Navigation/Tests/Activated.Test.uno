@@ -261,7 +261,7 @@ namespace Fuse.Navigation.Test
 		}
 		
 		[Test]
-		//tracking down https://github.com/fusetools/fuselibs-public/issues/223
+		//tracking down https://github.com/fuse-open/fuselibs/issues/223
 		public void EdgeNavigator()
 		{
 			var p = new UX.Activated.EdgeNavigator();

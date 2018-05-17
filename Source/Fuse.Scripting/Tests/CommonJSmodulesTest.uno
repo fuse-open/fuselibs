@@ -34,7 +34,7 @@ public class CommonJSmodules : TestBase
 	}
 
 	[Test]
-	[Ignore("https://github.com/fusetools/fuselibs-public/issues/679", "Android && USE_V8")]
+	[Ignore("https://github.com/fuse-open/fuselibs/issues/679", "Android && USE_V8")]
 	public void Determinism()
 	{
 		JSTest.RunTest(DeterminismInner);
@@ -101,7 +101,7 @@ public class CommonJSmodules : TestBase
 	}
 
 	[Test]
-	[Ignore("https://github.com/fusetools/fuselibs-public/issues/679", "Android && USE_V8")]
+	[Ignore("https://github.com/fuse-open/fuselibs/issues/679", "Android && USE_V8")]
 	public void Missing()
 	{
 		JSTest.RunTest(MissingInner);

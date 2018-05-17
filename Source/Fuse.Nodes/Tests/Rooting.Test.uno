@@ -75,7 +75,7 @@ namespace Fuse.Test
 			}
 		}
 		
-		//https://github.com/fusetools/fuselibs-public/issues/430
+		//https://github.com/fuse-open/fuselibs/issues/430
 		[Test]
 		public void DoubleRooting()
 		{
@@ -87,7 +87,7 @@ namespace Fuse.Test
 		}
 		
 		[Test]
-		//covers the scenario from https://github.com/fusetools/fuselibs-public/issues/518
+		//covers the scenario from https://github.com/fuse-open/fuselibs/issues/518
 		public void RemoveAll()
 		{
 			var p = new UX.Rooting.RemoveAll();
@@ -121,7 +121,7 @@ namespace Fuse.Test
 	/*
 		This mimics a behavior that `PageControl.Pages` and `AlternateRoot` could exhibit. Those might change thus as not being relied upon to test the rooting guarantee. This new class tests a specific scenario where those classes failed.
 		
-		Refer to https://github.com/fusetools/fuselibs-public/issues/430
+		Refer to https://github.com/fuse-open/fuselibs/issues/430
 	*/
 	public class RootOrderVisual : Panel
 	{

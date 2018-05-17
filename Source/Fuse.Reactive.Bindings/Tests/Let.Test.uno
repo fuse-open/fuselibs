@@ -91,7 +91,7 @@ namespace Fuse.Test
 		}
 		
 		[Test]
-		[Ignore("https://github.com/fusetools/fuselibs-public/issues/740")]
+		[Ignore("https://github.com/fuse-open/fuselibs/issues/740")]
 		public void Array()
 		{
 			var p = new UX.Let.Array();

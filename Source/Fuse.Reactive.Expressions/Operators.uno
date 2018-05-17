@@ -54,7 +54,7 @@ namespace Fuse.Reactive
 		protected override bool TryCompute(object left, object right, out object result)
 		{
 			//Workaround for UX emitting `Add` instead of `Concat`
-			//https://github.com/fusetools/fuselibs-public/issues/897
+			//https://github.com/fuse-open/fuselibs/issues/897
 			if (left is string || right is string)
 				return Concat.TryComputeImpl(left, right, out result);
 				

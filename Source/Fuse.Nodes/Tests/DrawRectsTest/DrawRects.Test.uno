@@ -353,7 +353,7 @@ namespace DrawRectsTest
 		}
 
 		[Test]
-		[Ignore("https://github.com/fusetools/fuselibs-public/issues/297")]
+		[Ignore("https://github.com/fuse-open/fuselibs/issues/297")]
 		public void VideoWithMarginDrawRectIsRendered()
 		{
 			try
@@ -420,7 +420,7 @@ namespace DrawRectsTest
 		}
 
 		[Test]
-		[Ignore("https://github.com/fusetools/fuselibs-public/issues/297")]
+		[Ignore("https://github.com/fuse-open/fuselibs/issues/297")]
 		public void Scale9VideoWithMarginDrawRectIsRendered()
 		{
 			try

@@ -12,7 +12,7 @@ namespace Fuse.Controls.Panels.Test
 		[Test]
 		public void IssuePublic53()
 		{
-			//https://github.com/fusetools/fuselibs-public/issues/53
+			//https://github.com/fuse-open/fuselibs/issues/53
 			var c = new UX.IssuePublic53();
 			using (var root = TestRootPanel.CreateWithChild(c))
 			{

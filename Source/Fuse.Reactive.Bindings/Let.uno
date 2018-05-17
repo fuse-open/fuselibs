@@ -109,7 +109,7 @@ namespace Fuse.Reactive
 		protected override void OnUnrooted()
 		{
 			_observable = null;
-			//TODO: https://github.com/fusetools/fuselibs-public/issues/789
+			//TODO: https://github.com/fuse-open/fuselibs/issues/789
 			DataChanged( null );
 			base.OnUnrooted();
 		}		
