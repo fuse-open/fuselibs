@@ -22,6 +22,14 @@ namespace Fuse.Video.Graphics.CIL
 
 	public static class VideoImpl
 	{
+		public static void SetOpenGL(IGL gl)
+		{
+#if CONFIG_MAC
+			Mono.MonoImpl.SetOpenGL(gl);
+#else
+			WPF.VideoImpl.SetOpenGL(gl);
+#endif
+		}
 
 		/// Jeeezzz, clean up this mess
 		public static VideoHandle CreateFromBytes(string name, byte[] data, Action loaded, Action<string> error)

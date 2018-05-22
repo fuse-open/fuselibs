@@ -15,13 +15,19 @@ namespace Fuse.Controls.VideoImpl.CIL
 		class VideoPromise : Promise<IVideoPlayer>
 		{
 			Fuse.Video.Graphics.CIL.VideoHandle _handle;
-			public VideoPromise(string url)
+
+			VideoPromise()
+			{
+				Fuse.Video.Graphics.CIL.VideoImpl.SetOpenGL(new VideoOpenGL());
+			}
+
+			public VideoPromise(string url) : this()
 			{
 				_handle = Fuse.Video.Graphics.CIL.VideoImpl.CreateFromUrl(url, OnLoaded, OnError);
 				UpdateManager.AddAction(PollStatus);
 			}
 
-			public VideoPromise(string name, byte[] data)
+			public VideoPromise(string name, byte[] data) : this()
 			{
 				_handle = Fuse.Video.Graphics.CIL.VideoImpl.CreateFromBytes(name, data, OnLoaded, OnError);
 				UpdateManager.AddAction(PollStatus);
@@ -190,10 +196,37 @@ namespace Fuse.Controls.VideoImpl.CIL
 		}
 
 	}
+
+	extern(DOTNET) class VideoOpenGL : Fuse.Video.Graphics.CIL.IGL
+	{
+		public void BindTexture(int target, int texture)
+		{
+			GL.BindTexture((GLTextureTarget)target, (GLTextureHandle)texture);
+		}
+
+		public void TexImage2D(int target, int level, int internalFormat, int width, int height, int border, int format, int type, IntPtr data)
+		{
+			GL.TexImage2D((GLTextureTarget)target, level, (GLPixelFormat)internalFormat, width, height, border, (GLPixelFormat)format, (GLPixelType)type, data);
+		}
+
+		public void TexSubImage2D(int target, int level, int xoffset, int yoffset, int width, int height, int format, int type, IntPtr pixels)
+		{
+			GL.TexSubImage2D((GLTextureTarget)target, level, xoffset, yoffset, width, height, (GLPixelFormat)format, (GLPixelType)type, pixels);
+		}
+	}
 }
 
 namespace Fuse.Video.Graphics.CIL
 {
+	[DotNetType("Fuse.Video.CILInterface.IGL")]
+	extern(DOTNET) internal interface IGL
+	{
+		void BindTexture(int target, int texture);
+
+		void TexImage2D(int target, int level, int internalFormat, int width, int height, int border, int format, int type, IntPtr data);
+
+		void TexSubImage2D(int target, int level, int xoffset, int yoffset, int width, int height, int format, int type, IntPtr pixels);
+	}
 
 	[TargetSpecificImplementation, DotNetType]
 	extern(DOTNET) internal class VideoHandle { }
@@ -201,6 +234,8 @@ namespace Fuse.Video.Graphics.CIL
 	[TargetSpecificImplementation, DotNetType]
 	extern(DOTNET) internal static class VideoImpl
 	{
+		[TargetSpecificImplementation]
+		public static void SetOpenGL(Fuse.Video.Graphics.CIL.IGL gl);
 
 		[TargetSpecificImplementation]
 		public static extern VideoHandle CreateFromBytes(string name, byte[] data, Action loaded, Action<string> error);

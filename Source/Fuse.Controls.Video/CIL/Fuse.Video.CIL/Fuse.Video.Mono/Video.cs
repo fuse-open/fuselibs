@@ -5,10 +5,7 @@ using AVFoundation;
 using CoreVideo;
 using CoreMedia;
 using CoreFoundation;
-using OpenTK.Graphics.OpenGL;
-using CoreGraphics;
-using System.Drawing;
-using ObjCRuntime;
+using Fuse.Video.CILInterface;
 
 namespace Fuse.Video.Mono
 {
@@ -25,7 +22,7 @@ namespace Fuse.Video.Mono
 
 	public static class VideoImpl
 	{
-
+		static IGL _gl;
 		static readonly MethodInfo _copyPixelBufferMethod;
 
 		static VideoImpl()
@@ -37,11 +34,12 @@ namespace Fuse.Video.Mono
 		{
 			var args = new object[] { time, outItemTimeForDisplay };
 			var result = _copyPixelBufferMethod.Invoke(output, args);
-			return new PixelBuffer((IntPtr)result);
+			return new PixelBuffer(_gl, (IntPtr)result);
 		}
 
-		public static VideoHandle Create(string uri, Action loaded, Action<string> error)
+		public static VideoHandle Create(IGL gl, string uri, Action loaded, Action<string> error)
 		{
+			_gl = gl;
 			var handle = new VideoHandle();
 			var url = new NSUrl(uri);
 			handle.Asset = new AVUrlAsset(url, (AVUrlAssetOptions)null);
