@@ -47,6 +47,9 @@
 ## WrapPanel / WrapLayout
 - Fixed `WrapPanel` to update its layout when a layout property changes.
 
+## Fuse.Views
+- Fixed a crash when pushing the back-button on Android.
+
 
 # 1.8
 
