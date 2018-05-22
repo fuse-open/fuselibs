@@ -127,7 +127,7 @@ namespace Fuse.Reactive.Test
 		}
 
 		[Test]
-		[Ignore("https://github.com/fusetools/fuselibs-public/issues/671", "Android || iOS")]
+		[Ignore("https://github.com/fuse-open/fuselibs/issues/671", "Android || iOS")]
 		/* Tests that binding empty Observable to Placeholder text do not throw exception */
 		public void Issue2532()
 		{
@@ -480,7 +480,7 @@ namespace Fuse.Reactive.Test
 		}
 
 		[Test]
-		[Ignore("https://github.com/fusetools/fuselibs-public/issues/671", "Android || iOS")]
+		[Ignore("https://github.com/fuse-open/fuselibs/issues/671", "Android || iOS")]
 		public void Issue2731()
 		{
 			var e = new UX.Issue2731();

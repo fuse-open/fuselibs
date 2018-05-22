@@ -277,7 +277,7 @@ namespace Fuse.Controls.Test
 		}
 		
 		[Test]
-		//checks source of https://github.com/fusetools/fuselibs-public/issues/833
+		//checks source of https://github.com/fuse-open/fuselibs/issues/833
 		public void RelativeSize()
 		{
 			var p = new UX.DockPanel.RelativeSize();

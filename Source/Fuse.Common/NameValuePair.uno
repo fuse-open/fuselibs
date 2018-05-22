@@ -46,7 +46,7 @@ namespace Fuse
 			to later error detection rather than silently discarding it.
 			
 			TODO: we probably don't need this function after  this issue is done:
-			https://github.com/fusetools/fuselibs-public/issues/233
+			https://github.com/fuse-open/fuselibs/issues/233
 		*/
 		public static IObject ObjectFromArray(IArray list)
 		{

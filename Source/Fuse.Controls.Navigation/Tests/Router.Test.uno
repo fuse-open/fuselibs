@@ -714,7 +714,7 @@ namespace Fuse.Navigation.Test
 		}
 		
 		[Test]
-		//Based on https://github.com/fusetools/fuselibs-public/issues/939
+		//Based on https://github.com/fuse-open/fuselibs/issues/939
 		public void DoublePushGoBack()
 		{
 			var p = new UX.Router.DoublePushGoBack();
@@ -740,7 +740,7 @@ namespace Fuse.Navigation.Test
 		}
 		
 		[Test]
-		//Crash in https://github.com/fusetools/fuselibs-public/issues/1066
+		//Crash in https://github.com/fuse-open/fuselibs/issues/1066
 		public void Issue1066()
 		{
 			var p = new UX.Router.Issue1066();

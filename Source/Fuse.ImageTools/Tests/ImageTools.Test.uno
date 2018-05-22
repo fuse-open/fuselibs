@@ -14,7 +14,7 @@ namespace Fuse.ImageTools.Test
 
 		[Test]
 		[extern(NATIVE) Ignore("Only supported on dotnet, Android or iOS")]
-		[extern(Android) Ignore("https://github.com/fusetools/fuselibs-public/issues/690")]
+		[extern(Android) Ignore("https://github.com/fuse-open/fuselibs/issues/690")]
 		public void CreatingAnImageSucceeds()
 		{
 			using (var root = new TestRootPanel()){
@@ -35,7 +35,7 @@ namespace Fuse.ImageTools.Test
 
 		[Test]
 		[extern(NATIVE) Ignore("Only supported on dotnet, Android or iOS")]
-		[extern(iOS || Android) Ignore("https://github.com/fusetools/fuselibs-public/issues/674")]
+		[extern(iOS || Android) Ignore("https://github.com/fuse-open/fuselibs/issues/674")]
 		public void CreatingAnImageFails()
 		{
 			Assert.Throws<FormatException>(MakeInvalidImage);

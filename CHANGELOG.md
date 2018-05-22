@@ -887,4 +887,4 @@ A new vector drawing system has been added to Fuse. This allows drawing of curve
 
 ## Old
 
-See [the commit history for this file](https://github.com/fusetools/fuselibs-public/commits/master/CHANGELOG.md) for older entries.
+See [the commit history for this file](https://github.com/fuse-open/fuselibs/commits/master/CHANGELOG.md) for older entries.

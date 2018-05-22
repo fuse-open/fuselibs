@@ -277,7 +277,7 @@ namespace Fuse.Reactive
 			This feature works in conjunction with `replaceAt` and `replaceAll` on Observable's.
 			
 			NOTE: This feature, if using animations, does not yet operate well in combination with `Reuse`. It may result in reuse of unintended items and/or unexpected animations.
-			https://github.com/fusetools/fuselibs-public/issues/175
+			https://github.com/fuse-open/fuselibs/issues/175
 		*/
 		public string IdentityKey
 		{
@@ -348,7 +348,7 @@ namespace Fuse.Reactive
 				}
 			}
 		}
-		//https://github.com/fusetools/fuselibs-public/issues/135
+		//https://github.com/fuse-open/fuselibs/issues/135
 		[WeakReference]
 		ITemplateSource _weakTemplateSource;
 		ITemplateSource _templateSource; //captured at rooting time

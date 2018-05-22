@@ -39,7 +39,7 @@ namespace Fuse.Reactive.Test
 		}
 
 		[Test]
-		[Ignore("https://github.com/fusetools/fuselibs-public/issues/671", "Android || iOS")]
+		[Ignore("https://github.com/fuse-open/fuselibs/issues/671", "Android || iOS")]
 		public void ArrayLookup()
 		{
 			var e = new UX.ArrayLookup();

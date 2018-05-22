@@ -91,7 +91,7 @@ namespace Fuse.Test
 		}
 		
 		[Test]
-		[Ignore("https://github.com/fusetools/fuselibs-public/issues/740")]
+		[Ignore("https://github.com/fuse-open/fuselibs/issues/740")]
 		public void Array()
 		{
 			var p = new UX.Let.Array();
@@ -284,7 +284,7 @@ namespace Fuse.Test
 			var p = new UX.Let.Conversion();
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
-				//TODO: Once the "size" function is merged from https://github.com/fusetools/fuselibs-public/pull/905
+				//TODO: Once the "size" function is merged from https://github.com/fuse-open/fuselibs/pull/905
 				//Assert.AreEqual( new Size2( new Size(20, Unit.Percent), new Size(30,Unit.Percent)), p.p1.Offset );
 				Assert.AreEqual( new Size2( new Size(10, Unit.Unspecified), new Size(20,Unit.Points)), p.p2.Offset );
 			}

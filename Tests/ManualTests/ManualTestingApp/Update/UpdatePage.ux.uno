@@ -96,7 +96,7 @@ public partial class UpdatePage
 	}
 }
 
-// This catches the error found in https://github.com/fusetools/fuselibs-public/issues/452
+// This catches the error found in https://github.com/fuse-open/fuselibs/issues/452
 // It's due to how InvalidateVisual prevents duplicate calls by checking the FrameIndex
 public class UpdateCircle : Fuse.Controls.Circle
 {

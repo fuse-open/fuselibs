@@ -29,7 +29,7 @@ namespace Fuse.Gestures.Test
 				root.PointerRelease();
 				Assert.AreEqual(100, p.Value.Y);
 				//there's no guarantee at the moment of clamping direction (could be max or min)
-				//TODO: https://github.com/fusetools/fuselibs-public/issues/798
+				//TODO: https://github.com/fuse-open/fuselibs/issues/798
 				Assert.IsTrue( Math.Abs(p.Value.X-0) < 1e-4 ||
 					Math.Abs(p.Value.X-120) < 1e-4);
 			}

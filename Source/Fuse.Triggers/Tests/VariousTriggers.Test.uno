@@ -56,7 +56,7 @@ namespace Fuse.Triggers.Test
 		}
 
 		[Test]
-		[Ignore("https://github.com/fusetools/fuselibs-public/issues/671", "Android || iOS")]
+		[Ignore("https://github.com/fuse-open/fuselibs/issues/671", "Android || iOS")]
 		public void WhileContainsText()
 		{
 			using (var root = new TestRootPanel())
@@ -77,7 +77,7 @@ namespace Fuse.Triggers.Test
 		}
 
 		[Test]
-		[Ignore("https://github.com/fusetools/fuselibs-public/issues/671", "Android || iOS")]
+		[Ignore("https://github.com/fuse-open/fuselibs/issues/671", "Android || iOS")]
 		public void TextViewWhileContainsText()
 		{
 			using (var root = new TestRootPanel())
@@ -98,7 +98,7 @@ namespace Fuse.Triggers.Test
 		}
 
 		[Test]
-		[Ignore("https://github.com/fusetools/fuselibs-public/issues/671", "Android || iOS")]
+		[Ignore("https://github.com/fuse-open/fuselibs/issues/671", "Android || iOS")]
 		public void ContainingText()
 		{
 			using (var root = new TestRootPanel())
@@ -129,7 +129,7 @@ namespace Fuse.Triggers.Test
 		}
 
 		[Test]
-		[Ignore("https://github.com/fusetools/fuselibs-public/issues/671", "Android || iOS")]
+		[Ignore("https://github.com/fuse-open/fuselibs/issues/671", "Android || iOS")]
 		public void WhileEnabled()
 		{
 			using (var root = new TestRootPanel())
@@ -149,7 +149,7 @@ namespace Fuse.Triggers.Test
 		}
 
 		[Test]
-		[Ignore("https://github.com/fusetools/fuselibs-public/issues/671", "Android || iOS")]
+		[Ignore("https://github.com/fuse-open/fuselibs/issues/671", "Android || iOS")]
 		public void WhileEnabled_2()
 		{
 			using (var root = new TestRootPanel())
@@ -169,7 +169,7 @@ namespace Fuse.Triggers.Test
 		}
 
 		[Test]
-		[Ignore("https://github.com/fusetools/fuselibs-public/issues/671", "Android || iOS")]
+		[Ignore("https://github.com/fuse-open/fuselibs/issues/671", "Android || iOS")]
 		public void WhileDisabled()
 		{
 			using (var root = new TestRootPanel())
@@ -189,7 +189,7 @@ namespace Fuse.Triggers.Test
 		}
 
 		[Test]
-		[Ignore("https://github.com/fusetools/fuselibs-public/issues/671", "Android || iOS")]
+		[Ignore("https://github.com/fuse-open/fuselibs/issues/671", "Android || iOS")]
 		public void WhileDisabled_2()
 		{
 			using (var root = new TestRootPanel())
@@ -209,7 +209,7 @@ namespace Fuse.Triggers.Test
 		}
 
 		[Test]
-		[Ignore("https://github.com/fusetools/fuselibs-public/issues/671", "Android || iOS")]
+		[Ignore("https://github.com/fuse-open/fuselibs/issues/671", "Android || iOS")]
 		public void Removing()
 		{
 			using (var root = new TestRootPanel())

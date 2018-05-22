@@ -12,7 +12,7 @@ namespace Fuse.Test
 	{
 		[Test]
 		// Updates to context itself need to be seen
-		//https://github.com/fusetools/fuselibs-public/issues/888
+		//https://github.com/fuse-open/fuselibs/issues/888
 		public void ContextChange()
 		{
 			var p = new UX.With.ContextChange();

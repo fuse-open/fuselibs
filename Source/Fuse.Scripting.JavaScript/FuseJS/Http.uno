@@ -88,7 +88,7 @@ namespace Fuse.Reactive.FuseJS
 			public Scripting.Object Obj { get; private set; }
 
 			// This caching of Context is suspect. Please see the issue below for context
-			// https://github.com/fusetools/fuselibs-public/issues/641
+			// https://github.com/fuse-open/fuselibs/issues/641
 			Scripting.Context _context;
 
 			HttpMessageHandlerRequest _req;

@@ -1,5 +1,5 @@
 <Panel ux:Class="UX.Let.Array">
-	<!-- https://github.com/fusetools/fuselibs-public/issues/740 -->
+	<!-- https://github.com/fuse-open/fuselibs/issues/740 -->
 	<!-- Also just Value="1,2,3,4,5" should work -->
 	<!-- <Let ux:Name="arr" Value="{= 1,2,3,4,5 }"/> -->
 	<Each Items="{arr}">

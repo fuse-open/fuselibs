@@ -348,7 +348,7 @@ namespace Fuse.Scripting.Test
 		}
 
 		[Test]
-		[Ignore("https://github.com/fusetools/fuselibs-public/issues/679", "Android && USE_V8")]
+		[Ignore("https://github.com/fuse-open/fuselibs/issues/679", "Android && USE_V8")]
 		public void ExceptionMessageIsMarshalledToJavaScript()
 		{
 			JSTest.RunTest(ExceptionMessageIsMarshalledToJavaScriptInner);
@@ -451,7 +451,7 @@ namespace Fuse.Scripting.Test
 		}
 
 		[Test]
-		[Ignore("https://github.com/fusetools/fuselibs-public/issues/679", "Android && USE_V8")]
+		[Ignore("https://github.com/fuse-open/fuselibs/issues/679", "Android && USE_V8")]
 		public void CallbackExceptions()
 		{
 			JSTest.RunTest(CallbackExceptionsInner);
@@ -464,7 +464,7 @@ namespace Fuse.Scripting.Test
 		}
 
 		[Test]
-		[Ignore("https://github.com/fusetools/fuselibs-public/issues/679", "Android && USE_V8")]
+		[Ignore("https://github.com/fuse-open/fuselibs/issues/679", "Android && USE_V8")]
 		public void CatchingCallbackExceptions()
 		{
 			JSTest.RunTest(CatchingCallbackExceptionsInner);
@@ -482,7 +482,7 @@ namespace Fuse.Scripting.Test
 		}
 
 		[Test]
-		[Ignore("https://github.com/fusetools/fuselibs-public/issues/679", "Android && USE_V8")]
+		[Ignore("https://github.com/fuse-open/fuselibs/issues/679", "Android && USE_V8")]
 		public void CatchingUnoExceptions()
 		{
 			JSTest.RunTest(CatchingUnoExceptionsInner);

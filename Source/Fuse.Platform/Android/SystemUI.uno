@@ -26,7 +26,7 @@ namespace Fuse.Platform
 		{
 			get
 			{
-				//TODO: https://github.com/fusetools/fuselibs-public/issues/1014
+				//TODO: https://github.com/fuse-open/fuselibs/issues/1014
 				return float4(0);
 			}
 		}
