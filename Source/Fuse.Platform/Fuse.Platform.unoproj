@@ -6,6 +6,7 @@
     "ProjectUrl": "https://fuse-open.github.io"
   },
   "InternalsVisibleTo": [
+    "Fuse.Views",
     "Fuse.Android",
     "Fuse.Common",
     "Fuse.Controls.Native",
