@@ -3,9 +3,9 @@
 @{Fuse.Platform.SystemUI:IncludeDirective}
 @{ObjC.Object:IncludeDirective}
 
-#include <AppDelegateSoftKeyboard.h>
+#include <KeyboardContext.h>
 
-@implementation uAppDelegate (SoftKeyboard)
+@implementation uKeyboardContext
 
 - (void)uKeyboardWillChangeFrame:(NSNotification *)notification
 {
