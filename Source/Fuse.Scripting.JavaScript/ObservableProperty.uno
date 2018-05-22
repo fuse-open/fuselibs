@@ -110,7 +110,7 @@ namespace Fuse.Scripting.JavaScript
 				Therefore, we only need to compare against default values
 				for value types that are known to be handled by `Marshal.TryConvertTo`.
 
-				https://github.com/fusetools/fuselibs-public/issues/541#issuecomment-335101235
+				https://github.com/fuse-open/fuselibs/issues/541#issuecomment-335101235
 			*/
 			static bool IsDefaultValueForType(object value, Uno.Type t)
 			{

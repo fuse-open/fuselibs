@@ -16,7 +16,7 @@ namespace Fuse.Charting
 		internal PlotElement()
 		{
 			//This should probably be "false", but see this issue:
-			//https://github.com/fusetools/fuselibs/issues/3866
+			//https://github.com/fusetools/fuselibs-private/issues/3866
 			SnapToPixels = true;
 		}
 

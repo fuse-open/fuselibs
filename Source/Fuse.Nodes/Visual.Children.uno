@@ -65,7 +65,7 @@ namespace Fuse
 		*/
 		public void RemoveAllChildren<T>() where T: Node
 		{
-			// Has to use use safe iterator, ref discussion on https://github.com/fusetools/fuselibs-public/pull/260
+			// Has to use use safe iterator, ref discussion on https://github.com/fuse-open/fuselibs/pull/260
 			foreach (var c in Children) 
 				if (c is T) Remove(c);
 		}

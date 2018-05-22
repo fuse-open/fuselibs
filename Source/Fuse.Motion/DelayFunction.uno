@@ -32,8 +32,8 @@ namespace Fuse.Motion
 			
 			protected override void OnArguments(Argument[] args)
 			{
-				//TODO: https://github.com/fusetools/fuselibs-public/issues/872  This doesn't deal with lost data correctly
-				//TODO: https://github.com/fusetools/fuselibs-public/issues/873 doesn't handle invalid Delay
+				//TODO: https://github.com/fuse-open/fuselibs/issues/872  This doesn't deal with lost data correctly
+				//TODO: https://github.com/fuse-open/fuselibs/issues/873 doesn't handle invalid Delay
 				Timer.Wait(Marshal.ToDouble(args[1].Value), new SetClosure(this, args[0].Value).Run);
 			}
 			

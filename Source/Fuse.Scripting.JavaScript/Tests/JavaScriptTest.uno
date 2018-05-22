@@ -28,7 +28,7 @@ namespace Fuse.Reactive.Test
 		// since that won't exclude the test during compilation.
 		[Test]
 		//future-proofing any cleanup of exported names (this uses unusual, but valid JS names)
-		//refer to https://github.com/fusetools/fuselibs-public/issues/972
+		//refer to https://github.com/fuse-open/fuselibs/issues/972
 		extern(!MSVC) public void ExoticNames()
 		{
 			var j = new UX.JavaScript.ExoticNames();

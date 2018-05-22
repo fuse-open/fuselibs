@@ -227,7 +227,7 @@ namespace Fuse.Reactive
 		}
 		
 		// Used to test that Instance internals behaves correctly
-		// in light of https://github.com/fusetools/fuselibs-public/issues/227
+		// in light of https://github.com/fuse-open/fuselibs/issues/227
 		extern (UNO_TEST) internal static int InsertCount;
 		
 		/** Indicates a new data item has been inserted at `dataIndex`. This should be called sequentially from the lowest items as new items as added -- the resulting window items must be built in that order. */

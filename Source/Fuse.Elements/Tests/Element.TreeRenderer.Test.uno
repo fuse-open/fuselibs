@@ -14,7 +14,7 @@ namespace Fuse.Elements.Test
 	{
 		[Test]
 		[Ignore("Needs a Surface backend", "HOST_WINDOWS && NATIVE")]
-		//https://github.com/fusetools/fuselibs-public/issues/1005
+		//https://github.com/fuse-open/fuselibs/issues/1005
 		public void PathDataChanged()
 		{
 			var p = new global::UX.ElementTreeRenderer.PathRenderBounds();

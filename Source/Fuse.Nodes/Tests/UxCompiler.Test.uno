@@ -9,7 +9,7 @@ namespace Fuse.Test
 	public class UxCompilerTest : TestBase
 	{
 		[Test]
-		// Ensure UX names hide Uno ones, refer https://github.com/fusetools/fuselibs-public/issues/911
+		// Ensure UX names hide Uno ones, refer https://github.com/fuse-open/fuselibs/issues/911
 		public void PropNames()
 		{
 			var p = new UX.UxCompiler.PropNames();

@@ -88,7 +88,7 @@ namespace Fuse.Reactive.Test
 				Instance.InsertCount = 0;
 
 				// Weridly, second time it failed to add the items back
-				// https://github.com/fusetools/fuselibs-public/issues/227
+				// https://github.com/fuse-open/fuselibs/issues/227
 				e.sw.Value = true;
 				root.StepFrameJS();
 				Assert.AreEqual(10, e.sp.Children.Count);

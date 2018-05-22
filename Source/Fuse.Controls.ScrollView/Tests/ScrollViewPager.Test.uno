@@ -107,7 +107,7 @@ namespace Fuse.Controls.ScrollViewTest
 		
 		[Test]
 		// Accesses _scrollable while unrooting
-		//https://github.com/fusetools/fuselibs-public/issues/560
+		//https://github.com/fuse-open/fuselibs/issues/560
 		public void Issue560()
 		{
 			var s = new UX.ScrollViewPager.Issue560();

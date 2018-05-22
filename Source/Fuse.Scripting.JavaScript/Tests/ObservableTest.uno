@@ -491,7 +491,7 @@ namespace Fuse.Reactive.Test
 		}
 		
 		[Test]
-		[Ignore("https://github.com/fusetools/fuselibs-public/issues/671", "Android || iOS")]
+		[Ignore("https://github.com/fuse-open/fuselibs/issues/671", "Android || iOS")]
 		public void InnerInner()
 		{
 			var p = new UX.Observable.InnerInner();
@@ -1094,7 +1094,7 @@ namespace Fuse.Reactive.Test
 		}
 		
 		[Test]
-		[Ignore("https://github.com/fusetools/fuselibs-public/issues/171")]
+		[Ignore("https://github.com/fuse-open/fuselibs/issues/171")]
 		public void InnerDetach()
 		{
 			var p = new UX.Observable.InnerDetach();

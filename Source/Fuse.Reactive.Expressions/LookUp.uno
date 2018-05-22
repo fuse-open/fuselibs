@@ -109,7 +109,7 @@ namespace Fuse.Reactive
 			
 			void ValueForwarder.IValueListener.LostValue()
 			{
-				//TODO: https://github.com/fusetools/fuselibs-public/issues/783
+				//TODO: https://github.com/fuse-open/fuselibs/issues/783
 				//_hasIndex = false;
 				_index = null;
 				_hasIndex = true;

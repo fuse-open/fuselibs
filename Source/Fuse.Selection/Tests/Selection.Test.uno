@@ -316,7 +316,7 @@ namespace Fuse.Gestures.Test
 		
 		[Test]
 		//ensure event emitted after values change
-		//https://github.com/fusetools/fuselibs-public/issues/885
+		//https://github.com/fuse-open/fuselibs/issues/885
 		public void EventOrder()
 		{
 			var p = new UX.Selection.EventOrder();

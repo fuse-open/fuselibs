@@ -35,7 +35,7 @@ If you haven't already registered an Android app, follow these steps:
 
 After rebuilding your project with the new settings, you should be ready to send and receive push notifications.
 
-> **Note:** Fuse currently only supports `data` type messages. See [here for details on messages types](https://firebase.google.com/docs/cloud-messaging/concept-options#data_messages) & [this forum post](https://www.fusetools.com/community/forums/howto_discussions/push_notificacions_with_google_firebase_notificati?page=1&highlight=22e21e83-bbf1-44c9-acc7-0cc9eb00edc9#post-22e21e83-bbf1-44c9-acc7-0cc9eb00edc9) for more information on how we will fix this in future.
+> **Note:** Fuse currently only supports `data` type messages. See [here for details on messages types](https://firebase.google.com/docs/cloud-messaging/concept-options#data_messages) & [this forum post](https://forums.fusetools.com/t/push-notificacions-with-google-firebase-notifications/2910/16) for more information on how we will fix this in future.
 > Sadly this means you currently can't use the Firebase Console to send test notifications (they will appear in the notification bar but will fail to reach JS).
 > See the example below for an example of how to send messages to a Fuse app.
 

@@ -234,7 +234,7 @@ namespace Fuse
 		[Test]
 		public void TryToZeroFloat4()
 		{
-			//https://github.com/fusetools/fuselibs-public/issues/592
+			//https://github.com/fuse-open/fuselibs/issues/592
 			float4 val;
 			int size;
 			Assert.IsFalse( Marshal.TryToZeroFloat4( "#ch", out val, out size ) );
