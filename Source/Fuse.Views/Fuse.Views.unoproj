@@ -30,6 +30,7 @@
     "Android/ICallback.java:Java:Android",
     "Android/IArguments.java:Java:Android",
     "Android/FuseViewsActivity.java:Java:Android",
+    "Android/FuseViewsFragment.java:Java:Android",
     "Android/Android.uxl:Extensions",
     "iOS/ViewHost.h:ObjCHeader:iOS",
     "iOS/ViewHost.mm:ObjCSource:iOS",
