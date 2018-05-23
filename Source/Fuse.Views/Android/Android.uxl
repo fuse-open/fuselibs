@@ -1,3 +1,4 @@
 <Extensions Backend="CPlusPlus" Condition="ANDROID">
 	<ProcessFile Name="FuseViewsActivity.java" />
+	<ProcessFile Name="FuseViewsFragment.java" />
 </Extensions>
