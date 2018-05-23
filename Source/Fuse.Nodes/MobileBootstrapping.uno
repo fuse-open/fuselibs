@@ -17,8 +17,11 @@ namespace Fuse
 			Fuse.Platform.Lifecycle.ExitedInteractive += OnExitInteractive;
 			Fuse.Platform.Lifecycle.Terminating += OnTerminating;
 
-			Uno.Platform.EventSources.HardwareKeys.KeyDown += KeyboardBootstrapper.OnKeyPressed;
-			Uno.Platform.EventSources.HardwareKeys.KeyUp += KeyboardBootstrapper.OnKeyReleased;
+			if defined(Mobile && !Library)
+			{
+				Uno.Platform.EventSources.HardwareKeys.KeyDown += KeyboardBootstrapper.OnKeyPressed;
+				Uno.Platform.EventSources.HardwareKeys.KeyUp += KeyboardBootstrapper.OnKeyReleased;
+			}
 		}
 
 		static void OnTerminating(Fuse.Platform.ApplicationState state)
