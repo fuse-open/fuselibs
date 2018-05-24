@@ -21,12 +21,5 @@ namespace Fuse.Controls.Native
 		{
 			_rootView = rootView;
 		}
-
-		extern(Android)
-		internal override bool IsViewportReady
-		{
-			get { return Fuse.Platform.SystemUI.IsReady; }
-		}
-		
 	}
 }
