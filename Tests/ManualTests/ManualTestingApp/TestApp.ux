@@ -2,15 +2,7 @@
 	<!-- Leave as 0.0.0.0, the resource is updated by set_version.sh on a  release -->
 	<string ux:Key="ResourceString" ux:Value="0.0.0.0"/>
 	
-	<!-- This will detect some invalid rooting/setup: it checks the symptom of getting a 0,0 size -->
-	<InterceptPanel Invalid="whenInvalid"><!-- Also checks root test with multiple children -->
-		<WhileTrue Value="false" ux:Name="whenInvalid">
-			<Panel Color="#8008">
-				<Text FontSize="64" Value="Invalid Bootstrap"/>
-			</Panel>
-		</WhileTrue>
-	</InterceptPanel>
-	
+	<Panel ux:Name="SoRootTestChecksMultipleChildren"/>
 	<TestAppTheme/>
 	<MainView/>
 </App>

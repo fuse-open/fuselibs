@@ -53,7 +53,7 @@ namespace Fuse
 
 			Uno.Platform.Displays.MainDisplay.Tick += OnTick;
 		}
-		
+
 		public sealed override IList<Node> Children
 		{
 			get { return RootVisual.Children; }
@@ -66,6 +66,7 @@ namespace Fuse
 
 		void OnTick(object sender, Uno.Platform.TimerEventArgs args)
 		{
+			RootViewport.InvalidateLayout();
 			try
 			{
 				PropagateBackground();

@@ -28,7 +28,6 @@
     "HttpXml/HttpXmlView.ux:UX",
     "HttpXml/ResultItem.ux.uno:Source",
     "HttpXml/ResultItem.ux:UX",
-    "InterceptPanel.uno:Source",
     "IsEnabled/IsEnabled2.ux:UX",
     "IsEnabled/IsEnabled.ux.uno:Source",
     "IsEnabled/IsEnabled.ux:UX",

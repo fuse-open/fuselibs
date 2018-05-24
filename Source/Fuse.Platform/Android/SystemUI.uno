@@ -81,9 +81,16 @@ namespace Fuse.Platform
 		static public Rect Frame
 		{
 			get { return _frame; }
+			private set
+			{
+				if (Rect.Equals(_frame, value))
+					return;
+
+				_frame = value;
+				OnFrameChanged();
+			}
 		}
 
-		//Whenever frame changes, includes IsReady status change
 		static public event EventHandler FrameChanged;
 		static private void OnFrameChanged()
 		{
@@ -438,21 +445,23 @@ namespace Fuse.Platform
 		@}
 
 
-		static internal bool IsReady { get; private set; }
-		
 		[Require("Source.Include", "Uno/Graphics/GLHelper.h")]
 		static void cppOnConfigChanged()
 		{
 			extern "GLHelper::SwapBackToBackgroundSurface()";
-			
+			ResetGeometry();
+		}
+
+		[Require("Source.Include", "Uno/Graphics/GLHelper.h")]
+		static void ResetGeometry()
+		{
+			extern "GLHelper::SwapBackToBackgroundSurface()";
 			var density = GetDensity();
 			var pos = float2(0f, 0f);
 			var size = _GetRootDisplaySize();
 			var frame = new Rect(pos, size);
+			Frame = frame;
 			Density = density;
-			_frame = frame;
-			IsReady = true;
-			OnFrameChanged();
 		}
 
 		[Foreign(Language.Java)]

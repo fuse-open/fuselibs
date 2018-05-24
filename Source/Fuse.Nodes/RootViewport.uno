@@ -85,15 +85,9 @@ namespace Fuse
 			OnInvalidateLayout();
 		}
 
-		internal virtual bool IsViewportReady
-		{
-			get { return true; }
-		}
-		
 		protected override void OnInvalidateLayout()
 		{
-			if (IsViewportReady)
-				UpdateManager.AddOnceAction(PerformLayout, UpdateStage.Layout);
+			UpdateManager.AddOnceAction(PerformLayout, UpdateStage.Layout);
 		}
 		
 		void IDisposable.Dispose()
