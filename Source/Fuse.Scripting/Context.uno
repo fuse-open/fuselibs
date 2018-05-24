@@ -47,23 +47,6 @@ namespace Fuse.Scripting
 				_moduleResults.Remove(mr.Id);
 		}
 
-		string Escape(string str)
-		{
-			var sb = new StringBuilder();
-			for (int i = 0; i < str.Length; ++i)
-			{
-				char c = str[i];
-				switch (c)
-				{
-					case '\\': sb.Append("\\\\"); break;
-					case '\'': sb.Append("\\'"); break;
-					case '"': sb.Append("\\\""); break;
-					default: sb.Append(new char[] {c}); break;
-				}
-			}
-			return sb.ToString();
-		}
-
 		protected Context()
 		{
 		}
