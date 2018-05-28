@@ -296,13 +296,14 @@ namespace Fuse.PushNotifications
 		[Foreign(Language.Java)]
 		static void SpitOutNotification(Java.Object _listener, string title, string body, string bigTitle, string bigBody, string notificationStyle, string featuredImage, string sound, Java.Object _payload)
 		@{
+			int id = PushNotificationReceiver.nextID();
 			Context context = (Context)_listener;
 			Bundle payload = (Bundle)_payload;
 			Intent intent = new Intent(context, @(Activity.Package).@(Activity.Name).class);
-			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 			intent.setAction(PushNotificationReceiver.ACTION);
 			intent.replaceExtras(payload);
-			android.app.PendingIntent pendingIntent = android.app.PendingIntent.getActivity(context, 0, intent, android.app.PendingIntent.FLAG_ONE_SHOT);
+			android.app.PendingIntent pendingIntent = android.app.PendingIntent.getActivity(context, id, intent, android.app.PendingIntent.FLAG_UPDATE_CURRENT);
 			android.app.NotificationManager notificationManager = (android.app.NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
 
 			NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context)
@@ -318,7 +319,6 @@ namespace Fuse.PushNotifications
 				notificationBuilder.setSound(defaultSoundUri);
 			}
 
-			int id = PushNotificationReceiver.nextID();
 
 			if (notificationStyle != null && !notificationStyle.isEmpty())
 			{
