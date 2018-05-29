@@ -7,7 +7,7 @@ namespace Fuse.Charting
 		static Plot()
 		{
 			ScriptClass.Register(typeof(Plot),
-				new ScriptMethod<Plot>("stepOffset", stepOffset, ExecutionThread.MainThread));
+				new ScriptMethod<Plot>("stepOffset", stepOffset));
 		}
 		
 		/**
@@ -15,7 +15,7 @@ namespace Fuse.Charting
 			
 			@scriptmethod stepOffset(step)
 		*/
-		static void stepOffset(Context c, Plot p, object[] args)
+		static void stepOffset(Plot p, object[] args)
 		{
 			if (args.Length != 1)
 			{

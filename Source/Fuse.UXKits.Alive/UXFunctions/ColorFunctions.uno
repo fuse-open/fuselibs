@@ -7,12 +7,17 @@ namespace Alive
 {
 	internal static class ColorFunctions
 	{
-		public static object Mix(object left, object right, object weight)
+		public static bool TryMix(object left, object right, object weight, out object result)
 		{
-			var weightedLeft = Marshal.Multiply(left, Marshal.Subtract(1, weight));
-			var weightedRight = Marshal.Multiply(right, weight);
+			result = null;
+			object inverseWeight = null, weightedLeft = null, weightedRight = null;
+			if (!Marshal.TrySubtract(1, weight, out inverseWeight) ||
+			    !Marshal.TryMultiply(left, inverseWeight, out weightedLeft) ||
+			    !Marshal.TryMultiply(right, weight, out weightedRight) ||
+			    !Marshal.TryAdd(weightedLeft, weightedRight, out result))
+				return false;
 
-			return Marshal.Add(weightedLeft, weightedRight);
+			return true;
 		}
 
 		public static object WithOpacity(object value, object opacity)
@@ -32,10 +37,10 @@ namespace Alive
 			[UXParameter("Second")] Fuse.Reactive.Expression right,
 			[UXParameter("Third")] Fuse.Reactive.Expression weight
 		) : base(left, right, weight) {}
-		
-		protected override object Compute(object left, object right, object weight)
+
+		protected override bool TryCompute(object left, object right, object weight, out object result)
 		{
-			return ColorFunctions.Mix(left, right, weight);
+			return ColorFunctions.TryMix(left, right, weight, out result);
 		}
 
 		public override string ToString()
@@ -53,9 +58,10 @@ namespace Alive
 			[UXParameter("Right")] Fuse.Reactive.Expression opacity
 		) : base(color, opacity) {}
 
-		protected override object Compute(object color, object opacity)
+		protected override bool TryCompute(object color, object opacity, out object result)
 		{
-			return ColorFunctions.WithOpacity(color, opacity);
+			result = ColorFunctions.WithOpacity(color, opacity);
+			return true;
 		}
 
 		public override string ToString()
@@ -73,10 +79,10 @@ namespace Alive
 			[UXParameter("Right")] Fuse.Reactive.Expression transparency
 		) : base(color, transparency) {}
 
-		protected override object Compute(object color, object transparency)
+		protected override bool TryCompute(object color, object transparency, out object result)
 		{
 			var transparentColor = ColorFunctions.WithOpacity(color, 0);
-			return ColorFunctions.Mix(color, transparentColor, transparency);
+			return ColorFunctions.TryMix(color, transparentColor, transparency, out result);
 		}
 
 		public override string ToString()

@@ -27,7 +27,7 @@ namespace Fuse.Charting
 			for (int i=0; i < trySteps.Length; ++i )
 			{
 				var stepSize = baseStepSize / trySteps[i];
-				var ns = Math.Round( range / stepSize );
+				var ns = Math.Floor(range / stepSize + 0.5f);
 				//bail if anything didn't work, We can't check float.ZeroTolernace anywhere since we should
 				//work on arbitrary range values
 				if (Float.IsNaN(baseStepSize) || Float.IsNaN(ns) || (ns < 1))
@@ -35,7 +35,7 @@ namespace Fuse.Charting
 					
 				min = Math.Floor( oMin / stepSize )  * stepSize;
 				max = Math.Ceil( oMax / stepSize ) * stepSize;
-				steps = (int)Math.Round( (max-min) / stepSize );
+				steps = (int)Math.Floor((max-min) / stepSize + 0.5f);
 				
 				if (steps <= desiredSteps)
 					break;

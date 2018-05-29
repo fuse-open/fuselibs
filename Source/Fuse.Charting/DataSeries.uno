@@ -96,7 +96,7 @@ namespace Fuse.Charting
 		float SafeMarshalFloat(object a)
 		{
 			double value;
-			if (Marshal.ToDouble(a, out value))
+			if (Marshal.TryToDouble(a, out value))
 			{	
 				float v = (float)value;
 				if (Uno.Float.IsNaN(v) || Uno.Float.IsInfinity(v))
