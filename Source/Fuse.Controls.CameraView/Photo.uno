@@ -46,7 +46,7 @@ namespace Fuse.Controls
 			ScriptClass.Register(typeof(Photo),
 				new ScriptPromise<Photo,string,string>("save", ExecutionThread.Any, save),
 				new ScriptPromise<Photo,string,string>("saveThumbnail", ExecutionThread.Any, saveThumbnail),
-				new ScriptMethod<Photo>("release", release, ExecutionThread.MainThread));
+				new ScriptMethod<Photo>("release", release));
 		}
 
 		/**
@@ -135,7 +135,7 @@ namespace Fuse.Controls
 			A photo can hold onto large amounts of memory. Make sure to release your photo objects when you are done using them.
 			Its considered bad practice to hold onto more than one photo at a time, older devices can run out of memory fast.
 		*/
-		static void release(Context context, Photo photo, object[] args)
+		static void release(Photo photo, object[] args)
 		{
 			photo.Release();
 		}

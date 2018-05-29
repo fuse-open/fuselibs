@@ -21,7 +21,7 @@ namespace Fuse.Controls
 		static Recording()
 		{
 			ScriptClass.Register(typeof(Recording),
-				new ScriptMethod<Recording>("filePath", filePath, ExecutionThread.Any));
+				new ScriptMethod<Recording>("filePath", filePath));
 		}
 
 		/**
