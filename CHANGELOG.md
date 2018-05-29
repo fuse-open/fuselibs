@@ -1,5 +1,8 @@
 # Unreleased
 
+### Fuse.Deprecated.CameraView
+- This obsolete package has been removed. All functionality should be present in `Fuse.Controls.CameraView` instead.
+
 # 1.9
 
 ## 1.9.0
