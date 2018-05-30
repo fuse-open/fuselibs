@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fuse.Profiling-WPF", "Fuse.Profiling-WPF\Fuse.Profiling-WPF.csproj", "{5A489FF5-C6E0-4A3D-B0C5-E7237F74142A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fuse.Profiling.Host", "Fuse.Profiling.Host\Fuse.Profiling.Host.csproj", "{8E7ED231-4A9A-4F31-95DB-4FD3C6981AE5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestApp", "TestApp\TestApp.csproj", "{6B4BDAED-38BE-4612-A815-0C11E3C1F4C4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5A489FF5-C6E0-4A3D-B0C5-E7237F74142A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A489FF5-C6E0-4A3D-B0C5-E7237F74142A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A489FF5-C6E0-4A3D-B0C5-E7237F74142A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A489FF5-C6E0-4A3D-B0C5-E7237F74142A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E7ED231-4A9A-4F31-95DB-4FD3C6981AE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E7ED231-4A9A-4F31-95DB-4FD3C6981AE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E7ED231-4A9A-4F31-95DB-4FD3C6981AE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E7ED231-4A9A-4F31-95DB-4FD3C6981AE5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B4BDAED-38BE-4612-A815-0C11E3C1F4C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B4BDAED-38BE-4612-A815-0C11E3C1F4C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B4BDAED-38BE-4612-A815-0C11E3C1F4C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B4BDAED-38BE-4612-A815-0C11E3C1F4C4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
