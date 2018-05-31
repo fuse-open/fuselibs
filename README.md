@@ -79,4 +79,3 @@ After `stuff.exe` has done it's job, you can find:
 | Prebuilt uno wrapper (Windows) | Stuff/uno.exe  |
 | Prebuilt uno wrapper (macOS)   | Stuff/uno      |
 | Prebuilt core packages         | Stuff/lib      |
-| Development tools              | Stuff/Devtools |
