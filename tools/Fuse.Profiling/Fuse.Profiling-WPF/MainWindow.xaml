@@ -1,0 +1,67 @@
+﻿<Window x:Class="Fuse.Profiling_WPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="500" Width="525">
+    <DockPanel>
+
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="File">
+                <MenuItem Header="Reset" Click="MenuItem_Click" />
+            </MenuItem>
+        </Menu>
+        
+        <ScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Visible" Height="300" DockPanel.Dock="Bottom" Name="_scroll">
+            <Grid>
+                
+                <ItemsControl ItemsSource="{Binding Frames}" x:Name="_listBox">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border VerticalAlignment="Bottom" Background="DarkOrange" Width="4" Height="{Binding DurationMs100}" MouseDown="Border_MouseDown" Tag="{Binding}">
+
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+
+                </ItemsControl>
+                <Border VerticalAlignment="Bottom" Height="64" Background="Green" Opacity="0.2" IsHitTestVisible="false" />
+                <Border Margin="0,0,0,64" Height="1" VerticalAlignment="Bottom" Background="Black"  IsHitTestVisible="false" />
+                <Border Margin="0,0,0,64" Background="Red" Opacity="0.2" IsHitTestVisible="false" />
+            </Grid>
+        </ScrollViewer>
+        <Grid>
+            <TreeView x:Name="_treeView" ItemsSource="{Binding Children}" Background="DarkGray">
+                <TreeView.ItemTemplate>
+                    <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding}" />
+                                <Border Width="{Binding Duration10}" Background="DarkCyan"  Height="4" Margin="10"  />
+                            </StackPanel>
+                            <ItemsControl ItemsSource="{Binding Events}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding}" />
+                                            <Border Width="{Binding Duration10}" Background="HotPink" Height="4" Margin="10" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+                    </HierarchicalDataTemplate>
+                </TreeView.ItemTemplate>
+                <TreeView.ItemContainerStyle>
+                    <Style TargetType="{x:Type TreeViewItem}">
+                        <Setter Property="IsExpanded" Value="True" />
+                    </Style>
+                </TreeView.ItemContainerStyle>
+            </TreeView>
+        </Grid>
+    </DockPanel>
+</Window>
