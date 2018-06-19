@@ -24,11 +24,17 @@ Add the following to you `.unoproj`
 
     "Android": {
         ...
+        "Notification": {
+            "Name" : "App Channel Name (Normally your app name)",
+            "Description" : "App Channel Description (Normally your app description)",
+            "ChannelID": "App Unique Channel ID (Normally your app package identifier)"
+        },
         "GooglePlay": {
             "SenderID": "111781901112"
         }
         ...
     },
+**Android Oreo** and higher requires to specify a channel to group notifications, for more info please refer to [NotificationChannel Official Documentation](https://developer.android.com/training/notify-user/channels). You can define channel required info using the `Notification` block mentioned in the example above.
 
 The `SenderID` is the sender ID from the [Firebase Console](https://console.firebase.google.com).
 If you don't yet have a project set up please see the [Android setup](#android-setup) section later in this document.
@@ -135,4 +141,3 @@ Google and Apple has different limits on the size of push notifications.
 
 - Google limits to 4096 bytes
 - Apple limits to 2048 bytes on iOS 8 and up but only 256 bytes on all earlier versions
-
