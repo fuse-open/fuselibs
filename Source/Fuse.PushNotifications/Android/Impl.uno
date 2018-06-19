@@ -14,6 +14,7 @@ namespace Fuse.PushNotifications
 {
 	[ForeignInclude(Language.Java,
 					"android.app.Activity",
+					"android.os.Build",
 					"android.os.AsyncTask",
 					"android.app.Notification",
 					"android.content.Context",
@@ -31,7 +32,8 @@ namespace Fuse.PushNotifications
 					"java.util.HashMap",
 					"org.json.JSONException",
 					"org.json.JSONObject")]
-	[Require("Gradle.Dependency.Compile", "com.google.android.gms:play-services-gcm:9.2.0")]
+	[Require("Gradle.Repository", "maven { url 'https://maven.google.com' }")]
+	[Require("Gradle.Dependency.Compile", "com.google.android.gms:play-services-gcm:15.0.1")]
 	extern(Android)
 	internal class AndroidImpl
 	{
@@ -300,7 +302,7 @@ namespace Fuse.PushNotifications
 			Context context = (Context)_listener;
 			Bundle payload = (Bundle)_payload;
 			Intent intent = new Intent(context, @(Activity.Package).@(Activity.Name).class);
-			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			intent.setAction(PushNotificationReceiver.ACTION);
 			intent.replaceExtras(payload);
 			android.app.PendingIntent pendingIntent = android.app.PendingIntent.getActivity(context, id, intent, android.app.PendingIntent.FLAG_UPDATE_CURRENT);
@@ -311,14 +313,22 @@ namespace Fuse.PushNotifications
 				.setContentTitle(title)
 				.setContentText(body)
 				.setAutoCancel(true)
+				.setChannelId("@(Project.Android.Notification.ChannelID)")
 				.setContentIntent(pendingIntent);
 
-			if (sound=="default")
-			{
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+				String name = "@(Project.Android.Notification.Name)";
+				String description = "@(Project.Android.Notification.Description)";
+				int importance = android.app.NotificationManager.IMPORTANCE_HIGH;
+				android.app.NotificationChannel channel = new android.app.NotificationChannel("@(Project.Android.Notification.ChannelID)", name, importance);
+				channel.setDescription(description);
+				// Register the channel with the system; you can't change the importance
+				// or other notification behaviors after this
+				notificationManager.createNotificationChannel(channel);
+			}else if (sound=="default"){
 				Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 				notificationBuilder.setSound(defaultSoundUri);
 			}
-
 
 			if (notificationStyle != null && !notificationStyle.isEmpty())
 			{

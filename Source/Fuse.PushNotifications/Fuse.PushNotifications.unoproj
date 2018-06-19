@@ -30,6 +30,8 @@
     "Android/Impl.uno:Source",
     "Android/Impl.cpp.uxl:Extensions",
     "Android/PushNotificationReceiver.java:File",
+    "Android/PushNotificationService.java:File",
+    "Android/GcmConstants.java:File",
     "Android/BigPictureStyleHttp.java:File",
     "Android/BundleFiles.java:File",
     "Android/Assets/DefaultIcon.png:File"

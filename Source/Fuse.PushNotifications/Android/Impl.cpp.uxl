@@ -1,11 +1,13 @@
 <Extensions Backend="CPlusPlus" Condition="Android">
     <Require AndroidManifest.Permission="com.google.android.c2dm.permission.RECEIVE" />
+    <ProcessFile Name="PushNotificationService.java" TargetName="@(Java.SourceDirectory)/com/fuse/PushNotifications/PushNotificationService.java" />
     <ProcessFile Name="PushNotificationReceiver.java" TargetName="@(Java.SourceDirectory)/com/fuse/PushNotifications/PushNotificationReceiver.java" />
+    <ProcessFile Name="GcmConstants.java" TargetName="@(Java.SourceDirectory)/com/fuse/PushNotifications/GcmConstants.java" />
     <ProcessFile Name="BigPictureStyleHttp.java" TargetName="@(Java.SourceDirectory)/com/fuse/PushNotifications/BigPictureStyleHttp.java" />
     <ProcessFile Name="BundleFiles.java" TargetName="@(Java.SourceDirectory)/com/fuse/PushNotifications/BundleFiles.java" />
     <Require AndroidManifest.ApplicationElement><![CDATA[
         <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
-        <receiver android:name="com.google.android.gms.gcm.GcmReceiver"
+        <receiver android:name="com.fuse.PushNotifications.PushNotificationReceiver"
             android:exported="true"
             android:permission="com.google.android.c2dm.permission.SEND" >
             <intent-filter>
@@ -16,12 +18,9 @@
         </receiver>
 
         <service
-            android:name="com.fuse.PushNotifications.PushNotificationReceiver"
-            android:exported="false" >
-            <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-            </intent-filter>
-        </service>
+            android:name="com.fuse.PushNotifications.PushNotificationService"
+            android:exported="false"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
         ]]></Require>
 
     <!-- http://iconhandbook.co.uk/reference/chart/android/ -->
