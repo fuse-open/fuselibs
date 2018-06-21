@@ -2,7 +2,7 @@
 [![Travis CI Build Status](https://travis-ci.org/fuse-open/fuselibs.svg?branch=master)](https://travis-ci.org/fuse-open/fuselibs)
 [![AppVeyor Build status](https://ci.appveyor.com/api/projects/status/an47qhe561v31jga/branch/master?svg=true)](https://ci.appveyor.com/project/fusetools/fuselibs-public/branch/master)
 [![license: MIT](https://img.shields.io/github/license/fuse-open/fuselibs.svg)](LICENSE.txt)
-[![Slack](https://img.shields.io/badge/chat-on%20slack-blue.svg)](https://fusecommunity.slack.com/messages/fuselibs)
+[![Slack](https://img.shields.io/badge/chat-on%20slack-blue.svg)](https://slackcommunity.fusetools.com/)
 
 Fuselibs is a collection of [Uno](https://fuse-open.github.io/docs/uno/uno-lang) libraries that provide
 the UI framework used to build [Fuse](https://fuse-open.github.io/) apps.
