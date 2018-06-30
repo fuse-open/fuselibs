@@ -1,5 +1,8 @@
 # Unreleased
 
+### ScrollViewPager
+- Added a new attribute called (`GridSize` = 1 by default) to let `ScrollViewPager` supports multi-column layout. 
+
 ### Fuse.Deprecated.CameraView
 - This obsolete package has been removed. All functionality should be present in `Fuse.Controls.CameraView` instead.
 

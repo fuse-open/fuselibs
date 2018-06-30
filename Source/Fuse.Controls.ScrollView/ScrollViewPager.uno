@@ -69,7 +69,23 @@ namespace Fuse.Controls
 				_endRange = value;
 			}
 		}
-		
+
+		int _gridSize = 1;
+		/**
+			An optional attribute that will maintain the layout in-case of using Grids or any layout seems to be columns.
+		*/
+		public int GridSize
+		{
+			get { return _gridSize; }
+			set
+			{
+				if (_gridSize == value)
+				return;
+				
+				_gridSize = value;
+			}
+		}
+
 		Each _each;
 		/**
 			The `Each` instance to control. This property is required.
@@ -226,7 +242,7 @@ namespace Fuse.Controls
 				var count = Each.DataCount;
 				
 				if (offset + limit < count)
-					Each.Offset = offset + 1;
+					Each.Offset = offset + GridSize;
 				else
 					nearTrueEnd = true;
 			}
@@ -234,7 +250,7 @@ namespace Fuse.Controls
 			{
 				var offset = Each.Offset;
 				if (offset > 0)
-					Each.Offset = offset - 1;
+					Each.Offset = offset - GridSize;
 				else
 					nearTrueStart = true;
 			}
@@ -276,7 +292,7 @@ namespace Fuse.Controls
 				
 				if (offset + limit < count)
 				{
-					Each.Limit = limit + 1;
+					Each.Limit = limit + GridSize;
 					changed = true;
 				}
 			}
@@ -289,7 +305,7 @@ namespace Fuse.Controls
 				
 				if (limit > 1)
 				{
-					Each.Limit = limit - 1;
+					Each.Limit = limit - GridSize;
 					changed = true;
 				}
 			}
