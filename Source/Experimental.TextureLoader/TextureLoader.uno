@@ -88,6 +88,8 @@ namespace Experimental.TextureLoader
 				PngByteArrayToTexture2D(arr, callback);
 			else if (contentType.IndexOf("application/octet-stream") != -1)
 				JpegByteArrayToTexture2D(arr, callback);
+			else if (contentType.IndexOf("binary/octet-stream") != -1)
+				JpegByteArrayToTexture2D(arr, callback);
 			else
 				throw new InvalidContentTypeException(contentType);
 		}
