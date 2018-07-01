@@ -167,7 +167,7 @@ namespace Fuse.Resources.Exif
 		@}
 	}
 
-	[Require("Gradle.Dependency.Compile", "com.drewnoakes:metadata-extractor:2.10.1")]
+	[Require("Gradle.Dependency.Implementation", "com.drewnoakes:metadata-extractor:2.10.1")]
 	[ForeignInclude(Language.Java,
 		"java.io.ByteArrayInputStream",
 		"java.io.InputStream",
