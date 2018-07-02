@@ -70,19 +70,19 @@ namespace Fuse.Controls
 			}
 		}
 
-		int _gridSize = 1;
+		int _columnCount = 1;
 		/**
 			An optional attribute that will maintain the layout in-case of using Grids or any layout seems to be columns.
 		*/
-		public int GridSize
+		public int ColumnCount
 		{
-			get { return _gridSize; }
+			get { return _columnCount; }
 			set
 			{
-				if (_gridSize == value)
+				if (_columnCount == value)
 				return;
 				
-				_gridSize = value;
+				_columnCount = value;
 			}
 		}
 
@@ -116,8 +116,29 @@ namespace Fuse.Controls
 				Fuse.Diagnostics.UserError( "Could not find a Scrollable control.", this );
 				return;
 			}
+
+			/*
+				Search for the parent type, if it is Grid then we have to get Grid Size from it and assign it to ColumnCount value 
+				TODO : @ColumnLayout and @GridLayout support !
+			*/
 			
-			//this mode won't work correctly, emit a warning with a suitable one
+			Grid _gridContainer = Parent as Grid;
+			if (_gridContainer != null)
+			{	
+				if(_gridContainer.Columns != "")
+				{
+					var _column_data = _gridContainer.Columns.Split(',');
+					if (_column_data.Length > 1)
+					{
+						ColumnCount = _column_data.Length;
+					}
+				}
+				else if (_gridContainer.ColumnCount > 1)
+				{
+					ColumnCount = _gridContainer.ColumnCount;
+				}
+			}
+			
 			if (_scrollable.LayoutMode == ScrollViewLayoutMode.PreserveScrollPosition) 
 			{
 				Fuse.Diagnostics.UserError( "The ScrollView should have `LayoutMode=\"PreserveVisual\"` for paging to work correctly", this );
@@ -242,7 +263,7 @@ namespace Fuse.Controls
 				var count = Each.DataCount;
 				
 				if (offset + limit < count)
-					Each.Offset = offset + GridSize;
+					Each.Offset = offset + ColumnCount;
 				else
 					nearTrueEnd = true;
 			}
@@ -250,7 +271,7 @@ namespace Fuse.Controls
 			{
 				var offset = Each.Offset;
 				if (offset > 0)
-					Each.Offset = offset - GridSize;
+					Each.Offset = offset - ColumnCount;
 				else
 					nearTrueStart = true;
 			}
@@ -292,7 +313,7 @@ namespace Fuse.Controls
 				
 				if (offset + limit < count)
 				{
-					Each.Limit = limit + GridSize;
+					Each.Limit = limit + ColumnCount;
 					changed = true;
 				}
 			}
@@ -305,7 +326,7 @@ namespace Fuse.Controls
 				
 				if (limit > 1)
 				{
-					Each.Limit = limit - GridSize;
+					Each.Limit = limit - ColumnCount;
 					changed = true;
 				}
 			}
