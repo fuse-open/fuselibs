@@ -272,8 +272,8 @@ namespace Fuse.Drawing.Primitives
 				11,11,11,11,11,11,
 			};
 			
-			var bufferVertex = new Buffer(vsr.Length * sizeof(float4));
-			var bufferEdge = new Buffer(vsr.Length * sizeof(float4));
+			var bufferVertex = new byte[vsr.Length * sizeof(float4)];
+			var bufferEdge = new byte[vsr.Length * sizeof(float4)];
 
 			_vertexInfo = new VertexAttributeInfo();
 			_vertexInfo.BufferOffset = 0;
@@ -298,8 +298,8 @@ namespace Fuse.Drawing.Primitives
 					i < (4*3*4+18) ? 2 /*CornerRadius[2]*/ : 3 /*CornerRadius[3]*/)) );
 			}
 
-			_vertexInfo.Buffer.Update(bufferVertex.GetBytes());
-			_edgeInfo.Buffer.Update(bufferEdge.GetBytes());
+			_vertexInfo.Buffer.Update(bufferVertex);
+			_edgeInfo.Buffer.Update(bufferEdge);
 			_bufferDistance.InitDeviceVertex(BufferUsage.Immutable);
 		}
 
