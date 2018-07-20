@@ -11,11 +11,11 @@
         <Require Source.Include="uImage/Texture.h" />
         <Require Source.Include="Uno/Support.h" />
 
-        <Method Signature="JpegByteArrayToTexture2D(Uno.Buffer,Experimental.TextureLoader.Callback)">
+        <Method Signature="JpegByteArrayToTexture2D(byte[],Experimental.TextureLoader.Callback)">
             <Body>
                 try
                 {
-                    uBase::Auto<uBase::BufferPtr> bp = new uBase::BufferPtr(U_BUFFER_PTR($0), U_BUFFER_SIZE($0), false);
+                    uBase::Auto<uBase::BufferPtr> bp = new uBase::BufferPtr($0->Ptr(), $0->Length(), false);
                     uBase::Auto<uBase::BufferStream> bs = new uBase::BufferStream(bp, true, false);
                     uBase::Auto<uImage::ImageReader> ir = uImage::Jpeg::CreateReader(bs);
                     uBase::Auto<uImage ::Bitmap> bmp = ir->ReadBitmap();
@@ -42,11 +42,11 @@
             </Body>
         </Method>
 
-        <Method Signature="PngByteArrayToTexture2D(Uno.Buffer,Experimental.TextureLoader.Callback)">
+        <Method Signature="PngByteArrayToTexture2D(byte[],Experimental.TextureLoader.Callback)">
             <Body>
                 try
                 {
-                    uBase::Auto<uBase::BufferPtr> bp = new uBase::BufferPtr(U_BUFFER_PTR($0), U_BUFFER_SIZE($0), false);
+                    uBase::Auto<uBase::BufferPtr> bp = new uBase::BufferPtr($0->Ptr(), $0->Length(), false);
                     uBase::Auto<uBase::BufferStream> bs = new uBase::BufferStream(bp, true, false);
                     uBase::Auto<uImage::ImageReader> ir = uImage::Png::CreateReader(bs);
                     uBase::Auto<uImage::Bitmap> bmp = ir->ReadBitmap();

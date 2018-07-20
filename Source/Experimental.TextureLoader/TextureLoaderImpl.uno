@@ -7,7 +7,7 @@ namespace Experimental.TextureLoader
 	static class TextureLoaderImpl
 	{
 		[TargetSpecificImplementation]
-		public static void JpegByteArrayToTexture2D(Buffer arr, Callback callback)
+		public static void JpegByteArrayToTexture2D(byte[] arr, Callback callback)
 		{
 			if defined(DOTNET)
 			{
@@ -16,7 +16,7 @@ namespace Experimental.TextureLoader
 		}
 
 		[TargetSpecificImplementation]
-		public static void PngByteArrayToTexture2D(Buffer arr, Callback callback)
+		public static void PngByteArrayToTexture2D(byte[] arr, Callback callback)
 		{
 			if defined(DOTNET)
 			{

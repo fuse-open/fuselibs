@@ -29,7 +29,13 @@ namespace Experimental.TextureLoader
 
 	public static class TextureLoader
 	{
+		[Obsolete("Use the byte[] overload instead")]
 		public static void JpegByteArrayToTexture2D(Buffer arr, Uno.Action<texture2D> callback)
+		{
+			JpegByteArrayToTexture2D(arr.GetBytes(), callback);
+		}
+
+		public static void JpegByteArrayToTexture2D(byte[] arr, Uno.Action<texture2D> callback)
 		{
 			try
 			{
@@ -49,7 +55,13 @@ namespace Experimental.TextureLoader
 			}
 		}
 
+		[Obsolete("Use the byte[] overload instead")]
 		public static void PngByteArrayToTexture2D(Buffer arr, Uno.Action<texture2D> callback)
+		{
+			PngByteArrayToTexture2D(arr.GetBytes(), callback);
+		}
+
+		public static void PngByteArrayToTexture2D(byte[] arr, Uno.Action<texture2D> callback)
 		{
 			try
 			{
@@ -69,7 +81,13 @@ namespace Experimental.TextureLoader
 			}
 		}
 
+		[Obsolete("Use the byte[] overload instead")]
 		public static void ByteArrayToTexture2DFilename(Buffer arr, string filename, Uno.Action<texture2D> callback)
+		{
+			ByteArrayToTexture2DFilename(arr.GetBytes(), filename, callback);
+		}
+
+		public static void ByteArrayToTexture2DFilename(byte[] arr, string filename, Uno.Action<texture2D> callback)
 		{
 			filename = filename.ToLower();
 			if (filename.EndsWith(".png"))
@@ -80,7 +98,13 @@ namespace Experimental.TextureLoader
 				throw new InvalidContentTypeException(filename);
 		}
 
-		public static void ByteArrayToTexture2DContentType(Buffer arr, string contentType, Uno.Action<texture2D> callback)
+		[Obsolete("Use the byte[] overload instead")]
+		public static void ByteArrayToTexture2DContentType(Buffer arr, string filename, Uno.Action<texture2D> callback)
+		{
+			ByteArrayToTexture2DFilename(arr.GetBytes(), filename, callback);
+		}
+
+		public static void ByteArrayToTexture2DContentType(byte[] arr, string contentType, Uno.Action<texture2D> callback)
 		{
 			if (contentType.IndexOf("image/jpeg") != -1 || contentType.IndexOf("image/jpg") != -1)
 				JpegByteArrayToTexture2D(arr, callback);
