@@ -145,7 +145,7 @@ namespace Fuse.Share
 				var description = args.Length>2 ? "" + args[2] : "";
 				if defined(android)
 				{
-					AndroidShareImpl.ShareFile("file://" + path, type, description);
+					AndroidShareImpl.ShareFile("content://" + path, type, description);
 					return true;
 				}
 				else if defined(iOS)
