@@ -41,11 +41,24 @@ namespace Fuse.CameraRoll
 		[Foreign(Language.ObjC)]
 		static void SelectPictureInternal(Action<string> onComplete, Action<string> onFail)
 		@{
-			dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-				[[CameraRollHelper instance] selectPictureWithCompletionHandler:onComplete onFail:onFail];
-			});
+			PHAuthorizationStatus status = [PHPhotoLibrary authorizationStatus];
+			if (status == PHAuthorizationStatusNotDetermined)
+				[PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status){
+					if (status == PHAuthorizationStatusAuthorized)
+						dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+							[[CameraRollHelper instance] selectPictureWithCompletionHandler:onComplete onFail:onFail];
+						});
+					else
+						onFail(@"PHAuthorizationStatusDenied");
+				}];
+			else if (status == PHAuthorizationStatusAuthorized)
+				dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+					[[CameraRollHelper instance] selectPictureWithCompletionHandler:onComplete onFail:onFail];
+				});
+			else if (status == PHAuthorizationStatusRestricted)
+				onFail(@"PHAuthorizationStatusRestricted");
+			else if (status == PHAuthorizationStatusDenied)
+				onFail(@"PHAuthorizationStatusDenied");
 		@}
-
-
 	}
 }
