@@ -152,7 +152,67 @@ namespace Fuse.CameraRoll
 		@}
 
 	}
+	
+	[ForeignInclude(Language.Java, "android.provider.MediaStore", "com.fuse.Activity", "android.content.Intent", "com.fusetools.camera.Image", "com.fusetools.camera.ImageStorageTools", "android.support.v4.content.ContextCompat")]
+	extern (Android) class CheckPermissionsCommand
+	{
+		public CheckPermissionsCommand(Promise<string> p)
+		{
+			var cb = new PromiseCallback<string>(p);
+			CheckPermissionsInternal(cb.Resolve, cb.Reject);
+		}
+		
+		[Foreign(Language.Java)]
+		internal static void CheckPermissionsInternal(Action<string> onComplete, Action<string> onFail)
+		@{
+			if (ContextCompat.checkSelfPermission(com.fuse.Activity.getRootActivity(), android.Manifest.permission.READ_EXTERNAL_STORAGE) != com.fuse.Activity.getRootActivity().getPackageManager().PERMISSION_GRANTED)
+			{
+				onFail.run("User does not have permission to read");
+			}
+			else if (ContextCompat.checkSelfPermission(com.fuse.Activity.getRootActivity(), android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != com.fuse.Activity.getRootActivity().getPackageManager().PERMISSION_GRANTED)
+			{
+				onFail.run("User does not have permission to write");
+			}
+			else
+			{
+				onComplete.run("User has permission to read and write");
+			}
+		@}
+	}
+	
+	[ForeignInclude(Language.Java, "android.provider.MediaStore", "com.fuse.Activity", "android.content.Intent", "com.fusetools.camera.Image", "com.fusetools.camera.ImageStorageTools")]
+	extern (Android) class requestAndroidPermissions
+	{
+		PromiseCallback<string> _callback;
+		public requestAndroidPermissions(Promise<string> p)
+		{
+			_callback = new PromiseCallback<string>(p);
+		}
+		
+		public void Execute()
+		{
+			Permissions.Request(new PlatformPermission[] { Permissions.Android.WRITE_EXTERNAL_STORAGE, Permissions.Android.READ_EXTERNAL_STORAGE }).Then(OnPermissions, OnRejected);
+		}
 
+		void OnPermissions(PlatformPermission[] grantedPermissions)
+		{
+			if(grantedPermissions.Length == 2)
+			{
+				_callback.Resolve("Success");
+			}
+			else
+			{
+				_callback.Reject("Required permission was not granted.");
+			}
+		}
+
+		void OnRejected(Exception e)
+		{
+			_callback.Reject(e.Message);
+		}
+
+	}
+	
 	[ForeignInclude(Language.Java, "android.provider.MediaStore", "com.fuse.Activity", "android.content.Intent", "com.fusetools.camera.Image", "com.fusetools.camera.ImageStorageTools")]
 	extern (Android) static internal class AndroidCameraRoll
 	{
@@ -166,6 +226,16 @@ namespace Fuse.CameraRoll
 			var p = new Promise<bool>();
 			new AddPicturePermissionCheckCommand(p, photo.Path).Execute();
 			return p;
+		}
+		
+		internal static void CheckPermissions(Promise<string> p)
+		{
+			new CheckPermissionsCommand(p);
+		}
+		
+		internal static void RequestPermissions(Promise<string> p)
+		{
+			new requestAndroidPermissions(p).Execute();
 		}
 	}
 }
