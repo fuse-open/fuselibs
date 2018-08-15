@@ -37,6 +37,8 @@ namespace Fuse.Camera
 			if(_instance != null)return;
 			Resource.SetGlobalKey(_instance = this, "FuseJS/Camera");
 			AddMember(new NativePromise<Image, Scripting.Object>("takePicture", TakePictureInterface, Image.Converter));
+			AddMember(new NativePromise<string, string>("checkPermissions", CheckUserPermissions, null));
+			AddMember(new NativePromise<string, string>("requestPermissions", RequestUserPermissions, null));
 		}
 
 		/**
@@ -85,6 +87,40 @@ namespace Fuse.Camera
 			else
 				p.Reject(new Exception("Camera unsupported on current platform"));
 
+			return p;
+		}
+
+		/**
+			@scriptmethod checkPermissions()
+
+			Checks if device has permissions to access the camera.
+
+			@return (Promise) a Promise that resolves if the user has permission
+		*/
+		static Future<string> CheckUserPermissions(object[] args)
+		{
+			var p = new Promise<string>();
+			if defined(Android)
+				AndroidCamera.CheckPermissions(p);
+			else if defined(iOS)
+				iOSCamera.CheckPermissions(p);
+			return p;
+		}
+
+		/**
+			@scriptmethod requestPermissions()
+
+			Requests acccess to the camera
+
+			@return (Promise) a Promise that resolves after the user has granted permissions
+		*/
+		static Future<string> RequestUserPermissions(object[] args) 
+		{
+			var p = new Promise<string>();
+			if defined(Android)
+				AndroidCamera.RequestPermissions(p);
+			else if defined(iOS)
+				iOSCamera.RequestPermissions(p);
 			return p;
 		}
 	}
