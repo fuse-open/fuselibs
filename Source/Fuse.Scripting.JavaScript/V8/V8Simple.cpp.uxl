@@ -6,5 +6,4 @@
 	<Require Condition="WIN32" SharedLibrary.x64="@('lib/Windows/x64/V8Simple.dll':Path)" />
 	<Require IncludeDirectory="@('.':Path)" />
 	<Require Condition="!Android" LinkLibrary="V8Simple" />
-	<Require Condition="Android" JNI.SystemLibrary="log" />
 </Extensions>
