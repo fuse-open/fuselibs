@@ -1,5 +1,5 @@
 <Extensions Backend="CPlusPlus" Condition="USE_V8">
-	<Require Condition="ANDROID" JNI.SharedLibrary="@('lib/Android/libV8Simple.so':Path)" />
+	<Require Condition="ANDROID" SharedLibrary="@('lib/Android/libV8Simple.so':Path)" />
 	<Require Condition="OSX" LinkDirectory="@('lib/OSX':Path)" />
 	<Require Condition="WIN32" LinkDirectory="@('lib/Windows/$(PlatformShortName)':Path)" />
 	<Require Condition="WIN32" SharedLibrary.x86="@('lib/Windows/x86/V8Simple.dll':Path)" />
