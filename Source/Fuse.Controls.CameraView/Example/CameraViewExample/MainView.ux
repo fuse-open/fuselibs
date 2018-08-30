@@ -162,6 +162,33 @@
 					router.push("ImagePage", args.data.photoFilePath);
 				}
 
+
+
+				var cameraWidth = Observable(0);
+				var cameraHeight = Observable(0);
+		
+				function tapToFocus(args) {
+					
+					Camera.setCameraFocusPoint(parseFloat(args.x), parseFloat(args.y), cameraWidth.value, cameraHeight.value, 0)
+						.then(function (isSet) {
+							
+							if (isSet) {
+								console.log('Focus set');
+							} else {
+								console.log('Focus not set');
+							}
+							
+						})
+						.catch(function (err) {
+							console.log("Failed to set camera focus point: " + err);
+						});
+				}
+
+				function cameraPlaced(args) {
+				  cameraWidth.value = parseFloat(args.width);
+				  cameraHeight.value = parseFloat(args.height);
+				}
+
 				module.exports = {
 					captureMode: captureMode,
 					setCaptureModePhoto: function () { setCaptureMode(Camera.CAPTURE_MODE_PHOTO); },
@@ -175,7 +202,9 @@
 					changeFlashMode: changeFlashMode,
 					capturedPhotos: capturedPhotos,
 					thumbnailClicked: thumbnailClicked,
-				}
+					tapToFocus: tapToFocus,
+					cameraPlaced: cameraPlaced
+				};
 			</JavaScript>
 
 			<Panel Dock="Top">
@@ -183,6 +212,8 @@
 					<FlashMode Mode="{flashMode}" />
 				</Panel>
 			</Panel>
+
+			
 
 			<DockPanel Dock="Bottom" Padding="8">
 				<StackPanel Dock="Top">
@@ -214,6 +245,7 @@
 				</Grid>
 
 			</DockPanel>
+
 			<Panel Dock="Fill">
 				<CameraView.PhotoLoaded PhotoCaptureImageSource="_photoCaptureImageSource">
 					<Set _cameraPreview.Visibility="Visible" />
@@ -235,8 +267,12 @@
 					</Image>
 				</Panel>
 				<NativeViewHost ux:Name="_nativeViewHost">
-					<CameraView ux:Name="_camera" PreviewStretchMode="UniformToFill" ClipToBounds="true" />
+					<CameraView ux:Name="_camera" PreviewStretchMode="UniformToFill" ClipToBounds="true" Placed="{cameraPlaced}" />
 				</NativeViewHost>
+			</Panel>
+
+			<Panel Clicked="{tapToFocus}" HitTestMode="LocalBounds">
+				
 			</Panel>
 		</DockPanel>
 	</Page>

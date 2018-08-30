@@ -8,21 +8,27 @@ import android.hardware.Camera;
 import android.hardware.Camera.Size;
 import android.view.Surface;
 import java.util.List;
+import java.util.ArrayList;
 import android.graphics.SurfaceTexture;
 import android.graphics.Matrix;
+import android.graphics.Rect;
 import android.media.MediaRecorder;
 import android.view.OrientationEventListener;
+import android.util.Log;
+import android.view.Display;
 
 public class CameraImpl extends TextureView implements TextureView.SurfaceTextureListener {
 
     final Camera _camera;
-    final boolean _autoFocus;
+    boolean _autoFocus;
     final int _maxWidth;
     final int _maxHeight;
     final int _cameraId;
     final OrientationEventListener _orientationListener;
 
     int _cameraRotation = 0;
+    int previewWidth;
+    int previewHeight;
 
     public CameraImpl(Context context, Camera camera, int cameraId, int maxWidth, int maxHeight) {
         super(context);
@@ -142,8 +148,6 @@ public class CameraImpl extends TextureView implements TextureView.SurfaceTextur
     }
 
     void UpdateTransform(Size previewSize, int width, int height) {
-        int previewWidth;
-        int previewHeight;
 
         if (isPortrait()) {
             previewWidth = previewSize.height;
@@ -251,6 +255,164 @@ public class CameraImpl extends TextureView implements TextureView.SurfaceTextur
         android.hardware.Camera.Parameters p = _camera.getParameters();
         p.setFlashMode(flashMode);
         _camera.setParameters(p);
+    }
+
+    public void setCameraFocusPoint(Double x, Double y, int cameraWidth, int cameraHeight, int isFocusLocked) {
+            
+        _camera.cancelAutoFocus();
+
+        android.hardware.Camera.Parameters parameters = _camera.getParameters();
+
+        if (parameters.getMaxNumMeteringAreas() > 0) {
+
+            try {
+
+                List<String> focusModes = parameters.getSupportedFocusModes();
+
+                if (isFocusLocked != 1) {
+
+                    if (focusModes.contains(Camera.Parameters.FOCUS_MODE_MACRO)) {
+
+                        if (focusModes.contains(Camera.Parameters.FOCUS_MODE_AUTO)) {
+                            parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
+                        }
+                    }
+
+                    if (parameters.isAutoExposureLockSupported()) {
+
+                        parameters.setAutoExposureLock(false);
+                    }
+
+                    if (parameters.isAutoWhiteBalanceLockSupported()) {
+
+                        parameters.setAutoWhiteBalanceLock(false);
+                    }
+
+                    _camera.setParameters(parameters);
+                }
+
+                int focus_area_size = 300;
+                int left = clamp(Float.valueOf((float)(x / cameraWidth) * 2000 - 1000).intValue(), focus_area_size);
+                int top = clamp(Float.valueOf((float)(y / cameraHeight) * 2000 - 1000).intValue(), focus_area_size);
+
+
+                Display display = com.fuse.Activity.getRootActivity().getWindowManager().getDefaultDisplay();
+                Double tmp;
+                Rect rect;
+                switch(display.getRotation()) {
+                    case 0: //portrait
+                        rect = new Rect(left, top, left + focus_area_size, top + focus_area_size);
+                        break;
+                    case 3: //landscape right
+                        rect = new Rect(top, left, top + focus_area_size, left + focus_area_size);
+                        break;
+                    case 2: //portrait upsidedown
+                        rect = new Rect(top, left, top + focus_area_size, left + focus_area_size);
+                        break;
+                    case 1: //landscape left
+                        rect = new Rect(left, top, left + focus_area_size, top + focus_area_size);
+                        break;
+                    default:
+                        rect = new Rect(left, top, left + focus_area_size, top + focus_area_size);
+                        break;
+                }
+
+
+                List<Camera.Area> meteringAreas = new ArrayList<Camera.Area>();
+                meteringAreas.add(new Camera.Area(rect, 1000));
+                parameters.setFocusAreas(meteringAreas);
+
+                if (focusModes.contains(Camera.Parameters.FOCUS_MODE_AUTO)) {
+                    parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
+                }
+
+                if (parameters.getMinExposureCompensation() != 0 
+                    && parameters.getMaxExposureCompensation() != 0
+                    && parameters.isAutoExposureLockSupported()
+                ) {
+                    
+                    int exposureAmount = (parameters.getMinExposureCompensation() - parameters.getMaxExposureCompensation()) * -1;
+                    int designAdjustment = 1; //added 1 to account for a control panel covered area on the bottom of the camera that can't be tapped on for focus
+                    if ((y/cameraHeight) < 0.5) { //apply only to upper half of camera screen
+                        designAdjustment = 0;
+                    }
+
+                    int amountApplied = (int)Math.round( (exposureAmount * (y/cameraHeight)) ) + designAdjustment; 
+                    amountApplied = (amountApplied > exposureAmount) ? exposureAmount : amountApplied;
+                    
+                    parameters.setExposureCompensation(parameters.getMinExposureCompensation() + amountApplied);
+                    
+                    parameters.setAutoExposureLock(false);
+                }
+
+
+                _camera.setParameters(parameters);
+
+
+
+                //check for lock
+                if (isFocusLocked == 1) {
+
+                    if (focusModes.contains(Camera.Parameters.FOCUS_MODE_MACRO)) {
+                        parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_MACRO);
+                    }
+
+                    if (parameters.isAutoExposureLockSupported()) {
+
+                        parameters.setAutoExposureLock(true);
+                    }
+
+                    if (parameters.isAutoWhiteBalanceLockSupported()) {
+
+                        parameters.setAutoWhiteBalanceLock(true);
+                    }
+
+                    _camera.setParameters(parameters);
+
+
+                    _autoFocus = false;
+                } else {
+                    _autoFocus = false;
+                }
+
+                _camera.startPreview();
+
+                _camera.autoFocus(new Camera.AutoFocusCallback() {
+                    @Override
+                    public void onAutoFocus(boolean success, Camera camera) {
+
+                        if (_camera.getParameters().getFocusMode().equals(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE)) {
+
+                            android.hardware.Camera.Parameters parameters = _camera.getParameters();
+                            parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
+                            if (parameters.getMaxNumFocusAreas() > 0) {
+                                parameters.setFocusAreas(null);
+                            }
+                            _camera.setParameters(parameters);
+                            _camera.startPreview();
+                        }
+                    }
+                });
+
+            } catch(Exception e) {
+                android.util.Log.d(toString(), e.getMessage());
+            }
+        } 
+    }
+
+
+    private int clamp(int touchCoordinateInCameraReper, int focusAreaSize) {
+        int result;
+        if (Math.abs(touchCoordinateInCameraReper)+focusAreaSize/2>1000){
+            if (touchCoordinateInCameraReper>0){
+                result = 1000 - focusAreaSize/2;
+            } else {
+                result = -1000 + focusAreaSize/2;
+            }
+        } else{
+            result = touchCoordinateInCameraReper - focusAreaSize/2;
+        }
+        return result;
     }
 
     public void dispose() {
