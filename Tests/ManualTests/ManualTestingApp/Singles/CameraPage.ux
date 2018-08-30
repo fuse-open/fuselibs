@@ -102,6 +102,34 @@
 			);
 		};
 		
+		exports.checkCameraPermissions = function()
+		{
+			Camera.checkPermissions().then(
+				function(res)
+				{
+					console.log("response: "+res)
+				}
+			).catch(
+				function(error){
+					console.log("error: "+error)
+				}
+			);
+		};
+
+		exports.requestCameraPermissions = function()
+		{
+			Camera.requestPermissions().then(
+				function(res)
+				{
+					console.log("response: "+res)
+				}
+			).catch(
+				function(error){
+					console.log("error: "+error)
+				}
+			);
+		};
+		
 		exports.checkPermissions = function()
 		{
 			CameraRoll.checkPermissions().then(
@@ -156,6 +184,8 @@
 			<StdButton Text="Take aspect corrected 100x100 picture via buffer" Clicked="{takeSmallPicture}"/>
 			<StdButton Text="Take cropped 320x320 picture" Clicked="{takeCroppedPicture}"/>
 			<StdButton Text="Get picture from cameraroll" Clicked="{selectImage}"/>
+			<StdButton Text="Check permission to access the camera" Clicked="{checkCameraPermissions}"/>
+			<StdButton Text="Request permission to access the camera" Clicked="{requestCameraPermissions}"/>
 			<StdButton Text="Check permission to access cameraroll" Clicked="{checkPermissions}"/>
 			<StdButton Text="Request permission to access cameraroll" Clicked="{requestPermissions}"/>
 			<WhileNotEmpty Items="{imagePath}">
