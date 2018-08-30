@@ -7,6 +7,11 @@
 - New feature: `checkPermissions()` - Check if your app has access to the camera.
 - New feature: `requestPermissions()` - Request permission to access the camera. In iOS, if the user has previously denied access this function will redirect them to your app settings in their iPhone / iPad.
 
+### CameraRoll
+- New feature: `checkPermissions()` - Check if your app has access to the gallery.
+- New feature: `requestPermissions()` - Request permission to access the gallery. In iOS, if the user has previously denied access this function will redirect them to your app settings in their iPhone / iPad.
+
+
 # 1.9
 
 ## 1.9.0

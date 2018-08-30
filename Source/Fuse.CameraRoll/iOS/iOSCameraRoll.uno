@@ -22,6 +22,18 @@ namespace Fuse.CameraRoll
 			AddToCameraRollInternal(photo.Path, cb.Resolve, cb.Reject);
 			return p;
 		}
+		
+		internal static void CheckPermissions(Promise<string> p)
+		{
+			var cb = new PromiseCallback<string>(p);
+			CheckPermissionsInternal(cb.Resolve, cb.Reject);
+		}
+		
+		internal static void RequestPermissions(Promise<string> p)
+		{
+			var cb = new PromiseCallback<string>(p);
+			RequestPermissionsInternal(cb.Resolve, cb.Reject);
+		}
 
 		internal static List<Image> ListTempImages()
 		{
@@ -59,6 +71,39 @@ namespace Fuse.CameraRoll
 				onFail(@"PHAuthorizationStatusRestricted");
 			else if (status == PHAuthorizationStatusDenied)
 				onFail(@"PHAuthorizationStatusDenied");
+		@}
+		
+		[Foreign(Language.ObjC)]
+		static void CheckPermissionsInternal(Action<string> onComplete, Action<string> onFail)
+		@{
+			PHAuthorizationStatus status = [PHPhotoLibrary authorizationStatus];
+			if (status == PHAuthorizationStatusAuthorized)
+				onComplete(@"PHAuthorizationStatusAuthorized");
+			else if (status == PHAuthorizationStatusNotDetermined)
+				onFail(@"PHAuthorizationStatusNotDetermined");
+			else if (status == PHAuthorizationStatusDenied)
+				onFail(@"PHAuthorizationStatusDenied");
+			else if (status == PHAuthorizationStatusRestricted)
+				onFail(@"PHAuthorizationStatusRestricted");
+		@}
+		
+		[Foreign(Language.ObjC)]
+		static void RequestPermissionsInternal(Action<string> onComplete, Action<string> onFail)
+		@{
+			PHAuthorizationStatus status = [PHPhotoLibrary authorizationStatus];
+			if (status == PHAuthorizationStatusNotDetermined)
+				[PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status){
+					if (status == PHAuthorizationStatusAuthorized)
+						onComplete(@"PHAuthorizationStatusAuthorized");
+					else
+						onFail(@"PHAuthorizationStatusDenied");
+				}];
+			else if (status == PHAuthorizationStatusAuthorized)
+				onComplete(@"PHAuthorizationStatusAuthorized");
+			else
+				dispatch_async(dispatch_get_main_queue(), ^{
+					[[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
+				});
 		@}
 	}
 }

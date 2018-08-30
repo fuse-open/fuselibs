@@ -116,9 +116,37 @@
 			);
 		};
 
+    exports.checkPermissions = function()
+		{
+			CameraRoll.checkPermissions().then(
+				function(res)
+				{
+					console.log("response: "+res)
+				}
+			).catch(
+				function(error){
+					console.log("error: "+error)
+				}
+			);
+		};
+
 		exports.requestCameraPermissions = function()
 		{
 			Camera.requestPermissions().then(
+				function(res)
+				{
+					console.log("response: "+res)
+				}
+			).catch(
+				function(error){
+					console.log("error: "+error)
+				}
+			);
+		};
+
+		exports.requestPermissions = function()
+		{
+			CameraRoll.requestPermissions().then(
 				function(res)
 				{
 					console.log("response: "+res)
@@ -158,6 +186,8 @@
 			<StdButton Text="Get picture from cameraroll" Clicked="{selectImage}"/>
 			<StdButton Text="Check permission to access the camera" Clicked="{checkCameraPermissions}"/>
 			<StdButton Text="Request permission to access the camera" Clicked="{requestCameraPermissions}"/>
+			<StdButton Text="Check permission to access cameraroll" Clicked="{checkPermissions}"/>
+			<StdButton Text="Request permission to access cameraroll" Clicked="{requestPermissions}"/>
 			<WhileNotEmpty Items="{imagePath}">
 				<StdButton Text="Reload last picture via base64" Clicked="{b64Test}"/>
 			</WhileNotEmpty>
