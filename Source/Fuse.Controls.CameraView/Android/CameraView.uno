@@ -230,17 +230,6 @@ namespace Fuse.Controls.Android
 			return p;
 		}
 
-		Future<CameraFocusPoint> ICamera.SetCameraFocusPoint(double x, double y, int cameraWidth, int cameraHeight, int isFocusLocked)
-		{
-			if (_camera == null)
-				return Reject<CameraFocusPoint>("Camera busy or misconfigured");
-
-			if (_captureState != CaptureState.Idle)
-				return Reject<CameraFocusPoint>("Cannot set photo options while capturing photo or video");
-
-			return _camera.SetCameraFocusPoint(x, y, cameraWidth, cameraHeight, isFocusLocked);
-		}
-
 		Future<FlashMode> ICamera.SetFlashMode(FlashMode mode)
 		{
 			if (_camera == null)

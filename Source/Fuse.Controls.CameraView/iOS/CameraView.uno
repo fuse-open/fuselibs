@@ -193,19 +193,6 @@ namespace Fuse.Controls.iOS
 			return p;
 		}
 
-		class SetCameraFocusPointClosure : CameraPromise<CameraFocusPoint>
-		{
-			public void OnResolve(CameraFocusPoint cameraFocusPoint) { Resolve(cameraFocusPoint); }
-			public void OnReject(string msg) { Reject(new Exception(msg)); }
-		}
-
-		public Future<CameraFocusPoint> SetCameraFocusPoint(double x, double y, int cameraWidth, int cameraHeight, int isFocusLocked)
-		{
-			var p = new SetCameraFocusPointClosure();
-			SetCameraFocusPoint(_handle, x, y, cameraWidth, cameraHeight, isFocusLocked, p.OnResolve, p.OnReject);
-			return p;
-		}
-
 		class SetFlashModeClosure : CameraPromise<FlashMode>
 		{
 			public void OnResolve(int flashMode) { Resolve(IntToFlashMode(flashMode)); }
@@ -311,12 +298,6 @@ namespace Fuse.Controls.iOS
 		static void SetCameraFacing(IntPtr handle, int cameraFacing, Action<int> onResolve, Action<string> onReject)
 		@{
 			fcv::setCameraFacing((fcv::CameraView*)handle, cameraFacing, onResolve, onReject);
-		@}
-
-		[Foreign(Language.ObjC)]
-		static void SetCameraFocusPoint(IntPtr handle, double x, double y, int cameraWidth, int cameraHeight, int isFocusLocked, Action<CameraFocusPoint> onResolve, Action<string> onReject)
-		@{
-			fcv::setCameraFocusPoint((fcv::CameraView*)handle, x, y, cameraWidth, cameraHeight, isFocusLocked, onResolve, onReject);
 		@}
 
 		[Foreign(Language.ObjC)]

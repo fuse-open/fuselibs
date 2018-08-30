@@ -25,7 +25,6 @@ namespace fcv {
 		CaptureMode captureMode;
 		CaptureState captureState;
 		CameraFacing cameraFacing;
-		CameraFocusPoint cameraFocusPoint;
 	};
 
 	void dispose(AVState* avState) {
@@ -398,116 +397,6 @@ namespace fcv {
 			[avState->session commitConfiguration];
 			cameraView->cameraFacing = (CameraFacing)cameraFacing;
 			onResolve(cameraView->cameraFacing);
-		});
-	}
-
-
-	void setCameraFocusPoint(CameraView* cameraView, 
-		double x, double y, int cameraWidth, int cameraHeight, 
-		int isFocusLocked,
-		void(^onResolve)(int), void(^onReject)(NSString*)) {
-
-		AVState* avState = cameraView->avState;
-		dispatch_async(avState->queue, ^{
-
-			AVCaptureDevice* currentDevice = avState->deviceInput.device;
-
-			if(!currentDevice)
-				return;
-			
-			if([currentDevice isFocusPointOfInterestSupported] 
-				&& [currentDevice isFocusModeSupported:AVCaptureFocusModeContinuousAutoFocus]
-				&& [currentDevice isExposureModeSupported:AVCaptureExposureModeContinuousAutoExposure]
-				)
-			{
-				NSError* error;
-
-				//check to unlock
-				if (isFocusLocked != 1 && [currentDevice lockForConfiguration:&error])
-				{
-
-					[currentDevice setFocusMode:AVCaptureFocusModeContinuousAutoFocus];
-			    [currentDevice setExposureMode:AVCaptureExposureModeContinuousAutoExposure];
-					[currentDevice setWhiteBalanceMode:AVCaptureWhiteBalanceModeContinuousAutoWhiteBalance];
-			    [currentDevice unlockForConfiguration];
-
-					[avState->session commitConfiguration];
-				}
-
-
-				if([currentDevice lockForConfiguration:&error])
-				{
-					CGPoint focusPoint;
-
-			    float focus_x = x/cameraWidth;
-			    float focus_y = y/cameraHeight;
-
-
-					switch([[UIDevice currentDevice] orientation]) {
-						case UIDeviceOrientationPortrait:
-							focusPoint = CGPointMake(focus_y, 1.f - focus_x);
-							break;
-						case UIDeviceOrientationPortraitUpsideDown:
-							focusPoint = CGPointMake(1.f - focus_y, focus_x);
-							break;
-						case UIDeviceOrientationLandscapeLeft:
-							focusPoint = CGPointMake(focus_y, 1.f - focus_x);
-							break;
-						case UIDeviceOrientationLandscapeRight:
-							focusPoint = CGPointMake(1.f - focus_x, focus_y);
-							break;
-						default:
-							focusPoint = CGPointMake(focus_y, 1.f - focus_x);
-							break;
-					}
-
-
-			    if ([currentDevice isFocusPointOfInterestSupported]) {
-			    	[currentDevice setFocusPointOfInterest:focusPoint];	
-			    }
-					
-					if ([currentDevice isExposurePointOfInterestSupported]) {
-				    [currentDevice setExposurePointOfInterest:focusPoint];
-				  }
-
-					[currentDevice setFocusMode:AVCaptureFocusModeContinuousAutoFocus];
-			    [currentDevice setExposureMode:AVCaptureExposureModeContinuousAutoExposure];
-					[currentDevice setWhiteBalanceMode:AVCaptureWhiteBalanceModeContinuousAutoWhiteBalance];
-					[currentDevice unlockForConfiguration];
-
-
-					[avState->session commitConfiguration];
-
-
-					if(isFocusLocked == 1 && [currentDevice lockForConfiguration:&error])
-					{
-
-						[currentDevice setFocusMode:AVCaptureFocusModeLocked];
-				    [currentDevice setExposureMode:AVCaptureExposureModeLocked];
-						[currentDevice setWhiteBalanceMode:AVCaptureWhiteBalanceModeLocked];
-				    [currentDevice unlockForConfiguration];
-
-
-						[avState->session commitConfiguration];
-
-
-						onResolve((CameraFocusPoint)1);
-						return;
-
-					}
-					else
-					{
-						onResolve((CameraFocusPoint)1);
-						return;
-					}
-
-				}
-				else
-				{
-					onReject(@"Could not lock for configuration AVCaptureDevice.");
-				}
-			}
-
 		});
 	}
 
