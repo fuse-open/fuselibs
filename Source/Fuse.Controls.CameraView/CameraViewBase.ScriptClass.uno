@@ -26,6 +26,7 @@ namespace Fuse.Controls
 				new ScriptPromise<CameraViewBase,RecordingSession,object>("startRecording", ExecutionThread.MainThread, startRecording, ConvertRecordingSession),
 				new ScriptPromise<CameraViewBase,CaptureMode,object>("setCaptureMode", ExecutionThread.MainThread, setCaptureMode, ConvertCaptureMode),
 				new ScriptPromise<CameraViewBase,CameraFacing,object>("setCameraFacing", ExecutionThread.MainThread, setCameraFacing, ConvertCameraFacing),
+				new ScriptPromise<CameraViewBase,CameraFocusPoint,object>("setCameraFocusPoint", ExecutionThread.MainThread, setCameraFocusPoint, ConvertCameraFocusPoint),
 				new ScriptPromise<CameraViewBase,FlashMode,object>("setFlashMode", ExecutionThread.MainThread, setFlashMode, ConvertFlashMode),
 				new ScriptPromise<CameraViewBase,CameraInfo,object>("getCameraInfo", ExecutionThread.MainThread, getCameraInfo, ConvertCameraInfo),
 				new ScriptPromise<CameraViewBase,PhotoOption[],object>("setPhotoOptions", ExecutionThread.JavaScript, setPhotoOptions, ConvertPhotoOptions),
@@ -139,6 +140,27 @@ namespace Fuse.Controls
 				return self.SetCameraFacing(EnumHelpers.As<CameraFacing>(arg));
 			else
 				return new Promise<CameraFacing>().RejectWithMessage("Bad argument");
+		}
+
+		/**
+			Set CameraFocusPoint
+
+			@scriptmethod setCameraFocusPoint( x, y, cameraWidth, cameraHeight, isFocusLocked )
+
+			Returns a promise that resolves to whether or not the focus is set. Valid values are double x, double y, int cameraWidth, int cameraHeight and int isFocusLocked.
+
+				<CameraView ux:Name="Camera" />
+				<JavaScript>
+					Camera.setCameraFocusPoint(x, y, cameraWidth, cameraHeight, isFocusLocked)
+						.then(function(isSet) {  })
+						.catch(function(error) { });
+				</JavaScript>
+		*/
+		static Future<CameraFocusPoint> setCameraFocusPoint(Context context, CameraViewBase self, object[] args) {
+			if (args.Length != 5)
+				return new Promise<CameraFocusPoint>().RejectWithMessage("Arguments for CameraFocusPoint must be provided");
+
+			return self.SetCameraFocusPoint( Marshal.ToDouble(args[0]), Marshal.ToDouble(args[1]), Marshal.ToInt(args[2]), Marshal.ToInt(args[3]), Marshal.ToInt(args[4]) );
 		}
 
 		/**
@@ -303,6 +325,10 @@ namespace Fuse.Controls
 		static object ConvertCameraFacing(Context c, CameraFacing cameraFacing)
 		{
 			return EnumHelpers.AsString(cameraFacing);
+		}
+
+		static object ConvertCameraFocusPoint(Context c, CameraFocusPoint cameraFocusPoint) {
+			return EnumHelpers.AsString(cameraFocusPoint);
 		}
 
 		static object ConvertFlashMode(Context c, FlashMode flashMode)
