@@ -116,9 +116,9 @@
 			);
 		};
 
-    exports.checkPermissions = function()
+		exports.requestCameraPermissions = function()
 		{
-			CameraRoll.checkPermissions().then(
+			Camera.requestPermissions().then(
 				function(res)
 				{
 					console.log("response: "+res)
@@ -129,10 +129,10 @@
 				}
 			);
 		};
-
-		exports.requestCameraPermissions = function()
+		
+		exports.checkPermissions = function()
 		{
-			Camera.requestPermissions().then(
+			CameraRoll.checkPermissions().then(
 				function(res)
 				{
 					console.log("response: "+res)
