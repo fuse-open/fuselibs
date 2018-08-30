@@ -57,6 +57,8 @@ namespace Fuse.CameraRoll
 			Resource.SetGlobalKey(_instance = this, "FuseJS/CameraRoll");
 			AddMember(new NativePromise<Image, Scripting.Object>("getImage", SelectPictureInterface, Image.Converter));
 			AddMember(new NativePromise<bool, Scripting.Object>("publishImage", AddToCameraRollInterface, null));
+			AddMember(new NativePromise<string, string>("checkPermissions", CheckUserPermissions, null));
+			AddMember(new NativePromise<string, string>("requestPermissions", RequestUserPermissions, null));
 		}
 
 		/**
@@ -90,6 +92,40 @@ namespace Fuse.CameraRoll
 		{
 			var Image = Image.FromObject(args[0]);
 			return AddToCameraRoll(Image);
+		}
+		
+		/**
+			@scriptmethod checkPermissions()
+
+			Checks if device has permissions to access the camera roll.
+
+			@return (Promise) a Promise that resolves if the user has permission
+		*/
+		static Future<string> CheckUserPermissions(object[] args)
+		{
+			var p = new Promise<string>();
+			if defined(Android)
+				AndroidCameraRoll.CheckPermissions(p);
+			else if defined(iOS)
+				iOSCameraRoll.CheckPermissions(p);
+			return p;
+		}
+		
+		/**
+			@scriptmethod requestPermissions()
+
+			Requests acccess to photo gallery
+
+			@return (Promise) a Promise that resolves after the user has granted permissions
+		*/
+		static Future<string> RequestUserPermissions(object[] args) 
+		{
+			var p = new Promise<string>();
+			if defined(Android)
+				AndroidCameraRoll.RequestPermissions(p);
+			else if defined(iOS)
+				iOSCameraRoll.RequestPermissions(p);
+			return p;
 		}
 
 		internal static Future<Image> SelectPicture()
