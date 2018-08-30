@@ -101,14 +101,18 @@ namespace Fuse.PushNotifications
 			UIApplication* application = [UIApplication sharedApplication];
 			if ([application respondsToSelector:@selector(registerUserNotificationSettings:)]) {
 				// use registerUserNotificationSettings
-				[application registerUserNotificationSettings: [UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeSound  | UIUserNotificationTypeAlert | UIUserNotificationTypeBadge)  categories:nil]];
-				[application registerForRemoteNotifications];
+				dispatch_async(dispatch_get_main_queue(), ^{
+					[application registerUserNotificationSettings: [UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeSound  | UIUserNotificationTypeAlert | UIUserNotificationTypeBadge)  categories:nil]];
+					[application registerForRemoteNotifications];
+				});
 			} else {
 				// use registerForRemoteNotificationTypes:
-				[application registerForRemoteNotificationTypes:
-				 UIRemoteNotificationTypeBadge |
-				 UIRemoteNotificationTypeSound |
-				 UIRemoteNotificationTypeAlert];
+				dispatch_async(dispatch_get_main_queue(), ^{
+					[application registerForRemoteNotificationTypes:
+					 UIRemoteNotificationTypeBadge |
+					 UIRemoteNotificationTypeSound |
+					 UIRemoteNotificationTypeAlert];
+				});
 			}
 		@}
 	}
