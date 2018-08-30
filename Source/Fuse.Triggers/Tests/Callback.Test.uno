@@ -12,6 +12,7 @@ namespace Fuse.Test
 	public class CallbackTest : TestBase
 	{
 		[Test]
+		[Ignore("https://github.com/fuse-open/fuselibs/issues/1188")]
 		public void ArgsContainsSender()
 		{
 			var p = new UX.Callback.ArgsContainsSender();
