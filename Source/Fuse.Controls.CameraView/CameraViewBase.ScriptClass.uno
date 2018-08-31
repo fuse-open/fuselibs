@@ -161,7 +161,10 @@ namespace Fuse.Controls
 			if (args.Length != 5)
 				return new Promise<CameraFocusPoint>().RejectWithMessage("Arguments for CameraFocusPoint must be provided");
 
-			return self.SetCameraFocusPoint( Marshal.ToDouble(args[0]), Marshal.ToDouble(args[1]), Marshal.ToInt(args[2]), Marshal.ToInt(args[3]), Marshal.ToInt(args[4]) );
+			return self.SetCameraFocusPoint( 
+				Marshal.ToDouble(args[0]), Marshal.ToDouble(args[1]), 
+				Marshal.ToInt(args[2]), Marshal.ToInt(args[3]), Marshal.ToInt(args[4]) 
+			);
 		}
 
 		/**

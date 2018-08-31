@@ -290,34 +290,46 @@ public class CameraImpl extends TextureView implements TextureView.SurfaceTextur
 
                     _camera.setParameters(parameters);
                 }
-
+                
+                /*
+                Get focus coordinates according to camera dimensions and focus area size
+                Reference - https://developer.android.com/reference/android/hardware/Camera.Parameters#getFocusAreas%28%29
+                - Each focus area is a rectangle with specified weight.
+                - Coordinates of the rectangle range from -1000 to 1000
+                - (-1000, -1000) is the upper left point.
+                - (1000, 1000) is the lower right point.
+                - The width and height of focus areas cannot be 0 or negative.
+                */
                 int focus_area_size = 300;
                 int left = clamp(Float.valueOf((float)(x / cameraWidth) * 2000 - 1000).intValue(), focus_area_size);
                 int top = clamp(Float.valueOf((float)(y / cameraHeight) * 2000 - 1000).intValue(), focus_area_size);
-
 
                 Display display = com.fuse.Activity.getRootActivity().getWindowManager().getDefaultDisplay();
                 Double tmp;
                 Rect rect;
                 switch(display.getRotation()) {
-                    case 0: //portrait
+                    default: //compiler complains if there's a possibility of rect not being defined
+                    case Surface.ROTATION_0: //portrait
                         rect = new Rect(left, top, left + focus_area_size, top + focus_area_size);
                         break;
-                    case 3: //landscape right
+                    case Surface.ROTATION_90: //landscape right
                         rect = new Rect(top, left, top + focus_area_size, left + focus_area_size);
                         break;
-                    case 2: //portrait upsidedown
+                    case Surface.ROTATION_180: //portrait upsidedown
                         rect = new Rect(top, left, top + focus_area_size, left + focus_area_size);
                         break;
-                    case 1: //landscape left
-                        rect = new Rect(left, top, left + focus_area_size, top + focus_area_size);
-                        break;
-                    default:
+                    case Surface.ROTATION_270: //landscape left
                         rect = new Rect(left, top, left + focus_area_size, top + focus_area_size);
                         break;
                 }
 
-
+                /*
+                Reference - https://developer.android.com/reference/android/hardware/Camera.Area
+                Camera.Area(rect, weight)
+                - rect - Bounds of the area.
+                - weight - Weight of the area. 
+                  The weight must range from 1 to 1000, and represents a weight for every pixel in the area.
+                */
                 List<Camera.Area> meteringAreas = new ArrayList<Camera.Area>();
                 meteringAreas.add(new Camera.Area(rect, 1000));
                 parameters.setFocusAreas(meteringAreas);
@@ -333,10 +345,14 @@ public class CameraImpl extends TextureView implements TextureView.SurfaceTextur
                     
                     int exposureAmount = (parameters.getMinExposureCompensation() - parameters.getMaxExposureCompensation()) * -1;
                     int designAdjustment = 1; //added 1 to account for a control panel covered area on the bottom of the camera that can't be tapped on for focus
-                    if ((y/cameraHeight) < 0.5) { //apply only to upper half of camera screen
+                    if ((y/cameraHeight) < 0.5) { //apply adjustment only if tap is in upper half of camera area 
                         designAdjustment = 0;
                     }
 
+                    /* 
+                    - determine the amount of exposure to apply according to the position of the tap
+                    - taps closer to the bottom controls or user are closer so typically require more exposure
+                    */
                     int amountApplied = (int)Math.round( (exposureAmount * (y/cameraHeight)) ) + designAdjustment; 
                     amountApplied = (amountApplied > exposureAmount) ? exposureAmount : amountApplied;
                     
@@ -345,10 +361,7 @@ public class CameraImpl extends TextureView implements TextureView.SurfaceTextur
                     parameters.setAutoExposureLock(false);
                 }
 
-
                 _camera.setParameters(parameters);
-
-
 
                 //check for lock
                 if (isFocusLocked == 1) {
@@ -369,12 +382,14 @@ public class CameraImpl extends TextureView implements TextureView.SurfaceTextur
 
                     _camera.setParameters(parameters);
 
-
-                    _autoFocus = false;
-                } else {
-                    _autoFocus = false;
                 }
 
+                _autoFocus = false;
+
+                /*
+                "shimmy" to make sure focus is set to continously focus on more android devices
+                Reference: https://stackoverflow.com/questions/17993751/whats-the-correct-way-to-implement-tap-to-focus-for-camera/23754117#23754117
+                */
                 _camera.startPreview();
 
                 _camera.autoFocus(new Camera.AutoFocusCallback() {
@@ -400,19 +415,19 @@ public class CameraImpl extends TextureView implements TextureView.SurfaceTextur
         } 
     }
 
-
     private int clamp(int touchCoordinateInCameraReper, int focusAreaSize) {
-        int result;
+        
         if (Math.abs(touchCoordinateInCameraReper)+focusAreaSize/2>1000) {
+
+            //return the maximums less the focus area size
             if (touchCoordinateInCameraReper>0) {
-                result = 1000 - focusAreaSize/2;
+                return 1000 - focusAreaSize/2;
             } else {
-                result = -1000 + focusAreaSize/2;
+                return -1000 + focusAreaSize/2;
             }
         } else {
-            result = touchCoordinateInCameraReper - focusAreaSize/2;
+            return touchCoordinateInCameraReper - focusAreaSize/2;
         }
-        return result;
     }
 
     public void dispose() {
