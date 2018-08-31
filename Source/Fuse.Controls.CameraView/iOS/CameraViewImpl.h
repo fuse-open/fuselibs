@@ -29,10 +29,6 @@ namespace fcv {
 		CAMERA_FACING_BACK = 1,
 	};
 
-	enum CameraFocusPoint {
-		OK = 1,
-	};
-
 	enum FlashMode {
 		FLASH_MODE_AUTO = AVCaptureFlashModeAuto,
 		FLASH_MODE_ON = AVCaptureFlashModeOn,

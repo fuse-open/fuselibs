@@ -156,7 +156,8 @@ namespace Fuse.Controls
 						.catch(function(error) { });
 				</JavaScript>
 		*/
-		static Future<CameraFocusPoint> setCameraFocusPoint(Context context, CameraViewBase self, object[] args) {
+		static Future<CameraFocusPoint> setCameraFocusPoint(Context context, CameraViewBase self, object[] args) 
+		{
 			if (args.Length != 5)
 				return new Promise<CameraFocusPoint>().RejectWithMessage("Arguments for CameraFocusPoint must be provided");
 
@@ -327,7 +328,8 @@ namespace Fuse.Controls
 			return EnumHelpers.AsString(cameraFacing);
 		}
 
-		static object ConvertCameraFocusPoint(Context c, CameraFocusPoint cameraFocusPoint) {
+		static object ConvertCameraFocusPoint(Context c, CameraFocusPoint cameraFocusPoint) 
+		{
 			return EnumHelpers.AsString(cameraFocusPoint);
 		}
 

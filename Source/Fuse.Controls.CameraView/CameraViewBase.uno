@@ -33,7 +33,8 @@ namespace Fuse.Controls
 		Front,
 	}
 
-	public enum CameraFocusPoint {
+	public enum CameraFocusPoint 
+	{
 		Ok,
 	}
 
@@ -131,7 +132,8 @@ namespace Fuse.Controls
 			return Camera.SetCameraFacing(facing);
 		}
 
-		public Future<CameraFocusPoint> SetCameraFocusPoint(double x, double y, int cameraWidth, int cameraHeight, int isFocusLocked) {
+		public Future<CameraFocusPoint> SetCameraFocusPoint(double x, double y, int cameraWidth, int cameraHeight, int isFocusLocked) 
+		{
 			if (!IsRootingCompleted)
 				return RejectNotRooted<CameraFocusPoint>();
 			return Camera.SetCameraFocusPoint(x, y, cameraWidth, cameraHeight, isFocusLocked);

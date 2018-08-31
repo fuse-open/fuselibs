@@ -25,7 +25,6 @@ namespace fcv {
 		CaptureMode captureMode;
 		CaptureState captureState;
 		CameraFacing cameraFacing;
-		CameraFocusPoint cameraFocusPoint;
 	};
 
 	void dispose(AVState* avState) {
@@ -481,11 +480,11 @@ namespace fcv {
 
 						[avState->session commitConfiguration];
 
-						onResolve((CameraFocusPoint)1);
+						onResolve(1);
 						return;
 
 					} else {
-						onResolve((CameraFocusPoint)1);
+						onResolve(1);
 						return;
 					}
 				} else {
