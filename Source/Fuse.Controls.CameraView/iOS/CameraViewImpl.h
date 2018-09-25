@@ -47,7 +47,7 @@ namespace fcv {
 	void capturePhoto(CameraView* cameraView, void(^onResolve)(void*,int), void(^onReject)(NSString*));
 	void startRecording(CameraView* cameraView, void(^onResolve)(RecordingSession*), void(^onReject)(NSString*));
 	void setCameraFacing(CameraView* cameraView, int cameraFacing, void(^onResolve)(int), void(^onReject)(NSString*));
-	void setCameraFocusPoint(CameraView* cameraView, double x, double y, int cameraWidth, int cameraHeight, int isFocusLocked, void(^onResolve)(int), void(^onReject)(NSString*));
+	void setCameraFocusPoint(CameraView* cameraView, double x, double y, int cameraWidth, int cameraHeight, int isFocusLocked, void(^onResolve)(id), void(^onReject)(NSString*));
 	void setFlashMode(CameraView* cameraView, int flashMode, void(^onResolve)(int), void(^onReject)(NSString*));
 	void getCameraInfo(CameraView* cameraView, void(^callback)(CameraInfo));
 	void dispose(disposable_t disposable);

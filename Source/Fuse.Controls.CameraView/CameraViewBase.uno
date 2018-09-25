@@ -33,11 +33,6 @@ namespace Fuse.Controls
 		Front,
 	}
 
-	public enum CameraFocusPoint 
-	{
-		Ok,
-	}
-
 	public abstract partial class CameraViewBase : LayoutControl, ICameraViewHost
 	{
 		PreviewStretchMode _previewStretchMode;
@@ -132,10 +127,10 @@ namespace Fuse.Controls
 			return Camera.SetCameraFacing(facing);
 		}
 
-		public Future<CameraFocusPoint> SetCameraFocusPoint(double x, double y, int cameraWidth, int cameraHeight, int isFocusLocked) 
+		public Future<Nothing> SetCameraFocusPoint(double x, double y, int cameraWidth, int cameraHeight, int isFocusLocked) 
 		{
 			if (!IsRootingCompleted)
-				return RejectNotRooted<CameraFocusPoint>();
+				return RejectNotRooted<Nothing>();
 			return Camera.SetCameraFocusPoint(x, y, cameraWidth, cameraHeight, isFocusLocked);
 		}
 
@@ -219,7 +214,7 @@ namespace Fuse.Controls
 		Future<RecordingSession> StartRecording();
 		Future<CaptureMode> SetCaptureMode(CaptureMode mode);
 		Future<CameraFacing> SetCameraFacing(CameraFacing facing);
-		Future<CameraFocusPoint> SetCameraFocusPoint(double x, double y, int cameraWidth, int cameraHeight, int isFocusLocked);
+		Future<Nothing> SetCameraFocusPoint(double x, double y, int cameraWidth, int cameraHeight, int isFocusLocked);
 		Future<FlashMode> SetFlashMode(FlashMode mode);
 		Future<PhotoOption[]> SetPhotoOptions(PhotoOption[] options);
 		Future<CameraInfo> GetCameraInfo();
@@ -233,7 +228,7 @@ namespace Fuse.Controls
 		public Future<RecordingSession> StartRecording() { return Reject<RecordingSession>(); }
 		public Future<CaptureMode> SetCaptureMode(CaptureMode mode) { return Reject<CaptureMode>(); }
 		public Future<CameraFacing> SetCameraFacing(CameraFacing facing) { return Reject<CameraFacing>(); }
-		public Future<CameraFocusPoint> SetCameraFocusPoint(double x, double y, int cameraWidth, int cameraHeight, int isFocusLocked) { return Reject<CameraFocusPoint>(); }
+		public Future<Nothing> SetCameraFocusPoint(double x, double y, int cameraWidth, int cameraHeight, int isFocusLocked) { return Reject<Nothing>(); }
 		public Future<FlashMode> SetFlashMode(FlashMode mode) { return Reject<FlashMode>(); }
 		public Future<CameraInfo> GetCameraInfo() { return Reject<CameraInfo>(); }
 		public Future<PhotoOption[]> SetPhotoOptions(PhotoOption[] options) { return Reject<PhotoOption[]>(); }

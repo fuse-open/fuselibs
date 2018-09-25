@@ -404,7 +404,7 @@ namespace fcv {
 	void setCameraFocusPoint(CameraView* cameraView, 
 		double x, double y, int cameraWidth, int cameraHeight, 
 		int isFocusLocked,
-		void(^onResolve)(int), void(^onReject)(NSString*)) {
+		void(^onResolve)(id), void(^onReject)(NSString*)) {
 
 		AVState* avState = cameraView->avState;
 		dispatch_async(avState->queue, ^{
@@ -480,11 +480,11 @@ namespace fcv {
 
 						[avState->session commitConfiguration];
 
-						onResolve(1);
+						onResolve(NULL);
 						return;
 
 					} else {
-						onResolve(1);
+						onResolve(NULL);
 						return;
 					}
 				} else {

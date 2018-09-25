@@ -27,8 +27,8 @@ public class CameraImpl extends TextureView implements TextureView.SurfaceTextur
     final OrientationEventListener _orientationListener;
 
     int _cameraRotation = 0;
-    int previewWidth;
-    int previewHeight;
+    int _previewWidth;
+    int _previewHeight;
 
     public CameraImpl(Context context, Camera camera, int cameraId, int maxWidth, int maxHeight) {
         super(context);
@@ -150,15 +150,15 @@ public class CameraImpl extends TextureView implements TextureView.SurfaceTextur
     void UpdateTransform(Size previewSize, int width, int height) {
 
         if (isPortrait()) {
-            previewWidth = previewSize.height;
-            previewHeight = previewSize.width;
+            _previewWidth = previewSize.height;
+            _previewHeight = previewSize.width;
         } else {
-            previewWidth = previewSize.width;
-            previewHeight = previewSize.height;
+            _previewWidth = previewSize.width;
+            _previewHeight = previewSize.height;
         }
 
-        float scaleX = (float)height / previewHeight * previewWidth / width;
-        float scaleY = (float)width / previewWidth * previewHeight / height;
+        float scaleX = (float)height / _previewHeight * _previewWidth / width;
+        float scaleY = (float)width / _previewWidth * _previewHeight / height;
 
         if (_shouldFill) {
             scaleX = Math.max(scaleX, 1);

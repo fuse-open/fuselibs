@@ -169,17 +169,7 @@
 		
 				function tapToFocus(args) {
 					
-					Camera.setCameraFocusPoint(parseFloat(args.x), parseFloat(args.y), cameraWidth.value, cameraHeight.value, 0)
-						.then(function (isSet) {
-							if (isSet) {
-								console.log('Focus set');
-							} else {
-								console.log('Focus not set');
-							}
-						})
-						.catch(function (err) {
-							console.log("Failed to set camera focus point: " + err);
-						});
+					Camera.setCameraFocusPoint(parseFloat(args.x), parseFloat(args.y), cameraWidth.value, cameraHeight.value, 0);
 				}
 
 				function cameraPlaced(args) {
