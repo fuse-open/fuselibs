@@ -155,6 +155,39 @@ namespace Fuse.Controls.Android
 			return new AndroidPhotoOptionPromise(this).Visit(options);
 		}
 
+		class AndroidCameraFocusPointPromise : Promise<Nothing> 
+		{
+			Camera _camera;
+			string _parameters;
+
+			public AndroidCameraFocusPointPromise(Camera camera) 
+			{
+				_camera = camera;
+				_parameters = _camera.SaveParameters();
+			}
+				
+			public Future<Nothing> doFocus(double x, double y, int cameraWidth, int cameraHeight, int isFocusLocked) 
+			{
+				try 
+				{
+					_camera.SetCameraFocusPointNow(x,y, cameraWidth, cameraHeight, isFocusLocked);
+					
+					Resolve(default(Nothing));
+					return this;
+				} 
+				catch (Exception e) 
+				{
+					Reject(e);
+					return this;
+				}
+			}
+		}
+
+		public Future<Nothing> SetCameraFocusPoint(double x, double y, int cameraWidth, int cameraHeight, int isFocusLocked) 
+		{
+			return new AndroidCameraFocusPointPromise(this).doFocus(x, y, cameraWidth, cameraHeight, isFocusLocked);
+		}
+
 		class RecordingSessionPromise : Promise<RecordingSession>
 		{
 			Action _doneCallback;
@@ -295,6 +328,12 @@ namespace Fuse.Controls.Android
 		void SetFlashMode(Java.Object handle, string flashMode)
 		@{
 			((CameraImpl)@{Fuse.Controls.Native.ViewHandle:Of(_this).NativeHandle:Get()}).setFlashMode(flashMode);
+		@}
+
+		[Foreign(Language.Java)]
+		void SetCameraFocusPointNow(double x, double y, int cameraWidth, int cameraHeight, int isFocusLocked) 
+		@{
+			((CameraImpl)@{Fuse.Controls.Native.ViewHandle:Of(_this).NativeHandle:Get()}).setCameraFocusPoint(x,y,cameraWidth,cameraHeight, isFocusLocked);
 		@}
 
 		[Foreign(Language.Java)]

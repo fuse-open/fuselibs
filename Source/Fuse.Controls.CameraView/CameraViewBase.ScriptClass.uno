@@ -26,6 +26,7 @@ namespace Fuse.Controls
 				new ScriptPromise<CameraViewBase,RecordingSession,object>("startRecording", ExecutionThread.MainThread, startRecording, ConvertRecordingSession),
 				new ScriptPromise<CameraViewBase,CaptureMode,object>("setCaptureMode", ExecutionThread.MainThread, setCaptureMode, ConvertCaptureMode),
 				new ScriptPromise<CameraViewBase,CameraFacing,object>("setCameraFacing", ExecutionThread.MainThread, setCameraFacing, ConvertCameraFacing),
+				new ScriptPromise<CameraViewBase,Nothing,object>("setCameraFocusPoint", ExecutionThread.MainThread, setCameraFocusPoint),
 				new ScriptPromise<CameraViewBase,FlashMode,object>("setFlashMode", ExecutionThread.MainThread, setFlashMode, ConvertFlashMode),
 				new ScriptPromise<CameraViewBase,CameraInfo,object>("getCameraInfo", ExecutionThread.MainThread, getCameraInfo, ConvertCameraInfo),
 				new ScriptPromise<CameraViewBase,PhotoOption[],object>("setPhotoOptions", ExecutionThread.JavaScript, setPhotoOptions, ConvertPhotoOptions),
@@ -139,6 +140,31 @@ namespace Fuse.Controls
 				return self.SetCameraFacing(EnumHelpers.As<CameraFacing>(arg));
 			else
 				return new Promise<CameraFacing>().RejectWithMessage("Bad argument");
+		}
+
+		/**
+			Set CameraFocusPoint
+
+			@scriptmethod setCameraFocusPoint( x, y, cameraWidth, cameraHeight, isFocusLocked )
+
+			Returns a promise of nothing. Valid values are double x, double y, int cameraWidth, int cameraHeight and int isFocusLocked.
+
+				<CameraView ux:Name="Camera" />
+				<JavaScript>
+					Camera.setCameraFocusPoint(x, y, cameraWidth, cameraHeight, isFocusLocked)
+						.then(function(isSet) {  })
+						.catch(function(error) { });
+				</JavaScript>
+		*/
+		static Future<Nothing> setCameraFocusPoint(Context context, CameraViewBase self, object[] args) 
+		{
+			if (args.Length != 5)
+				return new Promise<Nothing>().RejectWithMessage("Arguments for CameraFocusPoint must be provided");
+
+			return self.SetCameraFocusPoint( 
+				Marshal.ToDouble(args[0]), Marshal.ToDouble(args[1]), 
+				Marshal.ToInt(args[2]), Marshal.ToInt(args[3]), Marshal.ToInt(args[4]) 
+			);
 		}
 
 		/**
