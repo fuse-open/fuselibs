@@ -14,6 +14,7 @@ namespace Fuse.Maps.Android
 		MOVE = 2
 	}
 
+	[Require("Gradle.Repository", "maven { url 'https://maven.google.com' }")]
 	[Require("Gradle.Dependency.Compile", "com.google.android.gms:play-services-maps:12.0.1")]
 	extern (Android) public class MapView : Fuse.Controls.Native.Android.LeafView, IMapView
 	{
