@@ -27,8 +27,8 @@ namespace Fuse.Controls.Native.iOS
 			_host = host;
 
 			// The native control might reject values outside of the min/max range, so make sure we set min/max first
-			MinValue = _host.Value;
-			MaxValue = _host.Value;
+			MinValue = _host.MinValue;
+			MaxValue = _host.MaxValue;
 			Value = _host.Value;
 
 			_valueChangedEvent = UIControlEvent.AddValueChangedCallback(Handle, OnValueChanged);

@@ -1,5 +1,8 @@
 # Unreleased
 
+### Fuse.Controls.DatePicker
+- Fixed bug which caused dates not to be selectable if the control was inside a WhileTrue on iOS
+
 ### Fuse.Deprecated.CameraView
 - This obsolete package has been removed. All functionality should be present in `Fuse.Controls.CameraView` instead.
 
