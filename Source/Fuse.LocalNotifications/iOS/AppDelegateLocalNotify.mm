@@ -12,6 +12,7 @@
 	  UIUserNotificationTypeBadge|
 	  UIUserNotificationTypeSound
 	  categories:nil]];
+	@{Fuse.LocalNotifications.iOSImpl.SendPendingFromLaunchOptions():Call()};
 }
 
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
