@@ -68,7 +68,7 @@ namespace Fuse.LocalNotifications
                         String title = newIntent.getStringExtra("title");
                         String body = newIntent.getStringExtra("bbody");
                         String payload = newIntent.getStringExtra(@{ACTION});
-                        String result = "{ 'title': '" + title + "', 'body': '" + body + "', 'payload': '" + payload + "' }";
+						String result = com.fuse.LocalNotifications.LocalNotificationReceiver.MakePayloadString(title, body, payload);
                         @{NotificationRecieved(string):Call(result)};
                     }
                 },
@@ -128,7 +128,7 @@ namespace Fuse.LocalNotifications
 
             if (com.fuse.LocalNotifications.LocalNotificationReceiver.InForeground)
             {
-                String result = "{ 'title': '" + title + "', 'body': '" + body + "', 'payload': '" + payload + "' }";
+				String result = com.fuse.LocalNotifications.LocalNotificationReceiver.MakePayloadString(title, body, payload);
                 @{NotificationRecieved(string):Call(result)};
             } else {
                 Intent notificationIntent = new Intent(context, @(Activity.Package).@(Activity.Name).class);

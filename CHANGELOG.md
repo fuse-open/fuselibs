@@ -1,5 +1,8 @@
 # Unreleased
 
+### Fuse.LocalNotifications
+- Fix bug on android where the payload contain invalid json
+
 ### Fuse.Deprecated.CameraView
 - This obsolete package has been removed. All functionality should be present in `Fuse.Controls.CameraView` instead.
 
