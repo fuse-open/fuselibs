@@ -136,3 +136,232 @@ Google and Apple has different limits on the size of push notifications.
 - Google limits to 4096 bytes
 - Apple limits to 2048 bytes on iOS 8 and up but only 256 bytes on all earlier versions
 
+
+
+
+## Additional Android Push Notification Features
+
+Since Android 8+ (Oreo or API 26), it is mandatory to define and assign a channel to every notification.
+
+We have defined a default channel (named "App") to be assigned to notifications if they aren't already assigned a channel, so you don't need to define one but if you do want to customise it, read on.
+
+NB! Once a channel is created, you CANNOT change its properties later.
+
+Apart from the Notification Channel feature discussed above, here is a list of the other android features implemented thus far:
+
+- Notification Sound
+- Notification Color
+- Notification Priority
+- Notification Category
+- Notification Lockscreen Visibility
+
+Android 8+
+- Notification Channel
+- Nofitication Channel Group
+- Notification Channel Importance
+- Notification Channel Lockscreen Visibility
+- Notification Channel Light Color
+- Notification Channel Sound
+- Notification Channel Vibration
+- Notification Channel Show Badge
+- Notification Badge Number
+- Notification Badge Icon Type
+
+
+We'll show you how to implement them here in fuse but read more about each feature [here](https://developer.android.com/guide/topics/ui/notifiers/notifications).
+
+
+#### Notification Sound - Value - default
+
+    'notification': {
+        alert: {
+            'title': 'Well would ya look at that!',
+            'body': 'Hello from the server',
+            'sound': 'default'
+        }
+    },
+
+
+#### Notification Color - Values - #RRGGBB | #AARRGGBB
+
+    'notification': {
+        alert: {
+            'title': 'Well would ya look at that!',
+            'body': 'Hello from the server',
+            'color': '#8811FF'
+        }
+    },
+
+
+#### Notification Priority - Values - high | low | max | min
+
+    'notification': {
+        alert: {
+            'title': 'Well would ya look at that!',
+            'body': 'Hello from the server',
+            'notificationPriority': 'high'
+        }
+    },
+
+
+#### Notification Category - Values - alarm | reminder | event | call | message | email | promo | recommendation | social | error | progress | service | status | system | transport
+
+    'notification': {
+        alert: {
+            'title': 'Well would ya look at that!',
+            'body': 'Hello from the server',
+            'notificationCategory': 'social'
+        }
+    },
+
+
+#### Notification Lockscreen Visibility - Values - public | secret | private
+
+    'notification': {
+        alert: {
+            'title': 'Well would ya look at that!',
+            'body': 'Hello from the server',
+            'notificationLockscreenVisibility': 'secret'
+        }
+    },
+
+
+
+#### Notification Channel
+
+Notification Channel and a Notification Channel Group:
+
+    'notification': {
+        alert: {
+            'title': 'Well would ya look at that!',
+            'body': 'Hello from the server',
+            'notificationChannelGroupId': 'sports',
+            'notificationChannelGroupName': 'Sports',
+            'notificationChannelId': 'sports_football_highlights',
+            'notificationChannelName': 'Football Highlights',
+            'notificationChannelDescription': 'Video commentary once a week'
+        }
+    },
+
+Notification Channel Importance - Values - urgent | high | medium | low | none
+
+    'notification': {
+        alert: {
+            'title': 'Well would ya look at that!',
+            'body': 'Hello from the server',
+            'notificationChannelGroupId': 'sports',
+            'notificationChannelGroupName': 'Sports',
+            'notificationChannelId': 'sports_basketball_highlights',
+            'notificationChannelName': 'Basketball Highlights',
+            'notificationChannelDescription': 'Video commentary once a week',
+            'notificationChannelImportance': 'urgent',
+
+        }
+    },
+
+
+Notification Channel Lockscreen Visibility - Values - public | secret | private
+
+    'notification': {
+        alert: {
+            'title': 'Well would ya look at that!',
+            'body': 'Hello from the server',
+            'notificationChannelLockscreenVisibility': 'private'
+        }
+    },
+
+
+Notification Channel Light Color - Values - #RRGGBB
+
+    'notification': {
+        alert: {
+            'title': 'Well would ya look at that!',
+            'body': 'Hello from the server',
+            'notificationChannelLightColor': '#1188FF'
+        }
+    },
+
+
+Notification Channel Sound - Values - true | false
+
+    'notification': {
+        alert: {
+            'title': 'Well would ya look at that!',
+            'body': 'Hello from the server',
+            'notificationChannelIsSoundOn': 'true'
+        }
+    },
+
+
+Notification Channel Vibration - Values - true | false
+
+    'notification': {
+        alert: {
+            'title': 'Well would ya look at that!',
+            'body': 'Hello from the server',
+            'notificationChannelIsVibrationOn': 'true'
+        }
+    },
+
+
+Notification Channel Show Badge - Values - true | false
+
+    'notification': {
+        alert: {
+            'title': 'Well would ya look at that!',
+            'body': 'Hello from the server',
+            'notificationChannelIsShowBadgeOn': 'true'
+        }
+    },
+
+
+#### Notification Badge
+
+Notification Channel Badge Number
+
+    'notification': {
+        alert: {
+            'title': 'Well would ya look at that!',
+            'body': 'Hello from the server',
+            'notificationBadgeNumber': '23'
+        }
+    },
+
+
+Notification Channel Badge Icon Type - Values - none | small | large
+
+    'notification': {
+        alert: {
+            'title': 'Well would ya look at that!',
+            'body': 'Hello from the server',
+            'notificationBadgeIconType': 'small'
+        }
+    },
+
+
+
+#### Notification Uno Project Configurations
+
+The following notification settings can be set via the `.unoproj` settings:
+
+    "Android": {
+        ...
+        "Notification": {
+            "DefaultChannelGroupId": "default_group",
+            "DefaultChannelGroupName": "Categories",
+            "DefaultChannelId": "default_channel",
+            "DefaultChannelName": "App",
+            "DefaultChannelDescription": "",
+            "DefaultChannelImportance": "high",
+            "DefaultChannelLightColor": "#FF2C37",
+            "NotificationChannelLockscreenVisibility": "secret",
+            "NotificationChannelIsSoundOn": true,
+            "NotificationChannelIsShowBadgeOn": true,
+            "NotificationChannelIsVibrationOn": true
+        }
+        ...
+    },
+
+
+Note: notification payload settings will always override the notification settings from `.unoproj`.
+NB! Once a channel is created, you CANNOT change its properties later.

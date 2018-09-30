@@ -150,5 +150,13 @@ namespace Fuse.PushNotifications
 		}
 
 		public extern(!iOS) static void Register() { }
+
+		public extern(iOS) static bool IsRegisteredForRemoteNotifications()
+		{
+			return iOSImpl.IsRegisteredForRemoteNotifications();
+		}
+
+		public extern(Android) static bool IsRegisteredForRemoteNotifications() { return true; }
+		public extern(!iOS && !Android) static bool IsRegisteredForRemoteNotifications() { return true; }
 	}
 }
