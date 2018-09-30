@@ -3,6 +3,9 @@
 ### Fuse.LocalNotifications
 - Fix bug on iOS where an app is launched (not restored) from a notification and the notification isn't delivered
 
+### Fuse.Controls.DatePicker
+- Fixed bug which caused dates not to be selectable if the control was inside a WhileTrue on iOS
+
 ### Fuse.Deprecated.CameraView
 - This obsolete package has been removed. All functionality should be present in `Fuse.Controls.CameraView` instead.
 
