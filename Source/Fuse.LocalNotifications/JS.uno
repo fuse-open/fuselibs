@@ -32,7 +32,7 @@ namespace Fuse.LocalNotifications
 
 		{
 			if(_instance != null) return;
-			Resource.SetGlobalKey(_instance = this, "FuseJS/LocalNotifications");
+			Uno.UX.Resource.SetGlobalKey(_instance = this, "FuseJS/LocalNotifications");
 
 			var onReceivedMessage = new NativeEvent("onReceivedMessage");
 
