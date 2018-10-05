@@ -271,7 +271,7 @@ namespace Fuse.FileSystem
 
 				var FileSystem = require("FuseJS/FileSystem");
 
-				console.log(FileSystem.exists("myfile.txt") ? "It's there!" : "It's missing :/");
+				console.log(FileSystem.existsSync("myfile.txt") ? "It's there!" : "It's missing :/");
 		*/
 		object ExistsSync(Context context, object[] args)
 		{
@@ -794,7 +794,7 @@ namespace Fuse.FileSystem
 
 
 		/**
-			@scriptmethod writeBufferToFile(filename)
+			@scriptmethod writeBufferToFile(filename, data)
 			@param filename (String) Path to file
 			@param data (ArrayBuffer) Data to write to the file
 			@return (Promise) A Promise of nothing.
@@ -825,7 +825,7 @@ namespace Fuse.FileSystem
 
 
 		/**
-			@scriptmethod writeBufferToFileSync(filename)
+			@scriptmethod writeBufferToFileSync(filename, data)
 			@param filename (String) Path to file
 			@param data (ArrayBuffer) Data to write to the file
 
@@ -851,7 +851,7 @@ namespace Fuse.FileSystem
 
 
 		/**
-			@scriptmethod writeTextToFile(filename)
+			@scriptmethod writeTextToFile(filename, text)
 			@param filename (String) Path to file
 			@param text (String) Text to write to the file
 			@return (Promise) A Promise of nothing.
@@ -878,7 +878,7 @@ namespace Fuse.FileSystem
 
 
 		/**
-			@scriptmethod writeTextToFileSync(filename)
+			@scriptmethod writeTextToFileSync(filename, text)
 			@param filename (String) Path to file
 			@param text (String) Text to write to the file
 
