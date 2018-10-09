@@ -36,7 +36,6 @@ master)
     ;;
 esac
 
-stuff install Stuff
 uno doctor --configuration=Release --build-number=$VERSION
 
 # Make packages
