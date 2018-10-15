@@ -13,7 +13,7 @@ namespace SocketRocket
 	[Require("Xcode.Framework", "CFNetwork.framework")]
 	[Require("Xcode.Framework", "Foundation.framework")]
 	[Require("LinkLibrary", "icucore")]
-	[ForeignInclude(Language.ObjC, "ios/SocketRocket/WebSocketClientObjc.h")]
+	[ForeignInclude(Language.ObjC, "iOS/SocketRocket/WebSocketClientObjc.h")]
 	extern(iOS) public class WebSocketClient : IWebSocketClient, IDisposable
 	{
 		ObjC.Object _webSocket;
