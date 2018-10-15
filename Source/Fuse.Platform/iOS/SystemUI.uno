@@ -200,9 +200,9 @@ namespace Fuse.Platform
 			else
 			{
 				NSOperatingSystemVersion ver = [[NSProcessInfo processInfo] operatingSystemVersion];
-				*major = ver.majorVersion;
-				*minor = ver.minorVersion;
-				*revision = ver.patchVersion;
+				*major = (int)ver.majorVersion;
+				*minor = (int)ver.minorVersion;
+				*revision = (int)ver.patchVersion;
 			}
 		@}
 
