@@ -20,10 +20,10 @@
     "Android/Neovisionaries/WebSocketClient.uno:Source",
     "Android/Neovisionaries/Android.uxl:Extensions",
     "Android/Neovisionaries/nv-websocket-client.jar:File",
-    "ios/SocketRocket/WebSocketClient.uno:Source",
-    "ios/SocketRocket/WebSocketClientObjc.h:ObjCHeader:iOS",
-    "ios/SocketRocket/WebSocketClientObjc.mm:ObjCSource:iOS",
-    "ios/SocketRocket/SocketRocket-iOS.stuff",
-    "ios/SocketRocket/include/SRWebSocket.h:File"
+    "iOS/SocketRocket/WebSocketClient.uno:Source",
+    "iOS/SocketRocket/WebSocketClientObjc.h:ObjCHeader:iOS",
+    "iOS/SocketRocket/WebSocketClientObjc.mm:ObjCSource:iOS",
+    "iOS/SocketRocket/SocketRocket-iOS.stuff",
+    "iOS/SocketRocket/include/SRWebSocket.h:File"
   ]
 }
