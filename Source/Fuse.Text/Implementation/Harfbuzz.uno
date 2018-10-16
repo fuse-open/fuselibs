@@ -116,7 +116,7 @@ namespace Fuse.Text.Implementation
 				float x_offset; float y_offset;
 			} current;
 
-			for (int i = 0; i < glyphCount; ++i)
+			for (unsigned int i = 0; i < glyphCount; ++i)
 			{
 				hb_glyph_info_t info = glyphInfo[i];
 				hb_glyph_position_t pos = glyphPos[i];
