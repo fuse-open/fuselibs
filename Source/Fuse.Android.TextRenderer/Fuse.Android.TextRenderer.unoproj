@@ -1,7 +1,7 @@
 {
-  "Copyright": "Copyright (c) Fusetools AS 2017",
+  "Copyright": "Copyright (c) Fuse Open 2018",
   "Description": "Android TextRenderer",
-  "Publisher": "Fusetools AS",
+  "Publisher": "Fuse Open",
   "Package": {
     "ProjectUrl": "https://fuse-open.github.io"
   },

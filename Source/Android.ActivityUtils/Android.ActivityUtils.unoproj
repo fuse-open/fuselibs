@@ -1,7 +1,7 @@
 {
-  "Copyright": "Copyright (c) Fusetools AS 2016",
+  "Copyright": "Copyright (c) Fuse Open 2018",
   "Description": "Helper Utils for interacting with android Activities",
-  "Publisher": "Fusetools AS",
+  "Publisher": "Fuse Open",
   "Includes": [
       "*"
   ]

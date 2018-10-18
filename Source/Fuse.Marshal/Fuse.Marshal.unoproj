@@ -1,7 +1,7 @@
 {
-  "Copyright": "Copyright (c) Fusetools AS 2017",
+  "Copyright": "Copyright (c) Fuse Open 2018",
   "Description": "Allows marshalling and arithmetic between boxed value types",
-  "Publisher": "Fusetools AS",
+  "Publisher": "Fuse Open",
   "Package": {
     "ProjectUrl": "https://fuse-open.github.io"
   },

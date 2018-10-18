@@ -1,7 +1,7 @@
 {
-  "Copyright": "Copyright (c) Fusetools AS 2016",
+  "Copyright": "Copyright (c) Fuse Open 2018",
   "Description": "Fuse Views support package",
-  "Publisher": "Fusetools AS",
+  "Publisher": "Fuse Open",
   "Packages": [
     "Fuse.Nodes",
     "Fuse.Platform",
