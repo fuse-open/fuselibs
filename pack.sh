@@ -23,13 +23,12 @@ fi
 # use commit SHA as prerelease suffix
 case $BRANCH in
 release-*)
-    UNO_SUFFIX=
     ;;
 master)
-    UNO_SUFFIX="--suffix=master-$REVISION"
+    VERSION="$VERSION-master-$REVISION"
     ;;
 *)
-    UNO_SUFFIX="--suffix=dev-$REVISION"
+    VERSION="$VERSION-dev-$REVISION"
     ;;
 esac
 
@@ -42,7 +41,6 @@ for f in Source/*; do
     if [ -f "$project" ]; then
         uno pack "$project" \
             --version=$VERSION \
-            --out-dir="$OUT" \
-            $UNO_SUFFIX
+            --out-dir="$OUT"
     fi
 done
