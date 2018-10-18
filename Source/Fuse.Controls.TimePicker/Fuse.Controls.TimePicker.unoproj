@@ -3,7 +3,7 @@
   "Description": "Native TimePicker",
   "Publisher": "Fuse Open",
   "Package": {
-    "ProjectUrl": "https://fuse-open.github.io"
+    "ProjectUrl": "https://fuseopen.com"
   },
   "Projects": [
     "../Fuse.Common/Fuse.Common.unoproj",

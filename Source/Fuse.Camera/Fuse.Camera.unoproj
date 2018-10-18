@@ -4,7 +4,7 @@
   "Publisher": "Fuse Open",
   "Title": "Fuse.Camera",
   "Package": {
-    "ProjectUrl": "https://fuse-open.github.io"
+    "ProjectUrl": "https://fuseopen.com"
   },
   "Packages": [
     "Uno.Threading",

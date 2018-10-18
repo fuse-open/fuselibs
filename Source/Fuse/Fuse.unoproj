@@ -3,7 +3,7 @@
   "Publisher": "Fuse Open",
   "Description": "References the complete set of canonical, non-optional Fuse libraries",
   "Package": {
-    "ProjectUrl": "https://fuse-open.github.io"
+    "ProjectUrl": "https://fuseopen.com"
   },
   "IsTransitive": true,
   "Projects": [

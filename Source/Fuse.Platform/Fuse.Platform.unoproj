@@ -3,7 +3,7 @@
   "Publisher": "Fuse Open",
   "Copyright": "Copyright (c) Fuse Open 2018",
   "Package": {
-    "ProjectUrl": "https://fuse-open.github.io"
+    "ProjectUrl": "https://fuseopen.com"
   },
   "InternalsVisibleTo": [
     "Fuse.Views",

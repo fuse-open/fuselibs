@@ -3,7 +3,7 @@
   "Description": "Support for Push Notifications On Mobile",
   "Publisher": "Fuse Open",
   "Package": {
-    "ProjectUrl": "https://fuse-open.github.io"
+    "ProjectUrl": "https://fuseopen.com"
   },
   "Packages": [
     "Uno.Collections",

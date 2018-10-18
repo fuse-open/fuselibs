@@ -1,7 +1,7 @@
 {
   "Copyright": "Copyright (c) Fuse Open 2018",
   "Package": {
-    "ProjectUrl": "https://fuse-open.github.io"
+    "ProjectUrl": "https://fuseopen.com"
   },
   "Description": "A client for the WebSocket protocol",
   "Publisher": "Fuse Open",

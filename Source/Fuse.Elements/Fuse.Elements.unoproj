@@ -3,7 +3,7 @@
   "Description": "Multi-platform UI library based on 2D elements",
   "Publisher": "Fuse Open",
   "Package": {
-    "ProjectUrl": "https://fuse-open.github.io"
+    "ProjectUrl": "https://fuseopen.com"
   },
   "InternalsVisibleTo": [
     "Fuse",

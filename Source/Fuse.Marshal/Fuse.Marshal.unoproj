@@ -3,7 +3,7 @@
   "Description": "Allows marshalling and arithmetic between boxed value types",
   "Publisher": "Fuse Open",
   "Package": {
-    "ProjectUrl": "https://fuse-open.github.io"
+    "ProjectUrl": "https://fuseopen.com"
   },
   "Packages": [
     "Uno.Collections",

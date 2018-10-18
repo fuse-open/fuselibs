@@ -2,7 +2,7 @@
   "Copyright": "Copyright (c) Fuse Open 2018",
   "Publisher": "Fuse Open",
   "Package": {
-    "ProjectUrl": "https://fuse-open.github.io"
+    "ProjectUrl": "https://fuseopen.com"
   },
   "Packages": [
     "Uno.Collections",

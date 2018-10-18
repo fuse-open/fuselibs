@@ -3,7 +3,7 @@
   "Description": "WebView",
   "Publisher": "Fuse Open",
   "Package": {
-    "ProjectUrl": "https://fuse-open.github.io"
+    "ProjectUrl": "https://fuseopen.com"
   },
   "Projects": [
     "../Fuse.Platform/Fuse.Platform.unoproj",

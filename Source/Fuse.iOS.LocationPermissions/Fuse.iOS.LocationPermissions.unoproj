@@ -3,7 +3,7 @@
   "Description": "PList entries for iOS location APIs",
   "Publisher": "Fuse Open",
   "Package": {
-    "ProjectUrl": "https://fuse-open.github.io"
+    "ProjectUrl": "https://fuseopen.com"
   },
   "Includes": [
     "*"

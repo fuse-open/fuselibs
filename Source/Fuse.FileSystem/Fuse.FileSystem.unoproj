@@ -3,7 +3,7 @@
   "Description": "Native Storage",
   "Publisher": "Fuse Open",
   "Package": {
-    "ProjectUrl": "https://fuse-open.github.io"
+    "ProjectUrl": "https://fuseopen.com"
   },
   "InternalsVisibleTo": [
       "Fuse.FileSystem.Test"

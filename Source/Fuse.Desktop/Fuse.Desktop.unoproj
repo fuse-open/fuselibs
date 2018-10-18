@@ -3,7 +3,7 @@
   "Description": "Default bootstrapping for desktop platforms",
   "Publisher": "Fuse Open",
   "Package": {
-    "ProjectUrl": "https://fuse-open.github.io"
+    "ProjectUrl": "https://fuseopen.com"
   },
   "Projects": [
     "../Fuse.Elements/Fuse.Elements.unoproj",
