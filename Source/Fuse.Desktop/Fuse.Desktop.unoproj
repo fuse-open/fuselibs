@@ -1,9 +1,9 @@
 {
-  "Copyright": "Copyright (c) Fusetools AS 2017",
+  "Copyright": "Copyright (c) Fuse Open 2018",
   "Description": "Default bootstrapping for desktop platforms",
-  "Publisher": "Fusetools AS",
+  "Publisher": "Fuse Open",
   "Package": {
-    "ProjectUrl": "https://fuse-open.github.io"
+    "ProjectUrl": "https://fuseopen.com"
   },
   "Projects": [
     "../Fuse.Elements/Fuse.Elements.unoproj",

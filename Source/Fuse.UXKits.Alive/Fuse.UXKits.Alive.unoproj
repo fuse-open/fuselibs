@@ -1,8 +1,8 @@
 {
-  "Copyright": "Copyright (c) Fusetools AS 2017",
-  "Publisher": "Fusetools AS",
+  "Copyright": "Copyright (c) Fuse Open 2018",
+  "Publisher": "Fuse Open",
   "Package": {
-    "ProjectUrl": "https://fuse-open.github.io"
+    "ProjectUrl": "https://fuseopen.com"
   },
   "Packages": [
     "Fuse",

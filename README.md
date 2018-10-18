@@ -4,8 +4,8 @@
 [![license: MIT](https://img.shields.io/github/license/fuse-open/fuselibs.svg)](LICENSE.txt)
 [![Slack](https://img.shields.io/badge/chat-on%20slack-blue.svg)](https://slackcommunity.fusetools.com/)
 
-Fuselibs is a collection of [Uno](https://fuse-open.github.io/docs/uno/uno-lang) libraries that provide
-the UI framework used to build [Fuse](https://fuse-open.github.io/) apps.
+Fuselibs is a collection of [Uno](https://fuseopen.com/docs/uno/uno-lang) libraries that provide
+the UI framework used to build [Fuse](https://fuseopen.com/) apps.
 
 
 ## Requirements
