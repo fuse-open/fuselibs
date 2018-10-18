@@ -7,17 +7,9 @@ OUT="upload"
 
 VERSION=$(cat VERSION.txt)
 
-# Detect revision
-if [ -n "$BUILD_VCS_NUMBER" ]; then
-    REVISION=`echo "$BUILD_VCS_NUMBER" | cut -c1-7`
-else
-    REVISION=`git rev-parse --short HEAD`
-fi
-
-# Detect branch
-if [ -z "$BRANCH" ]; then
-    BRANCH=`git rev-parse --abbrev-ref HEAD`
-fi
+# Detect branch and revision
+REVISION=`git rev-parse --short HEAD`
+BRANCH=`git rev-parse --abbrev-ref HEAD`
 
 # Disable suffix on release branches, otherwise
 # use commit SHA as prerelease suffix
