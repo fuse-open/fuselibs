@@ -24,15 +24,12 @@ fi
 case $BRANCH in
 release-*)
     UNO_SUFFIX=
-    STUFF_SUFFIX="--suffix=-$VERSION"
     ;;
 master)
     UNO_SUFFIX="--suffix=master-$REVISION"
-    STUFF_SUFFIX="--suffix=-$VERSION-master-$REVISION"
     ;;
 *)
     UNO_SUFFIX="--suffix=dev-$REVISION"
-    STUFF_SUFFIX="--suffix=-$VERSION-dev-$REVISION"
     ;;
 esac
 
@@ -49,8 +46,3 @@ for f in Source/*; do
             $UNO_SUFFIX
     fi
 done
-
-stuff pack Tests/AutomaticTestApp \
-    --name=AutomaticTestApp \
-    $STUFF_SUFFIX \
-    --output-dir=AutomaticTestAppUpload
