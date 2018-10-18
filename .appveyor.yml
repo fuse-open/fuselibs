@@ -9,7 +9,11 @@ install:
   - ps: Expand-Archive mesa.zip mesa
 
 build_script:
-  - Stuff\uno doctor
+  - bash pack.sh
+  - 7z a fuselibs-artifacts-%APPVEYOR_BUILD_NUMBER%.zip upload\*.*
+
+artifacts:
+  - path: fuselibs-artifacts-%APPVEYOR_BUILD_NUMBER%.zip
 
 before_test:
   - ps: |
