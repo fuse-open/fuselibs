@@ -247,6 +247,7 @@ namespace Fuse.Resources
 			Action<Exception> _fail;
 			Exception _exception;
 			ImageOrientation _orientation;
+			texture2D _tex;
 
 			public BackgroundLoad(FileSource file, Action<texture2D, ImageOrientation> done, Action<Exception> fail)
 			{
@@ -262,23 +263,18 @@ namespace Fuse.Resources
 				{
 					var data = _file.ReadAllBytes();
 					_orientation = ExifData.FromByteArray(data).Orientation;
-					GWDoneCallback(TextureLoader.ByteArrayToTexture2DFilename(data, _file.Name));
+					_tex = TextureLoader.ByteArrayToTexture2DFilename(data, _file.Name);
+
+					if defined(OpenGL)
+						OpenGL.GL.Finish();
+
+					UpdateManager.PostAction(UIDoneCallback);
 				}
 				catch (Exception e)
 				{
 					_exception = e;
 					UpdateManager.PostAction(UIFailCallback);
 				}
-			}
-
-			texture2D _tex;
-			void GWDoneCallback(texture2D tex)
-			{
-				if defined(OpenGL)
-					OpenGL.GL.Finish();
-
-				_tex = tex;
-				UpdateManager.PostAction(UIDoneCallback);
 			}
 
 			void UIDoneCallback()
