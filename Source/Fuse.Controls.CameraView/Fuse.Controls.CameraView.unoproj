@@ -3,11 +3,13 @@
   "Publisher": "Fuse Open",
   "Title": "Fuse.Controls.CameraView",
   "Packages": [
-    "Fuse",
-    "FuseJS",
-    "Fuse.ImageTools",
     "Uno.Threading",
     "Uno.Permissions"
+  ],
+  "Projects": [
+    "../Fuse/Fuse.unoproj",
+    "../FuseJS/FuseJS.unoproj",
+    "../Fuse.ImageTools/Fuse.ImageTools.unoproj",
   ],
   "Includes": [
     "*",
