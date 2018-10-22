@@ -15,11 +15,11 @@ namespace Experimental.TextureLoader
 	[extern(CPLUSPLUS) Require("Source.Include", "Uno/Support.h")]
 	static class TextureLoaderImpl
 	{
-		public static void JpegByteArrayToTexture2D(byte[] arr, Callback callback)
+		public static texture2D JpegByteArrayToTexture2D(byte[] arr)
 		{
 			if defined(DOTNET)
 			{
-				CilTextureLoader.LoadTexture(arr, callback.Action, "fake.jpeg");
+				return CilTextureLoader.LoadTexture(arr, "fake.jpeg");
 			}
 			else if defined(CPLUSPLUS)
 			@{
@@ -44,20 +44,24 @@ namespace Experimental.TextureLoader
 
 					GLuint handle = uCreateGLTexture(tex, false, &info);
 
-					@{Experimental.TextureLoader.Callback.Execute(Uno.Graphics.Texture2D):Call($1, @{Uno.Graphics.Texture2D(OpenGL.GLTextureHandle,int2,int,Uno.Graphics.Format):New(handle, @{int2(int,int):New(originalWidth, originalHeight)}, info.MipCount, @{Uno.Graphics.Format.Unknown})})};
+					return @{Uno.Graphics.Texture2D(OpenGL.GLTextureHandle,int2,int,Uno.Graphics.Format):New(handle, @{int2(int,int):New(originalWidth, originalHeight)}, info.MipCount, @{Uno.Graphics.Format.Unknown})};
 				}
 				catch (const uBase::Exception &e)
 				{
 					U_THROW(@{Uno.Exception(string):New(uStringFromXliString(e.GetMessage()))});
 				}
 			@}
+			else
+			{
+				throw new NotImplementedException();
+			}
 		}
 
-		public static void PngByteArrayToTexture2D(byte[] arr, Callback callback)
+		public static texture2D PngByteArrayToTexture2D(byte[] arr)
 		{
 			if defined(DOTNET)
 			{
-				CilTextureLoader.LoadTexture(arr, callback.Action, "fake.png");
+				return CilTextureLoader.LoadTexture(arr, "fake.png");
 			}
 			else if defined(CPLUSPLUS)
 			@{
@@ -81,13 +85,17 @@ namespace Experimental.TextureLoader
 					uGLTextureInfo info;
 					GLuint handle = uCreateGLTexture(tex, false, &info);
 
-					@{Experimental.TextureLoader.Callback.Execute(Uno.Graphics.Texture2D):Call($1, @{Uno.Graphics.Texture2D(OpenGL.GLTextureHandle,int2,int,Uno.Graphics.Format):New(handle, @{int2(int,int):New(originalWidth, originalHeight)}, info.MipCount, @{Uno.Graphics.Format.Unknown})})};
+					return @{Uno.Graphics.Texture2D(OpenGL.GLTextureHandle,int2,int,Uno.Graphics.Format):New(handle, @{int2(int,int):New(originalWidth, originalHeight)}, info.MipCount, @{Uno.Graphics.Format.Unknown})};
 				}
 				catch (const uBase::Exception &e)
 				{
 					U_THROW(@{Uno.Exception(string):New(uStringFromXliString(e.GetMessage()))});
 				}
 			@}
+			else
+			{
+				throw new NotImplementedException();
+			}
 		}
 	}
 }

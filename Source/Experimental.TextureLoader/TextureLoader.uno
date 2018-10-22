@@ -5,23 +5,6 @@ using Uno.Collections;
 
 namespace Experimental.TextureLoader
 {
-	[TargetSpecificImplementation]
-	class Callback
-	{
-		Action<texture2D> _action;
-		public Action<texture2D> Action { get { return _action; }}
-
-		public Callback(Action<texture2D> action)
-		{
-			_action = action;
-		}
-
-		public void Execute(texture2D arg)
-		{
-			_action(arg);
-		}
-	}
-
 	public class InvalidContentTypeException : Exception
 	{
 		public InvalidContentTypeException(string reason) : base(reason) { }
@@ -39,13 +22,13 @@ namespace Experimental.TextureLoader
 		{
 			try
 			{
-				TextureLoaderImpl.JpegByteArrayToTexture2D(arr, new Callback(callback));
+				callback(TextureLoaderImpl.JpegByteArrayToTexture2D(arr));
 			}
 			catch (Exception jpegException)
 			{
 				try
 				{
-					TextureLoaderImpl.PngByteArrayToTexture2D(arr, new Callback(callback));
+					callback(TextureLoaderImpl.PngByteArrayToTexture2D(arr));
 				}
 				catch (Exception pngException)
 				{
@@ -65,13 +48,13 @@ namespace Experimental.TextureLoader
 		{
 			try
 			{
-				TextureLoaderImpl.PngByteArrayToTexture2D(arr, new Callback(callback));
+				callback(TextureLoaderImpl.PngByteArrayToTexture2D(arr));
 			}
 			catch (Exception pngException)
 			{
 				try
 				{
-					TextureLoaderImpl.JpegByteArrayToTexture2D(arr, new Callback(callback));
+					callback(TextureLoaderImpl.JpegByteArrayToTexture2D(arr));
 				}
 				catch (Exception jpegException)
 				{
