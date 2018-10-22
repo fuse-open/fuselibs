@@ -177,7 +177,7 @@ namespace Fuse.Resources
 			{
 				try
 				{
-					TextureLoader.ByteArrayToTexture2DContentType(_data, _contentType, GWDoneCallback);
+					GWDoneCallback(TextureLoader.ByteArrayToTexture2DContentType(_data, _contentType));
 				}
 				catch (Exception e)
 				{
