@@ -216,7 +216,7 @@ namespace Fuse.Elements
 			_vertexPositionBufferValid = false;
 		}
 
-		Buffer _tempBuffer;
+		byte[] _tempBuffer;
 
 		public void Draw(DrawContext dc, float4x4 localToClipTransform, Rect scissorRectInClipSpace)
 		{
@@ -233,7 +233,7 @@ namespace Fuse.Elements
 					_vertexPositionBufferValid = false;
 					_vertexTexCoordBufferValid = false;
 
-					_tempBuffer = new Buffer(_elements.Count * 4 * sizeof(float3));
+					_tempBuffer = new byte[_elements.Count * 4 * sizeof(float3)];
 				}
 
 				if (!_indexBufferValid)
@@ -289,7 +289,7 @@ namespace Fuse.Elements
 
 		void FillIndexBuffer()
 		{
-			var indices = new Buffer(_elements.Count * 6 * sizeof(ushort));
+			var indices = new byte[_elements.Count * 6 * sizeof(ushort)];
 			for (int i = 0; i < _elements.Count; ++i)
 			{
 				indices.Set((i * 6 + 0) * sizeof(ushort), (ushort)(i * 4 + 0));
@@ -303,7 +303,7 @@ namespace Fuse.Elements
 			if (_indexBuffer != null)
 				_indexBuffer.Dispose();
 
-			_indexBuffer = new IndexBuffer(indices.GetBytes(), BufferUsage.Immutable);
+			_indexBuffer = new IndexBuffer(indices, BufferUsage.Immutable);
 		}
 
 		const float CachingRectPaddingAdjustment = 0.5f;
@@ -324,7 +324,7 @@ namespace Fuse.Elements
 				vertexTexCoords.Set((i * 4 + 2) * _texCoordInfo.BufferStride + _texCoordInfo.BufferOffset, texCoordOrigin + size);
 				vertexTexCoords.Set((i * 4 + 3) * _texCoordInfo.BufferStride + _texCoordInfo.BufferOffset, texCoordOrigin + float2(0, size.Y));
 			}
-			_texCoordInfo.Buffer.Update(vertexTexCoords.GetBytes());
+			_texCoordInfo.Buffer.Update(vertexTexCoords);
 		}
 
 		void FillVertexPositionBuffer(DrawContext dc)
@@ -351,7 +351,7 @@ namespace Fuse.Elements
 				vertexPositions.Set((i * 4 + 2) * _positionInfo.BufferStride + _positionInfo.BufferOffset, float3(positionOrigin + right + up, opacity));
 				vertexPositions.Set((i * 4 + 3) * _positionInfo.BufferStride + _positionInfo.BufferOffset, float3(positionOrigin + up, opacity));
 			}
-			_positionInfo.Buffer.Update(vertexPositions.GetBytes());
+			_positionInfo.Buffer.Update(vertexPositions);
 		}
 	}
 }

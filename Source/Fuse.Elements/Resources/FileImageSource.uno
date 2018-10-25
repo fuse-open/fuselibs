@@ -196,7 +196,7 @@ namespace Fuse.Resources
 
 				var data = _file.ReadAllBytes();
 				_orientation = ExifData.FromByteArray(data).Orientation;
-				TextureLoader.ByteArrayToTexture2DFilename(new Buffer(data), _file.Name, SetTexture);
+				TextureLoader.ByteArrayToTexture2DFilename(data, _file.Name, SetTexture);
 				OnChanged();
 			}
 			catch (Exception e)
@@ -262,7 +262,7 @@ namespace Fuse.Resources
 				{
 					var data = _file.ReadAllBytes();
 					_orientation = ExifData.FromByteArray(data).Orientation;
-					TextureLoader.ByteArrayToTexture2DFilename(new Buffer(data), _file.Name, GWDoneCallback);
+					TextureLoader.ByteArrayToTexture2DFilename(data, _file.Name, GWDoneCallback);
 				}
 				catch (Exception e)
 				{
