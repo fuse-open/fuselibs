@@ -4,6 +4,10 @@
 #include FT_FREETYPE_H
 #include FT_ADVANCES_H
 
+#ifdef _MSC_VER
+#pragma warning(disable: 4200) // zero-sized array in struct/union
+#endif
+
 struct font_cache_t
 {
 	FT_Face ft_face;

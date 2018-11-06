@@ -1,10 +1,10 @@
 {
-  "Copyright": "Copyright (c) Fusetools AS 2017",
+  "Copyright": "Copyright (c) Fuse Open 2018",
   "Package": {
-    "ProjectUrl": "https://fuse-open.github.io"
+    "ProjectUrl": "https://fuseopen.com"
   },
   "Description": "A client for the WebSocket protocol",
-  "Publisher": "Fusetools AS",
+  "Publisher": "Fuse Open",
   "Projects": [
     "../Fuse.Common/Fuse.Common.unoproj",
     "../Fuse.Scripting/Fuse.Scripting.unoproj",
@@ -20,10 +20,10 @@
     "Android/Neovisionaries/WebSocketClient.uno:Source",
     "Android/Neovisionaries/Android.uxl:Extensions",
     "Android/Neovisionaries/nv-websocket-client.jar:File",
-    "ios/SocketRocket/WebSocketClient.uno:Source",
-    "ios/SocketRocket/WebSocketClientObjc.h:ObjCHeader:iOS",
-    "ios/SocketRocket/WebSocketClientObjc.mm:ObjCSource:iOS",
-    "ios/SocketRocket/SocketRocket-iOS.stuff",
-    "ios/SocketRocket/include/SRWebSocket.h:File"
+    "iOS/SocketRocket/WebSocketClient.uno:Source",
+    "iOS/SocketRocket/WebSocketClientObjc.h:ObjCHeader:iOS",
+    "iOS/SocketRocket/WebSocketClientObjc.mm:ObjCSource:iOS",
+    "iOS/SocketRocket/SocketRocket-iOS.stuff",
+    "iOS/SocketRocket/include/SRWebSocket.h:File"
   ]
 }

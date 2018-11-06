@@ -34,6 +34,21 @@
 			}
 		}
 	}
+
+	NSURL *url = navAction.request.URL;
+	if ([url.scheme isEqualToString:@"mailto"] ||
+		 [url.scheme isEqualToString:@"sms"] ||
+		 [url.scheme isEqualToString:@"tel"])
+	{
+		UIApplication *app = [UIApplication sharedApplication];
+		if ([app canOpenURL:url])
+		{
+			[app openURL:url];
+			handler(WKNavigationActionPolicyCancel);
+			return;
+		}
+	}
+
 	handler(WKNavigationActionPolicyAllow);
 }
 

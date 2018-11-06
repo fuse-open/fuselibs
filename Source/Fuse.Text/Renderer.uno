@@ -200,7 +200,7 @@ namespace Fuse.Text
 				if (quadCount > 0)
 				{
 					var vertexBuffer = new VertexBuffer(BufferUsage.Stream);
-					vertexBuffer.Update(CreateVertexBufferData(quads, textures[i].Size).GetBytes());
+					vertexBuffer.Update(CreateVertexBufferData(quads, textures[i].Size));
 
 					_batches.Add(new Batch(i, vertexBuffer, quadCount));
 				}
@@ -283,7 +283,7 @@ namespace Fuse.Text
 				if (length > _length)
 				{
 					_length = Math.Max(length, _length * 2);
-					IndexBuffer.Update(CreateIndexBufferData(_length).GetBytes());
+					IndexBuffer.Update(CreateIndexBufferData(_length));
 				}
 			}
 
@@ -299,10 +299,10 @@ namespace Fuse.Text
 			}
 		}
 
-		static Buffer CreateIndexBufferData(int length)
+		static byte[] CreateIndexBufferData(int length)
 		{
 			var stride = sizeof(ushort) * 6;
-			var buffer = new Buffer(stride * length);
+			var buffer = new byte[stride * length];
 			for (int i = 0; i < length; ++i)
 			{
 				var bufferPos = i * stride;
@@ -317,7 +317,7 @@ namespace Fuse.Text
 			return buffer;
 		}
 
-		static Buffer CreateVertexBufferData(List<Quad> quads, int2 texSize)
+		static byte[] CreateVertexBufferData(List<Quad> quads, int2 texSize)
 		{
 			var stride = sizeof(float2) + sizeof(ushort2);
 			var quadStride = 4 * stride;
@@ -384,7 +384,7 @@ namespace Fuse.Text
 				Uno.Runtime.Implementation.BufferImpl.SetUShort(buffer, bufferPos, texBottom, littleEndian);
 				bufferPos += sizeof(ushort);
 			}
-			return new Buffer(buffer);
+			return buffer;
 		}
 	}
 }

@@ -1,4 +1,6 @@
 package com.fusetools.webview;
+import android.content.Intent;
+import android.net.Uri;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.graphics.Bitmap;
@@ -37,7 +39,14 @@ public class FuseWebViewClient extends WebViewClient
 	{
 		if(tryInterceptUriScheme(url))
 			return true;
-		
+		else if (url.startsWith("mailto:") ||
+					url.startsWith("sms:") ||
+					url.startsWith("tel:")) {
+			Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+			com.fuse.Activity.getRootActivity().startActivity(intent);
+			return true;
+		}
+
 		if(!loadingFinished){
 			redirect = true;
 		}else{

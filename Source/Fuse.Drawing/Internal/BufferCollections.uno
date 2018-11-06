@@ -18,7 +18,7 @@ namespace Fuse.Drawing.Internal {
 		Thus each type needs its own derived class! (NOTE: I've just removed the generic for now)
 	*/
 	public class TypedBuffer {
-		protected Buffer back;
+		protected byte[] back;
 		protected int typeSize;
 		//how many items can be stored in back
 		protected int capacity;
@@ -33,14 +33,14 @@ namespace Fuse.Drawing.Internal {
 		
 		protected void Init( int initSize ) {
 			this.capacity = initSize;
-			back = new Buffer( typeSize * initSize );
+			back = new byte[typeSize * initSize];
 		}
 		
 		protected TypedBuffer() {
 			this.typeSize = 0;
 			this.capacity = 0;
 			this.size = 0;
-			back = new Buffer( 0 );
+			back = new byte[0];
 		}
 		
 		IndexBuffer deviceIndex = null;
@@ -48,7 +48,7 @@ namespace Fuse.Drawing.Internal {
 			Creates a device index buffer for this buffer.
 		*/
 		public void InitDeviceIndex( BufferUsage bu = BufferUsage.Dynamic ) {
-			deviceIndex = new IndexBuffer( back.GetBytes(), bu );
+			deviceIndex = new IndexBuffer( back, bu );
 		}
 		public IndexBuffer GetDeviceIndex() {
 			return deviceIndex;
@@ -56,7 +56,7 @@ namespace Fuse.Drawing.Internal {
 		
 		VertexBuffer deviceVertex = null;
 		public void InitDeviceVertex( BufferUsage bu = BufferUsage.Dynamic ) {
-			deviceVertex = new VertexBuffer( back.GetBytes(), bu );
+			deviceVertex = new VertexBuffer( back, bu );
 		}
 		public VertexBuffer GetDeviceVertex() {
 			return deviceVertex;
@@ -64,10 +64,10 @@ namespace Fuse.Drawing.Internal {
 		
 		public void UpdateDevice() {
 			if( deviceIndex != null ) {
-				deviceIndex.Update( back.GetBytes() );
+				deviceIndex.Update( back );
 			} 
 			if( deviceVertex != null ) {
-				deviceVertex.Update( back.GetBytes() );
+				deviceVertex.Update( back );
 			}
 		}
 		
@@ -75,9 +75,13 @@ namespace Fuse.Drawing.Internal {
 			return size;
 		}
 		
-		
-		public Buffer GetBuffer() {
+		public byte[] GetBytes() {
 			return back;
+		}
+
+		[Obsolete("Use GetBytes() instead")]
+		public Buffer GetBuffer() {
+			return new Buffer(back);
 		}
 		
 		/**
@@ -96,8 +100,8 @@ namespace Fuse.Drawing.Internal {
 				return;
 			}
 			int newCap = capacity * 2;
-			var newBuf = new Buffer( typeSize * newCap );
-			for( int i=0; i < back.SizeInBytes; ++i ) {
+			var newBuf = new byte[typeSize * newCap];
+			for( int i=0; i < back.Length; ++i ) {
 				newBuf.Set( i, back[i] );
 			}
 			back = newBuf;

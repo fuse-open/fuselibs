@@ -4,8 +4,8 @@
 [![license: MIT](https://img.shields.io/github/license/fuse-open/fuselibs.svg)](LICENSE.txt)
 [![Slack](https://img.shields.io/badge/chat-on%20slack-blue.svg)](https://slackcommunity.fusetools.com/)
 
-Fuselibs is a collection of [Uno](https://fuse-open.github.io/docs/uno/uno-lang) libraries that provide
-the UI framework used to build [Fuse](https://fuse-open.github.io/) apps.
+Fuselibs is a collection of [Uno](https://fuseopen.com/docs/uno/uno-lang) libraries that provide
+the UI framework used to build [Fuse](https://fuseopen.com/) apps.
 
 
 ## Requirements
@@ -61,21 +61,3 @@ conduct, and the process for submitting pull requests to us.
 ### Reporting issues
 
 Please report issues [here](https://github.com/fuse-open/fuselibs/issues).
-
-## What's this "Stuff" thing?
-
-Stuff is the tool that downloads and extracts `uno` (which is required to
-build fuselibs), as well as some other useful utilities. The `Stuff`
-directory contains `stuff.exe`, a few `.stuff`-files and a few
-`.packages`-files. `stuff.exe` is a tool that reads the `.stuff`-files,
-and download and extract them into the source tree. The dependencies
-specified in the `.package`-files installed lazily by `uno doctor` when
-needed. This is all automated in `build.bat` and `build.sh`.
-
-After `stuff.exe` has done it's job, you can find:
-
-| Component                      | Path           |
-|:-------------------------------|:---------------|
-| Prebuilt uno wrapper (Windows) | Stuff/uno.exe  |
-| Prebuilt uno wrapper (macOS)   | Stuff/uno      |
-| Prebuilt core packages         | Stuff/lib      |

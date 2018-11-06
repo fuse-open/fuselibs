@@ -41,7 +41,7 @@ namespace Fuse.PushNotifications
 				"registrationSucceeded")
 		{
 			if (_instance != null) return;
-			Resource.SetGlobalKey(_instance = this, "FuseJS/Push");
+			Uno.UX.Resource.SetGlobalKey(_instance = this, "FuseJS/Push");
 
 			// Old-style events for backwards compatibility
 			var onReceivedMessage = new NativeEvent("onReceivedMessage");

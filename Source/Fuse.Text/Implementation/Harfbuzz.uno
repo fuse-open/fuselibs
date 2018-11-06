@@ -9,13 +9,13 @@ namespace Fuse.Text.Implementation
 	[Require("Source.Include", "hb-ft-cached.h")]
 	[Require("Source.Include", "ft2build.h")]
 	[Require("Source.Declaration", "#include FT_ADVANCES_H")]
-	[Require("IncludeDirectory", "@('../harfbuzz/include':Path)")]
+	[extern(UNIX) Require("IncludeDirectory", "@('../harfbuzz/include':Path)")]
+	[extern(WIN32) Require("IncludeDirectory", "@('../harfbuzz/lib/Windows/include':Path)")] // Windows use a newer version of Harfbuzz
 	[extern(iOS) Require("Source.Include", "harfbuzz/hb-coretext.h")]
 	[extern(iOS) Require("LinkDirectory", "@('../harfbuzz/lib/iOS':Path)")]
 	[extern((PInvoke || NATIVE) && HOST_MAC) Require("LinkDirectory", "@('../harfbuzz/lib/OSX':Path)")]
 	[extern((PInvoke || NATIVE) && HOST_MAC) Require("Xcode.Framework", "CoreText")]
-	[extern(Android) Require("LinkDirectory", "@('../harfbuzz/lib/Android':Path)")]
-	[extern(Android) Require("JNI.StaticLibrary", "@('../harfbuzz/lib/Android/libharfbuzz.a':Path)")]
+	[extern(Android) Require("StaticLibrary", "@('../harfbuzz/lib/Android/libharfbuzz.a':Path)")]
 	[extern((PInvoke || NATIVE) && HOST_WINDOWS) Require("LinkDirectory", "@('../harfbuzz/lib/Windows':Path)")]
 	[extern(!Android) Require("LinkLibrary", "harfbuzz")]
 	[TargetSpecificImplementation]
@@ -116,7 +116,7 @@ namespace Fuse.Text.Implementation
 				float x_offset; float y_offset;
 			} current;
 
-			for (int i = 0; i < glyphCount; ++i)
+			for (unsigned int i = 0; i < glyphCount; ++i)
 			{
 				hb_glyph_info_t info = glyphInfo[i];
 				hb_glyph_position_t pos = glyphPos[i];

@@ -96,7 +96,7 @@ You can also bind to a path:
 	</JavaScript>
 	<Text Value="{complex.user.userinfo.name}" />
 
-This is very useful when binding to arbitrary data sources such as those returned from a REST service as JSON, as it often allows you to bind directly to complex data without processing the data in code first. [See this in-depth example](https://fuse-open.github.io/examples/news-feed/).
+This is very useful when binding to arbitrary data sources such as those returned from a REST service as JSON, as it often allows you to bind directly to complex data without processing the data in code first. [See this in-depth example](https://fuseopen.com/examples/news-feed/).
 
 ## Binding directions
 

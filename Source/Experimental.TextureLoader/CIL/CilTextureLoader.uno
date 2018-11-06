@@ -7,11 +7,11 @@ namespace Experimental.TextureLoader
 {
 	extern(DOTNET) static class CilTextureLoader
 	{
-		public static void LoadTexture(Buffer buffer, Action<texture2D> callback, string filename)
+		public static void LoadTexture(byte[] buffer, Action<texture2D> callback, string filename)
 		{
 			using(var stream = new Uno.IO.MemoryStream())
 			{
-				var imageBytes = buffer.GetBytes();
+				var imageBytes = buffer;
 				stream.Write(imageBytes, 0, imageBytes.Length);
 				stream.Position = 0;
 

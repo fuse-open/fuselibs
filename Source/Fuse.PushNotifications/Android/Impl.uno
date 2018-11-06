@@ -32,7 +32,7 @@ namespace Fuse.PushNotifications
 					"java.util.HashMap",
 					"org.json.JSONException",
 					"org.json.JSONObject")]
-	[Require("Gradle.Dependency.Compile", "com.google.android.gms:play-services-gcm:9.2.0")]
+	[Require("Gradle.Dependency.Implementation", "com.google.android.gms:play-services-gcm:9.2.0")]
 	extern(Android)
 	internal class AndroidImpl
 	{

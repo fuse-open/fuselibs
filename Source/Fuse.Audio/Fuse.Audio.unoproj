@@ -1,10 +1,10 @@
 {
-  "Copyright": "Copyright (c) Fusetools AS 2017",
+  "Copyright": "Copyright (c) Fuse Open 2018",
   "Description": "Audio playback support",
-  "Publisher": "Fusetools AS",
+  "Publisher": "Fuse Open",
   "Title": "Fuse.Audio",
   "Package": {
-    "ProjectUrl": "https://fuse-open.github.io"
+    "ProjectUrl": "https://fuseopen.com"
   },
   "Packages": [
     "Uno.Threading",

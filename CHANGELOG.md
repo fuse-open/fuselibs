@@ -1,5 +1,8 @@
 # Unreleased
 
+### Fuse.Controls.WebView
+- Improves WebView to handle mailto, sms, and tel special URLs supported by system apps on Android & iOS platforms
+
 ### Fuse.LocalNotifications
 - Fix bug on iOS where an app is launched (not restored) from a notification and the notification isn't delivered
 

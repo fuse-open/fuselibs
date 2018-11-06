@@ -8,8 +8,6 @@ namespace Fuse.Scripting.JavaScriptCore
 	[Set("DefaultValue", "NULL")]
 	extern(USE_JAVASCRIPTCORE) struct JSValueRef
 	{
-		IntPtr _dummy;
-
 		public static bool operator==(JSValueRef v1, JSValueRef v2) @{ return v1 == v2; @}
 		public static bool operator!=(JSValueRef v1, JSValueRef v2) @{ return v1 != v2; @}
 
@@ -149,8 +147,6 @@ namespace Fuse.Scripting.JavaScriptCore
 	[Set("DefaultValue", "NULL")]
 	extern(USE_JAVASCRIPTCORE) struct JSStringRef : IDisposable
 	{
-		IntPtr _dummy;
-
 		public static JSStringRef Create(string str)
 		@{
 			return ::JSStringCreateWithCharacters((const JSChar*)$0->Ptr(), $0->Length());
@@ -175,8 +171,6 @@ namespace Fuse.Scripting.JavaScriptCore
 	[Set("DefaultValue", "NULL")]
 	extern(USE_JAVASCRIPTCORE) struct JSObjectRef
 	{
-		IntPtr _dummy;
-
 		public static bool operator==(JSObjectRef o1, JSObjectRef o2) @{ return o1 == o2; @}
 		public static bool operator!=(JSObjectRef o1, JSObjectRef o2) @{ return o1 != o2; @}
 
@@ -329,8 +323,6 @@ namespace Fuse.Scripting.JavaScriptCore
 	[Set("DefaultValue", "NULL")]
 	extern(USE_JAVASCRIPTCORE) struct JSPropertyNameArray: IDisposable
 	{
-		IntPtr _dummy;
-
 		public int GetCount()
 		@{
 			return (@{int})::JSPropertyNameArrayGetCount(*$$);
@@ -356,8 +348,6 @@ namespace Fuse.Scripting.JavaScriptCore
 	[Set("DefaultValue", "NULL")]
 	extern(USE_JAVASCRIPTCORE) struct JSContextRef : IDisposable
 	{
-		IntPtr _dummy;
-
 		public static JSContextRef Create()
 		@{
 			return (@{JSContextRef})::JSGlobalContextCreate(NULL);
@@ -418,8 +408,6 @@ namespace Fuse.Scripting.JavaScriptCore
 	[Set("DefaultValue", "NULL")]
 	extern(USE_JAVASCRIPTCORE) struct JSClassRef : IDisposable
 	{
-		IntPtr _dummy;
-
 		public static JSClassRef CreateUnoFinalizer()
 		@{
 			::JSClassDefinition classDef = kJSClassDefinitionEmpty;
