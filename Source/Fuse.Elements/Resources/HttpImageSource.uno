@@ -164,6 +164,7 @@ namespace Fuse.Resources
 			Action<texture2D> _done;
 			Action<Exception> _fail;
 			Exception _exception;
+			texture2D _tex;
 			public BackgroundLoad(byte[] data, string contentType, Action<texture2D> done, Action<Exception> fail)
 			{
 				_data = data;
@@ -177,23 +178,18 @@ namespace Fuse.Resources
 			{
 				try
 				{
-					TextureLoader.ByteArrayToTexture2DContentType(_data, _contentType, GWDoneCallback);
+					_tex = TextureLoader.ByteArrayToTexture2DContentType(_data, _contentType);
+
+					if defined(OpenGL)
+						OpenGL.GL.Finish();
+
+					UpdateManager.AddOnceAction(UIDoneCallback);
 				}
 				catch (Exception e)
 				{
 					_exception = e;
 					UpdateManager.AddOnceAction(UIFailCallback);
 				}
-			}
-
-			texture2D _tex;
-			void GWDoneCallback(texture2D tex)
-			{
-				if defined(OpenGL)
-					OpenGL.GL.Finish();
-
-				_tex = tex;
-				UpdateManager.AddOnceAction(UIDoneCallback);
 			}
 
 			void UIDoneCallback()
