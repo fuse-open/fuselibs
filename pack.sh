@@ -9,7 +9,12 @@ VERSION=$(cat VERSION.txt)
 
 # Detect branch and revision
 REVISION=`git rev-parse --short HEAD`
-BRANCH=`git rev-parse --abbrev-ref HEAD`
+
+if [ -n "$APPVEYOR_REPO_BRANCH" ]; then
+    BRANCH=$APPVEYOR_REPO_BRANCH
+else
+    BRANCH=`git rev-parse --abbrev-ref HEAD`
+fi
 
 # Disable suffix on release branches, otherwise
 # use commit SHA as prerelease suffix

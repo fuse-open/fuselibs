@@ -5,23 +5,6 @@ using Uno.Collections;
 
 namespace Experimental.TextureLoader
 {
-	[TargetSpecificImplementation]
-	class Callback
-	{
-		Action<texture2D> _action;
-		public Action<texture2D> Action { get { return _action; }}
-
-		public Callback(Action<texture2D> action)
-		{
-			_action = action;
-		}
-
-		public void Execute(texture2D arg)
-		{
-			_action(arg);
-		}
-	}
-
 	public class InvalidContentTypeException : Exception
 	{
 		public InvalidContentTypeException(string reason) : base(reason) { }
@@ -35,17 +18,23 @@ namespace Experimental.TextureLoader
 			JpegByteArrayToTexture2D(arr.GetBytes(), callback);
 		}
 
+		[Obsolete("Use the returning overload instead")]
 		public static void JpegByteArrayToTexture2D(byte[] arr, Uno.Action<texture2D> callback)
+		{
+			callback(JpegByteArrayToTexture2D(arr));
+		}
+
+		public static texture2D JpegByteArrayToTexture2D(byte[] arr)
 		{
 			try
 			{
-				TextureLoaderImpl.JpegByteArrayToTexture2D(arr, new Callback(callback));
+				return TextureLoaderImpl.JpegByteArrayToTexture2D(arr);
 			}
 			catch (Exception jpegException)
 			{
 				try
 				{
-					TextureLoaderImpl.PngByteArrayToTexture2D(arr, new Callback(callback));
+					return TextureLoaderImpl.PngByteArrayToTexture2D(arr);
 				}
 				catch (Exception pngException)
 				{
@@ -61,17 +50,23 @@ namespace Experimental.TextureLoader
 			PngByteArrayToTexture2D(arr.GetBytes(), callback);
 		}
 
+		[Obsolete("Use the returning overload instead")]
 		public static void PngByteArrayToTexture2D(byte[] arr, Uno.Action<texture2D> callback)
+		{
+			callback(PngByteArrayToTexture2D(arr));
+		}
+
+		public static texture2D PngByteArrayToTexture2D(byte[] arr)
 		{
 			try
 			{
-				TextureLoaderImpl.PngByteArrayToTexture2D(arr, new Callback(callback));
+				return TextureLoaderImpl.PngByteArrayToTexture2D(arr);
 			}
 			catch (Exception pngException)
 			{
 				try
 				{
-					TextureLoaderImpl.JpegByteArrayToTexture2D(arr, new Callback(callback));
+					return TextureLoaderImpl.JpegByteArrayToTexture2D(arr);
 				}
 				catch (Exception jpegException)
 				{
@@ -87,13 +82,19 @@ namespace Experimental.TextureLoader
 			ByteArrayToTexture2DFilename(arr.GetBytes(), filename, callback);
 		}
 
+		[Obsolete("Use the returning overload instead")]
 		public static void ByteArrayToTexture2DFilename(byte[] arr, string filename, Uno.Action<texture2D> callback)
+		{
+			callback(ByteArrayToTexture2DFilename(arr, filename));
+		}
+
+		public static texture2D ByteArrayToTexture2DFilename(byte[] arr, string filename)
 		{
 			filename = filename.ToLower();
 			if (filename.EndsWith(".png"))
-				PngByteArrayToTexture2D(arr, callback);
+				return PngByteArrayToTexture2D(arr);
 			else if (filename.EndsWith(".jpg") || filename.EndsWith(".jpeg"))
-				JpegByteArrayToTexture2D(arr, callback);
+				return JpegByteArrayToTexture2D(arr);
 			else
 				throw new InvalidContentTypeException(filename);
 		}
@@ -104,16 +105,22 @@ namespace Experimental.TextureLoader
 			ByteArrayToTexture2DFilename(arr.GetBytes(), filename, callback);
 		}
 
+		[Obsolete("Use the returning overload instead")]
 		public static void ByteArrayToTexture2DContentType(byte[] arr, string contentType, Uno.Action<texture2D> callback)
 		{
+			callback(ByteArrayToTexture2DContentType(arr, contentType));
+		}
+
+		public static texture2D ByteArrayToTexture2DContentType(byte[] arr, string contentType)
+		{
 			if (contentType.IndexOf("image/jpeg") != -1 || contentType.IndexOf("image/jpg") != -1)
-				JpegByteArrayToTexture2D(arr, callback);
+				return JpegByteArrayToTexture2D(arr);
 			else if (contentType.IndexOf("image/png") != -1)
-				PngByteArrayToTexture2D(arr, callback);
+				return PngByteArrayToTexture2D(arr);
 			else if (contentType.IndexOf("application/octet-stream") != -1)
-				JpegByteArrayToTexture2D(arr, callback);
+				return JpegByteArrayToTexture2D(arr);
 			else if (contentType.IndexOf("binary/octet-stream") != -1)
-				JpegByteArrayToTexture2D(arr, callback);
+				return JpegByteArrayToTexture2D(arr);
 			else
 				throw new InvalidContentTypeException(contentType);
 		}

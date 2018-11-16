@@ -7,7 +7,7 @@ namespace Experimental.TextureLoader
 {
 	extern(DOTNET) static class CilTextureLoader
 	{
-		public static void LoadTexture(byte[] buffer, Action<texture2D> callback, string filename)
+		public static texture2D LoadTexture(byte[] buffer, string filename)
 		{
 			using(var stream = new Uno.IO.MemoryStream())
 			{
@@ -61,11 +61,12 @@ namespace Experimental.TextureLoader
 					GL.BindTexture(GLTextureTarget.Texture2D, textureHandle);
 					GL.PixelStore(GLPixelStoreParameter.UnpackAlignment, 1);
 					GL.TexImage2D(GLTextureTarget.Texture2D, 0, internalFormat, bitmap.Width, bitmap.Height, 0, pixelFormat, pixelType, bitmap.ReadData());
-					var texture = new Uno.Graphics.Texture2D(textureHandle, new Uno.Int2(bitmap.Width, bitmap.Height), 1, format);
-
-					callback(texture);
+					return new Uno.Graphics.Texture2D(textureHandle, new Uno.Int2(bitmap.Width, bitmap.Height), 1, format);
 				}
 			}
+
+			// Workaround for false E4516: Not all code paths return a value
+			return null;
 		}
 	}
 }

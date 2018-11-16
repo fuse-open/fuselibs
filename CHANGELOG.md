@@ -1,22 +1,30 @@
 # Unreleased
 
+
+# 1.10
+
+## 1.10.0
+
+### Experimental.TextureLoader
+- Added a set of overloads that return the texture object directly instead of passing the texture via callbacks. The old callback-based overloads are deprecated.
+
 ### Fuse.Controls.WebView
-- Improves WebView to handle mailto, sms, and tel special URLs supported by system apps on Android & iOS platforms
+- Improves WebView to handle `mailto:`, `sms:`, and `tel:` special URLs supported by system apps on Android and iOS.
 
 ### Fuse.LocalNotifications
-- Fix bug on iOS where an app is launched (not restored) from a notification and the notification isn't delivered
+- Fix bug on iOS where an app is launched (not restored) from a notification and the notification isn't delivered.
 
 ### Fuse.Controls.DatePicker
-- Fixed bug which caused dates not to be selectable if the control was inside a WhileTrue on iOS
+- Fixed bug which caused dates not to be selectable if the control was inside a WhileTrue on iOS.
 
 ### Fuse.Deprecated.CameraView
 - This obsolete package has been removed. All functionality should be present in `Fuse.Controls.CameraView` instead.
 
-### Camera
+### Camera
 - New feature: `checkPermissions()` - Check if your app has access to the camera.
 - New feature: `requestPermissions()` - Request permission to access the camera. In iOS, if the user has previously denied access this function will redirect them to your app settings in their iPhone / iPad.
 
-### CameraRoll
+### CameraRoll
 - New feature: `checkPermissions()` - Check if your app has access to the gallery.
 - New feature: `requestPermissions()` - Request permission to access the gallery. In iOS, if the user has previously denied access this function will redirect them to your app settings in their iPhone / iPad.
 
