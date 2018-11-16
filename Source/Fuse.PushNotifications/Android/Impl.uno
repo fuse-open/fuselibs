@@ -22,17 +22,18 @@ namespace Fuse.PushNotifications
 					"android.net.Uri",
 					"android.os.Bundle",
 					"android.graphics.Color",
+					"android.util.Log",
 					"android.support.v4.app.NotificationCompat",
 					"com.fuse.PushNotifications.PushNotificationReceiver",
 					"com.fuse.PushNotifications.BigPictureStyleHttp",
-					"com.google.android.gms.gcm.GoogleCloudMessaging",
-					"com.google.android.gms.common.ConnectionResult",
-					"com.google.android.gms.common.GooglePlayServicesUtil",
 					"java.util.ArrayList",
 					"java.util.HashMap",
 					"org.json.JSONException",
-					"org.json.JSONObject")]
-	[Require("Gradle.Dependency.Implementation", "com.google.android.gms:play-services-gcm:9.2.0")]
+					"org.json.JSONObject",
+					"com.google.android.gms.common.ConnectionResult",
+					"com.google.android.gms.common.GoogleApiAvailability"
+					)]
+	[Require("Gradle.Dependency.Implementation", "com.google.firebase:firebase-messaging:17.3.4")]
 	extern(Android)
 	internal class AndroidImpl
 	{
@@ -42,22 +43,16 @@ namespace Fuse.PushNotifications
 
 		static bool _init = false;
 		static List<string> _cachedMessages = new List<string>();
-		static string _senderID = extern<string>"uString::Ansi(\"@(Project.Android.GooglePlay.SenderID:Or(''))\")";
 		static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 
 		internal static void Init()
 		{
 			if (!_init)
 			{
-				if (_senderID!="")
-				{
-					JInit();
-					_init = true;
-					Lifecycle.EnteringInteractive += OnEnteringInteractive;
-					Lifecycle.ExitedInteractive += OnExitedInteractive;
-				} else {
-					debug_log "Fuse.PushNotifications: You have tried to start the android push notification service but do not have a 'Project.Android.GooglePlay.SenderID' specified in your unoproj file. Please add one and try again.";
-				}
+				JInit();
+				_init = true;
+				Lifecycle.EnteringInteractive += OnEnteringInteractive;
+				Lifecycle.ExitedInteractive += OnExitedInteractive;
 			}
 		}
 
@@ -73,36 +68,20 @@ namespace Fuse.PushNotifications
 				},
 				PushNotificationReceiver.ACTION);
 
-			// Set up GCM
-			final String senderID = @{_senderID};
+			// Set up FCM
 			final Activity activity = com.fuse.Activity.getRootActivity();
 			activity.runOnUiThread(new Runnable() {
 					@Override
 						public void run() {
-						// Check device for Play Services APK. If check succeeds, proceed with GCM registration.
+						// Check device for Play Services APK. If check succeeds, proceed with FCM registration.
 						if (@{CheckPlayServices():Call()}) {
-							GoogleCloudMessaging _gcm = GoogleCloudMessaging.getInstance(activity);
-							if (_gcm == null) {
-								_gcm = GoogleCloudMessaging.getInstance(activity.getApplicationContext());
+
+							String _regID = com.google.firebase.iid.FirebaseInstanceId.getInstance().getToken();
+							if (_regID != null) {
+								@{getRegistrationIdSuccess(string):Call(_regID)};
 							}
-							final GoogleCloudMessaging gcm = _gcm;
-							new AsyncTask<Void, Void, String>() {
-								@Override protected String doInBackground(Void... params) {
-									String msg = "";
-									try {
-										String _regID = gcm.register(senderID);
-										@{getRegistrationIdSuccess(string):Call(_regID)};
-										return "Device registered, registration ID=" + _regID;
-									} catch (java.io.IOException ex) {
-										msg = "Error :" + ex.getMessage();
-										@{getRegistrationIdError(string):Call(msg)};
-										return msg;
-									}
-								}
-								@Override protected void onPostExecute(String msg) {}
-							}.execute();
 						} else {
-							debug_log("No valid Google Play Services APK found.");
+							@{getRegistrationIdError(string):Call("Google Play Services need to be updated")};
 						}
 					}
 				});
@@ -115,17 +94,26 @@ namespace Fuse.PushNotifications
 		[Foreign(Language.Java)]
 		static bool CheckPlayServices()
 		@{
+
 			Activity activity = com.fuse.Activity.getRootActivity();
-			int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(activity);
+			GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
+			int resultCode = apiAvailability.isGooglePlayServicesAvailable(activity);
 			if (resultCode != ConnectionResult.SUCCESS) {
-				if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
-					GooglePlayServicesUtil.getErrorDialog(resultCode, activity, @{PLAY_SERVICES_RESOLUTION_REQUEST}).show();
+				if (apiAvailability.isUserResolvableError(resultCode)) {
+					apiAvailability.getErrorDialog(activity, resultCode, @{PLAY_SERVICES_RESOLUTION_REQUEST})
+						.show();
 				} else {
-					debug_log("This device is not supported.");
+					return false;
 				}
 				return false;
 			}
 			return true;
+		@}
+
+		[Foreign(Language.Java), ForeignFixedName]
+		static void RegistrationIDUpdated(string regid)
+		@{
+			@{getRegistrationIdSuccess(string):Call(regid)};
 		@}
 
 		static void getRegistrationIdSuccess(string regid)
@@ -424,12 +412,24 @@ namespace Fuse.PushNotifications
 				*/
 				#if @(Project.Android.Notification.DefaultChannelLightColor:IsSet)
 					channel.enableLights(true);
-					channel.setLightColor(Color.parseColor("@(Project.Android.Notification.DefaultChannelLightColor)"));
+					try {
+						channel.setLightColor(Color.parseColor("@(Project.Android.Notification.DefaultChannelLightColor)"));
+					} catch (Exception e) { //try with #
+						try {
+							channel.setLightColor(Color.parseColor("#@(Project.Android.Notification.DefaultChannelLightColor)"));
+						} catch (Exception e2) {}
+					}
 				#endif
 				// Allow for notificationChannelLightColor to be overridden from notification payload
 				if (notificationChannelLightColor!=null && !notificationChannelLightColor.isEmpty()) {
 					channel.enableLights(true);
-					channel.setLightColor(Color.parseColor(notificationChannelLightColor));
+					try {
+						channel.setLightColor(Color.parseColor(notificationChannelLightColor));
+					} catch (Exception e) {
+						try {
+							channel.setLightColor(Color.parseColor("#" + notificationChannelLightColor));
+						} catch (Exception e2) {}
+					}
 				}
 
 				/* Notification Channel Vibration On
@@ -641,11 +641,23 @@ namespace Fuse.PushNotifications
 				Example value: #8811ff
 			*/
 			#if @(Project.Android.NotificationIcon.Color:IsSet)
-				notificationBuilder.setColor(Color.parseColor("@(Project.Android.NotificationIcon.Color)"));
+				try {
+					notificationBuilder.setColor(Color.parseColor("@(Project.Android.NotificationIcon.Color)"));
+				} catch (Exception e) { //try with #
+					try {
+						notificationBuilder.setColor(Color.parseColor("#@(Project.Android.NotificationIcon.Color)"));
+					} catch (Exception e2) {}
+				}
 			#endif
 			// Allow for color to be overridden from notification payload
 			if (color!=null && !color.isEmpty()) {
-				notificationBuilder.setColor(Color.parseColor(color));
+				try {
+					notificationBuilder.setColor(Color.parseColor(color));
+				} catch (Exception e) { //try with #
+					try {
+						notificationBuilder.setColor(Color.parseColor("#" + color));
+					} catch (Exception e2) {}
+				}
 			}
 
 
