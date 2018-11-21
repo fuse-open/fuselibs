@@ -129,7 +129,7 @@ namespace Fuse.Navigation
 		
 		List<PageData> _pages = new List<PageData>();
 		
-		internal protected IList<PageData> Pages { get { return _pages; } }
+		internal IList<PageData> Pages { get { return _pages; } }
 		
 		internal PageData GetPageData( Visual page ) 
 		{
