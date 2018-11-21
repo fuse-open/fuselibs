@@ -3,7 +3,7 @@ using Uno.Collections;
 
 namespace Fuse.Physics
 {
-	interface IRule
+	public interface IRule
 	{
 		void Update(double deltaTime, World world);
 	}
