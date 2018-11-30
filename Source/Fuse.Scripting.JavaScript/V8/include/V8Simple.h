@@ -148,21 +148,6 @@ DllPublic const char* CDecl GetV8Version();
 /// }
 
 /// // -------------------------------------------------------------------------
-/// // Debug
-/// public static class Debug
-/// {
-/// [DllImport("V8Simple.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint="SetJSDebugMessageHandler")]
-/// public static extern void SetMessageHandler(JSContext context, IntPtr data, [MarshalAs(UnmanagedType.FunctionPtr)]JSDebugMessageHandler messageHandler);
-DllPublic void CDecl SetJSDebugMessageHandler(JSContext* context, void* data, JSDebugMessageHandler messageHandler);
-/// [DllImport("V8Simple.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint="SendJSDebugCommand")]
-/// public static extern void SendCommand(JSContext context, [MarshalAs(UnmanagedType.LPWStr, SizeParamIndex = 2)]string command, int length);
-DllPublic void CDecl SendJSDebugCommand(JSContext* context, const uint16_t* command, int length);
-/// [DllImport("V8Simple.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint="ProcessJSDebugMessages")]
-/// public static extern void ProcessMessages(JSContext context);
-DllPublic void CDecl ProcessJSDebugMessages(JSContext* context);
-/// }
-
-/// // -------------------------------------------------------------------------
 /// // Value
 /// public static class Value
 /// {
@@ -185,7 +170,7 @@ DllPublic double CDecl JSValueAsDouble(JSValue* value, JSRuntimeError* outError)
 /// public static extern JSString AsString(JSValue value, out JSRuntimeError error);
 DllPublic JSString* CDecl JSValueAsString(JSValue* value, JSRuntimeError* outError);
 /// [DllImport("V8Simple.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint="JSValueAsBool")]
-/// [return: MarshalAs(UnmanagedType.Bool)]
+/// [return: MarshalAs(UnmanagedType.I1)]
 /// public static extern bool AsBool(JSValue value, out JSRuntimeError error);
 DllPublic bool CDecl JSValueAsBool(JSValue* value, JSRuntimeError* outError);
 /// [DllImport("V8Simple.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint="JSValueAsObject")]
@@ -201,7 +186,7 @@ DllPublic JSFunction* CDecl JSValueAsFunction(JSValue* value, JSRuntimeError* ou
 /// public static extern JSExternal AsExternal(JSValue value, out JSRuntimeError error);
 DllPublic JSExternal* CDecl JSValueAsExternal(JSValue* value, JSRuntimeError* outError);
 /// [DllImport("V8Simple.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint="JSValueStrictEquals")]
-/// [return: MarshalAs(UnmanagedType.Bool)]
+/// [return: MarshalAs(UnmanagedType.I1)]
 /// public static extern bool StrictEquals(JSContext context, JSValue obj1, JSValue obj2);
 DllPublic bool CDecl JSValueStrictEquals(JSContext* context, JSValue* obj1, JSValue* obj2);
 
@@ -217,7 +202,7 @@ DllPublic JSValue* CDecl CreateJSInt(int value);
 /// public static extern JSValue CreateDouble(double value);
 DllPublic JSValue* CDecl CreateJSDouble(double value);
 /// [DllImport("V8Simple.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint="CreateJSBool")]
-/// public static extern JSValue CreateBool([MarshalAs(UnmanagedType.Bool)]bool value);
+/// public static extern JSValue CreateBool([MarshalAs(UnmanagedType.I1)]bool value);
 DllPublic JSValue* CDecl CreateJSBool(bool value);
 ///// Not memory managed; add an External property if data needs to be retained
 /// [DllImport("V8Simple.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint="CreateExternalJSArrayBuffer")]
@@ -236,7 +221,7 @@ DllPublic JSString* CDecl CreateJSString(JSContext* context, const uint16_t* buf
 /// public static extern int Length(JSContext context, JSString str);
 DllPublic int CDecl JSStringLength(JSContext* context, JSString* string);
 /// [DllImport("V8Simple.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint="WriteJSStringBuffer")]
-/// public static extern void Write(JSContext context, JSString str, [Out, MarshalAs(UnmanagedType.LPWStr)]StringBuilder buffer, [MarshalAs(UnmanagedType.Bool)]bool nullTerminate);
+/// public static extern void Write(JSContext context, JSString str, [Out, MarshalAs(UnmanagedType.LPWStr)]StringBuilder buffer, [MarshalAs(UnmanagedType.I1)]bool nullTerminate);
 DllPublic void CDecl WriteJSStringBuffer(JSContext* context, JSString* string, uint16_t* outBuffer, bool nullTerminate);
 /// public static string ToString(JSContext context, JSString str)
 /// {
@@ -261,7 +246,7 @@ DllPublic void CDecl SetJSObjectProperty(JSContext* context, JSObject* obj, JSSt
 /// public static extern JSArray CopyOwnPropertyNames(JSContext context, JSObject obj, out JSScriptException error);
 DllPublic JSArray* CDecl CopyJSObjectOwnPropertyNames(JSContext* context, JSObject* obj, JSScriptException** outError);
 /// [DllImport("V8Simple.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint="JSObjectHasProperty")]
-/// [return: MarshalAs(UnmanagedType.Bool)]
+/// [return: MarshalAs(UnmanagedType.I1)]
 /// public static extern bool HasProperty(JSContext context, JSObject obj, JSString key, out JSScriptException error);
 DllPublic bool CDecl JSObjectHasProperty(JSContext* context, JSObject* obj, JSString* key, JSScriptException** outError);
 /// [DllImport("V8Simple.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint="GetJSObjectArrayBufferData")]

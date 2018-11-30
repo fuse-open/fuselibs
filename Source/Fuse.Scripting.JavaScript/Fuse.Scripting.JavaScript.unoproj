@@ -42,10 +42,10 @@
     "JavaScriptEngine.cpp.uxl:Extensions",
 
     "V8/include/V8Simple.h",
-    "V8/lib/Android.stuff:Stuff",
     "V8/lib/DotNet.stuff:Stuff",
     "V8/lib/OSX.stuff:Stuff",
     "V8/lib/Windows.stuff:Stuff",
+    "V8/V8.stuff:Stuff",
 
     "JavaScriptCore/JSTypedArrayInclude.h:CHeader",
 
