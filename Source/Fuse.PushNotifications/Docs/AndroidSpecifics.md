@@ -28,8 +28,18 @@ If you haven't already registered an Android app, follow these steps:
 			"Package": "com.mycompany.myapp",
 		}
 
-- After adding the Android app, you will be prompted to download a `google-services.json` file.
-	This can be ignored, as it's not needed for push notifications and can always be downloaded later if needed.
+- After adding the Android app, you will be prompted to download a `google-services.json` file. Download and copy it to the root of your project.
+- Add the following file to tell fuse to copy google-services.json to your android app folder:
+
+Android.uxl
+
+```
+<Extensions Backend="CPlusPlus" Condition="Android">
+    <CopyFile Condition="Android" Name="google-services.json" TargetName="app/google-services.json" />
+</Extensions>
+```
+
+
 
 ### Sending notifications
 
