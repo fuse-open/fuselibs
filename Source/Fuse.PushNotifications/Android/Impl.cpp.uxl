@@ -2,6 +2,7 @@
     <Require AndroidManifest.Permission="com.google.android.c2dm.permission.RECEIVE" />
 
     <ProcessFile Name="PushNotificationReceiver.java" TargetName="@(Java.SourceDirectory)/com/fuse/PushNotifications/PushNotificationReceiver.java" />
+    <ProcessFile Name="PushNotificationIDService.java" TargetName="@(Java.SourceDirectory)/com/fuse/PushNotifications/PushNotificationIDService.java" />
     <ProcessFile Name="BigPictureStyleHttp.java" TargetName="@(Java.SourceDirectory)/com/fuse/PushNotifications/BigPictureStyleHttp.java" />
     <ProcessFile Name="BundleFiles.java" TargetName="@(Java.SourceDirectory)/com/fuse/PushNotifications/BundleFiles.java" />
 
