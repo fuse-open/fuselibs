@@ -24,7 +24,7 @@ namespace Fuse.Text
 		internal bool IsValid { get { return Scale != 0.0f; } }
 	}
 
-	class PositionedRun
+	public class PositionedRun
 	{
 		public readonly ShapedRun ShapedRun;
 		public Run Run { get { return ShapedRun.Run; } }

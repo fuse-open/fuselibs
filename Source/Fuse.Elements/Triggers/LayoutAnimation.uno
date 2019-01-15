@@ -5,13 +5,13 @@ using Fuse.Elements;
 
 namespace Fuse.Triggers
 {
-	class LayoutTransitionedArgs : VisualEventArgs
+	public class LayoutTransitionedArgs : VisualEventArgs
 	{
 		public LayoutTransitionedArgs(Visual node) 
 			: base(node)
 		{}
 	}
-	delegate void LayoutTransitionedHandler(object sender, LayoutTransitionedArgs args);
+	public delegate void LayoutTransitionedHandler(object sender, LayoutTransitionedArgs args);
 	sealed class LayoutTransitioned : VisualEvent<LayoutTransitionedHandler, LayoutTransitionedArgs>
 	{
 		protected override void Invoke(LayoutTransitionedHandler handler, object sender,
