@@ -26,32 +26,15 @@ In order to use Uno / Fuselibs, the following software must be installed:
 
 ## How do I build and test?
 
-### Windows
-
-* `build.bat` downloads and extracts uno, and builds all packages.
-* `test.bat` runs all tests.
-
-### macOS
-
-* `build.sh` downloads and extracts uno, and builds all packages.
-* `test.sh` runs all tests.
-
-
-### Fuse
-
-You may use a locally built copy of fuselibs with an installed copy of
-Fuse. This is done by creating a file named `.unoconfig` in either a Fuse
-project directory (applies to that project only), or in your home
-directory (applies to all projects). It should contain something like the
-following:
-
 ```
-Packages.SourcePaths += <path-to-fuselibs>/Source
+npm install
+npm run build
+npm run test
 ```
 
-You'll need to replace `<path-to-fuselibs>` above with the actual path to
-your fuselibs checkout.
-
+You can run the local `uno` directly using `node_modules/.bin/uno`. This
+is useful when you want to test apps using your local fuselibs build
+environment.
 
 ## Contributing
 
