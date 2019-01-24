@@ -1,5 +1,4 @@
 using Uno;
-using Uno.Compiler.ImportServices;
 
 namespace Fuse.Designer
 {
@@ -26,7 +25,7 @@ namespace Fuse.Designer
     public class IconAttribute: Attribute
     {
         public string Path;
-        public IconAttribute([Filename] string path)
+        public IconAttribute(string path)
         {
             Path = path;
         }
