@@ -1,9 +1,20 @@
 <Extensions Backend="CPlusPlus" Condition="USE_V8">
-	<Require Condition="ANDROID" SharedLibrary="@('lib/Android/libV8Simple.so':Path)" />
 	<Require Condition="OSX" LinkDirectory="@('lib/OSX':Path)" />
 	<Require Condition="WIN32" LinkDirectory="@('lib/Windows/$(PlatformShortName)':Path)" />
 	<Require Condition="WIN32" SharedLibrary.x86="@('lib/Windows/x86/V8Simple.dll':Path)" />
 	<Require Condition="WIN32" SharedLibrary.x64="@('lib/Windows/x64/V8Simple.dll':Path)" />
 	<Require IncludeDirectory="@('.':Path)" />
 	<Require Condition="!ANDROID" LinkLibrary="V8Simple" />
+
+	<!-- Build V8Simple on Android, and link static V8 -->
+	<CopyFile Condition="ANDROID" SourceFile="include/V8Simple.cpp" />
+	<Require Condition="ANDROID" IncludeDirectory="@('android/include':Path)" />
+	<Require Condition="ANDROID" StaticLibrary="@('android/lib/libv8_init.a':Path)" />
+	<Require Condition="ANDROID" StaticLibrary="@('android/lib/libv8_initializers.a':Path)" />
+	<Require Condition="ANDROID" StaticLibrary="@('android/lib/libv8_libbase.a':Path)" />
+	<Require Condition="ANDROID" StaticLibrary="@('android/lib/libv8_libplatform.a':Path)" />
+	<Require Condition="ANDROID" StaticLibrary="@('android/lib/libv8_libsampler.a':Path)" />
+	<Require Condition="ANDROID" StaticLibrary="@('android/lib/libv8_snapshot.a':Path)" />
+	<!-- Must be last library to avoid linker error -->
+	<Require Condition="ANDROID" StaticLibrary="@('android/lib/libv8_base.a':Path)" />
 </Extensions>
