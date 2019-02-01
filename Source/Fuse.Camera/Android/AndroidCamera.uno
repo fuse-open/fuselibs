@@ -32,7 +32,16 @@ namespace Fuse.Camera
 		}
 	}
 
-	[ForeignInclude(Language.Java, "android.provider.MediaStore", "com.fuse.Activity", "com.fusetools.camera.Image", "android.content.Intent")]
+	[ForeignInclude(Language.Java, 
+		"android.provider.MediaStore", 
+		"com.fuse.Activity", 
+		"com.fusetools.camera.Image", 
+		"android.os.Build",
+		"android.support.v4.content.FileProvider", 
+		"java.io.File",
+		"android.net.Uri", 
+		"android.util.Log", 
+		"android.content.Intent")]
 	extern (Android) internal class TakePictureCommand
 	{
 		Promise<Image> _promise;
@@ -65,7 +74,24 @@ namespace Fuse.Camera
 			Image p = (Image)photo;
 			try {
 				Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-				intent.putExtra(MediaStore.EXTRA_OUTPUT, p.getFileUri());
+
+				//FileProvider way for Marshmallow+ (API 23)
+				if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
+
+					File photoFile = p.getFile();
+					if (photoFile != null) {
+						Uri photoURI = FileProvider.getUriForFile(
+							com.fuse.Activity.getRootActivity(),
+							"@(Activity.Package).camera_file_provider",
+							photoFile);
+						intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+					} else {
+						return null;
+					}
+				} else {
+					intent.putExtra(MediaStore.EXTRA_OUTPUT, p.getFileUri());
+				}
+
 				return intent;
 			} catch (Exception e) {
 				e.printStackTrace();
