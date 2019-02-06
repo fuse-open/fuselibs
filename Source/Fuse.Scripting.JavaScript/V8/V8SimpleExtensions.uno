@@ -266,14 +266,14 @@ namespace Fuse.Scripting.V8
 		}
 		public static extern(CPlusPlus) void SetDebugMessageHandler(JSContext context, Action<JSString> messageHandler)
 		@{
-			::SetJSDebugMessageHandler(
+			/*::SetJSDebugMessageHandler(
 				$0,
 				@{Handle.Create(object):Call($1)},
 				([] (void* data, ::JSString* message) -> void
 				{
 					@{Action<JSString>} handler = (@{Action<JSString>})data;
 					@{Action<JSString>:Of(handler).Call(message)};
-				}));
+				}));*/
 		@}
 	}
 
