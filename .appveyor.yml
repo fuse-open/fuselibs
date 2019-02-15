@@ -9,7 +9,7 @@ install:
   - ps: Expand-Archive mesa.zip mesa
 
 build_script:
-  - npm pack
+  - npm pack --silent
 
 artifacts:
   - path: '*.tgz'
