@@ -6,20 +6,22 @@ mono: 5.4.1
 env:
   global:
     - XCODE_XCCONFIG_FILE=$TRAVIS_BUILD_DIR/.travis.xcconfig
+    - PATH=node_modules/.bin:$PATH
+    - LOG_TRACE=1
 
 install:
   - sudo easy_install pip
   - pip install six
-  - nuget install -ConfigFile Stuff/NuGet.config -OutputDirectory Stuff -ExcludeVersion Stuff/packages.config
+  - npm install
 
 before_script:
   - ulimit -c unlimited -S
   - rm -rf /cores/core.*
 
 script:
-  - Stuff/uno --trace doctor
-  - Stuff/uno --trace build -tios Tests/ManualTests/ManualTestingApp/ManualTestingApp.unoproj
-  - Stuff/uno --trace test -tnative --timeout=30 Source/AllTests.unoproj
+  - npm run build
+  - uno build ios Tests/ManualTests/ManualTestingApp/ManualTestingApp.unoproj
+  - uno test native --timeout=30 Source/AllTests.unoproj
 
 after_failure:
   - for c in $(ls /cores/core.*); do
