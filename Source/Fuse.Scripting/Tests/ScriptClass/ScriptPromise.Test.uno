@@ -11,7 +11,7 @@ using FuseTest;
 namespace Fuse.Scripting.Test
 {
 
-	class TestObject
+	public class TestObject
 	{
 		public string Value { get; set; }
 	}
