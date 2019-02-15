@@ -10,8 +10,6 @@ env:
     - LOG_TRACE=1
 
 install:
-  - sudo easy_install pip
-  - pip install six
   - npm install
 
 before_script:
