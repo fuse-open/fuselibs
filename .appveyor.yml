@@ -4,16 +4,15 @@ environment:
   LOG_TRACE: 1
 
 install:
-  - nuget install -ConfigFile Stuff\NuGet.config -OutputDirectory Stuff -ExcludeVersion Stuff\packages.config
+  - npm install
   - ps: Invoke-WebRequest https://files.fusetools.com/tooling/iyVp8kwQ0vLn-mesa-17.2.3.500.zip -OutFile mesa.zip
   - ps: Expand-Archive mesa.zip mesa
 
 build_script:
-  - bash pack.sh
-  - 7z a fuselibs-artifacts-%APPVEYOR_BUILD_NUMBER%.zip upload\*.*
+  - npm pack --silent
 
 artifacts:
-  - path: fuselibs-artifacts-%APPVEYOR_BUILD_NUMBER%.zip
+  - path: '*.tgz'
 
 before_test:
   - ps: |
@@ -24,4 +23,4 @@ before_test:
       }
 
 test_script:
-  - Stuff\uno test -tDotNet Source
+  - npm run test
