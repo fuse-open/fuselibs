@@ -1,0 +1,21 @@
+<Extensions Backend="CPlusPlus">
+
+	<ProcessFile Condition="Android" Name="CameraFileProvider.java" TargetName="app/src/main/java/com/fuse/fileprovider/CameraFileProvider.java" />
+	
+	<Require Condition="Android" AndroidManifest.ApplicationElement>
+		<![CDATA[
+			<provider
+				android:name="com.fuse.fileprovider.CameraFileProvider"
+				android:authorities="@(Activity.Package).camera_file_provider"
+				android:exported="false"
+				android:grantUriPermissions="true">
+				<meta-data
+					android:name="android.support.FILE_PROVIDER_PATHS"
+					android:resource="@xml/android_camera_paths" />
+			</provider>
+		]]>
+	</Require>
+
+	<CopyFile Condition="Android" Name="android_camera_paths.xml" TargetName="app/src/main/res/xml/android_camera_paths.xml" />
+
+</Extensions>

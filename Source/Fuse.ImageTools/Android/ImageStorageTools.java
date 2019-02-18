@@ -70,7 +70,8 @@ public class ImageStorageTools {
 
 	static String getAppName()
 	{
-		return com.fuse.Activity.getRootActivity().getPackageName();
+		//android - uses default app name in title, can override by defining title, fallback to package name if title set to nothing
+		return ("@(Project.Title)" != "") ? "@(Project.Title)" : com.fuse.Activity.getRootActivity().getPackageName();
 	}
 
 	public static Image saveBitmapAndGetImage(Bitmap bmp, boolean temp, Bitmap.CompressFormat fmt) throws Exception
