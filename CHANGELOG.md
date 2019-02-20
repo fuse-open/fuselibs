@@ -1,6 +1,23 @@
 # Unreleased
 
 
+# 1.11
+
+## 1.11.0
+
+### Fuse.Camera
+- Updated with new file permission requirements for newer androids.
+- Catered for out of memory error.
+- Post photo capture - rotation fix: If out of memory, won't crash but will downsize image to fit memory before adjusting rotation.
+- Fixed android app name.
+
+### Fuse.Scripting.JavaScript
+- Upgrade V8 to 6.9.427.23 on Android.
+
+### Other news
+- Switched to NPM for distribution.
+
+
 # 1.10
 
 ## 1.10.0
