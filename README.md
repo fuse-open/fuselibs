@@ -1,16 +1,23 @@
 # Fuselibs
-[![Travis CI Build Status](https://travis-ci.org/fuse-open/fuselibs.svg?branch=master)](https://travis-ci.org/fuse-open/fuselibs)
-[![AppVeyor Build status](https://ci.appveyor.com/api/projects/status/an47qhe561v31jga/branch/master?svg=true)](https://ci.appveyor.com/project/fusetools/fuselibs-public/branch/master)
-[![license: MIT](https://img.shields.io/github/license/fuse-open/fuselibs.svg)](LICENSE.txt)
-[![Slack](https://img.shields.io/badge/chat-on%20slack-blue.svg)](https://slackcommunity.fusetools.com/)
+
+[![AppVeyor build status](https://img.shields.io/appveyor/ci/fusetools/fuselibs-public/master.svg?logo=appveyor&logoColor=silver&style=flat-square)](https://ci.appveyor.com/project/fusetools/fuselibs-public/branch/master)
+[![Travis CI build status](https://img.shields.io/travis/fuse-open/fuselibs/master.svg?style=flat-square)](https://travis-ci.org/fuse-open/fuselibs)
+[![NPM package](https://img.shields.io/npm/v/@fuse-open/fuselibs.svg?style=flat-square)](https://www.npmjs.com/package/@fuse-open/fuselibs)
+[![License: MIT](https://img.shields.io/github/license/fuse-open/fuselibs.svg?style=flat-square)](LICENSE.txt)
+[![Slack](https://img.shields.io/badge/chat-on%20slack-blue.svg?style=flat-square)](https://slackcommunity.fusetools.com/)
 
 Fuselibs is a collection of [Uno](https://fuseopen.com/docs/uno/uno-lang) libraries that provide
 the UI framework used to build [Fuse](https://fuseopen.com/) apps.
 
+## Install
+
+```
+npm install @fuse-open/fuselibs
+```
 
 ## Requirements
 
-In order to use Uno / Fuselibs, the following software must be installed:
+In order to use Uno and Fuselibs, the following software must be installed:
 
 ### Windows
 
@@ -20,9 +27,14 @@ In order to use Uno / Fuselibs, the following software must be installed:
 ### macOS
 
 * [Mono](https://www.mono-project.com/download/)
-* [XCode](https://developer.apple.com/xcode/)
+* [Xcode](https://developer.apple.com/xcode/)
 * [CMake](https://cmake.org/)
 
+### Android
+
+* Android SDK and NDK
+
+These dependencies can be acquired by installing [android-build-tools](https://www.npmjs.com/package/android-build-tools).
 
 ## How do I build and test?
 
