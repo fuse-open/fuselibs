@@ -1,6 +1,6 @@
 <Extensions Backend="CPlusPlus">
 
-	<ProcessFile Name="ShareFileProvider.java" TargetName="@(Java.SourceDirectory)/com/fuse/fileprovider/ShareFileProvider.java" />
+	<ProcessFile Condition="Android" Name="ShareFileProvider.java" TargetName="app/src/main/java/com/fuse/fileprovider/ShareFileProvider.java" />
 	
 	<Require Condition="Android" AndroidManifest.ApplicationElement>
 		<![CDATA[
@@ -16,6 +16,6 @@
 		]]>
 	</Require>
 
-	<CopyFile Name="android_share_paths.xml" TargetName="app/src/main/res/xml/android_share_paths.xml" />
+	<CopyFile Condition="Android" Name="android_share_paths.xml" TargetName="app/src/main/res/xml/android_share_paths.xml" />
 
 </Extensions>

@@ -24,6 +24,7 @@ namespace Fuse.Share
 			Intent sendIntent = new Intent();
 			sendIntent.setAction(Intent.ACTION_SEND);
 			sendIntent.putExtra(Intent.EXTRA_TEXT, text);
+			sendIntent.putExtra(Intent.EXTRA_SUBJECT, description);
 			sendIntent.setType("text/plain");
 			com.fuse.Activity.getRootActivity().startActivity(Intent.createChooser(sendIntent, description));
 		@}
@@ -34,6 +35,7 @@ namespace Fuse.Share
 			Context context = com.fuse.Activity.getRootActivity();
 			Intent shareIntent = new Intent();
 			shareIntent.setAction(Intent.ACTION_SEND);
+			shareIntent.putExtra(Intent.EXTRA_SUBJECT, description);
 			//new way for Marshmallow+ (API 23)
 			if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
 				/*
