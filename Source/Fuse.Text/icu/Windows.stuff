@@ -1,4 +1,3 @@
 if HOST_WINDOWS {
-x86: "https://files.fusetools.com/tooling/HtthIgwJ2TdH-icu4c-55_1-Win32-msvc10.zip"
-x64: "https://files.fusetools.com/tooling/Oe1jy7Kg5uTN-icu4c-55_1-Win64-msvc10.zip"
+x64: "https://www.nuget.org/api/v2/package/icu-win32-shared-x64/55.1.0"
 }
