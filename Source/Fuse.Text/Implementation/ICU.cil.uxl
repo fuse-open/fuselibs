@@ -1,17 +1,10 @@
 <Extensions Backend="CIL">
 	<Define USE_ICU />
-	<Require Condition="HOST_WIN32 && HOST_X86" UnmanagedLibrary="../icu/x86/icu/bin/icudt55.dll" />
-	<Require Condition="HOST_WIN32 && HOST_X86" UnmanagedLibrary="../icu/x86/icu/bin/icuin55.dll" />
-	<Require Condition="HOST_WIN32 && HOST_X86" UnmanagedLibrary="../icu/x86/icu/bin/icuio55.dll" />
-	<Require Condition="HOST_WIN32 && HOST_X86" UnmanagedLibrary="../icu/x86/icu/bin/icule55.dll" />
-	<Require Condition="HOST_WIN32 && HOST_X86" UnmanagedLibrary="../icu/x86/icu/bin/iculx55.dll" />
-	<Require Condition="HOST_WIN32 && HOST_X86" UnmanagedLibrary="../icu/x86/icu/bin/icutu55.dll" />
-	<Require Condition="HOST_WIN32 && HOST_X86" UnmanagedLibrary="../icu/x86/icu/bin/icuuc55.dll" />
-	<Require Condition="HOST_WIN32 && HOST_X64" UnmanagedLibrary="../icu/x64/icu/bin64/icudt55.dll" />
-	<Require Condition="HOST_WIN32 && HOST_X64" UnmanagedLibrary="../icu/x64/icu/bin64/icuin55.dll" />
-	<Require Condition="HOST_WIN32 && HOST_X64" UnmanagedLibrary="../icu/x64/icu/bin64/icuio55.dll" />
-	<Require Condition="HOST_WIN32 && HOST_X64" UnmanagedLibrary="../icu/x64/icu/bin64/icule55.dll" />
-	<Require Condition="HOST_WIN32 && HOST_X64" UnmanagedLibrary="../icu/x64/icu/bin64/iculx55.dll" />
-	<Require Condition="HOST_WIN32 && HOST_X64" UnmanagedLibrary="../icu/x64/icu/bin64/icutu55.dll" />
-	<Require Condition="HOST_WIN32 && HOST_X64" UnmanagedLibrary="../icu/x64/icu/bin64/icuuc55.dll" />
+	<Require Condition="HOST_WIN32" UnmanagedLibrary="../icu/x64/bin64/icudt55.dll" />
+	<Require Condition="HOST_WIN32" UnmanagedLibrary="../icu/x64/bin64/icuin55.dll" />
+	<Require Condition="HOST_WIN32" UnmanagedLibrary="../icu/x64/bin64/icuio55.dll" />
+	<Require Condition="HOST_WIN32" UnmanagedLibrary="../icu/x64/bin64/icule55.dll" />
+	<Require Condition="HOST_WIN32" UnmanagedLibrary="../icu/x64/bin64/iculx55.dll" />
+	<Require Condition="HOST_WIN32" UnmanagedLibrary="../icu/x64/bin64/icutu55.dll" />
+	<Require Condition="HOST_WIN32" UnmanagedLibrary="../icu/x64/bin64/icuuc55.dll" />
 </Extensions>

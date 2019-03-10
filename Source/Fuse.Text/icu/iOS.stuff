@@ -1,3 +1,3 @@
 if iOS {
-/* 12.79MB */ iOS: "https://files.fusetools.com/tooling/cphnpuXYu52e-ICU-iOS.zip"
+/* 12.79MB */ iOS: "https://www.nuget.org/api/v2/package/icu-iOS-static/55.1.0"
 }
