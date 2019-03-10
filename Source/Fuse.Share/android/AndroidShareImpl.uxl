@@ -1,0 +1,21 @@
+<Extensions Backend="CPlusPlus">
+
+	<ProcessFile Condition="Android" Name="ShareFileProvider.java" TargetName="app/src/main/java/com/fuse/fileprovider/ShareFileProvider.java" />
+	
+	<Require Condition="Android" AndroidManifest.ApplicationElement>
+		<![CDATA[
+			<provider
+				android:name="com.fuse.fileprovider.ShareFileProvider"
+				android:authorities="@(Activity.Package).share_file_provider"
+				android:exported="false"
+				android:grantUriPermissions="true">
+				<meta-data
+					android:name="android.support.FILE_PROVIDER_PATHS"
+					android:resource="@xml/android_share_paths" />
+			</provider>
+		]]>
+	</Require>
+
+	<CopyFile Condition="Android" Name="android_share_paths.xml" TargetName="app/src/main/res/xml/android_share_paths.xml" />
+
+</Extensions>
