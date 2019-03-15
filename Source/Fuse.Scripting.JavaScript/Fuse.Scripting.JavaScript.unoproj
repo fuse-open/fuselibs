@@ -41,6 +41,7 @@
     "JavaScriptEngine.cil.uxl:Extensions",
     "JavaScriptEngine.cpp.uxl:Extensions",
 
+    "V8/include/V8Simple.cpp",
     "V8/include/V8Simple.h",
     "V8/lib/DotNet.stuff:Stuff",
     "V8/lib/OSX.stuff:Stuff",
