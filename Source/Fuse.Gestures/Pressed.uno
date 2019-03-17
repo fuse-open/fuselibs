@@ -50,6 +50,7 @@ namespace Fuse.Gestures
 	{
 		public bool Capture { get; set; }
 
+		float2 _pressedPosition;
 		/** Holds the initiall press-down position of the pointer that activated the trigger (read-only).
 
 			This can be used with a `{SnapshotProperty}` binding to place things in response to the pointer position. If the trigger
@@ -71,7 +72,6 @@ namespace Fuse.Gestures
 					</WhilePressed>
 				</Panel>
 		*/
-		float2 _pressedPosition;
 		public float2 PressedPosition
 		{
 			get { return Clicker != null ? Clicker.PressedPosition : _pressedPosition; }
