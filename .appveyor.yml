@@ -1,4 +1,5 @@
 version: '{build}'
+image: Visual Studio 2017
 
 environment:
   LOG_TRACE: 1
@@ -15,6 +16,8 @@ build_script:
   # Run Android build using Bash so we can kill Java to avoid that PowerShell
   # hangs, and still return the exit code from Uno.
   - bash -c "uno build android Tests/ManualTests/ManualTestingApp/ManualTestingApp.unoproj; exitcode=$?; taskkill //F //IM java.exe //T; exit $exitcode"
+  # Build for Windows
+  - uno build native Tests/ManualTests/ManualTestingApp/ManualTestingApp.unoproj
 
 artifacts:
   - path: '*.tgz'
