@@ -99,31 +99,22 @@ namespace Fuse.Scripting.Duktape
 
 		internal static void compile_file(this duk_context ctx, uint flags, string path)
 		@{
-			const char* cPath = uAllocCStr($2);
-			duk_compile_file($0, $1, cPath);
-			uFreeCStr(cPath);
+			duk_compile_file($0, $1, uCString($2).Ptr);
 		@}
 
 		internal static void compile_lstring(this duk_context ctx, uint flags, string src, uint len)
 		@{
-			const char* cSrc = uAllocCStr($2);
-			duk_compile_lstring($0, $1, cSrc, $3);
-			uFreeCStr(cSrc);
+			duk_compile_lstring($0, $1, uCString($2).Ptr, $3);
 		@}
 
 		internal static void compile_lstring_filename(this duk_context ctx, uint flags, string src, uint len)
 		@{
-			const char* cSrc = uAllocCStr($2);
-			duk_compile_lstring_filename($0, $1, cSrc, $3);
-			uFreeCStr(cSrc);
+			duk_compile_lstring_filename($0, $1, uCString($2).Ptr, $3);
 		@}
 
 		internal static int pcompile_string(this duk_context ctx, uint flags, string src)
 		@{
-			const char* cSrc = uAllocCStr($2);
-			int result = duk_pcompile_string($0, $1, cSrc);
-			uFreeCStr(cSrc);
-			return result;
+			return duk_pcompile_string($0, $1, uCString($2).Ptr);
 		@}
 
 		internal static int pcompile(this duk_context ctx, uint flags)
@@ -133,16 +124,12 @@ namespace Fuse.Scripting.Duktape
 
 		internal static void compile_string(this duk_context ctx, uint flags, string src)
 		@{
-			const char* cSrc = uAllocCStr($2);
-			duk_compile_string($0, $1, cSrc);
-			uFreeCStr(cSrc);
+			duk_compile_string($0, $1, uCString($2).Ptr);
 		@}
 
 		internal static void compile_string_filename(this duk_context ctx, uint flags, string src)
 		@{
-			const char* cSrc = uAllocCStr($2);
-			duk_compile_string_filename($0, $1, cSrc);
-			uFreeCStr(cSrc);
+			duk_compile_string_filename($0, $1, uCString($2).Ptr);
 		@}
 
 		internal static void concat(this duk_context ctx, int count)
@@ -172,10 +159,7 @@ namespace Fuse.Scripting.Duktape
 
 		internal static bool del_prop_string(this duk_context ctx, int obj_index, string key)
 		@{
-			const char* cKey = uAllocCStr($2);
-			bool res = duk_del_prop_string($0, $1, cKey);
-			uFreeCStr(cKey);
-			return res;
+			return duk_del_prop_string($0, $1, uCString($2).Ptr);
 		@}
 
 		internal static void dump_context_stderr(this duk_context ctx)
@@ -210,9 +194,7 @@ namespace Fuse.Scripting.Duktape
 
 		internal static void error(this duk_context ctx, string message)
 		@{
-			const char* cMessage = uAllocCStr($1);
-			duk_error($0, DUK_ERR_ERROR, cMessage);
-			uFreeCStr(cMessage);
+			duk_error($0, DUK_ERR_ERROR, uCString($1).Ptr);
 		@}
 
 		internal static void eval(this duk_context ctx)
@@ -222,16 +204,12 @@ namespace Fuse.Scripting.Duktape
 
 		internal static void eval_file(this duk_context ctx, string path)
 		@{
-			const char* cPath = uAllocCStr($1);
-			duk_eval_file($0, cPath);
-			uFreeCStr(cPath);
+			duk_eval_file($0, uCString($1).Ptr);
 		@}
 
 		internal static void eval_file_noresult(this duk_context ctx, string path)
 		@{
-			const char* cPath = uAllocCStr($1);
-			duk_eval_file_noresult($0, cPath);
-			uFreeCStr(cPath);
+			duk_eval_file_noresult($0, uCString($1).Ptr);
 		@}
 
 		internal static duk_context create_heap_default()
@@ -266,18 +244,12 @@ namespace Fuse.Scripting.Duktape
 
 		internal static bool put_prop_string(this duk_context ctx, int obj_index, string key)
 		@{
-			const char* cKey = uAllocCStr($2);
-			bool result = duk_put_prop_string($0, $1, cKey);
-			uFreeCStr(cKey);
-			return result;
+			return duk_put_prop_string($0, $1, uCString($2).Ptr);
 		@}
 
 		internal static int peval_string(this duk_context ctx, string code)
 		@{
-			const char* cCode = uAllocCStr($1);
-			int result = duk_peval_string($0, cCode);
-			uFreeCStr(cCode);
-			return result;
+			return duk_peval_string($0, uCString($1).Ptr);
 		@}
 
 		internal static void destroy_heap(this duk_context ctx)
@@ -307,17 +279,12 @@ namespace Fuse.Scripting.Duktape
 
 		internal static void push_string(this duk_context ctx, string str)
 		@{
-			const char* cStr = uAllocCStr($1);
-			duk_push_string($0, cStr);
-			uFreeCStr(cStr);
+			duk_push_string($0, uCString($1).Ptr);
 		@}
 
 		internal static bool get_prop_string(this duk_context ctx, int obj_index, string key)
 		@{
-			const char* cKey = uAllocCStr($2);
-			bool result = duk_get_prop_string($0, $1, cKey);
-			uFreeCStr(cKey);
-			return result;
+			return duk_get_prop_string($0, $1, uCString($2).Ptr);
 		@}
 
 		internal static bool is_array(this duk_context ctx, int index)
@@ -377,10 +344,7 @@ namespace Fuse.Scripting.Duktape
 
 		internal static int peval_string_noresult(this duk_context ctx, string str)
 		@{
-			const char* cStr = uAllocCStr($1);
-			int result = duk_peval_string_noresult($0, cStr);
-			uFreeCStr(cStr);
-			return result;
+			return duk_peval_string_noresult($0, uCString($1).Ptr);
 		@}
 
 		internal static void swap_top(this duk_context ctx, int index)
@@ -470,10 +434,7 @@ namespace Fuse.Scripting.Duktape
 
 		internal static bool has_prop_string(this duk_context ctx, int index, string key)
 		@{
-			const char* cKey = uAllocCStr($2);
-			bool result = duk_has_prop_string($0, $1, cKey);
-			uFreeCStr(cKey);
-			return result;
+			return duk_has_prop_string($0, $1, uCString($2).Ptr);
 		@}
 
 		internal static void new_(this duk_context ctx, int nargs)
