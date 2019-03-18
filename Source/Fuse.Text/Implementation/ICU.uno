@@ -16,9 +16,8 @@ namespace Fuse.Text.Implementation
 	[extern(HOST_WINDOWS && (PInvoke || NATIVE)) Require("LinkLibrary", "iculx")]
 	[extern(HOST_WINDOWS && (PInvoke || NATIVE)) Require("LinkLibrary", "icutu")]
 	[extern(HOST_WINDOWS && (PInvoke || NATIVE)) Require("LinkLibrary", "icuuc")]
-	[extern(HOST_WINDOWS && (PInvoke || NATIVE)) Require("IncludeDirectory", "@('../icu/x86/icu/include':Path)")]
-	[extern(HOST_WINDOWS && (PInvoke || NATIVE)) Require("LinkDirectory","@('../icu/$(PlatformShortName)/icu/lib':Path)")]
-	[extern(HOST_WINDOWS && (PInvoke || NATIVE)) Require("LinkDirectory","@('../icu/$(PlatformShortName)/icu/lib64':Path)")]
+	[extern(HOST_WINDOWS && (PInvoke || NATIVE)) Require("IncludeDirectory", "@('../icu/x64/include':Path)")]
+	[extern(HOST_WINDOWS && (PInvoke || NATIVE)) Require("LinkDirectory","@('../icu/x64/lib64':Path)")]
 	[extern(CPlusPlus || PInvoke) Require("Source.Include", "unicode/utypes.h")]
 	static extern(USE_ICU) class ICU
 	{
