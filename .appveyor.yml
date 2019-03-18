@@ -2,6 +2,7 @@ version: '{build}'
 
 environment:
   LOG_TRACE: 1
+  PATH: node_modules/.bin;%PATH%
 
 install:
   - npm install
