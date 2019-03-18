@@ -6,11 +6,15 @@ environment:
 
 install:
   - npm install
+  - npm install android-build-tools -g
   - ps: Invoke-WebRequest https://www.nuget.org/api/v2/package/mesa3d-x64/18.3.4 -OutFile mesa.zip
   - ps: Expand-Archive mesa.zip mesa
 
 build_script:
   - npm pack --silent
+  # Run Android build using Bash so we can kill Java to avoid that PowerShell
+  # hangs, and still return the exit code from Uno.
+  - bash -c "uno build android Tests/ManualTests/ManualTestingApp/ManualTestingApp.unoproj; exitcode=$?; taskkill //F //IM java.exe //T; exit $exitcode"
 
 artifacts:
   - path: '*.tgz'
