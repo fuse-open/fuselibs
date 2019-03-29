@@ -17,13 +17,14 @@ namespace Fuse.Controls.Native.iOS
 		IDisposable _editingEvents;
 		ObjC.Object _delegate;
 		FontFaceDescriptor _descriptor;
+		bool _isReadonly;
 
 		public SingleLineTextEdit(ITextEditHost textEditHost) : base(Create())
 		{
 			TextEditSpeedHack.Run();
 			_textEditHost = textEditHost;
 			_editingEvents = UIControlEvent.AddAllEditingEventsCallback(Handle, OnTextEdit);
-			_delegate = AddOnActionCallback(Handle, OnAction);
+			_delegate = CreateDelegate(Handle, OnAction, ShouldEditingCallback);
 			NativeFocus.AddListener(Handle, this);
 		}
 
@@ -43,6 +44,11 @@ namespace Fuse.Controls.Native.iOS
 			return _textEditHost.OnInputAction(TextInputActionType.Primary);
 		}
 
+		bool ShouldEditingCallback(ObjC.Object sender)
+		{
+			return !_isReadonly;
+		}
+
 		void OnTextEdit(ObjC.Object sender, ObjC.Object args)
 		{
 			OnValueChanged();
@@ -60,12 +66,13 @@ namespace Fuse.Controls.Native.iOS
 		@}
 
 		[Foreign(Language.ObjC)]
-		static ObjC.Object AddOnActionCallback(ObjC.Object handle, Func<ObjC.Object,bool> callback)
+		static ObjC.Object CreateDelegate(ObjC.Object handle, Func<ObjC.Object,bool> callback, Func<ObjC.Object,bool> shouldEditingCallback)
 		@{
 			::UITextField* textField = (::UITextField*)handle;
 			::TextFieldDelegate* textFieldDelegate = [[::TextFieldDelegate alloc] init];
 			[textFieldDelegate setOnActionCallback:callback];
 			[textFieldDelegate setMaxLength: INT_MAX];
+			[textFieldDelegate setShouldEditingCallback:shouldEditingCallback];
 			[textField setDelegate: textFieldDelegate];
 			return textFieldDelegate;
 		@}
@@ -164,7 +171,7 @@ namespace Fuse.Controls.Native.iOS
 
 		bool ITextEdit.IsReadOnly
 		{
-			set { /* TODO */ }
+			set { _isReadonly = value; }
 		}
 
 		TextInputHint ITextEdit.InputHint

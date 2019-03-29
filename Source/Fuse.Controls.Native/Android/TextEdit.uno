@@ -248,11 +248,15 @@ namespace Fuse.Controls.Native.Android
 			if (_isReadOnly)
 			{
 				SetInputType(Handle, 0);
+				SetFocusable(Handle, false);
+				SetFocusableInTouchMode(Handle, false);
 			}
 			else
 			{
 				SetInputType(Handle, flags);
 				SetImeOptions(Handle, ReturnKeyType);
+				SetFocusable(Handle, true);
+				SetFocusableInTouchMode(Handle, true);
 			}
 		}
 
@@ -337,6 +341,18 @@ namespace Fuse.Controls.Native.Android
 		static void SetImeOptions(Java.Object handle, int value)
 		@{
 			((android.widget.TextView)handle).setImeOptions(value);
+		@}
+
+		[Foreign(Language.Java)]
+		static void SetFocusable(Java.Object handle, bool value)
+		@{
+			((android.widget.EditText)handle).setFocusable(value);
+		@}
+
+		[Foreign(Language.Java)]
+		static void SetFocusableInTouchMode(Java.Object handle, bool value)
+		@{
+			((android.widget.EditText)handle).setFocusableInTouchMode(value);
 		@}
 
 		[Foreign(Language.Java)]

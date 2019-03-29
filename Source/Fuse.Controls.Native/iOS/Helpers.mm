@@ -124,6 +124,11 @@ static id currentFirstResponder;
 	return newLength <= [self maxLength];
 }
 
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+{
+	return [self shouldEditingCallback](textField);
+}
+
 @end
 
 @implementation TextViewDelegate
