@@ -43,6 +43,9 @@
 	shouldChangeCharactersInRange:(NSRange)range
 	replacementString:(NSString *)string;
 
+@property (copy) bool (^shouldEditingCallback)(id);
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField;
+
 @end
 
 @interface TextViewDelegate : NSObject<UITextViewDelegate>
