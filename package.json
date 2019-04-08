@@ -12,6 +12,7 @@
   },
   "files": [
     "Source/build/*",
+    "index.d.ts",
     ".unoconfig"
   ],
   "repository": {
