@@ -17,7 +17,7 @@ declare module "FuseJS/Base64" {
      *     var Base64 = require("FuseJS/Base64");
      *     console.log(Base64.decodeAscii("SGVsbG8sIHdvcmxkIQ==")); //LOG: Hello, world!
      */
-    function decodeAscii(value: any): any;
+    function decodeAscii(value: string): string;
 
     /**
      * Decodes the given base64 string to an ArrayBuffer.
@@ -28,7 +28,7 @@ declare module "FuseJS/Base64" {
      *     // Should print 0x1337
      *     console.log("0x" + view[0].toString(16));
      */
-    function decodeBuffer(base64String: any): any;
+    function decodeBuffer(base64String: string): ArrayBuffer;
 
     /**
      * Decodes the given base64 Latin-1 encoded bytes to a string.
@@ -37,15 +37,15 @@ declare module "FuseJS/Base64" {
      *     // Prints "hello world"
      *     console.log(Base64.decodeLatin1("aGVsbG8gd29ybGQ="));
      */
-    function decodeLatin1(stringToDecode: any): any;
+    function decodeLatin1(stringToDecode: string): string;
 
     /**
      * Decodes the given base64 value to an UTF8 string representation
      *
      *     var Base64 = require("FuseJS/Base64");
-     *     console.log(Base64.encodeUtf8("Rm9vIMKpIGJhcg==")); //LOG: Foo ¸ bar
+     *     console.log(Base64.encodeUtf8("Rm9vIMKpIGJhcg==")); //LOG: Foo Â¸ bar
      */
-    function decodeUtf8(value: any): any;
+    function decodeUtf8(value: string): string;
 
     /**
      * Encodes the given ASCII value to base64 string representation
@@ -53,7 +53,7 @@ declare module "FuseJS/Base64" {
      *     var Base64 = require("FuseJS/Base64");
      *     console.log(Base64.encodeAscii("Hello, world!")); //LOG: SGVsbG8sIHdvcmxkIQ==
      */
-    function encodeAscii(value: any): any;
+    function encodeAscii(value: string): string;
 
     /**
      * Encodes given array buffer to base64.
@@ -66,7 +66,7 @@ declare module "FuseJS/Base64" {
      *
      *     console.log(Base64.encodeBuffer(data));
      */
-    function encodeBuffer(arrayBuffer: any): any;
+    function encodeBuffer(arrayBuffer: ArrayBuffer): string;
 
     /**
      * Encodes the given string to a Latin-1 base64 string.
@@ -75,15 +75,15 @@ declare module "FuseJS/Base64" {
      *     // Prints "aGVsbG8gd29ybGQ="
      *     console.log(Base64.encodeLatin1("hello world"));
      */
-    function encodeLatin1(stringToEncode: any): any;
+    function encodeLatin1(stringToEncode: string): string;
 
     /**
      * Encodes the given UTF8 value to a base64 string representation
      *
      *     var Base64 = require("FuseJS/Base64");
-     *     console.log(Base64.encodeUtf8("Foo ¸ bar")); //LOG: Rm9vIMKpIGJhcg==
+     *     console.log(Base64.encodeUtf8("Foo Â¸ bar")); //LOG: Rm9vIMKpIGJhcg==
      */
-    function encodeUtf8(value: any): any;
+    function encodeUtf8(value: string): string;
 
 }
 
@@ -112,7 +112,7 @@ declare module "FuseJS/Bundle" {
      * });
      * ```
      */
-    function extract(bundleFilePath: any, destinationPath: any): any;
+    function extract(bundleFilePath: string, destinationPath: string): Promise<string>;
 
     /**
      * Fetch a list of every file bundled with the application.
@@ -125,7 +125,7 @@ declare module "FuseJS/Bundle" {
      * });
      * ```
      */
-    function list(): any;
+    function list(): Promise<string[]>;
 
     /**
      * Asynchronously reads a file from the application bundle
@@ -140,7 +140,7 @@ declare module "FuseJS/Bundle" {
      * });
      * ```
      */
-    function read(filename: any): any;
+    function read(filename: string): Promise<string>;
 
     /**
      * Read a bundled file as an ArrayBuffer of bytes
@@ -156,7 +156,7 @@ declare module "FuseJS/Bundle" {
      * });
      * ```
      */
-    function readBuffer(bundlePath: any): any;
+    function readBuffer(bundlePath: string): Promise<ArrayBuffer>;
 
     /**
      * Synchronously reads a file from the application bundle
@@ -170,7 +170,7 @@ declare module "FuseJS/Bundle" {
      *
      * > Warning: This call will block until the operation is finished. If you are reading large amounts of data, use read() instead.
      */
-    function readSync(filename: any): any;
+    function readSync(filename: string): string;
 
 }
 
@@ -205,6 +205,12 @@ declare module "FuseJS/Bundle" {
  * > Returns an empty string on all other platforms.
  */
 declare module "FuseJS/Environment" {
+    const ios: boolean;
+    const android: boolean;
+    const preview: boolean;
+    const mobile: boolean;
+    const desktop: boolean;
+    const mobileOSVersion: string;
 }
 
 /**
@@ -296,11 +302,9 @@ declare module "FuseJS/Environment" {
  * We're also using the @EventEmitter `observe` method on the `"stateChanged"` event to get an @Observable containing the current state.
  */
 declare module "FuseJS/Lifecycle" {
-    const BACKGROUND: any;
-
-    const FOREGROUND: any;
-
-    const INTERACTIVE: any;
+    const BACKGROUND: number;
+    const FOREGROUND: number;
+    const INTERACTIVE: number;
 
     /**
      * Will give you the current state as an integer
@@ -311,7 +315,7 @@ declare module "FuseJS/Lifecycle" {
      *     console.log(Lifecycle.state === Lifecycle.FOREGROUND);
      *     console.log(Lifecycle.state === Lifecycle.INTERACTIVE);
      */
-    const state: any;
+    const state: number;
 
     type Event = "enteringBackground" |
                  "enteringForeground" |
@@ -358,12 +362,12 @@ declare module "FuseJS/Camera" {
     /**
      * Checks if device has permissions to access the camera.
      */
-    function checkPermissions(): any;
+    function checkPermissions(): boolean;
 
     /**
      * Requests acccess to the camera
      */
-    function requestPermissions(): any;
+    function requestPermissions(): boolean;
 
     /**
      * Starts an OS-specific image capture view and returns a Promise of the resulting Image.
@@ -375,7 +379,7 @@ declare module "FuseJS/Camera" {
      *
      * The image capture view is user-configurable on Android.
      */
-    function takePicture(desiredWidth: any, desiredHeight: any): any;
+    function takePicture(desiredWidth?: number, desiredHeight?: number): Promise<any>;
 
 }
 
@@ -430,22 +434,22 @@ declare module "FuseJS/CameraRoll" {
      * On iOS this is done by uploading a copy of the image to an asset collection
      * named after the application within the system photo library.
      */
-    function publishImage(image: any): any;
+    function publishImage(image: any): void;
 
     /**
      * Checks if device has permissions to access the camera roll.
      */
-    function checkPermissions(): any;
+    function checkPermissions(): boolean;
 
     /**
      * Requests acccess to photo gallery
      */
-    function requestPermissions(): any;
+    function requestPermissions(): boolean;
 
     /**
      * Starts an OS-specific image picker view (user-configurable on Android).
      */
-    function getImage(): any;
+    function getImage(): Promise<any>;
 
 }
 
@@ -487,14 +491,14 @@ declare module "FuseJS/FileSystem" {
      * * `cache` -  The directory acquired by calling `Context.getCacheDir()`
      * * `files` -  The directory acquired by calling `Context.getFilesDir()`
      */
-    const androidPaths: any;
+    const androidPaths: string[];
 
     /**
      * A directory to put cached files.
      *
      * Note that files in this directory might be automatically removed when space is low, depending on platform.
      */
-    const cacheDirectory: any;
+    const cacheDirectory: string;
 
     /**
      * A directory to put data files that are private to the application.
@@ -505,7 +509,7 @@ declare module "FuseJS/FileSystem" {
      *
      * Note that cleaning or rebuilding your project will delete this directory.
      */
-    const dataDirectory: any;
+    const dataDirectory: string;
 
     /**
      * An object containing paths only exposed on iOS devices:
@@ -515,7 +519,7 @@ declare module "FuseJS/FileSystem" {
      * * `caches` -  Mapped to `NSCachesDirectory`
      * * `temp` -  Mapped to `NSTemporaryDirectory`
      */
-    const iosPaths: any;
+    const iosPaths: string[];
 
     /**
      * Asynchronously appends a string to a UTF-8 encoded file.
@@ -531,7 +535,7 @@ declare module "FuseJS/FileSystem" {
      *             console.log(error);
      *         });
      */
-    function appendTextToFile(filename: any): any;
+    function appendTextToFile(filename: string, contents: string): Promise<void>;
 
     /**
      * Synchronously appends a string to a UTF-8 encoded file.
@@ -542,7 +546,7 @@ declare module "FuseJS/FileSystem" {
      *
      *     FileSystem.appendTextToFileSync("myfile.txt", "Hello buddy");
      */
-    function appendTextToFileSync(filename: any): any;
+    function appendTextToFileSync(filename: string, contents: string): void;
 
     /**
      * Asynchronously copies a file or directory recursively from source to destination path
@@ -559,7 +563,7 @@ declare module "FuseJS/FileSystem" {
      *             console.log("Unable to copy file");
      *         });
      */
-    function copy(source: any, destination: any): any;
+    function copy(source: string, destination: string): Promise<void>;
 
     /**
      * Synchronously copies a file or directory recursively from source to destination path
@@ -571,7 +575,7 @@ declare module "FuseJS/FileSystem" {
      *     FileSystem.writeTextToFileSync("to-be-copied.txt", "hello world");
      *     FileSystem.copySync("to-be-copied.txt", "destination-reached.txt");
      */
-    function copySync(source: any, destination: any): any;
+    function copySync(source: string, destination: string): void;
 
     /**
      * Asynchronously creates a directory.
@@ -587,7 +591,7 @@ declare module "FuseJS/FileSystem" {
      *             console.log("Error trying to create directory.");
      *         });
      */
-    function createDirectory(path: any): any;
+    function createDirectory(path: string): Promise<void>;
 
     /**
      * Synchronously creates a directory.
@@ -598,7 +602,7 @@ declare module "FuseJS/FileSystem" {
      *
      *     FileSystem.createDirectory(FileSystem.dataDirectory + "/" + "new-directory");
      */
-    function createDirectorySync(path: any): any;
+    function createDirectorySync(path: string): void;
 
     /**
      * Asynchronously delete a file.
@@ -614,7 +618,7 @@ declare module "FuseJS/FileSystem" {
      *             console.log("Unable to delete file");
      *         });
      */
-    function delete(path: any): any;
+    function delete(path: string): Promise<void>;
 
     /**
      * Synchronously delete a file.
@@ -625,7 +629,7 @@ declare module "FuseJS/FileSystem" {
      *
      *     FileSystem.deleteSync("myfile.txt");
      */
-    function deleteSync(path: any): any;
+    function deleteSync(path: string): void;
 
     /**
      * Asynchronously check if a file exists.
@@ -641,7 +645,7 @@ declare module "FuseJS/FileSystem" {
      *             console.log("Unable to check if file exists");
      *         });
      */
-    function exists(path: any): any;
+    function exists(path: string): Promise<boolean>;
 
     /**
      * Synchronously check if a file exists.
@@ -652,7 +656,7 @@ declare module "FuseJS/FileSystem" {
      *
      *     console.log(FileSystem.existsSync("myfile.txt") ? "It's there!" : "It's missing :/");
      */
-    function existsSync(path: any): any;
+    function existsSync(path: string): boolean;
 
     /**
      * Asynchronously gets info about a directory.
@@ -676,7 +680,7 @@ declare module "FuseJS/FileSystem" {
      *             console.log("Failed to get directory info " + error);
      *         });
      */
-    function getDirectoryInfo(path: any): any;
+    function getDirectoryInfo(path: string): Promise<any>;
 
     /**
      * Synchronously gets info about a directory.
@@ -695,7 +699,7 @@ declare module "FuseJS/FileSystem" {
      *     var dirInfo = FileSystem.getDirectoryInfoSync("some-dir");
      *     console.log("file was modified on " + dirInfo.lastWriteTime);
      */
-    function getDirectoryInfoSync(path: any): any;
+    function getDirectoryInfoSync(path: string): any;
 
     /**
      * Asynchronously gets info about a file.
@@ -720,7 +724,7 @@ declare module "FuseJS/FileSystem" {
      *             "failed stat " + error
      *         });
      */
-    function getFileInfo(path: any): any;
+    function getFileInfo(path: string): Promise<any>;
 
     /**
      * Synchronously gets info about a file.
@@ -739,7 +743,7 @@ declare module "FuseJS/FileSystem" {
      *     var fileInfo = FileSystem.getFileInfoSync("some-file.txt");
      *     console.log("file was modified on " + fileInfo.lastWriteTime);
      */
-    function getFileInfoSync(path: any): any;
+    function getFileInfoSync(path: string): any;
 
     /**
      * Asynchronously list subdirectories in a directory.
@@ -755,7 +759,7 @@ declare module "FuseJS/FileSystem" {
      *             console.log("Unable to list subdirectories of directory: " + error);
      *         });
      */
-    function listDirectories(path: any): any;
+    function listDirectories(path: string): Promise<string[]>;
 
     /**
      * Synchronously list subdirectories in a directory.
@@ -767,7 +771,7 @@ declare module "FuseJS/FileSystem" {
      *     var directories = FileSystem.listDirectoriesSync(FileSystem.dataDirectory);
      *     console.log("There are " + directories.length + " subdirectories in directory");
      */
-    function listDirectoriesSync(path: any): any;
+    function listDirectoriesSync(path: string): string[];
 
     /**
      * Asynchronously lists both files and subdirectories in a directory.
@@ -783,7 +787,7 @@ declare module "FuseJS/FileSystem" {
      *             console.log("Unable to list entries in directory due to error " + error);
      *         });
      */
-    function listEntries(path: any): any;
+    function listEntries(path: string): Promise<string[]>;
 
     /**
      * Synchronously lists both files and subdirectories in a directory.
@@ -795,7 +799,7 @@ declare module "FuseJS/FileSystem" {
      *     var entries = FileSystem.listEntriesSync(FileSystem.dataDirectory);
      *     console.log("There are " + entries.length + " entries in directory");
      */
-    function listEntriesSync(path: any): any;
+    function listEntriesSync(path: string): string[];
 
     /**
      * Asynchronously list files in directory.
@@ -811,7 +815,7 @@ declare module "FuseJS/FileSystem" {
      *             console.log("Unable to list files in directory due to error " + error);
      *         });
      */
-    function listFiles(path: any): any;
+    function listFiles(path: string): Promise<string[]>;
 
     /**
      * Synchronously list files in directory.
@@ -823,7 +827,7 @@ declare module "FuseJS/FileSystem" {
      *     var files = FileSystem.listFilesSync(FileSystem.dataDirectory);
      *     console.log("There are " + files.length + " files in directory");
      */
-    function listFilesSync(path: any): any;
+    function listFilesSync(path: string): string[];
 
     /**
      * Asynchronously moves a file or directory from source to destination path
@@ -840,7 +844,7 @@ declare module "FuseJS/FileSystem" {
      *             console.log("Unable to move file");
      *         });
      */
-    function move(source: any, destination: any): any;
+    function move(source: string, destination: string): Promise<void>;
 
     /**
      * Synchronously moves a file or directory from source to destination path
@@ -852,7 +856,7 @@ declare module "FuseJS/FileSystem" {
      *     FileSystem.writeTextToFileSync("to-be-moved.txt", "hello world");
      *     FileSystem.moveSync("to-be-moved.txt", "destination-reached.txt");
      */
-    function moveSync(source: any, destination: any): any;
+    function moveSync(source: string, destination: string): Promise<void>;
 
     /**
      * Asynchronously reads a file and returns a Promise of an ArrayBuffer with its contents.
@@ -868,7 +872,7 @@ declare module "FuseJS/FileSystem" {
      *             console.log(error);
      *         });
      */
-    function readBufferFromFile(filename: any): any;
+    function readBufferFromFile(filename: string): Promise<ArrayBuffer>;
 
     /**
      * Synchronously reads a file and returns an ArrayBuffer with its contents.
@@ -879,7 +883,7 @@ declare module "FuseJS/FileSystem" {
      *
      *     var data = FileSystem.readBufferFromFileSync("myfile.txt");
      */
-    function readBufferFromFileSync(filename: any): any;
+    function readBufferFromFileSync(filename: string): ArrayBuffer;
 
     /**
      * Asynchronously reads a file and returns a Promise of its contents.
@@ -895,7 +899,7 @@ declare module "FuseJS/FileSystem" {
      *             console.log(error);
      *         });
      */
-    function readTextFromFile(filename: any): any;
+    function readTextFromFile(filename: string): Promise<string>;
 
     /**
      * Synchronously reads a file and returns its contents as a string.
@@ -907,7 +911,7 @@ declare module "FuseJS/FileSystem" {
      *     var content =  FileSystem.readTextFromFileSync(FileSystem.dataDirectory + "/" + "myfile.txt");
      *     console.log("The file contains " + content));
      */
-    function readTextFromFileSync(filename: any): any;
+    function readTextFromFileSync(filename: string): string;
 
     /**
      * Asynchronously writes an `ArrayBuffer` to a file.
@@ -927,7 +931,7 @@ declare module "FuseJS/FileSystem" {
      *             console.log(error);
      *         });
      */
-    function writeBufferToFile(filename: any, data: any): any;
+    function writeBufferToFile(filename: string, data: ArrayBuffer): Promise<void>;
 
     /**
      * Synchronously writes an `ArrayBuffer` to a file.
@@ -942,7 +946,7 @@ declare module "FuseJS/FileSystem" {
      *
      *     FileSystem.writeBufferToFileSync(FileSystem.dataDirectory + "/" + "myfile.txt", data);
      */
-    function writeBufferToFileSync(filename: any, data: any): any;
+    function writeBufferToFileSync(filename: string, data: ArrayBuffer): void;
 
     /**
      * Asynchronously writes a string to a UTF-8 encoded file.
@@ -958,7 +962,7 @@ declare module "FuseJS/FileSystem" {
      *             console.log(error);
      *         });
      */
-    function writeTextToFile(filename: any, text: any): any;
+    function writeTextToFile(filename: string, text: string): Promise<void>;
 
     /**
      * Synchronously writes a string to a UTF-8 encoded file.
@@ -969,7 +973,7 @@ declare module "FuseJS/FileSystem" {
      *
      *     FileSystem.writeTextToFileSync("myfile.txt", "Hello buddy");
      */
-    function writeTextToFileSync(filename: any, text: any): any;
+    function writeTextToFileSync(filename: string, text: string): void;
 
 }
 
@@ -1106,10 +1110,10 @@ declare module "FuseJS/GeoLocation" {
      * user to use location services whenever the app is
      * running.
      */
-    const authorizationRequest: any;
+    const authorizationRequest: number;
 
-    type Event = "changed(location)" |
-                 "error(error)";
+    type Event = "changed" |
+                 "error";
 
     /**
      * Registers a function to be called when one of the following events occur.
@@ -1117,7 +1121,7 @@ declare module "FuseJS/GeoLocation" {
      * * `"changed(location)"` - Raised when the location changes.
      * * `"error(error)"` - Raised when an error occurs.
      */
-    function on(event: Event, callback: () => void): void;
+    function on(event: Event, callback: (arg: any) => void): void;
 
     /**
      * Gets the current location as a promise.
@@ -1137,7 +1141,7 @@ declare module "FuseJS/GeoLocation" {
      *
      * See [the GeoLocation module](api:fuse/geolocation/geolocation) for an example.
      */
-    function getLocation(timeout: any): any;
+    function getLocation(timeout: number): any;
 
     /**
      * Starts the GeoLocation listening service.
@@ -1152,14 +1156,14 @@ declare module "FuseJS/GeoLocation" {
      *
      * See [the GeoLocation module](api:fuse/geolocation/geolocation) for an example.
      */
-    function startListening(minimumReportInterval: any, desiredAccuracy: any): any;
+    function startListening(minimumReportInterval: number, desiredAccuracy: number): void;
 
     /**
      * Stops the GeoLocation listening service.
      *
      * See [the GeoLocation module](api:fuse/geolocation/geolocation) for an example.
      */
-    function stopListening(): any;
+    function stopListening(): void;
 
 }
 
@@ -1203,7 +1207,7 @@ declare module "FuseJS/ImageTools" {
      *     ImageTools.getBase64FromImage(image)
      *         .then(function(base64Image) { console.log("The base64 encoded image is \"" + base64Image + "\""); });
      */
-    function getBase64FromImage(image: any): any;
+    function getBase64FromImage(image: any): Promise<string>;
 
     /**
      * Retrieves the underlying image data for an image as an ArrayBuffer.
@@ -1215,7 +1219,7 @@ declare module "FuseJS/ImageTools" {
      *     ImageTools.getBufferFromImage(image)
      *         .then(function(buf) { console.log("Image contains " + buf.byteLength + " bytes"); });
      */
-    function getBufferFromImage(image: any): any;
+    function getBufferFromImage(image: any): Promise<ArrayBuffer>;
 
     /**
      * Crops the supplied `image`, and returns a Promise of the transformed Image.
@@ -1241,7 +1245,7 @@ declare module "FuseJS/ImageTools" {
      *     ImageTools.crop(originalImage, options)
      *         .then(function(newImage) { console.log("Path of cropped image is " + newImage.path); });
      */
-    function crop(image: any, options: any): any;
+    function crop(image: any, options: any): Promise<any>;
 
     /**
      * Takes base64 string encoded image data and returns a Promise of an Image.
@@ -1255,7 +1259,7 @@ declare module "FuseJS/ImageTools" {
      *             console.log("Scratch path of image is " + image.path);
      *         });
      */
-    function getImageFromBase64(base64: any): any;
+    function getImageFromBase64(base64: string): Promise<any>;
 
     /**
      * Creates a new temporary image file from an ArrayBuffer of image data.
@@ -1266,7 +1270,7 @@ declare module "FuseJS/ImageTools" {
      *     ImageTools.getImageFromBuffer(imageData).
      *         then(function (image) { console.log("Scratch image path is: " + image.path); });
      */
-    function getImageFromBuffer(imageData: any): any;
+    function getImageFromBuffer(imageData: ArrayBuffer): Promise<any>;
 
     /**
      * Resizes an image using the options provided, and returns a Promise of the transformed Image.
@@ -1295,7 +1299,7 @@ declare module "FuseJS/ImageTools" {
      *     ImageTools.resize(originalImage, options)
      *         .then(function(newImage) { console.log("Path of resized image is " + newImage.path); });
      */
-    function resize(image: any, options: any): any;
+    function resize(image: any, options: any): Promise<any>;
 
 }
 
@@ -1429,22 +1433,22 @@ declare module "FuseJS/LocalNotifications" {
     /**
      * Dismisses all currently active notifications created by our app.
      */
-    function clearAllNotifications(): any;
+    function clearAllNotifications(): void;
 
     /**
      * Clears the badge number shown on the iOS home screen.
      */
-    function clearBadgeNumber(): any;
+    function clearBadgeNumber(): void;
 
     /**
      * Displays a notification to the user after the time specified by `secondsFromNow` has passed.
      */
-    function later(secondsFromNow: any, title: any, body: any, payload: any, sound: any, badgeNumber: any): any;
+    function later(secondsFromNow: number, title: string, body: string, payload: any, sound: boolean, badgeNumber?: any): void;
 
     /**
      * Instantly displays a notification to the user.
      */
-    function now(title: any, body: any, payload: any, sound: any, badgeNumber: any): any;
+    function now(title: string, body: string, payload: any, sound: boolean, badgeNumber?: any): void;
 
 }
 
@@ -1732,20 +1736,20 @@ declare module "FuseJS/Push" {
     /**
      * Cancels all previously shown notifications.
      */
-    function clearAllNotifications(): any;
+    function clearAllNotifications(): void;
 
     /**
      * Clears the badge number shown on the iOS home screen.
      *
      * Has no effects on other platforms.
      */
-    function clearBadgeNumber(): any;
+    function clearBadgeNumber(): void;
 
     /**
      * Registers the app with APNS. Only neccesary if APNS.RegisterOnLaunch was
      * set to false in the unoproj file.
      */
-    function register(): any;
+    function register(): void;
 
 }
 
@@ -1800,12 +1804,12 @@ declare module "FuseJS/Share" {
     /**
      * Share a file to another application by path.
      */
-    function shareFile(path: any, mimetype: any, description: any): any;
+    function shareFile(path: string, mimetype: string, description: string): void;
 
     /**
      * Share raw text to another application.
      */
-    function shareText(text: any, description: any): any;
+    function shareText(text: string, description: string): void;
 
 }
 
@@ -1832,7 +1836,7 @@ declare module "FuseJS/Storage" {
      *
      * > Warning: This call will block until the operation is finished.
      */
-    function deleteSync(filename: any): any;
+    function deleteSync(filename: string): boolean;
 
     /**
      * Synchrounously reads data from a file inside the application folder.
@@ -1844,7 +1848,7 @@ declare module "FuseJS/Storage" {
      *
      * > Warning: This call will block until the operation is finished. Use read() if you are reading large amounts of data.
      */
-    function readSync(filename: any): any;
+    function readSync(filename: string): string;
 
     /**
      * Asynchronously reads a file and returns a promise of its contents.
@@ -1858,7 +1862,7 @@ declare module "FuseJS/Storage" {
      *             console.log(error);
      *         });
      */
-    function read(filename: any): any;
+    function read(filename: string): Promise<string>;
 
     /**
      * Synchrounously writes data to a file inside the application folder.
@@ -1875,7 +1879,7 @@ declare module "FuseJS/Storage" {
      *
      * > Warning: This call will block until the operation is finished. Use write() if you are writing large amounts of data.
      */
-    function writeSync(filename: any, contents: any): any;
+    function writeSync(filename: string, contents: string): boolean;
 
     /**
      * Asynchronously writes to a file.
@@ -1892,7 +1896,7 @@ declare module "FuseJS/Storage" {
      *             }
      *         });
      */
-    function write(filename: any, contents: any): any;
+    function write(filename: string, contents: string): Promise<boolean>;
 
 }
 
@@ -1909,7 +1913,7 @@ declare module "FuseJS/Storage" {
  *     vibration.vibrate(0.8);
  */
 declare module "FuseJS/Vibration" {
-    function vibrate(seconds: any): any;
+    function vibrate(seconds: number): void;
 
 }
 
@@ -1927,6 +1931,7 @@ declare module "FuseJS/Vibration" {
  *     </JavaScript>
  */
 declare module "FuseJS/VideoTools" {
+    function copyVideoToCameraRoll(somePath: string): void;
 }
 
 /**
@@ -1952,7 +1957,7 @@ declare module "FuseJS/Email" {
      *     var email = require('FuseJS/Email');
      *     email.compose("to@example.com", "cc@example.com", "bcc@example.com", "subject", "message");
      */
-    function compose(): any;
+    function compose(to: string, cc: string, bcc: string, subject: string, message: string): void;
 
 }
 
@@ -2002,7 +2007,7 @@ declare module "FuseJS/InterApp" {
      * and `facetime:<parameters>` launches a Facetime video call on iOS.
      * More information on supported URI schemes: [on Android](https://developer.android.com/guide/components/intents-common.html) and [on iOS](https://developer.apple.com/library/content/featuredarticles/iPhoneURLScheme_Reference/Introduction/Introduction.html).
      */
-    function launchUri(uri: any): any;
+    function launchUri(uri: string): void;
 
 }
 
@@ -2027,7 +2032,7 @@ declare module "FuseJS/Maps" {
      *     var Maps = require("FuseJS/Maps");
      *     Maps.openAt(59.9117715, 10.7400957);
      */
-    function openAt(): any;
+    function openAt(latitude: number, longitude: number): void;
 
     /**
      * Launches the map application, centered at the location found nearby the given `latitude` and `longitude`,
@@ -2038,7 +2043,7 @@ declare module "FuseJS/Maps" {
      *     var Maps = require("FuseJS/Maps");
      *     Maps.searchNear(59.9117715, 10.7400957, "Fusetools");
      */
-    function searchNear(): any;
+    function searchNear(latitude: number, longitude: number, query: string): void;
 
     /**
      * Launches the map application, centered at the location found using `query` as search criteria.
@@ -2048,7 +2053,7 @@ declare module "FuseJS/Maps" {
      *     var Maps = require("FuseJS/Maps");
      *     Maps.searchNearby("Fusetools");
      */
-    function searchNearby(): any;
+    function searchNearby(query: string): void;
 
 }
 
@@ -2072,7 +2077,7 @@ declare module "FuseJS/Phone" {
      *     var phone = require("FuseJS/Phone");
      *     phone.call("+47 123 45 678");
      */
-    function call(number: any): any;
+    function call(number: string): void;
 
 }
 
@@ -2090,6 +2095,8 @@ declare module "FuseJS/Phone" {
  *     }, 10000, true);
  */
 declare module "FuseJS/Timer" {
+    interface TimerId {}
+
     /**
      * Schedules `func` to be called after `time` milliseconds.
      *
@@ -2102,7 +2109,7 @@ declare module "FuseJS/Timer" {
      *         console.log("This will run every 10 seconds until forever");
      *     }, 10000, true);
      */
-    function create(func: any, time: any, repeat: any): any;
+    function create(func: () => void, time: number, repeat: boolean): TimerId;
 
     /**
      * Deletes/unschedules a running timer.
@@ -2122,7 +2129,7 @@ declare module "FuseJS/Timer" {
      * }, 2000, true);
      * ```
      */
-    function delete(timerId: any): any;
+    function delete(timerId: TimerId): void;
 
 }
 
