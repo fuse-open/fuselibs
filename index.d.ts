@@ -84,7 +84,6 @@ declare module "FuseJS/Base64" {
      *     console.log(Base64.encodeUtf8("Foo ¸ bar")); //LOG: Rm9vIMKpIGJhcg==
      */
     function encodeUtf8(value: string): string;
-
 }
 
 /**
@@ -171,7 +170,6 @@ declare module "FuseJS/Bundle" {
      * > Warning: This call will block until the operation is finished. If you are reading large amounts of data, use read() instead.
      */
     function readSync(filename: string): string;
-
 }
 
 /**
@@ -334,7 +332,6 @@ declare module "FuseJS/Lifecycle" {
      * * `"stateChanged"` - Triggered when the app's lifecycle state has changed.
      */
     function on(event: Event, callback: () => void): void;
-
 }
 
 /**
@@ -380,7 +377,6 @@ declare module "FuseJS/Camera" {
      * The image capture view is user-configurable on Android.
      */
     function takePicture(desiredWidth?: number, desiredHeight?: number): Promise<any>;
-
 }
 
 /**
@@ -450,7 +446,6 @@ declare module "FuseJS/CameraRoll" {
      * Starts an OS-specific image picker view (user-configurable on Android).
      */
     function getImage(): Promise<any>;
-
 }
 
 /**
@@ -974,7 +969,6 @@ declare module "FuseJS/FileSystem" {
      *     FileSystem.writeTextToFileSync("myfile.txt", "Hello buddy");
      */
     function writeTextToFileSync(filename: string, text: string): void;
-
 }
 
 /**
@@ -1164,7 +1158,6 @@ declare module "FuseJS/GeoLocation" {
      * See [the GeoLocation module](api:fuse/geolocation/geolocation) for an example.
      */
     function stopListening(): void;
-
 }
 
 /**
@@ -1300,7 +1293,6 @@ declare module "FuseJS/ImageTools" {
      *         .then(function(newImage) { console.log("Path of resized image is " + newImage.path); });
      */
     function resize(image: any, options: any): Promise<any>;
-
 }
 
 /**
@@ -1449,7 +1441,6 @@ declare module "FuseJS/LocalNotifications" {
      * Instantly displays a notification to the user.
      */
     function now(title: string, body: string, payload: any, sound: boolean, badgeNumber?: any): void;
-
 }
 
 /**
@@ -1750,7 +1741,6 @@ declare module "FuseJS/Push" {
      * set to false in the unoproj file.
      */
     function register(): void;
-
 }
 
 /**
@@ -1810,7 +1800,6 @@ declare module "FuseJS/Share" {
      * Share raw text to another application.
      */
     function shareText(text: string, description: string): void;
-
 }
 
 /**
@@ -1897,7 +1886,6 @@ declare module "FuseJS/Storage" {
      *         });
      */
     function write(filename: string, contents: string): Promise<boolean>;
-
 }
 
 /**
@@ -1914,7 +1902,6 @@ declare module "FuseJS/Storage" {
  */
 declare module "FuseJS/Vibration" {
     function vibrate(seconds: number): void;
-
 }
 
 /**
@@ -1958,7 +1945,6 @@ declare module "FuseJS/Email" {
      *     email.compose("to@example.com", "cc@example.com", "bcc@example.com", "subject", "message");
      */
     function compose(to: string, cc: string, bcc: string, subject: string, message: string): void;
-
 }
 
 /**
@@ -2008,7 +1994,6 @@ declare module "FuseJS/InterApp" {
      * More information on supported URI schemes: [on Android](https://developer.android.com/guide/components/intents-common.html) and [on iOS](https://developer.apple.com/library/content/featuredarticles/iPhoneURLScheme_Reference/Introduction/Introduction.html).
      */
     function launchUri(uri: string): void;
-
 }
 
 /**
@@ -2054,7 +2039,6 @@ declare module "FuseJS/Maps" {
      *     Maps.searchNearby("Fusetools");
      */
     function searchNearby(query: string): void;
-
 }
 
 /**
@@ -2078,7 +2062,6 @@ declare module "FuseJS/Phone" {
      *     phone.call("+47 123 45 678");
      */
     function call(number: string): void;
-
 }
 
 /**
@@ -2130,6 +2113,4 @@ declare module "FuseJS/Timer" {
      * ```
      */
     function delete(timerId: TimerId): void;
-
 }
-
