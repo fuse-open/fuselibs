@@ -48,7 +48,10 @@ namespace Fuse.Reactive.FuseJS
 			
 			_tm = new TimerManager();
 			AddMember(new NativeFunction("create", (NativeCallback)Create));
-			AddMember(new NativeFunction("delete", (NativeCallback)Delete));
+			AddMember(new NativeFunction("destroy", (NativeCallback)Destroy));
+			// Note: 'delete' is a reserved word in TypeScript, so the method was renamed to 'destroy'.
+			// Calling 'delete' will still work to avoid breaking existing code.
+			AddMember(new NativeFunction("delete", (NativeCallback)Destroy));
 
 			Reset += OnReset;
 		}
@@ -98,7 +101,7 @@ namespace Fuse.Reactive.FuseJS
 		
 		
 		/**
-			@scriptmethod delete(timerId)
+			@scriptmethod destroy(timerId)
 			@param timerId (number) The ID of the timer to delete, as returned by `Timer.create()`.
 			
 			Deletes/unschedules a running timer.
@@ -113,15 +116,15 @@ namespace Fuse.Reactive.FuseJS
 				
 				callCount++;
 				if(callCount >= 3) {
-					Timer.delete(timerId);
+					Timer.destroy(timerId);
 				}
 			}, 2000, true);
 			```
 		*/
-		object Delete(Fuse.Scripting.Context context, object[] args)
+		object Destroy(Fuse.Scripting.Context context, object[] args)
 		{
 			if (args.Length < 1)
-				throw new Error("delete(): requires one argument");
+				throw new Error("destroy(): requires one argument");
 
 			try
 			{
@@ -130,7 +133,7 @@ namespace Fuse.Reactive.FuseJS
 			}
 			catch (MarshalException me)
 			{
-				Fuse.Diagnostics.UserWarning("Timer.delete(): The parameter is not a valid timer handle", this);
+				Fuse.Diagnostics.UserWarning("Timer.destroy(): The parameter is not a valid timer handle", this);
 			}
 
 			return null;
