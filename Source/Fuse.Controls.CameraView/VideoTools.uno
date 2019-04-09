@@ -38,6 +38,8 @@ namespace Fuse.VideoTools
 
 		/**
 			Copy a video to the camera roll.
+
+			@scriptmethod copyVideoToCameraRoll(videoPath)
 		*/
 		object CopyVideoToCameraRoll(Context c, object[] args)
 		{
