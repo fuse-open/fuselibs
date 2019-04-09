@@ -478,6 +478,13 @@ declare module "FuseJS/CameraRoll" {
  *         });
  */
 declare module "FuseJS/FileSystem" {
+    interface AndroidPaths {
+        externalCache: string;
+        externalFiles: string;
+        cache: string;
+        files: string;
+    }
+
     /**
      * An object containing paths only exposed on Android devices:
      *
@@ -486,7 +493,7 @@ declare module "FuseJS/FileSystem" {
      * * `cache` -  The directory acquired by calling `Context.getCacheDir()`
      * * `files` -  The directory acquired by calling `Context.getFilesDir()`
      */
-    const androidPaths: string[];
+    const androidPaths: AndroidPaths;
 
     /**
      * A directory to put cached files.
@@ -506,6 +513,13 @@ declare module "FuseJS/FileSystem" {
      */
     const dataDirectory: string;
 
+    interface IosPaths {
+        documents: string;
+        library: string;
+        caches: string;
+        temp: string;
+    }
+
     /**
      * An object containing paths only exposed on iOS devices:
      *
@@ -514,7 +528,7 @@ declare module "FuseJS/FileSystem" {
      * * `caches` -  Mapped to `NSCachesDirectory`
      * * `temp` -  Mapped to `NSTemporaryDirectory`
      */
-    const iosPaths: string[];
+    const iosPaths: IosPaths;
 
     /**
      * Asynchronously appends a string to a UTF-8 encoded file.
@@ -653,6 +667,12 @@ declare module "FuseJS/FileSystem" {
      */
     function existsSync(path: string): boolean;
 
+    interface DirectoryInfo {
+        exists: boolean;
+        lastWriteTime: Date;
+        lastAccessTime: Date;
+    }
+
     /**
      * Asynchronously gets info about a directory.
      *
@@ -675,7 +695,7 @@ declare module "FuseJS/FileSystem" {
      *             console.log("Failed to get directory info " + error);
      *         });
      */
-    function getDirectoryInfo(path: string): Promise<any>;
+    function getDirectoryInfo(path: string): Promise<DirectoryInfo>;
 
     /**
      * Synchronously gets info about a directory.
@@ -694,7 +714,14 @@ declare module "FuseJS/FileSystem" {
      *     var dirInfo = FileSystem.getDirectoryInfoSync("some-dir");
      *     console.log("file was modified on " + dirInfo.lastWriteTime);
      */
-    function getDirectoryInfoSync(path: string): any;
+    function getDirectoryInfoSync(path: string): DirectoryInfo;
+
+    interface FileInfo {
+        size: number;
+        exists: boolean;
+        lastWriteTime: Date;
+        lastAccessTime: Date;
+    }
 
     /**
      * Asynchronously gets info about a file.
@@ -719,7 +746,7 @@ declare module "FuseJS/FileSystem" {
      *             "failed stat " + error
      *         });
      */
-    function getFileInfo(path: string): Promise<any>;
+    function getFileInfo(path: string): Promise<FileInfo>;
 
     /**
      * Synchronously gets info about a file.
@@ -738,7 +765,7 @@ declare module "FuseJS/FileSystem" {
      *     var fileInfo = FileSystem.getFileInfoSync("some-file.txt");
      *     console.log("file was modified on " + fileInfo.lastWriteTime);
      */
-    function getFileInfoSync(path: string): any;
+    function getFileInfoSync(path: string): FileInfo;
 
     /**
      * Asynchronously list subdirectories in a directory.
@@ -1065,6 +1092,14 @@ declare module "FuseJS/FileSystem" {
  *     GeoLocation.on("error", function(err) { ... })
  */
 declare module "FuseJS/GeoLocation" {
+    interface Location {
+        altitude: number;
+        latitude: number;
+        longitude: number;
+        accuracy: number;
+        speed: number;
+    }
+
     /**
      * The last known location.
      *
@@ -1080,7 +1115,7 @@ declare module "FuseJS/GeoLocation" {
      *
      * See [the GeoLocation module](api:fuse/geolocation/geolocation) for an example.
      */
-    const location: any;
+    const location: Location;
 
     /**
      * The type of authorization request to make to the user.
@@ -1135,7 +1170,7 @@ declare module "FuseJS/GeoLocation" {
      *
      * See [the GeoLocation module](api:fuse/geolocation/geolocation) for an example.
      */
-    function getLocation(timeout: number): any;
+    function getLocation(timeout: number): Location;
 
     /**
      * Starts the GeoLocation listening service.
