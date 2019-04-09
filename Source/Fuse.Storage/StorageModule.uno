@@ -24,7 +24,11 @@ namespace Fuse.Storage
 			Resource.SetGlobalKey(_instance = this, "FuseJS/Storage");
 			AddMember(new NativeFunction("writeSync", Write));
 			AddMember(new NativeFunction("readSync", Read));
-			AddMember(new NativeFunction("deleteSync", Delete));
+			AddMember(new NativeFunction("removeSync", Remove));
+			// Note: 'delete' is a reserved word in TypeScript, so similar methods in the FileSystem module
+			// were renamed to 'remove'. The 'removeSync' method in this module was renamed to match this.
+			// Calling 'deleteSync' will still work to avoid breaking existing code.
+			AddMember(new NativeFunction("deleteSync", Remove));
 			AddMember(new NativePromise<bool, bool>("write", WriteAsync, null));
 			AddMember(new NativePromise<string, string>("read", ReadAsync, null));
 		}
@@ -88,7 +92,7 @@ namespace Fuse.Storage
 		}
 
 		/**
-			@scriptmethod deleteSync(filename)
+			@scriptmethod removeSync(filename)
 			@param filename (String) The file to delete
 			@return (boolean) `true` if the file was deleted, `false` otherwise.
 
@@ -96,7 +100,7 @@ namespace Fuse.Storage
 			
 				var Storage = require("FuseJS/Storage");
 				
-				var success = Storage.deleteSync("uselessFile.txt");
+				var success = Storage.removeSync("uselessFile.txt");
 				if(success) {
 					console.log("Deleted file");
 				}
@@ -106,7 +110,7 @@ namespace Fuse.Storage
 
 			> Warning: This call will block until the operation is finished.
 		*/
-		static object Delete(Scripting.Context c, object[] args)
+		static object Remove(Scripting.Context c, object[] args)
 		{
 			if (args.Length > 0)
 			{

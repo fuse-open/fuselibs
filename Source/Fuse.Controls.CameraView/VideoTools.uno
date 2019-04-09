@@ -18,9 +18,9 @@ namespace Fuse.VideoTools
 		## Example
 
 			<JavaScript>
-				var ImageTools = require("FuseJS/VideoTools");
+				var VideoTools = require("FuseJS/VideoTools");
 
-				ImageTools.copyVideoToCameraRoll(somePath);
+				VideoTools.copyVideoToCameraRoll(somePath);
 			</JavaScript>
 	*/
 	[UXGlobalModule]
@@ -38,6 +38,8 @@ namespace Fuse.VideoTools
 
 		/**
 			Copy a video to the camera roll.
+
+			@scriptmethod copyVideoToCameraRoll(videoPath)
 		*/
 		object CopyVideoToCameraRoll(Context c, object[] args)
 		{

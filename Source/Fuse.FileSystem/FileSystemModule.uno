@@ -66,8 +66,13 @@ namespace Fuse.FileSystem
 
 			AddMember(new NativePromise<Nothing, Scripting.Object>("createDirectory", CreateDirectory));
 			AddMember(new NativeFunction("createDirectorySync", CreateDirectorySync));
-			AddMember(new NativePromise<Nothing, Scripting.Object>("delete", Delete));
-			AddMember(new NativeFunction("deleteSync", DeleteSync));
+			AddMember(new NativePromise<Nothing, Scripting.Object>("remove", Remove));
+			AddMember(new NativeFunction("removeSync", RemoveSync));
+			// Note: 'delete' is a reserved word in TypeScript, so the method was renamed to 'remove'.
+			// The 'deleteSync' method was renamed to 'removeSync' to match.
+			// Calling 'delete' and 'deleteSync' will still work to avoid breaking existing code.
+			AddMember(new NativePromise<Nothing, Scripting.Object>("delete", Remove));
+			AddMember(new NativeFunction("deleteSync", RemoveSync));
 			AddMember(new NativePromise<bool, bool>("exists", Exists));
 			AddMember(new NativeFunction("existsSync", ExistsSync));
 			AddMember(new NativePromise<FileSystemInfo, Scripting.Object>("getDirectoryInfo", GetDirectoryInfo, ToScriptingObject));
@@ -190,7 +195,7 @@ namespace Fuse.FileSystem
 
 
 		/**
-			@scriptmethod delete(path)
+			@scriptmethod remove(path)
 			@param path (String) Path to a file or directory
 			@param recursive (Boolean) Delete directory recursively (ignored for files)
 			@return (Promise) A Promise of nothing
@@ -201,14 +206,14 @@ namespace Fuse.FileSystem
 
 				var FileSystem = require("FuseJS/FileSystem");
 
-				FileSystem.delete("myfile.txt")
+				FileSystem.remove("myfile.txt")
 					.then(function() {
 						console.log("Delete succeeded");
 					}, function(error) {
 						console.log("Unable to delete file");
 					});
 		*/
-		Future<Nothing> Delete(object[] args)
+		Future<Nothing> Remove(object[] args)
 		{
 			var recursive = (args.Length > 1 && args[1] is bool) ? (bool)args[1] : false;
 			return _operations.Delete(GetPathFromArgs(args), recursive);
@@ -216,7 +221,7 @@ namespace Fuse.FileSystem
 
 
 		/**
-			@scriptmethod deleteSync(path)
+			@scriptmethod removeSync(path)
 			@param path (String) Path to a file or directory
 			@param recursive (Boolean) Delete directory recursively (ignored for files)
 
@@ -226,9 +231,9 @@ namespace Fuse.FileSystem
 
 				var FileSystem = require("FuseJS/FileSystem");
 
-				FileSystem.deleteSync("myfile.txt");
+				FileSystem.removeSync("myfile.txt");
 		*/
-		object DeleteSync(Context context, object[] args)
+		object RemoveSync(Context context, object[] args)
 		{
 			var recursive = (args.Length > 1 && args[1] is bool) ? (bool)args[1] : false;
 			_operations.DeleteSync(GetPathFromArgs(args), recursive);
