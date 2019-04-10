@@ -620,14 +620,14 @@ declare module "FuseJS/FileSystem" {
      *
      *     var FileSystem = require("FuseJS/FileSystem");
      *
-     *     FileSystem.delete("myfile.txt")
+     *     FileSystem.remove("myfile.txt")
      *         .then(function() {
      *             console.log("Delete succeeded");
      *         }, function(error) {
      *             console.log("Unable to delete file");
      *         });
      */
-    function delete(path: string): Promise<void>;
+    function remove(path: string): Promise<void>;
 
     /**
      * Synchronously delete a file.
@@ -636,9 +636,9 @@ declare module "FuseJS/FileSystem" {
      *
      *     var FileSystem = require("FuseJS/FileSystem");
      *
-     *     FileSystem.deleteSync("myfile.txt");
+     *     FileSystem.removeSync("myfile.txt");
      */
-    function deleteSync(path: string): void;
+    function removeSync(path: string): void;
 
     /**
      * Asynchronously check if a file exists.
@@ -1850,7 +1850,7 @@ declare module "FuseJS/Storage" {
      *
      *     var Storage = require("FuseJS/Storage");
      *
-     *     var success = Storage.deleteSync("uselessFile.txt");
+     *     var success = Storage.removeSync("uselessFile.txt");
      *     if(success) {
      *         console.log("Deleted file");
      *     }
@@ -1860,7 +1860,7 @@ declare module "FuseJS/Storage" {
      *
      * > Warning: This call will block until the operation is finished.
      */
-    function deleteSync(filename: string): boolean;
+    function removeSync(filename: string): boolean;
 
     /**
      * Synchrounously reads data from a file inside the application folder.
@@ -1953,7 +1953,10 @@ declare module "FuseJS/Vibration" {
  *     </JavaScript>
  */
 declare module "FuseJS/VideoTools" {
-    function copyVideoToCameraRoll(somePath: string): void;
+    /**
+     * Copy a video to the camera roll.
+     */
+    function copyVideoToCameraRoll(videoPath: string): void;
 }
 
 /**
@@ -2142,10 +2145,10 @@ declare module "FuseJS/Timer" {
      *
      *     callCount++;
      *     if(callCount >= 3) {
-     *         Timer.delete(timerId);
+     *         Timer.destroy(timerId);
      *     }
      * }, 2000, true);
      * ```
      */
-    function delete(timerId: TimerId): void;
+    function destroy(timerId: TimerId): void;
 }
