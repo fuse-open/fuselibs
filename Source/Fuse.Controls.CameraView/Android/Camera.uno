@@ -395,7 +395,7 @@ namespace Fuse.Controls.Android
 		[Foreign(Language.Java)]
 		static Java.Object Create(Java.Object camera, int cameraId, int maxWidth, int maxHeight)
 		@{
-			CameraImpl view = new CameraImpl(@(Activity.Package).@(Activity.Name).GetRootActivity(), (android.hardware.Camera)camera, cameraId, maxWidth, maxHeight);
+			CameraImpl view = new CameraImpl(com.fuse.Activity.getRootActivity(), (android.hardware.Camera)camera, cameraId, maxWidth, maxHeight);
 			view.setLayoutParams(new android.widget.FrameLayout.LayoutParams(android.view.ViewGroup.LayoutParams.MATCH_PARENT, android.view.ViewGroup.LayoutParams.MATCH_PARENT));
 			return view;
 		@}

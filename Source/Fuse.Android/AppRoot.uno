@@ -67,7 +67,7 @@ namespace Fuse.Android
 		[Foreign(Language.Java)]
 		static Java.Object CreateRootView()
 		@{
-			android.widget.FrameLayout frameLayout = new android.widget.FrameLayout(@(Activity.Package).@(Activity.Name).GetRootActivity()) {
+			android.widget.FrameLayout frameLayout = new android.widget.FrameLayout(com.fuse.Activity.getRootActivity()) {
 
 					android.view.MotionEvent _currentEvent;
 

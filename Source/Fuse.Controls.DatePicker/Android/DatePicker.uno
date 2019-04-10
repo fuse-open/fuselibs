@@ -146,7 +146,7 @@ namespace Fuse.Controls.Native.Android
 		[Foreign(Language.Java)]
 		static Java.Object Create()
 		@{
-			return new android.widget.DatePicker(@(Activity.Package).@(Activity.Name).GetRootActivity());
+			return new android.widget.DatePicker(com.fuse.Activity.getRootActivity());
 		@}
 
 		[Foreign(Language.Java)]

@@ -60,7 +60,7 @@ namespace Fuse.Controls.Native.Android
 		[Foreign(Language.Java)]
 		static Java.Object Instantiate()
 		@{
-			android.widget.FrameLayout frameLayout = new com.fuse.android.views.CanvasViewGroup(@(Activity.Package).@(Activity.Name).GetRootActivity());
+			android.widget.FrameLayout frameLayout = new com.fuse.android.views.CanvasViewGroup(com.fuse.Activity.getRootActivity());
 			frameLayout.setFocusable(true);
 			frameLayout.setFocusableInTouchMode(true);
 			frameLayout.setClipChildren(false);

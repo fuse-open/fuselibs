@@ -114,7 +114,7 @@ namespace Fuse.Controls.Android
 		[Foreign(Language.Java)]
 		static Java.Object NewImageView()
 		@{
-			android.widget.ImageView imageView = new android.widget.ImageView(@(Activity.Package).@(Activity.Name).GetRootActivity());
+			android.widget.ImageView imageView = new android.widget.ImageView(com.fuse.Activity.getRootActivity());
 			imageView.setCropToPadding(true);
 			imageView.setScaleType(android.widget.ImageView.ScaleType.CENTER_INSIDE);
 			return imageView;

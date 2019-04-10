@@ -305,7 +305,7 @@ namespace Fuse.Controls.Android
 		[Foreign(Language.Java)]
 		static Java.Object Create()
 		@{
-			android.widget.FrameLayout frameLayout = new android.widget.FrameLayout(@(Activity.Package).@(Activity.Name).GetRootActivity());
+			android.widget.FrameLayout frameLayout = new android.widget.FrameLayout(com.fuse.Activity.getRootActivity());
 			frameLayout.setLayoutParams(new android.widget.FrameLayout.LayoutParams(android.view.ViewGroup.LayoutParams.MATCH_PARENT, android.view.ViewGroup.LayoutParams.MATCH_PARENT));
 			return frameLayout;
 		@}
