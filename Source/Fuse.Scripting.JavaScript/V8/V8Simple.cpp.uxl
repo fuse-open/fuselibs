@@ -1,8 +1,7 @@
 <Extensions Backend="CPlusPlus" Condition="USE_V8">
 	<Require Condition="OSX" LinkDirectory="@('lib/OSX':Path)" />
-	<Require Condition="WIN32" LinkDirectory="@('lib/Windows/$(PlatformShortName)':Path)" />
-	<Require Condition="WIN32" SharedLibrary.x86="@('lib/Windows/x86/V8Simple.dll':Path)" />
-	<Require Condition="WIN32" SharedLibrary.x64="@('lib/Windows/x64/V8Simple.dll':Path)" />
+	<Require Condition="WIN32" LinkDirectory="@('lib/Windows':Path)" />
+	<Require Condition="WIN32" SharedLibrary="@('lib/Windows/V8Simple.dll':Path)" />
 	<Require IncludeDirectory="@('.':Path)" />
 	<Require Condition="!ANDROID" LinkLibrary="V8Simple" />
 
