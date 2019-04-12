@@ -298,7 +298,7 @@ namespace Fuse.Controls.Native
 		[Foreign(Language.Java)]
 		static Java.Object InstantiateViewGroupImpl()
 		@{
-			android.widget.FrameLayout frameLayout = new com.fuse.android.views.ViewGroup(@(Activity.Package).@(Activity.Name).GetRootActivity());
+			android.widget.FrameLayout frameLayout = new com.fuse.android.views.ViewGroup(com.fuse.Activity.getRootActivity());
 			frameLayout.setFocusable(true);
 			frameLayout.setFocusableInTouchMode(true);
 			frameLayout.setClipChildren(false);
