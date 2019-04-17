@@ -6,7 +6,6 @@
       <CopyFile SourceFile="duktape.c" />
       <Require Source.Include="duktape_helpers.h" />
       <Require Entity="Uno.Action<Uno.IntPtr>" />
-      <Require Condition="Android" PreprocessorDefinition="DUK_F_32BIT_PTRS" />
       <Require Condition="Android" PreprocessorDefinition="DUK_F_USE_REPL_ALL" />
    </Type>
    <Type Name="Fuse.Scripting.Duktape.duk_context"
