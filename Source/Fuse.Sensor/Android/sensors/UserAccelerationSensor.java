@@ -17,7 +17,7 @@ public class UserAccelerationSensor extends AbstractSensor {
 
     @Override
     protected String getSensorName() {
-    	return "User Acceleration";
+        return "User Acceleration";
     }
 
 }

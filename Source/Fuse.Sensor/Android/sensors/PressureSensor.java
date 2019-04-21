@@ -17,7 +17,7 @@ public class PressureSensor extends AbstractSensor {
 
     @Override
     protected String getSensorName() {
-    	return "Pressure";
+        return "Pressure";
     }
 
 }

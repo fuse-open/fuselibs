@@ -186,7 +186,7 @@ namespace Fuse.Sensor
 				Sensor.stopListening(Sensor.CONNECTION_STATE);
 			}
 
-        To handle errors from Sensor we can listen to the `"error"` event, as follows:
+		To handle errors from Sensor we can listen to the `"error"` event, as follows:
 
 			var Sensor = require("FuseJS/Sensor")
 			Sensor.on("error", function(err) { ... })
@@ -535,24 +535,24 @@ namespace Fuse.Sensor
 	/** Determines the sensor type available for @SensorModule. */
 	public enum SensorType {
 		/** Measures the acceleration force in m/s2 that is applied to a device on all three physical axes (x, y, and z), including the force of gravity (9.81 m/s2) */
-	    ACCELEROMETER = 0,
-	    /** Measures a device's rate of rotation in rad/s around each of the three physical axes (x, y, and z) */
-	    GYROSCOPE = 1,
-	    /** Measures the ambient geomagnetic field for all three physical axes (x, y, z) in μT */
-	    MAGNETOMETER = 2,
-	    /** Measures the force of gravity in m/s2 that is applied to a device on all three physical axes (x, y, z). */
-	    GRAVITY = 3,
-	    /** Measures the acceleration force in m/s2 that is applied to a device on all three physical axes (x, y, and z), excluding the force of gravity. */
-	    USER_ACCELERATION = 4,
-	    /** Measures the orientation of a device by providing the three elements of the device's rotation vector. */
-	    ROTATION = 5,
-	    /** Number of steps taken by the user since the last reboot while the sensor was activated. */
-	    STEP_COUNTER = 6,
-	    /** Measures the ambient air pressure in hPa or mbar. */
-	    PRESSURE = 7,
-	    /** Monitor battery level and state */
-	    BATTERY = 8,
-	    /** Monitor network connectivity */
-	    CONNECTION_STATE = 9
+		ACCELEROMETER = 0,
+		/** Measures a device's rate of rotation in rad/s around each of the three physical axes (x, y, and z) */
+		GYROSCOPE = 1,
+		/** Measures the ambient geomagnetic field for all three physical axes (x, y, z) in μT */
+		MAGNETOMETER = 2,
+		/** Measures the force of gravity in m/s2 that is applied to a device on all three physical axes (x, y, z). */
+		GRAVITY = 3,
+		/** Measures the acceleration force in m/s2 that is applied to a device on all three physical axes (x, y, and z), excluding the force of gravity. */
+		USER_ACCELERATION = 4,
+		/** Measures the orientation of a device by providing the three elements of the device's rotation vector. */
+		ROTATION = 5,
+		/** Number of steps taken by the user since the last reboot while the sensor was activated. */
+		STEP_COUNTER = 6,
+		/** Measures the ambient air pressure in hPa or mbar. */
+		PRESSURE = 7,
+		/** Monitor battery level and state */
+		BATTERY = 8,
+		/** Monitor network connectivity */
+		CONNECTION_STATE = 9
 	}
 }

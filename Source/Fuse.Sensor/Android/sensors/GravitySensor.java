@@ -17,7 +17,7 @@ public class GravitySensor extends AbstractSensor {
 
     @Override
     protected String getSensorName() {
-    	return "Gravity";
+        return "Gravity";
     }
 
 }

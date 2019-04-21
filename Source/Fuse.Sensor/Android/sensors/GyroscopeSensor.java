@@ -17,7 +17,7 @@ public class GyroscopeSensor extends AbstractSensor {
 
     @Override
     protected String getSensorName() {
-    	return "Gyroscope";
+        return "Gyroscope";
     }
 
 }

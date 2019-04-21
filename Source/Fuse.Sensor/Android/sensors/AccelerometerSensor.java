@@ -17,7 +17,7 @@ public class AccelerometerSensor extends AbstractSensor {
 
     @Override
     protected String getSensorName() {
-    	return "Accelerometer";
+        return "Accelerometer";
     }
 
 }

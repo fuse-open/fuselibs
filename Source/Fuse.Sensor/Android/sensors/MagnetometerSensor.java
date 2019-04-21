@@ -17,7 +17,7 @@ public class MagnetometerSensor extends AbstractSensor {
 
     @Override
     protected String getSensorName() {
-    	return "Magnetometer";
+        return "Magnetometer";
     }
 
 }

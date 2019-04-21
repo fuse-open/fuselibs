@@ -200,7 +200,7 @@ static void TMReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkRea
         self.reachabilityRef = nil;
     }
 
-	self.reachableBlock          = nil;
+    self.reachableBlock          = nil;
     self.unreachableBlock        = nil;
     self.reachabilityBlock       = nil;
     self.reachabilitySerialQueue = nil;
@@ -364,10 +364,10 @@ static void TMReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkRea
 {
     SCNetworkReachabilityFlags flags;
 
-	if(SCNetworkReachabilityGetFlags(self.reachabilityRef, &flags))
+    if(SCNetworkReachabilityGetFlags(self.reachabilityRef, &flags))
     {
-		return (flags & kSCNetworkReachabilityFlagsConnectionRequired);
-	}
+        return (flags & kSCNetworkReachabilityFlagsConnectionRequired);
+    }
 
     return NO;
 }
@@ -375,15 +375,15 @@ static void TMReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkRea
 // Dynamic, on demand connection?
 -(BOOL)isConnectionOnDemand
 {
-	SCNetworkReachabilityFlags flags;
+    SCNetworkReachabilityFlags flags;
 
-	if (SCNetworkReachabilityGetFlags(self.reachabilityRef, &flags))
+    if (SCNetworkReachabilityGetFlags(self.reachabilityRef, &flags))
     {
-		return ((flags & kSCNetworkReachabilityFlagsConnectionRequired) &&
-				(flags & (kSCNetworkReachabilityFlagsConnectionOnTraffic | kSCNetworkReachabilityFlagsConnectionOnDemand)));
-	}
+        return ((flags & kSCNetworkReachabilityFlagsConnectionRequired) &&
+                (flags & (kSCNetworkReachabilityFlagsConnectionOnTraffic | kSCNetworkReachabilityFlagsConnectionOnDemand)));
+    }
 
-	return NO;
+    return NO;
 }
 
 // Is user intervention required?
@@ -391,13 +391,13 @@ static void TMReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkRea
 {
     SCNetworkReachabilityFlags flags;
 
-	if (SCNetworkReachabilityGetFlags(self.reachabilityRef, &flags))
+    if (SCNetworkReachabilityGetFlags(self.reachabilityRef, &flags))
     {
-		return ((flags & kSCNetworkReachabilityFlagsConnectionRequired) &&
-				(flags & kSCNetworkReachabilityFlagsInterventionRequired));
-	}
+        return ((flags & kSCNetworkReachabilityFlagsConnectionRequired) &&
+                (flags & kSCNetworkReachabilityFlagsInterventionRequired));
+    }
 
-	return NO;
+    return NO;
 }
 
 
@@ -430,19 +430,19 @@ static void TMReachabilityCallback(SCNetworkReachabilityRef target, SCNetworkRea
 
 -(NSString*)currentReachabilityString
 {
-	NetworkStatus temp = [self currentReachabilityStatus];
+    NetworkStatus temp = [self currentReachabilityStatus];
 
-	if(temp == ReachableViaWWAN)
-	{
+    if(temp == ReachableViaWWAN)
+    {
         // Updated for the fact that we have CDMA phones now!
-		return NSLocalizedString(@"Cellular", @"");
-	}
-	if (temp == ReachableViaWiFi)
-	{
-		return NSLocalizedString(@"WiFi", @"");
-	}
+        return NSLocalizedString(@"Cellular", @"");
+    }
+    if (temp == ReachableViaWiFi)
+    {
+        return NSLocalizedString(@"WiFi", @"");
+    }
 
-	return NSLocalizedString(@"No Connection", @"");
+    return NSLocalizedString(@"No Connection", @"");
 }
 
 -(NSString*)currentReachabilityFlags

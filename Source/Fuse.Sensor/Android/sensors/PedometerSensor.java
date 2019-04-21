@@ -17,7 +17,7 @@ public class PedometerSensor extends AbstractSensor {
 
     @Override
     protected String getSensorName() {
-    	return "Pedometer";
+        return "Pedometer";
     }
 
 }

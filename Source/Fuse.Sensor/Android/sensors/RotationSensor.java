@@ -17,7 +17,7 @@ public class RotationSensor extends AbstractSensor {
 
     @Override
     protected String getSensorName() {
-    	return "Rotation";
+        return "Rotation";
     }
 
 }

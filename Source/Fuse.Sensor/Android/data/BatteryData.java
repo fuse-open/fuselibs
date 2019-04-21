@@ -7,7 +7,7 @@ import static android.os.BatteryManager.*;
 
 public class BatteryData {
 
-	protected final int level;
+    protected final int level;
     protected final int scale;
     protected final int temperature;
     protected final int voltage;

@@ -10,7 +10,7 @@ import com.foreign.Uno.Action_Object;
 
 public abstract class AbstractSensor {
 
-	private final SensorManager mSensorManager;
+    private final SensorManager mSensorManager;
     private final Sensor mSensor;
     private final SensorEventListener mSensorEventListener;
     protected boolean isSensing = false;

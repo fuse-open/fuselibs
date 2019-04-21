@@ -586,7 +586,7 @@ namespace Fuse.Sensor
 		}
 	}
 
-		[Require("Xcode.Framework", "SystemConfiguration")]
+	[Require("Xcode.Framework", "SystemConfiguration")]
 	[ForeignInclude(Language.ObjC, "iOS/sensors/FOPressure.h")]
 	extern(iOS) class IOSPressureProvider : ISensorTracker
 	{
