@@ -1,0 +1,64 @@
+{
+  "Copyright": "Copyright (c) Fuse Open 2019",
+  "Description": "Native Sensor Access",
+  "Publisher": "Fuse Open",
+  "Package": {
+    "ProjectUrl": "https://fuseopen.com"
+  },
+  "Packages": [
+    "Uno.Collections",
+    "Uno.Threading"
+  ],
+  "Projects": [
+    "../Fuse.Common/Fuse.Common.unoproj",
+    "../Fuse.Marshal/Fuse.Marshal.unoproj",
+    "../Fuse.Scripting/Fuse.Scripting.unoproj"
+  ],
+  "Includes": [
+    "Android/data/SensorData.java:Java:Android",
+    "Android/data/BatteryData.java:Java:Android",
+    "Android/data/ConnectionStateData.java:Java:Android",
+    "Android/sensors/AbstractSensor.java:Java:Android",
+    "Android/sensors/AccelerometerSensor.java:Java:Android",
+    "Android/sensors/GyroscopeSensor.java:Java:Android",
+    "Android/sensors/MagnetometerSensor.java:Java:Android",
+    "Android/sensors/UserAccelerationSensor.java:Java:Android",
+    "Android/sensors/GravitySensor.java:Java:Android",
+    "Android/sensors/RotationSensor.java:Java:Android",
+    "Android/sensors/PedometerSensor.java:Java:Android",
+    "Android/sensors/BatterySensor.java:Java:Android",
+    "Android/sensors/ConnectionStateSensor.java:Java:Android",
+    "Android/sensors/PressureSensor.java:Java:Android",
+    "Android/SensorType.java:Java:Android",
+    "iOS/data/FOBatteryData.h:ObjCHeader:iOS",
+    "iOS/data/FOBatteryData.m:ObjCSource:iOS",
+    "iOS/data/FOConnectionStateData.h:ObjCHeader:iOS",
+    "iOS/data/FOConnectionStateData.m:ObjCSource:iOS",
+    "iOS/sensors/FOMotionManager.h:ObjCHeader:iOS",
+    "iOS/sensors/FOMotionManager.m:ObjCSource:iOS",
+    "iOS/sensors/FOAccelerometer.h:ObjCHeader:iOS",
+    "iOS/sensors/FOAccelerometer.m:ObjCSource:iOS",
+    "iOS/sensors/FOGyroscope.h:ObjCHeader:iOS",
+    "iOS/sensors/FOGyroscope.m:ObjCSource:iOS",
+    "iOS/sensors/FOMagnetometer.h:ObjCHeader:iOS",
+    "iOS/sensors/FOMagnetometer.m:ObjCSource:iOS",
+    "iOS/sensors/FODeviceMotion.h:ObjCHeader:iOS",
+    "iOS/sensors/FODeviceMotion.m:ObjCSource:iOS",
+    "iOS/sensors/FOPedometer.h:ObjCHeader:iOS",
+    "iOS/sensors/FOPedometer.m:ObjCSource:iOS",
+    "iOS/sensors/FOBattery.h:ObjCHeader:iOS",
+    "iOS/sensors/FOBattery.m:ObjCSource:iOS",
+    "iOS/sensors/FOReachability.h:ObjCHeader:iOS",
+    "iOS/sensors/FOReachability.m:ObjCSource:iOS",
+    "iOS/sensors/FOConnection.h:ObjCHeader:iOS",
+    "iOS/sensors/FOConnection.m:ObjCSource:iOS",
+    "iOS/sensors/FOPressure.h:ObjCHeader:iOS",
+    "iOS/sensors/FOPressure.m:ObjCSource:iOS",
+    "*"
+  ],
+  "iOS": {
+    "PList": {
+      "NSMotionUsageDescription": "Require access to Motion data to enhance user experience using app"
+    }
+  }
+}
