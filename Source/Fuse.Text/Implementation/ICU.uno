@@ -3,6 +3,8 @@ using Uno.Compiler.ExportTargetInterop;
 
 namespace Fuse.Text.Implementation
 {
+	[extern(LINUX) Require("LinkLibrary", "icuuc")]
+	[extern(LINUX) Require("LinkLibrary", "icudata")]
 	[extern(HOST_MAC && (PInvoke || NATIVE)) Require("LinkLibrary", "icucore")]
 	[extern(HOST_MAC && (PInvoke || iOS || NATIVE)) Require("IncludeDirectory", "@('../icu/i18n':Path)")]
 	[extern(HOST_MAC && (PInvoke || iOS || NATIVE)) Require("IncludeDirectory", "@('../icu/common':Path)")]

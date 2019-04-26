@@ -9,6 +9,8 @@ namespace Fuse.Scripting.JavaScriptCore
 	[extern(Android) Require("LinkLibrary", "jsc")]
 	[extern(Android) Require("IncludeDirectory", "@(PACKAGE_DIR:Path)/3rdparty/JavaScriptCore/Headers")]
 	[extern(iOS) Require("Xcode.Framework", "JavaScriptCore")]
+	[extern(LINUX) Require("LinkLibrary", "javascriptcoregtk-4.0")]
+	[extern(LINUX) Require("IncludeDirectory", "/usr/include/webkitgtk-4.0")]
 	[Require("Header.Include", "JavaScriptCore/JavaScript.h")]
 	public extern(USE_JAVASCRIPTCORE) class Context : Fuse.Scripting.JavaScript.JSContext
 	{

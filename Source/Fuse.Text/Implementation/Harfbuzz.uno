@@ -9,7 +9,7 @@ namespace Fuse.Text.Implementation
 	[Require("Source.Include", "hb-ft-cached.h")]
 	[Require("Source.Include", "ft2build.h")]
 	[Require("Source.Declaration", "#include FT_ADVANCES_H")]
-	[extern(UNIX) Require("IncludeDirectory", "@('../harfbuzz/include':Path)")]
+	[extern(APPLE || ANDROID) Require("IncludeDirectory", "@('../harfbuzz/include':Path)")]
 	[extern(WIN32) Require("IncludeDirectory", "@('../harfbuzz/lib/Windows/include':Path)")] // Windows use a newer version of Harfbuzz
 	[extern(iOS) Require("Source.Include", "harfbuzz/hb-coretext.h")]
 	[extern(iOS) Require("LinkDirectory", "@('../harfbuzz/lib/iOS':Path)")]

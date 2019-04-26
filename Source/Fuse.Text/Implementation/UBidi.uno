@@ -5,8 +5,7 @@ using Uno;
 
 namespace Fuse.Text.Bidirectional.Implementation
 {
-	[extern(HOST_MAC && (PInvoke || iOS || NATIVE)) Require("Source.Include", "unicode/ubidi.h")]
-	[extern(HOST_WINDOWS && (PInvoke || NATIVE)) Require("Source.Include", "unicode/ubidi.h")]
+	[Require("Source.Include", "unicode/ubidi.h")]
 	[Require("Source.Include", "string.h")]
 	static extern(USE_ICU) class UBidiRuns
 	{
