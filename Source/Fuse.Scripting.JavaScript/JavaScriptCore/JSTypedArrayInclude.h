@@ -1,5 +1,4 @@
-#ifdef ANDROID
-#else
+#ifdef __APPLE__
 	#include <Availability.h>
 	#ifndef __MAC_10_12
 		#define __MAC_10_12 101200
