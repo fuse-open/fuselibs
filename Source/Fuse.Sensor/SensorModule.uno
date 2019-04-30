@@ -21,8 +21,8 @@ namespace Fuse.Sensor
 
 		Besides being able to read sensor data, this module can also monitor changes in state of the battery and network connectivity
 
-		Use [startListening](api:fuse/sensor/sensor/startlistening.json) to get continual sensor data updates.
-		 And use [stoptListening](api:fuse/sensor/sensor/stoplistening.json) to stop getting continual sensor data updates.
+		Use [startListening](api:fuse/sensor/sensormodule/startlistening_bbef95e2.json) to get continual sensor data updates.
+		 And use [stopListening](api:fuse/sensor/sensormodule/stoplistening_bbef95e2.json) to stop getting continual sensor data updates.
 
 		You need to add a reference to `"Fuse.Sensor"` in your project file to use this feature.
 
@@ -77,7 +77,7 @@ namespace Fuse.Sensor
 				<Button Text="Stop continuous Accelerometer listener" Clicked="{stopAccelerometerContinuousListener}" />
 			</StackPanel>
 
-		In the above example we're using`"changed"` event. Data returned by this module are JavaScript objects of the following form:
+		In the above example we're using `"changed"` event. Data returned by this module are JavaScript objects of the following form:
 
 			{
 				type: sensor type (in this case is Sensor.ACCELEROMETER),
@@ -287,11 +287,11 @@ namespace Fuse.Sensor
 
 			Starts the Sensor listening service.
 
-			[onChanged](api:fuse/sensor/sensor/datachanged.json)
+			[onChanged](api:fuse/sensor/sensormodule/datachanged_a09c80e3.json)
 			events will be generated as the sensor changes.
 
 
-			Use [stopListening](api:fuse/sensor/sensor/stoplistening.json) to stop the service.
+			Use [stopListening](api:fuse/sensor/sensormodule/stoplistening_bbef95e2.json) to stop the service.
 
 			@param sensorType what type sensor that want to listen. see @SensorType for details
 
@@ -466,7 +466,7 @@ namespace Fuse.Sensor
 
 			Raised when the sensor changes.
 
-			Use [startListening](api:fuse/sensor/sensor/startlistening.json) to get these events.
+			Use [startListening](api:fuse/sensor/sensormodule/startlistening_bbef95e2.json) to get these events.
 
 			@param data will contain the new data, see @SensorData or @BatteryData or @InternetConnectionData
 		*/
