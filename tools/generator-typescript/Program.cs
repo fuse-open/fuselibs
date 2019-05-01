@@ -18,6 +18,7 @@ class ScriptMethod : ScriptEntity
 
 class ScriptProperty : ScriptEntity
 {
+    public string Type = "any";
 }
 
 class ScriptEvent : ScriptEntity
@@ -87,7 +88,18 @@ class Program
                 var scriptProperty = attributes["scriptProperty"];
                 var result = new ScriptProperty {Name = scriptProperty.ToString(), Documentation = full};
 
+                // Extract type and docs
                 if (result.Name.StartsWith("("))
+                {
+                    var i = result.Name.IndexOf(')', 1);
+                    result.Type = result.Name.Substring(1, i - 1);
+                    var parts = result.Name.Substring(i + 1).Trim().Split(' ');
+                    result.Name = parts[0];
+                    result.Documentation = string.Join(" ", parts.Skip(1));
+                }
+
+                // Skip duplicates
+                if (module.Properties.Any(p => p.Name == result.Name))
                     continue;
 
                 module.Properties.Add(result);
@@ -147,7 +159,7 @@ class Program
             foreach (var property in module.Properties)
             {
                 WriteDocumentation(property.Documentation, "    ");
-                Console.WriteLine($"    const {property.Name}: any;");
+                Console.WriteLine($"    const {property.Name}: {property.Type};");
                 Console.WriteLine();
             }
 
