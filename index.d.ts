@@ -208,6 +208,13 @@ declare module "FuseJS/Environment" {
     const preview: boolean;
     const mobile: boolean;
     const desktop: boolean;
+
+    /**
+     * A user-readable OS version number.On Android, it returns [Build.VERSION.RELEASE](https://developer.android.com/reference/android/os/Build.VERSION.html#RELEASE)
+     * (e.g. `1.0` or `3.4b5`).
+     * On iOS, it returns a string in the format of `<major>.<minor>.<patch>` (e.g. `9.2.1`).
+     * Returns an empty string on all other platforms.
+     */
     const mobileOSVersion: string;
 }
 
@@ -1776,6 +1783,237 @@ declare module "FuseJS/Push" {
      * set to false in the unoproj file.
      */
     function register(): void;
+}
+
+/**
+ * This module provides easy access to sensors on the device. There are 8 types of sensors supported by this module, namely:
+ * * Accelerometer Sensor
+ * * Gyroscope sensor
+ * * Magnetometer sensor
+ * * Gravity Sensor
+ * * User Acceleration Sensor
+ * * Rotation sensor
+ * * Step Counter Sensor
+ * * Pressure sensor
+ *
+ * Besides being able to read sensor data, this module can also monitor changes in state of the battery and network connectivity
+ *
+ * Use [startListening](api:fuse/sensor/sensormodule/startlistening_bbef95e2.json) to get continual sensor data updates.
+ *  And use [stopListening](api:fuse/sensor/sensormodule/stoplistening_bbef95e2.json) to stop getting continual sensor data updates.
+ *
+ * You need to add a reference to `"Fuse.Sensor"` in your project file to use this feature.
+ *
+ * This module is an @EventEmitter, so the methods from @EventEmitter can be used to listen to events.
+ *
+ * > Please note that this module will not work on Desktop Preview. When running on the device, not all devices have a complete sensor hardware,
+ * >  so not all sensor output data can be obtained, it all depends on the availability of sensors on the device.
+ * >  Make sure to check "error" event for possible error that encounter.
+ *
+ * ## Example
+ *
+ * The following example shows how to access accelerometer sensor:
+ *
+ *     <JavaScript>
+ *         var Observable = require("FuseJS/Observable");
+ *         var Sensor = require("FuseJS/Sensor");
+ *         var accelerometerData = Observable("")
+ *         var errorMessage = Observable("")
+ *
+ *         Sensor.on("error", function(failMessage) {
+ *             errorMessage.value = failMessage;
+ *         });
+ *
+ *         Sensor.on("changed", function(data) {
+ *             if (data.type == Sensor.ACCELEROMETER) {
+ *                 accelerometerData.value = "X axis : " + data.x + " Y axis : " + data.y + " Z axis : " + data.z;
+ *             }
+ *         });
+ *
+ *         function startAccelerometerContinuousListener() {
+ *             Sensor.startListening(Sensor.ACCELEROMETER);
+ *         }
+ *
+ *         function stopAccelerometerContinuousListener() {
+ *             Sensor.stopListening(Sensor.ACCELEROMETER);
+ *         }
+ *
+ *         module.exports = {
+ *             startAccelerometerContinuousListener,
+ *             stopAccelerometerContinuousListener,
+ *             accelerometerData,
+ *             errorMessage
+ *         };
+ *     </JavaScript>
+ *
+ *     <StackPanel ItemSpacing="5" Margin="0,30,0,0">
+ *         <Text>Accelerometer data :</Text>
+ *         <Text Value="{accelerometerData}" />
+ *         <Text Value="{errorMessage}" Color="Red" />
+ *
+ *         <Button Text="Start continuous Accelerometer listener" Clicked="{startAccelerometerContinuousListener}" />
+ *         <Button Text="Stop continuous Accelerometer listener" Clicked="{stopAccelerometerContinuousListener}" />
+ *     </StackPanel>
+ *
+ * In the above example we're using `"changed"` event. Data returned by this module are JavaScript objects of the following form:
+ *
+ *     {
+ *         type: sensor type (in this case is Sensor.ACCELEROMETER),
+ *         x: value of x axis,
+ *         y: value of y axis,
+ *         z: value of z axis,
+ *     }
+ *
+ * ## Output
+ *
+ * Data returned on the "changed" event argument are Javascript objects with always have `type` property.
+ *  Value of `type` property determine what type sensor data it contains.
+ *
+ * Accelerometer, Gyroscope, Magnetometer, Gravity, User Acceleration and Rotation data all have same form of javascript object as desribed in the example below:
+ *
+ *     var Sensor = require("FuseJS/Sensor")
+ *     Sensor.on('changed', function(data) {
+ *         switch (data.type) {
+ *             case Sensor.ACCELEROMETER:
+ *                 console.log("X axis : " + data.x + " Y axis : " + data.y + " Z axis : " + data.z);
+ *                 break;
+ *             case Sensor.GYROSCOPE:
+ *                 console.log("X axis : " + data.x + " Y axis : " + data.y + " Z axis : " + data.z);
+ *                 break;
+ *             case Sensor.MAGNETOMETER:
+ *                 console.log("X axis : " + data.x + " Y axis : " + data.y + " Z axis : " + data.z);
+ *                 break;
+ *             case Sensor.GRAVITY:
+ *                 console.log("X axis : " + data.x + " Y axis : " + data.y + " Z axis : " + data.z);
+ *                 break;
+ *             case Sensor.USER_ACCELERATION:
+ *                 console.log("X axis : " + data.x + " Y axis : " + data.y + " Z axis : " + data.z);
+ *                 break;
+ *             case Sensor.ROTATION:
+ *                 console.log("X axis : " + data.x + " Y axis : " + data.y + " Z axis : " + data.z);
+ *                 break;
+ *         }
+ *     });
+ *
+ *     function startListeningSensor() {
+ *         Sensor.startListening(Sensor.ACCELEROMETER);
+ *         Sensor.startListening(Sensor.GYROSCOPE);
+ *         Sensor.startListening(Sensor.MAGNETOMETER);
+ *         Sensor.startListening(Sensor.GRAVITY);
+ *         Sensor.startListening(Sensor.USER_ACCELERATION);
+ *         Sensor.startListening(Sensor.ROTATION);
+ *     }
+ *
+ *     function stopListeneingSensor() {
+ *         Sensor.stopListening(Sensor.ACCELEROMETER);
+ *         Sensor.stopListening(Sensor.GYROSCOPE);
+ *         Sensor.stopListening(Sensor.MAGNETOMETER);
+ *         Sensor.stopListening(Sensor.GRAVITY);
+ *         Sensor.stopListening(Sensor.USER_ACCELERATION);
+ *         Sensor.stopListening(Sensor.ROTATION);
+ *     }
+ *
+ * Step counter and pressure data has slightly different output javascript object as described in the example below:
+ *
+ *     var Sensor = require("FuseJS/Sensor")
+ *     Sensor.on('changed', function(data) {
+ *         switch (data.type) {
+ *             case Sensor.STEP_COUNTER:
+ *                 console.log("Num Steps taken : " + data.x);
+ *                 break;
+ *             case Sensor.PRESSURE:
+ *                 console.log("Pressure in hPa / mbar : " + data.x);
+ *                 console.log("Relative Altitude (iOS only) in meters : " + data.y);
+ *                 break;
+ *         }
+ *     });
+ *
+ *     function startListeningSensor() {
+ *         Sensor.startListening(Sensor.STEP_COUNTER);
+ *         Sensor.startListening(Sensor.PRESSURE);
+ *     }
+ *
+ *     function stopListeneingSensor() {
+ *         Sensor.stopListening(Sensor.STEP_COUNTER);
+ *         Sensor.stopListening(Sensor.PRESSURE);
+ *     }
+ *
+ * Lastly, monitoring state changes of battery or network connectivity has output javascript object as follow:
+ *
+ *     var Sensor = require("FuseJS/Sensor")
+ *     Sensor.on('changed', function(data) {
+ *         switch (data.type) {
+ *             case Sensor.BATTERY:
+ *                 console.log("Battery level : " + data.level);
+ *                 console.log("Battery state : " + data.state); // possible values : charging, unplug, full, not charging, unknown
+ *                 break;
+ *             case Sensor.CONNECTION_STATE:
+ *                 console.log("connection state : " + data.state); // boolan value : true connected, false disconnected
+ *                 console.log("connection state string : " + data.stateString); // possible values : 'connected' or 'disconnected'
+ *                 break;
+ *         }
+ *     });
+ *
+ *     function startMonitoringState() {
+ *         Sensor.startListening(Sensor.BATTERY);
+ *         Sensor.startListening(Sensor.CONNECTION_STATE);
+ *     }
+ *
+ *     function stopLMenitoringState() {
+ *         Sensor.stopListening(Sensor.BATTERY);
+ *         Sensor.stopListening(Sensor.CONNECTION_STATE);
+ *     }
+ *
+ * To handle errors from Sensor we can listen to the `"error"` event, as follows:
+ *
+ *     var Sensor = require("FuseJS/Sensor")
+ *     Sensor.on("error", function(err) { ... })
+ */
+declare module "FuseJS/Sensor" {
+    const ACCELEROMETER: number;
+    const GYROSCOPE: number;
+    const MAGNETOMETER: number;
+    const GRAVITY: number;
+    const USER_ACCELERATION: number;
+    const ROTATION: number;
+    const STEP_COUNTER: number;
+    const PRESSURE: number;
+    const BATTERY: number;
+
+    /**
+     * track network connectivity states.
+     */
+    const CONNECTION_STATE: number;
+
+    type Event = "changed(location)" |
+                 "error(error)";
+
+    /**
+     * Registers a function to be called when one of the following events occur.
+     *
+     * * `"changed(location)"` - Raised when the sensor changes.
+     * * `"error(error)"` - Raised when an error occurs.
+     */
+    function on(event: Event, callback: (arg: any) => void): void;
+
+    /**
+     * check whether sensor module is sensing for particular sensor.
+     */
+    function IsSensing(sensorType: number): boolean;
+
+    /**
+     * Starts the Sensor listening service.
+     *
+     * [onChanged](api:fuse/sensor/sensormodule/datachanged_a09c80e3.json)
+     * events will be generated as the sensor changes.
+     *
+     * Use [stopListening](api:fuse/sensor/sensormodule/stoplistening_bbef95e2.json) to stop the service.
+     */
+    function startListening(sensorType: number): void;
+
+    /**
+     * Stops the Sensor listening service.
+     */
+    function stopListening(sensorType: number): void;
 }
 
 /**
