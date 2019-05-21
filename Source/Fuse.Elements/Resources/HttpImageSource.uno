@@ -2,6 +2,7 @@ using Uno;
 using Uno.Graphics;
 using Uno.Collections;
 using Uno.UX;
+using Uno.IO;
 using Fuse.Drawing;
 using Fuse.Resources.Exif;
 
@@ -20,6 +21,7 @@ namespace Fuse.Resources
 				<HttpImageSource Url="https://upload.wikimedia.org/wikipedia/commons/0/06/Kitten_in_Rizal_Park%2C_Manila.jpg" />
 			</Image>
 
+		To cache the image to the disk, you can add `DiskCache` attribute and set it to `true` so that the next time we display an image it will no longer be downloaded from the network but use from disk instead.
 	*/
 	public sealed class HttpImageSource : ImageSource
 	{
@@ -34,7 +36,7 @@ namespace Fuse.Resources
 				if(value == null || value == "" )
 					return;
 
-				_proxy.Attach( HttpImageSourceCache.GetUrl( value ) );
+				_proxy.Attach( HttpImageSourceCache.GetUrl( value, DiskCache ) );
 			}
 		}
 
@@ -68,12 +70,30 @@ namespace Fuse.Resources
 		/** Specifies the source's pixel density.
 		*/
 		public float Density { get { return _proxy.Density; } set { _proxy.Density = value; } }
+		bool _diskCache = false;
+		/** Determines whether we use the disk cache to store downloaded images so that the next time we display an image it will no longer be downloaded from the network. Default is false. */
+		public bool DiskCache { get { return _diskCache; } set { _diskCache = value; } }
+
+		public void ClearCache()
+		{
+			if (Url != "")
+			{
+				string filenameBase = HttpImageSourceCache.GetFilenameBase(Url);
+				string filename = filenameBase + ".jpg";
+				if (File.Exists(filename))
+					File.Delete(filename);
+				filename = filenameBase + ".png";
+				if (File.Exists(filename))
+					File.Delete(filename);
+			}
+
+		}
 	}
 
 	static class HttpImageSourceCache
 	{
 		static Dictionary<String,WeakReference<HttpImageSourceImpl>> _cache = new Dictionary<String,WeakReference<HttpImageSourceImpl>>();
-		static public HttpImageSourceImpl GetUrl( String url )
+		static public HttpImageSourceImpl GetUrl( String url, bool diskCache )
 		{
 			WeakReference<HttpImageSourceImpl> value = null;
 			if( _cache.TryGetValue( url, out value ) )
@@ -88,29 +108,52 @@ namespace Fuse.Resources
 				_cache.Remove( url );
 			}
 
-			var nv = new HttpImageSourceImpl( url );
+			var nv = new HttpImageSourceImpl( url, diskCache );
 			_cache.Add( url, new WeakReference<HttpImageSourceImpl>(nv) );
 			return nv;
+		}
+
+		static string GetCacheDirectory()
+		{
+			string path = Path.Combine(Directory.GetUserDirectory(UserDirectory.Data), "cached_images");
+			if (!Directory.Exists(path))
+				Directory.CreateDirectory(path);
+			return path;
+		}
+
+		static public string GetFilenameBase(string url)
+		{
+			return Path.Combine(GetCacheDirectory(), url.GetHashCode().ToString());
 		}
 	}
 
 	class HttpImageSourceImpl : LoadingImageSource
 	{
 		String _url;
+		string _filenameBase;
 		public String Url { get { return _url; } }
 		String _contentType;
+		bool _diskCache;
 
-		public HttpImageSourceImpl( String url )
+		public HttpImageSourceImpl( String url, bool diskCache )
 		{
 			_url = url;
+			_diskCache = diskCache;
 		}
 
 		protected override void AttemptLoad()
 		{
 			try
 			{
-				HttpLoader.LoadBinary(Url, HttpCallback, LoadFailed);
 				_loading = true;
+				if (_diskCache && IsFileCacheExist(out _filenameBase, out _contentType))
+				{
+					new BackgroundLoad(null, _filenameBase, _contentType, SuccessCallback, FailureCallback);
+				}
+				else
+				{
+					HttpLoader.LoadBinary(Url, HttpCallback, LoadFailed);
+				}
 				OnChanged();
 			}
 			catch( Exception e )
@@ -119,9 +162,10 @@ namespace Fuse.Resources
 			}
 		}
 
-		void SuccessCallback(texture2D texture)
+		void SuccessCallback(texture2D texture, ImageOrientation orientation)
 		{
 			_loading = false;
+			_orientation = orientation;
 			SetTexture(texture);
 		}
 
@@ -152,33 +196,64 @@ namespace Fuse.Resources
 			else
 				_contentType = ct;
 
-			_orientation = ExifData.FromByteArray(data).Orientation;
+			new BackgroundLoad(data, _filenameBase, _contentType, SuccessCallback, FailureCallback);
+		}
 
-			new BackgroundLoad(data, _contentType, SuccessCallback, FailureCallback);
+		bool IsFileCacheExist(out string filenameBase, out string contentType)
+		{
+			filenameBase = HttpImageSourceCache.GetFilenameBase(Url);
+			if (File.Exists(filenameBase + ".jpg"))
+			{
+				contentType = "image/jpg";
+				return true;
+			}
+			if (File.Exists(filenameBase + ".png"))
+			{
+				contentType = "image/png";
+				return true;
+			}
+			contentType = "";
+			return false;
 		}
 
 		class BackgroundLoad
 		{
 			byte[] _data;
 			string _contentType;
-			Action<texture2D> _done;
+			string _filename;
+			Action<texture2D, ImageOrientation> _done;
 			Action<Exception> _fail;
 			Exception _exception;
+			ImageOrientation _orientation;
 			texture2D _tex;
-			public BackgroundLoad(byte[] data, string contentType, Action<texture2D> done, Action<Exception> fail)
+
+			public BackgroundLoad(byte[] data, string filenameBase, string contentType, Action<texture2D, ImageOrientation> done, Action<Exception> fail)
 			{
 				_data = data;
 				_contentType = contentType;
 				_done = done;
 				_fail = fail;
-
+				if (_contentType == "image/png")
+					_filename = filenameBase + ".png";
+				else
+					_filename = filenameBase + ".jpg";
 				GraphicsWorker.Dispatch(Run);
 			}
 			public void Run()
 			{
 				try
 				{
-					_tex = TextureLoader.ByteArrayToTexture2DContentType(_data, _contentType);
+					if (_data == null)
+					{
+						_data = File.ReadAllBytes(_filename);
+						_tex = TextureLoader.ByteArrayToTexture2DFilename(_data, _filename);
+					}
+					else
+					{
+						_tex = TextureLoader.ByteArrayToTexture2DContentType(_data, _contentType);
+						File.WriteAllBytes(_filename, _data);
+					}
+					_orientation = ExifData.FromByteArray(_data).Orientation;
 
 					if defined(OpenGL)
 						OpenGL.GL.Finish();
@@ -194,7 +269,7 @@ namespace Fuse.Resources
 
 			void UIDoneCallback()
 			{
-				_done(_tex);
+				_done(_tex, _orientation);
 			}
 
 			void UIFailCallback()
