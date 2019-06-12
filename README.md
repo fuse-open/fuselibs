@@ -48,6 +48,15 @@ You can run the local `uno` directly using `node_modules/.bin/uno`. This
 is useful when you want to test apps using your local fuselibs build
 environment.
 
+You can run the manual testing app using one of the following commands:
+
+```
+npm run android
+npm run dotnet
+npm run ios
+npm run native
+```
+
 ## Contributing
 
 Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of

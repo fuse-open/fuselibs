@@ -4,6 +4,7 @@ image: Visual Studio 2017
 environment:
   LOG_TRACE: 1
   PATH: node_modules/.bin;%PATH%
+  GRADLE_OPTS: -Dorg.gradle.daemon=false
 
 install:
   - npm install
@@ -13,9 +14,8 @@ install:
 
 build_script:
   - npm pack --silent
-  # Run Android build using Bash so we can kill Java to avoid that PowerShell
-  # hangs, and still return the exit code from Uno.
-  - bash -c "uno build android Tests/ManualTests/ManualTestingApp/ManualTestingApp.unoproj; exitcode=$?; taskkill //F //IM java.exe //T; exit $exitcode"
+  # Build for Android
+  - uno build android Tests/ManualTests/ManualTestingApp/ManualTestingApp.unoproj
   # Build for Windows
   - uno build native Tests/ManualTests/ManualTestingApp/ManualTestingApp.unoproj
 

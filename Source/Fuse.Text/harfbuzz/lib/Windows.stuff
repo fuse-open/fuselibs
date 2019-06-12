@@ -1,3 +1,3 @@
-if HOST_WINDOWS {
+if (DOTNET || NATIVE) && HOST_WINDOWS {
 /* 0.98MB */ Windows: "https://www.nuget.org/api/v2/package/fuselibs-harfbuzz-vc141-static-x64/1.8.1"
 }
