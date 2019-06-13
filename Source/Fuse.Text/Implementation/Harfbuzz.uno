@@ -16,7 +16,7 @@ namespace Fuse.Text.Implementation
 	[extern(iOS) Require("LinkDirectory", "@('../harfbuzz/lib/iOS':Path)")]
 	[extern((PInvoke || NATIVE) && HOST_MAC) Require("LinkDirectory", "@('../harfbuzz/lib/OSX':Path)")]
 	[extern((PInvoke || NATIVE) && HOST_MAC) Require("Xcode.Framework", "CoreText")]
-	[extern(Android) Require("StaticLibrary", "@('../harfbuzz/lib/Android/lib/@(ABI)/libharfbuzz.a':Path)")]
+	[extern(Android) Require("StaticLibrary", "@('../harfbuzz/lib/Android/lib/${ANDROID_ABI}/libharfbuzz.a':Path)")]
 	[extern((PInvoke || NATIVE) && HOST_WINDOWS) Require("LinkDirectory", "@('../harfbuzz/lib/Windows':Path)")]
 	[extern(!Android) Require("LinkLibrary", "harfbuzz")]
 	[TargetSpecificImplementation]
