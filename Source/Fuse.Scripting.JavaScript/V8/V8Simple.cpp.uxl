@@ -8,12 +8,12 @@
 	<!-- Build V8Simple on Android, and link static V8 -->
 	<CopyFile Condition="ANDROID" SourceFile="include/V8Simple.cpp" />
 	<Require Condition="ANDROID" IncludeDirectory="@('android/include':Path)" />
-	<Require Condition="ANDROID" StaticLibrary="@('android/lib/libv8_init.a':Path)" />
-	<Require Condition="ANDROID" StaticLibrary="@('android/lib/libv8_initializers.a':Path)" />
-	<Require Condition="ANDROID" StaticLibrary="@('android/lib/libv8_libbase.a':Path)" />
-	<Require Condition="ANDROID" StaticLibrary="@('android/lib/libv8_libplatform.a':Path)" />
-	<Require Condition="ANDROID" StaticLibrary="@('android/lib/libv8_libsampler.a':Path)" />
-	<Require Condition="ANDROID" StaticLibrary="@('android/lib/libv8_snapshot.a':Path)" />
+	<Require Condition="ANDROID" StaticLibrary="@('android/lib/${ANDROID_ABI}/libv8_init.a':Path)" />
+	<Require Condition="ANDROID" StaticLibrary="@('android/lib/${ANDROID_ABI}/libv8_initializers.a':Path)" />
+	<Require Condition="ANDROID" StaticLibrary="@('android/lib/${ANDROID_ABI}/libv8_libbase.a':Path)" />
+	<Require Condition="ANDROID" StaticLibrary="@('android/lib/${ANDROID_ABI}/libv8_libplatform.a':Path)" />
+	<Require Condition="ANDROID" StaticLibrary="@('android/lib/${ANDROID_ABI}/libv8_libsampler.a':Path)" />
+	<Require Condition="ANDROID" StaticLibrary="@('android/lib/${ANDROID_ABI}/libv8_snapshot.a':Path)" />
 	<!-- Must be last library to avoid linker error -->
-	<Require Condition="ANDROID" StaticLibrary="@('android/lib/libv8_base.a':Path)" />
+	<Require Condition="ANDROID" StaticLibrary="@('android/lib/${ANDROID_ABI}/libv8_base.a':Path)" />
 </Extensions>
