@@ -146,9 +146,9 @@ namespace Fuse.Resources
 			try
 			{
 				_loading = true;
-				if (_diskCache && IsFileCacheExist(out _filenameBase, out _contentType))
+				if (IsFileCacheExist(out _filenameBase, out _contentType) && _diskCache)
 				{
-					new BackgroundLoad(null, _filenameBase, _contentType, SuccessCallback, FailureCallback);
+					new BackgroundLoad(null, _filenameBase, _contentType, _diskCache, SuccessCallback, FailureCallback);
 				}
 				else
 				{
@@ -196,7 +196,7 @@ namespace Fuse.Resources
 			else
 				_contentType = ct;
 
-			new BackgroundLoad(data, _filenameBase, _contentType, SuccessCallback, FailureCallback);
+			new BackgroundLoad(data, _filenameBase, _contentType, _diskCache, SuccessCallback, FailureCallback);
 		}
 
 		bool IsFileCacheExist(out string filenameBase, out string contentType)
@@ -221,16 +221,18 @@ namespace Fuse.Resources
 			byte[] _data;
 			string _contentType;
 			string _filename;
+			bool _diskCache;
 			Action<texture2D, ImageOrientation> _done;
 			Action<Exception> _fail;
 			Exception _exception;
 			ImageOrientation _orientation;
 			texture2D _tex;
 
-			public BackgroundLoad(byte[] data, string filenameBase, string contentType, Action<texture2D, ImageOrientation> done, Action<Exception> fail)
+			public BackgroundLoad(byte[] data, string filenameBase, string contentType, bool diskCache, Action<texture2D, ImageOrientation> done, Action<Exception> fail)
 			{
 				_data = data;
 				_contentType = contentType;
+				_diskCache = diskCache;
 				_done = done;
 				_fail = fail;
 				if (_contentType == "image/png")
@@ -251,7 +253,8 @@ namespace Fuse.Resources
 					else
 					{
 						_tex = TextureLoader.ByteArrayToTexture2DContentType(_data, _contentType);
-						File.WriteAllBytes(_filename, _data);
+						if (_diskCache)
+							File.WriteAllBytes(_filename, _data);
 					}
 					_orientation = ExifData.FromByteArray(_data).Orientation;
 
