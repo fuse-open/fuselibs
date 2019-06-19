@@ -25,7 +25,7 @@ namespace Fuse.Internal
 			_owner = owner;
 		}
 
-		public Fuse.Internal.SizingContainer Sizing = new Fuse.Internal.SizingContainer();
+		public SizingContainer Sizing = new SizingContainer();
 
 		public FileSource File
 		{
