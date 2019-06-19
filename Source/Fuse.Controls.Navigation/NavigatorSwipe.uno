@@ -16,9 +16,13 @@ namespace Fuse.Controls
 		/** Used on pages to indicate they should use the Navigator swipe direction */
 		Default,
 		Left,
+		LeftEdge,
 		Up,
+		Bottom,
 		Right,
+		RightEdge,
 		Down,
+		Top,
 	}
 	
 	public enum NavigatorSwipeHow
@@ -85,28 +89,42 @@ namespace Fuse.Controls
 				_direction = value;
 				if (_swipeGesture != null)
 				{
-					_swipeGesture.Direction = GestureSwipeDirection;
+					SetupGestureSwipeDerection();
 					_swipeGesture.IsEnabled = Direction != NavigatorSwipeDirection.None;
 				}
 			}
 		}
-		
-		Fuse.Gestures.SwipeDirection GestureSwipeDirection
-		{	
-			get
+
+		void SetupGestureSwipeDerection()
+		{
+			switch (Direction)
 			{
-				switch (Direction)
-				{
-					case NavigatorSwipeDirection.Left: return Fuse.Gestures.SwipeDirection.Left;
-					case NavigatorSwipeDirection.Right: return Fuse.Gestures.SwipeDirection.Right;
-					case NavigatorSwipeDirection.Up: return Fuse.Gestures.SwipeDirection.Up;
-					case NavigatorSwipeDirection.Down: return Fuse.Gestures.SwipeDirection.Down;
-				}
-				//should not end up being used, behavior will be disabled
-				return Fuse.Gestures.SwipeDirection.Left;
+				case NavigatorSwipeDirection.Left:
+					_swipeGesture.Direction = Fuse.Gestures.SwipeDirection.Left;
+					break;
+				case NavigatorSwipeDirection.Right:
+					_swipeGesture.Direction =  Fuse.Gestures.SwipeDirection.Right;
+					break;
+				case NavigatorSwipeDirection.Up:
+					_swipeGesture.Direction =  Fuse.Gestures.SwipeDirection.Up;
+					break;
+				case NavigatorSwipeDirection.Down:
+					_swipeGesture.Direction = Fuse.Gestures.SwipeDirection.Down;
+					break;
+				case NavigatorSwipeDirection.LeftEdge:
+					_swipeGesture.Edge = Fuse.Gestures.Edge.Left;
+					break;
+				case NavigatorSwipeDirection.RightEdge:
+					_swipeGesture.Edge = Fuse.Gestures.Edge.Right;
+					break;
+				case NavigatorSwipeDirection.Top:
+					_swipeGesture.Edge = Fuse.Gestures.Edge.Top;
+					break;
+				case NavigatorSwipeDirection.Bottom:
+					_swipeGesture.Edge = Fuse.Gestures.Edge.Bottom;
+					break;
 			}
 		}
-		
 
 		public bool IsEnabled
 		{
@@ -197,7 +215,7 @@ namespace Fuse.Controls
 				return;
 			}
 	
-			_swipeGesture.Direction = GestureSwipeDirection;
+			SetupGestureSwipeDerection();
 			_swipeGesture.LengthNode = Parent as Element;
 			_swipeGesture.IsEnabled = Direction != NavigatorSwipeDirection.None;
 			
