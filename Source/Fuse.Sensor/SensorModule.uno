@@ -88,10 +88,10 @@ namespace Fuse.Sensor
 
 		## Output
 
-		Data returned on the "changed" event argument are Javascript objects with always have `type` property.
+		Data returned on the "changed" event argument are JavaScript objects with always have `type` property.
 		 Value of `type` property determine what type sensor data it contains.
 
-		Accelerometer, Gyroscope, Magnetometer, Gravity, User Acceleration and Rotation data all have same form of javascript object as desribed in the example below:
+		Accelerometer, Gyroscope, Magnetometer, Gravity, User Acceleration and Rotation data all have same form of JavaScript object as desribed in the example below:
 
 			var Sensor = require("FuseJS/Sensor")
 			Sensor.on('changed', function(data) {
@@ -126,7 +126,7 @@ namespace Fuse.Sensor
 				Sensor.startListening(Sensor.ROTATION);
 			}
 
-			function stopListeneingSensor() {
+			function stopListeningSensor() {
 				Sensor.stopListening(Sensor.ACCELEROMETER);
 				Sensor.stopListening(Sensor.GYROSCOPE);
 				Sensor.stopListening(Sensor.MAGNETOMETER);
@@ -135,7 +135,7 @@ namespace Fuse.Sensor
 				Sensor.stopListening(Sensor.ROTATION);
 			}
 
-		Step counter and pressure data has slightly different output javascript object as described in the example below:
+		Step counter and pressure data has slightly different output JavaScript object as described in the example below:
 
 			var Sensor = require("FuseJS/Sensor")
 			Sensor.on('changed', function(data) {
@@ -155,12 +155,12 @@ namespace Fuse.Sensor
 				Sensor.startListening(Sensor.PRESSURE);
 			}
 
-			function stopListeneingSensor() {
+			function stopListeningSensor() {
 				Sensor.stopListening(Sensor.STEP_COUNTER);
 				Sensor.stopListening(Sensor.PRESSURE);
 			}
 
-		Lastly, monitoring state changes of battery or network connectivity has output javascript object as follow:
+		Lastly, monitoring state changes of battery or network connectivity has output JavaScript object as follow:
 
 			var Sensor = require("FuseJS/Sensor")
 			Sensor.on('changed', function(data) {
@@ -181,7 +181,7 @@ namespace Fuse.Sensor
 				Sensor.startListening(Sensor.CONNECTION_STATE);
 			}
 
-			function stopLMenitoringState() {
+			function stopMonitoringState() {
 				Sensor.stopListening(Sensor.BATTERY);
 				Sensor.stopListening(Sensor.CONNECTION_STATE);
 			}
@@ -418,7 +418,7 @@ namespace Fuse.Sensor
 		}
 
 		/**
-			@scriptmethod IsSensing(sensorType)
+			@scriptmethod isSensing(sensorType)
 
 			check whether sensor module is sensing for particular sensor.
 
