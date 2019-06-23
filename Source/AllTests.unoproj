@@ -1,9 +1,5 @@
 {
   "BuildCondition": "UNO_TEST",
-  "Packages": [
-    "Fuse",
-    "FuseJS",
-  ],
   "Projects": [
     "**Test.unoproj"
   ],
