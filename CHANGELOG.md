@@ -1,6 +1,36 @@
 # Unreleased
 
 
+# 1.12
+
+## 1.12.0
+
+### Fuse.Controls.Native
+- Fixed readonly `TextInput`.
+
+### Fuse.Elements
+- Added `DiskCache` property on `HttpImageSource`.
+
+### Fuse.Scripting.JavaScript
+- Fixed building with `-DUSE_JAVASCRIPTCORE` on Android.
+
+### Fuse.Sensor
+- Added a new script module - FuseJS/Sensor.
+
+### Fuse.Share
+- Updated to new android file permission requirements when sharing.
+
+### FuseJS
+- Added definitions file for TypeScript.
+- Renamed the following methods (for TypeScript compatibility):
+    * FuseJS/FileSystem: `delete` -> `remove`
+    * FuseJS/FileSystem: `deleteSync` -> `removeSync`
+    * FuseJS/Timer: `delete` -> `destroy`
+    * FuseJS/Storage: `deleteSync` -> `removeSync`
+
+See also [v1.11.3...v1.12.0](https://github.com/fuse-open/fuselibs/compare/v1.11.3...v1.12.0).
+
+
 # 1.11
 
 ## 1.11.0
