@@ -7,7 +7,7 @@ namespace Fuse.Triggers.Actions
 
 		You'll find this trigger action in the Fuse.Launcher package, which have to be referenced from your uno project.
 		For example:
-
+		```JSON
 			{
 				"Packages": [
 					"Fuse",
@@ -15,9 +15,10 @@ namespace Fuse.Triggers.Actions
 					"Fuse.Launcher"
 				]
 			}
+		```
 
 		## Example
-
+		```XML
 			<StackPanel Margin="20">
 				<Button Margin="10" Text="Go to Fusetools">
 					<Clicked>
@@ -25,6 +26,7 @@ namespace Fuse.Triggers.Actions
 					</Clicked>
 				</Button>
 			</StackPanel>
+		```
 
 		Note: you can pass any URI string to `LaunchUri`, but how it is handled will depend on the target platform and particular device settings.
 
