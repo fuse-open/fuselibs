@@ -218,12 +218,6 @@ namespace Fuse.Platform
 			set { Uno.Platform.iOS.Application.SetRootView(value); }
 		}
 
-		[Foreign(Language.ObjC)]
-		static void SetAsRootView(ObjC.Object view)
-		@{
-
-		@}
-
 		static void OnWillResize()
 		{
 			if (MarginsChanged != null)
