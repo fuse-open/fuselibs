@@ -24,7 +24,6 @@ namespace Fuse.Charting
 		Consider using @PlotAxis instead to provide labels for the plot. It will use this layout.
 		
 		@advanced
-		@experimental
 	*/
 	public class PlotAxisLayout : Fuse.Layouts.Layout
 	{

@@ -183,9 +183,6 @@ namespace Fuse.Charting
 					</c:Plot>
 				</Panel>
 			</Panel>
-
-		
-		@experimental
 	*/
 	public class PlotAxis : Panel
 	{

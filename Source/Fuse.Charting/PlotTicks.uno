@@ -58,8 +58,6 @@ namespace Fuse.Charting
 			</Panel>
 
 		`AxisLine` indicates a line across the entire access should be drawn at this offset. In this example it's the top of the ticks, making this suitable for the bottom of a chart.
-
-		@experimental
 	*/
 	public class PlotTicks : Shape
 	{

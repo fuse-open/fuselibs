@@ -15,8 +15,6 @@ namespace Fuse.Charting
 	
 	/**
 		Provides a source of data for plotting.
-		
-		@experimental
 	*/
 	public class DataSeries : PropertyObject, Fuse.Reactive.IObserver
 	{

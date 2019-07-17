@@ -40,8 +40,6 @@ namespace Fuse.Charting
 					</c:Plot>
 				</Panel>
 			</Panel>
-		
-		@experimental
 	*/
 	public class PlotCurvePoint : CurvePoint, IPlotDataItemListener<PlotDataPoint>
 	{
