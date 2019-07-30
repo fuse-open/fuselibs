@@ -1,25 +1,22 @@
 <Extensions Backend="CPlusPlus" Condition="Android">
     <Require AndroidManifest.Permission="com.google.android.c2dm.permission.RECEIVE" />
+
     <ProcessFile Name="PushNotificationReceiver.java" TargetName="@(Java.SourceDirectory)/com/fuse/PushNotifications/PushNotificationReceiver.java" />
+    <ProcessFile Name="PushNotificationIDService.java" TargetName="@(Java.SourceDirectory)/com/fuse/PushNotifications/PushNotificationIDService.java" />
     <ProcessFile Name="BigPictureStyleHttp.java" TargetName="@(Java.SourceDirectory)/com/fuse/PushNotifications/BigPictureStyleHttp.java" />
     <ProcessFile Name="BundleFiles.java" TargetName="@(Java.SourceDirectory)/com/fuse/PushNotifications/BundleFiles.java" />
-    <Require AndroidManifest.ApplicationElement><![CDATA[
-        <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version" />
-        <receiver android:name="com.google.android.gms.gcm.GcmReceiver"
-            android:exported="true"
-            android:permission="com.google.android.c2dm.permission.SEND" >
-            <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
-                <category android:name="@(Activity.Package)" />
-            </intent-filter>
-        </receiver>
 
-        <service
-            android:name="com.fuse.PushNotifications.PushNotificationReceiver"
-            android:exported="false" >
+    <Require AndroidManifest.ApplicationElement><![CDATA[
+
+        <service android:name="com.fuse.PushNotifications.PushNotificationReceiver">
             <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+        
+        <service android:name="com.fuse.PushNotifications.PushNotificationIDService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
             </intent-filter>
         </service>
         ]]></Require>

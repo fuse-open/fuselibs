@@ -9,6 +9,18 @@ using Uno.Threading;
 
 namespace Fuse.PushNotifications
 {
+	
+	[ForeignInclude(Language.Java,
+		"android.util.Log",
+		"com.google.firebase.iid.FirebaseInstanceId",
+		"java.util.ArrayList", 
+		"java.util.List", 
+		"android.graphics.Color"
+	)]
+	[Require("Gradle.Dependency.ClassPath", "com.google.gms:google-services:4.2.0")]
+	[Require("Gradle.AllProjects.Repository", "maven {url 'https://maven.google.com'}")]
+	[Require("Gradle.Dependency.Implementation", "com.google.firebase:firebase-core:16.0.0")]
+	[Require("Gradle.BuildFile.End", "apply plugin: 'com.google.gms.google-services'")]
 	public static class PushNotify
 	{
 		extern(Android)
@@ -150,5 +162,13 @@ namespace Fuse.PushNotifications
 		}
 
 		public extern(!iOS) static void Register() { }
+
+		public extern(iOS) static bool IsRegisteredForRemoteNotifications()
+		{
+			return iOSImpl.IsRegisteredForRemoteNotifications();
+		}
+
+		public extern(Android) static bool IsRegisteredForRemoteNotifications() { return true; }
+		public extern(!iOS && !Android) static bool IsRegisteredForRemoteNotifications() { return true; }
 	}
 }

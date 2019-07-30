@@ -64,6 +64,7 @@ namespace Fuse.PushNotifications
 			AddMember(new NativeFunction("clearBadgeNumber", ClearBadgeNumber));
 			AddMember(new NativeFunction("clearAllNotifications", ClearAllNotifications));
 			AddMember(new NativeFunction("register", Register));
+			AddMember(new NativeFunction("isRegisteredForRemoteNotifications", IsRegisteredForRemoteNotifications));
 
 			Fuse.PushNotifications.PushNotify.ReceivedNotification += OnReceivedNotification;
 			Fuse.PushNotifications.PushNotify.RegistrationSucceeded += OnRegistrationSucceeded;
@@ -142,6 +143,21 @@ namespace Fuse.PushNotifications
 			}
 			Fuse.PushNotifications.PushNotify.Register();
 			return null;
+		}
+
+		/**
+			@scriptmethod isRegisteredForRemoteNotifications
+
+			Gets whether or not the user has enabled remote notifications
+		*/
+		public object IsRegisteredForRemoteNotifications(Context context, object[] args)
+		{
+			if (args.Length != 0)
+			{
+				Fuse.Diagnostics.UserError( "Push.isRegisteredForRemoteNotifications takes no arguments", this);
+				return null;
+			}
+			return Fuse.PushNotifications.PushNotify.IsRegisteredForRemoteNotifications();
 		}
 	}
 }
