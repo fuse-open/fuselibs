@@ -145,5 +145,19 @@ namespace Fuse.Triggers.Test
 				Assert.AreEqual(p.s2,p.sg.Active);
 			}
 		}
+
+		[Test]
+		public void TransitionStateValue()
+		{
+			var p = new UX.StateGroup.TransitionStateValue();
+			using (var root = TestRootPanel.CreateWithChild(p))
+			{
+				Assert.AreEqual(p.s1,p.sg.Active);
+				
+				p.t1.Pulse();
+				root.PumpDeferred();
+				Assert.AreEqual(p.s3,p.sg.Active);
+			}
+		}
 	}
 }

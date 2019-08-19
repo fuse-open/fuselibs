@@ -1,0 +1,11 @@
+<Panel ux:Class="UX.StateGroup.TransitionStateValue">
+	<StateGroup ux:Name="sg">
+		<State ux:Name="s1"/>
+		<State ux:Name="s2"/>
+		<State ux:Name="s3"/>
+	</StateGroup>
+
+	<Timeline ux:Name="t1">
+		<TransitionState Target="sg" Value="s3"/>
+	</Timeline>
+</Panel>
