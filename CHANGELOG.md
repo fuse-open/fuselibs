@@ -1,5 +1,7 @@
 # Unreleased
 
+### Fuse.Triggers.Actions.TransitionState
+- Added `Value` property on `TransitionState`.
 
 # 1.12
 
