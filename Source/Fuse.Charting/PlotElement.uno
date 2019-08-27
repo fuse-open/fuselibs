@@ -8,8 +8,6 @@ namespace Fuse.Charting
 {
 	/**
 		Common base for plot positioned elements.
-		
-		@experimental
 	*/
 	abstract public class PlotElement : Panel, IPlotDataItemListener<PlotDataPoint>
 	{

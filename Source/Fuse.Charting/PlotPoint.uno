@@ -155,8 +155,6 @@ namespace Fuse.Charting
 		This panel has a default of `Anchor="50%,50%"`.  This can be changed with `PointAnchor`
 		
 		This panel does not have any default size.
-		
-		@experimental
 	*/
 	public class PlotPoint : PlotElement
 	{

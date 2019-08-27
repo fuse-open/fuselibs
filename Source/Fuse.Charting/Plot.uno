@@ -10,7 +10,6 @@ namespace Fuse.Charting
 		A panel that contains a chart.
 		
 		@see Docs/plot.md
-		@experimental
 	*/
 	public partial class Plot : Panel
 	{

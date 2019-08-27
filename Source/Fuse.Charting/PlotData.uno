@@ -18,8 +18,6 @@ namespace Fuse.Charting
 					<c:PlotCurvePoint/>
 				</c:PlotData>
 			</Curve>
-		
-		@experimental
 	*/
 	public class PlotData : Instantiator, IPlotDataItemProvider
 	{

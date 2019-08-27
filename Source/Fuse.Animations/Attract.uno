@@ -14,7 +14,6 @@ namespace Fuse.Animations
 		A single `AttractorConfig` can be used for multiple `attract` expressions.
 		
 		@see @Attract
-		@experimental
 	*/
 	public class AttractorConfig : DestinationMotionConfig
 	{

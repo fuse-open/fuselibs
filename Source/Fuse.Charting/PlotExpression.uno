@@ -13,8 +13,6 @@ namespace Fuse.Charting
 		The prefix `axis.` is used within a @PlotAxis to access the values of axis.
 		
 		Unprefixed values access values in the @Plot
-		
-		@experimental
 	*/
 	[UXUnaryOperator("Plot")]
 	public sealed class PlotExpression : Fuse.Reactive.Expression
