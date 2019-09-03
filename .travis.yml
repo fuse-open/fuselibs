@@ -19,7 +19,7 @@ script:
   - npm run build
   - export XCODE_XCCONFIG_FILE=$TRAVIS_BUILD_DIR/.travis.xcconfig
   - uno build ios Tests/ManualTests/ManualTestingApp/ManualTestingApp.unoproj
-  - export XCODE_XCCONFIG_FILE=
+  - unset XCODE_XCCONFIG_FILE
   - uno test native --timeout=30 Source/AllTests.unoproj
 
 after_failure:
