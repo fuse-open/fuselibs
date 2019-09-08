@@ -162,7 +162,11 @@ namespace Fuse.PushNotifications
 		[Foreign(Language.ObjC)]
 		internal static bool IsRegisteredForRemoteNotifications()
 		@{
-			return [[UIApplication sharedApplication] isRegisteredForRemoteNotifications];
+			__block bool isReg = false;
+			dispatch_sync(dispatch_get_main_queue(), ^{
+			  isReg = [[UIApplication sharedApplication] isRegisteredForRemoteNotifications];
+			});
+			return isReg;
 		@}
 	}
 }

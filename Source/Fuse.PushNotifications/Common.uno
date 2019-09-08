@@ -134,7 +134,9 @@ namespace Fuse.PushNotifications
 		[Foreign(Language.ObjC)]
 		public extern(iOS) static void ClearBadgeNumber()
 		@{
-			[UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+			dispatch_async(dispatch_get_main_queue(), ^{
+				[UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+			});
 		@}
 
 		public extern(!iOS) static void ClearBadgeNumber() { }
@@ -142,8 +144,10 @@ namespace Fuse.PushNotifications
 		[Foreign(Language.ObjC)]
 		public extern(iOS) static void ClearAllNotifications()
 		@{
-			[UIApplication sharedApplication].applicationIconBadgeNumber = 1;
-			[UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+			dispatch_async(dispatch_get_main_queue(), ^{
+				[UIApplication sharedApplication].applicationIconBadgeNumber = 1;
+				[UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+			});
 		@}
 
 		[Foreign(Language.Java)]
