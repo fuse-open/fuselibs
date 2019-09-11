@@ -1,6 +1,8 @@
 #include <include/V8Simple.h>
 #include <v8.h>
 #include <libplatform/libplatform.h>
+#include <natives_blob.h>
+#include <snapshot_blob.h>
 #include <vector>
 #include <cstdlib>
 #include <atomic>
@@ -75,8 +77,18 @@ struct JSContext : RefCounted
 	{
 		if (_platform == nullptr)
 		{
+			auto* nativesBlobStartupData = new v8::StartupData();
+			nativesBlobStartupData->data = reinterpret_cast<const char*>(&natives_blob_bin[0]);
+			nativesBlobStartupData->raw_size = natives_blob_bin_len;
+			v8::V8::SetNativesDataBlob(nativesBlobStartupData);
+
+			auto* snapshotBlobStartupData = new v8::StartupData();
+			snapshotBlobStartupData->data = reinterpret_cast<const char*>(&snapshot_blob_bin[0]);
+			snapshotBlobStartupData->raw_size = snapshot_blob_bin_len;
+			v8::V8::SetSnapshotDataBlob(snapshotBlobStartupData);
+
 			v8::V8::InitializeICU();
-			_platform = v8::platform::CreateDefaultPlatform();
+			_platform = v8::platform::NewDefaultPlatform().release();
 			v8::V8::InitializePlatform(_platform);
 			v8::V8::Initialize();
 		}
@@ -365,7 +377,7 @@ static JSValue* Wrap(JSContext* context, const v8::TryCatch& tryCatch, v8::Local
 	if (value->IsNumber())
 		return new JSDouble(FromJust(context, tryCatch, value->NumberValue(context->LocalHandle())));
 	if (value->IsBoolean())
-		return new JSBool(FromJust(context, tryCatch, value->BooleanValue(context->LocalHandle())));
+		return new JSBool(value->BooleanValue(context->Isolate));
 	if (value->IsString())
 		return new JSString(context->Isolate, FromJust(context, tryCatch, value->ToString(context->LocalHandle())));
 	if (value->IsArray())
@@ -724,7 +736,7 @@ DllPublic int CDecl JSStringLength(JSContext* context, JSString* string)
 DllPublic void CDecl WriteJSStringBuffer(JSContext* context, JSString* string, uint16_t* outBuffer, bool nullTerminate)
 {
 	V8Scope scope(context);
-	string->LocalHandle(context)->Write(outBuffer, 0, -1, nullTerminate ? v8::String::NO_OPTIONS : v8::String::NO_NULL_TERMINATION);
+	string->LocalHandle(context)->Write(context->Isolate, outBuffer, 0, -1, nullTerminate ? v8::String::NO_OPTIONS : v8::String::NO_NULL_TERMINATION);
 }
 
 DllPublic JSValue* CDecl JSStringAsValue(JSString* string) { return static_cast<JSValue*>(string); }
