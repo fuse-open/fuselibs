@@ -3,6 +3,7 @@
 #import <Photos/Photos.h>
 #import "ImagePicker.h"
 
+#define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
 
 @interface CameraRollHelper : ImagePicker
 +(CameraRollHelper*) instance;
