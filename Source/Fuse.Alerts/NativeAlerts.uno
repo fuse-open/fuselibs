@@ -221,8 +221,10 @@ namespace Fuse.Alerts
 
 			[alert addAction:defaultAction];
 
-			[(::uAppDelegate*)[[UIApplication sharedApplication] delegate]
-				presentViewController:alert animated:YES completion:nil];
+			dispatch_async(dispatch_get_main_queue(), ^{
+				[(::uAppDelegate*)[[UIApplication sharedApplication] delegate]
+					presentViewController:alert animated:YES completion:nil];
+			});
 		@}
 
 		[Foreign(Language.ObjC)]
@@ -246,8 +248,10 @@ namespace Fuse.Alerts
 			[modalAlert addAction:positiveAction];
 			[modalAlert addAction:negativeAction];
 
-			[(::uAppDelegate*)[[UIApplication sharedApplication] delegate]
-				presentViewController:modalAlert animated:YES completion:nil];
+			dispatch_async(dispatch_get_main_queue(), ^{
+				[(::uAppDelegate*)[[UIApplication sharedApplication] delegate]
+					presentViewController:modalAlert animated:YES completion:nil];
+			});
 		@}
 	}
 }
