@@ -131,34 +131,42 @@ namespace Fuse.PushNotifications
 																									categories:nil];
 					[[UIApplication sharedApplication] registerUserNotificationSettings:settings];
 
-					[[UIApplication sharedApplication] registerForRemoteNotifications];
+					dispatch_async(dispatch_get_main_queue(), ^{
+						[[UIApplication sharedApplication] registerForRemoteNotifications];
+					});
 				}
 				
 			} else {
 				// Use registerForRemoteNotifications for iOS >= 10
-				dispatch_async(dispatch_get_main_queue(), ^{
-					/* 
-						Explicitly ask for permission else notifications are silent
-						https://developer.apple.com/documentation/uikit/uiapplication/1623078-registerforremotenotifications?language=objc
-					*/
-					UNUserNotificationCenter* center = [UNUserNotificationCenter currentNotificationCenter];
-					[center requestAuthorizationWithOptions:
-							(UNAuthorizationOptionAlert + 
-							UNAuthorizationOptionSound +
-							UNAuthorizationOptionBadge)
-							completionHandler:^(BOOL granted, NSError * _Nullable error) {
-							/* Continue to register users token, so that if they turn it on
-							in their general settings later, it will be "on" in your server side too */
+				
+				/* 
+					Explicitly ask for permission else notifications are silent
+					https://developer.apple.com/documentation/uikit/uiapplication/1623078-registerforremotenotifications?language=objc
+				*/
+				UNUserNotificationCenter* center = [UNUserNotificationCenter currentNotificationCenter];
+				[center requestAuthorizationWithOptions:
+						(UNAuthorizationOptionAlert + 
+						UNAuthorizationOptionSound +
+						UNAuthorizationOptionBadge)
+						completionHandler:^(BOOL granted, NSError * _Nullable error) {
+						/* Continue to register users token, so that if they turn it on
+						in their general settings later, it will be "on" in your server side too */
+						dispatch_async(dispatch_get_main_queue(), ^{
 							[application registerForRemoteNotifications];	
-					}];
-				});
+						});
+				}];
+				
 			}
 		@}
 
 		[Foreign(Language.ObjC)]
 		internal static bool IsRegisteredForRemoteNotifications()
 		@{
-			return [[UIApplication sharedApplication] isRegisteredForRemoteNotifications];
+			__block bool isReg = false;
+			dispatch_sync(dispatch_get_main_queue(), ^{
+			  isReg = [[UIApplication sharedApplication] isRegisteredForRemoteNotifications];
+			});
+			return isReg;
 		@}
 	}
 }
