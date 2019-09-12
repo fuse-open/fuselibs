@@ -29,7 +29,9 @@ namespace Fuse.Camera
 		[Foreign(Language.ObjC)]
 		static void TakePictureInternal(Action<string> onComplete, Action<string> onFail)
 		@{
-			[[CameraHelper instance] takePictureWithCompletionHandler:onComplete onFail:onFail];
+			dispatch_async(dispatch_get_main_queue(), ^{
+				[[CameraHelper instance] takePictureWithCompletionHandler:onComplete onFail:onFail];
+			});
 		@}
 		
 		[Foreign(Language.ObjC)]
