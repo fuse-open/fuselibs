@@ -1,5 +1,8 @@
 # Unreleased
 
+### Fuse.Alerts
+- Fix crash on iOS 13
+
 ### Fuse.Triggers.Actions.TransitionState
 - Added `Value` property on `TransitionState`.
 
