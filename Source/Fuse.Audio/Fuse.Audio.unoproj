@@ -3,9 +3,6 @@
   "Description": "Audio playback support",
   "Publisher": "Fuse Open",
   "Title": "Fuse.Audio",
-  "Package": {
-    "ProjectUrl": "https://fuseopen.com"
-  },
   "Packages": [
     "Uno.Threading",
     "Uno.Permissions"

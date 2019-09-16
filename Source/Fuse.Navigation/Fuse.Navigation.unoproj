@@ -3,9 +3,6 @@
   "Description": "Library of common trigger behaviors for UIs",
   "Publisher": "Fuse Open",
   "Title": "Fuse.Triggers",
-  "Package": {
-    "ProjectUrl": "https://fuseopen.com"
-  },
   "InternalsVisibleTo": [
     "Fuse.Controls",
     "Fuse.Controls.Primitives",

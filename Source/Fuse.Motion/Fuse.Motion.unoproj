@@ -2,9 +2,6 @@
   "Copyright": "Copyright (c) Fuse Open 2018",
   "Description": "Library for control motion and simulated physics for UI",
   "Publisher": "Fuse Open",
-  "Package": {
-    "ProjectUrl": "https://fuseopen.com"
-  },
   "Projects": [
     "../Fuse.Common/Fuse.Common.unoproj",
     "../Fuse.Reactive.Expressions/Fuse.Reactive.Expressions.unoproj"

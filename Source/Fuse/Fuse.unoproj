@@ -2,9 +2,6 @@
   "Copyright": "Copyright (c) Fuse Open 2018",
   "Publisher": "Fuse Open",
   "Description": "References the complete set of canonical, non-optional Fuse libraries",
-  "Package": {
-    "ProjectUrl": "https://fuseopen.com"
-  },
   "IsTransitive": true,
   "Projects": [
     "../Fuse.Platform/Fuse.Platform.unoproj",

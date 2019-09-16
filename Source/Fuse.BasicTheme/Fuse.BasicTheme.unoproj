@@ -2,9 +2,6 @@
   "Description": "This package is part of Fuse",
   "Publisher": "Fuse Open",
   "Copyright": "Copyright (c) Fuse Open 2018",
-  "Package": {
-    "ProjectUrl": "https://fuseopen.com"
-  },
   "Projects": [
     "../Fuse.Animations/Fuse.Animations.unoproj",
     "../Fuse.Controls/Fuse.Controls.unoproj",

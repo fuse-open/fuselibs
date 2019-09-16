@@ -3,9 +3,6 @@
   "Description": "Native image utilities",
   "Publisher": "Fuse Open",
   "Title": "Fuse.ImageTools",
-  "Package": {
-    "ProjectUrl": "https://fuseopen.com"
-  },
   "InternalsVisibleTo":[
     "Fuse.Camera",
     "Fuse.CameraRoll",

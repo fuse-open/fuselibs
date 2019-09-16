@@ -2,9 +2,6 @@
   "Description": "Library for data caching",
   "Publisher": "Fuse Open",
   "Copyright": "Copyright (c) Fuse Open 2018",
-  "Package": {
-    "ProjectUrl": "https://fuseopen.com"
-  },
   "Packages": [
     "Uno.Net.Http",
     "UnoCore"

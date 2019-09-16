@@ -3,9 +3,6 @@
   "Description": "Framework for reactive expressions",
   "Publisher": "Fuse Open",
   "IsTransitive": true,
-  "Package": {
-    "ProjectUrl": "https://fuseopen.com"
-  },
   "Packages": [
     "Uno.Collections",
     "Uno.Data.Json",
