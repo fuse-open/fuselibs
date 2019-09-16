@@ -182,7 +182,7 @@ namespace Fuse.Navigation.Test
 			}
 		}
 		
-		[Test]
+		[Test, Ignore("https://github.com/fuse-open/fuselibs/issues/769")]
 		public void LinearActivated()
 		{
 			var p = new UX.Activated.Linear();
