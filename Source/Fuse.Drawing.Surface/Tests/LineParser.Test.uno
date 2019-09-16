@@ -36,6 +36,28 @@ namespace Fuse.Test
 				float2(123.3333f,126.6666f), float2(151.6666f,126.6666f) );
 		}
 		
+		
+		[Test]
+		public void PointTokenStart()
+		{
+			var list = new LineSegments();
+			LineParser.ParseSVGPath( "M10 10c0 1.1.9 2 2.2.2", list.Segments );
+			
+			Assert.AreEqual(2, list.Segments.Count);
+			Check( list.Segments[0], LineSegmentType.Move, float2(10,10) );
+			Check( list.Segments[1], LineSegmentType.BezierCurve, float2(12.2f,10.2f), 
+				float2(10f,11.1f), float2(10.9f, 12f) );
+			
+			list.Clear();
+
+			LineParser.ParseSVGPath( "M10 10c0.1.2.3.4.5.6", list.Segments );
+			
+			Assert.AreEqual(2, list.Segments.Count);
+			Check( list.Segments[0], LineSegmentType.Move, float2(10,10) );
+			Check( list.Segments[1], LineSegmentType.BezierCurve, float2(10.5f,10.6f), 
+				float2(10.1f,10.2f), float2(10.3f, 10.4f) );
+		}
+		
 		void Check( LineSegment ls, LineSegmentType type, float2 to )
 		{
 			Assert.AreEqual( type, ls.Type );
