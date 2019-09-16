@@ -7,7 +7,7 @@
     "Uno.Threading",
     "Uno.Permissions"
   ],
-  "IsTransitive":true,
+  "IsTransitive": true,
   "Projects": [
     "../Android.ActivityUtils/Android.ActivityUtils.unoproj",
     "../Fuse.ImageTools/Fuse.ImageTools.unoproj",
