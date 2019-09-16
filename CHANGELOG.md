@@ -1,5 +1,8 @@
 # Unreleased
 
+### Fuse.ImageTools
+- Fix crop function not using height parameter
+
 ### Fuse.Alerts
 - Fix crash on iOS 13
 

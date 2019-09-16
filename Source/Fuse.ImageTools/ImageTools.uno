@@ -266,7 +266,7 @@ namespace Fuse.ImageTools
 				x = opts.ValueOrDefault<int>("x", 0);
 				y = opts.ValueOrDefault<int>("y", 0);
 				width = opts.ValueOrDefault<int>("width", 0);
-				height = opts.ValueOrDefault<int>("width", width);
+				height = opts.ValueOrDefault<int>("height", width);
 				inPlace = opts.ValueOrDefault<bool>("performInPlace", true);
 			}
 
