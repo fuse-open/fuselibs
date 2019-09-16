@@ -27,6 +27,7 @@ namespace Fuse.Drawing
 		Token _prevToken;
 		Token _token;
 		LineSegments _segments;
+		bool _tokenHasPoint;
 		readonly string _data;
 
 		public SVGPathParser(string data, IList<LineSegment> segments)
@@ -40,6 +41,8 @@ namespace Fuse.Drawing
 			_headToken = new Token(-1, false);
 			_prevToken = _headToken.Next = new Token(0, false);
 			bool wasExponent = false; //rough fix for https://github.com/Outracks/RealtimeStudio/issues/1313
+			_tokenHasPoint = false;
+			
 			for (int i =0; i<_data.Length; i++)
 			{
 				var c = _data[i];
@@ -48,7 +51,7 @@ namespace Fuse.Drawing
 					case '\0':
 					case ' ':
 					case ',':
-						StartNewToken(i-1, i+1); 
+						StartNewToken(i-1, i+1);
 						break;
 					case '-':
 						if( !wasExponent )
@@ -77,6 +80,14 @@ namespace Fuse.Drawing
 					case 'T':
 						StartNewToken(i - 1, i, true);
 						StartNewToken(i, i + 1);
+						break;
+					case '.':
+						if (_tokenHasPoint) {
+							StartNewToken(i - 1, i);
+							_tokenHasPoint = true;
+						} else {
+							_tokenHasPoint = true;
+						}
 						break;
 				}
 				wasExponent = c == 'e' || c == 'E';
@@ -133,7 +144,6 @@ namespace Fuse.Drawing
 				Fuse.Diagnostics.UserError( "Path data must start with a move 'M' or 'm' operation: " 
 					+ _data, this );
 				//behavior is undefined at this point (nothing will crash, just may not draw anything valid)
-				
 			}
 			_hasCurrentPoint = true;
 			
@@ -273,6 +283,7 @@ namespace Fuse.Drawing
 
 		void StartNewToken(int prevLastChar, int nextFirstChar, bool hasAction = false)
 		{
+			_tokenHasPoint = false;
 			_prevToken.Last = prevLastChar;
 			_prevToken = _prevToken.Next = new Token(nextFirstChar, hasAction);
 		}

@@ -1,5 +1,8 @@
 # Unreleased
 
+### Fuse.Drawing.Surface
+- Fixed SVGPathParser to better parse minimized svg data.
+
 ### Fuse.ImageTools
 - Fix crop function not using height parameter
 
