@@ -3,14 +3,11 @@
   "Description": "Native Camera support",
   "Publisher": "Fuse Open",
   "Title": "Fuse.Camera",
-  "Package": {
-    "ProjectUrl": "https://fuseopen.com"
-  },
   "Packages": [
     "Uno.Threading",
     "Uno.Permissions"
   ],
-  "IsTransitive":true,
+  "IsTransitive": true,
   "Projects": [
     "../Android.ActivityUtils/Android.ActivityUtils.unoproj",
     "../Fuse.ImageTools/Fuse.ImageTools.unoproj",

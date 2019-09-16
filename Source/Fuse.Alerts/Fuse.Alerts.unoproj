@@ -2,9 +2,6 @@
   "Copyright": "Copyright (c) Fuse Open 2018",
   "Description": "Native alerts and simple dialogs for mobile targets",
   "Publisher": "Fuse Open",
-  "Package": {
-    "ProjectUrl": "https://fuseopen.com"
-  },
   "Packages": [
     "Uno.Collections",
     "Uno.Threading"

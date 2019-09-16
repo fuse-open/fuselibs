@@ -2,10 +2,7 @@
   "Copyright": "Copyright (c) Fuse Open 2018",
   "Description": "MapView",
   "Publisher": "Fuse Open",
-  "Package": {
-    "ProjectUrl": "https://fuseopen.com"
-  },
-  "IsTransitive":true,
+  "IsTransitive": true,
   "Packages": [
     "Uno.Collections",
     "Uno.Permissions"

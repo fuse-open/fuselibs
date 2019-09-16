@@ -2,9 +2,6 @@
   "Copyright": "Copyright (c) Fuse Open 2018",
   "Description": "Native bootstrapping for Android",
   "Publisher": "Fuse Open",
-  "Package": {
-    "ProjectUrl": "https://fuseopen.com"
-  },
   "InternalsVisibleTo": [
     "Fuse.Launcher.Email",
     "Fuse.Launcher.InterApp",

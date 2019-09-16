@@ -2,9 +2,6 @@
   "Copyright": "Copyright (c) Fuse Open 2018",
   "Description": "Native TimePicker",
   "Publisher": "Fuse Open",
-  "Package": {
-    "ProjectUrl": "https://fuseopen.com"
-  },
   "Projects": [
     "../Fuse.Common/Fuse.Common.unoproj",
     "../Fuse.Controls/Fuse.Controls.unoproj",

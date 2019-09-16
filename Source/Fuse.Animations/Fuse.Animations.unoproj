@@ -2,9 +2,6 @@
   "Copyright": "Copyright (c) Fuse Open 2018",
   "Description": "Framework for general purpose animation",
   "Publisher": "Fuse Open",
-  "Package": {
-    "ProjectUrl": "https://fuseopen.com"
-  },
   "InternalsVisibleTo": [
     "Fuse.Animations.Test",
     "Fuse.Triggers",

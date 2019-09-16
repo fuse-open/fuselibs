@@ -2,9 +2,6 @@
   "Copyright": "Copyright (c) Fuse Open 2018",
   "Description": "Browser window polyfill",
   "Publisher": "Fuse Open",
-  "Package": {
-    "ProjectUrl": "https://fuseopen.com"
-  },
   "Projects": [
     "../Fuse.Scripting/Fuse.Scripting.unoproj",
     "../Fuse.Common/Fuse.Common.unoproj",
