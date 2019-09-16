@@ -2,9 +2,6 @@
   "Copyright": "Copyright (c) Fuse Open 2018",
   "Description": "Fuse.Drawing",
   "Publisher": "Fuse Open",
-  "Package": {
-    "ProjectUrl": "https://fuseopen.com"
-  },
   "Projects": [
     "../Fuse.Drawing.Planar/Fuse.Drawing.Planar.unoproj",
     "../Fuse.Drawing/Fuse.Drawing.unoproj",

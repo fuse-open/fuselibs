@@ -2,9 +2,6 @@
   "Copyright": "Copyright (c) Fuse Open 2018",
   "Description": "Library of common input gesture recognizers",
   "Publisher": "Fuse Open",
-  "Package": {
-    "ProjectUrl": "https://fuseopen.com"
-  },
   "InternalsVisibleTo": [
     "Fuse.BasicTheme",
     "Fuse.Controls",

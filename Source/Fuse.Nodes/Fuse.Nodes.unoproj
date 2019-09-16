@@ -2,9 +2,6 @@
   "Copyright": "Copyright (c) Fuse Open 2018",
   "Description": "Low-level Node and Visual framework",
   "Publisher": "Fuse Open",
-  "Package": {
-    "ProjectUrl": "https://fuseopen.com"
-  },
   "InternalsVisibleTo": [
     "DrawRectsTest",
     "Fuse.Android",

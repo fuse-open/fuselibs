@@ -3,9 +3,6 @@
   "Description": "Native Camera support",
   "Publisher": "Fuse Open",
   "Title": "Fuse.Camera",
-  "Package": {
-    "ProjectUrl": "https://fuseopen.com"
-  },
   "Packages": [
     "Uno.Threading",
     "Uno.Permissions"

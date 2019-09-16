@@ -2,9 +2,6 @@
   "Copyright": "Copyright (c) Fuse Open 2018",
   "Publisher": "Fuse Open",
   "Description": "References FuseJS standard features",
-  "Package": {
-    "ProjectUrl": "https://fuseopen.com"
-  },
   "IsTransitive": true,
   "Packages": [
     "Uno.Collections",
