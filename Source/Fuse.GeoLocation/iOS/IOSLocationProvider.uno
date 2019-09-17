@@ -109,6 +109,26 @@ namespace Fuse.GeoLocation
 			StartUpdatingLocation(_lm);
 		}
 
+
+		[Foreign(Language.ObjC)]
+		public bool IsLocationEnabled() 
+		@{
+			//check is hardware enabled
+			if ([CLLocationManager locationServicesEnabled]) {
+
+				//check user authorization
+				switch ([CLLocationManager authorizationStatus]) {
+					case kCLAuthorizationStatusAuthorizedAlways:
+					case kCLAuthorizationStatusAuthorizedWhenInUse: return true;
+						break;
+					default: return false;
+						break;
+				}
+			} else {
+				return false;
+			}
+		@}
+
 		[Foreign(Language.ObjC)]
 		static void SetCLLocationManagerParams(
 			ObjC.Object handle,
