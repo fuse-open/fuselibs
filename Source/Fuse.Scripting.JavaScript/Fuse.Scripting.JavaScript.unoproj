@@ -45,7 +45,7 @@
     "V8/lib/Windows.stuff:Stuff",
     "V8/V8.stuff:Stuff",
 
-    "JavaScriptCore/JSTypedArrayInclude.h:CHeader",
+    "JavaScriptCore/JSTypedArrayInclude.h:CHeader:USE_JAVASCRIPTCORE",
 
     "Duktape/duk_config.h:File",
     "Duktape/duktape.c:File",
