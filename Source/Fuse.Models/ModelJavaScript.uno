@@ -70,7 +70,7 @@ namespace Fuse.Models
 			v.RemoveAllChildren<ModelJavaScript>();
 			
 			//avoid creating without the NameTable as unfortunately UX will set the Model prior to the NameTable
-			if (md.NameTable == null || md.ModulePath == null)
+			if (md.NameTable == null || string.IsNullOrEmpty(md.ModulePath))
 				return;
 			
 			v.Children.Add(new ModelJavaScript(md));
