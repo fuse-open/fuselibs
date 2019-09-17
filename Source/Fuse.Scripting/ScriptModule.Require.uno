@@ -9,7 +9,7 @@ namespace Fuse.Scripting
 {
 	public partial class ScriptModule 
 	{
-		internal static string ModuleContainsAnErrorMessage = "require(): module contains an error: ";
+		internal const string ModuleContainsAnErrorMessage = "require(): module contains an error: ";
 
 		class RequireContext
 		{
