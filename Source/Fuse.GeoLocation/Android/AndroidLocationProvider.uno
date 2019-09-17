@@ -8,7 +8,7 @@ using Fuse.GeoLocation.Android;
 
 namespace Fuse.GeoLocation
 {
-	[ForeignInclude(Language.Java, "android.location.LocationManager", "android.location.Location", "android.util.Log", "java.util.List", "fuse.geolocation.UpdateListener", "android.os.Looper", "android.content.Context", "com.uno.StringArray")]
+	[ForeignInclude(Language.Java, "android.support.v4.content.ContextCompat", "android.content.pm.PackageManager", "android.Manifest", "android.location.LocationManager", "android.location.Location", "android.util.Log", "java.util.List", "fuse.geolocation.UpdateListener", "android.os.Looper", "android.content.Context", "com.uno.StringArray")]
 	extern(Android) class AndroidLocationProvider :  ILocationTracker
 	{
 		
@@ -25,6 +25,11 @@ namespace Fuse.GeoLocation
 		public void Init(Action onReady)
 		{
 			_onReady = onReady;
+			RequestPermissions();
+		}
+
+		void RequestPermissions()
+		{
 			var permissions = new PlatformPermission[] 
 			{
 				Permissions.Android.INTERNET,
@@ -66,6 +71,42 @@ namespace Fuse.GeoLocation
 		public void RequestAuthorization(GeoLocationAuthorizationType type)
 		{
 		}
+
+		[Foreign(Language.Java)]
+		public bool IsLocationEnabled() 
+		@{
+			android.location.LocationManager locationManager = (LocationManager)com.fuse.Activity.getRootActivity().getSystemService(Context.LOCATION_SERVICE);
+
+			if (locationManager != null) {
+
+				if (android.os.Build.VERSION.SDK_INT >= 23) {
+
+					//check if hardware enabled
+					if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)||locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)){
+
+						//check user authorization 
+						if (ContextCompat.checkSelfPermission(com.fuse.Activity.getRootActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED 
+							&& ContextCompat.checkSelfPermission(com.fuse.Activity.getRootActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+							return false;
+						} else {
+							return true;
+						}
+					} else {
+						return false;
+					}
+				} else {
+					//legacy fallback
+					try {
+						locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+						return true;
+					} catch (SecurityException e) {
+						return false;
+					}
+				}
+			} else {
+				return false;
+			}
+		@}
 		
 		[Foreign(Language.Java)]
 		static bool IsNetworkEnabled(Java.Object locationManager)
@@ -173,17 +214,37 @@ namespace Fuse.GeoLocation
 		
 		public void StartListening(Action<Location> onLocationChanged, Action<Uno.Exception> onLocationError, int minimumReportInterval, double desiredAccuracyInMeters)
 		{
-			if (_locationManager != null && !_started)
-			{
-				_onLocationChanged = onLocationChanged;
-				
-				if(IsNetworkEnabled(_locationManager))
-					RequestNetworkLocationUpdates(_locationManager, minimumReportInterval, desiredAccuracyInMeters, _updateListener);
-					
-				if(IsGPSEnabled(_locationManager))
-					RequestGPSLocationUpdates(_locationManager, minimumReportInterval, desiredAccuracyInMeters, _updateListener);
+			if (!IsLocationEnabled()) {
 
-				_started = true;
+				RequestPermissions();
+
+				if (_locationManager != null && !_started)
+				{
+					_onLocationChanged = onLocationChanged;
+					
+					if(IsNetworkEnabled(_locationManager))
+						RequestNetworkLocationUpdates(_locationManager, minimumReportInterval, desiredAccuracyInMeters, _updateListener);
+						
+					if(IsGPSEnabled(_locationManager))
+						RequestGPSLocationUpdates(_locationManager, minimumReportInterval, desiredAccuracyInMeters, _updateListener);
+
+					_started = true;
+				}
+
+			} else {
+
+				if (_locationManager != null && !_started)
+				{
+					_onLocationChanged = onLocationChanged;
+					
+					if(IsNetworkEnabled(_locationManager))
+						RequestNetworkLocationUpdates(_locationManager, minimumReportInterval, desiredAccuracyInMeters, _updateListener);
+						
+					if(IsGPSEnabled(_locationManager))
+						RequestGPSLocationUpdates(_locationManager, minimumReportInterval, desiredAccuracyInMeters, _updateListener);
+
+					_started = true;
+				}
 			}
 		}
 		

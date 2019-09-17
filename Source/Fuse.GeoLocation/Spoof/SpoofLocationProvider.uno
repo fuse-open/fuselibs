@@ -29,6 +29,11 @@ namespace Fuse.GeoLocation
 		public void StopListening()
 		{	
 		}
+		
+		public bool IsLocationEnabled()
+		{	
+			return false;
+		}
 
 		public void RequestAuthorization(GeoLocationAuthorizationType type)
 		{	

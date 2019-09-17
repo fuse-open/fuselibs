@@ -14,6 +14,8 @@ namespace Fuse.GeoLocation
 		
 		void StopListening();
 
+		bool IsLocationEnabled();
+
 		void RequestAuthorization(GeoLocationAuthorizationType type);
 		
 		void Init(Action onReady);
@@ -81,6 +83,11 @@ namespace Fuse.GeoLocation
 
 				return _lastLocation;
 			}
+		}
+
+		public bool IsLocationEnabled()
+		{
+			return _locationTracker.IsLocationEnabled();
 		}
 
 		void OnLocationChanged(Location newLocation)

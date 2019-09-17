@@ -132,6 +132,7 @@ namespace Fuse.GeoLocation
 			AddMember(onChangedEvent);
 			AddMember(onErrorEvent);
 
+			AddMember(new NativeFunction("isLocationEnabled", (NativeCallback)IsLocationEnabled));
 			AddMember(new NativeProperty<Fuse.GeoLocation.Location, Scripting.Object>("location", GetLocation, null, Converter));
 			AddMember(new NativePromise<Fuse.GeoLocation.Location, Scripting.Object>("getLocation", GetLocationAsync, Converter));
 			AddMember(new NativeProperty<Fuse.GeoLocation.GeoLocationAuthorizationType, int>("authorizationRequest", GetAuthorizationRequest, SetAuthorizationRequest, AuthorizationRequestConverter));
@@ -140,6 +141,14 @@ namespace Fuse.GeoLocation
 
 			_locationTracker.LocationChanged += LocationChanged;
 			_locationTracker.LocationError += LocationError;
+		}
+
+		/** @scriptmethod isLocationEnabled() 
+		Returns whether or not the device has Geolocation enabled.
+		*/
+		object IsLocationEnabled(Context context, object[] args) 
+		{
+			return _locationTracker.IsLocationEnabled();
 		}
 
 		/**
