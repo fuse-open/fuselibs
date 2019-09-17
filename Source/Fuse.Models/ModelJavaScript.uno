@@ -132,7 +132,7 @@ namespace Fuse.Models
 
 		void SetupModel()
 		{
-			if (_modulePath == null)
+			if (string.IsNullOrEmpty(_modulePath))
 			{
 				Code = string.Empty;
 				return;
