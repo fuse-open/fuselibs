@@ -52,7 +52,9 @@ namespace Fuse.iOS.Bindings
 		[Foreign(Language.ObjC)]
 		public static extern(iOS) void LaunchUriiOS(string uri)
 		@{
-			[[UIApplication sharedApplication] openURL:[NSURL URLWithString:uri]];
+			dispatch_sync(dispatch_get_main_queue(), ^{
+				[[UIApplication sharedApplication] openURL:[NSURL URLWithString:uri]];
+			});
 		@}
 	}
 }
