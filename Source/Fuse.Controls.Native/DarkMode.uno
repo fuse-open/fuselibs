@@ -64,18 +64,19 @@ namespace Fuse.Controls.Native.iOS
 		"android.app.Activity")]
 	public class DarkMode : NativeEventEmitterModule
 	{
-		public static readonly DarkMode _instance;
+		internal static readonly DarkMode _instance;
 
 		public DarkMode(): base(true, "changed")
 		{
 			if (_instance != null) return;
 			Resource.SetGlobalKey(_instance = this, "FuseJS/DarkMode");
 
-			SetupAndroidListener();
+			if defined(ANDROID)
+				SetupAndroidListener();
 		}
 
 		[Foreign(Language.Java)]
-		public extern(Android) void SetupAndroidListener() 
+		extern(Android) void SetupAndroidListener() 
 		@{ 
 			@{checkForDarkThemeChange():Call()};
 
@@ -95,12 +96,8 @@ namespace Fuse.Controls.Native.iOS
 			});
 		@}
 		
-		public extern(!MOBILE) void SetupAndroidListener() @{ debug_log("SetupAndroidListener not supported on this platform."); @}
-
-		public extern(iOS) void SetupAndroidListener() @{ @}
-
 		[Foreign(Language.Java)]
-		public static extern(Android) void checkForDarkThemeChange()
+		static extern(Android) void checkForDarkThemeChange()
 		@{
 			switch (com.fuse.Activity.getRootActivity().getResources().getConfiguration().uiMode & android.content.res.Configuration.UI_MODE_NIGHT_MASK) {
 				case android.content.res.Configuration.UI_MODE_NIGHT_YES:
@@ -117,7 +114,7 @@ namespace Fuse.Controls.Native.iOS
 		@}
 
 
-		public static void changeDarkMode(string modeValue) {
+		internal static void changeDarkMode(string modeValue) {
 
 			if (DarkMode._instance == null) {
 				new DarkMode();
