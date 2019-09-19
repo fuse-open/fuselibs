@@ -25,6 +25,7 @@
     "../Fuse.Elements/Fuse.Elements.unoproj",
     "../Fuse.Nodes/Fuse.Nodes.unoproj",
     "../Fuse.Common/Fuse.Common.unoproj",
+    "../Fuse.Scripting/Fuse.Scripting.unoproj",
   ],
   "Includes": [
     "*",
@@ -34,6 +35,8 @@
     "iOS/Helpers.mm:ObjCSource:iOS",
     "iOS/CanvasViewGroup.h:ObjCHeader:iOS",
     "iOS/CanvasViewGroup.mm:ObjCSource:iOS",
+    "iOS/ContainerView.h:ObjCHeader:iOS",
+    "iOS/ContainerView.mm:ObjCSource:iOS",
     "Android/Java/ScrollEventHandler.java:Java:Android",
     "Android/Java/FuseScrollView.java:Java:Android",
     "Android/Java/HorizontalScrollView.java:Java:Android",
