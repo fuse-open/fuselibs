@@ -14,6 +14,7 @@ namespace Fuse.Controls.Native.iOS
 	[Require("Source.Include", "GLKit/GLKit.h")]
 	[Require("Source.Include", "OpenGLES/EAGL.h")]
 	[Require("Source.Include", "Context.h")]
+	[Require("Source.Include", "iOS/ContainerView.h")]
 	[Require("Source.Include", "iOS/Helpers.h")]
 	extern(iOS) public class GraphicsView : View, IGraphicsView, IViewHost
 	{
@@ -49,7 +50,8 @@ namespace Fuse.Controls.Native.iOS
 		[Foreign(Language.ObjC)]
 		static ObjC.Object CreateContainer()
 		@{
-			UIView* view = [[UIView alloc] init];
+			ContainerView* view = [[ContainerView alloc] init];
+			[view viewDidLoad];
 			return view;
 		@}
 
