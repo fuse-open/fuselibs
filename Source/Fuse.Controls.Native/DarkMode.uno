@@ -58,6 +58,10 @@ namespace Fuse.Controls.Native.iOS
 		</App>
 		```
 	*/ 
+	[ForeignInclude(Language.Java,
+		"java.lang.Runnable",
+		"android.content.res.Configuration",
+		"android.app.Activity")]
 	public class DarkMode : NativeEventEmitterModule
 	{
 		public static readonly DarkMode _instance;
@@ -66,19 +70,58 @@ namespace Fuse.Controls.Native.iOS
 		{
 			if (_instance != null) return;
 			Resource.SetGlobalKey(_instance = this, "FuseJS/DarkMode");
+
+			SetupAndroidListener();
 		}
 
-		/* 
-			Example call for when implementing Android version:
-			@{Fuse.Controls.Native.iOS.DarkMode.changeDarkMode(string):Call(@"Dark")};
-		*/
+		[Foreign(Language.Java)]
+		public extern(Android) void SetupAndroidListener() 
+		@{ 
+			@{checkForDarkThemeChange():Call()};
+
+			com.fuse.Activity.SubscribeToLifecycleChange(new com.fuse.Activity.ActivityListener()
+			{
+				@Override public void onStop() {}
+				@Override public void onStart() {}
+				@Override public void onWindowFocusChanged(boolean hasFocus) {}
+				@Override public void onPause() {}
+				@Override public void onResume() {}
+				@Override public void onDestroy() {}
+
+				@Override public void onConfigurationChanged(android.content.res.Configuration config) 
+				{ 
+					@{checkForDarkThemeChange():Call()};
+				}
+			});
+		@}
+		
+		public extern(!MOBILE) void SetupAndroidListener() @{ debug_log("SetupAndroidListener not supported on this platform."); @}
+
+		public extern(iOS) void SetupAndroidListener() @{ @}
+
+		[Foreign(Language.Java)]
+		public static extern(Android) void checkForDarkThemeChange()
+		@{
+			switch (com.fuse.Activity.getRootActivity().getResources().getConfiguration().uiMode & android.content.res.Configuration.UI_MODE_NIGHT_MASK) {
+				case android.content.res.Configuration.UI_MODE_NIGHT_YES:
+					@{changeDarkMode(string):Call("Dark")};
+					break;
+				case android.content.res.Configuration.UI_MODE_NIGHT_NO:
+					@{changeDarkMode(string):Call("Light")};
+					break; 
+				case android.content.res.Configuration.UI_MODE_NIGHT_UNDEFINED:
+					@{changeDarkMode(string):Call("Unspecified")};
+					break; 
+			}
+
+		@}
+
+
 		public static void changeDarkMode(string modeValue) {
 
 			if (DarkMode._instance == null) {
 				new DarkMode();
 			}
-			
-			//Android(ToDo) - standardise output values
 			
 			//iOS - standardise output values
 			if (modeValue == "Unspecified") {
