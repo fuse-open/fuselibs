@@ -1,5 +1,8 @@
 # Unreleased
 
+### Fuse.Storage
+- Add `UserSettings` module. This module provides key-value pairs mechanism to store and retrieve primitive data types (string, number, boolean) as well as an array and a JSON object
+
 ### Fuse.Drawing.Surface
 - Fixed SVGPathParser to better parse minimized svg data.
 
