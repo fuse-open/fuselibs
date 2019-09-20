@@ -37,12 +37,26 @@ namespace Fuse.Controls.Native.iOS
 			var path = GetOptionalPath(descriptor.FileSource);
 			if (path != null)
 			{
-				var uifontdescriptor
+				if (descriptor.IsCustomFont) 
+				{
+					var uifontdescriptor
 					= iOSSystemFont.GetMatchingUIFontDescriptor(
 						path,
 						descriptor.Index,
 						descriptor.Match);
-				uifont = UIFontWithDescriptorAndSize(uifontdescriptor, size);
+					uifont = UIFontWithDescriptorAndSize(uifontdescriptor, size);
+				} 
+				else 
+				{
+					var uifontdescriptor
+					= iOSSystemFont.GetMatchingSystemFontDescriptor(
+						descriptor.FontStyle,
+						descriptor.FontWeight,
+						descriptor.FontDesign,
+						descriptor.FontSize
+					);
+					uifont = UIFontWithDescriptorAndSize(uifontdescriptor, size);
+				}
 			}
 			else
 			{

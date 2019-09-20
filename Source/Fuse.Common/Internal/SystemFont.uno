@@ -11,6 +11,13 @@ namespace Fuse.Internal
 		public readonly int Index;
 		public readonly IEnumerable<string> Styles;
 
+		//iOS13+ - for default systemfont
+		extern(IOS) internal bool IsCustomFont = true;
+		extern(IOS) internal Fuse.SystemFont.Style FontStyle; //normal/italic
+		extern(IOS) internal Fuse.SystemFont.Weight FontWeight; //thin/light/regular/bold/etc
+		extern(IOS) internal Fuse.SystemFont.Design FontDesign; //default/monospaced/rounded/serif
+		extern(IOS) internal int FontSize; //12/16/etc
+
 		/** Create a `FontFaceDescriptor` that selects the face by matching the its string. */
 		public FontFaceDescriptor(FileSource fileSource, IEnumerable<string> styles)
 		{
@@ -51,6 +58,15 @@ namespace Fuse.Internal
 				hash = hash * 23 + s.GetHashCode();
 			}
 			return hash;
+		}
+
+		extern(IOS) internal void SetFontAttributes(Fuse.SystemFont.Style fontStyle, Fuse.SystemFont.Weight fontWeight, Fuse.SystemFont.Design fontDesign, int fontSize, bool isCustomFont)
+		{
+			FontStyle = fontStyle;
+			FontWeight = fontWeight;
+			FontDesign = fontDesign;
+			FontSize = fontSize;
+			IsCustomFont = isCustomFont;
 		}
 	}
 
