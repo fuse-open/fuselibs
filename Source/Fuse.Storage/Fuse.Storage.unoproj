@@ -4,13 +4,21 @@
   "Publisher": "Fuse Open",
   "Packages": [
     "Uno.Threading",
+    "Uno.Collections",
+    "Uno.Data.Json"
   ],
   "Projects": [
     "../Fuse.Common/Fuse.Common.unoproj",
-    "../Fuse.Scripting/Fuse.Scripting.unoproj"
+    "../Fuse.Scripting/Fuse.Scripting.unoproj",
+    "../Fuse.Marshal/Fuse.Marshal.unoproj"
   ],
   "Includes": [
+    "AndroidUserSettings.uno:Source",
+    "IOSUserSettings.uno:Source",
     "ApplicationDir.uno:Source",
-    "StorageModule.uno:Source"
+    "StorageModule.uno:Source",
+    "UserSettingsModule.uno:Source",
+    "UserSettingsImpl.uno:Source",
+    "Json.uno:Source"
   ]
 }
