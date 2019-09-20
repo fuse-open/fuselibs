@@ -9,7 +9,7 @@ namespace Fuse.Triggers.Actions
 
 	/** Toggles the state of a toggleable component.
 	
-	    It is not reccommended to use this trigger action to toggle a logical state in your app. For that, use
+	    It is not recommended to use this trigger action to toggle a logical state in your app. For that, use
 	    an Observable boolean in JavaScript and manipulate its value in a callback.
 
 		## Example

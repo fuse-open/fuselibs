@@ -2,7 +2,7 @@
 
 ## Static naming (`ux:Name`)
 
-It is reccommended to primarily work with *static names* with UX documents. Static names are specified using the `ux:Name` attribute. This also implicitly sets the `Name` property accordingly on objects that support the property, such as @Nodes.
+It is recommended to primarily work with *static names* with UX documents. Static names are specified using the `ux:Name` attribute. This also implicitly sets the `Name` property accordingly on objects that support the property, such as @Nodes.
 
 Statically named objects can be referenced from other UX nodes and resolved at compile time, e.g.
 
