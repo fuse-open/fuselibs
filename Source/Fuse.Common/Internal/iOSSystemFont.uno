@@ -14,16 +14,30 @@ namespace Fuse.Internal
 		static HashSet<string> _families;
 		static Dictionary<string, string> _fontPaths;
 		static readonly string[] _weightNames = new string[]
-			{ "UltraLight", "Thin", "Light", "Regular", "Medium", "SemiBold", "Bold", "Heavy", "Black" };
+			{ "UltraLight", "Thin", "Light", "Regular", "Medium", "Semibold", "Bold", "Heavy", "Black" };
 
 		public static List<FontFaceDescriptor> Default
 		{
 			get
 			{
-				var descriptor = GetDefaultUIFontDescriptor();
-				var descriptors = GetFallbackUIFontDescriptors(descriptor);
-				var fontNames = GetFontNamesFromUIFontDescriptors(descriptors);
-				return GetDescriptorsFromFontNames(fontNames);
+				if (Fuse.iOSDevice.OperatingSystemVersion.Major >= 13) 
+				{
+					var path = "/System/Library/Fonts/Core/AppleSystemUIFont";
+					var fontName = ".AppleSystemUIFont";
+
+					var ffd = new FontFaceDescriptor(new SystemFileSource(path), GetFontNameStyles(fontName));
+					ffd.SetFontAttributes(Fuse.SystemFont.Style.Normal,Fuse.SystemFont.Weight.Normal,Fuse.SystemFont.Design.Default, 16, false);
+					var result = new List<FontFaceDescriptor>();
+					result.Add(ffd);
+					return result;
+				} 
+				else 
+				{
+					var descriptor = GetDefaultUIFontDescriptor();
+					var descriptors = GetFallbackUIFontDescriptors(descriptor);
+					var fontNames = GetFontNamesFromUIFontDescriptors(descriptors);
+					return GetDescriptorsFromFontNames(fontNames);
+				}
 			}
 		}
 
@@ -51,18 +65,68 @@ namespace Fuse.Internal
 
 		public static List<FontFaceDescriptor> Get(string family, Fuse.SystemFont.Style style, Fuse.SystemFont.Weight weight)
 		{
-			var weightIndex = Math.Clamp((int)weight, 0, _weightNames.Length - 1);
-			var descriptor = GetMatchingFontDescriptor(family, style == Fuse.SystemFont.Style.Italic, _weightNames[weightIndex]);
-			if (descriptor == null)
-			{
-				return Default;
-			}
-			else
-			{
+			if (Fuse.iOSDevice.OperatingSystemVersion.Major >= 13) 
+			{ //system font for iOS 13
+
+				//satisfy custom font structure
+				var path = "/System/Library/Fonts/Core/AppleSystemUIFont-" + style + weight;
+				var fontName = ".AppleSystemUIFont-" + style + "-" + weight;
+
+				var ffd = new FontFaceDescriptor(new SystemFileSource(path), GetFontNameStyles(fontName));
+				ffd.SetFontAttributes(style,weight,Fuse.SystemFont.Design.Default, 16, false);
+				var result = new List<FontFaceDescriptor>();
+				result.Add(ffd);
+				return result;
+			} 
+			else 
+			{ //normal custom font
+			
+				var weightIndex = Math.Clamp((int)weight, 0, _weightNames.Length - 1);
+				var descriptor = GetMatchingFontDescriptor(family, style == Fuse.SystemFont.Style.Italic, _weightNames[weightIndex]);
+				if (descriptor == null)
+				{
+					descriptor = GetDefaultFontDescriptor(_weightNames[weightIndex], (style == Fuse.SystemFont.Style.Italic));
+				}
+				descriptor = GetFallbackUIFontDescriptorsWeight(descriptor, family, _weightNames[weightIndex], (style == Fuse.SystemFont.Style.Italic));
 				var descriptors = GetFallbackUIFontDescriptors(descriptor);
 				var fontNames = GetFontNamesFromUIFontDescriptors(descriptors);
+
 				return GetDescriptorsFromFontNames(fontNames);
 			}
+		}
+
+		static ObjC.Object GetFallbackUIFontDescriptorsWeight(ObjC.Object descriptor, string family, string weightName, bool isItalic) 
+		{
+			var fontName = (!isItalic) ? GetDescriptorFontName(descriptor) : GetDescriptorName(descriptor);
+			if (weightName == "UltraLight" && isItalic == false && (DoesFontWeightExist(family, fontName, weightName) == false))
+				descriptor = GetMatchingFontDescriptor(family, isItalic, "Light");
+			else if (weightName == "Thin" && isItalic == false && (DoesFontWeightExist(family, fontName, weightName) == false))
+				descriptor = GetMatchingFontDescriptor(family, isItalic, "Light");
+			else if (weightName == "Light" && isItalic == false && (DoesFontWeightExist(family, fontName, weightName) == false))
+				descriptor = GetMatchingFontDescriptor(family, isItalic, "Regular");
+			else if (weightName == "Medium" && isItalic == false && (DoesFontWeightExist(family, fontName, weightName) == false))
+				descriptor = GetMatchingFontDescriptor(family, isItalic, "Regular");
+			else if (weightName == "Semibold" && isItalic == false && (DoesFontWeightExist(family, fontName, weightName) == false))
+				descriptor = GetMatchingFontDescriptor(family, isItalic, "Bold");
+			else if (weightName == "Heavy" && isItalic == false && (DoesFontWeightExist(family, fontName, weightName) == false))
+				descriptor = GetMatchingFontDescriptor(family, isItalic, "Bold");
+			else if (weightName == "Black" && isItalic == false && (DoesFontWeightExist(family, fontName, weightName) == false))
+				descriptor = GetMatchingFontDescriptor(family, isItalic, "Bold");
+			else if (weightName == "UltraLight" && isItalic && (DoesFontWeightExist(family, fontName, weightName) == false))
+				descriptor = GetMatchingFontDescriptor(family, isItalic, "Light");
+			else if (weightName == "Thin" && isItalic && (DoesFontWeightExist(family, fontName, weightName) == false))
+				descriptor = GetMatchingFontDescriptor(family, isItalic, "Light");
+			else if (weightName == "Light" && isItalic && (DoesFontWeightExist(family, fontName, weightName) == false))
+				descriptor = GetMatchingFontDescriptor(family, isItalic, "Regular");
+			else if (weightName == "Medium" && isItalic && (DoesFontWeightExist(family, fontName, weightName) == false))
+				descriptor = GetMatchingFontDescriptor(family, isItalic, "Regular");
+			else if (weightName == "Semibold" && isItalic && (DoesFontWeightExist(family, fontName, weightName) == false))
+				descriptor = GetMatchingFontDescriptor(family, isItalic, "Bold");
+			else if (weightName == "Heavy" && isItalic && (DoesFontWeightExist(family, fontName, weightName) == false))
+				descriptor = GetMatchingFontDescriptor(family, isItalic, "Bold");
+			else if (weightName == "Black" && isItalic && (DoesFontWeightExist(family, fontName, weightName) == false))
+				descriptor = GetMatchingFontDescriptor(family, isItalic, "Bold");
+			return descriptor;
 		}
 
 		static List<FontFaceDescriptor> GetDescriptorsFromFontNames(string[] fontNames)
@@ -120,7 +184,7 @@ namespace Fuse.Internal
 			var result = new string[descriptors.Length];
 			for (int i = 0; i < descriptors.Length; ++i)
 			{
-				result[i] = GetDescriptorFontName(descriptors[i]);
+				result[i] = GetDescriptorName(descriptors[i]);
 			}
 			return result;
 		}
@@ -128,13 +192,32 @@ namespace Fuse.Internal
 		[Foreign(Language.ObjC)]
 		static string GetDescriptorFontName(ObjC.Object descriptor)
 		@{
+			return ([UIFont fontWithDescriptor: ((UIFontDescriptor*)descriptor) size: 16]).fontName;
+		@}
+
+		[Foreign(Language.ObjC)]
+		static string GetDescriptorName(ObjC.Object descriptor)
+		@{
 			return ((UIFontDescriptor*)descriptor).fontAttributes[UIFontDescriptorNameAttribute];
 		@}
 
 		[Foreign(Language.ObjC)]
 		static string GetDefaultFontFamily()
 		@{
-			return [UIFont systemFontOfSize: 12].familyName;
+			return [UIFont systemFontOfSize: 16].familyName;
+		@}
+
+		[Foreign(Language.ObjC)]
+		static ObjC.Object GetDefaultFontDescriptor(string weight, bool isItalic)
+		@{
+			NSDictionary* attributes
+				= \@{ UIFontDescriptorFamilyAttribute: [UIFont systemFontOfSize: 16].familyName };
+			UIFontDescriptor* descriptor = [UIFontDescriptor fontDescriptorWithFontAttributes: attributes];
+			NSMutableDictionary* attributes2 = [\@{ UIFontDescriptorFaceAttribute: weight } mutableCopy];
+			descriptor = [UIFontDescriptor fontDescriptorWithFontAttributes: attributes];
+			descriptor = [descriptor fontDescriptorWithSymbolicTraits:
+				[descriptor symbolicTraits] | (isItalic ? UIFontDescriptorTraitItalic : 0)];
+			return descriptor;
 		@}
 
 		[Foreign(Language.ObjC)]
@@ -146,7 +229,7 @@ namespace Fuse.Internal
 			// are not included in the plists -- they're probably
 			// special-cased somewhere internally.
 			NSDictionary* attributes
-				= \@{ UIFontDescriptorFamilyAttribute: [UIFont systemFontOfSize: 12].familyName };
+				= \@{ UIFontDescriptorFamilyAttribute: [UIFont systemFontOfSize: 16].familyName };
 			return [UIFontDescriptor fontDescriptorWithFontAttributes: attributes];
 		@}
 
@@ -158,13 +241,26 @@ namespace Fuse.Internal
 			{
 				[attributes setObject:family forKey:UIFontDescriptorFamilyAttribute];
 			}
-
 			NSSet* mandatory = [NSSet setWithArray:attributes.allKeys];
 			UIFontDescriptor* descriptor = [UIFontDescriptor fontDescriptorWithFontAttributes: attributes];
 			descriptor = [descriptor fontDescriptorWithSymbolicTraits:
 				[descriptor symbolicTraits] | (isItalic ? UIFontDescriptorTraitItalic : 0)];
-
 			return descriptor;
+		@}
+
+		[Foreign(Language.ObjC)]
+		static bool DoesFontWeightExist(string family, string fontName, string weight)
+		@{
+			if (([fontName rangeOfString: weight options:NSCaseInsensitiveSearch].location == NSNotFound
+				&& [family rangeOfString: weight options:NSCaseInsensitiveSearch].location == NSNotFound)
+				|| fontName == NULL)
+			{
+			  return false;
+			}
+			else
+			{
+			  return true;
+			}
 		@}
 
 		[Foreign(Language.ObjC)]
@@ -328,6 +424,111 @@ namespace Fuse.Internal
 			}
 			throw new Exception("iOSSystemFont: No matching style in " + fileName);
 		}
+
+
+
+		internal static ObjC.Object GetMatchingSystemFontDescriptor(Fuse.SystemFont.Style fontStyle, Fuse.SystemFont.Weight fontWeight, Fuse.SystemFont.Design fontDesign, int fontSize)
+		{
+			string selectedFontStyle = "normal";
+			string selectedFontWeight = "normal";
+			string selectedFontDesign = "default";
+
+			switch (fontStyle) 
+			{
+				case Fuse.SystemFont.Style.Italic: selectedFontStyle = "italic";
+					break;
+			}
+
+			switch (fontWeight) 
+			{
+				case Fuse.SystemFont.Weight.UltraLight: selectedFontWeight = "ultralight";
+					break;
+				case Fuse.SystemFont.Weight.Thin: selectedFontWeight = "thin";
+					break;
+				case Fuse.SystemFont.Weight.Light: selectedFontWeight = "light";
+					break;
+				case Fuse.SystemFont.Weight.Normal: selectedFontWeight = "normal";
+					break;
+				case Fuse.SystemFont.Weight.Medium: selectedFontWeight = "medium";
+					break;
+				case Fuse.SystemFont.Weight.Semibold: selectedFontWeight = "semibold";
+					break;
+				case Fuse.SystemFont.Weight.Bold: selectedFontWeight = "bold";
+					break;
+				case Fuse.SystemFont.Weight.Heavy: selectedFontWeight = "heavy";
+					break;
+				case Fuse.SystemFont.Weight.Black: selectedFontWeight = "black";
+					break;
+			}
+
+			switch (fontDesign) 
+			{
+				case Fuse.SystemFont.Design.Default: selectedFontDesign = "default";
+					break;
+				case Fuse.SystemFont.Design.Monospaced: selectedFontDesign = "monospaced";
+					break;
+				case Fuse.SystemFont.Design.Rounded: selectedFontDesign = "rounded";
+					break;
+				case Fuse.SystemFont.Design.Serif: selectedFontDesign = "serif";
+					break;
+			}
+
+			return getSystemFontDesign(selectedFontStyle, selectedFontWeight, selectedFontDesign, fontSize);
+		}
+
+
+		[Foreign(Language.ObjC)]
+		static ObjC.Object getSystemFontDesign(string fontStyle, string fontWeight, string fontDesign, int fontSize)
+		@{
+			//weight
+			UIFontWeight selectedWeight;
+			if ([fontWeight isEqualToString:@"ultralight"])
+				selectedWeight = UIFontWeightUltraLight;
+			else if ([fontWeight isEqualToString:@"thin"])
+				selectedWeight = UIFontWeightThin;
+			else if ([fontWeight isEqualToString:@"light"])
+				selectedWeight = UIFontWeightLight;
+			else if ([fontWeight isEqualToString:@"normal"])
+				selectedWeight = UIFontWeightRegular;
+			else if ([fontWeight isEqualToString:@"regular"])
+				selectedWeight = UIFontWeightRegular;
+			else if ([fontWeight isEqualToString:@"medium"])
+				selectedWeight = UIFontWeightMedium;
+			else if ([fontWeight isEqualToString:@"semibold"])
+				selectedWeight = UIFontWeightSemibold;
+			else if ([fontWeight isEqualToString:@"bold"])
+				selectedWeight = UIFontWeightBold;
+			else if ([fontWeight isEqualToString:@"heavy"])
+				selectedWeight = UIFontWeightHeavy;
+			else if ([fontWeight isEqualToString:@"black"])
+				selectedWeight = UIFontWeightBlack;
+
+			//size & weight
+			UIFontDescriptor* descriptor = [UIFont systemFontOfSize: fontSize weight:selectedWeight].fontDescriptor;
+
+			//normal by default or italic
+			if ([fontStyle isEqualToString:@"italic"]) {
+				descriptor = [descriptor fontDescriptorWithSymbolicTraits:
+					[descriptor symbolicTraits] | UIFontDescriptorTraitItalic];
+			}
+
+			//design
+			#if defined(__IPHONE_13_0) && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_13_0
+			UIFontDescriptorSystemDesign selectedDesign;
+			if ([fontDesign isEqualToString:@"default"])
+				selectedDesign = UIFontDescriptorSystemDesignDefault;
+			else if ([fontDesign isEqualToString:@"monospaced"])
+				selectedDesign = UIFontDescriptorSystemDesignMonospaced;
+			else if ([fontDesign isEqualToString:@"rounded"])
+				selectedDesign = UIFontDescriptorSystemDesignRounded;
+			else if ([fontDesign isEqualToString:@"serif"])
+				selectedDesign = UIFontDescriptorSystemDesignSerif;
+
+			descriptor = [descriptor fontDescriptorWithDesign: selectedDesign];
+			#endif
+
+			return descriptor;
+		@}
 
 		[Foreign(Language.ObjC)]
 		static ObjC.Object[] GetDescriptors(string fileName)

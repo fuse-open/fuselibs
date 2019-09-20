@@ -89,6 +89,9 @@ namespace Fuse
 		}
 
 		[UXGlobalResource]
+		extern (Android) public static readonly Font UltraLight = new SystemFont("sans-serif-thin", SystemFont.Style.Normal, SystemFont.Weight.Thin);
+
+		[UXGlobalResource]
 		extern (Android) public static readonly Font Thin = new SystemFont("sans-serif-thin", SystemFont.Style.Normal, SystemFont.Weight.Thin);
 
 		[UXGlobalResource]
@@ -101,7 +104,19 @@ namespace Fuse
 		extern (Android) public static readonly Font Medium = new SystemFont("sans-serif", SystemFont.Style.Normal, SystemFont.Weight.Medium);
 
 		[UXGlobalResource]
+		extern (Android) public static readonly Font Semibold = new SystemFont("sans-serif", SystemFont.Style.Normal, SystemFont.Weight.Bold);
+
+		[UXGlobalResource]
 		extern (Android) public static readonly Font Bold = new SystemFont("sans-serif", SystemFont.Style.Normal, SystemFont.Weight.Bold);
+
+		[UXGlobalResource]
+		extern (Android) public static readonly Font Heavy = new SystemFont("sans-serif", SystemFont.Style.Normal, SystemFont.Weight.Bold);
+
+		[UXGlobalResource]
+		extern (Android) public static readonly Font Black = new SystemFont("sans-serif", SystemFont.Style.Normal, SystemFont.Weight.Bold);
+
+		[UXGlobalResource]
+		extern (Android) public static readonly Font UltraLightItalic = new SystemFont("sans-serif-thin", SystemFont.Style.Italic, SystemFont.Weight.Thin);
 
 		[UXGlobalResource]
 		extern (Android) public static readonly Font ThinItalic = new SystemFont("sans-serif-thin", SystemFont.Style.Italic, SystemFont.Weight.Thin);
@@ -116,8 +131,21 @@ namespace Fuse
 		extern (Android) public static readonly Font MediumItalic = new SystemFont("sans-serif", SystemFont.Style.Italic, SystemFont.Weight.Medium);
 
 		[UXGlobalResource]
+		extern (Android) public static readonly Font SemiboldItalic = new SystemFont("sans-serif", SystemFont.Style.Italic, SystemFont.Weight.Bold);
+
+		[UXGlobalResource]
 		extern (Android) public static readonly Font BoldItalic = new SystemFont("sans-serif", SystemFont.Style.Italic, SystemFont.Weight.Bold);
 
+		[UXGlobalResource]
+		extern (Android) public static readonly Font HeavyItalic = new SystemFont("sans-serif", SystemFont.Style.Italic, SystemFont.Weight.Bold);
+
+		[UXGlobalResource]
+		extern (Android) public static readonly Font BlackItalic = new SystemFont("sans-serif", SystemFont.Style.Italic, SystemFont.Weight.Bold);
+
+
+
+		[UXGlobalResource]
+		extern (iOS) public static readonly Font UltraLight = new SystemFont(Internal.iOSSystemFont.DefaultFontName, SystemFont.Style.Normal, SystemFont.Weight.UltraLight);
 
 		[UXGlobalResource]
 		extern (iOS) public static readonly Font Thin = new SystemFont(Internal.iOSSystemFont.DefaultFontName, SystemFont.Style.Normal, SystemFont.Weight.Thin);
@@ -129,16 +157,31 @@ namespace Fuse
 		extern (iOS) public static readonly Font Regular = new SystemFont(Internal.iOSSystemFont.DefaultFontName);
 
 		[UXGlobalResource]
+		extern (iOS) public static readonly Font Normal = new SystemFont(Internal.iOSSystemFont.DefaultFontName);
+
+		[UXGlobalResource]
 		extern (iOS) public static readonly Font Medium = new SystemFont(Internal.iOSSystemFont.DefaultFontName, SystemFont.Style.Normal, SystemFont.Weight.Medium);
 
 		[UXGlobalResource]
+		extern (iOS) public static readonly Font Semibold = new SystemFont(Internal.iOSSystemFont.DefaultFontName, SystemFont.Style.Normal, SystemFont.Weight.Semibold);
+
+		[UXGlobalResource]
 		extern (iOS) public static readonly Font Bold = new SystemFont(Internal.iOSSystemFont.DefaultFontName, SystemFont.Style.Normal, SystemFont.Weight.Bold);
+		
+		[UXGlobalResource]
+		extern (iOS) public static readonly Font Heavy = new SystemFont(Internal.iOSSystemFont.DefaultFontName, SystemFont.Style.Normal, SystemFont.Weight.Heavy);
+		
+		[UXGlobalResource]
+		extern (iOS) public static readonly Font Black = new SystemFont(Internal.iOSSystemFont.DefaultFontName, SystemFont.Style.Normal, SystemFont.Weight.Black);
+		
+		[UXGlobalResource]
+		extern (iOS) public static readonly Font UltraLightItalic = new SystemFont(Internal.iOSSystemFont.DefaultFontName, SystemFont.Style.Italic, SystemFont.Weight.UltraLight);
 
 		[UXGlobalResource]
-		extern (iOS) public static readonly Font ThinItalic = new SystemFont(Internal.iOSSystemFont.DefaultFontName, SystemFont.Style.Italic, SystemFont.Weight.Light); // Swapped intentionally
+		extern (iOS) public static readonly Font ThinItalic = new SystemFont(Internal.iOSSystemFont.DefaultFontName, SystemFont.Style.Italic, SystemFont.Weight.Thin);
 
 		[UXGlobalResource]
-		extern (iOS) public static readonly Font LightItalic = new SystemFont(Internal.iOSSystemFont.DefaultFontName, SystemFont.Style.Italic, SystemFont.Weight.Thin); // Swapped intentionally
+		extern (iOS) public static readonly Font LightItalic = new SystemFont(Internal.iOSSystemFont.DefaultFontName, SystemFont.Style.Italic, SystemFont.Weight.Light);
 
 		[UXGlobalResource]
 		extern (iOS) public static readonly Font Italic = new SystemFont(Internal.iOSSystemFont.DefaultFontName, SystemFont.Style.Italic);
@@ -147,8 +190,23 @@ namespace Fuse
 		extern (iOS) public static readonly Font MediumItalic = new SystemFont(Internal.iOSSystemFont.DefaultFontName, SystemFont.Style.Italic, SystemFont.Weight.Medium);
 
 		[UXGlobalResource]
+		extern (iOS) public static readonly Font SemiboldItalic = new SystemFont(Internal.iOSSystemFont.DefaultFontName, SystemFont.Style.Italic, SystemFont.Weight.Semibold);
+
+		[UXGlobalResource]
 		extern (iOS) public static readonly Font BoldItalic = new SystemFont(Internal.iOSSystemFont.DefaultFontName, SystemFont.Style.Italic, SystemFont.Weight.Bold);
 
+		[UXGlobalResource]
+		extern (iOS) public static readonly Font HeavyItalic = new SystemFont(Internal.iOSSystemFont.DefaultFontName, SystemFont.Style.Italic, SystemFont.Weight.Heavy);
+
+		[UXGlobalResource]
+		extern (iOS) public static readonly Font BlackItalic = new SystemFont(Internal.iOSSystemFont.DefaultFontName, SystemFont.Style.Italic, SystemFont.Weight.Black);
+
+
+
+
+		[UXGlobalResource]
+		/** The default font of the system, in it's thin weight typeface. */
+		extern (!iOS && !Android) public static readonly Font UltraLight = new Font(import("Internal/DesktopFonts/Roboto-Thin.ttf"));
 
 		[UXGlobalResource]
 		/** The default font of the system, in it's thin weight typeface. */
@@ -168,8 +226,23 @@ namespace Fuse
 
 		[UXGlobalResource]
 		/** The default font of the system, in it's bold typeface. */
+		extern (!iOS && !Android) public static readonly Font Semibold = new Font(import("Internal/DesktopFonts/Roboto-Bold.ttf"));
+
+		[UXGlobalResource]
+		/** The default font of the system, in it's bold typeface. */
 		extern (!iOS && !Android) public static readonly Font Bold = new Font(import("Internal/DesktopFonts/Roboto-Bold.ttf"));
 
+		[UXGlobalResource]
+		/** The default font of the system, in it's bold typeface. */
+		extern (!iOS && !Android) public static readonly Font Heavy = new Font(import("Internal/DesktopFonts/Roboto-Bold.ttf"));
+
+		[UXGlobalResource]
+		/** The default font of the system, in it's bold typeface. */
+		extern (!iOS && !Android) public static readonly Font Black = new Font(import("Internal/DesktopFonts/Roboto-Bold.ttf"));
+
+		[UXGlobalResource]
+		/** The default font of the system, in it's thin weight typeface. */
+		extern (!iOS && !Android) public static readonly Font UltraLightItalic = new Font(import("Internal/DesktopFonts/Roboto-ThinItalic.ttf"));
 
 		[UXGlobalResource]
 		/** The default font of the system, in it's thin weight typeface. */
@@ -189,6 +262,18 @@ namespace Fuse
 
 		[UXGlobalResource]
 		/** The default font of the system, in it's bold and italic typeface. */
+		extern (!iOS && !Android) public static readonly Font SemiboldItalic = new Font(import("Internal/DesktopFonts/Roboto-BoldItalic.ttf"));
+
+		[UXGlobalResource]
+		/** The default font of the system, in it's bold and italic typeface. */
 		extern (!iOS && !Android) public static readonly Font BoldItalic = new Font(import("Internal/DesktopFonts/Roboto-BoldItalic.ttf"));
+
+		[UXGlobalResource]
+		/** The default font of the system, in it's bold and italic typeface. */
+		extern (!iOS && !Android) public static readonly Font HeavyItalic = new Font(import("Internal/DesktopFonts/Roboto-BoldItalic.ttf"));
+
+		[UXGlobalResource]
+		/** The default font of the system, in it's bold and italic typeface. */
+		extern (!iOS && !Android) public static readonly Font BlackItalic = new Font(import("Internal/DesktopFonts/Roboto-BoldItalic.ttf"));
 	}
 }

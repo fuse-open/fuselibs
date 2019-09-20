@@ -1,4 +1,5 @@
 using Uno.UX;
+using Uno;
 
 namespace Fuse
 {
@@ -42,16 +43,27 @@ namespace Fuse
 			Light,
 			Normal,
 			Medium,
-			SemiBold,
+			Semibold,
 			Bold,
 			Heavy,
 			Black,
+
+			[Obsolete]
+			SemiBold = Semibold
 		}
 
 		public enum Style
 		{
 			Normal,
 			Italic,
+		}
+
+		public enum Design
+		{
+			Default,
+			Monospaced,
+			Rounded,
+			Serif,
 		}
 
 		[UXConstructor]
