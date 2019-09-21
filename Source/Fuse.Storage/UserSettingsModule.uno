@@ -48,12 +48,18 @@ namespace Fuse.Storage
 	public sealed class UserSettingsModule : NativeModule
 	{
 		static readonly UserSettingsModule _instance;
-		UserSettingsImpl _userSettingImpl;
+		IUserSettings _userSetting;
 		public UserSettingsModule()
 		{
 			if (_instance != null) return;
 			_instance = this;
-			_userSettingImpl = new UserSettingsImpl();
+
+			if defined(Android)
+				_userSetting = new AndroidUserSettingsImpl();
+			else if defined(iOS)
+				_userSetting = new IOSUserSettingsImpl();
+			else
+				_userSetting = new DesktopUserSettingsImpl();
 			Resource.SetGlobalKey(_instance, "FuseJS/UserSettings");
 			AddMember(new NativeFunction("getString", GetString));
 			AddMember(new NativeFunction("putString", PutString));
@@ -73,7 +79,7 @@ namespace Fuse.Storage
 			if (args.Length > 0)
 			{
 				string key = args[0] as string;
-				return _userSettingImpl.GetStringValue(key);
+				return _userSetting.GetStringValue(key);
 			}
 			return null;
 		}
@@ -86,7 +92,7 @@ namespace Fuse.Storage
 				if (args[1] == null)
 					return null;
 				string value = args[1] as string;
-				_userSettingImpl.SetStringValue(key, value);
+				_userSetting.SetStringValue(key, value);
 			}
 			return null;
 		}
@@ -96,7 +102,7 @@ namespace Fuse.Storage
 			if (args.Length > 0)
 			{
 				string key = args[0] as string;
-				return _userSettingImpl.GetNumberValue(key);
+				return _userSetting.GetNumberValue(key);
 			}
 			return null;
 		}
@@ -109,7 +115,7 @@ namespace Fuse.Storage
 				if (args[1] == null)
 					return null;
 				double value = Marshal.ToDouble(args[1]);
-				_userSettingImpl.SetNumberValue(key, value);
+				_userSetting.SetNumberValue(key, value);
 			}
 			return null;
 		}
@@ -119,7 +125,7 @@ namespace Fuse.Storage
 			if (args.Length > 0)
 			{
 				string key = args[0] as string;
-				return _userSettingImpl.GetBooleanValue(key);
+				return _userSetting.GetBooleanValue(key);
 			}
 			return null;
 		}
@@ -132,7 +138,7 @@ namespace Fuse.Storage
 				if (args[1] == null)
 					return null;
 				bool value = Marshal.ToBool(args[1]);
-				_userSettingImpl.SetBooleanValue(key, value);
+				_userSetting.SetBooleanValue(key, value);
 			}
 			return null;
 		}
@@ -142,7 +148,7 @@ namespace Fuse.Storage
 			if (args.Length > 0)
 			{
 				string key = args[0] as string;
-				var value = _userSettingImpl.GetStringValue(key);
+				var value = _userSetting.GetStringValue(key);
 				if (value != null)
 				{
 					// convert string to scripting object
@@ -161,14 +167,14 @@ namespace Fuse.Storage
 					return null;
 				// convert scripting object to string
 				var value = Json.Stringify(args[1]);
-				_userSettingImpl.SetStringValue(key, value);
+				_userSetting.SetStringValue(key, value);
 			}
 			return null;
 		}
 
 		object Clear(Context c, object[] args)
 		{
-			_userSettingImpl.Clear();
+			_userSetting.Clear();
 			return null;
 		}
 

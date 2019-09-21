@@ -13,8 +13,6 @@
     "../Fuse.Marshal/Fuse.Marshal.unoproj"
   ],
   "Includes": [
-    "AndroidUserSettings.uno:Source",
-    "IOSUserSettings.uno:Source",
     "ApplicationDir.uno:Source",
     "StorageModule.uno:Source",
     "UserSettingsModule.uno:Source",

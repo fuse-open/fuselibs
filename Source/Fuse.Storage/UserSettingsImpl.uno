@@ -1,6 +1,8 @@
 using Uno;
-using Uno.Collections;
 using Uno.IO;
+using Uno.UX;
+using Uno.Collections;
+using Uno.Compiler.ExportTargetInterop;
 
 namespace Fuse.Storage
 {
@@ -23,68 +25,12 @@ namespace Fuse.Storage
 		void Clear();
 	}
 
-	public class UserSettingsImpl : IUserSettings
+	public extern(!MOBILE) class DesktopUserSettingsImpl : IUserSettings
 	{
-		static IUserSettings _userSettings;
-		public UserSettingsImpl()
-		{
-			if(_userSettings != null) return;
-			if defined(Android)
-				_userSettings = new AndroidUserSettings();
-			else if defined(iOS)
-				_userSettings = new IOSUserSettings();
-			else
-				_userSettings = new DesktopUserSettings();
-		}
-
-		public string GetStringValue(string key)
-		{
-			return _userSettings.GetStringValue(key);
-		}
-
-		public double GetNumberValue(string key)
-		{
-			return _userSettings.GetNumberValue(key);
-		}
-
-		public bool GetBooleanValue(string key)
-		{
-			return _userSettings.GetBooleanValue(key);
-		}
-
-		public void SetStringValue(string key, string value)
-		{
-			_userSettings.SetStringValue(key, value);
-		}
-
-		public void SetNumberValue(string key, double value)
-		{
-			_userSettings.SetNumberValue(key, value);
-		}
-
-		public void SetBooleanValue(string key, bool value)
-		{
-			_userSettings.SetBooleanValue(key, value);
-		}
-
-		public void Remove(string key)
-		{
-			_userSettings.Remove(key);
-		}
-
-		public void Clear()
-		{
-			_userSettings.Clear();
-		}
-	}
-
-	internal class DesktopUserSettings : IUserSettings
-	{
-
 		string filename = "UserSettings.json";
 		Dictionary<string, object> data = new Dictionary<string, object>();
 
-		public DesktopUserSettings()
+		public DesktopUserSettingsImpl()
 		{
 			string content = "";
 			ApplicationDir.TryRead(filename, out content);
@@ -117,14 +63,6 @@ namespace Fuse.Storage
 				return (bool)data[key];
 			else
 				return false;
-		}
-
-		public float GetFloatValue(string key)
-		{
-			if (data.ContainsKey(key))
-				return (float)(double)data[key];
-			else
-				return 0;
 		}
 
 		public void SetStringValue(string key, string value)
@@ -168,5 +106,164 @@ namespace Fuse.Storage
 			var jsonString = Json.Stringify(data);
 			ApplicationDir.Write(filename, jsonString);
 		}
+	}
+
+	[ForeignInclude(Language.Java, "android.content.SharedPreferences", "android.preference.PreferenceManager")]
+	public extern(Android) class AndroidUserSettingsImpl : IUserSettings
+	{
+		Java.Object _sharedPreferences;
+
+		public AndroidUserSettingsImpl()
+		{
+			_sharedPreferences = Init();
+		}
+
+		[Foreign(Language.Java)]
+		private Java.Object Init()
+		@{
+			return PreferenceManager.getDefaultSharedPreferences(com.fuse.Activity.getRootActivity());
+		@}
+
+		[Foreign(Language.Java)]
+		public string GetStringValue(string key)
+		@{
+			SharedPreferences preferences = (SharedPreferences)@{AndroidUserSettingsImpl:Of(_this)._sharedPreferences:Get()};
+			return preferences.getString(key, "");
+		@}
+
+		[Foreign(Language.Java)]
+		public double GetNumberValue(string key)
+		@{
+			SharedPreferences preferences = (SharedPreferences)@{AndroidUserSettingsImpl:Of(_this)._sharedPreferences:Get()};
+			return preferences.getFloat(key, -1f);
+		@}
+
+		[Foreign(Language.Java)]
+		public bool GetBooleanValue(string key)
+		@{
+			SharedPreferences preferences = (SharedPreferences)@{AndroidUserSettingsImpl:Of(_this)._sharedPreferences:Get()};
+			return preferences.getBoolean(key, false);
+		@}
+
+		[Foreign(Language.Java)]
+		public void SetStringValue(string key, string value)
+		@{
+			SharedPreferences preferences = (SharedPreferences)@{AndroidUserSettingsImpl:Of(_this)._sharedPreferences:Get()};
+			SharedPreferences.Editor editor = preferences.edit();
+			editor.putString(key, value);
+			editor.commit();
+		@}
+
+		[Foreign(Language.Java)]
+		public void SetNumberValue(string key, double value)
+		@{
+			SharedPreferences preferences = (SharedPreferences)@{AndroidUserSettingsImpl:Of(_this)._sharedPreferences:Get()};
+			SharedPreferences.Editor editor = preferences.edit();
+			editor.putFloat(key, (float)value);
+			editor.commit();
+		@}
+
+		[Foreign(Language.Java)]
+		public void SetBooleanValue(string key, bool value)
+		@{
+			SharedPreferences preferences = (SharedPreferences)@{AndroidUserSettingsImpl:Of(_this)._sharedPreferences:Get()};
+			SharedPreferences.Editor editor = preferences.edit();
+			editor.putBoolean(key, value);
+			editor.commit();
+		@}
+
+		[Foreign(Language.Java)]
+		public void Remove(string key)
+		@{
+			SharedPreferences preferences = (SharedPreferences)@{AndroidUserSettingsImpl:Of(_this)._sharedPreferences:Get()};
+			SharedPreferences.Editor editor = preferences.edit();
+			editor.remove(key);
+			editor.commit();
+		@}
+
+		[Foreign(Language.Java)]
+		public void Clear()
+		@{
+			SharedPreferences preferences = (SharedPreferences)@{AndroidUserSettingsImpl:Of(_this)._sharedPreferences:Get()};
+			SharedPreferences.Editor editor = preferences.edit();
+			editor.clear();
+			editor.commit();
+		@}
+	}
+
+	public extern(iOS) class IOSUserSettingsImpl : IUserSettings
+	{
+		ObjC.Object _userDefaults;
+
+		public IOSUserSettingsImpl()
+		{
+			_userDefaults = Init();
+		}
+
+		[Foreign(Language.ObjC)]
+		private ObjC.Object Init()
+		@{
+			return [NSUserDefaults standardUserDefaults];
+		@}
+
+		[Foreign(Language.ObjC)]
+		public string GetStringValue(string key)
+		@{
+			NSUserDefaults * userDefault = (NSUserDefaults *)@{IOSUserSettingsImpl:Of(_this)._userDefaults:Get()};
+			return [userDefault stringForKey:key];
+		@}
+
+		[Foreign(Language.ObjC)]
+		public double GetNumberValue(string key)
+		@{
+			NSUserDefaults * userDefault = (NSUserDefaults *)@{IOSUserSettingsImpl:Of(_this)._userDefaults:Get()};
+			return [userDefault floatForKey:key];
+		@}
+
+		[Foreign(Language.ObjC)]
+		public bool GetBooleanValue(string key)
+		@{
+			NSUserDefaults * userDefault = (NSUserDefaults *)@{IOSUserSettingsImpl:Of(_this)._userDefaults:Get()};
+			return [userDefault boolForKey:key];
+		@}
+
+		[Foreign(Language.ObjC)]
+		public void SetStringValue(string key, string value)
+		@{
+			NSUserDefaults * userDefault = (NSUserDefaults *)@{IOSUserSettingsImpl:Of(_this)._userDefaults:Get()};
+			[userDefault setObject:value forKey:key];
+			[userDefault synchronize];
+		@}
+
+		[Foreign(Language.ObjC)]
+		public void SetNumberValue(string key, double value)
+		@{
+			NSUserDefaults * userDefault = (NSUserDefaults *)@{IOSUserSettingsImpl:Of(_this)._userDefaults:Get()};
+			[userDefault setFloat:value forKey:key];
+			[userDefault synchronize];
+		@}
+
+		[Foreign(Language.ObjC)]
+		public void SetBooleanValue(string key, bool value)
+		@{
+			NSUserDefaults * userDefault = (NSUserDefaults *)@{IOSUserSettingsImpl:Of(_this)._userDefaults:Get()};
+			[userDefault setBool:value forKey:key];
+			[userDefault synchronize];
+		@}
+
+		[Foreign(Language.ObjC)]
+		public void Remove(string key)
+		@{
+			NSUserDefaults * userDefault = (NSUserDefaults *)@{IOSUserSettingsImpl:Of(_this)._userDefaults:Get()};
+			[userDefault removeObjectForKey:key];
+			[userDefault synchronize];
+		@}
+
+		[Foreign(Language.ObjC)]
+		public void Clear()
+		@{
+			NSUserDefaults * userDefault = (NSUserDefaults *)@{IOSUserSettingsImpl:Of(_this)._userDefaults:Get()};
+			[userDefault removePersistentDomainForName:[[NSBundle mainBundle] bundleIdentifier]];
+		@}
 	}
 }
