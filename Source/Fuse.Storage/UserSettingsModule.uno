@@ -71,9 +71,18 @@ namespace Fuse.Storage
 			AddMember(new NativeFunction("putArray", PutObject));
 			AddMember(new NativeFunction("getObject", GetObject));
 			AddMember(new NativeFunction("putObject", PutObject));
+			AddMember(new NativeFunction("remove", Remove));
 			AddMember(new NativeFunction("clear", Clear));
 		}
 
+		/**
+			@scriptmethod getString(key)
+
+			Retrieve a String value from the UserSetting.
+
+			@param key The name of the UserSetting to retrieve
+
+		*/
 		object GetString(Context c, object[] args)
 		{
 			if (args.Length > 0)
@@ -84,6 +93,14 @@ namespace Fuse.Storage
 			return null;
 		}
 
+		/**
+			@scriptmethod putString(key, value)
+
+			Set a String value in the UserSetting.
+
+			@param key The name of the UserSetting to save
+			@param value The string value of the UserSetting to save
+		*/
 		object PutString(Context c, object[] args)
 		{
 			if (args.Length > 1)
@@ -97,6 +114,14 @@ namespace Fuse.Storage
 			return null;
 		}
 
+		/**
+			@scriptmethod getNumber(key)
+
+			Retrieve a Number value from the UserSetting.
+
+			@param key The name of the UserSetting to retrieve
+
+		*/
 		object GetNumber(Context c, object[] args)
 		{
 			if (args.Length > 0)
@@ -107,6 +132,14 @@ namespace Fuse.Storage
 			return null;
 		}
 
+		/**
+			@scriptmethod putNumber(key, value)
+
+			Set a Number value in the UserSetting.
+
+			@param key The name of the UserSetting to save
+			@param value The number value of the UserSetting to save
+		*/
 		object PutNumber(Context c, object[] args)
 		{
 			if (args.Length > 1)
@@ -120,6 +153,14 @@ namespace Fuse.Storage
 			return null;
 		}
 
+		/**
+			@scriptmethod getBoolean(key)
+
+			Retrieve a Boolean value from the UserSetting.
+
+			@param key The name of the UserSetting to retrieve
+
+		*/
 		object GetBoolean(Context c, object[] args)
 		{
 			if (args.Length > 0)
@@ -130,6 +171,14 @@ namespace Fuse.Storage
 			return null;
 		}
 
+		/**
+			@scriptmethod putNumber(key, value)
+
+			Set a Boolean value in the UserSetting.
+
+			@param key The name of the UserSetting to save
+			@param value The boolean value of the UserSetting to save
+		*/
 		object PutBoolean(Context c, object[] args)
 		{
 			if (args.Length > 1)
@@ -143,6 +192,14 @@ namespace Fuse.Storage
 			return null;
 		}
 
+		/**
+			@scriptmethod getObject(key)
+
+			Retrieve a Json Object value from the UserSetting.
+
+			@param key The name of the UserSetting to retrieve
+
+		*/
 		object GetObject(Context c, object[] args)
 		{
 			if (args.Length > 0)
@@ -158,6 +215,14 @@ namespace Fuse.Storage
 			return null;
 		}
 
+		/**
+			@scriptmethod putObject(key, value)
+
+			Set a JSON value in the UserSetting.
+
+			@param key The name of the UserSetting to save
+			@param value The JSON object value of the UserSetting to save
+		*/
 		object PutObject(Context c, object[] args)
 		{
 			if (args.Length > 1)
@@ -172,6 +237,28 @@ namespace Fuse.Storage
 			return null;
 		}
 
+		/**
+			@scriptmethod remove(key)
+
+			remove value based on key.
+
+			@param key The name of the UserSetting to remove
+		*/
+		object Remove(Context c, object[] args)
+		{
+			if (args.Length > 0)
+			{
+				string key = args[0] as string;
+				_userSetting.Remove(key);
+			}
+			return null;
+		}
+
+		/**
+			@scriptmethod clear()
+
+			clear User Setting values
+		*/
 		object Clear(Context c, object[] args)
 		{
 			_userSetting.Clear();
