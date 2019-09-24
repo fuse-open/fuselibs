@@ -300,11 +300,11 @@ namespace Fuse.Storage
 		object Clear(Context c, object[] args)
 		{
 			if defined(Android)
-					AndroidUserSettingsImpl.Clear();
-				else if defined(iOS)
-					IOSUserSettingsImpl.Clear();
-				else
-					DesktopUserSettingsImpl.GetInstance().Clear();
+				AndroidUserSettingsImpl.Clear();
+			else if defined(iOS)
+				IOSUserSettingsImpl.Clear();
+			else
+				DesktopUserSettingsImpl.GetInstance().Clear();
 			return null;
 		}
 

@@ -16,7 +16,6 @@
     "ApplicationDir.uno:Source",
     "StorageModule.uno:Source",
     "UserSettingsModule.uno:Source",
-    "UserSettingsImpl.uno:Source",
-    "Json.uno:Source"
+    "UserSettingsImpl.uno:Source"
   ]
 }
