@@ -81,7 +81,7 @@ namespace Fuse.Reactive
 	public sealed class LogicalNot: UnaryOperator
 	{
 		[UXConstructor]
-		public LogicalNot([UXParameter("Operand")] Expression operand): base(operand) {}
+		public LogicalNot([UXParameter("Operand")] Expression operand): base(operand, Flags.None) {}
 
 		protected override bool TryCompute(object operand, out object result)
 		{
