@@ -48,18 +48,10 @@ namespace Fuse.Storage
 	public sealed class UserSettingsModule : NativeModule
 	{
 		static readonly UserSettingsModule _instance;
-		IUserSettings _userSetting;
 		public UserSettingsModule()
 		{
 			if (_instance != null) return;
 			_instance = this;
-
-			if defined(Android)
-				_userSetting = new AndroidUserSettingsImpl();
-			else if defined(iOS)
-				_userSetting = new IOSUserSettingsImpl();
-			else
-				_userSetting = new DesktopUserSettingsImpl();
 			Resource.SetGlobalKey(_instance, "FuseJS/UserSettings");
 			AddMember(new NativeFunction("getString", GetString));
 			AddMember(new NativeFunction("putString", PutString));
@@ -88,7 +80,12 @@ namespace Fuse.Storage
 			if (args.Length > 0)
 			{
 				string key = args[0] as string;
-				return _userSetting.GetStringValue(key);
+				if defined(Android)
+					return AndroidUserSettingsImpl.GetStringValue(key);
+				else if defined(iOS)
+					return IOSUserSettingsImpl.GetStringValue(key);
+				else
+					return DesktopUserSettingsImpl.GetInstance().GetStringValue(key);
 			}
 			return null;
 		}
@@ -109,7 +106,12 @@ namespace Fuse.Storage
 				if (args[1] == null)
 					return null;
 				string value = args[1] as string;
-				_userSetting.SetStringValue(key, value);
+				if defined(Android)
+					AndroidUserSettingsImpl.SetStringValue(key, value);
+				else if defined(iOS)
+					IOSUserSettingsImpl.SetStringValue(key, value);
+				else
+					DesktopUserSettingsImpl.GetInstance().SetStringValue(key, value);
 			}
 			return null;
 		}
@@ -127,7 +129,12 @@ namespace Fuse.Storage
 			if (args.Length > 0)
 			{
 				string key = args[0] as string;
-				return _userSetting.GetNumberValue(key);
+				if defined(Android)
+					return AndroidUserSettingsImpl.GetNumberValue(key);
+				else if defined(iOS)
+					return IOSUserSettingsImpl.GetNumberValue(key);
+				else
+					return DesktopUserSettingsImpl.GetInstance().GetNumberValue(key);
 			}
 			return null;
 		}
@@ -148,7 +155,12 @@ namespace Fuse.Storage
 				if (args[1] == null)
 					return null;
 				double value = Marshal.ToDouble(args[1]);
-				_userSetting.SetNumberValue(key, value);
+				if defined(Android)
+					AndroidUserSettingsImpl.SetNumberValue(key, value);
+				else if defined(iOS)
+					IOSUserSettingsImpl.SetNumberValue(key, value);
+				else
+					DesktopUserSettingsImpl.GetInstance().SetNumberValue(key, value);
 			}
 			return null;
 		}
@@ -166,7 +178,12 @@ namespace Fuse.Storage
 			if (args.Length > 0)
 			{
 				string key = args[0] as string;
-				return _userSetting.GetBooleanValue(key);
+				if defined(Android)
+					return AndroidUserSettingsImpl.GetBooleanValue(key);
+				else if defined(iOS)
+					return IOSUserSettingsImpl.GetBooleanValue(key);
+				else
+					return DesktopUserSettingsImpl.GetInstance().GetBooleanValue(key);
 			}
 			return null;
 		}
@@ -187,7 +204,12 @@ namespace Fuse.Storage
 				if (args[1] == null)
 					return null;
 				bool value = Marshal.ToBool(args[1]);
-				_userSetting.SetBooleanValue(key, value);
+				if defined(Android)
+					AndroidUserSettingsImpl.SetBooleanValue(key, value);
+				else if defined(iOS)
+					IOSUserSettingsImpl.SetBooleanValue(key, value);
+				else
+					DesktopUserSettingsImpl.GetInstance().SetBooleanValue(key, value);
 			}
 			return null;
 		}
@@ -205,7 +227,13 @@ namespace Fuse.Storage
 			if (args.Length > 0)
 			{
 				string key = args[0] as string;
-				var value = _userSetting.GetStringValue(key);
+				var value = "";
+				if defined(Android)
+					value = AndroidUserSettingsImpl.GetStringValue(key);
+				else if defined(iOS)
+					value = IOSUserSettingsImpl.GetStringValue(key);
+				else
+					value = DesktopUserSettingsImpl.GetInstance().GetStringValue(key);
 				if (value != null)
 				{
 					// convert string to scripting object
@@ -232,7 +260,12 @@ namespace Fuse.Storage
 					return null;
 				// convert scripting object to string
 				var value = Json.Stringify(args[1]);
-				_userSetting.SetStringValue(key, value);
+				if defined(Android)
+					AndroidUserSettingsImpl.SetStringValue(key, value);
+				else if defined(iOS)
+					IOSUserSettingsImpl.SetStringValue(key, value);
+				else
+					DesktopUserSettingsImpl.GetInstance().SetStringValue(key, value);
 			}
 			return null;
 		}
@@ -249,7 +282,12 @@ namespace Fuse.Storage
 			if (args.Length > 0)
 			{
 				string key = args[0] as string;
-				_userSetting.Remove(key);
+				if defined(Android)
+					AndroidUserSettingsImpl.Remove(key);
+				else if defined(iOS)
+					IOSUserSettingsImpl.Remove(key);
+				else
+					DesktopUserSettingsImpl.GetInstance().Remove(key);
 			}
 			return null;
 		}
@@ -261,7 +299,12 @@ namespace Fuse.Storage
 		*/
 		object Clear(Context c, object[] args)
 		{
-			_userSetting.Clear();
+			if defined(Android)
+					AndroidUserSettingsImpl.Clear();
+				else if defined(iOS)
+					IOSUserSettingsImpl.Clear();
+				else
+					DesktopUserSettingsImpl.GetInstance().Clear();
 			return null;
 		}
 

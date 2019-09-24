@@ -6,31 +6,13 @@ using Uno.Compiler.ExportTargetInterop;
 
 namespace Fuse.Storage
 {
-	interface IUserSettings
+	public extern(!MOBILE) class DesktopUserSettingsImpl
 	{
-		string GetStringValue(string key);
+		static readonly string filename = "UserSettings.json";
+		static DesktopUserSettingsImpl instance;
+		static Dictionary<string, object> data = new Dictionary<string, object>();
 
-		double GetNumberValue(string key);
-
-		bool GetBooleanValue(string key);
-
-		void SetStringValue(string key, string value);
-
-		void SetNumberValue(string key, double value);
-
-		void SetBooleanValue(string key, bool value);
-
-		void Remove(string key);
-
-		void Clear();
-	}
-
-	public extern(!MOBILE) class DesktopUserSettingsImpl : IUserSettings
-	{
-		string filename = "UserSettings.json";
-		Dictionary<string, object> data = new Dictionary<string, object>();
-
-		public DesktopUserSettingsImpl()
+		private DesktopUserSettingsImpl()
 		{
 			string content = "";
 			ApplicationDir.TryRead(filename, out content);
@@ -39,6 +21,14 @@ namespace Fuse.Storage
 				for (var i = 0; i< obj.Keys.Length; i++)
 				 	data[obj.Keys[i]] = obj[obj.Keys[i]];
 			}
+		}
+
+		public static DesktopUserSettingsImpl GetInstance()
+		{
+			if (instance != null)
+				return instance;
+			instance = new DesktopUserSettingsImpl();
+			return instance;
 		}
 
 		public string GetStringValue(string key)
@@ -108,161 +98,135 @@ namespace Fuse.Storage
 		}
 	}
 
-	[ForeignInclude(Language.Java, "android.content.SharedPreferences", "android.preference.PreferenceManager")]
-	public extern(Android) class AndroidUserSettingsImpl : IUserSettings
+	[ForeignInclude(Language.Java, "com.fuse.Activity", "android.content.SharedPreferences", "android.preference.PreferenceManager")]
+	public extern(Android) class AndroidUserSettingsImpl
 	{
-		Java.Object _sharedPreferences;
-
-		public AndroidUserSettingsImpl()
-		{
-			_sharedPreferences = Init();
-		}
-
 		[Foreign(Language.Java)]
-		private Java.Object Init()
+		public static string GetStringValue(string key)
 		@{
-			return PreferenceManager.getDefaultSharedPreferences(com.fuse.Activity.getRootActivity());
-		@}
-
-		[Foreign(Language.Java)]
-		public string GetStringValue(string key)
-		@{
-			SharedPreferences preferences = (SharedPreferences)@{AndroidUserSettingsImpl:Of(_this)._sharedPreferences:Get()};
+			SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Activity.getRootActivity());
 			return preferences.getString(key, "");
 		@}
 
 		[Foreign(Language.Java)]
-		public double GetNumberValue(string key)
+		public static double GetNumberValue(string key)
 		@{
-			SharedPreferences preferences = (SharedPreferences)@{AndroidUserSettingsImpl:Of(_this)._sharedPreferences:Get()};
+			SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Activity.getRootActivity());
 			return preferences.getFloat(key, -1f);
 		@}
 
 		[Foreign(Language.Java)]
-		public bool GetBooleanValue(string key)
+		public static bool GetBooleanValue(string key)
 		@{
-			SharedPreferences preferences = (SharedPreferences)@{AndroidUserSettingsImpl:Of(_this)._sharedPreferences:Get()};
+			SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Activity.getRootActivity());
 			return preferences.getBoolean(key, false);
 		@}
 
 		[Foreign(Language.Java)]
-		public void SetStringValue(string key, string value)
+		public static void SetStringValue(string key, string value)
 		@{
-			SharedPreferences preferences = (SharedPreferences)@{AndroidUserSettingsImpl:Of(_this)._sharedPreferences:Get()};
+			SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Activity.getRootActivity());
 			SharedPreferences.Editor editor = preferences.edit();
 			editor.putString(key, value);
 			editor.commit();
 		@}
 
 		[Foreign(Language.Java)]
-		public void SetNumberValue(string key, double value)
+		public static void SetNumberValue(string key, double value)
 		@{
-			SharedPreferences preferences = (SharedPreferences)@{AndroidUserSettingsImpl:Of(_this)._sharedPreferences:Get()};
+			SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(Activity.getRootActivity());
 			SharedPreferences.Editor editor = preferences.edit();
 			editor.putFloat(key, (float)value);
 			editor.commit();
 		@}
 
 		[Foreign(Language.Java)]
-		public void SetBooleanValue(string key, bool value)
+		public static void SetBooleanValue(string key, bool value)
 		@{
-			SharedPreferences preferences = (SharedPreferences)@{AndroidUserSettingsImpl:Of(_this)._sharedPreferences:Get()};
+			SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(com.fuse.Activity.getRootActivity());
 			SharedPreferences.Editor editor = preferences.edit();
 			editor.putBoolean(key, value);
 			editor.commit();
 		@}
 
 		[Foreign(Language.Java)]
-		public void Remove(string key)
+		public static void Remove(string key)
 		@{
-			SharedPreferences preferences = (SharedPreferences)@{AndroidUserSettingsImpl:Of(_this)._sharedPreferences:Get()};
+			SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(com.fuse.Activity.getRootActivity());
 			SharedPreferences.Editor editor = preferences.edit();
 			editor.remove(key);
 			editor.commit();
 		@}
 
 		[Foreign(Language.Java)]
-		public void Clear()
+		public static void Clear()
 		@{
-			SharedPreferences preferences = (SharedPreferences)@{AndroidUserSettingsImpl:Of(_this)._sharedPreferences:Get()};
+			SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(com.fuse.Activity.getRootActivity());
 			SharedPreferences.Editor editor = preferences.edit();
 			editor.clear();
 			editor.commit();
 		@}
 	}
 
-	public extern(iOS) class IOSUserSettingsImpl : IUserSettings
+	public extern(iOS) class IOSUserSettingsImpl
 	{
-		ObjC.Object _userDefaults;
-
-		public IOSUserSettingsImpl()
-		{
-			_userDefaults = Init();
-		}
-
 		[Foreign(Language.ObjC)]
-		private ObjC.Object Init()
+		public static string GetStringValue(string key)
 		@{
-			return [NSUserDefaults standardUserDefaults];
-		@}
-
-		[Foreign(Language.ObjC)]
-		public string GetStringValue(string key)
-		@{
-			NSUserDefaults * userDefault = (NSUserDefaults *)@{IOSUserSettingsImpl:Of(_this)._userDefaults:Get()};
+			NSUserDefaults * userDefault = [NSUserDefaults standardUserDefaults];
 			return [userDefault stringForKey:key];
 		@}
 
 		[Foreign(Language.ObjC)]
-		public double GetNumberValue(string key)
+		public static double GetNumberValue(string key)
 		@{
-			NSUserDefaults * userDefault = (NSUserDefaults *)@{IOSUserSettingsImpl:Of(_this)._userDefaults:Get()};
+			NSUserDefaults * userDefault = [NSUserDefaults standardUserDefaults];
 			return [userDefault floatForKey:key];
 		@}
 
 		[Foreign(Language.ObjC)]
-		public bool GetBooleanValue(string key)
+		public static bool GetBooleanValue(string key)
 		@{
-			NSUserDefaults * userDefault = (NSUserDefaults *)@{IOSUserSettingsImpl:Of(_this)._userDefaults:Get()};
+			NSUserDefaults * userDefault = [NSUserDefaults standardUserDefaults];
 			return [userDefault boolForKey:key];
 		@}
 
 		[Foreign(Language.ObjC)]
-		public void SetStringValue(string key, string value)
+		public static void SetStringValue(string key, string value)
 		@{
-			NSUserDefaults * userDefault = (NSUserDefaults *)@{IOSUserSettingsImpl:Of(_this)._userDefaults:Get()};
+			NSUserDefaults * userDefault = [NSUserDefaults standardUserDefaults];
 			[userDefault setObject:value forKey:key];
 			[userDefault synchronize];
 		@}
 
 		[Foreign(Language.ObjC)]
-		public void SetNumberValue(string key, double value)
+		public static void SetNumberValue(string key, double value)
 		@{
-			NSUserDefaults * userDefault = (NSUserDefaults *)@{IOSUserSettingsImpl:Of(_this)._userDefaults:Get()};
+			NSUserDefaults * userDefault = [NSUserDefaults standardUserDefaults];
 			[userDefault setFloat:value forKey:key];
 			[userDefault synchronize];
 		@}
 
 		[Foreign(Language.ObjC)]
-		public void SetBooleanValue(string key, bool value)
+		public static void SetBooleanValue(string key, bool value)
 		@{
-			NSUserDefaults * userDefault = (NSUserDefaults *)@{IOSUserSettingsImpl:Of(_this)._userDefaults:Get()};
+			NSUserDefaults * userDefault = [NSUserDefaults standardUserDefaults];
 			[userDefault setBool:value forKey:key];
 			[userDefault synchronize];
 		@}
 
 		[Foreign(Language.ObjC)]
-		public void Remove(string key)
+		public static void Remove(string key)
 		@{
-			NSUserDefaults * userDefault = (NSUserDefaults *)@{IOSUserSettingsImpl:Of(_this)._userDefaults:Get()};
+			NSUserDefaults * userDefault = [NSUserDefaults standardUserDefaults];
 			[userDefault removeObjectForKey:key];
 			[userDefault synchronize];
 		@}
 
 		[Foreign(Language.ObjC)]
-		public void Clear()
+		public static void Clear()
 		@{
-			NSUserDefaults * userDefault = (NSUserDefaults *)@{IOSUserSettingsImpl:Of(_this)._userDefaults:Get()};
+			NSUserDefaults * userDefault = [NSUserDefaults standardUserDefaults];
 			[userDefault removePersistentDomainForName:[[NSBundle mainBundle] bundleIdentifier]];
 		@}
 	}
