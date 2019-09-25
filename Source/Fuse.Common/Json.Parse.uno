@@ -10,13 +10,13 @@ namespace Fuse
 
 			The returned object can be a single value, or a tree composed of `IObject`, `IArray`, `double`, `string` and `bool` objects.
 		*/
-		internal static object Parse(string json)
+		public static object Parse(string json)
 		{
 			return Convert(JsonReader.Parse(json));
 		}
 
 		/** Parses a list of JSON strings into a list of objects, using `Parse(string)`. */
-		internal static object[] Parse(string[] json)
+		public static object[] Parse(string[] json)
 		{
 			var res = new object[json.Length];
 			for (int i = 0; i < res.Length; i++)
