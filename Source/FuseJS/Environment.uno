@@ -47,7 +47,7 @@ namespace FuseJS
 			(e.g. `1.0` or `3.4b5`).
 			On iOS, it returns a string in the format of `<major>.<minor>.<patch>` (e.g. `9.2.1`).
 			Returns an empty string on all other platforms.
-    */
+	*/
 	[UXGlobalModule]
 	public sealed class Environment : NativeModule
 	{
@@ -76,59 +76,59 @@ namespace FuseJS
 		}
 
 		[Foreign(Language.Java)]
-	    static extern(Android) string GetCurrentLocale()
-	    @{
-		    java.util.Locale loc = java.util.Locale.getDefault();
+		static extern(Android) string GetCurrentLocale()
+		@{
+			java.util.Locale loc = java.util.Locale.getDefault();
 
-	        final char separator = '-';
-	        String language = loc.getLanguage();
-	        String region = loc.getCountry();
-	        String variant = loc.getVariant();
+			final char separator = '-';
+			String language = loc.getLanguage();
+			String region = loc.getCountry();
+			String variant = loc.getVariant();
 
-	        if (language.isEmpty() || !language.matches("\\p{Alpha}{2,8}")) {
-	            language = "und"; // "und" for Undetermined
-	        } else if (language.equals("in")) {
-	            language = "id";  // correct deprecated "Indonesian"
-	        }
+			if (language.isEmpty() || !language.matches("\\p{Alpha}{2,8}")) {
+				language = "und"; // "und" for Undetermined
+			} else if (language.equals("in")) {
+				language = "id";  // correct deprecated "Indonesian"
+			}
 
-	        StringBuilder bcp47Tag = new StringBuilder(language);
-	        if (!region.isEmpty()) {
-	            bcp47Tag.append(separator).append(region);
-	        }
+			StringBuilder bcp47Tag = new StringBuilder(language);
+			if (!region.isEmpty()) {
+				bcp47Tag.append(separator).append(region);
+			}
 
-	        if (!variant.isEmpty()) {
-	            bcp47Tag.append(separator).append(variant);
-	        }
+			if (!variant.isEmpty()) {
+				bcp47Tag.append(separator).append(variant);
+			}
 
-	        return bcp47Tag.toString();
-	    @}
+			return bcp47Tag.toString();
+		@}
 
-	    [Foreign(Language.ObjC)]
-	    static extern(iOS) string GetCurrentLocale()
-	    @{
-	        NSString* language = NSLocale.preferredLanguages[0];
+		[Foreign(Language.ObjC)]
+		static extern(iOS) string GetCurrentLocale()
+		@{
+			NSString* language = NSLocale.preferredLanguages[0];
 
-	        if (language.length <= 2) {
-	            NSLocale* locale = NSLocale.currentLocale;
-	            NSString* localeId = locale.localeIdentifier;
-	            NSRange underscoreIndex = [localeId rangeOfString: @"_" options: NSBackwardsSearch];
-	            NSRange atSignIndex = [localeId rangeOfString: @"@"];
+			if (language.length <= 2) {
+				NSLocale* locale = NSLocale.currentLocale;
+				NSString* localeId = locale.localeIdentifier;
+				NSRange underscoreIndex = [localeId rangeOfString: @"_" options: NSBackwardsSearch];
+				NSRange atSignIndex = [localeId rangeOfString: @"@"];
 
-	            if (underscoreIndex.location != NSNotFound) {
-	                if (atSignIndex.length == 0)
-	                    language = [NSString stringWithFormat: @"%@%@", language, [localeId substringFromIndex: underscoreIndex.location]];
-	                else {
-	                    NSRange localeRange = NSMakeRange(underscoreIndex.location, atSignIndex.location - underscoreIndex.location);
-	                    language = [NSString stringWithFormat: @"%@%@", language, [localeId substringWithRange: localeRange]];
-	                }
-	            }
-	        }
+				if (underscoreIndex.location != NSNotFound) {
+					if (atSignIndex.length == 0)
+						language = [NSString stringWithFormat: @"%@%@", language, [localeId substringFromIndex: underscoreIndex.location]];
+					else {
+						NSRange localeRange = NSMakeRange(underscoreIndex.location, atSignIndex.location - underscoreIndex.location);
+						language = [NSString stringWithFormat: @"%@%@", language, [localeId substringWithRange: localeRange]];
+					}
+				}
+			}
 
-	        return [language stringByReplacingOccurrencesOfString: @"_" withString: @"-"];
-	    @}
+			return [language stringByReplacingOccurrencesOfString: @"_" withString: @"-"];
+		@}
 
-	    static extern(!Mobile) string GetCurrentLocale() {
-	    	return "en-EN";
-	    }
+		static extern(!Mobile) string GetCurrentLocale() {
+			return "en-EN";
+		}
 	}
 }
