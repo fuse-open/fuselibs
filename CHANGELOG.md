@@ -1,5 +1,8 @@
 # Unreleased
 
+### FuseJS
+- FuseJS/Environment: add property to retrieve current device locale using BCP47 format
+
 ### Fuse.Storage
 - Add `UserSettings` module. This module provides key-value pairs mechanism to store and retrieve primitive data types (string, number, boolean) as well as an array and a JSON object
 
