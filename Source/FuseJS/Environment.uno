@@ -47,6 +47,7 @@ namespace FuseJS
 			(e.g. `1.0` or `3.4b5`).
 			On iOS, it returns a string in the format of `<major>.<minor>.<patch>` (e.g. `9.2.1`).
 			Returns an empty string on all other platforms.
+		@scriptproperty (string) locale Get current device locale using BCP47 format (e.g. `en-US`).
 	*/
 	[UXGlobalModule]
 	public sealed class Environment : NativeModule
