@@ -16,23 +16,23 @@ the UI framework used to build [Fuse](https://fuseopen.com/) apps.
 npm install @fuse-open/fuselibs
 ```
 
-## Requirements
+### Requirements
 
 In order to use Uno and Fuselibs, the following software must be installed:
 
-### Windows
+#### Windows
 
 * [VCRedist 2010](https://www.microsoft.com/en-US/Download/confirmation.aspx?id=14632)
 * [VCRedist 2013](https://www.microsoft.com/en-gb/download/details.aspx?id=40784)
 
-### macOS
+#### macOS
 
 * [Xcode](https://developer.apple.com/xcode/)
 * [CMake](https://cmake.org/)
 
 To launch iOS apps from the command-line, [ios-deploy](https://www.npmjs.com/package/ios-deploy) is needed.
 
-### Android
+#### Android
 
 * Android SDK and NDK
 
