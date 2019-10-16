@@ -38,7 +38,10 @@ To launch iOS apps from the command-line, [ios-deploy](https://www.npmjs.com/pac
 
 These dependencies can be acquired by installing [android-build-tools](https://www.npmjs.com/package/android-build-tools).
 
-## How do I build and test?
+## Building from source
+
+The following commands will install dependencies, build libraries, and
+run tests.
 
 ```
 npm install
