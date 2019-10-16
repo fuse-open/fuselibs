@@ -30,6 +30,8 @@ In order to use Uno and Fuselibs, the following software must be installed:
 * [Xcode](https://developer.apple.com/xcode/)
 * [CMake](https://cmake.org/)
 
+To launch iOS apps from the command-line, [ios-deploy](https://www.npmjs.com/package/ios-deploy) is needed.
+
 ### Android
 
 * Android SDK and NDK
