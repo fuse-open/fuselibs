@@ -27,7 +27,6 @@ In order to use Uno and Fuselibs, the following software must be installed:
 
 ### macOS
 
-* [Mono](https://www.mono-project.com/download/)
 * [Xcode](https://developer.apple.com/xcode/)
 * [CMake](https://cmake.org/)
 
