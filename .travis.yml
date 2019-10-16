@@ -1,7 +1,5 @@
 os: osx
 osx_image: xcode9.2
-language: csharp
-mono: 5.4.1
 
 env:
   global:
