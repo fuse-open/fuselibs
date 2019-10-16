@@ -66,7 +66,7 @@ namespace FuseJS
 			AddMember(new NativeProperty<bool, bool>("dotnet", defined(DOTNET))); // Undocumented for testing use only
 			AddMember(new NativeProperty<bool, bool>("host_mac", defined(HOST_MAC))); // Undocumented for testing use only
 			AddMember(new NativeProperty<string, string>("mobileOSVersion", GetMobileOSVersion));
-			AddMember(new NativeProperty< string, object >("locale", GetCurrentLocale));
+			AddMember(new NativeProperty<string, object>("locale", GetCurrentLocale));
 		}
 
 		static string GetMobileOSVersion()
@@ -109,16 +109,19 @@ namespace FuseJS
 		@{
 			NSString* language = NSLocale.preferredLanguages[0];
 
-			if (language.length <= 2) {
+			if (language.length <= 2)
+			{
 				NSLocale* locale = NSLocale.currentLocale;
 				NSString* localeId = locale.localeIdentifier;
 				NSRange underscoreIndex = [localeId rangeOfString: @"_" options: NSBackwardsSearch];
 				NSRange atSignIndex = [localeId rangeOfString: @"@"];
 
-				if (underscoreIndex.location != NSNotFound) {
+				if (underscoreIndex.location != NSNotFound)
+				{
 					if (atSignIndex.length == 0)
 						language = [NSString stringWithFormat: @"%@%@", language, [localeId substringFromIndex: underscoreIndex.location]];
-					else {
+					else
+					{
 						NSRange localeRange = NSMakeRange(underscoreIndex.location, atSignIndex.location - underscoreIndex.location);
 						language = [NSString stringWithFormat: @"%@%@", language, [localeId substringWithRange: localeRange]];
 					}
@@ -128,8 +131,9 @@ namespace FuseJS
 			return [language stringByReplacingOccurrencesOfString: @"_" withString: @"-"];
 		@}
 
-		static extern(!Mobile) string GetCurrentLocale() {
-			return "en-EN";
+		static extern(!Mobile) string GetCurrentLocale()
+		{
+			return "en-US";
 		}
 	}
 }
