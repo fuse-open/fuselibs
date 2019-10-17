@@ -1,22 +1,76 @@
 # Unreleased
 
+# 1.13
+
+## 1.13.0
+
 ### FuseJS
-- FuseJS/Environment: add property to retrieve current device locale using BCP47 format
-
-### Fuse.Storage
-- Add `UserSettings` module. This module provides key-value pairs mechanism to store and retrieve primitive data types (string, number, boolean) as well as an array and a JSON object
-
-### Fuse.Drawing.Surface
-- Fixed SVGPathParser to better parse minimized svg data.
-
-### Fuse.ImageTools
-- Fix crop function not using height parameter
+- FuseJS/Environment: add property to retrieve current device locale using BCP47 format (#1313).
 
 ### Fuse.Alerts
-- Fix crash on iOS 13
+- Fixed threading issue on iOS 13 (#1299).
 
-### Fuse.Triggers.Actions.TransitionState
-- Added `Value` property on `TransitionState`.
+### Fuse.Camera
+- Fixed threading issue on iOS 13 (#1294).
+
+### Fuse.CameraRoll
+- Fixed threading issue on iOS 13 (#1293).
+
+### Fuse.Common
+- Fixed system fonts on iOS 13 (#1291).
+- Added the following methods to public API (#1310).
+    - `Fuse.Json.Parse(string)`
+    - `Fuse.Json.Parse(string[])`
+
+### Fuse.Controls.Native
+- Added support for Dark Mode on Android (#1290).
+- Added support for Dark Mode on iOS (#1309).
+- Added new scriptmodule `FuseJS/DarkMode` (#1290).
+
+### Fuse.Controls.Navigation
+- Added Page Navigation swipe from edges (#1279).
+
+### Fuse.Drawing.Surface
+- Fixed SVGPathParser to better parse minimized svg data (#1302).
+
+### Fuse.GeoLocation
+- Fixed dependencies/permissions on Android (#1245).
+- Added new scriptmethod `isLocationEnabled` (#1245).
+
+### Fuse.ImageTools
+- Fixed crop function not using height parameter (#1300).
+
+### Fuse.Launcher.InterApp
+- Added docs for Universal and App Links support (#1282).
+
+### Fuse.Maps
+- Updated dependencies on Android (#1284).
+
+### Fuse.Models
+- Upgraded zone.js to v0.9.1 (#1296).
+- Allow unsetting/overriding Model (#1306).
+
+### Fuse.PushNotifications
+- Fixes and updates for Android and iOS (#1220, #1314).
+- Added scriptmethod `isRegisteredForRemoteNotifications` (#1220).
+- Fixed threading issue on iOS 13 (#1292).
+
+### Fuse.Reactive.Expressions
+- Fixed run-time warnings (#1312).
+
+### Fuse.Scripting.JavaScript
+- Upgraded V8 to v7.6.303.30 on Android (#1297).
+
+### Fuse.Storage
+- Add `UserSettings` module. This module provides key-value pairs mechanism to store and retrieve primitive data types (string, number, boolean) as well as an array and a JSON object (#1310).
+
+### Fuse.Triggers
+- Added `Value` property on `TransitionState` (#1286).
+
+### Fuse.iOS
+- Fixes threading issue on iOS 13 (#1308).
+
+[`v1.12.0...v1.13.0`](https://github.com/fuse-open/fuselibs/compare/v1.12.0...v1.13.0).
 
 # 1.12
 
