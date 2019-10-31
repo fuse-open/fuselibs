@@ -15,6 +15,7 @@ namespace Fuse.GeoLocation
 		void StopListening();
 
 		bool IsLocationEnabled();
+		string GetAuthorizationStatus();
 
 		void RequestAuthorization(GeoLocationAuthorizationType type);
 		
@@ -88,6 +89,11 @@ namespace Fuse.GeoLocation
 		public bool IsLocationEnabled()
 		{
 			return _locationTracker.IsLocationEnabled();
+		}
+
+		public string GetAuthorizationStatus()
+		{
+			return _locationTracker.GetAuthorizationStatus();
 		}
 
 		void OnLocationChanged(Location newLocation)

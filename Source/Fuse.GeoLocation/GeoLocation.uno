@@ -133,6 +133,7 @@ namespace Fuse.GeoLocation
 			AddMember(onErrorEvent);
 
 			AddMember(new NativeFunction("isLocationEnabled", (NativeCallback)IsLocationEnabled));
+			AddMember(new NativeProperty<string, object>("authorizationStatus", GetAuthorizationStatus));
 			AddMember(new NativeProperty<Fuse.GeoLocation.Location, Scripting.Object>("location", GetLocation, null, Converter));
 			AddMember(new NativePromise<Fuse.GeoLocation.Location, Scripting.Object>("getLocation", GetLocationAsync, Converter));
 			AddMember(new NativeProperty<Fuse.GeoLocation.GeoLocationAuthorizationType, int>("authorizationRequest", GetAuthorizationRequest, SetAuthorizationRequest, AuthorizationRequestConverter));
@@ -150,6 +151,15 @@ namespace Fuse.GeoLocation
 		{
 			return _locationTracker.IsLocationEnabled();
 		}
+
+		/** @scriptmethod GetAuthorizationStatus() 
+		Returns the authorization status of GeoLocation
+		*/
+		string GetAuthorizationStatus() 
+		{
+			return _locationTracker.GetAuthorizationStatus();
+		}
+
 
 		/**
 			@scriptmethod startListening(minimumReportInterval, desiredAccuracy)

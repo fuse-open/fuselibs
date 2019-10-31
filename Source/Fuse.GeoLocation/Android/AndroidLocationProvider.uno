@@ -8,7 +8,7 @@ using Fuse.GeoLocation.Android;
 
 namespace Fuse.GeoLocation
 {
-	[ForeignInclude(Language.Java, "android.support.v4.content.ContextCompat", "android.content.pm.PackageManager", "android.Manifest", "android.location.LocationManager", "android.location.Location", "android.util.Log", "java.util.List", "fuse.geolocation.UpdateListener", "android.os.Looper", "android.content.Context", "com.uno.StringArray")]
+	[ForeignInclude(Language.Java, "android.support.v4.content.ContextCompat", "android.content.pm.PackageManager", "android.Manifest", "android.location.LocationManager", "android.location.Location", "android.provider.Settings", "android.util.Log", "java.util.List", "fuse.geolocation.UpdateListener", "android.os.Looper", "android.content.Context", "com.uno.StringArray")]
 	extern(Android) class AndroidLocationProvider :  ILocationTracker
 	{
 		
@@ -105,6 +105,21 @@ namespace Fuse.GeoLocation
 				}
 			} else {
 				return false;
+			}
+		@}
+
+		[Foreign(Language.Java)]
+		public string GetAuthorizationStatus() 
+		@{
+			if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) //API 28
+			{ 
+				android.location.LocationManager lm = (android.location.LocationManager) com.fuse.Activity.getRootActivity().getSystemService(Context.LOCATION_SERVICE);
+				return lm.isLocationEnabled() ? "on" : "off";
+			}
+			else
+			{
+				int mode = android.provider.Settings.Secure.getInt(com.fuse.Activity.getRootActivity().getContentResolver(), android.provider.Settings.Secure.LOCATION_MODE, android.provider.Settings.Secure.LOCATION_MODE_OFF);
+				return  (mode != android.provider.Settings.Secure.LOCATION_MODE_OFF) ? "on" : "off";
 			}
 		@}
 		
