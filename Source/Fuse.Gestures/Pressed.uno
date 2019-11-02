@@ -161,4 +161,137 @@ namespace Fuse.Gestures
 			SetActive( _inside && Parent.IsContextEnabled && Pointer.IsPressed() );
 		}
 	}
+
+	public class HoldPressArgs: CustomPointerEventArgs
+	{
+		public HoldPressArgs(Fuse.Input.PointerEventArgs args, Visual visual) : base(args,visual) {}
+	}
+
+	public delegate void HoldPressHandler(object sender, HoldPressArgs args);
+
+	/** Triggers when a pointer is pressed on a @Visual.
+
+		The `HoldPress` trigger is a repeating trigger that will continue to pulse as long as a @Visual is being held.
+
+		# Example
+		In this example, a panel will scale and call a JS callback `pressed` for every 0.2 seconds, when pressed:
+
+			<Panel Background="#F00">
+				<HoldPress First="true" Handler="{pressed}" Delay="0.5" Repeat="0.2">
+					<Scale Target="rect" Vector="1.2" Duration="0.2" />
+				</HoldPress>
+			</Panel>
+	*/
+	public class HoldPress : Fuse.Gestures.ClickerTrigger
+	{
+		public event HoldPressHandler Handler;
+
+		bool _first = true;
+		double _startTime;
+		double _delay = 0.5;
+		double _repeat = 0.5;
+		int _triggerCount = 0;
+		bool _running = false;
+		Fuse.Input.PointerEventArgs _args;
+
+		/**
+			indicates that on finger down it triggers the action immediately
+		*/
+		public bool First
+		{
+			get { return _first; }
+			set { _first = value; }
+		}
+
+		/**
+			is how long to wait before triggering after the finger is pressed
+		*/
+		public double Delay
+		{
+			get { return _delay; }
+			set { _delay = value; }
+		}
+
+		/**
+			how often to trigger
+		*/
+		public double Repeat
+		{
+			get { return _repeat; }
+			set { _repeat = value; }
+		}
+
+		protected override void OnRooted()
+		{
+			base.OnRooted();
+			Clicker.PressingEvent += OnPressed;
+		}
+
+		protected override void OnUnrooted()
+		{
+			Clicker.PressingEvent -= OnPressed;
+			base.OnUnrooted();
+		}
+
+		void OnPressed(Fuse.Input.PointerEventArgs args, int clickCount)
+		{
+			if (!Accept(args))
+				return;
+			_args = args;
+			if (clickCount > 0)
+				StartTimer();
+			else
+				StopTimer();
+		}
+
+		void StartTimer()
+		{
+			_startTime = Uno.Diagnostics.Clock.GetSeconds();
+			if (!_running)
+			{
+				UpdateManager.AddAction(Update);
+				_running = true;
+			}
+		}
+
+		void StopTimer()
+		{
+			if (_running)
+			{
+				UpdateManager.RemoveAction(Update);
+				_triggerCount = 0;
+				_running = false;
+			}
+		}
+
+		void Update()
+		{
+			var now = Uno.Diagnostics.Clock.GetSeconds();
+			if (First && _triggerCount == 0)
+				DoPulse(now);
+			else
+			{
+				var time = now - _startTime;
+				if ((!First && _triggerCount == 0) || (First &&_triggerCount == 1))
+				{
+					if (time > Delay)
+						DoPulse(now);
+				}
+				else
+				{
+					if (time > Repeat)
+						DoPulse(now);
+				}
+			}
+		}
+
+		void DoPulse(double now)
+		{
+			Pulse();
+			if (Handler != null)
+				Handler(this, new HoldPressArgs(_args, Parent));
+			_startTime = now;
+			_triggerCount++;
+		}
+	}
 }
