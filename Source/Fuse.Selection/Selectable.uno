@@ -47,7 +47,7 @@ namespace Fuse.Selection
 			_selection = null;
 		}
 		
-		public static Selector ValueName = new Selector("Value");
+		internal static Selector ValueName = new Selector("Value");
 		
 		string _value;
 		/**

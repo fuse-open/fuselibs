@@ -70,7 +70,7 @@ namespace Fuse
 			}
 		}
 
-		public static Selector ParameterName = "Parameter";
+		internal static Selector ParameterName = "Parameter";
 
 		void OnParameterChanged()
 		{

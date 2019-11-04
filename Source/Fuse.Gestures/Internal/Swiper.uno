@@ -55,7 +55,7 @@ namespace Fuse.Gestures.Internal
 			EndProgress = 1 << 1,
 		}
 
-		public static Selector InProgressName = "InProgress";
+		internal static Selector InProgressName = "InProgress";
 		bool _inProgress = false;
 		public bool InProgress 
 		{ 
@@ -75,7 +75,7 @@ namespace Fuse.Gestures.Internal
 			SetProgress(active ? 1 : 0, ProgressFlags.EndProgress);
 		}
 
-		public static Selector ProgressName = "Progress";
+		internal static Selector ProgressName = "Progress";
 		internal bool SetProgress(double value, ProgressFlags flags = ProgressFlags.None)
 		{
 			var interacting = flags.HasFlag(ProgressFlags.Interacting);

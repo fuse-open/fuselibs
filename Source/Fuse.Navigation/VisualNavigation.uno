@@ -226,7 +226,7 @@ namespace Fuse.Navigation
 			return pd.Index;
 		}
 
-		public static Selector ActiveIndexName = "ActiveIndex";
+		internal static Selector ActiveIndexName = "ActiveIndex";
 		[UXOriginSetter("SetActiveIndex")]
 		/**
 			The child index of the currently active page.
