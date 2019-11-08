@@ -22,7 +22,26 @@ namespace Fuse.Charting
 	{
 		DestinationBehavior<float> _animStart = new DestinationBehavior<float>();
 		DestinationBehavior<float> _animEnd = new DestinationBehavior<float>();
-		
+
+		/**
+			Specifies where on a circle to start drawing our wedges.
+
+			The range is from 0 to 1, relative to the circumference of a full circle.
+		*/
+		public float RadialOffset { get; set; }
+
+		/**
+			Specifies how much of a circle our wedges will consume.
+
+			The range is from 0 to 1, relative to the circumference of a full circle.
+		*/
+		public float RadialScale { get; set; }
+
+		public PlotWedge()
+		{
+			RadialScale = 1;
+		}
+
 		/**
 			An @AttractorConfig used to animate a change in the shape of the wedge.
 			
@@ -65,14 +84,16 @@ namespace Fuse.Charting
 			_animEnd.SetValue( entry.CumulativeWeight.Y, AnimEnd );
 		}
 		
+		const float PI2 = Math.PIf * 2;
+
 		void AnimStart( float value )
 		{
-			StartAngle = value * Math.PIf * 2;
+			StartAngle = PI2 * RadialOffset + value * PI2 * RadialScale;
 		}
 		
 		void AnimEnd( float value )
 		{
-			EndAngle = value * Math.PIf * 2;
+			EndAngle = PI2 * RadialOffset + value * PI2 * RadialScale;
 		}
 	}
 }

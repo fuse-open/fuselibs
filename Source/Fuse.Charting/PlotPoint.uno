@@ -159,10 +159,25 @@ namespace Fuse.Charting
 	public class PlotPoint : PlotElement
 	{
 		DestinationBehavior<float2>_animator = new DestinationBehavior<float2>();
-		
+
+		/**
+			Specifies where on a circle to start drawing our points.
+
+			The range is from 0 to 1, relative to the circumference of a full circle.
+		*/
+		public float RadialOffset { get; set; }
+
+		/**
+			Specifies how much of a circle our points will consume.
+
+			The range is from 0 to 1, relative to the circumference of a full circle.
+		*/
+		public float RadialScale { get; set; }
+
 		public PlotPoint()
 		{
 			Anchor = new Size2( new Size(50, Unit.Percent), new Size(50,Unit.Percent) );
+			RadialScale = 1;
 			_calc.Init();
 		}
 		
@@ -225,6 +240,9 @@ namespace Fuse.Charting
 
 		void AnimUpdate( float2 value )
 		{
+			value.X *= RadialScale;
+			value.X += RadialOffset * Math.PIf * 2;
+
 			var p = _calc.ValueToPos(value);
 			X = new Size( p.X * 100, Unit.Percent );
 			Y = new Size( p.Y * 100, Unit.Percent );
