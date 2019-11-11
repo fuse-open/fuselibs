@@ -31,7 +31,7 @@ namespace Fuse
 			[[root layer] setAnchorPoint: { 0.0f, 0.0f }];
 			@{Fuse.Platform.SystemUI.RootView:Set(root)};
 			[root sizeToFit];
-			root.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
+			root.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin;
 			
 			return root;
 		@}

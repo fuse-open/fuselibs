@@ -1,9 +1,9 @@
 {
   "name": "@fuse-open/fuselibs",
-  "version": "1.12.0",
+  "version": "1.13.0",
   "description": "Fuselibs is a collection of Uno libraries that provide the UI framework used to build Fuse apps.",
   "devDependencies": {
-    "@fuse-open/uno": "^1.12.2"
+    "@fuse-open/uno": "^1.13.0"
   },
   "scripts": {
     "build": "uno doctor Source --express",
