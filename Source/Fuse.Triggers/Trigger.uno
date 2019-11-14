@@ -342,7 +342,11 @@ namespace Fuse.Triggers
 			if (!_isStarted)
 			{
 				if (!IsRootingStarted)
-					throw new Exception( "Trigger started prior to being rooted: " + this );
+				{
+					Fuse.Diagnostics.UserError("Warning: Trigger.uno - Trigger started prior to being rooted: ", this );
+					return;
+				}
+
 				_isStarted = true;
 				UseContent = true;
 				PlayActions(TriggerWhen.Start);
