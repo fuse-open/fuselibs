@@ -26,7 +26,6 @@
 
     "Android/Impl.uno:Source",
     "Android/Impl.cpp.uxl:Extensions",
-    "Android/PushNotificationIDService.java:File",
     "Android/PushNotificationReceiver.java:File",
     "Android/BigPictureStyleHttp.java:File",
     "Android/BundleFiles.java:File",

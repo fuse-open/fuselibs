@@ -17,9 +17,9 @@ namespace Fuse.PushNotifications
 		"java.util.List", 
 		"android.graphics.Color"
 	)]
-	[Require("Gradle.Dependency.ClassPath", "com.google.gms:google-services:4.2.0")]
+	[Require("Gradle.Dependency.ClassPath", "com.google.gms:google-services:4.3.2")]
 	[Require("Gradle.AllProjects.Repository", "maven {url 'https://maven.google.com'}")]
-	[Require("Gradle.Dependency.Implementation", "com.google.firebase:firebase-core:16.0.0")]
+	[Require("Gradle.Dependency.Implementation", "com.google.firebase:firebase-analytics:17.2.1")]
 	[Require("Gradle.BuildFile.End", "apply plugin: 'com.google.gms.google-services'")]
 	public static class PushNotify
 	{
