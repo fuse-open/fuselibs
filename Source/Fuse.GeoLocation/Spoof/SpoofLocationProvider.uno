@@ -34,6 +34,11 @@ namespace Fuse.GeoLocation
 		{	
 			return false;
 		}
+		
+		public string GetAuthorizationStatus()
+		{	
+			return "never";
+		}
 
 		public void RequestAuthorization(GeoLocationAuthorizationType type)
 		{	
