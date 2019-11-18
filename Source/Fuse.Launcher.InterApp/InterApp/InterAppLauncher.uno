@@ -40,7 +40,7 @@ namespace Fuse.LauncherImpl
 			}
 		}
 
-		public static void LaunchApp(string uri)
+		public static void LaunchApp(string uri, string appStoreUri = null)
 		{
 			if defined(Android)
 			{
@@ -55,7 +55,7 @@ namespace Fuse.LauncherImpl
 			}
 			if defined(iOS)
 			{
-				iOSDeviceInterop.LaunchUriiOS(uri);
+				iOSDeviceInterop.LaunchApp(uri, appStoreUri);
 			}
 		}
 	}
