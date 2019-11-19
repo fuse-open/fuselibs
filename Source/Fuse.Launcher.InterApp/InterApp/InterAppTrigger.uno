@@ -53,10 +53,11 @@ namespace Fuse.Triggers.Actions
 	public class LaunchApp : TriggerAction
 	{
 		public string Uri {get; set;}
+		public string AppStoreUri {get; set;}
 
 		protected override void Perform(Node target)
 		{
-			Fuse.LauncherImpl.InterAppLauncher.LaunchApp(this.Uri);
+			Fuse.LauncherImpl.InterAppLauncher.LaunchApp(this.Uri, this.AppStoreUri);
 		}
 	}
 }

@@ -232,7 +232,14 @@ namespace Fuse.Reactive.FuseJS
 		*/
 		public static object LaunchApp(Scripting.Context context, object[] args)
 		{
-			Fuse.LauncherImpl.InterAppLauncher.LaunchApp((string)args[0]);
+			if defined(Android)
+			{
+				Fuse.LauncherImpl.InterAppLauncher.LaunchApp((string)args[0]);
+			}
+			if defined(iOS)
+			{
+				Fuse.LauncherImpl.InterAppLauncher.LaunchApp((string)args[0], (string)args[1]);
+			}
 			return null;
 		}
 	}
