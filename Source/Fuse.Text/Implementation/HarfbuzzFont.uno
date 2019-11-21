@@ -70,22 +70,22 @@ namespace Fuse.Text.Implementation
 			{
 				var pos = i * stride;
 
-				var codepoint = Uno.Runtime.Implementation.BufferImpl.GetUInt(shapeData, pos, littleEndian);
+				var codepoint = shapeData.GetUInt(pos, littleEndian);
 				pos += sizeof(uint);
 
-				var cluster = Uno.Runtime.Implementation.BufferImpl.GetUInt(shapeData, pos, littleEndian);
+				var cluster = shapeData.GetUInt(pos, littleEndian);
 				pos += sizeof(uint);
 
-				var a1 = Uno.Runtime.Implementation.BufferImpl.GetFloat(shapeData, pos, littleEndian);
+				var a1 = shapeData.GetFloat(pos, littleEndian);
 				pos += sizeof(float);
 
-				var a2 = Uno.Runtime.Implementation.BufferImpl.GetFloat(shapeData, pos, littleEndian);
+				var a2 = shapeData.GetFloat(pos, littleEndian);
 				pos += sizeof(float);
 
-				var o1 = Uno.Runtime.Implementation.BufferImpl.GetFloat(shapeData, pos, littleEndian);
+				var o1 = shapeData.GetFloat(pos, littleEndian);
 				pos += sizeof(float);
 
-				var o2 = Uno.Runtime.Implementation.BufferImpl.GetFloat(shapeData, pos, littleEndian);
+				var o2 = shapeData.GetFloat(pos, littleEndian);
 				pos += sizeof(float);
 
 				var advance = Scale * float2(1, -1) * float2(a1, a2);
