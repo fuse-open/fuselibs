@@ -6,10 +6,6 @@ namespace Fuse.Reactive
 {
 	public abstract class InfixOperator: BinaryOperator
 	{
-		/** @deprecated Use the constructor that takes a name, as flags */
-		[Obsolete]
-		protected InfixOperator(Expression left, Expression right): base(left, right) {}
-		
 		protected InfixOperator(Expression left, Expression right, string symbol, Flags flags = Flags.None) :
 			base(left, right, symbol, flags) 
 		{ }
@@ -230,5 +226,5 @@ namespace Fuse.Reactive
 			return true;
 		}
 	}
-	
+
 }

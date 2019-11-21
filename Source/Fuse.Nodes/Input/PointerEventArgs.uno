@@ -81,24 +81,5 @@ namespace Fuse.Input
 			s.AddDouble("localX", localPoint.X);
 			s.AddDouble("localY", localPoint.Y);
 		}
-
-		/** @deprecated Use `ReleaseCapture` */
-		[Obsolete("Use ReleaseCapture instead")]
-		public void ReleaseSoftCapture(object behavior) { DeprecatedReleaseCapture(behavior); }
-		/** @deprecated Use `ReleaseCapture` */
-		[Obsolete("Use ReleaseCapture instead")]
-		public void ReleaseHardCapture(object behavior)  { DeprecatedReleaseCapture(behavior); }
-		
-		static bool _drcWarn;
-		void DeprecatedReleaseCapture(object behavior)
-		{
-			if (!_drcWarn)
-			{
-				//DEPRECATED: 2017-02-21
-				Fuse.Diagnostics.Deprecated( "The capture system no longer supports distinct captures for Soft and Hard capture, instead treating the same identity/behaviour as a single capture. Old code will only work if it captured just one pointer, and followed the pattern of soft then hard capture on it (or just a hard capture)", this );
-				_drcWarn = true;
-			}
-			ReleaseCapture(behavior); 
-		}
 	}
 }

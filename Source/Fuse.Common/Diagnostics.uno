@@ -141,13 +141,6 @@ namespace Fuse
 		}
 	}
 
-	[Obsolete]
-	public interface IScriptException
-	{
-		string FileName { get; }
-		int LineNumber { get; }
-	}
-	
 	public delegate void DiagnosticHandler( Diagnostic d );
 	
 	/** 

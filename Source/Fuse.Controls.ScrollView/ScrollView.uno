@@ -175,16 +175,6 @@ namespace Fuse.Controls
 		internal Scroller _scroller; //internal for Scroller to set
 		internal Scroller TestScroller { get { return _scroller; } }
 
-		/**
-			@advanced
-			@deprecated 2017-03-04
-		*/
-		[Obsolete]
-		public Scroller Scroller
-		{
-			get { return _scroller; }
-		}
-
 		MotionConfig _motion;
 		[UXContent]
 		/**

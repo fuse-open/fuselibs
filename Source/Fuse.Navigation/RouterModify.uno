@@ -85,15 +85,7 @@ namespace Fuse.Navigation
 	{
 		/** The router to use. If this is null (default) then it looks through the ancestor nodes to find the nearest router. */
 		public Router Router { get; set; }
-		
-		//backwards compatible constructor, won't be able to evaluate Path
-		//Deprecated: 2017-07-18
-		[Obsolete]
-		public RouterModify() 
-		{ 
-			Fuse.Diagnostics.UserWarning( "RouterModify is deprecated. Use one of `ModifyRoute`, `GotoRoute` or `PushRoute` instead.", this );
-		}
-		
+
 		[Flags]
 		internal enum Flags
 		{	

@@ -11,13 +11,6 @@ namespace Fuse.Triggers
 	*/
 	public class WhileKeyboardVisible: WhileTrigger, IPropertyListener
 	{
-		/** @Deprecated */
-		[Obsolete]
-		public float Threshold
-		{
-			get { return 150; }
-		}
-
 		WindowCaps _caps;
 		protected override void OnRooted()
 		{

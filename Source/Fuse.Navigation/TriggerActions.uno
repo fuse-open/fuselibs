@@ -106,19 +106,6 @@ namespace Fuse.Navigation
 	*/
 	public class NavigateToggle : TriggerAction
 	{
-		INavigation _context;
-		[Obsolete]
-		/** @deprecated 2018-03-06 */
-		public INavigation NavigationContext
-		{
-			get { return _context; }
-			set
-			{
-				_context = value;
-				Fuse.Diagnostics.Deprecated( "NavigateToggle.NavigationContext is no longer supported as it isn't needed", this );
-			}
-		}
-
 		/** The item to have its navigated state toggled. */
 		public Visual Target { get; set; }
 

@@ -7,11 +7,8 @@ namespace Fuse.Navigation
 		overrides on Page/Navigation and rooting order considerations.
 		
 		Create this object at rooting time and dispose of it while unrooting.
-		
-		@hide
-		@deprecated This was not meant to be public. It's an internal support mechanism for navigation events. 2017-04-06
 	*/
-	public class NavigationPageProxy : IPagePropertyListener
+	class NavigationPageProxy : IPagePropertyListener
 	{
 		public delegate void StatusChangedHandler(NavigationPageProxy sender);
 		StatusChangedHandler _ready;
@@ -28,8 +25,6 @@ namespace Fuse.Navigation
 		
 		bool _waitRootingCompleted;
 
-		/** Internal since class was meant to be internal, not public */
-		internal NavigationPageProxy() { }
 		/** Split from ctor since callers need the address prior to setup completing */
 		internal void Init( StatusChangedHandler ready, StatusChangedHandler unready, Visual source )
 		{
@@ -137,34 +132,12 @@ namespace Fuse.Navigation
 				RootImpl(source);
 			}
 		}
-		
-		//Obsolete stuff
-		[Obsolete] //2017-04-06
-		public NavigationPageProxy( Action ready, Action unready )
-		{
-			Fuse.Diagnostics.Deprecated( "NavigationPageProxy is not meant to be used directly, use specific navigation triggers", this );
-			var q = new ObsoleteWrapper{ Ready= ready, Unready = unready };
-			_ready = q.ReadyImpl;
-			_unready = q.UnreadyImpl;
-		}
-		
+
 		class ObsoleteWrapper
 		{
 			public Action Ready, Unready;
 			public void ReadyImpl(NavigationPageProxy npp) { Ready(); }
 			public void UnreadyImpl(NavigationPageProxy npp) { Unready(); }
-		}
-		
-		[Obsolete] //2017-04-06
-		public void Rooted( Visual source )
-		{
-			RootImpl(source);
-		}
-		
-		[Obsolete] //2017-04-06
-		public void Unrooted()
-		{
-			UnrootImpl();
 		}
 	}
 }
