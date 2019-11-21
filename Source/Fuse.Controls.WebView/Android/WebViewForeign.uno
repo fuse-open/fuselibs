@@ -8,7 +8,7 @@ using Uno.Compiler.ExportTargetInterop;
 
 namespace Fuse.Android.Controls.WebViewUtils
 {
-	[ForeignInclude(Language.Java, "com.fusetools.webview.JsInterface", "com.fusetools.webview.FuseWebViewClient", "com.fusetools.webview.FuseWebChromeClient", "android.util.Log", "android.webkit.WebView", "com.fusetools.webview.ScrollableWebView")]
+	[ForeignInclude(Language.Java, "com.fuse.webview.JsInterface", "com.fuse.webview.FuseWebViewClient", "com.fuse.webview.FuseWebChromeClient", "android.util.Log", "android.webkit.WebView", "com.fuse.webview.ScrollableWebView")]
 	public static class WebViewForeign
 	{
 		[Foreign(Language.Java)]

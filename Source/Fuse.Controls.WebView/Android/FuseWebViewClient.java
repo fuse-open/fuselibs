@@ -1,4 +1,4 @@
-package com.fusetools.webview;
+package com.fuse.webview;
 import android.content.Intent;
 import android.net.Uri;
 import android.webkit.WebView;

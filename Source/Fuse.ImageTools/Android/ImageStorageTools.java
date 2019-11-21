@@ -1,4 +1,4 @@
-package com.fusetools.camera;
+package com.fuse.camera;
 
 import android.app.Activity;
 import android.content.ContentResolver;
