@@ -78,11 +78,6 @@ namespace Fuse.Drawing.Internal {
 		public byte[] GetBytes() {
 			return back;
 		}
-
-		[Obsolete("Use GetBytes() instead")]
-		public Buffer GetBuffer() {
-			return new Buffer(back);
-		}
 		
 		/**
 			Copy an item to the underlying buffer. This does not do any 
