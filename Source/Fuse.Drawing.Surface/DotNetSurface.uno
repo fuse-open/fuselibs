@@ -455,7 +455,9 @@ namespace Fuse.Drawing
 				outputValues[i] = rgbValues[i + 2];
 			}
 
-			DotNetHelpers.Render(_size, new Buffer(outputValues), _GLTextureHandle);
+			var bufferPin = GCHandle.Alloc(outputValues, GCHandleType.Pinned);
+			DotNetHelpers.Render(_size, bufferPin.AddrOfPinnedObject(), _GLTextureHandle);
+			bufferPin.Free();
 			_bitmap.UnlockBits(bitmapData);
 		}
 		
@@ -625,7 +627,7 @@ namespace Fuse.Drawing
 		/** Render a given buffer into a size window on the given GLBuffer 
 
 		*/
-		public static extern void Render (float2 size, Buffer buffer, OpenGL.GLTextureHandle GLBuffer)
+		public static extern void Render (float2 size, IntPtr buffer, OpenGL.GLTextureHandle GLBuffer)
 		{
 			GL.BindTexture(GLTextureTarget.Texture2D, GLBuffer);
 			GL.PixelStore(GLPixelStoreParameter.UnpackAlignment, 1);
