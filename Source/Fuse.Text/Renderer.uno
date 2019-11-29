@@ -344,44 +344,44 @@ namespace Fuse.Text
 
 				var littleEndian = true;
 
-				Uno.Runtime.Implementation.BufferImpl.SetFloat(buffer, bufferPos, rectLeft, littleEndian);
+				buffer.Set(bufferPos, rectLeft, littleEndian);
 				bufferPos += sizeof(float);
-				Uno.Runtime.Implementation.BufferImpl.SetFloat(buffer, bufferPos, rectTop, littleEndian);
-				bufferPos += sizeof(float);
-
-				Uno.Runtime.Implementation.BufferImpl.SetUShort(buffer, bufferPos, texLeft, littleEndian);
-				bufferPos += sizeof(ushort);
-				Uno.Runtime.Implementation.BufferImpl.SetUShort(buffer, bufferPos, texTop, littleEndian);
-				bufferPos += sizeof(ushort);
-
-				Uno.Runtime.Implementation.BufferImpl.SetFloat(buffer, bufferPos, rectRight, littleEndian);
-				bufferPos += sizeof(float);
-				Uno.Runtime.Implementation.BufferImpl.SetFloat(buffer, bufferPos, rectTop, littleEndian);
+				buffer.Set(bufferPos, rectTop, littleEndian);
 				bufferPos += sizeof(float);
 
-				Uno.Runtime.Implementation.BufferImpl.SetUShort(buffer, bufferPos, texRight, littleEndian);
+				buffer.Set(bufferPos, texLeft, littleEndian);
 				bufferPos += sizeof(ushort);
-				Uno.Runtime.Implementation.BufferImpl.SetUShort(buffer, bufferPos, texTop, littleEndian);
-				bufferPos += sizeof(ushort);
-
-				Uno.Runtime.Implementation.BufferImpl.SetFloat(buffer, bufferPos, rectRight, littleEndian);
-				bufferPos += sizeof(float);
-				Uno.Runtime.Implementation.BufferImpl.SetFloat(buffer, bufferPos, rectBottom, littleEndian);
-				bufferPos += sizeof(float);
-
-				Uno.Runtime.Implementation.BufferImpl.SetUShort(buffer, bufferPos, texRight, littleEndian);
-				bufferPos += sizeof(ushort);
-				Uno.Runtime.Implementation.BufferImpl.SetUShort(buffer, bufferPos, texBottom, littleEndian);
+				buffer.Set(bufferPos, texTop, littleEndian);
 				bufferPos += sizeof(ushort);
 
-				Uno.Runtime.Implementation.BufferImpl.SetFloat(buffer, bufferPos, rectLeft, littleEndian);
+				buffer.Set(bufferPos, rectRight, littleEndian);
 				bufferPos += sizeof(float);
-				Uno.Runtime.Implementation.BufferImpl.SetFloat(buffer, bufferPos, rectBottom, littleEndian);
+				buffer.Set(bufferPos, rectTop, littleEndian);
 				bufferPos += sizeof(float);
 
-				Uno.Runtime.Implementation.BufferImpl.SetUShort(buffer, bufferPos, texLeft, littleEndian);
+				buffer.Set(bufferPos, texRight, littleEndian);
 				bufferPos += sizeof(ushort);
-				Uno.Runtime.Implementation.BufferImpl.SetUShort(buffer, bufferPos, texBottom, littleEndian);
+				buffer.Set(bufferPos, texTop, littleEndian);
+				bufferPos += sizeof(ushort);
+
+				buffer.Set(bufferPos, rectRight, littleEndian);
+				bufferPos += sizeof(float);
+				buffer.Set(bufferPos, rectBottom, littleEndian);
+				bufferPos += sizeof(float);
+
+				buffer.Set(bufferPos, texRight, littleEndian);
+				bufferPos += sizeof(ushort);
+				buffer.Set(bufferPos, texBottom, littleEndian);
+				bufferPos += sizeof(ushort);
+
+				buffer.Set(bufferPos, rectLeft, littleEndian);
+				bufferPos += sizeof(float);
+				buffer.Set(bufferPos, rectBottom, littleEndian);
+				bufferPos += sizeof(float);
+
+				buffer.Set(bufferPos, texLeft, littleEndian);
+				bufferPos += sizeof(ushort);
+				buffer.Set(bufferPos, texBottom, littleEndian);
 				bufferPos += sizeof(ushort);
 			}
 			return buffer;
