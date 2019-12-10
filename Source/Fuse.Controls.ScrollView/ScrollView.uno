@@ -83,7 +83,7 @@ namespace Fuse.Controls
 		internal static Selector UserScrollName = "UserScroll";
 		bool _userScroll = true;
 		/**
-			Enables/disables the ability for the user to scroll the control. When `false` the user cannot interact with the control but it can still be scrolled programamtically.
+			Enables/disables the ability for the user to scroll the control. When `false` the user cannot interact with the control but it can still be scrolled programmatically.
 		*/
 		public bool UserScroll
 		{	
