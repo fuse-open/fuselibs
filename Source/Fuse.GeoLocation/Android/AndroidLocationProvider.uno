@@ -8,7 +8,19 @@ using Fuse.GeoLocation.Android;
 
 namespace Fuse.GeoLocation
 {
-	[ForeignInclude(Language.Java, "android.support.v4.content.ContextCompat", "android.content.pm.PackageManager", "android.Manifest", "android.location.LocationManager", "android.location.Location", "android.provider.Settings", "android.util.Log", "java.util.List", "fuse.geolocation.UpdateListener", "android.os.Looper", "android.content.Context", "com.uno.StringArray")]
+	[ForeignInclude(Language.Java, 
+		"androidx.core.content.ContextCompat", 
+		"android.content.pm.PackageManager", 
+		"android.Manifest", 
+		"android.location.LocationManager", 
+		"android.location.Location", 
+		"android.provider.Settings", 
+		"android.util.Log", 
+		"java.util.List", 
+		"fuse.geolocation.UpdateListener", 
+		"android.os.Looper", 
+		"android.content.Context", 
+		"com.uno.StringArray")]
 	extern(Android) class AndroidLocationProvider :  ILocationTracker
 	{
 		
@@ -25,7 +37,16 @@ namespace Fuse.GeoLocation
 		public void Init(Action onReady)
 		{
 			_onReady = onReady;
-			RequestPermissions();
+
+			if (@(Project.Android.GeoLocation.RequestPermissionsOnLaunch:ToLower) == "false") 
+			{
+
+			} 
+			else 
+			{
+				RequestPermissions();
+			}
+			
 		}
 
 		void RequestPermissions()
@@ -77,33 +98,48 @@ namespace Fuse.GeoLocation
 		@{
 			android.location.LocationManager locationManager = (LocationManager)com.fuse.Activity.getRootActivity().getSystemService(Context.LOCATION_SERVICE);
 
-			if (locationManager != null) {
+			if (locationManager != null) 
+			{
 
-				if (android.os.Build.VERSION.SDK_INT >= 23) {
+				if (android.os.Build.VERSION.SDK_INT >= 23) 
+				{
 
 					//check if hardware enabled
-					if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)||locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)){
+					if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)||locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER))
+					{
 
 						//check user authorization 
 						if (ContextCompat.checkSelfPermission(com.fuse.Activity.getRootActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED 
-							&& ContextCompat.checkSelfPermission(com.fuse.Activity.getRootActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+							&& ContextCompat.checkSelfPermission(com.fuse.Activity.getRootActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) 
+						{
 							return false;
-						} else {
+						} 
+						else 
+						{
 							return true;
 						}
-					} else {
+					} 
+					else 
+					{
 						return false;
 					}
-				} else {
+				} 
+				else 
+				{
 					//legacy fallback
-					try {
+					try 
+					{
 						locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 						return true;
-					} catch (SecurityException e) {
+					} 
+					catch (SecurityException e) 
+					{
 						return false;
 					}
 				}
-			} else {
+			} 
+			else 
+			{
 				return false;
 			}
 		@}
@@ -114,12 +150,45 @@ namespace Fuse.GeoLocation
 			if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) //API 28
 			{ 
 				android.location.LocationManager lm = (android.location.LocationManager) com.fuse.Activity.getRootActivity().getSystemService(Context.LOCATION_SERVICE);
-				return lm.isLocationEnabled() ? "on" : "off";
+
+				if (lm.isLocationEnabled()) {
+
+					if (ContextCompat.checkSelfPermission(com.fuse.Activity.getRootActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED 
+							&& ContextCompat.checkSelfPermission(com.fuse.Activity.getRootActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) 
+					{
+						return "off";
+					} 
+					else 
+					{
+						return "on";
+					}
+				} 
+				else 
+				{
+					return "off";
+				}
 			}
 			else
 			{
 				int mode = android.provider.Settings.Secure.getInt(com.fuse.Activity.getRootActivity().getContentResolver(), android.provider.Settings.Secure.LOCATION_MODE, android.provider.Settings.Secure.LOCATION_MODE_OFF);
-				return  (mode != android.provider.Settings.Secure.LOCATION_MODE_OFF) ? "on" : "off";
+
+				if ((mode != android.provider.Settings.Secure.LOCATION_MODE_OFF)) 
+				{
+
+					if (ContextCompat.checkSelfPermission(com.fuse.Activity.getRootActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED 
+							&& ContextCompat.checkSelfPermission(com.fuse.Activity.getRootActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) 
+					{
+						return "off";
+					} 
+					else 
+					{
+						return "on";
+					}
+				} 
+				else 
+				{
+					return "off";
+				}
 			}
 		@}
 		
