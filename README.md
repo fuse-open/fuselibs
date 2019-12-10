@@ -53,7 +53,22 @@ You can run the local `uno` directly using `node_modules/.bin/uno`. This
 is useful when you want to test apps using your local fuselibs build
 environment.
 
-You can run the manual testing app using one of the following commands:
+### Express building
+
+When working with the source code and building often, it can be beneficial
+to build in *express mode*.
+
+```
+npm run build -- -e
+```
+
+Express mode will only rebuild the package(s) that have actually changed,
+skipping rebuilding all dependent packages.
+
+### Manual testing
+
+You can run the manual testing app on your desired platform using one of
+the following commands:
 
 ```
 npm run android
