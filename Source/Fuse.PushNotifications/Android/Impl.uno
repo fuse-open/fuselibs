@@ -23,7 +23,7 @@ namespace Fuse.PushNotifications
 					"android.os.Bundle",
 					"android.graphics.Color",
 					"android.util.Log",
-					"android.support.v4.app.NotificationCompat",
+					"androidx.core.app.NotificationCompat",
 					"com.fuse.PushNotifications.PushNotificationReceiver",
 					"com.fuse.PushNotifications.BigPictureStyleHttp",
 					"java.util.ArrayList",

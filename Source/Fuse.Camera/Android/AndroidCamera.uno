@@ -37,7 +37,7 @@ namespace Fuse.Camera
 		"com.fuse.Activity", 
 		"com.fusetools.camera.Image", 
 		"android.os.Build",
-		"android.support.v4.content.FileProvider", 
+		"androidx.core.content.FileProvider", 
 		"java.io.File",
 		"android.net.Uri", 
 		"android.util.Log", 
@@ -154,7 +154,7 @@ namespace Fuse.Camera
 		}
 	}
 	
-	[ForeignInclude(Language.Java, "android.provider.MediaStore", "com.fuse.Activity", "android.content.Intent", "com.fusetools.camera.Image", "com.fusetools.camera.ImageStorageTools", "android.support.v4.content.ContextCompat")]
+	[ForeignInclude(Language.Java, "android.provider.MediaStore", "com.fuse.Activity", "android.content.Intent", "com.fusetools.camera.Image", "com.fusetools.camera.ImageStorageTools", "androidx.core.content.ContextCompat")]
 	extern (Android) class CheckPermissionsCommand
 	{
 		public CheckPermissionsCommand(Promise<string> p)
