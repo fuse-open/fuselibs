@@ -8,7 +8,7 @@ using Fuse.GeoLocation.Android;
 
 namespace Fuse.GeoLocation
 {
-	[ForeignInclude(Language.Java, "android.support.v4.content.ContextCompat", "android.content.pm.PackageManager", "android.Manifest", "android.location.LocationManager", "android.location.Location", "android.provider.Settings", "android.util.Log", "java.util.List", "fuse.geolocation.UpdateListener", "android.os.Looper", "android.content.Context", "com.uno.StringArray")]
+	[ForeignInclude(Language.Java, "androidx.core.content.ContextCompat", "android.content.pm.PackageManager", "android.Manifest", "android.location.LocationManager", "android.location.Location", "android.provider.Settings", "android.util.Log", "java.util.List", "fuse.geolocation.UpdateListener", "android.os.Looper", "android.content.Context", "com.uno.StringArray")]
 	extern(Android) class AndroidLocationProvider :  ILocationTracker
 	{
 		
