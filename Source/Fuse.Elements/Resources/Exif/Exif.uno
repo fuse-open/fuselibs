@@ -110,8 +110,7 @@ namespace Fuse.Resources.Exif
 			{
 				if (p.Id == OrientationTagId)
 				{
-					var buffer = new Buffer(p.Value);
-					var orientation = buffer.GetShort(0,true);
+					var orientation = p.Value.GetShort(0, true);
 					return orientation;
 				}
 			}

@@ -49,4 +49,15 @@ namespace Fuse.Triggers.Actions
 			Fuse.LauncherImpl.InterAppLauncher.LaunchUri(new Uri(this.Uri));
 		}
 	}
+	
+	public class LaunchApp : TriggerAction
+	{
+		public string Uri {get; set;}
+		public string AppStoreUri {get; set;}
+
+		protected override void Perform(Node target)
+		{
+			Fuse.LauncherImpl.InterAppLauncher.LaunchApp(this.Uri, this.AppStoreUri);
+		}
+	}
 }

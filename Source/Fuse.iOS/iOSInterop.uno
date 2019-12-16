@@ -56,5 +56,20 @@ namespace Fuse.iOS.Bindings
 				[[UIApplication sharedApplication] openURL:[NSURL URLWithString:uri]];
 			});
 		@}
+
+		[Foreign(Language.ObjC)]
+		public static extern(iOS) void LaunchApp(string uri, string appStoreUri)
+		@{
+			dispatch_sync(dispatch_get_main_queue(), ^{
+				if ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:uri]]) 
+				{
+					[[UIApplication sharedApplication] openURL:[NSURL URLWithString:uri]];
+				} 
+				else if (appStoreUri != (id)[NSNull null] && appStoreUri.length > 0) 
+				{
+					[[UIApplication sharedApplication] openURL:[NSURL URLWithString:appStoreUri]];
+				}
+			});
+		@}
 	}
 }

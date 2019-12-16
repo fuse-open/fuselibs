@@ -29,6 +29,26 @@ namespace Fuse.Android.Bindings
 			return pendingIntent;
 		@}
 
+		[Foreign(Language.Java)]
+		public static extern(Android) Java.Object LaunchApp(string action, string applicationId)
+		@{
+			Intent pendingIntent = null;
+			Activity a = com.fuse.Activity.getRootActivity();
+
+			try
+			{
+				pendingIntent = a.getPackageManager().getLaunchIntentForPackage(applicationId);
+				a.startActivity(pendingIntent);
+			} 
+			catch (Exception e) 
+			{
+				pendingIntent = new Intent(action).setData(Uri.parse("https://play.google.com/store/apps/details?id=" + applicationId));
+				a.startActivity(pendingIntent);
+			}
+
+			return pendingIntent;
+		@}
+
 		public static Java.Object OpenAssetFileDescriptor(BundleFileSource fileSource)
 		{
 			return OpenAssetFileDescriptor(fileSource.BundleFile);

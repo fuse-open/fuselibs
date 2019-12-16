@@ -165,6 +165,7 @@ namespace Fuse.Reactive.FuseJS
 
 			AddMember(onReceivedUri);
 			AddMember(new NativeFunction("launchUri", LaunchUri));
+			AddMember(new NativeFunction("launchApp", LaunchApp));
 
 			Fuse.Platform.InterApp.ReceivedURI += OnReceivedUri;
 		}
@@ -209,6 +210,36 @@ namespace Fuse.Reactive.FuseJS
 			// - send just feels wrong :p
 
 			Fuse.LauncherImpl.InterAppLauncher.LaunchUri(new Uno.Net.Http.Uri((string)args[0]));
+			return null;
+		}
+
+		/**
+			@scriptmethod launchApp(uri)
+			@param uri (String) The URI to launch or application id(android) to launch.
+
+			Requests the system to launch an app.
+
+			Note: for iOS you must use a uri
+			for android, an applicationid like: https://play.google.com/store/apps/details?id=[application id]
+
+			There are several common URI schemes that you can use on iOS:
+				http://<website address>
+				https://<website address>
+				tel:<phone number>
+				sms:<phone number>
+			
+			More information on supported URI schemes on iOS(https://developer.apple.com/library/content/featuredarticles/iPhoneURLScheme_Reference/Introduction/Introduction.html).
+		*/
+		public static object LaunchApp(Scripting.Context context, object[] args)
+		{
+			if defined(Android)
+			{
+				Fuse.LauncherImpl.InterAppLauncher.LaunchApp((string)args[0]);
+			}
+			if defined(iOS)
+			{
+				Fuse.LauncherImpl.InterAppLauncher.LaunchApp((string)args[0], (string)args[1]);
+			}
 			return null;
 		}
 	}

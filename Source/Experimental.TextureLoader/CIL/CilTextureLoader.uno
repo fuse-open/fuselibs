@@ -1,6 +1,7 @@
 using Uno;
 using Uno.Compiler.ExportTargetInterop;
 using Uno.Native.Textures;
+using Uno.Runtime.InteropServices;
 using OpenGL;
 
 namespace Experimental.TextureLoader
@@ -60,7 +61,9 @@ namespace Experimental.TextureLoader
 					var textureHandle = GL.CreateTexture();
 					GL.BindTexture(GLTextureTarget.Texture2D, textureHandle);
 					GL.PixelStore(GLPixelStoreParameter.UnpackAlignment, 1);
-					GL.TexImage2D(GLTextureTarget.Texture2D, 0, internalFormat, bitmap.Width, bitmap.Height, 0, pixelFormat, pixelType, bitmap.ReadData());
+					var dataPin = GCHandle.Alloc(bitmap.ReadData(), GCHandleType.Pinned);
+					GL.TexImage2D(GLTextureTarget.Texture2D, 0, internalFormat, bitmap.Width, bitmap.Height, 0, pixelFormat, pixelType, dataPin.AddrOfPinnedObject());
+					dataPin.Free();
 					return new Uno.Graphics.Texture2D(textureHandle, new Uno.Int2(bitmap.Width, bitmap.Height), 1, format);
 				}
 			}

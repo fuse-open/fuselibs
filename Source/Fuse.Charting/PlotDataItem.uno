@@ -48,6 +48,13 @@ namespace Fuse.Charting
 		
 		void OnChanged()
 		{
+			// HACK: Early-out on attempts to access a disposed object.
+			// This happens quite frequently in a user app and we don't want this to cause
+			// a fatal crash, nor spam the log with error messages. The app seems to work
+			// fine if we simply early-out here instead.
+			if (_listener == null)
+				return;
+
 			_listener.OnNewData(_point);
 		}
 

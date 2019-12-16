@@ -277,7 +277,7 @@ namespace Fuse.Controls.Native
 			}
 			catch (Exception e)
 			{
-				debug_log("Fuse.Controls.Native.Android.ImageView: " + e.getMessage());
+				android.util.Log.e("Fuse.Controls.Native.Android.ImageView", e.getMessage());
 			}
 			return null;
 		@}
@@ -293,7 +293,7 @@ namespace Fuse.Controls.Native
 			}
 			catch (Exception e)
 			{
-				debug_log("Fuse.Controls.Native.Android.ImageView: " + e.getMessage());
+				android.util.Log.e("Fuse.Controls.Native.Android.ImageView", e.getMessage());
 			}
 			return null;
 		@}

@@ -25,15 +25,37 @@ namespace Fuse.LauncherImpl
 			if defined(Android)
 			{
 				Permissions.Request(Permissions.Android.INTERNET);
-				try {
+				try
+				{
 					AndroidDeviceInterop.LaunchIntent(_actionView, uri.AbsoluteUri);
-				} catch (Exception e) {
-					// ignore this error. Keeps behaviour in line with iOS
+				}
+				catch (Exception e)
+				{
+					debug_log("InterApp.LaunchUri - Failed to launch uri");
 				}
 			}
 			if defined(iOS)
 			{
 				iOSDeviceInterop.LaunchUriiOS(uri.AbsoluteUri);
+			}
+		}
+
+		public static void LaunchApp(string uri, string appStoreUri = null)
+		{
+			if defined(Android)
+			{
+				try 
+				{
+					AndroidDeviceInterop.LaunchApp(_actionView, uri);
+				} 
+				catch (Exception e) 
+				{
+					debug_log("InterApp.LaunchApp - Failed to launch app");
+				}
+			}
+			if defined(iOS)
+			{
+				iOSDeviceInterop.LaunchApp(uri, appStoreUri);
 			}
 		}
 	}

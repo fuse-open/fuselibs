@@ -14,7 +14,7 @@ namespace Fuse.Share
 					"android.net.Uri",
 					"android.util.Log", 
 					"android.content.Intent",
-					"android.support.v4.content.FileProvider", 
+					"androidx.core.content.FileProvider", 
 					"android.content.Context")]
 	public extern(Android) class AndroidShareImpl
 	{

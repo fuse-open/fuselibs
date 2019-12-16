@@ -130,6 +130,29 @@ namespace Fuse.GeoLocation
 		@}
 
 		[Foreign(Language.ObjC)]
+		public string GetAuthorizationStatus() 
+		@{
+			//check user authorization
+			switch ([CLLocationManager authorizationStatus]) {
+				//The user has not chosen whether the app can use location services.
+				case kCLAuthorizationStatusNotDetermined: return @"notDetermined";
+					break;
+				//The app is not authorized to use location services.
+				case kCLAuthorizationStatusRestricted: return @"restricted";
+					break;
+				//The user denied the use of location services for the app or they are disabled globally in Settings.
+				case kCLAuthorizationStatusDenied: return @"denied";
+					break;
+				//The user authorized the app to start location services at any time.
+				case kCLAuthorizationStatusAuthorizedAlways: return @"authorizedAlways";
+					break;
+				//The user authorized the app to start location services while it is in use.
+				case kCLAuthorizationStatusAuthorizedWhenInUse: return @"authorizedWhenInUse";
+					break;
+			}
+		@}
+
+		[Foreign(Language.ObjC)]
 		static void SetCLLocationManagerParams(
 			ObjC.Object handle,
 			double desiredAccuracyInMeters)
