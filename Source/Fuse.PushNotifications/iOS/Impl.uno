@@ -162,19 +162,18 @@ namespace Fuse.PushNotifications
 		[Foreign(Language.ObjC)]
 		internal static bool IsRegisteredForRemoteNotifications()
 		@{
-			__block bool isReg = false;
+			__block bool isRegisteredForRemote = true;
 
-			__block bool isNotificationsSettingsEnabled = false;
+			__block bool isNotificationsSettingsEnabled = true;
 
 			dispatch_sync(dispatch_get_main_queue(), ^{
-
-				isReg = [[UIApplication sharedApplication] isRegisteredForRemoteNotifications];
+				isRegisteredForRemote = [[UIApplication sharedApplication] isRegisteredForRemoteNotifications];
 				
 				[[UNUserNotificationCenter currentNotificationCenter] getNotificationSettingsWithCompletionHandler:^(UNNotificationSettings * _Nonnull settings) {
-					isNotificationsSettingsEnabled = (settings.alertStyle != UNAlertStyleNone);
+					isNotificationsSettingsEnabled = (settings.authorizationStatus == UNAuthorizationStatusAuthorized);
 				}];
 			});
-			return (isReg && isNotificationsSettingsEnabled);
+			return (isRegisteredForRemote && isNotificationsSettingsEnabled);
 		@}
 	}
 }

@@ -17,7 +17,11 @@ public class PushNotificationReceiver extends FirebaseMessagingService {
 	public PushNotificationReceiver() { 
 		super();
 	}
-
+	@Override
+	public void onNewToken(String refreshedToken) {
+		super.onNewToken(refreshedToken);
+		com.foreign.Fuse.PushNotifications.AndroidImpl.RegistrationIDUpdated(refreshedToken);
+	}
 	@Override
 	public void onMessageReceived(RemoteMessage message)
 	{

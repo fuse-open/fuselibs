@@ -33,7 +33,7 @@ namespace Fuse.PushNotifications
 					"com.google.android.gms.common.ConnectionResult",
 					"com.google.android.gms.common.GoogleApiAvailability"
 					)]
-	[Require("Gradle.Dependency.Implementation", "com.google.firebase:firebase-messaging:17.3.4")]
+	[Require("Gradle.Dependency.Implementation", "com.google.firebase:firebase-messaging:20.0.1")]
 	extern(Android)
 	internal class AndroidImpl
 	{
