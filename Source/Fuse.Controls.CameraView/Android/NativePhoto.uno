@@ -327,8 +327,7 @@ namespace Fuse.Controls.Android
 					input = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
 
 					DisplayMetrics displayMetrics = new DisplayMetrics();
-					@(Activity.Package).@(Activity.Name)
-						.GetRootActivity()
+					com.fuse.Activity.getRootActivity()
 						.getWindowManager()
 						.getDefaultDisplay()
 						.getMetrics(displayMetrics);
