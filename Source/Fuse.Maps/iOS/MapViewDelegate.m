@@ -120,39 +120,39 @@
 
 		_touchRecognizer.touchesBeganCallback = ^(NSSet * touches, UIEvent * event)
 		{
-			_touchCount += [touches count];
+			self->_touchCount += [touches count];
 			if(self.touchBlock == nil) return;
 
 			UITouch* t = [touches anyObject];
-			CGPoint l = [t locationInView:_mapView];
+			CGPoint l = [t locationInView:self->_mapView];
 
-			CLLocationCoordinate2D coord = [_mapView convertPoint:l toCoordinateFromView:_mapView];
+			CLLocationCoordinate2D coord = [self->_mapView convertPoint:l toCoordinateFromView:self->_mapView];
 
-			touchBlock(0, coord.latitude, coord.longitude);
+			self->touchBlock(0, coord.latitude, coord.longitude);
 		};
 
 		_touchRecognizer.touchesEndedCallback = ^(NSSet * touches, UIEvent * event)
 		{
-			_touchCount -= [touches count];
-			if(touchBlock == nil) return;
+			self->_touchCount -= [touches count];
+			if(self->touchBlock == nil) return;
 
 			UITouch* t = [touches anyObject];
-			CGPoint l = [t locationInView:_mapView];
+			CGPoint l = [t locationInView:self->_mapView];
 
-			CLLocationCoordinate2D coord = [_mapView convertPoint:l toCoordinateFromView:_mapView];
+			CLLocationCoordinate2D coord = [self->_mapView convertPoint:l toCoordinateFromView:self->_mapView];
 
-			touchBlock(1, coord.latitude, coord.longitude);
+			self->touchBlock(1, coord.latitude, coord.longitude);
 
-			if(_touchCount==0)
-				touchBlock(4, coord.latitude, coord.longitude);
+			if(self->_touchCount==0)
+				self->touchBlock(4, coord.latitude, coord.longitude);
 		};
 
 		_touchRecognizer.touchesCancelledCallback = ^(NSSet * touches, UIEvent * event)
 		{
-			_touchCount -= [touches count];
-			if(touchBlock == nil) return;
-			if(_touchCount==0)
-				touchBlock(4, 0, 0);
+			self->_touchCount -= [touches count];
+			if(self->touchBlock == nil) return;
+			if(self->_touchCount==0)
+				self->touchBlock(4, 0, 0);
 		};
 
 		UITapGestureRecognizer* _tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTap:)];
@@ -173,7 +173,7 @@
 		id annotation = view.annotation;
         	if (![annotation isKindOfClass:[MKUserLocation class]]) {
 			if(markerSelectBlock){
-				FusePinAnnotation* a = [view annotation];
+				FusePinAnnotation* a = (FusePinAnnotation*)[view annotation];
 				markerSelectBlock(a.markerID, a.title);
 			}
 		}
@@ -319,7 +319,7 @@
 			if (![annotation isKindOfClass:[FusePinAnnotation class]])
 				return nil;
 
-			FusePinAnnotation* a = annotation;
+			FusePinAnnotation* a = (FusePinAnnotation*)annotation;
 			if(a.icon == nil) return nil;
 			MKAnnotationView *annotationView = [[MKAnnotationView alloc] initWithAnnotation:annotation
 				reuseIdentifier:a.icon];
