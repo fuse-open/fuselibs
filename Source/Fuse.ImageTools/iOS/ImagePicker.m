@@ -20,7 +20,7 @@
 		_imagePicker.sourceType = type;
 		[_imagePicker setDelegate:self];
 		[[NSOperationQueue mainQueue] addOperationWithBlock:^ {
-			[[self VC] presentViewController:_imagePicker animated:YES completion:^{ }];
+			[[self VC] presentViewController:self->_imagePicker animated:YES completion:^{ }];
 		}];
 		return YES;
 	}else{
