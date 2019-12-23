@@ -1,4 +1,7 @@
 {
+  "iOS": {
+    "BundleIdentifier": "com.fuseopen.manualtestingapp"
+  },
   "Packages": [
     "Fuse",
     "FuseJS",
