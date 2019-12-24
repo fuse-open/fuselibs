@@ -1,5 +1,16 @@
 # Unreleased
 
+### Expressions
+- Added more string functions :
+    - `trim` function
+    - `indexOf` function
+    - `substring` function
+    - `replace` function
+    - `insert` function
+    - `split` function
+    - `startsWith` function
+    - `endsWith` function
+
 # 1.13
 
 ## 1.13.0
