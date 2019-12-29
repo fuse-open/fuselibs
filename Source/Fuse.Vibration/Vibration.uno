@@ -42,162 +42,162 @@ namespace Fuse.Vibration
 	[Require("Source.Include", "UIKit/UIKit.h")]
 	[Require("Xcode.Framework", "AudioToolbox")]
 	[ForeignInclude(Language.ObjC, "AudioToolbox/AudioToolbox.h")]
-	class IOSTapticEngine
+	class IOSTapticFeedback
 	{
-		public static extern(iOS) void perform(VibrationType style)
+		public static extern(iOS) void Perform(VibrationType style)
 		{
 			switch (style)
 			{
 				case VibrationType.Soft:
-					performSoft();
+					PerformSoft();
 					break;
 				case VibrationType.Rigid:
-					performRigid();
+					PerformRigid();
 					break;
 				case VibrationType.Light:
-					performLight();
+					PerformLight();
 					break;
 				case VibrationType.Medium:
-					performMedium();
+					PerformMedium();
 					break;
 				case VibrationType.Heavy:
-					performHeavy();
+					PerformHeavy();
 					break;
 				case VibrationType.Success:
-					performSuccess();
+					PerformSuccess();
 					break;
 				case VibrationType.Warning:
-					performWarning();
+					PerformWarning();
 					break;
 				case VibrationType.Error:
-					performError();
+					PerformError();
 					break;
 				case VibrationType.Selection:
-					performSelection();
+					PerformSelection();
 					break;
 				default:
-					performLight();
+					PerformLight();
 					break;
 
 			}
 		}
 
 		[Foreign(Language.ObjC)]
-		static extern(iOS) void performSoft()
+		static extern(iOS) void PerformSoft()
 		@{
 		#if defined(__IPHONE_10_0) && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_10_0
 			dispatch_async(dispatch_get_main_queue(), ^{
 				UIImpactFeedbackGenerator * feedback = [[UIImpactFeedbackGenerator alloc] initWithStyle:UIImpactFeedbackStyleSoft];
 				[feedback impactOccurred];
-    		});
-    	#else
-    		AudioServicesPlayAlertSound(kSystemSoundID_Vibrate);
-    	#endif
+			});
+		#else
+			AudioServicesPlayAlertSound(kSystemSoundID_Vibrate);
+		#endif
 		@}
 
 		[Foreign(Language.ObjC)]
-		static extern(iOS) void performRigid()
+		static extern(iOS) void PerformRigid()
 		@{
 		#if defined(__IPHONE_10_0) && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_10_0
 			dispatch_async(dispatch_get_main_queue(), ^{
 				UIImpactFeedbackGenerator * feedback = [[UIImpactFeedbackGenerator alloc] initWithStyle:UIImpactFeedbackStyleRigid];
 				[feedback impactOccurred];
-    		});
-    	#else
-    		AudioServicesPlayAlertSound(kSystemSoundID_Vibrate);
-    	#endif
+			});
+		#else
+			AudioServicesPlayAlertSound(kSystemSoundID_Vibrate);
+		#endif
 		@}
 
 		[Foreign(Language.ObjC)]
-		static extern(iOS) void performLight()
+		static extern(iOS) void PerformLight()
 		@{
 		#if defined(__IPHONE_10_0) && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_10_0
 			dispatch_async(dispatch_get_main_queue(), ^{
 				UIImpactFeedbackGenerator * feedback = [[UIImpactFeedbackGenerator alloc] initWithStyle:UIImpactFeedbackStyleLight];
 				[feedback impactOccurred];
-    		});
-    	#else
-    		AudioServicesPlayAlertSound(kSystemSoundID_Vibrate);
-    	#endif
+			});
+		#else
+			AudioServicesPlayAlertSound(kSystemSoundID_Vibrate);
+		#endif
 		@}
 
 		[Foreign(Language.ObjC)]
-		static extern(iOS) void performMedium()
+		static extern(iOS) void PerformMedium()
 		@{
 		#if defined(__IPHONE_10_0) && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_10_0
 			dispatch_async(dispatch_get_main_queue(), ^{
 				UIImpactFeedbackGenerator * feedback = [[UIImpactFeedbackGenerator alloc] initWithStyle:UIImpactFeedbackStyleLight];
 				[feedback impactOccurred];
-    		});
-    	#else
-    		AudioServicesPlayAlertSound(kSystemSoundID_Vibrate);
-    	#endif
+			});
+		#else
+			AudioServicesPlayAlertSound(kSystemSoundID_Vibrate);
+		#endif
 		@}
 
 		[Foreign(Language.ObjC)]
-		static extern(iOS) void performHeavy()
+		static extern(iOS) void PerformHeavy()
 		@{
 		#if defined(__IPHONE_10_0) && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_10_0
 			dispatch_async(dispatch_get_main_queue(), ^{
 				UIImpactFeedbackGenerator * feedback = [[UIImpactFeedbackGenerator alloc] initWithStyle:UIImpactFeedbackStyleLight];
 				[feedback impactOccurred];
-    		});
-    	#else
-    		AudioServicesPlayAlertSound(kSystemSoundID_Vibrate);
-    	#endif
+			});
+		#else
+			AudioServicesPlayAlertSound(kSystemSoundID_Vibrate);
+		#endif
 		@}
 
 		[Foreign(Language.ObjC)]
-		static extern(iOS) void performSuccess()
+		static extern(iOS) void PerformSuccess()
 		@{
 		#if defined(__IPHONE_10_0) && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_10_0
 			dispatch_async(dispatch_get_main_queue(), ^{
 				UINotificationFeedbackGenerator * feedback = [[UINotificationFeedbackGenerator alloc] init];
 				[feedback notificationOccurred:UINotificationFeedbackTypeSuccess];
-    		});
-    	#else
-    		AudioServicesPlayAlertSound(kSystemSoundID_Vibrate);
-    	#endif
+			});
+		#else
+			AudioServicesPlayAlertSound(kSystemSoundID_Vibrate);
+		#endif
 		@}
 
 		[Foreign(Language.ObjC)]
-		static extern(iOS) void performWarning()
+		static extern(iOS) void PerformWarning()
 		@{
 		#if defined(__IPHONE_10_0) && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_10_0
 			dispatch_async(dispatch_get_main_queue(), ^{
 				UINotificationFeedbackGenerator * feedback = [[UINotificationFeedbackGenerator alloc] init];
 				[feedback notificationOccurred:UINotificationFeedbackTypeWarning];
-    		});
-    	#else
-    		AudioServicesPlayAlertSound(kSystemSoundID_Vibrate);
-    	#endif
+			});
+		#else
+			AudioServicesPlayAlertSound(kSystemSoundID_Vibrate);
+		#endif
 		@}
 
 		[Foreign(Language.ObjC)]
-		static extern(iOS) void performError()
+		static extern(iOS) void PerformError()
 		@{
 		#if defined(__IPHONE_10_0) && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_10_0
 			dispatch_async(dispatch_get_main_queue(), ^{
 				UINotificationFeedbackGenerator * feedback = [[UINotificationFeedbackGenerator alloc] init];
 				[feedback notificationOccurred:UINotificationFeedbackTypeError];
-    		});
-    	#else
-    		AudioServicesPlayAlertSound(kSystemSoundID_Vibrate);
-    	#endif
+			});
+		#else
+			AudioServicesPlayAlertSound(kSystemSoundID_Vibrate);
+		#endif
 		@}
 
 		[Foreign(Language.ObjC)]
-		static extern(iOS) void performSelection()
+		static extern(iOS) void PerformSelection()
 		@{
 		#if defined(__IPHONE_10_0) && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_10_0
 			dispatch_async(dispatch_get_main_queue(), ^{
 				UISelectionFeedbackGenerator * feedback = [[UISelectionFeedbackGenerator alloc] init];
 				[feedback selectionChanged];
 				[feedback prepare];
-    		});
-    	#else
-    		AudioServicesPlayAlertSound(kSystemSoundID_Vibrate);
-    	#endif
+			});
+		#else
+			AudioServicesPlayAlertSound(kSystemSoundID_Vibrate);
+		#endif
 		@}
 	}
 
@@ -223,7 +223,7 @@ namespace Fuse.Vibration
 
 		public static extern(iOS) void Feedback(VibrationType type)
 		{
-			IOSTapticEngine.perform(type);
+			IOSTapticFeedback.Perform(type);
 		}
 
 		public static extern(!MOBILE) void Vibrate(double seconds) { }
