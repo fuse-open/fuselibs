@@ -1,7 +1,7 @@
 using Uno;
 using Uno.Collections;
 using Uno.Graphics;
-using Uno.Content.Images;
+using Uno.Graphics.Utils;
 
 namespace Fuse.Text
 {

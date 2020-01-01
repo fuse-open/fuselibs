@@ -1,5 +1,6 @@
 using Uno.Compiler.ExportTargetInterop;
-using Uno.Content.Images;
+using Uno.Graphics.Utils.Text;
+using Uno.Graphics.Utils;
 using Uno.Graphics;
 using Uno;
 
@@ -100,8 +101,8 @@ namespace Fuse.Text.Implementation
 			var data = Render(GetCTFont(_uiFont), glyph.Index, out size, out offset);
 			var grayscale = TryConvertRGBAToL8(data);
 			var bitmap = grayscale == null
-				? new Bitmap(size, Format.RGBA8888, new Buffer(data))
-				: new Bitmap(size, Format.L8, new Buffer(grayscale));
+				? new Bitmap(size, Format.RGBA8888, data)
+				: new Bitmap(size, Format.L8, grayscale);
 			return new RenderedGlyph(
 				bitmap,
 				float2(offset.X, LineHeight - Ascender - Descender - offset.Y - size.Y),

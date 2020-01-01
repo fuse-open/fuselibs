@@ -1,5 +1,6 @@
 using Uno.Compiler.ExportTargetInterop;
-using Uno.Content.Images;
+using Uno.Graphics.Utils.Text;
+using Uno.Graphics.Utils;
 using Uno.Graphics;
 using Uno.Text;
 using Uno;
@@ -271,14 +272,14 @@ namespace Fuse.Text.Implementation
 				var data = new byte[numBytes];
 				Memory.Copy(data, Current_Glyph_Bitmap_Buffer(face), numBytes);
 				BGRAToRGBA(data);
-				return new Bitmap(size, Format.RGBA8888, new Buffer(data));
+				return new Bitmap(size, Format.RGBA8888, data);
 			}
 			else // grayscale
 			{
 				var numBytes = size.X * size.Y;
 				var data = new byte[numBytes];
 				Memory.Copy(data, Current_Glyph_Bitmap_Buffer(face), numBytes);
-				return new Bitmap(size, Format.L8, new Buffer(data));
+				return new Bitmap(size, Format.L8, data);
 			}
 		}
 

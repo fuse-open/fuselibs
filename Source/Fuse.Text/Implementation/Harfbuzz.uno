@@ -1,5 +1,5 @@
 using Uno.Compiler.ExportTargetInterop;
-using Uno.Content.Images;
+using Uno.Graphics.Utils.Text;
 using Uno;
 
 namespace Fuse.Text.Implementation
