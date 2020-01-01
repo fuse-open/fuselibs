@@ -15,7 +15,8 @@
     "Fuse.iOS.Bindings",
   ],
   "Packages": [
-    "Uno.Threading",
+    "Uno.Graphics.Utils",
+    "Uno.Threading"
   ],
   "Projects": [
     "../Fuse.Animations/Fuse.Animations.unoproj",

@@ -1,5 +1,5 @@
 using Uno.Collections;
-using Uno.Content.Fonts;
+using Uno.Graphics.Utils.Text;
 
 namespace Fuse.Controls.FallbackTextRenderer
 {

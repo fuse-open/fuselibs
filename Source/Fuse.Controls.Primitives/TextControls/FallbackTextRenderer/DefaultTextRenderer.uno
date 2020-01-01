@@ -2,7 +2,7 @@ using Uno;
 using Uno.Graphics;
 using Uno.UX;
 using Uno.Collections;
-using Uno.Content.Fonts;
+using Uno.Graphics.Utils.Text;
 
 namespace Fuse.Controls.FallbackTextRenderer
 {
@@ -40,15 +40,15 @@ namespace Fuse.Controls.FallbackTextRenderer
 		const int initialMaxCharCount = 100;
 		static int _maxCharCount;
 
-		static Uno.Content.Fonts.TextRenderer _renderer;
+		static Uno.Graphics.Utils.Text.TextRenderer _renderer;
 
-		static Uno.Content.Fonts.TextRenderer renderer
+		static Uno.Graphics.Utils.Text.TextRenderer renderer
 		{
 			get
 			{
 				if (_renderer == null)
 				{
-					_renderer = new Uno.Content.Fonts.TextRenderer(initialMaxCharCount, new SpriteFontShader());
+					_renderer = new Uno.Graphics.Utils.Text.TextRenderer(initialMaxCharCount, new SpriteFontShader());
 					_renderer.Transform = new ProperTextTransform();
 				}
 				return _renderer;
@@ -161,7 +161,7 @@ namespace Fuse.Controls.FallbackTextRenderer
 			BitmapFont bmpfont;
 			if (!_bitmapFonts.TryGetValue(key, out bmpfont))
 			{
-				bmpfont = FontFaceHelpers.RenderSpriteFont(FontFace, size, CharacterSets.Ascii);
+				bmpfont = FontFace.RenderSpriteFont(size, CharacterSets.Ascii);
 				_bitmapFonts.Add(key, bmpfont);
 			}
 
@@ -174,7 +174,7 @@ namespace Fuse.Controls.FallbackTextRenderer
 				return;
 
 			_maxCharCount = Math.Max(_maxCharCount*2, maxCharCount);
-			_renderer = new Uno.Content.Fonts.TextRenderer(_maxCharCount, new SpriteFontShader());
+			_renderer = new Uno.Graphics.Utils.Text.TextRenderer(_maxCharCount, new SpriteFontShader());
 			_renderer.Transform = new ProperTextTransform();
 		}
 	}
@@ -182,14 +182,6 @@ namespace Fuse.Controls.FallbackTextRenderer
 	class ProperTextTransform : TextTransform
 	{
 		public DrawContext DrawContext;
-
-		float4x4 _matrix = float4x4.Identity;
-
-		public override float4x4 Matrix
-		{
-			get { return _matrix; }
-			set { _matrix = value; }
-		}
 
 		public override float4x4 ResolveClipSpaceMatrix()
 		{
