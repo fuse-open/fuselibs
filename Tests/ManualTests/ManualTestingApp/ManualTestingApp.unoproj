@@ -1,4 +1,7 @@
 {
+  "Android": {
+    "UsesCleartextTraffic": true
+  },
   "iOS": {
     "BundleIdentifier": "com.fuseopen.manualtestingapp"
   },
