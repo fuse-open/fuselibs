@@ -3,7 +3,7 @@ using Uno;
 using Uno.Graphics;
 using Uno.UX;
 using Uno.Collections;
-using Uno.Content.Fonts;
+using Uno.Graphics.Utils.Text;
 
 namespace Fuse
 {
@@ -162,7 +162,7 @@ namespace Fuse
 			BitmapFont bmpfont;
 			if (!_bitmapFonts.TryGetValue(key, out bmpfont))
 			{
-				bmpfont = FontFaceHelpers.RenderSpriteFont(FontFace, size, CharacterSets.Ascii);
+				bmpfont = FontFace.RenderSpriteFont(size, CharacterSets.Ascii);
 				_bitmapFonts.Add(key, bmpfont);
 			}
 
@@ -183,14 +183,6 @@ namespace Fuse
 	class ProperTextTransform : TextTransform
 	{
 		public DrawContext DrawContext;
-		
-		float4x4 _matrix = float4x4.Identity;
-
-		public override float4x4 Matrix
-		{
-			get { return _matrix; }
-			set { _matrix = value; }
-		}
 		
 		public override float4x4 ResolveClipSpaceMatrix()
 		{
