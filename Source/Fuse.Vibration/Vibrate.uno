@@ -29,7 +29,7 @@ namespace Fuse.Vibration
 		On iOS you can do vibration by leveraging Taptic Engine. There are 9 types of vibration :
 		* Soft
 		* Rigid
-		* light
+		* Light
 		* Medium
 		* Heavy
 		* Success

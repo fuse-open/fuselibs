@@ -126,7 +126,7 @@ namespace Fuse.Vibration
 		@{
 		#if defined(__IPHONE_10_0) && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_10_0
 			dispatch_async(dispatch_get_main_queue(), ^{
-				UIImpactFeedbackGenerator * feedback = [[UIImpactFeedbackGenerator alloc] initWithStyle:UIImpactFeedbackStyleLight];
+				UIImpactFeedbackGenerator * feedback = [[UIImpactFeedbackGenerator alloc] initWithStyle:UIImpactFeedbackStyleMedium];
 				[feedback impactOccurred];
 			});
 		#else
@@ -139,7 +139,7 @@ namespace Fuse.Vibration
 		@{
 		#if defined(__IPHONE_10_0) && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_10_0
 			dispatch_async(dispatch_get_main_queue(), ^{
-				UIImpactFeedbackGenerator * feedback = [[UIImpactFeedbackGenerator alloc] initWithStyle:UIImpactFeedbackStyleLight];
+				UIImpactFeedbackGenerator * feedback = [[UIImpactFeedbackGenerator alloc] initWithStyle:UIImpactFeedbackStyleHeavy];
 				[feedback impactOccurred];
 			});
 		#else
