@@ -1,15 +1,15 @@
 using Uno;
-using Uno.Compiler.ExportTargetInterop;
-using Uno.Platform;
-using Uno.Collections;
+using Uno.Graphics.Utils;
 
 namespace Experimental.TextureLoader
 {
+	[Obsolete]
 	public class InvalidContentTypeException : Exception
 	{
 		public InvalidContentTypeException(string reason) : base(reason) { }
 	}
 
+	[Obsolete]
 	public static class TextureLoader
 	{
 		[Obsolete("Use the returning overload instead")]
@@ -18,24 +18,10 @@ namespace Experimental.TextureLoader
 			callback(JpegByteArrayToTexture2D(arr));
 		}
 
+		[Obsolete]
 		public static texture2D JpegByteArrayToTexture2D(byte[] arr)
 		{
-			try
-			{
-				return TextureLoaderImpl.JpegByteArrayToTexture2D(arr);
-			}
-			catch (Exception jpegException)
-			{
-				try
-				{
-					return TextureLoaderImpl.PngByteArrayToTexture2D(arr);
-				}
-				catch (Exception pngException)
-				{
-					// both threw, but since the user asked for JPEG, answer with the JPEG-error
-					throw jpegException;
-				}
-			}
+			return Uno.Graphics.Utils.TextureLoader.Load2DJpeg(arr);
 		}
 
 		[Obsolete("Use the returning overload instead")]
@@ -44,24 +30,10 @@ namespace Experimental.TextureLoader
 			callback(PngByteArrayToTexture2D(arr));
 		}
 
+		[Obsolete]
 		public static texture2D PngByteArrayToTexture2D(byte[] arr)
 		{
-			try
-			{
-				return TextureLoaderImpl.PngByteArrayToTexture2D(arr);
-			}
-			catch (Exception pngException)
-			{
-				try
-				{
-					return TextureLoaderImpl.JpegByteArrayToTexture2D(arr);
-				}
-				catch (Exception jpegException)
-				{
-					// both threw, but since the user asked for PNG, answer with the PNG-error
-					throw pngException;
-				}
-			}
+			return Uno.Graphics.Utils.TextureLoader.Load2DPng(arr);
 		}
 
 		[Obsolete("Use the returning overload instead")]
@@ -70,15 +42,10 @@ namespace Experimental.TextureLoader
 			callback(ByteArrayToTexture2DFilename(arr, filename));
 		}
 
+		[Obsolete]
 		public static texture2D ByteArrayToTexture2DFilename(byte[] arr, string filename)
 		{
-			filename = filename.ToLower();
-			if (filename.EndsWith(".png"))
-				return PngByteArrayToTexture2D(arr);
-			else if (filename.EndsWith(".jpg") || filename.EndsWith(".jpeg"))
-				return JpegByteArrayToTexture2D(arr);
-			else
-				throw new InvalidContentTypeException(filename);
+			return Uno.Graphics.Utils.TextureLoader.Load2D(filename, arr);
 		}
 
 		[Obsolete("Use the returning overload instead")]
@@ -87,6 +54,7 @@ namespace Experimental.TextureLoader
 			callback(ByteArrayToTexture2DContentType(arr, contentType));
 		}
 
+		[Obsolete]
 		public static texture2D ByteArrayToTexture2DContentType(byte[] arr, string contentType)
 		{
 			if (contentType.IndexOf("image/jpeg") != -1 || contentType.IndexOf("image/jpg") != -1)
