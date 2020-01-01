@@ -3,8 +3,8 @@ using Uno.Graphics;
 using Uno.UX;
 using Uno.Collections;
 using Uno.Compiler.ExportTargetInterop;
+using Uno.Graphics.Utils;
 using Fuse.Resources.Exif;
-using Experimental.TextureLoader;
 
 namespace Fuse.Resources
 {
@@ -196,7 +196,7 @@ namespace Fuse.Resources
 
 				var data = _file.ReadAllBytes();
 				_orientation = ExifData.FromByteArray(data).Orientation;
-				SetTexture(TextureLoader.ByteArrayToTexture2DFilename(data, _file.Name));
+				SetTexture(TextureLoader.Load2D(_file.Name, data));
 				OnChanged();
 			}
 			catch (Exception e)
@@ -263,7 +263,7 @@ namespace Fuse.Resources
 				{
 					var data = _file.ReadAllBytes();
 					_orientation = ExifData.FromByteArray(data).Orientation;
-					_tex = TextureLoader.ByteArrayToTexture2DFilename(data, _file.Name);
+					_tex = TextureLoader.Load2D(_file.Name, data);
 
 					if defined(OpenGL)
 						OpenGL.GL.Finish();

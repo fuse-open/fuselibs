@@ -5,7 +5,6 @@ using Uno.UX;
 using Fuse.Drawing;
 using Fuse.Scripting;
 
-using Experimental.TextureLoader;
 using Uno.Net.Http;
 using Fuse.Resources.Exif;
 

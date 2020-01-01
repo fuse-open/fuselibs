@@ -1,12 +1,12 @@
 using Uno;
 using Uno.Graphics;
+using Uno.Graphics.Utils;
 using Uno.Collections;
 using Uno.UX;
 using Uno.IO;
 using Fuse.Drawing;
 using Fuse.Resources.Exif;
 
-using Experimental.TextureLoader;
 using Experimental.Http;
 
 namespace Fuse.Resources
@@ -248,11 +248,11 @@ namespace Fuse.Resources
 					if (_data == null)
 					{
 						_data = File.ReadAllBytes(_filename);
-						_tex = TextureLoader.ByteArrayToTexture2DFilename(_data, _filename);
+						_tex = TextureLoader.Load2D(_filename, _data);
 					}
 					else
 					{
-						_tex = TextureLoader.ByteArrayToTexture2DContentType(_data, _contentType);
+						_tex = TextureLoader.Load2D(_filename, _data);
 						if (_diskCache)
 							File.WriteAllBytes(_filename, _data);
 					}
