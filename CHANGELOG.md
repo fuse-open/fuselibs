@@ -1,15 +1,27 @@
 # Unreleased
 
+### Fuse.Vibration
+- On iOS you can do feedback vibration by leveraging Taptic Engine. There are 9 types of vibration :
+  * Soft
+  * Rigid
+  * light
+  * Medium
+  * Heavy
+  * Success
+  * Warning
+  * Error
+  * Selection
+
 ### Expressions
 - Added more string functions :
-    - `trim` function
-    - `indexOf` function
-    - `substring` function
-    - `replace` function
-    - `insert` function
-    - `split` function
-    - `startsWith` function
-    - `endsWith` function
+  - `trim` function
+  - `indexOf` function
+  - `substring` function
+  - `replace` function
+  - `insert` function
+  - `split` function
+  - `startsWith` function
+  - `endsWith` function
 
 # 1.13
 
