@@ -42,7 +42,7 @@ namespace Fuse.Vibration
 	[Require("Source.Include", "UIKit/UIKit.h")]
 	[Require("Xcode.Framework", "AudioToolbox")]
 	[ForeignInclude(Language.ObjC, "AudioToolbox/AudioToolbox.h")]
-	class IOSTapticFeedback
+	extern(iOS) class IOSTapticFeedback
 	{
 		public static extern(iOS) void Perform(VibrationType style)
 		{
