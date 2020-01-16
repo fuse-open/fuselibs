@@ -1,7 +1,7 @@
 using Fuse.Internal;
 using Uno.Collections;
-using Uno.Content.Images;
 using Uno.Graphics;
+using Uno.Graphics.Utils;
 using Uno;
 
 namespace Fuse.Text
@@ -78,7 +78,7 @@ namespace Fuse.Text
 			{
 				_dirty = false;
 				var texture = _textures[_textureIndex];
-				texture.Update(_bitmap.Buffer.GetBytes());
+				texture.Update(_bitmap.Data);
 			}
 		}
 
@@ -108,7 +108,7 @@ namespace Fuse.Text
 				int dstRow = (bdstPos.Y + y) * bdstSize.X + bdstPos.X;
 				for (int x = 0; x < bsrcSize.X; ++x)
 				{
-					dst.Buffer[dstRow + x] = src.Buffer[srcRow + x];
+					dst.Data[dstRow + x] = src.Data[srcRow + x];
 				}
 			}
 		}

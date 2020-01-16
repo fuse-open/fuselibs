@@ -2,9 +2,8 @@ using Uno;
 using Uno.Graphics;
 using Uno.Collections;
 using Uno.Compiler;
-
+using Uno.Platform;
 using OpenGL;
-using Uno.Runtime.Implementation;
 
 namespace Fuse
 {
@@ -55,15 +54,13 @@ namespace Fuse
 			return p;
 		}
 
-		Uno.Runtime.Implementation.GraphicsContextHandle _handle;
+		GraphicsContextBackend _backend;
 		RenderTarget _rootbuffer, _renderTarget;
 
 		public DrawContext(IRenderViewport viewport)
 		{
-			if defined(MOBILE)
-				_handle = extern<GraphicsContextHandle> "(@{GraphicsContextHandle})NULL";
-			else
-				_handle = GraphicsControllerImpl.GetInstance();
+			if defined(!MOBILE)
+				_backend = GraphicsContextBackend.Instance;
 			_viewport = viewport;
 
 			_rootbuffer = new RenderTarget();
@@ -98,7 +95,7 @@ namespace Fuse
 				}
 				else
 				{
-					_rootbuffer.Size = GraphicsControllerImpl.GetBackbufferSize(_handle);
+					_rootbuffer.Size = _backend.GetBackbufferSize();
 				}
 				_rootbuffer.HasDepth = true;
 			}

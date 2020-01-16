@@ -24,12 +24,12 @@
     "Fuse.Controls.Video",
   ],
   "Packages": [
+    "Uno.Graphics.Utils",
     "Uno.Net.Http"
   ],
   "Projects": [
     "../Fuse.Platform/Fuse.Platform.unoproj",
     "../Experimental.Http/Experimental.Http.unoproj",
-    "../Experimental.TextureLoader/Experimental.TextureLoader.unoproj",
     "../Fuse.Animations/Fuse.Animations.unoproj",
     "../Fuse.Designer/Fuse.Designer.unoproj",
     "../Fuse.Drawing.Planar/Fuse.Drawing.Planar.unoproj",

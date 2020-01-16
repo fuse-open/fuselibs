@@ -7,7 +7,6 @@
     "Uno.Threading"
   ],
   "Projects": [
-    "../Experimental.TextureLoader/Experimental.TextureLoader.unoproj",
     "../Fuse.Common/Fuse.Common.unoproj",
     "../Fuse.Controls/Fuse.Controls.unoproj",
     "../Fuse.Elements/Fuse.Elements.unoproj",

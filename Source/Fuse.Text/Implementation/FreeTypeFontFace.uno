@@ -1,6 +1,6 @@
 using Uno.Collections;
 using Uno.Compiler.ExportTargetInterop;
-using Uno.Content.Images;
+using Uno.Graphics.Utils.Text;
 using Uno.Graphics;
 using Uno.Runtime.InteropServices;
 using Uno.Threading;

@@ -170,7 +170,7 @@ namespace Fuse
 				return;
 			}
 
-			var wnd = WindowHelpers.GetPlatformWindowHandle(Window);
+			var wnd = Window.Backend;
 			var osPointSize = (float2)Window.ClientSize;
 			var pixelSize = (float2)Application.Current.GraphicsController.Backbuffer.Size;
 

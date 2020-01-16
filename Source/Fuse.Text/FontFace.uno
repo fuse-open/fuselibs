@@ -1,7 +1,7 @@
 using Fuse.Internal;
 using Fuse.Resources;
 using Uno.Collections;
-using Uno.Content.Images;
+using Uno.Graphics.Utils;
 using Uno.IO;
 using Uno;
 

@@ -1,6 +1,7 @@
 using Uno;
 using Uno.Collections;
-using Uno.Content.Fonts;
+using Uno.Graphics.Utils;
+using Uno.Graphics.Utils.Text;
 using Uno.UX;
 using Fuse;
 using Fuse.Elements;
@@ -37,12 +38,11 @@ namespace Fuse.Controls.FallbackTextRenderer
 
 			if (bfs != null)
 			{
-				return FontFace.Load(bfs.BundleFile);
+				return FontLoader.LoadFace(bfs.BundleFile);
 			}
 			else
 			{
-				var data = font.FileSource.ReadAllBytes();
-				return FontFace.Load(font.FileSource.Name, data, 0, data.Length);
+				return FontLoader.LoadFace(font.FileSource.ReadAllBytes());
 			}
 		}
 

@@ -1,6 +1,6 @@
 using Uno;
 using Uno.Collections;
-using Uno.Content.Fonts;
+using Uno.Graphics.Utils.Text;
 using Fuse.Controls.FallbackTextRenderer;
 
 namespace Fuse.Controls.FallbackTextEdit

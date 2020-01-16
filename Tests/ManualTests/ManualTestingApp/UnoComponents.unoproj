@@ -2,7 +2,8 @@
   "Packages": [
     "Fuse",
     "FuseJS",
-    "Uno.Data.Xml"
+    "Uno.Data.Xml",
+    "Uno.Graphics.Utils"
   ],
   "Includes": [
     "Fonts/RobotoCondensed-Light.ttf:File",

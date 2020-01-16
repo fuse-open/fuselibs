@@ -3,6 +3,7 @@
   "Publisher": "Fuse Open",
   "Packages": [
     "Uno.Collections",
+    "Uno.Graphics.Utils",
     "Uno.Threading",
   ],
   "Projects": [

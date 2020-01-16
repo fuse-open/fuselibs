@@ -2,9 +2,10 @@
   "Copyright": "Copyright (c) Fuse Open 2018",
   "Description": "Experimental.TextureLoader",
   "Publisher": "Fuse",
+  "Packages": [
+    "Uno.Graphics.Utils"
+  ],
   "Includes": [
     "TextureLoader.uno:Source",
-    "TextureLoaderImpl.uno:Source",
-    "CIL/CilTextureLoader.uno:Source"
   ]
 }
