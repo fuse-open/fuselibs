@@ -1,10 +1,47 @@
 # Unreleased
 
+# 1.14
+
+## 1.14.0
+
+### Experimental.TextureLoader
+- Marked all members as obsolete. Please use `TextureLoader` in `Uno.Graphics.Utils` instead (#1327).
+
+### Fuse.Android
+- Switched to AndroidX libraries (#1323).
+
+### Fuse.iOS
+- Auto Resizing Mask Fix (#1316).
+- Fixed compile-time warnings (#1335).
+
+### Fuse.Charting
+- Fix crash caused by accessing disposed object (#1322).
+- Added the following properties (#1317).
+    - `PlotPoint.RadialOffset`
+    - `PlotPoint.RadialScale`
+    - `PlotWedge.RadialOffset`
+    - `PlotWedge.RadialScale`
+
+### FuseJS/GeoLocation
+- Added `authorizationStatus` (#1319).
+
+### Fuse.Gestures
+- Added `HoldPress` trigger (#1320).
+
+### FuseJS/InterApp
+- Added `launchApp(uri)` (#1324, #1325).
+
+### Fuse.PushNotifications
+- Updated `IsRegistered` and updated dependencies (#1318).
+
+### Fuse.Triggers
+- Print run-time warning instead of throwing exception (#1321).
+
 ### Fuse.Vibration
-- On iOS you can do feedback vibration by leveraging Taptic Engine. There are 9 types of vibration :
+- On iOS you can do feedback vibration by leveraging Taptic Engine (#1338). There are 9 types of vibration:
   * Soft
   * Rigid
-  * light
+  * Light
   * Medium
   * Heavy
   * Success
@@ -13,7 +50,7 @@
   * Selection
 
 ### Expressions
-- Added more string functions :
+- Added more string functions (#1337):
   - `trim` function
   - `indexOf` function
   - `substring` function
@@ -22,6 +59,8 @@
   - `split` function
   - `startsWith` function
   - `endsWith` function
+
+[`v1.13.0...v1.14.0`](https://github.com/fuse-open/fuselibs/compare/v1.13.0...v1.14.0).
 
 # 1.13
 
