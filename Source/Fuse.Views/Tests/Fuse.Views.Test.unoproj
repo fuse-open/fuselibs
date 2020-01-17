@@ -9,7 +9,6 @@
     "../../Fuse.Common/Tests/FuseTest/FuseTest.unoproj"
   ],
   "Includes": [
-    "DefineLibrary.cil.uxl:Extensions",
     "DefineLibrary.cpp.uxl:Extensions",
     "*",
   ]

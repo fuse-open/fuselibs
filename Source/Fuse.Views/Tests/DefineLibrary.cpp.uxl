@@ -1,3 +1,3 @@
-<Extensions Backend="CPlusPlus">
+<Extensions Backend="CPlusPlus" Condition="MOBILE">
     <Define Library />
 </Extensions>
