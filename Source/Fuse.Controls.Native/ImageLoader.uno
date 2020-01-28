@@ -66,7 +66,7 @@ namespace Fuse.Controls.Native
 		static Dictionary<string, ImageHandle> _imageHandleCache =
 			new Dictionary<string, ImageHandle>();
 
-		extern(Android) static Dictionary<string, ImageHandlePromise> _pendingeImages =
+		static Dictionary<string, ImageHandlePromise> _pendingeImages =
 			new Dictionary<string, ImageHandlePromise>();
 
 		public static ImageHandle Load(FileSource fileSource)
@@ -124,24 +124,7 @@ namespace Fuse.Controls.Native
 			return handle;
 		}
 
-		extern(iOS) public static Future<ImageHandle> Load(HttpImageSource http)
-		{
-			var url = http.Url;
-			ImageHandle handle = null;
-			if (_imageHandleCache.TryGetValue(url, out handle))
-			{
-				handle.Pin();
-			}
-			else
-			{
-				if defined(iOS)
-					handle = new ImageHandle(url, LoadUri(url));
-				_imageHandleCache.Add(url, handle);
-			}
-			return new Promise<ImageHandle>(handle);
-		}
-
-		extern(Android) public static Future<ImageHandle> Load(HttpImageSource http)
+		public static Future<ImageHandle> Load(HttpImageSource http)
 		{
 			ImageHandlePromise pending = null;
 			if (_imageHandleCache.ContainsKey(http.Url))
@@ -160,7 +143,7 @@ namespace Fuse.Controls.Native
 			}
 		}
 
-		extern(Android) class PendingPromise : Promise<ImageHandle>
+		class PendingPromise : Promise<ImageHandle>
 		{
 			readonly Future<ImageHandle> _future;
 
@@ -180,6 +163,57 @@ namespace Fuse.Controls.Native
 			{
 				base.Dispose();
 				_future.Dispose();
+			}
+		}
+
+		extern(iOS) class ImageHandlePromise : Promise<ImageHandle>
+		{
+
+			readonly string _url;
+			readonly List<Future<ObjC.Object>> _dispose = new List<Future<ObjC.Object>>();
+
+			public ImageHandlePromise(string url) : base(UpdateManager.Dispatcher)
+			{
+				ImageLoader._pendingeImages.Add(url, this);
+				_url = url;
+				var download = Promise<ObjC.Object>.Run(UpdateManager.Dispatcher, Download);
+				var then = download.Then(OnDone);
+				_dispose.Add(download);
+				_dispose.Add(then);
+			}
+
+			void OnDone(ObjC.Object obj)
+			{
+				if (obj == null)
+				{
+					Reject(new Exception("Failed to load image from: " + _url));
+				}
+				else
+				{
+					var imageHandle = new ImageHandle(_url, obj);
+					ImageLoader._imageHandleCache.Add(_url, imageHandle);
+					Resolve(imageHandle);
+				}
+				ImageLoader._pendingeImages.Remove(_url);
+			}
+
+			ObjC.Object Download()
+			{
+				return Download(_url);
+			}
+
+			[Foreign(Language.ObjC)]
+			static ObjC.Object Download(string url)
+			@{
+				NSData* data = [NSData dataWithContentsOfURL: [NSURL URLWithString: url]];
+				return [UIImage imageWithData:data];
+			@}
+
+			public override void Dispose()
+			{
+				base.Dispose();
+				foreach(var p in _dispose)
+					p.Dispose();
 			}
 		}
 
