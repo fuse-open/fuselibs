@@ -25,6 +25,15 @@ namespace Fuse.GeoLocation
 		public IOSLocationProvider()
 		@{
 			CLLocationManager* lm = [[CLLocationManager alloc] init];
+			NSArray* backgroundModes  = [[NSBundle mainBundle].infoDictionary objectForKey:@"UIBackgroundModes"];
+
+		    if(backgroundModes && [backgroundModes containsObject:@"location"]) {
+		        if([lm respondsToSelector:@selector(setAllowsBackgroundLocationUpdates:)]) {
+		            // We now have iOS9 and the right capabilities to set this:
+					lm.allowsBackgroundLocationUpdates = true;
+		        }
+		    }
+
 			lm.pausesLocationUpdatesAutomatically = false;
 			LocationManagerDelegate* lmDelegate = [[LocationManagerDelegate alloc] initWithBlock: ^void (CLLocation* location)
 			{

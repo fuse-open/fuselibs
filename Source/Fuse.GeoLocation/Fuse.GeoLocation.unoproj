@@ -14,9 +14,13 @@
     "../Fuse.iOS.LocationPermissions/Fuse.iOS.LocationPermissions.unoproj"
   ],
   "Includes": [
+    "*",
+    "Android/Android.uxl:Extensions",
     "Android/UpdateListener.java:Java:Android",
+    "Android/BackgroundService.java:Java:Android",
+    "Android/Assets/DefaultIcon.png:File",
+    
     "iOS/LocationManagerDelegate.h:ObjCHeader:iOS",
     "iOS/LocationManagerDelegate.mm:ObjCSource:iOS",
-    "*"
   ]
 }

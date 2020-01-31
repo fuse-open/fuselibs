@@ -1,0 +1,33 @@
+<Extensions Backend="CPlusPlus" Condition="Android">
+
+	<Require AndroidManifest.Permission="android.permission.FOREGROUND_SERVICE" />
+
+	<ProcessFile Name="GeoLocationTmp.java" TargetName="@(Java.SourceDirectory)/com/foreign/Fuse/GeoLocation/GeoLocationTmp.java" />
+
+	<Require AndroidManifest.ApplicationElement><![CDATA[
+
+	<!-- Declare foreground service -->
+		<service android:name="fuse.geolocation.BackgroundService" 
+			android:enabled="true"
+			android:exported="true"
+			android:launchMode="singleTop" />
+	]]></Require>
+
+	<!-- http://iconhandbook.co.uk/reference/chart/android/ -->
+	<!-- pixplicity.com/dp-px-converter/ -->
+	<!-- https://material.google.com/style/icons.html -->
+
+	<ImageFile Name="@(Project.Android.GeoLocation.BackgroundLocation.NotificationIcon.LDPI:Path || Project.Android.Icons.LDPI:Path || '@//Android/Assets/DefaultIcon.png')"
+		 TargetName="app/src/main/res/mipmap-ldpi/bk_location.png" />
+	<ImageFile Name="@(Project.Android.GeoLocation.BackgroundLocation.NotificationIcon.MDPI:Path || Project.Android.Icons.MDPI:Path || '@//Android/Assets/DefaultIcon.png')"
+		 TargetName="app/src/main/res/mipmap-mdpi/bk_location.png" />
+	<ImageFile Name="@(Project.Android.GeoLocation.BackgroundLocation.NotificationIcon.HDPI:Path || Project.Android.Icons.HDPI:Path || '@//Android/Assets/DefaultIcon.png')"
+		 TargetName="app/src/main/res/mipmap-hdpi/bk_location.png" />
+	<ImageFile Name="@(Project.Android.GeoLocation.BackgroundLocation.NotificationIcon.XHDPI:Path || Project.Android.Icons.XHDPI:Path || '@//Android/Assets/DefaultIcon.png')"
+		 TargetName="app/src/main/res/mipmap-xhdpi/bk_location.png" />
+	<ImageFile Name="@(Project.Android.GeoLocation.BackgroundLocation.NotificationIcon.XXHDPI:Path || Project.Android.Icons.XXHDPI:Path || '@//Android/Assets/DefaultIcon.png')"
+		 TargetName="app/src/main/res/mipmap-xxhdpi/bk_location.png" />
+	<ImageFile Name="@(Project.Android.GeoLocation.BackgroundLocation.NotificationIcon.XXXHDPI:Path || Project.Android.Icons.XXXHDPI:Path || '@//Android/Assets/DefaultIcon.png')"
+		 TargetName="app/src/main/res/mipmap-xxxhdpi/bk_location.png" />
+	
+</Extensions>
