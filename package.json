@@ -3,12 +3,12 @@
   "version": "1.14.0",
   "description": "Fuselibs is a collection of Uno libraries that provide the UI framework used to build Fuse apps.",
   "devDependencies": {
-    "@fuse-open/uno": "^1.14.0"
+    "@fuse-open/uno": "^1.15.0-canary.1"
   },
   "scripts": {
     "build": "uno doctor Source",
     "prepack": "bash -c 'uno doctor Source --version=$npm_package_version --configuration=Release'",
-    "test": "uno test Source --run-local",
+    "test": "uno test Source",
     "android": "uno build android Tests/ManualTests/ManualTestingApp/ManualTestingApp.unoproj --run",
     "dotnet": "uno build dotnet Tests/ManualTests/ManualTestingApp/ManualTestingApp.unoproj --run",
     "ios": "uno build ios Tests/ManualTests/ManualTestingApp/ManualTestingApp.unoproj --run",

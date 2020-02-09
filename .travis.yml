@@ -18,7 +18,7 @@ script:
   - export XCODE_XCCONFIG_FILE=$TRAVIS_BUILD_DIR/.travis.xcconfig
   - uno build ios Tests/ManualTests/ManualTestingApp/ManualTestingApp.unoproj
   - unset XCODE_XCCONFIG_FILE
-  - uno test native --timeout=30 Source/AllTests.unoproj
+  - uno test native Source/AllTests.unoproj
 
 after_failure:
   - for c in $(ls /cores/core.*); do
