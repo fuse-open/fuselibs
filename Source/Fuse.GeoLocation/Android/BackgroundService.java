@@ -1,3 +1,4 @@
+@@ -0,0 +1,138 @@
 package fuse.geolocation;
 
 import android.os.IBinder;
@@ -6,6 +7,7 @@ import android.content.Intent;
 import android.app.Service;
 import android.util.Log;
 import android.os.Build;
+import android.graphics.Color;
 import android.content.Context;
 import android.app.Notification;
 import android.app.NotificationChannel;
