@@ -161,7 +161,7 @@ namespace Fuse.PushNotifications
 
 		static void OnRecieve(Java.Object bundle, bool fromNotificationBar)
 		{
-			var message = GetPayloadFromBundle(bundle);
+			var message = BundleToJSONStr(bundle);
 			if (Lifecycle.State == ApplicationState.Interactive)
 			{
 				var x = ReceivedNotification;
@@ -174,25 +174,96 @@ namespace Fuse.PushNotifications
 			}
 		}
 
+
 		[Foreign(Language.Java)]
-		static string GetPayloadFromBundle(Java.Object _bundle)
+		static Java.Object BundleToJSONObject(Java.Object _bundle)
 		@{
 			Bundle bundle = (Bundle)_bundle;
-			HashMap<String,Object> result = new HashMap<String, Object>();
-			for (String key : bundle.keySet()) {
-				Object item = bundle.get(key);
-				/* Only map simple serializable primitive items */
-				if (item!=null && (
-						item instanceof String ||
-						item instanceof Long ||
-						item instanceof Integer ||
-						item instanceof Boolean ||
-						item instanceof Double
-					)) {
-					result.put(key, item);
-				}
+
+			JSONObject resultJson = new JSONObject();
+
+			if (bundle == null) {
+				return resultJson;
 			}
-			JSONObject resultJson = new JSONObject(result);
+
+			try {
+				for (String bundleKey : bundle.keySet()) {
+
+					Object bundleValue = bundle.get(bundleKey);
+
+					if (bundleValue instanceof Bundle) {
+						resultJson.put(bundleKey, @{BundleToJSONObject(Java.Object):Call((Bundle) bundleValue)} );
+					} else if (bundleValue instanceof String) {
+						resultJson.put(bundleKey, "" + bundleValue);
+					} else if (bundleValue instanceof Boolean) {
+						resultJson.put(bundleKey, (boolean) bundleValue);
+					} else if (bundleValue instanceof Integer) {
+						resultJson.put(bundleKey, (int) bundleValue);
+					} else if (bundleValue instanceof Double) {
+						resultJson.put(bundleKey, (double) bundleValue);
+					} else if (bundleValue instanceof Long) {
+						resultJson.put(bundleKey, (long) bundleValue);
+					}
+				}
+			} catch (JSONException je) {
+				Log.d("PushNotifications.Impl.BundleToJSONObject", "BAD JSON");
+			}
+
+			return resultJson;
+		@}
+
+		[Foreign(Language.Java)]
+		static string BundleToJSONStr(Java.Object _bundle)
+		@{
+			Bundle bundle = (Bundle)_bundle;
+
+			if (bundle == null) {
+				return "";
+			}
+
+			JSONObject resultJson = new JSONObject();
+
+			try {
+				for (String bundleKey : bundle.keySet()) {
+
+					Object bundleValue = bundle.get(bundleKey);
+
+					if (bundleValue instanceof Bundle) {
+						resultJson.put(bundleKey, @{BundleToJSONObject(Java.Object):Call((Bundle) bundleValue)} );
+					} else if (bundleValue instanceof String) {
+						resultJson.put(bundleKey, "" + bundleValue);
+					} else if (bundleValue instanceof Boolean) {
+						resultJson.put(bundleKey, (boolean) bundleValue);
+					} else if (bundleValue instanceof Integer) {
+						resultJson.put(bundleKey, (int) bundleValue);
+					} else if (bundleValue instanceof Double) {
+						resultJson.put(bundleKey, (double) bundleValue);
+					} else if (bundleValue instanceof Long) {
+						resultJson.put(bundleKey, (long) bundleValue);
+					}
+				}
+			} catch (JSONException je) {
+				Log.d("PushNotifications.Impl.BundleToJSONStr", "BAD JSON");
+
+				//fallback to older implementation
+
+				HashMap<String,Object> result = new HashMap<String, Object>();
+				for (String key : bundle.keySet()) {
+					Object item = bundle.get(key);
+					/* Only map simple serializable primitive items */
+					if (item!=null && (
+							item instanceof String ||
+							item instanceof Long ||
+							item instanceof Integer ||
+							item instanceof Boolean ||
+							item instanceof Double
+						)) {
+						result.put(key, item);
+					}
+				}
+				resultJson = new JSONObject(result);
+			}
+
 			String finalPayload = resultJson.toString();
 			return finalPayload;
 		@}
@@ -218,8 +289,10 @@ namespace Fuse.PushNotifications
 			final Bundle bundle = (Bundle)_bundle;
 
 			if (!PushNotificationReceiver.InForeground) {
-				String notification = bundle.getString("notification");
-				String aps = bundle.getString("aps");
+				
+				String notification = @{BundleToJSONStr(Java.Object):Call((Bundle) bundle.get("notification"))};
+				String aps = @{BundleToJSONStr(Java.Object):Call((Bundle) bundle.get("aps"))};
+				
 				if (notification != null) {
 					// using the google style 'notification' subtree
 					@{NotificationFromJson(Java.Object,string,Java.Object):Call(listener, notification, bundle)};
