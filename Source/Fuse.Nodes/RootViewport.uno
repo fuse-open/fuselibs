@@ -182,7 +182,7 @@ namespace Fuse
 				//use old value, or try to guess correct density anyway (in case something uses it for off-screen drawing)
 				if (_pixelsPerOSPoint == 0 || _pixelsPerPoint ==0) 
 				{
-					_pixelsPerOSPoint = PlatformWindowImpl.GetDensity(wnd);
+					_pixelsPerOSPoint = wnd.GetDensity();
 					_pixelsPerPoint = _pixelsPerOSPoint;
 				}
 				return;
@@ -204,7 +204,7 @@ namespace Fuse
 			if (Math.Abs(pixelsPerOSPoint.X - pixelsPerOSPoint.Y) > zeroTolerance)
 				Fuse.Diagnostics.InternalError( "non-square pixelsPerOSPoint: " + pixelsPerOSPoint );
 
-			var osWindowDensity = PlatformWindowImpl.GetDensity(wnd);
+			var osWindowDensity = wnd.GetDensity();
 			_pixelsPerPoint = pixelsPerOSPoint.X * osWindowDensity;
 			if (_pixelsPerPoint <= zeroTolerance)
 				throw new Exception("A Window cannot have zero density.");
