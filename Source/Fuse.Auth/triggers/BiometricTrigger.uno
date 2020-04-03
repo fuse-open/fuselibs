@@ -25,11 +25,13 @@ namespace Fuse
 	{
 		protected override void OnRooted()
 		{
-			if defined(Android) {
+			if defined(Android)
+			{
 				if (AndroidBiometric.IsSupported())
 					Activate();
 			}
-			if defined(iOS) {
+			if defined(iOS)
+			{
 				if (IOSBiometric.IsSupported())
 					Activate();
 			}
@@ -38,11 +40,13 @@ namespace Fuse
 
 		protected override void OnUnrooted()
 		{
-			if defined(Android) {
+			if defined(Android)
+			{
 				if (AndroidBiometric.IsSupported())
 					Deactivate();
 			}
-			if defined(iOS) {
+			if defined(iOS)
+			{
 				if (IOSBiometric.IsSupported())
 					Deactivate();
 			}
