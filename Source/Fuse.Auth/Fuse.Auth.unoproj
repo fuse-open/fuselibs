@@ -1,0 +1,22 @@
+{
+  "Copyright": "Copyright (c) Fuse Open 2020",
+  "Description": "Audio playback support",
+  "Publisher": "Fuse Open",
+  "Title": "Fuse.Auth",
+  "Packages": [
+    "Uno.Threading",
+    "Uno.Permissions"
+  ],
+  "Projects": [
+    "../Fuse/Fuse.unoproj"
+  ],
+  "Includes": [
+    "*"
+  ],
+  "iOS": {
+    "PList": {
+      "NSFaceIDUsageDescription": "Require access to FaceID for authenticating"
+    },
+  }
+}
+
