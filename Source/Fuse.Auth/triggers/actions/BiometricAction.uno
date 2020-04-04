@@ -64,10 +64,10 @@ namespace Fuse
 		When Using FaceID on iOS, it is mandatory to add description about why you need authentication using FaceID. You can add the description by adding this config on your `unoproj` file
 
 				"iOS": {
-    				"PList": {
-      					"NSFaceIDUsageDescription": "Require access to FaceID for authenticating"
-    				}
-  				}
+					"PList": {
+						"NSFaceIDUsageDescription": "Require access to FaceID for authenticating"
+					}
+				}
 	*/
 	public class Authenticate : TriggerAction
 	{

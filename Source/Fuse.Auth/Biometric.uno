@@ -99,19 +99,19 @@ namespace Fuse
 				});
 
 				boolean isDeviceSecure = true;
-	        	BiometricPrompt.PromptInfo.Builder builder = new BiometricPrompt.PromptInfo.Builder();
-	        	KeyguardManager kManager = (KeyguardManager) com.fuse.Activity.getRootActivity().getSystemService(Context.KEYGUARD_SERVICE);
-	        	if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M)
+				BiometricPrompt.PromptInfo.Builder builder = new BiometricPrompt.PromptInfo.Builder();
+				KeyguardManager kManager = (KeyguardManager) com.fuse.Activity.getRootActivity().getSystemService(Context.KEYGUARD_SERVICE);
+				if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M)
 					isDeviceSecure = kManager.isDeviceSecure();
 				if (!isDeviceSecure)
 					builder = builder.setNegativeButtonText("Cancel");
-	        	builder = builder.setTitle("Biometric Authentication")
+				builder = builder.setTitle("Biometric Authentication")
 						.setSubtitle(reason)
 						.setDeviceCredentialAllowed(isDeviceSecure)
 						.setConfirmationRequired(false);
-	        	BiometricPrompt.PromptInfo promptInfo = builder.build();
-	        	biometricPrompt.authenticate(promptInfo);
-			}else {
+				BiometricPrompt.PromptInfo promptInfo = builder.build();
+				biometricPrompt.authenticate(promptInfo);
+			} else {
 				fail.run("Biometric is not supported");
 			}
 		@}
