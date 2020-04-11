@@ -13,6 +13,7 @@
   ],
   "Includes": [
     "MapMarker.uno:Source",
+    "MapOverlay.uno:Source",
     "MapView.uno:Source",
     "MapView.Events.uno:Source",
     "MapView.ScriptClass.uno:Source",

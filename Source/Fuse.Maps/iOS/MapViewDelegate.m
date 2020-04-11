@@ -57,10 +57,20 @@
 @implementation FusePinAnnotation
 @end
 
+@interface FuseOverlay : NSObject
+	@property(retain) id<MKOverlay> overlay;
+	@property(retain) MKOverlayPathRenderer* renderer;
+	@property int overlayID;
+@end
+
+@implementation FuseOverlay
+@end
+
 @implementation MapViewDelegate
 {
 	MKMapView* _mapView;
 	NSMutableDictionary* _annotations;
+	NSMutableDictionary* _overlays;
 	CLLocationManager* _locationMgr;
 	int _touchCount;
 }
@@ -71,6 +81,7 @@
 	@synthesize authChangeBlock;
 
 	static int _idPool = 0;
+	static int _idOverlayPool = 0;
 
 	-(id)init
 	{
@@ -79,6 +90,7 @@
 		_locationMgr = [[CLLocationManager alloc] init];
 		[_locationMgr setDelegate:self];
 		_annotations = [[NSMutableDictionary alloc] init];
+		_overlays = [[NSMutableDictionary alloc] init];
 		return self;
 	}
 
@@ -93,8 +105,8 @@
 				return false;
 		}
 	}
-	
-	-(void)locationManager:(CLLocationManager*)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status 
+
+	-(void)locationManager:(CLLocationManager*)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status
 	{
 			if(authChangeBlock!=nil)
 				authChangeBlock([self authorized]);
@@ -168,10 +180,15 @@
 		return _idPool++;
 	}
 
+	-(int)nextOverlayId
+	{
+		return _idOverlayPool++;
+	}
+
 	-(void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view
 	{
 		id annotation = view.annotation;
-        	if (![annotation isKindOfClass:[MKUserLocation class]]) {
+		if (![annotation isKindOfClass:[MKUserLocation class]]) {
 			if(markerSelectBlock){
 				FusePinAnnotation* a = (FusePinAnnotation*)[view annotation];
 				markerSelectBlock(a.markerID, a.title);
@@ -179,8 +196,8 @@
 		}
 	}
 
-	-(int)addMarker:(NSString*)label 
-		latitude:(double)lat 
+	-(int)addMarker:(NSString*)label
+		latitude:(double)lat
 		longitude:(double)lng
 		icon:(NSString*)iconPath
 		iconX:(float)iconX
@@ -217,6 +234,117 @@
 			[_mapView removeAnnotation:a];
 		}
 		[_annotations removeAllObjects];
+	}
+
+	-(void)_setupOverlayRenderer:(id<MKOverlay>)overlay
+		renderer:(MKOverlayPathRenderer*)renderer
+		strokeColor:(UIColor *) strokeColor
+		fillColor:(UIColor *)fillColor
+		lineWidth:(int)lineWidth
+		startCap:(int)startCap
+		endCap:(int)endCap
+		joinType:(int)joinType
+		pattern:(NSArray<NSNumber *> *)pattern
+	{
+		renderer.lineWidth = lineWidth;
+		renderer.strokeColor = strokeColor;
+		renderer.fillColor = fillColor;
+		CGLineCap lineCap = kCGLineCapRound;
+		switch (startCap)
+		{
+			case 0: lineCap = kCGLineCapRound; break;
+			case 1: lineCap = kCGLineCapButt; break;
+			case 2: lineCap = kCGLineCapSquare; break;
+		}
+		renderer.lineCap = lineCap;
+		CGLineJoin lineJoin = kCGLineJoinRound;
+		switch (joinType)
+		{
+			case 0: lineJoin = kCGLineJoinRound; break;
+			case 1: lineJoin = kCGLineJoinBevel; break;
+			case 2: lineJoin = kCGLineJoinMiter; break;
+		}
+		renderer.lineJoin = lineJoin;
+		renderer.lineDashPattern = pattern;
+		FuseOverlay *fuseOverlay = [[FuseOverlay alloc] init];
+		fuseOverlay.overlay = overlay;
+		fuseOverlay.renderer = renderer;
+		[_overlays setObject:fuseOverlay forKey:\@(_idOverlayPool)];
+		[self nextOverlayId];
+	}
+
+	-(void)addOverlay:(id)coords type:(int)overlayType
+		strokeColor:(UIColor *)strokeColor
+		fillColor:(UIColor *)fillColor
+		lineWidth:(int)lineWidth
+		geodesic:(bool)geodesic
+		startCap:(int)startCap
+		endCap:(int)endCap
+		joinType:(int)joinType
+		pattern:(NSArray<NSNumber *> *)pattern
+		centerLatitude:(double)centerLatitude
+		centerLongitude:(double)centerLongitude
+		radius:(double)radius
+	{
+		NSUInteger count = [coords count];
+		NSUInteger numOfCoordinate = count / 2;
+		CLLocationCoordinate2D coordinates[numOfCoordinate];
+		int idx = 0;
+		for (int i = 0; i < count; i+=2)
+		{
+			double lat = [coords[i] doubleValue];
+			double lon = [coords[i+1] doubleValue];
+			coordinates[idx] = CLLocationCoordinate2DMake(lat, lon);
+			idx++;
+		}
+		id<MKOverlay> overlay;
+		MKOverlayPathRenderer *renderer;
+		switch (overlayType)
+		{
+			case 1:
+			{
+				overlay = [MKPolygon polygonWithCoordinates:coordinates count:numOfCoordinate];
+				renderer = [[MKPolygonRenderer alloc] initWithPolygon:(MKPolygon*)overlay];
+				break;
+			}
+			case 2:
+			{
+				CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(centerLatitude, centerLongitude);
+				overlay = [MKCircle circleWithCenterCoordinate:coordinate radius:(CLLocationDistance)radius];
+				renderer = [[MKCircleRenderer alloc] initWithCircle:(MKCircle*)overlay];
+				break;
+			}
+			default:
+			{
+				if (geodesic)
+					overlay = [MKGeodesicPolyline polylineWithCoordinates:coordinates count:numOfCoordinate];
+				else
+					overlay = [MKPolyline polylineWithCoordinates:coordinates count:numOfCoordinate];
+				renderer = [[MKPolylineRenderer alloc] initWithPolyline:(MKPolyline*)overlay];
+				break;
+			}
+		}
+		[self _setupOverlayRenderer:overlay
+			renderer:renderer
+			strokeColor:strokeColor
+			fillColor:fillColor
+			lineWidth:lineWidth
+			startCap:startCap
+			endCap:endCap
+			joinType:joinType
+			pattern:pattern];
+		[_mapView addOverlay:overlay];
+	}
+
+	-(void)clearOverlays
+	{
+		for(id key in _overlays)
+		{
+			FuseOverlay* a = [_overlays objectForKey:key];
+			if(a==nil) continue;
+			[_mapView removeOverlay:a.overlay];
+		}
+		[_overlays removeAllObjects];
 	}
 
 	-(void)onTap:(UITapGestureRecognizer*)sender
@@ -259,6 +387,30 @@
 		mapMoveBlock = action;
 	}
 
+	- (MKOverlayRenderer *)mapView:(MKMapView *)mapView rendererForOverlay:(id<MKOverlay>)overlay
+	{
+		MKOverlayPathRenderer *renderer = nil;
+		for(id key in _overlays)
+		{
+			FuseOverlay* a = [_overlays objectForKey:key];
+			if (a.overlay == overlay)
+				return a.renderer;
+		}
+		if (renderer == nil)
+		{
+			if ([overlay isKindOfClass:[MKPolyline class]])
+				renderer = [[MKPolylineRenderer alloc] initWithPolyline:(MKPolyline *)overlay];
+			else if ([overlay isKindOfClass:[MKPolygonRenderer class]])
+				renderer = [[MKPolygonRenderer alloc] initWithPolygon:(MKPolygon *)overlay];
+			else
+				renderer = [[MKCircleRenderer alloc] initWithCircle:(MKCircle *)overlay];
+			renderer.lineWidth = 2;
+			renderer.strokeColor = [UIColor redColor];
+			renderer.fillColor = [UIColor redColor];
+		}
+		return renderer;
+	}
+
 	- (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated
 	{
 		if(mapMoveBlock)
@@ -289,22 +441,22 @@
 	-(MKAnnotationView *)mapView:(MKMapView *)theMapView viewForAnnotation:(id <MKAnnotation>)annotation
 	{
 		if ([annotation isKindOfClass:[MKUserLocation class]])
-            		return nil;  //return nil to use default blue dot view
-        
+			return nil;  //return nil to use default blue dot view
+
 		static NSString *SFAnnotationIdentifier = @"SFAnnotationIdentifier";
 		NSString* identifier = SFAnnotationIdentifier;
-		
+
 		FusePinAnnotation* fuseAnnotation = (FusePinAnnotation*)annotation;
-		
+
 		// make sure the annotation passed in is a fuse pin
 		// if it's not, then we want to use the default identifier
 		if ([annotation isKindOfClass:[FusePinAnnotation class]])
 			fuseAnnotation = nil;
-		
+
 		// ensure that the annotation actually has an icon selector
 		if(fuseAnnotation!=nil && [fuseAnnotation respondsToSelector:@selector(icon)])
 			identifier = fuseAnnotation.icon;
-			
+
 		MKPinAnnotationView *pinView = (MKPinAnnotationView *)[theMapView dequeueReusableAnnotationViewWithIdentifier:identifier];
 		if (!pinView)
 		{
@@ -324,12 +476,12 @@
 			MKAnnotationView *annotationView = [[MKAnnotationView alloc] initWithAnnotation:annotation
 				reuseIdentifier:a.icon];
 			UIImage* image = [UIImage imageWithContentsOfFile:a.icon];
-			
+
 			double ratio = image.size.width / 32.0; //32 is the width of the standard pin view
-			
-			UIImage *scaledImage = 
+
+			UIImage *scaledImage =
 				[UIImage imageWithCGImage:[image CGImage] scale:ratio orientation:image.imageOrientation];
-			
+
 			annotationView.canShowCallout = YES;
 			annotationView.image = scaledImage;
 			annotationView.centerOffset = CGPointMake(annotationView.frame.size.width*(a.iconX-0.5), -annotationView.frame.size.height*(a.iconY-0.5));
