@@ -107,6 +107,7 @@ namespace Fuse.Controls
 		bool AllowScroll { get; set; }
 
 		void UpdateMarkers();
+		void UpdateOverlays();
 		void HandleMarkerTapped(int id, string label);
 		void HandleLocationTapped(double latitude, double longitude);
 		void HandleLocationLongPress(double latitude, double longitude);
@@ -185,6 +186,63 @@ namespace Fuse.Controls
 			}
 			_cameraState = new MapCameraState();
 			_mapConfig = new MapConfig();
+		}
+
+		internal ObservableList<MapOverlay> _overlays;
+		public ObservableList<MapOverlay> Overlays
+		{
+			get
+			{
+				if(_overlays==null) _overlays = new ObservableList<MapOverlay>(OnOverlayAdded, OnOverlayRemoved);
+				return _overlays;
+			}
+		}
+
+
+		internal void AddOverlay(MapOverlay p)
+		{
+			if(Overlays.Contains(p)) return;
+			Overlays.Add(p);
+		}
+
+		internal void RemoveOverlay(MapOverlay p)
+		{
+			Overlays.Remove(p);
+		}
+
+		public void ClearOverlays(){
+			_overlays.Clear();
+			UpdateOverlays();
+		}
+
+		void OnOverlayAdded(MapOverlay overlay)
+		{
+			UpdateOverlaysNextFrame();
+		}
+
+		void OnOverlayRemoved(MapOverlay overlay)
+		{
+			UpdateOverlaysNextFrame();
+		}
+
+		bool _willUpdateOverlaysNextFrame;
+		internal void UpdateOverlaysNextFrame()
+		{
+			if(!MapIsReady || _willUpdateOverlaysNextFrame) return;
+			UpdateManager.PerformNextFrame(DeferredOverlayUpdate, UpdateStage.Primary);
+			_willUpdateOverlaysNextFrame = true;
+		}
+
+		void DeferredOverlayUpdate()
+		{
+			_willUpdateOverlaysNextFrame = false;
+			UpdateOverlays();
+		}
+
+		void UpdateOverlays()
+		{
+			if(MapIsReady)
+				MapViewClient.UpdateOverlays();
 		}
 
 		internal ObservableList<MapMarker> _markers;
@@ -288,6 +346,7 @@ namespace Fuse.Controls
 			ApplyCameraState();
 			UpdateRestState();
 			UpdateMarkers();
+			UpdateOverlays();
 		}
 
 		/* Begin methods that should be internal :( */
@@ -295,7 +354,7 @@ namespace Fuse.Controls
 		{
 			if (MarkerTapped != null)
 				MarkerTapped(this, new MarkerEventArgs(label));
-				
+
 			foreach(MapMarker m in Markers)
 			{
 				if(m.uid == id)
@@ -345,7 +404,7 @@ namespace Fuse.Controls
 			Latitude = latitude;
 			Longitude = longitude;
 		}
-		
+
 		bool MapIsReady
 		{
 			get {
@@ -363,7 +422,7 @@ namespace Fuse.Controls
 			}
 		}
 		/** When `true`, MapView will display a button that focuses the camera on the user's geographical location.
-		
+
 			> *Note:* The [ShowMyLocation](api:fuse/controls/mapview/showmylocation) property must be `True` for this to have an effect.
 		*/
 		public bool ShowMyLocationButton {

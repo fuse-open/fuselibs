@@ -51,7 +51,7 @@ namespace Fuse.Maps.Android
 			ForeignHelpers.Configure(_mapView);
 			SemanticControl.MapViewClient = this;
 		}
-		
+
 		public override void Dispose()
 		{
 			SemanticControl.MapViewClient = null;
@@ -122,6 +122,7 @@ namespace Fuse.Maps.Android
 			ConfigUI();
 			ConfigGestures();
 			UpdateMarkers();
+			UpdateOverlays();
 			OnReady();
 		}
 
@@ -179,6 +180,39 @@ namespace Fuse.Maps.Android
 					m.IconAnchorY,
 					m.uid
 				);
+			}
+		}
+
+		public ObservableList<MapOverlay> Overlays
+		{
+			get
+			{
+				return SemanticControl.Overlays;
+			}
+		}
+
+		public void UpdateOverlays()
+		{
+			if(!IsReady) return;
+			ForeignHelpers.ClearOverlays(_mapView);
+			foreach(MapOverlay p in Overlays)
+			{
+				int[] pattern = new int[] { p.DashPattern.X, p.DashPattern.Y };
+				ForeignHelpers.AddOverlay(
+					_mapView, p.Type,
+					p.GetCordinatesArray(),
+					(int)Uno.Color.ToArgb(p.StrokeColor),
+					(int)Uno.Color.ToArgb(p.FillColor),
+					p.LineWidth,
+					p.Geodesic,
+					p.StartCap,
+					p.EndCap,
+					p.JoinType,
+					pattern,
+					p.CenterLatitude,
+					p.CenterLongitude,
+					p.Radius
+					);
 			}
 		}
 
@@ -250,11 +284,11 @@ namespace Fuse.Maps.Android
 			}
 			set {
 				_showLocation = value;
-				if(IsReady) 
+				if(IsReady)
 				{
 					if(_showLocation)
 					{
-						var permissions = new PlatformPermission[] 
+						var permissions = new PlatformPermission[]
 						{
 							Permissions.Android.ACCESS_FINE_LOCATION,
 							Permissions.Android.ACCESS_COARSE_LOCATION

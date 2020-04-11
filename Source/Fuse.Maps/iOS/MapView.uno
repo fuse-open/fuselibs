@@ -120,7 +120,7 @@ namespace Fuse.Maps.iOS
 			if(OnReady!=null)
 				OnReady();
 		}
-		
+
 		void viewDidResize()
 		{
 			if(OnResize!=null)
@@ -216,6 +216,7 @@ namespace Fuse.Maps.iOS
 		@{
 			MapViewDelegate* dg = (MapViewDelegate*)@{MapView:Of(_this)._mapViewDelegate:Get()};
 			[dg clearMarkers];
+			[dg clearOverlays];
 			[dg setAsDelegate:nil];
 			[dg setMapMoveAction:nil];
 			[dg setMapTouchAction:nil];
@@ -298,8 +299,8 @@ namespace Fuse.Maps.iOS
 			{
 				AddMarker(
 					m.uid,
-					m.Label, 
-					m.Latitude, 
+					m.Label,
+					m.Latitude,
 					m.Longitude,
 					_markerGraphicsCache.Get(m.IconFile),
 					m.IconAnchorX,
@@ -308,10 +309,67 @@ namespace Fuse.Maps.iOS
 			}
 		}
 
+		[Foreign(Language.ObjC)]
+		void ClearOverlays()
+		@{
+			MapViewDelegate* dg = (MapViewDelegate*)@{MapView:Of(_this)._mapViewDelegate:Get()};
+			[dg clearOverlays];
+		@}
+
+		[Foreign(Language.ObjC)]
+		void AddOverlay(OverlayType type, double[] coordinates, float4 strokeColor, float4 fillColor, int lineWidth, bool geodesic, LineCap startCap, LineCap endCap, LineJoin joinType, int2 dashPattern, double centerLatitude, double centerLongitude, double radius)
+		@{
+			MapViewDelegate* dg = (MapViewDelegate*)@{MapView:Of(_this)._mapViewDelegate:Get()};
+			NSArray<NSNumber *> *pattern = @[[NSNumber numberWithInt:dashPattern.X], [NSNumber numberWithInt:dashPattern.Y]];
+			[dg addOverlay:coordinates
+				type:type
+				strokeColor:[UIColor colorWithRed:strokeColor.X green:strokeColor.Y blue:strokeColor.Z alpha:strokeColor.W]
+				fillColor:[UIColor colorWithRed:fillColor.X green:fillColor.Y blue:fillColor.Z alpha:fillColor.W]
+				lineWidth:lineWidth
+				geodesic:geodesic
+				startCap:startCap
+				endCap:endCap
+				joinType:joinType
+				pattern:pattern
+				centerLatitude:centerLatitude
+				centerLongitude:centerLongitude
+				radius:radius];
+		@}
+
+		public void UpdateOverlays()
+		{
+			ClearOverlays();
+			foreach(MapOverlay p in Overlays)
+			{
+				AddOverlay(
+					p.Type,
+					p.GetCordinatesArray(),
+					p.StrokeColor,
+					p.FillColor,
+					p.LineWidth,
+					p.Geodesic,
+					p.StartCap,
+					p.EndCap,
+					p.JoinType,
+					p.DashPattern,
+					p.CenterLatitude,
+					p.CenterLongitude,
+					p.Radius
+					);
+			}
+		}
+
 		public ObservableList<MapMarker> Markers {
 			get
 			{
 				return _mapViewHost.Markers;
+			}
+		}
+
+		public ObservableList<MapOverlay> Overlays {
+			get
+			{
+				return _mapViewHost.Overlays;
 			}
 		}
 
@@ -391,7 +449,7 @@ namespace Fuse.Maps.iOS
 		{
 			_mapView.SetBoolValue("showsUserLocation", status);
 		}
-		
+
 		public bool ShowMyLocation
 		{
 			get
@@ -400,9 +458,9 @@ namespace Fuse.Maps.iOS
 			}
 			set
 			{
-				if(value) 
+				if(value)
 					RequestLocationAuth(HandleLocationAuthChange);
-				else 
+				else
 					_mapView.SetBoolValue("showsUserLocation", value);
 			}
 		}
@@ -414,7 +472,7 @@ namespace Fuse.Maps.iOS
 			MapViewDelegate* dg = (MapViewDelegate*)@{MapView:Of(_this)._mapViewDelegate:Get()};
 			[dg requestLocationAuthentication:onAuthorizationResult];
 		@}
-		
+
 		//iOS 9 only :(
 		public bool ShowCompass
 		{
