@@ -749,6 +749,10 @@ namespace Fuse.Platform
 					com.fuse.Activity.getRootActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT);
 					return;
 				}
+				default:
+				{
+					com.fuse.Activity.getRootActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_USER);
+				}
 			}
 		@}
 	}
