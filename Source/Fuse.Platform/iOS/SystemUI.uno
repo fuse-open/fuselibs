@@ -323,6 +323,8 @@ namespace Fuse.Platform
 			IsTopFrameVisible = false;
 		}
 
+		static public int supportedOrientation = extern<int>"UIInterfaceOrientationMaskAll";
+
 		public static ScreenOrientation DeviceOrientation
 		{
 			get
@@ -398,17 +400,35 @@ namespace Fuse.Platform
 			NSNumber * value;
 			switch (orientation)
 			{
+				case 0:
+				{
+					@{supportedOrientation:Set(UIInterfaceOrientationMaskPortrait)};
+					value = [NSNumber numberWithInt:UIInterfaceOrientationPortrait];
+					break;
+				}
 				case 1:
+				{
+					@{supportedOrientation:Set(UIInterfaceOrientationMaskLandscapeLeft)};
 					value = [NSNumber numberWithInt:UIInterfaceOrientationLandscapeLeft];
 					break;
+				}
 				case 2:
+				{
+					@{supportedOrientation:Set(UIInterfaceOrientationMaskLandscapeRight)};
 					value = [NSNumber numberWithInt:UIInterfaceOrientationLandscapeRight];
 					break;
+				}
 				case 3:
+				{
+					@{supportedOrientation:Set(UIInterfaceOrientationMaskPortraitUpsideDown)};
 					value = [NSNumber numberWithInt:UIInterfaceOrientationPortraitUpsideDown];
 					break;
+				}
 				default:
+				{
+					@{supportedOrientation:Set(UIInterfaceOrientationMaskAll)};
 					value = [NSNumber numberWithInt:UIInterfaceOrientationPortrait];
+				}
 			}
 			[[UIDevice currentDevice] setValue:value forKey:@"orientation"];
 		@}
