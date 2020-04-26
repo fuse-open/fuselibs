@@ -358,40 +358,37 @@ namespace Fuse.Platform
 		[Foreign(Language.ObjC)]
 		static int GetCurrentScreenOrientation()
 		@{
-			if (@available(iOS 13, *))
+			#if defined(__IPHONE_13_0) && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_13_0
+			 UIInterfaceOrientation mask = [[UIApplication sharedApplication].windows firstObject].windowScene.interfaceOrientation;
+			 switch (mask)
+			 {
+			 	case UIInterfaceOrientationPortrait:
+			 		return 0;
+			 	case UIInterfaceOrientationLandscapeLeft:
+			 		return 1;
+			 	case UIInterfaceOrientationLandscapeRight:
+			 		return 2;
+			 	case UIInterfaceOrientationPortraitUpsideDown:
+			 		return 3;
+			 	case UIInterfaceOrientationUnknown:
+			 		return 4;
+			 }
+			#else
+			UIInterfaceOrientationMask mask = [[UIApplication sharedApplication] statusBarOrientation];
+			switch (mask)
 			{
-				 UIInterfaceOrientation mask = [[UIApplication sharedApplication].windows firstObject].windowScene.interfaceOrientation;
-				 switch (mask)
-				 {
-				 	case UIInterfaceOrientationPortrait:
-				 		return 0;
-				 	case UIInterfaceOrientationLandscapeLeft:
-				 		return 1;
-				 	case UIInterfaceOrientationLandscapeRight:
-				 		return 2;
-				 	case UIInterfaceOrientationPortraitUpsideDown:
-				 		return 3;
-				 	case UIInterfaceOrientationUnknown:
-				 		return 4;
-				 }
+				case UIInterfaceOrientationMaskPortrait:
+					return 0;
+				case UIInterfaceOrientationMaskLandscapeLeft:
+					return 1;
+				case UIInterfaceOrientationMaskLandscapeRight:
+					return 2;
+				case UIInterfaceOrientationMaskPortraitUpsideDown:
+					return 3;
+				default:
+					return 4;
 			}
-			else
-			{
-				UIInterfaceOrientationMask mask = [[UIApplication sharedApplication] statusBarOrientation];
-				switch (mask)
-				{
-					case UIInterfaceOrientationMaskPortrait:
-						return 0;
-					case UIInterfaceOrientationMaskLandscapeLeft:
-						return 1;
-					case UIInterfaceOrientationMaskLandscapeRight:
-						return 2;
-					case UIInterfaceOrientationMaskPortraitUpsideDown:
-						return 3;
-					default:
-						return 4;
-				}
-			}
+			#endif
 		@}
 
 		[Foreign(Language.ObjC)]
