@@ -13,7 +13,8 @@ namespace Fuse.Platform
 		"android.view.View.OnLayoutChangeListener", "android.view.View",
 		"android.view.ViewTreeObserver", "android.view.Window",
 		"android.view.WindowManager", "android.widget.FrameLayout",
-		"java.lang.reflect.Method")]
+		"android.content.Context", "android.content.pm.ActivityInfo",
+		"android.view.Surface", "java.lang.reflect.Method")]
 
 	static extern(android) class SystemUI
 	{
@@ -21,7 +22,8 @@ namespace Fuse.Platform
 		static  Rect BottomFrame { get { return GetBottomBarFrame(); } }
 
 		static public event Action MarginsChanged;
-		
+		static public event Action<ScreenOrientation> DeviceOrientationChanged;
+
 		static public float4 DeviceMargins
 		{
 			get
@@ -30,7 +32,7 @@ namespace Fuse.Platform
 				return float4(0);
 			}
 		}
-		
+
 		static public float4 SafeMargins
 		{
 			get
@@ -40,18 +42,18 @@ namespace Fuse.Platform
 				return float4(0,top,0,bottom) / Density;
 			}
 		}
-		
+
 		static public float4 StaticMargins
 		{
 			get
 			{
 				var top = TopFrame.Height;
 				var bottom = _staticBottomFrameSize;
-				return float4(0,top,0,bottom) / Density; 
+				return float4(0,top,0,bottom) / Density;
 			}
 		}
-		
-		
+
+
 		static Java.Object _keyboardListener; //ViewTreeObserver.OnGlobalLayoutListener
 		static Java.Object SuperLayout; //FrameLayout
 		static Java.Object RootLayout; //FrameLayout
@@ -72,9 +74,9 @@ namespace Fuse.Platform
 		// Taken from platform2 display
 
 		static float _density = 1;
-		static public float Density 
-		{ 
-			get { return _density; } 
+		static public float Density
+		{
+			get { return _density; }
 			private set { _density = value; }
 		}
 		static private Rect _frame;
@@ -236,7 +238,7 @@ namespace Fuse.Platform
 			}
 			return (float)result;
 		@}
-		
+
 		[Foreign(Language.Java)]
 		static public void ShowStatusBar()
 		@{
@@ -339,7 +341,7 @@ namespace Fuse.Platform
 			var height = _bottomFrameSize;
 			return new Rect(float2(0, 0), float2(dispSize.X, height));
 		}
-		
+
 		static void OnWillResize()
 		{
 			if (MarginsChanged != null)
@@ -635,7 +637,7 @@ namespace Fuse.Platform
 			float h = (int)GetRealDisplayHeight();
 			return float2(w, h);
 		}
-		
+
 
 		static public int APILevel { get { return GetAPILevel(); } }
 		static public int3 OSVersion
@@ -660,18 +662,98 @@ namespace Fuse.Platform
 				return int3(major, minor, revision);
 			}
 		}
-		
+
 		[Foreign(Language.Java)]
 		static int GetAPILevel()
 		@{
 			return android.os.Build.VERSION.SDK_INT;
 		@}
-		
+
 		[Foreign(Language.Java)]
 		static string GetOSVersion()
 		@{
 			return android.os.Build.VERSION.RELEASE;
 		@}
-		
+
+		public static ScreenOrientation DeviceOrientation
+		{
+			get
+			{
+				var orientation = GetCurrentScreenOrientation();
+				switch (orientation)
+				{
+					case 0:
+						return ScreenOrientation.Portrait;
+					case 1:
+						return ScreenOrientation.LandscapeLeft;
+					case 2:
+						return ScreenOrientation.LandscapeRight;
+					case 3:
+						return ScreenOrientation.PortraitUpsideDown;
+					default:
+						return ScreenOrientation.Default;
+				}
+			}
+			set
+			{
+				if (DeviceOrientation != value)
+				{
+					SetCurrentScreenOrientation(value);
+					if (DeviceOrientationChanged != null)
+						DeviceOrientationChanged(value);
+				}
+			}
+		}
+
+		[Foreign(Language.Java)]
+		static int GetCurrentScreenOrientation()
+		@{
+			final int rotation = ((WindowManager) com.fuse.Activity.getRootActivity().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getRotation();
+			switch (rotation)
+			{
+				case Surface.ROTATION_0:
+					return 0;
+				case Surface.ROTATION_270:
+					return 1;
+				case Surface.ROTATION_90:
+					return 2;
+				case Surface.ROTATION_180:
+					return 3;
+				default:
+					return 4;
+			}
+		@}
+
+		[Foreign(Language.Java)]
+		static void SetCurrentScreenOrientation(int orientation)
+		@{
+			switch (orientation)
+			{
+				case 0:
+				{
+					com.fuse.Activity.getRootActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+					return;
+				}
+				case 1:
+				{
+					com.fuse.Activity.getRootActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
+					return;
+				}
+				case 2:
+				{
+					com.fuse.Activity.getRootActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+					return;
+				}
+				case 3:
+				{
+					com.fuse.Activity.getRootActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT);
+					return;
+				}
+				default:
+				{
+					com.fuse.Activity.getRootActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_USER);
+				}
+			}
+		@}
 	}
 }

@@ -23,6 +23,12 @@
 	@{Fuse.Platform.SystemUI._statusBarDidChangeFrame(Uno.Platform.iOS.uCGRect):Call(frame)};
 }
 
+- (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window
+{
+	uAutoReleasePool pool;
+	return @{Fuse.Platform.SystemUI.supportedOrientation:Get()};
+}
+
 - (BOOL)prefersStatusBarHidden
 {
 	uAutoReleasePool pool;
