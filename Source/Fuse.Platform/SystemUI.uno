@@ -19,9 +19,18 @@ namespace Fuse.Platform
 		Fullscreen = 2,
 	}
 
+	public enum ScreenOrientation
+	{
+		Portrait,
+		LandscapeLeft,
+		LandscapeRight,
+		PortraitUpsideDown,
+		Default
+	}
+
 	/**
 		Abstract system details about the UI of the target device.
-		
+
 		This desktop version serves as the documentation for what is expected from the platform backends.
 	*/
 	static extern(!iOS && !Android) class SystemUI
@@ -30,21 +39,22 @@ namespace Fuse.Platform
 			Emitted whenever one of the `...Margins` property changes.
 		*/
 		static public event Action MarginsChanged;
-		
+		static public event Action<ScreenOrientation> DeviceOrientationChanged;
+
 		static float4 _deviceMargins = float4(0);
 		static float4 _safeMargins = float4(0);
 		static float4 _staticMargins = float4(0);
-		
+
 		/**
 			The margins the device reports as not being complete safe for drawing as something may obstruct the view, such as rounded corners or bevels.
-			
+
 			The units are the natural units of the native SDK, such that Viewport.PointsPerOSPoint would translate into Fuse points.
 		*/
 		static public float4 DeviceMargins
 		{
 			get { return _deviceMargins; }
 		}
-		
+
 		/**
 			Margins that completely exclude all system controls, device margins, or anything else which makes the area unsafe for drawing.
 		*/
@@ -60,16 +70,26 @@ namespace Fuse.Platform
 		{
 			get { return _staticMargins; }
 		}
-		
-		
+
+
 		extern(UNO_TEST) static internal void SetMargins( float4 device, float4 safe, float4 static_ )
 		{
 			_deviceMargins = device;
 			_safeMargins = safe;
 			_staticMargins = static_;
-			
+
 			if (MarginsChanged != null)
 				MarginsChanged();
+		}
+
+		public static ScreenOrientation DeviceOrientation
+		{
+			get { return ScreenOrientation.Portrait; }
+			set
+			{
+				if (DeviceOrientationChanged != null)
+					DeviceOrientationChanged(value);
+			}
 		}
 	}
 }
