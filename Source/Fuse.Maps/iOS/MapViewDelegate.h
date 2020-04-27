@@ -6,7 +6,7 @@ typedef void (^TouchesEventBlock)(NSSet * touches, UIEvent * event);
 
 @interface TouchRecognizer : UIGestureRecognizer
 	{
-	    TouchesEventBlock touchesBeganCallback;
+		TouchesEventBlock touchesBeganCallback;
 	}
 	@property(copy) TouchesEventBlock touchesBeganCallback;
 	@property(copy) TouchesEventBlock touchesEndedCallback;
@@ -20,8 +20,8 @@ typedef void (^TouchesEventBlock)(NSSet * touches, UIEvent * event);
 	-(void)setMapMoveAction:(void(^)(bool))action;
 	-(void)setMapTouchAction:(void(^)(int, double, double))action;
 	-(void)setMarkerSelectAction:(void(^)(int, NSString*))action;
-	-(int)addMarker:(NSString*)label 
-	latitude:(double)lat 
+	-(int)addMarker:(NSString*)label
+	latitude:(double)lat
 	longitude:(double)lng
 	icon:(NSString*)iconPath
 	iconX:(float)iconX
@@ -30,6 +30,8 @@ typedef void (^TouchesEventBlock)(NSSet * touches, UIEvent * event);
 	-(BOOL)authorized;
 	-(void)removeMarker:(int)identifier;
 	-(void)clearMarkers;
+	-(void)addOverlay:(id)coords type:(int)overlayType strokeColor:(UIColor *)strokeColor fillColor:(UIColor *)fillColor lineWidth:(int)lineWidth geodesic:(bool)geodesic startCap:(int)startCap endCap:(int)endCap joinType:(int)joinType pattern:(NSArray<NSNumber *> *)pattern centerLatitude:(double)centerLatitude centerLongitude:(double)centerLongitude radius:(double)radius;
+	-(void)clearOverlays;
 	-(void)requestLocationAuthentication:(void(^)(bool))onRequestResult;
 	-(void)locationManager:(CLLocationManager*)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status;
 	-(void)moveTo:(double)lat longitude:(double)l zoom:(double)z tilt:(double)t orientation:(double)o;

@@ -3,6 +3,9 @@
 ### Fuse.Auth
 - Introducing Fuse.Auth, the easiest way to perform user authentication using biometric sensor that reside on the device such as fingerprint or FaceID
 
+### MapView
+- Adds a map overlay to a MapView using `MapOverlay` Node. There are 3 types of overlay that are supported : Polyline, Polygon and Circle
+
 ### Fuse.Triggers
 - Added trigger action `SetWindowOrientation` for setting device orientation
 

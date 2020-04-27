@@ -6,15 +6,15 @@ using Uno.Compiler.ExportTargetInterop;
 
 namespace Fuse.Maps.Android
 {
-	[ForeignInclude(Language.Java, "com.fusetools.maps.FuseMap", "android.util.Log")]
+	[ForeignInclude(Language.Java, "com.fusetools.maps.FuseMap", "android.util.Log", "android.graphics.Color")]
 	extern (Android) static class ForeignHelpers
-	{	
+	{
 		[Foreign(Language.Java)]
 		internal static Java.Object CreateMap()
 		@{
 			return new FuseMap();
 		@}
-		
+
 		[Foreign(Language.Java)]
 		internal static void MoveCamera(Java.Object handle, double lat, double lng, float zoom, float tilt, float bearing, double duration)
 		@{
@@ -132,6 +132,20 @@ namespace Fuse.Maps.Android
 		@{
 			FuseMap map = (FuseMap)handle;
 			return map.addMarker(lat, lng, label, iconPath, iconAnchorX, iconAnchorY, uid);
+		@}
+
+		[Foreign(Language.Java)]
+		internal static void AddOverlay(Java.Object handle, OverlayType type, double[] coordinates, int strokeColor, int fillColor, int lineWidth, bool geodesic, LineCap startCap, LineCap endCap, LineJoin joinType, int[] dashPattern, double centerLatitude, double centerLongitude, double radius)
+		@{
+			FuseMap map = (FuseMap)handle;
+			map.AddOverlay(type, coordinates.copyArray(), strokeColor, fillColor, lineWidth, geodesic, startCap, endCap, joinType, dashPattern.copyArray(), centerLatitude, centerLongitude, radius);
+		@}
+
+		[Foreign(Language.Java)]
+		internal static void ClearOverlays(Java.Object handle)
+		@{
+			FuseMap map = (FuseMap)handle;
+			map.clearOverlays();
 		@}
 
 		[Foreign(Language.Java)]
