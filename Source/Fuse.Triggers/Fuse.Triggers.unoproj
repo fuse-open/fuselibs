@@ -42,6 +42,7 @@
     "Actions/Toggle.uno:Source",
     "Actions/TriggerAction.uno:Source",
     "Actions/Visibility.uno:Source",
+    "Actions/SetWindowOrientation.uno:Source",
     "AddingAnimation.uno:Source",
     "Busy.uno:Source",
     "Busy.ScriptClass.uno:Source",
