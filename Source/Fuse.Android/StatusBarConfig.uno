@@ -98,6 +98,37 @@ namespace Fuse.Android
 			}
 		}
 
+		StatusBarStyle _style = StatusBarStyle.Dark;
+		/** The visual style of the status bar
+		*/
+		public StatusBarStyle Style
+		{
+			get { return _style; }
+			set
+			{
+				_style = value;
+				if defined(Android)
+				{
+					if (!SetStatusBarStyle(value))
+						Fuse.Diagnostics.UserWarning("StatusBarConfig.Style is only supported on Android API-level 23 and higher", this);
+				}
+			}
+		}
+
+		extern(Android) internal static bool SetStatusBarStyle(StatusBarStyle style)
+		{
+			switch (style)
+			{
+				case StatusBarStyle.Dark:
+					SystemUI.SetDarkStatusBarStyle();
+					return true;
+				case StatusBarStyle.Light:
+					SystemUI.SetLightStatusBarStyle();
+					return true;
+			}
+			return false;
+		}
+
 		extern(Android) internal static bool SetStatusBarColor(float4 color)
 		{
 			return SystemUI.SetStatusBarColor((int)Uno.Color.ToArgb(color));
