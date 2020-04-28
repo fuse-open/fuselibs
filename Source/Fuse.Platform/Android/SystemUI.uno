@@ -14,7 +14,8 @@ namespace Fuse.Platform
 		"android.view.ViewTreeObserver", "android.view.Window",
 		"android.view.WindowManager", "android.widget.FrameLayout",
 		"android.content.Context", "android.content.pm.ActivityInfo",
-		"android.view.Surface", "java.lang.reflect.Method")]
+		"android.view.Surface", "java.lang.reflect.Method",
+		"android.graphics.Color", "android.view.WindowManager.LayoutParams")]
 
 	static extern(android) class SystemUI
 	{
@@ -281,6 +282,30 @@ namespace Fuse.Platform
 				@{CompensateRootLayoutForSystemUI():Call()};
 				@{cppOnTopFrameChanged(int):Call(0)};
 			}});
+		@}
+
+		[Foreign(Language.Java)]
+		public static int GetStatusBarColor()
+		@{
+			Window window = com.fuse.Activity.getRootActivity().getWindow();
+			if (Build.VERSION.SDK_INT >= 21)
+				return window.getStatusBarColor();
+			else
+				return Color.BLACK;
+		@}
+
+		[Foreign(Language.Java)]
+		public static bool SetStatusBarColor(int color)
+		@{
+			Window window = com.fuse.Activity.getRootActivity().getWindow();
+			if (Build.VERSION.SDK_INT >= 21)
+			{
+				window.addFlags(LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+				window.setStatusBarColor(color);
+				return true;
+			}
+			else
+				return false;
 		@}
 
 		static public void UpdateStatusBar()
