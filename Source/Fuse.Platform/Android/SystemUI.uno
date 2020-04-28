@@ -67,6 +67,7 @@ namespace Fuse.Platform
 		static bool hasCachedStatusBarSize = false;
 		static int cachedOpenSize = 0;
 		static int _systemUIState;
+		static int _statusbarStyle = 0; // dark
 		static int _topFrameSize;
 		static int _bottomFrameSize;
 		static int _staticBottomFrameSize;
@@ -308,6 +309,36 @@ namespace Fuse.Platform
 				return false;
 		@}
 
+		[Foreign(Language.Java)]
+		public static bool SetDarkStatusBarStyle()
+		@{
+			if (android.os.Build.VERSION.SDK_INT >= 23)
+			{
+				View decorView = com.fuse.Activity.getRootActivity().getWindow().getDecorView();
+				int flags = decorView.getSystemUiVisibility();
+				flags |= 0x2000;
+				decorView.setSystemUiVisibility(flags);
+				@{_statusbarStyle:Set(@{StatusBarStyle.Dark})};
+				return true;
+			}
+			return false;
+		@}
+
+		[Foreign(Language.Java)]
+		public static bool SetLightStatusBarStyle()
+		@{
+			if (android.os.Build.VERSION.SDK_INT >= 23)
+			{
+				View decorView = com.fuse.Activity.getRootActivity().getWindow().getDecorView();
+				int flags = decorView.getSystemUiVisibility();
+				flags &= ~0x2000;
+				decorView.setSystemUiVisibility(flags);
+				@{_statusbarStyle:Set(@{StatusBarStyle.Light})};
+				return true;
+			}
+			return false;
+		@}
+
 		static public void UpdateStatusBar()
 		{
 			// this method reapplies the current status bar settings.
@@ -323,6 +354,17 @@ namespace Fuse.Platform
 			case SysUIState.Fullscreen:
 				EnterFullscreen();
 				break;
+			}
+			// this method reapplies the current status bar style settings.
+			// It does not change whether it is dark or lightt.
+			switch(_statusbarStyle)
+			{
+				case StatusBarStyle.Dark:
+					SetDarkStatusBarStyle();
+					break;
+				case StatusBarStyle.Light:
+					SetLightStatusBarStyle();
+					break;
 			}
 		}
 
