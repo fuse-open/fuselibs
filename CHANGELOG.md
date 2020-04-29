@@ -5,6 +5,7 @@
 
 ### MapView
 - Adds a map overlay to a MapView using `MapOverlay` Node. There are 3 types of overlay that are supported : Polyline, Polygon and Circle
+
 ### Fuse.Triggers
 - Added trigger action `SetWindowOrientation` for setting device orientation
 
