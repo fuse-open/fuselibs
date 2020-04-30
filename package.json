@@ -36,5 +36,9 @@
   "bugs": {
     "url": "https://github.com/fuse-open/fuselibs/issues"
   },
+  "funding": {
+    "type" : "opencollective",
+    "url" : "https://opencollective.com/fuse-open"
+  },
   "homepage": "https://github.com/fuse-open/fuselibs#readme"
 }
