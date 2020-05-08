@@ -1,5 +1,5 @@
-# We don't really care about the order of changelog entries
-CHANGELOG.md merge=union
-
 # Auto detect text files and perform LF normalization
 * text=auto
+
+# We don't really care about the order of changelog entries
+CHANGELOG.md merge=union
