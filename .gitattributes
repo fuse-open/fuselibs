@@ -3,3 +3,15 @@
 
 # We don't really care about the order of changelog entries
 CHANGELOG.md merge=union
+
+# Mark vendored code
+Source/Fuse.Scripting.JavaScript/3rdparty/*.js                  linguist-vendored
+Source/Fuse.Scripting.JavaScript/Duktape/*.h                    linguist-vendored
+Source/Fuse.Scripting.JavaScript/FuseJS/Tests/node_modules/**/* linguist-vendored
+Source/Fuse.Scripting.JavaScript/JavaScriptCore/3rdparty/**/*.h linguist-vendored
+Source/Fuse.Text/harfbuzz/include/**/*.h                        linguist-vendored
+Source/Fuse.Text/icu/**/*.h                                     linguist-vendored
+
+jquery.js       linguist-vendored
+zone.js         linguist-vendored
+zone.min.js     linguist-vendored
