@@ -90,7 +90,7 @@ Please report issues [here](https://github.com/fuse-open/fuselibs/issues).
 
 ### Code Contributors
 
-This project exists thanks to all the people who contribute. [[Contribute](CONTRIBUTING.md)].
+This project exists thanks to all the people who contribute. [[Contribute](CONTRIBUTING.md)]
 <a href="https://github.com/fuse-open/fuselibs/graphs/contributors"><img src="https://opencollective.com/fuse-open/contributors.svg?width=890&button=false" /></a>
 
 ### Financial Contributors
