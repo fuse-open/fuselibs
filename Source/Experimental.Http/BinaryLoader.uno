@@ -18,12 +18,12 @@ namespace Experimental.Http
 		public String Uri;
 		public String Method;
 
-		public void Initiate()
+		public void Initiate(bool cacheResponse)
 		{
-			MakeRequest();
+			MakeRequest(cacheResponse);
 		}
 
-		public void MakeRequest()
+		public void MakeRequest(bool cacheResponse)
 		{
 			if (LoaderConst.Handler == null)
 				LoaderConst.Handler = new HttpMessageHandler();
@@ -32,6 +32,7 @@ namespace Experimental.Http
 			request.Error += OnError;
 			request.Done += OnLoaded;
 			request.SetResponseType( HttpResponseType.ByteArray );
+			request.EnableCache(cacheResponse);
 			request.SendAsync();
 		}
 
