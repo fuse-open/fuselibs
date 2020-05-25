@@ -91,5 +91,11 @@ namespace Fuse.Resources
 		{
 			return _texture;
 		}
+
+		public override byte[] GetBytes()
+		{
+			return null;
+		}
+
 	}
 }
