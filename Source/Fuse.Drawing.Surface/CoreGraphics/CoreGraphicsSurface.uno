@@ -18,7 +18,6 @@ namespace Fuse.Drawing
 	[Require("Xcode.Framework","CoreGraphics")]
 	[Require("Source.Include", "CoreGraphics/CoreGraphicsLib.h")]
 	[Require("Xcode.Framework","GLKit")]
-	[extern(OSX) Require("Source.Include","XliPlatform/GL.h")]
 	[extern(iOS) Require("Source.Include","OpenGLES/ES2/gl.h")]
 	extern(iOS||OSX)
 	abstract class CoreGraphicsSurface : Surface
@@ -248,30 +247,39 @@ namespace Fuse.Drawing
 
 		}
 
-		[Require("Xcode.Framework","UIKit")]
+		[extern(iOS) Require("Xcode.Framework","UIKit")]
+		[extern(OSX) Require("Source.Include", "AppKit/AppKit.h")]
+		[Require("Source.Include", "TargetConditionals.h")]
 		[Foreign(Language.ObjC)]
-		extern(iOS) IntPtr CreateNativeImage(byte[] bytes)
+		extern(iOS||OSX) IntPtr CreateNativeImage(byte[] bytes)
 		@{
 			uArray* arr = [bytes unoArray];
 			NSData* data = [NSData dataWithBytes:arr->Ptr() length:arr->Length()];
+			#if TARGET_OS_IPHONE
 			UIImage * image = [UIImage imageWithData:data];
+			CGImageRef cgImage = image.CGImage;
+			#elif TARGET_OS_MAC
+			NSImage * image = [[NSImage alloc] initWithData:data];
+			NSRect imageRect = NSMakeRect(0, 0, image.size.width, image.size.height);
+			CGImageRef cgImage = [image CGImageForProposedRect:&imageRect context:NULL hints:nil];
+			#endif
 
 			// fix Orientation
 			CGAffineTransform transform = CGAffineTransformIdentity;
-            transform = CGAffineTransformTranslate(transform, image.size.width, image.size.height);
-            transform = CGAffineTransformRotate(transform, (CGFloat) M_PI);
-            transform = CGAffineTransformTranslate(transform, image.size.width, 0);
-            transform = CGAffineTransformScale(transform, -1, 1);
-            CGContextRef ctx = CGBitmapContextCreate(nil, (size_t) image.size.width, (size_t) image.size.height,
-                   CGImageGetBitsPerComponent(image.CGImage), 0,
-                   CGImageGetColorSpace(image.CGImage),
-                   CGImageGetBitmapInfo(image.CGImage));
-            CGContextConcatCTM(ctx, transform);
-            CGContextDrawImage(ctx, CGRectMake(0,0,image.size.width,image.size.height), image.CGImage);
-            CGImageRef cgimg = CGBitmapContextCreateImage(ctx);
-            CGContextRelease(ctx);
+			transform = CGAffineTransformTranslate(transform, image.size.width, image.size.height);
+			transform = CGAffineTransformRotate(transform, (CGFloat) M_PI);
+			transform = CGAffineTransformTranslate(transform, image.size.width, 0);
+			transform = CGAffineTransformScale(transform, -1, 1);
+			CGContextRef ctx = CGBitmapContextCreate(nil, (size_t) image.size.width, (size_t) image.size.height,
+					CGImageGetBitsPerComponent(cgImage), 0,
+					CGImageGetColorSpace(cgImage),
+					CGImageGetBitmapInfo(cgImage));
+			CGContextConcatCTM(ctx, transform);
+			CGContextDrawImage(ctx, CGRectMake(0,0,image.size.width,image.size.height), cgImage);
+			CGImageRef cgimg = CGBitmapContextCreateImage(ctx);
+			CGContextRelease(ctx);
 
-            return cgimg;
+			return cgimg;
 		@}
 
 		public override void Unprepare( Brush brush )
