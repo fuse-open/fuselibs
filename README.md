@@ -22,6 +22,10 @@ the UI framework used to build [Fuse](https://fuseopen.com/) apps.
 $ npm install @fuse-open/fuselibs
 ```
 
+### TypeScript definitions
+
+* [@fuse-open/types](https://www.npmjs.com/package/@fuse-open/types)
+
 ### Related packages
 
 * [android-build-tools](https://www.npmjs.com/package/android-build-tools)
