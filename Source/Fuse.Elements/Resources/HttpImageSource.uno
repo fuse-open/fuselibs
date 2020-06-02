@@ -68,6 +68,7 @@ namespace Fuse.Resources
 		public override int2 PixelSize { get { return _proxy.PixelSize; } }
 		public override ImageSourceState State { get { return _proxy.State; } }
 		public override texture2D GetTexture() { return _proxy.GetTexture(); }
+		public override byte[] GetBytes() { return _proxy.GetBytes(); }
 		public override void Reload() { _proxy.Reload(); }
 		public override float SizeDensity { get { return Density; } }
 
@@ -172,11 +173,12 @@ namespace Fuse.Resources
 			}
 		}
 
-		void SuccessCallback(texture2D texture, ImageOrientation orientation)
+		void SuccessCallback(texture2D texture, byte[] bytes, ImageOrientation orientation)
 		{
 			_loading = false;
 			_orientation = orientation;
 			SetTexture(texture);
+			SetBytes(bytes);
 		}
 
 		void FailureCallback(Exception e)
@@ -232,13 +234,13 @@ namespace Fuse.Resources
 			string _contentType;
 			string _filename;
 			bool _diskCache;
-			Action<texture2D, ImageOrientation> _done;
+			Action<texture2D, byte[], ImageOrientation> _done;
 			Action<Exception> _fail;
 			Exception _exception;
 			ImageOrientation _orientation;
 			texture2D _tex;
 
-			public BackgroundLoad(byte[] data, string filenameBase, string contentType, bool diskCache, Action<texture2D, ImageOrientation> done, Action<Exception> fail)
+			public BackgroundLoad(byte[] data, string filenameBase, string contentType, bool diskCache, Action<texture2D, byte[], ImageOrientation> done, Action<Exception> fail)
 			{
 				_data = data;
 				_contentType = contentType;
@@ -282,7 +284,7 @@ namespace Fuse.Resources
 
 			void UIDoneCallback()
 			{
-				_done(_tex, _orientation);
+				_done(_tex, _data, _orientation);
 			}
 
 			void UIFailCallback()

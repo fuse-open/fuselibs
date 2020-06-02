@@ -176,6 +176,11 @@ namespace Fuse.Resources
 			return _proxy.GetTexture();
 		}
 
+		public override byte[] GetBytes()
+		{
+			return _proxy.GetBytes();
+		}
+
 		public override void Reload()
 		{
 			_proxy.Reload();
