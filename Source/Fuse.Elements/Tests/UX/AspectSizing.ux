@@ -1,33 +1,33 @@
 <Panel ux:Class="UX.AspectSizing">
 	<Panel Width="50" Aspect="2" ux:Name="P1" Alignment="TopLeft" Margin="5" BoxSizing="FillAspect"/>
 	<Panel Height="50" Aspect="2" ux:Name="P2" Alignment="BottomRight" BoxSizing="FillAspect"/>
-	
+
 	<Panel Width="50%" Aspect="2" MaxHeight="300" BoxSizing="FillAspect" ux:Name="P3"/>
 	<Panel Width="50%" Aspect="2" MaxHeight="100" BoxSizing="FillAspect" ux:Name="P4"/>
-	
+
 	<Panel Height="50%" Aspect="0.5" MaxWidth="200" BoxSizing="FillAspect" ux:Name="P5"/>
 	<Panel Height="50%" Aspect="0.5" MaxWidth="100" BoxSizing="FillAspect" ux:Name="P6"/>
-	
+
 	<Panel Alignment="Center">
 		<Panel MinWidth="20" Aspect="4" ux:Name="P7" BoxSizing="FillAspect"/>
 	</Panel>
 	<Panel Alignment="Center">
 		<Panel MinHeight="20" Aspect="4" ux:Name="P8" BoxSizing="FillAspect"/>
 	</Panel>
-	
+
 	<Panel Alignment="Center" MinWidth="20">
 		<Panel Aspect="4" ux:Name="P9" BoxSizing="FillAspect"/>
 	</Panel>
 	<Panel Alignment="Center" MinHeight="20">
 		<Panel Aspect="4" ux:Name="P10" BoxSizing="FillAspect"/>
 	</Panel>
-	
+
 	<!-- Aspect breaking constraints -->
 	<Panel Width="50" Aspect="0.5" BoxSizing="FillAspect" MaxHeight="80" ux:Name="P11"
 		AspectConstraint="Trim"/>
 	<Panel Height="50" Aspect="2" BoxSizing="FillAspect" MaxWidth="80" ux:Name="P12"
 		AspectConstraint="Trim"/>
-		
+
 	<Panel MaxWidth="50">
 		<!-- Default  AspectConstraint="PreserveTrim" -->
 		<Panel Aspect="2" BoxSizing="FillAspect" MinHeight="50" ux:Name="P13"/>
@@ -35,5 +35,5 @@
 		<Panel Aspect="2" BoxSizing="FillAspect" MinHeight="50" ux:Name="P15" AspectConstraint="Preserve"/>
 		<Panel Aspect="2" BoxSizing="FillAspect" MinHeight="50" ux:Name="P16" AspectConstraint="Trim"/>
 	</Panel>
-		
+
 </Panel>

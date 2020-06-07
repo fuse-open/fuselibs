@@ -1,17 +1,17 @@
 <Panel ux:Class="UX.RenderBoundsBasicsTest">
 	<Panel Width="100" Height="70" Offset="20,30" Alignment="TopLeft" ux:Name="P1"
 		Color="#FFF"/>
-	
+
 	<Panel Alignment="Center" ux:Name="P4" Color="#FFF">
 		<Panel Width="50" Height="80" ux:Name="P2" Alignment="Center" Color="#FFF">
 			<Rotation Degrees="90"/>
 		</Panel>
 	</Panel>
-	
+
 	<Panel Width="0" Height="0" ux:Name="P3" Color="#FFF">
 		<Panel Offset="-10,-10" Width="10" Height="10" MaxWidth="1000" MaxHeight="1000" Alignment="TopLeft" Color="#FFF"/>
 		<Panel Offset="5,20" Width="5" Height="7" MaxWidth="1000" MaxHeight="1000" Alignment="TopLeft" Color="#FFF"/>
 	</Panel>
-	
+
 	<Panel ux:Name="P5"/>
 </Panel>

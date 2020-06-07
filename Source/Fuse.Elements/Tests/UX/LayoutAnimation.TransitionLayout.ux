@@ -8,12 +8,12 @@
 			<TransitionLayout From="f"/>
 		</Timeline>
 	</Panel>
-	
+
 	<Panel Height="50" Width="200" Alignment="BottomRight" ux:Name="f"/>
 	<Panel Height="200" Width="50" Alignment="BottomLeft" ux:Name="g">
 		<Timeline ux:Name="s2">
 			<TransitionLayout Target="m" From="g"/>
 		</Timeline>
 	</Panel>
-	
+
 </Panel>

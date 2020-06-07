@@ -36,7 +36,7 @@ namespace Fuse.Elements
 				elm.ElementBatchEntry = null;
 				_elementBatchValid = false;
 			}
-			
+
 			//TODO: The `OnRemoved` should probably be sufficient, but it wasn't clear how to
 			//properly restructure the memory in the batcher to make it work. So this is a kind of workaround.
 			if (_elementBatcher != null)
@@ -46,7 +46,7 @@ namespace Fuse.Elements
 		protected void DrawUnderlayChildren(DrawContext dc)
 		{
 			var zOrder = GetCachedZOrder();
-			for (var i = 0; i < zOrder.Length; i++) 
+			for (var i = 0; i < zOrder.Length; i++)
 			{
 				var v = zOrder[i];
 				if (v.Layer != Layer.Underlay) return;
@@ -68,7 +68,7 @@ namespace Fuse.Elements
 					_elementBatcher = null;
 				}
 
-				for (var i = 0; i < zOrder.Length; i++) 
+				for (var i = 0; i < zOrder.Length; i++)
 				{
 					var v = zOrder[i];
 					if (v.Layer == Layer.Underlay) continue;
@@ -84,7 +84,7 @@ namespace Fuse.Elements
 					else
 						_elementBatcher.RemoveAllElements();
 
-					for (var i = 0; i < zOrder.Length; i++) 
+					for (var i = 0; i < zOrder.Length; i++)
 					{
 						var v = zOrder[i];
 						if (v.Layer == Layer.Underlay) continue;
@@ -105,7 +105,7 @@ namespace Fuse.Elements
 				_elementBatcher = null;
 			}
 		}
-		
+
 		protected virtual void DrawWithChildren(DrawContext dc)
 		{
 			DrawUnderlayChildren(dc);

@@ -14,12 +14,12 @@ namespace Fuse.Elements
 
 	/**
 		Refers to the alignment of an element, or content, in its parent.
-		
+
 		This encodes both a vertical and horizontal alignment.
-		
+
 		- `Left`, `HorizontalCenter`, `Right` specify horizontal alignment
 		- `Top`, `VerticalCenter`, `Bottom` specify vertical alignment
-		
+
 		@see Layout
 	*/
 	public enum Alignment
@@ -72,7 +72,7 @@ namespace Fuse.Elements
 		/** Aligns element to the bottom right corner. */
 	    BottomRight = Right | Bottom
 	}
-	
+
 	public static class AlignmentHelpers
 	{
 		public static Alignment GetVerticalAlign(Alignment a)
@@ -83,20 +83,20 @@ namespace Fuse.Elements
 		{
 			return (Alignment)((int)a & 3);
 		}
-		
+
 		public static float2 GetAnchor(Alignment a)
 		{
 			var h = GetHorizontalAlign(a);
 			var x = h == Alignment.Left ? 0f :
 				h == Alignment.Right ? 1f : 0.5f;
-			
+
 			var v = GetVerticalAlign(a);
 			var y = v == Alignment.Top ? 0f :
 				v == Alignment.Bottom ? 1f : 0.5f;
-				
+
 			return float2(x,y);
 		}
-		
+
 		internal static SimpleAlignment GetVerticalSimpleAlign(Alignment a)
 		{
 			var raw = AlignmentHelpers.GetVerticalAlign(a);
@@ -106,7 +106,7 @@ namespace Fuse.Elements
 				return SimpleAlignment.Center;
 			return SimpleAlignment.Begin;
 		}
-		
+
 		internal static SimpleAlignment GetHorizontalSimpleAlign(Alignment a)
 		{
 			var raw = AlignmentHelpers.GetHorizontalAlign(a);
@@ -116,7 +116,7 @@ namespace Fuse.Elements
 				return SimpleAlignment.Center;
 			return SimpleAlignment.Begin;
 		}
-		
+
 		internal static OptionalSimpleAlignment GetVerticalSimpleAlignOptional(Alignment a)
 		{
 			var raw = AlignmentHelpers.GetVerticalAlign(a);
@@ -128,7 +128,7 @@ namespace Fuse.Elements
 				return OptionalSimpleAlignment.End;
 			return OptionalSimpleAlignment.None;
 		}
-		
+
 		internal static OptionalSimpleAlignment GetHorizontalSimpleAlignOptional(Alignment a)
 		{
 			var raw = AlignmentHelpers.GetHorizontalAlign(a);
@@ -141,7 +141,7 @@ namespace Fuse.Elements
 			return OptionalSimpleAlignment.None;
 		}
 	}
-	
+
 	enum SimpleAlignment
 	{
 		Begin,
@@ -156,14 +156,14 @@ namespace Fuse.Elements
 		Center,
 		End
 	}
-	
+
 	public enum CachingMode
 	{
 		Optimized,
 		Always,
 		Never
 	}
-	
+
 	/**
 		Specifies how an image size is calculated and how it is stretched.
 	*/
@@ -206,6 +206,6 @@ namespace Fuse.Elements
 		/** The size of the image of the image will be reported as 0 for unknown dimensions during initial calculations. */
 		Zero,
 		/** The natural size of the image, based on Source/Density will be used */
-		Natural,	
+		Natural,
 	}
 }

@@ -14,7 +14,7 @@ namespace Fuse.Effects
 
 	public abstract class Effect: Node
 	{
-		readonly EffectType _effectType;	
+		readonly EffectType _effectType;
 		public EffectType Type { get { return _effectType; } }
 
 		protected Effect(EffectType effectType)
@@ -44,7 +44,7 @@ namespace Fuse.Effects
 
 		public Element Element { get; private set; }
 
-		
+
 		public event Action<Effect> RenderingChanged;
 
 		protected void OnRenderingChanged()
@@ -52,7 +52,7 @@ namespace Fuse.Effects
 			if (RenderingChanged != null) RenderingChanged(this);
 		}
 
-		
+
 		public event Action<Effect> RenderBoundsChanged;
 
 		protected void OnRenderBoundsChanged()
@@ -66,7 +66,7 @@ namespace Fuse.Effects
 
 		//given the input RenderBounds return the new bounds
 		public virtual VisualBounds ModifyRenderBounds( VisualBounds inBounds )
-		{ 
+		{
 			return inBounds;
 		}
 	}

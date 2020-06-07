@@ -12,13 +12,13 @@ namespace Fuse.Elements
 
 		/**
 			How the element's visuals are cached while drawing.
-			
+
 			You generally don't need to modify this as the default uses a heuristical approach to determine what it should and should not cache. Modifying this incorrectly could result in worse performance.
 		*/
 		public CachingMode CachingMode
 		{
 			get { return Get(FastProperty1.CachingMode, DefaultCachingMode); }
-			set 
+			set
 			{
 				if (CachingMode != value)
 				{
@@ -59,17 +59,17 @@ namespace Fuse.Elements
 		}
 
 		extern (FUSELIBS_PROFILING) double _childCullTime;
-		
+
 
 		public override void Draw(DrawContext dc)
 		{
 			if (!IsRootingCompleted)
 				Fuse.Diagnostics.InternalError( "Draw called on a non-rooted node", this );
-				
+
 			if (Visibility != Visibility.Visible)
 				return;
 
-			extern double cullTime; 
+			extern double cullTime;
 			if defined (FUSELIBS_PROFILING)
 				cullTime = Uno.Diagnostics.Clock.GetSeconds();
 
@@ -85,7 +85,7 @@ namespace Fuse.Elements
 				}
 				_childCullTime = 0;
 			}
-			
+
 			if (visibleRect.Size.X == 0 || visibleRect.Size.Y == 0)
 				return;
 

@@ -5,7 +5,7 @@
 		TransformOrigin="Anchor">
 		<Translation RelativeTo="PositionOffset" RelativeNode="A" Vector="1" ux:Name="M1"/>
 		<Translation RelativeTo="PositionOffset" RelativeNode="A" Vector="0.5" ux:Name="M2"/>
-		
+
 		<Translation RelativeTo="TransformOriginOffset" RelativeNode="A" Vector="1" ux:Name="M3"/>
 		<Translation RelativeTo="TransformOriginOffset" RelativeNode="A" Vector="0.5" ux:Name="M4"/>
 	</Panel>

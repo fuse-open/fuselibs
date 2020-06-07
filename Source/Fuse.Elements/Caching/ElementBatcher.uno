@@ -47,7 +47,7 @@ namespace Fuse.Elements
 		{
 			DiscardAtlasing();
 		}
-		
+
 		public void Dispose()
 		{
 			DiscardAtlasing();
@@ -67,7 +67,7 @@ namespace Fuse.Elements
 			_elements.Clear();
 			DrawListValid = false;
 		}
-		
+
 		//See the note in `Element.Batching.uno` as to why this function exists
 		public void Remove(Element elm)
 		{

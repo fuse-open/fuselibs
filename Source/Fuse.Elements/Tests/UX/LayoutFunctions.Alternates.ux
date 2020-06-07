@@ -2,7 +2,7 @@
 	<LetFloat ux:Name="a" Value="2"/>
 	<LetFloat2 ux:Name="b" Value="3,4"/>
 	<LetFloat3 ux:Name="c" Value="5,6,7"/>
-	
+
 	<FuseTest.DudElement Value="x({a})" ux:Name="xa"/>
 	<FuseTest.DudElement Value="x({b})" ux:Name="xb"/>
 	<FuseTest.DudElement Value="y({b})" ux:Name="yb"/>

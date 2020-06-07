@@ -6,7 +6,7 @@
 			<Panel Alignment="BottomRight" Offset="5,5" Width="10" Height="10" Color="#FFF"/>
 		</Panel>
 	</Panel>
-	
+
 	<!-- only inner elements have color -->
 	<Panel Offset="200,100" Width="100" Height="100" ux:Name="P3" ClipToBounds="true" Alignment="TopLeft">
 		<Panel ux:Name="P4">
@@ -14,5 +14,5 @@
 			<Panel Alignment="BottomRight" Offset="5,5" Width="10" Height="10" Color="#FFF"/>
 		</Panel>
 	</Panel>
-	
+
 </Panel>
