@@ -119,7 +119,7 @@ WebSocket = (function(window, WebSocketClient) {
 			}
 		};
 	}
-	
+
 	WebSocket.CONNECTING = 0;
 	WebSocket.OPEN = 1;
 	WebSocket.CLOSING = 2;
