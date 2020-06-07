@@ -6,14 +6,14 @@
 			path: [ "two", {} ]
 		})
 	</JavaScript>
-	
+
 	<DockPanel>
 		<Page ux:Class="SBInnerPage" HitTestMode="LocalBoundsAndChildren">
 			<Router ux:Dependency="R"/>
 			<WhileCanGoBack NavigationContext="R">
 				<Change theSwipe.IsEnabled="true"/>
 			</WhileCanGoBack>
-			
+
 			<SwipeGesture Direction="Right" LengthNode="this" ux:Name="theSwipe" IsEnabled="false"/>
 			<SwipingAnimation Source="theSwipe">
 				<ModifyRoute Router="R" How="PrepareBack" When="Start"/>
@@ -23,7 +23,7 @@
 				<ModifyRoute Router="R" How="FinishPrepared"/>
 			</Swiped>
 		</Page>
-		
+
 		<Navigator ux:Name="ONav" DefaultPath="one">
 			<Page ux:Name="one" Title="OOne">
 				<Navigator ux:Name="INav" DefaultPath="one">
@@ -31,9 +31,9 @@
 					<SBInnerPage ux:Template="two" Title="ITwo" R="R"/>
 				</Navigator>
 			</Page>
-			
+
 			<SBInnerPage ux:Template="two" R="R" Title="OTwo"/>
-			
+
 			<SwipeGesture Direction="Left" LengthNode="ONav" ux:Name="theOuterSwipe"/>
 			<SwipingAnimation Source="theOuterSwipe">
 				<ModifyRoute Router="R" How="PreparePush" Bookmark="two" When="Start"/>
@@ -42,7 +42,7 @@
 			<Swiped Source="theOuterSwipe">
 				<ModifyRoute Router="R" How="FinishPrepared"/>
 			</Swiped>
-			
+
 		</Navigator>
 	</DockPanel>
 </Panel>

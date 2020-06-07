@@ -11,7 +11,7 @@
 				title: "happy",
 			}]
 		})
-		
+
 		exports.goto = function() {
 			router.goto({
 				$path: "one",
@@ -23,20 +23,20 @@
 		<Panel ux:Template="one">
 			<Text Value="{id}"/>
 		</Panel>
-		
+
 		<Panel ux:Class="ROPTwo">
 			<Router ux:Dependency="router"/>
 			<Text Value="!{id}"/>
 			<PageControl ux:Name="pc">
 				<JavaScript>
 					exports.pushRelative = function() {
-						router.pushRelative( pc, { 
+						router.pushRelative( pc, {
 							$path: "first",
 							title: "joyous",
 						})
 					}
 				</JavaScript>
-				
+
 				<Panel ux:Name="first">
 					<WhileActive>
 						<Text Value="1.{title}"/>
@@ -47,14 +47,14 @@
 						<Text Value="2.{title}"/>
 					</WhileActive>
 				</Panel>
-				
+
 				<FuseTest.Invoke Handler="{pushRelative}" ux:Name="callPushRelative"/>
 			</PageControl>
 		</Panel>
-		
+
 		<ROPTwo ux:Name="two" router="router"/>
 	</Navigator>
-	
+
 	<FuseTest.Invoke Handler="{goto}" ux:Name="callGoto"/>
 	<Timeline ux:Name="push">
 		<PushRoute Bookmark="two"/>

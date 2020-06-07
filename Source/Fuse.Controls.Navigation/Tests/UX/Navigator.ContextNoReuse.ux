@@ -1,19 +1,19 @@
 <Panel ux:Class="UX.Navigator.ContextNoReuse">
 	<JavaScript>
 		var Observable = require("FuseJS/Observable")
-		
-		exports.pages = Observable({ 
+
+		exports.pages = Observable({
 			$path: "MyPage",
 			value: "dog" ,
 		})
-		
+
 		exports.pushTwo = function() {
 			exports.pages.add({
 				$path: "MyPage",
 				value: "cat",
 			})
 		}
-		
+
 		exports.replaceThree = function() {
 			exports.pages.replaceAt( exports.pages.length - 1, {
 				$path: "MyPage",
@@ -25,7 +25,7 @@
 		<Panel ux:Template="MyPage">
 			<Text Value="{value}"/>
 		</Panel>
-		
+
 		<FuseTest.Invoke Handler="{pushTwo}" ux:Name="callPushTwo"/>
 		<FuseTest.Invoke Handler="{replaceThree}" ux:Name="callReplaceThree"/>
 	</Navigator>

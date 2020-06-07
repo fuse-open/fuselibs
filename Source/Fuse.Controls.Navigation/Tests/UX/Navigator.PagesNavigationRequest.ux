@@ -1,16 +1,16 @@
 <Panel ux:Class="UX.Navigator.PagesNavigationRequest">
 	<JavaScript>
 		var Observable = require("FuseJS/Observable")
-		
+
 		var pageA = {
 			$path: "one",
 		}
 		var pageB = {
 			$path: "two",
 		}
-		
+
 		exports.pages = Observable(pageA, pageB)
-		
+
 		exports.next = function() {
 			var pageC = {
 				$path: "three",
@@ -24,11 +24,11 @@
 		}
 	</JavaScript>
 	<Navigator Pages="{pages}" ux:Name="nav" Transition="None">
-		
+
 		<Page ux:Name="one"/>
 		<Page ux:Name="two"/>
 		<Page ux:Name="three"/>
-		
+
 		<FuseTest.Invoke Handler="{next}" ux:Name="callNext"/>
 	</Navigator>
 </Panel>

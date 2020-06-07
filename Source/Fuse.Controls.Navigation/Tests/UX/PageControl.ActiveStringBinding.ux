@@ -1,10 +1,10 @@
 <Panel ux:Class="UX.PageControl.ActiveStringBinding">
 	<JavaScript>
 		exports.activePage = "222";
-		exports.pageData = [ 
+		exports.pageData = [
 			{ "pageName": "111" },
 			{ "pageName": "222" },
-			{ "pageName": "333" } 
+			{ "pageName": "333" }
 		];
 	</JavaScript>
 

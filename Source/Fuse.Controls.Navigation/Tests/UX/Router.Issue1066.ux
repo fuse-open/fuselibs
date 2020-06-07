@@ -5,7 +5,7 @@
 		<Page ux:Template="home">
 			<PageControl>
 				<Page/>
-			</PageControl>	
+			</PageControl>
 		</Page>
 	</Navigator>
 </Panel>

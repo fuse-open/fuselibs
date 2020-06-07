@@ -1,7 +1,7 @@
 <Panel ux:Class="UX.PageControl.PagesRoot">
 	<JavaScript>
 		var Observable = require("FuseJS/Observable");
-		
+
 		exports.pageIndex = Observable(0)
 		exports.pages = Observable({
 			$path: "any",
@@ -13,13 +13,13 @@
 			$path: "alter",
 			desc: "three",
 		})
-		
+
 		exports.goto1 = function() { exports.pageIndex.value = 1 }
 	</JavaScript>
 
 	<!-- ensure the binding is available prior to PageControl rooting -->
 	<Each Items="{pages}"/>
-	
+
 	<WhileTrue ux:Name="w">
 		<PageControl ActiveIndex="{pageIndex}" Pages="{pages}" ux:Name="pc" Transition="None">
 			<NavigationMotion GotoDuration="0"/>

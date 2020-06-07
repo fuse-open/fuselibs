@@ -3,19 +3,19 @@
 	<JavaScript>
 		var Observable = require("FuseJS/Observable");
 		var tabList = Observable();
-		
+
 		exports.pageText = Observable("***")
 		exports.pageIndex = Observable(0)
 		exports.pageIndex.onValueChanged( module, function(value) {
 			exports.pageText.value = "Page" + value
 		})
-		
+
 		exports.goto0 = function() { exports.pageIndex.value = 0 }
 		exports.goto2 = function() { exports.pageIndex.value = 2 }
 		exports.goto4 = function() { exports.pageIndex.value = 4 }
 		exports.seek1 = function() { PC.seekToPath( "B" ) }
 	</JavaScript>
-	
+
 	<PageControl ActiveIndex="{pageIndex}" ClipToBounds="true" ux:Name="PC">
 		<Page ux:Name="A"/>
 		<Page ux:Name="B"/>
@@ -26,7 +26,7 @@
 
 	<Text Value="{pageIndex}" ux:Name="Q"/>
 	<Text Value="{pageText}" ux:Name="R"/>
-	
+
 	<FuseTest.Invoke Handler="{goto0}" ux:Name="Goto0"/>
 	<FuseTest.Invoke Handler="{goto2}" ux:Name="Goto2"/>
 	<FuseTest.Invoke Handler="{seek1}" ux:Name="Seek1"/>

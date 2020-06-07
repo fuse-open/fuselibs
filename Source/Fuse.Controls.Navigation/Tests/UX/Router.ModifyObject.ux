@@ -2,7 +2,7 @@
 	<Router ux:Name="router"/>
 	<JavaScript>
 		var Observable = require("FuseJS/Observable")
-		
+
 		exports.firstPath = [{
 			$path: "two",
 			id: 7,
@@ -10,7 +10,7 @@
 			$path: "first",
 			title: "joyous",
 		}]
-		
+
 		exports.thirdPath = Observable({
 			$path: "three",
 			id: 9,
@@ -23,7 +23,7 @@
 		<Panel ux:Template="one">
 			<Text Value="{id}"/>
 		</Panel>
-		
+
 		<Panel ux:Template="two">
 			<Text Value="!{id}"/>
 			<PageControl>
@@ -39,7 +39,7 @@
 				</Panel>
 			</PageControl>
 		</Panel>
-		
+
 		<Panel ux:Template="three">
 			<Text Value="?{id}"/>
 			<PageControl>
@@ -56,7 +56,7 @@
 			</PageControl>
 		</Panel>
 	</Navigator>
-	
+
 	<Timeline ux:Name="gotoR">
 		<GotoRoute Path="( '$path': 'one', id: 5)"/>
 	</Timeline>
@@ -72,5 +72,5 @@
 	<Timeline ux:Name="pushThird">
 		<PushRoute Path="{thirdPath}"/>
 	</Timeline>
-	
+
 </Panel>

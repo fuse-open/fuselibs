@@ -2,18 +2,18 @@
 	<Router ux:Name="R" IsMasterRouter="false"/>
 	<JavaScript>
 		var Observable = require("FuseJS/Observable")
-		
+
 		exports.titleOne = Observable("no")
 		exports.titleTwo = Observable("no")
 		exports.titleThree = Observable("no")
-		
+
 		exports.activateOne = function() { exports.titleOne.value = "yes" }
 		exports.activateTwo = function() { exports.titleTwo.value = "yes" }
 		exports.activateThree = function() { exports.titleThree.value = "yes" }
 	</JavaScript>
 	<Navigator ux:Name="Nav" DefaultPath="one" Transition="None">
 		<Page ux:Name="one" Title="{titleOne}" Activated="{activateOne}" PrepareBusy="None"/>
-		<Page ux:Name="two" Title="{titleTwo}" Activated="{activateTwo}" PrepareBusy="None"/>	
-		<Page ux:Name="three" Title="{titleThree}" Activated="{activateThree}" PrepareBusy="None"/>	
+		<Page ux:Name="two" Title="{titleTwo}" Activated="{activateTwo}" PrepareBusy="None"/>
+		<Page ux:Name="three" Title="{titleThree}" Activated="{activateThree}" PrepareBusy="None"/>
 	</Navigator>
 </Panel>

@@ -5,12 +5,12 @@
 			<FuseTest.CountAction When="Forward" ux:Name="fToBack"/>
 			<FuseTest.CountAction When="Backward" ux:Name="bToBack"/>
 		</Transition>
-		
+
 		<Transition Direction="ToFront">
 			<FuseTest.CountAction When="Forward" ux:Name="fToFront"/>
 			<FuseTest.CountAction When="Backward" ux:Name="bToFront"/>
 		</Transition>
-		
+
 		<Transition Direction="FromBack">
 			<FuseTest.CountAction When="Forward" ux:Name="fFromBack"/>
 			<FuseTest.CountAction When="Backward" ux:Name="bFromBack"/>
@@ -25,9 +25,9 @@
 			<FuseTest.CountAction When="Forward" ux:Name="f1"/>
 			<FuseTest.CountAction When="Backward" ux:Name="b1"/>
 		</Transition>
-		
+
 	</Panel>
-	
+
 	<Navigator ux:Name="nav" DefaultPath="one">
 		<TFBPage ux:Template="one"/>
 	</Navigator>

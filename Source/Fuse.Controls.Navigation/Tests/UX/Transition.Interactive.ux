@@ -4,7 +4,7 @@
 		<Transition ux:Name="T1" Mode="Prepare">
 			<Nothing Duration="1"/>
 		</Transition>
-		
+
 		<Transition ux:Name="T2">
 			<Nothing Duration="1"/>
 		</Transition>
