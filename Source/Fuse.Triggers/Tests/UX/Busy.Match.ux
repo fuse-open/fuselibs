@@ -3,12 +3,12 @@
 		<WhileBusy ux:Name="D1"><Nothing/></WhileBusy>
 		<WhileBusy ux:Name="P1" Match="Parent"><Nothing/></WhileBusy>
 		<WhileBusy ux:Name="O1" Match="OnlyDescendents"><Nothing/></WhileBusy>
-		
+
 		<FuseTest.BusyControl ux:Name="W2">
 			<WhileBusy ux:Name="D2"><Nothing/></WhileBusy>
 			<WhileBusy ux:Name="P2" Match="Parent"><Nothing/></WhileBusy>
 			<WhileBusy ux:Name="O2" Match="OnlyDescendents"><Nothing/></WhileBusy>
-		
+
 			<FuseTest.BusyControl ux:Name="W3"/>
 		</FuseTest.BusyControl>
 	</FuseTest.BusyControl>

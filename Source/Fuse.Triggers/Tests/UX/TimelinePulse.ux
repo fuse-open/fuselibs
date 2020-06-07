@@ -1,6 +1,6 @@
 <Panel ux:Class="UX.TimelinePulse">
 	<Panel ux:Name="Dummy" Height="0"/>
-	
+
 	<Timeline ux:Name="T1">
 		<Change Dummy.Height="100" Duration="1"/>
 	</Timeline>

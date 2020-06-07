@@ -12,12 +12,12 @@
 			</Panel>
 		</Placeholder>
 	</Panel>
-	
+
 	<Panel ux:Name="P2">
 		<Placeholder Target="C" ux:Name="PL2">
 		</Placeholder>
 	</Panel>
-	
+
 	<WhileTrue ux:Name="LS">
 		<Change self.LayoutElement="P2"/>
 	</WhileTrue>

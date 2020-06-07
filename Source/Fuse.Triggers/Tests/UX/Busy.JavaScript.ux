@@ -6,13 +6,13 @@
 		<Panel ux:Name="P2">
 			<JavaScript>
 				var BusyTask = require("FuseJS/BusyTask")
-				
+
 				var task = new BusyTask(P2)
-				
+
 				exports.done = function() {
 					task.done()
 				}
-				
+
 				exports.busy = function() {
 					task = new BusyTask(P2)
 				}

@@ -5,7 +5,7 @@
 	<Panel ux:Name="P1">
 		<JavaScript>
 			var BusyTask = require("FuseJS/BusyTask")
-			
+
 			exports.busy = function() {
 				task = new BusyTask(P1)
 			}

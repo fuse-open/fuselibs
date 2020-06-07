@@ -1,14 +1,14 @@
 <Panel ux:Class="UX.Toggle.Basic">
 	<Panel>
 		<ToggleControl ux:Name="v">
-			<Panel>	
+			<Panel>
 				<Timeline ux:Name="t1">
 					<Toggle/>
 				</Timeline>
 			</Panel>
 		</ToggleControl>
 	</Panel>
-	
+
 	<Timeline ux:Name="t2">
 		<Toggle Target="v"/>
 	</Timeline>
