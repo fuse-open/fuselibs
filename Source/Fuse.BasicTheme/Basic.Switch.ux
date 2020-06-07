@@ -20,13 +20,13 @@
 			<SolidColor Color="{Resource Basic.CLine}" ux:Name="_switchStrokeColor"/>
 		</Stroke>
 	</Rectangle>
-		
+
 	<WhileDisabled>
 		<Change Target="_switchThumbStroke.Width" Value="2" Duration="0.25"/>
 	</WhileDisabled>
 
 	<Fuse.BasicTheme.SwitchBehavior Bounds="_switchBounds">
-		<Move Target="_switchThumb" X="1" RelativeTo="ParentSize" Duration="0.25" 
+		<Move Target="_switchThumb" X="1" RelativeTo="ParentSize" Duration="0.25"
 			Easing="QuadraticInOut" />
 		<Change _switchStroke.Width="30" Duration="0.25" Easing="QuadraticInOut"/>
 		<Change Target="_switchStrokeColor.Color" Value="{Resource Basic.C500}"  Duration="0.05"
