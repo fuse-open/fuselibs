@@ -9,7 +9,7 @@
         exports.flip = function() {
             exports.g.add(123)
         }
-        
+
     </JavaScript>
     <StackPanel ux:Name="p1">
         <Each Items="{items}">
@@ -24,7 +24,7 @@
             <Each Items="{itemsMapped}">
                 <Fuse.Reactive.Test.CreateCountPanel />
             </Each>
-        </StackPanel>   
+        </StackPanel>
     </Each>
     <FuseTest.Invoke Handler="{flip}" ux:Name="flip"/>
 </Panel>

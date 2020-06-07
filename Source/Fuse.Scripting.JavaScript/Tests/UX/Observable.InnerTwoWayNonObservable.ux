@@ -1,48 +1,48 @@
 <Panel ux:Class="UX.Observable.InnerTwoWayNonObservable">
 	<JavaScript>
 		var Observable = require("FuseJS/Observable")
-		
+
 		var sourceItems = Observable("a")
 		exports.sourceItems = sourceItems
 		var items = sourceItems._forceInnerTwoWay()
 		exports.items = items
-		
+
 		//some use "items" and some "sourceItems". We don't need an exhaustive check since the code is shared
 		exports.step1 = function() {
 			items.add( "b" )
 		}
-		
+
 		exports.step2 = function() {
 			sourceItems.insertAt(0, "c")
 		}
-		
+
 		exports.step3 = function() {
 			items.removeAt(1)
 		}
-		
+
 		exports.step4 = function() {
 			sourceItems.insertAll(1, ["d","e","f","g"] )
 		}
-		
+
 		exports.step5 = function() {
 			items.removeRange(2,3)
 		}
-		
+
 		exports.step6 = function() {
 			sourceItems.replaceAt(2,"h")
 		}
-		
+
 		exports.step7 = function() {
 			items.clear()
 		}
-		
+
 		exports.step8 = function() {
 			sourceItems.value = "i"
 		}
 	</JavaScript>
 	<FuseTest.ObservableCollector ux:Name="SC" Items="{sourceItems}"/>
 	<FuseTest.ObservableCollector ux:Name="OC" Items="{items}"/>
-	
+
 	<FuseTest.Invoke Handler="{step1}" ux:Name="Step1"/>
 	<FuseTest.Invoke Handler="{step2}" ux:Name="Step2"/>
 	<FuseTest.Invoke Handler="{step3}" ux:Name="Step3"/>

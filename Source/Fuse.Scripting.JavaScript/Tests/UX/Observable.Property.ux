@@ -2,22 +2,22 @@
 	<Panel ux:Class="OIPanel">
 		<object ux:Property="Wrap"/>
 		<object ux:Property="OWrap"/>
-			
+
 		<JavaScript>
 			var Observable = require("FuseJS/Observable")
-			
+
 			exports.w = this.Wrap.innerTwoWay()
 			exports.ow = this.OWrap.inner().pick("o").innerTwoWay()
 		</JavaScript>
 		<Text Value="{w}" ux:Name="A"/>
 		<Text Value="{ow}" ux:Name="B"/>
 	</Panel>
-	
+
 	<JavaScript>
 		var Observable = require("FuseJS/Observable")
-		
+
 		exports.a = Observable("one")
-		
+
 		exports.b = Observable({
 			o: Observable("o1")
 		})
@@ -26,6 +26,6 @@
 	<OIPanel Wrap="{a}" OWrap="{b}" ux:Name="W"/>
 	<Text Value="{a}" ux:Name="A"/>
 	<Text Value="{textB}" ux:Name="B"/>
-	
+
 	<FuseTest.Invoke Handler="{swap}" ux:Name="Swap"/>
 </Panel>

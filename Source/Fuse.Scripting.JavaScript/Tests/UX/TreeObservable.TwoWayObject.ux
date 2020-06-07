@@ -23,7 +23,7 @@
 		var tree = new Tree();
 		module.exports = { tree:tree };
 	</JavaScript>
-	
+
 	<TextInput ux:Name="ti" Value="{tree.thing.foo}" />
 	<FuseTest.DudElement ux:Name="t" StringValue="{tree.thing.thing.foo}" />
 	<FuseTest.DudElement ux:Name="wasChanged" StringValue="{tree.wasChanged}" />

@@ -1,6 +1,6 @@
 
 
-/* 
+/*
 	This function represents the low-level interface between the TreeObservable mechanism
 	on the Uno side, and JS. When an instance of TreeObservable is found in the data context,
 	the Uno side instruments the object to allow change callbacks to Uno.

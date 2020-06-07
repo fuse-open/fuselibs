@@ -1,47 +1,47 @@
 <Panel ux:Class="UX.Observable.InnerNonObservable">
 	<JavaScript>
 		var Observable = require("FuseJS/Observable")
-		
+
 		var sourceItems = Observable("a")
 		exports.sourceItems = sourceItems
 		var items = sourceItems._forceInner()
 		exports.items = items
-		
+
 		exports.step1 = function() {
 			sourceItems.add( "b" )
 		}
-		
+
 		exports.step2 = function() {
 			sourceItems.insertAt(0, "c")
 		}
-		
+
 		exports.step3 = function() {
 			sourceItems.removeAt(1)
 		}
-		
+
 		exports.step4 = function() {
 			sourceItems.insertAll(1, ["d","e","f","g"] )
 		}
-		
+
 		exports.step5 = function() {
 			sourceItems.removeRange(2,3)
 		}
-		
+
 		exports.step6 = function() {
 			sourceItems.replaceAt(2,"h")
 		}
-		
+
 		exports.step7 = function() {
 			sourceItems.clear()
 		}
-		
+
 		exports.step8 = function() {
 			sourceItems.value = "i"
 		}
 	</JavaScript>
 	<FuseTest.ObservableCollector ux:Name="SC" Items="{sourceItems}"/>
 	<FuseTest.ObservableCollector ux:Name="OC" Items="{items}"/>
-	
+
 	<FuseTest.Invoke Handler="{step1}" ux:Name="Step1"/>
 	<FuseTest.Invoke Handler="{step2}" ux:Name="Step2"/>
 	<FuseTest.Invoke Handler="{step3}" ux:Name="Step3"/>

@@ -25,8 +25,8 @@
 		<string ux:Property="Foo" />
 		<int ux:Property="Bar" />
 		<object ux:Property="ComplexObj" />
-		
-		<JavaScript 
+
+		<JavaScript
 			dep:foo="{foo}"
 			dep:bar="{bar}"
 			dep:obs="{obs}"
@@ -42,7 +42,7 @@
 			if (Bar === 0) { return; }
 			if (ComplexObj == null) { return; }
 			if (ComplexObj.moo !== 77) { throw new Error("Failed to pass complex object"); }
-			if (ComplexObj.funfun() !== 88) { throw new Erorr("Failed to pass function along complex object"); }		
+			if (ComplexObj.funfun() !== 88) { throw new Erorr("Failed to pass function along complex object"); }
 
 			if (foo !== 1) { throw new Error() }
 			if (bar !== 2) { throw new Error() }

@@ -1,10 +1,10 @@
 <Panel ux:Class="UX.Observable.ReplaceAtFail">
 	<JavaScript>
 		var Observable = require("FuseJS/Observable")
-		
+
 		var items = Observable(1,2)
 		exports.items = items
-		
+
 		exports.step1 = function() {
 			try {
 				items.replaceAt(3,4)
@@ -13,6 +13,6 @@
 		}
 	</JavaScript>
 	<FuseTest.ObservableCollector ux:Name="OC" Items="{items}"/>
-	
+
 	<FuseTest.Invoke Handler="{step1}" ux:Name="Step1"/>
 </Panel>

@@ -15,7 +15,7 @@
 
 		<StackPanel ux:Name="js">
 			<JavaScript>
-				module.exports = { 
+				module.exports = {
 					foo: "wrong"
 				}
 			</JavaScript>

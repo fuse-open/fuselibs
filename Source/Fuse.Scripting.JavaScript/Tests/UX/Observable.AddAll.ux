@@ -1,28 +1,28 @@
 <Panel ux:Class="UX.Observable.AddAll">
 	<JavaScript>
 		var Observable = require("FuseJS/Observable")
-		
+
 		var items = Observable(1,2)
 		exports.items = items
-		
+
 		exports.step1 = function() {
 			items.addAll( [1,2,5] )
 		}
-		
+
 		exports.step2 = function() {
 			items.addAll( [] )
 		}
-		
+
 		exports.step3 = function() {
 			items.refreshAll( [] )
 		}
-		
+
 		exports.step4 = function() {
 			items.refreshAll( [9] )
 		}
 	</JavaScript>
 	<FuseTest.ObservableCollector ux:Name="OC" Items="{items}"/>
-	
+
 	<FuseTest.Invoke Handler="{step1}" ux:Name="Step1"/>
 	<FuseTest.Invoke Handler="{step2}" ux:Name="Step2"/>
 	<FuseTest.Invoke Handler="{step3}" ux:Name="Step3"/>

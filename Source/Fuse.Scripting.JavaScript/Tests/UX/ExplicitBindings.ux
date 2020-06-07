@@ -16,5 +16,5 @@
 	<!-- This binding is not supposed to resolve because bindings on
 		the outer panel don't see the inner <JavaScript> -->
 	<DataBinding Target="p1.X" Key="foo" />
-	
+
 </Panel>

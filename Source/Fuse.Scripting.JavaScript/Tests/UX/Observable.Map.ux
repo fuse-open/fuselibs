@@ -1,46 +1,46 @@
 <Panel ux:Class="UX.Observable.Map">
 	<JavaScript>
 		var Observable = require("FuseJS/Observable")
-		
+
 		var items = Observable("a")
 		exports.items = items.map( function(val) {
 			return "$" + val
 		})
-		
+
 		exports.step1 = function() {
 			items.add( "b" )
 		}
-		
+
 		exports.step2 = function() {
 			items.insertAt(0, "c")
 		}
-		
+
 		exports.step3 = function() {
 			items.removeAt(1)
 		}
-		
+
 		exports.step4 = function() {
 			items.insertAll(1, ["d","e","f","g"] )
 		}
-		
+
 		exports.step5 = function() {
 			items.removeRange(2,3)
 		}
-		
+
 		exports.step6 = function() {
 			items.replaceAt(2,"h")
 		}
-		
+
 		exports.step7 = function() {
 			items.clear()
 		}
-		
+
 		exports.step8 = function() {
 			items.value = "i"
 		}
 	</JavaScript>
 	<FuseTest.ObservableCollector ux:Name="OC" Items="{items}"/>
-	
+
 	<FuseTest.Invoke Handler="{step1}" ux:Name="Step1"/>
 	<FuseTest.Invoke Handler="{step2}" ux:Name="Step2"/>
 	<FuseTest.Invoke Handler="{step3}" ux:Name="Step3"/>
