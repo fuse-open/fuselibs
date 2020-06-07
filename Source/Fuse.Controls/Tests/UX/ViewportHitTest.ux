@@ -7,7 +7,7 @@
 			<Change self.Color="#00F" Duration="0" DurationBack="0.5"/>
 		</Clicked>
 	</Panel>
-	
+
 	<Grid ux:Class="RepeatGrid" ColumnCount="2" Color="#FFF8"  Margin="50" CellSpacing="25">
 		<ClickPanel ux:Name="A" Color="0,0,1,1" />
 		<Viewport>
@@ -24,15 +24,15 @@
 			</Panel>
 		</Viewport>
 	</Grid>
-	
+
 	<Grid ColumnCount="2" Alignment="TopLeft" Width="1000" Height="800" Color="#008"
 		SnapToPixels="false" CellSpacing="25">
 		<RepeatGrid ux:Name="Q"/>
-		
+
 		<Viewport Perspective="500">
 			<RepeatGrid ux:Name="R"/>
 		</Viewport>
-		
+
 		<Panel>
 			<Viewport Perspective="600">
 				<RepeatGrid ux:Name="S">
@@ -42,7 +42,7 @@
 				</RepeatGrid>
 			</Viewport>
 		</Panel>
-		
+
 		<Panel>
  			<Viewport Perspective="500" Mode="Disabled">
 				<RepeatGrid ux:Name="T">
