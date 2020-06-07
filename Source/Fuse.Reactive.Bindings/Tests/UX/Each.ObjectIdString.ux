@@ -6,11 +6,11 @@
 		exports.items.add( "one")
 		exports.items.add( "two" )
 		exports.items.add( "three" )
-		
+
 		exports.replaceAt = function() {
 			exports.items.replaceAt( 1, "two" )
 		}
-		
+
 		exports.replaceAll = function() {
 			exports.items.replaceAll([ "two", "one", "three" ])
 		}
@@ -24,7 +24,7 @@
 			</FuseTest.DudElement>
 		</Each>
 	</StackPanel>
-	
+
 	<FuseTest.Invoke Handler="{replaceAt}" ux:Name="CallReplace"/>
 	<FuseTest.Invoke Handler="{replaceAll}" ux:Name="CallReplaceAll"/>
 	<FuseTest.Invoke Handler="{clear}" ux:Name="CallClear"/>

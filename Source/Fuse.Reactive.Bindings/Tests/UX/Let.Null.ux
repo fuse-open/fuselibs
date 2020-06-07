@@ -1,15 +1,15 @@
 <Panel ux:Class="UX.Let.Null">
 	<FuseTest.Data ux:Name="nl"/>
 	<FuseTest.Data Value="( one: 1 )" ux:Name="nb"/>
-	
+
 	<Let ux:Name="a" Expression="{Property nl.Value}.one"/>
 	<Let ux:Name="b" Expression="{nothing}"/>
 	<Let ux:Name="c" Expression="{Property nl.Value}"/>
 	<Let ux:Name="d"/>
-	
+
 	<FuseTest.DudElement BoolValue="isDefined({a})" ux:Name="ha"/>
 	<FuseTest.DudElement BoolValue="isDefined({b})" ux:Name="hb"/>
 	<FuseTest.DudElement BoolValue="isDefined({c})" ux:Name="hc"/>
 	<FuseTest.DudElement BoolValue="isDefined({d})" ux:Name="hd"/>
-	
+
 </Panel>

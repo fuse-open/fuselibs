@@ -1,8 +1,8 @@
 <Panel ux:Class="UX.Let.Bool">
 	<LetBool Value="false" ux:Name="a"/>
-	
+
 	<ToggleControl Value="{a}" ux:Name="t"/>
-	
+
 	<FuseTest.DudElement BoolValue="{a}" ux:Name="da"/>
 	<FuseTest.DudElement StringValue="{= {a} ? 't' : 'f' }" ux:Name="ds"/>
 </Panel>

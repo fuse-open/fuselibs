@@ -10,29 +10,29 @@
 		</Each>
 	</Panel>
 
-	
+
 	<Panel ux:Name="c">
 		<Each Count="1" TemplateKey="one" TemplateSource="c">
 			<FuseTest.DudElement StringValue="X"/>
 		</Each>
-		
+
 		<FuseTest.DudElement ux:Template="one" StringValue="A"/>
 	</Panel>
-	
+
 	<Panel ux:Name="d">
 		<Each Count="1" TemplateKey="one" TemplateSource="c">
 			<FuseTest.DudElement StringValue="X"/>
 			<FuseTest.DudElement ux:Template="one" StringValue="Q" ux:DefaultTemplate="true"/>
 		</Each>
 	</Panel>
-	
+
 	<Panel ux:Name="e">
 		<Each Count="1" TemplateKey="one" TemplateSource="e">
 			<FuseTest.DudElement StringValue="X"/>
 			<FuseTest.DudElement ux:Template="one" StringValue="Q" ux:DefaultTemplate="true"/>
 		</Each>
 	</Panel>
-	
+
 	<Panel ux:Name="f">
 		<Each Count="1">
 			<FuseTest.DudElement StringValue="A"/>

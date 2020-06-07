@@ -1,18 +1,18 @@
 <Panel ux:Class="UX.Each.Null">
 	<JavaScript>
 		var Observable = require("FuseJS/Observable")
-		
+
 		exports.items = Observable( Observable(), Observable() )
-		
+
 		exports.second = function() {
 			exports.items.getAt(1).value = { tpl: "one", value: 2 }
 		}
-		
+
 		exports.clear = function() {
 			exports.items.getAt(0).clear()
 			exports.items.getAt(1).clear()
 		}
-		
+
 		exports.both = function() {
 			exports.items.getAt(1).value = { tpl: "one", value: 3 }
 			exports.items.getAt(0).value = { value: 4 }
@@ -22,7 +22,7 @@
 		<FuseTest.DudElement StringValue="A{value}" ux:Template="one"/>
 		<FuseTest.DudElement StringValue="B{value}" ux:DefaultTemplate="true"/>
 	</Each>
-	
+
 	<FuseTest.Invoke Handler="{second}" ux:Name="callSecond"/>
 	<FuseTest.Invoke Handler="{clear}" ux:Name="callClear"/>
 	<FuseTest.Invoke Handler="{both}" ux:Name="callBoth"/>

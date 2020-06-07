@@ -1,10 +1,10 @@
 <Panel ux:Class="UX.Each.ObservableChange">
 	<JavaScript>
 		var Observable = require("FuseJS/Observable")
-		
+
 		exports.items = Observable()
 		exports.items.add( Observable( { a: 1 } ) )
-		
+
 		exports.update = function() {
 			exports.items.getAt(0).value = { b: 2 }
 		}
@@ -12,6 +12,6 @@
 	<Each Items="{items}">
 		<FuseTest.DudElement StringValue="{= {a} ?? '*' }-{= {b} ?? '*'}"/>
 	</Each>
-	
+
 	<FuseTest.Invoke Handler="{update}" ux:Name="callUpdate"/>
 </Panel>

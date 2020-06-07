@@ -10,11 +10,11 @@
 		exports.remove = function() {
 			exports.list.removeAt(0)
 		}
-		
+
 		exports.set = function() {
 			exports.list.value = {}
 		}
-		
+
 		exports.clear = function() {
 			exports.list.clear()
 		}
@@ -24,7 +24,7 @@
 	<FuseTest.Invoke Handler="{remove}" ux:Name="Remove"/>
 	<FuseTest.Invoke Handler="{set}" ux:Name="Set"/>
 	<FuseTest.Invoke Handler="{clear}" ux:Name="Clear"/>
-	
+
 	<Panel ux:Name="T">
 		<WhileCount Items="{list}" EqualTo="0" ux:Name="W1"><Text Value="A"/></WhileCount>
 		<WhileCount Items="{list}" GreaterThan="1" ux:Name="W2"><Text Value="B"/></WhileCount>
