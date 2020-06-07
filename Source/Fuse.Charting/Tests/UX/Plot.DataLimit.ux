@@ -5,7 +5,7 @@
 	</JavaScript>
 	<c:Plot ux:Name="plot" DataLimit="8">
 		<c:DataSeries Data="{values}"/>
-		
+
 		<Panel ux:Name="B">
 			<c:PlotData>
 				<Text Value="{Plot data.source.y}"/>

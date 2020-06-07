@@ -1,12 +1,12 @@
 <Panel ux:Class="UX.PlotAxis.Skip" xmlns:c="Fuse.Charting">
 	<JavaScript>
 		var Observable = require("FuseJS/Observable")
-		
+
 		function Item( value, label ) {
 			this.value = value
 			this.label = label
 		}
-		
+
 		exports.values = Observable()
 		for (var i=0; i < 20; ++i) {
 			exports.values.add( new Item( i, "" + i ) )
@@ -14,7 +14,7 @@
 	</JavaScript>
 	<c:Plot DataExtend="2,0" DataOffset="5" DataLimit="10" ux:Name="P">
 		<c:DataSeries Data="{values}"/>
-		
+
 		<c:PlotAxis Axis="X" ux:Name="XL" SkipEnds="3,2" ExcludeExtend="false">
 			<Text ux:Template="Label" Value="{Plot axis.label}"/>
 		</c:PlotAxis>

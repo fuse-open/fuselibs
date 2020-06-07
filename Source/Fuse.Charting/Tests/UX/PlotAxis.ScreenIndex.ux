@@ -4,7 +4,7 @@
 	</JavaScript>
 	<c:Plot DataOffset="3" DataLimit="4" ux:Name="P">
 		<c:DataSeries Data="{data}"/>
-		
+
 		<Panel ux:Name="X">
 			<c:PlotAxisData Axis="X" ux:Name="XL">
 				<Text Value="{Plot axis.screenIndex}"/>

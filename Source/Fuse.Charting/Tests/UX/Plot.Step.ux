@@ -5,20 +5,20 @@
 		for (var i=0;i<200; ++i) {
 			exports.values.add( { value: i, label: "#" + i } )
 		}
-		
+
 		exports.next = function() {
 			plot.stepOffset(50)
 		}
 	</JavaScript>
 	<c:Plot ux:Name="plot" DataLimit="50">
 		<c:DataSeries Data="{values}"/>
-		
+
 		<Panel ux:Name="B">
 			<c:PlotData>
 				<Text Value="{Plot data.source.y}"/>
 			</c:PlotData>
 		</Panel>
 	</c:Plot>
-	
+
 	<FuseTest.Invoke Handler="{next}" ux:Name="CallNext"/>
 </Panel>
