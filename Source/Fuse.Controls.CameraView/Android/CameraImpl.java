@@ -258,7 +258,7 @@ public class CameraImpl extends TextureView implements TextureView.SurfaceTextur
     }
 
     public void setCameraFocusPoint(Double x, Double y, int cameraWidth, int cameraHeight, int isFocusLocked) {
-            
+
         _camera.cancelAutoFocus();
 
         android.hardware.Camera.Parameters parameters = _camera.getParameters();
@@ -290,7 +290,7 @@ public class CameraImpl extends TextureView implements TextureView.SurfaceTextur
 
                     _camera.setParameters(parameters);
                 }
-                
+
                 /*
                 Get focus coordinates according to camera dimensions and focus area size
                 Reference - https://developer.android.com/reference/android/hardware/Camera.Parameters#getFocusAreas%28%29
@@ -327,7 +327,7 @@ public class CameraImpl extends TextureView implements TextureView.SurfaceTextur
                 Reference - https://developer.android.com/reference/android/hardware/Camera.Area
                 Camera.Area(rect, weight)
                 - rect - Bounds of the area.
-                - weight - Weight of the area. 
+                - weight - Weight of the area.
                   The weight must range from 1 to 1000, and represents a weight for every pixel in the area.
                 */
                 List<Camera.Area> meteringAreas = new ArrayList<Camera.Area>();
@@ -338,26 +338,26 @@ public class CameraImpl extends TextureView implements TextureView.SurfaceTextur
                     parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
                 }
 
-                if (parameters.getMinExposureCompensation() != 0 
+                if (parameters.getMinExposureCompensation() != 0
                     && parameters.getMaxExposureCompensation() != 0
                     && parameters.isAutoExposureLockSupported()
                 ) {
-                    
+
                     int exposureAmount = (parameters.getMinExposureCompensation() - parameters.getMaxExposureCompensation()) * -1;
                     int designAdjustment = 1; //added 1 to account for a control panel covered area on the bottom of the camera that can't be tapped on for focus
-                    if ((y/cameraHeight) < 0.5) { //apply adjustment only if tap is in upper half of camera area 
+                    if ((y/cameraHeight) < 0.5) { //apply adjustment only if tap is in upper half of camera area
                         designAdjustment = 0;
                     }
 
-                    /* 
+                    /*
                     - determine the amount of exposure to apply according to the position of the tap
                     - taps closer to the bottom controls or user are closer so typically require more exposure
                     */
-                    int amountApplied = (int)Math.round( (exposureAmount * (y/cameraHeight)) ) + designAdjustment; 
+                    int amountApplied = (int)Math.round( (exposureAmount * (y/cameraHeight)) ) + designAdjustment;
                     amountApplied = (amountApplied > exposureAmount) ? exposureAmount : amountApplied;
-                    
+
                     parameters.setExposureCompensation(parameters.getMinExposureCompensation() + amountApplied);
-                    
+
                     parameters.setAutoExposureLock(false);
                 }
 
@@ -412,11 +412,11 @@ public class CameraImpl extends TextureView implements TextureView.SurfaceTextur
             } catch(Exception e) {
                 android.util.Log.d(toString(), e.getMessage());
             }
-        } 
+        }
     }
 
     private int clamp(int touchCoordinateInCameraReper, int focusAreaSize) {
-        
+
         if (Math.abs(touchCoordinateInCameraReper)+focusAreaSize/2>1000) {
 
             //return the maximums less the focus area size
