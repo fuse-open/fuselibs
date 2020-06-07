@@ -184,7 +184,7 @@ namespace FuseVideoImpl
 		VideoState * vs = (VideoState*)videoState;
 		return CMTimeGetSeconds([vs->Asset duration]);
 	}
-	
+
 	double getPosition(void * videoState)
 	{
 		VideoState * vs = (VideoState*)videoState;
@@ -243,12 +243,12 @@ namespace FuseVideoImpl
 		CVPixelBufferRef pixelBuffer = [vs->PlayerItemVideoOutput copyPixelBufferForItemTime: [vs->PlayerItem currentTime] itemTimeForDisplay:nil];
 		if(pixelBuffer == NULL)
 			return CVOpenGLESTextureGetName(vs->TextureHandle);
-		
+
 		size_t width = CVPixelBufferGetWidth(pixelBuffer);
 		size_t height = CVPixelBufferGetHeight(pixelBuffer);
-		
+
 		cleanup(videoState);
-		
+
 		glActiveTexture(GL_TEXTURE0);
 		CVReturn err = CVOpenGLESTextureCacheCreateTextureFromImage(
 			kCFAllocatorDefault,
@@ -272,11 +272,11 @@ namespace FuseVideoImpl
 				@{Uno.Action:Of(vs->ErrorHandler):Call()};
 			}
 		}
-		
+
 		glBindTexture(CVOpenGLESTextureGetTarget(vs->TextureHandle), CVOpenGLESTextureGetName(vs->TextureHandle));
 		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		
+
 		CVBufferRelease(pixelBuffer);
 		return CVOpenGLESTextureGetName(vs->TextureHandle);
 	}
