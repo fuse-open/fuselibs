@@ -1,10 +1,10 @@
 <Panel ux:Class="UX.IssuePublic53">
-    <!-- test case that caused regression in Fuse 1.0.0 
+    <!-- test case that caused regression in Fuse 1.0.0
 		https://github.com/fuse-open/fuselibs/issues/53
 	-->
 	<Container ux:Class="Material.ActionButton" Subtree="inner" Width="56" Height="56" Margin="16">
 		<Material.ActionButton ux:Class="Material.MiniActionButton" Width="40" Height="40" />
-		
+
 		<WhileTrue ux:Binding="Children">
 			<Change this.Margin="24" />
 		</WhileTrue>

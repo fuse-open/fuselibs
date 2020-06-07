@@ -217,7 +217,7 @@ namespace Fuse.Controls.Panels.Test
 				Assert.AreEqual(float2(300,40), p.G.ActualSize);
 			}
 		}
-		
+
 		[Test]
 		public void Max()
 		{
@@ -228,14 +228,14 @@ namespace Fuse.Controls.Panels.Test
 				Assert.AreEqual(float2(100,120), p.W.ActualSize);
 				Assert.AreEqual(float2(100,120), p.B.ActualSize);
 				Assert.AreEqual(float2(80,100), p.O.ActualSize);
-				
+
 				Assert.AreEqual(float4(10,10,80,100), ActualPositionSize(p.F2));
 				Assert.AreEqual(float2(100,120), p.W2.ActualSize);
 				Assert.AreEqual(float2(100,120), p.B2.ActualSize);
 				Assert.AreEqual(float2(80,100), p.O2.ActualSize);
 			}
 		}
-		
+
 		[Test]
 		public void VerticalRightToLeft()
 		{
@@ -250,7 +250,7 @@ namespace Fuse.Controls.Panels.Test
 				Assert.AreEqual( float4(right-100, top+10, 20, 50), ActualPositionSize(p.P4));
 			}
 		}
-		
+
 		[Test]
 		public void Center()
 		{
@@ -260,7 +260,7 @@ namespace Fuse.Controls.Panels.Test
 				Assert.AreEqual( float4(2,2,30*4,90), ActualPositionSize(p.W) );
 			}
 		}
-		
+
 		[Test]
 		public void ChildSize()
 		{
@@ -273,7 +273,7 @@ namespace Fuse.Controls.Panels.Test
 				Assert.AreEqual( float4(5,35,190,20), ActualPositionSize(p.P4));
 			}
 		}
-		
+
 		[Test]
 		public void ItemSize()
 		{
@@ -286,7 +286,7 @@ namespace Fuse.Controls.Panels.Test
 				Assert.AreEqual( float4(10,0,10,10), ActualPositionSize(p.A4));
 			}
 		}
-		
+
 		[Test]
 		public void RowAlignment()
 		{
@@ -324,14 +324,14 @@ namespace Fuse.Controls.Panels.Test
 				Assert.AreEqual( float4(100,0,100,10), ActualPositionSize(p.RP2));
 				Assert.AreEqual( float4(0,10,100,30), ActualPositionSize(p.RP3));
 				Assert.AreEqual( float4(100,15,100,20), ActualPositionSize(p.RP4));
-				
+
 				Assert.AreEqual( float4(8,0,2,100), ActualPositionSize(p.RR1));
 				Assert.AreEqual( float4(0,100,10,100), ActualPositionSize(p.RR2));
 				Assert.AreEqual( float4(10,0,30,100), ActualPositionSize(p.RR3));
 				Assert.AreEqual( float4(20,100,20,100), ActualPositionSize(p.RR4));
 			}
 		}
-		
+
 		[Test]
 		public void Invalidate()
 		{
@@ -340,12 +340,12 @@ namespace Fuse.Controls.Panels.Test
 			{
 				Assert.AreEqual( float2(50,50), p.p1.ActualSize );
 				Assert.AreEqual( float2(50,0), p.p2.ActualPosition );
-				
+
 				p.wp.ItemHeight = 40;
 				root.StepFrame();
 				Assert.AreEqual( float2(50,40), p.p1.ActualSize );
 				Assert.AreEqual( float2(50,0), p.p2.ActualPosition );
-				
+
 				p.wp.Orientation = Orientation.Vertical;
 				root.StepFrame();
 				Assert.AreEqual( float2(50,40), p.p1.ActualSize );

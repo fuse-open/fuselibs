@@ -277,7 +277,7 @@ namespace Fuse.Controls.Test
 				Assert.AreEqual(parent.ColumnList[2].ActualExtent, 213);
 			}
 		}
-		
+
 		[Test]
 		public void ParseDataTest()
 		{
@@ -290,7 +290,7 @@ namespace Fuse.Controls.Test
 			Assert.AreEqual( Metric.Proportion, c[1].WidthMetric );
 			Assert.AreEqual( 1.5f, c[1].Width );
 			Assert.AreEqual( Metric.Auto, c[2].WidthMetric );
-			
+
 			var r = new List<Row>();
 			Row.Parse( " 12, 0.275e1* ,auto ", r );
 			Assert.AreEqual( 3, r.Count );
@@ -361,13 +361,13 @@ namespace Fuse.Controls.Test
 					Assert.AreEqual( float2(300,200), grid.C23.ActualPosition );
 					Assert.AreEqual( float2(0,300), grid.C30.ActualPosition );
 					Assert.AreEqual( float2(200,400), grid.C42.ActualPosition );
-				
+
 					grid.InvalidateLayout();
 					root.StepFrame();
 				}
 			}
 		}
-		
+
 		[Test]
 		public void AutomaticLayoutColumnMajor()
 		{
@@ -382,13 +382,13 @@ namespace Fuse.Controls.Test
 					Assert.AreEqual( float2(200,300), grid.C23.ActualPosition );
 					Assert.AreEqual( float2(300,0), grid.C30.ActualPosition );
 					Assert.AreEqual( float2(400,200), grid.C42.ActualPosition );
-				
+
 					grid.InvalidateLayout();
 					root.StepFrame();
 				}
 			}
 		}
-		
+
 		[Test]
 		public void SnapToPixelsLayout()
 		{
@@ -397,10 +397,10 @@ namespace Fuse.Controls.Test
 				var grid = new UX.GridSnapToPixels();
 				root.Children.Add(grid);
 				var spacing = root.SnapToPixelsSize(grid.CellSpacing);
-				
+
 				var sz = root.SnapToPixelsSize( float2(400) );
 				root.Layout(sz);
-				
+
 				Assert.AreEqual(grid.C12.ActualPosition.X + grid.C12.ActualSize.X,
 					grid.C21.ActualPosition.X + grid.C21.ActualSize.X);
 				Assert.AreEqual(grid.C11.ActualPosition.X + grid.C11.ActualSize.X + spacing,
@@ -416,7 +416,7 @@ namespace Fuse.Controls.Test
 					1e-4f);
 			}
 		}
-		
+
 		[Test]
 		public void GridContentAlignment()
 		{
@@ -424,16 +424,16 @@ namespace Fuse.Controls.Test
 			{
 				var g = new UX.GridContentAlignment();
 				root.Children.Add(g);
-				
+
 				root.Layout(int2(1000));
 				Assert.AreEqual(float2(-200,-100), g.A0.ActualPosition);
-				
+
 				Assert.AreEqual(float2(-850,-900), g.B0.ActualPosition);
-				
+
 				Assert.AreEqual(float2(0,0), g.C0.ActualPosition);
 			}
 		}
-		
+
 		[Test]
 		public void Issue1109()
 		{
@@ -445,21 +445,21 @@ namespace Fuse.Controls.Test
 				root.Layout(int2(1000));
 				//checks evidence of proper support, not the row count directly
 				Assert.AreEqual(float2(1000,0),g.G.ActualSize);
-				
+
 				for (int i=0; i < 7; ++i)
 					g.G.Children.Add(new Panel() { Height = 100 });
 				root.Layout(int2(1000));
 				Assert.AreEqual(float2(1000,300),g.G.ActualSize);
-				
+
 				g.G.Children.Remove(g.G.FirstChild<Visual>());
 				root.Layout(int2(1000));
 				Assert.AreEqual(float2(1000,200),g.G.ActualSize);
-				
+
 				while (g.G.HasVisualChildren)
 					g.G.Children.Remove(g.G.FirstChild<Visual>());
 				root.Layout(int2(1000));
 				Assert.AreEqual(float2(1000,0),g.G.ActualSize);
-				
+
 				//proportional sized
 				for (int i=0; i < 7; ++i)
 					g.P.Children.Add(new Panel());
@@ -468,7 +468,7 @@ namespace Fuse.Controls.Test
 				root.Layout(int2(1000));
 				Assert.AreEqual(float2(1000,1000),g.P.ActualSize);
 				Assert.AreEqual(float2(1000/3.0f),q.ActualSize);
-				
+
 				g.P.Children.Remove(g.P.FirstChild<Visual>());
 				g.P.Children.Remove(g.P.FirstChild<Visual>());
 				root.Layout(int2(1000));
@@ -494,7 +494,7 @@ namespace Fuse.Controls.Test
 				Assert.AreEqual("bar", g.Text.Value);
 			}
 		}
-		
+
 		[Test]
 		/* this requires the no-auto prefilling of proportions to work, and the first auto measure pass providing
 			partial values in GridLayout.Measure */
@@ -507,30 +507,30 @@ namespace Fuse.Controls.Test
 				Assert.AreEqual(float2(50,100), g.A11.ActualSize);
 				Assert.AreEqual(float2(100,100),g.A12.ActualSize);
 				Assert.AreEqual(float2(0,100),g.A13.ActualSize);
-				
+
 				Assert.AreEqual(float2(100,50), g.A21.ActualSize);
 				Assert.AreEqual(float2(100,50),g.A22.ActualSize);
 				Assert.AreEqual(float2(0,50),g.A23.ActualSize);
-				
+
 				Assert.AreEqual(float2(100,200), g.A31.ActualSize);
 				Assert.AreEqual(float2(100,200),g.A32.ActualSize);
 				Assert.AreEqual(float2(0,200),g.A33.ActualSize);
-				
+
 				//vertical layout
 				Assert.AreEqual(float2(150,75), g.B11.ActualSize);
 				Assert.AreEqual(float2(50,100), g.B12.ActualSize);
 				Assert.AreEqual(float2(300,100), g.B13.ActualSize);
-				
+
 				Assert.AreEqual(float2(150,100), g.B21.ActualSize);
 				Assert.AreEqual(float2(50,100), g.B22.ActualSize);
 				Assert.AreEqual(float2(300,100), g.B23.ActualSize);
-				
+
 				Assert.AreEqual(float2(150,150), g.B31.ActualSize);
 				Assert.AreEqual(float2(50,150), g.B32.ActualSize);
 				Assert.AreEqual(float2(300,150), g.B33.ActualSize);
 			}
 		}
-		
+
 		[Test]
 		public void Issue2964()
 		{
@@ -539,7 +539,7 @@ namespace Fuse.Controls.Test
 			g.Rows = null;
 			g.Columns = null;
 		}
-		
+
 		[Test]
 		//checks that spanning items get correct sizes for non-spanning diretion
 		public void GridSpanAuto()
@@ -550,7 +550,7 @@ namespace Fuse.Controls.Test
 				Assert.AreEqual(float2(200,200), p.P1.ActualSize);
 				Assert.AreEqual(float2(50,50), p.P2.ActualSize);
 				Assert.AreEqual(float2(150,150), p.P3.ActualSize);
-				
+
 				Assert.AreEqual(float2(500,500), p.Q1.ActualSize);
 				Assert.AreEqual(float2(100,100), p.Q2.ActualSize);
 				Assert.AreEqual(float2(100,100), p.Q3.ActualSize);
@@ -558,7 +558,7 @@ namespace Fuse.Controls.Test
 				Assert.AreEqual(float2(200,200), p.Q5.ActualSize);
 			}
 		}
-		
+
 		[Test]
 		//checks that spanning items don't contribute to auto sizes
 		public void GridSpanAuto2()
@@ -571,26 +571,26 @@ namespace Fuse.Controls.Test
 				Assert.AreEqual(float2(50,20), p.P3.ActualSize);
 			}
 		}
-		
+
 		[Test]
 		//some specific checks of the "default" metric with alignment
 		public void GridDefaultMetric()
 		{
 			var p = new UX.Grid.DefaultMetric();
 			using (var root = TestRootPanel.CreateWithChild(p,int2(500,500)))
-			{	
+			{
 				Assert.AreEqual(float2(125,300), p.T1.ActualSize);
 				Assert.AreEqual(float2(125,300), p.T2.ActualSize);
 				Assert.AreEqual(float2(125,300), p.T3.ActualSize);
 				Assert.AreEqual(float2(125,300), p.T4.ActualSize);
-				
+
 				Assert.AreEqual(float2(300,125), p.L1.ActualSize);
 				Assert.AreEqual(float2(300,125), p.L2.ActualSize);
 				Assert.AreEqual(float2(300,125), p.L3.ActualSize);
 				Assert.AreEqual(float2(300,125), p.L4.ActualSize);
 			}
 		}
-		
+
 		[Test]
 		public void GridDefaultRow()
 		{
@@ -601,7 +601,7 @@ namespace Fuse.Controls.Test
 				var diagnostics = dg.DequeueAll();
 				Assert.AreEqual(1, diagnostics.Count);
 				Assert.Contains("incompatible", diagnostics[0].Message);
-				
+
 				//https://github.com/fusetools/fuselibs-private/issues/3286
 				//specifically set DefaultRow afterwards to trigger the defect
 				p.G1.DefaultRow = "auto";
@@ -611,7 +611,7 @@ namespace Fuse.Controls.Test
 				Assert.AreEqual(float2(300,30), p.T3.ActualSize);
 			}
 		}
-		
+
 		[Test]
 		public void GridRowCount()
 		{
@@ -622,12 +622,12 @@ namespace Fuse.Controls.Test
 				Assert.AreEqual(float2(50,100), p.T1.ActualSize);
 				Assert.AreEqual(float2(50,100), p.T2.ActualSize);
 				Assert.AreEqual(float2(50,100), p.T3.ActualSize);
-				
+
 				Assert.AreEqual(float2(50,500), p.G2.ActualSize);
 				Assert.AreEqual(float2(50,100), p.R1.ActualSize);
 				Assert.AreEqual(float2(50,100), p.R2.ActualSize);
 				Assert.AreEqual(float2(50,100), p.R3.ActualSize);
-				
+
 				Assert.AreEqual(float2(50,100), p.S5.ActualSize);
 				Assert.AreEqual(float2(0,400), p.S5.ActualPosition);
 				p.G3.Children.Add(p.S2);
@@ -648,12 +648,12 @@ namespace Fuse.Controls.Test
 				Assert.AreEqual(float2(100,50), p.T1.ActualSize);
 				Assert.AreEqual(float2(100,50), p.T2.ActualSize);
 				Assert.AreEqual(float2(100,50), p.T3.ActualSize);
-				
+
 				Assert.AreEqual(float2(500,50), p.G2.ActualSize);
 				Assert.AreEqual(float2(100,50), p.R1.ActualSize);
 				Assert.AreEqual(float2(100,50), p.R2.ActualSize);
 				Assert.AreEqual(float2(100,50), p.R3.ActualSize);
-				
+
 				Assert.AreEqual(float2(100,50), p.S5.ActualSize);
 				Assert.AreEqual(float2(400,0), p.S5.ActualPosition);
 				p.G3.Children.Add(p.S2);
@@ -663,7 +663,7 @@ namespace Fuse.Controls.Test
 				Assert.AreEqual(float2(400,0), p.S5.ActualPosition);
 			}
 		}
-		
+
 		[Test]
 		public void GridRowCreation()
 		{
@@ -676,7 +676,7 @@ namespace Fuse.Controls.Test
 				Assert.AreEqual(float2(300,100), p.T1.ActualPosition);
 				Assert.AreEqual(float2(100,100), p.T4.ActualSize);
 				Assert.AreEqual(float2(900,400), p.T4.ActualPosition);
-				
+
 				p.G1.RowCount = 3;
 				p.G1.Children.Remove(p.T4);
 				root.IncrementFrame();
@@ -684,7 +684,7 @@ namespace Fuse.Controls.Test
 				Assert.AreEqual(float2(3*1000/4.0f,500/3.0f), p.T1.ActualPosition, 1e-4f);
 			}
 		}
-		
+
 		[Test]
 		public void GridListener()
 		{
@@ -695,14 +695,14 @@ namespace Fuse.Controls.Test
 				Assert.AreEqual(float2(20,20),p.P2.ActualSize);
 				Assert.AreEqual(float2(10,30),p.P3.ActualSize);
 				Assert.AreEqual(float2(20,30),p.P4.ActualSize);
-				
+
 				p.R1.Extent = 10;
 				root.IncrementFrame();
 				Assert.AreEqual(float2(10,10),p.P1.ActualSize);
 				Assert.AreEqual(float2(20,10),p.P2.ActualSize);
 				Assert.AreEqual(float2(10,30),p.P3.ActualSize);
 				Assert.AreEqual(float2(20,30),p.P4.ActualSize);
-				
+
 				p.G.RowCount = 3;
 				p.G.Children.Add(p.P5);
 				root.IncrementFrame();
@@ -711,7 +711,7 @@ namespace Fuse.Controls.Test
 				Assert.AreEqual(float2(10,30),p.P3.ActualSize);
 				Assert.AreEqual(float2(20,30),p.P4.ActualSize);
 				Assert.AreEqual(float2(10,460),p.P5.ActualSize);
-				
+
 				p.R1.Extent = 50; //should still be an explicit one, with listener
 				root.IncrementFrame();
 				Assert.AreEqual(float2(10,50),p.P1.ActualSize);
@@ -721,7 +721,7 @@ namespace Fuse.Controls.Test
 				Assert.AreEqual(float2(10,420),p.P5.ActualSize);
 			}
 		}
-		
+
 		[Test]
 		//ensures that columns added via spanning don't become permanent (this gives a defined
 		//behaviour to a layout that was previously undefined)
@@ -733,16 +733,16 @@ namespace Fuse.Controls.Test
 				//relayout causes the issue, not the initial layout
 				p.G.InvalidateLayout();
 				root.StepFrame();
-				
+
 				Assert.AreEqual(float2(300,100),p.C1.ActualSize);
 				Assert.AreEqual(float2(0,100),p.C2.ActualPosition);
 				Assert.AreEqual(float2(400,100),p.C3.ActualSize);
-				
+
 				Assert.AreEqual(float2(100,300),p.C6.ActualPosition);
 				Assert.AreEqual(float2(0,300),p.C5.ActualPosition);
 			}
 		}
-		
+
 		[Test]
 		public void EmptySpec()
 		{
@@ -754,7 +754,7 @@ namespace Fuse.Controls.Test
 				Assert.AreEqual(float2(0,50),p.P2.ActualPosition);
 			}
 		}
-		
+
 		[Test]
 		public void Issue1019()
 		{
@@ -763,9 +763,9 @@ namespace Fuse.Controls.Test
 			{
 				Assert.AreEqual( float2(200,150), p.g.ActualSize );
 			}
-			
+
 		}
-		
+
 		[Test]
 		public void Issue842_1()
 		{
@@ -778,7 +778,7 @@ namespace Fuse.Controls.Test
 				Assert.AreEqual( float2(100,150), p.s.ActualSize );
 			}
 		}
-		
+
 		[Test]
 		public void Issue842_2()
 		{
@@ -791,7 +791,7 @@ namespace Fuse.Controls.Test
 				Assert.AreEqual( float2(100,150), p.s.ActualSize );
 			}
 		}
-		
+
 		//region Private Methods
 
 		private Panel CreateCell(Grid parent, int row, int column)

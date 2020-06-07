@@ -4,7 +4,7 @@
 		<Rectangle Layer="Background" ux:Name="B"/>
 		<Rectangle Layer="Overlay" ux:Name="O"/>
 	</WrapPanel>
-	
+
 	<StackPanel MaxWidth="100">
 		<DockPanel>
 			<WrapPanel Dock="Left" ux:Name="W2" Padding="10">

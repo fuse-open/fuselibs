@@ -5,11 +5,11 @@
 		<Panel Width="150" Height="150" ux:Name="A2"/>
 		<Panel Width="150" Height="150" ux:Name="A3"/>
 	</Grid>
-	
+
 	<Grid Columns="800,1000" Rows="400,600" Alignment="BottomCenter">
 		<Panel ux:Name="B0"/>
 	</Grid>
-	
+
 	<Grid Columns="800,1000" Rows="400,600" Alignment="BottomCenter" ContentAlignment="TopLeft">
 		<Panel ux:Name="C0"/>
 	</Grid>
