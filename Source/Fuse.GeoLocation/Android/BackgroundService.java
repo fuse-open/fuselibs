@@ -20,7 +20,7 @@ public class BackgroundService extends Service
 	public static final String ACTION_START_FOREGROUND_SERVICE = "ACTION_START_FOREGROUND_SERVICE";
     public static final String ACTION_STOP_FOREGROUND_SERVICE = "ACTION_STOP_FOREGROUND_SERVICE";
 
-	public BackgroundService() 
+	public BackgroundService()
 	{
 		// Log.d("BACKGROUND SERVICE", "CREATED");
 	}
@@ -32,7 +32,7 @@ public class BackgroundService extends Service
 	}
 
 	@Override
-	public void onCreate() 
+	public void onCreate()
 	{
 		super.onCreate();
 		// Log.d("BACKGROUND SERVICE", "onCREATE()");
@@ -41,7 +41,7 @@ public class BackgroundService extends Service
 
 
 	@Override
-	public int onStartCommand(Intent intent, int flags, int startId) 
+	public int onStartCommand(Intent intent, int flags, int startId)
 	{
 		if(intent != null)
 		{
@@ -89,7 +89,7 @@ public class BackgroundService extends Service
         /*
 			Notification Color - Add color to your icon and from Oreo+ it adds the color to your app name as well
 			 - https://developer.android.com/guide/topics/ui/notifiers/notifications
-			parseColor() format #RRGGBB or #AARRGGBB 
+			parseColor() format #RRGGBB or #AARRGGBB
 			 - https://developer.android.com/reference/android/graphics/Color#parseColor(java.lang.String)
 			Example value: #8811ff
 		*/
@@ -102,7 +102,7 @@ public class BackgroundService extends Service
 				} catch (Exception e2) {}
 			}
 		#endif
-        
+
         NotificationCompat.BigTextStyle bigTextStyle = new NotificationCompat.BigTextStyle();
         bigTextStyle.setBigContentTitle("Background Location");
         bigTextStyle.bigText("Background Location is Actively Using Your Location.");
