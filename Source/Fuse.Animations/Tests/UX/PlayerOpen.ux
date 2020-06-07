@@ -1,6 +1,6 @@
 <Panel ux:Class="UX.PlayerOpen">
 	<Panel ux:Name="Dummy"/>
-	
+
 	<TriggerAnimation ux:Name="A1" ux:AutoBind="false">
 		<Spin Target="Dummy" Frequency="1" Delay="5"/>
 	</TriggerAnimation>

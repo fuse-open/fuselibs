@@ -1,5 +1,5 @@
 <Panel ux:Class="UX.Attract.Basic">
-	<AttractorConfig Unit="Points" Easing="Linear" 
+	<AttractorConfig Unit="Points" Easing="Linear"
 		Duration="1" DurationExp="1" Distance="25" ux:Global="lit"/>
 	<Slider Minimum="0" Maximum="100" Value="50" ux:Name="slider"/>
 	<Translation X="attract({Property slider.Value}, lit)" ux:Name="T"/>
