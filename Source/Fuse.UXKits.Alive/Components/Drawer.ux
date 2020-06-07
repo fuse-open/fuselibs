@@ -5,7 +5,7 @@
 
 		this.close = function() { isOpen.value = false; };
 		this.open = function() { isOpen.value = true; }
-		
+
 		module.exports = {
 			isOpen: isOpen,
 			close: this.close,
