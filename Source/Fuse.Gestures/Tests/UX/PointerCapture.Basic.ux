@@ -4,7 +4,7 @@
 		<WhilePressed>
 			<Change S.Visibility="Visible"/>
 		</WhilePressed>
-		
+
 		<StackPanel Visibility="Collapsed" ux:Name="S">
 			<Panel Height="10"/>
 			<Panel ux:Class="PCBItem" Height="50" Width="50" HitTestMode="LocalBounds">
@@ -13,7 +13,7 @@
 					<FuseTest.CountAction ux:Name="C"/>
 				</Released>
 			</Panel>
-				
+
 			<PCBItem ux:Name="IA"/>
 			<PCBItem ux:Name="IB"/>
 			<PCBItem ux:Name="IC"/>

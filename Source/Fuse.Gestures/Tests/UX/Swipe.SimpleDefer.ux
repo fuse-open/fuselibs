@@ -3,7 +3,7 @@
 	<SwipingAnimation Source="SG" ux:Name="SA">
 		<Nothing ux:Name="N"/>
 	</SwipingAnimation>
-	
+
 	<Swiped Source="SG">
 		<Fuse.Gestures.Test.DeferAction ux:Name="D"/>
 	</Swiped>

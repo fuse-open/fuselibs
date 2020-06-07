@@ -3,7 +3,7 @@
 
 	<WhileSwipeActive Source="SG" ux:Name="W"/>
 	<SwipingAnimation Source="SG" ux:Name="S"/>
-	
+
 	<Timeline ux:Name="timeToggle">
 		<ToggleSwipeActive Target="SG"/>
 	</Timeline>
@@ -13,7 +13,7 @@
 	<Timeline ux:Name="timeBypassOff">
 		<SetSwipeActive Target="SG" Value="false" Bypass="true"/>
 	</Timeline>
-	
+
 	<Swiped Source="SG">
 		<FuseTest.CountAction ux:Name="SwipeActive"/>
 	</Swiped>

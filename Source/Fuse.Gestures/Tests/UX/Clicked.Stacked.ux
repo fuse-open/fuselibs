@@ -3,17 +3,17 @@
 		<Clicked>
 			<FuseTest.CountAction ux:Name="C1"/>
 		</Clicked>
-		
+
 		<Panel HitTestMode="LocalBoundsAndChildren" Margin="10">
 			<Clicked>
 				<FuseTest.CountAction ux:Name="C2"/>
 			</Clicked>
-			
+
 			<Panel HitTestMode="LocalBoundsAndChildren" Margin="10">
 				<Clicked>
 					<FuseTest.CountAction ux:Name="C3"/>
 				</Clicked>
-				
+
 			</Panel>
 		</Panel>
 	</Panel>

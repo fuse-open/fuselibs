@@ -3,7 +3,7 @@
 
 	<WhileSwipeActive Source="SG" ux:Name="W"/>
 	<SwipingAnimation Source="SG" ux:Name="S"/>
-	
+
 	<Swiped Source="SG">
 		<FuseTest.CountAction ux:Name="SwipeActive"/>
 	</Swiped>
