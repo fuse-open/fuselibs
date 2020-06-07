@@ -18,12 +18,12 @@ namespace Fuse.Reactive.Test
 				using (var root = TestRootPanel.CreateWithChild(p))
 				{
 					Assert.AreEqual( "abc", p.d1.ObjectValue);
-					
+
 					p.a.Value = null;
 					root.PumpDeferred();
 					Assert.AreEqual( "lost", p.d1.ObjectValue);
 					Assert.AreEqual( "null", p.d2.ObjectValue);
-				
+
 					var msgs = dg.DequeueAll();
 					Assert.IsTrue(msgs.Count > 0);
 					for (int i=0; i < msgs.Count; ++i)
@@ -31,7 +31,7 @@ namespace Fuse.Reactive.Test
 				}
 			}
 		}
-		
+
 		public void Basic()
 		{
 			var p = new UX.UnaryOperator.Basic();
@@ -48,14 +48,14 @@ namespace Fuse.Reactive.Test
 			}
 		}
 	}
-	
+
 	[UXFunction("_unDep")]
 	class UnDep : UnaryOperator
 	{
 		[UXConstructor]
 		public UnDep([UXParameter("Operand")] Expression op) : base(op)
 		{}
-		
+
 		protected override void OnNewOperand(IListener listener, object operand)
 		{
 			if (operand != null)
@@ -63,14 +63,14 @@ namespace Fuse.Reactive.Test
 			else
 				listener.OnNewData(this, "null");
 		}
-		
+
 		protected override void OnLostOperand(IListener listener)
 		{
 			listener.OnNewData(this, "lost");
 		}
 	}
 
-	
+
 	[UXFunction("_unJoin")]
 	class UnJoin : UnaryOperator
 	{
@@ -78,12 +78,12 @@ namespace Fuse.Reactive.Test
 		public UnJoin([UXParameter("Operand")] Expression operand)
 			: base(operand, "_unJoin")
 		{}
-		
+
 		protected override bool TryCompute(object op, out object result)
-		{	
+		{
 			result = "[" + op.ToString() + "]";
 			return true;
 		}
 	}
-	
+
 }

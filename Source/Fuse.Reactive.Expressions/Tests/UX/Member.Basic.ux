@@ -8,14 +8,14 @@
 			},
 			obs: Observable(2)
 		}
-		
+
 		exports.dyn = Observable({
 			value: 5,
-			inner: { 
+			inner: {
 				value: 6
 			}
 		})
-		
+
 		exports.step1 = function() {
 			exports.dyn.value = {
 				value: 15,
@@ -26,17 +26,17 @@
 			exports.stat.obs.value = 12
 		}
 	</JavaScript>
-	
+
 	<FuseTest.DudElement Value="{stat.value}" ux:Name="sv"/>
 	<FuseTest.DudElement Value="{stat.inner.value}" ux:Name="siv"/>
 	<FuseTest.DudElement Value="{stat.obs}" ux:Name="so"/>
 	<FuseTest.DudElement Value="{dyn.value}" ux:Name="dv"/>
 	<FuseTest.DudElement Value="{dyn.inner.value}" ux:Name="div"/>
-	
+
 	<FuseTest.DudElement Value="{stat}.value" ux:Name="asv"/>
 	<FuseTest.DudElement Value="{stat.inner}.value" ux:Name="asiv"/>
 	<FuseTest.DudElement Value="{dyn}.value" ux:Name="adv"/>
 	<FuseTest.DudElement Value="{dyn.inner}.value" ux:Name="adiv"/>
-	
+
 	<FuseTest.Invoke Handler="{step1}" ux:Name="callStep1"/>
 </Panel>

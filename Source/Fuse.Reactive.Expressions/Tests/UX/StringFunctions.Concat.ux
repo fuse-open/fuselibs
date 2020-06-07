@@ -1,7 +1,7 @@
 <Panel ux:Class="UX.StringFunctions.Concat">
 	<Let Value="{= 1 }" ux:Name="a"/>
 	<Let Value="{= 2 }" ux:Name="b"/>
-	
+
 	<Text Value="{a}-{b}" ux:Name="txt"/>
 	<FuseTest.Value Object=" '2' + '3' " ux:Name="obj"/>
 

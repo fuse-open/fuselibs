@@ -4,10 +4,10 @@
 	<FuseTest.Data ux:Name="strctData2" Value="(one: 'x', three: 'z')"/>
 	<FuseTest.Data ux:Name="strctData3" Value="(two: 'y', three: 'z')"/>
 	<FuseTest.Data ux:Name="strctData4" Value="(one: 'x', two: 'y', three: 'z')"/>
-	
+
 	<FuseTest.DudElement StringValue="{= _terJoin( {Property strct.Value}.one, {Property strct.Value}.two, {Property strct.Value}.three) ?? 'nope' }" ux:Name="a"/>
 	<FuseTest.DudElement StringValue="{= _terJoin1( {Property strct.Value}.one, {Property strct.Value}.two, {Property strct.Value}.three) ?? 'nope' }" ux:Name="b"/>
 	<FuseTest.DudElement StringValue="{= _terJoin2( {Property strct.Value}.one, {Property strct.Value}.two, {Property strct.Value}.three) ?? 'nope' }" ux:Name="c"/>
 	<FuseTest.DudElement StringValue="{= _terJoin3( {Property strct.Value}.one, {Property strct.Value}.two, {Property strct.Value}.three) ?? 'nope' }" ux:Name="d"/>
-	
+
 </Panel>

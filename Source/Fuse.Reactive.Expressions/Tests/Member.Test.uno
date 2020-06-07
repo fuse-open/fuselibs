@@ -24,7 +24,7 @@ namespace Fuse.Reactive.Test
 				Assert.AreEqual(4, p.asiv.Value);
 				Assert.AreEqual(5, p.adv.Value);
 				Assert.AreEqual(6, p.adiv.Value);
-				
+
 				p.callStep1.Perform();
 				root.StepFrameJS();
 				Assert.AreEqual(12, p.so.Value);
