@@ -35,8 +35,6 @@ namespace Fuse.Drawing
 				throw new Exception("NativeSurface.Begin was not called");
 		}
 
-		protected override void PrepareImageFill( ImageFill img ) { }
-
 		[Foreign(Language.CPlusPlus)]
 		static void SetCGContext(IntPtr cp, IntPtr cgContext)
 		@{

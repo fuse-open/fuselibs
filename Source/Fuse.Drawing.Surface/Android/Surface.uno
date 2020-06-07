@@ -120,7 +120,21 @@ namespace Fuse.Drawing
 			_imageBrushes[fill] = PrepareImageFillImpl(fill);
 		}
 
-		protected abstract Java.Object PrepareImageFillImpl( ImageFill img );
+		protected Java.Object PrepareImageFillImpl( ImageFill img )
+		{
+			var src = img.Source;
+			Java.Object imageRef = CreateNativeImage(src.GetBytes());
+			return imageRef;
+		}
+
+		[Foreign(Language.Java)]
+		extern(Android) Java.Object CreateNativeImage(byte[] data)
+		@{
+			byte[] bytes = ((ByteArray)data).copyArray();
+			android.graphics.BitmapFactory.Options options = new android.graphics.BitmapFactory.Options();
+			android.graphics.Bitmap bitmap = android.graphics.BitmapFactory.decodeByteArray(bytes, 0, bytes.length, options);
+			return bitmap;
+		@}
 
 		public override void FillPath( SurfacePath path, Brush fill )
 		{
@@ -287,11 +301,6 @@ namespace Fuse.Drawing
 				true
 			);
 
-			// flip the image so that it displays correctly
-			Matrix matrix = new Matrix();
-			matrix.preScale(1, -1);
-			scaledBitmap = Bitmap.createBitmap(scaledBitmap, 0, 0, (int)tileSizeX, (int)tileSizeY, matrix, true);
-
 			BitmapShader shader = new BitmapShader(scaledBitmap, Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
 			paint.setShader(shader);
 
@@ -335,7 +344,7 @@ namespace Fuse.Drawing
 			Paint.Join join = joinMap[Math.max(0,Math.min(2,fjoin))];
 			Paint.Cap[] capMap = { Paint.Cap.BUTT, Paint.Cap.ROUND, Paint.Cap.SQUARE };
 			Paint.Cap cap = capMap[Math.max(0,Math.min(2,fcap))];
-			
+
 			Paint paint = new Paint();
 
 			paint.setStrokeMiter(miterLimit);
