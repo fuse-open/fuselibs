@@ -6,11 +6,11 @@
 				<FuseTest.Invoke Handler="{add}" ux:Name="callAdd"/>
 				<FuseTest.Invoke Handler="{remove}" ux:Name="callRemove"/>
 			</Panel>
-			
+
  			<UMUItem Name="{name}" />
 		</Each>
 	</Panel>
-	
+
 	<Panel ux:Name="s">
 		<Each Items="{sel}">
 			<Text Value="{name}"/>
