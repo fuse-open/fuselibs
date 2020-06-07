@@ -2,7 +2,7 @@
 	<JavaScript>
 		var Observable = require("FuseJS/Observable")
 		exports.text = Observable("hi")
-		
+
 		exports.changed = function(args) {
 			exports.text.value = Math.floor(args.value[0]*100) + "," + Math.floor(args.value[1]*100) +
 				" " + Math.floor(args.relativePosition[0]*100) + "," + Math.floor(args.relativePosition[1]*100)

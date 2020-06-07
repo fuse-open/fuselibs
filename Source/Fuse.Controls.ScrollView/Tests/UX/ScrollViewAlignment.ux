@@ -3,11 +3,11 @@
 	<ScrollView ux:Name="SV1">
 		<StackContent Alignment="Bottom" ux:Name="C1"/>
 	</ScrollView>
-	
+
 	<ScrollView ux:Name="SV2">
 		<StackContent Alignment="Top" ux:Name="C2"/>
 	</ScrollView>
-	
+
 	<ScrollView ux:Name="SV3">
 		<StackContent Alignment="VerticalCenter" ux:Name="C3"/>
 	</ScrollView>
@@ -40,8 +40,8 @@
 	</ScrollView>
 
 	<ScrollView AllowedScrollDirections="Horizontal" ux:Name="SV9">
-		<StackPanel Orientation="Horizontal" Alignment="Center" 
-			Width="100" Height="100%" ux:Name="C9"> 
+		<StackPanel Orientation="Horizontal" Alignment="Center"
+			Width="100" Height="100%" ux:Name="C9">
 			<Rectangle Width="10"/>
 		</StackPanel>
 	</ScrollView>
@@ -69,13 +69,13 @@
 			<Rectangle Height="18" Width="100"/>
 		</StackPanel>
 	</ScrollView>
-	
+
 	<StackPanel ux:Class="StackContent">
 		<Rectangle Height="200"/>
 		<Rectangle Height="200"/>
 		<Rectangle Height="200"/>
 		<Rectangle Height="200"/>
 		<Rectangle Height="200"/>
-	</StackPanel>	
+	</StackPanel>
 
 </Panel>

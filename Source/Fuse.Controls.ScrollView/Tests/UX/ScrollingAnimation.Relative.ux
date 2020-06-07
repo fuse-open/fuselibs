@@ -6,6 +6,6 @@
 		<Rectangle Width="100"/>
 		<Rectangle Width="100"/>
 	</StackPanel>
-	
+
 	<ScrollingAnimation ux:Name="S1"/>
 </ScrollView>
