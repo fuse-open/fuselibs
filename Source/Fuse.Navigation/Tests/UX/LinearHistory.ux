@@ -15,8 +15,8 @@
 					<GoForward/>
 				</Timeline>
 			</Panel>
-			
-			
+
+
 			<!-- These don't alter TheNav due to a new Nav -->
 			<Panel>
 				<LinearNavigation/>
@@ -26,7 +26,7 @@
 				<Timeline ux:Name="GoForward3">
 					<GoForward/>
 				</Timeline>
-				
+
 				<!-- these have an explicit context, thus work again -->
 				<Panel Navigation="TheNav">
 					<Timeline ux:Name="GoBack4">
@@ -39,7 +39,7 @@
 			</Panel>
 		</Panel>
 	</Page>
-	
+
 	<!-- need something to modify otherwise trigger has no progress -->
 	<Rectangle ux:Name="Dummy" Layer="Overlay"/>
 	<WhileCanGoBack ux:Name="TheCanGoBack">
@@ -48,12 +48,12 @@
 	<WhileCanGoForward ux:Name="TheCanGoForward">
 		<Change Dummy.CornerRadius="10"/>
 	</WhileCanGoForward>
-	
+
 	<Timeline ux:Name="GoBack1">
 		<GoBack/>
 	</Timeline>
 	<Timeline ux:Name="GoForward1">
 		<GoForward/>
 	</Timeline>
-	
+
 </Panel>

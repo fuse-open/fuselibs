@@ -9,7 +9,7 @@
 		module.exports.goto_test2 = function () {
 			var x = {
 				hello:"world",
-				number:1337,	
+				number:1337,
 			};
 			router.goto("page2", x);
 		};
@@ -80,5 +80,5 @@
 			});
 		</JavaScript>
 	</Panel>
-	
+
 </Panel>

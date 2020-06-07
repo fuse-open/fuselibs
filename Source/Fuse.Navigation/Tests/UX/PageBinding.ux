@@ -5,7 +5,7 @@
 	<Panel Page="P3">
 		<Text Value="{Page Title}" ux:Name="T2"/>
 	</Panel>
-	
+
 	<!-- harder scenario pre-navigation rooting -->
 	<PageIndicator Navigation="Outer" ux:Name="I2">
 		<Panel ux:Template="Dot" Width="10" ux:Name="self">
@@ -14,15 +14,15 @@
 			</WhileActive>
 		</Panel>
 	</PageIndicator>
-	
+
 	<Panel>
 		<LinearNavigation ux:Name="Outer" Active="P1"/>
-		
+
 		<Page Title="One" ux:Name="P1"/>
 		<Page Title="Two" ux:Name="P2"/>
 		<Page Title="Three" ux:Name="P3"/>
 	</Panel>
-	
+
 	<!-- easy scenario post navigation rooting -->
 	<PageIndicator Navigation="Outer" ux:Name="I1">
 		<Panel ux:Template="Dot" Width="10" ux:Name="self">

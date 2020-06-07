@@ -2,7 +2,7 @@
 	<NavigationMotion GotoDuration="1" GotoEasing="Linear"/>
 	<Page ux:Name="one"/>
 	<Page ux:Name="two"/>
-	
+
 	<WhilePageActive ux:Name="W1"/>
 	<WhilePageActive NameEquals="one" ux:Name="W2"/>
 	<WhilePageActive NameEquals="two" Threshold="0.5" Limit="0.9" ux:Name="W3"/>

@@ -31,7 +31,7 @@ namespace Fuse.Navigation
 	public class WhileNavigating : WhileTrigger
 	{
 		INavigation _context;
-		
+
 		protected override void OnRooted()
 		{
 			base.OnRooted();
@@ -41,7 +41,7 @@ namespace Fuse.Navigation
 				Diagnostics.UserError( "WhileNavigating requires a Navigation context", this );
 				return;
 			}
-			
+
 			_context.StateChanged += OnStateChanged;
 			SetActive( _context.State != NavigationState.Stable );
 		}

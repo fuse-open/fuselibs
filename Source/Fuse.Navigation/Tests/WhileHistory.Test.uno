@@ -18,11 +18,11 @@ namespace Fuse.Navigation.Test
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
 				Assert.AreEqual(0,p.wcb.Progress);
-				
+
 				p.Step1.Perform();
 				root.StepFrameJS();
 				Assert.AreEqual(1,p.wcb.Progress);
-				
+
 				p.Step2.Perform();
 				root.StepFrameJS();
 				Assert.AreEqual(0,p.wcb.Progress);
@@ -40,7 +40,7 @@ namespace Fuse.Navigation.Test
 				p.router.Push( new Route("b") );
 				root.StepFrame();
 				Assert.AreEqual(1, p.wcb.Progress);
-				
+
 				p.router.Push( new Route("c") );
 				root.StepFrame();
 				Assert.AreEqual(1, p.wcb.Progress);
@@ -66,6 +66,6 @@ namespace Fuse.Navigation.Test
 				Assert.AreEqual(1, p.wcb.Progress);
 			}
 		}
-		
+
 	}
 }

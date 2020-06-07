@@ -10,7 +10,7 @@
 			</JavaScript>
 			<FuseTest.Invoke Handler="{go}" ux:Name="OneGo"/>
 		</Page>
-		
+
 		<Page Color="#FAA" ux:Name="two">
 			<JavaScript dep:router="findRouter()">
 				exports.go = function() {

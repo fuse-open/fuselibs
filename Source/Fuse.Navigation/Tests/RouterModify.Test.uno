@@ -19,13 +19,13 @@ namespace Fuse.Navigation.Test
 			{
 				root.StepFrameJS();
 				Assert.AreEqual( "one", p.router.GetCurrentRoute().Format() );
-				
+
 				p.gotoNext.Pulse();
 				root.StepFrame();
 				Assert.AreEqual( "two?{}", p.router.GetCurrentRoute().Format() );
 			}
 		}
-		
+
 		[Test]
 		public void Path()
 		{
@@ -37,22 +37,22 @@ namespace Fuse.Navigation.Test
 				p.gotoNext.Pulse();
 				root.StepFrame();
 				Assert.AreEqual( "two", p.router.GetCurrentRoute().Format() );
-				
+
 				p.gotoParams.Pulse();
 				root.StepFrame();
 				Assert.AreEqual( "three?{\"id\":12}", p.router.GetCurrentRoute().Format() );
-				
+
 				//TODO: https://github.com/fuse-open/fuselibs/issues/274
 				p.gotoInner.Pulse();
 				root.StepFrame();
 				Assert.AreEqual( "four?{\"id\":13}/inner?{\"a\":1,\"b\":2}", p.router.GetCurrentRoute().Format() );
-	
+
  				p.gotoEmpty.Pulse();
  				root.StepFrame();
  				Assert.AreEqual( "one/b", p.router.GetCurrentRoute().Format() );
 			}
 		}
-		
+
 		[Test]
 		public void DynamicPath()
 		{
@@ -65,17 +65,17 @@ namespace Fuse.Navigation.Test
 				p.gotoNext.Pulse();
 				root.StepFrameJS();
 				Assert.AreEqual( "two?{\"id\":12}", p.router.GetCurrentRoute().Format() );
-				
+
 				p.gotoParam.Pulse();
 				root.StepFrameJS();
 				Assert.AreEqual( "three?{\"id\":22}", p.router.GetCurrentRoute().Format() );
-				
+
 				p.gotoProp.Pulse();
 				root.StepFrame();
 				Assert.AreEqual( "one?{\"id\":8}", p.router.GetCurrentRoute().Format() );
 			}
 		}
-		
+
 		[Test]
 		public void GotoPush()
 		{
@@ -88,21 +88,21 @@ namespace Fuse.Navigation.Test
 				p.gotoNext.Perform();
 				root.StepFrameJS();
 				Assert.AreEqual( "two?{\"id\":12}", p.router.GetCurrentRoute().Format() );
-				
+
 				p.pushParam.Perform();
 				root.StepFrameJS();
 				Assert.AreEqual( "three?{\"id\":22}", p.router.GetCurrentRoute().Format() );
 				Assert.IsTrue( p.router.CanGoBack ); //evidence of push
-				
+
 				p.gotoProp.Perform();
 				root.StepFrame();
 				Assert.AreEqual( "one?{\"id\":8}", p.router.GetCurrentRoute().Format() );
 				Assert.IsFalse( p.router.CanGoBack ); //evidence of goto
-				
+
 				p.gotoBookmark.Perform();
 				root.StepFrame();
 				Assert.AreEqual( "four/a", p.router.GetCurrentRoute().Format() );
-				
+
 				p.gotoRelative.Perform();
 				root.StepFrame();
 				Assert.AreEqual( "four/b", p.router.GetCurrentRoute().Format() );

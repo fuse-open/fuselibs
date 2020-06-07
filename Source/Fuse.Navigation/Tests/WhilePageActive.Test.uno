@@ -16,15 +16,15 @@ namespace Fuse.Navigation.Test
 				Assert.AreEqual(1,TriggerProgress(p.W1));
 				Assert.AreEqual(1,TriggerProgress(p.W2));
 				Assert.AreEqual(0,TriggerProgress(p.W3));
-				
+
 				p.Active = p.two;
 				root.StepFrame(); //fudge for motion delayed start
 				root.StepFrame(0.5f);
 				Assert.AreEqual(0,TriggerProgress(p.W1));
 				Assert.AreEqual(0,TriggerProgress(p.W2));
 				Assert.AreEqual(1,TriggerProgress(p.W3));
-				
-				root.StepFrame(0.5f); 
+
+				root.StepFrame(0.5f);
 				Assert.AreEqual(1,TriggerProgress(p.W1));
 				Assert.AreEqual(0,TriggerProgress(p.W2));
 				Assert.AreEqual(0,TriggerProgress(p.W3));
