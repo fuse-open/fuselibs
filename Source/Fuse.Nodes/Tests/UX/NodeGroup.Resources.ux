@@ -6,7 +6,7 @@
 
 	<Panel>
 		<NGResources/>
-		
+
 		<Text Value="{Resource Happy}" TextColor="{Resource Low}" ux:Name="T"/>
 	</Panel>
 </Panel>
