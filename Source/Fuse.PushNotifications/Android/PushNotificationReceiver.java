@@ -22,7 +22,7 @@ public class PushNotificationReceiver extends FirebaseMessagingService {
 	public static int nextID() { return _notificationID += 1; }
 	private static Object lock = new Object();
 
-	public PushNotificationReceiver() { 
+	public PushNotificationReceiver() {
 		super();
 	}
 	@Override
@@ -44,7 +44,7 @@ public class PushNotificationReceiver extends FirebaseMessagingService {
 					if (entry.getValue().charAt(0) == '{') {
 						jsonStr += entry.getValue() + ",";
 					} else {
-						jsonStr += "\"" + entry.getValue() + "\"" + ",";	
+						jsonStr += "\"" + entry.getValue() + "\"" + ",";
 					}
 				}
 				jsonStr = jsonStr.replaceAll(",$", "");
@@ -86,13 +86,13 @@ public class PushNotificationReceiver extends FirebaseMessagingService {
 
         return bundle;
     }
-    
-    
+
+
     public static Bundle handleJSONArray(JSONArray jsonArray) {
         Bundle bundle = new Bundle();
 
         for (int i = 0; i < jsonArray.length(); i++) {
-            
+
             try {
                 Object jsonArrayValue = jsonArray.get(i);
 
@@ -129,7 +129,7 @@ public class PushNotificationReceiver extends FirebaseMessagingService {
 
             try {
                 Object keyValue = jsonObject.get(keyStr);
-            
+
                 if (keyValue instanceof JSONObject) {
                     bundle.putBundle(keyStr, handleJSONObject((JSONObject) keyValue));
                 } else if (keyValue instanceof JSONArray) {
@@ -149,7 +149,7 @@ public class PushNotificationReceiver extends FirebaseMessagingService {
                 Log.d("handleJSONObject", "BAD JSON VALUE IN JSON OBJECT, AT KEY: " + keyStr);
             }
         }
-        
+
         return bundle;
     }
 }
