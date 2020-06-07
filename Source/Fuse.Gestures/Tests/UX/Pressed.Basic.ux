@@ -8,7 +8,7 @@
 		</Pressed>
 		<WhilePressed ux:Name="WP"/>
 	</Panel>
-		
+
 	<Grid ColumnCount="2">
 		<PBCell ux:Name="P1"/>
 		<PBCell ux:Name="P2"/>

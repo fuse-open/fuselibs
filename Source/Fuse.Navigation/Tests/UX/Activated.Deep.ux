@@ -8,12 +8,12 @@
 			<FuseTest.CountAction ux:Name="D"/>
 		</Deactivated>
 	</Panel>
-	
+
 	<JavaScript>
 		exports.step1 = function() {
 			router.goto( "AP2" )
 		}
-		
+
 		exports.step2 = function() {
 			//must be seen as a single change in full path activation
 			router.goto( "AP1", {}, "BP2" )
@@ -29,20 +29,20 @@
 		<Deactivated Path="Full">
 			<FuseTest.CountAction ux:Name="D"/>
 		</Deactivated>
-				
+
 					<PageControl Transition="None" ux:Name="C1" Active="CP1">
 						<ActPage ux:Name="CP1"/>
 						<ActPage ux:Name="CP2"/>
 					</PageControl>
 				</ActPage>
-				
+
 				<ActPage ux:Name="BP2"/>
 			</Navigator>
 		</ActPage>
-		
+
 		<ActPage ux:Name="AP2"/>
 	</Navigator>
-	
+
 	<FuseTest.Invoke Handler="{step1}" ux:Name="Step1"/>
 	<FuseTest.Invoke Handler="{step2}" ux:Name="Step2"/>
 </Panel>

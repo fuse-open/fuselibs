@@ -3,11 +3,11 @@
 	<JavaScript>
 		var Observable = require("FuseJS/Observable")
 		exports.text = Observable("hi")
-		
-		exports.failText = exports.text.failedMap( 	function(err) { 
+
+		exports.failText = exports.text.failedMap( 	function(err) {
 			return err
 		})
-		
+
 		exports.fail = function() {
 			exports.text.failed("nope")
 		}
@@ -20,7 +20,7 @@
 		<Text Value="{Clear text}" ux:Name="T"/>
 		<Text Value="{Clear failText}" ux:Name="TF"/>
 	</Panel>
-	
+
 	<FuseTest.Invoke Handler="{fail}" ux:Name="CallFail"/>
 	<FuseTest.Invoke Handler="{restore}" ux:Name="CallRestore"/>
 </Panel>

@@ -1,34 +1,34 @@
 <Panel ux:Class='UX.Panel.InvalidateDepend'>
 	<Element ux:Class="Dummy"/>
-	
+
 	<Panel Alignment="TopRight" Width="100" Height="100" ux:Name="P1">
 		<Text Alignment="Center" Value="Hi" ux:Name="T1"/>
 	</Panel>
-	
+
 	<Panel ux:Name="P2"/>
-	
+
 	<Panel Alignment="TopRight" ux:Name="P3">
 		<Text Alignment="Center" Value="Hi" ux:Name="T2"/>
 	</Panel>
-	
+
 	<Grid Columns="1*,1*" Rows="1*,1*" ux:Name="G1">
 		<Panel ux:Name="GP1">
 			<Text Alignment="Center" Value="hi" ux:Name="T3">
 				<Dummy ux:Name="N1"/>
 			</Text>
 		</Panel>
-		
+
 		<Panel ux:Name="GP2" Alignment="Center">
 		</Panel>
-		
+
 		<Panel ux:Name="GP3">
 		</Panel>
-		
+
 		<Text ux:Name="T4">
 			<Dummy ux:Name="N2"/>
 		</Text>
 	</Grid>
-	
+
 	<StackPanel Alignment="Center" Orientation="Horizontal" ux:Name="S1">
 		<Text ux:Name="ST1">
 			<Dummy ux:Name="SD1"/>
@@ -37,7 +37,7 @@
 			<Dummy ux:Name="SD2"/>
 		</Text>
 	</StackPanel>
-	
+
 	<Panel ux:Name="P4">
 		<Dummy ux:Name="N3"/>
 	</Panel>

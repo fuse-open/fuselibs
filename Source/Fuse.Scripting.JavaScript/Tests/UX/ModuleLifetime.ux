@@ -4,7 +4,7 @@
 	<JavaScript>
 		var Observable = require("FuseJS/Observable");
 
-		var items = Observable("thing1", "thing2", "thing3"); 
+		var items = Observable("thing1", "thing2", "thing3");
 
 		module.exports = {
 			items: items,
@@ -21,7 +21,7 @@
 		<Each Items="{items}">
 			<Panel>
 				<JavaScript>
-				
+
 					function callback()
 					{
 						// do nothing

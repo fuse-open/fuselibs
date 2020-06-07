@@ -1,12 +1,12 @@
 <Panel ux:Class="UX.PlotAxis.One" xmlns:c="Fuse.Charting">
 	<JavaScript>
 		var Observable = require("FuseJS/Observable")
-		
+
 		function Item( value, label ) {
 			this.value = value
 			this.label = label
 		}
-		
+
 		exports.values = Observable(
 			new Item( 11, "one" ),
 			new Item( 22, "two" ),
@@ -17,7 +17,7 @@
 	</JavaScript>
 	<c:Plot DataOffset="1" DataLimit="1" DataExtend="1,1" ux:Name="P">
 		<c:DataSeries Data="{values}"/>
-		
+
 		<c:PlotAxis Axis="X" Alignment="Bottom" ux:Name="XL">
 			<Text ux:Template="Label" Value="{Plot axis.label}" Height="20"/>
 		</c:PlotAxis>

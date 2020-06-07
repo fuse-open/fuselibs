@@ -15,7 +15,7 @@ namespace Fuse.Controls.Panels.Test
 			{
 				root.TestDraw();
 				Assert.IsFalse(p.FP.TestHasFreezePrepared);
-				
+
 				p.B1.IsBusy = false;
 				root.StepFrame(0.5f); //multiple frames
 				root.TestDraw();

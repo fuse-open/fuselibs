@@ -4,21 +4,21 @@
 	<Rectangle Alignment="Center" Width="100" Height="200" ux:Name="R2" Color="#FFF">
 		<Rectangle Alignment="CenterRight" Width="50" Height="40" Anchor="50%,50%" Color="#FFF"/>
 	</Rectangle>
-	
+
 	<Rectangle Alignment="Center" Width="200" Height="100" ux:Name="R3">
 		<Stroke Width="5" Offset="10" Color="#000"/>
 	</Rectangle>
-	
+
 	<ContentControl Width="100" Height="100" ux:Name="C1">
 		<Panel Width="50" Height="80" X="60" Y="50" Color="#FFF"/>
 	</ContentControl>
-	
+
 	<Image Alignment="TopLeft" StretchMode="PointPrecise" File="Assets/200x100.png" ux:Name="I1"/>
 	<Panel Width="200" Height="200" ux:Name="P1">
 		<!-- does not fill whole area -->
 		<Image File="Assets/200x100.png" ux:Name="I2"/>
 	</Panel>
-	
+
 	<Image Alignment="TopLeft" StretchMode="PointPrecise" File="Assets/200x100.png" ux:Name="I3">
 		<Panel Alignment="BottomRight" Width="50" Height="60" Anchor="50%,50%" Color="#FFF"/>
 	</Image>

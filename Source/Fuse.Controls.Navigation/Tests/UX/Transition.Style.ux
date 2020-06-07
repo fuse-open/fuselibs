@@ -4,11 +4,11 @@
 		<Transition ux:Name="T1" Style="bang">
 			<Nothing Duration="1"/>
 		</Transition>
-		
+
 		<Transition ux:Name="T2" Style="">
 			<Nothing Duration="1"/>
 		</Transition>
-		
+
 		<Transition ux:Name="T3">
 			<Nothing Duration="1"/>
 		</Transition>
@@ -22,7 +22,7 @@
 				style: "bang",
 			})
 		}
-		
+
 		exports.flashOne = function() {
 			router.modify({
 				how: "Goto",
@@ -33,7 +33,7 @@
 	</JavaScript>
 	<FuseTest.Invoke Handler="{bangTwo}" ux:Name="BangTwo"/>
 	<FuseTest.Invoke Handler="{flashOne}" ux:Name="FlashOne"/>
-	
+
 	<Navigator ux:Name="nav" DefaultPath="one">
 		<TSBPage ux:Name="one"/>
 		<TSBPage ux:Name="two"/>

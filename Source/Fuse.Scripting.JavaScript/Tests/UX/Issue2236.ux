@@ -3,11 +3,11 @@
 		var Observable = require( "FuseJS/Observable" )
 
 		exports.okay = Observable(false)
-		
+
 		var items = Observable()
 		items.add({i:1})
 		exports.items = items
-		
+
 		exports.go = function(args) {
 			try {
 				items.removeAt(3)

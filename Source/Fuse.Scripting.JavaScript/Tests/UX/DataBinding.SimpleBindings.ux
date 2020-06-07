@@ -1,12 +1,12 @@
 <Panel ux:Class="UX.DataBinding.SimpleBindings">
 	<JavaScript>
 		var Observable = require("FuseJS/Observable")
-		
+
 		exports.on = Observable(true)
 		exports.label = Observable("hello")
 		exports.progress = Observable(200)
 		exports.color = Observable([1,0,0,1])
-		
+
 		exports.next = function() {
 			exports.on.value = false
 			exports.label.value = "goodbye"
@@ -14,11 +14,11 @@
 			exports.color.value = [0,1,0,1]
 		}
 	</JavaScript>
-	
+
 	<WhileTrue Value="{on}" ux:Name="TheWhile"/>
 	<Text Value="{label}" ux:Name="TheText" TextColor="{color}"/>
 	<RangeControl Value="{progress}" Minimum="0" Maximum="1000" ux:Name="TheRange"/>
-	
+
 	<FuseTest.Invoke Handler="{next}" ux:Name="CallNext"/>
-	
+
 </Panel>

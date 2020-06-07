@@ -19,7 +19,7 @@ namespace Fuse.Elements
 		public Size Width
 		{
 			get { return _width; }
-			set 
+			set
 			{
 				if (_width != value)
 				{
@@ -41,20 +41,20 @@ namespace Fuse.Elements
 		public Size Height
 		{
 			get { return _height; }
-			set 
-			{ 
-				if (_height != value) 
+			set
+			{
+				if (_height != value)
 				{
 					_height = value;
 					InvalidateLayout();
 				}
 			}
 		}
-		
+
 		/** The combined `Width` and `Height` of the element.
-		
+
 			If using this property avoid using `Width` or `Height` as this is a combined alias for those properties. Choose the property that works easier for your desired binding, expressions and animations.
-		
+
 			See @Layout for more details.
 		*/
 		public Size2 Size
@@ -78,11 +78,11 @@ namespace Fuse.Elements
 		public Size MinWidth
 		{
 			get { return Get(FastProperty1.MinWidth, Uno.UX.Size.Auto); }
-			set 
-			{ 
+			set
+			{
 				if (MinWidth != value)
 				{
-					Set(FastProperty1.MinWidth, value, Uno.UX.Size.Auto); 
+					Set(FastProperty1.MinWidth, value, Uno.UX.Size.Auto);
 					InvalidateLayout();
 				}
 			}
@@ -99,11 +99,11 @@ namespace Fuse.Elements
 		public Size MinHeight
 		{
 			get { return Get(FastProperty1.MinHeight, Uno.UX.Size.Auto); }
-			set 
-			{ 
+			set
+			{
 				if (MinHeight != value)
 				{
-					Set(FastProperty1.MinHeight, value, Uno.UX.Size.Auto); 
+					Set(FastProperty1.MinHeight, value, Uno.UX.Size.Auto);
 					InvalidateLayout();
 				}
 			}
@@ -120,11 +120,11 @@ namespace Fuse.Elements
 		public Size MaxWidth
 		{
 			get { return Get(FastProperty1.MaxWidth, Uno.UX.Size.Auto); }
-			set 
-			{ 
+			set
+			{
 				if (MaxWidth != value)
 				{
-					Set(FastProperty1.MaxWidth, value, Uno.UX.Size.Auto); 
+					Set(FastProperty1.MaxWidth, value, Uno.UX.Size.Auto);
 					InvalidateLayout();
 				}
 			}
@@ -141,11 +141,11 @@ namespace Fuse.Elements
 		public Size MaxHeight
 		{
 			get { return Get(FastProperty1.MaxHeight, Uno.UX.Size.Auto); }
-			set 
-			{ 
+			set
+			{
 				if (MaxHeight != value)
 				{
-					Set(FastProperty1.MaxHeight, value, Uno.UX.Size.Auto); 
+					Set(FastProperty1.MaxHeight, value, Uno.UX.Size.Auto);
 					InvalidateLayout();
 				}
 			}
@@ -161,8 +161,8 @@ namespace Fuse.Elements
 		public Alignment Alignment
 		{
 			get { return _alignment; }
-			set 
-			{ 
+			set
+			{
 				if (_alignment != value)
 				{
 					_alignment = value;
@@ -209,7 +209,7 @@ namespace Fuse.Elements
 			_visibility = value;
 			OnVisibilityChanged(old, origin);
 		}
-		
+
 		static Selector _visibilityName = "Visibility";
 		void OnVisibilityChanged(Visibility oldVisibility, IPropertyListener origin)
 		{
@@ -242,13 +242,13 @@ namespace Fuse.Elements
 		public float4 Margin
 		{
 			get { return Get(FastProperty1.Margin, float4(0)); }
-			set 
+			set
 			{
 				if (Margin != value)
 				{
 					Set(FastProperty1.Margin, value, float4(0));
-					InvalidateLayout();	
-				} 
+					InvalidateLayout();
+				}
 			}
 		}
 
@@ -272,13 +272,13 @@ namespace Fuse.Elements
 		public float4 Padding
 		{
 			get { return Get(FastProperty1.Padding, float4(0)); }
-			set 
+			set
 			{
 				if (Padding != value)
 				{
 					Set(FastProperty1.Padding, value, float4(0));
-					InvalidateLayout();	
-				} 
+					InvalidateLayout();
+				}
 			}
 		}
 
@@ -289,13 +289,13 @@ namespace Fuse.Elements
 		public Size2 Offset
 		{
 			get { return Get(FastProperty1.Offset, Size2.Auto); }
-			set 
+			set
 			{
 				if (Offset != value)
 				{
 					Set(FastProperty1.Offset, value, Size2.Auto);
-					InvalidateLayout();	
-				} 
+					InvalidateLayout();
+				}
 			}
 		}
 
@@ -312,13 +312,13 @@ namespace Fuse.Elements
 		public Size2 Anchor
 		{
 			get { return Get(FastProperty1.Anchor, Size2.Auto); }
-			set 
+			set
 			{
 				if (Anchor != value)
 				{
 					Set(FastProperty1.Anchor, value, Size2.Auto);
-					InvalidateLayout();	
-				} 
+					InvalidateLayout();
+				}
 			}
 		}
 
@@ -329,13 +329,13 @@ namespace Fuse.Elements
 		public Size X
 		{
 			get { return Get(FastProperty1.X, Uno.UX.Size.Auto); }
-			set 
+			set
 			{
 				if (X != value)
 				{
 					Set(FastProperty1.X, value, Uno.UX.Size.Auto);
-					InvalidateLayout();	
-				} 
+					InvalidateLayout();
+				}
 			}
 		}
 
@@ -346,18 +346,18 @@ namespace Fuse.Elements
 		public Size Y
 		{
 			get { return Get(FastProperty1.Y, Uno.UX.Size.Auto); }
-			set 
+			set
 			{
 				if (Y != value)
 				{
 					Set(FastProperty1.Y, value, Uno.UX.Size.Auto);
-					InvalidateLayout();	
-				} 
+					InvalidateLayout();
+				}
 			}
 		}
 
 		/** The combined `X` and `Y` position of the element.
-		
+
 			If using this property avoid using `X` or `Y` properties, as this is an combined alias for those properties. Choose the property that works easier for your desired bindined, expressions and animations.
 		*/
 		public Size2 Position
@@ -369,7 +369,7 @@ namespace Fuse.Elements
 				Y = value.Y;
 			}
 		}
-		
+
 		static readonly Selector _clipToBoundsName = "ClipToBounds";
 
 		/** Clips the child elements to the bounds of this element visually.
@@ -377,7 +377,7 @@ namespace Fuse.Elements
 		public bool ClipToBounds
 		{
 			get { return HasBit(FastProperty1.ClipToBounds); }
-			set 
+			set
 			{
 				if (ClipToBounds != value)
 				{

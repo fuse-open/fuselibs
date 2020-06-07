@@ -3,12 +3,12 @@
 		<WhileCanGoBack ux:Name="wb1"/>
 		<WhileCanGoForward ux:Name="wf1"/>
 	</Panel>
-	
+
 	<PageControl ux:Name="nav">
 		<Panel ux:Name="pa"/>
 		<Panel ux:Name="pb"/>
 		<Panel ux:Name="pc"/>
-		
+
 		<Panel Layer="Overlay">
 			<WhileCanGoBack ux:Name="wb2"/>
 			<WhileCanGoForward ux:Name="wf2"/>

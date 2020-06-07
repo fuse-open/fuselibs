@@ -14,7 +14,7 @@ namespace Fuse.Reactive
 		{
 			listener.OnNewData(this, new Array(args));
 		}
-		
+
 		public override string ToString()
 		{
 			return FormatString("");
@@ -54,7 +54,7 @@ namespace Fuse.Reactive
 	public sealed class VectorZ : UnaryOperator
 	{
 		[UXConstructor]
-		public VectorZ([UXParameter("Operand")] Expression operand) : 
+		public VectorZ([UXParameter("Operand")] Expression operand) :
 			base(operand, "z") {}
 		protected override bool TryCompute(object operand, out object result)
 		{
@@ -63,12 +63,12 @@ namespace Fuse.Reactive
 			int size;
 			if (!Marshal.TryToZeroFloat4(operand, out v, out size) || size < 3)
 				return false;
-				
+
 			result = v.Z;
 			return true;
 		}
 	}
-	
+
 	[UXFunction("w" )]
 	/**
 		Returns the `W` value of a `float4` value.
@@ -76,7 +76,7 @@ namespace Fuse.Reactive
 	public sealed class VectorW : UnaryOperator
 	{
 		[UXConstructor]
-		public VectorW([UXParameter("Operand")] Expression operand) : 
+		public VectorW([UXParameter("Operand")] Expression operand) :
 			base(operand, "w") {}
 		protected override bool TryCompute(object operand, out object result)
 		{
@@ -85,10 +85,10 @@ namespace Fuse.Reactive
 			int size;
 			if (!Marshal.TryToZeroFloat4(operand, out v, out size) || size < 4)
 				return false;
-				
+
 			result = v.W;
 			return true;
 		}
 	}
-	
+
 }

@@ -5,13 +5,13 @@
 
 		function handler(val) {
 			if ((val.data instanceof Function)) { ok.value = true; }
-		} 
+		}
 
 		function test1() { console.log('test1');}
 
 		module.exports = {
 			handler: handler, test1: test1, ok: ok
-		};  
+		};
   </JavaScript>
 
  <Panel ux:Class="homepagebutton" Background="White">

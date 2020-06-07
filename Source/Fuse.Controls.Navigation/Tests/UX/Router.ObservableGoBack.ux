@@ -2,12 +2,12 @@
 	<Router ux:Name="router"/>
 	<JavaScript>
 		var Observable = require("FuseJS/Observable")
-		
+
 		exports.pages = Observable({
 			$path: "one",
 			count: 1
 		})
-		
+
 		var count = 1
 		exports.push = function() {
 			exports.pages.add({
@@ -15,7 +15,7 @@
 				count: ++count,
 			})
 		}
-		
+
 		exports.history = Observable( function() {
 			var text = ""
 			for (var i=0; i < exports.pages.length; ++i) {
@@ -31,12 +31,12 @@
 		<Panel ux:Template="one">
 			<Text Value="{count}"/>
 		</Panel>
-		
+
 		<Panel ux:Template="two">
 			<Text Alignment="Center" Value="{count}" FontSize="48"/>
 		</Panel>
 	</Navigator>
-		
+
 	<Panel>
 		<WhileCanGoBack ux:Name="wc"/>
 		<Timeline ux:Name="goBack">
@@ -44,6 +44,6 @@
 		</Timeline>
 		<Text Value="{history}" ux:Name="history"/>
 	</Panel>
-	
+
 	<FuseTest.Invoke Handler="{push}" ux:Name="callPush"/>
 </Panel>

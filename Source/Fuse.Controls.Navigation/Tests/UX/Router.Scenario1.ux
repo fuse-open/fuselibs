@@ -5,7 +5,7 @@
 			<Panel ux:Template="one">
 				<PageControl ux:Name="PC1" Active="ii">
 					<Page ux:Name="ii"/>
-					
+
 					<!-- direct child outlet -->
 					<PageControl ux:Name="iii">
 						<Page ux:Name="bee"/>

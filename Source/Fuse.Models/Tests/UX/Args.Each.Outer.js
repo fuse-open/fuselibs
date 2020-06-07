@@ -7,7 +7,7 @@ export default class Outer {
 			{ id: "bar" },
 			{ id: "baz" },
 		];
-		
+
 		this.outerInstanceCount = ++globalOuterInstanceCount;
 		this.innerInstanceCount = 0;
 	}

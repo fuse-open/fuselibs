@@ -2,7 +2,7 @@
 	<Rectangle Height="50" ux:Name="R1"/>
 	<Rectangle Height="50" ux:Name="R2"/>
 	<Rectangle Height="50" ux:Name="R3"/>
-	
+
 	<Timeline ux:Name="T1">
 		<Change R1.Height="100" Easing="BackInOut"/>
 		<Change R2.Height="100" Easing="BackInOut" MixOp="Weight"/>

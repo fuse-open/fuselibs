@@ -18,7 +18,7 @@ namespace Fuse.Navigation
 
 		/**
 			Transition to the target node.
-			
+
 			@scriptmethod goto(node)
 			@param node The `Visual` target for the transition. For most navigation types this must already be
 				 a child of the navigation panel.
@@ -42,24 +42,24 @@ namespace Fuse.Navigation
 			var pd = GetPageData(page);
 			if (pd == null)
 				return new NavigationPageState{ Progress = 0, PreviousProgress = 0 };
-			return new NavigationPageState{ 
+			return new NavigationPageState{
 				Progress = pd.Progress, PreviousProgress = pd.PreviousProgress };
 		}
 
 		public event NavigationPageCountHandler PageCountChanged;
-		
+
 		NavigationState _navState = NavigationState.Stable;
 		public NavigationState State
 		{
 			get { return _navState; }
 		}
 		public event ValueChangedHandler<NavigationState> StateChanged;
-		
+
 		protected void OnStateChanged(NavigationState newState)
 		{
 			if (newState == _navState)
 				return;
-				
+
 			_navState = newState;
 			if (StateChanged != null)
 				StateChanged( this, new ValueChangedArgs<NavigationState>(newState) );
@@ -77,7 +77,7 @@ namespace Fuse.Navigation
 		{
 			OnPageProgressChanged(0,0,mode);
 		}
-		
+
 		protected void OnPageProgressChanged(double current, double prev, NavigationMode mode)
 		{
 			if (PageProgressChanged != null)
@@ -97,9 +97,9 @@ namespace Fuse.Navigation
 				handler(this, new NavigatedArgs(newElement));
 			}
 		}
-		
+
 		public event ActivePageChangedHandler ActivePageChanged;
-		
+
 		/**
 			Call immedaitely when the active page changes (when it is set). This happens prior to animation,
 			so strictly prior to `OnNavigated` (though within the same frame, the next calls, is fine).
@@ -107,7 +107,7 @@ namespace Fuse.Navigation
 		protected void OnActiveChanged(Visual newElement)
 		{
 			OnPropertyChanged(ActiveIndexName);
-			
+
 			if (ActivePageChanged != null)
 				ActivePageChanged(this, newElement);
 		}
@@ -126,19 +126,19 @@ namespace Fuse.Navigation
 		public virtual bool CanGoForward { get { return false; } }
 		public virtual void ClearHistory() { }
 
-		
+
 		List<PageData> _pages = new List<PageData>();
-		
+
 		internal IList<PageData> Pages { get { return _pages; } }
-		
-		internal PageData GetPageData( Visual page ) 
+
+		internal PageData GetPageData( Visual page )
 		{
 			if (page == null)
 				return null;
-				
+
 			return PageData.Get(page);
 		}
-		
+
 		protected override void OnRooted()
 		{
 			base.OnRooted();
@@ -154,16 +154,16 @@ namespace Fuse.Navigation
 				//we require Visual (though IsPage tends to check that anyway)
 				if (!Navigation.IsPage(x))
 					continue;
-					
+
 				var pd = PageData.GetOrCreate(x);
 				pd.Index = c;
 				_pages.Add( pd );
 				c++;
 			}
-			
+
 			OnPageCountChanged();
 		}
-		
+
 		protected override void OnUnrooted()
 		{
 			_pages.Clear();
@@ -175,7 +175,7 @@ namespace Fuse.Navigation
 			var v = child as Visual;
 			if (v == null)
 				return;
-				
+
 			UpdatePages();
 		}
 
@@ -184,10 +184,10 @@ namespace Fuse.Navigation
 			var v = child as Visual;
 			if (v == null)
 				return;
-				
+
 			UpdatePages();
 		}
-		
+
 		public virtual void OnChildMovedWhileRooted(Node child)
 		{
 			var v = child as Visual;
@@ -198,9 +198,9 @@ namespace Fuse.Navigation
 		}
 
 		protected bool IsPage(Node x) { return Navigation.IsPage(x); }
-		
-		public int PageCount 
-		{ 
+
+		public int PageCount
+		{
 			get { return _pages.Count; }
 		}
 
@@ -230,15 +230,15 @@ namespace Fuse.Navigation
 		[UXOriginSetter("SetActiveIndex")]
 		/**
 			The child index of the currently active page.
-			
+
 			The value is `-1` if there is currently no active page.
-			
+
 			Setting this value causes the navigation to transition to the desired page. Due to animations there may be a delay between setting and the new value actually becoming the "active" page. If you need to respond at a precise time in the transition you can use a `ActivatingAnimation` or a `WhileActive` trigger with appropriate threshold.
 		*/
 		public int ActiveIndex
 		{
-			get 
-			{ 
+			get
+			{
 				var pd = GetPageData(Active);
 				return pd == null ? -1 : pd.Index;
 			}

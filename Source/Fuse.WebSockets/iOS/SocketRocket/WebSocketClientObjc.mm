@@ -7,7 +7,7 @@
 	@property (nonatomic, copy) void (^eventHandler)(NSString *, NSString *);
 	@property (nonatomic, copy) void (^receivedMessage)(NSString *);
 	@property (nonatomic, copy) void (^receivedData)(uint8_t *, NSUInteger);
-	
+
 	@property SRWebSocket *webSocket;
 
 @end

@@ -17,7 +17,7 @@ namespace Fuse.Controls.Panels.Test
 				Assert.AreEqual( float4(0), p.a.Padding );
 				Assert.AreEqual( float4(0,0,10,5), p.b.Padding );
 				Assert.AreEqual( float4(5,5,5,5), p.c.Padding );
-				
+
 				root.SetSafeMargins( float4(1,5,10,15) );
 				root.StepFrame();
 				Assert.AreEqual( float4(1,5,10,0), p.a.Padding );

@@ -7,7 +7,7 @@
 			<ActivatingAnimation ux:Name="A" Scale="0.6"/>
 			<DeactivatingAnimation ux:Name="D" Scale="0.25"/>
 		</Panel>
-		
+
 		<NSPage ux:Name="P1"/>
 		<NSPage ux:Name="P2"/>
 		<NSPage ux:Name="P3"/>

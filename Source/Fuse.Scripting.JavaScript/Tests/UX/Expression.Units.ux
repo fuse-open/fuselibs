@@ -3,4 +3,4 @@
 	<Rectangle ux:Name="r2" Offset="100%/5,0"/>
 	<Rectangle ux:Name="r3" Offset="(100/5)%,0"/>
 	<Rectangle ux:Name="r4" Offset="100/5,0"/>
-</StackPanel> 
+</StackPanel>

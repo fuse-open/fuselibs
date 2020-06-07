@@ -14,7 +14,7 @@
 
 		module.exports = { tree:tree };
 	</JavaScript>
-	
+
 	<FuseTest.ObservableCollector ux:Name="OC" Items="{tree.itemsRef}" />
 
 	<Panel>

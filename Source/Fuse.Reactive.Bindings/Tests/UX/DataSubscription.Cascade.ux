@@ -5,7 +5,7 @@
 	</JavaScript>
 	<Text Value="{a}" ux:Name="a1"/>
 	<Text Value="{b}" ux:Name="b1"/>
-	
+
 	<Panel>
 		<JavaScript>
 			exports.a = "2"

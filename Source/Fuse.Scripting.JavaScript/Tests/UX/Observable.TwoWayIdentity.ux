@@ -2,12 +2,12 @@
 	<JavaScript>
 		var Observable = require("FuseJS/Observable")
 		Observable._testResetDeprecated()
-		
+
 		var a = Observable("one")
 		var b = Observable(a)
 		var c = b.inner().twoWayMap(
 			function( dt ) { return dt }, function( d, dt ) { return d } )
-		
+
 		exports.a = a
 		exports.c = c
 	</JavaScript>

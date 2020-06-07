@@ -1,7 +1,7 @@
 <Panel ux:Class="UX.DataSeries.Basic" xmlns:c="Fuse.Charting">
 	<JavaScript>
 		var Observable = require("FuseJS/Observable")
-		
+
 		exports.one = Observable( 3, 1, 2 )
 		exports.two = Observable( { x: 5 } , {y: 3 }, {z:  6}, {w: 1} )
 	</JavaScript>

@@ -4,7 +4,7 @@
 	<Panel Dock="Left" Width="10%" ux:Name="P3"/>
 	<Panel Dock="Right" Width="5%" ux:Name="P4"/>
 	<Panel Dock="Right" Width="5%" ux:Name="P5"/>
-	
+
 	<Panel Width="30%" Height="20%" ux:Name="P6"/>
 	<Panel>
 		<Panel Width="30%" Height="20%" ux:Name="P7"/>

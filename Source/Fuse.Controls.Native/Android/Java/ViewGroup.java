@@ -1,7 +1,7 @@
 package com.fuse.android.views;
 
 public class ViewGroup extends android.widget.FrameLayout {
-	
+
 	public boolean HitTestEnabled;
 
 	public ViewGroup(android.content.Context context)

@@ -1,12 +1,12 @@
 <Panel ux:Class="UX.Each.Order">
 	<JavaScript>
 		var Observable = require("FuseJS/Observable")
-		
+
 		var count = 0
 		function Item() {
 			this.id = "Q" + (count++)
 		}
-		
+
 		exports.items = Observable()
 		for (var i=0; i < 2; ++i) {
 			exports.items.add( new Item() )
@@ -15,7 +15,7 @@
 		exports.add = function() {
 			exports.items.add( new Item() )
 		}
-		
+
 		exports.remove = function() {
 			exports.items.remove(exports.items.getAt(0))
 		}
@@ -27,7 +27,7 @@
 		</Each>
 		<Panel ux:Name="C3"/>
 	</StackPanel>
-	
+
 	<FuseTest.Invoke Handler="{add}" ux:Name="CallAdd"/>
 	<FuseTest.Invoke Handler="{remove}" ux:Name="CallRemove"/>
 </Panel>

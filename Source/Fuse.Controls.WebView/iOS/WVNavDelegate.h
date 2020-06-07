@@ -9,8 +9,8 @@ typedef bool (^BoolFunc)(void);
 @property(copy) StringAction onCustomURI;
 @property(copy) BoolFunc hasURISchemeHandler;
 @property (nonatomic, retain) NSArray* uriSchemes;
--(id)initWithEventHandlers:(Action)beginLoading 
-  loaded:(Action)pageLoaded 
+-(id)initWithEventHandlers:(Action)beginLoading
+  loaded:(Action)pageLoaded
   change:(Action)urlChanged
   uriHandler:(StringAction)uriHandler
   schemes:(NSArray*)schemes

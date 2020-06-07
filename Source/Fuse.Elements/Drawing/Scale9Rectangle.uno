@@ -8,7 +8,7 @@ namespace Fuse.Elements.Internal
 	{
 		static public Scale9Rectangle Impl = new Scale9Rectangle();
 
-		public void Draw(DrawContext dc, Visual element, float2 size,  float2 scaleTextureSize, 
+		public void Draw(DrawContext dc, Visual element, float2 size,  float2 scaleTextureSize,
 			Texture2D tex, float4 color, float4 margin)
 		{
 			draw
@@ -55,7 +55,7 @@ namespace Fuse.Elements.Internal
 				float y: yv.X * Ay + yv.Y * By + yv.Z * Cy;
 
 				float2 LocalPosition: float2(x, y);
-				
+
 				float4 WorldPosition: Vector.Transform(float4(LocalPosition,0,1), element.WorldTransform);
 
 				public float2 TexCoord : float2(

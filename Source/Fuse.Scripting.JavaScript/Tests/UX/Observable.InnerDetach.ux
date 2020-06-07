@@ -23,7 +23,7 @@
 			<TextInput Value="{val}" ux:Name="T"/>
 		</Panel>
 	</Panel>
-	
+
 	<!-- a lower level test of the same fix -->
 	<Panel>
 		<JavaScript>
@@ -31,14 +31,14 @@
 			var a = Observable()
 			var b = Observable()
 			var c = b.innerTwoWay()
-			
+
 			exports.d = c.map( function(v) {
 				if (v instanceof Observable) {
 					throw new Exception("That observable should not be seen here" )
 				}
 				return v
 			})
-			
+
 			exports.step1 = function() {
 				b.value = a
 			}

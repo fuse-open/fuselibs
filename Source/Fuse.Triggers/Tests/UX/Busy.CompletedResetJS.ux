@@ -4,11 +4,11 @@
 			CP1.reset()
 		}
 	</JavaScript>
-	<FuseTest.Invoke Handler="{reset}" ux:Name="CallReset"/>	
-	
+	<FuseTest.Invoke Handler="{reset}" ux:Name="CallReset"/>
+
 	<Completed ux:Name="CP1">
 		<FuseTest.CountAction ux:Name="C1"/>
 	</Completed>
-	
+
 	<FuseTest.BusyControl ux:Name="B"/>
 </Panel>

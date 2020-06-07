@@ -18,7 +18,7 @@ namespace Fuse.Reactive.Test
 				Assert.AreEqual("lol", p.tb.Value);
 			}
 		}
-		
+
 	}
 }
 

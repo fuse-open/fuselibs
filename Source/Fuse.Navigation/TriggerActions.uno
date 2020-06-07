@@ -72,10 +72,10 @@ namespace Fuse.Navigation
 			if (Target != null)
 			{
 				ctx.Goto(Target, mode);
-				
+
 				if (ClearForwardHistory && ctx is StructuredNavigation)
 					(ctx as StructuredNavigation).QueueClearForwardHistory();
-			}	
+			}
 		}
 	}
 
@@ -109,16 +109,16 @@ namespace Fuse.Navigation
 		INavigation _context;
 		[Obsolete]
 		/** @deprecated 2018-03-06 */
-		public INavigation NavigationContext 
-		{ 
+		public INavigation NavigationContext
+		{
 			get { return _context; }
-			set 
+			set
 			{
 				_context = value;
 				Fuse.Diagnostics.Deprecated( "NavigateToggle.NavigationContext is no longer supported as it isn't needed", this );
 			}
 		}
-	
+
 		/** The item to have its navigated state toggled. */
 		public Visual Target { get; set; }
 
@@ -154,7 +154,7 @@ namespace Fuse.Navigation
 	}
 
 	/** Navigates backward in the navigation stack/z-order of a @Navigation, @PageControl, or @WebView.
-	
+
 		# Example
 		In this example, `GoBack` will be used to navigate away from the first page of a `PageControl`.
 
@@ -174,9 +174,9 @@ namespace Fuse.Navigation
 					</Button>
 				</Panel>
 			</PageControl>
-			
+
 		Backward refers to pages that are behind the active one in navigation order. This trigger is not suitable for navigation that does not have a history or sequence of pages.
-		
+
 		See [Navigation Order](articles:navigation/navigationorder.md)
 	*/
 	public class GoBack : BackForwardNavigationTriggerAction
@@ -209,9 +209,9 @@ namespace Fuse.Navigation
 					</Button>
 				</Panel>
 			</PageControl>
-			
+
 		Forward refers to pages that are in front of the active one in navigation order.  This trigger is not suitable for navigation that does not have a history or sequence of pages.
-		
+
 		See [Navigation Order](articles:navigation/navigationorder.md)
 	*/
 	public class GoForward : BackForwardNavigationTriggerAction

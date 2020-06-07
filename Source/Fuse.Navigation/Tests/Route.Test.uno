@@ -80,7 +80,7 @@ namespace Fuse.Navigation.Test
 			var s1 = Route.Serialize(route.SubRoute);
 			var s2 = Route.Serialize(deserialized.SubRoute);
 			Assert.AreEqual(s1, s2);
-		}		
+		}
 
 	}
 }

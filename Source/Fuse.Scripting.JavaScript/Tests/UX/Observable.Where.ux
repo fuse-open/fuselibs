@@ -1,7 +1,7 @@
 <Panel ux:Class="UX.Observable.Where">
 	<JavaScript>
 		var Observable = require("FuseJS/Observable")
-		
+
 		var items = Observable(0,1,2,3)
 		exports.high = items.where( function(x) {
 			return x >= 2
@@ -9,47 +9,47 @@
 		exports.low = items.where( function(x) {
 			return x < 2
 		})
-		
+
 		//0,1,2,3,4
 		exports.step1 = function() {
 			items.add( 4 )
 		}
-		
+
 		//5, 0,1,2,3,4
 		exports.step2 = function() {
 			items.insertAt(0, 5)
 		}
-		
+
 		//5,1,2,3,4
 		exports.step3 = function() {
 			items.removeAt(1)
 		}
-		
+
 		//5,6,7,8,1,2,3,4
 		exports.step4 = function() {
 			items.insertAll(1, [6,7,8] )
 		}
-		
+
 		//5,6,2,3,4
 		exports.step5 = function() {
 			items.removeRange(2,3)
 		}
-		
+
 		//5,6,1,3,4
 		exports.step6 = function() {
 			items.replaceAt(2,1)
 		}
-		
+
 		//5,6,1,3,0
 		exports.step7 = function() {
 			items.replaceAt(4,0)
 		}
-		
+
 		//
 		exports.step8 = function() {
 			items.clear()
 		}
-		
+
 		//3
 		exports.step9 = function() {
 			items.value = 0
@@ -57,7 +57,7 @@
 	</JavaScript>
 	<FuseTest.ObservableCollector ux:Name="OL" Items="{low}"/>
 	<FuseTest.ObservableCollector ux:Name="OH" Items="{high}"/>
-	
+
 	<FuseTest.Invoke Handler="{step1}" ux:Name="Step1"/>
 	<FuseTest.Invoke Handler="{step2}" ux:Name="Step2"/>
 	<FuseTest.Invoke Handler="{step3}" ux:Name="Step3"/>

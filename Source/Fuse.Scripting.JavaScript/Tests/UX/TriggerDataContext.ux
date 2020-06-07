@@ -1,6 +1,6 @@
 <Panel ux:Class="UX.TriggerDataContext">
 	<JavaScript>
-		module.exports = { 
+		module.exports = {
 			items: [
 				{ title: "correct title" },
 				{ title: "correct title" },

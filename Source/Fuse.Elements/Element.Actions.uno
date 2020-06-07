@@ -2,12 +2,12 @@ using Fuse.Triggers.Actions;
 
 namespace Fuse.Elements
 {
-	/** Elements are visuals that cover a rectangular 2D region. 
-		
+	/** Elements are visuals that cover a rectangular 2D region.
+
 		@topic Elements
-		
+
 		@include Docs/Element.md
-		
+
 		# Available Element classes
 
 		[subclass Fuse.Elements.Element]

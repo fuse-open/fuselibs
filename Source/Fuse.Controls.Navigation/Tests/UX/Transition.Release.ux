@@ -4,12 +4,12 @@
 		<Transition>
 			<Nothing Duration="1"/>
 		</Transition>
-		
+
 		<Transition To="popup" AutoRelease="false">
 			<Nothing Duration="1"/>
 		</Transition>
 	</Panel>
-	
+
 	<Navigator ux:Name="nav" DefaultPath="one" Remove="Released">
 		<TRPage ux:Template="one"/>
 		<TRPage ux:Template="popup"/>

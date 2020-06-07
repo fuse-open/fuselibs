@@ -35,7 +35,7 @@ describe('general observable tests', function() {
         assert.equal(fruits.length, 4);
         assert.equal(goodFruits.length, 3);
 
-        fruits.add({name: "Grape", isGood: true}); 
+        fruits.add({name: "Grape", isGood: true});
 
         assert.equal(fruits.length, 5);
         assert.equal(goodFruits.length, 4);
@@ -156,7 +156,7 @@ describe('general observable tests', function() {
     it('test_09', function () {
         var projects = Observable("Fix tickets", "Finalize design", "Debug backend");
         var estNeededPeople = Observable(function() { return projects.length * 2; });
-            
+
         estNeededPeople.addSubscriber(function(){
             //console.log("Estimated people: " + estNeededPeople.value + ". That is " + (estNeededPeople.value == 6 ? "correct." : "incorrect!"));
         });
@@ -193,7 +193,7 @@ describe('general observable tests', function() {
 
         staff.remove(staff.getAt(0));
         assert.equal(enoughStaff.value, true);
-        
+
         staff.remove(staff.getAt(0));
         assert.equal(enoughStaff.value, false);
     });
@@ -424,14 +424,14 @@ describe('general observable tests', function() {
         assert.equal(trueValue.value, true);
 
         falseValue.value = true;
-        
+
         assert.equal(trueValue.value, false);
     });
     it('test_26', function () {
         var list = Observable(10, 46, 35, 32, 52);
 
         assert.equal(list.length, 5);
-        
+
         list.removeWhere(function(x) {
             return x < 35;
         });
@@ -482,7 +482,7 @@ describe('general observable tests', function() {
 	var testObservable = Observable(1, "two", "3");
 	assert.equal(testObservable.toString(), "(observable) 1,two,3");
     });
-    
+
     it('test_32', function() {
 	/*
 	var rootObservable = Observable(1);

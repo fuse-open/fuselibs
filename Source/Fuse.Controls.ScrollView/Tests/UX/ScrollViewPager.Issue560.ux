@@ -6,7 +6,7 @@
 				<Panel Height="50"/>
 			</Each>
 		</StackPanel>
-		
+
 		<ScrollViewPager Each="theEach" ux:Name="svp"/>
 	</ScrollView>
 </Panel>

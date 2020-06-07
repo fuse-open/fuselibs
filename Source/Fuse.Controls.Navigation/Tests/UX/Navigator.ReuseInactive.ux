@@ -1,6 +1,6 @@
 <Panel ux:Class="UX.Navigator.ReuseInactive">
 	<Router ux:Name="router" IsMasterRouter="false"/>
-	
+
 	<Navigator ux:Name="nav">
 		<Page Reuse="Inactive" ux:Template="One" PrepareBusy="None"/>
 		<Page Reuse="None" ux:Template="Two" PrepareBusy="None"/>

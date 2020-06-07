@@ -3,7 +3,7 @@
 		<float3 ux:Property="Value"/>
 		<JavaScript>
 			var Observable = require("FuseJS/Observable")
-			
+
 			exports.X = this.Value.pickTwoWay(0)
 			exports.Y = this.Value.pickTwoWay(1)
 			exports.Z = this.Value.pickTwoWay(2)
@@ -12,16 +12,16 @@
 		<Text Value="{Y}" ux:Name="TY"/>
 		<Text Value="{Z}" ux:Name="TZ"/>
 	</Panel>
-	
+
 	<JavaScript>
 		var Observable = require("FuseJS/Observable")
-		
+
 		exports.position = Observable([1,2,3])
 		exports.showPosition = exports.position.map( function(v) {
 			return v[0] + "," + v[1] + "," + v[2]
 		})
-		
-		exports.changeY = function() {	
+
+		exports.changeY = function() {
 			var v = exports.position.value
 			v[1] = 20
 			exports.position.value = v
@@ -29,6 +29,6 @@
 	</JavaScript>
 	<Text Value="{showPosition}" ux:Name="S"/>
 	<MTWFControl Value="{position}" ux:Name="C"/>
-	
+
 	<FuseTest.Invoke Handler="{changeY}" ux:Name="ChangeY"/>
 </Panel>

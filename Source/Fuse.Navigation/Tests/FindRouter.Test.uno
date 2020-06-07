@@ -15,11 +15,11 @@ namespace Fuse.Navigation.Test
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
 				Assert.AreEqual(p.pc.Active, p.one);
-				
+
 				p.OneGo.Perform();
 				root.StepFrameJS();
 				Assert.AreEqual(p.pc.Active, p.two);
-				
+
 				p.TwoGo.Perform();
 				root.StepFrameJS();
 				Assert.AreEqual(p.pc.Active, p.one);

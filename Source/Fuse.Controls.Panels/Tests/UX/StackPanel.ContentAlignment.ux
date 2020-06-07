@@ -9,7 +9,7 @@
 		<Rectangle SnapToPixels="true" Width="50" Height="50" ux:Name="RB1"/>
 		<Rectangle SnapToPixels="true" Width="50" Height="50" ux:Name="RB2"/>
 	</StackPanel>
-	
+
 	<StackPanel SnapToPixels="true" Alignment="HorizontalCenter" ContentAlignment="VerticalCenter">
 		<Rectangle SnapToPixels="true" Width="50" Height="50" ux:Name="RC0"/>
 		<Rectangle SnapToPixels="true" Width="50" Height="50" ux:Name="RC1"/>

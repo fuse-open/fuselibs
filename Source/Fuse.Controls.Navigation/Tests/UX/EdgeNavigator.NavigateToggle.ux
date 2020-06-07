@@ -6,16 +6,16 @@
 					<NavigateToggle/>
 				</Timeline>
 			</StackPanel>
-			
+
 			<Panel ux:Name="main"/>
-			
+
 		</EdgeNavigator>
 	</Panel>
-	
+
 	<Panel>
 		<Timeline ux:Name="toggleElse">
 			<NavigateToggle Target="left"/>
 		</Timeline>
 	</Panel>
-	
+
 </Panel>

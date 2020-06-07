@@ -1,7 +1,7 @@
 <Panel ux:Class="UX.Values">
 	<JavaScript>
 		var Observable = require("FuseJS/Observable")
-		
+
 		exports.current = Observable("")
 		function updateCurrent() {
 			var q = ""
@@ -13,12 +13,12 @@
 			}
 			exports.current.value = q
 		}
-		
+
 		exports.sel = Observable()
 		exports.sel.add( "two" )
 		exports.sel.add( "four" )
 		exports.sel.onValueChanged( module, updateCurrent)
-	
+
 		exports.clear = function() {
 			exports.sel.clear()
 			updateCurrent()
@@ -41,27 +41,27 @@
 			updateCurrent()
 		}
 	</JavaScript>
-	<StackPanel>	
+	<StackPanel>
 		<Selection Values="{sel}" ux:Name="TS"/>
-		
+
 		<Panel ux:Class="VOption" Color="#0000">
 			<string ux:Property="Value"/>
 			<Selectable Value="{Property this.Value}" ux:Name="Sel"/>
-			
+
 			<WhileSelected>
 				<Change this.Color="#FFFF"/>
 			</WhileSelected>
 		</Panel>
-		
+
 		<VOption Value="one" ux:Name="O1"/>
 		<VOption Value="two" ux:Name="O2"/>
 		<VOption Value="three" ux:Name="O3"/>
 		<VOption Value="four" ux:Name="O4"/>
 		<VOption Value="five" ux:Name="O5"/>
 	</StackPanel>
-	
+
 	<Text ux:Name="C" Value="{current}"/>
-	
+
 	<FuseTest.Invoke Handler="{clear}" ux:Name="CallClear"/>
 	<FuseTest.Invoke Handler="{remove}" ux:Name="CallRemove"/>
 	<FuseTest.Invoke Handler="{add}" ux:Name="CallAdd"/>

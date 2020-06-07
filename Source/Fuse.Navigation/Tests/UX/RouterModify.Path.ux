@@ -7,7 +7,7 @@
 				<Page ux:Name="b"/>
 			</PageControl>
 		</Page>
-		
+
 		<Page ux:Name="two"/>
 		<Page ux:Name="three"/>
 		<Page ux:Name="four">
@@ -16,7 +16,7 @@
 			</PageControl>
 		</Page>
 	</PageControl>
-	
+
 	<Timeline ux:Name="gotoNext">
 		<GotoRoute Path=" 'two' "/>
 	</Timeline>

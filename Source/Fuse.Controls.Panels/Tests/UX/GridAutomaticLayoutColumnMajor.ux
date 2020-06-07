@@ -4,25 +4,25 @@
 	<Rectangle Fill="Green" ux:Name="C02"/>
 	<Rectangle Fill="Fuchsia" ux:Name="C03"/>
 	<Rectangle Fill="Teal" Grid.Row="4" Grid.ColumnSpan="5" ux:Name="C04"/>
-	
+
 	<!-- Red -->
 	<Rectangle Fill="Lime" ux:Name="C11"/>
 	<Rectangle Fill="Black" Grid.RowSpan="2" ux:Name="C12"/>
 	<!-- Black -->
 	<!-- Teal -->
-	
+
 	<!-- Red -->
 	<Rectangle Fill="Maroon" Grid.RowSpan="2" Grid.ColumnSpan="2" ux:Name="C21"/>
 	<!-- Maroon -->
 	<Rectangle Fill="Olive" ux:Name="C23"/>
 	<!-- Teal -->
-	
+
 	<Rectangle Fill="Lime" ux:Name="C30"/>
 	<!-- Maroon -->
 	<!-- Maroon -->
 	<Rectangle Fill="Navy" ux:Name="C33"/>
 	<!-- Teal -->
-	
+
 	<Rectangle Fill="Gray" ux:Name="C40"/>
 	<Rectangle Fill="Purple" ux:Name="C41"/>
 	<Rectangle Fill="Olive" ux:Name="C42"/>

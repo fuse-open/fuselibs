@@ -1,36 +1,36 @@
 <Panel ux:Class="UX.Observable.Combine">
 	<JavaScript>
 		var Observable = require("FuseJS/Observable")
-		
+
 		var a = Observable(1)
 		var b = Observable("a")
 		var c = Observable()
-		
+
 		function combine(a,b,c) {
 			return (a || "*") + (b || "*") + (c || "*")
 		}
 		exports.itemA = a.combine( b,c, combine )
 		exports.itemB = a.combineLatest( b, c, combine )
-		
+
 		exports.step1 = function() {
 			c.value = "@"
 		}
-		
+
 		exports.step2 = function() {
 			a.clear()
 		}
-		
+
 		exports.failed = function() {
 			a.failed("nope")
 		}
-		
+
 		exports.restore = function() {
 			a.value = "#"
 		}
 	</JavaScript>
 	<Text Value="{ReadClear itemA}" ux:Name="A"/>
 	<Text Value="{ReadClear itemB}" ux:Name="B"/>
-	
+
 	<FuseTest.Invoke Handler="{step1}" ux:Name="Step1"/>
 	<FuseTest.Invoke Handler="{step2}" ux:Name="Step2"/>
 	<FuseTest.Invoke Handler="{failed}" ux:Name="Failed"/>

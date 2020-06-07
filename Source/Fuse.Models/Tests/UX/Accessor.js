@@ -9,11 +9,11 @@ export default class ModelAccessor {
 	set highCount(v) {
 		this.value = v - 100
 	}
-	
+
 	get doubleHigh() {
 		return this.highCount * 2
 	}
-	
+
 	incr() {
 		this.value++
 	}

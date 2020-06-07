@@ -51,7 +51,7 @@ public class Image {
 	{
 		return ImageStorageTools.getFileName(getFilePath());
 	}
-	
+
 	public String getExtension()
 	{
 		String filenameArray[] = getFileName().split("\\.");
@@ -83,7 +83,7 @@ public class Image {
 		long usedMemInMB=(runtime.totalMemory() - runtime.freeMemory()) / 1048576L;
 		return maxHeapSizeInMB - usedMemInMB;
 	}
-	
+
 	static Bitmap rotateImage(Bitmap source, float angle) {
 		Matrix matrix = new Matrix();
 		matrix.postRotate(angle);
@@ -112,14 +112,14 @@ public class Image {
 
 		return inSampleSize;
 	}
-	
+
 	public void correctOrientationFromExif()
 	{
 		try{
-			int orientation = 
+			int orientation =
 				new ExifInterface(getFilePath())
 					.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED);
-						
+
 			int angle = 0;
 			switch(orientation) {
 				case ExifInterface.ORIENTATION_ROTATE_90:
@@ -182,7 +182,7 @@ public class Image {
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	public Bitmap getBitmap(){
@@ -239,7 +239,7 @@ public class Image {
 		Bitmap bmp = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
 		return ImageStorageTools.saveBitmapAndGetImage(bmp, true, Bitmap.CompressFormat.JPEG);
 	}
-	
+
 	public static Image fromBitmap(Bitmap bmp) throws Exception
 	{
 		return ImageStorageTools.saveBitmapAndGetImage(bmp, true, Bitmap.CompressFormat.PNG);

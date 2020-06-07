@@ -44,9 +44,9 @@
 
 		exports.go = function() {
 			if (f.getAt(1) !== 2) { throw new Error(); }
-			a.value = 10; 
-			expected_b = 55; 
-			b.replaceAt(0, 55); 
+			a.value = 10;
+			expected_b = 55;
+			b.replaceAt(0, 55);
 		}
 
 	</JavaScript>

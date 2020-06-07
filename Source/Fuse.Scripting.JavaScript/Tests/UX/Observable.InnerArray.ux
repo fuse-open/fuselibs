@@ -1,15 +1,15 @@
 <Panel ux:Class="UX.Observable.InnerArray">
 	<JavaScript>
 		var Observable = require("FuseJS/Observable")
-		
+
 		var a = Observable([1,2,3])
 		exports.b = a.inner()
-		
+
 		exports.step1 = function() {
 			a.value = [2,3,4]
 		}
 	</JavaScript>
 	<FuseTest.ObservableCollector ux:Name="OC" Items="{b}"/>
-	
+
 	<FuseTest.Invoke Handler="{step1}" ux:Name="Step1"/>
 </Panel>

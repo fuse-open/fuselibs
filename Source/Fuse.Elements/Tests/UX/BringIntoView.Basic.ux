@@ -7,7 +7,7 @@
 			</Timeline>
 		</Panel>
 	</Panel>
-	
+
 	<Timeline ux:Name="t1">
 		<BringIntoView TargetNode="a"/>
 	</Timeline>

@@ -5,18 +5,18 @@
 	</JavaScript>
 	<c:Plot>
 		<c:DataSeries Data="{values}"/>
-		
+
 		<Panel ux:Name="B">
 			<c:PlotData>
 				<c:PlotBar/>
 			</c:PlotData>
 		</Panel>
-		
+
 		<Curve ux:Name="C">
 			<c:PlotData>
 				<c:PlotCurvePoint/>
 			</c:PlotData>
 		</Curve>
-		
+
 	</c:Plot>
 </Panel>

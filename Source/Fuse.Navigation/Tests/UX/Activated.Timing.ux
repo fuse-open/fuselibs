@@ -6,24 +6,24 @@
 		<Deactivated>
 			<FuseTest.CountAction ux:Name="D"/>
 		</Deactivated>
-		
+
 		<Activated When="Immediate">
 			<FuseTest.CountAction ux:Name="QA"/>
 		</Activated>
 		<Deactivated When="Immediate">
 			<FuseTest.CountAction ux:Name="QD"/>
 		</Deactivated>
-		
+
 		<Transition ux:Name="T">
 			<Nothing Duration="1"/>
 		</Transition>
 	</Panel>
-	
+
 	<JavaScript>
 		exports.step1 = function() {
 			A1.gotoPath("AP2");
 		}
-		
+
 		exports.step2 = function() {
 			A1.seekToPath("AP1");
 		}
@@ -32,7 +32,7 @@
 		<ATActPage ux:Name="AP1"/>
 		<ATActPage ux:Name="AP2"/>
 	</Navigator>
-	
+
 	<FuseTest.Invoke Handler="{step1}" ux:Name="Step1"/>
 	<FuseTest.Invoke Handler="{step2}" ux:Name="Step2"/>
 </Panel>

@@ -1,26 +1,26 @@
 <Panel ux:Class="UX.Navigator.PagesInert">
 	<JavaScript>
 		var Observable = require("FuseJS/Observable")
-		
+
 		var pageA = {
 			$path: "one",
 		}
 		var pageB = {
 			$path: "two",
 		}
-		
+
 		exports.pages = Observable(pageA, pageB)
-		
+
 		exports.replace = function() {
 			exports.pages.replaceAll([pageA, pageB])
 		}
 	</JavaScript>
 	<Navigator Pages="{pages}" ux:Name="theNav" Transition="None">
-		
+
 		<Page ux:Name="one"/>
 		<Page ux:Name="two"/>
 		<Page ux:Name="three"/>
-		
+
 		<FuseTest.Invoke Handler="{replace}" ux:Name="callReplace"/>
 	</Navigator>
 </Panel>

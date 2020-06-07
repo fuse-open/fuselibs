@@ -27,7 +27,7 @@ namespace Fuse.Controls.Test
 				Assert.AreEqual("UX/ColumnLayout1.ux", p.L.SourceFileName);
 			}
 		}
-		
+
 		[Test]
 		public void Layout2()
 		{
@@ -45,7 +45,7 @@ namespace Fuse.Controls.Test
 				Assert.AreEqual("UX/ColumnLayout2.ux", p.L.SourceFileName);
 			}
 		}
-		
+
 		[Test]
 		public void Layout3()
 		{
@@ -63,7 +63,7 @@ namespace Fuse.Controls.Test
 				Assert.AreEqual("UX/ColumnLayout3.ux", p.L.SourceFileName);
 			}
 		}
-		
+
 		[Test]
 		public void Layout4()
 		{
@@ -76,7 +76,7 @@ namespace Fuse.Controls.Test
 				Assert.AreEqual("UX/ColumnLayout4.ux", p.L.SourceFileName);
 			}
 		}
-		
+
 		[Test]
 		public void Layout5()
 		{
@@ -94,7 +94,7 @@ namespace Fuse.Controls.Test
 				Assert.AreEqual("UX/ColumnLayout5.ux", p.L.SourceFileName);
 			}
 		}
-		
+
 		[Test]
 		public void TooSmall()
 		{
@@ -104,6 +104,6 @@ namespace Fuse.Controls.Test
 				Assert.AreEqual(float2(100,50),p.P1.ActualSize);
 			}
 		}
-		
+
 	}
 }

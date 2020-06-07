@@ -1,6 +1,6 @@
 <Panel ux:Class="UX.Navigator.Removing">
 	<Router ux:Name="R" IsMasterRouter="false"/>
-	
+
 	<Page ux:Class="NRPage" PrepareBusy="None">
 		<Transition ux:Name="T1">
 			<Nothing Duration="1"/>
@@ -9,7 +9,7 @@
 			<Nothing Duration="1"/>
 		</RemovingAnimation>
 	</Page>
-		
+
 	<Navigator ux:Name="Nav" Transition="None" DefaultPath="one">
 		<NRPage ux:Template="one"/>
 	</Navigator>

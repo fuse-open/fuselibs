@@ -3,7 +3,7 @@
 	<SwipingAnimation ux:Name="SA" Source="SG">
 		<Change trans.Y="0"/>
 	</SwipingAnimation>
-	
+
 	<Panel ux:Name="bottomPanel" Height="400" HitTestMode="LocalBounds">
 		<Translation Y="1" RelativeTo="Size" ux:Name="trans"/>
 	</Panel>

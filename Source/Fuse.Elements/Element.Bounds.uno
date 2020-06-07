@@ -66,19 +66,19 @@ namespace Fuse.Elements
 		//otherwise Floor/Ceil could round incorrectly on near exact values due to precision
 		//refer to: https://github.com/fusetools/fuselibs-private/issues/735
 		const float pixelEpsilon = 0.005f;
-		
+
 		internal Recti GetViewportInvertPixelRect(DrawContext dc, Rect localRegion)
 		{
 			var transformMatrix = dc.GetLocalToClipTransform(this);
 			var esr = Rect.Transform(localRegion, transformMatrix);
-			
+
 			var low = Math.Floor( pixelEpsilon +
-				(Math.Min( esr.Minimum, esr.Maximum )+1f)/2f * dc.GLViewportPixelSize 
+				(Math.Min( esr.Minimum, esr.Maximum )+1f)/2f * dc.GLViewportPixelSize
 				);
 			var high = Math.Ceil( (Math.Max( esr.Minimum, esr.Maximum )+1f)/2f * dc.GLViewportPixelSize -
 				pixelEpsilon
 				);
-			var r  = new Recti( (int)low.X, (int)(dc.GLViewportPixelSize.Y-high.Y), 
+			var r  = new Recti( (int)low.X, (int)(dc.GLViewportPixelSize.Y-high.Y),
 				(int)(high.X), (int)(dc.GLViewportPixelSize.Y - low.Y) );
 			return r;
 		}
@@ -89,7 +89,7 @@ namespace Fuse.Elements
 				return dc.Scissor;
 			if (localRegion.IsEmpty)
 				return new Recti(0,0,0,0);
-				
+
 			var s = dc.Scissor;
 			var v = GetViewportInvertPixelRect(dc, localRegion.FlatRect);
 			var i = Recti.Intersect(s,v);

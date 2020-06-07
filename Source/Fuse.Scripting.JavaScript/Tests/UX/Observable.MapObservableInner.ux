@@ -1,7 +1,7 @@
 <Panel ux:Class="UX.Observable.MapObservableInner">
 	<JavaScript>
 		var Observable = require("FuseJS/Observable")
-		
+
 		var source = Observable(3)
 		var items = source.map( function(count) {
 			var entries = Observable()
@@ -10,7 +10,7 @@
 			}
 			return entries
 		}).inner()
-		
+
 		exports.source = source
 		exports.items = items
 	</JavaScript>

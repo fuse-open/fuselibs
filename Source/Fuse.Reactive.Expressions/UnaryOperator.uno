@@ -11,18 +11,18 @@ namespace Fuse.Reactive
 		protected UnaryOperator(Expression operand, Flags flags = Flags.DeprecatedVirtualFlags | Flags.DeprecatedVirtualUnary )
 			: base( new Expression[]{ operand }, flags )
 		{ }
-			
+
 		protected UnaryOperator(Expression operand, string name, Flags flags = Flags.None)
 			: base( new Expression[]{ operand }, flags, name )
 		{ }
-		
+
 		internal override Flags GetFlags()
 		{
 			return IsOperandOptional ? Flags.Optional0 : Flags.None;
 		}
 
 		protected virtual bool IsOperandOptional { get { return false; } }
-		
+
 		/**
 			@param result the result of the computation
 			@return true if the value could be computed, false otherwise
@@ -33,7 +33,7 @@ namespace Fuse.Reactive
 			result = Compute(operand);
 			return true;
 		}
-		
+
 		/** @deprecated Override `TryCompute` function. 2017-11-29 */
 		protected virtual object Compute(object operand) { return null; }
 
@@ -41,7 +41,7 @@ namespace Fuse.Reactive
 		{
 			return TryCompute(args[0].Value, out result);
 		}
-		
+
 		/** @deprecated Override `TryCompute` or don't derive from `UnaryOperator` if you need argument tracking (which is rare). The typical base would be `Expression` and create a `Subscription` derived from `ExpressionListener`. 2017-12-14 */
 		protected virtual void OnNewOperand(IListener listener, object operand)
 		{
@@ -56,14 +56,14 @@ namespace Fuse.Reactive
 				listener.OnLostData(this);
 			}
 		}
-		internal void InternalOnNewOperand(IListener listener, object operand) 
+		internal void InternalOnNewOperand(IListener listener, object operand)
 		{ OnNewOperand(listener, operand); }
 
 		/** @deprecated Override `Compute` or don't derive from `UnaryOperator` if you need argument tracking (which is rare). The typical base would be `Expression` and create a `Subscription` derived from `ExpressionListener`. 2017-12-14 */
 		protected virtual void OnLostOperand(IListener listener)
 		{
 			listener.OnLostData(this);
-		}		
+		}
 		internal void InternalOnLostOperand(IListener listener)
 		{ OnLostOperand(listener); }
 	}

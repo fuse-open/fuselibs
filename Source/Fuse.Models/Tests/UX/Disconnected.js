@@ -2,7 +2,7 @@ class Inner {
 	constructor(v) {
 		this.value = v
 	}
-	
+
 	incr() {
 		this.value++
 	}
@@ -15,11 +15,11 @@ export default class Disconnected {
 	constructor() {
 		this.inner = cur
 	}
-	
+
 	updateNext() {
 		next.incr()
 	}
-	
+
 	swap() {
 		var t = cur
 		cur = next

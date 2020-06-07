@@ -13,19 +13,19 @@
 		<!-- This has no replacement, but we doesn't have a legitimate use-case either -->
 		<Text Value="{}" ux:Name="a"/>
 	</Panel>
-	
+
 	<Panel ux:Name="b">
 		<With Data="{one}">
 			<Text Value="{}"/>
 		</With>
 	</Panel>
-	
+
 	<Panel ux:Name="c">
 		<Instance Item="{two.value}">
 			<Text Value="{}"/>
 		</Instance>
 	</Panel>
-	
+
 	<Panel ux:Name="d">
 		<Each Items="{items}">
 			<Text Value="{}"/>

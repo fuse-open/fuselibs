@@ -6,16 +6,16 @@
 		exports.forceRemove1 = function() { TS.forceRemove("1") }
 	</JavaScript>
 	<Selection ux:Name="TS" Value="1" MinCount="1" MaxCount="2"/>
-		
+
 	<Panel ux:Class="JSLOption" Color="#0000">
 		<string ux:Property="Value"/>
 		<Selectable Value="{Property this.Value}" ux:Name="Sel"/>
 	</Panel>
-	
+
 	<JSLOption Value="1" ux:Name="O1"/>
 	<JSLOption Value="2" ux:Name="O2"/>
 	<JSLOption Value="3" ux:Name="O3"/>
-	
+
 	<FuseTest.Invoke Handler="{add1}" ux:Name="CallAddO1"/>
 	<FuseTest.Invoke Handler="{remove1}" ux:Name="CallRemoveO1"/>
 	<FuseTest.Invoke Handler="{forceAdd1}" ux:Name="CallForceAddO1"/>

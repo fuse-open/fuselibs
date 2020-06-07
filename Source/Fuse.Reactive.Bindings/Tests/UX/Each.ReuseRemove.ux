@@ -1,12 +1,12 @@
 <Panel ux:Class="UX.Each.ReuseRemove">
 	<JavaScript>
 		var Observable = require("FuseJS/Observable")
-		
+
 		exports.items = Observable()
 		for (var i=0; i < 10; ++i) {
 			exports.items.add( i )
 		}
-		
+
 		exports.remove = function() {
 			exports.items.removeAt(2)
 		}
@@ -16,6 +16,6 @@
 			<FuseTest.DudElement Value="{= data()}"/>
 		</Each>
 	</StackPanel>
-	
+
 	<FuseTest.Invoke Handler="{remove}" ux:Name="Remove"/>
 </Panel>

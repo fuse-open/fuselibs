@@ -10,7 +10,7 @@
 			<Collapse/>
 		</Timeline>
 	</Panel>
-	
+
 	<Timeline ux:Name="show2">
 		<Show TargetNode="a"/>
 	</Timeline>
@@ -20,5 +20,5 @@
 	<Timeline ux:Name="collapse2">
 		<Collapse TargetNode="a"/>
 	</Timeline>
-	
+
 </Panel>

@@ -23,5 +23,5 @@ namespace Fuse.Reactive.Test
 			}
 		}
 	}
-	
+
 }

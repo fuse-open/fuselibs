@@ -1,12 +1,12 @@
 <Panel ux:Class="UX.Observable.WhereObservableCondition">
 	<JavaScript>
 		var Observable = require("FuseJS/Observable")
-		
+
 		function Item(id,enabled) {
 			this.id = id
 			this.enabled = Observable(enabled)
 		}
-		
+
 		//+0,-1
 		var items = Observable( new Item(0,true), new Item(1,false))
 		exports.items = items.where( function(x) {
@@ -14,43 +14,43 @@
 		}).map( function(x) {
 			return x.id
 		})
-		
+
 		exports.notItems = items.where( function(x) {
 			return x.enabled.not()
 		}).map( function(x) {
 			return x.id
 		})
-		
+
 		//+0,+1
 		exports.step1 = function() {
 			items.getAt(1).enabled.value = true
 		}
-		
+
 		//+0,+1,+2
 		exports.step2 = function() {
 			items.add( new Item(2,true) )
 		}
-		
+
 		//-3,+0,+1,+2
 		exports.step3 = function() {
 			items.insertAt(0, new Item(3,false))
 		}
-		
+
 		//-3,-0,+1,+2
 		exports.step4 = function() {
 			items.getAt(1).enabled.value = false
 		}
-		
+
 		//-3,+2
 		exports.step5 = function() {
 			items.removeRange(1,2)
 		}
-		
+
 		//-4,+5,-3,+2
 		exports.step6 = function() {
 			items.insertAll(0, [new Item(4,false), new Item(5,true)])
 		}
-		
+
 		//-4,+5,+6,+2
 		exports.step7 = function() {
 			items.replaceAt(2, new Item(6,true))
@@ -58,7 +58,7 @@
 	</JavaScript>
 	<FuseTest.ObservableCollector ux:Name="OC" Items="{items}"/>
 	<FuseTest.ObservableCollector ux:Name="ON" Items="{notItems}"/>
-	
+
 	<FuseTest.Invoke Handler="{step1}" ux:Name="Step1"/>
 	<FuseTest.Invoke Handler="{step2}" ux:Name="Step2"/>
 	<FuseTest.Invoke Handler="{step3}" ux:Name="Step3"/>

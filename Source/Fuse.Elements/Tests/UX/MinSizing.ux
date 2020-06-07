@@ -1,9 +1,9 @@
 <Panel ux:Class="UX.MinSizing">
 	<!-- rely on Image aspect sizing to help test -->
-	
+
 	<Image File="Assets/200x100.png" MinWidth="100" Alignment="Center" StretchSizing="Zero"
 		ux:Name="E1"/>
-	
+
 	<Panel MinHeight="300" Alignment="Center">
 		<Image File="Assets/200x100.png" StretchSizing="Zero" ux:Name="E2"/>
 	</Panel>
@@ -13,18 +13,18 @@
 			<Panel ux:Name="E3"/>
 		</Panel>
 	</Panel>
-	
+
 	<Panel MinHeight="60" Alignment="Center" Padding="5">
 		<Image File="Assets/200x100.png" ux:Name="P1" StretchSizing="Zero"/>
 	</Panel>
 	<Panel MinHeight="60" Alignment="Center">
 		<Image File="Assets/200x100.png" ux:Name="P2" Margin="5" StretchSizing="Zero"/>
 	</Panel>
-	
+
 	<Panel MinWidth="120" Padding="5" Alignment="Center">
 		<Panel Margin="5">
 			<Image File="Assets/200x100.png" ux:Name="P3" StretchSizing="Zero"/>
 		</Panel>
 	</Panel>
-	
+
 </Panel>

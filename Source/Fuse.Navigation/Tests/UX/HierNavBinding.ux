@@ -14,10 +14,10 @@
 			</WhileInExitState>
 		</Panel>
 	</PageIndicator>
-	
+
 	<Panel>
 		<HierarchicalNavigation ux:Name="Outer" Active="P1"/>
-		
+
 		<Page Title="One" ux:Name="P1"/>
 		<Page Title="Two" ux:Name="P2" ux:AutoBind="false"/>
 		<Page Title="Three" ux:Name="P3" ux:AutoBind="false"/>

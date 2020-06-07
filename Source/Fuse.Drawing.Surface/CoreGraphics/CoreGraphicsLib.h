@@ -18,7 +18,7 @@ struct Context
 		CGContextSaveGState(Context);
 		saveStateCount++;
 	}
-	
+
 	bool RestoreState()
 	{
 		if (saveStateCount >0)
@@ -29,7 +29,7 @@ struct Context
 		}
 		return false;
 	}
-	
+
 	bool ResetState()
 	{
 		bool okay = true;
@@ -40,7 +40,7 @@ struct Context
 		}
 		return okay;
 	}
-	
+
 	void ReleaseContext()
 	{
 		CGContextRelease(Context);

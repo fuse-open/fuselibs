@@ -8,11 +8,11 @@ class Flights {
 class Home {
 	constructor(app) {
 		this.app = app
-		
+
 		this.homePages = [
 			new Flights(this.app),
 		]
-		
+
 		this.pageIndex = 0
 	}
 }
@@ -20,7 +20,7 @@ class Home {
 export default class Loop2 {
 	constructor() {
 		this.home = new Home(this)
-		
+
 		this.pages = [
 			this.home
 		]

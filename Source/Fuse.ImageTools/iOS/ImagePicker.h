@@ -9,7 +9,7 @@
 -(UIViewController*) VC;
 -(void) closePickerThen:(Action)a;
 
--(BOOL) openImagePickerWithSourceType:(UIImagePickerControllerSourceType)type 
-		then:(DictionaryAction)a 
+-(BOOL) openImagePickerWithSourceType:(UIImagePickerControllerSourceType)type
+		then:(DictionaryAction)a
 		or:(Action)b;
 @end

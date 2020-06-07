@@ -8,13 +8,13 @@ namespace Fuse.Navigation
 {
 	/**
 		These triggers respond to the current "activation" state of a page.
-		
+
 		[subclass Fuse.Navigation.NavigationAnimation]
-		
+
 		The states of these triggers depends on the page progress of a page, where 0 is active and +/-1 (or higher) is inactive. These values are logically mapped into a range from 0...1 for each trigger, where 0 is the definitive "off" state of the trigger and 1 is the "on" state.
-		
+
 		Values in between are considered to be in transition. The `Threshold` and `Limit` properties can be used to adjust when these triggers flip between active/inactive on continuous navigation.
-		
+
 		If the navigation is discrete, such as with `Navigator` or `DirectNavigation` the `Threshold` will have no effect as pages are either `0` or `1` in progress. The `Limit` property should also not be used since it will also be ineffectual.
 
 		See [Navigation Order](articles:navigation/navigationorder.md)
@@ -26,11 +26,11 @@ namespace Fuse.Navigation
 		float _threshold = 1;
 		/**
 			At which progress should this trigger become active.
-			
+
 			The default is `1`, meaning the trigger will only become active when the page is fully reaches the matching state; partial page progress will be ignored.
 
 			Using the threshold we can lower the point at which the trigger is activated.
-		
+
 				<Page ux:Class="MyPage" Color="#FAA">
 					<WhileActive Threshold="0.5">
 						<Change this.Color="#AFA"/>
@@ -68,22 +68,22 @@ namespace Fuse.Navigation
 		RoutePagePath _path = RoutePagePath.Full;
 		/**
 			Whether the page just needs to be active in the local navigation or the the full path to the root needs to be active.
-			
+
 			Default: Full
 		*/
 		public RoutePagePath Path
 		{
 			get { return _path; }
-			set 
+			set
 			{
 				_path = value;
 				if (_proxy != null)
 					_proxy.Path = value;
 			}
 		}
-		
+
 		RoutePageProxy _proxy;
-		
+
 		protected override void OnRooted()
 		{
 			base.OnRooted();
@@ -91,7 +91,7 @@ namespace Fuse.Navigation
 			_proxy.Path = Path;
 			_proxy.Init();
 		}
-		
+
 		protected override void OnUnrooted()
 		{
 			_proxy.Dispose();
@@ -107,7 +107,7 @@ namespace Fuse.Navigation
 				set = set && progress <= Limit;
 			SetActive( set );
 		}
-		
+
 		internal abstract double MapProgress( double progress );
 	}
 
@@ -162,7 +162,7 @@ namespace Fuse.Navigation
 				</Page>
 				<Page Background="Blue" />
 			</PageControl>
-			
+
 		The progress of this trigger is calculated as the page's distance from the active page (or the navigation position for continuous navigation). For example, the active page has a distance of 0, meaning this trigger will not be activated, and a page 1 away from the active has a distance of 1, meaning this trigger will be activated. The `Threshold=0.1` in this example means the trigger activates after the page has been swiped only 10% of the distance away from the active position.
 	*/
 	public class WhileInactive : WhileNavigationTrigger

@@ -1,16 +1,16 @@
 <Panel ux:Class="UX.Each.WindowMod">
 	<JavaScript>
 		var Observable = require("FuseJS/Observable")
-		
+
 		exports.items = Observable()
 		for (var i=0; i < 100; ++i) {
 			exports.items.add( { id: "" + i } )
 		}
-		
+
 		exports.add = function() {
 			exports.items.add( { id: "add" } )
 		}
-		
+
 		exports.remove = function() {
 			exports.items.remove(exports.items.getAt(10))
 		}
@@ -18,11 +18,11 @@
 		exports.removeAt = function() {
 			exports.items.removeAt(12)
 		}
-		
+
 		exports.clear = function() {
 			exports.items.clear()
 		}
-		
+
 		exports.insert = function() {
 			exports.items.insertAt( 12, { id: "ins" } )
 		}
@@ -30,7 +30,7 @@
 		exports.replaceAll1 = function() {
 			exports.items.replaceAll( [ { id: "r0" } ] )
 		}
-		
+
 		exports.replaceAll5 = function() {
 			exports.items.replaceAll( [ { id: "r1" }, { id: "r2" }, { id: "r3" }, { id: "r4" }, { id: "r5" } ] )
 		}
@@ -40,7 +40,7 @@
 			<Text Value="{id}"/>
 		</Each>
 	</Panel>
-	
+
 	<FuseTest.Invoke Handler="{add}" ux:Name="CallAdd"/>
 	<FuseTest.Invoke Handler="{remove}" ux:Name="CallRemove"/>
 	<FuseTest.Invoke Handler="{removeAt}" ux:Name="CallRemoveAt"/>
@@ -48,5 +48,5 @@
 	<FuseTest.Invoke Handler="{insert}" ux:Name="CallInsert"/>
 	<FuseTest.Invoke Handler="{replaceAll1}" ux:Name="CallReplaceAll1"/>
 	<FuseTest.Invoke Handler="{replaceAll5}" ux:Name="CallReplaceAll5"/>
-	
+
 </Panel>

@@ -9,12 +9,12 @@
 	<FuseTest.DudElement SizeValue="10pt" ux:Name="s2"/>
 	<FuseTest.DudElement SizeValue="10%" ux:Name="s3"/>
 	<FuseTest.DudElement SizeValue="10px" ux:Name="s4"/>
-	
+
 	<FuseTest.DudElement Size2Value="10" ux:Name="ss1"/>
 	<FuseTest.DudElement Size2Value="10pt,20px" ux:Name="ss2"/>
 	<FuseTest.DudElement Size2Value=" '20,30%' " ux:Name="ss3"/>
 	<FuseTest.DudElement Size2Value="float( (50,60) )" ux:Name="ss4"/>
-	
+
 	<FuseTest.DudElement SizeValue="{one}" ux:Name="a1"/>
 	<FuseTest.DudElement Size2Value="{two}" ux:Name="a2"/>
 </Panel>

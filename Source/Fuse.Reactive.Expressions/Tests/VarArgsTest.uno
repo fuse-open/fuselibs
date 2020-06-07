@@ -23,7 +23,7 @@ namespace Fuse.Reactive.Test
 		protected override void OnNewPartialArguments(Argument[] args, IListener listener)
 		{
 			// We want to get this callback exactly 3 times for args.Length == 3 (0, 1 and 2 arguments ready)
-			if (args.Length == 3) 
+			if (args.Length == 3)
 			{
 				C++;
 				Assert.IsFalse(args[1].HasValue);
@@ -69,7 +69,7 @@ namespace Fuse.Reactive.Test
 				Assert.AreEqual(3, VarArgsTestFunc.C);
 			}
 		}
-		
+
 		[Test]
 		public void LostData()
 		{
@@ -79,25 +79,25 @@ namespace Fuse.Reactive.Test
 				Assert.AreEqual( "*", e.a.StringValue );
 				Assert.AreEqual( "**", e.b.StringValue );
 				Assert.AreEqual( "***", e.c.StringValue );
-				
+
 				e.strct.Value = e.strctData1.Value;
 				root.PumpDeferred();
 				Assert.AreEqual( "/x", e.a.StringValue );
 				Assert.AreEqual( "/xy", e.b.StringValue );
 				Assert.AreEqual( "xy*", e.c.StringValue );
-				
+
 				e.strct.Value = e.strctData2.Value;
 				root.PumpDeferred();
 				Assert.AreEqual( "/x", e.a.StringValue );
 				Assert.AreEqual( "x*", e.b.StringValue );
 				Assert.AreEqual( "x*z", e.c.StringValue );
-				
+
 				e.strct.Value = e.strctData3.Value;
 				root.PumpDeferred();
 				Assert.AreEqual( "*", e.a.StringValue );
 				Assert.AreEqual( "*y", e.b.StringValue );
 				Assert.AreEqual( "*yz", e.c.StringValue );
-				
+
 				e.strct.Value = e.strctData4.Value;
 				root.PumpDeferred();
 				Assert.AreEqual( "/x", e.a.StringValue );
@@ -106,7 +106,7 @@ namespace Fuse.Reactive.Test
 			}
 		}
 	}
-	
+
 	[UXFunction("varJoin")]
 	public class VarJoin : Fuse.Reactive.SimpleVarArgFunction
 	{
@@ -120,7 +120,7 @@ namespace Fuse.Reactive.Test
 			}
 			listener.OnNewData(this, r);
 		}
-		
+
 		protected override void OnNewArguments(Argument[] args, IListener listener)
 		{
 			var r = "/";
@@ -132,5 +132,5 @@ namespace Fuse.Reactive.Test
 			listener.OnNewData(this, r);
 		}
 	}
-	
+
 }

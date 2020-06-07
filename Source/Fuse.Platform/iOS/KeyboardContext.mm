@@ -25,8 +25,8 @@
 		frameEnd.size.height = 0.;
 	}
 	else // UIKeyboardWillChangeFrameNotification
-		resizeReason = @{Fuse.Platform.SystemUIResizeReason.WillChangeFrame};	
-	
+		resizeReason = @{Fuse.Platform.SystemUIResizeReason.WillChangeFrame};
+
 	@{Fuse.Platform.SystemUI.uKeyboardWillChangeFrame(Uno.Platform.iOS.uCGRect, Uno.Platform.iOS.uCGRect, double, int, Fuse.Platform.SystemUIResizeReason):Call(frameBegin, frameEnd, animationDuration, static_cast<int32_t>(animationCurve), resizeReason)};
 }
 

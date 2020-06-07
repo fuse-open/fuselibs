@@ -31,7 +31,7 @@
 
 	<Alive.ThemeBase ux:Class="Alive.LightTheme">
 		<ResourceFloat4 Key="Alive.AccentColor" Value="{Resource Alive.Light.AccentColor}" />
-		
+
 		<float4 ux:Key="Alive.Blue" ux:Value="Alive.Light.Blue"/>
 		<float4 ux:Key="Alive.Orange" ux:Value="Alive.Light.Orange"/>
 		<float4 ux:Key="Alive.Green" ux:Value="Alive.Light.Green"/>
@@ -66,7 +66,7 @@
 
 	<Alive.ThemeBase ux:Class="Alive.DarkTheme">
 		<ResourceFloat4 Key="Alive.AccentColor" Value="{Resource Alive.Dark.AccentColor}" />
-		
+
 		<float4 ux:Key="Alive.Blue" ux:Value="Alive.Dark.Blue"/>
 		<float4 ux:Key="Alive.Orange" ux:Value="Alive.Dark.Orange"/>
 		<float4 ux:Key="Alive.Green" ux:Value="Alive.Dark.Green"/>

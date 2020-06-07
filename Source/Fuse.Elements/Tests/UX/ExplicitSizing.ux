@@ -4,11 +4,11 @@
 	<Panel Width="300" Alignment="Center">
 		<Image File="Assets/200x100.png" ux:Name="E1" MemoryPolicy="UnloadUnused"/>
 	</Panel>
-	
+
 	<Panel Width="100" Height="100" Alignment="Center">
 		<Image File="Assets/200x100.png" ux:Name="E2" Alignment="Center" MemoryPolicy="UnloadUnused"/>
 	</Panel>
-	
+
 	<!-- ordering of limits -->
 	<Panel Width="300" MaxWidth="200" Height="100" MaxHeight="80" ux:Name="M1"/>
 	<Panel Width="300" MinWidth="400" Height="100" MinHeight="120" ux:Name="M2"/>

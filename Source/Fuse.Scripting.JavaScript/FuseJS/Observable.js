@@ -5,13 +5,13 @@
 /* ----- Observable ------
 
 	Message API:
-	
+
 		The format of all messages is:
-		
+
 			[object, operation, origin, args...]
-		
+
 		The arguments to individual messages:
-		
+
 			add [value]
 			clear []
 			insertAll [index, valuesArray]
@@ -22,7 +22,7 @@
 			removeRange [index, count, removeValuesArray]
 			set [value]
 			failed [message]
-				- this implies a "clear" as well. 
+				- this implies a "clear" as well.
 				- any other message following clears the failed state
 */
 
@@ -81,7 +81,7 @@ Observable._createOrigin = function() {
 function ValueObservable(values) {
 	ObservableCtor.call(this)
 	this._values = Array.prototype.slice.call(values)
-	if (!this._values) { 
+	if (!this._values) {
 		this._values = []
 	}
 }
@@ -105,7 +105,7 @@ Observable.prototype._watchSource = function(source, callback, suppressCallback)
 	var callbackProxy = function() {
 		callback.apply(self, arguments)
 	}
-	
+
 	return this._addSubscriptionWatcher( function() {
 		source.addSubscriber(callbackProxy, suppressCallback)
 	}, function() {
@@ -123,15 +123,15 @@ Observable.prototype._unwatchSource = function(watchSourceId) {
 		2 = (value, index)
 		3 = (value, replaceValue)
 		4 = (value, index, replaceValue)
-		
+
 */
 Observable.prototype._proxyFrom = function(source, mapFunc, clearMap, sigType, suppressInitial) {
 	var needsIndex = sigType == 2 || sigType == 4
-	
+
 	if (sigType <1 || sigType >4) {
 		throw new Error( "Invalid sigType to _proxyFrom")
 	}
-	
+
 	function mapValue(value, index, replaceValue) {
 		if (sigType == 1) {
 			return mapFunc(value)
@@ -143,12 +143,12 @@ Observable.prototype._proxyFrom = function(source, mapFunc, clearMap, sigType, s
 			return mapFunc(value, index, replaceValue)
 		}
 	}
-	
+
 	var self = this
 	function clearMapAll() {
-		if (clearMap) { 
-			for (var i = 0; i < self.length; i++) { 
-				clearMap(self._values[i]); 
+		if (clearMap) {
+			for (var i = 0; i < self.length; i++) {
+				clearMap(self._values[i]);
 			}
 		}
 	}
@@ -159,7 +159,7 @@ Observable.prototype._proxyFrom = function(source, mapFunc, clearMap, sigType, s
 		{
 			return
 		}
-		
+
 		if (op === "add")
 		{
 			self.add(mapValue(p1, this.length, undefined), source._origin);
@@ -193,7 +193,7 @@ Observable.prototype._proxyFrom = function(source, mapFunc, clearMap, sigType, s
 		{
 			clearMapAll()
 			var values = p1
-			
+
 			var res = new Array(values.length)
 			for (var i=0; i < values.length; ++i)
 			{
@@ -235,11 +235,11 @@ Observable.prototype._proxyFrom = function(source, mapFunc, clearMap, sigType, s
 			self.replaceAll(r, source._origin);
 		}
 	}, suppressInitial)
-	
+
 	if (clearMap) {
 		res.watchCleanupId = self._addSubscriptionWatcher( function() {}, clearMapAll );
 	}
-	
+
 	return res
 }
 
@@ -257,7 +257,7 @@ function Identity(x)
 
 /*
 	A wrapper to ProxyObserveList
-	
+
 		ProxyObseve( sources..., callback )
 		=>
 		ProxyObserveList( sources, callback, undefined )
@@ -282,7 +282,7 @@ function ProxyObserve()
 
 /**
 	Creates a proxy observable to several source observables.
-	
+
 	@param sources the list of source observables to observe
 	@param callback called with each change message from the sources
 	@param endSubscriptionCallback called when the subscription to the source has ended
@@ -308,7 +308,7 @@ function ProxyObserveList(sources, callback, endSubscriptionCallback)
 function FunctionObservable(func) {
 	ObservableCtor.call(this)
 	this._isProxy = true;
-	
+
 	var obs = this;
 	obs._values = [];
 	obs._func = arguments[0];
@@ -406,18 +406,18 @@ Observable.prototype.onValueChanged = function(module, callback) {
 	// Support old syntax where module is not provided (no cleanup can be done!)
 	if (!callback) {
 		//DEPRECATED: 2016-07-20
-		Diagnostics.deprecated( "onValueChanged now expects a `module` as the first parameter. " + 
+		Diagnostics.deprecated( "onValueChanged now expects a `module` as the first parameter. " +
 			"Without it there will be a leak." )
 		callback = module
 		module = null
 	}
-	
-	var subscriber = function(obs, cmd, origin, value) { 
+
+	var subscriber = function(obs, cmd, origin, value) {
 		//for simplicity just update the value always, see https://github.com/fusetools/fuselibs-private/issues/3556
 		callback(obs.value);
 	};
-	
-	if (!module) {	
+
+	if (!module) {
 		this.addSubscriber( subscriber );
 	} else {
 		this._addDisposableSubscriber( module, subscriber )
@@ -429,14 +429,14 @@ Observable.prototype.subscribe = function(module) {
 };
 
 Observable.prototype._addDisposableSubscriber = function(module, subscriber) {
-	if ((!module) || (!("disposed" in module))) { 
-		throw new Error("must provide a module argument"); 
+	if ((!module) || (!("disposed" in module))) {
+		throw new Error("must provide a module argument");
 	}
 
 	var self = this;
-	
+
 	self.addSubscriber(subscriber);
-	
+
 	module.disposed.push(function() {
 		self.removeSubscriber(subscriber);
 	});
@@ -459,7 +459,7 @@ function combineGetSources(self, args)
 	return src;
 }
 
-Observable.prototype.combine = function() 
+Observable.prototype.combine = function()
 {
 	var sources = combineGetSources(this, arguments);
 	var mapFunc = arguments[arguments.length-1];
@@ -468,13 +468,13 @@ Observable.prototype.combine = function()
 		var values = [];
 		for (var i = 0; i < sources.length; i++) {
 			var src = sources[i]
-			
+
 			var f = src.getFailure()
 			if (f) {
 				this.failed(f)
 				return
-			}	
-			
+			}
+
 			values.push(src.value);
 		}
 		var res = mapFunc.apply(res, values);
@@ -483,7 +483,7 @@ Observable.prototype.combine = function()
 	return res;
 };
 
-Observable.prototype.combineLatest = function() 
+Observable.prototype.combineLatest = function()
 {
 	var sources = combineGetSources(this, arguments);
 	var mapFunc = arguments[arguments.length-1];
@@ -492,16 +492,16 @@ Observable.prototype.combineLatest = function()
 		var values = [];
 		for (var i = 0; i < sources.length; i++) {
 			var src = sources[i]
-			
+
 			var f = src.getFailure()
 			if (f) {
 				combined.failed(f)
 				return;
 			}
-			
-			if (src.length === 0) { 
+
+			if (src.length === 0) {
 				combined.clear()
-				return; 
+				return;
 			}
 			values.push(src.value);
 		}
@@ -511,22 +511,22 @@ Observable.prototype.combineLatest = function()
 	return combined;
 };
 
-Observable.prototype.combineArrays = function(sources, mapFunc) 
+Observable.prototype.combineArrays = function(sources, mapFunc)
 {
 	var sources = combineGetSources(this, arguments);
 	var mapFunc = arguments[arguments.length-1];
-	
+
 	var res = ProxyObserveList(sources, function() {
 		var values = [];
 		for (var i = 0; i < sources.length; i++) {
 			var src = sources[i]
-			
+
 			var f = src.getFailure()
 			if (f) {
 				this.failed(f)
 				return
-			}	
-			
+			}
+
 			values.push(src._values);
 		}
 
@@ -581,7 +581,7 @@ Observable.prototype._addSubscriber = function(sub, suppressInitialCallback)
 		}
 		PumpMessages();
 	}
-	
+
 	this._subscribers.push(sub);
 };
 
@@ -625,7 +625,7 @@ Observable.prototype._addSubscriptionWatcher = function(begin, end) {
 	if (this._beganSubscriptions) {
 		begin()
 	}
-	
+
 	return watcherId
 }
 
@@ -651,7 +651,7 @@ Observable.prototype._beginSubscriptions = function() {
 		return
 	}
 	this._beganSubscriptions = true
-	
+
 	if (this.beginSubscriptions != Observable.prototype.beginSubscriptions) {
 		if (!deprecatedMsg.beginSubscriptions) {
 			Diagnostics.deprecated( "`.beginSubscriptions` is deprecated. There is currently no replacement, please contact Fuse for how to migrate your code.")
@@ -659,7 +659,7 @@ Observable.prototype._beginSubscriptions = function() {
 		}
 		this.beginSubscriptions()
 	}
-	
+
 	var sw = this._subscriptionWatchers
 	if (sw) {
 		var copy = sw.slice()
@@ -671,7 +671,7 @@ Observable.prototype._beginSubscriptions = function() {
 
 Observable.prototype._endSubscriptions = function() {
 	this._beganSubscriptions = false
-	
+
 	if (this.endSubscriptions != Observable.prototype.endSubscriptions) {
 		if (!deprecatedMsg.endSubscriptions) {
 			Diagnostics.deprecated( "`.endSubscriptions` is deprecated. There is currently no replacement, please contact Fuse for how to migrate your code.")
@@ -679,7 +679,7 @@ Observable.prototype._endSubscriptions = function() {
 		}
 		this.endSubscriptions()
 	}
-	
+
 	var sw = this._subscriptionWatchers
 	if (!sw) {
 		return
@@ -746,7 +746,7 @@ Observable.prototype.insertAt = function(index, value, _origin)
 };
 
 /**
-	Marks a failure on the Observable. This clears any values and propagates the failures to 
+	Marks a failure on the Observable. This clears any values and propagates the failures to
 	any listeners and/or maps.
 */
 Observable.prototype.failed = function(message, _origin) {
@@ -759,7 +759,7 @@ Observable.prototype._clearFailed = function(_origin) {
 	if (!this._failed) {
 		return
 	}
-	
+
 	this._failed = undefined
 }
 
@@ -874,7 +874,7 @@ Observable.prototype.add = function(x, _origin)
 
 Observable.prototype.insertAll = function(index, array, _origin)
 {
-	this._values = 
+	this._values =
 		this._values.slice(0, index)
 		.concat(array)
 		.concat(this._values.slice(index));
@@ -986,7 +986,7 @@ Object.defineProperty(Observable.prototype, "length",
 
 Observable.prototype.setValueExclusive = function(value, exclude, origin) {
 	this._values = [value];
-	this._queueMessageExclusive([this, "set", origin, value], exclude);	
+	this._queueMessageExclusive([this, "set", origin, value], exclude);
 };
 
 Observable.prototype.setValueWithOrigin = function(value, origin)
@@ -1082,7 +1082,7 @@ function PostMessage(sub, args)
 /**
 	_queueMessage( object, op, origin, args... )
 */
-Observable.prototype._queueMessage = function() 
+Observable.prototype._queueMessage = function()
 {
 	var args = Array.prototype.slice.call(arguments);
 	if (args[1] !== "failed") {
@@ -1094,7 +1094,7 @@ Observable.prototype._queueMessage = function()
 	this._queueMessageExclusive(args);
 };
 
-Observable.prototype._queueMessageExclusive = function(args, exclude) 
+Observable.prototype._queueMessageExclusive = function(args, exclude)
 {
 	for (var i = 0; i < this._subscribers.length; i++) {
 		var sub = this._subscribers[i];
@@ -1116,7 +1116,7 @@ Observable.prototype.map = function(mapFunc, clearMap)
 }
 
 Observable.prototype.mapTwoWay = function( mapFunc, unmapFunc )
-{	
+{
 	return this._map(mapFunc, unmapFunc, undefined)
 }
 
@@ -1126,7 +1126,7 @@ Observable.prototype._map = function(mapFunc, unmapFunc, clearMap)
 
 	//is the mapping function expecting an index
 	var mapFuncNeedsIndex = mapFunc.length > 1
-	
+
 	var source = this
 	var target = new ProxyObservable()
 	target._proxyFrom(this, mapFunc, clearMap, mapFuncNeedsIndex ? 2 : 1, false)
@@ -1134,7 +1134,7 @@ Observable.prototype._map = function(mapFunc, unmapFunc, clearMap)
 	if (unmapFunc) {
 		source._proxyFrom(target, unmapFunc, undefined, 3, true)
 	}
-	
+
 	return target
 };
 
@@ -1170,7 +1170,7 @@ Observable.prototype.parseJson = function()
 	return this.map(JSON.parse);
 };
 
-Observable.prototype.stringifyJson = function() 
+Observable.prototype.stringifyJson = function()
 {
 	return this.map(JSON.stringify);
 };
@@ -1223,7 +1223,7 @@ Observable.prototype.where = function(criteria)
 		criteria = ObjectToFilter(criteria);
 	}
 
-	
+
 	var self = this.map(function(x, index) {
 		var cond = criteria(x);
 		var item = {
@@ -1274,7 +1274,7 @@ Observable.prototype.where = function(criteria)
 			{
 				this.value = p1.value;
 			}
-			else 
+			else
 			{
 				this.replaceAll([]);
 			}
@@ -1309,7 +1309,7 @@ Observable.prototype.where = function(criteria)
 			var index = getResultIndex(p1);
 			var newValue = p2;
 			var oldValue = p3;
-	
+
 			if (oldValue.condition)
 			{
 				if (newValue.condition)
@@ -1359,7 +1359,7 @@ Observable.prototype.where = function(criteria)
 
 			if (count > 0)
 			{
-				this.removeRange(index, count);	
+				this.removeRange(index, count);
 			}
 		}
 		else if (op === "failed")
@@ -1441,25 +1441,25 @@ Observable.prototype._inner = function(enableTwoWay, forceSourceObservable) {
 	var proxied = undefined
 	var targetProxyId = undefined
 	var sourceProxyId = undefined
-	
+
 	function selfChanged(src, op, origin, p1, p2) {
 		var source = self.value
 		var toProxy = source instanceof Observable ? source : (forceSourceObservable ? self : null)
 		if (toProxy !== null && toProxy === proxied) {
 			return
 		}
-			
+
 		if (proxied) {
 			target._unproxyFrom(targetProxyId)
 			if (enableTwoWay) {
 				proxied._unproxyFrom(sourceProxyId)
 			}
-			
+
 			targetProxyId = undefined
 			sourceProxyId = undefined
 			proxied = undefined
 		}
-		
+
 		if (toProxy) {
 			targetProxyId = target._proxyFrom(toProxy, function(v) { return v }, undefined, 1, false )
 			if (enableTwoWay) {
@@ -1474,13 +1474,13 @@ Observable.prototype._inner = function(enableTwoWay, forceSourceObservable) {
 			target.value = source
 		}
 	}
-	
+
 	target._addSubscriptionWatcher( function() {
 		self.addSubscriber(selfChanged)
 	}, function() {
 		self.removeSubscriber(selfChanged)
 	})
-	
+
 	//DEPRECATED: 2016-12-27
 	target.twoWayMap = function(f,g) {
 		if (!deprecatedMsg.twoWayMap) {
@@ -1489,7 +1489,7 @@ Observable.prototype._inner = function(enableTwoWay, forceSourceObservable) {
 		}
 		return self._innerDeprecated().twoWayMap(f,g)
 	}
-	
+
 	return target
 }
 
@@ -1596,41 +1596,41 @@ Observable.prototype.slice = function(begin, end)
 
 /**
 	Maps the error state.
-	
+
 	@param failedMapFunc(err) Returns the value to use when there is failure
 	@param notFailedMapFunc()  (OPTIONAL) Returns the value to use when there is no failure
 */
 Observable.prototype.failedMap = function( failedMapFunc, notFailedMapFunc ) {
 	var res = new ProxyObservable()
-	
+
 	res._watchSource( this, function(src, op, origin, p1, p2) {
 		var value = undefined
-		
+
 		if (op === "failed") {
 			value = failedMapFunc(p1)
 		} else if (notFailedMapFunc) {
 			value = notFailedMapFunc()
 		}
-		
+
 		if (value !== undefined) {
 			res.setValueWithOrigin( value, origin )
 		} else {
 			res.clear( origin )
 		}
 	})
-	
+
 	return res
 }
 
 /**
 	Returns an observable which has value `true` if this observable failed, or `false` otherwise.
-	
+
 	It optionally takes a list of several other observables and the result of them is OR'd together (`true` if any of them is failed, `false` is none of them are failed.
 */
-Observable.prototype.isFailed = function() {	
+Observable.prototype.isFailed = function() {
 	var sources = Array.prototype.slice.call(arguments)
 	sources.unshift(this)
-	
+
 	var res = ProxyObserveList(sources, function() {
 		var failed = false
 		for (var i=0; i < sources.length; ++i) {
@@ -1653,10 +1653,10 @@ Observable._getDataObserver = function(node, key)
 
 	if (!(key in node._dataObservers)) {
 
-		var obs = Observable();	
+		var obs = Observable();
 
 		var handle;
-		
+
 		function changed(data) {
 			obs.value = data;
 		}

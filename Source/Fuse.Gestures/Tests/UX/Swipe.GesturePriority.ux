@@ -8,10 +8,10 @@
 	<Swiped Source="SDown">
 		<FuseTest.CountAction ux:Name="CDown"/>
 	</Swiped>
-	
+
 	<Grid ColumnCount="2">
 		<Panel HitTestMode="LocalBounds"/>
-		
+
 		<ScrollView ux:Name="SV">
 			<Panel Height="2000" HitTestMode="LocalBounds"/>
 		</ScrollView>

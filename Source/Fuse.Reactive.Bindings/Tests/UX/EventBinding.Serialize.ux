@@ -7,7 +7,7 @@
 			ctx: {
 				foo: "bar",
 			},
-			run: function(args) { 
+			run: function(args) {
 				result.value = "dataContext" in args ? JSON.stringify(args.dataContext.foo) : "ERROR";
 				result.value += "-" + args.data.foo
 			}

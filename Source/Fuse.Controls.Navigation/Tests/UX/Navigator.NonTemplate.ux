@@ -8,7 +8,7 @@
 	<DockPanel>
 		<FuseTest.Invoke Handler="{pushP1}" ux:Name="PushP1"/>
 		<FuseTest.Invoke Handler="{pushP2}" ux:Name="PushP2"/>
-		
+
 		<PageView DefaultPath="P1" ux:Name="theNav">
 			<Page Title="One" ux:Template="P1" PrepareBusy="None"/>
 			<Page Title="Two" Name="P2" PrepareBusy="None"/>

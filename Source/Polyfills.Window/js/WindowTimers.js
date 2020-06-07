@@ -1,7 +1,7 @@
 (function(window, timer){
 
 	'use strict';
-	
+
 	window.setTimeout = function(handler, timeout, args) {
 		//TODO: Add support for multiple args
 		if(typeof handler === "function")
@@ -22,7 +22,7 @@
 	window.clearInterval = function(handle) {
 		timer.delete(handle);
 	}
-	
+
 })(window, require("FuseJS/Timer"));
 
 setTimeout = window.setTimeout;

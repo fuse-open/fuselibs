@@ -21,7 +21,7 @@
 	<FuseTest.Invoke Handler="{resume}" ux:Name="Resume"/>
 	<FuseTest.Invoke Handler="{seek5}" ux:Name="Seek5"/>
 	<FuseTest.Invoke Handler="{stop}" ux:Name="Stop"/>
-	
+
 	<Timeline ux:Name="T">
 		<Nothing Duration="5" ux:Name="N"/>
 	</Timeline>

@@ -13,14 +13,14 @@ public class FuseWebViewClient extends WebViewClient
 {
 	boolean redirect;
 	boolean loadingFinished;
-	
-	Action _pageLoadedAction; 
-	Action _pageStartedAction; 
-	Action _urlChangedAction; 
+
+	Action _pageLoadedAction;
+	Action _pageStartedAction;
+	Action _urlChangedAction;
 	Action_String _onCustomURI;
 	String[] _customURIs;
 	Func _hasUriSchemeHandler;
-	
+
 	public FuseWebViewClient(Action loaded, Action started, Action changed, Action_String onCustomURI, StringArray customURIs, Func hasUriSchemeHandler)
 	{
 		super();
@@ -33,9 +33,9 @@ public class FuseWebViewClient extends WebViewClient
 		loadingFinished = true;
 		redirect = false;
 	}
-	
+
 	@Override
-	public boolean shouldOverrideUrlLoading(WebView view, String url) 
+	public boolean shouldOverrideUrlLoading(WebView view, String url)
 	{
 		if(tryInterceptUriScheme(url))
 			return true;
@@ -57,7 +57,7 @@ public class FuseWebViewClient extends WebViewClient
 		view.loadUrl(url);
 		return false;
 	}
-	
+
 	private boolean tryInterceptUriScheme(String url){
 		boolean hasUriSchemeHandler = _hasUriSchemeHandler.run();
 		if(hasUriSchemeHandler)
@@ -73,7 +73,7 @@ public class FuseWebViewClient extends WebViewClient
 		}
 		return false;
 	}
-	
+
 	@Override
 	public void onPageStarted(WebView view, String url, Bitmap favIcon)
 	{
@@ -83,7 +83,7 @@ public class FuseWebViewClient extends WebViewClient
 		}
 		loadingFinished = false;
 	}
-	
+
 	@Override
 	public void onPageFinished(WebView view, String url)
 	{
@@ -92,7 +92,7 @@ public class FuseWebViewClient extends WebViewClient
 
 		if(!redirect)
 			loadingFinished = true;
-			
+
 		if(loadingFinished && !redirect){
 			loadingFinished = true;
 			if (_pageLoadedAction != null)

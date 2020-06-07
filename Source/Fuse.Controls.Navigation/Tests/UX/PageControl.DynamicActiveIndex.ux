@@ -2,9 +2,9 @@
 	<JavaScript>
 		var Observable = require("FuseJS/Observable")
 		exports.index = Observable(2)
-		
+
 		exports.items = Observable()
-		
+
 		exports.add = function() {
 			for (var i=0; i < 5; ++i ) {
 				exports.items.add( { id: i } )
@@ -22,6 +22,6 @@
 		</Timeline>
 	</Panel>
 	<FuseTest.DudElement Value="{Read index}" ux:Name="index"/>
-	
+
 	<FuseTest.Invoke Handler="{add}" ux:Name="callAdd"/>
 </Panel>

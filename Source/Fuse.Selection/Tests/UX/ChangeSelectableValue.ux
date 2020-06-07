@@ -1,6 +1,6 @@
 <Panel ux:Class="UX.ChangeSelectableValue">
 	<Selection ux:Name="TS"/>
-	
+
 	<Panel ux:Class="CSVMyItem" Color="#0000">
 		<string ux:Property="Value"/>
 		<Selectable Value="{Property this.Value}" ux:Name="Sel"/>

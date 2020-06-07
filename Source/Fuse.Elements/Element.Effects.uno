@@ -18,13 +18,13 @@ namespace Fuse.Elements
 			}
 		}
 
-		
+
 		private bool HasEffects
 		{
 			get { return _effects != null && _effects.Count > 0; }
 		}
 
-		
+
 		private bool HasActiveEffects
 		{
 			get
@@ -44,7 +44,7 @@ namespace Fuse.Elements
 
 
 		int _compositionEffects;
-		
+
 		private bool HasCompositionEffect
 		{
 			get { return _compositionEffects > 0; }

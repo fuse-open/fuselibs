@@ -2,14 +2,14 @@
 	<JavaScript>
 		var Observable = require("FuseJS/Observable")
 		exports.items = Observable()
-		
+
 		var count = 0
 		exports.add = function() {
 			exports.items.add( { text: "" + (count++) } )
 		}
 		exports.add()
 		exports.add()
-		
+
 		exports.remove1 = function() {
 			exports.items.removeAt(1)
 		}
@@ -22,7 +22,7 @@
 			<Text Value="{text}"/>
 		</Deferred>
 	</Each>
-	
+
 	<FuseTest.Invoke Handler="{add}" ux:Name="CallAdd"/>
 	<FuseTest.Invoke Handler="{add2}" ux:Name="CallAdd2"/>
 	<FuseTest.Invoke Handler="{remove1}" ux:Name="CallRemove1"/>

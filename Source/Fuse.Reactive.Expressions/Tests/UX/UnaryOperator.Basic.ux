@@ -2,7 +2,7 @@
 	<FuseTest.Data Value=" 'hi' " ux:Name="v"/>
 	<FuseTest.Data StringValue="{= true }" ux:Name="truth"/>
 	<FuseTest.Data StringValue="{= false }" ux:Name="falsehood"/>
-	
+
 	<FuseTest.DudElement StringValue="{= _unJoin('ab') }" ux:Name="a"/>
 	<FuseTest.DudElement StringValue="{= _unJoin({none}) ?? 'x' }" ux:Name="b"/>
 	<FuseTest.DudElement StringValue="{= _unJoin({v}) }" ux:Name="c"/>

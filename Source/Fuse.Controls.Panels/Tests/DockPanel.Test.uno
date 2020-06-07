@@ -128,7 +128,7 @@ namespace Fuse.Controls.Test
 				TestElementDockLayout(root, child2, Dock.Fill, int2(1024, 768), float2(300, 200), float2((1024 - 10-100-20 - 300-20+10)/2, (768-200-15+5)/2));
 
 				TestElementDockLayout(root, child1, Dock.Left, int2(320, 240), float2(100, 50), float2(10, (240-50-15+5)/2));
-				TestElementDockLayout(root, child2, Dock.Fill, int2(320, 240), float2(300, 200), 
+				TestElementDockLayout(root, child2, Dock.Fill, int2(320, 240), float2(300, 200),
 					float2(70, (240-200-15+5)/2));
 
 				TestElementDockLayout(root, child1, Dock.Left, int2(1234, 789), float2(100, 50), float2(10, (789-50-15+5)/2f));
@@ -208,7 +208,7 @@ namespace Fuse.Controls.Test
 				LayoutTestHelper.TestElementLayout(p.child2, float2(46, 109), float2(736-46, 441 + (1038-441-109)/2f), 0.0001f);
 			}
 		}
-		
+
 		[Test]
 		public void DockMultiFill()
 		{
@@ -221,7 +221,7 @@ namespace Fuse.Controls.Test
 				Assert.AreEqual( float2(10,10), p.ThePanel.ActualPosition );
 			}
 		}
-		
+
 		[Test]
 		public void DockRelative()
 		{
@@ -237,7 +237,7 @@ namespace Fuse.Controls.Test
 				Assert.AreEqual(float2(240,70),p.P7.ActualSize);
 			}
 		}
-		
+
 		[Test]
 		public void DockRelativeStack()
 		{
@@ -251,8 +251,8 @@ namespace Fuse.Controls.Test
 				Assert.AreEqual(float2(10,10),p.P2.ActualPosition);
 			}
 		}
-		
-		[Test] 
+
+		[Test]
 		public void Max()
 		{
 			var p = new UX.DockPanel.Max();
@@ -260,12 +260,12 @@ namespace Fuse.Controls.Test
 			{
 				Assert.AreEqual( float2(50,100), p.a1.ActualSize );
 				Assert.AreEqual( float2(50,120), p.d1.ActualSize );
-				
+
 				Assert.AreEqual( float2(100,50), p.a2.ActualSize );
 				Assert.AreEqual( float2(120,50), p.d2.ActualSize );
 			}
 		}
-		
+
 		[Test]
 		public void Issue1082()
 		{
@@ -275,7 +275,7 @@ namespace Fuse.Controls.Test
 				Assert.AreEqual(0,p.ip.GetContentSizeCount);
 			}
 		}
-		
+
 		[Test]
 		//checks source of https://github.com/fuse-open/fuselibs/issues/833
 		public void RelativeSize()
@@ -287,7 +287,7 @@ namespace Fuse.Controls.Test
 				Assert.AreEqual(float2(0,0),p.left.ActualPosition);
 				Assert.AreEqual(float2(80,400),p.right.ActualSize);
 				Assert.AreEqual(float2(320,0),p.right.ActualPosition);
-				
+
 				p.dp.Width = 200;
 				root.StepFrame();
 				Assert.AreEqual(float2(40,400),p.left.ActualSize);
@@ -296,7 +296,7 @@ namespace Fuse.Controls.Test
 				Assert.AreEqual(float2(160,0),p.right.ActualPosition);
 			}
 		}
-		
+
 
 		private void TestElementDockLayout(TestRootPanel root, Element element, Fuse.Layouts.Dock dock,
 			int2 rootSize, float2 expectActualSize, float2 expectActualPosition,

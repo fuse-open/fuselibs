@@ -2,16 +2,16 @@
 	<Router ux:Name="router" IsMasterRouter="false"/>
 	<JavaScript>
 		var Observable = require("FuseJS/Observable")
-		
+
 		exports.actPath = Observable("")
 		exports.deactPath = Observable("")
-		
+
 		exports.activateP1 = function() { actExtend("1") }
 		exports.deactivateP1 = function() { deactExtend("1") }
-		
+
 		exports.activateP2 = function() { actExtend("2") }
 		exports.deactivateP2 = function() { deactExtend("2") }
-		
+
 		function actExtend(p) {
 			exports.actPath.value += p
 		}
@@ -24,13 +24,13 @@
 			<Activated When="Immediate"><Callback Handler="{activateP1}"/></Activated>
 			<Deactivated When="Immediate"><Callback Handler="{deactivateP1}"/></Deactivated>
 		</Page>
-		
+
 		<Page ux:Template="P2" PrepareBusy="None">
 			<Activated Handler="{activateP2}" When="Immediate"/>
 			<Deactivated Handler="{deactivateP2}" When="Immediate"/>
 		</Page>
 	</Navigator>
-	
+
 	<Text ux:Name="Act" Value="{actPath}"/>
 	<Text ux:Name="Deact" Value="{deactPath}"/>
 </Panel>

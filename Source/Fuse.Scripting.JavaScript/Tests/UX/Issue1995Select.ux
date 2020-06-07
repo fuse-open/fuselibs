@@ -1,11 +1,11 @@
 <Panel ux:Class="UX.Issue1995Select">
 	<JavaScript>
 		var Observable = require( "FuseJS/Observable" )
-		
+
 		exports.text = Observable("#")
 		exports.a = Observable({ text: "1"})
 		exports.b = Observable({ text: "2"})
-		
+
 		exports.append = function(args) {
 			exports.text.value += args.data.text
 		}
@@ -20,7 +20,7 @@
 				</Panel>
 			</Panel>
 		</With>
-		
+
 		<With Data="{b}">
 			<Panel ux:Name="In2"/>
 		</With>

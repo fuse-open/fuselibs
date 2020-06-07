@@ -1,7 +1,7 @@
 <Panel ux:Class="UX.MathFunctions.Negate">
 	<FuseTest.Value Integer="10" ux:Name="a"/>
 	<FuseTest.Value Object="-{Property a.Object}" ux:Name="b"/>
-	
+
 	<LetFloat Value="-20" ux:Name="a2"/>
 	<FuseTest.Value Object="-{a2}" ux:Name="b2"/>
 </Panel>

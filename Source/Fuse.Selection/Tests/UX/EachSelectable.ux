@@ -1,5 +1,5 @@
 <Panel ux:Class="UX.EachSelectable">
-	<JavaScript>	
+	<JavaScript>
 		var Observable = require("FuseJS/Observable")
 		exports.items = Observable(
 			{ value: "one" },

@@ -1,7 +1,7 @@
 <Panel ux:Class="UX.Cycle.Restore">
 	<Translation X="0" ux:Name="t1"/>
 	<Translation X="0" ux:Name="t2"/>
-	
+
 	<WhileTrue ux:Name="wt">
 		<Cycle Target="t1.X" Low="0" High="100" Waveform="Sawtooth"/>
 		<Cycle Target="t2.X" Low="0" High="100" Restore="Forward" Waveform="Sawtooth"/>

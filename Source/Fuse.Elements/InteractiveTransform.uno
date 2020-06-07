@@ -12,7 +12,7 @@ namespace Fuse.Elements
 			get { return _zoomFactor; }
 			set { SetZoomFactor(value, null); }
 		}
-		
+
 		static Selector _zoomFactorName = "ZoomFactor";
 		public void SetZoomFactor(float value, IPropertyListener origin)
 		{
@@ -23,8 +23,8 @@ namespace Fuse.Elements
 				OnMatrixChanged();
 			}
 		}
-	
-		
+
+
 		float _rotation = 0;
 		[UXOriginSetter("SetRotation")]
 		public float Rotation
@@ -43,7 +43,7 @@ namespace Fuse.Elements
 				OnMatrixChanged();
 			}
 		}
-		
+
 		float2 _translation;
 		[UXOriginSetter("SetTranslation")]
 		public float2 Translation
@@ -62,23 +62,23 @@ namespace Fuse.Elements
 				OnMatrixChanged();
 			}
 		}
-		
+
 		public override bool IsFlat { get { return true; } }
-		
+
 		public override void PrependTo(FastMatrix matrix)
 		{
 			matrix.PrependRotation(Rotation);
 			matrix.PrependScale(ZoomFactor);
 			matrix.PrependTranslation(Translation.X, Translation.Y,0);
 		}
-		
+
 		public override void AppendTo(FastMatrix matrix, float weight = 1)
 		{
 			matrix.AppendTranslation(Translation.X, Translation.Y,0);
 			matrix.AppendScale(ZoomFactor * weight);
 			matrix.AppendRotation(Rotation * weight);
 		}
-		
+
 		internal void AppendRotationScale(FastMatrix matrix)
 		{
 			matrix.AppendScale(ZoomFactor);

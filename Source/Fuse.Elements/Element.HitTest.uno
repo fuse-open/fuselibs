@@ -55,14 +55,14 @@ namespace Fuse.Elements
 		{
 			if (ClipToBounds && !IsPointInside(htc.LocalPoint))
 				return;
-				
+
 			if (HitTestMode.HasFlag(HitTestMode.Children))
 				OnHitTestChildren(htc);
 			if (HitTestMode.HasFlag(HitTestMode.LocalVisual))
 				OnHitTestLocalVisual(htc);
 			if (HitTestMode.HasFlag(HitTestMode.LocalBounds))
 			{
-				if (IsPointInside(htc.LocalPoint)) 
+				if (IsPointInside(htc.LocalPoint))
 					htc.Hit(this);
 			}
 		}
@@ -78,7 +78,7 @@ namespace Fuse.Elements
 		}
 
 		protected virtual void OnHitTestLocalVisual(HitTestContext htc) { }
-		
+
 		/**
 			Derived classes should overried HitTestLocalVisualBounds if they draw a local visual.
 		*/
@@ -87,7 +87,7 @@ namespace Fuse.Elements
 			get
 			{
 				var n = VisualBounds.Empty;
-				
+
 				if (HitTestMode.HasFlag(HitTestMode.LocalBounds))
 					n = n.AddRect( float2(0), ActualSize );
 				if (HitTestMode.HasFlag(HitTestMode.LocalVisual))
@@ -95,7 +95,7 @@ namespace Fuse.Elements
 				return n;
 			}
 		}
-		
+
 		protected virtual VisualBounds HitTestLocalVisualBounds
 		{
 			get
@@ -105,7 +105,7 @@ namespace Fuse.Elements
 		}
 
 		protected override VisualBounds HitTestChildrenBounds
-		{	
+		{
 			get
 			{
 				if (HitTestMode.HasFlag(HitTestMode.Children))

@@ -2,6 +2,6 @@
 	<Slider Value="{highCount}" ux:Name="v" Minimum="0" Maximum="1000"/>
 	<FuseTest.DudElement Value="{value}" ux:Name="r"/>
 	<FuseTest.DudElement Value="{doubleHigh}" ux:Name="d"/>
-	
+
 	<FuseTest.Invoke Handler="{incr}" ux:Name="callIncr"/>
 </Panel>

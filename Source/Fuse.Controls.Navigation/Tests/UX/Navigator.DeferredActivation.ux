@@ -13,7 +13,7 @@
 			router.goBack();
 		}
 	</JavaScript>
-	
+
     <Page ux:Class="Home" Background="#ffffff">
         <Router ux:Dependency="router" />
     </Page>
@@ -30,7 +30,7 @@
 			<FuseTest.CountAction ux:Name="TB"/>
 		</Activated>
     </Page>
-    
+
 	<FuseTest.Invoke Handler="{search}" ux:Name="GoSearch"/>
 	<FuseTest.Invoke Handler="{goBack}" ux:Name="GoBack"/>
 </Panel>
