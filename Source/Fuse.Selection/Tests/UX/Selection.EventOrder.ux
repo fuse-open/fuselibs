@@ -1,10 +1,10 @@
 <Panel ux:Class="UX.Selection.EventOrder">
 	<JavaScript>
 		var Observable = require("FuseJS/Observable")
-		
+
 		exports.selected = Observable()
 		exports.result = Observable()
-		
+
 		exports.onChanged = function() {
 			var q = "";
 			for (var i=0; i < exports.selected.length; ++i) {
@@ -17,6 +17,6 @@
 
 	<Selectable Value="A" ux:Name="sa"/>
 	<Selectable Value="B" ux:Name="sb"/>
-	
+
 	<Text Value="{result}" ux:Name="r"/>
 </Panel>

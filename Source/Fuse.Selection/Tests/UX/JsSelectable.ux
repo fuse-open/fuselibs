@@ -1,6 +1,6 @@
 <Panel ux:Class="UX.JsSelectable">
 	<Selection ux:Name="TS" Value="two"/>
-		
+
 	<Panel ux:Class="SelOption" Color="#0000">
 		<string ux:Property="Value"/>
 		<JavaScript>
@@ -15,14 +15,14 @@
 			}
 		</JavaScript>
 		<Selectable Value="{Property this.Value}" ux:Name="Sel"/>
-		
+
 		<FuseTest.Invoke Handler="{add}" ux:Name="CallAdd"/>
 		<FuseTest.Invoke Handler="{remove}" ux:Name="CallRemove"/>
 		<FuseTest.Invoke Handler="{toggle}" ux:Name="CallToggle"/>
 	</Panel>
-	
+
 	<SelOption Value="one" ux:Name="O1"/>
 	<SelOption Value="two" ux:Name="O2"/>
 	<SelOption Value="three" ux:Name="O3"/>
-	
+
 </Panel>

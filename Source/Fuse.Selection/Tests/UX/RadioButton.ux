@@ -1,6 +1,6 @@
 <Panel ux:Class="UX.RadioButton">
 	<Selection MinCount="1" MaxCount="1" ux:Name="TS"/>
-	
+
 	<Panel ux:Class="RBMyItem" Color="#0000">
 		<string ux:Property="Value"/>
 		<Selectable Value="{Property this.Value}"/>
@@ -15,10 +15,10 @@
 
 	<FuseTest.DudElement BoolValue="isSelected(I1)" ux:Name="si1"/>
 	<FuseTest.DudElement BoolValue="isSelected(I2)" ux:Name="si2"/>
-	
+
 	<RBMyItem Value="one" ux:Name="I1"/>
 	<RBMyItem Value="two" ux:Name="I2"/>
 	<RBMyItem Value="three" ux:Name="I3"/>
 	<RBMyItem Value="four" ux:Name="I4"/>
-	
+
 </Panel>
