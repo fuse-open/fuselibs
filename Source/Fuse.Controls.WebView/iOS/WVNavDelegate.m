@@ -1,7 +1,7 @@
 #import "WVNavDelegate.h"
 @implementation WVNavDelegate
--(id)initWithEventHandlers:(Action)beginLoading 
-	loaded:(Action)pageLoaded 
+-(id)initWithEventHandlers:(Action)beginLoading
+	loaded:(Action)pageLoaded
 	change:(Action)urlChanged
 	uriHandler:(StringAction)uriHandler
 	schemes:(NSArray*)schemes
@@ -17,7 +17,7 @@
 	return self;
 }
 
--(void) webView:(WKWebView*)webview 
+-(void) webView:(WKWebView*)webview
 	decidePolicyForNavigationAction:(WKNavigationAction*)navAction
 	decisionHandler:(void(^)(WKNavigationActionPolicy))handler
 {
@@ -52,19 +52,19 @@
 	handler(WKNavigationActionPolicyAllow);
 }
 
--(void) webView:(WKWebView*)webview 
+-(void) webView:(WKWebView*)webview
 	didStartProvisionalNavigation:(WKNavigation*)navigation
 {
 	self.onBeginLoading();
 }
 
--(void) webView:(WKWebView*)webview 
+-(void) webView:(WKWebView*)webview
 	didCommitNavigation:(WKNavigation*)navigation
 {
 	self.onBeginLoading();
 }
 
--(void) webView:(WKWebView*)webview 
+-(void) webView:(WKWebView*)webview
 	didFinishNavigation:(WKNavigation*)navigation
 {
 	self.onURLChanged();

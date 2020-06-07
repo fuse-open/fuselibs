@@ -9,9 +9,9 @@ public class JsInterface
 	{
 		_handler = handler;
 	}
-	
+
 	@JavascriptInterface
-	public void onResult(String result) 
+	public void onResult(String result)
 	{
 		_handler.run(result);
 	}

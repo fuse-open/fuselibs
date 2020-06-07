@@ -13,14 +13,14 @@ public class FuseWebChromeClient extends WebChromeClient
 		super();
 		_handler = handler;
 	}
-	
+
 	@Override
 	public void onProgressChanged(WebView view, int progress)
 	{
 		super.onProgressChanged(view, progress);
 		_handler.run(progress);
 	}
-	
+
 	@Override
 	public boolean onShowFileChooser (WebView webView, ValueCallback<Uri[]> filePathCallback, WebChromeClient.FileChooserParams fileChooserParams)
 	{
