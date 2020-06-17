@@ -27,7 +27,7 @@ namespace Fuse.Platform
 	[Require("Source.Include", "@{Uno.Platform.iOS.Application:Include}")]
 	[Require("Source.Include", "Uno-iOS/AppDelegate.h")]
 	[Require("Source.Include","objc/message.h")]
-	[Require("Source.Include", "KeyboardContext.h")]
+	[Require("Source.Include", "NotificationCenterContext.h")]
 	static extern(iOS) class SystemUI
 	{
 		static Rect _bottomFrame;
@@ -63,6 +63,22 @@ namespace Fuse.Platform
 
 		static public event Action MarginsChanged;
 		static public event Action<ScreenOrientation> DeviceOrientationChanged;
+		static public event Action<float> TextScaleFactorChanged;
+
+		static float _textScaleFactor = 1.0f;
+		static public float TextScaleFactor
+		{
+			get { return _textScaleFactor; }
+			private set
+			{
+				if (_textScaleFactor != value)
+				{
+					_textScaleFactor = value;
+					if (TextScaleFactorChanged != null)
+						TextScaleFactorChanged(value);
+				}
+			}
+		}
 
 		// @property (nonatomic, setter=uSetStatusBarAnimation:) UIStatusBarAnimation uStatusBarAnimation;
 		public static StatusBarAnimation uStatusBarAnimation { get; set; }
@@ -83,43 +99,64 @@ namespace Fuse.Platform
 		static public void OnCreate()
 		{
 			((Uno.Platform.iOSDisplay)Uno.Platform.Displays.MainDisplay).FrameChanged += OnFrameChanged;
+			Uno.Platform.CoreApp.EnteringForeground += OnEnteringForeground;
 			OnFrameChanged(null, null);
-			EnableKeyboardResizeNotifications(_keyboardContext);
+			SetupNotificationCenterObservers(_notificationContext);
 		}
 
 		static public void OnDestroy()
 		{
-			DisableKeyboardResizeNotifications(_keyboardContext);
+			RemoveNotificationCenterObservers(_notificationContext);
+			Uno.Platform.CoreApp.EnteringForeground -= OnEnteringForeground;
 		}
 
-		static ObjC.Object _keyboardContext = NewKeyboardContext();
+		static void OnEnteringForeground(Uno.Platform.ApplicationState newState)
+		{
+			ReadConfiguration(_notificationContext);
+		}
 
 		[Foreign(Language.ObjC)]
-		static ObjC.Object NewKeyboardContext()
+		static void ReadConfiguration(ObjC.Object notificationContext)
 		@{
-			return [[uKeyboardContext alloc] init];
+			uNotificationCenterContext* ctx = (uNotificationCenterContext*)notificationContext;
+			CGFloat textScaleFactor = [ctx textScaleFactor];
+			@{uTextScaleFactorDidChange(float):Call(textScaleFactor)};
+		@}
+
+		static ObjC.Object _notificationContext = NewNotificationCenterContext();
+
+		[Foreign(Language.ObjC)]
+		static ObjC.Object NewNotificationCenterContext()
+		@{
+			return [[uNotificationCenterContext alloc] init];
 		@}
 
 		[Foreign(Language.ObjC)]
-		static void EnableKeyboardResizeNotifications(ObjC.Object keyboardContext)
+		static void SetupNotificationCenterObservers(ObjC.Object notificationContext)
 		@{
-			uKeyboardContext* ctx = (uKeyboardContext*)keyboardContext;
+			uNotificationCenterContext* ctx = (uNotificationCenterContext*)notificationContext;
+			 NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
 
-			[[NSNotificationCenter defaultCenter]
+			[center
 			 addObserver:ctx selector:@selector(uKeyboardWillChangeFrame:)
 			 name:UIKeyboardWillShowNotification object:nil];
 
-			[[NSNotificationCenter defaultCenter]
+			[center
 			 addObserver:ctx
 			 selector:@selector(uKeyboardWillChangeFrame:)
 			 name:UIKeyboardWillHideNotification object:nil];
+
+			[center
+			 addObserver:ctx
+			 selector:@selector(onUserSettingsChanged:)
+			 name:UIContentSizeCategoryDidChangeNotification object:nil];
 		@}
 
 
 		[Foreign(Language.ObjC)]
-		static void DisableKeyboardResizeNotifications(ObjC.Object keyboardContext)
+		static void RemoveNotificationCenterObservers(ObjC.Object notificationContext)
 		@{
-			uKeyboardContext* ctx = (uKeyboardContext*)keyboardContext;
+			uNotificationCenterContext* ctx = (uNotificationCenterContext*)notificationContext;
 
 			[[NSNotificationCenter defaultCenter]
 			 removeObserver:ctx
@@ -284,6 +321,11 @@ namespace Fuse.Platform
 				Uno.Platform.iOS.Support.Pre_iOS8_HandleDeviceOrientation_Rect(frameEnd, null),
 				1);
 			OnWillResize();
+		}
+
+		static void uTextScaleFactorDidChange(float _textScaleFactor)
+		{
+			TextScaleFactor = _textScaleFactor;
 		}
 
 		//------------------------------------------------------------
