@@ -1,5 +1,8 @@
 # Unreleased
 
+### Fuse.Controls.Primitives
+- `TextControl` accessibility feature: `FontScale` Property
+
 ### Fuse.Auth
 - Introducing Fuse.Auth, the easiest way to perform user authentication using biometric sensor that reside on the device such as fingerprint or FaceID
 
