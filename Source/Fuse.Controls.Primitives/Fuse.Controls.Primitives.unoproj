@@ -19,6 +19,7 @@
     "Uno.Threading"
   ],
   "Projects": [
+    "../Fuse.Platform/Fuse.Platform.unoproj",
     "../Fuse.Animations/Fuse.Animations.unoproj",
     "../Fuse.Controls.Native/Fuse.Controls.Native.unoproj",
     "../Fuse.Controls.Panels/Fuse.Controls.Panels.unoproj",

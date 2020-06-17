@@ -5,6 +5,7 @@ using Fuse.Elements;
 using Fuse.Scripting;
 using Fuse.Triggers;
 using Fuse.Controls.Native;
+using Fuse.Platform;
 
 namespace Fuse.Controls
 {
@@ -55,7 +56,7 @@ namespace Fuse.Controls
 			if (_value != newValue)
 			{
 				_value = newValue;
-				OnValueChanged(this);	
+				OnValueChanged(this);
 			}
 		}
 
@@ -122,12 +123,39 @@ namespace Fuse.Controls
 		float _fontSize = Font.PlatformDefaultSize;
 		public float FontSize
 		{
-			get { return _fontSize; }
+			get
+			{
+				if (FontScale > 0)
+					return _fontSize * FontScale;
+				else
+					return _fontSize;
+			}
 			set
 			{
 				if (_fontSize != value)
 				{
 					_fontSize = value;
+
+					OnFontSizeChanged();
+					InvalidateVisual();
+				}
+			}
+		}
+
+		/** Specifies text scale factor of a font size. For example, if the `FontScale` is 1.5, then text will be 50% larger than the specified font size.
+		The default normal value of `FontScale` is 1, but it will change dynamically according to the system setting of font/text size (in accessibility section).
+		So if the user change the font/text size in the phone settings app, then Fuse will honor that setting and will change all of the texts or labels in the Fuse App to match that setting.
+		If you don't want that behaviour you can set `FontScale` property to negative value (ex: -1)
+		*/
+		float _fontScale = SystemUI.TextScaleFactor;
+		public float FontScale
+		{
+			get { return _fontScale; }
+			set
+			{
+				if (_fontScale != value)
+				{
+					_fontScale = value;
 
 					OnFontSizeChanged();
 					InvalidateVisual();
@@ -164,7 +192,7 @@ namespace Fuse.Controls
 		}
 
 
-		/** The color of the text. 
+		/** The color of the text.
 
 			`Color` is an alias for this property, which is recommended to use for consistency.
 		*/

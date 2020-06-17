@@ -1,5 +1,6 @@
 using Uno;
 using Uno.UX;
+using Fuse.Platform;
 
 namespace Fuse.Controls
 {
@@ -35,6 +36,9 @@ namespace Fuse.Controls
 		{
 			base.OnRooted();
 
+			if (FontScale > 0)
+				SystemUI.TextScaleFactorChanged += TextScaleFactorChanged;
+
 			if (VisualContext == VisualContext.Graphics)
 			{
 				if defined(USE_HARFBUZZ)
@@ -68,6 +72,10 @@ namespace Fuse.Controls
 					_textRenderer.SoftDispose();
 				_textRenderer = null;
 			}
+
+			if (FontScale > 0)
+				SystemUI.TextScaleFactorChanged -= TextScaleFactorChanged;
+
 			base.OnUnrooted();
 		}
 
@@ -95,7 +103,7 @@ namespace Fuse.Controls
 			}
 			return b;
 		}
-		
+
 		protected override void ArrangePaddingBox( LayoutParams lp )
 		{
 			base.ArrangePaddingBox(lp);
@@ -107,12 +115,12 @@ namespace Fuse.Controls
 				_textRenderer.Arrange(float2(0), lp.Size);
 			}
 		}
-		
+
 		protected override bool FastTrackDrawWithOpacity(DrawContext dc)
 		{
 			return false;
 		}
-		
+
 		protected override void DrawVisual(DrawContext dc)
 		{
 			var str = RenderValue;
@@ -122,14 +130,14 @@ namespace Fuse.Controls
 				_textRenderer.Draw(dc, this);
 			}
 		}
-		
+
 		protected override void OnHitTestLocalVisual(HitTestContext htc)
 		{
 			if (IsPointInside(htc.LocalPoint))
 				htc.Hit(this);
 			base.OnHitTestLocalVisual(htc);
 		}
-		
+
 		protected override VisualBounds HitTestLocalVisualBounds
 		{
 			get
@@ -139,7 +147,7 @@ namespace Fuse.Controls
 				return b;
 			}
 		}
-		
+
 		protected override VisualBounds CalcRenderBounds()
 		{
 			var b = base.CalcRenderBounds(); //for backgrounds
@@ -147,12 +155,17 @@ namespace Fuse.Controls
 				b = b.AddRect(_textRenderer.GetRenderBounds());
 			return b;
 		}
-		
+
 		protected override void SoftDispose()
 		{
 			base.SoftDispose();
-			if (_textRenderer != null)	
+			if (_textRenderer != null)
 				_textRenderer.SoftDispose();
+		}
+
+		private void TextScaleFactorChanged(float textScaleFactor)
+		{
+			FontScale = textScaleFactor;
 		}
 	}
 }
