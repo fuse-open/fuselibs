@@ -36,7 +36,7 @@ namespace Fuse.Controls
 		{
 			base.OnRooted();
 
-			if (FontScale > 0)
+			if defined(!IGNORE_FONT_SCALING)
 				SystemUI.TextScaleFactorChanged += TextScaleFactorChanged;
 
 			if (VisualContext == VisualContext.Graphics)
@@ -73,7 +73,7 @@ namespace Fuse.Controls
 				_textRenderer = null;
 			}
 
-			if (FontScale > 0)
+			if defined(!IGNORE_FONT_SCALING)
 				SystemUI.TextScaleFactorChanged -= TextScaleFactorChanged;
 
 			base.OnUnrooted();
@@ -165,7 +165,8 @@ namespace Fuse.Controls
 
 		private void TextScaleFactorChanged(float textScaleFactor)
 		{
-			FontScale = textScaleFactor;
+			OnFontSizeChanged();
+			InvalidateVisual();
 		}
 	}
 }

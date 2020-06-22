@@ -1,7 +1,7 @@
 # Unreleased
 
 ### Fuse.Controls.Primitives
-- `TextControl` accessibility feature: `FontScale` Property
+- `TextControl` accessibility feature. Introduce `MinFontScale` and `MaxFontScale` Property to control the minimum or maximum text scaling behavior when the text/font size configuration setting on the phone has changed. Now default Fuse will honor the phone's text/font size configuration setting and will change all of the texts or labels in the Fuse App to match the setting. If you don't want the behavior you can pass a compiler flag:`IGNORE_FONT_SCALING` when building the app i.e: `uno build ios -DIGNORE_FONT_SCALING`
 
 ### Fuse.Auth
 - Introducing Fuse.Auth, the easiest way to perform user authentication using biometric sensor that reside on the device such as fingerprint or FaceID
