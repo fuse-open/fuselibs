@@ -125,18 +125,7 @@ namespace Fuse.Controls
 		{
 			get
 			{
-				if defined(IGNORE_FONT_SCALING)
-					return _fontSize;
-
-				if (MinFontScale == 0 && MaxFontScale == 0)
-					return _fontSize * SystemUI.TextScaleFactor;
-				else
-				{
-					if (MinFontScale == 1 && MaxFontScale == 1)
-						return _fontSize;
-					else
-						return _fontSize * Math.Max(MinFontScale, Math.Min(MaxFontScale, SystemUI.TextScaleFactor));
-				}
+				return _fontSize;
 			}
 			set
 			{
@@ -146,6 +135,24 @@ namespace Fuse.Controls
 
 					OnFontSizeChanged();
 					InvalidateVisual();
+				}
+			}
+		}
+
+		public float FontSizeScaled
+		{
+			get
+			{
+				if defined(IGNORE_FONT_SCALING)
+					return _fontSize;
+				if (_minFontScale == 0 && _maxFontScale == 0)
+					return _fontSize * SystemUI.TextScaleFactor;
+				else
+				{
+					if (_minFontScale == 1 && _maxFontScale == 1)
+						return _fontSize;
+					else
+						return _fontSize * Math.Max(_minFontScale, Math.Min(_maxFontScale, SystemUI.TextScaleFactor));
 				}
 			}
 		}

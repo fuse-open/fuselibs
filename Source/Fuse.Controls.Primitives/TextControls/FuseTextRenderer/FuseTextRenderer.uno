@@ -188,7 +188,7 @@ namespace Fuse.Controls.FuseTextRenderer
 		void UpdateFont()
 		{
 			int newFontSize = Math.Clamp(
-				(int)Math.Floor(_control.FontSize * _control.Viewport.PixelsPerPoint + 0.5f),
+				(int)Math.Floor( _control.FontSizeScaled * _control.Viewport.PixelsPerPoint + 0.5f),
 				4,
 				400);
 			if (_control.Font != _fuseFont || newFontSize != _fontSize)
