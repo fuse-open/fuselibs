@@ -1,5 +1,4 @@
 os: osx
-osx_image: xcode9.2
 language: node_js
 node_js:
   - 10
@@ -14,7 +13,6 @@ install:
 
 before_script:
   - ulimit -c unlimited -S
-  - rm -rf /cores/core.*
 
 script:
   - npm run build
