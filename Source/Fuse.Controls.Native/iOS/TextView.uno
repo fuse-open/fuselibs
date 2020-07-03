@@ -103,7 +103,11 @@ namespace Fuse.Controls.Native.iOS
 
 		TextTruncation ITextView.TextTruncation
 		{
-			set { /* TODO */ }
+			set
+			{
+				if (value == TextTruncation.Standard)
+					SetTextTruncation(Handle);
+			}
 		}
 
 		void UpdateText()
@@ -116,6 +120,14 @@ namespace Fuse.Controls.Native.iOS
 		@{
 			::UILabel* label = (::UILabel*)handle;
 			label.attributedText = (NSAttributedString*)attributedString;
+		@}
+
+		[Foreign(Language.ObjC)]
+		static void SetTextTruncation(ObjC.Object handle)
+		@{
+			::UILabel* label = (::UILabel*)handle;
+			label.numberOfLines = 1;
+			label.lineBreakMode = NSLineBreakByTruncatingTail;
 		@}
 	}
 }
