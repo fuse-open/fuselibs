@@ -11,12 +11,17 @@
     "../Fuse/Fuse.unoproj"
   ],
   "Includes": [
-    "*"
+    "*",
+    "iOS/SignInHelper.h:ObjCHeader:iOS",
+    "iOS/SignInHelper.mm:ObjCSource:iOS"
   ],
   "iOS": {
     "PList": {
       "NSFaceIDUsageDescription": "Require access to FaceID for authenticating"
     },
+    "SystemCapabilities": {
+      "SignInWithApple": true
+    }
   }
 }
 
