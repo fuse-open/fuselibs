@@ -2,6 +2,7 @@
 
 ### Fuse.Auth
 - Introducing Fuse.Auth, the easiest way to perform user authentication using biometric sensor that reside on the device such as fingerprint or FaceID
+- Introducing Platform SignIn. a Sign In mechanism that use `Sign In With Apple` on iOS and `Google SignIn` on Android. There is two API added, `PlatformSignIn` as trigger action and `FuseJS/Auth` as javascript module.
 
 # 1.14
 
