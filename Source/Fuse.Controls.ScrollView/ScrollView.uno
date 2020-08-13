@@ -15,13 +15,13 @@ namespace Fuse.Controls
 		public bool IsAdjustment { get; private set; }
 		//this much was adjusted due to layout change, not "scrolling"
 		public float2 ArrangeOffset { get; private set; }
-		
+
 		public IPropertyListener Origin { get; private set; }
-		
+
 		public float2 RelativeScrollPosition { get; private set; }
-		
+
 		public ScrollPositionChangedArgs( float2 scrollPos, float2 arrangeOffset, bool isAdjustment,
-			IPropertyListener origin, float2 relativeScrollPos) 
+			IPropertyListener origin, float2 relativeScrollPos)
 			: base(scrollPos)
 		{
 			this.ArrangeOffset = arrangeOffset;
@@ -29,16 +29,16 @@ namespace Fuse.Controls
 			this.IsAdjustment = isAdjustment;
 			this.RelativeScrollPosition = relativeScrollPos;
 		}
-		
+
 		void IScriptEvent.Serialize(IEventSerializer s)
 		{
 			s.AddObject("value", Value);
 			s.AddObject("relativePosition", RelativeScrollPosition);
 		}
 	}
-	
+
 	public delegate void ScrollPositionChangedHandler(object sender, ScrollPositionChangedArgs args);
-	
+
 	/**
 		A `ScrollView` is a control that allows scrolling over the content.
 		It only accepts a single child, from which the size of the scrollable area is calculated.
@@ -46,7 +46,7 @@ namespace Fuse.Controls
 
 		By default, ScrollView tries to take up the same amount of space as its content in the scrollable direction.
 		However, when placed in a @Panel (or @DockPanel, @Grid, etc.), the size of the ScrollView itself will be limited to the size of its parent.
-		
+
 		> *Note*
 		>
 		> @StackPanel does not limit the size of its children, but rather lets them extend to whatever size they want to take up.
@@ -56,24 +56,24 @@ namespace Fuse.Controls
 		>
 		> This means that **a ScrollView inside a @StackPanel probably won't behave as you expect it to**.
 		> We recommend using a different type of @Panel (e.g. a @DockPanel) as the parent of the ScrollView or setting the ScrollView's height explicitly.
-		
+
 		The `Alignment` of the child content influences the `MinScroll` and `MaxScroll` values as well as the starting `ScrollPosition`.
 		For example a `Bottom` aligned element will start with the bottom of the content visible (aligned to the bottom of the `ScrollView`) and `MinScroll` will be negative, as the overflow is to the top of the `ScrollView`.
 
 		## LayoutMode
-		
+
 		By default a `ScrollView` keeps a consistent `ScrollPosition` when the layout changes. This may result in jumping when content is added/removed.
-		
+
 		An alternate mode `LayoutMode="PreserveVisual"` instead attempts to maintain visual consistency when its children or parent layout is changed. It assumes it's immediate content is a container and looks at that container's children.  For example, a layout like this:
-		
+
 			<ScrollView>
 				<StackPanel>
 					<Panel/>
 					<Panel/>
 				<StackPanel>
 			</ScrollView>
-		
-		Visuals without `LayoutRole=Standard` are not considered when retaining the visual consistency. The `LayoutMode` property can be used to adjust this behavior.		
+
+		Visuals without `LayoutRole=Standard` are not considered when retaining the visual consistency. The `LayoutMode` property can be used to adjust this behavior.
 	*/
 	public partial class ScrollViewBase: ContentControl, IScrollViewHost
 	{
@@ -86,25 +86,25 @@ namespace Fuse.Controls
 			Enables/disables the ability for the user to scroll the control. When `false` the user cannot interact with the control but it can still be scrolled programmatically.
 		*/
 		public bool UserScroll
-		{	
+		{
 			get { return _userScroll; }
-			set 
+			set
 			{
 				if (_userScroll == value)
 					return;
-					
+
 				_userScroll = value;
 				OnScrollPropertyChanged(UserScrollName, this);
 			}
 		}
-		
+
 		internal static Selector GesturePriorityName = "GesturePriority";
 		GesturePriority _gesturePriority = GesturePriority.Low;
 		/**
 			The priority of the scrolling gestures.
-			
+
 			The default is Lower.
-			
+
 			@advanced
 			@experimental
 		*/
@@ -115,29 +115,29 @@ namespace Fuse.Controls
 			{
 				if (_gesturePriority == value)
 					return;
-					
+
 				_gesturePriority = value;
 				OnScrollPropertyChanged(GesturePriorityName, this);
 			}
 		}
-		
-		
+
+
 		bool _snapMinTransform = true;
 		/**
 			If set to `false` the contents will not visually scroll into the minimum snapping region (when the user scrolls beyond the top of the content). This region however still exists and can be used in ScrollingAnimation still.
 		*/
-		public bool SnapMinTransform 
-		{ 
+		public bool SnapMinTransform
+		{
 			get { return _snapMinTransform; }
 			set { _snapMinTransform = value; }
 		}
-		
+
 		bool _snapMaxTransform = true;
 		/**
 			If set to `false` the contents will not visually scroll into the maximum snapping region (when the user scrolls beyond the bottom of the content). This region however still exists and can be used in ScrollingAnimation still.
 		*/
 		public bool SnapMaxTransform
-		{ 
+		{
 			get { return _snapMaxTransform; }
 			set { _snapMaxTransform = value; }
 		}
@@ -156,16 +156,16 @@ namespace Fuse.Controls
 		}
 
 		protected override void OnRooted()
-		{	
+		{
 			base.OnRooted();
 			_hasPrevArrange = false;
 		}
-		
+
 		protected override void OnUnrooted()
 		{
 			base.OnUnrooted();
 		}
-		
+
 		public ScrollViewBase()
 		{
 			ClipToBounds = true;
@@ -174,17 +174,17 @@ namespace Fuse.Controls
 
 		internal Scroller _scroller; //internal for Scroller to set
 		internal Scroller TestScroller { get { return _scroller; } }
-		
+
 		/**
 			@advanced
 			@deprecated 2017-03-04
 		*/
 		[Obsolete]
-		public Scroller Scroller 
+		public Scroller Scroller
 		{
 			get { return _scroller; }
 		}
-		
+
 		MotionConfig _motion;
 		[UXContent]
 		/**
@@ -195,8 +195,8 @@ namespace Fuse.Controls
 					<Panel>...content...</Panel>
 				</ScrollView>
 		*/
-		public MotionConfig Motion 
-		{ 	
+		public MotionConfig Motion
+		{
 			get
 			{
 				if (_motion == null)
@@ -210,7 +210,7 @@ namespace Fuse.Controls
 					Fuse.Diagnostics.UserError( "Motion should not be changed post-rooting", this );
 			}
 		}
-		
+
 		static Selector _keepFocusInViewName = "KeepFocusInView";
 		bool _keepFocusInView = true;
 		/**
@@ -219,7 +219,7 @@ namespace Fuse.Controls
 		public bool KeepFocusInView
 		{
 			get { return _keepFocusInView; }
-			set 
+			set
 			{
 				if (_keepFocusInView != value)
 				{
@@ -247,8 +247,8 @@ namespace Fuse.Controls
 		public ScrollDirections AllowedScrollDirections
 		{
 			get { return _allowedScrollDirections; }
-			set 
-			{ 
+			set
+			{
 				if (_allowedScrollDirections != value)
 				{
 					_allowedScrollDirections = value;
@@ -261,7 +261,7 @@ namespace Fuse.Controls
 				}
 			}
 		}
-		
+
 		void OnScrollPropertyChanged(Selector name, IPropertyListener origin)
 		{
 			InvalidateLayout();
@@ -280,24 +280,24 @@ namespace Fuse.Controls
 			get { return _scrollPosition; }
 			set { SetScrollPosition(value, this); }
 		}
-		
+
 		//this must be stored so we are aware of relative changes due to layout
 		float2 _previousRelative = float2(Float.PositiveInfinity);
-		
+
 		public void SetScrollPosition(float2 position, IPropertyListener origin)
 		{
 			SetScrollPositionImpl(position, float2(0), false, origin);
 		}
-		
+
 		void SetScrollPosition(float2 position, float2 arrangeOffset, IPropertyListener origin)
 		{
 			SetScrollPositionImpl(position, arrangeOffset, true, origin);
 		}
-		
+
 		void SetScrollPositionImpl(float2 position, float2 arrangeOffset, bool adjustment, IPropertyListener origin)
 		{
 			bool changed = false;
-			
+
 			position = Constrain(position);
 			//TODO: It's uncertain why this check is needed, it may not be anymore
 			if (Vector.LengthSquared(position - _scrollPosition) > _zeroTolerance)
@@ -305,7 +305,7 @@ namespace Fuse.Controls
 				_scrollPosition = position;
 				changed = true;
 			}
-			
+
 			if (!SnapMinTransform)
 				position = Math.Max( MinScroll, position );
 			if (!SnapMaxTransform)
@@ -334,11 +334,11 @@ namespace Fuse.Controls
 					sv.ScrollPosition = position;
 				}
 			}
-			
+
 			if (changed)
 				OnScrollPositionChanged(arrangeOffset, adjustment, origin);
 		}
-		
+
 		/**
 			Obtain scroll position needed to scroll to the center of the @Visual.
 		*/
@@ -346,18 +346,18 @@ namespace Fuse.Controls
 		{
 			if (n == null || Element == null)
 				return float2(0);
-				
+
 			var trans = n.GetTransformTo(Element);
 			var local = Vector.Transform(float3(0),trans);
-			
+
 			var elm = n as Element;
 			if (elm == null)
 				return local.XY;
-				
+
 			//center the element
 			return local.XY + elm.ActualSize/2 - ActualSize/2;
 		}
-		
+
 		/**
 			Scrolls to absolute target position in points.
 
@@ -370,7 +370,7 @@ namespace Fuse.Controls
 			else
 				_scroller.Goto(position);
 		}
-		
+
 		/**
 			Scrolls to a relative target position.
 
@@ -380,12 +380,12 @@ namespace Fuse.Controls
 		{
 			Goto( RelativeToAbsolutePosition(position) );
 		}
-		
+
 		internal float2 RelativeToAbsolutePosition( float2 pos )
 		{
 			return MinScroll + (MaxScroll - MinScroll) * pos;
 		}
-		
+
 		float2 FromScalarPosition( float value )
 		{
 			if (AllowedScrollDirections == ScrollDirections.Horizontal)
@@ -394,7 +394,7 @@ namespace Fuse.Controls
 				return float2(0,value);
 			return float2(value);
 		}
-		
+
 		internal float ToScalarPosition( float2 value )
 		{
 			if (AllowedScrollDirections == ScrollDirections.Horizontal)
@@ -403,7 +403,7 @@ namespace Fuse.Controls
 				return value.Y;
 			return (value.X + value.Y) /2;
 		}
-		
+
 		/**
 			The relative position of the `ScrollView`, from 0 at `MinScroll`, to 1 at `MaxScroll`.
 		*/
@@ -418,7 +418,7 @@ namespace Fuse.Controls
 					q.X = Element == null ? 0.5f : AlignmentHelpers.GetAnchor(Element.Alignment).X;
 				if (r.Y < _zeroTolerance)
 					q.Y = Element == null ? 0.5f : AlignmentHelpers.GetAnchor(Element.Alignment).Y;
-					
+
 				return q;
 			}
 			set
@@ -426,7 +426,7 @@ namespace Fuse.Controls
 				ScrollPosition = (value * (MaxScroll - MinScroll)) + MinScroll;
 			}
 		}
-		
+
 		/**
 			Raised whenever the scroll position changes. This includes the aboslute position, the relative position and overflow/snapping position changes.
 		*/
@@ -439,7 +439,7 @@ namespace Fuse.Controls
 
 			var handler = ScrollPositionChanged;
 			if (handler != null)
-				handler(this, new ScrollPositionChangedArgs(ScrollPosition,arrangeOffset, 
+				handler(this, new ScrollPositionChangedArgs(ScrollPosition,arrangeOffset,
 					adjustment, origin, RelativeScrollPosition));
 		}
 
@@ -450,49 +450,49 @@ namespace Fuse.Controls
 		{
 			get
 			{
-				if (Element == null) 
+				if (Element == null)
 					return float2(0);
 
-				return ConstrainUp( Math.Max(ContentMarginSize + Element.ActualPosition + 
+				return ConstrainUp( Math.Max(ContentMarginSize + Element.ActualPosition +
 					Padding.XY + Padding.ZW - ActualSize, float2(0)) );
 			}
 		}
-		
+
 		/**
 			The extent of the maximum overflow (snapping) region. This is used only by gesture controls and will likely be deprecated as a public property.
 		*/
 		public float2 MaxOverflow
 		{
-			get 
-			{ 
-				return MaxScroll + ConstrainUp(_scroller == null ? float2(0) : _scroller.OverflowExtent); 
+			get
+			{
+				return MaxScroll + ConstrainUp(_scroller == null ? float2(0) : _scroller.OverflowExtent);
 			}
 		}
-		
+
 		/**
 			The minimum scroll position in points.
 		*/
-		public float2 MinScroll 
-		{ 
-			get 
-			{ 
+		public float2 MinScroll
+		{
+			get
+			{
 				if (Element == null) return float2(0);
 
 				return ConstrainDown( Math.Min( float2(0), Element.ActualPosition - Padding.XY ) );
 			}
 		}
-		
+
 		/**
 			The extent of the minimum overflow (snapping) region. This is used only by gesture controls and will likely be deprecated as a public property.
 		*/
 		public float2 MinOverflow
 		{
-			get 
-			{ 
-				return MinScroll - ConstrainDown(_scroller == null ? float2(0) : _scroller.OverflowExtent); 
+			get
+			{
+				return MinScroll - ConstrainDown(_scroller == null ? float2(0) : _scroller.OverflowExtent);
 			}
 		}
-		
+
 		internal float2 ConstrainExtents( float2 t )
 		{
 			if (AllowedScrollDirections == ScrollDirections.Horizontal)
@@ -501,12 +501,12 @@ namespace Fuse.Controls
 				t.X = 0;
 			return t;
 		}
-		
+
 		internal float2 Constrain( float2 t )
 		{
 			return IfSnap(ConstrainExtents(t));
 		}
-		
+
 		float2 ConstrainUp( float2 t )
 		{
 			return IfSnapUp(ConstrainExtents(t));
