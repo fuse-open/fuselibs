@@ -355,7 +355,7 @@ namespace Fuse.Controls
 				return local.XY;
 
 			//center the element
-			return local.XY + elm.ActualSize/2 - ActualSize/2;
+			return MinScroll + local.XY + elm.ActualSize/2 - ActualSize/2;
 		}
 
 		/**
