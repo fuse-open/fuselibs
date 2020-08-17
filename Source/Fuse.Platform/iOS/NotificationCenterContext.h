@@ -8,8 +8,10 @@
 
 @{Uno.Rect:IncludeDirective}
 
-@interface uKeyboardContext : NSObject
+@interface uNotificationCenterContext : NSObject
 - (void)uKeyboardWillChangeFrame:(NSNotification *)notification;
+- (void)onUserSettingsChanged:(NSNotification*)notification;
+- (CGFloat)textScaleFactor;
 @end
 
 #endif

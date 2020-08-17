@@ -86,7 +86,8 @@ namespace Fuse.Controls
 		{
 			OnPropertyChanged(FontSizePropertyName);
 			var edit = GetITextView();
-			if (edit != null) edit.FontSize = FontSize;
+			if (edit != null)
+				edit.FontSize = FontSizeScaled;
 			InvalidateLayout();
 			InvalidateVisual();
 			InvalidateRenderer();

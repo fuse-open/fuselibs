@@ -40,10 +40,26 @@ namespace Fuse.Platform
 		*/
 		static public event Action MarginsChanged;
 		static public event Action<ScreenOrientation> DeviceOrientationChanged;
+		static public event Action<float> TextScaleFactorChanged;
 
 		static float4 _deviceMargins = float4(0);
 		static float4 _safeMargins = float4(0);
 		static float4 _staticMargins = float4(0);
+		static float _textScaleFactor = 1.0f;
+
+		static public float TextScaleFactor
+		{
+			get { return _textScaleFactor; }
+			private set
+			{
+				if (_textScaleFactor != value)
+				{
+					_textScaleFactor = value;
+					if (TextScaleFactorChanged != null)
+						TextScaleFactorChanged(value);
+				}
+			}
+		}
 
 		/**
 			The margins the device reports as not being complete safe for drawing as something may obstruct the view, such as rounded corners or bevels.

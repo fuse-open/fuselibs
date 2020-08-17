@@ -24,6 +24,7 @@ namespace Fuse.Platform
 
 		static public event Action MarginsChanged;
 		static public event Action<ScreenOrientation> DeviceOrientationChanged;
+		static public event Action<float> TextScaleFactorChanged;
 
 		static public float4 DeviceMargins
 		{
@@ -54,6 +55,20 @@ namespace Fuse.Platform
 			}
 		}
 
+		static float _textScaleFactor = 1.0f;
+		static public float TextScaleFactor
+		{
+			get { return _textScaleFactor; }
+			private set
+			{
+				if (_textScaleFactor != value)
+				{
+					_textScaleFactor = value;
+					if (TextScaleFactorChanged != null)
+						TextScaleFactorChanged(value);
+				}
+			}
+		}
 
 		static Java.Object _keyboardListener; //ViewTreeObserver.OnGlobalLayoutListener
 		static Java.Object SuperLayout; //FrameLayout
@@ -133,6 +148,7 @@ namespace Fuse.Platform
 		@{
 			@{UpdateStatusBar():Call()};
 			((FrameLayout)@{RootLayout}).setVisibility(View.VISIBLE);
+			@{ReadConfiguration():Call()};
 		@}
 
 		static void OnDestroy()
@@ -143,7 +159,21 @@ namespace Fuse.Platform
 
 		static void OnConfigChanged()
 		{
+			ReadConfiguration();
 			CompensateRootLayoutForSystemUI();
+		}
+
+		[Foreign(Language.Java)]
+		static public void ReadConfiguration()
+		@{
+			float fontScale = com.fuse.Activity.getRootActivity().getResources().getConfiguration().fontScale;
+			@{UpdateTextScaleFactor(float):Call(fontScale)};
+
+		@}
+
+		static void UpdateTextScaleFactor(float _textScaleFactor)
+		{
+			TextScaleFactor = _textScaleFactor;
 		}
 
 		[Foreign(Language.Java)]
