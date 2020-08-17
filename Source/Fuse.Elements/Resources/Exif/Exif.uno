@@ -146,6 +146,7 @@ namespace Fuse.Resources.Exif
 				}
 				CFRelease(imageSource);
 			}
+			CFRelease(data);
 
 			int rotation = -1;
 			NSString* tagTarget = @"Orientation";
