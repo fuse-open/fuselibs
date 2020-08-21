@@ -129,6 +129,8 @@ namespace Fuse.Gestures
 					Fuse.Diagnostics.InternalError( "inconsistent gesture state" );
 				else
 					_gesture = Input.Gestures.Add( this, _scrollable, GestureType.Primary | GestureType.NodeShare);
+				// mouse wheel support
+				Pointer.WheelMoved.AddHandler(_scrollable, OnPointerWheelMoved);
 			}
 			else if (_scrollable != null)
 			{
@@ -136,6 +138,7 @@ namespace Fuse.Gestures
 					Fuse.Diagnostics.InternalError( "inconsistent gesture state" );
 				else
 				{
+					Pointer.WheelMoved.RemoveHandler(_scrollable, OnPointerWheelMoved);
 					_gesture.Dispose();
 					_gesture = null;
 				}
@@ -310,6 +313,17 @@ namespace Fuse.Gestures
 			}
 
 			return GestureRequest.Cancel;
+		}
+
+		void OnPointerWheelMoved(object sender, PointerWheelMovedArgs args)
+		{
+			_region.StartUser();
+			_region.Position = _scrollable.ScrollPosition;
+			_region.StepUser( -args.WheelDelta );
+			UpdateScrollMax();
+			_region.Update( Time.FrameInterval );
+			_scrollable.SetScrollPosition(Math.Min(Math.Max(_region.Position, _scrollable.MinScroll), _scrollable.MaxScroll), this);
+			_region.EndUser();
 		}
 
 		//call if the size/position changed in response to a non-user event (like resize)
