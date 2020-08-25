@@ -1,4 +1,4 @@
-package com.fusetools.webview;
+package com.fuse.webview;
 
 import android.webkit.WebView;
 import android.content.Context;

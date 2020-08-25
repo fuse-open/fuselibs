@@ -35,7 +35,7 @@ namespace Fuse.Camera
 	[ForeignInclude(Language.Java, 
 		"android.provider.MediaStore", 
 		"com.fuse.Activity", 
-		"com.fusetools.camera.Image", 
+		"com.fuse.camera.Image", 
 		"android.os.Build",
 		"androidx.core.content.FileProvider", 
 		"java.io.File",
@@ -111,7 +111,7 @@ namespace Fuse.Camera
 		@}
 	}
 
-	[ForeignInclude(Language.Java, "com.fuse.Activity", "com.fusetools.camera.Image", "android.content.Intent", "com.fusetools.camera.ImageStorageTools")]
+	[ForeignInclude(Language.Java, "com.fuse.Activity", "com.fuse.camera.Image", "android.content.Intent", "com.fuse.camera.ImageStorageTools")]
 	extern (Android) internal class TakePictureCallback
 	{
 		Promise<Image> _p;
@@ -154,7 +154,7 @@ namespace Fuse.Camera
 		}
 	}
 	
-	[ForeignInclude(Language.Java, "android.provider.MediaStore", "com.fuse.Activity", "android.content.Intent", "com.fusetools.camera.Image", "com.fusetools.camera.ImageStorageTools", "androidx.core.content.ContextCompat")]
+	[ForeignInclude(Language.Java, "android.provider.MediaStore", "com.fuse.Activity", "android.content.Intent", "com.fuse.camera.Image", "com.fuse.camera.ImageStorageTools", "androidx.core.content.ContextCompat")]
 	extern (Android) class CheckPermissionsCommand
 	{
 		public CheckPermissionsCommand(Promise<string> p)
@@ -185,7 +185,7 @@ namespace Fuse.Camera
 		@}
 	}
 	
-	[ForeignInclude(Language.Java, "android.provider.MediaStore", "com.fuse.Activity", "android.content.Intent", "com.fusetools.camera.Image", "com.fusetools.camera.ImageStorageTools")]
+	[ForeignInclude(Language.Java, "android.provider.MediaStore", "com.fuse.Activity", "android.content.Intent", "com.fuse.camera.Image", "com.fuse.camera.ImageStorageTools")]
 	extern (Android) class requestAndroidPermissions
 	{
 		PromiseCallback<string> _callback;

@@ -1,4 +1,4 @@
-package com.fusetools.webview;
+package com.fuse.webview;
 import com.foreign.Uno.Action_String;
 import android.webkit.JavascriptInterface;
 

@@ -28,8 +28,8 @@ namespace Fuse.Drawing
 		"android.graphics.PorterDuffXfermode",
 		"android.graphics.Matrix",
 		"android.graphics.PorterDuff.Mode",
-		"com.fusetools.drawing.surface.LinearGradientStore",
-		"com.fusetools.drawing.surface.GraphicsSurfaceContext",
+		"com.fuse.drawing.surface.LinearGradientStore",
+		"com.fuse.drawing.surface.GraphicsSurfaceContext",
 	)]
 	[ForeignInclude(Language.Java,
 		"java.nio.ByteBuffer",

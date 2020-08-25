@@ -1,4 +1,4 @@
-package com.fusetools.drawing.surface;
+package com.fuse.drawing.surface;
 
 // since we need to provide the linear gradient with
 // different stops based on the rotation of the phone

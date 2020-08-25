@@ -1,4 +1,4 @@
-package com.fusetools.maps;
+package com.fuse.maps;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.MotionEvent;

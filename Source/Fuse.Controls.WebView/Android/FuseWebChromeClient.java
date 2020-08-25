@@ -1,4 +1,4 @@
-package com.fusetools.webview;
+package com.fuse.webview;
 import android.webkit.WebView;
 import android.webkit.WebChromeClient;
 import android.webkit.ValueCallback;

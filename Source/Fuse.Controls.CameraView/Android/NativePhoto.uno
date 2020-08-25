@@ -12,7 +12,7 @@ using Fuse.Resources.Exif;
 namespace Fuse.Controls.Android
 {
 	[ForeignInclude(Language.Java,
-		"com.fusetools.camera.ImageStorageTools",
+		"com.fuse.camera.ImageStorageTools",
 		"java.io.File",
 		"java.io.FileOutputStream")]
 	extern(ANDROID) class NativePhoto : Photo
@@ -267,7 +267,7 @@ namespace Fuse.Controls.Android
 		}
 
 		[ForeignInclude(Language.Java,
-			"com.fusetools.camera.ImageStorageTools",
+			"com.fuse.camera.ImageStorageTools",
 			"java.lang.Thread",
 			"java.lang.Runnable",
 			"android.graphics.Bitmap",
