@@ -257,7 +257,7 @@ namespace Fuse.Selection
 			get { return _values.Count; }
 		}
 		
-		public static Selector ValueName = new Selector("Value");
+		internal static Selector ValueName = new Selector("Value");
 		
 		[UXOriginSetter("SetValue")]
 		/**

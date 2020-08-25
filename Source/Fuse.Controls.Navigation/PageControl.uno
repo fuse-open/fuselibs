@@ -314,7 +314,7 @@ namespace Fuse.Controls
 		
 		bool IsHorizontal { get { return _orient == Orientation.Horizontal; } }
 		
-		public static Selector ActiveIndexName = "ActiveIndex";
+		internal static Selector ActiveIndexName = "ActiveIndex";
 		[UXOriginSetter("SetActiveIndex")]
 		/**
 			The child index of the current active page. 
