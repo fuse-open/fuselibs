@@ -75,6 +75,9 @@ namespace Fuse.Controls.Native.iOS
 		Stationary,
 		Ended,
 		Cancelled,
+		RegionEntered,
+		RegionMoved,
+		RegionExited
 	}
 
 	extern(iOS) internal static class UITouchExtensions
@@ -98,6 +101,14 @@ namespace Fuse.Controls.Native.iOS
 					return @{TouchPhase.Ended};
 				case UITouchPhaseCancelled:
 					return @{TouchPhase.Cancelled};
+				#if defined(__IPHONE_13_4) && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_13_4
+				case UITouchPhaseRegionEntered:
+					return @{TouchPhase.RegionEntered};
+				case UITouchPhaseRegionMoved:
+					return @{TouchPhase.RegionMoved};
+				case UITouchPhaseRegionExited:
+					return @{TouchPhase.RegionExited};
+				#endif
 				default:
 					[NSException raise:@"Unknown touchphase" format:@"Touch phase of %ld is invalid", (long)phase];
 					break;
