@@ -128,6 +128,11 @@ namespace Fuse.Physics
 			{
 				fft.OnTriggered(this, _position);
 			}
+
+			for (var dropped = Visual.FirstChild<Dropped>(); dropped != null; dropped = dropped.NextSibling<Dropped>())
+			{
+				dropped.OnTriggered(this, _position);
+			}
 		}
 
 		internal void Move(float3 delta)
