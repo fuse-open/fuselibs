@@ -61,7 +61,7 @@ namespace Fuse.Physics
 		public Draggable Draggable { get; set; }
 
 		/** Target Element classname that is intersected by a draggable element */
-		public string ToTargetClass { get; set; }
+		public string ToTargetUxClass { get; set; }
 
 		bool _activated;
 		new protected void SetActive(bool on)
@@ -180,7 +180,7 @@ namespace Fuse.Physics
 		protected override void OnRooted()
 		{
 			base.OnRooted();
-			if (ToTargetClass != null)
+			if (ToTargetUxClass != null)
 				UpdateManager.AddDeferredAction(GetTargetClassInstances, LayoutPriority.Post);
 		}
 
@@ -192,7 +192,7 @@ namespace Fuse.Physics
 
 		void GetTargetClassInstances()
 		{
-			_targetInstances = SearchNodeByTargetClass(Parent as Element, ToTargetClass);
+			_targetInstances = SearchNodeByTargetClass(Parent as Element, ToTargetUxClass);
 		}
 	}
 
@@ -269,9 +269,9 @@ namespace Fuse.Physics
 				return;
 			}
 
-			if (Target == null && ToTargetClass == null)
+			if (Target == null && ToTargetUxClass == null)
 			{
-				Fuse.Diagnostics.UserError( "Target property or ToTargetClass property has not been set.", this );
+				Fuse.Diagnostics.UserError( "Target property or ToTargetUxClass property has not been set.", this );
 				return;
 			}
 		}
@@ -293,7 +293,7 @@ namespace Fuse.Physics
 			{
 				for (var v = target.FirstChild<WhileDroppingBy>(); v != null; v = v.NextSibling<WhileDroppingBy>())
 				{
-					if (v.Source == source || source.GetType().FullName == v.SourceClass)
+					if (v.Source == source || source.GetType().FullName == v.SourceUxClass)
 						v.SetActive(on);
 				}
 			}
@@ -305,7 +305,7 @@ namespace Fuse.Physics
 			if (obj == Draggable && prop.Equals("Translation"))
 			{
 				var source = Parent as Element;
-				if (ToTargetClass != null)
+				if (ToTargetUxClass != null)
 				{
 					var overlapedTarget = FindOverlaps();
 					if (overlapedTarget != null)
@@ -397,14 +397,14 @@ namespace Fuse.Physics
 		public Element Source { get; set; }
 
 		/** Source element classname that has draggable behavior on which intersect with the element that has `WhileDroppingBy` trigger  */
-		public string SourceClass { get; set; }
+		public string SourceUxClass { get; set; }
 
 		protected override void OnRooted()
 		{
 			base.OnRooted();
-			if (Source == null && SourceClass == null)
+			if (Source == null && SourceUxClass == null)
 			{
-				Fuse.Diagnostics.UserError( "Source property or SourceClass property has not been set.", this );
+				Fuse.Diagnostics.UserError( "Source property or SourceUxClass property has not been set.", this );
 				return;
 			}
 		}
@@ -453,7 +453,7 @@ namespace Fuse.Physics
 		public Element By { get; set; }
 
 		/** a `Draggable` visual classname that will be dropped to an element that has a `Dropped` trigger */
-		public string ByClass { get; set; }
+		public string ByUxClass { get; set; }
 
 		/** Data that can be transferred to the element when drag n drop activity has been finished  */
 		object _data;
@@ -505,7 +505,7 @@ namespace Fuse.Physics
 			Pulse();
 			for (var dropped = to.FirstChild<Dropped>(); dropped != null; dropped = dropped.NextSibling<Dropped>())
 			{
-				if (dropped.By == source || dropped.ByClass == source.GetType().FullName)
+				if (dropped.By == source || dropped.ByUxClass == source.GetType().FullName)
 				{
 					dropped.Pulse();
 					dropped.Data = Data;
@@ -523,7 +523,7 @@ namespace Fuse.Physics
 		internal void OnTriggered(Body body, float3 position)
 		{
 			var source = Parent as Element;
-			if (ToTargetClass != null)
+			if (ToTargetUxClass != null)
 			{
 				var target = FindOverlaps();
 				if (target != null)
@@ -546,7 +546,7 @@ namespace Fuse.Physics
 		protected override void OnRooted()
 		{
 			base.OnRooted();
-			if (To == null && ToTargetClass == null && By == null && ByClass == null)
+			if (To == null && ToTargetUxClass == null && By == null && ByUxClass == null)
 			{
 				Fuse.Diagnostics.UserError( "To property or By property has not been set.", this );
 				return;
