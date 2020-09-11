@@ -22,6 +22,7 @@ namespace Fuse.Physics
 
 		float2 _translation;
 
+		/** To track translation information when user drag the @Visual */
 		[UXOriginSetter("SetTranslation")]
 		public float2 Translation
 		{

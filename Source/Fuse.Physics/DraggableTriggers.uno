@@ -245,6 +245,8 @@ namespace Fuse.Physics
 			</ClientPanel>
 		</App>
 		```
+
+		@experimental
 	*/
 	public class WhileDraggingOver : DraggableTrigger, IPropertyListener
 	{
@@ -390,6 +392,8 @@ namespace Fuse.Physics
 				</Panel>
 			</ClientPanel>
 		</App>
+
+		@experimental
 	*/
 	public class WhileDroppingBy : DraggableTrigger
 	{
@@ -443,6 +447,8 @@ namespace Fuse.Physics
 
 	/**
 		a Trigger that pulse when draggable element has been dropped to the target or target element has received draggable element
+
+		@experimental
 	*/
 	public class Dropped: DraggableTrigger
 	{
