@@ -56,12 +56,43 @@ namespace Fuse.Physics
 	{
 	}
 
+	public class OverlapInfo
+	{
+		public Element OverlappedElement;
+		public float OverlappedArea;
+
+		public OverlapInfo()
+		{
+			OverlappedElement = null;
+			OverlappedArea = Float.MinValue;
+		}
+
+		public OverlapInfo(Element element, float area)
+		{
+			OverlappedElement = element;
+			OverlappedArea = area;
+		}
+
+	}
+
 	public abstract class DraggableTrigger: Fuse.Triggers.WhileTrigger
 	{
 		public Draggable Draggable { get; set; }
 
 		/** Target Element classname that is intersected by a draggable element */
 		public string ToTargetUxClass { get; set; }
+
+		/** Minimum cover area to consider if two Visual is overlapped. range in 0 - 1 */
+		float _areaThreshold = Float.MinValue;
+		public float AreaThreshold
+		{
+			get { return _areaThreshold; }
+			set
+			{
+				if (_areaThreshold != value)
+					_areaThreshold = value;
+			}
+		}
 
 		bool _activated;
 		new protected void SetActive(bool on)
@@ -82,12 +113,12 @@ namespace Fuse.Physics
 		{
 			var current = source as Visual;
 			var parent = source.Parent;
-			IList<Node> resultNode = new List<Node>();
 			while(parent != null)
 			{
 				current = parent;
 				parent = parent.Parent;
 			}
+			IList<Node> resultNode = new List<Node>();
 			SearchNodeByClassName(current.Children, targetClass, resultNode);
 			return resultNode;
 		}
@@ -109,15 +140,9 @@ namespace Fuse.Physics
 			return false;
 		}
 
-		protected bool IsOverlap(Element source, Element target)
+		protected float CheckOverlap(Element source, Element target)
 		{
-			var area = 0.0f;
-			return IsOverlap(source, target, out area);
-		}
-
-		protected bool IsOverlap(Element source, Element target, out float overlapArea)
-		{
-			overlapArea = 0.0f;
+			var overlapArea = Float.MinValue;
 			var l1 = float2(source.WorldPosition.X, source.WorldPosition.Y);
 			var r1 = l1 + source.ActualSize;
 			var l2 = float2(target.WorldPosition.X, target.WorldPosition.Y);
@@ -126,49 +151,58 @@ namespace Fuse.Physics
 			// If one visual is on left side of other
 			if (l1.X >= r2.X || l2.X >= r1.X)
 			{
-				return false;
+				return overlapArea;
 			}
 
 			// If one visual is above other
 			if (r2.Y <= l1.Y || r1.Y <= l2.Y)
 			{
-				return false;
+				return overlapArea;
 			}
 
 			var area1 = Math.Abs(l1.X - r1.X) * Math.Abs(l1.Y - r1.Y);
 			var area2 = Math.Abs(l2.X - r2.X) * Math.Abs(l2.Y - r2.Y);
 			var areaI = (Math.Min(r1.X, r2.X) - Math.Max(l1.X, l2.X)) * (Math.Min(r1.Y, r2.Y) - Math.Max(l1.Y, l2.Y));
 
-			overlapArea = area1 + area2 - areaI;
-
-			return true;
+			overlapArea = (area1 >= area2) ? areaI /area2 : areaI / area1;
+			return overlapArea;
 		}
 
-		protected Element FindOverlaps()
+		IList<Element> FilteredTarget(Element source)
 		{
-			var source = Parent as Element;
-			var currOverlapedArea = Float.MaxValue;
-			Element targetElement = null;
-			var nextOverlap = true;
+			var maxX = source.WorldPosition.X;
+			var maxY = source.WorldPosition.Y;
+			IList<Element> nodes = new List<Element>();
 			foreach (var target in _targetInstances)
 			{
-				float overlapArea;
-				var targetEle = target as Element;
-				if (IsOverlap(source, targetEle, out overlapArea))
-				{
-					if (currOverlapedArea > overlapArea)
-					{
-						currOverlapedArea = overlapArea;
-						targetElement = targetEle;
-					}
-					nextOverlap = true;
-				}
-				else
-					nextOverlap = false;
-				if (!nextOverlap && targetElement != null)
-					break;
+				var targetElement = target as Element;
+				var targetX = targetElement.WorldPosition.X + targetElement.ActualSize.X;
+				var targetY = targetElement.WorldPosition.Y + targetElement.ActualSize.Y;
+				if (maxX < targetX && maxY < targetY)
+					nodes.Add(targetElement);
 			}
-			return targetElement;
+			return nodes;
+		}
+
+		protected OverlapInfo FindBestOverlaps(Element source)
+		{
+			var overlapInfo = new OverlapInfo();
+			var filteredTarget = FilteredTarget(source);
+			foreach (var target in filteredTarget)
+			{
+				var targetEle = target as Element;
+				var currOverlapedArea = CheckOverlap(source, targetEle);
+				if (currOverlapedArea > 0)
+				{
+					if (overlapInfo.OverlappedArea < currOverlapedArea)
+					{
+						overlapInfo.OverlappedElement = targetEle;
+						overlapInfo.OverlappedArea = currOverlapedArea;
+					}
+				}
+			}
+			filteredTarget = null;
+			return overlapInfo;
 		}
 
 		IList<Node> _targetInstances;
@@ -289,14 +323,28 @@ namespace Fuse.Physics
 			base.OnUnrooted();
 		}
 
-		void SetWhileDroppingByActive(Element source, Element target, bool on)
+		void InActivateWhileDroppingBy(Element source, Element target)
 		{
 			if (source != null && target != null)
 			{
 				for (var v = target.FirstChild<WhileDroppingBy>(); v != null; v = v.NextSibling<WhileDroppingBy>())
 				{
-					if (v.Source == source || source.GetType().FullName == v.SourceUxClass)
-						v.SetActive(on);
+					if ((v.Source == source || source.GetType().FullName == v.SourceUxClass))
+						v.SetActive(false);
+				}
+			}
+		}
+
+		void ChangeStateWhileDroppingBy(Element source, Element target, float overlapArea)
+		{
+			if (source != null && target != null)
+			{
+				for (var v = target.FirstChild<WhileDroppingBy>(); v != null; v = v.NextSibling<WhileDroppingBy>())
+				{
+					if ((v.Source == source || source.GetType().FullName == v.SourceUxClass) && overlapArea > v.AreaThreshold)
+						v.SetActive(true);
+					else
+						v.SetActive(false);
 				}
 			}
 		}
@@ -309,36 +357,35 @@ namespace Fuse.Physics
 				var source = Parent as Element;
 				if (ToTargetUxClass != null)
 				{
-					var overlapedTarget = FindOverlaps();
-					if (overlapedTarget != null)
+					var overlapedTarget = FindBestOverlaps(source);
+					if (overlapedTarget.OverlappedElement != null)
 					{
-						SetActive(true);
-						SetWhileDroppingByActive(source, overlapedTarget, true);
-						if (_lastOverlapedTarget != overlapedTarget)
-						{
-							SetWhileDroppingByActive(source, _lastOverlapedTarget, false);
-							_lastOverlapedTarget = overlapedTarget;
-						}
+						if (overlapedTarget.OverlappedArea > AreaThreshold)
+							SetActive(true);
+						else
+							SetActive(false);
+
+						ChangeStateWhileDroppingBy(source, overlapedTarget.OverlappedElement, overlapedTarget.OverlappedArea);
 					}
 					else
 					{
 						SetActive(false);
-						foreach (var target in TargetInstances)
-							SetWhileDroppingByActive(source, target as Element, false);
+					}
+					if (overlapedTarget.OverlappedElement != _lastOverlapedTarget)
+					{
+						InActivateWhileDroppingBy(source, _lastOverlapedTarget);
+						_lastOverlapedTarget = overlapedTarget.OverlappedElement;
 					}
 				}
 				else
 				{
-					if (IsOverlap(source, Target))
-					{
+					var overlapped = CheckOverlap(source, Target);
+					if (overlapped > AreaThreshold)
 						SetActive(true);
-						SetWhileDroppingByActive(source, Target, true);
-					}
 					else
-					{
 						SetActive(false);
-						SetWhileDroppingByActive(source, Target, false);
-					}
+
+					ChangeStateWhileDroppingBy(source, Target, overlapped);
 				}
 			}
 		}
@@ -531,11 +578,11 @@ namespace Fuse.Physics
 			var source = Parent as Element;
 			if (ToTargetUxClass != null)
 			{
-				var target = FindOverlaps();
-				if (target != null)
-					DroppedAction(source, target);
+				var target = FindBestOverlaps(source);
+				if (target.OverlappedElement != null)
+					DroppedAction(source, target.OverlappedElement);
 			}
-			else if (To != null && IsOverlap(source, To))
+			else if (To != null && CheckOverlap(source, To) > 0)
 			{
 				DroppedAction(source, To);
 			}
