@@ -22,6 +22,7 @@
     "Fuse.iOS",
     "Fuse.iOS.Bindings",
     "Fuse.Controls.Video",
+    "Fuse.Physics",
   ],
   "Packages": [
     "Uno.Graphics.Utils",
