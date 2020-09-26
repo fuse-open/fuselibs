@@ -365,7 +365,22 @@ namespace Fuse.Platform
 			IsTopFrameVisible = false;
 		}
 
-		static public int supportedOrientation = extern<int>"UIInterfaceOrientationMaskAll";
+		static public int supportedOrientation = GetProjectSettingsOrientation();
+
+		private static int GetProjectSettingsOrientation()
+		{
+			if (@(Project.Mobile.Orientations:ToLower) == "portrait")
+				return  extern<int>"UIInterfaceOrientationMaskPortrait";
+			if (@(Project.Mobile.Orientations:ToLower) == "portraitupsidedown")
+				return  extern<int>"UIInterfaceOrientationMaskPortraitUpsideDown";
+			if (@(Project.Mobile.Orientations:ToLower) == "landscape")
+				return  extern<int>"UIInterfaceOrientationMaskLandscapeLeft | UIInterfaceOrientationMaskLandscapeRight";
+			if (@(Project.Mobile.Orientations:ToLower) == "landscapeleft")
+				return  extern<int>"UIInterfaceOrientationMaskLandscapeLeft";
+			if (@(Project.Mobile.Orientations:ToLower) == "landscaperight")
+				return  extern<int>"UIInterfaceOrientationMaskLandscapeRight";
+			return  extern<int>"UIInterfaceOrientationMaskAll";
+		}
 
 		public static ScreenOrientation DeviceOrientation
 		{
@@ -465,8 +480,28 @@ namespace Fuse.Platform
 				}
 				default:
 				{
-					@{supportedOrientation:Set(UIInterfaceOrientationMaskAll)};
-					value = [NSNumber numberWithInt:UIInterfaceOrientationPortrait];
+					int orientationMask = GetProjectSettingsOrientation();
+					@{supportedOrientation:Set(orientationMask)};
+					switch (orientationMask)
+					{
+						case UIInterfaceOrientationMaskPortrait:
+							value = [NSNumber numberWithInt:UIInterfaceOrientationPortrait];
+							break;
+						case UIInterfaceOrientationMaskPortraitUpsideDown:
+							value = [NSNumber numberWithInt:UIInterfaceOrientationPortraitUpsideDown];
+							break;
+						case UIInterfaceOrientationMaskLandscapeLeft | UIInterfaceOrientationMaskLandscapeRight:
+							value = [NSNumber numberWithInt:UIInterfaceOrientationLandscapeLeft];
+							break;
+						case UIInterfaceOrientationMaskLandscapeLeft:
+							value = [NSNumber numberWithInt:UIInterfaceOrientationLandscapeLeft];
+							break;
+						case UIInterfaceOrientationMaskLandscapeRight:
+							value = [NSNumber numberWithInt:UIInterfaceOrientationLandscapeRight];
+							break;
+						default:
+							value = [NSNumber numberWithInt:UIInterfaceOrientationPortrait];
+					}
 				}
 			}
 			[[UIDevice currentDevice] setValue:value forKey:@"orientation"];
