@@ -135,21 +135,21 @@ namespace Fuse.Platform
 		static void SetupNotificationCenterObservers(ObjC.Object notificationContext)
 		@{
 			uNotificationCenterContext* ctx = (uNotificationCenterContext*)notificationContext;
-			 NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
+			NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
 
 			[center
-			 addObserver:ctx selector:@selector(uKeyboardWillChangeFrame:)
-			 name:UIKeyboardWillShowNotification object:nil];
+				addObserver:ctx selector:@selector(uKeyboardWillChangeFrame:)
+				name:UIKeyboardWillShowNotification object:nil];
 
 			[center
-			 addObserver:ctx
-			 selector:@selector(uKeyboardWillChangeFrame:)
-			 name:UIKeyboardWillHideNotification object:nil];
+				addObserver:ctx
+				selector:@selector(uKeyboardWillChangeFrame:)
+				name:UIKeyboardWillHideNotification object:nil];
 
 			[center
-			 addObserver:ctx
-			 selector:@selector(onUserSettingsChanged:)
-			 name:UIContentSizeCategoryDidChangeNotification object:nil];
+				addObserver:ctx
+				selector:@selector(onUserSettingsChanged:)
+				name:UIContentSizeCategoryDidChangeNotification object:nil];
 		@}
 
 
@@ -159,12 +159,12 @@ namespace Fuse.Platform
 			uNotificationCenterContext* ctx = (uNotificationCenterContext*)notificationContext;
 
 			[[NSNotificationCenter defaultCenter]
-			 removeObserver:ctx
-			 name:UIKeyboardWillShowNotification object:nil];
+				removeObserver:ctx
+				name:UIKeyboardWillShowNotification object:nil];
 
 			[[NSNotificationCenter defaultCenter]
-			 removeObserver:ctx
-			 name:UIKeyboardWillHideNotification object:nil];
+				removeObserver:ctx
+				name:UIKeyboardWillHideNotification object:nil];
 		@}
 
 		//------------------------------------------------------------
@@ -416,20 +416,20 @@ namespace Fuse.Platform
 		static int GetCurrentScreenOrientation()
 		@{
 			#if defined(__IPHONE_13_0) && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_13_0
-			 UIInterfaceOrientation mask = [[UIApplication sharedApplication].windows firstObject].windowScene.interfaceOrientation;
-			 switch (mask)
-			 {
-			 	case UIInterfaceOrientationPortrait:
-			 		return 0;
-			 	case UIInterfaceOrientationLandscapeLeft:
-			 		return 1;
-			 	case UIInterfaceOrientationLandscapeRight:
-			 		return 2;
-			 	case UIInterfaceOrientationPortraitUpsideDown:
-			 		return 3;
-			 	case UIInterfaceOrientationUnknown:
-			 		return 4;
-			 }
+			UIInterfaceOrientation mask = [[UIApplication sharedApplication].windows firstObject].windowScene.interfaceOrientation;
+			switch (mask)
+			{
+				case UIInterfaceOrientationPortrait:
+					return 0;
+				case UIInterfaceOrientationLandscapeLeft:
+					return 1;
+				case UIInterfaceOrientationLandscapeRight:
+					return 2;
+				case UIInterfaceOrientationPortraitUpsideDown:
+					return 3;
+				case UIInterfaceOrientationUnknown:
+					return 4;
+			}
 			#else
 			UIInterfaceOrientationMask mask = [[UIApplication sharedApplication] statusBarOrientation];
 			switch (mask)
