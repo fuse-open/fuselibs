@@ -370,7 +370,7 @@ namespace Fuse.Platform
 		private static int GetProjectSettingsOrientation()
 		{
 			if (@(Project.Mobile.Orientations:ToLower) == "portrait")
-				return  extern<int>"UIInterfaceOrientationMaskPortrait";
+				return  extern<int>"UIInterfaceOrientationMaskPortrait | UIInterfaceOrientationMaskPortraitUpsideDown";
 			if (@(Project.Mobile.Orientations:ToLower) == "portraitupsidedown")
 				return  extern<int>"UIInterfaceOrientationMaskPortraitUpsideDown";
 			if (@(Project.Mobile.Orientations:ToLower) == "landscape")
@@ -415,23 +415,26 @@ namespace Fuse.Platform
 		[Foreign(Language.ObjC)]
 		static int GetCurrentScreenOrientation()
 		@{
+			UIInterfaceOrientation mask;
 			#if defined(__IPHONE_13_0) && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_13_0
-			UIInterfaceOrientation mask = [[UIApplication sharedApplication].windows firstObject].windowScene.interfaceOrientation;
-			switch (mask)
-			{
-				case UIInterfaceOrientationPortrait:
-					return 0;
-				case UIInterfaceOrientationLandscapeLeft:
-					return 1;
-				case UIInterfaceOrientationLandscapeRight:
-					return 2;
-				case UIInterfaceOrientationPortraitUpsideDown:
-					return 3;
-				case UIInterfaceOrientationUnknown:
-					return 4;
+			if (@available(iOS 13.0, *)) {
+				mask = [[UIApplication sharedApplication].windows firstObject].windowScene.interfaceOrientation;
+				switch (mask)
+				{
+					case UIInterfaceOrientationPortrait:
+						return 0;
+					case UIInterfaceOrientationLandscapeLeft:
+						return 1;
+					case UIInterfaceOrientationLandscapeRight:
+						return 2;
+					case UIInterfaceOrientationPortraitUpsideDown:
+						return 3;
+					case UIInterfaceOrientationUnknown:
+						return 4;
+				}
 			}
-			#else
-			UIInterfaceOrientationMask mask = [[UIApplication sharedApplication] statusBarOrientation];
+			#endif
+			mask = [[UIApplication sharedApplication] statusBarOrientation];
 			switch (mask)
 			{
 				case UIInterfaceOrientationMaskPortrait:
@@ -445,7 +448,6 @@ namespace Fuse.Platform
 				default:
 					return 4;
 			}
-			#endif
 		@}
 
 		[Foreign(Language.ObjC)]
@@ -484,7 +486,7 @@ namespace Fuse.Platform
 					@{supportedOrientation:Set(orientationMask)};
 					switch (orientationMask)
 					{
-						case UIInterfaceOrientationMaskPortrait:
+						case UIInterfaceOrientationMaskPortrait | UIInterfaceOrientationMaskPortraitUpsideDown:
 							value = [NSNumber numberWithInt:UIInterfaceOrientationPortrait];
 							break;
 						case UIInterfaceOrientationMaskPortraitUpsideDown:
