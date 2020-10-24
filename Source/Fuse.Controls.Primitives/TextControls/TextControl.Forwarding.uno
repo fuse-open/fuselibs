@@ -29,13 +29,13 @@ namespace Fuse.Controls
 			var tv = NativeView as ITextView;
 			tv.Value = Value;
 			tv.MaxLength = MaxLength;
+			tv.TextTruncation = TextTruncation;
 			tv.TextWrapping = TextWrapping;
 			tv.LineSpacing = LineSpacing;
 			tv.FontSize = FontSize;
 			tv.Font = Font;
 			tv.TextAlignment = TextAlignment;
 			tv.TextColor = Color;
-			tv.TextTruncation = TextTruncation;
 		}
 
 		protected virtual void OnValueChanged(IPropertyListener origin)

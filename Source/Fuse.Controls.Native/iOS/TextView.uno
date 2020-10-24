@@ -41,6 +41,8 @@ namespace Fuse.Controls.Native.iOS
 		{
 			set
 			{
+				if (value == TextWrapping.Wrap)
+					SetTextLines(Handle, 0);
 				_builder.SetTextWrapping(value);
 				UpdateText();
 			}
@@ -106,7 +108,7 @@ namespace Fuse.Controls.Native.iOS
 			set
 			{
 				if (value == TextTruncation.Standard)
-					SetTextTruncation(Handle);
+					SetTextLines(Handle, 1);
 			}
 		}
 
@@ -123,10 +125,10 @@ namespace Fuse.Controls.Native.iOS
 		@}
 
 		[Foreign(Language.ObjC)]
-		static void SetTextTruncation(ObjC.Object handle)
+		static void SetTextLines(ObjC.Object handle, int line)
 		@{
 			::UILabel* label = (::UILabel*)handle;
-			label.numberOfLines = 1;
+			label.numberOfLines = line;
 			label.lineBreakMode = NSLineBreakByTruncatingTail;
 		@}
 	}
