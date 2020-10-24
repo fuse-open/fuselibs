@@ -96,7 +96,9 @@ namespace Fuse.Controls.Native.Android
 		[Foreign(Language.Java)]
 		static void SetTextWrapping(Java.Object handle, bool wrap)
 		@{
-			((android.widget.TextView)handle).setHorizontallyScrolling( (wrap) ? false : true );
+			android.widget.TextView tv = (android.widget.TextView)handle;
+			tv.setHorizontallyScrolling( (wrap) ? false : true );
+			tv.setSingleLine( (wrap) ? false : true );
 		@}
 
 		[Foreign(Language.Java)]
