@@ -13,6 +13,8 @@ namespace Fuse
 	[Require("Source.Import","LocalAuthentication/LocalAuthentication.h")]
 	extern(iOS) class IOSBiometric
 	{
+		static Promise<BiometricStatus> _promise;
+
 		[Foreign(Language.ObjC)]
 		public extern(iOS) static bool IsSupported()
 		@{
@@ -40,6 +42,24 @@ namespace Fuse
 			else
 				action_fail([authError localizedDescription]);
 		@}
+
+		static void OnResult()
+		{
+			var result = new BiometricStatus(true, "Authentication succeed");
+			_promise.Resolve(result);
+		}
+
+		static void OnFailed(string message)
+		{
+			var result = new BiometricStatus(false, message);
+			_promise.Resolve(result);
+		}
+
+		public static void Authenticate(string reason, Promise<BiometricStatus> promise)
+		{
+			_promise = promise;
+			Authenticate(reason, OnResult, OnFailed);
+		}
 	}
 
 
@@ -54,6 +74,8 @@ namespace Fuse
 	)]
 	extern(Android) class AndroidBiometric
 	{
+		static Promise<BiometricStatus> _promise;
+
 		[Foreign(Language.Java)]
 		public extern(Android) static bool IsSupported()
 		@{
@@ -76,7 +98,7 @@ namespace Fuse
 		@{
 			if (@{IsSupported():Call()}) {
 				Executor executor = ContextCompat.getMainExecutor(com.fuse.Activity.getRootActivity());
-				BiometricPrompt biometricPrompt = new BiometricPrompt(com.fuse.Activity.getRootActivity(),
+				final BiometricPrompt biometricPrompt = new BiometricPrompt(com.fuse.Activity.getRootActivity(),
 						executor, new BiometricPrompt.AuthenticationCallback() {
 
 					@Override
@@ -109,11 +131,33 @@ namespace Fuse
 						.setSubtitle(reason)
 						.setDeviceCredentialAllowed(isDeviceSecure)
 						.setConfirmationRequired(false);
-				BiometricPrompt.PromptInfo promptInfo = builder.build();
-				biometricPrompt.authenticate(promptInfo);
+				final BiometricPrompt.PromptInfo promptInfo = builder.build();
+				com.fuse.Activity.getRootActivity().runOnUiThread(new Runnable() {
+					public void run() {
+						biometricPrompt.authenticate(promptInfo);
+					}
+				});
 			} else {
 				fail.run("Biometric is not supported");
 			}
 		@}
+
+		static void OnResult()
+		{
+			var result = new BiometricStatus(true, "Authentication succeed");
+			_promise.Resolve(result);
+		}
+
+		static void OnFailed(string message)
+		{
+			var result = new BiometricStatus(false, message);
+			_promise.Resolve(result);
+		}
+
+		public static void Authenticate(string reason, Promise<BiometricStatus> promise)
+		{
+			_promise = promise;
+			Authenticate(reason, OnResult, OnFailed);
+		}
 	}
 }
