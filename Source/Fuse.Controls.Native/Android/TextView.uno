@@ -25,6 +25,14 @@ namespace Fuse.Controls.Native.Android
 			}
 		}
 
+		int ITextView.MaxLines
+		{
+			set
+			{
+				if (value > 0) SetMaxLines(Handle, value);
+			}
+		}
+
 		public TextWrapping TextWrapping
 		{
 			set { SetTextWrapping(Handle, value == Fuse.Controls.TextWrapping.Wrap); }
@@ -114,6 +122,15 @@ namespace Fuse.Controls.Native.Android
 		static void SetLineSpacing(Java.Object handle, float spacing)
 		@{
 			((android.widget.TextView)handle).setLineSpacing(spacing, 1.0f);
+		@}
+
+		[Foreign(Language.Java)]
+		static void SetMaxLines(Java.Object handle, int line)
+		@{
+			android.widget.TextView tv = (android.widget.TextView)handle;
+			tv.setEllipsize(android.text.TextUtils.TruncateAt.END);
+			tv.setHorizontallyScrolling(false);
+			tv.setMaxLines(line);
 		@}
 
 		[Foreign(Language.Java)]

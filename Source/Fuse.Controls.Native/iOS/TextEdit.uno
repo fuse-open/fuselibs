@@ -88,6 +88,11 @@ namespace Fuse.Controls.Native.iOS
 			set { SetMaxLength(_delegate, (value == 0) ? int.MaxValue : value); }
 		}
 
+		int ITextView.MaxLines
+		{
+			set { /* TODO */ }
+		}
+
 		[Foreign(Language.ObjC)]
 		static void SetMaxLength(ObjC.Object delegateHandle, int maxLength)
 		@{
@@ -544,6 +549,11 @@ namespace Fuse.Controls.Native.iOS
 		{
 			// TODO: fix the value == 0 crap
 			set { SetMaxLength(_delegate, (value == 0) ? int.MaxValue : value); }
+		}
+
+		int ITextView.MaxLines
+		{
+			set { /* TODO */ }
 		}
 
 		[Foreign(Language.ObjC)]

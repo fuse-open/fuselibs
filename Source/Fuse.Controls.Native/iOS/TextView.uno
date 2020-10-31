@@ -37,6 +37,14 @@ namespace Fuse.Controls.Native.iOS
 			set { }
 		}
 
+		int ITextView.MaxLines
+		{
+			set
+			{
+				if (value > 0) SetTextLines(Handle, value);
+			}
+		}
+
 		TextWrapping ITextView.TextWrapping
 		{
 			set

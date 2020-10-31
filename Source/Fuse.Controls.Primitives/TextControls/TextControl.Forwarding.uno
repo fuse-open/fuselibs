@@ -10,6 +10,7 @@ namespace Fuse.Controls
 		public static readonly Selector MaxLengthPropertyName = "MaxLength";
 		public static readonly Selector TextWrappingPropertyName = "TextWrapping";
 		public static readonly Selector LineSpacingPropertyName = "LineSpacing";
+		public static readonly Selector MaxLinesPropertyName = "MaxLines";
 		public static readonly Selector FontSizePropertyName = "FontSize";
 		public static readonly Selector FontPropertyName = "Font";
 		public static readonly Selector TextAlignmentPropertyName = "TextAlignment";
@@ -36,6 +37,7 @@ namespace Fuse.Controls
 			tv.Font = Font;
 			tv.TextAlignment = TextAlignment;
 			tv.TextColor = Color;
+			tv.MaxLines = MaxLines;
 		}
 
 		protected virtual void OnValueChanged(IPropertyListener origin)
@@ -77,6 +79,16 @@ namespace Fuse.Controls
 			OnPropertyChanged(LineSpacingPropertyName);
 			var edit = GetITextView();
 			if (edit != null) edit.LineSpacing = LineSpacing;
+			InvalidateLayout();
+			InvalidateVisual();
+			InvalidateRenderer();
+		}
+
+		protected virtual void OnMaxLinesChanged()
+		{
+			OnPropertyChanged(MaxLinesPropertyName);
+			var edit = GetITextView();
+			if (edit != null) edit.MaxLines = MaxLines;
 			InvalidateLayout();
 			InvalidateVisual();
 			InvalidateRenderer();

@@ -33,6 +33,7 @@ namespace Fuse.Text
 			Font font,
 			List<List<ShapedRun>> logicalLineRuns,
 			float maxPixelWidth,
+			int maxLines,
 			out float minTolerance, out float maxTolerance)
 		{
 			minTolerance = 0;
@@ -42,7 +43,22 @@ namespace Fuse.Text
 			{
 				WrapLine(font, maxPixelWidth, ref minTolerance, ref maxTolerance, line, result);
 			}
+			if (maxLines > 0 && result.Count > maxLines)
+			{
+				result = result.Take(maxLines).ToList();
+				// adding `...`
+				InsertTruncationSringSymbol(font, result);
+				return result;
+			}
 			return result;
+		}
+
+		static void InsertTruncationSringSymbol(Font font, List<List<ShapedRun>> lines)
+		{
+			var truncationSrun = new ShapedRun(
+					new Run(new Substring(Font.Truncation), 0),
+					font.ShapedTruncation);
+			lines[lines.Count - 1].Add(truncationSrun);
 		}
 
 		static void WrapLine(
