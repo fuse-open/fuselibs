@@ -5,6 +5,9 @@
   "Packages": [
     "Uno.Collections"
   ],
+  "InternalsVisibleTo": [
+    "Fuse.Controls.Primitives"
+  ],
   "Projects": [
     "../Fuse.Animations/Fuse.Animations.unoproj",
     "../Fuse.Drawing.Planar/Fuse.Drawing.Planar.unoproj",
