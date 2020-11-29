@@ -12,3 +12,4 @@ AutomaticTestAppUpload/*
 node_modules/
 *.tgz
 .DS_Store
+debug.log
