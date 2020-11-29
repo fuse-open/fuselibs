@@ -46,11 +46,26 @@ namespace Fuse.Reactive
 		}
 	}
 
+	[UXFunction("length")]
+	public sealed class Length: UnaryOperator
+	{
+		[UXConstructor]
+		public Length([UXParameter("Value")] Expression value): base(value, "length") {}
+		protected override bool TryCompute(object s, out object result)
+		{
+			result = null;
+			if (s == null) return false;
+			var arr = s as IArray;
+			result = arr != null ? arr.Length : s.ToString().Length;
+			return true;
+		}
+	}
+
 	[UXFunction("indexOf")]
 	public sealed class IndexOf: BinaryOperator
 	{
 		[UXConstructor]
-		public IndexOf([UXParameter("Value")] Expression value, [UXParameter("String")] Expression str): base(value, str, "trim") {}
+		public IndexOf([UXParameter("Value")] Expression value, [UXParameter("String")] Expression str): base(value, str, "indexOf") {}
 		protected override bool TryCompute(object s, object left, out object result)
 		{
 			result = null;
