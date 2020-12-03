@@ -17,15 +17,15 @@ namespace Fuse.Controls.Native.Android
 	extern(Android) class DatePickerView : LeafView, IDatePickerView
 	{
 		DatePicker _host;
+		Java.Object _datePicker;
+		Java.Object _dateLabel;
 
 		[UXConstructor]
 		public DatePickerView([UXParameter("Host")]DatePicker host) : base(Create())
 		{
 			_host = host;
-
-			Init(Handle);
-
 			// The native control might reject values outside of the min/max range, so make sure we set min/max first
+			Style = _host.Style;
 			MinValue = _host.MinValue;
 			MaxValue = _host.MaxValue;
 			Value = _host.Value;
@@ -39,16 +39,38 @@ namespace Fuse.Controls.Native.Android
 			_host = null;
 		}
 
+		DatePickerStyle _style = DatePickerStyle.Default;
+		public DatePickerStyle Style
+		{
+			get { return _style; }
+			set
+			{
+				_style = value;
+				switch (value)
+				{
+					case DatePickerStyle.Default:
+					case DatePickerStyle.Inline:
+					case DatePickerStyle.Wheels:
+						SetStyle(Handle, 0);
+						break;
+					case DatePickerStyle.Compact:
+						SetStyle(Handle, 1);
+						break;
+				}
+				SetDate(_datePicker, _dateLabel, DateTimeConverterHelpers.ConvertDateTimeToMsSince1970InUtc(_pollValueCache));
+			}
+		}
+
 		public DateTime Value
 		{
 			get
 			{
-				var msSince1970InUtc = GetDateInMsSince1970InUtc(Handle);
+				var msSince1970InUtc = GetDateInMsSince1970InUtc(_datePicker);
 				return DateTimeConverterHelpers.ConvertMsSince1970InUtcToDateTime(msSince1970InUtc);
 			}
 			set
 			{
-				SetDate(Handle, DateTimeConverterHelpers.ConvertDateTimeToMsSince1970InUtc(value));
+				SetDate(_datePicker, _dateLabel, DateTimeConverterHelpers.ConvertDateTimeToMsSince1970InUtc(value));
 				UpdatePollValueCache();
 			}
 		}
@@ -64,6 +86,7 @@ namespace Fuse.Controls.Native.Android
 		{
 			if (Value != _pollValueCache)
 			{
+				SetDate(_datePicker, _dateLabel, DateTimeConverterHelpers.ConvertDateTimeToMsSince1970InUtc(Value));
 				OnValueChanged(Value);
 				UpdatePollValueCache();
 			}
@@ -83,25 +106,19 @@ namespace Fuse.Controls.Native.Android
 
 		internal protected override void OnSizeChanged()
 		{
-			if (GetApiLevel() >= 24)
-				return;
-
 			writebackFrameCounter = 0;
 		}
 
 		void UpdateWriteback()
 		{
-			if (GetApiLevel() >= 24)
-				return;
-
 			if (writebackFrameCounter < 2)
 			{
 				writebackFrameCounter++;
 				if (writebackFrameCounter == 2)
 				{
 					var v = DateTimeConverterHelpers.ConvertDateTimeToMsSince1970InUtc(Value);
-					SetDate(Handle, v - 1); // Write temp value, as the picker won't scroll unless the value actually changes
-					SetDate(Handle, v);
+					SetDate(_datePicker, _dateLabel, v - 1); // Write temp value, as the picker won't scroll unless the value actually changes
+					SetDate(_datePicker, _dateLabel, v);
 				}
 			}
 		}
@@ -120,6 +137,8 @@ namespace Fuse.Controls.Native.Android
 		public void OnUnrooted()
 		{
 			UpdateManager.RemoveAction(Update);
+			_datePicker = null;
+			_dateLabel = null;
 		}
 
 		void OnValueChanged(DateTime value)
@@ -129,31 +148,27 @@ namespace Fuse.Controls.Native.Android
 
 		public DateTime MinValue
 		{
-			set { SetMinValue(Handle, DateTimeConverterHelpers.ConvertDateTimeToMsSince1970InUtc(value)); }
+			set { SetMinValue(_datePicker, DateTimeConverterHelpers.ConvertDateTimeToMsSince1970InUtc(value)); }
 		}
 
 		public DateTime MaxValue
 		{
-			set { SetMaxValue(Handle, DateTimeConverterHelpers.ConvertDateTimeToMsSince1970InUtc(value)); }
+			set { SetMaxValue(_datePicker, DateTimeConverterHelpers.ConvertDateTimeToMsSince1970InUtc(value)); }
 		}
-
-		[Foreign(Language.Java)]
-		static int GetApiLevel()
-		@{
-			return android.os.Build.VERSION.SDK_INT;
-		@}
 
 		[Foreign(Language.Java)]
 		static Java.Object Create()
 		@{
-			return new android.widget.DatePicker(com.fuse.Activity.getRootActivity());
+			android.widget.FrameLayout frameLayout = new android.widget.FrameLayout(com.fuse.Activity.getRootActivity());
+			frameLayout.setLayoutParams(new android.widget.FrameLayout.LayoutParams(android.view.ViewGroup.LayoutParams.MATCH_PARENT, android.view.ViewGroup.LayoutParams.MATCH_PARENT));
+			return frameLayout;
 		@}
 
 		[Foreign(Language.Java)]
-		void Init(Java.Object datePickerHandle)
+		void SetStyle(Java.Object handle, int style)
 		@{
-			android.widget.DatePicker datePicker = (android.widget.DatePicker)datePickerHandle;
-
+			android.widget.FrameLayout frameLayout = (android.widget.FrameLayout)handle;
+			frameLayout.removeAllViews();
 			// Use local calendar to get default year/month/day
 			java.util.Calendar cal = java.util.Calendar.getInstance();
 
@@ -161,13 +176,34 @@ namespace Fuse.Controls.Native.Android
 			int m = cal.get(java.util.Calendar.MONTH);
 			int d = cal.get(java.util.Calendar.DAY_OF_MONTH);
 
-			// onDateChangedListener is extremely inconsistent, esp. when using the now-default material theme,
-			//  so let's just skip trying to use it altogether and go for a polling-based approach instead.
-			datePicker.init(y, m, d, null);
+			if (style == 1) { // compact
+				final android.app.DatePickerDialog pickerDialog = new android.app.DatePickerDialog(com.fuse.Activity.getRootActivity());
+
+				java.text.DateFormat dateFormat = android.text.format.DateFormat.getMediumDateFormat(com.fuse.Activity.getRootActivity());
+				android.widget.TextView textview = new android.widget.TextView(com.fuse.Activity.getRootActivity());
+				textview.setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP,16);
+				textview.setTextColor(android.graphics.Color.parseColor("#555555"));
+				textview.setText(dateFormat.format(cal.getTime()));
+				textview.setOnClickListener(new android.view.View.OnClickListener() {
+					@Override
+					public void onClick(android.view.View v) {
+						pickerDialog.show();
+					}
+				});
+				frameLayout.addView(textview);
+				@{DatePickerView:Of(_this)._datePicker:Set(pickerDialog.getDatePicker())};
+				@{DatePickerView:Of(_this)._dateLabel:Set(textview)};
+			} else {
+				android.widget.DatePicker datePicker = new android.widget.DatePicker(com.fuse.Activity.getRootActivity());
+				datePicker.setLayoutParams(new android.widget.FrameLayout.LayoutParams(android.view.ViewGroup.LayoutParams.MATCH_PARENT, android.view.ViewGroup.LayoutParams.MATCH_PARENT));
+				datePicker.init(y, m, d, null);
+				@{DatePickerView:Of(_this)._datePicker:Set(datePicker)};
+				frameLayout.addView(datePicker);
+			}
 		@}
 
 		[Foreign(Language.Java)]
-		void SetDate(Java.Object datePickerHandle, long msSince1970InUtc)
+		void SetDate(Java.Object datePickerHandle, Java.Object dateLabelHandle, long msSince1970InUtc)
 		@{
 			java.util.Calendar cal = java.util.Calendar.getInstance(java.util.TimeZone.getTimeZone("UTC"), java.util.Locale.getDefault());
 			cal.setTimeInMillis(msSince1970InUtc);
@@ -178,6 +214,11 @@ namespace Fuse.Controls.Native.Android
 
 			android.widget.DatePicker datePicker = (android.widget.DatePicker)datePickerHandle;
 			datePicker.updateDate(y, m, d);
+			android.widget.TextView textview = (android.widget.TextView)dateLabelHandle;
+			if (textview != null) {
+				java.text.DateFormat dateFormat = android.text.format.DateFormat.getMediumDateFormat(com.fuse.Activity.getRootActivity());
+				textview.setText(dateFormat.format(cal.getTime()));
+			}
 		@}
 
 		[Foreign(Language.Java)]

@@ -30,6 +30,7 @@ namespace Fuse.Controls.Native.iOS
 			MinValue = _host.MinValue;
 			MaxValue = _host.MaxValue;
 			Value = _host.Value;
+			Style = _host.Style;
 
 			_valueChangedEvent = UIControlEvent.AddValueChangedCallback(Handle, OnValueChanged);
 		}
@@ -45,6 +46,37 @@ namespace Fuse.Controls.Native.iOS
 		void OnValueChanged(ObjC.Object sender, ObjC.Object args)
 		{
 			_host.OnNativeViewValueChanged(Value);
+		}
+
+		public DatePickerStyle Style
+		{
+			get
+			{
+				var style = GetDatePickerStyle(Handle);
+				switch (style)
+				{
+					case 0:
+						return DatePickerStyle.Default;
+					case 1:
+						return DatePickerStyle.Compact;
+					case 2:
+						return DatePickerStyle.Inline;
+					case 3:
+						return DatePickerStyle.Wheels;
+					default:
+						return DatePickerStyle.Default;
+				}
+			}
+			set
+			{
+				// hack to make rendering native datepicker on compact mode correctly
+				if (value == DatePickerStyle.Default || value == DatePickerStyle.Compact)
+					_host.Height = new Size(30, Unit.Points);
+				else
+					_host.Height = new Size(100, Unit.Percent);
+
+				SetDatePickerStyle(Handle, value);
+			}
 		}
 
 		public DateTime Value
@@ -117,6 +149,53 @@ namespace Fuse.Controls.Native.iOS
 
 			[dp setMaximumDate:date];
 		@}
+
+		[Foreign(Language.ObjC)]
+		int GetDatePickerStyle(ObjC.Object datePickerHandle)
+		@{
+			#if defined(__IPHONE_13_4) && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_13_4
+			UIDatePicker *dp = (UIDatePicker *)datePickerHandle;
+			UIDatePickerStyle style = dp.datePickerStyle;
+			switch(style)
+			{
+				case UIDatePickerStyleAutomatic:
+					return 0;
+				case UIDatePickerStyleCompact:
+					return 1;
+				case UIDatePickerStyleInline:
+					return 2;
+				case UIDatePickerStyleWheels:
+					return 3;
+			}
+			#endif
+			return 0;
+		@}
+
+		[Foreign(Language.ObjC)]
+		void SetDatePickerStyle(ObjC.Object datePickerHandle, int style)
+		@{
+			#if defined(__IPHONE_13_4) && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_13_4
+			UIDatePicker *dp = (UIDatePicker *)datePickerHandle;
+			UIDatePickerStyle datePickerStyle = UIDatePickerStyleAutomatic;
+			switch (style)
+			{
+				case 0:
+					datePickerStyle = UIDatePickerStyleAutomatic;
+					break;
+				case 1:
+					datePickerStyle = UIDatePickerStyleCompact;
+					break;
+				case 2:
+					datePickerStyle = UIDatePickerStyleInline;
+					break;
+				case 3:
+					datePickerStyle = UIDatePickerStyleWheels;
+					break;
+			}
+			[dp setPreferredDatePickerStyle:datePickerStyle];
+			#endif
+		@}
+
 	}
 
 }
