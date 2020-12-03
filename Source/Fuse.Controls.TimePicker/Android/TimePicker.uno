@@ -17,12 +17,15 @@ namespace Fuse.Controls.Native.Android
 	extern(Android) class TimePickerView : LeafView, ITimePickerView
 	{
 		TimePicker _host;
+		Java.Object _timePicker;
+		Java.Object _timeLabel;
 
 		[UXConstructor]
 		public TimePickerView([UXParameter("Host")]TimePicker host) : base(Create())
 		{
 			_host = host;
 
+			Style = _host.Style;
 			Value = _host.Value;
 			Is24HourView = _host.Is24HourView;
 
@@ -37,16 +40,38 @@ namespace Fuse.Controls.Native.Android
 			_host = null;
 		}
 
+		TimePickerStyle _style = TimePickerStyle.Default;
+		public TimePickerStyle Style
+		{
+			get { return _style; }
+			set
+			{
+				_style = value;
+				switch (value)
+				{
+					case TimePickerStyle.Default:
+					case TimePickerStyle.Inline:
+					case TimePickerStyle.Wheels:
+						SetStyle(Handle, 0);
+						break;
+					case TimePickerStyle.Compact:
+						SetStyle(Handle, 1);
+						break;
+				}
+				SetTime(_timePicker, _timeLabel, DateTimeConverterHelpers.ConvertDateTimeToMsSince1970InUtc(_pollValueCache));
+			}
+		}
+
 		public DateTime Value
 		{
 			get
 			{
-				var msSince1970InUtc = GetTimeInMsSince1970InUtc(Handle);
+				var msSince1970InUtc = GetTimeInMsSince1970InUtc(_timePicker);
 				return DateTimeConverterHelpers.ConvertMsSince1970InUtcToDateTime(msSince1970InUtc);
 			}
 			set
 			{
-				SetTime(Handle, DateTimeConverterHelpers.ConvertDateTimeToMsSince1970InUtc(value));
+				SetTime(_timePicker, _timeLabel, DateTimeConverterHelpers.ConvertDateTimeToMsSince1970InUtc(value));
 				UpdatePollValueCache();
 			}
 		}
@@ -62,6 +87,7 @@ namespace Fuse.Controls.Native.Android
 		{
 			if (Value != _pollValueCache)
 			{
+				SetTime(_timePicker, _timeLabel, DateTimeConverterHelpers.ConvertDateTimeToMsSince1970InUtc(Value));
 				OnValueChanged(Value);
 				UpdatePollValueCache();
 			}
@@ -84,17 +110,60 @@ namespace Fuse.Controls.Native.Android
 
 		public bool Is24HourView
 		{
-			set { SetIs24HourView(Handle, value); }
+			set { SetIs24HourView(_timePicker, value); }
 		}
 
 		[Foreign(Language.Java)]
 		static Java.Object Create()
 		@{
-			return new android.widget.TimePicker(com.fuse.Activity.getRootActivity());
+			android.widget.FrameLayout frameLayout = new android.widget.FrameLayout(com.fuse.Activity.getRootActivity());
+			frameLayout.setLayoutParams(new android.widget.FrameLayout.LayoutParams(android.view.ViewGroup.LayoutParams.MATCH_PARENT, android.view.ViewGroup.LayoutParams.MATCH_PARENT));
+			return frameLayout;
 		@}
 
 		[Foreign(Language.Java)]
-		void SetTime(Java.Object timePickerHandle, long msSince1970InUtc)
+		void SetStyle(Java.Object handle, int style)
+		@{
+			java.util.Calendar cal = java.util.Calendar.getInstance(java.util.TimeZone.getTimeZone("UTC"), java.util.Locale.getDefault());
+
+			int hour = cal.get(java.util.Calendar.HOUR);
+			if (cal.get(java.util.Calendar.AM_PM) == java.util.Calendar.PM)
+				hour += 12;
+			int minute = cal.get(java.util.Calendar.MINUTE);
+
+			android.widget.FrameLayout frameLayout = (android.widget.FrameLayout)handle;
+			frameLayout.removeAllViews();
+			if (style == 1) {
+				final com.fuse.android.widget.FuseTimePickerDialog pickerDialog = new com.fuse.android.widget.FuseTimePickerDialog(com.fuse.Activity.getRootActivity(), null, hour, minute, false);
+				android.widget.TextView textview = new android.widget.TextView(com.fuse.Activity.getRootActivity());
+				textview.setTextSize(android.util.TypedValue.COMPLEX_UNIT_SP,16);
+				textview.setTextColor(android.graphics.Color.parseColor("#555555"));
+				textview.setOnClickListener(new android.view.View.OnClickListener() {
+					@Override
+					public void onClick(android.view.View v) {
+						pickerDialog.show();
+					}
+				});
+				frameLayout.addView(textview);
+				@{TimePickerView:Of(_this)._timePicker:Set(pickerDialog.getTimePicker())};
+				@{TimePickerView:Of(_this)._timeLabel:Set(textview)};
+			}
+			else {
+				android.widget.TimePicker timePicker = new android.widget.TimePicker(com.fuse.Activity.getRootActivity());
+				if (android.os.Build.VERSION.SDK_INT >= 23) {
+					timePicker.setHour(hour);
+					timePicker.setMinute(minute);
+				} else {
+					timePicker.setCurrentHour(hour);
+					timePicker.setCurrentMinute(minute);
+				}
+				@{TimePickerView:Of(_this)._timePicker:Set(timePicker)};
+				frameLayout.addView(timePicker);
+			}
+		@}
+
+		[Foreign(Language.Java)]
+		void SetTime(Java.Object timePickerHandle, Java.Object timeLabelHandle, long msSince1970InUtc)
 		@{
 			java.util.Calendar cal = java.util.Calendar.getInstance(java.util.TimeZone.getTimeZone("UTC"), java.util.Locale.getDefault());
 			cal.setTimeInMillis(msSince1970InUtc);
@@ -105,13 +174,18 @@ namespace Fuse.Controls.Native.Android
 			int minute = cal.get(java.util.Calendar.MINUTE);
 
 			android.widget.TimePicker timePicker = (android.widget.TimePicker)timePickerHandle;
-
 			if (android.os.Build.VERSION.SDK_INT >= 23) {
 				timePicker.setHour(hour);
 				timePicker.setMinute(minute);
 			} else {
 				timePicker.setCurrentHour(hour);
 				timePicker.setCurrentMinute(minute);
+			}
+			android.widget.TextView textview = (android.widget.TextView)timeLabelHandle;
+			if (textview != null) {
+				String pattern = timePicker.is24HourView() ? "HH:mm" : "hh:mm";
+				java.text.SimpleDateFormat simpleDateFormat = new java.text.SimpleDateFormat(pattern);
+				textview.setText(simpleDateFormat.format(cal.getTime()));
 			}
 		@}
 
