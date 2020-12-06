@@ -30,6 +30,9 @@
 ### StatusBar
 - `Android.StatusBarConfig` Added property to change status bar style: Dark or Light.
 
+### FuseJS
+- FuseJS/Environment: add property to retrieve general information that reside in the .unoproj file such as: Title, Version, Publisher.
+
 # 1.14
 
 ## 1.14.0
