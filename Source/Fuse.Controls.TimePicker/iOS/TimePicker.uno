@@ -27,6 +27,7 @@ namespace Fuse.Controls.Native.iOS
 			_host = host;
 
 			Value = _host.Value;
+			Style = _host.Style;
 
 			_valueChangedEvent = UIControlEvent.AddValueChangedCallback(Handle, OnValueChanged);
 		}
@@ -48,6 +49,37 @@ namespace Fuse.Controls.Native.iOS
 		{
 			get { return DateTimeConverterHelpers.ConvertNSDateToDateTime(DateTimeConverterHelpers.ReconstructUtcTime(GetTime(Handle))); }
 			set { SetTime(Handle, DateTimeConverterHelpers.ReconstructUtcTime(DateTimeConverterHelpers.ConvertDateTimeToNSDate(value))); }
+		}
+
+		public TimePickerStyle Style
+		{
+			get
+			{
+				var style = GetTimePickerStyle(Handle);
+				switch (style)
+				{
+					case 0:
+						return TimePickerStyle.Default;
+					case 1:
+						return TimePickerStyle.Compact;
+					case 2:
+						return TimePickerStyle.Inline;
+					case 3:
+						return TimePickerStyle.Wheels;
+					default:
+						return TimePickerStyle.Default;
+				}
+			}
+			set
+			{
+				// hack to make rendering native datepicker on compact mode correctly
+				if (value == TimePickerStyle.Default || value == TimePickerStyle.Compact)
+					_host.Height = new Size(30, Unit.Points);
+				else
+					_host.Height = new Size(100, Unit.Percent);
+
+				SetTimePickerStyle(Handle, value);
+			}
 		}
 
 		// Dummy prop, as the iOS API doesn't provide an explicit API for this.
@@ -95,6 +127,52 @@ namespace Fuse.Controls.Native.iOS
 			UIDatePicker *dp = (UIDatePicker *)datePickerHandle;
 
 			return [dp date];
+		@}
+
+		[Foreign(Language.ObjC)]
+		int GetTimePickerStyle(ObjC.Object timePickerHandle)
+		@{
+			#if defined(__IPHONE_13_4) && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_13_4
+			UIDatePicker *dp = (UIDatePicker *)timePickerHandle;
+			UIDatePickerStyle style = dp.datePickerStyle;
+			switch(style)
+			{
+				case UIDatePickerStyleAutomatic:
+					return 0;
+				case UIDatePickerStyleCompact:
+					return 1;
+				case UIDatePickerStyleInline:
+					return 2;
+				case UIDatePickerStyleWheels:
+					return 3;
+			}
+			#endif
+			return 0;
+		@}
+
+		[Foreign(Language.ObjC)]
+		void SetTimePickerStyle(ObjC.Object timePickerHandle, int style)
+		@{
+			#if defined(__IPHONE_13_4) && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_13_4
+			UIDatePicker *dp = (UIDatePicker *)timePickerHandle;
+			UIDatePickerStyle datePickerStyle;
+			switch (style)
+			{
+				case 0:
+					datePickerStyle = UIDatePickerStyleAutomatic;
+					break;
+				case 1:
+					datePickerStyle = UIDatePickerStyleCompact;
+					break;
+				case 2:
+					datePickerStyle = UIDatePickerStyleInline;
+					break;
+				case 3:
+					datePickerStyle = UIDatePickerStyleWheels;
+					break;
+			}
+			[dp setPreferredDatePickerStyle:datePickerStyle];
+			#endif
 		@}
 	}
 

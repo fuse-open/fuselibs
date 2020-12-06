@@ -16,13 +16,54 @@ namespace Fuse.Controls
 		DateTime Value { set; }
 		DateTime MinValue { set; }
 		DateTime MaxValue { set; }
+		DatePickerStyle Style { set; }
 
 		void OnRooted();
 		void OnUnrooted();
 	}
 
+	/** Available DatePicker style */
+	public enum DatePickerStyle
+	{
+		Default,
+		Compact,
+		Inline,
+		/** Only available on iOS */
+		Wheels
+	}
+
 	public abstract partial class DatePickerBase : Panel
 	{
+		static Selector _styleName = "Style";
+
+		DatePickerStyle _style = DatePickerStyle.Default;
+		[UXOriginSetter("SetStyle")]
+		/** DatePicker style */
+		public DatePickerStyle Style
+		{
+			get { return _style; }
+			set { SetStyle(value, this); }
+		}
+
+		public void SetStyle(DatePickerStyle value, IPropertyListener origin)
+		{
+			if (value != _style)
+			{
+				_style = value;
+				OnStyleValueChanged(origin);
+				InvalidateLayout();
+			}
+
+			var dpv = DatePickerView;
+			if (dpv != null)
+				dpv.Style = value;
+		}
+
+		internal void OnStyleValueChanged(IPropertyListener origin)
+		{
+			OnPropertyChanged(_styleName, origin);
+		}
+
 		static Selector _valueName = "Value";
 
 		DateTime _value = DateTime.UtcNow;
