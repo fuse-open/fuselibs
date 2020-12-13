@@ -14,6 +14,8 @@ install:
 
 build_script:
   - npm pack --silent
+  # Check that doc-export works
+  - npm run doc-export
   # Build for Android
   - uno build android Tests/ManualTests/ManualTestingApp/ManualTestingApp.unoproj
   # Build for Windows

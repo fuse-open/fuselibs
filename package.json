@@ -12,7 +12,8 @@
     "android": "uno build android Tests/ManualTests/ManualTestingApp/ManualTestingApp.unoproj --run",
     "dotnet": "uno build dotnet Tests/ManualTests/ManualTestingApp/ManualTestingApp.unoproj --run",
     "ios": "uno build ios Tests/ManualTests/ManualTestingApp/ManualTestingApp.unoproj --run",
-    "native": "uno build native Tests/ManualTests/ManualTestingApp/ManualTestingApp.unoproj --run"
+    "native": "uno build native Tests/ManualTests/ManualTestingApp/ManualTestingApp.unoproj --run",
+    "doc-export": "uno build docs tools/doc-export"
   },
   "files": [
     "Source/build/*",
