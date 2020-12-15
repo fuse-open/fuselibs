@@ -47,13 +47,13 @@ namespace Fuse.Text
 			{
 				result = result.Take(maxLines).ToList();
 				// adding `...`
-				InsertTruncationSringSymbol(font, result);
+				InsertTruncationStringSymbol(font, result);
 				return result;
 			}
 			return result;
 		}
 
-		static void InsertTruncationSringSymbol(Font font, List<List<ShapedRun>> lines)
+		static void InsertTruncationStringSymbol(Font font, List<List<ShapedRun>> lines)
 		{
 			var truncationSrun = new ShapedRun(
 					new Run(new Substring(Font.Truncation), 0),
