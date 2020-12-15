@@ -120,6 +120,21 @@ namespace Fuse.Controls
 			}
 		}
 
+		/** Specifies the maximum number line of text if TextWrapping set to Wrap
+		*/
+		public int MaxLines
+		{
+			get { return Get(FastProperty2.MaxLines, 0); }
+			set
+			{
+				if (MaxLines != value)
+				{
+					Set(FastProperty2.MaxLines, value, 0);
+					OnMaxLinesChanged();
+				}
+			}
+		}
+
 		float _fontSize = Font.PlatformDefaultSize;
 		public float FontSize
 		{

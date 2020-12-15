@@ -60,11 +60,11 @@ namespace Fuse.Android
 				var layoutWidth = (int)Math.Ceil(Math.Max(wrapWidthPixels, desiredWidth));
 				Layout = (Control.TextTruncation == Fuse.Controls.TextTruncation.Standard)
 					? new StaticLayout(text, 0, text.Length, Paint, layoutWidth, align, 1.0f, lineSpacing, false, TextUtils.TruncateAt.End, width)
-					: new StaticLayout(text, Paint, layoutWidth, align, 1.0f, lineSpacing, false);
+					: new StaticLayout(text, Paint, layoutWidth, align, 1.0f, lineSpacing, false, Control.MaxLines);
 			}
 			else
 			{
-				Layout = new StaticLayout(text, Paint, width, align, 1.0f, lineSpacing, false);
+				Layout = new StaticLayout(text, Paint, width, align, 1.0f, lineSpacing, false, Control.MaxLines);
 			}
 
 			var bounds = new Uno.Rect(0, 0, 0, 0);

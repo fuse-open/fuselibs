@@ -14,6 +14,7 @@ namespace Fuse.Controls.FuseTextRenderer
 		public readonly TextAlignment TextAlignment;
 		public readonly float LineSpacing;
 		public readonly float PixelWidth;
+		public readonly int MaxLines;
 
 		public TextControlData(Fuse.Text.Font font, Fuse.Controls.TextControl control, float pixelWidth)
 		{
@@ -24,6 +25,7 @@ namespace Fuse.Controls.FuseTextRenderer
 			TextAlignment = control.TextAlignment;
 			LineSpacing = control.LineSpacing * control.Viewport.PixelsPerPoint;
 			PixelWidth = pixelWidth;
+			MaxLines = control.MaxLines;
 		}
 
 		public bool Subsumes(TextControlData other, Tolerances tolerances, bool measureOnly)
@@ -44,6 +46,7 @@ namespace Fuse.Controls.FuseTextRenderer
 				&& TextWrapping == other.TextWrapping
 				&& TextTruncation == other.TextTruncation
 				&& TextAlignment == other.TextAlignment
+				&& MaxLines == other.MaxLines
 				&& Math.Abs(LineSpacing - other.LineSpacing) <= Tolerances.Epsilon
 				&& withinWrapTolerance
 				&& tolerances.MinTruncation - Tolerances.Epsilon <= PixelWidth
@@ -80,6 +83,7 @@ namespace Fuse.Controls.FuseTextRenderer
 					data.Font,
 					shapedRuns,
 					data.PixelWidth + Tolerances.Epsilon,
+					data.MaxLines,
 					out tolerances.MinWrap,
 					out tolerances.MaxWrap)
 				: shapedRuns;

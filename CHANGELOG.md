@@ -13,6 +13,7 @@
 
 ### Fuse.Controls.Primitives
 - `TextControl` accessibility feature. Introduce `MinFontScale` and `MaxFontScale` Property to control the minimum or maximum text scaling behavior when the text/font size configuration setting on the phone has changed. Now default Fuse will honor the phone's text/font size configuration setting and will change all of the texts or labels in the Fuse App to match the setting. If you don't want the behavior you can pass a compiler flag:`IGNORE_FONT_SCALING` when building the app i.e: `uno build ios -DIGNORE_FONT_SCALING`
+- Added `MaxLines` property to the `Text` component to limit the number of lines when `TextWrapping` property is set to `Wrap`
 - Added support for `Shadow` Behavior in `NativeViewHost`
 - Added support for rendering backdrop filter of glass effect using the new `Glass` behavior
 

@@ -25,6 +25,7 @@ namespace Fuse.Controls.Native
 	{
 		string Value { set; }
 		int MaxLength { set; }
+		int MaxLines { set; }
 		TextWrapping TextWrapping { set; }
 		float LineSpacing { set; }
 		float FontSize { set;}

@@ -111,32 +111,37 @@ namespace Fuse.Controls.FallbackTextRenderer
 			float minX = 0.0f;
 			float height = 0.0f;
 			int maxTextLength = 0;
+			int currLine = 0;
 
 			foreach (var wrappedLine in _wrappedLines)
 			{
-				var extent = float2(0, wrappedLine.LineWidth);
-
-				if (!useMin)
+				if (Control.MaxLines > 0 && currLine < Control.MaxLines)
 				{
-					switch (Control.TextAlignment)
-					{
-						case TextAlignment.Left:
-							extent = float2(0,wrappedLine.LineWidth);
-							break;
-						case TextAlignment.Right:
-							extent = float2(wrapWidth - wrappedLine.LineWidth, wrapWidth);
-							break;
-						case TextAlignment.Center:
-							extent = float2(wrapWidth/2 - wrappedLine.LineWidth/2,
-								wrapWidth/2 + wrappedLine.LineWidth/2);
-							break;
-					}
-				}
+					var extent = float2(0, wrappedLine.LineWidth);
 
-				minX = Math.Min(minX,extent[0]);
-				maxX = Math.Max(maxX,extent[1]);
-				maxTextLength += wrappedLine.Text.Length;
-				height += _wrapInfo.LineHeight;
+					if (!useMin)
+					{
+						switch (Control.TextAlignment)
+						{
+							case TextAlignment.Left:
+								extent = float2(0,wrappedLine.LineWidth);
+								break;
+							case TextAlignment.Right:
+								extent = float2(wrapWidth - wrappedLine.LineWidth, wrapWidth);
+								break;
+							case TextAlignment.Center:
+								extent = float2(wrapWidth/2 - wrappedLine.LineWidth/2,
+									wrapWidth/2 + wrappedLine.LineWidth/2);
+								break;
+						}
+					}
+
+					minX = Math.Min(minX,extent[0]);
+					maxX = Math.Max(maxX,extent[1]);
+					maxTextLength += wrappedLine.Text.Length;
+					height += _wrapInfo.LineHeight;
+				}
+				currLine++;
 			}
 
 			//TODO: https://github.com/fusetools/fuselibs-private/issues/1386
