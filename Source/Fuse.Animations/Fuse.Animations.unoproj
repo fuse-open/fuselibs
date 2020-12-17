@@ -19,6 +19,7 @@
     "../Fuse.Reactive.Expressions/Fuse.Reactive.Expressions.unoproj",
   ],
   "Includes": [
+    "Docs/**:File",
     "Animator.uno:Source",
     "Attract.uno:Source",
     "Attractor.uno:Source",

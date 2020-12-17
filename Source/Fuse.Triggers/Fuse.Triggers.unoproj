@@ -29,6 +29,7 @@
     "../Fuse.Nodes/Fuse.Nodes.unoproj",
   ],
   "Includes": [
+    "Docs/**:File",
     "Actions/Callback.uno:Source",
     "Actions/CancelInteractions.uno:Source",
     "Actions/DebugAction.uno:Source",
