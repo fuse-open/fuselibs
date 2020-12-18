@@ -2,10 +2,8 @@
   "Copyright": "Copyright (c) Fuse Open 2018",
   "Description": "Native Vibration",
   "Publisher": "Fuse Open",
-  "Packages": [
-    "Uno.Permissions"
-  ],
   "Projects": [
+    "../Fuse.Android.Permissions/Fuse.Android.Permissions.unoproj",
     "../Fuse.Triggers/Fuse.Triggers.unoproj",
     "../Fuse.Scripting/Fuse.Scripting.unoproj",
     "../Fuse.Nodes/Fuse.Nodes.unoproj",

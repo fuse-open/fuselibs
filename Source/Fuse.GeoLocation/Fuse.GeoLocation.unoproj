@@ -4,10 +4,10 @@
   "Publisher": "Fuse Open",
   "Packages": [
     "Uno.Collections",
-    "Uno.Threading",
-    "Uno.Permissions"
+    "Uno.Threading"
   ],
   "Projects": [
+    "../Fuse.Android.Permissions/Fuse.Android.Permissions.unoproj",
     "../Fuse.Common/Fuse.Common.unoproj",
     "../Fuse.Marshal/Fuse.Marshal.unoproj",
     "../Fuse.Scripting/Fuse.Scripting.unoproj",

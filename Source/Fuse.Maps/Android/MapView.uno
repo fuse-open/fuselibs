@@ -2,7 +2,7 @@ using Uno;
 using Uno.Collections;
 using Fuse;
 using Fuse.Controls;
-using Uno.Permissions;
+using Fuse.Android.Permissions;
 using Uno.Compiler.ExportTargetInterop;
 
 namespace Fuse.Maps.Android

@@ -4,10 +4,10 @@
   "Publisher": "Fuse Open",
   "Title": "Fuse.Audio",
   "Packages": [
-    "Uno.Threading",
-    "Uno.Permissions"
+    "Uno.Threading"
   ],
   "Projects": [
+    "../Fuse.Android.Permissions/Fuse.Android.Permissions.unoproj",
     "../Fuse/Fuse.unoproj"
   ],
   "Includes": [

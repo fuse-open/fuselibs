@@ -1,4 +1,4 @@
-using Uno.Permissions;
+using Fuse.Android.Permissions;
 using Fuse.Scripting;
 using Uno;
 namespace Fuse.ImageTools

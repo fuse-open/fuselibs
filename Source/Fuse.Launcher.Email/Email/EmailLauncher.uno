@@ -1,7 +1,7 @@
 using Uno;
 using Uno.Text;
 using Uno.Compiler.ExportTargetInterop;
-using Uno.Permissions;
+using Fuse.Android.Permissions;
 using Uno.Net.Http;
 using Fuse.Android.Bindings;
 using Fuse.iOS.Bindings;

@@ -4,12 +4,12 @@
   "Publisher": "Fuse Open",
   "Title": "Fuse.CameraRoll",
   "Packages": [
-    "Uno.Threading",
-    "Uno.Permissions"
+    "Uno.Threading"
   ],
   "IsTransitive": true,
   "Projects": [
     "../Android.ActivityUtils/Android.ActivityUtils.unoproj",
+    "../Fuse.Android.Permissions/Fuse.Android.Permissions.unoproj",
     "../Fuse.ImageTools/Fuse.ImageTools.unoproj",
     "../Fuse.Common/Fuse.Common.unoproj",
     "../Fuse.Scripting/Fuse.Scripting.unoproj"

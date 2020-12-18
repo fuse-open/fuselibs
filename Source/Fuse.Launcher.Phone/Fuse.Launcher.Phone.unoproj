@@ -3,10 +3,10 @@
   "Description": "Native Launcher",
   "Publisher": "Fuse Open",
   "Packages": [
-    "Uno.Net.Http",
-    "Uno.Permissions"
+    "Uno.Net.Http"
   ],
   "Projects": [
+    "../Fuse.Android.Permissions/Fuse.Android.Permissions.unoproj",
     "../Fuse.Triggers/Fuse.Triggers.unoproj",
     "../Fuse.Nodes/Fuse.Nodes.unoproj",
     "../Fuse.Scripting/Fuse.Scripting.unoproj",

@@ -3,7 +3,7 @@ using Uno;
 using Uno.Compiler.ExportTargetInterop;
 using Android;
 using Fuse.ImageTools;
-using Uno.Permissions;
+using Fuse.Android.Permissions;
 namespace Fuse.Camera
 {
 	

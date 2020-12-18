@@ -2,7 +2,7 @@ using Uno;
 using Uno.Threading;
 using Uno.Time;
 using Uno.Collections;
-using Uno.Permissions;
+using Fuse.Android.Permissions;
 using Uno.Compiler.ExportTargetInterop;
 using Fuse.GeoLocation.Android;
 
