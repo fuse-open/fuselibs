@@ -9,13 +9,13 @@ namespace Fuse.Triggers
 		/** listens to events coming from anywhere */
 		Global,
 	}
-	
+
 	/**
 		Triggers when a @UserEvent is raised.
-		
+
 		> *Note:* See [this article](/docs/basics/creating-components#events-userevent)
 		> for a more complete explanation of user events.
-		
+
 		By default, `OnUserEvent` will only listen for events that are
 		declared in one of its ancestor nodes. If you want to listen for
 		events coming from anywhere, set the `Filter` property to `Global`.
@@ -41,12 +41,12 @@ namespace Fuse.Triggers
 					<RaiseUserEvent EventName="myEvent" />
 				</Clicked>
 			</Panel>
-		
+
 		This example illustrates how you can read the arguments that were
 		passed with the event from a JavaScript handler.
-		
+
 			<UserEvent ux:Name="myEvent" />
-			
+
 			<Panel Color="#123">
 				<Clicked>
 					<RaiseUserEvent EventName="myEvent">
@@ -54,17 +54,17 @@ namespace Fuse.Triggers
 					</RaiseUserEvent>
 				</Clicked>
 			</Panel>
-			
+
 			<OnUserEvent EventName="myEvent" Handler="{eventHandler}" />
-			
+
 			<JavaScript>
 				function eventHandler(args) {
 					console.log("myEvent raised with argument 'myArgument': " + args.myArgument);
 				}
-			
+
 				module.exports = { eventHandler: eventHandler };
 			</JavaScript>
-	
+
 	*/
 	public class OnUserEvent : Trigger
 	{
@@ -139,7 +139,7 @@ namespace Fuse.Triggers
 			//handler first
 			if (Handler != null)
 				Handler(this, args);
-				
+
 			Pulse();
 		}
 	}

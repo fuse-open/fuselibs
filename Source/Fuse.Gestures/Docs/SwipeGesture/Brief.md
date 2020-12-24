@@ -18,7 +18,7 @@ However, this isn't doing anything useful yet. Let's add a trigger!
 			<Move X="200" />
 		</SwipingAnimation>
 	</Panel>
-	
+
 We've now added a @SwipingAnimation, which will map the progress of our swipe gesture onto a series of
 animations. In this case, we are moving the panel over the same distance as the `Length` of our
 SwipeGesture, resulting in the panel moving along with the pointer.
@@ -35,7 +35,7 @@ We also want to respond when the swipe has completed, which is achieved using th
 		<SwipingAnimation Source="swipe">
 			<Move X="200" />
 		</SwipingAnimation>
-		
+
 		<Swiped>
 			<DebugAction Message="Swiped!" />
 		</Swiped>
@@ -111,6 +111,6 @@ Below is an example of a size-independent switch control implemented using Swipe
 				<Move X="1" RelativeTo="Size" RelativeNode="track" />
 			</SwipingAnimation>
 		</Circle>
-		
+
 		<Rectangle ux:Name="track" Height="15" Color="#0003" Margin="25,0" CornerRadius="15" />
 	</Panel>

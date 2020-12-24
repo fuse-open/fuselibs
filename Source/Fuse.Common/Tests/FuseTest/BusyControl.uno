@@ -15,7 +15,7 @@ namespace FuseTest
 
 		BusyTaskActivity _activity = BusyTaskActivity.Processing;
 		public BusyTaskActivity Activity { get { return _activity; } set { _activity = value; } }
-		
+
 		bool _isBusy = false;
 		public bool IsBusy
 		{
@@ -34,25 +34,25 @@ namespace FuseTest
 				}
 			}
 		}
-		
+
 		protected override void OnRooted()
 		{
 			base.OnRooted();
 			if (IsBusy)
 				SetBusy();
 		}
-		
+
 		protected override void OnUnrooted()
 		{
 			ResetBusy();
 			base.OnUnrooted();
 		}
-		
+
 		void SetBusy()
 		{
 			BusyTask.SetBusy(this, ref _busyTask, _activity);
 		}
-		
+
 		void ResetBusy()
 		{
 			BusyTask.SetBusy(this, ref _busyTask, BusyTaskActivity.None);

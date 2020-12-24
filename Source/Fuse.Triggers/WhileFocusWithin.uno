@@ -8,7 +8,7 @@ using Fuse.Input;
 namespace Fuse.Triggers
 {
 	/**
-		Active whenever a child of its containing element is in focus. 
+		Active whenever a child of its containing element is in focus.
 	*/
 	public class WhileFocusWithin: WhileTrigger
 	{

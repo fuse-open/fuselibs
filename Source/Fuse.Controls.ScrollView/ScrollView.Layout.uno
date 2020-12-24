@@ -12,18 +12,18 @@ namespace Fuse.Controls
 	{
 		/** The value of ScrollPosition does not change, this may result in different visual position */
 		PreserveScrollPosition,
-		/** 
+		/**
 			The ScrollPosition is modified so that the element closest to the center visually remains visually in the same position.
 		*/
 		PreserveVisual,
 	}
-	
+
 	public partial class ScrollViewBase
 	{
 		ScrollViewLayoutMode _layoutMode = ScrollViewLayoutMode.PreserveScrollPosition;
 		/**
 			Specifies how ScrollPosition is modified when the control gets a new layout.
-			
+
 			@experimental The specific layout behaviour may be changed in upcoming releases as we further understand how this works in various use-cases.
 		*/
 		public ScrollViewLayoutMode LayoutMode
@@ -31,11 +31,11 @@ namespace Fuse.Controls
 			get { return _layoutMode; }
 			set { _layoutMode = value; }
 		}
-		
+
 		bool _hasPrevArrange;
 		Element _placeAnchor;
 		float2 _oldMinScroll, _oldMaxScroll, _placePosition, _oldScrollPosition, _oldActualSize;
-		
+
 		protected override void ArrangePaddingBox(LayoutParams lp)
 		{
 			if (Element == null)
@@ -45,7 +45,7 @@ namespace Fuse.Controls
 			}
 			else
 			{
-				_placeAnchor = (!_hasPrevArrange || LayoutMode == ScrollViewLayoutMode.PreserveScrollPosition) ? 
+				_placeAnchor = (!_hasPrevArrange || LayoutMode == ScrollViewLayoutMode.PreserveScrollPosition) ?
 					null : FindAnchorElement();
 				if (_placeAnchor != null)
 				{
@@ -55,29 +55,29 @@ namespace Fuse.Controls
 					_oldActualSize = ActualSize;
 					_placePosition = _placeAnchor.ActualPosition + Content.ActualPosition;
 				}
-				
+
 				ArrangeContent(lp);
-				
+
 				_hasPrevArrange = true;
 			}
 			UpdateManager.AddDeferredAction(UpdateScrollPosition, LayoutPriority.Later);
 		}
-		
+
 		internal static Selector SizingChanged = "SizingChanged";
-		
+
 		void UpdateScrollPosition()
 		{
 			if (_placeAnchor != null)
 			{
 				var relAnchor = AlignmentHelpers.GetAnchor(_contentAlignment);
-					
+
 				//if possible keep the previous element in the same position
 				var oldAnchor = relAnchor * _oldActualSize;
 				var oldOffset = _placePosition - oldAnchor;
-					
-				var newAnchor = relAnchor * ActualSize; 
+
+				var newAnchor = relAnchor * ActualSize;
 				var newOffset = Content.ActualPosition + _placeAnchor.ActualPosition - newAnchor;
-					
+
 				var diff = newOffset - oldOffset;
 				//gestures need the "diff" to offset their scrolling interaction
 				//don't exceed min/max though as to not trigger any ends animation
@@ -87,7 +87,7 @@ namespace Fuse.Controls
 				var ndiff = nsp - ScrollPosition;
 				SetScrollPosition( nsp, ndiff, this );
 			}
-			
+
 			//constrain to new ends (use scroller if possible to allow for animation and interplay with pointer)
 			if (_scroller != null && IsRootingCompleted)
 			{
@@ -99,14 +99,14 @@ namespace Fuse.Controls
 				//force messages since relative position always changes
 				OnScrollPositionChanged(float2(0), false, this);
 			}
-			
+
 			OnPropertyChanged(SizingChanged);
 		}
-		
-		 
+
+
 		/**
 			Find a good element that is currently in view to use as an anchor for layout changes.
-			
+
 			This finds the element who's center is nearest to the center of the visual display.
 		*/
 		Element FindAnchorElement()
@@ -116,12 +116,12 @@ namespace Fuse.Controls
 
 			var relAnchor = AlignmentHelpers.GetAnchor(_contentAlignment);
 			var anchor = relAnchor * ActualSize;
-			
+
 			for (var c = Element.FirstChild<Element>(); c != null; c = c.NextSibling<Element>())
 			{
 				if (!c.HasMarginBox || c.LayoutRole != LayoutRole.Standard)
 					continue;
-					
+
 				var cAnchor = Content.ActualPosition - ScrollPosition + c.ActualPosition + c.ActualSize * relAnchor;
 				var dist = Vector.Length(cAnchor - anchor);
 				if (dist < curDist || cur == null)
@@ -130,32 +130,32 @@ namespace Fuse.Controls
 					curDist = dist;
 				}
 			}
-			
+
 			return cur;
 		}
-		
+
 		//track the result of `ArrangeContent`
 		Alignment _contentAlignment;
 		float2 _contentMarginSize;
-		
+
 		internal float2 ContentMarginSize { get { return _contentMarginSize; } }
-		
+
 		void ArrangeContent(LayoutParams lp)
 		{
 			var nlp = lp.CloneAndDerive();
 			nlp.RemoveSize(Padding.XY + Padding.ZW);
 			nlp.SetRelativeSize(lp.GetAvailableSize(),true,true);
-				
+
 			Alignment align = Alignment.Default;
 			var setWidth = false;
 			var setHeight = false;
-			
+
 			if (AllowedScrollDirections == ScrollDirections.Both)
 			{
 				align = Alignment.TopLeft;
 				setWidth = true;
 				setHeight = true;
-			} 
+			}
 			else if (AllowedScrollDirections == ScrollDirections.Horizontal)
 			{
 				align = Alignment.Left;
@@ -174,7 +174,7 @@ namespace Fuse.Controls
 			//set default alignment on content
 			var hAlign = Alignment.Default;
 			if (setWidth)
-			{	
+			{
 				hAlign = AlignmentHelpers.GetHorizontalAlign(Content.Alignment);
 				if (hAlign == Alignment.Default)
 					hAlign = AlignmentHelpers.GetHorizontalAlign(align);
@@ -187,23 +187,23 @@ namespace Fuse.Controls
 					vAlign = AlignmentHelpers.GetVerticalAlign(align);
 			}
 			align = hAlign | vAlign;
-			
+
 			nlp.RetainAxesXY(!setWidth, !setHeight);
-				
+
 			var sz = Content.ArrangeMarginBox(Padding.XY, nlp);
 			Layouts.Layout.AdjustAlignBox(Content, sz, float4(Padding.XY,lp.Size-Padding.ZW),
 				align);
-				
+
 			_contentMarginSize = sz;
 			_contentAlignment = align;
 		}
-		
+
 		protected override LayoutDependent IsMarginBoxDependent( Visual child )
 		{
 			//require a rearrange if the child margin change since the scroll range must change
 			return LayoutDependent.MaybeArrange;
 		}
-		
+
 		protected override float2 GetContentSize(LayoutParams lp)
 		{
 			if (Element != null)
@@ -215,7 +215,7 @@ namespace Fuse.Controls
 			}
 			return float2(0);
 		}
-		
+
 		/**
 			The distance to the visible view area for the provided rectangle.
 		*/

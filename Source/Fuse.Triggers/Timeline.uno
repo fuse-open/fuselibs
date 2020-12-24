@@ -79,14 +79,14 @@ namespace Fuse.Triggers
 		{
 			_suppressPropertyChangedProgress = true;
 		}
-		
+
 		/** Makes triggers active when progress is 0 if `true` */
 		public bool OnAtZero
 		{
 			get { return _startAtZero; }
 			set { _startAtZero = value; }
 		}
-		
+
 		//reflects high level requests to stop/start, not actual animation/trigger playback
 		enum State
 		{
@@ -107,7 +107,7 @@ namespace Fuse.Triggers
 				_initialProgress = value;
 			}
 		}
-		
+
 		bool _hasTargetProgress;
 		double _targetProgress = 0;
 		/** Progress at which the Timeline ends */
@@ -122,8 +122,8 @@ namespace Fuse.Triggers
 					PlayTo(_targetProgress);
 			}
 		}
-		
-		/** 
+
+		/**
 			Sets the behavior of the Timeline once the end has been reached.
 
 			Possible values are:
@@ -135,9 +135,9 @@ namespace Fuse.Triggers
 		public PlayMode PlayMode
 		{
 			get { return Animation.PlayMode; }
-			set  
-			{ 
-				Animation.PlayMode = value; 
+			set
+			{
+				Animation.PlayMode = value;
 				//in Wrap mode ensure we're playing forward by default
 				if (Animation.PlayMode == PlayMode.Wrap)
 				{
@@ -159,18 +159,18 @@ namespace Fuse.Triggers
 				//em: I couldn't see any use-case where you'd have InitialProgress and want bypass
 				if (Bypass == TriggerBypassMode.Standard && !_hasInitialProgress)
 					BypassSeek(TargetProgress);
-					
+
 				if (_state == State.Play)
 					Play(TargetProgress);
 			}
 		}
-		
+
 		static Selector _progressName = "Progress";
 		public event ValueChangedHandler<double> ProgressChanged;
 
 		/**
 			Stops the playback at the current progress. Sets the TargetProgress to this new progress.
-			
+
 			This is not the same as the `IPlayback.Stop` function, nor `Stop` UX action.
 		*/
 		public void Stop()
@@ -185,21 +185,21 @@ namespace Fuse.Triggers
 
 		/**
 			Plays to a target progress.
-			
+
 			You might need to call `TimelinePlayTo` from Uno if calling this directly.
 		*/
 		public void PlayTo(double progress)
 		{
 			TimelinePlayTo(progress);
 		}
-		
+
 		//workaround for Uno visibility defect
 		public void TimelinePlayTo(double progress)
 		{
 			if (IsRootingCompleted)
 				Play(progress);
 		}
-		
+
 		AnimationVariant _lastPlay = AnimationVariant.Forward;
 		void Play(double progress)
 		{
@@ -233,7 +233,7 @@ namespace Fuse.Triggers
 			}
 		}
 
-		void IPlayback.Stop() 
+		void IPlayback.Stop()
 		{
 			if (IsRootingCompleted)
 			{
@@ -242,18 +242,18 @@ namespace Fuse.Triggers
 				_state = State.Stop;
 			}
 		}
-		
+
 		void IPlayback.Pause()
 		{
 			Pause();
 		}
-		
+
 		void IPlayback.Resume()
 		{
 			if (IsRootingCompleted)
 				Play(_lastPlay == AnimationVariant.Forward ? 1 : 0);
 		}
-		
+
 		[UXOriginSetter("SetProgress")]
 		/** Current progress of the timeline */
 		public new double Progress
@@ -291,25 +291,24 @@ namespace Fuse.Triggers
 			if (ProgressChanged != null)
 				ProgressChanged(sender, new ValueChangedArgs<double>(Progress));
 		}
-		
-		
+
 		public new void Pulse()
 		{
 			base.Pulse();
 		}
-		
+
 		public void PulseForward()
 		{
 			_targetProgress = 1;
 			DirectActivate(BypassOff);
 		}
-		
+
 		void BypassOff()
 		{
 			_targetProgress = 0;
 			BypassDeactivate();
 		}
-		
+
 		new public void PulseBackward()
 		{
 			BypassActivate();

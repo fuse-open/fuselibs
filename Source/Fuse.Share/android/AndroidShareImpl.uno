@@ -12,9 +12,9 @@ namespace Fuse.Share
 					"java.util.ArrayList",
 					"android.os.Build",
 					"android.net.Uri",
-					"android.util.Log", 
+					"android.util.Log",
 					"android.content.Intent",
-					"androidx.core.content.FileProvider", 
+					"androidx.core.content.FileProvider",
 					"android.content.Context")]
 	public extern(Android) class AndroidShareImpl
 	{
@@ -43,10 +43,10 @@ namespace Fuse.Share
 				*/
 				Uri uri = Uri.parse("content://" + path);
 				File newFile = new File(uri.getPath());
-				/* 
-					Note: The XML file is the only way you can specify the directories 
+				/*
+					Note: The XML file is the only way you can specify the directories
 					you want to share; you can't programmatically add a directory.
-					~ https://developer.android.com/training/secure-file-sharing/setup-sharing 
+					~ https://developer.android.com/training/secure-file-sharing/setup-sharing
 					~ https://developer.android.com/reference/android/support/v4/content/FileProvider
 				*/
 				Uri contentUri = FileProvider.getUriForFile(context,
@@ -54,7 +54,7 @@ namespace Fuse.Share
 												 newFile);
 				shareIntent.putExtra(Intent.EXTRA_STREAM, contentUri);
 			} else {
-				//for older droids 
+				//for older droids
 				Uri uri = Uri.parse("file://" + path);
 				shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
 			}

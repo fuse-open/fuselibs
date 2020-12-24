@@ -50,12 +50,12 @@ namespace Fuse.Video.WPF
 
 		void OnMediaFailed(object sender, ExceptionEventArgs e)
 		{
-			
+
 		}
 
 		void OnMediaOpened(object sender, EventArgs e)
 		{
-			
+
 		}
 
 		public void LoadUrl(string url, Action loaded, Action<string> error)
@@ -127,7 +127,7 @@ namespace Fuse.Video.WPF
 			{
 				if (!(_prevPosition == _mediaPlayer.Position))
 				{
-					_prevPosition = _mediaPlayer.Position;	
+					_prevPosition = _mediaPlayer.Position;
 					return true;
 				}
 				return false;
@@ -172,16 +172,16 @@ namespace Fuse.Video.WPF
 
 				var stride = _renderTargetBitmap.PixelWidth * 4;
 				var size = _renderTargetBitmap.PixelHeight * stride;
-				
+
 				if (_pixelBuffer == null || _pixelBuffer.Length != size)
 					_pixelBuffer = new byte[size];
-				
+
 				var pinnedBuffer = GCHandle.Alloc(_pixelBuffer, GCHandleType.Pinned);
-				
+
 				try
 				{
 					var pixelBufferPtr = pinnedBuffer.AddrOfPinnedObject();
-					
+
 					_renderTargetBitmap.CopyPixels(Int32Rect.Empty, pixelBufferPtr, size, stride);
 
 

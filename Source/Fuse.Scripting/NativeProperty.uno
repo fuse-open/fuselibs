@@ -21,7 +21,7 @@ namespace Fuse.Scripting
 			_isReadonly = true;
 			_readonlyValue = value;
 		}
-		
+
 		public NativeProperty(string name, Func<T> getHandler = null, Action<TJSValue> setHandler = null, ValueConverter<T, TJSValue> valueConverter = null) : base(name)
 		{
 			_setHandler = setHandler;
@@ -39,7 +39,7 @@ namespace Fuse.Scripting
 
 			return null;
 		}
-		
+
 		object SetProperty(Context context, object[] args)
 		{
 			if(_setHandler == null) _setHandler = SetProperty;
@@ -49,7 +49,7 @@ namespace Fuse.Scripting
 			return null;
 		}
 		protected virtual void SetProperty(TJSValue value) {}
-		
+
 		object GetProperty(Context context, object[] args)
 		{
 			if(_getHandler == null)
@@ -57,7 +57,7 @@ namespace Fuse.Scripting
 
 			if(_valueConverter != null)
 				return _valueConverter(context, _getHandler());
-			
+
 			return _getHandler();
 		}
 		protected virtual T GetProperty() { return default(T); }

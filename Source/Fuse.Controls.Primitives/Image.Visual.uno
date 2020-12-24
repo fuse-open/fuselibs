@@ -45,9 +45,9 @@ namespace Fuse.Controls
 		protected override void ArrangePaddingBox( LayoutParams lp)
 		{
 			base.ArrangePaddingBox(lp);
-				
+
 			var size = lp.Size;
-			
+
 			Container.Sizing.snapToPixels = SnapToPixels;
 			Container.Sizing.absoluteZoom = AbsoluteZoom;
 
@@ -59,7 +59,7 @@ namespace Fuse.Controls
 			_drawSize = contentDesiredSize * _scale;
 			_uvClip = Container.Sizing.CalcClip( size, ref _drawOrigin, ref _drawSize );
 			InvalidateRenderBounds();
-			
+
 			SetContentBox(float4(_drawOrigin,_drawOrigin+_drawSize));
 			UpdateNativeImageTransform();
 		}
@@ -77,11 +77,11 @@ namespace Fuse.Controls
 		{
 			if (!base.FastTrackDrawWithOpacity(dc))
 				return false;
-			
+
 			DrawVisualColor(dc, float4(Color.XYZ, Color.W * Opacity));
 			return true;
 		}
-		
+
 		protected override void DrawVisual(DrawContext dc)
 		{
 			DrawVisualColor(dc, Color);
@@ -120,7 +120,7 @@ namespace Fuse.Controls
 
 			return transform;
 		}
-		
+
 		void DrawVisualColor(DrawContext dc, float4 color)
 		{
 			var tex = Container.GetTexture();
@@ -153,7 +153,7 @@ namespace Fuse.Controls
 				htc.Hit(this);
 			base.OnHitTestLocalVisual(htc);
 		}
-		
+
 		protected override VisualBounds HitTestLocalVisualBounds
 		{
 			get
@@ -163,7 +163,7 @@ namespace Fuse.Controls
 				return b;
 			}
 		}
-		
+
 		protected override VisualBounds CalcRenderBounds()
 		{
 			var b = base.CalcRenderBounds();

@@ -7,5 +7,5 @@
 	<Require Condition="HOST_OSX" Assembly="Lib/Mac/Fuse.Video.CILInterface.dll" />
 	<Require Condition="HOST_OSX" Assembly="Lib/Mac/Fuse.Video.Mono.dll" />
 	<Require Condition="HOST_OSX" Assembly="Lib/Mac/Fuse.Video.CIL.dll" />
-	
+
 </Extensions>

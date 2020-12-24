@@ -88,44 +88,44 @@ namespace Fuse.Navigation
 
 		[Flags]
 		internal enum Flags
-		{	
+		{
 			None = 0,
 		}
 		//different Ctor to distinguish from deprecated one
-		internal RouterModify(Flags flags) 
+		internal RouterModify(Flags flags)
 		{
 		}
-		
+
 		RouterRequest _request = new RouterRequest();
-		
+
 		/** How to modify the router. */
 		public ModifyRouteHow How
 		{
 			get { return _request.How; }
 			set { _request.How = value; }
 		}
-		
+
 		/** Get the route from this bookmark. */
-		public string Bookmark 
-		{ 
+		public string Bookmark
+		{
 			get { return _request.Bookmark; }
 			set { _request.Bookmark = value; }
 		}
-		
+
 		/** How to transition to the new page. */
 		public NavigationGotoMode Transition
 		{
 			get { return _request.Transition; }
 			set { _request.Transition = value; }
 		}
-		
+
 		/** The operation style of the transition. */
-		public string Style 
-		{ 
+		public string Style
+		{
 			get { return _request.Style; }
 			set { _request.Style = value; }
 		}
-		
+
 		public Node Relative
 		{
 			get { return _request.Relative; }
@@ -136,14 +136,14 @@ namespace Fuse.Navigation
 		/* This is an IExpression since the claculation of the path might be costly (in terms of setup
 			and evaluation), and we don't want it to keep updating unless it is actually used. */
 		/** The target path.
-			
+
 			This is expression is evaluated only when the trigger fires. */
-		public IExpression Path 
-		{ 
+		public IExpression Path
+		{
 			get { return _path; }
 			set { _path = value; }
 		}
-		
+
 		NodeExpressionBinding _pathSub;
 
 		protected override void OnUnrooted()
@@ -151,7 +151,7 @@ namespace Fuse.Navigation
 			DisposePathSub();
 			base.OnUnrooted();
 		}
-		
+
 		protected override void Perform(Node n)
 		{
 			if (Path != null)
@@ -164,7 +164,7 @@ namespace Fuse.Navigation
 				PerformRoute(n, null);
 			}
 		}
-		
+
 		void DisposePathSub()
 		{
 			if (_pathSub != null)
@@ -173,18 +173,18 @@ namespace Fuse.Navigation
 				_pathSub = null;
 			}
 		}
-		
+
 		void IListener.OnNewData(IExpression source, object value)
 		{
 			if (source != Path || _pathSub == null)
 				return;
-		
+
 			try
 			{
 				RouterPageRoute route = null;
 				if (!RouterRequest.ParseUXRoute(value, out route))
 					return;
-				
+
 				PerformRoute( (_pathSub as IContext).Node, route);
 			}
 			finally
@@ -192,23 +192,23 @@ namespace Fuse.Navigation
 				DisposePathSub();
 			}
 		}
-		
+
 		void IListener.OnLostData(IExpression source)
 		{
 			//unexpected/ignorable as listening is one-off
 		}
-			
+
 		void PerformRoute(Node n, RouterPageRoute route)
 		{
 			_request.Route = route;
-			
+
 			var useRouter = Router ?? Fuse.Navigation.Router.TryFindRouter(n);
 			if (useRouter == null)
 			{
 				Fuse.Diagnostics.UserError( "Router not set and none could be found", this );
 				return;
 			}
-			
+
 			_request.MakeRequest(useRouter);
 		}
 	}
@@ -219,35 +219,35 @@ namespace Fuse.Navigation
 		public ModifyRoute()  : base(Flags.None)
 		{ }
 	}
-	
+
 	/**
 		Goto a new route in the router.
-		
+
 		This is the same as @RouterModify with `How="Goto"`
-		
+
 		@see RouterModify
 	*/
 	public class GotoRoute : RouterModify
 	{
 		[UXConstructor]
 		public GotoRoute() : base(Flags.None)
-		{ 
+		{
 			How = ModifyRouteHow.Goto;
 		}
 	}
-	
+
 	/**
 		Push a new route onto the router.
-		
+
 		This is the same as @RouterModify with `How="Push"`
-		
+
 		@see RouterModify
 	*/
 	public class PushRoute : RouterModify
 	{
 		[UXConstructor]
 		public PushRoute()  : base(Flags.None)
-		{ 
+		{
 			How = ModifyRouteHow.Push;
 		}
 	}

@@ -5,7 +5,7 @@ namespace Fuse.Input.UX
 	public static class AttachedKeyboardMembers
 	{
 		[UXAttachedEventAdder("Keyboard.KeyPressed")]
-		/** Called when a @Visual receives a key press event while having input focus. 
+		/** Called when a @Visual receives a key press event while having input focus.
 			On mobile devices, keyboard input only applies to physical buttons (such as BackButton), not soft keyboards.
 		*/
 		public static void AddKeyPressedHandler(Visual node, KeyPressedHandler handler)
@@ -20,12 +20,12 @@ namespace Fuse.Input.UX
 		}
 
 		[UXAttachedEventAdder("Keyboard.KeyReleased")]
-		/** Called when a @Visual receives a key release event while having input focus. 
+		/** Called when a @Visual receives a key release event while having input focus.
 			On mobile devices, keyboard input only applies to physical buttons (such as BackButton), not soft keyboards.
 		*/
 		public static void AddKeyReleasedHandler(Visual node, KeyReleasedHandler handler)
 		{
-			Keyboard.KeyReleased.AddHandler(node, handler);	
+			Keyboard.KeyReleased.AddHandler(node, handler);
 		}
 
 		[UXAttachedEventRemover("Keyboard.KeyReleased")]

@@ -9,24 +9,24 @@ namespace Fuse
 			Defines the density of the viewport in pixels per point.
 		*/
 		float PixelsPerPoint { get; }
-		
+
 		/**
 			The nominal 2-dimensionl size of the viewport in points.
 		*/
 		float2 Size { get; }
-		
+
 		/**
 			The nominal 2-dimensional pixel size of the viewport in pixels.
 		*/
 		float2 PixelSize { get; }
-		
+
 		/**
 			A transform from world space to view space for this viewport. This can be used
 			to determine the camere relative location of items.
 		*/
 		float4x4 ViewTransform { get; }
 	}
-	
+
 	/**
 		Defines the current drawing viewports. This really has nothing to do with the IViewport but was
 		historically connected to it.
@@ -38,7 +38,7 @@ namespace Fuse
 			to the most recently defined world.
 		*/
 		float4x4 ProjectionTransform { get; }
-		
+
 		/**
 			A transform converting from world space to projection/clip space.  This is expressed as relative
 			to the most recently defined world.
@@ -55,7 +55,7 @@ namespace Fuse
 		*/
 		float2 ViewRange { get; }
 	}
-	
+
 	/**
 		Defines the current logical viewport for input translation.
 
@@ -129,7 +129,7 @@ namespace Fuse
 		public float4x4 ViewProjectionTransformInverse;
 		public float4x4 ViewTransform;
 		public float4x4 ViewTransformInverse;
-		
+
 		public void Update( IViewport viewport, IFrustum frustum )
 		{
 			if (frustum.TryGetProjectionTransform(viewport, out ProjectionTransform) &&
@@ -161,13 +161,13 @@ namespace Fuse
 			mx.M42 = size.Y/2;
 			return mx;
 		}
-		
+
 		public float4x4 GetFlatWorldToVisualTransform(float2 size)
 		{
 			var mx = GetClipToVisualSpace(size);
 			return Matrix.Mul(ViewProjectionTransform,mx);
 		}
-		
+
 		public float4x4 LocalViewProjectionTransform;
 		public void Update( IViewport viewport, IFrustum frustum, Visual where )
 		{
@@ -182,14 +182,14 @@ namespace Fuse
 	{
 		float _pixelsPerPoint;
 		public float PixelsPerPoint { get {return _pixelsPerPoint; } }
-		
+
 		public float2 Size { get { return PixelSize / PixelsPerPoint; } }
-		
+
 		float2 _pixelSize;
 		public float2 PixelSize { get { return _pixelSize; } }
-		
+
 		FrustumViewport _frustumViewport = new FrustumViewport();
-		
+
 		public float4x4 ProjectionTransform
 		{ get { return _frustumViewport.ProjectionTransform; } }
 		public float4x4 ProjectionTransformInverse
@@ -202,10 +202,10 @@ namespace Fuse
 		{ get { return _frustumViewport.ViewTransform; } }
 		public float4x4 ViewTransformInverse
 		{ get { return _frustumViewport.ViewTransformInverse; } }
-		
+
 		public float3 ViewOrigin { get { return _frustum.GetWorldPosition(this); } }
 		public float2 ViewRange { get { return _frustum.GetDepthRange(this); } }
-		
+
 		public Ray PointToWorldRay(float2 pointPos)
 		{
 			return ViewportHelpers.PointToWorldRay(this, _frustumViewport.ViewProjectionTransformInverse, pointPos);
@@ -214,9 +214,9 @@ namespace Fuse
 		{
 			return ViewportHelpers.WorldToLocalRay(this, world, worldRay, where);
 		}
-		
+
 		IFrustum _frustum;
-		
+
 		public FixedViewport( int2 pixelSize, float pixelsPerPoint, IFrustum frustum )
 		{
 			_frustum = frustum;
@@ -225,13 +225,13 @@ namespace Fuse
 			_frustumViewport.Update(this, frustum);
 		}
 	}
-	
+
 	class InheritViewport : IRenderViewport
 	{
 		IRenderViewport _baseView;
 		FrustumViewport _childView;
 		Visual _child;
-		
+
 		public InheritViewport( IRenderViewport baseView, FrustumViewport childView, Visual child )
 		{
 			_baseView = baseView;
@@ -239,12 +239,12 @@ namespace Fuse
 			_child = child;
 		}
 		public float PixelsPerPoint { get { return _baseView.PixelsPerPoint; } }
-		
+
 		//in points
 		public float2 Size { get { return _baseView.Size; } }
-		
+
 		public float2 PixelSize { get { return _baseView.PixelSize; } }
-		
+
 		public float4x4 ProjectionTransform { get { return _baseView.ProjectionTransform; } }
 		public float4x4 ViewProjectionTransform
 		{

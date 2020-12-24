@@ -35,7 +35,7 @@ namespace Fuse.Reactive
 		void OnPropertyChanged(IDisposable subscription, string propertyName, object newValue);
 	}
 
-	/** Represents a reactive collection. 
+	/** Represents a reactive collection.
 
 		This interface can be implemented by any reactive data provider that wants to interop
 		with the `Fuse.Reactive` framework.
@@ -43,17 +43,17 @@ namespace Fuse.Reactive
 		## Availability of data
 
 		As `IObservableArray` extends `IArray`, it is always safe to read synchronously from
-		the collection in the range `0..Length`. However, any meaningful data may be unavailable 
-		(and hence `Length == 0`), or out of date. 
-		
+		the collection in the range `0..Length`. However, any meaningful data may be unavailable
+		(and hence `Length == 0`), or out of date.
+
 		A subscription is needed in order to instruct the implementation to fetch the
-		underlaying data or bring the collection up to date. When subscribed to, the data 
-		may then be fetched	asynchronously. The first reliable up-to-date data is passed 
+		underlaying data or bring the collection up to date. When subscribed to, the data
+		may then be fetched	asynchronously. The first reliable up-to-date data is passed
 		to the subscription	via callbacks.
 	*/
 	interface IObservableArray: IArray
 	{
-		/** Creates a new subscription to the collection, which will pass change events to the given observer. 
+		/** Creates a new subscription to the collection, which will pass change events to the given observer.
 
 			## Disposal of subscription
 
@@ -63,7 +63,7 @@ namespace Fuse.Reactive
 			The subscriber must filter out any late callback messages that arrives after disposal of the subscription.
 
 			## Write-back subscriptions
-			
+
 			The returned object may or may not support the `ISubscription` interface. The subscriber can test whether the
 			returned object `is ISubscription`.If so, the data source supports write-backs	to the data source, where
 			the current subscription can be excluded from callbacks.
@@ -88,12 +88,12 @@ namespace Fuse.Reactive
 		This interface extends the `IObservableArray` with the added contract of
 		being interpretable as a single value, called the *primary value*. The primary
 		value of the `IObservable` is the value at index `0` in the collection, if available.
-		
-		When interpreted as a single value, it is valid for the collection to be empty, 
+
+		When interpreted as a single value, it is valid for the collection to be empty,
 		which which means the primary value is not available. It is also valid for the
 		collection to have more than one value, in which case the other values will be ignored.
-		
-		The `IObservable` interface receives special treatment by the reactive operators. For 
+
+		The `IObservable` interface receives special treatment by the reactive operators. For
 		example, consider the following data-binding expression:
 
 			<Text>Hello {user.name}!</Text>
@@ -108,12 +108,12 @@ namespace Fuse.Reactive
 
 			<Text>{message}</Text>
 
-		If `message` yields an `IObservable`, the primary value (`message[0]`) of the observable 
+		If `message` yields an `IObservable`, the primary value (`message[0]`) of the observable
 		will be displayed, if available. If there primary value is not available, the expression
 		will not yield any value (no value is written to the target property.)
 
 		Some properties accept all types (`object`), or `IObservable` explicitly. In these cases,
-		the data binding will not create a subscription, but rather pass the object directly to 
+		the data binding will not create a subscription, but rather pass the object directly to
 		the target property for it to create a subscription. Examples of this is `Each.Items`,
 		`Selection.Values`, `Match.Value`, `With.Data` and `WhileCount.Items`.
 

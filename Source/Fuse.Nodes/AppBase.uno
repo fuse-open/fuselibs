@@ -33,7 +33,7 @@ namespace Fuse
 
 
 	[IgnoreMainClass]
-	/** Base class for Fuse @Apps. 
+	/** Base class for Fuse @Apps.
 		This class contains implementation and interface that is common between all platforms. You
 		only need to derive from this class when adding support for a new platform.
 		Fuse already provides derived classes for each supported platform, all of them named @App, that you
@@ -108,7 +108,7 @@ namespace Fuse
 				return RootViewport.PixelsPerOSPoint;
 			}
 		}
-		
+
 		void InvalidateGraphicsView(Node n)
 		{
 			var v = n as Visual;
@@ -145,7 +145,7 @@ namespace Fuse
 			*/
 		public event UnhandledExceptionHandler UnhandledException;
 
-		/** Notfies the @App about an unhandled exception within a subsystem of the app. 
+		/** Notfies the @App about an unhandled exception within a subsystem of the app.
 			If implementing a subsystems (such as separate threads) where exceptions can be
 			thrown out of the app, you can catch such otherwise unhandled exceptions and report them
 			to this method, to allow users to use the @UnhandledException event to deal with
@@ -190,21 +190,21 @@ namespace Fuse
 		{
 			_testRootViewport = rv;
 		}
-		
+
 		static internal RootViewport CurrentRootViewport
 		{
-			get 
+			get
 			{
 				if (_testRootViewport != null)
 					return _testRootViewport;
-					
+
 				if (Current == null)
 					throw new Exception( "No AppBase Current defined" );
-					
+
 				var rv = Current.RootViewport;
 				if (rv == null)
 					throw new Exception( "No RootViewport defined" );
-					
+
 				return rv;
 			}
 		}
@@ -236,16 +236,16 @@ namespace Fuse
 
 		/** The virtual root @Visual of the @App. This is where @Children are located. */
 		public abstract Visual ChildrenVisual { get; }
-		
-		
+
+
 		[UXContent]
 		/** The @Node.Resources of the virtual root node of the @App.
 			Note that the virtual root node might be different from the @RootViewport depending
 			on platform */
 		public IList<Resource> Resources { get { return RootViewport.Resources; } }
 
-		/** Called when the application updates. 
-			This method can be overridden by platform-specific @App implementations, but should not 
+		/** Called when the application updates.
+			This method can be overridden by platform-specific @App implementations, but should not
 			be overridden in user code. Use @UpdateManager instead. */
 		protected virtual void OnUpdate()
 		{

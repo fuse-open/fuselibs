@@ -22,7 +22,7 @@ namespace Fuse.Test
 				Assert.AreEqual("Hello", GetText(p));
 			}
 		}
-		
+
 		[Test]
 		public void Basic()
 		{
@@ -33,7 +33,7 @@ namespace Fuse.Test
 				Assert.AreEqual( "Text", p.txt.Value );
 			}
 		}
-		
+
 		[Test]
 		public void ContextRef()
 		{

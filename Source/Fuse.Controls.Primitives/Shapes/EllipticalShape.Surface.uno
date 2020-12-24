@@ -13,14 +13,14 @@ namespace Fuse.Controls
 			var list = new LineSegments();
 			var startAngle = StartAngle;
 			var endAngle = EffectiveEndAngle;
-			
+
 			if (UseAngle)
 			{
 				var s = float2(Math.Cos(startAngle), Math.Sin(startAngle));
 				var c = float2(Math.Cos((startAngle+endAngle)/2), Math.Sin((startAngle+endAngle)/2));
 				var e = float2(Math.Cos(endAngle), Math.Sin(endAngle));
-				
-				if (drawArc) 
+
+				if (drawArc)
 				{
 					list.MoveTo( center + s * radius );
 				}
@@ -29,10 +29,10 @@ namespace Fuse.Controls
 					list.MoveTo( center );
 					list.LineTo( center + s * radius );
 				}
-				
+
 				list.EllipticArcTo( center + c * radius, radius, 0, false, startAngle < endAngle );
 				list.EllipticArcTo( center + e * radius, radius, 0, false, startAngle < endAngle );
-				
+
 				if (!drawArc)
 				{
 					list.LineTo( center );

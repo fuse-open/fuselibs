@@ -27,7 +27,7 @@ namespace Fuse.Reactive.FuseJS
 		{
 			return new FuseJSHttpClient(context).Obj;
 		}
-		
+
 		class HttpJSDispatcher : Uno.Threading.IDispatcher
 		{
 			Scripting.IThreadWorker _worker;

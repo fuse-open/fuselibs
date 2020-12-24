@@ -19,13 +19,13 @@ namespace Fuse.Controls.ScrollToTest
 				s.stA.Pulse();
 				root.StepFrame(5); //stabilize animation
 				Assert.AreEqual(300,s.ScrollPosition.Y);
-				
+
 				s.stB.Pulse();
 				root.StepFrame(5); //stabilize animation
 				Assert.AreEqual(750,s.ScrollPosition.Y);
 			}
 		}
-		
+
 		[Test]
 		public void Target()
 		{
@@ -35,7 +35,7 @@ namespace Fuse.Controls.ScrollToTest
 				p.stA.Pulse();
 				root.StepFrame(5); //stabilize animation
 				Assert.AreEqual(300,p.s.ScrollPosition.Y);
-				
+
 				p.stB.Pulse();
 				//no need to wait, was seek
 				root.PumpDeferred();

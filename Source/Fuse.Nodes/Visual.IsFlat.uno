@@ -18,8 +18,8 @@ namespace Fuse
 					Parent.InvalidateFlat();
 			}
 		}
-		
-		bool _isLocalFlatCached 
+
+		bool _isLocalFlatCached
 		{
 			get { return HasBit(FastProperty1.IsLocalFlatCached); }
 			set { SetBit(FastProperty1.IsLocalFlatCached, value); }
@@ -37,13 +37,13 @@ namespace Fuse
 			{
 				if (_isLocalFlatCached)
 					return _isLocalFlat;
-					
+
 				_isLocalFlat = CalcIsLocalFlat();
 				_isLocalFlatCached = true;
 				return _isLocalFlat;
 			}
 		}
-		
+
 		internal virtual bool CalcIsLocalFlat()
 		{
 			for (var t = FirstChild<Transform>(); t != null; t = t.NextSibling<Transform>())
@@ -51,7 +51,7 @@ namespace Fuse
 
 			return true;
 		}
-		
+
 		bool _areChildrenFlatCached
 		{
 			get { return HasBit(FastProperty1.AreChildrenFlatCached); }
@@ -71,22 +71,22 @@ namespace Fuse
 			{
 				if (_areChildrenFlatCached)
 					return _areChildrenFlat;
-				
+
 				_areChildrenFlat = CalcAreChildrenFlat();
 				_areChildrenFlatCached = true;
 				return _areChildrenFlat;
 			}
 		}
-		
+
 		internal virtual bool CalcAreChildrenFlat()
 		{
 			for (var v = FirstChild<Visual>(); v != null; v = v.NextSibling<Visual>())
 				if (!v.AreChildrenFlat || !v.IsLocalFlat)
 					return false;
-			
+
 			return true;
 		}
-		
+
 		//Compeltely flat, both locally and children
 		internal bool IsFlat { get { return IsLocalFlat && AreChildrenFlat; } }
 	}

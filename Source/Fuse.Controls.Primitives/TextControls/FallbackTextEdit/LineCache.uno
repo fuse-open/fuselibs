@@ -50,7 +50,7 @@ namespace Fuse.Controls.FallbackTextEdit
 			}
 		}
 
-		
+
 		LineCacheTransform _transform;
 		public LineCacheTransform Transform
 		{

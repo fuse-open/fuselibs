@@ -128,7 +128,7 @@ namespace Fuse.Desktop
 		{
 			try
 			{
-				Pointer.RaiseLeft(this, TranslatePointerEvent(args));	
+				Pointer.RaiseLeft(this, TranslatePointerEvent(args));
 			}
 			catch (Exception e)
 			{

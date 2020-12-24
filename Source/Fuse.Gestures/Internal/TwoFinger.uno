@@ -13,23 +13,23 @@ namespace Fuse.Gestures.Internal
 	delegate void TwoFingerZoomHandler(float factor);
 	delegate void TwoFingerRotateHandler(float angle);
 	delegate void TwoFingerTranslateHandler(float2 amount);
-	
+
 	sealed class TwoFinger : IGesture
 	{
 		float _keyZoomRangeUp = 200;
 		float _keyZoomRangeDown = 100;
 		float _startThresholdDistance = 20;
-		
+
 		int _attachCount = 1;
 		Visual _node;
-		
+
 		TwoFinger(Visual n)
 		{
 			_node = n;
 		}
 
 		bool _allowKeyControl = true;
-		
+
 		static readonly PropertyHandle _property = Fuse.Properties.CreateHandle();
 		static public TwoFinger Attach(Visual n)
 		{
@@ -46,7 +46,7 @@ namespace Fuse.Gestures.Internal
 			nt.OnRooted();
 			return nt;
 		}
-		
+
 		public void Detach()
 		{
 			_attachCount--;
@@ -56,13 +56,13 @@ namespace Fuse.Gestures.Internal
 				_node.Properties.Clear(_property);
 			}
 		}
-		
+
 		Gesture _gesture;
 		void OnRooted()
 		{
 			_gesture = Input.Gestures.Add( this, _node, GestureType.Multi );
 		}
-		
+
 		void OnUnrooted()
 		{
 			_gesture.Dispose();
@@ -74,7 +74,7 @@ namespace Fuse.Gestures.Internal
 		public event TwoFingerZoomHandler Zoomed;
 		public event TwoFingerRotateHandler Rotated;
 		public event TwoFingerTranslateHandler Translated;
-		
+
 		void IGesture.OnLostCapture(bool forced)
 		{
 			_point[0].Down = _point[1].Down = -1;
@@ -86,7 +86,7 @@ namespace Fuse.Gestures.Internal
 					Ended();
 			}
 		}
-		
+
 		class Point
 		{
 			public int Down = -1;
@@ -95,12 +95,12 @@ namespace Fuse.Gestures.Internal
 		Point[] _point = new[]{ new Point(), new Point() };
 		float2 _fullTrans;
 		bool _trackingKeyboard;
-	
+
 		GestureRequest IGesture.OnPointerPressed(PointerPressedArgs args)
 		{
 			if (_point[1].Down != -1)
 				return GestureRequest.Ignore;
-				
+
 			return GestureRequest.Capture;
 		}
 
@@ -117,37 +117,37 @@ namespace Fuse.Gestures.Internal
 				return new GesturePriorityConfig( GesturePriority.Normal, sig );
 			}
 		}
-		
+
 		bool _begun;
 		void IGesture.OnCaptureChanged( PointerEventArgs args, CaptureType type, CaptureType prev )
 		{
 			var p = PointFromArgs(args);
 			if (p == null)
 				p = _point[0].Down == -1 ? _point[0] : _point[1];
-				
+
 			if (p.Down == -1)
 			{
 				p.Start = p.Current = p.Previous = FromWindow(args.WindowPoint);
 				p.Down = args.PointIndex;
-			
+
 				//alwas reset start
 				_point[0].Start = _point[0].Previous = _point[0].Current;
 				_fullTrans = float2(0);
 			}
-			
+
 			if (CaptureTypeHelper.BecameHard(prev,type))
 			{
 				_begun = true;
-			
+
 				_point[0].Start = _point[0].Current;
 				_point[1].Start = _point[1].Current;
 				_fullTrans = float2(0);
-			
+
 				if (Started != null)
 					Started();
 			}
 		}
-		
+
 		float2 FromWindow(float2 p)
 		{
 			if(_node.Parent == null)
@@ -155,35 +155,35 @@ namespace Fuse.Gestures.Internal
 			//use parent on the assumption that element itself might be moving/transforming
 			return _node.Parent.WindowToLocal(p);
 		}
-		
+
 		Point PointFromArgs(PointerEventArgs args)
-		{	
+		{
 			if (args.PointIndex == _point[0].Down)
 				return _point[0];
 			if (args.PointIndex == _point[1].Down)
 				return _point[1];
 			return null;
 		}
-		
+
 		GestureRequest IGesture.OnPointerMoved(PointerMovedArgs args)
 		{
 			var p = PointFromArgs(args);
 			if (p == null)
 				return GestureRequest.Cancel;
-				
+
 			p.Current = FromWindow(args.WindowPoint);
 
 			float scale = 1;
 			float angle = 0;
 			float2 trans = float2(0);
-			
+
 			// float hardDist = 0;
 			if (_point[1].Down != -1)
 			{
 				var start = _point[0].Start - _point[1].Start;
 				var current = _point[0].Current - _point[1].Current;
 				scale = Vector.Length(current) / Vector.Length(start);
-				
+
 				var sa = Math.Atan2(start.Y,start.X);
 				var ea = Math.Atan2(current.Y,current.X);
 				angle = ea - sa;
@@ -191,30 +191,30 @@ namespace Fuse.Gestures.Internal
 				var startCenter = (_point[0].Start - _point[1].Start)/2 + _point[1].Start;
 				var currentCenter = (_point[0].Current - _point[1].Current)/2 + _point[1].Current;
 				var rawTrans = currentCenter - startCenter;
-	
+
 				var rot = Matrix.RotationZ(-angle);
 				trans = Vector.Transform(rawTrans, rot).XY / scale;
-				
+
 				/*if (_begun)
 				{
 					_point[0].Previous = _point[0].Current;
 					_point[1].Previous = _point[1].Current;
 				}*/
-				
+
 			}
 			else if (_allowKeyControl)
 			{
 				if (Keyboard.IsKeyPressed(Uno.Platform.Key.ControlKey))
 				{
 					var diff = p.Current.Y - p.Start.Y;
-					scale = diff < 0 ? (-diff / _keyZoomRangeUp + 1) : 
+					scale = diff < 0 ? (-diff / _keyZoomRangeUp + 1) :
 						(_keyZoomRangeDown / (_keyZoomRangeDown+diff));
 					// hardDist = Math.Abs(diff);
-					
+
 					var l = p.Current - p.Start;
 					if (Math.Abs(l.X) + Math.Abs(l.Y) > 10)
 						angle = Math.Atan2(diff < 0 ? l.Y : -l.Y, diff < 0 ? l.X : -l.X) + Math.PIf/2;
-						
+
 					_trackingKeyboard = true;
 				}
 				else if (Keyboard.IsKeyPressed(Uno.Platform.Key.ShiftKey))
@@ -224,7 +224,7 @@ namespace Fuse.Gestures.Internal
 					_trackingKeyboard = true;
 				}
 			}
-			
+
 			if (_begun)
 			{
 				if (Zoomed != null)
@@ -234,14 +234,14 @@ namespace Fuse.Gestures.Internal
 				if (Translated != null)
 					Translated(trans);
 			}
-			
+
 			return GestureRequest.Capture;
 		}
-		
+
 		GestureRequest IGesture.OnPointerReleased(PointerReleasedArgs args)
 		{
 			return GestureRequest.Cancel;
 		}
 	}
-	
+
 }

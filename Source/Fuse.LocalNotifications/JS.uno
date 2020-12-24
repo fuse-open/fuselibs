@@ -46,7 +46,7 @@ namespace Fuse.LocalNotifications
 
 			Fuse.LocalNotifications.Notify.Received += OnReceived;
 		}
-		
+
 		/**
 			@scriptevent receivedMessage
 		*/
@@ -56,9 +56,9 @@ namespace Fuse.LocalNotifications
 		}
 
 		/** Displays a notification to the user after the time specified by `secondsFromNow` has passed.
-		
+
 			@scriptmethod later(secondsFromNow, title, body, payload, sound, badgeNumber)
-			
+
 			@param secondsFromNow (Number) How long in seconds until the notification fires.
 			@param title (String) The title of the notification.
 			@param body (String) The body text of the notification.
@@ -86,9 +86,9 @@ namespace Fuse.LocalNotifications
 		}
 
 		/** Instantly displays a notification to the user.
-		
+
 			@scriptmethod now(title, body, payload, sound, badgeNumber)
-			
+
 			@param title (String) The title of the notification.
 			@param body (String) The body text of the notification.
 			@param payload (String) A string that is not shown in the notification itself, but will be present in the callback.
@@ -126,7 +126,7 @@ namespace Fuse.LocalNotifications
 
 		/**
 			@scriptmethod clearBadgeNumber
-			
+
 			Clears the badge number shown on the iOS home screen.
 		*/
 		public object ClearBadgeNumber(Context context, object[] args)
@@ -134,10 +134,10 @@ namespace Fuse.LocalNotifications
 			Fuse.LocalNotifications.Notify.ClearBadgeNumber();
 			return null;
 		}
-		
+
 		/**
 			@scriptmethod clearAllNotifications
-			
+
 			Dismisses all currently active notifications created by our app.
 		*/
 		public object ClearAllNotifications(Context context, object[] args)

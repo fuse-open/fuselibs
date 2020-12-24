@@ -26,7 +26,7 @@ namespace Fuse.Test
 				Assert.IsTrue( tn.P5.RenderBoundsWithoutEffects.IsEmpty );
 			}
 		}
-		
+
 		[Test]
 		public void Stack()
 		{
@@ -50,7 +50,7 @@ namespace Fuse.Test
 				Assert.AreEqual( new Rect(0,0,50,80), tn.P2.RenderBoundsWithoutEffects.FlatRect );
 			}
 		}
-		
+
 		[Test]
 		public void Props()
 		{
@@ -67,7 +67,7 @@ namespace Fuse.Test
 				Assert.AreEqual( new Rect(0,0,100,100), tn.P2.RenderBoundsWithoutEffects.FlatRect );
 			}
 		}
-		
+
 		[Test]
 		public void Clip()
 		{
@@ -83,7 +83,7 @@ namespace Fuse.Test
 				Assert.AreEqual( new Rect(50,50,300,200), tn.LocalRenderBounds.FlatRect );
 			}
 		}
-		
+
 		[Test]
 		public void Containers()
 		{
@@ -104,7 +104,7 @@ namespace Fuse.Test
 				Assert.AreEqual( new Rect(0,0,225,130), p.I3.LocalRenderBounds.FlatRect );
 			}
 		}
-		
+
 		[Test]
 		public void ChangeBackground()
 		{

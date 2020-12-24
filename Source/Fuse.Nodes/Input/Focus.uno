@@ -78,14 +78,14 @@ namespace Fuse.Input
 			_lastFocusedVisual = null;
 			ChangeFocusedVisual(null);
 		}
-		
+
 		/** Release only if the current focus is the given node. For native integration. */
 		public static void ReleaseFrom(Visual n)
 		{
 			if (FocusedVisual == n)
 				Release();
 		}
-		
+
 		/** Implies this control has obtained the focus, unlike GiveTo this is not a request.*/
 		public static void Obtained(Visual n)
 		{
@@ -164,7 +164,7 @@ namespace Fuse.Input
 			//shortcut to help frequent calls (like from iOS)
 			if (node == _focusedObject)
 				return;
-				
+
 			while (node != null)
 			{
 				var delegator = GetDelegator(node);
@@ -173,28 +173,28 @@ namespace Fuse.Input
 					node = delegator();
 					continue;
 				}
-				
+
 				var focusDelegate = GetFocusDelegate(node);
 				if (focusDelegate != null)
 				{
 					node = focusDelegate;
 					continue;
 				}
-				
+
 				break;
 			}
-			
+
 			if (!CanSetFocus(node))
 				node = null;
-			
+
 			if (node == _focusedObject)
 				return;
 
 			//switch focus prior to event so callback checks can see new focus
 			_lastFocusedVisual = _focusedObject;
 			_focusedObject = node;
-			
-			if(_lastFocusedVisual != null) 
+
+			if(_lastFocusedVisual != null)
 			{
 				var nf = _lastFocusedVisual as INotifyFocus;
 				if (nf != null) nf.OnFocusLost();
@@ -202,11 +202,11 @@ namespace Fuse.Input
 				Lost.RaiseWithBubble(new FocusLostArgs(_lastFocusedVisual));
 			}
 
-			if(_focusedObject != null) 
+			if(_focusedObject != null)
 			{
 				var nf = _focusedObject as INotifyFocus;
 				if (nf != null) nf.OnFocusGained();
-				
+
 				Gained.RaiseWithBubble(new FocusGainedArgs(_focusedObject));
 			}
 		}
@@ -241,15 +241,15 @@ namespace Fuse.Input
 		{
 			IsFocusableChanged.RaiseWithoutBubble(new IsFocusableChangedArgs(n));
 		}
-	
+
 		static internal bool HandlesFocusEvent(Visual n)
 		{
 			return IsFocusable(n) ||
 				GetDelegator(n) != null ||
 				GetFocusDelegate(n) != null;
 		}
-		
-		
+
+
 		[UXAttachedPropertyGetter("Focus.Delegate")]
 		public static Visual GetFocusDelegate(Visual n)
 		{
@@ -267,7 +267,7 @@ namespace Fuse.Input
 		{
 			n._focusDelegate = null;
 		}
-		
+
 		static void OnFocusDelegateChanged(Visual n) { }
 	}
 }

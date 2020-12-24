@@ -17,7 +17,7 @@ namespace Fuse.Elements.Test
 
 			Assert.AreEqual(WrapMode.Repeat, imageFill.WrapMode);
 		}
-		
+
 		[Test]
 		public void ResourceBasic()
 		{
@@ -29,7 +29,7 @@ namespace Fuse.Elements.Test
 				{
 					fb.AssertPixel(float4(0,1,0,1), int2(50));
 				}
-				
+
 				root.Children.Remove(p);
 				root.StepFrame(61); //UnloadUnused waits 60s
 				Assert.AreEqual(0,DisposalManager.TestMemoryResourceCount);
@@ -37,9 +37,9 @@ namespace Fuse.Elements.Test
 				Assert.IsTrue(p.IF.TestIsClean);
 			}
 		}
-		
+
 		[Test]
-		//tests a variation that changes the resource, this caused the leak in 
+		//tests a variation that changes the resource, this caused the leak in
 		//https://github.com/fusetools/fuselibs-private/issues/3502
 		public void ResourceReplace()
 		{
@@ -52,7 +52,7 @@ namespace Fuse.Elements.Test
 				{
 					fb.AssertPixel(float4(0,1,0,1), int2(50));
 				}
-				
+
 				p.Next.Perform();
 				root.StepFrameJS();
 				WaitLoad(root, p.W);
@@ -60,7 +60,7 @@ namespace Fuse.Elements.Test
 				{
 					fb.AssertPixel(float4(1,0,0,1), int2(50));
 				}
-				
+
 				root.Children.Remove(p);
 				root.StepFrame(61); //UnloadUnused waits 60s
 				Assert.AreEqual(0,DisposalManager.TestMemoryResourceCount);
@@ -68,7 +68,7 @@ namespace Fuse.Elements.Test
 				Assert.IsTrue(p.IF.TestIsClean);
 			}
 		}
-		
+
 		[Test]
 		[Ignore("https://github.com/fusetools/uno/issues/934")]
 		public void UrlResource()
@@ -81,7 +81,7 @@ namespace Fuse.Elements.Test
 				{
 					fb.AssertPixel(float4(0,1,0,1), int2(50));
 				}
-				
+
 				Assert.AreEqual(1,DisposalManager.TestMemoryResourceCount);
 				root.Children.Remove(p);
 				root.StepFrame(61); //UnloadUnused waits 60s
@@ -90,7 +90,7 @@ namespace Fuse.Elements.Test
 				Assert.IsTrue(p.IF.TestIsClean);
 			}
 		}
-		
+
 		[Test]
 		[Ignore("https://github.com/fusetools/fuselibs-private/issues/3511")]
 		public void Calibrate()
@@ -118,7 +118,7 @@ namespace Fuse.Elements.Test
 				}
 			}
 		}
-		
+
 		[Test]
 		//going to background releases temp resources (image is also marked to release here to simplify the test)
 		public void Dispose()
@@ -131,12 +131,12 @@ namespace Fuse.Elements.Test
 				{
 					fb.AssertPixel(float4(0,1,0,1), int2(10));
 				}
-				
+
 				DisposalManager.Clean(DisposalRequest.Background);
 				Assert.IsTrue(p.IF.TestIsClean);
 			}
 		}
-		
+
 		[Test]
 		//Loading is immediately set, not waiting until first draw
 		//https://github.com/fusetools/fuselibs-private/issues/3514
@@ -151,7 +151,7 @@ namespace Fuse.Elements.Test
 				Assert.AreEqual(1,p.C.PerformedCount);
 			}
 		}
-		
+
 		void WaitLoad(TestRootPanel root, Fuse.Triggers.Trigger t)
 		{
 			while( TriggerProgress(t) > 0 || t.PlayState != Fuse.Triggers.TriggerPlayState.Stopped) {

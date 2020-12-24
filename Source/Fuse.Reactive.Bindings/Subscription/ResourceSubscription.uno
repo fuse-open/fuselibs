@@ -12,7 +12,7 @@ namespace Fuse.Reactive
 		IListener _listener;
 		IExpression _source;
 		IDisposable _diag;
-		
+
 		public ResourceSubscription(IExpression source, Node origin, string key, IListener listener, Type type)
 		{
 			_source = source;
@@ -22,7 +22,7 @@ namespace Fuse.Reactive
 			_listener = listener;
 
 			ResourceRegistry.AddResourceChangedHandler(_key, OnChanged);
-			OnChanged();		
+			OnChanged();
 		}
 
 		public void Dispose()

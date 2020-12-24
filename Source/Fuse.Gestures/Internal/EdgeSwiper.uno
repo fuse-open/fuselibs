@@ -36,20 +36,20 @@ namespace Fuse.Gestures.Internal
 			new DegreeSpan(-45.0f, 45.0f));
 
 		readonly DestinationSimulation<float> _pointBody1D = SmoothSnap<float>.CreateNormalized();
-		
+
 		public event Action<object, double> ProgressChanged;
-		
+
 		public double Progress
 		{
 			get { return _progress; }
-			private set 
-			{ 
-				_progress = Math.Max(value, 0.0); 
+			private set
+			{
+				_progress = Math.Max(value, 0.0);
 				if (ProgressChanged != null)
 					ProgressChanged(this, _progress);
 			}
 		}
-		
+
 		public void Seek( double progress )
 		{
 			Progress = progress;
@@ -68,7 +68,7 @@ namespace Fuse.Gestures.Internal
 		float _velocityThreshold = 300.0f;
 		int _down = -1;
 		bool _isHardCapture;
-		
+
 		PointerVelocity<float2> _velocity = new PointerVelocity<float2>();
 
 		Element _element;
@@ -94,7 +94,7 @@ namespace Fuse.Gestures.Internal
 				return (Progress > 0.0 && _pointBody1D.IsStatic);
 			}
 		}
-		
+
 		public void Enable()
 		{
 			_pointBody1D.Destination = 1;
@@ -106,14 +106,14 @@ namespace Fuse.Gestures.Internal
 			_pointBody1D.Destination = 0;
 			CheckNeedUpdated();
 		}
-		
+
 		bool _hasUpdated;
 		void CheckNeedUpdated(bool off = false)
 		{
 			bool needUpdated = _down == -1 && !_pointBody1D.IsStatic;
 			if (needUpdated == _hasUpdated)
 				return;
-				
+
 			if (needUpdated)
 			{
 				UpdateManager.AddAction(OnUpdated);
@@ -132,7 +132,7 @@ namespace Fuse.Gestures.Internal
 			Progress = _pointBody1D.Position;
 			CheckNeedUpdated(true);
 		}
-		
+
 		void OnLostCapture()
 		{
 			_down = -1;
@@ -146,7 +146,7 @@ namespace Fuse.Gestures.Internal
 		{
 			if (_down != -1 || !IsWithinSwipeBounds(args.WindowPoint))
 				return;
-			
+
 			_isHardCapture = false;
 			if (args.TrySoftCapture(this, OnLostCapture,_element))
 			{
@@ -159,7 +159,7 @@ namespace Fuse.Gestures.Internal
 				_velocity.Reset(_currentCoord, float2(0));
 			}
 		}
-		
+
 		float2 FromWindow(float2 p)
 		{
 			if(_element == null || _element.Parent == null)
@@ -173,23 +173,23 @@ namespace Fuse.Gestures.Internal
 			_currentCoord = coord;
 			//var diff = -(_currentCoord - _previousCoord);
 			_previousCoord = coord;
-		
+
 			var t = Clock.GetSeconds();
 			var elapsed = t - _prevTime;
 			_prevTime = t;
-			
-			_velocity.AddSample( _currentCoord, (float)elapsed, 
+
+			_velocity.AddSample( _currentCoord, (float)elapsed,
 				(!_isHardCapture ? SampleFlags.Tentative : SampleFlags.None) |
 				(release ? SampleFlags.Release : SampleFlags.None) );
 		}
-		
+
 		void OnPointerMoved(object sender, PointerMovedArgs args)
 		{
 			if (_down != args.PointIndex)
 				return;
 
 			MoveUser(FromWindow(args.WindowPoint));
-			
+
 			if (!_isHardCapture)
 			{
 				var diff = _currentCoord - _startCoord;
@@ -202,7 +202,7 @@ namespace Fuse.Gestures.Internal
 						withinBounds = _leftRightSwipe.IsWithinBounds(diff);
 						break;
 
-					case Edge.Top:    
+					case Edge.Top:
 					case Edge.Bottom:
 						withinBounds = _upDownSwipe.IsWithinBounds(diff);
 						break;
@@ -224,7 +224,7 @@ namespace Fuse.Gestures.Internal
 		{
 			if (_down != args.PointIndex)
 				return;
-				
+
 			//if gesture not recognize return to current state
 			if (!_isHardCapture)
 			{
@@ -233,7 +233,7 @@ namespace Fuse.Gestures.Internal
 			}
 
 			MoveUser(FromWindow(args.WindowPoint), true);
-			Pointer.ReleaseCapture(this);			
+			Pointer.ReleaseCapture(this);
 
 			var v = PrimaryValue(_velocity.CurrentVelocity);
 			bool on = false;
@@ -243,10 +243,10 @@ namespace Fuse.Gestures.Internal
 				on = true;
 			else if (Progress > 0.5f)
 				on = true;
-				
+
 			_pointBody1D.Destination = on ? 1 : 0;
 			_pointBody1D.Position = (float)Progress;
-			
+
 			_down = -1;
 			_isHardCapture = false;
 			CheckNeedUpdated();
@@ -286,8 +286,8 @@ namespace Fuse.Gestures.Internal
 			var bounds = t.ActualSize;
 			var progress = (_currentCoord - _startCoord) / bounds;
 			Progress = Math.Clamp(_startProgress + PrimaryValue(progress), 0.0, 1.0);
-		}	
-		
+		}
+
 		float PrimaryValue(float2 v)
 		{
 			switch (Edge)

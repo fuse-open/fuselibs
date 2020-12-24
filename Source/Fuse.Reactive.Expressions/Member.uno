@@ -32,7 +32,7 @@ namespace Fuse.Reactive
 			Member _member;
 			IListener _listener;
 			IDisposable _objectSub;
-			
+
 			public Subscription(Member member, IContext context, IListener listener)
 			{
 				_listener = listener;
@@ -40,7 +40,7 @@ namespace Fuse.Reactive
 				//at end, be aware of sync call to OnNewData
 				_objectSub = _member.BaseObject.Subscribe(context, this);
 			}
-			
+
 			IPropertySubscription _obsObjSub;
 			void DisposeObservableObjectSubscription()
 			{
@@ -72,7 +72,7 @@ namespace Fuse.Reactive
 					_listener.OnLostData(_member);
 				}
 			}
-			
+
 			protected override void OnLostData(IExpression source)
 			{
 				DisposeObservableObjectSubscription();

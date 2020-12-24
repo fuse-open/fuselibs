@@ -104,7 +104,7 @@ namespace Fuse
 				if (Parent != null)
 				{
 					Parent.CheckWorldTransformVersion();
-				
+
 					if (_parentWorldTransformVersion != Parent._worldTransformVersion)
 					{
 						_parentWorldTransformVersion = Parent._worldTransformVersion;
@@ -122,7 +122,7 @@ namespace Fuse
 			{
 				if (_worldTransform != null)
 					CheckWorldTransformVersion();
-				
+
 				if (_worldTransform == null)
 					_worldTransform = CalcWorldTransform();
 				return _worldTransform;
@@ -143,8 +143,8 @@ namespace Fuse
 			}
 		}
 
-		internal FastMatrix InternLocalTransformInternal { get { return LocalTransformInternal; } } 
-		
+		internal FastMatrix InternLocalTransformInternal { get { return LocalTransformInternal; } }
+
 		protected FastMatrix LocalTransformInternal
 		{
 			get
@@ -242,10 +242,10 @@ namespace Fuse
 			if (HasExplicitTransforms)
 			{
 				PrependTransformOrigin(m);
-				
+
 				for (var t = FirstChild<Transform>(); t != null; t = t.NextSibling<Transform>())
 					t.PrependTo(m);
-					
+
 				PrependInverseTransformOrigin(m);
 			}
 		}
@@ -275,13 +275,13 @@ namespace Fuse
 
 		/**
 			Indicates the `RenderBounds` have changed and need to be recalculated.
-			
+
 			This implies `InvalidateVisual`.
 		*/
 		protected void InvalidateRenderBounds()
 		{
 			InvalidateVisual();
-			
+
 			var p = this;
 			while (p != null)
 			{

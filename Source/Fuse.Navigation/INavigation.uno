@@ -12,11 +12,11 @@ namespace Fuse.Navigation
 
 	/**
 		What type of navigation page transition is being performed.
-		
+
 		Each mode should be explicitly handled to allow for future additions.
 	*/
 	public enum NavigationGotoMode
-	{	
+	{
 		/** The request is for a normal transition (animated) to the target page */
 		Transition,
 		/** The request is to immediately change to target page bypassing any animations  */
@@ -30,7 +30,7 @@ namespace Fuse.Navigation
 	public class NavigatedArgs: EventArgs, IScriptEvent
 	{
 		public Visual NewVisual { get; private set; }
-		
+
 		public NavigatedArgs(Visual newVisual)
 		{
 			NewVisual = newVisual;
@@ -42,7 +42,7 @@ namespace Fuse.Navigation
 			else s.AddString("name", "");
 		}
 	}
-	
+
 	public delegate void NavigatedHandler(object sender, NavigatedArgs args);
 	public delegate void HistoryChangedHandler(object sender);
 	public delegate void NavigationPageCountHandler(object sender);
@@ -67,10 +67,10 @@ namespace Fuse.Navigation
 		public float Progress;
 		public float PreviousProgress;
 	}
-	
+
 	/**
 		An extended navigation interface implemented by full navigation behaviors.
-		
+
 		This API is subject to significant changes in coming versions. Though previously not marked as experimental, there is a need to consolidate and group some of the events and states to remain maintainable, fix some defects, and add some required features.
 		@experimental
 	*/
@@ -82,7 +82,7 @@ namespace Fuse.Navigation
 		Visual ActivePage { get; }
 		NavigationPageState GetPageState(Visual page);
 		NavigationState State { get; }
-		
+
 		/** @hide */
 		event NavigationPageCountHandler PageCountChanged;
 		/** @hide */
@@ -93,11 +93,11 @@ namespace Fuse.Navigation
 		event ActivePageChangedHandler ActivePageChanged;
 		/** @hide */
 		event ValueChangedHandler<NavigationState> StateChanged;
-		
+
 		void Goto(Visual node, NavigationGotoMode mode = NavigationGotoMode.Transition);
 		void Toggle(Visual node);
 	}
-	
+
 	//this is internal for now as it was done quickly to resolve an issue, and not thought about as a feature
 	internal interface ISeekableNavigation : INavigation
 	{

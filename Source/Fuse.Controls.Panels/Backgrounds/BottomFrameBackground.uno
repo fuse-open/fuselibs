@@ -30,7 +30,7 @@ namespace Fuse.Controls
 		You also have the option to not take the size of the keyboard into account:
 
 			<BottomBarBackground IncludesKeyboard="false" />
-			
+
 	*/
 	public class BottomBarBackground : BottomFrameBackground { }
 
@@ -92,13 +92,13 @@ namespace Fuse.Controls
 			if (sender == _caps && name == WindowCaps.NameSafeMargins)
 				InvalidateLayout();
 		}
-		
+
 		protected override float2 GetContentSize(LayoutParams lp)
 		{
 			var v = float4(0);
 			if (!Marshal.TryToType<float4>(_caps[WindowCaps.NameSafeMargins], out v))
 				return float2(0);
-				
+
 			if (IncludesKeyboard || v.W < KeyboardVisibleThreshold)
 				_height = v.W;
 

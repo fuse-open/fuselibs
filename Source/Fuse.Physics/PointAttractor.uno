@@ -37,7 +37,7 @@ namespace Fuse.Physics
 
 		float3 DirectionTo(Body b)
 		{
-			return TargetPoint - b.CenterPosition;	
+			return TargetPoint - b.CenterPosition;
 		}
 
 		float CalcForce(Body b)
@@ -74,7 +74,7 @@ namespace Fuse.Physics
 			foreach (var b in World.Bodies)
 			{
 				if (b.Visual == Parent) continue;
-				
+
 				var force = CalcForce(b);
 
 				ForceFieldTrigger.SetForce(this, b, force);
@@ -90,7 +90,7 @@ namespace Fuse.Physics
 				if (dist < 0.5f) return;
 
 				dir /= dist;
-				
+
 				dir *= Curve(force) * 50 * _strength;
 
 				var f = dir * (float)deltaTime;
@@ -100,5 +100,5 @@ namespace Fuse.Physics
 
 	}
 
-	
+
 }

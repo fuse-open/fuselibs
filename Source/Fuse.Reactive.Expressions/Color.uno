@@ -6,7 +6,7 @@ namespace Fuse.Reactive
 	//reference: http://www.easyrgb.com/en/math.php
 	static class ColorModel
 	{
-		static public float4 RgbaToHsla( float4 v ) 
+		static public float4 RgbaToHsla( float4 v )
 		{
 			var r = v[0];
 			var g = v[1];
@@ -27,9 +27,9 @@ namespace Fuse.Reactive
 			}
 			else //Chromatic data...
 			{
-				if ( l < 0.5 ) 
+				if ( l < 0.5 )
 					s = del_max / ( max + min );
-				else           
+				else
 					s = del_max / ( 2 - max - min );
 
 				var del_r = ( ( ( max - r ) / 6 ) + ( del_max / 2 ) ) / del_max;
@@ -43,25 +43,25 @@ namespace Fuse.Reactive
 				else //b == max
 					h = ( 2 / 3.0f ) + del_g - del_r;
 
-				if ( h < 0 ) 
+				if ( h < 0 )
 					h += 1;
-				if ( h > 1 ) 
+				if ( h > 1 )
 					h -= 1;
 			}
-			
+
 			return float4(h,s,l,v[3]);
 		}
-		
+
 		static public float4 HslaToRgba( float4 v )
 		{
 			var h = v[0];
 			var s = v[1];
 			var l = v[2];
-			
+
 			float var_2;
-			if ( l < 0.5f ) 
+			if ( l < 0.5f )
 				var_2 = l * ( 1.0f + s );
-			else           
+			else
 				var_2 = ( l + s ) - ( s * l );
 
 			var var_1 = 2 * l - var_2;
@@ -69,7 +69,7 @@ namespace Fuse.Reactive
 			var r = Hue_2_RGB( var_1, var_2, h + ( 1.0f / 3.0f ) );
 			var g = Hue_2_RGB( var_1, var_2, h );
 			var b = Hue_2_RGB( var_1, var_2, h - ( 1.0f / 3.0f ) );
-			
+
 			return float4(r,g,b, v[3]);
 		}
 
@@ -86,44 +86,44 @@ namespace Fuse.Reactive
 
 	/**
 		Functions for modifying color values.
-		
+
 		Colors in Fuse are represented as RGBA values. A `float3` converts to a `float4` by having a `1` implicitly added as the alpha value. Hex strings can also convert to color values.
-		
+
 		Most of the operations are calculated in HSL color space, first by converting the RGB value to HSL, performing the operation, and converting back to RGB.  The alpha value is not modified by RGB <=> HSL conversions.
-		
+
 		Clamping is, in general, not done on the inputs, intermediaries, or outputs. This means you may end up with RGB values outside of the 0..1 range. This ensures that color information is not prematurely lost when performing multiplate operations.
-		
+
 		[subclass Fuse.Reactive.BinaryColorFunction]
-		
+
 		To work directly with HSL values you can use the `hslaToRgba` and `rgbaToHsla` functions.
 	*/
 	public abstract class BinaryColorFunction : BinaryOperator
 	{
-		internal BinaryColorFunction(Expression color, Expression value, String name): 
+		internal BinaryColorFunction(Expression color, Expression value, String name):
 			base(color, value, name) {}
-			
+
 		protected override bool TryCompute(object color_, object value_, out object result)
 		{
 			result = null;
-			
+
 			float4 color = float4(0);
 			float value = 0;
 			if (!Marshal.TryToColorFloat4( color_, out color ) ||
 				!Marshal.TryToType<float>( value_, out value ))
 				return false;
-				
+
 			result = ColorCompute(color, value);
 			return true;
 		}
-		
+
 		internal abstract float4 ColorCompute(float4 color, float value);
 	}
-	
+
 	/**
 		Reduces the lightness of a color.
-		
+
 		This subtracts the lightness value in HSL color space.
-		
+
 		The result is not clamped; refer to @BinaryColorFunction.
 	*/
 	[UXFunction("darken")]
@@ -131,9 +131,9 @@ namespace Fuse.Reactive
 	{
 		[UXConstructor]
 		public DarkenFunction([UXParameter("Color")] Expression color,
-			[UXParameter("Lightness")] Expression lightness) : 
+			[UXParameter("Lightness")] Expression lightness) :
 			base(color, lightness, "darken") {}
-			
+
 		internal override float4 ColorCompute(float4 color, float value)
 		{
 			var h = ColorModel.RgbaToHsla(color);
@@ -141,22 +141,22 @@ namespace Fuse.Reactive
 			return ColorModel.HslaToRgba(h);
 		}
 	}
-	
+
 	/**
 		Increases the lightness of a color.
-		
+
 		This adds the lightness value in HSL color space.
-		
+
 		The result is not clamped; refer to @BinaryColorFunction.
 	*/
 	[UXFunction("lighten")]
 	public sealed class LightenFunction : BinaryColorFunction
 	{
 		[UXConstructor]
-		public LightenFunction([UXParameter("Color")] Expression color, 
-			[UXParameter("Lightness")] Expression lightness) : 
+		public LightenFunction([UXParameter("Color")] Expression color,
+			[UXParameter("Lightness")] Expression lightness) :
 			base(color, lightness, "lighten") {}
-			
+
 		internal override float4 ColorCompute(float4 color, float value)
 		{
 			var h = ColorModel.RgbaToHsla(color);
@@ -167,19 +167,19 @@ namespace Fuse.Reactive
 
 	/**
 		Decreases the saturation of a color.
-		
+
 		This subtracts the saturation value in HSL color space.
-		
+
 		The result is not clamped; refer to @BinaryColorFunction.
 	*/
 	[UXFunction("desaturate")]
 	public sealed class DesaturateFunction : BinaryColorFunction
 	{
 		[UXConstructor]
-		public DesaturateFunction([UXParameter("Color")] Expression color, 
-			[UXParameter("Saturation")] Expression saturation) : 
+		public DesaturateFunction([UXParameter("Color")] Expression color,
+			[UXParameter("Saturation")] Expression saturation) :
 			base(color, saturation, "desaturate") {}
-			
+
 		internal override float4 ColorCompute(float4 color, float value)
 		{
 			var h = ColorModel.RgbaToHsla(color);
@@ -190,19 +190,19 @@ namespace Fuse.Reactive
 
 	/**
 		Increases the saturation of a color.
-		
+
 		This adds the saturation value in HSL color space.
-		
+
 		The result is not clamped; refer to @BinaryColorFunction.
 	*/
 	[UXFunction("saturate")]
 	public sealed class SaturateFunction : BinaryColorFunction
 	{
 		[UXConstructor]
-		public SaturateFunction([UXParameter("Color")] Expression color, 
+		public SaturateFunction([UXParameter("Color")] Expression color,
 			[UXParameter("Saturation")] Expression saturation) :
 			base(color, saturation, "saturate") {}
-			
+
 		internal override float4 ColorCompute(float4 color, float value)
 		{
 			var h = ColorModel.RgbaToHsla(color);
@@ -210,23 +210,23 @@ namespace Fuse.Reactive
 			return ColorModel.HslaToRgba(h);
 		}
 	}
-	
+
 	/**
 		Scales the saturation of the color towards full or none.
-		
+
 		Positive values from 0..1 lerp between the current saturation and `1`.
 		Negative values from 0..1 lerp between the current saturation and `0`.
-		
+
 		The scaling is done in HSL color space.
 	*/
 	[UXFunction("scaleSaturation")]
 	public sealed class ScaleSaturationFunction : BinaryColorFunction
 	{
 		[UXConstructor]
-		public ScaleSaturationFunction([UXParameter("Color")] Expression color, 
-			[UXParameter("Factor")] Expression factor) : 
+		public ScaleSaturationFunction([UXParameter("Color")] Expression color,
+			[UXParameter("Factor")] Expression factor) :
 			base(color, factor, "scaleSaturation") {}
-			
+
 		internal override float4 ColorCompute(float4 color, float value)
 		{
 			var h = ColorModel.RgbaToHsla(color);
@@ -234,23 +234,23 @@ namespace Fuse.Reactive
 			return ColorModel.HslaToRgba(h);
 		}
 	}
-	
+
 	/**
 		Scales the lightness of the color towards white or black.
-		
+
 		Positive values from 0..1 lerp between the current lightness and `1`.
 		Negative values from 0..1 lerp between the current ligthness and `0`.
-		
+
 		The scaling is done in HSL color space.
 	*/
 	[UXFunction("scaleLightness")]
 	public sealed class ScaleLightnessFunction : BinaryColorFunction
 	{
 		[UXConstructor]
-		public ScaleLightnessFunction([UXParameter("Color")] Expression color, 
+		public ScaleLightnessFunction([UXParameter("Color")] Expression color,
 			[UXParameter("Factor")] Expression factor) :
 			base(color, factor, "scaleLightness") {}
-			
+
 		internal override float4 ColorCompute(float4 color, float value)
 		{
 			var h = ColorModel.RgbaToHsla(color);
@@ -258,20 +258,20 @@ namespace Fuse.Reactive
 			return ColorModel.HslaToRgba(h);
 		}
 	}
-	
+
 	/**
 		Adjusts the hue of the color.
-		
+
 		This adds the hue value to the hue in HSL color space. It is wrapped around to remain in the range 0..1.
 	*/
 	[UXFunction("adjustHue")]
 	public sealed class AdjustHueFunction : BinaryColorFunction
 	{
 		[UXConstructor]
-		public AdjustHueFunction([UXParameter("Color")] Expression color, 
-			[UXParameter("Hue")] Expression hue) : 
+		public AdjustHueFunction([UXParameter("Color")] Expression color,
+			[UXParameter("Hue")] Expression hue) :
 			base(color, hue, "adjustHue" ) { }
-			
+
 		internal override float4 ColorCompute(float4 color, float value)
 		{
 			var h = ColorModel.RgbaToHsla(color);
@@ -282,53 +282,53 @@ namespace Fuse.Reactive
 
 	/**
 		Converts a color from RGBA to HSLA color space.
-		
+
 		The result is a float4 with this format:
-		
+
 			float4( hue, saturation, lightness, alpha )
-		
+
 		Values in HSL are normalized just like in RGB. Hue is 0..1, covering the range 0° to 360°. Saturation and lightness are 0..1. Alpha is 0..1 is copied from the input RGBA value.
 	*/
 	[UXFunction("rgbaToHsla")]
 	public sealed class RgbaToHslaFunction : UnaryOperator
 	{
 		[UXConstructor]
-		public RgbaToHslaFunction([UXParameter("RGBA")] Expression color): 
+		public RgbaToHslaFunction([UXParameter("RGBA")] Expression color):
 			base(color, "rgbaToHsla") {}
-			
+
 		protected override bool TryCompute(object color_, out object result)
 		{
 			result = null;
-			
+
 			float4 color = float4(0);
 			if (!Marshal.TryToColorFloat4( color_, out color ))
 				return false;
-				
+
 			result = ColorModel.RgbaToHsla(color);
 			return true;
 		}
 	}
-	
+
 	/**
 		Converts a color from HSLA to RGBA.
-		
+
 		See @RgbaToHslaFunction for notes on the format.
 	*/
 	[UXFunction("hslaToRgba")]
 	public sealed class HslaToRgbaFunction : UnaryOperator
 	{
 		[UXConstructor]
-		public HslaToRgbaFunction([UXParameter("HSLA")] Expression color): 
+		public HslaToRgbaFunction([UXParameter("HSLA")] Expression color):
 			base(color, "hslaToRgba") {}
-			
+
 		protected override bool TryCompute(object color_, out object result)
 		{
 			result = null;
-			
+
 			float4 color = float4(0);
 			if (!Marshal.TryToColorFloat4( color_, out color ))
 				return false;
-				
+
 			result = ColorModel.HslaToRgba(color);
 			return true;
 		}

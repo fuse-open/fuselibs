@@ -4,7 +4,7 @@ namespace Fuse
 {
 	/**
 		If a size parameter is not availble it will reutrn 0, via Size, X, Y
-		
+
 		`struct` was chosen here over `class` for performance reasons. A lot of these objects are
 		created for node in the tree and in performance testing the structs were simply performing
 		a lot better.
@@ -27,7 +27,7 @@ namespace Fuse
 			NoRelativeY = 1<<10,
 		}
 		Flags _flags;
-		
+
 		float2 _size;
 		float2 _maxSize;
 		float2 _minSize;
@@ -40,23 +40,23 @@ namespace Fuse
 			else
 				_flags &= ~g;
 		}
-		
+
 		public bool HasX { get { return _flags.HasFlag(Flags.X); } }
 		public bool HasY { get { return _flags.HasFlag(Flags.Y); } }
 		public bool HasSize { get { return HasX && HasY; } }
-		
+
 		public bool Temporary { get { return _flags.HasFlag(Flags.Temporary); } }
-		
+
 		public bool HasMaxX { get { return _flags.HasFlag(Flags.MaxX); } }
 		public bool HasMaxY { get { return _flags.HasFlag(Flags.MaxY); } }
 		public bool HasMaxSize { get { return HasMaxX && HasMaxY; } }
-		
+
 		public bool HasMinX { get { return _flags.HasFlag(Flags.MinX); } }
 		public bool HasMinY { get { return _flags.HasFlag(Flags.MinY); } }
 		public bool HasMinSize { get { return HasMinX && HasMinY; } }
-		
+
 		public bool HasRelativeX
-		{	
+		{
 			get
 			{
 				if (_flags.HasFlag(Flags.NoRelativeX))
@@ -65,7 +65,7 @@ namespace Fuse
 			}
 		}
 		public bool HasRelativeY
-		{	
+		{
 			get
 			{
 				if (_flags.HasFlag(Flags.NoRelativeY))
@@ -73,7 +73,7 @@ namespace Fuse
 				return _flags.HasFlag(Flags.RelativeY) || HasY;
 			}
 		}
-		
+
 		/**
 			Create an exact copy of this instance.
 		*/
@@ -87,7 +87,7 @@ namespace Fuse
 			lp._relativeSize = _relativeSize;
 			return lp;
 		}
-		
+
 		static bool _warnTrueClone;
 		/** @deprecated: use `Clone` */
 		public LayoutParams TrueClone()
@@ -100,10 +100,10 @@ namespace Fuse
 			}
 			return Clone();
 		}
-		
+
 		/**
 			Create a copy of this instance that is suitable for used in layout derivation.
-			
+
 			This clears the relative settings on the layout.
 		*/
 		public LayoutParams CloneAndDerive()
@@ -116,7 +116,7 @@ namespace Fuse
 			lp._relativeSize = float2(0);
 			return lp;
 		}
-		
+
 		static bool _warnDeriveClone;
 		/** @deprecated: use `CloneAndDerive` */
 		public LayoutParams DeriveClone()
@@ -129,13 +129,13 @@ namespace Fuse
 			}
 			return CloneAndDerive();
 		}
-		
+
 		public void Reset()
 		{
 			_flags = Flags.None;
 			_size = _maxSize = _minSize = _relativeSize = float2(0);
 		}
-		
+
 		public void Copy(LayoutParams o)
 		{
 			_flags = o._flags;
@@ -144,7 +144,7 @@ namespace Fuse
 			_minSize = o._minSize;
 			_relativeSize = o._relativeSize;
 		}
-		
+
 		static public LayoutParams Create( float2 size )
 		{
 			var lp = new LayoutParams();
@@ -153,7 +153,7 @@ namespace Fuse
 			lp._size = Math.Max(float2(0), size);
 			return lp;
 		}
-		
+
 		static public LayoutParams CreateTemporary( float2 size )
 		{
 			var lp = new LayoutParams();
@@ -163,7 +163,7 @@ namespace Fuse
 			lp.SetFlag(Flags.Temporary, true);
 			return lp;
 		}
-		
+
 		static public LayoutParams CreateXY( float2 size, bool hasX, bool hasY )
 		{
 			var lp = new LayoutParams();
@@ -173,12 +173,12 @@ namespace Fuse
 			lp._size.Y = hasY ? Math.Max(size.Y,0) : 0;
 			return lp;
 		}
-		
+
 		static public LayoutParams CreateEmpty()
 		{
 			return new LayoutParams();
 		}
-		
+
 		/**
 			For removing border areas like Margin and Padding
 		*/
@@ -188,21 +188,21 @@ namespace Fuse
 			_maxSize = Math.Max(float2(0), _maxSize - size);
 			_minSize = Math.Max(float2(0), _minSize - size);
 		}
-		
+
 		public void RemoveSize( float4 size )
 		{
 			RemoveSize( size.XY + size.ZW );
 		}
-		
+
 		public void RetainAxesXY( bool x, bool y )
 		{
 			RetainXY(x,y);
 			RetainMaxXY(x,y);
 		}
-		
+
 		/**
 			Retains or discards the X/Y information.
-			
+
 			Be careful when using this, it is typically used in combination with RetainMaxXY (or RetainAxesXY in combination), or with a ConstrainMax. The layout must consider how it affects not just the X/Y values, but also the Min/Max XY values.
 		*/
 		public void RetainXY( bool x, bool y )
@@ -218,7 +218,7 @@ namespace Fuse
 				SetFlag(Flags.Y,false);
 			}
 		}
-		
+
 		public void RetainMaxXY( bool x, bool y )
 		{
 			if (!x)
@@ -232,7 +232,7 @@ namespace Fuse
 				SetFlag(Flags.MaxY,false);
 			}
 		}
-		
+
 		public void SetSize( float2 xy, bool hasX = true, bool hasY = true )
 		{
 			_size = Math.Max(float2(0),xy);
@@ -243,7 +243,7 @@ namespace Fuse
 			if (!hasY)
 				_size.Y = 0;
 		}
-		
+
 		public void SetX( float x )
 		{
 			SetFlag(Flags.X,true);
@@ -255,7 +255,7 @@ namespace Fuse
 			SetFlag(Flags.Y, true);
 			_size.Y = Math.Max(y,0);
 		}
-		
+
 		public void SetRelativeSize(float2 sz, bool hasX, bool hasY)
 		{
 			_relativeSize = Math.Max(float2(0),sz);
@@ -273,7 +273,7 @@ namespace Fuse
 				_maxSize.X = max;
 			SetFlag(Flags.MaxX,true);
 		}
-		
+
 		public void ConstrainMaxY( float max )
 		{
 			if (HasMaxY)
@@ -282,14 +282,14 @@ namespace Fuse
 				_maxSize.Y = max;
 			SetFlag(Flags.MaxY,true);
 		}
-		
+
 		public void ConstrainMax( float2 max, bool hasMaxX = true, bool hasMaxY = true )
 		{
 			max = Math.Max(float2(0),max);
-			
+
 			if (hasMaxX)
 				ConstrainMaxX(max.X);
-			
+
 			if (hasMaxY)
 				ConstrainMaxY(max.Y);
 		}
@@ -302,7 +302,7 @@ namespace Fuse
 				_minSize.X = min;
 			SetFlag(Flags.MinX,true);
 		}
-		
+
 		public void ConstrainMinY( float min )
 		{
 			if (HasMinY)
@@ -311,18 +311,18 @@ namespace Fuse
 				_minSize.Y = min;
 			SetFlag(Flags.MinY,true);
 		}
-		
+
 		public void ConstrainMin( float2 min, bool hasMinX = true, bool hasMinY = true )
 		{
 			min = Math.Max(float2(0),min);
-			
+
 			if (hasMinX)
 				ConstrainMinX(min.X);
-			
+
 			if (hasMinY)
 				ConstrainMinY(min.Y);
 		}
-		
+
 		/**
 			Do box model constraining on this with the provided constraints.
 		*/
@@ -332,7 +332,7 @@ namespace Fuse
 			ConstrainMax(o.MaxSize, o.HasMaxX, o.HasMaxY);
 			ConstrainMin(o.MinSize, o.HasMinX, o.HasMinY);
 		}
-		
+
 		/**
 			Apply ordered constraints of this LayoutParams to the point.
 		*/
@@ -342,7 +342,7 @@ namespace Fuse
 			var y = true;
 			return PointConstrain(p,ref x,ref y);
 		}
-		
+
 		float2 PointConstrain( float2 p, ref bool knowX, ref bool knowY )
 		{
 			if (HasX)
@@ -360,7 +360,7 @@ namespace Fuse
 				p.X = knowX ? Math.Max(p.X, MinX) : MinX;
 				knowX = true;
 			}
-				
+
 			if (HasY)
 			{
 				p.Y = Y;
@@ -376,56 +376,56 @@ namespace Fuse
 				p.Y = knowY ? Math.Max(p.Y, MinY) : MinY;
 				knowY = true;
 			}
-			
+
 			return p;
 		}
-		
+
 		public float2 GetAvailableSize()
 		{
 			var x = false;
 			var y = false;
 			return PointConstrain(float2(0), ref x, ref y);
 		}
-		
+
 		public float2 GetAvailableSize( out bool hasX, out bool hasY )
 		{
 			hasX = false;
 			hasY = false;
 			return PointConstrain(float2(0), ref hasX, ref hasY);
 		}
-		
+
 		public float2 Size { get { return _size; } }
 		public float X { get { return _size.X; } }
 		public float Y { get { return _size.Y; } }
-		
+
 		public float2 MaxSize { get { return _maxSize; } }
 		public float MaxX { get { return _maxSize.X; } }
 		public float MaxY { get { return _maxSize.Y; } }
-		
+
 		public float2 MinSize { get { return _minSize; } }
 		public float MinX { get { return _minSize.X; } }
 		public float MinY { get { return _minSize.Y; } }
 
 		public float2 RelativeSize { get { return float2(RelativeX, RelativeY); } }
-		public float RelativeX 
-		{ 
-			get 
-			{ 
+		public float RelativeX
+		{
+			get
+			{
 				if (_flags.HasFlag(Flags.NoRelativeX))
 					return 0;
-				return _flags.HasFlag(Flags.RelativeX) ? _relativeSize.X : _size.X; 
+				return _flags.HasFlag(Flags.RelativeX) ? _relativeSize.X : _size.X;
 			}
 		}
-		public float RelativeY 
-		{ 
-			get 
-			{ 
+		public float RelativeY
+		{
+			get
+			{
 				if (_flags.HasFlag(Flags.NoRelativeY))
 					return 0;
-				return _flags.HasFlag(Flags.RelativeY) ? _relativeSize.Y : _size.Y; 
-			} 
+				return _flags.HasFlag(Flags.RelativeY) ? _relativeSize.Y : _size.Y;
+			}
 		}
-		
+
 		//just for debugging
 		internal string Format()
 		{
@@ -439,7 +439,7 @@ namespace Fuse
 				s += _size.Y;
 			else
 				s += "*";
-			
+
 			s += "] Max=[";
 			if (HasMaxX)
 				s += _maxSize.X;
@@ -450,7 +450,7 @@ namespace Fuse
 				s += _maxSize.Y;
 			else
 				s += "*";
-	
+
 			s += "] Min=[";
 			if (HasMinX)
 				s += _minSize.X;
@@ -461,7 +461,7 @@ namespace Fuse
 				s += _minSize.Y;
 			else
 				s += "*";
-				
+
 			s += "] Rel=[";
 			if (HasRelativeX)
 				s += RelativeX;
@@ -475,9 +475,9 @@ namespace Fuse
 			s += "]}";
 			return s;
 		}
-		
+
 		public bool IsCompatible(LayoutParams nlp)
-		{	
+		{
 			if (HasX != nlp.HasX || HasY != nlp.HasY ||
 				HasMaxX != nlp.HasMaxX || HasMaxY != nlp.HasMaxY ||
 				HasMinX != nlp.HasMinX || HasMinY != nlp.HasMinY)
@@ -500,7 +500,7 @@ namespace Fuse
 				return false;
 			if (HasRelativeY && (Math.Abs(RelativeY - nlp.RelativeY) > zeroTolerance))
 				return false;
-				
+
 			return true;
 		}
 	}

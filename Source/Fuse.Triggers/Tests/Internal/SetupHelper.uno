@@ -14,7 +14,7 @@ namespace Fuse.Triggers.Test
 		{
 			//this should all happen at once in terms of rooting (vital to the trigger actions)
 			var capture = Node.CaptureRooting();
-			
+
 			var se = AddAction(control, trigger);
 			var panel = new Panel();
 			se.Panel = panel;
@@ -29,7 +29,7 @@ namespace Fuse.Triggers.Test
 			root.PumpDeferred();
 			return se;
 		}
-		
+
 		public static SetupEntity AddAction(Element control, Trigger trigger)
 		{
 			var forwardTriggerAction = new FuseTest.CountAction();

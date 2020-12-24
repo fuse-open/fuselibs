@@ -8,7 +8,7 @@ namespace Fuse
 	{
 		static PropertyHandle _isContextEnabledChangedHandle = Fuse.Properties.CreateHandle();
 
-		/** Raised when the IsContextEnabled property changes 
+		/** Raised when the IsContextEnabled property changes
 			@advanced */
 		public event EventHandler IsContextEnabledChanged
 		{
@@ -19,7 +19,7 @@ namespace Fuse
 		static readonly Selector _isEnabledName = "IsEnabled";
 		/** Whether this node is currently interactable.
 			Disabled visuals do not receive input focus. However, they can still
-			be visible and block hit test for underlaying objects. 
+			be visible and block hit test for underlaying objects.
 
 			You can use the @WhileEnabled and @WhileDisabled triggers to specify different styling for
 			a visual while enabled/disabled.
@@ -29,8 +29,8 @@ namespace Fuse
 		public bool IsEnabled
 		{
 			get { return HasBit(FastProperty1.IsEnabled); }
-			set 
-			{ 
+			set
+			{
 				if (value != IsEnabled)
 				{
 					SetBit(FastProperty1.IsEnabled, value);
@@ -44,11 +44,11 @@ namespace Fuse
 		{
 			OnPropertyChanged(_isEnabledName, origin);
 		}
-		
+
 		/** Whether this node is in an enabled context.
 			The context is disabled if one of the ancestor nodes have @IsEnabled set to `false`.
 
-			You can use the @WhileContextEnabled and @WhileContextDisabled triggers to specify different 
+			You can use the @WhileContextEnabled and @WhileContextDisabled triggers to specify different
 			styling for	a visual while the context is enabled or disabled.
 
 			@see IsEnabled
@@ -71,7 +71,7 @@ namespace Fuse
 					v.UpdateIsContextEnabledCache();
 			}
 		}
-		
+
 		protected virtual void OnIsContextEnabledChanged()
 		{
 			RaiseEvent(_isContextEnabledChangedHandle, VisualBits.IsContextEnabledChanged);

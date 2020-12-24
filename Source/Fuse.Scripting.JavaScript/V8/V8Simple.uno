@@ -151,11 +151,11 @@ namespace Fuse.Scripting.V8.Simple
 	extern(USE_V8) static class Debug
 	{
 		public static extern(DOTNET) void SetMessageHandler(JSContext context, IntPtr data, JSDebugMessageHandler messageHandler);
-		public static extern void SendCommand(JSContext context, string command, int length) @{ 
-			//::SendJSDebugCommand($0, (uint16_t*)$1->Ptr(), $2); 
+		public static extern void SendCommand(JSContext context, string command, int length) @{
+			//::SendJSDebugCommand($0, (uint16_t*)$1->Ptr(), $2);
 		@}
-		public static extern void ProcessMessages(JSContext context) @{ 
-			//::ProcessJSDebugMessages($0); 
+		public static extern void ProcessMessages(JSContext context) @{
+			//::ProcessJSDebugMessages($0);
 		@}
 	}
 

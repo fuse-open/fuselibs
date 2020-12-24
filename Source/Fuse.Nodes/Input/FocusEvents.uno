@@ -1,7 +1,7 @@
 
 namespace Fuse.Input
 {
-	
+
 	// --- FocusGained ---
 
 	public class FocusGainedArgs: VisualEventArgs
@@ -54,5 +54,5 @@ namespace Fuse.Input
 	}
 
 
-	
+
 }

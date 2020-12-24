@@ -120,7 +120,7 @@ namespace Fuse.Reactive.Test
 
 				Assert.AreEqual("bar", e.t.StringValue);
 				Assert.AreEqual("bar", e.ti.Value);
-				
+
 				root.StepFrameJS();
 				Assert.AreEqual("True", e.wasChanged.StringValue);
 			}

@@ -30,30 +30,30 @@ namespace Fuse.Controls
 		{
 			return CreateEllipticalPath( surface, ActualSize/2, ActualSize/2 );
 		}
-		
+
 		protected override void OnHitTestLocalVisual(Fuse.HitTestContext htc)
 		{
 			base.OnHitTestLocalVisual(htc);
-			
+
 			if (!HasFills)
 				return;
-				
+
 			const float pointsZeroTolerance = 1e-05f;
 			if (ActualSize.Y < pointsZeroTolerance || ActualSize.X < pointsZeroTolerance)
 				return;
 			//normalized point offset from center of control
 			var offPoint = (htc.LocalPoint - ActualSize/2) / (ActualSize/2);
-			
+
 			if (Vector.Length(offPoint) > 1)
 				return;
-			
+
 			if (UseAngle)
 			{
 				var localAngle = Math.Atan2(offPoint.Y,offPoint.X);
 				if (!SurfaceUtil.AngleInRange(localAngle, StartAngle, EffectiveEndAngle))
 					return;
 			}
-			
+
 			htc.Hit(this);
 		}
 	}

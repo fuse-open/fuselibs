@@ -10,15 +10,15 @@ namespace Fuse.Effects
 			: base(effectType)
 		{
 		}
-		
+
 		public override void Render(DrawContext dc)
 		{
 			var rect = GetLocalElementRect();
 			OnRender(dc, rect);
 		}
-		
+
 		protected abstract void OnRender(DrawContext dc, Rect region);
-		
+
 		internal static Recti ConservativelySnapToCoveringIntegers(Rect r)
 		{
 			// To prevent translations from affecting the size, round off origin and size
@@ -34,7 +34,7 @@ namespace Fuse.Effects
 		protected Rect GetLocalElementRect()
 		{
 			var ir = ConservativelySnapToCoveringIntegers(
-				Rect.Scale(Element.RenderBoundsWithoutEffects.FlatRect, Element.AbsoluteZoom)); 
+				Rect.Scale(Element.RenderBoundsWithoutEffects.FlatRect, Element.AbsoluteZoom));
 			return new Rect(ir.Minimum.X/Element.AbsoluteZoom,
 				ir.Minimum.Y/Element.AbsoluteZoom,
 				ir.Maximum.X/Element.AbsoluteZoom,

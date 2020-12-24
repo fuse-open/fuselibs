@@ -68,12 +68,12 @@ namespace Fuse
 			{
 				get
 				{
-					if (_array != null) 
+					if (_array != null)
 					{
 						if (_array[_pos] == null) throw new Exception();
 						return _array[_pos];
 					}
-					else 
+					else
 					{
 						if (_current == null) throw new Exception();
 						return _current;
@@ -95,7 +95,7 @@ namespace Fuse
 
 				if (_array != null)
 					return _pos < _array.Length;
-				
+
 				if (_current == null) _current = _v._firstChild;
 				else _current = _current._nextSibling;
 
@@ -164,10 +164,10 @@ namespace Fuse
 							_current = _current._nextSibling;
 						}
 						// the copied array is just a subset, so reset index
-						if (_pos != -1 && _array.Length > 0) _pos = 0; 
+						if (_pos != -1 && _array.Length > 0) _pos = 0;
 
 						// tempting, but not correct. when _pos != -1, it uses _array[_pos]
-						// _current = _array[0]; 
+						// _current = _array[0];
 					}
 				}
 

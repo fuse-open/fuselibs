@@ -9,7 +9,7 @@ namespace Fuse
 {
 	public partial class Visual
 	{
-        // Offers a fast but unsafe (as in doesn't deal correclty with changes) enumeration over 
+        // Offers a fast but unsafe (as in doesn't deal correclty with changes) enumeration over
         // exclusively the visual children of the visual.
         // This is only mean to interface with APIs that require IEnumerable<Visual> - for general
         // purpose enumeration, use FirstChild<Visual>() and NextSibling<Visual>()
@@ -44,7 +44,7 @@ namespace Fuse
             }
 
             public T Current { get { return _current; } }
-            public void Reset() { _current = null; _reachedEnd = false; } 
+            public void Reset() { _current = null; _reachedEnd = false; }
             public void Dispose() { Reset(); _parent = null;  }
         }
     }

@@ -24,7 +24,7 @@ namespace Fuse.Controls
 				pos = float2(0);
 				return false;
 			}
-			
+
 			pos = args.Length == 1 ?
 				s.FromScalarPosition(Marshal.ToFloat(args[0])) :
 				float2(Marshal.ToFloat(args[0]), Marshal.ToFloat(args[1]));
@@ -33,7 +33,7 @@ namespace Fuse.Controls
 
 		/**
 			Scroll to an absolute position (in points).
-			
+
 			@scriptmethod goto(absolutePosition)
 			@scriptmethod goto(absoluteX, absoluteY)
 		*/
@@ -44,10 +44,10 @@ namespace Fuse.Controls
 				return;
 			s.Goto(pos);
 		}
-		
+
 		/**
 			Scroll to a relative position (range 0..1 over the full scrolling range).
-			
+
 			@scriptmethod gotoRelative(relativePosition)
 			@scriptmethod gotoRelative(relativeX, relativeY)
 		*/
@@ -58,10 +58,10 @@ namespace Fuse.Controls
 				return;
 			s.GotoRelative(pos);
 		}
-		
+
 		/**
 			Seek to an absolute position (in points). This bypasses the scrolling animation.
-			
+
 			@scriptmethod seekTo(absolutePosition)
 			@scriptmethod seekTo(absoluteX, absoluteY)
 		*/
@@ -72,10 +72,10 @@ namespace Fuse.Controls
 				return;
 			s.ScrollPosition = pos;
 		}
-		
+
 		/**
 			Seek to a relative position (range 0..1 over the full scrolling range). This bypasses the scrolling animation.
-			
+
 			@scriptmethod seekToRelative(relativePosition)
 			@scriptmethod seekToRelative(relativeX, relativeY)
 		*/

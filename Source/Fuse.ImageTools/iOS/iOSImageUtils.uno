@@ -64,7 +64,7 @@ namespace Fuse.ImageTools
 				[ImageHelper imageFromData:data onComplete:onSuccess onFail:onFail];
 			});
 		@}
-		
+
 		[Foreign(Language.ObjC)]
 		public static string GetImageFromBufferSync(byte[] byteArray)
 		@{

@@ -9,12 +9,12 @@ using Uno.Threading;
 
 namespace Fuse.PushNotifications
 {
-	
+
 	[ForeignInclude(Language.Java,
 		"android.util.Log",
 		"com.google.firebase.iid.FirebaseInstanceId",
-		"java.util.ArrayList", 
-		"java.util.List", 
+		"java.util.ArrayList",
+		"java.util.List",
 		"android.graphics.Color"
 	)]
 	[Require("Gradle.Dependency.ClassPath", "com.google.gms:google-services:4.3.2")]

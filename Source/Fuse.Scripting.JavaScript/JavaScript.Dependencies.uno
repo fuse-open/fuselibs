@@ -55,7 +55,7 @@ namespace Fuse.Reactive
 
 				_script.DispatchEvaluateIfDependenciesReady();
 			}
-			
+
 			void IListener.OnLostData(IExpression source)
 			{
 				//TODO: uncertain now, maybe nothing is correct (keep currently evaluated state)
@@ -65,9 +65,9 @@ namespace Fuse.Reactive
 
    		List<Dependency> _dependencies;
 		/** A list of named expressions that will be evaluated and injected as variables into the script.
-		
+
 			This property allows injecting dependencies defined as UX expressions into the script using the `dep:` XML namespace.
-			
+
 			Example:
 
 				<JavaScript>
@@ -83,20 +83,20 @@ namespace Fuse.Reactive
 			* Accessing data from data context `dep:foo="{foo}"`
 			* Accessing properties synchronously `dep:SomeProp="{Property SomeProp}"`
 		*/
-		public IList<Dependency> Dependencies 
-		{ 
-			get 
+		public IList<Dependency> Dependencies
+		{
+			get
 			{
-				if (_dependencies == null) 
+				if (_dependencies == null)
 					_dependencies = new List<Dependency>();
 
-				return _dependencies; 
-			} 
+				return _dependencies;
+			}
 		}
 
-		void SubscribeToDependenciesAndDispatchEvaluate() 
+		void SubscribeToDependenciesAndDispatchEvaluate()
 		{
-			if (_dependencies != null) 
+			if (_dependencies != null)
 				for (var i = 0; i < _dependencies.Count; i++)
 					_dependencies[i].Subscribe(this);
 
@@ -105,14 +105,14 @@ namespace Fuse.Reactive
 
 		void DisposeDependencySubscriptions()
 		{
-			if (_dependencies != null) 
+			if (_dependencies != null)
 				for (var i = 0; i < _dependencies.Count; i++)
 					_dependencies[i].Unsubscribe();
 		}
 
 		void DispatchEvaluateIfDependenciesReady()
 		{
-			if (_dependencies != null) 
+			if (_dependencies != null)
 				for (var i = 0; i < _dependencies.Count; i++)
 					if (!_dependencies[i].HasValue) return;
 
@@ -138,7 +138,7 @@ namespace Fuse.Reactive
 		{
 			if (_preserveModuleInstance)
 				return;
-				
+
 			if (_moduleInstance != null)
 			{
 				_moduleInstance.Dispose();

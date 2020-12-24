@@ -54,7 +54,7 @@ namespace Fuse.Triggers.Test
 				Assert.AreEqual(0.5, TriggerProgress(p.B2), eps + root.StepIncrement*2); //TODO: this seems to be too many frames off now
 			}
 		}
-		
+
 		[Test]
 		//a timing issue found in https://github.com/fusetools/fuselibs-private/issues/3489
 		public void EmptyTiming()
@@ -64,23 +64,23 @@ namespace Fuse.Triggers.Test
 			{
 				Assert.AreEqual(1,TriggerProgress(p.A));
 				Assert.AreEqual(0,TriggerProgress(p.B));
-				
+
 				p.SG.Active = p.B;
 				root.PumpDeferred();
 				Assert.AreEqual(0,TriggerProgress(p.A));
 				Assert.AreEqual(0,TriggerProgress(p.B));
 				Assert.AreEqual(TriggerPlayState.Forward, p.B.PlayState);
-				
+
  				Assert.AreEqual(1, p.C1.PerformedCount);
  				Assert.AreEqual(0, p.C2.PerformedCount);
 				Assert.AreEqual(1, p.C3.PerformedCount);
 				Assert.AreEqual(0, p.C4.PerformedCount);
-				
+
 				root.StepFrame(0.5f);
 				Assert.AreEqual(0.5f,TriggerProgress(p.B));
 			}
 		}
-		
+
 		[Test]
 		public void Root()
 		{
@@ -91,11 +91,11 @@ namespace Fuse.Triggers.Test
 				Assert.AreEqual(1, TriggerProgress(p.A));
 				p.B.Goto();
 				Assert.AreEqual(p.B, p.SG.Active);
-				
+
 				root.PumpDeferred();
 				Assert.AreEqual(0, TriggerProgress(p.A));
 				Assert.AreEqual(1, TriggerProgress(p.B));
-				
+
 				p.Children.Remove(p.SG);
 				root.IncrementFrame();
 				p.Children.Add(p.SG);
@@ -104,7 +104,7 @@ namespace Fuse.Triggers.Test
 				Assert.AreEqual(1, TriggerProgress(p.B));
 			}
 		}
-		
+
 		[Test]
 		public void Interrupt()
 		{
@@ -112,16 +112,16 @@ namespace Fuse.Triggers.Test
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
 				var eps = root.StepIncrement + _zeroTolerance;
-				
+
 				Assert.AreEqual(p.A, p.SG.Active);
 				Assert.AreEqual(1, TriggerProgress(p.A));
 				p.B.Goto();
 				Assert.AreEqual(p.B, p.SG.Active);
 				root.StepFrame(0.5f);
-				
+
 				Assert.AreEqual(0.5f, TriggerProgress(p.A), eps);
 				Assert.AreEqual(0f, TriggerProgress(p.B));
-				
+
 				eps += 2*root.StepIncrement; //drifting 1-2 frames on each switch
 				p.C.Goto();
 				Assert.AreEqual(p.C, p.SG.Active);
@@ -131,7 +131,7 @@ namespace Fuse.Triggers.Test
 				Assert.AreEqual(0.5f, TriggerProgress(p.C), eps);
 			}
 		}
-		
+
 		[Test]
 		public void TransitionState()
 		{
@@ -139,7 +139,7 @@ namespace Fuse.Triggers.Test
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
 				Assert.AreEqual(p.s1,p.sg.Active);
-				
+
 				p.t1.Pulse();
 				root.PumpDeferred();
 				Assert.AreEqual(p.s2,p.sg.Active);
@@ -153,7 +153,7 @@ namespace Fuse.Triggers.Test
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
 				Assert.AreEqual(p.s1,p.sg.Active);
-				
+
 				p.t1.Pulse();
 				root.PumpDeferred();
 				Assert.AreEqual(p.s3,p.sg.Active);

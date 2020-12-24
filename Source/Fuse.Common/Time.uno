@@ -19,7 +19,7 @@ namespace Fuse
 			_prev = start;
 			_init = true;
 		}
-		
+
 		internal static void Set(double current)
 		{
 			if (!_init)
@@ -40,14 +40,14 @@ namespace Fuse
 		{
 			get { return _current - _base; }
 		}
-		
+
 		/** Returns the number of seconds between the beginning of this frame and the beginning
 			of last frame. */
 		public static double FrameInterval
 		{
 			get { return _delta; }
 		}
-		
+
 		/** The timestamp (in seconds) used as base for this timer */
 		public static double FrameTimeBase
 		{

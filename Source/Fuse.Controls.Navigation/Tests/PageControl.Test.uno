@@ -44,7 +44,7 @@ namespace Fuse.Controls.Test
 				Assert.AreEqual( p.B, p.PC.Active );
 				Assert.AreEqual( "1", p.Q.Value );
 				Assert.AreEqual( "Page1", p.R.Value );
-				
+
 				p.RouteGoto4.Pulse();
 				root.MultiStepFrameJS(2);
 				Assert.AreEqual( 3, p.PC.ActiveIndex );
@@ -53,7 +53,7 @@ namespace Fuse.Controls.Test
 				Assert.AreEqual( "Page3", p.R.Value );
 			}
 		}
-		
+
 		[Test]
 		/** Ensures the SwipeNavigate integration is working (see SwipeNavigate.Test.uno for a more complete feature test */
 		public void Swipe()
@@ -68,7 +68,7 @@ namespace Fuse.Controls.Test
 				Assert.AreEqual(p.P2,p.Active);
 			}
 		}
-		
+
 		[Test]
 		//ensure specific distance covered by swiping
 		public void SwipeProgress()
@@ -77,9 +77,9 @@ namespace Fuse.Controls.Test
 			using (var root = TestRootPanel.CreateWithChild(p,int2(1000)))
 			{
 				Assert.AreEqual(0, (p as INavigation).PageProgress);
-				
+
 				(p as INavigation).PageProgressChanged += OnPageProgressChanged;
-				
+
 				float speed = 100;
 				root.PointerPress( float2(800,200) );
 				root.PointerSlide( float2(800,200), float2(550,200), speed);
@@ -88,7 +88,7 @@ namespace Fuse.Controls.Test
 				Assert.AreEqual(0.25 - Fuse.Input.Gesture.HardCaptureSignificanceThreshold/1000,
 					(p as INavigation).PageProgress,
 					root.StepIncrement * speed / 1000 + ZeroTolerance);
-					
+
 				//trying to check jitter https://github.com/fusetools/fuselibs-private/issues/3597
 				//the test doesn't produce "actual" jitter though, but it does detect the extra calls to progress changed
 				Assert.IsTrue(_absChangedSum < 0.25);
@@ -98,7 +98,7 @@ namespace Fuse.Controls.Test
 
 		string SafeFormat( RouterPageRoute r )
 		{
-			if (r == null) 
+			if (r == null)
 				return "*null*";
 			return r.Format();
 		}
@@ -136,7 +136,7 @@ namespace Fuse.Controls.Test
 
 			}
 		}
-		
+
 		double _absChangedSum;
 		int _progressCount;
 		void OnPageProgressChanged(object s, NavigationArgs args)
@@ -145,7 +145,7 @@ namespace Fuse.Controls.Test
 			var diff = args.Progress - args.PreviousProgress;
 			_absChangedSum += Math.Abs(diff);
 		}
-		
+
 		[Test]
 		public void DynamicActiveIndex()
 		{
@@ -154,18 +154,18 @@ namespace Fuse.Controls.Test
 			{
 				//give any changes to ActiveIndex a chance to propagate in both directions
 				root.StepFrameJS();
-				root.StepFrameJS(); 
+				root.StepFrameJS();
 				Assert.AreEqual( 2, p.index.Value );
-				
+
 				p.callAdd.Perform();
 				root.StepFrameJS();
 				Assert.AreEqual( 2, p.index.Value );
-				
+
 				p.goForward.Pulse();
 				root.StepFrame(5);
 				root.StepFrameJS();
 				Assert.AreEqual( 1, p.index.Value );
-				
+
 				//swipe left (default to go forward)
 				root.PointerSwipe( float2(100,100), float2(800,100), 300 );
 				root.StepFrame(5); //stabilize
@@ -173,7 +173,7 @@ namespace Fuse.Controls.Test
 				Assert.AreEqual( 0, p.index.Value );
 			}
 		}
-		
+
 		[Test]
 		public void Active()
 		{
@@ -187,7 +187,7 @@ namespace Fuse.Controls.Test
 				Assert.AreEqual( 0, p.p1.an.Progress );
 			}
 		}
-		
+
 		[Test]
 		//ensuring it works without content
 		public void Empty()
@@ -198,7 +198,7 @@ namespace Fuse.Controls.Test
 				Assert.AreEqual( null, p.pc.Active );
 			}
 		}
-		
+
 		[Test]
 		public void WhileTrigger()
 		{
@@ -210,7 +210,7 @@ namespace Fuse.Controls.Test
 				Assert.AreEqual( 1, p.wb1.Progress );
 				Assert.AreEqual( 0, p.wf2.Progress );
 				Assert.AreEqual( 1, p.wb2.Progress );
-				
+
 				p.nav.GoBack();
 				root.PumpDeferred();
 				Assert.AreEqual( p.pb, p.nav.Active );
@@ -218,7 +218,7 @@ namespace Fuse.Controls.Test
 				Assert.AreEqual( 1, p.wb1.Progress );
 				Assert.AreEqual( 1, p.wf2.Progress );
 				Assert.AreEqual( 1, p.wb2.Progress );
-				
+
 				p.nav.GoBack();
 				root.PumpDeferred();
 				Assert.AreEqual( p.pc, p.nav.Active );
@@ -226,7 +226,7 @@ namespace Fuse.Controls.Test
 				Assert.AreEqual( 0, p.wb1.Progress );
 				Assert.AreEqual( 1, p.wf2.Progress );
 				Assert.AreEqual( 0, p.wb2.Progress );
-				
+
 				p.nav.GoForward();
 				root.PumpDeferred();
 				Assert.AreEqual( p.pb, p.nav.Active );
@@ -236,7 +236,7 @@ namespace Fuse.Controls.Test
 				Assert.AreEqual( 1, p.wb2.Progress );
 			}
 		}
-		
+
 		[Test]
 		//variant without a PageControl.Active set initially
 		public void WhileTrigger2()
@@ -249,7 +249,7 @@ namespace Fuse.Controls.Test
 				Assert.AreEqual( 1, p.wb1.Progress );
 				Assert.AreEqual( 0, p.wf2.Progress );
 				Assert.AreEqual( 1, p.wb2.Progress );
-				
+
 				p.nav.GoBack();
 				root.PumpDeferred();
 				Assert.AreEqual( p.pb, p.nav.Active );
@@ -259,7 +259,7 @@ namespace Fuse.Controls.Test
 				Assert.AreEqual( 1, p.wb2.Progress );
 			}
 		}
-		
+
 		[Test]
 		public void WhileActive()
 		{
@@ -269,19 +269,19 @@ namespace Fuse.Controls.Test
 				Assert.AreEqual( 1, p.paA.Progress );
 				Assert.AreEqual( 0, p.pbA.Progress );
 				Assert.AreEqual( 0, p.pcA.Progress );
-				
+
 				p.nav.GoBack();
 				root.StepFrame();
 				Assert.AreEqual( 0, p.paA.Progress );
 				Assert.AreEqual( 1, p.pbA.Progress );
 				Assert.AreEqual( 0, p.pcA.Progress );
-				
+
 				p.nav.GoBack();
 				root.StepFrame();
 				Assert.AreEqual( 0, p.paA.Progress );
 				Assert.AreEqual( 0, p.pbA.Progress );
 				Assert.AreEqual( 1, p.pcA.Progress );
-				
+
 				p.nav.GoForward();
 				root.StepFrame();
 				Assert.AreEqual( 0, p.paA.Progress );
@@ -289,7 +289,7 @@ namespace Fuse.Controls.Test
 				Assert.AreEqual( 0, p.pcA.Progress );
 			}
 		}
-		
+
 		[Test]
 		//by default inactive pages will be collapsed
 		public void Visibility()
@@ -303,7 +303,7 @@ namespace Fuse.Controls.Test
 				Assert.AreEqual( 1, p.pav.Progress );
 				Assert.AreEqual( 0, p.pbv.Progress );
 				Assert.AreEqual( 0, p.pcv.Progress );
-				
+
 				p.nav.Active = p.pb;
 				root.StepFrame(0.1f); //just a bit, both visible
 				Assert.AreEqual( Fuse.Elements.Visibility.Visible, p.pa.Visibility );
@@ -312,7 +312,7 @@ namespace Fuse.Controls.Test
 				Assert.AreEqual( 1, p.pav.Progress );
 				Assert.AreEqual( 1, p.pbv.Progress );
 				Assert.AreEqual( 0, p.pcv.Progress );
-				
+
 				root.StepFrame(1); //complete animation
 				Assert.AreEqual( Fuse.Elements.Visibility.Collapsed, p.pa.Visibility );
 				Assert.AreEqual( Fuse.Elements.Visibility.Visible, p.pb.Visibility );
@@ -322,7 +322,7 @@ namespace Fuse.Controls.Test
 				Assert.AreEqual( 0, p.pcv.Progress );
 			}
 		}
-		
+
 		[Test]
 		public void PagesBasic()
 		{
@@ -335,14 +335,14 @@ namespace Fuse.Controls.Test
 				//ensure the Template instantiation isn't overdone
 				Assert.AreEqual( 3, FuseTest.InstanceCounter.Count );
 				Assert.AreEqual( 3, GetChildren<Page>(p.pc).Length );
-				
+
 				p.goto1.Perform();
 				root.StepFrameJS();
 				Assert.AreEqual("two", GetRecursiveText(p.pc.Active));
 				Assert.AreEqual( 3, FuseTest.InstanceCounter.Count );
 			}
 		}
-		
+
 		[Test]
 		//trying to get the Pages value known at rooting time to invoke other code paths
 		public void PagesRoot()
@@ -351,17 +351,17 @@ namespace Fuse.Controls.Test
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
 				root.StepFrameJS();
-				
+
 				p.w.Value = true;
 				root.StepFrameJS();
 				Assert.AreEqual("one", GetRecursiveText(p.pc.Active));
-				
+
 				p.goto1.Perform();
 				root.StepFrameJS();
 				Assert.AreEqual("two", GetRecursiveText(p.pc.Active));
 			}
 		}
-		
+
 		[Test]
 		public void PagesChange()
 		{
@@ -373,20 +373,20 @@ namespace Fuse.Controls.Test
 				Assert.AreEqual("one,two,three", GetRecursiveText(p.pc));
 				Assert.AreEqual("two", GetRecursiveText(p.pc.Active));
 				Assert.AreEqual( 3, FuseTest.InstanceCounter.Count );
-				
+
 				p.callAdd.Perform();
 				root.StepFrameJS();
 				Assert.AreEqual("one,two,three,four", GetRecursiveText(p.pc));
 				Assert.AreEqual("two", GetRecursiveText(p.pc.Active));
 				Assert.AreEqual( 4, FuseTest.InstanceCounter.Count );
-				
+
 				p.callInsert.Perform();
 				root.StepFrameJS();
 				Assert.AreEqual("five,one,two,three,four", GetRecursiveText(p.pc));
 				//Index is considered the dominant selector, thus the active page changes
 				Assert.AreEqual("one", GetRecursiveText(p.pc.Active));
 				Assert.AreEqual( 5, FuseTest.InstanceCounter.Count );
-				
+
 				p.callRemove.Perform();
 				root.StepFrameJS();
 				Assert.AreEqual("five,three,four", GetRecursiveText(p.pc));
@@ -394,7 +394,7 @@ namespace Fuse.Controls.Test
 				Assert.AreEqual( 5, FuseTest.InstanceCounter.Count );
 			}
 		}
-		
+
 		[Test]
 		public void PageHistory()
 		{
@@ -405,7 +405,7 @@ namespace Fuse.Controls.Test
 				Assert.AreEqual( p.b, p.pc.Active );
 			}
 		}
-		
+
 		[Test]
 		public void ActiveStringBinding()
 		{

@@ -11,7 +11,7 @@ namespace Fuse.VideoTools
 		@scriptmodule FuseJS/VideoTools
 
 		Utility methods for video files manipulation. Currently only supports moving a video file to the camera roll.
-		
+
 		> To use this module, add `Fuse.CameraView` to your package references in your `.unoproj`.
 
 
@@ -59,7 +59,7 @@ namespace Fuse.VideoTools
 			}
 		}
 
-		extern (iOS) internal class iOSVideoTools 
+		extern (iOS) internal class iOSVideoTools
 		{
 			[Require("Xcode.Framework", "AssetsLibrary")]
 			[Require("Source.Include", "AssetsLibrary/AssetsLibrary.h")]
@@ -82,7 +82,7 @@ namespace Fuse.VideoTools
 						}];
 					}];
 				}
-				else 
+				else
 				{
 					return false;
 				}
@@ -91,12 +91,12 @@ namespace Fuse.VideoTools
 			@}
 		}
 
-		[ForeignInclude(Language.Java, 
-			"android.os.Environment", 
+		[ForeignInclude(Language.Java,
+			"android.os.Environment",
 			"java.io.File",
 			"android.media.MediaScannerConnection"
 		)]
-		extern (Android) internal class AndroidVideoTools 
+		extern (Android) internal class AndroidVideoTools
 		{
 			[Foreign(Language.Java)]
 			public static bool SaveVideo(string outputFileURL)
@@ -118,7 +118,7 @@ namespace Fuse.VideoTools
 					outPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES) + "/" + originalFile.getName();
 				else
 					outPath = com.fuse.Activity.getRootActivity().getFilesDir().getAbsolutePath() + "/" + originalFile.getName();
-				
+
 				try {
 					destinationFile = new File(outPath);
 				} catch (Exception e) {

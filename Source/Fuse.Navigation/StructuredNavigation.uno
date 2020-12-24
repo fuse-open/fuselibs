@@ -29,8 +29,8 @@ namespace Fuse.Navigation
 
 		MotionConfig _motion;
 		[UXContent]
-		public MotionConfig Motion 
-		{ 	
+		public MotionConfig Motion
+		{
 			get
 			{
 				if (_motion == null)
@@ -44,9 +44,9 @@ namespace Fuse.Navigation
 					Fuse.Diagnostics.UserError( "Motion should not be changed post-rooting", this );
 			}
 		}
-		
+
 		BoundedRegion2D _region;
-			
+
 		protected override void OnRooted()
 		{
 			base.OnRooted();
@@ -58,13 +58,13 @@ namespace Fuse.Navigation
 			// https://github.com/fusetools/fuselibs-private/issues/3427
 			if (_active != null && !Parent.Children.Contains(_active))
 				SetActive(null);
-				
+
 			if (PageCount > 0 && _active == null)
 				SetActive(GetPage(0));
 
 			if (_active != null)
 				GotoImpl(_active, NavigationGotoMode.Bypass);
-			
+
 			_region = Motion.AcquireSimulation();
 			_region.Position = float2(_progress,0);
 		}
@@ -77,7 +77,7 @@ namespace Fuse.Navigation
 				_region = null;
 				Motion.ReleaseSimulation();
 			}
-				
+
 			CheckNeedUpdate(true);
 			base.OnUnrooted();
 		}
@@ -92,7 +92,7 @@ namespace Fuse.Navigation
 			if (mode != NavigationGotoMode.Transition &&
 				mode != NavigationGotoMode.Bypass)
 				return;
-		
+
 			if (Parent == null)
 			{
 				//queue until rooted
@@ -118,7 +118,7 @@ namespace Fuse.Navigation
 				SetActive(null);
 				return;
 			}
-			
+
 			if (!Parent.Children.Contains(element))
 			{
 				if (Mode == NavigationStructure.Hierarchical)
@@ -146,7 +146,7 @@ namespace Fuse.Navigation
 			TransitionToChild(element, mode.HasFlag(NavigationGotoMode.Bypass) );
 			OnHistoryChanged();
 		}
-		
+
 		public void QueueClearForwardHistory()
 		{
 			_queueClearForwardHistory = true;
@@ -180,7 +180,7 @@ namespace Fuse.Navigation
 			CheckNeedUpdate();
 			return true;
 		}
-		
+
 		bool _hasUpdated;
 		void CheckNeedUpdate(bool off = false)
 		{
@@ -200,7 +200,7 @@ namespace Fuse.Navigation
 				_hasUpdated = false;
 			}
 		}
-		
+
 		void OnUpdated()
 		{
 			if (_region == null)
@@ -208,7 +208,7 @@ namespace Fuse.Navigation
 				Fuse.Diagnostics.InternalError( "Updated called without a region", this );
 				return;
 			}
-				
+
 			var prev = _region.Position.X;
 			_region.Update( Time.FrameInterval );
 			ChangeProgress(prev, _region.Position.X, NavigationMode.Seek);
@@ -216,18 +216,18 @@ namespace Fuse.Navigation
 			//allow turning off update now, this ensures we always get one update when _region changed
 			CheckNeedUpdate(true);
 		}
-		
+
 		//only used when not rooted (_region == null)
 		float _progress;
-		
+
 		void ResetRegionLimits()
 		{
 			_region.MaxPosition = float2(MaxIndex,0);
 			_region.MinPosition = float2(0);
 		}
-		
+
 		void SetProgress(float value)
-		{	
+		{
 			float prev;
 			if (_region != null)
 			{
@@ -241,10 +241,10 @@ namespace Fuse.Navigation
 				prev = _progress;
 				_progress = value;
 			}
-			
+
 			ChangeProgress(prev, value, NavigationMode.Bypass);
 		}
-		
+
 		float _prevProgress;
 		void ChangeProgress(float prev, float next, NavigationMode mode)
 		{
@@ -257,11 +257,11 @@ namespace Fuse.Navigation
 			var pd = GetPageData(page);
 			if (pd == null)
 				return new NavigationPageState{ Progress = 0, PreviousProgress = 0 };
-				
+
 			return new NavigationPageState{ Progress = (float)Progress - pd.Index,
 				PreviousProgress = (float)_prevProgress  - pd.Index };
 		}
-		
+
 		public override bool CanGoForward
 		{
 			get
@@ -292,8 +292,8 @@ namespace Fuse.Navigation
 
 		//DEPRECATED: 2016-03-30
 		[UXContent]
-		public Easing Easing 
-		{ 
+		public Easing Easing
+		{
 			get { return Motion.GotoEasing; }
 			set
 			{
@@ -301,8 +301,8 @@ namespace Fuse.Navigation
 				Fuse.Diagnostics.Deprecated( "Use a `NavigationMotion` and the `GotoEasing` property instead of `Navigation.Easing`", this );
 			}
 		}
-		public double Duration  
-		{ 
+		public double Duration
+		{
 			get { return Motion.GotoDuration; }
 			set
 			{
@@ -370,7 +370,7 @@ namespace Fuse.Navigation
 				Goto(value, NavigationGotoMode.Transition);
 			}
 		}
-		
+
 		void SetActive(Visual page)
 		{
 			if (page == _active)
@@ -389,7 +389,7 @@ namespace Fuse.Navigation
 				ResetRegionLimits();
 				_region.StartUser();
 			}
-				
+
 			OnStateChanged( NavigationState.Seek );
 		}
 
@@ -408,7 +408,7 @@ namespace Fuse.Navigation
 				Fuse.Diagnostics.InternalError( "Seek being called on an unrooted navigation", this );
 				return;
 			}
-			
+
 			var prev = (float)Progress;
 			_region.StepUser(float2(args.RelativeDelta,0));
 			ChangeProgress(prev, _region.Position.X, NavigationMode.Seek);
@@ -420,7 +420,7 @@ namespace Fuse.Navigation
 			//don't allow an end to interrupt something else
 			if (!_region.IsUser)
 				return;
-				
+
 			var targetIndex = 0;
 			switch (args.SnapTo)
 			{
@@ -442,7 +442,7 @@ namespace Fuse.Navigation
 
 			if (_region != null)
 				_region.EndUser(float2(args.Velocity,0));
-			
+
 			//force stop if we don't otherwise update the region (in cases where the progress doesn't change)
 			if (!TransitionToChild(GetPage(targetIndex), false, true))
 				_region.Reset(_region.Position);
@@ -500,9 +500,9 @@ namespace Fuse.Navigation
 
 	/**
 		## Navigation Order
-		
+
 		The navigation order of a `LinearNavigation` is the same as the child order. Earlier children are in front of later children. The navigation progress is continuous, and pages can be more than 1 away from the active one.
-		
+
 		See [Navigation Order](articles:navigation/navigationorder.md)
 	*/
 	public class LinearNavigation : StructuredNavigation

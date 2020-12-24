@@ -36,21 +36,21 @@ namespace Fuse.Drawing
 			get { return _brush; }
 			set
 			{
-				if (value == _brush) 
+				if (value == _brush)
 					return;
-					
+
 				if (IsPinned && _brush != null)
 					_brush.Unpin();
-					
-				if (IsPinned && _brush is DynamicBrush) 
+
+				if (IsPinned && _brush is DynamicBrush)
 					((DynamicBrush)_brush).RemovePropertyListener(this);
 				_brush = value;
-				if (IsPinned && _brush is DynamicBrush) 
+				if (IsPinned && _brush is DynamicBrush)
 					((DynamicBrush)_brush).AddPropertyListener(this);
-				
+
 				if (IsPinned && _brush != null)
 					_brush.Pin();
-				
+
 				OnPropertyChanged(_brushName);
 			}
 		}
@@ -71,7 +71,7 @@ namespace Fuse.Drawing
 				return float4(0);
 			}
 			set
-			{	
+			{
 				SetColor(value, this);
 			}
 		}
@@ -111,13 +111,13 @@ namespace Fuse.Drawing
 				OnPropertyChanged(_offsetName);
 			}
 		}
-		
+
 		static Selector _adjustmentName = "Adjustment";
 		StrokeAdjustment _adjustment = StrokeAdjustment.PixelNear;
 		public StrokeAdjustment Adjustment
 		{
 			get { return _adjustment; }
-			set 
+			set
 			{
 				if (_adjustment != value)
 				{
@@ -126,7 +126,7 @@ namespace Fuse.Drawing
 				}
 			}
 		}
-		
+
 		static Selector _alignmentName = "Alignment";
 		StrokeAlignment _alignment = StrokeAlignment.Inside;
 		public StrokeAlignment Alignment
@@ -141,11 +141,11 @@ namespace Fuse.Drawing
 				}
 			}
 		}
-		
+
 
 		/**
 			Combines the Width, Alignment, and Offset to get the logical extents of the stroke.
-			
+
 			@return float2(width, center)
 		*/
 		public float2 GetDeviceAdjusted( float pixelsPerPoint )
@@ -193,10 +193,10 @@ namespace Fuse.Drawing
 					w = Math.Floor( w * ppi ) / ppi;
 					break;
 			}
-			
+
 			return w;
 		}
-		
+
 		float Adjust(float w, float ppi)
 		{
 			w = AdjustPosition(w,ppi);
@@ -230,12 +230,12 @@ namespace Fuse.Drawing
 				OnPropertyChanged(_lineJoinName);
 			}
 		}
-		
+
 		static Selector _lineJoinMiterLimitName = "LineJoinMiterLimit";
 		float _lineJoinMiterLimit = 1;
 		/**
-			Clips miter joins at this limit. 
-			
+			Clips miter joins at this limit.
+
 			This value is relative to the stroke width.
 		*/
 		public float LineJoinMiterLimit
@@ -250,7 +250,7 @@ namespace Fuse.Drawing
 		}
 
 		public Stroke() { }
-		
+
 		public Stroke(Brush brush, float width = 1.0f, LineCap lineCap = Fuse.Drawing.LineCap.Butt, LineJoin lineJoin = Fuse.Drawing.LineJoin.Miter)
 		{
 			Brush = brush;
@@ -258,7 +258,7 @@ namespace Fuse.Drawing
 			LineCap = lineCap;
 			LineJoin = lineJoin;
 		}
-		
+
 		int _pinCount;
 		public void Pin()
 		{
@@ -266,18 +266,18 @@ namespace Fuse.Drawing
 			if (_pinCount == 1)
 				OnPinned();
 		}
-		
+
 		public void Unpin()
 		{
 			_pinCount--;
 			if (_pinCount == 0)
 				OnUnpinned();
 		}
-		
+
 		public bool IsPinned { get { return _pinCount > 0; } }
-		
-		protected void OnPinned() 
-		{ 
+
+		protected void OnPinned()
+		{
 			if (Brush != null)
 			{
 				Brush.Pin();
@@ -286,9 +286,9 @@ namespace Fuse.Drawing
 					db.AddPropertyListener(this);
 			}
 		}
-		
-		protected void OnUnpinned() 
-		{ 
+
+		protected void OnUnpinned()
+		{
 			if (Brush != null)
 			{
 				Brush.Unpin();

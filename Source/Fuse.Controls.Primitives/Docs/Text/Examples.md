@@ -1,4 +1,4 @@
-# Examples 
+# Examples
 
 ## Text properties
 
@@ -22,12 +22,12 @@ In this example, the first text element will be left aligned as this is the defa
 
 		<Text ux:Class="Light" Font="Light" />
 		<Text ux:Class="Medium" Font="Medium" TextWrapping="Wrap" />
-		<Text ux:Class="Warning" 
-			Font="Medium" 
+		<Text ux:Class="Warning"
+			Font="Medium"
 			FontSize="42"
 			TextAlignment="Center"
 			Color="#f00" />
-			
+
 		<StackPanel>
 			<Light>Just some text</Light>
 			<Warning>The robots are coming!</Warning>
@@ -35,4 +35,4 @@ In this example, the first text element will be left aligned as this is the defa
 		</StackPanel>
 	</App>
 
-In this example we load two fonts and create three different semantic classes, `Light`, `Medium` and `Warning`, combining some of the available `Text` properties. In this example, the fonts are located in the same directory as the relevant UX file. 
+In this example we load two fonts and create three different semantic classes, `Light`, `Medium` and `Warning`, combining some of the available `Text` properties. In this example, the fonts are located in the same directory as the relevant UX file.

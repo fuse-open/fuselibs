@@ -11,7 +11,7 @@ namespace Fuse.Scripting
 		{
 			return this;
 		}
-		
+
 		public event EventHandler Reset;
 
 		internal void InternalReset()

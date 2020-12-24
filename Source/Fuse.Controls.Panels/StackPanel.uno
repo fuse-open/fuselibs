@@ -5,8 +5,8 @@ using Fuse.Layouts;
 
 namespace Fuse.Controls
 {
-	
-	/** Stacks children vertically (default) or horizontally. 
+
+	/** Stacks children vertically (default) or horizontally.
 
 		The default layout is a vertical stack, but one can use the Orientation property to specify that the stack should be laid out horizontally.
 
@@ -14,8 +14,8 @@ namespace Fuse.Controls
 				... elements ...
 			</StackPanel>
 
-		You can use the @ItemSpacing property to make some space between elements. It differs from setting Margin on each child, in that it only 
-		adjusts the space directly between the elements, not the space around each of them. 
+		You can use the @ItemSpacing property to make some space between elements. It differs from setting Margin on each child, in that it only
+		adjusts the space directly between the elements, not the space around each of them.
 
 		## Example
 
@@ -45,8 +45,8 @@ namespace Fuse.Controls
 
 		/** Adds distance between elements in the stacking direction.
 
-			You can use the ItemSpacing property to make some space between elements. It differs from setting Margin on each child, in that it only 
-			adjusts the space directly between the elements, not the space around each of them. 
+			You can use the ItemSpacing property to make some space between elements. It differs from setting Margin on each child, in that it only
+			adjusts the space directly between the elements, not the space around each of them.
 
 			## Example
 

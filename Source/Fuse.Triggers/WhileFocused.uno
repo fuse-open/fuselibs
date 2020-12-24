@@ -4,7 +4,7 @@ using Fuse.Input;
 namespace Fuse.Triggers
 {
 	/**
-		Active whenever its containing element is in focus. 
+		Active whenever its containing element is in focus.
 	*/
 	public class WhileFocused : WhileTrigger
 	{
@@ -36,7 +36,7 @@ namespace Fuse.Triggers
 
 	/**
 		Active whenever its containing element is not in focus.
-	
+
 		The inverse of @WhileFocused.
 	*/
 	public class WhileNotFocused : WhileTrigger

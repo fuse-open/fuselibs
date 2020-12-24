@@ -12,7 +12,7 @@ namespace Fuse
 			{
 				var intf = obj.GetType().GetInterfaces();
 				for (var i = 0; i < intf.Length; i++)
-					if (intf[i] == t) return true;				
+					if (intf[i] == t) return true;
 			}
 			else
 			{

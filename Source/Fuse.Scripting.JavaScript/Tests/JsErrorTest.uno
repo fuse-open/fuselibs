@@ -24,7 +24,7 @@ namespace Fuse.Reactive.Test
 				Assert.Contains("Error.UnknownSymbol.ux", s.FileName);
 			}
 		}
-		
+
 		[Test]
 		[Ignore("https://github.com/fuse-open/fuselibs/issues/679", "Android && USE_V8")]
 		public void RequireInvalid()
@@ -45,7 +45,7 @@ namespace Fuse.Reactive.Test
 				Assert.Contains("module not found: FuseJS/Pinecone", s.Message);
 			}
 		}
-		
+
 		[Test]
 		/** Simple reading of undefined value in a Call closure to exported function */
 		public void ReadUndefined()
@@ -68,7 +68,7 @@ namespace Fuse.Reactive.Test
 				}
 			}
 		}
-		
+
 		[Test]
 		[Ignore("https://github.com/fusetools/fuselibs-private/issues/2855")]
 		/* Tests a particularly tricky place for an exception in JavaScript. */

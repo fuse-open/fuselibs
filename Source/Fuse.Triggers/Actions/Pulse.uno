@@ -21,7 +21,7 @@ namespace Fuse.Triggers.Actions
 	public class Pulse : TriggerAction
 	{
 		public IPulseTrigger Target { get; set; }
-		
+
 		protected override void Perform(Node target)
 		{
 			var t = Target;
@@ -36,7 +36,7 @@ namespace Fuse.Triggers.Actions
 	public class PulseBackward : TriggerAction
 	{
 		public Timeline Target { get; set; }
-		
+
 		protected override void Perform(Node target)
 		{
 			var t = Target;
@@ -51,7 +51,7 @@ namespace Fuse.Triggers.Actions
 	public class PulseForward : TriggerAction
 	{
 		public Timeline Target { get; set; }
-		
+
 		protected override void Perform(Node target)
 		{
 			var t = Target;
@@ -59,5 +59,5 @@ namespace Fuse.Triggers.Actions
 				t.PulseForward();
 		}
 	}
-	
+
 }

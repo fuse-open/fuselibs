@@ -84,7 +84,7 @@ namespace Fuse.Controls.Test
 		}
 
 		[Test]
-		/* 
+		/*
 			Viewport should be cacheable. This quick test tests for that. It's kept fairly light since the actual
 			caching heuristic also plays a role here.
 		*/
@@ -95,14 +95,14 @@ namespace Fuse.Controls.Test
 			{
 				for (int i=0;i < 5; ++i)
 					r.TestDraw();
-				
+
 				Assert.AreEqual(5,p.B.DrawCount);
 				//Dependent on exact heuristic and can be changed, but certainly should be less than 5, probably 1 or 2
 				Assert.AreEqual(1,p.A.DrawCount);
 				Assert.AreEqual(1,p.C.DrawCount);
 			}
 		}
-		
+
 		[Test]
 		/*
 			Viewports can flatten their children.
@@ -120,7 +120,7 @@ namespace Fuse.Controls.Test
 			}
 		}
 	}
-	
+
 	public class MockViewport : Fuse.Elements.Viewport
 	{
 		public int DrawCount;

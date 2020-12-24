@@ -112,7 +112,7 @@ namespace Fuse.Test
 			var e = new Switch();
 			var helper = new ToggledChangedHelper(e);
 			e.Value = false;
-			e.Value = false; 
+			e.Value = false;
 			Assert.AreEqual(0, helper.ToggledChangedNum);
 		}
 

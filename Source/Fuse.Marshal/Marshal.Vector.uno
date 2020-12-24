@@ -6,7 +6,7 @@ namespace Fuse
 	{
 		static object ToVector(IArray arr)
 		{
-			if (arr.Length == 1) 
+			if (arr.Length == 1)
 			{
 				if (arr[0] is Size) return (Size)arr[0];
 				else return Marshal.ToFloat(arr[0]);

@@ -23,7 +23,7 @@ namespace Fuse.Controls
 		/** nothing is done */
 		Unchanged,
 	}
-	
+
 	/**
 		Specifies what user interaction is provided.
 	*/
@@ -34,7 +34,7 @@ namespace Fuse.Controls
 		/** A swiping gesture is used to move between pages. */
 		Swipe,
 	}
-	
+
 	/**
 		Specifies what transition is used to move between pages.
 	*/
@@ -47,9 +47,9 @@ namespace Fuse.Controls
 		/** A default transition suitable for the theme/app is used. Typically this is a sliding. */
 		Standard,
 	}
-	
+
 	/**
-		A standard page navigation system. This provides standard transitions, user interaction and 
+		A standard page navigation system. This provides standard transitions, user interaction and
 		appropriate page handling for a basic linear navigation.
 	*/
 	public abstract partial class NavigationControl : Panel, INavigation, Fuse.Reactive.IObserver, Node.ISubtreeDataProvider
@@ -59,18 +59,18 @@ namespace Fuse.Controls
 			//to support embedding of navigation and avoid having translated children still visible
 			ClipToBounds = true;
 		}
-		
+
 		internal void SetNavigation(Fuse.Navigation.VisualNavigation nav)
 		{
 			_navigation = nav;
 			Children.Add(_navigation);
 		}
-		
+
 		internal NavigationControlTransition _transition = NavigationControlTransition.Standard;
 		/**
 			Specifies what transitions should be used for page navigation. If you wish to create your own
 			transitions set to `None` and add your own to the pages.
-			
+
 			When using custom transitions be sure to add a @ReleasePage action. This instructs the `Navigator` on when it can reuse, discard, or add the page to its cache.
 		*/
 		public NavigationControlTransition Transition
@@ -84,13 +84,13 @@ namespace Fuse.Controls
 				//only update on rooting
 			}
 		}
-		
+
 		Fuse.Navigation.VisualNavigation _navigation;
 		internal Fuse.Navigation.VisualNavigation Navigation
 		{
 			get { return _navigation; }
 		}
-		
+
 		/**
 			The currently active visual of the navigation.
 		*/
@@ -107,23 +107,23 @@ namespace Fuse.Controls
 				var v = n as Element;
 				if (v != null) UpdateChild(v);
 			}
-			
+
 			base.OnChildAdded(n);
 		}
-		
+
 		//the outlet page on which this control resides.
 		protected Visual AncestorPage { private set; get; }
 
 		internal RouterPage AncestorRouterPage { private set; get; }
 
-		/* 
+		/*
 			This affects the structure of navigation, in particular by associating PageData.RouterPage's
 			with each child, thus needs to happen prior to rooting the children.
 		*/
 		protected override void OnRootedPreChildren()
 		{
 			base.OnRootedPreChildren();
-			
+
 			if (IsRouterOutlet)
 			{
 				AncestorPage = Router.FindRouterOutletPage(this);
@@ -142,58 +142,58 @@ namespace Fuse.Controls
 					else
 						this.AncestorRouterPage = RouterPage.CreateDefault();
 				}
-			} 
+			}
 			else
 			{
 				this.AncestorRouterPage = RouterPage.CreateDefault();
 			}
-			
+
 		}
-		
+
 		protected override void OnRooted()
 		{
 			base.OnRooted();
-			
+
 			//defer first update to rooted, to avoid creating/deleting unused Swipe behavior if None
 			UpdateInteraction();
-			
+
 			Navigation.PageProgressChanged += OnPageProgressChanged;
-			
+
 			//do after child rooting since it relies on the navigation behaviour to have been rooted
 			for (var c = FirstChild<Element>(); c != null; c = c.NextSibling<Element>())
 				UpdateChild(c);
-			
+
 			if (AncestorRouterPage != null)
 				AncestorRouterPage.ChildRouterPagesUpdated += OnChildRouterPagesUpdated;
 			OnPageHistoryChanged();
-			
+
 			BlockInputRooted();
 		}
-		
+
 		void OnChildRouterPagesUpdated()
 		{
 			RouterPage.BubbleHistoryChanged(this);
 		}
-		
+
 		/**
 			Called when the interaction for the control should be setup.
 		*/
 		protected virtual void UpdateInteraction() {}
-		
+
 		void UpdateChild(Element c)
 		{
 			if (!Fuse.Navigation.Navigation.IsPage(c))
 				return;
-				
+
 			var cpd = GetControlPageData(c);
 			UpdateProgress(c, Navigation.GetPageState(c), cpd);
-			
+
 			if ( (cpd.Enter == null || cpd.Exit == null || cpd.Inactive == null || cpd.Removing == null) )
 			{
 				CleanupTriggers(c, cpd); //in case partially null
-				
+
 				CreateTriggers(c, cpd);
-				
+
 				if (cpd.Enter != null)
 					c.Children.Add(cpd.Enter);
 				if (cpd.Exit != null)
@@ -203,7 +203,7 @@ namespace Fuse.Controls
 				if (cpd.Removing != null)
 					c.Children.Add(cpd.Removing);
 			}
-			
+
 			//attach a default RouterPage if it doesn't have one
 			var pd = PageData.GetOrCreate(c);
 			if (pd.RouterPage == null)
@@ -213,25 +213,25 @@ namespace Fuse.Controls
 		/**
 			How the stnadard triggers are implemented will differ depending on the navigation type
 			being used.
-			
+
 			@param c the element targeted by the trigger (don't add them here, just create them)
 			@param pd where to store the created triggers
 		*/
 		protected abstract void CreateTriggers(Element c, ControlPageData pd);
-		
+
 		protected override void OnUnrooted()
 		{
 			BlockInputUnrooted();
 			OnPageHistoryUnrooted();
-			
+
 			if (AncestorPage != null)
 			{
 				PageData.GetOrCreate(AncestorPage).RouterPageChanged -= OnRouterPageChanged;
 				AncestorPage = null;
 			}
-			
+
 			Navigation.PageProgressChanged -= OnPageProgressChanged;
-			
+
 			for (var c = FirstChild<Element>(); c != null; c = c.NextSibling<Element>())
 			{
 				var pd = GetControlPageData(c,false);
@@ -239,10 +239,10 @@ namespace Fuse.Controls
 					continue;
 				CleanupTriggers(c, pd);
 			}
-			
+
 			base.OnUnrooted();
 		}
-		
+
 		virtual void CleanupTriggers(Element page, ControlPageData data)
 		{
 			if (data.Enter != null)
@@ -266,7 +266,7 @@ namespace Fuse.Controls
 				data.Removing = null;
 			}
 		}
-		
+
 		protected override void OnChildRemoved(Node n)
 		{
 			var pc = n as Element;
@@ -278,10 +278,10 @@ namespace Fuse.Controls
 					CleanupTriggers(pc, pd);
 				}
 			}
-			
+
 			base.OnChildRemoved(n);
 		}
-		
+
 		void OnPageProgressChanged(object page, NavigationArgs args)
 		{
 			for (int i=0; i < Navigation.PageCount; ++i)
@@ -289,17 +289,17 @@ namespace Fuse.Controls
 				var n = Navigation.GetPage(i) as Element;
 				if (n == null)
 					return;
-				
+
 				UpdateProgress(n, Navigation.GetPageState(n), GetControlPageData(n));
 			}
 		}
-		
+
 		protected virtual void UpdateProgress(Element page, NavigationPageState state, ControlPageData pd) { }
 
 		bool _isRouterOutlet = true;
 		/**
-			Specifies whether this control participates in routing (is it a router outlet). 
-			
+			Specifies whether this control participates in routing (is it a router outlet).
+
 			The default is "true".
 		*/
 		public bool IsRouterOutlet
@@ -307,7 +307,7 @@ namespace Fuse.Controls
 			get{ return _isRouterOutlet; }
 			set { _isRouterOutlet = value; }
 		}
-		
+
 		/*
 			This class does not implemented IRouterOutlet due to a defect in the compiler. I was unable
 			to get the derived classes compiling and overriding parts of the interface. So the derived
@@ -322,34 +322,34 @@ namespace Fuse.Controls
 				return OutletType.Outlet;
 			}
 		}
-		
+
 		public class ControlPageData
 		{
 			public Trigger Enter, Exit, Inactive, Removing;
-			
+
 			public bool HasTriggers
 			{
 				get { return Enter != null || Exit != null || Inactive != null || Removing != null; }
 			}
-			
+
 			//this page came from a template (as opposed to a child instance added by the user)
 			public bool FromTemplate;
 		}
-		
+
 		internal static ControlPageData GetControlPageData(Visual elm, bool create = true)
 		{
 			var pd = PageData.GetOrCreate(elm, create);
 			if (pd == null) //could only happen if create == false
 				return null;
-				
+
 			if (pd.ControlPageData != null || !create)
 				return (ControlPageData)pd.ControlPageData;
-				
+
 			var cpd = new ControlPageData();
 			pd.ControlPageData = cpd;
 			return cpd;
 		}
-		
+
 		static PropertyHandle _propTransition = Properties.CreateHandle();
 		[UXAttachedPropertySetter("NavigationControl.Transition")]
 		static public void SetTransition(Visual elm, NavigationControlTransition value)
@@ -365,19 +365,19 @@ namespace Fuse.Controls
 				return (NavigationControlTransition)res;
 			return NavigationControlTransition.Default;
 		}
-		
+
 		protected NavigationControlTransition PageTransition(Visual elm)
 		{
 			var t = GetTransition(elm);
 			if (t != NavigationControlTransition.Default)
 				return t;
-			
+
 			if (elm.FirstChild<Transition>() != null)
 				return NavigationControlTransition.None;
-				
+
 			return Transition;
 		}
-		
+
 		//INavigation
 		/** See @Navigation.PageCount */
 		public int INavigation.PageCount { get { return Navigation.PageCount; } }
@@ -448,22 +448,22 @@ namespace Fuse.Controls
 			//serialized string.
 			return a == null || a == "" || a == "\"\"" || a == "{}" || a == "null";
 		}
-		
+
 		internal bool CompatibleParameter( string a, string b )
 		{
 			if (a == b)
 				return true;
-				
+
 			return IsEmptyParameter(a) && IsEmptyParameter(b);
 		}
 
 		void OnRouterPageChanged(object sender, RouterPage routerPage)
 		{
 			AncestorRouterPage = routerPage;
-			
+
 			if (AncestorRouterPage == null)
 				return;
-				
+
 			var pages = AncestorRouterPage.ChildRouterPages;
 			Visual ignore;
 			var current = (this as IRouterOutlet).GetCurrent(out ignore);
@@ -476,9 +476,9 @@ namespace Fuse.Controls
 		{
 			var pages = AncestorRouterPage != null ? AncestorRouterPage.ChildRouterPages : null;
 			if (pages != null && pages.Count > 0)
-			{ 
+			{
 				Visual ignore;
-				((IRouterOutlet)this).Goto( pages[pages.Count-1], NavigationGotoMode.Bypass, 
+				((IRouterOutlet)this).Goto( pages[pages.Count-1], NavigationGotoMode.Bypass,
 					RoutingOperation.Goto, "", out ignore );
 			}
 			else
@@ -488,12 +488,12 @@ namespace Fuse.Controls
 
 			Navigation.ActivePageChanged += OnActivePageChanged;
 		}
-		
+
 		internal void UnrootActivePage()
 		{
 			Navigation.ActivePageChanged -= OnActivePageChanged;
 		}
-		
+
 		void OnActivePageChanged(object sender, Visual active)
 		{
 			if (AncestorRouterPage != null)
@@ -507,12 +507,12 @@ namespace Fuse.Controls
 					pages.Add( current );
 					changed = true;
 				}
-				else if (pages[pages.Count -1] != current) 
+				else if (pages[pages.Count -1] != current)
 				{
 					pages[pages.Count-1] = current;
 					changed = true;
 				}
-	
+
 				if (changed)
 					RouterPage.BubbleHistoryChanged(this);
 			}

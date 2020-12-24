@@ -47,7 +47,7 @@ namespace Fuse.Scripting.JavaScriptCore
 		}
 
 		public override int Length
-		{ 
+		{
 			get
 			{
 				int result = 0;

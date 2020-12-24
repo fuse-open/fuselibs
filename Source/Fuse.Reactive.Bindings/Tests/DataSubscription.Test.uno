@@ -18,7 +18,7 @@ namespace Fuse.Reactive.Bindings.Test
 				Assert.AreEqual( "hi", p.txt.Value );
 			}
 		}
-		
+
 		[Test]
 		public void Cascade()
 		{
@@ -32,7 +32,7 @@ namespace Fuse.Reactive.Bindings.Test
 				Assert.AreEqual( "B", p.b2.Value );
 			}
 		}
-		
+
 		[Test]
 		//covers the deprecated support for {} bindings
 		public void Deprecated()
@@ -54,7 +54,7 @@ namespace Fuse.Reactive.Bindings.Test
 				finally
 				{
 					var dm = dg.DequeueAll();
-					foreach (var d in dm) 
+					foreach (var d in dm)
 						Assert.IsTrue( d.Message.IndexOf( "deprecated" ) != -1 );
 				}
 			}

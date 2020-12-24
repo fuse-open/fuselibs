@@ -4,11 +4,11 @@ namespace Fuse.Triggers
 {
 	/**
 		A trigger that is active while its parent @WebView is loading.
-		
+
 		## Example
-		
+
 		The following example displays a loading indicator while the @WebView is loading a page.
-		
+
 			<NativeViewHost>
 				<Panel ux:Name="loadingIndicator" Opacity="0" Alignment="Bottom" Color="#0006">
 					<Text Alignment="Center" Margin="10" Color="#fff">Loading...</Text>

@@ -47,10 +47,10 @@ namespace Fuse.Reactive
 			{
 				if (_listener != null)
 					_listener.OnNewData(_snap, value);
-					
+
 				Dispose();
 			}
-			
+
 			void IListener.OnLostData(IExpression source)
 			{
 				//keeps old value

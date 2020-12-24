@@ -6,8 +6,8 @@ using Uno.Matrix;
 namespace Fuse
 {
 	/*
-		This file implements the WorldTransformInvalidated event and calls the OnInvalidateWorldTransform method, 
-		which due to optimizations can not be generated the intuitive way anymore. 
+		This file implements the WorldTransformInvalidated event and calls the OnInvalidateWorldTransform method,
+		which due to optimizations can not be generated the intuitive way anymore.
 
 		The implementation is based on counting how many listeners there are in the subtree, at rooting time.
 		This allows us to traverse the precise path down to the listeners instead of traversing the entire
@@ -37,11 +37,11 @@ namespace Fuse
 				_worldTransform = null;
 				_worldTransformInverse = null;
 			}
-			
+
 			if (_worldTransformInvalidated != null)
 				_worldTransformInvalidated(this, EventArgs.Empty);
 
-			if (_wtiListeners > 0) 
+			if (_wtiListeners > 0)
 			{
 				for (var v = FirstChild<Visual>(); v != null; v = v.NextSibling<Visual>())
 					v.InvalidateWorldTransform();
@@ -53,15 +53,15 @@ namespace Fuse
 		*/
 		public event EventHandler WorldTransformInvalidated
 		{
-			add 
-			{ 
+			add
+			{
 				if (_worldTransformInvalidated == null && _wtiRooted)
 					IncrementWTIListener();
 
 				_worldTransformInvalidated += value;
 			}
-			remove 
-			{ 
+			remove
+			{
 				_worldTransformInvalidated -= value;
 
 				if (_worldTransformInvalidated == null && _wtiRooted)
@@ -76,7 +76,7 @@ namespace Fuse
 			_wtiRooted = true;
 			if (_wtiListeners != 0)
 				throw new Exception(); // should never happen
-			
+
 			if (_worldTransformInvalidated != null)
 				IncrementWTIListener();
 		}

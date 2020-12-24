@@ -133,7 +133,7 @@ namespace Fuse.Video.Mono
 
 			if (handle.Pixels == null || handle.Pixels.Length != pixelBufferSize)
 				handle.Pixels = new byte[pixelBufferSize];
-			
+
 			var rt = new CMTime();
 			using (var buffer = CopyPixelBuffer (handle.Output, handle.PlayerItem.CurrentTime, ref rt))
 				buffer.UpdateTexture (textureHandle, handle);
@@ -141,7 +141,7 @@ namespace Fuse.Video.Mono
 
 		public static float GetVolume(VideoHandle handle)
 		{
-			return handle.Player.Volume;	
+			return handle.Player.Volume;
 		}
 
 		public static void SetVolume(VideoHandle handle, float volume)
@@ -171,18 +171,18 @@ namespace Fuse.Video.Mono
 			}
 			return degrees;
 		}
-		
+
 		public static void Dispose(VideoHandle handle)
-		{	
+		{
 			if (handle.Player != null)
 				handle.Player.Dispose();
-			
+
 			if (handle.PlayerItem != null)
 				handle.PlayerItem.Dispose();
-			
+
 			if (handle.Output != null)
 				handle.Output.Dispose();
-			
+
 			if (handle.Asset != null)
 				handle.Asset.Dispose();
 		}

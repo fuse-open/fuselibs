@@ -11,7 +11,7 @@ using Fuse.Motion.Simulation;
 namespace Fuse.Gestures.Internal
 {
 	enum SwipeRegionArea
-	{	
+	{
 		All,
 		Vector,
 	}
@@ -28,20 +28,20 @@ namespace Fuse.Gestures.Internal
 			get { return _isEnabled; }
 			set { _isEnabled = value; }
 		}
-		
+
 		GesturePriority _gesturePriority = GesturePriority.Low;
 		public GesturePriority GesturePriority
 		{
 			get { return _gesturePriority; }
 			set { _gesturePriority = value; }
 		}
-		
+
 		double _progress;
 		public double Progress
-		{	
+		{
 			get { return _progress; }
 		}
-		
+
 		double _stableProgress;
 		public double StableProgress
 		{
@@ -57,19 +57,19 @@ namespace Fuse.Gestures.Internal
 
 		internal static Selector InProgressName = "InProgress";
 		bool _inProgress = false;
-		public bool InProgress 
-		{ 
+		public bool InProgress
+		{
 			get { return _inProgress; }
 			private set
 			{
 				if (value == _inProgress)
 					return;
-					
+
 				_inProgress = value;
 				OnPropertyChanged(InProgressName);
 			}
 		}
-		
+
 		public void SetActive(bool active)
 		{
 			SetProgress(active ? 1 : 0, ProgressFlags.EndProgress);
@@ -80,19 +80,19 @@ namespace Fuse.Gestures.Internal
 		{
 			var interacting = flags.HasFlag(ProgressFlags.Interacting);
 			var endProgress = flags.HasFlag(ProgressFlags.EndProgress);
-			
+
 			//don't check value == _progress since we need to send messages
 			_progress = value;
 			OnPropertyChanged(ProgressName);
 
 			InProgress = !endProgress;
-			
+
 			//expect to be called later without interacting flag
 			if (interacting && !AutoTrigger)
 				return false;
-				
+
 			bool swiped = false;
-			
+
 			if (endProgress)
 			{
 				//truncate _progress
@@ -102,7 +102,7 @@ namespace Fuse.Gestures.Internal
 					_progress = 1;
 				else
 					Fuse.Diagnostics.InternalError("Unexpected progress in swipe", this );
-				
+
 				bool active = _progress == 1;
 				bool cancelled = _stableProgress == _progress;
 				if (TriggerSwipe || AutoTrigger)
@@ -115,32 +115,32 @@ namespace Fuse.Gestures.Internal
 					TriggerSwipe = false;
 					swiped = true;
 				}
-					
+
 				_stableProgress = _progress;
 				if (active && RevertActive)
 					UpdateManager.AddDeferredAction(DoRevertActive, LayoutPriority.Post);
 			}
 			return swiped;
 		}
-		
+
 		internal bool TriggerSwipe;
-		
+
 		//only sent when the user completes an activation (they swipe) <Active,Cancelled>
 		public event Action<bool, bool> Swiped;
-		
+
 		static Selector _isActiveName = "IsActive";
 		bool _isActive;
-		public bool IsActive 
-		{ 
+		public bool IsActive
+		{
 			get { return _isActive; }
 			set { SetIsActive(value, this); }
 		}
-		
+
 		public void SetIsActive(bool value, IPropertyListener origin)
 		{
 			if (value == _isActive)
 				return;
-				
+
 			_isActive = value;
 			OnPropertyChanged(_isActiveName);
 		}
@@ -152,45 +152,45 @@ namespace Fuse.Gestures.Internal
 
 			IsActive = false;
 		}
-		
+
 		class DoSwiped
 		{
 			public bool Active;
 			public SwipeRegion Region;
 			public bool Cancelled;
-			
+
 			public void Perform()
 			{
 				if (Region.Swiped != null)
 					Region.Swiped(Active, Cancelled);
 			}
 		}
-		
+
 		//expected to be a unit vector. The primary direction of the swipe
 		public float2 Direction;
 
 		//the accepted range of motion (angle from Direction) for this region to match
 		public float Range = Math.DegreesToRadians(30);
-		
+
 		public readonly DestinationSimulation<float> PointBody1D = SmoothSnap<float>.CreateNormalized();
-		
+
 		public bool IsStatic
 		{
 			get { return PointBody1D.IsStatic; }
 		}
-		
+
 		public bool IsSelectable
 		{
 			get { return (IsStatic || IsInterruptible) && IsEnabled; }
 		}
-		
+
 		public SwipeRegionArea Area;
 
 		//hit area is the region around this line
 		public float4 AreaVector;
 		//up to this distance away
 		public float AreaVectorDistance = 100;
-		
+
 		//lower priority has precedence during activation
 		public int Priority = 0;
 
@@ -205,59 +205,59 @@ namespace Fuse.Gestures.Internal
 
 		//can an active transition be interrupted by the user
 		public bool IsInterruptible = true;
-		
+
 		//adjust time for snapping animation
 		public  double TimeMultiplier = 1.0;
-		
+
 		//once active it reverts to inactive immediately (bypass mode)
 		public bool RevertActive = false;
-		
+
 		//triggers swiped the moment it reaches full progress
 		public bool AutoTrigger = false;
-		
+
 		public bool IsPointInside(Element prime, float2 coord)
 		{
 			if (Area == SwipeRegionArea.All)
 				return true;
-				
+
 			if (Area == SwipeRegionArea.Vector)
 			{
 				var size = prime.ActualSize;
-				
+
 				if (coord.X < 0 || coord.Y < 0 || coord.X > size.X || coord.Y > size.Y)
 					return false;
-					
+
 				var v = AreaVector * float4(size,size);
 				var l = VectorUtil.DistanceLine(v, coord);
 				//this extends the swipe area for revealed panels from the edge, to ensure the whole panel can be swiped
 				return l < Math.Max(AreaVectorDistance, EffectiveLength * Progress);
 			}
-			
+
 			return false;
 		}
-		
+
 		public float ActivateStrength(float2 diff)
 		{
 			var l = Vector.Length(diff);
 			if (l < _zeroTolerance)
 				return 0;
-				
+
 			//only activate in the direction where it could move currently
 			var a = VectorUtil.Angle(diff, Direction);
 			if (Progress < 1 && a < Range/2)
 				return l;
-				
+
 			if (Progress > 0 && a > (Math.PIf - Range/2))
 				return l;
-				
+
 			return 0;
 		}
-		
+
 		public float ScalarDistance(float2 diff)
 		{
 			return VectorUtil.ScalarProjection(diff, Direction);
 		}
-		
+
 		double EffectiveLength
 		{
 			get
@@ -267,7 +267,7 @@ namespace Fuse.Gestures.Internal
 				return Math.Abs(Vector.Dot( Direction, LengthElement.ActualSize ));
 			}
 		}
-		
+
 		public bool InteractProgress(float2 diff, double startProgress)
 		{
 			var l = ScalarDistance(diff);
@@ -277,24 +277,24 @@ namespace Fuse.Gestures.Internal
 				flags |= ProgressFlags.EndProgress;
 			return SetProgress(p, flags);
 		}
-		
+
 		public float ScalarValue(float2 x)
 		{
 			return VectorUtil.ScalarProjection(x, Direction);
 		}
 	}
-	
+
 	class Swiper : IGesture
 	{
-	
+
 		int _attachCount = 1;
 		Element _element;
-		
+
 		Swiper(Element elm)
 		{
 			_element = elm;
 		}
-		
+
 		static readonly PropertyHandle _swiperProperty = Fuse.Properties.CreateHandle();
 		static public Swiper AttachSwiper(Element elm)
 		{
@@ -305,13 +305,13 @@ namespace Fuse.Gestures.Internal
 				s._attachCount++;
 				return s;
 			}
-			
+
 			var ns = new Swiper(elm);
 			elm.Properties.Set(_swiperProperty, ns);
 			ns.OnRooted(elm);
 			return ns;
 		}
-		
+
 		public void Detach()
 		{
 			_attachCount--;
@@ -321,7 +321,7 @@ namespace Fuse.Gestures.Internal
 				OnUnrooted();
 			}
 		}
-		
+
 		//set once the interacting region is identified
 		SwipeRegion _pointerRegion;
 		//excluded on selection
@@ -329,30 +329,30 @@ namespace Fuse.Gestures.Internal
 		//added during pointer down, contains all regions that might be considered
 		List<SwipeRegion> _pointerRegions = new List<SwipeRegion>();
 		List<SwipeRegion> _regions = new List<SwipeRegion>();
-		
+
 		public void AddRegion(SwipeRegion region)
 		{
 			int i=0;
 			for (i=0; i < _regions.Count; ++i)
 				if (_regions[i].Priority > region.Priority)
 					break;
-			
+
 			_regions.Insert(i, region);
 			CheckNeedUpdated();
 		}
-		
+
 		public void RemoveRegion(SwipeRegion region)
 		{
 			_regions.Remove(region);
 			CheckNeedUpdated();
 		}
-		
+
 		Gesture _gesture;
 		void OnRooted(Element n)
 		{
 			_pointerRegion = null;
 			_pointerRegions.Clear();
-			
+
 			_element = n;
 			_gesture = Input.Gestures.Add( this, _element, GestureType.Primary | GestureType.NodeShare);
 		}
@@ -362,7 +362,7 @@ namespace Fuse.Gestures.Internal
 			_gesture.Dispose();
 			_element =  null;
 		}
-		
+
 		bool _hasUpdated;
 		void CheckNeedUpdated(bool off = false)
 		{
@@ -381,10 +381,10 @@ namespace Fuse.Gestures.Internal
 					region.SetProgress( region.StableProgress, SwipeRegion.ProgressFlags.EndProgress );
 				}
 			}
-				
+
 			if (needUpdated == _hasUpdated)
 				return;
-				
+
 			if (needUpdated)
 			{
 				UpdateManager.AddAction(OnUpdated);
@@ -404,15 +404,15 @@ namespace Fuse.Gestures.Internal
 				var region = _regions[i];
 				if (region.IsStatic && !region.InProgress)
 					continue;
-					
+
 				if (!region.IsStatic)
 					region.PointBody1D.Update( Time.FrameInterval * region.TimeMultiplier );
-				region.SetProgress(region.PointBody1D.Position, 
+				region.SetProgress(region.PointBody1D.Position,
 					region.IsStatic ? SwipeRegion.ProgressFlags.EndProgress : SwipeRegion.ProgressFlags.None);
 			}
 			CheckNeedUpdated(true);
 		}
-		
+
 		void IGesture.OnLostCapture(bool forced)
 		{
 			_significance = 0;
@@ -430,9 +430,9 @@ namespace Fuse.Gestures.Internal
 		double _prevTime;
 		float2 _startCoord;
 		float _velocityThreshold = 300.0f;
-		
+
 		PointerVelocity<float2> _velocity = new PointerVelocity<float2>();
-		
+
 		float _significance;
 		GesturePriorityConfig IGesture.Priority
 		{
@@ -445,7 +445,7 @@ namespace Fuse.Gestures.Internal
 					_pointerRegion == null ? 0 : (_pointerRegion.Priority < 100 ? 1 : 0) );
 			}
 		}
-		
+
 		GestureRequest IGesture.OnPointerPressed(PointerPressedArgs args)
 		{
 			var coord = FromWindow(args.WindowPoint);
@@ -464,7 +464,7 @@ namespace Fuse.Gestures.Internal
 				return GestureRequest.Ignore;
 			return GestureRequest.Capture;
 		}
-		
+
 		void IGesture.OnCaptureChanged(PointerEventArgs args, CaptureType how, CaptureType prev)
 		{
 			if (_pointerRegions.Count == 0)
@@ -472,11 +472,11 @@ namespace Fuse.Gestures.Internal
 				Fuse.Diagnostics.InternalError( "invalid OnCapture" );
 				return;
 			}
-			
+
 			//actual movement is deferred from point of capture
 			RestartMove( FromWindow(args.WindowPoint) );
 		}
-		
+
 		float2 FromWindow(float2 p)
 		{
 			if(_element == null || _element.Parent == null)
@@ -487,17 +487,17 @@ namespace Fuse.Gestures.Internal
 
 		void MoveUser(float2 coord, double elapsed, bool release = false)
 		{
-			_velocity.AddSample( coord, (float)elapsed, 
+			_velocity.AddSample( coord, (float)elapsed,
 				(!_gesture.IsHardCapture ? SampleFlags.Tentative : SampleFlags.None) |
 				(release ? SampleFlags.Release : SampleFlags.None) );
 		}
-		
+
 		void RestartMove(float2 currentCoord)
 		{
 			_startCoord = currentCoord;
 			_velocity.Reset( _startCoord);
 		}
-		
+
 		bool _allowNewRegion;
 		GestureRequest IGesture.OnPointerMoved(PointerMovedArgs args)
 		{
@@ -505,7 +505,7 @@ namespace Fuse.Gestures.Internal
 
 			var currentCoord = FromWindow(args.WindowPoint);
 			_prevTime = args.Timestamp;
-			
+
 			//to allow a new region to start immediately
 			for( int i=0; i<2;++i)
 			{
@@ -526,7 +526,7 @@ namespace Fuse.Gestures.Internal
 						}
 						_excludeRegion = null;
 						_pointerRegion = selRegion;
-						
+
 						_startProgress = _pointerRegion.Progress;
 						currentCoord = FromWindow(args.WindowPoint);
 						//diff needs to be reset to avoid a jump
@@ -534,9 +534,9 @@ namespace Fuse.Gestures.Internal
 						_allowNewRegion = false;
 					}
 				}
-				
+
 				_significance = _pointerRegion == null ? 0f : Math.Abs(_pointerRegion.ScalarDistance(diff));
-				
+
 				//defer anything until region is identified
 				if (_pointerRegion != null && _gesture.IsHardCapture)
 				{
@@ -557,10 +557,10 @@ namespace Fuse.Gestures.Internal
 
 				break;
 			}
-			
+
 			return GestureRequest.Capture;
 		}
-		
+
 		SwipeRegion SelectRegion(float2 diff)
 		{
 			SwipeRegion sel = null;
@@ -571,19 +571,19 @@ namespace Fuse.Gestures.Internal
 				var str = region.ActivateStrength(diff);
 				if (str <= 0)
 					continue;
-				
+
 				if (sel == null ||
 					sel.Progress < region.Progress )
 				{
 					sel = region;
 				}
 			}
-			
+
 			return sel;
 		}
 
 		GestureRequest IGesture.OnPointerReleased(PointerReleasedArgs args)
-		{	
+		{
 			//if gesture not recognize return to current state
 			if (!_gesture.IsHardCapture || _pointerRegion == null)
 				return GestureRequest.Cancel;
@@ -607,7 +607,7 @@ namespace Fuse.Gestures.Internal
 			SetActivation(_pointerRegion, on, false);
 			return GestureRequest.Cancel;
 		}
-		
+
 		public void SetActivation(SwipeRegion region, bool on, bool bypass = false)
 		{
 			var d = on ? 1.0f : 0.0f;

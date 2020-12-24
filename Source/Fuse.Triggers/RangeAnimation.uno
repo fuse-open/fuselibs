@@ -7,12 +7,12 @@ namespace Fuse.Triggers
 {
 	/**
 		Animates using a value clamped between a minimum and a maximum as progress.
-		
+
 		This is useful when you want to animate something between two arbitrary values.
-		
+
 		## Example
 		In this example, an @(RangeAnimation) is used to animate a panel 360 degrees as a @(RangeControl2D) goes from 0 to 100.
-		
+
 			<RangeControl2D Width="180" Height="180" Margin="2" ux:Name="rangeControl">
 				<CircularRangeBehavior/>
 				<Panel ux:Name="thumb" Margin="4">
@@ -23,7 +23,7 @@ namespace Fuse.Triggers
 				</RangeAnimation>
 				<Circle Color="#aaa" />
 			</RangeControl2D>
-		
+
 		@mount Animation
 	*/
 	public class RangeAnimation : Trigger
@@ -40,23 +40,23 @@ namespace Fuse.Triggers
 					Update();
 			}
 		}
-		
+
 		float _minimum = 0;
 		/** `value`'s minimum value, e.x where progress is 0 */
-		public float Minimum 
-		{ 
+		public float Minimum
+		{
 			get { return _minimum; }
 			set { _minimum = value; }
 		}
-		
+
 		float _maximum = 1;
 		/** `value`'s maximum value, e.x where progress is 1 */
-		public float Maximum 
-		{ 
+		public float Maximum
+		{
 			get { return _maximum; }
 			set { _maximum = value; }
 		}
-		
+
 		double _prevValue;
 		protected override void OnRooted()
 		{

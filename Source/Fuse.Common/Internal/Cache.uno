@@ -95,7 +95,7 @@ namespace Fuse.Internal
 	}
 
 	/** A `TValue` whose lifetime is managed by a `Cache`.
-	
+
 		`Dispose()` signals to the parent `Cache` that we're no longer
 		using `Value`. The `Cache` might subsequently choose to dispose
 		`Value`, so we should not rely on `Value` being usable after

@@ -27,13 +27,13 @@ namespace Fuse
 			_bindings = list;
 		}
 
-		void Root(Binding b) 
-		{ 
+		void Root(Binding b)
+		{
 			if (IsRootingStarted) b.Root(this);
 		}
 
-		void Unroot(Binding b) 
-		{ 
+		void Unroot(Binding b)
+		{
 			if (IsRootingStarted) b.Unroot();
 		}
 
@@ -63,14 +63,14 @@ namespace Fuse
 
 		void ICollection<Binding>.Clear()
 		{
-			if (IsRootingStarted) UnrootBindings();			
+			if (IsRootingStarted) UnrootBindings();
 			_bindings = null;
 		}
 
 		public void Add(Binding item)
 		{
 			if (_bindings == null) _bindings = item;
-			else if (_bindings is Binding) MakeBindingList(item); 
+			else if (_bindings is Binding) MakeBindingList(item);
 			else BindingList.Add(item);
 
 			Root(item);
@@ -82,7 +82,7 @@ namespace Fuse
 
 			if (_bindings == item) { _bindings = null; return true; }
 			if (_bindings == null || _bindings is Binding) return false;
-			
+
 			return BindingList.Remove(item);
 		}
 
@@ -94,14 +94,14 @@ namespace Fuse
 			return false;
 		}
 
-		int ICollection<Binding>.Count 
-		{ 
+		int ICollection<Binding>.Count
+		{
 			get
 			{
 				if (_bindings == null) return 0;
 				if (_bindings is Binding) return 1;
 				return BindingList.Count;
-			} 
+			}
 		}
 
 		public void Insert(int index, Binding item)
@@ -139,7 +139,7 @@ namespace Fuse
 			get
 			{
 				if (_bindings == null) throw new Exception();
-				
+
 				var b = Binding;
 				if (b != null)
 				{

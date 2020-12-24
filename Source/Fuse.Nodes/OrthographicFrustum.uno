@@ -17,14 +17,14 @@ namespace Fuse
 				_hasOrigin = true;
 			}
 		}
-		
+
 		bool _hasSize;
 		float2 _size;
 		public float2 Size
 		{
-			get 
-			{ 
-				return _size; 
+			get
+			{
+				return _size;
 			}
 			set
 			{
@@ -44,13 +44,13 @@ namespace Fuse
 				_hasLocalFromWorld = true;
 			}
 		}
-			
+
 		public bool TryGetProjectionTransform(ICommonViewport viewport, out float4x4 result)
 		{
 			var viewSize = _hasSize ? Size : viewport.Size;
 			return FrustumMatrix.TryOrthoRH(viewSize.X, viewSize.Y, 1, 1000, out result);
 		}
-		
+
 		public float4x4 GetViewTransform(ICommonViewport viewport)
 		{
 			var origin = _hasOrigin ? Origin : float2(0);
@@ -64,7 +64,7 @@ namespace Fuse
 				ts = Matrix.Mul(LocalFromWorld, ts);
 			return ts;
 		}
-		
+
 		public bool TryGetProjectionTransformInverse(ICommonViewport viewport, out float4x4 result)
 		{
 			var viewSize = _hasSize ? Size : viewport.Size;
@@ -85,12 +85,12 @@ namespace Fuse
 				ts = Matrix.Mul(ts, Matrix.Invert(LocalFromWorld));
 			return ts;
 		}
-		
+
 		public float3 GetWorldPosition( ICommonViewport viewport )
-		{	
+		{
 			return float3( (_hasSize ? Size : viewport.Size)/2, 2);
 		}
-		
+
 		public float2 GetDepthRange( ICommonViewport viewport )
 		{
 			return float2(1, 1000);

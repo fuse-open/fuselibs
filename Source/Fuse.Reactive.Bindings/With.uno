@@ -36,8 +36,8 @@ namespace Fuse.Reactive
 		IDisposable _sub;
 		object _sourceData;
 
-		/** Specifies the new data context for the subtree. 
-			
+		/** Specifies the new data context for the subtree.
+
 			If this property is to an `IObservable`, the subtree will see first actual
 			value of that observable.
 		*/
@@ -53,7 +53,7 @@ namespace Fuse.Reactive
 					_sourceData = value;
 
 					var obs = value as IObservable;
-					if (obs != null) 
+					if (obs != null)
 					{
 						// Special case for `IObservable` which can be interpreted as a single value
 						SetSubtreeData(null);
@@ -78,7 +78,7 @@ namespace Fuse.Reactive
 		{
 			SetSubtreeData(value);
 		}
-		
+
 		void ValueForwarder.IValueListener.LostValue()
 		{
 			SetSubtreeData(null);

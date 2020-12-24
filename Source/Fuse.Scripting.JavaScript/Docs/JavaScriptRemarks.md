@@ -13,7 +13,7 @@ Or by inlining the JavaScript code in the tag, like this:
 		console.log("Hello, FuseJS!");
 	</JavaScript>
 
-## About FuseJS 
+## About FuseJS
 
 FuseJS is a JavaScript framework for writing cross-platform mobile app business logic. It consists of a bunch of classes that covers
 the basic functionality required for creating native mobile apps, as well as the @Observable class which lets you expose data to the UI in a functional reactive way.
@@ -90,7 +90,7 @@ Example:
 	var foo = getSomeGlobalObservable();
 
 	function fooChanged() { ... }
-	
+
 	foo.addSubscriber(fooChanged);
 
 	...

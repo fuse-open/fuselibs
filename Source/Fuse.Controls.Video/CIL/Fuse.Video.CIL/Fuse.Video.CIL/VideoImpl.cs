@@ -93,12 +93,12 @@ namespace Fuse.Video.Graphics.CIL
 		{
 			return handle.Video.Duration;
 		}
-		
+
 		public static int GetWidth(VideoHandle handle)
 		{
 			return handle.Video.Width;
 		}
-		
+
 		public static int GetHeight(VideoHandle handle)
 		{
 			return handle.Video.Height;
@@ -108,7 +108,7 @@ namespace Fuse.Video.Graphics.CIL
 		{
 			return handle.Video.IsFrameAvaiable;
 		}
-		
+
 		public static void Play(VideoHandle handle)
 		{
 			handle.Video.Play();
@@ -118,7 +118,7 @@ namespace Fuse.Video.Graphics.CIL
 		{
 			return handle.Video.RotationDegrees;
 		}
-		
+
 		public static void Pause(VideoHandle handle)
 		{
 			handle.Video.Pause();
@@ -139,7 +139,7 @@ namespace Fuse.Video.Graphics.CIL
 
 		public static void CopyPixels(VideoHandle handle, byte[] destination)
 		{
-			handle.Video.CopyPixels(destination);	
+			handle.Video.CopyPixels(destination);
 		}
 
 	}

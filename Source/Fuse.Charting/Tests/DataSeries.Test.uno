@@ -24,7 +24,7 @@ namespace Fuse.Test
 				Assert.AreEqual(0.5f, ds[0].Value.X);
 				Assert.AreEqual(1.5f, ds[1].Value.X);
 				Assert.AreEqual(2.5f, ds[2].Value.X);
-				
+
 				ds = p.P.Series[1].PlotData;
 				Assert.AreEqual(4, ds.Count);
 				Assert.AreEqual(0.5f, ds[0].Value.X); //specified value ignored in Count mode
@@ -34,7 +34,7 @@ namespace Fuse.Test
 				Assert.AreEqual(1, ds[3].Value.W);
 			}
 		}
-		
+
 		[Test]
 		public void Array()
 		{

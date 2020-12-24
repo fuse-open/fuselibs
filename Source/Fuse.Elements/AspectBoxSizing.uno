@@ -15,29 +15,29 @@ namespace Fuse.Elements
 		/** Applies the Preserve and then Trim rules. This is the default. */
 		PreserveTrim = Preserve | Trim,
 	}
-	
+
 	internal sealed class FillAspectBoxSizing : BoxSizing
 	{
 		static public FillAspectBoxSizing Singleton = new FillAspectBoxSizing();
-		
+
 		override public BoxPlacement CalcBoxPlacement(Element element, float2 position, LayoutParams lp)
 		{
 			return StandardBoxSizing.Singleton.CalcBoxPlacement(element, position, lp);
 		}
-		
+
 		override public float2 CalcMarginSize(Element element, LayoutParams lp)
 		{
 			return StandardBoxSizing.Singleton.CalcMarginSize(element, lp);
 		}
-		
+
 		override public float2 CalcArrangePaddingSize(Element element, LayoutParams lp)
-		{	
+		{
 			var cs = GetConstraints( element, lp, ConstraintFlags.ImplicitMax );
 			var c = lp.CloneAndDerive();
 			c.BoxConstrain(cs);
-			
+
 			var aspect = element.Aspect;
-			
+
 			var sz = float2(0);
 			if (c.HasSize)
 				sz = Pick(c.Size,aspect);
@@ -45,9 +45,9 @@ namespace Fuse.Elements
 				sz = float2(c.X, c.X / aspect);
 			else if(c.HasY)
 				sz = float2(c.Y * aspect, c.Y);
-			
+
 			var ac = element.AspectConstraint;
-			
+
 			if (ac.HasFlag(AspectConstraint.Preserve))
 			{
 				if (c.HasMaxSize)
@@ -56,7 +56,7 @@ namespace Fuse.Elements
 					sz = Fit(sz, float2(c.MaxX,sz.Y), aspect);
 				else if (c.HasMaxY)
 					sz = Fit(sz, float2(sz.X, c.MaxY), aspect);
-					
+
 				if (c.HasMinX && sz.X < c.MinX)
 					sz = float2(c.MinX, c.MinX / aspect);
 				if (c.HasMinY && sz.Y < c.MinY)
@@ -78,43 +78,43 @@ namespace Fuse.Elements
 
 			return sz;
 		}
-		
+
 		float2 Pick(float2 sz, float aspect)
 		{
 			var y = sz.X / aspect;
 			if (y <= sz.Y)
 				return float2(sz.X, y);
-				
+
 			return float2(sz.Y * aspect, sz.Y);
 		}
-		
+
 		float2 Fit(float2 sz, float2 max, float aspect)
 		{
 			if (sz.X <= max.X && sz.Y <= max.Y)
 				return sz;
-				
-			if (sz.X > max.X)	
+
+			if (sz.X > max.X)
 				return float2(max.X, max.X / aspect);
 			return float2(max.Y * aspect, max.Y);
 		}
 	}
-	
+
 	public partial class Element
 	{
 		public const float DefaultAspect = 1;
 
 		/**
 			The aspect ratio that an element must fulfill in layout.
-			
+
 			This is the X:Y ratio. `2` is twice as wide as tall and `0.5` is half as wide as tall.
-			
+
 			@remarks Docs/BoxSizing.md
 		*/
 		public float Aspect
 		{
 			get { return Get(FastProperty1.Aspect, DefaultAspect); }
-			set 
-			{ 
+			set
+			{
 				if (Aspect != value)
 				{
 					Set(FastProperty1.Aspect, value, DefaultAspect);
@@ -124,20 +124,20 @@ namespace Fuse.Elements
 		}
 
 		public const AspectConstraint DefaultAspectConstraint = AspectConstraint.PreserveTrim;
-		
+
 		/**
 			Determines how the aspect ratio is maintained in a situation when it violates the min or max sizing constraints.
-			
+
 			@remarks Docs/BoxSizing.md
 		*/
 		public AspectConstraint AspectConstraint
 		{
 			get { return Get(FastProperty1.AspectConstraint, DefaultAspectConstraint); }
-			set 
-			{ 
+			set
+			{
 				if (AspectConstraint != value)
 				{
-					Set(FastProperty1.AspectConstraint, value, DefaultAspectConstraint); 
+					Set(FastProperty1.AspectConstraint, value, DefaultAspectConstraint);
 					InvalidateLayout();
 				}
 			}

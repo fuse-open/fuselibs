@@ -35,7 +35,7 @@ namespace Fuse.Triggers
 			get { return _source; }
 			set { _source = value; }
 		}
-		
+
 		Visual _visual;
 		protected override void OnRooted()
 		{
@@ -91,7 +91,7 @@ namespace Fuse.Triggers
 			get { return _source; }
 			set { _source = value; }
 		}
-		
+
 		Visual _visual;
 		bool _on;
 		protected override void OnRooted()
@@ -113,10 +113,10 @@ namespace Fuse.Triggers
 		void OnInteractingChanged(object s, object a)
 		{
 			bool n = _visual.IsInteracting;
-			if (n == _on)	
+			if (n == _on)
 				return;
 			_on = n;
-			
+
 			if (!n)
 				Pulse();
 		}

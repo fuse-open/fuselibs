@@ -10,20 +10,20 @@ namespace Fuse.Triggers
 		/** A change in parameter activates the busy task */
 		ParameterChanged = 1 << 0,
 	}
-	
+
 	/**
 		Marks a UX node as busy.
-		
-		There are several cases where we need to perform some background task, for instance fetching data over the network or performing some expensive computation. `Busy` can be used to coorindate this busy activity between JavaScript and UX. 
-		
+
+		There are several cases where we need to perform some background task, for instance fetching data over the network or performing some expensive computation. `Busy` can be used to coorindate this busy activity between JavaScript and UX.
+
 		We often want to be able to signal to our view (UX) that our data is not yet ready for display. Marking a node as busy will activate any `WhileBusy` triggers on it. This is the same mechanism used to indicate that an image is loading.
-		
+
 		## Examples
-		
+
 		### Loading data
-		
+
 		We might wish to display a loading indicator while making an HTTP request.
-		
+
 			<Panel>
 				<WhileBusy>
 					<Text Value="Loading..."/>
@@ -43,14 +43,14 @@ namespace Fuse.Triggers
 				</JavaScript>
 				<Activated Handler="{startLoad}"/>
 			</Panel>
-			
+
 		This example starts loading data when the page is activated. The `Loading...` text will be shown while it is loading, and removed once it is completed.
 
-		
+
 		### Preparing for navigation
-		
+
 		The @Navigator waits for a busy page to finish preparing before navigating to it. We can use `Busy` to ensure our bindings our done before this happens.
-		
+
 			<Page>
 				<Busy Activity="Preparing" On="ParameterChanged" ux:Name="busy"/>
 				<JavaScript>
@@ -68,26 +68,26 @@ namespace Fuse.Triggers
 		bool _isActive = true;
 		/**
 			Whether the Node is marked busy or not.
-			
+
 			The default is `true` -- you must set it explicitly to `false`, or call `.reset` from JS to turn off the busy status.
 		*/
 		public bool IsActive
 		{
 			get { return _isActive; }
-			set 
+			set
 			{
 				if (value == _isActive)
 					return;
-					
+
 				_isActive = value;
 				UpdateState();
 			}
 		}
-		
+
 		BusyTaskActivity _activity = BusyTaskActivity.Processing;
 		/**
 			How the node will be marked as busy.
-			
+
 			The default is `Processing`. If you wish to delay page navigation until this task is finished you need to use `Preparing`, as that is what @Navigator watches.
 		*/
 		public BusyTaskActivity Activity
@@ -97,7 +97,7 @@ namespace Fuse.Triggers
 			{
 				if (value == _activity)
 					return;
-					
+
 				_activity = value;
 				UpdateState();
 			}
@@ -112,16 +112,16 @@ namespace Fuse.Triggers
 			get { return _on; }
 			set { _on = value; }
 		}
-		
+
 		BusyTask _busyTask;
 		BusyOn _rootOn; //track what was set while rooted
 		void UpdateState()
 		{
 			if (!IsRootingStarted)
 				return;
-				
+
 			BusyTask.SetBusy(Parent, ref _busyTask, IsActive ? Activity : BusyTaskActivity.None);
-			
+
 			_rootOn = _on;
 			if (_rootOn.HasFlag(BusyOn.ParameterChanged))
 			{
@@ -137,7 +137,7 @@ namespace Fuse.Triggers
 				}
 			}
 		}
-		
+
 		protected override void OnRooted()
 		{
 			base.OnRooted();
@@ -145,13 +145,13 @@ namespace Fuse.Triggers
 				(Parent as Visual).ParameterChanged -= OnParameterChanged;
 			UpdateState();
 		}
-		
+
 		protected override void OnUnrooted()
 		{
 			BusyTask.SetBusy(Parent, ref _busyTask, BusyTaskActivity.None );
 			base.OnUnrooted();
 		}
-		
+
 		void OnParameterChanged(object s, EventArgs args)
 		{
 			IsActive = true;

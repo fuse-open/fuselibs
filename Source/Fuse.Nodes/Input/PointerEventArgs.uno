@@ -55,7 +55,7 @@ namespace Fuse.Input
 		{
 			return Pointer.IsCaptured(PointIndex, behavior);
 		}
-		
+
 		internal bool IsHardCaptured
 		{
 			get { return Pointer.IsCaptured(CaptureType.Hard, PointIndex, null); }

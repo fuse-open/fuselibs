@@ -41,7 +41,7 @@ namespace Fuse.Scripting
 	public abstract class ScriptProperty: ScriptMember
 	{
 		public readonly string Modifier;
-		protected ScriptProperty(string name, string modifier = null): base(name) 
+		protected ScriptProperty(string name, string modifier = null): base(name)
 		{
 			Modifier = modifier ?? "";
 		}
@@ -51,12 +51,12 @@ namespace Fuse.Scripting
 	public sealed class ScriptProperty<TOwner, TValue>: ScriptProperty
 	{
 		readonly Func<TOwner, Property<TValue>> _getter;
-		public override Property GetProperty(PropertyObject owner) 
-		{ 
+		public override Property GetProperty(PropertyObject owner)
+		{
 			if (!(owner is TOwner)) throw new Exception("ScriptProperty: incorrect owner type");
-			return _getter((TOwner)owner); 
+			return _getter((TOwner)owner);
 		}
-		public ScriptProperty(string name, Func<TOwner, Property<TValue>> getter, string modifier = null): base(name, modifier) 
+		public ScriptProperty(string name, Func<TOwner, Property<TValue>> getter, string modifier = null): base(name, modifier)
 		{
 			_getter = getter;
 		}
@@ -227,7 +227,7 @@ namespace Fuse.Scripting
 				return _method(c, (T)obj, args);
 			}
 		}
-		
+
 		class CallClosure
 		{
 			readonly Action<T> _method;
@@ -443,7 +443,7 @@ namespace Fuse.Scripting
 
 		readonly ScriptMember[] _members;
 		public ScriptMember[] Members { get { return _members; } }
-		
+
 		ScriptClass(Type unoType, ScriptMember[] members)
 		{
 			_unoType = unoType;

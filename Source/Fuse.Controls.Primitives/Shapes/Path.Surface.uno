@@ -11,7 +11,7 @@ namespace Fuse.Controls
 		{
 			var pos = CalcPositioning();
 			var list = new List<LineSegment>();
-			
+
 			for (int i=0; i < _segments.Count; ++i )
 			{
 				var seg = _segments[i];
@@ -20,7 +20,7 @@ namespace Fuse.Controls
 				seg.Translate( pos.Offset + pos.Extents.Minimum );
 				list.Add(seg);
 			}
-			
+
 			return list;
 		}
 	}

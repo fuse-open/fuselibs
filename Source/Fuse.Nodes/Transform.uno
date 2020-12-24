@@ -3,11 +3,11 @@ using Uno.UX;
 
 namespace Fuse
 {
-	/** 
+	/**
 		Transforms are used to move, rotate, scale and skew elements beyond their assigned placement by the Fuse layout engine.
 
 		@topic Transforms
-		
+
 		Transforms are added to elements just like other elements and triggers.
 
 		# Example
@@ -26,7 +26,7 @@ namespace Fuse
 	{
 		public abstract void PrependTo(FastMatrix matrix);
 		public abstract void AppendTo(FastMatrix matrix, float weight = 1);
-		
+
 		internal event Action<Transform> MatrixChanged;
 
 		protected void OnMatrixChanged(object igoreSender = null, object ignoreArgs = null)
@@ -34,8 +34,8 @@ namespace Fuse
 			if (MatrixChanged != null)
 				MatrixChanged(this);
 		}
-		
-		/** Whether this tranform keeps the object strictly in the XY-plane. 
+
+		/** Whether this tranform keeps the object strictly in the XY-plane.
 			This property is used for optimization and must be computed correctly
 			in derived classes.
 		*/
@@ -65,7 +65,7 @@ namespace Fuse
 		public float3 EulerAngle
 		{
 			get { return _euler; }
-			set 
+			set
 			{
 				if (_euler != value)
 				{
@@ -74,12 +74,12 @@ namespace Fuse
 				}
 			}
 		}
-		
+
 		/** The rotation in degrees for each axis. */
 		public float3 EulerAngleDegrees
 		{
 			get { return Math.RadiansToDegrees(_euler); }
-			set 
+			set
 			{
 				var r = Math.DegreesToRadians(value);
 				if (_euler != r)
@@ -89,7 +89,7 @@ namespace Fuse
 				}
 			}
 		}
-		
+
 		/** The rotation in degrees.
 			This controls the rotation on Z-axis, i.e. the only meaningful axis of rotation
 			for 2D graphics. Same as @DegreesZ.
@@ -99,7 +99,7 @@ namespace Fuse
 			get { return DegreesZ; }
 			set { DegreesZ = value; }
 		}
-		
+
 		/** The rotation in radians.
 			This controls the rotation on Z-axis, i.e. the only meaningful axis of rotation
 			for 2D graphics. Same as @AngleZ.
@@ -118,7 +118,7 @@ namespace Fuse
 			get { return Math.RadiansToDegrees(_euler.Z); }
 			set { AngleZ = Math.DegreesToRadians(value); }
 		}
-		
+
 		public float AngleZ
 		{
 			get { return _euler.Z; }
@@ -131,7 +131,7 @@ namespace Fuse
 				}
 			}
 		}
-		
+
 		/** The rotation in degrees on the Y-axis.
 			This is mainly used for 3D rotation. For a rotation in the 2D plane, use @Degrees.
 		*/
@@ -153,13 +153,13 @@ namespace Fuse
 				}
 			}
 		}
-		
+
 		public float DegreesX
 		{
 			get { return Math.RadiansToDegrees(_euler.X); }
 			set { AngleX = Math.DegreesToRadians(value); }
 		}
-		
+
 		public float AngleX
 		{
 			get { return _euler.X; }
@@ -172,16 +172,16 @@ namespace Fuse
 				}
 			}
 		}
-		
+
 		bool HasRotation
 		{
-			get 
+			get
 			{
 				return Math.Abs(_euler.X) + Math.Abs(_euler.Y) + Math.Abs(_euler.Z)
 					> _zeroTolerance;
 			}
 		}
-		
+
 		public override void AppendTo(FastMatrix m, float weight)
 		{
 			if (HasRotation)
@@ -193,9 +193,9 @@ namespace Fuse
 			if (HasRotation)
 				m.PrependRotationQuaternion( Quaternion.FromEulerAngle(_euler) );
 		}
-		
-		public override bool IsFlat 
-		{ 
+
+		public override bool IsFlat
+		{
 			get { return Math.Abs(_euler.X) < _zeroTolerance
 				&& Math.Abs(_euler.Y) < _zeroTolerance; }
 		}
@@ -203,7 +203,7 @@ namespace Fuse
 
 	/**
 		Applies a shear to the visual (skews it). If you wish to animate the shear use a @Skew animator instead.
-		
+
 		A shear is 2D, applying to only the X, and Y axes.
 	*/
 	public sealed class Shear: Transform
@@ -213,7 +213,7 @@ namespace Fuse
 		public float2 Vector
 		{
 			get { return _vector; }
-			set 
+			set
 			{
 				if (_vector != value)
 				{
@@ -222,13 +222,13 @@ namespace Fuse
 				}
 			}
 		}
-		
+
 		/** Shortcut to `Degrees.X` */
-		public float DegreesX 
-		{ 
+		public float DegreesX
+		{
 			get { return _vector.X; }
-			set 
-			{ 
+			set
+			{
 				var r = Math.DegreesToRadians(value);
 				if (_vector.X != r)
 				{
@@ -239,11 +239,11 @@ namespace Fuse
 		}
 
 		/** Shortcut to `Degrees.Y` */
-		public float DegreesY 
-		{ 
+		public float DegreesY
+		{
 			get { return _vector.Y; }
-			set 
-			{ 
+			set
+			{
 				var r = Math.DegreesToRadians(value);
 				if (_vector.Y != r)
 				{
@@ -263,7 +263,7 @@ namespace Fuse
 					Math.DegreesToRadians(value.Y));
 			}
 		}
-		
+
 		public override void AppendTo(FastMatrix m, float weight)
 		{
 			var v = Vector * weight;
@@ -275,9 +275,9 @@ namespace Fuse
 			var v = Vector;
 			m.PrependShear(v.X,v.Y);
 		}
-		
-		public override bool IsFlat 
-		{ 
+
+		public override bool IsFlat
+		{
 			get { return true; }
 		}
 	}
@@ -288,7 +288,7 @@ namespace Fuse
 		Visual RelativeNode { get; }
 		void OnTransformChanged(object ignoredSender, object ignoredArgs);
 	}
-	
+
 	/**
 		A singleton interface that calculates the transform.
 	*/
@@ -297,20 +297,20 @@ namespace Fuse
 		/**
 			Perform the event subscriptions necessary to support this transform. Changes should invoke
 			Transform.OnMatrixChanged.
-			
+
 			The transform will be rooted when this is called.
-			
+
 			You don't need to subscribe to changes on the `Transform` properties, those are all implicitly handled.
-			
+
 			@return An object that contains subscription information that can be used by `Unsubscribe`
 				to remove the subscriptions. `null` can be returned in which case `Unsubscribe` *may* not
 				be called.
-				
+
 				The use of an opaque return value is an optimization for the most common situations
 				in fuselibs: either no subscription, or a subscription to a single existing object.
 		*/
 		object Subscribe(ITransformRelative transform);
-		
+
 		/**
 			Unsubscribe from the events subscribed via `Subscribe`. Do not rely on properties of
 			the `Transform` being the same as when `Subscribe` was called, make use of the returned
@@ -318,7 +318,7 @@ namespace Fuse
 		*/
 		void Unsubscribe(ITransformRelative transform, object sub);
 	}
-	
+
 	/**
 		A common base that provides for translation relative to other nodes.
 	*/
@@ -338,7 +338,7 @@ namespace Fuse
 				CheckSubscription(false);
 			}
 		}
-		
+
 		TransformMode _relativeTo;
 		public TransformMode RelativeTo
 		{
@@ -353,7 +353,7 @@ namespace Fuse
 				CheckSubscription(false);
 			}
 		}
-		
+
 		internal RelativeTransform(TransformMode defaultTransform)
 		{
 			_relativeTo = defaultTransform;
@@ -362,7 +362,7 @@ namespace Fuse
 		Visual ITransformRelative.Target { get { return Parent; } }
 		Visual ITransformRelative.RelativeNode { get { return RelativeNode; } }
 		void ITransformRelative.OnTransformChanged(object s, object a) { OnMatrixChanged(); }
-		
+
 		protected override void OnRooted()
 		{
 			base.OnRooted();
@@ -394,12 +394,12 @@ namespace Fuse
 				_waitRootingCompleted.RootingCompleted -= OnRootingCompleted;
 				_waitRootingCompleted = null;
 			}
-		}		
+		}
 		void OnRootingCompleted()
 		{
 			CheckSubscription(false);
 		}
-		
+
 		object _subscription;
 		void CheckSubscription(bool fromRooted)
 		{
@@ -413,13 +413,13 @@ namespace Fuse
 				_waitRootingCompleted.RootingCompleted += OnRootingCompleted;
 				return;
 			}
-			
+
 			ClearSubscription();
 			//UNO: https://github.com/fusetools/uno/issues/645
 			_subscription = (RelativeTo as ITransformMode).Subscribe(this);
 			OnMatrixChanged();
 		}
 	}
-	
-	
+
+
 }

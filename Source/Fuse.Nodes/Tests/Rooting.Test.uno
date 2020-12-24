@@ -74,7 +74,7 @@ namespace Fuse.Test
 				Assert.IsTrue(p.P2.IsRootingCompleted);
 			}
 		}
-		
+
 		//https://github.com/fuse-open/fuselibs/issues/430
 		[Test]
 		public void DoubleRooting()
@@ -85,7 +85,7 @@ namespace Fuse.Test
 				Assert.AreEqual( "okay", GetText(p.rov));
 			}
 		}
-		
+
 		[Test]
 		//covers the scenario from https://github.com/fuse-open/fuselibs/issues/518
 		public void RemoveAll()
@@ -95,7 +95,7 @@ namespace Fuse.Test
 			{
 				Assert.AreEqual(1, p.a.RootCount);
 				Assert.AreEqual(1, p.b.RootCount);
-				
+
 				p.RemoveAllChildren<RootTracker>();
 				Assert.AreEqual(0, p.a.RootCount);
 				Assert.AreEqual(0, p.b.RootCount);
@@ -103,7 +103,7 @@ namespace Fuse.Test
 				Assert.IsFalse(root.Children.Contains(p.b));
 			}
 		}
-		
+
 		[Test]
 		public void ScrollViewScenario()
 		{
@@ -115,28 +115,28 @@ namespace Fuse.Test
 				Assert.AreEqual(0, p.a.Tracker.RootCount);
 			}
 		}
-		
+
 	}
-	
+
 	/*
 		This mimics a behavior that `PageControl.Pages` and `AlternateRoot` could exhibit. Those might change thus as not being relied upon to test the rooting guarantee. This new class tests a specific scenario where those classes failed.
-		
+
 		Refer to https://github.com/fuse-open/fuselibs/issues/430
 	*/
 	public class RootOrderVisual : Panel
 	{
 		Text _p;
-		
+
 		//bindings resolve prior to OnRooted, but during rooting, this simulates that
 		protected override void OnRootedPreChildren()
 		{
 			base.OnRootedPreChildren();
-			
+
 			_p = new Text();
 			_p.Value = "okay";
 			Children.Add(_p);
 		}
-		
+
 		protected override void OnUnrooted()
 		{
 			base.OnUnrooted();
@@ -144,11 +144,11 @@ namespace Fuse.Test
 			_p = null;
 		}
 	}
-	
+
 	public class RootTracker : Panel
 	{
 		public int RootCount;
-		
+
 		protected override void OnRooted()
 		{
 			base.OnRooted();
@@ -156,7 +156,7 @@ namespace Fuse.Test
 				Fuse.Diagnostics.InternalError("Invalid rooting" );
 			RootCount++;
 		}
-		
+
 		protected override void OnUnrooted()
 		{
 			if (RootCount != 1)
@@ -165,23 +165,23 @@ namespace Fuse.Test
 			base.OnUnrooted();
 		}
 	}
-	
+
 	//simulates how Scroller is added/removed in ScrollView
 	public class ScrollViewScenarioBehavior : Panel
-	{	
+	{
 		public RootTracker Tracker = new RootTracker();
-		
+
 		protected override void OnRooted()
 		{
 			base.OnRooted();
 			Children.Add( Tracker );
 		}
-		
+
 		protected override void OnUnrooted()
 		{
 			RemoveAllChildren<RootTracker>();
 			base.OnUnrooted();
 		}
 	}
-	
+
 }

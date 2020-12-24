@@ -10,7 +10,7 @@ namespace Fuse.Reactive
 		The children of an `Each` tag represent a template that will be "projected" for each item in the collection
 		specified by the `Items` property. The projected item then becomes the data context for that instance, so
 		data-binding can be specified relative to the item itself rather than having to index the collection explicitly.
-		
+
 		Note that each subtree projected by `Each` lives in its own scope.
 		This means that the children of an `Each` cannot be accessed from outside it.
 		You can, however, access nodes declared outside the `Each` from the inside.
@@ -64,14 +64,14 @@ namespace Fuse.Reactive
 			    var Observable = require("FuseJS/Observable");
 
 			    module.exports.posts = Observable(
-				    {postType: "text", body: "Lorem ipsum", title: "Hello, world"}, 
+				    {postType: "text", body: "Lorem ipsum", title: "Hello, world"},
 				    {postType: "quote", quote: "Stuff", title: "A quote"}
 			    );
 			</JavaScript>
 
 			<ScrollView>
 				<StackPanel>
-					<Each Items="{posts}" MatchKey="postType"> 
+					<Each Items="{posts}" MatchKey="postType">
 						<StackPanel ux:Template="text" Height="100" Color="#FFF" Margin="10" Padding="10">
 							<Shadow Distance="3" />
 							<Text FontSize="25" Value="{title}" />
@@ -88,7 +88,7 @@ namespace Fuse.Reactive
 			</ScrollView>
 
 		`MatchKey` works by looking for a property in the data context of each item from `Items`.
-		The value of this property is then used to determine the template to use for the current item. 
+		The value of this property is then used to determine the template to use for the current item.
 		In the above example, we store the template we want to use in the property `postType`, which will appear in the data context of each item being iterated.
 	*/
 	public class Each: Instantiator
@@ -144,13 +144,13 @@ namespace Fuse.Reactive
 		Each(IList<Template> templates): base(templates) {}
 		public Each() {}
 
-		/** A collection containing the data items used to populate the parent. 
+		/** A collection containing the data items used to populate the parent.
 
 			This property can not be used together with `Count`.
 
 			The provided object must implement `IArray`. To support dynamic changes to the collection, it can also implement `IObservableArray`.
 			For example, if a `FuseJS/Observable` is provided, this implements `IObservableArray`.
-	
+
 			Each item in the collection can in turn be an `IObservable`. If so, the Each will subscribe to these items and use the dynamic value. However,
 			this will not work in combination with the `MatchKey`, `IdentityKey` and `MatchObject` features which require an immediate value.
 
@@ -172,14 +172,14 @@ namespace Fuse.Reactive
 		public int Count
 		{
 			get { return _count; }
-			set 
-			{ 
+			set
+			{
 				if (_hasCount && _count == value)
 					return;
-					
+
 				_count = value;
 				_hasCount = true;
-				
+
 				var items = new object[_count];
 				for (int i=0; i < _count; ++i)
 					items[i] = new NoContextItem();
@@ -189,12 +189,12 @@ namespace Fuse.Reactive
 
 		/**
 			The index of the first item added.
-			
+
 			The default is 0.
-			
+
 			This can be used together with `Limit` to create a window of items.
 		*/
-		new public int Offset 
+		new public int Offset
 		{
 			get { return base.Offset; }
 			set { base.Offset = value; }
@@ -202,9 +202,9 @@ namespace Fuse.Reactive
 
 		/**
 			Limits the number of items added by each.
-			
+
 			The default is to not limit the number of items added.
-			
+
 			The first item is the one at `Offset`, and then subsequent items, up to the `Limit` amount, are added.
 		*/
 		new public int Limit

@@ -16,8 +16,8 @@ namespace Fuse.Navigation
 
 		MotionConfig _motion;
 		[UXContent]
-		public MotionConfig Motion 
-		{ 	
+		public MotionConfig Motion
+		{
 			get
 			{
 				if (_motion == null)
@@ -31,9 +31,9 @@ namespace Fuse.Navigation
 					Fuse.Diagnostics.UserError( "Motion should not be changed post-rooting", this );
 			}
 		}
-		
+
 		BoundedRegion2D _region;
-			
+
 		enum Desired
 		{
 			None,
@@ -43,23 +43,23 @@ namespace Fuse.Navigation
 		Desired _desired = Desired.None;
 		Visual _desiredActive;
 		int _desiredIndex;
-		
+
 		protected override void OnRooted()
 		{
 			base.OnRooted();
 
 			if (_desired == Desired.None && PageCount > 0)
 				_desiredActive = GetPage(0);
-				
+
 			_region = Motion.AcquireSimulation();
 			_region.Position = float2(_progress,0);
 			if (!GotoDesiredActive())
 				SetProgress(GetPageIndex(_active));
-				
+
 			//force events as the above may not actually change the values, yet the logical state can change
 			OnHistoryChanged();
 		}
-		
+
 		Visual _listenComplete;
 		void CleanupListenComplete()
 		{
@@ -69,12 +69,12 @@ namespace Fuse.Navigation
 				_listenComplete = null;
 			}
 		}
-		
+
 		void GotoDesiredActiveAction()
 		{
 			GotoDesiredActive();
 		}
-		
+
 		bool GotoDesiredActive()
 		{
 			Visual desiredPage = null;
@@ -83,19 +83,19 @@ namespace Fuse.Navigation
 				case Desired.None:
 					desiredPage = _active ?? GetPage(0);
 					break;
-					
+
 				case Desired.Active:
 					desiredPage = _desiredActive;
 					break;
-					
+
 				case Desired.Index:
 					desiredPage = GetPage(_desiredIndex);
 					break;
 			}
-			
+
 			if (desiredPage == null)
 				return false;
-				
+
 			if (!desiredPage.IsRootingStarted)
 			{
 				CleanupListenComplete();
@@ -103,11 +103,11 @@ namespace Fuse.Navigation
 				_listenComplete.RootingCompleted += GotoDesiredActiveAction;
 				return false;
 			}
-		
+
 			UpdateDesired(desiredPage, -1);
-			if (desiredPage == _active)	
+			if (desiredPage == _active)
 				return false;
-				
+
 			GotoImpl(desiredPage, NavigationGotoMode.Bypass);
 			return true;
 		}
@@ -120,7 +120,7 @@ namespace Fuse.Navigation
 				_region = null;
 				Motion.ReleaseSimulation();
 			}
-				
+
 			CheckNeedUpdate(true);
 			base.OnUnrooted();
 		}
@@ -138,11 +138,11 @@ namespace Fuse.Navigation
 			if (mode != NavigationGotoMode.Transition &&
 				mode != NavigationGotoMode.Bypass)
 				return;
-		
+
 			UpdateDesired(element, -1);
 			GotoInternal(element, mode);
 		}
-		
+
 		/*
 			Internal goto does not update the desired mode. It should be used by anything internally that needs a Goto but does not reflect a user desired change.
 		*/
@@ -171,10 +171,10 @@ namespace Fuse.Navigation
 				Fuse.Diagnostics.UserError( "Attempting to navigate to element with different parent", element );
 				return;
 			}
-			
+
 			TransitionToChild(element, mode.HasFlag(NavigationGotoMode.Bypass) );
 		}
-		
+
 		/**
 			@return true if the _region was updated
 		*/
@@ -203,7 +203,7 @@ namespace Fuse.Navigation
 			CheckNeedUpdate();
 			return true;
 		}
-		
+
 		bool _hasUpdated;
 		void CheckNeedUpdate(bool off = false)
 		{
@@ -223,7 +223,7 @@ namespace Fuse.Navigation
 				_hasUpdated = false;
 			}
 		}
-		
+
 		void OnUpdated()
 		{
 			if (_region == null)
@@ -231,7 +231,7 @@ namespace Fuse.Navigation
 				Fuse.Diagnostics.InternalError( "Updated called without a region", this );
 				return;
 			}
-				
+
 			var prev = _region.Position.X;
 			_region.Update( Time.FrameInterval );
 			ChangeProgress(prev, _region.Position.X, NavigationMode.Seek);
@@ -239,18 +239,18 @@ namespace Fuse.Navigation
 			//allow turning off update now, this ensures we always get one update when _region changed
 			CheckNeedUpdate(true);
 		}
-		
+
 		//only used when not rooted (_region == null)
 		float _progress;
-		
+
 		void ResetRegionLimits()
 		{
 			_region.MaxPosition = float2(MaxIndex,0);
 			_region.MinPosition = float2(0);
 		}
-		
+
 		void SetProgress(float value)
-		{	
+		{
 			float prev;
 			if (_region != null)
 			{
@@ -264,10 +264,10 @@ namespace Fuse.Navigation
 				prev = _progress;
 				_progress = value;
 			}
-			
+
 			ChangeProgress(prev, value, NavigationMode.Bypass);
 		}
-		
+
 		float _prevProgress;
 		void ChangeProgress(float prev, float next, NavigationMode mode)
 		{
@@ -280,11 +280,11 @@ namespace Fuse.Navigation
 			var pd = GetPageData(page);
 			if (pd == null)
 				return new NavigationPageState{ Progress = 0, PreviousProgress = 0 };
-				
+
 			return new NavigationPageState{ Progress = (float)Progress - pd.Index,
 				PreviousProgress = (float)_prevProgress  - pd.Index };
 		}
-		
+
 		public override bool CanGoForward
 		{
 			get
@@ -312,17 +312,17 @@ namespace Fuse.Navigation
 			if (CanGoBack)
 				DesiredTransition(Previous);
 		}
-		
+
 		//transition to an update the desired values
 		void DesiredTransition(Visual target)
 		{
 			UpdateDesired(target, -1);
 			TransitionToChild(target);
 		}
-		
+
 		internal static Selector DesiredActiveName = "DesiredActive";
 		internal static Selector DesiredActiveIndexName = "DesiredActiveIndex";
-		
+
 		void UpdateDesired(Visual target, int index)
 		{
 			if (target != null)
@@ -334,7 +334,7 @@ namespace Fuse.Navigation
 			{
 				target = GetPage(index);
 			}
-			
+
 			if (_desiredActive != target)
 			{
 				_desiredActive = target;
@@ -401,33 +401,33 @@ namespace Fuse.Navigation
 			get { return _active; }
 			set { SetDesiredActive(value); }
 		}
-		
+
 		public Visual DesiredActive
 		{
 			get { return _desiredActive; }
 			set { SetDesiredActive(value); }
 		}
-		
+
 		public int DesiredActiveIndex
 		{
 			get { return _desiredIndex; }
 			set { SetDesiredActiveIndex(value); }
 		}
-		
+
 		void SetDesiredActive( Visual page )
 		{
 			UpdateDesired(page, -1);
 			_desired = Desired.Active;
 			GotoInternal(page, NavigationGotoMode.Transition);
 		}
-		
+
 		void SetDesiredActiveIndex( int index )
 		{
 			UpdateDesired( null, index );
 			_desired = Desired.Index;
 			GotoInternal( _desiredActive, NavigationGotoMode.Transition );
 		}
-		
+
 		void DirectSetActive(Visual page)
 		{
 			if (page == _active)
@@ -447,7 +447,7 @@ namespace Fuse.Navigation
 				ResetRegionLimits();
 				_region.StartUser();
 			}
-				
+
 			OnStateChanged( NavigationState.Seek );
 		}
 
@@ -466,7 +466,7 @@ namespace Fuse.Navigation
 				Fuse.Diagnostics.InternalError( "Seek being called on an unrooted navigation", this );
 				return;
 			}
-			
+
 			var prev = (float)Progress;
 			_region.StepUser(float2(args.RelativeDelta,0));
 			ChangeProgress(prev, _region.Position.X, NavigationMode.Seek);
@@ -478,7 +478,7 @@ namespace Fuse.Navigation
 			//don't allow an end to interrupt something else
 			if (!_region.IsUser)
 				return;
-				
+
 			var targetIndex = 0;
 			switch (args.SnapTo)
 			{
@@ -500,7 +500,7 @@ namespace Fuse.Navigation
 
 			if (_region != null)
 				_region.EndUser(float2(args.Velocity,0));
-			
+
 			//force stop if we don't otherwise update the region (in cases where the progress doesn't change)
 			UpdateDesired( null, targetIndex );
 			if (!TransitionToChild(GetPage(targetIndex), false, true))

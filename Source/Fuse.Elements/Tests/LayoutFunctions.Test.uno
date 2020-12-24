@@ -19,16 +19,16 @@ namespace Fuse.Elements.Test
 				var b = p.FindNodeByName("b") as Element;
 				Assert.AreEqual(float2(10,20), b.ActualPosition);
 				Assert.AreEqual(float2(300,400), b.ActualSize);
-				
+
 				Assert.AreEqual(float2(10,20), p.c.ActualPosition);
 				Assert.AreEqual(float2(300,400), p.c.ActualSize);
-				
+
 				var d = p.FindNodeByName("d") as Element;
 				Assert.AreEqual(float2(10,20), b.ActualPosition);
 				Assert.AreEqual(float2(300,400), b.ActualSize);
 			}
 		}
-		
+
 		[Test]
 		public void LostData()
 		{
@@ -39,18 +39,18 @@ namespace Fuse.Elements.Test
 				{
 					Assert.AreEqual( -1, p.dw.Value );
 					Assert.AreEqual( -1, p.dh.Value );
-					
+
 					p.wt.Value = true;
 					root.StepFrame();
 					Assert.AreEqual( 10, p.dw.Value );
 					Assert.AreEqual( 20, p.dh.Value );
-					
+
 					p.wt.Value = false;
 					root.StepFrame();
 				}
 			}
 		}
-		
+
 		[Test]
 		public void Alternates()
 		{

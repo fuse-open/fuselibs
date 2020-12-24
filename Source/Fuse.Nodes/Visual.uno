@@ -21,27 +21,27 @@ namespace Fuse
 		visual appearance and invisible objects that contain other visuals. Examples of visuals
 		are @Rectangle, @Panel, @Button and @WebView.
 
-		Visuals manage pointer input for an area of the screen and respond accordingly. 
+		Visuals manage pointer input for an area of the screen and respond accordingly.
 		The area for which the visual receives pointer input is determined by the @HitTest
 		method. The area does not need to be a rectangular area, it can be any complex shape.
 
 		Visuals can have many different types of children, including other visuals, @Behaviors,
 		and @Transforms. The @Children has a certain order which is the order in which the children
-		are laid out during layout. This order is by default is identical to the Z-order. However, 
+		are laid out during layout. This order is by default is identical to the Z-order. However,
 		the Z-order can be manipulated separately from the child-order.
 
-		Visuals can have input focus if the `Focus.IsFocusable` property is set to `true`. 
+		Visuals can have input focus if the `Focus.IsFocusable` property is set to `true`.
 	*/
 	public abstract partial class Visual : Node, IList<Node>, IPropertyListener, ITemplateSource, IEnumerable<Visual>
 	{
 		public abstract void Draw(DrawContext dc);
 
-		public virtual VisualContext VisualContext 
-		{ 
-			get 
-			{ 
+		public virtual VisualContext VisualContext
+		{
+			get
+			{
 				if defined(!Mobile) return VisualContext.Graphics;
-				if (Parent != null) return Parent.VisualContext; 
+				if (Parent != null) return Parent.VisualContext;
 				else return VisualContext.Unknown;
 			}
 		}
@@ -60,7 +60,7 @@ namespace Fuse
 
 		public virtual void OnIsSelectedChanged(bool isSelected)
 		{
-			
+
 		}
 
 		double _drawCost;
@@ -88,9 +88,9 @@ namespace Fuse
 		}
 
 		IViewport _viewport;
-		
+
 		bool _childrenShouldRoot = false;
-		internal override bool ShouldRootChildren		
+		internal override bool ShouldRootChildren
 		{
 			get { return IsRootingStarted && _childrenShouldRoot; }
 		}
@@ -114,7 +114,7 @@ namespace Fuse
 			{
 				// Use the IEnumerable<Node> implementation here, as this correctly deals
 				// with the list being manipulated during rooting/unrooting
-				foreach (var c in Children) 
+				foreach (var c in Children)
 				{
 					if (c.IsUnrooted)
 						c.RootInternal(this);
@@ -130,17 +130,17 @@ namespace Fuse
 		}
 
 		protected virtual void OnRootedPreChildren() { }
-		
+
 		protected override void OnUnrooted()
 		{
 			base.OnUnrooted();
 			_childrenShouldRoot = false;
-			
+
 			UnrootResources();
 			_viewport = null;
 
 			ClearLayout();
-			
+
 			ResetParameterListeners();
 
 			if (Input.Focus.FocusedVisual == this)
@@ -159,7 +159,7 @@ namespace Fuse
 
 			ConcludePendingRemove();
 		}
-		
+
 		void ClearLayout()
 		{
 			_layoutDirty = InvalidateLayoutReason.NothingChanged;
@@ -176,7 +176,7 @@ namespace Fuse
 
 		/**
 			Converts a coordinate from the parent space into the local space.
-			
+
 			@param result The result will be stored here. It is undefined if the return is `false`
 			@return true if the result is defined, false is the calculation could not be performed.
 		*/

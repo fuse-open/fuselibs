@@ -20,7 +20,7 @@ namespace Fuse.Triggers
 			else
 				Deactivate();
 		}
-		
+
 		/** Call in situations where the bypassing is forced. This should be rare since during rooting the normal bypass mechanism of the trigger will apply. */
 		protected void BypassSetActive(bool on)
 		{

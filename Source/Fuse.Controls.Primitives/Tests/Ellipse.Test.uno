@@ -18,12 +18,12 @@ namespace Fuse.Controls.Primitives.Test
 				Assert.AreEqual(p.a, p.GetHitWindowPoint( float2(50,50)));
 				Assert.AreEqual(null, p.GetHitWindowPoint( float2(21,15)));
 				Assert.AreEqual(p.a, p.GetHitWindowPoint( float2(147,89)));
-				
+
 				Assert.AreEqual(p.b, p.GetHitWindowPoint( float2(0,100) + float2(52,88)));
 				Assert.AreEqual(null, p.GetHitWindowPoint( float2(0,100) + float2(52,95)));
 				Assert.AreEqual(p.b, p.GetHitWindowPoint( float2(0,100) + float2(152,51)));
 				Assert.AreEqual(null, p.GetHitWindowPoint( float2(0,100) + float2(152,49)));
-				
+
 				Assert.AreEqual(p.c, p.GetHitWindowPoint( float2(200,0) + float2(78,22)));
 				Assert.AreEqual(null, p.GetHitWindowPoint( float2(200,0) + float2(83,22)));
 				Assert.AreEqual(null, p.GetHitWindowPoint( float2(200,0) + float2(49,22)));

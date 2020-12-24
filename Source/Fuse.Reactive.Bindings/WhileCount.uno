@@ -11,7 +11,7 @@ namespace Fuse.Reactive
 		The collection is specified with `Items`.
 
 		`WhileCount` accepts a combination of properties that form an open or closed range of numbers to test against. The trigger is active while the count of items matches.
-		
+
 		- `EqualTo` is used on its own and the item count must match this number.
 		- Using just `LessThan` or `LessThanEqual` the count of items must be less than, or less than or equal to, this number.
 		- Using juse `GreaterThan` or `GreaterThanEqual` the count of items must be greater than, or greater than or equal to, this number.
@@ -81,13 +81,13 @@ namespace Fuse.Reactive
 		{
 			if (!IsRootingStarted)
 				return;
-				
+
 			if (_subscription != null) _subscription.Dispose();
-			
+
 			var obs = _items as IObservableArray;
 			if (obs != null)
 				_subscription = obs.Subscribe(this);
-			
+
 			UpdateState();
 		}
 
@@ -102,21 +102,21 @@ namespace Fuse.Reactive
 				Assess(e.Length);
 				return;
 			}
-			
+
 			var obs = _items as IObservableArray;
 			if (obs != null)
 			{
 				Assess(obs.Length);
 				return;
 			}
-			
+
 			var arr = _items as IArray;
-			if (arr != null) 
+			if (arr != null)
 			{
 				Assess(arr.Length);
 				return;
 			}
-			
+
 			Assess(0);
 		}
 
@@ -127,7 +127,7 @@ namespace Fuse.Reactive
 			_oldCount = count;
 			SetActive(IsOn(_oldCount));
 		}
-		
+
 		bool IsOn(int count)
 		{
 			if (_low == Range.Exclusive && (count <= _compare.X))
@@ -138,7 +138,7 @@ namespace Fuse.Reactive
 				return false;
 			if (_high == Range.Inclusive && (count > _compare.Y))
 				return false;
-			
+
 			return true;
 		}
 
@@ -148,10 +148,10 @@ namespace Fuse.Reactive
 			Exclusive,
 			Inclusive,
 		}
-		
+
 		int2 _compare;
 		Range _low = Range.Open, _high = Range.Open;
-		
+
 		/** Active when the count of the collection is less than the provided value. */
 		public int LessThan
 		{
@@ -175,7 +175,7 @@ namespace Fuse.Reactive
 				UpdateState();
 			}
 		}
-		
+
 		/** Active when the count of the collection is greater than the provided value. */
 		public int GreaterThan
 		{
@@ -199,7 +199,7 @@ namespace Fuse.Reactive
 				UpdateState();
 			}
 		}
-		
+
 		/** Active when the count of the collection is equal to the provided value. */
 		public int EqualTo
 		{
@@ -250,7 +250,7 @@ namespace Fuse.Reactive
 		{
 			Assess(values.Length);
 		}
-		
+
 		internal bool TestIsClean
 		{
 			get { return _subscription == null; }

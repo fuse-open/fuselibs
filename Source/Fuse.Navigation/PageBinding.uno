@@ -159,63 +159,63 @@ namespace Fuse.Navigation
 	{
 		void PageChanged(Visual where);
 	}
-	
+
 	static public class NavigationPageProperty
 	{
 		static readonly PropertyHandle _pageProperty = Fuse.Properties.CreateHandle();
 
 		static internal List<IPageResourceBinding> RootedBindings = new List<IPageResourceBinding>();
 
-		static Dictionary<Visual, List<IPagePropertyListener>> _watchers = 
+		static Dictionary<Visual, List<IPagePropertyListener>> _watchers =
 			new Dictionary<Visual, List<IPagePropertyListener>>();
-		
+
 		static List<IPagePropertyListener> GetWatcherList(Visual where, bool optional = false)
 		{
 			List<IPagePropertyListener> o;
 			if (_watchers.TryGetValue(where, out o))
 				return o;
-				
+
 			if (optional)
 				return null;
-				
+
 			var q = new List<IPagePropertyListener>();
 			_watchers.Add(where, q);
 			return q;
 		}
-		
+
 		static internal void AddPageWatcher(Visual where, IPagePropertyListener callback)
 		{
 			GetWatcherList(where).Add(callback);
 		}
-		
+
 		static internal void RemovePageWatcher(Visual where, IPagePropertyListener callback)
 		{
 			var list = GetWatcherList(where, true);
 			if (list == null)
 				return;
-				
+
 			list.Remove(callback);
 			if (list.Count == 0)
 				_watchers.Remove(where);
 		}
-		
+
 		[UXAttachedPropertySetter("Navigation.Page")]
 		public static void SetNavigationPage(Visual n, Visual page)
 		{
 			var old = GetNavigationPage(n);
 			if (old == page)
 				return;
-				
+
 			n.Properties.Set(_pageProperty, page);
 			UpdateListeners(n);
 		}
-		
+
 		static void UpdateListeners(Visual node)
 		{
 			//TODO: replace with listeners
 			foreach (var binding in RootedBindings)
 				binding.UpdateSource();
-				
+
 			//iterate up looking for anything that might be affected by this change
 			while (node != null)
 			{
@@ -226,15 +226,15 @@ namespace Fuse.Navigation
 					var dup = new List<IPagePropertyListener>();
 					for (int i=0; i < list.Count; ++i)
 						dup.Add(list[i]);
-						
+
 					for (int i=0; i < dup.Count; ++i)
 						dup[i].PageChanged(node);
 				}
-				
+
 				node = node.Parent;
 			}
 		}
-		
+
 
 		[UXAttachedPropertyGetter("Navigation.Page")]
 		public static Visual GetNavigationPage(Visual n)

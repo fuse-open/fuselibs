@@ -62,7 +62,7 @@ namespace Fuse.Controls.VideoImpl
 
 		readonly Future<IVideoPlayer> _loaderFuture;
 		readonly Future<IVideoPlayer> _thenFuture;
-		
+
 		readonly Action<IVideoPlayer> _loaded;
 		readonly Action<Exception> _error;
 
@@ -174,7 +174,7 @@ namespace Fuse.Controls.VideoImpl
 			catch(Exception e)
 			{
 				_callbacks.OnError(e);
-				return;	
+				return;
 			}
 			_callbacks.OnLoading();
 		}

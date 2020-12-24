@@ -7,7 +7,7 @@ namespace FuseTest
 	public sealed class Invoke : Behavior
 	{
 		public event VisualEventHandler Handler;
-		
+
 		public void Perform()
 		{
 			if (Handler != null)

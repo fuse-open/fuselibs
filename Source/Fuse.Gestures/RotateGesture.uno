@@ -22,10 +22,10 @@ namespace Fuse.Gestures
 		[UXConstructor]
 		public RotateGesture([UXParameter("Target")] InteractiveTransform target)
 			: base(target)
-		{ 
+		{
 			Region = BasicBoundedRegion2D.CreateRadians();
 		}
-		
+
 		/**
 			The rotation will be done in increments of this value, expressed in radians.
 		*/
@@ -34,40 +34,40 @@ namespace Fuse.Gestures
 		/**
 			`Step` specified in degrees.
 		*/
-		public float StepDegrees 
-		{ 
+		public float StepDegrees
+		{
 			get { return Math.RadiansToDegrees(Step); }
 			set { Step = Math.DegreesToRadians(value); }
 		}
-		
+
 		protected override void OnRooted()
 		{
 			base.OnRooted();
 			Impl.Rotated += OnRotated;
 		}
-		
+
 		protected override void OnUnrooted()
 		{
 			Impl.Rotated -= OnRotated;
 			base.OnUnrooted();
 		}
-		
+
 		float _startRotation;
 		protected override void OnStarted()
 		{
 			_startRotation = Target.Rotation;
 			Region.Reset(float2(_startRotation,0));
 		}
-		
+
 		protected override void OnEnded()
 		{
 		}
-		
+
 		protected override void OnUpdate()
 		{
 			Target.Rotation = Region.Position.X;
 		}
-		
+
 		void OnRotated(float angle)
 		{
 			var q = _startRotation + angle;
@@ -83,5 +83,5 @@ namespace Fuse.Gestures
 			}
 		}
 	}
-	
+
 }

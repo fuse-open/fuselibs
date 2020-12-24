@@ -43,18 +43,18 @@ namespace Fuse.Gestures
 	public abstract class TransformGesture : Behavior
 	{
 		public InteractiveTransform Target
-		{	
+		{
 			get;
 			private set;
 		}
 
 		internal BoundedRegion2D Region = BasicBoundedRegion2D.CreatePoints();
-	
+
 		internal TransformGesture(InteractiveTransform target)
 		{
 			Target = target;
 		}
-		
+
 		internal TwoFinger Impl;
 		protected override void OnRooted()
 		{
@@ -63,7 +63,7 @@ namespace Fuse.Gestures
 			Impl.Started += OnStarted;
 			Impl.Ended += OnEnded;
 		}
-		
+
 		protected override void OnUnrooted()
 		{
 			Impl.Started -= OnStarted;
@@ -73,32 +73,32 @@ namespace Fuse.Gestures
 			CheckNeedUpdate();
 			base.OnUnrooted();
 		}
-		
+
 		protected abstract void OnStarted();
 		protected abstract void OnEnded();
-		
+
 		void Update()
 		{
 			Region.Update(Time.FrameInterval);
 			OnUpdate();
 			CheckNeedUpdate();
 		}
-		
+
 		bool _hasUpdate;
 		protected void CheckNeedUpdate()
 		{
 			var need = IsRootingCompleted && !Region.IsStatic;
 			if (need == _hasUpdate)
 				return;
-				
+
 			_hasUpdate = need;
 			if (need)
 				UpdateManager.AddAction(Update);
 			else
 				UpdateManager.RemoveAction(Update);
 		}
-		
+
 		protected virtual void OnUpdate() { }
 	}
-	
+
 }

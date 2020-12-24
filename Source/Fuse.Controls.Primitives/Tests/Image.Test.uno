@@ -39,7 +39,7 @@ namespace Fuse.Controls.Primitives.Test
 				Assert.AreEqual(null, img.Source);
 			}
 		}
-		
+
 		[Test]
 		public void Fail()
 		{
@@ -49,12 +49,12 @@ namespace Fuse.Controls.Primitives.Test
 			{
 				Assert.AreEqual(0, TriggerProgress(p.W1));
 				Assert.AreEqual(0, TriggerProgress(p.W2));
-				
+
 				p.L.Fail( "nope" );
 				root.PumpDeferred();
 				//Assert.AreEqual(1, TriggerProgress(p.W1)); //Not in current version
 				Assert.AreEqual(1, TriggerProgress(p.W2));
-				
+
 				p.L.MarkReady();
 				root.PumpDeferred();
 				Assert.AreEqual(0, TriggerProgress(p.W1));
@@ -141,7 +141,7 @@ namespace Fuse.Controls.Primitives.Test
 			TestImageOrientation(ImageOrientation.Rotate270);
 			TestImageOrientation(ImageOrientation.Rotate270 | ImageOrientation.FlipVertical);
 		}
-		
+
 		[Test]
 		public void MultiDensityBasic()
 		{
@@ -153,14 +153,14 @@ namespace Fuse.Controls.Primitives.Test
 				Assert.AreEqual(float2(100,100), p.img.ActualSize);
 				root.Children.Remove(p);
 			}
-			
+
 			p.ms.MatchDensity = 2;
 			using (var root = TestRootPanel.CreateWithChildDensity(p, int2(500), 2))
 			{
 				Assert.AreEqual(float2(100,50), p.img.ActualSize);
 				root.Children.Remove(p);
 			}
-			
+
 			p.ms.MatchDensity = 4;
 			using (var root = TestRootPanel.CreateWithChildDensity(p, int2(500), 4))
 			{
@@ -168,6 +168,6 @@ namespace Fuse.Controls.Primitives.Test
 				root.Children.Remove(p);
 			}
 		}
-		
+
 	}
 }

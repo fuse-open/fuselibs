@@ -8,9 +8,9 @@ namespace Fuse
 	public class PerspectiveFrustum : IFrustum
 	{
 		public float Distance { get; set; }
-		
+
 		//TODO: PerspectiveOrigin
-		
+
 		public bool TryGetProjectionTransform( ICommonViewport viewport, out float4x4 result )
 		{
 			return FrustumMatrix.TryPerspectiveProjection( viewport.Size, zNearBase,
@@ -21,7 +21,7 @@ namespace Fuse
 		{
 			return FrustumMatrix.PerspectiveView( viewport.Size, Distance, float2(0.5f,0.5f) );
 		}
-		
+
 		public bool TryGetProjectionTransformInverse(ICommonViewport viewport, out float4x4 result)
 		{
 			return FrustumMatrix.TryPerspectiveProjectionInverse( viewport.Size,
@@ -32,7 +32,7 @@ namespace Fuse
 		{
 			return FrustumMatrix.PerspectiveViewInverse( viewport.Size, Distance,float2(0.5f,0.5f) );
 		}
-		
+
 		public float3 GetWorldPosition( ICommonViewport viewport )
 		{
 			return float3(viewport.Size/2,-Distance);

@@ -39,14 +39,14 @@ namespace FuseTest
 		}
 
 		public RecordDiagnosticGuard()
-		{ 
+		{
 			if (TestBase._allowDiagnostics)
 				throw new Exception("Diagnostics already allowed");
 
 			TestBase._allowDiagnostics = true;
 			Diagnostics.DiagnosticReported += OnDiagnostic;
 		}
-		
+
 		void OnDiagnostic(Diagnostic d)
 		{
 			if (!d.IsTemporalWarning)
@@ -116,7 +116,7 @@ namespace FuseTest
 			}
 			return list.ToArray();
 		}
-		
+
 		static string ConcatList(string a, string b)
 		{
 			if (b == "")
@@ -125,7 +125,7 @@ namespace FuseTest
 				return b;
 			return a + "," + b;
 		}
-		
+
 		static public string GetText(Visual p)
 		{
 			var q = "";
@@ -138,7 +138,7 @@ namespace FuseTest
 			}
 			return q;
 		}
-		
+
 		static public string GetRecursiveText(Visual p)
 		{
 			var q = "";
@@ -148,19 +148,19 @@ namespace FuseTest
 				var t = c as Fuse.Controls.Text;
 				if (t != null)
 					q = ConcatList(q,t.Value);
-				
+
 				var v = c as Visual;
 				if (v != null)
 					q = ConcatList(q, GetRecursiveText(v));
 			}
 			return q;
 		}
-		
+
 		/** Get a stringified version of the UseValue's of the DudElement children in Z order */
 		static public string GetDudZ(Visual root)
 		{
 			var q = "";
-			
+
 			var zOrder = root.GetCachedZOrder();
 
 			for (int i = 0; i < zOrder.Length; ++i)
@@ -175,8 +175,8 @@ namespace FuseTest
 			}
 			return q;
 		}
-		
-		
+
+
 		/**
 			Use this rather than access Progress directly. It limits how many projects we have
 			to expose Internals to.
@@ -185,17 +185,17 @@ namespace FuseTest
 		{
 			return t.Progress;
 		}
-		
+
 		protected float4 ActualPositionSize( Element e)
 		{
 			return float4( e.ActualPosition, e.ActualSize );
 		}
-		
+
 		protected float GestureHardCaptureSignificanceThreshold
 		{
 			get { return Fuse.Input.Gesture.HardCaptureSignificanceThreshold; }
 		}
-		
+
 		protected void RequireModule<T>() where T : new()
 		{
 			TestRootPanel.RequireModule<T>();

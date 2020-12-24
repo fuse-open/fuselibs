@@ -8,7 +8,7 @@ namespace Fuse.Controls
 	/** Displays a star
 
 		Star is a @Shape and does not have fills, strokes and a size by default,
-		you must set this for it to be visible. 
+		you must set this for it to be visible.
 
 		## Example:
 
@@ -34,7 +34,7 @@ namespace Fuse.Controls
 				OnPropertyChanged("Points");
 			}
 		}
-		
+
 		float _ratio = 0.5f;
 		public float Ratio
 		{
@@ -48,10 +48,10 @@ namespace Fuse.Controls
 				OnPropertyChanged("Ratio");
 			}
 		}
-		
+
 		float _roundRatio;
-		public float RoundRatio 
-		{ 
+		public float RoundRatio
+		{
 			get { return _roundRatio; }
 			set
 			{
@@ -76,7 +76,7 @@ namespace Fuse.Controls
 				OnPropertyChanged("RotationDegrees");
 			}
 		}
-		
+
 		internal float RotationRadians
 		{
 			get { return _degrees / 180 * Math.PIf; }

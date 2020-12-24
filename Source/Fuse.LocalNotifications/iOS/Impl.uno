@@ -13,7 +13,7 @@ namespace Fuse.LocalNotifications
 	[Require("Entity", "Fuse.LocalNotifications.iOSImpl.OnReceivedLocalNotification(string)")]
 	[Require("Entity", "Fuse.LocalNotifications.iOSImpl.SendPendingFromLaunchOptions()")]
 	[Require("Entity", "Uno.Platform.iOS.Application.LaunchOptions")]
-	[Require("uContext.SourceFile.DidFinishLaunching", "[self initializeLocalNotifications:[notification object]];")]	
+	[Require("uContext.SourceFile.DidFinishLaunching", "[self initializeLocalNotifications:[notification object]];")]
 	[Require("uContext.SourceFile.Declaration", "#include <iOS/AppDelegateLocalNotify.h>")]
     internal extern(iOS) static class iOSImpl
     {

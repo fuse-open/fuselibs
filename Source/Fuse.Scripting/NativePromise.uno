@@ -64,7 +64,7 @@ namespace Fuse.Scripting
 		}
 
 		protected override object CreateObject(Context context)
-		{ 
+		{
 			return (Callback)new ContextClosure(_futureFactory, _resultConverter).CreatePromise;
 		}
 

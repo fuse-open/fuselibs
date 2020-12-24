@@ -24,40 +24,40 @@ namespace Fuse.Triggers
 
 		/**
 			Pulses the Timeline (plays to end and back to start).
-			
+
 			@scriptmethod pulse()
 		*/
 		static void pulse(Timeline n)
 		{
 			n.Pulse();
 		}
-		
+
 		/**
 			Pulses the Timeline forward (plays to the end and deactivates).
-			
+
 			@scriptmethod pulseForward()
 		*/
 		static void pulseForward(Timeline n)
 		{
 			n.PulseForward();
 		}
-		
+
 		/**
 			Pulses the Timeline backward (seeks to end then plays backward to start)
-			
+
 			@scriptmethod pulseBackward()
 		*/
 		static void pulseBackward(Timeline n)
 		{
 			n.PulseBackward();
 		}
-		
+
 		/**
 			Plays to a particular progress in the Timeline. This plays from the current progress to the new
 			target progress.
-			
+
 			@scriptmethod playTo( progress )
-			
+
 			@param progress The relative position (0..1) to play to.
 		*/
 		static void playTo(Timeline n, object[] args)
@@ -70,42 +70,42 @@ namespace Fuse.Triggers
 
 			n.PlayTo( Marshal.ToDouble(args[0]) );
 		}
-		
+
 		/**
 			Stops playback. This sets the target progress to the current location such that @resume
 			will not keep playing.
-			
+
 			@scriptmethod stop()
 		*/
 		static void stop(Timeline n)
 		{
 			n.Stop();
 		}
-		
+
 		/**
 			Resumes playback from the current progress to the target progress. Call this after a @pause to
 			resume playback.
-			
+
 			@scriptmethod resume()
 		*/
 		static void resume(Timeline n)
 		{
 			n.Resume();
 		}
-		
+
 		/**
 			Pauses playback at the current progress. Call @resume to continue playing.
-			
+
 			@scriptmethod pause()
 		*/
 		static void pause(Timeline n)
 		{
 			n.Pause();
 		}
-		
+
 		/**
 			Seeks to a given location (jumps there without playing the intervening animation).
-			
+
 			@scriptmethod seek( progress )
 			@param progress The relative position (0..1) to seek to.
 		*/

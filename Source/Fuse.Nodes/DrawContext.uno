@@ -181,13 +181,13 @@ namespace Fuse
 			GLViewportPixelSize = viewportPixelSize;
 			GLScissor = glscissor;
 		}
-		
+
 		public void PushEmptyRenderTarget()
 		{
 			OnRenderTargetChange();
 			_renderTargets.Add(GetRenderTargetEntry());
-		}		
-		
+		}
+
 		public void PopRenderTarget()
 		{
 			OnRenderTargetChange();

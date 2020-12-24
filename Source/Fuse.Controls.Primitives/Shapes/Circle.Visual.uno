@@ -23,23 +23,23 @@ namespace Fuse.Controls
 				return float2(s,e);
 			}
 		}
-		
+
 		protected override void DrawFill(DrawContext dc, Brush fill)
 		{
 			var angles = CanvasAngles;
-			
+
 			if (UseAngle)
 				Fuse.Drawing.Primitives.Wedge.Singleton.Fill(dc,this,Radius,fill,Center,
 					angles[0], angles[1], Smoothness);
 			else
-				Fuse.Drawing.Primitives.Circle.Singleton.Fill(dc,this,Radius,fill,Center, 
+				Fuse.Drawing.Primitives.Circle.Singleton.Fill(dc,this,Radius,fill,Center,
 					Smoothness);
 		}
-		
+
 		protected override void DrawStroke(DrawContext dc, Stroke stroke)
 		{
 			var angles = CanvasAngles;
-			
+
 			if (UseAngle)
 				Fuse.Drawing.Primitives.Wedge.Singleton.Stroke(dc,this,Radius,stroke, Center,
 					angles[0], angles[1], Smoothness);
@@ -51,10 +51,10 @@ namespace Fuse.Controls
 		protected override void OnHitTestLocalVisual(Fuse.HitTestContext htc)
 		{
 			base.OnHitTestLocalVisual(htc);
-			
+
 			if (!HasFills || Vector.Distance(htc.LocalPoint, Center) > Radius)
 				return;
-			
+
 			if (UseAngle)
 			{
 				var off = htc.LocalPoint - Center;
@@ -62,7 +62,7 @@ namespace Fuse.Controls
 				if (!SurfaceUtil.AngleInRange(localAngle, StartAngle, EffectiveEndAngle))
 					return;
 			}
-			
+
 			htc.Hit(this);
 		}
 	}

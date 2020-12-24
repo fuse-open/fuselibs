@@ -13,9 +13,9 @@ namespace Fuse.Animations
 	class DestinationBehavior<T>
 	{
 		public DestinationMotionConfig Motion;
-		
+
 		public delegate void ValueHandler( T value );
-		
+
 		ValueHandler _handler;
 		DestinationSimulation<T> _simulation;
 
@@ -26,15 +26,15 @@ namespace Fuse.Animations
 				StopListenUpdate();
 				return;
 			}
-				
+
 			_simulation.Update( Time.FrameInterval );
 			if (_handler != null)
 				_handler( _simulation.Position );
-			
+
 			if (_simulation.IsStatic)
 				StopListenUpdate();
 		}
-		
+
 		bool _listenUpdate;
 		void StopListenUpdate()
 		{
@@ -44,14 +44,14 @@ namespace Fuse.Animations
 				_listenUpdate = false;
 			}
 		}
-		
+
 		public void Unroot()
 		{
 			StopListenUpdate();
 			_simulation = null;
 			_handler = null;
 		}
-		
+
 		public void SetValue( T value, ValueHandler handler )
 		{
 			if (Motion == null)
@@ -59,7 +59,7 @@ namespace Fuse.Animations
 				handler( value );
 				return;
 			}
-			
+
 			_handler = handler;
 			if (_simulation == null)
 			{
@@ -74,7 +74,7 @@ namespace Fuse.Animations
 				_simulation.Destination = value;
 				_simulation.Start();
 			}
-				
+
 			if (!_listenUpdate)
 			{
 				UpdateManager.AddAction( OnUpdate );

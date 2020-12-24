@@ -9,9 +9,9 @@ namespace Fuse.Controls
 
 	@include Docs/Text/Remarks.md
 
-	@seealso Fuse.Controls.TextInput	
+	@seealso Fuse.Controls.TextInput
 	@seealso Fuse.Font
-	*/	
+	*/
 	public class Text: TextControl
 	{
 		/** @experimental Does text shaping on a background thread.

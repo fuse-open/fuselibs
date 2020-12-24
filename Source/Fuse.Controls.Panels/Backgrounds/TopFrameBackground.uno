@@ -31,7 +31,7 @@ namespace Fuse.Controls
 	public class TopFrameBackground: Control
 	{
 		WindowCaps _caps;
-		
+
 		protected override void OnRooted()
 		{
 			base.OnRooted();

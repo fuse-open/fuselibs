@@ -3,10 +3,10 @@ The following example uses @Selection to create a simple list of options. Tap th
 	<Panel ux:Class="MyItem" Color="#aaa">
 		<string ux:Property="Label" />
 		<string ux:Property="Value" />
-		
+
 		<Selectable Value="{ReadProperty this.Value}" />
 		<Text Value="{ReadProperty this.Label}" />
-		
+
 		<WhileSelected>
 			<Change this.Color="#ffc" />
 		</WhileSelected>
@@ -31,7 +31,7 @@ The following example uses @Selection to create a simple list of options. Tap th
 
 	<StackPanel>
 		<Selection Values="{values}" />
-	
+
 		<MyItem Label="Big Red One" Value="sku-01" />
 		<MyItem Label="Small Green Two" Value="sku-02" />
 		<MyItem Label="Third Last One" Value="sku-03" />

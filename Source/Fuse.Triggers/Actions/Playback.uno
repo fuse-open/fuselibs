@@ -19,7 +19,7 @@ namespace Fuse.Triggers
 		double Position { get; set; }
 		double Duration { get; }
 	}
-	
+
 }
 
 namespace Fuse.Triggers.Actions
@@ -34,9 +34,9 @@ namespace Fuse.Triggers.Actions
 	/** Stop a video or timeline.
 
 		The position is set to the beginning, and the playback is stopped.
-	
+
 		## Video Example
-		
+
 			<Grid Rows="3*,1*" >
 				<Video ux:Name="video" Url="http://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_320x180.mp4" StretchMode="Uniform" />
 				<Grid Columns="1*,1*">
@@ -47,9 +47,9 @@ namespace Fuse.Triggers.Actions
 					</Button>
 					<Button Text="Stop">
 						<Clicked>
-							<Stop Target="video" />                
+							<Stop Target="video" />
 						</Clicked>
-					</Button>				
+					</Button>
 				</Grid>
 			</Grid>
 
@@ -58,7 +58,7 @@ namespace Fuse.Triggers.Actions
 			<StackPanel>
 				<Rectangle Width="150" Height="150" Margin="60" ux:Name="rect" CornerRadius="10" >
 					<Stroke ux:Name="rectStroke" Offset="10" Width="3" Color="#3579e6" />
-					
+
 					<Timeline  ux:Name="timeline" TimeMultiplier="0.4">
 						<Rotate>
 							<Keyframe DegreesZ="360" Time="1" />
@@ -106,11 +106,11 @@ namespace Fuse.Triggers.Actions
 	}
 
 	/** Pause a video or timeline
-		
+
 		This stops playback but does not change the current position.
 
 		## Example
-		
+
 			<Grid Rows="3*,1*" >
 				<Video ux:Name="video" Url="http://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_320x180.mp4" AutoPlay="true" StretchMode="Uniform" />
 				<Grid Columns="1*,1*">
@@ -138,13 +138,13 @@ namespace Fuse.Triggers.Actions
 	}
 
 	/** Resume or start a video or timeline
-	
+
 		This continues playing from where the video or timeline was paused (or from the start if `Stop` was called).
-		
+
 		A timeline will play either forward or backward, depending on the last play direction.
 
 		## Video Example
-	
+
 			<Grid Rows="3*,1*" >
 				<Video ux:Name="video" Url="http://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_320x180.mp4" StretchMode="Uniform" />
 				<Button Text="Play">
@@ -159,7 +159,7 @@ namespace Fuse.Triggers.Actions
 			<StackPanel>
 				<Rectangle Width="150" Height="150" Margin="60" ux:Name="rect" CornerRadius="10" >
 					<Stroke ux:Name="rectStroke" Offset="10" Width="3" Color="#3579e6" />
-					
+
 					<Timeline  ux:Name="timeline" TimeMultiplier="0.4">
 						<Rotate>
 							<Keyframe DegreesZ="360" Time="1" />
@@ -205,7 +205,7 @@ namespace Fuse.Triggers.Actions
 				t.Resume();
 		}
 	}
-	
+
 	/**
 		@deprecated Use @Play
 	*/

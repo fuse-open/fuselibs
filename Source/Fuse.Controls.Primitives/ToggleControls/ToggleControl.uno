@@ -11,7 +11,7 @@ using Fuse.Scripting;
 
 namespace Fuse.Controls
 {
-	/** Panel that contains a toggleable value 
+	/** Panel that contains a toggleable value
 
 		Panel type that is suitable for making toggleable semantic controls,
 		like Switch, CheckBox, ToggleButton etc.

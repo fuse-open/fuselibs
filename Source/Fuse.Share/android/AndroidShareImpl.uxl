@@ -1,7 +1,7 @@
 <Extensions Backend="CPlusPlus">
 
 	<ProcessFile Condition="Android" Name="ShareFileProvider.java" TargetName="app/src/main/java/com/fuse/fileprovider/ShareFileProvider.java" />
-	
+
 	<Require Condition="Android" AndroidManifest.ApplicationElement>
 		<![CDATA[
 			<provider

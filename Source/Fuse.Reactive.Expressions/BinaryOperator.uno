@@ -9,24 +9,24 @@ namespace Fuse.Reactive
 	{
 		public Expression Left { get { return GetArgument(0); } }
 		public Expression Right { get { return GetArgument(1); } }
-		
-		protected BinaryOperator(Expression left, Expression right, 
+
+		protected BinaryOperator(Expression left, Expression right,
 			Flags flags = Flags.DeprecatedVirtualFlags)
 			: base( new Expression[]{ left, right}, flags )
 		{ }
 
-		protected BinaryOperator(Expression left, Expression right, 
+		protected BinaryOperator(Expression left, Expression right,
 			string name, Flags flags = Flags.None)
 			: base( new Expression[]{ left, right}, flags, name )
 		{ }
-		
+
 		internal override Flags GetFlags()
 		{
 			return Flags.None |
 				(IsLeftOptional ? Flags.Optional0 : Flags.None) |
 				(IsRightOptional ? Flags.Optional1 : Flags.None);
 		}
-		
+
 		protected virtual bool IsLeftOptional { get { return false; } }
 		protected virtual bool IsRightOptional { get { return false; } }
 
@@ -36,7 +36,7 @@ namespace Fuse.Reactive
 			result = Compute(left, right);
 			return true;
 		}
-		
+
 		/** @deprecated Override the `TryCompute` function. 2017-11-29 */
 		protected virtual object Compute(object left, object right) { return null; }
 

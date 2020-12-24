@@ -5,7 +5,7 @@ namespace Fuse.Navigation
 	/**
 		Use this class to listen for changes on a page in a navigation. This takes cares of the various
 		overrides on Page/Navigation and rooting order considerations.
-		
+
 		Create this object at rooting time and dispose of it while unrooting.
 	*/
 	class NavigationPageProxy : IPagePropertyListener
@@ -14,15 +14,15 @@ namespace Fuse.Navigation
 		StatusChangedHandler _ready;
 		StatusChangedHandler _unready;
 		Visual _source;
-		
+
 		public Visual Page { get; private set; }
-		
+
 		INavigation _navigation;
 		public INavigation Navigation { get { return _navigation; } }
-		
+
 		Visual _pageBind;
 		internal Visual PageBind { get { return _pageBind; } }
-		
+
 		bool _waitRootingCompleted;
 
 		/** Split from ctor since callers need the address prior to setup completing */
@@ -41,7 +41,7 @@ namespace Fuse.Navigation
 				Fuse.Diagnostics.InternalError( "Attempting rooting to null source", this );
 				return;
 			}
-			
+
 			Page = Fuse.Navigation.Navigation.TryFindPage(_source, out _navigation, out _pageBind);
 			if (Page == null)
 			{
@@ -65,19 +65,19 @@ namespace Fuse.Navigation
 				Fuse.Diagnostics.InternalError( "Something went wrong locating a Navigator", this );
 				return;
 			}
-			
+
 			if (_pageBind != null)
 				NavigationPageProperty.AddPageWatcher(_pageBind, this);
 			if (_ready != null && _navigation != null)
 				_ready(this);
 		}
-		
+
 		/** @returns true if it is ready (the Page and Navigation objects are available) */
 		public bool IsReady
 		{
 			get { return _navigation != null; }
 		}
-		
+
 		void OnPageRootingCompleted()
 		{
 			if (!_waitRootingCompleted || Page == null || _source == null)
@@ -85,13 +85,13 @@ namespace Fuse.Navigation
 				Fuse.Diagnostics.InternalError( "Got an undesired ready event", this );
 				return;
 			}
-			
+
 			Page.RootingCompleted -= OnPageRootingCompleted;
 			_waitRootingCompleted = false;
-			
+
 			RootImpl(_source);
 		}
-		
+
 		public void Dispose()
 		{
 			UnrootImpl();
@@ -106,22 +106,22 @@ namespace Fuse.Navigation
 				//ready() only called when Navigation != null
 				if (_navigation != null)
 					_unready(this);
-					
+
 				if (_waitRootingCompleted)
 				{
 					Page.RootingCompleted -= OnPageRootingCompleted;
 					_waitRootingCompleted = false;
 				}
 			}
-				
+
 			if (_pageBind != null)
 				NavigationPageProperty.RemovePageWatcher(_pageBind, this);
-				
+
 			Page = null;
 			_navigation = null;
 			_source = null;
 		}
-		
+
 		void IPagePropertyListener.PageChanged(Visual n)
 		{
 			var page = Fuse.Navigation.Navigation.TryFindPage(_source);
@@ -141,4 +141,4 @@ namespace Fuse.Navigation
 		}
 	}
 }
-		
+

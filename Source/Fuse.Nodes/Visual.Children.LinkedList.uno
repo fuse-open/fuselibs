@@ -11,7 +11,7 @@ namespace Fuse
 	{
 		internal const int OrphanParentID = -1;
 		internal Node _nextSibling;
-		
+
 		internal int _parentID = OrphanParentID;
 
 		// Using Fuse.Internal.RawPointer<T> to avoid reference loop
@@ -21,8 +21,8 @@ namespace Fuse
 
 		/** Returns the next sibling node of the given type. */
 		public T NextSibling<T>() where T: Node
-		{ 
-			var n = _nextSibling; 
+		{
+			var n = _nextSibling;
 			while (n != null)
 			{
 				var v = n as T;
@@ -33,8 +33,8 @@ namespace Fuse
 		}
 
 		/** Returns the next sibling node of the given type. */
-		public T PreviousSibling<T>() where T: Node 
-		{ 
+		public T PreviousSibling<T>() where T: Node
+		{
 			var n = (Node)_previousSibling;
 			while (n != null)
 			{
@@ -71,7 +71,7 @@ namespace Fuse
 
 		/** The number of child visuals of this visual. */
 		public int VisualChildCount { get { return _visualChildCount; } }
-		
+
 		void Children_Clear()
 		{
 			Children_Invalidate();
@@ -84,7 +84,7 @@ namespace Fuse
 				c._nextSibling = null;
 				c._previousSibling = (Node)null;
 			}
-			
+
 			_firstChild = null;
 			_lastChild = null;
 			_childCount = 0;
@@ -96,7 +96,7 @@ namespace Fuse
 			Children_Invalidate();
 			Children_MakeParent(this, n);
 
-			if (_firstChild == null) 
+			if (_firstChild == null)
 			{
 				_firstChild = n;
 				_lastChild = n;

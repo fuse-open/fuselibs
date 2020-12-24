@@ -3,8 +3,8 @@ using Uno;
 namespace Fuse.Reactive
 {
 	/** Utility base class that observes the first value of an `IObservable`.
-		
-		Note that this class should only be used with instances that support `IObservable`, 
+
+		Note that this class should only be used with instances that support `IObservable`,
 		not just `IObservableArray`. This ensures the collection is semantically inteneded
 		for single-value use.
 	*/
@@ -17,8 +17,8 @@ namespace Fuse.Reactive
 
 		protected object Value
 		{
-			get 
-			{ 
+			get
+			{
 				if (_obs == null) return null;
 				if (_obs.Length == 0) return null;
 				return _obs[0];
@@ -40,7 +40,7 @@ namespace Fuse.Reactive
 			_obs = obs;
 			_obsSub = obs.Subscribe(this);
 		}
-		
+
 		protected void Unsubscribe()
 		{
 			if (_obsSub != null) _obsSub.Dispose();
@@ -55,7 +55,7 @@ namespace Fuse.Reactive
 
 		protected abstract void PushData(object newValue);
 		protected abstract void LostData();
-		
+
 		void IObserver.OnClear()
 		{
 			LostData();
@@ -63,7 +63,7 @@ namespace Fuse.Reactive
 
 		void IObserver.OnSet(object newValue)
 		{
-			PushData(newValue);				
+			PushData(newValue);
 		}
 
 		void IObserver.OnAdd(object addedValue)
@@ -105,9 +105,9 @@ namespace Fuse.Reactive
 
 	class ValueForwarder: ValueObserver
 	{
-		public interface IValueListener 
-		{ 
-			void NewValue(object value); 
+		public interface IValueListener
+		{
+			void NewValue(object value);
 			void LostValue();
 		}
 

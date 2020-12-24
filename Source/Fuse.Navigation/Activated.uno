@@ -6,35 +6,35 @@ using Fuse.Triggers;
 namespace Fuse.Navigation
 {
 	public delegate void ActivatedHandler(object sender, EventArgs args);
-	
+
 	/**
 		@hide
 	*/
 	public abstract class NavigationTrigger : PulseTrigger<EventArgs>
 	{
 		internal NavigationTrigger() { }
-		
+
 		RoutePagePath _path = RoutePagePath.Full;
 		/**
 			Whether just the local navigation, or the full path to the root is required to be active.
-			
+
 			Default: Full
 		*/
 		public RoutePagePath Path
 		{
 			get { return _path; }
-			set 
+			set
 			{
 				_path = value;
 				if (_proxy != null)
 					_proxy.Path = value;
 			}
 		}
-		
+
 		RoutePageTriggerWhen _when = RoutePageTriggerWhen.Stable;
 		/**
 			Trigger on navigation start, or only when the navigation is completed.
-			
+
 			Default: Stable
 		*/
 		public RoutePageTriggerWhen When
@@ -47,9 +47,9 @@ namespace Fuse.Navigation
 					_proxy.TriggerWhen = value;
 			}
 		}
-		
+
 		RoutePageProxy _proxy;
-		
+
 		protected override void OnRooted()
 		{
 			base.OnRooted();
@@ -60,7 +60,7 @@ namespace Fuse.Navigation
 		}
 
 		protected abstract void ActiveChanged( bool isActive, bool isRoot );
-		
+
 		protected override void OnUnrooted()
 		{
 			_proxy.Dispose();
@@ -70,7 +70,7 @@ namespace Fuse.Navigation
 	}
 
 	/** Active whenever a page becomes active.
-		
+
 		This trigger will also be pulsed at rooting time if the page is currently the active one.
 
 		## Example
@@ -91,7 +91,7 @@ namespace Fuse.Navigation
 			</PageControl>
 
 		Note that this trigger may also be used as an attached event directly on a `Page`, like so:
-		
+
 			<Page Activated="{jsActivated}">
 			</Page>
 	*/
@@ -118,7 +118,7 @@ namespace Fuse.Navigation
 	}
 
 	/** Active whenever a page becomes inactive.
-		
+
 		This trigger may not pulse when the trigger, navigation, or the page is unrooted.
 
 		## Example
@@ -137,9 +137,9 @@ namespace Fuse.Navigation
 					</Deactivated>
 				</Page>
 			</PageControl>
-		
+
 		Note that this trigger may also be used as an attached event directly on a `Page`, like so:
-		
+
 			<Page Deactivated="{jsDeactivated}">
 			</Page>
 	*/
@@ -164,5 +164,5 @@ namespace Fuse.Navigation
 				Pulse(new EventArgs());
 		}
 	}
-	
+
 }

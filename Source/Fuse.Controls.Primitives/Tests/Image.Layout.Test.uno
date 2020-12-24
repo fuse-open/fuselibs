@@ -74,7 +74,7 @@ namespace Fuse.Test
 				filePath, lineNumber, memberName);
 			var visual = image;
 			Assert.IsTrue(visual != null);
-			Assert.AreEqual(scaling, visual._scale, Assert.ZeroTolerance, filePath, lineNumber, memberName); 
+			Assert.AreEqual(scaling, visual._scale, Assert.ZeroTolerance, filePath, lineNumber, memberName);
 		}
 
 		static void TestImageLayout(TestRootPanel root, int2 layout, Image image, float2 drawSize, float2 drawPosition,
@@ -94,7 +94,7 @@ namespace Fuse.Test
 			var visual = image;
 			Assert.IsTrue(visual != null);
 			Assert.AreEqual(drawSize, visual._drawSize, Assert.ZeroTolerance, filePath, lineNumber, memberName);
-			Assert.AreEqual(drawPosition, visual._origin, Assert.ZeroTolerance, filePath, lineNumber, memberName); 
+			Assert.AreEqual(drawPosition, visual._origin, Assert.ZeroTolerance, filePath, lineNumber, memberName);
 		}
 	}
 }

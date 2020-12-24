@@ -289,10 +289,10 @@ namespace Fuse.PushNotifications
 			final Bundle bundle = (Bundle)_bundle;
 
 			if (!PushNotificationReceiver.InForeground) {
-				
+
 				String notification = @{BundleToJSONStr(Java.Object):Call((Bundle) bundle.get("notification"))};
 				String aps = @{BundleToJSONStr(Java.Object):Call((Bundle) bundle.get("aps"))};
-				
+
 				if (notification != null) {
 					// using the google style 'notification' subtree
 					@{NotificationFromJson(Java.Object,string,Java.Object):Call(listener, notification, bundle)};
@@ -410,15 +410,15 @@ namespace Fuse.PushNotifications
 		@}
 
 		[Foreign(Language.Java)]
-		static void SpitOutNotification(Java.Object _listener, 
-			string title, string body, 
-			string bigTitle, string bigBody, string notificationStyle, string featuredImage, 
-			string sound, string color, 
+		static void SpitOutNotification(Java.Object _listener,
+			string title, string body,
+			string bigTitle, string bigBody, string notificationStyle, string featuredImage,
+			string sound, string color,
 			string notificationPriority, string notificationCategory, string notificationLockscreenVisibility,
-			string notificationChannelId, string notificationChannelName, string notificationChannelDescription, 
+			string notificationChannelId, string notificationChannelName, string notificationChannelDescription,
 			string notificationChannelImportance, string notificationChannelLockscreenVisibility, string notificationChannelLightColor,
 			string notificationChannelIsVibrationOn, string notificationChannelIsSoundOn, string notificationChannelIsShowBadgeOn,
-			string notificationChannelGroupId, string notificationChannelGroupName, 
+			string notificationChannelGroupId, string notificationChannelGroupName,
 			string notificationBadgeNumber, string notificationBadgeIconType,
 			Java.Object _payload)
 		@{
@@ -437,7 +437,7 @@ namespace Fuse.PushNotifications
 			// Notification Channel id - unique identifier that you could use to get the channel properties
 			String channelId = "@(Project.Android.Notification.DefaultChannelId)";
 			channelId = (channelId != "") ? channelId : "default_channel";
-			/* Notification Channel name - appears in the App notification settings, under "Categories" or a group name 
+			/* Notification Channel name - appears in the App notification settings, under "Categories" or a group name
 				- https://developer.android.com/training/notify-user/channels */
 			String channelName = "@(Project.Android.Notification.DefaultChannelName)";
 			channelName = (channelName != "") ? channelName : "App";
@@ -453,7 +453,7 @@ namespace Fuse.PushNotifications
 			if (
 				(notificationChannelId!=null && !notificationChannelId.isEmpty()) &&
 				(notificationChannelName!=null && !notificationChannelName.isEmpty())
-			) { 
+			) {
 				channelId = notificationChannelId;
 				channelName = notificationChannelName;
 			}
@@ -523,7 +523,7 @@ namespace Fuse.PushNotifications
 					channel.setVibrationPattern(DEFAULT_VIBRATE_PATTERN);
 				}
 
-				// Notification Channel Sound On 
+				// Notification Channel Sound On
 				#if @(Project.Android.Notification.NotificationChannelIsSoundOn:IsSet)
 					if (Boolean.parseBoolean("@(Project.Android.Notification.NotificationChannelIsSoundOn)")) {
 						Uri defaultSoundUri = android.media.RingtoneManager.getDefaultUri(android.media.RingtoneManager.TYPE_NOTIFICATION);
@@ -542,7 +542,7 @@ namespace Fuse.PushNotifications
 					}
 				#endif
 				// Allow for notificationChannelIsSoundOn to be overridden from notification payload
-				if (notificationChannelIsSoundOn!=null && !notificationChannelIsSoundOn.isEmpty() 
+				if (notificationChannelIsSoundOn!=null && !notificationChannelIsSoundOn.isEmpty()
 					&& Boolean.parseBoolean(notificationChannelIsSoundOn)) {
 					Uri defaultSoundUri = android.media.RingtoneManager.getDefaultUri(android.media.RingtoneManager.TYPE_NOTIFICATION);
 					android.media.AudioAttributes att = new android.media.AudioAttributes.Builder()
@@ -558,7 +558,7 @@ namespace Fuse.PushNotifications
 					}
 					channel.setSound(defaultSoundUri, att);
 				}
-				
+
 				// Notification Channel Lock Screen Visibility - same as notification lock screen visibility which is deprecated from Oreo+ (see below)
 				String notificationChannelLockscreenVisibilityIn = "";
 				#if @(Project.Android.Notification.NotificationChannelLockscreenVisibility:IsSet)
@@ -597,7 +597,7 @@ namespace Fuse.PushNotifications
 				if (
 					(notificationChannelGroupId!=null && !notificationChannelGroupId.isEmpty()) &&
 					(notificationChannelGroupName!=null && !notificationChannelGroupName.isEmpty())
-				) { 
+				) {
 					channelGroupId = notificationChannelGroupId;
 					channelGroupName = notificationChannelGroupName;
 				}
@@ -614,8 +614,8 @@ namespace Fuse.PushNotifications
 				.setContentIntent(pendingIntent);
 
 			// For API < Oreo API 26
-			if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.O) { 
-				//Notification Sound 
+			if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.O) {
+				//Notification Sound
 				if (sound=="default")
 				{
 					if (android.os.Build.VERSION.SDK_INT >= 21) { //Lollipop
@@ -657,9 +657,9 @@ namespace Fuse.PushNotifications
 				case "secret": notificationBuilder.setVisibility(NotificationCompat.VISIBILITY_SECRET); break;
 				case "private": notificationBuilder.setVisibility(NotificationCompat.VISIBILITY_PRIVATE); break;
 			}
-			
+
 			/* Notification Category - https://developer.android.com/training/notify-user/build-notification#system-category
-				Android uses a some pre-defined system-wide categories to determine whether to disturb the user with 
+				Android uses a some pre-defined system-wide categories to determine whether to disturb the user with
 				a given notification when the user has enabled Do Not Disturb mode.
 			*/
 			switch(notificationCategory.toLowerCase()) {
@@ -692,10 +692,10 @@ namespace Fuse.PushNotifications
 				default: notificationBuilder.setPriority(NotificationCompat.PRIORITY_DEFAULT); break;
 			}
 
-			/* 
+			/*
 				Notification Title - From Nougat (API 24), the app name is included in notification,
 				so this allows you to hide your title when using it for your app name
-				Example value: 24 
+				Example value: 24
 			*/
 			if (title!=null && !title.isEmpty()) {
 				String noTitleStyleMinAPIVersion = "@(Project.Android.Notification.NoTitleStyleMinAPIVersion)";
@@ -709,7 +709,7 @@ namespace Fuse.PushNotifications
 			/*
 				Notification Color - Add color to your icon and from Oreo+ it adds the color to your app name as well
 				 - https://developer.android.com/guide/topics/ui/notifiers/notifications
-				parseColor() format #RRGGBB or #AARRGGBB 
+				parseColor() format #RRGGBB or #AARRGGBB
 				 - https://developer.android.com/reference/android/graphics/Color#parseColor(java.lang.String)
 				Example value: #8811ff
 			*/
@@ -804,7 +804,7 @@ namespace Fuse.PushNotifications
 					Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 					n.sound = defaultSoundUri;
 					n.category = Notification.CATEGORY_ALARM;
-					
+
 					android.media.AudioAttributes.Builder attrs = new android.media.AudioAttributes.Builder();
 					attrs.setContentType(android.media.AudioAttributes.CONTENT_TYPE_SONIFICATION);
 					attrs.setUsage(android.media.AudioAttributes.USAGE_ALARM);

@@ -15,7 +15,7 @@ namespace Fuse.ImageTools
 			var asBytes = Convert.FromBase64String(b64);
 			var stream = new MemoryStream(asBytes);
 			DotNetImage outImage = DotNetImage.FromStream(stream);
-			
+
 			var path = TemporaryPath("jpg");
 			outImage.Save(path);
 			onSuccess(path);
@@ -32,7 +32,7 @@ namespace Fuse.ImageTools
 				onSuccess(Convert.ToBase64String(imageBytes));
 			}
 		}
-		
+
 		static string TemporaryPath(string extension)
 		{
 			var dir = DotNetNative.Path.GetTempPath ();

@@ -90,7 +90,7 @@ namespace Fuse.Triggers.Actions
 						webViewTitle: webViewTitle.map(function(title) { return "HTML Title: " + title; }),
 						updateTitle: updateTitle
 					}
-				</JavaScript>			
+				</JavaScript>
 				<Text Value="{webViewTitle}" Alignment="Center" />
 				<NativeViewHost>
 					<WebView Url="https://www.fusetools.com">
@@ -118,10 +118,10 @@ namespace Fuse.Triggers.Actions
 		public string JavaScript
 		{
 			get { return _rawSource; }
-			set 
-			{ 
+			set
+			{
 				_rawSource = value;
-				_processedSource = PrepareScriptForEval(_rawSource); 
+				_processedSource = PrepareScriptForEval(_rawSource);
 			}
 		}
 

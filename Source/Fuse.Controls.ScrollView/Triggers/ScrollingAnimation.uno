@@ -15,7 +15,7 @@ namespace Fuse.Triggers
 		SnapStart,
 		SnapEnd,
 		Explicit,
-		
+
 		SnapMin = SnapStart,
 		SnapMax = SnapEnd,
 	}
@@ -50,8 +50,8 @@ namespace Fuse.Triggers
 
 		ScrollDirections _scrollDirections = ScrollDirections.Vertical;
 		//only Vertical or Horizontal are supported
-		public ScrollDirections ScrollDirections 
-		{ 
+		public ScrollDirections ScrollDirections
+		{
 			get
 			{
 				if (_hasScrollDirections || _scrollable == null)
@@ -113,7 +113,7 @@ namespace Fuse.Triggers
 					BypassSeek(OffsetScrollProgress);
 			}
 		}
-		
+
 		ScrollView _scrollable;
 
 		double OffsetScrollProgress

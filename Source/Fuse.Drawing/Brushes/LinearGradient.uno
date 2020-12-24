@@ -61,10 +61,10 @@ namespace Fuse.Drawing
 		/** Smoothly interpolates colors between the GradientStop's */
 		Smooth,
 	}
-	
+
 	/**
 		A linear gradient @Brush.
-		
+
 		@LinearGradient lets you describe a linear gradient using a collection of @GradientStops.
 		The following example displays a @Rectangle with a @LinearGradient that fades from white at the top, to black at the bottom.
 
@@ -76,9 +76,9 @@ namespace Fuse.Drawing
 			</LinearGradient>
 		</Rectangle>
 		```
-		
+
 		You may also specify any number of @GradientStops.
-		
+
 		```
 		<Circle>
 			<LinearGradient AngleDegrees="90">
@@ -128,7 +128,7 @@ namespace Fuse.Drawing
 		static Selector _startPointName = "StartPoint";
 		float2 _startPoint;
 
-		/** 
+		/**
 			Check to ensure that stops are in the right order. If they are not, throw an exception, as the code assumes they are ordered correctly.
 		*/
 		static void ValidateStopsSorted(IList<GradientStop> stops)
@@ -178,7 +178,7 @@ namespace Fuse.Drawing
 				}
 			}
 		}
-		
+
 		static Selector _angleName = "Angle";
 		float _angle;
 		bool _hasAngle;
@@ -196,20 +196,20 @@ namespace Fuse.Drawing
 				}
 			}
 		}
-		
+
 		/** The angle of the gradient in degrees. Can be used instead of `StartPoint` and `EndPoint`. */
 		public float AngleDegrees
 		{
 			get { return Math.RadiansToDegrees(_angle); }
 			set { Angle = Math.DegreesToRadians(value); }
 		}
-		
+
 		public bool HasAngle { get { return _hasAngle; } }
 
 		LinearGradientInterpolation _interpolation = LinearGradientInterpolation.Linear;
 		/**
 			Defines how the colors are interpolatied between the points.
-			
+
 			The default is `Linear`.
 		*/
 		public LinearGradientInterpolation Interpolation
@@ -219,12 +219,12 @@ namespace Fuse.Drawing
 			{
 				if (_interpolation == value)
 					return;
-					
+
 				_interpolation = value;
 				OnPropertyChanged(_interpolationName);
 			}
 		}
-		
+
 		static int SelectOffset(GradientStop a, GradientStop b)
 		{
 			return (int)Math.Sign(a.Offset - b.Offset);
@@ -234,7 +234,7 @@ namespace Fuse.Drawing
 		{
 			gs.AddPropertyListener(this);
 			_invalid = true;
-			
+
 			if (IsPinned)
 			{
 				OnPropertyChanged(_stopsName);
@@ -246,7 +246,7 @@ namespace Fuse.Drawing
 		{
 			gs.RemovePropertyListener(this);
 			_invalid = true;
-			
+
 			if (IsPinned)
 				OnPropertyChanged(_stopsName);
 		}
@@ -259,22 +259,22 @@ namespace Fuse.Drawing
 		{
 			foreach (var s in stops) _stops.Add(s);
 		}
-		
+
 		protected override void OnPinned()
 		{
 			base.OnPinned();
 			_stops.RootSubscribe(OnAdded, OnRemoved);
 		}
-		
+
 		static LinearGradient()
 		{
 			_gradientSize = Math.Min( 1028, texture2D.MaxSize );
 		}
-		
+
 		static int _gradientSize = 256;
-		
+
 		//public for `draw`
-		public framebuffer _gradientBuffer; 
+		public framebuffer _gradientBuffer;
 		public float2 _gradientStart;
 		bool _invalid = true;
 		protected override void OnPrepare(DrawContext dc, float2 canvasSize)
@@ -284,40 +284,40 @@ namespace Fuse.Drawing
 				_gradientBuffer = FramebufferPool.Lock( int2(_gradientSize,1), Format.RGBA8888, false );
 				_invalid = true;
 			}
-			
+
 			if (_invalid)
 			{
 				_gradientStart = LinearGradientDrawable.Singleton.FillBuffer(dc, this, _gradientBuffer);
 				_invalid = false;
 			}
 		}
-		
+
 		protected override void OnUnpinned()
 		{
 			_stops.RootUnsubscribe();
-			
+
 			if (_gradientBuffer != null)
 			{
 				FramebufferPool.Release(_gradientBuffer);
 				_gradientBuffer = null;
 				_invalid = true;
 			}
-			
+
 			base.OnUnpinned();
 		}
-		
-		public float4 GetEffectiveEndPoints( float2 size ) 
+
+		public float4 GetEffectiveEndPoints( float2 size )
 		{
 			if (!HasAngle)
 				return float4(StartPoint * size, EndPoint * size);
-				
+
 			//for Angle this matches the CSS definition so that the gradient nominal start/end (0,1) are in the two corners
-			var angleLen = Math.Abs( size.X * Math.Cos(Angle) ) + 
+			var angleLen = Math.Abs( size.X * Math.Cos(Angle) ) +
 				Math.Abs( size.Y * Math.Sin(Angle) );
 			var angleSlope = float2(Math.Cos(Angle), Math.Sin(Angle));
 			var angleStartPoint = (size/2 - angleSlope*angleLen/2);
 			var angleEndPoint = (size/2 + angleSlope*angleLen/2);
-			
+
 			return float4(angleStartPoint, angleEndPoint);
 		}
 
@@ -326,29 +326,29 @@ namespace Fuse.Drawing
 		float2 endPoint: endPoints.ZW;
 		float2 tLineSlope: Vector.Normalize(endPoint - startPoint);
 		float tLineLen: Vector.Length(endPoint - startPoint);
-		
+
 		float tc: req(TexCoord as float2)
 		{
 			var v = TexCoord * CanvasSize - startPoint;
 			var p = Vector.Dot(v, tLineSlope) / tLineLen;
 			return (p - _gradientStart.X) / _gradientStart.Y;
 		};
-		
+
 		FinalColor: sample(_gradientBuffer.ColorBuffer,float2(tc,0.5f), Uno.Graphics.SamplerState.LinearClamp);
 	}
-	
+
 	class LinearGradientDrawable
 	{
 		static public LinearGradientDrawable Singleton = new LinearGradientDrawable();
-		
+
 		public float2 FillBuffer(DrawContext dc, LinearGradient lg, framebuffer fb)
 		{
 			var stops = lg.SortedStops;
 			if (stops.Length < 2)
 				return float2(0,1);
-				
+
 			var length = stops[stops.Length-1].Offset - stops[0].Offset;
-			
+
 			dc.PushRenderTarget(fb);
 
 			bool smooth = lg.Interpolation == LinearGradientInterpolation.Smooth;
@@ -363,7 +363,7 @@ namespace Fuse.Drawing
 				ClipPosition: float4(TexCoord.X*2-1,-TexCoord.Y*2+1,0,1);
 				DepthTestEnabled: false;
 				BlendEnabled: false;
-				
+
 				float[] Offsets :
 				{
 					var ofs = new float[Math.Max(stops.Length,1)];
@@ -394,8 +394,8 @@ namespace Fuse.Drawing
 						var color2 = Colors[i+1];
 
 						color = Uno.Math.Lerp(
-							color, 
-							float4(color2.XYZ*color2.W, color2.W), 
+							color,
+							float4(color2.XYZ*color2.W, color2.W),
 							smooth ? Uno.Math.SmoothStep(step1, step2, p) : LinearStep(step1,step2,p));
 					}
 
@@ -404,14 +404,14 @@ namespace Fuse.Drawing
 			};
 
 			dc.PopRenderTarget();
-			
+
 			return float2(stops[0].Offset, length);
 		}
-		
+
 		public static float LinearStep(float edge0, float edge1, float x)
 		{
 			return Math.Clamp((x - edge0) / (edge1 - edge0), 0.0f, 1.0f);
 		}
-		
+
 	}
 }

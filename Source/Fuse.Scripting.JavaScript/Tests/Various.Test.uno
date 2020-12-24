@@ -232,7 +232,7 @@ namespace Fuse.Reactive.Test
 
 		[Test]
 		/** Tests that modules and ClassInstances along with their implicit observable backing is
-			appropriately disposed, and that Observable.onValueChanged subscribers are removed when 
+			appropriately disposed, and that Observable.onValueChanged subscribers are removed when
 			modules are disposed */
 		public void ModuleLifetime()
 		{
@@ -263,7 +263,7 @@ namespace Fuse.Reactive.Test
 				root.Children.Remove(e);
 				root.StepFrameJS();
 
-				// Should now have zero subscribers - none from JS, none 
+				// Should now have zero subscribers - none from JS, none
 				// from the implicit property backing
 				JavaScript.Worker.Invoke(getSubscriberCount.Run);
 				root.StepFrameJS();
@@ -353,7 +353,7 @@ namespace Fuse.Reactive.Test
 		{
 			var e = new UX.Issue2398();
 		}
-		
+
 		[Test]
 		/* A variant of the previous test involving Select and a changing Context */
 		public void Issue1995Select()
@@ -576,7 +576,7 @@ namespace Fuse.Reactive.Test
 				Assert.AreEqual("Bar", e.Text.Value);
 			}
 		}
-		
+
 		[Test]
 		public void OptionalExplicitTest()
 		{

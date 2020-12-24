@@ -38,14 +38,14 @@ namespace Fuse.Triggers
 			if (_on)
 				Activate();
 		}
-	
+
 		StateGroup _stateGroup;
 		internal void RootStateGroup(StateGroup stateGroup)
 		{
 			OverrideContextParent = OverrideContextParent ?? stateGroup;
 			_stateGroup = stateGroup;
 		}
-		
+
 		protected override void OnUnrooted()
 		{
 			if (OverrideContextParent == _stateGroup) OverrideContextParent = null;
@@ -54,7 +54,7 @@ namespace Fuse.Triggers
 		}
 
 		public new double Progress { get { return base.Progress; } }
-		
+
 		public void Goto()
 		{
 			if (_stateGroup == null)
@@ -62,10 +62,10 @@ namespace Fuse.Triggers
 				Fuse.Diagnostics.InternalError( "Cannot call `Goto` on an unrooted `State`");
 				return;
 			}
-			
+
 			_stateGroup.Goto(this);
 		}
-		
+
 		protected override void OnPlayStateChanged(TriggerPlayState state)
 		{
 			if (_stateGroup != null && state == TriggerPlayState.Stopped)

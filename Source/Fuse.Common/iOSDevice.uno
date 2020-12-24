@@ -21,7 +21,7 @@ namespace Fuse
 			return Major + "." + Minor + "." + Patch;
 		}
 	}
-	
+
 	[TargetSpecificImplementation]
 	extern(iOS) public static class iOSDevice
 	{
@@ -30,16 +30,16 @@ namespace Fuse
 			Portrait,
 			Landscape
 		}
-		
+
 		static OSVersion _osVersion;
 		public static OSVersion OperatingSystemVersion
 		{
 			get{
 				if(_osVersion != null) return _osVersion;
-				
+
 				int major, minor, patch;
 				GetiOSVersion(out major, out minor, out patch);
-				
+
 				return _osVersion = new OSVersion(major, minor, patch);
 			}
 		}

@@ -12,7 +12,7 @@ namespace Fuse.Controls
 			Fuse.Drawing.Primitives.Rectangle.Singleton.Fill(dc,this,
 				ActualSize, CornerRadius, fill, float2(0), Smoothness);
 		}
-		
+
 		protected override void DrawStroke(DrawContext dc, Stroke stroke)
 		{
 			Fuse.Drawing.Primitives.Rectangle.Singleton.Stroke(dc,this,
@@ -22,13 +22,13 @@ namespace Fuse.Controls
 		protected override void OnHitTestLocalVisual(Fuse.HitTestContext htc)
 		{
 			base.OnHitTestLocalVisual(htc);
-			
+
 			var lp = htc.LocalPoint;
 			if (!HasFills || !IsPointInside(lp))
 				return;
 
 			var cr = ConstrainedCornerRadius;
-				
+
 			if (lp.X < cr[0] && lp.Y < cr[0])
 			{
 				if( Vector.Distance( lp, float2(cr[0] ) ) > cr[0] )
@@ -36,7 +36,7 @@ namespace Fuse.Controls
 			}
 			else if (lp.X > (ActualSize.X - cr[1]) && lp.Y < cr[1])
 			{
-				if( Vector.Distance( lp, float2(ActualSize.X - cr[1], cr[1] ) ) 
+				if( Vector.Distance( lp, float2(ActualSize.X - cr[1], cr[1] ) )
 					> cr[1] )
 					return;
 			}
@@ -48,11 +48,11 @@ namespace Fuse.Controls
 			}
 			else if (lp.X > (ActualSize.X - cr[2]) && lp.Y > (ActualSize.Y - cr[2]) )
 			{
-				if( Vector.Distance( lp, float2(ActualSize.X - cr[2], 
+				if( Vector.Distance( lp, float2(ActualSize.X - cr[2],
 					ActualSize.Y - cr[2] ) ) > cr[2] )
 					return;
 			}
-			
+
 			htc.Hit(this);
 		}
 	}

@@ -11,7 +11,7 @@ namespace Fuse.Navigation
 	/*
 		This is a collection of static methods related to Navigation but that don't really have anything to
 		do with the `Navigation` type itself.
-		
+
 		The `NavigationPageProxy` deals properly with the various overrides and dynamic changes. These functions here are only good for one-time lookups.
 	*/
 	public abstract partial class Navigation
@@ -25,7 +25,7 @@ namespace Fuse.Navigation
 			var t = node as IBaseNavigation;
 			if (t != null)
 				return t;
-				
+
 			for (var x = node.FirstChild<Node>(); x != null; x = x.NextSibling<Node>())
 			{
 				var c = x as IBaseNavigation;
@@ -41,7 +41,7 @@ namespace Fuse.Navigation
 			//confusing lookup across navigation bounds for different triggers
 			return TryFindBaseNavigation(node) as INavigation;
 		}
-		
+
 		public static IBaseNavigation TryFindBaseNavigation(Node node, out Visual parent)
 		{
 			parent = null;
@@ -50,7 +50,7 @@ namespace Fuse.Navigation
 				Fuse.Diagnostics.InternalError( "TryFindBaseNavigation requires rooting to have started", node );
 				return null;
 			}
-			
+
 			while (node != null)
 			{
 				var v = node as Visual;
@@ -68,7 +68,7 @@ namespace Fuse.Navigation
 
 			return null;
 		}
-		
+
 		public static IBaseNavigation TryFindBaseNavigation(Node node)
 		{
 			Visual v;
@@ -85,13 +85,13 @@ namespace Fuse.Navigation
 			Visual bind;
 			return TryFindPage(node, out nav, out bind);
 		}
-		
+
 		/**
 			Locates the Page best associated with the provided node.
-			
+
 			This is not public since the difficulty in using this API is too high. Look at using the NavigationPageProxy
 			object to bind correctly.
-			
+
 			@param node where to look for a page. This scans upwards.
 			@param nav this associated navigation object
 			@param pageBind non-null if this is an explicit page binding, in which case you need
@@ -105,13 +105,13 @@ namespace Fuse.Navigation
 			var prev = node as Visual;
 			nav = null;
 			pageBind = null;
-			
+
 			if (!node.IsRootingStarted)
 			{
 				Fuse.Diagnostics.InternalError( "TryFindPage requires rooting to have started", node );
 				return null;
 			}
-			
+
 			bool first = true;
 			while (node != null)
 			{
@@ -123,7 +123,7 @@ namespace Fuse.Navigation
 					if (p != null)
 					{
 						pageBind = v;
-						
+
 						if (p.IsRootingStarted)
 						{
 							nav = TryFind(p);
@@ -149,7 +149,7 @@ namespace Fuse.Navigation
 							return prev;
 						}
 					}
-					
+
 					//the most recent Visual, not just Node, is the page
 					prev = v;
 				}
@@ -192,4 +192,4 @@ namespace Fuse.Navigation
 	}
 
 }
-		
+

@@ -1,4 +1,4 @@
-using Uno; 
+using Uno;
 using Uno.UX;
 
 namespace Fuse
@@ -12,8 +12,8 @@ namespace Fuse
 		public Selector Name
 		{
 			get { return _name; }
-			set 
-			{ 
+			set
+			{
 				if (_name != value)
 				{
 					_name = value;
@@ -29,7 +29,7 @@ namespace Fuse
 		}
 
 		/** Finds the first node with a given name that satisfies the given acceptor.
-			The serach algorithm works as follows: Nodes in the subtree are matched first, then 
+			The serach algorithm works as follows: Nodes in the subtree are matched first, then
 			it matches the nodes in the subtrees ofthe ancestor nodes by turn all the way to the
 			root. If no matching node is found, the function returns null.
 		*/
@@ -85,6 +85,6 @@ namespace Fuse
 			}
 			return false;
 		}
-		
+
 	}
 }

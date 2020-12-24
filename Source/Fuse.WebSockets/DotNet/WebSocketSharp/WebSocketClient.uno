@@ -34,13 +34,13 @@ namespace WebSocketSharp
 			// NOTE: I'm enabling tls1.2 nanually here (since we export to .net 4.5), should probably check if its supported first if exported to other targets https://msdn.microsoft.com/en-us/library/windows/desktop/bb870930(v=vs.85).aspx#listing_supported_cipher_suites
 			// Mono does not support tls 1.1 and 1.2 until Mono 4.6 http://tirania.org/blog/archive/2016/Sep-30.html
 			_webSocket.SslConfiguration = new ClientSslConfiguration(host, null, SslProtocols.Default | SslProtocols.Tls11 | SslProtocols.Tls12, false);
-			
+
 			_webSocket.OnOpen += Opened;
 			_webSocket.OnClose += Closed;
 			_webSocket.OnError += Error;
 			_webSocket.OnMessage += MessageReceived;
 		}
-		
+
 		void Opened(object sender, object args) {
 			_open();
 		}

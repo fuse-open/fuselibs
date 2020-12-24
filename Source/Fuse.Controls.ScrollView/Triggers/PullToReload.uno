@@ -22,7 +22,7 @@ namespace Fuse.Triggers
 		See the [Pull to reload](/examples/pull-to-reload), for a complete example on how to use it.
 
 		# Example
-		
+
 		The following example flashes the app background in different colors as the different states of the `PullToReload` happen:
 
 			<ScrollView>

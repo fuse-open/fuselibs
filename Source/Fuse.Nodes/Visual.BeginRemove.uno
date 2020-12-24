@@ -41,18 +41,18 @@ namespace Fuse
 		{
 			if (_done)
 				return;
-			
+
 			if (_then != null) _then(Child);
 			_done = true;
 			Child.ConcludePendingRemove();
 		}
-		
+
 		void IUpdateListener.Update()
 		{
 			Remove();
 		}
 	}
-	
+
 	public interface IBeginRemoveVisualListener
 	{
 		void OnBeginRemoveVisual(PendingRemoveVisual pr);
@@ -69,15 +69,15 @@ namespace Fuse
 				if (then != null) then(child);
 				return;
 			}
-			
+
 			if (!Children.Contains(child))
 				return;
-				
+
 			//refer to the issue, this needs to be fixed better
 			//https://github.com/fusetools/fuselibs-private/issues/1966
 			if (child.HasBit(FastProperty1.PendingRemove))
 				return;
-			
+
 			var args = new PendingRemoveVisual(child, this, then);
 
 			child.OnBeginRemoveVisual(args);
@@ -97,13 +97,13 @@ namespace Fuse
 		{
 			var v = n as Visual;
 			if (v != null) BeginRemoveVisual(v, then);
-			else 
+			else
 			{
 				Children.Remove(n);
 				if (then != null) then(n);
 			}
 		}
-		
+
 		protected void OnBeginRemoveVisual(PendingRemoveVisual args)
 		{
 			SetBit(FastProperty1.PendingRemove, true);

@@ -18,7 +18,7 @@ namespace Fuse.Reactive
 	}
 
 	[UXValueBindingAlias("Data")]
-	/** 
+	/**
 		Data bindings allow you to bind properties on UX markup objects to values coming from
 		a @JavaScript or other data context.
 
@@ -36,7 +36,7 @@ namespace Fuse.Reactive
 			<DataBinding Target="panel1.Width" Key="panelWidth" />
 
 		> Note: The expression passed to `Key` in explicit mode is by default in the data scope. To reference global names, escape it using `{= }`
-		
+
 		The above code will use `100` as the default value for `panel1.Width` until the `panelWidth`
 		data is resolved.
 
@@ -51,8 +51,8 @@ namespace Fuse.Reactive
 
 		[UXConstructor]
 		public DataBinding(
-			[UXParameter("Target")] Uno.UX.Property target, 
-			[UXParameter("Key"), UXDataScope] IExpression key, 
+			[UXParameter("Target")] Uno.UX.Property target,
+			[UXParameter("Key"), UXDataScope] IExpression key,
 			[UXParameter("Mode"), UXDefaultValue("Default")] BindingMode mode): base(key)
 		{
 			_mode = mode;
@@ -78,7 +78,7 @@ namespace Fuse.Reactive
 			PushValue(newValue);
 		}
 
-		static string TypeToJSName(Type t) 
+		static string TypeToJSName(Type t)
 		{
 			if (t == typeof(int) || t == typeof(float) || t == typeof(double)) return "number";
 			if (t == typeof(string)) return "string";
@@ -121,7 +121,7 @@ namespace Fuse.Reactive
 		{
 			InvalidListOperation();
 		}
-		
+
 		protected override void OnRooted()
 		{
 			base.OnRooted();
@@ -134,13 +134,13 @@ namespace Fuse.Reactive
 		{
 			BusyTask.SetBusy( Parent, ref _busyTask, BusyTaskActivity.Failed, message );
 		}
-		
+
 		void ClearFailed()
 		{
 			if (Parent != null)
 				BusyTask.SetBusy( Parent, ref _busyTask, BusyTaskActivity.None );
 		}
-		
+
 		protected override void OnUnrooted()
 		{
 			ClearFailed();
@@ -153,17 +153,17 @@ namespace Fuse.Reactive
 				_subscription.Dispose();
 				_subscription = null;
 			}
-		
+
 			ClearValue();
 			base.OnUnrooted();
 		}
-		
+
 		internal void SetTarget( object value )
 		{
 			ClearFailed();
 			Target.SetAsObject(value, this);
 		}
-		
+
 		void ClearValue()
 		{
 			if (Clear) SetTarget(null);
@@ -180,7 +180,7 @@ namespace Fuse.Reactive
 			{
 				if (_subscription != null)
 				{
-					if (Write) 
+					if (Write)
 					{
 						var sub = _subscription as ISubscription;
 						if (sub != null) sub.SetExclusive(Target.GetAsObject());
@@ -206,7 +206,7 @@ namespace Fuse.Reactive
 		internal override void NewValue(object value)
 		{
 			CleanSubscription();
-			
+
 			if (Marshal.Is(value, Target.PropertyType))
 			{
 				// Note - this case is required in addition to the final 'else', because if the target
@@ -227,7 +227,7 @@ namespace Fuse.Reactive
 				PushValue(value);
 			}
 		}
-		
+
 		internal override void LostValue()
 		{
 			CleanSubscription();
@@ -269,7 +269,7 @@ namespace Fuse.Reactive
 				_registryName = null;
 			}
 		}
-		
+
 		bool TryPushAsName(object newValue)
 		{
 			var name = ToSelector(newValue);
@@ -288,7 +288,7 @@ namespace Fuse.Reactive
 				}
 
 				// Unable to resolve node
-				if (Target.PropertyType.IsClass && !Marshal.CanConvertClass(Target.PropertyType)) 
+				if (Target.PropertyType.IsClass && !Marshal.CanConvertClass(Target.PropertyType))
 				{
 					// TODO: this gives a lot of false positives if the tree isn't fully populated yet.
 					//debug_log("Warning: Data binding failed. No object named '" + name + "' of type " + typeof(T) + " found");
@@ -302,7 +302,7 @@ namespace Fuse.Reactive
 		static Selector ToSelector(object newValue)
 		{
 			return
-				newValue is Selector ? (Selector)newValue : 
+				newValue is Selector ? (Selector)newValue :
 				newValue is string ? new Selector((string)newValue) : default(Selector);
 		}
 
@@ -333,16 +333,16 @@ namespace Fuse.Reactive
 	public class PropertyBinding: DataBinding
 	{
 		[UXConstructor]
-		public PropertyBinding([UXParameter("Target")] Uno.UX.Property target, [UXParameter("Source")] Uno.UX.Property source) 
+		public PropertyBinding([UXParameter("Target")] Uno.UX.Property target, [UXParameter("Source")] Uno.UX.Property source)
 			: base(target, new Reactive.Property(new Constant(source.Object), source), BindingMode.Default) {}
 	}
 
 	public class ResourceBinding: DataBinding
 	{
 		[UXConstructor]
-		public ResourceBinding([UXParameter("Target")] Uno.UX.Property target, [UXParameter("Key")] string key) 
+		public ResourceBinding([UXParameter("Target")] Uno.UX.Property target, [UXParameter("Key")] string key)
 			: base(target, new Reactive.Resource(key), BindingMode.Default) {}
 	}
 
-	
+
 }

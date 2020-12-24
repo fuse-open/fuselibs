@@ -18,20 +18,20 @@ namespace Fuse.Input
             get;
             protected set;
         }
-        
+
         public bool IsControlKeyPressed
-        { 
+        {
             get;
             protected set;
         }
-        
-        public bool IsShiftKeyPressed 
-        { 
+
+        public bool IsShiftKeyPressed
+        {
             get;
             protected set;
         }
-        
-        public bool IsAltKeyPressed 
+
+        public bool IsAltKeyPressed
         {
             get;
             protected set;
@@ -120,18 +120,18 @@ namespace Fuse.Input
 		}
 
 		static Visual KeyTargetVisual
-		{	
+		{
 			get
 			{
 				return Focus.FocusedVisual ?? AppBase.CurrentRootViewport;
 			}
 		}
-		
+
 		public static bool RaiseKeyPressed(Uno.Platform.Key key, bool isMetaKeyPressed, bool isControlKeyPressed, bool isShiftKeyPressed, bool isAltKeyPressed)
 		{
 			_keysDown.Add(key);
 
-			var args = new KeyPressedArgs(key, isMetaKeyPressed, isControlKeyPressed, isShiftKeyPressed, isAltKeyPressed, KeyTargetVisual);	
+			var args = new KeyPressedArgs(key, isMetaKeyPressed, isControlKeyPressed, isShiftKeyPressed, isAltKeyPressed, KeyTargetVisual);
 			KeyPressed.RaiseWithBubble(args);
 
 			return args.IsHandled;

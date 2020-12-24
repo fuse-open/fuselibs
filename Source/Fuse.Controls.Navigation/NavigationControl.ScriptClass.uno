@@ -15,12 +15,12 @@ namespace Fuse.Controls
 				new ScriptMethod<NavigationControl>("seekToPath", seekToPath),
 				new ScriptMethod<NavigationControl>("modifyPath", modifyPath));
 		}
-		
+
 		/**
 			Go to the desired page. This may reuse the existing page if it is compatible.
-			
+
 			This is not a router method. It is a local change to the navigation control. If used in a router it will modify the current path and not alter the history.
-			
+
 			@scriptmethod gotoPath( path [, parameter] )
 			@param path the name of the path to use
 			@param parameter an optional parameter for the page
@@ -29,12 +29,12 @@ namespace Fuse.Controls
 		{
 			alterPath(nav, args, "gotoPath", NavigationGotoMode.Transition);
 		}
-		
+
 		/**
 			Go to the desired page without using a transition (bypass mode). This may reuse the existing page if it is compatible.
-			
+
 			This is not a router method. It is a local change to the navigation control. If used in a router it will modify the current path and not alter the history.
-			
+
 			@scriptmethod seekToPath( path [, parameter] )
 			@param path the name of the path to use
 			@param parameter an optional parameter for the page
@@ -43,7 +43,7 @@ namespace Fuse.Controls
 		{
 			alterPath(nav, args, "seekToPath", NavigationGotoMode.Bypass);
 		}
-		
+
 		static void alterPath(NavigationControl nav, object[] args, string opName,
 			NavigationGotoMode gotoMode)
 		{
@@ -52,14 +52,14 @@ namespace Fuse.Controls
 				Fuse.Diagnostics.UserError( "NavigationControl." + opName + " requires 1 or 2 arguments", nav);
 				return;
 			}
-			
+
 			var outlet = nav as IRouterOutlet;
 			if (outlet == null)
 			{
 				Fuse.Diagnostics.InternalError( "Must be an IRouterOutlet", nav );
 				return;
 			}
-			
+
 			var path = Marshal.ToType<string>(args[0]);
 			string param = null;
 			if (args.Length > 1)
@@ -68,25 +68,25 @@ namespace Fuse.Controls
 			Visual ignore;
 			outlet.Goto(rPage, gotoMode, RoutingOperation.Goto, "", out ignore);
 		}
-		
+
 		/**
 			Goto the desired page and modify the local history.
-			
+
 			The properties here match the same named properties of `router.modify`
-			
+
 			@scriptmethod modifyPath( navigationSpec )
-			
-			The navigationSpec is a JavaScript object that specifies all the properties for the modification, 
+
+			The navigationSpec is a JavaScript object that specifies all the properties for the modification,
 			for example:
-			
+
 				nav.modifyPath({
 					how: "Goto",
 					path: [ "one", {} ],
 					transition: "Bypass",
 				})
-				
+
 			This gotos to the "one" page without a transition.
-			
+
 			The options are:
 				- `how`: One of:
 					- `Goto`: Clears the current route stack, like `goto()`
@@ -106,7 +106,7 @@ namespace Fuse.Controls
 				Fuse.Diagnostics.UserError( "`modifyPath` takes on argument", nav );
 				return;
 			}
-			
+
 			var obj = args[0] as IObject;
 			if (obj == null)
 			{
@@ -116,13 +116,13 @@ namespace Fuse.Controls
 
 			//reusing RouterRequest to ensure same meaning and defaults on supported arguments
 			var rr = new RouterRequest(RouterRequest.Flags.FlatRoute);
-			if (!rr.AddArguments(obj, RouterRequest.Fields.How | RouterRequest.Fields.Transition |	
+			if (!rr.AddArguments(obj, RouterRequest.Fields.How | RouterRequest.Fields.Transition |
 				RouterRequest.Fields.Style | RouterRequest.Fields.Path))
 			{
 				Fuse.Diagnostics.UserError( "`modifyPath` unrecognized arguments", nav );
 				return;
 			}
-			
+
 			if (rr.Route != null && rr.Route.SubRoute != null)
 			{
 				Fuse.Diagnostics.UserError( "`modifyPath` expects one route component", nav );
@@ -140,7 +140,7 @@ namespace Fuse.Controls
 				Fuse.Diagnostics.UserError( "`modifyPath` unable to find route component", nav );
 				return;
 			}
-			
+
 			RoutingOperation op = RoutingOperation.Goto;
 			switch (rr.How)
 			{
@@ -149,7 +149,7 @@ namespace Fuse.Controls
 						childPages.Add( page );
 					op = RoutingOperation.Push;
 					break;
-					
+
 				case ModifyRouteHow.Goto:
 					if (childPages != null)
 					{
@@ -158,7 +158,7 @@ namespace Fuse.Controls
 					}
 					op = RoutingOperation.Goto;
 					break;
-					
+
 				case ModifyRouteHow.Replace:
 					if (childPages != null)
 					{
@@ -170,7 +170,7 @@ namespace Fuse.Controls
 					}
 					op = RoutingOperation.Replace;
 					break;
-					
+
 				case ModifyRouteHow.GoBack:
 					if (childPages != null)
 					{
@@ -183,12 +183,12 @@ namespace Fuse.Controls
 					}
 					op = RoutingOperation.Pop;
 					break;
-					
+
 				default:
 					Fuse.Diagnostics.UserError( "Unsupported `How`: " + rr.How, nav );
 					return;
 			}
-			
+
 			var outlet = (IRouterOutlet)nav;
 			Visual ignore;
 			outlet.Goto( page, rr.Transition, op, rr.Style, out ignore );

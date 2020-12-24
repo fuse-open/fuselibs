@@ -22,7 +22,7 @@ namespace Fuse.Charting.Test
 			}
 			return q;
 		}
-		
+
 		//missing functionality in our IList
 		static public int IndexOf( IList<Node> list, Node obj )
 		{
@@ -31,7 +31,7 @@ namespace Fuse.Charting.Test
 					return i;
 			return -1;
 		}
-		
+
 		static public int CountChildren<T>( Visual v )
 		{
 			var c = 0;
@@ -42,7 +42,7 @@ namespace Fuse.Charting.Test
 			}
 			return c;
 		}
-		
+
 		static public T[] Children<T>( Visual v ) where T : class
 		{
 			var list = new List<T>();

@@ -41,7 +41,7 @@ namespace Fuse
 				}
 			}
 		}
-		
+
 		static PropertyHandle _parameterChangedHandle = Fuse.Properties.CreateHandle();
 
 		/** Raised when the `Parameter` property changes.
@@ -51,7 +51,7 @@ namespace Fuse
 			add { AddEventHandler(_parameterChangedHandle, VisualBits.ParameterChanged, value); }
 			remove { RemoveEventHandler(_parameterChangedHandle, VisualBits.ParameterChanged, value); }
 		}
-		
+
 
 		List<Function> _parameterListeners;
 
@@ -92,10 +92,10 @@ namespace Fuse
 		{
 			_parameterListeners = null;
 		}
-		
+
 		/**
 			Prepares a visual with a new parameter. This is meant to indicate a high-level transition, such as navigation to a new page.
-			
+
 			Overrides are expected to call `base.Prepare` or perform the same behaviour. Callers will expect the parmaeter to be taken as-is.
 		*/
 		internal virtual void Prepare(string parameter)

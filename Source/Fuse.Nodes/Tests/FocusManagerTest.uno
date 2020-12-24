@@ -23,7 +23,7 @@ namespace Fuse.Test
 				Assert.AreEqual(dummy, Focus.FocusedVisual);
 			}
 		}
-		
+
 		[Test]
 		public void CanNotSetFocusedVisualOnNotIsFocusable()
 		{
@@ -38,7 +38,7 @@ namespace Fuse.Test
 				Assert.AreNotEqual(dummy, Focus.FocusedVisual);
 			}
 		}
-		
+
 		[Test]
 		public void CanNotSetFocusedVisualOnNotEnbled()
 		{
@@ -54,12 +54,12 @@ namespace Fuse.Test
 				Assert.AreNotEqual(dummy, Focus.FocusedVisual);
 			}
 		}
-		
+
 		[Test]
 		public void CanSetFocusedVisualToNull()
 		{
 			Focus.Release();
-			
+
 			Assert.AreEqual(null, Focus.FocusedVisual);
 		}
 
@@ -78,7 +78,7 @@ namespace Fuse.Test
 		{
 			return FocusPredictStrategy.Predict(visual, FocusNavigationDirection.Down);
 		}
-		
+
 		class FocusableVisual : Visual
 		{
 			public FocusableVisual()
@@ -88,12 +88,12 @@ namespace Fuse.Test
 
 			public override void Draw(DrawContext dc) {}
 		}
-		
+
 		class NotFocusableVisual : Visual
 		{
 			public override void Draw(DrawContext dc) {}
 		}
-		
+
 		class NotEnabledVisual : FocusableVisual
 		{
 			public NotEnabledVisual()

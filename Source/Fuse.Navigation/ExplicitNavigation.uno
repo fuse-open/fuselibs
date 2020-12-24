@@ -13,7 +13,7 @@ namespace Fuse.Navigation
 			if (mode != NavigationGotoMode.Transition &&
 				mode != NavigationGotoMode.Bypass)
 				return;
-				
+
 			SetPageProgress(visual, 0, false);
 			Active = visual;
 			OnPageProgressChanged( mode == NavigationGotoMode.Bypass ?
@@ -24,11 +24,11 @@ namespace Fuse.Navigation
 		public override Visual Active
 		{
 			get { return _active; }
-			set 
-			{ 
+			set
+			{
 				if (_active != value)
 				{
-					_active = value; 
+					_active = value;
 					OnActiveChanged(_active);
 					OnNavigated(_active);
 				}
@@ -39,7 +39,7 @@ namespace Fuse.Navigation
 		{
 			get { return 0; }
 		}
-		
+
 		void SetPageProgress(Visual page, float progress, float previous, bool update, bool havPrev)
 		{
 			var pd = GetPageData(page);
@@ -50,22 +50,22 @@ namespace Fuse.Navigation
 			if (update)
 				OnPageProgressChanged(NavigationMode.Switch);
 		}
-		
+
 		public void SetPageProgress(Visual page, float progress, float previous, bool update = true)
 		{
 			SetPageProgress(page, progress, previous, update, true );
 		}
-		
+
 		public void SetPageProgress(Visual page, float progress, bool update = true)
 		{
 			SetPageProgress(page, progress, 0, update, false );
 		}
-		
+
 		public void UpdateProgress(NavigationMode mode)
 		{
 			OnPageProgressChanged(mode);
 		}
-		
+
 		public void SetState(NavigationState state)
 		{
 			OnStateChanged(state);

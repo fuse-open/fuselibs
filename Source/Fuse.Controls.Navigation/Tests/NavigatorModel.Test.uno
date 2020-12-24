@@ -18,9 +18,9 @@ namespace Fuse.Navigation.Test
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
 				root.StepFrameJS();
-				
+
 				Assert.AreEqual( "outer,inner", GetRecursiveText(p));
 			}
 		}
-	}	
+	}
 }
