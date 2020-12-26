@@ -1,7 +1,7 @@
 using Uno.Threading;
 using Uno.Compiler.ExportTargetInterop;
 using Fuse.GeoLocation.Android;
-using Uno.Permissions;
+using Fuse.Android.Permissions;
 using Uno;
 
 namespace Fuse.GeoLocation

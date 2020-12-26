@@ -4,10 +4,10 @@
   "Publisher": "Fuse Open",
   "IsTransitive": true,
   "Packages": [
-    "Uno.Net.Http",
-    "Uno.Permissions"
+    "Uno.Net.Http"
   ],
   "Projects": [
+    "../Fuse.Android.Permissions/Fuse.Android.Permissions.unoproj",
     "../Fuse.Launcher.Email/Fuse.Launcher.Email.unoproj",
     "../Fuse.Launcher.InterApp/Fuse.Launcher.InterApp.unoproj",
     "../Fuse.Launcher.Maps/Fuse.Launcher.Maps.unoproj",

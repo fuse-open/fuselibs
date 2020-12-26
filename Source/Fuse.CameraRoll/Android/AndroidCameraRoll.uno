@@ -3,7 +3,7 @@ using Uno;
 using Uno.Compiler.ExportTargetInterop;
 using Android;
 using Fuse.ImageTools;
-using Uno.Permissions;
+using Fuse.Android.Permissions;
 namespace Fuse.CameraRoll
 {
 	[ForeignInclude(Language.Java, "com.fuse.Activity", "com.fuse.camera.Image", "android.content.Intent", "com.fuse.camera.ImageStorageTools")]

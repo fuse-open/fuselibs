@@ -2,7 +2,7 @@ using Uno.Threading;
 using Uno;
 using Uno.UX;
 using Fuse.Scripting;
-using Uno.Permissions;
+using Fuse.Android.Permissions;
 using Fuse.Scripting.JSObjectUtils;
 namespace Fuse.ImageTools
 {

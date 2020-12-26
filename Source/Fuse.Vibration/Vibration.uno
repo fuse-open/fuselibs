@@ -1,4 +1,4 @@
-using Uno.Permissions;
+using Fuse.Android.Permissions;
 using Uno.Compiler.ExportTargetInterop;
 
 namespace Fuse.Vibration

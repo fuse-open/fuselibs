@@ -1,5 +1,5 @@
 using Uno.Compiler.ExportTargetInterop;
-using Uno.Permissions;
+using Fuse.Android.Permissions;
 using Fuse.Android.Bindings;
 using Fuse.iOS.Bindings;
 

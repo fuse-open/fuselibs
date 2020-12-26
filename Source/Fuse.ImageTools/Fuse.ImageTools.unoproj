@@ -9,10 +9,10 @@
     "Fuse.ImageTools.Test"
   ],
   "Packages": [
-    "Uno.Threading",
-    "Uno.Permissions"
+    "Uno.Threading"
   ],
   "Projects": [
+    "../Fuse.Android.Permissions/Fuse.Android.Permissions.unoproj",
     "../Fuse.Common/Fuse.Common.unoproj",
     "../Fuse.Scripting/Fuse.Scripting.unoproj"
   ],

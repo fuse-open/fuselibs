@@ -3,13 +3,13 @@
   "Publisher": "Fuse Open",
   "Title": "Fuse.Controls.CameraView",
   "Packages": [
-    "Uno.Threading",
-    "Uno.Permissions"
+    "Uno.Threading"
   ],
   "Projects": [
+    "../Fuse.Android.Permissions/Fuse.Android.Permissions.unoproj",
     "../Fuse/Fuse.unoproj",
     "../FuseJS/FuseJS.unoproj",
-    "../Fuse.ImageTools/Fuse.ImageTools.unoproj",
+    "../Fuse.ImageTools/Fuse.ImageTools.unoproj"
   ],
   "Includes": [
     "*",
