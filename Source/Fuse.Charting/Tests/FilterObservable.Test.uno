@@ -68,9 +68,9 @@ namespace Fuse.Test
 				source.Add( "X" );
 				for (int i=0; i < 100; ++i)
 				{
-					source.Insert( r.NextInt(source.Count), "" + i );
+					source.Insert( r.Next(source.Count), "" + i );
 					if (i % 3 == 0)
-						source.RemoveAt( r.NextInt(source.Count) );
+						source.RemoveAt( r.Next(source.Count) );
 						
 					var q = "";
 					for (int j=2; j < sa.Length - 2; ++j)
