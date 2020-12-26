@@ -9,15 +9,6 @@ namespace Fuse.Scripting
 		public int LineNumber { get; private set;}
 		public string ScriptStackTrace { get; private set; }
 
-		[Obsolete("Use ScriptException.Message instead")]
-		public string ErrorMessage { get { return Message; } }
-
-		[Obsolete("Use ScriptException.ScriptStackTrace instead")]
-		public string JSStackTrace { get { return ScriptStackTrace; } }
-
-		[Obsolete]
-		public string SourceLine { get { return null; } }
-
 		public ScriptException(
 			string name,
 			string message,

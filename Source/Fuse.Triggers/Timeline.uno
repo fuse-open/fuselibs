@@ -254,24 +254,6 @@ namespace Fuse.Triggers
 				Play(_lastPlay == AnimationVariant.Forward ? 1 : 0);
 		}
 		
-
-		/** Deprecated */
-		[Obsolete]
-		void IPlayback.PlayTo(double progress)
-		{
-			PlayTo(progress);
-		}
-		[Obsolete]
-		public bool IPlayback.CanPlayTo { get { return true; } }
-		[Obsolete]
-		public bool IPlayback.CanStop { get { return true; } }
-		[Obsolete]
-		public bool IPlayback.CanPause { get { return true; } }
-		[Obsolete]
-		public bool IPlayback.CanResume { get { return true; } }
-		/** End-Deprecated */
-		
-		
 		[UXOriginSetter("SetProgress")]
 		/** Current progress of the timeline */
 		public new double Progress

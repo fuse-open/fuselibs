@@ -781,67 +781,6 @@ namespace Fuse.Input
 
 				WheelMoved.RaiseWithBubble(args, VisualEventMode.Enabled);
 			}
-			
-			
-			/***** Deprecated interface, doesn't work fully *****/
-			[Obsolete("Use IsCaptured instead")]
-			public static bool IsSoftCaptured(int pointIndex)
-			{ return IsCaptured( CaptureType.Soft, pointIndex, null ); }
-			
-			[Obsolete("Use IsCaptured instead")]
-			public static bool IsSoftCaptured(int pointIndex, object capturerIdentity)
-			{ 
-				DeprecatedCapture();
-				return IsCaptured( CaptureType.Soft, pointIndex, capturerIdentity ); 
-			}
-			
-			[Obsolete("Use ReleaseCapture instead")]
-			public static void ReleaseSoftCapture(int pointIndex, object identity)
-			{ 
-				DeprecatedCapture();
-				ReleaseCapture(identity); 
-			}
-			
-			[Obsolete("Use ReleaseCapture instead")]
-			public static void ReleaseAllCaptures(object identity)
-			{
-				DeprecatedCapture();
-				ReleaseCapture(identity);
-			}
-			
-			[Obsolete("Use IsCaptured instead")]
-			public static bool IsHardCaptured(int pointIndex)
-			{ 
-				return IsCaptured( CaptureType.Hard, pointIndex, null );
-			}
-			
-			[Obsolete("Use IsCaptured instead")]
-			public static bool IsHardCaptured(int pointIndex, object behavior)
-			{ 
-				DeprecatedCapture();
-				return IsCaptured( CaptureType.Hard, pointIndex, behavior ); 
-			}
-			
-			[Obsolete("Use ReleaseCapture instead")]
-			public static void ReleaseHardCapture(int pointIndex)
-			{
-				DeprecatedCapture();
-				var c = GetFirstCapture( CaptureType.Hard, pointIndex, null );
-				if (c != null)
-					ReleaseCapture(c.Identity);
-			}
-			
-			static bool _dcWarn;
-			static void DeprecatedCapture()
-			{
-				//DEPRECATED: 2017-02-21
-				if (_dcWarn)
-					return;
-				
-				Fuse.Diagnostics.Deprecated( "The capture system no longer supports distinct captures for Soft and Hard capture, instead treating the same identity/behaviour as a single capture. Old code will only work if it captured just one pointer, and followed the pattern of soft then hard capture on it (or just a hard capture). It's advisable to migrate to avoid any potential issues.", null );
-				_dcWarn = true;
-			}
-			/***** End deprecated interface *****/
 		}
 	}
 }

@@ -397,35 +397,6 @@ namespace Fuse.Controls
 				Playback.Stop();
 		}
 
-		/** Deprecated 2017-02-27 */
-		[Obsolete]
-		public void PlayTo(double progress)
-		{
-			if (Playback != null)
-				Playback.PlayTo(progress);
-		}
-		[Obsolete]
-		public bool CanPlayTo
-		{
-			get { return Playback != null ? Playback.CanPlayTo : false; }
-		}
-		[Obsolete]
-		public bool CanStop
-		{
-			get { return true; }
-		}
-		[Obsolete]
-		public bool CanPause
-		{
-			get { return true; }
-		}
-		[Obsolete]
-		public bool CanResume
-		{
-			get { return true; }
-		}
-		/* End-Deprecated */
-
 		public void Pause()
 		{
 			if (Playback != null)

@@ -32,15 +32,6 @@ namespace Fuse
 			throw new MarshalException(v, typeof(double));
 		}
 
-		/**
-			@deprecated Name kept for compatibility, use `TryToDouble` instead 2017-10-19
-		*/
-		[Obsolete]
-		public static bool ToDouble(object v, out double res)
-		{
-			return TryToDouble( v, out res );
-		}
-		
 		public static bool TryToDouble( object v, out double res )
 		{
 			if (v is double) { res = (double)v; return true; }
@@ -79,15 +70,6 @@ namespace Fuse
 			
 			res = (float)d;
 			return true;
-		}
-
-		/**
-			@deprecated use `TryToDouble` instead 2017-10-19
-		*/
-		[Obsolete]
-		public static bool ToDouble(string s, out double res)
-		{
-			return double.TryParse(s, out res);
 		}
 		
 		public static bool TryToDouble(string s, out double res)

@@ -180,15 +180,6 @@ namespace Fuse.Controls.VideoImpl
 			((IMediaPlayback)this).Position = 0.0;
 		}
 
-		/** Deprecated **/
-		void IPlayback.PlayTo(double progress)
-		{
-			Fuse.Diagnostics.Unsupported("IPlayback.PlayTo(double) not supported in Fuse.Controls.Video",
-				this);
-		}
-		bool IPlayback.CanPlayTo { get { return false; } }
-		/** End-Deprecated **/
-
 		void IPlayback.Pause()
 		{
 			_playbackTarget = PlaybackTarget.Paused;
@@ -221,10 +212,6 @@ namespace Fuse.Controls.VideoImpl
 			get { return (_videoService.Duration > 1e-05) ? _videoService.Position / _videoService.Duration : 0.0; }
 			set { _videoService.Position = _videoService.Duration * value; }
 		}
-
-		bool IPlayback.CanStop { get { return true; } }
-		bool IPlayback.CanPause { get { return true; } }
-		bool IPlayback.CanResume { get { return true; } }
 
 		event ValueChangedHandler<double> IProgress.ProgressChanged
 		{

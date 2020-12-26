@@ -202,18 +202,6 @@ namespace Fuse
 			Assert.AreEqual(new Size(r.X, Unit.Unspecified), Marshal.ToSize(v));
 
 		}
-		
-		[Test]
-		[Obsolete]
-		public void Deprecated()
-		{
-			Assert.AreEqual( 8.0, Marshal.Add(3.0,5.0));
-			Assert.AreEqual( -2.0, Marshal.Subtract(3.0,5.0));
-			Assert.AreEqual( 15.0, Marshal.Multiply(3.0,5.0));
-			Assert.AreEqual( 0.6, Marshal.Divide(3.0,5.0));
-			Assert.AreEqual( 3.0, Marshal.Min(3.0,5.0));
-			Assert.AreEqual( 5.0, Marshal.Max(3.0,5.0));
-		}
 
 		[Test]
 		public void VectorMarshaling()
