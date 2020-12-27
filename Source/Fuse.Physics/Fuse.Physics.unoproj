@@ -15,6 +15,7 @@
     "../Fuse.Common/Fuse.Common.unoproj"
   ],
   "Includes": [
+    "Docs/**:File",
     "*.uno"
   ]
 }

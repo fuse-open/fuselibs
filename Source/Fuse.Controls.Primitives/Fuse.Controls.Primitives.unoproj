@@ -44,8 +44,5 @@
   ],
   "Includes": [
     "*"
-  ],
-  "Excludes": [
-    "Docs"
   ]
 }
