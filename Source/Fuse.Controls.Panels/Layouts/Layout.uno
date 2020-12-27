@@ -14,34 +14,34 @@ namespace Fuse.Layouts
 			Don't allow user layout's yet as the API here is not completely stable, nor easy to use.
 		*/
 		internal Layout() { }
-		
+
 		static readonly PropertyHandle _fillPaddingProperty = Fuse.Properties.CreateHandle();
-		
+
 		[UXAttachedPropertySetter("Layout.FillPadding")]
 		public static void SetFillPadding(Visual n, bool f)
 		{
 			n.Properties.Set(_fillPaddingProperty, f);
 			InvalidateLayout(n);
 		}
-		
+
 		[UXAttachedPropertyGetter("Layout.FillPadding")]
 		public static bool GetFillPadding(Visual n)
 		{
 			object v;
 			if (n.Properties.TryGet(_fillPaddingProperty, out v))
 				return (bool)v;
-				
+
 			return n.Layer == Layer.Background ||
 			       n.Layer == Layer.Underlay;
 		}
-		
+
 		[UXAttachedPropertyResetter("Layout.FillPadding")]
 		public static void ResetFillPadding(Visual n)
 		{
 			n.Properties.Clear(_fillPaddingProperty);
 			InvalidateLayout(n);
 		}
-		
+
 		protected LayoutControl Container;
 
 		internal void Rooted(LayoutControl element)
@@ -51,9 +51,9 @@ namespace Fuse.Layouts
 			Container = element;
 			OnRooted();
 		}
-		
-		virtual protected void OnRooted() 
-		{ 
+
+		virtual protected void OnRooted()
+		{
 		}
 
 		internal void Unrooted(LayoutControl element)
@@ -63,30 +63,30 @@ namespace Fuse.Layouts
 			OnUnrooted();
 			Container = null;
 		}
-		
+
 		virtual protected void OnUnrooted()
 		{
 		}
 
 		//true at the start of rooting, prior to OnRooted call
 		internal bool IsRootingStarted { get { return Container != null; } }
-	
+
 		internal abstract float2 GetContentSize(Visual elementOwner, LayoutParams lp);
 		internal abstract void ArrangePaddingBox(Visual elementOwner, float4 padding, LayoutParams lp);
-		
+
 		protected bool AffectsLayout(Node n)
 		{
 			var v = n as Visual;
-			return v != null && (v.LayoutRole == LayoutRole.Standard ||	
+			return v != null && (v.LayoutRole == LayoutRole.Standard ||
 				v.LayoutRole == LayoutRole.Placeholder);
 		}
-		
+
 		protected bool ShouldArrange(Node n)
 		{
 			var v = n as Visual;
 			return v != null && v.LayoutRole != LayoutRole.Independent;
 		}
-		
+
 		protected bool ArrangeMarginBoxSpecial(Node n, float4 padding, LayoutParams lp)
 		{
 			var e = n as Visual;
@@ -102,7 +102,7 @@ namespace Fuse.Layouts
 					elm.RequestLayout();
 				return true;
 			}
-				
+
 			if (lr == LayoutRole.Inert)
 			{
 				var b = GetFillPadding(e);
@@ -113,10 +113,10 @@ namespace Fuse.Layouts
 				e.ArrangeMarginBox( p, nlp );
 				return true;
 			}
-			
+
 			return false;
 		}
-		
+
 		/**
 			Some properties attached to children are actually properties of the parent layout, thus
 			need to invlaidate at that level.
@@ -127,19 +127,19 @@ namespace Fuse.Layouts
 			if (child.Parent != null)
 				child.Parent.InvalidateLayout();
 		}
-		
+
 		internal virtual LayoutDependent IsMarginBoxDependent( Visual child )
 		{
 			//conservative Yes
 			return LayoutDependent.Yes;
 		}
-		
+
 		protected void InvalidateLayout()
 		{
 			if (Container != null)
 				Container.InvalidateLayout();
 		}
-		
+
 		protected bool SnapToPixels
 		{
 			get
@@ -147,31 +147,31 @@ namespace Fuse.Layouts
 				return Container != null && Container.SnapToPixels;
 			}
 		}
-		
+
 		protected float2 SnapUp( float2 p )
 		{
 			if (SnapToPixels)
 				return Container.InternSnapUp(p);
 			return p;
 		}
-		
+
 		protected float SnapUp( float p )
 		{
 			return SnapUp(float2(p)).X;
 		}
-		
+
 		protected float2 Snap( float2 p )
 		{
 			if (SnapToPixels)
 				return Container.InternSnap(p);
 			return p;
 		}
-		
+
 		protected float Snap( float p )
 		{
 			return Snap(float2(p)).X;
 		}
-		
+
 		static LayoutControl GetLayoutControl(Visual elm)
 		{
 			while(elm != null)
@@ -180,23 +180,23 @@ namespace Fuse.Layouts
 					return elm as LayoutControl;
 				elm = elm.Parent;
 			}
-			
+
 			return null;
 		}
-		
+
 		static void InvalidateLayout(Visual elm)
 		{
 			var p = GetLayoutControl(elm);
 			if (p != null)
 				p.InvalidateLayout();
 		}
-		
+
 		/**
 			Adjusts the alignment of an item inside the box (in parent-space).
-			
+
 			This can only be called once after the margin box of the `node` is first
 			arranged as it offsets that position.
-			
+
 			TODO: this probably doesn't support `Element.Anchor`
 		*/
 		internal static void AdjustAlignBox(Visual node, float2 sz, float4 box, Alignment align)
@@ -208,10 +208,10 @@ namespace Fuse.Layouts
 			var va = AlignmentHelpers.GetVerticalSimpleAlign(align);
 			if (va != Alignment.Default)
 				pos.Y = SimpleOff( sz.Y, box.YW, va);
-				
+
 			node.AdjustMarginBoxPosition( pos );
 		}
-		
+
 		static float SimpleOff(float sz, float2 range, SimpleAlignment align)
 		{
 			if (align == SimpleAlignment.Center)
@@ -221,14 +221,14 @@ namespace Fuse.Layouts
 			else
 				return range[0];
 		}
-		
+
 		[UXLineNumber]
 		/** @hide */
 		public int SourceLineNumber { get; set; }
 		[UXSourceFileName]
 		/** @hide */
 		public string SourceFileName { get; set; }
-		
+
 		ISourceLocation ISourceLocation.SourceNearest
 		{
 			get

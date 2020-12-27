@@ -5,7 +5,7 @@ using Uno.UX;
 namespace Fuse.Resources
 {
 	public class FileResource: FileSource
-	{	
+	{
 		FileSource _file;
 
 		[UXConstructor]

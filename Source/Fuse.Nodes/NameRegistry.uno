@@ -87,7 +87,7 @@ namespace Fuse
 			List<INameListener> list;
 			if (!_listeners.TryGetValue(name, out list))
 				return;
-				
+
 			list.Remove(listener);
 		}
 

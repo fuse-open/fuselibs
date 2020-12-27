@@ -21,7 +21,7 @@ namespace Fuse.Input.UX
 		/** Called when a @Visual loses input focus. */
 		public static void AddFocusLostHandler(Visual node, FocusLostHandler handler)
 		{
-			Focus.Lost.AddHandler(node, handler);	
+			Focus.Lost.AddHandler(node, handler);
 		}
 
 		[UXAttachedEventRemover("Focus.Lost")]

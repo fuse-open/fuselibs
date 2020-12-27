@@ -18,7 +18,7 @@ namespace Fuse.Scripting
 		public DependencyType Type;
 		public object Value;
 	}
-	
+
 	public partial class ScriptModule
 	{
 		string GetEffectiveCode()

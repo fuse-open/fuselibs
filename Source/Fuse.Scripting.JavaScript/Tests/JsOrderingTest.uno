@@ -18,29 +18,29 @@ namespace Fuse.Reactive.Test
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
 				root.StepFrameJS();
-				//there is no guarantee of initial order, so just reset 
+				//there is no guarantee of initial order, so just reset
 				p.order.ResetAction();
-				
+
 				p.Step1.Perform();
 				root.StepFrameJS();
 				Assert.AreEqual( "B=2,C=3", p.order.Action );
-				
+
 				p.order.ResetAction();
 				p.Step2.Perform();
 				root.StepFrameJS();
 				Assert.AreEqual( "C=4,A=5,B=6", p.order.Action );
 			}
 		}
-		
+
 		[Test]
 		public void Function()
-		{	
+		{
 			var p = new UX.JsOrdering.Function();
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
 				root.StepFrameJS();
 				p.order.ResetAction();
-				
+
 				p.Step1.Perform();
 				root.StepFrameJS();
 				Assert.AreEqual( "B=1,G=2,A=3", p.order.Action );
@@ -69,7 +69,7 @@ namespace FuseTest
 				AddAction( "A", value );
 			}
 		}
-		
+
 		string _b;
 		public string B
 		{
@@ -80,7 +80,7 @@ namespace FuseTest
 				AddAction( "B", value );
 			}
 		}
-		
+
 		string _c;
 		public string C
 		{
@@ -94,26 +94,26 @@ namespace FuseTest
 
 		string _action = null;
 		public string Action { get { return _action; } }
-		
+
 		void AddAction(string name, string value)
 		{
 			if (_action != null)
 				_action += ",";
 			_action += name + "=" + value;
 		}
-	
+
 		public void ResetAction()
 		{
 			_action = null;
 		}
-		
-		
+
+
 		static Ordering()
 		{
 			ScriptClass.Register(typeof(Ordering),
 				new ScriptMethod<Ordering>("go", go));
 		}
-		
+
 		static void go(Ordering o, object[] args)
 		{
 			o.AddAction( "G", Marshal.ToType<string>(args[0]));

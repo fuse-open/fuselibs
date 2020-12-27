@@ -8,7 +8,7 @@ namespace Fuse.Triggers.Actions
 	public class CancelInteractions : TriggerAction
 	{
 		public Visual Target { get; set; }
-		
+
 		protected override void Perform(Node target)
 		{
 			var t = Target ?? target.FindByType<Visual>();

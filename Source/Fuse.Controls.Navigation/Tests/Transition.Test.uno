@@ -72,7 +72,7 @@ namespace Fuse.Navigation.Test
 				Assert.AreEqual(0, TransitionGroup.TestMemoryCount );
 			}
 		}
-		
+
 		[Test]
 		//checks some basic with non-template pages and with Bypass mode
 		public void BasicNonTemplate()
@@ -85,7 +85,7 @@ namespace Fuse.Navigation.Test
 				Assert.AreEqual(0, TriggerProgress(p.one.t5));
 				Assert.AreEqual(0, TriggerProgress(p.two.t5));
 				Assert.AreEqual(1, TriggerProgress(p.two.t4));
-				
+
 				//was all in bypass, thus no counts
 				Assert.AreEqual(0, p.one.f4.PerformedCount);
 				Assert.AreEqual(0, p.one.b4.PerformedCount);
@@ -125,7 +125,7 @@ namespace Fuse.Navigation.Test
 				Assert.AreEqual(0, TransitionGroup.TestMemoryCount );
 			}
 		}
-		
+
 		[Test]
 		public void FrontBack()
 		{
@@ -153,7 +153,7 @@ namespace Fuse.Navigation.Test
 				Assert.AreEqual(2, TotalActionCount(p1));
 			}
 		}
-		
+
 		[Test]
 		public void InFrontBehind()
 		{
@@ -182,7 +182,7 @@ namespace Fuse.Navigation.Test
 			}
 		}
 
-		/* 
+		/*
 			Sums all FuseTest.CountAction counts of the child triggers. This simplifies tests to only checking what has
 			changed/is non-zero.
 		*/
@@ -192,9 +192,9 @@ namespace Fuse.Navigation.Test
 			for (int i=0; i < v.Children.Count; ++i)
 			{
 				var t = v.Children[i] as Trigger;
-				if (t == null)	
+				if (t == null)
 					continue;
-					
+
 				for (int j=0; j < t.Actions.Count; ++j)
 				{
 					var ta = t.Actions[j] as FuseTest.CountAction;
@@ -202,10 +202,10 @@ namespace Fuse.Navigation.Test
 						c += ta.PerformedCount;
 				}
 			}
-			
+
 			return c;
 		}
-		
+
 		[Test]
 		public void Release()
 		{
@@ -230,7 +230,7 @@ namespace Fuse.Navigation.Test
 				Assert.IsTrue(p.nav.Children.Contains(p1));
 			}
 		}
-		
+
 		[Test]
 		public void Interactive()
 		{
@@ -245,14 +245,14 @@ namespace Fuse.Navigation.Test
 				Assert.AreEqual(0f, TriggerProgress(p.one.T1), eps);
 				Assert.AreEqual(0f, TriggerProgress(p.two.T1), eps);
 				root.StepFrame(1); //stabilize
-				
+
 				root.PointerPress(float2(100,100));
 				root.PointerSlide(float2(100,100), float2(600+GestureHardCaptureSignificanceThreshold,100),200);
 				Assert.AreEqual(0f, TriggerProgress(p.one.T2), eps);
 				Assert.AreEqual(0f, TriggerProgress(p.two.T2), eps);
 				Assert.AreEqual(0.5f, TriggerProgress(p.one.T1), eps);
 				Assert.AreEqual(0.5f, TriggerProgress(p.two.T1), eps);
-				
+
 				root.PointerRelease(float2(600+GestureHardCaptureSignificanceThreshold,100));
 				root.StepFrame(5); //stabilize
 				Assert.AreEqual(0f, TriggerProgress(p.one.T2), eps);
@@ -261,7 +261,7 @@ namespace Fuse.Navigation.Test
 				Assert.AreEqual(0f, TriggerProgress(p.two.T1), eps);
 			}
 		}
-		
+
 		[Test]
 		//tests operation style matching
 		public void Style()
@@ -275,7 +275,7 @@ namespace Fuse.Navigation.Test
 				var b = (float)TriggerProgress(p.one.T1);
 				Assert.IsTrue( b < (2 * root.StepIncrement + _zeroTolerance) );
 				root.StepFrame(0.4f - b);
-				
+
 				Assert.AreEqual(0.4f, TriggerProgress(p.one.T1));
 				Assert.AreEqual(0f, TriggerProgress(p.one.T2));
 				Assert.AreEqual(0f, TriggerProgress(p.one.T3));
@@ -283,21 +283,21 @@ namespace Fuse.Navigation.Test
 				Assert.AreEqual(0f, TriggerProgress(p.two.T2));
 				Assert.AreEqual(0f, TriggerProgress(p.two.T3));
 				root.StepFrame(2); //stabilize
-				
-				
+
+
 				p.FlashOne.Perform();
 				root.StepFrameJS();
 				b = (float)TriggerProgress(p.two.T3);
 				Assert.IsTrue( b < (2 * root.StepIncrement + _zeroTolerance) );
 				root.StepFrame(0.4f - b);
-				
+
 				Assert.AreEqual(0f, TriggerProgress(p.one.T1));
 				Assert.AreEqual(0f, TriggerProgress(p.one.T2));
 				Assert.AreEqual(0.6f, TriggerProgress(p.one.T3));
 				Assert.AreEqual(0f, TriggerProgress(p.two.T1));
 				Assert.AreEqual(0f, TriggerProgress(p.two.T2));
 				Assert.AreEqual(0.4f, TriggerProgress(p.two.T3));
-				
+
 			}
 		}
 	}

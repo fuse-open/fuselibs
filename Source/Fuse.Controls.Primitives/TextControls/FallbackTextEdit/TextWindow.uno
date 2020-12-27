@@ -50,7 +50,7 @@ namespace Fuse.Controls.FallbackTextEdit
 
 		protected override void OnDraw(DrawContext dc)
 		{
-			_wrapInfo.TextRenderer.BeginRendering(_wrapInfo.FontSize, _wrapInfo.AbsoluteZoom, 
+			_wrapInfo.TextRenderer.BeginRendering(_wrapInfo.FontSize, _wrapInfo.AbsoluteZoom,
 				WorldTransform, ActualSize, _textColor, _maxTextLength);
 
 			float lineHeight = _wrapInfo.LineHeight * _wrapInfo.AbsoluteZoom;

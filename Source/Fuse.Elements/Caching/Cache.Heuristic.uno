@@ -17,7 +17,7 @@ namespace Fuse.Elements
 			Recti cachingRect;
 			if (!GetCachingRect(dc, out cachingRect))
 				return false;
-				
+
 			switch (_element.CachingMode)
 			{
 				case CachingMode.Never:

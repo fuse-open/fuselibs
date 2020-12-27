@@ -18,8 +18,8 @@ namespace Fuse
 		PropertyHandle _handle;
 		object _value;
 
-		public static PropertyHandle CreateHandle() 
-		{ 
+		public static PropertyHandle CreateHandle()
+		{
 			return new PropertyHandle();
 		}
 
@@ -37,7 +37,7 @@ namespace Fuse
 			val = null;
 			return false;
 		}
-		
+
 		public bool Has(PropertyHandle handle)
 		{
 			if (_handle == handle) return true;
@@ -56,7 +56,7 @@ namespace Fuse
 			{
 				_value = val;
 			}
-			else 
+			else
 			{
 				if (_next == null) _next = new Properties();
 				_next.Set(handle, val);
@@ -156,7 +156,7 @@ namespace Fuse
 		void Clear(PropertyHandle handle, object val, bool all)
 		{
 			if (_handle == null) return;
-		
+
 			var p = this;
 			var previous = (Properties)null;
 

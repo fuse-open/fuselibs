@@ -14,8 +14,8 @@ namespace Fuse.Controls
 		public float2 Minimum
 		{
 			get { return _minimum; }
-			set 
-			{ 
+			set
+			{
 				if (_minimum != value)
 				{
 					_minimum = value;
@@ -28,8 +28,8 @@ namespace Fuse.Controls
 		public float2 Maximum
 		{
 			get { return _maximum; }
-			set 
-			{ 
+			set
+			{
 				if (_maximum != value)
 				{
 					_maximum = value;
@@ -64,9 +64,9 @@ namespace Fuse.Controls
 			get { return ValueToRelative(Value); }
 			set { Value = ValueFromRelative(value); }
 		}
-		
+
 		float2 _userStep;
-		/** 	
+		/**
 			Quantizes user selection to this step. This is enforced by the behavior and not by this
 			control. The control can still have non-quantized values (allowing animation).
 		*/
@@ -75,7 +75,7 @@ namespace Fuse.Controls
 			get { return _userStep; }
 			set { _userStep = value; }
 		}
-		
+
 		public float2 RelativeUserStep
 		{
 			get { return ValueToRelative(UserStep); }
@@ -85,7 +85,7 @@ namespace Fuse.Controls
 		public event ValueChangedHandler<float2> ValueChanged;
 		public event ValueChangedHandler<float> ValueXChanged;
 		public event ValueChangedHandler<float> ValueYChanged;
-		
+
 		void OnRangeChanged()
 		{
 		}
@@ -108,18 +108,18 @@ namespace Fuse.Controls
 		{
 			return relative * (Maximum - Minimum) + Minimum;
 		}
-		
+
 		internal float2 ValueToRelative(float2 value)
 		{
 			var range = Maximum - Minimum;
 			const float zeroTolerance = 1e-05f;
-			var x = Math.Abs(range.X) > zeroTolerance ? value.X/range.X : 
+			var x = Math.Abs(range.X) > zeroTolerance ? value.X/range.X :
 				(value.X >= Maximum.X ? 1 : 0);
 			var y = Math.Abs(range.Y) > zeroTolerance ? value.Y/range.Y :
 				(value.Y >= Maximum.Y ? 1 : 0);
 			return float2(x,y);
 		}
-		
+
 		[UXOriginSetter("SetValueX")]
 		public float ValueX
 		{
@@ -131,7 +131,7 @@ namespace Fuse.Controls
 		{
 			SetValue(float2(value,Value.Y),origin);
 		}
-		
+
 		[UXOriginSetter("SetValueY")]
 		public float ValueY
 		{

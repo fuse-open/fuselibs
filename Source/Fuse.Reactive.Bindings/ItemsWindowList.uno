@@ -16,34 +16,34 @@ namespace Fuse.Reactive
 		{
 			void SetValid();
 			void SetFailed(string message);
-			
+
 			//All changes in WindowItems will be reflected through these calls
 			void AddedWindowItem(int windowIndex, T windowItem);
 			void RemovedWindowItem(T windowItem);
 			void OnCurrentDataChanged(T windowItem, object oldData);
 		}
-		
+
 		[WeakReference]
 		IListener _listener;
-		
-		public ItemsWindowList( IListener listener ) 
+
+		public ItemsWindowList( IListener listener )
 		{
 			_listener = listener;
 		}
-		
+
 		public InstanceIdentity Identity = InstanceIdentity.None;
-		
+
 		string _identityKey = null;
 		public string IdentityKey
 		{
 			get { return _identityKey; }
-			set 
-			{ 
-				_identityKey = value; 
+			set
+			{
+				_identityKey = value;
 				Identity = InstanceIdentity.Key;
 			}
 		}
-		
+
 		object _items;
 		public object GetItems() { return _items; }
 		/** @hide */
@@ -63,15 +63,15 @@ namespace Fuse.Reactive
 
 		void ItemsChanged()
 		{
-			DisposeItemsSubscription();	
+			DisposeItemsSubscription();
 
-			Repopulate(); 
+			Repopulate();
 
 			var obs = _items as IObservableArray;
 			if (obs != null)
 				_itemsSubscription = obs.Subscribe(this);
 		}
-		
+
 		IDisposable _itemsSubscription;
 		void DisposeItemsSubscription()
 		{
@@ -81,7 +81,7 @@ namespace Fuse.Reactive
 				_itemsSubscription = null;
 			}
 		}
-		
+
 		object GetData(int dataIndex)
 		{
 			var e = _items as object[];
@@ -92,34 +92,34 @@ namespace Fuse.Reactive
 
 			return null;
 		}
-		
+
 		bool _isRooted = false;
 		public void Rooted()
 		{
 			_isRooted = true;
 			ItemsChanged();
 		}
-		
+
 		public void Unrooted()
 		{
 			RemoveAll();
 			DisposeItemsSubscription();
 			_isRooted = false;
 		}
-		
+
 		void Repopulate()
 		{
 			RemoveAll();
 
 			var e = _items as object[];
-			if (e != null) 
+			if (e != null)
 			{
 				for (int i = 0; i < e.Length; i++) InsertedDataAt(i);
 			}
 			else
 			{
 				var a = _items as IArray;
-				if (a != null) 
+				if (a != null)
 				{
 					for (int i = 0; i < a.Length; i++) InsertedDataAt(i);
 				}
@@ -139,9 +139,9 @@ namespace Fuse.Reactive
 
 			return null;
 		}
-		
-		/** 
-			Obtain the ID of an item based on the data. This uses the Identity properties. 
+
+		/**
+			Obtain the ID of an item based on the data. This uses the Identity properties.
 			@return id if found, null if not found or no matching ids configured
 		*/
 		object GetDataId(object data)
@@ -150,14 +150,14 @@ namespace Fuse.Reactive
 			{
 				case InstanceIdentity.None:
 					return null;
-					
+
 				case InstanceIdentity.Key:
 					return GetDataKey(data, IdentityKey);
-					
+
 				case InstanceIdentity.Object:
 					return data;
 			}
-			
+
 			return null;
 		}
 
@@ -171,10 +171,10 @@ namespace Fuse.Reactive
 				Fuse.Diagnostics.InternalError( "Invalid item in WindowList", this );
 				return;
 			}
-			
+
 			_listener.OnCurrentDataChanged( wi, oldData );
 		}
-		
+
 		protected override T CreateWindowItem( int dataIndex )
 		{
 			var data = GetData(dataIndex);
@@ -191,22 +191,22 @@ namespace Fuse.Reactive
 			else
 				_listener.SetValid();
 		}
-		
-		protected override void OnRemovedWindowItem(T wi) 
-		{ 
+
+		protected override void OnRemovedWindowItem(T wi)
+		{
 			if (_isRooted) _listener.RemovedWindowItem(wi);
 		}
-		
+
 		protected override void OnAddedWindowItem(int windowIndex, T wi)
 		{
 			if (_isRooted) _listener.AddedWindowItem(windowIndex, wi);
 		}
-		
+
 		public override int GetDataCount()
 		{
 			//optimization to avoid needless logic in base class prior to rooting
 			if (!_isRooted) return 0;
-			
+
 			var e = _items as object[];
 			if (e != null) return e.Length;
 
@@ -215,26 +215,26 @@ namespace Fuse.Reactive
 
 			return 0;
 		}
-		
-		
+
+
 		bool TryUpdateAt(int dataIndex, object newData)
 		{
 			if (Identity == InstanceIdentity.None)
 				return false;
-			
+
 			var windowIndex = DataToWindowIndex(dataIndex);
 			if (windowIndex < 0 || windowIndex >= WindowItemCount)
 				return false;
-				
+
 			var wi = GetWindowItem(windowIndex);
 			var newId = GetDataId(newData);
 			if (wi.Id == null || !Object.Equals(wi.Id, newId))
 				return false;
-				
+
 			wi.Data = newData;
 			return true;
 		}
-		
+
 		void PatchTo(IArray values)
 		{
 			//collect new ids in the window
@@ -242,11 +242,11 @@ namespace Fuse.Reactive
 			var limit = CalcOffsetLimitCountOf(values.Length);
 			for (int i=0; i < limit; ++i)
 				newIds.Add( GetDataId(values[i+Offset]) );
-				
+
 			var curIds = new List<object>();
 			for (int i=0; i < WindowItemCount; ++i)
 				curIds.Add( GetWindowItem(i).Id);
-			
+
 			var ops = PatchList.Patch( curIds, newIds, PatchAlgorithm.Simple, null );
 			for (int i=0; i < ops.Count; ++i)
 			{
@@ -269,25 +269,25 @@ namespace Fuse.Reactive
 				}
 			}
 		}
-		
-		
+
+
 		void IObserver.OnSet(object newValue)
 		{
 			RemoveAll();
 			TrimAndPad();
 		}
-		
+
 		void IObserver.OnFailed(string message)
 		{
 			RemoveAll();
 			SetError(message);
 		}
-		
+
 		void IObserver.OnAdd(object addedValue)
 		{
 			TrimAndPad();
 		}
-		
+
 		void IObserver.OnRemoveAt(int index)
 		{
 			RemovedDataAt(index);

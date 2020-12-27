@@ -12,7 +12,7 @@ namespace Fuse.Navigation
 		/** Does nothing. */
 		None
 	}
-	
+
 	/** @deprecated */
 	public enum RouterGoBackBehavior
 	{
@@ -31,7 +31,7 @@ namespace Fuse.Navigation
 		PrepareGoto,
 		FinishPrepared,
 	}
-	
+
 	/** Manages routing and navigation history for part or all of a Fuse app.
 
 		> Note: It is recommended that you first read the [Navigation guide](/docs/navigation/navigation) for a full overview of Fuse's navigation system.
@@ -79,12 +79,12 @@ namespace Fuse.Navigation
 					<Button Text="Second page" Padding="20" Clicked="{gotoSecond}" />
 				</Grid>
 			</DockPanel>
-			
-			
+
+
 		## Page Navigation Order
-		
+
 		The history of the router follows the standard history ordering, newest routes are at the front of the history, older routes at the back.
-		
+
 		The router however does not decide on the navigation order of the pages in the individual controls, as described in [Navigation Order](articles:navigation/navigationorder.md). This is controlled by each outlet being used.
 	*/
 	public partial class Router : Node, IBaseNavigation, IPreviewStateSaver
@@ -109,14 +109,14 @@ namespace Fuse.Navigation
 					}
 					n = n.Parent;
 				}
-				
+
 				if (root)
 				{
 					var ps = PreviewState.Find( this );
 					if (ps != null)
 					{
 						ps.AddSaver(this);
-						
+
 						var psd = ps.Current;
 						if (psd != null)
 						{
@@ -134,18 +134,18 @@ namespace Fuse.Navigation
 			var ps = PreviewState.Find( this);
 			if (ps != null)
 				ps.RemoveSaver(this);
-				
+
 			Fuse.Input.Keyboard.KeyPressed.RemoveGlobalHandler(OnKeyPressed);
-			
+
 			base.OnUnrooted();
 		}
-		
+
 		const string _previewStateId = "router";
 		void IPreviewStateSaver.Save( PreviewStateData psd )
 		{
 			psd.Set( _previewStateId, _rootPage );
 		}
-		
+
 		bool _isMasterRouter = true;
 		/**
 			If `true` indicates this is the primary router of the application -- has implications for integration
@@ -166,7 +166,7 @@ namespace Fuse.Navigation
 		{
 			if (args.Key == Uno.Platform.Key.BackButton)
 			{
-				if (BackButtonAction == BackButtonAction.GoBack) 
+				if (BackButtonAction == BackButtonAction.GoBack)
 				{
 					if (!GoBack())
 					{
@@ -182,7 +182,7 @@ namespace Fuse.Navigation
 			The default is `GoBack`. If your app has multiple routers or you want
 			to handle back button logic manually, you can set this to `None`.
 		*/
-		public BackButtonAction BackButtonAction 
+		public BackButtonAction BackButtonAction
 		{
 			get { return _backButtonAction; }
 			set { _backButtonAction = value; }
@@ -192,12 +192,12 @@ namespace Fuse.Navigation
 		{
 			return GetHistoryRoute(0).ToRoute();
 		}
-		
+
 		RouterPageRoute GetCurrentRouterPageRoute()
 		{
 			return GetHistoryRoute(0);
 		}
-		
+
 		/**	Clears the history and navigates to the specified route. */
 		public void Goto(Route route, string operationStyle = "")
 		{
@@ -215,7 +215,7 @@ namespace Fuse.Navigation
 		{
 			Modify( how, RouterPageRoute.Convert(route), mode, operationStyle );
 		}
-		
+
 		internal void Modify( ModifyRouteHow how, RouterPageRoute route, NavigationGotoMode mode,
 			string operationStyle )
 		{
@@ -224,23 +224,23 @@ namespace Fuse.Navigation
 				case ModifyRouteHow.Goto:
 					SetRoute(route, mode, RoutingOperation.Goto, operationStyle);
 					break;
-					
+
 				case ModifyRouteHow.Push:
 					SetRoute(route, mode, RoutingOperation.Push, operationStyle);
 					break;
-					
+
 				case ModifyRouteHow.Replace:
 					SetRoute(route, mode, RoutingOperation.Replace, operationStyle);
 					break;
-					
+
 				case ModifyRouteHow.GoBack:
 					Pop();
 					break;
-					
+
 				case ModifyRouteHow.PrepareBack:
 					if (route != null)
 						Fuse.Diagnostics.UserWarning( "PrepareBack does not support an explicit route", this );
-					
+
 					var popRoute = GetHistoryRoute(1);
 					if (popRoute == null)
 					{
@@ -250,52 +250,52 @@ namespace Fuse.Navigation
 
 					PrepareRoute(popRoute, RoutingOperation.Pop, operationStyle);
 					break;
-					
+
 				case ModifyRouteHow.PreparePush:
 					PrepareRoute(route, RoutingOperation.Push, operationStyle);
 					break;
-					
+
 				case ModifyRouteHow.PrepareGoto:
 					PrepareRoute(route, RoutingOperation.Goto, operationStyle);
 					break;
-					
+
 				case ModifyRouteHow.FinishPrepared:
 					FinishPrepared();
 					break;
 			}
-			
+
 		}
-		
+
 		internal Dictionary<string,RouterPageRoute> Bookmarks = new Dictionary<string,RouterPageRoute>();
-		
-		
+
+
 		RouterGoBackBehavior _goBackBehavior = RouterGoBackBehavior.GoBack;
-		/** 
-			@deprecated Exists only to get back deprecated GoUp behavior 2018-03-14 
+		/**
+			@deprecated Exists only to get back deprecated GoUp behavior 2018-03-14
 			@advanced
 		*/
 		public RouterGoBackBehavior GoBackBehavior
 		{
 			get { return _goBackBehavior; }
-			set 
-			{ 
-				_goBackBehavior = value; 
+			set
+			{
+				_goBackBehavior = value;
 				if (value == RouterGoBackBehavior.GoBackAndUp)
 					Fuse.Diagnostics.Deprecated( "Up behavior is deprecated as it isn't well defined.", this );
 			}
 		}
-		
+
 		/** Goes back to the previous page in the navigation history, or up one level in the route if the history is empty.
-			
+
 			If the navigation history is nonempty, this pops the previous item from the history and makes
-			that the current route. 
-			
+			that the current route.
+
 			If the navigation history is empty, this method goes to a route one level above the current
-			route. If the current route is already a top level route, this method does nothing. 
+			route. If the current route is already a top level route, this method does nothing.
 		*/
 		public bool GoBack()
 		{
-			if (CanGoBack) 
+			if (CanGoBack)
 			{
 				Pop();
 				return true;
@@ -304,7 +304,7 @@ namespace Fuse.Navigation
 			{
 				return GoUp();
 			}
-			
+
 			return false;
 		}
 		public void IBaseNavigation.GoBack() { GoBack(); }
@@ -317,20 +317,20 @@ namespace Fuse.Navigation
 				return GetHistoryRoute(1) != null;
 			}
 		}
-		
+
 		bool GoUp()
 		{
 			var cur = GetCurrentRouterPageRoute();
-			if (cur == null) 
+			if (cur == null)
 				return false;
-				
+
 			var up = cur.Up();
-			if (up != cur) 
+			if (up != cur)
 			{
 				SetRoute(up, NavigationGotoMode.Transition, RoutingOperation.Pop, "");
 				return true;
 			}
-			
+
 			return false;
 		}
 
@@ -359,7 +359,7 @@ namespace Fuse.Navigation
 			_prepareProgress = 0;
 			_prepareOperationStyle = operationStyle;
 		}
-		
+
 		void FinishPrepared()
 		{
 			if (_prepareOutlet == null)
@@ -368,20 +368,20 @@ namespace Fuse.Navigation
 			SetRoute(_prepareNext, NavigationGotoMode.Transition, _prepareOperation, _prepareOperationStyle);
 			ClearPrepared();
 		}
-		
+
 		void ClearPrepared()
 		{
 			_prepareOutlet = null;
 			_prepareCurrent = null;
 			_prepareNext = null;
 		}
-		
+
 		public double PrepareProgress
 		{
 			get { return _prepareProgress; }
 			set { SetPrepareProgress(value); }
 		}
-		
+
 		void SetPrepareProgress(double value)
 		{
 			if (_prepareCurrent == null || _prepareNext == null	 || _prepareOutlet == null)
@@ -390,17 +390,17 @@ namespace Fuse.Navigation
 			int depth = GetOutletDepth(_prepareOutlet);
 			var pc = _prepareCurrent.SubDepth(depth);
 			var pn = _prepareNext.SubDepth(depth);
-			
+
 			if (pc == null || pn == null)
 			{
 				Fuse.Diagnostics.InternalError( "Invalid outlet depth in prepare progress", this );
 				return;
 			}
-			
+
 			_prepareProgress = value;
 			_prepareOutlet.PartialPrepareGoto(_prepareProgress);
 		}
-		
+
 		public void CancelNavigation()
 		{
 			if (_prepareOutlet != null)
@@ -415,18 +415,18 @@ namespace Fuse.Navigation
 				Fuse.Diagnostics.InternalError( "No active navigation that can be cancelled" );
 			}
 		}
-		
-		RouterPageRoute SetRoute(RouterPageRoute r, NavigationGotoMode gotoMode, RoutingOperation operation, 
+
+		RouterPageRoute SetRoute(RouterPageRoute r, NavigationGotoMode gotoMode, RoutingOperation operation,
 			string operationStyle, bool userRequest = true)
 		{
 			if (r == null)
 				throw new Exception( "Route cannot be null" );
-				
+
 			//prepared routes are cleared when the actual route is changed
 			ClearPrepared();
-			
+
 			var current = GetCurrentRouterPageRoute();
-			
+
 			IRouterOutlet ignore;
 			var outR = SetRouteImpl(Parent, _rootPage, r, gotoMode, operation, operationStyle, out ignore);
 			if (outR == null)
@@ -436,22 +436,22 @@ namespace Fuse.Navigation
 					Fuse.Diagnostics.UserError( msg, this );
 				else
 					Fuse.Diagnostics.InternalError( msg, this );
-					
+
 				//try to cleanup on error and go to previous state
 				SetRouteImpl(Parent, _rootPage, current, NavigationGotoMode.Bypass, RoutingOperation.Goto,
 					"", out ignore);
 			}
-			
+
 			OnHistoryChanged();
 			return outR;
 		}
-		
+
 		/* This has become an unfortunate monstrosity of logic. All the standard use-cases are covered by tests but the overall logic is a bit confusing. It may not produce the desired/expected history in non-standard uses.  It should not however produce a garbage state: the current route will always be valid. A proper cleanup would require passing a separate pageOperation, distinct from operation.  Or it may be cleaner to take a list of RouterPage instead of a Route, and determine the history/pages changes separately. */
-		RouterPageRoute SetRouteImpl(Visual root, RouterPage rootPage, RouterPageRoute r, 
-			NavigationGotoMode gotoMode, 
+		RouterPageRoute SetRouteImpl(Visual root, RouterPage rootPage, RouterPageRoute r,
+			NavigationGotoMode gotoMode,
 			RoutingOperation operation, string operationStyle, out IRouterOutlet majorChange,
 			bool canReuse = true)
-		{	
+		{
 			var pages = rootPage.ChildRouterPages;
 			majorChange = null;
 			var outlet = FindOutletDown(root);
@@ -460,19 +460,19 @@ namespace Fuse.Navigation
 				Fuse.Diagnostics.InternalError( "No router outlet found to handle route: " + r, this );
 				return null;
 			}
-			
+
 			RouterPage page = r.RouterPage;
 			Visual pageVisual = null;
 			var didTransition = outlet.CompareCurrent(page, out pageVisual);
 			if (didTransition == RoutingResult.Invalid)
 				return null;
-			
+
 			//pushing/goto up to the leaf route can reuse existing matching pages
 			bool leafOp = r.SubRoute == null && operation != RoutingOperation.Goto;
 			bool reusePage = canReuse && didTransition == RoutingResult.NoChange && !leafOp;
 			if (reusePage)
 				page = outlet.GetCurrent(out pageVisual);
-			
+
 			if (gotoMode != NavigationGotoMode.Prepare)
 			{
 				switch (operation)
@@ -481,7 +481,7 @@ namespace Fuse.Navigation
 						pages.Clear();
 						pages.Add(page);
 						break;
-						
+
 					case RoutingOperation.Push:
 						if (!canReuse)
 						{
@@ -491,7 +491,7 @@ namespace Fuse.Navigation
 						else if (!reusePage)
 							pages.Add(page);
 						break;
-						
+
 					case RoutingOperation.Replace:
 						if (!reusePage)
 						{
@@ -501,7 +501,7 @@ namespace Fuse.Navigation
 								pages.Add(page);
 						}
 						break;
-						
+
 					case RoutingOperation.Pop:
 						if (canReuse && !reusePage)
 						{
@@ -511,15 +511,15 @@ namespace Fuse.Navigation
 						break;
 				}
 			}
-			
-			
+
+
 			if (didTransition != RoutingResult.NoChange)
 			{
 				didTransition = outlet.Goto(page, gotoMode, operation, operationStyle, out pageVisual);
 				if (didTransition == RoutingResult.Invalid)
 					return null;
 			}
-			
+
 			bool trackMajorChange = true;
 			if (didTransition == RoutingResult.Change)
 			{
@@ -536,9 +536,9 @@ namespace Fuse.Navigation
 					Fuse.Diagnostics.InternalError( "SubRoute requested but outlet has no active path: " + r, this );
 					return null;
 				}
-				
+
 				IRouterOutlet subMajorChange;
-				outSubRoute = SetRouteImpl(pageVisual, page, r.SubRoute, gotoMode, operation, 
+				outSubRoute = SetRouteImpl(pageVisual, page, r.SubRoute, gotoMode, operation,
 					operationStyle, out subMajorChange, reusePage );
 				if (trackMajorChange)
 					majorChange = subMajorChange;
@@ -549,35 +549,35 @@ namespace Fuse.Navigation
 			{
 				outSubRoute = GetCurrent(pageVisual);
 			}
-			
+
 			return new RouterPageRoute( page, outSubRoute);
 		}
-		
+
 		RouterPageRoute GetCurrent(Visual from, IRouterOutlet to = null)
 		{
 			if (from == null)
 				return null;
-				
+
 			var outlet = FindOutletDown(from);
 			if (outlet == null || outlet == to)
 				return null;
-				
+
 			Visual pageVisual;
 			var page = outlet.GetCurrent(out pageVisual);
 			return new RouterPageRoute( page, GetCurrent(pageVisual, to));
 		}
-		
+
 		RouterPageRoute GetRouteUpToRouter(Node from)
 		{
 			RouterPageRoute route = null;
-			
+
 			while (from != null)
 			{
 				Node page;
 				var outlet = FindOutletUp(from, out page);
 				if (outlet == null)
 					break;
-					
+
 				var v = page as Visual;
 				var pd = v != null ? PageData.Get(v) : null;
 				RouterPage opage = null;
@@ -587,13 +587,13 @@ namespace Fuse.Navigation
 				else
 					opage = pd.RouterPage;
 				route = new RouterPageRoute( opage, route );
-				
+
 				from = (outlet as Node).Parent;
 			}
-			
+
 			return route;
 		}
-		
+
 		/* Find the nearest ancestor that is a Page in a RouterOutlet, but do not cross a Router. */
 		static internal Visual FindRouterOutletPage(Node from)
 		{
@@ -609,13 +609,13 @@ namespace Fuse.Navigation
 					if (v != null) return v;
 					Fuse.Diagnostics.InternalError( "Unexpected request for RouterOutlet page", from );
 				}
-				
+
 				from = from.Parent;
 			}
-			
+
 			return null;
 		}
-		
+
 		int GetOutletDepth(IRouterOutlet outlet)
 		{
 			int c=0;
@@ -627,15 +627,15 @@ namespace Fuse.Navigation
 				if (n is IRouterOutlet)
 					c++;
 			}
-			
+
 			return c;
 			}
-		
+
 		IRouterOutlet FindOutletDown(Node active)
 		{
 			var ro = AsRouterOutlet(active);
 			if (ro != null) return ro;
-			
+
 			var v = active as Visual;
 			if (v != null)
 			{
@@ -643,7 +643,7 @@ namespace Fuse.Navigation
 				//must check before since it could be anywhere in the children
 				if (HasOtherRouter(v))
 					return null;
-				
+
 				for (var ue = v.FirstChild<Node>(); ue != null; ue = ue.NextSibling<Node>())
 				{
 					ro = FindOutletDown(ue);
@@ -652,20 +652,20 @@ namespace Fuse.Navigation
 			}
 			return null;
 		}
-		
+
 		static IRouterOutlet AsRouterOutlet(Node n)
 		{
 			var ro = n as IRouterOutlet;
 			if (ro != null && ro.Type.HasFlag(OutletType.Outlet) ) return ro;
 			return null;
 		}
-		
+
 		IRouterOutlet FindOutletUp(Node active)
 		{
 			Node ignore;
 			return FindOutletUp(active, out ignore);
 		}
-		
+
 		IRouterOutlet FindOutletUp(Node active, out Node page)
 		{
 			page = active;
@@ -673,50 +673,50 @@ namespace Fuse.Navigation
 			{
 				var ro = AsRouterOutlet(active);
 				if (ro != null) return ro;
-			
+
 				//prevent crossing bounds
 				var v = active as Visual;
 				if (v != null && HasRouter(v))
 					return null;
-					
+
 				page = active;
 				active = active.Parent;
 			}
 			return null;
 		}
-		
+
 		internal Route GetRelativeRoute(Node from, Route rel)
 		{
 			return GetRelativeRoute( from, RouterPageRoute.Convert(rel) ).ToRoute();
 		}
-		
+
 		internal RouterPageRoute GetRelativeRoute(Node from, RouterPageRoute rel)
-		{	
+		{
 			if (!IsRootingCompleted || !from.IsRootingCompleted)
 			{
 				Fuse.Diagnostics.UserError( "Cannot calculate relative node if not rooted", this );
 				return null;
 			}
-				
+
 			var outlet = FindOutletUp(from);
 			if (outlet == null)
 			{
 				Diagnostics.UserError( "Did not find an outlet relative to the provided Node", this );
 				return null;
 			}
-			
+
 			var current = GetRouteUpToRouter( (outlet as Node).Parent );
 			//this might be a top-level RouterOutlet so check for a null
 			var route = current == null ? rel : current.Append( rel );
 			return route;
 		}
-		
+
 		bool HasOtherRouter(Visual n)
 		{
 			var r = n.FirstChild<Router>();
 			return r != null && r != this;
 		}
-		
+
 		static bool HasRouter(Node n)
 		{
 			var v = n as Visual;
@@ -724,17 +724,17 @@ namespace Fuse.Navigation
 				return false;
 			return v.FirstChild<Router>() != null;
 		}
-		
+
 		void IBaseNavigation.GoForward() { }
 		bool IBaseNavigation.CanGoForward { get { return false; } }
-		
+
 		public event HistoryChangedHandler IBaseNavigation.HistoryChanged;
 		internal void OnHistoryChanged()
 		{
 			if (HistoryChanged != null)
 				HistoryChanged(this);
 		}
-		
+
 		internal static Router TryFindRouter(Node n)
 		{
 			var p = n;
@@ -747,20 +747,20 @@ namespace Fuse.Navigation
 					if (r != null)
 						return r;
 				}
-				
+
 				p = p.Parent;
 			}
-			
+
 			return null;
 		}
-		
+
 		RouterPage _rootPage = RouterPage.CreateDefault();
 		/* The root of the navigation hierachy. */
 		internal RouterPage RootPage
 		{
 			get { return _rootPage; }
 		}
-		
+
 		/* Get a Route from the history stack, where 0 is the current route, -1 the previous, etc. */
 		internal RouterPageRoute GetHistoryRoute( int at )
 		{
@@ -769,28 +769,28 @@ namespace Fuse.Navigation
 			EnumerateHistory( gha.HistoryAction, list, _rootPage );
 			return gha.Result;
 		}
-		
+
 		class GetHistoryAt
 		{
 			public int At;
-			
+
 			public RouterPageRoute Result;
-			
+
 			public bool HistoryAction( List<RouterPage> stack )
 			{
 				RouterPageRoute r = null;
 				for (int i=stack.Count-1; i>=0; --i)
 					r = new RouterPageRoute( stack[i], r );
-		
+
 				if (At == 0)
 					Result = r;
-					
+
 				At--;
 				return At >= 0;
 			}
 		}
-		
-		internal int TestHistoryCount 
+
+		internal int TestHistoryCount
 		{
 			get
 			{
@@ -813,17 +813,17 @@ namespace Fuse.Navigation
 		}
 
 		delegate bool HistoryAction( List<RouterPage> stack );
-		
+
 		bool EnumerateHistory( HistoryAction action, List<RouterPage> stack, RouterPage rp )
 		{
 			if (rp == null)
 				return true;
-			
+
 			var cp = rp.ChildRouterPages;
 			if (cp == null || cp.Count == 0)
 				return action(stack);
-			
-			for (int i= cp.Count -1; i >= 0; --i) 
+
+			for (int i= cp.Count -1; i >= 0; --i)
 			{
 				var childPage = cp[i];
 				stack.Add( childPage );
@@ -832,33 +832,33 @@ namespace Fuse.Navigation
 				if (!q)
 					return false;
 			}
-			
+
 			return true;
 		}
 
-		/* An invaluable tool for debugging. */		
+		/* An invaluable tool for debugging. */
 		internal string TestDumpHistory()
 		{
 			return "*\n" + TestDumpHistory(_rootPage, "");
 		}
-		
+
 		string TestDumpHistory(RouterPage rp, string indent )
 		{
 			if (rp == null)
 				return "";
-				
+
 			var cp = rp.ChildRouterPages;
 			string ret = indent + rp.Path + " @" + rp.GetHashCode() + "\n";
-			
+
 			if (cp == null)
 				return ret;
-				
+
 			for (int i=cp.Count - 1; i >= 0; --i)
 			{
 				var childPage = cp[i];
 				ret += TestDumpHistory( childPage, indent + "    " );
 			}
-			
+
 			return ret;
 		}
 	}

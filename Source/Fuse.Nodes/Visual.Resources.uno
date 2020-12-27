@@ -33,14 +33,14 @@ namespace Fuse
 			{
 				var list = (RootableList<Resource>)Resources;
 				list.Subscribe(OnResourceChanged,OnResourceChanged);
-				
+
 				//TODO: it feels as though this shouldn't be needed during rooting, but there's one
 				//test that somehow exhibits the need for it.
 				for (int i=0; i < list.Count; ++i)
 					OnResourceChanged(list[i]);
 			}
 		}
-		
+
 		void UnrootResources()
 		{
 			if (HasResources)
@@ -49,7 +49,7 @@ namespace Fuse
 				list.Unsubscribe();
 			}
 		}
-		
+
 		public void SetResource(string key, object value)
 		{
 			var resources = Resources;
@@ -63,10 +63,10 @@ namespace Fuse
 					break;
 				}
 			}
-			
+
 			resources.Add( new Resource(key, value) );
 		}
-		
+
 		public override bool TryGetResource(string key, Predicate<object> acceptor, out object resource)
 		{
 			if (HasResources)
@@ -91,9 +91,9 @@ namespace Fuse
 
 		bool HasResources
 		{
-			get { return HasBit(VisualBits.Resources); }	
+			get { return HasBit(VisualBits.Resources); }
 		}
-		
+
 		void OnResourceChanged(Resource res)
 		{
 			Fuse.Resources.ResourceRegistry.NotifyResourceChanged(res.Key);

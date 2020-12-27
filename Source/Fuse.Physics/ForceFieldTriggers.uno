@@ -126,7 +126,7 @@ namespace Fuse.Physics
 
 	/**
 		@mount Physics
-		
+
 		Animates a draggable element depending on how close it is to a point attractor
 
 		The animation will animate from 0(outside the forcefield radius), to 1(at the center of the forcefield), unless `From` and `To` are used to specify a custom range. This is the same as using a `RangeAdapter`.
@@ -173,7 +173,7 @@ namespace Fuse.Physics
 		internal override void SetForce(Body body, float force)
 		{
 			var f = Math.Clamp((force - From) / (To-From), 0, 1);
-			Seek(f, Fuse.Animations.AnimationVariant.Forward);	
+			Seek(f, Fuse.Animations.AnimationVariant.Forward);
 		}
 	}
 }

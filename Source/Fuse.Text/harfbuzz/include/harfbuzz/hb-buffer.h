@@ -44,7 +44,7 @@ HB_BEGIN_DECLS
  * hb_glyph_info_t:
  * @codepoint: either a Unicode code point (before shaping) or a glyph index
  *             (after shaping).
- * @mask: 
+ * @mask:
  * @cluster: the index of the character in the original text that corresponds
  *           to this #hb_glyph_info_t, or whatever the client passes to
  *           hb_buffer_add(). More than one #hb_glyph_info_t can have the same

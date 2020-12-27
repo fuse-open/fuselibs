@@ -102,7 +102,7 @@ This is very useful when binding to arbitrary data sources such as those returne
 
 ### Two-way binding (default)
 
-By default, data bindings are *two-way* when possible. This means if the property that emits changed events changes by some other means 
+By default, data bindings are *two-way* when possible. This means if the property that emits changed events changes by some other means
 than the data binding, such as user input or animation, the binding object will write the new value back to the source if it is an `Observable`.
 
 	<TextInput Value="{text}" />

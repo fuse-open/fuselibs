@@ -13,12 +13,12 @@ namespace Fuse.Triggers
 				new ScriptMethod<Completed>("reset", reset)
 			);
 		}
-		
+
 		/**
 			Resets the `Completed` trigger allowing it to trigger again.
-			
+
 			This can be useful when you modify many variables that are bound to the UX. You can reset an existing `Completed` trigger, allowing it to pulse again once the results of all those new variables have been reflected in the UI.
-			
+
 			@scriptmethod reset()
 		*/
 		static void reset(Completed cp)

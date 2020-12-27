@@ -16,7 +16,7 @@ namespace Fuse.Motion.Simulation
 			a.EnergyEps = 0.05f;
 			return a;
 		}
-		
+
 		static public ElasticForce<T> CreateRadians()
 		{
 			var a = new ElasticForce<T>(0.01f);
@@ -27,7 +27,7 @@ namespace Fuse.Motion.Simulation
 			a.MaxSpeed = 2*Math.PIf;
 			return a;
 		}
-		
+
 		static public ElasticForce<T> CreateNormalized()
 		{
 			var a = new ElasticForce<T>(0.0001f);
@@ -38,7 +38,7 @@ namespace Fuse.Motion.Simulation
 			a.MaxSpeed = 1.0f;
 			return a;
 		}
-		
+
 		static public ElasticForce<T> CreateUnit( MotionUnit unit )
 		{
 			switch(unit)
@@ -49,29 +49,29 @@ namespace Fuse.Motion.Simulation
 			}
 			throw new Exception( "Unsupported unit type: " +unit );
 		}
-		
+
 		float _scale;
 		const float _zeroTolerance = 1e-05f;
 		public ElasticForce( float scale = _zeroTolerance )
 		{
 			_scale = scale;
 		}
-		
+
 		public bool IsLocked
 		{
-			get; 
+			get;
 			set;
 		}
 
-		public T Position 
-		{ 
-			get; 
-			set; 
+		public T Position
+		{
+			get;
+			set;
 		}
 
 		T _velocity;
-		public T Velocity 
-		{ 
+		public T Velocity
+		{
 			get { return _velocity; }
 			set
 			{
@@ -118,11 +118,11 @@ namespace Fuse.Motion.Simulation
 			get { return _energyEps; }
 			set { _energyEps = value;}
 		}
-		
+
 		float _maxSpeed;
 		bool _hasMaxSpeed;
 		public float MaxSpeed
-		{	
+		{
 			get { return _maxSpeed; }
 			set
 			{
@@ -130,7 +130,7 @@ namespace Fuse.Motion.Simulation
 				_maxSpeed = value;
 			}
 		}
-		
+
 		public void ResetMaxSpeed()
 		{
 			_hasMaxSpeed = false;
@@ -150,7 +150,7 @@ namespace Fuse.Motion.Simulation
 		}
 
 		double timeStep = 0.001;
-		
+
 		double _remainTime = 0;
 		public void Update(double elapsed)
 		{
@@ -160,7 +160,7 @@ namespace Fuse.Motion.Simulation
 				Iterate();
 				_remainTime -= timeStep;
 			}
-			
+
 			if (!IsStatic)
 				Velocity = _blender.Weight( Velocity, (float)(1 - Math.Min(1,Damping*elapsed)) );
 		}
@@ -173,10 +173,10 @@ namespace Fuse.Motion.Simulation
 				double dlength;
 				var unit = _blender.ToUnit( v, out dlength );
 				float length = (float)dlength;
-				
+
 				if (length < _scale)
 					return _blender.Zero;
-					
+
 				var p = Math.Pow( length, AttractionCurve );
 				return _blender.Weight( unit, p );
 			}
@@ -201,18 +201,18 @@ namespace Fuse.Motion.Simulation
 			}
 
 			if (!IsLocked)
-			{ 
+			{
 				var step = _blender.Weight( Velocity, (float)timeStep );
 				Position = _blender.Add( Position, step );
 
-				if (Energy < EnergyEps) 
+				if (Energy < EnergyEps)
 				{
 					Position = Destination;
 					IsStatic = true;
 				}
 			}
 		}
-		
+
 		public void Reset( T value )
 		{
 			Position = value;
@@ -220,7 +220,7 @@ namespace Fuse.Motion.Simulation
 			Velocity = _blender.Zero;
 			IsStatic = true;
 		}
-		
+
 		public void Start()
 		{
 			//nothing

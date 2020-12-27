@@ -4,8 +4,8 @@ using Uno.Collections;
 namespace Fuse.Reactive
 {
 	/** Using this class directly is unusual. `ComputeExpression` is the preferred option for functions, and `ExpressionListener` for when that doesn't apply.
-	
-		Relying on this behaviour is bad. The Observable support was only intended for bindings. All other 
+
+		Relying on this behaviour is bad. The Observable support was only intended for bindings. All other
 		values should use IExpression's facilities. The unintended support may be removed in the future.
 
 		Implements `IListener`, and forward incoming values to the protected `OnNewData` method.
@@ -13,7 +13,7 @@ namespace Fuse.Reactive
 		is forwarded to the `OnNewData` method instead.
 
 		Extenders should override `OnNewData()`, `OnLostData` and `Dispose()`.
-		
+
 		@hide
 	*/
 	public abstract class InnerListener: IDisposable, IListener
@@ -73,7 +73,7 @@ namespace Fuse.Reactive
 				OnNewData(source, value);
 			}
 		}
-		
+
 		void IListener.OnLostData(IExpression source)
 		{
 			OnLostData(source);
@@ -102,7 +102,7 @@ namespace Fuse.Reactive
 			{
 				_listener.OnNewData(_source, newValue);
 			}
-			
+
 			protected override void LostData()
 			{
 				_listener.OnLostData(_source);

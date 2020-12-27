@@ -163,7 +163,7 @@ namespace Fuse.Test
 					},
 					new NoFocus()
 					{
-						Children = 
+						Children =
 						{
 							focused,
 							new FocusableVisual()
@@ -255,7 +255,7 @@ namespace Fuse.Test
 		{
 			return FocusPredictStrategy.Predict(visual, Fuse.Input.FocusNavigationDirection.Up);
 		}
-		
+
 		class FocusableVisual : Visual
 		{
 			public FocusableVisual()
@@ -271,7 +271,7 @@ namespace Fuse.Test
 			public override void Draw(DrawContext dc) {}
 		}
 
-		
+
 		class NotEnabledVisual : FocusableVisual
 		{
 			public NotEnabledVisual()

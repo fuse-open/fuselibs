@@ -35,7 +35,7 @@ namespace Fuse.Effects
 				}
 			}
 		}
-		
+
 		public override bool Active { get { return Radius > 0; } }
 
 		public override VisualBounds ModifyRenderBounds( VisualBounds inBounds )

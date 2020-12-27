@@ -13,7 +13,7 @@ namespace Fuse.Drawing
 		void Prepare(object obj);
 		void Unprepare(object obj);
 	}
-	
+
 	/**
 		Tracks the modification and preparedness state of draw objects, Stroke and Brush. This
 		moves the complexity of this away from the classes that use them.
@@ -28,10 +28,10 @@ namespace Fuse.Drawing
 			public bool Dirty;
 			public PropertyObject DrawObject;
 		}
-		
+
 		MiniList<Item> _items;
 		bool _rooted;
-		
+
 		public void Sync()
 		{
 			if (!_rooted)
@@ -39,7 +39,7 @@ namespace Fuse.Drawing
 				Fuse.Diagnostics.InternalError( "Sync while not rooted", this );
 				return;
 			}
-			
+
 			for (int i=_items.Count-1; i >=0; --i)
 			{
 				var item = _items[i];
@@ -59,12 +59,12 @@ namespace Fuse.Drawing
 						_feedback.Unprepare(item.DrawObject);
 						item.Prepared = false;
 					}
-					
+
 					_items.RemoveAt(i);
 				}
 			}
 		}
-		
+
 		IDrawObjectWatcherFeedback _feedback;
 		public void OnRooted(IDrawObjectWatcherFeedback feedback)
 		{
@@ -78,23 +78,23 @@ namespace Fuse.Drawing
 				item.DrawObject.AddPropertyListener(this);
 			}
 		}
-		
+
 		public void OnUnrooted()
 		{
 			Reset();
 			Sync();
 			_rooted = false;
-			
+
 			for (int i=0; i < _items.Count; ++i)
 			{
 				var item = _items[i];
 				if (item.Listening)
 					item.DrawObject.RemovePropertyListener(this);
 			}
-			
+
 			_feedback = null;
 		}
-		
+
 		public void Reset()
 		{
 			for (int i=0; i < _items.Count; ++i)
@@ -103,23 +103,23 @@ namespace Fuse.Drawing
 				item.Used = false;
 			}
 		}
-		
+
 		public void Add(Stroke stroke)
 		{
 			AddObject(stroke);
 			AddObject(stroke.Brush);
 		}
-		
+
 		public void Add(Brush brush)
 		{
 			AddObject(brush);
 		}
-		
+
 		void AddObject(PropertyObject drawObject)
 		{
 			if (drawObject == null)
 				return;
-				
+
 			for (int i=0; i < _items.Count; ++i)
 			{
 				if (_items[i].DrawObject == drawObject)
@@ -129,24 +129,24 @@ namespace Fuse.Drawing
 					return;
 				}
 			}
-			
+
 			if (_rooted)
 				drawObject.AddPropertyListener(this);
-		
+
 			_items.Add( new Item{
 				Used = true,
 				DrawObject = drawObject,
 				Listening = _rooted,
 				Dirty = true });
 		}
-		
+
 		static Selector ShadingName = "Shading";
 		void IPropertyListener.OnPropertyChanged(PropertyObject obj, Selector prop)
 		{
 			//Deal with brush directly, see TODO in Stroke
 			if (prop == ShadingName)
 				return;
-				
+
 			for (int i=0; i < _items.Count; ++i)
 			{
 				var item = _items[i];

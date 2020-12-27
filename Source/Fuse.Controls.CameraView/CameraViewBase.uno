@@ -127,7 +127,7 @@ namespace Fuse.Controls
 			return Camera.SetCameraFacing(facing);
 		}
 
-		public Future<Nothing> SetCameraFocusPoint(double x, double y, int cameraWidth, int cameraHeight, int isFocusLocked) 
+		public Future<Nothing> SetCameraFocusPoint(double x, double y, int cameraWidth, int cameraHeight, int isFocusLocked)
 		{
 			if (!IsRootingCompleted)
 				return RejectNotRooted<Nothing>();

@@ -7,7 +7,7 @@ using Uno.IO;
 
 namespace Fuse.Scripting
 {
-	public partial class ScriptModule 
+	public partial class ScriptModule
 	{
 		internal const string ModuleContainsAnErrorMessage = "require(): module contains an error: ";
 
@@ -52,13 +52,13 @@ namespace Fuse.Scripting
 					{
 						if (_rt == null)
 							throw new Error( "require(): unable to resolve ux: prefixes: " + id );
-							
+
 						Dependency res;
 						if (_rt.TryGetValue(id.Substring(uxPrefix.Length), out res)) return res.Value;
-						
+
 						throw new Error("require(): ux name not found: " + id);
 					}
-					
+
 					var mod = _m.TryResolve(path, isFile);
 					if (mod == null)
 						throw new Error("require(): module not found: " + id);

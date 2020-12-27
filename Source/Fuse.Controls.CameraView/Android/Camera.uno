@@ -155,27 +155,27 @@ namespace Fuse.Controls.Android
 			return new AndroidPhotoOptionPromise(this).Visit(options);
 		}
 
-		class AndroidCameraFocusPointPromise : Promise<Nothing> 
+		class AndroidCameraFocusPointPromise : Promise<Nothing>
 		{
 			Camera _camera;
 			string _parameters;
 
-			public AndroidCameraFocusPointPromise(Camera camera) 
+			public AndroidCameraFocusPointPromise(Camera camera)
 			{
 				_camera = camera;
 				_parameters = _camera.SaveParameters();
 			}
-				
-			public Future<Nothing> doFocus(double x, double y, int cameraWidth, int cameraHeight, int isFocusLocked) 
+
+			public Future<Nothing> doFocus(double x, double y, int cameraWidth, int cameraHeight, int isFocusLocked)
 			{
-				try 
+				try
 				{
 					_camera.SetCameraFocusPointNow(x,y, cameraWidth, cameraHeight, isFocusLocked);
-					
+
 					Resolve(default(Nothing));
 					return this;
-				} 
-				catch (Exception e) 
+				}
+				catch (Exception e)
 				{
 					Reject(e);
 					return this;
@@ -183,7 +183,7 @@ namespace Fuse.Controls.Android
 			}
 		}
 
-		public Future<Nothing> SetCameraFocusPoint(double x, double y, int cameraWidth, int cameraHeight, int isFocusLocked) 
+		public Future<Nothing> SetCameraFocusPoint(double x, double y, int cameraWidth, int cameraHeight, int isFocusLocked)
 		{
 			return new AndroidCameraFocusPointPromise(this).doFocus(x, y, cameraWidth, cameraHeight, isFocusLocked);
 		}
@@ -331,7 +331,7 @@ namespace Fuse.Controls.Android
 		@}
 
 		[Foreign(Language.Java)]
-		void SetCameraFocusPointNow(double x, double y, int cameraWidth, int cameraHeight, int isFocusLocked) 
+		void SetCameraFocusPointNow(double x, double y, int cameraWidth, int cameraHeight, int isFocusLocked)
 		@{
 			((CameraImpl)@{Fuse.Controls.Native.ViewHandle:Of(_this).NativeHandle:Get()}).setCameraFocusPoint(x,y,cameraWidth,cameraHeight, isFocusLocked);
 		@}

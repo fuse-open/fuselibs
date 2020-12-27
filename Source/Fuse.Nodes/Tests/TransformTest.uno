@@ -45,7 +45,7 @@ namespace Fuse.Test
 				Assert.AreEqual( 1, tn.D4.WorldTransform.M42 );
 			}
 		}
-		
+
 		static void CheckTransform(float3 expect, float3 input, Transform transform,
 			[CallerFilePath] string filePath = "", [CallerLineNumber] int lineNumber = 0, [CallerMemberName] string memberName = "")
 		{
@@ -54,7 +54,7 @@ namespace Fuse.Test
 			var q = Vector.TransformCoordinate(input, f.Matrix);
 			Assert.AreEqual(expect, q, Assert.ZeroTolerance, filePath, lineNumber, memberName);
 		}
-		
+
 		[Test]
 		public void Rotation()
 		{
@@ -62,20 +62,20 @@ namespace Fuse.Test
 			r.DegreesZ = 90;
 			CheckTransform(float3(1,1,0), float3(1,-1,0), r);
 			Assert.IsTrue(r.IsFlat);
-			
+
 			r.DegreesZ = 0;
 			r.DegreesY = 90;
 			CheckTransform(float3(1,1,1), float3(-1,1,1), r);
 			Assert.IsFalse(r.IsFlat);
-			
+
 			r.EulerAngleDegrees = float3(90,0,0);
 			CheckTransform(float3(0,0,1), float3(0,1,0), r);
 			Assert.IsFalse(r.IsFlat);
-			
+
 			r.EulerAngle = float3(Math.PIf/2,0,Math.PIf);
 			CheckTransform(float3(0,0,-1), float3(0,1,0), r);
 		}
-		
+
 		[Test]
 		public void Scaling()
 		{
@@ -83,11 +83,11 @@ namespace Fuse.Test
 			s.Vector = float3(1,2,3);
 			CheckTransform(float3(2,4,6), float3(2), s);
 			Assert.IsTrue(s.IsFlat);
-			
+
 			s.Factor = 3;
 			CheckTransform(float3(3,6,9), float3(1,2,3), s);
 		}
-		
+
 		[Test]
 		public void Translation()
 		{
@@ -97,13 +97,13 @@ namespace Fuse.Test
 			t.Z = 10;
 			CheckTransform(float3(-4,4,11),float3(1), t);
 			Assert.IsFalse(t.IsFlat);
-			
+
 			t.Vector = float3(1,-4,0);
 			CheckTransform(float3(6,0,3), float3(5,4,3), t);
 			Assert.IsTrue(t.IsFlat);
 		}
-		
-		[Test] 
+
+		[Test]
 		public void TranslationRelative()
 		{
 			var p = new UX.TranslationRelative();

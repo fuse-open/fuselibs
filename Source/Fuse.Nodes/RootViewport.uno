@@ -89,7 +89,7 @@ namespace Fuse
 		{
 			UpdateManager.AddOnceAction(PerformLayout, UpdateStage.Layout);
 		}
-		
+
 		void IDisposable.Dispose()
 		{
 			Children.Clear();
@@ -180,14 +180,14 @@ namespace Fuse
 			{
 				_pixelSize = float2(0);
 				//use old value, or try to guess correct density anyway (in case something uses it for off-screen drawing)
-				if (_pixelsPerOSPoint == 0 || _pixelsPerPoint ==0) 
+				if (_pixelsPerOSPoint == 0 || _pixelsPerPoint ==0)
 				{
 					_pixelsPerOSPoint = wnd.GetDensity();
 					_pixelsPerPoint = _pixelsPerOSPoint;
 				}
 				return;
 			}
-			
+
 			//WORKAROUND: https://github.com/fusetools/Uno/issues/327
 			var pointAspect = (float)osPointSize.X / (float)osPointSize.Y;
 			var pixelAspect = (float)pixelSize.X / (float)pixelSize.Y;
@@ -281,9 +281,9 @@ namespace Fuse
 		/** Composition for PreviewState support */
 		PreviewState _previewState = new PreviewState();
 		internal PreviewState PreviewState { get { return _previewState; } }
-		
-		/** Returns an opaque object of the saved state for preview. This is neither a serialized nor cloned state; it can be used only once in `RestorePreviewState` 
-		
+
+		/** Returns an opaque object of the saved state for preview. This is neither a serialized nor cloned state; it can be used only once in `RestorePreviewState`
+
 			@hide for Preview only
 		*/
 		public object SavePreviewState()
@@ -292,9 +292,9 @@ namespace Fuse
 				return _previewState.Save();
 			return null;
 		}
-		
-		/** Sets the current state to restore (may be null). This must be called prior to adding any children. The state contained here will only be used once. Each time a state must be restored `SavePreviewState` and `PreviewSetState` should be called again. 
-		
+
+		/** Sets the current state to restore (may be null). This must be called prior to adding any children. The state contained here will only be used once. Each time a state must be restored `SavePreviewState` and `PreviewSetState` should be called again.
+
 			@hide for Preview only
 		*/
 		public void RestorePreviewState(object state)
@@ -302,7 +302,7 @@ namespace Fuse
 			var psd = state as PreviewStateData;
 			if (psd == null && state != null)
 				Fuse.Diagnostics.InternalError( "Incorrect state type for PreviewSetState", this );
-				
+
 			if (_previewState != null)
 				_previewState.SetState(psd);
 		}

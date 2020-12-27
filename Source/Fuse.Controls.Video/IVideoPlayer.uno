@@ -42,5 +42,5 @@ namespace Fuse.Controls.VideoImpl
 		void IVideoPlayer.Play() { }
 		void IVideoPlayer.Update() { }
 	}
-	
+
 }

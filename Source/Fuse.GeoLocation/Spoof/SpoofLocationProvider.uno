@@ -25,25 +25,25 @@ namespace Fuse.GeoLocation
 		public void StartListening(Action<Location> onLocationChanged, Action<Exception> onLocationError, int minimumReportInterval, double desiredAccuracyInMeters)
 		{
 		}
-		
+
 		public void StopListening()
-		{	
+		{
 		}
-		
+
 		public bool IsLocationEnabled()
-		{	
+		{
 			return false;
 		}
-		
+
 		public string GetAuthorizationStatus()
-		{	
+		{
 			return "never";
 		}
 
 		public void RequestAuthorization(GeoLocationAuthorizationType type)
-		{	
+		{
 		}
-		
+
 		public void Init(Action onReady)
 		{
 			onReady();

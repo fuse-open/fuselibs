@@ -31,7 +31,7 @@ namespace Fuse.Resources
 			if (_handlers.TryGetValue(key, out list))
 			{
 				foreach (var h in list) h();
-			} 
+			}
 		}
 	}
 }

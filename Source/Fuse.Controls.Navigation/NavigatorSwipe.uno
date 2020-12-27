@@ -24,7 +24,7 @@ namespace Fuse.Controls
 		Down,
 		Top,
 	}
-	
+
 	public enum NavigatorSwipeHow
 	{
 		/** Navigates back one step in the navigation history. Will give error if swiped further back than possible. */
@@ -37,17 +37,17 @@ namespace Fuse.Controls
 
 	/**
 		Allows navigation through swipe gestures.
-		
+
 		We can control the behavior of a `NavigatorSwipe` using the `How` parameter, which controls what happens when the specified direction is swiped. `PushBookmark` and `GotoBookmark` both
-		navigate to the bookmark specified by the `Bookmark` property in their own way(same behavior as @(Router) ). `Back` navigates backwards, but should be used with caution, 
+		navigate to the bookmark specified by the `Bookmark` property in their own way(same behavior as @(Router) ). `Back` navigates backwards, but should be used with caution,
 		as it does not check if there is anything to go back to, meaning it can generate errors.
-		
+
 		In the following example, we demonstrate `NavigatorSwipe` being used on both a `Navigator`, and navigated pages. Some navigation rules are set up:
 
-		 * Swiping up while on the blue panel will go to a bookmark pointing to the indigo page. 
-		 * Swiping up while on the indigo page will navigate you to the red page. 
+		 * Swiping up while on the blue panel will go to a bookmark pointing to the indigo page.
+		 * Swiping up while on the indigo page will navigate you to the red page.
 		 * Swiping down on any page will go back to the previous page.
-		
+
 			<Panel>
 				<Router ux:Name="router" />
 
@@ -84,8 +84,8 @@ namespace Fuse.Controls
 		public NavigatorSwipeDirection Direction
 		{
 			get { return _direction; }
-			set 
-			{ 
+			set
+			{
 				_direction = value;
 				if (_swipeGesture != null)
 				{
@@ -131,14 +131,14 @@ namespace Fuse.Controls
 			get { return UseContent; }
 			set { UseContent = value; }
 		}
-		
+
 		NavigatorSwipeHow _how;
 		public NavigatorSwipeHow How
 		{
 			get { return _how; }
-			set 
-			{ 
-				_how = value; 
+			set
+			{
+				_how = value;
 				switch (_how)
 				{
 					case NavigatorSwipeHow.Back:
@@ -153,56 +153,56 @@ namespace Fuse.Controls
 				}
 			}
 		}
-		
+
 		string _bookmark;
 		public string Bookmark
 		{
 			get { return _modify.Bookmark; }
 			set  { _modify.Bookmark = value; }
 		}
-		
-		public string Style 
-		{ 
+
+		public string Style
+		{
 			get { return _modify.Style; }
 			set { _modify.Style = value; }
 		}
-		
+
 		SwipeGesture _swipeGesture = new SwipeGesture();
 		SwipingAnimation _swipeAnim;
 		Swiped _swipedCompleted;
 		Swiped _swipedCancelled;
-		RouterModify _modify = new RouterModify(RouterModify.Flags.None){ 
+		RouterModify _modify = new RouterModify(RouterModify.Flags.None){
 			When = TriggerWhen.Start };
 		Router _router;
 		Animator _prepareAnim;
-		
+
 		public NavigatorSwipe()
 		{
 			UseContent = true;
-			
+
 			How = NavigatorSwipeHow.Back;
-			
+
 			_swipeAnim = new SwipingAnimation(_swipeGesture);
 			_swipeAnim.Actions.Add( _modify );
 
 			_swipedCompleted = new Swiped(_swipeGesture );
 			_swipedCompleted.Actions.Add( new RouterModify(RouterModify.Flags.None){
 				How = ModifyRouteHow.FinishPrepared });
-				
+
 			_swipedCancelled = new Swiped(_swipeGesture);
 			_swipedCancelled.How = SwipedHow.Cancelled;
 			_swipedCancelled.Actions.Add( new RouterCancelNavigation() );
-			
+
 			Nodes.Add(_swipeGesture);
 			Nodes.Add(_swipeAnim);
 			Nodes.Add(_swipedCompleted);
 			Nodes.Add(_swipedCancelled);
 		}
-		
+
 		protected override void OnRooted()
 		{
 			base.OnRooted();
-			
+
 			_router = Router.TryFindRouter(this);
 			if (_router == null)
 			{
@@ -214,17 +214,17 @@ namespace Fuse.Controls
 				Fuse.Diagnostics.UserError( "SwipeNavigator requires an Element parent", this );
 				return;
 			}
-	
+
 			SetupGestureSwipeDerection();
 			_swipeGesture.LengthNode = Parent as Element;
 			_swipeGesture.IsEnabled = Direction != NavigatorSwipeDirection.None;
-			
+
 			_prepareAnim = new Change<double>(new Router_PrepareProgress_Property(_router)){
 				Value = 1,
 				};
 			_swipeAnim.Animators.Add( _prepareAnim );
 		}
-		
+
 		protected override void OnUnrooted()
 		{
 			_swipeAnim.Animators.Remove( _prepareAnim );
@@ -233,7 +233,7 @@ namespace Fuse.Controls
 			base.OnUnrooted();
 		}
 	}
-	
+
 	class Router_PrepareProgress_Property: Uno.UX.Property<double>
 	{
 		Router _obj;

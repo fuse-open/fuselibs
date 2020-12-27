@@ -19,12 +19,12 @@ namespace Fuse.Charting.Test
 				root.StepFrameJS();
 				Assert.AreEqual( "one,two,three,four,five", Util.GetText(p.XL) );
 				Assert.AreEqual( float2(500,20), p.XL.ActualSize );
-				
+
 				Assert.AreEqual( "0,10,20,30,40,50,60", Util.GetText(p.YL) );
 				Assert.AreEqual( float2(100,1000), p.YL.ActualSize );
 			}
 		}
-		
+
 		[Test]
 		public void Group()
 		{
@@ -52,14 +52,14 @@ namespace Fuse.Charting.Test
 				txts = Util.Children<Text>(p.XL);
 				Assert.AreEqual( ((2-2)+0.5f)*(1000/10), txts[0].ActualPosition.X );
 				Assert.AreEqual( ((4-2)+0.5f)*(1000/10), txts[1].ActualPosition.X );
-				
+
 				p.XL.Group = 3;
 				p.P.DataOffset = 1;
 				root.StepFrame();
 				Assert.AreEqual( "3,6,9", Util.GetText(p.XL));
 				txts = Util.Children<Text>(p.XL);
 				Assert.AreEqual( ((3-1)+0.5f)*(1000/10), txts[0].ActualPosition.X );
-				
+
 				//https://github.com/fusetools/premiumlibs/issues/28
 				p.P.DataOffset = 2;
 				root.StepFrame();
@@ -68,7 +68,7 @@ namespace Fuse.Charting.Test
 				Assert.AreEqual( ((3-2)+0.5f)*(1000/10), txts[0].ActualPosition.X );
 			}
 		}
-		
+
 		[Test]
 		public void Skip()
 		{
@@ -81,7 +81,7 @@ namespace Fuse.Charting.Test
 				Assert.AreEqual("8,9,10,11,12", Util.GetText(p.XN));
 			}
 		}
-		
+
 		[Test]
 		public void Object()
 		{
@@ -92,7 +92,7 @@ namespace Fuse.Charting.Test
 				Assert.AreEqual("one,two,three,four,five", Util.GetText(p.X));
 			}
 		}
-		
+
 		[Test]
 		public void ScreenIndex()
 		{
@@ -101,13 +101,13 @@ namespace Fuse.Charting.Test
 			{
 				root.StepFrameJS();
 				Assert.AreEqual("0,1,2,3", Util.GetText(p.X));
-				
+
 				p.P.DataOffset = 0;
 				root.StepFrame();
 				Assert.AreEqual("0,1,2,3", Util.GetText(p.X)); //no difference since "screenIndex"
 			}
 		}
-		
+
 		[Test]
 		//adapted from Plot.Data.Filter test to see combination with group
 		public void FilterGroup()
@@ -117,37 +117,37 @@ namespace Fuse.Charting.Test
 			{
 				root.StepFrameJS();
 				Assert.AreEqual("3,6", GetText(p.A));
-				
+
 				p.D.ExcludeExtend = true;
 				root.PumpDeferred();
 				Assert.AreEqual("3,6", GetText(p.A));
-				
+
 				p.D.SkipEnds = int2(2,1);
 				root.PumpDeferred();
 				Assert.AreEqual("6", GetText(p.A));
-				
+
 				p.P.DataOffset = 0;
 				root.PumpDeferred();
 				Assert.AreEqual("3", GetText(p.A));
-				
+
 				p.D.ExcludeExtend = false;
 				root.PumpDeferred();
 				Assert.AreEqual("3", GetText(p.A));
-				
+
 				p.P.DataOffset = 1;
 				root.PumpDeferred();
 				Assert.AreEqual("3", GetText(p.A));
-				
+
 				p.D.SkipEnds = int2(0);
 				root.PumpDeferred();
 				Assert.AreEqual("0,3", GetText(p.A));
-				
+
 				p.P.DataOffset = 0;
 				root.PumpDeferred();
 				Assert.AreEqual("0,3", GetText(p.A));
 			}
 		}
-		
+
 		[Test]
 		//somehow a 1-count was causing ExcludeExtend not to work
 		public void One()
@@ -157,7 +157,7 @@ namespace Fuse.Charting.Test
 			{
 				root.StepFrameJS();
 				Assert.AreEqual("two", GetText(p.XL));
-				
+
 				p.P.DataOffset = 0;
 				root.StepFrame();
 				Assert.AreEqual("one", GetText(p.XL));

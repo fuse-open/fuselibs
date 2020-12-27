@@ -11,8 +11,8 @@ namespace FuseTest
 	public class LoadingBrush : DynamicBrush, ILoading
 	{
 		bool _isLoading = true;
-		public bool IsLoading 
-		{ 
+		public bool IsLoading
+		{
 			get { return _isLoading; }
 			set
 			{
@@ -20,7 +20,7 @@ namespace FuseTest
 				OnPropertyChanged(ILoadingStatic.IsLoadingName);
 			}
 		}
-		
+
 		bool ILoading.IsLoading
 		{
 			get { return IsLoading; }

@@ -23,7 +23,7 @@ namespace Fuse.Charting.Test
 			using (var root = TestRootPanel.CreateWithChild(p,int2(300,1000)))
 			{
 				root.StepFrameJS();
-				
+
 				var bars = Util.Children<PlotBar>(p.A);
 				Assert.AreEqual(3,bars.Length);
 				Compare(0,750, 100, 250, bars[0]);
@@ -39,7 +39,7 @@ namespace Fuse.Charting.Test
 					Assert.AreEqual(50,a.Value);
 					Assert.AreEqual(Unit.Percent, a.Unit);
 				}
-				
+
 				bars = Util.Children<PlotBar>(p.B);
 				Assert.AreEqual(3,bars.Length);
 				Compare(0,0, 100, 250, bars[0]);
@@ -51,7 +51,7 @@ namespace Fuse.Charting.Test
 					Assert.AreEqual(0, a.Value);
 					Assert.AreEqual(Unit.Percent, a.Unit);
 				}
-				
+
 				bars = Util.Children<PlotBar>(p.C);
 				Assert.AreEqual(3,bars.Length);
 				Compare(0,400, 100, 100, bars[0]);
@@ -61,7 +61,7 @@ namespace Fuse.Charting.Test
 				Assert.AreEqual(0,an.Value);
 				an = bars[1].Anchor.Y;
 				Assert.AreEqual(100,an.Value);
-				
+
 				bars = Util.Children<PlotBar>(p.D);
 				Assert.AreEqual(3,bars.Length);
 				Compare(0,100,100,200,bars[0]);
@@ -73,14 +73,14 @@ namespace Fuse.Charting.Test
 				Assert.AreEqual(100,an.Value);
 				an = bars[2].Anchor.Y;
 				Assert.AreEqual(0,an.Value);
-				
+
 				bars = Util.Children<PlotBar>(p.E);
 				Compare(0,0, 100, 1000, bars[0]);
 				Compare(100,0, 100, 1000, bars[1]);
 				Compare(200,0, 100, 1000, bars[2]);
 			}
 		}
-		
+
 		[Test]
 		public void PlacementVert()
 		{
@@ -88,7 +88,7 @@ namespace Fuse.Charting.Test
 			using (var root = TestRootPanel.CreateWithChild(p,int2(1000,300)))
 			{
 				root.StepFrameJS();
-				
+
 				var bars = Util.Children<PlotBar>(p.A);
 				Assert.AreEqual(3,bars.Length);
 				Compare(0,200, 250, 100, bars[0]);
@@ -103,7 +103,7 @@ namespace Fuse.Charting.Test
 					Assert.AreEqual(50, a.Value);
 					Assert.AreEqual(Unit.Percent, a.Unit);
 				}
-				
+
 				bars = Util.Children<PlotBar>(p.B);
 				Assert.AreEqual(3,bars.Length);
 				Compare(750,200, 250,100, bars[0]);
@@ -115,7 +115,7 @@ namespace Fuse.Charting.Test
 					Assert.AreEqual(100, a.Value);
 					Assert.AreEqual(Unit.Percent, a.Unit);
 				}
-				
+
 				bars = Util.Children<PlotBar>(p.C);
 				Assert.AreEqual(3,bars.Length);
 				Compare(500,200, 100,100, bars[0]);
@@ -125,7 +125,7 @@ namespace Fuse.Charting.Test
 				Assert.AreEqual(100,an.Value);
 				an = bars[1].Anchor.X;
 				Assert.AreEqual(0,an.Value);
-				
+
 				bars = Util.Children<PlotBar>(p.D);
 				Assert.AreEqual(3,bars.Length);
 				Compare(700,200, 200,100, bars[0]);
@@ -137,20 +137,20 @@ namespace Fuse.Charting.Test
 				Assert.AreEqual(0,an.Value);
 				an = bars[2].Anchor.X;
 				Assert.AreEqual(100,an.Value);
-				
+
 				bars = Util.Children<PlotBar>(p.E);
 				Compare(0,200, 1000, 100, bars[0]);
 				Compare(0,100, 1000, 100, bars[1]);
 				Compare(0,0, 1000, 100, bars[2]);
 			}
 		}
-		
+
 		void Compare( float x, float y, float width, float height, Element e,
 			[CallerFilePath] string filePath = "",
 			[CallerLineNumber] int lineNumber = 0,
 			[CallerMemberName] string memberName = "")
 		{
-			Assert.AreEqual( float2(x,y), e.ActualPosition, Assert.ZeroTolerance, filePath, lineNumber, 
+			Assert.AreEqual( float2(x,y), e.ActualPosition, Assert.ZeroTolerance, filePath, lineNumber,
 				memberName + "-Position");
 			Assert.AreEqual( float2(width,height), e.ActualSize, Assert.ZeroTolerance, filePath, lineNumber,
 				memberName + "-Size");

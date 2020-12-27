@@ -8,10 +8,10 @@ namespace Fuse.Reactive
 	{
 		/** See `IExpression.Subscribe` for docs.	*/
 		public abstract IDisposable Subscribe(IContext context, IListener listener);
-		
-		/** Holds information about an argument to an Expression 
+
+		/** Holds information about an argument to an Expression
 			@advanced */
-		public class Argument 
+		public class Argument
 		{
 			internal IExpression Source;
 			internal IDisposable Subscription;
@@ -19,11 +19,11 @@ namespace Fuse.Reactive
 			/** The current value of the argument. If `HasValue` is `false`, `null` is returned. */
 			public object Value { get; internal set; }
 
-			/** Whether or not this argument has yielded a value yet. 
+			/** Whether or not this argument has yielded a value yet.
 				This can only return false if `OnNewPartialArguments` was overridden.
 			*/
 			public bool HasValue { get; internal set; }
-			
+
 			internal void Dispose()
 			{
 				if (Subscription != null)
@@ -36,14 +36,14 @@ namespace Fuse.Reactive
 				HasValue = false;
 			}
 		}
-		
+
 		[UXLineNumber]
 		/** @hide */
 		public int SourceLineNumber { get; set; }
 		[UXSourceFileName]
 		/** @hide */
 		public string SourceFileName { get; set; }
-		
+
 		ISourceLocation ISourceLocation.SourceNearest { get { return this; } }
 	}
 

@@ -214,7 +214,7 @@ namespace Fuse.Scripting.JavaScript
 			if (n != null)
 			{
 				var ni = n.Properties.Get(_classInstanceProperty) as ClassInstance;
-				if (ni == null) 
+				if (ni == null)
 				{
 					ni = new ClassInstance((ThreadWorker)ThreadWorker, obj, rootTable);
 					n.Properties.Set(_classInstanceProperty, ni);
@@ -279,7 +279,7 @@ namespace Fuse.Scripting.JavaScript
 
 				var definer = (Function)context.Evaluate(p.Name + " (ScriptProperty)",
 						"(function(cl, getObservable) { Object.defineProperty(cl.prototype, '" + p.Name + "', "
-							+ "{" 
+							+ "{"
 								+ "get: function() { "
 									+ "var obs = getObservable(this); "
 									+ "if (" + rawField + " != obs) {"
@@ -309,7 +309,7 @@ namespace Fuse.Scripting.JavaScript
 			{
 				_m = m;
 
-				var factory = (Function)context.Evaluate(m.Name + " (ScriptMethod)", "(function (cl, callback) { cl.prototype." + m.Name + 
+				var factory = (Function)context.Evaluate(m.Name + " (ScriptMethod)", "(function (cl, callback) { cl.prototype." + m.Name +
 					" = function() { return callback(this.external_object, Array.prototype.slice.call(arguments)); }})");
 
 				factory.Call(context, cl, (Callback)Callback);

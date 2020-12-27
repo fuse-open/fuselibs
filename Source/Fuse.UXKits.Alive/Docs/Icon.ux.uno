@@ -2,7 +2,7 @@ namespace Alive
 {
 	/**
 		Alive comes with a set of icons, exposed via the Icon component.
-	
+
 		@topic Alive Icons
 
 		The icons come bundled in a font file.
@@ -15,13 +15,13 @@ namespace Alive
 		```
 
 		The width and height of an icon is determined by the `Size` property..
-		
+
 		```
 		<Alive.Icon Value="&#xEA3A;" Size="48" />
 		```
-		
+
 		## All icons
-		
+
 		@include Docs/IconTable.md
 
 

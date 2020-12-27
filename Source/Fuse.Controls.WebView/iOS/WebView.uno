@@ -10,7 +10,7 @@ using Fuse.Controls;
 
 namespace Fuse.iOS.Controls
 {
-	
+
 	[Require("Source.Include", "iOS/NoZoomDelegate.h")]
 	[Require("Source.Include", "WebKit/WebKit.h")]
 	static extern(iOS) class WKWebViewHelpers
@@ -308,12 +308,12 @@ namespace Fuse.iOS.Controls
 			if(UrlChanged != null)
 				UrlChanged(this, EventArgs.Empty);
 		}
-		
+
 		public bool HasURISchemeHandler()
 		{
 			return URISchemeHandler != null;
 		}
-		
+
 		void OnCustomURI(string url)
 		{
 			if(URISchemeHandler!=null)

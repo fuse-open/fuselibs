@@ -12,7 +12,7 @@ rooted:
 
 When a node	is removed from a rooted tree, it becomes *unrooted*.
 
-While rooted, nodes have a @Parent. Only @Visual nodes can be parents of other nodes. However, 
+While rooted, nodes have a @Parent. Only @Visual nodes can be parents of other nodes. However,
 @Behaviors may contain other nodes in UX markup. In the following example, the @WhilePressed
 (which is a @Behavior) contains a @Circle. The @Circle is not rooted by default.
 

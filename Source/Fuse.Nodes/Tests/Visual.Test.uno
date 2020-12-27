@@ -13,7 +13,7 @@ namespace Fuse.Test
 	public class ZOrderTestPanel: Fuse.Controls.Panel
 	{
 		internal int InvalidatedCount;
-		protected override void OnZOrderInvalidated() 
+		protected override void OnZOrderInvalidated()
 		{
 			InvalidatedCount++;
 		}
@@ -21,7 +21,7 @@ namespace Fuse.Test
 
 	public class ZOrderTestChildPanel: Fuse.Controls.Panel
 	{
-		protected override void OnZOrderInvalidated() 
+		protected override void OnZOrderInvalidated()
 		{
 			throw new Exception("This shouldn't happen");
 		}
@@ -29,7 +29,7 @@ namespace Fuse.Test
 
 	public class VisualTest : TestBase
 	{
-		
+
 		[Test]
 		public void ZOrderChanged()
 		{
@@ -65,25 +65,25 @@ namespace Fuse.Test
 			using (var r = TestRootPanel.CreateWithChild(p))
 			{
 				Assert.IsTrue(p.A.IsFlat);
-				
+
 				Assert.IsFalse(p.B.IsFlat);
 				Assert.IsFalse(p.B.IsLocalFlat);
 				Assert.IsTrue(p.B.AreChildrenFlat);
-				
+
 				Assert.IsFalse(p.C.IsFlat);
 				Assert.IsTrue(p.C.IsLocalFlat);
 				Assert.IsFalse(p.C.AreChildrenFlat);
-				
+
 				Assert.IsFalse(p.D.IsFlat);
 				Assert.IsFalse(p.E.IsLocalFlat);
 				p.R1.DegreesX = 0;
 				Assert.IsTrue(p.D.IsFlat);
 				Assert.IsTrue(p.E.IsLocalFlat);
-				
+
 				Assert.IsTrue(p.F.IsFlat);
 			}
 		}
-		
+
 		[Test]
 		/*
 			Tests an invalidation issue https://github.com/fusetools/fuselibs-private/issues/2318
@@ -132,7 +132,7 @@ namespace Fuse.Test
 				Assert.AreEqual("{\"foo\":\"bar\"}", p.CurrentParameter.StringValue);
 			}
 		}
-		
+
 		[Test]
 		public void LayoutRoleChange()
 		{
@@ -141,12 +141,12 @@ namespace Fuse.Test
 			{
 				Assert.AreEqual(InvalidateLayoutReason.NothingChanged,p.a.LayoutDirty);
 				Assert.AreEqual(InvalidateLayoutReason.NothingChanged,p.b.LayoutDirty);
-				
+
 				p.b.LayoutRole = LayoutRole.Inert;
 				Assert.AreEqual(InvalidateLayoutReason.MarginBoxChanged,p.a.LayoutDirty);
 				Assert.AreEqual(InvalidateLayoutReason.MarginBoxChanged,p.b.LayoutDirty);
 				root.StepFrame();
-				
+
 				p.b.LayoutRole = LayoutRole.Inert;
 				Assert.AreEqual(InvalidateLayoutReason.NothingChanged,p.a.LayoutDirty);
 				Assert.AreEqual(InvalidateLayoutReason.NothingChanged,p.b.LayoutDirty);

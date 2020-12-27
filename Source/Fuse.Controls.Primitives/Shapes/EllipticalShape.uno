@@ -8,10 +8,10 @@ namespace Fuse.Controls
 		static Selector EndAngleName = new Selector( "EndAngle" );
 		static Selector StartAngleName=  new Selector( "StartAngle" );
 		static Selector LengthAngleName = new Selector( "LengthAngle" );
-		
+
 		float _startAngle, _endAngle;
 		bool _hasAngle;
-		
+
 		/** The angle in radians where the slice begins. */
 		public float StartAngle
 		{
@@ -20,14 +20,14 @@ namespace Fuse.Controls
 			{
 				if (_hasAngle && _startAngle == value)
 					return;
-					
+
 				_startAngle = value;
 				_hasAngle = true;
 				InvalidateSurfacePath();
 				OnPropertyChanged(StartAngleName);
 			}
 		}
-		
+
 		/** The angle in radians where the slice ends. */
 		public float EndAngle
 		{
@@ -36,13 +36,13 @@ namespace Fuse.Controls
 			{
 				if (_endAngle == value)
 					return;
-					
+
 				_endAngle = value;
 				InvalidateSurfacePath();
 				OnPropertyChanged(EndAngleName);
 			}
 		}
-		
+
 		internal bool UseAngle
 		{
 			get
@@ -55,11 +55,11 @@ namespace Fuse.Controls
 				const float zeroTolerance = 1e-05f;
 				if (_hasLengthAngle && (Math.Abs(_lengthAngle) >= (2*Math.PIf-zeroTolerance)))
 					return false;
-					
+
 				return true;
 			}
 		}
-		
+
 		//track distinct from EndAngle to allow animation just on StartAngle with a LengthAngle
 		float _lengthAngle;
 		bool _hasLengthAngle;
@@ -71,14 +71,14 @@ namespace Fuse.Controls
 			{
 				if (_hasLengthAngle && _lengthAngle == value)
 					return;
-					
+
 				_lengthAngle = value;
 				_hasLengthAngle = true;
 				InvalidateSurfacePath();
 				OnPropertyChanged(LengthAngleName);
 			}
 		}
-		
+
 		/** The angle in degrees where the slice begins. */
 		public float StartAngleDegrees
 		{
@@ -91,14 +91,14 @@ namespace Fuse.Controls
 			get { return Math.RadiansToDegrees(_endAngle); }
 			set { EndAngle = Math.DegreesToRadians(value); }
 		}
-		
+
 		/** An offset in degrees from `StartAngle`. This can be used instead of `EndAngleDegrees`. */
 		public float LengthAngleDegrees
 		{
 			get { return Math.RadiansToDegrees(_lengthAngle); }
 			set { LengthAngle = Math.DegreesToRadians(value); }
 		}
-		
+
 		internal float EffectiveEndAngle
 		{
 			get

@@ -10,18 +10,18 @@ namespace Fuse.Gestures.Test
 		[Test]
 		//a left half-circle control, basic check that all properties work together
 		public void CircularBasic()
-		{	
+		{
 			var p = new UX.RangeControl2D.CircularBasic();
 			using (var root = TestRootPanel.CreateWithChild(p, int2(100,100)))
 			{
 				Assert.AreEqual(225, p.crb.DegreesValue);
-				
+
 				var a = Math.DegreesToRadians(135.0f);
 				var r = 40;
 				root.PointerPress( float2(Math.Cos(a),Math.Sin(a))*r + float2(50,50) );
 				root.PointerRelease();
 				Assert.AreEqual(float2(30,160), p.Value);
-				
+
 				//a value outside the range to test clamping.
 				a = Math.DegreesToRadians(45.0f);
 				r = 15;

@@ -24,9 +24,9 @@ namespace Fuse.Navigation
 			Mode = mode;
 		}
 	}
-	
+
 	public delegate void NavigationHandler(object sender, NavigationArgs state);
-	
+
 	public enum NavigationState
 	{
 		Stable,

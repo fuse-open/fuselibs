@@ -8,13 +8,13 @@ namespace Fuse.Maps
 	{
 		Dictionary<string, MarkerSource> _cache;
 		Action _changeHandler;
-		
+
 		public MarkerIconCache(Action changeHandler)
 		{
 			_cache = new Dictionary<string, MarkerSource>();
 			_changeHandler = changeHandler;
 		}
-		
+
 		public string Get(FileSource src)
 		{
 			if(src==null) return null;
@@ -25,40 +25,40 @@ namespace Fuse.Maps
 			_cache[key] = markerSource;
 			return markerSource.Path;
 		}
-		
+
 		internal void OnChanged()
 		{
 			if(_changeHandler!=null)
 				_changeHandler();
 		}
-		
+
 		internal static string MakeKey(FileSource src)
 		{
 			return "marker_"+src.Name.Replace('/', '_');
 		}
 	}
-	
+
 	internal class MarkerSource
 	{
 		readonly FileSource _src;
 		readonly MarkerIconCache _cache;
 		bool dirty;
 		string _path;
-		
-		public string Path { 
+
+		public string Path {
 			get {
 				if(!dirty) return _path;
 				var image = Fuse.ImageTools.ImageTools.ImageFromByteArray(_src.ReadAllBytes());
 				image.Rename(Name, true);
 				dirty = false;
 				return _path = image.Path;
-			} 
+			}
 		}
-		
+
 		public string Name {
 			get; private set;
 		}
-		
+
 		public MarkerSource(string name, FileSource input, MarkerIconCache cache)
 		{
 			dirty = true;
@@ -67,12 +67,12 @@ namespace Fuse.Maps
 			_src.DataChanged += OnDataChanged;
 			Name = name;
 		}
-		
+
 		~MarkerSource()
 		{
 			_src.DataChanged -= OnDataChanged;
 		}
-		
+
 		void OnDataChanged(object sender, EventArgs args)
 		{
 			dirty = true;

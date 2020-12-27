@@ -89,7 +89,7 @@ namespace Fuse.Controls.VideoImpl.Android
 			public override void Dispose()
 			{
 				base.Dispose();
-				ScheduleDispose();	
+				ScheduleDispose();
 			}
 		}
 

@@ -27,7 +27,7 @@ namespace Fuse.Reactive.FuseJS
 
 		For the [receivedUri](api:fuse/reactive/fusejs/interapp/onreceiveduri_968f99a6.json) event to be triggered, you need register a custom URI scheme for your app, as shown [here](articles:basics/uno-projects#mobile-urischeme).
 
-				
+
 		## Deep Links - Universal and App Links
 
 		You can receive the `receivedUri` event, mentioned above, for associated web urls that have been tapped on in other apps.
@@ -37,7 +37,7 @@ namespace Fuse.Reactive.FuseJS
 		Android: [https://developer.android.com/training/app-links](https://developer.android.com/training/app-links)
 
 		## Apple Universal Links
-				
+
 		1. Add the associated domains in your `.unoproj`
 		2. Add the Apple App Site Association file to your website
 
@@ -110,7 +110,7 @@ namespace Fuse.Reactive.FuseJS
 		```
 
 		### 2. Add the asset links file to your website
-		
+
 		Example:
 		```
 		[{
@@ -227,7 +227,7 @@ namespace Fuse.Reactive.FuseJS
 				https://<website address>
 				tel:<phone number>
 				sms:<phone number>
-			
+
 			More information on supported URI schemes on iOS(https://developer.apple.com/library/content/featuredarticles/iPhoneURLScheme_Reference/Introduction/Introduction.html).
 		*/
 		public static object LaunchApp(Scripting.Context context, object[] args)

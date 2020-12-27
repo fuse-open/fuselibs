@@ -44,11 +44,11 @@ namespace Fuse.LauncherImpl
 		{
 			if defined(Android)
 			{
-				try 
+				try
 				{
 					AndroidDeviceInterop.LaunchApp(_actionView, uri);
-				} 
-				catch (Exception e) 
+				}
+				catch (Exception e)
 				{
 					debug_log("InterApp.LaunchApp - Failed to launch app");
 				}

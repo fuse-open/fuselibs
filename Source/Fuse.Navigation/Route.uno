@@ -6,8 +6,8 @@ namespace Fuse.Navigation
 	/** Reporesents a route to be used with @Router.
 
 		This class represents one element in a linked list, that forms a multi-level route path
-		with optional parameters for each part of the path. 
-		
+		with optional parameters for each part of the path.
+
 		The instances are immutable.
 	*/
 	public sealed class Route
@@ -23,7 +23,7 @@ namespace Fuse.Navigation
 		/** The parameter to be supplied to the @Path for this part of the route */
 		public readonly string Parameter;
 
-		/** Points to the next @Route object in a linked list of path elements. 
+		/** Points to the next @Route object in a linked list of path elements.
 			Can be `null` if this is the last path element in the route. */
 		public readonly Route SubRoute;
 
@@ -40,7 +40,7 @@ namespace Fuse.Navigation
 		/** Returns the number of path elements in the @SubRoute chain. */
 		public int Length
 		{
-			get 
+			get
 			{
 				if (SubRoute == null) return 1;
 				else return SubRoute.Length + 1;
@@ -53,7 +53,7 @@ namespace Fuse.Navigation
 			var sub = SubRoute == null ? subRoute : SubRoute.Append(subRoute);
 			return new Route(Path, Parameter, sub);
 		}
-		
+
 		/**
 			Returns a @Route without the last @SubRoute in from this @Route.
 			If this @Route has no @SubRoute, this method returns this @Route instance.
@@ -66,12 +66,12 @@ namespace Fuse.Navigation
 			else if (SubRoute.SubRoute == null) return new Route(Path, Parameter, null);
 			return new Route(Path, Parameter, SubRoute.Up());
 		}
-		
+
 		internal bool HasUp
 		{
 			get { return SubRoute != null; }
 		}
-		
+
 		internal string Format()
 		{
 			var q = Path ?? "";
@@ -171,15 +171,15 @@ namespace Fuse.Navigation
 				Fuse.Diagnostics.InternalError( "count can't be < 0", this );
 				return null;
 			}
-			
+
 			if (count == 0)
 				return this;
-				
+
 			if (SubRoute == null)
 				return null;
-				
+
 			return SubRoute.SubDepth(count-1);
 		}
-		
+
 	}
 }

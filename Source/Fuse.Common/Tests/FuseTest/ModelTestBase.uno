@@ -2,7 +2,7 @@ using Uno;
 
 namespace FuseTest
 {
-	/** 
+	/**
 		USe this base for tests that use Models. It does some registration of needed global modules.
 	*/
 	public class ModelTestBase : TestBase

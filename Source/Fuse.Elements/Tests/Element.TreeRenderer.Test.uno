@@ -24,19 +24,19 @@ namespace Fuse.Elements.Test
 				p.Reset();
 				p.a.Data = "M0,0 L100,100";
 				root.StepFrame(); //dispatch is done as part of layout, thus PumpDeferred is not enough
-				
+
 				Assert.IsTrue( p.RenderBoundsChangedElements.Contains( p.a ) );
 			}
-		}	
+		}
 	}
-	
+
 	public class TreeRendererPanel : Panel, ITreeRenderer
 	{
 		public override ITreeRenderer TreeRenderer
 		{
 			get { return this; }
 		}
-		
+
 		void ITreeRenderer.RootingStarted(Element e) { }
 		void ITreeRenderer.Rooted(Element e) { }
 		void ITreeRenderer.Unrooted(Element e) { }
@@ -49,24 +49,24 @@ namespace Fuse.Elements.Test
 		void ITreeRenderer.ClipToBoundsChanged(Element e, bool clipToBounds) { }
 		void ITreeRenderer.ZOrderChanged(Element e, Visual[] zorder) { }
 		void ITreeRenderer.HitTestModeChanged(Element e, bool enabled) { }
-		
+
 		public HashSet<Element> RenderBoundsChangedElements = new HashSet<Element>();
-		void ITreeRenderer.RenderBoundsChanged(Element e) 
-		{ 
+		void ITreeRenderer.RenderBoundsChanged(Element e)
+		{
 			RenderBoundsChangedElements.Add( e );
 		}
-		
-		bool ITreeRenderer.Measure(Element e, LayoutParams lp, out float2 size) 
-		{ 
+
+		bool ITreeRenderer.Measure(Element e, LayoutParams lp, out float2 size)
+		{
 			size = float2(0);
 			return false;
 		}
-		
+
 		public void Reset()
 		{
 			RenderBoundsChangedElements.Clear();
 		}
 	}
-	
+
 }
 

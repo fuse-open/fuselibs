@@ -37,14 +37,14 @@ namespace Fuse
 
         Ray _worldRay;
         public Ray WorldRay { get { return _worldRay; } }
-        
+
         public Ray PushWorldRay(Ray n)
         {
 			var r = _worldRay;
 			_worldRay = n;
 			return r;
         }
-        
+
         public void PopWorldRay(Ray o)
         {
 			_worldRay = o;

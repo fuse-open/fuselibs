@@ -10,6 +10,6 @@ namespace Fuse.Controls
 {
 	public class NavigationBar : Panel
 	{
-		
+
 	}
 }

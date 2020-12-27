@@ -6,7 +6,7 @@ using Fuse.Scripting;
 
 namespace Fuse
 {
-	/** Nodes are the basic building blocks of Fuse apps. 
+	/** Nodes are the basic building blocks of Fuse apps.
 
 		@topic Nodes
 
@@ -69,11 +69,11 @@ namespace Fuse
 					c++;
 					n = n.Parent;
 				}
-				
+
 				return c;
 			}
 		}
-		
+
 		/**
 			The context parent is the semantic parent of this node. It is where non-UI structure should
 			be resolved, like looking for the DataContext, a Navigation, or other semantic item.
@@ -82,7 +82,7 @@ namespace Fuse
 		{
 			get { return OverrideContextParent ?? Parent; }
 		}
-		
+
 		/**
 			Allows an alternate contextParent. This will be reset on each unrooting, preventing unrooted
 			use, and breaking any loops.
@@ -124,8 +124,8 @@ namespace Fuse
 			for (int i = 0; i < indent; i++) sb.Append("  ");
 			sb.AppendLine(this.ToString());
 		}
-		
-		/** 
+
+		/**
 			Allows a way for things that insert nodes (like `Each`) to determine the end of the
 			group of nodes further inserted by that node (such as a combination with `Match` or `Deferred`)
 		*/
@@ -145,7 +145,7 @@ namespace Fuse
 				var b = from as T;
 				if (b != null)
 					return b;
-					
+
 				var v = from as Visual;
 				if (v != null)
 				{
@@ -157,7 +157,7 @@ namespace Fuse
 			}
 			return null;
 		}
-		
+
 		public T FindByType<T>() where T : class
 		{
 			if (this is T) return this as T;
@@ -174,14 +174,14 @@ namespace Fuse
 			}
 			return null;
 		}
-		
+
 		[UXLineNumber]
 		/** @hide */
 		public int SourceLineNumber { get; set; }
 		[UXSourceFileName]
 		/** @hide */
 		public string SourceFileName { get; set; }
-		
+
 		ISourceLocation ISourceLocation.SourceNearest
 		{
 			get

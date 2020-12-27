@@ -14,17 +14,17 @@ namespace Fuse.Test
 		private bool _captured = false;
 		private bool _entered = false;
 
-		public bool Pressed 
+		public bool Pressed
 		{
 			get { return _pressed; }
 		}
 
-		public bool Captured 
+		public bool Captured
 		{
 			get { return _captured; }
 		}
 
-		public bool Entered 
+		public bool Entered
 		{
 			get { return _entered; }
 		}
@@ -52,7 +52,7 @@ namespace Fuse.Test
 			_pressed = true;
 			if (_captured)
 				return;
-				
+
 			if (SoftCaptureModeEnabled && args.TrySoftCapture(this, OnCaptureLost))
 			{
 				_captured = true;
@@ -90,7 +90,7 @@ namespace Fuse.Test
 		{
 			if (!_captured)
 				return;
-				
+
 			Fuse.Input.Pointer.ReleaseCapture(this);
 			OnCaptureLost();
 		}

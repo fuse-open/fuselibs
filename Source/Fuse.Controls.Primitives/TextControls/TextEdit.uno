@@ -20,7 +20,7 @@ namespace Fuse.Controls
 		event TextInputActionHandler ActionTriggered;
 		bool IsPassword { get; set; }
 	}
-	
+
 	abstract class TextEdit : TextControl, ITextEditControl
 	{
 		readonly bool _isMultiline;
@@ -47,8 +47,8 @@ namespace Fuse.Controls
 		public bool IsPassword
 		{
 			get { return HasBit(FastProperty2.IsPassword);}
-			set 
-			{ 
+			set
+			{
 				if (IsPassword != value)
 				{
 					SetBit(FastProperty2.IsPassword, value);
@@ -67,12 +67,12 @@ namespace Fuse.Controls
 		public bool IsReadOnly
 		{
 			get { return HasBit(FastProperty2.IsReadOnly);}
-			set 
-			{ 
+			set
+			{
 				if (IsReadOnly != value)
 				{
 					SetBit(FastProperty2.IsReadOnly, value);
-					OnIsReadOnlyChanged();	
+					OnIsReadOnlyChanged();
 				}
 			}
 		}
@@ -85,8 +85,8 @@ namespace Fuse.Controls
 		public TextInputHint InputHint
 		{
 			get { return Get(FastProperty2.InputHint, TextInputHint.Default); }
-			set 
-			{ 
+			set
+			{
 				if (InputHint != value)
 				{
 					Set(FastProperty2.InputHint, value, TextInputHint.Default);
@@ -103,8 +103,8 @@ namespace Fuse.Controls
 		public float4 CaretColor
 		{
 			get { return Get(FastProperty2.CaretColor, float4(0,0,0,1)); }
-			set 
-			{ 
+			set
+			{
 				if (CaretColor != value)
 				{
 					Set(FastProperty2.CaretColor, value, float4(0,0,0,1));
@@ -122,8 +122,8 @@ namespace Fuse.Controls
 		public float4 SelectionColor
 		{
 			get { return Get(FastProperty2.SelectionColor, float4(.6f, .8f, 1.0f, .5f)); }
-			set 
-			{ 
+			set
+			{
 				if (SelectionColor != value)
 				{
 					Set(FastProperty2.SelectionColor, value, float4(.6f, .8f, 1.0f, .5f));
@@ -141,7 +141,7 @@ namespace Fuse.Controls
 		public TextInputActionStyle ActionStyle
 		{
 			get { return Get(FastProperty2.ActionStyle, TextInputActionStyle.Next); }
-			set 
+			set
 			{
 				if (ActionStyle != value)
 				{
@@ -159,8 +159,8 @@ namespace Fuse.Controls
 		public AutoCorrectHint AutoCorrectHint
 		{
 			get { return Get(FastProperty2.AutoCorrectHint, AutoCorrectHint.Default); }
-			set 
-			{ 
+			set
+			{
 				if (AutoCorrectHint != value)
 				{
 					Set(FastProperty2.AutoCorrectHint, value, AutoCorrectHint.Default);
@@ -177,8 +177,8 @@ namespace Fuse.Controls
 		public AutoCapitalizationHint AutoCapitalizationHint
 		{
 			get { return Get(FastProperty2.AutoCapitalizationHint, AutoCapitalizationHint.None); }
-			set 
-			{ 
+			set
+			{
 				if (AutoCapitalizationHint != value)
 				{
 					Set(FastProperty2.AutoCapitalizationHint, value, AutoCapitalizationHint.None);
@@ -195,8 +195,8 @@ namespace Fuse.Controls
 		public string PlaceholderText
 		{
 			get { return Get(FastProperty2.PlaceholderText, ""); }
-			set 
-			{ 
+			set
+			{
 				if (PlaceholderText != value)
 				{
 					Set(FastProperty2.PlaceholderText, value ?? string.Empty, "");
@@ -214,8 +214,8 @@ namespace Fuse.Controls
 		public float4 PlaceholderColor
 		{
 			get { return Get(FastProperty2.PlaceholderColor, float4(0,0,0,1)); }
-			set 
-			{ 
+			set
+			{
 				if (PlaceholderColor != value)
 				{
 					Set(FastProperty2.PlaceholderColor, value, float4(0,0,0,1));
@@ -256,10 +256,10 @@ namespace Fuse.Controls
 			//just assume we have only a single "primary" action for now
 			if (ActionStyle == TextInputActionStyle.Next)
 				Focus.Move(FocusNavigationDirection.Down);
-				
+
 			return true;
 		}
-		
+
 		protected override VisualBounds CalcRenderBounds()
 		{
 			var b = base.CalcRenderBounds();

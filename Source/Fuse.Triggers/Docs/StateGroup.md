@@ -22,7 +22,7 @@ We'll add a @Panel as well, so we have something to animate.
 		</State>
 		<State ux:Name="secondState">
 			<Change thePanel.Color="#00f" />
-		</State>	
+		</State>
 	</StateGroup>
 </Panel>
 ```
@@ -124,7 +124,7 @@ This is done either by calling the `goto(state)` or `gotoNext()` methods on the 
 
 <StateGroup ux:Name="stateGroup">
 	<State ux:Name="firstState">
-		<!-- ... -->	
+		<!-- ... -->
 	</State>
 	<State ux:Name="secondState">
 		<!-- ... -->

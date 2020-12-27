@@ -9,20 +9,20 @@ namespace Fuse.Charting
 		X = 0,
 		Y = 1,
 	}
-	
+
 	public enum PlotAxisLayoutPosition
-	{	
+	{
 		/** Layout is grid-like with each cell positioned in the top-left position of the available area */
 		Cell,
 		/** Layout is directly at the tick point, suitable for using with an Anchor based layout */
 		Anchor,
 	}
-	
+
 	/**
 		Positions elements along an axis' tick locations.
-		
+
 		Consider using @PlotAxis instead to provide labels for the plot. It will use this layout.
-		
+
 		@advanced
 	*/
 	public class PlotAxisLayout : Fuse.Layouts.Layout
@@ -35,12 +35,12 @@ namespace Fuse.Charting
 			{
 				if (_axis == value)
 					return;
-					
+
 				_axis = value;
 				InvalidateLayout();
 			}
 		}
-		
+
 		PlotAxisLayoutPosition _position = PlotAxisLayoutPosition.Cell;
 		public PlotAxisLayoutPosition ContentPosition
 		{
@@ -49,7 +49,7 @@ namespace Fuse.Charting
 			{
 				if (_position == value)
 					return;
-					
+
 				_position = value;
 				InvalidateLayout();
 			}
@@ -59,12 +59,12 @@ namespace Fuse.Charting
 		{
 			get { return Axis == PlotAxisLayoutAxis.X ? 0 : 1; }
 		}
-		
+
 		void OnDataChanged(object s, DataChangedArgs args)
 		{
 			InvalidateLayout();
 		}
-		
+
 		struct CellSizing
 		{
 			public LayoutParams LP;
@@ -72,7 +72,7 @@ namespace Fuse.Charting
 			public float2 Origin;
 			public bool IsVert;
 		}
-		
+
 		int _stepCount;
 		public int StepCount
 		{
@@ -81,12 +81,12 @@ namespace Fuse.Charting
 			{
 				if (_stepCount == value)
 					return;
-					
+
 				_stepCount = Math.Max(1,value);
 				InvalidateLayout();
 			}
 		}
-		
+
 		PlotOrientation _orientation;
 		public PlotOrientation Orientation
 		{
@@ -95,12 +95,12 @@ namespace Fuse.Charting
 			{
 				if (_orientation == value)
 					return;
-					
+
 				_orientation = value;
 				InvalidateLayout();
 			}
 		}
-		
+
 		float _positionBase;
 		public float ContentPositionBase
 		{
@@ -109,30 +109,30 @@ namespace Fuse.Charting
 			{
 				if (_positionBase == value)
 					return;
-					
+
 				_positionBase = value;
 				InvalidateLayout();
 			}
 		}
-		
+
 		float _scale = 1;
 		public float Scale
 		{
 			get { return _scale; }
-			set 
+			set
 			{
 				if (_scale == value)
 					return;
-					
+
 				_scale = value;
 				InvalidateLayout();
 			}
 		}
-		
+
 		CellSizing CellSize(LayoutParams lp)
 		{
 			var nlp = lp.CloneAndDerive();
-			
+
 			var count = StepCount;
 			var step = float2(0);
 			var origin = float2(0);
@@ -147,46 +147,46 @@ namespace Fuse.Charting
 			else
 			{
 				step.X = nlp.Size.X / count;
-				nlp.SetX( step.X * Scale );	
+				nlp.SetX( step.X * Scale );
 			}
-			
+
 			return new CellSizing{ LP = nlp, Step = step, Origin = origin, IsVert = isVert };
 		}
-		
+
 		internal override float2 GetContentSize(Visual container, LayoutParams lp)
 		{
 			var cs = CellSize(lp);
-			
+
 			var max = float2(0);
 			var count = 0;
 			for (var n = container.FirstChild<Visual>(); n != null; n = n.NextSibling<Visual>())
 			{
 				if (!AffectsLayout(n))
 					continue;
-					
+
 				var sz = n.GetMarginSize( cs.LP );
 				max = Math.Max(sz,max);
 				count++;
 			}
-			
+
 			if (cs.IsVert)
 				max.Y = max.Y * count;
 			else
 				max.X = max.X * count;
-			
+
 			return max;
 		}
-		
+
 		internal override void ArrangePaddingBox(Visual container, float4 padding, LayoutParams lp)
 		{
 			if (padding != float4(0))
 				Fuse.Diagnostics.UserWarning( "PlotAxisLayout does not support the `Padding` property", this );
-				
+
 			var cs = CellSize(lp);
 
 			var dataOffset = ContentPositionBase;
 			var posOffset = ContentPosition == PlotAxisLayoutPosition.Cell ? -Math.Abs(cs.Step/2) : float2(0);
-			
+
 			var c = 0;
 			for (var n = container.FirstChild<Visual>(); n != null; n = n.NextSibling<Visual>())
 			{
@@ -199,7 +199,7 @@ namespace Fuse.Charting
 				var axisEntry = GetNodeAxisEntry(n);
 				if (axisEntry != null)
 					axisIndex = axisEntry.ScreenIndex;
-				
+
 				n.ArrangeMarginBox( (axisIndex + dataOffset) * cs.Step + posOffset + cs.Origin, cs.LP );
 				c++;
 			}
@@ -211,11 +211,11 @@ namespace Fuse.Charting
 			var provider = n.ContextParent as Node.ISubtreeDataProvider;
 			if (n == null)
 				return null;
-			
+
 			object o;
 			provider.TryGetDataProvider( n, Node.DataType.Prime, out o );
 			return o as AxisEntry;
 		}
-		
+
 	}
 }

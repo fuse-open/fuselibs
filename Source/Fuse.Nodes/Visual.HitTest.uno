@@ -12,7 +12,7 @@ namespace Fuse
 			LocalPoint,
 			WorldRay,
 		}
-		
+
 		internal virtual HitTestTransformMode HitTestTransform
 		{
 			get
@@ -22,14 +22,14 @@ namespace Fuse
 				return HitTestTransformMode.WorldRay;
 			}
 		}
-		
+
 		public void HitTest(HitTestContext htc)
 		{
-			if (!IsVisible) 
+			if (!IsVisible)
 				return;
 
 			var bounds = HitTestBounds;
-			
+
 			float2 localPoint;
 			bool hit;
 			if (bounds.IsFlat && HitTestTransform == HitTestTransformMode.LocalPoint)
@@ -46,11 +46,11 @@ namespace Fuse
 				localPoint = ViewportHelpers.LocalPlaneIntersection(local);
 
 				hit = bounds.IsFlat ? bounds.ContainsPoint(localPoint) : bounds.IntersectsRay(local);
-			} 
+			}
 
 			if (FuseConfig.VisualHitTestClipping && !hit)
 				return;
-			
+
 			var old = htc.PushLocalPoint(localPoint);
 			OnHitTest(htc);
 			htc.PopLocalPoint(old);
@@ -65,7 +65,7 @@ namespace Fuse
 					zOrder[i].HitTest(htc);
 			}
 		}
-		
+
 		public Visual GetHitWindowPoint(float2 windowPoint)
 		{
 			var htr = new HitTestRecord();
@@ -76,7 +76,7 @@ namespace Fuse
 			HitTest(htc);
 			return htr.Visual;
 		}
-		
+
 		class HitTestRecord
 		{
 			public Visual Visual;
@@ -86,7 +86,7 @@ namespace Fuse
 					Visual = result.HitObject;
 			}
 		}
-		
+
 		protected  void InvalidateHitTestBounds()
 		{
 			var p = this;
@@ -96,10 +96,10 @@ namespace Fuse
 				p = p.Parent;
 			}
 		}
-		
+
 		VisualBounds _hitTestBoundsCache;
 		bool _isHitTestBoundsCacheValid;
-		
+
 		public virtual VisualBounds HitTestBounds
 		{
 			get
@@ -108,19 +108,19 @@ namespace Fuse
 					return _hitTestBoundsCache;
 
 				var nb = VisualBounds.Empty;
-				
+
 				if (IsContextEnabled && IsVisible)
 				{
 					nb = nb.Merge( HitTestLocalBounds );
 					nb = nb.Merge( HitTestChildrenBounds );
 				}
-				
+
 				_hitTestBoundsCache = nb;
 				_isHitTestBoundsCacheValid = true;
 				return nb;
 			}
 		}
-		
+
 		protected virtual VisualBounds HitTestLocalBounds
 		{
 			get
@@ -128,7 +128,7 @@ namespace Fuse
 				return VisualBounds.Empty;
 			}
 		}
-		
+
 		protected virtual VisualBounds HitTestChildrenBounds
 		{
 			get

@@ -20,7 +20,7 @@ namespace Fuse.Drawing
 			}
 		}
 	}
-	
+
 	class SVGPathParser
 	{
 		Token _headToken;
@@ -35,14 +35,14 @@ namespace Fuse.Drawing
 			_data = data;
 			_segments = new LineSegments(segments);
 		}
-		
+
 		public void Parse()
 		{
 			_headToken = new Token(-1, false);
 			_prevToken = _headToken.Next = new Token(0, false);
 			bool wasExponent = false; //rough fix for https://github.com/Outracks/RealtimeStudio/issues/1313
 			_tokenHasPoint = false;
-			
+
 			for (int i =0; i<_data.Length; i++)
 			{
 				var c = _data[i];
@@ -133,23 +133,23 @@ namespace Fuse.Drawing
 			//implied lineTo following move
 			if (prev == 'm' || prev == 'M')
 			{
-				if (c == 'm')	
+				if (c == 'm')
 					c = 'l';
 				else if (c == 'M')
 					c = 'L';
 			}
-			
+
 			if (!_hasCurrentPoint && c != 'm' && c != 'M')
 			{
-				Fuse.Diagnostics.UserError( "Path data must start with a move 'M' or 'm' operation: " 
+				Fuse.Diagnostics.UserError( "Path data must start with a move 'M' or 'm' operation: "
 					+ _data, this );
 				//behavior is undefined at this point (nothing will crash, just may not draw anything valid)
 			}
 			_hasCurrentPoint = true;
-			
+
 			switch (c)
 			{
-				case 'M': 
+				case 'M':
 					_segments.MoveTo(ReadFloat2());
 					break;
 				case 'C':
@@ -171,7 +171,7 @@ namespace Fuse.Drawing
 				case 'Z':
 					_segments.ClosePath();
 					break;
-				case 'L': 
+				case 'L':
 					_segments.LineTo(ReadFloat2());
 					break;
 				case 'H':
@@ -229,13 +229,13 @@ namespace Fuse.Drawing
 				case 'z':
 					_segments.ClosePath();
 					break;
-				case 'l': 
+				case 'l':
 					_segments.LineToRel(ReadFloat2());
 					break;
-				case 'h': 
+				case 'h':
 					_segments.HorizLineToRel(ReadFloat());
 					break;
-				case 'v': 
+				case 'v':
 					_segments.VertLineToRel(ReadFloat());
 					break;
 				case 'a':
@@ -265,10 +265,10 @@ namespace Fuse.Drawing
 					break;
 				}
 			}
-			
+
 			_hasPrevControlC = false;
 			_hasPrevControlQ = false;
-			
+
 			if (c == 'q' || c == 'Q' || c == 't' || c == 'T')
 			{
 				//value set in switch
@@ -296,7 +296,7 @@ namespace Fuse.Drawing
 			_token = _token.Next;
 			return res;
 		}
-		
+
 		float2 ReadFloat2()
 		{
 			var a = ReadFloat();
@@ -309,7 +309,7 @@ namespace Fuse.Drawing
 	{
 		public int First;
 		public int Last;
-		
+
 		public Token Next;
 
 		public bool HasAction;

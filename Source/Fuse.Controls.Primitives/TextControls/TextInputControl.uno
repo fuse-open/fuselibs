@@ -20,7 +20,7 @@ namespace Fuse.Controls
 
 	public delegate void TextInputActionHandler(object sender, TextInputActionArgs args);
 
-	/**	
+	/**
 		Base class for text editing controls.
 	*/
 	public abstract class TextInputControl: LayoutControl, IValue<string>
@@ -42,7 +42,7 @@ namespace Fuse.Controls
 		{
 			Focus.GiveTo(this);
 		}
-		
+
 		Visual FocusDelegator()
 		{
 			return _editor;
@@ -75,22 +75,22 @@ namespace Fuse.Controls
 		}
 
 		[UXOriginSetter("SetValue"), UXContent]
-		public string Value 
-		{ 
-			get { return _editor.Value; } 
+		public string Value
+		{
+			get { return _editor.Value; }
 			set { SetValue(value, this); }
 		}
-		
-		public void SetValue(string v, IPropertyListener origin) 
-		{ 
-			_editor.SetValue(v, origin); 
-			
+
+		public void SetValue(string v, IPropertyListener origin)
+		{
+			_editor.SetValue(v, origin);
+
 			//if we're the origin force the property changed event since we won't get the OnPropertyChanged
 			//callback from the editor
 			if (origin == this)
 				OnPropertyChanged("Value", this);
 		}
-		
+
 		public event ValueChangedHandler<string> ValueChanged
 		{
 			add { _editor.ValueChanged += value; }

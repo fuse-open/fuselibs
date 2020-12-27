@@ -2,7 +2,7 @@ using Uno;
 
 namespace Fuse.Designer
 {
-	
+
 	extern(Designer) public static class UnoHostInterface
 	{
 

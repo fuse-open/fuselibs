@@ -14,7 +14,7 @@ namespace Fuse.Layouts
 		internal override float2 GetContentSize(Visual container, LayoutParams lp)
 		{
 			var size = GetElementsSize(container, lp);
-			
+
 			/*
 			bool recalc = false;
 			if (!fillSet.HasFlag(Size_Flags.X))
@@ -29,11 +29,11 @@ namespace Fuse.Layouts
 				fillSet |= Size_Flags.Y;
 				recalc = true;
 			}
-			
+
 			if (recalc)
 				size = GetElementsSize(container, fillSize, fillSet);
 			*/
-				
+
 			return size;
 		}
 
@@ -61,7 +61,7 @@ namespace Fuse.Layouts
 				}
 			}
 		}
-		
+
 		internal override LayoutDependent IsMarginBoxDependent( Visual child )
 		{
 			//only if the element itself is dependent

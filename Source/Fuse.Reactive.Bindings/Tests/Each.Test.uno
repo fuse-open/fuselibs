@@ -63,7 +63,7 @@ namespace Fuse.Reactive.Test
 			}
 		}
 
-		
+
 
 		[Test]
 		public void DoubleSubscribe()
@@ -115,27 +115,27 @@ namespace Fuse.Reactive.Test
 					root.StepFrameJS();
 					Assert.AreEqual(baseCount+1,e.C1.VisualChildCount);
 					Assert.AreEqual("" + (step+5), (e.C1.GetVisualChildImpl(5) as Text).Value);
-					
+
 					e.CallRemove.Perform();
 					root.StepFrameJS();
 					Assert.AreEqual(baseCount,e.C1.VisualChildCount);
-					
+
 					e.CallRemoveAt.Perform();
 					root.StepFrameJS();
 					Assert.AreEqual(baseCount-1,e.C1.VisualChildCount);
-					
+
 					//two removal + one addiiton
 					baseCount--;
 					//two removals at location 5, so id goes up by two
 					step+=2;
 				}
-				
+
 				e.CallClear.Perform();
 				root.StepFrameJS();
 				Assert.AreEqual(0,e.C1.VisualChildCount);
 			}
 		}
-		
+
 		[Test]
 		/**
 			Ensures children are added in the correct location
@@ -146,18 +146,18 @@ namespace Fuse.Reactive.Test
 			using (var root = TestRootPanel.CreateWithChild(e))
 			{
 				root.StepFrameJS();
-				
+
 				Assert.AreEqual(4,e.C1.VisualChildCount);
 				Assert.AreEqual(e.C2, e.C1.GetVisualChildImpl(0));
 				Assert.AreEqual(new Selector("Q0"), e.C1.GetVisualChildImpl(1).Name);
 				Assert.AreEqual(new Selector("Q1"), e.C1.GetVisualChildImpl(2).Name);
 				Assert.AreEqual(e.C3, e.C1.GetVisualChildImpl(3));
-				
+
 				e.CallRemove.Perform();
 				e.CallRemove.Perform();
 				root.StepFrameJS();
 				Assert.AreEqual(2,e.C1.VisualChildCount);
-				
+
 				e.CallAdd.Perform();
 				root.StepFrameJS();
 				Assert.AreEqual(3,e.C1.VisualChildCount);
@@ -166,7 +166,7 @@ namespace Fuse.Reactive.Test
 				Assert.AreEqual(e.C3, e.C1.GetVisualChildImpl(2));
 			}
 		}
-		
+
 		[Test]
 		//variation on https://github.com/fusetools/fuselibs-private/issues/2802
 		public void EachEach()
@@ -176,17 +176,17 @@ namespace Fuse.Reactive.Test
 			{
 				root.StepFrameJS();
 				Assert.AreEqual( "G0-0,G0-1,G1-0,G1-1", GetText(e));
-				
+
 				e.CallAdd.Perform();
 				root.StepFrameJS();
 				Assert.AreEqual( "G0-0,G0-1,G1-0,G1-1,G2-0,G2-1", GetText(e));
-				
+
 				e.CallRemove1.Perform();
 				root.StepFrameJS();
 				Assert.AreEqual( "G0-0,G0-1,G2-0,G2-1", GetText(e));
 			}
 		}
-		
+
 		[Test]
 		/* Tests changes in the Limit/Offset properties */
 		public void EachWindowBasic()
@@ -224,7 +224,7 @@ namespace Fuse.Reactive.Test
 				Assert.AreEqual( 2, e.E.WindowItemsCount );
 			}
 		}
-		
+
 		[Test]
 		/* Tests changes in the Observable while using the Limit/Offset properties */
 		public void EachWindowMod()
@@ -281,9 +281,9 @@ namespace Fuse.Reactive.Test
 				Assert.AreEqual( "1,2", GetText(e.C) );
 			}
 		}
-		
+
 		[Test]
-		/* Tests Each with Limit and Count. Since Count doesn't expose an index we can't actually tell 
+		/* Tests Each with Limit and Count. Since Count doesn't expose an index we can't actually tell
 		if the "correct" items are used. This is thus just to ensure nothing breaks. */
 		public void EachLimitCount()
 		{
@@ -304,7 +304,7 @@ namespace Fuse.Reactive.Test
 				Assert.AreEqual( "*,*,*", GetText(e) );
 			}
 		}
-		
+
 		[Test]
 		public void Issue3312()
 		{
@@ -315,7 +315,7 @@ namespace Fuse.Reactive.Test
 				Assert.AreEqual( "Jane,Alex", GetText(e.P1));
 			}
 		}
-		
+
 		[Test]
 		public void Issue3430()
 		{
@@ -324,12 +324,12 @@ namespace Fuse.Reactive.Test
 			{
 				root.StepFrameJS();
 				Assert.AreEqual("1,2", GetText(e.S));
-				
+
 				e.increment.Perform();
 				root.StepFrameJS();
 				Assert.AreEqual("1,2,1,2,3,4,5", e.OC.JoinValues());
 				Assert.AreEqual("1,2,1,2,3,4,5", GetText(e.S));
-				
+
 				//removeRange had the same underlying problem
 				e.decrement.Perform();
 				root.StepFrameJS();
@@ -337,7 +337,7 @@ namespace Fuse.Reactive.Test
 				Assert.AreEqual("1,2,4,5", GetText(e.S));
 			}
 		}
-		
+
 		[Test]
 		public void Fail()
 		{
@@ -346,17 +346,17 @@ namespace Fuse.Reactive.Test
 			{
 				root.StepFrameJS();
 				Assert.AreEqual("0,1", GetText(e.C));
-				
+
 				e.CallFail.Perform();
 				root.StepFrameJS();
 				Assert.AreEqual("fail", GetText(e.C));
-				
+
 				e.CallRestore.Perform();
 				root.StepFrameJS();
 				Assert.AreEqual("R0,R1", GetText(e.C));
 			}
 		}
-		
+
 		[Test]
 		//tests an issue with Offset going beyond end of data
 		public void Offset()
@@ -368,7 +368,7 @@ namespace Fuse.Reactive.Test
 				Assert.AreEqual("3,4,5,6,7,8,9", GetText(e));
 			}
 		}
-		
+
 		[Test]
 		public void FunctionBasic()
 		{
@@ -379,7 +379,7 @@ namespace Fuse.Reactive.Test
 				Assert.AreEqual("1-1-0,2-2-1,3-3-2", GetText(e));
 			}
 		}
-		
+
 		[Test]
 		//ensure values are updated as each items change
 		public void FunctionOrder()
@@ -389,21 +389,21 @@ namespace Fuse.Reactive.Test
 			{
 				root.StepFrameJS();
 				Assert.AreEqual("0-0,1-1", GetText(e));
-				
+
 				e.CallInsert.Perform();
 				root.StepFrameJS();
 				Assert.AreEqual("2-0,0-1,1-2", GetText(e));
-				
+
 				e.CallRemove.Perform();
 				root.StepFrameJS();
 				Assert.AreEqual("2-0,1-1", GetText(e));
-				
+
 				e.CallReplace.Perform();
 				root.StepFrameJS();
 				Assert.AreEqual("3-0", GetText(e));
 			}
 		}
-		
+
 		[Test]
 		//nested Each lookup
 		public void FunctionArg()
@@ -424,22 +424,22 @@ namespace Fuse.Reactive.Test
 			{
 				root.StepFrameJS();
 				var z0 = GetZChildren(e.s);
-				
+
 				e.e.Offset = 1;
 				root.StepFrame();
 				var z1 = GetZChildren(e.s);
 				Assert.AreEqual("5,4,3,2,1", GetDudZ(e.s));
-				
+
 				Assert.AreEqual(z0[0],z1[1]);
 				Assert.AreEqual(z0[4],z1[0]); //node actually reused
-				
+
 				//ensure layout was invalidated
 				Assert.AreEqual(float2(0,40),(z1[0] as Element).ActualPosition);
 				Assert.AreEqual(float2(0,0),(z1[4] as Element).ActualPosition);
 				Assert.IsTrue(e.e.TestIsAvailableClean);
 			}
 		}
-		
+
 		[Test]
 		public void ReuseRemove()
 		{
@@ -448,13 +448,13 @@ namespace Fuse.Reactive.Test
 			{
 				root.StepFrameJS();
 				Assert.AreEqual("9,8,7,6,5,4,3,2,1,0", GetDudZ(e.s));
-		
+
 				e.Remove.Perform();
 				root.StepFrameJS();
 				Assert.AreEqual("9,8,7,6,5,4,3,1,0", GetDudZ(e.s));
 			}
 		}
-		
+
 		[Test]
 		//same setup as Reuse but ensures the nodes are not reused (Reuse="None", as default)
 		public void ReuseNone()
@@ -464,18 +464,18 @@ namespace Fuse.Reactive.Test
 			{
 				root.StepFrameJS();
 				var z0 = GetZChildren(e.s);
-				
+
 				e.e.Offset = 1;
 				root.StepFrame();
 				var z1 = GetZChildren(e.s);
 				Assert.AreEqual("5,4,3,2,1", GetDudZ(e.s));
-				
+
 				Assert.AreEqual(z0[0],z1[1]);
 				Assert.AreNotEqual(z0[4],z1[0]); //node not reused
 				Assert.IsTrue(e.e.TestIsAvailableClean);
 			}
 		}
-		
+
 		[Test]
 		public void ReuseTemplates()
 		{
@@ -485,12 +485,12 @@ namespace Fuse.Reactive.Test
 				root.StepFrameJS();
 				var z0 = GetZChildren(e.s);
 				Assert.AreEqual("107,6,105,4", GetDudZ(e.s));
-				
+
 				e.e.Offset = 2;
 				root.StepFrame();
 				var z1 = GetZChildren(e.s);
 				Assert.AreEqual("105,4,103,2", GetDudZ(e.s));
-				
+
 				Assert.AreEqual(z0[3],z1[1]);
 				Assert.AreEqual(z0[0],z1[2]);//reuse
 				Assert.AreEqual(z0[1],z1[3]);//reuse
@@ -505,7 +505,7 @@ namespace Fuse.Reactive.Test
 				list[i] = root.GetZOrderChild(i);
 			return list;
 		}
-		
+
 		[Test]
 		//index() retains the previous value if the item is removed, or rather it doesn't update if there is no value
 		public void FunctionRemove()
@@ -515,7 +515,7 @@ namespace Fuse.Reactive.Test
 			{
  				root.StepFrameJS();
  				Assert.AreEqual("0-0,1-1,2-2", GetText(e));
- 				
+
  				e.CallReplace.Perform();
  				root.StepFrameJS();
  				//it's not certain if the new element is guaranteed to be in this place
@@ -523,7 +523,7 @@ namespace Fuse.Reactive.Test
  				//Assert.AreEqual("0-0,1-1,2-2,3-0", GetText(e));
 			}
 		}
-		
+
 		[Test]
 		//there's no way to test this feature yet
 		[Ignore("https://github.com/fusetools/fuselibs-private/issues/4199")]
@@ -536,7 +536,7 @@ namespace Fuse.Reactive.Test
  				Assert.AreEqual("0,1,2", GetText(e));
 			}
 		}
-		
+
 		[Test]
 		//any node inside the Each will work for lookup
 		public void FunctionSearch()
@@ -548,7 +548,7 @@ namespace Fuse.Reactive.Test
  				Assert.AreEqual("0,1,2", GetRecursiveText(e));
 			}
 		}
-		
+
 		[Test]
 		//ensure ordering when items are added/removed at the same time
 		public void RemoveAdd()
@@ -558,21 +558,21 @@ namespace Fuse.Reactive.Test
 			{
 				root.StepFrameJS();
 				Assert.AreEqual("0,1,2,3,4,5,6,7,8,9", GetText(e));
-				
+
 				e.CallStep1.Perform();
 				root.StepFrameJS();
 				Assert.AreEqual("0,1,3,a2,a1,5,6,7,8,9", GetText(e));
-				
+
 				e.CallStep2.Perform();
 				root.StepFrameJS();
 				Assert.AreEqual("0,1,3,a2,a1,5,6,b1,8,9", GetText(e));
-				
+
 				e.CallStep3.Perform();
 				root.StepFrameJS();
 				Assert.AreEqual("c2", GetText(e));
 			}
 		}
-		
+
 		[Test]
 		public void IdentityKey()
 		{
@@ -582,31 +582,31 @@ namespace Fuse.Reactive.Test
 				root.StepFrameJS();
 				var z0 = GetZChildren(e.s);
 				Assert.AreEqual("30,20,10", GetDudZ(e.s));
-				
+
 				e.CallReplace.Perform();
 				root.StepFrameJS();
 				var z1 = GetZChildren(e.s);
 				Assert.AreEqual("30,21,10",GetDudZ(e.s));
-				
+
 				for (int i=0; i < z0.Length; ++i)
 					Assert.AreEqual( z0[i], z1[i] );
 				Assert.IsTrue(e.e.TestIsAvailableClean);
-				
+
 				e.CallReplaceAll.Perform();
 				root.StepFrameJS();
 				var z2 = GetZChildren(e.s);
 				Assert.AreEqual("32,12,22",GetDudZ(e.s));
-				
+
 				Assert.AreEqual( z0[0], z2[0] );
 				Assert.AreEqual( z0[1], z2[2] );
 				Assert.AreEqual( z0[2], z2[1] );
 				Assert.IsTrue(e.e.TestIsAvailableClean);
-				
+
 				e.CallClear.Perform();
 				root.StepFrameJS();
 			}
 		}
-		
+
 		[Test]
 		public void IdentityKeyString()
 		{
@@ -616,31 +616,31 @@ namespace Fuse.Reactive.Test
 				root.StepFrameJS();
 				var z0 = GetZChildren(e.s);
 				Assert.AreEqual("three,two,one", GetDudZ(e.s));
-				
+
 				e.CallReplace.Perform();
 				root.StepFrameJS();
 				var z1 = GetZChildren(e.s);
 				Assert.AreEqual("three,two,one",GetDudZ(e.s));
-				
+
 				for (int i=0; i < z0.Length; ++i)
 					Assert.AreEqual( z0[i], z1[i] );
 				Assert.IsTrue(e.e.TestIsAvailableClean);
-				
+
 				e.CallReplaceAll.Perform();
 				root.StepFrameJS();
 				var z2 = GetZChildren(e.s);
 				Assert.AreEqual("three,one,two",GetDudZ(e.s));
-				
+
 				Assert.AreEqual( z0[0], z2[0] );
 				Assert.AreEqual( z0[1], z2[2] );
 				Assert.AreEqual( z0[2], z2[1] );
 				Assert.IsTrue(e.e.TestIsAvailableClean);
-				
+
 				e.CallClear.Perform();
 				root.StepFrameJS();
 			}
 		}
-		
+
 		[Test]
 		public void IdentityKeyOrder()
 		{
@@ -650,35 +650,35 @@ namespace Fuse.Reactive.Test
 				root.StepFrameJS();
 				var z0 = GetZChildren(e.s);
 				Assert.AreEqual("50,40,30,20,10", GetDudZ(e.s));
-			
+
 				e.CallReplaceAll1.Perform();
 				root.StepFrameJS();
 				var z1 = GetZChildren(e.s);
 				Assert.AreEqual("51,40,31,20,11", GetDudZ(e.s)); //40,20 linger with RemovingAnimation
-				
+
 				for (int i=0; i< 5; ++i)
 					Assert.AreEqual(z0[i],z1[i]);
-				
+
 				//clear up removing ones
 				root.StepFrame(1.1f);
 				Assert.AreEqual( 3, GetZChildren(e.s).Length );
 				Assert.AreEqual("51,31,11", GetDudZ(e.s));
-				
+
 				e.CallReplaceAll2.Perform();
 				root.StepFrameJS();
 				var z2 = GetZChildren(e.s);
 				Assert.AreEqual("82,52,72,32,11,62", GetDudZ(e.s)); //11 lingers (...,62,11 is another acceptble order)
-				
+
 				Assert.AreEqual(z0[0],z2[1]);
 				Assert.AreEqual(z0[2],z2[3]);
-				
+
 				//clear up removing ones
 				root.StepFrame(1.1f);
 				Assert.AreEqual( 5, GetZChildren(e.s).Length );
 				Assert.AreEqual("82,52,72,32,62", GetDudZ(e.s));
 			}
 		}
-		
+
 		[Test]
 		//ensure templates are updated if a matching object is used. Unfortunately this doesn't actually test
 		//the short path in `Instance.TryUpdateAt` is actually called.
@@ -690,23 +690,23 @@ namespace Fuse.Reactive.Test
 				root.StepFrameJS();
 				var z0 = GetZChildren(e);
 				Assert.AreEqual("140,30,120,10", GetDudZ(e));
-				
+
 				e.CallReplace1.Perform();
 				root.StepFrameJS();
 				var z1 = GetZChildren(e);
 				Assert.AreEqual("140,30,121,10", GetDudZ(e));
 				Assert.AreEqual(z0[2],z1[2]);
-				
+
 				e.CallReplace2.Perform();
 				root.StepFrameJS();
 				var z2 = GetZChildren(e);
 				Assert.AreEqual("140,30,22,10", GetDudZ(e));
 				Assert.AreNotEqual(z0[2],z2[2]);
-				
+
 				Assert.IsTrue(e.each.TestIsAvailableClean);
 			}
 		}
-		
+
 		[Test]
 		//ensure updated observables reflect their data
 		public void Observable()
@@ -717,7 +717,7 @@ namespace Fuse.Reactive.Test
 				root.StepFrameJS();
 				var z0 = GetZChildren(e);
 				Assert.AreEqual("30,20,10", GetDudZ(e));
-				
+
 				e.CallUpdate.Perform();
 				root.StepFrameJS();
 				var z1 = GetZChildren(e);
@@ -725,7 +725,7 @@ namespace Fuse.Reactive.Test
 				Assert.AreEqual(z0[1], z1[1]);
 			}
 		}
-		
+
 		[Test]
 		//catches probelms with not having any templates, or having no matching templates
 		public void ZeroTemplates()
@@ -734,12 +734,12 @@ namespace Fuse.Reactive.Test
 			using (var root = TestRootPanel.CreateWithChild(e))
 			{
 				root.StepFrameJS();
-				
+
 				Assert.AreEqual( 0, GetZChildren(e.a).Length );
 				Assert.AreEqual( 0, GetZChildren(e.b).Length );
 			}
 		}
-		
+
 		[Test]
 		public void DefaultTemplates()
 		{
@@ -754,7 +754,7 @@ namespace Fuse.Reactive.Test
 				Assert.AreEqual( "A,A", GetDudZ(e.f));
 			}
 		}
-		
+
 		[Test]
 		public void Multiple()
 		{
@@ -764,7 +764,7 @@ namespace Fuse.Reactive.Test
 				Assert.AreEqual( "1,2,1,2", GetText(e));
 			}
 		}
-		
+
 		[Test]
 		//change TemplateSource after rooting
 		public void TemplateSource()
@@ -773,21 +773,21 @@ namespace Fuse.Reactive.Test
 			using (var root = TestRootPanel.CreateWithChild(e))
 			{
 				Assert.AreEqual( "A", GetDudZ(e.tb));
-				
+
 				e.each.TemplateSource = e.tb;
 				root.PumpDeferred();
 				Assert.AreEqual( "B", GetDudZ(e.tb));
-				
+
 				e.each.TemplateSource = e.tc;
 				root.PumpDeferred();
 				Assert.AreEqual( "C", GetDudZ(e.tb));
-				
+
 				e.each.TemplateSource = null;
 				root.PumpDeferred();
 				Assert.AreEqual( "A", GetDudZ(e.tb));
 			}
 		}
-		
+
 		[Test]
 		public void ReplaceWithLess()
 		{
@@ -797,7 +797,7 @@ namespace Fuse.Reactive.Test
 				root.StepFrameJS();
 
 				Assert.AreEqual(3*2+1, e.grid.Children.Count);
-				
+
 				e.monthsToMaturitySlider.Value = 12;
 				root.StepFrameJS();
 				Assert.AreEqual(12*2+1, e.grid.Children.Count);
@@ -815,7 +815,7 @@ namespace Fuse.Reactive.Test
 				Assert.AreEqual(50*2+1, e.grid.Children.Count);
 			}
 		}
-		
+
 		[Test]
 		public void MatchKey()
 		{
@@ -823,15 +823,15 @@ namespace Fuse.Reactive.Test
 			using (var root = TestRootPanel.CreateWithChild(e))
 			{
 				root.StepFrameJS();
-				
+
 				Assert.AreEqual( "O4,T3,O2,T1,O0", GetDudZ(e.s) );
-				
+
 				e.each.MatchKey = "alt";
 				root.PumpDeferred();
 				Assert.AreEqual( "B4,A3,B2,A1,B0", GetDudZ(e.s) );
 			}
 		}
-		
+
 		[Test]
 		public void ObservableMatchKey()
 		{
@@ -840,13 +840,13 @@ namespace Fuse.Reactive.Test
 			{
 				root.StepFrameJS(1);
 				Assert.AreEqual( "A3,B2,A1", GetDudZ(e));
-				
+
 				e.callUpdate.Perform();
 				root.StepFrameJS();
 				Assert.AreEqual( "A3,C4,A1", GetDudZ(e));
 			}
 		}
-		
+
 		[Test]
 		public void ObservableChange()
 		{
@@ -855,13 +855,13 @@ namespace Fuse.Reactive.Test
 			{
 				root.StepFrameJS();
 				Assert.AreEqual( "1-*", GetDudZ(e));
-				
+
 				e.callUpdate.Perform();
 				root.StepFrameJS();
 				Assert.AreEqual( "*-2", GetDudZ(e));
 			}
 		}
-		
+
 		[Test]
 		//templates for missing/null items should not be created
 		public void Null()
@@ -871,19 +871,19 @@ namespace Fuse.Reactive.Test
 			{
 				root.StepFrameJS();
 				Assert.AreEqual( null, e.FirstChild<DudElement>() );
-				
+
 				e.callSecond.Perform();
 				root.StepFrameJS();
 				Assert.AreEqual( "A2", GetDudZ(e) );
-				
+
 				e.callClear.Perform();
 				root.StepFrameJS();
 				Assert.AreEqual( null, e.FirstChild<DudElement>() );
-				
+
 				e.callBoth.Perform();
 				root.StepFrameJS();
 				Assert.AreEqual( "A3,B4", GetDudZ(e) );
-				
+
 				e.callClear.Perform();
 				root.StepFrameJS();
 				Assert.AreEqual( null, e.FirstChild<DudElement>() );

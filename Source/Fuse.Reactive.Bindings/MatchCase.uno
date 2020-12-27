@@ -5,7 +5,7 @@ using Uno.Collections;
 namespace Fuse.Reactive
 {
 	/** Compares a value with a set of constants, and activates/deactivates visual trees associated with those constants.
-		
+
 		`Match` (in conjunction with @Case) is useful when you want to display one of a number of different visuals
 		based on a certain value. You can think of it like pattern matching and/or switch/case constructs from your
 		favorite programming language.
@@ -67,7 +67,7 @@ namespace Fuse.Reactive
 
 		void IObserver.OnClear()
 		{
-			
+
 		}
 
 		void IObserver.OnAdd(object addedValue)
@@ -252,12 +252,12 @@ namespace Fuse.Reactive
 					}
 
 				}
-				
+
 				Parent.InsertNodesAfter(this, _elements.GetEnumerator());
 			}
 			_oldCase = c;
 		}
-		
+
 		internal override Node GetLastNodeInGroup()
 		{
 			if (_elements.Count == 0)
@@ -268,28 +268,28 @@ namespace Fuse.Reactive
 
 	[UXContentMode("Template")]
 	/** Specifies a constant and an associated visual tree that will be used with @Match.
-		
+
 		See @Match for more info.
 	*/
 	public class Case
 	{
 		Match _match;
 		bool IsRooted { get { return _match != null; } }
-		
+
 		internal void Root(Match match)
 		{
 			if (_match != null) throw new Exception("Case already has a Match");
 			_match = match;
-			
+
 			if (_factories != null)
 				_factories.Subscribe(OnFactoriesChanged, OnFactoriesChanged);
 		}
-		
+
 		internal void Unroot()
 		{
 			if (_factories != null)
 				_factories.Unsubscribe();
-				
+
 			_match = null;
 		}
 

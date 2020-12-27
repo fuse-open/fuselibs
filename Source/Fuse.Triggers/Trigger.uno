@@ -16,7 +16,7 @@ namespace Fuse.Triggers
 		Never,
 		/** Only changes during the rooting frame are handled as bypass, without special exceptions. */
 		Rooting,
-		
+
 		/** Deprecated: 2017-07-21
 			For possible backwards compatibilty, like Standard but excludes the check for layout bypass.
 			This mode should not be used. */
@@ -36,21 +36,21 @@ namespace Fuse.Triggers
 		/** Something is seeking backward on the trigger */
 		SeekForward,
 	}
-	
+
 	/*
 		There are a series of high-level actions, such as `Activate` and their implementations `DirectActivate`
 		and `BypassActivate`. In most cases the high-level function should be called (ex. `activate`). It
 		will appropriately bypass, or progress normally, base on the rooting and bypass state of the trigger.
 		They can also safely be called at any time (even when not rooted), but they will just be ignored in
 		that case (on the expectation that OnRooted will call them again correctly).
-		
+
 		The `Direct...` and `Bypass...` functions should be called only under special circumstances. They must
 		be properly guarded for rooting and bypass state -- thus can lead to exceptions if not called correctly.
 	*/
 
 	/**
 		Triggers are the main tools for interaction response, transitions and animation in Fuse.
-		
+
 		@topic Triggers and animation
 
 		Triggers are objects that can be used in UX markup that detect events, gestures, other user input or
@@ -69,7 +69,7 @@ namespace Fuse.Triggers
 		> See the [remarks section](#section-remarks) at the bottom of this page for more information
 
 		## Available triggers in Fuse
-		
+
 		[subclass Fuse.Triggers.Trigger]
 
 		@remarks Docs/TriggersRemarks.md
@@ -83,24 +83,24 @@ namespace Fuse.Triggers
 		TriggerAnimation _animation;
 		List<TriggerAction> _actions;
 		TriggerPlayState _lastPlayState = TriggerPlayState.Stopped;
-		
+
 		//special mode for Timeline to be in "started" state at Progress==0
 		internal bool _startAtZero = false;
-		
+
 		TriggerBypassMode _bypass = TriggerBypassMode.Standard;
 		/**
-			Specifies how changes in state are handled while initializing and rooting the trigger. 
+			Specifies how changes in state are handled while initializing and rooting the trigger.
 
-			In some cases, a trigger is rooted to the visual tree while in its active state. In these cases, 
+			In some cases, a trigger is rooted to the visual tree while in its active state. In these cases,
 			one could expect one of two things to happen;
 			  1. the animation plays from the start as soon as the trigger is rooted.
 			  2. the trigger jumps instantly to the end of the animation.
 
-			One can use the `Bypass` property to differentiate between these. The default is `Bypass="Standard"`, 
+			One can use the `Bypass` property to differentiate between these. The default is `Bypass="Standard"`,
 			which corresponds to case 2. If one wants the effect of case 2, one can use `Bypass="Never"` instead.
 		*/
-		public TriggerBypassMode Bypass 
-		{ 
+		public TriggerBypassMode Bypass
+		{
 			get { return _bypass; }
 			set
 			{
@@ -138,11 +138,11 @@ namespace Fuse.Triggers
 			Specifies a multiplier to the elapsed time for animation playback.
 		*/
 		public double TimeMultiplier
-		{	
+		{
 			get { return Animation.TimeMultiplier; }
 			set { Animation.TimeMultiplier = value; }
 		}
-		
+
 		/**
 			Stretches the duration of the animation to fill up this period of time.
 		*/
@@ -156,7 +156,7 @@ namespace Fuse.Triggers
 			Specifies an explicit backward animation instead of using the implied backward animation
 			of the animators involved. Be aware that actions are not part of the animation.
 
-			Triggers normally use the same animators when deactivating as they do when they activate. There are however 
+			Triggers normally use the same animators when deactivating as they do when they activate. There are however
 			animations that require a different set of animators when animating back from the active state. For this purpose
 			one can bind a new set of animators to the `BackwardAnimation` property like so:
 
@@ -170,7 +170,7 @@ namespace Fuse.Triggers
 					</WhilePressed>
 				</Panel>
 
-			In this example, the @Panel only rotates when pressed. When the pointer is released, it does not animate back. 
+			In this example, the @Panel only rotates when pressed. When the pointer is released, it does not animate back.
 			Note that the effect of the animators are still reversed. The only difference is that they loose their duration.
 		*/
 		public TriggerAnimation BackwardAnimation
@@ -178,7 +178,7 @@ namespace Fuse.Triggers
 			get { return Animation.Backward; }
 			set { Animation.Backward = value; }
 		}
-		
+
 		/**
 			`true` if there is an explicit backward animation.
 		*/
@@ -186,7 +186,7 @@ namespace Fuse.Triggers
 		{
 			get { return Animation.HasBackward; }
 		}
-		
+
 		/**
 			If there is a transition between forward/backward playback and two timeilnes are being
 			used (implicit or explicit) this specifies the cross-fade time.
@@ -232,7 +232,7 @@ namespace Fuse.Triggers
 
 		/** The current progress of the trigger.
 
-			Triggers are defined over a progress range from 0...1. How a trigger plays over its progress depends on the 
+			Triggers are defined over a progress range from 0...1. How a trigger plays over its progress depends on the
 			type of trigger. A trigger at 0 progress is completely deactivated. Content added via the trigger is removed at this time.
 			Any progress above 0 will have the content added. Certain animators may delay the removal of content until their animation is completed.
 		*/
@@ -271,12 +271,12 @@ namespace Fuse.Triggers
 					AddDeferredAction(action);
 			}
 		}
-		
+
 		class DeferredItem
 		{
 			public TriggerAction Action;
 			public Node Node;
-			
+
 			public void Perform()
 			{
 				Action.PerformFromNode(Node);
@@ -286,7 +286,7 @@ namespace Fuse.Triggers
 		{
 			UpdateManager.AddDeferredAction( new DeferredItem{ Action = i, Node = this }.Perform );
 		}
-		
+
 		protected virtual void OnPlayStateChanged(TriggerPlayState state)
 		{
 		}
@@ -352,7 +352,7 @@ namespace Fuse.Triggers
 				PlayActions(TriggerWhen.Start);
 			}
 		}
-		
+
 		void PlayActions(TriggerWhen when)
 		{
 			if (_actions != null)
@@ -364,7 +364,7 @@ namespace Fuse.Triggers
 					//a good idea, but was required for the Navigation preparation stuff (which likely
 					//needs to chagne anyway)
 					if (act.When == when)
-						act.PerformFromNode(this); 
+						act.PerformFromNode(this);
 				}
 			}
 		}
@@ -386,7 +386,7 @@ namespace Fuse.Triggers
 		{
 			get { return !IsRootingStarted; }
 		}
-		
+
 		/**
 			Determines whether an operation should be done in bypass mode. This is used by all the
 			high-level functions to determine whether the `Direct...` or `Bypass...` method is called.
@@ -401,26 +401,26 @@ namespace Fuse.Triggers
 				//pretend we were already rooted for preserved frames
 				if (IsPreservedRootFrame && Bypass != TriggerBypassMode.Rooting)
 					return false;
-					
+
 				if (_noLayoutFrame == UpdateManager.FrameIndex && Bypass != TriggerBypassMode.ExceptLayout)
 					return true;
-					
+
 				if (Node.IsRootCapture(_rootCaptureIndex))
 					return true;
-				else	
+				else
 					_rootCaptureIndex = 0;
-					
+
 				return !IsRootingCompleted;
 			}
 		}
-		
+
 		int _noLayoutFrame = -1;
 		/**
 			Indicates the trigger is bound to the layout of a visual. This will keep the trigger in Bypass
 			mode until after the first layout of the element is obtained. This is required since layout
 			does not happen in the same root grouping/update phase as the creation of the element, yet
 			not having a layout should qualify as part of the rooting period.
-			
+
 			A trigger that deals with layout should call this during its rooting.
 		*/
 		protected void RequireLayout(Visual visual)
@@ -428,30 +428,30 @@ namespace Fuse.Triggers
 			if (visual == null || !visual.HasMarginBox)
 				_noLayoutFrame = UpdateManager.FrameIndex;
 		}
-		
+
 		/**
 			Activates the trigger (target progress of 1).
-			
+
 			This uses the appropriate Direct or Bypass operation.
 		*/
 		protected void Activate(Action done = null)
 		{
 			if (ShouldIgnore)
 				return;
-				
+
 			if (ShouldBypass)
 				BypassActivate();
 			else
 				DirectActivate(done);
 		}
-		
+
 		protected void BypassActivate()
 		{
 			BypassSeek(1);
 			//must also play to get open ended animations running
 			PlayOn();
 		}
-		
+
 		protected void DirectActivate(Action done = null)
 		{
 			PlayEnd(true, done);
@@ -459,63 +459,63 @@ namespace Fuse.Triggers
 
 		/**
 			Deactivates the trigger (target progress of 0).
-			
+
 			This uses the appropriate Direct or Bypass operation.
 		*/
 		protected void Deactivate()
 		{
 			if (ShouldIgnore)
 				return;
-				
+
 			if (ShouldBypass)
 				BypassDeactivate();
 			else
 				DirectDeactivate();
 		}
-		
+
 		protected void DirectDeactivate()
 		{
 			//TODO: Maybe `Stop` should be implied when we reach 0 progress
 			PlayEnd(false, StopAction);
 		}
-		
+
 		protected void BypassDeactivate()
 		{
 			BypassSeek(0);
 			DirectDeactivate();
 		}
-		
+
 		void StopAction() { Stop(); }
 
 		/**
-			Plays the trigger to progress 1 then back to 0. 
-			
+			Plays the trigger to progress 1 then back to 0.
+
 			This is intended for use in event/pulse-ilke triggers such as `Clicked`.
 		*/
 		protected void Pulse()
 		{
 			if (ShouldIgnore)
 				return;
-				
+
 			//emulate pause to force direction based tirggers to trigger on a pulse
 			SetPlayState(TriggerPlayState.Stopped);
 			DirectActivate(DirectDeactivate);
 		}
-		
+
 		/**
 			Plays the trigger starting at progress=1 down to 0.
-			
+
 			This is a special pulse for inverted animation triggers such as `AddingAnimation`.
 		*/
 		protected void PulseBackward()
 		{
 			if (ShouldIgnore)
 				return;
-				
+
 			BypassActivate();
 			DirectDeactivate();
 		}
-		
+
 		protected void InversePulse()
 		{
 			PlayEnd(false,PlayOn);
@@ -528,7 +528,7 @@ namespace Fuse.Triggers
 
 		/**
 			Play the trigger from where it currently is to the end.
-			
+
 			@param on whether to play to progress=1 (true) or to progress=0 (false)
 			@param done an action to execute when the progress reaches the desired state (is done)
 		*/
@@ -537,7 +537,7 @@ namespace Fuse.Triggers
 			if (on)
 				Start();
 			SetDone(done, on);
-			
+
 			// direction must be forced in case something activaties/deactivates without an intervening frame.
 			// OnProgressUpdate will be called, but with 0 progress. Check progress though to avoid double
 			// activation at end while stopped.
@@ -637,12 +637,12 @@ namespace Fuse.Triggers
 				return diff > 0 ? TriggerPlayState.Forward : diff < 0 ? TriggerPlayState.Backward : TriggerPlayState.Stopped;
 			return diff > 0 ? TriggerPlayState.SeekForward : diff < 0 ? TriggerPlayState.SeekBackward : TriggerPlayState.Stopped;
 		}
-		
-		bool IsForward(TriggerPlayState ps) 
-		{ 
+
+		bool IsForward(TriggerPlayState ps)
+		{
 			return ps == TriggerPlayState.Forward || ps == TriggerPlayState.SeekForward;
 		}
-		
+
 		bool IsBackward(TriggerPlayState ps)
 		{
 			return ps == TriggerPlayState.Backward || ps == TriggerPlayState.SeekBackward;
@@ -653,12 +653,12 @@ namespace Fuse.Triggers
 		//the one use-case of Timeline. Sender is not needed in the non-Timeline case since Trigger.Progress does
 		//not have a setter.
 		internal bool _suppressPropertyChangedProgress = false;
-		
-		void IUnwrappedPlayerFeedback.OnProgressUpdated(object s, double prev, double cur, 
+
+		void IUnwrappedPlayerFeedback.OnProgressUpdated(object s, double prev, double cur,
 			PlayerFeedbackFlags flags)
 		{
 			var diff = cur - prev;
-				
+
 			SetPlayState(WhatDirection(diff, flags.HasFlag(PlayerFeedbackFlags.Animated)));
 			OnProgressChanged();
 			if (!_suppressPropertyChangedProgress)
@@ -666,7 +666,7 @@ namespace Fuse.Triggers
 
 			if (_actions == null)
 				return;
-				
+
 			var dir = diff > 0 ? TriggerWhen.Forward : TriggerWhen.Backward;
 			for (int i=0; i < _actions.Count; ++i)
 			{
@@ -686,7 +686,7 @@ namespace Fuse.Triggers
 
 		/**
 			Plays to a specific progress with the given animation variant.
-			
+
 			Playing follows the duration of time according to the animators in the trigger. Actions
 			are executed appropriately.
 		*/
@@ -697,14 +697,14 @@ namespace Fuse.Triggers
 				SetPlayState( TriggerPlayState.Forward );
 			else if (progress < Progress)
 				SetPlayState( TriggerPlayState.Backward );
-				
+
 			if (EnsureState(progress))
 				_animState.PlayToProgress(progress, variant, TriggerAnimationState.SeekFlags.ForcePlayer);
 		}
 
 		/**
 			Seeks to a specific progress with the given animation variant.
-			
+
 			Time is skipped over in seek and the animator's jump directly to the target progress. In non-bypass
 			mode the actions will still be triggered (this is important to support user seeking operations
 			on gestures). In bypass mode the actions will be skipped.
@@ -713,13 +713,13 @@ namespace Fuse.Triggers
 		{
 			if (ShouldIgnore)
 				return;
-				
+
 			if (ShouldBypass)
 				BypassSeek(progress, direction);
 			else
 				DirectSeek(progress, direction);
 		}
-		
+
 		protected void DirectSeek(double progress, AnimationVariant direction = AnimationVariant.Forward)
 		{
 			SeekImpl(progress, direction, TriggerAnimationState.SeekFlags.ForcePlayer);
@@ -730,7 +730,7 @@ namespace Fuse.Triggers
 			SeekImpl(progress, direction,
 					TriggerAnimationState.SeekFlags.ForcePlayer | TriggerAnimationState.SeekFlags.BypassUpdate );
 		}
-		
+
 		void SeekImpl(double progress, AnimationVariant direction, TriggerAnimationState.SeekFlags flags)
 		{
 			if( progress > 0 )
@@ -769,14 +769,14 @@ namespace Fuse.Triggers
 				}
 			}
 		}
-		
+
 		internal override void OnPreserveRootFrame()
 		{
 			base.OnPreserveRootFrame();
 			_rootProgress = Progress;
 			_rootPlayState = _lastPlayState;
 		}
-		
+
 		protected override void OnUnrooted()
 		{
 			Stop(true);
@@ -785,15 +785,15 @@ namespace Fuse.Triggers
 
 			base.OnUnrooted();
 		}
-		
+
 		void UnrootActions()
 		{
 			if (_actions == null)
 				return;
-				
+
 			for (int i=0; i < _actions.Count; ++i)
 				_actions[i].Unroot();
 		}
-		
+
 	}
 }

@@ -24,8 +24,8 @@ namespace Fuse
 		Overlay,
 	}
 
-	/** 
-		The influence this visual has on the layout and inside content controls, such as @PageControl or @ScrollView. 
+	/**
+		The influence this visual has on the layout and inside content controls, such as @PageControl or @ScrollView.
 	*/
 	public enum LayoutRole
 	{
@@ -38,7 +38,7 @@ namespace Fuse
 		/** The Visual takes it's layout from somewhere other than it's parent. A Visual that uses LayoutMaster will get this role. */
 		Independent,
 	}
-	
+
 	public enum InvalidateLayoutReason
 	{
 		//the ordering here is important, higher values are more extreme updates
@@ -58,7 +58,7 @@ namespace Fuse
 		MaybeArrange,
 		Yes,
 	}
-	
+
 	public enum MarginBoxDependent
 	{
 		None,
@@ -81,7 +81,7 @@ namespace Fuse
 	}
 
 	public delegate void RequestBringIntoViewHandler(object sender, RequestBringIntoViewArgs args);
-	
+
 	sealed class LostMarginBoxArgs : EventArgs
 	{
 		public Visual Visual { get; private set; }
@@ -90,14 +90,14 @@ namespace Fuse
 			Visual = elm;
 		}
 	}
-	
+
 	delegate void LostMarginBoxHandler(object sender, LostMarginBoxArgs args);
 
 	public abstract partial class Visual
 	{
 		static readonly PropertyHandle _layerProperty = Fuse.Properties.CreateHandle();
-		
-		/** The layer this visual belongs to in the @Parent container. 
+
+		/** The layer this visual belongs to in the @Parent container.
 			@default Layout
 		*/
 		public Layer Layer
@@ -109,7 +109,7 @@ namespace Fuse
 					return (Layer)v;
 				return Layer.Layout;
 			}
-			set 
+			set
 			{
 				if (Layer != value)
 				{
@@ -119,25 +119,25 @@ namespace Fuse
 				}
 			}
 		}
-		
+
 
 		static readonly PropertyHandle _layoutRoleProperty = Fuse.Properties.CreateHandle();
-		
-		/** Describes how this visual participates in layout. 
+
+		/** Describes how this visual participates in layout.
 			@default Standard
 		*/
 		public LayoutRole LayoutRole
 		{
-			get 
+			get
 			{
 				object v;
 				if (Properties.TryGet(_layoutRoleProperty, out v))
 					return (LayoutRole)v;
-					
+
 				//a convenience so that non-base layers have no layout role by default
 				if (Layer != Layer.Layout)
 					return LayoutRole.Inert;
-					
+
 				return LayoutRole.Standard;
 			}
 			set
@@ -145,12 +145,12 @@ namespace Fuse
 				object v;
 				if (Properties.TryGet(_layoutRoleProperty, out v) && (LayoutRole)v == value)
 					return;
-					
+
 				Properties.Set(_layoutRoleProperty, value);
 				InvalidateLayout();
 			}
 		}
-	
+
 		public virtual float2 GetMarginSize(LayoutParams lp)
  		{
  			return float2(0);
@@ -161,30 +161,30 @@ namespace Fuse
  		}
 
 		InvalidateLayoutReason _layoutDirty;
-		
+
 		internal InvalidateLayoutReason LayoutDirty
 		{
 			get { return _layoutDirty; }
 		}
-		
+
 		internal bool IsLayoutDirty
 		{
 			get { return _layoutDirty != InvalidateLayoutReason.NothingChanged; }
 		}
 
 		internal virtual bool IsLayoutRoot { get { return false; } }
-		
+
 		/**
 			Indicates that this element requires a new layout as some layout parameters or content
 			have changed.
-			
+
 			This does not directly change any sizes or invalidate any cached values. The actual changes done
 			during a call to `ArrangeMarginBox` must invalidate those as appropriate.
 		*/
-		public void InvalidateLayout( InvalidateLayoutReason reason = 
+		public void InvalidateLayout( InvalidateLayoutReason reason =
 			InvalidateLayoutReason.MarginBoxChanged )
 		{
-			if (_performingLayout) 
+			if (_performingLayout)
 				throw new Exception("Layout was invalidated while performing layout");
 
 			if ((int)reason <= (int)_layoutDirty)
@@ -199,9 +199,9 @@ namespace Fuse
 			{
 				if ((int)reason <= (int)parent._layoutDirty)
 					break;
-		
+
 				var useReason = reason;
-				
+
 				//without margin box we must propagate margin changed, otherwise Rearrange is not possible
 				if (child.HasMarginBox && (int)reason > (int)InvalidateLayoutReason.ChildChanged)
 				{
@@ -223,42 +223,42 @@ namespace Fuse
 						case LayoutDependent.No:
 							useReason = reason = InvalidateLayoutReason.ChildChanged;
 							break;
-							
+
 						case LayoutDependent.NoArrange:
 							useReason = InvalidateLayoutReason.MarginBoxChanged;
 							reason = InvalidateLayoutReason.ChildChanged;
 							break;
-							
+
 						case LayoutDependent.Maybe:
 							useReason = InvalidateLayoutReason.ChildChanged;
 							if (maybeChild == null)
 								maybeChild = parent;
 							break;
-							
+
 						case LayoutDependent.MaybeArrange:
 							useReason = InvalidateLayoutReason.MarginBoxChanged;
 							if (maybeChild == null)
 								maybeChild = parent;
 							break;
-					
+
 						case LayoutDependent.Yes:
 							reason = useReason = InvalidateLayoutReason.MarginBoxChanged;
 							break;
 					}
 				}
-				
+
 				//there might be an optimized way to avoid this sometimes, but let's be safe for now
 				parent.OnInvalidateLayout();
-				
+
 				if ((int)useReason > (int)parent._layoutDirty)
 					parent._layoutDirty = useReason;
-			
+
 				child = parent;
 				parent = parent.Parent;
 			}
 		}
 
-		/**	
+		/**
 			@return Yes if the child influences the results of ArrangeMarginBox (size or layout of this node),
 				No if it cannot, and Maybe otherwise (in cases of stretching)
 		*/
@@ -274,19 +274,19 @@ namespace Fuse
 			var s = Math.Floor(p * AbsoluteZoom + 0.5f) / AbsoluteZoom;
 			return s;
 		}
-		
+
 		protected float2 IfSnap(float2 p)
 		{
 			return SnapToPixels ? Snap(p) : p;
 		}
-		
+
 		protected float2 IfSnapUp(float2 p)
 		{
 			return SnapToPixels ? SnapUp(p) : p;
 		}
 
 		const float pixelEpsilon = 0.005f;
-		
+
 		internal float2 InternSnapUp(float2 p) { return SnapUp(p); }
 		protected float2 SnapUp(float2 p)
 		{
@@ -299,7 +299,7 @@ namespace Fuse
 			var s = Math.Floor(p * AbsoluteZoom + pixelEpsilon) / AbsoluteZoom;
 			return s;
 		}
-		
+
 		protected float2 IfSnapDown(float2 p)
 		{
 			return SnapToPixels ? SnapDown(p) : p;
@@ -308,25 +308,25 @@ namespace Fuse
 		 /*DEPRECATED*/
 		public float AbsoluteZoom
 		{
-			get 
-			{ 
+			get
+			{
 				var v = Viewport;
 				//somebody is calling this without being rooted, safety check
 				if (v == null)
 					return 1;
-				return v.PixelsPerPoint; 
+				return v.PixelsPerPoint;
 			}
 		}
-		
+
 		/** Whether to snap the result of layout of this visual to physical device pixels.
 			@default true */
 		public bool SnapToPixels
 		{
-			get 
-			{ 
-				return HasBit(FastProperty1.ContextSnapToPixelsCache); 
+			get
+			{
+				return HasBit(FastProperty1.ContextSnapToPixelsCache);
 			}
-			set 
+			set
 			{
 				if (SnapToPixels != value || !HasBit(FastProperty1.HasSnapToPixels))
 				{
@@ -340,8 +340,8 @@ namespace Fuse
 
 		void UpdateContextSnapToPixelsCache()
 		{
-			var newValue = 
-				HasBit(FastProperty1.HasSnapToPixels) ? HasBit(FastProperty1.SnapToPixels) : 
+			var newValue =
+				HasBit(FastProperty1.HasSnapToPixels) ? HasBit(FastProperty1.SnapToPixels) :
 				Parent != null ? Parent.SnapToPixels :
 				true;
 
@@ -353,7 +353,7 @@ namespace Fuse
 					v.UpdateContextSnapToPixelsCache();
 			}
 		}
-	
+
 		protected void PerformLayout()
 		{
 			PerformLayout(Viewport.Size);
@@ -370,7 +370,7 @@ namespace Fuse
 				_cachedRenderTargetSize = clientSize;
 				InvalidateLayout();
 			}
-			
+
 			if (_layoutDirty != InvalidateLayoutReason.NothingChanged)
 			{
 				_performingLayout = true;
@@ -395,24 +395,24 @@ namespace Fuse
 				}
 			}
 		}
-		
+
 		void UpdateLayout()
 		{
 			switch (_layoutDirty)
 			{
 				case InvalidateLayoutReason.NothingChanged:
 					break;
-					
+
 				case InvalidateLayoutReason.ChildChanged:
 					for (var v = FirstChild<Visual>(); v != null; v = v.NextSibling<Visual>())
 						v.UpdateLayout();
 					break;
-					
+
 				case InvalidateLayoutReason.MarginBoxChanged:
 					RearrangeMarginBox();
 					break;
 			}
-			
+
 			//since not all paths above set this
 			_layoutDirty = InvalidateLayoutReason.NothingChanged;
 		}
@@ -421,21 +421,21 @@ namespace Fuse
 		float2 _ambMargin;
 		LayoutParams _ambLayoutParams = LayoutParams.CreateEmpty();
 		bool _hasMarginBox = false;
-		
+
 		internal bool HasMarginBox { get { return _hasMarginBox; } }
-		
+
 		//emitted when HasMarginBox transitions to "false"
 		internal event LostMarginBoxHandler LostMarginBox;
 		internal void ClearMarginBox()
 		{
 			if (!_hasMarginBox)
 				return;
-				
+
 			_hasMarginBox = true;
 			if (LostMarginBox != null)
 				LostMarginBox( this, new LostMarginBoxArgs(this) );
 		}
-		
+
 		void RearrangeMarginBox()
 		{
 			if (!HasMarginBox)
@@ -444,7 +444,7 @@ namespace Fuse
 			}
 			ArrangeMarginBox( _ambPosition, _ambLayoutParams );
 		}
-		
+
 		protected virtual float2 OnArrangeMarginBox(float2 position, LayoutParams lp)
 		{
 			var sz = float2(0);
@@ -458,7 +458,7 @@ namespace Fuse
 
 		public float2 ArrangeMarginBox(float2 position, LayoutParams lp)
 		{
-			var same = HasMarginBox && 
+			var same = HasMarginBox &&
 				(_layoutDirty == InvalidateLayoutReason.NothingChanged) &&
 				_ambLayoutParams.IsCompatible(lp);
 
@@ -478,35 +478,35 @@ namespace Fuse
 			{
 				marginBox = OnArrangeMarginBox(position, lp);
 			}
-			
+
 			_layoutDirty = InvalidateLayoutReason.NothingChanged;
-			
+
 			_ambMargin = marginBox;
 			_ambPosition = position;
 			_ambLayoutParams = lp.Clone();
 			_hasMarginBox = true;
-			
+
 			return marginBox;
 		}
-		
+
 		internal float2 MarginBoxPosition { get { return _ambPosition; } }
-		
+
 		internal void AdjustMarginBoxPosition( float2 position )
 		{
 			ArrangeMarginBox(position, _ambLayoutParams);
 		}
-		
+
 		internal virtual bool CanAdjustMarginBox { get { return false; } }
 		internal virtual void OnAdjustMarginBoxPosition( float2 position ) { }
 
 		/**
 			Returns the origin of this Visual in the viewport (world) space.
-			
+
 			This is used in layout to calculate pixel snapping.
 		*/
 		protected virtual float2 AbsoluteViewportOrigin
 		{
-			get 
+			get
 			{
 				if (Parent != null)
 					return Parent.AbsoluteViewportOrigin;
@@ -520,10 +520,10 @@ namespace Fuse
 
         	internal protected virtual void OnBringIntoView(Visual elm)
         	{
-	        	if (RequestBringIntoView != null) 
+	        	if (RequestBringIntoView != null)
 	        		RequestBringIntoView(this, new RequestBringIntoViewArgs(elm));
 
-        		if (Parent != null) 
+        		if (Parent != null)
         			Parent.OnBringIntoView(elm);
         	}
 

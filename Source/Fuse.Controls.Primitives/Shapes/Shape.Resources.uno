@@ -7,9 +7,9 @@ using Fuse.Triggers;
 namespace Fuse.Controls
 {
 	/*
-		This is designed such that it could be moved up to Visual or Node if required -- as other 
+		This is designed such that it could be moved up to Visual or Node if required -- as other
 		things that use ILoading will need to do the same thing.
-		
+
 		The interface points to move are:
 			- OnPropertyChanged must call OnLoadingResourcePropertyChanged
 			- OnRooted/OnUnrooted must call OnLoadingResourceRooted/Unrooted
@@ -39,21 +39,21 @@ namespace Fuse.Controls
 					loading = new Dictionary<PropertyObject,ResourceWatcher>();
 					Properties.Set(_loadingResourcesHandle, loading);
 				}
-				
+
 				return loading;
 			}
 		}
-		
+
 		bool HasLoadingResources
 		{
 			get { return Properties.Has(_loadingResourcesHandle); }
 		}
-		
-		internal void AddLoadingResource( PropertyObject res ) 
+
+		internal void AddLoadingResource( PropertyObject res )
 		{
 			if (!(res is ILoading))
 				return;
-				
+
 			var all = LoadingResources;
 			ResourceWatcher watcher;
 			if (!all.TryGetValue(res, out watcher))
@@ -61,45 +61,45 @@ namespace Fuse.Controls
 				watcher = new ResourceWatcher();
 				all[res] = watcher;
 			}
-			
+
 			if (IsRootingStarted && !watcher.IsWatching)
 			{
 				res.AddPropertyListener(this);
 				watcher.IsWatching = true;
 			}
 		}
-		
+
 		internal void RemoveLoadingResource( PropertyObject res )
 		{
 			if (!(res is ILoading))
 				return;
-				
+
 			var all = LoadingResources;
 			ResourceWatcher watcher;
 			if (!all.TryGetValue(res, out watcher))
 				return;
-				
+
 			if (watcher.IsWatching)
 			{
 				res.RemovePropertyListener(this);
 				watcher.IsWatching = false;
 			}
-			
+
 			all.Remove(res);
 		}
-		
+
 		internal void OnLoadingResourcePropertyChanged( PropertyObject sender, Selector property )
 		{
 			var loading = sender as ILoading;
 			if (!HasLoadingResources || loading == null)
 				return;
-				
+
 			if (property != ILoadingStatic.IsLoadingName)
 				return;
-				
+
 			CheckStatus();
 		}
-		
+
 		internal void OnLoadingResourceRooted()
 		{
 			if (HasLoadingResources)
@@ -114,12 +114,12 @@ namespace Fuse.Controls
 			}
 			CheckStatus();
 		}
-		
+
 		internal void OnLoadingResourceUnrooted()
 		{
 			if (!HasLoadingResources)
 				return;
-				
+
 			foreach (var item in LoadingResources)
 			{
 				if (item.Value.IsWatching)
@@ -127,16 +127,16 @@ namespace Fuse.Controls
 				item.Value.IsWatching = false;
 			}
 		}
-		
+
 		BusyTask _loadingResourceTask;
-		
+
 		void CheckStatus()
 		{
 			var loading = false;
 			if (HasLoadingResources)
 			{
 				foreach (var item in LoadingResources)
-				{	
+				{
 					if ((item.Key as ILoading).IsLoading)
 					{
 						loading = true;
@@ -148,6 +148,6 @@ namespace Fuse.Controls
 			BusyTask.SetBusy(this, ref _loadingResourceTask, loading ? BusyTaskActivity.Loading :
 				BusyTaskActivity.None);
 		}
-		
+
 	}
 }

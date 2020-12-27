@@ -23,15 +23,15 @@ namespace Fuse.Navigation
 
 	/**
 		These triggers are used to animate pages as they move to and away from the active page.
-		
+
 		The basic behavior of this trigger depends on whether the navigation is continuous, such as a `PageControl` or `LinearNavigation`, or is discrete, such as `Navigator` or `DirectNavigation`.
-		
+
 		When used with continuous navigation a `Duration` property is not needed on the animators. The progress is mapped from the progress of the page itself in the navigation.
-		
+
 		When used with a discrete navigation a `Duration` is required. There is no smooth page progress change, it will simply flip between multiple states. Here the duration of the trigger will be used to do the animation.
-		
+
 		[subclass Fuse.Navigation.NavigationAnimation]
-		
+
 		See [Navigation Order](articles:navigation/navigationorder.md)
 	*/
 	public abstract class NavigationAnimation : Trigger
@@ -41,14 +41,14 @@ namespace Fuse.Navigation
 		protected Visual PageContext { get { return _proxy.Page; } }
 		protected INavigation NavContext { get { return _proxy.Navigation; } }
 		NavigationPageProxy _proxy;
-		
+
 		protected override void OnRooted()
 		{
 			base.OnRooted();
 			_proxy = new NavigationPageProxy();
 			_proxy.Init(NavReady,NavUnready,Parent);
 		}
-		
+
 		void NavReady(object s)
 		{
 			_proxy.Navigation.PageProgressChanged += OnNavigationStateChanged;
@@ -62,7 +62,7 @@ namespace Fuse.Navigation
 			_delay = false;
 			base.OnUnrooted();
 		}
-		
+
 		void NavUnready(object s)
 		{
 			_proxy.Navigation.PageProgressChanged -= OnNavigationStateChanged;
@@ -74,11 +74,11 @@ namespace Fuse.Navigation
 		float _scale = 1;
 		/**
 			Modifies the scale of the mapping from page progress to trigger progress.
-			
+
 			The progress of these triggers is based on the page progress in the navigation. Pages have a distance from the active page. While some controls limit the distance to just `0..1`, others, like a `PageControl`, allow for pages to have a distance greater than `1` away. By default this trigger reaches progress 1 when the page reaches a distance of 1, anything greater than 1 will not further modify the trigger.
-			
+
 			The `Scale` property allows changing that mapping. For example, a scale of `0.5` would mean that a page must reach a distance of 2 away from the active one before the trigger reaches a progress of 1.
-			
+
 			See [Navigation Order](articles:navigation/navigationorder.md)
 		*/
 		public float Scale
@@ -118,7 +118,7 @@ namespace Fuse.Navigation
 				BypassSeek(p, variant);
 			}
 		}
-		
+
 		void GoProgressPlay()
 		{
 			if (!_delay)
@@ -185,7 +185,7 @@ namespace Fuse.Navigation
 				<CustomPanel Background="#0F0" />
 				<CustomPanel Background="#00F" />
 			</PageControl>
-			
+
 		See [Navigation Order](articles:navigation/navigationorder.md)
 	*/
 	public class ExitingAnimation : EnterExitAnimation
@@ -196,11 +196,11 @@ namespace Fuse.Navigation
 		}
 	}
 
-	/**	
+	/**
 		Specifies an animation for a page that is in front of the active one.
 
 		Animates from 0 to 1 as the page progress goes from 0 to 1. For discrete navigation changes the duration of the animators will be used.
-		
+
 		For clarity, if the page is coming from the front, such as navigating forward in a `PageControl`, the trigger animates from 1 to 0. This is just a natural result of the page's progress changing from 1 to 0.
 
 		## Example
@@ -220,7 +220,7 @@ namespace Fuse.Navigation
 				<CustomPanel Background="#0F0" />
 				<CustomPanel Background="#00F" />
 			</PageControl>
-			
+
 		See [Navigation Order](articles:navigation/navigationorder.md)
 	*/
 	public class EnteringAnimation : EnterExitAnimation

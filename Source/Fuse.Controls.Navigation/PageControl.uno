@@ -14,19 +14,19 @@ namespace Fuse.Controls
 {
 	/**
 		Provides standard transitions, user interaction, and page handling for a basic linear navigation.
-		
+
 		# Examples
-		
+
 		The following example illustrates the default behavior of `PageControl`, which is to slide the pages in response to swipe gestures:
-		
+
 			<PageControl>
 				<Panel Background="Red"/>
 				<Panel Background="Blue"/>
 			</PageControl>
-		
+
 		`PageControl` is a router outlet, meaning that it can be controlled by a @Router.
 		You can disable this behavior by setting the @IsRouterOutlet property to `false`.
-		
+
 			<JavaScript>
 			    module.exports = {
 			        gotoPage1: function() { router.goto("page1"); },
@@ -67,15 +67,15 @@ namespace Fuse.Controls
 			</DockPanel>
 
 		Take a look at the [Slides](/examples/page-control) example to see how this can be used in practice.
-		
+
 		## Navigation Order
-		
+
 		The pages of a `PageControl` are ordered front to back, with the first child being in the front. Going forward means going towards the first child and going backwards means going towards the last child.
-		
+
 		`PageControl` uses continous navigation between pages (not discrete changes).
-		
+
 		See [Navigation Order](articles:navigation/navigationorder.md)
-		
+
 	*/
 	public partial class PageControl : NavigationControl, ISeekableNavigation, IRouterOutlet, IPropertyListener
 	{
@@ -87,7 +87,7 @@ namespace Fuse.Controls
 
 		/**
 			Transition to a page.
-			
+
 			@scriptmethod goto(node)
 			@param node The @Visual object of target page. Typically a `ux:Name` variable.
 		*/
@@ -102,12 +102,12 @@ namespace Fuse.Controls
 		{
 			get { return ((NavigationControl)this).Navigation as Fuse.Navigation.DynamicLinearNavigation; }
 		}
-		
+
 		public PageControl()
 		{
 			//https://github.com/fusetools/fuselibs-private/issues/1548
 			HitTestMode = HitTestMode.LocalBounds | HitTestMode.Children;
-			
+
 			//defaults for NavigationControl
 			_interaction = NavigationControlInteraction.Swipe;
 			_transition = NavigationControlTransition.Standard;
@@ -123,17 +123,17 @@ namespace Fuse.Controls
 			_pages.Rooted(this);
 			RootActivePage();
 		}
-		
+
 		protected override void OnUnrooted()
 		{
 			UnrootActivePage();
 			_pages.Unrooted();
 			base.OnUnrooted();
 		}
-		
+
 		void IPropertyListener.OnPropertyChanged(PropertyObject obj, Selector property)
 		{
-			if (obj == Navigation) 
+			if (obj == Navigation)
 			{
 				//forward index changes
 				if (property == VisualNavigation.ActiveIndexName)
@@ -142,26 +142,26 @@ namespace Fuse.Controls
 		}
 
 		OutletType IRouterOutlet.Type { get { return RouterOutletType; } }
-		
+
 		void IRouterOutlet.PartialPrepareGoto(double progress)
 		{
 		}
-		
+
 		void IRouterOutlet.CancelPrepare()
 		{
 		}
-		
+
 		RoutingResult IRouterOutlet.CompareCurrent(RouterPage routerPage, out Visual pageVisual)
 		{
 			return CommonNavigation.CompareCurrent(this, Active, routerPage, out pageVisual);
 		}
-		
-		RoutingResult IRouterOutlet.Goto(RouterPage routerPage, NavigationGotoMode gotoMode, 
+
+		RoutingResult IRouterOutlet.Goto(RouterPage routerPage, NavigationGotoMode gotoMode,
 			RoutingOperation operation, string operationStyle, out Visual pageVisual)
 		{
 			return CommonNavigation.Goto(this, routerPage, gotoMode, operation, operationStyle, out pageVisual);
 		}
-		
+
 		RouterPage IRouterOutlet.GetCurrent(out Visual pageVisual)
 		{
 			pageVisual = Active;
@@ -170,7 +170,7 @@ namespace Fuse.Controls
 			else
 				return PageData.GetOrCreate(Active).RouterPage;
 		}
-		
+
 		internal NavigationControlInactiveState _inactive = NavigationControlInactiveState.Collapsed;
 		/**
 			Specifiy what is done to pages that are inactive.
@@ -180,7 +180,7 @@ namespace Fuse.Controls
 			get { return _inactive; }
 			set { _inactive = value; }
 		}
-		
+
 		protected override void UpdateProgress(Element page, NavigationPageState state, ControlPageData pd)
 		{
 			var active = Math.Abs(state.Progress) < 1;
@@ -191,14 +191,14 @@ namespace Fuse.Controls
 			if (DisableInactive)
 				page.IsEnabled = active;
 		}
-		
+
 		protected override void CreateTriggers(Element c, ControlPageData pd)
 		{
 			switch (PageTransition(c))
 			{
 				case NavigationControlTransition.None:
 					break;
-					
+
 				case NavigationControlTransition.Standard:
 					if (IsHorizontal)
 					{
@@ -213,12 +213,12 @@ namespace Fuse.Controls
 					break;
 			}
 		}
-		
+
 		bool CollapseInactive
 		{
 			get { return _inactive == NavigationControlInactiveState.Collapsed; }
 		}
-		
+
 		bool DisableInactive
 		{
 			get { return _inactive == NavigationControlInactiveState.Collapsed
@@ -229,7 +229,7 @@ namespace Fuse.Controls
 		protected override void UpdateInteraction()
 		{
 			var needSwipe = _interaction == NavigationControlInteraction.Swipe;
-			
+
 			if (needSwipe)
 			{
 				if (_swipe == null)
@@ -247,7 +247,7 @@ namespace Fuse.Controls
 				_swipe = null;
 			}
 		}
-		
+
 		AllowedNavigationDirections _swipeAllow = AllowedNavigationDirections.Both;
 		/**
 			Access @SwipeNavigation.AllowedDirections for the swiper on this control
@@ -262,7 +262,7 @@ namespace Fuse.Controls
 					_swipe.AllowedDirections = value;
 			}
 		}
-		
+
 		internal NavigationControlInteraction _interaction = NavigationControlInteraction.Swipe;
 		/* Moved to PageControl from NavigationControl for now since not used in Navigator yet */
 		/**
@@ -289,19 +289,19 @@ namespace Fuse.Controls
 		[UXContent]
 		public MotionConfig Motion
 		{
-			get 
-			{ 
+			get
+			{
 				var q = Navigation;
-				return q == null ? null : q.Motion; 
+				return q == null ? null : q.Motion;
 			}
-			set 
-			{ 
+			set
+			{
 				var q = Navigation;
 				if (q != null)
-					q.Motion = value; 
+					q.Motion = value;
 			}
 		}
-		
+
 		Orientation _orient = Orientation.Horizontal;
 		/**
 			Specifies the orientation of the page layout.
@@ -311,16 +311,16 @@ namespace Fuse.Controls
 			get { return _orient; }
 			set { _orient = value; }
 		}
-		
+
 		bool IsHorizontal { get { return _orient == Orientation.Horizontal; } }
-		
+
 		internal static Selector ActiveIndexName = "ActiveIndex";
 		[UXOriginSetter("SetActiveIndex")]
 		/**
-			The child index of the current active page. 
-			
+			The child index of the current active page.
+
 			This can used to get and set the current page from JavaScript as well as listen to page changes. When used in conjunction with an `Each` to create dynamic pages the `ActiveIndex` is an index into that list of items (assuming no other children are added).
-			
+
 			@see VisualNavigation.DesiredActiveIndex
 		*/
 		public int ActiveIndex
@@ -332,18 +332,18 @@ namespace Fuse.Controls
 		{
 			Navigation.DesiredActiveIndex = value;
 		}
-		
+
 		//ISeekableNavigation
 		void ISeekableNavigation.BeginSeek() { (Navigation as ISeekableNavigation).BeginSeek(); }
 		float2 ISeekableNavigation.SeekRange { get { return Navigation.SeekRange; } }
 		void ISeekableNavigation.Seek(UpdateSeekArgs args) { (Navigation as ISeekableNavigation).Seek(args); }
 		void ISeekableNavigation.EndSeek(EndSeekArgs args) { (Navigation as ISeekableNavigation).EndSeek(args); }
-		
-		
+
+
 		CommonNavigationPages _pages = new CommonNavigationPages();
 		/**
 			Provides a list of models that define the pages for the page control. The pages have the same structure as `Navigator.Pages` -- but here they do not define a history. To control what is the current page bind to `ActiveIndex`.
-			
+
 			The items in the array are objects, either explicitly created or via the Model feature. They should contain the the `$path` property which specifies the path to use. The object itself will be added to the data context for the page, allowing lookups from within the object.
 		*/
 		public IArray Pages

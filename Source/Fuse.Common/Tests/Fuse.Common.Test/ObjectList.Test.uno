@@ -14,54 +14,54 @@ namespace Fuse.Test
 		{
 			static int Count = 0;
 			public int Value;
-			
+
 			public Dummy()
 			{
 				Value = Count++;
 			}
-			
+
 			public Dummy(int ndx)
 			{
 				Value = ndx;
 			}
-			
+
 			public override string ToString()
 			{
 				return "#" + Value;
 			}
 		}
-					
+
 		[Test]
 		public void Basic()
 		{
 			var l = new ObjectList<Dummy>();
 			Assert.AreEqual(0,l.Count);
-			
+
 			var a = new Dummy();
 			l.Add(a);
 			Assert.AreEqual(1,l.Count);
 			Assert.AreEqual(a, l[0]);
-			
+
 			var b = new Dummy();
 			l.Add(b);
 			Assert.AreEqual(2,l.Count);
 			Assert.AreEqual(a, l[0]);
 			Assert.AreEqual(b, l[1]);
-			
+
 			//force a grow
 			for (int i=0; i < ObjectList<Dummy>.InitialCapacity; ++i)
 				l.Add( new Dummy() );
 			Assert.AreEqual(2 + ObjectList<Dummy>.InitialCapacity,l.Count);
 			Assert.AreEqual(a, l[0]);
 			Assert.AreEqual(b, l[1]);
-			
+
 			var c = new Dummy();
 			l.Insert(0,c);
 			Assert.AreEqual(3 + ObjectList<Dummy>.InitialCapacity,l.Count);
 			Assert.AreEqual(c, l[0]);
 			Assert.AreEqual(a, l[1]);
 			Assert.AreEqual(b, l[2]);
-			
+
 			var d = new Dummy();
 			l.Insert(1,d);
 			Assert.AreEqual(4 + ObjectList<Dummy>.InitialCapacity,l.Count);
@@ -69,7 +69,7 @@ namespace Fuse.Test
 			Assert.AreEqual(d, l[1]);
 			Assert.AreEqual(a, l[2]);
 			Assert.AreEqual(b, l[3]);
-			
+
 			Assert.IsTrue(l.Contains(a));
 			Assert.IsTrue(l.Remove(a));
 			Assert.IsFalse(l.Contains(a));
@@ -77,22 +77,22 @@ namespace Fuse.Test
 			Assert.AreEqual(c, l[0]);
 			Assert.AreEqual(d, l[1]);
 			Assert.AreEqual(b, l[2]);
-			
+
 			Assert.IsTrue(l.Contains(d));
 			l.RemoveAt(1);
 			Assert.IsFalse(l.Contains(d));
 			Assert.AreEqual(2 + ObjectList<Dummy>.InitialCapacity,l.Count);
 			Assert.AreEqual(c, l[0]);
 			Assert.AreEqual(b, l[1]);
-			
+
 			l.Clear();
 			Assert.AreEqual(0, l.Count);
 			Assert.IsFalse(l.Contains(c));
 			Assert.IsFalse(l.Contains(b));
-			
+
 			Assert.IsTrue(l.TestIsConsistent);
 		}
-		
+
 		[Test]
 		public void TailOps()
 		{
@@ -103,30 +103,30 @@ namespace Fuse.Test
 			l.Insert(0, a);
 			l.Insert(1, b);
 			l.Insert(2, c);
-			
+
 			Assert.AreEqual(3, l.Count);
 			Assert.AreEqual(a, l[0]);
 			Assert.AreEqual(b, l[1]);
 			Assert.AreEqual(c, l[2]);
-			
+
 			l.RemoveAt(2);
 			Assert.AreEqual(2, l.Count);
 			Assert.AreEqual(a, l[0]);
 			Assert.AreEqual(b, l[1]);
 			Assert.IsFalse(l.Contains(c));
-			
+
 			l.Remove(b);
 			Assert.AreEqual(1, l.Count);
 			Assert.AreEqual(a, l[0]);
 			Assert.IsFalse(l.Contains(b));
-			
+
 			l.RemoveAt(0);
 			Assert.AreEqual(0, l.Count);
 			Assert.IsFalse(l.Contains(a));
-			
+
 			Assert.IsTrue(l.TestIsConsistent);
 		}
-		
+
 		[Test]
 		public void HeadOps()
 		{
@@ -137,18 +137,18 @@ namespace Fuse.Test
 			l.Insert(0, a);
 			l.Insert(0, b);
 			l.Insert(0, c);
-			
+
 			Assert.AreEqual(3, l.Count);
 			Assert.AreEqual(a, l[2]);
 			Assert.AreEqual(b, l[1]);
 			Assert.AreEqual(c, l[0]);
-			
+
 			l.RemoveAt(0);
 			Assert.AreEqual(2, l.Count);
 			Assert.AreEqual(a, l[1]);
 			Assert.AreEqual(b, l[0]);
 			Assert.IsFalse(l.Contains(c));
-			
+
 			l.Remove(b);
 			Assert.AreEqual(1, l.Count);
 			Assert.AreEqual(a, l[0]);

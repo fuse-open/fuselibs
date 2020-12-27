@@ -65,12 +65,12 @@ namespace Fuse.Reactive
 		static string Format(Context context, object[] args)
 		{
 			var sb = new StringBuilder();
-			
+
 			for (var i = 0; i < args.Length; ++i)
 			{
 				if (i != 0)
 					sb.Append(" ");
-				
+
 				sb.Append(ToString(context, args[i]));
 			}
 

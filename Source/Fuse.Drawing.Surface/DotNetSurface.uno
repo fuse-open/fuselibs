@@ -15,7 +15,7 @@ namespace Fuse.Drawing
 	using DotNetNative;
 	/**
 		An object used to refer to a created path.
-		
+
 		Each backend should derive from this type. The paths will not be used cross-implementation.
 	*/
 	extern(DOTNET)
@@ -24,18 +24,18 @@ namespace Fuse.Drawing
 		public FillRule FillRule;
 		public DotNetGraphicsPath Path;
 	}
-	
+
 	/**
 		The Surface is a path-based drawing API. A call to `CreatePath` is used to create a path, then one of `StrokePath` or `FillPath` is used to draw it.
-		
+
 		This allows the users of `Canvas` to optimize for animation of either the path or the stroke/fill objects independently.
-		
+
 		This also keeps the API minimal. There are no convenience functions in this class. Those are provided via higher-level classes, such as `LineSegments` or `SurfaceUtil`.
 	*/
 
 	static internal class DotNetUtil
 	{
-		/** 
+		/**
 			Calculates end points needed to extend the start/end over the entire cover region. This is a utility function for CreateColorBlend that needs to workaround DotNet not supporting clamped gradients.
 		*/
 		static public float4 AdjustedEndPoints( float4 area, float2 start, float2 end )
@@ -43,7 +43,7 @@ namespace Fuse.Drawing
 			var unit = Vector.Normalize(end - start);
 			var normal = float2(unit.Y,-unit.X);
 			var isSlopeNeg = unit.X * (-unit.Y) < 0;
-			
+
 			float2 cornerA, cornerB;
 			if (isSlopeNeg)
 			{
@@ -55,18 +55,18 @@ namespace Fuse.Drawing
 				cornerA = area.XW;
 				cornerB = area.ZY;
 			}
-			
+
 			//swap corners if the input strat/end is more oriented from B->A than A->B
 			//this could be logically be done with an angle copmarison on `unit`, but it's sensitive to the
 			//hard-condition of `isSlopeNeg`
-			if (Vector.Distance(end,cornerA) + Vector.Distance(start,cornerB) < 
+			if (Vector.Distance(end,cornerA) + Vector.Distance(start,cornerB) <
 				Vector.Distance(end,cornerB) + Vector.Distance(start,cornerA))
 			{
 				var t = cornerA;
 				cornerA = cornerB;
 				cornerB = t;
 			}
-			
+
 			var ca = float2(0);
 			var cb = float2(0);
 			if (!Collision.LineLineIntersection(cornerA, normal, start, unit, out ca) ||
@@ -75,17 +75,17 @@ namespace Fuse.Drawing
 				//something funny with the input, sane fallback
 				return float4( start.X, start.Y, end.X, end.Y );
 			}
-			
+
 			return float4( ca.X, ca.Y, cb.X, cb.Y );
 		}
-		
+
 		/**
 			Calculate the adjusted offsets of points along a line given new endpoints of that line.
-			
+
 			If adjStart or adjEnd are already on the line it will use the input start/end as the endpoints instead.
-			
+
 			Returns a float2 (r) that can be used to calculate the adjusted offset on (p):
-			
+
 				(p * r[0]) + r[1]
 		*/
 		static public float2 AdjustedOffsets( float2 start, float2 end, ref float2 adjStart, ref float2 adjEnd )
@@ -103,7 +103,7 @@ namespace Fuse.Drawing
 				tAS = (adjStart.Y - start.Y) / dir.Y;
 				tAE = (adjEnd.Y - start.Y) / dir.Y;
 			}
-			
+
 			if (tAS > 0)
 			{
 				adjStart = start;
@@ -114,13 +114,13 @@ namespace Fuse.Drawing
 				adjEnd = end;
 				tAE = 1;
 			}
-			
+
 			var tLen = tAE - tAS;
-			
+
 			return float2( 1f / tLen, -tAS / tLen );
 		}
 	}
-	
+
 	[Require("Assembly", "System.Drawing")]
 	[extern(DOTNET) Require("Source.Include","XliPlatform/GL.h")]
 	extern(DOTNET)
@@ -131,7 +131,7 @@ namespace Fuse.Drawing
 		float _pixelsPerPoint;
 		float2 _size;
 		OpenGL.GLTextureHandle _GLTextureHandle;
-		
+
 		Bitmap _bitmap;
 		DotNetGraphics _graphics;
 		List<DotNetNative.Matrix> _transformStates = new List<DotNetNative.Matrix>();
@@ -160,23 +160,23 @@ namespace Fuse.Drawing
 			}
 
 			_tiledImages.Clear();
-			
+
 			if (_graphics != null)
 			{
 				_graphics.Dispose();
 				_graphics = null;
 			}
-			
+
 			if (_bitmap != null)
 			{
 				_bitmap.Dispose();
 				_bitmap = null;
 			}
 		}
-		
+
 		/**
 			Concatenates a transform to be used for rendering paths (FillPath and StrokePath).
-			
+
 			This should really be a 2x3 transform:
 				[ M11 M12 ]
 				[ M21 M22 ]
@@ -189,7 +189,7 @@ namespace Fuse.Drawing
 			var state = _graphics.Transform.Clone();
 			_transformStates.Add(state);
 
-			_graphics.MultiplyTransform(new DotNetNative.Matrix(t.M11, t.M12, t.M21, t.M22, 
+			_graphics.MultiplyTransform(new DotNetNative.Matrix(t.M11, t.M12, t.M21, t.M22,
 				t.M41 * _pixelsPerPoint, t.M42 * _pixelsPerPoint), MatrixOrder.Prepend);
 		}
 
@@ -204,8 +204,8 @@ namespace Fuse.Drawing
 			_graphics.Transform = state.Clone();
 			_transformStates.RemoveAt(_transformStates.Count - 1);
 		}
-		
-		/** 
+
+		/**
 			Creates a pth from the provided list of segments.
 		*/
 		public override SurfacePath CreatePath( IList<LineSegment> segments, FillRule fillRule = FillRule.NonZero )
@@ -215,7 +215,7 @@ namespace Fuse.Drawing
 
 			return new DotNetCanvasPath{ Path = path, FillRule = fillRule };
 		}
-		
+
 		/**
 			Disposes of a path object created by `CreatePath`.
 		*/
@@ -228,14 +228,14 @@ namespace Fuse.Drawing
 				Fuse.Diagnostics.InternalError( "Duplicate dispose of SurfacePath", path );
 				return;
 			}
-			
+
 			cgPath.Path.Dispose();
 			cgPath.Path = null;
 		}
-	
+
 		/**
 			Fills the path with the given brush.
-			
+
 			This brush must have been passed to `Prepare` previously.
 		*/
 		public override void FillPath( SurfacePath path, Brush fill )
@@ -251,7 +251,7 @@ namespace Fuse.Drawing
 
 			var solidColor = fill as ISolidColor;
 			if (solidColor != null)
-			{	
+			{
 				DotNetHelpers.FillPathSolidColor(_graphics, graphicsPath, DotNetHelpers.ColorFromFloat4(solidColor.Color));
 				return;
 			}
@@ -264,7 +264,7 @@ namespace Fuse.Drawing
 				DotNetHelpers.FillPathLinearGradient(_graphics, graphicsPath, linearGradient, ends[0], ends[1], ends[2], ends[3]);
 				return;
 			}
-			
+
 			var imageFill = fill as ImageFill;
 			if (imageFill != null)
 			{
@@ -276,20 +276,20 @@ namespace Fuse.Drawing
 					return;
 				}
 				image = bitPair.Item1;
-				
+
 				var sizing = imageFill.SizingContainer;
-				sizing.absoluteZoom = _pixelsPerPoint; 
+				sizing.absoluteZoom = _pixelsPerPoint;
 				var imageSize = imageFill.Source.Size;
 				var scale = sizing.CalcScale( ElementSize, imageSize );
 				var origin = sizing.CalcOrigin( ElementSize, imageSize * scale );
-				
+
 				var tileSize = imageSize * _pixelsPerPoint * scale;
 				var pixelOrigin = origin * _pixelsPerPoint;
-				
+
 				DotNetHelpers.FillPathImage(
-					_graphics, graphicsPath, 
-					image, pixelOrigin.X, pixelOrigin.Y, 
-					tileSize.X, tileSize.Y, 
+					_graphics, graphicsPath,
+					image, pixelOrigin.X, pixelOrigin.Y,
+					tileSize.X, tileSize.Y,
 					ElementSize.X * _pixelsPerPoint, ElementSize.Y * _pixelsPerPoint
 				);
 
@@ -298,13 +298,13 @@ namespace Fuse.Drawing
 
 			Fuse.Diagnostics.UserError( "Unsupported brush", fill );
 		}
-		
+
 
 		Dictionary<Tuple<Brush, Int, Int>, Bitmap> _tiledImages = new Dictionary<Tuple<Brush, Int, Int>, Bitmap>();
 
 		/**
 			Strokes the path with the given stroke.
-			
+
 			This stroke, and it's brush, must have been passed to `Prepare` previously.
 		*/
 		public override void StrokePath( SurfacePath path, Stroke stroke )
@@ -325,11 +325,11 @@ namespace Fuse.Drawing
 			if (solidColor != null)
 			{
 				DotNetHelpers.StrokePathSolidColor(
-					_graphics, 
-					graphicsPath, 
-					DotNetHelpers.ColorFromFloat4(solidColor.Color), 
-					strokeWidth, 
-					stroke.LineJoinMiterLimit, 
+					_graphics,
+					graphicsPath,
+					DotNetHelpers.ColorFromFloat4(solidColor.Color),
+					strokeWidth,
+					stroke.LineJoinMiterLimit,
 					stroke.LineJoin,
 					stroke.LineCap
 				);
@@ -342,14 +342,14 @@ namespace Fuse.Drawing
 				var ends = linearGradient.GetEffectiveEndPoints(ElementSize) * _pixelsPerPoint;
 
 				DotNetHelpers.StrokePathLinearGradient(
-					_graphics, 
-					graphicsPath, 
-					linearGradient, 
-					ends[0], 
-					ends[1], 
-					ends[2], 
-					ends[3], 
-					strokeWidth, 
+					_graphics,
+					graphicsPath,
+					linearGradient,
+					ends[0],
+					ends[1],
+					ends[2],
+					ends[3],
+					strokeWidth,
 					stroke.LineJoinMiterLimit,
 					stroke.LineJoin,
 					stroke.LineCap
@@ -362,11 +362,11 @@ namespace Fuse.Drawing
 			if (imageFill != null)
 			{
 				var sizing = imageFill.SizingContainer;
-				sizing.absoluteZoom = _pixelsPerPoint; 
+				sizing.absoluteZoom = _pixelsPerPoint;
 				var imageSize = imageFill.Source.Size;
 				var scale = sizing.CalcScale( ElementSize, imageSize );
 				var origin = sizing.CalcOrigin( ElementSize, imageSize * scale );
-				
+
 				var tileSize = imageSize * _pixelsPerPoint * scale;
 				var pixelOrigin = origin * _pixelsPerPoint;
 
@@ -386,16 +386,16 @@ namespace Fuse.Drawing
 						return;
 					}
 					image = bitPair.Item1;
-					
+
 					newImage = new Bitmap(image, tileSizeX, tileSizeY);
 					_tiledImages[tuple] = newImage;
 				}
 
 				DotNetHelpers.StrokePathImage(
-					_graphics, graphicsPath, 
+					_graphics, graphicsPath,
 					newImage,
 					pixelOrigin.X, pixelOrigin.Y,
-					strokeWidth, 
+					strokeWidth,
 					stroke.LineJoinMiterLimit,
 					stroke.LineJoin,
 					stroke.LineCap
@@ -427,7 +427,7 @@ namespace Fuse.Drawing
 			_GLTextureHandle = fb.ColorBuffer.GLTextureHandle;
 		}
 
-		
+
 		/**
 			Ends drawing. All drawing called after `Begin` and to now must be completed by now. This copies the resulting image to the desired output setup in `Begin`.
 		*/
@@ -460,7 +460,7 @@ namespace Fuse.Drawing
 			bufferPin.Free();
 			_bitmap.UnlockBits(bitmapData);
 		}
-		
+
 
 		/**
 			Prepares this brush for drawing. If this is called a second time with the same `Brush` it indicates the properties of that brush have changed.
@@ -515,12 +515,12 @@ namespace Fuse.Drawing
 						prevPoint = to;
 						path.StartFigure();
 						break;
-						
+
 					case LineSegmentType.Straight:
 						path.AddLine(prevPoint, to);
 						prevPoint = to;
 						break;
-						
+
 					case LineSegmentType.BezierCurve:
 					{
 						var a = PixelFromPoint(seg.A);
@@ -529,7 +529,7 @@ namespace Fuse.Drawing
 						prevPoint = to;
 						break;
 					}
-					
+
 					case LineSegmentType.EllipticArc:
 					{
 						_temp.Clear();
@@ -537,7 +537,7 @@ namespace Fuse.Drawing
 						prevPoint = AddSegments( path, _temp, prevPoint );
 						break;
 					}
-					
+
 					case LineSegmentType.Close:
 					{
 						path.CloseFigure();
@@ -546,7 +546,7 @@ namespace Fuse.Drawing
 					}
 				}
 			}
-			
+
 			return prevPoint;
 		}
 
@@ -568,7 +568,7 @@ namespace Fuse.Drawing
 			var imageRef = LoadImage(src.PixelSize.X, src.PixelSize.Y );
 			FramebufferPool.Release(fb);
 			_drawContext.PopRenderTarget();
-			
+
 			_imageBrushes[img] = imageRef;
 		}
 
@@ -593,7 +593,7 @@ namespace Fuse.Drawing
 			var handle = GCHandle.Alloc(pixelData, GCHandleType.Pinned);
 			IntPtr buffer =  Marshal.UnsafeAddrOfPinnedArrayElement(pixelData, 0);
 
-			var image = new Bitmap(width, height, width * 4, PixelFormat.Format32bppPArgb, buffer);			
+			var image = new Bitmap(width, height, width * 4, PixelFormat.Format32bppPArgb, buffer);
 
 			return Tuple.Create(image, handle);
 		}
@@ -603,7 +603,7 @@ namespace Fuse.Drawing
 			if (_graphics == null)
 				throw new Exception( "Object disposed" );
 		}
-		
+
 		void VerifyBegun()
 		{
 			if (_buffer == null)
@@ -624,7 +624,7 @@ namespace Fuse.Drawing
 			return new PointF(point.X, point.Y);
 		}
 
-		/** Render a given buffer into a size window on the given GLBuffer 
+		/** Render a given buffer into a size window on the given GLBuffer
 
 		*/
 		public static extern void Render (float2 size, IntPtr buffer, OpenGL.GLTextureHandle GLBuffer)
@@ -632,9 +632,9 @@ namespace Fuse.Drawing
 			GL.BindTexture(GLTextureTarget.Texture2D, GLBuffer);
 			GL.PixelStore(GLPixelStoreParameter.UnpackAlignment, 1);
 			GL.TexImage2D(
-				GLTextureTarget.Texture2D, 0, 
-				GLPixelFormat.Rgba, (int)size.X, (int)size.Y, 0, 
-				GLPixelFormat.Rgba, GLPixelType.UnsignedByte, 
+				GLTextureTarget.Texture2D, 0,
+				GLPixelFormat.Rgba, (int)size.X, (int)size.Y, 0,
+				GLPixelFormat.Rgba, GLPixelType.UnsignedByte,
 				buffer
 			);
 			return;
@@ -657,7 +657,7 @@ namespace Fuse.Drawing
 
 		/**
 			A Clamped WrapMode for ColorBlend is not supported (despite being in the docs). We workaround by duplicating the start/end colors and extending the start/end points to cover the entire drawing region.
-			
+
 			This is done quite roughly now and assume the input is reasonably sane (not some/both points for outside of the rectangle, or of tiny distance).  It relies on DotNet donig the trimming of excessive start/end lines on its own (the calc here will almost always produce a line that is excessively long).
 		*/
 		static ColorBlend CreateColorBlend(LinearGradient lg, RectangleF bounds, float2 inStart, float2 inEnd,
@@ -681,7 +681,7 @@ namespace Fuse.Drawing
 			colors[numberOfColorPoints - 1] = endColor;
 			offsets[numberOfColorPoints - 1] = 1.0f;
 
-			var newEnds = DotNetUtil.AdjustedEndPoints( 
+			var newEnds = DotNetUtil.AdjustedEndPoints(
 				float4( bounds.X, bounds.Y, bounds.X + bounds.Width, bounds.Y + bounds.Height ),
 				inStart, inEnd );
 			gStart = newEnds.XY;
@@ -697,31 +697,31 @@ namespace Fuse.Drawing
 				colors[i + 1] = ColorFromFloat4(stop.Color);
 				offsets[i + 1] = stop.Offset * adjust[0] + adjust[1];
 			}
-			
+
 			ColorBlend blend = new ColorBlend();
-			blend.Positions = offsets; 
-			blend.Colors = colors; 
+			blend.Positions = offsets;
+			blend.Colors = colors;
 
 			return blend;
 		}
 
-		static bool IsStrokeBoundsZero( RectangleF bounds, float width ) 
+		static bool IsStrokeBoundsZero( RectangleF bounds, float width )
 		{
 			//It's not clear where they come from, but they are valid bounds at a high-level, but DotNet
 			//tends to fault on them.
-			if (bounds.Width == 0 && bounds.Height == 0) 
+			if (bounds.Width == 0 && bounds.Height == 0)
 				return width == 0; //all exact seems correct, near-zero works in DotNet
 			return false;
 		}
-		
+
 		/** Strokes a path with a solid color and the given settings
 
 			Does nothing if the path has no width or height
 		*/
 		public static extern void StrokePathSolidColor(
-			DotNetGraphics graphics, GraphicsPath path, 
-			DotNetNative.Color color, float width, 
-			float miterLimit, 
+			DotNetGraphics graphics, GraphicsPath path,
+			DotNetNative.Color color, float width,
+			float miterLimit,
 			LineJoin lineJoin, LineCap lineCap
 		)
 		{
@@ -744,11 +744,11 @@ namespace Fuse.Drawing
 		}
 
 		public static extern void StrokePathImage(
-			DotNetGraphics graphics, GraphicsPath path, 
-			Bitmap image, 
+			DotNetGraphics graphics, GraphicsPath path,
+			Bitmap image,
 			float originX, float originY,
 			float width,
-			float miterLimit, 
+			float miterLimit,
 			LineJoin lineJoin, LineCap lineCap
 		)
 		{
@@ -758,7 +758,7 @@ namespace Fuse.Drawing
 			bounds.Inflate(width, width);
 
 			var brush = new TextureBrush(image, DotNetWrapMode.Tile);
-			
+
 			brush.ScaleTransform(1, -1);
 			brush.TranslateTransform(originX, originY);
 
@@ -775,16 +775,16 @@ namespace Fuse.Drawing
 			brush.Dispose();
 		}
 
-		/** Stroke a path with a linear color. 
+		/** Stroke a path with a linear color.
 
 			Does nothing if the path has no width or height
 		*/
 		public static extern void StrokePathLinearGradient(
-			DotNetGraphics graphics, GraphicsPath path, 
-			LinearGradient lg, 
-			float startX, float startY, 
-			float endX, float endY, 
-			float width, float miterLimit, 
+			DotNetGraphics graphics, GraphicsPath path,
+			LinearGradient lg,
+			float startX, float startY,
+			float endX, float endY,
+			float width, float miterLimit,
 			LineJoin lineJoin, LineCap lineCap
 		)
 		{
@@ -810,13 +810,13 @@ namespace Fuse.Drawing
 			);
 
 			brush.InterpolationColors = blend;
-			
+
 			Pen pen = new Pen(brush, width);
 			pen.MiterLimit = miterLimit;
 			pen.LineJoin = DotNetHelpers.LineJoinToDotNet(lineJoin);
 			pen.StartCap = DotNetHelpers.LineCapToDotNet(lineCap);
 			pen.EndCap = DotNetHelpers.LineCapToDotNet(lineCap);
-			
+
 			graphics.SetClip(bounds, CombineMode.Replace);
 			graphics.SmoothingMode = SmoothingMode.AntiAlias;
 			graphics.DrawPath(pen, path);
@@ -824,8 +824,8 @@ namespace Fuse.Drawing
 			brush.Dispose();
 			graphics.Restore(state);
 		}
-		
-		public static extern void FillPathSolidColor(DotNetGraphics graphics, GraphicsPath path, DotNetNative.Color color) 
+
+		public static extern void FillPathSolidColor(DotNetGraphics graphics, GraphicsPath path, DotNetNative.Color color)
 		{
 			SolidBrush brush = new SolidBrush(color);
 
@@ -835,11 +835,11 @@ namespace Fuse.Drawing
 
 			brush.Dispose();
 		}
-		
+
 		public static extern void FillPathLinearGradient(
-			DotNetGraphics graphics, GraphicsPath path, 
-			LinearGradient lg, 
-			float startX, float startY, 
+			DotNetGraphics graphics, GraphicsPath path,
+			LinearGradient lg,
+			float startX, float startY,
 			float endX, float endY
 		)
 		{
@@ -860,7 +860,7 @@ namespace Fuse.Drawing
 
 			brush.InterpolationColors = blend;
 			graphics.SetClip(bounds, CombineMode.Replace);
-			
+
 			var state = graphics.Save();
 			graphics.SmoothingMode = SmoothingMode.AntiAlias;
 			graphics.FillPath(brush, path);
@@ -872,8 +872,8 @@ namespace Fuse.Drawing
 
 
 		public static void FillPathImage(
-			DotNetGraphics graphics, GraphicsPath path, Bitmap image, 
-			float originX, float originY, 
+			DotNetGraphics graphics, GraphicsPath path, Bitmap image,
+			float originX, float originY,
 			float tileSizeX, float tileSizeY,
 			float width, float height
 			)
@@ -939,7 +939,7 @@ namespace Fuse.Drawing
 
 	extern (DOTNET) internal class DotNetGraphicsPath
 	{
-		GraphicsPath _internalGraphicsPath; 
+		GraphicsPath _internalGraphicsPath;
 
 		public DotNetGraphicsPath ()
 		{
@@ -960,10 +960,10 @@ namespace Fuse.Drawing
 		public void CurveTo(float2 startPoint, float2 point1, float2 point2, float2 endPoint)
 		{
 			_internalGraphicsPath.AddBezier(
-				DotNetHelpers.PointFFromFloat2(startPoint), 
-				DotNetHelpers.PointFFromFloat2(point1), 
+				DotNetHelpers.PointFFromFloat2(startPoint),
+				DotNetHelpers.PointFFromFloat2(point1),
 				DotNetHelpers.PointFFromFloat2(point2),
-				DotNetHelpers.PointFFromFloat2(endPoint) 
+				DotNetHelpers.PointFFromFloat2(endPoint)
 			);
 		}
 
@@ -991,7 +991,7 @@ namespace Fuse.Drawing
 		public void CloseAllFigures()
 		{
 			_internalGraphicsPath.CloseAllFigures();
-		}	
+		}
 	}
 
 	namespace DotNetNative
@@ -1070,7 +1070,7 @@ namespace Fuse.Drawing
 
 			public override extern void Dispose();
 		}
-				
+
 
 		[DotNetType("System.Drawing.Drawing2D.LinearGradientBrush")]
 		extern(DOTNET) internal class LinearGradientBrush : DotNetBrush
@@ -1096,7 +1096,7 @@ namespace Fuse.Drawing
 			public extern Color[] SurroundColors { get; set; }
 			public override extern void Dispose();
 		}
-				
+
 
 		[DotNetType("System.Drawing.SolidBrush")]
 		extern(DOTNET) internal class SolidBrush : DotNetBrush
@@ -1310,7 +1310,7 @@ namespace Fuse.Drawing
 			public extern String IsIdentity { get; }
 			public extern Matrix Clone();
 		}
-			
+
 		[DotNetType("System.Drawing.Pen")]
 		extern(DOTNET) internal class Pen
 		{

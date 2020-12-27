@@ -20,7 +20,7 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #ifndef JSValue_h
@@ -197,7 +197,7 @@ NS_CLASS_AVAILABLE(10_9, 7_0)
 /*!
 @method
 @abstract Convert this JSValue to an Objective-C object.
-@discussion The JSValue is converted to an Objective-C object according 
+@discussion The JSValue is converted to an Objective-C object according
  to the conversion rules specified above.
 @result The Objective-C representation of this JSValue.
 */
@@ -206,7 +206,7 @@ NS_CLASS_AVAILABLE(10_9, 7_0)
 /*!
 @method
 @abstract Convert a JSValue to an Objective-C object of a specific class.
-@discussion The JSValue is converted to an Objective-C object of the specified Class. 
+@discussion The JSValue is converted to an Objective-C object of the specified Class.
  If the result is not of the specified Class then <code>nil</code> will be returned.
 @result An Objective-C object of the specified Class or <code>nil</code>.
 */
@@ -215,7 +215,7 @@ NS_CLASS_AVAILABLE(10_9, 7_0)
 /*!
 @method
 @abstract Convert a JSValue to a boolean.
-@discussion The JSValue is converted to a boolean according to the rules specified 
+@discussion The JSValue is converted to a boolean according to the rules specified
  by the JavaScript language.
 @result The boolean result of the conversion.
 */
@@ -224,7 +224,7 @@ NS_CLASS_AVAILABLE(10_9, 7_0)
 /*!
 @method
 @abstract Convert a JSValue to a double.
-@discussion The JSValue is converted to a number according to the rules specified 
+@discussion The JSValue is converted to a number according to the rules specified
  by the JavaScript language.
 @result The double result of the conversion.
 */
@@ -233,7 +233,7 @@ NS_CLASS_AVAILABLE(10_9, 7_0)
 /*!
 @method
 @abstract Convert a JSValue to an <code>int32_t</code>.
-@discussion The JSValue is converted to an integer according to the rules specified 
+@discussion The JSValue is converted to an integer according to the rules specified
  by the JavaScript language.
 @result The <code>int32_t</code> result of the conversion.
 */
@@ -242,7 +242,7 @@ NS_CLASS_AVAILABLE(10_9, 7_0)
 /*!
 @method
 @abstract Convert a JSValue to a <code>uint32_t</code>.
-@discussion The JSValue is converted to an integer according to the rules specified 
+@discussion The JSValue is converted to an integer according to the rules specified
  by the JavaScript language.
 @result The <code>uint32_t</code> result of the conversion.
 */
@@ -251,8 +251,8 @@ NS_CLASS_AVAILABLE(10_9, 7_0)
 /*!
 @method
 @abstract Convert a JSValue to a NSNumber.
-@discussion If the JSValue represents a boolean, a NSNumber value of YES or NO 
- will be returned. For all other types the value will be converted to a number according 
+@discussion If the JSValue represents a boolean, a NSNumber value of YES or NO
+ will be returned. For all other types the value will be converted to a number according
  to the rules specified by the JavaScript language.
 @result The NSNumber result of the conversion.
 */
@@ -261,7 +261,7 @@ NS_CLASS_AVAILABLE(10_9, 7_0)
 /*!
 @method
 @abstract Convert a JSValue to a NSString.
-@discussion The JSValue is converted to a string according to the rules specified 
+@discussion The JSValue is converted to a string according to the rules specified
  by the JavaScript language.
 @result The NSString containing the result of the conversion.
 */
@@ -270,7 +270,7 @@ NS_CLASS_AVAILABLE(10_9, 7_0)
 /*!
 @method
 @abstract Convert a JSValue to a NSDate.
-@discussion The value is converted to a number representing a time interval 
+@discussion The value is converted to a number representing a time interval
  since 1970 which is then used to create a new NSDate instance.
 @result The NSDate created using the converted time interval.
 */
@@ -285,7 +285,7 @@ NS_CLASS_AVAILABLE(10_9, 7_0)
  integer, and an NSArray of this size is allocated. Properties corresponding
  to indicies within the array bounds will be copied to the array, with
  JSValues converted to equivalent Objective-C objects as specified.
-@result The NSArray containing the recursively converted contents of the 
+@result The NSArray containing the recursively converted contents of the
  converted JavaScript array.
 */
 - (NSArray *)toArray;
@@ -308,7 +308,7 @@ NS_CLASS_AVAILABLE(10_9, 7_0)
 /*!
 @method
 @abstract Access a property of a JSValue.
-@result The JSValue for the requested property or the JSValue <code>undefined</code> 
+@result The JSValue for the requested property or the JSValue <code>undefined</code>
  if the property does not exist.
 */
 - (JSValue *)valueForProperty:(NSString *)property;
@@ -338,7 +338,7 @@ NS_CLASS_AVAILABLE(10_9, 7_0)
 @method
 @abstract Define properties with custom descriptors on JSValues.
 @discussion This method may be used to create a data or accessor property on an object.
- This method operates in accordance with the Object.defineProperty method in the 
+ This method operates in accordance with the Object.defineProperty method in the
  JavaScript language.
 */
 - (void)defineProperty:(NSString *)property descriptor:(id)descriptor;
@@ -346,15 +346,15 @@ NS_CLASS_AVAILABLE(10_9, 7_0)
 /*!
 @method
 @abstract Access an indexed (numerical) property on a JSValue.
-@result The JSValue for the property at the specified index. 
- Returns the JavaScript value <code>undefined</code> if no property exists at that index. 
+@result The JSValue for the property at the specified index.
+ Returns the JavaScript value <code>undefined</code> if no property exists at that index.
 */
 - (JSValue *)valueAtIndex:(NSUInteger)index;
 
 /*!
 @method
 @abstract Set an indexed (numerical) property on a JSValue.
-@discussion For JSValues that are JavaScript arrays, indices greater than 
+@discussion For JSValues that are JavaScript arrays, indices greater than
  UINT_MAX - 1 will not affect the length of the array.
 */
 - (void)setValue:(id)value atIndex:(NSUInteger)index;
@@ -366,7 +366,7 @@ NS_CLASS_AVAILABLE(10_9, 7_0)
 /*!
 @property
 @abstract Check if a JSValue corresponds to the JavaScript value <code>undefined</code>.
-*/ 
+*/
 @property (readonly) BOOL isUndefined;
 
 /*!
@@ -386,7 +386,7 @@ NS_CLASS_AVAILABLE(10_9, 7_0)
 @abstract Check if a JSValue is a number.
 @discussion In JavaScript, there is no differentiation between types of numbers.
  Semantically all numbers behave like doubles except in special cases like bit
- operations. 
+ operations.
 */
 @property (readonly) BOOL isNumber;
 
@@ -405,13 +405,13 @@ NS_CLASS_AVAILABLE(10_9, 7_0)
 /*!
 @property
 @abstract Check if a JSValue is an array.
-*/ 
+*/
 @property (readonly) BOOL isArray NS_AVAILABLE(10_11, 9_0);
 
 /*!
 @property
 @abstract Check if a JSValue is a date.
-*/ 
+*/
 @property (readonly) BOOL isDate NS_AVAILABLE(10_11, 9_0);
 
 /*!
@@ -444,7 +444,7 @@ NS_CLASS_AVAILABLE(10_9, 7_0)
 @discussion In JavaScript, if a function doesn't explicitly return a value then it
  implicitly returns the JavaScript value <code>undefined</code>.
 @param arguments The arguments to pass to the function.
-@result The return value of the function call. 
+@result The return value of the function call.
 */
 - (JSValue *)callWithArguments:(NSArray *)arguments;
 
@@ -460,7 +460,7 @@ NS_CLASS_AVAILABLE(10_9, 7_0)
 /*!
 @method
 @abstract Invoke a method on a JSValue.
-@discussion Accesses the property named <code>method</code> from this value and 
+@discussion Accesses the property named <code>method</code> from this value and
  calls the resulting value as a function, passing this JSValue as the <code>this</code>
  value along with the specified arguments.
 @param method The name of the method to be invoked.
@@ -502,7 +502,7 @@ NS_CLASS_AVAILABLE(10_9, 7_0)
 
 /*!
 @method
-@abstract 
+@abstract
 Create a JSValue from a CGRect.
 @result A newly allocated JavaScript object containing properties
  named <code>x</code>, <code>y</code>, <code>width</code>, and <code>height</code>, with values from the CGRect.
@@ -538,7 +538,7 @@ Create a JSValue from a CGRect.
 /*!
 @method
 @abstract Convert a JSValue to a CGRect.
-@discussion Reads the properties named <code>x</code>, <code>y</code>, 
+@discussion Reads the properties named <code>x</code>, <code>y</code>,
  <code>width</code>, and <code>height</code> from this JSValue and converts the results to double.
 @result The new CGRect.
 */
@@ -635,27 +635,27 @@ extern "C" {
     data or accessor property, or to create a new data property.
 */
 /*!
-@const 
+@const
 */
 JS_EXPORT extern NSString * const JSPropertyDescriptorWritableKey;
 /*!
-@const 
+@const
 */
 JS_EXPORT extern NSString * const JSPropertyDescriptorEnumerableKey;
 /*!
-@const 
+@const
 */
 JS_EXPORT extern NSString * const JSPropertyDescriptorConfigurableKey;
 /*!
-@const 
+@const
 */
 JS_EXPORT extern NSString * const JSPropertyDescriptorValueKey;
 /*!
-@const 
+@const
 */
 JS_EXPORT extern NSString * const JSPropertyDescriptorGetKey;
 /*!
-@const 
+@const
 */
 JS_EXPORT extern NSString * const JSPropertyDescriptorSetKey;
 

@@ -20,7 +20,7 @@ namespace Fuse.Storage
 
 			return true;
 		}
-		
+
 		static void CreateFile(string filepath)
 		{
 			using(var stream = File.Open(filepath, FileMode.Create))
@@ -56,10 +56,10 @@ namespace Fuse.Storage
 		{
 			if (filename == null)
 				throw new ArgumentNullException(nameof(filename));
-			
+
 			var filepath = Path.Combine(Directory.GetUserDirectory(UserDirectory.Data), filename);
 			if(!File.Exists(filepath)) return false;
-		
+
 			try
 			{
 				File.Delete(filepath);

@@ -17,17 +17,17 @@ namespace Fuse.Elements.Test
 			{
 				root.Children.Add(p);
 				root.Layout(int2(1000));
-				
+
 				Assert.AreEqual(float2(100,50),p.E1.ActualSize);
 				Assert.AreEqual(float2(600,300),p.E2.ActualSize);
 				Assert.AreEqual(float2(150,80),p.E3.ActualSize);
-				
+
 				Assert.AreEqual(float2(100,50),p.P1.ActualSize);
 				Assert.AreEqual(float2(100,50),p.P2.ActualSize);
 				Assert.AreEqual(float2(100,50),p.P3.ActualSize);
 			}
 		}
-		
+
 		[Test]
 		public void Explicit()
 		{
@@ -43,7 +43,7 @@ namespace Fuse.Elements.Test
 
 				Assert.AreEqual(float2(300,150),p.E1.ActualSize);
 				Assert.AreEqual(float2(100,50),p.E2.ActualSize);
-				
+
 				Assert.AreEqual(float2(200,80),p.M1.ActualSize);
 				Assert.AreEqual(float2(400,120),p.M2.ActualSize);
 
@@ -53,7 +53,7 @@ namespace Fuse.Elements.Test
  				Assert.AreEqual(0,Fuse.Resources.DisposalManager.TestMemoryResourceCount);
 			}
 		}
-		
+
 		[Test]
 		public void Max()
 		{
@@ -62,12 +62,12 @@ namespace Fuse.Elements.Test
 			{
 				root.Children.Add(p);
 				root.Layout(int2(1000));
-				
+
 				Assert.AreEqual(float2(100,50),p.E1.ActualSize);
 				Assert.AreEqual(float2(160,80),p.E2.ActualSize);
 				Assert.AreEqual(float2(200,50),p.E3.ActualSize);
 				Assert.AreEqual(float2(200,100),p.E4.ActualSize);
-				
+
 				Assert.AreEqual(float2(100,50),p.P1.ActualSize);
 				Assert.AreEqual(float2(100,50),p.P2.ActualSize);
 				Assert.AreEqual(float2(100,50),p.P3.ActualSize);

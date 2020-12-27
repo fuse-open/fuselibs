@@ -9,7 +9,7 @@ namespace Fuse.Motion
 	public class DelayFunction: Expression
 	{
 		Expression _value, _delay;
-		
+
 		[UXConstructor]
 		public DelayFunction([UXParameter("Value")] Expression value, [UXParameter("Delay")] Expression delay)
 		{
@@ -23,26 +23,26 @@ namespace Fuse.Motion
 			sub.Init(context);
 			return sub;
 		}
-		
+
 		class Subscription : ExpressionListener
 		{
 			public Subscription( DelayFunction source, IListener listener ) :
 				base( source, listener, new Expression[]{ source._value, source._delay }, Flags.None )
 			{ }
-			
+
 			protected override void OnArguments(Argument[] args)
 			{
 				//TODO: https://github.com/fuse-open/fuselibs/issues/872  This doesn't deal with lost data correctly
 				//TODO: https://github.com/fuse-open/fuselibs/issues/873 doesn't handle invalid Delay
 				Timer.Wait(Marshal.ToDouble(args[1].Value), new SetClosure(this, args[0].Value).Run);
 			}
-			
+
 			public new void SetData(object value)
 			{
 				base.SetData(value);
 			}
 		}
-		
+
 		class SetClosure
 		{
 			readonly Subscription _sub;

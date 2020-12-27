@@ -6,7 +6,7 @@ namespace Fuse.GeoLocation
 	{
 	    double _lat;
 	    double _long;
-	    
+
 	    public double Latitude { get { return _lat; } }
 	    public double Longitude { get { return _long; } }
 

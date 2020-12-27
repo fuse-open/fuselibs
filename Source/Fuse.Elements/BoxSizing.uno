@@ -14,7 +14,7 @@ namespace Fuse.Elements
 		public float2 Position;
 		//the size of the padding box
 		public float2 Size;
-		
+
 		bool NoGood(float value)
 		{
 			return Float.IsInfinity(value) || Float.IsNaN(value);
@@ -23,7 +23,7 @@ namespace Fuse.Elements
 		{
 			return NoGood(value) || value < 0;
 		}
-		
+
 		internal bool SanityConstrain()
 		{
 			var ret = false;
@@ -57,20 +57,20 @@ namespace Fuse.Elements
 				ret = true;
 				Position.Y = 0;
 			}
-			
+
 			return ret;
 		}
 	}
-	
+
 	abstract class BoxSizing
 	{
 		abstract public BoxPlacement CalcBoxPlacement(Element element, float2 position, LayoutParams lp);
-		
+
 		/**
 			Return the size of the margin box given these LayoutParams for the available margin area.
 		*/
 		abstract public float2 CalcMarginSize(Element element, LayoutParams lp);
-		
+
 		/**
 			Calculate the size of padding box to be used for arrangement with these LayoutParams for
 			the padding box. This should not consider box sizing contrains, such as Limit, but just
@@ -79,13 +79,13 @@ namespace Fuse.Elements
 		abstract public float2 CalcArrangePaddingSize(Element element, LayoutParams lp);
 
 		virtual public void RequestLayout(Element element) { }
-		
+
 		virtual public LayoutDependent IsContentRelativeSize(Element element)
 		{
 			//assume child relative (worst case)
 			return LayoutDependent.Yes;
 		}
-		
+
 		protected float UnitSize( Element element, Size value,
 			float relative, bool hasRelative, out bool known )
 		{
@@ -97,7 +97,7 @@ namespace Fuse.Elements
 
 			if (u == Unit.Pixels)
 				return value.Value / element.AbsoluteZoom;
-				
+
 			//Percent
 			if (hasRelative)
 				return value.Value * relative / 100f;
@@ -105,41 +105,41 @@ namespace Fuse.Elements
 			known = false;
 			return 0;
 		}
-		
+
 		protected SimpleAlignment EffectiveHorizontalAlignment(Element element)
 		{
 			var raw = AlignmentHelpers.GetHorizontalAlign(element.Alignment);
-			
+
 			if (raw == Alignment.Left)
 				return SimpleAlignment.Begin;
 			if (raw == Alignment.Right)
 				return SimpleAlignment.End;
 			if (raw == Alignment.HorizontalCenter)
 				return SimpleAlignment.Center;
-				
+
 			if (element.HasBit(FastProperty1.X))
 				return SimpleAlignment.Begin;
-				
+
 			return SimpleAlignment.Center;
 		}
-		
+
 		protected SimpleAlignment EffectiveVerticalAlignment(Element element)
 		{
 			var raw = AlignmentHelpers.GetVerticalAlign(element.Alignment);
-			
+
 			if (raw == Alignment.Top)
 				return SimpleAlignment.Begin;
 			if (raw == Alignment.Bottom)
 				return SimpleAlignment.End;
 			if (raw == Alignment.VerticalCenter)
 				return SimpleAlignment.Center;
-				
+
 			if (element.HasBit(FastProperty1.Y))
 				return SimpleAlignment.Begin;
-			
+
 			return SimpleAlignment.Center;
 		}
-		
+
 		protected float SimpleToAnchor( SimpleAlignment align )
 		{
 			if (align == SimpleAlignment.Begin)
@@ -148,19 +148,19 @@ namespace Fuse.Elements
 				return 100;
 			return 50;
 		}
-		
-		protected void EffectiveAnchor( Element element, SimpleAlignment halign, SimpleAlignment valign, 
+
+		protected void EffectiveAnchor( Element element, SimpleAlignment halign, SimpleAlignment valign,
 			out Size2 anchor)
 		{
 			if (element.HasBit(FastProperty1.Anchor))
-			{	
+			{
 				anchor = element.Anchor;
 				return;
 			}
-			
+
 			anchor = new Size2(new Size(SimpleToAnchor(halign), Unit.Percent), new Size(SimpleToAnchor(valign), Unit.Percent));
 		}
-		
+
 		[Flags]
 		protected enum ConstraintFlags
 		{
@@ -171,9 +171,9 @@ namespace Fuse.Elements
 			ConstraintFlags flags = ConstraintFlags.None)
 		{
 			var c = LayoutParams.CreateEmpty();
-			
+
 			bool known = false;
-			
+
 			if (!element.Width.IsAuto)
 			{
 				var x = UnitSize(element, element.Width, lp.RelativeX, lp.HasRelativeX, out known);
@@ -181,7 +181,7 @@ namespace Fuse.Elements
 					c.SetX(x);
 			}
 			else if (lp.HasX && //classic WPF, default alignment with no x/y is stretching
-				AlignmentHelpers.GetHorizontalAlign(element.Alignment) == Alignment.Default && 
+				AlignmentHelpers.GetHorizontalAlign(element.Alignment) == Alignment.Default &&
 				!element.HasBit(FastProperty1.X))
 			{
 				c.SetX(lp.X);
@@ -193,13 +193,13 @@ namespace Fuse.Elements
 				if (known)
 					c.SetY(y);
 			}
-			else if (lp.HasY && 
-				AlignmentHelpers.GetVerticalAlign(element.Alignment) == Alignment.Default && 
+			else if (lp.HasY &&
+				AlignmentHelpers.GetVerticalAlign(element.Alignment) == Alignment.Default &&
 				!element.HasBit(FastProperty1.Y))
 			{
 				c.SetY(lp.Y);
 			}
-			
+
 			known = false;
 			Size limit = 0; //unused
 			if (element.HasBit(FastProperty1.MaxWidth))
@@ -218,7 +218,7 @@ namespace Fuse.Elements
 				if (known)
 					c.ConstrainMaxX(mx);
 			}
-			
+
 			known = false;
 			if (element.HasBit(FastProperty1.MaxHeight))
 			{
@@ -236,30 +236,30 @@ namespace Fuse.Elements
 				if (known)
 					c.ConstrainMaxY(my);
 			}
-			
+
 			if (element.HasBit(FastProperty1.MinWidth))
 			{
 				var mn = UnitSize(element, element.MinWidth, lp.RelativeX, lp.HasRelativeX, out known);
 				if (known)
 					c.ConstrainMinX( mn );
 			}
-			
+
 			if (element.HasBit(FastProperty1.MinHeight))
 			{
 				var mn = UnitSize(element, element.MinHeight, lp.RelativeY, lp.HasRelativeY, out known);
 				if (known)
 					c.ConstrainMinY( mn );
 			}
-			
+
 			return c;
 		}
-		
+
 	}
-	
+
 	class StandardBoxSizing : BoxSizing
 	{
 		static public StandardBoxSizing Singleton = new StandardBoxSizing();
-		
+
 		override public BoxPlacement CalcBoxPlacement(Element element, float2 position, LayoutParams lp)
 		{
 			var margin = element.Margin;
@@ -268,7 +268,7 @@ namespace Fuse.Elements
 			var marginBox = element.GetMarginSize( lp );
 			var paddingBox = marginBox - margin.XY - margin.ZW;
 			avSize -= margin.XY + margin.ZW;
-			
+
 			avSize = Math.Max( float2(0), avSize );
 			paddingBox = Math.Max( float2(0), paddingBox );
 
@@ -281,7 +281,7 @@ namespace Fuse.Elements
 			var halign = EffectiveHorizontalAlignment(element);
 			if (!lp.HasX)
 				halign = SimpleAlignment.Begin;
-				
+
 			var valign = EffectiveVerticalAlignment(element);
 			if (!lp.HasY)
 				valign = SimpleAlignment.Begin;
@@ -314,13 +314,13 @@ namespace Fuse.Elements
 					);
 				p += o;
 			}
-			
+
 			if (element.HasBit(FastProperty1.X))
 			{
 				var o = element.X;
 				p.X += UnitSize( element, o, avSize.X, lp.HasX, out ignore );
 			}
-			
+
 			if (element.HasBit(FastProperty1.Y))
 			{
 				var o = element.Y;
@@ -338,10 +338,10 @@ namespace Fuse.Elements
 			bp.MarginBox = marginBox;
 			bp.Position = p;
 			bp.Size = s;
-			
+
 			return bp;
 		}
-		
+
 		override public float2 CalcMarginSize(Element element, LayoutParams lp)
 		{
 			if (element.Visibility == Visibility.Collapsed)
@@ -359,15 +359,15 @@ namespace Fuse.Elements
 			sz += margin.XY + margin.ZW;
 			return sz;
 		}
-		
+
 		override public float2 CalcArrangePaddingSize(Element element, LayoutParams lp)
 		{
-			var c = GetConstraints(element, lp, 
+			var c = GetConstraints(element, lp,
 				ImplicitMax ? ConstraintFlags.ImplicitMax : ConstraintFlags.None);
 			var child = lp.CloneAndDerive();
 			child.BoxConstrain(c);
 			var sz = child.Size;
-			
+
 			if (!child.HasSize)
 			{
 				var pad = element.Padding;
@@ -377,46 +377,46 @@ namespace Fuse.Elements
 				sz = element.InternGetContentSize(child);
 				sz += pad.XY + pad.ZW;
 			}
-			
+
 			sz = c.PointConstrain( sz );
-			
+
 			if(element.SnapToPixels)
 				sz = SnapUp(element, sz);
-			
+
 			return sz;
 		}
 
 		protected bool ImplicitMax = true;
-		
+
 		float pixelEpsilon = 0.005f;
 		float2 SnapUp(Element element, float2 p)
 		{
 			var s = Math.Ceil(p * element.AbsoluteZoom - pixelEpsilon) / element.AbsoluteZoom;
 			return s;
 		}
-		
+
 		override public LayoutDependent IsContentRelativeSize(Element element)
 		{
 			bool ha = AlignmentHelpers.GetHorizontalAlign(element.Alignment) != Alignment.Default;
 			bool w = !element.Width.IsAuto;
-				
+
 			bool va = AlignmentHelpers.GetVerticalAlign(element.Alignment) != Alignment.Default;
 			bool h = !element.Height.IsAuto;
-				
+
 			if (w && h)
 				return LayoutDependent.No;
-				
+
 			if (ha || va)
 				return LayoutDependent.Yes;
-				
+
 			return LayoutDependent.Maybe;
 		}
 	}
-	
+
 	class NoImplicitMaxBoxSizing : StandardBoxSizing
 	{
 		static public new NoImplicitMaxBoxSizing Singleton = new NoImplicitMaxBoxSizing();
-		
+
 		public NoImplicitMaxBoxSizing()
 		{
 			ImplicitMax = false;

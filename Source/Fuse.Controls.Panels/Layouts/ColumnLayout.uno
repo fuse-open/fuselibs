@@ -84,7 +84,7 @@ namespace Fuse.Layouts
 				}
 			}
 		}
-		
+
 		bool _hasColumnSize;
 		float _columnSize;
 
@@ -138,7 +138,7 @@ namespace Fuse.Layouts
 				}
 			}
 		}
-		
+
 		float _itemSpacing = 0;
 		/**	Spacing between each item of a column.
 
@@ -192,12 +192,12 @@ namespace Fuse.Layouts
 				}
 			}
 		}
-		
+
 		int LeastAt( float[] c )
 		{
 			float sz = c[0];
 			int i = 0;
-			
+
 			for (int j=1; j < c.Length; j++)
 			{
 				if (c[j] < sz)
@@ -206,10 +206,10 @@ namespace Fuse.Layouts
 					i = j;
 				}
 			}
-			
+
 			return i;
 		}
-		
+
 		float Max(float[] c)
 		{
 			var mx = c[0];
@@ -217,30 +217,30 @@ namespace Fuse.Layouts
 				mx = Math.Max(mx, c[j]);
 			return mx;
 		}
-		
+
 		internal override float2 GetContentSize(Visual container, LayoutParams lp)
 		{
 			return Arrange(container, lp);
 		}
-		
+
 		internal override void ArrangePaddingBox(Visual container, float4 padding, LayoutParams lp)
 		{
 			Arrange(container, lp, true, padding);
 		}
-		
-		float2 Arrange(Visual container, LayoutParams lp, 
+
+		float2 Arrange(Visual container, LayoutParams lp,
 			bool doArrange = false, float4 padding=float4(0) )
 		{
 			bool vert = Orientation == Orientation.Vertical;
-			
+
 			var columnCount = Math.Max(1,ColumnCount);
 			var columnSize = ColumnSize;
 			var columnSpace = columnSize + ColumnSpacing;
 			var useColumnSize = _hasColumnSize;
-			
+
 			var avail = lp.GetAvailableSize();
 			avail -= padding.XY + padding.ZW;
-			
+
 			if (!useColumnSize && ((vert && !lp.HasX) || (!vert && !lp.HasY)))
 			{
 				//assume all columns contain max/fixed-size elements
@@ -252,13 +252,13 @@ namespace Fuse.Layouts
 					var c = v.GetMarginSize(LayoutParams.CreateEmpty());
 					mx = Math.Max( mx, c);
 				}
-				
+
 				//fall-through to normal sizing
 				columnSize = vert ? mx.X : mx.Y;
 				columnSpace = columnSize + ColumnSpacing;
 				useColumnSize = true;
 			}
-			
+
 			if (useColumnSize)
 			{
 				if (!_hasColumnCount)
@@ -269,7 +269,7 @@ namespace Fuse.Layouts
 						columnCount = (int)Math.Floor( (avail.Y + ColumnSpacing) / columnSpace);
 					columnCount = Math.Max(1,columnCount);
 				}
-					
+
 				if (Sizing == ColumnLayoutSizing.Fill)
 				{
 					columnSpace = ((vert ? avail.X : avail.Y) + ColumnSpacing) / columnCount;
@@ -283,7 +283,7 @@ namespace Fuse.Layouts
 			}
 
 			var at = new float[columnCount];
-			
+
 			for (var v = container.FirstChild<Visual>(); v != null; v = v.NextSibling<Visual>())
 			{
 				var avs = float2(vert ? columnSize : 0.0f, vert ? 0.0f : columnSize);
@@ -300,7 +300,7 @@ namespace Fuse.Layouts
 					var pos = vert ?
 						float2( padding.X + col*columnSpace, padding.Y + at[col] ) :
 						float2( padding.X + at[col], padding.Y + col*columnSpace );
-						
+
 					nsz = v.ArrangeMarginBox(pos, LayoutParams.CreateXY(avs,vert, !vert));
 				}
 				else if (AffectsLayout(v))
@@ -311,7 +311,7 @@ namespace Fuse.Layouts
 				{
 					continue;
 				}
-					
+
 				at[col] += vert ? nsz.Y : nsz.X;
 			}
 
@@ -323,11 +323,11 @@ namespace Fuse.Layouts
 				if (!_hasColumnCount)
 					_columnCount = columnCount;
 			}
-			
+
 			var size = (columnCount * columnSpace) - ColumnSpacing;
 			var q = vert ? float2(size, Max(at)) : float2(Max(at), size);
 			return q;
 		}
-		
+
 	}
 }

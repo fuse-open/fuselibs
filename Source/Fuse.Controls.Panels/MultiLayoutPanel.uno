@@ -54,14 +54,14 @@ namespace Fuse.Controls
 
 	/**
 		Allows you to move @Elements between different layouts using the `Placeholder` class.
-		
+
 		This allows us to @Move elements between different locations in the visual tree, and also switch between certain layouts on the fly.
-		
+
 		**Note:** `MultiLayoutPanel` is a good option for when you want to have different layouts based on on the value of certain data. In the cases where you are mostly interested in using different layouts as a means of creating animations, using the @Element.LayoutMaster property might be a better choice.
-		
+
 		# Example
 		This example shows a simple 3-choice Selection which uses a `MultiLayoutPanel` together with `LayoutAnimation` to animate an indicator for the selected option:
-		
+
 			<Panel Alignment="Center" Width="200" Height="50" >
 				<MultiLayoutPanel ux:Name="multiLayout">
 					<Grid ColumnCount="3">
@@ -152,7 +152,7 @@ namespace Fuse.Controls
 		public Template ContentFactory
 		{
 			get { return ContentTemplate; }
-			set 
+			set
 			{
 				Diagnostics.Deprecated("ContentFactory is deprecated, use ContentTemplate instead", this);
 				ContentTemplate = value;

@@ -12,7 +12,7 @@ namespace Fuse.Navigation
 		Replace,
 		Pop,
 	}
-	
+
 	[Flags]
 	enum OutletType
 	{
@@ -20,7 +20,7 @@ namespace Fuse.Navigation
 		/** This IRouterOutlet is an outlet, if not specified it will be skipped over during searching */
 		Outlet = 1<<1,
 	}
-	
+
 	/**
 		The result code is used to help Router decide how to combine an entire routing request.
 		For example, only the outermost page change should be animated, the inner ones will just
@@ -37,11 +37,11 @@ namespace Fuse.Navigation
 		/** The path/parameter was not valid and thus no change occurred */
 		Invalid,
 	}
-	
+
 	/**	Represents an object that handle navigation to one @Route path element. */
 	interface IRouterOutlet
 	{
-		/** Navigates the outlet to the given path, with the given parameter. 
+		/** Navigates the outlet to the given path, with the given parameter.
 
 			@param page Can be modified by the receiver to normalize the Path/Parameter.  The caller passes ownership to the RouterOutlet -- it may read data after the call but no longer modify it.
 			@param gotoMode Specifies whether the router should transition (animate) to the new state,
@@ -49,22 +49,22 @@ namespace Fuse.Navigation
 			@param operation specifies what routing operation is being performed to generate this
 				request. The operation is only relevant during transition and does not become a persistent part of the route.
 			@param operationStyle identifies the style of transition that is being performed. This has no concrete semantic meaning; it is defined by a user and optionally matched inside a trigger. The style is only relevant during transition and does not become a persistent part of the route.
-				
+
 			@return what happened as a result of this request. This assists the router in combining this operation into the entire routing request.
 		*/
-		RoutingResult Goto(RouterPage page, NavigationGotoMode gotoMode, 
+		RoutingResult Goto(RouterPage page, NavigationGotoMode gotoMode,
 			RoutingOperation operation, string operationStyle, out Visual visual);
 
 		/*
 			If NoChange or MinorChange then page.Visual will be set
 		*/
 		RoutingResult CompareCurrent(RouterPage page, out Visual visual);
-			
+
 		void PartialPrepareGoto(	double progress);
 		void CancelPrepare();
-			
+
 		RouterPage GetCurrent(out Visual visual);
-		
+
 		OutletType Type { get; }
 	}
 }

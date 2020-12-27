@@ -8,7 +8,7 @@ using Fuse.Resources;
 namespace Fuse.Controls
 {
 	/**
-		Builds indicator icons for each page of a @PageControl based on a specified template, and displays them next to each other. To use it, you have to provide a template named `Dot`, 
+		Builds indicator icons for each page of a @PageControl based on a specified template, and displays them next to each other. To use it, you have to provide a template named `Dot`,
 		as well as providing a @PageControl to listen to through the `Navigation` property.
 
 		The @ActivatingAnimation animator can be used to animate a `Dot` when its corresponding page is active.
@@ -26,7 +26,7 @@ namespace Fuse.Controls
 				<PageControl ux:Name="nav">
 					<Each Items="{pages}">
 						<Page Color="data()">
-							
+
 						</Page>
 					</Each>
 				</PageControl>
@@ -45,7 +45,7 @@ namespace Fuse.Controls
 	public sealed partial class PageIndicator
 	{
 		INavigation _pageProgress;
-		
+
 		[UXConstructor]
 		public PageIndicator([UXParameter("Navigation")] INavigation navigation)
 		{
@@ -56,8 +56,8 @@ namespace Fuse.Controls
 		}
 
 		Template _dotTemplate;
-		Template DotTemplate 
-		{ 
+		Template DotTemplate
+		{
 			get { return FindTemplate("Dot") ?? _dotTemplate; }
 		}
 
@@ -67,13 +67,13 @@ namespace Fuse.Controls
 			_pageProgress.PageCountChanged += UpdateCount;
 			UpdateCount(null);
 		}
-		
+
 		protected override void OnUnrooted()
 		{
 			_pageProgress.PageCountChanged -= UpdateCount;
 			base.OnUnrooted();
 		}
-		
+
 		void UpdateCount(object s)
 		{
 			RecreateDots();
@@ -103,7 +103,7 @@ namespace Fuse.Controls
 			}
 		}
 	}
-	
+
 	class PageIndicatorDotTemplate: Uno.UX.Template
 	{
 		public PageIndicatorDotTemplate(): base(null, false) {}

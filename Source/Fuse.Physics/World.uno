@@ -50,7 +50,7 @@ namespace Fuse.Physics
 			if (w != null) return w;
 
 			if (n.Parent != null) return FindWorld(n.Parent);
-			
+
 			return _globalWorld;
 		}
 

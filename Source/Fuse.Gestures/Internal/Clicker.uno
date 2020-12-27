@@ -9,7 +9,7 @@ namespace Fuse.Gestures
 	delegate void ClickerEventHandler(PointerEventArgs args, int count);
 
 	public enum ClickerPointerIndex
-	{	
+	{
 		//activates only on the primary pointer index
 		Primary,
 		//activates on any pointer index (only one activation per gesture at a time)
@@ -37,13 +37,13 @@ namespace Fuse.Gestures
 		{
 			get { return _pointerIndex; }
 			set { _pointerIndex = value; }
-		} 
+		}
 
 		//As we have no signifiicance we can return a high priority, forcing other gestures to be sure they
 		//recognize themselves before stealing from clicker.
 		GesturePriority _gesturePriority = GesturePriority.Highest;
-		/** 
-			Alters the priority of the click trigger. 
+		/**
+			Alters the priority of the click trigger.
 
 			The highest of all priorities for clicked triggers on a node will be used as the priority, as they all share the same fundamental behaviour. You must therefore override all ClickerTrigger and WhileClickerTrigger GesturePriority's values to have a consistent behaviour.
 
@@ -84,8 +84,8 @@ namespace Fuse.Gestures
 		}
 
 		GesturePriority _gesturePriority = GesturePriority.Highest;
-		/** 
-			Alters the priority of the WhileClicker trigger. 
+		/**
+			Alters the priority of the WhileClicker trigger.
 
 			See the note on @ClickerTrigger.GesturePriority
 
@@ -193,7 +193,7 @@ namespace Fuse.Gestures
 			_lastArgs = args;
 			return GestureRequest.Capture;
 		}
-		
+
 		void IGesture.OnCaptureChanged(PointerEventArgs args, CaptureType how, CaptureType prev)
 		{
 			if (LongPressedEvent != null && !_hasUpdate)
@@ -312,7 +312,7 @@ namespace Fuse.Gestures
 				_clickCount = 0;
 			}
 		}
-		
+
 		GesturePriorityConfig IGesture.Priority
 		{
 			get

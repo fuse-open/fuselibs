@@ -20,9 +20,9 @@ namespace Fuse.Charting
 
 	/**
 		Positions a plot bar.
-		
+
 		This automatically sets the `X`,`Y`,`Width`,`Heigth` and `Anchor` properties on the element. The result is undefined if you override one of these values. Use a child element if you wish to make an element relative to the PlotBar placement.
-		
+
 
 		# Example
 
@@ -59,42 +59,42 @@ namespace Fuse.Charting
 		public PlotBarStyle Style
 		{
 			get { return _style; }
-			set 
+			set
 			{
 				if (_style == value)
 					return;
-					
+
 				_style = value;
 			}
 		}
-		
+
 		/**
 			An @AttractorConfig used to animate the position and size change of the bar.
-			
+
 			The default (null) will not do any animation.
 		*/
 		public AttractorConfig Attractor
 		{
 			get { return _animPosition.Motion as AttractorConfig; }
-			set 
-			{ 	
+			set
+			{
 				_animPosition.Motion = value;
 				_animSize.Motion = value;
 				if (value.Unit != MotionUnit.Normalized )
 					Fuse.Diagnostics.UserWarning( "Expecting Unit=\"Normalized\" for attractor", this );
 			}
 		}
-		
+
 		DestinationBehavior<float4>_animPosition = new DestinationBehavior<float4>();
 		DestinationBehavior<float2>_animSize = new DestinationBehavior<float2>();
-		
+
 		internal override void OnDataPointChanged( PlotDataPoint entry )
 		{
 			var relValue = entry.RelativeValue;
 			var isVert = entry.Plot.GetAxisOrientation(0) == PlotOrientation.Vertical;
-			
+
 			var barWidth = 1.0f / entry.Count;
-			
+
 			float barValue = 0, barBase = 0;
 			switch (Style)
 			{
@@ -102,25 +102,25 @@ namespace Fuse.Charting
 					barValue = relValue.Y - entry.Plot.PlotStats.Baseline.Y;
 					barBase = entry.Plot.PlotStats.Baseline.Y;
 					break;
-					
+
 				case PlotBarStyle.Range:
 					barValue = relValue.Y - relValue.Z;
 					barBase = relValue.Z;
 					break;
-					
+
 				case PlotBarStyle.Full:
 					barValue = 1;
 					barBase = 0;
 					break;
 			}
-				
+
 			var barEnd = barBase + barValue;
-			
+
 			//we must align to the baseline so it always appears flat even with pixel precision and aliasing issues
 			//this works better when combined with `SnapToPixels="true"` and partially avoids issue (3866)
 			var primeAnchor = (isVert ? barEnd < barBase : barEnd > barBase) ? 1f : 0f;
 			var secondAnchor = 0.5f;
-			
+
 			var axisBase = relValue.X;
 
 			float nX, nY, nHeight, nWidth;
@@ -141,20 +141,20 @@ namespace Fuse.Charting
 				nWidth = barWidth;
 				nAnchor = float2( secondAnchor, primeAnchor);
 			}
-			
+
 			_animPosition.SetValue( float4( nX, nY, nAnchor.X, nAnchor.Y ), AnimPosition );
 			_animSize.SetValue( float2( nWidth, nHeight ), AnimSize );
 		}
-		
+
 		void AnimPosition( float4 value )
 		{
 			X = new Size( value[0] * 100, Unit.Percent );
 			Y = new Size( value[1] * 100, Unit.Percent );
-			Anchor = new Size2( 
+			Anchor = new Size2(
 				new Size(value[2] * 100, Unit.Percent),
 				new Size(value[3] * 100, Unit.Percent) );
 		}
-		
+
 		void AnimSize( float2 value)
 		{
 			Width = new Size( value[0] * 100, Unit.Percent );

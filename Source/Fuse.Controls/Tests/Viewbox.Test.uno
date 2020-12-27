@@ -26,7 +26,7 @@ namespace Fuse.Controls.Test
 				Assert.AreEqual(float2(175,150),p.R3.ActualPosition);
 			}
 		}
-		
+
 		//https://github.com/fusetools/fuselibs-private/issues/1506
 		[Test]
 		public void ContentResize()

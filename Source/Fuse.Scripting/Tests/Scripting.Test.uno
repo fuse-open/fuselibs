@@ -597,12 +597,12 @@ namespace Fuse.Scripting.Test
 				fun.Call(context, new Scripting.Callback(MyCallback), new Scripting.External(new Uno.Object()));
 			}
 		}
-		
+
 		[Test]
 		public void ArrayBufferSupport()
 		{
 			JSTest.RunTest(ArrayBufferSupportInner);
-				
+
 		}
 
 		void ArrayBufferSupportInner(Fuse.Scripting.Context context)

@@ -22,13 +22,13 @@ namespace Fuse.Controls
 			base.OnRooted();
 			UpdateValue();
 		}
-		
+
 		string _format = "F0";
 		public string Format
 		{
 			get { return _format; }
-			set 
-			{ 
+			set
+			{
 				var newFormatString = "{0:" + value + "}";
 				if (_format != value || _formatString != newFormatString)
 				{
@@ -43,8 +43,8 @@ namespace Fuse.Controls
 		public string FormatString
 		{
 			get { return _formatString; }
-			set 
-			{ 
+			set
+			{
 				if (_formatString != value)
 				{
 					_formatString = value;
@@ -52,13 +52,13 @@ namespace Fuse.Controls
 				}
 			}
 		}
-		
-		float _value;		
+
+		float _value;
 		public float Value
 		{
 			get { return _value; }
-			set 
-			{ 
+			set
+			{
 				if (_value != value)
 				{
 					_value = value;
@@ -67,10 +67,10 @@ namespace Fuse.Controls
 				}
 			}
 		}
-		
+
 		static Selector _valueName = "Value";
 		public event ValueChangedHandler<float> ValueChanged;
-		
+
 		void OnValueChanged(float n, IPropertyListener origin)
 		{
 			OnPropertyChanged(_valueName);
@@ -80,7 +80,7 @@ namespace Fuse.Controls
 				ValueChanged(n, args);
 			}
 		}
-		
+
 		void UpdateValue()
 		{
 			try {
@@ -89,7 +89,7 @@ namespace Fuse.Controls
 				//TODO: restore, branch mixup
 				//Fuse.Diagnostics.Exception( "Invalidat format: " + FormatString, e, this );
 				throw e;
-			} 
+			}
 		}
 	}
 }

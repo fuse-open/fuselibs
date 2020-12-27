@@ -12,7 +12,7 @@ namespace Fuse.Charting
 		/** Values are added to previous series and a range is constructed */
 		Add,
 	}
-	
+
 	/**
 		Provides a source of data for plotting.
 	*/
@@ -24,7 +24,7 @@ namespace Fuse.Charting
 		public IArray Data
 		{
 			get { return _rawData; }
-			set 
+			set
 			{
 				ClearSubscription();
 				_rawData = value;
@@ -32,13 +32,13 @@ namespace Fuse.Charting
 				AddSubscription();
 			}
 		}
-		
+
 		List<Data> _data = new List<Data>();
-		internal List<Data> PlotData 
+		internal List<Data> PlotData
 		{
 			get { return _data; }
 		}
-		
+
 		DataSeriesMetric _metric = DataSeriesMetric.Direct;
 		/**
 			How the input values are interpreted.
@@ -50,12 +50,12 @@ namespace Fuse.Charting
 			{
 				if (_metric == value)
 					return;
-			
+
 				_metric = value;
 				InvalidateData();
 			}
 		}
-		
+
 		void ClearSubscription()
 		{
 			if (_subscription != null)
@@ -64,12 +64,12 @@ namespace Fuse.Charting
 				_subscription = null;
 			}
 		}
-		
+
 		void AddSubscription()
 		{
 			if (_plot == null || _rawData == null)
 				return;
-				
+
 			if (_observableData != null)
 			{
 				_subscription = _observableData.Subscribe(this);
@@ -78,14 +78,14 @@ namespace Fuse.Charting
 			else
 				AddArrayData(_rawData);
 		}
-		
+
 		void AddArrayData(IArray data)
 		{
 			for (int i=0; i < data.Length; ++i )
 				AddDataObject(data[i]);
 			InvalidateData();
 		}
-		
+
 		void AddDataObject(object a)
 		{
 			InsertDataObject(_data.Count, a);
@@ -95,21 +95,21 @@ namespace Fuse.Charting
 		{
 			double value;
 			if (Marshal.TryToDouble(a, out value))
-			{	
+			{
 				float v = (float)value;
 				if (Uno.Float.IsNaN(v) || Uno.Float.IsInfinity(v))
 				{
 					Fuse.Diagnostics.UserError( "Invalid floating point value: " + value, this );
 					return 0;
 				}
-				
+
 				return v;
 			}
-			
+
 			Fuse.Diagnostics.UserError( "Invalid floating point value: " + a, this );
 			return 0;
 		}
-		
+
 		void InsertDataObject(int index, object a)
 		{
 			var iobj = a as IObject;
@@ -128,10 +128,10 @@ namespace Fuse.Charting
 				if (iobj.ContainsKey("w"))
 					val.W = SafeMarshalFloat(iobj["w"]);
 				d.SourceValue = val;
-				
+
 				if (iobj.ContainsKey("label"))
 					d.Label = Marshal.ToType<string>(iobj["label"]);
-					
+
 				d.SourceObject = iobj;
 				d.Behavior = _plot;
 				_data.Insert(index, d);
@@ -144,13 +144,13 @@ namespace Fuse.Charting
 			vd.Behavior = _plot;
 			_data.Insert(index, vd);
 		}
-		
+
 		void IObserver.OnClear()
 		{
 			_data.Clear();
 			InvalidateData();
 		}
-		
+
 		void IObserver.OnNewAll(IArray values)
 		{
 			_data.Clear();
@@ -158,59 +158,59 @@ namespace Fuse.Charting
 				AddDataObject(values[i]);
 			InvalidateData();
 		}
-		
+
 		void IObserver.OnNewAt(int index, object newValue)
 		{
 			_data.RemoveAt(index);
 			InsertDataObject(index, newValue);
 			InvalidateData();
 		}
-		
+
 		void IObserver.OnSet(object newValue)
 		{
 			_data.Clear();
 			AddDataObject(newValue);
 			InvalidateData();
 		}
-		
+
 		void IObserver.OnAdd(object addedValue)
 		{
 			AddDataObject(addedValue);
 			InvalidateData();
 		}
-		
+
 		void IObserver.OnRemoveAt(int index)
 		{
 			_data.RemoveAt(index);
 			InvalidateData();
 		}
-		
+
 		void IObserver.OnInsertAt(int index, object value)
 		{
 			InsertDataObject(index, value);
 			InvalidateData();
 		}
-		
+
 		void IObserver.OnFailed(string message)
 		{
 			_data.Clear();
 			Fuse.Diagnostics.InternalError( "Error on the SourceData", this );
 			InvalidateData();
 		}
-		
+
 		PlotBehavior _plot;
 		void InvalidateData()
 		{
 			if (_plot != null)
 				_plot.InvalidateData();
 		}
-		
+
 		internal void Root( PlotBehavior plot )
 		{
 			_plot = plot;
 			AddSubscription();
 		}
-		
+
 		internal void Unroot()
 		{
 			ClearSubscription();

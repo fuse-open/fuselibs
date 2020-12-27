@@ -21,7 +21,7 @@ namespace Fuse.Controls.FallbackTextEdit
 				Invalidate();
 			}
 		}
-		
+
 		LineCacheTransform _transform;
 		public LineCacheTransform Transform
 		{
@@ -32,10 +32,10 @@ namespace Fuse.Controls.FallbackTextEdit
 				Invalidate();
 			}
 		}
-		
+
 		public string VisualText
 		{
-			get 
+			get
 			{
 				if (_transform != null)
 					return _transform.Transform(_text);

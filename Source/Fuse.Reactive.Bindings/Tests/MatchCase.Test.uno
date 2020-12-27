@@ -20,7 +20,7 @@ namespace Fuse.Reactive.Test
 				Assert.AreEqual("OneTwo", GetText(e.Container));
 			}
 		}
-		
+
 		[Test]
 		/* Ensures items are added in the correct order */
 		public void MatchOrder()
@@ -32,7 +32,7 @@ namespace Fuse.Reactive.Test
 				Assert.AreEqual( "123", GetText(e.A) );
 			}
 		}
-		
+
 		string GetText(Visual root)
 		{
 			var q = "";
@@ -44,7 +44,7 @@ namespace Fuse.Reactive.Test
 			}
 			return q;
 		}
-		
+
 		[Test]
 		/** More ordering, ensuring multiple matches also in order */
 		public void MatchOrder2()
@@ -64,7 +64,7 @@ namespace Fuse.Reactive.Test
 				Assert.AreEqual( "01234", GetText(e.A) );
 			}
 		}
-		
+
 		[Test]
 		/** https://github.com/fusetools/fuselibs-private/issues/2802 */
 		public void MatchEachOrder()
@@ -76,7 +76,7 @@ namespace Fuse.Reactive.Test
 				Assert.AreEqual( "123", GetText(e) );
 			}
 		}
-		
+
 		[Test]
 		/** When the child inserts nodes, variation of 2802 */
 		public void MatchMultipleOrder()

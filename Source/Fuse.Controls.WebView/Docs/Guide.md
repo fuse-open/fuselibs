@@ -32,7 +32,7 @@ Whilst you will naturally want to do most of your JS coding in Fuse the usual wa
 
 			<BottomBarBackground Dock="Bottom" />
 		</DockPanel>
-	</App>	
+	</App>
 
 
 ## HTML
@@ -56,7 +56,7 @@ Whilst you will naturally want to do most of your JS coding in Fuse the usual wa
 			]]>
 		</HTML>
 	</LoadHtml>
-	
+
 
 WebViews can also be fed raw HTML to display by wrapping an `HTML` node or via the `LoadHtml` trigger action:
 

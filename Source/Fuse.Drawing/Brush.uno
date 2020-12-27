@@ -8,7 +8,7 @@ namespace Fuse.Drawing
 	/** @hide */
 	public class BrushConverter: Marshal.IConverter
 	{
-		public bool CanConvert(Type t) 
+		public bool CanConvert(Type t)
 		{
 			return t == typeof(Brush) || t.IsSubclassOf(typeof(Brush));
 		}
@@ -22,17 +22,17 @@ namespace Fuse.Drawing
 			}
 			return null;
 		}
-		
+
 		static BrushConverter()
 		{
 			Marshal.AddConverter(new BrushConverter());
 		}
 	}
-	
+
 	public abstract class Brush: PropertyObject
 	{
 		apply PreMultipliedAlphaCompositing;
-		
+
 		public virtual bool IsCompletelyTransparent { get { return false; }}
 
 		//This must be premultiplied
@@ -45,7 +45,7 @@ namespace Fuse.Drawing
 		// Internal so that derived classes outside Fuse.Drawing must
 		// explicitly inherit either DynamicBrush or StaticBrush
 		internal Brush() {}
-		
+
 		int _pinCount;
 		public void Pin()
 		{
@@ -53,25 +53,25 @@ namespace Fuse.Drawing
 			if (_pinCount == 1)
 				OnPinned();
 		}
-		
+
 		public void Unpin()
 		{
 			_pinCount--;
 			if (_pinCount == 0)
 				OnUnpinned();
 		}
-		
+
 		public bool IsPinned { get { return _pinCount > 0; } }
-		
-		public void Prepare(DrawContext dc, float2 canvasSize) 
-		{ 
+
+		public void Prepare(DrawContext dc, float2 canvasSize)
+		{
 			if (!IsPinned)
 				Fuse.Diagnostics.InternalError( "Brush is not pinned, preparation invalid", this );
 			OnPrepare(dc, canvasSize);
 		}
-		
+
 		protected virtual void OnPrepare(DrawContext dc, float2 canvasSize) { }
-		
+
 		protected virtual void OnPinned() { }
 		protected virtual void OnUnpinned() { }
 	}
@@ -94,7 +94,7 @@ namespace Fuse.Drawing
 				OnPropertyChanged(_opacityName);
 			}
 		}
-		
+
 		PixelColor: prev * Opacity;
 	}
 }

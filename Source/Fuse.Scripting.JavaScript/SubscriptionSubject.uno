@@ -23,9 +23,9 @@ namespace Fuse.Scripting
 			protected Subscription(SubscriptionSubject s)
 			{
 				_s = s;
-				
+
 				if (s._subscribers == null) s._subscribers = this;
-				else 
+				else
 				{
 					_next = s._subscribers;
 					_next._prev = this;

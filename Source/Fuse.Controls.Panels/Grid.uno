@@ -6,7 +6,7 @@ using Fuse.Elements;
 
 namespace Fuse.Controls
 {
-	
+
 	/** Lays out children in a grid formation.
 
 		## RowCount and ColumnCount properties
@@ -45,7 +45,7 @@ namespace Fuse.Controls
 
 		The proportional column sizes here are calculated by first summing all the values (1+1+3 = 5).
 		Then we divide our value by the total (1/5 = 20%, 1/5 = 20%, 3/5 = 60%).
-		
+
 		Note that proportional sizes only make sense if the grid is expanding to fill the parent panel, or
 		has a fixed size. If it is shrinking to fit it's contents the proportional rows/columns will have zero
 		size.
@@ -145,12 +145,12 @@ namespace Fuse.Controls
 		/** The list of Row objects.
 
 			These objects are typically created when parsing the @Rows string.
-			
+
 			@advanced
 		*/
 		public IList<Row> RowList { get { return _gridLayout.RowList; } }
 
-		/** The sizes of the rows of the grid as a comma-separated list of grid sizes. 
+		/** The sizes of the rows of the grid as a comma-separated list of grid sizes.
 
 			Can not be used together with @RowCount.
 
@@ -163,7 +163,7 @@ namespace Fuse.Controls
 			Example of a Grid with 3 rows where the first two each occupy 20% of the available space, and the last one occupies 60%:
 
 				<Grid Rows="1*,1*,3*"/>
-				
+
 			The sizes here are calculated by first summing all the values (1+1+3 = 5).
 			Then we divide our value by the total (1/5 = 20%, 1/5 = 20%, 3/5 = 60%).
 
@@ -206,9 +206,9 @@ namespace Fuse.Controls
 		/** The default grid size of an automatically created row.
 
 			Default is `1*` - all rows equally sharing remaining space.
-			
+
 			This default only makes sense if your `Grid` expands to fill an area. If the grid shrinks to fit the contents, such as when it is aligned, or in a DockPanel, StackPanel, or ScrollView, then this default will not work. You may instead want `auto` as the default.
-			
+
 			See @Rows and @RowCount.
 		*/
 		public string DefaultRow
@@ -216,7 +216,7 @@ namespace Fuse.Controls
 			get { return _gridLayout.DefaultRow; }
 			set { _gridLayout.DefaultRow = value; }
 		}
-		
+
 		[UXContent]
 		/** The list of Column objects.
 
@@ -239,7 +239,7 @@ namespace Fuse.Controls
 			Example of a Grid with 3 columns where the first two each occupy 20% of the available space, and the last one occupies 60%:
 
 				<Grid Columns="1*,1*,3*"/>
-				
+
 			The sizes here are calculated by first summing all the values (1+1+3 = 5).
 			Then we divide our value by the total (1/5 = 20%, 1/5 = 20%, 3/5 = 60%).
 
@@ -282,7 +282,7 @@ namespace Fuse.Controls
 		/** The default grid size of an automatically created column.
 
 			Default is `1*` - all columns equally sharing remaining space.
-			
+
 			See @Columns and @ColumnCount.
 		*/
 		public string DefaultColumn
@@ -312,12 +312,12 @@ namespace Fuse.Controls
 			get { return _gridLayout.ChildOrder; }
 			set { _gridLayout.ChildOrder = value; }
 		}
-		
+
 		public Grid()
 		{
 			Layout = _gridLayout = new GridLayout();
 		}
-		
-		
+
+
 	}
 }

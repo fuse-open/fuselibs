@@ -8,7 +8,7 @@ namespace Fuse.Controls
 {
 	/** A panel that places children in a dedicated `Subtree` visual, allowing you to create custom container.
 
-		## Usage example 
+		## Usage example
 
 		We use the `Subtree` property to identify the inner visual that will receive the children.
 
@@ -19,7 +19,7 @@ namespace Fuse.Controls
 				</Rectangle>
 			</Container>
 
-		Note that to add nodes that make up the container itself (e.g. decoration), we need to explicitly mark them 
+		Note that to add nodes that make up the container itself (e.g. decoration), we need to explicitly mark them
 		with `ux:Binding="Children"`, otherwise these nodes will be added to `innerPanel`.
 
 		To use the container, we can simply do:
@@ -35,19 +35,19 @@ namespace Fuse.Controls
 	{
 		Visual _subtree;
 		/** The visual that contains the subtree. */
-		public Visual Subtree 
+		public Visual Subtree
 		{
 			get { return _subtree; }
-			set 
+			set
 			{
 				if (_subtree != value)
 				{
-					if (_subtree != null && _subtreeNodes != null && IsRootingCompleted) 
+					if (_subtree != null && _subtreeNodes != null && IsRootingCompleted)
 						_subtreeNodes.RootUnsubscribe();
-						
+
 					_subtree = value;
-					
-					if (_subtree != null && _subtreeNodes != null && IsRootingCompleted) 
+
+					if (_subtree != null && _subtreeNodes != null && IsRootingCompleted)
 						_subtreeNodes.RootSubscribe(OnNodeAdded, OnNodeRemoved);
 				}
 			}
@@ -58,10 +58,10 @@ namespace Fuse.Controls
 
 		[UXPrimary]
 		/** The list of nodes that will be added to the `Subtree` visual. This is the default property for UX markup children of `Container`. */
-		public IList<Node> SubtreeNodes 
-		{ 
-			get 
-			{ 
+		public IList<Node> SubtreeNodes
+		{
+			get
+			{
 				if (_subtreeNodes == null)
 				{
 					_subtreeNodes = new RootableList<Node>();
@@ -70,7 +70,7 @@ namespace Fuse.Controls
 				}
 
 				return _subtreeNodes;
-			} 
+			}
 		}
 
 		void OnNodeAdded(Node n)
@@ -82,14 +82,14 @@ namespace Fuse.Controls
 		{
 			if (_subtree != null) _subtree.Children.Remove(n);
 		}
-		
+
 		protected override void OnRooted()
 		{
 			base.OnRooted();
 			if (_subtreeNodes != null)
 				_subtreeNodes.RootSubscribe(OnNodeAdded, OnNodeRemoved);
 		}
-		
+
 		protected override void OnUnrooted()
 		{
 			if (_subtreeNodes != null)

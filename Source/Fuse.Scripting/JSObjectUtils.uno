@@ -14,14 +14,14 @@ namespace Fuse.Scripting
 			if(index < 0 || index > args.Length-1) return defaultValue;
 			return Marshal.ToType<T>(args[index]);
 		}
-		
+
 		public static T Value<T>(this Scripting.Object obj, string name)
 		{
 			var v = obj[name];
 			if(v==null) throw new Uno.ArgumentException("Property '"+name+"' does not exist on object");
 			return Marshal.ToType<T>(v);
 		}
-		
+
 		public static T Value<T>(this object[] args, int index)
 		{
 			return Marshal.ToType<T>(args[index]);

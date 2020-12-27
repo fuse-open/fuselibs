@@ -21,13 +21,13 @@ Or,
 
 Note that `ux:Name` must be set to a static name at compile time, it can not be used with a binding or changed at runtime.
 
-`ux:Name` can be used on all objects, even those which don't support a `Name` property. 
+`ux:Name` can be used on all objects, even those which don't support a `Name` property.
 
 Inside a `ux:Class` or `ux:InnerClass`, the root node (the one decorated with `ux:Class`) is named `this` by default. You don't need to give it a name explicitly.
 
 ## Name uniqueness and scoping
 
-Static names must be unique within the scope it is declared. 
+Static names must be unique within the scope it is declared.
 
 A node marked `ux:Class` represents a new root scope. You can not reference names in a different class.
 
@@ -41,7 +41,7 @@ Sometimes Nodes must be assigned a name dynamically. This can be done by using t
 
 	<Panel Name="{name}">
 
-Note that dynamically named objects can not be referenced statically by @Change animators or similar. 
+Note that dynamically named objects can not be referenced statically by @Change animators or similar.
 
 Uniqueness and scoping is not enforced for dynamic names, which can lead to ambiguity and name clashes at runtime.
 

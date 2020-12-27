@@ -17,7 +17,7 @@ namespace Fuse.Test
 			TestStepping( 10, 0, 105, 6, 0, 120 );
 			TestStepping( 10, 0, 943, 10, 0, 1000 );
 		}
-		
+
 		void TestStepping( int iStep, float iMin, float iMax, int oStep, float oMin, float oMax )
 		{
 			int steps = iStep;

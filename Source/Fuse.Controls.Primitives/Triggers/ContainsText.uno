@@ -29,7 +29,7 @@ a password field:
 			get { return _source; }
 			set { _source = value; }
 		}
-		
+
 		IValue<string> _value;
 		protected override void OnRooted()
 		{
@@ -38,7 +38,7 @@ a password field:
 				_value = Source;
 			else
 				_value = Parent as IValue<string>;
-				
+
 			if (_value != null)
 			{
 				_value.ValueChanged += OnValueChanged;
@@ -66,9 +66,9 @@ a password field:
 		}
 	}
 
-	/** 
-	    DEPRECATED: Use @WhileContainsText instead 
-		
+	/**
+	    DEPRECATED: Use @WhileContainsText instead
+
 	*/
 	public class ContainingText : WhileContainsText
 	{
@@ -77,5 +77,5 @@ a password field:
 			Fuse.Diagnostics.Deprecated( "Use the trigger WhileContainsText instead", this );
 		}
 	}
-	
+
 }

@@ -13,12 +13,12 @@ namespace Fuse.Triggers
 				new ScriptMethod<State>("goto", goto_)
 			);
 		}
-			
+
 		void ignore() {}
-		
+
 		/**
 			Tells the parent @StateGroup to transition to this state.
-			
+
 			@scriptmethod goto()
 		*/
 		static void goto_(State n)

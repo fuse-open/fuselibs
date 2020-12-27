@@ -6,9 +6,9 @@ using System;
 namespace Fuse.Triggers.Actions
 {
 	/** Log a message, which is useful for debugging
-		
+
 		## Example
-			
+
 			<StackPanel Margin="20">
 				<Button Margin="10" Text="Log 'Hello World!'">
 					<Clicked>

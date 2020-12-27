@@ -27,15 +27,15 @@ namespace Fuse.Controls
 		Note that using for example both @(StartAngle) and @(StartAngleDegrees) on the same @(Circle) will have an undefined behavior.
 
 		## Examples
-		
+
 		Displaying a red @Circle:
-		
+
 		```
 		<Circle Width="100" Height="100" Color="#f00" />
 		```
-		
+
 		Getting fancy with a @Stroke and @LinearGradient:
-		
+
 		```
 		<Circle Width="100" Height="100" >
 			<LinearGradient>
@@ -47,9 +47,9 @@ namespace Fuse.Controls
 			</Stroke>
 		</Circle>
 		```
-		
+
 		Drawing a slice of a circle:
-		
+
 		```
 		<Circle Width="150" Height="150" Color="#f00" StartAngleDegrees="135" LengthAngleDegrees="145" />
 		```
@@ -68,7 +68,7 @@ namespace Fuse.Controls
 		{
 			get { return VisualContext != VisualContext.Graphics; }
 		}
-		
+
 		protected override SurfacePath CreateSurfacePath(Surface surface)
 		{
 			return CreateEllipticalPath( surface, Center, float2(Radius) );

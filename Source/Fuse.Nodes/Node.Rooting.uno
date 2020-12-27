@@ -28,7 +28,7 @@ namespace Fuse
 		{
 			get { return _rootStage == RootStage.Started || _rootStage == RootStage.Completed; }
 		}
-		
+
 		internal virtual bool ShouldRootChildren
 		{
 			get { return IsRootingStarted; }
@@ -39,12 +39,12 @@ namespace Fuse
 		public bool IsRootingCompleted { get { return _rootStage == RootStage.Completed; } }
 
 		internal bool IsUnrooting { get { return _rootStage == RootStage.Unrooting; } }
-		
+
 		internal bool IsUnrooted { get { return _rootStage == RootStage.Unrooted; } }
 
 		/*
 			Rooting is done in groups. The initial call to `RootInternal` will capture the rooting group and release it when it is done. This is important for Triggers that need to know if an operation is being performed during rooting or not. Simply tracking the UpdateManager.FrameIndex is not enough since multiple operations can happen in one frame that may require distinct groups (NavigatorTest.DeferredActivation).
-			
+
 			Anything that wants to manually open a frame can follow the pattern in RootInternal.
 		*/
 		static int _rootCaptureIndex = 0;
@@ -58,12 +58,12 @@ namespace Fuse
 		{
 			if (_hasRootCapture)
 				return false;
-				
+
 			_rootCaptureIndex++;
 			//wraparound protection (just in case, also allows 0 to be a non-value)
 			if (_rootCaptureIndex < 1)
 				_rootCaptureIndex = 1;
-				
+
 			_hasRootCapture = true;
 			return true;
 		}
@@ -71,16 +71,16 @@ namespace Fuse
 		{
 			if (!captured)
 				return;
-				
+
 			UpdateManager.AddDeferredAction( _laterReleaseRooting, LayoutPriority.EndGroup );
 		}
-		
+
 		static Action _laterReleaseRooting = LaterReleaseRooting;
 		static void LaterReleaseRooting()
 		{
 			_hasRootCapture = false;
 		}
-		
+
 		/**
 			This is the prime entry point to rooting. No other rooting function should be called outside of a call to this function (and it's descendent calls in turn).
 		*/
@@ -96,7 +96,7 @@ namespace Fuse
 				ReleaseRooting(captured);
 			}
 		}
-			
+
 		void RootInternalImpl(Visual parent)
 		{
 			//to help detect errors like https://github.com/fusetools/fuselibs-private/issues/2244
@@ -194,18 +194,18 @@ namespace Fuse
 		}
 
 		protected virtual void SoftDispose() { }
-		
+
 		int _preservedRootFrame = -1;
-		
+
 		internal bool IsPreservedRootFrame
 		{
 			get { return _preservedRootFrame == UpdateManager.FrameIndex; }
 		}
-		
+
 		/**
 			Indicates that a Node is about is to be unrooted, but the next rooting should as much as possible
 			behave as though it were rooted before. This is most relevant for `Placeholder` and `Trigger`.
-			
+
 			This is limited to unrooting/rooting within the same frame now. Delayed rerooting will be
 			treated as a new rooting (we have no use-case to support this yet).
 		*/
@@ -213,12 +213,12 @@ namespace Fuse
 		{
 			VisitSubtree(IterPreserveRootFrame);
 		}
-		
+
 		void IterPreserveRootFrame(Node n)
 		{
 			n.OnPreserveRootFrame();
 		}
-		
+
 		internal virtual void OnPreserveRootFrame()
 		{
 			_preservedRootFrame = UpdateManager.FrameIndex;

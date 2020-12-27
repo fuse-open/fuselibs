@@ -21,7 +21,7 @@ namespace Fuse.Test
 				Assert.AreEqual(float3(2.5f,3.5f,1), tn.S1.RelativeTo.GetScaleVector(tn.S2));
 			}
 		}
-		
+
 		[Test]
 		/**
 			Ensures changes in size in the RelativeNode are reflected in the scale
@@ -41,7 +41,7 @@ namespace Fuse.Test
 				Assert.AreEqual(7, tn.B.LocalTransform.M22);
 			}
 		}
-		
+
 		[Test]
 		public void Offset()
 		{
@@ -55,7 +55,7 @@ namespace Fuse.Test
 				Assert.AreEqual(float3(-450,-175,0), tn.M4.RelativeTo.GetAbsVector(tn.M4));
 			}
 		}
-		
+
 		[Test]
 		/*
 			Tests event subscription on Translation to ensure it is updating correctly.
@@ -95,7 +95,7 @@ namespace Fuse.Test
 				Assert.AreEqual(750, tn.C.LocalTransform.M42);
 			}
 		}
-		
+
 		[Test]
 		/*
 			Tests event subscription when PositionOffset is used with the same LayoutMaster. It can generate Placed events without reinvalidating the WorldTransform.

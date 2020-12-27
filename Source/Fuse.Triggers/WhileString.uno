@@ -16,7 +16,7 @@ namespace Fuse.Triggers
 		/** The string value contains `Compare` */
 		Contains,
 	}
-	
+
 	/** Activate when the condition on the string value is true */
 	public sealed class WhileString : WhileValue<string>
 	{
@@ -24,7 +24,7 @@ namespace Fuse.Triggers
 		public WhileStringTest Test
 		{
 			get { return _test; }
-			set 
+			set
 			{
 				if (_test != value)
 				{
@@ -33,11 +33,11 @@ namespace Fuse.Triggers
 				}
 			}
 		}
-		
+
 		string _compare;
-		/** 
+		/**
 			The value used in comparison.
-			
+
 			This is not used by all `Type` values.
 		*/
 		public string Compare
@@ -52,11 +52,11 @@ namespace Fuse.Triggers
 				}
 			}
 		}
-		
+
 		bool _caseSensitive = true;
 		/**
 			If `false` then the strings will be compared in a case-insensitve manner.
-			
+
 			The default is `true`.
 		*/
 		public bool CaseSensitive
@@ -82,12 +82,12 @@ namespace Fuse.Triggers
 				Test = WhileStringTest.Equals;
 			}
 		}
-		
+
 		/** Shortcut to set `Type="Contain" Compare="value"` */
 		public string Contains
 		{
 			get { return Compare; }
-			set 
+			set
 			{
 				Compare = value;
 				Test = WhileStringTest.Contains;
@@ -109,7 +109,7 @@ namespace Fuse.Triggers
 				}
 			}
 		}
-		
+
 		public int MaxLength
 		{
 			get { return _maxLength; }
@@ -123,7 +123,7 @@ namespace Fuse.Triggers
 				}
 			}
 		}
-		
+
 		protected override bool IsOn
 		{
 			get
@@ -134,10 +134,10 @@ namespace Fuse.Triggers
 
 				if (_hasMaxLength && value.Length > MaxLength)
 					return false;
-					
+
 				if (_hasMinLength && value.Length < MinLength)
 					return false;
-					
+
 				if (!CaseSensitive)
 				{
 					value = value.ToLower();
@@ -147,30 +147,30 @@ namespace Fuse.Triggers
 				bool c = true;
 				switch (Test)
 				{
-					case WhileStringTest.None:	
+					case WhileStringTest.None:
 						c = true;
 						break;
-						
+
 					case WhileStringTest.IsEmpty:
 						c = value.Length == 0;
 						break;
-						
+
 					case WhileStringTest.IsNotEmpty:
 						c = value.Length > 0;
 						break;
-						
+
 					case WhileStringTest.Equals:
 						c = value == compare;
 						break;
-						
+
 					case WhileStringTest.Contains:
 						c = value.IndexOf(compare) != -1;
 						break;
 				}
-				
+
 				if (!c)
 					return false;
-					
+
 				return true;
 			}
 		}

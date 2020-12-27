@@ -54,29 +54,29 @@ namespace Fuse
 			var t = DominantType(ta, tb);
 
 			Computer c;
-			if (_computers.TryGetValue(t, out c)) 
+			if (_computers.TryGetValue(t, out c))
 				return c.TryOp(op, a, b, out result);
 			return false;
 		}
-		
-		public static bool TryAdd(object a, object b, out object result) 
+
+		public static bool TryAdd(object a, object b, out object result)
 		{ return TryOp( Computer.TypeOp.Add, a, b, out result ); }
-		
-		public static bool TrySubtract(object a, object b, out object result) 
+
+		public static bool TrySubtract(object a, object b, out object result)
 		{ return TryOp( Computer.TypeOp.Subtract, a, b, out result ); }
-		
-		public static bool TryMultiply(object a, object b, out object result) 
+
+		public static bool TryMultiply(object a, object b, out object result)
 		{ return TryOp( Computer.TypeOp.Multiply, a, b, out result ); }
-		
-		public static bool TryDivide(object a, object b, out object result) 
+
+		public static bool TryDivide(object a, object b, out object result)
 		{ return TryOp( Computer.TypeOp.Divide, a, b, out result ); }
-		
-		public static bool TryMin(object a, object b, out object result) 
+
+		public static bool TryMin(object a, object b, out object result)
 		{ return TryOp( Computer.TypeOp.Min, a, b, out result ); }
-		
-		public static bool TryMax(object a, object b, out object result) 
+
+		public static bool TryMax(object a, object b, out object result)
 		{ return TryOp( Computer.TypeOp.Max, a, b, out result ); }
-		
+
 		static bool TryOp(Computer.BoolOp op, object a, object b, out bool result)
 		{
 			result = false;
@@ -84,14 +84,14 @@ namespace Fuse
 			var t = DominantType(a.GetType(), b.GetType());
 
 			Computer c;
-			if (_computers.TryGetValue(t, out c)) 
+			if (_computers.TryGetValue(t, out c))
 				return c.TryOp(op, a, b, out result);
 			return false;
 		}
-		
+
 		public static bool TryLessThan(object a, object b, out bool result)
 		{ return TryOp(Computer.BoolOp.LessThan, a, b, out result ); }
-		
+
 		public static bool TryLessOrEqual(object a, object b, out bool result)
 		{ return TryOp(Computer.BoolOp.LessOrEqual, a, b, out result ); }
 
@@ -100,7 +100,7 @@ namespace Fuse
 
 		public static bool TryGreaterOrEqual(object a, object b, out bool result)
 		{ return TryOp(Computer.BoolOp.GreaterOrEqual, a, b, out result ); }
-		
+
 		public static bool TryEqualTo(object a, object b, out bool result)
 		{ return TryOp(Computer.BoolOp.EqualTo, a, b, out result ); }
 	}

@@ -14,7 +14,7 @@ namespace FuseTest
 		{
 			PerformedCount += 1;
 		}
-		
+
 		public void Reset()
 		{
 			PerformedCount = 0;

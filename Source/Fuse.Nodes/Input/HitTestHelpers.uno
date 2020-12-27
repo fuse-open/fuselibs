@@ -19,12 +19,12 @@ namespace Fuse.Input
 		void Select(HitTestResult result)
         {
 			count++;
-			if (_result == null || 
+			if (_result == null ||
 				(_result.HasHitDistance && result.HasHitDistance && result.HitDistance < _result.HitDistance) )
 				_result = result;
         }
 	}
-	
+
 
 	public static class HitTestHelpers
 	{

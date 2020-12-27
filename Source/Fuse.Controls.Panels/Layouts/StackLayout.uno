@@ -20,7 +20,7 @@ namespace Fuse.Layouts
 		Standard,
 		TwoPass,
 	}
-	
+
 	public sealed class StackLayout : Layout
 	{
 
@@ -43,7 +43,7 @@ namespace Fuse.Layouts
 			_orientation = Orientation.Vertical;
 			InvalidateLayout();
 		}
-		
+
 		float _itemSpacing = 0;
 		public float ItemSpacing
 		{
@@ -57,7 +57,7 @@ namespace Fuse.Layouts
 				}
 			}
 		}
-		
+
 		Alignment _contentAlignment = Alignment.Default;
 		public Alignment ContentAlignment
 		{
@@ -71,7 +71,7 @@ namespace Fuse.Layouts
 				}
 			}
 		}
-		
+
 		StackLayoutMode _mode = StackLayoutMode.Standard;
 		public StackLayoutMode Mode
 		{
@@ -96,7 +96,7 @@ namespace Fuse.Layouts
 			nlp.RetainAxesXY(vert, !vert);
 
 			var size = GetElementsSize(container, nlp);
-			
+
 			if (Mode == StackLayoutMode.TwoPass)
 			{
 				bool recalc = false;
@@ -116,11 +116,11 @@ namespace Fuse.Layouts
 						recalc = true;
 					}
 				}
-				
+
 				if (recalc)
 					size = GetElementsSize(container, nlp);
 			}
-				
+
 			return size;
 		}
 
@@ -132,7 +132,7 @@ namespace Fuse.Layouts
 				return SnapUp( ItemSpacing );
 			}
 		}
-		
+
 		float2 GetElementsSize(Visual container, LayoutParams lp)
 		{
 			var orientation = Orientation;
@@ -150,7 +150,7 @@ namespace Fuse.Layouts
 					spacing = 0;
 					firstItem = false;
 				}
-				
+
 				var cds = c.GetMarginSize(lp);
 
 				if (orientation == Orientation.Horizontal)
@@ -172,17 +172,17 @@ namespace Fuse.Layouts
 			get
 			{
 				var ca = ContentAlignment;
-				if (ca == Alignment.Default && Container != null) 
+				if (ca == Alignment.Default && Container != null)
 					ca = Container.Alignment;
-					
+
 				if (Orientation == Orientation.Vertical)
 					return AlignmentHelpers.GetVerticalSimpleAlign(ca);
 				else
 					return AlignmentHelpers.GetHorizontalSimpleAlign(ca);
 			}
 		}
-		
-		internal override void ArrangePaddingBox(Visual container, float4 padding, 
+
+		internal override void ArrangePaddingBox(Visual container, float4 padding,
 			LayoutParams lp)
 		{
 			var d = 0.0f;
@@ -210,14 +210,14 @@ namespace Fuse.Layouts
 			{
 				if (ArrangeMarginBoxSpecial(c, padding, lp)) //TODO: hmm, used to drop X/Y Flag
 					continue;
-				
+
 				if (hasItem)
 					d += effectiveSpacing;
 				var cds = c.ArrangeMarginBox( axis*d + paddingOffset, nlp);
 				d += Vector.Dot(cds,axis);
 				hasItem = true;
 			}
-	
+
 			var sa = EffectiveContentAlignment;
 			if (sa != SimpleAlignment.Begin)
 			{

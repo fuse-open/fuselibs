@@ -37,7 +37,7 @@ namespace Fuse.Controls.Native.iOS
 			var path = GetOptionalPath(descriptor.FileSource);
 			if (path != null)
 			{
-				if (descriptor.IsCustomFont) 
+				if (descriptor.IsCustomFont)
 				{
 					var uifontdescriptor
 					= iOSSystemFont.GetMatchingUIFontDescriptor(
@@ -45,8 +45,8 @@ namespace Fuse.Controls.Native.iOS
 						descriptor.Index,
 						descriptor.Match);
 					uifont = UIFontWithDescriptorAndSize(uifontdescriptor, size);
-				} 
-				else 
+				}
+				else
 				{
 					var uifontdescriptor
 					= iOSSystemFont.GetMatchingSystemFontDescriptor(

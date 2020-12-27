@@ -8,16 +8,16 @@ namespace FuseTest
 	{
 		//only one backing value to prevent tests from seeing different values
 		object _value;
-		
-		public object Value 
-		{ 
+
+		public object Value
+		{
 			get { return _value; }
 			set { SetValue(value); }
 		}
-		
+
 		void SetValue( object value )
-		{ 
-			_value = value; 
+		{
+			_value = value;
 			if (IsRootingCompleted)
 			{
 				OnPropertyChanged( "Value" );
@@ -25,15 +25,15 @@ namespace FuseTest
 				OnPropertyChanged( "StringValue" );
 			}
 		}
-		
+
 		public float FloatValue
 		{
 			get { return (float)_value; }
 			set { _value = value; }
 		}
-		
-		public string StringValue 
-		{ 
+
+		public string StringValue
+		{
 			get { return (string)_value; }
 			set { _value = value; }
 		}

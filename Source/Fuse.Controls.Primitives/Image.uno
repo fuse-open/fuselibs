@@ -15,7 +15,7 @@ using Fuse.Controls.Native;
 namespace Fuse.Controls
 {
 	/** Displays an Image
-	
+
 		Image provides several features for working with images in fuse, we will go through them in some short examples.
 
 		Displaying an image from a file or an url:
@@ -24,7 +24,7 @@ namespace Fuse.Controls
 				<Image File="some_file.png" />
 				<Image Url="some_url" />
 			</StackPanel>
-	
+
 
 		## Displaying a multi-density image from files:
 
@@ -51,32 +51,32 @@ namespace Fuse.Controls
 					</MultiDensityImageSource>
 				</Image>
 			</StackPanel>
-		
+
 		## Displaying an image from a file specified from JavaScript
 		Uno cannot automatically bundle images when their path is defined in JavaScript. Because of this, you have to manually bundle those by manually importing them in your unproj file. You can either bundle one file like this:
-		
+
 			"Includes": [
 				"*",
 				"image.jpg:Bundle"
 			]
-		
+
 		Or bundle an entire folder, or all files of a specific type, using wildcards:
-		
+
 			"Includes": [
 				"*.jpg:Bundle"
 			]
 
 		You can read more on bundling files with your project [here.](/docs/assets/bundle).
-		
+
 		When you have bundled your image files, you can refer to them from javascript like this:
-		
+
 			<JavaScript>
 				module.exports = {
 					image: "image.jpg"
 				};
 			</JavaScript>
 			<Image File="{image}" />
-		
+
 	*/
 	public partial class Image : LayoutControl, ISizeConstraint
 	{
@@ -85,7 +85,7 @@ namespace Fuse.Controls
 		{
 			get { return _container; }
 		}
-		
+
 		protected override void OnRooted()
 		{
 			base.OnRooted();
@@ -99,7 +99,7 @@ namespace Fuse.Controls
 			_container.SourceError += OnContainerSourceError;
 			_container.IsRooted = true;
 		}
-		
+
 		protected override void OnUnrooted()
 		{
 			IsVisibleChanged -= OnIsVisibleChanged;
@@ -112,7 +112,7 @@ namespace Fuse.Controls
 
 			base.OnUnrooted();
 		}
-		
+
 		void OnContainerParamChanged(object s, object a )
 		{
 			OnParamChanged();
@@ -121,7 +121,7 @@ namespace Fuse.Controls
 		{
 			OnSourceChanged();
 		}
-		
+
 		ImageSourceErrorArgs _lastError;
 		void OnContainerSourceError(object s, ImageSourceErrorArgs args)
 		{
@@ -131,12 +131,12 @@ namespace Fuse.Controls
 			if (!_markedFailed && _container.Source.State == ImageSourceState.Failed)
 				OnSourceChanged();
 		}
-		
+
 		void OnIsVisibleChanged(object s, object a)
 		{
 			_container.IsVisible = IsVisible;
 		}
-		
+
 		/**
 			Loads an image from a File.
 
@@ -169,7 +169,7 @@ namespace Fuse.Controls
 		}
 
 		[UXContent]
-		/** The list of image files in different pixel densities. 
+		/** The list of image files in different pixel densities.
 			To specify a multi-density image, please use @MultiDensityImageSource
 		*/
 		public IList<FileSource> Files
@@ -229,14 +229,14 @@ namespace Fuse.Controls
 				}
 			}
 		}
-		
+
 		/** @advanced */
 		public event EventHandler ParamChanged;
 		void OnParamChanged()
 		{
 			if (ParamChanged != null)
 				ParamChanged(this, EventArgs.Empty);
-				
+
 			InvalidateLayout();
 			InvalidateRenderBounds();
 			UpdateNativeImageSource();
@@ -253,15 +253,15 @@ namespace Fuse.Controls
 			{
 				_markedFailed = _container.Source.State == ImageSourceState.Failed;
 				bool isLoading = _container.Source.State == ImageSourceState.Loading;
-				BusyTask.SetBusy(this, ref _loadingTask, 
+				BusyTask.SetBusy(this, ref _loadingTask,
 					_markedFailed ? BusyTaskActivity.Failed :
 					isLoading ? BusyTaskActivity.Loading : BusyTaskActivity.None,
 					_markedFailed ? (_lastError == null ? "unknown failure" : _lastError.Reason) : "");
 			}
-			
+
 			if (SourceChanged != null)
 				SourceChanged(this, EventArgs.Empty);
-				
+
 			InvalidateLayout();
 			InvalidateRenderBounds();
 
@@ -340,7 +340,7 @@ namespace Fuse.Controls
 			_hasContentBox = true;
 			_contentBox = contentBox;
 		}
-		
+
 		float2 ISizeConstraint.ContentSize
 		{
 			get

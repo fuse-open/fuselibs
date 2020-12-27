@@ -31,21 +31,21 @@ namespace Fuse.Triggers
 			}
 
 			static bool _warning = false;
-			
+
 			public object Construct(Context context, object[] args)
 			{
-				if (!_warning) 
+				if (!_warning)
 				{
 					//DEPRECATED: 2017-01-09
 					Fuse.Diagnostics.Deprecated( "Use the `Busy` behavior instead of FuseJS/BusyTask", this );
 					_warning = true;
 				}
-				
+
 				if (args.Length == 0 || args.Length > 2)
 					throw new Error("new BusyTask() - must provide 1 or 2 arguments");
 				var n = _c.Wrap(args[0]) as Node;
 				if (n == null) throw new Error("new BusyTask() - argument must be an UX node");
-				
+
 				var act = BusyTaskActivity.Processing;
 				if (args.Length == 2)
 					act = Marshal.ToType<BusyTaskActivity>(args[1]);

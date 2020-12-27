@@ -47,7 +47,7 @@ namespace Fuse.Navigation
 			if (mode != NavigationGotoMode.Transition &&
 				mode != NavigationGotoMode.Bypass)
 				return;
-				
+
 			//TODO: mode
 			foreach (var sw in _swipers)
 			{
@@ -58,7 +58,7 @@ namespace Fuse.Navigation
 			}
 			CheckProgress();
 		}
-		
+
 		public override void Toggle(Visual page)
 		{
 			if (Active == page)
@@ -93,7 +93,7 @@ namespace Fuse.Navigation
 				//throw here instead of message, due to later assumption in this code (TODO: fix)
 				throw new Exception( "EdgeNavigation must be rooted in an Element" );
 			}
-				
+
 			CheckChildren();
 		}
 
@@ -157,7 +157,7 @@ namespace Fuse.Navigation
 					_swipers[edge] = s;
 				}
 			}
-			
+
 			OnPageProgressChanged(NavigationMode.Bypass);
 		}
 
@@ -172,7 +172,7 @@ namespace Fuse.Navigation
 			}
 			CheckProgress();
 		}
-		
+
 		void CheckProgress()
 		{
 			//determine active page (undefined if multiple open)
@@ -231,7 +231,7 @@ namespace Fuse.Navigation
 		{
 			get { return GetPageIndex(_active); }
 		}
-		
+
 		public override NavigationPageState GetPageState(Visual page)
 		{
 			foreach (var sw in _swipers)
@@ -241,7 +241,7 @@ namespace Fuse.Navigation
 					return new NavigationPageState{ Progress = 1 - (float)sw.Value.Progress,
 						PreviousProgress = 0 }; //TODO: Previous
 			}
-			
+
 			return new NavigationPageState{ Progress = (float)-_maxProgress, PreviousProgress = 0 };
 		}
 	}

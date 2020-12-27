@@ -2,7 +2,7 @@
 
 The default layout and configuration of UX markup elements is called the rest state. Triggers define deviations from this rest state.
 
-Each trigger knows how to "un-apply" its own animation to return to the rest state, even if interrupted mid-animation. This is great because 
+Each trigger knows how to "un-apply" its own animation to return to the rest state, even if interrupted mid-animation. This is great because
 it means animation is completely separated from the logical state of your program, greatly reducing the complexity of dealing with combined
 animation on multiple devices, screen sizes, with real data and real user input.
 
@@ -22,8 +22,8 @@ Pulse triggers typically have names that are past-tense verbs.
 
 ## While-triggers
 
-Triggers with names starting with `While...` are sustained triggers that activate under certain conditions, and remain active until that 
-condition goes away. 
+Triggers with names starting with `While...` are sustained triggers that activate under certain conditions, and remain active until that
+condition goes away.
 
 For example @WhilePressed activates while the containing visual is pressed by a pointer, and deactivates when the pointer is released.
 
@@ -35,7 +35,7 @@ For example @WhilePressed activates while the containing visual is pressed by a 
 	</Panel>
 
 The containing timeline starts plaing from the beginning when a pointer is pressed, and sustains the end state of the animation while the
-pointer remains pressed. If the pointer is released in the middle of the animation, the progress is cancelled and recedes naturally from 
+pointer remains pressed. If the pointer is released in the middle of the animation, the progress is cancelled and recedes naturally from
 its progress at the time of the release.
 
 ### Animation-triggers

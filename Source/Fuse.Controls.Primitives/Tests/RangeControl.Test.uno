@@ -9,7 +9,7 @@ namespace Fuse.Gestures.Test
 	{
 		[Test]
 		public void Orientation()
-		{	
+		{
 			var p = new UX.RangeControlHorizontal();
 			using (var root = TestRootPanel.CreateWithChild(p, int2(1000,500)))
 			{
@@ -28,7 +28,7 @@ namespace Fuse.Gestures.Test
 				Assert.AreEqual( 80, p.Value );
 			}
 		}
-		
+
 		[Test]
 		public void LinearUserStep()
 		{
@@ -45,7 +45,7 @@ namespace Fuse.Gestures.Test
 				Assert.AreEqual( 100, p.Value );
 			}
 		}
-		
+
 		[Test]
 		public void ReverseRange()
 		{
@@ -66,7 +66,7 @@ namespace Fuse.Gestures.Test
 				Assert.AreEqual( 20, p.Value );
 			}
 		}
-		
+
 		[Test]
 		public void Properties()
 		{
@@ -76,14 +76,14 @@ namespace Fuse.Gestures.Test
 				Assert.AreEqual( 20, p.value.Value );
 				Assert.AreEqual( 0.6, p.relativeValue.Value );
 				Assert.AreEqual( 0.6, p.progress.Value );
-				
+
 				p.rc.Value = -50;
 				Assert.AreEqual( -50, p.value.Value );
 				Assert.AreEqual( 0.25, p.relativeValue.Value );
 				Assert.AreEqual( 0.25, p.progress.Value );
 			}
 		}
-		
+
 		[Test]
 		//https://github.com/fuse-open/fuselibs/issues/578
 		public void LinearRangeBounds()
@@ -93,12 +93,12 @@ namespace Fuse.Gestures.Test
 			{
 				root.PointerSwipe( float2(300,100), float2(223,100) );
 				Assert.AreEqual(73, p.Value);
-				
+
 				root.PointerSwipe( float2(100,100), float2(150,100) );
 				Assert.AreEqual(0, p.Value);
 			}
 		}
-		
+
 		[Test]
 		//values can be outside range, but user can't select them
 		public void RangeValue()
@@ -107,15 +107,15 @@ namespace Fuse.Gestures.Test
 			using (var root = TestRootPanel.CreateWithChild(p,int2(300)))
 			{
 				Assert.AreEqual(150, p.rc.Value);
-				
+
 				root.PointerSwipe( float2(150,150), float2(250,150) );
 				Assert.AreEqual(100, p.rc.Value);
-				
+
 				p.rc.Value = -50;
 				root.PumpDeferred();
 				Assert.AreEqual(-50, p.rc.Value);
 			}
 		}
-		
+
 	}
 }

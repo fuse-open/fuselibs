@@ -10,21 +10,21 @@ using Fuse.Android.Controls.WebViewUtils.WebViewForeign;
 namespace Fuse.Android.Controls.WebViewUtils
 {
 	extern (Android) sealed internal class EvaluateJsCommand
-	{		
+	{
 		readonly Action<string> _handler;
 		public readonly string JavaScript;
-		
+
 		public EvaluateJsCommand(string javaScript, Action<string> handler)
 		{
 			JavaScript = javaScript;
 			_handler = handler;
 		}
-		
+
 		public void Execute(Java.Object webViewHandle, string expression)
 		{
 			webViewHandle.LoadUrl("javascript:"+expression);
 		}
-		
+
 		public void HandleResult(string result){
 			if(_handler!=null)
 				_handler(result);
@@ -42,7 +42,7 @@ namespace Fuse.Android.Controls.WebViewUtils
 			_webViewHandle = webViewHandle;
 			_webViewHandle.AddJavascriptInterface(_interfaceName = "FuseJSInterface", OnJsResult);
 		}
-		
+
 		public void EvaluateJs(string js, Action<string> handler)
 		{
 			var cmd = new EvaluateJsCommand(js, handler);
@@ -50,7 +50,7 @@ namespace Fuse.Android.Controls.WebViewUtils
 			if(_evaluateRequests.Count==1)
 				NextRequest();
 		}
-		
+
 		void NextRequest()
 		{
 			if(_evaluateRequests.Count==0) return;
@@ -58,11 +58,11 @@ namespace Fuse.Android.Controls.WebViewUtils
 			_evaluateRequests.RemoveAt(0);
 			_currentRequest.Execute(_webViewHandle, CreateExpression(_currentRequest.JavaScript));
 		}
-		
+
 		string CreateExpression(string original){
 			return _interfaceName+".onResult( eval(\'"+original+"\') );";
 		}
-		
+
 		void OnJsResult(string result)
 		{
 			_currentRequest.HandleResult(result);

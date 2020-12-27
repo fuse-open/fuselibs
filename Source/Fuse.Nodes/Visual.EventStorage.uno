@@ -35,11 +35,11 @@ namespace Fuse
 			if (HasBit(ne)) Properties.ForeachInList(ph, InvokeEventHandler, EventArgs.Empty);
 		}
 
-		void InvokeEventHandler(object obj, object args) 
-		{ 
+		void InvokeEventHandler(object obj, object args)
+		{
 			((EventHandler)obj)(this, (EventArgs)args);
 		}
-		
+
 
 		void AddEventHandler(PropertyHandle ph, VisualBits ne, object handler)
 		{

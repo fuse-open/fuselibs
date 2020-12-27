@@ -23,23 +23,23 @@ namespace Fuse.Triggers.Actions
 		/** @see Timeline.Stop */
 		Stop,
 	}
-	
+
 	/**
 		A unified action that controls a @Timeline.
-		
+
 		These actions differ from the `IPlayback` interface, which only supports a plain media view of the Timeline. `TimelineAction` exposes the advanced functionality of @Timeline, and matches the JavaScript interface.
 	*/
 	public class TimelineAction : TriggerAction
 	{
 		public Timeline Target { get; set; }
-		
+
 		public TimelineActionHow How { get; set; }
 
 		/**
 			A relative progress location (0..1) for certain `How` values (`PlayTo`, `Seek`).
 		*/
 		public double Progress { get; set; }
-		
+
 		protected override void Perform(Node target)
 		{
 			var t = Target;
@@ -48,7 +48,7 @@ namespace Fuse.Triggers.Actions
 				Fuse.Diagnostics.UserError( "`TimelineAction` called without a `Timeline` `Target`", this );
 				return;
 			}
-			
+
 			switch (How)
 			{
 				case TimelineActionHow.Pause:

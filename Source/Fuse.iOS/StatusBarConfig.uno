@@ -6,22 +6,22 @@ namespace Fuse.iOS
 {
 	/**
 		Configures the appearance of the status bar on *iOS*.
-	
+
 		To configure the status bar on *Android*, see [Android.StatusBarConfig](api:fuse/android/statusbarconfig).
 
 		### Example
-		
+
 		To configure the status bar on iOS, place an `iOS.StatusBarConfig` somewhere in your UX tree.
 
 			<App>
 				<iOS.StatusBarConfig Style="Light" Animation="Slide" IsVisible="True" />
-				
+
 				<!-- The rest of our app goes here -->
 			</App>
-		
+
 		However, we usually want to configure the status bar for Android as well.
 		We'll add an additional [Android.StatusBarConfig](api:fuse/android/statusbarconfig).
-		
+
 			<iOS.StatusBarConfig Style="Light" Animation="Slide" IsVisible="True" />
 			<Android.StatusBarConfig Color="#0003" IsVisible="True" />
 	*/

@@ -90,14 +90,14 @@ namespace Fuse.Navigation
 	{
 		ISeekableNavigation Navigation
 		{
-			get 
-			{ 
-				return Fuse.Navigation.Navigation.TryFindBaseNavigation(ContextParent) as ISeekableNavigation; 
+			get
+			{
+				return Fuse.Navigation.Navigation.TryFindBaseNavigation(ContextParent) as ISeekableNavigation;
 			}
 		}
 
 		PointerVelocity<float2> _velocity = new PointerVelocity<float2>();
-			
+
 		ISeekableNavigation _currentNavigation = null;
 		Gesture _gesture;
 		protected override void OnRooted()
@@ -119,22 +119,22 @@ namespace Fuse.Navigation
 			Specifies the direction the user should swipe to move forward in the navigation. Forward
 			means towards the "entering" pages (those in front).
 		*/
-		public SwipeDirection ForwardDirection 
-		{ 
+		public SwipeDirection ForwardDirection
+		{
 			get { return _forwardDirection; }
 			set { _forwardDirection = value; }
 		}
-		
+
 		/**
 			DEPRECATED: use ForwardDirection, Note the old direction had the unfortunate aspect of being
 			the `BackwardDirection`: so you must specify the opposite direction.
 		*/
-		public SwipeDirection SwipeDirection 
-		{ 
+		public SwipeDirection SwipeDirection
+		{
 			get { return Invert(ForwardDirection); }
 			set { ForwardDirection = Invert(value); }
 		}
-		
+
 		SwipeDirection Invert(SwipeDirection sd)
 		{
 			switch(sd)
@@ -146,7 +146,7 @@ namespace Fuse.Navigation
 			}
 			return SwipeDirection.Left;
 		}
-		
+
 		public float VelocityThreshold { get; set; }
 
 		Element _lengthNode;
@@ -160,7 +160,7 @@ namespace Fuse.Navigation
 			get { return _lengthNode; }
 			set { _lengthNode = value; }
 		}
-		
+
 		bool _hasMaxPages;
 		float _maxPages;
 		/**
@@ -219,7 +219,7 @@ namespace Fuse.Navigation
 					Gesture.VectorSignificance( Direction, diff ) );
 			}
 		}
-		
+
 		GestureRequest IGesture.OnPointerPressed(PointerPressedArgs args)
 		{
 			_startCoord = _currentCoord = args.WindowPoint;
@@ -232,7 +232,7 @@ namespace Fuse.Navigation
 			}
 			return GestureRequest.Capture;
 		}
-		
+
 		bool _startedSeek;
 		void IGesture.OnCaptureChanged(PointerEventArgs args, CaptureType how, CaptureType prev)
 		{
@@ -259,7 +259,7 @@ namespace Fuse.Navigation
 
 			if (_gesture.IsHardCapture)
 				_currentNavigation.Seek(GetNavigationArgs());
-			
+
 			return GestureRequest.Capture;
 		}
 
@@ -280,14 +280,14 @@ namespace Fuse.Navigation
 
 		float2 Scale
 		{
-			get 
-			{ 
+			get
+			{
 				if (_lengthNode != null)
 					return _lengthNode.ActualSize;
 				var e = Parent as Element;
 				if (e == null)
 					return float2(1);
-				return e.ActualSize; 
+				return e.ActualSize;
 			}
 		}
 
@@ -327,7 +327,7 @@ namespace Fuse.Navigation
 			get { return _swipeAllow; }
 			set { _swipeAllow = value; }
 		}
-		
+
 		UpdateSeekArgs GetNavigationArgs()
 		{
 			float distance, scale;
@@ -347,14 +347,14 @@ namespace Fuse.Navigation
 				distance = -distance;
 
 			var rel = distance / scale;
-			
+
 			if (!AllowedDirections.HasFlag(AllowedNavigationDirections.Backward))
 				rel = Math.Min(0,rel);
 			if (!AllowedDirections.HasFlag(AllowedNavigationDirections.Forward))
 				rel = Math.Max(0,rel);
 			if (_hasMaxPages)
 				rel = Math.Clamp(rel, -_maxPages, _maxPages);
-				
+
 			var clampDistance = rel * scale;
 			var delta = clampDistance - _prevDistance;
 			_prevDistance = clampDistance;

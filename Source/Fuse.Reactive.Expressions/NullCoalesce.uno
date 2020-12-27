@@ -17,13 +17,13 @@ namespace Fuse.Reactive
 				result = args[0].Value;
 				return true;
 			}
-			
+
 			if (args[1].HasValue)
 			{
 				result = args[1].Value;
 				return true;
 			}
-			
+
 			result = null;
 			return false;
 		}

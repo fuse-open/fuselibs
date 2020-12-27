@@ -33,21 +33,21 @@ namespace Fuse.Controls.Test
 
 				var pg = p.Nav.FirstChild<Page>();
 				var b = pg.FirstChild<FuseTest.BusyControl>();
-				
+
 				Assert.IsTrue(pg.IsFrozen);
 				Assert.IsFalse(pg.TestHasFreezePrepared);
 				root.StepFrame();
 				root.TestDraw();
-				
+
 				Assert.IsTrue(pg.IsFrozen);
 				Assert.IsFalse(pg.TestHasFreezePrepared);
 				b.IsBusy = false;
-				
+
 				root.StepFrame();
 				root.TestDraw();
 				Assert.IsTrue(pg.IsFrozen);
 				Assert.IsTrue(pg.TestHasFreezePrepared);
-				
+
 				root.StepFrame(5); //stabilize
 				Assert.IsFalse(pg.IsFrozen);
 				Assert.IsFalse(pg.TestHasFreezePrepared);

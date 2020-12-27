@@ -11,17 +11,17 @@ namespace Fuse.GeoLocation
 		void GetLocation(Promise<Location> promise, double timeout);
 
 		void StartListening(Action<Location> onLocationChanged, Action<Exception> onLocationError, int minimumReportInterval, double desiredAccuracyInMeters);
-		
+
 		void StopListening();
 
 		bool IsLocationEnabled();
 		string GetAuthorizationStatus();
 
 		void RequestAuthorization(GeoLocationAuthorizationType type);
-		
+
 		void Init(Action onReady);
 	}
-	
+
 	public enum GeoLocationAuthorizationType
 	{
 		Never = 0,
@@ -43,17 +43,17 @@ namespace Fuse.GeoLocation
 		void Init()
 		{
 			if(_locationTracker != null) return;
-			
+
 			if defined(Android)
 				_locationTracker = new AndroidLocationProvider();
 			else if defined(iOS)
 				_locationTracker = new IOSLocationProvider();
 			else
 				_locationTracker = new SpoofLocationProvider();
-				
+
 			_locationTracker.Init(FlushBufferedCalls);
 		}
-		
+
 		void FlushBufferedCalls()
 		{
 			foreach(var call in _bufferedCalls)
@@ -61,11 +61,11 @@ namespace Fuse.GeoLocation
 			_bufferedCalls = null;
 			_isReady = true;
 		}
-		
+
 		public event Action<Location> LocationChanged;
-		
+
 		public event Action<string> LocationError;
-		
+
 		bool _isReady;
 
 		Location _lastLocation;
@@ -119,7 +119,7 @@ namespace Fuse.GeoLocation
 			_locationTracker.RequestAuthorization(AuthorizationType);
 			_locationTracker.StartListening(OnLocationChanged, OnLocationError, minimumReportInterval, desiredAccuracyInMeters);
 		}
-		
+
 		public void StopListening()
 		{
 			if (!_isReady)

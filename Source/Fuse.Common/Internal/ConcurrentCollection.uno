@@ -6,13 +6,13 @@ namespace Uno.Collections
 	class ConcurrentCollection<T> : ICollection<T>
 	{
 		List<T> _back = new List<T>();
-		
+
 		struct ModItem
 		{
 			public T Item;
 			public bool Add;
 		}
-		
+
 		List<ModItem> _mod;
 		List<ModItem> Mod
 		{
@@ -23,18 +23,18 @@ namespace Uno.Collections
 				return _mod;
 			}
 		}
-		
+
 		bool _defer;
-	
+
 		public void DeferChanges()
 		{
 			_defer = true;
 		}
-		
+
 		public void EndDefer()
 		{
 			_defer = false;
-			
+
 			if (_mod != null)
 			{
 				for (int i=0; i < _mod.Count; ++i)
@@ -45,18 +45,18 @@ namespace Uno.Collections
 					else
 						_back.Remove(a.Item);
 				}
-				
+
 				_mod.Clear();
 			}
 		}
-		
+
         public void Clear()
         {
 			_back.Clear();
 			if (_mod != null)
 				_mod.Clear();
         }
-        
+
         public void Add(T item)
         {
 			if (_defer)
@@ -70,13 +70,13 @@ namespace Uno.Collections
 						return;
 					}
 				}
-				
+
 				Mod.Add( new ModItem{ Item = item, Add = true } );
 			}
 			else
 				_back.Add(item);
         }
-        
+
         public bool Remove(T item)
         {
 			if (_defer)
@@ -90,19 +90,19 @@ namespace Uno.Collections
 						return true;
 					}
 				}
-					
+
 				if (_back.Contains(item))
 				{
 					Mod.Add( new ModItem{ Item = item, Add = false } );
 					return true;
 				}
-				
+
 				return false;
 			}
-			
+
 			return _back.Remove(item);
         }
-        
+
         public bool Contains(T item)
         {
 			if (_mod != null)
@@ -112,20 +112,20 @@ namespace Uno.Collections
 					var m = _mod[i];
 					if (!object.Equals(m.Item,item))
 						continue;
-						
+
 					return m.Add;
 				}
 			}
-			
+
 			return _back.Contains(item);
         }
-        
-        public int Count 
-        { 
-			get 
-			{ 
+
+        public int Count
+        {
+			get
+			{
 				var c = _back.Count;
-				
+
 				if (_mod != null)
 				{
 					for (int i=0; i < _mod.Count; ++i)
@@ -136,11 +136,11 @@ namespace Uno.Collections
 							c--;
 					}
 				}
-				
-				return c; 
+
+				return c;
 			}
 		}
-		
+
 		public T this [int index]
 		{
 			get
@@ -148,12 +148,12 @@ namespace Uno.Collections
 				return _back[index];
 			}
 		}
-		
+
 		public IEnumerator<T> GetEnumerator()
 		{
 			return _back.GetEnumerator();
 		}
-		
+
 		class DeferLockImpl : IDisposable
 		{
 			ConcurrentCollection<T> _collection;
@@ -161,7 +161,7 @@ namespace Uno.Collections
 			{
 				_collection = c;
 			}
-			
+
 			public void Dispose()
 			{
 				_collection.EndDefer();

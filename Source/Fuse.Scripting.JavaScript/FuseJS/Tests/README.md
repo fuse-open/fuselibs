@@ -8,7 +8,7 @@ All tests are olaced in `tests` directory. If you need to add new tests, you can
 
 # Run tests from browser
 
-The simplest way to run tests is open `index.html` in your browser. 
+The simplest way to run tests is open `index.html` in your browser.
 
 # Run tests from NodeJS
 

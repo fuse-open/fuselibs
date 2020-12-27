@@ -24,7 +24,7 @@ namespace Fuse.Scripting
 			}
 		}
 
-		public override FileSource GetFile() { return _file; } 
+		public override FileSource GetFile() { return _file; }
 
 		Bundle _bundle;
 		public Bundle Bundle

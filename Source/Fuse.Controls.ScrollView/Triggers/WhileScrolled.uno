@@ -7,13 +7,13 @@ namespace Fuse.Triggers
 {
 	/**
 		Is active while the @ScrollView is scrolled within a given region.
-		
+
 		This defines the region the same way as @Scrolled
 	*/
 	public class WhileScrolled : WhileTrigger
 	{
 		ScrollViewBase _scrollable;
-		
+
 		protected override void OnRooted()
 		{
 			base.OnRooted();
@@ -23,17 +23,17 @@ namespace Fuse.Triggers
 				Fuse.Diagnostics.UserError( "Scrolled could not find a Scrollable control.", this );
 				return;
 			}
-			
+
 			_scrollable.ScrollPositionChanged += OnScrollPositionChanged;
 			Update();
 		}
-		
+
 		void Update()
 		{
 			if (_scrollable != null)
 				SetActive(_region.IsInZone(_scrollable));
 		}
-		
+
 		protected override void OnUnrooted()
 		{
 			if (_scrollable != null)

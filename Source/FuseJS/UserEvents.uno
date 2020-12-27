@@ -20,7 +20,7 @@ namespace FuseJS
 				Fuse.Diagnostics.UserError( "Cannot find message with name: " + Name, this);
 				return;
 			}
-			
+
 			//already a shallow call in UpdateManager, so directly raise
 			dispatch.DirectRaise(Source, Args);
 		}
@@ -32,13 +32,13 @@ namespace FuseJS
 		static readonly UserEvents _instance;
 		public UserEvents()
 		{
-			if(_instance != null) return; 
+			if(_instance != null) return;
 			Resource.SetGlobalKey(_instance = this, "FuseJS/UserEvents");
 			AddMember(new NativeFunction("raise", Raise));
 		}
 
 		static bool _warn;
-		
+
 		/**
 			args[0] = Name of UserEvent
 			args[1] = dictionary of arguments (optional)
@@ -51,7 +51,7 @@ namespace FuseJS
 				Fuse.Diagnostics.Deprecated("The FuseJS/UserEvents `Raise` function is deprecated. Use the `object.raise` on a named event instead.", context);
 				_warn = true;
 			}
-			
+
 			var eventName = (string)args[0];
 
 			//convert arguments, if any
@@ -64,7 +64,7 @@ namespace FuseJS
 				foreach (var key in keys)
 					postArgs[key] = p[key];
 			}
-			
+
 			//must be raised in the Update thread
 			var re = new RaiseEvent();
 			//we have no way to get our Node at the moment

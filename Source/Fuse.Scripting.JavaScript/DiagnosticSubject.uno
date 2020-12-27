@@ -4,7 +4,7 @@ using Fuse.Scripting;
 namespace Fuse.Scripting
 {
     class DiagnosticSubject
-    {		
+    {
         IDisposable _diagnostic;
         public void ClearDiagnostic()
         {

@@ -19,7 +19,7 @@ namespace SocketRocket
 		ObjC.Object _webSocket;
 		Action _open;
 		Action _close;
-		Action<string> _error;	
+		Action<string> _error;
 
 		public void Create(string uri,
 			string[] protocols,
@@ -43,7 +43,7 @@ namespace SocketRocket
 			Action<string> receiveMessageHandler,
 			Action<byte[]> receiveDataHandler)
 		@{
-			return [[WebSocketClientObjc alloc] 
+			return [[WebSocketClientObjc alloc]
 							initWithUrl:url
 							protocols:[protocols copyArray]
 							eventHandler:eventHandler

@@ -49,7 +49,7 @@ namespace Fuse.Triggers.Actions
 			Fuse.LauncherImpl.InterAppLauncher.LaunchUri(new Uri(this.Uri));
 		}
 	}
-	
+
 	public class LaunchApp : TriggerAction
 	{
 		public string Uri {get; set;}

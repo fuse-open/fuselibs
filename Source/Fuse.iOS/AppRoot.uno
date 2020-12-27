@@ -32,11 +32,11 @@ namespace Fuse
 			@{Fuse.Platform.SystemUI.RootView:Set(root)};
 			[root sizeToFit];
 			root.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin;
-			
+
 			return root;
 		@}
 
-		
+
 		static float4 _clearColor = float4(1f);
 		public static float4 ClearColor
 		{
@@ -45,7 +45,7 @@ namespace Fuse
 			{
 				if (_clearColor == value)
 					return;
-					
+
 				_clearColor = value;
 				SetClearColor(_appRootView, value.X, value.Y, value.Z, value.W);
 			}

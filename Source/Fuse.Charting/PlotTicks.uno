@@ -22,7 +22,7 @@ namespace Fuse.Charting
 		/** The ticks are radial lines from the center to the edge. This is generally used for pie and spider charts. */
 		Angular,
 	}
-	
+
 	/**
 		Creates tick marks, usually for an axis. This is a @Shape, allowing `Stroke...` properties to be used for drawing the ticks.  The ticks that are drawn will line up with the labels of @PlotAxis provided they are the same element size (either `Width` or `Height` depending on the axis).
 
@@ -66,7 +66,7 @@ namespace Fuse.Charting
 		PlotTickAxis _axes = PlotTickAxis.X;
 		/**
 			Draw ticks for which axes.
-			
+
 			`Both` is allowed, in which case a grid will be created.
 		*/
 		public PlotTickAxis Axis
@@ -76,7 +76,7 @@ namespace Fuse.Charting
 			{
 				if (_axes == value)
 					return;
-					
+
 				_axes = value;
 				InvalidateSurfacePath();
 			}
@@ -93,17 +93,17 @@ namespace Fuse.Charting
 			{
 				if (_style == value)
 					return;
-					
+
 				_style = value;
 				InvalidateSurfacePath();
 			}
 		}
-		
+
 		bool _hasAxisLine;
 		float _axisLine;
-		/** 
+		/**
 			X or Y Offset, relative to size, in which to draw the axis line.
-			
+
 			If not specified then no line will be drawn.
 		*/
 		public float AxisLine
@@ -113,23 +113,23 @@ namespace Fuse.Charting
 			{
 				if (_hasAxisLine && _axisLine == value)
 					return;
-					
+
 				_hasAxisLine = true;
 				_axisLine = value;
 				InvalidateSurfacePath();
 			}
 		}
-		
+
 		float _offset = 0;
 		/** For Style="Angular", offset the base of the lines (from center) by this amount (relative value) */
 		public float BaseOffset
 		{
 			get { return _offset; }
-			set 
+			set
 			{
 				if (_offset == value)
 					return;
-					
+
 				_offset = value;
 				InvalidateSurfacePath();
 			}
@@ -151,7 +151,7 @@ namespace Fuse.Charting
 		public int2 SkipEnds
 		{
 			get { return _filter.SkipEnds; }
-			set 
+			set
 			{
 				if (_filter.SetSkipEnds(value))
 					InvalidateSurfacePath();
@@ -168,13 +168,13 @@ namespace Fuse.Charting
 					InvalidateSurfacePath();
 			}
 		}
-		
-		
+
+
 		PlotBehavior _plot;
 		protected override void OnRooted()
 		{
 			base.OnRooted();
-			
+
 			_plot = PlotBehavior.FindPlot(this);
 			if (_plot == null)
 			{
@@ -186,7 +186,7 @@ namespace Fuse.Charting
 				_plot.DataChanged += OnDataChanged;
 			}
 		}
-		
+
 		protected override void OnUnrooted()
 		{
 			if (_plot != null)
@@ -197,12 +197,12 @@ namespace Fuse.Charting
 			}
 			base.OnUnrooted();
 		}
-		
+
 		void OnDataChanged(object s, DataChangedArgs args)
 		{
 			InvalidateSurfacePath();
 		}
-			
+
 		void GetOrientation( int axis, out float2 xVector, out float2 yVector )
 		{
 			var o = _plot.GetAxisOrientation(axis);
@@ -217,7 +217,7 @@ namespace Fuse.Charting
 				yVector = float2(1,0);
 			}
 		}
-		
+
 		protected override SurfacePath CreateSurfacePath(Surface surface)
 		{
 			var list = new LineSegments();
@@ -229,20 +229,20 @@ namespace Fuse.Charting
 				if (Axis.HasFlag(PlotTickAxis.Y))
 					DrawLine( list, 1 );
 			}
-			
+
 			return surface.CreatePath(list.Segments);
 		}
-		
+
 		void DrawLine( LineSegments list, int axis )
 		{
 			_filter.IsCountAxis = _plot.IsCountAxis( axis );
 			var items = _plot.GetAxisItems(axis);
-			
+
 			var isOffset = _plot.AxisMetric( axis ) == PlotAxisMetric.OffsetCount;
 			var offset = isOffset ? 0.5f : 0f;
 			var steps = _plot.PlotStats.Steps[axis];
 			var sz = ActualSize;
-			
+
 			switch (Style)
 			{
 				case PlotTickStyle.Axial:
@@ -254,20 +254,20 @@ namespace Fuse.Charting
 						list.MoveTo( _axisLine * b * sz );
 						list.LineToRel( a * sz );
 					}
-				
+
 					for (int i=0; i < items.Length; ++i)
 					{
 						int w;
 						if (!_filter.Accept(items[i], i, items.Length, out w))
 							continue;
-							
+
 						var pos = (w + offset) / (float)steps;
 						list.MoveTo( pos * a * sz );
 						list.LineToRel( b * sz );
 					}
 					break;
 				}
-				
+
 				case PlotTickStyle.Angular:
 				{
 					if (_hasAxisLine)
@@ -276,13 +276,13 @@ namespace Fuse.Charting
 						list.EllipticArcToRel( float2(-_axisLine,0) * sz, _axisLine * sz/2, 0, false, true );
 						list.EllipticArcToRel( float2(_axisLine,0) * sz, _axisLine * sz/2, 0, false, true );
 					}
-					
+
 					for (int i=0; i < items.Length; ++i)
 					{
 						int w;
 						if (!_filter.Accept(items[i], i, items.Length, out w))
 							continue;
-							
+
 						var angle = (w + offset) / (float)steps * Math.PIf * 2;
 						var position = float2( Math.Cos(angle), Math.Sin(angle) );
 						list.MoveTo( sz * 0.5f + position * sz/2 * BaseOffset );

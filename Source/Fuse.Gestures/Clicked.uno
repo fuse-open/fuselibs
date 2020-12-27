@@ -11,7 +11,7 @@ namespace Fuse.Gestures
 
 	public delegate void ClickedHandler(object sender, ClickedArgs args);
 
-	/** Triggers when a pointer is clicked on a @Visual. 
+	/** Triggers when a pointer is clicked on a @Visual.
 
 		The `Clicked` trigger is quite similar to the @(Tapped) trigger, but these two triggers differ slightly in the interactions they handle.
 		While a click represents a pointer being pressed and then released on an element, a tap represents a pointer being both pressed and released within a certain period of time.

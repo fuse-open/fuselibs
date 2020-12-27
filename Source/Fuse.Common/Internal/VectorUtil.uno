@@ -11,7 +11,7 @@ namespace Fuse.Internal
 		{
 			return Vector.Dot(a,b) / Vector.Dot(b,b) * b;
 		}
-		
+
 		/**
 			Scalar projection of `a` on `b`
 		*/
@@ -19,7 +19,7 @@ namespace Fuse.Internal
 		{
 			return Vector.Dot(a,b)/Vector.Length(b);
 		}
-		
+
 		/**
 			Vector rejection of `a` on `b`
 		*/
@@ -28,21 +28,21 @@ namespace Fuse.Internal
 			var a1 = Projection(a,b);
 			return a - a1;
 		}
-		
+
 		public static float NormRejection(float2 a, float2 b)
 		{
 			return Vector.Length( Rejection(a,b) );
 		}
-		
+
 		/**
-			Angle between two vectors. 
+			Angle between two vectors.
 			@return in range 0...pi
 		*/
 		public static float Angle(float2 a, float2 b)
 		{
 			return Math.Acos( Vector.Dot(a,b) / (Vector.Length(a) * Vector.Length(b)) );
 		}
-		
+
 		/**
 			Distance between a line (defined by two points [line.XY, line.ZW]) and a point `p`
 		*/

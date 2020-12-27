@@ -93,14 +93,14 @@ namespace Fuse
 			TestScalar(Marshal.ToDouble("13"));
 
 			TestVector(7.0f, float4(7.0f, 7.0f, 7.0f, 7.0f));
-			TestVector(7.0, float4(7.0f, 7.0f, 7.0f, 7.0f));			
+			TestVector(7.0, float4(7.0f, 7.0f, 7.0f, 7.0f));
 			TestVector(7, float4(7.0f, 7.0f, 7.0f, 7.0f));
 
 			TestVector((Size)7.0f, float4(7.0f, 7.0f, 7.0f, 7.0f));
 			TestVector(new Size2(7.0f, 8.0f), float4(7.0f, 8.0f, 7.0f, 8.0f));
 
 			TestVector(float2(7.0f, 8.0f), float4(7.0f, 8.0f, 7.0f, 8.0f));
-			TestVector(float3(7.0f, 8.0f, 9.0f), float4(7.0f, 8.0f, 9.0f, 1.0f));			
+			TestVector(float3(7.0f, 8.0f, 9.0f), float4(7.0f, 8.0f, 9.0f, 1.0f));
 			TestVector(float4(7.0f, 8.0f, 9.0f, 10.0f), float4(7.0f, 8.0f, 9.0f, 10.0f));
 
 			object v = new Size(13, Unit.Percent);
@@ -124,14 +124,14 @@ namespace Fuse
 			Assert.IsTrue(Marshal.TryAdd(a,b, out result));
 			return result;
 		}
-		
+
 		object CheckMarshalSubtract(object a, object b)
 		{
 			object result;
 			Assert.IsTrue(Marshal.TrySubtract(a,b, out result));
 			return result;
 		}
-		
+
 		object CheckMarshalMultiply(object a, object b)
 		{
 			object result;
@@ -145,7 +145,7 @@ namespace Fuse
 			Assert.IsTrue(Marshal.TryDivide(a,b, out result));
 			return result;
 		}
-		
+
 		// Expects the incoming value to be an equivalent of double 13.0
 		void TestScalar(object v)
 		{
@@ -218,7 +218,7 @@ namespace Fuse
 				Assert.AreEqual(float4(1, 2, 3, 4), p.Constant4.Margin);
 			}
 		}
-		
+
 		[Test]
 		public void TryToZeroFloat4()
 		{
@@ -230,7 +230,7 @@ namespace Fuse
 				new object[]{ 1,2, new Junk()}), out val, out size ) );
 			Assert.IsFalse( Marshal.TryToZeroFloat4(  new ListWrapper(
 				new object[]{ 1, "abc"}), out val, out size ) );
-				
+
 			Assert.IsTrue( Marshal.TryToZeroFloat4(  new ListWrapper(
 				new object[]{ 1, 2, 3}), out val, out size ) );
 			Assert.AreEqual( float4(1,2,3,0), val );
@@ -239,7 +239,7 @@ namespace Fuse
 			Assert.AreEqual( float4(0,0,0,0), val );
 		}
 	}
-	
+
 	class Junk{}
 	class ListWrapper: IArray
 	{

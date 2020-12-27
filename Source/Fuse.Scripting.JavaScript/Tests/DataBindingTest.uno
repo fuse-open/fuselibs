@@ -87,7 +87,7 @@ namespace Fuse.Reactive.Test
 				Assert.AreEqual(float4(0,1,0,1), e.TheText.TextColor);
 			}
 		}
-		
+
 		[Test]
 		public void Object()
 		{
@@ -115,7 +115,7 @@ namespace Fuse.Reactive.Test
 				Assert.AreEqual(float4(0,0,1,1), e.TheText.TextColor);
 			}
 		}
-		
+
 		[Test]
 		public void NodeName()
 		{
@@ -126,13 +126,13 @@ namespace Fuse.Reactive.Test
 				Assert.AreEqual( p.A, p.Bind.Node );
 				Assert.AreEqual( p.A, p.Bind.Visual );
 				Assert.AreEqual( p.B, p.Bind.Trigger );
-				
+
 				//https://github.com/fusetools/fuselibs-private/issues/3538
 				//Assert.AreEqual( p.C, p.SBind.Node );
 				Assert.AreEqual( p.B, p.SBind.Trigger );
 			}
 		}
-		
+
 		[Test]
 		public void NodeDefer()
 		{
@@ -141,13 +141,13 @@ namespace Fuse.Reactive.Test
 			{
 				root.StepFrameJS();
 				Assert.AreEqual( null, p.Bind.Node ); //not yet
-				
+
 				p.B.Value = true;
 				root.PumpDeferred();
 				Assert.AreEqual( p.A, p.Bind.Node );
 			}
 		}
-		
+
 		[Test]
 		public void FileConversion()
 		{
@@ -158,7 +158,7 @@ namespace Fuse.Reactive.Test
 				Assert.AreEqual( "Hello", p.B.File.ReadAllText() );
 			}
 		}
-		
+
 		[Test]
 		public void Failed()
 		{
@@ -169,13 +169,13 @@ namespace Fuse.Reactive.Test
 				Assert.AreEqual("hi",p.T.Value);
 				Assert.AreEqual("", p.TF.Value);
 				Assert.AreEqual(0, TriggerProgress(p.WF));
-				
+
 				p.CallFail.Perform();
 				root.StepFrameJS();
 				Assert.AreEqual("",p.T.Value);
 				Assert.AreEqual("nope", p.TF.Value);
 				Assert.AreEqual(1, TriggerProgress(p.WF));
-				
+
 				p.CallRestore.Perform();
 				root.StepFrameJS();
 				Assert.AreEqual("bye",p.T.Value);
@@ -191,5 +191,5 @@ namespace FuseTest
 	public class FileHolder : Fuse.Behavior
 	{
 		public FileSource File { get; set; }
-	}	
+	}
 }

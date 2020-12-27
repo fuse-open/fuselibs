@@ -42,7 +42,7 @@ namespace Fuse.Triggers.Test
 				Assert.AreEqual(0, TriggerProgress(p.WS));
 			}
 		}
-		
+
 		[Test]
 		public void CaseSensitive()
 		{
@@ -56,7 +56,7 @@ namespace Fuse.Triggers.Test
 				Assert.AreEqual(0, TriggerProgress(p.WS));
 			}
 		}
-		
+
 		[Test]
 		public void Contains()
 		{
@@ -70,7 +70,7 @@ namespace Fuse.Triggers.Test
 				Assert.AreEqual(1, TriggerProgress(p.WS));
 			}
 		}
-		
+
 		[Test]
 		public void Length()
 		{

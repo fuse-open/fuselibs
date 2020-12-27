@@ -72,7 +72,7 @@ namespace Fuse.Scripting
 
 		public Function CallbackToFunction(Callback c)
 		{
-			if (_identity == null) 
+			if (_identity == null)
 				_identity = (Function)Evaluate("(Context)", "(function(x) { return x; })");
 
 			return (Function)_identity.Call(this, c);

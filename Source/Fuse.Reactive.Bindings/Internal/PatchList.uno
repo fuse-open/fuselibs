@@ -12,14 +12,14 @@ namespace Fuse.Reactive.Internal
 		//update(at a, with data)
 		Update,
 	}
-	
+
 	struct PatchItem
 	{
 		public PatchOp Op;
 		public int A;
 		public int Data;
 	}
-	
+
 	enum PatchAlgorithm
 	{
 		/** Removes all the items then adds the new list */
@@ -47,11 +47,11 @@ namespace Fuse.Reactive.Internal
 				case PatchAlgorithm.Simple:
 					return new SimpleAlgorithm<T>(from,to, emptyKey).Calc();
 			}
-			
+
 			return null;
 		}
-		
-		/** 
+
+		/**
 			Removes all items then adds in the new ones.
 		*/
 		static List<PatchItem> PatchRemoveAll<T>( IList<T> from, IList<T> to )
@@ -59,13 +59,13 @@ namespace Fuse.Reactive.Internal
 			var ops = new List<PatchItem>();
 			for (int i=0; i < from.Count; ++i)
 				ops.Add( new PatchItem{ Op = PatchOp.Remove, A = 0 } );
-				
+
 			for (int i=0; i < to.Count; ++i)
 				ops.Add( new PatchItem{ Op = PatchOp.Insert, A = i, Data = i } );
-				
+
 			return ops;
 		}
-		
+
 		/** Formats the list of patches for testing/debugging */
 		static public string Format(IList<PatchItem> list)
 		{
@@ -102,26 +102,26 @@ namespace Fuse.Reactive.Internal
 		List<bool> _toUsed;
 		List<PatchItem> _ops;
 		T _emptyKey;
-		
+
 		public SimpleAlgorithm( IList<T> from, IList<T> to, T emptyKey )
 		{
 			_emptyKey = emptyKey;
 			_from = from;
 			_to = to;
 			_toIndex = Index(to);
-			
+
 			//track which ones are used in the to list
 			_toUsed = new List<bool>(to.Count);
 			for (int i=0; i < to.Count; ++i)
 				_toUsed.Add(false);
-				
+
 			_ops = new List<PatchItem>();
 		}
-		
+
 		struct Location
 		{
 			public int From, To;
-			
+
 			public override string ToString()
 			{
 				return From + "," + To;
@@ -156,13 +156,13 @@ namespace Fuse.Reactive.Internal
 					}
 					break;
 				}
-				
+
 				var rem = fromAt + oPos;
 				for (int i=0; i < anchor.To; ++i)
 				{
 					if (_toUsed[i])
 						continue;
-						
+
 					_ops.Add( new PatchItem{ Op = PatchOp.Insert, A = oPos + anchor.From, Data = i });
 					oPos++;
 					_toUsed[i] = true;
@@ -177,24 +177,24 @@ namespace Fuse.Reactive.Internal
 				_toUsed[anchor.To] = true;
 				fromAt++;
 			}
-			
+
 			AppendRemainingTo(fromAt + oPos);
 			return _ops;
 		}
-		
+
 		void AppendRemainingTo(int oPos)
 		{
 			for (int i=0; i < _to.Count; ++i)
 			{
 				if (_toUsed[i])
 					continue;
-					
+
 				_ops.Add( new PatchItem{ Op = PatchOp.Insert, A = oPos, Data = i });
 				_toUsed[i] = true;
 				oPos++;
 			}
 		}
-		
+
 		/** Find the next item in the from list that's also still in the to list */
 		Location FindNextAnchor( int fromAt )
 		{
@@ -202,18 +202,18 @@ namespace Fuse.Reactive.Internal
 			{
 				int faLoc = -1;
 				if (Object.Equals(_from[fromAt],_emptyKey) ||
-					!_toIndex.TryGetValue(_from[fromAt], out faLoc) || 
+					!_toIndex.TryGetValue(_from[fromAt], out faLoc) ||
 					_toUsed[faLoc])
 				{
 					fromAt++;
 					continue;
 				}
-				
+
 				return new Location{ From = fromAt, To =  faLoc };
 			}
-			
+
 			return new Location{ From = -1, To = -1 };
 		}
 	}
-	
+
 }

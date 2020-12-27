@@ -35,9 +35,9 @@ namespace Fuse.Triggers.Test
 			ExitTriggerForwardAction = exitTriggerForwardAction;
 			ExitTriggerBackwardAction = exitTriggerBackwardAction;
 		}
-		
+
 		public void Reset()
-		{	
+		{
 			ActivatedTriggerForwardAction.Reset();
 			ActivatedTriggerBackwardAction.Reset();
 			EnterTriggerForwardAction.Reset();
@@ -45,6 +45,6 @@ namespace Fuse.Triggers.Test
 			ExitTriggerForwardAction.Reset();
 			ExitTriggerBackwardAction.Reset();
 		}
-		
+
 	}
 }

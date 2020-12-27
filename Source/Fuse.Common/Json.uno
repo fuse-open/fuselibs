@@ -34,7 +34,7 @@ namespace Fuse
 				visitedSet.Add(value);
 
 				var obj = value as IObject;
-				
+
 				sb.Append("{");
 				var keys = new string[obj.Keys.Length];
 				Uno.Array.Copy(obj.Keys, keys, obj.Keys.Length);
@@ -68,7 +68,7 @@ namespace Fuse
 				}
 
 				sb.Append("]");
-				
+
 				visitedSet.Remove(value);
 			}
 			else sb.Append("null");
