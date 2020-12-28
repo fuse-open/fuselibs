@@ -19,7 +19,8 @@
         "Fuse.Controls.CameraView",
         "Fuse.UXKits.Alive",
         "Fuse.Models",
-        "Fuse.Sensor"
+        "Fuse.Sensor",
+        "Fuse.Auth"
     ],
     "Includes": [
         "*"
