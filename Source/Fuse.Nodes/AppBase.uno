@@ -158,7 +158,7 @@ namespace Fuse
 		{
 			//don't use Fuse.Diagnostics.UnknownException, that assumes a sane error path, but
 			//at this point we don't have one anymore and thus Diagnostics may not be able to report correctly
-			Uno.Diagnostics.Debug.Log(e.ToString(), Uno.Diagnostics.DebugMessageType.Error);
+			Uno.Diagnostics.Log.Error(e.ToString());
 			if (UnhandledException != null)
 			{
 				var args = new UnhandledExceptionArgs(e);

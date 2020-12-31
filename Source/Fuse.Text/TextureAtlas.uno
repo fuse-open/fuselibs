@@ -47,7 +47,8 @@ namespace Fuse.Text
 		// between all SubTextures.
 		public SubTexture Add(Bitmap bitmap)
 		{
-			assert bitmap.Format == _format;
+			if (bitmap.Format != _format)
+				throw new InvalidOperationException("TextureAtlas: bitmap.Format != _format");
 
 			Recti rectWithBorder;
 			var sizeWithBorder = bitmap.Size + int2(1, 1);
@@ -93,8 +94,11 @@ namespace Fuse.Text
 
 		static void Blit(Bitmap dst, Bitmap src, int2 dstPos)
 		{
-			assert new Recti(int2(0), dst.Size).Contains(new Recti(dstPos, src.Size));
-			assert src.Format == dst.Format;
+			if (!(new Recti(int2(0), dst.Size).Contains(new Recti(dstPos, src.Size))))
+				throw new InvalidOperationException("TextureAtlas: !(new Recti(int2(0), dst.Size).Contains(new Recti(dstPos, src.Size)))");
+
+			if (src.Format != dst.Format)
+				throw new InvalidOperationException("TextureAtlas: src.Format != dst.Format");
 
 			var bpp = FormatHelpers.GetStrideInBytes(src.Format);
 

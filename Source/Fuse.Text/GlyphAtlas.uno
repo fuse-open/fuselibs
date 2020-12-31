@@ -24,7 +24,9 @@ namespace Fuse.Text
 		public SubTexture Add(Bitmap bitmap)
 		{
 			var format = bitmap.Format;
-			assert format == Format.L8 || format == Format.RGBA8888;
+			if (format != Format.L8 && format != Format.RGBA8888)
+				throw new InvalidOperationException("GlyphAtlas: format != Format.L8 && format != Format.RGBA8888");
+
 			var atlas = format == Format.L8 ? _textureAtlasL8 : _textureAtlasRGBA;
 			return atlas.Add(bitmap);
 		}

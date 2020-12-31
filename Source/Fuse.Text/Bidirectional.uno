@@ -42,7 +42,8 @@ namespace Fuse.Text.Bidirectional
 			var result = new List<ShapedRun>();
 			if (resultLinkedList != null)
 				result.AddRange(resultLinkedList);
-			assert result.Count == runs.Count;
+			if (result.Count != runs.Count)
+				throw new InvalidOperationException("Bidirectional: result.Count != runs.Count");
 			return result;
 		}
 
@@ -95,7 +96,8 @@ namespace Fuse.Text.Bidirectional
 				run = nextRun;
 			}
 
-			assert ranges.Count >= 1;
+			if (ranges.Count < 1)
+				throw new InvalidOperationException("Bidirectional: ranges.Count < 1");
 
 			while (ranges.Count >= 2)
 			{
@@ -115,11 +117,13 @@ namespace Fuse.Text.Bidirectional
 
 		static void MergeRange(Stack<Range> ranges, Range range)
 		{
-			assert ranges.Count >= 1;
+			if (ranges.Count < 1)
+				throw new InvalidOperationException("Bidirectional: ranges.Count < 1");
 
 			var previous = ranges.Peek();
 
-			assert previous.Level < range.Level;
+			if (previous.Level >= range.Level)
+				throw new InvalidOperationException("Bidirectional: previous.Level >= range.Level");
 
 			if (IsRightToLeft(previous.Level))
 			{

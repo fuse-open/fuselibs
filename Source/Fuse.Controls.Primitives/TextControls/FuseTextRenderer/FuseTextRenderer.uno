@@ -145,7 +145,10 @@ namespace Fuse.Controls.FuseTextRenderer
 		void AsyncMeasurementsDone(CacheState state)
 		{
 			BusyTask.SetBusy(_control, ref _busyTask, BusyTaskActivity.None);
-			assert _cacheState == null;
+
+			if (_cacheState != null)
+				throw new InvalidOperationException("TextRenderer: _cacheState != null");
+
 			_cacheState = state;
 			_control.InvalidateLayout();
 			_control.InvalidateVisual();

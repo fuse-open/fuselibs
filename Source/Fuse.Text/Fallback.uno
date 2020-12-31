@@ -10,7 +10,9 @@ namespace Fuse.Text
 
 		public FallingBackFontFace(params CacheItem<FontFaceDescriptor, FontFace>[] fontFaces)
 		{
-			assert fontFaces.Length > 0;
+			if (fontFaces.Length == 0)
+				throw new InvalidOperationException("FallingBackFontFace: fontFaces.Length == 0");
+
 			FontFaces = fontFaces;
 		}
 
@@ -42,7 +44,9 @@ namespace Fuse.Text
 
 		public FallingBackFont(params CacheItem<int, Font>[] fonts)
 		{
-			assert fonts.Length > 0;
+			if (fonts.Length == 0)
+				throw new InvalidOperationException("FallingBackFont: fonts.Length == 0");
+
 			Fonts = fonts;
 		}
 
@@ -73,7 +77,9 @@ namespace Fuse.Text
 		public override PositionedGlyph[] Shape(Substring text, int fontIndex, TextDirection dir)
 		{
 			// Note: For performance reasons, nested FallingBackFonts are not supported
-			assert fontIndex == 0;
+			if (fontIndex != 0)
+				throw new InvalidOperationException("FallingBackFont: fontIndex != 0");
+
 			return ShapeInner(text, 0, dir);
 		}
 

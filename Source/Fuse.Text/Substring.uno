@@ -292,10 +292,14 @@ namespace Fuse.Text
 
 		public static Substring InclusiveRange(this Substring s, int start, int end)
 		{
-			assert !IsTrailingSurrogate(s[start]);
-			if (IsLeadingSurrogate(s[end])) ++end;
+			if (IsTrailingSurrogate(s[start]))
+				throw new InvalidOperationException("SubstringExtensions: IsTrailingSurrogate(s[start])");
 
-			assert end < s.Length;
+			if (IsLeadingSurrogate(s[end]))
+				++end;
+
+			if (end >= s.Length)
+				throw new InvalidOperationException("SubstringExtensions: end >= s.Length");
 
 			return s.GetSubstring(start, end - start + 1);
 		}
