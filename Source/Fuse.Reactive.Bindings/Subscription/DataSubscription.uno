@@ -33,7 +33,7 @@ namespace Fuse.Reactive
 			ClearDiagnostic();
 			DisposeSubscription();
 			_isResolved = false;
-			
+
 			if (_dataSub.HasData)
 			{
 				var obs = _dataSub.Provider as IObservableObject;

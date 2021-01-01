@@ -8,11 +8,11 @@ using Fuse.Elements;
 
 namespace Fuse.Layouts
 {
-	/**	
+	/**
 		Specifies the size of a row or column in a Grid.
-		
+
 		The string syntax for this definition is:
-		
+
 		- `auto`: `Metric="Auto"`, the `Extent` is not relevant
 		- `default`:  `Metric="Default"` with an `Extent="1"`
 		- `##`: `Metric="Absolute" with `Extent="##"` (## is a size in points)
@@ -24,27 +24,27 @@ namespace Fuse.Layouts
 		protected internal void OnChanged() { if (Changed != null) Changed(); }
 
 		protected DefinitionBase() { }
-		
+
 		protected DefinitionBase(float extent, Metric metric)
 		{
 			_extent = extent;
 			_metric = metric;
 		}
-		
+
 		internal DefinitionBase( DefinitionBase copy, CreationType creation )
 		{
 			Copy(copy, creation);
 		}
-		
+
 		internal void Copy<T>(T copy, CreationType creation ) where T : DefinitionBase
 		{
 			Metric = copy.Metric;
 			Extent = copy.Extent;
 			Creation = creation;
 		}
-		
+
 		float _actualOffset;
-		
+
 		public float ActualOffset
 		{
 			get { return _actualOffset; }
@@ -65,9 +65,9 @@ namespace Fuse.Layouts
 			//implied to fill in empty spaces
 			Implied,
 		}
-		
+
 		internal CreationType Creation = CreationType.Explicit;
-		
+
 		internal bool UsesDefault
 		{
 			get { return Creation == CreationType.Count || Creation == CreationType.Implied; }
@@ -76,13 +76,13 @@ namespace Fuse.Layouts
 		{
 			get { return Creation == CreationType.Implied; }
 		}
-		
+
 		Metric _metric = Metric.Proportion;
 		public Metric Metric
 		{
 			get { return _metric; }
-			set 
-			{ 
+			set
+			{
 				if (_metric != value)
 				{
 					_metric = value;
@@ -90,7 +90,7 @@ namespace Fuse.Layouts
 				}
 			}
 		}
-		
+
 		float _extent = 1;
 		public float Extent
 		{
@@ -104,7 +104,7 @@ namespace Fuse.Layouts
 				}
 			}
 		}
-		
+
 		internal float ActualExtent;
 		internal bool HasActualExtent;
 
@@ -146,7 +146,7 @@ namespace Fuse.Layouts
 					n.Extent = float.Parse(t);
 					n.Metric = Metric.Absolute;
 				}
-				
+
 				return n;
 			}
 			catch (Exception e)
@@ -159,7 +159,7 @@ namespace Fuse.Layouts
 				return n;
 			}
 		}
-		
+
 		internal string Serialize()
 		{
 			switch (Metric)
@@ -194,7 +194,7 @@ namespace Fuse.Layouts
 		Absolute,
 		/**
 			The size is assigned proportionally between all rows/columns with a `Propertion` metric. The space divided is the total size available to the grid less all `Absolute` and `Auto` sized rows/columns.
-			
+
 			If the size of the dimension is not known, such as an aligned grid, or the row height in a `StackPanel`, the `Proportion` metric will result in 0 size.
 		*/
 		Proportion,
@@ -202,10 +202,10 @@ namespace Fuse.Layouts
 			The size is calculated based on the content of the cells.
 		*/
 		Auto,
-		/** 
+		/**
 			This is the mode used if none is specified. It will behave as `Auto` if the layout size is unavailable, and will behave as `Proportion` if available (when the grid is stretched).
-			
-			This default is only suitable for grids where the size is known, or stretched to fill the parent. It also works if only one-dimension is known and there is only 1 row or column. Any grid with mulitple rows and columns that are not stretched, should not use this default, opting for `Absolute` or `Auto` instead. 
+
+			This default is only suitable for grids where the size is known, or stretched to fill the parent. It also works if only one-dimension is known and there is only 1 row or column. Any grid with mulitple rows and columns that are not stretched, should not use this default, opting for `Absolute` or `Auto` instead.
 		*/
 		Default,
 	}
@@ -216,7 +216,7 @@ namespace Fuse.Layouts
 
 		public Column(float width, Metric metric)
 			: base( width, metric ) { }
-			
+
 		private Column(Column copy, CreationType creation)
 			: base( copy, creation ) { }
 
@@ -244,7 +244,7 @@ namespace Fuse.Layouts
 
 		private Row(Row copy, CreationType creation)
 			: base( copy, creation ) { }
-			
+
 		public Metric HeightMetric
 		{
 			get { return base.Metric; }
@@ -265,7 +265,7 @@ namespace Fuse.Layouts
 		RowMajor,
 		ColumnMajor,
 	}
-	
+
 	public sealed class GridLayout : Layout
 	{
 		[	UXContent]
@@ -294,7 +294,7 @@ namespace Fuse.Layouts
 				}
 			}
 		}
-		
+
 		static Row _staticDefaultRow = new Row{ Metric = Metric.Default, Extent = 1 };
 		Row _defaultRow = _staticDefaultRow;
 		public string DefaultRow
@@ -306,7 +306,7 @@ namespace Fuse.Layouts
 				ModifyDefault(_rows, _defaultRow);
 			}
 		}
-		
+
 		void ModifyDefault<T>(RootableList<T> list, T primordial ) where T : DefinitionBase, new()
 		{
 			for (int i=0; i < list.Count; ++i)
@@ -320,28 +320,28 @@ namespace Fuse.Layouts
 			}
 			Changed();
 		}
-		
+
 		public int RowCount
 		{
 			get { return RowList.Count; }
 			set { ModifyCount(_rows, value, _defaultRow); }
 		}
-		
+
 		/** The numbers of rows/cols as specified by the user (no implied items) */
 		int UserCount<T>( IList<T> list ) where T : DefinitionBase
 		{
 			int c = list.Count;
 			while (c > 0 && list[c-1].IsImplied)
 				c--;
-				
+
 			return c;
 		}
-		
+
 		void ModifyCount<T>(IList<T> list, int count, T primordial ) where T : DefinitionBase, new()
 		{
 			if (count == list.Count)
 				return;
-				
+
 			//due to data-binding setting a default of 0 we can't trigger an error on <= 0, but only <0
 			//but setting 0 is really just a way to resetting the explicit count and letting explicit Column
 			//and ColumnSpan properties take precedence
@@ -350,14 +350,14 @@ namespace Fuse.Layouts
 				Fuse.Diagnostics.UserError( "RowCount and ColumnCount must be >= 1", this );
 				return;
 			}
-				
-			while (list.Count < count) 
+
+			while (list.Count < count)
 			{
 				var n = new T();
 				n.Copy(primordial, DefinitionBase.CreationType.Count);
 				list.Add(n);
 			}
-			while (list.Count > count) 
+			while (list.Count > count)
 				list.RemoveLast();
 			for (int i=0; i < list.Count; ++i)
 			{
@@ -368,7 +368,7 @@ namespace Fuse.Layouts
 			}
 			Changed();
 		}
-		
+
 
 		[UXContent]
 		public IList<Column> ColumnList { get { return _columns; } }
@@ -394,27 +394,27 @@ namespace Fuse.Layouts
 				ModifyDefault(_columns, _defaultColumn);
 			}
 		}
-		
+
 		public int ColumnCount
 		{
 			get { return ColumnList.Count; }
 			set { ModifyCount(_columns, value, _defaultColumn); }
 		}
-		
+
 		Column GetColumnData(int column)
 		{
 			if (column >= 0 && column < _columns.Count)
 				return _columns[column];
 			return null;
 		}
-		
+
 		Row GetRowData(int row)
 		{
 			if (row >= 0 && row < _rows.Count)
 				return _rows[row];
 			return null;
 		}
-		
+
 		float _cellSpacing = 0;
 		public float CellSpacing
 		{
@@ -428,7 +428,7 @@ namespace Fuse.Layouts
 				}
 			}
 		}
-		
+
 		Alignment _contentAlignment = Alignment.Default;
 		public Alignment ContentAlignment
 		{
@@ -449,7 +449,7 @@ namespace Fuse.Layouts
 		static readonly PropertyHandle _columnProperty = Fuse.Properties.CreateHandle();
 		static readonly PropertyHandle _actualColumnProperty = Fuse.Properties.CreateHandle();
 		static readonly PropertyHandle _columnSpanProperty = Fuse.Properties.CreateHandle();
-		
+
 		public static void SetRow(Visual elm, int row)
 		{
 			elm.Properties.Set(_rowProperty, row);
@@ -466,7 +466,7 @@ namespace Fuse.Layouts
 		int GetActualRow(Visual elm)
 		{
 			object v;
-			if (elm.Properties.TryGet(_actualRowProperty, out v)) 
+			if (elm.Properties.TryGet(_actualRowProperty, out v))
 				return (int)v;
 			//it's not part of the proper grid
 			return -1;
@@ -509,11 +509,11 @@ namespace Fuse.Layouts
 			if (elm.Properties.TryGet(_columnProperty, out v)) return (int)v;
 			else return 0;
 		}
-		
+
 		void CalcActualPositions(Visual container)
 		{
 			bool rowMajor = ChildOrder == GridChildOrder.RowMajor;
-			
+
 			//find expected max column
 			int minorCount = Math.Max(1,rowMajor ? UserCount(ColumnList) : UserCount(RowList));
 			for (var e = container.FirstChild<Visual>(); e != null; e = e.NextSibling<Visual>())
@@ -533,13 +533,13 @@ namespace Fuse.Layouts
 			var majorAvail = new List<int>(minorCount);
 			for (int c=0; c< minorCount; c++)
 				majorAvail.Add(0);
-				
+
 			int rowAt = 0;
 			int colAt = 0;
-			
+
 			int maxRow = 0;
 			int maxCol = 0;
-			
+
 			for (var elm = container.FirstChild<Visual>(); elm != null; elm = elm.NextSibling<Visual>())
 			{
 				if (!AffectsLayout(elm)) continue;
@@ -551,18 +551,18 @@ namespace Fuse.Layouts
 					colAt = (int)v;
 					haveCol = true;
 				}
-				
+
 				if (elm.Properties.TryGet(_rowProperty, out v))
 				{
 					rowAt = (int)v;
 					haveRow = true;
 				}
-				
+
 				if (haveRow && !haveCol)
 					colAt = 0;
 				if (haveCol && !haveRow)
 					rowAt = 0;
-				
+
 				if (!haveRow && !haveCol)
 				{
 					if ( rowMajor )
@@ -590,16 +590,16 @@ namespace Fuse.Layouts
 						}
 					}
 				}
-					
+
 				elm.Properties.Set(_actualRowProperty, rowAt);
 				elm.Properties.Set(_actualColumnProperty, colAt);
-				
+
 				var xs = GetColumnSpan(elm);
 				var ys = GetRowSpan(elm);
 
 				maxRow = Math.Max(maxRow, rowAt + ys);
 				maxCol = Math.Max(maxCol, colAt + xs);
-				
+
 				//if an explicit position moves earlier in the grid (that it's natural child ordering)
 				//the behaviour of  majorAvail, and auto-position becomes undefined
 				if (rowMajor)
@@ -613,7 +613,7 @@ namespace Fuse.Layouts
 						majorAvail[c] = colAt + xs;
 				}
 			}
-			
+
 			//trim/expand missing rows/columns
 			TrimPad( _rows, maxRow, _defaultRow );
 			TrimPad( _columns, maxCol, _defaultColumn );
@@ -632,7 +632,7 @@ namespace Fuse.Layouts
 			{
 				if (!list[i].IsImplied)
 					break;
-					
+
 				list.RemoveAt(i);
 			}
 		}
@@ -640,7 +640,7 @@ namespace Fuse.Layouts
 		int GetActualColumn(Visual elm)
 		{
 			object v;
-			if (elm.Properties.TryGet(_actualColumnProperty, out v)) 
+			if (elm.Properties.TryGet(_actualColumnProperty, out v))
 				return (int)v;
 			//it's not part of the proper grid
 			return -1;
@@ -661,7 +661,7 @@ namespace Fuse.Layouts
 		public static int GetColumnSpan(Visual elm)
 		{
 			object v;
-			if (elm.Properties.TryGet(_columnSpanProperty, out v)) 
+			if (elm.Properties.TryGet(_columnSpanProperty, out v))
 			{
 				return (int)v;
 			}
@@ -683,7 +683,7 @@ namespace Fuse.Layouts
 		}
 
 		void DefinitionAdded(DefinitionBase r)
-		{ 
+		{
 			if (AddListener(r))
 				Changed();
 		}
@@ -701,7 +701,7 @@ namespace Fuse.Layouts
 			item.Changed += Changed;
 			return true;
 		}
-		
+
 		bool RemoveListener( DefinitionBase item )
 		{
 			//this may seem wrong since the Creation type can change, except that nothing can ever
@@ -711,14 +711,14 @@ namespace Fuse.Layouts
 			item.Changed -= Changed;
 			return true;
 		}
-		
+
 		protected override void OnRooted()
 		{
 			base.OnRooted();
 			_rows.RootSubscribe(DefinitionAdded, DefinitionRemoved);
 			_columns.RootSubscribe(DefinitionAdded, DefinitionRemoved);
 		}
-		
+
 		protected override void OnUnrooted()
 		{
 			base.OnUnrooted();
@@ -728,7 +728,7 @@ namespace Fuse.Layouts
 
 		internal override float2 GetContentSize(Visual container, LayoutParams lp)
 		{
-			return Measure(container, lp);	
+			return Measure(container, lp);
 		}
 
 		float EffectiveCellSpacing
@@ -739,14 +739,14 @@ namespace Fuse.Layouts
 				return SnapUp(CellSpacing);
 			}
 		}
-		
+
 		Metric EffectiveMetric(Metric src, bool expand)
 		{
 			if (src == Metric.Default)
 				return expand ? Metric.Proportion : Metric.Auto;
 			return src;
 		}
-		
+
 		float GetTotalProportion<T>(IList<T> list, bool expand) where T : DefinitionBase
 		{
 			var total = 0.0f;
@@ -764,27 +764,27 @@ namespace Fuse.Layouts
 			// in pixel snapping ensure each is pixel sized, evenly spreading extra pixels
 			var extraWidth = 0f;
 			var colWidth = available / proportion;
-				
+
 			for (int i = 0; i < list.Count; i++)
 			{
 				var c = list[i];
 
 				if (EffectiveMetric(c.Metric,expand) != Metric.Proportion)
 					continue;
-				
+
 				var w = Snap( c.Extent * colWidth + extraWidth );
 				extraWidth += c.Extent * colWidth - w;
 				c.ActualExtent = w;
 				c.HasActualExtent = true;
 			}
 		}
-		
-		void CalcInitialExtents<T>(IList<T> list, bool expand, 
+
+		void CalcInitialExtents<T>(IList<T> list, bool expand,
 			out float used, out bool hasAuto ) where T : DefinitionBase
 		{
 			hasAuto = false;
 			used = 0;
-			
+
 			for (int i = 0; i < list.Count; i++)
 			{
 				var c = list[i];
@@ -796,12 +796,12 @@ namespace Fuse.Layouts
 					c.HasActualExtent = true;
 					used += c.Extent;
 				}
-				
+
 				if (EffectiveMetric(c.Metric,expand) == Metric.Auto)
 					hasAuto = true;
 			}
 		}
-		
+
 		float CalcTotalExtentAndOffset<T>(IList<T> list, float effectiveCellSpacing) where T : DefinitionBase
 		{
 			var total = 0.0f;
@@ -809,22 +809,22 @@ namespace Fuse.Layouts
 			{
 				if (i > 0)
 					total += effectiveCellSpacing;
-					
+
 				var c = list[i];
 				c.ActualOffset = total;
 				total += c.ActualExtent;
 			}
-			
+
 			return total;
 		}
-		
+
 		float2 GetAutoSize( Visual child, int x0, int y0, bool expandX, bool expandY,
 			out bool knowX, out bool knowY,
 			out bool autoX, out bool autoY)
 		{
 			int xs = GetColumnSpan(child);
 			int ys = GetRowSpan(child);
-			
+
 			var sz = float2(0);
 			knowX = true;
 			knowY = true;
@@ -846,7 +846,7 @@ namespace Fuse.Layouts
 					else
 						sz.X += colData.ActualExtent;
 				}
-					
+
 				for( int y = y0; y < y0 + ys; y++ )
 				{
 					var rowData = GetRowData(y);
@@ -864,10 +864,10 @@ namespace Fuse.Layouts
 					}
 				}
 			}
-			
+
 			return sz;
 		}
-		
+
 		void CalcAuto(Visual container, ref float availableWidth, ref float availableHeight, bool secondPass,
 			bool hasFirstHorzSize, bool hasFirstVertSize,
 			bool expandWidth, bool expandHeight)
@@ -885,12 +885,12 @@ namespace Fuse.Layouts
 				var rowData = GetRowData(y);
 				if (rowData == null)
 					continue;
-					
+
 				var sizeMatch = (EffectiveMetric(rowData.Metric,expandHeight) == Metric.Proportion && !hasFirstVertSize)
 					|| (EffectiveMetric(colData.Metric,expandWidth) == Metric.Proportion && !hasFirstHorzSize);
 				if (sizeMatch != secondPass)
 					continue;
-				
+
 				bool knowX = false;
 				bool knowY = false;
 				bool autoX = false;
@@ -900,7 +900,7 @@ namespace Fuse.Layouts
 				if (!autoX && !autoY)
 					continue;
 				var clp = LayoutParams.CreateXY( knowSize,
-					knowX && !autoX,  
+					knowX && !autoX,
 					knowY && !autoY);
 				var cds = child.GetMarginSize(clp);
 
@@ -911,7 +911,7 @@ namespace Fuse.Layouts
 					colData.ActualExtent = w;
 					colData.HasActualExtent = true;
 				}
-				
+
 				if (autoY)
 				{
 					var h = Math.Max(rowData.ActualExtent, cds.Y);
@@ -920,17 +920,17 @@ namespace Fuse.Layouts
 					rowData.HasActualExtent = true;
 				}
 			}
-			
+
 			availableWidth = Math.Max(availableWidth, 0.0f);
 			availableHeight = Math.Max(availableHeight, 0.0f);
 		}
-		
+
 		float2 Measure(Visual container, LayoutParams lp)
 		{
 			var effectiveCellSpacing = EffectiveCellSpacing;
-			
+
 			CalcActualPositions(container);
-			
+
 			var fillHorizontal = lp.HasX;
 			var fillVertical = lp.HasY;
 			var lpAvail = lp.GetAvailableSize();
@@ -941,7 +941,7 @@ namespace Fuse.Layouts
 			//thus they are just taken from the layout fill properties
 			var expandWidth = fillHorizontal;
 			var expandHeight = fillVertical;
-			
+
 			// Reserve space for and measure cols/rows with absolute metrics and reset size for all others
 			bool hasAutoCol;
 			float usedWidth;
@@ -958,21 +958,21 @@ namespace Fuse.Layouts
 			//just one pass on children)
 			float widthProportion = GetTotalProportion(_columns, expandWidth);
 			float heightProportion = GetTotalProportion(_rows, expandHeight);
-			
+
 			bool hasFirstHorzSize = false;
 			if (!hasAutoCol && fillHorizontal)
-			{	
+			{
 				CalcFill(_columns, availableWidth, widthProportion, expandWidth);
 				hasFirstHorzSize = true;
 			}
-			
+
 			bool hasFirstVertSize = false;
 			if (!hasAutoRow && fillVertical)
-			{	
+			{
 				CalcFill(_rows, availableHeight, heightProportion, expandHeight);
 				hasFirstVertSize = true;
 			}
-			
+
 			// Measure cols/rows with auto metrics in both dimensions
 			CalcAuto(container, ref availableWidth, ref availableHeight, false, hasFirstHorzSize, hasFirstVertSize,
 				expandWidth, expandHeight);
@@ -980,10 +980,10 @@ namespace Fuse.Layouts
 			// do fill for axes not done before
 			if (fillHorizontal && !hasFirstHorzSize)
 				CalcFill(_columns, availableWidth, widthProportion, expandWidth);
-			
+
 			if (fillVertical && !hasFirstVertSize)
 				CalcFill(_rows, availableHeight, heightProportion, expandHeight);
-			
+
 			//measure again for auto cells that didn't get measured the first pass
 			CalcAuto(container, ref availableWidth, ref availableHeight, true, hasFirstHorzSize, hasFirstVertSize,
 				expandWidth, expandHeight);
@@ -995,7 +995,7 @@ namespace Fuse.Layouts
 			CheckMeasureSettings(lp.HasX, lp.HasY);
 			return float2(totalWidth, totalHeight);
 		}
-		
+
 		bool _checkMeasureWarning;
 		/*
 			Checks the limitations as noted on Metric.Default
@@ -1007,14 +1007,14 @@ namespace Fuse.Layouts
 				bad = true;
 			if (HasDefaultMetric(_columns) && !hasX && _columns.Count > 1)
 				bad = true;
-				
+
 			if (bad && !_checkMeasureWarning)
 			{
 				_checkMeasureWarning = true;
 				Fuse.Diagnostics.UserError( "A grid is using incompatible layout parameters which may result in incorrect layout. A grid using `Default` row or column sizing must have only one row or column, or have a known size. Add a `DefaultRow` or `DefaultColumn` to get the desired sizing.", this );
 			}
 		}
-		
+
 		bool HasDefaultMetric<T>( IList<T> list ) where T : DefinitionBase
 		{
 			for (int i=0; i < list.Count; ++i) {
@@ -1039,8 +1039,8 @@ namespace Fuse.Layouts
 				return ca;
 			}
 		}
-		
-		internal override void ArrangePaddingBox(Visual container, float4 padding, 
+
+		internal override void ArrangePaddingBox(Visual container, float4 padding,
 			LayoutParams lp)
 		{
 			var remainSize = lp.Size - padding.XY - padding.ZW;
@@ -1072,7 +1072,7 @@ namespace Fuse.Layouts
 					off.Y = lp.Y - measured.Y - padding.W;
 					break;
 			}
-			
+
 			var effectiveCellSpacing = EffectiveCellSpacing;
 			var nlp = lp.CloneAndDerive();
 			for (var child = container.FirstChild<Visual>(); child != null; child = child.NextSibling<Visual>())
@@ -1118,7 +1118,7 @@ namespace Fuse.Layouts
 				child.ArrangeMarginBox(off + float2(x, y), nlp);
 			}
 		}
-		
+
 		internal override LayoutDependent IsMarginBoxDependent( Visual child )
 		{
 			var c = GetColumnData( GetActualColumn(child) );
@@ -1129,7 +1129,7 @@ namespace Fuse.Layouts
 			if (c == null || r == null)
 				return LayoutDependent.No;
 
-			return EffectiveMetric(c.Metric,false) != Metric.Auto && 
+			return EffectiveMetric(c.Metric,false) != Metric.Auto &&
 				EffectiveMetric(r.Metric,false) != Metric.Auto ?
 				LayoutDependent.No : LayoutDependent.Yes;
 		}

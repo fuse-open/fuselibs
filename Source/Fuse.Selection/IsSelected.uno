@@ -8,7 +8,7 @@ namespace Fuse.Selection
 	[UXFunction("isSelected")]
 	/**
 		`true` while the @Selectable is currently selected.
-		
+
 		This expression attaches to the first @Selectable node that is an ancestory of the expression node. Optionally,  you may specify an argument to get a different selectable `isSelected( myPanel )`.
 	*/
 	public class IsSelectedFunction : VarArgFunction
@@ -16,12 +16,12 @@ namespace Fuse.Selection
 		[UXConstructor]
 		public IsSelectedFunction()
 		{ }
-		
+
  		public override string ToString()
  		{
  			return FormatString("isSelected");
  		}
-		
+
 		public override IDisposable Subscribe(IContext context, IListener listener)
 		{
 			if (Arguments.Count > 1)
@@ -29,12 +29,12 @@ namespace Fuse.Selection
 				Fuse.Diagnostics.UserError( "too many arguments for isSelected", this );
 				return null;
 			}
-			
+
 			var ins = new OuterSubscription(this, listener, context.Node );
 			ins.Init(context);
 			return ins;
 		}
-		
+
 		class OuterSubscription : Subscription, IPropertyListener
 		{
 			//static values
@@ -42,7 +42,7 @@ namespace Fuse.Selection
 			IListener _listener;
 			IExpression _node;
 			Node _from;
-			
+
 			//the actual object values for the function
 			Node _curFrom;
 			Selection _selection;
@@ -50,7 +50,7 @@ namespace Fuse.Selection
 
 			IDisposable _nodeSub;
 
-			public OuterSubscription( IsSelectedFunction expr, IListener listener, Node from ) : 
+			public OuterSubscription( IsSelectedFunction expr, IListener listener, Node from ) :
 				base( expr )
 			{
 				_from = from;
@@ -78,7 +78,7 @@ namespace Fuse.Selection
 				}
 				NewNode( node );
 			}
-			
+
 			Node _pendingNode;
 			void OnPendingRooted()
 			{
@@ -88,7 +88,7 @@ namespace Fuse.Selection
 				CleanPending();
 				NewNode( p );
 			}
-			
+
 			void CleanPending()
 			{
 				if (_pendingNode == null)
@@ -96,39 +96,39 @@ namespace Fuse.Selection
 				_pendingNode.RootingCompleted -= OnPendingRooted;
 				_pendingNode = null;
 			}
-			
+
 			void NewNode( Node from )
 			{
 				if (_curFrom == from)
 					return;
-					
+
 				CleanListener();
-				
+
 				_curFrom = from;
 				if (from == null)
 				{
 					_listener.OnLostData(_expr);
 					return;
 				}
-				
+
 				if (!Selection.TryFindSelectable(_curFrom, out _selectable, out _selection))
 				{
 					Fuse.Diagnostics.UserError( "Unable to locate a `Selectable` and `Selection`", _expr );
 					_listener.OnLostData(_expr);
 					return;
 				}
-			
+
 				_selection.SelectionChanged += OnSelectionChanged;
 				_selectable.AddPropertyListener(this);
 				PushNewValue();
 			}
-			
+
 			void PushNewValue()
 			{
 				if (_selection != null)
 					_listener.OnNewData(_expr, _selection.IsSelected(_selectable));
 			}
-			
+
 			void CleanListener()
 			{
 				if (_selection == null)
@@ -138,20 +138,20 @@ namespace Fuse.Selection
 				_selection = null;
 				_selectable = null;
 			}
-			
+
 			public override void Dispose()
 			{
 				base.Dispose();
 				CleanPending();
 				CleanListener();
 			}
-			
+
 			void IPropertyListener.OnPropertyChanged(PropertyObject obj, Selector prop)
 			{
 				if (obj == _selectable)
 					PushNewValue();
 			}
-		
+
 			void OnSelectionChanged(object s, object args)
 			{
 				PushNewValue();

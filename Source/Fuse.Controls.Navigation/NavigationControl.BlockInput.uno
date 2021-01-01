@@ -9,13 +9,13 @@ namespace Fuse.Controls
 		/** Input is blocked during navigation -- when `WhileNavigating` would be active */
 		WhileNavigating,
 	}
-	
+
 	public abstract partial class NavigationControl
 	{
 		NavigationControlBlockInput _blockInput = NavigationControlBlockInput.WhileNavigating;
 		/**
 			Whether or not input to block input to the pages during navigation.
-			
+
 			The default is `WhileNavigating`: the pages will not get any pointer input during navigation.
 		*/
 		public NavigationControlBlockInput BlockInput
@@ -25,7 +25,7 @@ namespace Fuse.Controls
 			{
 				if (_blockInput == value)
 					return;
-					
+
 				_blockInput = value;
 				if (IsRootingCompleted)
 					UpdateBlockInput();
@@ -37,12 +37,12 @@ namespace Fuse.Controls
 		{
 			UpdateBlockInput();
 		}
-		
+
 		void BlockInputUnrooted()
 		{
 			DisableBlockInput();
 		}
-		
+
 		void UpdateBlockInput()
 		{
 			if (_blockInput == NavigationControlBlockInput.Never)
@@ -50,7 +50,7 @@ namespace Fuse.Controls
 			else
 				EnableBlockInput();
 		}
-			
+
 		void DisableBlockInput()
 		{
 			if (_blockInputTrigger != null)
@@ -59,7 +59,7 @@ namespace Fuse.Controls
 				_blockInputTrigger = null;
 			}
 		}
-		
+
 		void EnableBlockInput()
 		{
 			if (_blockInputTrigger == null)

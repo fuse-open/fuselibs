@@ -6,9 +6,9 @@ using System;
 namespace Fuse.Triggers.Actions
 {
 	/** Log a message, which is useful for debugging
-		
+
 		## Example
-			
+
 			<StackPanel Margin="20">
 				<Button Margin="10" Text="Log 'Hello World!'">
 					<Clicked>
@@ -37,14 +37,14 @@ namespace Fuse.Triggers.Actions
 		{
 			if defined(DEBUG)
 			{
-				if (Message!=null)
-					Uno.Diagnostics.Debug.Log(Message);
+				if (Message != null)
+					Uno.Diagnostics.Log.Debug(Message);
 
 				if (_props != null)
 				{
 					foreach (ITaggedDebugProperty prop in _props)
 					{
-						Uno.Diagnostics.Debug.Log(prop.GetTag() + " = " + prop.GetStringValue());
+						Uno.Diagnostics.Log.Debug(prop.GetTag() + " = " + prop.GetStringValue());
 					}
 				}
 			}

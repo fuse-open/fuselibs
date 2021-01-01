@@ -28,8 +28,8 @@ namespace Fuse.Drawing
 		"android.graphics.PorterDuffXfermode",
 		"android.graphics.Matrix",
 		"android.graphics.PorterDuff.Mode",
-		"com.fusetools.drawing.surface.LinearGradientStore",
-		"com.fusetools.drawing.surface.GraphicsSurfaceContext"
+		"com.fuse.drawing.surface.LinearGradientStore",
+		"com.fuse.drawing.surface.GraphicsSurfaceContext"
 	)]
 	[ForeignInclude(Language.Java,
 		"java.nio.ByteBuffer",
@@ -114,43 +114,6 @@ namespace Fuse.Drawing
 
 			GLUtils.texImage2D(GLES20.GL_TEXTURE_2D, 0, realContext.bitmap, 0);
 			realContext.bitmap.recycle();
-		@}
-
-		/*
-			This approach is really bad now. When Erik refactors ImageSource we shouldn't
-			need to do the round-trip to GL.
-			We might end up not supporting ImageFill until this is fixed, but this is useful
-			here now to complete/test the sizing/tiling support.
-		*/
-		protected sealed override Java.Object PrepareImageFillImpl( ImageFill img )
-		{
-			var src = img.Source;
-			var tex = src.GetTexture();
-			var fb = FramebufferPool.Lock( src.PixelSize, Uno.Graphics.Format.RGBA8888, false );
-
-			_drawContext.PushRenderTarget(fb);
-			Blitter.Singleton.Blit(tex, new Rect(float2(-1), float2(2)), float4x4.Identity, 1.0f, true);
-			Java.Object imageRef = LoadImage((int)tex.GLTextureHandle, src.PixelSize.X, src.PixelSize.Y );
-			FramebufferPool.Release(fb);
-			_drawContext.PopRenderTarget();
-
-			return imageRef;
-		}
-
-		[Foreign(Language.Java)]
-		static Java.Object LoadImage(int glTextureId, int width, int height)
-		@{
-			int size = width * height * 4;
-			int[] pixels = new int[size];
-
-			IntBuffer pixelData = IntBuffer.wrap(pixels);
-			GLES20.glPixelStorei(GLES20.GL_PACK_ALIGNMENT, 1);
-			GLES20.glReadPixels(0, 0, width,height, GLES20.GL_RGBA, GLES20.GL_UNSIGNED_BYTE, pixelData);
-
-			Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-			bitmap.copyPixelsFromBuffer(pixelData);
-
-			return bitmap;
 		@}
 
 		protected sealed override void VerifyBegun()

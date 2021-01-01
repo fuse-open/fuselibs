@@ -1,22 +1,22 @@
 <Panel ux:Class="UX.Router.Modify">
 	<Router ux:Name="router" IsMasterRouter="false"/>
 	<JavaScript>
-		module.exports.goA = function() { 
+		module.exports.goA = function() {
 			router.modify({
 				how: "Push",
 				path: [ "P2", {}, "P3", {} ],
 			})
 		}
-		
-		module.exports.goB = function() { 
+
+		module.exports.goB = function() {
 			router.modify({
 				how: "Replace",
 				path: [ "P4", {} ],
 				relative: C2,
 			})
 		}
-		
-		module.exports.goC = function() { 
+
+		module.exports.goC = function() {
 			router.modify({
 				how: "Goto",
 				path: [ "P1" ],
@@ -27,7 +27,7 @@
 	<FuseTest.Invoke Handler="{goA}" ux:Name="GoA"/>
 	<FuseTest.Invoke Handler="{goB}" ux:Name="GoB"/>
 	<FuseTest.Invoke Handler="{goC}" ux:Name="GoC"/>
-	
+
 	<PageControl ux:Name="C1">
 		<Page ux:Name="P1"/>
 		<Page ux:Name="P2">

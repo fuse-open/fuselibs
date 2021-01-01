@@ -39,7 +39,7 @@ namespace Fuse.Test
 				DeferredManager.TestTimeLimit = prevTestTimeLimit;
 			}
 		}
-		
+
 		[Test]
 		public void Busy()
 		{
@@ -51,7 +51,7 @@ namespace Fuse.Test
 				Assert.AreEqual("1", GetText(p));
 			}
 		}
-		
+
 		string GetText(Visual root)
 		{
 			string t = "";
@@ -63,7 +63,7 @@ namespace Fuse.Test
 			}
 			return t;
 		}
-		
+
 		[Test]
 		//https://github.com/fusetools/fuselibs-private/issues/2806
 		public void Unroot()
@@ -75,7 +75,7 @@ namespace Fuse.Test
 				Assert.AreEqual(6, p.Children.Count);
 			}
 		}
-		
+
 		[Test]
 		public void Each()
 		{
@@ -106,7 +106,7 @@ namespace Fuse.Test
 				Assert.AreEqual( "0243", GetText(p));
 			}
 		}
-		
+
 		[Test]
 		public void Match()
 		{

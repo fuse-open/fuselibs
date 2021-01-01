@@ -156,14 +156,14 @@ namespace Fuse.Controls
 						.catch(function(error) { });
 				</JavaScript>
 		*/
-		static Future<Nothing> setCameraFocusPoint(Context context, CameraViewBase self, object[] args) 
+		static Future<Nothing> setCameraFocusPoint(Context context, CameraViewBase self, object[] args)
 		{
 			if (args.Length != 5)
 				return new Promise<Nothing>().RejectWithMessage("Arguments for CameraFocusPoint must be provided");
 
-			return self.SetCameraFocusPoint( 
-				Marshal.ToDouble(args[0]), Marshal.ToDouble(args[1]), 
-				Marshal.ToInt(args[2]), Marshal.ToInt(args[3]), Marshal.ToInt(args[4]) 
+			return self.SetCameraFocusPoint(
+				Marshal.ToDouble(args[0]), Marshal.ToDouble(args[1]),
+				Marshal.ToInt(args[2]), Marshal.ToInt(args[3]), Marshal.ToInt(args[4])
 			);
 		}
 

@@ -1,5 +1,5 @@
 version: '{build}'
-image: Visual Studio 2017
+image: Visual Studio 2019
 
 environment:
   LOG_TRACE: 1
@@ -9,11 +9,11 @@ environment:
 install:
   - npm install
   - npm install android-build-tools -g
-  - ps: Invoke-WebRequest https://www.nuget.org/api/v2/package/mesa3d-x64/18.3.4 -OutFile mesa.zip
-  - ps: Expand-Archive mesa.zip mesa
 
 build_script:
   - npm pack --silent
+  # Check that doc-export works
+  - npm run doc-export
   # Build for Android
   - uno build android Tests/ManualTests/ManualTestingApp/ManualTestingApp.unoproj
   # Build for Windows
@@ -21,14 +21,6 @@ build_script:
 
 artifacts:
   - path: '*.tgz'
-
-before_test:
-  - ps: |
-      Get-ChildItem -Path Source -Recurse -Include *Test.unoproj | Select-Object -ExpandProperty DirectoryName | Foreach-Object {
-        $buildDir = Join-Path $_ build\Test\DotNet
-        New-Item -Force -ItemType directory -Path $buildDir | Out-Null
-        Copy-Item -Path mesa\opengl32.dll -Destination (Join-Path $buildDir opengl32.dll)
-      }
 
 test_script:
   - npm run test

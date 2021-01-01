@@ -10,14 +10,14 @@ namespace Fuse.Controls
 		Setting the rectangle's `Color` property gives it a solid color fill:
 
 			<Rectangle Color="Blue" Width="100" Height="100" />
-		
-		Rectangles can have an arbitrary number of @Fills and @Strokes. Fills are of 
+
+		Rectangles can have an arbitrary number of @Fills and @Strokes. Fills are of
 		type @Brush, and can be specified as tags inside the rectangle.
 
-		> Note that by default, a Rectangle has no fills or strokes, making it 
-		> invisible unless you provide some or specify something. 
+		> Note that by default, a Rectangle has no fills or strokes, making it
+		> invisible unless you provide some or specify something.
 
-		## Example		
+		## Example
 
 		    <Grid Alignment="Center" Rows="100,100,100" Columns="100">
 				<Rectangle Margin="10" CornerRadius="4">
@@ -38,7 +38,7 @@ namespace Fuse.Controls
 	public partial class Rectangle : Shape
 	{
 		float4 _cornerRadius;
-		/** The size of the rounded corner, in points. 
+		/** The size of the rounded corner, in points.
 
 			By default, rectangles have sharp corners.
 
@@ -50,7 +50,7 @@ namespace Fuse.Controls
 			get { return _cornerRadius; }
 			set { SetCornerRadius(value, this); }
 		}
-		
+
 		/**
 			Limits the corner radius to half the size provided (usually the ActualSize).
 		*/
@@ -62,12 +62,12 @@ namespace Fuse.Controls
 				useCornerRadius[i] = Math.Clamp(useCornerRadius[i],0,mn);
 			return useCornerRadius;
 		}
-		
+
 		float4 ConstrainedCornerRadius
 		{
 			get { return GetConstrainedCornerRadius(ActualSize); }
 		}
-		
+
 		public static readonly Selector CornerRadiusPropertyName = "CornerRadius";
 		public void SetCornerRadius(float4 value, IPropertyListener origin)
 		{
@@ -79,5 +79,5 @@ namespace Fuse.Controls
 			}
 		}
 	}
-	
+
 }

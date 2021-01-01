@@ -6,9 +6,9 @@
 	<Timeline ux:Name="set">
 		<Set a.Value="{= 4 }"/>
 	</Timeline>
-	
+
 	<Let ux:Name="b" Expression="7"/>
 	<FuseTest.DudElement Value="{Property b.Value}" ux:Name="f"/>
 	<FuseTest.DudElement Value="{b}" ux:Name="g"/>
-	
+
 </Panel>

@@ -10,7 +10,7 @@ Unlike the `EnteringAnimation` and `ExitingAnimation` triggers, `Transition` all
 			<Move Y="1" RelativeTo="ParentSize" Duration="1"/>
 		</Transition>
 	</Page>
-	
+
 This page has a special transition if navigating to the `Contacts` page. In this case it will slide the page to the left. All other transitions away from this page will slide down.
 
 # To / From
@@ -45,7 +45,7 @@ With certain combinations of properties this may at first seem odd, for example:
 	<Transition Direction="ToActive">
 		<Move X="100" Duration="1"/>
 	</Transition>
-	
+
 This `Transition` is only selected when the page is becoming the active one. The animation will start at `X=100` and move towards `X=0` over a duration of `1`.
 
 The final state of any active page is always with all transitions deactivated.

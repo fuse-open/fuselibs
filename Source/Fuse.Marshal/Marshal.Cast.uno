@@ -14,7 +14,7 @@ namespace Fuse
 		public static bool ToBool(object v)
 		{
 			if (v is bool) return (bool)v;
-			else if (v is string) 
+			else if (v is string)
 			{
 				var s = (string)v;
 				if (s == "true") return true;
@@ -32,15 +32,6 @@ namespace Fuse
 			throw new MarshalException(v, typeof(double));
 		}
 
-		/**
-			@deprecated Name kept for compatibility, use `TryToDouble` instead 2017-10-19
-		*/
-		[Obsolete]
-		public static bool ToDouble(object v, out double res)
-		{
-			return TryToDouble( v, out res );
-		}
-		
 		public static bool TryToDouble( object v, out double res )
 		{
 			if (v is double) { res = (double)v; return true; }
@@ -51,12 +42,12 @@ namespace Fuse
 			else if (v is float3) { res = ((float3)v).X; return true; }
 			else if (v is float4) { res = ((float4)v).X; return true; }
 			else if (v is Size) { res = ((Size)v).Value; return true; }
-			else if (v is Size2) 
-			{ 
+			else if (v is Size2)
+			{
 				var s = (Size2)v;
 				var x = s.X;
-				res = x.Value; 
-				return true; 
+				res = x.Value;
+				return true;
 			}
 			else if (v is uint) { res = (double)(uint)v; return true; }
 			else if (v is short) { res = (double)(short)v; return true; }
@@ -67,7 +58,7 @@ namespace Fuse
 			res = default(double);
 			return false;
 		}
-		
+
 		public static bool TryToFloat( object v, out float res )
 		{
 			double d;
@@ -76,20 +67,11 @@ namespace Fuse
 				res = default(float);
 				return false;
 			}
-			
+
 			res = (float)d;
 			return true;
 		}
 
-		/**
-			@deprecated use `TryToDouble` instead 2017-10-19
-		*/
-		[Obsolete]
-		public static bool ToDouble(string s, out double res)
-		{
-			return double.TryParse(s, out res);
-		}
-		
 		public static bool TryToDouble(string s, out double res)
 		{
 			return double.TryParse(s, out res);
@@ -166,27 +148,27 @@ namespace Fuse
 
 			throw new MarshalException(o, typeof(float4));
 		}
-		
+
 		/**
 			Converts a value to a float4. Unlike `ToFloat4` this will zero extend the missing components.
-			
+
 			@return true if converted successfully, false if no suitable conversion exists. `null` cannot be converted and will return false;
 			@param value the result value (0 padded as necessary)
 			@param size the size of the result
-			
+
 		*/
 		public static bool TryToZeroFloat4(object o, out float4 value, out int size)
 		{
 			value = float4(0);
 			size = 0;
-			
-			if (o is float4) 
+
+			if (o is float4)
 			{
 				value = (float4)o;
 				size = 4;
 				return true;
 			}
-			
+
 			if (o is float3)
 			{
 				var f = (float3)o;
@@ -194,7 +176,7 @@ namespace Fuse
 				size = 3;
 				return true;
 			}
-			
+
 			if (o is float2)
 			{
 				var f = (float2)o;
@@ -202,7 +184,7 @@ namespace Fuse
 				size = 2;
 				return true;
 			}
-			
+
 			if (o is string)
 			{
 				var s = (string)o;
@@ -226,7 +208,7 @@ namespace Fuse
 					(a.Length > 2 && !TryToFloat( a[2], out z )) ||
 					(a.Length > 3 && !TryToFloat( a[3], out w )))
 					return false;
-					
+
 				value = float4(x,y,z,w);
 				size = a.Length;
 				return true;
@@ -243,10 +225,10 @@ namespace Fuse
 
 			return false;
 		}
-		
+
 		/**
 			Converts a float3, float4 or equivalently convertible type to a float4. This  uses color conversion rules: it sets the alpha component to 1 if not specified.
-			
+
 			@return true if converted successfully, false if no suitable conversion exists. `null` cannot be converted and will return false;
 			@param value the result value
 		*/
@@ -258,10 +240,10 @@ namespace Fuse
 				return false;
 			if (size != 4 && size !=3)
 				return false;
-				
+
 			if (size == 3)
 				value[3] = 1;
-				
+
 			return true;
 		}
 
@@ -326,24 +308,24 @@ namespace Fuse
 				throw new MarshalException(o, typeof(Size));
 			return a;
 		}
-			
+
 		public static bool TryToSize(object o, out Size result)
 		{
 			result = new Size();
-			
-			if (o is Size) 
+
+			if (o is Size)
 			{
 				result = (Size)o;
 				return true;
 			}
-			if (o is Size2) 
+			if (o is Size2)
 			{
 				result = ((Size2)o).X;
 				return true;
 			}
 			if (o is string)
 				return TryStringToSize((string)o, out result);
-				
+
 			float v;
 			if (!TryToFloat(o, out v))
 				return false;
@@ -358,20 +340,20 @@ namespace Fuse
 				throw new MarshalException(o, typeof(Size2));
 			return a;
 		}
-		
+
 		public static bool TryToSize2(object o, out Size2 result)
 		{
 			int ignore;
 			return TryToSize2(o, out result, out ignore);
 		}
-		
+
 		/** Convert to a Size type up to Size2 returning the count of the elements provided in the input. */
 		public static bool TryToSize2(object o, out Size2 result, out int count)
 		{
 			result = new Size2();
 			count = 0;
-			
-			if (o is Size2) 
+
+			if (o is Size2)
 			{
 				result = (Size2) o;
 				count = 2;
@@ -383,9 +365,9 @@ namespace Fuse
 				count = 1;
 				return true;
 			}
-			if (o is string) 
+			if (o is string)
 				return TryStringToSize2((string)o, out result, out count);
-			
+
 			if (o is IArray)
 			{
 				var arr = (IArray)o;
@@ -395,12 +377,12 @@ namespace Fuse
 				Size b = new Size();
 				if (!TryToSize(arr[0], out a) || !TryToSize(arr[1], out b))
 					return false;
-					
+
 				result = new Size2(a,b);
 				count = 2;
 				return true;
 			}
-			
+
 			float4 v;
 			int vc;
 			//ideally we'd also fail if `vc > 2`, but there's a strange check in `MarshalTest.TestVector` expecting long values to convert to Size/Size2 !
@@ -418,13 +400,13 @@ namespace Fuse
 		{
 			result = new Size2();
 			count = 0;
-			
+
 			if (o.Contains(","))
 			{
 				var p = o.Split(',');
 				if (p.Length !=2)
 					return false;
-					
+
 				Size a = new Size();
 				Size b = new Size();
 				if (!TryStringToSize(p[0], out a) ||
@@ -452,7 +434,7 @@ namespace Fuse
 			if (s.EndsWith("%")) { unit = Unit.Percent; s = s.Substring(0, s.Length-1); }
 			else if (s.EndsWith("pt")) { unit = Unit.Points; s = s.Substring(0, s.Length-2); }
 			else if (s.EndsWith("px")) { unit = Unit.Pixels; s = s.Substring(0, s.Length-2); }
-			
+
 			float v;
 			if (!float.TryParse(s, out v))
 			{

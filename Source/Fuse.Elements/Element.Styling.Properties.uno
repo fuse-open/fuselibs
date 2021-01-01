@@ -25,11 +25,11 @@ namespace Fuse.Elements
 		static Selector _opacityName = "Opacity";
 
 		[UXOriginSetter("SetOpacity")]
-		/** 
-			The opacity of the element. 
-			
+		/**
+			The opacity of the element.
+
 			When `0`, the element will be completely transparent, yet will still be considered for hit testing (it and it's children are still actually part of the UI). To make an element invisble without hit testing set `Visibility="Hidden"`
-			
+
 			@see @Element.Visibility
 		*/
 		public float Opacity

@@ -21,28 +21,28 @@ namespace Fuse.Reactive.Test
 				Assert.AreEqual( "nope", p.b.ObjectValue );
 				Assert.AreEqual( "nope", p.c.ObjectValue );
 				Assert.AreEqual( "nope", p.d.ObjectValue );
-				
+
 				p.strct.Value = p.strctData1.Value;
 				root.PumpDeferred();
 				Assert.AreEqual( "nope", p.a.ObjectValue );
 				Assert.AreEqual( "nope", p.b.ObjectValue );
 				Assert.AreEqual( "nope", p.c.ObjectValue );
 				Assert.AreEqual( "xy*", p.d.ObjectValue );
-				
+
 				p.strct.Value = p.strctData2.Value;
 				root.PumpDeferred();
 				Assert.AreEqual( "nope", p.a.ObjectValue );
 				Assert.AreEqual( "nope", p.b.ObjectValue );
 				Assert.AreEqual( "x*z", p.c.ObjectValue );
 				Assert.AreEqual( "nope", p.d.ObjectValue );
-				
+
 				p.strct.Value = p.strctData3.Value;
 				root.PumpDeferred();
 				Assert.AreEqual( "nope", p.a.ObjectValue );
 				Assert.AreEqual( "*yz", p.b.ObjectValue );
 				Assert.AreEqual( "nope", p.c.ObjectValue );
 				Assert.AreEqual( "nope", p.d.ObjectValue );
-				
+
 				p.strct.Value = p.strctData4.Value;
 				root.PumpDeferred();
 				Assert.AreEqual( "xyz", p.a.ObjectValue );
@@ -51,7 +51,7 @@ namespace Fuse.Reactive.Test
 				Assert.AreEqual( "xyz", p.d.ObjectValue );
 			}
 		}
-		
+
 		[Test]
 		public void Error()
 		{
@@ -60,16 +60,16 @@ namespace Fuse.Reactive.Test
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
 				Assert.IsFalse( p.iq.BoolValue );
-				
+
 				p.c.Value = 'a';
 				root.PumpDeferred();
-				
+
 				var d = dg.DequeueAll();
 				Assert.IsTrue( d.Count == 1 || d.Count == 2 ); //TODO: there is a double OnNewData somewhere, not relevant to this feature though!
 				Assert.Contains( "Failed to compute", d[0].Message );
 
 				Assert.IsFalse( p.iq.BoolValue );
-				
+
 				p.c.Value = 0.5;
 				root.PumpDeferred();
 				Assert.IsTrue( p.iq.BoolValue );
@@ -77,7 +77,7 @@ namespace Fuse.Reactive.Test
 			}
 		}
 	}
-	
+
 	[UXFunction("_terJoin")]
 	class TerJoin : TernaryOperator
 	{
@@ -86,12 +86,12 @@ namespace Fuse.Reactive.Test
 			[UXParameter("Third")] Expression third)
 			: base(first, second, third, Flags.None)
 		{}
-			
+
 		protected TerJoin([UXParameter("First")] Expression first, [UXParameter("Second")] Expression second,
 			[UXParameter("Third")] Expression third, Flags flags)
 			: base(first, second, third, flags)
 		{}
-		
+
 		protected override bool TryCompute(object first, object second, object third, out object result)
 		{
 			result = (first == null ? "*" : first.ToString()) +
@@ -100,7 +100,7 @@ namespace Fuse.Reactive.Test
 			return true;
 		}
 	}
-	
+
 	[UXFunction("_terJoin1")]
 	class TerJoin1 : TerJoin
 	{
@@ -110,7 +110,7 @@ namespace Fuse.Reactive.Test
 			: base(first, second, third, Flags.Optional0)
 		{}
 	}
-	
+
 	[UXFunction("_terJoin2")]
 	class TerJoin2 : TerJoin
 	{
@@ -120,7 +120,7 @@ namespace Fuse.Reactive.Test
 			: base(first, second, third, Flags.Optional1)
 		{}
 	}
-	
+
 	[UXFunction("_terJoin3")]
 	class TerJoin3 : TerJoin
 	{
@@ -130,5 +130,5 @@ namespace Fuse.Reactive.Test
 			: base(first, second, third, Flags.Optional2)
 		{}
 	}
-	
+
 }

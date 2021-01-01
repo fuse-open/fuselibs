@@ -17,11 +17,11 @@ namespace Fuse.Triggers.Test
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
 				Assert.IsFalse(p.v.Value);
-				
+
 				p.t2.Pulse();
 				root.PumpDeferred();
 				Assert.IsTrue(p.v.Value);
-				
+
 				p.t1.Pulse();
 				root.PumpDeferred();
 				Assert.IsFalse(p.v.Value);

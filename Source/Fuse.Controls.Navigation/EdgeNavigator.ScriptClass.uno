@@ -16,17 +16,17 @@ namespace Fuse.Controls
 
 		/**
 			Closes any open edge panels.
-			
+
 			@scriptmethod dismiss()
 		*/
 		static void dismiss(EdgeNavigator e)
 		{
 			e.Dismiss();
 		}
-		
+
 		/**
 			Opens an edge panel.
-			
+
 			@scriptmethod open(edge)
 			@param edge The enum name of the edge to open @Fuse.Navigation.NavigationEdge
 		*/
@@ -37,10 +37,10 @@ namespace Fuse.Controls
 				Fuse.Diagnostics.UserError( "EdgeNaviagator.open requires 1 parameter (edge)", e );
 				return;
 			}
-			
+
 			var edge = Marshal.ToType<Fuse.Navigation.NavigationEdge>(args[0]);
 			e.GotoEdge(edge);
 		}
-		
+
 	}
 }

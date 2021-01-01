@@ -53,7 +53,7 @@ namespace FuseTest
 
 			TestVerticalAlignment(elm, Alignment.Default);
 			ResetElementProperties(elm);
-			
+
 			TestVerticalAlignment(elm, Alignment.HorizontalCenter);
 			ResetElementProperties(elm);
 
@@ -87,11 +87,11 @@ namespace FuseTest
 		{
 
 			elm.Alignment = Alignment.Center;
-			
+
 			elm.MinWidth = 100;
 			elm.SnapToPixels = false;
 			elm.ArrangeMarginBox(float2(0),LayoutParams.Create(float2(1000f)));
-			
+
 			Assert.AreEqual(100, elm.ActualSize.X);
 		}
 
@@ -286,7 +286,7 @@ namespace FuseTest
 			elm.Height = 200;
 			elm.Margin = margin;
 			elm.SnapToPixels = false;
-			
+
 			elm.Alignment = align;
 
 			elm.ArrangeMarginBox(float2(0f), LayoutParams.Create(float2(1000f)));

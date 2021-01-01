@@ -1,6 +1,7 @@
 using Uno;
 using Uno.UX;
 using Uno.Collections;
+using Uno.Compiler.ExportTargetInterop;
 
 using Fuse;
 using Fuse.Controls;
@@ -90,6 +91,9 @@ namespace Fuse.Controls
 
 				if (_rectangleTranslation != null)
 					_rectangleTranslation.XY = Offset;
+
+				if (_elementParent != null && _elementParent.ViewHandle != null)
+					DecorateNativeShadow(Color, Size, Offset);
 			}
 		}
 
@@ -107,6 +111,9 @@ namespace Fuse.Controls
 
 				if (_rectangleTranslation != null)
 					_rectangleTranslation.XY = Offset;
+
+				if (_elementParent != null && _elementParent.ViewHandle != null)
+					DecorateNativeShadow(Color, Size, Offset);
 			}
 		}
 
@@ -133,6 +140,9 @@ namespace Fuse.Controls
 
 				if (_dropShadow != null)
 					_dropShadow.Size = _size;
+
+				if (_elementParent != null && _elementParent.ViewHandle != null)
+					DecorateNativeShadow(Color, Size, Offset);
 			}
 		}
 
@@ -140,7 +150,7 @@ namespace Fuse.Controls
 		/**
 			The color of the drop shadow.
 
-		 	For more information on what notations Color supports, check out [this subpage](articles:ux-markup/literals#colors).
+			For more information on what notations Color supports, check out [this subpage](articles:ux-markup/literals#colors).
 		*/
 		public float4 Color
 		{
@@ -154,6 +164,9 @@ namespace Fuse.Controls
 
 				if (_dropShadow != null)
 					_dropShadow.Color = _color;
+
+				if (_elementParent != null && _elementParent.ViewHandle != null)
+					DecorateNativeShadow(Color, Size, Offset);
 			}
 		}
 
@@ -221,6 +234,82 @@ namespace Fuse.Controls
 			}
 		}
 
+		void AddNativeDecoration()
+		{
+			DecorateNativeShadow(Color, Size, Offset);
+		}
+
+		void DecorateNativeShadow(float4 color, float size, float2 offset)
+		{
+			if defined(iOS)
+				AddDecorationInternalIOS(_elementParent.ViewHandle.NativeHandle, color, size, offset);
+			if defined(Android)
+				AddDecorationInternalAndroid(_elementParent.ViewHandle.NativeHandle, (int)Uno.Color.ToArgb(color), size, offset.X, offset.Y);
+		}
+
+		[Foreign(Language.ObjC)]
+		static extern (iOS) void AddDecorationInternalIOS(ObjC.Object viewHandle, float4 color, float size, float2 offset)
+		@{
+			UIView * view = (UIView *)viewHandle;
+			view.layer.masksToBounds = NO;
+			view.layer.shadowColor = [UIColor colorWithRed:color.X green:color.Y blue:color.Z alpha:color.W].CGColor;
+			view.layer.shadowOpacity = 1.0;
+			view.layer.shadowRadius = size;
+			view.layer.shadowOffset = CGSizeMake(offset.X, offset.Y);
+		@}
+
+		[Foreign(Language.Java)]
+		static extern (Android) void AddDecorationInternalAndroid(Java.Object viewHandle, int color, float size, float offsetX, float offsetY)
+		@{
+			android.view.View view = (android.view.View)viewHandle;
+			android.view.ViewGroup parentView = (android.view.ViewGroup)view.getParent();
+			if (parentView != null)
+				parentView.setClipToPadding(false);
+			float scale = com.fuse.Activity.getRootActivity().getResources().getDisplayMetrics().density;
+			float elevationSize = (size * scale + 0.5f);
+			view.setOutlineProvider(android.view.ViewOutlineProvider.PADDED_BOUNDS);
+			view.setElevation(elevationSize);
+			view.setTranslationX(offsetX);
+			view.setTranslationY(offsetY);
+			if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
+				view.setOutlineAmbientShadowColor(color);
+				view.setOutlineSpotShadowColor(color);
+			}
+		@}
+
+		void RemoveNativeDecoration()
+		{
+			if defined(MOBILE)
+			{
+				var viewhandle = _elementParent.ViewHandle;
+				RemoveDecorationInternal(viewhandle.NativeHandle);
+			}
+		}
+
+		[Foreign(Language.ObjC)]
+		static extern(iOS) void RemoveDecorationInternal(ObjC.Object viewHandle)
+		@{
+			UIView * view = (UIView *)viewHandle;
+			view.layer.sublayers = nil;
+		@}
+
+		[Foreign(Language.Java)]
+		static extern(Android) void RemoveDecorationInternal(Java.Object viewHandle)
+		@{
+			android.view.View view = (android.view.View)viewHandle;
+			android.view.ViewGroup parentView = (android.view.ViewGroup)view.getParent();
+			if (parentView != null)
+				parentView.setClipToPadding(true);
+			view.setOutlineProvider(android.view.ViewOutlineProvider.BACKGROUND);
+			view.setElevation(0);
+			view.setTranslationX(0);
+			view.setTranslationY(0);
+			if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
+				view.setOutlineAmbientShadowColor(android.graphics.Color.TRANSPARENT);
+				view.setOutlineSpotShadowColor(android.graphics.Color.TRANSPARENT);
+			}
+		@}
+
 		protected override void OnRooted()
 		{
 			base.OnRooted();
@@ -229,12 +318,18 @@ namespace Fuse.Controls
 			if (_elementParent == null)
 				throw new Exception("Invalid parent for Effect: " + Parent);
 
-			AddDecoration();
+			if (_elementParent.ViewHandle != null)
+				AddNativeDecoration();
+			else
+				AddDecoration();
 		}
 
 		protected override void OnUnrooted()
 		{
-			RemoveDecoration();
+			if (_elementParent.ViewHandle != null)
+				RemoveNativeDecoration();
+			else
+				RemoveDecoration();
 			_elementParent = null;
 			base.OnUnrooted();
 		}

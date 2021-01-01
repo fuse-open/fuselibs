@@ -2,16 +2,16 @@
 	<Panel ux:Class="LPPanel">
 		<float2 ux:Property="F2"/>
 		<string ux:Property="S"/>
-		
+
 		<LetFloat2 Value="{Property this.F2}" ux:Name="f2"/>
 		<LetString Value="{Property this.S}" ux:Name="s"/>
-		
+
 		<TextInput Value="{s}" ux:Name="sc"/>
 		<RangeControl2D Value="{f2}" ux:Name="rc"/>
 	</Panel>
 
 	<LetFloat2 Value="10,20" ux:Name="sf2"/>
 	<LetString Value="title" ux:Name="ss"/>
-	
+
 	<LPPanel F2="{sf2}" S="{ss}" ux:Name="lp"/>
 </Panel>

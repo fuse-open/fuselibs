@@ -38,7 +38,7 @@ namespace Fuse.Elements
 			//stop propagation to parent if already dirty
 			if (_renderBoundsWithEffects == null && _renderBoundsWithoutEffects == null)
 				return true;
-				
+
 			_renderBoundsWithoutEffects = null;
 			OnInvalidateRenderBoundsWithEffects();
 
@@ -71,7 +71,7 @@ namespace Fuse.Elements
 			_renderBoundsWithEffects = null;
 		}
 
-		
+
 		public void InvalidateRenderBoundsWithEffects()
 		{
 			OnInvalidateRenderBoundsWithEffects();

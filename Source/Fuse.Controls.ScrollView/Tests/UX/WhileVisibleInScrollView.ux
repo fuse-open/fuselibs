@@ -10,7 +10,7 @@
 			<Nothing/>
 		</WhileVisibleInScrollView>
 	</Panel>
-	
+
 	<ScrollView ux:Name="S">
 		<StackPanel>
 			<WISV ux:Name="W1"/>

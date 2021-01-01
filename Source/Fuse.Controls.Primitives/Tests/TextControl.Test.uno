@@ -21,7 +21,7 @@ namespace Fuse.Controls.Primitives.Test
 
 			Assert.AreEqual("", tc.Value);
 		}
-		
+
 		[Test]
 		[Ignore("https://github.com/fuse-open/fuselibs/issues/671", "Android || iOS")]
 		public void TextInputBinding()
@@ -32,7 +32,7 @@ namespace Fuse.Controls.Primitives.Test
 				root.StepFrameJS();
 				Assert.AreEqual("one", p.T1.Value);
 				Assert.AreEqual("one", p.T2.Value);
-				
+
 				p.T1.Value = "two";
 				root.StepFrameJS();
 				Assert.AreEqual("two", p.T1.Value);

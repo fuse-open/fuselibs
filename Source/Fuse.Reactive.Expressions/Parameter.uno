@@ -16,13 +16,13 @@ namespace Fuse.Reactive
 	public sealed class Parameter: Expression
 	{
 		Expression Visual;
-		
+
 		[UXConstructor]
 		public Parameter([UXParameter("Operand")] Fuse.Reactive.Expression visual)
 		{
 			Visual = visual;
 		}
-		
+
 		public override IDisposable Subscribe(IContext context, IListener listener)
 		{
 			return new Subscription(this, context, listener);
@@ -33,7 +33,7 @@ namespace Fuse.Reactive
 			Parameter _parameter;
 			IListener _listener;
 			IDisposable _sub;
-			
+
 			public Subscription(Parameter parameter, IContext context, IListener listener)
 			{
 				_parameter = parameter;
@@ -69,7 +69,7 @@ namespace Fuse.Reactive
 				ClearDiagnostic();
 
 				UnsubscribeVisual();
-				
+
 				try
 				{
 					_visual = (Visual)obj;
@@ -83,7 +83,7 @@ namespace Fuse.Reactive
 
 				OnParameterChanged(null, null);
 			}
-			
+
 			protected override void OnLostData(IExpression source)
 			{
 				ClearDiagnostic();

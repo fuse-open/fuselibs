@@ -7,11 +7,11 @@ namespace Fuse.Reactive
 {
 	public interface IListener
 	{
-		/** 
+		/**
 			New data has been resolved for the expression. This data is assumed to be valid at this level of evaluation. This will not be sent prior to having a valid value.
 		*/
 		void OnNewData(IExpression source, object data);
-		/** 
+		/**
 			The expression no longer resolves to a valid value, either the source is unavailable, or it doesn't convert properly. Publishers should avoid sending this unless they previously sent `OnNewData`, as it can generate needless overhead. However, listeners should gracefully handle repeated calls to `OnLostData`.
 		*/
 		void OnLostData(IExpression source);
@@ -20,7 +20,7 @@ namespace Fuse.Reactive
 	public interface IContext
 	{
 		/** Creates a subscription to given key in this context.
-			
+
 			May return `null` after calling `listener.OnNewData` if the data was synchronously available
 			and will never change.
 		*/
@@ -36,7 +36,7 @@ namespace Fuse.Reactive
 	/** Represents a subscription that might support write-back. */
 	public interface IWriteable: IDisposable
 	{
-		/** Attempts to write to the source. 
+		/** Attempts to write to the source.
 			Returns whether or not the source was successfully updated.
 		*/
 		bool TrySetExclusive(object value);
@@ -47,7 +47,7 @@ namespace Fuse.Reactive
 		/** Creates a subscription to the expression in the given data context.
 
 			May return an `IWriteable` if the expression represents a writeable source (e.g. a property).
-			
+
 			May return `null` after calling `listener.OnNewData` if the data was synchronously available
 			and will never change.
 		*/

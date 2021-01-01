@@ -19,7 +19,7 @@ namespace Fuse
 			public int Length { get { return 1; } }
 			public object this[int index]
 			{
-				get 
+				get
 				{
 					if (index != 0) throw new IndexOutOfRangeException();
 					return _obj;
@@ -33,7 +33,7 @@ namespace Fuse
 			_converters.Add(conv);
 		}
 
-		/** Attempts to convert the given object to the given type. 
+		/** Attempts to convert the given object to the given type.
 
 			The conversion is performed using optimistic and relaxed conversion rules.
 
@@ -46,7 +46,7 @@ namespace Fuse
 		*/
 		public static bool TryConvertTo(Type t, object o, out object res, object diagnosticSource = null)
 		{
-			if (o == null) 
+			if (o == null)
 			{
 				res = null;
 				return true;
@@ -130,7 +130,7 @@ namespace Fuse
 			res = (T)ores;
 			return true;
 		}
-		
+
 		public static bool CanConvertClass(Type t)
 		{
 			for (int i = 0; i < _converters.Count; i++)

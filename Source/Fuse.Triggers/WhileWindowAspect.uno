@@ -45,15 +45,15 @@ namespace Fuse.Triggers
 
 	/**
 		Active while the size of the app's viewport fulfills some given constraints.
-		
+
 		Constraints are specified via the @GreaterThan, @LessThan and @EqualTo
 		properties. Each constraint must be provided as a pair of numbers,
 		representing the target width and height (in points) to match against.
-		
+
 		Note that both the X and Y axis must satisfy the constraints you provide.
 
 		## Examples
-		
+
 		The following example changes the color of `myRect` if the size of the
 		app's viewport exceeds 400x400 points.
 
@@ -65,14 +65,14 @@ namespace Fuse.Triggers
 		If you want to match on a single axis only, you can provide a value for
 		the other axis that is greater than zero, and that you can safely assume
 		will always match.
-		
+
 		For instance, if you want to check if only the width of the viewport is
 		greater than 400 points, you could do the following:
 
 			<WhileWindowSize GreaterThan="400,1">
-		
+
 		This also works for @LessThan by providing a big value.
-		
+
 			<WhileWindowSize LessThan="400,99999">
 
 		You can also specify multiple constraints on the same `WhileWindowSize`
@@ -80,9 +80,9 @@ namespace Fuse.Triggers
 		order for the trigger to activate.
 
 			<WhileWindowSize GreaterThan="200,300" LessThan="700,1000">
-		
+
 	*/
-	public class WhileWindowSize : WindowSizeTrigger 
+	public class WhileWindowSize : WindowSizeTrigger
 	{
 
 		/** Active when the window size is greater than the provided value. */
@@ -92,9 +92,9 @@ namespace Fuse.Triggers
 		/** Active when the window size is equal to the provided value. */
 		public float2 EqualTo { get; set; }
 
-		protected override bool IsActive 
-		{ 
-			get 
+		protected override bool IsActive
+		{
+			get
 			{
 				if(Viewport==null) return false;
 				var sz = Viewport.Size;
@@ -118,7 +118,7 @@ namespace Fuse.Triggers
 				}
 
 				return true;
-			} 
+			}
 		}
 	}
 
@@ -136,9 +136,9 @@ namespace Fuse.Triggers
 
 	/**
 		Active when the app's viewport width is larger than its height.
-		
+
 		## Example
-		
+
 		The following example changes the color of `myRect` from black to white
 		while the device is in landscape.
 

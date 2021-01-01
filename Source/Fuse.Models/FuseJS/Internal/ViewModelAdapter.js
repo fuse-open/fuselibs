@@ -10,17 +10,17 @@ exports.adaptView = function(view, viewModule, model) {
 
 	function wrapProperty(key) {
 		var observable = view[key];
-		
+
 		function propChanged() {
 			dirty();
 		}
-		
+
 		observable.addSubscriber(propChanged);
 
 		viewModule.disposed.push(function() {
 			observable.removeSubscriber(propChanged);
 		})
-		
+
 		var initialValue = model[key];
 
 		Object.defineProperty(model, key, {
@@ -32,7 +32,7 @@ exports.adaptView = function(view, viewModule, model) {
 				dirty();
 			}
 		});
-		
+
 		if('_defaultValueCallback' in observable) {
 			observable._defaultValueCallback(initialValue);
 		}

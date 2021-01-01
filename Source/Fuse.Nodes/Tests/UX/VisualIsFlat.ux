@@ -1,16 +1,16 @@
 <Panel ux:Class="UX.VisualIsFlat">
 	<Panel ux:Name="A"/>
-	
+
 	<Panel ux:Name="B">
 		<Rotation DegreesX="15"/>
 	</Panel>
-	
+
 	<Panel ux:Name="C">
 		<Panel>
 			<Rotation DegreesX="15"/>
 		</Panel>
 	</Panel>
-	
+
 	<Panel ux:Name="D">
 		<Panel>
 			<Panel>
@@ -20,7 +20,7 @@
 			</Panel>
 		</Panel>
 	</Panel>
-	
+
 	<Panel>
 		<Rotation DegreesX="15"/>
 		<Panel ux:Name="F"/>

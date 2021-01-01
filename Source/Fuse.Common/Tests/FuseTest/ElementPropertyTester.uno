@@ -24,7 +24,7 @@ namespace FuseTest
 			GetSetMargin(elm);
 			GetSetPadding(elm);
 			GetSetSnapToPixels(elm);
-			
+
 			///
 			/// GitHub #1191
 			///
@@ -34,7 +34,7 @@ namespace FuseTest
 
 
 			GetSetCachingMode(elm);
-			
+
 			GetSetIsEnabled(elm);
 
 			//NodeTester.TestAll(elm);

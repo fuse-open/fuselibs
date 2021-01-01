@@ -42,7 +42,7 @@
 			<Text Value="{name}"/>
 		</Each>
 	</Panel>
-	
+
 	<FuseTest.Invoke Handler="{gotoOther}" ux:Name="GotoOther"/>
 	<FuseTest.Invoke Handler="{gotoGreens}" ux:Name="GotoGreens"/>
 </Panel>

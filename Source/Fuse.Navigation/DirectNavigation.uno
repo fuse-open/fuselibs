@@ -8,9 +8,9 @@ namespace Fuse.Navigation
 {
 	/**
 		## Navigation Order
-		
+
 		Pages in a `DirectNavigation` have a discrete page progress. The active page is `0`, and all others are `-1`. All inactives pages are behind the active one, and no pages are ever in front of the active one.
-		
+
 		See [Navigation Order](articles:navigation/navigationorder.md)
 	*/
 	public class DirectNavigation : VisualNavigation
@@ -63,7 +63,7 @@ namespace Fuse.Navigation
 				var newProgress = active ? 0 : -1;
 				SetProgressState(c, newProgress);
 			}
-			
+
 			OnPageProgressChanged(bypass ? NavigationMode.Bypass : NavigationMode.Switch);
 		}
 
@@ -85,11 +85,11 @@ namespace Fuse.Navigation
 				Fuse.Diagnostics.InternalError( "Unexpected null page", elm );
 				return;
 			}
-			
+
 			pd.PreviousProgress = pd.Progress;
 			pd.Progress = progress;
 		}
-		
+
 		public override double PageProgress
 		{
 			get

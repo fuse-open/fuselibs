@@ -20,7 +20,7 @@ namespace Fuse
 		{
 			var key = (string)args[0];
 			var callback = (Scripting.Function)args[1];
-			return new External(new DataWatcher(n, c, callback, key));			
+			return new External(new DataWatcher(n, c, callback, key));
 		}
 
 		static object _destroyWatcher(Context c, Node n, object[] args)

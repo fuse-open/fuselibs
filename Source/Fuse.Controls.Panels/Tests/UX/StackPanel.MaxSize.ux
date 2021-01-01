@@ -1,7 +1,7 @@
 <Panel ux:Class="UX.StackPanel.MaxSize">
 	<StackPanel>
 		<FuseTest.AreaElement Area="4000" ux:Name="a"/>
-		
+
 		<WrapPanel ux:Name="w">
 			<Panel Width="200" Height="50" ux:Name="b1"/>
 			<Panel Width="200" Height="50" ux:Name="b2"/>
@@ -9,7 +9,7 @@
 			<Panel Width="200" Height="50" ux:Name="b4"/>
 		</WrapPanel>
 	</StackPanel>
-	
+
 	<StackPanel Orientation="Horizontal" Alignment="Top">
 		<WrapPanel ux:Name="h">
 			<Panel Width="200" Height="50" ux:Name="h1"/>
@@ -18,5 +18,5 @@
 			<Panel Width="200" Height="50" ux:Name="h4"/>
 		</WrapPanel>
 	</StackPanel>
-	
+
 </Panel>

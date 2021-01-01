@@ -1,37 +1,37 @@
 <Panel ux:Class="UX.Observable.OnValueChanged">
 	<JavaScript>
 		var Observable = require("FuseJS/Observable")
-		
+
 		var a = Observable()
 		var b = Observable("init")
 		b.onValueChanged( module, function(v) {
 			a.value = v
 		})
-		
+
 		exports.a = a
-		
+
 		exports.set = function() {
 			b.value = "set"
 		}
-		
+
 		exports.clear = function() {
 			b.clear()
 		}
-		
+
 		exports.add = function() {
 			b.add( "add" )
 		}
-		
-		exports.replaceAll = function() {	
+
+		exports.replaceAll = function() {
 			b.replaceAll( [ "one", "two", "three" ] )
 		}
-		
+
 		exports.failed = function() {
 			b.failed("nope")
 		}
 	</JavaScript>
 	<Text Value="{ReadClear a}" ux:Name="A"/>
-	
+
 	<FuseTest.Invoke Handler="{set}" ux:Name="CallSet"/>
 	<FuseTest.Invoke Handler="{clear}" ux:Name="CallClear"/>
 	<FuseTest.Invoke Handler="{add}" ux:Name="CallAdd"/>

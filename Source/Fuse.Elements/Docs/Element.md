@@ -19,7 +19,7 @@ This example will layout two `Rectangle`s and add `Clicked`-triggers to both of 
 			</Clicked>
 		</Rectangle>
 	</Grid>
-	
+
  This can be very helpful if you have visual elements obscuring elements below it, where you want the lower elements respond to input.
 
 ## ClipToBounds

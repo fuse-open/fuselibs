@@ -4,7 +4,7 @@
 		<State ux:Name="s2"/>
 		<State ux:Name="s3"/>
 	</StateGroup>
-	
+
 	<Timeline ux:Name="t1">
 		<TransitionState Target="sg" Type="Next"/>
 	</Timeline>

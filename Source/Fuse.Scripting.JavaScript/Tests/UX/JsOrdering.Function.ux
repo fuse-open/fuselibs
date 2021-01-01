@@ -6,7 +6,7 @@
 		exports.a = Observable()
 		exports.b = Observable()
 		exports.c = Observable()
-		
+
 		exports.step1 = function() {
 		}
 
@@ -15,7 +15,7 @@
 			order.go(2)
 			exports.a.value = 3
 		}
-		
+
 		exports.step2 = function() {
 			order.go(5)
 			exports.a.value = 6
@@ -23,7 +23,7 @@
 			exports.b.value = 8
 		}
 	</JavaScript>
-	
+
 	<FuseTest.Invoke Handler="{step1}" ux:Name="Step1"/>
 	<FuseTest.Invoke Handler="{step2}" ux:Name="Step2"/>
 </Panel>

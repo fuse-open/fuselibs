@@ -20,7 +20,7 @@ namespace Fuse.Controls.Test
 		////
 		////
 		////
-		
+
 		[Test]
 		public void TextWrappingTest()
 		{
@@ -43,7 +43,7 @@ namespace Fuse.Controls.Test
 			var t = new TextInput();
 			ElementLayoutTester.All(t);
 		}
-		
+
 		[Test]
 		public void Text()
 		{
@@ -54,7 +54,7 @@ namespace Fuse.Controls.Test
 			Assert.AreEqual("dsopfjsdofijsdofijsdfoij", t.Value);
 		}
 
-		
+
 	}
 
 }

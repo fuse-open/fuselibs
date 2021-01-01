@@ -6,12 +6,8 @@ namespace Fuse.Reactive
 {
 	public abstract class InfixOperator: BinaryOperator
 	{
-		/** @deprecated Use the constructor that takes a name, as flags */
-		[Obsolete]
-		protected InfixOperator(Expression left, Expression right): base(left, right) {}
-		
 		protected InfixOperator(Expression left, Expression right, string symbol, Flags flags = Flags.None) :
-			base(left, right, symbol, flags) 
+			base(left, right, symbol, flags)
 		{ }
 
 		/** @deprecated Provide a name to the constructor instead. */
@@ -26,13 +22,13 @@ namespace Fuse.Reactive
 	public sealed class Concat : InfixOperator
 	{
 		[UXConstructor]
-		public Concat([UXParameter("Left")] Expression left, [UXParameter("Right")] Expression right) : 
+		public Concat([UXParameter("Left")] Expression left, [UXParameter("Right")] Expression right) :
 			base(left, right, "++") {}
 		protected override bool TryCompute(object left, object right, out object result)
 		{
 			return TryComputeImpl(left, right, out result);
 		}
-		
+
 		static internal bool TryComputeImpl(object left, object right, out object result)
 		{
 			result = null;
@@ -40,16 +36,16 @@ namespace Fuse.Reactive
 			if (!Marshal.TryToType<string>(left, out a) ||
 				!Marshal.TryToType<string>(right, out b))
 				return false;
-				
+
 			result = a + b;
 			return true;
 		}
 	}
-	
+
 	public sealed class Add: InfixOperator
 	{
 		[UXConstructor]
-		public Add([UXParameter("Left")] Expression left, [UXParameter("Right")] Expression right) : 
+		public Add([UXParameter("Left")] Expression left, [UXParameter("Right")] Expression right) :
 			base(left, right, "+") {}
 		protected override bool TryCompute(object left, object right, out object result)
 		{
@@ -57,7 +53,7 @@ namespace Fuse.Reactive
 			//https://github.com/fuse-open/fuselibs/issues/897
 			if (left is string || right is string)
 				return Concat.TryComputeImpl(left, right, out result);
-				
+
 			return Marshal.TryAdd(left, right, out result);
 		}
 	}
@@ -65,7 +61,7 @@ namespace Fuse.Reactive
 	public sealed class Subtract: InfixOperator
 	{
 		[UXConstructor]
-		public Subtract([UXParameter("Left")] Expression left, [UXParameter("Right")] Expression right): 
+		public Subtract([UXParameter("Left")] Expression left, [UXParameter("Right")] Expression right):
 			base(left, right, "-") {}
 		protected override bool TryCompute(object left, object right, out object result)
 		{
@@ -76,7 +72,7 @@ namespace Fuse.Reactive
 	public sealed class Multiply: InfixOperator
 	{
 		[UXConstructor]
-		public Multiply([UXParameter("Left")] Expression left, [UXParameter("Right")] Expression right): 
+		public Multiply([UXParameter("Left")] Expression left, [UXParameter("Right")] Expression right):
 			base(left, right, "*") {}
 		protected override bool TryCompute(object left, object right, out object result)
 		{
@@ -87,7 +83,7 @@ namespace Fuse.Reactive
 	public sealed class Divide: InfixOperator
 	{
 		[UXConstructor]
-		public Divide([UXParameter("Left")] Expression left, [UXParameter("Right")] Expression right): 
+		public Divide([UXParameter("Left")] Expression left, [UXParameter("Right")] Expression right):
 			base(left, right,"/") {}
 		protected override bool TryCompute(object left, object right, out object result)
 		{
@@ -109,7 +105,7 @@ namespace Fuse.Reactive
 			return true;
 		}
 
-		public override string ToString() 
+		public override string ToString()
 		{
 			return "(" + First + " ? " + Second + " : " + Third + ")";
 		}
@@ -118,7 +114,7 @@ namespace Fuse.Reactive
 	public sealed class LessThan: InfixOperator
 	{
 		[UXConstructor]
-		public LessThan([UXParameter("Left")] Expression left, [UXParameter("Right")] Expression right): 
+		public LessThan([UXParameter("Left")] Expression left, [UXParameter("Right")] Expression right):
 			base(left, right,"<") {}
 		protected override bool TryCompute(object left, object right, out object result)
 		{
@@ -174,7 +170,7 @@ namespace Fuse.Reactive
 	public sealed class Equal: InfixOperator
 	{
 		[UXConstructor]
-		public Equal([UXParameter("Left")] Expression left, [UXParameter("Right")] Expression right): 
+		public Equal([UXParameter("Left")] Expression left, [UXParameter("Right")] Expression right):
 			base(left, right,"==") {}
 		protected override bool TryCompute(object left, object right, out object result)
 		{
@@ -188,7 +184,7 @@ namespace Fuse.Reactive
 	public sealed class NotEqual: InfixOperator
 	{
 		[UXConstructor]
-		public NotEqual([UXParameter("Left")] Expression left, [UXParameter("Right")] Expression right): 
+		public NotEqual([UXParameter("Left")] Expression left, [UXParameter("Right")] Expression right):
 			base(left, right, "!=") {}
 		protected override bool TryCompute(object left, object right, out object result)
 		{
@@ -206,7 +202,7 @@ namespace Fuse.Reactive
 	public sealed class LogicalAnd: InfixOperator
 	{
 		[UXConstructor]
-		public LogicalAnd([UXParameter("Left")] Expression left, [UXParameter("Right")] Expression right): 
+		public LogicalAnd([UXParameter("Left")] Expression left, [UXParameter("Right")] Expression right):
 			base(left, right, "&&") {}
 		protected override bool TryCompute(object left, object right, out object result)
 		{
@@ -220,7 +216,7 @@ namespace Fuse.Reactive
 	public sealed class LogicalOr: InfixOperator
 	{
 		[UXConstructor]
-		public LogicalOr([UXParameter("Left")] Expression left, [UXParameter("Right")] Expression right): 
+		public LogicalOr([UXParameter("Left")] Expression left, [UXParameter("Right")] Expression right):
 			base(left, right, "||") {}
 		protected override bool TryCompute(object left, object right, out object result)
 		{
@@ -230,5 +226,5 @@ namespace Fuse.Reactive
 			return true;
 		}
 	}
-	
+
 }

@@ -1,4 +1,4 @@
-package com.fusetools.drawing.surface;
+package com.fuse.drawing.surface;
 
 import android.graphics.Canvas;
 import android.graphics.Bitmap;

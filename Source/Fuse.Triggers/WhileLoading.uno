@@ -26,7 +26,7 @@ namespace Fuse.Triggers
 			</StackPanel>
 
 		@examples Docs/VideoTriggers.md
-		
+
 		`<WhileLoading>` is equivalent to `<WhileBusy Activity="Loading">`.
 	*/
 	public class WhileLoading : WhileBusy

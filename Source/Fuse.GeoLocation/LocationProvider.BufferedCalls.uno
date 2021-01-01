@@ -27,8 +27,8 @@ namespace Fuse.GeoLocation
 				tracker.StartListening(onLocationChanged, onLocationError, minimumReportInterval, desiredAccuracyInMeters);
 			}
 		}
-		
-		class StopListeningCall : BufferedCall 
+
+		class StopListeningCall : BufferedCall
 		{
 			public StopListeningCall()
 			{
@@ -38,7 +38,7 @@ namespace Fuse.GeoLocation
 				tracker.StopListening();
 			}
 		}
-		
+
 		class GetLocationCall : BufferedCall {
 			readonly Promise<Location> promise;
 			readonly double timeout;

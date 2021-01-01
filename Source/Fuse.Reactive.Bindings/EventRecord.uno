@@ -32,7 +32,7 @@ namespace Fuse.Reactive
 		public object Data { get { return _data; } }
 		public Selector Sender { get { return _sender; } }
 		public IEnumerable<KeyValuePair<string, object>> Args { get { return _args; } }
-		
+
 		void AddObject(string key, object value)
 		{
 			if (_args == null) _args = new Dictionary<string, object>();

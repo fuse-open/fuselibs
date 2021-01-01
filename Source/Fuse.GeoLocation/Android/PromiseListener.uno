@@ -1,17 +1,17 @@
 using Uno.Threading;
 using Uno.Compiler.ExportTargetInterop;
 using Fuse.GeoLocation.Android;
-using Uno.Permissions;
+using Fuse.Android.Permissions;
 using Uno;
 
 namespace Fuse.GeoLocation
 {
-	[ForeignInclude(Language.Java, 
-		"androidx.core.content.ContextCompat", 
-		"android.content.pm.PackageManager", 
-		"android.location.LocationManager", 
-		"fuse.geolocation.UpdateListener", 
-		"android.os.Handler", 
+	[ForeignInclude(Language.Java,
+		"androidx.core.content.ContextCompat",
+		"android.content.pm.PackageManager",
+		"android.location.LocationManager",
+		"fuse.geolocation.UpdateListener",
+		"android.os.Handler",
 		"android.os.Looper",
 		"android.os.Build"
 	)]
@@ -23,11 +23,11 @@ namespace Fuse.GeoLocation
 		public PromiseListener(Java.Object locationManagerHandle, double timeout, Promise<Location> promise)
 		{
 			_locationManager = locationManagerHandle;
-			_promise = promise;	
+			_promise = promise;
 			_listener = CreateListener(OnLocationChanged);
 			StartUpdatesWithTimer(_locationManager, _listener, OnTimeout, (int)timeout);
 		}
-		
+
 		void OnTimeout()
 		{
 			if(_promise.State != FutureState.Pending) return;
@@ -41,37 +41,37 @@ namespace Fuse.GeoLocation
 			StopUpdate(_locationManager, _listener);
 			_promise.Resolve(LocationHelpers.ConvertLocation(location));
 		}
-		
+
 		[Foreign(Language.Java)]
 		static void StopUpdate(Java.Object locationManager, Java.Object listener)
 		@{
 			Handler h = new Handler(Looper.getMainLooper());
 			h.post(new Runnable() {
-				@Override 
+				@Override
 				public void run() {
 					((LocationManager)locationManager).removeUpdates((UpdateListener)listener);
-				} 
+				}
 			});
 		@}
-		
+
 		[Foreign(Language.Java)]
 		static Java.Object CreateListener(Action<Java.Object> onLocationChanged)
 		@{
 			return new UpdateListener(onLocationChanged);
 		@}
-		
+
 		[Foreign(Language.Java)]
 		static void StartUpdatesWithTimer(Java.Object locationManager, Java.Object listener, Action onTimeout, int timeout)
 		@{
 			Handler h = new Handler(Looper.getMainLooper());
-			h.postDelayed(onTimeout, (long)timeout);				
+			h.postDelayed(onTimeout, (long)timeout);
 			h.post(new Runnable(){
 				@Override
 				public void run() {
 
-					LocationManager lm = (LocationManager) locationManager; 
+					LocationManager lm = (LocationManager) locationManager;
 
-					if (ContextCompat.checkSelfPermission(com.fuse.Activity.getRootActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED 
+					if (ContextCompat.checkSelfPermission(com.fuse.Activity.getRootActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
 						&& ContextCompat.checkSelfPermission(com.fuse.Activity.getRootActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)
 					{
 						lm.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, (UpdateListener)listener, null);
@@ -90,9 +90,9 @@ namespace Fuse.GeoLocation
 		@{
 			//check if background location is explicitly requested (not enabled by default since Android Q)
 			if ("@(Project.Android.GeoLocation.BackgroundLocation.Enabled:ToLower)" == "true"
-				&& android.os.Build.VERSION.SDK_INT >= 29) 
+				&& android.os.Build.VERSION.SDK_INT >= 29)
 			{
-				if (ContextCompat.checkSelfPermission(com.fuse.Activity.getRootActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED 
+				if (ContextCompat.checkSelfPermission(com.fuse.Activity.getRootActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
 					&& ContextCompat.checkSelfPermission(com.fuse.Activity.getRootActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)
 				{
 					if (ContextCompat.checkSelfPermission(com.fuse.Activity.getRootActivity(), android.Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED)
@@ -125,8 +125,8 @@ namespace Fuse.GeoLocation
 
 			switch (permissionState)
 			{
-				case 3:	
-					var permissions = new PlatformPermission[] 
+				case 3:
+					var permissions = new PlatformPermission[]
 					{
 						Permissions.Android.INTERNET,
 						Permissions.Android.ACCESS_COARSE_LOCATION,
@@ -134,8 +134,8 @@ namespace Fuse.GeoLocation
 					};
 					Permissions.Request(permissions).Then(OnPermissionsResult, OnPermissionsError);
 					break;
-				case 2: 
-					var permissions = new PlatformPermission[] 
+				case 2:
+					var permissions = new PlatformPermission[]
 					{
 						Permissions.Android.INTERNET,
 						Permissions.Android.ACCESS_COARSE_LOCATION,
@@ -144,15 +144,15 @@ namespace Fuse.GeoLocation
 					};
 					Permissions.Request(permissions).Then(OnPermissionsResult, OnPermissionsError);
 					break;
-				case 1: 
-					var permissions = new PlatformPermission[] 
+				case 1:
+					var permissions = new PlatformPermission[]
 					{
 						Permissions.Android.INTERNET,
 						Permissions.Android.ACCESS_BACKGROUND_LOCATION
 					};
 					Permissions.Request(permissions).Then(OnPermissionsResult, OnPermissionsError);
 					break;
-				case 0: 
+				case 0:
 					break;
 			}
 		}
@@ -168,8 +168,8 @@ namespace Fuse.GeoLocation
 		[Foreign(Language.Java)]
 		static void GetSingleUpdate(Java.Object locationManager, Java.Object listener)
 		@{
-			
-			LocationManager lm = (LocationManager) locationManager; 
+
+			LocationManager lm = (LocationManager) locationManager;
 			lm.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, (UpdateListener)listener, null);
 			lm.requestSingleUpdate(LocationManager.GPS_PROVIDER, (UpdateListener)listener, null);
 		@}

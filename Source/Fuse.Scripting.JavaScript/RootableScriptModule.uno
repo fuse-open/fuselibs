@@ -14,7 +14,7 @@ namespace Fuse.Scripting.JavaScript
 		/** UX names are not injected but still available via `require("ux:name")` */
 		Require,
 	}
-	
+
 	class RootableScriptModule: ScriptModule
 	{
 		readonly ThreadWorker _worker;
@@ -27,7 +27,7 @@ namespace Fuse.Scripting.JavaScript
 			get { return _moduleNames; }
 			set { _moduleNames = value; }
 		}
-		
+
 		public RootableScriptModule(ThreadWorker worker, NameTable names)
 		{
 			_worker = worker;
@@ -60,11 +60,11 @@ namespace Fuse.Scripting.JavaScript
 		{
 			var argsString = base.GenerateArgs(c, result, args);
 
-			foreach (var dep in Dependencies) 
+			foreach (var dep in Dependencies)
 			{
 				if (dep.Value.Type == DependencyType.Name && ModuleNames != ScriptModuleNames.InjectAll)
 					continue;
-					
+
 				argsString += ", " + dep.Key;
 				args.Add(dep.Value.Value);
 			}

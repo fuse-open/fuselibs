@@ -6,7 +6,7 @@ namespace Fuse.Controls
 {
 
 	/** Baseclass for buttons
-	
+
 		ButtonBase is the undecorated baseclass for buttons in fuse. Can be used to make
 		ux classes for buttons that has text.
 

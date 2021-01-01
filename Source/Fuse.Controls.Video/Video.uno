@@ -54,7 +54,7 @@ namespace Fuse.Controls
 		It is similar to Image; they share the properties `StretchMode`, `StretchDirection` and `ContentAlignment` and they work in the same way for both classes.
 
 		## Useful properties
-		
+
 		Video comes with a set of properties that can be used to configure it or control it, in addition to the properties shared with Image:
 
 		- `Volume`: range from 0.0 to 1.0, default is 1.0
@@ -87,13 +87,13 @@ namespace Fuse.Controls
 		- [Android supported formats](https://developer.android.com/guide/appendix/media-formats.html)
 		- [iOS and OS X supported formats (found under 'public.movie')](https://developer.apple.com/library/mac/documentation/Miscellaneous/Reference/UTIRef/Articles/System-DeclaredUniformTypeIdentifiers.html)
 		- [Windows supported formats](https://msdn.microsoft.com/en-us/library/cc189080%28v=vs.95%29.aspx?f=255&MSPPError=-2147217396)
-		
+
 		## Playing from the local file system
 
 		Videos can also be played from the local file system of the device the app is running on. This can be done by prepending `file://` to the absolute path of the video:
 
 			<Video File="file:///data/data/com.fuse.app/video.mp4" />
-		
+
 		Notice the three slashes at the start. This is due to unix file system paths always beginning with a `/`
 
 		## Example
@@ -120,7 +120,7 @@ namespace Fuse.Controls
 					</Button>
 				</Grid>
 			</DockPanel>
-			
+
 	*/
 	public partial class Video : Panel, IMediaPlayback
 	{
@@ -128,7 +128,7 @@ namespace Fuse.Controls
 		VideoSource _source;
 		[UXContent]
 		/** The source of this video.
-		
+
 			Using this property can not be combined with using `Url` or `File`.
 		*/
 		public VideoSource Source
@@ -236,8 +236,8 @@ namespace Fuse.Controls
 		public bool IsLooping
 		{
 			get { return _isLooping; }
-			set 
-			{ 
+			set
+			{
 				if (_isLooping != value)
 				{
 					_isLooping = value;
@@ -253,8 +253,8 @@ namespace Fuse.Controls
 		public bool AutoPlay
 		{
 			get { return _autoPlay; }
-			set 
-			{ 
+			set
+			{
 				if (_autoPlay != value)
 				{
 					_autoPlay = value;
@@ -270,8 +270,8 @@ namespace Fuse.Controls
 		public StretchMode StretchMode
 		{
 			get { return _stretchMode; }
-			set 
-			{ 
+			set
+			{
 				if (_stretchMode != value)
 				{
 					_stretchMode = value;
@@ -287,8 +287,8 @@ namespace Fuse.Controls
 		public StretchDirection StretchDirection
 		{
 			get { return _stretchDirection; }
-			set 
-			{ 
+			set
+			{
 				if (_stretchDirection != value)
 				{
 					_stretchDirection = value;
@@ -306,8 +306,8 @@ namespace Fuse.Controls
 		public StretchSizing StretchSizing
 		{
 			get { return _stretchSizing; }
-			set 
-			{ 
+			set
+			{
 				if (_stretchSizing != value)
 				{
 					_stretchSizing = value;
@@ -317,15 +317,15 @@ namespace Fuse.Controls
 		}
 
 		Fuse.Elements.Alignment _contentAlignment = Fuse.Elements.Alignment.Center;
-		/** Specifies the alignment of the video inside the element. 
-		
+		/** Specifies the alignment of the video inside the element.
+
 		This is used when the video itself does not fill, or overfills, the available space.
 			@default Fuse.Elements.Alignment.Center
 		*/
 		public Fuse.Elements.Alignment ContentAlignment
 		{
 			get { return _contentAlignment; }
-			set 
+			set
 			{
 				if (_contentAlignment != value)
 				{
@@ -342,8 +342,8 @@ namespace Fuse.Controls
 		public float Volume
 		{
 			get { return _volume; }
-			set 
-			{ 
+			set
+			{
 				if (_volume != value)
 				{
 					_volume = value;
@@ -363,7 +363,7 @@ namespace Fuse.Controls
 			RemoveAllChildren<Fuse.Controls.VideoImpl.VideoVisual>();
 			base.OnUnrooted();
 		}
-		
+
 		/** @advanced */
 		public event EventHandler RenderParamChanged;
 
@@ -396,35 +396,6 @@ namespace Fuse.Controls
 			if (Playback != null)
 				Playback.Stop();
 		}
-
-		/** Deprecated 2017-02-27 */
-		[Obsolete]
-		public void PlayTo(double progress)
-		{
-			if (Playback != null)
-				Playback.PlayTo(progress);
-		}
-		[Obsolete]
-		public bool CanPlayTo
-		{
-			get { return Playback != null ? Playback.CanPlayTo : false; }
-		}
-		[Obsolete]
-		public bool CanStop
-		{
-			get { return true; }
-		}
-		[Obsolete]
-		public bool CanPause
-		{
-			get { return true; }
-		}
-		[Obsolete]
-		public bool CanResume
-		{
-			get { return true; }
-		}
-		/* End-Deprecated */
 
 		public void Pause()
 		{

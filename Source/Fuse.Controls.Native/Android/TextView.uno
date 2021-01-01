@@ -25,6 +25,14 @@ namespace Fuse.Controls.Native.Android
 			}
 		}
 
+		int ITextView.MaxLines
+		{
+			set
+			{
+				if (value > 0) SetMaxLines(Handle, value);
+			}
+		}
+
 		public TextWrapping TextWrapping
 		{
 			set { SetTextWrapping(Handle, value == Fuse.Controls.TextWrapping.Wrap); }
@@ -69,9 +77,13 @@ namespace Fuse.Controls.Native.Android
 			set { SetTextColor(Handle, (int)Color.ToArgb(value)); }
 		}
 
-		public TextTruncation TextTruncation
+		TextTruncation ITextView.TextTruncation
 		{
-			set { /* TODO */ }
+			set
+			{
+				if (value == TextTruncation.Standard)
+					SetTextTruncation(Handle);
+			}
 		}
 
 		[Foreign(Language.Java)]
@@ -92,13 +104,33 @@ namespace Fuse.Controls.Native.Android
 		[Foreign(Language.Java)]
 		static void SetTextWrapping(Java.Object handle, bool wrap)
 		@{
-			((android.widget.TextView)handle).setHorizontallyScrolling( (wrap) ? false : true );
+			android.widget.TextView tv = (android.widget.TextView)handle;
+			tv.setHorizontallyScrolling( (wrap) ? false : true );
+			tv.setSingleLine( (wrap) ? false : true );
+		@}
+
+		[Foreign(Language.Java)]
+		static void SetTextTruncation(Java.Object handle)
+		@{
+			android.widget.TextView tv = (android.widget.TextView)handle;
+			tv.setEllipsize(android.text.TextUtils.TruncateAt.END);
+			tv.setHorizontallyScrolling(false);
+			tv.setSingleLine();
 		@}
 
 		[Foreign(Language.Java)]
 		static void SetLineSpacing(Java.Object handle, float spacing)
 		@{
 			((android.widget.TextView)handle).setLineSpacing(spacing, 1.0f);
+		@}
+
+		[Foreign(Language.Java)]
+		static void SetMaxLines(Java.Object handle, int line)
+		@{
+			android.widget.TextView tv = (android.widget.TextView)handle;
+			tv.setEllipsize(android.text.TextUtils.TruncateAt.END);
+			tv.setHorizontallyScrolling(false);
+			tv.setMaxLines(line);
 		@}
 
 		[Foreign(Language.Java)]

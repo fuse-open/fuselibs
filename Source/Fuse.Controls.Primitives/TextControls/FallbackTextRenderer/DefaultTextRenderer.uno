@@ -32,7 +32,7 @@ namespace Fuse.Controls.FallbackTextRenderer
 			{
 				this.FontFace = fontFace;
 				this.Size = size;
-			} 
+			}
 		}
 
 		static Dictionary<FontKey, BitmapFont> _bitmapFonts;

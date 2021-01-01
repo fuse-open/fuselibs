@@ -16,13 +16,13 @@ namespace Fuse.Reactive.Test
 			using (var root = TestRootPanel.CreateWithChild(j))
 			{
 				root.StepFrameJS();
-				
+
 				j.callGo.Perform();
 				root.StepFrameJS();
 				Assert.AreEqual("yes", j.text.Value);
 			}
 		}
-		
+
 		// NOTE: This test is excluded on MSVC since the compiler used for that target apparently
 		// don't properly support unicode symbols. We're not using the [Ignore] attribute here
 		// since that won't exclude the test during compilation.
@@ -35,7 +35,7 @@ namespace Fuse.Reactive.Test
 			using (var root = TestRootPanel.CreateWithChild(j))
 			{
 				root.StepFrameJS();
-				
+
 				j.callGo.Perform();
 				root.StepFrameJS();
 				Assert.AreEqual("yes", j.text1.Value);

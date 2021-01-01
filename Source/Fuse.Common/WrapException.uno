@@ -5,7 +5,7 @@ namespace Fuse
 	/**
 		Wraps an exception that needs to be rethrown at another location. Using this exception indicates
 		there isn't an actual new error condition, but the original exception is still the true error.
-		
+
 		Locations that report exception information, or forward them for diagnostics, should unwrap
 		such exceptions.
 	*/
@@ -24,15 +24,15 @@ namespace Fuse
 			{
 				e = e.InnerException;
 			}
-			
+
 			return e;
 		}
-		
+
 		public override string ToString()
 		{
 			return InnerException.ToString();
 		}
-		
+
 		public override string Message
 		{
 			get { return InnerException.Message; }

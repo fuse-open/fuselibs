@@ -11,7 +11,7 @@ namespace Fuse.Elements
 			//TODO: Ugh, not even sure how this works correctly
 			_actualSize = size;
 			InternArrangePaddingBox(LayoutParams.CreateTemporary(size));
-			
+
 			//TODO: this duplicates what is done in PerformPlacement
 			InvalidateVisual();
 			InvalidateRenderBounds();
@@ -27,11 +27,11 @@ namespace Fuse.Elements
 		protected override void OnRooted()
 		{
 			base.OnRooted();
-			
+
 			NotifyTreeRendererRooted();
 
 			InvalidateVisualComposition();
-			
+
 			//clears the placement/layout status
 			_placedBefore = null;
 
@@ -50,7 +50,7 @@ namespace Fuse.Elements
 			NotifyTreeRendererUnrooted();
 
 			CleanupBatching();
-			
+
 			if defined(Designer)
 			{
 				NotifyUnrooted();

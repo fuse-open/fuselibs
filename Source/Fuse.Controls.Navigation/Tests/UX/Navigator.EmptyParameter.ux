@@ -3,9 +3,9 @@
 	<JavaScript>
 		module.exports.goA = function() { router.goto('p1',"") }
 		module.exports.goB = function() { router.goto('p1',null) }
-		module.exports.goC = function() { router.goto('p1',{}) } 
-		module.exports.goD = function() { router.goto('p1',{ }) } 
-		module.exports.goE = function() { router.goto('p1',{a:""}) } 
+		module.exports.goC = function() { router.goto('p1',{}) }
+		module.exports.goD = function() { router.goto('p1',{ }) }
+		module.exports.goE = function() { router.goto('p1',{a:""}) }
 	</JavaScript>
 	<FuseTest.Invoke Handler="{goA}" ux:Name="GoA"/>
 	<FuseTest.Invoke Handler="{goB}" ux:Name="GoB"/>

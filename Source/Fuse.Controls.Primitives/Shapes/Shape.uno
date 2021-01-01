@@ -9,12 +9,12 @@ using Fuse.Controls.Native;
 namespace Fuse.Controls
 {
 	/** Displays a shape with fills and strokes
-	
+
 		Shape is the baseclass for all shapes in fuse. A shape can have @Fills and @Strokes.
 		By default a shape does not have a size, fills or strokes. You must add some for it to be visible.
 
 		## Example:
-			
+
 			<Rectangle Width="200" Height="100" CornerRadius="16">
 				<LinearGradient>
 					<GradientStop Offset="0" Color="#0ee" />
@@ -24,7 +24,7 @@ namespace Fuse.Controls
 					<SolidColor Color="#000" />
 				</Stroke>
 			</Rectangle>
-			
+
 
 			<Circle Width="200" Height="100" >
 				<LinearGradient>
@@ -36,16 +36,16 @@ namespace Fuse.Controls
 				</Stroke>
 			</Circle>
 
-			
+
 		## Available Shape classes:
 
 		[subclass Fuse.Controls.Shape]
-		
-		
+
+
 		## Strokes
-		
+
 		Use only one of the methods of specifying strokes. Either list the desired `Stroke` objects as children, or provide a single object to the `Stroke` property, or specify one or more of `StrokeColor`, `StrokeWidth`, and `StrokeAlignment`.
-		
+
 		It is undefined what happens if the different ways of specifying a stroke are combined.
 	*/
 	public abstract partial class Shape : LayoutControl, ISurfaceDrawable, IPropertyListener,
@@ -59,14 +59,14 @@ namespace Fuse.Controls
 		[UXOriginSetter("SetColor")]
 		public float4 Color
 		{
-			get 
-			{ 
-				var f = Fill as ISolidColor; 
+			get
+			{
+				var f = Fill as ISolidColor;
 				if (f != null) return f.Color;
 				return float4(0);
 			}
-			set 
-			{ 
+			set
+			{
 				SetColor(value, this);
 			}
 		}
@@ -92,12 +92,12 @@ namespace Fuse.Controls
 		/** The `Fill` property sets a single fill on the `Shape` */
 		public Brush Fill
 		{
-			get 
-			{ 
+			get
+			{
 				if (_fills == null || _fills.Count == 0) return null;
 				else return _fills[0];
 			}
-			set 
+			set
 			{
 				Fills.Clear();
 				if (value != null)
@@ -131,7 +131,7 @@ namespace Fuse.Controls
 				Fuse.Diagnostics.InternalError( "Unexpected null brush", this );
 				return;
 			}
-			
+
 			f.Pin();
 			AddDrawCost(1);
 
@@ -139,9 +139,9 @@ namespace Fuse.Controls
 			{
 				((DynamicBrush)f).AddPropertyListener(this);
 			}
-			
+
 			AddLoadingResource( f );
-			
+
 			InvalidateRenderBounds();
 			UpdateNativeShape();
 		}
@@ -154,7 +154,7 @@ namespace Fuse.Controls
 				Fuse.Diagnostics.InternalError( "Unexpected null brush", this );
 				return;
 			}
-			
+
 			f.Unpin();
 			RemoveDrawCost(1);
 
@@ -162,7 +162,7 @@ namespace Fuse.Controls
 			{
 				((DynamicBrush)f).RemovePropertyListener(this);
 			}
-			
+
 			RemoveLoadingResource( f );
 
 			InvalidateRenderBounds();
@@ -175,12 +175,12 @@ namespace Fuse.Controls
 		public override void OnPropertyChanged(PropertyObject sender, Selector property)
 		{
 			OnLoadingResourcePropertyChanged(sender, property);
-			
+
 			if (sender is Brush) InvalidateVisual();
-			else if (sender is Stroke) 
+			else if (sender is Stroke)
 			{
 				InvalidateVisual();
-				if (property == _widthName || property == _offsetName) 
+				if (property == _widthName || property == _offsetName)
 					InvalidateRenderBounds();
 			}
 			else base.OnPropertyChanged(sender, property);
@@ -190,19 +190,19 @@ namespace Fuse.Controls
 
 		public bool HasFills { get { return _fills != null && _fills.Count > 0; } }
 
-		/** 
+		/**
 			Applies a single `Stroke` to the `Shape`.
 		*/
-		
+
 		public Stroke Stroke
 		{
-			get 
-			{ 
+			get
+			{
 				if (_strokes == null || _strokes.Count ==0) return null;
 				return _strokes[0];
 			}
-			set 
-			{ 
+			set
+			{
 				Strokes.Clear();
 				if (value != null)
 					Strokes.Add(value);
@@ -214,9 +214,9 @@ namespace Fuse.Controls
 
 		List<Stroke> _styleStrokes;
 
-		/** 
+		/**
 			A `Stroke`s that will be drawn on the shape. These are drawn layered from bottom-to-top.
-			
+
 			These are drawn on top of any fills the shape has.
 		*/
 		RootableList<Stroke> _strokes;
@@ -234,7 +234,7 @@ namespace Fuse.Controls
 				return _strokes;
 			}
 		}
-		
+
 		Stroke DefaultStroke
 		{
 			get
@@ -249,7 +249,7 @@ namespace Fuse.Controls
 				return strokes[0];
 			}
 		}
-		
+
 		SolidColor DefaultStrokeBrush
 		{
 			get
@@ -257,7 +257,7 @@ namespace Fuse.Controls
 				return DefaultStroke.Brush as SolidColor;
 			}
 		}
-		
+
 		/**
 			Sets the color of the stroke for the shape.
 		*/
@@ -266,7 +266,7 @@ namespace Fuse.Controls
 			get { return HasStrokes ? DefaultStrokeBrush.Color : float4(0); }
 			set { DefaultStrokeBrush.Color = value; }
 		}
-		
+
 		/**
 			Sets the width of the stroke for the shape.
 		*/
@@ -275,10 +275,10 @@ namespace Fuse.Controls
 			get { return HasStrokes ? DefaultStroke.Width : 0; }
 			set { DefaultStroke.Width = value; }
 		}
-		
+
 		/**
 			Sets the alignment of the stroke for the shape.
-			
+
 			The default is `Center` unlike a `Stroke` object which uses `Inner` as the default.
 		*/
 		public StrokeAlignment StrokeAlignment
@@ -295,7 +295,7 @@ namespace Fuse.Controls
 				Fuse.Diagnostics.InternalError( "Unexpected null stroke", this );
 				return;
 			}
-			
+
 			s.Pin();
 			AddDrawCost(1);
 			s.AddPropertyListener(this);
@@ -311,11 +311,11 @@ namespace Fuse.Controls
 				Fuse.Diagnostics.InternalError( "Unexpected null stroke", this );
 				return;
 			}
-			
+
 			s.Unpin();
 			RemoveDrawCost(1);
 			s.RemovePropertyListener(this);
-			
+
 			InvalidateRenderBounds();
 			UpdateNativeShape();
 		}
@@ -324,8 +324,8 @@ namespace Fuse.Controls
 		public float Smoothness
 		{
 			get { return _smoothness; }
-			set 
-			{ 
+			set
+			{
 				if (_smoothness != value)
 				{
 					_smoothness = value;
@@ -340,7 +340,7 @@ namespace Fuse.Controls
 		DrawObjectWatcher _watcher;
 		//internal and not protected since DrawObjectWatcher is an internal class
 		internal DrawObjectWatcher Watcher { get { return _watcher; } }
-		
+
 		protected override void OnRooted()
 		{
 			base.OnRooted();
@@ -358,7 +358,7 @@ namespace Fuse.Controls
 			}
 
 			OnLoadingResourceRooted();
-			
+
 			_surface = NeedSurface ? SurfaceManager.FindOrCreate(this) : SurfaceManager.Find(this);
 			if (_surface != null)
 				OnSurfaceRooted();
@@ -381,11 +381,11 @@ namespace Fuse.Controls
 			}
 
 			OnLoadingResourceUnrooted();
-			
-			if (_surface != null)	
+
+			if (_surface != null)
 				OnSurfaceUnrooted();
 		}
-		
+
 		internal virtual void PrepareDraw(DrawContext dc, float2 canvasSize)
 		{
 			if (HasFills)
@@ -427,12 +427,12 @@ namespace Fuse.Controls
 			base.PushPropertiesToNativeView();
 			UpdateNativeShape();
 		}
-		
+
 		protected override void ArrangePaddingBox(LayoutParams lp)
 		{
 			base.ArrangePaddingBox(lp);
 			InvalidateSurfacePath();
 		}
-		
+
 	}
 }

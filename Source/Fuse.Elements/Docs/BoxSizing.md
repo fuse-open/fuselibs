@@ -26,7 +26,7 @@ This is useful for elements that are generally larger than their parent. Usually
 		<Text Value="A Notice"/>
 		<Image BoxSizing="NoImplicitMax" File="star.png" Alignment="TopLeft" Anchor="50%,50%"/>
 	</Panel>
-	
+
 This creates a text label with a star in the upper-left corner. The `BoxSizing="NoImplicitMax"` ensures that the star is it's natural size even if the label is smaller than it.
 
 
@@ -40,11 +40,11 @@ This creates a text label with a star in the upper-left corner. The `BoxSizing="
 			<Text Value="Two"/>
 			<Text Value="Three"/>
 		</StackPanel>
-		
+
 		<WhileTrue ux:Name="showMenu">
 			<Change theStack.LimitHeight="100%" Duration="0.5"/>
 		</WhileTrue>
-		
+
 		<Clicked>
 			<Toggle Target="showMenu"/>
 		</Clicked>

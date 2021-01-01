@@ -15,13 +15,54 @@ namespace Fuse.Controls
 	{
 		DateTime Value { set; }
 		bool Is24HourView { set; }
+		TimePickerStyle Style { set; }
 
 		void OnRooted();
 		void OnUnrooted();
 	}
 
+	/** Available TimePicker style */
+	public enum TimePickerStyle
+	{
+		Default,
+		Compact,
+		Inline,
+		/** Only available on iOS */
+		Wheels
+	}
+
 	public abstract partial class TimePickerBase : Panel
 	{
+		static Selector _styleName = "Style";
+
+		TimePickerStyle _style = TimePickerStyle.Default;
+		[UXOriginSetter("SetStyle")]
+		/** TimePicker style */
+		public TimePickerStyle Style
+		{
+			get { return _style; }
+			set { SetStyle(value, this); }
+		}
+
+		public void SetStyle(TimePickerStyle value, IPropertyListener origin)
+		{
+			if (value != _style)
+			{
+				_style = value;
+				OnStyleValueChanged(origin);
+				InvalidateLayout();
+			}
+
+			var dpv = TimePickerView;
+			if (dpv != null)
+				dpv.Style = value;
+		}
+
+		internal void OnStyleValueChanged(IPropertyListener origin)
+		{
+			OnPropertyChanged(_styleName, origin);
+		}
+
 		static Selector _valueName = "Value";
 
 		DateTime _value = DateTime.UtcNow;

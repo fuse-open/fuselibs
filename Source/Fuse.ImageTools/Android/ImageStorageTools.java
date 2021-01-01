@@ -1,4 +1,4 @@
-package com.fusetools.camera;
+package com.fuse.camera;
 
 import android.app.Activity;
 import android.content.ContentResolver;
@@ -88,7 +88,7 @@ public class ImageStorageTools {
 		bmp.recycle();
 		return i;
 	}
-	
+
 	public static void saveBitmap(Bitmap bmp, String path) throws Exception
 	{
 		String ext = path.substring(path.lastIndexOf('.') + 1).toLowerCase();
@@ -144,7 +144,7 @@ public class ImageStorageTools {
 		ContentResolver cr = com.fuse.Activity.getRootActivity().getContentResolver();
 		return MediaStore.Images.Media.getBitmap(cr, contentUri);
 	}
-	
+
 	public static String getMimeType(Uri uriImage)
 	{
 		ContentResolver cr = com.fuse.Activity.getRootActivity().getContentResolver();
@@ -160,7 +160,7 @@ public class ImageStorageTools {
 
 		return strMimeType;
 	}
-	
+
 	public static Image createScratchFromUri(Uri contentUri) throws Exception
 	{
 		String type = getMimeType(contentUri);

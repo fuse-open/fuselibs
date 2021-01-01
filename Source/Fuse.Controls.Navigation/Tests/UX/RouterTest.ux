@@ -1,8 +1,8 @@
 <Panel ux:Class="UX.RouterTest">
-	
+
 	<Panel>
 		<Router ux:Name="routerA" IsMasterRouter="false"/>
-		
+
 		<Panel>
 			<Navigator DefaultPath="two" ux:Name="N1">
 				<Panel ux:Template="one">
@@ -12,7 +12,7 @@
 							<Page ux:Name="deux"/>
 						</PageControl>
 						<Page ux:Name="ii"/>
-						
+
 						<!-- direct child outlet -->
 						<PageControl ux:Name="iii" Active="bee">
 							<Page ux:Name="eh"/>
@@ -30,11 +30,11 @@
 			</Navigator>
 		</Panel>
 	</Panel>
-	
+
 	<!-- separate test, reusing same UX to ensure multiple routers work -->
 	<Panel>
 		<Router ux:Name="routerB" IsMasterRouter="false"/>
-		
+
 		<Navigator ux:Name="N2">
 			<Panel ux:Template="one">
 			</Panel>

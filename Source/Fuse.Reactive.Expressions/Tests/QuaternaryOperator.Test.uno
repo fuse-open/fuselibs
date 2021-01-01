@@ -22,7 +22,7 @@ namespace Fuse.Reactive.Test
 				Assert.AreEqual( "nope", p.c.ObjectValue );
 				Assert.AreEqual( "nope", p.d.ObjectValue );
 				Assert.AreEqual( "nope", p.e.ObjectValue );
-				
+
 				p.strct.Value = p.strctData1.Value;
 				root.PumpDeferred();
 				Assert.AreEqual( "nope", p.a.ObjectValue );
@@ -30,7 +30,7 @@ namespace Fuse.Reactive.Test
 				Assert.AreEqual( "nope", p.c.ObjectValue );
 				Assert.AreEqual( "nope", p.d.ObjectValue );
 				Assert.AreEqual( "xyz*", p.e.ObjectValue );
-				
+
 				p.strct.Value = p.strctData2.Value;
 				root.PumpDeferred();
 				Assert.AreEqual( "nope", p.a.ObjectValue );
@@ -38,7 +38,7 @@ namespace Fuse.Reactive.Test
 				Assert.AreEqual( "nope", p.c.ObjectValue );
 				Assert.AreEqual( "xy*w", p.d.ObjectValue );
 				Assert.AreEqual( "nope", p.e.ObjectValue );
-				
+
 				p.strct.Value = p.strctData3.Value;
 				root.PumpDeferred();
 				Assert.AreEqual( "nope", p.a.ObjectValue );
@@ -46,7 +46,7 @@ namespace Fuse.Reactive.Test
 				Assert.AreEqual( "x*zw", p.c.ObjectValue );
 				Assert.AreEqual( "nope", p.d.ObjectValue );
 				Assert.AreEqual( "nope", p.e.ObjectValue );
-				
+
 				p.strct.Value = p.strctData4.Value;
 				root.PumpDeferred();
 				Assert.AreEqual( "nope", p.a.ObjectValue );
@@ -54,7 +54,7 @@ namespace Fuse.Reactive.Test
 				Assert.AreEqual( "nope", p.c.ObjectValue );
 				Assert.AreEqual( "nope", p.d.ObjectValue );
 				Assert.AreEqual( "nope", p.e.ObjectValue );
-				
+
 				p.strct.Value = p.strctData5.Value;
 				root.PumpDeferred();
 				Assert.AreEqual( "xyzw", p.a.ObjectValue );
@@ -64,7 +64,7 @@ namespace Fuse.Reactive.Test
 				Assert.AreEqual( "xyzw", p.e.ObjectValue );
 			}
 		}
-		
+
 		[Test]
 		public void Error()
 		{
@@ -73,15 +73,15 @@ namespace Fuse.Reactive.Test
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
 				Assert.IsFalse( p.iq.BoolValue );
-				
+
 				p.d.Value = "triggerBad";
-				
+
 				var d = dg.DequeueAll();
 				Assert.IsTrue( d.Count == 1 || d.Count == 2 ); //TODO: there is a double OnNewData somewhere, not relevant to this feature though!
 				Assert.Contains( "Failed to compute", d[0].Message );
 
 				Assert.IsFalse( p.iq.BoolValue );
-		
+
 				p.d.Value = 4;
 				root.PumpDeferred();
 				Assert.IsTrue( p.iq.BoolValue );
@@ -89,7 +89,7 @@ namespace Fuse.Reactive.Test
 			}
 		}
 	}
-	
+
 	[UXFunction("_quaJoin")]
 	class QuaJoin : QuaternaryOperator
 	{
@@ -98,12 +98,12 @@ namespace Fuse.Reactive.Test
 			[UXParameter("Third")] Expression third, [UXParameter("Fourth")] Expression fourth)
 			: base(first, second, third, fourth, Flags.None)
 		{}
-			
+
 		protected QuaJoin([UXParameter("First")] Expression first, [UXParameter("Second")] Expression second,
 			[UXParameter("Third")] Expression third, [UXParameter("Fourth")] Expression fourth, Flags flags)
 			: base(first, second, third, fourth, flags)
 		{}
-		
+
 		protected override bool TryCompute(object first, object second, object third, object fourth, out object result)
 		{
 			//special case for Error test (as we had no actual QuaternaryOperator's to test)
@@ -112,7 +112,7 @@ namespace Fuse.Reactive.Test
 				result = null;
 				return false;
 			}
-				
+
 			result = (first == null ? "*" : first.ToString()) +
 				(second == null ? "*" : second.ToString()) +
 				(third == null ? "*" : third.ToString()) +
@@ -120,7 +120,7 @@ namespace Fuse.Reactive.Test
 			return true;
 		}
 	}
-	
+
 	[UXFunction("_quaJoin1")]
 	class QuaJoin1 : QuaJoin
 	{
@@ -130,7 +130,7 @@ namespace Fuse.Reactive.Test
 			: base(first, second, third, fourth, Flags.Optional0)
 		{}
 	}
-	
+
 	[UXFunction("_quaJoin2")]
 	class QuaJoin2 : QuaJoin
 	{

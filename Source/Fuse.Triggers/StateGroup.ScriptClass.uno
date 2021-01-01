@@ -9,7 +9,7 @@ namespace Fuse.Triggers
 	{
 		static StateGroup()
 		{
-			ScriptClass.Register(typeof(StateGroup), 
+			ScriptClass.Register(typeof(StateGroup),
 				new ScriptMethod<StateGroup>("goto", goto_),
 				new ScriptMethod<StateGroup>("gotoNext", gotoNext)
 			);
@@ -30,15 +30,15 @@ namespace Fuse.Triggers
 			}
 			n.Goto(state);
 		}
-		
+
 		/**
 			Transition to a target state.
-			
+
 			@scriptmethod goto( name )
 			@param name The name of the target state.
-			
+
 			@scriptmethod goto( state )
-			@param state The state object for the target state. This must be a @State that already 
+			@param state The state object for the target state. This must be a @State that already
 				exists in this @StateGroup.
 		*/
 		static void goto_(StateGroup n, object[] args)
@@ -48,17 +48,17 @@ namespace Fuse.Triggers
 				Fuse.Diagnostics.UserError( "StateGroup.goto requires 1 argument", n );
 				return;
 			}
-			
+
 			if (args[0] is string)
 				gotoName(n, args[0] as string);
 			else
 				n.Goto(args[0] as State);
 		}
-		
+
 		/**
 			Transition to the next state (the one after the current one). This wraps around to the first state
 			if at the last one.
-			
+
 			@scriptmethod gotoNext()
 		*/
 		static void gotoNext(StateGroup n)

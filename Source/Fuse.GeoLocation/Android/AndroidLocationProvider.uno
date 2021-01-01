@@ -2,71 +2,71 @@ using Uno;
 using Uno.Threading;
 using Uno.Time;
 using Uno.Collections;
-using Uno.Permissions;
+using Fuse.Android.Permissions;
 using Uno.Compiler.ExportTargetInterop;
 using Fuse.GeoLocation.Android;
 
 namespace Fuse.GeoLocation
 {
-	[ForeignInclude(Language.Java, 
-		"androidx.core.content.ContextCompat", 
-		"android.content.pm.PackageManager", 
-		"android.Manifest", 
-		"android.location.LocationManager", 
-		"android.location.Location", 
-		"android.provider.Settings", 
-		"android.util.Log", 
-		"java.util.List", 
-		"fuse.geolocation.UpdateListener", 
-		"fuse.geolocation.BackgroundService", 
-		"android.content.Intent", 
-		"android.os.Looper", 
-		"android.content.Context", 
+	[ForeignInclude(Language.Java,
+		"androidx.core.content.ContextCompat",
+		"android.content.pm.PackageManager",
+		"android.Manifest",
+		"android.location.LocationManager",
+		"android.location.Location",
+		"android.provider.Settings",
+		"android.util.Log",
+		"java.util.List",
+		"fuse.geolocation.UpdateListener",
+		"fuse.geolocation.BackgroundService",
+		"android.content.Intent",
+		"android.os.Looper",
+		"android.content.Context",
 		"com.uno.StringArray")]
 	extern(Android) class AndroidLocationProvider :  ILocationTracker
 	{
-		
+
 		bool _authorized;
 		bool _started;
 		Action<Location> _onLocationChanged;
 		Java.Object _locationManager;
 		Java.Object _updateListener;
 		Action _onReady;
-		
+
 		Action<Location> startListening_onLocationChanged;
 		int startListening_minimumReportInterval;
 		double startListening_desiredAccuracyInMeters;
-		
+
 		public AndroidLocationProvider() { }
-		
+
 		public void Init(Action onReady)
 		{
 			_onReady = onReady;
 
-			if (@(Project.Android.GeoLocation.RequestPermissionsOnLaunch:ToLower) == "false") 
+			if (@(Project.Android.GeoLocation.RequestPermissionsOnLaunch:ToLower) == "false")
 			{
 				_authorized = false;
 				_locationManager = GetLocationManager();
 				_updateListener = GetUpdateListener(OnLocationChanged);
 				_onReady();
 				_onReady = null;
-			} 
-			else 
+			}
+			else
 			{
 				RequestPermissions();
 			}
-			
+
 		}
 
 
 		[Foreign(Language.Java)]
-		static int checkPermissions() 
-		@{	
+		static int checkPermissions()
+		@{
 			//check if background location is explicitly requested (not enabled by default since Android Q)
 			if ("@(Project.Android.GeoLocation.BackgroundLocation.Enabled:ToLower)" == "true"
-				&& android.os.Build.VERSION.SDK_INT >= 29) 
+				&& android.os.Build.VERSION.SDK_INT >= 29)
 			{
-				if (ContextCompat.checkSelfPermission(com.fuse.Activity.getRootActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED 
+				if (ContextCompat.checkSelfPermission(com.fuse.Activity.getRootActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
 					&& ContextCompat.checkSelfPermission(com.fuse.Activity.getRootActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)
 				{
 					if (ContextCompat.checkSelfPermission(com.fuse.Activity.getRootActivity(), android.Manifest.permission.ACCESS_BACKGROUND_LOCATION) == PackageManager.PERMISSION_GRANTED)
@@ -79,14 +79,14 @@ namespace Fuse.GeoLocation
 						//request background permission
 						return 1;
 					}
-				} 
+				}
 				else
 				{
 					//request all permissions
 					return 2;
 				}
-			} 
-			else 
+			}
+			else
 			{
 				//request regular permissions
 				return 3;
@@ -98,8 +98,8 @@ namespace Fuse.GeoLocation
 			int permissionState = checkPermissions();
 
 			switch (permissionState) {
-				case 3:	
-					var permissions = new PlatformPermission[] 
+				case 3:
+					var permissions = new PlatformPermission[]
 					{
 						Permissions.Android.INTERNET,
 						Permissions.Android.ACCESS_COARSE_LOCATION,
@@ -107,8 +107,8 @@ namespace Fuse.GeoLocation
 					};
 					Permissions.Request(permissions).Then(OnPermissionsResult, OnPermissionsError);
 					break;
-				case 2: 
-					var permissions = new PlatformPermission[] 
+				case 2:
+					var permissions = new PlatformPermission[]
 					{
 						Permissions.Android.INTERNET,
 						Permissions.Android.ACCESS_COARSE_LOCATION,
@@ -117,8 +117,8 @@ namespace Fuse.GeoLocation
 					};
 					Permissions.Request(permissions).Then(OnPermissionsResult, OnPermissionsError);
 					break;
-				case 1: 
-					var permissions = new PlatformPermission[] 
+				case 1:
+					var permissions = new PlatformPermission[]
 					{
 						Permissions.Android.INTERNET,
 						Permissions.Android.ACCESS_BACKGROUND_LOCATION
@@ -128,9 +128,9 @@ namespace Fuse.GeoLocation
 				case 0:
 					break;
 			}
-			
+
 		}
-		
+
 		void OnPermissionsResult(PlatformPermission[] grantedPermissions)
 		{
 			_authorized = true;
@@ -139,20 +139,20 @@ namespace Fuse.GeoLocation
 			_onReady();
 			_onReady = null;
 		}
-		
+
 		void OnPermissionsError(Exception e)
 		{
 			_authorized = false;
 			_onReady();
 			_onReady = null;
 		}
-		
+
 		[Foreign(Language.Java)]
 		static Java.Object GetLocationManager()
 		@{
 			return com.fuse.Activity.getRootActivity().getSystemService(Context.LOCATION_SERVICE);
 		@}
-		
+
 		[Foreign(Language.Java)]
 		static Java.Object GetUpdateListener(Action<Java.Object> onLocationChanged)
 		@{
@@ -165,118 +165,118 @@ namespace Fuse.GeoLocation
 		}
 
 		[Foreign(Language.Java)]
-		public bool IsLocationEnabled() 
+		public bool IsLocationEnabled()
 		@{
 			android.location.LocationManager locationManager = (LocationManager)com.fuse.Activity.getRootActivity().getSystemService(Context.LOCATION_SERVICE);
 
-			if (locationManager != null) 
+			if (locationManager != null)
 			{
-				if (android.os.Build.VERSION.SDK_INT >= 23) 
+				if (android.os.Build.VERSION.SDK_INT >= 23)
 				{
 					//check if background location is explicitly requested (not enabled by default since Android Q)
 					if ("@(Project.Android.GeoLocation.BackgroundLocation.Enabled:ToLower)" == "true"
-						&& android.os.Build.VERSION.SDK_INT >= 29) 
+						&& android.os.Build.VERSION.SDK_INT >= 29)
 					{
 						//check if hardware enabled
 						if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)||locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER))
 						{
-							//check user authorization 
-							if (ContextCompat.checkSelfPermission(com.fuse.Activity.getRootActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED 
+							//check user authorization
+							if (ContextCompat.checkSelfPermission(com.fuse.Activity.getRootActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
 								&& ContextCompat.checkSelfPermission(com.fuse.Activity.getRootActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
-								&& ContextCompat.checkSelfPermission(com.fuse.Activity.getRootActivity(), android.Manifest.permission.ACCESS_BACKGROUND_LOCATION) != PackageManager.PERMISSION_GRANTED) 
+								&& ContextCompat.checkSelfPermission(com.fuse.Activity.getRootActivity(), android.Manifest.permission.ACCESS_BACKGROUND_LOCATION) != PackageManager.PERMISSION_GRANTED)
 							{
 								return false;
-							} 
-							else 
+							}
+							else
 							{
 								return true;
 							}
-						} 
-						else 
-						{
-							return false;
 						}
-					} 
-					else 
-					{
-						//check if hardware enabled
-						if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)||locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER))
-						{
-							//check user authorization 
-							if (ContextCompat.checkSelfPermission(com.fuse.Activity.getRootActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED 
-								&& ContextCompat.checkSelfPermission(com.fuse.Activity.getRootActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) 
-							{
-								return false;
-							} 
-							else 
-							{
-								return true;
-							}
-						} 
-						else 
+						else
 						{
 							return false;
 						}
 					}
-				} 
-				else 
+					else
+					{
+						//check if hardware enabled
+						if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)||locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER))
+						{
+							//check user authorization
+							if (ContextCompat.checkSelfPermission(com.fuse.Activity.getRootActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+								&& ContextCompat.checkSelfPermission(com.fuse.Activity.getRootActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+							{
+								return false;
+							}
+							else
+							{
+								return true;
+							}
+						}
+						else
+						{
+							return false;
+						}
+					}
+				}
+				else
 				{
 					//legacy fallback
-					try 
+					try
 					{
 						locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 						return true;
-					} 
-					catch (SecurityException e) 
+					}
+					catch (SecurityException e)
 					{
 						return false;
 					}
 				}
-			} 
-			else 
+			}
+			else
 			{
 				return false;
 			}
 		@}
 
 		[Foreign(Language.Java)]
-		public string GetAuthorizationStatus() 
+		public string GetAuthorizationStatus()
 		@{
 			if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) //API 28
-			{ 
+			{
 				android.location.LocationManager lm = (android.location.LocationManager) com.fuse.Activity.getRootActivity().getSystemService(Context.LOCATION_SERVICE);
 
 				if (lm.isLocationEnabled()) {
 
 					//check if background location is explicitly requested (not enabled by default since Android Q)
 					if ("@(Project.Android.GeoLocation.BackgroundLocation.Enabled:ToLower)" == "true"
-						&& android.os.Build.VERSION.SDK_INT >= 29) 
+						&& android.os.Build.VERSION.SDK_INT >= 29)
 					{
-						if (ContextCompat.checkSelfPermission(com.fuse.Activity.getRootActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED 
+						if (ContextCompat.checkSelfPermission(com.fuse.Activity.getRootActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
 							&& ContextCompat.checkSelfPermission(com.fuse.Activity.getRootActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
-							&& ContextCompat.checkSelfPermission(com.fuse.Activity.getRootActivity(), android.Manifest.permission.ACCESS_BACKGROUND_LOCATION) != PackageManager.PERMISSION_GRANTED) 
+							&& ContextCompat.checkSelfPermission(com.fuse.Activity.getRootActivity(), android.Manifest.permission.ACCESS_BACKGROUND_LOCATION) != PackageManager.PERMISSION_GRANTED)
 						{
 							return "off";
-						} 
-						else 
-						{
-							return "on";
 						}
-					} 
-					else 
-					{
-						if (ContextCompat.checkSelfPermission(com.fuse.Activity.getRootActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED 
-							&& ContextCompat.checkSelfPermission(com.fuse.Activity.getRootActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) 
-						{
-							return "off";
-						} 
-						else 
+						else
 						{
 							return "on";
 						}
 					}
-				} 
-				else 
+					else
+					{
+						if (ContextCompat.checkSelfPermission(com.fuse.Activity.getRootActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+							&& ContextCompat.checkSelfPermission(com.fuse.Activity.getRootActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+						{
+							return "off";
+						}
+						else
+						{
+							return "on";
+						}
+					}
+				}
+				else
 				{
 					return "off";
 				}
@@ -286,25 +286,25 @@ namespace Fuse.GeoLocation
 				//legacy checks
 				int mode = android.provider.Settings.Secure.getInt(com.fuse.Activity.getRootActivity().getContentResolver(), android.provider.Settings.Secure.LOCATION_MODE, android.provider.Settings.Secure.LOCATION_MODE_OFF);
 
-				if ((mode != android.provider.Settings.Secure.LOCATION_MODE_OFF)) 
+				if ((mode != android.provider.Settings.Secure.LOCATION_MODE_OFF))
 				{
-					if (ContextCompat.checkSelfPermission(com.fuse.Activity.getRootActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED 
-							&& ContextCompat.checkSelfPermission(com.fuse.Activity.getRootActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) 
+					if (ContextCompat.checkSelfPermission(com.fuse.Activity.getRootActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+							&& ContextCompat.checkSelfPermission(com.fuse.Activity.getRootActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
 					{
 						return "off";
-					} 
-					else 
+					}
+					else
 					{
 						return "on";
 					}
-				} 
-				else 
+				}
+				else
 				{
 					return "off";
 				}
 			}
 		@}
-		
+
 		[Foreign(Language.Java)]
 		static bool IsNetworkEnabled(Java.Object locationManager)
 		@{
@@ -316,14 +316,14 @@ namespace Fuse.GeoLocation
 		@{
 			return ((LocationManager)locationManager).isProviderEnabled(LocationManager.GPS_PROVIDER);
 		@}
-		
-		
+
+
 		[Foreign(Language.Java)]
 		static int GetNumProviders(Java.Object handle)
 		@{
 			return ((LocationManager)handle).getAllProviders().size();
 		@}
-		
+
 		[Foreign(Language.Java)]
 		static void ListProviders(Java.Object handle, string[] output)
 		@{
@@ -336,15 +336,15 @@ namespace Fuse.GeoLocation
 		{
 			if(_onLocationChanged != null)
 				_onLocationChanged(LocationHelpers.ConvertLocation(location));
-		}	
-		
+		}
+
 		public void GetLocation(Promise<Location> promise, double timeout)
 		{
 			if (_locationManager == null) return;
-			
+
 			new PromiseListener(_locationManager, timeout, promise);
 		}
-		
+
 		[Foreign(Language.Java)]
 		static Java.Object GetLastKnownLocationFromProvider(Java.Object handle, string provider)
 		@{
@@ -364,7 +364,7 @@ namespace Fuse.GeoLocation
 				var locations = new List<Location>();
 				string[] providers = new string[GetNumProviders(_locationManager)];
 				ListProviders(_locationManager, providers);
-				foreach(var provider in providers) 
+				foreach(var provider in providers)
 				{
 					var lo = GetLastKnownLocationFromProvider(_locationManager, provider);
 					if(lo != null)
@@ -375,7 +375,7 @@ namespace Fuse.GeoLocation
 			}
 			return null;
 		}
-		
+
 		Location ChooseBestLocation(IList<Location> locations, int minDistance, Instant minTime)
 		{
 			Location bestResult = null;
@@ -409,18 +409,18 @@ namespace Fuse.GeoLocation
 						bestResult = location;
 						bestAccuracy = location.Accuracy;
 					}
-				}		
+				}
 			}
 
 			return bestResult;
 		}
-		
+
 		[Foreign(Language.Java)]
 		static void RequestNetworkLocationUpdates(Java.Object handle, int minimumReportInterval, double desiredAccuracyInMeters, Java.Object listener)
 		@{
 			((LocationManager)handle).requestLocationUpdates(LocationManager.NETWORK_PROVIDER, (long)minimumReportInterval, (float)desiredAccuracyInMeters, (UpdateListener)listener, Looper.getMainLooper());
 		@}
-		
+
 		[Foreign(Language.Java)]
 		static void RequestGPSLocationUpdates(Java.Object handle, int minimumReportInterval, double desiredAccuracyInMeters, Java.Object listener)
 		@{
@@ -466,8 +466,8 @@ namespace Fuse.GeoLocation
 			int permissionState = checkPermissions();
 
 			switch (permissionState) {
-				case 3:	
-					var permissions = new PlatformPermission[] 
+				case 3:
+					var permissions = new PlatformPermission[]
 					{
 						Permissions.Android.INTERNET,
 						Permissions.Android.ACCESS_COARSE_LOCATION,
@@ -475,8 +475,8 @@ namespace Fuse.GeoLocation
 					};
 					Permissions.Request(permissions).Then(OnStartListeningPermissionsResult, OnStartListeningPermissionsError);
 					break;
-				case 2: 
-					var permissions = new PlatformPermission[] 
+				case 2:
+					var permissions = new PlatformPermission[]
 					{
 						Permissions.Android.INTERNET,
 						Permissions.Android.ACCESS_COARSE_LOCATION,
@@ -485,8 +485,8 @@ namespace Fuse.GeoLocation
 					};
 					Permissions.Request(permissions).Then(OnStartListeningPermissionsResult, OnStartListeningPermissionsError);
 					break;
-				case 1: 
-					var permissions = new PlatformPermission[] 
+				case 1:
+					var permissions = new PlatformPermission[]
 					{
 						Permissions.Android.ACCESS_BACKGROUND_LOCATION
 					};
@@ -495,7 +495,7 @@ namespace Fuse.GeoLocation
 				case 0:
 					break;
 			}
-			
+
 		}
 
 		void startListening() {
@@ -503,14 +503,14 @@ namespace Fuse.GeoLocation
 			if (_locationManager != null && !_started)
 			{
 				_onLocationChanged = startListening_onLocationChanged;
-				
+
 				if(IsNetworkEnabled(_locationManager))
 					RequestNetworkLocationUpdates(_locationManager, startListening_minimumReportInterval, startListening_desiredAccuracyInMeters, _updateListener);
-					
+
 				if(IsGPSEnabled(_locationManager))
 					RequestGPSLocationUpdates(_locationManager, startListening_minimumReportInterval, startListening_desiredAccuracyInMeters, _updateListener);
 
-				if (@(Project.Android.GeoLocation.BackgroundLocation.Enabled:ToLower) == "true") 
+				if (@(Project.Android.GeoLocation.BackgroundLocation.Enabled:ToLower) == "true")
 				{
 					StartForegroundService();
 				}
@@ -523,22 +523,22 @@ namespace Fuse.GeoLocation
 		{
 			startListening();
 		}
-		
+
 		void OnStartListeningPermissionsError(Exception e)
 		{
 		}
-		
+
 		[Foreign(Language.Java)]
 		static void RemoveUpdates(Java.Object manager, Java.Object listener)
 		@{
 			((LocationManager)manager).removeUpdates((UpdateListener)listener);
 		@}
-		
+
 		public void StopListening()
 		{
 			RemoveUpdates(_locationManager, _updateListener);
 
-			if (@(Project.Android.GeoLocation.BackgroundLocation.Enabled:ToLower) == "true") 
+			if (@(Project.Android.GeoLocation.BackgroundLocation.Enabled:ToLower) == "true")
 			{
 				StopForegroundService();
 			}

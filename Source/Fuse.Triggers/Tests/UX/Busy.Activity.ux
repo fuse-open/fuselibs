@@ -6,12 +6,12 @@
 		<WhileBusy ux:Name="W2" Activity="Loading">
 			<Nothing/>
 		</WhileBusy>
-		
+
 		<Panel>
 			<WhileBusy ux:Name="W3" Activity="Processing" IsHandled="true">
 				<Nothing/>
 			</WhileBusy>
-			
+
 			<FuseTest.BusyControl ux:Name="B1" Activity="Common"/>
 			<FuseTest.BusyControl ux:Name="B2" Activity="Loading"/>
 			<FuseTest.BusyControl ux:Name="B3" Activity="Processing"/>

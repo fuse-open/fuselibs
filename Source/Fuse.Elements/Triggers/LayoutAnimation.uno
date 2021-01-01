@@ -7,7 +7,7 @@ namespace Fuse.Triggers
 {
 	public class LayoutTransitionedArgs : VisualEventArgs
 	{
-		public LayoutTransitionedArgs(Visual node) 
+		public LayoutTransitionedArgs(Visual node)
 			: base(node)
 		{}
 	}
@@ -26,7 +26,7 @@ namespace Fuse.Triggers
 		static LayoutTransitioned _transitioned = new LayoutTransitioned();
 		public static VisualEvent<LayoutTransitionedHandler, LayoutTransitionedArgs>
 			Transitioned { get { return _transitioned; } }
-			
+
 		class WorldPositionChangeMode: ITranslationMode
 		{
 			public float3 GetAbsVector(Translation t)
@@ -34,7 +34,7 @@ namespace Fuse.Triggers
 				return GetWorldPositionChange(t.RelativeNode) * t.Vector;
 			}
 			//results are fixed
-			public object Subscribe(ITransformRelative transform) { return null; } 
+			public object Subscribe(ITransformRelative transform) { return null; }
 			public void Unsubscribe(ITransformRelative transform, object sub) { }
 		}
 
@@ -100,7 +100,7 @@ namespace Fuse.Triggers
 				baseSize = newSize;
 				return b;
 			}
-			
+
 			//TODO: public TransformModeFlags Flags { get { return TransformModeFlags.None; } }
 		}
 
@@ -117,9 +117,9 @@ namespace Fuse.Triggers
 				var n = oldSize / newSize;
 				return float3(n,1) * v.Vector;
 			}
-			
+
 			//fixed results...?
-			public object Subscribe(ITransformRelative transform) { return null; } 
+			public object Subscribe(ITransformRelative transform) { return null; }
 			public void Unsubscribe(ITransformRelative transform, object sub) { }
 		}
 
@@ -155,7 +155,7 @@ namespace Fuse.Triggers
 			}
 		}
 	}
-	
+
 	public enum LayoutAnimationType
 	{
 		Implicit = 1<<0,
@@ -216,7 +216,7 @@ namespace Fuse.Triggers
 			get { return _type; }
 			set { _type = value; }
 		}
-		
+
 		Element _element;
 		protected override void OnRooted()
 		{
@@ -256,14 +256,14 @@ namespace Fuse.Triggers
 		{
 			if (!Type.HasFlag(LayoutAnimationType.Implicit))
 				return;
-				
+
 			//track only one change per frame
 			if (_hasOld == UpdateManager.FrameIndex)
 				return;
 
 			if (!args.HasPrev)
 				return;
-			
+
 			_hasOld = UpdateManager.FrameIndex;
 
 			_oldWorld = _element.WorldTransform;
@@ -277,7 +277,7 @@ namespace Fuse.Triggers
 		{
 			if (!Type.HasFlag(LayoutAnimationType.Implicit))
 				return;
-				
+
 			if (_hasOld != UpdateManager.FrameIndex)
 				return;
 			//explicit transitions have precedence
@@ -298,18 +298,18 @@ namespace Fuse.Triggers
 			BypassActivate();
 			Deactivate();
 		}
-		
+
 		void OnTransitioned(object sender, LayoutTransitionedArgs args)
 		{
 			if (!Type.HasFlag(LayoutAnimationType.Explicit))
 				return;
-				
+
 			_frameTrans = UpdateManager.FrameIndex;
 			BypassActivate();
 			Deactivate();
 		}
 	}
-	
+
 }
 
 namespace Fuse.Triggers.Actions
@@ -345,7 +345,7 @@ namespace Fuse.Triggers.Actions
 		public Element Target { get; set; }
 		/** Transition the element from this one. */
 		public Element From { get; set; }
-		
+
 		protected override void Perform(Node target)
 		{
 			//use Visual search for future-proofing this logic (it could be transitioned, just not supported now)
@@ -359,22 +359,22 @@ namespace Fuse.Triggers.Actions
 			//defer calculations until after layout since either element may have changed layout
 			UpdateManager.AddDeferredAction(Transition,UpdateStage.Layout, LayoutPriority.Placement);
 		}
-		
+
 		Element _perform;
 		void Transition()
 		{
 			float2 oldPosition = From.LocalTransform.M41M42;
 			float2 oldSize = From.ActualSize;
-			
+
 			var m = Matrix.Mul( From.WorldTransform, _perform.Parent.WorldTransformInverse );
 			float3 worldChange = m.M41M42M43 - float3(_perform.IntendedPosition,0);
-			
+
 			LayoutTransition.SetWorldPositionChange(_perform, worldChange);
 			LayoutTransition.SetPositionChange(_perform, oldPosition, _perform.IntendedPosition);
 			LayoutTransition.SetSizeChange(_perform, oldSize, _perform.IntendedSize);
-			
+
 			LayoutTransition.Transitioned.RaiseWithoutBubble(new LayoutTransitionedArgs(_perform));
 		}
-		
+
 	}
 }

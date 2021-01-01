@@ -1,11 +1,11 @@
 <Panel ux:Class="UX.VectorFunctions.XYZW">
 	<LetFloat3 ux:Name="a" Value="5,6,7"/>
 	<LetFloat4 ux:Name="b" Value="1,2,3,4"/>
-	
+
 	<FuseTest.DudElement Value="x({a})" ux:Name="xa"/>
 	<FuseTest.DudElement Value="y({a})" ux:Name="ya"/>
 	<FuseTest.DudElement Value="z({a})" ux:Name="za"/>
-	
+
 	<FuseTest.DudElement Value="z({b})" ux:Name="zb"/>
 	<FuseTest.DudElement Value="w({b})" ux:Name="wb"/>
 </Panel>

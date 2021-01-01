@@ -263,10 +263,10 @@ EventEmitter.prototype.observe = function observe(type) {
 		}
 	}
 	var self = this;
-	result._addSubscriptionWatcher( function() { 
-		self.addListener(type, listener); 
-	}, function() { 
-		self.removeListener(type, listener); 
+	result._addSubscriptionWatcher( function() {
+		self.addListener(type, listener);
+	}, function() {
+		self.removeListener(type, listener);
 	});
 	event.observable = result;
 	return result;

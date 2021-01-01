@@ -13,10 +13,10 @@ namespace Polyfills.Window
 		{
 			return this;
 		}
-		
+
 		static readonly WindowModule _instance;
-		static FileSource _fileSourceInstance; 
-		
+		static FileSource _fileSourceInstance;
+
 		static FileSource GetWindow()
 		{
 			if(_fileSourceInstance == null)

@@ -14,12 +14,12 @@ namespace Fuse.Elements
 		/** The element copies the local size and position of the master element's parent. */
 		ParentLayout,
 	}
-	
+
 	internal sealed class LayoutMasterBoxSizing : BoxSizing
 	{
 		static public LayoutMasterBoxSizing Singleton = new LayoutMasterBoxSizing();
-		
-		public override BoxPlacement CalcBoxPlacement(Element element, float2 position, 
+
+		public override BoxPlacement CalcBoxPlacement(Element element, float2 position,
 			LayoutParams lp)
 		{
 			var master = GetLayoutMaster(element);
@@ -31,22 +31,22 @@ namespace Fuse.Elements
 				bp.Size = element.ActualSize;
 				return bp;
 			}
-				
+
 			return StandardBoxSizing.Singleton.CalcBoxPlacement(element, position, lp );
 		}
-		
+
 		public override void RequestLayout(Element element)
 		{
 			var data = GetLayoutMasterData(element);
 			data.ScheduleCheckLayout();
 		}
-		
+
 		public override float2 CalcMarginSize(Element element, LayoutParams lp)
 		{
 			var master = GetLayoutMaster(element);
 			if (master == null)
 				return element.ActualSize;
-				
+
 			return StandardBoxSizing.Singleton.CalcMarginSize(element, lp);
 		}
 
@@ -54,7 +54,7 @@ namespace Fuse.Elements
 		{
 			return StandardBoxSizing.Singleton.CalcArrangePaddingSize(element, lp);
 		}
-		
+
 		static readonly PropertyHandle _layoutMasterDataProperty = Fuse.Properties.CreateHandle();
 
 		internal class LayoutMasterData
@@ -63,7 +63,7 @@ namespace Fuse.Elements
 			public Element Element;
 
 			public LayoutMasterMode Mode = LayoutMasterMode.ParentTransform;
-			
+
 			Element _master;
 			public Element Master
 			{
@@ -72,15 +72,15 @@ namespace Fuse.Elements
 				{
 					if (_master == value)
 						return;
-				
+
 					if (_master != null)
 						_master.Placed -= OnPlaced;
-					
+
 					_master = value;
-					
+
 					if (_master != null)
 						_master.Placed += OnPlaced;
-				
+
 					if (Element.IsRootingCompleted)
 						ScheduleCheckLayout();
 				}
@@ -93,10 +93,10 @@ namespace Fuse.Elements
 				if (!_pendingCheckLayout)
 				{
 					_pendingCheckLayout = true;
-					UpdateManager.AddDeferredAction(CheckLayout);						
+					UpdateManager.AddDeferredAction(CheckLayout);
 				}
 			}
-			
+
 			internal void CheckLayout()
 			{
 				_pendingCheckLayout = false;
@@ -105,7 +105,7 @@ namespace Fuse.Elements
 
 				var pos = float2(0);
 				var size = float2(0);
-				
+
 				if (Mode == LayoutMasterMode.LocalLayout)
 				{
 					pos = _master.ActualPosition;
@@ -127,22 +127,22 @@ namespace Fuse.Elements
 					var r = new Rect( float2(0), _master.ActualSize );
 					size = Rect.Transform( r, m ).Size;
 				}
-				
+
 				Element.ArrangeMarginBox( pos, LayoutParams.Create(size));
 			}
-			
+
 			void OnPlaced(object s, object args)
 			{
 				UpdateManager.AddDeferredAction(CheckLayout);
 			}
 		}
-		
+
 		internal static LayoutMasterData GetLayoutMasterData(Element elm)
 		{
 			object v;
 			if (elm.Properties.TryGet(_layoutMasterDataProperty, out v))
 				return (LayoutMasterData)v;
-				
+
 			var sd = new LayoutMasterData();
 			sd.Element = elm;
 			elm.Properties.Set(_layoutMasterDataProperty, sd);
@@ -153,20 +153,20 @@ namespace Fuse.Elements
 		{
 			return LayoutDependent.No;
 		}
-		
+
 		//should only be used via `Element.LayoutMaster` for now
 		//[UXAttachedPropertySetter("LayoutMasterBoxSizing.LayoutMaster")]
 		internal static void SetLayoutMaster(Element elm, Element master)
 		{
 			GetLayoutMasterData(elm).Master = master;
 		}
-		
+
 		//[UXAttachedPropertyGetter("LayoutMasterBoxSizing.LayoutMaster")]
 		internal static Element GetLayoutMaster(Element elm)
 		{
 			return GetLayoutMasterData(elm).Master;
 		}
-			
+
 		//[UXAttachedPropertyResetter("LayoutMasterBoxSizing.LayoutMaster")]
 		internal static void ResetLayoutMaster(Element elm)
 		{

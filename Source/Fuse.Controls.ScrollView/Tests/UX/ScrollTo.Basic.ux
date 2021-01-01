@@ -4,7 +4,7 @@
 			<ScrollTo RelativePosition="0.5"/>
 		</Timeline>
 	</Rectangle>
-	
+
 	<Timeline ux:Name="stA">
 		<ScrollTo Position="300"/>
 	</Timeline>

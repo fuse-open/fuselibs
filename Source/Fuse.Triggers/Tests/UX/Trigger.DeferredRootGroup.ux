@@ -5,7 +5,7 @@
 	<FuseTest.WhileDefer ux:Name="W2" On="true" Bypass="Never">
 		<Nothing Duration="1"/>
 	</FuseTest.WhileDefer>
-	
+
 	<FuseTest.WhileDefer ux:Name="D1">
 		<Nothing Duration="1"/>
 	</FuseTest.WhileDefer>
@@ -13,9 +13,9 @@
 		<Change D1.On="true"/>
 	</FuseTest.WhileDefer>
 
-	
+
 	<FuseTest.WhileDefer ux:Name="L1" On="true" Later="true">
 		<Nothing Duration="1"/>
 	</FuseTest.WhileDefer>
-	
+
 </Panel>

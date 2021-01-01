@@ -29,17 +29,17 @@ namespace Fuse.Gestures
 			base.OnRooted();
 			Impl.Translated += OnTranslated;
 		}
-	
+
 		protected override void OnUnrooted()
 		{
 			Impl.Translated -= OnTranslated;
 			base.OnUnrooted();
 		}
-		
+
 		float2 _startTranslation;
 		FastMatrix _startTransform;
 		float4x4 _invTransform;
-		
+
 		float2 _screenPrevTranslation, _screenStartTranslation;
 		protected override void OnStarted()
 		{
@@ -47,45 +47,45 @@ namespace Fuse.Gestures
 			_startTransform = FastMatrix.Identity();
 			Target.AppendRotationScale(_startTransform);
 			_invTransform = Matrix.Invert(_startTransform.Matrix );
-			_screenStartTranslation = _screenPrevTranslation = 
+			_screenStartTranslation = _screenPrevTranslation =
 				Vector.Transform(_startTranslation, _startTransform.Matrix ).XY;
-			
+
 			Region.Position = _screenStartTranslation;
 			UpdateConstraint();
 			Region.StartUser();
 			CheckNeedUpdate();
 		}
-		
+
 		protected override void OnEnded()
 		{
 			Region.EndUser();
 			CheckNeedUpdate();
 		}
-		
+
 		void UpdateConstraint()
 		{
 			var c = TranslationConstraint;
 			Region.MinPosition = c.XY;
 			Region.MaxPosition = c.ZW;
 		}
-		
+
 		void OnTranslated(float2 dist)
 		{
 			UpdateConstraint();
-			
+
 			var screen = _screenStartTranslation + dist;
 			var step = screen - _screenPrevTranslation;
 			Region.StepUser(step);
 			_screenPrevTranslation = screen;
-			
+
 			Target.Translation = Vector.Transform(Region.Position, _invTransform).XY;
 		}
-		
+
 		protected override void OnUpdate()
 		{
 			Target.Translation = Vector.Transform(Region.Position, _invTransform).XY;
 		}
-	
+
 		//TODO: this is invalid if the image is rotated!!!
 		internal float4 TranslationConstraint
 		{
@@ -94,7 +94,7 @@ namespace Fuse.Gestures
 				var hasSize = false;
 				var size = float2(0);
 				var trimSize = float2(0);
-				
+
 				if (_constrainElement != null)
 				{
 					size = _constrainElement.ActualSize;
@@ -106,7 +106,7 @@ namespace Fuse.Gestures
 					trimSize = _sizeConstraint.TrimSize;
 					hasSize = true;
 				}
-				
+
 				if (hasSize)
 				{
 					// transform original bounds to find...
@@ -114,7 +114,7 @@ namespace Fuse.Gestures
 					Target.AppendRotationScale(trans);
 					var rect = new Rect(-size/2, size);
 					var bounds = Rect.Transform(rect, trans.Matrix);
-					
+
 					//...extent over the original size..
 					var full = bounds.Maximum;
 					var over = Math.Max(float2(0), full - (size + trimSize) / 2);
@@ -122,11 +122,11 @@ namespace Fuse.Gestures
 					var c = float4(-over,over);
 					return c;
 				}
-				
+
 				return float4(float.NegativeInfinity,float.NegativeInfinity, float.PositiveInfinity, float.PositiveInfinity);
 			}
 		}
-		
+
 		Element _constrainElement;
 		/**
 			Constrains the gesture so the resulting scaled and translated @Visual will remain visible within the @ConstrainElement. That is, you can't pan it outside of the visible area.
@@ -148,12 +148,12 @@ namespace Fuse.Gestures
 		public Element ConstrainElement
 		{
 			get { return _constrainElement; }
-			set 
-			{ 
-				_constrainElement = value; 
+			set
+			{
+				_constrainElement = value;
 			}
 		}
-		
+
 		ISizeConstraint _sizeConstraint;
 		/**
 			Constrains the gesture so the resulting scaled and translated item will remain visible. Unlike @ConstrainElement this works only with items exposing an @ISizeConstraint, such as @Image, but provides stricter bounds calculations (based on the actual visual content, not just the element bounds).

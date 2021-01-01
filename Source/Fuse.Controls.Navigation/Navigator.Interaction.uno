@@ -9,15 +9,15 @@ using Fuse.Triggers.Actions;
 
 namespace Fuse.Controls
 {
-	
+
 	public partial class Navigator
 	{
 		NavigatorSwipeDirection _swipeBack = NavigatorSwipeDirection.None;
 		/**
 			Adds a swipe gesture to navigate backwards in the router history.
-			
+
 			This specifies the direction the user should swipe to go back. The default is `None`, indicating swiping is not enabled.
-			
+
 			This can be disabled on a per-page basis by specifying `SwipeBack="None"` on the page.
 		*/
 		public NavigatorSwipeDirection SwipeBack
@@ -29,7 +29,7 @@ namespace Fuse.Controls
 		NavigatorSwipe _navigatorSwipeBack;
 		NavigatorSwipe NavigatorSwipeBack
 		{
-			get 
+			get
 			{
 				if (_navigatorSwipeBack == null)
 				{
@@ -39,7 +39,7 @@ namespace Fuse.Controls
 				return _navigatorSwipeBack;
 			}
 		}
-		
+
 		Router _router;
 		void RootInteraction()
 		{
@@ -47,46 +47,46 @@ namespace Fuse.Controls
 			{
 				//in case turned off after unrooting
 				if (_navigatorSwipeBack != null)
-				{	
+				{
 					Children.Remove(_navigatorSwipeBack);
 					_navigatorSwipeBack = null;
 				}
 				return;
 			}
-			
+
 			NavigatorSwipeBack.Direction = SwipeBack;
 			NavigatorSwipeBack.How = NavigatorSwipeHow.Back;
-				
+
 			//add in local bounds to ensure it always works. There is no way we can determine if the
 			//hittestmode has been overidden by the user :/
 			HitTestMode = HitTestMode | HitTestMode.LocalBounds;
-			
+
 			_router = Router.TryFindRouter(this);
 			if (_router == null)
 			{
 				Fuse.Diagnostics.UserError( "Navigator requires a Router for interaction", this );
 				return;
 			}
-		
+
 			//this is easier than adding a WhileCanGoBack trigger
 			_router.HistoryChanged += OnHistoryChanged;
 			OnHistoryChanged(null);
 		}
-		
+
 		void UnrootInteraction()
 		{
 		}
-		
+
 		void OnHistoryChanged(object sender)
 		{
 			EnablePageSwipeBack();
 		}
-		
+
 		void CheckInteraction()
 		{
 			EnablePageSwipeBack();
 		}
-		
+
 		void EnablePageSwipeBack()
 		{
 			if (_navigatorSwipeBack != null && _router != null)
@@ -102,7 +102,7 @@ namespace Fuse.Controls
 				}
 			}
 		}
-		
+
 		static PropertyHandle _propSwipeBack = Properties.CreateHandle();
 		[UXAttachedPropertySetter("Navigator.SwipeBack")]
 		static public void SetSwipeBack(Visual elm, NavigatorSwipeDirection value)
@@ -121,12 +121,12 @@ namespace Fuse.Controls
 			}
 			return NavigatorSwipeDirection.Default;
 		}
-		
+
 		NavigatorSwipeDirection PageSwipeBackDirection(Visual elm)
 		{
 			var n = GetSwipeBack(elm);
 			return n == NavigatorSwipeDirection.Default ? SwipeBack : n;
 		}
-		
+
 	}
 }

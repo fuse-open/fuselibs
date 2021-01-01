@@ -27,7 +27,7 @@ namespace Fuse.Platform
 	[Require("Source.Include", "@{Uno.Platform.iOS.Application:Include}")]
 	[Require("Source.Include", "Uno-iOS/AppDelegate.h")]
 	[Require("Source.Include","objc/message.h")]
-	[Require("Source.Include", "KeyboardContext.h")]
+	[Require("Source.Include", "NotificationCenterContext.h")]
 	static extern(iOS) class SystemUI
 	{
 		static Rect _bottomFrame;
@@ -63,6 +63,22 @@ namespace Fuse.Platform
 
 		static public event Action MarginsChanged;
 		static public event Action<ScreenOrientation> DeviceOrientationChanged;
+		static public event Action<float> TextScaleFactorChanged;
+
+		static float _textScaleFactor = 1.0f;
+		static public float TextScaleFactor
+		{
+			get { return _textScaleFactor; }
+			private set
+			{
+				if (_textScaleFactor != value)
+				{
+					_textScaleFactor = value;
+					if (TextScaleFactorChanged != null)
+						TextScaleFactorChanged(value);
+				}
+			}
+		}
 
 		// @property (nonatomic, setter=uSetStatusBarAnimation:) UIStatusBarAnimation uStatusBarAnimation;
 		public static StatusBarAnimation uStatusBarAnimation { get; set; }
@@ -83,51 +99,72 @@ namespace Fuse.Platform
 		static public void OnCreate()
 		{
 			((Uno.Platform.iOSDisplay)Uno.Platform.Displays.MainDisplay).FrameChanged += OnFrameChanged;
+			Uno.Platform.CoreApp.EnteringForeground += OnEnteringForeground;
 			OnFrameChanged(null, null);
-			EnableKeyboardResizeNotifications(_keyboardContext);
+			SetupNotificationCenterObservers(_notificationContext);
 		}
 
 		static public void OnDestroy()
 		{
-			DisableKeyboardResizeNotifications(_keyboardContext);
+			RemoveNotificationCenterObservers(_notificationContext);
+			Uno.Platform.CoreApp.EnteringForeground -= OnEnteringForeground;
 		}
 
-		static ObjC.Object _keyboardContext = NewKeyboardContext();
+		static void OnEnteringForeground(Uno.Platform.ApplicationState newState)
+		{
+			ReadConfiguration(_notificationContext);
+		}
 
 		[Foreign(Language.ObjC)]
-		static ObjC.Object NewKeyboardContext()
+		static void ReadConfiguration(ObjC.Object notificationContext)
 		@{
-			return [[uKeyboardContext alloc] init];
+			uNotificationCenterContext* ctx = (uNotificationCenterContext*)notificationContext;
+			CGFloat textScaleFactor = [ctx textScaleFactor];
+			@{uTextScaleFactorDidChange(float):Call(textScaleFactor)};
+		@}
+
+		static ObjC.Object _notificationContext = NewNotificationCenterContext();
+
+		[Foreign(Language.ObjC)]
+		static ObjC.Object NewNotificationCenterContext()
+		@{
+			return [[uNotificationCenterContext alloc] init];
 		@}
 
 		[Foreign(Language.ObjC)]
-		static void EnableKeyboardResizeNotifications(ObjC.Object keyboardContext)
+		static void SetupNotificationCenterObservers(ObjC.Object notificationContext)
 		@{
-			uKeyboardContext* ctx = (uKeyboardContext*)keyboardContext;
+			uNotificationCenterContext* ctx = (uNotificationCenterContext*)notificationContext;
+			NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
 
-			[[NSNotificationCenter defaultCenter]
-			 addObserver:ctx selector:@selector(uKeyboardWillChangeFrame:)
-			 name:UIKeyboardWillShowNotification object:nil];
+			[center
+				addObserver:ctx selector:@selector(uKeyboardWillChangeFrame:)
+				name:UIKeyboardWillShowNotification object:nil];
 
-			[[NSNotificationCenter defaultCenter]
-			 addObserver:ctx
-			 selector:@selector(uKeyboardWillChangeFrame:)
-			 name:UIKeyboardWillHideNotification object:nil];
+			[center
+				addObserver:ctx
+				selector:@selector(uKeyboardWillChangeFrame:)
+				name:UIKeyboardWillHideNotification object:nil];
+
+			[center
+				addObserver:ctx
+				selector:@selector(onUserSettingsChanged:)
+				name:UIContentSizeCategoryDidChangeNotification object:nil];
 		@}
 
 
 		[Foreign(Language.ObjC)]
-		static void DisableKeyboardResizeNotifications(ObjC.Object keyboardContext)
+		static void RemoveNotificationCenterObservers(ObjC.Object notificationContext)
 		@{
-			uKeyboardContext* ctx = (uKeyboardContext*)keyboardContext;
+			uNotificationCenterContext* ctx = (uNotificationCenterContext*)notificationContext;
 
 			[[NSNotificationCenter defaultCenter]
-			 removeObserver:ctx
-			 name:UIKeyboardWillShowNotification object:nil];
+				removeObserver:ctx
+				name:UIKeyboardWillShowNotification object:nil];
 
 			[[NSNotificationCenter defaultCenter]
-			 removeObserver:ctx
-			 name:UIKeyboardWillHideNotification object:nil];
+				removeObserver:ctx
+				name:UIKeyboardWillHideNotification object:nil];
 		@}
 
 		//------------------------------------------------------------
@@ -286,6 +323,11 @@ namespace Fuse.Platform
 			OnWillResize();
 		}
 
+		static void uTextScaleFactorDidChange(float _textScaleFactor)
+		{
+			TextScaleFactor = _textScaleFactor;
+		}
+
 		//------------------------------------------------------------
 
 		// @property (nonatomic, readonly) @{Uno.Rect} uStatusBarFrame;
@@ -323,7 +365,22 @@ namespace Fuse.Platform
 			IsTopFrameVisible = false;
 		}
 
-		static public int supportedOrientation = extern<int>"UIInterfaceOrientationMaskAll";
+		static public int supportedOrientation = GetProjectSettingsOrientation();
+
+		private static int GetProjectSettingsOrientation()
+		{
+			if (@(Project.Mobile.Orientations:ToLower) == "portrait")
+				return  extern<int>"UIInterfaceOrientationMaskPortrait | UIInterfaceOrientationMaskPortraitUpsideDown";
+			if (@(Project.Mobile.Orientations:ToLower) == "portraitupsidedown")
+				return  extern<int>"UIInterfaceOrientationMaskPortraitUpsideDown";
+			if (@(Project.Mobile.Orientations:ToLower) == "landscape")
+				return  extern<int>"UIInterfaceOrientationMaskLandscapeLeft | UIInterfaceOrientationMaskLandscapeRight";
+			if (@(Project.Mobile.Orientations:ToLower) == "landscapeleft")
+				return  extern<int>"UIInterfaceOrientationMaskLandscapeLeft";
+			if (@(Project.Mobile.Orientations:ToLower) == "landscaperight")
+				return  extern<int>"UIInterfaceOrientationMaskLandscapeRight";
+			return  extern<int>"UIInterfaceOrientationMaskAll";
+		}
 
 		public static ScreenOrientation DeviceOrientation
 		{
@@ -358,23 +415,26 @@ namespace Fuse.Platform
 		[Foreign(Language.ObjC)]
 		static int GetCurrentScreenOrientation()
 		@{
+			UIInterfaceOrientation mask;
 			#if defined(__IPHONE_13_0) && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_13_0
-			 UIInterfaceOrientation mask = [[UIApplication sharedApplication].windows firstObject].windowScene.interfaceOrientation;
-			 switch (mask)
-			 {
-			 	case UIInterfaceOrientationPortrait:
-			 		return 0;
-			 	case UIInterfaceOrientationLandscapeLeft:
-			 		return 1;
-			 	case UIInterfaceOrientationLandscapeRight:
-			 		return 2;
-			 	case UIInterfaceOrientationPortraitUpsideDown:
-			 		return 3;
-			 	case UIInterfaceOrientationUnknown:
-			 		return 4;
-			 }
-			#else
-			UIInterfaceOrientationMask mask = [[UIApplication sharedApplication] statusBarOrientation];
+			if (@available(iOS 13.0, *)) {
+				mask = [[UIApplication sharedApplication].windows firstObject].windowScene.interfaceOrientation;
+				switch (mask)
+				{
+					case UIInterfaceOrientationPortrait:
+						return 0;
+					case UIInterfaceOrientationLandscapeLeft:
+						return 1;
+					case UIInterfaceOrientationLandscapeRight:
+						return 2;
+					case UIInterfaceOrientationPortraitUpsideDown:
+						return 3;
+					case UIInterfaceOrientationUnknown:
+						return 4;
+				}
+			}
+			#endif
+			mask = [[UIApplication sharedApplication] statusBarOrientation];
 			switch (mask)
 			{
 				case UIInterfaceOrientationMaskPortrait:
@@ -388,7 +448,6 @@ namespace Fuse.Platform
 				default:
 					return 4;
 			}
-			#endif
 		@}
 
 		[Foreign(Language.ObjC)]
@@ -423,8 +482,28 @@ namespace Fuse.Platform
 				}
 				default:
 				{
-					@{supportedOrientation:Set(UIInterfaceOrientationMaskAll)};
-					value = [NSNumber numberWithInt:UIInterfaceOrientationPortrait];
+					int orientationMask = GetProjectSettingsOrientation();
+					@{supportedOrientation:Set(orientationMask)};
+					switch (orientationMask)
+					{
+						case UIInterfaceOrientationMaskPortrait | UIInterfaceOrientationMaskPortraitUpsideDown:
+							value = [NSNumber numberWithInt:UIInterfaceOrientationPortrait];
+							break;
+						case UIInterfaceOrientationMaskPortraitUpsideDown:
+							value = [NSNumber numberWithInt:UIInterfaceOrientationPortraitUpsideDown];
+							break;
+						case UIInterfaceOrientationMaskLandscapeLeft | UIInterfaceOrientationMaskLandscapeRight:
+							value = [NSNumber numberWithInt:UIInterfaceOrientationLandscapeLeft];
+							break;
+						case UIInterfaceOrientationMaskLandscapeLeft:
+							value = [NSNumber numberWithInt:UIInterfaceOrientationLandscapeLeft];
+							break;
+						case UIInterfaceOrientationMaskLandscapeRight:
+							value = [NSNumber numberWithInt:UIInterfaceOrientationLandscapeRight];
+							break;
+						default:
+							value = [NSNumber numberWithInt:UIInterfaceOrientationPortrait];
+					}
 				}
 			}
 			[[UIDevice currentDevice] setValue:value forKey:@"orientation"];

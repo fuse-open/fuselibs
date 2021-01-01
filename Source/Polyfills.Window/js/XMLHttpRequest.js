@@ -1,7 +1,7 @@
 (function (window, HttpClient) {
 
 	'use strict';
-	
+
 	var HttpRequestState = {
 		Uninitialized : 0,
 		Opened : 1,
@@ -41,7 +41,7 @@
 				return this._fuseHttpRequest.getResponseStatus();
 			}
 		};
-		
+
 		propertyDescriptors.statusText = {
 			get: function () {
 				if(this._fuseHttpRequest === null) return "";
@@ -94,7 +94,7 @@
 		Object.defineProperties(a, propertyDescriptors);
 		return a;
 	};
-		
+
 	fuseXMLHttpRequest.UNSENT = 0;
 	fuseXMLHttpRequest.OPENED = 1;
 	fuseXMLHttpRequest.HEADERS_RECEIVED = 2;
@@ -172,7 +172,7 @@
 		else
 			throw "InvalidStateError";
 	}
-	
+
 	fuseXMLHttpRequest.prototype.setRequestHeader = function(header, value) {
 		if(this._fuseHttpRequest === null) return;
 		return this._fuseHttpRequest.setHeader(header, value + "");
@@ -202,7 +202,7 @@
 		fuseXMLHttpRequest.prototype.removeEventListener = window.EventTarget.prototype.removeEventListener;
 		fuseXMLHttpRequest.prototype.dispatchEvent = window.EventTarget.prototype.dispatchEvent;
 	}
-	
+
 	function isAnyObject(value) {
 		return value != null && (typeof value === 'object' || typeof value === 'function');
 	}
@@ -211,7 +211,7 @@
 		if(typeof this.dispatchEvent === 'function') {
 			if(typeof arg === 'undefined')
 				arg = {};
-			
+
 			if(isAnyObject(arg))
 				arg.type = eventName;
 			else

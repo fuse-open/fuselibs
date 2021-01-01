@@ -5,6 +5,9 @@
   "Packages": [
     "Uno.Collections"
   ],
+  "InternalsVisibleTo": [
+    "Fuse.Controls.Primitives"
+  ],
   "Projects": [
     "../Fuse.Animations/Fuse.Animations.unoproj",
     "../Fuse.Drawing.Planar/Fuse.Drawing.Planar.unoproj",
@@ -15,6 +18,7 @@
     "../Fuse.Common/Fuse.Common.unoproj"
   ],
   "Includes": [
+    "Docs/**:File",
     "BasicEffect.uno:Source",
     "Blur.uno:Source",
     "Desaturate.uno:Source",

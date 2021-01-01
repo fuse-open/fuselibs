@@ -1,6 +1,6 @@
 <Panel ux:Class="UX.Image.RetryReload">
 	<JavaScript>
-		exports.reload = function() { 
+		exports.reload = function() {
 			image.reload()
 		}
 

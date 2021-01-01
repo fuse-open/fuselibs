@@ -27,7 +27,7 @@ namespace Fuse
 		{
 			get { return (DesktopRootViewport)RootViewport; }
 		}
-		
+
 		readonly RootPanel _rootPanel = new RootPanel();
 		protected App()
 		{
@@ -51,7 +51,7 @@ namespace Fuse
 		{
 			get { return _rootPanel.Children; }
 		}
-		
+
 		public override Visual ChildrenVisual
 		{
 			get { return _rootPanel; }
@@ -71,9 +71,9 @@ namespace Fuse
 			UpdateManager.IncreaseFrameIndex();
 		}
 
-		public override bool NeedsRedraw 
-		{ 
-			get { return DesktopRootViewport.IsDirty; } 
+		public override bool NeedsRedraw
+		{
+			get { return DesktopRootViewport.IsDirty; }
 		}
 
 		public sealed override void Update()
@@ -82,7 +82,7 @@ namespace Fuse
 			{
 				Time.Set(Uno.Diagnostics.Clock.GetSeconds());
 				OnUpdate();
-				
+
 				// It's important that the FrameIndex is incremented every frame even if nothing draws. The increment
 				// should happen after drawing, but if there is nothing to draw it won't reach that code, thus we
 				// check for that condition here.
@@ -94,6 +94,6 @@ namespace Fuse
 				OnUnhandledException(e);
 			}
 		}
-	
+
 	}
 }

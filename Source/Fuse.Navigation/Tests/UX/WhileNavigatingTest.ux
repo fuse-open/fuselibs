@@ -1,6 +1,6 @@
 <Panel ux:Class="UX.WhileNavigatingTest">
 	<LinearNavigation ux:Name="Nav"/>
-	
+
 	<Page ux:Name="P1">
 		<WhileNavigating ux:Name="WN1">
 			<Nothing Duration="0"/>
@@ -8,7 +8,7 @@
 	</Page>
 	<Page ux:Name="P2"/>
 	<Page ux:Name="P3"/>
-	
+
 	<WhileNavigating ux:Name="WN2">
 		<Nothing Duration="0"/>
 	</WhileNavigating>

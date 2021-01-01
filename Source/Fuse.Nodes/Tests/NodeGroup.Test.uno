@@ -25,32 +25,32 @@ namespace Fuse.Controls.Test
 				p.innerPanel.IsActive = false;
 				p.innerPanel.IsActive = true;
 				Assert.IsTrue(p.B.Children.Contains(p.C));
-				
+
 				//remove outer while removing
 				p.innerPanel.IsActive = false;
 				p.outerPanel.IsActive = false;
 				root.PumpDeferred();
 				Assert.IsFalse(p.A.Children.Contains(p.B));
 				Assert.IsFalse(p.B.Children.Contains(p.C));
-				
+
 				p.outerPanel.IsActive = true;
 				Assert.IsTrue(p.A.Children.Contains(p.B));
 				Assert.IsFalse(p.B.Children.Contains(p.C));
-				
+
 				//remove inner while outer not visible
 				p.innerPanel.IsActive = true;
 				Assert.IsTrue(p.B.Children.Contains(p.C));
-				
+
 				p.outerPanel.IsActive = false;
 				root.PumpDeferred();
 				Assert.IsFalse(p.A.Children.Contains(p.B));
-				
+
 				p.innerPanel.IsActive = false;
 				root.PumpDeferred();
 				Assert.IsFalse(p.B.Children.Contains(p.C));
 			}
 		}
-		
+
 		[Test]
 		//a simple practical test
 		public void GridLine()
@@ -64,7 +64,7 @@ namespace Fuse.Controls.Test
 				Assert.AreEqual(float2(200), p.C.C3.ActualPosition);
 			}
 		}
-		
+
 		[Test]
 		public void Resources()
 		{

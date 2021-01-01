@@ -3,12 +3,12 @@
 		<float4 ux:Property="Color"/>
 		<string ux:Property="Title"/>
 		<string ux:Property="Emoji"/>
-		
+
 		<Rectangle Color="{Property this.Color}" ux:Name="C1"/>
 		<Text Value="{Property this.Title}" ux:Name="C2"/>
 		<Text Value="{Property this.Emoji}" ux:Name="C3"/>
 	</NodeGroup>
-	
+
 	<Grid ColumnCount="3">
 		<NGGridLine Color="#AFA" Title="Happy One" Emoji="😀" ux:Name="A"/>
 		<NGGridLine Color="#FFA" Title="Cry Baby" Emoji="😭" ux:Name="B"/>

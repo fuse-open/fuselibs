@@ -15,6 +15,7 @@
     "../Fuse.Scripting/Fuse.Scripting.unoproj"
   ],
   "Includes": [
+    "Docs/**:File",
     "Common.uno:Source",
     "JS.uno:Source",
 

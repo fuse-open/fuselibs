@@ -8,20 +8,20 @@
 		}
 	</JavaScript>
 	<FuseTest.Invoke Handler="{go}" ux:Name="callGo"/>
-	
+
 	<Timeline Name="ಠ_ಠ">
 		<Set text1.Value="yes"/>
 	</Timeline>
 	<Text Value="nope" ux:Name="text1"/>
-	
+
 	<Timeline ux:Name="$">
 		<Set text2.Value="yes"/>
 	</Timeline>
 	<Text Value="nope" ux:Name="text2"/>
-	
+
 	<Timeline Name="_&#x200c;⁀">
 		<Set text3.Value="yes"/>
 	</Timeline>
 	<Text Value="nope" ux:Name="text3"/>
-	
+
 </Panel>

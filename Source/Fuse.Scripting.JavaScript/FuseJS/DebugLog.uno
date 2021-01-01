@@ -35,42 +35,42 @@ namespace Fuse.Reactive
 			c.GlobalObject["console"] = console;
 		}
 
-		static object LogInternal(Context context, object[] args, Uno.Diagnostics.DebugMessageType debugMessageType)
+		static object LogInternal(Context context, object[] args, Uno.Diagnostics.LogLevel level)
 		{
 			var formatted = Format(context, args);
-			Uno.Diagnostics.Debug.Log(formatted, debugMessageType);
+			Uno.Diagnostics.Log.WriteLine(level, formatted);
 			return null;
 		}
 
 		static object Log(Context context, object[] args)
 		{
-			return LogInternal(context, args, Uno.Diagnostics.DebugMessageType.Debug);
+			return LogInternal(context, args, Uno.Diagnostics.LogLevel.Debug);
 		}
 
 		static object Warn(Context context, object[] args)
 		{
-			return LogInternal(context, args, Uno.Diagnostics.DebugMessageType.Warning);
+			return LogInternal(context, args, Uno.Diagnostics.LogLevel.Warning);
 		}
 
 		static object Info(Context context, object[] args)
 		{
-			return LogInternal(context, args, Uno.Diagnostics.DebugMessageType.Information);
+			return LogInternal(context, args, Uno.Diagnostics.LogLevel.Information);
 		}
 
 		static object Error(Context context, object[] args)
 		{
-			return LogInternal(context, args, Uno.Diagnostics.DebugMessageType.Error);
+			return LogInternal(context, args, Uno.Diagnostics.LogLevel.Error);
 		}
 
 		static string Format(Context context, object[] args)
 		{
 			var sb = new StringBuilder();
-			
+
 			for (var i = 0; i < args.Length; ++i)
 			{
 				if (i != 0)
 					sb.Append(" ");
-				
+
 				sb.Append(ToString(context, args[i]));
 			}
 

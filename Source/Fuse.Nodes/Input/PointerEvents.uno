@@ -127,5 +127,5 @@ namespace Fuse.Input
 			handler(sender, args);
 		}
 	}
-	
+
 }

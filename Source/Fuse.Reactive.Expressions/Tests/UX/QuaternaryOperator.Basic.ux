@@ -5,11 +5,11 @@
 	<FuseTest.Data ux:Name="strctData3" Value="(one: 'x', three: 'z', four: 'w')"/>
 	<FuseTest.Data ux:Name="strctData4" Value="(two: 'y', three: 'z', four: 'w')"/>
 	<FuseTest.Data ux:Name="strctData5" Value="(one: 'x', two: 'y', three: 'z', four: 'w')"/>
-	
+
 	<FuseTest.DudElement StringValue="{= _quaJoin( {Property strct.Value}.one, {Property strct.Value}.two, {Property strct.Value}.three, {Property strct.Value}.four) ?? 'nope' }" ux:Name="a"/>
 	<FuseTest.DudElement StringValue="{= _quaJoin1( {Property strct.Value}.one, {Property strct.Value}.two, {Property strct.Value}.three, {Property strct.Value}.four) ?? 'nope' }" ux:Name="b"/>
 	<FuseTest.DudElement StringValue="{= _quaJoin2( {Property strct.Value}.one, {Property strct.Value}.two, {Property strct.Value}.three, {Property strct.Value}.four) ?? 'nope' }" ux:Name="c"/>
 	<FuseTest.DudElement StringValue="{= _quaJoin3( {Property strct.Value}.one, {Property strct.Value}.two, {Property strct.Value}.three, {Property strct.Value}.four) ?? 'nope' }" ux:Name="d"/>
 	<FuseTest.DudElement StringValue="{= _quaJoin4( {Property strct.Value}.one, {Property strct.Value}.two, {Property strct.Value}.three, {Property strct.Value}.four) ?? 'nope' }" ux:Name="e"/>
-	
+
 </Panel>

@@ -3,7 +3,7 @@
 		<Each Count="1">
 		</Each>
 	</Panel>
-	
+
 	<Panel ux:Name="b">
 		<JavaScript>
 			exports.items = [ { key: "one" } ]

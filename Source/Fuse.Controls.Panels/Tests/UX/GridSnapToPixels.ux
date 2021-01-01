@@ -4,15 +4,15 @@
 	<Rectangle ux:Name="C21"><SolidColor Color="1,0,0,0.8"/></Rectangle>
 	<Rectangle ux:Name="C31"><SolidColor Color="1,0,0,0.6"/></Rectangle>
 	<Rectangle ux:Name="C41"><SolidColor Color="1,0,0,0.4"/></Rectangle>
-	
+
 	<Rectangle ux:Name="C12" Grid.ColumnSpan="2"><SolidColor Color="1,1,0,1"/></Rectangle>
 	<Rectangle ux:Name="C32"><SolidColor Color="1,1,0,0.6"/></Rectangle>
 	<Rectangle ux:Name="C42" Grid.RowSpan="2"><SolidColor Color="1,1,0,0.4"/></Rectangle>
-	
+
 	<Rectangle ux:Name="C13"><SolidColor Color="1,0,1,1"/></Rectangle>
 	<Rectangle ux:Name="C23"><SolidColor Color="1,0,1,0.8"/></Rectangle>
 	<Rectangle ux:Name="C33"><SolidColor Color="1,0,1,0.6"/></Rectangle>
-	
+
 	<Rectangle ux:Name="C14"><SolidColor Color="0,1,0,1"/></Rectangle>
 	<Rectangle ux:Name="C24"><SolidColor Color="0,1,0,0.8"/></Rectangle>
 	<Rectangle ux:Name="C34"><SolidColor Color="0,1,0,0.6"/></Rectangle>

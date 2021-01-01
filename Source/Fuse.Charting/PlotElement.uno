@@ -24,14 +24,14 @@ namespace Fuse.Charting
 			base.OnRooted();
 			_watcher = new PlotDataItemWatcher<PlotDataPoint>(this,this);
 		}
-			
+
 		protected override void OnUnrooted()
 		{
 			_watcher.Dispose();
 			_watcher = null;
 			base.OnUnrooted();
 		}
-		
+
 		void IPlotDataItemListener<PlotDataPoint>.OnNewData(PlotDataPoint entry) { OnDataPointChanged(entry); }
 		internal abstract void OnDataPointChanged( PlotDataPoint entry );
 	}

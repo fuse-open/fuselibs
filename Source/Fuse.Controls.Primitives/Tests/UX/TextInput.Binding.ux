@@ -1,7 +1,7 @@
 <Panel ux:Class="UX.TextInput.Binding">
 	<JavaScript>
 		var Observable = require("FuseJS/Observable")
-		
+
 		exports.text = Observable("one")
 	</JavaScript>
 	<TextInput Value="{text}" ux:Name="T1"/>

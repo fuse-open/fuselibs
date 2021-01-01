@@ -26,6 +26,7 @@
     "../Fuse.Triggers/Fuse.Triggers.unoproj",
   ],
   "Includes": [
-	"**.uno:Source",
+    "Docs/**:File",
+    "**.uno:Source"
   ]
 }

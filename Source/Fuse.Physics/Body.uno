@@ -1,10 +1,11 @@
 using Uno;
 using Uno.Collections;
+using Uno.UX;
 using Fuse.Elements;
 
 namespace Fuse.Physics
 {
-	internal class Body
+	internal class Body: IPropertyListener
 	{
 		static readonly PropertyHandle _frictionHandle = Properties.CreateHandle();
 
@@ -25,30 +26,71 @@ namespace Fuse.Physics
 			get { return GetFriction(Visual); }
 			set { SetFriction(Visual, value); }
 		}
-		
+
 		internal readonly World World;
 		internal readonly Visual Visual;
 
 		internal int PinCount;
 
 		readonly Translation _translation;
+		readonly Draggable _draggable;
+
+		internal float3 _deltaFromCenter = float3(0);
+		internal ITransformOrigin _prevTransform;
+
+		public void SetPointerPosition (float3 worldPos) {
+			_deltaFromCenter = float3(0);
+			_deltaFromCenter = worldPos - CenterPosition;
+
+			Element ele = Visual as Element;
+
+			if (ele != null) {
+				var localPos = float3(ele.ActualSize / 2, 0) + _deltaFromCenter;
+
+				_prevTransform = ele.TransformOrigin;
+				ele.ExplicitTransformOrigin = new Size2(
+					Size.Percent(localPos.X * 100 / Visual.LocalBounds.Maximum.X),
+					Size.Percent(localPos.Y * 100 / Visual.LocalBounds.Maximum.Y),
+				);
+			}
+		}
+
+		public void ReleasePointer() {
+			_deltaFromCenter = float3(0);
+			Element ele = Visual as Element;
+
+			if (ele != null) {
+				ele.TransformOrigin = _prevTransform;
+			}
+		}
 
 		internal float3 CenterPosition
 		{
-			get { return Vector.Transform(Visual.LocalBounds.Center, Visual.WorldTransform).XYZ; }
+			get
+			{
+				return Vector.Transform(Visual.LocalBounds.Center + _deltaFromCenter, Visual.WorldTransform).XYZ;
+			}
 		}
 
-		internal Body(World world, Visual node) 
+		internal Body(World world, Visual node)
 		{
 			Visual = node;
+
 			_translation = new Translation();
+			_draggable = Visual.FirstChild<Draggable>();
+			_position = float3(_draggable.Translation.X, _draggable.Translation.Y, 0);
+			_translation.Vector = _position;
+
 			Visual.Children.Add(_translation);
 
 			World = world;
+
+			_draggable.AddPropertyListener(this);
 		}
 
 		internal void Dispose()
 		{
+			_draggable.RemovePropertyListener(this);
 			Visual.Children.Remove(_translation);
 		}
 
@@ -69,12 +111,28 @@ namespace Fuse.Physics
 			if (_motionOwner != null) return false;
 
 			_motionOwner = owner;
+
+			for (var fft = Visual.FirstChild<DragStarted>(); fft != null; fft = fft.NextSibling<DragStarted>())
+			{
+				fft.OnTriggered(this, _position);
+			}
+
 			return true;
 		}
 
 		internal void UnlockMotion()
 		{
 			_motionOwner = null;
+
+			for (var fft = Visual.FirstChild<DragEnded>(); fft != null; fft = fft.NextSibling<DragEnded>())
+			{
+				fft.OnTriggered(this, _position);
+			}
+
+			for (var dropped = Visual.FirstChild<Dropped>(); dropped != null; dropped = dropped.NextSibling<Dropped>())
+			{
+				dropped.OnTriggered(this, _position);
+			}
 		}
 
 		internal void Move(float3 delta)
@@ -87,7 +145,7 @@ namespace Fuse.Physics
 		internal void ConstrainToBounds(Element elm)
 		{
 			_constraint = elm;
-			
+
 		}
 
 		internal void ApplyForce(float3 force)
@@ -97,14 +155,14 @@ namespace Fuse.Physics
 
 		internal float3 Position { get { return _position; } }
 
-		internal float3 WorldPosition 
+		internal float3 WorldPosition
 		{
-			get 
+			get
 			{
 				return Visual.WorldPosition;
 			}
 		}
- 
+
 		float3 _velocity;
 		float3 _position;
 
@@ -144,10 +202,12 @@ namespace Fuse.Physics
 					_velocity = float3(0);
 				}
 			}
+
+			_draggable.Translation = float2(_position.X, _position.Y);
 		}
 
 		void ApplyFriction(double deltaTime)
-		{	
+		{
 			var friction = Friction;
 
 			for (double t = 0; t < deltaTime; t += 0.001)
@@ -160,6 +220,13 @@ namespace Fuse.Physics
 		{
 			if (_motionOwner != null) return;
 			_position += _velocity * (float)deltaTime * 5;
+		}
+
+		void IPropertyListener.OnPropertyChanged(PropertyObject obj, Selector prop)
+		{
+			if (obj == _draggable && prop.Equals("Translation")) {
+				_position = float3(_draggable.Translation.X, _draggable.Translation.Y, 0);
+			}
 		}
 	}
 

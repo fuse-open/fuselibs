@@ -7,7 +7,7 @@
 		<FuseTest.DudElement StringValue="{value}" ux:Name="v"/>
 		<FuseTest.DudElement Value="{id}" ux:Name="id"/>
 		<DataBinding Target="this.Load" Key="load"/>
-		
+
 		<FuseTest.Invoke Handler="{incrLoad}" ux:Name="callIncrLoad"/>
 	</Panel>
 

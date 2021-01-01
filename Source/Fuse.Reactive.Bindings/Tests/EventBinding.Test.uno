@@ -52,7 +52,7 @@ namespace Fuse.Reactive.Test
 				Assert.AreEqual("\"bar\"-bar", e.Text.Value);
 			}
 		}
-		
+
 		[Test]
 		public void StandardData()
 		{
@@ -60,13 +60,13 @@ namespace Fuse.Reactive.Test
 			using (var root = TestRootPanel.CreateWithChild(e))
 			{
 				root.StepFrameJS();
-				
+
 				e.goWith.Perform();
 				e.c.FirstChild<FuseTest.Invoke>().Perform();
-				for (var c = e.a.FirstChild<Panel>(); c != null; c = c .NextSibling<Panel>()) 
+				for (var c = e.a.FirstChild<Panel>(); c != null; c = c .NextSibling<Panel>())
 					c.FirstChild<FuseTest.Invoke>().Perform();
 				root.StepFrameJS();
-				
+
 				Assert.AreEqual( "si-la-one-two-", e.r.StringValue );
 			}
 		}

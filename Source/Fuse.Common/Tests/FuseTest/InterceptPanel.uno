@@ -17,7 +17,7 @@ namespace FuseTest
 			GetContentSizeCount++;
 			return base.GetContentSize(lp);
 		}
-		
+
 		public void Reset()
 		{
 			GetContentSizeCount = 0;

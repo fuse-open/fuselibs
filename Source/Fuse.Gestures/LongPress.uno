@@ -41,7 +41,7 @@ namespace Fuse.Gestures
 		{
 			if (!Accept(args))
 				return;
-			
+
 			Pulse();
 			if (Handler != null)
 				Handler(this, new LongPressedArgs(args, Parent));

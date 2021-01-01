@@ -3,7 +3,7 @@
 		<Panel ColumnSpan="2" ux:Name="C1"/>
 		<Panel ux:Name="C2"/>
 		<Panel ux:Name="C3" ColumnSpan="2"/>
-		
+
 		<Panel ColumnSpan="2" ux:Name="C4"/>
 		<Panel ux:Name="C5"/>
 		<Panel ux:Name="C6" ColumnSpan="2"/>

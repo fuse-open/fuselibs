@@ -13,7 +13,7 @@
 +(void)imageFromData:(NSData*)data
 		onComplete:(StringAction)onComplete
 		onFail:(StringAction)onFail;
-		
+
 +(NSString*)imageFromDataSync:(NSData*)data;
 
 +(void)resizeImage:(NSString*)path

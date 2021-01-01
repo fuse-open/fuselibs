@@ -7,7 +7,7 @@ namespace Fuse.Drawing
 	{
 		Surface GetSurface();
 	}
-	
+
 	static public class SurfaceManager
 	{
 		static public Surface Create(object owner)

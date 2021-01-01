@@ -11,7 +11,7 @@ namespace Fuse.Controls
 		/** Brings the new current visual to the front */
 		BringToFront,
 	}
-	
+
 	class NavigatorSwitchedArgs : VisualEventArgs
 	{
 		public String OldPath, NewPath;
@@ -20,15 +20,15 @@ namespace Fuse.Controls
 		public RoutingOperation Operation;
 		public string OperationStyle;
 		public NavigationGotoMode Mode;
-		
-		public NavigatorSwitchedArgs( Visual v ) 
+
+		public NavigatorSwitchedArgs( Visual v )
 			: base(v)
 		{
 		}
 	}
-	
+
 	delegate void NavigationSwitchedHandler(object sender, NavigatorSwitchedArgs args);
-	
+
 	/**
 		In order of most restrictve (except Default) to least restrictive (which imply the less restrictve ones as well).
 	*/
@@ -62,5 +62,5 @@ namespace Fuse.Controls
 		/** As soon as the page is released (typically when no longer visible). */
 		Released,
 	}
-	
+
 }

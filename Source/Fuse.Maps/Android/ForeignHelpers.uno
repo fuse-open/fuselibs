@@ -6,7 +6,7 @@ using Uno.Compiler.ExportTargetInterop;
 
 namespace Fuse.Maps.Android
 {
-	[ForeignInclude(Language.Java, "com.fusetools.maps.FuseMap", "android.util.Log", "android.graphics.Color")]
+	[ForeignInclude(Language.Java, "com.fuse.maps.FuseMap", "android.util.Log", "android.graphics.Color")]
 	extern (Android) static class ForeignHelpers
 	{
 		[Foreign(Language.Java)]

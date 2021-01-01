@@ -24,7 +24,7 @@ namespace Fuse.Internal
 
 			return true;
 		}
-		
+
 		public static bool TryOrthoRH(float width, float height, float zNear, float zFar, out float4x4 result)
 		{
 			if (TryOrthoLH(width, height, zNear, zFar, out result))
@@ -58,7 +58,7 @@ namespace Fuse.Internal
 			result.M43 *= -1.0f;
 			return result;
 		}
-		
+
 		public static float4x4 PerspectiveView( float2 viewSize, float distance, float2 relOrigin )
 		{
 			var t = Matrix.Translation(-relOrigin.X*viewSize.X, -relOrigin.Y*viewSize.Y, distance);
@@ -72,7 +72,7 @@ namespace Fuse.Internal
 			var t = Matrix.Translation(relOrigin.X*viewSize.X, relOrigin.Y*viewSize.Y, -distance);
 			return Matrix.Mul(s,t);
 		}
-		
+
 		public static bool TryPerspectiveProjection( float2 viewSize, float znear, float zfar, float distance, out float4x4 result )
 		{
 			var zdiff = znear - zfar;
@@ -91,7 +91,7 @@ namespace Fuse.Internal
 			result.M43 = 2 * (zfar * znear) / zdiff;
 			return true;
 		}
-		
+
 		public static bool TryPerspectiveProjectionInverse( float2 viewSize, float znear, float zfar, float distance, out float4x4 result )
 		{
 			float zdiv = 2*zfar*znear;

@@ -13,7 +13,7 @@ namespace Fuse.Scripting
         {
             return new ActionClosure<T>(action).Run;
         }
-        
+
         public static Callback FromAction<T1, T2>(Action<T1, T2> action)
         {
             return new ActionClosure<T1, T2>(action).Run;

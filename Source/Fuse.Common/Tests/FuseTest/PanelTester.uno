@@ -132,7 +132,7 @@ namespace FuseTest
 			{
 				root.Children.Add(parent);
 
-				LayoutTestHelper.TestElementLayout(root, panelToTest, int2(600,600), 
+				LayoutTestHelper.TestElementLayout(root, panelToTest, int2(600,600),
 					root.SnapToPixelsSize(float2(100, 71)) , float2(600 - 100 - root.SnapToPixelsPos(21.4f),
 					root.SnapToPixelsPos(5.3f)), 0.0001f);
 
@@ -144,7 +144,7 @@ namespace FuseTest
 			{
 				root.Children.Add(parent);
 
-				LayoutTestHelper.TestElementLayout(root, panelToTest, int2(900,600), 
+				LayoutTestHelper.TestElementLayout(root, panelToTest, int2(900,600),
 					root.SnapToPixelsSize(float2(100, 71)) , float2(900 - 100 - root.SnapToPixelsPos(21.4f),
 					root.SnapToPixelsPos(5.3f)), 0.0001f);
 
@@ -176,7 +176,7 @@ namespace FuseTest
 				panelToTest.MinWidth = 542;
 				panelToTest.Height = 417;
 
-				LayoutTestHelper.TestElementLayout(root, panelToTest, int2(341, 608), float2(542, 417), 
+				LayoutTestHelper.TestElementLayout(root, panelToTest, int2(341, 608), float2(542, 417),
 					float2(-101.5f, (608-417-14+12)/2f));
 				LayoutTestHelper.TestElementLayout(root, panelToTest, int2(847, 609), float2(847-11-13, 417), float2(11, (609-417-14+12)/2f));
 

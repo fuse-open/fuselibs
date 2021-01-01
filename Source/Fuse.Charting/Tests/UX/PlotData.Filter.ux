@@ -8,7 +8,7 @@
 	</JavaScript>
 	<c:Plot DataOffset="3" DataLimit="5" DataExtend="1,2" ux:Name="P">
 		<c:DataSeries Data="{values}"/>
-		
+
 		<Panel ux:Name="A">
 			<c:PlotData ux:Name="D">
 				<Text Value="{Plot data.source.y}"/>

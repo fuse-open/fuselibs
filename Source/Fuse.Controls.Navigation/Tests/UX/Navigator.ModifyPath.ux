@@ -9,7 +9,7 @@
 				}]
 			})
 		}
-		
+
 		exports.pushTwo = function() {
 			nav.modifyPath({
 				how: "Push",
@@ -20,7 +20,7 @@
 				}]
 			})
 		}
-		
+
 		exports.replaceThree = function() {
 			nav.modifyPath({
 				how: "Replace",
@@ -31,13 +31,13 @@
 				}]
 			})
 		}
-		
+
 		exports.goBack = function() {
 			nav.modifyPath({
 				how: "GoBack",
 			})
 		}
-		
+
 		exports.goBackTwo = function() {
 			nav.modifyPath({
 				how: "GoBack",
@@ -48,7 +48,7 @@
 			})
 		}
 	</JavaScript>
-	
+
 	<Navigator ux:Name="nav" Transition="None">
 		<Panel ux:Template="one">
 			<Text Value="1.{id}"/>
@@ -60,7 +60,7 @@
 			<Text Value="3.{id}"/>
 		</Panel>
 	</Navigator>
-	
+
 	<FuseTest.Invoke Handler="{gotoOne}" ux:Name="gotoOne"/>
 	<FuseTest.Invoke Handler="{pushTwo}" ux:Name="pushTwo"/>
 	<FuseTest.Invoke Handler="{replaceThree}" ux:Name="replaceThree"/>

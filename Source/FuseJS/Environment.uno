@@ -48,11 +48,31 @@ namespace FuseJS
 			On iOS, it returns a string in the format of `<major>.<minor>.<patch>` (e.g. `9.2.1`).
 			Returns an empty string on all other platforms.
 		@scriptproperty (string) locale Get current device locale using BCP47 format (e.g. `en-US`).
+		@scriptproperty (string) appTitle Get application title info from .unoproj file
+		@scriptproperty (string) appVersion Get application version info from .unoproj file
+		@scriptproperty (string) appPublisher Get application publisher info from .unoproj file
+		@scriptproperty (string) copyright Get application copyright info from .unoproj file
+		@scriptproperty (string) androidTitle Get Android application title info from .unoproj file
+		@scriptproperty (string) androidVersionCode Get Android application version code info from .unoproj file
+		@scriptproperty (string) androidVersionNumber Get Android application version number info from .unoproj file
+		@scriptproperty (string) iosTitle Get iOS application title info from .unoproj file
+		@scriptproperty (string) iosVersionNumber Get iOS application version number info from .unoproj file
 	*/
 	[UXGlobalModule]
 	public sealed class Environment : NativeModule
 	{
 		static readonly Environment _instance;
+
+		static string versionNumber = @(Project.Version);
+		static string title      = @(Project.Title);
+		static string publisher  = @(Project.Publisher);
+		static string copyright  = @(Project.Copyright);
+		static string androidTitle  = @(Project.Android.ApplicationLabel);
+		static string androidVersionNumber  = @(Project.Android.VersionName);
+		static string androidVersionCode  = @(Project.Android.VersionCode);
+		static string iosTitle  = @(Project.iOS.BundleName);
+		static string iosVersionNumber  = @(Project.iOS.BundleVersion);
+
 
 		public Environment()
 		{
@@ -67,6 +87,15 @@ namespace FuseJS
 			AddMember(new NativeProperty<bool, bool>("host_mac", defined(HOST_MAC))); // Undocumented for testing use only
 			AddMember(new NativeProperty<string, string>("mobileOSVersion", GetMobileOSVersion));
 			AddMember(new NativeProperty<string, object>("locale", GetCurrentLocale));
+			AddMember(new NativeProperty<string, string>("appVersion", versionNumber));
+			AddMember(new NativeProperty<string, string>("appTitle", title));
+			AddMember(new NativeProperty<string, string>("appPublisher", publisher));
+			AddMember(new NativeProperty<string, string>("copyright", copyright));
+			AddMember(new NativeProperty<string, string>("androidVersionNumber", androidVersionNumber));
+			AddMember(new NativeProperty<string, string>("androidVersionCode", androidVersionCode));
+			AddMember(new NativeProperty<string, string>("androidTitle", androidTitle));
+			AddMember(new NativeProperty<string, string>("iosVersionNumber", iosVersionNumber));
+			AddMember(new NativeProperty<string, string>("iosTitle", iosTitle));
 		}
 
 		static string GetMobileOSVersion()

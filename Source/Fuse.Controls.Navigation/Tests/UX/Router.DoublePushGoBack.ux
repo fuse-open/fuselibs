@@ -4,7 +4,7 @@
 			router.push("two", {})
 			router.push("two", {})
 		}
-	
+
 		exports.goBack = function() {
 			router.goBack()
 		}

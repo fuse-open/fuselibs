@@ -49,7 +49,7 @@ namespace Fuse.Controls.ScrollViewTest
 				Assert.AreEqual(float2(1000,1000),p.sp3.ActualSize);
 			}
 		}
-		
+
 		[Test]
 		public void BringIntoViewTest()
 		{
@@ -110,7 +110,7 @@ namespace Fuse.Controls.ScrollViewTest
 				Assert.AreEqual(float2(0,-150),sv.MinOverflow);
 			}
 		}
-			
+
 
 		/**
 			Ensures that a scroller doesn't loose track of the desired target and bounds
@@ -152,7 +152,7 @@ namespace Fuse.Controls.ScrollViewTest
 				Assert.AreEqual(200, p.SV.TestScroller.TestTargetDestination.X);
 			}
 		}
-		
+
 		[Test]
 		public void ScrollViewAlignment()
 		{
@@ -217,7 +217,7 @@ namespace Fuse.Controls.ScrollViewTest
 				Assert.AreEqual( float2(140,90), sv.C12.ActualSize );
 			}
 		}
-		
+
 		[Test]
 		public void UserScroll()
 		{
@@ -237,7 +237,7 @@ namespace Fuse.Controls.ScrollViewTest
 				Assert.AreEqual(pos, sv.S.ScrollPosition.Y);
 			}
 		}
-		
+
 		[Test]
 		public void UserInteraction()
 		{
@@ -251,11 +251,11 @@ namespace Fuse.Controls.ScrollViewTest
 				root.PointerSlide(float2(100,500), float2(100,300), speed);
 				//adjust for delayed gesture and accuracy of sliding steps
 				const float zeroTolerance = 1e-05f;
-				Assert.AreEqual(200 - GestureHardCaptureSignificanceThreshold, 
+				Assert.AreEqual(200 - GestureHardCaptureSignificanceThreshold,
 					sv.S.ScrollPosition.Y, 2 * root.StepIncrement * speed + zeroTolerance);
 			}
 		}
-		
+
 		[Test]
 		public void LayoutChangeBottom()
 		{
@@ -273,7 +273,7 @@ namespace Fuse.Controls.ScrollViewTest
 				Assert.AreEqual( -100, sv.S.ScrollPosition.Y );
 			}
 		}
-		
+
 		[Test]
 		public void LayoutChangeTop()
 		{
@@ -296,7 +296,7 @@ namespace Fuse.Controls.ScrollViewTest
 				Assert.AreEqual( 50, sv.S.ScrollPosition.Y, 1e-3 );
 			}
 		}
-		
+
 		[Test]
 		public void ScrollPositionChanged()
 		{
@@ -316,7 +316,7 @@ namespace Fuse.Controls.ScrollViewTest
 				Assert.AreEqual( "0,80000 50,8", s.T.Value );
 			}
 		}
-		
+
 		[Test]
 		//UserMode must be maintained regardless of what happens to the scroller
 		public void UserMode()
@@ -327,24 +327,24 @@ namespace Fuse.Controls.ScrollViewTest
 				float speed = 100;
 				root.PointerPress(float2(100,500));
 				root.PointerSlide(float2(100,500), float2(100,550), speed);
-				
+
 				s.SV.Height = new Size(999,Unit.Points); //forces layout reevaluation
 				//without the fix this would switch to Destination mode and start scrolling automatically
 				root.StepFrame(1);
 				root.PointerSlide(float2(100,550), float2(100,580), speed);
-				
+
 				s.P.Height = new Size(100,Unit.Points); //force content layout and size change
 				root.StepFrame(1);
 				root.PointerSlide(float2(100,580), float2(100,600), speed);
-				
+
 				//adjust for delayed gesture and accuracy of sliding steps
 				// 2*StepIncrement since it's allowed to delay one frame/event now
 				const float zeroTolerance = 1e-05f;
-				Assert.AreEqual(-100 + GestureHardCaptureSignificanceThreshold, 
+				Assert.AreEqual(-100 + GestureHardCaptureSignificanceThreshold,
 					s.SV.ScrollPosition.Y, 2*root.StepIncrement * speed + zeroTolerance);
 
 				Assert.AreEqual( 100 * (-s.SV.ScrollPosition.Y / s.SM.OverflowExtent.Y), s.SAP.Height.Value );
-				
+
 				//let it snap now
 				root.PointerRelease(float2(100,600));
 				root.StepFrame(5);
@@ -352,7 +352,7 @@ namespace Fuse.Controls.ScrollViewTest
 				Assert.AreEqual(0, s.SAP.Height.Value);
 			}
 		}
-		
+
 		[Test]
 		public void GesturePriority()
 		{
@@ -360,7 +360,7 @@ namespace Fuse.Controls.ScrollViewTest
 			using (var root = TestRootPanel.CreateWithChild( sv, int2(1000) ))
 			{
 				Assert.AreEqual(0,sv.S.ScrollPosition.Y);
-			
+
 				root.PointerSwipe(float2(100,500), float2(100,400),100);
 				Assert.AreEqual( 0, sv.S.ScrollPosition.Y); //SwipeGesture wins out
 				root.StepFrame(5); //stabilize

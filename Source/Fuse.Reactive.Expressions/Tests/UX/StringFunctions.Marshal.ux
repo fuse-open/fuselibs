@@ -2,7 +2,7 @@
 	<Let Value=" 'a' " ux:Name="a"/>
 	<Let Value=" 'b' " ux:Name="b"/>
 	<Let Value="{= 3 }" ux:Name="c"/>
-	
+
 	<FuseTest.Value Object="{a} + {b}" ux:Name="str"/>
 	<FuseTest.Value Object="{a} + {c}" ux:Name="num"/>
 </Panel>

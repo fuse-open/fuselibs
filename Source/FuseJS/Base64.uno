@@ -8,18 +8,18 @@ namespace FuseJS
 {
     /**
         @scriptmodule FuseJS/Base64
-		
+
 		Allows you to encode and decode strings from Base64.
-		
+
 		This is useful when passing string to places where some characters are not allowed.
-		
+
 		This example demonstrates simple use of the `Base64` module. The code prints the input string, and the computed Base64 string.
-		
+
 			var Base64 = require("FuseJS/Base64");
 			var string = "Hello, world!";
 			console.log(string); //LOG: Hello, world!
 			console.log(Base64.encodeAscii(string)); //LOG: SGVsbG8sIHdvcmxkIQ==
-		
+
     */
 	[UXGlobalModule]
 	public sealed class Base64 : NativeModule
@@ -130,7 +130,7 @@ namespace FuseJS
 		/** @scriptmethod encodeAscii(value)
 
 			Encodes the given ASCII value to base64 string representation
-			
+
 				var Base64 = require("FuseJS/Base64");
 				console.log(Base64.encodeAscii("Hello, world!")); //LOG: SGVsbG8sIHdvcmxkIQ==
 
@@ -191,7 +191,7 @@ namespace FuseJS
 		}
 
 		/** @scriptmethod decodeUtf8(value)
-			
+
 			Decodes the given base64 value to an UTF8 string representation
 
 				var Base64 = require("FuseJS/Base64");

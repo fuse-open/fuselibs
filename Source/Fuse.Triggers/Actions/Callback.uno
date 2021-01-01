@@ -6,7 +6,7 @@ namespace Fuse.Triggers.Actions
 		Calls a JavaScript function when a trigger is activated.
 
 		## Example
-		
+
 		This example calls the JavaScript function `someJSFunction` when a @Button is @Clicked.
 
 			<JavaScript>
@@ -15,7 +15,7 @@ namespace Fuse.Triggers.Actions
 				}
 				module.exports = { someJSFunction: someJSFunction };
 			</JavaScript>
-			
+
 			<Button Text="Do something">
 				<Clicked>
 					<Callback Handler="{someJSFunction}"/>
@@ -26,15 +26,15 @@ namespace Fuse.Triggers.Actions
 	{
 		/** @advanced */
 		public Action Action { get; set; }
-		
+
 		/** The JavaScript function to be called */
 		public event VisualEventHandler Handler;
-		
+
 		protected override void Perform(Node target)
 		{
 			if (Action != null)
 				Action();
-				
+
 			if (Handler != null)
 			{
 				var visual = target.FindByType<Visual>();

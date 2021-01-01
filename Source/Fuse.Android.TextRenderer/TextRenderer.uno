@@ -12,7 +12,7 @@ namespace Fuse.Android
 {
 	using Fuse.Controls;
 	using Fuse.Controls.Native.Android;
-	
+
 	extern (Android) class TextControlLayout
 	{
 		public StaticLayout Layout { get; private set; }
@@ -26,7 +26,7 @@ namespace Fuse.Android
 		float _cacheWrapWidthPoints;
 		bool _cacheMin;
 		bool _cacheValid;
-		
+
 		public void Invalidate()
 		{
 			_cacheValid = false;
@@ -60,11 +60,11 @@ namespace Fuse.Android
 				var layoutWidth = (int)Math.Ceil(Math.Max(wrapWidthPixels, desiredWidth));
 				Layout = (Control.TextTruncation == Fuse.Controls.TextTruncation.Standard)
 					? new StaticLayout(text, 0, text.Length, Paint, layoutWidth, align, 1.0f, lineSpacing, false, TextUtils.TruncateAt.End, width)
-					: new StaticLayout(text, Paint, layoutWidth, align, 1.0f, lineSpacing, false);
+					: new StaticLayout(text, Paint, layoutWidth, align, 1.0f, lineSpacing, false, Control.MaxLines);
 			}
 			else
 			{
-				Layout = new StaticLayout(text, Paint, width, align, 1.0f, lineSpacing, false);
+				Layout = new StaticLayout(text, Paint, width, align, 1.0f, lineSpacing, false, Control.MaxLines);
 			}
 
 			var bounds = new Uno.Rect(0, 0, 0, 0);
@@ -102,7 +102,7 @@ namespace Fuse.Android
 
 			return StaticLayout.Alignment.Normal; // SHUT UP, COMPILER!
 		}
-		
+
 		public void UpdatePaint(Fuse.Controls.TextControl Control, TextPaint paint)
 		{
 			paint.AntiAlias = true;
@@ -110,7 +110,7 @@ namespace Fuse.Android
 			paint.Typeface = (Control.Font != Fuse.Font.PlatformDefault)
 				? TypefaceCache.GetTypeface(Control.Font)
 				: Typeface.Default;
-			paint.TextSize = Control.FontSize * Control.Viewport.PixelsPerPoint;
+			paint.TextSize = Control.FontSizeScaled * Control.Viewport.PixelsPerPoint;
 			paint.Color = Control.TextColor;
 		}
 	}
@@ -121,13 +121,13 @@ namespace Fuse.Android
 		{
 			return new TextRenderer(control);
 		}
-		
+
 		Fuse.Controls.TextControl _control;
 		TextRenderer( Fuse.Controls.TextControl Control )
 		{
 			_control = Control;
 		}
-		
+
 		TextPaint _paint;
 		void UpdatePaint()
 		{
@@ -135,7 +135,7 @@ namespace Fuse.Android
 				_paint = new TextPaint();
 			_textLayout.UpdatePaint(_control, _paint);
 		}
-		
+
 		TextControlLayout _textLayout = new TextControlLayout();
 		TextControlLayout _measureLayout;
 		bool _renderThreaded;
@@ -148,32 +148,32 @@ namespace Fuse.Android
 			_arrangeSize = size;
 			UpdateLayout();
 		}
-		
+
 		void UpdateLayout()
 		{
 			UpdatePaint();
 
 			if(_textLayout.Measure(_control, _paint, _arrangeSize.X, false))
 				_emitNewTexture = true;
-			
+
 			var textLength = (_control.RenderValue != null) ? _control.RenderValue.Length : 0;
 
 			_renderThreaded = textLength > 50;
 		}
-		
+
 		public void Invalidate()
 		{
 			_textLayout.Invalidate();
 			if (_measureLayout != null)
 				_measureLayout.Invalidate();
 		}
-		
+
 		public void SoftDispose()
 		{
 			DisposeTexture();
 			_paint = null;
 		}
-		
+
 		public float2 GetContentSize(LayoutParams lp)
 		{
 			if (_measureLayout == null)
@@ -181,14 +181,14 @@ namespace Fuse.Android
 
 			if (_paint == null)
 				_paint = new TextPaint();
-				
+
 			var wrapWidth = lp.HasX ? lp.X : float.PositiveInfinity;
 			if (lp.HasMaxX)
 				wrapWidth = Math.Min(wrapWidth, lp.MaxX);
-				
+
 			UpdatePaint();
 			_measureLayout.Measure(_control, _paint, wrapWidth, true);
-			var q =float2(_measureLayout.Layout.EllipsizedWidth, _measureLayout.Layout.Height) / 
+			var q =float2(_measureLayout.Layout.EllipsizedWidth, _measureLayout.Layout.Height) /
 				_control.Viewport.PixelsPerPoint;
 
 			return q;
@@ -199,7 +199,7 @@ namespace Fuse.Android
 			UpdateLayout();
 			return Uno.Rect.Translate( new Uno.Rect(
 				(float2)_textLayout.PixelBounds.Position / _control.Viewport.PixelsPerPoint,
-				(float2)_textLayout.PixelBounds.Size / _control.Viewport.PixelsPerPoint), 
+				(float2)_textLayout.PixelBounds.Size / _control.Viewport.PixelsPerPoint),
 				_arrangePosition);
 		}
 
@@ -337,7 +337,7 @@ namespace Fuse.Android
 				else if (_control.TextAlignment == TextAlignment.Center)
 					position -= (pointSize.Y - size.Y)/2;
 			}*/
-			
+
 			var m = dc.GetLocalToClipTransform(where);
 			Blitter.Singleton.Blit(_texture, new Rect(position, pointSize), m);
 		}

@@ -4,7 +4,7 @@ using Uno.Collections;
 namespace Fuse
 {
 	/** Represents a name-value pair, as denoted by `name: value` in UX expressions.
-		
+
 		Implements `IObject`, which means the `NameValuePair` can be viewed as an object
 		with a single property.
 
@@ -30,8 +30,8 @@ namespace Fuse
 		}
 
 		string[] IObject.Keys { get { return new [] { Name }; } }
-		bool IObject.ContainsKey(string key) { return Name == key; } 
-		object IObject.this[string key] 
+		bool IObject.ContainsKey(string key) { return Name == key; }
+		object IObject.this[string key]
 		{
 			get
 			{
@@ -41,10 +41,10 @@ namespace Fuse
 		}
 
 		/** Creates an IObject implementation from an `IArray` of `NameValuePair`.
-			If the items are not `NameValuePair` instances, or there is a duplicate, they will be 
+			If the items are not `NameValuePair` instances, or there is a duplicate, they will be
 			added with an indexed key value (unspecified) -- this is to pass through information
 			to later error detection rather than silently discarding it.
-			
+
 			TODO: we probably don't need this function after  this issue is done:
 			https://github.com/fuse-open/fuselibs/issues/233
 		*/

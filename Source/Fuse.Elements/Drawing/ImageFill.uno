@@ -10,13 +10,13 @@ namespace Fuse.Drawing
 {
 	/**
 		A @Brush that fills a @Shape with an image.
-		
+
 		It works almost identically to @Image, but is a @Brush and can therefore not be used as a standalone element.
-		
+
 		## Example
-		
+
 		The following example will fill a `Circle` with an image loaded from the file `Portrait.png`:
-		
+
 		```
 		<Circle Width="160" Height="160">
 			<ImageFill File="Portrait.png" />
@@ -29,30 +29,30 @@ namespace Fuse.Drawing
 		{
 			_container = new ImageContainer(this);
 		}
-		
+
 		protected override void OnPinned()
 		{
 			base.OnPinned();
 			_container.IsRooted = true;
 			LoadNow();
 		}
-		
+
 		void LoadNow()
 		{
 			//trigger loading now, rather than waiting for Draw. This ensures the Busy status gets
-			//set correctly, and resolves. Something might be waiting for it to be ready before 
+			//set correctly, and resolves. Something might be waiting for it to be ready before
 			//attempting to draw
 			if (_container.IsRooted)
-				_container.GetTexture(); 
+				_container.GetTexture();
 		}
-		
+
 		protected override void OnUnpinned()
 		{
 			CleanTempTexture();
 			_container.IsRooted = false;
 			base.OnUnpinned();
 		}
-		
+
 		internal bool TestIsClean
 		{
 			get { return _tempTexture == null && _container.TestIsClean; }
@@ -66,11 +66,11 @@ namespace Fuse.Drawing
 			OnPropertyChanged(ILoadingStatic.IsLoadingName);
 			LoadNow();
 		}
-		
+
 		bool ILoading.IsLoading
 		{
-			get 
-			{ 
+			get
+			{
 				var src = _container.Source;
 				if (src == null)
 					return false;
@@ -100,7 +100,7 @@ namespace Fuse.Drawing
 
 		float2 GetSize()
 		{
-			if (Source != null) 
+			if (Source != null)
 				return _container.Sizing.CalcContentSize( Source.Size, Source.PixelSize );
 			return float2(0);
 		}
@@ -127,7 +127,7 @@ namespace Fuse.Drawing
 				_tempTexture = null;
 			}
 		}
-		
+
 		protected override void OnPrepare(DrawContext dc, float2 canvasSize)
 		{
 			//?? _container.Sizing.snapToPixels = SnapToPixels;
@@ -193,11 +193,11 @@ namespace Fuse.Drawing
 		//translate to/from element position to get the correct UV coordinates based on _container.Sizing
 		float2 ElementPosition: req(TexCoord as float2)
 			CanvasSize * TexCoord;
-		float2 OurTC: 
+		float2 OurTC:
 			(ElementPosition - DP.Origin)/DP.Size *(DP.UVClip.ZW - DP.UVClip.XY) + DP.UVClip.XY;
-			
+
 		DrawContext DrawContext: prev, null;
-		DrawParams DP: 
+		DrawParams DP:
 			GetDrawParams(DrawContext, CanvasSize);
 
 		float2 AdjustedTexCoord: DP.TexCoordBias1 + OurTC * DP.TexCoordScale1;
@@ -207,23 +207,23 @@ namespace Fuse.Drawing
 
 		float4 fc : TextureColor * Color;
 		FinalColor: float4(fc.XYZ*fc.W, fc.W);
-		
+
 		///////////////////////////////////////////
 		// ImageContainer proxying
 		ImageContainer _container;
 		[UXContent]
 		public FileSource File
-		{	
+		{
 			get { return _container.File; }
 			set { _container.File = value; }
 		}
-		
+
 		internal SizingContainer SizingContainer
 		{
 			get { return _container.Sizing; }
 		}
-		
-		public string Url 
+
+		public string Url
 		{
 			get { return _container.Url; }
 			set { _container.Url = value; }
@@ -234,7 +234,7 @@ namespace Fuse.Drawing
 			get { return _container.Density; }
 			set { _container.Density = value; }
 		}
-		
+
 		public MemoryPolicy MemoryPolicy
 		{
 			get { return _container.MemoryPolicy; }
@@ -292,13 +292,13 @@ namespace Fuse.Drawing
 			get { return _container.StretchDirection; }
 			set { _container.StretchDirection = value; }
 		}
-		
+
 		public Fuse.Elements.Alignment ContentAlignment
 		{
 			get { return _container.ContentAlignment; }
 			set { _container.ContentAlignment = value; }
 		}
-		
+
 		double _lastUsed;
 		MemoryPolicy IMemoryResource.MemoryPolicy { get { return _container.MemoryPolicy; } }
 		bool IMemoryResource.IsPinned { get { return _container.IsRooted; } }

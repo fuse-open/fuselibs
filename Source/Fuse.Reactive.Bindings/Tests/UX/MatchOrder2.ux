@@ -3,7 +3,7 @@
 		var Observable = require( "FuseJS/Observable" )
 		exports.yes =Observable(true)
 		exports.no = Observable(false)
-		
+
 		exports.flip = function() {
 			exports.yes.value = !exports.yes.value
 			exports.no.value = !exports.no.value
@@ -30,7 +30,7 @@
 		</Match>
 		<Text Value="4"/>
 	</StackPanel>
-	
+
 	<FuseTest.Invoke Handler="{flip}" ux:Name="CallFlip"/>
-	
+
 </Panel>

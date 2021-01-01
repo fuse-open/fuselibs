@@ -1,6 +1,6 @@
 using Uno;
 using Uno.Compiler.ExportTargetInterop;
-using Uno.Permissions;
+using Fuse.Android.Permissions;
 using Uno.Net.Http;
 using Fuse.iOS.Bindings;
 using Fuse.Android.Bindings;
@@ -44,11 +44,11 @@ namespace Fuse.LauncherImpl
 		{
 			if defined(Android)
 			{
-				try 
+				try
 				{
 					AndroidDeviceInterop.LaunchApp(_actionView, uri);
-				} 
-				catch (Exception e) 
+				}
+				catch (Exception e)
 				{
 					debug_log("InterApp.LaunchApp - Failed to launch app");
 				}

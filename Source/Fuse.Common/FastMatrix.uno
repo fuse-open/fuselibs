@@ -11,7 +11,7 @@ namespace Fuse
 
 		bool _hasNonTranslation;
 		public bool HasNonTranslation { get { return _hasNonTranslation; } }
-		
+
 		bool _isValid = true;
 		/**
 			 A FastMatrix may be invalid if it's the result of an operation that could not be done,
@@ -57,7 +57,7 @@ namespace Fuse
 			_hasNonTranslation = false;
 			_isValid = true;
 		}
-		
+
 		public static FastMatrix FromFloat4x4(float4x4 m)
 		{
 			var k = new FastMatrix();
@@ -113,7 +113,7 @@ namespace Fuse
 			_matrix = Uno.Matrix.Mul(Uno.Matrix.Scaling(float3(factor, factor, factor)), _matrix);
 			_hasNonTranslation = true;
 		}
-		
+
 		public void PrependShear(float xRadians, float yRadians)
 		{
 			_matrix = Uno.Matrix.Mul(Uno.Matrix.Shear(float2(xRadians,yRadians)), _matrix);
@@ -125,7 +125,7 @@ namespace Fuse
 			_matrix = Uno.Matrix.Mul(_matrix, Uno.Matrix.Shear(float2(xRadians,yRadians)) );
 			_hasNonTranslation = true;
 		}
-		
+
 		void SimpleTranslation(float x, float y, float z)
 		{
 			_matrix.M41 += x;
@@ -194,7 +194,7 @@ namespace Fuse
 		{
 			_matrix = Uno.Matrix.Mul(Uno.Matrix.Translation(offset), _matrix);
 		}
-		
+
 		public void PrependFastMatrix(FastMatrix fm)
 		{
 			_isValid = _isValid && fm._isValid;
@@ -210,7 +210,7 @@ namespace Fuse
 				_matrix.M43 += fm._matrix.M43;
 			}
 		}
-		
+
 		public void AppendFastMatrix(FastMatrix fm)
 		{
 			_isValid = _isValid && fm._isValid;

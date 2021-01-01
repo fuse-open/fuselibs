@@ -19,7 +19,7 @@ namespace Fuse.iOS.Bindings
 		ObjC.Object _textColor; // UIColor*
 		ObjC.Object _style; // NSMutableParagraphStyle*
 		public float TextOpacity;
-		
+
 		public ObjC.Object LayoutManager; // NSLayoutManager*
 		public ObjC.Object TextContainer; // NSTextContainer*
 		public Uno.Rect PixelBounds;
@@ -28,7 +28,7 @@ namespace Fuse.iOS.Bindings
 		{
 			_layoutValid = false;
 		}
-		
+
 		[Foreign(Language.ObjC)]
 		public TextLayout()
 		@{
@@ -38,7 +38,7 @@ namespace Fuse.iOS.Bindings
 			NSMutableParagraphStyle* ps = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
 			@{ObjC.Object:Of(_this)._style:Set(ps)};
 		@}
-		
+
 		public bool UpdateLayout(Fuse.Controls.TextControl control, float2 size, bool useMin=false)
 		{
 			size = Math.Ceil(size * control.Viewport.PixelsPerPoint);
@@ -46,7 +46,7 @@ namespace Fuse.iOS.Bindings
 			if (valid)
 				return false;
 
-			_font = Fuse.Controls.Native.iOS.FontCache.Get(control.Font.Descriptors[0], control.FontSize * control.Viewport.PixelsPerPoint);
+			_font = Fuse.Controls.Native.iOS.FontCache.Get(control.Font.Descriptors[0], control.FontSizeScaled * control.Viewport.PixelsPerPoint);
 
 			//iOS Text rendering fails to apply opacity to emoji, therefore we apply opacity on our own
 			_textColor = ToUIColor(float4(control.TextColor.XYZ,1));
@@ -58,7 +58,7 @@ namespace Fuse.iOS.Bindings
 			if (control.TextTruncation == Fuse.Controls.TextTruncation.None &&
 				control.TextWrapping == TextWrapping.NoWrap)
 				width = 0;
-			TextContainer = CreateNSTextContainer(width, size.Y);
+			TextContainer = CreateNSTextContainer(width, size.Y, control.MaxLines);
 			AddNSTextContainer(LayoutManager, TextContainer);
 
 			SetNSParagraphStyleProperties(
@@ -102,10 +102,15 @@ namespace Fuse.iOS.Bindings
 		@}
 
 		[Foreign(Language.ObjC)]
-		public static ObjC.Object CreateNSTextContainer(float width, float height)
+		public static ObjC.Object CreateNSTextContainer(float width, float height, int maxLines)
 		@{
 			NSTextContainer* result = [[NSTextContainer alloc] initWithSize:CGSizeMake(width, height)];
 			result.lineFragmentPadding = 0;
+			if (maxLines > 0)
+			{
+				result.maximumNumberOfLines =  maxLines;
+				result.lineBreakMode = NSLineBreakByTruncatingTail;
+			}
 			return result;
 		@}
 
@@ -199,21 +204,21 @@ namespace Fuse.iOS.Bindings
 		{
 			return new TextRenderer(control);
 		}
-		
+
 		TextLayout _textLayout = new TextLayout();
 		TextLayout _measureLayout;
-		
+
 		Fuse.Controls.TextControl _control;
 		public TextRenderer( Fuse.Controls.TextControl control )
 		{
 			_control = control;
 		}
-		
+
 		public float2 GetContentSize(LayoutParams lp)
 		{
-			if (_measureLayout == null)	
+			if (_measureLayout == null)
 				_measureLayout = new TextLayout();
-				
+
 			var size = float2(
 				lp.HasX ? lp.X : float.PositiveInfinity,
 				lp.HasY ? lp.Y : float.PositiveInfinity);
@@ -224,12 +229,12 @@ namespace Fuse.iOS.Bindings
 			_measureLayout.UpdateLayout(_control, size, true);
 			return _measureLayout.PixelBounds.Size / _control.Viewport.PixelsPerPoint;
 		}
-		
+
 		public void Draw(DrawContext dc, Visual where)
 		{
 			if (_textLayout.UpdateLayout(_control, _arrangeSize))
 				InvalidateTexture();
-				
+
 			var pixelSize = (int2)Math.Ceil(_textLayout.PixelBounds.Size);
 			if (pixelSize.X < 1 || pixelSize.Y < 1 ||
 			    pixelSize.X > Texture2D.MaxSize || pixelSize.Y > Texture2D.MaxSize)
@@ -308,7 +313,7 @@ namespace Fuse.iOS.Bindings
 			Invalidate();
 			_textLayout.UpdateLayout(_control, _arrangeSize);
 		}
-		
+
 		public void Invalidate()
 		{
 			_textLayout.Invalidate();
@@ -316,7 +321,7 @@ namespace Fuse.iOS.Bindings
 				_measureLayout.Invalidate();
 			InvalidateTexture();
 		}
-		
+
 		public void SoftDispose()
 		{
 			InvalidateTexture();

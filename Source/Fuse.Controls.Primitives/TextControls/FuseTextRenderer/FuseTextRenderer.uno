@@ -145,7 +145,10 @@ namespace Fuse.Controls.FuseTextRenderer
 		void AsyncMeasurementsDone(CacheState state)
 		{
 			BusyTask.SetBusy(_control, ref _busyTask, BusyTaskActivity.None);
-			assert _cacheState == null;
+
+			if (_cacheState != null)
+				throw new InvalidOperationException("TextRenderer: _cacheState != null");
+
 			_cacheState = state;
 			_control.InvalidateLayout();
 			_control.InvalidateVisual();
@@ -188,7 +191,7 @@ namespace Fuse.Controls.FuseTextRenderer
 		void UpdateFont()
 		{
 			int newFontSize = Math.Clamp(
-				(int)Math.Floor(_control.FontSize * _control.Viewport.PixelsPerPoint + 0.5f),
+				(int)Math.Floor( _control.FontSizeScaled * _control.Viewport.PixelsPerPoint + 0.5f),
 				4,
 				400);
 			if (_control.Font != _fuseFont || newFontSize != _fontSize)

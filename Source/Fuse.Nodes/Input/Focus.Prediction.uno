@@ -16,7 +16,7 @@ namespace Fuse.Input
 				else if (direction == FocusNavigationDirection.Up)
 					return FocusPrediction.PredictPreviousVisual(n, Focus.CanSetFocus);
 			}
-			
+
 			return null;
 		}
 	}
@@ -75,7 +75,7 @@ namespace Fuse.Input
 
 		static Visual NextSibling(Visual visual)
 		{
-			return (visual.Parent != null) 
+			return (visual.Parent != null)
 				? NextSibling(visual.Parent, visual)
 				: null;
 		}

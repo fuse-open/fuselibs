@@ -6,17 +6,17 @@ namespace Fuse.Navigation
 {
 	/**
 		Is active while a page, optionally matching given criteria, is active in the navigation.
-		
+
 		This trigger checks the `Navigation.Active` page only. During a transition it will consider partial progress, but only for the `Active` page itself.
 	*/
 	public class WhilePageActive : WhileTrigger
 	{
 		INavigation _navigation;
-		
+
 		float _threshold = 1;
 		/**
 			At which progress should this trigger become active.
-			
+
 			The default is `1`, meaning the trigger will only become active when the page is fully reaches the matching state; partial page progress will be ignored.
 		*/
 		public float Threshold
@@ -39,11 +39,11 @@ namespace Fuse.Navigation
 				_hasLimit = true;
 			}
 		}
-		
+
 		string _nameEquals;
 		/**
 			If non-null then the name of the page must equal this value for the trigger to be active.
-			
+
 			In a `Navigator` the `path` of a `Route` becomes the `Name` allowing this property to be used for path matching.
 		*/
 		public string NameEquals
@@ -51,7 +51,7 @@ namespace Fuse.Navigation
 			get { return _nameEquals; }
 			set { _nameEquals = value; }
 		}
-		
+
 		protected override void OnRooted()
 		{
 			base.OnRooted();
@@ -61,11 +61,11 @@ namespace Fuse.Navigation
 				Fuse.Diagnostics.UserError( "Must be used within a navigation context", this );
 				return;
 			}
-			
+
 			_navigation.PageProgressChanged += OnStateChanged;
 			Update();
 		}
-		
+
 		protected override void OnUnrooted()
 		{
 			base.OnUnrooted();
@@ -75,12 +75,12 @@ namespace Fuse.Navigation
 				_navigation = null;
 			}
 		}
-		
+
 		void OnStateChanged(object sender, NavigationArgs args)
 		{
 			Update();
 		}
-		
+
 		void Update()
 		{
 			var active = _navigation.ActivePage;
@@ -89,15 +89,15 @@ namespace Fuse.Navigation
 				SetActive(false);
 				return;
 			}
-			
+
 			var progress = 1 - Math.Abs(_navigation.GetPageState(active).Progress);
 			var set = progress >= Threshold;
 			if (_hasLimit)
 				set = set && progress <= Limit;
-				
+
 			if (NameEquals != null)
 				set = set && ((string)active.Name == NameEquals);
-				
+
 			SetActive( set );
 		}
 	}

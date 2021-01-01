@@ -56,23 +56,23 @@ namespace Fuse.Controls
 		{
 			base.OnPlaceholderTextChanged();
 			InvalidateVisual();
-			InvalidateLayout();	
+			InvalidateLayout();
 		}
 
 		protected override void OnPlaceholderColorChanged()
 		{
 			base.OnPlaceholderColorChanged();
 			InvalidateVisual();
-			InvalidateLayout();	
+			InvalidateLayout();
 		}
 
 		internal override string RenderValue
 		{
-			get 
-			{ 
+			get
+			{
 				// Only use the built-in text rendering mechanism to render
 				// the placeholder text
-				return UseGraphicsPlaceholder ? PlaceholderText : null; 
+				return UseGraphicsPlaceholder ? PlaceholderText : null;
 			}
 		}
 
@@ -88,7 +88,7 @@ namespace Fuse.Controls
 			if defined(!Mobile)
 			{
 				_caretBrush.Pin();
-				UpdateManager.AddAction(Update);	
+				UpdateManager.AddAction(Update);
 			}
 		}
 
@@ -99,7 +99,7 @@ namespace Fuse.Controls
 			if defined(!Mobile)
 			{
 				_caretBrush.Unpin();
-				UpdateManager.RemoveAction(Update);	
+				UpdateManager.RemoveAction(Update);
 			}
 		}
 
@@ -136,7 +136,7 @@ namespace Fuse.Controls
 			_textWindow.InvalidateVisual();
 			_caretPosition = Focus.IsWithin(this) ? _lineCache.GetLastTextPos() : new TextPosition(0, 0);
 			_selection = null;
-			
+
 			InvalidateLayout();
 			InvalidateVisual();
 		}
@@ -157,12 +157,12 @@ namespace Fuse.Controls
 					if (Time.FrameTime > _revealEnd)
 					{
 						if( pt.SetReveal( -1 ) )
-							_lineCache.InvalidateVisual();	
+							_lineCache.InvalidateVisual();
 					}
 				}
 			}
 		}
-		
+
 		void InvalidateLineCacheLayout()
 		{
 			InvalidateLayout();
@@ -213,7 +213,7 @@ namespace Fuse.Controls
 			var renderer = TextRenderer.GetTextRenderer(Font);
 
 			return new WordWrapInfo(renderer, haveWidth && IsWordWrapEnabled, wrapWidth,
-				FontSize, renderer.GetLineHeight(FontSize), 
+				FontSize, renderer.GetLineHeight(FontSize),
 				LineSpacing, AbsoluteZoom);
 		}
 
@@ -226,7 +226,7 @@ namespace Fuse.Controls
 				_textWindow.ArrangeMarginBox(float2(0), LayoutParams.Create(sz));
 				return sz;
 			}
-			
+
 		}
 
 		public override void Draw(DrawContext dc)
@@ -248,15 +248,15 @@ namespace Fuse.Controls
 			BringCaretIntoView(_wrapInfo, textBoundsWidth);
 
 			DrawBackground(dc, Opacity);
-			
+
 			if (!string.IsNullOrEmpty(Value))
-				_textWindow.Draw(_wrapInfo, _selection, 
-					Color, SelectionColor, 
+				_textWindow.Draw(_wrapInfo, _selection,
+					Color, SelectionColor,
 					Value.Length, TextAlignment, textBoundsSize, -_windowPos, dc);
 
 			if (Focus.IsWithin(this) && CaretColor.W > 0)
 			{
-				DrawCaret(_wrapInfo, textBoundsWidth, dc);	
+				DrawCaret(_wrapInfo, textBoundsWidth, dc);
 				UpdateManager.PerformNextFrame(InvalidateVisual);
 			}
 		}
@@ -326,7 +326,7 @@ namespace Fuse.Controls
 			var wrapWidth = ActualSize.X;
 			var wrapInfo = CreateWrapInfo(wrapWidth,true);
 			var textBoundsWidth = GetClampedTextBoundsSize(wrapInfo).X;
-			_caretPosition = _lineCache.BoundsToTextPos(wrapInfo, 
+			_caretPosition = _lineCache.BoundsToTextPos(wrapInfo,
 				TextAlignment, textBoundsWidth, ControlToTextBounds(p));
 			BringCaretIntoView(wrapInfo, textBoundsWidth);
 			ResetCaretBlink();
@@ -345,7 +345,7 @@ namespace Fuse.Controls
 
 		Rect GetCaretRect(WordWrapInfo wrapInfo, float textBoundsWidth)
 		{
-			var pos = _lineCache.TextPosToBounds(wrapInfo, 
+			var pos = _lineCache.TextPosToBounds(wrapInfo,
 				TextAlignment, textBoundsWidth, _caretPosition);
 			var width = 2.0f;
 			return new Rect(pos, float2(width, wrapInfo.LineHeight));
@@ -628,7 +628,7 @@ namespace Fuse.Controls
 
 				case Uno.Platform.Key.Up:
 					var oldCaretPos = _caretPosition;
-					_caretPosition = _lineCache.TryMoveUp(wrapInfo, 
+					_caretPosition = _lineCache.TryMoveUp(wrapInfo,
 						TextAlignment, textBoundsWidth, _caretPosition);
 
 					if(args.IsShiftKeyPressed && _caretPosition.Line == oldCaretPos.Line)
@@ -642,7 +642,7 @@ namespace Fuse.Controls
 
 				case Uno.Platform.Key.Down:
 					var oldCaretPos = _caretPosition;
-					_caretPosition = _lineCache.TryMoveDown(wrapInfo, 
+					_caretPosition = _lineCache.TryMoveDown(wrapInfo,
 						TextAlignment, textBoundsWidth, _caretPosition);
 
 					if(args.IsShiftKeyPressed && _caretPosition.Line == oldCaretPos.Line)

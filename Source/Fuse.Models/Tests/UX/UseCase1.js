@@ -13,7 +13,7 @@ export default class UseCase1 {
 	add(args) {
 		this.sel.push(args.data)
 	}
-	
+
 	remove(args) {
 		this.sel.splice( this.sel.indexOf(args.data), 1 )
 	}

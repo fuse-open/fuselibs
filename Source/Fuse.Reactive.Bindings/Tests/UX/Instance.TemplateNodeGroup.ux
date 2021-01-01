@@ -9,7 +9,7 @@
 	<TNGItem>
 		<Text Value="one" ux:Template="item"/>
 	</TNGItem>
-	
+
 	<TNGItem>
 		<Text Value="two" ux:Template="item"/>
 		<Text Value="faux" ux:Generate="Template"/>

@@ -11,7 +11,7 @@ namespace Fuse.FileSystem
 	[UXGlobalModule]
 	/**
 		@scriptmodule FuseJS/FileSystem
-		
+
 		Provides an interface to the file system.
 
 			var FileSystem = require("FuseJS/FileSystem");

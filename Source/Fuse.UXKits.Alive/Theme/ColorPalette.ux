@@ -36,7 +36,7 @@
 	<float4 ux:Global="Alive.Light.BubbleStrokeColor" ux:Value="#fff" />
 	<float4 ux:Global="Alive.Light.ListViewItemColor" ux:Value="Alive.Gray100" />
 	<float4 ux:Global="Alive.Light.ListViewItemAlternateColor" ux:Value="Alive.Gray200" />
-	
+
 	<!-- Dark -->
 	<float4 ux:Global="Alive.Dark.Red" ux:Value="#dc5b71"/>
 	<float4 ux:Global="Alive.Dark.Blue" ux:Value="#8184f9"/>

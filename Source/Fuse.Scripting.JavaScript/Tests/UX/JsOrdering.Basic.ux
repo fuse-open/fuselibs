@@ -6,19 +6,19 @@
 		exports.a = Observable()
 		exports.b = Observable()
 		exports.c = Observable()
-		
+
 		exports.step1 = function() {
 			exports.b.value = 2
 			exports.c.value = 3
 		}
-		
+
 		exports.step2 = function() {
 			exports.c.value = 4
 			exports.a.value = 5
 			exports.b.value = 6
 		}
 	</JavaScript>
-	
+
 	<FuseTest.Invoke Handler="{step1}" ux:Name="Step1"/>
 	<FuseTest.Invoke Handler="{step2}" ux:Name="Step2"/>
 </Panel>

@@ -1,12 +1,12 @@
 <Panel ux:Class="UX.PlotAxis.Object" xmlns:c="Fuse.Charting">
 	<JavaScript>
 		var Observable = require("FuseJS/Observable")
-		
+
 		function Item( value, tag ) {
 			this.value = value
 			this.tag = tag
 		}
-		
+
 		exports.values = Observable(
 			new Item( 11, "one" ),
 			new Item( 22, "two" ),
@@ -17,7 +17,7 @@
 	</JavaScript>
 	<c:Plot>
 		<c:DataSeries Data="{values}"/>
-		
+
 		<Panel ux:Name="X">
 			<c:PlotAxisData Axis="X" ux:Name="XL">
 				<Text Value="{= {Plot axis.object}.tag}"/>

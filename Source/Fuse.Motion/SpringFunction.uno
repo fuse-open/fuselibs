@@ -63,9 +63,9 @@ namespace Fuse.Motion
 					StartSimulation();
 				}
 			}
-			
+
 			void IListener.OnLostData(IExpression source)
-			{ 
+			{
 				StopSimulation();
 				if (_listener != null)
 					_listener.OnLostData( source );

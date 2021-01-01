@@ -23,7 +23,7 @@ namespace FuseTest
 			Keyboard.KeyPressed.AddHandler(node, OnKeyPressed);
 			Keyboard.KeyReleased.AddHandler(node, OnKeyReleased);
 		}
-		
+
 		void IDisposable.Dispose()
 		{
 			if (_node != null)
@@ -37,15 +37,15 @@ namespace FuseTest
 				Keyboard.KeyReleased.RemoveGlobalHandler(OnKeyReleased);
 			}
 		}
-		
+
 		public KeyPressedArgs LastKeyPressedArgs;
 		public KeyReleasedArgs LastKeyReleasedArgs;
-		
+
 		void OnKeyPressed(object s, KeyPressedArgs args)
 		{
 			LastKeyPressedArgs = args;
 		}
-		
+
 		void OnKeyReleased(object s, KeyReleasedArgs args)
 		{
 			LastKeyReleasedArgs = args;

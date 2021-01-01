@@ -4,7 +4,7 @@
 		Observable._testResetDeprecated()
 
 		exports.watchers = Observable()
-		
+
 		var watch = Observable(1)
 		watch.beginSubscriptions = function() {
 			exports.watchers.add( "W" )
@@ -12,7 +12,7 @@
 		watch.endSubscriptions = function() {
 			exports.watchers.remove( "W" )
 		}
-		
+
 		var noWatch = Observable(2)
 		noWatch.beginSubscriptions = function() {
 			exports.watchers.add( "NW" )
@@ -20,19 +20,19 @@
 		noWatch.endSubscriptions = function() {
 			throw new Exception("Never expected")
 		}
-		
+
 		function subscriber() { }
-		
+
 		exports.add = function() {
 			watch.addSubscriber(subscriber)
 		}
-		
+
 		exports.remove = function() {
 			watch.removeSubscriber(subscriber)
 		}
 	</JavaScript>
 	<FuseTest.ObservableCollector ux:Name="W" Items="{watchers}"/>
-	
+
 	<FuseTest.Invoke Handler="{add}" ux:Name="Add"/>
 	<FuseTest.Invoke Handler="{remove}" ux:Name="Remove"/>
 </Panel>

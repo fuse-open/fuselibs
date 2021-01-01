@@ -5,7 +5,7 @@ using Fuse.Elements;
 namespace Fuse.Triggers.Actions
 {
 	/** Scrolls a @fuse/controls/scrollview so that the target element becomes visible
-		
+
 		## Example
 
 				<ScrollView>
@@ -42,7 +42,7 @@ namespace Fuse.Triggers.Actions
 		{
 			//use Visual for future-proofing this logic (it could be brought into view, just not supported now)
 			var elm = target.FindByType<Visual>() as Element;
-			if (elm != null)	
+			if (elm != null)
 				elm.BringIntoView();
 		}
 	}

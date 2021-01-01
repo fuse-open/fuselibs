@@ -126,6 +126,11 @@ namespace Fuse.Controls
 				return Texture;
 			}
 
+			public override byte[] GetBytes()
+			{
+				return null;
+			}
+
 			public override float SizeDensity
 			{
 				get { return 1.0f; }

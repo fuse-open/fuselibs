@@ -3,7 +3,7 @@ using Uno.Text;
 using Uno.IO;
 using Uno.Collections;
 using Uno.Compiler.ExportTargetInterop;
-using Uno.Permissions;
+using Fuse.Android.Permissions;
 using Uno.Net.Http;
 using Fuse.LauncherImpl;
 

@@ -43,7 +43,7 @@
 		<Panel Height="30" ux:Name="RP3"/>
 		<Panel Height="20" ux:Name="RP4"/>
 	</WrapPanel>
-	
+
 	<WrapPanel ItemHeight="100" Orientation="Vertical" RowAlignment="Right" MaxHeight="200">
 		<Panel Width="2" ux:Name="RR1"/>
 		<Panel Width="10" ux:Name="RR2"/>

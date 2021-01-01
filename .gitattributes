@@ -1,31 +1,19 @@
-# We don't really care about the order of changelog entries
-CHANGELOG.md merge=union
-
 # Auto detect text files and perform LF normalization
 * text=auto
 
-# Use CRLF line endings for bat files
-*.bat    crlf
+# We don't really care about the order of changelog entries
+CHANGELOG.md merge=union
 
-# Custom for Visual Studio
-*.cs     diff=csharp
-*.sln    merge=union
-*.csproj merge=union
-*.vbproj merge=union
-*.fsproj merge=union
-*.dbproj merge=union
+# Mark vendored code
+Source/Fuse.Scripting.JavaScript/3rdparty/**                    linguist-vendored
+Source/Fuse.Scripting.JavaScript/Duktape/**                     linguist-vendored
+Source/Fuse.Scripting.JavaScript/FuseJS/Tests/node_modules/**   linguist-vendored
+Source/Fuse.Scripting.JavaScript/JavaScriptCore/3rdparty/**     linguist-vendored
+Source/Fuse.Text/harfbuzz/include/**                            linguist-vendored
+Source/Fuse.Text/icu/**                                         linguist-vendored
+Source/Fuse.WebSockets/iOS/SocketRocket/include/**              linguist-vendored
 
-# Standard to msysgit
-*.doc  diff=astextplain
-*.DOC  diff=astextplain
-*.docx diff=astextplain
-*.DOCX diff=astextplain
-*.dot  diff=astextplain
-*.DOT  diff=astextplain
-*.pdf  diff=astextplain
-*.PDF  diff=astextplain
-*.rtf  diff=astextplain
-*.RTF  diff=astextplain
-
-# Useful for certain integration tests
-*.crlf    crlf
+# Mark vendored files
+jquery.js       linguist-vendored
+zone.js         linguist-vendored
+zone.min.js     linguist-vendored

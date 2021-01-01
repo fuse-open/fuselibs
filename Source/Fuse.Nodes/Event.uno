@@ -21,25 +21,25 @@ namespace Fuse
 	static class VisualListCache
 	{
 		static List<List<Visual>> _visualListCache = new List<List<Visual>>();
-		
+
 		public static List<Visual> Acquire()
 		{
 			if (_visualListCache.Count > 0)
-			{	
+			{
 				var l = _visualListCache[_visualListCache.Count-1];
 				_visualListCache.RemoveAt(_visualListCache.Count-1);
 				return l;
 			}
 			return new List<Visual>();
 		}
-		
+
 		public static void Release( List<Visual> list )
-		{	
+		{
 			list.Clear();
 			_visualListCache.Add(list);
 		}
 	}
-	
+
 	public abstract class VisualEvent<THandler, TArgs> where TArgs: VisualEventArgs
 	{
 		PropertyHandle _handle = Properties.CreateHandle();
@@ -84,7 +84,7 @@ namespace Fuse
 		{
 			Raise(args,type, true, PostBubbleAction);
 		}
-		
+
 		public void RaiseWithoutBubble(TArgs args, VisualEventMode type = VisualEventMode.Normal)
 		{
 			Raise(args,type,false, null);
@@ -114,17 +114,17 @@ namespace Fuse
 					break;
 				visual = visual.Parent;
 			}
-				
+
 			for (int i=0; i < list.Count; ++i)
 				list[i].Properties.ForeachInList(_handle, handler, list[i], args);
-			
+
 			if (PostBubbleAction != null)
 				PostBubbleAction(args, list);
-				
+
 			InvokeGlobalHandlers(visual, args);
 			VisualListCache.Release(list);
 		}
-		
+
 		void OnRaise(object target, object[] args)
 		{
 			var handler = (THandler)target;
@@ -153,7 +153,7 @@ namespace Fuse
 				Fuse.AppBase.OnUnhandledExceptionInternal(e);
 			}
 		}
-		
+
 		protected abstract void Invoke(THandler handler, object sender, TArgs args);
 	}
 
@@ -171,12 +171,12 @@ namespace Fuse
 
 			Visual = visual;
 		}
-		
-		void IScriptEvent.Serialize(IEventSerializer s) 
-		{ 
+
+		void IScriptEvent.Serialize(IEventSerializer s)
+		{
 			Serialize(s);
 		}
-		
+
 		virtual void Serialize(IEventSerializer s)
 		{
 		}
@@ -184,5 +184,5 @@ namespace Fuse
 
 	public delegate void VisualEventHandler(object sender, VisualEventArgs args);
 
-	
+
 }

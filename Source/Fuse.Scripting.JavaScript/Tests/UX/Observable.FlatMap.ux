@@ -1,7 +1,7 @@
 <Panel ux:Class="UX.Observable.FlatMap">
 	<JavaScript>
 		var Observable = require("FuseJS/Observable")
-		
+
 		var inA = Observable({ name: Observable("inA") })
 		var inB = Observable({ name: Observable("inB") })
 
@@ -11,15 +11,15 @@
 			} else if (param == "B") {
 				return inB
 			}
-			
+
 			return null
 		})
-		
+
 		exports.step1 = function() {
 			inB.value.name.value = "inB*"
 		}
 	</JavaScript>
 	<Text Value="{item.name}" ux:Name="N"/>
-	
+
 	<FuseTest.Invoke Handler="{step1}" ux:Name="Step1"/>
 </Panel>

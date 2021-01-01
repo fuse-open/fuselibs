@@ -1,7 +1,7 @@
 using Uno;
 using Uno.UX;
 using Uno.Compiler.ExportTargetInterop;
-using Uno.Permissions;
+using Fuse.Android.Permissions;
 using Uno.Threading;
 using Uno.Collections;
 

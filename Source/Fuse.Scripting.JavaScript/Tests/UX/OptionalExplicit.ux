@@ -4,7 +4,7 @@
 		exports.foo = 123
 		// should not be reached below, as there is a bundled file that matches
 		// this path
-		exports.OptionalExplicit = 777 
+		exports.OptionalExplicit = 777
 	</JavaScript>
 	<JavaScript dep:bar="{foo}">
 		var OptionalExplicit = require("OptionalExplicit")
@@ -18,7 +18,7 @@
 		exports.success = 1
 	</JavaScript>
 	<Text ux:Name="t" Value="{success}" />
-	
+
 	<Panel ux:Class="OESub">
 		<Router ux:Dependency="quirk"/>
 		<JavaScript>
@@ -29,5 +29,5 @@
 		<Text ux:Name="t" Value="{success}" />
 	</Panel>
 	<OESub quirk="router" ux:Name="q"/>
-	
+
 </Panel>

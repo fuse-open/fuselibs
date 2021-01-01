@@ -53,7 +53,7 @@ namespace Fuse.Navigation.Test
 			using (var root = TestRootPanel.CreateWithChild(p, int2(100)))
 			{
 				root.MultiStepFrameJS(2);
-				
+
 				p.CallStepTwo.Perform();
 				root.MultiStepFrameJS(2);
 
@@ -84,7 +84,7 @@ namespace Fuse.Navigation.Test
 				TFPCheck(root, p.P4, p.Inner2, p.P4, null);
 			}
 		}
-		
+
 		void TFPCheck(TestRootPanel root, Visual page, INavigation navObject, Visual pageObject, Visual pageBindObject,
 			[CallerFilePath] string filePath = "", [CallerLineNumber] int lineNumber = 0,
 			[CallerMemberName] string memberName = "")
@@ -97,22 +97,22 @@ namespace Fuse.Navigation.Test
 			Assert.AreEqual(navObject, npp.Navigation, filePath, lineNumber, memberName + ": NavObject");
 			Assert.AreEqual(pageObject, npp.Page, filePath, lineNumber, memberName + ": PageObject");
 			Assert.AreEqual(pageBindObject, npp.PageBind, filePath, lineNumber, memberName + ": PageBindObject");
-			
+
 			npp.Dispose();
 			Assert.IsFalse(_navReady);
 		}
-		
+
 		bool _navReady;
 		void NavReady(object s)
 		{
 			_navReady = true;
 		}
-		
+
 		void NavUnready(object s)
 		{
 			_navReady = false;
 		}
-		
+
 		[Test]
 		/*
 			https://github.com/fusetools/fuselibs-private/issues/1804
@@ -137,13 +137,13 @@ namespace Fuse.Navigation.Test
 				Assert.AreEqual(0, _changeCount);
 			}
 		}
-		
+
 		int _changeCount;
 		void OnPageProgressChanged(object sender, NavigationArgs args)
 		{
 			_changeCount++;
 		}
-		
+
 		[Test]
 		public void PageBinding()
 		{
@@ -187,7 +187,7 @@ namespace Fuse.Navigation.Test
 				Assert.AreEqual(10, (p.I2.Children[1] as Element).Width.Value);
 			}
 		}
-		
+
 		[Test]
 		//tests the use-cases intended to be fulfilled by page bindings, including the PageIndicator
 		public void PageBindingFull()
@@ -222,11 +222,11 @@ namespace Fuse.Navigation.Test
 				Assert.AreEqual(1,TriggerProgress(p3.WA));
 			}
 		}
-		
+
 		[Test]
 		/* Even if we remove HierNav somehow keep this function for PageIndicator. It tests
 			whether dynamically added pages in navigation are being bound correctly.
-			
+
 			The need for multiple triggers here is to track down some defects with the lists
 			in the bindings -- in demos only some of the triggers were updating correctly.
 		*/
@@ -280,7 +280,7 @@ namespace Fuse.Navigation.Test
 				Assert.AreEqual(20, (p.I2.Children[2] as Element).X.Value);
 			}
 		}
-		
+
 		[Test]
 		//https://github.com/fusetools/fuselibs-private/issues/3761
 		public void RootScale()
@@ -292,48 +292,48 @@ namespace Fuse.Navigation.Test
 				Assert.AreEqual(0.1f, TriggerProgress(p.P2.X));
 				Assert.AreEqual(0.2f, TriggerProgress(p.P3.X));
 				Assert.AreEqual(0.3f, TriggerProgress(p.P4.X));
-				
+
 				Assert.AreEqual(0, TriggerProgress(p.P1.N));
 				Assert.AreEqual(0, TriggerProgress(p.P2.N));
 				Assert.AreEqual(0, TriggerProgress(p.P3.N));
 				Assert.AreEqual(0, TriggerProgress(p.P4.N));
-				
+
 				Assert.AreEqual(1, TriggerProgress(p.P1.A));
 				Assert.AreEqual(0.4f, TriggerProgress(p.P2.A));
 				Assert.AreEqual(0, TriggerProgress(p.P3.A));
 				Assert.AreEqual(0, TriggerProgress(p.P4.A));
-				
+
 				Assert.AreEqual(0, TriggerProgress(p.P1.D));
 				Assert.AreEqual(0.25f, TriggerProgress(p.P2.D));
 				Assert.AreEqual(0.50f, TriggerProgress(p.P3.D));
 				Assert.AreEqual(0.75f, TriggerProgress(p.P4.D));
-				
-				
+
+
 				p.Nav.Active=p.P3;
 				root.StepFrame(5);
-				
+
 				for (int i=0; i < 2; ++i)
 				{
 					Assert.AreEqual(0, TriggerProgress(p.P1.X));
 					Assert.AreEqual(0, TriggerProgress(p.P2.X));
 					Assert.AreEqual(0, TriggerProgress(p.P3.X));
 					Assert.AreEqual(0.1f, TriggerProgress(p.P4.X));
-					
+
 					Assert.AreEqual(1, TriggerProgress(p.P1.N));
 					Assert.AreEqual(0.5f, TriggerProgress(p.P2.N));
 					Assert.AreEqual(0, TriggerProgress(p.P3.N));
 					Assert.AreEqual(0, TriggerProgress(p.P4.N));
-					
+
 					Assert.AreEqual(0, TriggerProgress(p.P1.A));
 					Assert.AreEqual(0.4f, TriggerProgress(p.P2.A));
 					Assert.AreEqual(1, TriggerProgress(p.P3.A));
 					Assert.AreEqual(0.4f, TriggerProgress(p.P4.A));
-					
+
 					Assert.AreEqual(0.50f, TriggerProgress(p.P1.D));
 					Assert.AreEqual(0.25f, TriggerProgress(p.P2.D));
 					Assert.AreEqual(0.00f, TriggerProgress(p.P3.D));
 					Assert.AreEqual(0.25f, TriggerProgress(p.P4.D));
-					
+
 					//ensure consistent over unroot/root
 					p.Children.Remove(p.C);
 					root.StepFrame();
@@ -342,6 +342,6 @@ namespace Fuse.Navigation.Test
 				}
 			}
 		}
-		
+
 	}
 }

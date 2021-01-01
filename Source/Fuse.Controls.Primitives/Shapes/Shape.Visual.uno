@@ -13,33 +13,33 @@ namespace Fuse.Controls
 		{
 			return false;
 		}
-		
+
 		protected override void DrawVisual(DrawContext dc)
-		{ 
+		{
 			if (_surface != null)
 			{
 				_surface.Draw(dc, this, this);
 				return;
 			}
-			
+
 			PrepareDraw(dc, ActualSize);
-			
+
 			if (HasFills)
 			{
 				foreach (var fill in Fills)
 					DrawFill(dc, fill);
 			}
-			
+
 			if (HasStrokes)
 			{
 				foreach (var stroke in Strokes)
 					DrawStroke(dc, stroke);
 			}
 		}
-		
+
 		protected virtual void DrawFill(DrawContext dc, Brush fill) { }
 		protected virtual void DrawStroke(DrawContext dc, Stroke stroke) { }
-		
+
 		protected override VisualBounds HitTestLocalVisualBounds
 		{
 			get
@@ -58,16 +58,16 @@ namespace Fuse.Controls
 			var r = base.CalcRenderBounds();
 			if (!(HasStrokes || HasFills))
 				return r;
-				
+
 			var extents = CalcShapeExtents();
-				
+
 			float adjust = 0;
 			if (HasStrokes)
 			{
 				foreach (var stroke in Strokes)
 				{
 					var extent = stroke.GetDeviceAdjusted( Viewport.PixelsPerPoint );
-					
+
 					//extends for worst case Square caps and miter limit/bevels
 					var m = extent[1] + Math.Max( extent[0] * Stroke.LineJoinMiterLimit,
 						Vector.Length(float2(extent[0])) );
@@ -75,7 +75,7 @@ namespace Fuse.Controls
 				}
 			}
 			adjust += Smoothness-1;
-			
+
 			extents.Minimum -= adjust;
 			extents.Maximum += adjust;
 			r = r.AddRect(extents);

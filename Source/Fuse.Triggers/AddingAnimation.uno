@@ -49,7 +49,7 @@ namespace Fuse.Triggers
 			get { return _delayFrame; }
 			set { _delayFrame = value; }
 		}
-		
+
 		protected override void OnRooted()
 		{
 			base.OnRooted();

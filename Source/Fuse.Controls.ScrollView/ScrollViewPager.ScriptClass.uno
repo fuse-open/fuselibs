@@ -11,7 +11,7 @@ namespace Fuse.Controls
 			ScriptClass.Register(typeof(ScrollViewPager),
 				new ScriptMethod<ScrollViewPager>("check", check));
 		}
-		
+
 		static void check(ScrollViewPager s)
 		{
 			//defer to allow deferred Each handling to create items

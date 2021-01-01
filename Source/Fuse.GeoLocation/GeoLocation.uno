@@ -144,18 +144,18 @@ namespace Fuse.GeoLocation
 			_locationTracker.LocationError += LocationError;
 		}
 
-		/** @scriptmethod isLocationEnabled() 
+		/** @scriptmethod isLocationEnabled()
 		Returns whether or not the device has Geolocation enabled.
 		*/
-		object IsLocationEnabled(Context context, object[] args) 
+		object IsLocationEnabled(Context context, object[] args)
 		{
 			return _locationTracker.IsLocationEnabled();
 		}
 
-		/** @scriptmethod GetAuthorizationStatus() 
+		/** @scriptmethod GetAuthorizationStatus()
 		Returns the authorization status of GeoLocation
 		*/
-		string GetAuthorizationStatus() 
+		string GetAuthorizationStatus()
 		{
 			return _locationTracker.GetAuthorizationStatus();
 		}
@@ -165,13 +165,13 @@ namespace Fuse.GeoLocation
 			@scriptmethod startListening(minimumReportInterval, desiredAccuracy)
 
 			Starts the GeoLocation listening service.
-			
+
 			[onChanged](api:fuse/geolocation/geolocation/locationchanged_adbb1cba.json)
 			events will be generated as the location changes.
 
 
 			Use [stopListening](api:fuse/geolocation/geolocation/stoplistening_bbef95e2.json) to stop the service.
-			
+
 			The parameters here are desired values; the actual interval and accuracy are dependent on the
 			device.
 
@@ -179,7 +179,7 @@ namespace Fuse.GeoLocation
 
 			@param minimumReportInterval how often the position should be updated. Value in milliseconds
 			@param desiredAccuracy how accurate, in meters, should the values be
-			
+
 		*/
 		object StartListening(Context c, object[] args)
 		{
@@ -189,7 +189,7 @@ namespace Fuse.GeoLocation
 			_locationTracker.StartListening(minimumReportInterval, desiredAccuracyInMeters);
 			return null;
 		}
-		
+
 		/**
 			@scriptmethod stopListening()
 
@@ -233,7 +233,7 @@ namespace Fuse.GeoLocation
 		{
 			return new object[] { "changed", Converter(context, location) };
 		}
-		
+
 		/**
 			@scriptevent error(error)
 
@@ -245,7 +245,7 @@ namespace Fuse.GeoLocation
 		{
 			EmitError(error);
 		}
-		
+
 		static int AuthorizationRequestConverter(Context context, Fuse.GeoLocation.GeoLocationAuthorizationType type)
 		{
 			return (int)type;
@@ -312,7 +312,7 @@ namespace Fuse.GeoLocation
 		{
 			return _locationTracker.Location;
 		}
-		
+
 		/**
 			@scriptmethod getLocation(timeout)
 
@@ -320,7 +320,7 @@ namespace Fuse.GeoLocation
 			@return a promise
 
 			Gets the current location as a promise.
-			
+
 			Can optionally be passed a timeout (in milliseconds)
 			that the promise should be rejected after.
 

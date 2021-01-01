@@ -45,13 +45,13 @@ namespace Fuse.Controls
 		internal int uid = UID_POOL++;
 		public delegate void MarkerTappedHandler(object sender, EventArgs args);
 		public event MarkerTappedHandler Tapped;
-		
+
 		internal void HandleTapped()
 		{
 			if (Tapped != null)
 				Tapped(this, new EventArgs());
 		}
-		
+
 		string _label;
 		public string Label {
 			get
@@ -96,12 +96,12 @@ namespace Fuse.Controls
 				MarkDirty();
 			}
 		}
-		
+
 		FileSource _icon;
 		/**
 			The asset image file to use as the marker icon override
 		*/
-		public FileSource IconFile 
+		public FileSource IconFile
 		{
 			get {
 				return _icon;
@@ -111,7 +111,7 @@ namespace Fuse.Controls
 				MarkDirty();
 			}
 		}
-		
+
 		//TODO: Combine these into single float2 field once Latitude and Longitude can be combined into single double2 field
 		float2 _iconAnchor = float2(0.5f, 0.5f);
 		/**
@@ -122,7 +122,7 @@ namespace Fuse.Controls
 			get { return _iconAnchor.X; }
 			set { _iconAnchor.X = value; MarkDirty(); }
 		}
-		
+
 		/**
 			The normalized Y-position of the Icon image to use as the icon/map contact point
 		*/

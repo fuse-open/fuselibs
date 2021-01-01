@@ -7,7 +7,7 @@
 	<Require AndroidManifest.ApplicationElement><![CDATA[
 
 	<!-- Declare foreground service -->
-		<service android:name="fuse.geolocation.BackgroundService" 
+		<service android:name="fuse.geolocation.BackgroundService"
 			android:enabled="true"
 			android:exported="true"
 			android:launchMode="singleTop" />
@@ -29,5 +29,5 @@
 		 TargetName="app/src/main/res/mipmap-xxhdpi/bk_location.png" />
 	<ImageFile Name="@(Project.Android.GeoLocation.BackgroundLocation.NotificationIcon.XXXHDPI:Path || Project.Android.Icons.XXXHDPI:Path || '@//Android/Assets/DefaultIcon.png')"
 		 TargetName="app/src/main/res/mipmap-xxxhdpi/bk_location.png" />
-	
+
 </Extensions>

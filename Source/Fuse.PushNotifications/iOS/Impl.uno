@@ -96,18 +96,18 @@ namespace Fuse.PushNotifications
 			DelayedRegToken = "";
 			Lifecycle.EnteringForeground -= DispatchDelayedRegToken;
 		}
-		
+
 		[Foreign(Language.ObjC)]
 		internal static bool SYSTEM_VERSION_LESS_THAN(string v)
 		@{
-			return ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedAscending);  
+			return ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedAscending);
 		@}
 
 		[Foreign(Language.ObjC)]
 		internal static void RegisterForPushNotifications()
 		@{
 			UIApplication* application = [UIApplication sharedApplication];
-			if( @{SYSTEM_VERSION_LESS_THAN(string):Call(@"10.0")} ) {  
+			if( @{SYSTEM_VERSION_LESS_THAN(string):Call(@"10.0")} ) {
 
 				if( @{SYSTEM_VERSION_LESS_THAN(string):Call(@"8")} ) {
 
@@ -135,27 +135,27 @@ namespace Fuse.PushNotifications
 						[[UIApplication sharedApplication] registerForRemoteNotifications];
 					});
 				}
-				
+
 			} else {
 				// Use registerForRemoteNotifications for iOS >= 10
-				
-				/* 
+
+				/*
 					Explicitly ask for permission else notifications are silent
 					https://developer.apple.com/documentation/uikit/uiapplication/1623078-registerforremotenotifications?language=objc
 				*/
 				UNUserNotificationCenter* center = [UNUserNotificationCenter currentNotificationCenter];
 				[center requestAuthorizationWithOptions:
-						(UNAuthorizationOptionAlert + 
+						(UNAuthorizationOptionAlert +
 						UNAuthorizationOptionSound +
 						UNAuthorizationOptionBadge)
 						completionHandler:^(BOOL granted, NSError * _Nullable error) {
 						/* Continue to register users token, so that if they turn it on
 						in their general settings later, it will be "on" in your server side too */
 						dispatch_async(dispatch_get_main_queue(), ^{
-							[application registerForRemoteNotifications];	
+							[application registerForRemoteNotifications];
 						});
 				}];
-				
+
 			}
 		@}
 
@@ -168,7 +168,7 @@ namespace Fuse.PushNotifications
 
 			dispatch_sync(dispatch_get_main_queue(), ^{
 				isRegisteredForRemote = [[UIApplication sharedApplication] isRegisteredForRemoteNotifications];
-				
+
 				[[UNUserNotificationCenter currentNotificationCenter] getNotificationSettingsWithCompletionHandler:^(UNNotificationSettings * _Nonnull settings) {
 					isNotificationsSettingsEnabled = (settings.authorizationStatus == UNAuthorizationStatusAuthorized);
 				}];

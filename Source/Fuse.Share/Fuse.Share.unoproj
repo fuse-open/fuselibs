@@ -3,10 +3,10 @@
   "Description": "Content sharing API",
   "Publisher": "Fuse Open",
   "Packages": [
-    "Uno.Threading",
-    "Uno.Permissions",
+    "Uno.Threading"
   ],
   "Projects": [
+    "../Fuse.Android.Permissions/Fuse.Android.Permissions.unoproj",
     "../Fuse.Scripting/Fuse.Scripting.unoproj",
     "../Fuse.Nodes/Fuse.Nodes.unoproj",
     "../Fuse.Common/Fuse.Common.unoproj",

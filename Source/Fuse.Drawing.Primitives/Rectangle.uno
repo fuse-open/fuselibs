@@ -22,7 +22,7 @@ namespace Fuse.Drawing.Primitives
 		DepthTestEnabled: false;
 		public float2 TexCoord: LocalPosition / CanvasSize;
 	}
-	
+
 	block CommonBrush
 	{
 		public float Smoothness: 1f;
@@ -79,7 +79,7 @@ namespace Fuse.Drawing.Primitives
 
 			//include outer region for stroke
 			var extend = Math.Max(0,r[0]+r[1]) + Smoothness;
-			
+
 			Draw(dc ,visual, Size, CornerRadius, stroke.Brush, sc,
 				float2(extend), Position, Smoothness );
 		}
@@ -107,7 +107,7 @@ namespace Fuse.Drawing.Primitives
 				r[i] = a[i] + b[i];
 			return r;
 		}
-		
+
 		float[] sub(float[] a, float[] b)
 		{
 			var r = new float[a.Length];
@@ -115,7 +115,7 @@ namespace Fuse.Drawing.Primitives
 				r[i] = a[i] - b[i];
 			return r;
 		}
-		
+
 		float[] neg(float[] a)
 		{
 			var r = new float[a.Length];
@@ -123,7 +123,7 @@ namespace Fuse.Drawing.Primitives
 				r[i] = -a[i];
 			return r;
 		}
-		
+
 		float sum_mul(float[] a, float[] b)
 		{
 			var r = 0f;
@@ -134,11 +134,11 @@ namespace Fuse.Drawing.Primitives
 
 		VertexAttributeInfo _vertexInfo, _edgeInfo;
 		FloatBuffer _bufferDistance;
-		
+
 		void InitBuffers()
 		{
 			_bufferDistance = new FloatBuffer();
-			
+
 			var CornerRadius0 = new float[]{1,0,0,0, 0,0, 0,0, 0 };
 			var CornerRadius1 = new float[]{0,1,0,0, 0,0, 0,0, 0 };
 			var CornerRadius2 = new float[]{0,0,1,0, 0,0, 0,0, 0 };
@@ -148,7 +148,7 @@ namespace Fuse.Drawing.Primitives
 			var ExtendX = new float[]{0,0,0,0, 0,0, 1,0, 0 };
 			var ExtendY = new float[]{0,0,0,0, 0,0, 0,1, 0 };
 			var Mn = new float[]{0,0,0,0, 0,0, 0,0, 1 };
-				
+
 			var vr = new []{
 				CornerRadius0, add(SizeY,ExtendY),
 				sub(SizeX,CornerRadius1), add(SizeY,ExtendY),
@@ -188,7 +188,7 @@ namespace Fuse.Drawing.Primitives
 				CornerRadius3,Mn,
 				sub(SizeX,CornerRadius2), Mn,
 			};
-			
+
 			var offsets = new float2[vr.Length];
 			for (int i = 0 ; i < vr.Length; ++i)
 			{
@@ -242,7 +242,7 @@ namespace Fuse.Drawing.Primitives
 				11,18,10,
 				14,18,11,
 			};
-			
+
 			var ptr = new[]{
 				//left
 				22,8,22,
@@ -264,14 +264,14 @@ namespace Fuse.Drawing.Primitives
 				7,21,9,
 				9,21,23,
 				9,23,23,
-				
+
 				//corners
 				3,3,3,3,3,3,
 				4,4,4,4,4,4,
 				12,12,12,12,12,12,
 				11,11,11,11,11,11,
 			};
-			
+
 			var bufferVertex = new byte[vsr.Length * sizeof(float4)];
 			var bufferEdge = new byte[vsr.Length * sizeof(float4)];
 
@@ -340,12 +340,12 @@ namespace Fuse.Drawing.Primitives
 			{
 				apply Common;
 				apply virtual cover;
-				
+
 				DrawContext: dc;
 				Visual: visual;
 				Size: local::Size;
 				CanvasSize: csz;
-				
+
 				float[] Uniforms: _uniforms;
 
 				float4 V : vertex_attrib<float4>(_vertexInfo.Type, _vertexInfo.Buffer, _vertexInfo.BufferStride, _vertexInfo.BufferOffset);
@@ -375,7 +375,7 @@ namespace Fuse.Drawing.Primitives
 
 				float RawDistance: Vector.Distance(pixel LocalPositionScaled, EdgeScaled) * distanceScale - EdgeBase;
 				float2 EdgeNormal: Vector.Normalize(pixel LocalPosition - Edge);
-				
+
 				apply virtual brush;
 				apply CommonBrush;
 				apply virtual falloff;

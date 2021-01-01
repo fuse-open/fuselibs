@@ -13,7 +13,7 @@ using Fuse.Internal;
 using Fuse.Scripting;
 using Fuse.Triggers;
 
-/* 
+/*
 	This file is based on a copy of FuseTest's equivalent file, but with a minimal
 	public API surface. This file implements the public test API required by ux:Test.
 */
@@ -54,9 +54,9 @@ namespace Fuse.Testing
 	public class TestRootPanel : Panel
 	{
 		TestRootViewport _rootViewport;
-		
+
 		internal TestRootViewport RootViewport { get { return _rootViewport; } }
-		
+
 		public TestRootPanel()
 		{
 			this.SnapToPixels = false;
@@ -132,10 +132,9 @@ namespace Fuse.Testing
 
 		void OnDiagnostic(Diagnostic d)
 		{
-			if (d.UnoType == Uno.Diagnostics.DebugMessageType.Error)
+			if (d.UnoType == Uno.Diagnostics.LogLevel.Error)
 			{
 				_errors.Add(d);
-				
 			}
 		}
 
@@ -145,10 +144,10 @@ namespace Fuse.Testing
 			WaitJS = 1 << 0,
 			IncrementFrame = 1 << 1,
 		}
-		
+
 		/**
-			Indicates any deferred actions should be pumped. Code that should work without 
-			a new frame should call this instead of `IncrementFrame` to help ensure the 
+			Indicates any deferred actions should be pumped. Code that should work without
+			a new frame should call this instead of `IncrementFrame` to help ensure the
 			frame updating code is not used inappropriately. This limits itself to just processing
 			the pending deferred messages in the current update stage.
 		*/
@@ -156,42 +155,42 @@ namespace Fuse.Testing
 		{
 			UpdateManager.TestProcessCurrentDeferredActions();
 		}
-		
+
 		/**
 			Does a single step of the elapsedTime. This is used when you need to tightly control
 			the step time, or simulate a frame drop. Otherwise if you have  large time consider
 			using `StepFrame` instead.
 		*/
-		internal void IncrementFrame(float elapsedTime = -1) 
+		internal void IncrementFrame(float elapsedTime = -1)
 		{
 			IncrementFrameImpl(elapsedTime, StepFlags.IncrementFrame);
 		}
 
 		float _frameIncrement = 1/60f;
 		float StepIncrement { get { return _frameIncrement; } }
-			
-		void IncrementFrameImpl(float elapsedTime = -1, 
+
+		void IncrementFrameImpl(float elapsedTime = -1,
 			StepFlags flags = StepFlags.IncrementFrame)
 		{
 			if (elapsedTime < 0)
 				elapsedTime = _frameIncrement;
-				
+
 			if (flags.HasFlag(StepFlags.WaitJS))
 			{
 				var w = Fuse.Reactive.JavaScript.Worker;
 				if (w != null)
 					w.WaitIdle();
 			}
-				
+
 			Time.Set( Time.FrameTime + elapsedTime );
 			UpdateManager.Update();
 			if (flags.HasFlag(StepFlags.IncrementFrame))
 				UpdateManager.IncreaseFrameIndex();
 		}
-		
+
 		/**
 			If something being tested uses `PerformNextFrame` then you'll typically need to IncrementFrame
-			twice. The first call completes the current frame (when the posting occurs), and the next 
+			twice. The first call completes the current frame (when the posting occurs), and the next
 			completes the following frame (when the action is posted).
 			This function makes this expectation clearer.
 		*/
@@ -200,7 +199,7 @@ namespace Fuse.Testing
 			IncrementFrame();
 			IncrementFrame();
 		}
-		
+
 		/**
 			Steps at a reasonable frame rate to reach the `elapsedTime`.
 		*/
@@ -208,7 +207,7 @@ namespace Fuse.Testing
 		{
 			if (elapsedTime < 0)
 				elapsedTime = _frameIncrement;
-				
+
 			var e = 0f;
 			const float zeroTolerance = 1e-05f;
 			while (e < (elapsedTime - zeroTolerance))
@@ -218,7 +217,7 @@ namespace Fuse.Testing
 				e += s;
 			}
 		}
-		
+
 		/**
 			Steps frames until the JS action list in the Dispatch manages to synchronize. Note
 			in IncrementFrame we wait for JS processing to be done via `ThreadWorker.WaitIdle`,
@@ -236,7 +235,7 @@ namespace Fuse.Testing
 				IncrementFrameImpl(_frameIncrement, StepFlags.WaitJS | StepFlags.IncrementFrame);
 			}
 		}
-		
+
 		/**
 			Steps frames until the Deferred actions are all cleared. Guaranteed to step at least one frame.
 		*/
@@ -260,18 +259,18 @@ namespace Fuse.Testing
 			Fuse.Input.Pointer.RaisePressed(this, CreatePointerEvent(windowPoint));
 			StepFrame();
 		}
-		
+
 		internal void PointerMove(float2 windowPoint)
 		{
 			Fuse.Input.Pointer.RaiseMoved(this, CreatePointerEvent(windowPoint));
 			StepFrame();
 		}
-		
+
 		internal void PointerSlide(float2 from, float2 to, float speed)
 		{
 			var len = Vector.Length(to - from);
 			var unit = Vector.Normalize(to - from);
-			
+
 			var at = 0f;
 			while( at < len )
 			{
@@ -279,12 +278,12 @@ namespace Fuse.Testing
 				at = Math.Min(len, at + _frameIncrement * speed);
 			}
 		}
-		
+
 		internal void PointerSwipe(float2 from, float2 to, float speed = 500)
 		{
 			var len = Vector.Length(to - from);
 			var unit = Vector.Normalize(to - from);
-			
+
 			PointerPress(from);
 			var at = _frameIncrement * speed;
 			while( at < len )
@@ -294,13 +293,13 @@ namespace Fuse.Testing
 			}
 			PointerRelease(to);
 		}
-		
+
 		internal void PointerRelease(float2 windowPoint)
 		{
 			Fuse.Input.Pointer.RaiseReleased(this, CreatePointerEvent(windowPoint));
 			StepFrame();
 		}
-		
+
 		PointerEventData CreatePointerEvent(float2 windowPoint)
 		{
 			var ped = new PointerEventData
@@ -315,7 +314,7 @@ namespace Fuse.Testing
 				};
 			return ped;
 		}
-		
+
 		/**
 			The UX compiler genertes instantiations of all UXGlobalModule's in the App InitializeUX.
 			This does not happen for test cases, so you must explicitly say which modules you want.
@@ -325,19 +324,19 @@ namespace Fuse.Testing
 		{
 			if (_modules == null)
 				_modules = new List<object>();
-				
+
 			for (int i=0; i < _modules.Count; ++i)
 			{
 				if (_modules[i] is T)
 					return;
 			}
-			
+
 			_modules.Add( new T() );
 		}
 		static List<object> _modules;
 	}
 
-	/**	
+	/**
 		Global singletons are not set by default during testing. This is to help discourage such references from fuselibs itself. This guard sets up those references for tests where it is unavoidable.
 	*/
 	class TestRootSingletonsGuard : IDisposable
@@ -346,7 +345,7 @@ namespace Fuse.Testing
 		{
 			AppBase.TestSetRootViewport( trp.RootViewport );
 		}
-		
+
 		public void Dispose()
 		{
 			AppBase.TestSetRootViewport( null );

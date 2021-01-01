@@ -1,8 +1,8 @@
 <Panel ux:Class="UX.PlayerClosed">
 	<Panel ux:Name="Dummy"/>
-	
+
 	<TriggerAnimation ux:Name="A1" ux:AutoBind="false">
 		<Change Dummy.Height="100" Duration="1"/>
 	</TriggerAnimation>
-	
+
 </Panel>

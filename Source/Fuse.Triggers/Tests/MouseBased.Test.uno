@@ -117,11 +117,11 @@ namespace Fuse.Triggers.Test
 
 		private Element GetDummyButton()
 		{
-			return new Button() 
-						{ 
-							Width = 100, 
-							Height = 100, 
-							HitTestMode = HitTestMode.LocalBounds | HitTestMode.Children 
+			return new Button()
+						{
+							Width = 100,
+							Height = 100,
+							HitTestMode = HitTestMode.LocalBounds | HitTestMode.Children
 						};
 		}
 

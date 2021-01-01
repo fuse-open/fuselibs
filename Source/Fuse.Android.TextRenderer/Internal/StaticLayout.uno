@@ -37,9 +37,10 @@ namespace Fuse.Android
 			Alignment align,
 			float spacingMult,
 			float spacingAdd,
-			bool includePad)
-			
-			: this( Create(text, paint.Handle, width, (int)align, spacingMult, spacingAdd, includePad) ) { }
+			bool includePad,
+			int maxLines)
+
+			: this( Create(text, paint.Handle, width, (int)align, spacingMult, spacingAdd, includePad, maxLines) ) { }
 
 		public StaticLayout(
 			string text,
@@ -175,7 +176,8 @@ namespace Fuse.Android
 			int align,
 			float spacingMult,
 			float spacingAdd,
-			bool includePad)
+			bool includePad,
+			int maxLines)
 		@{
 			// Be careful, doing stupid enum conversion
 			android.text.Layout.Alignment alignment = android.text.Layout.Alignment.ALIGN_CENTER;
@@ -184,7 +186,13 @@ namespace Fuse.Android
 
 			android.text.TextPaint paint = (android.text.TextPaint)paintHandle;
 
-			return new android.text.StaticLayout(text, paint, width, alignment, spacingMult, spacingAdd, includePad);
+			android.text.StaticLayout.Builder builder = android.text.StaticLayout.Builder.obtain(text, 0, text.length(), paint, width);
+			return builder.setMaxLines(maxLines == 0 ? Integer.MAX_VALUE : maxLines)
+				.setAlignment(alignment)
+				.setIncludePad(includePad)
+				.setLineSpacing(spacingAdd, spacingMult)
+				.setEllipsize(android.text.TextUtils.TruncateAt.END)
+				.build();
 		@}
 
 		[Foreign(Language.Java)]

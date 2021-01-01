@@ -12,7 +12,7 @@ namespace Fuse.Gestures.Test
 	{
 		[Test]
 		public void Layer()
-		{	
+		{
 			var p = new UX.Gesture.Layer();
 			using (var root = TestRootPanel.CreateWithChild(p, int2(1000)))
 			{
@@ -62,7 +62,7 @@ namespace Fuse.Gestures.Test
 				root.StepFrame(5);
 				Assert.AreEqual(40, p.rangeH.Value);
 				Assert.AreEqual(p.pageC, p.edgeMain.Active);
-				
+
 
 
 			}

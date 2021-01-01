@@ -79,10 +79,10 @@ namespace Fuse.Layouts
 					var nlp = lp.Clone();
 					nlp.RetainXY(false, nlp.HasY);
 					var cds = c.GetMarginSize( nlp );
-					
+
 					lp.RemoveSize(float2(cds.X,0));
 					var subtree = MeasureSubtree(container, child.NextSibling<Node>(), lp);
-					return float2(cds.X + subtree.X, 
+					return float2(cds.X + subtree.X,
 						Math.Max(cds.Y, subtree.Y));
 				}
 
@@ -92,21 +92,21 @@ namespace Fuse.Layouts
 					var nlp = lp.Clone();
 					nlp.RetainXY(nlp.HasX, false);
 					var cds = c.GetMarginSize( nlp );
-					
+
 					lp.RemoveSize(float2(0,cds.Y));
 					var subtree = MeasureSubtree(container, child.NextSibling<Node>(), lp);
-					return float2(Math.Max(cds.X, subtree.X), 
+					return float2(Math.Max(cds.X, subtree.X),
 						cds.Y + subtree.Y);
 				}
 
 				case Dock.Fill:
 					return MeasureSubtree(container, child.NextSibling<Node>(), lp);
 			}
-			
+
 			return float2(0);
 		}
 
-		internal override void ArrangePaddingBox(Visual container, float4 padding, 
+		internal override void ArrangePaddingBox(Visual container, float4 padding,
 			LayoutParams lp)
 		{
 			var availablePosition = padding.XY;
@@ -114,7 +114,7 @@ namespace Fuse.Layouts
 
 			var nlp = lp.CloneAndDerive();
 			nlp.SetRelativeSize(lp.Size,lp.HasX,lp.HasY);
-			
+
 			for (var c = container.FirstChild<Visual>(); c != null; c = c.NextSibling<Visual>())
 			{
 				if (ArrangeMarginBoxSpecial(c, padding, lp))
@@ -158,19 +158,19 @@ namespace Fuse.Layouts
 							nlp);
 						availableSize.Y -= desiredSize.Y;
 						break;
-						
+
 					case Dock.Fill:
 						break;
 				}
-				
+
 				availableSize = Math.Max(availableSize, float2(0));
 			}
-			
+
 			nlp.SetSize(availableSize);
 			for (var c = container.FirstChild<Visual>(); c != null; c = c.NextSibling<Visual>())
 			{
 				if (!AffectsLayout(c)) continue;
-				
+
 				if (GetDock(c) != Dock.Fill)
 					continue;
 				c.ArrangeMarginBox(availablePosition, nlp);

@@ -1,10 +1,10 @@
 export default class ListOrder {
-	constructor() { 
+	constructor() {
 		this.items = [ 2, 3 ]
-		
+
 		this._count = 5
 	}
-	
+
 	add() {
 		this.items.push( this._count )
 		this._count++
@@ -14,7 +14,7 @@ export default class ListOrder {
 		this.items.splice(1, 0, this._count )
 		this._count++
 	}
-	
+
 	shift() {
 		this.items.shift()
 	}

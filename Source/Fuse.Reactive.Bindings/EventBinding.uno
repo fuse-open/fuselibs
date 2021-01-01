@@ -5,7 +5,7 @@ using Uno.Threading;
 
 namespace Fuse.Reactive
 {
-	/**	 
+	/**
 		Event bindings allows binding events to to JavaScript functions.
 
 		@topic Event binding
@@ -51,9 +51,9 @@ namespace Fuse.Reactive
 			_eventHandler = obj as IEventHandler;
 			ProcessQueuedEvents();
 		}
-		
+
 		internal override void LostValue()
-		{	
+		{
 			_eventHandler = null;
 		}
 

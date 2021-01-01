@@ -6,7 +6,7 @@ namespace Fuse
 {
 	public class ComputeException: Exception
 	{
-		public ComputeException(string op, object a, object b) 
+		public ComputeException(string op, object a, object b)
 			: base("Cannot '" + op + "'' objects of type '" + a.GetType() + "'' and '" + b.GetType() + "'")
 		{}
 	}
@@ -23,7 +23,7 @@ namespace Fuse
 			Max,
 		}
 		public abstract bool TryOp( TypeOp op, object a, object b, out object result );
-		
+
 		public enum BoolOp
 		{
 			LessThan,
@@ -52,16 +52,16 @@ namespace Fuse
 			result = tr;
 			return true;
 		}
-		
+
 		protected abstract bool TryOpImpl( TypeOp op, T a, T b, out T result );
-		
+
 		public bool TryConvert(object o, out T result)
 		{
 			return Marshal.TryToType<T>(o, out result);
 		}
 
 		public override bool TryOp( BoolOp op, object a, object b, out bool result)
-		{ 
+		{
 			T ma = default(T);
 			T mb = default(T);
 			result = false;
@@ -70,7 +70,7 @@ namespace Fuse
 				return false;
 			return TryOpImpl(op, ma,mb, out result);
 		}
-		
+
 		protected abstract bool TryOpImpl( BoolOp op, T a, T b, out bool result );
 	}
 
@@ -82,18 +82,18 @@ namespace Fuse
 			{
 				case TypeOp.Add: result = a + b; return true;
 			}
-			
+
 			result = null;
 			return false;
 		}
-		
+
 		protected override bool TryOpImpl( BoolOp op, string a, string b, out bool result )
 		{
 			switch(op)
 			{
 				case BoolOp.EqualTo: result = a == b; return true;
 			}
-			
+
 			result = false;
 			return false;
 		}
@@ -112,11 +112,11 @@ namespace Fuse
 				case TypeOp.Min: result = Math.Min(a,b); return true;
 				case TypeOp.Max: result = Math.Max(a,b); return true;
 			}
-			
+
 			result = 0;
 			return false;
 		}
-		
+
 		protected override bool TryOpImpl( BoolOp op, double a, double b, out bool result )
 		{
 			switch(op)
@@ -127,7 +127,7 @@ namespace Fuse
 				case BoolOp.GreaterThan: result = a > b; return true;
 				case BoolOp.GreaterOrEqual: result = a >= b; return true;
 			}
-			
+
 			result = false;
 			return false;
 		}
@@ -165,18 +165,18 @@ namespace Fuse
 				case TypeOp.Subtract: result = a - b; return true;
 				case TypeOp.Multiply: result = a * b; return true;
 				case TypeOp.Divide: result = a/b; return true;
-				case TypeOp.Min: 
-					result = new Size(Math.Min(a.Value, b.Value), Size.Combine(a.Unit, b.Unit)); 
+				case TypeOp.Min:
+					result = new Size(Math.Min(a.Value, b.Value), Size.Combine(a.Unit, b.Unit));
 					return true;
 				case TypeOp.Max:
-					result = new Size(Math.Max(a.Value, b.Value), Size.Combine(a.Unit, b.Unit)); 
+					result = new Size(Math.Max(a.Value, b.Value), Size.Combine(a.Unit, b.Unit));
 					return true;
 			}
-			
+
 			result =  new Size();
 			return false;
 		}
-	
+
 		protected override bool TryOpImpl( BoolOp op, Size a, Size b, out bool result )
 		{
 			switch(op)
@@ -187,7 +187,7 @@ namespace Fuse
 				case BoolOp.GreaterThan: result = a.Value > b.Value; return true;
 				case BoolOp.GreaterOrEqual: result = a.Value >= b.Value; return true;
 			}
-			
+
 			result = false;
 			return false;
 		}
@@ -204,18 +204,18 @@ namespace Fuse
 				case TypeOp.Multiply: result = a * b; return true;
 				case TypeOp.Divide: result = a/b; return true;
 			}
-			
+
 			result = new Size2();
 			return false;
 		}
-		
+
 		protected override bool TryOpImpl( BoolOp op, Size2 a, Size2 b, out bool result )
 		{
 			switch(op)
 			{
 				case BoolOp.EqualTo: result = a == b; return true;
 			}
-			
+
 			result = false;
 			return false;
 		}
@@ -232,18 +232,18 @@ namespace Fuse
 				case TypeOp.Multiply: result = a * b; return true;
 				case TypeOp.Divide: result = a/b; return true;
 			}
-			
+
 			result = float2(0);
 			return false;
 		}
-		
+
 		protected override bool TryOpImpl( BoolOp op, float2 a, float2 b, out bool result )
 		{
 			switch(op)
 			{
 				case BoolOp.EqualTo: result = a == b; return true;
 			}
-			
+
 			result = false;
 			return false;
 		}
@@ -260,18 +260,18 @@ namespace Fuse
 				case TypeOp.Multiply: result = a * b; return true;
 				case TypeOp.Divide: result = a/b; return true;
 			}
-			
+
 			result = float3(0);
 			return false;
 		}
-		
+
 		protected override bool TryOpImpl( BoolOp op, float3 a, float3 b, out bool result )
 		{
 			switch(op)
 			{
 				case BoolOp.EqualTo: result = a == b; return true;
 			}
-			
+
 			result = false;
 			return false;
 		}
@@ -288,18 +288,18 @@ namespace Fuse
 				case TypeOp.Multiply: result = a * b; return true;
 				case TypeOp.Divide: result = a/b; return true;
 			}
-			
+
 			result = float4(0);
 			return false;
 		}
-		
+
 		protected override bool TryOpImpl( BoolOp op, float4 a, float4 b, out bool result )
 		{
 			switch(op)
 			{
 				case BoolOp.EqualTo: result = a == b; return true;
 			}
-			
+
 			result = false;
 			return false;
 		}

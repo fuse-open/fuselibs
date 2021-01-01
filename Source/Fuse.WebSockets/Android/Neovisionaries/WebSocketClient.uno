@@ -33,27 +33,27 @@ namespace Neovisionaries
 					public void onError(WebSocket websocket, WebSocketException cause) {
 						error.run(cause.getMessage());
 					}
-					
+
 					@Override
 					public void onConnectError(WebSocket websocket, WebSocketException cause) throws Exception {
 						error.run(cause.getMessage());
 					}
-					
+
 					@Override
 					public void onConnected(WebSocket websocket, Map<String, List<String>> headers) {
 						open.run();
 					}
-					
+
 					@Override
 					public void onDisconnected(WebSocket websocket, WebSocketFrame serverCloseFrame, WebSocketFrame clientCloseFrame, boolean closedByServer) {
 						close.run();
 					}
-					
+
 					@Override
 					public void onTextMessage(WebSocket websocket, String message) {
 						receiveMessageHandler.run(message);
 					}
-					
+
 					@Override
 					public void onBinaryMessage(WebSocket websocket, byte[] binary) throws Exception {
 						receiveDataHandler.run(new com.uno.ByteArray(binary));

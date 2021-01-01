@@ -6,6 +6,6 @@
 	</JavaScript>
 	<Busy On="ParameterChanged" ux:Name="B"/>
 	<WhileBusy ux:Name="W"/>
-	
+
 	<FuseTest.Invoke Handler="{done}" ux:Name="{CallDone}"/>
 </Panel>

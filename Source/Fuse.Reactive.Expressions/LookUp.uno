@@ -58,7 +58,7 @@ namespace Fuse.Reactive
 				if (source == _lu.Index) NewIndex(value);
 				if (source == _lu.Collection) NewCollection(value);
 			}
-			
+
 			void IListener.OnLostData(IExpression source)
 			{
 				_listener.OnLostData(_lu);
@@ -72,7 +72,7 @@ namespace Fuse.Reactive
 				var obs = ind as IObservable;
 				if (obs != null)
 				{
-					// Special case for when index is an IObservable 
+					// Special case for when index is an IObservable
 					_indexForwarder = new ValueForwarder(obs, this);
 				}
 				else
@@ -106,7 +106,7 @@ namespace Fuse.Reactive
 				_hasIndex = true;
 				ResultChanged();
 			}
-			
+
 			void ValueForwarder.IValueListener.LostValue()
 			{
 				//TODO: https://github.com/fuse-open/fuselibs/issues/783
@@ -145,7 +145,7 @@ namespace Fuse.Reactive
 				DisposeCollectionObservableSub();
 
 				var obs = col as IObservableArray;
-				if (obs != null) 
+				if (obs != null)
 					// Special case for when the collection is an IObservableArray
 					_colObservableSub = obs.Subscribe(this);
 
@@ -161,7 +161,7 @@ namespace Fuse.Reactive
 				}
 			}
 
-			
+
 
 			void ResultChanged()
 			{
@@ -259,7 +259,7 @@ namespace Fuse.Reactive
 			void IObserver.OnFailed(string message){ ResultChanged(); }
 			void IObserver.OnNewAll(IArray values){ ResultChanged(); }
 			void IObserver.OnRemoveAt(int index){ ResultChanged(); }
-			void IObserver.OnInsertAt(int index, object value){ ResultChanged(); }		
+			void IObserver.OnInsertAt(int index, object value){ ResultChanged(); }
 		}
 	}
 }

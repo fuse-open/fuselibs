@@ -7,7 +7,7 @@ using FuseTest;
 namespace Fuse.Test
 {
 	class PQ { }
-	
+
 	public class PriorityQueueTest : TestBase
 	{
 		[Test]
@@ -16,7 +16,7 @@ namespace Fuse.Test
 			var a = new PQ();
 			var b = new PQ();
 			var c = new PQ();
-			
+
 			var l = new PriorityQueue<PQ>();
 			Assert.IsTrue( l.Empty );
 			l.Add(a,10);
@@ -27,7 +27,7 @@ namespace Fuse.Test
 			Assert.AreEqual(b, l[0]);
 			Assert.AreEqual(a, l[1]);
 			Assert.AreEqual(c, l[2]);
-			
+
 			var p = l.PopTop();
 			Assert.AreEqual(c,p);
 			Assert.AreEqual(2,l.Count);
@@ -39,7 +39,7 @@ namespace Fuse.Test
 			Assert.AreEqual(a, l[0]);
 			Assert.IsFalse( l.Empty );
 		}
-		
+
 		[Test]
 		public void Fifo()
 		{
@@ -49,7 +49,7 @@ namespace Fuse.Test
 			l.Add(2, 200);
 			Assert.AreEqual(1, l.PopTop());
 		}
-		
+
 		[Test]
 		public void Lifo()
 		{
@@ -59,7 +59,7 @@ namespace Fuse.Test
 			l.Add(2, 200);
 			Assert.AreEqual(2, l.PopTop());
 		}
-		
+
 		[Test]
 		public void Float4Priority()
 		{
@@ -67,7 +67,7 @@ namespace Fuse.Test
 			var b = new PQ();
 			var c = new PQ();
 			var d = new PQ();
-			
+
 			var l = new PriorityQueue<PQ>();
 			Assert.IsTrue( l.Empty );
 			l.Add(a,10);

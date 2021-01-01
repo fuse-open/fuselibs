@@ -20,7 +20,8 @@ namespace Fuse
 		IsPassword = 1<<12,
 		IsReadOnly = 1<<13,
 		AutoCorrectHint = 1<<14,
-		AutoCapitalizationHint = 1<<15
+		AutoCapitalizationHint = 1<<15,
+		MaxLines = 1<<16,
 	}
 
 	class FastProperty2Link
@@ -37,7 +38,7 @@ namespace Fuse
 	class FastProperty2Link<T>: FastProperty2Link
 	{
 		public T Value;
-		public FastProperty2Link(FastProperty2 p, T value) : base(p) 
+		public FastProperty2Link(FastProperty2 p, T value) : base(p)
 		{
 			Value = value;
 		}
@@ -62,7 +63,7 @@ namespace Fuse
 				if (object.Equals(value, defaultValue)) Clear(p);
 				else Find<T>(p).Value = value;
 			}
-			else 
+			else
 			{
 				if (!object.Equals(value, defaultValue)) Insert<T>(p, value);
 			}
@@ -142,7 +143,7 @@ namespace Fuse
 			return null;
 		}
 
-		
+
 	}
 
 }

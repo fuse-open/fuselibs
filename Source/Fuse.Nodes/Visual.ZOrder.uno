@@ -24,7 +24,7 @@ namespace Fuse
 				if (_zOffset == value)
 					return;
 				_zOffset = value;
-				if (Parent != null)	
+				if (Parent != null)
 					Parent.InvalidateZOrder();
 			}
 		}
@@ -34,14 +34,14 @@ namespace Fuse
 		{
 			if (_cachedZOrder == null)
 					_cachedZOrder = ComputeZOrder();
-				
+
 			return _cachedZOrder;
 		}
 
 		int _naturalZOrder;
 		bool _zOrderFixed;
 
-		/** Brings the given child to the front of the Z-order. 
+		/** Brings the given child to the front of the Z-order.
 			In UX markup, use the @BringToFront trigger action instead.
 		*/
 		public void BringToFront(Visual item)
@@ -50,9 +50,9 @@ namespace Fuse
 
 			var maxNaturalZOrder = int.MinValue;
 			for (var v = FirstChild<Visual>(); v != null; v = v.NextSibling<Visual>())
-				if (v != item && v.Layer == item.Layer && v._naturalZOrder > maxNaturalZOrder) 
+				if (v != item && v.Layer == item.Layer && v._naturalZOrder > maxNaturalZOrder)
 					maxNaturalZOrder = v._naturalZOrder;
-			
+
 			if (maxNaturalZOrder != int.MinValue && maxNaturalZOrder+1 != item._naturalZOrder)
 			{
 				item._naturalZOrder = maxNaturalZOrder+1;
@@ -61,7 +61,7 @@ namespace Fuse
 			}
 		}
 
-		/** Sends the given child to the back of the Z-order. 
+		/** Sends the given child to the back of the Z-order.
 			In UX markup, use the @SendToBack trigger action instead.
 		*/
 		public void SendToBack(Visual item)
@@ -71,7 +71,7 @@ namespace Fuse
 			var minNaturalZOrder = int.MaxValue;
 			for (var v = FirstChild<Visual>(); v != null; v = v.NextSibling<Visual>())
 				if (v != item && v.Layer == item.Layer && v._naturalZOrder < minNaturalZOrder) minNaturalZOrder = v._naturalZOrder;
-			
+
 			if (minNaturalZOrder != int.MaxValue && minNaturalZOrder-1 != item._naturalZOrder)
 			{
 				item._naturalZOrder = minNaturalZOrder-1;
@@ -81,7 +81,7 @@ namespace Fuse
 		}
 
 		protected virtual void OnZOrderInvalidated() {}
-	
+
 		void InvalidateZOrder()
 		{
 			_cachedZOrder = null;

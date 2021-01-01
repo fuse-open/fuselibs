@@ -1,4 +1,4 @@
-package com.fusetools.webview;
+package com.fuse.webview;
 import com.foreign.Uno.Action_String;
 import android.webkit.JavascriptInterface;
 
@@ -9,9 +9,9 @@ public class JsInterface
 	{
 		_handler = handler;
 	}
-	
+
 	@JavascriptInterface
-	public void onResult(String result) 
+	public void onResult(String result)
 	{
 		_handler.run(result);
 	}

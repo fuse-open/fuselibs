@@ -5,6 +5,7 @@ using Fuse.Elements;
 using Fuse.Scripting;
 using Fuse.Triggers;
 using Fuse.Controls.Native;
+using Fuse.Platform;
 
 namespace Fuse.Controls
 {
@@ -55,7 +56,7 @@ namespace Fuse.Controls
 			if (_value != newValue)
 			{
 				_value = newValue;
-				OnValueChanged(this);	
+				OnValueChanged(this);
 			}
 		}
 
@@ -119,15 +120,101 @@ namespace Fuse.Controls
 			}
 		}
 
+		/** Specifies the maximum number line of text if TextWrapping set to Wrap
+		*/
+		public int MaxLines
+		{
+			get { return Get(FastProperty2.MaxLines, 0); }
+			set
+			{
+				if (MaxLines != value)
+				{
+					Set(FastProperty2.MaxLines, value, 0);
+					OnMaxLinesChanged();
+				}
+			}
+		}
+
 		float _fontSize = Font.PlatformDefaultSize;
 		public float FontSize
 		{
-			get { return _fontSize; }
+			get
+			{
+				return _fontSize;
+			}
 			set
 			{
 				if (_fontSize != value)
 				{
 					_fontSize = value;
+
+					OnFontSizeChanged();
+					InvalidateVisual();
+				}
+			}
+		}
+
+		public float FontSizeScaled
+		{
+			get
+			{
+				if defined(IGNORE_FONT_SCALING)
+					return _fontSize;
+				if (_minFontScale == 0 && _maxFontScale == 0)
+					return _fontSize * SystemUI.TextScaleFactor;
+				else
+				{
+					if (_minFontScale == 1 && _maxFontScale == 1)
+						return _fontSize;
+					else
+						return _fontSize * Math.Max(_minFontScale, Math.Min(_maxFontScale, SystemUI.TextScaleFactor));
+				}
+			}
+		}
+
+		/**
+		Specifies the maximum text scale factor to accommodate if there is a change in the phone setting (Text Accessibility)
+
+		Set value `MaxFontScale` and `MinFontScale` to 1 if you want to ignore the text scale factor value that has been set in the phone setting.
+		Or if you want to ignore completely the font text scaling in your app, you can add `IGNORE_FONT_SCALING` compiler flag when building the app
+		*/
+		float _maxFontScale = 0.0f;
+		public float MaxFontScale
+		{
+			get
+			{
+				return _maxFontScale;
+			}
+			set
+			{
+				if (_maxFontScale != value)
+				{
+					_maxFontScale = value;
+
+					OnFontSizeChanged();
+					InvalidateVisual();
+				}
+			}
+		}
+
+		/**
+		Specifies the minimum text scale factor to accommodate if there is a change in the phone setting (Text Accessibility)
+
+		Set value `MaxFontScale` and `MinFontScale` to 1 if you want to ignore the text scale factor value that has been set in the phone setting.
+		Or if you want to ignore completely the font text scaling in your app, you can add `IGNORE_FONT_SCALING` compiler flag when building the app
+		*/
+		float _minFontScale = 0.0f;
+		public float MinFontScale
+		{
+			get
+			{
+				return _minFontScale;
+			}
+			set
+			{
+				if (_minFontScale != value)
+				{
+					_minFontScale = value;
 
 					OnFontSizeChanged();
 					InvalidateVisual();
@@ -164,7 +251,7 @@ namespace Fuse.Controls
 		}
 
 
-		/** The color of the text. 
+		/** The color of the text.
 
 			`Color` is an alias for this property, which is recommended to use for consistency.
 		*/

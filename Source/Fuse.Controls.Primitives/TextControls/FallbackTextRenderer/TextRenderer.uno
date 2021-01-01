@@ -11,11 +11,11 @@ namespace Fuse.Controls.FallbackTextRenderer
 	sealed class TextRenderer : ITextRenderer
 	{
 		TextControl Control;
-		public TextRenderer( TextControl text ) 
+		public TextRenderer( TextControl text )
 		{
 			Control = text;
 		}
-		
+
 		static Dictionary<Font, DefaultTextRenderer> _textRenderers = new Dictionary<Font, DefaultTextRenderer>();
 
 		internal static DefaultTextRenderer GetTextRenderer(Font f)
@@ -82,7 +82,7 @@ namespace Fuse.Controls.FallbackTextRenderer
 
 			var font = Control.Font;
 			var renderer = GetTextRenderer(font);
-			var fontSize = Control.FontSize;
+			var fontSize = Control.FontSizeScaled;
 
 			_wrapInfo = new WordWrapInfo(renderer, (Control.TextWrapping == TextWrapping.Wrap),
 				wrapWidth, fontSize,
@@ -111,32 +111,37 @@ namespace Fuse.Controls.FallbackTextRenderer
 			float minX = 0.0f;
 			float height = 0.0f;
 			int maxTextLength = 0;
+			int currLine = 0;
 
 			foreach (var wrappedLine in _wrappedLines)
 			{
-				var extent = float2(0, wrappedLine.LineWidth);
-
-				if (!useMin)
+				if (Control.MaxLines > 0 && currLine < Control.MaxLines)
 				{
-					switch (Control.TextAlignment)
+					var extent = float2(0, wrappedLine.LineWidth);
+
+					if (!useMin)
 					{
-						case TextAlignment.Left:
-							extent = float2(0,wrappedLine.LineWidth);
-							break;
-						case TextAlignment.Right: 
-							extent = float2(wrapWidth - wrappedLine.LineWidth, wrapWidth);
-							break;
-						case TextAlignment.Center:
-							extent = float2(wrapWidth/2 - wrappedLine.LineWidth/2,
-								wrapWidth/2 + wrappedLine.LineWidth/2);
-							break;
+						switch (Control.TextAlignment)
+						{
+							case TextAlignment.Left:
+								extent = float2(0,wrappedLine.LineWidth);
+								break;
+							case TextAlignment.Right:
+								extent = float2(wrapWidth - wrappedLine.LineWidth, wrapWidth);
+								break;
+							case TextAlignment.Center:
+								extent = float2(wrapWidth/2 - wrappedLine.LineWidth/2,
+									wrapWidth/2 + wrappedLine.LineWidth/2);
+								break;
+						}
 					}
+
+					minX = Math.Min(minX,extent[0]);
+					maxX = Math.Max(maxX,extent[1]);
+					maxTextLength += wrappedLine.Text.Length;
+					height += _wrapInfo.LineHeight;
 				}
-				
-				minX = Math.Min(minX,extent[0]);
-				maxX = Math.Max(maxX,extent[1]);
-				maxTextLength += wrappedLine.Text.Length;
-				height += _wrapInfo.LineHeight;
+				currLine++;
 			}
 
 			//TODO: https://github.com/fusetools/fuselibs-private/issues/1386
@@ -147,7 +152,7 @@ namespace Fuse.Controls.FallbackTextRenderer
 		public void Draw(DrawContext dc, Fuse.Visual where)
 		{
 			UpdateArrange();
-				
+
 			//TODO: truncation!
 			_wrapInfo.TextRenderer.BeginRendering(_wrapInfo.FontSize, _wrapInfo.AbsoluteZoom,
 				where.WorldTransform, _size, Control.RenderColor, _maxTextLength);
@@ -162,7 +167,7 @@ namespace Fuse.Controls.FallbackTextRenderer
 			}
 			_wrapInfo.TextRenderer.EndRendering(dc);
 		}
-		
+
 		float2 _position, _size;
 		public void Arrange(float2 position, float2 size)
 		{
@@ -171,26 +176,26 @@ namespace Fuse.Controls.FallbackTextRenderer
 			Invalidate();
 			UpdateArrange();
 		}
-		
+
 		void UpdateArrange()
 		{
 			if (_wrapInfo != null)
 				return;
-				
+
 			var v = Control.RenderValue ?? "";
 			InitWrap(_size.X, v, false);
 		}
-		
+
 		public void Invalidate()
 		{
 			_wrapInfo = null;
 		}
-		
+
 		public Rect GetRenderBounds()
 		{
 			return Rect.Translate(_textBounds,_position);
 		}
-		
+
 		public void SoftDispose()
 		{
 			_wrapInfo = null;

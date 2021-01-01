@@ -8,9 +8,9 @@ using Fuse.Controls.Native;
 namespace Fuse.Controls
 {
 	/** Baseclass for controls that contains a range value
-		
+
 		This is the baseclass for @Controls that hold a range value. For example @Slider.
-		
+
 		RangeControl is what you want to use if your component will hold a range value,
 		RangeControl support for example @ProgressAnimation which makes it nice to use in
 		animation.
@@ -45,14 +45,14 @@ namespace Fuse.Controls
 		/** Minimum value of the RangeControl. Defaults to 0
 
 			This is the left/top value of the RangeControl and may be a value larger than Maximum.
-			
+
 			@see Range
 		*/
 		public double Minimum
 		{
 			get { return _minimum; }
-			set 
-			{ 
+			set
+			{
 				if (_minimum != value)
 				{
 					_minimum = value;
@@ -60,20 +60,20 @@ namespace Fuse.Controls
 				}
 			}
 		}
-		
+
 		double _maximum = 100.0f;
-		/** 
-			Maximum value of the RangeControl. Defaults to 100 
-		
+		/**
+			Maximum value of the RangeControl. Defaults to 100
+
 			This is the bottom/right value of the RangeControl and may be a value smaller than Minimum.
-			
+
 			@see Range
 		*/
 		public double Maximum
 		{
 			get { return _maximum; }
-			set 
-			{ 
+			set
+			{
 				if (_maximum != value)
 				{
 					_maximum = value;
@@ -81,14 +81,14 @@ namespace Fuse.Controls
 				}
 			}
 		}
-		
+
 		/**
 			The range of values covered by the control.
-			
+
 			This maps to `Minimum, Maximum`.
-			
-			This range is not enforced by the `RangeControl`, the actual `Value` may be programmatically set outside the desired range. This is required to support bound values correctly where the order of  setting `Range` and `Value` is undefined. 
-			
+
+			This range is not enforced by the `RangeControl`, the actual `Value` may be programmatically set outside the desired range. This is required to support bound values correctly where the order of  setting `Range` and `Value` is undefined.
+
 			The standard range behaviours @LinearRangeBehavior and @CircularRangeBehavior will clamp the user's selection to the range.
 		*/
 		public float2 Range
@@ -111,7 +111,7 @@ namespace Fuse.Controls
 			get { return _value; }
 			set { SetValue(value, this); }
 		}
-		
+
 		static Selector _valueName = "Value";
 
 		IRangeView RangeView
@@ -154,10 +154,10 @@ namespace Fuse.Controls
 		}
 
 		double _userStep;
-		/** 	
+		/**
 			Quantizes user selection to this step. This is enforced by the behavior and not by this
 			control. The control can still have non-quantized values (allowing animation).
-			
+
 			A value of 0, the default, will use a continuous value range.
 		*/
 		public double UserStep
@@ -165,7 +165,7 @@ namespace Fuse.Controls
 			get { return _userStep; }
 			set { _userStep = value; }
 		}
-		
+
 		public double RelativeUserStep
 		{
 			get { return StepValueToRelative(UserStep); }
@@ -173,7 +173,7 @@ namespace Fuse.Controls
 		}
 
 		public event ValueChangedHandler<double> ValueChanged;
-		
+
 		public event ValueChangedHandler<double> ProgressChanged
 		{
 			add { ValueChanged += value; }
@@ -210,12 +210,12 @@ namespace Fuse.Controls
 			get { return ValueToRelative(Value); }
 			set { Value = ValueFromRelative(value); }
 		}
-		
+
 		internal double ValueFromRelative(double relative)
 		{
 			return relative * (Maximum - Minimum) + Minimum;
 		}
-		
+
 		internal double ValueToRelative(double value)
 		{
 			var range = Maximum - Minimum;
@@ -225,7 +225,7 @@ namespace Fuse.Controls
 				return 0;
 			return q;
 		}
-		
+
 		internal double StepValueToRelative( double value )
 		{
 			return Math.Abs( value / (Maximum - Minimum) );
@@ -237,9 +237,9 @@ namespace Fuse.Controls
 
 		void IRangeViewHost.OnProgressChanged(double newProgress)
 		{
-			SetValue(ValueFromRelative(newProgress), null);	
+			SetValue(ValueFromRelative(newProgress), null);
 		}
-		
+
 		double IRangeViewHost.RelativeUserStep
 		{
 			get { return RelativeUserStep; }

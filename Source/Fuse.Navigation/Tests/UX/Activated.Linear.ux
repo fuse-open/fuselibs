@@ -1,22 +1,22 @@
 <Panel ux:Class="UX.Activated.Linear">
 	<JavaScript>
 		var Observable = require("FuseJS/Observable")
-		
+
 		exports.actPath = Observable("")
 		exports.deactPath = Observable("")
-		
+
 		exports.activateP1 = function() { actExtend("1") }
 		exports.deactivateP1 = function() { deactExtend("1") }
-		
+
 		exports.activateP2 = function() { actExtend("2") }
 		exports.deactivateP2 = function() { deactExtend("2") }
-		
+
 		exports.activateP3 = function() { actExtend("3") }
 		exports.deactivateP3 = function() { deactExtend("3") }
-		
+
 		exports.activateP4 = function() { actExtend("4") }
 		exports.deactivateP4 = function() { deactExtend("4") }
-		
+
 		function actExtend(p) {
 			exports.actPath.value += p
 		}
@@ -27,21 +27,21 @@
 	<LinearNavigation ux:Name="Nav">
 		<NavigationMotion GotoDuration="1"/>
 	</LinearNavigation>
-	
+
 	<Page ux:Name="P1">
 		<Activated When="Immediate"><Callback Handler="{activateP1}"/></Activated>
 		<Deactivated When="Immediate"><Callback Handler="{deactivateP1}"/></Deactivated>
 	</Page>
-	
+
 	<Page ux:Name="P2">
 		<Activated Handler="{activateP2}" When="Immediate"/>
 		<Deactivated Handler="{deactivateP2}" When="Immediate"/>
 	</Page>
-	
+
 	<Page ux:Name="P3" Activated="{activateP3}" Deactivated="{deactivateP3}"/>
-	
+
 	<Page ux:Name="P4" Activated="{activateP4}" Deactivated="{deactivateP4}"/>
-	
+
 	<Text ux:Name="Act" Value="{actPath}"/>
 	<Text ux:Name="Deact" Value="{deactPath}"/>
 </Panel>

@@ -15,25 +15,25 @@ namespace Fuse.Selection
 
 	/**
 		@Selection is used to create a selection control, such as an item list, radio buttons, or picker. The @Selection itself defines the selection, managing the high-level behaviour and tracking the current value. A variety of @Selectable objects define which items can be selected.
-		
-		## Introduction to the Selection API 
-		
+
+		## Introduction to the Selection API
+
 		<iframe width="560" height="315" src="https://www.youtube.com/embed/Ngil94H-Mk4" frameborder="0" allowfullscreen></iframe>
-		
+
 		The selection is associated with the node in which it appears. For example:
-		
+
 			<Panel>
 				<Selection/>
 			</Panel>
-			
+
 		The @Panel is now considered to be a selection control. Behaviours and triggers, such as @Selectable and @Selected, that are descendents of this panel will find this `Selection` behavior.
-		
+
 		The @(Selectable) node is used to make a child of a selection control selectable. When assigned to a nodes, it will iterate through the controls parents until it finds a selection control.
 
 		The Selection API's functions are split between user-interaction and programming APIs. The user interaction functions are constrained to the requirements of the Selection, such as `MaxCount` and `MinCount`. The programmatic functions can set whatever state they want; they are not constrained. This makes it easy to create value bindings and JavaScript driven behaviour without worrying about initialization order.
-		
+
 		## Example
-		
+
 		@examples Docs/example.md
 	*/
 	public partial class Selection : Behavior, Reactive.IObserver
@@ -49,7 +49,7 @@ namespace Fuse.Selection
 					if (l != null)
 						return l;
 				}
-					
+
 				v = v.ContextParent;
 			}
 			return null;
@@ -59,7 +59,7 @@ namespace Fuse.Selection
 		{
 			selectable = null;
 			selection = null;
-			
+
 			while (n != null)
 			{
 				var vs = n as Visual;
@@ -69,31 +69,31 @@ namespace Fuse.Selection
 						selectable = vs.FirstChild<Selectable>();
 					else
 						selection = vs.FirstChild<Selection>();
-					
+
 					if (selectable != null && selection != null)
 						return true;
 				}
-				
+
 				n = n.ContextParent;
 			}
-			
+
 			selectable = null;
 			selection = null;
 			return false;
 		}
-		
+
 		protected override void OnRooted()
 		{
 			base.OnRooted();
 			OnObservableValuesChanged();
 		}
-		
+
 		protected override void OnUnrooted()
 		{
 			ClearSubscription();
 			base.OnUnrooted();
 		}
-		
+
 		SelectionReplace _replace = SelectionReplace.Oldest;
 		/**
 			Specifies what happens when the user selects an item that would exceed the MaxCount.
@@ -103,7 +103,7 @@ namespace Fuse.Selection
 			get { return _replace; }
 			set { _replace = value; }
 		}
-		
+
 		int _minCount = 0;
 		/**
 			The minimum number of items the user is allowed to select. If they attempt to deselect and item and go below this count the deselect will be ignored.
@@ -115,11 +115,11 @@ namespace Fuse.Selection
 			{
 				if (value == _minCount)
 					return;
-				
+
 				_minCount = value;
 			}
 		}
-		
+
 		bool _hasMaxCount = false;
 		int _maxCount;
 		/**
@@ -132,18 +132,18 @@ namespace Fuse.Selection
 			{
 				if (_hasMaxCount && value == _maxCount)
 					return;
-				
+
 				if (value < 1)
 				{
 					Fuse.Diagnostics.UserError( "MaxCount must >= 1", this );
 					return;
 				}
-				
+
 				_hasMaxCount = true;
 				_maxCount = value;
 			}
 		}
-		
+
 		/**
 			Is a `MaxCount` defined on this `Selection`.
 		*/
@@ -153,7 +153,7 @@ namespace Fuse.Selection
 		}
 
 		List<string> _values = new List<string>();
-		
+
 		/**
 			@return true if the Selectable is currently selected.
 		*/
@@ -162,20 +162,20 @@ namespace Fuse.Selection
 			// "nothing" can never be selected
 			if (string.IsNullOrEmpty(b.Value))
 				return false;
-				
+
 			return _values.Contains(b.Value);
 		}
-		
+
 		/**
 			Toggles the selection status of this Selectable.
-			
+
 			This respects the user-interaction constraints.
 		*/
 		public void Toggle(Selectable b)
 		{
 			Toggle(b.Value);
 		}
-		
+
 		void Toggle(string value)
 		{
 			if (_values.Contains(value))
@@ -183,20 +183,20 @@ namespace Fuse.Selection
 			else
 				Add(value);
 		}
-		
+
 		/**
 			Adds a Selectable to the Selection. If it is already added it won't be added a second time.
-			
+
 			This respects the user-interaction constraints. If too many items are added `Replace` defines what happens.
 		*/
 		public void Add(Selectable b)
 		{
 			Add(b.Value);
 		}
-		
+
 		/**
 			Removes a Selectable from the Selection. If it is not in the selection then nothing happens.
-			
+
 			This respects the user-interaction constraints. The item will not be removed if it would go below `MinCount`.
 		*/
 		public void Remove(Selectable b)
@@ -206,7 +206,7 @@ namespace Fuse.Selection
 
 		/**
 			Clears all items from the selection.
-			
+
 			This ignores user-interaction constraints.
 		*/
 		public void Clear()
@@ -214,7 +214,7 @@ namespace Fuse.Selection
 			_values.Clear();
 			OnSelectionChanged(How.API);
 		}
-		
+
 		/**
 			Adds a Selectable to the Selection even if would violate the user-interaction constraints. It will however not add the same value twice.
 		*/
@@ -222,7 +222,7 @@ namespace Fuse.Selection
 		{
 			ForceAdd(b.Value);
 		}
-		
+
 		void ForceAdd(string value)
 		{
 			if (!_values.Contains(value))
@@ -231,7 +231,7 @@ namespace Fuse.Selection
 				OnSelectionChanged(How.API);
 			}
 		}
-		
+
 		/**
 			Removes a Selectable form the Selection even if it would violated the user-interaction constraints (such as `MinCount`).
 		*/
@@ -239,7 +239,7 @@ namespace Fuse.Selection
 		{
 			ForceRemove(b.Value);
 		}
-		
+
 		void ForceRemove(string value)
 		{
 			if (_values.Contains(value))
@@ -248,7 +248,7 @@ namespace Fuse.Selection
 				OnSelectionChanged(How.API);
 			}
 		}
-		
+
 		/**
 			The number of items currently selected.
 		*/
@@ -256,15 +256,15 @@ namespace Fuse.Selection
 		{
 			get { return _values.Count; }
 		}
-		
-		public static Selector ValueName = new Selector("Value");
-		
+
+		internal static Selector ValueName = new Selector("Value");
+
 		[UXOriginSetter("SetValue")]
 		/**
 			The string value of the item curerntly selected. If multiple items are selected then it will be value of the oldest item selected.
-			
+
 			This is suitable for use with selections that allow only one item to be selected, such as radio buttons. It can be used directly in a binding:
-			
+
 				<Selection Value="{jsValue}"/>
 		*/
 		public string Value
@@ -288,48 +288,48 @@ namespace Fuse.Selection
 				else
 					has = true;
 			}
-			
+
 			if (!has)
 				Add(value);
 		}
-		
+
 		void Remove(string value)
 		{
 			if (!_values.Contains(value))
 				return;
-				
+
 			if (_values.Count-1 < MinCount)
 				return;
-				
+
 			_values.Remove(value);
 			OnSelectionChanged(How.API);
 		}
-		
+
 		void Add(string value)
 		{
 			if (_values.Contains(value))
 				return;
-				
+
 			if (HasMaxCount && _values.Count+1 > MaxCount)
 			{
 				if (Replace == SelectionReplace.None || MaxCount < 1 /*safety for below*/)
 					return;
-					
+
 				if (Replace == SelectionReplace.Oldest)
 					_values.RemoveAt(0);
 				else
 					_values.RemoveAt(_values.Count-1);
 			}
-			
+
 			_values.Add(value);
 			OnSelectionChanged(How.API);
 		}
-		
+
 		/**
 			Raised whenever the selection state changes.
 		*/
 		public event EventHandler SelectionChanged;
-		
+
 		enum How
 		{
 			API,
@@ -346,7 +346,7 @@ namespace Fuse.Selection
 			public int Length { get { return _list.Count; } }
 			public object this [int index] { get { return _list[index]; } }
 		}
-		
+
 		void OnSelectionChanged(How how)
 		{
 			if (how == How.API && _subscription != null)
@@ -355,12 +355,12 @@ namespace Fuse.Selection
 				if (sub != null) sub.ReplaceAllExclusive( new ListWrapper(_values) );
 				else Diagnostics.UserWarning("Selection changed, but the bound collection is not writeable.", this);
 			}
-			
+
 			OnPropertyChanged(ValueName);
 			if (SelectionChanged != null)
 				SelectionChanged(this, EventArgs.Empty);
 		}
-		
+
 		/*
 			Allows a selectable to change value without the selection state changes.
 		*/
@@ -368,7 +368,7 @@ namespace Fuse.Selection
 		{
 			if (string.IsNullOrEmpty(old) || string.IsNullOrEmpty(nw))
 				return;
-				
+
 			if (_values.Contains(old))
 			{
 				_values.Remove(old);
@@ -376,25 +376,25 @@ namespace Fuse.Selection
 				OnSelectionChanged(How.API);
 			}
 		}
-		
+
 		Reactive.IObservableArray _observableValues;
 		/**
 			The current list of selected values. This should be bound to an `IObservableArray` (e.g `FuseJS/Observable`) order to create a 2-way interface for the selected items.
-			
+
 			@examples Docs/example.md
 		*/
 		public object Values
 		{
 			get { return _observableValues; }
-			set 
-			{ 
+			set
+			{
 				var q = value as Reactive.IObservableArray;
 				if (value != null && q == null)
 				{
 					Fuse.Diagnostics.UserError( "`Values` must be an IObservableArray", this );
 					return;
 				}
-				
+
 				if (_observableValues != q)
 				{
 					_observableValues = q;
@@ -402,7 +402,7 @@ namespace Fuse.Selection
 				}
 			}
 		}
-		
+
 		void OnObservableValuesChanged()
 		{
 			ClearSubscription();
@@ -410,10 +410,10 @@ namespace Fuse.Selection
 				return;
 
 			OnNewAll(_observableValues);
-				
+
 			_subscription = _observableValues.Subscribe(this);
 		}
-		
+
 		IDisposable _subscription;
 		void ClearSubscription()
 		{
@@ -442,7 +442,7 @@ namespace Fuse.Selection
 				_values.Add( Marshal.ToType<string>( values[i] ) );
 			OnSelectionChanged(How.Observable);
 		}
-		
+
 		void Reactive.IObserver.OnNewAt(int index, object newValue)
 		{
 			if (index <0 || index >= _values.Count)
@@ -453,20 +453,20 @@ namespace Fuse.Selection
 			_values[index] = Marshal.ToType<string>(newValue);
 			OnSelectionChanged(How.Observable);
 		}
-		
+
 		void Reactive.IObserver.OnSet(object newValue)
 		{
 			_values.Clear();
 			_values.Add( Marshal.ToType<string>(newValue) );
 			OnSelectionChanged(How.Observable);
 		}
-		
+
 		void Reactive.IObserver.OnAdd(object addedValue)
 		{
 			_values.Add( Marshal.ToType<string>(addedValue) );
 			OnSelectionChanged(How.Observable);
 		}
-		
+
 		void Reactive.IObserver.OnRemoveAt(int index)
 		{
 			if (index <0 || index >= _values.Count)
@@ -477,7 +477,7 @@ namespace Fuse.Selection
 			_values.RemoveAt(index);
 			OnSelectionChanged(How.Observable);
 		}
-		
+
 		void Reactive.IObserver.OnInsertAt(int index, object value)
 		{
 			if (index <0 || index > _values.Count)
@@ -488,13 +488,13 @@ namespace Fuse.Selection
 			_values.Insert(index, Marshal.ToType<string>(value) );
 			OnSelectionChanged(How.Observable);
 		}
-		
+
 		void Reactive.IObserver.OnFailed(string message)
 		{
 			(this as Reactive.IObserver).OnClear();
 			Fuse.Diagnostics.InternalError( message, this );
 		}
-		
+
 		internal string Test_JoinValues()
 		{
 			string q = "";

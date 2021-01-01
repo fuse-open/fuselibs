@@ -15,9 +15,9 @@ namespace Fuse.Controls.VideoImpl
 
 	internal extern (!iOS && !Android && !DOTNET) class VideoVisual : ControlVisual<global::Fuse.Controls.Video>
 	{
-	
+
 		readonly Panel _placeholder;
-		
+
 		public VideoVisual()
 		{
 			_placeholder = new Panel();
@@ -35,7 +35,7 @@ namespace Fuse.Controls.VideoImpl
 
 			_placeholder.Children.Add(image);
 		}
-		
+
 		protected override void Attach()
 		{
 			Control.Children.Add(_placeholder);
@@ -44,7 +44,7 @@ namespace Fuse.Controls.VideoImpl
 		protected override void Detach()
 		{
 			Control.Children.Remove(_placeholder);
-		}	
+		}
 
 		public override void Draw(DrawContext dc) { }
 	}
@@ -180,15 +180,6 @@ namespace Fuse.Controls.VideoImpl
 			((IMediaPlayback)this).Position = 0.0;
 		}
 
-		/** Deprecated **/
-		void IPlayback.PlayTo(double progress)
-		{
-			Fuse.Diagnostics.Unsupported("IPlayback.PlayTo(double) not supported in Fuse.Controls.Video",
-				this);
-		}
-		bool IPlayback.CanPlayTo { get { return false; } }
-		/** End-Deprecated **/
-
 		void IPlayback.Pause()
 		{
 			_playbackTarget = PlaybackTarget.Paused;
@@ -221,10 +212,6 @@ namespace Fuse.Controls.VideoImpl
 			get { return (_videoService.Duration > 1e-05) ? _videoService.Position / _videoService.Duration : 0.0; }
 			set { _videoService.Position = _videoService.Duration * value; }
 		}
-
-		bool IPlayback.CanStop { get { return true; } }
-		bool IPlayback.CanPause { get { return true; } }
-		bool IPlayback.CanResume { get { return true; } }
 
 		event ValueChangedHandler<double> IProgress.ProgressChanged
 		{
@@ -352,7 +339,7 @@ namespace Fuse.Controls.VideoImpl
 			if (lp.X >= _drawOrigin.X && lp.X <= (_drawOrigin.X + _drawSize.X) &&
 				lp.Y >= _drawOrigin.Y && lp.Y <= (_drawOrigin.Y + _drawSize.Y) )
 				htc.Hit(this);
-				
+
 			base.OnHitTest(htc);
 		}
 

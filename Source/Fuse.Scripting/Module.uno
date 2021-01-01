@@ -38,7 +38,7 @@ namespace Fuse.Scripting
 		}
 
 		protected bool IsEvaluated { get { return _isEvaluated; } }
-		
+
 		EventHandler _evaluated;
 		public event EventHandler Evaluated
 		{
@@ -76,7 +76,7 @@ namespace Fuse.Scripting
 		{
 			return c.NewObject();
 		}
-		
+
 		public virtual void Dispose() {}
 	}
 }

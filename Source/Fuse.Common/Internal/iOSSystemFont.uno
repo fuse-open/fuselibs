@@ -20,7 +20,7 @@ namespace Fuse.Internal
 		{
 			get
 			{
-				if (Fuse.iOSDevice.OperatingSystemVersion.Major >= 13) 
+				if (Fuse.iOSDevice.OperatingSystemVersion.Major >= 13)
 				{
 					var path = "/System/Library/Fonts/Core/AppleSystemUIFont";
 					var fontName = ".AppleSystemUIFont";
@@ -30,8 +30,8 @@ namespace Fuse.Internal
 					var result = new List<FontFaceDescriptor>();
 					result.Add(ffd);
 					return result;
-				} 
-				else 
+				}
+				else
 				{
 					var descriptor = GetDefaultUIFontDescriptor();
 					var descriptors = GetFallbackUIFontDescriptors(descriptor);
@@ -65,7 +65,7 @@ namespace Fuse.Internal
 
 		public static List<FontFaceDescriptor> Get(string family, Fuse.SystemFont.Style style, Fuse.SystemFont.Weight weight)
 		{
-			if (Fuse.iOSDevice.OperatingSystemVersion.Major >= 13) 
+			if (Fuse.iOSDevice.OperatingSystemVersion.Major >= 13)
 			{ //system font for iOS 13
 
 				//satisfy custom font structure
@@ -77,10 +77,10 @@ namespace Fuse.Internal
 				var result = new List<FontFaceDescriptor>();
 				result.Add(ffd);
 				return result;
-			} 
-			else 
+			}
+			else
 			{ //normal custom font
-			
+
 				var weightIndex = Math.Clamp((int)weight, 0, _weightNames.Length - 1);
 				var descriptor = GetMatchingFontDescriptor(family, style == Fuse.SystemFont.Style.Italic, _weightNames[weightIndex]);
 				if (descriptor == null)
@@ -95,7 +95,7 @@ namespace Fuse.Internal
 			}
 		}
 
-		static ObjC.Object GetFallbackUIFontDescriptorsWeight(ObjC.Object descriptor, string family, string weightName, bool isItalic) 
+		static ObjC.Object GetFallbackUIFontDescriptorsWeight(ObjC.Object descriptor, string family, string weightName, bool isItalic)
 		{
 			var fontName = (!isItalic) ? GetDescriptorFontName(descriptor) : GetDescriptorName(descriptor);
 			if (weightName == "UltraLight" && isItalic == false && (DoesFontWeightExist(family, fontName, weightName) == false))
@@ -433,13 +433,13 @@ namespace Fuse.Internal
 			string selectedFontWeight = "normal";
 			string selectedFontDesign = "default";
 
-			switch (fontStyle) 
+			switch (fontStyle)
 			{
 				case Fuse.SystemFont.Style.Italic: selectedFontStyle = "italic";
 					break;
 			}
 
-			switch (fontWeight) 
+			switch (fontWeight)
 			{
 				case Fuse.SystemFont.Weight.UltraLight: selectedFontWeight = "ultralight";
 					break;
@@ -461,7 +461,7 @@ namespace Fuse.Internal
 					break;
 			}
 
-			switch (fontDesign) 
+			switch (fontDesign)
 			{
 				case Fuse.SystemFont.Design.Default: selectedFontDesign = "default";
 					break;

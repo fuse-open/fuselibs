@@ -4,7 +4,7 @@
 			<FuseTest.DudElement StringValue="{= data() }"/>
 		</Each>
 	</Panel>
-	
+
 	<Panel ux:Name="b">
 		<Each Items="{items}">
 			<FuseTest.DudElement StringValue="{name}"/>

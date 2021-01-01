@@ -6,7 +6,7 @@
 	Focus.IsFocusable="true">
 
 	<Text Value="{Property this.Text}" TextColor="{Resource Basic.CFillFore}" TextAlignment="Center" Font="RobotoLight"/>
-	
+
 	<DockPanel
 	    Alignment="CenterLeft"
 	    DockPanel.Dock="Left">

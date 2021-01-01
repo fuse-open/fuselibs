@@ -27,8 +27,8 @@ namespace Fuse
 				c.SubtreeToString(sb, indent+1);
 		}
 
-		/** Returns the first child node of the given type. 
-			
+		/** Returns the first child node of the given type.
+
 			To get the very first child node (of any type), use `FirstChild<Node>()`.
 		*/
 		public T FirstChild<T>() where T: Node
@@ -43,7 +43,7 @@ namespace Fuse
 			return null;
 		}
 
-		/** Returns the last child node of the given type. 
+		/** Returns the last child node of the given type.
 
 			To get the very last child node (of any type), use `LastChild<Node>()`.
 		*/
@@ -59,14 +59,14 @@ namespace Fuse
 			return null;
 		}
 
-		/** Removes all children of the given type. 
-			
+		/** Removes all children of the given type.
+
 			To remove all children (of all types), use `RemoveAllChildren<Node>()`.
 		*/
 		public void RemoveAllChildren<T>() where T: Node
 		{
 			// Has to use use safe iterator, ref discussion on https://github.com/fuse-open/fuselibs/pull/260
-			foreach (var c in Children) 
+			foreach (var c in Children)
 				if (c is T) Remove(c);
 		}
 
@@ -104,7 +104,7 @@ namespace Fuse
 				for (var n = FirstChild<Node>(); n != null; n = n.NextSibling<Node>())
 				{
 					var obs = n as IParentObserver;
-					if (obs != null && n.IsRootingCompleted) 
+					if (obs != null && n.IsRootingCompleted)
 						obs.OnChildRemovedWhileRooted(elm);
 				}
 			}
@@ -119,12 +119,12 @@ namespace Fuse
 				for (var n = FirstChild<Node>(); n != null; n = n.NextSibling<Node>())
 				{
 					var obs = n as IParentObserver;
-					if (obs != null && n.IsRootingCompleted) 
+					if (obs != null && n.IsRootingCompleted)
 						obs.OnChildMovedWhileRooted(elm);
 				}
 			}
 		}
-		
+
 		void OnAdded(Node b)
 		{
 			var v = b as Visual;
@@ -148,7 +148,7 @@ namespace Fuse
 			Unrelate(this, b);
 			OnChildRemoved(b);
 		}
-		
+
 		void OnMoved(Node b)
 		{
 			OnChildMoved(b);
@@ -166,7 +166,7 @@ namespace Fuse
 			InvalidateHitTestBounds();
 			InvalidateRenderBounds();
 		}
-		
+
 		void ICollection<Node>.Clear()
 		{
 			for (var c = _firstChild; c != null; c = c._nextSibling)
@@ -193,7 +193,7 @@ namespace Fuse
 		}
 
 		/** Inserts a child node after the given sibling node.
-			
+
 			For performance reasons, this entrypoint is recommended over using `InsertAt`.
 
 			To insert at the beginning of the list, use `null` as the first argument.
@@ -209,7 +209,7 @@ namespace Fuse
 		{
 			return Children_Contains(item);
 		}
-		
+
 		int IndexOf(Node item)
 		{
 			return Children_IndexOf(item);
@@ -231,7 +231,7 @@ namespace Fuse
 		}
 
 		/**
-			Inserts several nodes at the location. This ensures they are all added befor starting 
+			Inserts several nodes at the location. This ensures they are all added befor starting
 			any rooting behaviouir, thus guaranteeing they are inerted in consecutive order
 			in the Children list (something that calling `Insert` in sequence cannot do, as
 			rooting a child could introduce new children).
@@ -245,11 +245,11 @@ namespace Fuse
 		{
 			InsertNodesAfterImpl(preceeder, items, true);
 		}
-		
-		
+
+
 		void InsertNodesAfterImpl(Node preceeder, IEnumerator<Node> items, bool allowMove)
 		{
-			if (!Children_Contains(preceeder)) 
+			if (!Children_Contains(preceeder))
 				throw new Exception("Cannot insert nodes after a node that is not a child of this parent");
 
 			//cleanup all nodes first
@@ -258,7 +258,7 @@ namespace Fuse
 
 			//becomes non-null on the first moved node
 			HashSet<Node> moved = null;
-			
+
 			//nodes should be considered added in the same group
 			var capture = CaptureRooting();
 			try

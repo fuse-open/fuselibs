@@ -7,7 +7,7 @@ export default class Bind {
 		this.DefaultFromJS = 10
 		this.Value = undefined
 	}
-	
+
 	incrLoad() {
 		this.Load++
 	}

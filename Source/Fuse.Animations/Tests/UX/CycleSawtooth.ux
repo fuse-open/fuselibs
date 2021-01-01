@@ -2,9 +2,9 @@
 	<Translation XY="0,0" ux:Name="T1"/>
 	<Translation XY="0,0" ux:Name="T2"/>
 	<WhileVisible>
-		<Cycle Target="T1.XY" Low="0" High="100" 
+		<Cycle Target="T1.XY" Low="0" High="100"
 			Base="2,1" Offset="50,25" Waveform="Sawtooth" ux:Name="C1"/>
-		<Cycle Target="T2.XY" Low="0" High="100" 
+		<Cycle Target="T2.XY" Low="0" High="100"
 			Base="2,1" Offset="50,25" Waveform="Sawtooth" ux:Name="C2"/>
 	</WhileVisible>
 </Panel>

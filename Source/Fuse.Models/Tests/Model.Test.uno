@@ -21,10 +21,10 @@ namespace Fuse.Models.Test
 
 				e.disconnect.Perform();
 				root.StepFrameJS();
-				
+
 				e.resolvePromise.Perform();
 				root.StepFrameJS();
-				
+
 				e.connect.Perform();
 				root.StepFrameJS();
 				Assert.AreEqual("foo", e.promisedValue.StringValue);
@@ -88,7 +88,7 @@ namespace Fuse.Models.Test
 				Assert.AreEqual(2, e.instanceCount.Value);
 			}
 		}
-		
+
 		[Test]
 		public void NestedArray()
 		{
@@ -121,7 +121,7 @@ namespace Fuse.Models.Test
 		}
 
 		[Test]
-		public void ReplaceAt() 
+		public void ReplaceAt()
 		{
 			var e = new UX.Model.ReplaceAt();
 			using (var root = TestRootPanel.CreateWithChild(e))
@@ -133,7 +133,7 @@ namespace Fuse.Models.Test
 				root.StepFrameJS(); // Throws if test fails
 			}
 		}
-		
+
 		[Test]
 		public void Async()
 		{
@@ -265,7 +265,7 @@ namespace Fuse.Models.Test
 				Assert.AreEqual( "5", e.r.UseValue );
 			}
 		}
-		
+
 		[Test]
 		public void Loop2()
 		{
@@ -650,7 +650,7 @@ namespace Fuse.Models.Test
 			using(var root = TestRootPanel.CreateWithChild(e))
 			{
 				root.StepFrameJS();
-				
+
 				for(var i = 0; i < 5; ++i)
 				{
 					Assert.AreEqual(i, e.v.Value);
@@ -718,7 +718,7 @@ namespace Fuse.Models.Test
 
 				e.attachCycle.Perform();
 				root.StepFrameJS();
-				
+
 				e.changeCycleData.Perform();
 				root.StepFrameJS();
 

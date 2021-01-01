@@ -32,11 +32,11 @@ namespace Fuse.Triggers
 					</ProgressAnimation>
 				</Slider>
 			</Panel>
-			
+
 		## Compatible controls
-		
+
 		ProgressAnimation works with classes that implement `Fuse.Triggers.IProgress`.
-		
+
 		[subclass Fuse.Triggers.IProgress]
 	*/
 	public class ProgressAnimation : Trigger
@@ -66,7 +66,7 @@ namespace Fuse.Triggers
 				InitProgress();
 			}
 		}
-		
+
 		IProgress _progress;
 		double _prevValue;
 		protected override void OnRooted()

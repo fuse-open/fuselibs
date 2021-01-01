@@ -11,11 +11,11 @@ namespace Fuse.Controls.Native.iOS
 	[UXGlobalModule]
 	/**
 		@scriptmodule FuseJS/DarkMode
-		
+
 		This module provides access to whether or not the current OS setting for Dark Mode is enabled and or changed.
-		
+
 		## Example
-		
+
 		```xml
 		<App>
 			<JavaScript>
@@ -57,7 +57,7 @@ namespace Fuse.Controls.Native.iOS
 			</WhileFalse>
 		</App>
 		```
-	*/ 
+	*/
 	[ForeignInclude(Language.Java,
 		"java.lang.Runnable",
 		"android.content.res.Configuration",
@@ -76,8 +76,8 @@ namespace Fuse.Controls.Native.iOS
 		}
 
 		[Foreign(Language.Java)]
-		extern(Android) void SetupAndroidListener() 
-		@{ 
+		extern(Android) void SetupAndroidListener()
+		@{
 			@{checkForDarkThemeChange():Call()};
 
 			com.fuse.Activity.SubscribeToLifecycleChange(new com.fuse.Activity.ActivityListener()
@@ -89,13 +89,13 @@ namespace Fuse.Controls.Native.iOS
 				@Override public void onResume() {}
 				@Override public void onDestroy() {}
 
-				@Override public void onConfigurationChanged(android.content.res.Configuration config) 
-				{ 
+				@Override public void onConfigurationChanged(android.content.res.Configuration config)
+				{
 					@{checkForDarkThemeChange():Call()};
 				}
 			});
 		@}
-		
+
 		[Foreign(Language.Java)]
 		static extern(Android) void checkForDarkThemeChange()
 		@{
@@ -105,10 +105,10 @@ namespace Fuse.Controls.Native.iOS
 					break;
 				case android.content.res.Configuration.UI_MODE_NIGHT_NO:
 					@{changeDarkMode(string):Call("Light")};
-					break; 
+					break;
 				case android.content.res.Configuration.UI_MODE_NIGHT_UNDEFINED:
 					@{changeDarkMode(string):Call("Unspecified")};
-					break; 
+					break;
 			}
 
 		@}
@@ -119,7 +119,7 @@ namespace Fuse.Controls.Native.iOS
 			if (DarkMode._instance == null) {
 				new DarkMode();
 			}
-			
+
 			//iOS - standardise output values
 			if (modeValue == "Unspecified") {
 				modeValue = "light"; //default to light

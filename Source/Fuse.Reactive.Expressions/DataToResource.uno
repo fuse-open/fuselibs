@@ -6,13 +6,13 @@ namespace Fuse.Reactive
 	[UXUnaryOperator("DataToResource")]
 	/**
 		Binds to a resource with the key provided in a context variable. This allows selecting resources from @JavaScript by key name.
-		
+
 		In this example three different fonts are created as resources. The font is selected by name in the exported JavaScript items.
-		
+
 			<Font File="../../Assets/fonts/Roboto-Bold.ttf" ux:Key="Bold"/>
 			<Font File="../../Assets/fonts/Roboto-Regular.ttf" ux:Key="Regular"/>
 			<Font File="../../Assets/fonts/Roboto-Italic.ttf" ux:Key="Italic"/>
-			
+
 			<JavaScript>
 				exports.items = [
 					{ font: "Bold" },
@@ -25,9 +25,9 @@ namespace Fuse.Reactive
 					<Text Value="Sample Text" Font="{DataToResource font}"/>
 				</Each>
 			</StackPanel>
-		
+
 		`{DataToResource variableKey}` is similar to `{Resource key}`, except it allows a variable key name instead of a static one.
-		
+
 		@see Fuse.Resources.ResourceBinding
 	*/
 	public class DataToResource: Expression
@@ -49,7 +49,7 @@ namespace Fuse.Reactive
 		class DataToResourceSubscription: ExpressionListener
 		{
 			Node _node;
-			public DataToResourceSubscription(DataToResource dtr, IContext context, IListener listener): 
+			public DataToResourceSubscription(DataToResource dtr, IContext context, IListener listener):
 				base(dtr, listener, new Expression[]{ dtr._data }, Flags.None)
 			{
 				_node = context.Node;

@@ -122,7 +122,7 @@ namespace Fuse.Controls.Test
 				LayoutTestHelper.TestElementLayout(child, float2(200,50), float2(0,0));
 			}
 		}
-		
+
 		[Test]
 		public void LayoutOffset()
 		{
@@ -134,7 +134,7 @@ namespace Fuse.Controls.Test
 				LayoutTestHelper.TestElementLayout(p.r3, float2(10,10), float2(750-5,300-5));
 			}
 		}
-		
+
 		[Test]
 		public void ElementAnchor()
 		{
@@ -145,7 +145,7 @@ namespace Fuse.Controls.Test
 				LayoutTestHelper.TestElementLayout(p.r2, float2(20,10), float2(-6,1000-8));
 			}
 		}
-		
+
 		[Test]
 		public void MaxWidthHeight()
 		{
@@ -161,7 +161,7 @@ namespace Fuse.Controls.Test
 				Assert.AreEqual(float2(100,300), p.P7.ActualSize);
 			}
 		}
-		
+
 		[Test]
 		public void InvalidateDepend()
 		{
@@ -174,26 +174,26 @@ namespace Fuse.Controls.Test
 				Assert.AreEqual(InvalidateLayoutReason.MarginBoxChanged, p.P1.LayoutDirty);
 				Assert.AreEqual(InvalidateLayoutReason.ChildChanged, p.LayoutDirty);
 				Assert.AreEqual(InvalidateLayoutReason.NothingChanged, p.P2.LayoutDirty);
-				
+
 				root.Layout(int2(1000));
 				p.T2.InvalidateLayout();
 				Assert.AreEqual(InvalidateLayoutReason.MarginBoxChanged, p.T2.LayoutDirty);
 				Assert.AreEqual(InvalidateLayoutReason.MarginBoxChanged, p.P3.LayoutDirty);
 				Assert.AreEqual(InvalidateLayoutReason.ChildChanged, p.LayoutDirty);
-				
+
 				root.Layout(int2(1000));
 				p.GP2.InvalidateLayout();
 				Assert.AreEqual(InvalidateLayoutReason.MarginBoxChanged, p.GP2.LayoutDirty);
 				Assert.AreEqual(InvalidateLayoutReason.ChildChanged, p.G1.LayoutDirty);
 				Assert.AreEqual(InvalidateLayoutReason.ChildChanged, p.LayoutDirty);
-				
+
 				root.Layout(int2(1000));
 				p.T3.InvalidateLayout();
 				Assert.AreEqual(InvalidateLayoutReason.MarginBoxChanged, p.T3.LayoutDirty);
 				Assert.AreEqual(InvalidateLayoutReason.ChildChanged, p.GP1.LayoutDirty);
 				Assert.AreEqual(InvalidateLayoutReason.ChildChanged, p.G1.LayoutDirty);
 				Assert.AreEqual(InvalidateLayoutReason.ChildChanged, p.LayoutDirty);
-				
+
 				root.Layout(int2(1000));
 				p.N1.InvalidateLayout();
 				Assert.AreEqual(InvalidateLayoutReason.MarginBoxChanged, p.N1.LayoutDirty);
@@ -201,12 +201,12 @@ namespace Fuse.Controls.Test
 				Assert.AreEqual(InvalidateLayoutReason.ChildChanged, p.GP1.LayoutDirty);
 				Assert.AreEqual(InvalidateLayoutReason.ChildChanged, p.G1.LayoutDirty);
 				Assert.AreEqual(InvalidateLayoutReason.ChildChanged, p.LayoutDirty);
-				
+
 				root.Layout(int2(1000));
 				p.GP3.InvalidateLayout();
 				Assert.AreEqual(InvalidateLayoutReason.MarginBoxChanged, p.GP3.LayoutDirty);
 				Assert.AreEqual(InvalidateLayoutReason.ChildChanged, p.G1.LayoutDirty);
-				
+
 				root.Layout(int2(1000));
 				p.N2.InvalidateLayout();
 				Assert.AreEqual(InvalidateLayoutReason.MarginBoxChanged, p.N2.LayoutDirty);
@@ -217,7 +217,7 @@ namespace Fuse.Controls.Test
 				p.N3.InvalidateLayout();
 				Assert.AreEqual(InvalidateLayoutReason.MarginBoxChanged, p.N3.LayoutDirty);
 				Assert.AreEqual(InvalidateLayoutReason.ChildChanged, p.P4.LayoutDirty);
-				
+
 				root.Layout(int2(1000));
 				p.SD1.InvalidateLayout();
 				Assert.AreEqual(InvalidateLayoutReason.MarginBoxChanged, p.SD1.LayoutDirty);
@@ -226,7 +226,7 @@ namespace Fuse.Controls.Test
 				Assert.AreEqual(InvalidateLayoutReason.ChildChanged, p.LayoutDirty);
 			}
 		}
-		
+
 		[Test]
 		public void Issue1063()
 		{
@@ -234,7 +234,7 @@ namespace Fuse.Controls.Test
 			using (var root = TestRootPanel.CreateWithChild(p, int2(1000)))
 			{
 				root.IncrementFrame();
-				
+
 				p.innerPanel.Value = false;
 				root.IncrementFrame(0.1f);
 				Assert.IsTrue(p.B.Children.Contains(p.C));
@@ -250,7 +250,7 @@ namespace Fuse.Controls.Test
 				root.IncrementFrame(0.1f);
 				p.innerPanel.Value = true;
 				Assert.IsTrue(p.B.Children.Contains(p.C));
-				
+
 				//remove outer while removing
 				p.innerPanel.Value = false;
 				root.IncrementFrame(0.1f);
@@ -258,27 +258,27 @@ namespace Fuse.Controls.Test
 				root.IncrementFrame(0.1f);
 				Assert.IsFalse(p.A.Children.Contains(p.B));
 				Assert.IsFalse(p.B.Children.Contains(p.C));
-				
+
 				p.outerPanel.Value = true;
 				root.IncrementFrame(0.1f);
 				Assert.IsTrue(p.A.Children.Contains(p.B));
 				Assert.IsFalse(p.B.Children.Contains(p.C));
-				
+
 				//remove inner while outer not visible
 				p.innerPanel.Value = true;
 				root.IncrementFrame(0.1f);
 				Assert.IsTrue(p.B.Children.Contains(p.C));
-				
+
 				p.outerPanel.Value = false;
 				root.PumpDeferred();
 				Assert.IsFalse(p.A.Children.Contains(p.B));
-				
+
 				p.innerPanel.Value = false;
 				root.PumpDeferred();
 				Assert.IsFalse(p.B.Children.Contains(p.C));
 			}
 		}
-		
+
 		[Test]
 		public void ZOrder()
 		{
@@ -296,7 +296,7 @@ namespace Fuse.Controls.Test
 					Assert.AreEqual(order[i], p.GetZOrderChild(i));
 			}
 		}
-		
+
 		[Test]
 		public void MinSequence()
 		{
@@ -308,12 +308,12 @@ namespace Fuse.Controls.Test
  				Assert.AreEqual( float2(75,20), p.c3.ActualSize);
  				Assert.AreEqual( float2(75,20), p.c4.ActualSize);
  				Assert.AreEqual( float2(75,20), p.c5.ActualSize);
- 				
+
 				Assert.AreEqual( float2(75,20), p.a.ActualSize );
  				Assert.AreEqual( float2(75,20), p.d.ActualSize);
 			}
 		}
-		
+
 		[Test]
 		public void MinAspect()
 		{

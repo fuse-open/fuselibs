@@ -7,11 +7,11 @@
 	<_Inner Value="1">
 		<FuseTest.DudElement Value="{value}" ux:Name="a"/>
 	</_Inner>
-	
+
 	<_Inner Value="2">
 		<FuseTest.DudElement Value="{value}" ux:Name="b"/>
 	</_Inner>
-	
+
 	<_Inner Value="3">
 		<FuseTest.DudElement Value="{value}" ux:Name="c"/>
 	</_Inner>

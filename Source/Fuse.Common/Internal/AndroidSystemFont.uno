@@ -7,7 +7,7 @@ using Uno;
 
 namespace Fuse.Internal
 {
-	[ForeignInclude(Language.Java, "fuse.android.graphics.FontListParser")]
+	[ForeignInclude(Language.Java, "com.fuse.android.graphics.FontListParser")]
 	extern(Android) static class AndroidSystemFont
 	{
 		struct Family

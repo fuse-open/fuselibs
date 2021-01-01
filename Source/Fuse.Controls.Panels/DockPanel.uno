@@ -7,7 +7,7 @@ using Fuse.Elements;
 namespace Fuse.Controls
 {
 
-	/** Lays out its children by docking them to the different sides, one after the other. 
+	/** Lays out its children by docking them to the different sides, one after the other.
 
 		One can specify which side per element by using the @Dock property like this:
 

@@ -12,7 +12,7 @@ namespace Fuse.Gestures
 		Common linear sliding behaviour used for implementing a @RangeControl.
 
 		Used to enable sliding touch input on @RangeControl.
-		
+
 		The range of motion of the control is the size of the `LinearRangeBehavior` parent. By nesting deeper than the immediate child of the @RangeControl you can have a range of motion distinct from the size of the overall control.
 
 		## Example
@@ -52,7 +52,7 @@ namespace Fuse.Gestures
 			get { return _orientation; }
 			set { _orientation = value; }
 		}
-		
+
 		Element _boundsElement;
 		Gesture _gesture;
 		protected override void OnRooted()
@@ -62,7 +62,7 @@ namespace Fuse.Gestures
 			Control = FindRangeControl();
 			if (Control == null)
 				Fuse.Diagnostics.UserRootError( "RangeControl", Parent, this );
-			
+
 			_boundsElement = Parent as Element;
 			if (_boundsElement == null)
 				Fuse.Diagnostics.UserRootError( "Element", Parent, this );
@@ -87,13 +87,13 @@ namespace Fuse.Gestures
 		{
 			get { return Orientation == Orientation.Horizontal ? float2(1,0) : float2(0,1); }
 		}
-		
+
 		void IGesture.OnLostCapture(bool forced)
 		{
 			if (forced)
 				Control.Value = _initialValue;
 		}
-		
+
 		GesturePriority _gesturePriority = GesturePriority.Normal;
 		/** Alters the priority of the gesture relative to other gestures. */
 		public GesturePriority GesturePriority
@@ -104,13 +104,13 @@ namespace Fuse.Gestures
 
 		GesturePriorityConfig IGesture.Priority
 		{
-			get 
+			get
 			{
 				return new GesturePriorityConfig( GesturePriority.Normal,
 					Gesture.VectorSignificance( Direction, _currentCoord - _startCoord ) );
 			}
 		}
-		
+
 		float2 _startCoord;
 		float2 _currentCoord;
 		double _initialValue = 0f;
@@ -120,7 +120,7 @@ namespace Fuse.Gestures
 			if (_gesture.IsHardCapture)
 				Focus.GiveTo(Control);
 		}
-		
+
 		GestureRequest IGesture.OnPointerPressed(PointerPressedArgs c)
 		{
 			_startCoord = _currentCoord = c.WindowPoint;

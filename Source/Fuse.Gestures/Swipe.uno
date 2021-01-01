@@ -19,7 +19,7 @@ namespace Fuse.Gestures
 		Right,
 		Down,
 	}
-	
+
 	/** Determines the behavior of a @SwipeGesture. */
 	public enum SwipeType
 	{
@@ -28,10 +28,10 @@ namespace Fuse.Gestures
 		*/
 		Simple,
 		/** Swiping toggles between an active/inactive state.
-			
+
 			The @WhileSwipeActive trigger will be active while its source @SwipeGesture has `Type="Active"`
 			and has been swiped to its active state.
-			
+
 			We can alter the state of an Active-type @SwipeGesture using
 			[SetSwipeActive](api:fuse/gestures/setswipeactive) and/or
 			[ToggleSwipeActive](api:fuse/gestures/toggleswipeactive).
@@ -39,14 +39,14 @@ namespace Fuse.Gestures
 		Active,
 		/** Swipes are completed when the user has swiped over the entire distance of the @SwipeGesture,
 			and further swipes can be initiated without releasing the pointer.
-			
+
 			Swipes in the same direction cannot be activated in sequence: Left-Left is excluded, but Left-Up-Left would be triggered.
 		*/
 		Auto,
 	}
-	
+
 	/** Recognizes a swipe (the movement of a pointer in a given direction).
-	
+
 		@topic Swipe Gestures
 		@include Docs/SwipeGesture/Brief.md
 		@remarks Docs/SwipeGesture/Remarks.md
@@ -59,12 +59,12 @@ namespace Fuse.Gestures
 			Type = SwipeType.Simple;
 			Direction = SwipeDirection.Left;
 		}
-		
+
 		Swiper _swiper;
 		SwipeRegion _region = new SwipeRegion();
 
 		internal Swiper TestSwiper { get { return _swiper; } }
-		
+
 		SwipeType _type;
 		/**
 			The type of swipe to detect. See @SwipeType.
@@ -72,13 +72,13 @@ namespace Fuse.Gestures
 		public SwipeType Type
 		{
 			get { return _type; }
-			set 
-			{ 
-				_type = value; 
+			set
+			{
+				_type = value;
 				_region.IsInterruptible = Type != SwipeType.Simple;
 				_region.RevertActive = Type != SwipeType.Active;
 				_region.AutoTrigger = Type == SwipeType.Auto;
-				
+
 				//Active type has automatic completed when the halfway mark is reached (unless overridden)
 				if (_type == SwipeType.Active && !_hasThreshold)
 				{
@@ -87,12 +87,12 @@ namespace Fuse.Gestures
 				}
 			}
 		}
-		
+
 		bool _hasEdge;
 		Edge _edge;
 		/**
 			If specified, this makes the swipe gesture activate from the edge of the parent element.
-			
+
 			See [edge swipes](#edge-swipes).
 
 			> **Note:** Only one of `Edge` or `Direction` can be specified.
@@ -132,16 +132,16 @@ namespace Fuse.Gestures
 				}
 			}
 		}
-		
+
 		bool _hasDirection;
 		SwipeDirection _direction;
-	    
+
 		/**
 			The direction of movement to detect swipe gestures for.
 
 			When `Type="Active"`, the opposite direction is used to deactivate the trigger.
 		*/
-    
+
 		public SwipeDirection Direction
 		{
 			get { return _direction; }
@@ -150,7 +150,7 @@ namespace Fuse.Gestures
 				_direction = value;
 				_hasDirection = true;
 				_region.Area = SwipeRegionArea.All;
-				
+
 				switch(Direction)
 				{
 					case SwipeDirection.Left:
@@ -172,25 +172,25 @@ namespace Fuse.Gestures
 				}
 			}
 		}
-		
+
 		/**
 			The total distance that must be covered in order for the swipe to complete.
 
 			This is used to determine the progress of the swipe gesture.
-			
+
 			Note that since SwipeGesture applies some physics, deceleration also counts when calculating
 			progress.
 		*/
-    
+
 		public float Length
 		{
 			get { return (float)_region.Length; }
 			set { _region.Length = value; }
 		}
-		
+
 		/**
 			If specified, the SwipeGesture will measure the given element to determine its `Length`.
-			
+
 			See [length based on element size](api:fuse/gestures/swipegesture#length-based-on-element-size).
 		*/
 		public Element LengthNode
@@ -198,7 +198,7 @@ namespace Fuse.Gestures
 			get { return _region.LengthElement; }
 			set { _region.LengthElement = value; }
 		}
-		
+
 		/**
 			For [edge](api:fuse/gestures/swipegesture#edge) SwipeGestures, `HitSize` determines the maximum distance
 			from the edge (in points) that swipes can begin at.
@@ -215,16 +215,16 @@ namespace Fuse.Gestures
 			get { return _region.IsEnabled; }
 			set { _region.IsEnabled = value; }
 		}
-		
+
 		internal static Selector GesturePriorityName = "GesturePriority";
 		GesturePriority _gesturePriority = GesturePriority.Low;
 		/**
 			The priority of the swiping gesture when competing with other gestures.
-			
-			The default is Lower. 
-			
+
+			The default is Lower.
+
 			Mutliple `SwipeGesture` behaviours in the same node become part of a single compound gesture. The priority is applied, but once the gesture acquires a hard capture (becomes solely recognized), a lower priority swipe may then nonetheless be triggered (should the pointer direction change).
-			
+
 			@advanced
 			@experimental
 		*/
@@ -233,16 +233,16 @@ namespace Fuse.Gestures
 			get { return _region.GesturePriority; }
 			set { _region.GesturePriority = value; }
 		}
-		
+
 		bool _hasThreshold;
 		/**
 			The relative distance that must be travelled before the gesture automatically completes.
-			
+
 			The default when Type != Active is `1`, meaning the user must travel, or swipe with enough velocity, to cover the full distance. When `Type == Active` the default is `0.5`, meaning the panel will automatically open/close when the half-way point is reached.
-			
+
 			A separate value for activation and deactivating can be specified. The first value of the `float2` is the activation threshold, and the second value the deactivation threshold.
 		*/
-		public float2 Threshold 
+		public float2 Threshold
 		{
 			get { return float2(_region.ActivationThreshold, 1-_region.DeactivationThreshold); }
 			set
@@ -252,7 +252,7 @@ namespace Fuse.Gestures
 				_region.DeactivationThreshold = 1-value[1];
 			}
 		}
-		
+
 		protected override void OnRooted()
 		{
 			base.OnRooted();
@@ -262,7 +262,7 @@ namespace Fuse.Gestures
 				Fuse.Diagnostics.UserRootError( "Element", Parent, this );
 				return;
 			}
-				
+
 			_region.SetActive(IsActive);
 			_swiper = Swiper.AttachSwiper(element);
 			_swiper.AddRegion(Region);
@@ -280,11 +280,11 @@ namespace Fuse.Gestures
 		{
 			get { return _region; }
 		}
-		
+
 		protected override void OnUnrooted()
 		{
 			_region.RemovePropertyListener(this);
-			
+
 			if (_swiper != null)
 			{
 				_swiper.RemoveRegion(_region);
@@ -293,7 +293,7 @@ namespace Fuse.Gestures
 			}
 			base.OnUnrooted();
 		}
-		
+
 		[UXOriginSetter("SetIsActive")]
 		/** `true` if the SwipeGesture has `Type="Active"` and has been swiped to the active state. */
 		public bool IsActive
@@ -301,12 +301,12 @@ namespace Fuse.Gestures
 			get { return _region.IsActive; }
 			set { SetIsActive(value, this); }
 		}
-		
+
 		public void SetIsActive(bool value, IPropertyListener origin)
 		{
 			SetActive(value, origin);
 		}
-		
+
 		internal void SetActive(bool value, IPropertyListener origin, bool bypass = false)
 		{
 			if (_swiper == null)
@@ -314,7 +314,7 @@ namespace Fuse.Gestures
 			else
 				_swiper.SetActivation(_region, value, bypass);
 		}
-		
+
 		static Selector _isActiveName = "IsActive";
 	}
 
@@ -351,15 +351,15 @@ namespace Fuse.Gestures
 	{
 		/** Attach to this `SwipeGesture` */
 		public SwipeGesture Source { get; private set; }
-	
+
 		SwipeRegion _region;
-		
+
 		[UXConstructor]
 		public SwipingAnimation( [UXParameter("Source")] SwipeGesture source)
 		{
 			Source = source;
 		}
-		
+
 		protected override void OnRooted()
 		{
 			base.OnRooted();
@@ -367,7 +367,7 @@ namespace Fuse.Gestures
 			_region.AddPropertyListener(this);
 			OnProgressChanged(Source.Region.Progress);
 		}
-		
+
 		protected override void OnUnrooted()
 		{
 			_region.RemovePropertyListener(this);
@@ -391,9 +391,9 @@ namespace Fuse.Gestures
 		Sets the state of an [Active](api:fuse/gestures/swipegesture#swipetype-active-overview)-type @SwipeGesture.
 
 		# Example
-		
+
 			<SwipeGesture ux:Name="swipe" Direction="Right" Length="100" Type="Active" />
-			
+
 			<Button Text="Close">
 				<Clicked>
 					<SetSwipeActive Target="swipe" Value="false" />
@@ -404,10 +404,10 @@ namespace Fuse.Gestures
 	{
 		/** The @SwipeGesture to set the state of. */
 		public SwipeGesture Target { get; set; }
-		
+
 		/** `true` if the @SwipeGesture should be transitioned to the active state, `false` for inactive. */
 		public bool Value { get; set; }
-		
+
 		/** Set to `true` to skip animation. */
 		public bool Bypass { get; set; }
 
@@ -422,11 +422,11 @@ namespace Fuse.Gestures
 		Toggles an [Active](api:fuse/gestures/swipegesture#swipetype-active-overview)-type @SwipeGesture on or off.
 
 		# Example
-		
+
 		In this example, a `SwipeGesture` is toggled when a button is pressed.
 
 			<SwipeGesture ux:Name="swipe" Direction="Right" Length="100" Type="Active" />
-			
+
 			<Button Text="Toggle">
 				<Clicked>
 					<ToggleSwipeActive Target="swipe" />
@@ -437,7 +437,7 @@ namespace Fuse.Gestures
 	{
 		/** The @SwipeGesture to toggle. */
 		public SwipeGesture Target { get; set; }
-		
+
 		protected override void Perform(Node target)
 		{
 			if (Target != null)
@@ -449,7 +449,7 @@ namespace Fuse.Gestures
 		@SwipeGesture has been swiped to the active state.
 
 		# Example
-		
+
 		This example shows a `Panel` that is scaled by a factor of 1.5 while the `SwipeGesture` is active:
 
 			<Panel Width="100" Height="100" Background="#000">
@@ -468,15 +468,15 @@ namespace Fuse.Gestures
 
 		float _threshold = 1;
 		/**
-			The gesture progress at which this trigger is active. The gesture has a progress from 0..1 measured across it's length. 
-			
+			The gesture progress at which this trigger is active. The gesture has a progress from 0..1 measured across it's length.
+
 				<Panel Width="100" Height="100" Background="#000">
 					<SwipeGesture ux:Name="swipe" Direction="Up" Length="50"/>
 					<WhileSwipeActive Source="swipe" Threshold="0.5">
 						<Scale Factor="1.5" Duration="0.4" />
 					</WhileSwipeActive>
 				</Panel>
-				
+
 			The `Scale` will apply as soon as the user swipes 25 points, `0.5` of the total `Length`.
 		*/
 		public float Threshold
@@ -484,13 +484,13 @@ namespace Fuse.Gestures
 			get { return _threshold; }
 			set { _threshold = value; }
 		}
-		
+
 		[UXConstructor]
 		public WhileSwipeActive( [UXParameter("Source")] SwipeGesture source)
 		{
 			Source = source;
 		}
-		
+
 		protected override void OnRooted()
 		{
 			base.OnRooted();
@@ -498,7 +498,7 @@ namespace Fuse.Gestures
 			_region.AddPropertyListener(this);
 			OnProgressChanged(Source.Region.Progress);
 		}
-		
+
 		protected override void OnUnrooted()
 		{
 			_region.RemovePropertyListener(this);
@@ -561,17 +561,17 @@ namespace Fuse.Gestures
 	{
 		/** The @SwipeGesture that this trigger should respond to. */
 		public SwipeGesture Source { get; private set; }
-		
+
 		[UXConstructor]
 		public Swiped( [UXParameter("Source")] SwipeGesture source)
 		{
 			Source = source;
 		}
-	
+
 		SwipedHow _how = SwipedHow.ToActive;
 		/**
 			Specifies the matching criteria for the swipe.
-			
+
 			Note that only Active-type @SwipeGestures can produce a `ToInactive` event.
 		*/
 		public SwipedHow How
@@ -579,7 +579,7 @@ namespace Fuse.Gestures
 			get { return _how;}
 			set { _how = value; }
 		}
-		
+
 		SwipeRegion _region;
 		protected override void OnRooted()
 		{
@@ -587,7 +587,7 @@ namespace Fuse.Gestures
 			_region = Source.Region;
 			_region.Swiped += OnSwiped;
 		}
-		
+
 		protected override void OnUnrooted()
 		{
 			_region.Swiped -= OnSwiped;
@@ -602,7 +602,7 @@ namespace Fuse.Gestures
 					Pulse();
 				return;
 			}
-				
+
 			if (v && (How == SwipedHow.ToActive || How == SwipedHow.ToEither))
 				Pulse();
 			if (!v && (How == SwipedHow.ToInactive || How == SwipedHow.ToEither))
@@ -611,8 +611,8 @@ namespace Fuse.Gestures
 	}
 
 	/**
-		Is active while a swiping gesture is in progress. 
-		
+		Is active while a swiping gesture is in progress.
+
 		A swiping gesture is in progress while the user is swiping, as well as the time it takes the animation to complete the full length of the gesture. Invsersely, this trigger is inactive when the gesture is completely stable.
 	*/
 	public class WhileSwiping : WhileTrigger, IPropertyListener
@@ -627,7 +627,7 @@ namespace Fuse.Gestures
 		{
 			Source = source;
 		}
-		
+
 		protected override void OnRooted()
 		{
 			base.OnRooted();
@@ -635,7 +635,7 @@ namespace Fuse.Gestures
 			_region.AddPropertyListener(this);
 			OnInProgressChanged(_region.InProgress);
 		}
-		
+
 		protected override void OnUnrooted()
 		{
 			_region.RemovePropertyListener(this);
@@ -653,5 +653,5 @@ namespace Fuse.Gestures
 			SetActive(inProgress);
 		}
 	}
-	
+
 }

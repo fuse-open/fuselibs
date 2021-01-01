@@ -41,7 +41,7 @@ namespace Fuse.Scripting
 	public abstract class ScriptProperty: ScriptMember
 	{
 		public readonly string Modifier;
-		protected ScriptProperty(string name, string modifier = null): base(name) 
+		protected ScriptProperty(string name, string modifier = null): base(name)
 		{
 			Modifier = modifier ?? "";
 		}
@@ -51,12 +51,12 @@ namespace Fuse.Scripting
 	public sealed class ScriptProperty<TOwner, TValue>: ScriptProperty
 	{
 		readonly Func<TOwner, Property<TValue>> _getter;
-		public override Property GetProperty(PropertyObject owner) 
-		{ 
+		public override Property GetProperty(PropertyObject owner)
+		{
 			if (!(owner is TOwner)) throw new Exception("ScriptProperty: incorrect owner type");
-			return _getter((TOwner)owner); 
+			return _getter((TOwner)owner);
 		}
-		public ScriptProperty(string name, Func<TOwner, Property<TValue>> getter, string modifier = null): base(name, modifier) 
+		public ScriptProperty(string name, Func<TOwner, Property<TValue>> getter, string modifier = null): base(name, modifier)
 		{
 			_getter = getter;
 		}
@@ -75,12 +75,6 @@ namespace Fuse.Scripting
 	{
 		public readonly string Code;
 
-		[Obsolete("Use ScriptMethodInline(string, string) instead")]
-		public ScriptMethodInline(string name, ExecutionThread thread, string code): base(name)
-		{
-			Code = code;
-		}
-
 		public ScriptMethodInline(string name, string code): base(name)
 		{
 			Code = code;
@@ -94,21 +88,8 @@ namespace Fuse.Scripting
 
 	public class ScriptMethod<T>: ScriptMethod
 	{
-		// legacy
-		[Obsolete]
-		public readonly ExecutionThread Thread;
-
 		readonly Func<Context, T, object[], object> _method;
 		readonly Action<T> _voidMethod;
-
-		[Obsolete("Use ScriptMethod<T>(string, Uno.Func<Fuse.Scripting.Context, T, object[], object)>) instead")]
-		public ScriptMethod(string name, Func<Context, T, object[], object> method, ExecutionThread thread): this(name, method)
-		{
-			if (thread == ExecutionThread.MainThread)
-				throw new ArgumentException("Cannot call a non-void method asynchronously", nameof(thread));
-
-			Thread = thread;
-		}
 
 		/** Create a ScriptMethod that will run on the script-thread
 
@@ -121,17 +102,6 @@ namespace Fuse.Scripting
 				throw new ArgumentNullException(nameof(method));
 
 			_method = method;
-		}
-
-		[Obsolete("Use ScriptMethod<T>(string, Uno.Action<T)>), ScriptMethod<T>(string, Uno.Action<T, object[])>) or ScriptMethod<T>(string, Uno.Func<Fuse.Scripting.Context, T, object[], object)>) instead")]
-		public ScriptMethod(string name, Action<Context, T, object[]> method, ExecutionThread thread): base(name)
-		{
-			Thread = thread;
-
-			if (method == null)
-				throw new ArgumentNullException(nameof(method));
-
-			_method = new LegacyMethodClosure<T>(method, thread).Run;
 		}
 
 		class LegacyMethodClosure<T>
@@ -257,7 +227,7 @@ namespace Fuse.Scripting
 				return _method(c, (T)obj, args);
 			}
 		}
-		
+
 		class CallClosure
 		{
 			readonly Action<T> _method;
@@ -473,7 +443,7 @@ namespace Fuse.Scripting
 
 		readonly ScriptMember[] _members;
 		public ScriptMember[] Members { get { return _members; } }
-		
+
 		ScriptClass(Type unoType, ScriptMember[] members)
 		{
 			_unoType = unoType;

@@ -33,7 +33,7 @@ namespace Fuse.Triggers.Actions
 
 		[UXGlobalResource("GiveFocus")] public static readonly TriggerAction Singleton = new GiveFocus();
 	}
-	
+
 	/**
 		Releases focus from the currently focused Element when activated.
 

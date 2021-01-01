@@ -43,7 +43,7 @@
 	<Panel ux:Name="p11" Y="y(p9)"/>
 	<Panel ux:Name="p12" X="x(p9)" Y="y(p9)"/>
 	<Panel ux:Name="pan" />
-	
+
 	<!-- these guys just need to compile -->
 	<WhilePressed>
 		<Change pan.Width="width(p1)" />

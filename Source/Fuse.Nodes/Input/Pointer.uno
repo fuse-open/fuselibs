@@ -12,7 +12,7 @@ namespace Fuse.Input
 		None = 0,
 		/**
 			A soft capture is a non-exclusive capture which allows any other soft captures to also exist. These are used when a gesture has not yet been fully identified (selection of gestures), or the capturer never needs to make visual feedback, or if the capturer doesn't care about losing the capture.
-			
+
 			Only one of Soft or Hard can be specified.
 		*/
 		Soft = 1 << 0,
@@ -26,12 +26,12 @@ namespace Fuse.Input
 		Children = 1 << 2,
 		/**
 			Multiple Soft/Hard-NodeShared captures can exist on the same node. Usually a hard capture will release all other captures. NodeShare allows captures on the same node to persist even in the presence of a hard capture.
-			
+
 			This is use for specific situations such as a SwipeGesture in a ScrollView where it makes sense that both gestures can handle the same input at the same time.
 		*/
 		NodeShare = 1 << 3,
 	}
-	
+
 	static public class CaptureTypeHelper
 	{
 		static public bool GainedCapture( CaptureType prev, CaptureType next )
@@ -39,13 +39,13 @@ namespace Fuse.Input
 			return !prev.HasFlag(CaptureType.Soft) && !prev.HasFlag(CaptureType.Hard) &&
 				(next.HasFlag(CaptureType.Soft) || next.HasFlag(CaptureType.Hard));
 		}
-		
+
 		static public bool BecameHard( CaptureType prev, CaptureType next )
 		{
 			return !prev.HasFlag(CaptureType.Hard) && next.HasFlag(CaptureType.Hard);
 		}
 	}
-	
+
 	internal class Capture
 	{
 		public Visual Visual { get; private set; }
@@ -53,19 +53,19 @@ namespace Fuse.Input
 		public object Identity { get; private set; }
 		public Action LostCallback;
 		public CaptureType Type = CaptureType.None;
-		
+
 		public bool Deleted;
 
 		public List<int> PointIndex = new List<int>(); //TODO: make and use a MiniList
-		
+
 		public Capture(Visual n, object identity)
 		{
 			if (n == null || identity == null)
 				throw new Exception( "Invalid Capture parameters" );
-				
+
 			Visual = n;
 			Identity = identity;
-			
+
 			//calc VisualDepth
 			VisualDepth = 0;
 			var q = Visual;
@@ -75,28 +75,28 @@ namespace Fuse.Input
 				q = q.Parent;
 			}
 		}
-		
+
 		public bool AcceptsPoint( int index)
 		{
 			return PointIndex.Contains(index);
 		}
-		
+
 		public bool IsSuitable
 		{
-			get 
+			get
 			{
 				return Visual.IsContextEnabled &&
 					Visual.IsRootingCompleted;
 			}
 		}
-		
+
 		public int CompareStrength(Capture o)
 		{
 			var hardThis = Type.HasFlag(CaptureType.Hard);
 			var hardO = o.Type.HasFlag(CaptureType.Hard);
 			if (hardThis == hardO)
 				return 0;
-				
+
 			return hardThis ? 1 : -1;
 		}
 	}
@@ -113,11 +113,11 @@ namespace Fuse.Input
 		Directly using the `Pointer` class is not advised. For all typical UI controls you should iuse the @Gestures system. The gesture system is better able to deal with conflict between gestures.
 
 		## Captures
-		
+
 		A capture indicates some listener is interested in receiving events for a pointer event even if they no longer hit the target visual. Any capture blocks events from being sent outside of the tree starting at the provided visual.
-		
+
 		An `identity` is used to identify the capture listener. Each identity has only one capture. This may be at different levels, or involve single or multiple pointer indexes. Multiple captures with the same `identity` can not be created -- it always modifies the existing one.
-		
+
 		Only one `CaptureType.Hard` can exist for a `PointIndex` at one time. This will also cancel all soft captures that also accept that point (even if it isn't the only point they accept). An exception is those with `NodeShare`.
 
 		@advanced
@@ -145,10 +145,10 @@ namespace Fuse.Input
 		public static VisualEvent<PointerLeftHandler, PointerLeftArgs> Left { get { return _left; } }
 		public static VisualEvent<PointerWheelMovedHandler, PointerWheelMovedArgs> WheelMoved { get { return _wheelMoved; } }
 
-		public static void AddHandlers(Visual node, 
-			PointerPressedHandler pressed = null, 
-			PointerMovedHandler moved = null, 
-			PointerReleasedHandler released = null, 
+		public static void AddHandlers(Visual node,
+			PointerPressedHandler pressed = null,
+			PointerMovedHandler moved = null,
+			PointerReleasedHandler released = null,
 			PointerEnteredHandler entered = null,
 			PointerLeftHandler left = null,
 			PointerWheelMovedHandler wheelMoved = null)
@@ -161,10 +161,10 @@ namespace Fuse.Input
 			if (wheelMoved != null) WheelMoved.AddHandler(node, wheelMoved);
 		}
 
-		public static void RemoveHandlers(Visual node, 
-			PointerPressedHandler pressed = null, 
-			PointerMovedHandler moved = null, 
-			PointerReleasedHandler released = null, 
+		public static void RemoveHandlers(Visual node,
+			PointerPressedHandler pressed = null,
+			PointerMovedHandler moved = null,
+			PointerReleasedHandler released = null,
 			PointerEnteredHandler entered = null,
 			PointerLeftHandler left = null,
 			PointerWheelMovedHandler wheelMoved = null)
@@ -177,7 +177,7 @@ namespace Fuse.Input
 			if (wheelMoved != null) WheelMoved.RemoveHandler(node, wheelMoved);
 		}
 
-		
+
 
 		public static float2[] Coords
 		{
@@ -226,19 +226,19 @@ namespace Fuse.Input
 		{
 			public int Count;
 			public bool AnyDeleted;
-			
+
 			public void Dispose()
 			{
 				if (--Count > 0)
 					return;
-					
+
 				//safety
 				if (Count < 0)
 				{
 					Fuse.Diagnostics.InternalError( "Inconsistent Count", this );
 					Count = 0;
 				}
-				
+
 				if (AnyDeleted)
 				{
 					for (int i=_captures.Count-1; i >= 0; --i )
@@ -249,7 +249,7 @@ namespace Fuse.Input
 					AnyDeleted = false;
 				}
 			}
-			
+
 			public void Delete( Capture c )
 			{
 				c.Deleted = true;
@@ -257,7 +257,7 @@ namespace Fuse.Input
 			}
 		}
 		static CaptureLockImpl _captureLockImpl = new CaptureLockImpl();
-		
+
 		static CaptureLockImpl CaptureLock()
 		{
 			_captureLockImpl.Count++;
@@ -274,10 +274,10 @@ namespace Fuse.Input
 					var c = _captures[i];
 					if (c.Deleted)
 						continue;
-						
+
 					if (!c.AcceptsPoint(pointIndex))
 						continue;
-						
+
 					//drop nodes that are no longer suitable
 					if (!c.IsSuitable)
 					{
@@ -285,7 +285,7 @@ namespace Fuse.Input
 						cl.Delete(c);
 						continue;
 					}
-					
+
 					var str = best == null ? 1 : c.CompareStrength(best);
 					if ( (str > 0) || //first come wins on tie
 						(str == 0 && c.VisualDepth > best.VisualDepth)) //or lower in tree on tie
@@ -294,7 +294,7 @@ namespace Fuse.Input
 			}
 			return best;
 		}
-		
+
 		internal static Capture GetCapture(object identity)
 		{
 			using (var cl = CaptureLock())
@@ -304,14 +304,14 @@ namespace Fuse.Input
 					var c = _captures[i];
 					if (c.Deleted)
 						continue;
-						
-					if (c.Identity != identity)	
+
+					if (c.Identity != identity)
 						continue;
-					
+
 					return c;
 				}
 			}
-			
+
 			return null;
 		}
 
@@ -319,12 +319,12 @@ namespace Fuse.Input
 		{
 			return IsCaptured( CaptureType.None, pointIndex, identity );
 		}
-		
+
 		public static bool IsCaptured(CaptureType type, int pointIndex, object identity)
 		{
 			return GetFirstCapture( type, pointIndex, identity ) != null;
 		}
-		
+
 		static Capture GetFirstCapture( CaptureType type, int pointIndex, object identity )
 		{
 			for (int i=0; i < _captures.Count; ++i)
@@ -338,12 +338,12 @@ namespace Fuse.Input
 					continue;
 				if ( (c.Type & type) != type )
 					continue;
-					
+
 				return c;
 			}
 			return null;
 		}
-		
+
 		/**
 			Is the new capture request allowed based on what is already in the capture list.
 		*/
@@ -357,25 +357,25 @@ namespace Fuse.Input
 				if (!IsCaptureAllowedAgainst( c, type, visual, pointIndex, identity ))
 					return false;
 			}
-			
+
 			return true;
 		}
-		
+
 		/**
 			Is the capture allowed given an existing `current` capture?
 		*/
-		static bool IsCaptureAllowedAgainst( Capture current, CaptureType type, Visual visual, 
+		static bool IsCaptureAllowedAgainst( Capture current, CaptureType type, Visual visual,
 			int pointIndex, object identity )
 		{
 			if (current.Identity == identity)
 				return true;
 			if (!current.AcceptsPoint(pointIndex))
 				return true;
-				
+
 			if (current.Type.HasFlag(CaptureType.Hard))
-				return visual == current.Visual && current.Type.HasFlag(CaptureType.NodeShare) && 
+				return visual == current.Visual && current.Type.HasFlag(CaptureType.NodeShare) &&
 					type.HasFlag(CaptureType.NodeShare);
-					
+
 			return true;
 		}
 
@@ -391,7 +391,7 @@ namespace Fuse.Input
 					var c = _captures[i];
 					if (c.Deleted)
 						continue;
-			
+
 					for (int p=0; p < c.PointIndex.Count; ++p)
 					{
 						if (!IsCaptureAllowedAgainst( to, c.Type,  c.Visual, c.PointIndex[p], c.Identity))
@@ -404,11 +404,11 @@ namespace Fuse.Input
 				}
 			}
 		}
-		
-		
+
+
 		/**
 			Releases a capture with the provided identity. The `LostCallback` will not be called.
-			
+
 			If no capture with this identity exists then nothing happens. This makes this function safe to call during cleanup.
 		*/
 		public static void ReleaseCapture(object identity)
@@ -425,7 +425,7 @@ namespace Fuse.Input
 				}
 			}
 		}
-		
+
 		internal static void LoseCapture(int pointIndex)
 		{
 			using (var cl = CaptureLock())
@@ -446,7 +446,7 @@ namespace Fuse.Input
 
 		/**
 			Only one capture per identity is allowed. If an existing capture is overridden the previous lostCallback will not be called.
-			
+
 			@return true if the capture succeeded. false if it was not allowed due to something else having a higher priority capture.
 		*/
 		public static bool ModifyCapture(object identity, Visual visual, Action lostCallback,
@@ -458,14 +458,14 @@ namespace Fuse.Input
 				throw new Exception( "Capture requires identity object" );
 			if (visual == null)
 				throw new Exception( "Capture requires visual" );
-			//we can't emit an error here as there are too many cases with async events, especially 
+			//we can't emit an error here as there are too many cases with async events, especially
 			//with Gesture, where the state suddenly changes. Simply failing should be fine
 			if (!visual.IsContextEnabled || !visual.IsRootingCompleted)
 				return false;
-				
+
 			if (!IsCaptureAllowed( type, visual, pointIndex, identity ))
 				return false;
-				
+
 			var c = GetCapture(identity);
 			if (c != null)
 			{
@@ -477,17 +477,17 @@ namespace Fuse.Input
 				c = new Capture(visual, identity);
 				_captures.Add(c);
 			}
-			
+
 			c.Type = type;
 			c.LostCallback = lostCallback;
 			c.PointIndex.Clear();
 			c.PointIndex.Add(pointIndex);
-			
+
 			LoseSoftCapturesTo(c);
-				
+
 			return true;
 		}
-		
+
 		/**
 			Modifies the type of an existing capture.
 		*/
@@ -499,18 +499,18 @@ namespace Fuse.Input
 				Fuse.Diagnostics.InternalError( "Attempting to modify an unknown capture", identity );
 				return false;
 			}
-			
+
 			//we don't check for existing hard capture, since they would have cleared any soft ones for
 			//the point already (also checked in ExtendCapture)
-			
+
 			c.Type = type;
 			LoseSoftCapturesTo(c);
 			return true;
 		}
-		
+
 		/**
 			Adds more points to an existing capture. All the points will be captured in the same fashion as the original capture (such as Hard or Soft).
-			
+
 			@return `false` if this is not allowed based on other captures (existing hard capture for example). In this case the original capture will be left unchanged. `true` if the capture now watches this new point in addition to any previous points.
 		*/
 		public static bool ExtendCapture(object identity, int pointIndex)
@@ -521,18 +521,18 @@ namespace Fuse.Input
 				Fuse.Diagnostics.InternalError( "Attempting to extend unknown capture", identity );
 				return false;
 			}
-			
+
 			if (!IsCaptureAllowed( c.Type, c.Visual, pointIndex, c.Identity ))
 				return false;
-			
+
 			if (!c.PointIndex.Contains(pointIndex))
 				c.PointIndex.Add(pointIndex);
-			
+
 			LoseSoftCapturesTo(c);
-				
+
 			return true;
 		}
-		
+
 		internal static bool RaisePressed(Visual root, PointerEventData data)
 		{
 			var target = RoutePointerEvent(data, root);
@@ -554,11 +554,11 @@ namespace Fuse.Input
 			var target = RoutePointerEvent(data, root);
 			var e = new PointerReleasedArgs(data, target);
 			EventResponder.OnPointerReleased(e);
-			
+
 			//finger's left, so nothing can be hovering anymore
 			if (data.PointerType == Uno.Platform.PointerType.Touch)
 				ProcessPointerEnterLeave(null, data);
-				
+
 			return e.IsHandled;
 		}
 
@@ -569,17 +569,17 @@ namespace Fuse.Input
 			EventResponder.OnPointerWheelMoved(e);
 			return e.IsHandled;
 		}
-		
+
 		internal static void RaiseLeft(Visual root, PointerEventData data)
 		{
 			ProcessPointerEnterLeave(null, data);
 		}
 
 		static Visual RoutePointerEvent(PointerEventData plainEvent, Visual root)
-		{	
+		{
 			var target = root;
 			bool toHit = true;
-			
+
 			var c = GetPrimaryCapture(plainEvent.PointIndex);
 			if (c != null)
 			{
@@ -590,7 +590,7 @@ namespace Fuse.Input
 			if (toHit)
 			{
 				var n = RouteToHit(plainEvent, target);
-				if (n != null) 
+				if (n != null)
 					target = n;
 			}
 
@@ -604,10 +604,10 @@ namespace Fuse.Input
 			//disabled nodes are skipped, so that a softcapture can actually grab this event at the closest enabled node
 			while (result != null && !result.HitObject.IsContextEnabled)
 				result.HitObject = result.HitObject.Parent;
-			
+
 			ProcessPointerEnterLeave(result, args);
 
-			if (result == null) 
+			if (result == null)
 				return null;
 
 			return result.HitObject;
@@ -622,7 +622,7 @@ namespace Fuse.Input
 			{
 				if (lastHitList[j].Status != PELStatus.Removed)
 					continue;
-					
+
 				//Use "Force" since anything that got enter must get leave
 				Left.RaiseWithoutBubble(new PointerLeftArgs(args, lastHitList[j].Visual), VisualEventMode.Force);
 				lastHitList.RemoveAt(j);
@@ -641,7 +641,7 @@ namespace Fuse.Input
 		{
 			for( int i=0; i < list.Count; ++i )
 				list[i].Status = PELStatus.Removed;
-				
+
 			while (hitObject != null)
 			{
 				bool found = false;
@@ -654,7 +654,7 @@ namespace Fuse.Input
 						break;
 					}
 				}
-				
+
 				if (!found)
 				{
 					list.Add( new PELHolder{
@@ -662,7 +662,7 @@ namespace Fuse.Input
 						Status = PELStatus.Added,
 					});
 				}
-				
+
 				hitObject = hitObject.Parent;
 			}
 		}
@@ -678,8 +678,8 @@ namespace Fuse.Input
 			public Visual Visual;
 			public PELStatus Status;
 		}
-		
-		static Dictionary<int, List<PELHolder>> _lastHitVisuals = 
+
+		static Dictionary<int, List<PELHolder>> _lastHitVisuals =
 			new Dictionary<int, List<PELHolder>>();
 
 		static List<PELHolder> GetLastHitList(int pointIndex)
@@ -701,7 +701,7 @@ namespace Fuse.Input
 		{
 			if (args.IsHandled)
 				return;
-				
+
 			var b = false;
 			for (int i=0; i < nodes.Count; ++i)
 			{
@@ -711,7 +711,7 @@ namespace Fuse.Input
 					break;
 				}
 			}
-			
+
 			if (!b)
 			{
 				Focus.Release();
@@ -754,7 +754,7 @@ namespace Fuse.Input
 				}
 
 				Coord = args.WindowPoint;
-				
+
 				if (args.Visual == null) return;
 
 				Moved.RaiseWithBubble(args, VisualEventMode.Enabled);
@@ -781,67 +781,6 @@ namespace Fuse.Input
 
 				WheelMoved.RaiseWithBubble(args, VisualEventMode.Enabled);
 			}
-			
-			
-			/***** Deprecated interface, doesn't work fully *****/
-			[Obsolete("Use IsCaptured instead")]
-			public static bool IsSoftCaptured(int pointIndex)
-			{ return IsCaptured( CaptureType.Soft, pointIndex, null ); }
-			
-			[Obsolete("Use IsCaptured instead")]
-			public static bool IsSoftCaptured(int pointIndex, object capturerIdentity)
-			{ 
-				DeprecatedCapture();
-				return IsCaptured( CaptureType.Soft, pointIndex, capturerIdentity ); 
-			}
-			
-			[Obsolete("Use ReleaseCapture instead")]
-			public static void ReleaseSoftCapture(int pointIndex, object identity)
-			{ 
-				DeprecatedCapture();
-				ReleaseCapture(identity); 
-			}
-			
-			[Obsolete("Use ReleaseCapture instead")]
-			public static void ReleaseAllCaptures(object identity)
-			{
-				DeprecatedCapture();
-				ReleaseCapture(identity);
-			}
-			
-			[Obsolete("Use IsCaptured instead")]
-			public static bool IsHardCaptured(int pointIndex)
-			{ 
-				return IsCaptured( CaptureType.Hard, pointIndex, null );
-			}
-			
-			[Obsolete("Use IsCaptured instead")]
-			public static bool IsHardCaptured(int pointIndex, object behavior)
-			{ 
-				DeprecatedCapture();
-				return IsCaptured( CaptureType.Hard, pointIndex, behavior ); 
-			}
-			
-			[Obsolete("Use ReleaseCapture instead")]
-			public static void ReleaseHardCapture(int pointIndex)
-			{
-				DeprecatedCapture();
-				var c = GetFirstCapture( CaptureType.Hard, pointIndex, null );
-				if (c != null)
-					ReleaseCapture(c.Identity);
-			}
-			
-			static bool _dcWarn;
-			static void DeprecatedCapture()
-			{
-				//DEPRECATED: 2017-02-21
-				if (_dcWarn)
-					return;
-				
-				Fuse.Diagnostics.Deprecated( "The capture system no longer supports distinct captures for Soft and Hard capture, instead treating the same identity/behaviour as a single capture. Old code will only work if it captured just one pointer, and followed the pattern of soft then hard capture on it (or just a hard capture). It's advisable to migrate to avoid any potential issues.", null );
-				_dcWarn = true;
-			}
-			/***** End deprecated interface *****/
 		}
 	}
 }

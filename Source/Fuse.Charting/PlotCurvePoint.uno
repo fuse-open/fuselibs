@@ -49,7 +49,7 @@ namespace Fuse.Charting
 		{
 			_calc.Init();
 		}
-		
+
 		PointCalculator _calc;
 		/** @see @PlotPoint.Style */
 		public PlotPointStyle Style
@@ -57,17 +57,17 @@ namespace Fuse.Charting
 			get { return _calc.Style; }
 			set { _calc.Style = value; }
 		}
-		
+
 		/** @see @PlotPoint.Offset */
 		public float Offset
 		{
 			get { return _calc.Offset; }
 			set { _calc.Offset = value; }
 		}
-		
+
 		/**
 			An @AttractorConfig used to animate the position of the point.
-			
+
 			The default (null) will not do any animation.
 		*/
 		public AttractorConfig Attractor
@@ -75,7 +75,7 @@ namespace Fuse.Charting
 			get { return _animator.Motion as AttractorConfig; }
 			set { _animator.Motion = value; }
 		}
-		
+
 		PlotDataItemWatcher<PlotDataPoint> _watcher;
 		protected override void OnRooted()
 		{
@@ -83,7 +83,7 @@ namespace Fuse.Charting
 			_watcher = new PlotDataItemWatcher<PlotDataPoint>(this,this);
 			_calc.CheckAttractor(Attractor, this);
 		}
-			
+
 		protected override void OnUnrooted()
 		{
 			_watcher.Dispose();
@@ -91,12 +91,12 @@ namespace Fuse.Charting
 			_animator.Unroot();
 			base.OnUnrooted();
 		}
-		
+
 		void IPlotDataItemListener<PlotDataPoint>.OnNewData( PlotDataPoint entry )
 		{
 			_animator.SetValue( _calc.PrepareEntry(entry), AnimUpdate );
 		}
-		
+
 		void AnimUpdate( float2 value )
 		{
 			var p = _calc.ValueToPos(value);

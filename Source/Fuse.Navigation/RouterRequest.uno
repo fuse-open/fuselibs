@@ -18,7 +18,7 @@ namespace Fuse.Navigation
 		public NavigationGotoMode Transition;
 		public string Style;
 		public string Bookmark;
-		
+
 		//not supported in most cases, as `How` overrides/decides
 		RoutingOperation _operation;
 		public RoutingOperation Operation
@@ -31,7 +31,7 @@ namespace Fuse.Navigation
 			}
 		}
 		public bool HasOperation;
-		
+
 		[Flags]
 		public enum Flags
 		{
@@ -40,13 +40,13 @@ namespace Fuse.Navigation
 			FlatRoute = 1 << 0,
 		}
 		Flags _flags;
-		
+
 		public RouterRequest(Flags flags = Flags.None)
 		{
 			_flags = flags;
 			Reset();
 		}
-		
+
 		public void Reset()
 		{
 			How = ModifyRouteHow.Goto;
@@ -56,13 +56,13 @@ namespace Fuse.Navigation
 			Style = "";
 			HasOperation = false;
 		}
-		
-		public bool AddHow( ModifyRouteHow how ) 
+
+		public bool AddHow( ModifyRouteHow how )
 		{
 			How = how;
 			return true;
 		}
-		
+
 		public bool AddPath( object value )
 		{
 			if (_flags.HasFlag(Flags.FlatRoute))
@@ -73,7 +73,7 @@ namespace Fuse.Navigation
 					Fuse.Diagnostics.UserError( "`path` should be an array", this );
 					return false;
 				}
-				
+
 				//TODO: convert to bool form like ParseNVPRoute
 				Route = ParseFlatRoute(path);
 			}
@@ -82,10 +82,10 @@ namespace Fuse.Navigation
 				if (!ParseNVPRoute(value, out Route))
 					return false;
 			}
-			
+
 			return true;
 		}
-		
+
 		[Flags]
 		public enum Fields
 		{
@@ -97,7 +97,7 @@ namespace Fuse.Navigation
 			Bookmark = 1 << 5,
 			Path = 1 << 6,
 			Operation = 1 << 7,
-			
+
 			Standard = How | Route | Relative | Transition | Style | Bookmark | Path,
 		}
 		public bool AddArgument(string name, object value, Fields allow = Fields.Standard)
@@ -107,7 +107,7 @@ namespace Fuse.Navigation
 
 			if (name == "path" && allow.HasFlag(Fields.Path))
 				return AddPath( value );
-			
+
 			if (name == "relative" && allow.HasFlag(Fields.Relative))
 			{
 				Relative = value as Node;
@@ -119,7 +119,7 @@ namespace Fuse.Navigation
 				{
 					Fuse.Diagnostics.UserError( "Invalid transition value", this );
 					return false;
-				} 
+				}
 				else
 				{
 					Transition = v;
@@ -151,10 +151,10 @@ namespace Fuse.Navigation
 				Fuse.Diagnostics.UserError( "Unrecognized or unsupported argument: " + name, this );
 				return false;
 			}
-			
+
 			return true;
 		}
-		
+
 		public bool AddArguments(IObject obj, Fields allow = Fields.Standard)
 		{
 			var keys = obj.Keys;
@@ -165,11 +165,11 @@ namespace Fuse.Navigation
 			}
 			return true;
 		}
-		
+
 		public bool MakeRequest(Router router)
 		{
 			var targetRoute = Route;
-			
+
 			if (Bookmark != null)
 			{
 				if (targetRoute != null)
@@ -177,17 +177,17 @@ namespace Fuse.Navigation
 					Fuse.Diagnostics.UserError( "A path and bookmark cannot both be specified", router);
 					return false;
 				}
-				
+
 				if (!router.Bookmarks.TryGetValue(Bookmark, out targetRoute))
-				{	
+				{
 					Fuse.Diagnostics.UserError( "Unknown bookmark: " + Bookmark, router);
 					return false;
 				}
 			}
-			
+
 			if (Relative != null)
 				targetRoute = router.GetRelativeRoute(Relative, targetRoute);
-				
+
 			router.Modify( How, targetRoute, Transition, Style );
 			return true;
 		}
@@ -200,11 +200,11 @@ namespace Fuse.Navigation
 				cvt[i] = path[i];
 			return ParseFlatRoute(cvt);
 		}
-		
+
 		static public RouterPageRoute ParseFlatRoute(object[] args, int pos = 0)
 		{
 			if (args.Length <= pos) return null;
-			
+
 			var path = args[pos] as string;
 			if (path != null)
 			{
@@ -216,24 +216,24 @@ namespace Fuse.Navigation
 				if (!ValidateParameter(arg, 0)) return null;
 
 				var parameter = Json.Stringify(arg, true);
-				return new RouterPageRoute( 
+				return new RouterPageRoute(
 					new RouterPage( path, parameter ), ParseFlatRoute(args, pos+2));
 			}
 			else
 			{
 				return new RouterPageRoute(
-					new RouterPage( PagesMap.GetObjectPath(args[pos]), null, args[pos] ), 
+					new RouterPage( PagesMap.GetObjectPath(args[pos]), null, args[pos] ),
 						ParseFlatRoute(args, pos+1));
 			}
 		}
-		
+
 		/**
 			This function decides whether to parse an ObjectRoute or a NVPRoute. It needs to employ a bit of trickery since the UX parser doesn't retain some syntax information, like the different between:
 				a:b, c:d
 			and
 				(a:b, c:d)
 			They both end up as the same IObject, which also exposes IArray.
-			
+
 			Here we'll assume if the first object, or the first element of the array, contains a path marker, then it's an object path.
 		*/
 		static internal bool ParseUXRoute(object value, out RouterPageRoute route)
@@ -242,24 +242,24 @@ namespace Fuse.Navigation
 				return ParseObjectRoute(value, out route);
 			return ParseNVPRoute(value, out route);
 		}
-		
+
 		static bool IsObjectRoute(object value)
 		{
 			var array = value as IArray;
 			var isProperArray = array != null && !(value is IObject);
 			if (isProperArray && array.Length > 0 && PagesMap.HasObjectPath(array[0]))
 				return true;
-				
+
 			if (!isProperArray && PagesMap.HasObjectPath(value))
 				return true;
-				
+
 			return false;
 		}
-		
+
 		static internal bool ParseObjectRoute(object value, out RouterPageRoute route)
 		{
 			route = null;
-			
+
 			var array = value as IArray;
 			var isProperArray = array != null && !(value is IObject);
 			if (isProperArray)
@@ -269,7 +269,7 @@ namespace Fuse.Navigation
 					if (!ParseObjectComponent(array[i], ref route))
 						return false;
 				}
-				
+
 				return true;
 			}
 			else
@@ -277,7 +277,7 @@ namespace Fuse.Navigation
 				return ParseObjectComponent(value, ref route);
 			}
 		}
-		
+
 		static bool ParseObjectComponent(object value, ref RouterPageRoute route)
 		{
 			var path = PagesMap.GetObjectPath(value);
@@ -286,11 +286,11 @@ namespace Fuse.Navigation
 				Fuse.Diagnostics.UserError( "Object does not contain a $path", null);
 				return false;
 			}
-			
+
 			route = new RouterPageRoute( new RouterPage( path, null, value), route);
 			return true;
 		}
-		
+
 		static internal bool ParseNVPRoute(object value, out RouterPageRoute route)
 		{
 			route = null;
@@ -303,7 +303,7 @@ namespace Fuse.Navigation
 					if (!ParseNVPComponent(array[i], ref route))
 						return false;
 				}
-				
+
 				return true;
 			}
 			else
@@ -311,7 +311,7 @@ namespace Fuse.Navigation
 				return ParseNVPComponent(value, ref route);
 			}
 		}
-		
+
 		static bool ParseNVPComponent(object value, ref RouterPageRoute route)
 		{
 			//require a "string", rather than use TryToType, to avoid nonsense being accepted
@@ -320,19 +320,19 @@ namespace Fuse.Navigation
 				route = new RouterPageRoute( new RouterPage( (string)value ),  route);
 				return true;
 			}
-			
+
 			var nvp = value as NameValuePair;
 			if (nvp != null)
 			{
-				route = new RouterPageRoute( new RouterPage( nvp.Name, 
+				route = new RouterPageRoute( new RouterPage( nvp.Name,
 					Json.Stringify(nvp.Value)), route);
 				return true;
 			}
-			
+
 			Fuse.Diagnostics.UserError("incompatible path component", value);
 			return false;
 		}
-		
+
 		static bool ValidateParameter(object arg, int depth = 0)
 		{
 			if (depth > 49)

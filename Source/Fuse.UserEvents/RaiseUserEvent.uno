@@ -12,21 +12,21 @@ namespace Fuse.Triggers.Actions
 		> for a more complete explanation of user events.
 
 		# Examples
-		
+
 		The following example shows a button which raises a @UserEvent when
 		clicked.
-			
+
 			<UserEvent ux:Name="myEvent" />
 			<Button>
 				<Clicked>
 					<RaiseUserEvent EventName="myEvent" />
 				</Clicked>
 			</Button>
-		
+
 		You can also pass arguments using @UserEventArg.
 		When using a JavaScript function to handle the event, the arguments will
 		be passed to that function.
-		
+
 			<UserEvent ux:Name="myEvent" />
 			<Button>
 				<Clicked>
@@ -43,8 +43,8 @@ namespace Fuse.Triggers.Actions
 		/**
 			The name of the even to raise. This corresponds to the @UserEvent.Name property.
 		*/
-		public Selector EventName 
-		{ 
+		public Selector EventName
+		{
 			get { return _eventName; }
 			set
 			{
@@ -52,11 +52,11 @@ namespace Fuse.Triggers.Actions
 				_event = null;
 			}
 		}
-		
-		//caches found Event to avoid multiple lookups	
+
+		//caches found Event to avoid multiple lookups
 		Node _eventTarget;
 		UserEvent _event;
-		
+
 		IList<UserEventArg> _args;
 		[UXPrimary]
 		/**
@@ -72,7 +72,7 @@ namespace Fuse.Triggers.Actions
 				return _args;
 			}
 		}
-		
+
 		protected override void Perform(Node target)
 		{
 			if (_event == null || _eventTarget != target)
@@ -81,18 +81,18 @@ namespace Fuse.Triggers.Actions
 				_event = UserEvent.ScanTree(target, EventName, out n);
 				_eventTarget = target;
 			}
-				
+
 			if (_event == null)
 				Fuse.Diagnostics.UserError( "no UserEvent found: " + EventName, this );
 			else
 				_event.Raise(ConvertArgs());
 		}
-		
+
 		Dictionary<string,object> ConvertArgs()
 		{
 			if (_args == null || _args.Count == 0)
 				return null;
-				
+
 			var d = new Dictionary<string,object>();
 			foreach (var arg in _args)
 			{
@@ -101,10 +101,10 @@ namespace Fuse.Triggers.Actions
 			return d;
 		}
 	}
-	
+
 	/**
 		Represents an argument to be passed with @RaiseUserEvent
-		
+
 		A user event may also include a number of arguments that can be
 		read from JavaScript.
 
@@ -115,7 +115,7 @@ namespace Fuse.Triggers.Actions
 		for a more complete explanation of user events.
 
 		## Example
-		
+
 		The following example shows a @Button that, when clicked, raises a
 		user event with the argument `message`, which has the value
 		`Hello from UX!`.
@@ -135,18 +135,18 @@ namespace Fuse.Triggers.Actions
 			The Name of the argument.
 		*/
 		public string Name { get; private set; }
-		
+
 		[UXConstructor]
 		public UserEventArg([UXParameter("Name")] string name)
 		{
 			Name = name;
 		}
-		
+
 		/**
 			Specifies the generic `object` value of the argument.
 		*/
 		public object Value { get; set; }
-		
+
 		/**
 			The @Value as an `int`
 		*/
@@ -155,7 +155,7 @@ namespace Fuse.Triggers.Actions
 			get { return (int)Value; }
 			set { Value = value; }
 		}
-		
+
 		/**
 			The @Value as a `float`
 		*/
@@ -165,7 +165,7 @@ namespace Fuse.Triggers.Actions
 			get { return (float)(double)Value; }
 			set { Value = (double)value; }
 		}
-		
+
 		/**
 			The @Value as a `string`
 		*/
@@ -174,7 +174,7 @@ namespace Fuse.Triggers.Actions
 			get { return (string)Value; }
 			set { Value = value; }
 		}
-		
+
 		/**
 			The @Value as a `bool`
 		*/

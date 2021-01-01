@@ -1,21 +1,21 @@
 <Panel ux:Class="UX.Observable.NotNull">
 	<JavaScript>
 		var Observable = require("FuseJS/Observable")
-		
+
 		exports.count = Observable(0)
 		var items = Observable()
 		var notNull = items.notNull()
 		notNull.onValueChanged( module, function(v) {
 			exports.count.value++
 		})
-		
+
 		exports.notNull = notNull
 		exports.nnCount  = notNull.count()
-		
+
 		exports.step1 = function() {
 			items.value = "a"
 		}
-		
+
 		exports.step2 = function() {
 			items.value = null
 		}
@@ -23,7 +23,7 @@
 	<Text Value="{count}" ux:Name="C"/>
 	<Text Value="{nnCount}" ux:Name="NC"/>
 	<Text Value="{Clear notNull}" ux:Name="NN"/>
-	
+
 	<FuseTest.Invoke Handler="{step1}" ux:Name="Step1"/>
 	<FuseTest.Invoke Handler="{step2}" ux:Name="Step2"/>
 </Panel>

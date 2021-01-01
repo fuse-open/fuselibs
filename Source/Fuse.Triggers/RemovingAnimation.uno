@@ -49,10 +49,10 @@ namespace Fuse.Triggers
 				Fuse.Diagnostics.InternalError( "Double removal of Visual", this );
 				return;
 			}
-			
+
 			_args = pr;
 			_args.AddSubscriber();
-			Activate(OnDone);	
+			Activate(OnDone);
 		}
 
 		void OnDone()
@@ -62,7 +62,7 @@ namespace Fuse.Triggers
 				Fuse.Diagnostics.InternalError( "Unexpected done", this );
 				return;
 			}
-			
+
 			_args.RemoveSubscriber();
 			_args = null;
 		}

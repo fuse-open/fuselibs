@@ -61,9 +61,9 @@ namespace Fuse.Layouts
 				}
 			}
 		}
-		
+
 		bool IsVert
-		{	
+		{
 			get { return Orientation == Orientation.Vertical; }
 		}
 
@@ -94,7 +94,7 @@ namespace Fuse.Layouts
 				}
 			}
 		}
-		
+
 		public string ID { get; set; }
 
 		internal override float2 GetContentSize(
@@ -103,7 +103,7 @@ namespace Fuse.Layouts
 		{
 			return Arrange(container, lp, false);
 		}
-		
+
 		internal override void ArrangePaddingBox(
 			Visual container,
 			float4 padding,
@@ -111,13 +111,13 @@ namespace Fuse.Layouts
 		{
 			Arrange(container, lp, true, padding);
 		}
-		
-		float2 Arrange(Visual container, LayoutParams lp,	
+
+		float2 Arrange(Visual container, LayoutParams lp,
 			bool doArrange, float4 padding = float4(0))
 		{
 			var nlp = lp.CloneAndDerive();
 			nlp.RemoveSize(padding);
-			
+
 			bool hasX, hasY;
 			var lpav = nlp.GetAvailableSize( out hasX, out hasY );
 			float majorAvail = IsVert ? (hasY ? lpav.Y : float.PositiveInfinity) : (hasX ? lpav.X : float.PositiveInfinity);
@@ -148,7 +148,7 @@ namespace Fuse.Layouts
 			int majorStart = 0;
 			// current row
 			int currentRow = 0;
-			
+
 			int i = 0;
 			for (var n = container.FirstChild<Node>(); n != null; n = n.NextSibling<Node>(), i++)
 			{
@@ -166,7 +166,7 @@ namespace Fuse.Layouts
 				var cminorSize = IsVert ? eSize.X : eSize.Y;
 				placements[i].Z = cmajorSize;
 				placements[i].W = cminorSize;
-				
+
 				//need next row?
 				if ( (majorUsed + cmajorSize) > majorAvail && majorUsed > 0)
 				{
@@ -174,13 +174,13 @@ namespace Fuse.Layouts
 						minorSizes[j] = minorMaxSize;
 					majorMaxUsed = Math.Max(majorMaxUsed, majorUsed);
 					minorUsed += minorMaxSize;
-					
+
 					minorMaxSize = 0;
 					majorUsed = 0;
 					majorStart = i;
 					currentRow++;
 				}
-				
+
 				placements[i].X = majorUsed;
 				placements[i].Y = minorUsed;
 				minorMaxSize = Math.Max(minorMaxSize, cminorSize);
@@ -196,7 +196,7 @@ namespace Fuse.Layouts
 			minorUsed += minorMaxSize;
 
 			if (doArrange)
-			{	
+			{
 				var saMin = IsVert ? AlignmentHelpers.GetHorizontalSimpleAlignOptional(RowAlignment) : AlignmentHelpers.GetVerticalSimpleAlignOptional(RowAlignment);
 				var saMaj = IsVert ? AlignmentHelpers.GetVerticalSimpleAlignOptional(RowAlignment) : AlignmentHelpers.GetHorizontalSimpleAlignOptional(RowAlignment);
 				var elp = lp.CloneAndDerive();
@@ -239,19 +239,19 @@ namespace Fuse.Layouts
 						case OptionalSimpleAlignment.None:
 							break;
 					}
-					
+
 					if (IsVert)
 						placement = placement.YXWZ;
-					
+
 					if (FlowDirection == FlowDirection.RightToLeft)
 						placement = float4( nlp.X - placement.X - placement.Z, placement.YZW );
-					
+
 					elp.SetSize(float2(placement.Z,placement.W));
 					element.ArrangeMarginBox(
 						padding.XY + placement.XY, elp);
 				}
 			}
-			
+
 			var sz = IsVert ? float2(minorUsed, majorMaxUsed)
 				: float2(majorMaxUsed, minorUsed);
 			return sz;

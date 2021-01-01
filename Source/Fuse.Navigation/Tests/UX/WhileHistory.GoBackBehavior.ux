@@ -4,7 +4,7 @@
 		exports.step1 = function() {
 			router.push( "b" )
 		}
-		
+
 		exports.step2 = function() {
 			router.goBack()
 		}
@@ -18,7 +18,7 @@
 			<Page ux:Name="b"/>
 		</Navigator>
 	</Panel>
-	
+
 	<FuseTest.Invoke Handler="{step1}" ux:Name="Step1"/>
 	<FuseTest.Invoke Handler="{step2}" ux:Name="Step2"/>
 </Panel>

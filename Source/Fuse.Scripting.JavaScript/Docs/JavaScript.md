@@ -14,7 +14,7 @@ Example:
 		<Text Value="{foo}" />
 	</Panel>
 
-The `Text` in the above example will display the string `bar`. 
+The `Text` in the above example will display the string `bar`.
 
 ## Global modules
 

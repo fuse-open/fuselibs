@@ -19,17 +19,17 @@ namespace Fuse.Controls
 		//this is here because we want to set the LayoutRole as well
 		[UXAttachedPropertySetter("Element.LayoutMaster")]
 		/** Makes an element inherit the layout of another.
-		
+
 			## Examples
-			
+
 			The following example will result in two overlapping @Rectangles.
-			
+
 				<StackPanel>
 					<Rectangle ux:Name="master" Height="150" Color="#f00a" />
 					<Rectangle LayoutMaster="master" Color="#00fa" />
 				</StackPanel>
-			
-				
+
+
 			Changing the `LayoutMaster` of an element will trigger any @LayoutAnimations on that element.
 			The above example illustrates how `LayoutMaster` can be used to implement a moving selection rectangle.
 			It consists of two panels that when clicked, animate the `selection` @Rectangle to inherit their size and position.
@@ -58,7 +58,7 @@ namespace Fuse.Controls
 						</Panel>
 					</StackPanel>
 				</Panel>
-				
+
 		*/
 		public static void SetLayoutMaster(Element elm, Element master)
 		{
@@ -75,13 +75,13 @@ namespace Fuse.Controls
 				LayoutMasterBoxSizing.SetLayoutMaster(elm, master);
 			}
 		}
-		
+
 		[UXAttachedPropertyGetter("Element.LayoutMaster")]
 		public static Element GetLayoutMaster(Element elm)
-		{	
-			return LayoutMasterBoxSizing.GetLayoutMaster(elm); 
+		{
+			return LayoutMasterBoxSizing.GetLayoutMaster(elm);
 		}
-			
+
 		Layout _layout;
 		[UXContent]
 		/** The layout that will be applied to the children.
@@ -100,8 +100,8 @@ namespace Fuse.Controls
 		public Layout Layout
 		{
 			get { return _layout ?? Fuse.Layouts.Layouts.Default; }
-			set 
-			{ 
+			set
+			{
 				if (value != _layout)
 				{
 					if (IsRootingCompleted && _layout != null) _layout.Unrooted(this);
@@ -139,7 +139,7 @@ namespace Fuse.Controls
 		protected override void ArrangePaddingBox(LayoutParams lp)
 		{
 			base.ArrangePaddingBox(lp);
-			
+
 			if (HasVisualChildren) // optimization
 				Layout.ArrangePaddingBox(this, Padding, lp);
 		}
@@ -157,9 +157,9 @@ namespace Fuse.Controls
 				InvalidateLayout();
 			base.OnChildRemoved(elm);
 		}
-		
+
 		protected override void OnChildMoved(Node elm)
-		{	
+		{
 			if (elm is Visual)
 				InvalidateLayout();
 			base.OnChildMoved(elm);
@@ -169,7 +169,7 @@ namespace Fuse.Controls
 		{
 			var outer = BoxSizingObject.IsContentRelativeSize(this);
 			var inner = Layout.IsMarginBoxDependent(child);
-			
+
 			if (outer == LayoutDependent.Yes)
 			{
 				if (inner == LayoutDependent.No)
@@ -197,10 +197,10 @@ namespace Fuse.Controls
 		protected override bool FastTrackDrawWithOpacity(DrawContext dc)
 		{
 			if (HasChildren) return false;
-			
+
 			if (Background != null)
 				DrawBackground(dc, Opacity);
-			
+
 			// Asserting base class doesn't need to draw anything!
 			return true;
 		}

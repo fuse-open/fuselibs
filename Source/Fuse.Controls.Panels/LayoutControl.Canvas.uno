@@ -17,8 +17,8 @@ namespace Fuse.Controls
 		public Surface Surface;
 		public DrawObjectWatcher Watcher;
 		public LayoutControl LayoutControl;
-		
-		//TODO: The below is essentially identical to that in Shape.Surface, maybe this can 
+
+		//TODO: The below is essentially identical to that in Shape.Surface, maybe this can
 		//be mostly moved into the Watcher?
 		void IDrawObjectWatcherFeedback.Changed(object obj)
 		{
@@ -26,7 +26,7 @@ namespace Fuse.Controls
 				LayoutControl.InvalidateLayout();
 			LayoutControl.InvalidateVisual();
 		}
-		
+
 		void IDrawObjectWatcherFeedback.Prepare(object obj)
 		{
 			if (Surface == null)
@@ -34,12 +34,12 @@ namespace Fuse.Controls
 				Fuse.Diagnostics.InternalError( "Prepare without surface", this );
 				return;
 			}
-			
+
 			var b = obj as Brush;
 			if (b != null)
 				Surface.Prepare(b);
 		}
-		
+
 		void IDrawObjectWatcherFeedback.Unprepare(object obj)
 		{
 			if (Surface == null)
@@ -47,13 +47,13 @@ namespace Fuse.Controls
 				Fuse.Diagnostics.InternalError( "Prepare without surface", this );
 				return;
 			}
-			
+
 			var b = obj as Brush;
 			if (b != null)
 				Surface.Unprepare(b);
 		}
 	}
-	
+
 	/*
 		`Panel` and `VectorLayer` are both `ISurfaceDrawable` which share this code. We don't want
 		`LayoutControl` to expose `ISurfaceDrawable` though, limiting it to only those derived classes.
@@ -62,11 +62,11 @@ namespace Fuse.Controls
 	public partial class LayoutControl
 	{
 		LayoutControlSurface _surface;
-		internal Surface LayoutSurface 
+		internal Surface LayoutSurface
 		{
 			get { return _surface != null ? _surface.Surface : null; }
 		}
-		
+
 		internal void SurfaceRooted(bool require)
 		{
 			Surface surface;
@@ -74,7 +74,7 @@ namespace Fuse.Controls
 				surface = SurfaceManager.FindOrCreate(this);
 			else
 				surface = SurfaceManager.Find(this);
-				
+
 			if (surface != null)
 			{
 				_surface = new LayoutControlSurface();
@@ -84,7 +84,7 @@ namespace Fuse.Controls
 				_surface.Watcher.OnRooted(_surface);
 			}
 		}
-		
+
 		internal void SurfaceUnrooted()
 		{
 			if (_surface != null)
@@ -92,12 +92,12 @@ namespace Fuse.Controls
 				if (_surface.BackgroundPath != null)
 					_surface.Surface.DisposePath(_surface.BackgroundPath);
 				_surface.Watcher.OnUnrooted();
-					
+
 				SurfaceManager.Release(this, _surface.Surface);
 				_surface = null;
 			}
 		}
-		
+
 		internal void ISurfaceDrawableDraw(Surface surface)
 		{
 			if (_surface == null)
@@ -113,7 +113,7 @@ namespace Fuse.Controls
 			_surface.Watcher.Reset();
 			_surface.Watcher.Add(Background);
 			_surface.Watcher.Sync();
-			
+
 			if (Background != null)
 			{
 				if (_surface.BackgroundPath == null || _surface.BackgroundPathSize != ActualSize)
@@ -128,10 +128,10 @@ namespace Fuse.Controls
 					_surface.BackgroundPath = surface.CreatePath(rect.Segments);
 					_surface.BackgroundPathSize = ActualSize;
 				}
-				
+
 				surface.FillPath(_surface.BackgroundPath, Background);
 			}
-			
+
 			var zOrder = GetCachedZOrder();
 			for (int i = 0; i < zOrder.Length; i++)
 			{
@@ -146,7 +146,7 @@ namespace Fuse.Controls
 					}
 					continue;
 				}
-				
+
 				surface.PushTransform(child.LocalTransform);
 				surface.DrawLocal(drawable);
 				surface.PopTransform();

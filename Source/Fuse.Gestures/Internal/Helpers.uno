@@ -39,7 +39,7 @@ namespace Fuse.Gestures
 		}
 
 	}
-	
+
 	//TODO: The DegreeSpan use in this for _horziontal/VerticalGesture in various places seems
 	//complex/wrong. The ranges seem like the opposite/exclusion zones. It's very confusing.
 	class SwipeGestureHelper

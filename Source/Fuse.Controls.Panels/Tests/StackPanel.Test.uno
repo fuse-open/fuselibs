@@ -149,7 +149,7 @@ namespace Fuse.Controls.Test
 				LayoutTestHelper.TestElementLayout(p, float2(400,215), float2((1000-400)/2f,(1000-215)/2f));
 			}
 		}
-		
+
 		[Test]
 		public void LayoutPercentFixed()
 		{
@@ -162,7 +162,7 @@ namespace Fuse.Controls.Test
 				LayoutTestHelper.TestElementLayout(p, float2(1000,200), float2(0,400));
 			}
 		}
-		
+
 		[Test]
 		public void SecondPassAndResizeRequired()
 		{
@@ -175,7 +175,7 @@ namespace Fuse.Controls.Test
 				LayoutTestHelper.TestElementLayout(p.Area3, float2(40,250), float2(40,375));
 			}
 		}
-		
+
 		[Test]
 		public void ContentAlignment()
 		{
@@ -203,7 +203,7 @@ namespace Fuse.Controls.Test
 				Assert.AreEqual( float2(-20.000000f,0), p.RD2.ActualPosition);
 			}
 		}
-		
+
 		[Test]
 		public void Issue1252()
 		{
@@ -219,7 +219,7 @@ namespace Fuse.Controls.Test
 				Assert.AreEqual(float2(0,60), p.E3.ActualPosition);
 			}
 		}
-		
+
 		[Test]
 		public void StackLayoutCompat() //https://github.com/fusetools/fuselibs-private/issues/1484
 		{
@@ -235,7 +235,7 @@ namespace Fuse.Controls.Test
 				Assert.AreEqual(float2(160,80),p.I1.ActualSize);
 			}
 		}
-		
+
 		[Test]
 		public void MaxSize()
 		{
@@ -244,12 +244,12 @@ namespace Fuse.Controls.Test
 			{
 				Assert.AreEqual(float2(400,10), p.a.ActualSize);
 				Assert.AreEqual(float2(400,100), p.w.ActualSize);
-				
+
 				Assert.AreEqual(float2(0,0), p.b1.ActualPosition);
 				Assert.AreEqual(float2(200,0), p.b2.ActualPosition);
 				Assert.AreEqual(float2(0,50), p.b3.ActualPosition);
 				Assert.AreEqual(float2(200,50), p.b4.ActualPosition);
-				
+
 				Assert.AreEqual(float2(800,50), p.h.ActualSize);
 				Assert.AreEqual(float2(0,0), p.h1.ActualPosition);
 				Assert.AreEqual(float2(200,0), p.h2.ActualPosition);
@@ -257,9 +257,9 @@ namespace Fuse.Controls.Test
 				Assert.AreEqual(float2(600,0), p.h4.ActualPosition);
 			}
 		}
-		
+
 		//region Private Methods
-		
+
 		private Panel GetChildForStackPanel(float4 margin, float width, float height)
 		{
 			var child = new Panel();

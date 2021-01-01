@@ -2,13 +2,13 @@
 	<JavaScript>
 		var Observable = require("FuseJS/Observable")
 		exports.staticNull = null
-		
+
 		exports.emptyFloat = Observable()
-		
+
 		exports.struct = Observable({
 			placeholder: 1,
 		})
-		
+
 		exports.step1 = function() {
 			exports.emptyFloat.value = 0
 			exports.struct.value = {
@@ -16,7 +16,7 @@
 				placeholder: 1,
 			}
 		}
-		
+
 		exports.step2 = function() {
 			exports.emptyFloat.clear()
 			exports.struct.value = {
@@ -24,13 +24,13 @@
 			}
 		}
 	</JavaScript>
-	
+
 	<FuseTest.DudElement ObjectValue="{staticNull}" ux:Name="staticNull"/>
 	<FuseTest.DudElement Value="{emptyFloat}" ux:Name="emptyFloat"/>
 	<FuseTest.DudElement Value="{emptyFloat} ?? 6" ux:Name="emptyCoal"/>
 	<FuseTest.DudElement Value="{struct.none}" ux:Name="structNone"/>
 	<FuseTest.DudElement Value="{struct.none} ?? 5" ux:Name="structCoal"/>
-	
+
 	<FuseTest.Invoke Handler="{step1}" ux:Name="callStep1"/>
 	<FuseTest.Invoke Handler="{step2}" ux:Name="callStep2"/>
 </Panel>

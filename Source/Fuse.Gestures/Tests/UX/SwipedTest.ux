@@ -4,7 +4,7 @@
 		<!-- need to have something to have progress -->
 		<Change Dummy.CornerRadius="100"/>
 	</SwipingAnimation>
-	
+
 	<Swiped Source="SG">
 		<FuseTest.CountAction ux:Name="SwipeActive"/>
 	</Swiped>
@@ -14,6 +14,6 @@
 	<Swiped Source="SG" How="ToEither">
 		<FuseTest.CountAction ux:Name="SwipeEither"/>
 	</Swiped>
-	
+
 	<Rectangle ux:Name="Dummy"/>
 </Panel>

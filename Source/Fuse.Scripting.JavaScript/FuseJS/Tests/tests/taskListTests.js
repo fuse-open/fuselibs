@@ -58,7 +58,7 @@ describe('task list tests', function() {
             foo.addSubscriber(function () {
                 //do nothing;
             });
-            
+
             assert.equal(foo.length, 3);
 
             todoList.add(new Task(true, 9));

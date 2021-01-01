@@ -27,9 +27,9 @@ namespace Fuse.Controls
 		string _data;
 		/**
 			A string contained the SVG formatted path data. As specified by SVG 1.1.
-			
+
 			The following draws a rectangle with a blue stroke:
-			
+
 				<Path Data="M 100 100 L 300 100 L 200 300 z" StrokeColor="#008" StrokeWidth="2"/>
 
 			The size of the resulting shape depends on `FitMode`.
@@ -37,8 +37,8 @@ namespace Fuse.Controls
 		public string Data
 		{
 			get { return _data; } //TODO
-			set 
-			{ 
+			set
+			{
 				if (_data == value)
 					return;
 				_data = value;
@@ -47,10 +47,10 @@ namespace Fuse.Controls
 				InvalidateSurfacePath();
 			}
 		}
-		
+
 		SizingContainer sizing = new SizingContainer();
 		internal SizingContainer Sizing { get { return sizing; } }
-		
+
 		/**
 			How are the bounds, calculated by `Data` and `FitMode`, stretched to fill the available area in `Path`
 		*/
@@ -63,8 +63,8 @@ namespace Fuse.Controls
 					OnShapeLayoutChanged();
 			}
 		}
-		
-		/** 
+
+		/**
 			Whether stretching, shrinking, or both are allowed.
 		*/
 		public StretchDirection StretchDirection
@@ -77,7 +77,7 @@ namespace Fuse.Controls
 			}
 		}
 
-		/** 
+		/**
 			For images that are not stretched to fill the bounds of `Path`, how are they aligned.
 		*/
 		public Fuse.Elements.Alignment ContentAlignment
@@ -102,8 +102,8 @@ namespace Fuse.Controls
 				_fillRule = value;
 				OnShapeLayoutChanged();
 			}
-		}		
-		
+		}
+
 		FitMode _fitMode = FitMode.ShrinkToGeometry;
 		/**
 			How are the bounds of the image calculated from the `Data`, and how is the image fit into those bounds.
@@ -120,17 +120,17 @@ namespace Fuse.Controls
 				}
 			}
 		}
-		
+
 		void OnShapeLayoutChanged()
 		{
 			InvalidateSurfacePath();
 			InvalidateLayout();
 		}
-		
+
 		float4 _extents;
 		/**
 			Sets explicit extents to use instead of calculating the bounds of `Data`.
-			
+
 			Setting this implicitly sets `FitMode == Extents`
 		*/
 		public float4 Extents
@@ -140,19 +140,19 @@ namespace Fuse.Controls
 			{
 				if (_extents == value && _fitMode == FitMode.Extents)
 					return;
-					
+
 				_extents = value;
 				_fitMode = FitMode.Extents;
 				OnShapeLayoutChanged();
 			}
 		}
-		
+
 		float2 GetDesiredContentSize()
 		{
 			var hi = float2(0);
 			var lo = float2(0);
 			var bounds = CalcNaturalExtents();
-			
+
 			switch( FitMode )
 			{
 				case FitMode.GeometryMaximum:
@@ -164,7 +164,7 @@ namespace Fuse.Controls
 					lo = bounds.Minimum;
 					hi = bounds.Maximum;
 					break;
-					
+
 				case FitMode.Extents:
 					lo = Extents.XY;
 					hi = Extents.ZW;
@@ -174,8 +174,8 @@ namespace Fuse.Controls
 			var natural = hi - lo;
 			return natural;
 		}
-		
-		
+
+
 		protected override float2 GetContentSize( LayoutParams lp )
 		{
 			var natural = GetDesiredContentSize();
@@ -190,24 +190,24 @@ namespace Fuse.Controls
 		{
 			return LineMetrics.GetBounds(_segments);
 		}
-		
+
 		protected override Rect CalcShapeExtents()
 		{
 			var pos = CalcPositioning();
 			//follows logic of CreateSurfacePath
 			var mn = (pos.NaturalExtents.Minimum - pos.Extents.Minimum) * pos.Scale + pos.Offset + pos.Extents.Minimum;
 			var mx = (pos.NaturalExtents.Maximum - pos.Extents.Minimum) * pos.Scale + pos.Offset + pos.Extents.Minimum;
-			
+
 			var r = new Rect( mn, mx - mn ); //origin/size form
 			return r;
 		}
-		
+
 		protected override void InvalidateSurfacePath()
 		{
 			base.InvalidateSurfacePath();
 			InvalidateRenderBounds();
 		}
-		
+
 		struct Positioning
 		{
 			public float2 Scale;
@@ -215,7 +215,7 @@ namespace Fuse.Controls
 			public Rect NaturalExtents;
 			public Rect Extents;
 		}
-		
+
 		Positioning CalcPositioning()
 		{
 			var naturalExtents = CalcNaturalExtents();
@@ -224,7 +224,7 @@ namespace Fuse.Controls
 			var offset = Sizing.CalcOrigin( ActualSize, desiredSize * scale );
 
 			var extents = naturalExtents;
-			
+
 			switch( FitMode )
 			{
 				case FitMode.GeometryMaximum:
@@ -233,7 +233,7 @@ namespace Fuse.Controls
 				case FitMode.ShrinkToGeometry:
 					offset -= extents.Minimum;
 					break;
-					
+
 				case FitMode.Extents:
 					offset -= extents.Minimum;
 					extents = new Rect( Extents.XY, Extents.ZW - Extents.XY );

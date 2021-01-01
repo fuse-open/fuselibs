@@ -2,14 +2,14 @@
 	<Router ux:Name="router" IsMasterRouter="false"/>
 	<PageControl ux:Name="PC1" Active="a" Transition="None">
 		<Page ux:Name="a">
-			<PageControl Active="hot">	
+			<PageControl Active="hot">
 				<Page ux:Name="hot"/>
 				<Page ux:Name="cold"/>
 				<Page ux:Name="warm"/>
 			</PageControl>
 		</Page>
 		<Page ux:Name="b">
-			<PageControl Active="cat">	
+			<PageControl Active="cat">
 				<Page ux:Name="cat"/>
 				<Page ux:Name="dog"/>
 			</PageControl>

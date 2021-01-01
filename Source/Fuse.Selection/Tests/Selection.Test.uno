@@ -11,7 +11,7 @@ namespace Fuse.Gestures.Test
 		[Test]
 		/* Using Min/MaxCount==1 */
 		public void RadioButton()
-		{	
+		{
 			var p = new UX.RadioButton();
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
@@ -38,7 +38,7 @@ namespace Fuse.Gestures.Test
 				Assert.AreEqual(true, p.I2.s.BoolValue);
 			}
 		}
-		
+
 		[Test]
 		/* Rename a value (primarily to test JS binding on the name) and some various changes in selection */
 		public void ChangeSelectableValue()
@@ -80,7 +80,7 @@ namespace Fuse.Gestures.Test
 				Assert.IsTrue(p.TS.IsSelected(p.I2.Sel));
 			}
 		}
-		
+
 		[Test]
 		public void Replace()
 		{
@@ -107,7 +107,7 @@ namespace Fuse.Gestures.Test
 				Assert.AreEqual("three,one", p.TS.Test_JoinValues() );
 			}
 		}
-		
+
 		[Test]
 		/* Tests the Values binding to an Observable */
 		public void Values()
@@ -150,7 +150,7 @@ namespace Fuse.Gestures.Test
 				Assert.AreEqual("two", p.C.Value);
 			}
 		}
-		
+
 		[Test]
 		/* Test the Selection JS script class interface */
 		public void JsSelection()
@@ -191,7 +191,7 @@ namespace Fuse.Gestures.Test
 				Assert.AreEqual("", p.TS.Test_JoinValues());
 			}
 		}
-		
+
 		[Test]
 		/* Test the Selectable JS script class interface.*/
 		public void JsSelectable()
@@ -228,7 +228,7 @@ namespace Fuse.Gestures.Test
 				Assert.AreEqual("one", p.TS.Test_JoinValues());
 			}
 		}
-		
+
 		[Test]
 		/* Tests JS interface limits and forced options */
 		public void JsSelectionLimit()
@@ -260,7 +260,7 @@ namespace Fuse.Gestures.Test
 				Assert.AreEqual("2,3,1", p.TS.Test_JoinValues()); //since Replace=Oldest by default
 			}
 		}
-		
+
 		[Test]
 		/* Ensure changes in selectable values from bindings are correctly initialized */
 		public void EachSelectable()
@@ -275,20 +275,20 @@ namespace Fuse.Gestures.Test
 				Assert.IsFalse(two == null);
 				var three = root.FindNodeByName("three") as Visual;
 				Assert.IsFalse(three == null);
-				
+
 				//https://github.com/fusetools/fuselibs-private/issues/3385
 				//this has been switch to a 0-duration animator for now
 				Assert.AreEqual(1,TriggerProgress(two.FirstChild<WhileSelected>()));
 				Assert.AreEqual(0,TriggerProgress(one.FirstChild<WhileSelected>()));
 				Assert.AreEqual(0,TriggerProgress(three.FirstChild<WhileSelected>()));
 				Assert.AreEqual("two", p.TS.Value);
-				
+
 				p.E.Limit = 0;
 				root.StepFrame();
 				Assert.AreEqual("two", p.TS.Value);
 			}
 		}
-		
+
 		[Test]
 		/* Sensitive to changes if data is availabe at Values subscription time */
 		public void SubscribeInit()
@@ -297,23 +297,23 @@ namespace Fuse.Gestures.Test
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
 				root.StepFrameJS();
-				
+
 				for (int i=0; i<3; ++i)
 				{
 					Assert.AreEqual("1,3", GetRecursiveText(p.l1));
 					Assert.AreEqual("", GetRecursiveText(p.l2));
-				
+
 					p.wt.Value = true;
 					root.PumpDeferred();
 					Assert.AreEqual("1,3", GetRecursiveText(p.l1));
 					Assert.AreEqual("1,3", GetRecursiveText(p.l2));
-				
+
 					p.wt.Value = false;
 					root.PumpDeferred();
 				}
 			}
 		}
-		
+
 		[Test]
 		//ensure event emitted after values change
 		//https://github.com/fuse-open/fuselibs/issues/885
@@ -324,15 +324,15 @@ namespace Fuse.Gestures.Test
 			{
 				root.StepFrameJS();
 				Assert.AreEqual( "", p.r.Value );
-				
+
 				p.sa.Add();
 				root.StepFrameJS();
 				Assert.AreEqual( "A", p.r.Value );
-				
+
 				p.sb.Add();
 				root.StepFrameJS();
 				Assert.AreEqual( "AB", p.r.Value );
-				
+
 				p.sa.Remove();
 				root.StepFrameJS();
 				Assert.AreEqual( "B", p.r.Value );

@@ -1,20 +1,20 @@
 <Panel ux:Class="UX.Observable.IsAnyFailed">
 	<JavaScript>
 		var Observable = require("FuseJS/Observable")
-		
+
 		exports.a = Observable(1)
 		exports.b = Observable(2)
 		exports.c = Observable(3)
-		
+
 		exports.failed = exports.a.isFailed(exports.b, exports.c)
-		
+
 		exports.failA = function() {
 			exports.a.failed( "NO" )
 		}
 		exports.failC = function() {
 			exports.c.failed( "NO" )
 		}
-		
+
 		exports.restoreA = function() {
 			exports.a.value = 2
 		}
@@ -26,6 +26,6 @@
 	<FuseTest.Invoke Handler="{restoreA}" ux:Name="CallRestoreA"/>
 	<FuseTest.Invoke Handler="{failC}" ux:Name="CallFailC"/>
 	<FuseTest.Invoke Handler="{restoreC}" ux:Name="CallRestoreC"/>
-	
+
 	<WhileTrue Value="{failed}" ux:Name="W"/>
 </Panel>

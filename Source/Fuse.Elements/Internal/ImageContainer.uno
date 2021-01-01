@@ -111,7 +111,7 @@ namespace Fuse.Internal
 		{
 			get
 			{
-				if (_files == null) 
+				if (_files == null)
 				{
 					_files = new RootableList<FileSource>();
 					if (IsRooted)
@@ -163,8 +163,8 @@ namespace Fuse.Internal
 				}
 			}
 		}
-		
-		bool _isSourceListen;	
+
+		bool _isSourceListen;
 		void UpdateSourceListen(bool forceOff = false)
 		{
 			bool should = !forceOff && _source != null && IsRooted;
@@ -178,7 +178,7 @@ namespace Fuse.Internal
 				_isSourceListen = false;
 				return;
 			}
-			
+
 			_isSourceListen = should;
 			if (should)
 			{
@@ -201,7 +201,7 @@ namespace Fuse.Internal
 			if (_owner != null)
 				_owner.OnSourceChanged();
 		}
-		
+
 		public event ImageSourceErrorHandler SourceError;
 		void OnSourceError(object s, ImageSourceErrorArgs args)
 		{
@@ -227,22 +227,22 @@ namespace Fuse.Internal
 		public bool IsRooted
 		{
 			get { return _isRooted; }
-			set 
+			set
 			{
 				if (_isRooted == value)
 					return;
-					
+
 				_isRooted = value;
 				if (_isRooted)
 					OnRooted();
-				else 
+				else
 					OnUnrooted();
-					
+
 				CheckPinning();
 				UpdateSourceListen();
 			}
 		}
-		
+
 		void OnRooted()
 		{
 			if (_files != null)
@@ -251,7 +251,7 @@ namespace Fuse.Internal
 				OnFilesChanged(null);
 			}
 		}
-		
+
 		void OnUnrooted()
 		{
 			if (_files != null)
@@ -270,7 +270,7 @@ namespace Fuse.Internal
 			bool on = _isRooted;
 			if (MemoryPolicy.UnpinInvisible && !_isVisible)
 				on = false;
-				
+
 			if( on != _sourcePinned )
 			{
 				if( on )
@@ -359,7 +359,7 @@ namespace Fuse.Internal
 				return Source.GetTexture();
 			return null;
 		}
-		
+
 		bool _isVisible = true;
 		public bool IsVisible
 		{
@@ -373,7 +373,7 @@ namespace Fuse.Internal
 				}
 			}
 		}
-		
+
 		internal bool TestIsClean
 		{
 			get { return Source == null || ImageSource.TestIsClean(Source); }

@@ -20,7 +20,7 @@ namespace Fuse.Reactive.Test
 				Assert.AreEqual( float4(4,5,2,3), p.f4.UseValue );
 			}
 		}
-		
+
 		[Test]
 		public void FailFloat()
 		{
@@ -29,17 +29,17 @@ namespace Fuse.Reactive.Test
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
 				Assert.IsTrue( p.b.BoolValue );
-				
+
 				p.v.String = "abc";
 				root.PumpDeferred();
 				Assert.IsFalse( p.b.BoolValue );
-				
+
 				var d = dg.DequeueAll();
 				Assert.AreEqual(1, d.Count);
 				Assert.Contains( "Failed to compute", d[0].Message );
 			}
 		}
-		
+
 		[Test]
 		public void ToString()
 		{
@@ -50,7 +50,7 @@ namespace Fuse.Reactive.Test
 				Assert.AreEqual( "2", p.s2.UseValue );
 			}
 		}
-		
+
 		[Test]
 		public void FailString()
 		{
@@ -59,22 +59,22 @@ namespace Fuse.Reactive.Test
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
 				Assert.IsFalse( p.b.BoolValue );
-				
+
 				p.v.String = "abc";
 				root.PumpDeferred();
 				Assert.IsTrue( p.b.BoolValue );
-				
+
  				p.v.String = null;
  				root.PumpDeferred();
  				Assert.IsFalse( p.b.BoolValue );
-				
+
 				var d = dg.DequeueAll();
 				Assert.IsTrue( d.Count ==2 || d.Count == 3); //don't want to be too strict yet, reporting is not perfect
 				Assert.Contains( "Failed to compute", d[0].Message );
 				Assert.Contains( "Failed to compute", d[1].Message );
 			}
 		}
-		
+
 		[Test]
 		//doesn't use the conversion operators but implicitly uses the size conversion code
 		public void SizeBasic()
@@ -83,12 +83,12 @@ namespace Fuse.Reactive.Test
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
 				root.StepFrameJS();
-				
+
 				Assert.AreEqual( new Size(10, Unit.Unspecified), p.s1.SizeValue );
 				Assert.AreEqual( new Size(10, Unit.Points), p.s2.SizeValue);
 				Assert.AreEqual( new Size(10, Unit.Percent), p.s3.SizeValue);
 				Assert.AreEqual( new Size(10, Unit.Pixels), p.s4.SizeValue);
-				
+
 				Assert.AreEqual( new Size2(new Size(10, Unit.Unspecified),
 					new Size(10, Unit.Unspecified)), p.ss1.Size2Value );
 				Assert.AreEqual( new Size2(new Size(10, Unit.Points),
@@ -97,13 +97,13 @@ namespace Fuse.Reactive.Test
 					new Size(30, Unit.Percent)), p.ss3.Size2Value );
 				Assert.AreEqual( new Size2(new Size(50, Unit.Unspecified),
 					new Size(60, Unit.Unspecified)), p.ss4.Size2Value );
-					
+
 				Assert.AreEqual( new Size(10, Unit.Unspecified), p.a1.SizeValue );
 				Assert.AreEqual( new Size2(new Size(20, Unit.Unspecified),
 					new Size(30, Unit.Percent)), p.a2.Size2Value );
 			}
 		}
-		
+
 		[Test]
 		public void SizeOp()
 		{
@@ -111,12 +111,12 @@ namespace Fuse.Reactive.Test
 			using (var root = TestRootPanel.CreateWithChild(p))
 			{
 				root.StepFrameJS();
-				
+
 				Assert.AreEqual( new Size(10, Unit.Unspecified), p.s1.SizeValue );
 				Assert.AreEqual( new Size(10, Unit.Points), p.s2.SizeValue);
 				Assert.AreEqual( new Size(10, Unit.Percent), p.s3.SizeValue);
 				Assert.AreEqual( new Size(10, Unit.Pixels), p.s4.SizeValue);
-				
+
 				Assert.AreEqual( new Size2(new Size(10, Unit.Unspecified),
 					new Size(10, Unit.Unspecified)), p.ss1.Size2Value );
 				//Assert.AreEqual( new Size2(new Size(10, Unit.Points),
@@ -125,11 +125,11 @@ namespace Fuse.Reactive.Test
 					new Size(30, Unit.Percent)), p.ss3.Size2Value );
 				Assert.AreEqual( new Size2(new Size(50, Unit.Unspecified),
 					new Size(60, Unit.Unspecified)), p.ss4.Size2Value );
-					
+
 				Assert.AreEqual( new Size(10, Unit.Unspecified), p.a1.SizeValue );
 				Assert.AreEqual( new Size2(new Size(20, Unit.Unspecified),
 					new Size(30, Unit.Percent)), p.a2.Size2Value );
-					
+
 				Assert.AreEqual( new Size2(new Size(10, Unit.Percent),
 					new Size(20, Unit.Percent)), p.a3.Size2Value );
 				Assert.AreEqual( new Size2(new Size(5, Unit.Pixels),

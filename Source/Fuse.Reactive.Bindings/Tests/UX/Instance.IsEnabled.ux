@@ -4,7 +4,7 @@
 			<Text Value="boop"/>
 		</Instance>
 	</Panel>
-	
+
 	<JavaScript>
 		var Observable = require("FuseJS/Observable")
 		exports.show = Observable(false)

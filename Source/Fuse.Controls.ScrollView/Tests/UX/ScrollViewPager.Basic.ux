@@ -6,7 +6,7 @@
 				<FuseTest.DudElement Value="{index()}" Height="100"/>
 			</Each>
 		</StackPanel>
-		
+
 		<ScrollViewPager Each="theEach" Retain="3" ux:Name="svp"/>
 	</ScrollView>
 </Panel>

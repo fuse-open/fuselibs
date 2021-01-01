@@ -1,0 +1,28 @@
+{
+    "Packages": [
+        "Fuse",
+        "FuseJS",
+        "Fuse.GeoLocation",
+        "Fuse.Camera",
+        "Fuse.CameraRoll",
+        "Fuse.ImageTools",
+        "Fuse.Maps",
+        "Fuse.Vibration",
+        "Fuse.Launcher",
+        "Fuse.PushNotifications",
+        "Fuse.LocalNotifications",
+        "Fuse.BasicTheme",
+        "Fuse.Maps",
+        "Fuse.Audio",
+        "Fuse.Share",
+        "Fuse.Charting",
+        "Fuse.Controls.CameraView",
+        "Fuse.UXKits.Alive",
+        "Fuse.Models",
+        "Fuse.Sensor",
+        "Fuse.Auth"
+    ],
+    "Includes": [
+        "*"
+    ]
+}

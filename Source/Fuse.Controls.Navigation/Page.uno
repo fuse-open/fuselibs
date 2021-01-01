@@ -11,7 +11,7 @@ namespace Fuse.Controls
 		/** Freezes the page when it's parent navigation is currently navigating. */
 		WhileNavigating,
 	}
-	
+
 	public enum PagePrepareBusy
 	{
 		/** Nothing special happens when the page is prepared */
@@ -19,28 +19,28 @@ namespace Fuse.Controls
 		/** The page is marked busy for a couple of frames when prepared, thus deferring navigation */
 		FrameDelay,
 	}
-	
+
 	/** Represents a page that participates in navigation.
-	
+
 		You generally want to use this as the base class when implementing your page views, although any @Visual can be used.
-		
+
 		See the [navigation guide](/docs/navigation/navigation) for an introductory guide to implementing navigation in your app.
-		
+
 		## Example
-		
+
 		The following example illustrates subclassing @Page and using it in a @PageControl.
-		
+
 			<Page ux:Class="MyPage">
 			    <Text Alignment="Center">This is a page!</Text>
 			</Page>
-			
+
 			<PageControl>
 			    <MyPage />
 			    <MyPage />
 			</PageControl>
-		
+
 		## Remarks
-		
+
 		@Page exposes a local @Uno.UX.Resource "Title", which can be set using the @Title property.
 	*/
 	public class Page: Panel
@@ -50,7 +50,7 @@ namespace Fuse.Controls
 			//this is a better default for combining with `Freeze`
 			DeferFreeze = BusyTaskActivity.Short;
 		}
-		
+
 		public object SaveState()
 		{
 			return OnSaveState();
@@ -72,8 +72,8 @@ namespace Fuse.Controls
 		/** The title of the page. Setting this will also set a local @Uno.UX.Resource with the key "Title". */
 		public string Title
 		{
-			get 
-			{ 
+			get
+			{
 				object v;
 				if (TryGetResource(_titleKey, null, out v))
 					return v as string;
@@ -95,7 +95,7 @@ namespace Fuse.Controls
 			base.OnRooted();
 			SetupFreezeTrigger();
 		}
-		
+
 		void SetupFreezeTrigger()
 		{
 			CleanupFreezeTrigger();
@@ -107,11 +107,11 @@ namespace Fuse.Controls
 					_freezeTrigger = new NavigationInternal.PageWhileNavigatingFreeze(this);
 					break;
 			}
-			
+
 			if (_freezeTrigger != null)
 				Children.Add(_freezeTrigger);
 		}
-		
+
 		void CleanupFreezeTrigger()
 		{
 			if (_freezeTrigger != null)
@@ -120,7 +120,7 @@ namespace Fuse.Controls
 				_freezeTrigger = null;
 			}
 		}
-		
+
 		protected override void OnUnrooted()
 		{
 			CleanupFreezeTrigger();
@@ -131,13 +131,13 @@ namespace Fuse.Controls
 		PageFreeze _freeze = PageFreeze.Never;
 		/**
 			Specifies when this page will be frozen.
-			
+
 			For full size transitions, like in a top-level navigator, this value is typically set to `WhileNavigating`:
-			
+
 				<Page Freeze="WhileNavigating">
-				
+
 			This may improve navigation performance by essentially blocking animation on the page itself while in transition.
-			
+
 			Refer to the @Fuse.Controls.Panel.IsFrozen property.
 			@advanced
 		*/
@@ -159,14 +159,14 @@ namespace Fuse.Controls
 			get { return _prepare; }
 			set { _prepare = value; }
 		}
-		
+
 		BusyTask _prepareBusy;
 		int _busyFrames;
 		bool _isBusy;
 		internal override void Prepare(string parameter)
 		{
 			base.Prepare(parameter);
-			
+
 			if (PrepareBusy == PagePrepareBusy.FrameDelay)
 			{
 				//this usually ends up as 1 since prepare tends to be called prior to the first update stages
@@ -180,13 +180,13 @@ namespace Fuse.Controls
 			_busyFrames = 0;
 			ListenBusy();
 		}
-		
+
 		void ListenBusy()
 		{
 			var should = _busyFrames > 0;
 			if (should == _isBusy)
 				return;
-				
+
 			_isBusy = should;
 			if (_isBusy)
 			{
@@ -199,12 +199,12 @@ namespace Fuse.Controls
 				UpdateManager.RemoveAction( OnBusyUpdate );
 			}
 		}
-		
+
 		void OnBusyUpdate()
 		{
 			_busyFrames--;
 			ListenBusy();
 		}
-		
+
 	}
 }

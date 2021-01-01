@@ -26,7 +26,7 @@ namespace Fuse.Reactive.FuseJS
 				_timer = (FuseJS.TimerModule)res;
 			else
 				_timer = new Fuse.Reactive.FuseJS.TimerModule();
-			
+
 			var setTimout = (Scripting.Function) context.Evaluate("fuse-builtins: setTimeout", import("setTimeout.js").ReadAllText());
 			if (setTimout != null && _timer != null)
 				setTimout.Call(context, _timer.EvaluateExports(context, "FuseJS/Timer"), context.GlobalObject);
@@ -45,19 +45,19 @@ namespace Fuse.Reactive.FuseJS
 			//load/register Diagnostics
 			new DiagnosticsImplModule();
 			new FileModule(import("Diagnostics.js")).EvaluateExports(context, "FuseJS/Diagnostics");
-			
+
 			Observable = (Scripting.Function)new FileModule(import("Observable.js")).EvaluateExports(context, "FuseJS/Observable");
 			TreeObservable = (Scripting.Function)new FileModule(import("TreeObservable.js")).EvaluateExports(context, "FuseJS/TreeObservable");
 			EventEmitter = EventEmitterModule.GetConstructor(context);
 			Date = (Scripting.Function)context.Evaluate("fuse-builtins", "Date");
 			DateCtor = (Scripting.Function)context.Evaluate("fuse-builtins", "(function(ticks) { return new Date(ticks); })");
-			
+
 			res = null;
 			// TODO: This should eventually be an optional module. It's here until we accept to break stuff.
 			if (Uno.UX.Resource.TryFindGlobal("Polyfills/Window", IsModule, out res))
 				((Module)res).Evaluate(context, "Polyfills/Window");
 		}
-		
+
 		static bool IsModule(object module)
 		{
 			return module is Module;

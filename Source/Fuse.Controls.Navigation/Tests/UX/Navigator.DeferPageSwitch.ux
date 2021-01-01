@@ -2,8 +2,8 @@
 	<Router ux:Name="R" IsMasterRouter="false"/>
 	<Navigator ux:Name="Nav" DefaultPath="one">
 		<Page ux:Name="one" PrepareBusy="None"/>
-		
-		<Page ux:Name="two" PrepareBusy="None">	
+
+		<Page ux:Name="two" PrepareBusy="None">
 			<FuseTest.BusyControl IsBusy="true" Activity="Preparing" ux:Name="B"/>
 			<Transition ux:Name="T">
 				<Nothing Duration="1"/>

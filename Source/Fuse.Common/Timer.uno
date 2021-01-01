@@ -52,7 +52,7 @@ namespace Fuse
 			Note that the UI thread performs rendering and is only executing callbacks once
 			per frame. Since the interval between frames is typically 16 milliseconds, this
 			method can not be relied upon for very short durations. For high-performance timing,
-			consider spawning a new thread. 
+			consider spawning a new thread.
 		*/
 		public static void Wait(double duration, Action callback)
 		{

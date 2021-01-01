@@ -47,7 +47,7 @@ function Model(initialState, stateInitializer)
 			promises: {},
 			isClass: false
 		}
-		
+
 		idToMeta.set(meta.id, meta);
 		stateToMeta.set(state, meta);
 		node.__fuse_id = meta.id;
@@ -149,7 +149,7 @@ function Model(initialState, stateInitializer)
 		function hasParent() {
 			return meta.parents.length > 0;
 		}
-		
+
 		meta.evaluateDerivedProps = function(visited)
 		{
 			if (!hasParent()) return;
@@ -178,7 +178,7 @@ function Model(initialState, stateInitializer)
 					evaluatingDerivedProps--;
 				}
 			}
-			
+
 			for (var parent of meta.parents) {
 				if (parent !== null) {
 					parent.meta.evaluateDerivedProps(visited);
@@ -232,14 +232,14 @@ function Model(initialState, stateInitializer)
 			if (!hasParent()) {
 				// This object is no longer attached to the model tree,
 				// we got this callback as an async remnant
-				return; 
+				return;
 			}
 
 			if (state instanceof Array) {
-				for (var i = 0; i < Math.min(state.length, node.length); i++) { 
+				for (var i = 0; i < Math.min(state.length, node.length); i++) {
 					if (isThenable(state[i])) { dealWithPromise(i, state[i]); }
 					if (oldValueEquals(i, state[i])) continue;
-					
+
 					if (state.length > node.length) {
 						insertAt(i, state[i]);
 						i++;
@@ -253,12 +253,12 @@ function Model(initialState, stateInitializer)
 						set(i, wrap(i, state[i]))
 					}
 				}
-				
-				if (state.length > node.length) { 
+
+				if (state.length > node.length) {
 					addRange(state.slice(node.length, state.length))
 				}
 				else if (state.length < node.length) {
-					removeRange(i, node.length-state.length) 
+					removeRange(i, node.length-state.length)
 				}
 			}
 			else {
@@ -425,8 +425,8 @@ function Model(initialState, stateInitializer)
 		function getPath(visited) {
 			if (cachedPath == null) { cachedPath = computePath(visited); }
 			return cachedPath;
-		} 
-		
+		}
+
 		meta.getPath = getPath;
 		meta.invalidatePath = function() { cachedPath = null; }
 
@@ -439,7 +439,7 @@ function Model(initialState, stateInitializer)
 				// We are the root node
 				return [];
 			}
-			
+
 			for (var i = 0; i < meta.parents.length; i++) {
 				var parent = meta.parents[i];
 
@@ -447,7 +447,7 @@ function Model(initialState, stateInitializer)
 					continue;
 
 				visited.add(parent.meta);
-				
+
 				var arr = parent.meta.getPath(visited);
 				if (arr instanceof Array) {
 					return arr.concat(parent.key);
@@ -518,7 +518,7 @@ function Model(initialState, stateInitializer)
 		function insertAt(index, item) {
 			node.splice(index, 0, null);
 			node[index] = item = wrap(index, item)
-			
+
 			updateArrayParentIndices(index+1, 1);
 
 			var path =  getPath();
@@ -537,10 +537,10 @@ function Model(initialState, stateInitializer)
 				node[index] = item = wrap(index, item);
 				TreeObservable.add.apply(store, getPath().concat([item]));
 			}
-			
+
 			changesDetected++;
 		}
-		
+
 		function pathString(key) {
 			var path = getPath();
 			if (path.length === 0) { return key }

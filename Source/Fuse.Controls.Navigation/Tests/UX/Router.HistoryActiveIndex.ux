@@ -3,12 +3,12 @@
 	<JavaScript>
 		var Observable = require("FuseJS/Observable");
 		exports.pageIndex = Observable(0)
-		
+
 		exports.goto0 = function() { exports.pageIndex.value = 0 }
 		exports.goto2 = function() { exports.pageIndex.value = 2 }
 		exports.goto4 = function() { exports.pageIndex.value = 4 }
 	</JavaScript>
-	
+
 	<PageControl ActiveIndex="{pageIndex}">
 		<Page ux:Name="A"/>
 		<Page ux:Name="B"/>

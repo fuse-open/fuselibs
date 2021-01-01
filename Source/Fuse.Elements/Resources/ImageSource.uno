@@ -32,14 +32,14 @@ namespace Fuse.Resources
 		{
 			s.AddString("reason", Reason);
 		}
-		
+
 		ImageSource _imageSource;
-		
+
 		internal ImageSourceErrorArgs(ImageSource imageSource)
 		{
 			_imageSource = imageSource;
 		}
-		
+
 		internal void Post()
 		{
 			_imageSource.FireError(this);
@@ -51,18 +51,18 @@ namespace Fuse.Resources
 	class ImageSourceChangedArgs : EventArgs
 	{
 		ImageSource _imageSource;
-		
+
 		internal ImageSourceChangedArgs(ImageSource imageSource)
 		{
 			_imageSource = imageSource;
 		}
-		
+
 		internal void Post()
 		{
 			_imageSource.FireChanged(this);
 		}
 	}
-	
+
 	/** Provides an image from a source such as a file, url, or other source.
 
 		## Example
@@ -76,9 +76,9 @@ namespace Fuse.Resources
 		A common pattern is to declare `ImageSource`s as global resources, as shown below.
 
 			<FileImageSource ux:Global="FuseLogo" File="fuse.png" />
-			
+
 			<Image Source="FuseLogo" />
-		
+
 		## Available image source types:
 
 		[subclass Fuse.Resources.ImageSource]
@@ -89,7 +89,7 @@ namespace Fuse.Resources
 		protected void OnChanged()
 		{
 			//the message is deferred since some sources are lazy-loading on request and would
-			//otherwise cause a layout invalidation during layout. 
+			//otherwise cause a layout invalidation during layout.
 			//mortoray: it feels wrong to have this here, that somehow this is layout's problem, not ImageSource's
 			if (Changed != null)
 				UpdateManager.AddDeferredAction( new ImageSourceChangedArgs(this).Post );
@@ -152,11 +152,12 @@ namespace Fuse.Resources
 		public abstract int2 PixelSize { get; }
 		public abstract ImageSourceState State { get; }
 		public abstract texture2D GetTexture();
+		public abstract byte[] GetBytes();
 		public virtual void Reload() {}
 
 		//We can't use just `Density` here: https://stackoverflow.com/questions/82437/why-is-it-impossible-to-override-a-getter-only-property-and-add-a-setter
 		public abstract float SizeDensity { get; }
-		
+
 		/** This is an internal interface, used to check memory leaks, thus it can't be part of the actual
 			interface definition */
 		internal static bool TestIsClean(ImageSource image)
@@ -164,7 +165,7 @@ namespace Fuse.Resources
 			var file = image as FileImageSource;
 			if (file != null)
 				return file.TestIsClean;
-			
+
 			throw new Exception( "Unrecognized ImageSource in Test:" + image );
 		}
 	}

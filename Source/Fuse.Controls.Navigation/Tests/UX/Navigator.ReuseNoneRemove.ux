@@ -1,6 +1,6 @@
 <Panel ux:Class="UX.Navigator.ReuseNoneRemove">
 	<Router ux:Name="router" IsMasterRouter="false"/>
-	
+
 	<Navigator ux:Name="nav">
 		<Panel ux:Template="One"/>
 		<Panel Reuse="None" ux:Template="Two"/>

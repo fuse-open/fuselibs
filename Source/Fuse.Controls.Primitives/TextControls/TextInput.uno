@@ -5,10 +5,10 @@ using Fuse.Elements;
 namespace Fuse.Controls
 {
 	/** Single-line text input control.
-	
+
 		`TextInput` is what you typically use or subclass when making input fields that only require a single line, like usernames, passwords, numbers, email, search fields, etc.
 		It has no appearance by default, which means it will be invisible until you give it a look or a text value.
-		
+
 		> If you want a text input control with a default appearance, see @TextBox.
 		> If you want to accept multiple lines of text, use @TextView.
 
@@ -28,9 +28,9 @@ namespace Fuse.Controls
 					</Rectangle>
 				</TextInput>
 			</Panel>
-			
+
 		The following example illustrates how you can subclass TextInput to achieve a consistent look throughout your app.
-		
+
 			<!-- Subclassing TextInput -->
 			<TextInput ux:Class="MyTextInput" FontSize="20" PlaceholderColor="#ccc" Padding="5">
 				<Rectangle Layer="Background" CornerRadius="3">
@@ -38,7 +38,7 @@ namespace Fuse.Controls
 					<SolidColor Color="White" />
 				</Rectangle>
 			</TextInput>
-			
+
 			<!-- Example usage -->
 			<StackPanel Margin="10" ItemSpacing="10">
 				<MyTextInput PlaceholderText="Username" />
@@ -46,10 +46,10 @@ namespace Fuse.Controls
 				<MyTextInput PlaceholderText="Repeat password" IsPassword="true" />
 				<MyTextInput />
 			</StackPanel>
-			
-			
+
+
 		This example shows how you can configure the layout and behavior of the on-screen keyboard when the TextInput is in focus using the @InputHint, @AutoCorrectHint, @AutoCapitalizationHint and @ActionStyle properties.
-		
+
 			<TextInput PlaceholderText="Search..." ActionStyle="Search" AutoCapitalizationHint="None" />
 			<TextInput PlaceholderText="Email" InputHint="Email" ActionStyle="Send" AutoCorrectHint="Disabled" AutoCapitalizationHint="None" />
 			<TextInput PlaceholderText="http://" InputHint="URL" ActionStyle="Go" AutoCorrectHint="Disabled" AutoCapitalizationHint="None" />
@@ -58,7 +58,7 @@ namespace Fuse.Controls
 			<TextInput PlaceholderText="1.234" InputHint="Decimal" />
 			<TextInput PlaceholderText="1" InputHint="Integer" />
 
-		A common use-case is to have the TextInput raise an event when the user presses the return/search key on their virtual/physical keyboard. 
+		A common use-case is to have the TextInput raise an event when the user presses the return/search key on their virtual/physical keyboard.
 		The following example demonstrates using `ActionTriggered` to get an event when this happens:
 
 			<StackPanel>
@@ -67,7 +67,7 @@ namespace Fuse.Controls
 
 					var searchStr = Observable("Please enter a query...");
 					var entryStr = Observable("");
-					
+
 					function onSearch(args) {
 						searchStr.value = "You entered: " + entryStr.value;
 					}
@@ -83,7 +83,7 @@ namespace Fuse.Controls
 				<Text FontSize="20" Value="{searchStr}" />
 			</StackPanel>
 
-		In some cases, it might be undesirable for the virtual keyboard to disappear when a certain other ux element is pressed. 
+		In some cases, it might be undesirable for the virtual keyboard to disappear when a certain other ux element is pressed.
 		This can be done by passing a parent container to the `Focus.Delegate` property, causing the focus state to be delegated to the delegate target:
 
 			<DockPanel ux:Name="dockpanel" IsFocusable="true" Color="#fff">
@@ -93,7 +93,7 @@ namespace Fuse.Controls
 					<Rectangle CornerRadius="4" Color="#000" />
 				</Panel>
 			</DockPanel>
-		
+
 	*/
 	public class TextInput: TextInputControl, ITextEditControl
 	{
@@ -114,7 +114,7 @@ namespace Fuse.Controls
 
 		/** Visual alignment of the underlying text editor. */
 		public Alignment EditorAlignment { get { return Editor.Alignment; } set { Editor.Alignment = value; } }
-		
+
 		/** Text to show when the `TextInputControl` does not have a value
 		*/
 		public string PlaceholderText { get { return Editor.PlaceholderText; } set { Editor.PlaceholderText = value; } }
@@ -123,7 +123,7 @@ namespace Fuse.Controls
 		*/
 		public float4 PlaceholderColor { get { return Editor.PlaceholderColor; } set { Editor.PlaceholderColor = value; } }
 
-		/** 
+		/**
 		 * Fires when the user presses the return/search key on their virtual/physical keyboard.
 		 */
 		public event TextInputActionHandler	ActionTriggered
@@ -131,14 +131,14 @@ namespace Fuse.Controls
 			add { Editor.ActionTriggered += value; }
 			remove { Editor.ActionTriggered -= value; }
 		}
-		
+
 		/** Specifies what the returnkey should mean. For exmaple:
 			`ActionStyle="Send"` will change the return key to a send icon if the platform supports it.
 			`ActionStyle="Next"` will make the return key focus the next `TextInputControl` if any. Typically
 			used in forms.
 		*/
 		public TextInputActionStyle ActionStyle { get { return Editor.ActionStyle; } set { Editor.ActionStyle = value; } }
-		
+
 	}
 
 	/**	Multi-line text editor.
@@ -153,7 +153,7 @@ namespace Fuse.Controls
 				<Rectangle Layer="Background" CornerRadius="4">
 					<Stroke Color="#000" />
 				</Rectangle>
-				
+
 			</TextView>
 
 	*/

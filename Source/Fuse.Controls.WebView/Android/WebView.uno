@@ -9,8 +9,8 @@ using Fuse.Android.Controls.WebViewUtils.WebViewForeign;
 using Fuse.Controls;
 
 namespace Fuse.Android.Controls
-{	
-	
+{
+
 	extern (Android) public class WebView :
 		Fuse.Controls.Native.Android.LeafView,
 		Fuse.Controls.IWebView
@@ -18,13 +18,13 @@ namespace Fuse.Android.Controls
 		Java.Object _webChromeClientHandle;
 		Java.Object _webViewClientHandle;
 		Java.Object _webViewHandle;
-		
+
 		public event ValueChangedHandler<double> ProgressChanged;
 		public event EventHandler BeginLoading;
 		public event EventHandler UrlChanged;
 		public event EventHandler PageLoaded;
 		public event EventHandler URISchemeHandler;
-		
+
 		Fuse.Controls.WebView _webViewHost;
 		JSEvalRequestManager _evalRequestMgr;
 		string[] _uriSchemes;
@@ -39,46 +39,46 @@ namespace Fuse.Android.Controls
 		{
 			_webViewHost = host;
 			_webViewHandle = handle;
-			
+
 			_evalRequestMgr = new JSEvalRequestManager(_webViewHandle);
-			
-			_webChromeClientHandle = _webViewHandle.CreateAndSetWebChromeClient(OnProgressChanged);				
+
+			_webChromeClientHandle = _webViewHandle.CreateAndSetWebChromeClient(OnProgressChanged);
 			_webViewClientHandle = _webViewHandle.CreateAndSetWebViewClient(
-				OnPageLoaded, 
-				OnBeginloading, 
-				OnUrlChanged, 
-				OnCustomURI, 
-				schemes, 
+				OnPageLoaded,
+				OnBeginloading,
+				OnUrlChanged,
+				OnCustomURI,
+				schemes,
 				HasURISchemeHandler
 			);
 			_uriSchemes = schemes;
 
 			_webViewHost.WebViewClient = this;
 		}
-		
+
 		public bool HasURISchemeHandler()
 		{
 			return URISchemeHandler!=null;
 		}
-		
+
 		void OnCustomURI(string url)
 		{
 			if(URISchemeHandler!=null)
 				URISchemeHandler(this, new URISchemeEventArgs(url));
 		}
-		
+
 		void OnPageLoaded()
 		{
 			if(PageLoaded!=null)
 				PageLoaded(this, EventArgs.Empty);
 		}
-		
+
 		void OnBeginloading()
 		{
 			if(BeginLoading!=null)
 				BeginLoading(this, EventArgs.Empty);
 		}
-		
+
 		void OnUrlChanged()
 		{
 			if(UrlChanged!=null)
@@ -154,12 +154,12 @@ namespace Fuse.Android.Controls
 				HistoryChanged(_webViewHost);
 			}
 		}
-		
+
 		public void LoadHtml(string html)
 		{
 			LoadHtml(html, null);
 		}
-		
+
 		public void LoadHtml(string html, string baseUrl)
 		{
 			if(html == null || html == "") return;
@@ -187,13 +187,13 @@ namespace Fuse.Android.Controls
 			_webViewHandle.LoadUrl(url);
 			OnHistoryChanged();
 		}
-		
+
 		void OnProgressChanged(int newProgress)
 		{
 			if (ProgressChanged != null)
 				ProgressChanged(this, new ValueChangedArgs<double>(newProgress/100.0));
 		}
-		
+
 		public double Progress
 		{
 			get { return _webViewHandle.GetProgress() / 100.0; }
@@ -222,7 +222,7 @@ namespace Fuse.Android.Controls
 				LoadHtml(data);
 			}
 		}
-		
+
 		public bool ZoomEnabled { get; set; }
 		public bool ScrollEnabled { get; set; }
 	}

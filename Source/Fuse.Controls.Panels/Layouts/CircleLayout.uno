@@ -62,7 +62,7 @@ namespace Fuse.Layouts
 
 		float _startAngle = 0;
 		/**	The angle where the circle segment starts.
-		
+
 			This is the point on the circle where the first element will be centered.
 
 			@default 0

@@ -19,6 +19,6 @@
 		YAxisSteps="7" YRange="10,20"
 		>
 		<c:DataSeries Data="{values}"/>
-		
+
 	</c:Plot>
 </Panel>

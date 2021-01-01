@@ -10,11 +10,11 @@ namespace Fuse
 	{
 		Template FindTemplate(string key);
 	}
-	
+
 	struct TemplateSourceImpl
 	{
 		List<Template> _templates;
-		
+
 		public int Count { get { return _templates == null ? 0 : _templates.Count; } }
 		public Template this[int index] { get { return _templates[index]; } }
 		public List<Template> Templates
@@ -38,17 +38,17 @@ namespace Fuse
 			return null;
 		}
 	}
-	
+
 	public partial class Visual
 	{
 		TemplateSourceImpl _templates;
 
 		/** List of templates that will be used to populate this Visual.
 
-			This list allows you to place nodes with a `ux:Template="key"` attribute inside a @Visual in UX Markup, 
+			This list allows you to place nodes with a `ux:Template="key"` attribute inside a @Visual in UX Markup,
 			where `key` is the match key to be used when selecting a template.
 
-			This list has many use cases. For example, when populating a view with data, the correct template can be 
+			This list has many use cases. For example, when populating a view with data, the correct template can be
 			picked based on a field	in the data source:
 
 				<StackPanel Items="{items}" MatchKey="type">

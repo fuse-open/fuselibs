@@ -8,11 +8,11 @@
 		exports.items.add( { id: 3, v: 30 })
 		exports.items.add( { id: 4, v: 40 })
 		exports.items.add( { id: 5, v: 50 })
-		
+
 		exports.replaceAt = function() {
 			exports.items.replaceAt( 1, { id: 2, v: "21" })
 		}
-		
+
 		exports.replaceAll1 = function() {
 			exports.items.replaceAll([
 				{ id: 1, v: "11" },
@@ -39,7 +39,7 @@
 			</FuseTest.DudElement>
 		</Each>
 	</StackPanel>
-	
+
 	<FuseTest.Invoke Handler="{replaceAll1}" ux:Name="CallReplaceAll1"/>
 	<FuseTest.Invoke Handler="{replaceAll2}" ux:Name="CallReplaceAll2"/>
 </Panel>

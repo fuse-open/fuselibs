@@ -3,7 +3,7 @@ using Uno.UX;
 namespace Fuse
 {
 	/**
-		Allows placing a node in a different place in the UX tree than the location of this 
+		Allows placing a node in a different place in the UX tree than the location of this
 		behavior, while keeping the data context from this behavior.
 
 		## Example
@@ -38,21 +38,21 @@ namespace Fuse
 			{
 				if (value == _parentNode)
 					return;
-					
+
 				if (!IsRootingCompleted)
 				{
 					_parentNode = value;
 					return;
 				}
-				
+
 				Remove();
 				_parentNode = value;
 				Add();
 			}
 		}
-		
+
 		Node _node;
-		
+
 		[UXContent]
 		/** The node that will be inserted into the @ParentNode */
 		public Node Node
@@ -62,13 +62,13 @@ namespace Fuse
 			{
 				if (value == _node)
 					return;
-					
+
 				if (!IsRootingCompleted)
-				{	
+				{
 					_node = value;
 					return;
 				}
-				
+
 				Remove();
 				_node = value;
 				Add();
@@ -92,18 +92,18 @@ namespace Fuse
 			{
 				if (_isEnabled == value)
 					return;
-					
+
 				_isEnabled = value;
 				if (!IsRootingCompleted)
 					return;
-					
+
 				if (_isEnabled)
 					Add();
 				else
 					Remove();
 			}
 		}
-		
+
 		bool _preserveContext = true;
 		/** Whether to preserve the data context from the @AlternateRoot.
 			@default true. */
@@ -112,27 +112,27 @@ namespace Fuse
 			get { return _preserveContext; }
 			set { _preserveContext = value; }
 		}
-		
+
 		protected override void OnRooted()
 		{
 			base.OnRooted();
 			if (IsEnabled)
 				Add();
 		}
-		
+
 		protected override void OnUnrooted()
 		{
 			Remove();
 			base.OnUnrooted();
 		}
-		
+
 		void Remove()
 		{
 			if (ParentNode == null || Node == null)
 				return;
 			ParentNode.BeginRemoveChild(Node);
 		}
-		
+
 		void Add()
 		{
 			if (ParentNode == null || Node == null)

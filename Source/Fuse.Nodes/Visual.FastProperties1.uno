@@ -67,7 +67,7 @@ namespace Fuse
 	public partial class Visual
 	{
 		FastProperty1Link _fastProperties1;
-		int _fastPropertyBits1 = FastProperty1.IsEnabled | FastProperty1.IsContextEnabledCache | 
+		int _fastPropertyBits1 = FastProperty1.IsEnabled | FastProperty1.IsContextEnabledCache |
 			FastProperty1.SnapToPixels | FastProperty1.ContextSnapToPixelsCache;
 
 		internal T Get<T>(FastProperty1 p, T defaultValue)

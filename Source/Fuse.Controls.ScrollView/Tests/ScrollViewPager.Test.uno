@@ -11,22 +11,22 @@ namespace Fuse.Controls.ScrollViewTest
 		void WaitIdle( TestRootPanel root, ScrollViewPager svp, string where )
 		{
 			var start = Uno.Diagnostics.Clock.GetSeconds();
-			while (true) 
+			while (true)
 			{
 				root.StepFrameJS();
 				//-1 since frame index increment happens after all activity
 				if (svp.LastActivityFrame < UpdateManager.FrameIndex-1)
 					return;
-					
+
 				var elapsed = Uno.Diagnostics.Clock.GetSeconds() - start;
 				if (elapsed > 1.0) {
 					throw new Exception( "Waiting too long for idle: " + where );
 				}
 			}
 		}
-		
+
 		[Test]
-		//This is only a sanity test. If changes are made to ScrollViewPager/ScrollView manual testing is 
+		//This is only a sanity test. If changes are made to ScrollViewPager/ScrollView manual testing is
 		//required. This will catch things that completely break the functionality
 		public void Basic()
 		{
@@ -35,25 +35,25 @@ namespace Fuse.Controls.ScrollViewTest
 			{
 				p.svp.ReachedEnd += OnReachedEnd;
 				p.svp.ReachedStart += OnReachedStart;
-				
+
 				WaitIdle(root, p.svp, "init");
 				Assert.AreEqual(9, p.theEach.Limit);
 				Assert.AreEqual("8,7,6,5,4,3,2,1,0", GetDudZ(p.s));
-				
-				//first init will have us trigger both of these. Due to all the deferred stuff with bindings 
+
+				//first init will have us trigger both of these. Due to all the deferred stuff with bindings
 				//I couldn't see any way to prevent this
 				_countReachedEnd = 0;
 				_countReachedStart = 0;
-				
+
 				p.scroll.Goto(float2(0,300));
 				WaitIdle(root, p.svp, "goto 300");
 				Assert.AreEqual(9, p.theEach.Limit);
 				Assert.AreEqual("8,7,6,5,4,3,2,1,0", GetDudZ(p.s));
 				Assert.AreEqual(0, p.theEach.Offset);
-				
+
 				Assert.AreEqual(0, _countReachedEnd);
 				Assert.AreEqual(0, _countReachedStart);
-				
+
 				float jiggleTolerance = 1e-2f;
 				int offset = 3;
 				for (int i=0; i < 4; ++i, offset +=3 )
@@ -62,25 +62,25 @@ namespace Fuse.Controls.ScrollViewTest
 					WaitIdle(root, p.svp, "goto 600 #" + i);
 					Assert.AreEqual(9, p.theEach.Limit);
 					Assert.AreEqual(offset, p.theEach.Offset);
-					if (i ==0) 
+					if (i ==0)
 						Assert.AreEqual("11,10,9,8,7,6,5,4,3", GetDudZ(p.s));
-						
+
 					root.StepFrame(5); //let the ScrollView finish jiggling
 					Assert.AreEqual(300, p.scroll.ScrollPosition.Y, jiggleTolerance);
 				}
 				Assert.AreEqual("20,19,18,17,16,15,14,13,12", GetDudZ(p.s));
 				Assert.AreEqual(0, _countReachedEnd);
 				Assert.AreEqual(0, _countReachedStart);
-				
+
 				//reach the end
 				p.scroll.Goto(float2(0,600));
 				WaitIdle(root,p.svp, "goto 600-end");
 				Assert.AreEqual(9, p.theEach.Limit);
 				Assert.AreEqual(12, p.theEach.Offset); //max offset
-				
+
 				Assert.AreEqual(1, _countReachedEnd);
 				Assert.AreEqual(0, _countReachedStart);
-				
+
 				//reach the start
 				while( p.scroll.ScrollPosition.Y > 0 )
 				{
@@ -99,12 +99,12 @@ namespace Fuse.Controls.ScrollViewTest
 		{
 			_countReachedEnd++;
 		}
-		
+
 		void OnReachedStart(object s, ScrollViewPagerArgs args)
 		{
 			_countReachedStart++;
 		}
-		
+
 		[Test]
 		// Accesses _scrollable while unrooting
 		//https://github.com/fuse-open/fuselibs/issues/560

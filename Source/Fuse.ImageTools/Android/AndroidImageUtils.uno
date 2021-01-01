@@ -4,7 +4,7 @@ using Uno.Compiler.ExportTargetInterop;
 using Android;
 namespace Fuse.ImageTools
 {
-	[ForeignInclude(Language.Java, "java.lang.Thread", "java.lang.Runnable", "android.util.Log", "android.provider.MediaStore", "com.fuse.Activity", "com.fusetools.camera.Image", "com.fusetools.camera.ImageUtils", "android.content.Intent")]
+	[ForeignInclude(Language.Java, "java.lang.Thread", "java.lang.Runnable", "android.util.Log", "android.provider.MediaStore", "com.fuse.Activity", "com.fuse.camera.Image", "com.fuse.camera.ImageUtils", "android.content.Intent")]
 	extern (Android) static internal class AndroidImageUtils
 	{
 

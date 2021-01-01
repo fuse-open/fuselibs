@@ -4,19 +4,24 @@
   "Publisher": "Fuse Open",
   "Title": "Fuse.Auth",
   "Packages": [
-    "Uno.Threading",
-    "Uno.Permissions"
+    "Uno.Threading"
   ],
   "Projects": [
+    "../Fuse.Android.Permissions/Fuse.Android.Permissions.unoproj",
     "../Fuse/Fuse.unoproj"
   ],
   "Includes": [
-    "*"
+    "*",
+    "iOS/SignInHelper.h:ObjCHeader:iOS",
+    "iOS/SignInHelper.mm:ObjCSource:iOS"
   ],
   "iOS": {
     "PList": {
       "NSFaceIDUsageDescription": "Require access to FaceID for authenticating"
     },
+    "SystemCapabilities": {
+      "SignInWithApple": true
+    }
   }
 }
 

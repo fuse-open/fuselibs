@@ -11,7 +11,7 @@ namespace Fuse.Scripting.JavaScript
 		public override object this[int index]
 		{
 			get { return _values[index]; }
-			
+
 		}
 
 		public void SetValue(int index, object value)
@@ -21,19 +21,19 @@ namespace Fuse.Scripting.JavaScript
 
 		readonly List<Subscription> _observers = new List<Subscription>();
 		bool _usingObservers;
-		
+
 		void ObserversCleanup()
 		{
 			if (_usingObservers)
 				return;
-		
+
 			for (int i=_observers.Count-1; i>=0; --i)
 			{
 				if (_observers[i].Removed)
 					_observers.RemoveAt(i);
 			}
 		}
-		
+
 		internal int TestObserverCount
 		{
 			get
@@ -55,7 +55,7 @@ namespace Fuse.Scripting.JavaScript
 			public int Origin { get { return _origin; } }
 			//actual remove is deferred until safe (`Perform` locks the removals)
 			public bool Removed { get; private set; }
-			
+
 			public bool ShouldSend(int origin = -1)
 			{
 				return !Removed && origin != _origin;
@@ -224,7 +224,7 @@ namespace Fuse.Scripting.JavaScript
 
 		/**
 			Subscribes to updates on the `Observable`.
-			
+
 			The `Observer` state will be updated just prior to the callback on the `IObserver`.
 			The internal state will be consistent with the state expected as a result of that operation (it
 			won't lag behind or go ahead with compount operations, such as InsertAll using individual
@@ -286,7 +286,7 @@ namespace Fuse.Scripting.JavaScript
 			{
 				UpdateManager.PostAction(new Set(this, ctx.Reflect(args[3]), origin).Perform);
 			}
-			else if (op == "clear") 
+			else if (op == "clear")
 			{
 				UpdateManager.PostAction(new Clear(this, origin).Perform);
 			}
@@ -294,11 +294,11 @@ namespace Fuse.Scripting.JavaScript
 			{
 				UpdateManager.PostAction(new NewAt(this, ToInt(args[3]), ctx.Reflect(args[4])).Perform);
 			}
-			else if (op == "newAll") 
+			else if (op == "newAll")
 			{
 				UpdateManager.PostAction(new NewAll(this, (ArrayMirror)ctx.Reflect(args[3]), origin).Perform);
 			}
-			else if (op == "add") 
+			else if (op == "add")
 			{
 				UpdateManager.PostAction(new Add(this, ctx.Reflect(args[3])).Perform);
 			}
@@ -314,7 +314,7 @@ namespace Fuse.Scripting.JavaScript
 			{
 				UpdateManager.PostAction(new RemoveRange(this, ToInt(args[3]), ToInt(args[4])).Perform);
 			}
-			else if (op == "insertAll") 
+			else if (op == "insertAll")
 			{
 				UpdateManager.PostAction(new InsertAll(this, ToInt(args[3]), (ArrayMirror)ctx.Reflect(args[4])).Perform);
 			}
@@ -322,8 +322,8 @@ namespace Fuse.Scripting.JavaScript
 			{
 				UpdateManager.PostAction(new Failed(this, args[3] as string).Perform);
 			}
-			else 
-			{	
+			else
+			{
 				throw new Uno.Exception("Unhandled observable operation: " + op);
 			}
 
@@ -376,7 +376,7 @@ namespace Fuse.Scripting.JavaScript
 
 			public void Perform()
 			{
-				if (_observable.IsUnsubscribed) 
+				if (_observable.IsUnsubscribed)
 				{
 					Unsubscribe();
 					return;
@@ -392,7 +392,7 @@ namespace Fuse.Scripting.JavaScript
 				{
 					_observable._usingObservers = false;
 				}
-				
+
 				_isPerformed = true;
 			}
 
@@ -430,7 +430,7 @@ namespace Fuse.Scripting.JavaScript
 
 				Observable._values.Clear();
 				Observable._values.Add(_value);
-				
+
 				for (int i=0; i < sub.Count; ++i)
 				{
 					if (sub[i].ShouldSend(_origin))
@@ -452,7 +452,7 @@ namespace Fuse.Scripting.JavaScript
 			{
 				Observable.UnsubscribeValues();
 				Observable._values.Clear();
-				
+
 				for (int i=0; i < sub.Count; ++i)
 				{
 					if (sub[i].ShouldSend(_origin))
@@ -460,21 +460,21 @@ namespace Fuse.Scripting.JavaScript
 				}
 			}
 		}
-		
+
 		class Failed : Operation
 		{
 			readonly string _message;
-			
+
 			public Failed(Observable obs, string message) : base(obs)
 			{
 				_message = message;
 			}
-			
+
 			protected override void OnPerform(IList<Subscription> sub)
 			{
 				Observable.UnsubscribeValues();
 				Observable._values.Clear();
-				
+
 				for (int i=0; i < sub.Count; ++i)
 				{
 					if (sub[i].ShouldSend())
@@ -504,7 +504,7 @@ namespace Fuse.Scripting.JavaScript
 			{
 				ValueMirror.Unsubscribe(Observable[_index]);
 				Observable.SetValue(_index, _value);
-				
+
 				for (int i=0; i < sub.Count; ++i)
 				{
 					if (sub[i].ShouldSend())
@@ -535,7 +535,7 @@ namespace Fuse.Scripting.JavaScript
 
 				Observable._values.Clear();
 				Observable._values.AddRange(_newValues.ItemsReadonly);
-				
+
 				for (int i=0; i < sub.Count; ++i)
 				{
 					if (sub[i].ShouldSend(_origin))
@@ -556,7 +556,7 @@ namespace Fuse.Scripting.JavaScript
 			protected override void OnPerform(IList<Subscription> sub)
 			{
 				Observable._values.Add(_value);
-				
+
 				for (int i=0; i < sub.Count; ++i)
 				{
 					if (sub[i].ShouldSend())
@@ -578,7 +578,7 @@ namespace Fuse.Scripting.JavaScript
 			{
 				ValueMirror.Unsubscribe(Observable[_index]);
 				Observable._values.RemoveAt(_index);
-				
+
 				for (int i=0; i < sub.Count; ++i)
 				{
 					if (sub[i].ShouldSend())
@@ -605,7 +605,7 @@ namespace Fuse.Scripting.JavaScript
 				{
 					ValueMirror.Unsubscribe(Observable[_index]);
 					Observable._values.RemoveAt(_index);
-					
+
 					for (int j=0; j < sub.Count; ++j)
 					{
 						if (sub[j].ShouldSend())
@@ -634,7 +634,7 @@ namespace Fuse.Scripting.JavaScript
 			protected override void OnPerform(IList<Subscription> sub)
 			{
 				Observable._values.Insert(_index, _value);
-				
+
 				for (int i=0; i < sub.Count; ++i)
 				{
 					if (sub[i].ShouldSend())
@@ -665,7 +665,7 @@ namespace Fuse.Scripting.JavaScript
 				for (int i = 0; i < _items.Length; i++)
 				{
 					Observable._values.Insert(_index+i, _items[i]);
-					
+
 					for (int j = 0; j < sub.Count; ++j)
 					{
 						if (sub[j].ShouldSend())

@@ -16,18 +16,18 @@ namespace Fuse.Triggers
 		Processing = 1<<2,
 		/** Setup of the node and its children that should resolve in a couple of frames. */
 		Preparing = 1<<3,
-		
+
 		/** There is a failure condition. Resolution may or may not be automatic */
 		Failed = 1<<4,
-		
+
 		/** Busy activities that should resolve within a few frames */
 		Short = Deferring | Preparing,
 		/** Busy activities tat may take several seconds, or longer,  to resolve */
 		Long = Loading | Processing,
-		
+
 		/** Typical busy activities, excluding `Failed` */
 		Common = Loading | Deferring | Processing | Preparing,
-		
+
 		/** A complete list of all possible BusyTaskActivity's */
 		Any = Common | Failed,
 	}
@@ -41,7 +41,7 @@ namespace Fuse.Triggers
 		/** Matches just the one parent node */
 		Parent,
 	}
-	
+
 	public interface IBusyHandler
 	{
 		BusyTaskActivity BusyActivityHandled { get; }
@@ -58,12 +58,12 @@ namespace Fuse.Triggers
 			RootingPersistent,
 			UnrootingDone,
 		}
-		
+
 		Type _type;
 		BusyTaskActivity _activity = BusyTaskActivity.None;
 		string _message;
-		
-		internal BusyTask(Node n, Type type = Type.RootingPersistent, 
+
+		internal BusyTask(Node n, Type type = Type.RootingPersistent,
 			BusyTaskActivity act = BusyTaskActivity.Processing,
 			string message = "")
 		{
@@ -72,14 +72,14 @@ namespace Fuse.Triggers
 			_activity = act;
 			_message = message;
 			_tasks.Add(this);
-			
+
 			_node.Unrooted += OnUnrooted;
 			_node.RootingCompleted += OnRooted;
-			
+
 			if (_node.IsRootingStarted)
 				OnBusyChanged(n);
 		}
-		
+
 		internal void SetNodeActivity(Node n, BusyTaskActivity act, string message)
 		{
 			_node = n;
@@ -95,7 +95,7 @@ namespace Fuse.Triggers
 			{
 				_node.Unrooted -= OnUnrooted;
 				_node.RootingCompleted -= OnRooted;
-				
+
 				_tasks.Remove(this);
 				OnBusyChanged(_node);
 			}
@@ -105,18 +105,18 @@ namespace Fuse.Triggers
 		{
 			return GetBusyActivity(n) != BusyTaskActivity.None;
 		}
-		
+
 		public static BusyTaskActivity GetBusyActivity(Node n, BusyTaskMatch match = BusyTaskMatch.Descendents)
 		{
 			var act = BusyTaskActivity.None;
-			
+
 			for (int i = 0; i < _tasks.Count; i++)
 			{
 				var task = _tasks[i];
 				var tnode = task._node;
 				if (!tnode.IsRootingStarted)
 					continue;
-					
+
 				while (tnode != null)
 				{
 					if (match == BusyTaskMatch.OnlyDescendents)
@@ -132,10 +132,10 @@ namespace Fuse.Triggers
 						act |= task._activity;
 						break;
 					}
-		
+
 					if (match == BusyTaskMatch.Parent)
 						break;
-						
+
 					if (IsBusyHandled(tnode, task._activity)) break;
 					tnode = tnode.ContextParent;
 				}
@@ -158,14 +158,14 @@ namespace Fuse.Triggers
 			return activity == BusyTaskActivity.None;
 		}
 
-		static Dictionary<Node, List<Action>> _listeners 
+		static Dictionary<Node, List<Action>> _listeners
 			= new Dictionary<Node, List<Action>>();
 
 		internal static void AddListener(Node n, Action handler)
 		{
 			if (!_listeners.ContainsKey(n))
 				_listeners.Add(n, new List<Action>());
-			
+
 			_listeners[n].Add(handler);
 		}
 
@@ -181,7 +181,7 @@ namespace Fuse.Triggers
 		{
 			if (n.IsUnrooted)
 				return;
-				
+
 			while (n != null)
 			{
 				if (_listeners.ContainsKey(n))
@@ -200,7 +200,7 @@ namespace Fuse.Triggers
 				Done();
 			OnBusyChanged(_node);
 		}
-		
+
 		void OnRooted()
 		{
 			OnBusyChanged(_node);
@@ -210,7 +210,7 @@ namespace Fuse.Triggers
 		{
 			if (act != BusyTaskActivity.None)
 			{
-				if (bt == null) 
+				if (bt == null)
 					bt = new BusyTask(n, Type.RootingPersistent, act, message);
 				else
 					bt.SetNodeActivity(n, act, message);
@@ -227,13 +227,13 @@ namespace Fuse.Triggers
 
 		static BusyTask()
 		{
-			ScriptClass.Register(typeof(BusyTask), 
+			ScriptClass.Register(typeof(BusyTask),
 				new ScriptMethod<BusyTask>("done", done));
 		}
 
 		/**
 			@scriptmethod done
-			
+
 			Completes a [BusyTask](/docs/fuse/triggers/busytaskmodule).
 		*/
 		static void done(BusyTask bt)

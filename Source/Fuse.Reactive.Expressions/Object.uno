@@ -5,8 +5,8 @@ using Uno.Text;
 
 namespace Fuse.Reactive
 {
-	/** Creates an `IObject` from an arbitrary number of NameValuePairs. 
-	
+	/** Creates an `IObject` from an arbitrary number of NameValuePairs.
+
 		The returned object also implements `IArray` with the original ordering of the NameValuePairs.
 
 		In UX expressions, objects are denoted as lists of NameValuePair: `{name1: value1, name2: value2}`.
@@ -47,7 +47,7 @@ namespace Fuse.Reactive
 
 		string[] IObject.Keys
 		{
-			get 
+			get
 			{
 				return _dict.Keys.ToArray();
 			}

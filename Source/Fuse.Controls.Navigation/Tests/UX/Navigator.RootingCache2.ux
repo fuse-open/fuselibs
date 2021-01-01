@@ -4,7 +4,7 @@
 		<Page ux:Class="RCPage2">
 			<WhileActive ux:Name="A"><Nothing/></WhileActive>
 		</Page>
-		
+
 		<RCPage2 ux:Name="one" Title="one"/>
 		<RCPage2 ux:Name="two" Title="two"/>
 	</Navigator>

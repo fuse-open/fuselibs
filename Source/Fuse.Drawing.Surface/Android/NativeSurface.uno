@@ -28,8 +28,8 @@ namespace Fuse.Drawing
 		"android.graphics.PorterDuffXfermode",
 		"android.graphics.Matrix",
 		"android.graphics.PorterDuff.Mode",
-		"com.fusetools.drawing.surface.LinearGradientStore",
-		"com.fusetools.drawing.surface.GraphicsSurfaceContext",
+		"com.fuse.drawing.surface.LinearGradientStore",
+		"com.fuse.drawing.surface.GraphicsSurfaceContext",
 	)]
 	[ForeignInclude(Language.Java,
 		"java.nio.ByteBuffer",
@@ -48,14 +48,14 @@ namespace Fuse.Drawing
 		}
 
 		Java.Object _canvas;
-		
+
 		[Foreign(Language.Java)]
 		static void SetCanvas(Java.Object context, Java.Object canvas)
 		@{
 			GraphicsSurfaceContext impl = (GraphicsSurfaceContext) context;
 			impl.canvas = (Canvas)canvas;
 		@}
-		
+
 		public override void Begin(DrawContext dc, framebuffer fb, float pixelsPerPoint)
 		{
 			throw new NotSupportedException();
@@ -66,18 +66,6 @@ namespace Fuse.Drawing
 			SetCanvas(SurfaceContext, null);
 			_canvas = null;
 		}
-
-		protected sealed override Java.Object PrepareImageFillImpl( ImageFill img )
-		{
-			//TODO: must be completed, or least a warning and the empty item cached.
-			return DummyBitmap();
-		}
-
-		[Foreign(Language.Java)]
-		static Java.Object DummyBitmap()
-		@{
-			return Bitmap.createBitmap(10,10,Bitmap.Config.ARGB_8888);
-		@}
 
 		protected sealed override void VerifyBegun()
 		{

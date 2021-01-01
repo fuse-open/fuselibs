@@ -10,6 +10,7 @@ namespace Fuse.Controls
 		public static readonly Selector MaxLengthPropertyName = "MaxLength";
 		public static readonly Selector TextWrappingPropertyName = "TextWrapping";
 		public static readonly Selector LineSpacingPropertyName = "LineSpacing";
+		public static readonly Selector MaxLinesPropertyName = "MaxLines";
 		public static readonly Selector FontSizePropertyName = "FontSize";
 		public static readonly Selector FontPropertyName = "Font";
 		public static readonly Selector TextAlignmentPropertyName = "TextAlignment";
@@ -29,13 +30,14 @@ namespace Fuse.Controls
 			var tv = NativeView as ITextView;
 			tv.Value = Value;
 			tv.MaxLength = MaxLength;
+			tv.TextTruncation = TextTruncation;
 			tv.TextWrapping = TextWrapping;
 			tv.LineSpacing = LineSpacing;
 			tv.FontSize = FontSize;
 			tv.Font = Font;
 			tv.TextAlignment = TextAlignment;
 			tv.TextColor = Color;
-			tv.TextTruncation = TextTruncation;
+			tv.MaxLines = MaxLines;
 		}
 
 		protected virtual void OnValueChanged(IPropertyListener origin)
@@ -82,11 +84,22 @@ namespace Fuse.Controls
 			InvalidateRenderer();
 		}
 
+		protected virtual void OnMaxLinesChanged()
+		{
+			OnPropertyChanged(MaxLinesPropertyName);
+			var edit = GetITextView();
+			if (edit != null) edit.MaxLines = MaxLines;
+			InvalidateLayout();
+			InvalidateVisual();
+			InvalidateRenderer();
+		}
+
 		protected virtual void OnFontSizeChanged()
 		{
 			OnPropertyChanged(FontSizePropertyName);
 			var edit = GetITextView();
-			if (edit != null) edit.FontSize = FontSize;
+			if (edit != null)
+				edit.FontSize = FontSizeScaled;
 			InvalidateLayout();
 			InvalidateVisual();
 			InvalidateRenderer();

@@ -401,8 +401,8 @@ namespace fcv {
 	}
 
 
-	void setCameraFocusPoint(CameraView* cameraView, 
-		double x, double y, int cameraWidth, int cameraHeight, 
+	void setCameraFocusPoint(CameraView* cameraView,
+		double x, double y, int cameraWidth, int cameraHeight,
 		int isFocusLocked,
 		void(^onResolve)(id), void(^onReject)(NSString*)) {
 
@@ -410,11 +410,11 @@ namespace fcv {
 		dispatch_async(avState->queue, ^{
 
 			AVCaptureDevice* currentDevice = avState->deviceInput.device;
-			
+
 			if(!currentDevice)
 				return;
 
-			if([currentDevice isFocusPointOfInterestSupported] 
+			if([currentDevice isFocusPointOfInterestSupported]
 				&& [currentDevice isFocusModeSupported:AVCaptureFocusModeContinuousAutoFocus]
 				&& [currentDevice isExposureModeSupported:AVCaptureExposureModeContinuousAutoExposure]
 				) {
@@ -457,9 +457,9 @@ namespace fcv {
 					}
 
 					if ([currentDevice isFocusPointOfInterestSupported]) {
-						[currentDevice setFocusPointOfInterest:focusPoint];	
+						[currentDevice setFocusPointOfInterest:focusPoint];
 					}
-					
+
 					if ([currentDevice isExposurePointOfInterestSupported]) {
 						[currentDevice setExposurePointOfInterest:focusPoint];
 					}

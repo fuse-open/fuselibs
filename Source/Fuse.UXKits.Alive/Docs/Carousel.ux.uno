@@ -2,7 +2,7 @@ namespace Alive
 {
 	/**
 		A Carousel component with a depth-like effect.
-		
+
 			<Alive.Carousel>
 				<Alive.CarouselPage>
 					<Alive.Card>
@@ -20,16 +20,16 @@ namespace Alive
 					</Alive.Card>
 				</Alive.CarouselPage>
 			</Alive.Carousel>
-			
-			
+
+
 		See also [FlatCarousel](api:alive/flatcarousel).
 	*/
 	public partial class Carousel {}
-	
+
 	/**
 		A page in a [Carousel](api:alive/carousel).
 		Provides no visuals, only animation.
-		
+
 			<Alive.Carousel>
 				<Alive.CarouselPage>
 					<Alive.Card>

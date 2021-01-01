@@ -12,17 +12,17 @@ namespace Fuse.Triggers
 			get { return base.Value; }
 			set { base.Value = value; }
 		}
-		
+
 		enum Range
 		{
 			Open,
 			Exclusive,
 			Inclusive,
 		}
-		
+
 		float2 _compare;
 		Range _low = Range.Open, _high = Range.Open;
-		
+
 		/** Active when the float `Value` is less than the provided value. */
 		public float LessThan
 		{
@@ -34,7 +34,7 @@ namespace Fuse.Triggers
 				UpdateState();
 			}
 		}
-		
+
 		/** Active when the float `Value` is less than or equal to the provided value. */
 		public float LessThanEqual
 		{
@@ -46,7 +46,7 @@ namespace Fuse.Triggers
 				UpdateState();
 			}
 		}
-		
+
 		/** Active when the float `Value` is greater than the provided value. */
 		public float GreaterThan
 		{
@@ -58,7 +58,7 @@ namespace Fuse.Triggers
 				UpdateState();
 			}
 		}
-		
+
 		/** Active when the float `Value` is greater than or equal to the provided value. */
 		public float GreaterThanEqual
 		{
@@ -70,7 +70,7 @@ namespace Fuse.Triggers
 				UpdateState();
 			}
 		}
-		
+
 		protected override bool IsOn
 		{
 			get
@@ -83,7 +83,7 @@ namespace Fuse.Triggers
 					return false;
 				if (_high == Range.Inclusive && (Value > _compare.Y))
 					return false;
-				
+
 				return true;
 			}
 		}

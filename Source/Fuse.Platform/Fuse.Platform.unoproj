@@ -6,6 +6,7 @@
     "Fuse.Views",
     "Fuse.Android",
     "Fuse.Common",
+    "Fuse.Controls.Primitives",
     "Fuse.Controls.Panels",
     "Fuse.Controls.WebView",
     "Fuse.Elements",
@@ -24,8 +25,8 @@
     "Android/SystemUI.uno:Source",
     "iOS/SystemUI.uno:Source",
     "iOS/SystemUI.ios.uxl:Extensions",
-    "iOS/KeyboardContext.h:File",
-    "iOS/KeyboardContext.mm:File",
+    "iOS/NotificationCenterContext.h:File",
+    "iOS/NotificationCenterContext.mm:File",
     "iOS/AppDelegateStatusBar.h:File",
     "iOS/AppDelegateStatusBar.mm:File"
   ]

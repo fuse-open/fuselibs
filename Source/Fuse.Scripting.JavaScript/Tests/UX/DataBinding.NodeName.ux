@@ -1,21 +1,21 @@
 <Panel ux:Class="UX.DataBinding.NodeName">
 	<JavaScript>
 		var Observable = require("FuseJS/Observable")
-		
+
 		exports.node = Observable("A")
 		exports.trigger = "B"
 	</JavaScript>
-	
+
 	<FuseTest.BindingNode Node="{node}" Trigger="{trigger}" Visual="{node}" ux:Name="Bind"/>
 	<Panel>
 		<JavaScript>
 			exports.sNode = this.C;
 		</JavaScript>
 		<Panel ux:Name="C"/>
-		
+
 		<FuseTest.BindingNode Node="{sNode}" Trigger="{trigger}" ux:Name="SBind"/>
 	</Panel>
-	
+
 	<Panel ux:Name="A"/>
 	<WhileTrue ux:Name="B"/>
 </Panel>

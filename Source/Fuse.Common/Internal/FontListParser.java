@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package fuse.android.graphics;
+package com.fuse.android.graphics;
 
 import android.util.Xml;
 

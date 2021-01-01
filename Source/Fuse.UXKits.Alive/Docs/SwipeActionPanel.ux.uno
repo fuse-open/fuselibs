@@ -21,7 +21,7 @@ namespace Alive
 
 			<Alive.SwipeActionPanel>
 				<Alive.SwipeActionConfirmed Handler="{onConfirmed}" />
-				
+
 			</Alive.SwipeActionPanel>
 
 		The button has a red color by default, and fades into yellow following the confirmation animation.

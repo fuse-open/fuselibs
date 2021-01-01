@@ -12,9 +12,9 @@ namespace Fuse.Gestures
 {
 	/**
 		Implements the default scrolling functionality.
-		
+
 		There should be no reason to instantiate/reference this class directly. It will most likely be made internal an inaccessible in a future release.
-		
+
 		@advanced
 		@deprecated 2017-03-04
 	*/
@@ -22,14 +22,7 @@ namespace Fuse.Gestures
 	{
 		//to avoid warning on deprecated public ctor
 		internal Scroller(bool ignore) { }
-		
-		[Obsolete]
-		public Scroller()
-		{
-			//DEPRECATED: 2017-03-04
-			Fuse.Diagnostics.Deprecated( "Scroller should not be used directly as it is an internal class. The ScrollView provides the entire interface for scrolling.", this );
-		}
-		
+
 		BoundedRegion2D _region;
 
 		PointerVelocity<float2> _velocity = new PointerVelocity<float2>();
@@ -43,9 +36,9 @@ namespace Fuse.Gestures
 		public bool DelayStart
 		{
 			get { return _delayStart; }
-			set 
-			{ 
-				_delayStart = value; 
+			set
+			{
+				_delayStart = value;
 				Fuse.Diagnostics.Deprecated( "Scroller.DelayStart is no longer supported.", this );
 			}
 		}
@@ -63,7 +56,7 @@ namespace Fuse.Gestures
 			_scrollable.AddPropertyListener(this);
 			//Set in ugly fashion, required by https://github.com/fusetools/fuselibs-private/issues/870
 			//previously the ScrollView would just listen for added children, but this appears safer
-			_scrollable._scroller = this; 
+			_scrollable._scroller = this;
 			_scrollable.RequestBringIntoView += OnRequestBringIntoView;
 			_scrollable.ScrollPositionChanged += OnScrollPositionChanged;
 			_region = _scrollable.Motion.AcquireSimulation();
@@ -84,7 +77,7 @@ namespace Fuse.Gestures
 				_hasUpdated = false;
 				UpdateManager.RemoveAction(OnUpdated);
 			}
-			
+
 			UpdatePointerEvents(true);
 
 			if (_region != null)
@@ -98,17 +91,6 @@ namespace Fuse.Gestures
 			base.OnUnrooted();
 		}
 
-		[Obsolete]
-		public bool UserScroll
-		{
-			get { return ScrollableUserScroll; }
-			set
-			{
-				//DEPRECATED: 2017-03-04
-				Fuse.Diagnostics.Deprecated( "This value bound to the ScrollView now, set ScrollView.UserScroll instead", this );
-			}
-		}
-		
 		//this exists just so `UserScroll` can be `Obsolete` for a few releases
 		bool ScrollableUserScroll
 		{
@@ -129,6 +111,8 @@ namespace Fuse.Gestures
 					Fuse.Diagnostics.InternalError( "inconsistent gesture state" );
 				else
 					_gesture = Input.Gestures.Add( this, _scrollable, GestureType.Primary | GestureType.NodeShare);
+				// mouse wheel support
+				Pointer.WheelMoved.AddHandler(_scrollable, OnPointerWheelMoved);
 			}
 			else if (_scrollable != null)
 			{
@@ -136,6 +120,7 @@ namespace Fuse.Gestures
 					Fuse.Diagnostics.InternalError( "inconsistent gesture state" );
 				else
 				{
+					Pointer.WheelMoved.RemoveHandler(_scrollable, OnPointerWheelMoved);
 					_gesture.Dispose();
 					_gesture = null;
 				}
@@ -188,7 +173,7 @@ namespace Fuse.Gestures
 		GesturePriorityConfig IGesture.Priority
 		{
 			get
-			{ 
+			{
 				return new GesturePriorityConfig(
 					_scrollable == null ? GesturePriority.Low : _scrollable.GesturePriority,
 					(!DelayStart ? 100 : 0) + _significance);
@@ -202,7 +187,7 @@ namespace Fuse.Gestures
 				UpdateManager.AddAction(_scrollable.InvalidateVisual);
 			_pressed = true;
 		}
-		
+
 		void StopInvalidateVisual()
 		{
 			if (_pressed)
@@ -239,8 +224,8 @@ namespace Fuse.Gestures
 			return _scrollable.Parent.WindowToLocal(p);
 		}
 
-		void IGesture.OnLostCapture( bool forced ) 
-		{ 
+		void IGesture.OnLostCapture( bool forced )
+		{
 			StopInvalidateVisual();
 			_significance = 0;
 			if (_region != null && _region.IsUser)
@@ -308,8 +293,19 @@ namespace Fuse.Gestures
 
 				_region.EndUser( -_scrollable.ConstrainExtents(_velocity.CurrentVelocity) );
 			}
-			
+
 			return GestureRequest.Cancel;
+		}
+
+		void OnPointerWheelMoved(object sender, PointerWheelMovedArgs args)
+		{
+			_region.StartUser();
+			_region.Position = _scrollable.ScrollPosition;
+			_region.StepUser( -args.WheelDelta );
+			UpdateScrollMax();
+			_region.Update( Time.FrameInterval );
+			_scrollable.SetScrollPosition(Math.Min(Math.Max(_region.Position, _scrollable.MinScroll), _scrollable.MaxScroll), this);
+			_region.EndUser();
 		}
 
 		//call if the size/position changed in response to a non-user event (like resize)
@@ -378,13 +374,13 @@ namespace Fuse.Gestures
 				_updateFirstFrame = false;
 				return;
 			}
-			
+
 			if (_region == null || _scrollable == null)
 			{
 				Fuse.Diagnostics.InternalError( "Invalid scroller update" );
 				return;
 			}
-			
+
 			UpdateScrollMax();
 			_region.Update( Time.FrameInterval );
 			_scrollable.SetScrollPosition(_region.Position, this);
@@ -396,21 +392,21 @@ namespace Fuse.Gestures
 		{
 			if (obj != _scrollable)
 				return;
-				
+
 			if (sel == ScrollView.UserScrollName)
 				UpdatePointerEvents();
 		}
-		
+
 		void OnScrollPositionChanged(object s, ScrollPositionChangedArgs args)
 		{
 			if (args.Origin == this)
 				return;
-				
+
 			if (args.IsAdjustment)
 				_region.Adjust(args.ArrangeOffset);
 			else
 				_region.Reset(args.Value);
-				
+
 			CheckNeedUpdated(true); //allow remove of Update
 		}
 
@@ -443,7 +439,7 @@ namespace Fuse.Gestures
 				_region.StepUser( diff );
 				OnUpdated();
 			}
-			_velocity.AddSample( FromWindow(_pointerPos), (float)elapsed, 
+			_velocity.AddSample( FromWindow(_pointerPos), (float)elapsed,
 				(!flags.HasFlag(MoveUserFlags.Started) ? SampleFlags.Tentative : SampleFlags.None) |
 				(flags.HasFlag(MoveUserFlags.Release) ? SampleFlags.Release : SampleFlags.None) );
 		}

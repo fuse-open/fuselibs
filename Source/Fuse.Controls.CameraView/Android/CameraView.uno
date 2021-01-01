@@ -1,7 +1,7 @@
 using Uno;
 using Uno.UX;
 using Uno.Compiler.ExportTargetInterop;
-using Uno.Permissions;
+using Fuse.Android.Permissions;
 using Uno.Threading;
 using Uno.Collections;
 
@@ -230,7 +230,7 @@ namespace Fuse.Controls.Android
 			return p;
 		}
 
-		Future<Nothing> ICamera.SetCameraFocusPoint(double x, double y, int cameraWidth, int cameraHeight, int isFocusLocked) 
+		Future<Nothing> ICamera.SetCameraFocusPoint(double x, double y, int cameraWidth, int cameraHeight, int isFocusLocked)
 		{
 			if (_camera == null)
 				return Reject<Nothing>("Camera busy or misconfigured");

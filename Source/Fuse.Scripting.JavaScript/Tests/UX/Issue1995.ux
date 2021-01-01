@@ -1,14 +1,14 @@
 <Panel ux:Class="UX.Issue1995">
 	<JavaScript>
 		var Observable = require( "FuseJS/Observable" )
-		
+
 		exports.text = Observable("Start")
-		
+
 		exports.items = Observable()
 		for (var i=0; i < 10; ++i ) {
 			exports.items.add({ text: "#" + i })
 		}
-		
+
 		exports.click = function(args) {
 			exports.text.value = args.data.text
 		}

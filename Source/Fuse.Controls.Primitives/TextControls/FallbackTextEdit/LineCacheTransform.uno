@@ -14,13 +14,13 @@ namespace Fuse.Controls.FallbackTextEdit
 	class LineCachePasswordTransform : LineCacheTransform
 	{
 		int _reveal = -1;
-		public bool SetReveal( int r ) 
+		public bool SetReveal( int r )
 		{
 			var b = r != _reveal;
 			_reveal = r;
 			return b;
 		}
-		
+
 		public string Transform( string text )
 		{
 			if (string.IsNullOrEmpty(text)) return text;

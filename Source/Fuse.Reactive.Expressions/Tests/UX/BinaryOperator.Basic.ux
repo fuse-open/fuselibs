@@ -4,15 +4,15 @@
 	<FuseTest.Data ux:Name="strctData1" Value="(one: 'x')"/>
 	<FuseTest.Data ux:Name="strctData2" Value="(two: 'y')"/>
 	<FuseTest.Data ux:Name="strctData3" Value="(one: 'x', two: 'y')"/>
-	
+
 	<FuseTest.DudElement StringValue="{= _binJoin('ab','cd') }" ux:Name="a"/>
 	<FuseTest.DudElement StringValue="{= _binJoin({none}, {Property v.Value}) }" ux:Name="b"/>
-	
+
 	<FuseTest.DudElement StringValue="{= _binJoin({Property strct.Value}.one, {Property strct.Value}.two) }" ux:Name="c"/>
-	
+
 	<FuseTest.DudElement  ux:Name="d"
 		StringValue="{= _binJoinR({Property strct.Value}.one, {Property strct.Value}.two) ?? '*' }"/>
 	<FuseTest.DudElement  ux:Name="e"
 		StringValue="{= _binJoinLR({Property strct.Value}.one, {Property strct.Value}.two) }"/>
-	
+
 </Panel>

@@ -120,7 +120,7 @@ namespace Fuse.GeoLocation
 
 
 		[Foreign(Language.ObjC)]
-		public bool IsLocationEnabled() 
+		public bool IsLocationEnabled()
 		@{
 			//check is hardware enabled
 			if ([CLLocationManager locationServicesEnabled]) {
@@ -139,7 +139,7 @@ namespace Fuse.GeoLocation
 		@}
 
 		[Foreign(Language.ObjC)]
-		public string GetAuthorizationStatus() 
+		public string GetAuthorizationStatus()
 		@{
 			//check user authorization
 			switch ([CLLocationManager authorizationStatus]) {

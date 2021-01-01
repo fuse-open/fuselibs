@@ -187,7 +187,7 @@ namespace Fuse.Reactive.Test
 		}
 
 		[Test]
-		public void ParameterFunction() 
+		public void ParameterFunction()
 		{
 			var e = new UX.ParameterFunction();
 

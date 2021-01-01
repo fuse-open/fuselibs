@@ -16,7 +16,7 @@ namespace Fuse.Controls
 				<NativeViewHost>
 					<Switch />
 				</NativeViewHost>
-			</StackPanel>		
+			</StackPanel>
 
 	*/
 	public partial class Switch

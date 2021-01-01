@@ -80,7 +80,7 @@ namespace Fuse.Triggers.Test
 		/*
 			The large `IncrementFrame` increments here ensure that activation statuses
 			are not skipped while moving a large distance at once.
-			
+
 			TODO: but of course that fails now and the use-case is uncertain. These need
 			to be restored if necessary, see NavigationAnimations.uno for the missing code.
 		*/
@@ -215,21 +215,21 @@ namespace Fuse.Triggers.Test
 
 			if (add)
 				panel.Children.Add(page);
-				
-			return new NavigationSetupEntity(page, 
+
+			return new NavigationSetupEntity(page,
 				activatedForwardTriggerAction, activatedBackwardTriggerAction,
 				enterForwardTriggerAction, enterBackwardTriggerAction,
 				exitForwardTriggerAction, exitBackwardTriggerAction);
 		}
 
-		private void TestPageTriggers(NavigationSetupEntity setupEntity, 
-			int activatedForwardActionPerformedCount, 
+		private void TestPageTriggers(NavigationSetupEntity setupEntity,
+			int activatedForwardActionPerformedCount,
 			int activatedBackwardActionPerformedCount,
-			int enterForwardActionPerformedCount, 
+			int enterForwardActionPerformedCount,
 			int enterBackwardActionPerformedCount,
-			int exitForwardActionPerformedCount, 
+			int exitForwardActionPerformedCount,
 			int exitBackwardActionPerformedCount,
-			[CallerFilePath] string filePath = "", [CallerLineNumber] int lineNumber = 0, 
+			[CallerFilePath] string filePath = "", [CallerLineNumber] int lineNumber = 0,
 			[CallerMemberName] string memberName = "")
 		{
 			/*debug_log "+Act: " + setupEntity.ActivatedTriggerForwardAction.PerformedCount +
@@ -238,7 +238,7 @@ namespace Fuse.Triggers.Test
 				"  -Enter: " + setupEntity.EnterTriggerBackwardAction.PerformedCount +
 				"  +Exit: " + setupEntity.ExitTriggerForwardAction.PerformedCount +
 				"  -Exit: " + setupEntity.ExitTriggerBackwardAction.PerformedCount;*/
-				
+
 			Assert.AreEqual(activatedForwardActionPerformedCount,
 				setupEntity.ActivatedTriggerForwardAction.PerformedCount,
 				filePath, lineNumber, memberName + " ActivatedForward");

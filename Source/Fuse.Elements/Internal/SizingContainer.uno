@@ -34,7 +34,7 @@ namespace Fuse.Internal
 			align = a;
 			return true;
 		}
-		
+
 		public bool SetStretchSizing( StretchSizing ss )
 		{
 			if (ss == stretchSizing)
@@ -66,12 +66,12 @@ namespace Fuse.Internal
 						return float2(0);
 					return float2(pixelSize.X,pixelSize.Y) / absoluteZoom;
 				}
-					
+
 				case StretchMode.PointPrefer:
 				{
 					if (pixelSize.X == 0 || pixelSize.Y == 0)
 						return float2(0);
-						
+
 					var exact = float2(pixelSize.X,pixelSize.Y) / absoluteZoom;
 					var scale = size / exact;
 					if (scale.X  > 0.75 && scale.X < 1.5)
@@ -87,21 +87,21 @@ namespace Fuse.Internal
 					*/
 					break;
 				}
-					
+
 				default:
 					break;
 			}
-			
+
 			if (!snapToPixels)
 				return size;
 			return SnapSize(size);
 		}
-		
+
 		float2 SnapSize( float2 sz )
 		{
 			return Math.Floor(sz * absoluteZoom + 0.5f) / absoluteZoom;
 		}
-		
+
 		float2 CalcScale( float2 availableSize, float2 desiredSize,
 			bool autoWidth, bool autoHeight )
 		{
@@ -112,7 +112,7 @@ namespace Fuse.Internal
 			var scale = float2(1);
 			const float zeroTolerance = 1e-05f;
 
-			if (autoWidth && autoHeight && !(stretchMode == StretchMode.PointPrecise || 
+			if (autoWidth && autoHeight && !(stretchMode == StretchMode.PointPrecise ||
 				stretchMode == StretchMode.PixelPrecise ||
 				stretchMode == StretchMode.PointPrefer) )
 			{
@@ -154,7 +154,7 @@ namespace Fuse.Internal
 						var sm = autoWidth ? s.Y :
 							autoHeight ? s.X :
 							//as `Min` is used below, and zeroX/Y imply infinite scale, we can special case here to get correct values
-							zeroX ? s.Y : 
+							zeroX ? s.Y :
 							zeroY ? s.X :
 							Math.Min( s.X, s.Y );
 						scale = float2(sm);
@@ -288,7 +288,7 @@ namespace Fuse.Internal
 			bool autoHeight = !lp.HasY;
 			var scale = CalcScale( lp.Size, size, autoWidth, autoHeight );
 			var res = scale * size;
-			
+
 			//the order here matches the applicatin order in BoxSizing (explicit -> Max -> Min)
 			bool recalc = false;
 			if (lp.HasMaxX && res.X > lp.MaxX)
@@ -320,7 +320,7 @@ namespace Fuse.Internal
 				scale = CalcScale( res, size, autoWidth, autoHeight);
 				res = scale * size;
 			}
-			
+
 			return res;
 		}
 	}

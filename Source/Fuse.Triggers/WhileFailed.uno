@@ -11,7 +11,7 @@ namespace Fuse.Triggers
 		This trigger can be used inside a @Video, an @Image, or an @Each element.
 
 		@examples Docs/VideoTriggers.md
-		
+
 		`<WhileFailed>` is equivalent to `<WhileBusy Activity="Failed" IsHandled="true"/>`
 	*/
 	public class WhileFailed : WhileBusy

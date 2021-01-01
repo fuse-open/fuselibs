@@ -2,7 +2,7 @@ using Uno.Threading;
 using Uno;
 using Uno.UX;
 using Fuse.Scripting;
-using Uno.Permissions;
+using Fuse.Android.Permissions;
 using Fuse.Scripting.JSObjectUtils;
 namespace Fuse.ImageTools
 {
@@ -18,7 +18,7 @@ namespace Fuse.ImageTools
 		@scriptmodule FuseJS/ImageTools
 
 		Utility methods for common Image manipulation.
-		
+
 		> To use this module, add `Fuse.ImageTools` to your package references in your `.unoproj`.
 
 		Fuse represents images as frozen JavaScript Image objects, consisting of a path, a filename, a width and a height.
@@ -65,7 +65,7 @@ namespace Fuse.ImageTools
 			AddMember(new NativeProperty<object, int>("KEEP_ASPECT", ResizeMode.KeepAspect));
 			AddMember(new NativeProperty<object, int>("SCALE_AND_CROP", ResizeMode.ScaleAndCrop));
 		}
-		
+
 		public static Image ImageFromByteArray(byte[] bytes)
 		{
 			if defined(Android)

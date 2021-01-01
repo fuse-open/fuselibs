@@ -36,7 +36,7 @@ namespace Fuse.ImageTools
 			if(_dims.X == 0 && _dims.Y == 0)
 				_dims = iOSImageUtils.GetSize(this);
 		}
-		
+
 		public bool Rename(string newName, bool overwrite = false)
 		{
 			if(newName == Name) return true;

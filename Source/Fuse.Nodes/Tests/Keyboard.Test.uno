@@ -29,6 +29,6 @@ namespace Fuse.Test
 				Assert.AreEqual(p.B, keyB.LastKeyPressedArgs.Visual);
 			}
 		}
-		
+
 	}
 }

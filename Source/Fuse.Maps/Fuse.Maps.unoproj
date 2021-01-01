@@ -4,14 +4,15 @@
   "Publisher": "Fuse Open",
   "IsTransitive": true,
   "Packages": [
-    "Uno.Collections",
-    "Uno.Permissions"
+    "Uno.Collections"
   ],
   "Projects": [
+    "../Fuse.Android.Permissions/Fuse.Android.Permissions.unoproj",
     "../Fuse.ImageTools/Fuse.ImageTools.unoproj",
     "../Fuse/Fuse.unoproj"
   ],
   "Includes": [
+    "Docs/**:File",
     "MapMarker.uno:Source",
     "MapOverlay.uno:Source",
     "MapView.uno:Source",

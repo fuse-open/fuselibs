@@ -9,7 +9,7 @@ namespace Fuse.Triggers
 	{
 		float2 GetPoints(float value, ScrollViewBase scrollable);
 	}
-	
+
 	public static class IScrolledLengths
 	{
 		class PointsLength : IScrolledLength
@@ -19,11 +19,11 @@ namespace Fuse.Triggers
 				return float2(value);
 			}
 		}
-		[UXGlobalResource("Points")] 
+		[UXGlobalResource("Points")]
 		/** Values are expressed in points in the ScrollView */
 		public static readonly IScrolledLength Points = new PointsLength();
-		
-		
+
+
 		class PixelsLength : IScrolledLength
 		{
 			public float2 GetPoints(float value, ScrollViewBase scrollable)
@@ -31,11 +31,11 @@ namespace Fuse.Triggers
 				return float2(value) / scrollable.AbsoluteZoom;
 			}
 		}
-		[UXGlobalResource("Pixels")] 
+		[UXGlobalResource("Pixels")]
 		/** Values are expressed in points in the ScrollView */
 		public static readonly IScrolledLength Pixels = new PixelsLength();
-		
-		
+
+
 		class ContentSizeLength : IScrolledLength
 		{
 			public float2 GetPoints(float value, ScrollViewBase scrollable)
@@ -43,12 +43,12 @@ namespace Fuse.Triggers
 				return value * (scrollable.MaxScroll - scrollable.MinScroll);
 			}
 		}
-		
-		[UXGlobalResource("ContentSize")] 
+
+		[UXGlobalResource("ContentSize")]
 		/** Value is a fraction of the Content size of the ScrollView */
 		public static readonly IScrolledLength ContentSize = new ContentSizeLength();
-		
-		
+
+
 		class ScrollViewSizeLength : IScrolledLength
 		{
 			public float2 GetPoints(float value, ScrollViewBase scrollable)
@@ -56,12 +56,12 @@ namespace Fuse.Triggers
 				return value * scrollable.ActualSize;
 			}
 		}
-		
-		[UXGlobalResource("ScrollViewSize")] 
+
+		[UXGlobalResource("ScrollViewSize")]
 		/** Value is a fraction of the Content size of the ScrollView */
 		public static readonly IScrolledLength ScrollViewSize = new ScrollViewSizeLength();
 	}
-	
+
 	/** A relative location in a ScrollView */
 	public enum ScrolledWhere
 	{
@@ -72,7 +72,7 @@ namespace Fuse.Triggers
 		/** The end of the scrolling area, at @ScrollView.MaxScroll */
 		End,
 	}
-	
+
 	class ScrollRegion
 	{
 		public ScrolledWhere To = ScrolledWhere.None;
@@ -83,7 +83,7 @@ namespace Fuse.Triggers
 			To = value;
 			return true;
 		}
-		
+
 		public float Within;
 		public bool SetWithin( float value )
 		{
@@ -92,7 +92,7 @@ namespace Fuse.Triggers
 			Within = value;
 			return true;
 		}
-		
+
 		public IScrolledLength RelativeTo = IScrolledLengths.Points;
 		public bool SetRelativeTo( IScrolledLength value )
 		{
@@ -101,16 +101,16 @@ namespace Fuse.Triggers
 			RelativeTo = value;
 			return true;
 		}
-		
+
 		float2 CalcWithin(ScrollViewBase scrollable)
 		{
 			return RelativeTo.GetPoints(Within, scrollable);
 		}
-		
+
 		public bool IsInZone(ScrollViewBase scrollable)
 		{
 			var w = CalcWithin(scrollable);
-			
+
 			var sw = scrollable.ToScalarPosition(w);
 			var sp = scrollable.ToScalarPosition(scrollable.ScrollPosition);
 
@@ -118,20 +118,20 @@ namespace Fuse.Triggers
 			{
 				case ScrolledWhere.None:
 					return false;
-					
+
 				case ScrolledWhere.Start:
 				{
 					var smin = scrollable.ToScalarPosition(scrollable.MinScroll);
 					return sp <= smin + sw;
 				}
-					
+
 				case ScrolledWhere.End:
 				{
 					var smax = scrollable.ToScalarPosition(scrollable.MaxScroll);
 					return sp >= smax - sw;
 				}
 			}
-			
+
 			return false;
 		}
 	}

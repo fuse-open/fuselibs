@@ -12,7 +12,7 @@
 		<Panel ux:Name="R3" Height="50"/>
 		<!-- nothing, but the others should still be weight as though there are 5 rows -->
 	</Grid>
-	
+
 	<Grid Alignment="Top" ux:Name="G3">
 		<Panel ux:Name="S2" Column="2" ux:AutoBind="false"/>
 		<Panel ux:Name="S5" Column="4" Height="50"/>

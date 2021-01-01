@@ -11,8 +11,13 @@ using Experimental.Http;
 
 namespace Fuse.Resources
 {
+	public enum CachePolicy
+	{
+		Default, /** Honor cache-control header from server */
+		AlwaysUseLocalCache /** Always use local data if available and ignoring cache-control header */
+	}
 	/** Provides an image fetched via HTTP which can be displayed by the @Image control.
-	
+
 		> *Note* @Image provides a shorthand for this, using its [Url](api:fuse/controls/image/url) property.
 
 		## Example
@@ -36,7 +41,7 @@ namespace Fuse.Resources
 				if(value == null || value == "" )
 					return;
 
-				_proxy.Attach( HttpImageSourceCache.GetUrl( value, DiskCache ) );
+				_proxy.Attach( HttpImageSourceCache.GetUrl( value, DiskCache, DiskCachePolicy ) );
 			}
 		}
 
@@ -63,6 +68,7 @@ namespace Fuse.Resources
 		public override int2 PixelSize { get { return _proxy.PixelSize; } }
 		public override ImageSourceState State { get { return _proxy.State; } }
 		public override texture2D GetTexture() { return _proxy.GetTexture(); }
+		public override byte[] GetBytes() { return _proxy.GetBytes(); }
 		public override void Reload() { _proxy.Reload(); }
 		public override float SizeDensity { get { return Density; } }
 
@@ -73,6 +79,9 @@ namespace Fuse.Resources
 		bool _diskCache = false;
 		/** Determines whether we use the disk cache to store downloaded images so that the next time we display an image it will no longer be downloaded from the network. Default is false. */
 		public bool DiskCache { get { return _diskCache; } set { _diskCache = value; } }
+		/** What policy of disk cache mechanism. `CachePolicy.Default` will honor cache control header */
+		CachePolicy _diskCachePolicy = CachePolicy.Default;
+		public CachePolicy DiskCachePolicy { get { return _diskCachePolicy; } set { _diskCachePolicy = value; } }
 
 		public void ClearCache()
 		{
@@ -93,7 +102,7 @@ namespace Fuse.Resources
 	static class HttpImageSourceCache
 	{
 		static Dictionary<String,WeakReference<HttpImageSourceImpl>> _cache = new Dictionary<String,WeakReference<HttpImageSourceImpl>>();
-		static public HttpImageSourceImpl GetUrl( String url, bool diskCache )
+		static public HttpImageSourceImpl GetUrl( String url, bool diskCache, CachePolicy diskCachePolicy )
 		{
 			WeakReference<HttpImageSourceImpl> value = null;
 			if( _cache.TryGetValue( url, out value ) )
@@ -108,7 +117,7 @@ namespace Fuse.Resources
 				_cache.Remove( url );
 			}
 
-			var nv = new HttpImageSourceImpl( url, diskCache );
+			var nv = new HttpImageSourceImpl( url, diskCache, diskCachePolicy );
 			_cache.Add( url, new WeakReference<HttpImageSourceImpl>(nv) );
 			return nv;
 		}
@@ -134,11 +143,13 @@ namespace Fuse.Resources
 		public String Url { get { return _url; } }
 		String _contentType;
 		bool _diskCache;
+		CachePolicy _diskCachePolicy;
 
-		public HttpImageSourceImpl( String url, bool diskCache )
+		public HttpImageSourceImpl( String url, bool diskCache, CachePolicy diskCachePolicy )
 		{
 			_url = url;
 			_diskCache = diskCache;
+			_diskCachePolicy = diskCachePolicy;
 		}
 
 		protected override void AttemptLoad()
@@ -146,13 +157,13 @@ namespace Fuse.Resources
 			try
 			{
 				_loading = true;
-				if (IsFileCacheExist(out _filenameBase, out _contentType) && _diskCache)
+				if (IsFileCacheExist(out _filenameBase, out _contentType) && _diskCache && _diskCachePolicy == CachePolicy.AlwaysUseLocalCache)
 				{
 					new BackgroundLoad(null, _filenameBase, _contentType, _diskCache, SuccessCallback, FailureCallback);
 				}
 				else
 				{
-					HttpLoader.LoadBinary(Url, HttpCallback, LoadFailed);
+					HttpLoader.LoadBinary(Url, _diskCache, HttpCallback, LoadFailed);
 				}
 				OnChanged();
 			}
@@ -162,11 +173,12 @@ namespace Fuse.Resources
 			}
 		}
 
-		void SuccessCallback(texture2D texture, ImageOrientation orientation)
+		void SuccessCallback(texture2D texture, byte[] bytes, ImageOrientation orientation)
 		{
 			_loading = false;
 			_orientation = orientation;
 			SetTexture(texture);
+			SetBytes(bytes);
 		}
 
 		void FailureCallback(Exception e)
@@ -222,13 +234,13 @@ namespace Fuse.Resources
 			string _contentType;
 			string _filename;
 			bool _diskCache;
-			Action<texture2D, ImageOrientation> _done;
+			Action<texture2D, byte[], ImageOrientation> _done;
 			Action<Exception> _fail;
 			Exception _exception;
 			ImageOrientation _orientation;
 			texture2D _tex;
 
-			public BackgroundLoad(byte[] data, string filenameBase, string contentType, bool diskCache, Action<texture2D, ImageOrientation> done, Action<Exception> fail)
+			public BackgroundLoad(byte[] data, string filenameBase, string contentType, bool diskCache, Action<texture2D, byte[], ImageOrientation> done, Action<Exception> fail)
 			{
 				_data = data;
 				_contentType = contentType;
@@ -272,7 +284,7 @@ namespace Fuse.Resources
 
 			void UIDoneCallback()
 			{
-				_done(_tex, _orientation);
+				_done(_tex, _data, _orientation);
 			}
 
 			void UIFailCallback()
@@ -285,7 +297,10 @@ namespace Fuse.Resources
 
 		void LoadFailed( string reason )
 		{
-			Fail("Loading image from '" + Url + "' failed: " + reason);
+			if (_contentType != "") // file cache exists
+				new BackgroundLoad(null, _filenameBase, _contentType, _diskCache, SuccessCallback, FailureCallback);
+			else
+				Fail("Loading image from '" + Url + "' failed: " + reason);
 		}
 
 		void Fail( string msg, Exception e = null )

@@ -1,6 +1,6 @@
 <Panel ux:Class="UX.Replace">
 	<Selection ux:Name="TS" MaxCount="2" />
-	
+
 	<Panel ux:Class="RMyItem" Color="#0000">
 		<string ux:Property="Value"/>
 		<Selectable Value="{Property this.Value}" ux:Name="Sel"/>

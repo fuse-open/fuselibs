@@ -1,13 +1,38 @@
 # Unreleased
 
+### Fuse.physics
+- Refactor `Draggable` using IGesture System.
+- Introduce `Translation` property to `Draggable` to track translation position when user drag a visual with `Dragabble` behavior attached
+- Introduce two new Triggers:
+  - `DragStarted` Pulse when dragging activity has been started
+  - `DragEnded` Pulse when dragging activity has been ended
+- Drag and Drop API. Experimental support for drag and drop between visual element. Introduce sets of Triggers:
+  - `WhileDraggingOver` Activated when Visual that contain `Draggable` behavior and `WhileDraggingOver` trigger is overlaped / intersected with the `Target` Visual property that is defined in `WhileDraggingOver`
+  - `WhileDroppingBy` Activated when Visual that contain `WhileDroppingBy` trigger being overlaped / intersected by `Source` Draggable Visual
+  - `Dropped` Pulse when Draggable Visual is being dropped to the target visual and vice versa.
+
+### Fuse.Controls.Primitives
+- `TextControl` accessibility feature. Introduce `MinFontScale` and `MaxFontScale` Property to control the minimum or maximum text scaling behavior when the text/font size configuration setting on the phone has changed. Now default Fuse will honor the phone's text/font size configuration setting and will change all of the texts or labels in the Fuse App to match the setting. If you don't want the behavior you can pass a compiler flag:`IGNORE_FONT_SCALING` when building the app i.e: `uno build ios -DIGNORE_FONT_SCALING`
+- Added `MaxLines` property to the `Text` component to limit the number of lines when `TextWrapping` property is set to `Wrap`
+- Added support for `Shadow` Behavior in `NativeViewHost`
+- Added support for rendering backdrop filter of glass effect using the new `Glass` behavior
+
 ### Fuse.Auth
 - Introducing Fuse.Auth, the easiest way to perform user authentication using biometric sensor that reside on the device such as fingerprint or FaceID
+- Introducing Platform SignIn. a Sign In mechanism that use `Sign In With Apple` on iOS and `Google SignIn` on Android. There is two API added, `PlatformSignIn` as trigger action and `FuseJS/Auth` as javascript module.
 
 ### MapView
 - Adds a map overlay to a MapView using `MapOverlay` Node. There are 3 types of overlay that are supported : Polyline, Polygon and Circle
 
 ### Fuse.Triggers
 - Added trigger action `SetWindowOrientation` for setting device orientation
+- Added trigger action `SetStatusBarUI` for setting look and feel of statusbar
+
+### StatusBar
+- `Android.StatusBarConfig` Added property to change status bar style: Dark or Light.
+
+### FuseJS
+- FuseJS/Environment: add property to retrieve general information that reside in the .unoproj file such as: Title, Version, Publisher.
 
 # 1.14
 

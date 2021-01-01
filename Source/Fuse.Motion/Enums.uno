@@ -16,7 +16,7 @@ namespace Fuse.Motion
 		/** The movement has a dimishing influence on the actual value as it extends into the overflow area */
 		Elastic,
 	}
-	
+
 	/**
 		The basic motion types. This defines the algorithm being used to perform animation of a value.
 	*/
@@ -34,7 +34,7 @@ namespace Fuse.Motion
 		The unit of the value being animated.
 	*/
 	public enum MotionUnit
-	{	
+	{
 		/** Fuse virtual points, typical for a `ScrollView` or other `Element` size property */
 		Points,
 		/** Normalized values are those where `1` represents a full unit of movement, such as a page in navigation */

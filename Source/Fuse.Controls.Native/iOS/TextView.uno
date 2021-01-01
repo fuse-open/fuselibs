@@ -37,10 +37,20 @@ namespace Fuse.Controls.Native.iOS
 			set { }
 		}
 
+		int ITextView.MaxLines
+		{
+			set
+			{
+				if (value > 0) SetTextLines(Handle, value);
+			}
+		}
+
 		TextWrapping ITextView.TextWrapping
 		{
 			set
 			{
+				if (value == TextWrapping.Wrap)
+					SetTextLines(Handle, 0);
 				_builder.SetTextWrapping(value);
 				UpdateText();
 			}
@@ -103,7 +113,11 @@ namespace Fuse.Controls.Native.iOS
 
 		TextTruncation ITextView.TextTruncation
 		{
-			set { /* TODO */ }
+			set
+			{
+				if (value == TextTruncation.Standard)
+					SetTextLines(Handle, 1);
+			}
 		}
 
 		void UpdateText()
@@ -116,6 +130,14 @@ namespace Fuse.Controls.Native.iOS
 		@{
 			::UILabel* label = (::UILabel*)handle;
 			label.attributedText = (NSAttributedString*)attributedString;
+		@}
+
+		[Foreign(Language.ObjC)]
+		static void SetTextLines(ObjC.Object handle, int line)
+		@{
+			::UILabel* label = (::UILabel*)handle;
+			label.numberOfLines = line;
+			label.lineBreakMode = NSLineBreakByTruncatingTail;
 		@}
 	}
 }

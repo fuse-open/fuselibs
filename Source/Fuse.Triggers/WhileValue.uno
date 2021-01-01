@@ -7,7 +7,7 @@ namespace Fuse.Triggers
 	{
 		static internal bool _deprecatedNote;
 	}
-	
+
 	public abstract class WhileValue<T> : WhileTrigger, IPulseTrigger
 	{
 		T _value;
@@ -44,18 +44,18 @@ namespace Fuse.Triggers
 		{
 			if (!WhileValueStatic._deprecatedNote)
 			{
-				Fuse.Diagnostics.Deprecated( 
+				Fuse.Diagnostics.Deprecated(
 					"`Pulse` on a `WhileValue` will be removed, create a `Timeline` instead.",
 					this);
 				WhileValueStatic._deprecatedNote = true;
 			}
-				
+
 			if (IsOn != Invert)
 				base.InversePulse();
 			else
 				base.Pulse();
 		}
-		
+
 		static IValue<T> FindValueNode(Node n)
 		{
 			if (n is IValue<T>) return (IValue<T>)n;

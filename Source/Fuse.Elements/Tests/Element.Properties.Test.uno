@@ -16,7 +16,7 @@ namespace FuseTest
 		[Test]
 		public void TextBlockPropertyTest()
 		{
-			var t = new Text();	
+			var t = new Text();
 			ElementPropertyTester.All(t);
 		}
 

@@ -60,7 +60,7 @@ namespace Fuse
 		{
 			get { return RootVisual.Children; }
 		}
-		
+
 		public sealed override Visual ChildrenVisual
 		{
 			get { return RootVisual; }
@@ -77,7 +77,7 @@ namespace Fuse
 				Fuse.AppBase.OnUnhandledExceptionInternal(e);
 			}
 			Time.Set(Uno.Diagnostics.Clock.GetSeconds());
-			
+
 			try
 			{
 				OnUpdate();
@@ -99,7 +99,7 @@ namespace Fuse
 			CheckStatusBarOrientation();
 			base.OnUpdate();
 		}
-		
+
 		//iOS: has no events to detect focus change thus we need this stupid polling
  		ObjC.Object _currentFocus;
  		void CheckFocus()

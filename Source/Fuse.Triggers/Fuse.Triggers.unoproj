@@ -29,6 +29,7 @@
     "../Fuse.Nodes/Fuse.Nodes.unoproj",
   ],
   "Includes": [
+    "Docs/**:File",
     "Actions/Callback.uno:Source",
     "Actions/CancelInteractions.uno:Source",
     "Actions/DebugAction.uno:Source",
@@ -42,7 +43,7 @@
     "Actions/Toggle.uno:Source",
     "Actions/TriggerAction.uno:Source",
     "Actions/Visibility.uno:Source",
-    "Actions/SetWindowOrientation.uno:Source",
+    "Actions/SetSystemUI.uno:Source",
     "AddingAnimation.uno:Source",
     "Busy.uno:Source",
     "Busy.ScriptClass.uno:Source",

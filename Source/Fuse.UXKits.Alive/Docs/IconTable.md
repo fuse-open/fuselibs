@@ -12,7 +12,7 @@
 	.documentation__content--alive-icon-table-item code {
 		background: #fff;
 	}
-	
+
 	.documentation__content--alive-icon-table-item svg {
 		display: block;
 		margin-left: auto;
