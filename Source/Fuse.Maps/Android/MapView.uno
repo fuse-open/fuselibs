@@ -250,6 +250,16 @@ namespace Fuse.Maps.Android
 			ForeignHelpers.MoveCamera(_mapView, latitude, longitude, (float)zoomlevel, (float)tilt, (float)orientation, 0.0);
 		}
 
+		public void ShowAllMarkers()
+		{
+			ForeignHelpers.ShowAllMarkers(_mapView);
+		}
+
+		public void Snapshot(Action<string> actionSucces, Action<string> actionError)
+		{
+			ForeignHelpers.TakeSnapshot(_mapView, actionSucces, actionError);
+		}
+
 		void ConfigUI(){
 			if(IsReady) ForeignHelpers.ConfigureUI(_mapView, _showCompass, _showLocationButton);
 		}

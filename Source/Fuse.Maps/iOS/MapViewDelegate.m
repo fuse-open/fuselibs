@@ -528,12 +528,79 @@
 		return span;
 	}
 
--(void)moveTo:(double)lat longitude:(double)lng zoom:(double)z tilt:(double)t orientation:(double)o
+	-(void)moveTo:(double)lat longitude:(double)lng zoom:(double)z tilt:(double)t orientation:(double)o
 	{
 		z = MAX(2.0, MIN(z, 21));
 		CLLocationCoordinate2D newCenter = CLLocationCoordinate2DMake(lat, lng);
 		MKCoordinateSpan span = [self coordinateSpanWithMapView:_mapView centerCoordinate:newCenter andZoomLevel:z];
-	[_mapView setRegion:MKCoordinateRegionMake(newCenter, span)];
+		[_mapView setRegion:MKCoordinateRegionMake(newCenter, span)];
+	}
+
+	-(void)showAllAnotations
+	{
+		[_mapView showAnnotations:_mapView.annotations animated:YES];
+	}
+
+	-(void)takeSnapshot:(void(^)(NSString *))onSnapshotSucceed error:(void(^)(NSString *))onSnapshotError
+	{
+		MKMapSnapshotOptions *options = [[MKMapSnapshotOptions alloc] init];
+		options.region = _mapView.region;
+		options.scale = [UIScreen mainScreen].scale;
+		options.size = _mapView.frame.size;
+
+		MKMapSnapshotter *snapshotter = [[MKMapSnapshotter alloc] initWithOptions:options];
+		[snapshotter startWithCompletionHandler:^(MKMapSnapshot *snapshot, NSError *error) {
+			if (error != nil) {
+				if(onSnapshotError != nil)
+					onSnapshotError([error localizedDescription]);
+				return;
+			}
+
+			UIImage *image = snapshot.image;
+			MKAnnotationView *pin = [[MKPinAnnotationView alloc] initWithAnnotation:nil reuseIdentifier:@""];
+
+			CGRect finalImageRect = CGRectMake(0, 0, image.size.width, image.size.height);
+			UIGraphicsBeginImageContextWithOptions(image.size, YES, image.scale);
+			[image drawAtPoint:CGPointMake(0, 0)];
+
+			for (FusePinAnnotation * annotation in [_annotations allValues])
+			{
+				CGPoint point = [snapshot pointForCoordinate:annotation.coordinate];
+				if (CGRectContainsPoint(finalImageRect, point)) // this is too conservative, but you get the idea
+				{
+					UIImage* pinImage;
+					CGPoint pinCenterOffset;
+					if (annotation.icon != nil)
+					{
+						UIImage* imgMarker = [UIImage imageWithContentsOfFile:annotation.icon];
+						double ratio = imgMarker.size.width / 32.0; //32 is the width of the standard pin view
+						pinImage = [UIImage imageWithCGImage:[imgMarker CGImage] scale:ratio orientation:imgMarker.imageOrientation];
+						pinCenterOffset = CGPointMake(pin.frame.size.width*(annotation.iconX-0.5), -pin.frame.size.height*(annotation.iconY-0.5));
+					}
+					else
+					{
+						pinImage = pin.image;
+						pinCenterOffset = pin.centerOffset;
+					}
+					point.x -= pin.bounds.size.width / 2.0;
+					point.y -= pin.bounds.size.height / 2.0;
+					point.x += pinCenterOffset.x;
+					point.y += pinCenterOffset.y;
+
+					[pinImage drawAtPoint:point];
+				}
+			}
+
+			UIImage *finalImage = UIGraphicsGetImageFromCurrentImageContext();
+			UIGraphicsEndImageContext();
+			NSData *data = UIImagePNGRepresentation(finalImage);
+			NSString * path = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES)[0];
+			NSString * filename = [path stringByAppendingPathComponent:@"map_snapshot.png"];
+			[data writeToFile:filename atomically:YES];
+
+			if(onSnapshotSucceed != nil)
+				onSnapshotSucceed(filename);
+		}];
 	}
 
 	-(double)getZoomLevel
