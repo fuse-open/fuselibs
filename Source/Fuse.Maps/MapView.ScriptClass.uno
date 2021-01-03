@@ -1,7 +1,7 @@
 using Uno;
 using Uno.UX;
 using Uno.Collections;
-
+using Uno.Threading;
 using Fuse.Scripting;
 
 namespace Fuse.Controls
@@ -15,7 +15,9 @@ namespace Fuse.Controls
 				new ScriptMethod<MapView>("setBearing", setBearing),
 				new ScriptMethod<MapView>("setTilt", setTilt),
 				new ScriptMethod<MapView>("setZoom", setZoom),
+				new ScriptMethod<MapView>("showAllMarkers", showAllMarkers),
 				new ScriptMethod<MapView>("setMarkers", setMarkers),
+				new ScriptPromise<MapView,string,string>("snapshot", ExecutionThread.MainThread, snapshot, null),
 				new ScriptMethod<MapView>("setOverlays", setOverlays));
 		}
 
@@ -405,5 +407,58 @@ namespace Fuse.Controls
 			return m;
 		}
 
+		/** Zoom to make all of markers in the MapView is shown.
+
+			@scriptMethod showAllMarkers()
+		*/
+		static void showAllMarkers(MapView view, object[] args)
+		{
+			view.ShowAllMarkers();
+		}
+
+		/** Take a snapshot of MapView.
+
+			@scriptMethod snapshot()
+			use this method to take a picture of the MapView, returning a promise with the path argument of where the picture is stored
+
+			Examples:
+
+				<NativeViewHost>
+					<MapView ux:Name="MapView" />
+				</NativeViewHost>
+				<JavaScript>
+					MapView.snapshot()
+						.then(function(path) {
+							console.log(path);
+						})
+						.catch(function(err) { });
+				</JavaScript>
+		*/
+		static Future<string> snapshot(Context context, MapView self, object[] args)
+		{
+			var p = new Promise<string>();
+			var pc = new PromiseCallback(p);
+			self.Snapshot(pc.Resolve, pc.Reject);
+			return p;
+		}
+
+		class PromiseCallback
+		{
+			Promise<string> _p;
+			public PromiseCallback(Promise<string> p)
+			{
+				_p = p;
+			}
+
+			public void Resolve(string path)
+			{
+				_p.Resolve(path);
+			}
+
+			public void Reject(string reason)
+			{
+				_p.Reject(new Exception(reason));
+			}
+		}
 	}
 }

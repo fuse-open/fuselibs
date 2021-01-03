@@ -108,6 +108,8 @@ namespace Fuse.Controls
 
 		void UpdateMarkers();
 		void UpdateOverlays();
+		void ShowAllMarkers();
+		void Snapshot(Action<string> actionSucces, Action<string> actionError);
 		void HandleMarkerTapped(int id, string label);
 		void HandleLocationTapped(double latitude, double longitude);
 		void HandleLocationLongPress(double latitude, double longitude);
@@ -243,6 +245,18 @@ namespace Fuse.Controls
 		{
 			if(MapIsReady)
 				MapViewClient.UpdateOverlays();
+		}
+
+		void ShowAllMarkers()
+		{
+			if(MapIsReady)
+				MapViewClient.ShowAllMarkers();
+		}
+
+		void Snapshot(Action<string> actionSucces, Action<string> actionError)
+		{
+			if(MapIsReady)
+				MapViewClient.Snapshot(actionSucces, actionError);
 		}
 
 		internal ObservableList<MapMarker> _markers;

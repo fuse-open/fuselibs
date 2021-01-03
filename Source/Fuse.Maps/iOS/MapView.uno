@@ -508,5 +508,29 @@ namespace Fuse.Maps.iOS
 		{
 			MoveTo(latitude,longitude, Zoom, Tilt, Bearing);
 		}
+
+		public void ShowAllMarkers()
+		{
+			ShowAllAnotations();
+		}
+
+		[Foreign(Language.ObjC)]
+		public void ShowAllAnotations()
+		@{
+			MapViewDelegate* dg = (MapViewDelegate*)@{MapView:Of(_this)._mapViewDelegate:Get()};
+			[dg showAllAnotations];
+		@}
+
+		public void Snapshot(Action<string> actionSucces, Action<string> actionError)
+		{
+			TakeSnapshot(actionSucces, actionError);
+		}
+
+		[Foreign(Language.ObjC)]
+		public void TakeSnapshot(Action<string> actionSucces, Action<string> actionError)
+		@{
+			MapViewDelegate* dg = (MapViewDelegate*)@{MapView:Of(_this)._mapViewDelegate:Get()};
+			[dg takeSnapshot:actionSucces error:actionError];
+		@}
 	}
 }

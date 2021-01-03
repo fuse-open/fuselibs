@@ -35,6 +35,8 @@ typedef void (^TouchesEventBlock)(NSSet * touches, UIEvent * event);
 	-(void)requestLocationAuthentication:(void(^)(bool))onRequestResult;
 	-(void)locationManager:(CLLocationManager*)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status;
 	-(void)moveTo:(double)lat longitude:(double)l zoom:(double)z tilt:(double)t orientation:(double)o;
+	-(void)showAllAnotations;
+	-(void)takeSnapshot:(void(^)(NSString *))onSnapshotSucceed error:(void(^)(NSString *))onSnapshotError;
 	@property (nonatomic, strong) void (^mapMoveBlock)(bool);
 	@property (nonatomic, strong) void (^touchBlock)(int type, double x, double y);
 	@property (nonatomic, strong) void (^markerSelectBlock)(int id, NSString* label);
