@@ -117,13 +117,13 @@ namespace Fuse.Maps.iOS
 
 		void viewDidAppear()
 		{
-			if(OnReady!=null)
+			if (OnReady!=null)
 				OnReady();
 		}
 
 		void viewDidResize()
 		{
-			if(OnResize!=null)
+			if (OnResize!=null)
 				OnResize();
 		}
 
@@ -195,7 +195,7 @@ namespace Fuse.Maps.iOS
 		void OnReadyInternal()
 		{
 			_isReady = true;
-			if(OnReady!=null) OnReady();
+			if (OnReady!=null) OnReady();
 		}
 
 		[Require("Source.Include", "iOS/MapViewDelegate.h")]
@@ -262,7 +262,7 @@ namespace Fuse.Maps.iOS
 
 		void OnCameraMoved(bool animated)
 		{
-			if(animated) //not user interaction but we record it as such
+			if (animated) //not user interaction but we record it as such
 				_mapViewHost.OnMapInteractionEnd();
 		}
 
@@ -458,7 +458,7 @@ namespace Fuse.Maps.iOS
 			}
 			set
 			{
-				if(value)
+				if (value)
 					RequestLocationAuth(HandleLocationAuthChange);
 				else
 					_mapView.SetBoolValue("showsUserLocation", value);

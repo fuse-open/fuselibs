@@ -410,14 +410,14 @@ namespace Fuse.Controls
 			if (_coordinates != null)
 				_coordinates.RootSubscribe(OnCoordinateAdded, OnCoordinateRemoved);
 			MapView m = Parent as MapView;
-			if(m != null)
+			if (m != null)
 				m.AddOverlay(this);
 		}
 
 		protected override void OnUnrooted()
 		{
 			MapView m = Parent as MapView;
-			if(m != null)
+			if (m != null)
 				m.RemoveOverlay(this);
 			if (_coordinates != null)
 				_coordinates.Unsubscribe();
@@ -427,7 +427,7 @@ namespace Fuse.Controls
 		void MarkDirty()
 		{
 			MapView m = Parent as MapView;
-			if(m != null)
+			if (m != null)
 				m.UpdateOverlaysNextFrame();
 		}
 

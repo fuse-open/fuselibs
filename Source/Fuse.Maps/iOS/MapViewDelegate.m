@@ -108,14 +108,14 @@
 
 	-(void)locationManager:(CLLocationManager*)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status
 	{
-			if(authChangeBlock!=nil)
+			if (authChangeBlock!=nil)
 				authChangeBlock([self authorized]);
 		}
 
 	-(void)requestLocationAuthentication:(void(^)(bool))onRequestResult
 	{
-		if([self authorized]){
-			if(onRequestResult!=nil)
+		if ([self authorized]){
+			if (onRequestResult!=nil)
 				onRequestResult(true);
 		}else{
 			authChangeBlock = onRequestResult;
@@ -133,7 +133,7 @@
 		_touchRecognizer.touchesBeganCallback = ^(NSSet * touches, UIEvent * event)
 		{
 			self->_touchCount += [touches count];
-			if(self.touchBlock == nil) return;
+			if (self.touchBlock == nil) return;
 
 			UITouch* t = [touches anyObject];
 			CGPoint l = [t locationInView:self->_mapView];
@@ -146,7 +146,7 @@
 		_touchRecognizer.touchesEndedCallback = ^(NSSet * touches, UIEvent * event)
 		{
 			self->_touchCount -= [touches count];
-			if(self->touchBlock == nil) return;
+			if (self->touchBlock == nil) return;
 
 			UITouch* t = [touches anyObject];
 			CGPoint l = [t locationInView:self->_mapView];
@@ -155,15 +155,15 @@
 
 			self->touchBlock(1, coord.latitude, coord.longitude);
 
-			if(self->_touchCount==0)
+			if (self->_touchCount==0)
 				self->touchBlock(4, coord.latitude, coord.longitude);
 		};
 
 		_touchRecognizer.touchesCancelledCallback = ^(NSSet * touches, UIEvent * event)
 		{
 			self->_touchCount -= [touches count];
-			if(self->touchBlock == nil) return;
-			if(self->_touchCount==0)
+			if (self->touchBlock == nil) return;
+			if (self->_touchCount==0)
 				self->touchBlock(4, 0, 0);
 		};
 
@@ -189,7 +189,7 @@
 	{
 		id annotation = view.annotation;
 		if (![annotation isKindOfClass:[MKUserLocation class]]) {
-			if(markerSelectBlock){
+			if (markerSelectBlock){
 				FusePinAnnotation* a = (FusePinAnnotation*)[view annotation];
 				markerSelectBlock(a.markerID, a.title);
 			}
@@ -220,7 +220,7 @@
 	-(void)removeMarker:(int)identifier
 	{
 		FusePinAnnotation* a = [_annotations objectForKey:\@(identifier)];
-		if(a==nil) return;
+		if (a==nil) return;
 		[_mapView removeAnnotation:a];
 		[_annotations removeObjectForKey:\@(identifier)];
 	}
@@ -230,7 +230,7 @@
 		for(id key in _annotations)
 		{
 			FusePinAnnotation* a = [_annotations objectForKey:key];
-			if(a==nil) continue;
+			if (a==nil) continue;
 			[_mapView removeAnnotation:a];
 		}
 		[_annotations removeAllObjects];
@@ -341,7 +341,7 @@
 		for(id key in _overlays)
 		{
 			FuseOverlay* a = [_overlays objectForKey:key];
-			if(a==nil) continue;
+			if (a==nil) continue;
 			[_mapView removeOverlay:a.overlay];
 		}
 		[_overlays removeAllObjects];
@@ -349,7 +349,7 @@
 
 	-(void)onTap:(UITapGestureRecognizer*)sender
 	{
-		if(sender.state == UIGestureRecognizerStateEnded && touchBlock != nil)
+		if (sender.state == UIGestureRecognizerStateEnded && touchBlock != nil)
 		{
 			CGPoint l = [sender locationInView:_mapView];
 			CLLocationCoordinate2D coord = [_mapView convertPoint:l toCoordinateFromView:_mapView];
@@ -360,7 +360,7 @@
 
 	-(void)onLongPress:(UILongPressGestureRecognizer *)sender
 	{
-		if(touchBlock == nil) return;
+		if (touchBlock == nil) return;
 		if (sender.state == UIGestureRecognizerStateBegan)
 		{
 			CGPoint l = [sender locationInView:_mapView];
@@ -413,7 +413,7 @@
 
 	- (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated
 	{
-		if(mapMoveBlock)
+		if (mapMoveBlock)
 			mapMoveBlock(animated);
 	}
 
@@ -454,7 +454,7 @@
 			fuseAnnotation = nil;
 
 		// ensure that the annotation actually has an icon selector
-		if(fuseAnnotation!=nil && [fuseAnnotation respondsToSelector:@selector(icon)])
+		if (fuseAnnotation!=nil && [fuseAnnotation respondsToSelector:@selector(icon)])
 			identifier = fuseAnnotation.icon;
 
 		MKPinAnnotationView *pinView = (MKPinAnnotationView *)[theMapView dequeueReusableAnnotationViewWithIdentifier:identifier];
@@ -472,7 +472,7 @@
 				return nil;
 
 			FusePinAnnotation* a = (FusePinAnnotation*)annotation;
-			if(a.icon == nil) return nil;
+			if (a.icon == nil) return nil;
 			MKAnnotationView *annotationView = [[MKAnnotationView alloc] initWithAnnotation:annotation
 				reuseIdentifier:a.icon];
 			UIImage* image = [UIImage imageWithContentsOfFile:a.icon];
@@ -551,7 +551,7 @@
 		MKMapSnapshotter *snapshotter = [[MKMapSnapshotter alloc] initWithOptions:options];
 		[snapshotter startWithCompletionHandler:^(MKMapSnapshot *snapshot, NSError *error) {
 			if (error != nil) {
-				if(onSnapshotError != nil)
+				if (onSnapshotError != nil)
 					onSnapshotError([error localizedDescription]);
 				return;
 			}
@@ -598,7 +598,7 @@
 			NSString * filename = [path stringByAppendingPathComponent:@"map_snapshot.png"];
 			[data writeToFile:filename atomically:YES];
 
-			if(onSnapshotSucceed != nil)
+			if (onSnapshotSucceed != nil)
 				onSnapshotSucceed(filename);
 		}];
 	}

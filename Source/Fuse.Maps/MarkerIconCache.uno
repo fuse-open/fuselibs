@@ -17,9 +17,9 @@ namespace Fuse.Maps
 
 		public string Get(FileSource src)
 		{
-			if(src==null) return null;
+			if (src==null) return null;
 			var key = MakeKey(src);
-			if(_cache.ContainsKey(key))
+			if (_cache.ContainsKey(key))
 				return _cache[key].Path;
 			var markerSource = new MarkerSource(key, src, this);
 			_cache[key] = markerSource;
@@ -28,7 +28,7 @@ namespace Fuse.Maps
 
 		internal void OnChanged()
 		{
-			if(_changeHandler!=null)
+			if (_changeHandler!=null)
 				_changeHandler();
 		}
 
@@ -47,7 +47,7 @@ namespace Fuse.Maps
 
 		public string Path {
 			get {
-				if(!dirty) return _path;
+				if (!dirty) return _path;
 				var image = Fuse.ImageTools.ImageTools.ImageFromByteArray(_src.ReadAllBytes());
 				image.Rename(Name, true);
 				dirty = false;
