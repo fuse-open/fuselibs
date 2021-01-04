@@ -38,13 +38,13 @@ namespace Fuse.Triggers.Actions
 			if defined(DEBUG)
 			{
 				if (Message != null)
-					Uno.Diagnostics.Log.Debug(Message);
+					Uno.Diagnostics.Debug.Log(Message);
 
 				if (_props != null)
 				{
 					foreach (ITaggedDebugProperty prop in _props)
 					{
-						Uno.Diagnostics.Log.Debug(prop.GetTag() + " = " + prop.GetStringValue());
+						Uno.Diagnostics.Debug.Log(prop.GetTag() + " = " + prop.GetStringValue());
 					}
 				}
 			}

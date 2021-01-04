@@ -45,24 +45,24 @@ namespace Fuse
 
 		internal bool IsTemporalWarning;
 
-		internal Uno.Diagnostics.LogLevel UnoType
+		internal Uno.Diagnostics.DebugMessageType UnoType
 		{
 			get
 			{
 				switch (Type)
 				{
 					case DiagnosticType.UserSuccess:
-						return Uno.Diagnostics.LogLevel.Information;
+						return Uno.Diagnostics.DebugMessageType.Information;
 
 					case DiagnosticType.UserWarning:
 					case DiagnosticType.Deprecated:
 					case DiagnosticType.Unsupported:
 					case DiagnosticType.PerformanceWarning:
-						return Uno.Diagnostics.LogLevel.Warning;
+						return Uno.Diagnostics.DebugMessageType.Warning;
 
 					case DiagnosticType.UserError:
 					case DiagnosticType.InternalError:
-						return Uno.Diagnostics.LogLevel.Error;
+						return Uno.Diagnostics.DebugMessageType.Error;
 
 					default:
 						throw new Exception("invalid Type: " + Type);
@@ -179,7 +179,7 @@ namespace Fuse
 			if (DiagnosticReported != null)
 				DiagnosticReported(d);
 			else
-				Uno.Diagnostics.Log.WriteLine(d.UnoType, d.Format(false));
+				Uno.Diagnostics.Debug.Log(d.Format(false), d.UnoType);
 		}
 
 		class Temporal: IDisposable
@@ -207,7 +207,7 @@ namespace Fuse
 			if (DiagnosticReported != null)
 				DiagnosticReported(d);
 
-			Uno.Diagnostics.Log.WriteLine(d.UnoType, d.ToString());
+			Uno.Diagnostics.Debug.Log(d.ToString(), d.UnoType);
 			return new Temporal(d);
 		}
 

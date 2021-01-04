@@ -132,7 +132,7 @@ namespace Fuse.Testing
 
 		void OnDiagnostic(Diagnostic d)
 		{
-			if (d.UnoType == Uno.Diagnostics.LogLevel.Error)
+			if (d.UnoType == Uno.Diagnostics.DebugMessageType.Error)
 			{
 				_errors.Add(d);
 			}
