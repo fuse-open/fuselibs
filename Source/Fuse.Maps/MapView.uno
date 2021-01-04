@@ -195,7 +195,7 @@ namespace Fuse.Controls
 		{
 			get
 			{
-				if(_overlays==null) _overlays = new ObservableList<MapOverlay>(OnOverlayAdded, OnOverlayRemoved);
+				if (_overlays==null) _overlays = new ObservableList<MapOverlay>(OnOverlayAdded, OnOverlayRemoved);
 				return _overlays;
 			}
 		}
@@ -203,7 +203,7 @@ namespace Fuse.Controls
 
 		internal void AddOverlay(MapOverlay p)
 		{
-			if(Overlays.Contains(p)) return;
+			if (Overlays.Contains(p)) return;
 			Overlays.Add(p);
 		}
 
@@ -230,7 +230,7 @@ namespace Fuse.Controls
 		bool _willUpdateOverlaysNextFrame;
 		internal void UpdateOverlaysNextFrame()
 		{
-			if(!MapIsReady || _willUpdateOverlaysNextFrame) return;
+			if (!MapIsReady || _willUpdateOverlaysNextFrame) return;
 			UpdateManager.PerformNextFrame(DeferredOverlayUpdate, UpdateStage.Primary);
 			_willUpdateOverlaysNextFrame = true;
 		}
@@ -243,19 +243,19 @@ namespace Fuse.Controls
 
 		void UpdateOverlays()
 		{
-			if(MapIsReady)
+			if (MapIsReady)
 				MapViewClient.UpdateOverlays();
 		}
 
 		void ShowAllMarkers()
 		{
-			if(MapIsReady)
+			if (MapIsReady)
 				MapViewClient.ShowAllMarkers();
 		}
 
 		void Snapshot(Action<string> actionSucces, Action<string> actionError)
 		{
-			if(MapIsReady)
+			if (MapIsReady)
 				MapViewClient.Snapshot(actionSucces, actionError);
 		}
 
@@ -264,7 +264,7 @@ namespace Fuse.Controls
 		{
 			get
 			{
-				if(_markers==null) _markers = new ObservableList<MapMarker>(OnMarkerAdded, OnMarkerRemoved);
+				if (_markers==null) _markers = new ObservableList<MapMarker>(OnMarkerAdded, OnMarkerRemoved);
 				return _markers;
 			}
 		}
@@ -272,7 +272,7 @@ namespace Fuse.Controls
 
 		internal void AddMarker(MapMarker m)
 		{
-			if(Markers.Contains(m)) return;
+			if (Markers.Contains(m)) return;
 			Markers.Add(m);
 		}
 
@@ -299,7 +299,7 @@ namespace Fuse.Controls
 		bool _willUpdateMarkersNextFrame;
 		internal void UpdateMarkersNextFrame()
 		{
-			if(!MapIsReady || _willUpdateMarkersNextFrame) return;
+			if (!MapIsReady || _willUpdateMarkersNextFrame) return;
 			UpdateManager.PerformNextFrame(DeferredMarkerUpdate, UpdateStage.Primary);
 			_willUpdateMarkersNextFrame = true;
 		}
@@ -313,7 +313,7 @@ namespace Fuse.Controls
 		bool _willUpdateCameraNextFrame;
 		internal void UpdateCameraNextFrame()
 		{
-			if(!MapIsReady || _willUpdateCameraNextFrame) return;
+			if (!MapIsReady || _willUpdateCameraNextFrame) return;
 			UpdateManager.PerformNextFrame(ApplyCameraState, UpdateStage.Primary);
 			_willUpdateCameraNextFrame = true;
 		}
@@ -321,13 +321,13 @@ namespace Fuse.Controls
 		void ApplyCameraState()
 		{
 			_willUpdateCameraNextFrame = false;
-			if(MapIsReady)
+			if (MapIsReady)
 				MapViewClient.MoveTo(Latitude, Longitude, Zoom, Tilt, Bearing);
 		}
 
 		public void UpdateMarkers()
 		{
-			if(MapIsReady)
+			if (MapIsReady)
 				MapViewClient.UpdateMarkers();
 		}
 
@@ -338,7 +338,7 @@ namespace Fuse.Controls
 			set
 			{
 				_mapViewClient = value;
-				if(_mapViewClient == null)
+				if (_mapViewClient == null)
 				{
 					_mapReady = false;
 					return;
@@ -354,7 +354,7 @@ namespace Fuse.Controls
 		bool _mapReady = false;
 		void OnMapReady()
 		{
-			if(MapViewClient == null) return;
+			if (MapViewClient == null) return;
 			_mapReady = true;
 			MapViewClient.OnReady = null;
 			ApplyCameraState();
@@ -371,7 +371,7 @@ namespace Fuse.Controls
 
 			foreach(MapMarker m in Markers)
 			{
-				if(m.uid == id)
+				if (m.uid == id)
 				{
 					m.HandleTapped();
 					return;
@@ -399,7 +399,7 @@ namespace Fuse.Controls
 		internal void OnMapInteractionEnd()
 		{
 			UserInteractingWithMap = false;
-			if(MapIsReady)
+			if (MapIsReady)
 				_cameraState.CopyFrom(MapViewClient);
 			UpdateRestState();
 		}
@@ -431,7 +431,7 @@ namespace Fuse.Controls
 			get { return _mapConfig.ShowMyLocation; }
 			set {
 				_mapConfig.ShowMyLocation = value;
-				if(MapIsReady)
+				if (MapIsReady)
 					MapViewClient.ShowMyLocation = _mapConfig.ShowMyLocation;
 			}
 		}
@@ -443,7 +443,7 @@ namespace Fuse.Controls
 			get { return _mapConfig.ShowMyLocationButton; }
 			set {
 				_mapConfig.ShowMyLocationButton = value;
-				if(MapIsReady)
+				if (MapIsReady)
 					MapViewClient.ShowMyLocationButton = _mapConfig.ShowMyLocationButton;
 			}
 		}
@@ -452,7 +452,7 @@ namespace Fuse.Controls
 			get { return _mapConfig.ShowCompass; }
 			set {
 				_mapConfig.ShowCompass = value;
-				if(MapIsReady)
+				if (MapIsReady)
 					MapViewClient.ShowCompass = _mapConfig.ShowCompass;
 			}
 		}
@@ -463,7 +463,7 @@ namespace Fuse.Controls
 			get { return _mapConfig.AllowZoom; }
 			set {
 				_mapConfig.AllowZoom = value;
-				if(MapIsReady)
+				if (MapIsReady)
 					MapViewClient.AllowZoom = _mapConfig.AllowZoom;
 			}
 		}
@@ -474,7 +474,7 @@ namespace Fuse.Controls
 			get { return _mapConfig.AllowTilt; }
 			set {
 				_mapConfig.AllowTilt = value;
-				if(MapIsReady)
+				if (MapIsReady)
 					MapViewClient.AllowTilt = _mapConfig.AllowTilt;
 			}
 		}
@@ -485,7 +485,7 @@ namespace Fuse.Controls
 			get { return _mapConfig.AllowRotate; }
 			set {
 				_mapConfig.AllowRotate = value;
-				if(MapIsReady)
+				if (MapIsReady)
 					MapViewClient.AllowRotate = _mapConfig.AllowRotate;
 			}
 		}
@@ -497,7 +497,7 @@ namespace Fuse.Controls
 			get { return _mapConfig.AllowScroll; }
 			set {
 				_mapConfig.AllowScroll = value;
-				if(MapIsReady)
+				if (MapIsReady)
 					MapViewClient.AllowScroll = _mapConfig.AllowScroll;
 			}
 		}
@@ -508,7 +508,7 @@ namespace Fuse.Controls
 			get { return _mapConfig.Style; }
 			set {
 				_mapConfig.Style = value;
-				if(MapIsReady)
+				if (MapIsReady)
 					MapViewClient.Style = _mapConfig.Style;
 			}
 		}

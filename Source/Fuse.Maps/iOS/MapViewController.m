@@ -20,14 +20,14 @@
 
 -(void)viewDidLayoutSubviews
 {
-  if(self.onResizeCallback!=nil && self.view.frame.size.width > 0)
+  if (self.onResizeCallback!=nil && self.view.frame.size.width > 0)
     self.onResizeCallback();
 }
 
 -(void)viewDidAppear:(BOOL)animated
 {
   [super viewDidAppear:animated];
-  if(self.onAppearedCallback!=nil)
+  if (self.onAppearedCallback!=nil)
     self.onAppearedCallback();
 }
 @end

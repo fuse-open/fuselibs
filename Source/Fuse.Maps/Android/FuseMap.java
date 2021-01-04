@@ -108,9 +108,9 @@ public class FuseMap extends FrameLayout {
 
 	public void dispose()
 	{
-		if(_googleMap!=null)
+		if (_googleMap!=null)
 			_googleMap.setOnCameraChangeListener(null);
-		if(_mapView!=null)
+		if (_mapView!=null)
 			removeView(_mapView);
 		_callback = null;
 		_googleMap = null;
@@ -121,7 +121,7 @@ public class FuseMap extends FrameLayout {
 
 	private boolean onTouch(MotionEvent event)
 	{
-		if(_callback != null)
+		if (_callback != null)
 			return _callback.onTouchEvent(event.getAction(), event.getX(), event.getY());
 
 		return false;
@@ -170,7 +170,7 @@ public class FuseMap extends FrameLayout {
 			}
 		});
 
-		if(_callback!=null)
+		if (_callback!=null)
 			_callback.onReady();
 	}
 
@@ -205,11 +205,11 @@ public class FuseMap extends FrameLayout {
 	public String addMarker(double lat, double lng, String label, String iconPath, float iconAnchorX, float iconAnchorY, int uid)
 	{
 		MarkerOptions opt = new MarkerOptions().position(new LatLng(lat, lng));
-		if(iconPath!=null)
+		if (iconPath!=null)
 		{
 			opt.icon(BitmapDescriptorFactory.fromPath(iconPath)).anchor(iconAnchorX, iconAnchorY);
 		}
-		if(label!=null) opt.title(label);
+		if (label!=null) opt.title(label);
 		Marker m =  _googleMap.addMarker(opt);
 		_markerIDs.put(m, uid);
 		return m.getId();
@@ -490,7 +490,7 @@ public class FuseMap extends FrameLayout {
 
 	private void performCameraMove(CameraUpdate cu, double duration)
 	{
-		if(duration == 0.0){
+		if (duration == 0.0){
 			_googleMap.moveCamera(cu);
 			return;
 		}

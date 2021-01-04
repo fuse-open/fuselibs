@@ -17,7 +17,7 @@ namespace Fuse.Controls
 				new ScriptMethod<MapView>("setZoom", setZoom),
 				new ScriptMethod<MapView>("showAllMarkers", showAllMarkers),
 				new ScriptMethod<MapView>("setMarkers", setMarkers),
-				new ScriptPromise<MapView,string,string>("snapshot", ExecutionThread.MainThread, snapshot, null),
+				new ScriptPromise<MapView, string, string>("snapshot", ExecutionThread.MainThread, snapshot, null),
 				new ScriptMethod<MapView>("setOverlays", setOverlays));
 		}
 
