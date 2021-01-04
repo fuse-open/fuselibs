@@ -117,13 +117,13 @@ namespace Fuse.Maps.iOS
 
 		void viewDidAppear()
 		{
-			if(OnReady!=null)
+			if (OnReady!=null)
 				OnReady();
 		}
 
 		void viewDidResize()
 		{
-			if(OnResize!=null)
+			if (OnResize!=null)
 				OnResize();
 		}
 
@@ -195,7 +195,7 @@ namespace Fuse.Maps.iOS
 		void OnReadyInternal()
 		{
 			_isReady = true;
-			if(OnReady!=null) OnReady();
+			if (OnReady!=null) OnReady();
 		}
 
 		[Require("Source.Include", "iOS/MapViewDelegate.h")]
@@ -262,7 +262,7 @@ namespace Fuse.Maps.iOS
 
 		void OnCameraMoved(bool animated)
 		{
-			if(animated) //not user interaction but we record it as such
+			if (animated) //not user interaction but we record it as such
 				_mapViewHost.OnMapInteractionEnd();
 		}
 
@@ -458,7 +458,7 @@ namespace Fuse.Maps.iOS
 			}
 			set
 			{
-				if(value)
+				if (value)
 					RequestLocationAuth(HandleLocationAuthChange);
 				else
 					_mapView.SetBoolValue("showsUserLocation", value);
@@ -508,5 +508,29 @@ namespace Fuse.Maps.iOS
 		{
 			MoveTo(latitude,longitude, Zoom, Tilt, Bearing);
 		}
+
+		public void ShowAllMarkers()
+		{
+			ShowAllAnotations();
+		}
+
+		[Foreign(Language.ObjC)]
+		public void ShowAllAnotations()
+		@{
+			MapViewDelegate* dg = (MapViewDelegate*)@{MapView:Of(_this)._mapViewDelegate:Get()};
+			[dg showAllAnotations];
+		@}
+
+		public void Snapshot(Action<string> actionSucces, Action<string> actionError)
+		{
+			TakeSnapshot(actionSucces, actionError);
+		}
+
+		[Foreign(Language.ObjC)]
+		public void TakeSnapshot(Action<string> actionSucces, Action<string> actionError)
+		@{
+			MapViewDelegate* dg = (MapViewDelegate*)@{MapView:Of(_this)._mapViewDelegate:Get()};
+			[dg takeSnapshot:actionSucces error:actionError];
+		@}
 	}
 }

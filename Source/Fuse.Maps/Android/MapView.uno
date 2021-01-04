@@ -56,7 +56,7 @@ namespace Fuse.Maps.Android
 		{
 			SemanticControl.MapViewClient = null;
 			IsReady = false;
-			if(_mapView!=null)
+			if (_mapView!=null)
 				ForeignHelpers.Destroy(_mapView);
 			_mapView = null;
 			_mapViewHost = null;
@@ -70,7 +70,7 @@ namespace Fuse.Maps.Android
 
 		void SetLocationFromMap(double lat, double lng)
 		{
-			if(SemanticControl.UserInteractingWithMap)
+			if (SemanticControl.UserInteractingWithMap)
 				SemanticControl.UpdateRestState();
 		}
 
@@ -133,7 +133,7 @@ namespace Fuse.Maps.Android
 			set
 			{
 				_mapStyleInternal = value;
-				if(IsReady)
+				if (IsReady)
 					switch(_mapStyleInternal)
 					{
 						case MapStyle.Satellite:
@@ -152,7 +152,7 @@ namespace Fuse.Maps.Android
 		public double Zoom
 		{
 			get {
-				if(!IsReady) return 0.0;
+				if (!IsReady) return 0.0;
 				return ForeignHelpers.GetZoom(_mapView);
 			}
 		}
@@ -166,7 +166,7 @@ namespace Fuse.Maps.Android
 		}
 
 		public void UpdateMarkers(){
-			if(!IsReady) return;
+			if (!IsReady) return;
 			ForeignHelpers.Clear(_mapView);
 			foreach(MapMarker m in Markers)
 			{
@@ -193,7 +193,7 @@ namespace Fuse.Maps.Android
 
 		public void UpdateOverlays()
 		{
-			if(!IsReady) return;
+			if (!IsReady) return;
 			ForeignHelpers.ClearOverlays(_mapView);
 			foreach(MapOverlay p in Overlays)
 			{
@@ -218,7 +218,7 @@ namespace Fuse.Maps.Android
 
 		public void SetLocation(double latitude, double longitude)
 		{
-			if(IsReady) ForeignHelpers.SetPosition(_mapView, latitude, longitude, 0.0);
+			if (IsReady) ForeignHelpers.SetPosition(_mapView, latitude, longitude, 0.0);
 		}
 
 		public double Bearing {
@@ -250,12 +250,22 @@ namespace Fuse.Maps.Android
 			ForeignHelpers.MoveCamera(_mapView, latitude, longitude, (float)zoomlevel, (float)tilt, (float)orientation, 0.0);
 		}
 
+		public void ShowAllMarkers()
+		{
+			ForeignHelpers.ShowAllMarkers(_mapView);
+		}
+
+		public void Snapshot(Action<string> actionSucces, Action<string> actionError)
+		{
+			ForeignHelpers.TakeSnapshot(_mapView, actionSucces, actionError);
+		}
+
 		void ConfigUI(){
-			if(IsReady) ForeignHelpers.ConfigureUI(_mapView, _showCompass, _showLocationButton);
+			if (IsReady) ForeignHelpers.ConfigureUI(_mapView, _showCompass, _showLocationButton);
 		}
 
 		void ConfigGestures(){
-			if(IsReady) ForeignHelpers.ConfigureGestures(_mapView, _allowZoom, _allowRotate, _allowTilt, _allowScroll);
+			if (IsReady) ForeignHelpers.ConfigureGestures(_mapView, _allowZoom, _allowRotate, _allowTilt, _allowScroll);
 		}
 
 		class ShowLocationCommand
@@ -284,9 +294,9 @@ namespace Fuse.Maps.Android
 			}
 			set {
 				_showLocation = value;
-				if(IsReady)
+				if (IsReady)
 				{
-					if(_showLocation)
+					if (_showLocation)
 					{
 						var permissions = new PlatformPermission[]
 						{

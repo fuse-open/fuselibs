@@ -108,14 +108,14 @@
 
 	-(void)locationManager:(CLLocationManager*)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status
 	{
-			if(authChangeBlock!=nil)
+			if (authChangeBlock!=nil)
 				authChangeBlock([self authorized]);
 		}
 
 	-(void)requestLocationAuthentication:(void(^)(bool))onRequestResult
 	{
-		if([self authorized]){
-			if(onRequestResult!=nil)
+		if ([self authorized]){
+			if (onRequestResult!=nil)
 				onRequestResult(true);
 		}else{
 			authChangeBlock = onRequestResult;
@@ -133,7 +133,7 @@
 		_touchRecognizer.touchesBeganCallback = ^(NSSet * touches, UIEvent * event)
 		{
 			self->_touchCount += [touches count];
-			if(self.touchBlock == nil) return;
+			if (self.touchBlock == nil) return;
 
 			UITouch* t = [touches anyObject];
 			CGPoint l = [t locationInView:self->_mapView];
@@ -146,7 +146,7 @@
 		_touchRecognizer.touchesEndedCallback = ^(NSSet * touches, UIEvent * event)
 		{
 			self->_touchCount -= [touches count];
-			if(self->touchBlock == nil) return;
+			if (self->touchBlock == nil) return;
 
 			UITouch* t = [touches anyObject];
 			CGPoint l = [t locationInView:self->_mapView];
@@ -155,15 +155,15 @@
 
 			self->touchBlock(1, coord.latitude, coord.longitude);
 
-			if(self->_touchCount==0)
+			if (self->_touchCount==0)
 				self->touchBlock(4, coord.latitude, coord.longitude);
 		};
 
 		_touchRecognizer.touchesCancelledCallback = ^(NSSet * touches, UIEvent * event)
 		{
 			self->_touchCount -= [touches count];
-			if(self->touchBlock == nil) return;
-			if(self->_touchCount==0)
+			if (self->touchBlock == nil) return;
+			if (self->_touchCount==0)
 				self->touchBlock(4, 0, 0);
 		};
 
@@ -189,7 +189,7 @@
 	{
 		id annotation = view.annotation;
 		if (![annotation isKindOfClass:[MKUserLocation class]]) {
-			if(markerSelectBlock){
+			if (markerSelectBlock){
 				FusePinAnnotation* a = (FusePinAnnotation*)[view annotation];
 				markerSelectBlock(a.markerID, a.title);
 			}
@@ -220,7 +220,7 @@
 	-(void)removeMarker:(int)identifier
 	{
 		FusePinAnnotation* a = [_annotations objectForKey:\@(identifier)];
-		if(a==nil) return;
+		if (a==nil) return;
 		[_mapView removeAnnotation:a];
 		[_annotations removeObjectForKey:\@(identifier)];
 	}
@@ -230,7 +230,7 @@
 		for(id key in _annotations)
 		{
 			FusePinAnnotation* a = [_annotations objectForKey:key];
-			if(a==nil) continue;
+			if (a==nil) continue;
 			[_mapView removeAnnotation:a];
 		}
 		[_annotations removeAllObjects];
@@ -341,7 +341,7 @@
 		for(id key in _overlays)
 		{
 			FuseOverlay* a = [_overlays objectForKey:key];
-			if(a==nil) continue;
+			if (a==nil) continue;
 			[_mapView removeOverlay:a.overlay];
 		}
 		[_overlays removeAllObjects];
@@ -349,7 +349,7 @@
 
 	-(void)onTap:(UITapGestureRecognizer*)sender
 	{
-		if(sender.state == UIGestureRecognizerStateEnded && touchBlock != nil)
+		if (sender.state == UIGestureRecognizerStateEnded && touchBlock != nil)
 		{
 			CGPoint l = [sender locationInView:_mapView];
 			CLLocationCoordinate2D coord = [_mapView convertPoint:l toCoordinateFromView:_mapView];
@@ -360,7 +360,7 @@
 
 	-(void)onLongPress:(UILongPressGestureRecognizer *)sender
 	{
-		if(touchBlock == nil) return;
+		if (touchBlock == nil) return;
 		if (sender.state == UIGestureRecognizerStateBegan)
 		{
 			CGPoint l = [sender locationInView:_mapView];
@@ -413,7 +413,7 @@
 
 	- (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated
 	{
-		if(mapMoveBlock)
+		if (mapMoveBlock)
 			mapMoveBlock(animated);
 	}
 
@@ -454,7 +454,7 @@
 			fuseAnnotation = nil;
 
 		// ensure that the annotation actually has an icon selector
-		if(fuseAnnotation!=nil && [fuseAnnotation respondsToSelector:@selector(icon)])
+		if (fuseAnnotation!=nil && [fuseAnnotation respondsToSelector:@selector(icon)])
 			identifier = fuseAnnotation.icon;
 
 		MKPinAnnotationView *pinView = (MKPinAnnotationView *)[theMapView dequeueReusableAnnotationViewWithIdentifier:identifier];
@@ -472,7 +472,7 @@
 				return nil;
 
 			FusePinAnnotation* a = (FusePinAnnotation*)annotation;
-			if(a.icon == nil) return nil;
+			if (a.icon == nil) return nil;
 			MKAnnotationView *annotationView = [[MKAnnotationView alloc] initWithAnnotation:annotation
 				reuseIdentifier:a.icon];
 			UIImage* image = [UIImage imageWithContentsOfFile:a.icon];
@@ -528,12 +528,79 @@
 		return span;
 	}
 
--(void)moveTo:(double)lat longitude:(double)lng zoom:(double)z tilt:(double)t orientation:(double)o
+	-(void)moveTo:(double)lat longitude:(double)lng zoom:(double)z tilt:(double)t orientation:(double)o
 	{
 		z = MAX(2.0, MIN(z, 21));
 		CLLocationCoordinate2D newCenter = CLLocationCoordinate2DMake(lat, lng);
 		MKCoordinateSpan span = [self coordinateSpanWithMapView:_mapView centerCoordinate:newCenter andZoomLevel:z];
-	[_mapView setRegion:MKCoordinateRegionMake(newCenter, span)];
+		[_mapView setRegion:MKCoordinateRegionMake(newCenter, span)];
+	}
+
+	-(void)showAllAnotations
+	{
+		[_mapView showAnnotations:_mapView.annotations animated:YES];
+	}
+
+	-(void)takeSnapshot:(void(^)(NSString *))onSnapshotSucceed error:(void(^)(NSString *))onSnapshotError
+	{
+		MKMapSnapshotOptions *options = [[MKMapSnapshotOptions alloc] init];
+		options.region = _mapView.region;
+		options.scale = [UIScreen mainScreen].scale;
+		options.size = _mapView.frame.size;
+
+		MKMapSnapshotter *snapshotter = [[MKMapSnapshotter alloc] initWithOptions:options];
+		[snapshotter startWithCompletionHandler:^(MKMapSnapshot *snapshot, NSError *error) {
+			if (error != nil) {
+				if (onSnapshotError != nil)
+					onSnapshotError([error localizedDescription]);
+				return;
+			}
+
+			UIImage *image = snapshot.image;
+			MKAnnotationView *pin = [[MKPinAnnotationView alloc] initWithAnnotation:nil reuseIdentifier:@""];
+
+			CGRect finalImageRect = CGRectMake(0, 0, image.size.width, image.size.height);
+			UIGraphicsBeginImageContextWithOptions(image.size, YES, image.scale);
+			[image drawAtPoint:CGPointMake(0, 0)];
+
+			for (FusePinAnnotation * annotation in [_annotations allValues])
+			{
+				CGPoint point = [snapshot pointForCoordinate:annotation.coordinate];
+				if (CGRectContainsPoint(finalImageRect, point)) // this is too conservative, but you get the idea
+				{
+					UIImage* pinImage;
+					CGPoint pinCenterOffset;
+					if (annotation.icon != nil)
+					{
+						UIImage* imgMarker = [UIImage imageWithContentsOfFile:annotation.icon];
+						double ratio = imgMarker.size.width / 32.0; //32 is the width of the standard pin view
+						pinImage = [UIImage imageWithCGImage:[imgMarker CGImage] scale:ratio orientation:imgMarker.imageOrientation];
+						pinCenterOffset = CGPointMake(pin.frame.size.width*(annotation.iconX-0.5), -pin.frame.size.height*(annotation.iconY-0.5));
+					}
+					else
+					{
+						pinImage = pin.image;
+						pinCenterOffset = pin.centerOffset;
+					}
+					point.x -= pin.bounds.size.width / 2.0;
+					point.y -= pin.bounds.size.height / 2.0;
+					point.x += pinCenterOffset.x;
+					point.y += pinCenterOffset.y;
+
+					[pinImage drawAtPoint:point];
+				}
+			}
+
+			UIImage *finalImage = UIGraphicsGetImageFromCurrentImageContext();
+			UIGraphicsEndImageContext();
+			NSData *data = UIImagePNGRepresentation(finalImage);
+			NSString * path = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES)[0];
+			NSString * filename = [path stringByAppendingPathComponent:@"map_snapshot.png"];
+			[data writeToFile:filename atomically:YES];
+
+			if (onSnapshotSucceed != nil)
+				onSnapshotSucceed(filename);
+		}];
 	}
 
 	-(double)getZoomLevel

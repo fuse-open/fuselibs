@@ -23,6 +23,7 @@
 
 ### MapView
 - Adds a map overlay to a MapView using `MapOverlay` Node. There are 3 types of overlay that are supported : Polyline, Polygon and Circle
+- Added two scriptclass function, `snapshot` for taking an image of the current MapView display and `showAllMarkers` to zoom MapView to the particular position where all of the markers is visible on the MapView
 
 ### Fuse.Triggers
 - Added trigger action `SetWindowOrientation` for setting device orientation

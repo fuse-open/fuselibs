@@ -23,6 +23,20 @@ namespace Fuse.Maps.Android
 		@}
 
 		[Foreign(Language.Java)]
+		internal static void ShowAllMarkers(Java.Object handle)
+		@{
+			FuseMap map = (FuseMap)handle;
+			map.showAllMarkers();
+		@}
+
+		[Foreign(Language.Java)]
+		internal static void TakeSnapshot(Java.Object handle, Action<string> actionSucces, Action<string> actionError)
+		@{
+			FuseMap map = (FuseMap)handle;
+			map.shapshot(actionSucces, actionError);
+		@}
+
+		[Foreign(Language.Java)]
 		internal static void SetPosition(Java.Object handle, double lat, double lng, double duration)
 		@{
 			FuseMap map = (FuseMap)handle;

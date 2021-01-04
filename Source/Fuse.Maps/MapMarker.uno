@@ -136,20 +136,20 @@ namespace Fuse.Controls
 		{
 			base.OnRooted();
 			MapView m = Parent as MapView;
-			if(m != null) m.AddMarker(this);
+			if (m != null) m.AddMarker(this);
 		}
 
 		protected override void OnUnrooted()
 		{
 			base.OnUnrooted();
 			MapView m = Parent as MapView;
-			if(m != null) m.RemoveMarker(this);
+			if (m != null) m.RemoveMarker(this);
 		}
 
 		void MarkDirty()
 		{
 			MapView m = Parent as MapView;
-			if(m != null) m.UpdateMarkersNextFrame();
+			if (m != null) m.UpdateMarkersNextFrame();
 		}
 	}
 }

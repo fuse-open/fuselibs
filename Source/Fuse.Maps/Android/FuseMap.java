@@ -5,11 +5,13 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.util.Log;
 import android.widget.FrameLayout;
+import android.graphics.Bitmap;
 
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMap.SnapshotReadyCallback;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.UiSettings;
@@ -33,11 +35,14 @@ import com.google.android.gms.maps.model.Gap;
 import com.google.android.gms.maps.model.Dot;
 import com.google.android.gms.maps.model.PatternItem;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLngBounds;
 import java.util.Map;
 import java.util.List;
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.io.FileOutputStream;
+import com.foreign.Uno.Action_String;
 
 public class FuseMap extends FrameLayout {
 
@@ -103,9 +108,9 @@ public class FuseMap extends FrameLayout {
 
 	public void dispose()
 	{
-		if(_googleMap!=null)
+		if (_googleMap!=null)
 			_googleMap.setOnCameraChangeListener(null);
-		if(_mapView!=null)
+		if (_mapView!=null)
 			removeView(_mapView);
 		_callback = null;
 		_googleMap = null;
@@ -116,7 +121,7 @@ public class FuseMap extends FrameLayout {
 
 	private boolean onTouch(MotionEvent event)
 	{
-		if(_callback != null)
+		if (_callback != null)
 			return _callback.onTouchEvent(event.getAction(), event.getX(), event.getY());
 
 		return false;
@@ -165,7 +170,7 @@ public class FuseMap extends FrameLayout {
 			}
 		});
 
-		if(_callback!=null)
+		if (_callback!=null)
 			_callback.onReady();
 	}
 
@@ -200,11 +205,11 @@ public class FuseMap extends FrameLayout {
 	public String addMarker(double lat, double lng, String label, String iconPath, float iconAnchorX, float iconAnchorY, int uid)
 	{
 		MarkerOptions opt = new MarkerOptions().position(new LatLng(lat, lng));
-		if(iconPath!=null)
+		if (iconPath!=null)
 		{
 			opt.icon(BitmapDescriptorFactory.fromPath(iconPath)).anchor(iconAnchorX, iconAnchorY);
 		}
-		if(label!=null) opt.title(label);
+		if (label!=null) opt.title(label);
 		Marker m =  _googleMap.addMarker(opt);
 		_markerIDs.put(m, uid);
 		return m.getId();
@@ -343,6 +348,44 @@ public class FuseMap extends FrameLayout {
 		performCameraMove(cu, duration);
 	}
 
+	public void showAllMarkers()
+	{
+		LatLngBounds.Builder builder = new LatLngBounds.Builder();
+		for (Marker marker : _markerIDs.keySet()) {
+			builder.include(marker.getPosition());
+		}
+		LatLngBounds bounds = builder.build();
+		int width = _mapView.getMeasuredWidth();
+		int height = _mapView.getMeasuredHeight();
+		int padding = (int) (height * 0.15); // offset from edges of the map in pixels
+		CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, width, height, padding);
+		_googleMap.animateCamera(cu);
+	}
+
+	public void shapshot(final Action_String actionSucess, final Action_String actionError)
+	{
+		SnapshotReadyCallback callback = new SnapshotReadyCallback() {
+			Bitmap bitmap;
+
+			@Override
+			public void onSnapshotReady(Bitmap snapshot) {
+				bitmap = snapshot;
+				try {
+					android.content.Context context = com.fuse.Activity.getRootActivity();
+					java.io.File dir = context.getFilesDir();
+					String mPath = dir.getAbsolutePath() + "/map_snapshot.png";
+					FileOutputStream out = new FileOutputStream(mPath);
+					bitmap.compress(Bitmap.CompressFormat.PNG, 90, out);
+					actionSucess.run(mPath);
+				} catch (Exception e) {
+					actionError.run(e.getMessage());
+					e.printStackTrace();
+				}
+			}
+		};
+		_googleMap.snapshot(callback);
+	}
+
 	public void setPosition(double lat, double lng, double duration)
 	{
 		CameraUpdate cu = genCamUpdate(lat, lng, getZoom(), getTilt(), getOrientation());
@@ -447,7 +490,7 @@ public class FuseMap extends FrameLayout {
 
 	private void performCameraMove(CameraUpdate cu, double duration)
 	{
-		if(duration == 0.0){
+		if (duration == 0.0){
 			_googleMap.moveCamera(cu);
 			return;
 		}
