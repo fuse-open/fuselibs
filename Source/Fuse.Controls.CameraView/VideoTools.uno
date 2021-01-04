@@ -12,7 +12,7 @@ namespace Fuse.VideoTools
 
 		Utility methods for video files manipulation. Currently only supports moving a video file to the camera roll.
 
-		> To use this module, add `Fuse.CameraView` to your package references in your `.unoproj`.
+		> To use this module, add `Fuse.Controls.CameraView` to your package references in your `.unoproj`.
 
 
 		## Example
