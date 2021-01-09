@@ -30,7 +30,7 @@ typedef void (^TouchesEventBlock)(NSSet * touches, UIEvent * event);
 	-(BOOL)authorized;
 	-(void)removeMarker:(int)identifier;
 	-(void)clearMarkers;
-	-(void)addOverlay:(id)coords type:(int)overlayType strokeColor:(UIColor *)strokeColor fillColor:(UIColor *)fillColor lineWidth:(int)lineWidth geodesic:(bool)geodesic startCap:(int)startCap endCap:(int)endCap joinType:(int)joinType pattern:(NSArray<NSNumber *> *)pattern centerLatitude:(double)centerLatitude centerLongitude:(double)centerLongitude radius:(double)radius;
+	-(void)addOverlay:(id)coords type:(int)overlayType strokeColor:(UIColor *)strokeColor fillColor:(UIColor *)fillColor lineWidth:(int)lineWidth geodesic:(bool)geodesic startCap:(int)startCap endCap:(int)endCap joinType:(int)joinType pattern:(NSArray<NSNumber *> *)pattern centerLatitude:(double)centerLatitude centerLongitude:(double)centerLongitude radius:(double)radius overlayID:(int)overlayID;
 	-(void)clearOverlays;
 	-(void)requestLocationAuthentication:(void(^)(bool))onRequestResult;
 	-(void)locationManager:(CLLocationManager*)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status;
@@ -40,5 +40,6 @@ typedef void (^TouchesEventBlock)(NSSet * touches, UIEvent * event);
 	@property (nonatomic, strong) void (^mapMoveBlock)(bool);
 	@property (nonatomic, strong) void (^touchBlock)(int type, double x, double y);
 	@property (nonatomic, strong) void (^markerSelectBlock)(int id, NSString* label);
+	@property (nonatomic, strong) void (^overlaySelectBlock)(int id);
 	@property (nonatomic, strong) void (^authChangeBlock)(bool authorized);
 @end

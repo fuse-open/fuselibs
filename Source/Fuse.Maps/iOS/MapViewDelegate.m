@@ -77,6 +77,7 @@
 
 	@synthesize mapMoveBlock;
 	@synthesize markerSelectBlock;
+	@synthesize overlaySelectBlock;
 	@synthesize touchBlock;
 	@synthesize authChangeBlock;
 
@@ -245,6 +246,7 @@
 		endCap:(int)endCap
 		joinType:(int)joinType
 		pattern:(NSArray<NSNumber *> *)pattern
+		overlayID:(int)overlayID
 	{
 		renderer.lineWidth = lineWidth;
 		renderer.strokeColor = strokeColor;
@@ -269,6 +271,7 @@
 		FuseOverlay *fuseOverlay = [[FuseOverlay alloc] init];
 		fuseOverlay.overlay = overlay;
 		fuseOverlay.renderer = renderer;
+		fuseOverlay.overlayID = overlayID;
 		[_overlays setObject:fuseOverlay forKey:\@(_idOverlayPool)];
 		[self nextOverlayId];
 	}
@@ -285,6 +288,7 @@
 		centerLatitude:(double)centerLatitude
 		centerLongitude:(double)centerLongitude
 		radius:(double)radius
+		overlayID:(int)overlayID
 	{
 		NSUInteger count = [coords count];
 		NSUInteger numOfCoordinate = count / 2;
@@ -332,7 +336,8 @@
 			startCap:startCap
 			endCap:endCap
 			joinType:joinType
-			pattern:pattern];
+			pattern:pattern
+			overlayID:overlayID];
 		[_mapView addOverlay:overlay];
 	}
 
@@ -355,6 +360,30 @@
 			CLLocationCoordinate2D coord = [_mapView convertPoint:l toCoordinateFromView:_mapView];
 
 			touchBlock(2, coord.latitude, coord.longitude);
+			[self checkOverlayTapped:coord];
+		}
+	}
+
+	-(void)checkOverlayTapped:(CLLocationCoordinate2D)coord
+	{
+		if (overlaySelectBlock == NULL)
+			return;
+
+		MKMapPoint mappoint = MKMapPointForCoordinate(coord);
+		for (id<MKOverlay> overlay in _mapView.overlays)
+		{
+			MKOverlayPathRenderer * renderer = (MKOverlayPathRenderer*)[_mapView rendererForOverlay:overlay];
+			CGPoint tapPoint = [renderer pointForMapPoint:mappoint];
+			if (CGPathContainsPoint(renderer.path, nil, tapPoint, false))
+				for(id key in _overlays)
+				{
+					FuseOverlay* a = [_overlays objectForKey:key];
+					if (a.overlay == overlay)
+					{
+						overlaySelectBlock(a.overlayID);
+						return;
+					}
+				}
 		}
 	}
 

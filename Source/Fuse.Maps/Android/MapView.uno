@@ -46,6 +46,7 @@ namespace Fuse.Maps.Android
 				OnAnimationEnd,
 				SetLocationFromMap,
 				HandleMarkerTapped,
+				HandleOverlayTapped,
 				OnTouchEvent
 				);
 			ForeignHelpers.Configure(_mapView);
@@ -111,6 +112,11 @@ namespace Fuse.Maps.Android
 		public void HandleMarkerTapped(int uid, string title)
 		{
 			SemanticControl.HandleMarkerTapped(uid, title);
+		}
+
+		public void HandleOverlayTapped(int id)
+		{
+			SemanticControl.HandleOverlayTapped(id);
 		}
 
 		internal void OnMapReady()
@@ -211,7 +217,8 @@ namespace Fuse.Maps.Android
 					pattern,
 					p.CenterLatitude,
 					p.CenterLongitude,
-					p.Radius
+					p.Radius,
+					p.uid
 					);
 			}
 		}
