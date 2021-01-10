@@ -218,7 +218,7 @@ namespace Fuse.Maps.Android
 					p.CenterLatitude,
 					p.CenterLongitude,
 					p.Radius,
-					p.uid
+					p.Uid
 					);
 			}
 		}

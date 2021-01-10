@@ -349,7 +349,7 @@ namespace Fuse.Maps.iOS
 			foreach(MapOverlay p in Overlays)
 			{
 				AddOverlay(
-					p.uid,
+					p.Uid,
 					p.Type,
 					p.GetCordinatesArray(),
 					p.StrokeColor,

@@ -375,6 +375,7 @@
 			MKOverlayPathRenderer * renderer = (MKOverlayPathRenderer*)[_mapView rendererForOverlay:overlay];
 			CGPoint tapPoint = [renderer pointForMapPoint:mappoint];
 			if (CGPathContainsPoint(renderer.path, nil, tapPoint, false))
+			{
 				for(id key in _overlays)
 				{
 					FuseOverlay* a = [_overlays objectForKey:key];
@@ -384,6 +385,7 @@
 						return;
 					}
 				}
+			}
 		}
 	}
 

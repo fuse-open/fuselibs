@@ -383,7 +383,7 @@ namespace Fuse.Controls
 		{
 			foreach(MapOverlay m in Overlays)
 			{
-				if (m.uid == id)
+				if (m.Uid == id)
 				{
 					m.HandleTapped();
 					return;
