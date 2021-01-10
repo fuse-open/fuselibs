@@ -115,6 +115,16 @@ namespace Fuse.Controls
 		static Selector _centerLatitudeName = "CenterLatitude";
 		static Selector _centerLongitudeName = "CenterLongitude";
 		static Selector _radiusName = "Radius";
+		static int _uidPool = 0;
+		internal int Uid = _uidPool++;
+		public delegate void OverlayTappedHandler(object sender, EventArgs args);
+		public event OverlayTappedHandler Tapped;
+
+		internal void HandleTapped()
+		{
+			if (Tapped != null)
+				Tapped(this, new EventArgs());
+		}
 
 		void IPropertyListener.OnPropertyChanged(PropertyObject sender, Selector property)
 		{

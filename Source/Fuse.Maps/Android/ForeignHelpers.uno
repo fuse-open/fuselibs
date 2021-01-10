@@ -149,10 +149,10 @@ namespace Fuse.Maps.Android
 		@}
 
 		[Foreign(Language.Java)]
-		internal static void AddOverlay(Java.Object handle, OverlayType type, double[] coordinates, int strokeColor, int fillColor, int lineWidth, bool geodesic, LineCap startCap, LineCap endCap, LineJoin joinType, int[] dashPattern, double centerLatitude, double centerLongitude, double radius)
+		internal static void AddOverlay(Java.Object handle, OverlayType type, double[] coordinates, int strokeColor, int fillColor, int lineWidth, bool geodesic, LineCap startCap, LineCap endCap, LineJoin joinType, int[] dashPattern, double centerLatitude, double centerLongitude, double radius, int uid)
 		@{
 			FuseMap map = (FuseMap)handle;
-			map.AddOverlay(type, coordinates.copyArray(), strokeColor, fillColor, lineWidth, geodesic, startCap, endCap, joinType, dashPattern.copyArray(), centerLatitude, centerLongitude, radius);
+			map.AddOverlay(type, coordinates.copyArray(), strokeColor, fillColor, lineWidth, geodesic, startCap, endCap, joinType, dashPattern.copyArray(), centerLatitude, centerLongitude, radius, uid);
 		@}
 
 		[Foreign(Language.Java)]
@@ -194,6 +194,7 @@ namespace Fuse.Maps.Android
 			Action onAnimationEnd,
 			Action<double, double> handleCameraChange,
 			Action<int, string> handleMarkerPressed,
+			Action<int> handleOverlayPressed,
 			Action<int, float, float> handleTouchEvent
 		)
 		@{
@@ -227,6 +228,18 @@ namespace Fuse.Maps.Android
 				public boolean onMarkerPress(com.google.android.gms.maps.model.Marker m) {
 					handleMarkerPressed.run(map.getIdforMarker(m), m.getTitle());
 					return false;
+				}
+				@Override
+				public void onPolygonPress(com.google.android.gms.maps.model.Polygon m) {
+					handleOverlayPressed.run(map.getIdforPolygon(m));
+				}
+				@Override
+				public void onPolylinePress(com.google.android.gms.maps.model.Polyline m) {
+					handleOverlayPressed.run(map.getIdforPolyline(m));
+				}
+				@Override
+				public void onCirclePress(com.google.android.gms.maps.model.Circle m) {
+					handleOverlayPressed.run(map.getIdforCircle(m));
 				}
 				@Override
 				public boolean onTouchEvent(int action, float x, float y) {

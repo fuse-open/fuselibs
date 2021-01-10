@@ -167,7 +167,7 @@ namespace Fuse.Maps.iOS
 			//_container.OnReady = OnReadyInternal;
 			_container.OnResize = OnReadyInternal;
 			_mapView = _container.Map;
-			_mapViewDelegate = Configure(_mapView.Handle, OnCameraMoved, OnMapTouch, HandleMarkerTapped);
+			_mapViewDelegate = Configure(_mapView.Handle, OnCameraMoved, OnMapTouch, HandleMarkerTapped, HandleOverlayTapped);
 			_mapViewHost.MapViewClient = this;
 			_markerGraphicsCache = new MarkerIconCache(UpdateMarkers);
 		}
@@ -200,7 +200,7 @@ namespace Fuse.Maps.iOS
 
 		[Require("Source.Include", "iOS/MapViewDelegate.h")]
 		[Foreign(Language.ObjC)]
-		ObjC.Object Configure(ObjC.Object mapView, Action<bool> onMapMove, Action<int, double, double> onMapTouch, Action<int, string> onMarkerTouch)
+		ObjC.Object Configure(ObjC.Object mapView, Action<bool> onMapMove, Action<int, double, double> onMapTouch, Action<int, string> onMarkerTouch, Action<int> onOverlayTouch)
 		@{
 			MKMapView* mv = mapView;
 			MapViewDelegate* dg = [[MapViewDelegate alloc] init];
@@ -208,6 +208,7 @@ namespace Fuse.Maps.iOS
 			[dg setMapMoveAction:onMapMove];
 			[dg setMapTouchAction:onMapTouch];
 			[dg setMarkerSelectAction:onMarkerTouch];
+			[dg setOverlaySelectBlock:onOverlayTouch];
 			return dg;
 		@}
 
@@ -292,6 +293,11 @@ namespace Fuse.Maps.iOS
 			_mapViewHost.HandleMarkerTapped(id, label);
 		}
 
+		public void HandleOverlayTapped(int id)
+		{
+			_mapViewHost.HandleOverlayTapped(id);
+		}
+
 		public void UpdateMarkers()
 		{
 			ClearMarkers();
@@ -317,7 +323,7 @@ namespace Fuse.Maps.iOS
 		@}
 
 		[Foreign(Language.ObjC)]
-		void AddOverlay(OverlayType type, double[] coordinates, float4 strokeColor, float4 fillColor, int lineWidth, bool geodesic, LineCap startCap, LineCap endCap, LineJoin joinType, int2 dashPattern, double centerLatitude, double centerLongitude, double radius)
+		void AddOverlay(int uid, OverlayType type, double[] coordinates, float4 strokeColor, float4 fillColor, int lineWidth, bool geodesic, LineCap startCap, LineCap endCap, LineJoin joinType, int2 dashPattern, double centerLatitude, double centerLongitude, double radius)
 		@{
 			MapViewDelegate* dg = (MapViewDelegate*)@{MapView:Of(_this)._mapViewDelegate:Get()};
 			NSArray<NSNumber *> *pattern = @[[NSNumber numberWithInt:dashPattern.X], [NSNumber numberWithInt:dashPattern.Y]];
@@ -333,7 +339,8 @@ namespace Fuse.Maps.iOS
 				pattern:pattern
 				centerLatitude:centerLatitude
 				centerLongitude:centerLongitude
-				radius:radius];
+				radius:radius
+				overlayID:uid];
 		@}
 
 		public void UpdateOverlays()
@@ -342,6 +349,7 @@ namespace Fuse.Maps.iOS
 			foreach(MapOverlay p in Overlays)
 			{
 				AddOverlay(
+					p.Uid,
 					p.Type,
 					p.GetCordinatesArray(),
 					p.StrokeColor,

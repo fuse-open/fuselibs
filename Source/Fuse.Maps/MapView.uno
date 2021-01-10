@@ -111,6 +111,7 @@ namespace Fuse.Controls
 		void ShowAllMarkers();
 		void Snapshot(Action<string> actionSucces, Action<string> actionError);
 		void HandleMarkerTapped(int id, string label);
+		void HandleOverlayTapped(int id);
 		void HandleLocationTapped(double latitude, double longitude);
 		void HandleLocationLongPress(double latitude, double longitude);
 		Action OnReady { get; set; }
@@ -372,6 +373,17 @@ namespace Fuse.Controls
 			foreach(MapMarker m in Markers)
 			{
 				if (m.uid == id)
+				{
+					m.HandleTapped();
+					return;
+				}
+			}
+		}
+		public void HandleOverlayTapped(int id)
+		{
+			foreach(MapOverlay m in Overlays)
+			{
+				if (m.Uid == id)
 				{
 					m.HandleTapped();
 					return;

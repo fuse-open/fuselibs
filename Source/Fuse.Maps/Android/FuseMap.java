@@ -57,6 +57,9 @@ public class FuseMap extends FrameLayout {
 		void onAnimationStop();
 		void onCameraChange(double latitude, double longitude, double zoom, double tilt, double bearing);
 		boolean onMarkerPress(Marker m);
+		void onPolygonPress(Polygon p);
+		void onPolylinePress(Polyline p);
+		void onCirclePress(Circle c);
 		boolean onTouchEvent(int action, float x, float y);
 	}
 
@@ -65,9 +68,9 @@ public class FuseMap extends FrameLayout {
 	private MapView _mapView;
 	private boolean _isAnimating;
 	private Map<Marker, Integer> _markerIDs;
-	private List<Polyline> _polylines;
-	private List<Polygon> _polygons;
-	private List<Circle> _circles;
+	private Map<Polyline, Integer> _polylines;
+	private Map<Polygon, Integer> _polygons;
+	private Map<Circle, Integer> _circles;
 
 	public FuseMap()
 	{
@@ -76,9 +79,9 @@ public class FuseMap extends FrameLayout {
 		_mapView = new MapView(com.fuse.Activity.getRootActivity());
 		addView(_mapView);
 		_markerIDs = new HashMap<Marker,Integer>();
-		_polylines = new ArrayList<Polyline>();
-		_polygons = new ArrayList<Polygon>();
-		_circles = new ArrayList<Circle>();
+		_polylines = new HashMap<Polyline, Integer>();
+		_polygons = new HashMap<Polygon, Integer>();
+		_circles = new HashMap<Circle, Integer>();
 
 		_mapView.getMapAsync(new OnMapReadyCallback()
 		{
@@ -93,6 +96,21 @@ public class FuseMap extends FrameLayout {
 	public int getIdforMarker(Marker m)
 	{
 		return _markerIDs.get(m);
+	}
+
+	public int getIdforPolygon(Polygon p)
+	{
+		return _polygons.get(p);
+	}
+
+	public int getIdforPolyline(Polyline p)
+	{
+		return _polylines.get(p);
+	}
+
+	public int getIdforCircle(Circle c)
+	{
+		return _circles.get(c);
 	}
 
 	@Override
@@ -170,8 +188,47 @@ public class FuseMap extends FrameLayout {
 			}
 		});
 
+		_googleMap.setOnPolygonClickListener(new GoogleMap.OnPolygonClickListener() {
+
+			@Override
+			public void onPolygonClick(Polygon polygon) {
+				onPolygonPress(polygon);
+			}
+		});
+
+		_googleMap.setOnPolylineClickListener(new GoogleMap.OnPolylineClickListener() {
+
+			@Override
+			public void onPolylineClick(Polyline polyline) {
+				onPolylinePress(polyline);
+			}
+		});
+
+		_googleMap.setOnCircleClickListener(new GoogleMap.OnCircleClickListener() {
+
+			@Override
+			public void onCircleClick(Circle circle) {
+				onCirclePress(circle);
+			}
+		});
+
 		if (_callback!=null)
 			_callback.onReady();
+	}
+
+	void onPolygonPress(Polygon polygon)
+	{
+		_callback.onPolygonPress(polygon);
+	}
+
+	void onPolylinePress(Polyline polyline)
+	{
+		_callback.onPolylinePress(polyline);
+	}
+
+	void onCirclePress(Circle circle)
+	{
+		_callback.onCirclePress(circle);
 	}
 
 	private boolean onMarkerPress(Marker marker)
@@ -298,7 +355,7 @@ public class FuseMap extends FrameLayout {
 		return null;
 	}
 
-	public String AddOverlay(int type, double[] coordinates, int strokeColor, int fillColor, int lineWidth, boolean geodesic, int startCap, int endCap, int joinType, int[] dashPattern, double centerLatitude, double centerLongitude, double radius)
+	public String AddOverlay(int type, double[] coordinates, int strokeColor, int fillColor, int lineWidth, boolean geodesic, int startCap, int endCap, int joinType, int[] dashPattern, double centerLatitude, double centerLongitude, double radius, int uid)
 	{
 		int jointType = selectJointType(joinType);
 		List<PatternItem> pattern = constructPattern(dashPattern);
@@ -309,30 +366,33 @@ public class FuseMap extends FrameLayout {
 		{
 			case 1:
 				Polygon polygon = drawPolygon(points, strokeColor, fillColor, lineWidth, geodesic, jointType, pattern);
-				_polygons.add(polygon);
+				polygon.setClickable(true);
+				_polygons.put(polygon, uid);
 				return polygon.getId();
 			case 2:
 				Circle circle = drawCircle(new LatLng(centerLatitude, centerLongitude), radius, strokeColor, fillColor, lineWidth, pattern);
-				_circles.add(circle);
+				circle.setClickable(true);
+				_circles.put(circle, uid);
 				return circle.getId();
 			default:
 				Polyline polyline = drawPolyline(points, strokeColor, lineWidth, geodesic, startCap, endCap, jointType, pattern);
-				_polylines.add(polyline);
+				polyline.setClickable(true);
+				_polylines.put(polyline, uid);
 				return polyline.getId();
 		}
 	}
 
 	public void clearOverlays()
 	{
-		for (Polyline polyline : _polylines) {
+		for (Polyline polyline : _polylines.keySet()) {
 			polyline.remove();
 		}
 		_polylines.clear();
-		for (Polygon polygon : _polygons) {
+		for (Polygon polygon : _polygons.keySet()) {
 			polygon.remove();
 		}
 		_polygons.clear();
-		for (Circle circle : _circles) {
+		for (Circle circle : _circles.keySet()) {
 			circle.remove();
 		}
 		_circles.clear();
