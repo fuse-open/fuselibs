@@ -136,7 +136,7 @@ namespace Fuse.Alerts
 		}
 
 		[Foreign(Language.Java)]
-		extern (android) static void AlertNative(String title, String message, String okButtonLabel, Action onOK)
+		extern (android) internal static void AlertNative(String title, String message, String okButtonLabel, Action onOK)
 		@{
 			Runnable r = new Runnable() {
 				@Override
@@ -159,7 +159,7 @@ namespace Fuse.Alerts
 		@}
 
 		[Foreign(Language.Java)]
-		extern (android) static void ConfirmNative(String title, String message, String okButtonLabel, String cancelButtonLabel, Action onOK, Action onCancel)
+		extern (android) internal static void ConfirmNative(String title, String message, String okButtonLabel, String cancelButtonLabel, Action onOK, Action onCancel)
 		@{
 			Runnable r = new Runnable() {
 				@Override
@@ -207,7 +207,7 @@ namespace Fuse.Alerts
 		}
 
 		[Foreign(Language.ObjC)]
-		extern (iOS) static void AlertNative(String title, String message, String okButtonLabel, Action onOK)
+		extern (iOS) internal static void AlertNative(String title, String message, String okButtonLabel, Action onOK)
 		@{
 			UIAlertController* alert = [UIAlertController
 				alertControllerWithTitle:title
@@ -228,7 +228,7 @@ namespace Fuse.Alerts
 		@}
 
 		[Foreign(Language.ObjC)]
-		extern (iOS) static void ConfirmNative(String title, String message, String okButtonLabel, String cancelButtonLabel, Action onOK, Action onCancel)
+		extern (iOS) internal static void ConfirmNative(String title, String message, String okButtonLabel, String cancelButtonLabel, Action onOK, Action onCancel)
 		@{
 			UIAlertController* modalAlert = [UIAlertController
 				alertControllerWithTitle:title

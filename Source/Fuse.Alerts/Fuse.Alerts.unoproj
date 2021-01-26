@@ -7,7 +7,8 @@
     "Uno.Threading"
   ],
   "Projects": [
-    "../Fuse.Scripting/Fuse.Scripting.unoproj"
+    "../Fuse.Scripting/Fuse.Scripting.unoproj",
+    "../Fuse/Fuse.unoproj"
   ],
   "Includes": [
     "*"
