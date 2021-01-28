@@ -8,7 +8,8 @@
   ],
   "Projects": [
     "../Fuse.Scripting/Fuse.Scripting.unoproj",
-    "../Fuse/Fuse.unoproj"
+    "../Fuse.Nodes/Fuse.Nodes.unoproj",
+    "../Fuse.Triggers/Fuse.Triggers.unoproj"
   ],
   "Includes": [
     "*"

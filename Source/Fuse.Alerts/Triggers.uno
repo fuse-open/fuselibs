@@ -58,7 +58,7 @@ namespace Fuse
 
 		string _title = "Alert";
 		/**
-		The title of the alert dialog
+			The title of the alert dialog
 		*/
 		public string Title
 		{
@@ -73,7 +73,7 @@ namespace Fuse
 		}
 
 		/**
-		String message to show in the dialog
+			String message to show in the dialog
 		*/
 		public string Message
 		{
@@ -82,7 +82,7 @@ namespace Fuse
 
 		string _okLabel = "OK";
 		/**
-		Ok label button on the alert dialog
+			Ok label button on the alert dialog
 		*/
 		public string OkLabelButton
 		{
@@ -97,7 +97,7 @@ namespace Fuse
 		}
 
 		/**
-		Optionally specifies a handler that will be called when this trigger is pulsed.
+			Optionally specifies a handler that will be called when this trigger is pulsed.
 		*/
 		public event AlertHandler Handler;
 
@@ -164,7 +164,7 @@ namespace Fuse
 
 		string _title = "Confirm";
 		/**
-		The title of the confirm dialog
+			The title of the confirm dialog
 		*/
 		public string Title
 		{
@@ -179,7 +179,7 @@ namespace Fuse
 		}
 
 		/**
-		String message to show in the dialog
+			String message to show in the dialog
 		*/
 		public string Message
 		{
@@ -188,7 +188,7 @@ namespace Fuse
 
 		string _okLabel = "OK";
 		/**
-		Ok label button on the confirm dialog
+			Ok label button on the confirm dialog
 		*/
 		public string OkLabelButton
 		{
@@ -204,7 +204,7 @@ namespace Fuse
 
 		string _cancelLabel = "Cancel";
 		/**
-		Cancel label button on the confirm dialog
+			Cancel label button on the confirm dialog
 		*/
 		public string CancelLabelButton
 		{
@@ -219,7 +219,7 @@ namespace Fuse
 		}
 
 		/**
-		Optionally specifies a handler that will be called when this trigger is pulsed.
+			Optionally specifies a handler that will be called when this trigger is pulsed.
 		*/
 		public event AlertHandler Handler;
 
