@@ -4,7 +4,7 @@ using Fuse.Triggers;
 using Fuse.Controls;
 
 /**
-	Trigger that will active while the @ScrollView is in motion
+	Trigger that will become active while the @ScrollView is in motion
 **/
 public class WhileScrolling : WhileTrigger
 {
