@@ -16,7 +16,7 @@ namespace Fuse.Controls
 
 		float2 GetSize()
 		{
-			if (Source == null)
+			if (Source == null || !_isLoaded)
 				return float2(0);
 
 			var size = Source.Size;

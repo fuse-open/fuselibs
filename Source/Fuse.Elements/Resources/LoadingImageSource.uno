@@ -60,7 +60,7 @@ namespace Fuse.Resources
 				return _texture;
 			}
 
-			LoadImage();
+			Load();
 			return _texture;
 		}
 
@@ -72,11 +72,11 @@ namespace Fuse.Resources
 				return _bytes;
 			}
 
-			LoadImage();
+			Load();
 			return _bytes;
 		}
 
-		void LoadImage()
+		public override void Load()
 		{
 			if (_loading || _failed)
 				return;
@@ -87,7 +87,7 @@ namespace Fuse.Resources
 		public override void Reload()
 		{
 			Cleanup( CleanupReason.Normal );
-			LoadImage();
+			Load();
 		}
 
 		protected void ChangePrep()
@@ -177,7 +177,7 @@ namespace Fuse.Resources
 			{
 				//must trigger load on Size request, since 0-layout size may result in GetTexture never being called
 				if (_texture == null)
-					LoadImage();
+					Load();
 				MarkUsed();
 				return _textureSize;
 			}

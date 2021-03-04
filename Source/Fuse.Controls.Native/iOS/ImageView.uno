@@ -64,6 +64,12 @@ namespace Fuse.Controls.Native.iOS
 			}
 		}
 
+		bool _isLoad = true;
+		public bool IsLoaded
+		{
+			set { _isLoad = value; }
+		}
+
 		void UpdateImage()
 		{
 			var c = _tintColor;
@@ -122,12 +128,14 @@ namespace Fuse.Controls.Native.iOS
 
 		void UpdateImage(FileImageSource fileImageSource)
 		{
-			ImageHandle = ImageLoader.Load(fileImageSource.File);
+			if (_isLoad)
+				ImageHandle = ImageLoader.Load(fileImageSource.File);
 		}
 
 		void UpdateImage(HttpImageSource http)
 		{
-			ImageLoader.Load(http).Then(OnImageLoaded, OnImageLoadFailed);
+			if (_isLoad)
+				ImageLoader.Load(http).Then(OnImageLoaded, OnImageLoadFailed);
 		}
 
 		void OnImageLoaded(ImageHandle handle)

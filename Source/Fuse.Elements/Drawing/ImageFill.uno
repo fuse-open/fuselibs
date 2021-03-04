@@ -42,7 +42,7 @@ namespace Fuse.Drawing
 			//trigger loading now, rather than waiting for Draw. This ensures the Busy status gets
 			//set correctly, and resolves. Something might be waiting for it to be ready before
 			//attempting to draw
-			if (_container.IsRooted)
+			if (_container.IsRooted && IsLoaded)
 				_container.GetTexture();
 		}
 
@@ -61,10 +61,13 @@ namespace Fuse.Drawing
 		static Selector _sourceName = "Source";
 		void IImageContainerOwner.OnSourceChanged()
 		{
-			CleanTempTexture();
-			OnPropertyChanged(_sourceName);
-			OnPropertyChanged(ILoadingStatic.IsLoadingName);
-			LoadNow();
+			if (IsLoaded)
+			{
+				CleanTempTexture();
+				OnPropertyChanged(_sourceName);
+				OnPropertyChanged(ILoadingStatic.IsLoadingName);
+				LoadNow();
+			}
 		}
 
 		bool ILoading.IsLoading
@@ -100,7 +103,7 @@ namespace Fuse.Drawing
 
 		float2 GetSize()
 		{
-			if (Source != null)
+			if (Source != null && IsLoaded)
 				return _container.Sizing.CalcContentSize( Source.Size, Source.PixelSize );
 			return float2(0);
 		}
@@ -141,7 +144,8 @@ namespace Fuse.Drawing
 			dp.Origin = origin;
 			dp.Size = contentDesiredSize * scale;
 			dp.UVClip = _container.Sizing.CalcClip( canvasSize, ref dp.Origin, ref dp.Size );
-			dp.Texture = _container.GetTexture();
+			if (IsLoaded)
+				dp.Texture = _container.GetTexture();
 
 			if (dp.Texture != null && !dp.Texture.IsPow2 && WrapMode == WrapMode.Repeat && !Texture2D.HaveNonPow2Support)
 			{
@@ -304,6 +308,60 @@ namespace Fuse.Drawing
 		bool IMemoryResource.IsPinned { get { return _container.IsRooted; } }
 		double IMemoryResource.LastUsed { get { return _lastUsed; } }
 		void IMemoryResource.SoftDispose() { CleanTempTexture(); }
+
+		bool _isLoaded = true;
+		/**
+			get the information of the image fetch status
+		*/
+		public bool IsLoaded
+		{
+			get { return _isLoaded; }
+		}
+
+		bool _autoLoad = true;
+		/**
+			Auto fetch and display the image data from the network or disk. The default value is `true`.
+			To enable lazy load of the image set this `AutoLoad` value to `false`, and then the later on set it to `true` to load the image.
+			You can also use the `LoadImage` trigger action to fetch the Image.
+		*/
+		public bool AutoLoad
+		{
+			get
+			{
+				return _autoLoad;
+			}
+			set
+			{
+				_autoLoad = value;
+				_isLoaded = _autoLoad;
+				CleanTempTexture();
+				LoadNow();
+			}
+		}
+
+		/**
+			Load the image from Url or Disk
+		*/
+		public void Load()
+		{
+			if (Source != null)
+			{
+				Source.Load();
+				_isLoaded = true;
+			}
+		}
+
+		/**
+			Reload the image from Url or Disk
+		*/
+		public void Reload()
+		{
+			if (Source != null)
+			{
+				Source.Reload();
+				_isLoaded = true;
+			}
+		}
 	}
 
 	class RepeatBaker

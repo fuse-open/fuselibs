@@ -12,7 +12,7 @@ namespace Fuse.Resources
 	{
 		static Dictionary<FileSource,WeakReference<FileImageSourceImpl>> _cache =
 			new Dictionary<FileSource,WeakReference<FileImageSourceImpl>>();
-		static public FileImageSourceImpl GetFileSource(FileSource file)
+		static public FileImageSourceImpl GetFileSource(FileSource file, int2 targetSize)
 		{
 			WeakReference<FileImageSourceImpl> value = null;
 			if(_cache.TryGetValue(file, out value))
@@ -23,7 +23,7 @@ namespace Fuse.Resources
 				_cache.Remove(file);
 			}
 
-			var nv = new FileImageSourceImpl(file);
+			var nv = new FileImageSourceImpl(file, targetSize);
 			_cache.Add(file, new WeakReference<FileImageSourceImpl>(nv));
 			return nv;
 		}
@@ -66,6 +66,10 @@ namespace Fuse.Resources
 	*/
 	public sealed class FileImageSource : ImageSource
 	{
+		/** The Target size of the image to resize.
+		*/
+		public int2 TargetSize { get; set; }
+
 		/** Specifies a path to an image file.
 
 		This file will automatically be added to the app as a bundle file.
@@ -80,7 +84,7 @@ namespace Fuse.Resources
 				if( value == null )
 					return;
 
-				var bf = FileImageSourceCache.GetFileSource(value);
+				var bf = FileImageSourceCache.GetFileSource(value, TargetSize);
 				_proxy.Attach(bf);
 			}
 		}
@@ -131,6 +135,7 @@ namespace Fuse.Resources
 		public override texture2D GetTexture() { return _proxy.GetTexture(); }
 		public override byte[] GetBytes() { return _proxy.GetBytes(); }
 		public override void Reload() { _proxy.Reload(); }
+		public override void Load() { _proxy.Load(); }
 		public override float SizeDensity { get { return Density; } }
 
 		//shared public interface
@@ -143,6 +148,7 @@ namespace Fuse.Resources
 	class FileImageSourceImpl : LoadingImageSource
 	{
 		FileSource _file;
+		int2 _targetSize;
 
 		[UXContent]
 		public FileSource File
@@ -150,12 +156,13 @@ namespace Fuse.Resources
 			get { return _file; }
 		}
 
-		public FileImageSourceImpl(FileSource file)
+		public FileImageSourceImpl(FileSource file, int2 targetSize)
 		{
 			if (file == null)
 				throw new ArgumentNullException(nameof(file));
 
 			_file = file;
+			_targetSize = targetSize;
 			_file.DataChanged += OnDataChanged;
 		}
 
@@ -196,6 +203,7 @@ namespace Fuse.Resources
 				}
 
 				var data = _file.ReadAllBytes();
+				data = ImageBackgroundLoad.ResizeImage(data, _targetSize);
 				_orientation = ExifData.FromByteArray(data).Orientation;
 				SetTexture(TextureLoader.Load2D(_file.Name, data));
 				SetBytes(data);
@@ -223,7 +231,8 @@ namespace Fuse.Resources
 			}
 
 			_loading = true;
-			new BackgroundLoad(_file, SuccessCallback, FailureCallback);
+			var imageBackgroundLoad = new ImageBackgroundLoad(_file, _targetSize, SuccessCallback, FailureCallback);
+			imageBackgroundLoad.Dispatch();
 			OnChanged();
 		}
 
@@ -240,58 +249,6 @@ namespace Fuse.Resources
 			_loading = false;
 			Cleanup(CleanupReason.Failed);
 			OnError("Loading image from file failed. " + e.Message, e);
-		}
-
-		//NOTE: a copy from HttpImageSource.BackgroundLoad with minor changes
-		class BackgroundLoad
-		{
-			FileSource _file;
-			Action<texture2D, byte[], ImageOrientation> _done;
-			Action<Exception> _fail;
-			Exception _exception;
-			ImageOrientation _orientation;
-			texture2D _tex;
-			byte[] _bytes;
-
-			public BackgroundLoad(FileSource file, Action<texture2D, byte[], ImageOrientation> done, Action<Exception> fail)
-			{
-				_file = file;
-				_done = done;
-				_fail = fail;
-
-				GraphicsWorker.Dispatch(Run);
-			}
-			public void Run()
-			{
-				try
-				{
-					_bytes = _file.ReadAllBytes();
-					_orientation = ExifData.FromByteArray(_bytes).Orientation;
-					_tex = TextureLoader.Load2D(_file.Name, _bytes);
-
-					if defined(OpenGL)
-						OpenGL.GL.Finish();
-
-					UpdateManager.PostAction(UIDoneCallback);
-				}
-				catch (Exception e)
-				{
-					_exception = e;
-					UpdateManager.PostAction(UIFailCallback);
-				}
-			}
-
-			void UIDoneCallback()
-			{
-				_done(_tex, _bytes, _orientation);
-			}
-
-			void UIFailCallback()
-			{
-				var e = _exception;
-				_exception = null;
-				_fail(e);
-			}
 		}
 	}
 }

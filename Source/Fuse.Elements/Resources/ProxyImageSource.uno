@@ -129,6 +129,12 @@ namespace Fuse.Resources
 				_impl.Reload();
 		}
 
+		public void Load()
+		{
+			if (_impl != null)
+				_impl.Load();
+		}
+
 		public void Release()
 		{
 			if (_impl != null)
