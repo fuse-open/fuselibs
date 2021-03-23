@@ -14,7 +14,7 @@ namespace Fuse.Scripting.JavaScript
 		public ModuleInstance(IThreadWorker worker, Reactive.JavaScript js)
 		{
 			for (var i = 0; i < js.Dependencies.Count; i++)
-				_deps.Add(js.Dependencies[i].Name, js.Dependencies[i].Value);
+				_deps[js.Dependencies[i].Name] = js.Dependencies[i].Value;
 
 			_js = js;
 			_worker = worker;
