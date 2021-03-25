@@ -17,6 +17,7 @@
   ],
   "Includes": [
     "*",
-    "Internal/*"
+    "Internal/*",
+    "StaticLayoutBuilder.java:Java:Android"
   ]
 }
