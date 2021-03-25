@@ -186,6 +186,9 @@ namespace Fuse.Android
 
 			android.text.TextPaint paint = (android.text.TextPaint)paintHandle;
 
+			if (android.os.Build.VERSION.SDK_INT < 23)
+				return com.fuse.android.text.StaticLayoutBuilder.create(text, 0, text.length(), paint, width, alignment, spacingMult, spacingAdd, includePad, android.text.TextUtils.TruncateAt.END, width, maxLines == 0 ? Integer.MAX_VALUE : maxLines);
+
 			android.text.StaticLayout.Builder builder = android.text.StaticLayout.Builder.obtain(text, 0, text.length(), paint, width);
 			return builder.setMaxLines(maxLines == 0 ? Integer.MAX_VALUE : maxLines)
 				.setAlignment(alignment)

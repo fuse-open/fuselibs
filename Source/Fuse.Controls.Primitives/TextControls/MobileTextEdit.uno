@@ -342,25 +342,28 @@ namespace Fuse.Controls
 
 			target.setHorizontallyScrolling(!isMultiline);
 
-			if (updateTextAlignment)
+			if (android.os.Build.VERSION.SDK_INT < 17)
 			{
-				// This piece of code fixes the textalignment issues we have
-				// been having for a long time. What happens is that TextView/EditText
-				// has some internal state for text alignment that is not updated when
-				// setting properties like textAlignment/gravity/scroll etc.
-				// Reading the TextView code, I found that the following method
-				// calls will hit the codepaths that update the text alignment state
-				target.setSelection(source.getSelectionStart(), source.getSelectionEnd());
-				target.layout(0, 0, width, height);
-				target.onPreDraw();
-			}
-			else
-			{
-				// One cause of the issue above is that the source TextEdit's scrollposition
-				// does not have a valid value. One frame after changing textalignment this state
-				// will be valid
-				target.setScrollX(source.getScrollX());
-				target.setScrollY(source.getScrollY());
+				if (updateTextAlignment)
+				{
+					// This piece of code fixes the textalignment issues we have
+					// been having for a long time. What happens is that TextView/EditText
+					// has some internal state for text alignment that is not updated when
+					// setting properties like textAlignment/gravity/scroll etc.
+					// Reading the TextView code, I found that the following method
+					// calls will hit the codepaths that update the text alignment state
+					target.setSelection(source.getSelectionStart(), source.getSelectionEnd());
+					target.layout(0, 0, width, height);
+					target.onPreDraw();
+				}
+				else
+				{
+					// One cause of the issue above is that the source TextEdit's scrollposition
+					// does not have a valid value. One frame after changing textalignment this state
+					// will be valid
+					target.setScrollX(source.getScrollX());
+					target.setScrollY(source.getScrollY());
+				}
 			}
 		@}
 
