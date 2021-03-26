@@ -1,0 +1,24 @@
+{
+	"Title": "TextTest",
+	"Description": "Text testing",
+	"Copyright": "Copyright © 2021 $(Publisher)",
+	"Developer": "andrewq@redblueprint.com",
+	"Version": "1.0",
+	"VersionCode": 1000,
+	"Includes": [
+		"*"
+	],
+	"Packages": [
+		"Fuse",
+		"FuseJS"
+	],
+	"Android": {
+	    "Architectures": {
+	      "Debug": ["armeabi-v7a", "arm64-v8a"],
+	      "Release": ["armeabi-v7a", "arm64-v8a"]
+	    },
+	},
+	"iOS": {
+		
+	}
+}
