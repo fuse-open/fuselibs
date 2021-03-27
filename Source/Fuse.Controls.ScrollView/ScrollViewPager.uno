@@ -2,6 +2,7 @@ using Uno;
 using Uno.UX;
 
 using Fuse.Reactive;
+using Fuse.Layouts;
 
 namespace Fuse.Controls
 {
@@ -80,6 +81,17 @@ namespace Fuse.Controls
 			set { _each = value; }
 		}
 
+		Layout _layout;
+		/**
+			The `Layout` instance to read offsets from. This property is optional.
+			If not set, the first Layout child will be used.
+		*/
+		public Layout Layout
+		{
+			get { return _layout; }
+			set { _layout = value; }
+		}
+
 		ScrollViewBase _scrollable;
 		protected override void OnRooted()
 		{
@@ -97,7 +109,7 @@ namespace Fuse.Controls
 			_scrollable = Parent.FindByType<ScrollViewBase>();
 			if (_scrollable == null)
 			{
-				Fuse.Diagnostics.UserError( "Could not find a Scrollable control.", this );
+				Fuse.Diagnostics.UserError( "Could not find a Scrollable control", this );
 				return;
 			}
 
@@ -107,6 +119,23 @@ namespace Fuse.Controls
 				Fuse.Diagnostics.UserError( "The ScrollView should have `LayoutMode=\"PreserveVisual\"` for paging to work correctly", this );
 				return;
 			}
+
+			if (_layout == null)
+			{
+				// find first Layout
+				foreach (var child in _scrollable.Children)
+				{
+					if (child is Visual)
+					{
+						child.VisitSubtree((n) => {
+							if (n is Panel) _layout = (n as Panel).Layout;
+						});
+						if (_layout != null) break;
+					}
+				}
+			}
+			if defined(DEBUG)
+				debug_log "[ScrollViewPager] OnRooted() " + "Layout=" + _layout;
 
 			_scrollable.AddPropertyListener(this);
 			_prevActualSize = float2(0);
@@ -198,6 +227,7 @@ namespace Fuse.Controls
 
 		bool _nearTrueEnd;
 		bool _nearTrueStart;
+
 		void CheckPosition()
 		{
 			if (_pendingSizing || _scrollable == null)
@@ -226,7 +256,11 @@ namespace Fuse.Controls
 				var count = Each.DataCount;
 
 				if (offset + limit < count)
-					Each.Offset = offset + 1;
+				{
+					Each.Offset = offset + _layout.GetNextOffset();
+					if defined(DEBUG) 
+						debug_log "[ScrollViewPager] nearEnd, Each.Offset=" + Each.Offset;
+				}
 				else
 					nearTrueEnd = true;
 			}
@@ -234,7 +268,11 @@ namespace Fuse.Controls
 			{
 				var offset = Each.Offset;
 				if (offset > 0)
-					Each.Offset = offset - 1;
+				{
+					Each.Offset = Math.Max(0, offset - _layout.GetPrevOffset());
+					if defined(DEBUG) 
+						debug_log "[ScrollViewPager] nearStart, Each.Offset=" + Each.Offset;
+				}
 				else
 					nearTrueStart = true;
 			}
@@ -278,6 +316,8 @@ namespace Fuse.Controls
 				{
 					Each.Limit = limit + 1;
 					changed = true;
+					if defined(DEBUG) 
+						debug_log "[ScrollViewPager] Pages < Retain, Each.Limit=" + Each.Limit;
 				}
 			}
 			else if (scalarPages > Retain &&
@@ -291,14 +331,18 @@ namespace Fuse.Controls
 				{
 					Each.Limit = limit - 1;
 					changed = true;
+					if defined(DEBUG) 
+						debug_log "[ScrollViewPager] Pages > Retain, Each.Limit=" + Each.Limit;
 				}
 			}
+
+			_prevActualSize = _scrollable.ActualSize;
 
 			if (!changed)
 			{
 				//only check once the sizing is done to prevent needless event calls while still doing layout
 				//of several items.
-				CheckPosition();
+				UpdateManager.PerformNextFrame(CheckPosition);
 				return;
 			}
 
