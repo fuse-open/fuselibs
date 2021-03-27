@@ -68,6 +68,16 @@ namespace Fuse.Layouts
 		{
 		}
 
+		virtual public int GetPrevOffset()
+		{
+			return -1;
+		}
+
+		virtual public int GetNextOffset()
+		{
+			return 1;
+		}
+
 		//true at the start of rooting, prior to OnRooted call
 		internal bool IsRootingStarted { get { return Container != null; } }
 
