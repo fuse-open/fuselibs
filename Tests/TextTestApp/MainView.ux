@@ -1,119 +1,241 @@
 <App>
-	<ScrollView>
-		<StackPanel Alignment="Center" Padding="10" MinHeight="2000" Width="100%">
-			<StackPanel Alignment="CenterLeft" ItemSpacing="5" Width="100%">
+	<DockPanel>
+		<ScrollView>
+			<StackPanel Alignment="Center" Padding="10" MinHeight="2000" Width="100%">
+				<StackPanel Alignment="CenterLeft" ItemSpacing="5" Width="100%">
 
-				<Rectangle Color="#222" Width="100%" Height="0" Margin="20" />
+					<Rectangle Color="#222" Width="100%" Height="0" Margin="20" />
 
-				<Text Value="Normal Text" Font="Bold" FontSize="18" Margin="0,0,0,10" />
+					<Text Value="Normal Text" Font="Bold" FontSize="18" Margin="0,0,0,10" />
 
-				<Text Value="UltraLight sample text" Font="UltraLight"/>
-				<Text Value="Thin sample text" Font="Thin"/>
-				<Text Value="Light sample text" Font="Light"/>
-				<Text Value="Regular sample text" Font="Regular"/>
-				<Text Value="Medium sample text" Font="Medium"/>
-				<Text Value="Semibold sample text" Font="Semibold"/>
-				<Text Value="Bold sample text" Font="Bold"/>
-				<Text Value="Heavy sample text" Font="Heavy"/>
-				<Text Value="Black sample text" Font="Black"/>
+					<Text Value="UltraLight sample text" Font="UltraLight"/>
+					<Text Value="Thin sample text" Font="Thin"/>
+					<Text Value="Light sample text" Font="Light"/>
+					<Text Value="Regular sample text" Font="Regular"/>
+					<Text Value="Medium sample text" Font="Medium"/>
+					<Text Value="Semibold sample text" Font="Semibold"/>
+					<Text Value="Bold sample text" Font="Bold"/>
+					<Text Value="Heavy sample text" Font="Heavy"/>
+					<Text Value="Black sample text" Font="Black"/>
 
-				<Rectangle Color="#222" Width="100%" Height="0" Margin="20" />
+					<Rectangle Color="#222" Width="100%" Height="0" Margin="20" />
 
-				<Text Value="Italic Text" Font="Bold" FontSize="18" Margin="0,0,0,10" />
+					<Text Value="Italic Text" Font="Bold" FontSize="18" Margin="0,0,0,10" />
 
-				<Text Value="UltraLightItalic sample text" Font="UltraLightItalic"/>
-				<Text Value="ThinItalic sample text" Font="ThinItalic"/>
-				<Text Value="LightItalic sample text" Font="LightItalic"/>
-				<Text Value="Italic sample text" Font="Italic"/>
-				<Text Value="MediumItalic sample text" Font="MediumItalic"/>
-				<Text Value="SemiboldItalic sample text" Font="SemiboldItalic"/>
-				<Text Value="BoldItalic sample text" Font="BoldItalic"/>
-				<Text Value="HeavyItalic sample text" Font="HeavyItalic"/>
-				<Text Value="BlackItalic sample text" Font="BlackItalic"/>
+					<Text Value="UltraLightItalic sample text" Font="UltraLightItalic"/>
+					<Text Value="ThinItalic sample text" Font="ThinItalic"/>
+					<Text Value="LightItalic sample text" Font="LightItalic"/>
+					<Text Value="Italic sample text" Font="Italic"/>
+					<Text Value="MediumItalic sample text" Font="MediumItalic"/>
+					<Text Value="SemiboldItalic sample text" Font="SemiboldItalic"/>
+					<Text Value="BoldItalic sample text" Font="BoldItalic"/>
+					<Text Value="HeavyItalic sample text" Font="HeavyItalic"/>
+					<Text Value="BlackItalic sample text" Font="BlackItalic"/>
 
-			</StackPanel>
-
-			<Rectangle Color="#222" Width="100%" Height="1" Margin="20" />
-
-			<StackPanel Alignment="CenterLeft" ItemSpacing="5" Width="100%">
-
-				<Text Value="LTR Single Line Text with only TextAlignment" Font="Bold" FontSize="18" TextWrapping="Wrap" Margin="0,0,0,10" />
-
-				<Text Value="Left Default TextAlignment" />
-				<Text Value="Left TextAlignment" TextAlignment="Left" />
-				<Text Value="Center TextAlignment" TextAlignment="Center" />
-				<Text Value="Right TextAlignment" TextAlignment="Right" />
-
-				<Rectangle Color="#222" Width="100%" Height="0" Margin="20" />
-
-				<Text Value="RTL Single Line Text" Font="Bold" FontSize="18" Margin="0,0,0,10" />
-				
-				<Text Value="محاذاة النص الافتراضية اليسرى" />
-				<Text Value="محاذاة النص الأيسر" TextAlignment="Left" />
-				<Text Value="توسيط TextAlignment" TextAlignment="Center" />
-				<Text Value="محاذاة النص الصحيحة" TextAlignment="Right" />
+				</StackPanel>
 
 				<Rectangle Color="#222" Width="100%" Height="1" Margin="20" />
 
+				<StackPanel Alignment="CenterLeft" ItemSpacing="5" Width="100%">
 
-				<Text Value="LTR Multi-Line Text" Font="Bold" FontSize="18" Margin="0,0,0,10" />
+					<Text Value="LTR Single Line Text with only TextAlignment" Font="Bold" FontSize="18" TextWrapping="Wrap" Margin="0,0,0,10" />
 
-				<Text Value="The quick brown fox jumps over the lazy dog. Sphinx of black quartz, judge my vow. Jackdaws love my big sphinx of quartz. Pack my box with five dozen liquor jugs. The quick onyx goblin jumps over the lazy dwarf. Cwm fjord bank glyphs vext quiz. How razorback-jumping frogs can level six piqued gymnasts! Cozy lummox gives smart squid who asks for job pen. Amazingly few discotheques provide jukeboxes." FontSize="12" TextWrapping="Wrap" Margin="0,0,0,10" />
+					<Text Value="Left Default TextAlignment" />
+					<Text Value="Left TextAlignment" TextAlignment="Left" />
+					<Text Value="Center TextAlignment" TextAlignment="Center" />
+					<Text Value="Right TextAlignment" TextAlignment="Right" />
+
+					<Rectangle Color="#222" Width="100%" Height="0" Margin="20" />
+
+					<Text Value="RTL Single Line Text" Font="Bold" FontSize="18" Margin="0,0,0,10" />
+					
+					<Text Value="محاذاة النص الافتراضية اليسرى" />
+					<Text Value="محاذاة النص الأيسر" TextAlignment="Left" />
+					<Text Value="توسيط TextAlignment" TextAlignment="Center" />
+					<Text Value="محاذاة النص الصحيحة" TextAlignment="Right" />
+
+					<Rectangle Color="#222" Width="100%" Height="1" Margin="20" />
 
 
-				<Text Value="RTL Multi-Line Text with TextAlignment and Alignment Right" Font="Bold" FontSize="18" TextWrapping="Wrap"/>
-				<Text Value="Example Image of what the RTL version should similarly look like in Arabic" Font="Regular" TextWrapping="Wrap"/>
-				<Image File="rtl_example_1_arabic.png" />
-				<Text Value="الثعلب البني السريع يقفز فوق الكلب الكسول. أبو الهول من الكوارتز الأسود ، احكم على نذري. الغربان تحب أبو الهول الكبير من الكوارتز. قم بوضع خمسة أباريق من الخمر في صندوقي وإغلاقه. يقفز عفريت الجزع السريع فوق القزم الكسول. Cwm Fjord bank glyphs vext quiz. كيف يمكن للضفادع التي تقفز شائكة رفع مستوى ستة لاعبين منزعج! يعطي Cozy lummox الحبار الذكي الذي يطلب قلم العمل. عدد قليل من المراقص يقدمون صناديق الموسيقى." FontSize="12" TextWrapping="Wrap" TextAlignment="Right" Alignment="Right" Margin="0,0,0,10" />
+					<Text Value="LTR Multi-Line Text" Font="Bold" FontSize="18" Margin="0,0,0,10" />
 
-				<Text Value="Example Image of what the RTL version should similarly look like in Hebrew" Font="Regular" TextWrapping="Wrap"/>
-				<Image File="rtl_example_1_hebrew.png" />
-				<Text Value="השועל החום המהיר קופץ מעל הכלב העצלן. ספינקס של קוורץ שחור, שפט את הנדר שלי. שבלונות אוהבות את הספינקס הגדול שלי של קוורץ. ארז את הקופסה שלי עם חמישה תריסר קנקני משקאות. גובלין האוניקס המהיר קופץ מעל הגמד העצלן. Cwm Fjord Bank glyphs vext quiz. כמה צפרדעים שקופצות תער יכולות לרמות שישה מתעמלות מעוררות! לומוקס נעים נותן דיונון חכם שמבקש עט עבודה. להפליא מעט דיסקוטקים מספקים תיבות נגינה." FontSize="12" TextWrapping="Wrap" TextAlignment="Right" Alignment="Right" />
+					<Text Value="The quick brown fox jumps over the lazy dog. Sphinx of black quartz, judge my vow. Jackdaws love my big sphinx of quartz. Pack my box with five dozen liquor jugs. The quick onyx goblin jumps over the lazy dwarf. Cwm fjord bank glyphs vext quiz. How razorback-jumping frogs can level six piqued gymnasts! Cozy lummox gives smart squid who asks for job pen. Amazingly few discotheques provide jukeboxes." FontSize="12" TextWrapping="Wrap" Margin="0,0,0,10" />
+
+
+					<Text Value="RTL Multi-Line Text with TextAlignment LEFT" Font="Bold" FontSize="20" TextWrapping="Wrap"/>
+					<Text Value="Example Image of what the RTL version should similarly look like in Arabic" Font="Regular" TextWrapping="Wrap"/>
+					<Image File="rtl_example_1_arabic.png" />
+					<Android>
+						<Text TextAlignment="Left" Value="الثعلب البني السريع يقفز فوق الكلب الكسول. أبو الهول من الكوارتز الأسود ، احكم على نذري. الغربان تحب أبو الهول الكبير من الكوارتز. قم بوضع خمسة أباريق من الخمر في صندوقي وإغلاقه. يقفز عفريت الجزع السريع فوق القزم الكسول. Cwm Fjord bank glyphs vext quiz. كيف يمكن للضفادع التي تقفز شائكة رفع مستوى ستة لاعبين منزعج! يعطي Cozy lummox الحبار الذكي الذي يطلب قلم العمل. عدد قليل من المراقص يقدمون صناديق الموسيقى." FontSize="12" TextWrapping="Wrap"  Margin="0,0,0,10" />
+					</Android>
+					<iOS>
+						<Text TextAlignment="Right" Value="الثعلب البني السريع يقفز فوق الكلب الكسول. أبو الهول من الكوارتز الأسود ، احكم على نذري. الغربان تحب أبو الهول الكبير من الكوارتز. قم بوضع خمسة أباريق من الخمر في صندوقي وإغلاقه. يقفز عفريت الجزع السريع فوق القزم الكسول. Cwm Fjord bank glyphs vext quiz. كيف يمكن للضفادع التي تقفز شائكة رفع مستوى ستة لاعبين منزعج! يعطي Cozy lummox الحبار الذكي الذي يطلب قلم العمل. عدد قليل من المراقص يقدمون صناديق الموسيقى." FontSize="12" TextWrapping="Wrap"  Margin="0,0,0,10" />
+					</iOS>
+
+					<Text Value="Example Image of what the RTL version should similarly look like in Hebrew" Font="Regular" TextWrapping="Wrap"/>
+					<Image File="rtl_example_1_hebrew.png" />
+					<Android>
+						<Text TextAlignment="Left" Value="השועל החום המהיר קופץ מעל הכלב העצלן. ספינקס של קוורץ שחור, שפט את הנדר שלי. שבלונות אוהבות את הספינקס הגדול שלי של קוורץ. ארז את הקופסה שלי עם חמישה תריסר קנקני משקאות. גובלין האוניקס המהיר קופץ מעל הגמד העצלן. Cwm Fjord Bank glyphs vext quiz. כמה צפרדעים שקופצות תער יכולות לרמות שישה מתעמלות מעוררות! לומוקס נעים נותן דיונון חכם שמבקש עט עבודה. להפליא מעט דיסקוטקים מספקים תיבות נגינה." FontSize="12" TextWrapping="Wrap"  Margin="0,0,0,10"  />
+					</Android>
+					<iOS>
+						<Text TextAlignment="Right" Value="השועל החום המהיר קופץ מעל הכלב העצלן. ספינקס של קוורץ שחור, שפט את הנדר שלי. שבלונות אוהבות את הספינקס הגדול שלי של קוורץ. ארז את הקופסה שלי עם חמישה תריסר קנקני משקאות. גובלין האוניקס המהיר קופץ מעל הגמד העצלן. Cwm Fjord Bank glyphs vext quiz. כמה צפרדעים שקופצות תער יכולות לרמות שישה מתעמלות מעוררות! לומוקס נעים נותן דיונון חכם שמבקש עט עבודה. להפליא מעט דיסקוטקים מספקים תיבות נגינה." FontSize="12" TextWrapping="Wrap"  Margin="0,0,0,10"  />
+					</iOS>
+
+					
+					<Text ux:Name="address_text" Value="האם התכוונת ל 15 Bay Street, Laurel, CA?" FontSize="12" TextWrapping="Wrap"  Margin="0,0,0,10"  />
+					<iOS>
+						<Change address_text.TextAlignment="Right" />
+					</iOS>
+
+
+				</StackPanel>
+
+				<Rectangle Color="#222" Width="100%" Height="1" Margin="20" />
+
+				<StackPanel Alignment="CenterLeft" ItemSpacing="5" Width="100%">
+
+					<Text Value="Current Text Input" Font="Bold" FontSize="20" TextWrapping="Wrap" Margin="0,0,0,10" />
+
+					<Text Value="LTR Text Inputs" Font="Bold" FontSize="18" TextWrapping="Wrap" Margin="0,0,0,10" />
+
+					<Text Value="Default TextAlignment" Font="Bold" FontSize="16" TextWrapping="Wrap" Margin="0,0,0,0" />
+					<MyTextInput Value="Default TextAlignment" Margin="0,0,0,10" />
+					<Text Value="Left TextAlignment" Font="Bold" FontSize="16" TextWrapping="Wrap" Margin="0,0,0,0" />
+					<MyTextInput Value="Left TextAlignment" TextAlignment="Left" Margin="0,0,0,10" />
+					<Text Value="Center TextAlignment" Font="Bold" FontSize="16" TextWrapping="Wrap" Margin="0,0,0,0" />
+					<MyTextInput Value="Center TextAlignment" TextAlignment="Center" Margin="0,0,0,10" />
+					<Text Value="Right TextAlignment" Font="Bold" FontSize="16" TextWrapping="Wrap" Margin="0,0,0,0" />
+					<MyTextInput Value="Right TextAlignment" TextAlignment="Right" Margin="0,0,0,10" />
+
+					<Text Value="RTL Text Inputs" Font="Bold" FontSize="18" TextWrapping="Wrap" Margin="0,0,0,10" />
+
+					<Text Value="Default TextAlignment" Font="Bold" FontSize="16" TextWrapping="Wrap" Margin="0,0,0,0" />
+					<MyTextInput Value="محاذاة النص الافتراضية" Margin="0,0,0,10" />
+					<Text Value="Left TextAlignment" Font="Bold" FontSize="16" TextWrapping="Wrap" Margin="0,0,0,0" />
+					<MyTextInput Value="محاذاة النص الأيسر" TextAlignment="Left" Margin="0,0,0,10" />
+					<Text Value="Center TextAlignment" Font="Bold" FontSize="16" TextWrapping="Wrap" Margin="0,0,0,0" />
+					<MyTextInput Value="توسيط TextAlignment" TextAlignment="Center" Margin="0,0,0,10" />
+					<Text Value="Right TextAlignment" Font="Bold" FontSize="16" TextWrapping="Wrap" Margin="0,0,0,0" />
+					<MyTextInput Value="محاذاة النص الصحيحة" TextAlignment="Right" Margin="0,0,0,10" />
+
+
+					<Rectangle Color="#222" Width="100%" Height="0" Margin="10" />
+
+
+					<Text Value="Text Input Workaround (26 Mar 2021)" Font="Bold" FontSize="20" TextWrapping="Wrap" Margin="0,0,0,10" />
+
+					<Text Value="LTR Text Inputs" Font="Bold" FontSize="18" TextWrapping="Wrap" Margin="0,0,0,10" />
+
+					<Text Value="Default TextAlignment" Font="Bold" FontSize="16" TextWrapping="Wrap" Margin="0,0,0,0" />
+					<MyTextInputWorkaround Value="Default TextAlignment" Margin="0,0,0,10" />
+					<Text Value="Left TextAlignment" Font="Bold" FontSize="16" TextWrapping="Wrap" Margin="0,0,0,0" />
+					<MyTextInputWorkaround Value="Left TextAlignment" TextAlignment="Left" Margin="0,0,0,10" />
+					<Text Value="Center TextAlignment" Font="Bold" FontSize="16" TextWrapping="Wrap" Margin="0,0,0,0" />
+					<MyTextInputWorkaround Value="Center TextAlignment" TextAlignment="Center" Margin="0,0,0,10" />
+					<Text Value="Right TextAlignment" Font="Bold" FontSize="16" TextWrapping="Wrap" Margin="0,0,0,0" />
+					<MyTextInputWorkaround Value="Right TextAlignment" TextAlignment="Right" Margin="0,0,0,10" />
+
+					<Text Value="RTL Text Inputs" Font="Bold" FontSize="18" TextWrapping="Wrap" Margin="0,0,0,10" />
+
+					<Text Value="Default TextAlignment" Font="Bold" FontSize="16" TextWrapping="Wrap" Margin="0,0,0,0" />
+					<MyTextInputWorkaround Value="محاذاة النص الافتراضية" Margin="0,0,0,10" />
+					<Text Value="Left TextAlignment" Font="Bold" FontSize="16" TextWrapping="Wrap" Margin="0,0,0,0" />
+					<MyTextInputWorkaround Value="محاذاة النص الأيسر" TextAlignment="Left" Margin="0,0,0,10" />
+					<Text Value="Center TextAlignment" Font="Bold" FontSize="16" TextWrapping="Wrap" Margin="0,0,0,0" />
+					<MyTextInputWorkaround Value="توسيط TextAlignment" TextAlignment="Center" Margin="0,0,0,10" />
+					<Text Value="Right TextAlignment" Font="Bold" FontSize="16" TextWrapping="Wrap" Margin="0,0,0,0" />
+					<MyTextInputWorkaround Value="محاذاة النص الصحيحة" TextAlignment="Right" Margin="0,0,0,10" />
+
+
+
+
+					<Rectangle Color="#222" Width="100%" Height="0" Margin="20" />
+					
+
+
+					<Text Value="TextViews" Font="Bold" FontSize="18" TextWrapping="Wrap" Margin="0,0,0,10" />
+
+					<MyTextView Value="The quick brown fox jumps over the lazy dog. Sphinx of black quartz, judge my vow. Jackdaws love my big sphinx of quartz. Pack my box with five dozen liquor jugs. The quick onyx goblin jumps over the lazy dwarf. Cwm fjord bank glyphs vext quiz. How razorback-jumping frogs can level six piqued gymnasts! Cozy lummox gives smart squid who asks for job pen. Amazingly few discotheques provide jukeboxes." FontSize="12" TextAlignment="Left" Margin="0,0,0,10" />
+
+					<MyTextView Value="השועל החום המהיר קופץ מעל הכלב העצלן. ספינקס של קוורץ שחור, שפט את הנדר שלי. שבלונות אוהבות את הספינקס הגדול שלי של קוורץ. ארז את הקופסה שלי עם חמישה תריסר קנקני משקאות. גובלין האוניקס המהיר קופץ מעל הגמד העצלן. Cwm Fjord Bank glyphs vext quiz. כמה צפרדעים שקופצות תער יכולות לרמות שישה מתעמלות מעוררות! לומוקס נעים נותן דיונון חכם שמבקש עט עבודה. להפליא מעט דיסקוטקים מספקים תיבות נגינה." FontSize="12" TextAlignment="Right"  Margin="0,0,0,10"  />
+					
+
+					<Rectangle Color="#222" Width="100%" Height="0" Margin="100" />
+					
+
+					
+
+					<Panel ux:Class="MyTextInputWorkaround" IsFocusable="true" MinHeight="44" Padding="5" TextAlignment="Left" HitTestMode="LocalBounds" TextColor="#000" CaretColor="#000" PlaceholderColor="#ccc" CornerRadius="3" Width="250">
+						<float4 ux:Property="TextColor" />
+						<float4 ux:Property="PlaceholderColor" />
+						<float4 ux:Property="CaretColor" />
+						<float4 ux:Property="CornerRadius" />
+						<string ux:Property="Value" />
+						<string ux:Property="AutoCorrectHint" />
+						<string ux:Property="AutoCapitalizationHint" />
+						<string ux:Property="ActionStyle" />
+						<object ux:Property="ActionTriggered" />
+						<string ux:Property="TextAlignment" />
+
+						<TextInput ux:Name="input" 
+							Alignment="{ReadProperty TextAlignment}" 
+							Value="{ReadProperty Value}"
+							PlaceholderColor="{ReadProperty PlaceholderColor}"
+							TextColor="{ReadProperty TextColor}"
+							CaretColor="{ReadProperty CaretColor}"
+							ActionStyle="{ReadProperty ActionStyle}"
+							ActionTriggered="{ReadProperty ActionTriggered}"
+							AutoCorrectHint="{ReadProperty AutoCorrectHint}"
+							AutoCapitalizationHint="{ReadProperty AutoCapitalizationHint}"
+							Focus.Delegate="this" 
+							MinWidth="5">
+
+							<WhileFocused>
+								<Change input.TextAlignment="{ReadProperty TextAlignment}" />
+							</WhileFocused>
+
+							<WhileFocused Invert="true">
+								<Change input.TextAlignment="Left" />
+							</WhileFocused>
+
+						</TextInput>
+
+						<Clicked>
+							<GiveFocus TargetNode="input" />
+						</Clicked>
+
+						<Rectangle Layer="Background" Opacity="1" CornerRadius="{ReadProperty CornerRadius}">
+							<Stroke Width="1" Color="#CCC" />
+							<SolidColor Color="#FFF" />
+						</Rectangle>
+					</Panel>
+
+
+					<TextInput ux:Class="MyTextInput" FontSize="20" PlaceholderColor="#CCC" Padding="5" Width="250" Alignment="Center">
+						<Rectangle Layer="Background" CornerRadius="3">
+							<Stroke Width="1" Color="#CCC" />
+							<SolidColor Color="#FFF" />
+						</Rectangle>
+					</TextInput>
+
+					<TextView ux:Class="MyTextView" FontSize="20" TextWrapping="NoWrap" Padding="5" Width="250" Alignment="Center" TextColor="#000" CaretColor="#000">
+
+					    <Rectangle Layer="Background" CornerRadius="3">
+							<Stroke Width="1" Color="#CCC" />
+							<SolidColor Color="#FFF" />
+					    </Rectangle>
+
+					</TextView>
+
+				</StackPanel>
+
+
 			</StackPanel>
+		</ScrollView>
+		<BottomBarBackground Dock="Bottom" IncludesKeyboard="true" />
+	</DockPanel>
 
-			<Rectangle Color="#222" Width="100%" Height="1" Margin="20" />
+	
 
-			<StackPanel Alignment="CenterLeft" ItemSpacing="5" Width="100%">
-
-				<Text Value="LTR Text Inputs" Font="Bold" FontSize="18" TextWrapping="Wrap" Margin="0,0,0,10" />
-
-				<Text Value="Default TextAlignment" Font="Bold" FontSize="16" TextWrapping="Wrap" Margin="0,0,0,0" />
-				<MyTextInput Value="Default TextAlignment" Margin="0,0,0,10" />
-				<Text Value="Left TextAlignment" Font="Bold" FontSize="16" TextWrapping="Wrap" Margin="0,0,0,0" />
-				<MyTextInput Value="Left TextAlignment" TextAlignment="Left" Margin="0,0,0,10" />
-				<Text Value="Center TextAlignment" Font="Bold" FontSize="16" TextWrapping="Wrap" Margin="0,0,0,0" />
-				<MyTextInput Value="Center TextAlignment" TextAlignment="Center" Margin="0,0,0,10" />
-				<Text Value="Right TextAlignment" Font="Bold" FontSize="16" TextWrapping="Wrap" Margin="0,0,0,0" />
-				<MyTextInput Value="Right TextAlignment" TextAlignment="Right" Margin="0,0,0,10" />
-
-				<Text Value="RTL Text Inputs" Font="Bold" FontSize="18" TextWrapping="Wrap" Margin="0,0,0,10" />
-
-				<Text Value="Default TextAlignment" Font="Bold" FontSize="16" TextWrapping="Wrap" Margin="0,0,0,0" />
-				<MyTextInput Value="محاذاة النص الافتراضية" Margin="0,0,0,10" />
-				<Text Value="Left TextAlignment" Font="Bold" FontSize="16" TextWrapping="Wrap" Margin="0,0,0,0" />
-				<MyTextInput Value="محاذاة النص الأيسر" TextAlignment="Left" Margin="0,0,0,10" />
-				<Text Value="Center TextAlignment" Font="Bold" FontSize="16" TextWrapping="Wrap" Margin="0,0,0,0" />
-				<MyTextInput Value="توسيط TextAlignment" TextAlignment="Center" Margin="0,0,0,10" />
-				<Text Value="Right TextAlignment" Font="Bold" FontSize="16" TextWrapping="Wrap" Margin="0,0,0,0" />
-				<MyTextInput Value="محاذاة النص الصحيحة" TextAlignment="Right" Margin="0,0,0,10" />
-
-				<Rectangle Color="#222" Width="100%" Height="0" Margin="100" />
-				
-
-				<BottomBarBackground Dock="Bottom" IncludesKeyboard="true" />
-				
-
-				<TextInput ux:Class="MyTextInput" FontSize="20" PlaceholderColor="#ccc" Padding="5" Width="250" Alignment="Center">
-					<Rectangle Layer="Background" CornerRadius="3">
-						<Stroke Width="1" Color="#ccc" />
-						<SolidColor Color="White" />
-					</Rectangle>
-				</TextInput>
-
-			</StackPanel>
-
-
-		</StackPanel>
-	</ScrollView>
 	<Rectangle ux:Name="bk" Layer="Background" Color="#FFF" />
 </App>
