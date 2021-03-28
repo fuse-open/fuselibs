@@ -70,7 +70,7 @@ namespace Fuse.Layouts
 
 		virtual public int GetPrevOffset()
 		{
-			return -1;
+			return 1;
 		}
 
 		virtual public int GetNextOffset()
