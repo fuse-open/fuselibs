@@ -11,7 +11,8 @@
     "../Fuse.Launcher.Email/Fuse.Launcher.Email.unoproj",
     "../Fuse.Launcher.InterApp/Fuse.Launcher.InterApp.unoproj",
     "../Fuse.Launcher.Maps/Fuse.Launcher.Maps.unoproj",
-    "../Fuse.Launcher.Phone/Fuse.Launcher.Phone.unoproj"
+    "../Fuse.Launcher.Phone/Fuse.Launcher.Phone.unoproj",
+    "../Fuse.Launcher.InAppBrowser/Fuse.Launcher.InAppBrowser.unoproj",
   ],
   "Includes": [
     "Launcher.uno:Source",
