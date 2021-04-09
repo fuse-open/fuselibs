@@ -85,6 +85,7 @@
     "Resources/MultiDensityImageSource.uno:Source",
     "Resources/ProxyImageSource.uno:Source",
     "Resources/TextureImageSource.uno:Source",
+    "Resources/ImageBackgroundLoad.uno:Source",
     "Resources/Exif/Exif.uno",
     "Resources/Exif/MakeSureExifIsAlwaysIncluded.uxl:Extensions",
     "Transforms.uno:Source",

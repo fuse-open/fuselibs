@@ -154,6 +154,7 @@ namespace Fuse.Resources
 		public abstract texture2D GetTexture();
 		public abstract byte[] GetBytes();
 		public virtual void Reload() {}
+		public virtual void Load() {}
 
 		//We can't use just `Density` here: https://stackoverflow.com/questions/82437/why-is-it-impossible-to-override-a-getter-only-property-and-add-a-setter
 		public abstract float SizeDensity { get; }

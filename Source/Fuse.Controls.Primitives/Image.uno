@@ -119,6 +119,7 @@ namespace Fuse.Controls
 		}
 		void OnContainerSourceChanged(object s, object a )
 		{
+			_isLoaded = AutoLoad;
 			OnSourceChanged();
 		}
 
@@ -130,6 +131,7 @@ namespace Fuse.Controls
 			//fails to load
 			if (!_markedFailed && _container.Source.State == ImageSourceState.Failed)
 				OnSourceChanged();
+			_isLoaded = false;
 		}
 
 		void OnIsVisibleChanged(object s, object a)
@@ -230,6 +232,59 @@ namespace Fuse.Controls
 			}
 		}
 
+		bool _isLoaded = true;
+		/**
+			get the information of the image fetch status
+		*/
+		public bool IsLoaded
+		{
+			get { return _isLoaded; }
+		}
+
+		/**
+			Auto fetch and display the image data from the network or disk. The default value is `true`.
+			To enable lazy load of the image set this `AutoLoad` value to `false`, and then the later on set it to `true` to load the image.
+			You can also use the `LoadImage` trigger action to fetch the Image.
+		*/
+		bool _autoLoad = true;
+		public bool AutoLoad
+		{
+			get
+			{
+				return _autoLoad;
+			}
+			set
+			{
+				_autoLoad = value;
+				_isLoaded = _autoLoad;
+				OnParamChanged();
+			}
+		}
+
+		/**
+			Load the image from Url or Disk
+		*/
+		public void Load()
+		{
+			if (Source != null)
+			{
+				Source.Load();
+				_isLoaded = true;
+			}
+		}
+
+		/**
+			Reload the image from Url or Disk
+		*/
+		public void Reload()
+		{
+			if (Source != null)
+			{
+				Source.Reload();
+				_isLoaded = true;
+			}
+		}
+
 		/** @advanced */
 		public event EventHandler ParamChanged;
 		void OnParamChanged()
@@ -237,9 +292,12 @@ namespace Fuse.Controls
 			if (ParamChanged != null)
 				ParamChanged(this, EventArgs.Empty);
 
-			InvalidateLayout();
-			InvalidateRenderBounds();
-			UpdateNativeImageSource();
+			if (_isLoaded)
+			{
+				InvalidateLayout();
+				InvalidateRenderBounds();
+				UpdateNativeImageSource();
+			}
 		}
 
 		BusyTask _loadingTask;
@@ -249,23 +307,26 @@ namespace Fuse.Controls
 		bool _markedFailed;
 		void OnSourceChanged()
 		{
-			if (_container.Source != null)
-			{
-				_markedFailed = _container.Source.State == ImageSourceState.Failed;
-				bool isLoading = _container.Source.State == ImageSourceState.Loading;
-				BusyTask.SetBusy(this, ref _loadingTask,
-					_markedFailed ? BusyTaskActivity.Failed :
-					isLoading ? BusyTaskActivity.Loading : BusyTaskActivity.None,
-					_markedFailed ? (_lastError == null ? "unknown failure" : _lastError.Reason) : "");
-			}
-
 			if (SourceChanged != null)
 				SourceChanged(this, EventArgs.Empty);
 
-			InvalidateLayout();
-			InvalidateRenderBounds();
+			if (_isLoaded)
+			{
+				if (_container.Source != null)
+				{
+					_markedFailed = _container.Source.State == ImageSourceState.Failed;
+					bool isLoading = _container.Source.State == ImageSourceState.Loading;
+					BusyTask.SetBusy(this, ref _loadingTask,
+						_markedFailed ? BusyTaskActivity.Failed :
+						isLoading ? BusyTaskActivity.Loading : BusyTaskActivity.None,
+						_markedFailed ? (_lastError == null ? "unknown failure" : _lastError.Reason) : "");
+				}
 
-			UpdateNativeImageSource();
+				InvalidateLayout();
+				InvalidateRenderBounds();
+
+				UpdateNativeImageSource();
+			}
 		}
 
 		/** @advanced
@@ -369,6 +430,7 @@ namespace Fuse.Controls
 			var imageView = ImageView;
 			if (imageView != null)
 			{
+				imageView.IsLoaded = IsLoaded;
 				imageView.ImageSource = Source;
 				ImageView.TintColor = Color;
 			}

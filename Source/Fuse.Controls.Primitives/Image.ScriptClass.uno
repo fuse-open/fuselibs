@@ -11,6 +11,7 @@ namespace Fuse.Controls
 		static Image()
 		{
 			ScriptClass.Register(typeof(Image),
+				new ScriptMethod<Image>("load", load),
 				new ScriptMethod<Image>("reload", reload),
 				new ScriptMethod<Image>("retry", retry),
 				new ScriptMethod<Image>("clearCache", clearCache));
@@ -21,11 +22,19 @@ namespace Fuse.Controls
 
 			@scriptmethod reload( )
 		*/
+		static void load(Image img)
+		{
+			img.Load();
+		}
+
+		/**
+			Reload the image source.
+
+			@scriptmethod reload( )
+		*/
 		static void reload(Image img)
 		{
-			var src = img.Source;
-			if (src != null)
-				src.Reload();
+			img.Reload();
 		}
 
 		/**
@@ -37,7 +46,7 @@ namespace Fuse.Controls
 		{
 			var src = img.Source;
 			if (src != null && src.State == Fuse.Resources.ImageSourceState.Failed)
-				src.Reload();
+				img.Reload();
 		}
 
 		/**

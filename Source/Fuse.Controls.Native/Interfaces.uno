@@ -94,6 +94,7 @@ namespace Fuse.Controls.Native
 	{
 		ImageSource ImageSource { set; }
 		float4 TintColor { set; }
+		bool IsLoaded { set; }
 		void UpdateImageTransform(float density, float2 origin, float2 scale, float2 drawSize);
 	}
 

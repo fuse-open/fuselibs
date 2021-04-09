@@ -122,6 +122,12 @@ namespace Fuse.Controls.Native.Android
 			}
 		}
 
+		bool _isLoad = true;
+		public bool IsLoaded
+		{
+			set { _isLoad = value; }
+		}
+
 		Java.Object _imageView;
 
 		public ImageView() : base(CreateContainer())
@@ -175,12 +181,14 @@ namespace Fuse.Controls.Native.Android
 
 		void UpdateImage(FileImageSource fileImageSource)
 		{
-			ImageHandle = ImageLoader.Load(fileImageSource.File);
+			if (_isLoad)
+				ImageHandle = ImageLoader.Load(fileImageSource.File);
 		}
 
 		void UpdateImage(HttpImageSource http)
 		{
-			ImageLoader.Load(http).Then(OnImageLoaded, OnImageLoadFailed);
+			if (_isLoad)
+				ImageLoader.Load(http).Then(OnImageLoaded, OnImageLoadFailed);
 		}
 
 		void UpdateImage(MultiDensityImageSource multi)
