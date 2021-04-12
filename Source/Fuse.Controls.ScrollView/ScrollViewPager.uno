@@ -134,8 +134,8 @@ namespace Fuse.Controls
 					}
 				}
 			}
-			if defined(DEBUG)
-				debug_log "[ScrollViewPager] OnRooted() " + "Layout=" + _layout;
+			if defined(DEBUG_SCROLLVIEWPAGER)
+				debug_log "[ScrollViewPager.OnRooted()] Layout=" + _layout;
 
 			_scrollable.AddPropertyListener(this);
 			_prevActualSize = float2(0);
@@ -258,8 +258,8 @@ namespace Fuse.Controls
 				if (offset + limit < count)
 				{
 					Each.Offset = offset + _layout.GetNextOffset();
-					if defined(DEBUG) 
-						debug_log "[ScrollViewPager] nearEnd, Each.Offset=" + Each.Offset;
+					if defined(DEBUG_SCROLLVIEWPAGER) 
+						debug_log "[ScrollViewPager.CheckPosition()] nearEnd, Each.Offset=" + Each.Offset;
 				}
 				else
 					nearTrueEnd = true;
@@ -270,8 +270,8 @@ namespace Fuse.Controls
 				if (offset > 0)
 				{
 					Each.Offset = Math.Max(0, offset - _layout.GetPrevOffset());
-					if defined(DEBUG) 
-						debug_log "[ScrollViewPager] nearStart, Each.Offset=" + Each.Offset;
+					if defined(DEBUG_SCROLLVIEWPAGER) 
+						debug_log "[ScrollViewPager.CheckPosition()] nearStart, Each.Offset=" + Each.Offset;
 				}
 				else
 					nearTrueStart = true;
@@ -316,8 +316,8 @@ namespace Fuse.Controls
 				{
 					Each.Limit = limit + 1;
 					changed = true;
-					if defined(DEBUG) 
-						debug_log "[ScrollViewPager] Pages < Retain, Each.Limit=" + Each.Limit;
+					if defined(DEBUG_SCROLLVIEWPAGER) 
+						debug_log "[ScrollViewPager.CheckSizing()] Pages < Retain, Each.Limit=" + Each.Limit;
 				}
 			}
 			else if (scalarPages > Retain &&
@@ -331,8 +331,8 @@ namespace Fuse.Controls
 				{
 					Each.Limit = limit - 1;
 					changed = true;
-					if defined(DEBUG) 
-						debug_log "[ScrollViewPager] Pages > Retain, Each.Limit=" + Each.Limit;
+					if defined(DEBUG_SCROLLVIEWPAGER) 
+						debug_log "[ScrollViewPager.CheckSizing()] Pages > Retain, Each.Limit=" + Each.Limit;
 				}
 			}
 
