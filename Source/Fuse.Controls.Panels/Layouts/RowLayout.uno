@@ -5,6 +5,7 @@ using Uno.UX;
 using Fuse;
 using Fuse.Controls;
 using Fuse.Elements;
+using Fuse.Reactive;
 
 namespace Fuse.Layouts
 {
@@ -97,52 +98,134 @@ namespace Fuse.Layouts
 				}
 			}
 		}
-		
+
+		Each _each;
+		/**
+			The `Each` instance to control. This property is required.
+		*/
+		public Each Each
+		{
+			get { return _each; }
+			set { _each = value; }
+		}
+
+		override protected void OnRooted()
+		{
+			base.OnRooted();
+
+			if (_each == null)
+			{
+				// find first Each
+				foreach (var child in Container.Children)
+				{
+					if (child is Each)
+					{
+						_each = child as Each;
+						break;
+					}
+				}
+			}
+
+			if (Each == null)
+			{
+				Fuse.Diagnostics.UserError( "Require an Each", this );
+				return;
+			}
+
+			if defined(DEBUG_ROWLAYOUT)
+				debug_log "[RowLayout.OnRooted()] Each=" + Each;
+		}
+
 		int _offset;
-		Stack<int> _stack = new Stack<int>();
-		
+		Stack<int> _offsets = new Stack<int>();
+
 		override public int GetPrevOffset()
 		{
-			return _stack.Count > 0 ? _stack.Pop() : 0;
+			return _offsets.Count > 0 ? _offsets.Pop() : 0;
 		}
 
 		override public int GetNextOffset()
 		{
-			_stack.Push(_offset);
+			_offsets.Push(_offset);
 			return _offset;
 		}
 
-		internal override float2 GetContentSize(Visual container, LayoutParams lp)
-		{		
-			if defined(DEBUG) 
-				debug_log "[RowLayout] GetContentSize()";
-			return Arrange(container, lp);			
+		void recalcOffsets(LayoutParams lp)
+		{
+			var offset = Each.Offset;
+			
+			if defined(DEBUG_ROWLAYOUT) 
+				debug_log "[RowLayout.recalcOffsets()] Each.Offset=" + offset;
+			
+			_offsets.Clear();
+			if (offset > 0)
+			{
+				var array = Each.Items as IArray;
+				if (array != null)
+				{
+					var rowSize = RowSize;
+					var useRowSize = _hasRowSize;
+					var itemSpacing = ItemSpacing;
+					float x = 0.0f;
+					int cx = 0, rx = 0;
+					for (int i = 0; i <= offset; i++)
+					{
+						var item = array[i] as IObject;
+						float sy = useRowSize ? rowSize / Marshal.ToFloat(item["height"]) : 1.0f;
+						float w = Marshal.ToFloat(item["width"]) * sy;
+						if (x + w <= lp.X)
+						{
+							x += w + itemSpacing;
+							cx += 1;
+						}
+						else
+						{
+							_offsets.Push(Math.Max(1, cx));
+							x = w + itemSpacing;
+							cx = 1;
+							rx = i;
+						}
+					}
+					Each.Offset = rx;
+					//UpdateManager.PerformNextFrame(Container.InvalidateVisual, UpdateStage.Primary, 2); // Fix screen not refreshing on iOS
+				}
+			}
 		}
 
-		bool _arranging;
+		float _lastX = -1;
+
+		internal override float2 GetContentSize(Visual container, LayoutParams lp)
+		{
+			if defined(DEBUG_ROWLAYOUT) 
+				debug_log "[RowLayout.GetContentSize()]";
+
+			float2 size = Arrange(container, lp);
+			
+			if (_lastX != -1 && _lastX != size.X)
+				recalcOffsets(lp);
+			_lastX = size.X;
+			
+			return size;
+		}
+
 		internal override void ArrangePaddingBox(Visual container, float4 padding, LayoutParams lp)
 		{
-			if (_arranging)
-				return;
-			if defined(DEBUG) 
-				debug_log "[RowLayout] ArrangePaddingBox()";
+			if defined(DEBUG_ROWLAYOUT) 
+				debug_log "[RowLayout.ArrangePaddingBox()]";
+			
 			Arrange(container, lp, true, padding);
 		}
 
 		float2 Arrange(Visual container, LayoutParams lp, bool doArrange = false, float4 padding = float4(0))
 		{	
-			_arranging = doArrange;
-			
 			var rowSize = RowSize;
 			var rowSpacing = RowSpacing;
 			var useRowSize = _hasRowSize;
 			var itemSpacing = ItemSpacing;
 			var sizing = Sizing;
 
-			var nlp = lp.CloneAndDerive();
-
 			var vlp = useRowSize ? LayoutParams.CreateXY(float2(0.0f, rowSize), false, true) : LayoutParams.CreateEmpty();
-			var hlp = LayoutParams.CreateXY(float2(nlp.X, 0.0f), true, false);
+			var hlp = LayoutParams.CreateXY(float2(lp.X, 0.0f), true, false);
 			var slp = vlp.CloneAndDerive();
 			
 			float x = 0.0f, y = 0.0f, my = 0.0f, sy = 1.0f, sp = 0.0f;
@@ -155,7 +238,7 @@ namespace Fuse.Layouts
 			{
 				if (AffectsLayout(v))
 				{
-					for (z = v, x = 0.0f, my = 0.0f, cx = 0; z != null && (x + z.GetMarginSize(vlp).X <= nlp.X); z = z.NextSibling<Visual>(), cx++)
+					for (z = v, x = 0.0f, my = 0.0f, cx = 0; z != null && (x + z.GetMarginSize(vlp).X <= lp.X); z = z.NextSibling<Visual>(), cx++)
 					{
 						nsz = z.GetMarginSize(vlp);
 						x += nsz.X + itemSpacing;
@@ -175,10 +258,10 @@ namespace Fuse.Layouts
 					
 					if (useRowSize && sizing == RowLayoutSizing.Fill) // calc row scaling factor sy
 					{
-						if ((z != null && x - itemSpacing != nlp.X) || (z == null && x - itemSpacing > nlp.X * 0.75f)) // special treatment of last row
+						if ((z != null && x - itemSpacing != lp.X) || (z == null && x - itemSpacing > lp.X * 0.75f)) // special treatment of last row
 						{
 							sp = (cx - 1) * itemSpacing;
-							sy = (nlp.X - sp) / (x - itemSpacing - sp);
+							sy = (lp.X - sp) / (x - itemSpacing - sp);
 							my *= sy;
 						}
 						else
@@ -188,6 +271,7 @@ namespace Fuse.Layouts
 					}
 					for (i = 0, x = 0.0f; v != null && i < cx; v = v.NextSibling<Visual>(), i++)
 					{
+						// TODO: check if no RowSize is specified
 						slp.SetSize(float2(0.0f, rowSize * sy), false, true); // aspect scale
 						nsz = doArrange ? v.ArrangeMarginBox(float2(padding.X + x, padding.Y + y), slp) : v.GetMarginSize(slp);
 						x += nsz.X + itemSpacing;
@@ -200,9 +284,7 @@ namespace Fuse.Layouts
 					continue;
 				}
 			}
-			
-			_arranging = false;
-			return float2(nlp.X, y - rowSpacing);
+			return float2(lp.X, y - rowSpacing);
 		}
 	}
 }
