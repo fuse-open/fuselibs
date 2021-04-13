@@ -8,7 +8,8 @@
         </Method>
 
         <Method Signature="_access_background_location():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.ACCESS_BACKGROUND_LOCATION" />
+            <!-- Disabled due to errors when publishing on Google Play. Please add this permission manually if really needed. -->
+            <!-- <Require AndroidManifest.Permission="android.permission.ACCESS_BACKGROUND_LOCATION" /> -->
         </Method>
 
         <Method Signature="_access_coarse_location():Fuse.Android.Permissions.PlatformPermission">
