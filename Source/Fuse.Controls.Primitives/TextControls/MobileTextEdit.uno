@@ -335,15 +335,16 @@ namespace Fuse.Controls
 
 			target.setLayoutParams(new android.widget.FrameLayout.LayoutParams(width, height));
 
-			if (android.os.Build.VERSION.SDK_INT >= 17)
-				target.setTextAlignment(android.view.View.TEXT_ALIGNMENT_GRAVITY);
-
 			target.setGravity(source.getGravity());
 
-			target.setHorizontallyScrolling(!isMultiline);
-
-			if (android.os.Build.VERSION.SDK_INT < 17)
+			if (android.os.Build.VERSION.SDK_INT >= 17)
 			{
+				target.setTextAlignment(android.view.View.TEXT_ALIGNMENT_GRAVITY);
+				target.setHorizontallyScrolling(false);
+			}
+			else
+			{
+				target.setHorizontallyScrolling(!isMultiline);
 				if (updateTextAlignment)
 				{
 					// This piece of code fixes the textalignment issues we have
