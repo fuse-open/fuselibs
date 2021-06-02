@@ -133,18 +133,21 @@ namespace Fuse.Controls.Native.iOS
 		int GetTimePickerStyle(ObjC.Object timePickerHandle)
 		@{
 			#if defined(__IPHONE_13_4) && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_13_4
-			UIDatePicker *dp = (UIDatePicker *)timePickerHandle;
-			UIDatePickerStyle style = dp.datePickerStyle;
-			switch(style)
+			if (@available(iOS 13.4, *))
 			{
-				case UIDatePickerStyleAutomatic:
-					return 0;
-				case UIDatePickerStyleCompact:
-					return 1;
-				case UIDatePickerStyleInline:
-					return 2;
-				case UIDatePickerStyleWheels:
-					return 3;
+				UIDatePicker *dp = (UIDatePicker *)timePickerHandle;
+				UIDatePickerStyle style = dp.datePickerStyle;
+				switch(style)
+				{
+					case UIDatePickerStyleAutomatic:
+						return 0;
+					case UIDatePickerStyleCompact:
+						return 1;
+					case UIDatePickerStyleInline:
+						return 2;
+					case UIDatePickerStyleWheels:
+						return 3;
+				}
 			}
 			#endif
 			return 0;
@@ -154,24 +157,27 @@ namespace Fuse.Controls.Native.iOS
 		void SetTimePickerStyle(ObjC.Object timePickerHandle, int style)
 		@{
 			#if defined(__IPHONE_13_4) && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_13_4
-			UIDatePicker *dp = (UIDatePicker *)timePickerHandle;
-			UIDatePickerStyle datePickerStyle;
-			switch (style)
+			if (@available(iOS 13.4, *))
 			{
-				case 0:
-					datePickerStyle = UIDatePickerStyleAutomatic;
-					break;
-				case 1:
-					datePickerStyle = UIDatePickerStyleCompact;
-					break;
-				case 2:
-					datePickerStyle = UIDatePickerStyleInline;
-					break;
-				case 3:
-					datePickerStyle = UIDatePickerStyleWheels;
-					break;
+				UIDatePicker *dp = (UIDatePicker *)timePickerHandle;
+				UIDatePickerStyle datePickerStyle;
+				switch (style)
+				{
+					case 0:
+						datePickerStyle = UIDatePickerStyleAutomatic;
+						break;
+					case 1:
+						datePickerStyle = UIDatePickerStyleCompact;
+						break;
+					case 2:
+						datePickerStyle = UIDatePickerStyleInline;
+						break;
+					case 3:
+						datePickerStyle = UIDatePickerStyleWheels;
+						break;
+				}
+				[dp setPreferredDatePickerStyle:datePickerStyle];
 			}
-			[dp setPreferredDatePickerStyle:datePickerStyle];
 			#endif
 		@}
 	}
