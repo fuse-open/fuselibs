@@ -113,15 +113,19 @@ namespace Fuse.Controls
 					break;
 				case NavigatorSwipeDirection.LeftEdge:
 					_swipeGesture.Edge = Fuse.Gestures.Edge.Left;
+					_swipeGesture.HitSize = 10;
 					break;
 				case NavigatorSwipeDirection.RightEdge:
 					_swipeGesture.Edge = Fuse.Gestures.Edge.Right;
+					_swipeGesture.HitSize = 10;
 					break;
 				case NavigatorSwipeDirection.Top:
 					_swipeGesture.Edge = Fuse.Gestures.Edge.Top;
+					_swipeGesture.HitSize = 10;
 					break;
 				case NavigatorSwipeDirection.Bottom:
 					_swipeGesture.Edge = Fuse.Gestures.Edge.Bottom;
+					_swipeGesture.HitSize = 10;
 					break;
 			}
 		}
