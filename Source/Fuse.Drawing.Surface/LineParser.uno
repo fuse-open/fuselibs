@@ -223,7 +223,7 @@ namespace Fuse.Drawing
 					var b = ReadFloat2();
 					var pt = ReadFloat2();
 					var a = _hasPrevControlC ? -(_prevControl - _segments.CurPos) : float2(0);
-					_segments.BezierCurveTo(pt, a, b);
+					_segments.BezierCurveToRel(pt, a, b);
 					break;
 				}
 				case 'z':
