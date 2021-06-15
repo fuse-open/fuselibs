@@ -333,4 +333,24 @@ namespace Fuse.Reactive
 			return true;
 		}
 	}
+
+	[UXFunction("hsvColor")]
+	public class HsvColorFunction: TernaryOperator
+	{
+		[UXConstructor]
+		public HsvColorFunction([UXParameter("H")] Expression h,
+							[UXParameter("S")] Expression s,
+							[UXParameter("V")] Expression v) : base(h, s, v, Flags.None)
+		{
+		}
+
+		protected override bool TryCompute(object first, object second, object third, out object result)
+		{
+			var h = Fuse.Marshal.ToFloat(first);
+			var s = Fuse.Marshal.ToFloat(second);
+			var v = Fuse.Marshal.ToFloat(third);
+			result = Uno.Color.FromHsv(float3(h, s, v));
+			return true;
+		}
+	}
 }
