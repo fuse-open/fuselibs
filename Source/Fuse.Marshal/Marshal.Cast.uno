@@ -107,6 +107,18 @@ namespace Fuse
 				var s = (string)o;
 				if (s.StartsWith("#"))
 					return Uno.Color.Parse(s);
+				float4 f4;
+				if (TryStringToFloat4(s, out f4))
+					return f4;
+				float3 f3;
+				if (TryStringToFloat3(s, out f3))
+					return float4(f3.X, f3.Y, f3.Z, 1.0f);
+				float2 f2;
+				if (TryStringToFloat2(s, out f2))
+					return float4(f2.X, f2.Y, f2.X, f2.Y);
+				float f;
+				if (TryStringToFloat(s, out f))
+					return float4(f, f, f, f);
 			}
 			else if (o is Size)
 			{
@@ -197,6 +209,34 @@ namespace Fuse
 					}
 
 					return false;
+				}
+				float4 f4;
+				if (TryStringToFloat4(s, out f4))
+				{
+					value = f4;
+					size = 4;
+					return true;
+				}
+				float3 f3;
+				if (TryStringToFloat3(s, out f3))
+				{
+					value = float4(f3.X, f3.Y, f3.Z, 0);
+					size = 3;
+					return true;
+				}
+				float2 f2;
+				if (TryStringToFloat2(s, out f2))
+				{
+					value = float4(f2.X, f2.Y, 0, 0);
+					size = 2;
+					return true;
+				}
+				float f;
+				if (TryStringToFloat(s, out f))
+				{
+					value = float4(f, 0, 0, 0);
+					size = 1;
+					return true;
 				}
 			}
 			else if (o is IArray)
@@ -443,6 +483,80 @@ namespace Fuse
 			}
 
 			result = new Size(v, unit);
+			return true;
+		}
+
+		static bool TryStringToFloat4(string o, out float4 result)
+		{
+			result = float4(0);
+			if (o.Contains(","))
+			{
+				var p = o.Split(',');
+				if (p.Length != 4)
+					return false;
+
+				float a = 0;
+				float b = 0;
+				float c = 0;
+				float d = 0;
+				if (!TryStringToFloat(p[0], out a) ||
+					!TryStringToFloat(p[1], out b) ||
+					!TryStringToFloat(p[2], out c) ||
+					!TryStringToFloat(p[3], out d))
+					return false;
+				result = float4(a,b,c,d);
+				return true;
+			}
+			return false;
+		}
+
+		static bool TryStringToFloat3(string o, out float3 result)
+		{
+			result = float3(0);
+			if (o.Contains(","))
+			{
+				var p = o.Split(',');
+				if (p.Length != 3)
+					return false;
+
+				float a = 0;
+				float b = 0;
+				float c = 0;
+				if (!TryStringToFloat(p[0], out a) ||
+					!TryStringToFloat(p[1], out b) ||
+					!TryStringToFloat(p[2], out c))
+					return false;
+				result = float3(a,b,c);
+				return true;
+			}
+			return false;
+		}
+
+		static bool TryStringToFloat2(string o, out float2 result)
+		{
+			result = float2(0);
+			if (o.Contains(","))
+			{
+				var p = o.Split(',');
+				if (p.Length != 2)
+					return false;
+
+				float a = 0;
+				float b = 0;
+				if (!TryStringToFloat(p[0], out a) ||
+					!TryStringToFloat(p[1], out b))
+					return false;
+				result = float2(a,b);
+				return true;
+			}
+			return false;
+		}
+
+		static bool TryStringToFloat(string o, out float result)
+		{
+			var s = o.Trim();
+			if (!float.TryParse(s, out result))
+				return false;
 			return true;
 		}
 	}
