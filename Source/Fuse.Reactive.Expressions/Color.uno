@@ -335,6 +335,9 @@ namespace Fuse.Reactive
 	}
 
 	[UXFunction("hsvColor")]
+	/**
+		Converts a HSV color to RGB.
+	*/
 	public class HsvColorFunction: TernaryOperator
 	{
 		[UXConstructor]
@@ -350,6 +353,54 @@ namespace Fuse.Reactive
 			var s = Fuse.Marshal.ToFloat(second);
 			var v = Fuse.Marshal.ToFloat(third);
 			result = Uno.Color.FromHsv(float3(h, s, v));
+			return true;
+		}
+	}
+
+	/**
+		RGBA function.
+	*/
+	[UXFunction("rgba")]
+	public class RgbColorFunction: QuaternaryOperator
+	{
+		[UXConstructor]
+		public RgbColorFunction([UXParameter("R")] Expression r,
+							[UXParameter("G")] Expression g,
+							[UXParameter("B")] Expression b,
+							[UXParameter("A")] Expression a) : base(r, g, b, a, Flags.None)
+		{
+		}
+
+		protected override bool TryCompute(object first, object second, object third, object fourth, out object result)
+		{
+			var r = Fuse.Marshal.ToFloat(first);
+			var g = Fuse.Marshal.ToFloat(second);
+			var b = Fuse.Marshal.ToFloat(third);
+			var	a = Fuse.Marshal.ToFloat(fourth);
+			result = float4(Math.Min(r / 255.0f, 1.0f), Math.Min(g / 255.0f, 1.0f), Math.Min(b / 255.0f, 1.0f), Math.Min(a / 255.0f, 1.0f));
+			return true;
+		}
+	}
+
+	/**
+		Converts a color from float3 or float4 to hex string color.
+	*/
+	[UXFunction("hexColor")]
+	public sealed class HexColorFunction : UnaryOperator
+	{
+		[UXConstructor]
+		public HexColorFunction([UXParameter("Color")] Expression color):
+			base(color, "hexColor") {}
+
+		protected override bool TryCompute(object color_, out object result)
+		{
+			result = null;
+
+			float4 color = float4(0);
+			if (!Marshal.TryToColorFloat4( color_, out color ))
+				return false;
+			else
+				result = "#" + Uno.Color.ToHex(color);
 			return true;
 		}
 	}
