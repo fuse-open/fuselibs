@@ -22,7 +22,7 @@ namespace Fuse.Effects
 	If we don't set it, The `Glass` behavior will try to find the background from the sibling element where `Glass` behavior is attached
 
 	*/
-	public class Glass : Behavior
+	public class Glass : Behavior, IPropertyListener
 	{
 		Element _elementParent;
 		Element _element;
@@ -52,24 +52,6 @@ namespace Fuse.Effects
 			}
 		}
 
-		float3 _lumaAdd;
-		public float3 LumaAdd
-		{
-			get
-			{
-				return _lumaAdd;
-			}
-			set
-			{
-				if (_lumaAdd != value)
-				{
-					_lumaAdd = value;
-					if (_frostedGlass != null)
-						_frostedGlass.LumaAdd = _lumaAdd;
-				}
-			}
-		}
-
 		float _radius = 3;
 		/** The radius/size of the blur */
 		public float Radius
@@ -91,19 +73,34 @@ namespace Fuse.Effects
 
 		void AddDecoration()
 		{
-			_element = new Rectangle
+			if (_elementParent is Circle)
 			{
-				Width = new Size(100, Unit.Percent),
-				Height = new Size(100, Unit.Percent),
-				Color = Uno.Color.FromRgba(0xFFFFFFFF),
-				Layer = Layer.Underlay
-			};
+				_element = new Circle
+				{
+					Color = Uno.Color.FromRgba(0xFFFFFFFF)
+				};
+			}
+			else
+			{
+				var rectParent = _elementParent as Rectangle;
+				var cornerRadius = float4(0);
+				if (rectParent != null)
+					cornerRadius = rectParent.CornerRadius;
+
+				_element = new Rectangle
+				{
+					CornerRadius = cornerRadius,
+					Color = Uno.Color.FromRgba(0xFFFFFFFF)
+				};
+			}
+			_element.Width = new Size(100, Unit.Percent);
+			_element.Height = new Size(100, Unit.Percent);
+			_element.Layer = Layer.Underlay;
 
 			_frostedGlass = new FrostedGlass
 			{
 				Background = Background,
 				Radius = Radius,
-				LumaAdd = LumaAdd,
 				LumaRange = LumaRange,
 			};
 
@@ -135,6 +132,7 @@ namespace Fuse.Effects
 			_elementParent = Parent as Element;
 			if (_elementParent == null)
 				throw new Exception("Invalid parent for Effect: " + Parent);
+			_elementParent.AddPropertyListener(this);
 
 			Background = Background ?? FindBackground(_elementParent as Visual);
 			if (Background == null)
@@ -154,10 +152,25 @@ namespace Fuse.Effects
 			Background.WorldTransformInvalidated -= OnTransform;
 			Background = null;
 
+			_elementParent.RemovePropertyListener(this);
 			_elementParent.WorldTransformInvalidated -= OnTransform;
 			_elementParent = null;
 
 			base.OnUnrooted();
+		}
+
+		void IPropertyListener.OnPropertyChanged(PropertyObject sender, Selector property)
+		{
+			if (_element != null)
+			{
+				if (property == Rectangle.CornerRadiusPropertyName)
+				{
+					var rect = _element as Rectangle;
+					var rectParent =  _elementParent as Rectangle;
+					rect.CornerRadius = rectParent.CornerRadius;
+					_element.InvalidateVisual();
+				}
+			}
 		}
 
 		void OnTransform(object sender, EventArgs args)
@@ -180,8 +193,22 @@ namespace Fuse.Effects
 		{
 			get; set;
 		}
-		public float3 LumaRange { get; set; }
-		public float3 LumaAdd { get; set; }
+
+		float3 _lumaRange;
+		public float3 LumaRange
+		{
+			get { return _lumaRange; }
+			set
+			{
+				if (_lumaRange != value)
+				{
+					_lumaRange = value;
+
+					OnRenderingChanged();
+					OnRenderBoundsChanged();
+				}
+			}
+		}
 
 		float _radius;
 		public float Radius
@@ -223,12 +250,16 @@ namespace Fuse.Effects
 
 			paddedRect = new Rect(left, top, right, bottom);
 
-			var original = bg.CaptureRegion(dc, paddedRect, int2(0));
+			var blurRegion = bg.CaptureRegion(dc, paddedRect, int2(0));
+			if (blurRegion == null)
+				return;
+
+			var original = Element.CaptureRegion(dc, elementRect, float2(0));
 			if (original == null)
 				return;
 
-			var blur = EffectHelpers.Instance.Blur(original.ColorBuffer, dc, Sigma * bg.AbsoluteZoom);
-			FramebufferPool.Release(original);
+			var blur = EffectHelpers.Instance.Blur(blurRegion.ColorBuffer, dc, Sigma * bg.AbsoluteZoom);
+			FramebufferPool.Release(blurRegion);
 
 			draw Fuse.Drawing.Planar.Image
 			{
@@ -236,12 +267,14 @@ namespace Fuse.Effects
 				Visual: Element;
 				Position: elementRect.Minimum;
 				Invert: true;
-				Size: paddedRect.Size;
-				Texture: blur.ColorBuffer;
+				Size: elementRect.Size;
+				Texture: original.ColorBuffer;
+
+				float4 m: sample(blur.ColorBuffer, TexCoord, Uno.Graphics.SamplerState.LinearClamp);
+				PixelColor: TextureColor * float4(m.XYZ * m.W, m.W) * float4(LumaRange, 1);
 
 				apply Fuse.Drawing.PreMultipliedAlphaCompositing;
 				DepthTestEnabled: false;
-				PixelColor: prev * float4(LumaRange, 1) + float4(LumaAdd,0);
 			};
 
 			FramebufferPool.Release(blur);
