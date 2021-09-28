@@ -1,0 +1,20 @@
+<Extensions Backend="CPlusPlus">
+
+	<Require Condition="Android" Activity.OnPermissionsResult="com.fuse.mediapicker.MediaPickerImpl.onRequestPermissionsResult(requestCode, permissions, grantResults);" />
+	<Require Condition="Android" AndroidManifest.ApplicationElement>
+		<![CDATA[
+			<provider
+				android:name="com.fuse.mediapicker.MediaPickerFileProvider"
+				android:authorities="@(Activity.Package).media_picker_file_provider"
+				android:exported="false"
+				android:grantUriPermissions="true">
+				<meta-data
+					android:name="android.support.FILE_PROVIDER_PATHS"
+					android:resource="@xml/android_media_paths" />
+			</provider>
+		]]>
+	</Require>
+
+	<CopyFile Condition="Android" Name="android_media_paths.xml" TargetName="app/src/main/res/xml/android_media_paths.xml" />
+
+</Extensions>
