@@ -47,7 +47,8 @@ The following software must be installed in order to use Uno and Fuselibs.
 #### iOS
 
 * [Xcode](https://developer.apple.com/xcode/)
-* [ios-deploy](https://www.npmjs.com/package/ios-deploy)
+* [ios-deploy](https://www.npmjs.com/package/ios-deploy) *(optional)*
+* [ios-sim](https://www.npmjs.com/package/ios-sim) *(optional)*
 
 #### macOS
 
@@ -93,8 +94,10 @@ the following commands:
 
 ```
 npm run android
+npm run android-emu
 npm run dotnet
 npm run ios
+npm run ios-sim
 npm run native
 ```
 
