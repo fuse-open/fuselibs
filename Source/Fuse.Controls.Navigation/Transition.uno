@@ -195,7 +195,7 @@ namespace Fuse.Triggers
 
 		## Extended Example
 
-		The [Transition Example](https://github.com/fusetools/fuse-samples/tree/master/Samples/UIStructure/Transition) shows a variety of page transitions using `Transition`.
+		The [Transition Example](https://github.com/fuse-open/fuse-samples/tree/master/Samples/UIStructure/Transition) shows a variety of page transitions using `Transition`.
 	*/
 	public class Transition : Trigger
 	{
