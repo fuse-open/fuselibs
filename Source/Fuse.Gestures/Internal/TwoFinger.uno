@@ -29,6 +29,23 @@ namespace Fuse.Gestures.Internal
 		}
 
 		bool _allowKeyControl = true;
+		bool _allowSingleTouch = false;
+
+		/* used for pan gesture to enable translating element using just one finger */
+		public bool SingleTouch
+		{
+			get
+			{
+				return _allowSingleTouch;
+			}
+			set
+			{
+				if (value != _allowSingleTouch)
+				{
+					_allowSingleTouch = value;
+				}
+			}
+		}
 
 		static readonly PropertyHandle _property = Fuse.Properties.CreateHandle();
 		static public TwoFinger Attach(Visual n)
@@ -98,7 +115,7 @@ namespace Fuse.Gestures.Internal
 
 		GestureRequest IGesture.OnPointerPressed(PointerPressedArgs args)
 		{
-			if (_point[1].Down != -1)
+			if (_point[1].Down != -1 && !_allowSingleTouch)
 				return GestureRequest.Ignore;
 
 			return GestureRequest.Capture;
@@ -114,6 +131,8 @@ namespace Fuse.Gestures.Internal
 				else if (_point[1].Down != -1)
 					sig = Vector.Length( _point[0].Current - _point[0].Start ) +
 					Vector.Length( _point[1].Current - _point[1].Start );
+				else if (_point[1].Down == -1)
+					sig = Vector.Length( _point[0].Current - _point[0].Start );
 				return new GesturePriorityConfig( GesturePriority.Normal, sig );
 			}
 		}
@@ -202,6 +221,8 @@ namespace Fuse.Gestures.Internal
 				}*/
 
 			}
+			else if (_allowSingleTouch)
+				trans = _point[0].Current - _point[0].Start;
 			else if (_allowKeyControl)
 			{
 				if (Keyboard.IsKeyPressed(Uno.Platform.Key.ControlKey))
@@ -224,7 +245,6 @@ namespace Fuse.Gestures.Internal
 					_trackingKeyboard = true;
 				}
 			}
-
 			if (_begun)
 			{
 				if (Zoomed != null)

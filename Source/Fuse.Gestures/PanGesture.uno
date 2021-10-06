@@ -24,9 +24,27 @@ namespace Fuse.Gestures
 			: base(target)
 		{ }
 
+		bool _allowSingleTouch = true;
+		public bool SingleTouch
+		{
+			get
+			{
+				return _allowSingleTouch;
+			}
+			set
+			{
+				if (value != _allowSingleTouch)
+				{
+					_allowSingleTouch = value;
+					Impl.SingleTouch = _allowSingleTouch;
+				}
+			}
+		}
+
 		protected override void OnRooted()
 		{
 			base.OnRooted();
+			Impl.SingleTouch = _allowSingleTouch;
 			Impl.Translated += OnTranslated;
 		}
 
