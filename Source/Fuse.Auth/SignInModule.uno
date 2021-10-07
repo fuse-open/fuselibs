@@ -8,56 +8,56 @@ namespace Fuse
 {
 	[UXGlobalModule]
 	/**
-		Javascript Module for taking Platform SignIn. Platform SignIn is a SignIn mechanism that use `Sign In With Apple` on iOS and `Google SignIn` on Android.
+Javascript Module for taking Platform SignIn. Platform SignIn is a SignIn mechanism that use `Sign In With Apple` on iOS and `Google SignIn` on Android.
 
-		Platform SignIn is only available on the mobile target platform (iOS and Android).
+Platform SignIn is only available on the mobile target platform (iOS and Android).
 
-		You need to add a reference to `"Fuse.Auth"` in your project file to use this feature.
+You need to add a reference to `"Fuse.Auth"` in your project file to use this feature.
 
-		> For more information on what are the pre-request when implementing `Sign In With Apple` or `Google Sign In`, you can check the documentation on the apple developer website or android developer website
-		> for iOS add "SystemCapabilities": { "SignInWithApple":true }  in the unoproj file.
+> For more information on what are the pre-request when implementing `Sign In With Apple` or `Google Sign In`, you can check the documentation on the apple developer website or android developer website
+> for iOS add "SystemCapabilities": { "SignInWithApple":true }  in the unoproj file.
 
-		## Example
+## Example
 
-			The following example shows how to use it:
+The following example shows how to use it:
 
-				```XML
-					<App>
-						<JavaScript>
-							var Auth = require('useJS/Auth');
+```XML
+	<App>
+		<JavaScript>
+			var Auth = require('useJS/Auth');
 
-							function doSignIn() {
-								Auth.signIn().then(function(result) {
-									// result is json object containing these properties :
-									// email -> user email that has been sign in / sign up
-									// firstName -> User firstname
-									// lastName -> User Lastname
-									// userId -> User uniqe Id
-								}, function (ex) {
-									// failed login
-								})
-							}
-							Auth.hasSignedIn().then(function (result) {
-								if (result) {
-									// user has already sign in
-								}
-							})
+			function doSignIn() {
+				Auth.signIn().then(function(result) {
+					// result is json object containing these properties :
+					// email -> user email that has been sign in / sign up
+					// firstName -> User firstname
+					// lastName -> User Lastname
+					// userId -> User uniqe Id
+				}, function (ex) {
+					// failed login
+				})
+			}
+			Auth.hasSignedIn().then(function (result) {
+				if (result) {
+					// user has already sign in
+				}
+			})
 
-							module.exports = {
-								doSignIn
-							}
+			module.exports = {
+				doSignIn
+			}
 
-						</JavaScript>
-						<Button Text="Sign In">
-							<Clicked>
-								<Callback Handler="{doSignIn}" />
-							</Clicked>
-						</Button>
-					</App
-				```
+		</JavaScript>
+		<Button Text="Sign In">
+			<Clicked>
+				<Callback Handler="{doSignIn}" />
+			</Clicked>
+		</Button>
+	</App
+```
 
-		> When the callback handler is fired for the first time and the result object of `status` property is true, save those logged user information immediately to the server especially on iOS,
-		>  because as stated in the documentation on the apple website, the Sign In With Apple  will only send userId informataion the next time user do the authentication again
+> When the callback handler is fired for the first time and the result object of `status` property is true, save those logged user information immediately to the server especially on iOS,
+>  because as stated in the documentation on the apple website, the Sign In With Apple  will only send userId informataion the next time user do the authentication again
 
 	*/
 	public class SignInModule : NativeModule
