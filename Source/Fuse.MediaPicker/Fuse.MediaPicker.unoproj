@@ -1,0 +1,37 @@
+{
+  "Copyright": "Copyright (c) Fuse Open 2021",
+  "Description": "Native Camera Media Picker Support",
+  "Publisher": "Fuse Open",
+  "Title": "Fuse.MediaPIcker",
+  "Packages": [
+    "Uno.Threading"
+  ],
+  "IsTransitive": true,
+  "Projects": [
+    "../Fuse.Common/Fuse.Common.unoproj",
+    "../Fuse.Marshal/Fuse.Marshal.unoproj",
+    "../Fuse.Scripting/Fuse.Scripting.unoproj"
+  ],
+  "Includes": [
+    "*",
+    "Android/*",
+    "iOS/*",
+    "Android/ExifDataCopier.java:Java:Android",
+    "Android/FileUtils.java:Java:Android",
+    "Android/ImageResizer.java:Java:Android",
+    "Android/MediaPicker.java:Java:Android",
+    "Android/MediaPickerImpl.java:Java:Android",
+    "Android/MediaPickerFileProvider.java:Java:Android",
+    "Android/MediaPickerUtils.java:Java:Android",
+    "iOS/FOMediaPickerImageUtil.h:CHeader:iOS",
+    "iOS/FOMediaPickerImageUtil.m:CSource:iOS",
+    "iOS/FOMediaPickerMetaDataUtil.h:CHeader:iOS",
+    "iOS/FOMediaPickerMetaDataUtil.m:CSource:iOS",
+    "iOS/FOMediaPickerPhotoAssetUtil.h:CHeader:iOS",
+    "iOS/FOMediaPickerPhotoAssetUtil.m:CSource:iOS",
+    "iOS/FOMediaPicker.h:CHeader:iOS",
+    "iOS/FOMediaPicker.m:CSource:iOS",
+    "iOS/FOPHPickerSaveImageOps.h:CHeader:iOS",
+    "iOS/FOPHPickerSaveImageOps.m:CSource:iOS",
+  ]
+}
