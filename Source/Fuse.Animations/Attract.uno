@@ -28,13 +28,13 @@ namespace Fuse.Animations
 		This requires an @AttractorConfig that defines the style of the animation.
 		
 		# Example
-		
+		```xml
 			<AttractorConfig Unit="Points" Easing="SinusoidalInOut" Duration="0.3" ux:Global="asPoints"/>
 			
 			<Panel>
 				<Translation X="attract({xOffset}, asPoints)"/>
 			</Panel>
-			
+		```
 		Where `xOffset` is a context variable.
 	*/
 	public sealed class Attract : Fuse.Reactive.Expression

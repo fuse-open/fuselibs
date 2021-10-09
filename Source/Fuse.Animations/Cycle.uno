@@ -34,25 +34,25 @@ namespace Fuse.Animations
 		## Example
 		
 		The below example creates a simple pulsing effect on the panel while it is pressed.
-		
+		```xml
 			<Panel Color="Blue" ux:Name="panel1" Width="100" Height="100">
 				<WhilePressed>
 					<Cycle Target="panel1.Width" Low="80" High="120" Frequency="0.5"/>
 				</WhilePressed>
 			</Panel>
-			
+		```
 		By adjusting the `Waveform` you can creates animations that wrap-around instead of bouncing back and forth.
-		
+		```xml
 			<Cycle Target="panel.X" Low="-100" High="100" Waveform="Triangle"/>
-			
+		```
 		The "wrap-around" here is simply the nature of the triangular waveform -- the default waveform is sinusoidal.
 		
 		## Formula
 		
 		The properties are defined to be a simple interface, but it may be easier to understand see how they all relate in an expression. Given a current time offset the value of the `Target` is defined roughly as:
-		
+		```csharp
 			Target.Value = Lerp( Low, High, Easing( Waveform(Time) ) ) * Base + Offset
-			
+		```
 		`Low` and `High` can only be scalar values. `Cycle` checks whether these values cross zero, or one. If they do, it will start at that value, and return to that value when done (this is the default value for `ProgressOffset`). This allows a smooth return to rest state in animation.
 		
 		Modifying `Base` and `Offset` allows you to use `Cycle` with non-scalar values. Though be aware not all combinations of value can provide for a smooth return to the rest state.

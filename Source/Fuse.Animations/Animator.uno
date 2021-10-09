@@ -19,14 +19,14 @@ namespace Fuse.Animations
 		## Example
 
 		Examples of animator types are @Change and @Move, as used in this example:
-
+		```xml
 			<Panel ux:Name="panel1" Color="Blue">
 				<WhilePressed>
 					<Change panel1.Color="#0f0" Duration="1" />
 					<Move X="100" Delay="1" Duration="1" />
 				</WhilePressed>
 			</Panel>
-
+		```
 		When the @WhilePressed trigger above is activated when a pointer is pressed on the panel, 
 		the animators are played according to their `Delays` and other properties.
 
@@ -38,7 +38,7 @@ namespace Fuse.Animations
 
 		Setting the `Delay` property results in the actual animation being delayed by that amount of seconds. `DelayBack` is used to set a different delay on the backward animation. The total duration of the animation becomes the delay + the duration. The following @Change animator has a total duration of 7 seconds. It waits 5 seconds after being activated and then animates its target element over 2 seconds.
 
-		```
+		```xml
 		<Change Delay="5" Duration="2" someElement.Height="100"/>
 		```
 
@@ -46,7 +46,7 @@ namespace Fuse.Animations
 
 		Fuse comes with a standard set of predefined easing curves. Easing curves are used to control how an animation progresses over time. The default easing is set to `Linear`. With linear easing, the animation progresses at the same speed over its entire duration. This usually appears quite unnatural and fake. To gain a more natural feel, we can change the easing to `QuadraticInOut`, like so:
 
-		```
+		```xml
 		<Change Easing="QuadraticInOut" Duration="2" someElement.Property="SomeValue"/>
 		```
 
