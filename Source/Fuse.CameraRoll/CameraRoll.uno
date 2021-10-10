@@ -21,7 +21,7 @@ namespace Fuse.CameraRoll
 		## Examples
 		
 		Requesting an image from the camera roll:
-		
+		```javascript
 			var cameraRoll = require("FuseJS/CameraRoll");
 			
 			cameraRoll.getImage()
@@ -30,9 +30,9 @@ namespace Fuse.CameraRoll
 			    }, function(error) {
 			        // Will be called if the user aborted the selection or if an error occurred.
 			    });
-		
+		```
 		Taking a picture with the camera and adding it to the camera roll:
-		
+		```javascript
 			var cameraRoll = require("FuseJS/CameraRoll");
 			var camera = require("FuseJS/Camera");
 			
@@ -45,7 +45,7 @@ namespace Fuse.CameraRoll
 			    }, function(error) {
 			        // Will called if an error occurred.
 			    });
-		
+		```
 		> **Note**: You also need to add a package reference to `Fuse.Camera` for the above example to work.
 	*/
 	public sealed class CameraRoll : NativeModule
