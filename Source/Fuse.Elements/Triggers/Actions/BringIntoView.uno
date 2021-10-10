@@ -7,7 +7,7 @@ namespace Fuse.Triggers.Actions
 	/** Scrolls a @fuse/controls/scrollview so that the target element becomes visible
 
 		## Example
-
+		```xml
 				<ScrollView>
 					<Grid Rows="auto, 400, 400, 400, auto" Margin="10">
 						<Button Text="Go to Bottom" Alignment="Bottom">
@@ -35,6 +35,7 @@ namespace Fuse.Triggers.Actions
 						</Button>
 					</Grid>
 				</ScrollView>
+		```
 	*/
 	public class BringIntoView : TriggerAction
 	{

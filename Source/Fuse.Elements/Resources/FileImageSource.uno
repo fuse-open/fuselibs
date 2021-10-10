@@ -35,11 +35,11 @@ namespace Fuse.Resources
 
 		## Example
 		This example displays an image from the file `kitten.jpg`:
-
+		```xml
 			<Image>
 				<FileImageSource File="kitten.jpg" />
 			</Image>
-
+		```
 		## Referencing from JavaScript
 
 		When building your project, Fuse needs to know which files to bundle with the app.
@@ -47,13 +47,13 @@ namespace Fuse.Resources
 
 		However, if the path comes from JavaScript or some other dynamic data source, it cannot automatically be inferred by the compiler.
 		Thus, we need to explicitly specify it as a [bundle file](articles:assets/bundle) in our `.unoproj`:
-
+		```json
 			"Includes": [
 				"assets/kitten.jpg:Bundle"
 			]
-
+		```
 		We can now use JavaScript to specify the path to the image:
-
+		```xml
 			<JavaScript>
 				module.exports = {
 					image: "assets/kitten.jpg"
@@ -63,6 +63,7 @@ namespace Fuse.Resources
 			<Image>
 				<FileImageSource File="{image}" />
 			</Image>
+		```
 	*/
 	public sealed class FileImageSource : ImageSource
 	{

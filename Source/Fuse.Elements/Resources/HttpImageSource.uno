@@ -21,11 +21,11 @@ namespace Fuse.Resources
 		> *Note* @Image provides a shorthand for this, using its [Url](api:fuse/controls/image/url) property.
 
 		## Example
-
+		```xml
 			<Image>
 				<HttpImageSource Url="https://upload.wikimedia.org/wikipedia/commons/0/06/Kitten_in_Rizal_Park%2C_Manila.jpg" />
 			</Image>
-
+		```
 		To cache the image to the disk, you can add `DiskCache` attribute and set it to `true` so that the next time we display an image it will no longer be downloaded from the network but use from disk instead.
 	*/
 	public sealed class HttpImageSource : ImageSource

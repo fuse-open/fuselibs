@@ -68,17 +68,17 @@ namespace Fuse.Resources
 		## Example
 
 		The following example displays an @Image from a @FileImageSource:
-
+		```xml
 			<Image>
 				<FileImageSource File="fuse.png" />
 			</Image>
-
+		```
 		A common pattern is to declare `ImageSource`s as global resources, as shown below.
-
+		```xml
 			<FileImageSource ux:Global="FuseLogo" File="fuse.png" />
 
 			<Image Source="FuseLogo" />
-
+		```
 		## Available image source types:
 
 		[subclass Fuse.Resources.ImageSource]
