@@ -29,7 +29,7 @@ namespace Fuse.Controls
 		## Example
 
 		The following example illustrates subclassing @Page and using it in a @PageControl.
-
+		```xml
 			<Page ux:Class="MyPage">
 			    <Text Alignment="Center">This is a page!</Text>
 			</Page>
@@ -38,7 +38,7 @@ namespace Fuse.Controls
 			    <MyPage />
 			    <MyPage />
 			</PageControl>
-
+		```
 		## Remarks
 
 		@Page exposes a local @Uno.UX.Resource "Title", which can be set using the @Title property.
@@ -133,9 +133,9 @@ namespace Fuse.Controls
 			Specifies when this page will be frozen.
 
 			For full size transitions, like in a top-level navigator, this value is typically set to `WhileNavigating`:
-
+			```xml
 				<Page Freeze="WhileNavigating">
-
+			```
 			This may improve navigation performance by essentially blocking animation on the page itself while in transition.
 
 			Refer to the @Fuse.Controls.Panel.IsFrozen property.

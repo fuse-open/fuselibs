@@ -13,15 +13,15 @@ namespace Fuse
 	## Example
 
 	The following example shows how to use a bold font from the Baskerville font family:
-
+	```xml
 		<SystemFont Family="Baskerville" Style="Normal" Weight="Bold" ux:Global="BaskervilleBold" />
 		<Text Font="BaskervilleBold">Hello, world!</Text>
-
+	```
 	Android typically uses abstract font families (e.g. `sans-serif`),
 	whereas iOS uses concrete (e.g. `Helvetica Neue`), so it is often the case that
 	we want to specify different font families that are depending on the target. To do this,
 	we can use local resources:
-
+	```xml
 		<Android>
 			<SystemFont Family="monospace" Style="Normal" Weight="Normal" ux:Key="Monospace" />
 		</Android>
@@ -29,7 +29,7 @@ namespace Fuse
 			<SystemFont Family="Courier" Style="Normal" Weight="Normal" ux:Key="Monospace" />
 		</iOS>
 		<Text Font="{Resource Monospace}">Hello, world!</Text>
-
+	```
 	Note that this only works on iOS and Android, and that it is not guaranteed to
 	be consistent across devices, OSes, or OS versions.
 

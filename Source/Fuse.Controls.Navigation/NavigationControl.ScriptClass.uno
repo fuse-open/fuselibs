@@ -78,13 +78,13 @@ namespace Fuse.Controls
 
 			The navigationSpec is a JavaScript object that specifies all the properties for the modification,
 			for example:
-
+			```js
 				nav.modifyPath({
 					how: "Goto",
 					path: [ "one", {} ],
 					transition: "Bypass",
-				})
-
+				});
+			```
 			This gotos to the "one" page without a transition.
 
 			The options are:

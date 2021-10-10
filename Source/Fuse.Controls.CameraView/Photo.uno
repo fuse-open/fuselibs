@@ -55,7 +55,7 @@ namespace Fuse.Controls
 			@scriptmethod save()
 
 			Returns a Promise that resolves to a string containing the filepath to the photo.
-
+			```xml
 				<CameraView ux:Name="Camera" />
 				<JavaScript>
 					Camera.capturePhoto()
@@ -70,6 +70,7 @@ namespace Fuse.Controls
 						})
 						.catch(function(err) { });
 				</JavaScript>
+			```
 		*/
 		static Future<string> save(Context context, Photo photo, object[] args)
 		{
@@ -90,7 +91,7 @@ namespace Fuse.Controls
 
 			Its good practice to provide a sizehint if you know what size the thumbnail should be.
 			The sizehint will be interpreted as points.
-
+			```xml
 				<CameraView ux:Name="Camera" />
 				<JavaScript>
 					Camera.capturePhoto()
@@ -110,6 +111,7 @@ namespace Fuse.Controls
 						})
 						.catch(function(err) { });
 				</JavaScript>
+			```
 		*/
 		static Future<string> saveThumbnail(Context context, Photo photo, object[] args)
 		{

@@ -13,7 +13,7 @@ namespace Fuse.Controls
 		when the photo is ready.
 
 		Example:
-
+		```xml
 			<NativeViewHost>
 				<Panel ux:Name="previewPanel" Visibility="Hidden">
 					<Button Text="DISMISS" Alignment="Bottom" Margin="10">
@@ -32,6 +32,7 @@ namespace Fuse.Controls
 					<Set cameraPanel.Visibility="Hidden" />
 				</CameraView.PhotoLoaded>
 			</NativeViewHost>
+		```xml
 	*/
 	public partial class PhotoPreview
 	{
