@@ -14,7 +14,7 @@ namespace Fuse
 		## Example
 
 			The following example shows how to use it:
-
+			```javascript
 				<JavaScript>
 					var Auth = require('FuseJS/Biometric');
 
@@ -38,14 +38,15 @@ namespace Fuse
 						<Clicked Handler="{authenticate}" />
 					</Button>
 				</Panel>
-
+			```
 		When Using FaceID on iOS, it is mandatory to add description about why you need authentication using FaceID. You can add the description by adding this config on your `unoproj` file
-
-				"iOS": {
-					"PList": {
-						"NSFaceIDUsageDescription": "Require access to FaceID for authenticating"
-					}
+		```json
+			"iOS": {
+				"PList": {
+					"NSFaceIDUsageDescription": "Require access to FaceID for authenticating"
 				}
+			}
+		```
 	*/
 	public class BiometricModule : NativeModule
 	{

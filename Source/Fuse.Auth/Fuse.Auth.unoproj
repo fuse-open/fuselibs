@@ -1,6 +1,6 @@
 {
   "Copyright": "Copyright (c) Fuse Open 2020",
-  "Description": "Audio playback support",
+  "Description": "Biometric authentication support",
   "Publisher": "Fuse Open",
   "Title": "Fuse.Auth",
   "Packages": [
