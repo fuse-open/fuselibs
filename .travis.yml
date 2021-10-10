@@ -16,9 +16,7 @@ before_script:
 
 script:
   - npm run build
-  - export XCODE_XCCONFIG_FILE=$TRAVIS_BUILD_DIR/.travis.xcconfig
-  - uno build ios Tests/ManualTests/ManualTestingApp/ManualTestingApp.unoproj
-  - unset XCODE_XCCONFIG_FILE
+  - uno build ios-sim Tests/ManualTests/ManualTestingApp/ManualTestingApp.unoproj
   - uno test native Source/AllTests.unoproj
 
 after_failure:
