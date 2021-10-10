@@ -1,6 +1,6 @@
 {
   "Copyright": "Copyright (c) Fuse Open 2018",
-  "Description": "Primitives",
+  "Description": "Fuse ScrollView implementation",
   "Publisher": "Fuse Open",
   "InternalsVisibleTo": [
     "Fuse.Android",

@@ -65,14 +65,14 @@ namespace Fuse.Controls
 		By default a `ScrollView` keeps a consistent `ScrollPosition` when the layout changes. This may result in jumping when content is added/removed.
 
 		An alternate mode `LayoutMode="PreserveVisual"` instead attempts to maintain visual consistency when its children or parent layout is changed. It assumes it's immediate content is a container and looks at that container's children.  For example, a layout like this:
-
+		```xml
 			<ScrollView>
 				<StackPanel>
 					<Panel/>
 					<Panel/>
 				<StackPanel>
 			</ScrollView>
-
+		```
 		Visuals without `LayoutRole=Standard` are not considered when retaining the visual consistency. The `LayoutMode` property can be used to adjust this behavior.
 	*/
 	public partial class ScrollViewBase: ContentControl, IScrollViewHost
@@ -179,11 +179,12 @@ namespace Fuse.Controls
 		[UXContent]
 		/**
 			The animation and scrolling behavior of a `ScrollView` can be configured using @ScrollViewMotion.
-
+			```xml
 				<ScrollView>
 					<ScrollViewMotion GotoEasing="Linear" GotoDuration="0.5"/>
 					<Panel>...content...</Panel>
 				</ScrollView>
+			```
 		*/
 		public MotionConfig Motion
 		{
@@ -225,13 +226,13 @@ namespace Fuse.Controls
 			Specifies in which directions the `ScrollView` scrolls. The default is `Vertical`.
 
 			This also affects how layout is done of the content, which the scroll direction considered the "open" axis. It's important to have content that matches the direction. For example a @StackPanel must be marked as `Horizontal` for horizontal scrolling.
-
+			```xml
 				<ScrollView AllowedScrollDirections="Horizontal">
 					<StackPanel Orientation="Horizontal">
 						...
 					</StackPanel>
 				</ScrollView>
-
+			```
 			Only `Horizontal`, `Vertical`, and `Both` are supported.
 		*/
 		public ScrollDirections AllowedScrollDirections

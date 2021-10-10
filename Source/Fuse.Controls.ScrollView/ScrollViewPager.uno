@@ -15,7 +15,7 @@ namespace Fuse.Controls
 		This controls the `Offset` and `Limit` properties of an `Each` inside a `ScrollView`. It limits the number of items displayed to improve performance.
 
 		The setup that works now is with a `StackPanel` (Horizontal or Vertical)
-
+		```xml
 			<ScrollView LayoutMode="PreserveVisual">
 				<StackPanel>
 					<Each Items="{items}" Reuse="Frame" ux:Name="theEach">
@@ -27,7 +27,7 @@ namespace Fuse.Controls
 
 				<ScrollViewPager Each="theEach" ReachedEnd="{loadMore}"/>
 			</ScrollView>
-
+		```
 		It's required to use `LayoutMode="PreserveVisual"`, otherwise the scrolling will not function correctly. `Reuse="Frame"` is optional but recommended: it improves performance by reusing objects.
 
 		`ReachedEnd` is called when the true end of the list is reached and more data is required. It's actually called somewhat before the end is reached, thus allowing the loading process to start before the user reaches the end. There is also a `RechedStart` to allow loading when scrolling the opposite direction.  Neither of these callbacks are mandatory; `ScrollViewPager` is also helpful for displaying large static lists.
