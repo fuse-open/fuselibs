@@ -18,12 +18,12 @@ namespace Fuse.Controls
 		# Example
 
 		This example demonstrates a simple `Panel` with a couple of overlapping children, and many of the properties often used with `Panel` set:
-
+		```xml
 			<Panel Margin="10" Padding="2,4,6,8" Color="#444">
 				<Text>This child will be drawn over the other child</Text>
 				<Rectangle Color="#eee" />
 			</Panel>
-
+		```
 	*/
 	public partial class Panel: LayoutControl, ISurfaceDrawable
 	{

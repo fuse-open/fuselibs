@@ -11,23 +11,23 @@ namespace Fuse.Controls
 		## Usage example
 
 		We use the `Subtree` property to identify the inner visual that will receive the children.
-
+		```xml
 			<Container ux:Class="MyContainer" Subtree="innerPanel">
 				<Rectangle ux:Binding="Children" CornerRadius="10" Margin="10">
 					<Stroke Color="Red" Width="2" />
 					<Panel Margin="10" ux:Name="innerPanel" />
 				</Rectangle>
 			</Container>
-
+		```
 		Note that to add nodes that make up the container itself (e.g. decoration), we need to explicitly mark them
 		with `ux:Binding="Children"`, otherwise these nodes will be added to `innerPanel`.
 
 		To use the container, we can simply do:
-
+		```xml
 			<MyContainer>
 				<Panel Color="Blue" />
 			</MyContainer>
-
+		```
 		Here, the blue panel will be placed as a child of `innerPanel`, instead of as a direct child of the
 		container.
 	*/

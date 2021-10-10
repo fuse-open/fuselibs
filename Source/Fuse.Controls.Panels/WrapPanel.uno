@@ -14,21 +14,21 @@ namespace Fuse.Controls
 		FlowDirection can either be LeftToRight or RightToLeft.
 
 		The following `WrapPanel` lays out its children horizontally from right to left.
-
+		```xml
 			<WrapPanel FlowDirection="RightToLeft">
 			    <Each Count="10">
 			        <Rectangle Margin="5" Width="100" Height="100" Color="Blue"/>
 			    </Each>
 			</WrapPanel>
-
+		```
 		The `Orientation` property can be used to make a vertical WrapPanel like so:
-
+		```xml
 			<WrapPanel Orientation="Vertical">
 			    <Each Count="10">
 			        <Rectangle Margin="5" Width="100" Height="100" Color="Blue"/>
 			    </Each>
 			</WrapPanel>
-
+		```
 		You can also specify the maximum area the `WrapPanel` will allocate an element by using the `ItemWidth` and `ItemHeight` properties.
 	*/
 	public class WrapPanel : Panel
@@ -50,13 +50,13 @@ namespace Fuse.Controls
 		/** The orientation in which children are laid out. Defaults to `Horizontal`.
 
 			The `Orientation` property can be used to make a vertical WrapPanel like so:
-
+			```xml
 				<WrapPanel Orientation="Vertical">
 				    <Each Count="10">
 				        <Rectangle Margin="5" Width="100" Height="100" Color="Blue"/>
 				    </Each>
 				</WrapPanel>
-
+			```
 			See also the `FlowDirection` property.
 		*/
 		public Orientation Orientation
@@ -68,13 +68,13 @@ namespace Fuse.Controls
 		/** The flow direction in which elements are laid out.
 
 			The following `WrapPanel` lays out its children horizontally from right to left.
-
+			```xml
 				<WrapPanel FlowDirection="RightToLeft">
 					<Each Count="10">
 						<Rectangle Margin="5" Width="100" Height="100" Color="Blue"/>
 					</Each>
 				</WrapPanel>
-
+			```
 		*/
 		public FlowDirection FlowDirection
 		{

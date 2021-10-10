@@ -90,7 +90,7 @@ namespace Fuse.Controls
 	/** A native view that hosts graphics-rendered UI controls.
 
 		GraphicsView is the counterpart to @NativeViewHost and allows you to add Fuse views to a NativeViewHost-scope.
-
+		```xml
 			<App>
 				<NativeViewHost>
 				    <StackPanel>
@@ -101,7 +101,7 @@ namespace Fuse.Controls
 				    </StackPanel>
 				</NativeViewHost>
 			</App>
-
+		```
 		As with the NativeViewHost note that depth ordering will behave differently when mixing Native and Fuse views.
 	*/
 	public partial class GraphicsView: IViewport, IRenderViewport, ITreeRenderer, IProxyHost

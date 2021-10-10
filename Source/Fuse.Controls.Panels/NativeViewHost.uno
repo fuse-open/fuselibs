@@ -23,15 +23,15 @@ namespace Fuse.Controls
 		## Examples
 
 		@WebView is only available as a native view. Here's how to display one:
-
+		```xml
 			<Panel>
 				<NativeViewHost>
 					<WebView Url="http://example.com" />
 				</NativeViewHost>
 			</Panel>
-
+		```
 		We can also layer native @Controls over each other and form heirarchies within the `NativeViewHost`, just like with regular UX markup:
-
+		```xml
 			<Panel>
 				<NativeViewHost>
 					<Panel Alignment="Top" Padding="15" Color="#0006">
@@ -40,23 +40,24 @@ namespace Fuse.Controls
 					<WebView Url="http://example.com" />
 				</NativeViewHost>
 			</Panel>
-
+		```
 		You can use the `RenderToTexture` property to render the native view to a texture to enable correct layer-compositing with
 		other graphics-based @Visuals. Note that this comes at a performance cost, and *native views are not interactive while being
 		rendered to texture*.
-
+		```xml
 			<Text Alignment="Center">This text is layered on top of the NativeViewHost</Text>
 			<NativeViewHost RenderToTexture="true">
 				<Rectangle Color="#324" />
 			</NativeViewHost>
-
+		```
 		To make an app consisting solely of native components, place a `<NativeViewHost>` at the root level of your app:
-
+		```xml
 			<App>
 				<NativeViewHost>
 					<!-- entire app goes here -->
 				</NativeViewHost>
 			</App>
+		```
 	*/
 	public class NativeViewHost : LayoutControl, ITreeRenderer, IOffscreenRendererHost
 	{
