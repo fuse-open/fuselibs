@@ -119,8 +119,9 @@ namespace Fuse.Controls
 		```
 
 		WebViews can also be fed raw HTML to display by wrapping an @HTML node or via the @LoadHtml trigger action:
-
-		`<LoadHtml TargetNode="myWebView" BaseUrl="http://my.domain" Source="{html}"/>`
+		```xml
+		<LoadHtml TargetNode="myWebView" BaseUrl="http://my.domain" Source="{html}"/>
+		```
 	*/
 	public partial class WebView : Panel, IWebView
 	{

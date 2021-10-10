@@ -26,7 +26,7 @@ namespace Fuse.Controls
 		## Example
 
 		The following example shows how to set up a `TimePicker` object and set the value from JS using a `Date` object:
-
+		```xml
 			<StackPanel>
 				<JavaScript>
 					var Observable = require("FuseJS/Observable");
@@ -52,7 +52,7 @@ namespace Fuse.Controls
 
 				<Button Text="Time to get cracking!" Clicked="{timeToGetCracking}" Margin="5" />
 			</StackPanel>
-
+		```
 	*/
 	public partial class TimePicker
 	{

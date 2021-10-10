@@ -8,7 +8,7 @@ namespace Fuse.Triggers
 
 		This example will blink the blue background green when the page finishes
 		loading:
-
+		```xml
 			<Panel ux:Name="panel" Color="Blue">
 				<NativeViewHost Height="50%">
 					<WebView Url="http://interwebs.com">
@@ -18,6 +18,7 @@ namespace Fuse.Triggers
 					</WebView>
 				</NativeViewHost>
 			</Panel>
+		```
 	*/
 	public class PageLoaded : Trigger
 	{

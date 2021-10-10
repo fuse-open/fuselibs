@@ -78,18 +78,19 @@ namespace Fuse.Triggers.Actions
 						]]>
 					</HTML>
 				</LoadHtml>
-			</Clicked
+			</Clicked>
 		</Button>
 		```
 
 		You may optionally specify a base URL to use when resolving relative links and enforcing JavaScript's
 		[same origin policy](https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy).
-
+		```xml
 			<LoadHtml BaseUrl="https://example.com/">
 				<HTML>
 					...
 				</HTML>
 			</LoadHtml>
+		```
 	*/
 	public sealed class LoadHtml : WebViewNavAction, ISourceReceiver
 	{
