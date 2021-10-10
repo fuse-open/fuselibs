@@ -14,7 +14,7 @@ namespace Fuse.Triggers.Actions
 		## Example
 
 		The following example shows how to use:
-
+		```xml
 			<StackPanel>
 				<Image ux:Name="img" Url="https://picsum.photos/600/300" AutoLoad="false" Height="200" />
 				<Button Text="Load Image">
@@ -23,6 +23,7 @@ namespace Fuse.Triggers.Actions
 					</Clicked>
 				</Button>
 			</StackPanel>
+		```
 	*/
 	public sealed class LoadImage : TriggerAction
 	{

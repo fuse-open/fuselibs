@@ -6,7 +6,7 @@ namespace Fuse.Controls
 		native switch will be displayed if used in NativeViewHost.
 
 		## Example
-
+		```xml
 			<StackPanel>
 				<Switch ux:Name="_sw">
 					<WhileTrue Value="{ReadProperty _sw.Value}">
@@ -17,7 +17,7 @@ namespace Fuse.Controls
 					<Switch />
 				</NativeViewHost>
 			</StackPanel>
-
+		```
 	*/
 	public partial class Switch
 	{

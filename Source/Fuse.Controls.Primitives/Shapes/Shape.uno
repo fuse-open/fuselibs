@@ -14,7 +14,7 @@ namespace Fuse.Controls
 		By default a shape does not have a size, fills or strokes. You must add some for it to be visible.
 
 		## Example:
-
+		```xml
 			<Rectangle Width="200" Height="100" CornerRadius="16">
 				<LinearGradient>
 					<GradientStop Offset="0" Color="#0ee" />
@@ -35,7 +35,7 @@ namespace Fuse.Controls
 					<SolidColor Color="#000" />
 				</Stroke>
 			</Circle>
-
+		```
 
 		## Available Shape classes:
 

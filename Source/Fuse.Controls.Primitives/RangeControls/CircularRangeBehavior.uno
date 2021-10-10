@@ -41,7 +41,7 @@ namespace Fuse.Gestures
 
 		### Andgle-based circular range control
 		The following example shows a simple circular @(RangeControl) implemented using `CircularRangeBehavior`, where a visual is rotated as the @(RangeControl) is changed. The range is calculated from the angle between the mouse and the X-axis
-
+		```xml
 			<RangeControl Width="180" Height="180" Margin="2">
 				<CircularRangeBehavior />
 				<Panel ux:Name="thumb" Margin="4">
@@ -52,10 +52,10 @@ namespace Fuse.Gestures
 				</ProgressAnimation>
 				<Circle Color="#aaa" />
 			</RangeControl>
-
+		```
 		### Angle and radius based circular range control
 		When used with a @(RangeControl2D), you can get both the angle progress, and the radius progress. This effectively means that your range control allows the user to control two ranges at once.
-
+		```xml
 			<RangeControl2D Width="180" Height="180" Margin="2" ux:Name="rangeControl">
 				<CircularRangeBehavior/>
 				<Panel ux:Name="thumb" Margin="4">
@@ -72,6 +72,7 @@ namespace Fuse.Gestures
 				</Circle>
 				<Circle Color="#aaa" />
 			</RangeControl2D>
+		```
 	*/
 	public class CircularRangeBehavior : Behavior, IGesture
 	{

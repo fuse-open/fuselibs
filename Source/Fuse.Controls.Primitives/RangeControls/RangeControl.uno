@@ -16,7 +16,7 @@ namespace Fuse.Controls
 		animation.
 
 		## Example
-
+		```xml
 			<StackPanel>
 
 				<RangeControl ux:Class="CustomSlider" Padding="16,2,16,2" Margin="2" >
@@ -33,7 +33,7 @@ namespace Fuse.Controls
 				<CustomSlider />
 
 			</StackPanel>
-
+		```
 		## Available RangeControl classes
 
 		[subclass Fuse.Controls.RangeControl]

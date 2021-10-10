@@ -16,7 +16,7 @@ namespace Fuse.Gestures
 		The range of motion of the control is the size of the `LinearRangeBehavior` parent. By nesting deeper than the immediate child of the @RangeControl you can have a range of motion distinct from the size of the overall control.
 
 		## Example
-
+		```xml
 			<StackPanel>
 
 				<RangeControl ux:Class="CustomSlider" Padding="16,2,16,2" Margin="2" >
@@ -33,7 +33,7 @@ namespace Fuse.Gestures
 				<CustomSlider />
 
 			</StackPanel>
-
+		```
 	*/
 	public class LinearRangeBehavior : Behavior, IGesture
 	{

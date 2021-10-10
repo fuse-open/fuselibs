@@ -28,7 +28,7 @@ namespace Fuse.Controls
 		The following code displays a green background while a piece of
 		text is loading on the background thread, and fades in the text
 		when it's available.
-
+		```xml
 			<Panel ux:Name="_loading" Background="#0F0" Opacity="0.0"/>
 			<Text ux:Name="_text" Value="Some text" LoadAsync="true" >
 				<WhileLoading>
@@ -36,7 +36,7 @@ namespace Fuse.Controls
 					<Change _text.Opacity="0.0"  Duration="0.5" />
 				</WhileLoading>
 			</Text>
-
+		```
 		## Remarks
 
 		This property currently only works when running on an actual

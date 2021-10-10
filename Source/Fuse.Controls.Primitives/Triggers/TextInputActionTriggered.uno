@@ -9,13 +9,13 @@ namespace Fuse.Triggers
 		Triggers when the returnkey on the keyboard is clicked.
 
 		## Example
-
+		```xml
 			<TextInput PlaceholderText="Example">
 				<TextInputActionTriggered>
 					<DebugAction Message="TextInputActionTriggered" />
 				</TextInputActionTriggered>
 			</TextInput>
-
+		```
 	*/
 	public class TextInputActionTriggered : Trigger
 	{

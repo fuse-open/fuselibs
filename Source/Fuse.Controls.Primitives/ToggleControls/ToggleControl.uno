@@ -17,7 +17,7 @@ namespace Fuse.Controls
 		like Switch, CheckBox, ToggleButton etc.
 
 		## Example
-
+		```xml
 			<ToggleControl ux:Class="CheckBox" BoxSizing="FillAspect" Aspect="1" Margin="2" HitTestMode="LocalBounds" Width="48" Height="48">
 				<Rectangle Color="#999" Margin="4" ux:Name="_toggledBox" Opacity="0" />
 				<WhileTrue Value="{ReadProperty this.Value}">
@@ -30,7 +30,7 @@ namespace Fuse.Controls
 					<Toggle Target="this" />
 				</Clicked>
 			</ToggleControl>
-
+		```
 	*/
 	public class ToggleControl: Panel, IValue<bool>, IToggleViewHost, IToggleable
 	{
