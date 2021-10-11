@@ -34,12 +34,13 @@ namespace Fuse.Reactive
 	/** Returns false if the value exists and is non-null, true otherwise.
 
 		This is the same condition used in the NullCoalesce operator:
-
+		```uno
 			expr ?? res
-
+		```
 		Is the same as:
-
+		```uno
 			isNull(expr) ? res : expr
+		```
 	*/
 	public sealed class IsNull : UnaryOperator
 	{

@@ -18,7 +18,7 @@ namespace Fuse.Reactive
 		- Using both a `LessThan` or `LessThanEqual` and `GreaterThan` or `GreaterThanEqual` creates a closed range to compare. The number of items must be within this range.
 
 		This example shows how to use @WhileCount and @WhileEmpty with an @Observable:
-
+		```xml
 			<JavaScript>
 				var Observable = require("FuseJS/Observable");
 				module.exports = {
@@ -40,6 +40,7 @@ namespace Fuse.Reactive
 			<WhileCount Items="{friends}" GreaterThanEqual="2" LessThanEqual="5" Invert="true">
 				<Text>You do not have 2-5 friends.</Text>
 			</WhileCount>
+		```
 	*/
 	public class WhileCount : WhileTrigger, IObserver
 	{

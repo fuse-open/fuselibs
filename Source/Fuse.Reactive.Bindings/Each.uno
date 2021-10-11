@@ -16,7 +16,7 @@ namespace Fuse.Reactive
 		You can, however, access nodes declared outside the `Each` from the inside.
 
 		## Example
-
+		```xml
 			<JavaScript>
 				module.exports = {
 					items: [
@@ -34,7 +34,7 @@ namespace Fuse.Reactive
 					</StackPanel>
 				</Each>
 			</StackPanel>
-
+		```
 		# Using `Each` with `ux:Template`
 
 		If you are using `Each` in a custom made component, you can increase the cusomizability of that component by allowing it to take in custom template objects which it can use instead of the default template the `Each` is using. To do this, you need to do two things:
@@ -46,7 +46,7 @@ namespace Fuse.Reactive
 
 		## Example
 		The following example demonstrates passing custom templates into a class for an `Each` to use:
-
+		```xml
 			<StackPanel ux:Class="CoolRepeater" Background="#FAD">
 				<Each TemplateSource="this" TemplateKey="Item" Count="20">
 					<Text>No template is given</Text>
@@ -55,11 +55,11 @@ namespace Fuse.Reactive
 			<CoolRepeater>
 				<Text ux:Template="Item">Hello, world!</Text>
 			</CoolRepeater>
-
+		```
 		Notice that if you remove the "Hello, world!" text that is our custom template, the `Each` will fall back to using the child as the template.
 
 		If you want the ability to control the template on a per-item basis, the similar `MatchKey`-property can be used:
-
+		```xml
 			<JavaScript>
 			    var Observable = require("FuseJS/Observable");
 
@@ -86,7 +86,7 @@ namespace Fuse.Reactive
 					</Each>
 				</StackPanel>
 			</ScrollView>
-
+		```
 		`MatchKey` works by looking for a property in the data context of each item from `Items`.
 		The value of this property is then used to determine the template to use for the current item.
 		In the above example, we store the template we want to use in the property `postType`, which will appear in the data context of each item being iterated.
