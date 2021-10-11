@@ -17,15 +17,15 @@ namespace Fuse.Selection
 		@Selection is used to create a selection control, such as an item list, radio buttons, or picker. The @Selection itself defines the selection, managing the high-level behaviour and tracking the current value. A variety of @Selectable objects define which items can be selected.
 
 		## Introduction to the Selection API
-
+		```xml
 		<iframe width="560" height="315" src="https://www.youtube.com/embed/Ngil94H-Mk4" frameborder="0" allowfullscreen></iframe>
-
+		```
 		The selection is associated with the node in which it appears. For example:
-
+		```xml
 			<Panel>
 				<Selection/>
 			</Panel>
-
+		```
 		The @Panel is now considered to be a selection control. Behaviours and triggers, such as @Selectable and @Selected, that are descendents of this panel will find this `Selection` behavior.
 
 		The @(Selectable) node is used to make a child of a selection control selectable. When assigned to a nodes, it will iterate through the controls parents until it finds a selection control.
@@ -264,8 +264,9 @@ namespace Fuse.Selection
 			The string value of the item curerntly selected. If multiple items are selected then it will be value of the oldest item selected.
 
 			This is suitable for use with selections that allow only one item to be selected, such as radio buttons. It can be used directly in a binding:
-
+			```xml
 				<Selection Value="{jsValue}"/>
+			```
 		*/
 		public string Value
 		{

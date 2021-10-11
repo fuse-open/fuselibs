@@ -16,7 +16,7 @@ namespace Fuse.Storage
 		> `UserSettings` module is implemented atop NSUserDefaults on iOS and Shared Preferences on Android
 
 		## Example
-
+		```xml
 			<JavaScript>
 				var userSettings = require("FuseJS/UserSettings")
 
@@ -43,7 +43,7 @@ namespace Fuse.Storage
 				var preferences = userSettings.getArray('preferences');
 				var profile = userSettings.getObject('profile');
 			</JavaScript>
-
+		```
 	*/
 	public sealed class UserSettingsModule : NativeModule
 	{
