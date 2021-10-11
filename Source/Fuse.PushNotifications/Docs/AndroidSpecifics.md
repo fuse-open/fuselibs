@@ -7,13 +7,13 @@ This section covers how to set up Firebase Push Notifications to the point that 
 - Click the little cogwheel button at the top of the sidebar, and press "Project settings"
 - Navigate to the "Cloud Messaging" tab
 - Copy the "Sender ID" into your `.unoproj` like this:
-
+```json
 		"Android": {
 			"GooglePlay": {
 				"SenderID": "<Sender ID goes here>"
 			}
 		}
-
+```
 ### Registering the Android app
 
 To enable Firebase Cloud Messaging, you need to register an Android app with your Firebase project.
@@ -23,17 +23,17 @@ If you haven't already registered an Android app, follow these steps:
 - A dialog will pop up, prompting you for a package name (the other fields are optional).
 	By default, this will be `com.apps.<yourappnameinlowercase>`.
 	However, it is recommended to set your own:
-
+```json
 		"Android": {
 			"Package": "com.mycompany.myapp",
 		}
-
+```
 - After adding the Android app, you will be prompted to download a `google-services.json` file. Download and copy it to the root of your project.
 - Add the following file to tell fuse to copy google-services.json to your android app folder:
 
 Android.uxl
 
-```
+```xml
 <Extensions Backend="CPlusPlus" Condition="Android">
     <CopyFile Condition="Android" Name="google-services.json" TargetName="app/google-services.json" />
 </Extensions>
@@ -55,7 +55,7 @@ This, along with your FCM Server key, are the details that is needed to send tha
 Your server key can be found under the "Cloud Messaging" tab of the Project Settings page (where you obtained your Sender ID).
 
 Here some example Fuse code for sending your app a notification.
-
+```xml
     <JavaScript>
         var API_ACCESS_KEY = '----HARDCODED API KEY----';
         var regID = '----HARDCODED REG ID FROM THE APP YOU ARE SENDING TO----';
@@ -86,5 +86,5 @@ Here some example Fuse code for sending your app a notification.
             });
         }
     </JavaScript>
-
+```
 Whilst hardcoding the RegID is clearly not a good idea, it serves the purpose for this simple test.

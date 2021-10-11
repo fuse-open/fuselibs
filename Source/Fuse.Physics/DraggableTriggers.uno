@@ -235,7 +235,7 @@ namespace Fuse.Physics
 
 		#Example:
 
-		```
+		```xml
 		<App>
 			<JavaScript>
 				var Observable = require("FuseJS/Observable");
@@ -396,7 +396,7 @@ namespace Fuse.Physics
 
 		#Example:
 
-		```
+		```xml
 		<App>
 			<JavaScript>
 				var Observable = require("FuseJS/Observable");
@@ -439,7 +439,7 @@ namespace Fuse.Physics
 				</Panel>
 			</ClientPanel>
 		</App>
-
+		```
 		@experimental
 	*/
 	public class WhileDroppingBy : DraggableTrigger
