@@ -8,7 +8,7 @@ namespace Alive
 
 		The `Distance` property determines the distance from where the header starts sticking that must be scrolled,
 		for the animation to progress from start to finish.
-
+		```xml
 			<ScrollView>
 				<StackPanel>
 					<Alive.StickyHeader>
@@ -21,6 +21,7 @@ namespace Alive
 					</Alive.StickyHeader>
 				</StackPanel>
 			</ScrollView>
+		```
 	*/
 	public partial class StickyHeaderAnimation {}
 }

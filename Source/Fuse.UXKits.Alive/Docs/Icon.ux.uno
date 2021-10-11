@@ -10,13 +10,13 @@ namespace Alive
 
 		Icons are specified as hexadecimal escape codes to the `Value` property, referring to their unicode code point.
 
-		```
+		```xml
 		<Alive.Icon Value="&#xEB96;" />
 		```
 
 		The width and height of an icon is determined by the `Size` property..
 
-		```
+		```xml
 		<Alive.Icon Value="&#xEA3A;" Size="48" />
 		```
 

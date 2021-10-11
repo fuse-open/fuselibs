@@ -2,7 +2,7 @@ namespace Alive
 {
 	/**
 		Combines a [TabBar](api:alive/tabbar) and a @PageControl.
-
+		```xml
 			<TabPageControl>
 				<Alive.TabPage Label="Page 1">
 					<!-- page content -->
@@ -14,6 +14,7 @@ namespace Alive
 					<!-- page content -->
 				</Alive.TabPage>
 			</TabPageControl>
+		```
 	*/
 	public partial class TabPageControl {}
 }

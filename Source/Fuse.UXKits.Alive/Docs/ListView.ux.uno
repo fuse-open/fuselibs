@@ -6,7 +6,7 @@ namespace Alive
 		ListView takes its items directly as a property.
 
 		**Note:** `Items` must be an @Observable.
-
+		```xml
 			<JavaScript>
 				var Observable = require("FuseJS/Observable");
 
@@ -22,13 +22,13 @@ namespace Alive
 					<Alive.Body Value="{task}" Alignment="Center" />
 				</Panel>
 			</Alive.ListView>
-
+		```
 
 		ListView applies @AddingAnimation, @RemovingAnimation and @LayoutAnimation to each element by default.
 		This behavior can be disabled using the `IsAnimated` property.
-
+		```xml
 			<Alive.ListView IsAnimated="false" Items="{data}">
-
+		```
 	*/
 	public partial class ListView {}
 }

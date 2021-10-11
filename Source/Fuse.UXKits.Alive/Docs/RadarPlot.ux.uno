@@ -2,7 +2,7 @@ namespace Alive
 {
 	/**
 		A radar-style [Plot](api:fuse/charting/plot) for a single data series of *exactly* six data points.
-
+		```xml
 			<JavaScript>
 				var Observable = require("FuseJS/Observable");
 
@@ -19,6 +19,7 @@ namespace Alive
 			<Alive.RadarPlot>
 				<Fuse.Charting.DataSeries Data="{data}" />
 			</Alive.RadarPlot>
+		```
 	*/
 	public partial class RadarPlot {}
 }

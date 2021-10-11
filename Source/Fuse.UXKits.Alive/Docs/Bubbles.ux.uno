@@ -2,7 +2,7 @@ namespace Alive
 {
 	/**
 		A row of partially overlapping [Bubbles](api:alive/bubble).
-
+		```xml
 			<Alive.Bubbles>
 				<Alive.Bubble>
 					<Alive.ImageFill File="image1.jpg" />
@@ -14,6 +14,7 @@ namespace Alive
 					<Alive.ImageFill File="image3.jpg" />
 				</Alive.Bubble>
 			</Alive.Bubbles>
+		```
 	*/
 	public partial class Bubbles {}
 }

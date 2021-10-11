@@ -2,13 +2,13 @@ namespace Alive
 {
 	/**
 		A bordered circle, generally used for profile images.
-
+		```xml
 			<Alive.Bubble>
 				<Alive.ImageFill File="Assets/image.jpg" />
 			</Alive.Bubble>
-
+		```
 		[Bubbles](api:alive/bubbles) displays a row of partially overlapping Bubbles.
-
+		```xml
 			<Alive.Bubbles>
 				<Each Items="{friends}">
 					<Alive.Bubble>
@@ -16,6 +16,7 @@ namespace Alive
 					</Alive.Bubble>
 				</Each>
 			</Alive.Bubbles>
+		```
 	*/
 	public partial class Bubble {}
 }
