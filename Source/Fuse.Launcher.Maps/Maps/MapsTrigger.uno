@@ -8,7 +8,7 @@ namespace Fuse.Triggers.Actions
 
 		You'll find this trigger action in the Fuse.Launcher package, which have to be referenced from your uno project.
 		For example:
-
+		```json
 			{
 				"Packages": [
 					"Fuse",
@@ -16,9 +16,9 @@ namespace Fuse.Triggers.Actions
 					"Fuse.Launcher"
 				]
 			}
-
+		```
 		## Example
-
+		```xml
 			<StackPanel Margin="20">
 				<Button Margin="10" Text="Launch Maps">
 					<Clicked>
@@ -26,6 +26,7 @@ namespace Fuse.Triggers.Actions
 					</Clicked>
 				</Button>
 			</StackPanel>
+		```
 	*/
 	public class LaunchMaps : TriggerAction
 	{

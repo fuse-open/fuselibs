@@ -13,9 +13,10 @@ namespace Fuse.Reactive.FuseJS
 		You need to add a reference to `"Fuse.Launcher"` in your project file to use this feature.
 
 		## Example
-
+		```js
 			var phone = require("FuseJS/Phone");
 			phone.call("+47 123 45 678");
+		```
 	*/
 	public sealed class Phone : NativeModule
 	{
@@ -33,10 +34,10 @@ namespace Fuse.Reactive.FuseJS
 			Launches your device's phone app with the specified number.
 
 			## Example
-
+			```js
 				var phone = require("FuseJS/Phone");
 				phone.call("+47 123 45 678");
-
+			```
 		*/
 		public static object Call(Scripting.Context context, object[] args)
 		{
