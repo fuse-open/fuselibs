@@ -21,7 +21,7 @@ namespace Fuse.Gestures
 		## Example
 
 		Shows a red circle we can use two fingers to zoom in or out.
-
+		```xml
 			<Panel>
 				<InteractiveTransform ux:Name="transform" />
 				<ZoomGesture Target="transform" />
@@ -30,6 +30,7 @@ namespace Fuse.Gestures
 					<Circle Width="350" Height="350" Color="Red" />
 				</Panel>
 			</Panel>
+		```
 	*/
 	public sealed class ZoomGesture : TransformGesture
 	{

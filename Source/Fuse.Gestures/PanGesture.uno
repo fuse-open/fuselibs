@@ -154,7 +154,7 @@ namespace Fuse.Gestures
 			## Example
 
 			The circle in this example will always be visible in the light grey area when zoomed in and panned.
-
+			```xml
 				<Panel HitTestMode="LocalBounds" Width="400" Height="400" ux:Name="TheWrapper" Color="#aaa" ClipToBounds="true">
 					<Circle Color="#afa">
 						<InteractiveTransform ux:Name="ImageTrans"/>
@@ -162,6 +162,7 @@ namespace Fuse.Gestures
 					<ZoomGesture Target="ImageTrans"/>
 					<PanGesture Target="ImageTrans" ConstrainElement="TheWrapper"/>
 				</Panel>
+			```
 		*/
 		public Element ConstrainElement
 		{
@@ -179,7 +180,7 @@ namespace Fuse.Gestures
 			## Example
 
 			The zoomed image cannot be panned outside the extents of the control.
-
+			```xml
 				<Panel HitTestMode="LocalBounds" Width="400" Height="400" Color="#aaa" ClipToBounds="true">
 					<Image File="../../Assets/large_troll.jpg" ux:Name="TheImage">
 						<InteractiveTransform ux:Name="ImageTrans"/>
@@ -187,6 +188,7 @@ namespace Fuse.Gestures
 					<ZoomGesture Target="ImageTrans"/>
 					<PanGesture Target="ImageTrans" Constraint="TheImage"/>
 				</Panel>
+			```
 		*/
 		public ISizeConstraint Constraint
 		{
