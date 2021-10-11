@@ -3,7 +3,7 @@ an overlay over the video when it is loading, paused, completed, or has failed.
 It also uses these triggers to display a play button and a pause button only at
 appropriate times.
 
-
+```xml
 	<StackPanel>
 		<Panel>
 			<Panel ux:Name="overlay" Background="Black" Opacity="0">
@@ -55,3 +55,4 @@ appropriate times.
 			</Button>
 		</Grid>
 	</StackPanel>
+```

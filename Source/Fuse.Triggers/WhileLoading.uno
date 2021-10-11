@@ -12,7 +12,7 @@ namespace Fuse.Triggers
 		## Example
 
 		The following example will display some text while an image resource is loading via URL:
-
+		```xml
 			<StackPanel>
 				<Image Url="https://upload.wikimedia.org/wikipedia/commons/f/f1/Kitten_and_partial_reflection_in_mirror.jpg">
 					<WhileLoading>
@@ -24,7 +24,7 @@ namespace Fuse.Triggers
 					<Text>Image is loading...</Text>
 				</WhileTrue>
 			</StackPanel>
-
+		```
 		@examples Docs/VideoTriggers.md
 
 		`<WhileLoading>` is equivalent to `<WhileBusy Activity="Loading">`.

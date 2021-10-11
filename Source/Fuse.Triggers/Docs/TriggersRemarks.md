@@ -11,13 +11,13 @@ animation on multiple devices, screen sizes, with real data and real user input.
 
 Pulse triggers detect one-off events such as @Clicked or @Tapped, and play their timeline once. A typical
 use case is to do a @Callback to JavaScript:
-
+```xml
 	<Panel Color="Blue">
 		<Tapped>
 			<Callback Handler="{panelTapped}" />
 		</Tapped>
 	</Panel>
-
+```
 Pulse triggers typically have names that are past-tense verbs.
 
 ## While-triggers
@@ -26,14 +26,14 @@ Triggers with names starting with `While...` are sustained triggers that activat
 condition goes away.
 
 For example @WhilePressed activates while the containing visual is pressed by a pointer, and deactivates when the pointer is released.
-
+```xml
 	<Panel Color="Red" ux:Name="panel">
 		<WhilePressed>
 			<Scale Factor="0.9" Duration="0.2" Easing="BackOut" />
 			<Change panel.Color="Blue" Delay="0.2" Duration="0.2" Easing="CubicOut" />
 		</WhilePressed>
 	</Panel>
-
+```
 The containing timeline starts plaing from the beginning when a pointer is pressed, and sustains the end state of the animation while the
 pointer remains pressed. If the pointer is released in the middle of the animation, the progress is cancelled and recedes naturally from
 its progress at the time of the release.

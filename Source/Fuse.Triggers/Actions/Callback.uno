@@ -8,7 +8,7 @@ namespace Fuse.Triggers.Actions
 		## Example
 
 		This example calls the JavaScript function `someJSFunction` when a @Button is @Clicked.
-
+		```xml
 			<JavaScript>
 				var someJSFunction = function () {
 					console.log("some function called");
@@ -21,6 +21,7 @@ namespace Fuse.Triggers.Actions
 					<Callback Handler="{someJSFunction}"/>
 				</Clicked>
 			</Button>
+		```
 	*/
 	public class Callback : TriggerAction
 	{

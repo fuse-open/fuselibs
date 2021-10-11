@@ -30,17 +30,17 @@ namespace Fuse
 
 			Here is a very basic example showing how you can raise a UserEvent
 			from JavaScript.
-
+			```xml
 				<UserEvent ux:Name="myEvent" />
 
 				<JavaScript>
 					myEvent.raise();
 				</JavaScript>
-
+			```
 			The following example raises an event with some arguments 5 seconds
 			after JavaScript has started executing, and logs its arguments in
 			the event handler.
-
+			```xml
 				<UserEvent ux:Name="myEvent" />
 				<OnUserEvent EventName="myEvent" Handler="{eventHandler}" />
 
@@ -61,7 +61,7 @@ namespace Fuse
 
 					module.exports = { eventHandler: eventHandler };
 				</JavaScript>
-
+			```
 		**/
 		static void raise(UserEvent n, object[] args)
 		{

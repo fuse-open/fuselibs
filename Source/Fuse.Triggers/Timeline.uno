@@ -24,7 +24,7 @@ namespace Fuse.Triggers
 		>
 		> *Incorrect:*
 		>
-		> ```
+		> ```xml
 		> <Timeline>
 		>     <Change rect.Opacity="1" Delay="0.0" Duration="0.5" />
 		>     <Change rect.Opacity="0" Delay="0.5" Duration="0.5" />
@@ -33,7 +33,7 @@ namespace Fuse.Triggers
 		>
 		> *Correct:*
 		>
-		> ```
+		> ```xml
 		> <Timeline>
 		>     <Change Target="rect.Opacity">
 		>         <Keyframe Value="1" Time="0.5" />
@@ -45,7 +45,7 @@ namespace Fuse.Triggers
 		## Example
 
 		Here is an example of how we can use a timeline to animate several properties on a rectangle (its width and color), and then play between the start and end of this `Timeline` by clicking two buttons.
-
+		```xml
 			<StackPanel>
 				<Rectangle ux:Name="rect" Height="40" Width="100%">
 					<SolidColor ux:Name="color" Color="#f00" />
@@ -71,7 +71,7 @@ namespace Fuse.Triggers
 					<Change color.Color="#0f0" Duration="0.3" Delay="0.3"/>
 				</Timeline>
 			</StackPanel>
-
+		```
 	*/
 	public partial class Timeline : Trigger, IPlayback, IPulseTrigger
 	{

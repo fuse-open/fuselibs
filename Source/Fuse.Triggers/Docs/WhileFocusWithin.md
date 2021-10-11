@@ -1,6 +1,6 @@
 This example changes the surrounding @StackPanel's color when a @TextInput is
 selected.
-
+```xml
 	<StackPanel ux:Name="panel" Color="#bbb">
 		<TextInput PlaceholderText="Name" />
 		<TextInput PlaceholderText="Age" />
@@ -9,3 +9,4 @@ selected.
 			<Change panel.Color="Green" Duration="0.2"/>
 		</WhileFocusWithin>
 	</StackPanel>
+```

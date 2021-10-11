@@ -17,15 +17,15 @@ namespace Fuse.Triggers
 		`Completed` is used to respond to the completion of a preparation, loading, or other busy task.
 
 		This example draws attention to an `Image` when it has completed loading:
-
+		```xml
 			<Image Url="some_big_image">
 				<Completed>
 					<Scale Factor="0.8" Duration="0.4"/>
 				</Completed>
 			</Image>
-
+		```
 		`Completed` always fires, even if the node wasn't busy before. This makes it suitable for things that should always run. It also makes it useful in combination with other triggers. For example, the below scales the image when the navigation page is both active and completed.
-
+		```xml
 			<Page>
 				<Image Alignment="Center" Url="some_image" ux:Name="theImage"/>
 				<WhileActive>
@@ -34,6 +34,7 @@ namespace Fuse.Triggers
 					</Completed>
 				</WhileActive>
 			</Page>
+		```
 	*/
 	public partial class Completed : PulseTrigger<CompletedEventArgs>
 	{
