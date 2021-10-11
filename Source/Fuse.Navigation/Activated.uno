@@ -76,7 +76,7 @@ namespace Fuse.Navigation
 		## Example
 
 		This example will print to the console whenever the each of the two pages is activated:
-
+		```xml
 			<PageControl>
 				<Page Background="Red">
 					<Activated>
@@ -89,11 +89,12 @@ namespace Fuse.Navigation
 					</Activated>
 				</Page>
 			</PageControl>
-
+		```
 		Note that this trigger may also be used as an attached event directly on a `Page`, like so:
-
+		```xml
 			<Page Activated="{jsActivated}">
 			</Page>
+		```
 	*/
 	public class Activated : NavigationTrigger
 	{
@@ -124,7 +125,7 @@ namespace Fuse.Navigation
 		## Example
 
 		This example will print to the console whenever the each of the two pages is deactivated:
-
+		```xml
 			<PageControl>
 				<Page Background="Red">
 					<Deactivated>
@@ -137,11 +138,12 @@ namespace Fuse.Navigation
 					</Deactivated>
 				</Page>
 			</PageControl>
-
+		```
 		Note that this trigger may also be used as an attached event directly on a `Page`, like so:
-
+		```xml
 			<Page Deactivated="{jsDeactivated}">
 			</Page>
+		```
 	*/
 	public class Deactivated : NavigationTrigger
 	{

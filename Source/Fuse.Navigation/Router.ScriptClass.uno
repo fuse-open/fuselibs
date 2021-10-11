@@ -25,9 +25,9 @@ namespace Fuse.Navigation
 			The parameters form a repeating set of pairs. The `path` is the name of the page or template
 			to use. `parameter` is the dynamic property to assign to the path; it may be `null` if not relevant
 			at this level.
-
+			```js
 				router.goto( "home", null, "contact", null, "view", { id: "john" } )
-
+			```
 			This specifies a three-level path. The first two levels, `home` and `contact` do not have any property.
 			The third level `view` specifies the `id` of the user that will be viewed.
 		*/
@@ -55,13 +55,13 @@ namespace Fuse.Navigation
 			the @Navigator or @PageControl at, or up from, `node`.
 			The path fragment starting at that outlet will be replaced with the new path.
 			A `goto` is done on this resulting path.
-
+			```xml
 				<Router ux:Name="router"/>
 				<Navigator>
 					<Navigator ux:Template="one" ux:Name="inner">
 						<Panel ux:Template="a"/>
 						<Panel ux:Template="b"/>
-
+			```
 			If the current route is `one/a` a call to `gotoRelative( inner, "b" )` will go to the route `one/b`.
 			The relative path replaces the path starting at `inner`.
 
@@ -112,9 +112,9 @@ namespace Fuse.Navigation
 			The parameters form a repeating set of pairs. The `path` is the name of the page or template
 			to use. `parameter` is the dynamic property to assign to the path; it may be `null` if not relevant
 			at this level.
-
+			```js
 				router.push( "home", null, "contact", null, "view", { id: "john" } )
-
+			```
 			This specifies a three-level path. The first two levels, `home` and `contact` do not have any property.
 			The third level `view` specifies the `id` of the user that will be viewed.
 		*/
@@ -148,13 +148,13 @@ namespace Fuse.Navigation
 
 			The navigationSpec is a JavaScript object that specifies all the properties for the router operation,
 			for example:
-
+			```js
 				router.modify({
 					how: "Goto",
 					path: [ "one", {}, "two", {} ],
 					transition: "Bypass",
-				})
-
+				});
+			```
 			This gotos to the "one/two" page without a transition.
 
 			The options are:
@@ -201,12 +201,12 @@ namespace Fuse.Navigation
 			 * `path`(array)  : Path to be navigated to. This uses the same notation as `navigate()`.
 
 			This example registers a bookmark, `"optionsPage"`, with the path `"options"`:
-
+			```js
 				router.bookmark({
 					name: "optionsPage",
 					path: [ "options", { } ]
 				});
-
+			```
 			@scriptmethod bookmark( bookmark )
 
 
@@ -293,14 +293,15 @@ namespace Fuse.Navigation
 			The callback receives an array on the form `[path, parameter]+`.
 
 			Example:
-
+			```js
 				router.getRoute(function(route) {
 					route[0] // first path segment
 					route[1] // first parameter
 					route[2] // second path segment
 					route[3] // second parameter
 					// and so on
-				})
+				});
+			```
 		*/
 		static object GetRoute(Context c, Router r, object[] args)
 		{

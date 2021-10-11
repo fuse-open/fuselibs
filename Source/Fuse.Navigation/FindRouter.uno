@@ -10,7 +10,7 @@ namespace Fuse.Navigation
 
 		This can be used to get access to a router in JavaScript. This assume that a @Router has been
 		declared somewhere higher in the UX tree (it need not be in the same file).
-
+		```xml
 			<Page>
 				<JavaScript dep:router="findRouter()">
 					exports.go = function() {
@@ -20,6 +20,7 @@ namespace Fuse.Navigation
 
 				<Button Alignment="Center" Clicked="{go}"/>
 			</Page>
+		```
 	*/
 	[UXFunction("findRouter")]
 	public sealed class FindRouter : Fuse.Reactive.Expression

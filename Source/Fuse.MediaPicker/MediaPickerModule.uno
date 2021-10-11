@@ -18,7 +18,7 @@ namespace Fuse.MediaPicker
 		On Android using this API will request the CAMERA and WRITE_EXTERNAL_STORAGE permissions.
 
 		## Example
-
+		```js
 			var mediaPicker = require('FuseJS/MediaPicker');
 			var options = {
 				source: mediaPicker.SOURCE_GALLERY, // pick image from gallery, use mediaPicker.SOURCE_CAMERA for taking picture or record video from the device camera
@@ -41,7 +41,7 @@ namespace Fuse.MediaPicker
 			}).catch(function(error) {
 				//Something went wrong, see error for details
 			});
-
+		```
 		> **Note**: This package is considered as the advanced version of the `Fuse.CameraRoll` `getImage` method, where in this package we have options to pick media (images & video) from the gallery or by taking from the device camera.
 	*/
 	[UXGlobalModule]

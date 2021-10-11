@@ -29,7 +29,7 @@ namespace Fuse.Navigation
 		more structured navigation.
 
 		## Example
-
+		```xml
 			<PageControl>
 				<Page>
 					<Grid Background="#282a37" Rows="auto,1*" Padding="20">
@@ -48,6 +48,7 @@ namespace Fuse.Navigation
 					</Grid>
 				</Page>
 			</PageControl>
+		```
 	*/
 	public class NavigateTo : NavigationTriggerAction
 	{
@@ -89,7 +90,7 @@ namespace Fuse.Navigation
 		# Example
 
 		This example shows the use of `NavigateToggle` by toggling the visibility of an `EdgePanel`.
-
+		```xml
 			<DockPanel>
 				<EdgeNavigation/>
 				<Panel Width="150" Edge="Left" Background="#f63" Alignment="Left" ux:Name="nav">
@@ -103,6 +104,7 @@ namespace Fuse.Navigation
 					</Tapped>
 				</Panel>
 			</DockPanel>
+		```
 	*/
 	public class NavigateToggle : TriggerAction
 	{
@@ -144,7 +146,7 @@ namespace Fuse.Navigation
 
 		# Example
 		In this example, `GoBack` will be used to navigate away from the first page of a `PageControl`.
-
+		```xml
 			<PageControl>
 				<Panel Background="#0F0" ux:Name="firstPage">
 					<Button Text="GoBack" Alignment="Center" Margin="10">
@@ -161,7 +163,7 @@ namespace Fuse.Navigation
 					</Button>
 				</Panel>
 			</PageControl>
-
+		```
 		Backward refers to pages that are behind the active one in navigation order. This trigger is not suitable for navigation that does not have a history or sequence of pages.
 
 		See [Navigation Order](articles:navigation/navigationorder.md)
@@ -179,7 +181,7 @@ namespace Fuse.Navigation
 
 		# Example
 		In this example, `GoForward` will be used to navigate back to the first page of a `PageControl`. This is because "Forward" means "towards the first page" when used in linear navigation.
-
+		```xml
 			<PageControl>
 				<Panel Background="#F00" ux:Name="page1">
 					<Button Alignment="Center" Text="Go to page 2">
@@ -196,7 +198,7 @@ namespace Fuse.Navigation
 					</Button>
 				</Panel>
 			</PageControl>
-
+		```
 		Forward refers to pages that are in front of the active one in navigation order.  This trigger is not suitable for navigation that does not have a history or sequence of pages.
 
 		See [Navigation Order](articles:navigation/navigationorder.md)
