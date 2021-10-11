@@ -5,20 +5,20 @@ As with many of our bindings over OS features we like to start with a light API 
 ## Getting Set Up
 
 Include the Fuse local notification library by adding the following to your `.unoproj` file
-
+```json
     "Packages": [
         ...
         "Fuse.LocalNotifications",
         ...
     ],
-
+```
 This is enough to start using this feature in your apps. Let's look at that now.
 
 
 ## App Example
 
 This is a full Fuse app that uses Local Notifications:
-
+```xml
     <App>
         <JavaScript>
             var LocalNotify = require("FuseJS/LocalNotifications");
@@ -52,7 +52,7 @@ This is a full Fuse app that uses Local Notifications:
             <BottomBarBackground DockPanel.Dock="Bottom" />
         </DockPanel>
     </App>
-
+```
 Let's break down what is happening here.
 
 ## How it works
@@ -60,11 +60,11 @@ Let's break down what is happening here.
 We will skip the `module.exports` and stuff inside the `DockPanel`, as that is better explained in other guides. Let's instead go through the JS.
 
 After `require`ing our module like normal, we set up a function which will deliver a notification 4 seconds in the future.
-
+```js
     function sendLater() {
         LocalNotify.later(4, "Finally!", "4 seconds is a long time", "hmm?", true);
     }
-
+```
 The `later` function take the following parameters:
 
 - `secondsFromNow`: How long in seconds until the notification fires
@@ -73,24 +73,23 @@ The `later` function take the following parameters:
 - `payload`: a string which is not shown in the notification itself, but will be present in the callback.
 - `sound`: a `bool` specifying whether or not the device should make the default notification sound when it is shown in the notification bar
 - `badgeNumber`: An optional parameter that is only used on iOS, which puts a badge number against the apps icon. This is often used for showing the quantity of 'things' that need the user's attention. For example an email app could show the number of unread emails.
-
-
+```js
     function sendNow() {
         LocalNotify.now("Boom!", "Just like that", "payload", true);
     }
-
+```
 The `now` function is almost identical to the `later` function, except that it doesnt have the `secondsFromNow` parameter.
 
 One last thing to note about both `now` and `later`, is that they will not deliver a notification to the user if the app is open. Instead, they will trigger the `receivedMessage` event silently.
 
 Finally, we set up the function that will be called whenever we get a notification, by using the @EventEmitter `on` method to register it.
-
+```js
     LocalNotify.on("receivedMessage", function(payload) {
         console.log("Received Local Notification: " + payload);
         LocalNotify.clearAllNotifications();
         LocalNotify.clearBadgeNumber();
     });
-
+```
 This function is called whenever a notification is delivered while the app is open, or when the app is started from a notification the user has selected.
 
 The `payload` will be a string in JSON format containing the following keys:
