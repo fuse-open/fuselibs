@@ -50,20 +50,21 @@ namespace Fuse
 
 			This list has many use cases. For example, when populating a view with data, the correct template can be
 			picked based on a field	in the data source:
-
+			```xml
 				<StackPanel Items="{items}" MatchKey="type">
 					<SmallProfile ux:Template="small_profile" />
 					<BigProfile ux:Template="big_profile" />
 				</StackPanel>
-
+			```
 			The name of the template can also have a special significance in certain contexts, for example when dealing
 			with native control wrappers:
-
+			```xml
 				<Control ux:Class="MySlider">
 					<MyWrappers.iOS.Slider ux:Template="iOSAppearance" />
 					<MyWrappers.Android.Slider ux:Template="AndroidAppearance" />
 					<MyWrappers.Graphics.Slider ux:Template="GraphicsAppearance" />
 				</Control>
+			```
 		*/
 		[UXContent]
 		public IList<Template> Templates { get { return _templates.Templates; } }

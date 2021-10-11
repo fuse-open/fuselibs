@@ -8,14 +8,14 @@ namespace Fuse
 
 		Event handlers for the [Element.Placed](api:fuse/elements/element/placed) event will be called with
 		an instance of `PlacedArgs`, containing the following fields:
-
+		```json
 			{
 				x,      // X-coordinate of the element's new position
 				y,      // Y-coordinate of the element's new position
 				width,  // The new width of the element.
 				height  // The new height of the element
 			}
-
+		```
 		All coordinates are in the parent node's local space, in points.
 	*/
 	public class PlacedArgs: EventArgs, IScriptEvent

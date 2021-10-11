@@ -3,7 +3,7 @@
 
 When you want to do several transformations on the same element, the order in which they are applied matters. Being explicit about adding transforms lets us exploit this fact.
 
-```
+```xml
 <Rectangle Color="Green" Width="50" Height="50">
 	<Translation X="100" />
 	<Rotation Degrees="45" />

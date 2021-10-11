@@ -54,14 +54,14 @@ namespace Fuse
 			## Example
 
 			This method is deprecated - use the following pattern instead:
-
+			```xml
 				<Panel ux:Name="channelView">
 					<JavaScript>
 						channelView.Parameter.onValueChanged(module, function(param) {
 							// lookup channel with id "param"
 						})
 					</JavaScript>
-
+			```
 			@scriptmethod onParameterChanged( callback )
 			@param callback The script method to call when the parameter changes. This is guaranted to be
 				called at least once at registration time; you don't need to lookup the parameter another way.
