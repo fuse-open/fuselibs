@@ -30,17 +30,23 @@ namespace Fuse.Navigation
 				<Text Value="Open subpage" />
 			</Panel>
 		```
+
 		If we only need to go back in navigation history, the `Bookmark` property can be omitted:
+		
 		```xml
 			<RouterModify How="GoBack" />
 		```
+		
 		When using `Navigator` or `PageControl`, the default transitions can be overriden by setting `Transition`
 		and `Style` properties on `RouterModify`. This pushes another page without a transition:
+		
 		```xml
 			<RouterModify How="Push" Transition="Bypass" Bookmark="myBookmark" />
 		```
+		
 		We can use the `Style` property to refer to specific `Transition` triggers on target pages, allowing us
 		to trigger different transitions for separate use cases:
+		
 		```xml
 			<Router ux:Name="router" />
 			...
