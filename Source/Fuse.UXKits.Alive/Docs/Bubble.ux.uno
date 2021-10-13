@@ -7,7 +7,9 @@ namespace Alive
 				<Alive.ImageFill File="Assets/image.jpg" />
 			</Alive.Bubble>
 		```
+
 		[Bubbles](api:alive/bubbles) displays a row of partially overlapping Bubbles.
+
 		```xml
 			<Alive.Bubbles>
 				<Each Items="{friends}">
@@ -17,6 +19,7 @@ namespace Alive
 				</Each>
 			</Alive.Bubbles>
 		```
+		
 	*/
 	public partial class Bubble {}
 }

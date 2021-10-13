@@ -2,6 +2,7 @@ namespace Alive
 {
 	/**
 		A title with an underline that extends to the left.
+		
 		```xml
 			<Alive.UnderlineTitle Text="Hello, world" />
 		```

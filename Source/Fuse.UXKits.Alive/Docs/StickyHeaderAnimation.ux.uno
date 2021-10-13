@@ -8,6 +8,7 @@ namespace Alive
 
 		**Note:** `Header` *must* be a direct child of the parent element of the StickyHeaderAnimation,
 		and the parent element must be a direct child of the @ScrollView's root child element.
+
 		```xml
 			<ScrollView>
 				<StackPanel>
@@ -22,6 +23,7 @@ namespace Alive
 				</StackPanel>
 			</ScrollView>
 		```
+		
 	*/
 	public partial class StickyHeaderAnimation {}
 }

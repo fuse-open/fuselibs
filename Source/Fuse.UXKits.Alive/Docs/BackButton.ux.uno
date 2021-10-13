@@ -15,7 +15,7 @@ namespace Alive
 			</JavaScript>
 
 			<Alive.BackButton Clicked="{goBack}" />
-		```xml
+		```
 
 	*/
 	public partial class BackButton {}
