@@ -24,7 +24,6 @@ namespace Alive
 
 		@include Docs/IconTable.md
 
-
 	*/
 	public partial class Icon {}
 }

@@ -2,6 +2,7 @@ namespace Alive
 {
 	/**
 		A row of partially overlapping [Bubbles](api:alive/bubble).
+		
 		```xml
 			<Alive.Bubbles>
 				<Alive.Bubble>

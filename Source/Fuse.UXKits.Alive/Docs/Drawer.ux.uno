@@ -6,6 +6,7 @@ namespace Alive
 		A menu element must be provided using the `Menu` dependency.
 
 		In most cases, the Drawer sits at the root of the app, enclosing the root Navigator.
+
 		```xml
 			<App>
 				<JavaScript>
@@ -33,7 +34,9 @@ namespace Alive
 				</Alive.Drawer>
 			</App>
 		```
+
 		Drawer can be opened and closed from JavaScript using the `open()` and `close()` methods.
+
 		```xml
 			<JavaScript>
 				exports.openDrawer = function() {
@@ -49,15 +52,19 @@ namespace Alive
 				<Panel ux:Binding="Menu" />
 			</Alive.Drawer>
 		```
+
 		Drawer displays a floating button above its content that opens the Drawer.
 		This can be disabled using the `HideButton` property.
+
 		```xml
 			<Alive.Drawer HideButton="true">
 				<Panel ux:Binding="Menu" />
 			</Alive.Drawer />
 		```
+
 		You can combine this property with `WhileActive` to hide the button for certain pages.
 		In the example below, the button is hidden while inside `SecondPage`.
+
 		```xml
 			<App>
 				<Router ux:Name="router" />
@@ -82,6 +89,7 @@ namespace Alive
 				</Page>
 			</App>
 		```
+		
 	*/
 	public partial class Drawer {}
 }

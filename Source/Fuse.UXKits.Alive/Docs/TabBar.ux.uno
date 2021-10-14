@@ -9,6 +9,7 @@ namespace Alive
 
 		You must specify a `Navigation`, which refers to the @PageControl or other @LinearNavigation
 		that contains the pages.
+
 		```xml
 			<DockPanel>
 				<Alive.TabBar Dock="Top" Navigation="pageControl" />
@@ -25,6 +26,7 @@ namespace Alive
 				</PageControl>
 			</DockPanel>
 		```
+		
 	*/
 	public partial class TabBar {}
 }

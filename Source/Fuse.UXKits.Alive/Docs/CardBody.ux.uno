@@ -2,6 +2,7 @@ namespace Alive
 {
 	/**
 		A @StackPanel with the right margins and spacing for text content in a Card.
+		
 		```xml
 			<Alive.Card>
 				<Alive.CardBody>

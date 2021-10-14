@@ -5,6 +5,7 @@ namespace Alive
 		Children are placed inside a DockPanel.
 
 		Use [NavBarTitle](api:alive/navbartitle) for title text in a `NavBar`.
+		
 		```xml
 			<DockPanel>
 				<Alive.NavBar>

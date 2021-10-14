@@ -12,6 +12,7 @@ namespace Alive
 
 		When the button is tapped, this component will raise a UserEvent named Alive.SwipeActionConfirmed.
 		You can handle this event using the Alive.SwipeActionConfirmed trigger.
+
 		```xml
 			<JavaScript>
 				exports.onConfirmed = function() {
@@ -24,6 +25,7 @@ namespace Alive
 
 			</Alive.SwipeActionPanel>
 		```
+		
 		The button has a red color by default, and fades into yellow following the confirmation animation.
 		You can customize this gradient using the GradientStartColor and GradientEndColor properties.
 

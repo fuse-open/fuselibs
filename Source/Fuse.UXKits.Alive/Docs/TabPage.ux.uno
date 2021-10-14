@@ -7,6 +7,7 @@ namespace Alive
 		to generate labelled tabs for each page.
 
 		See also [PartialTabPage](api:alive/partialtabpage).
+		
 		```xml
 			<TabPageControl>
 				<Alive.TabPage Label="Page 1">

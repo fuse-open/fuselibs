@@ -4,6 +4,7 @@ namespace Alive
 
 		Cards are generally light. Thus, they have an implicit LightTheme by default.
 		You can disable this behavior by using its base class, [ThemedCard](api:alive/themedcard) instead.
+		
 		```xml
 			<Alive.ThemedCard>
 				<Alive.DarkTheme />
@@ -16,6 +17,7 @@ namespace Alive
 		```
 
 		[Alive.ImageFill](api:alive/imagefill) can be used to fill a card with an image.
+		
 		```xml
 			<Alive.Card>
 				<Alive.ImageFill File="Assets/image.jpg" />
@@ -26,6 +28,7 @@ namespace Alive
 		Note: [CardMedia](api:alive/cardmedia) has an implicit [DarkTheme](api:alive/darktheme).
 
 		[CardBody](api:alive/cardbody) is a @StackPanel with proper margin and spacing for text content in a Card.
+		
 		```xml
 			<Alive.Card>
 				<StackPanel>
@@ -38,6 +41,7 @@ namespace Alive
 				</StackPanel>
 			</Alive.Card>
 		```
+
 	*/
 	public partial class Card {}
 

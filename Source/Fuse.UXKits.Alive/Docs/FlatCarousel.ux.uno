@@ -25,6 +25,7 @@ namespace Alive
 		Thus, there are two ways to display content above this gradient.
 
 		You can provide a Title and/or Subtitle to be displayed in the bottom-left corner.
+
 		```xml
 			<Alive.FlatCarousel>
 				<Alive.FlatCarouselPage Title="Page 1">
@@ -35,7 +36,9 @@ namespace Alive
 				</Alive.FlatCarouselPage>
 			</Alive.FlatCarousel>
 		```
+
 		Instead of the default Title/Subtitle setup, you can provide the `Content` template to use a custom element.
+
 		```xml
 			<Alive.FlatCarousel>
 				<Alive.FlatCarouselPage>
@@ -46,6 +49,7 @@ namespace Alive
 				</Alive.FlatCarouselPage>
 			</Alive.FlatCarousel>
 		```
+		
 	*/
 	public partial class FlatCarouselPage {}
 }

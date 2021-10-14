@@ -6,6 +6,7 @@ namespace Alive
 
 		**Note:** StickyHeader *must* be placed directly inside the ScrollView's root element.
 		This is because `StickyHeader` calculates its own position relative to its parent.
+
 		```xml
 			<ScrollView>
 				<StackPanel>
@@ -24,8 +25,10 @@ namespace Alive
 				</StackPanel>
 			</ScrollView>
 		```
+
 		[MediaScroller](api:alive/mediascroller) wraps a StackPanel around its children,
 		and so any StickyHeader must be a direct child of the `MediaScroller` itself.
+
 		```xml
 			<Alive.MediaScroller>
 				<Panel ux:Binding="Media" />
@@ -39,6 +42,7 @@ namespace Alive
 				</Alive.StickyHeader>
 			</Alive.MediaScroller>
 		```
+		
 		See also @StickyHeaderAnimation
 	*/
 	public partial class StickyHeader {}
