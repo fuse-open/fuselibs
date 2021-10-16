@@ -2,11 +2,13 @@ namespace Alive
 {
 	/**
 		A bordered circle, generally used for profile images.
+
 		```xml
 		<Alive.Bubble>
 			<Alive.ImageFill File="Assets/image.jpg" />
 		</Alive.Bubble>
 		```
+		
 		![actionButton](../../media/alive/bubbles/single.png)
 
 		[Bubbles](api:alive/bubbles) displays a row of partially overlapping Bubbles.
