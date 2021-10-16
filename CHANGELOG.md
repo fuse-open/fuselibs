@@ -1,45 +1,116 @@
 # Unreleased
 
-### Fuse.physics
-- Refactor `Draggable` using IGesture System.
-- Introduce `Translation` property to `Draggable` to track translation position when user drag a visual with `Dragabble` behavior attached
-- Introduce two new Triggers:
-  - `DragStarted` Pulse when dragging activity has been started
-  - `DragEnded` Pulse when dragging activity has been ended
-- Drag and Drop API. Experimental support for drag and drop between visual element. Introduce sets of Triggers:
-  - `WhileDraggingOver` Activated when Visual that contain `Draggable` behavior and `WhileDraggingOver` trigger is overlaped / intersected with the `Target` Visual property that is defined in `WhileDraggingOver`
-  - `WhileDroppingBy` Activated when Visual that contain `WhileDroppingBy` trigger being overlaped / intersected by `Source` Draggable Visual
-  - `Dropped` Pulse when Draggable Visual is being dropped to the target visual and vice versa.
+## 2.0
 
-## Fuse.Elements
-- Lazy load feature on `ImageFill` brush. Introduce `AutoLoad` bool property to control when we fetch the image data. The default value is `true` which means it automatically load the image data and display it whenever it rooted. Set it to false to make it lazy load and using the new `LoadImage` trigger action to actually load the image.
-- Added `TargetSize` property on `HttpImageSource` and `FileImageSource` to resize the image before displaying. Only works on iOS and Android
+### Breaking changes
+- TextControl accessibility: Introduce MinFontScale and MaxFontScale Property (#1362)
+- Single finger PanGesture (#1428)
+
+### Fuse.Physics
+- Draggable enhancements (#1373)
+  - Refactor `Draggable` using IGesture System
+  - Introduce `Translation` property to `Draggable` to track translation position when user drag a visual with `Dragabble` behavior attached
+  - Introduce two new Triggers:
+    - `DragStarted` Pulse when dragging activity has been started
+    - `DragEnded` Pulse when dragging activity has been ended
+  - Drag and Drop API. Experimental support for drag and drop between visual element. Introduce sets of Triggers:
+    - `WhileDraggingOver` Activated when Visual that contain `Draggable` behavior and `WhileDraggingOver` trigger is overlaped / intersected with the `Target` Visual property that is defined in `WhileDraggingOver`
+    - `WhileDroppingBy` Activated when Visual that contain `WhileDroppingBy` trigger being overlaped / intersected by `Source` Draggable Visual
+    - `Dropped` Pulse when Draggable Visual is being dropped to the target visual and vice versa
+
+### Fuse.Elements
+- Lazy load feature on `ImageFill` brush. Introduce `AutoLoad` bool property to control when we fetch the image data. The default value is `true` which means it automatically load the image data and display it whenever it rooted. Set it to false to make it lazy load and using the new `LoadImage` trigger action to actually load the image (#1401)
+- Added `TargetSize` property on `HttpImageSource` and `FileImageSource` to resize the image before displaying. Only works on iOS and Android (#1401)
+
+### Fuse.Controls.DatePicker
+- Add Style property to DatePicker and TimePicker (#1384, #1420)
 
 ### Fuse.Controls.Primitives
-- `TextControl` accessibility feature. Introduce `MinFontScale` and `MaxFontScale` Property to control the minimum or maximum text scaling behavior when the text/font size configuration setting on the phone has changed. Now default Fuse will honor the phone's text/font size configuration setting and will change all of the texts or labels in the Fuse App to match the setting. If you don't want the behavior you can pass a compiler flag:`IGNORE_FONT_SCALING` when building the app i.e: `uno build ios -DIGNORE_FONT_SCALING`
-- Added `MaxLines` property to the `Text` component to limit the number of lines when `TextWrapping` property is set to `Wrap`
-- Added support for `Shadow` Behavior in `NativeViewHost`
-- Added support for rendering backdrop filter of glass effect using the new `Glass` behavior
-- Lazy load feature on `Image` component. Introduce `AutoLoad` bool property to control when we fetch the image data. The default value is `true` which means it automatically load the image data and display it whenever it rooted. Set it to false to make it lazy load and using the new `LoadImage` trigger action to actually load the image.
-- Added `LoadImage` trigger action to load image data for `Image` or `ImageFill`
+- `TextControl` accessibility feature. Introduce `MinFontScale` and `MaxFontScale` Property to control the minimum or maximum text scaling behavior when the text/font size configuration setting on the phone has changed. Now default Fuse will honor the phone's text/font size configuration setting and will change all of the texts or labels in the Fuse App to match the setting. If you don't want the behavior you can pass a compiler flag:`IGNORE_FONT_SCALING` when building the app i.e: `uno build ios -DIGNORE_FONT_SCALING` (#1362)
+- Added `MaxLines` property to the `Text` component to limit the number of lines when `TextWrapping` property is set to `Wrap` (#1385)
+- Added support for `Shadow` Behavior in `NativeViewHost` (#1380)
+- Added support for rendering backdrop filter of glass effect using the new `Glass` behavior (#1381, #1426)
+- Lazy load feature on `Image` component. Introduce `AutoLoad` bool property to control when we fetch the image data. The default value is `true` which means it automatically load the image data and display it whenever it rooted. Set it to false to make it lazy load and using the new `LoadImage` trigger action to actually load the image. (#1401)
+- Added `LoadImage` trigger action to load image data for `Image` or `ImageFill` (#1401)
 
 ### Fuse.Auth
-- Introducing Fuse.Auth, the easiest way to perform user authentication using biometric sensor that reside on the device such as fingerprint or FaceID
-- Introducing Platform SignIn. a Sign In mechanism that use `Sign In With Apple` on iOS and `Google SignIn` on Android. There is two API added, `PlatformSignIn` as trigger action and `FuseJS/Auth` as javascript module.
+- Introducing Fuse.Auth, the easiest way to perform user authentication using biometric sensor that reside on the device such as fingerprint or FaceID (#1351)
+- Introducing Platform SignIn. a Sign In mechanism that use `Sign In With Apple` on iOS and `Google SignIn` on Android. There is two API added, `PlatformSignIn` as trigger action and `FuseJS/Auth` as javascript module (#1366)
 
 ### MapView
-- Adds a map overlay to a MapView using `MapOverlay` Node. There are 3 types of overlay that are supported : Polyline, Polygon and Circle
-- Added two scriptclass function, `snapshot` for taking an image of the current MapView display and `showAllMarkers` to zoom MapView to the particular position where all of the markers is visible on the MapView
+- Adds a map overlay to a MapView using `MapOverlay` Node. There are 3 types of overlay that are supported : Polyline, Polygon and Circle (#1352)
+- Added two scriptclass function, `snapshot` for taking an image of the current MapView display and `showAllMarkers` to zoom MapView to the particular position where all of the markers is visible on the MapView (#1395)
+- Implement click event on MapOverlay (#1396)
 
 ### Fuse.Triggers
-- Added trigger action `SetWindowOrientation` for setting device orientation
-- Added trigger action `SetStatusBarUI` for setting look and feel of statusbar
+- Added trigger action `SetWindowOrientation` for setting device orientation (#1354)
+- Added trigger action `SetStatusBarUI` for setting look and feel of statusbar (#1355)
 
-### StatusBar
-- `Android.StatusBarConfig` Added property to change status bar style: Dark or Light.
+### iOS enhancements
+- Fix Image bounds in NativeViewHost (#1341)
+- ImageLoader run on background thread (#1342)
+- Fix memory leak on get image orientation (#1371)
+- Compatibility with latest Xcode and iOS13.4 later (#1377)
+- Fix device orientation setup, honor the project settings (#1375)
+- Fuse.Text: Upgrade ICU to v68.2 (#1403)
+
+### Android enhancements
+- `Android.StatusBarConfig` Added property to change status bar style: Dark or Light. (#1355)
+- Push Notifications - JSON Payload Upgrade (#1346)
+- Implement feedback vibration (#1359)
+- Fix text rendering (#1405)
+- Don't add BACKGROUND_LOCATION to manifest (#1411)
+- TextEditRenderer: Enable horizontal scrolling only on lower versions (#1414)
+- GeoLocation Upgrade (#1344, #1345)
+
+### New features
+- Trigger Action for Native Alerts (#1397)
+- WhileScrolling Trigger (#1398)
+- Media Picker (#1427)
+
+### Other enhancements
+- Introduce DiskCachePolicy in HttpImageSource (#1356)
+- ImageSource and ImageFill Enhancement (#1360)
+- Implement TextTruncation on NativeViewHost (#1364)
+- Fix Visual Scroll Position of an element when MinScroll is Negative (#1368)
+- Experimental support for mouse wheel scroll (#1372)
+- Fix text-wrapping in NativeViewHost (#1378)
+- Update ModuleInstance.uno (#1404)
+- Tweak swipe edge navigation (#1421)
+- Fix path 's' command use relative bezier curve (#1422)
 
 ### FuseJS
-- FuseJS/Environment: add property to retrieve general information that reside in the .unoproj file such as: Title, Version, Publisher.
+- FuseJS/Environment
+  - Add properties to retrieve general information that reside in the .unoproj file (#1383)
+- Biometric Module (#1379)
+
+### UX expressions
+- Add `hsvColor()` function (#1423)
+- Enable cast from `string` to `float4` (#1424)
+- Add `hexColor()` and `rgba()` functions (#1425)
+- Add `length()` function (#1382)
+
+### Code structure
+- Make static selectors internal (#1369)
+- Rename Java packages (#1370)
+- Import Fuse.Android.Permissions from Uno.Permissions (#1387)
+- Trim trailing whitespace (#1361, #1388)
+- Include markdown docs in package (#1386)
+
+### Legacy
+- Fuse.Charting: Fix deprecation warnings in test (#1390)
+- Drop obsolete legacy code (#1389)
+- AppVeyor: Drop legacy mesa-download (#1391)
+- Replace usage of obsolete APIs (#1348)
+- Drop obsolete text file (#1350)
+- Update TypeScript definitions (#1357)
+
+### Docs and testing
+- doc-export: Add Fuse.Auth reference (#1392)
+- Fuse.Controls.CameraView: Fix type-name typo (#1393)
+- Text Test App (#1408, #1409)
+
+https://github.com/fuse-open/fuselibs/compare/v1.14.0...master
 
 # 1.14
 
