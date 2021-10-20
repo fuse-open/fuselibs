@@ -6,22 +6,22 @@ namespace Alive
 		You can disable this behavior by using its base class, [ThemedCard](api:alive/themedcard) instead.
 		
 		```xml
-			<Alive.ThemedCard>
-				<Alive.DarkTheme />
-			</Alive.ThemedCard>
+		<Alive.ThemedCard>
+			<Alive.DarkTheme />
+		</Alive.ThemedCard>
 		```
 
 		Cards are Rectangles, which means they can have children and/or fills.
 		```xml
-			<Alive.Card Color="Alive.Gray200" />
+		<Alive.Card Color="Alive.Gray200" />
 		```
 
 		[Alive.ImageFill](api:alive/imagefill) can be used to fill a card with an image.
 		
 		```xml
-			<Alive.Card>
-				<Alive.ImageFill File="Assets/image.jpg" />
-			</Alive.Card>
+		<Alive.Card>
+			<Alive.ImageFill File="Assets/image.jpg" />
+		</Alive.Card>
 		```
 
 		[CardMedia](api:alive/cardmedia) can be used to only fill the top of a Card.
@@ -30,16 +30,16 @@ namespace Alive
 		[CardBody](api:alive/cardbody) is a @StackPanel with proper margin and spacing for text content in a Card.
 		
 		```xml
-			<Alive.Card>
-				<StackPanel>
-					<Alive.CardMedia>
-						<Alive.ImageFill File="Assets/image.jpg" />
-					</Alive.CardMedia>
-					<Alive.CardBody>
-						<Alive.Title>Whee, I'm a card!</Alive.Title>
-					</Alive.CardBody>
-				</StackPanel>
-			</Alive.Card>
+		<Alive.Card>
+			<StackPanel>
+				<Alive.CardMedia>
+					<Alive.ImageFill File="Assets/image.jpg" />
+				</Alive.CardMedia>
+				<Alive.CardBody>
+					<Alive.Title>Whee, I'm a card!</Alive.Title>
+				</Alive.CardBody>
+			</StackPanel>
+		</Alive.Card>
 		```
 
 	*/

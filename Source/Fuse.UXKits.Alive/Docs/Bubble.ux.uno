@@ -5,29 +5,29 @@ namespace Alive
 
 		```xml
 		<Alive.Bubble>
-			<Alive.ImageFill File="Assets/image.jpg" />
+			<Alive.ImageFill Url="https://icons-for-free.com/iconfiles/png/512/profile+profile+page+user+icon-1320186864367220794.png" />
 		</Alive.Bubble>
 		```
-		
-		![actionButton](../../media/alive/bubbles/single.png)
+
+		![actionButton](../../../media/alive/bubbles/single.png)
 
 		[Bubbles](api:alive/bubbles) displays a row of partially overlapping Bubbles.
 
 		```xml
 		<Alive.Bubbles>
             <Alive.Bubble Color="Red">
-                <Alive.ImageFill File="profile.jpg"/>
+                <Alive.ImageFill Url="https://icons-for-free.com/iconfiles/png/512/profile+profile+page+user+icon-1320186864367220794.png" />
             </Alive.Bubble>
             <Alive.Bubble Color="Yellow">
-                <Alive.ImageFill File="profile.jpg"/>
+                <Alive.ImageFill Url="https://icons-for-free.com/iconfiles/png/512/profile+profile+page+user+icon-1320186864367220794.png" />
             </Alive.Bubble>
             <Alive.Bubble Color="Green">
-                <Alive.ImageFill File="profile.jpg"/>
+                <Alive.ImageFill Url="https://icons-for-free.com/iconfiles/png/512/profile+profile+page+user+icon-1320186864367220794.png" />
             </Alive.Bubble>
         </Alive.Bubbles>
 		```
-
-		![actionButton](../../media/alive/bubbles/multiple.png)
+		
+		![actionButton](../../../media/alive/bubbles/multiple.png)
 
 		or using `Each` for that
 
