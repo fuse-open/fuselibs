@@ -4,16 +4,22 @@ namespace Alive
 		A flat carousel component.
 
 		See [FlatCarouselPage](api:alive/flatcarouselpage) for more on individual page layout.
+
 		```xml
-			<Alive.FlatCarousel>
-				<Alive.FlatCarouselPage Title="Page 1">
-					<Image File="image.jpg" StretchMode="UniformToFill" />
-				</Alive.FlatCarouselPage>
-				<Alive.FlatCarouselPage Title="Page 2" Subtitle="Yeah!">
-					<Image File="image.jpg" StretchMode="UniformToFill" />
-				</Alive.FlatCarouselPage>
-			</Alive.FlatCarousel>
+		<Alive.FlatCarousel Color="#BAC">
+            <Alive.FlatCarouselPage Title="Page 1">
+                <Image Url="https://icons-for-free.com/iconfiles/png/512/profile+profile+page+user+icon-1320186864367220794.png"
+                        StretchMode="UniformToFill" />
+            </Alive.FlatCarouselPage>
+            <Alive.FlatCarouselPage Title="Page 2" Subtitle="Yeah!">
+                <Image Url="https://icons-for-free.com/iconfiles/png/512/profile+profile+page+user+icon-1320186864367220794.png"
+                        StretchMode="UniformToFill" />
+            </Alive.FlatCarouselPage>
+        </Alive.FlatCarousel>
 		```
+		
+		![actionButton](../../docs/media/alive/flatcarousel.gif)
+		
 		See also [Carousel](api:alive/carousel).
 	*/
 	public partial class FlatCarousel {}
@@ -45,11 +51,14 @@ namespace Alive
 					<Panel ux:Template="Content">
 						<Alive.Body>Hello, world</Alive.Body>
 					</Panel>
-					<Image File="image.jpg" StretchMode="UniformToFill" />
+					<Image Url="https://icons-for-free.com/iconfiles/png/512/profile+profile+page+user+icon-1320186864367220794.png"
+                        	StretchMode="UniformToFill" />
 				</Alive.FlatCarouselPage>
 			</Alive.FlatCarousel>
 		```
 		
+		![actionButton](../../docs/media/alive/flatcarousel.png)
+
 	*/
 	public partial class FlatCarouselPage {}
 }
