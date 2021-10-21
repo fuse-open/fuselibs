@@ -17,7 +17,7 @@ namespace Alive
         </Alive.Bubbles>
 		```
 		
-		![actionButton](../../../media/alive/bubbles/multiple.png)
+		![actionButton](../../docs/media/alive/bubbles/multiple.png)
 
 	*/
 	public partial class Bubbles {}

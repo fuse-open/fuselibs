@@ -17,7 +17,7 @@ namespace Alive
 		</Panel>
 		```
 
-		![actionButton](../../../media/alive/contentgradient.png)
+		![actionButton](../../docs/media/alive/contentgradient.png)
 	*/
 	public partial class ContentGradient {}
 }

@@ -23,7 +23,7 @@ namespace Alive
 		</Alive.Carousel>
 		```
 
-		![actionButton](../../../media/alive/carousel.png)
+		![actionButton](../../docs/media/alive/carousel.png)
 
 		See also [FlatCarousel](api:alive/flatcarousel).
 	*/

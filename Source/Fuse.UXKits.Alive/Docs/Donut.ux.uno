@@ -26,7 +26,7 @@ namespace Alive
 		</App>
 		```
 
-		![actionButton](../../../media/alive/donut.png)
+		![actionButton](../../docs/media/alive/donut.png)
 
 		See also [ColorBadge](api:alive/colorbadge)
 	*/

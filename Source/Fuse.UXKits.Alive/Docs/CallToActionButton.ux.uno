@@ -9,7 +9,7 @@ namespace Alive
 		<Alive.CallToActionButton Text="Look at it glow!" Glow="true" />
 		```
 		
-		![actionButton](../../../media/alive/calltoactionbutton.png)
+		![actionButton](../../docs/media/alive/calltoactionbutton.png)
 	*/
 	public partial class CallToActionButton {}
 }

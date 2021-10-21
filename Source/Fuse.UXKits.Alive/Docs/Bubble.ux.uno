@@ -9,7 +9,7 @@ namespace Alive
 		</Alive.Bubble>
 		```
 
-		![actionButton](../../../media/alive/bubbles/single.png)
+		![actionButton](../../docs/media/alive/bubbles/single.png)
 
 		[Bubbles](api:alive/bubbles) displays a row of partially overlapping Bubbles.
 
@@ -27,7 +27,7 @@ namespace Alive
         </Alive.Bubbles>
 		```
 		
-		![actionButton](../../../media/alive/bubbles/multiple.png)
+		![actionButton](../../docs/media/alive/bubbles/multiple.png)
 
 		or using `Each` for that
 

@@ -26,7 +26,7 @@ namespace Alive
 		</App>
 		```
 
-		![actionButton](../../../media/alive/colorbadge.png)
+		![actionButton](../../docs/media/alive/colorbadge.png)
 
 		> **Note** Color can be changed only by overriding an AccentColor of the Theme
 		
