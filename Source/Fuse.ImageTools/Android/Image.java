@@ -237,7 +237,7 @@ public class Image {
 	{
 		byte[] decodedString = Base64.decode(b64, Base64.DEFAULT);
 		Bitmap bmp = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-		return ImageStorageTools.saveBitmapAndGetImage(bmp, true, Bitmap.CompressFormat.JPEG);
+		return ImageStorageTools.saveBitmapAndGetImage(bmp, true, Bitmap.CompressFormat.PNG);
 	}
 
 	public static Image fromBitmap(Bitmap bmp) throws Exception
