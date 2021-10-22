@@ -7,13 +7,15 @@ namespace Alive
 		Use [NavBarTitle](api:alive/navbartitle) for title text in a `NavBar`.
 		
 		```xml
-			<DockPanel>
-				<Alive.NavBar>
-					<Alive.BackButton Dock="Left" />
-					<Alive.NavBarTitle>Page</Alive.NavBarTitle>
-				</Alive.NavBar>
-			</DockPanel>
+		<DockPanel>
+			<Alive.NavBar Dock="Top">
+				<Alive.BackButton Dock="Left" />
+				<Alive.NavBarTitle Alignment="Center">Page</Alive.NavBarTitle>
+			</Alive.NavBar>
+		</DockPanel>
 		```
+
+		![actionButton](../../docs/media/alive/navbar.png)
 	*/
 	public partial class NavBar {}
 }
