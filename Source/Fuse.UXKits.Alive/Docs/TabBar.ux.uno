@@ -11,22 +11,23 @@ namespace Alive
 		that contains the pages.
 
 		```xml
-			<DockPanel>
-				<Alive.TabBar Dock="Top" Navigation="pageControl" />
-				<PageControl ux:Name="pageControl">
-					<Alive.TabPage Label="Page 1">
-						<!-- page content -->
-					</Alive.TabPage>
-					<Alive.TabPage Label="Page 2">
-						<!-- page content -->
-					</Alive.TabPage>
-					<Alive.TabPage Label="Page 3">
-						<!-- page content -->
-					</Alive.TabPage>
-				</PageControl>
-			</DockPanel>
+		<DockPanel>
+			<Alive.TabBar Dock="Top" Navigation="pageControl" />
+			<PageControl ux:Name="pageControl">
+				<Alive.TabPage Label="Page 1">
+					<!-- page content -->
+				</Alive.TabPage>
+				<Alive.TabPage Label="Page 2">
+					<!-- page content -->
+				</Alive.TabPage>
+				<Alive.TabPage Label="Page 3">
+					<!-- page content -->
+				</Alive.TabPage>
+			</PageControl>
+		</DockPanel>
 		```
-		
+
+		![actionButton](../../docs/media/alive/tabbar.gif)
 	*/
 	public partial class TabBar {}
 }

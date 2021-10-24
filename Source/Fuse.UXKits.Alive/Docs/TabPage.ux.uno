@@ -7,20 +7,22 @@ namespace Alive
 		to generate labelled tabs for each page.
 
 		See also [PartialTabPage](api:alive/partialtabpage).
-		
+
 		```xml
-			<TabPageControl>
-				<Alive.TabPage Label="Page 1">
-					<!-- page content -->
-				</Alive.TabPage>
-				<Alive.TabPage Label="Page 2">
-					<!-- page content -->
-				</Alive.TabPage>
-				<Alive.TabPage Label="Page 3">
-					<!-- page content -->
-				</Alive.TabPage>
-			</TabPageControl>
+		<Alive.TabPageControl>
+			<Alive.TabPage Label="Page 1">
+				<!-- page content -->
+			</Alive.TabPage>
+			<Alive.TabPage Label="Page 2">
+				<!-- page content -->
+			</Alive.TabPage>
+			<Alive.TabPage Label="Page 3">
+				<!-- page content -->
+			</Alive.TabPage>
+		</Alive.TabPageControl>
 		```
+
+		![actionButton](../../docs/media/alive/tabbar.gif)
 	*/
 	public partial class TabPage {}
 }
