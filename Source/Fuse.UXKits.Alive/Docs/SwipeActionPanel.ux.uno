@@ -5,27 +5,49 @@ namespace Alive
 		A confirmation message is shown when the button is tapped.
 
 		```xml
-		<Alive.SwipeActionPanel ButtonText="Do nothing" ConfirmationText="And thus, nothing was done">
-			<Panel Color="#fff" Height="80" />
-		</Alive.SwipeActionPanel>
+		<Panel ux:Name="ParentPanel" Color="#ccc">
+      <Alive.SwipeActionPanel ButtonText="Do nothing"
+                              ConfirmationText="And thus, nothing was done"
+                              Height="80">
+  		    <Panel ux:Name="BodyPanel" Color="#fff">
+            <Text Value="Swipe me left" Alignment="Center"/>
+          </Panel>
+  		</Alive.SwipeActionPanel>
+    </Panel>
 		```
+
+		![actionButton](../../docs/media/alive/SwipeActionPanel.gif)
 
 		When the button is tapped, this component will raise a UserEvent named Alive.SwipeActionConfirmed.
 		You can handle this event using the Alive.SwipeActionConfirmed trigger.
 
 		```xml
-			<JavaScript>
-				exports.onConfirmed = function() {
-					doSomething();
-				}
-			</JavaScript>
+		<JavaScript>
+      var Observable = require("FuseJS/Observable");
+      var bodyPanelText = Observable("Swipe me left");
 
-			<Alive.SwipeActionPanel>
-				<Alive.SwipeActionConfirmed Handler="{onConfirmed}" />
+      exports.bodyPanelText = bodyPanelText;
+      exports.onConfirmed = function() {
+				bodyPanelText.value = "Action was confirmed!";
+			};
 
-			</Alive.SwipeActionPanel>
+		</JavaScript>
+
+    <Panel ux:Name="ParentPanel" Color="#ccc">
+      <Alive.SwipeActionPanel ButtonText="Do nothing"
+                              ConfirmationText="Congratulations!"
+                              Height="80">
+          <Alive.SwipeActionConfirmed Handler="{onConfirmed}" />
+
+  		    <Panel ux:Name="BodyPanel" Color="#fff">
+            <Text Value="{bodyPanelText}" Alignment="Center"/>
+          </Panel>
+  		</Alive.SwipeActionPanel>
+    </Panel>
 		```
-		
+
+		![actionButton](../../docs/media/alive/SwipeActionPanelConfirmation.gif)
+
 		The button has a red color by default, and fades into yellow following the confirmation animation.
 		You can customize this gradient using the GradientStartColor and GradientEndColor properties.
 
@@ -51,6 +73,9 @@ namespace Alive
 				</RemovingAnimation>
 			</Panel>
 		```
+
+		![actionButton](../../docs/media/alive/SwipeActionPanelConfirmationStayOpen.gif)
+
 	*/
 	public partial class SwipeActionPanel {}
 }
