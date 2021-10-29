@@ -12,7 +12,7 @@
 
 > Build beautiful, high-performance iOS and Android apps with a single codebase.
 
-Fuselibs is a collection of [Uno](https://fuseopen.com/docs/uno/uno-lang) libraries that provide
+Fuselibs is a collection of [Uno](https://github.com/fuse-open/uno#readme) libraries that provide
 the UI framework used to build [Fuse](https://fuseopen.com/) apps.
 
 ## Install
