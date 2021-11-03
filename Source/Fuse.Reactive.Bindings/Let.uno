@@ -233,22 +233,22 @@ namespace Fuse.Reactive
 		Binds an expression or value to a name in the data context. This simplifies repeated calculations and allows introduction of new variables.
 
 		To introduce a new value:
-
+		```xml
 			<Let ux:Name="a" Value="5"/>
-
+		```
 		The value is now part of the data context:
-
+		```xml
 			<Slider Value="{a}"/>
-
+		```
 		It can also be accessed directly outside of the context:
-
+		```xml
 			<Slider Value="{Property a.Value}"/>
-
+		```
 
 		If you are using an expression it's recommended now to use `Expression` instead of `Value`:
-
+		```xml
 			<Let ux:Name="p" Expression="{pos} + 5"/>
-
+		```
 		This ensures proper propagation of undefined values.  (This is part of the reason this is an experimental API, since we don't really want to distinguish between Expression and Value, but have no choice at the moment).
 
 		## LetType
@@ -331,11 +331,11 @@ namespace Fuse.Reactive
 		Unlike @Let this enforces a specific value type and is suitable for use with `Change`, `Set`, and other property bindings.
 
 		These values are two-way bindable (like Observables), for example:
-
+		```xml
 			<LetString Value="hello" ux:Name="a"/>
 			<TextInput Value="{a}"/>
 			<Text Value="{a}"/>
-
+		```
 		Typing in the `TextInput` will modify the value of `a` and update the `Text` value.
 
 		## Available types

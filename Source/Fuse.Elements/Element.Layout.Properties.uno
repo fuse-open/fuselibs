@@ -186,14 +186,14 @@ namespace Fuse.Elements
 			In the following example, only two of the rectangles are visible. The second Rectangle is collapsed,
 			so it's not taking up any space at all. The third Rectangle is hidden, so it takes up space, but is not
 			visible. The last Rectangle has no Visibility set, so it defaults to being visible as usual.
-
+			```xml
 				<StackPanel>
 					<Rectangle Visibility="Visible" Color="Red" Height="50"/>
 					<Rectangle Visibility="Collapsed" Color="Green" Height="50"/>
 					<Rectangle Visibility="Hidden" Color="Blue" Height="50"/>
 					<Rectangle Color="Yellow" Height="50"/>
 				</StackPanel>
-
+			```
 			@default Visible
 		*/
 		[UXOriginSetter("SetVisibility")]
@@ -227,14 +227,14 @@ namespace Fuse.Elements
 			`Margin` controls the distance from the edges of an element to the corresponding edges of its container.
 
 			`Margin` is made up of 4 values; one for each edge of the element. In order, they are left, top, right, and bottom. In UX, they are specified as a comma-separated list:
-
+			```xml
 				<Panel Margin="10,20,30,40" />
-
+			```
 			They can also be specified in a shortened form:
-
+			```xml
 				<Panel Margin="10" /> <!-- is expanded to "10,10,10,10" -->
 				<Panel Margin="10,20" /> <!-- is expanded to "10,20,10,20" -->
-
+			```
 			See @Layout for more details.
 
 			@default 0,0,0,0
@@ -257,14 +257,14 @@ namespace Fuse.Elements
 			`Padding` controls the distance from the edges of an element to the edges of the elements inside it. It's very similar to @Margin, except that it works "inwards".
 
 			`Padding` is made up of 4 values; one for each edge of the element. In order, they are left, top, right, and bottom. In UX, they are specified as a comma-separated list:
-
+			```xml
 				<Panel Padding="10,20,30,40" />
-
+			```
 			They can also be specified in a shortened form:
-
+			```xml
 				<Panel Padding="10" /> <!-- is expanded to "10,10,10,10" -->
 				<Panel Padding="10,20" /> <!-- is expanded to "10,20,10,20" -->
-
+			```
 			See @Layout for more details.
 
 			@default 0,0,0,0

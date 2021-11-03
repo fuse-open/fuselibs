@@ -30,7 +30,7 @@ namespace Fuse.Controls
 			@scriptmethod filePath
 
 			Returns a string containing the filepath to the video
-
+			```xml
 				<CameraView ux:Name="Camera" />
 				<JavaScript>
 					Camera.startRecording()
@@ -41,6 +41,7 @@ namespace Fuse.Controls
 								});
 						});
 				</JavaScript>
+			```
 		*/
 		static object filePath(Context context, Recording self, object[] args)
 		{

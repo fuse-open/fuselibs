@@ -13,7 +13,7 @@ namespace Fuse.Triggers
 
 		* Note that `PullToReload` inherits from @ScrollingAnimation and therefore can be tweaked further using its properties. Here is an example of how we can tweak it to be pulled from the bottom instead using the `Range` property from `ScrollingAnimation`:
 
-		```
+		```xml
 		<PullToReload Range="SnapMax">
 			...
 		</PullToReload>
@@ -24,7 +24,7 @@ namespace Fuse.Triggers
 		# Example
 
 		The following example flashes the app background in different colors as the different states of the `PullToReload` happen:
-
+		```xml
 			<ScrollView>
 				<PullToReload>
 					<Timeline ux:Name="redFlash">
@@ -58,6 +58,7 @@ namespace Fuse.Triggers
 				</StackPanel>
 				<SolidColor ux:Name="color" Color="#FFF"/>
 			</ScrollView>
+		```
 	*/
 	public partial class PullToReload
 	{

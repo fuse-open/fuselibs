@@ -20,15 +20,15 @@ namespace Fuse.Controls
 		## Model
 
 		The EdgeNavigator can be bound to a model with the `Pages` property. For example:
-
+		```xml
 			<EdgeNavigator Pages="{pages}">
 				<Panel Edge="Left" ux:Template="left"/>
 				<Panel Edge="Right" ux:Template="right"/>
 				<Panel ux:Template="main"/>
 			</EdgeNavigator>
-
+		```
 		Then in your main model state you define `pages`
-
+		```js
 			export default class MainState {
 				constructor() {
 					this.pages = [ new LeftPage(), new RightPage(), new MainPage() ]
@@ -52,6 +52,7 @@ namespace Fuse.Controls
 					this.$path = "main"
 				}
 			}
+		```
 	*/
 	public partial class EdgeNavigator : NavigationControl, IRouterOutlet
 	{

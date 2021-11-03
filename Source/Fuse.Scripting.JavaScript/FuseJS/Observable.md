@@ -17,13 +17,13 @@ Observables are created by calling the `Observable` function with zero or more i
 * `Observable(<initial values>)` - constructor
 
 Examples:
-
+```js
 	var emptyObservable = Observable();
 
 	var isSomethingEnabled = Observable(true);
 
 	var friends = Observable("Jake", "Jane", "Joe");
-
+```
 
 ### Observable values
 When an `Observable` contains a single value, we use the `.value` property to get or set
@@ -32,14 +32,14 @@ the value.
 * `.value` - gets or sets the value at index 0
 
 Examples:
-
+```js
 	if (isSomethingEnabled.value)
 	{
 		doSomething();
 	}
 
 	isSomethingEnabled.value = false;
-
+```
 ### Observable lists
 
 When an `Observable` represents a list of values, we use the following functions to
@@ -54,7 +54,7 @@ manipulate the values:
 * `.replaceAll(array)` - replaces the list with elements from the `array`
 
 Examples:
-
+```js
 	friends.add("Gina");
 
 	debug_log("I have " + friends.length + " friends");
@@ -64,7 +64,7 @@ Examples:
 	friends.forEach(function(x) {
 		debug_log("* " + x);
 	});
-
+```
 
 ### Reactive programming
 We say that Observables are _reactive_. This means that they can be _observed_ by _observers_. When the value of an `Observable` changes, the observers are notified about the change, and can update
@@ -77,7 +77,7 @@ When we build apps with FuseJS, we start by identifing the values that make up t
 
 Consider a simple TODO app as an example, consisting of a list of tasks. The core data model for this
 app can look like this:
-
+```js
 	function Task(description, assignedPerson, isDone)
 	{
 		this.description = description,
@@ -89,7 +89,7 @@ app can look like this:
 		new Task("Buy milk", "Jane", false),
 		new Task("Clean the kitchen", "Joe", false)
 	);
-
+```
 We use observables to hold the data that can change over time.
 
 In the above example, what person is assigned to a task (`assignedPerson`), and whether the task is
@@ -115,13 +115,13 @@ These are some of the most important reactive operators:
 
 Say we want to compute a string which explains in natural language how many tasks are done
 in our TODO app. We can then use the `count` and `map` operators:
-
+```js
 	tasksDone = todoList.count(function(x) { return x.isDone; });
 
 	tasksDoneText = tasksDone.map(function(x) {
 		return "There are " + x + " completed tasks.";
 	});
-
+```
 If we now modify the `todoList`,  `tasksDone` and `tasksDoneText` now know how to compute their
 values automatically.
 
@@ -152,18 +152,18 @@ observable as arguments.
 * `.not()` - Converts `true` to `false` and vice versa
 
 Say for example we want to count the number of task that are *not* complete, we can simply use the `.not()` operator:
-
+```js
 	tasksNotDone = todoList.count(function(x) { return x.isDone.not(); });
-
+```
 Let's count the number of incomplete tasks assigned to a specific person:
-
+```js
 	currentPerson = Observable("Jane");
 
 	remainingTasks = todoList.count(function(x) {
 		return x.isDone.not()
 		.and(x.assignedPerson.equalTo(currentPerson));
 	};
-
+```
 ### Subscribing to updates
 The results of reactive operators will not be computed unless something is actually _subscribing_
 to the results. We can do this using the following methods:
@@ -172,11 +172,11 @@ to the results. We can do this using the following methods:
 * `.removeSubscriber(func)` - removes `func` from the list of funcitons that will be called when changes occur
 
 We can subscribe to the observables in our TODO app example to be notified when a value changes:
-
+```js
 	tasksDoneText.addSubscriber(function() {
 		debug_log(taskDoneText.value);
 	};
-
+```
 You will get a callback immeditately when subscribing to an observable.
 
 If we now add or remove elements from the TODO list, or change `isDone.value` on some of the tasks,

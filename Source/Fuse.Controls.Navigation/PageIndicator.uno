@@ -17,7 +17,7 @@ namespace Fuse.Controls
 
 		The following example shows the use of `PageIndicator` to indicate the current progress in a @PageControl navigation, by scaling the rectangle indicator representing the current page by a `Factor` of 1.3.
 
-
+		```xml
 			<DockPanel>
 				<JavaScript>
 					var Observable = require("FuseJS/Observable");
@@ -38,7 +38,7 @@ namespace Fuse.Controls
 					</Rectangle>
 				</PageIndicator>
 			</DockPanel>
-
+		```
 
 		@mount UI Components / Navigation
 	*/

@@ -18,9 +18,9 @@ namespace Fuse.Gestures
 
 		To scroll to an absolute position, provide a value to the `Position` property.
 		This property accepts a pair of numbers, representing X and Y coordinates.
-
+		```xml
 			<ScrollTo Target="myScrollView" Position="0, 50" />
-
+		```
 		### Relative position
 
 		Alternatively, you can scroll to a relative position using the `RelativePosition` property.
@@ -29,13 +29,13 @@ namespace Fuse.Gestures
 		Each coordinate should be in the range `0..1`, where `1` represents the largest distance
 		the user can scroll in that direction.
 		For instance, a `RelativePosition` of `1, 1` will scroll to the bottom-right corner.
-
+		```xml
 			<ScrollTo Target="myScrollView" RelativePosition="0, 0.5" />
-
+		```
 		When triggered, the above will scroll `myScrollView` to the vertical center of its scrollable area.
 
 		## Example
-
+		```xml
 			<DockPanel>
 				<Button Dock="Top" Text="Scroll to top" Margin="20">
 					<Clicked>
@@ -52,6 +52,7 @@ namespace Fuse.Gestures
 					</Rectangle>
 				</ScrollView>
 			</DockPanel>
+		```
 	*/
 	public class ScrollTo : TriggerAction
 	{

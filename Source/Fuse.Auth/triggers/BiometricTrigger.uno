@@ -10,7 +10,7 @@ namespace Fuse
 		Triggers if device has biometric sensor and user has already configure it
 
 		## Example
-
+		```xml
 			<Panel>
 				<SupportBiometric>
 					<Button Text="Sign In With Biometric">
@@ -20,6 +20,7 @@ namespace Fuse
 					</Button>
 				</SupportBiometric>
 			</Panel>
+		```
 	*/
 	public class SupportBiometric: Trigger
 	{

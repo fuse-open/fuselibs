@@ -8,7 +8,7 @@ namespace Fuse.Reactive
 		Binds to a resource with the key provided in a context variable. This allows selecting resources from @JavaScript by key name.
 
 		In this example three different fonts are created as resources. The font is selected by name in the exported JavaScript items.
-
+		```xml
 			<Font File="../../Assets/fonts/Roboto-Bold.ttf" ux:Key="Bold"/>
 			<Font File="../../Assets/fonts/Roboto-Regular.ttf" ux:Key="Regular"/>
 			<Font File="../../Assets/fonts/Roboto-Italic.ttf" ux:Key="Italic"/>
@@ -25,7 +25,7 @@ namespace Fuse.Reactive
 					<Text Value="Sample Text" Font="{DataToResource font}"/>
 				</Each>
 			</StackPanel>
-
+		```
 		`{DataToResource variableKey}` is similar to `{Resource key}`, except it allows a variable key name instead of a static one.
 
 		@see Fuse.Resources.ResourceBinding

@@ -10,11 +10,11 @@ namespace Fuse.Triggers.Actions
 	/** Makes an @Element visible by setting `Visibility` to `Visible`.
 
 		## Basic syntax
-
+		```xml
 			<Show TargetNode="myElement" />
-
+		```
 		## Example
-
+		```xml
 			<Grid RowCount="3" ColumnCount="1">
 				<Button Text="Show the elements">
 					<Clicked>
@@ -26,6 +26,7 @@ namespace Fuse.Triggers.Actions
 				<Panel ux:Name="hiddenElement" Visibility="Hidden" Background="Blue" />
 				<Panel ux:Name="collapsedElement" Visibility="Collapsed" Background="Red" />
 			</Grid>
+		```
 	*/
 	public class Show: TriggerAction
 	{
@@ -50,11 +51,11 @@ namespace Fuse.Triggers.Actions
 		Use @Collapse if you don't want the element to take up any space.
 
 		## Basic syntax
-
+		```xml
 			<Hide TargetNode="myElement" />
-
+		```
 		## Example
-
+		```xml
 			<Button Text="Hide the element">
 				<Clicked>
 					<Hide TargetNode="visibleElement" />
@@ -62,6 +63,7 @@ namespace Fuse.Triggers.Actions
 			</Button>
 
 			<Panel ux:Name="visibleElement" Visibility="Visible" Background="Blue" />
+		```
 	*/
 	public class Hide: TriggerAction
 	{
@@ -86,11 +88,11 @@ namespace Fuse.Triggers.Actions
 		Use @Hide if you want the element to be invisible, but still take up space.
 
 		## Basic syntax
-
+		```xml
 			<Collapse TargetNode="myElement" />
-
+		```
 		## Example
-
+		```xml
 			<Button Text="Collapse the element">
 				<Clicked>
 					<Collapse TargetNode="visibleElement" />
@@ -98,6 +100,7 @@ namespace Fuse.Triggers.Actions
 			</Button>
 
 			<Panel ux:Name="visibleElement" Visibility="Visible" Background="Blue" />
+		```
 	*/
 	public class Collapse: TriggerAction
 	{

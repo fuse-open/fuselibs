@@ -25,13 +25,13 @@ namespace Fuse.Triggers
 		## Examples
 
 		By default, the value of a `WhileTrue` is `false`.
-
+		```xml
 			<WhileTrue>
 				<!-- Any actions/animators placed here will never be triggered -->
 			</WhileTrue>
-
+		```
 		You can, however, use @Set to change its value.
-
+		```xml
 			<Panel Width="200" Height="200" Background="#000">
 				<Clicked>
 					<Set moveToTheRight.Value="true" />
@@ -41,9 +41,9 @@ namespace Fuse.Triggers
 					<Move X="200" Duration="0.4" />
 				</WhileTrue>
 			</Panel>
-
+		```
 		Its value can also be toggled on and off using @Toggle.
-
+		```xml
 			<Panel Width="200" Height="200" Background="#000">
 				<WhileTrue ux:Name="moveToTheRight">
 					<Move X="200" Duration="0.4" />
@@ -53,12 +53,12 @@ namespace Fuse.Triggers
 					<Toggle Target="moveToTheRight" />
 				</Clicked>
 			</Panel>
-
+		```
 		It is also particularly useful to data-bind `Value` to an @Observable.
 
 		The following example consists of a @TextBox, as well as a @Button that fades to full transparency while
 		the user has entered less than 6 characters into the @TextBox.
-
+		```xml
 			<JavaScript>
 				var Observable = require("FuseJS/Observable");
 
@@ -81,7 +81,7 @@ namespace Fuse.Triggers
 					<Change loginButton.Opacity="0" Duration="0.3" />
 				</WhileTrue>
 			</StackPanel>
-
+		```
 		## Instance
 
 		The children of `WhileTrue` are created whether the `Value` is true or false; this is the standard behavior of all triggers. If you need to prevent item creation when the value is false, consider using an `Instance` instead and bind to the `IsEnabled` property.

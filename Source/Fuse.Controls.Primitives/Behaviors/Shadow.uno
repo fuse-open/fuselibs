@@ -16,14 +16,14 @@ namespace Fuse.Controls
 		## Example
 
 		This example shows a rounded rectangle with a shadow that animates in size when pressed:
-
+		```xml
 			<Rectangle Width="100" Height="100" Color="Red" CornerRadius="5">
 				<Shadow ux:Name="RectangleShadow" Size="10" />
 				<Clicked>
 					<Change DurationBack="0.2" RectangleShadow.Size="20" />
 				</Clicked>
 			</Rectangle>
-
+		```
 	*/
 	public class Shadow : Behavior
 	{

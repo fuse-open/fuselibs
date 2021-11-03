@@ -186,7 +186,7 @@ namespace Fuse.Triggers
 		This example shows three rectangles, a teal, a red and a blue one. If
 		the red or blue rectangle is clucked, the Width and Alignment
 		properties of the teal rectangle gets smoothly animated.
-
+		```xml
 			<StackPanel>
 				<Rectangle ux:Name="panel" Width="100" Height="100" CornerRadius="5" Color="Teal" Alignment="Center">
 					<LayoutAnimation>
@@ -207,6 +207,7 @@ namespace Fuse.Triggers
 					</Clicked>
 				</Rectangle>
 			</StackPanel>
+		```
 	*/
 	public class LayoutAnimation: Trigger
 	{
@@ -323,7 +324,7 @@ namespace Fuse.Triggers.Actions
 
 		# Example
 		This example demonstrates `TransitionLayout` in action when a button is clicked.
-
+		```xml
 			<DockPanel>
 				<Panel Dock="Top" Height="20" ux:Name="originElement" />
 				<Button Height="100" Dock="Bottom" Text="Transition!">
@@ -336,7 +337,7 @@ namespace Fuse.Triggers.Actions
 					</Clicked>
 				</Button>
 			</DockPanel>
-
+		```
 		When clicked, the @(Button) in this example will perform a transition over 1 second from the position and size of `originElement` (top edge of the @(DockPanel)) to its actual position and size (bottom edge of the @(DockPanel)).
 	*/
 	public class TransitionLayout : TriggerAction

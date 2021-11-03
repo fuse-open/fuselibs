@@ -9,9 +9,10 @@ namespace Fuse.Reactive.FuseJS
 		Launches the default email app, and starts composing a message.
 
 		You need to add a reference to `"Fuse.Launcher"` in your project file to use this feature.
-
+		```js
 			var email = require('FuseJS/Email');
 			email.compose("to@example.com", "cc@example.com", "bcc@example.com", "subject", "message");
+		```
 
 	*/
 	[UXGlobalModule]
@@ -37,10 +38,10 @@ namespace Fuse.Reactive.FuseJS
 			bcc – The email address(es) of whom to send a blind carbon copy
 			subject – The subject of the email
 			message – The body text of the email
-
+			```js
 				var email = require('FuseJS/Email');
 				email.compose("to@example.com", "cc@example.com", "bcc@example.com", "subject", "message");
-
+			```
 		*/
 		public static object Compose(Scripting.Context context, object[] args)
 		{

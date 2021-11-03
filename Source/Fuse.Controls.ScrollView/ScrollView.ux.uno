@@ -12,17 +12,17 @@ namespace Fuse.Controls
 		# Example
 
 		This example demonstrates the use of `ScrollView` by having it contain a `Panel` that would normally be too big to be viewed.
-
+		```xml
 			<ScrollView>
 				<Panel Width="2000" Height="2000" />
 			</ScrollView>
-
+		```
 		You may also constrain the directions the ScrollView is allowed to scroll in using the `AllowedScrollDirections` property.
-
+		```xml
 			<ScrollView AllowedScrollDirections="Horizontal">
 				<!-- Contents -->
 			</ScrollView>
-
+		```
 		By default, ScrollView tries to take up the same amount of space as its content in the scrollable directions.
 		However, when placed in a @Panel (or @DockPanel, @Grid, etc.), the size of the ScrollView itself will be limited to the size of its parent.
 
@@ -44,14 +44,14 @@ namespace Fuse.Controls
 		By default a `ScrollView` keeps a consistent `ScrollPosition` when the layout changes. This may result in jumping when content is added/removed.
 
 		An alternate mode `LayoutMode="PreserveVisual"` instead attempts to maintain visual consistency when its children or parent layout is changed. It assumes it's immediate content is a container and looks at that container's children.  For example, a layout like this:
-
+		```xml
 			<ScrollView>
 				<StackPanel>
 					<Panel/>
 					<Panel/>
 				<StackPanel>
 			</ScrollView>
-
+		```
 		Visuals without `LayoutRole=Standard` are not considered when retaining the visual consistency. The `LayoutMode` property can be used to adjust this behavior.
 
 	*/

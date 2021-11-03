@@ -236,7 +236,7 @@ namespace Fuse
 
 	/**
 		Allows creating a class that contains several nodes and resources that are added directly to their Parent, as though included directly.
-
+		```xml
 			<NodeGroup ux:Class="GridLine">
 				<float4 ux:Property="Color"/>
 				<string ux:Property="Title"/>
@@ -252,9 +252,9 @@ namespace Fuse
 				<GridLine Color="#FFA" Title="Cry Baby" Emoji="😭"/>
 				<GridLine Color="#FAA" Title="Mr. Angry" Emoji="😠"/>
 			</Grid>
-
+		```
 		A `NodeGroup` may be used as a target for `Each.TemplateSource` or `Instance.TemplateSource`. This can be used to create classes that position templated items.
-
+		```xml
 			<NodeGroup ux:Class="TitleBar">
 				<Grid Columns="40,1*,40" Alignment="Top">
 					<Panel>
@@ -285,7 +285,7 @@ namespace Fuse
 					<Image File="pageTitle.png" ux:Template="title"/>
 				</TitleBar>
 			</Page>
-
+		```
 	*/
 	public class NodeGroup : NodeGroupBase, ITemplateSource
 	{

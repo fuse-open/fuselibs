@@ -9,19 +9,19 @@ We have opted for a lightweight consistent interface across iOS and Android whic
 ### Step 1.
 
 Include the Fuse push notification library by adding the following to your `.unoproj` file
-
+```json
     "Packages": [
         ...
         "Fuse.PushNotifications",
         ...
     ],
-
+```
 ### Step 2. (Only for Android)
 
 Google notifications require a little extra info.
 
 Add the following to you `.unoproj`
-
+```json
     "Android": {
         ...
         "GooglePlay": {
@@ -29,7 +29,7 @@ Add the following to you `.unoproj`
         }
         ...
     },
-
+```
 The `SenderID` is the sender ID from the [Firebase Console](https://console.firebase.google.com).
 If you don't yet have a project set up please see the [Android setup](#android-setup) section later in this document.
 
@@ -55,19 +55,19 @@ All three callbacks mentioned are available in JavaScript and Uno.
 - When your app starts it registers with APNS. As all access is controlled through Apple's certificate system there is no extra info to provide (we will mention server side a bit later)
 
 If you wish to disable auto-registration you can place the following in your unoproj file:
-
+```json
     "iOS": {
         "PushNotifications": {
             "RegisterOnLaunch": false
         }
     },
-
+```
 You must then register for push notifications by calling `register()` from JS. This option is useful as when the notifications are registered the OS may ask the user for permission to use push notifications and this may be undesirable on launch.
 
 ## Using the API from JavaScript
 
 Integrating with notifications from JavaScript is simple. Here is an example that just logs when the callbacks fire:
-
+```xml
     <JavaScript>
         var push = require("FuseJS/Push");
 
@@ -83,7 +83,7 @@ Integrating with notifications from JavaScript is simple. Here is an example tha
             console.log("Recieved Push Notification: " + payload);
         });
     </JavaScript>
-
+```
 Here we're using the @EventEmitter `on` method to register our functions with the different events.
 In a real app we should send our `registration ID` to our server when `registrationSucceeded` is triggered.
 
@@ -106,25 +106,25 @@ We support push notifications in JSON format. When a notification arrives one of
 Apple and Google's APIs define how the data in the payload is used to populate the system notification, however we have normalized it a little.
 
 For iOS we'll just include an `aps` entry in the notification's JSON, like so:
-
+```json
     'aps': {
         alert: {
             'title': 'Well would ya look at that!',
             'body': 'Hello from the server'
         }
     },
-
+```
 And 'title' and 'body' will be used as the title and body of the system notification.
 
 For Android we can use exactly the same `'aps'` entry or the alternatively the following:
-
+```json
     'notification': {
         alert: {
             'title': 'Well would ya look at that!',
             'body': 'Hello from the server'
         }
     },
-
+```
 The `notification` entry is the standard Google way of doing this but we felt that it wouldn't hurt to support the Apple way too.
 
 > The current implementation only guarantees the `title` and `body` entries will work. We also always use your app's icon as the notification icon. This is an area we will extend as Fuse matures. If you have specific requests, be sure to let us know!
@@ -172,7 +172,7 @@ We'll show you how to implement them here in fuse but read more about each featu
 
 
 #### Notification Sound - Value - default
-
+```json
     'notification': {
         alert: {
             'title': 'Well would ya look at that!',
@@ -180,10 +180,10 @@ We'll show you how to implement them here in fuse but read more about each featu
             'sound': 'default'
         }
     },
-
+```
 
 #### Notification Color - Values - #RRGGBB | #AARRGGBB
-
+```json
     'notification': {
         alert: {
             'title': 'Well would ya look at that!',
@@ -191,10 +191,10 @@ We'll show you how to implement them here in fuse but read more about each featu
             'color': '#8811FF'
         }
     },
-
+```
 
 #### Notification Priority - Values - high | low | max | min
-
+```json
     'notification': {
         alert: {
             'title': 'Well would ya look at that!',
@@ -202,10 +202,10 @@ We'll show you how to implement them here in fuse but read more about each featu
             'notificationPriority': 'high'
         }
     },
-
+```
 
 #### Notification Category - Values - alarm | reminder | event | call | message | email | promo | recommendation | social | error | progress | service | status | system | transport
-
+```json
     'notification': {
         alert: {
             'title': 'Well would ya look at that!',
@@ -213,10 +213,10 @@ We'll show you how to implement them here in fuse but read more about each featu
             'notificationCategory': 'social'
         }
     },
-
+```
 
 #### Notification Lockscreen Visibility - Values - public | secret | private
-
+```json
     'notification': {
         alert: {
             'title': 'Well would ya look at that!',
@@ -224,13 +224,13 @@ We'll show you how to implement them here in fuse but read more about each featu
             'notificationLockscreenVisibility': 'secret'
         }
     },
-
+```
 
 
 #### Notification Channel
 
 Notification Channel and a Notification Channel Group:
-
+```json
     'notification': {
         alert: {
             'title': 'Well would ya look at that!',
@@ -242,9 +242,9 @@ Notification Channel and a Notification Channel Group:
             'notificationChannelDescription': 'Video commentary once a week'
         }
     },
-
+```
 Notification Channel Importance - Values - urgent | high | medium | low | none
-
+```json
     'notification': {
         alert: {
             'title': 'Well would ya look at that!',
@@ -258,10 +258,10 @@ Notification Channel Importance - Values - urgent | high | medium | low | none
 
         }
     },
-
+```
 
 Notification Channel Lockscreen Visibility - Values - public | secret | private
-
+```json
     'notification': {
         alert: {
             'title': 'Well would ya look at that!',
@@ -269,10 +269,10 @@ Notification Channel Lockscreen Visibility - Values - public | secret | private
             'notificationChannelLockscreenVisibility': 'private'
         }
     },
-
+```
 
 Notification Channel Light Color - Values - #RRGGBB
-
+```json
     'notification': {
         alert: {
             'title': 'Well would ya look at that!',
@@ -280,10 +280,10 @@ Notification Channel Light Color - Values - #RRGGBB
             'notificationChannelLightColor': '#1188FF'
         }
     },
-
+```
 
 Notification Channel Sound - Values - true | false
-
+```json
     'notification': {
         alert: {
             'title': 'Well would ya look at that!',
@@ -291,10 +291,10 @@ Notification Channel Sound - Values - true | false
             'notificationChannelIsSoundOn': 'true'
         }
     },
-
+```
 
 Notification Channel Vibration - Values - true | false
-
+```json
     'notification': {
         alert: {
             'title': 'Well would ya look at that!',
@@ -302,10 +302,10 @@ Notification Channel Vibration - Values - true | false
             'notificationChannelIsVibrationOn': 'true'
         }
     },
-
+```
 
 Notification Channel Show Badge - Values - true | false
-
+```json
     'notification': {
         alert: {
             'title': 'Well would ya look at that!',
@@ -313,23 +313,23 @@ Notification Channel Show Badge - Values - true | false
             'notificationChannelIsShowBadgeOn': 'true'
         }
     },
-
+```
 
 #### Notification Badge
 
 Notification Channel Badge Number
-
-    'notification': {
+```json
+   'notification': {
         alert: {
             'title': 'Well would ya look at that!',
             'body': 'Hello from the server',
             'notificationBadgeNumber': '23'
         }
     },
-
+```
 
 Notification Channel Badge Icon Type - Values - none | small | large
-
+```json
     'notification': {
         alert: {
             'title': 'Well would ya look at that!',
@@ -337,13 +337,13 @@ Notification Channel Badge Icon Type - Values - none | small | large
             'notificationBadgeIconType': 'small'
         }
     },
-
+```
 
 
 #### Notification Uno Project Configurations
 
 The following notification settings can be set via the `.unoproj` settings:
-
+```json
     "Android": {
         ...
         "Notification": {
@@ -361,7 +361,7 @@ The following notification settings can be set via the `.unoproj` settings:
         }
         ...
     },
-
+```
 
 Note: notification payload settings will always override the notification settings from `.unoproj`.
 NB! Once a channel is created, you CANNOT change its properties later.

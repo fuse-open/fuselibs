@@ -47,7 +47,7 @@ namespace Fuse.Controls
 		 * Swiping up while on the blue panel will go to a bookmark pointing to the indigo page.
 		 * Swiping up while on the indigo page will navigate you to the red page.
 		 * Swiping down on any page will go back to the previous page.
-
+		```xml
 			<Panel>
 				<Router ux:Name="router" />
 
@@ -77,6 +77,7 @@ namespace Fuse.Controls
 					<NavigatorSwipe How="Back" Direction="Down"/>
 				</Navigator>
 			</Panel>
+		```
 	*/
 	public class NavigatorSwipe : NodeGroupBase
 	{

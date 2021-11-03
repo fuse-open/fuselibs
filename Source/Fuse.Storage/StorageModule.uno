@@ -10,9 +10,9 @@ namespace Fuse.Storage
 		@scriptmodule FuseJS/Storage
 
 		The storage API allows you to read from and write to files in the application directory.
-
+		```js
 			var Storage = require("FuseJS/Storage");
-
+		```
 		Check out the individual functions for documentation on how to use them.
 	*/
 	public sealed class StorageModule : NativeModule
@@ -40,7 +40,7 @@ namespace Fuse.Storage
 			@return (Promise) A promise of a boolean, which will be `true` if the write succeeded.
 
 			Asynchronously writes to a file.
-
+			```js
 				var Storage = require("FuseJS/Storage");
 
 				Storage.write("myfile.txt", "Hello from Fuse!")
@@ -52,6 +52,7 @@ namespace Fuse.Storage
 							console.log("Couldn't write to file.");
 						}
 					});
+			```
 		*/
 		static Future<bool> WriteAsync(object[] args)
 		{
@@ -71,7 +72,7 @@ namespace Fuse.Storage
 			@return (Promise) A promise of the file's contents.
 
 			Asynchronously reads a file and returns a promise of its contents.
-
+			```js
 				var Storage = require("FuseJS/Storage");
 
 				Storage.read("myfile.txt")
@@ -80,6 +81,7 @@ namespace Fuse.Storage
 					}, function(error) {
 						console.log(error);
 					});
+			```
 		*/
 		static Future<string> ReadAsync(object[] args)
 		{
@@ -97,7 +99,7 @@ namespace Fuse.Storage
 			@return (boolean) `true` if the file was deleted, `false` otherwise.
 
 			Synchrounously deletes a file inside the application folder.
-
+			```js
 				var Storage = require("FuseJS/Storage");
 
 				var success = Storage.removeSync("uselessFile.txt");
@@ -107,7 +109,7 @@ namespace Fuse.Storage
 				else {
 					console.log("An error occured!");
 				}
-
+			```
 			> Warning: This call will block until the operation is finished.
 		*/
 		static object Remove(Scripting.Context c, object[] args)
@@ -126,7 +128,7 @@ namespace Fuse.Storage
 			@return (boolean) `true` if the write was successful, `false` otherwise
 
 			Synchrounously writes data to a file inside the application folder.
-
+			```js
 				var Storage = require("FuseJS/Storage");
 
 				var success = Storage.writeSync("myfile.txt", "Hello from Fuse!");
@@ -136,7 +138,7 @@ namespace Fuse.Storage
 				else {
 					console.log("An error occured!");
 				}
-
+			```
 			> Warning: This call will block until the operation is finished. Use write() if you are writing large amounts of data.
 		*/
 		static object Write(Scripting.Context c, object[] args)
@@ -157,12 +159,12 @@ namespace Fuse.Storage
 			@return (String) The contents of the file
 
 			Synchrounously reads data from a file inside the application folder.
-
+			```js
 				var Storage = require("FuseJS/Storage");
 
 				var contents = Storage.readSync("myfile.txt");
 				console.log(contents);
-
+			```
 			> Warning: This call will block until the operation is finished. Use read() if you are reading large amounts of data.
 		*/
 		static object Read(Scripting.Context c, object[] args)

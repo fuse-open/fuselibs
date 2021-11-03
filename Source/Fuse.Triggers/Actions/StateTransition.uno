@@ -15,7 +15,7 @@ namespace Fuse.Triggers.Actions
 
 		## Example
 		The following example displays a red panel that will turn its color in green when clicked.
-
+		```xml
 			<Panel ux:Name="thePanel" Width="100" Height="100">
 				<StateGroup ux:Name="stateGroup">
 					<State ux:Name="redState">
@@ -30,6 +30,7 @@ namespace Fuse.Triggers.Actions
 					<TransitionState Value="greenState" Target="stateGroup" />
 				</Clicked>
 			</Panel>
+		```
 	*/
 	public class TransitionState : TriggerAction
 	{

@@ -35,7 +35,7 @@ namespace Fuse.Sensor
 		## Example
 
 		The following example shows how to access accelerometer sensor:
-
+		```xml
 			<JavaScript>
 				var Observable = require("FuseJS/Observable");
 				var Sensor = require("FuseJS/Sensor");
@@ -76,23 +76,23 @@ namespace Fuse.Sensor
 				<Button Text="Start continuous Accelerometer listener" Clicked="{startAccelerometerContinuousListener}" />
 				<Button Text="Stop continuous Accelerometer listener" Clicked="{stopAccelerometerContinuousListener}" />
 			</StackPanel>
-
+		```
 		In the above example we're using `"changed"` event. Data returned by this module are JavaScript objects of the following form:
-
+		```json
 			{
 				type: sensor type (in this case is Sensor.ACCELEROMETER),
 				x: value of x axis,
 				y: value of y axis,
 				z: value of z axis,
 			}
-
+		```
 		## Output
 
 		Data returned on the "changed" event argument are JavaScript objects with always have `type` property.
 		 Value of `type` property determine what type sensor data it contains.
 
 		Accelerometer, Gyroscope, Magnetometer, Gravity, User Acceleration and Rotation data all have same form of JavaScript object as desribed in the example below:
-
+		```js
 			var Sensor = require("FuseJS/Sensor")
 			Sensor.on('changed', function(data) {
 				switch (data.type) {
@@ -134,9 +134,9 @@ namespace Fuse.Sensor
 				Sensor.stopListening(Sensor.USER_ACCELERATION);
 				Sensor.stopListening(Sensor.ROTATION);
 			}
-
+		```
 		Step counter and pressure data has slightly different output JavaScript object as described in the example below:
-
+		```js
 			var Sensor = require("FuseJS/Sensor")
 			Sensor.on('changed', function(data) {
 				switch (data.type) {
@@ -159,9 +159,9 @@ namespace Fuse.Sensor
 				Sensor.stopListening(Sensor.STEP_COUNTER);
 				Sensor.stopListening(Sensor.PRESSURE);
 			}
-
+		```
 		Lastly, monitoring state changes of battery or network connectivity has output JavaScript object as follow:
-
+		```js
 			var Sensor = require("FuseJS/Sensor")
 			Sensor.on('changed', function(data) {
 				switch (data.type) {
@@ -185,12 +185,12 @@ namespace Fuse.Sensor
 				Sensor.stopListening(Sensor.BATTERY);
 				Sensor.stopListening(Sensor.CONNECTION_STATE);
 			}
-
+		```
 		To handle errors from Sensor we can listen to the `"error"` event, as follows:
-
+		```js
 			var Sensor = require("FuseJS/Sensor")
 			Sensor.on("error", function(err) { ... })
-
+		```
 		@scriptproperty (int) ACCELEROMETER track accelerometer sensor.
 		@scriptproperty (int) GYROSCOPE track gyroscope sensor.
 		@scriptproperty (int) MAGNETOMETER track magnetometer sensor.

@@ -20,7 +20,7 @@ namespace Fuse.Animations
 
 		# Example
 		In the following example, a rotation of 90 degrees will be adapted into a rotation of 45 degrees by using a `RangeAdapter` to change the range our `WhilePressed` trigger:
-
+		```xml
 			<Panel Alignment="Center" Width="200" Height="200">
 				<Rectangle Color="#2196F3" CornerRadius="5" />
 				<Timeline ux:Name="rotationTimeline">
@@ -31,6 +31,7 @@ namespace Fuse.Animations
 					<Change range.Value="1" Duration="1"/>
 				</WhilePressed>
 			</Panel>
+		```
 	*/
 	[UXAutoGeneric("RangeAdapter","Source")]
 	public sealed class RangeAdapter<T> : Behavior, IPropertyListener

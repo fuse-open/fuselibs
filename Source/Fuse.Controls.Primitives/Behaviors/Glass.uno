@@ -10,14 +10,14 @@ namespace Fuse.Effects
 	/** Applies a glass backdrop effect to an @Element.
 
 	The following example displays a glass effect.
-
-	<ClientPanel>
-		<Panel Width="150" Height="70" Alignment="Center">
-			<Glass Radius="10" />
-		</Panel>
-		<Image ux:Name="image" Alignment="Center" Margin="20" Background="Purple" Url="https://fuseopen.com/assets/white-logo.png" />
-	</ClientPanel>
-
+	```xml
+		<ClientPanel>
+			<Panel Width="150" Height="70" Alignment="Center">
+				<Glass Radius="10" />
+			</Panel>
+			<Image ux:Name="image" Alignment="Center" Margin="20" Background="Purple" Url="https://fuseopen.com/assets/white-logo.png" />
+		</ClientPanel>
+	```
 	We need to set the `Background` property of the `Glass` behavior to the Element that will act as a background so it will get blurred out.
 	If we don't set it, The `Glass` behavior will try to find the background from the sibling element where `Glass` behavior is attached
 

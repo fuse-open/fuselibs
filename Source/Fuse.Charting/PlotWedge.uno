@@ -11,12 +11,13 @@ namespace Fuse.Charting
 		Creates a wedge shape for a pie chart.
 
 		This sets the `StartAngle` and `EndAngle` of the base `Ellipse` class. You should not override this properties, though other `Ellipse` and `Shape` properties are okay.
-
+		```xml
 			<Panel BoxSizing="FillAspect" Aspect="1">
 				<c:PlotData>
 					<c:PlotWedge StrokeColor="#000" StrokeWidth="2">
 				</c:PlotData>
 			</Panel>
+		```
 	*/
 	public class PlotWedge : Ellipse, IPlotDataItemListener<PlotDataPoint>
 	{

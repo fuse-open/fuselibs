@@ -7,14 +7,14 @@ namespace Fuse.Controls
 		used in a @NativeViewHost.
 
 		## Example:
-
+		```xml
 			<StackPanel>
 				<Slider Value="50" Minimum="0" Maximum="100" />
 				<NativeViewHost>
 					<Slider Value="0.25" Minimum="0" Maximum="1" />
 				</NativeViewHost>
 			</StackPanel>
-
+		```
 		@seealso Fuse.Controls.RangeControl
 	*/
 	public partial class Slider

@@ -11,7 +11,7 @@ namespace Fuse.Triggers
 
 		#Example
 		The following example contains a list, where every item plays a `RemovingAnimation` as they are removed:
-
+		```xml
 			<JavaScript>
 				var Observable = require('FuseJS/Observable');
 				var list = Observable("Dog", "Cat", "Horse");
@@ -37,6 +37,7 @@ namespace Fuse.Triggers
 					</Panel>
 				</Each>
 			</StackPanel>
+		```
 	*/
 	public class RemovingAnimation: Trigger, IBeginRemoveVisualListener
 	{

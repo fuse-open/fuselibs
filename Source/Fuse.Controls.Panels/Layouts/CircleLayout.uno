@@ -14,7 +14,7 @@ namespace Fuse.Layouts
 		> layout calculation issues.
 
 		## Example
-
+		```xml
 			<Panel Color="#000000">
 				<CircleLayout />
 				<Circle Fill="#ff00ff" />
@@ -24,7 +24,7 @@ namespace Fuse.Layouts
 				<Circle Fill="#ffff00" />
 				<Circle Fill="#ff7f7f" />
 			</Panel>
-
+		```
 		The layout calculation is done by fitting circles into a large circle. The elements inside are all
 		treated as circles, such that arranging them they all just touch the `Radius` edge and each other
 		(with a zero arc-spacing).

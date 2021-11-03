@@ -16,14 +16,14 @@ namespace Fuse.Controls
 		## Example
 
 		The following example demonstrates how a `StatusBarBackground` can be docked inside a `DockPanel` to ensure the rest of the app's content (inside by the `Panel`) will be placed below the status bar.
-
+		```xml
 			<DockPanel>
 				<StatusBarBackground Dock="Top"/>
 				<Panel>
 					<Text>This text will be below the status bar</Text>
 				</Panel>
 			</DockPanel>
-
+		```
 		See also @BottomBarBackground.
 	*/
 	public class StatusBarBackground : TopFrameBackground { }

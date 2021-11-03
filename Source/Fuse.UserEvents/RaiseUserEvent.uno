@@ -15,18 +15,18 @@ namespace Fuse.Triggers.Actions
 
 		The following example shows a button which raises a @UserEvent when
 		clicked.
-
+		```xml
 			<UserEvent ux:Name="myEvent" />
 			<Button>
 				<Clicked>
 					<RaiseUserEvent EventName="myEvent" />
 				</Clicked>
 			</Button>
-
+		```
 		You can also pass arguments using @UserEventArg.
 		When using a JavaScript function to handle the event, the arguments will
 		be passed to that function.
-
+		```xml
 			<UserEvent ux:Name="myEvent" />
 			<Button>
 				<Clicked>
@@ -36,6 +36,7 @@ namespace Fuse.Triggers.Actions
 					</RaiseUserEvent>
 				</Clicked>
 			</Button>
+		```
 	*/
 	public class RaiseUserEvent : TriggerAction
 	{
@@ -119,7 +120,7 @@ namespace Fuse.Triggers.Actions
 		The following example shows a @Button that, when clicked, raises a
 		user event with the argument `message`, which has the value
 		`Hello from UX!`.
-
+		```xml
 			<UserEvent ux:Name="myEvent" />
 			<Button Text="Raise event with message">
 				<Clicked>
@@ -128,6 +129,7 @@ namespace Fuse.Triggers.Actions
 					</RaiseUserEvent>
 				</Clicked>
 			</Button>
+		```
 	*/
 	public sealed class UserEventArg: PropertyObject
 	{

@@ -8,11 +8,11 @@ namespace Fuse.Controls
 {
 	/** 
 		Forces the content (by scaling) to fit inside the available space.
-
+		```xml
 			<Viewbox>
 				<Rectangle Color="#808" Width="200" Height="100" />
 			</Viewbox>
-
+		```
 		This will maintain its aspect ratio of 2:1 while stretching the Rectangle to be the size of the Viewbox.
 
 		You can set which directions you want the content to scale by setting the StretchDirection-property:

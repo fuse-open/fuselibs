@@ -16,14 +16,14 @@ namespace Fuse.Resources
 		best suited for a particular screen.
 
 		## Example
-
+		```xml
 			<Image StretchMode="PointPrefer">
 				<MultiDensityImageSource>
 					<FileImageSource File="Icon.png" Density="1"/>
 					<FileImageSource File="Icon.png@2x.png" Density="2"/>
 				</MultiDensityImageSource>
 			</Image>
-
+		```
 	*/
 	public sealed class MultiDensityImageSource : ImageSource
 	{

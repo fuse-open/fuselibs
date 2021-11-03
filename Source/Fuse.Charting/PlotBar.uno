@@ -27,7 +27,7 @@ namespace Fuse.Charting
 		# Example
 
 		The following example draws a red bar chart using the `PlotBar` element and @Rectangle
-
+		```javascript
 			<Panel xmlns:c="Fuse.Charting" >
 				<JavaScript>
 					var Observable = require("FuseJS/Observable");
@@ -52,6 +52,7 @@ namespace Fuse.Charting
 					</c:Plot>
 				</Panel>
 			</Panel>
+		```
 	*/
 	public class PlotBar : PlotElement
 	{

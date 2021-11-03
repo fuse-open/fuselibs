@@ -31,7 +31,7 @@ namespace Fuse.Elements
 	/** The Viewport element allows you to perform 3D transformations with perspective projection. 
 
 		The Perspective property controls how far away the camera is from the Z = 0 plane (where everything is drawn by default), in points.
-
+		```xml
 			<App>
 				<Viewport Perspective="400">
 					<Panel>
@@ -43,6 +43,7 @@ namespace Fuse.Elements
 					</Panel>
 				</Viewport>
 			</App>
+		```
 	*/
 	public class Viewport : Element, IViewport, IRenderViewport
 	{

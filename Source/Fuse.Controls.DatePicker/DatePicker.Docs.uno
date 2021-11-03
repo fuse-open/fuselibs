@@ -29,7 +29,7 @@ namespace Fuse.Controls
 
 		The following example shows how to set up a `DatePicker` object with a specific minimum and maximum value, and set the
 		value from JS using a `Date` object:
-
+		```xml
 			<StackPanel>
 				<JavaScript>
 					var Observable = require("FuseJS/Observable");
@@ -58,7 +58,7 @@ namespace Fuse.Controls
 
 				<Button Text="Who you gonna call?" Clicked="{whoYouGonnaCall}" Margin="5" />
 			</StackPanel>
-
+		```
 	*/
 	public partial class DatePicker
 	{

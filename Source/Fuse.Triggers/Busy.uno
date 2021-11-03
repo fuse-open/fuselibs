@@ -23,7 +23,7 @@ namespace Fuse.Triggers
 		### Loading data
 
 		We might wish to display a loading indicator while making an HTTP request.
-
+		```xml
 			<Panel>
 				<WhileBusy>
 					<Text Value="Loading..."/>
@@ -43,14 +43,14 @@ namespace Fuse.Triggers
 				</JavaScript>
 				<Activated Handler="{startLoad}"/>
 			</Panel>
-
+		```
 		This example starts loading data when the page is activated. The `Loading...` text will be shown while it is loading, and removed once it is completed.
 
 
 		### Preparing for navigation
 
 		The @Navigator waits for a busy page to finish preparing before navigating to it. We can use `Busy` to ensure our bindings our done before this happens.
-
+		```xml
 			<Page>
 				<Busy Activity="Preparing" On="ParameterChanged" ux:Name="busy"/>
 				<JavaScript>
@@ -62,6 +62,7 @@ namespace Fuse.Triggers
 				</JavaScript>
 				<Text Value="{name}"/>
 			</Page>
+		```
 	*/
 	public partial class Busy : Behavior
 	{

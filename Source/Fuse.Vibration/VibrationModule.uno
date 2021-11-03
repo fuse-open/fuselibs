@@ -13,11 +13,12 @@ namespace Fuse.Vibration
 		## Example
 
 		The following code vibrates the device for 0.8 seconds.
-
+		```js
 			var vibration = require('FuseJS/Vibration');
 			vibration.vibrate(0.8);
 			// works on iOS using TapticEngine
-			vibration.vibrate('medium')
+			vibration.vibrate('medium');
+		```
 	*/
 	[UXGlobalModule]
 	public sealed class VibrationModule : NativeModule

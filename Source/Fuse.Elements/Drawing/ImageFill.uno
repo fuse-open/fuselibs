@@ -17,7 +17,7 @@ namespace Fuse.Drawing
 
 		The following example will fill a `Circle` with an image loaded from the file `Portrait.png`:
 
-		```
+		```xml
 		<Circle Width="160" Height="160">
 			<ImageFill File="Portrait.png" />
 		</Circle>

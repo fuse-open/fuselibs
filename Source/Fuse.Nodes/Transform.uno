@@ -12,11 +12,11 @@ namespace Fuse
 
 		# Example
 		In this example, we scale a circle to become three times its original size:
-
+		```xml
 			<Circle Color="Green" Width="50" Height="50">
 				<Scaling Factor="3" />
 			</Circle>
-
+		```
 		## Available transforms
 		[subclass Fuse.Transform]
 
@@ -47,11 +47,11 @@ namespace Fuse
 
 		# Example
 		The following example rotates a rectangle 45 degrees
-
+		```xml
 			<Rectangle Width="100" Height="50">
 				<Rotation Degrees="90"/>
 			</Rectangle>
-
+		```
 		For animated rotations, consider using a @Rotate animator instead of animating
 		the properties of this class.
 

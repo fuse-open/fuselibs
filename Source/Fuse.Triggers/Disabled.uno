@@ -52,13 +52,13 @@ namespace Fuse.Triggers
 
 		# Example
 		This example shows a panel that is rotated 45 degrees. It will always be rotated 45 degrees, as `IsEnabled` is `true` by default.
-
+		```xml
 			<Panel  Width="50" Height="50" Background="Red" >
 				<WhileEnabled>
 					<Rotate Degrees="45" Duration="0.5"/>
 				</WhileEnabled>
 			</Panel>
-
+		```
 		@examples Docs/WhileEnabledDisabled.md
 	*/
 	public class WhileEnabled : WhileEnabledDisabledTrigger

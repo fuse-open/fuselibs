@@ -1,6 +1,6 @@
 This example changes the surrounding panel's color when the @TextInput is
 selected.
-
+```xml
 	<Panel ux:Name="panel" Color="#bbb">
 		<TextInput ux:Name="input" PlaceholderText="Name">
 			<WhileFocusWithin>
@@ -8,3 +8,4 @@ selected.
 			</WhileFocusWithin>
 		</TextInput>
 	</Panel>
+```

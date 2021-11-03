@@ -11,7 +11,7 @@ namespace Fuse.Reactive
 		@topic Event binding
 
 		You can hook up event handlers to call JavaScript functions with similar syntax to data bindings:
-
+		```xml
 			<JavaScript>
 			    module.exports = {
 			        clickHandler: function (args) {
@@ -20,7 +20,7 @@ namespace Fuse.Reactive
 			    };
 			</JavaScript>
 			<Button Clicked="{clickHandler}" Text="Click me!" />
-
+		```
 		For more information, see @DataBinding.
 	*/
 	public class EventBinding: ExpressionBinding

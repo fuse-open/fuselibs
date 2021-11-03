@@ -9,12 +9,13 @@ namespace Fuse.Triggers
 
 		This example sets a panel's background color to green if the app is
 		running on iOS. If the app is ran on another platform, it will be red:
-
+		```xml
 			<Panel ux:Name="panel" Background="#F00" >
 				<iOS>
 					<Change panel.Background="#0F0" />
 				</iOS>
 			</Panel>
+		```
 	*/
 	public class iOS: Trigger
 	{
@@ -45,12 +46,13 @@ namespace Fuse.Triggers
 		This example sets a panel's background color to green if the app is
 		running on Android. If the app is ran on another platform, it will be
 		red:
-
+		```xml
 			<Panel ux:Name="panel" Background="#F00" >
 				<Android>
 					<Change panel.Background="#0F0" />
 				</Android>
 			</Panel>
+		```
 	*/
 	public class Android: Trigger
 	{

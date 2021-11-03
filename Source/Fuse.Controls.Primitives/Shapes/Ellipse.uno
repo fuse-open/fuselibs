@@ -12,7 +12,7 @@ namespace Fuse.Controls
 		to become visible.
 
 		## Example:
-
+		```xml
 			<Ellipse Width="300" Height="100">
 				<LinearGradient>
 					<GradientStop Offset="0" Color="#0cc" />
@@ -22,7 +22,7 @@ namespace Fuse.Controls
 					<SolidColor Color="#000" />
 				</Stroke>
 			</Ellipse>
-
+		```
 	*/
 	public partial class Ellipse : EllipticalShape
 	{

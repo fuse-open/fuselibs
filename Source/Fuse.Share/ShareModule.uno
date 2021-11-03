@@ -19,7 +19,7 @@ namespace Fuse.Share
 	You need to add a reference to "Fuse.Share" in your project file to use this feature.
 
 	## Example
-
+	```xml
 		<JavaScript>
 			var Share = require("FuseJS/Share")
 			var Camera = require("FuseJS/Camera")
@@ -37,9 +37,9 @@ namespace Fuse.Share
 				}
 			}
 		</JavaScript>
-
+	```
 	## iPad example
-
+	```xml
 		<Panel>
 			<Button Text="Share" Clicked="{shareText}"/>
 			<Panel ux:Name="ShareOrigin" Alignment="Center" Width="1" Height="1" />
@@ -54,6 +54,7 @@ namespace Fuse.Share
 				}
 			</JavaScript>
 		</Panel>
+	```
 	*/
 	[UXGlobalModule]
 	public class ShareModule : NativeModule

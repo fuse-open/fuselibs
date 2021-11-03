@@ -159,7 +159,7 @@ namespace Fuse.Triggers
 			Triggers normally use the same animators when deactivating as they do when they activate. There are however
 			animations that require a different set of animators when animating back from the active state. For this purpose
 			one can bind a new set of animators to the `BackwardAnimation` property like so:
-
+			```xml
 				<Panel Width="100" Height="100" Color="#00b2ee">
 					<WhilePressed>
 						<Rotate Degrees="90" Duration="0.5" />
@@ -169,7 +169,7 @@ namespace Fuse.Triggers
 						</TriggerAnimation>
 					</WhilePressed>
 				</Panel>
-
+			```xml
 			In this example, the @Panel only rotates when pressed. When the pointer is released, it does not animate back.
 			Note that the effect of the animators are still reversed. The only difference is that they loose their duration.
 		*/

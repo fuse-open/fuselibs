@@ -15,8 +15,8 @@ namespace Fuse
 
 			When this value is set, the parameter can be accessed in JavaScript through the `.Parameter` property on this object.
 
-			Example:
-
+			## Example:
+			```xml
 				<JavaScript>
 					router.goto("profile", { id: 3 });
 				</JavaScript>
@@ -28,6 +28,7 @@ namespace Fuse
 						});
 					</JavaScript>
 				</Page>
+			```
 		*/
 		public string Parameter
 		{

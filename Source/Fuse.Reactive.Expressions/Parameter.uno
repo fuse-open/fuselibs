@@ -7,9 +7,9 @@ namespace Fuse.Reactive
 	/** Returns the parameter of the given page (visual), parsed from a JSON string.
 
 		Usage:
-
+		```xml
 			<Text Value="parameter(this).title" />
-
+		```
 		The parameter can be ommited
 	*/
 	[UXFunction("parameter")]

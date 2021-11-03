@@ -108,7 +108,7 @@ namespace Fuse
 		`Deferred` says that the content is not required immediately and may be created somewhat later. This allows the app to startup faster, or to create new pages faster. Without `Deferred` the nodes are initialized all in the same frame, which can lead to delays. With `Deferred` the node creation is staggered over several frames. This allows the app to start rendering and displaying prior to being completely initialized.
 
 		A common use is with an @Each:
-
+		```xml
 			<Each Items="{items}">
 				<Deferred>
 					<StackPanel Orientation="Horizontal">
@@ -118,7 +118,7 @@ namespace Fuse
 					</StackPanel>
 				</Deferred>
 			</Each>
-
+		```
 
 		Note that the delay is measured in frames: deferred content will still be added quickly. Nonetheless it may result in some popping of the new elements and a change in layout.
 

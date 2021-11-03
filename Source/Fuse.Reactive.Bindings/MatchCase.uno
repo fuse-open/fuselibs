@@ -11,7 +11,7 @@ namespace Fuse.Reactive
 		favorite programming language.
 
 		## Example
-
+		```xml
 			<JavaScript>
 				module.exports = {
 					active: "blue"
@@ -25,6 +25,7 @@ namespace Fuse.Reactive
 					<Rectangle Fill="#00f" Height="50" Width="50" />
 				</Case>
 			</Match>
+		```
 	*/
 	public class Match: Behavior, IObserver
 	{

@@ -8,17 +8,21 @@ namespace Alive
 
 		See also [PartialTabPage](api:alive/partialtabpage).
 
-			<TabPageControl>
-				<Alive.TabPage Label="Page 1">
-					<!-- page content -->
-				</Alive.TabPage>
-				<Alive.TabPage Label="Page 2">
-					<!-- page content -->
-				</Alive.TabPage>
-				<Alive.TabPage Label="Page 3">
-					<!-- page content -->
-				</Alive.TabPage>
-			</TabPageControl>
+		```xml
+		<Alive.TabPageControl>
+			<Alive.TabPage Label="Page 1">
+				<!-- page content -->
+			</Alive.TabPage>
+			<Alive.TabPage Label="Page 2">
+				<!-- page content -->
+			</Alive.TabPage>
+			<Alive.TabPage Label="Page 3">
+				<!-- page content -->
+			</Alive.TabPage>
+		</Alive.TabPageControl>
+		```
+
+		![actionButton](../../docs/media/alive/tabbar.gif)
 	*/
 	public partial class TabPage {}
 }

@@ -76,7 +76,7 @@ namespace Fuse.Triggers.Actions
 		Note that of course return is optional. If you don't return anything from your evaluated JS the return value of the expression will simply be "null".
 
 		## Example
-
+		```xml
 			<Grid Rows="0.15*, 1*">
 				<JavaScript>
 					var Observable = require('FuseJS/Observable');
@@ -100,6 +100,7 @@ namespace Fuse.Triggers.Actions
 					</WebView>
 				</NativeViewHost>
 			</Grid>
+		```
 	*/
 	public class EvaluateJS : TriggerAction
 	{

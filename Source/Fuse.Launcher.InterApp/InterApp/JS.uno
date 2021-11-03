@@ -112,7 +112,7 @@ namespace Fuse.Reactive.FuseJS
 		### 2. Add the asset links file to your website
 
 		Example:
-		```
+		```json
 		[{
 		  "relation": ["delegate_permission/common.handle_all_urls"],
 		    "target": {

@@ -12,7 +12,7 @@ namespace Fuse.Reactive
 		## Example
 
 		This example displays the text `Your friends list is empty.` using `WhileEmpty`:
-
+		```xml
 			<JavaScript>
 				var Observable = require("FuseJS/Observable");
 				module.exports = {
@@ -22,7 +22,7 @@ namespace Fuse.Reactive
 			<WhileEmpty Items="{friends}">
 				<Text>Your friends list is empty.</Text>
 			</WhileEmpty>
-
+		```
 		@see WhileCount
 		@see WhileNotEmpty
 	*/
@@ -41,7 +41,7 @@ namespace Fuse.Reactive
 		## Example
 
 		This example displays the text `You have at least one friend!` using `WhileNotEmpty`:
-
+		```xml
 			<JavaScript>
 				var Observable = require("FuseJS/Observable");
 				module.exports = {
@@ -51,7 +51,7 @@ namespace Fuse.Reactive
 			<WhileNotEmpty Items="{friends}">
 				<Text>You have at least one friend!</Text>
 			</WhileNotEmpty>
-
+		```
 		@See WhileEmpty
 	*/
 	public class WhileNotEmpty : WhileCount

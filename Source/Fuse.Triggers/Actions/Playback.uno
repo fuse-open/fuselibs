@@ -36,7 +36,7 @@ namespace Fuse.Triggers.Actions
 		The position is set to the beginning, and the playback is stopped.
 
 		## Video Example
-
+		```xml
 			<Grid Rows="3*,1*" >
 				<Video ux:Name="video" Url="http://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_320x180.mp4" StretchMode="Uniform" />
 				<Grid Columns="1*,1*">
@@ -52,9 +52,9 @@ namespace Fuse.Triggers.Actions
 					</Button>
 				</Grid>
 			</Grid>
-
+		```
 		## Timeline Example
-
+		```xml
 			<StackPanel>
 				<Rectangle Width="150" Height="150" Margin="60" ux:Name="rect" CornerRadius="10" >
 					<Stroke ux:Name="rectStroke" Offset="10" Width="3" Color="#3579e6" />
@@ -94,6 +94,7 @@ namespace Fuse.Triggers.Actions
 					</Clicked>
 				</Button>
 			</StackPanel>
+		```
 	*/
 	public sealed class Stop : PlaybackAction
 	{
@@ -110,7 +111,7 @@ namespace Fuse.Triggers.Actions
 		This stops playback but does not change the current position.
 
 		## Example
-
+		```xml
 			<Grid Rows="3*,1*" >
 				<Video ux:Name="video" Url="http://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_320x180.mp4" AutoPlay="true" StretchMode="Uniform" />
 				<Grid Columns="1*,1*">
@@ -126,6 +127,7 @@ namespace Fuse.Triggers.Actions
 					</Button>
 				</Grid>
 			</Grid>
+		```
 	*/
 	public sealed class Pause : PlaybackAction
 	{
@@ -144,7 +146,7 @@ namespace Fuse.Triggers.Actions
 		A timeline will play either forward or backward, depending on the last play direction.
 
 		## Video Example
-
+		```xml
 			<Grid Rows="3*,1*" >
 				<Video ux:Name="video" Url="http://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_320x180.mp4" StretchMode="Uniform" />
 				<Button Text="Play">
@@ -153,9 +155,9 @@ namespace Fuse.Triggers.Actions
 					</Clicked>
 				</Button>
 			</Grid>
-
+		```
 		## Timeline Example
-
+		```xml
 			<StackPanel>
 				<Rectangle Width="150" Height="150" Margin="60" ux:Name="rect" CornerRadius="10" >
 					<Stroke ux:Name="rectStroke" Offset="10" Width="3" Color="#3579e6" />
@@ -195,6 +197,7 @@ namespace Fuse.Triggers.Actions
 					</Clicked>
 				</Button>
 			</StackPanel>
+		```
 	*/
 	public class Play : PlaybackAction
 	{

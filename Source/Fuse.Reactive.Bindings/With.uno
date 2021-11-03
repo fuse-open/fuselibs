@@ -9,7 +9,7 @@ namespace Fuse.Reactive
 		particularly useful for "viewing" part of a deeply-nested object graph.
 
 		## Example
-
+		```xml
 			<JavaScript>
 				module.exports = {
 					complex: {
@@ -23,7 +23,7 @@ namespace Fuse.Reactive
 				<Text Value="{name}" />
 				<Text Value="{age}" />
 			</With>
-
+		```
 	*/
 	public class With : Triggers.Trigger, Node.ISubtreeDataProvider, ValueForwarder.IValueListener
 	{

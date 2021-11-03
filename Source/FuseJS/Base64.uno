@@ -14,12 +14,12 @@ namespace FuseJS
 		This is useful when passing string to places where some characters are not allowed.
 
 		This example demonstrates simple use of the `Base64` module. The code prints the input string, and the computed Base64 string.
-
+		```js
 			var Base64 = require("FuseJS/Base64");
 			var string = "Hello, world!";
 			console.log(string); //LOG: Hello, world!
 			console.log(Base64.encodeAscii(string)); //LOG: SGVsbG8sIHdvcmxkIQ==
-
+		```
     */
 	[UXGlobalModule]
 	public sealed class Base64 : NativeModule
@@ -43,13 +43,13 @@ namespace FuseJS
 
 		/** @scriptmethod decodeBuffer(base64String)
 			Decodes the given base64 string to an ArrayBuffer.
-
+			```js
 				var Base64 = require("FuseJS/Base64");
 				var buf = Base64.decodeBuffer("NxMAAA==");
 				var view = new Int32Array(data);
 				// Should print 0x1337
 				console.log("0x" + view[0].toString(16));
-
+			```
 			@param base64String (String) base64 encoded string
 			@return (ArrayBuffer) Decoded ArrayBuffer
 		**/
@@ -65,7 +65,7 @@ namespace FuseJS
 
 		/** @scriptmethod encodeBuffer(arrayBuffer)
 			Encodes given array buffer to base64.
-
+			```js
 				var Base64 = require("FuseJS/Base64");
 
 				var data = new ArrayBuffer(4);
@@ -73,7 +73,7 @@ namespace FuseJS
 				view[0] = 0x1337;
 
 				console.log(Base64.encodeBuffer(data));
-
+			```
 			@param arrayBuffer (ArrayBuffer) The ArrayBuffer to encode
 			@return (String) A base64 encoded string
 		**/
@@ -88,11 +88,11 @@ namespace FuseJS
 
 		/** @scriptmethod decodeLatin1(stringToDecode)
 		    Decodes the given base64 Latin-1 encoded bytes to a string.
-
+			```js
 				var Base64 = require("FuseJS/Base64");
 				// Prints "hello world"
 				console.log(Base64.decodeLatin1("aGVsbG8gd29ybGQ="));
-
+			```
 			@param stringToDecode (String) Base64 encoded string
 			@return (String) Decoded string
 		**/
@@ -107,11 +107,11 @@ namespace FuseJS
 
 		/** @scriptmethod encodeLatin1(stringToEncode)
 		    Encodes the given string to a Latin-1 base64 string.
-
+			```js
 				var Base64 = require("FuseJS/Base64");
 				// Prints "aGVsbG8gd29ybGQ="
 				console.log(Base64.encodeLatin1("hello world"));
-
+			```
 			@param stringToEncode (String) String to encode
 			@return (String) Encoded string
 		**/
@@ -130,10 +130,10 @@ namespace FuseJS
 		/** @scriptmethod encodeAscii(value)
 
 			Encodes the given ASCII value to base64 string representation
-
+			```js
 				var Base64 = require("FuseJS/Base64");
 				console.log(Base64.encodeAscii("Hello, world!")); //LOG: SGVsbG8sIHdvcmxkIQ==
-
+			```
 			@param value (String) Ascii
 			@return (String) Base64
 		*/
@@ -151,10 +151,10 @@ namespace FuseJS
 		/** @scriptmethod decodeAscii(value)
 
 			Decodes the given base64 value to an ASCII string representation
-
+			```js
 				var Base64 = require("FuseJS/Base64");
 				console.log(Base64.decodeAscii("SGVsbG8sIHdvcmxkIQ==")); //LOG: Hello, world!
-
+			```
 			@param value (String) Base64
 			@return (String) Ascii
 		*/
@@ -172,10 +172,10 @@ namespace FuseJS
 		/** @scriptmethod encodeUtf8(value)
 
 			Encodes the given UTF8 value to a base64 string representation
-
+			```js
 				var Base64 = require("FuseJS/Base64");
 				console.log(Base64.encodeUtf8("Foo © bar")); //LOG: Rm9vIMKpIGJhcg==
-
+			```
 			@param value (String) Utf8
 			@return (String) Base64
 		*/
@@ -193,10 +193,10 @@ namespace FuseJS
 		/** @scriptmethod decodeUtf8(value)
 
 			Decodes the given base64 value to an UTF8 string representation
-
+			```js
 				var Base64 = require("FuseJS/Base64");
 				console.log(Base64.encodeUtf8("Rm9vIMKpIGJhcg==")); //LOG: Foo © bar
-
+			```
 			@param value (String) Base64
 			@return (String) Utf8
 		*/

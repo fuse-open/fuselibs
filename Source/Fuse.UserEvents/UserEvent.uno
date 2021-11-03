@@ -99,16 +99,16 @@ namespace Fuse
 
 		We put a @UserEvent at the root of our component class to indicate that it can raise a particular event.
 		Where we place our @UserEvent is important, since a node has to be in its subtree to raise or handle it.
-
+		```xml
 			<Panel ux:Class="MyComponent">
 				<UserEvent ux:Name="myEvent" />
 			</Panel>
-
+		```
 		This creates an event named `myEvent`.
 
 		>**Note:** To make a @UserEvent that can be raised or handled from anywhere in the app, declare it on the root @App node, like this:
 		>
-		>```
+		>```xml
 		><App>
 		> 	<UserEvent ux:Name="myGlobalEvent" />
 		> 	<!-- The rest of our app goes here -->
@@ -117,7 +117,7 @@ namespace Fuse
 
 
 		We can now use @RaiseUserEvent to raise the event from UX.
-
+		```xml
 			<Panel ux:Class="MyComponent">
 				<UserEvent ux:Name="myEvent" />
 
@@ -125,9 +125,9 @@ namespace Fuse
 					<RaiseUserEvent EventName="myEvent" />
 				</Clicked>
 			</Panel>
-
+		```
 		Or we can raise it from JavaScript.
-
+		```xml
 			<Panel ux:Class="MyComponent">
 				<UserEvent ux:Name="myEvent" />
 
@@ -137,21 +137,21 @@ namespace Fuse
 					}, 5000);
 				</JavaScript>
 			</Panel>
-
+		```
 		When we instantiate our component, we can respond to its events using the @OnUserEvent trigger.
-
+		```xml
 			<MyComponent>
 				<OnUserEvent EventName="myEvent">
 					<!-- Actions/animators go here -->
 				</OnUserEvent>
 			</MyComponent>
-
+		```
 		Note that we are referencing our @UserEvent by name even though it is declared outside of our current scope.
 		We can do this because `EventName` refers to the `Name` of the event. Setting `ux:Name` also sets `Name`, which means that in this example, the `Name` will be `myEvent`.
 		The actual instance of @UserEvent will be resolved at runtime.
 
 		We can also handle events in JavaScript.
-
+		```xml
 			<JavaScript>
 				function eventHandler() {
 					//do something
@@ -163,23 +163,23 @@ namespace Fuse
 			<MyComponent>
 				<OnUserEvent EventName="myEvent" Handler="{eventHandler}"/>
 			</MyComponent>
-
+		```
 		We can pass arguments when raising an event.
-
+		```xml
 			myEvent.raise({
 				userName: "james",
 				isAdmin: false
 			});
-
+		```
 		This is also possible when raising the event from UX.
-
+		```xml
 			<RaiseUserEvent EventName="myEvent">
 				<UserEventArg Name="userName" StringValue="james" />
 				<UserEventArg Name="isAdmin" BoolValue="false" />
 			</RaiseUserEvent>
-
+		```
 		The arguments are then passed to the event handler.
-
+		```xml
 			<JavaScript>
 				function eventHandler(args) {
 					console.log("Username: " + args.userName + ", Is admin: " + args.isAdmin);
@@ -189,8 +189,7 @@ namespace Fuse
 			</JavaScript>
 
 			<OnUserEvent EventName="myEvent" Handler="{eventHandler}" />
-
-
+		```
 
 		@see fuse/triggers/actions/raiseuserevent
 		@see fuse/userevent/raise_09a1af86

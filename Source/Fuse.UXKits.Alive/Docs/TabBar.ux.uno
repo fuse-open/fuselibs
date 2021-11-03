@@ -10,20 +10,24 @@ namespace Alive
 		You must specify a `Navigation`, which refers to the @PageControl or other @LinearNavigation
 		that contains the pages.
 
-			<DockPanel>
-				<Alive.TabBar Dock="Top" Navigation="pageControl" />
-				<PageControl ux:Name="pageControl">
-					<Alive.TabPage Label="Page 1">
-						<!-- page content -->
-					</Alive.TabPage>
-					<Alive.TabPage Label="Page 2">
-						<!-- page content -->
-					</Alive.TabPage>
-					<Alive.TabPage Label="Page 3">
-						<!-- page content -->
-					</Alive.TabPage>
-				</PageControl>
-			</DockPanel>
+		```xml
+		<DockPanel>
+			<Alive.TabBar Dock="Top" Navigation="pageControl" />
+			<PageControl ux:Name="pageControl">
+				<Alive.TabPage Label="Page 1">
+					<!-- page content -->
+				</Alive.TabPage>
+				<Alive.TabPage Label="Page 2">
+					<!-- page content -->
+				</Alive.TabPage>
+				<Alive.TabPage Label="Page 3">
+					<!-- page content -->
+				</Alive.TabPage>
+			</PageControl>
+		</DockPanel>
+		```
+
+		![actionButton](../../docs/media/alive/tabbar.gif)
 	*/
 	public partial class TabBar {}
 }

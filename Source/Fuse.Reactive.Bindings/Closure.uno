@@ -65,15 +65,16 @@ namespace Fuse.Reactive
 			to get access to all the names in the scope of the closure.
 
 			Example with NGUX syntax:
-
+			```xml
 				<Panel ux:Name="foo" />
 				<Closure (Ready)="nodeReady($event)" />
-
+			```
 			And then in the TypeScript component:
-
+			```js
 				nodeReady(e) {
 					e.foo // holds a reference to the Panel above
 				}
+			```
 		*/
 		public event ClosureHandler Ready
 		{

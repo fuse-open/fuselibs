@@ -8,12 +8,13 @@ namespace Fuse.Gestures
 
 		# Example
 		In this example, a panel will rotate for 0.4 seconds, then rotate back, when released:
-
+		```xml
 			<Panel Background="#F00">
 				<Released>
 					<Rotate Degrees="90" Duration=".4" DurationBack=".2" />
 				</Released>
 			</Panel>
+		```
 	*/
 	public class Released : Fuse.Triggers.Trigger
 	{

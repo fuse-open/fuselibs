@@ -56,7 +56,7 @@ namespace Fuse.Physics
 
 		## Example
 		In the following example, a circle in the middle of the screen flashes green if a smaller, blue circle, is moved into its force field:
-
+		```xml
 			<Panel>
 				<Panel Width="60" Height="60" Alignment="BottomLeft">
 					<Circle Color="#42A5F5" />
@@ -73,6 +73,7 @@ namespace Fuse.Physics
 			<Panel Alignment="BottomLeft" Width="100" Height="100">
 				<PointAttractor Radius="500" Strength="100" Offset="0,0,0"/>
 			</Panel>
+		```
 	*/
 	public class EnteredForceField: ForceFieldEventTrigger
 	{
@@ -96,7 +97,7 @@ namespace Fuse.Physics
 
 		## Example
 		In the following example, a circle with a `PointAttractor` in the middle of the screen flashes green if a smaller, blue circle, is removed from the forcefield.
-
+		```xml
 			<Panel>
 				<Panel Width="60" Height="60" Alignment="Center">
 					<Circle Color="#42A5F5" />
@@ -110,6 +111,7 @@ namespace Fuse.Physics
 					<PointAttractor ux:Name="centerAttract" Radius="150" Strength="250" />
 				</Panel>
 			</Panel>
+		```
 	*/
 	public class ExitedForceField: ForceFieldEventTrigger
 	{
@@ -133,7 +135,7 @@ namespace Fuse.Physics
 
 		# Example
 		In the following example, a red circle will get smaller as a blue, filled circle nears the center `PointAttract`, `centerAttract`. Because `To` is set to `1.3` on the `InForceFieldAnimation`, the animation will never animate further than `0.77`.
-
+		```xml
 			<Panel>
 				<Panel Width="60" Height="60" Alignment="BottomLeft">
 					<Circle Color="#42A5F5" />
@@ -152,6 +154,7 @@ namespace Fuse.Physics
 			<Panel Alignment="BottomLeft" Width="100" Height="100">
 				<PointAttractor Radius="300" Strength="150" Offset="0,0,0"/>
 			</Panel>
+		```
 	*/
 	public class InForceFieldAnimation : ForceFieldTrigger
 	{

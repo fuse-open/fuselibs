@@ -1,6 +1,5 @@
-This example changes the background color to white when it is possible to
-scroll down.
-
+This example changes the background color to white when it is possible to scroll down.
+```xml
 	<ScrollView>
 		<SolidColor ux:Name="color" Color="#000"/>
 		<StackPanel Margin="10">
@@ -12,3 +11,4 @@ scroll down.
 			<Change color.Color="#ddd" Duration="0.4"/>
 		</WhileScrollable>
 	</ScrollView>
+```

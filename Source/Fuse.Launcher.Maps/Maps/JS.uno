@@ -13,9 +13,10 @@ namespace Fuse.Reactive.FuseJS
 		## Example
 
 		This code will launch a map centered at the nearest pizza restaurant.
-
+		```js
 			var Maps = require("FuseJS/Maps");
 			Maps.searchNear(59.9117715, 10.7400957, "pizza restaurant");
+		```
 	*/
 	[UXGlobalModule]
 	public sealed class Maps : NativeModule
@@ -38,9 +39,10 @@ namespace Fuse.Reactive.FuseJS
 			Launches the map application, centered at the location found using `query` as search criteria.
 
 			## Example
-
+			```js
 				var Maps = require("FuseJS/Maps");
 				Maps.searchNearby("Fusetools");
+			```
 		*/
 		public static object SearchNearby(Scripting.Context context, object[] args)
 		{
@@ -59,9 +61,10 @@ namespace Fuse.Reactive.FuseJS
 			using `query` as search criteria.
 
 			## Example
-
+			```js
 				var Maps = require("FuseJS/Maps");
 				Maps.searchNear(59.9117715, 10.7400957, "Fusetools");
+			```
 		*/
 		public static object SearchNear(Scripting.Context context, object[] args)
 		{
@@ -80,9 +83,10 @@ namespace Fuse.Reactive.FuseJS
 			Launches the map application, centered at the location given by `latitude` and `longitude`.
 
 			## Example
-
+			```js
 				var Maps = require("FuseJS/Maps");
 				Maps.openAt(59.9117715, 10.7400957);
+			```
 		*/
 		public static object OpenAt(Scripting.Context context, object[] args)
 		{

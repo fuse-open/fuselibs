@@ -1,5 +1,5 @@
 The following example uses @Selection to create a simple list of options. Tap the items to toggle their selection. `Values` is bound to a JavaScript `Observable` in order to track the currently selected items.
-
+```xml
 	<Panel ux:Class="MyItem" Color="#aaa">
 		<string ux:Property="Label" />
 		<string ux:Property="Value" />
@@ -41,3 +41,4 @@ The following example uses @Selection to create a simple list of options. Tap th
 		<Text Value="Selected:" Margin="0,10,0,0" />
 		<Text Value="{list}" />
 	</StackPanel>
+```

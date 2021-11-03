@@ -8,7 +8,7 @@ namespace Fuse.Triggers.Actions
 	/** Log a message, which is useful for debugging
 
 		## Example
-
+		```xml
 			<StackPanel Margin="20">
 				<Button Margin="10" Text="Log 'Hello World!'">
 					<Clicked>
@@ -16,6 +16,7 @@ namespace Fuse.Triggers.Actions
 					</Clicked>
 				</Button>
 			</StackPanel>
+		```
 	*/
 	public class DebugAction : TriggerAction
 	{

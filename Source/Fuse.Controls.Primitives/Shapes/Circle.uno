@@ -30,13 +30,13 @@ namespace Fuse.Controls
 
 		Displaying a red @Circle:
 
-		```
+		```xml
 		<Circle Width="100" Height="100" Color="#f00" />
 		```
 
 		Getting fancy with a @Stroke and @LinearGradient:
 
-		```
+		```xml
 		<Circle Width="100" Height="100" >
 			<LinearGradient>
 				<GradientStop Offset="0" Color="#cf0" />
@@ -50,7 +50,7 @@ namespace Fuse.Controls
 
 		Drawing a slice of a circle:
 
-		```
+		```xml
 		<Circle Width="150" Height="150" Color="#f00" StartAngleDegrees="135" LengthAngleDegrees="145" />
 		```
 	*/

@@ -17,13 +17,14 @@ namespace Fuse.Layouts
 		by setting the `Orientation` attribute to `Horizontal`.
 
 		## Example
-
+		```xml
 			<Panel>
 				<ColumnLayout />
 				<Each Count="10">
 					<Circle Margin="5" Color="Blue" />
 				</Each>
 			</Panel>
+		```
 	*/
 	public sealed class ColumnLayout : Layout
 	{
@@ -34,13 +35,14 @@ namespace Fuse.Layouts
 			@default Orientation.Vertical
 
 			The `Orientation` property can be used to make a horizontal @ColumnLayout:
-
+			```xml
 				<Panel>
 					<ColumnLayout Orientation="Horizontal" ColumnCount="4" />
 					<Each Count="10">
 						<Circle Margin="5" Width="100" Height="100" Color="Blue" />
 					</Each>
 				</Panel>
+			```
 		*/
 		public Orientation Orientation
 		{
@@ -61,7 +63,7 @@ namespace Fuse.Layouts
 		/**	Number of columns to lay out.
 
 			@default 2
-
+			```xml
 				<Panel Color="Black" >
 					<!-- Lay out lots of yellow circles and red rectangles in columns -->
 					<ColumnLayout ColumnCount="10" />
@@ -70,6 +72,7 @@ namespace Fuse.Layouts
 						<Rectangle Margin="5" Width="10" Height="40" Color="Red" />
 					</Each>
 				</Panel>
+			```
 		*/
 		public int ColumnCount
 		{
@@ -97,7 +100,7 @@ namespace Fuse.Layouts
 			Otherwise, when `Orientation` is `Horizontal`, size means height.
 
 			> Note that `ColumnSize` and `ColumnCount` are exclusive, and should not be set at the same time.
-
+			```xml
 				<Panel Color="Black">
 					<ColumnLayout ColumnSize="12" />
 					<Each Count="150">
@@ -106,6 +109,7 @@ namespace Fuse.Layouts
 						<Rectangle Margin="1" CornerRadius="4" Width="10" Height="20"  Color="Teal" />
 					</Each>
 				</Panel>
+			```
 		*/
 		public float ColumnSize
 		{
@@ -170,7 +174,7 @@ namespace Fuse.Layouts
 			> Note that `Sizing` only will only affect the layout when the `ColumnSize` attribute is defined.
 
 			@default Fixed
-
+			```xml
 				<Panel Color="#000000" >
 					<ColumnLayout Sizing="Fill" ColumnSize="50" />
 					<Each Count="10">
@@ -178,7 +182,7 @@ namespace Fuse.Layouts
 						<Rectangle Height="30" Color="Red" />
 					</Each>
 				</Panel>
-
+			```
 		*/
 		public ColumnLayoutSizing Sizing
 		{

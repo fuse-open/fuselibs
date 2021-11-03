@@ -18,15 +18,15 @@ namespace Fuse.Controls
 		# Examples
 
 		The following example illustrates the default behavior of `PageControl`, which is to slide the pages in response to swipe gestures:
-
+		```xml
 			<PageControl>
 				<Panel Background="Red"/>
 				<Panel Background="Blue"/>
 			</PageControl>
-
+		```
 		`PageControl` is a router outlet, meaning that it can be controlled by a @Router.
 		You can disable this behavior by setting the @IsRouterOutlet property to `false`.
-
+		```xml
 			<JavaScript>
 			    module.exports = {
 			        gotoPage1: function() { router.goto("page1"); },
@@ -42,10 +42,10 @@ namespace Fuse.Controls
 			    <Panel ux:Name="page2" Color="#2ecc71" Clicked="{gotoPage3}" />
 			    <Panel ux:Name="page3" Color="#3498db" Clicked="{gotoPage1}" />
 			</PageControl>
-
+		```
 		By using data binding, you can set the currently active page by `Name` using the `Active` property.
 		In the following example, We have three pages and a button that returns the user to the first page.
-
+		```xml
 			<DockPanel>
 				<JavaScript>
 					var Observable = require("FuseJS/Observable");
@@ -65,7 +65,7 @@ namespace Fuse.Controls
 				</PageControl>
 				<Button Text="Home" Clicked="{clickHandler}" Dock="Bottom"/>
 			</DockPanel>
-
+		```
 		Take a look at the [Slides](/examples/page-control) example to see how this can be used in practice.
 
 		## Navigation Order

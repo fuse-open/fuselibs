@@ -19,18 +19,18 @@ namespace Fuse.Controls
 		## Example
 
 		The following example demonstrates how a `BottomBarBackground` can be docked inside a `DockPanel` to ensure the rest of the app's content (inside by the `Panel`) will be placed above the bottom bar.
-
+		```xml
 			<DockPanel>
 				<BottomBarBackground Dock="Bottom" />
 				<Panel>
 					<Text>This text will be above the bottom bar</Text>
 				</Panel>
 			</DockPanel>
-
+		```
 		You also have the option to not take the size of the keyboard into account:
-
+		```xml
 			<BottomBarBackground IncludesKeyboard="false" />
-
+		```
 	*/
 	public class BottomBarBackground : BottomFrameBackground { }
 

@@ -12,9 +12,9 @@ You can declare a node as a template by specifying the `ux:Template` attribute. 
 You can read more about templates [here](/docs/basics/creating-components#templates-ux-template).
 
 Non-template pages can also be used. The `Name` of the page will be used to match the path:
-
+```xml
 	<Page Name="matchPath">
-
+```
 These pages always just have the one instance, will always be reused, and will never be removed. Otherwise they function the same as the template pages.
 
 Here are some general rules that will you help decide whether you want to use a template or non-template page:
@@ -40,7 +40,7 @@ When using custom transitions be sure to add a @ReleasePage action. This instruc
 
 The following example illustrates a basic navigation setup using a @Router and @Navigator.
 For a complete introduction and proper examples of Fuse's navigation system, see the [Navigation guide](/docs/navigation/navigation).
-
+```xml
 	<JavaScript>
 		module.exports = {
 			gotoFirst: function() { router.goto("firstPage"); },
@@ -65,7 +65,7 @@ For a complete introduction and proper examples of Fuse's navigation system, see
 			<Button Text="Second page" Padding="20" Clicked="{gotoSecond}" />
 		</Grid>
 	</DockPanel>
-
+```
 ## Navigation Order
 
 The `Navigator` uses discrete page progress changes while navigating. The active page will have progress `0`. If a page is pushed it will start at `1` and be switched immediately to `0`. The previously active page will become `-1`. A "back" operation will reverse the transition.

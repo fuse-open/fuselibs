@@ -20,13 +20,14 @@ namespace Fuse.Triggers
 
 		The following example will flash the screen blue when the "menu" button
 		(which is present on some older Android devices) is pressed:
-
+		```xml
 			<Panel>
 				<Rectangle ux:Name="rect" Layer="Background" Color="#F00" />
 				<OnKeyPress Key="MenuButton">
 					<Change rect.Color="#00F" Duration="0.2" />
 				</OnKeyPress>
 			</Panel>
+		```
 	*/
 	public class OnKeyPress : Trigger
 	{
@@ -35,7 +36,7 @@ namespace Fuse.Triggers
 			be listened to through data-binding.
 
 			## Example
-
+			```xml
 				<Panel>
 					<JavaScript>
 						module.exports = {
@@ -44,6 +45,7 @@ namespace Fuse.Triggers
 					</JavaScript>
 					<OnKeyPress Key="BackButton" Handler="{menuButtonClicked}" />
 				</Panel>
+			```
 		*/
 		public event KeyPressHandler Handler;
 
@@ -87,13 +89,14 @@ namespace Fuse.Triggers
 
 		The following code will flash the screen blue when the back button is
 		pressed:
-
+		```xml
 			<Panel>
 				<Rectangle ux:Name="rect" Layer="Background" Color="#F00" />
 				<OnBackButton>
 					<Change rect.Color="#00F" Duration="0.2" />
 				</OnBackButton>
 			</Panel>
+		```
 	*/
 	public sealed class OnBackButton : OnKeyPress
 	{

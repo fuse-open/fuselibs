@@ -7,8 +7,9 @@ namespace Fuse.Controls
 		This is convenient when you want to provide custom transitions for all pages.
 
 		`<PageView />` is equivalent to the following:
-
+		```xml
 			<Navigator Transition="None" GotoState="Unchanged" />
+		```
 	*/
 	public class PageView : Navigator
 	{

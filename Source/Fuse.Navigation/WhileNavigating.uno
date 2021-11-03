@@ -14,7 +14,7 @@ namespace Fuse.Navigation
 		# Example
 
 		In this example, the pages become slightly smaller when you are navigating them:
-
+		```xml
 			<App>
 			    <Page ux:Class="ScalingPanel">
 			        <Scaling ux:Name="scale" Factor="1" />
@@ -27,6 +27,7 @@ namespace Fuse.Navigation
 			        <ScalingPanel Color="Blue" />
 			    </PageControl>
 			</App>
+		```
 	*/
 	public class WhileNavigating : WhileTrigger
 	{

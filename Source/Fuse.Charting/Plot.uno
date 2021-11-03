@@ -25,12 +25,12 @@ namespace Fuse.Charting
 			The source data used for the Plot.
 
 			These are specified as a child of the `Plot` element:
-
+			```xml
 				<c:Plot>
 					<c:DataSeries Data="{data1}"/>
 					<c:DataSeries Data="{data2}"/>
 					<c:DataSeries Data="{data3}"/>
-
+			```
 		*/
 		public IList<DataSeries> Series
 		{
@@ -112,9 +112,9 @@ namespace Fuse.Charting
 			Includes additional data in the visible range created by Offset/Limit.
 
 			For example:
-
+			```xml
 				<Plot DataLimit="6" DataExtend="2,1">
-
+			```
 			This will adjust the chart to display 6 items. It will however also include the the two items before the size shown, and the 1 after it. This will result in items being displayed beyond the edges of the chart, which can be employed for various visual effects.
 
 			One such effect would be a `ClipToBounds="true"` on a `Curve`. This would you to have the curve extend completely to the edges of the chart instead of ending at the visible data set.

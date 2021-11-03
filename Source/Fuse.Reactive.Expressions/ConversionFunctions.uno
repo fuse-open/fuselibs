@@ -40,12 +40,12 @@ namespace Fuse.Reactive
 	/** Forces conversion to a Size or Size2 depending on input size.
 
 		This is useful when using operators that may not be able to infer the desired types. For example:
-
+		```xml
 			<JavaScript>
 				exports.jsArray = [0.2, 0.4]
 			</JavaScript>
 			<Panel Offset="size({jsArray}) * 100%"/>
-
+		```
 		This function follows the conversion rules as though the operand was being converted directly to a `Size` or `Size2` property type. If the input is a `float2`, array, or already a Size2, then it will be converted to a `Size2`, otherwise a `Size` type.
 	*/
 	public sealed class ToSize : UnaryOperator

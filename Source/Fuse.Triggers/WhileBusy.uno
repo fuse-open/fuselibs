@@ -13,17 +13,17 @@ namespace Fuse.Triggers
 		## Example
 
 		The following example displays an @Image from a URL, and a text while it's loading.
-
+		```xml
 			<Image Url="SOME_IMAGE_URL">
 				<WhileBusy>
 					<Text Value="Loading..." />
 				</WhileBusy>
 			</Image>
-
+		```
 		When a node is marked as busy, its ancestors are also considered busy.
 		This lets us react to multiple busy nodes in the same trigger.
 		In the following example we have two @Images loaded via HTTP, and a "Loading..." indicator that fades to transparency after both images have downloaded.
-
+		```xml
 			<Panel>
 				<Panel ux:Name="loadingPanel" Opacity="0" Alignment="Top">
 					<Text>Loading...</Text>
@@ -36,7 +36,7 @@ namespace Fuse.Triggers
 					<Image Url="SOME_OTHER_IMAGE_URL" />
 				</StackPanel>
 			</Panel>
-
+		```
 	*/
 	public class WhileBusy: WhileTrigger, IBusyHandler
 	{
@@ -55,12 +55,12 @@ namespace Fuse.Triggers
 
 		/**
 			If true then the busy status is blocked from reaching parent nodes.
-
+			```xml
 				<WhileBusy ux:Name="W1">...</WhileBusy>
 				<Panel>
 					<WhileBusy ux:Name="W2" IsHandled="true">...</WhileBusy>
 					<Image Url="http://some.place/file.png"/>
-
+			```
 			In this arrangement the `W1` trigger will not be active while the `Image` is loading. The `IsHandled="true"` in the `W2` trigger indicates it completely handles the busy status for this node and its descendants.
 		*/
 		public bool IsHandled { get; set; }

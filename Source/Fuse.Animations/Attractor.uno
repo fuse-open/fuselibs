@@ -13,7 +13,7 @@ namespace Fuse.Animations
 	 	Instead of animating a property directly, an attractors act as an intermediary between an animator 
 	 	and its target. It will continuously animate its target towards its `Value` using a simple form 
 	 	of physics simulation. We can combine this behavior with animation by animating the attractor's `Value` property.
-
+		```xml
 			<Panel ux:Name="somePanel">
 				<Translation ux:Name="someTranslation"/>
 				<Attractor ux:Name="someAttractor" Target="someTranslation.X"/>
@@ -22,6 +22,7 @@ namespace Fuse.Animations
 				</WhilePressed>
 
 			</Panel>
+		```
 	*/
 	public class Attractor<T> : Behavior, IPropertyListener
 	{

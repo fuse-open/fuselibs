@@ -7,7 +7,7 @@ namespace Fuse.Vibration
 
 		You'll find this trigger action in the Fuse.Vibration package, which have to be referenced from your uno project.
 		For example:
-
+		```json
 			{
 				"Packages": [
 					"Fuse",
@@ -15,9 +15,9 @@ namespace Fuse.Vibration
 					"Fuse.Vibration"
 				]
 		  	}
-
+		```
 		## Example
-
+		```xml
 			<StackPanel Margin="20">
 				<Button Margin="10" Text="Vibrate">
 					<Clicked>
@@ -25,7 +25,7 @@ namespace Fuse.Vibration
 					</Clicked>
 				</Button>
 			</StackPanel>
-
+		```
 		On iOS you can do vibration by leveraging Taptic Engine. There are 9 types of vibration :
 		* Soft
 		* Rigid
@@ -39,7 +39,7 @@ namespace Fuse.Vibration
 		To activate it, just pass those value to `VibrationType` property
 
 		##Example
-
+		```xml
 			<StackPanel Margin="20">
 				<!-- Works on iOS using Taptic Engine -->
 				<Button Margin="10" Text="Heavy Vibrate">
@@ -48,6 +48,7 @@ namespace Fuse.Vibration
 					</Clicked>
 				</Button>
 			</StackPanel>
+		```
 	*/
 	public class Vibrate : TriggerAction
 	{

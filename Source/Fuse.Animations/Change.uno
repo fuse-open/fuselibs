@@ -20,13 +20,13 @@ namespace Fuse.Animations
 		# Example
 
 		As with other animators, you can also specify a `Duration`:
-
+		```xml
 			<Panel ux:Name="panel" Color="#000">
 				<WhilePressed>
 					<Change panel.Color="#fff" Duration="0.5" />
 				</WhilePressed>
 			</Panel>
-
+		```
 		If the value is continuous this will result in a continously interpolated change in value.
 		If the value cannot be continuously animated, the value will change discretely.
 

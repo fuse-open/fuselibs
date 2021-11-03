@@ -64,7 +64,7 @@ namespace FuseJS
 		This module is an @EventEmitter, so the methods from @EventEmitter can be used to listen to events.
 
 		## Example
-
+		```xml
 			<JavaScript>
 				var Lifecycle = require('FuseJS/Lifecycle');
 
@@ -90,7 +90,7 @@ namespace FuseJS
 				<Text>Current lifecycle state:</Text>
 				<Text Value="{lifecycleState}" />
 			</StackPanel>
-
+		```
 		In the above example we're using the @EventEmitter `on` method to listen to the different events.
 		We're also using the @EventEmitter `observe` method on the `"stateChanged"` event to get an @Observable containing the current state.
 	*/
@@ -178,12 +178,13 @@ namespace FuseJS
 			@scriptproperty state
 
 			Will give you the current state as an integer
-
+			```js
 				var Lifecycle = require("FuseJS/Lifecycle");
 
 				console.log(Lifecycle.state === Lifecycle.BACKGROUND);
 				console.log(Lifecycle.state === Lifecycle.FOREGROUND);
 				console.log(Lifecycle.state === Lifecycle.INTERACTIVE);
+			```
 		*/
 		static int GetCurrentState()
 		{
@@ -195,12 +196,13 @@ namespace FuseJS
 
 			Triggered when the app has left the suspended state and now is running.
 			You will receive this event when the app starts.
-
+			```js
 				var Lifecycle = require("FuseJS/Lifecycle");
 
 				Lifecycle.on("enteringForeground", function() {
 					console.log("Entering foreground");
 				});
+			```
 		*/
 		void OnEnteringForeground(ApplicationState newState)
 		{
@@ -211,12 +213,13 @@ namespace FuseJS
 			@scriptevent enteringInteractive
 
 			Triggered when the app is entering a state where it is fully focused and receiving events.
-
+			```js
 				var Lifecycle = require("FuseJS/Lifecycle");
 
 				Lifecycle.on("enteringInteractive", function() {
 					console.log("The app is gaining focus");
 				});
+			```
 		*/
 		void OnEnteringInteractive(ApplicationState newState)
 		{
@@ -227,12 +230,13 @@ namespace FuseJS
 			@scriptevent exitedInteractive
 
 			Triggered when the app is partially obscured or is no longer the focus (e.g. when you drag open the notification bar)
-
+			```js
 				var Lifecycle = require("FuseJS/Lifecycle");
 
 				Lifecycle.on("exitedInteractive", function() {
 					console.log("The app is no longer in focus");
 				});
+			```
 		*/
 		void OnExitedInteractive(ApplicationState newState)
 		{
@@ -243,12 +247,13 @@ namespace FuseJS
 			@scriptevent enteringBackground
 
 			Triggered when the app is leaving the running state and is about to be suspended.
-
+			```js
 				var Lifecycle = require("FuseJS/Lifecycle");
 
 				Lifecycle.on("enteringBackground", function() {
 					console.log("Entering background");
 				});
+			```
 		*/
 		void OnEnteringBackground(ApplicationState newState)
 		{
@@ -260,12 +265,13 @@ namespace FuseJS
 			@param newState (Number) The new lifecycle state.
 
 			Triggered when the app's lifecycle state has changed.
-
+			```js
 				var Lifecycle = require("FuseJS/Lifecycle");
 
 				Lifecycle.on("stateChanged", function(newState) {
 					console.log("The lifecycle state changed " + newState);
 				});
+			```
 		*/
 		void OnStateChanged(ApplicationState newState)
 		{

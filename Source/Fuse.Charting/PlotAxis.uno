@@ -9,13 +9,14 @@ namespace Fuse.Charting
 		Iterates over the axis steps/data.
 
 		This example places rotated labels at each tick. Though note this simple layout can be achieved easier just using `PlotAxis` instead.
-
+		```xml
 			<c:PlotAxisData Axis="X">
 				<Text X="{Plot axis.position} * 100%" Y="0" FontSize="18" Color="#000"
 					Value="{Plot axis.label}" Anchor="105%,45%" TransformOrigin="Anchor" ux:Name="t">
 					<Rotation Degrees="-60"/>
 				</Text>
 			</c:PlotAxisData>
+		```
 	*/
 	public class PlotAxisData : Instantiator, IPlotDataItemProvider
 	{
@@ -153,7 +154,7 @@ namespace Fuse.Charting
 		# Example
 
 		The following example places labels on the y-axis of a bar chart.
-
+		```javascript
 			<Panel xmlns:c="Fuse.Charting" >
 				<JavaScript>
 					var Observable = require("FuseJS/Observable");
@@ -183,6 +184,7 @@ namespace Fuse.Charting
 					</c:Plot>
 				</Panel>
 			</Panel>
+		```
 	*/
 	public class PlotAxis : Panel
 	{
