@@ -127,11 +127,15 @@ namespace FuseVideoImpl
 		if (errorCallback != NULL)
 			uRetain(errorCallback);
 
+	#if @(METAL:Defined)
+		U_ERROR("VideoImpl: Not supported on Metal");
+	#else
 		#if COREVIDEO_USE_EAGLCONTEXT_CLASS_IN_API
 		CVReturn err = CVOpenGLESTextureCacheCreate(kCFAllocatorDefault, NULL, [EAGLContext currentContext], NULL, &(vs->TextureCacheHandle));
 		#else
 		CVReturn err = CVOpenGLESTextureCacheCreate(kCFAllocatorDefault, NULL, (__bridge void *)[EAGLContext currentContext], NULL, &(vs->TextureCacheHandle));
 		#endif
+	#endif
 
 		NSURL * url = [NSURL URLWithString:uri];
 

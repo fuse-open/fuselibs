@@ -104,11 +104,12 @@ namespace Fuse.Controls.Native
 		}
 
 		[Foreign(Language.ObjC)]
-		[Require("Xcode.Framework", "GLKit")]
+		[extern(!METAL) Require("Xcode.Framework", "GLKit")]
 		[Require("Source.Include", "UIKit/UIKit.h")]
 		[Require("Source.Include", "CoreGraphics/CoreGraphics.h")]
-		[Require("Source.Include", "GLKit/GLKit.h")]
-		[Require("Source.Include", "OpenGLES/EAGL.h")]
+		[extern(!METAL) Require("Source.Include", "GLKit/GLKit.h")]
+		[extern(!METAL) Require("Source.Include", "OpenGLES/EAGL.h")]
+		[extern(METAL) Require("Source.Include","OpenGLES/ES2/gl.h")]
 		[Require("Source.Include", "QuartzCore/QuartzCore.h")]
 		extern(iOS)
 		static void Upload(
