@@ -17,7 +17,7 @@ namespace Fuse.Drawing
 
 	[Require("Xcode.Framework","CoreGraphics")]
 	[Require("Source.Include", "CoreGraphics/CoreGraphicsLib.h")]
-	[Require("Xcode.Framework","GLKit")]
+	[extern(!METAL) Require("Xcode.Framework","GLKit")]
 	[extern(iOS) Require("Source.Include","OpenGLES/ES2/gl.h")]
 	extern(iOS||OSX)
 	abstract class CoreGraphicsSurface : Surface

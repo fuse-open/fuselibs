@@ -238,11 +238,15 @@ namespace Fuse.Controls.iOS
 			CVOpenGLESTextureRef textureHandle;
 			CVOpenGLESTextureCacheRef textureCacheHandle;
 
+		#if @(METAL:Defined)
+			U_ERROR("NativePhoto: Not supported on Metal");
+		#else
 			#if COREVIDEO_USE_EAGLCONTEXT_CLASS_IN_API
 			CVReturn err = CVOpenGLESTextureCacheCreate(kCFAllocatorDefault, NULL, [EAGLContext currentContext], NULL, &textureCacheHandle);
 			#else
 			CVReturn err = CVOpenGLESTextureCacheCreate(kCFAllocatorDefault, NULL, (__bridge void *)[EAGLContext currentContext], NULL, &textureCacheHandle);
 			#endif
+		#endif
 
 			if (err != kCVReturnSuccess) {
 				onReject([NSString stringWithFormat:@"Failed to create CVOpenGLESTextureCache, error code: %d", err]);

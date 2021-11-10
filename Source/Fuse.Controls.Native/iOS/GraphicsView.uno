@@ -9,10 +9,11 @@ namespace Fuse.Controls.Native.iOS
 		[UXConstructor]
 		public GraphicsView([UXParameter("Host")]Visual host) { }
 	}
-	[Require("Xcode.Framework", "GLKit")]
+	[extern(!METAL) Require("Xcode.Framework", "GLKit")]
 	[Require("Source.Include", "UIKit/UIKit.h")]
-	[Require("Source.Include", "GLKit/GLKit.h")]
-	[Require("Source.Include", "OpenGLES/EAGL.h")]
+	[extern(!METAL) Require("Source.Include", "GLKit/GLKit.h")]
+	[extern(!METAL) Require("Source.Include", "OpenGLES/EAGL.h")]
+	[extern(METAL) Require("Source.Include", "MetalANGLE/MGLKit.h")]
 	[Require("Source.Include", "Context.h")]
 	[Require("Source.Include", "iOS/ContainerView.h")]
 	[Require("Source.Include", "iOS/Helpers.h")]
@@ -73,11 +74,19 @@ namespace Fuse.Controls.Native.iOS
 		static ObjC.Object CreateGlkView(ObjC.Object container)
 		@{
 			UIView* c = (UIView*)container;
+		#if @(METAL:Defined)
+			MGLKView* view = [[MGLKView alloc] init];
+		#else
 			GLKView* view = [[GLKView alloc] init];
+		#endif
 			view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 			[[view layer] setAnchorPoint: { 0.0f, 0.0f }];
 			[view setBackgroundColor: [UIColor colorWithRed:0.0f green: 0.0f blue:0.0f alpha:0.0f]];
+		#if @(METAL:Defined)
+			[view setDrawableDepthFormat:MGLDrawableDepthFormat16];
+		#else
 			[view setDrawableDepthFormat:GLKViewDrawableDepthFormat16];
+		#endif
 			[view setEnableSetNeedsDisplay:true];
 			[view setMultipleTouchEnabled:true];
 			[c addSubview: view];
@@ -94,8 +103,13 @@ namespace Fuse.Controls.Native.iOS
 			if (x < 1 || y < 1)
 				return false;
 
+		#if @(METAL:Defined)
+			MGLKView* glkView = (MGLKView*)handle;
+			MGLContext* ctx = [[uContext sharedContext] glContext];
+		#else
 			GLKView* glkView = (GLKView*)handle;
 			EAGLContext* ctx = [[uContext sharedContext] glContext];
+		#endif
 
 			[glkView setContext:ctx];
 			[glkView bindDrawable];
@@ -114,7 +128,11 @@ namespace Fuse.Controls.Native.iOS
 		[Foreign(Language.ObjC)]
 		static void EndDraw(ObjC.Object handle)
 		@{
+		#if @(METAL:Defined)
+			MGLKView* glkView = (MGLKView*)handle;
+		#else
 			GLKView* glkView = (GLKView*)handle;
+		#endif
 			[glkView display];
 		@}
 
@@ -130,8 +148,15 @@ namespace Fuse.Controls.Native.iOS
 		[Foreign(Language.ObjC)]
 		static void DeleteDrawable(ObjC.Object handle)
 		@{
+		#if @(METAL:Defined)
+			MGLKView* glkView = (MGLKView*)handle;
+
+			// FIXME: No deleteDrawable method in MGLKView?
+		#else
 			GLKView* glkView = (GLKView*)handle;
+
 			[glkView deleteDrawable];
+		#endif
 		@}
 
 	}

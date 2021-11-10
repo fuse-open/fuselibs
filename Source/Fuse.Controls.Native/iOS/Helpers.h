@@ -4,8 +4,13 @@
 
 #include <Uno/Uno.h>
 #include <UIKit/UIKit.h>
+#if @(METAL:Defined)
+#include <MetalANGLE/MGLKit.h>
+#else
 #include <GLKit/GLKit.h>
 #include <OpenGLES/EAGL.h>
+#endif
+
 
 @interface ShapeView : UIControl
 -(UIControl*)childrenView;

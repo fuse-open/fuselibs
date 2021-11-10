@@ -12,8 +12,10 @@
     "android": "uno build android Tests/ManualTests/ManualTestingApp/ManualTestingApp.unoproj --run",
     "android-emu": "uno build android-emu Tests/ManualTests/ManualTestingApp/ManualTestingApp.unoproj --run",
     "dotnet": "uno build dotnet Tests/ManualTests/ManualTestingApp/ManualTestingApp.unoproj --run",
-    "ios": "uno build ios Tests/ManualTests/ManualTestingApp/ManualTestingApp.unoproj --run",
+    "ios": "uno build ios Tests/ManualTests/ManualTestingApp/ManualTestingApp.unoproj --debug",
+    "ios-metal": "uno build ios Tests/ManualTests/ManualTestingApp/ManualTestingApp.unoproj -DMETAL --debug",
     "ios-sim": "uno build ios-sim Tests/ManualTests/ManualTestingApp/ManualTestingApp.unoproj --run",
+    "ios-sim-metal": "uno build ios-sim Tests/ManualTests/ManualTestingApp/ManualTestingApp.unoproj -DMETAL --run",
     "native": "uno build native Tests/ManualTests/ManualTestingApp/ManualTestingApp.unoproj --run",
     "doc-export": "uno build docs tools/doc-export"
   },
