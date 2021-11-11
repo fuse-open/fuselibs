@@ -54,7 +54,7 @@ namespace Fuse.Navigation
 
 		The following example illustrates a basic navigation setup using a @Router and @Navigator.
 		For a complete introduction and proper examples of Fuse's navigation system, see the [Navigation guide](/docs/navigation/navigation).
-
+		```xml
 			<JavaScript>
 				module.exports = {
 					gotoFirst: function() { router.goto("firstPage"); },
@@ -79,7 +79,7 @@ namespace Fuse.Navigation
 					<Button Text="Second page" Padding="20" Clicked="{gotoSecond}" />
 				</Grid>
 			</DockPanel>
-
+		```
 
 		## Page Navigation Order
 

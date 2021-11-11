@@ -33,24 +33,27 @@ namespace Fuse
 
 		## Example
 
-			The following example shows how to use it:
+		The following example shows how to use it:
 
-				<JavaScript>
-					module.exports = {
-						handler: function(data) {
-							if (data.buttonLabel == 'Yes'){
-								console.log("yes button clicked")
-							}
-						}
-					};
-				</JavaScript>
-				<Panel>
-					<Button Text="Display Alert" Alignment="Center">
-						<Clicked>
-							<ShowAlert Message="Hello world!" OkLabelButton="Yes" Handler="{handler}"/>
-						</Clicked>
-					</Button>
-				</Panel>
+		'''javascript
+		<JavaScript>
+			module.exports = {
+				handler: function(data) {
+					if (data.buttonLabel == 'Yes'){
+						console.log("yes button clicked")
+					}
+				}
+			};
+		</JavaScript>
+		<Panel>
+			<Button Text="Display Alert" Alignment="Center">
+				<Clicked>
+					<ShowAlert Message="Hello world!" OkLabelButton="Yes" Handler="{handler}"/>
+				</Clicked>
+			</Button>
+		</Panel>
+		```
+		
 	*/
 	public class ShowAlert: TriggerAction
 	{
@@ -137,26 +140,29 @@ namespace Fuse
 
 		## Example
 
-			The following example shows how to use it:
+		The following example shows how to use it:
 
-				<JavaScript>
-					module.exports = {
-						handler: function(data) {
-							if (data.buttonLabel == 'Yes'){
-								console.log("yes button clicked")
-							} else if (data.buttonLabel == 'Cancel'){
-								console.log("cancel button clicked")
-							}
-						}
-					};
-				</JavaScript>
-				<Panel>
-					<Button Text="Display Alert" Alignment="Center">
-						<Clicked>
-							<ShowConfirm Message="Are you sure want to logout?" OkLabelButton="Yes" CancelLabelButton="Cancel" Handler="{handler}"/>
-						</Clicked>
-					</Button>
-				</Panel>
+		```javascript
+		<JavaScript>
+			module.exports = {
+				handler: function(data) {
+					if (data.buttonLabel == 'Yes'){
+						console.log("yes button clicked")
+					} else if (data.buttonLabel == 'Cancel'){
+						console.log("cancel button clicked")
+					}
+				}
+			};
+		</JavaScript>
+		<Panel>
+			<Button Text="Display Alert" Alignment="Center">
+				<Clicked>
+					<ShowConfirm Message="Are you sure want to logout?" OkLabelButton="Yes" CancelLabelButton="Cancel" Handler="{handler}"/>
+				</Clicked>
+			</Button>
+		</Panel>
+		```
+		
 	*/
 	public class ShowConfirm: TriggerAction
 	{

@@ -4,13 +4,13 @@ namespace Fuse.Animations
 {
 	/**
 		Continuously rotates an element, given a `Frequency` measured in full rotations per second.
-
+		```xml
 			<Panel>
-			<WhilePressed>
-				<Spin Frequency="2" />
-			</WhilePressed>
+				<WhilePressed>
+					<Spin Frequency="2" />
+				</WhilePressed>
 			</Panel>
-
+		```
 		As with @(Cycle), you may also specify a `Duration` to control the length of the animation.
 
 		@mount Animation

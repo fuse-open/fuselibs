@@ -1,6 +1,6 @@
 This example shows how we can use @WhileEnabled and @WhileDisabled inside a
 panel to react to its state:
-
+```xml
 	<StackPanel>
 		<Panel ux:Name="panel" Width="50" Height="50" Background="Red" >
 			<WhileEnabled>
@@ -20,3 +20,4 @@ panel to react to its state:
 			</Clicked>
 		</Button>
 	</StackPanel>
+```

@@ -22,7 +22,7 @@ namespace Fuse.Triggers
 
 	/**
 		Active while an element is positioned within the visible area of the @ScrollView.
-
+		```xml
 			<ScrollView>
 				<StackPanel>
 					<Each Items="{images}">
@@ -38,7 +38,7 @@ namespace Fuse.Triggers
 					</Each>
 				</StackPanel>
 			</ScrollView>
-
+		```
 		This example will show the images only when they are actually in the visible area. Combined with the `UnloadUnused` memory policy this will allow the memory to be freed when they aren't visible to the user.
 
 		If the panel has a fixed height, as in this example, you could also collapse the text to save the calculation and rendering time.

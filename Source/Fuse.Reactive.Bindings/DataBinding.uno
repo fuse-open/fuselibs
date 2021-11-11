@@ -26,15 +26,15 @@ namespace Fuse.Reactive
 
 		Data bindings are most easily expressed in UX Markup using the `{expression}` syntax, where `expression` is
 		the binding path, like so:
-
+		```xml
 			<Text Value="{textKey}" />
-
+		```
 		Data bindings can also be declared explicitly. Explicit databindings allow you
 		to specify a default value that is used before the data binding is resolved:
-
+		```xml
 			<Panel ux:Name="panel1" Width="100" />
 			<DataBinding Target="panel1.Width" Key="panelWidth" />
-
+		```
 		> Note: The expression passed to `Key` in explicit mode is by default in the data scope. To reference global names, escape it using `{= }`
 
 		The above code will use `100` as the default value for `panel1.Width` until the `panelWidth`

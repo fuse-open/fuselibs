@@ -5,7 +5,7 @@ It hooks into some useful triggers for building a customized browsing experience
 The WebView is a native Android and iOS element, and as such needs to be contained in a `NativeViewHost`.
 
 Whilst you will naturally want to do most of your JS coding in Fuse the usual way, there are times you may want to evaluate JS in the WebView's context and the resulting data be fed back into Fuse. This is where the `EvaluateJS` comes in:
-
+```xml
 	<App>
 		<JavaScript>
 				module.exports = {
@@ -33,12 +33,12 @@ Whilst you will naturally want to do most of your JS coding in Fuse the usual wa
 			<BottomBarBackground Dock="Bottom" />
 		</DockPanel>
 	</App>
-
+```
 
 ## HTML
 `<HTML/>` is a semantic utility node used to feed a `WebView` component or a `LoadHtml` action with raw HTML:
 
-
+```xml
 	<NativeViewHost>
 		<WebView>
 			<HTML>
@@ -56,9 +56,9 @@ Whilst you will naturally want to do most of your JS coding in Fuse the usual wa
 			]]>
 		</HTML>
 	</LoadHtml>
-
+```
 
 WebViews can also be fed raw HTML to display by wrapping an `HTML` node or via the `LoadHtml` trigger action:
-
+```xml
 	<LoadHtml TargetNode="myWebView" BaseUrl="http://my.domain" Source="{html}"/>
-
+```

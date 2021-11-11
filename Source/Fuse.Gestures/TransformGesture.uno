@@ -20,7 +20,7 @@ namespace Fuse.Gestures
 		A `TransformGesture` interprets pointer gestures and modifies an `InteractiveTransform` in response.
 
 		Note that the `TransformGesture` on its own has no visual impact, it only modifies the `InteractiveTransform`, which provides the actual visual transformation.  For example here is a simple image viewing setup:
-
+		```xml
 			<Panel HitTestMode="LocalBounds">
 				<Image File="my_image.jpg">
 					<InteractiveTransform ux:Name="ImageTrans"/>
@@ -29,7 +29,7 @@ namespace Fuse.Gestures
 				<PanGesture Target="ImageTrans"/>
 				<RotateGesture Target="ImageTrans"/>
 			</Panel>
-
+		```
 		One `InteractiveTransform` can be the target of multiple gestures. They will coorindate correctly with each other to provide a unified experience. The `InteractiveTransform` will contain values that represent the total transformation.
 
 		@topic Gestures

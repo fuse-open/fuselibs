@@ -309,7 +309,7 @@ namespace Fuse.Reactive
 			## Example
 
 			This example uses `Each`, but it applies equally to `Instance` and other subclasses of `Instantiator`.
-
+			```xml
 				<Panel ux:Class="MyListControl">
 					<StackPanel>
 						<Each Count="10" TemplateSource="this" TemplateKey="ListItem">
@@ -317,17 +317,17 @@ namespace Fuse.Reactive
 						</Each>
 					</StackPanel>
 				</Panel>
-
+			```
 			If we instantiate `<MyListControl>` now, it will display the text "This is an item" 10 times.
 
 			However, we can override the template like this:
-
+			```xml
 				<MyListControl>
 					<Rectangle ux:Template="ListItem" Color="Red">
 						<Text>This is a red item</Text>
 					</Rectangle>
 				</MyListControl>
-
+			```
 			This will display a red rectangle with the text "This is a red item" 10 times, instead of the default
 			template defined in the component itself.
 
@@ -412,17 +412,19 @@ namespace Fuse.Reactive
 			a string field in the data source.
 
 			Instead of:
-
+			```xml
 				<Each Items="{listData}">
 				<Deferred>
 					<Match Value="{type}">
 						<Case String="month">
 							<Panel ...
+			```
 			Do:
-
+			```xml
 				<Each Items="{listData}" MatchKey="type">
 					<Deferred ux:Template="month">
 						<Panel ...
+			```
 		*/
 		public string MatchKey
 		{
@@ -444,12 +446,12 @@ namespace Fuse.Reactive
 			Unset by default, meaning all templates will be instantiated (assuming MatchKey, and TemplateKey are also unset).
 
 			If you intend on using a binding, or expression, for this value it is recommend to set `Defaults` as well. This avoids an momentary creation of the defaults while the binding has not yet resolved.
-
+			```xml
 				<Instance Match="{type}" Defaults="None">
 					<Panel ux:Template="side"/>
 					<Panel ux:Template="fore"/>
 				</Instance>
-
+			```
 			`{type}` may resolve to an async JavaScript variable, meaning it won't produce an immediate value. This will result in `Match` not yet having a value, thus all templates would be instantiated by default. `Defaults="None"` prevents this behaviour.
 		*/
 		public string Match
@@ -474,12 +476,13 @@ namespace Fuse.Reactive
 			The default is `Standard`: if none of `Match`, `MatchKey` or `TemplateKey` are specified the default will be created. If there is no explicitly marked default then all templates are instantiated.
 
 			A default template is marked wtih `ux:DefaultTemplate="true"`
-
+			```xml
 				<Each Items="{items}" MatchKey="{type}">
 					<FrontCard ux:Template="front"/>
 					<BackCard ux:Template="back"/>
 					<DefaultCard ux:DefaultTemplate="true"/>
 				</Each>
+			```
 		*/
 		public InstanceDefaults Defaults
 		{

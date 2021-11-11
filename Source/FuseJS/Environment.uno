@@ -15,7 +15,7 @@ namespace FuseJS
 		## Examples
 
 		You can check which platform your app is running on using the following boolean properties:
-
+		```js
 			var Environment = require('FuseJS/Environment');
 
 			if(Environment.ios)        console.log("Running on iOS");
@@ -23,12 +23,13 @@ namespace FuseJS
 			if(Environment.preview)    console.log("Running in preview mode");
 			if(Environment.mobile)     console.log("Running on iOS or Android");
 			if(Environment.desktop)    console.log("Running on desktop");
-
+		```
 		You can also get the version of the current *mobile* OS as a
 		human-readable string using the `mobileOSVersion` property.
-
+		```js
 			console.log(Environment.mobileOSVersion);
-
+		```
+		
 		> *Note*
 		>
 		> On Android, `mobileOSVersion` returns [Build.VERSION.RELEASE](https://developer.android.com/reference/android/os/Build.VERSION.html#RELEASE)

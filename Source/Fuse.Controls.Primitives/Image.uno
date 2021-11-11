@@ -19,15 +19,15 @@ namespace Fuse.Controls
 		Image provides several features for working with images in fuse, we will go through them in some short examples.
 
 		Displaying an image from a file or an url:
-
+		```xml
 			<StackPanel>
 				<Image File="some_file.png" />
 				<Image Url="some_url" />
 			</StackPanel>
-
+		```
 
 		## Displaying a multi-density image from files:
-
+		```xml
 			<StackPanel>
 				<Image Files="logo.png, logo@2x.png, logo@4x.png" />
 				<Image>
@@ -38,10 +38,10 @@ namespace Fuse.Controls
 					</MultiDensityImageSource>
 				</Image>
 			</StackPanel/>
-
+		```
 
 		## Displaying a multi-density image from urls:
-
+		```xml
 			<StackPanel>
 				<Image>
 					<MultiDensityImageSource>
@@ -51,32 +51,32 @@ namespace Fuse.Controls
 					</MultiDensityImageSource>
 				</Image>
 			</StackPanel>
-
+		```
 		## Displaying an image from a file specified from JavaScript
 		Uno cannot automatically bundle images when their path is defined in JavaScript. Because of this, you have to manually bundle those by manually importing them in your unproj file. You can either bundle one file like this:
-
+		```json
 			"Includes": [
 				"*",
 				"image.jpg:Bundle"
 			]
-
+		```
 		Or bundle an entire folder, or all files of a specific type, using wildcards:
-
+		```json
 			"Includes": [
 				"*.jpg:Bundle"
 			]
-
+		```
 		You can read more on bundling files with your project [here.](/docs/assets/bundle).
 
 		When you have bundled your image files, you can refer to them from javascript like this:
-
+		```xml
 			<JavaScript>
 				module.exports = {
 					image: "image.jpg"
 				};
 			</JavaScript>
 			<Image File="{image}" />
-
+		```
 	*/
 	public partial class Image : LayoutControl, ISizeConstraint
 	{
@@ -342,8 +342,9 @@ namespace Fuse.Controls
 			Specifies a policy to control the loading and unloading of the image. The two common policies are `PreloadRetain`, the default which loads images at startup and keeps them loaded, and `UnloadUnused` which keeps only used images loaded.
 
 			For dynamic images, such as those coming from HTTP, you should use the `UnloadUnused` policy, otherwise you'll continue to consume more memory as more images are loaded. For example:
-
+			```xml
 				<Image Url="{imageLocation}" MemoryPolicy="UnloadUnused"/>
+			```
 		*/
 		public MemoryPolicy MemoryPolicy
 		{

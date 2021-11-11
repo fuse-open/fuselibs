@@ -11,7 +11,7 @@ namespace Fuse.Selection
 		## Changing the selected state
 
 		There is no default behavior that changes a visuals selected state. In order to select a @(Selectable:selectable), you need to use @(ToggleSelection). A normal use of this would be inside a @(Clicked) trigger, like this:
-
+		```xml
 			<Panel>
 				<Selection />
 				<Panel>
@@ -21,7 +21,7 @@ namespace Fuse.Selection
 					</Clicked>
 				</Panel>
 			</Panel>
-
+		```
 		## Reacting to a change in selected state
 
 		You can react to changes in the state of a @(Selectable) element using @(Selected), which pulses when the element is selected, or @(WhileSelected), which is true as long as the element is selected.

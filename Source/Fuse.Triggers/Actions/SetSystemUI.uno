@@ -7,12 +7,13 @@ namespace Fuse.Triggers.Actions
 		Set Screen Orientation
 
 		## Example
-
+		```xml
 			<Page>
 				<Activated>
 					<SetWindowOrientation To="LandscapeLeft" />
 				</Activated>
 			</Page>
+		```
 	*/
 	public class SetWindowOrientation : TriggerAction
 	{
@@ -32,12 +33,13 @@ namespace Fuse.Triggers.Actions
 		Set Status Bar UI
 
 		## Example
-
+		```xml
 			<Page>
 				<Activated>
 					<SetStatusBarUI Style="Dark" Color="#FFF" IsVisible="true" />
 				</Activated>
 			</Page>
+		```
 	*/
 	public class SetStatusBarUI : TriggerAction
 	{

@@ -11,7 +11,7 @@ To set the data context, you typically add a *behavior* to a node that provides 
 ## JavaScript module as data source
 
 The simplest way to create a data source is through JavaScript, here is a databound "Hello world" minimal example:
-
+```xml
 	<App>
 		<JavaScript>
 			module.exports = {
@@ -20,9 +20,9 @@ The simplest way to create a data source is through JavaScript, here is a databo
 		</JavaScript>
 		<Text Value="{greeting}" />
 	</App>
-
+```
 Similarly, you can bind to collections:
-
+```xml
 	<App>
 		<JavaScript>
 			var data = ["1", "2", "3"];
@@ -37,9 +37,9 @@ Similarly, you can bind to collections:
 			</Each>
 		</StackPanel>
 	</App>
-
+```
 This will predictably list out the text strings 1, 2 and 3. When binding the `Text Value` `{= data()}` means _the prime data context_, in this case the enumerated item from `Each`. Typically, you will bind to more complex data sources, so each element will have something interesting to bind to:
-
+```xml
 	<App>
 		<JavaScript>
 			var Observable = require("FuseJS/Observable");
@@ -62,9 +62,9 @@ This will predictably list out the text strings 1, 2 and 3. When binding the `Te
 			</Each>
 		</StackPanel>
 	</App>
-
+```
 In this case, we have also made the data source Observable. This means that it supports propagating changes to the data source at runtime. In this case, the collection itself is `Observable`, but the items are not. You can bind to the children, but if they were to change, these changes would not be reflected in the UI. If you wanted to make the children also propagate their changes to the UI, you would make them `Observable` also:
-
+```xml
 	<JavaScript>
 		var Observable = require("FuseJS/Observable");
 		var data = Observable(
@@ -79,9 +79,9 @@ In this case, we have also made the data source Observable. This means that it s
 			<Text Value="{name}" />
 		</Each>
 	</StackPanel>
-
+```
 You can also bind to a path:
-
+```xml
 	<JavaScript>
 		var complex = {
 			user: {
@@ -95,7 +95,7 @@ You can also bind to a path:
 		};
 	</JavaScript>
 	<Text Value="{complex.user.userinfo.name}" />
-
+```
 This is very useful when binding to arbitrary data sources such as those returned from a REST service as JSON, as it often allows you to bind directly to complex data without processing the data in code first. [See this in-depth example](https://fuseopen.com/examples/news-feed/).
 
 ## Binding directions
@@ -104,31 +104,31 @@ This is very useful when binding to arbitrary data sources such as those returne
 
 By default, data bindings are *two-way* when possible. This means if the property that emits changed events changes by some other means
 than the data binding, such as user input or animation, the binding object will write the new value back to the source if it is an `Observable`.
-
+```xml
 	<TextInput Value="{text}" />
-
+```
 In the above example, if the user manipulates the text input, and `text` is a bound observable, the observable will be updated.
 
 ### Read-only bindings (one-way)
 
 To create a strictly *one way* binding that *reads* from the data source and upates the property, use the `Read` binding alias:
-
+```xml
 	<TextInput Value="{Read text}" />
-
+```
 In the above example, a bound observable `text` will not be updated if the user manipulates the text input.
 
 ### Write-only bindings (one-way)
 
 To create a strictly *one way* binding that *writes* to the data source when the property is changed by external actors, use the `Write` binding alias:
-
+```xml
 	<TextInput Value="{Write text}" />
-
+```
 In the above example, the `Value` will not respect the value of `text` coming from JavaScript, but it will update `text` observable when the user manipulates the text box.
 
 ## Event binding to JavaScript functions
 
 You can hook up event handlers to call JavaScript functions with similar syntax:
-
+```xml
 	<JavaScript>
 		module.exports = {
 			clickHandler: function (args) {
@@ -137,22 +137,22 @@ You can hook up event handlers to call JavaScript functions with similar syntax:
 		};
 	</JavaScript>
 	<Button Clicked="{clickHandler}" Text="Click me!" />
-
+```
 ## Clear-bindings
 
 Sometimes it is desireable for the data binding to clear the target property value when the binding is unrooted, for example when the containing page is removed or navigated away from, and later added back or navigated back to with a different data context. In some scenarios, the page will then show some undesired, outdated data while the new data is being loaded.
 
 To avoid that, so called clear-bindings can be used:
-
+```xml
 	<Text Value="{Clear foo}" />
-
+```
 This will cause the `Value` of the `Text` to be reset to `null` (empty string) when the containing page is unrooted, so that the old text does not linger if the page is reused later.
 
 There are also variants of clear binidngs for read-only and write-only bindings:
-
+```xml
 	<Text Value="{ReadClear foo}" />
 	<Text Value="{WriteClear foo}" />
-
+```
 > Note: Clear-bindings always push `default(T)` (e.g. `null`, `false`, `0` or `0.0`) when unrooted, which is not neccessarily the default value of the property.
 
 ## Each
@@ -163,15 +163,15 @@ The `Each` behavior maintains one copy of its subtree per item in its Items coll
 
 When using `Each`, we typically data-bind the `Items` property to an array data source to produce one visual
 node per object in the data source.
-
+```xml
 	<Each Items="{items}">
 		<Rectangle Width="{width}" Height="{height}" Fill="#808" />
 	</Each>
-
+```
 Observable add/remove operations on the `Items` collection can be animated using AddingAnimation, RemovingAnimation and LayoutAnimation
 
 It is also possible to nest `Each` behaviors:
-
+```xml
 	<JavaScript>
 		var Observable = require("FuseJS/Observable");
 		module.exports = {
@@ -202,28 +202,28 @@ It is also possible to nest `Each` behaviors:
 			</Each>
 		</StackPanel>
 	</ScrollView>
-
+```
 You can get the number of items being iterated over using the `Count` property.
 
 You can also just use `Each` as a simple repeater:
-
+```xml
 	<Grid ColumnCount="3">
 		<Each Count="9">
 			<Rectangle Margin="10" Fill="#610" />
 		</Each>
 	</Grid>
-
+```
 ## WhileCount and WhileEmpty
 
 The `WhileEmpty` and `WhileCount` Triggertriggers) can be used to act on the number of items in a collection:
-
+```xml
 	<Each Items="{friends}">
 		<!-- ... List friend ... -->
 	</Each>
 	<WhileEmpty Items="{friends}">
 		<Text>No friends. :(</Text>
 	</WhileEmpty>
-
+```
 `WhileEmpty` is a special case of `WhileCount` where the `EqualTo`-property is set to `0`. `WhileCount` accepts the following properties:
 
 - `EqualTo` - Active when the count of the collection is equal to the provided value
@@ -231,15 +231,15 @@ The `WhileEmpty` and `WhileCount` Triggertriggers) can be used to act on the num
 - `LessThan` - Active when the count of the collection is less than the provided value
 
 For example:
-
+```xml
 	<WhileCount Items="{things}" EqualTo="3" GreaterThan="3" >
 		<Text>You have 3 or more things.</Text>
 	</WhileCount>
-
+```
 ## Select
 
 If you have a complex data context and want to narrow the data context down, you can use `Select`:
-
+```xml
 	<JavaScript>
 		module.exports = {
 			complex: {
@@ -253,12 +253,12 @@ If you have a complex data context and want to narrow the data context down, you
 		<Text Value="{name}" />
 		<Text Value="{age}" />
 	</Select>
-
+```
 
 ## Match and Case
 
 You can drive which subtree should be active using `Match` and `Case`:
-
+```xml
 	<JavaScript>
 		module.exports = {
 			active: "blue"
@@ -272,7 +272,7 @@ You can drive which subtree should be active using `Match` and `Case`:
 			<Rectangle Fill="#00f" Height="50" Width="50" />
 		</Case>
 	</Match>
-
+```
 Valid match properties for `Case` are:
 
 - `String` - match a string
@@ -285,7 +285,7 @@ Valid match properties for `Case` are:
 ## DataToResource
 
 You can bind to a defined resource using DataToResource:
-
+```xml
 	<FileImageSource ux:Key="picture" File="Pictures/Picture1.jpg" />
 	<JavaScript>
 		module.exports = {
@@ -293,4 +293,4 @@ You can bind to a defined resource using DataToResource:
 		}
 	</JavaScript>
 	<Image Source="{DataToResource picture}" />
-
+```

@@ -12,14 +12,15 @@ namespace Fuse.Animations
 		# Examples
 
 		The following @(Move) animator will first animate X to 10 over 0.5 second, then from 10 to 15 over 0.5 second. Finally, it will go from an X of 15 to 5 over 1 second.
-		
+		```xml
 			<Move RelativeTo="ParentSize">
 				<Keyframe X="10" Time="0.5"/>
 				<Keyframe X="15" Time="1"/>
 				<Keyframe X="5" Time="2"/>
 			</Move>
-
+		```
 		Here is an example of using @Keyframes with a @(Change) animator:
+		```xml
 			<Page>
 				<SolidColor ux:Name="background" Color="#f00"/>
 				<ActivatingAnimation>
@@ -31,7 +32,7 @@ namespace Fuse.Animations
 					</Change>
 				</ActivatingAnimation>
 			</Page>
-
+		```
 		This time we use `TimeDelta` instead of time. With `TimeDelta` we can specify time as a relative term instead of absolute. This means that the order of the @Keyframes matter, but it lets us reason about the keyframes in terms of their duration instead of their absolute time on the timeline.
 		
 		Note: Despite being a `PropertyObject` the properties in this class are not reactive.

@@ -5,18 +5,19 @@
 It is recommended to primarily work with *static names* with UX documents. Static names are specified using the `ux:Name` attribute. This also implicitly sets the `Name` property accordingly on objects that support the property, such as @Nodes.
 
 Statically named objects can be referenced from other UX nodes and resolved at compile time, e.g.
-
+```xml
 	<Panel ux:Name="panel1" />
 	<AlternateRoot ParentNode="panel1">
 		<Image ... />
 	</AlternateRoot>
-
+```
 Or,
-
+```xml
 	<Rectangle ux:Name="rect1" ... />
 	<WhilePressed>
 		<Change rect1.CornerRadius="20" />
 	</WhilePressed
+```
 
 
 Note that `ux:Name` must be set to a static name at compile time, it can not be used with a binding or changed at runtime.
@@ -38,9 +39,9 @@ Child scopes may access names from their parent scopes. Parent scopes may not ac
 ## Dynamic naming (`Name`)
 
 Sometimes Nodes must be assigned a name dynamically. This can be done by using the @Node.Name property.
-
+```xml
 	<Panel Name="{name}">
-
+```
 Note that dynamically named objects can not be referenced statically by @Change animators or similar.
 
 Uniqueness and scoping is not enforced for dynamic names, which can lead to ambiguity and name clashes at runtime.

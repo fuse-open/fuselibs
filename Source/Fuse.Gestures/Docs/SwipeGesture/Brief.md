@@ -2,23 +2,23 @@
 
 A SwipeGesture must be attached to an @Element, and will begin detecting swipes when the pointer is pressed
 down on that element. Attaching a @SwipeGesture to an @Element is simply adding it as a child:
-
+```xml
 	<Panel>
 		<SwipeGesture ux:Name="swipe" Direction="Right" Length="200" />
 	</Panel>
-
+```
 The snippet above will recognize swipe gestures moving from left to right,
 over a distance of 200 points.
 
 However, this isn't doing anything useful yet. Let's add a trigger!
-
+```xml
 	<Panel Width="100" Height="100" Background="Black">
 		<SwipeGesture ux:Name="swipe" Direction="Right" Length="200" />
 		<SwipingAnimation Source="swipe">
 			<Move X="200" />
 		</SwipingAnimation>
 	</Panel>
-
+```
 We've now added a @SwipingAnimation, which will map the progress of our swipe gesture onto a series of
 animations. In this case, we are moving the panel over the same distance as the `Length` of our
 SwipeGesture, resulting in the panel moving along with the pointer.
@@ -29,7 +29,7 @@ SwipeGesture, resulting in the panel moving along with the pointer.
 
 We also want to respond when the swipe has completed, which is achieved using the
 [Swiped](api:fuse/gestures/swiped) trigger. Let's extend our previous example a bit.
-
+```xml
 	<Panel Width="100" Height="100" Background="Black">
 		<SwipeGesture ux:Name="swipe" Direction="Right" Length="200" />
 		<SwipingAnimation Source="swipe">
@@ -40,7 +40,7 @@ We also want to respond when the swipe has completed, which is achieved using th
 			<DebugAction Message="Swiped!" />
 		</Swiped>
 	</Panel>
-
+```
 For illustrative purposes, we are using @DebugAction to log a message
 to the console when the swipe has completed.
 
@@ -79,10 +79,10 @@ We can alter the state of an Active-type SwipeGesture using
 
 When using the `Active` type, we can optionally configure the [Swiped](api:fuse/gestures/swiped) trigger
 to respond to only activation or only deactivation.
-
+```xml
 	<Swiped How="ToActive">
 	<Swiped How="ToInactive">
-
+```
 In addition, the @WhileSwipeActive trigger will be active while its source @SwipeGesture is an Active-type
 SwipeGesture, and has been swiped to its active state.
 
@@ -103,7 +103,7 @@ we can supply an @Element to be measured via the `LengthNode` property.
 This is a powerful feature, as it allows us to create swipe-based controls that work regardless of their size.
 
 Below is an example of a size-independent switch control implemented using SwipeGesture.
-
+```xml
 	<Panel Height="50">
 		<Circle Width="50" Height="50" Color="#000" Alignment="Left">
 			<SwipeGesture ux:Name="swipe" LengthNode="track" Direction="Right" Type="Active" />
@@ -114,3 +114,4 @@ Below is an example of a size-independent switch control implemented using Swipe
 
 		<Rectangle ux:Name="track" Height="15" Color="#0003" Margin="25,0" CornerRadius="15" />
 	</Panel>
+```

@@ -23,17 +23,17 @@ namespace Fuse.Controls
 			## Examples
 
 			The following example will result in two overlapping @Rectangles.
-
+			```xml
 				<StackPanel>
 					<Rectangle ux:Name="master" Height="150" Color="#f00a" />
 					<Rectangle LayoutMaster="master" Color="#00fa" />
 				</StackPanel>
-
+			```
 
 			Changing the `LayoutMaster` of an element will trigger any @LayoutAnimations on that element.
 			The above example illustrates how `LayoutMaster` can be used to implement a moving selection rectangle.
 			It consists of two panels that when clicked, animate the `selection` @Rectangle to inherit their size and position.
-
+			```xml
 				<Panel>
 					<Rectangle ux:Name="selection" LayoutMaster="target1">
 						<Stroke Width="2" Brush="#3498db" Offset="2" />
@@ -58,7 +58,7 @@ namespace Fuse.Controls
 						</Panel>
 					</StackPanel>
 				</Panel>
-
+			```
 		*/
 		public static void SetLayoutMaster(Element elm, Element master)
 		{

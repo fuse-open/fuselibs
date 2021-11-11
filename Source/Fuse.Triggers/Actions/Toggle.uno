@@ -13,7 +13,7 @@ namespace Fuse.Triggers.Actions
 	    an Observable boolean in JavaScript and manipulate its value in a callback.
 
 		## Example
-
+		```xml
 			<StackPanel>
 				<Switch ux:Name="switch1" />
 
@@ -23,7 +23,7 @@ namespace Fuse.Triggers.Actions
 					</Clicked>
 				</Button>
 			</StackPanel>
-
+		```
 
 	*/
 	public class Toggle : TriggerAction

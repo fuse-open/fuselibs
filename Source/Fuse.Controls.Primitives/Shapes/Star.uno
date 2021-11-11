@@ -11,14 +11,14 @@ namespace Fuse.Controls
 		you must set this for it to be visible.
 
 		## Example:
-
+		```xml
 			<Star Width="200" Height="200" Ratio="0.4" >
 				<LinearGradient>
 					<GradientStop Offset="0" Color="#0ee" />
 					<GradientStop Offset="1" Color="#e0e" />
 				</LinearGradient>
 			</Star>
-
+		```
 	*/
 	public partial class Star : Shape
 	{

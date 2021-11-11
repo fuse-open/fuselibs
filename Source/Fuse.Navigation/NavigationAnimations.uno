@@ -171,7 +171,7 @@ namespace Fuse.Navigation
 		## Example
 
 		This example shows the use of both `ExitingAnimation` and `EnteringAnimation` in a custom transition for three panels in a @(PageControl):
-
+		```xml
 			<Panel ux:Class="CustomPanel" TransformOrigin="TopLeft">
 				<EnteringAnimation>
 					<Rotate Degrees="90"/>
@@ -185,7 +185,7 @@ namespace Fuse.Navigation
 				<CustomPanel Background="#0F0" />
 				<CustomPanel Background="#00F" />
 			</PageControl>
-
+		```
 		See [Navigation Order](articles:navigation/navigationorder.md)
 	*/
 	public class ExitingAnimation : EnterExitAnimation
@@ -206,7 +206,7 @@ namespace Fuse.Navigation
 		## Example
 
 		This example shows the use of both `EnteringAnimation` and `ExitingAnimation` in a custom transition for three panels in a @(PageControl):
-
+		```xml
 			<Panel ux:Class="CustomPanel" TransformOrigin="TopLeft">
 				<EnteringAnimation>
 					<Rotate Degrees="90"/>
@@ -220,7 +220,7 @@ namespace Fuse.Navigation
 				<CustomPanel Background="#0F0" />
 				<CustomPanel Background="#00F" />
 			</PageControl>
-
+		```
 		See [Navigation Order](articles:navigation/navigationorder.md)
 	*/
 	public class EnteringAnimation : EnterExitAnimation
@@ -238,7 +238,7 @@ namespace Fuse.Navigation
 		## Example
 
 		The following example shows an `ActivatingAnimation` animating the `Height` of a `Rectangle`, causing it to reduce in size vertically as a page is being navigated to:
-
+		```xml
 			<PageControl>
 				<Panel Background="Red" />
 				<Panel Background="Blue">
@@ -248,7 +248,7 @@ namespace Fuse.Navigation
 					</ActivatingAnimation>
 				</Panel>
 			</PageControl>
-
+		```
 		See [Navigation Order](articles:navigation/navigationorder.md)
 	*/
 	public class ActivatingAnimation : NavigationAnimation
@@ -285,7 +285,7 @@ namespace Fuse.Navigation
 		## Example
 
 		The following example shows a `DeactivatingAnimation` animating the `Height` of a `Rectangle`, causing it to fill the page being navigated to:
-
+		```xml
 			<PageControl>
 				<Panel Background="Red" />
 				<Panel Background="Blue">
@@ -295,7 +295,7 @@ namespace Fuse.Navigation
 					</DeactivatingAnimation>
 				</Panel>
 			</PageControl>
-
+		```
 		See [Navigation Order](articles:navigation/navigationorder.md)
 	*/
 	public class DeactivatingAnimation : NavigationAnimation

@@ -12,7 +12,7 @@ namespace Fuse.Triggers
 		## Example
 
 		The following example shows a @Panel whose background color changes when the user is interacting with the @ScrollView surrounding it:
-
+		```xml
 			<ScrollView Alignment="VerticalCenter" ClipToBounds="False">
 				<Panel ux:Name="coloredPanel" Background="#f00" HitTestMode="LocalBoundsAndChildren" MinHeight="200">
 					<Text Alignment="Center" TextColor="#fff">Scroll me!</Text>
@@ -22,6 +22,7 @@ namespace Fuse.Triggers
 					<Change coloredPanel.Background="#00f" />
 				</WhileInteracting>
 			</ScrollView>
+		```
 	*/
 	public class WhileInteracting : WhileTrigger
 	{
@@ -69,7 +70,7 @@ namespace Fuse.Triggers
 
 		The following example shows a blue panel with a slider on it. When
 		finishing a slide of the slider, the panel blinks red.
-
+		```xml
 			<Panel ux:Name="panel" Color="Blue">
 				<Slider >
 					<InteractionCompleted>
@@ -77,6 +78,7 @@ namespace Fuse.Triggers
 					</InteractionCompleted>
 				</Slider>
 			</Panel>
+		```
 	*/
 	public class InteractionCompleted : Trigger
 	{

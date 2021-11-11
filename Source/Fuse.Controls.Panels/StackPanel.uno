@@ -9,23 +9,24 @@ namespace Fuse.Controls
 	/** Stacks children vertically (default) or horizontally.
 
 		The default layout is a vertical stack, but one can use the Orientation property to specify that the stack should be laid out horizontally.
-
+		```xml
 			<StackPanel Orientation="Horizontal">
 				... elements ...
 			</StackPanel>
-
+		```
 		You can use the @ItemSpacing property to make some space between elements. It differs from setting Margin on each child, in that it only
 		adjusts the space directly between the elements, not the space around each of them.
 
 		## Example
 
 		The following example shows three Panels in a StackPanel, spaced using the ItemSpacing property:
-
+		```xml
 			<StackPanel ItemSpacing="20">
 				<Panel Height="100" Background="Red"/>
 				<Panel Height="100" Background="Green"/>
 				<Panel Height="100" Background="Blue"/>
 			</StackPanel>
+		```
 	*/
 	public class StackPanel : Panel
 	{
@@ -51,12 +52,13 @@ namespace Fuse.Controls
 			## Example
 
 			The following example shows three Panels in a StackPanel, spaced using the ItemSpacing property:
-
+			```xml
 				<StackPanel ItemSpacing="20">
 					<Panel Height="100" Background="Red"/>
 					<Panel Height="100" Background="Green"/>
 					<Panel Height="100" Background="Blue"/>
 				</StackPanel>
+			```
 		*/
 		public float ItemSpacing
 		{

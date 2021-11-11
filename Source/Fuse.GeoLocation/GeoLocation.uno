@@ -28,7 +28,7 @@ namespace Fuse.GeoLocation
 		## Example
 
 		The following example shows how the different modes of operation can be used:
-
+		```xml
 			<JavaScript>
 				var Observable = require("FuseJS/Observable");
 				var GeoLocation = require("FuseJS/GeoLocation");
@@ -85,20 +85,20 @@ namespace Fuse.GeoLocation
 				<Button Text="Start continuous listener" Clicked="{startContinuousListener}" />
 				<Button Text="Stop continuous listener" Clicked="{stopContinuousListener}" />
 			</StackPanel>
-
+		```xml
 		In the above example we're using the @EventEmitter `observe` method to create an @Observable from the
 		`"changed"` event. We can also listen to changes by using the `on` method, as follows:
 
 			GeoLocation.on("changed", function(location) { ... })
 
 		Locations returned by this module are JavaScript objects of the following form:
-
+		```json
 			{
 				latitude: a number measured in decimal degrees,
 				longitude: a number measured in decimal degrees,
 				accuracy: a number measured in meters
 			}
-
+		```
 		To handle errors from GeoLocation we can listen to the `"error"` event, as follows:
 
 			GeoLocation.on("error", function(err) { ... })
@@ -211,7 +211,7 @@ namespace Fuse.GeoLocation
 			Use [startListening](api:fuse/geolocation/geolocation/startlistening_bbef95e2.json) to get these events.
 
 			The parameter object is of the following form:
-
+			```json
 				{
 					altitude: altitude measured in meters,
 					latitude: a number measured in decimal degrees,
@@ -219,7 +219,7 @@ namespace Fuse.GeoLocation
 					accuracy: a number measured in meters,
 					speed: speed measured in meters per second
 				}
-
+			```
 			See [the GeoLocation module](api:fuse/geolocation/geolocation) for an example.
 
 			@param location will contain the new location, see @location
@@ -266,16 +266,16 @@ namespace Fuse.GeoLocation
 
 			Setting this property to `1`, which is also the
 			default, for example as follows:
-
+			```json
 				var GeoLocation = require("FuseJS/GeoLocation");
 				GeoLocation.authorizationRequest = 1;
-
+			```
 			Means that the app should request permission from the
 			user to use location services while the app is in the
 			foreground. Setting it to `2`, as follows:
-
+			```json
 				GeoLocation.authorizationRequest = 2;
-
+			```
 			Means that the app should request permission from the
 			user to use location services whenever the app is
 			running.
@@ -297,7 +297,7 @@ namespace Fuse.GeoLocation
 			The last known location.
 
 			The returned object is of the following form:
-
+			```json
 				{
 					altitude: altitude measured in meters,
 					latitude: a number measured in decimal degrees,
@@ -305,7 +305,7 @@ namespace Fuse.GeoLocation
 					accuracy: a number measured in meters,
 					speed: speed measured in meters per second
 				}
-
+			```
 			See [the GeoLocation module](api:fuse/geolocation/geolocation) for an example.
 		*/
 		Fuse.GeoLocation.Location GetLocation()
@@ -325,7 +325,7 @@ namespace Fuse.GeoLocation
 			that the promise should be rejected after.
 
 			If successful, the promise is resolved with an object of the following form:
-
+			```json
 				{
 					altitude: altitude measured in meters,
 					latitude: a number measured in decimal degrees,
@@ -333,7 +333,7 @@ namespace Fuse.GeoLocation
 					accuracy: a number measured in meters,
 					speed: speed measured in meters per second
 				}
-
+			```
 			See [the GeoLocation module](api:fuse/geolocation/geolocation) for an example.
 		*/
 		Future<Fuse.GeoLocation.Location> GetLocationAsync(object[] args)

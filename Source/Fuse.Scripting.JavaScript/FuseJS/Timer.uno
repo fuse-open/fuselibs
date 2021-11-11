@@ -12,7 +12,7 @@ namespace Fuse.Reactive.FuseJS
 		@scriptmodule FuseJS/Timer
 
 		The Timer API lets you schedule functions to be executed after a given time.
-
+		```js
 			var Timer = require("FuseJS/Timer");
 
 			Timer.create(function() {
@@ -22,6 +22,7 @@ namespace Fuse.Reactive.FuseJS
 			Timer.create(function() {
 				console.log("This will run every 10 seconds until forever");
 			}, 10000, true);
+		```
 	*/
 	public class TimerModule : NativeModule
 	{
@@ -70,7 +71,7 @@ namespace Fuse.Reactive.FuseJS
 			@return (number) The ID of the timer, which can be used later to delete it.
 
 			Schedules `func` to be called after `time` milliseconds.
-
+			```js
 				var Timer = require("FuseJS/Timer");
 				Timer.create(function() {
 					console.log("This will run once, after 3 seconds");
@@ -79,6 +80,7 @@ namespace Fuse.Reactive.FuseJS
 				Timer.create(function() {
 					console.log("This will run every 10 seconds until forever");
 				}, 10000, true);
+			```
 		*/
 		object Create(Fuse.Scripting.Context context, object[] args)
 		{
@@ -106,7 +108,7 @@ namespace Fuse.Reactive.FuseJS
 
 			Deletes/unschedules a running timer.
 
-			```
+			```js
 			var Timer = require("FuseJS/Timer");
 
 			var callCount = 0;

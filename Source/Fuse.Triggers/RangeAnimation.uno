@@ -12,7 +12,7 @@ namespace Fuse.Triggers
 
 		## Example
 		In this example, an @(RangeAnimation) is used to animate a panel 360 degrees as a @(RangeControl2D) goes from 0 to 100.
-
+		```xml
 			<RangeControl2D Width="180" Height="180" Margin="2" ux:Name="rangeControl">
 				<CircularRangeBehavior/>
 				<Panel ux:Name="thumb" Margin="4">
@@ -23,7 +23,7 @@ namespace Fuse.Triggers
 				</RangeAnimation>
 				<Circle Color="#aaa" />
 			</RangeControl2D>
-
+		```
 		@mount Animation
 	*/
 	public class RangeAnimation : Trigger

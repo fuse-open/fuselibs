@@ -1,18 +1,15 @@
-
-
-
 ## Getting started
 
 JavaScript can be used in UX markup through the `JavaScript` class, either by pointing to external JavaScript files, like this:
-
+```xml
 	<JavaScript File="SomeCode.js" />
-
+```
 Or by inlining the JavaScript code in the tag, like this:
-
+```xml
 	<JavaScript>
 		console.log("Hello, FuseJS!");
 	</JavaScript>
-
+```
 ## About FuseJS
 
 FuseJS is a JavaScript framework for writing cross-platform mobile app business logic. It consists of a bunch of classes that covers
@@ -23,15 +20,15 @@ the basic functionality required for creating native mobile apps, as well as the
 FuseJS implements the <a href="http://www.commonjs.org/">CommonJS</a> module system. Each code file or inline snippet is a _module_.
 
 In order to expose data and functions to other modules, one can add them to the `module.exports` object:
-
+```xml
 	<JavaScript>
 		module.exports = {
 			exportedSymbol: "Hello, rest of the world!"
 		};
 	</JavaScript>
-
+```
 Failing to export from modules will make it impossible to reach defined data inside the module:
-
+```xml
 	<JavaScript>
 		var data = [1, 2, 3];
 		var invisible = "I'm invisible";
@@ -40,7 +37,7 @@ Failing to export from modules will make it impossible to reach defined data ins
 			data: data
 		};
 	</JavaScript>
-
+```
 This is good for hiding implementation details from other calling JavaScript modules and UX code.
 
 
@@ -49,30 +46,29 @@ This is good for hiding implementation details from other calling JavaScript mod
 Each code file (or inline snippet) defines a module.
 
 You can import JavaScript modules by their file name. To do this, make sure your JavaScript files are included in your .unoproj file as "Bundle" files:
-
-
+```json
 	"Includes": [
 		"yourJavaScriptFile.js:Bundle"
 		..other files ..
 	]
-
+```
 or if you want to make all JavaScript files be includes as bundled files:
-
+```json
 	"Includes": [
 		"**.js:Bundle"
 	]
-
+```
 Then, you can require using the JavaScript file name:
-
+```js
 	var myModule = require('/someJavaScriptFile.js');
-
+```
 
 Note that prefixing the file name with a "/" means that we are looking for the file relative to the project root directory. To name a file relative to the current file, prefix with "./". By omitting the prefixes, the file name is relative to the project root, or the global module it's in.
-
+```js
 	var relativeToProjectRoot = require('/SomeComponent');
 	var relativeFile = require('./MainView');
 	var relativeToRootOrGlobalModule = require('SomeOtherComponent.js');
-
+```
 > Note that you may omit the .js file extension in the file name if you wish
 
 ## Module instancing
@@ -86,7 +82,7 @@ A module inside a `<JavaScript>` tag (or pointed to in an external file) will be
 In Fuse, a JavaScript module can correspond to multiple module instances that get created and destroyed on the fly. If your module allocates resources that need manual cleanup, such as creating explicit `Observable` subscriptions, you can assign a handler to `module.disposed` and clean up after yourself there.
 
 Example:
-
+```js
 	var foo = getSomeGlobalObservable();
 
 	function fooChanged() { ... }
@@ -98,7 +94,7 @@ Example:
 	module.disposed = function () {
 		foo.removeSubscriber(fooChanged)
 	}
-
+```
 ## Design and motivation
 
 The key design goal of FuseJS is to keep your JavaScript code small, clean and only concerned with the practical functions of your application. Meanwhile

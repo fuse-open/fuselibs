@@ -69,14 +69,14 @@ namespace Fuse.Reactive
 			This property allows injecting dependencies defined as UX expressions into the script using the `dep:` XML namespace.
 
 			Example:
-
+			```xml
 				<JavaScript>
 					exports.foo = 123
 				</JavaScript>
 				<JavaScript dep:foo="{foo}">
 					foo // this is now 123
 				</JavaScript>
-
+			```
 			A script is not executed until all of its dependencies are available. If any of the dependencies change, the script is re-executed.
 
 			This has multiple use-cases:

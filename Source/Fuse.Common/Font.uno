@@ -10,19 +10,20 @@ namespace Fuse
 	/** Represents a specific typeface. 
 
 		Global resource fonts can be specified directly on @Text and @TextInput objects:
-
+		```xml
 			<Text Font="PlatformDefault" />
-
+		```
 		Or inline based on an `.otf` or `.ttf` file:
-
+		```xml
 			<Text Value="Hello!">
 				<Font File="arial.ttf" />
 			</Text>
-
+		```
 		To create a global resource font from a file, use the `ux:Global` attribute:
-
+		```xml
 			<Font File="arial.ttf" ux:Global="MyDefaultFont" />
 			<Text Font="MyDefaultFont" />
+		```
 	*/
 	public class Font
 	{

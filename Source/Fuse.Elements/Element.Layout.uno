@@ -288,7 +288,7 @@ namespace Fuse.Elements
 			> as doing so can lead to flickering and other artifacts.
 
 			## Example
-
+			```xml
 				<JavaScript>
 					function panelPlaced(args) {
 						console.dir("New position:", [args.x, args.y]);
@@ -299,6 +299,7 @@ namespace Fuse.Elements
 				</JavaScript>
 
 				<Panel Placed="{panelPlaced}"/>
+			```
 		*/
 		public event PlacedHandler Placed;
 

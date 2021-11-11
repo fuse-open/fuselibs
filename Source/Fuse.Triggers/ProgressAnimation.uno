@@ -23,7 +23,7 @@ namespace Fuse.Triggers
 
 		This example shows a slider, and blurs the slider itself with the
 		blur-radius taken from the slider-value:
-
+		```xml
 			<Panel Color="Black">
 				<Slider>
 					<Blur ux:Name="blur" Radius="0"/>
@@ -32,7 +32,7 @@ namespace Fuse.Triggers
 					</ProgressAnimation>
 				</Slider>
 			</Panel>
-
+		```
 		## Compatible controls
 
 		ProgressAnimation works with classes that implement `Fuse.Triggers.IProgress`.

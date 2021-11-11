@@ -327,17 +327,17 @@ namespace Fuse.Gestures
 	# Examples
 
 	In this example, a panel moves 200 points to the right when swiped over a distance of 200 points.
-
+	```xml
 		<Panel Width="100" Height="100" Background="#000">
 			<SwipeGesture ux:Name="swipe" Direction="Right" Length="200" />
 			<SwipingAnimation Source="swipe">
 				<Move X="200" />
 			</SwipingAnimation>
 		</Panel>
-
+	```
 	In this example, we demonstrate using the `LengthNode` property of @(SwipeGesture),
 	and the `RelativeNode` property of @(Move), to determine the swipe length based on the width of the panel.
-
+	```xml
 		<Panel ux:Name="parentContainer" Margin="40">
 			<Panel Width="60" Height="60" Background="#000" Alignment="Left">
 				<SwipeGesture ux:Name="swipe" Direction="Right" Type="Active" LengthNode="parentContainer" />
@@ -346,6 +346,7 @@ namespace Fuse.Gestures
 				</SwipingAnimation>
 			</Panel>
 		</Panel>
+	```
 	*/
 	public class SwipingAnimation : Trigger, IPropertyListener
 	{
@@ -391,7 +392,7 @@ namespace Fuse.Gestures
 		Sets the state of an [Active](api:fuse/gestures/swipegesture#swipetype-active-overview)-type @SwipeGesture.
 
 		# Example
-
+		```xml
 			<SwipeGesture ux:Name="swipe" Direction="Right" Length="100" Type="Active" />
 
 			<Button Text="Close">
@@ -399,6 +400,7 @@ namespace Fuse.Gestures
 					<SetSwipeActive Target="swipe" Value="false" />
 				</Clicked>
 			</Button>
+		```
 	*/
 	public class SetSwipeActive : Fuse.Triggers.Actions.TriggerAction
 	{
@@ -424,7 +426,7 @@ namespace Fuse.Gestures
 		# Example
 
 		In this example, a `SwipeGesture` is toggled when a button is pressed.
-
+		```xml
 			<SwipeGesture ux:Name="swipe" Direction="Right" Length="100" Type="Active" />
 
 			<Button Text="Toggle">
@@ -432,6 +434,7 @@ namespace Fuse.Gestures
 					<ToggleSwipeActive Target="swipe" />
 				</Clicked>
 			</Button>
+		```
 	*/
 	public class ToggleSwipeActive : Fuse.Triggers.Actions.TriggerAction
 	{
@@ -451,13 +454,14 @@ namespace Fuse.Gestures
 		# Example
 
 		This example shows a `Panel` that is scaled by a factor of 1.5 while the `SwipeGesture` is active:
-
+		```xml
 			<Panel Width="100" Height="100" Background="#000">
 				<SwipeGesture ux:Name="swipe" Direction="Up" Length="50" Type="Simple" />
 				<WhileSwipeActive Source="swipe">
 					<Scale Factor="1.5" Duration="0.4" />
 				</WhileSwipeActive>
 			</Panel>
+		```
 	*/
 	public class WhileSwipeActive : WhileTrigger, IPropertyListener
 	{
@@ -469,14 +473,14 @@ namespace Fuse.Gestures
 		float _threshold = 1;
 		/**
 			The gesture progress at which this trigger is active. The gesture has a progress from 0..1 measured across it's length.
-
+			```xml
 				<Panel Width="100" Height="100" Background="#000">
 					<SwipeGesture ux:Name="swipe" Direction="Up" Length="50"/>
 					<WhileSwipeActive Source="swipe" Threshold="0.5">
 						<Scale Factor="1.5" Duration="0.4" />
 					</WhileSwipeActive>
 				</Panel>
-
+			```
 			The `Scale` will apply as soon as the user swipes 25 points, `0.5` of the total `Length`.
 		*/
 		public float Threshold
@@ -549,13 +553,14 @@ namespace Fuse.Gestures
 		# Example
 
 		This example shows a quick animation after a panel has been swiped.
-
+		```xml
 			<Panel Width="100" Height="100">
 				<SwipeGesture ux:Name="swipe" Direction="Up" Length="50" Type="Simple" />
 				<Swiped Source="swipe">
 					<Scale Factor="1.5" Duration="0.4" DurationBack="0.2" />
 				</Swiped>
 			</Panel>
+		```
 	*/
 	public class Swiped : Trigger
 	{

@@ -101,7 +101,7 @@ namespace Fuse.Controls
 			@param overlays (Object|Array) Either a single object describing a map overlay, or an array of them.
 
 			The following format is used for describing map markers:
-
+			```json
 				{
 					lineWidth: 2,
 					strokeColor: '#348',
@@ -116,11 +116,11 @@ namespace Fuse.Controls
 						{ latitude: 60.111567, longitude: 11.001030 },
 					]
 				}
-
+			```
 			## Example
 
 			The following example places a map overlay
-
+			```xml
 				<NativeViewHost>
 					<MapView ux:Name="myMapView" />
 				</NativeViewHost>
@@ -140,7 +140,7 @@ namespace Fuse.Controls
 						}
 					]);
 				</JavaScript>
-
+			```
 		*/
 		static void setOverlays(MapView view, object[] args)
 		{
@@ -310,17 +310,17 @@ namespace Fuse.Controls
 			@param markers (Object|Array) Either a single object describing a map marker, or an array of them.
 
 			The following format is used for describing map markers:
-
+			```json
 				{
 					latitude: 0,
 					longitude: 0,
 					label: "Hello, world!"
 				}
-
+			```
 			## Example
 
 			The following example places a map marker at Fuse's home in Oslo, Norway.
-
+			```xml
 				<NativeViewHost>
 					<MapView ux:Name="myMapView" />
 				</NativeViewHost>
@@ -330,7 +330,7 @@ namespace Fuse.Controls
 						{ latitude: 59.911567, longitude: 10.741030, label: "Fuse HQ" }
 					]);
 				</JavaScript>
-
+			```
 		*/
 		static void setMarkers(MapView view, object[] args)
 		{
@@ -422,7 +422,7 @@ namespace Fuse.Controls
 			use this method to take a picture of the MapView, returning a promise with the path argument of where the picture is stored
 
 			Examples:
-
+			```xml
 				<NativeViewHost>
 					<MapView ux:Name="MapView" />
 				</NativeViewHost>
@@ -433,6 +433,7 @@ namespace Fuse.Controls
 						})
 						.catch(function(err) { });
 				</JavaScript>
+			```
 		*/
 		static Future<string> snapshot(Context context, MapView self, object[] args)
 		{

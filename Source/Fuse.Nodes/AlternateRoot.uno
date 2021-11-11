@@ -7,6 +7,7 @@ namespace Fuse
 		behavior, while keeping the data context from this behavior.
 
 		## Example
+		```xml
 			<Panel ux:Class="MyPage">
 				<Visual ux:Dependency="navBar" />
 				<string ux:Property="Content" />
@@ -26,6 +27,7 @@ namespace Fuse
 					<MyPage Content="Page 2" Highlight="#1f8" navBar="navBar" />
 				</PageControl>
 			</ClientPanel>
+		```
 	*/
 	public sealed class AlternateRoot : Behavior
 	{

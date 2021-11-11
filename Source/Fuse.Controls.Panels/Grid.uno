@@ -13,25 +13,25 @@ namespace Fuse.Controls
 
 		If what you need is a certain number of equally sized rows and/or columns,
 		you can use the @RowCount and @ColumnCount properties.
-
+		```xml
 			<Grid RowCount="4" ColumnCount="2"/>
-
+		```
 		By default, elements in the grid are placed in the order they appear in UX, from left to right,
 		top to bottom. However, you can explicitly specify per element which grid cell they should be placed
 		in using the `Row` and `Column` properties.
-
+		```xml
 			<Grid RowCount="1" ColumnCount="2">
 				<Rectangle Row="0" Column="1" Color="Red"/>
 				<Rectangle Row="0" Column="0" Color="Blue"/>
 			</Grid>
-
+		```
 		If you want an element to occupy multiple rows or columns,
 		you can use the `RowSpan` and `ColumnSpan` properties.
-
+		```xml
 			<Grid RowCount="2" ColumnCount="2">
 				<Rectangle ColumnSpan="2" RowSpan="2" Color="Red"/>
 			</Grid>
-
+		```
 		## Rows and Columns properties
 
 		More fine grained control of how the rows and column sizes are calculated can be achieved with the
@@ -40,9 +40,9 @@ namespace Fuse.Controls
 
 		Example of a Grid with 3 rows of size 10, 10 and 50 points, and 3 columns, the first each occupy 20%
 		of the available space and the last one occupies 60%.
-
+		```xml
 			<Grid Rows="10,10,50" Columns="1*,1*,3*"/>
-
+		```
 		The proportional column sizes here are calculated by first summing all the values (1+1+3 = 5).
 		Then we divide our value by the total (1/5 = 20%, 1/5 = 20%, 3/5 = 60%).
 
@@ -52,9 +52,9 @@ namespace Fuse.Controls
 
 		The following Grid has 2 rows where the first row gets the height of the tallest element in that row,
 		and the second row takes up any remaining space:
-
+		```xml
 			<Grid Rows="auto,1*" />
-
+		```
 	*/
 	public class Grid : Panel
 	{
@@ -161,16 +161,17 @@ namespace Fuse.Controls
 			* Numbers postfixed with `*` denote a proportional ratio of the remaining space after all fixed size and `auto` rows/columns are subtracted.
 
 			Example of a Grid with 3 rows where the first two each occupy 20% of the available space, and the last one occupies 60%:
-
+			```xml
 				<Grid Rows="1*,1*,3*"/>
-
+			```
 			The sizes here are calculated by first summing all the values (1+1+3 = 5).
 			Then we divide our value by the total (1/5 = 20%, 1/5 = 20%, 3/5 = 60%).
 
 			Example of a Grid with 4 rows where the first row is 100 points wide, the next row takes as much space as needed (`auto`), and the last two rows
 			share the remaining space with a 1:2 ratio:
-
+			```xml
 				<Grid Rows="100,auto,1*,2*" />
+			```
 		*/
 		public string Rows
 		{
@@ -237,16 +238,17 @@ namespace Fuse.Controls
 			* Numbers postfixed with `*` denote a proportional ratio of the remaining space after all fixed size and `auto` rows/columns are subtracted.
 
 			Example of a Grid with 3 columns where the first two each occupy 20% of the available space, and the last one occupies 60%:
-
+			```xml
 				<Grid Columns="1*,1*,3*"/>
-
+			```
 			The sizes here are calculated by first summing all the values (1+1+3 = 5).
 			Then we divide our value by the total (1/5 = 20%, 1/5 = 20%, 3/5 = 60%).
 
 			Example of a Grid with 4 columns where the first row is 100 points wide, the next row takes as much space as needed (`auto`), and the last two columns
 			share the remaining space with a 1:2 ratio:
-
+			```xml
 				<Grid Columns="100,auto,1*,2*" />
+			```
 		*/
 		public string Columns
 		{

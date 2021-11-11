@@ -30,7 +30,7 @@ namespace Fuse.Navigation
 			The default is `1`, meaning the trigger will only become active when the page is fully reaches the matching state; partial page progress will be ignored.
 
 			Using the threshold we can lower the point at which the trigger is activated.
-
+			```xml
 				<Page ux:Class="MyPage" Color="#FAA">
 					<WhileActive Threshold="0.5">
 						<Change this.Color="#AFA"/>
@@ -41,7 +41,7 @@ namespace Fuse.Navigation
 					<MyPage ux:Name="B"/>
 					<MyPage ux:Name="C"/>
 				</PageControl>
-
+			```
 			As the user swipes from B to C the progress of B will reduce from 1 towards 0 and the progress of C increases from 0 towards 1. The `Threadhold="0.5"` here causes the trigger swtich at the mid-way point of the transition. In this setup this means that one page is green and the rest are red -- the one closest to active is green.
 		*/
 		public float Threshold
@@ -119,7 +119,7 @@ namespace Fuse.Navigation
 		The following example changes the value of a @Text element to `Active` when the
 		first page of a @PageControl is active. We set the `Threshold` high to make the
 		change happen later when transitioning to the page.
-
+		```xml
 			<PageControl>
 				<Page>
 					<Panel Alignment="Center">
@@ -131,7 +131,7 @@ namespace Fuse.Navigation
 				</Page>
 				<Page Background="Blue" />
 			</PageControl>
-
+		```
 		The progress of this trigger for a page is calculated as `1 - distance_to_active`. So a page progress of 0 will map to `1` for this trigger, and anything more than `1` away from the active page will be `0`. For example, the `Threshold="0.9"` in the above example means the trigger will become active when the page has been swiped 90% of the way to active, instead of waiting to 100%.
 	*/
 	public class WhileActive : WhileNavigationTrigger
@@ -150,7 +150,7 @@ namespace Fuse.Navigation
 		The following example changes the value of a @Text element to `Inactive` when the
 		first page of a @PageControl is inactive. We set the `Threshold` low to make the
 		change happen earlier when transitioning from the page.
-
+		```xml
 			<PageControl>
 				<Page>
 					<Panel Alignment="Center">
@@ -162,7 +162,7 @@ namespace Fuse.Navigation
 				</Page>
 				<Page Background="Blue" />
 			</PageControl>
-
+		```
 		The progress of this trigger is calculated as the page's distance from the active page (or the navigation position for continuous navigation). For example, the active page has a distance of 0, meaning this trigger will not be activated, and a page 1 away from the active has a distance of 1, meaning this trigger will be activated. The `Threshold=0.1` in this example means the trigger activates after the page has been swiped only 10% of the distance away from the active position.
 	*/
 	public class WhileInactive : WhileNavigationTrigger

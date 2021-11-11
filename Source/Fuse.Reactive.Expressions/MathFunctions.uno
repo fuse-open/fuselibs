@@ -247,8 +247,9 @@ namespace Fuse.Reactive
 	[UXFunction("atan2")]
 	/**
 		The invserse trigonometric tangent of the input components
-
+		```uno
 			atan2(y, x)
+		```
 	*/
 	public sealed class Atan2 : BinaryFloatOperator
 	{
@@ -259,8 +260,9 @@ namespace Fuse.Reactive
 
 	/**
 		The inverse trigonometric tangent of the input components. Like `atan2` but uses the input vector for the X and Y values.
-
+		```uno
 			atanVector( v ) == atan2( v.Y, v.X )
+		```
 	*/
 	[UXFunction("atanVector")]
 	public sealed class AtanVector : UnaryOperator
@@ -411,9 +413,9 @@ namespace Fuse.Reactive
 
 	/**
 		Calculates the linear interpolation between two values.
-
+		```uno
 			lerp( from, to, step )
-
+		```
 		When step==0 the result is `from`, when step==1 the result is `to`. Partial values are linearly interpolated. Step values <0 and >1 are also supported.
 
 		The input supports a 1-4 component value for `from` and `to`. The result will be same size.
@@ -466,9 +468,9 @@ namespace Fuse.Reactive
 
 	/**
 		Restricts the range of a value to between two numbers.
-
+		```uno
 			clamp( value, min, max)
-
+		```
 		Returns
 		- `min` when `value < min`
 		- `max` when `value > max`

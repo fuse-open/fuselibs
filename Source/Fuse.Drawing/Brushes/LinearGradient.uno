@@ -68,7 +68,7 @@ namespace Fuse.Drawing
 		@LinearGradient lets you describe a linear gradient using a collection of @GradientStops.
 		The following example displays a @Rectangle with a @LinearGradient that fades from white at the top, to black at the bottom.
 
-		```
+		```xml
 		<Rectangle>
 			<LinearGradient StartPoint="0,0" EndPoint="0,1">
 				<GradientStop Offset="0" Color="#fff" />
@@ -79,7 +79,7 @@ namespace Fuse.Drawing
 
 		You may also specify any number of @GradientStops.
 
-		```
+		```xml
 		<Circle>
 			<LinearGradient AngleDegrees="90">
 				<GradientStop Offset="0" Color="#f00" />
@@ -95,7 +95,7 @@ namespace Fuse.Drawing
 
 		Instead of `StartPoint` and `EndPoint`, you can also specify an angle. This can either be in radians using the `Angle` property, or in degrees using the `AngleDegrees` property.
 
-		```
+		```xml
 		<LinearGradient Angle="2.4" />
 		              or
 		<LinearGradient AngleDegrees="45" />

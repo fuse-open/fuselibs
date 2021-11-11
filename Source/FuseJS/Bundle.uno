@@ -13,7 +13,7 @@ namespace FuseJS
 
 		The bundle API allows you to read files that is bundled with the application, defined in the project file (using `<filename>:Bundle`).
 
-		```
+		```js
 		var Bundle = require("FuseJS/Bundle");
 		```
 
@@ -40,7 +40,7 @@ namespace FuseJS
 
 			Read a bundled file as an ArrayBuffer of bytes
 
-			```
+			```js
 			var Observable = require("FuseJS/Observable");
 			var Bundle = require("FuseJS/Bundle");
 			var ImageTools = require("FuseJS/ImageTools");
@@ -76,7 +76,7 @@ namespace FuseJS
 
 			Fetch a list of every file bundled with the application.
 
-			```
+			```js
 			var Bundle = require("FuseJS/Bundle");
 
 			Bundle.list().then(function(list) {
@@ -122,7 +122,7 @@ namespace FuseJS
 			Asynchronously reads a file from the application bundle and writes it to a destination on the device.
 			Use with `FuseJS/FileSystem` to determine destination paths. This is useful for extracting html and associated content for local use with WebView via `file://` protocol.
 
-			```
+			```js
 			var Bundle = require("FuseJS/Bundle");
 			var FileSystem = require("FuseJS/FileSystem");
 			var Observable = require("FuseJS/Observable");
@@ -154,7 +154,7 @@ namespace FuseJS
 
 			Asynchronously reads a file from the application bundle
 
-			```
+			```js
 			var Bundle = require("FuseJS/Bundle");
 
 			Bundle.read("someData.json").then(function(contents) {
@@ -181,7 +181,7 @@ namespace FuseJS
 
 			Synchronously reads a file from the application bundle
 
-			```
+			```js
 			var Bundle = require("FuseJS/Bundle");
 
 			var contents = Bundle.readSync("someData.json");

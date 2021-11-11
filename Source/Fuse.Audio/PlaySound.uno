@@ -9,7 +9,7 @@ namespace Fuse
 
 		You'll find this trigger action in the Fuse.Audio package, which have to be referenced from your Uno project file.
 		For example:
-
+		```json
 			{
 				"Packages": [
 					"Fuse",
@@ -17,9 +17,9 @@ namespace Fuse
 					"Fuse.Audio"
 				]
 			}
-
+		```
 		## Example
-
+		```xml
 			<StackPanel Margin="20">
 				<Button Margin="10" Text="Test Sound">
 					<Clicked>
@@ -27,6 +27,7 @@ namespace Fuse
 					</Clicked>
 				</Button>
 			</StackPanel>
+		```
 	*/
 	public class PlaySound : TriggerAction
 	{

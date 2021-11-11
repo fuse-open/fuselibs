@@ -2,7 +2,7 @@ This package provides a cross-platform abstraction over the native camera APIs o
 
 The `CameraView` API is mostly exposed as a [`Promise`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) based API in JavaScript. Lets have a look at how to get up and running:
 
-```
+```xml
 <DockPanel>
     <NativeViewHost Dock="Fill">
         <!-- The size and aspect of the camera live preview

@@ -11,7 +11,7 @@ namespace Fuse.Triggers.Actions
 		> This means that using `ZOffset` can still cause this @Visual to be rendered underneath its siblings.
 
 		## Example
-
+		```xml
 			<ScrollView>
 				<Grid Rows="400, 1*" Margin="10">
 					<Panel>
@@ -33,6 +33,7 @@ namespace Fuse.Triggers.Actions
 					</Rectangle>
 				</Grid>
 			</ScrollView>
+		```
 	*/
 	public class BringToFront : Fuse.Triggers.Actions.TriggerAction
 	{
@@ -56,7 +57,7 @@ namespace Fuse.Triggers.Actions
 		> This means that using `ZOffset` can still cause this @Visual to be rendered on top of its siblings.
 
 		## Example
-
+		```xml
 			<ScrollView>
 				<Grid Rows="400, 1*" Margin="10">
 					<Panel>
@@ -78,6 +79,7 @@ namespace Fuse.Triggers.Actions
 					</Rectangle>
 				</Grid>
 			</ScrollView>
+		```
 	*/
 	public class SendToBack : Fuse.Triggers.Actions.TriggerAction
 	{

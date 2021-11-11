@@ -29,9 +29,9 @@ namespace Fuse.Controls
 			A string contained the SVG formatted path data. As specified by SVG 1.1.
 
 			The following draws a rectangle with a blue stroke:
-
+			```xml
 				<Path Data="M 100 100 L 300 100 L 200 300 z" StrokeColor="#008" StrokeWidth="2"/>
-
+			```
 			The size of the resulting shape depends on `FitMode`.
 		*/
 		public string Data

@@ -194,11 +194,11 @@ namespace Fuse.Animations
 		`Move` does not affect layout, so the element will just get an offset from its actual location.
 
 		Example:
-			
+		```xml
 			<WhilePressed>
 				<Move X="50" Duration="1" Easing="BackOut" />
 			</WhilePressed>
-
+		```
 		When pressed, this will move the element by 50 points in the X direction over 1 second, with
 		a back-out easing curve.
 
@@ -206,9 +206,9 @@ namespace Fuse.Animations
 
 		You may want for an element to move relative to its own size or some other elements size.
 		To achieve this we can use the @RelativeTo property, for instance:
-
+		```xml
 			<Move X="0.5" RelativeTo="Size" />
-
+		```
 		The above line moves the element by 50% of its own size to the right.
 	*/
 	public sealed class Move: TransformAnimator<Translation>
@@ -259,12 +259,13 @@ namespace Fuse.Animations
 
 		# Example
 		This example rotates a panel while the mouse pointer hovers over it
-
+		```xml
 			<Panel>
 				<WhileHovering>
 					<Rotate Degrees="90" Duration="0.5"/>
 				</WhileHovering>
 			</Panel>
+		```
 	*/
 	public sealed class Rotate: TransformAnimator<Rotation>
 	{
@@ -319,13 +320,13 @@ namespace Fuse.Animations
 
 		# Example
 		The following example scales a rectangle when it is being pressed
-
+		```xml
 			<Rectangle>
 				<WhilePressed>
 					<Scale Factor="2" Duration="0.4"/>
 				</WhilePressed>
 			</Rectangle>
-
+		```
 		@see Scaling
 	*/
 	public sealed class Scale: TransformAnimator<Scaling>
@@ -364,13 +365,13 @@ namespace Fuse.Animations
 
 		# Example
 		This example animates a skew on a panel as it is being pressed
-
+		```xml
 			<Panel Background="#F00">
 				<WhilePressed>
 					<Skew DegreesX="30" Duration="0.4"/>
 				</WhilePressed>
 			</Panel>
-
+		```
 		@see Shear
 	*/
 	public sealed class Skew : TransformAnimator<Shear>

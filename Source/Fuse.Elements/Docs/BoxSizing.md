@@ -21,19 +21,19 @@ Elements have an implied `MaxWidth` and `MaxHeight` of `100%`.
 This works like `Standard` but removes the implied `MaxWidth` and `MaxHeight`.
 
 This is useful for elements that are generally larger than their parent. Usually this is for adding panels beside an element, or decorations near an element.
-
+```xml
 	<Panel Alignment="Center">
 		<Text Value="A Notice"/>
 		<Image BoxSizing="NoImplicitMax" File="star.png" Alignment="TopLeft" Anchor="50%,50%"/>
 	</Panel>
-
+```
 This creates a text label with a star in the upper-left corner. The `BoxSizing="NoImplicitMax"` ensures that the star is it's natural size even if the label is smaller than it.
 
 
 ## Limit
 
 `Limit` allows you to restrict the resulting size of an element without modifying the layout of the element itself. It's primary use-case is for drawers (panels that slide in/out).
-
+```xml
 	<Panel Alignment="Center" Height="30" Color="#AFF">
 		<StackPanel Alignment="TopLeft" Anchor="0%,100%" BoxSizing="Limit" LimitHeight="0%" ux:Name="theStack" Color="#AFA" ClipToBounds="true">
 			<Text Value="One"/>
@@ -49,7 +49,7 @@ This creates a text label with a star in the upper-left corner. The `BoxSizing="
 			<Toggle Target="showMenu"/>
 		</Clicked>
 	</Panel>
-
+```
 If you click on the box in the example a list of items will slide out from the top. This is done by starting with a `LimitHeight="0%"` and animating to `100%`. The percentage here refers to the calculated size of the element based on the `Standard` model. The height of the parent does not influence the children however (the available size in the limited dimensions is erased).
 
 Notice the `ClipToBounds="true"`. Though the size is limited it doesn't prevent an element from being oversized, thus we clip to hide to oversized part.
@@ -60,9 +60,9 @@ Notice the `ClipToBounds="true"`. Though the size is limited it doesn't prevent 
 ## FillAspect
 
 The size of the element is calculated to meet the specified @Element.Aspect ratio. This is based on the available space in the parent element, but also considers any explicit `Width` or `Height` properties.
-
+```xml
 	<Grid BoxSizing="FillAspect" Aspect="2" ColumnCount="4" RowCount="2">
-
+```
 This creates a 4x2 grid that fills the available space but enforces the aspect of `2`, which causes it to be twice as wide as tall. This results in the cells being square.
 
 Unlike the standard sizing model the content of the element, it's children, are not considered when calculating the size. It's strictly a calculation derived from the parent layout and the element's own layout properties.

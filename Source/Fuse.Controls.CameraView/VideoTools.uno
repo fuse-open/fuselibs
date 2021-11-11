@@ -16,12 +16,13 @@ namespace Fuse.VideoTools
 
 
 		## Example
-
+		```xml
 			<JavaScript>
 				var VideoTools = require("FuseJS/VideoTools");
 
 				VideoTools.copyVideoToCameraRoll(somePath);
 			</JavaScript>
+		```
 	*/
 	[UXGlobalModule]
 	public class VideoTools : NativeModule

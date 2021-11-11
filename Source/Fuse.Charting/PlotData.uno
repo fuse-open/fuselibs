@@ -6,7 +6,7 @@ namespace Fuse.Charting
 		Iterator for visual plot data.
 
 		This works like an @Each for the visible data points. Use a @PlotBar or  @PlotCurvePoint to add elements matching this data. Or use a `{Plot data.*}` to get at the variables for the data point.
-
+		```xml
 			<Panel>
 				<c:PlotData>
 					<c:PlotBar/>
@@ -18,21 +18,23 @@ namespace Fuse.Charting
 					<c:PlotCurvePoint/>
 				</c:PlotData>
 			</Curve>
+		```
 	*/
 	public class PlotData : Instantiator, IPlotDataItemProvider
 	{
 		/**
 			Iterate data from this DataSeries, by index. The index is based on the order the `DataSeries` are added to the Plot.
-
+			```xml
 				<Plot>
 					<DataSeries Source="{values0}" ux:Name="seriesOne"/><!-- SeriesIndex="0" -->
 					<DataSeries Source="{values1}" ux:Name="seriesTwo"/><!-- SeriesIndex="1" -->
+			```
 		*/
 		public int SeriesIndex { get; set; }
 
 		/**
 			Iterate data from this DataSeries. Use a `ux:Name` on the DataSeries.
-
+			```xml
 				<Plot>
 					<DataSeries Source="{values0}" ux:Name="seriesOne"/>
 					<DataSeries Source="{values1}" ux:Name="seriesTwo"/>
@@ -41,6 +43,7 @@ namespace Fuse.Charting
 					<PlotData Series="seriesTwo">
 						...
 					</PlotData>
+			```
 		*/
 		public DataSeries Series { get; set; }
 

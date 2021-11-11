@@ -11,7 +11,7 @@ namespace Fuse.Controls
 		ux classes for buttons that has text.
 
 		## Example:
-
+		```xml
 			<ButtonBase ux:Class="GradientButton" Margin="2">
 				<Text ux:Name="Button_Text" Value="{ReadProperty this.Text}" Color="#000" Alignment="Center" TextAlignment="Center" Margin="10" />
 				<Rectangle CornerRadius="4" Layer="Background">
@@ -21,7 +21,7 @@ namespace Fuse.Controls
 					</LinearGradient>
 				</Rectangle>
 			</ButtonBase>
-
+		```
 	*/
 	public class ButtonBase : Panel
 	{

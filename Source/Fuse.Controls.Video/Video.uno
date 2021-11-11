@@ -63,7 +63,7 @@ namespace Fuse.Controls
 		- `IsLooping`: a bool specifying if the video should loop or not, default is false
 
 		## Useful triggers that can be used with `Video`
-
+		```xml
 			<Video>
 				<WhilePlaying />    <!-- Active while the video is playing -->
 				<WhilePaused />     <!-- Active while the video is paused -->
@@ -71,15 +71,15 @@ namespace Fuse.Controls
 				<WhileLoading />    <!-- Active while the video is loading -->
 				<WhileFailed />     <!-- Active if the video failed to load or an error occured -->
 			</Video>
-
+		```
 		## Useful actions that can be used to control `Video`
 
 		Fuse comes with a set of actions that can be used to control video playback. They all have a common `Target` property that specifies which `Video` element they control.
-
+		```xml
 			<Pause />                   <!-- Pauses playback, leaving the current position as-is -->
 			<Stop />                    <!-- Stops playback and returns to the beginning of the video -->
 			<Resume />                  <!-- Resumes playback from the current position -->
-
+		```
 		## Supported formats
 
 		`Video` is implemented by using the videodecoder provided by the export target and therefore supports whatever the platform supports. Be aware that Windows, OS X, Android and iOS might not share support for some formats
@@ -91,15 +91,15 @@ namespace Fuse.Controls
 		## Playing from the local file system
 
 		Videos can also be played from the local file system of the device the app is running on. This can be done by prepending `file://` to the absolute path of the video:
-
+		```xml
 			<Video File="file:///data/data/com.fuse.app/video.mp4" />
-
+		```
 		Notice the three slashes at the start. This is due to unix file system paths always beginning with a `/`
 
 		## Example
 
 		The following example shows how to play a video, display its playback progress using @ProgressAnimation, and pause/resume the video using the @Pause and @Resume animators.
-
+		```xml
 			<DockPanel>
 				<Video ux:Name="video" Dock="Fill" File="fuse_video.mp4" IsLooping="true" StretchMode="UniformToFill">
 					<ProgressAnimation>
@@ -120,7 +120,7 @@ namespace Fuse.Controls
 					</Button>
 				</Grid>
 			</DockPanel>
-
+		```
 	*/
 	public partial class Video : Panel, IMediaPlayback
 	{

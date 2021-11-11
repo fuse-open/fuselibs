@@ -28,7 +28,7 @@ namespace Fuse.ImageTools
 		On Android using this API will request the WRITE_EXTERNAL_STORAGE and READ_EXTERNAL_STORAGE permissions.
 
 		## Example
-
+		```xml
 			<JavaScript>
 				var ImageTools = require("FuseJS/ImageTools");
 				var Observable = require("FuseJS/Observable");
@@ -44,6 +44,7 @@ namespace Fuse.ImageTools
 				module.exports = { test: new Date().toString(), image: imagePath };
 			</JavaScript>
 			<Image File="{image}" />
+		```
 	*/
 	[UXGlobalModule]
 	public class ImageTools : NativeModule
@@ -94,10 +95,11 @@ namespace Fuse.ImageTools
 			Creates a new temporary image file from an ArrayBuffer of image data.
 
 			## Example
-
+			```js
 				var ImageTools = require("FuseJS/ImageTools");
 				ImageTools.getImageFromBuffer(imageData).
 					then(function (image) { console.log("Scratch image path is: " + image.path); });
+			```
 		*/
 		Future<Image> ImageFromBufferInterface(object[] args)
 		{
@@ -140,11 +142,12 @@ namespace Fuse.ImageTools
 			Retrieves the underlying image data for an image as an ArrayBuffer.
 
 			## Example
-
+			```js
 				// Here image is expected to be an `Image` object
 				var ImageTools = require("FuseJS/ImageTools");
 				ImageTools.getBufferFromImage(image)
 					.then(function(buf) { console.log("Image contains " + buf.byteLength + " bytes"); });
+			```
 		*/
 		Future<byte[]> BufferFromImageInterface(object[] args)
 		{
@@ -189,7 +192,7 @@ namespace Fuse.ImageTools
 			* `performInPlace` - Boolean value determining whether the existing image will replaced
 
 			## Example
-
+			```js
 				// Here we assume that we have an existing image variable `originalImage`
 				var ImageTools = require("FuseJS/ImageTools");
 
@@ -201,6 +204,7 @@ namespace Fuse.ImageTools
 
 				ImageTools.resize(originalImage, options)
 					.then(function(newImage) { console.log("Path of resized image is " + newImage.path); });
+			```
 		*/
 		Future<Image> ResizeImageInterface(object[] args)
 		{
@@ -236,7 +240,7 @@ namespace Fuse.ImageTools
 			* `performInPlace` - Boolean value determining whether the existing image will replaced
 
 			## Example
-
+			```js
 				// Here we assume that we have an existing image variable `originalImage`
 				var ImageTools = require("FuseJS/ImageTools");
 
@@ -247,6 +251,7 @@ namespace Fuse.ImageTools
 
 				ImageTools.crop(originalImage, options)
 					.then(function(newImage) { console.log("Path of cropped image is " + newImage.path); });
+			```
 		*/
 		Future<Image> CropImageInterface(object[] args)
 		{
@@ -284,13 +289,14 @@ namespace Fuse.ImageTools
 			Takes base64 string encoded image data and returns a Promise of an Image.
 
 			## Example
-
+			```js
 				// Here we assume that someBase64ImageString contains a base-64 encoded image
 				var ImageTools = require("FuseJS/ImageTools");
 				ImageTools.getImageFromBase64(someBase64ImageString);
 					.then(function(image) {
 						console.log("Scratch path of image is " + image.path);
 					});
+			```
 		*/
 		Future<Image> ImageFromBase64Interface(object[] args)
 		{
@@ -308,11 +314,12 @@ namespace Fuse.ImageTools
 			Encodes the given image as a base64 string.
 
 			## Example
-
+			```js
 				// Here we assume that we have an existing `image` object
 				var ImageTools = require("FuseJS/ImageTools");
 				ImageTools.getBase64FromImage(image)
 					.then(function(base64Image) { console.log("The base64 encoded image is \"" + base64Image + "\""); });
+			```
 		*/
 		Future<string> Base64FromImageInterface(object[] args)
 		{

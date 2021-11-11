@@ -6,7 +6,7 @@ namespace Fuse.Triggers.Actions
 
 		# Example
 		In this example, a pulse activated by pressing a `Button` scales the button by 1.5 over 0.2 seconds, then scales it back to 1 over the same duration.
-
+		```xml
 			<Button Text="Pulse">
 				<WhileTrue ux:Name="pulseMe" Value="false">
 					<Scale Factor="1.5" Duration="0.2" />
@@ -16,7 +16,7 @@ namespace Fuse.Triggers.Actions
 					<Pulse Target="pulseMe" />
 				</Clicked>
 			</Button>
-
+		```
 	*/
 	public class Pulse : TriggerAction
 	{

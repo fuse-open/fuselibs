@@ -93,11 +93,11 @@ namespace Fuse.Reactive
 		Provides information about the device.
 
 		Use the global `Device` variable to access these reactive variables. For example, to include something only on Android:
-
+		```xml
 			<Instance IsEnabled="Device.isAndroid">
 				<CameraView/>
 			</Instance>
-
+		```
 		The properties are:
 			- `isAndroid` (bool): True if running on Android OS, false otherwise
 			- `isIOS` (bool): True if running on iOS OS, false otherwise

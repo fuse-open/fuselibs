@@ -15,13 +15,14 @@ namespace Fuse.Controls
 			To set a solid color as background, consider using the @Color property instead.
 
 			This property is automatically set if you put a brush inside the control, e.g.
-			
-			<Panel>
-				<LinearGradient>
-					<GradientStop Offset="0" Color="Black" />
-					<GradientStop Offset="0" Color="Black" />
-				</LinearGradient>
-			</Panel>
+			```xml
+				<Panel>
+					<LinearGradient>
+						<GradientStop Offset="0" Color="Black" />
+						<GradientStop Offset="0" Color="Black" />
+					</LinearGradient>
+				</Panel>
+			```
 		*/
 		public Brush Background
 		{

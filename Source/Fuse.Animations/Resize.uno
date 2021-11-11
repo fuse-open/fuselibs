@@ -20,14 +20,14 @@ namespace Fuse.Animations
 		The size is considered a temporary size for the element, not it's true intended size. When the animator is disabled the natural size will be restored.
 
 		# Example
-		
+		```xml
 			<Panel>
 				<LayoutAnimation>
 					<Resize RelativeTo="SizeChange" Duration="1" Vector="1"/>
 					<Move RelativeTo="PositionChange" Duration="1" Vector="1"/>
 				</LayoutAnimation>
 			</Panel>
-			
+		```
 	*/
 	public class Resize: TrackAnimator
 	{

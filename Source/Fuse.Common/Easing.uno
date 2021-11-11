@@ -402,7 +402,7 @@ namespace Fuse.Animations
 		while the last control point is fixed at (1,1) the two remaining control points are configurable.
 
 		## Example
-
+		```xml
 			<Rectangle Width="100" Height="100" Color="#18f" CornerRadius="10">
 				<WhilePressed>
 					<Move X="100" Duration="0.3">
@@ -410,7 +410,7 @@ namespace Fuse.Animations
 					</Move>
 				</WhilePressed>
 			</Rectangle>
-
+		```
 		The above `CubicBezierEasing` is equivalent to:
 
 			// In iOS
@@ -429,22 +429,22 @@ namespace Fuse.Animations
 		## Different `Easing` and `EasingBack`
 
 		You can use `ux:Binding` to specify two different easing curves for `Easing` and `EasingBack`:
-
+		```xml
 			<Move X="100" Duration="0.3">
 				<CubicBezierEasing ux:Binding="Easing" ControlPoints="0.4, 0.0, 1.0, 1.0" />
 				<CubicBezierEasing ux:Binding="EasingBack" ControlPoints="0.3, 0.0, 0.3, 1.0" />
 			</Move>
-
+		```
 		## Creating new global easing functions
 
 		You can use `ux:Global to define a new global easing curve:
-
+		```xml
 			<CubicBezierEasing ux:Global="MyStandardEasing" ControlPoints="0.4, 0.0, 1.0, 1.0" />
-
+		```
 		And then:
-
+		```xml
 			<Move X="100" Duration="0.3" Easing="MyStandardEasing" />
-
+		```
 	*/
 	public class CubicBezierEasing: Easing
 	{

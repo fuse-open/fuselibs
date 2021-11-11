@@ -95,9 +95,9 @@ namespace Fuse.Reactive
 
 		The `IObservable` interface receives special treatment by the reactive operators. For
 		example, consider the following data-binding expression:
-
+		```xml
 			<Text>Hello {user.name}!</Text>
-
+		```
 		If `user` is an `IObservable`, then this data binding refers to `user[0].name`, when
 		at least one element is available in the `IObservable`.
 
@@ -105,9 +105,9 @@ namespace Fuse.Reactive
 		yields an `IObservable`, and the target property is not compatible with `IObservable`,
 		the data binding will create a subscription and feed the primary value to the target
 		property. Example:
-
+		```xml
 			<Text>{message}</Text>
-
+		```
 		If `message` yields an `IObservable`, the primary value (`message[0]`) of the observable
 		will be displayed, if available. If there primary value is not available, the expression
 		will not yield any value (no value is written to the target property.)

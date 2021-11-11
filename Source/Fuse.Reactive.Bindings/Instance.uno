@@ -23,12 +23,13 @@ namespace Fuse.Reactive
 			This works with features like `MatchKey`, behaving like an `Each` with a single item in it.
 
 			For example, you may have part of the UI depend on the type of data being viewed:
-
+			```xml
 				<Instance Item="{card}" MatchKey="type">
 					<NumericCard ux:Template="number"/>
 					<FaceCard ux:Template="face"/>
 					<JokerCard ux:Template="joker"/>
 				</Instance>
+			```
 		*/
 		public object Item
 		{
@@ -57,8 +58,9 @@ namespace Fuse.Reactive
 			When `true`, the default, the desired templates will be created. When `false` nothing will be created.
 
 			Ensure that when attaching to a binding, or other delayed or async expression, that you force an unknown value to `false`. As the default is `true`, a delayed, or lost value, would otherwise end up being `true` and may temporarily instance the templates.
-
+			```xml
 				<Instance IsEnabled="{jsVar} ?? false">
+			```
 		*/
 		public bool IsEnabled
 		{

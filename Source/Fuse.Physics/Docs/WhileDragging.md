@@ -1,5 +1,5 @@
 This example shows a rectangle that animates while it is being dragged:
-
+```xml
 	<Panel>
 		<Rectangle Background="Blue" Width="50" Height="100">
 			<Draggable/>
@@ -9,3 +9,4 @@ This example shows a rectangle that animates while it is being dragged:
 			</WhileDragging>
 		</Rectangle>
 	</Panel>
+```

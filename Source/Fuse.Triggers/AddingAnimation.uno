@@ -20,7 +20,7 @@ namespace Fuse.Triggers
 		The following example showcases a list that you can add elements to by
 		pressing a button. Elements added are animated in using an
 		`AddingAnimation`:
-
+		```xml
 			<StackPanel Width="100%">
 				<JavaScript>
 					var Observable = require('FuseJS/Observable');
@@ -40,6 +40,7 @@ namespace Fuse.Triggers
 				</Each>
 				<Button Text="Add more" Clicked="{addElement}"/>
 			</StackPanel>
+		```
 	*/
 	public class AddingAnimation : Trigger
 	{

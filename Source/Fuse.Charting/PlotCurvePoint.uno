@@ -15,7 +15,7 @@ namespace Fuse.Charting
 		# Example
 
 		This example demonstrates a simple line graph built using `PlotCurvePoint`
-
+		```javascript
 			<Panel xmlns:c="Fuse.Charting" >
 				<JavaScript>
 					var Observable = require("FuseJS/Observable");
@@ -40,6 +40,7 @@ namespace Fuse.Charting
 					</c:Plot>
 				</Panel>
 			</Panel>
+		```
 	*/
 	public class PlotCurvePoint : CurvePoint, IPlotDataItemListener<PlotDataPoint>
 	{

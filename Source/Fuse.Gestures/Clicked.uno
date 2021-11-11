@@ -18,13 +18,13 @@ namespace Fuse.Gestures
 
 		# Example
 		In this example, a panel will rotate for 0.4 seconds, then rotate back, when clicked:
-
+		```xml
 			<Panel Background="#F00">
 				<Clicked>
 					<Rotate Degrees="90" Duration=".4" DurationBack=".2" />
 				</Clicked>
 			</Panel>
-
+		```
 		@see Tapped
 	*/
 	public class Clicked : Fuse.Gestures.ClickerTrigger
@@ -85,12 +85,13 @@ namespace Fuse.Gestures
 
 		## Example
 		The following example rotates a rectangle if it is double clicked.
-
+		```xml
 			<Panel Width="100" Height="100" Color="#F00" >
 				<DoubleClicked>
 					<Rotate Degrees="270" Easing="ExponentialOut" Duration=".3"/>
 				</DoubleClicked>
 			</Panel>
+		```
 	*/
 	public class DoubleClicked : Fuse.Gestures.ClickerTrigger
 	{

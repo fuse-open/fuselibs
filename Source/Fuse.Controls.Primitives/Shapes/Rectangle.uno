@@ -8,9 +8,9 @@ namespace Fuse.Controls
 	/** Displays a rectangle.
 
 		Setting the rectangle's `Color` property gives it a solid color fill:
-
+		```xml
 			<Rectangle Color="Blue" Width="100" Height="100" />
-
+		```
 		Rectangles can have an arbitrary number of @Fills and @Strokes. Fills are of
 		type @Brush, and can be specified as tags inside the rectangle.
 
@@ -18,7 +18,7 @@ namespace Fuse.Controls
 		> invisible unless you provide some or specify something.
 
 		## Example
-
+		```xml
 		    <Grid Alignment="Center" Rows="100,100,100" Columns="100">
 				<Rectangle Margin="10" CornerRadius="4">
 					<SolidColor Color="#a542db" />
@@ -34,6 +34,7 @@ namespace Fuse.Controls
 					<SolidColor Color="#3579e6" />
 				</Rectangle>
 			</Grid>
+		```
 	*/
 	public partial class Rectangle : Shape
 	{

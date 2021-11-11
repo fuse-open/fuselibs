@@ -15,7 +15,7 @@ namespace Fuse.Controls
 		## Examples
 
 		This example shows a basic TextInput with some style and a button to clear its contents.
-
+		```xml
 			<Panel>
 				<Button Alignment="CenterRight" Text="Clear" Margin="5">
 					<Clicked>
@@ -28,9 +28,9 @@ namespace Fuse.Controls
 					</Rectangle>
 				</TextInput>
 			</Panel>
-
+		```
 		The following example illustrates how you can subclass TextInput to achieve a consistent look throughout your app.
-
+		```xml
 			<!-- Subclassing TextInput -->
 			<TextInput ux:Class="MyTextInput" FontSize="20" PlaceholderColor="#ccc" Padding="5">
 				<Rectangle Layer="Background" CornerRadius="3">
@@ -46,10 +46,10 @@ namespace Fuse.Controls
 				<MyTextInput PlaceholderText="Repeat password" IsPassword="true" />
 				<MyTextInput />
 			</StackPanel>
-
+		```
 
 		This example shows how you can configure the layout and behavior of the on-screen keyboard when the TextInput is in focus using the @InputHint, @AutoCorrectHint, @AutoCapitalizationHint and @ActionStyle properties.
-
+		```xml
 			<TextInput PlaceholderText="Search..." ActionStyle="Search" AutoCapitalizationHint="None" />
 			<TextInput PlaceholderText="Email" InputHint="Email" ActionStyle="Send" AutoCorrectHint="Disabled" AutoCapitalizationHint="None" />
 			<TextInput PlaceholderText="http://" InputHint="URL" ActionStyle="Go" AutoCorrectHint="Disabled" AutoCapitalizationHint="None" />
@@ -57,10 +57,10 @@ namespace Fuse.Controls
 			<TextInput PlaceholderText="1234" InputHint="Number" />
 			<TextInput PlaceholderText="1.234" InputHint="Decimal" />
 			<TextInput PlaceholderText="1" InputHint="Integer" />
-
+		```
 		A common use-case is to have the TextInput raise an event when the user presses the return/search key on their virtual/physical keyboard.
 		The following example demonstrates using `ActionTriggered` to get an event when this happens:
-
+		```xml
 			<StackPanel>
 				<JavaScript>
 					var Observable = require("FuseJS/Observable");
@@ -82,10 +82,10 @@ namespace Fuse.Controls
 				<TextInput Value="{entryStr}" PlaceholderText="Enter your query...." ActionTriggered="{onSearch}" />
 				<Text FontSize="20" Value="{searchStr}" />
 			</StackPanel>
-
+		```
 		In some cases, it might be undesirable for the virtual keyboard to disappear when a certain other ux element is pressed.
 		This can be done by passing a parent container to the `Focus.Delegate` property, causing the focus state to be delegated to the delegate target:
-
+		```xml
 			<DockPanel ux:Name="dockpanel" IsFocusable="true" Color="#fff">
 				<TextInput Focus.Delegate="dockpanel" />
 				<Panel Dock="Right">
@@ -93,7 +93,7 @@ namespace Fuse.Controls
 					<Rectangle CornerRadius="4" Color="#000" />
 				</Panel>
 			</DockPanel>
-
+		```
 	*/
 	public class TextInput: TextInputControl, ITextEditControl
 	{
@@ -146,7 +146,7 @@ namespace Fuse.Controls
 		TextView provides features for editing and viewing large amounts of text.
 
 		## Example
-
+		```xml
 			<TextView ux:Class="TextViewer" TextWrapping="Wrap" Padding="4" Margin="4" TextColor="#000" CaretColor="#000">
 					Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
@@ -155,7 +155,7 @@ namespace Fuse.Controls
 				</Rectangle>
 
 			</TextView>
-
+		```
 	*/
 	public class TextView: TextInputControl
 	{

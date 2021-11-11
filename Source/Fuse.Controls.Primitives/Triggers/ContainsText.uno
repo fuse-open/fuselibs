@@ -11,7 +11,7 @@ namespace Fuse.Triggers
 
 		This example displays a warning text unless the user has entered some text into
 a password field:
-
+		```xml
 			<StackPanel>
 				<TextInput IsPassword="True">
 					<WhileContainsText>
@@ -20,6 +20,7 @@ a password field:
 				</TextInput>
 				<Text Color="Red" ux:Name="warningText">You must enter a password!</Text>
 			</StackPanel>
+		```
 	*/
 	public class WhileContainsText : WhileTrigger
 	{

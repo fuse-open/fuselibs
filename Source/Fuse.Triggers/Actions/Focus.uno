@@ -12,7 +12,7 @@ namespace Fuse.Triggers.Actions
 
 		# Example
 		In the following example, focus is given to a `TextInput` when a button is clicked.
-
+		```xml
 			<StackPanel>
 				<TextInput ux:Name="input" Height="50" Value="Filler text"/>
 				<Button Text="Button">
@@ -21,6 +21,7 @@ namespace Fuse.Triggers.Actions
 					</Clicked>
 				</Button>
 			</StackPanel>
+		```
 	*/
 	public class GiveFocus: TriggerAction
 	{
@@ -39,12 +40,13 @@ namespace Fuse.Triggers.Actions
 
 		# Example
 		In this example, a `TextInput` will release its focus when the Enter key on the keyboard is pressed.
-
+		```xml
 			<TextInput ux:Name="input" Height="50" Value="Filler text">
 				<TextInputActionTriggered>
 					<ReleaseFocus />
 				</TextInputActionTriggered>
 			</TextInput>
+		```
 	*/
 	public class ReleaseFocus : TriggerAction
 	{

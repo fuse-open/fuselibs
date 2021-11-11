@@ -6,13 +6,13 @@ namespace Fuse.Controls
 		to use it in navigation.
 
 		## Example:
-
+		```xml
 			<BackButton>
 				<Clicked>
 					<GoBack />
 				</Clicked>
 			</BackButton>
-
+		```
 	*/
 	public partial class BackButton
 	{

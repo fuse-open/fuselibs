@@ -3,7 +3,8 @@ namespace Alive
 	/**
 		A left-pointing arrow, used in navigation.
 		**Note:** this component only provides visuals and does not actually perform navigation.
-
+		
+		```xml
 			<Router ux:Name="router" />
 
 			<JavaScript>
@@ -14,6 +15,8 @@ namespace Alive
 			</JavaScript>
 
 			<Alive.BackButton Clicked="{goBack}" />
+		```
+
 	*/
 	public partial class BackButton {}
 }

@@ -8,7 +8,7 @@ namespace Fuse.Resources
 		Creates or overrides a resource with the given key.
 
 		Note that static resources are better declared with `ux:Key`. The `ResourceSetter` types are to be used when a dynamic value is needed, or one that cannot be expressed with `ux:Key`.
-
+		```xml
 			<Panel>
 				<string Value="Static Page Title" ux:Key="Title"/>
 			</Panel>
@@ -17,7 +17,7 @@ namespace Fuse.Resources
 					<ResourceString Key="Title" Value="{pageTitle}"/>
 				</Panel>
 			</Each>
-
+		```
 		The resources created via `ResourceSetter` are local to where they are defined (this is also true of `ux:Key`). Bindings in this node, and its descendents, can bind to the them. Descendents may also provide a new resource with the same `Key`, which overrides it for that part of the UI tree.
 
 		@see @Fuse.Resources.ResourceBinding

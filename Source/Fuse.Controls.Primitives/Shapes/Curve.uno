@@ -228,7 +228,7 @@ namespace Fuse.Controls
 		## Example
 
 			Draws a simple line graph.
-
+		```xml
 			<Panel Alignment="Center" Width="300" Height="200">
 				<Curve StrokeWidth="10" StrokeColor="#ABC">
 					<CurvePoint At="0.00,0.0"/>
@@ -238,6 +238,7 @@ namespace Fuse.Controls
 					<CurvePoint At="1.00,0.6"/>
 				</Curve>
 			</Panel>
+		```
 	*/
 	public class Curve : SegmentedShape, IPropertyListener
 	{

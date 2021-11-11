@@ -8,11 +8,11 @@ namespace Fuse.Resources
 	/** Specifies a @texture2D object to be displayed by an @Image element.
 
 		## Example
-
+		```xml
 			<Image>
 				<TextureImageSource Texture="MyTexture" />
 			</Image>
-
+		```
 	*/
 	public class TextureImageSource : ImageSource
 	{

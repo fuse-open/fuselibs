@@ -39,12 +39,13 @@ namespace Fuse.Gestures
 
 		# Example
 		In this example, a panel will double in size when it is pressed:
-
+		```xml
 			<Panel Width="50" Height="50">
 				<WhilePressed>
 					<Scale Factor="2" Duration="0.2"/>
 				</WhilePressed>
 			</Panel>
+		```
 	*/
 	public class WhilePressed : WhileTrigger
 	{
@@ -61,7 +62,7 @@ namespace Fuse.Gestures
 			This property is read-only. Writing to it does nothing.
 
 			## Example
-
+			```xml
 				<Panel Color="Red">
 					<WhilePressed ux:Name="wpGesture">
 						<Rectangle ux:Name="rect" Alignment="TopLeft" Offset="{SnapshotProperty wpGesture.PressedPosition}" Width="20" Height="20" Color="White">
@@ -71,6 +72,7 @@ namespace Fuse.Gestures
 						</Rectangle>
 					</WhilePressed>
 				</Panel>
+			```
 		*/
 		public float2 PressedPosition
 		{
@@ -175,12 +177,13 @@ namespace Fuse.Gestures
 
 		# Example
 		In this example, a panel will scale and call a JS callback `pressed` for every 0.2 seconds, when pressed:
-
+		```xml
 			<Panel Background="#F00">
 				<HoldPress First="true" Handler="{pressed}" Delay="0.5" Repeat="0.2">
 					<Scale Target="rect" Vector="1.2" Duration="0.2" />
 				</HoldPress>
 			</Panel>
+		```
 	*/
 	public class HoldPress : Fuse.Gestures.ClickerTrigger
 	{

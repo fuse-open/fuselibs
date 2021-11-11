@@ -20,7 +20,7 @@ namespace Fuse.Controls
 			@scriptmethod stop()
 
 			Returns a Promise that resloves to a @Recording
-
+			```xml
 				<CameraView ux:Name="Camera" />
 				<JavaScript>
 					Camera.startRecording()
@@ -31,6 +31,7 @@ namespace Fuse.Controls
 						})
 						.catch(function(err) { }):
 				</JavaScript>
+			```
 		*/
 		static Future<Recording> stop(Context context, RecordingSession recordingSession, object[] args)
 		{

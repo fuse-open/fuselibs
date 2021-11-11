@@ -56,31 +56,31 @@ namespace Fuse.Triggers
 
 		The following example changes the color of `myRect` if the size of the
 		app's viewport exceeds 400x400 points.
-
+		```xml
 			<Rectangle ux:Name="myRect" Color="#f00" />
 			<WhileWindowSize GreaterThan="400,400">
 				<Change myRect.Color="#00f" Duration=".5"/>
 			</WhileWindowSize>
-
+		```
 		If you want to match on a single axis only, you can provide a value for
 		the other axis that is greater than zero, and that you can safely assume
 		will always match.
 
 		For instance, if you want to check if only the width of the viewport is
 		greater than 400 points, you could do the following:
-
+		```xml
 			<WhileWindowSize GreaterThan="400,1">
-
+		```
 		This also works for @LessThan by providing a big value.
-
+		```xml
 			<WhileWindowSize LessThan="400,99999">
-
+		```
 		You can also specify multiple constraints on the same `WhileWindowSize`
 		trigger. Note that all constraints that you specify must be satisfied in
 		order for the trigger to activate.
-
+		```xml
 			<WhileWindowSize GreaterThan="200,300" LessThan="700,1000">
-
+		```
 	*/
 	public class WhileWindowSize : WindowSizeTrigger
 	{
@@ -141,11 +141,12 @@ namespace Fuse.Triggers
 
 		The following example changes the color of `myRect` from black to white
 		while the device is in landscape.
-
+		```xml
 			<Rectangle ux:Name="myRect" Color="#000" />
 			<WhileWindowLandscape>
 				<Change myRect.Color="#fff" Duration="0.5" />
 			</WhileWindowLandscape>
+		```
 	*/
 	public sealed class WhileWindowLandscape : WhileWindowAspect
 	{
@@ -157,11 +158,12 @@ namespace Fuse.Triggers
 
 		The following example changes the color of `myRect` from black to white
 		while the device is in portrait.
-
+		```xml
 			<Rectangle ux:Name="myRect" Color="#000" />
 			<WhileWindowPortrait>
 				<Change myRect.Color="#fff" Duration="0.5" />
 			</WhileWindowPortrait>
+		```
 	*/
 	public sealed class WhileWindowPortrait : WhileWindowAspect
 	{

@@ -61,7 +61,7 @@ namespace Fuse.Controls
 
 		# Example
 		This example shows a simple 3-choice Selection which uses a `MultiLayoutPanel` together with `LayoutAnimation` to animate an indicator for the selected option:
-
+		```xml
 			<Panel Alignment="Center" Width="200" Height="50" >
 				<MultiLayoutPanel ux:Name="multiLayout">
 					<Grid ColumnCount="3">
@@ -95,6 +95,7 @@ namespace Fuse.Controls
 					</Grid>
 				</MultiLayoutPanel>
 			</Panel>
+		```
 	*/
 	public class MultiLayoutPanel: Panel
 	{

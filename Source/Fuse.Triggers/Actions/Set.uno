@@ -15,35 +15,37 @@ namespace Fuse.Triggers.Actions
 		> **Note:** If you wish to temporarily change the value of a property, use @Change instead.
 
 		The basic syntax of `Set` is as follows:
-
+		```xml
 			<Set myNode.MyProperty="MyValue" />
-
+		```
 		However, this is just syntactic sugar. The following is equivalent:
-
+		```xml
 			<Set Target="myNode.MyProperty" Value="MyValue" />
-
+		```
 		## Example
 
 		The following example consists of a red @Rectangle that, once clicked, changes its color to blue.
-
+		```xml
 			<Rectangle ux:Name="myRectangle" Color="Red">
 				<Clicked>
 					<Set myRectangle.Color="Blue" />
 				</Clicked>
 			</Rectangle>
+		```
 	*/
 	public class Set<T> : TriggerAction
 	{
 		/** The property to assign to.
 
 			## Example
-
+			```xml
 				<Button Text="Make background blue">
 					<Clicked>
 						<Set Target="background.Color" Value="Blue" />
 					</Clicked>
 				</Button>
 				<Rectangle ux:Name="background" Color="Red" />
+			```
 		*/
 		public Property<T> Target { get; private set; }
 
@@ -89,13 +91,14 @@ namespace Fuse.Triggers.Actions
 
 			The following example consists of a red @Rectangle and a button that fades its color
 			a little step towards blue with each click.
-
+			```xml
 				<Button Text="Make background more blue">
 					<Clicked>
 						<Set Target="background.Color" Increment="-0.2, 0, 0.2, 0" />
 					</Clicked>
 				</Button>
 				<Rectangle ux:Name="background" Color="1, 0, 0, 1" />
+			```
 		*/
 		public T Increment
 		{

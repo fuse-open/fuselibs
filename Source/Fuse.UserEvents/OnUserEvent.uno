@@ -21,9 +21,9 @@ namespace Fuse.Triggers
 		events coming from anywhere, set the `Filter` property to `Global`.
 
 		`OnUserEvent` also lets you attach a JavaScript handler to the event.
-
+		```xml
 			<OnUserEvent EventName="myEvent" Handler="{myHandler}" />
-
+		```
 		The handler function is called with the arguments that were passed
 		with the event as a plain JavaScript object.
 
@@ -31,7 +31,7 @@ namespace Fuse.Triggers
 
 		This example defines a @UserEvent and triggers it when the panel
 		is clicked:
-
+		```xml
 			<Panel ux:Name="panel" Color="Blue">
 				<UserEvent Name="myEvent"/>
 				<OnUserEvent EventName="myEvent">
@@ -41,10 +41,10 @@ namespace Fuse.Triggers
 					<RaiseUserEvent EventName="myEvent" />
 				</Clicked>
 			</Panel>
-
+		```
 		This example illustrates how you can read the arguments that were
 		passed with the event from a JavaScript handler.
-
+		```xml
 			<UserEvent ux:Name="myEvent" />
 
 			<Panel Color="#123">
@@ -64,7 +64,7 @@ namespace Fuse.Triggers
 
 				module.exports = { eventHandler: eventHandler };
 			</JavaScript>
-
+		```
 	*/
 	public class OnUserEvent : Trigger
 	{

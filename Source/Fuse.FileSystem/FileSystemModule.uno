@@ -13,9 +13,9 @@ namespace Fuse.FileSystem
 		@scriptmodule FuseJS/FileSystem
 
 		Provides an interface to the file system.
-
+		```js
 			var FileSystem = require("FuseJS/FileSystem");
-
+		```
 		Using the asynchronous Promise based functions is recommended to keep your UI responsive,
 		although synchronous variants are also available if preferred.
 
@@ -25,7 +25,7 @@ namespace Fuse.FileSystem
 		## Example
 
 		This example writes a text to a file, and then reads it back:
-
+		```js
 			var FileSystem = require("FuseJS/FileSystem");
 			var path = FileSystem.dataDirectory + "/" + "testfile.tmp";
 
@@ -39,6 +39,7 @@ namespace Fuse.FileSystem
 				.catch(function(error) {
 					console.log("Unable to read file due to error:" + error);
 				});
+		```
 	*/
 	public class FileSystemModule : NativeModule
 	{
@@ -111,7 +112,7 @@ namespace Fuse.FileSystem
 			Asynchronously appends a string to a UTF-8 encoded file.
 
 			## Example
-
+			```js
 				var FileSystem = require("FuseJS/FileSystem");
 
 				FileSystem.appendTextToFile(FileSystem.dataDirectory + "/" + "myfile.txt", "Hello buddy")
@@ -120,6 +121,7 @@ namespace Fuse.FileSystem
 					}, function(error) {
 						console.log(error);
 					});
+			```
 		*/
 		Future<Nothing> AppendTextToFile(object[] args)
 		{
@@ -137,10 +139,11 @@ namespace Fuse.FileSystem
 			Synchronously appends a string to a UTF-8 encoded file.
 
 			## Example
-
+			```js
 				var FileSystem = require("FuseJS/FileSystem");
 
 				FileSystem.appendTextToFileSync("myfile.txt", "Hello buddy");
+			```
 		*/
 		object AppendTextToFileSync(Context context, object[] args)
 		{
@@ -159,7 +162,7 @@ namespace Fuse.FileSystem
 			Asynchronously creates a directory.
 
 			## Example
-
+			```js
 				var FileSystem = require("FuseJS/FileSystem");
 
 				FileSystem.createDirectory(FileSystem.dataDirectory + "/" + "new-directory")
@@ -168,6 +171,7 @@ namespace Fuse.FileSystem
 					}, function(error) {
 						console.log("Error trying to create directory.");
 					});
+			```
 		*/
 		public Future<Nothing> CreateDirectory(object[] args)
 		{
@@ -182,10 +186,11 @@ namespace Fuse.FileSystem
 			Synchronously creates a directory.
 
 			## Example
-
+			```js
 				var FileSystem = require("FuseJS/FileSystem");
 
 				FileSystem.createDirectory(FileSystem.dataDirectory + "/" + "new-directory");
+			```
 		*/
 		public object CreateDirectorySync(Context context, object[] args)
 		{
@@ -203,7 +208,7 @@ namespace Fuse.FileSystem
 			Asynchronously delete a file.
 
 			## Example
-
+			```js
 				var FileSystem = require("FuseJS/FileSystem");
 
 				FileSystem.remove("myfile.txt")
@@ -212,6 +217,7 @@ namespace Fuse.FileSystem
 					}, function(error) {
 						console.log("Unable to delete file");
 					});
+			```
 		*/
 		Future<Nothing> Remove(object[] args)
 		{
@@ -228,10 +234,11 @@ namespace Fuse.FileSystem
 			Synchronously delete a file.
 
 			## Example
-
+			```js
 				var FileSystem = require("FuseJS/FileSystem");
 
 				FileSystem.removeSync("myfile.txt");
+			```
 		*/
 		object RemoveSync(Context context, object[] args)
 		{
@@ -249,7 +256,7 @@ namespace Fuse.FileSystem
 			Asynchronously check if a file exists.
 
 			## Example
-
+			```js
 				var FileSystem = require("FuseJS/FileSystem");
 
 				FileSystem.exists("myfile.txt")
@@ -258,6 +265,7 @@ namespace Fuse.FileSystem
 					}, function(error) {
 						console.log("Unable to check if file exists");
 					});
+			```
 		*/
 		Future<bool> Exists(object[] args)
 		{
@@ -273,10 +281,11 @@ namespace Fuse.FileSystem
 			Synchronously check if a file exists.
 
 			## Example
-
+			```js
 				var FileSystem = require("FuseJS/FileSystem");
 
 				console.log(FileSystem.existsSync("myfile.txt") ? "It's there!" : "It's missing :/");
+			```
 		*/
 		object ExistsSync(Context context, object[] args)
 		{
@@ -351,7 +360,7 @@ namespace Fuse.FileSystem
 			* `lastAccessTime` –  A `Date` stating when directory was accessed
 
 			## Example
-
+			```js
 				var FileSystem = require("FuseJS/FileSystem");
 
 				FileSystem.createDirectorySync("some-dir");
@@ -362,6 +371,7 @@ namespace Fuse.FileSystem
 					.catch(function(error) {
 						console.log("Failed to get directory info " + error);
 					});
+			```
 		*/
 		Future<FileSystemInfo> GetDirectoryInfo(object[] args)
 		{
@@ -383,12 +393,13 @@ namespace Fuse.FileSystem
 			* `lastAccessTime` -  A `Date` stating when directory was accessed
 
 			## Example
-
+			```js
 				var FileSystem = require("FuseJS/FileSystem");
 
 				FileSystem.createDirectorySync("some-dir");
 				var dirInfo = FileSystem.getDirectoryInfoSync("some-dir");
 				console.log("file was modified on " + dirInfo.lastWriteTime);
+			```
 		*/
 		object GetDirectoryInfoSync(Context context, object[] args)
 		{
@@ -411,7 +422,7 @@ namespace Fuse.FileSystem
 			* `lastAccessTime` –  A `Date` stating when file was accessed
 
 			## Example
-
+			```js
 				var FileSystem = require("FuseJS/FileSystem");
 
 				FileSystem.writeTextToFileSync("some-file.txt", "hello there");
@@ -422,6 +433,7 @@ namespace Fuse.FileSystem
 					.catch(function(error) {
 						"failed stat " + error
 					});
+			```
 		*/
 		Future<FileSystemInfo> GetFileInfo(object[] args)
 		{
@@ -443,12 +455,13 @@ namespace Fuse.FileSystem
 			* `lastAccessTime` –  A `Date` stating when file was accessed
 
 			## Example
-
+			```js
 				var FileSystem = require("FuseJS/FileSystem");
 
 				FileSystem.writeTextToFileSync("some-file.txt", "hello there");
 				var fileInfo = FileSystem.getFileInfoSync("some-file.txt");
 				console.log("file was modified on " + fileInfo.lastWriteTime);
+			```
 		*/
 		object GetFileInfoSync(Context context, object[] args)
 		{
@@ -487,7 +500,7 @@ namespace Fuse.FileSystem
 			Asynchronously list subdirectories in a directory.
 
 			## Example
-
+			```js
 				var FileSystem = require("FuseJS/FileSystem");
 
 				FileSystem.listDirectories(FileSystem.dataDirectory)
@@ -496,6 +509,7 @@ namespace Fuse.FileSystem
 					}, function(error) {
 						console.log("Unable to list subdirectories of directory: " + error);
 					});
+			```
 		*/
 		Future<string[]> ListDirectories(object[] args)
 		{
@@ -511,11 +525,12 @@ namespace Fuse.FileSystem
 			Synchronously list subdirectories in a directory.
 
 			## Example
-
+			```js
 				var FileSystem = require("FuseJS/FileSystem");
 
 				var directories = FileSystem.listDirectoriesSync(FileSystem.dataDirectory);
 				console.log("There are " + directories.length + " subdirectories in directory");
+			```
 		*/
 		object ListDirectoriesSync(Context context, object[] args)
 		{
@@ -531,7 +546,7 @@ namespace Fuse.FileSystem
 			Asynchronously lists both files and subdirectories in a directory.
 
 			## Example
-
+			```js
 				var FileSystem = require("FuseJS/FileSystem");
 
 				FileSystem.listEntries(FileSystem.dataDirectory)
@@ -540,6 +555,7 @@ namespace Fuse.FileSystem
 					}, function(error) {
 						console.log("Unable to list entries in directory due to error " + error);
 					});
+			```
 		*/
 		Future<string[]> ListEntries(object[] args)
 		{
@@ -555,11 +571,12 @@ namespace Fuse.FileSystem
 			Synchronously lists both files and subdirectories in a directory.
 
 			## Example
-
+			```js
 				var FileSystem = require("FuseJS/FileSystem");
 
 				var entries = FileSystem.listEntriesSync(FileSystem.dataDirectory);
 				console.log("There are " + entries.length + " entries in directory");
+			```
 		*/
 		object ListEntriesSync(Context context, object[] args)
 		{
@@ -575,7 +592,7 @@ namespace Fuse.FileSystem
 			Asynchronously list files in directory.
 
 			## Example
-
+			```js
 				var FileSystem = require("FuseJS/FileSystem");
 
 				FileSystem.listFiles(FileSystem.dataDirectory)
@@ -584,6 +601,7 @@ namespace Fuse.FileSystem
 					}, function(error) {
 						console.log("Unable to list files in directory due to error " + error);
 					});
+			```
 		*/
 		Future<string[]> ListFiles(object[] args)
 		{
@@ -599,11 +617,12 @@ namespace Fuse.FileSystem
 			Synchronously list files in directory.
 
 			## Example
-
+			```js
 				var FileSystem = require("FuseJS/FileSystem");
 
 				var files = FileSystem.listFilesSync(FileSystem.dataDirectory);
 				console.log("There are " + files.length + " files in directory");
+			```
 		*/
 		object ListFilesSync(Context context, object[] args)
 		{
@@ -620,7 +639,7 @@ namespace Fuse.FileSystem
 			Asynchronously moves a file or directory from source to destination path
 
 			## Example
-
+			```js
 				FileSystem = require("FuseJS/FileSystem");
 
 				FileSystem.writeTextToFile("to-be-moved.txt", "hello world")
@@ -630,6 +649,7 @@ namespace Fuse.FileSystem
 					.catch(function(err) {
 						console.log("Unable to move file");
 					});
+			```
 		*/
 		Future<Nothing> Move(object[] args)
 		{
@@ -646,11 +666,12 @@ namespace Fuse.FileSystem
 			Synchronously moves a file or directory from source to destination path
 
 			## Example
-
+			```js
 				FileSystem = require("FuseJS/FileSystem");
 
 				FileSystem.writeTextToFileSync("to-be-moved.txt", "hello world");
 				FileSystem.moveSync("to-be-moved.txt", "destination-reached.txt");
+			```
 		*/
 		object MoveSync(Context context, object[] args)
 		{
@@ -670,7 +691,7 @@ namespace Fuse.FileSystem
 			Asynchronously copies a file or directory recursively from source to destination path
 
 			## Example
-
+			```js
 				FileSystem = require("FuseJS/FileSystem");
 
 				FileSystem.writeTextToFile("to-be-copied.txt", "hello world")
@@ -680,6 +701,7 @@ namespace Fuse.FileSystem
 					.catch(function(err) {
 						console.log("Unable to copy file");
 					});
+			```
 		*/
 		Future<Nothing> Copy(object[] args)
 		{
@@ -696,11 +718,12 @@ namespace Fuse.FileSystem
 			Synchronously copies a file or directory recursively from source to destination path
 
 			## Example
-
+			```js
 				FileSystem = require("FuseJS/FileSystem");
 
 				FileSystem.writeTextToFileSync("to-be-copied.txt", "hello world");
 				FileSystem.copySync("to-be-copied.txt", "destination-reached.txt");
+			```
 		*/
 		object CopySync(Context context, object[] args)
 		{
@@ -719,7 +742,7 @@ namespace Fuse.FileSystem
 			Asynchronously reads a file and returns a Promise of an ArrayBuffer with its contents.
 
 			## Example
-
+			```js
 				var FileSystem = require("FuseJS/FileSystem");
 
 				FileSystem.readBufferFromFile("myfile.txt")
@@ -728,6 +751,7 @@ namespace Fuse.FileSystem
 					}, function(error) {
 						console.log(error);
 					});
+			```
 		*/
 		Future<byte[]> ReadBufferFromFile(object[] args)
 		{
@@ -743,10 +767,11 @@ namespace Fuse.FileSystem
 			Synchronously reads a file and returns an ArrayBuffer with its contents.
 
 			## Example
-
+			```js
 				var FileSystem = require("FuseJS/FileSystem");
 
 				var data = FileSystem.readBufferFromFileSync("myfile.txt");
+			```
 		*/
 		object ReadBufferFromFileSync(Context context, object[] args)
 		{
@@ -762,7 +787,7 @@ namespace Fuse.FileSystem
 			Asynchronously reads a file and returns a Promise of its contents.
 
 			## Example
-
+			```js
 				var FileSystem = require("FuseJS/FileSystem");
 
 				FileSystem.readTextFromFile("myfile.txt")
@@ -771,6 +796,7 @@ namespace Fuse.FileSystem
 					}, function(error) {
 						console.log(error);
 					});
+			```
 		*/
 		Future<string> ReadTextFromFile(object[] args)
 		{
@@ -786,11 +812,12 @@ namespace Fuse.FileSystem
 			Synchronously reads a file and returns its contents as a string.
 
 			## Example
-
+			```js
 				var FileSystem = require("FuseJS/FileSystem");
 
 				var content =  FileSystem.readTextFromFileSync(FileSystem.dataDirectory + "/" + "myfile.txt");
 				console.log("The file contains " + content));
+			```
 		*/
 		object ReadTextFromFileSync(Context context, object[] args)
 		{
@@ -807,7 +834,7 @@ namespace Fuse.FileSystem
 			Asynchronously writes an `ArrayBuffer` to a file.
 
 			## Example
-
+			```js
 				var FileSystem = require("FuseJS/FileSystem");
 
 				var data = new ArrayBuffer(4);
@@ -820,6 +847,7 @@ namespace Fuse.FileSystem
 					}, function(error) {
 						console.log(error);
 					});
+			```
 		*/
 		Future<Nothing> WriteBufferToFile(object[] args)
 		{
@@ -837,7 +865,7 @@ namespace Fuse.FileSystem
 			Synchronously writes an `ArrayBuffer` to a file.
 
 			## Example
-
+			```js
 				var FileSystem = require("FuseJS/FileSystem");
 
 				var data = new ArrayBuffer(4);
@@ -845,6 +873,7 @@ namespace Fuse.FileSystem
 				view[0] = 0x1337;
 
 				FileSystem.writeBufferToFileSync(FileSystem.dataDirectory + "/" + "myfile.txt", data);
+			```
 		*/
 		object WriteBufferToFileSync(Context context, object[] args)
 		{
@@ -864,7 +893,7 @@ namespace Fuse.FileSystem
 			Asynchronously writes a string to a UTF-8 encoded file.
 
 			## Example
-
+			```js
 				var FileSystem = require("FuseJS/FileSystem");
 
 				FileSystem.writeTextToFile(FileSystem.dataDirectory + "/" + "myfile.txt", "Hello buddy")
@@ -873,6 +902,7 @@ namespace Fuse.FileSystem
 					}, function(error) {
 						console.log(error);
 					});
+			```
 		*/
 		Future<Nothing> WriteTextToFile(object[] args)
 		{
@@ -890,10 +920,11 @@ namespace Fuse.FileSystem
 			Synchronously writes a string to a UTF-8 encoded file.
 
 			## Example
-
+			```js
 				var FileSystem = require("FuseJS/FileSystem");
 
 				FileSystem.writeTextToFileSync("myfile.txt", "Hello buddy");
+			```
 		*/
 		object WriteTextToFileSync(Context context, object[] args)
 		{

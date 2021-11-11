@@ -29,7 +29,7 @@ namespace Fuse.Charting
 		# Example
 
 		The following example shows `PlotTicks` being used to draw lines on the x-axis of a bar chart.
-
+		```javascript
 			<Panel xmlns:c="Fuse.Charting" >
 				<JavaScript>
 					var Observable = require("FuseJS/Observable");
@@ -56,7 +56,7 @@ namespace Fuse.Charting
 					</c:Plot>
 				</Panel>
 			</Panel>
-
+		```
 		`AxisLine` indicates a line across the entire access should be drawn at this offset. In this example it's the top of the ticks, making this suitable for the bottom of a chart.
 	*/
 	public class PlotTicks : Shape

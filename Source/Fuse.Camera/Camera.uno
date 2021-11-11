@@ -19,7 +19,7 @@ namespace Fuse.Camera
 		On Android using this API will request the CAMERA and WRITE_EXTERNAL_STORAGE permissions.
 
 		## Example
-
+		```javascript
 			var camera = require('FuseJS/Camera');
 			camera.takePicture(640,480).then(function(image)
 			{
@@ -27,6 +27,7 @@ namespace Fuse.Camera
 			}).catch(function(error) {
 			    //Something went wrong, see error for details
 			});
+		```
 	*/
 	[UXGlobalModule]
 	public sealed class Camera : NativeModule

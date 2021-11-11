@@ -19,12 +19,13 @@ namespace Fuse.Gestures
 		## Example
 
 		This example demonstrates how to scale `Panel` by a factor of 2 when a pointer hovers over it:
-
+		```xml
 			<Panel Width="50" Height="50">
 				<WhileHovering>
 					<Scale Factor="2" Duration="0.2" />
 				</WhileHovering>
 			</Panel>
+		```
 	*/
 	public class WhileHovering: Trigger
 	{

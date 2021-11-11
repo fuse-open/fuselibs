@@ -26,7 +26,7 @@ namespace Fuse.Triggers
 		This trigger allows you to animate properties based on the absolute position of a @ScrollView.
 
 		In this example, we remove a top ledge as a ScrollView scrolls down:
-
+		```xml
 			<Panel>
 				<Panel Alignment="Top" Height="50" ux:Name="ledge">
 					<Text Alignment="Center" TextAlignment="Center" Color="#fff" Value="TopLedge" />
@@ -43,6 +43,7 @@ namespace Fuse.Triggers
 					</StackPanel>
 				</ScrollView>
 			</Panel>
+		```
 	*/
 	public class ScrollingAnimation : Trigger, IPropertyListener
 	{
@@ -191,7 +192,7 @@ namespace Fuse.Triggers
 		# Example
 
 		In the following example, our background changes color when we reach the bottom of our @(ScrollView):
-
+		```xml
 			<ScrollViewer>
 				<SolidColor ux:Name="color" Color="#000"/>
 				<StackPanel Margin="10">
@@ -203,7 +204,7 @@ namespace Fuse.Triggers
 					<Change color.Color="#ddd" Duration="0.4"/>
 				</WhileScrollable>
 			</ScrollViewer>
-
+		```
 		@example Docs/WhileScrollable.md
 
 	*/

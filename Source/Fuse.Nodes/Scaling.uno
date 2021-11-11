@@ -27,11 +27,11 @@ namespace Fuse
 
 		# Example
 		The following example will make the `Rectangle` twice as big as the original size:
-
+		```xml
 			<Rectangle Width="100" Height="100">
 				<Scaling Factor="2"/>
 			</Rectangle>
-
+		```
 		For animated scaling, consider using a @Scale animator instead of animating the properties of this class.
 
 		The standard options for `RelativeTo` are:
