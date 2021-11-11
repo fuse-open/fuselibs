@@ -31,28 +31,32 @@ namespace Fuse.Android
 	}
 
 	/**
-Configures the appearance of the status bar on *Android*.
+		Configures the appearance of the status bar on *Android*.
 
-To configure the status bar on *iOS*, see [iOS.StatusBarConfig](api:fuse/ios/statusbarconfig).
+		To configure the status bar on *iOS*, see [iOS.StatusBarConfig](api:fuse/ios/statusbarconfig).
 
-> *Note*: This has no effect on Android versions prior to 5.0 (API level 21).
+		> *Note*: This has no effect on Android versions prior to 5.0 (API level 21).
 
-## Example
+		## Example
 
-To configure the status bar on Android, place an `Android.StatusBarConfig` somewhere in your UX tree.
-```xml
-<App>
-	<Android.StatusBarConfig Color="#0003" IsVisible="True" />
+		To configure the status bar on Android, place an `Android.StatusBarConfig` somewhere in your UX tree.
+		
+		```xml
+		<App>
+			<Android.StatusBarConfig Color="#0003" IsVisible="True" />
 
-	<!-- The rest of our app -->
-</App>
-```
-However, we usually want to configure the status bar for iOS as well.
-We'll add an additional [iOS.StatusBarConfig](api:fuse/ios/statusbarconfig).
-```xml
-<Android.StatusBarConfig Color="#0003" IsVisible="True" />
-<iOS.StatusBarConfig Style="Light" Animation="Slide" IsVisible="True" />
-```
+			<!-- The rest of our app -->
+		</App>
+		```
+		
+		However, we usually want to configure the status bar for iOS as well.
+		We'll add an additional [iOS.StatusBarConfig](api:fuse/ios/statusbarconfig).
+		
+		```xml
+		<Android.StatusBarConfig Color="#0003" IsVisible="True" />
+		<iOS.StatusBarConfig Style="Light" Animation="Slide" IsVisible="True" />
+		```
+
 	*/
 	public class StatusBarConfig: Behavior
 	{
