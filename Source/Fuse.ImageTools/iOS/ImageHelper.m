@@ -312,7 +312,7 @@
 	@try {
 		NSData* data = [[NSData alloc] initWithBase64EncodedString:b64 options:NSDataBase64DecodingIgnoreUnknownCharacters];
 		UIImage* image = [UIImage imageWithData:data];
-		NSString* path = [self createImagePathWithExtension:@"jpg" temp:YES];
+		NSString* path = [self createImagePathWithExtension:@"png" temp:YES];
 		[self saveImage:image path:path];
 		a(path);
 	} @catch(NSException* e) {
