@@ -35,7 +35,7 @@ namespace Fuse
 
 		The following example shows how to use it:
 
-		'''javascript
+		```javascript
 		<JavaScript>
 			module.exports = {
 				handler: function(data) {
