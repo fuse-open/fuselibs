@@ -40,5 +40,10 @@ namespace Fuse
 		{
 			EmailLauncher.LaunchEmail(to, carbonCopy, blindCarbonCopy, subject, message);
 		}
+
+		public static void LaunchInAppBrowser(string url)
+		{
+			InAppBrowserLauncher.LaunchInAppBrowser(url);
+		}
 	}
 }
