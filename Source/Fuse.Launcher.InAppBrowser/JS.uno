@@ -15,8 +15,10 @@ namespace Fuse.Reactive.FuseJS
 
 		## Example
 
+		```javascript
 			var inAppBrowser = require("FuseJS/InAppBrowser");
 			inAppBrowser.openUrl("https://fuseopen.com");
+		```
 	*/
 	public class InAppBrowserModule : NativeModule
 	{

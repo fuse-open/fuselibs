@@ -55,7 +55,7 @@ namespace Fuse.LauncherImpl
 
 	}
 
-	[Require("Gradle.Dependency.Implementation", "androidx.browser:browser:1.3.0")]
+	[Require("Gradle.Dependency.Implementation", "androidx.browser:browser:1.0.0")]
 	[ForeignInclude(Language.Java, "androidx.browser.customtabs.CustomTabsIntent", "android.net.Uri")]
 	public extern(Android) class Chrome
 	{
