@@ -1,16 +1,36 @@
 package com.fuse.webview;
-import android.webkit.WebView;
-import android.webkit.WebChromeClient;
-import android.webkit.ValueCallback;
+
+import android.app.Activity;
+import android.content.Context;
 import android.net.Uri;
+import android.os.Build;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.webkit.JsResult;
+import android.webkit.ValueCallback;
+import android.webkit.WebChromeClient;
+import android.webkit.WebView;
+import android.widget.FrameLayout;
 import com.foreign.Uno.Action_int;
 
 public class FuseWebChromeClient extends WebChromeClient
 {
+	static final FrameLayout.LayoutParams COVER_SCREEN_PARAMS = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+
+	int _originalOrientation;
+	FullscreenHolder _fullscreenContainer;
+	CustomViewCallback _customViewCallback;
+	View _customView;
+	Activity _activity;
 	Action_int _handler;
+
 	public FuseWebChromeClient(Action_int handler)
 	{
 		super();
+		_activity = com.fuse.Activity.getRootActivity();
 		_handler = handler;
 	}
 
@@ -26,5 +46,80 @@ public class FuseWebChromeClient extends WebChromeClient
 	{
 		//TODO: Implement file chooser API via JS callbacks
 		return super.onShowFileChooser(webView, filePathCallback, fileChooserParams);
+	}
+
+	@Override
+	public boolean onJsAlert(WebView view, String url, String message, JsResult result) {
+		result.confirm();
+		return super.onJsAlert(view, url, message, result);
+	}
+
+	@Override
+	public void onShowCustomView(View view, CustomViewCallback callback) {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+			if (_customView != null) {
+				callback.onCustomViewHidden();
+				return;
+			}
+
+			_originalOrientation = _activity.getRequestedOrientation();
+
+			FrameLayout decor = (FrameLayout) _activity.getWindow().getDecorView();
+
+			_fullscreenContainer = new FullscreenHolder(_activity);
+			_fullscreenContainer.addView(view, ViewGroup.LayoutParams.MATCH_PARENT);
+			decor.addView(_fullscreenContainer, ViewGroup.LayoutParams.MATCH_PARENT);
+			_customView = view;
+			setFullscreen(true);
+			_customViewCallback = callback;
+			_activity.setRequestedOrientation(_originalOrientation);
+		}
+		super.onShowCustomView(view, callback);
+	}
+
+	@Override
+	public void onHideCustomView() {
+		if (_customView == null) {
+			return;
+		}
+
+		setFullscreen(false);
+
+		FrameLayout decor = (FrameLayout) _activity.getWindow().getDecorView();
+		decor.removeView(_fullscreenContainer);
+		_fullscreenContainer = null;
+		_customView = null;
+		_customViewCallback.onCustomViewHidden();
+
+		_activity.setRequestedOrientation(_originalOrientation);
+	}
+
+	private void setFullscreen(boolean enabled) {
+
+		Window win = _activity.getWindow();
+		WindowManager.LayoutParams winParams = win.getAttributes();
+		final int bits = WindowManager.LayoutParams.FLAG_FULLSCREEN;
+		if (enabled) {
+			winParams.flags |= bits;
+		} else {
+			winParams.flags &= ~bits;
+			if (_customView != null) {
+				_customView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
+			}
+		}
+		win.setAttributes(winParams);
+	}
+
+	static class FullscreenHolder extends FrameLayout {
+
+		public FullscreenHolder(Context ctx) {
+			super(ctx);
+			setBackgroundColor(ctx.getResources().getColor(android.R.color.black));
+		}
+
+		@Override
+		public boolean onTouchEvent(MotionEvent evt) {
+			return true;
+		}
 	}
 }
