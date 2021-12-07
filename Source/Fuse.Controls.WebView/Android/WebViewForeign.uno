@@ -29,9 +29,9 @@ namespace Fuse.Android.Controls.WebViewUtils
 		[Foreign(Language.Java)]
 		public extern (Android) static void AddJavascriptInterface(this Java.Object handle, string name, Action<string> resultHandler)
 		@{
-				WebView wv = (WebView)handle;
-				JsInterface jsi = new JsInterface(resultHandler);
-				wv.addJavascriptInterface(jsi, name);
+			WebView wv = (WebView)handle;
+			JsInterface jsi = new JsInterface(resultHandler);
+			wv.addJavascriptInterface(jsi, name);
 		@}
 
 		[Foreign(Language.Java)]
@@ -123,8 +123,8 @@ namespace Fuse.Android.Controls.WebViewUtils
 		[Foreign(Language.Java)]
 		public extern (Android) static double GetProgress(this Java.Object handle)
 		@{
-				WebView wv = (WebView)handle;
-				return wv.getProgress();
+			WebView wv = (WebView)handle;
+			return wv.getProgress();
 		@}
 
 	}
