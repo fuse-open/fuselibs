@@ -15,6 +15,7 @@ namespace Fuse.Android.Controls
 		Fuse.Controls.Native.Android.LeafView,
 		Fuse.Controls.IWebView
 	{
+		Java.Object _downloadListenerHandle;
 		Java.Object _webChromeClientHandle;
 		Java.Object _webViewClientHandle;
 		Java.Object _webViewHandle;
@@ -24,6 +25,8 @@ namespace Fuse.Android.Controls
 		public event EventHandler UrlChanged;
 		public event EventHandler PageLoaded;
 		public event EventHandler URISchemeHandler;
+		public event EventHandler BeginDownload;
+		public event EventHandler FileDownloaded;
 
 		Fuse.Controls.WebView _webViewHost;
 		JSEvalRequestManager _evalRequestMgr;
@@ -42,6 +45,7 @@ namespace Fuse.Android.Controls
 
 			_evalRequestMgr = new JSEvalRequestManager(_webViewHandle);
 
+			_downloadListenerHandle = _webViewHandle.CreateAndSetDownloadListener(OnBeginDownload, OnFileDownloaded);
 			_webChromeClientHandle = _webViewHandle.CreateAndSetWebChromeClient(OnProgressChanged);
 			_webViewClientHandle = _webViewHandle.CreateAndSetWebViewClient(
 				OnPageLoaded,
@@ -83,6 +87,18 @@ namespace Fuse.Android.Controls
 		{
 			if(UrlChanged!=null)
 				UrlChanged(this, EventArgs.Empty);
+		}
+
+		void OnBeginDownload(string url)
+		{
+			if (BeginDownload != null)
+				BeginDownload(this, new DownloadEventArgs(url, null));
+		}
+
+		void OnFileDownloaded(string url, string path)
+		{
+			if (FileDownloaded != null)
+				FileDownloaded(this, new DownloadEventArgs(url, path));
 		}
 
 		public void Eval(string js, Action<string> resultHandler)

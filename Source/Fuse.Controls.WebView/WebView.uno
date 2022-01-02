@@ -28,6 +28,8 @@ namespace Fuse.Controls
 		event EventHandler BeginLoading;
 		event EventHandler UrlChanged;
 		event EventHandler URISchemeHandler;
+		event EventHandler BeginDownload;
+		event EventHandler FileDownloaded;
 		void LoadHtml(string html);
 		void LoadHtml(string html, string baseUrl);
 		void LoadUrl(string url);
@@ -173,6 +175,14 @@ namespace Fuse.Controls
 			Callback that fires if a URL request matching the app's UriScheme is made
 		*/
 		public event EventHandler URISchemeHandler;
+		/**
+			Callback that fires when a file will start to download
+		*/
+		public event EventHandler BeginDownload;
+		/**
+			Callback that fires when a file has been downloaded
+		*/
+		public event EventHandler FileDownloaded;
 
 
 		HTML _html;
@@ -238,6 +248,8 @@ namespace Fuse.Controls
 					_webViewClient.BeginLoading -= OnBeginLoading;
 					_webViewClient.UrlChanged -= OnPageChanged;
 					_webViewClient.URISchemeHandler -= URISchemeHandler;
+					_webViewClient.BeginDownload -= BeginDownload;
+					_webViewClient.FileDownloaded -= FileDownloaded;
 
 					url = _webViewClient.Url;
 					source = _webViewClient.Source ?? "";
@@ -256,6 +268,8 @@ namespace Fuse.Controls
 					_webViewClient.BeginLoading += OnBeginLoading;
 					_webViewClient.UrlChanged += OnPageChanged;
 					_webViewClient.URISchemeHandler += URISchemeHandler;
+					_webViewClient.BeginDownload += BeginDownload;
+					_webViewClient.FileDownloaded += FileDownloaded;
 
 					_webViewClient.BaseUrl = baseUrl;
 					_webViewClient.Source = source;
@@ -555,6 +569,8 @@ namespace Fuse.Controls
 		public event EventHandler BeginLoading;
 		public event EventHandler UrlChanged;
 		public event EventHandler URISchemeHandler;
+		public event EventHandler BeginDownload;
+		public event EventHandler FileDownloaded;
 		public double Progress { get { return 0.0; } }
 		public bool ZoomEnabled { get; set; }
 		public bool ScrollEnabled { get; set; }

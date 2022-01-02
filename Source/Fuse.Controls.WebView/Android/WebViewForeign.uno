@@ -8,7 +8,7 @@ using Uno.Compiler.ExportTargetInterop;
 
 namespace Fuse.Android.Controls.WebViewUtils
 {
-	[ForeignInclude(Language.Java, "com.fuse.webview.JsInterface", "com.fuse.webview.FuseWebViewClient", "com.fuse.webview.FuseWebChromeClient", "android.util.Log", "android.webkit.WebView", "com.fuse.webview.ScrollableWebView")]
+	[ForeignInclude(Language.Java, "com.fuse.webview.JsInterface", "com.fuse.webview.FuseDownloadListener", "com.fuse.webview.FuseWebViewClient", "com.fuse.webview.FuseWebChromeClient", "android.util.Log", "android.webkit.WebView", "com.fuse.webview.ScrollableWebView")]
 	public static class WebViewForeign
 	{
 		[Foreign(Language.Java)]
@@ -48,6 +48,14 @@ namespace Fuse.Android.Controls.WebViewUtils
 			FuseWebViewClient client = new FuseWebViewClient(loaded, started, changed, onCustomURI, customURIs, hasUriSchemeHandler);
 			((WebView)webViewHandle).setWebViewClient(client);
 			return client;
+		@}
+
+		[Foreign(Language.Java)]
+		public extern (Android) static Java.Object CreateAndSetDownloadListener(this Java.Object webViewHandle, Action<string> beginDownload, Action<string, string> fileDownloaded)
+		@{
+			FuseDownloadListener downloadListener = new FuseDownloadListener(beginDownload, fileDownloaded);
+			((WebView)webViewHandle).setDownloadListener(downloadListener);
+			return downloadListener;
 		@}
 
 		[Foreign(Language.Java)]
