@@ -341,5 +341,9 @@ namespace Fuse.iOS.Controls
 		public event EventHandler URISchemeHandler;
 		public bool ZoomEnabled { get; set; }
 		public bool ScrollEnabled { get; set; }
+
+		// Not implemented
+		public event EventHandler BeginDownload;
+		public event EventHandler FileDownloaded;
 	}
 }
