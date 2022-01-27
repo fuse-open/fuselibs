@@ -94,7 +94,7 @@ namespace Fuse.Controls
 		```XML
 		<App Background="#333">
 			<JavaScript>
-					module.exports = {
+				module.exports = {
 						onPageLoaded : function(res) {
 							console.log("WebView arrived at "+ JSON.parse(res.json).url);
 					}
@@ -103,7 +103,7 @@ namespace Fuse.Controls
 			<DockPanel>
 				<StatusBarBackground Dock="Top"/>
 				<NativeViewHost>
-					<WebView Dock="Fill" Url="http://www.google.com">
+					<WebView Dock="Fill" Url="https://www.google.com">
 						<PageLoaded>
 							<EvaluateJS Handler="{onPageLoaded}">
 								var result = {
