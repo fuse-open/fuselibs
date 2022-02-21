@@ -2,6 +2,7 @@ package com.fuse.webview;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.view.MotionEvent;
@@ -19,6 +20,7 @@ import com.foreign.Uno.Action_int;
 public class FuseWebChromeClient extends WebChromeClient
 {
 	static final FrameLayout.LayoutParams COVER_SCREEN_PARAMS = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+	static final int REQUEST_CODE_FILE_PICKER = 51426;
 
 	int _originalOrientation;
 	FullscreenHolder _fullscreenContainer;
@@ -42,10 +44,71 @@ public class FuseWebChromeClient extends WebChromeClient
 	}
 
 	@Override
-	public boolean onShowFileChooser (WebView webView, ValueCallback<Uri[]> filePathCallback, WebChromeClient.FileChooserParams fileChooserParams)
-	{
-		//TODO: Implement file chooser API via JS callbacks
-		return super.onShowFileChooser(webView, filePathCallback, fileChooserParams);
+	public boolean onShowFileChooser(WebView webView, final ValueCallback<Uri[]> filePathCallback, WebChromeClient.FileChooserParams fileChooserParams) {
+		if (Build.VERSION.SDK_INT >= 21) {
+			final boolean allowMultiple = fileChooserParams.getMode() == FileChooserParams.MODE_OPEN_MULTIPLE;
+			Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+			intent.addCategory(Intent.CATEGORY_OPENABLE);
+			intent.setType("*/*");
+
+			if (allowMultiple) {
+				if (Build.VERSION.SDK_INT >= 18) {
+					intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+				}
+			}
+
+			com.fuse.Activity.ResultListener listener = new com.fuse.Activity.ResultListener() {
+				@Override
+				public boolean onResult(int requestCode, int resultCode, Intent intent) {
+					if (requestCode == REQUEST_CODE_FILE_PICKER) {
+						if (resultCode == Activity.RESULT_OK) {
+							if (intent != null) {
+								if (filePathCallback != null) {
+									Uri[] dataUris = null;
+
+									try {
+										if (intent.getDataString() != null) {
+											dataUris = new Uri[] { Uri.parse(intent.getDataString()) };
+										}
+										else {
+											if (Build.VERSION.SDK_INT >= 16) {
+												if (intent.getClipData() != null) {
+													final int numSelectedFiles = intent.getClipData().getItemCount();
+
+													dataUris = new Uri[numSelectedFiles];
+
+													for (int i = 0; i < numSelectedFiles; i++) {
+														dataUris[i] = intent.getClipData().getItemAt(i).getUri();
+													}
+												}
+											}
+										}
+									}
+									catch (Exception ignored) { }
+
+									filePathCallback.onReceiveValue(dataUris);
+								}
+							}
+						}
+						else {
+							if (filePathCallback != null) {
+								filePathCallback.onReceiveValue(null);
+							}
+						}
+
+						com.fuse.Activity.unsubscribeFromResults(this);
+					}
+
+					return true;
+				}
+			};
+
+			com.fuse.Activity.subscribeToResults(listener);
+			_activity.startActivityForResult(Intent.createChooser(intent, "Choose File"), REQUEST_CODE_FILE_PICKER);
+			return true;
+		} else {
+			return super.onShowFileChooser(webView, filePathCallback, fileChooserParams);
+		}
 	}
 
 	@Override
