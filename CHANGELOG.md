@@ -1,5 +1,20 @@
 # Unreleased
 
+## 2.1
+
+### Fuse.ImageTools
+- Transparency support for images from base64 (#1434)
+
+### Fuse.Launcher
+- InAppBrowser launcher (#1412)
+
+### Fuse.Controls.WebView
+- Support fullscreen mode (#1435)
+- Download ability (#1436)
+- Open file picker for file inputs (#1439)
+
+https://github.com/fuse-open/fuselibs/compare/v2.0.1...v2.1.0
+
 ## 2.0
 
 ### Breaking changes
