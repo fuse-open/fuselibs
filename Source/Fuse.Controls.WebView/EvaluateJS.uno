@@ -93,7 +93,7 @@ namespace Fuse.Triggers.Actions
 				</JavaScript>
 				<Text Value="{webViewTitle}" Alignment="Center" />
 				<NativeViewHost>
-					<WebView Url="https://www.fusetools.com">
+					<WebView Url="https://fuseopen.com">
 						<PageLoaded>
 							<EvaluateJS JavaScript="return window.document.title;" Handler="{updateTitle}" />
 						</PageLoaded>

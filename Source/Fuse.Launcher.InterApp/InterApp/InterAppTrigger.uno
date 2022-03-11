@@ -20,9 +20,9 @@ namespace Fuse.Triggers.Actions
 		## Example
 		```XML
 			<StackPanel Margin="20">
-				<Button Margin="10" Text="Go to Fusetools">
+				<Button Margin="10" Text="Go to Fuse Open">
 					<Clicked>
-						<LaunchUri Uri="https://www.fusetools.com/" />
+						<LaunchUri Uri="https://fuseopen.com/" />
 					</Clicked>
 				</Button>
 			</StackPanel>

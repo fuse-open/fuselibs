@@ -33,7 +33,7 @@ namespace Fuse.Share
 				},
 				shareText : function()
 				{
-					Share.shareText("https://www.fusetools.com/", "The link to Fuse website");
+					Share.shareText("https://fuseopen.com/", "The link to Fuse Open website");
 				}
 			}
 		</JavaScript>
@@ -49,7 +49,7 @@ namespace Fuse.Share
 					shareText : function()
 					{
 						// The iOS popover will use the position of ShareOrigin as its spawn origin
-						Share.shareText("https://www.fusetools.com/", "The link to Fuse website", ShareOrigin);
+						Share.shareText("https://fuseopen.com/", "The link to Fuse Open website", ShareOrigin);
 					}
 				}
 			</JavaScript>

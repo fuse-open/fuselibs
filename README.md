@@ -4,7 +4,7 @@
 [![Travis CI build status](https://img.shields.io/travis/fuse-open/fuselibs/master.svg?style=flat-square)](https://travis-ci.org/fuse-open/fuselibs)
 [![NPM package](https://img.shields.io/npm/v/@fuse-open/fuselibs.svg?style=flat-square)](https://www.npmjs.com/package/@fuse-open/fuselibs)
 [![License: MIT](https://img.shields.io/github/license/fuse-open/fuselibs.svg?style=flat-square)](LICENSE.txt)
-[![Slack](https://img.shields.io/badge/chat-on%20slack-blue.svg?style=flat-square)](https://slackcommunity.fusetools.com/)
+[![Slack](https://img.shields.io/badge/chat-on%20slack-blue.svg?style=flat-square)](https://fusecommunity.slack.com/)
 [![Financial Contributors on Open Collective](https://opencollective.com/fuse-open/all/badge.svg?label=financial+contributors&style=flat-square)](https://opencollective.com/fuse-open)
 
 ![Target platforms](https://img.shields.io/badge/target%20os-Android%20%7C%20iOS%20%7C%20Linux%20%7C%20macOS%20%7C%20Windows-7F5AB6?style=flat-square&logo=android&logoColor=silver)
