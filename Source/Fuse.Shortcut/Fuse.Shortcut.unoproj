@@ -1,0 +1,17 @@
+{
+  "Copyright": "Copyright (c) Fuse Open 2022",
+  "Description": "Shows menu items when pressing App Icon on the device home screen",
+  "Publisher": "Fuse Open",
+  "Packages": [
+    "Uno.Threading"
+  ],
+  "Projects": [
+    "../Fuse.Scripting/Fuse.Scripting.unoproj",
+    "../Fuse.Common/Fuse.Common.unoproj",
+  ],
+  "Includes": [
+    "*",
+    "iOS/FOShortcutHandler.h:ObjCHeader:iOS",
+    "iOS/FOShortcutHandler.m:ObjCSource:iOS",
+  ]
+}
