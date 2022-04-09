@@ -277,7 +277,13 @@ namespace Fuse.Effects
 				DepthTestEnabled: false;
 			};
 
+			FramebufferPool.Release(original);
+			FramebufferPool.Release(blurRegion);
 			FramebufferPool.Release(blur);
+
+			original = null;
+			blurRegion = null;
+			blur = null;
 		}
 	}
 }
