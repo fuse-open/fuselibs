@@ -28,6 +28,40 @@ namespace Fuse.Drawing
 				OnPropertyChanged(_shadingName);
 		}
 
+		static Selector _dashedSizeName = "DashedSize";
+		[UXOriginSetter("SetDashedSize")]
+		/**
+			Create a dashed stroke and set the gap between stroke.
+		*/
+		public float DashedSize
+		{
+			get
+			{
+				if (Brush is DashedColor)
+					return ((DashedColor)Brush).DashedSize;
+				return 0.0f;
+			}
+			set
+			{
+				SetDashedSize(value, this);
+			}
+		}
+
+		public void SetDashedSize(float dashedSize, IPropertyListener origin)
+		{
+			if (dashedSize != DashedSize && dashedSize > 0)
+			{
+				if (!(Brush is DashedColor))
+					Brush = new DashedColor(Color, dashedSize);
+				else
+					((DashedColor)Brush).DashedSize = dashedSize;
+			}
+			else
+				Brush = new SolidColor(Color);
+
+			OnPropertyChanged(_dashedSizeName, origin);
+		}
+
 		static Selector _brushName = "Brush";
 		Brush _brush;
 		[UXContent]
@@ -60,7 +94,7 @@ namespace Fuse.Drawing
 		/**
 			The color of the stroke.
 
-		 	For more information on what notations Color supports, check out [this subpage](articles:ux-markup/literals#colors).
+			For more information on what notations Color supports, check out [this subpage](articles:ux-markup/literals#colors).
 		*/
 		public float4 Color
 		{
@@ -68,6 +102,8 @@ namespace Fuse.Drawing
 			{
 				if (Brush is ISolidColor)
 					return ((ISolidColor)Brush).Color;
+				if (Brush is DashedColor)
+					return ((DashedColor)Brush).Color;
 				return float4(0);
 			}
 			set
@@ -79,12 +115,22 @@ namespace Fuse.Drawing
 		{
 			if (color != Color)
 			{
-				if (!(Brush is SolidColor))
- 					Brush = new SolidColor(color);
-	 			else
-	 				((SolidColor)Brush).Color = color;
+				if (DashedSize > 0)
+				{
+					if (!(Brush is DashedColor))
+						Brush = new DashedColor(Color, DashedSize);
+					else
+						((DashedColor)Brush).Color = color;
+				}
+				else
+				{
+					if (!(Brush is SolidColor))
+						Brush = new SolidColor(color);
+					else
+						((SolidColor)Brush).Color = color;
+				}
 
-	 			OnPropertyChanged(_colorName, origin);
+				OnPropertyChanged(_colorName, origin);
 			}
 		}
 
