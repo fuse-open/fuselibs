@@ -96,29 +96,29 @@ namespace Fuse
 		protected override void OnUpdate()
 		{
 			CheckFocus();
-			CheckStatusBarOrientation();
+			CheckOrientation();
 			base.OnUpdate();
 		}
 
 		//iOS: has no events to detect focus change thus we need this stupid polling
- 		ObjC.Object _currentFocus;
- 		void CheckFocus()
- 		{
- 			var newFocus = Fuse.Controls.Native.iOS.FocusHelpers.GetCurrentFirstResponder();
+		ObjC.Object _currentFocus;
+		void CheckFocus()
+		{
+			var newFocus = Fuse.Controls.Native.iOS.FocusHelpers.GetCurrentFirstResponder();
 
- 			if (!Compare(_currentFocus, newFocus))
- 			{
- 				if (!IsNull(_currentFocus))
- 					Fuse.Controls.Native.iOS.NativeFocus.RaiseFocusLost(_currentFocus);
+			if (!Compare(_currentFocus, newFocus))
+			{
+				if (!IsNull(_currentFocus))
+					Fuse.Controls.Native.iOS.NativeFocus.RaiseFocusLost(_currentFocus);
 
- 				_currentFocus = newFocus;
+				_currentFocus = newFocus;
 
- 				if (!IsNull(_currentFocus))
- 					Fuse.Controls.Native.iOS.NativeFocus.RaiseFocusGained(_currentFocus);
- 			}
- 		}
+				if (!IsNull(_currentFocus))
+					Fuse.Controls.Native.iOS.NativeFocus.RaiseFocusGained(_currentFocus);
+			}
+		}
 
- 		[Foreign(Language.ObjC)]
+		[Foreign(Language.ObjC)]
 		[Require("Source.Include", "UIKit/UIKit.h")]
 		static bool Compare(ObjC.Object x, ObjC.Object y)
 		@{
@@ -132,17 +132,17 @@ namespace Fuse
 			return x == nil;
 		@}
 
- 		int _prevStatusBarOrientation = -1;
- 		void CheckStatusBarOrientation()
- 		{
- 			var o = Device.StatusBarOrientation;
- 			if (_prevStatusBarOrientation != o)
- 			{
- 				_prevStatusBarOrientation = o;
+		int _prevOrientation = -1;
+		void CheckOrientation()
+		{
+			var o = Device.Orientation;
+			if (_prevOrientation != o)
+			{
+				_prevOrientation = o;
 				if defined(!DISABLE_IMPLICIT_GRAPHICSVIEW)
 					UpdateManager.PerformNextFrame(_graphicsView.InvalidateVisual);
- 			}
- 		}
+			}
+		}
 
 	}
 
@@ -154,23 +154,11 @@ namespace Fuse
 			get { return GetCurrentOrientation(); }
 		}
 
-		public static int StatusBarOrientation
-		{
-			get { return GetStatusBarOrientation(); }
-		}
-
 		[Foreign(Language.ObjC)]
 		static int GetCurrentOrientation()
 		@{
 			return (int)[[UIDevice currentDevice] orientation];
 		@}
-
-		[Foreign(Language.ObjC)]
-		static int GetStatusBarOrientation()
-		@{
-			return (int)[[UIApplication sharedApplication] statusBarOrientation];
-		@}
-
 	}
 
 }
