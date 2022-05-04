@@ -8,7 +8,7 @@ environment:
 
 install:
   - npm install
-  - npm install android-build-tools -g
+  - npm install android-build-tools@1.x -g
 
 build_script:
   - npm pack --silent
