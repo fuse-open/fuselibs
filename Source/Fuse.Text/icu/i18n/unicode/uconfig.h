@@ -15,6 +15,9 @@
 #ifndef __UCONFIG_H__
 #define __UCONFIG_H__
 
+#if defined(__APPLE__)
+#include <TargetConditionals.h>
+#endif
 
 /*!
  * \file
