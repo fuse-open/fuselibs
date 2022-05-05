@@ -1,5 +1,24 @@
 # Unreleased
 
+## 2.2
+
+### Fuse.Shortcut
+- New library for home screen shortcuts (#1440)
+
+### Fuse.Controls.Primitives
+- Fix memory leak in Glass effect (#1441)
+
+### Fuse.Drawing
+- Experimental support for dashed strokes (#1442)
+
+### Fuse.iOS
+- Update device orientation implementation (#1443)
+
+### Fuse.Text
+- Silences warnings when building on Mac with Xcode 13 (#1444)
+
+https://github.com/fuse-open/fuselibs/compare/v2.1.1...v2.2.0
+
 ## 2.1
 
 ### Fuse.ImageTools
