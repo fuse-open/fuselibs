@@ -17,7 +17,7 @@
 ### Fuse.Text
 - Silences warnings when building on Mac with Xcode 13 (#1444)
 
-https://github.com/fuse-open/fuselibs/compare/v2.1.1...v2.2.0
+[`v2.1.1...v2.2.0`](https://github.com/fuse-open/fuselibs/compare/v2.1.1...v2.2.0)
 
 ## 2.1
 
@@ -32,7 +32,7 @@ https://github.com/fuse-open/fuselibs/compare/v2.1.1...v2.2.0
 - Download ability (#1436)
 - Open file picker for file inputs (#1439)
 
-https://github.com/fuse-open/fuselibs/compare/v2.0.1...v2.1.0
+[`v2.0.1...v2.1.0`](https://github.com/fuse-open/fuselibs/compare/v2.0.1...v2.1.0)
 
 ## 2.0
 
@@ -144,7 +144,7 @@ https://github.com/fuse-open/fuselibs/compare/v2.0.1...v2.1.0
 - Fuse.Controls.CameraView: Fix type-name typo (#1393)
 - Text Test App (#1408, #1409)
 
-https://github.com/fuse-open/fuselibs/compare/v1.14.0...master
+[`v1.14.0...v2.0.0`](https://github.com/fuse-open/fuselibs/compare/v1.14.0...v2.0.0)
 
 # 1.14
 
