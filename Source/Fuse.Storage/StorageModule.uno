@@ -40,6 +40,7 @@ namespace Fuse.Storage
 			@return (Promise) A promise of a boolean, which will be `true` if the write succeeded.
 
 			Asynchronously writes to a file.
+
 			```js
 				var Storage = require("FuseJS/Storage");
 
@@ -72,6 +73,7 @@ namespace Fuse.Storage
 			@return (Promise) A promise of the file's contents.
 
 			Asynchronously reads a file and returns a promise of its contents.
+
 			```js
 				var Storage = require("FuseJS/Storage");
 
@@ -82,6 +84,7 @@ namespace Fuse.Storage
 						console.log(error);
 					});
 			```
+			
 		*/
 		static Future<string> ReadAsync(object[] args)
 		{
@@ -99,6 +102,7 @@ namespace Fuse.Storage
 			@return (boolean) `true` if the file was deleted, `false` otherwise.
 
 			Synchrounously deletes a file inside the application folder.
+
 			```js
 				var Storage = require("FuseJS/Storage");
 
@@ -110,6 +114,7 @@ namespace Fuse.Storage
 					console.log("An error occured!");
 				}
 			```
+
 			> Warning: This call will block until the operation is finished.
 		*/
 		static object Remove(Scripting.Context c, object[] args)
@@ -128,6 +133,7 @@ namespace Fuse.Storage
 			@return (boolean) `true` if the write was successful, `false` otherwise
 
 			Synchrounously writes data to a file inside the application folder.
+
 			```js
 				var Storage = require("FuseJS/Storage");
 
@@ -139,6 +145,7 @@ namespace Fuse.Storage
 					console.log("An error occured!");
 				}
 			```
+
 			> Warning: This call will block until the operation is finished. Use write() if you are writing large amounts of data.
 		*/
 		static object Write(Scripting.Context c, object[] args)
@@ -159,12 +166,14 @@ namespace Fuse.Storage
 			@return (String) The contents of the file
 
 			Synchrounously reads data from a file inside the application folder.
+
 			```js
 				var Storage = require("FuseJS/Storage");
 
 				var contents = Storage.readSync("myfile.txt");
 				console.log(contents);
 			```
+			
 			> Warning: This call will block until the operation is finished. Use read() if you are reading large amounts of data.
 		*/
 		static object Read(Scripting.Context c, object[] args)
