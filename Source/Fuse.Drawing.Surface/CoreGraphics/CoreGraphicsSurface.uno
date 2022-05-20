@@ -428,9 +428,11 @@ namespace Fuse.Drawing
 		@{
 			auto ctx = (CGLib::Context*)cp;
 			CGFloat color[] = {r,g,b,a};
-			CGContextSetFillColorWithColor(ctx->Context, CGColorCreate(ctx->ColorSpace, color));
+			CGColorRef colorRef = CGColorCreate(ctx->ColorSpace, color);
+			CGContextSetFillColorWithColor(ctx->Context, colorRef);
 
 			ctx->FillPath((CGPathRef)path, eoFill);
+			CGColorRelease(colorRef);
 		@}
 
 		[Foreign(Language.CPlusPlus)]
