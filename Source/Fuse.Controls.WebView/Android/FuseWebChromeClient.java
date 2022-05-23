@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,18 +16,27 @@ import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
+
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.foreign.Uno.Action_int;
+
+import com.vansuita.pickimage.bean.PickResult;
+import com.vansuita.pickimage.bundle.PickSetup;
+import com.vansuita.pickimage.dialog.PickImageDialog;
+import com.vansuita.pickimage.listeners.IPickCancel;
+import com.vansuita.pickimage.listeners.IPickResult;
 
 public class FuseWebChromeClient extends WebChromeClient
 {
-	static final FrameLayout.LayoutParams COVER_SCREEN_PARAMS = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 	static final int REQUEST_CODE_FILE_PICKER = 51426;
 
 	int _originalOrientation;
+	ValueCallback<Uri[]> _filePathCallback;
 	FullscreenHolder _fullscreenContainer;
 	CustomViewCallback _customViewCallback;
 	View _customView;
-	Activity _activity;
+	AppCompatActivity _activity;
 	Action_int _handler;
 
 	public FuseWebChromeClient(Action_int handler)
@@ -44,9 +54,58 @@ public class FuseWebChromeClient extends WebChromeClient
 	}
 
 	@Override
-	public boolean onShowFileChooser(WebView webView, final ValueCallback<Uri[]> filePathCallback, WebChromeClient.FileChooserParams fileChooserParams) {
+	public boolean onShowFileChooser(final WebView webView, ValueCallback<Uri[]> filePathCallback, WebChromeClient.FileChooserParams fileChooserParams) {
+		// Cancel existing callback first, if any.
+		onReceiveFileChooserValue(null);
+
+		// Set callback for onReceiveFileChooserValue().
+		_filePathCallback = filePathCallback;
+
 		if (Build.VERSION.SDK_INT >= 21) {
 			final boolean allowMultiple = fileChooserParams.getMode() == FileChooserParams.MODE_OPEN_MULTIPLE;
+
+			if (!allowMultiple) {
+				// Show a dialog where we can pick images using Camera or Gallery.
+
+				PickImageDialog dialog = PickImageDialog
+						.build(new PickSetup().setVideo(false))
+						.setOnPickResult(new IPickResult() {
+							@Override
+							public void onPickResult(PickResult r) {
+								onReceiveFileChooserValue(new Uri[]{ r.getUri() });
+							}
+						})
+						.setOnPickCancel(new IPickCancel() {
+							@Override
+							public void onCancelClick() {
+								onReceiveFileChooserValue(null);
+							}
+						});
+
+				// It's possible to cancel the dialog without receiving onCancelClick(), for example
+				// when tapping on the background or when using the back button.
+
+				// However, if we don't call onReceiveFileChooserValue(), it is no longer possible
+				// to open more dialogs. onShowFileChooser() just never gets called again...
+
+				// So, to workaround the problem, we'll listen for any touch events from WebView,
+				// make sure to call onReceiveFileChooserValue(), and this trick makes it possible
+				// to open another dialog!
+
+				webView.setOnTouchListener(new View.OnTouchListener() {
+					@Override
+					public boolean onTouch(View view, MotionEvent event) {
+						onReceiveFileChooserValue(null);
+						return false;
+					}
+				});
+
+				dialog.show(_activity.getSupportFragmentManager());
+				return true;
+			}
+
+			// Fallback:
+
 			Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
 			intent.addCategory(Intent.CATEGORY_OPENABLE);
 			intent.setType("*/*");
@@ -63,37 +122,35 @@ public class FuseWebChromeClient extends WebChromeClient
 					if (requestCode == REQUEST_CODE_FILE_PICKER) {
 						if (resultCode == Activity.RESULT_OK) {
 							if (intent != null) {
-								if (filePathCallback != null) {
-									Uri[] dataUris = null;
+								Uri[] dataUris = null;
 
-									try {
-										if (intent.getDataString() != null) {
-											dataUris = new Uri[] { Uri.parse(intent.getDataString()) };
-										}
-										else {
-											if (Build.VERSION.SDK_INT >= 16) {
-												if (intent.getClipData() != null) {
-													final int numSelectedFiles = intent.getClipData().getItemCount();
+								try {
+									if (intent.getDataString() != null) {
+										dataUris = new Uri[] { Uri.parse(intent.getDataString()) };
+									}
+									else {
+										if (Build.VERSION.SDK_INT >= 16) {
+											if (intent.getClipData() != null) {
+												final int numSelectedFiles = intent.getClipData().getItemCount();
 
-													dataUris = new Uri[numSelectedFiles];
+												dataUris = new Uri[numSelectedFiles];
 
-													for (int i = 0; i < numSelectedFiles; i++) {
-														dataUris[i] = intent.getClipData().getItemAt(i).getUri();
-													}
+												for (int i = 0; i < numSelectedFiles; i++) {
+													dataUris[i] = intent.getClipData().getItemAt(i).getUri();
 												}
 											}
 										}
 									}
-									catch (Exception ignored) { }
-
-									filePathCallback.onReceiveValue(dataUris);
 								}
+								catch (Exception e) {
+									Log.e("FuseWebChromeClient", e.toString());
+								}
+
+								onReceiveFileChooserValue(dataUris);
 							}
 						}
 						else {
-							if (filePathCallback != null) {
-								filePathCallback.onReceiveValue(null);
-							}
+							onReceiveFileChooserValue(null);
 						}
 
 						com.fuse.Activity.unsubscribeFromResults(this);
@@ -108,6 +165,13 @@ public class FuseWebChromeClient extends WebChromeClient
 			return true;
 		} else {
 			return super.onShowFileChooser(webView, filePathCallback, fileChooserParams);
+		}
+	}
+
+	private void onReceiveFileChooserValue(Uri[] value) {
+		if (_filePathCallback != null) {
+			_filePathCallback.onReceiveValue(value);
+			_filePathCallback = null;
 		}
 	}
 
