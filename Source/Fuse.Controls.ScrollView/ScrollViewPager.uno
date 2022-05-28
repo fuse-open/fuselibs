@@ -36,6 +36,25 @@ namespace Fuse.Controls
 	*/
 	public partial class ScrollViewPager : Behavior, IPropertyListener
 	{
+		int _step = 1;
+		/** The step value for increasing or decreasing Offset/Limit property of the `Each`
+
+			@Default 1
+
+			If the content of the `ScrollView` is a `CollectionPanel`, set this value to match with `GroupCount` property of the `CollectionPanel` to avoid Visual jumping.
+		*/
+		public int Step
+		{
+			get { return _step; }
+			set
+			{
+				if (_step == value)
+					return;
+
+				_step = value;
+			}
+		}
+
 		int _retain = 3;
 		/**
 			An approximate number of pages to retain. The size of the visible part of the `ScrollView` is the page size. Enough items to fill multiple amounts of this size are kept around. The rest are discarded.
@@ -226,7 +245,7 @@ namespace Fuse.Controls
 				var count = Each.DataCount;
 
 				if (offset + limit < count)
-					Each.Offset = offset + 1;
+					Each.Offset = offset + Step;
 				else
 					nearTrueEnd = true;
 			}
@@ -234,7 +253,7 @@ namespace Fuse.Controls
 			{
 				var offset = Each.Offset;
 				if (offset > 0)
-					Each.Offset = offset - 1;
+					Each.Offset = offset - Step;
 				else
 					nearTrueStart = true;
 			}
@@ -276,7 +295,7 @@ namespace Fuse.Controls
 
 				if (offset + limit < count)
 				{
-					Each.Limit = limit + 1;
+					Each.Limit = limit + Step;
 					changed = true;
 				}
 			}
@@ -289,7 +308,7 @@ namespace Fuse.Controls
 
 				if (limit > 1)
 				{
-					Each.Limit = limit - 1;
+					Each.Limit = limit - Step;
 					changed = true;
 				}
 			}
