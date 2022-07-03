@@ -56,7 +56,7 @@ The following software must be installed in order to use Uno and Fuselibs.
 
 #### Windows
 
-* [VCRedist 2010](https://www.microsoft.com/en-US/Download/confirmation.aspx?id=14632)
+* [VCRedist 2010](https://www.microsoft.com/en-us/download/confirmation.aspx?id=26999)
 * [VCRedist 2013](https://www.microsoft.com/en-gb/download/details.aspx?id=40784)
 
 ## Building from source
