@@ -20,7 +20,8 @@
         "Fuse.UXKits.Alive",
         "Fuse.Models",
         "Fuse.Sensor",
-        "Fuse.Auth"
+        "Fuse.Auth",
+        "Fuse.Shortcut"
     ],
     "Includes": [
         "*"
