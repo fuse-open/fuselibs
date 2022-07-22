@@ -1,0 +1,24 @@
+<Extensions Backend="CPlusPlus" Condition="ANDROID">
+
+    <!-- Used to implement onShowFileChooser() in FuseWebChromeClient.java -->
+
+    <Require Gradle.Dependency.Implementation="com.github.jrvansuita:PickImage:2.5.5" />
+
+    <Require Gradle.AllProjects.Repository="maven { url 'https://jitpack.io' }" />
+
+    <Require AndroidManifest.ApplicationElement>
+        <![CDATA[
+        <provider
+            android:name="com.vansuita.pickimage.provider.PickImageFileProvider"
+            android:authorities="${applicationId}.com.vansuita.pickimage.provider"
+            android:exported="false"
+            android:grantUriPermissions="true"
+            tools:replace="android:authorities">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/picker_provider_paths" />
+        </provider>
+        ]]>
+    </Require>
+
+</Extensions>
