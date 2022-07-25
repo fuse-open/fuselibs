@@ -1,5 +1,15 @@
 # Unreleased
 
+## 2.3
+
+### Fuse.Controls.Panels
+- Introduce new type of Panel: CollectionPanel (#1446)
+
+### Fuse.Controls.WebView
+- WebView (Android): Image picker dialog (#1448)
+
+[`v2.2.1...v2.3.0`](https://github.com/fuse-open/fuselibs/compare/v2.2.1...v2.3.0)
+
 ## 2.2
 
 ### Fuse.Shortcut
