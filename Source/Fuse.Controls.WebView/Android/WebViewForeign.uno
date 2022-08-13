@@ -20,6 +20,7 @@ namespace Fuse.Android.Controls.WebViewUtils
 			wv.getSettings().setLoadWithOverviewMode(true); //mimic iOS Safari and Android Chrome
 			wv.getSettings().setSupportZoom(zoomEnabled);
 			wv.getSettings().setBuiltInZoomControls(zoomEnabled);
+			wv.getSettings().setDisplayZoomControls(false);
 			wv.getSettings().setDomStorageEnabled(true);
 			wv.setAllowScroll(scrollEnabled);
 
