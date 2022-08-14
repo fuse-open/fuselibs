@@ -54,6 +54,8 @@ namespace Fuse.iOS.Controls
 			WKWebView* wv = [[WKWebView alloc] init];
 			wv.scrollView.delegate = zoomEnabled ? NULL : [[NoZoomDelegate alloc] init];
 			wv.scrollView.scrollEnabled = scrollEnabled;
+			wv.allowsBackForwardNavigationGestures = YES;
+			wv.allowsLinkPreview = NO;
 
 			return wv;
 		@}
