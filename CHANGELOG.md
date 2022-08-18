@@ -1,5 +1,15 @@
 # Unreleased
 
+## 2.4
+
+### Fuse.Controls.WebView
+- Improvements for wrapping web apps
+  - iOS: Enabling edge swipe for history back
+  - iOS: Disable preview a page on long pressing a link
+  - Android: Hide zoom button controls
+
+[`v2.3.0...v2.4.0`](https://github.com/fuse-open/fuselibs/compare/v2.3.0...v2.4.0)
+
 ## 2.3
 
 ### Fuse.Controls.Panels
