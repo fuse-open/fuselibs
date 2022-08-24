@@ -354,7 +354,8 @@
 		temp:(BOOL)temp
 {
 	NSString* name = [[url path] lastPathComponent];
-	return [NSString stringWithFormat:@"%@/%@", [self createImagePath:temp], name];
+	NSString* uuid = [[NSUUID UUID] UUIDString];
+	return [NSString stringWithFormat:@"%@/%@%@", [self createImagePath:temp], uuid, name];
 }
 
 +(NSString*) applicationDocumentsDirectory
