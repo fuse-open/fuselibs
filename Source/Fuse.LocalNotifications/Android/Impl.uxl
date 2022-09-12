@@ -1,7 +1,7 @@
 <Extensions Backend="CPlusPlus" Condition="Android">
     <ProcessFile Name="LocalNotificationReceiver.java" TargetName="@(Java.SourceDirectory)/com/fuse/LocalNotifications/LocalNotificationReceiver.java" />
     <Require AndroidManifest.ApplicationElement><![CDATA[
-        <receiver android:name="com.fuse.LocalNotifications.LocalNotificationReceiver">
+        <receiver android:name="com.fuse.LocalNotifications.LocalNotificationReceiver" android:exported="true">
             <intent-filter>
                 <action android:name="android.media.action.DISPLAY_NOTIFICATION" />
                 <category android:name="android.intent.category.DEFAULT" />
