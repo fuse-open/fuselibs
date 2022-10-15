@@ -3,6 +3,7 @@
 [![AppVeyor build status](https://img.shields.io/appveyor/ci/fusetools/fuselibs-public/master.svg?logo=appveyor&logoColor=silver&style=flat-square)](https://ci.appveyor.com/project/fusetools/fuselibs-public/branch/master)
 [![Travis CI build status](https://img.shields.io/travis/fuse-open/fuselibs/master.svg?style=flat-square)](https://travis-ci.org/fuse-open/fuselibs)
 [![NPM package](https://img.shields.io/npm/v/@fuse-open/fuselibs.svg?style=flat-square)](https://www.npmjs.com/package/@fuse-open/fuselibs)
+[![NPM beta](https://img.shields.io/npm/v/@fuse-open/fuselibs/beta.svg?style=flat-square)](https://www.npmjs.com/package/@fuse-open/fuselibs)
 [![License: MIT](https://img.shields.io/github/license/fuse-open/fuselibs.svg?style=flat-square)](LICENSE.txt)
 [![Slack](https://img.shields.io/badge/chat-on%20slack-blue.svg?style=flat-square)](https://fusecommunity.slack.com/)
 [![Financial Contributors on Open Collective](https://opencollective.com/fuse-open/all/badge.svg?label=financial+contributors&style=flat-square)](https://opencollective.com/fuse-open)
@@ -20,6 +21,10 @@ the UI framework used to build [Fuse](https://fuseopen.com/) apps.
 ```
 $ npm install @fuse-open/fuselibs
 ```
+
+### Beta releases
+
+We are currently working on [`beta-3.0`](https://github.com/fuse-open/fuselibs/tree/beta-3.0). Releases made from this branch are tagged `@beta` on NPM.
 
 ### TypeScript definitions
 
