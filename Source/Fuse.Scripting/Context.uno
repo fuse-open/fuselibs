@@ -100,6 +100,15 @@ namespace Fuse.Scripting
 			return null;
 		}
 
+		Function _stringify;
+		public string Stringify(object value)
+		{
+			if (_stringify == null)
+				_stringify = (Function)Evaluate("(Context)", "JSON.stringify");
+
+			return _stringify.Call(this, value).ToString();
+		}
+
 		Function _parseJson;
 		public object ParseJson(string json)
 		{
