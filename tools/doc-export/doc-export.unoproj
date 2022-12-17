@@ -21,7 +21,8 @@
         "Fuse.Models",
         "Fuse.Sensor",
         "Fuse.Auth",
-        "Fuse.Shortcut"
+        "Fuse.Shortcut",
+        "Fuse.Alerts"
     ],
     "Includes": [
         "*"
