@@ -1,5 +1,31 @@
 # Unreleased
 
+## 2.6
+
+### Fuse.Platform
+- Device orientation for iOS 16 compatibility (#1454)
+
+### Fuse.Scripting
+- Add `Context.Stringify()` method (#1455)
+
+### Other changes
+- Add `Fuse.Alerts` to doc-export (#1456)
+
+[`v2.5.0...v2.6.0`](https://github.com/fuse-open/fuselibs/compare/v2.5.0...v2.6.0)
+
+## 2.5
+
+### Fuse.Controls.WebView
+- Upgrade PickImage for Android to version 3.0.01 (#1453)
+
+### Fuse.ImageTools
+- Prevent duplicate paths on iOS (#1451)
+
+### Fuse.LocalNotifications
+- Android 12 compatibility fix (#1452)
+
+[`v2.4.0...v2.5.0`](https://github.com/fuse-open/fuselibs/compare/v2.4.0...v2.5.0)
+
 ## 2.4
 
 ### Fuse.Controls.WebView

@@ -506,7 +506,33 @@ namespace Fuse.Platform
 					}
 				}
 			}
+			#if defined(__IPHONE_16_0) && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_16_0
+			if (@available(iOS 16.0, *)) {
+				for (UIScene* scene in UIApplication.sharedApplication.connectedScenes) {
+					if (![scene isKindOfClass:[UIWindowScene class]]) {
+						continue;
+					}
+					UIWindowScene* windowScene = (UIWindowScene*)scene;
+					UIInterfaceOrientationMask currentInterfaceOrientation = 1 << windowScene.interfaceOrientation;
+					if (!(@{supportedOrientation:Get()} & currentInterfaceOrientation)) {
+						[[[windowScene keyWindow] rootViewController] setNeedsUpdateOfSupportedInterfaceOrientations];
+						UIWindowSceneGeometryPreferencesIOS* preference =
+						[[UIWindowSceneGeometryPreferencesIOS alloc] initWithInterfaceOrientations:@{supportedOrientation:Get()}];
+						[windowScene requestGeometryUpdateWithPreferences:preference
+										errorHandler:^(NSError* error) {
+											NSLog(@"Failed to change device orientation: %@",error);
+										}];
+					}
+				}
+			}
+			else
+			{
+				[[UIDevice currentDevice] setValue:value forKey:@"orientation"];
+			}
+			#else
 			[[UIDevice currentDevice] setValue:value forKey:@"orientation"];
+			#endif
+
 		@}
 	}
 }
