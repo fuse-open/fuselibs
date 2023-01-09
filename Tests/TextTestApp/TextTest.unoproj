@@ -1,7 +1,7 @@
 {
 	"Title": "TextTest",
 	"Description": "Text testing",
-	"Copyright": "Copyright © 2021 $(Publisher)",
+	"Copyright": "Copyright (c) Fuse Open",
 	"Developer": "andrewq@redblueprint.com",
 	"Version": "1.0",
 	"VersionCode": 1000,
@@ -12,13 +12,4 @@
 		"Fuse",
 		"FuseJS"
 	],
-	"Android": {
-	    "Architectures": {
-	      "Debug": ["armeabi-v7a", "arm64-v8a"],
-	      "Release": ["armeabi-v7a", "arm64-v8a"]
-	    },
-	},
-	"iOS": {
-		
-	}
 }

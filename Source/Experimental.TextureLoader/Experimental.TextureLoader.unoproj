@@ -1,7 +1,7 @@
 {
-  "Copyright": "Copyright (c) Fuse Open 2018",
+  "Copyright": "Copyright (c) Fuse Open",
   "Description": "Experimental.TextureLoader",
-  "Publisher": "Fuse",
+  "Publisher": "Fuse Open",
   "Packages": [
     "Uno.Graphics.Utils"
   ],

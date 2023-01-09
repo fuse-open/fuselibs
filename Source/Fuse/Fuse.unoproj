@@ -1,5 +1,5 @@
 {
-  "Copyright": "Copyright (c) Fuse Open 2018",
+  "Copyright": "Copyright (c) Fuse Open",
   "Publisher": "Fuse Open",
   "Description": "References the complete set of canonical, non-optional Fuse libraries",
   "IsTransitive": true,
