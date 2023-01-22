@@ -4,16 +4,19 @@ using Uno.Threading;
 namespace Fuse.Scripting
 {
 	public delegate T ResultFactory<T>(object[] args);
+	public delegate T ResultFactory2<T>(Context context, object[] args);
 	public delegate Future<T> FutureFactory<T>(object[] args);
+	public delegate Future<T> FutureFactory2<T>(Context context, object[] args);
 	public delegate TJSResult ResultConverter<T, TJSResult>(Context context, T result);
 
 	class FactoryClosure<T>
 	{
-		ResultFactory<T> _factory;
+		ResultFactory2<T> _factory;
+		Context _context;
 		object[] _args;
 		Promise<T> _promise;
 
-		public FactoryClosure(ResultFactory<T> factory, object[] args, Promise<T> promise)
+		public FactoryClosure(ResultFactory2<T> factory, Context context, object[] args, Promise<T> promise)
 		{
 			_factory = factory;
 			_args = args;
@@ -25,7 +28,7 @@ namespace Fuse.Scripting
 			T res = default(T);
 			try
 			{
-				res = _factory(_args);
+				res = _factory(_context, _args);
 			}
 			catch (Exception e)
 			{
@@ -37,27 +40,40 @@ namespace Fuse.Scripting
 		}
 	}
 
-	public sealed class NativePromise<T, TJSResult>: NativeMember
+	public sealed class NativePromise<T, TJSResult> : NativeMember
 	{
-		FutureFactory<T> _futureFactory;
+		FutureFactory2<T> _futureFactory;
 		ResultConverter<T, TJSResult> _resultConverter;
-		ResultFactory<T> _func;
+		ResultFactory2<T> _func;
 
 		public NativePromise(string name, ResultFactory<T> func, ResultConverter<T, TJSResult> resultConverter = null): base(name)
 		{
-			_func = func;
-			_futureFactory = (FutureFactory<T>)Factory;
+			_func = new ResultFactoryClosure<T>(func).Run;
+			_futureFactory = (FutureFactory2<T>)Factory;
 			_resultConverter = resultConverter;
 		}
 
-		Future<T> Factory(object[] args)
+		public NativePromise(string name, ResultFactory2<T> func, ResultConverter<T, TJSResult> resultConverter = null): base(name)
+		{
+			_func = func;
+			_futureFactory = (FutureFactory2<T>)Factory;
+			_resultConverter = resultConverter;
+		}
+
+		Future<T> Factory(Context context, object[] args)
 		{
 			var future = new Promise<T>();
-			new Thread(new FactoryClosure<T>(_func, args, future).Run).Start();
+			new Thread(new FactoryClosure<T>(_func, context, args, future).Run).Start();
 			return future;
 		}
 
 		public NativePromise(string name, FutureFactory<T> futureFactory, ResultConverter<T, TJSResult> resultConverter = null): base(name)
+		{
+			_futureFactory = new FutureFactoryClosure<T>(futureFactory).Run;
+			_resultConverter = resultConverter;
+		}
+
+		public NativePromise(string name, FutureFactory2<T> futureFactory, ResultConverter<T, TJSResult> resultConverter = null): base(name)
 		{
 			_futureFactory = futureFactory;
 			_resultConverter = resultConverter;
@@ -70,9 +86,10 @@ namespace Fuse.Scripting
 
 		class ContextClosure
 		{
-			FutureFactory<T> _factory;
+			FutureFactory2<T> _factory;
 			ResultConverter<T, TJSResult> _converter;
-			public ContextClosure(FutureFactory<T> factory, ResultConverter<T, TJSResult> converter)
+
+			public ContextClosure(FutureFactory2<T> factory, ResultConverter<T, TJSResult> converter)
 			{
 				_factory = factory;
 				_converter = converter;
@@ -80,8 +97,8 @@ namespace Fuse.Scripting
 
 			internal object CreatePromise(Context context, object[] args)
 			{
-				var promise = (Function)context.GlobalObject["Promise"]; // HACK - TODO: get rid of this
-				var future = _factory(args);
+				var promise = (Function)context.GlobalObject["Promise"];
+				var future = _factory(context, args);
 				return promise.Construct(context, (Callback)new PromiseClosure(context.ThreadWorker, future, _converter).Run);
 			}
 		}
@@ -123,7 +140,7 @@ namespace Fuse.Scripting
 					_threadWorker.Invoke(this.InternalResolve);
 			}
 
-			void InternalResolve(Scripting.Context context)
+			void InternalResolve(Context context)
 			{
 				if(_converter != null)
 					_resolve.Call(context, _converter(context, _result));
@@ -138,9 +155,39 @@ namespace Fuse.Scripting
 					_threadWorker.Invoke(this.InternalReject);
 			}
 
-			void InternalReject(Scripting.Context context)
+			void InternalReject(Context context)
 			{
 				_reject.Call(context, _reason.Message);
+			}
+		}
+
+		class ResultFactoryClosure<T>
+		{
+			readonly ResultFactory<T> _func;
+
+			public ResultFactoryClosure(ResultFactory<T> func)
+			{
+				_func = func;
+			}
+
+			public T Run(Context context, object[] args)
+			{
+				return _func(args);
+			}
+		}
+
+		class FutureFactoryClosure<T>
+		{
+			readonly FutureFactory<T> _func;
+
+			public FutureFactoryClosure(FutureFactory<T> func)
+			{
+				_func = func;
+			}
+
+			public Future<T> Run(Context context, object[] args)
+			{
+				return _func(args);
 			}
 		}
 	}
