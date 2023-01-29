@@ -1001,6 +1001,7 @@ namespace Fuse.Drawing
 		extern(DOTNET) internal class ImageFormat
 		{
 			public static extern ImageFormat Bmp { get; }
+			public static extern ImageFormat Png { get; }
 		}
 
 		[DotNetType("System.Drawing.Drawing2D.GraphicsPath")]
@@ -1120,12 +1121,14 @@ namespace Fuse.Drawing
 			public extern Bitmap(int width, int height, int stride, PixelFormat format, IntPtr scan0);
 			public extern int Width { get; }
 			public extern int Height { get; }
+			public extern void Save(string filename, ImageFormat format);
 			public extern void Save(Stream stream, ImageFormat format);
 			public extern void Dispose();
 			public extern PixelFormat PixelFormat { get; }
 			public extern BitmapData LockBits( Rectangle rect, ImageLockMode flags, PixelFormat format );
 			public extern void UnlockBits(BitmapData bitmapdata);
 			public extern void SetResolution(float xDpi, float yDpi);
+			public extern void RotateFlip (RotateFlipType rotateFlipType);
 		}
 
 		[DotNetType("System.Drawing.Imaging.BitmapData")]
@@ -1174,6 +1177,27 @@ namespace Fuse.Drawing
 			public extern Matrix Transform { get; set; }
 			public GraphicsUnit PageUnit { get; set; }
 			public extern void RotateTransform(float angle);
+		}
+
+		[DotNetType("System.Drawing.RotateFlipType")]
+		extern(DOTNET) internal enum RotateFlipType
+		{
+			Rotate180FlipNone      = 2,
+			Rotate180FlipX         = 6,
+			Rotate180FlipXY        = 0,
+			Rotate180FlipY         = 4,
+			Rotate270FlipNone      = 3,
+			Rotate270FlipX         = 7,
+			Rotate270FlipXY        = 1,
+			Rotate270FlipY         = 5,
+			Rotate90FlipNone       = 1,
+			Rotate90FlipX          = 5,
+			Rotate90FlipXY         = 3,
+			Rotate90FlipY          = 7,
+			RotateNoneFlipNone     = 0,
+			RotateNoneFlipX        = 4,
+			RotateNoneFlipXY       = 2,
+			RotateNoneFlipY        = 6
 		}
 
 		[DotNetType("System.Drawing.GraphicsUnit")]
