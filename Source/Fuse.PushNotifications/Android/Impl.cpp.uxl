@@ -7,7 +7,7 @@
 
     <Require AndroidManifest.ApplicationElement><![CDATA[
 
-        <service android:name="com.fuse.PushNotifications.PushNotificationReceiver">
+        <service android:name="com.fuse.PushNotifications.PushNotificationReceiver" android:exported="true">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
