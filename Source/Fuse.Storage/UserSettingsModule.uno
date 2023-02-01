@@ -35,7 +35,7 @@ namespace Fuse.Storage
 					'married': false
 				});
 
-				var username = userSettings.getString('username');
+				var email = userSettings.getString('email');
 				var password = userSettings.getString('password');
 				var api_token = userSettings.getString('api_token');
 				var logged = userSettings.getBoolean('logged');
