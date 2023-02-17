@@ -11,14 +11,19 @@ namespace Fuse
 {
 	public static class Launcher
 	{
-		public static void LaunchUri(Uno.Net.Http.Uri uri)
+		public static void LaunchUri(Uri uri)
 		{
 			InterAppLauncher.LaunchUri(uri);
 		}
 
-		public static void LaunchCall(string callString)
+		public static void LaunchCall(string phoneNumber)
 		{
-			PhoneLauncher.LaunchCall(callString);
+			PhoneLauncher.LaunchCall(phoneNumber);
+		}
+
+		public static void LaunchSms(string phoneNumber, string body)
+		{
+			PhoneLauncher.LaunchSms(phoneNumber, body);
 		}
 
 		public static void LaunchMaps(double latitude, double longitude)
