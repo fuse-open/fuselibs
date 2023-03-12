@@ -36,6 +36,7 @@
     "**.uxl:Extensions",
     "FuseJS/*.js:Bundle",
     "3rdparty/es6-promise.min.js:File",
+    "regenerator/runtime.min.js:File",
     "JavaScriptEngine.cil.uxl:Extensions",
     "JavaScriptEngine.cpp.uxl:Extensions",
 

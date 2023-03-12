@@ -42,6 +42,9 @@ namespace Fuse.Reactive.FuseJS
 			context.Evaluate("fuse-builtins: es6-promise", import("../3rdparty/es6-promise.min.js").ReadAllText());
 			context.Evaluate("fuse-builtins: es6-promise", "ES6Promise.polyfill();");
 
+			// regenerator-runtime (async/await)
+			context.Evaluate("fuse-builtins: regenerator-runtime", import("../regenerator/runtime.min.js").ReadAllText());
+
 			//load/register Diagnostics
 			new DiagnosticsImplModule();
 			new FileModule(import("Diagnostics.js")).EvaluateExports(context, "FuseJS/Diagnostics");
