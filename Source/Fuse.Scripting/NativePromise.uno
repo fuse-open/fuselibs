@@ -3,8 +3,10 @@ using Uno.Threading;
 
 namespace Fuse.Scripting
 {
+	[Obsolete("Please use ResultFactory2 instead.")]
 	public delegate T ResultFactory<T>(object[] args);
 	public delegate T ResultFactory2<T>(Context context, object[] args);
+	[Obsolete("Please use FutureFactory2 instead.")]
 	public delegate Future<T> FutureFactory<T>(object[] args);
 	public delegate Future<T> FutureFactory2<T>(Context context, object[] args);
 	public delegate TJSResult ResultConverter<T, TJSResult>(Context context, T result);
@@ -46,6 +48,7 @@ namespace Fuse.Scripting
 		ResultConverter<T, TJSResult> _resultConverter;
 		ResultFactory2<T> _func;
 
+		[Obsolete("Please add the Context parameter to your delegate.")]
 		public NativePromise(string name, ResultFactory<T> func, ResultConverter<T, TJSResult> resultConverter = null): base(name)
 		{
 			_func = new ResultFactoryClosure<T>(func).Run;
@@ -67,6 +70,7 @@ namespace Fuse.Scripting
 			return future;
 		}
 
+		[Obsolete("Please add the Context parameter to your delegate.")]
 		public NativePromise(string name, FutureFactory<T> futureFactory, ResultConverter<T, TJSResult> resultConverter = null): base(name)
 		{
 			_futureFactory = new FutureFactoryClosure<T>(futureFactory).Run;

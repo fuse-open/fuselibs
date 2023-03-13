@@ -51,7 +51,7 @@ namespace FuseJS
 			});
 			```
 		*/
-		public static Future<byte[]> ReadBuffer(object[] args)
+		static Future<byte[]> ReadBuffer(Context c, object[] args)
 		{
 			var searchPath = args.ValueOrDefault<string>(0, "");
 			if(searchPath=="")
@@ -84,7 +84,7 @@ namespace FuseJS
 			});
 			```
 		*/
-		public static Future<IEnumerable<BundleFile>> GetList(object[] args = null)
+		static Future<IEnumerable<BundleFile>> GetList(Context c, object[] args)
 		{
 			var p = new Promise<IEnumerable<BundleFile>>();
 			var files = Uno.IO.Bundle.AllFiles;
@@ -133,7 +133,7 @@ namespace FuseJS
 			});
 			```
 		*/
-		public static Future<string> Extract(object[] args)
+		static Future<string> Extract(Context c, object[] args)
 		{
 			var searchPath = args.ValueOrDefault<string>(0, "");
 			var destinationPath = args.ValueOrDefault<string>(1, "");
@@ -164,7 +164,7 @@ namespace FuseJS
 			});
 			```
 		*/
-		public static Future<string> ReadAsync(object[] args)
+		static Future<string> ReadAsync(Context c, object[] args)
 		{
 			if (args.Length > 0)
 			{
@@ -213,7 +213,7 @@ namespace FuseJS
 			}
 			catch(Exception e)
 			{
-				return ""; // HACK!!
+				return "";
 			}
 		}
 

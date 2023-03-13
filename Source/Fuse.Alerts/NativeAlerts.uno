@@ -60,7 +60,7 @@ namespace Fuse.Alerts
 
 			@return (Promise) A boolean promise that resolves to `true` if the OK button was pressed.
 		*/
-		public static Future<bool> Alert(object[] args)
+		static Future<bool> Alert(Context context, object[] args)
 		{
 			return AlertInternal(
 				getOrDefault(args, 0, "Alert!"),
@@ -80,7 +80,7 @@ namespace Fuse.Alerts
 
 			@return (Promise) A boolean promise that resolves to `true` if the OK button was pressed and `false` if the Cancel button was pressed.
 		*/
-		public static Future<bool> Confirm(object[] args)
+		static Future<bool> Confirm(Context context, object[] args)
 		{
 			return ConfirmInternal(
 				getOrDefault(args, 0, "Confirm"),
