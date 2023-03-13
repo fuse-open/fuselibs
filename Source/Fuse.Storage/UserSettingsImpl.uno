@@ -8,18 +8,31 @@ namespace Fuse.Storage
 {
 	public extern(!MOBILE) class DesktopUserSettingsImpl
 	{
-		static readonly string filename = "UserSettings.json";
 		static DesktopUserSettingsImpl instance;
 		static Dictionary<string, object> data = new Dictionary<string, object>();
 
+		static string GetFilename()
+		{
+			string folder = @(Project.Name);
+			string filename = "UserSettings.json";
+			var settingFolder = Path.Combine(Directory.GetUserDirectory(UserDirectory.Data), folder);
+			var settingFile = Path.Combine(settingFolder, filename);
+
+			if (!Directory.Exists(settingFolder))
+				Directory.CreateDirectory(settingFolder);
+			if (!File.Exists(settingFile))
+				using(var stream = File.Open(settingFile, FileMode.Create)) {}
+
+			return settingFile;
+		}
+
 		private DesktopUserSettingsImpl()
 		{
-			string content = "";
-			ApplicationDir.TryRead(filename, out content);
+			string content = File.ReadAllText(DesktopUserSettingsImpl.GetFilename());
 			if (content != "") {
 				IObject obj = Json.Parse(content) as IObject;
 				for (var i = 0; i< obj.Keys.Length; i++)
-				 	data[obj.Keys[i]] = obj[obj.Keys[i]];
+					data[obj.Keys[i]] = obj[obj.Keys[i]];
 			}
 		}
 
@@ -94,7 +107,7 @@ namespace Fuse.Storage
 		private void Synchronize()
 		{
 			var jsonString = Json.Stringify(data);
-			ApplicationDir.Write(filename, jsonString);
+			File.WriteAllText(DesktopUserSettingsImpl.GetFilename(), jsonString);
 		}
 	}
 

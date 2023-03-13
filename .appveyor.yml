@@ -2,11 +2,12 @@ version: '{build}'
 image: Visual Studio 2022
 
 environment:
+  nodejs_version: 14
   LOG_TRACE: 1
-  PATH: node_modules/.bin;%PATH%
   GRADLE_OPTS: -Dorg.gradle.daemon=false
 
 install:
+  - ps: Install-Product node $env:nodejs_version
   - npm install
   - npm install android-build-tools@1.x -g
 
@@ -15,12 +16,12 @@ build_script:
   # Check that doc-export works
   - npm run doc-export
   # Build for Android
-  - uno build android Tests/ManualTests/ManualTestingApp/ManualTestingApp.unoproj
+  - npx uno build android Tests/ManualTests/ManualTestingApp/ManualTestingApp.unoproj
   # Build for Windows
-  - uno build native Tests/ManualTests/ManualTestingApp/ManualTestingApp.unoproj
+  - npx uno build native Tests/ManualTests/ManualTestingApp/ManualTestingApp.unoproj
 
 artifacts:
   - path: '*.tgz'
 
 test_script:
-  - npm run test
+  - npm test

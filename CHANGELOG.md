@@ -1,5 +1,30 @@
 # Unreleased
 
+## 2.7
+
+### Fuse.Controls.Panels
+- Take screenshot of a Panel and save as a file (#1461)
+
+### Fuse.Controls.ScrollView
+- Add Snapping feature for ScrollView (#1459)
+
+### Fuse.Launcher.Phone
+- Add SMS launcher and scriptmethod (#1464)
+
+### Fuse.PushNotifications
+- Android 12 compatibility fix (#1463)
+
+### Fuse.Scripting
+- Add Context parameter to NativePromise delegates (#1460)
+
+## Fuse.Storage
+- Fix desktop implementation of UserSettings (#1462)
+
+### Other changes
+- Use Node.js v14 on AppVeyor (#1457)
+
+[`v2.6.0...v2.7.0`](https://github.com/fuse-open/fuselibs/compare/v2.6.0...v2.7.0)
+
 ## 2.6
 
 ### Fuse.Platform

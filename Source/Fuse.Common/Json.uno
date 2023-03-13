@@ -26,6 +26,35 @@ namespace Fuse
 			else if (value is float) sb.Append(ToLiteral((double)(float)value));
 			else if (value is int) sb.Append(ToLiteral((double)(int)value));
 			else if (value is bool) sb.Append(ToLiteral((bool)value));
+			else if (value is IDictionary<string, object>)
+			{
+				if (visitedSet.Contains(value))
+					throw new Exception("Json.Stringify(): object can not contain cycles");
+
+				visitedSet.Add(value);
+				var obj = value as IDictionary<string, object>;
+				sb.Append("{");
+				var keys = new string[obj.Keys.Count];
+				var enumKeys = obj.Keys.GetEnumerator();
+				var idx = 0;
+				while (enumKeys.MoveNext())
+				{
+					keys[idx] = enumKeys.Current;
+					idx++;
+				}
+				if (normalized) Uno.Array.Sort(keys, String.Compare);
+				for (int i = 0; i < keys.Length; i++)
+				{
+					if (i > 0) sb.Append(",");
+					ToLiteral(keys[i], sb);
+					sb.Append(":");
+					Stringify(obj[keys[i]], normalized, sb, visitedSet);
+				}
+
+				sb.Append("}");
+
+				visitedSet.Remove(value);
+			}
 			else if (value is IObject)
 			{
 				if (visitedSet.Contains(value))

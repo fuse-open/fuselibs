@@ -1,5 +1,5 @@
 {
-  "Copyright": "Copyright (c) Fuse Open 2018",
+  "Copyright": "Copyright (c) Fuse Open",
   "Description": "Abstraction over platform-specific native controls",
   "Publisher": "Fuse Open",
   "InternalsVisibleTo": [
