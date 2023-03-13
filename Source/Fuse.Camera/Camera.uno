@@ -48,7 +48,7 @@ namespace Fuse.Camera
 			Starts an OS-specific image capture view and returns a Promise of the resulting Image.
 
 			If the desiredWidth and height parameters are set, returns an Image scaled as close to the specified
-			width/height as possible while maintaining aspect ratio. 
+			width/height as possible while maintaining aspect ratio.
 
 			If no size parameters are given, the taken image will be full-sized as determined by the device camera.
 
@@ -59,7 +59,7 @@ namespace Fuse.Camera
 
 			@return (Promise) a Promise of a device-orientation-corrected read/writable Image.
 		*/
-		static Future<Image> TakePictureInterface(object[] args)
+		static Future<Image> TakePictureInterface(Context context, object[] args)
 		{
 			if(args.Length==0) return TakePicture();
 			var width = args.ValueOrDefault<int>(0);
@@ -98,7 +98,7 @@ namespace Fuse.Camera
 
 			@return (Promise) a Promise that resolves if the user has permission
 		*/
-		static Future<string> CheckUserPermissions(object[] args)
+		static Future<string> CheckUserPermissions(Context context, object[] args)
 		{
 			var p = new Promise<string>();
 			if defined(Android)
@@ -115,7 +115,7 @@ namespace Fuse.Camera
 
 			@return (Promise) a Promise that resolves after the user has granted permissions
 		*/
-		static Future<string> RequestUserPermissions(object[] args) 
+		static Future<string> RequestUserPermissions(Context context, object[] args)
 		{
 			var p = new Promise<string>();
 			if defined(Android)

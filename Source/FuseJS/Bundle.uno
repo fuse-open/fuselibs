@@ -213,7 +213,7 @@ namespace FuseJS
 			}
 			catch(Exception e)
 			{
-				return ""; // HACK!!
+				return "";
 			}
 		}
 

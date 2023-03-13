@@ -68,7 +68,7 @@ namespace Fuse.CameraRoll
 
 			@return (Promise) a Promise of a local read/writable Image copied from the camera roll.
 		*/
-		static Future<Image> SelectPictureInterface(object[] args)
+		static Future<Image> SelectPictureInterface(Context context, object[] args)
 		{
 			return SelectPicture();
 		}
@@ -88,7 +88,7 @@ namespace Fuse.CameraRoll
 
 			@return (Promise) a Promise that resolves to `true` when/if the publish completed
 		*/
-		static Future<bool> AddToCameraRollInterface(object[] args)
+		static Future<bool> AddToCameraRollInterface(Context context, object[] args)
 		{
 			var Image = Image.FromObject(args[0]);
 			return AddToCameraRoll(Image);
@@ -101,7 +101,7 @@ namespace Fuse.CameraRoll
 
 			@return (Promise) a Promise that resolves if the user has permission
 		*/
-		static Future<string> CheckUserPermissions(object[] args)
+		static Future<string> CheckUserPermissions(Context context, object[] args)
 		{
 			var p = new Promise<string>();
 			if defined(Android)
@@ -118,7 +118,7 @@ namespace Fuse.CameraRoll
 
 			@return (Promise) a Promise that resolves after the user has granted permissions
 		*/
-		static Future<string> RequestUserPermissions(object[] args) 
+		static Future<string> RequestUserPermissions(Context context, object[] args) 
 		{
 			var p = new Promise<string>();
 			if defined(Android)
