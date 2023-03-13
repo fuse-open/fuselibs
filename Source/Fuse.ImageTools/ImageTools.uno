@@ -101,7 +101,7 @@ namespace Fuse.ImageTools
 					then(function (image) { console.log("Scratch image path is: " + image.path); });
 			```
 		*/
-		Future<Image> ImageFromBufferInterface(object[] args)
+		Future<Image> ImageFromBufferInterface(Context c, object[] args)
 		{
 			var p = new Promise<Image>();
 			var cb = new ImagePromiseCallback(p);
@@ -149,7 +149,7 @@ namespace Fuse.ImageTools
 					.then(function(buf) { console.log("Image contains " + buf.byteLength + " bytes"); });
 			```
 		*/
-		Future<byte[]> BufferFromImageInterface(object[] args)
+		Future<byte[]> BufferFromImageInterface(Context c, object[] args)
 		{
 			var p = new Promise<byte[]>();
 			if(args.Length == 1){
@@ -206,7 +206,7 @@ namespace Fuse.ImageTools
 					.then(function(newImage) { console.log("Path of resized image is " + newImage.path); });
 			```
 		*/
-		Future<Image> ResizeImageInterface(object[] args)
+		Future<Image> ResizeImageInterface(Context c, object[] args)
 		{
 			if(args.Length!=2)
 				throw new Exception("resize takes 2 arguments: An Image and an Object of options");
@@ -253,7 +253,7 @@ namespace Fuse.ImageTools
 					.then(function(newImage) { console.log("Path of cropped image is " + newImage.path); });
 			```
 		*/
-		Future<Image> CropImageInterface(object[] args)
+		Future<Image> CropImageInterface(Context c, object[] args)
 		{
 			if(args.Length!=2)
 				throw new Exception("crop takes 2 arguments: An Image and an options object");
@@ -298,7 +298,7 @@ namespace Fuse.ImageTools
 					});
 			```
 		*/
-		Future<Image> ImageFromBase64Interface(object[] args)
+		Future<Image> ImageFromBase64Interface(Context c, object[] args)
 		{
 			if(args.Length!=1)
 				throw new Exception("imageFromBase64 needs a base64 string argument");
@@ -321,7 +321,7 @@ namespace Fuse.ImageTools
 					.then(function(base64Image) { console.log("The base64 encoded image is \"" + base64Image + "\""); });
 			```
 		*/
-		Future<string> Base64FromImageInterface(object[] args)
+		Future<string> Base64FromImageInterface(Context c, object[] args)
 		{
 			if(args.Length!=1)
 				throw new Exception("base64FromImage needs a Image argument");
