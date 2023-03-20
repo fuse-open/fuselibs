@@ -55,7 +55,7 @@ namespace Fuse.Storage
 					});
 			```
 		*/
-		static Future<bool> WriteAsync(object[] args)
+		static Future<bool> WriteAsync(Context c, object[] args)
 		{
 			if (args.Length > 0)
 			{
@@ -86,7 +86,7 @@ namespace Fuse.Storage
 			```
 			
 		*/
-		static Future<string> ReadAsync(object[] args)
+		static Future<string> ReadAsync(Context c, object[] args)
 		{
 			if (args.Length > 0)
 			{
@@ -117,7 +117,7 @@ namespace Fuse.Storage
 
 			> Warning: This call will block until the operation is finished.
 		*/
-		static object Remove(Scripting.Context c, object[] args)
+		static object Remove(Context c, object[] args)
 		{
 			if (args.Length > 0)
 			{
@@ -148,7 +148,7 @@ namespace Fuse.Storage
 
 			> Warning: This call will block until the operation is finished. Use write() if you are writing large amounts of data.
 		*/
-		static object Write(Scripting.Context c, object[] args)
+		static object Write(Context c, object[] args)
 		{
 			if (args.Length > 0)
 			{
@@ -176,7 +176,7 @@ namespace Fuse.Storage
 			
 			> Warning: This call will block until the operation is finished. Use read() if you are reading large amounts of data.
 		*/
-		static object Read(Scripting.Context c, object[] args)
+		static object Read(Context c, object[] args)
 		{
 			string filename = null;
 			if (args.Length > 0)

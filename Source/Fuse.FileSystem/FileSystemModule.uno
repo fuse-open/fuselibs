@@ -123,7 +123,7 @@ namespace Fuse.FileSystem
 					});
 			```
 		*/
-		Future<Nothing> AppendTextToFile(object[] args)
+		Future<Nothing> AppendTextToFile(Context context, object[] args)
 		{
 			var path = GetPathFromArgs(args);
 			var text = GetArg<string>(args, 1, "Second argument \"text\" is required to be a string");
@@ -219,7 +219,7 @@ namespace Fuse.FileSystem
 					});
 			```
 		*/
-		Future<Nothing> Remove(object[] args)
+		Future<Nothing> Remove(Context context, object[] args)
 		{
 			var recursive = (args.Length > 1 && args[1] is bool) ? (bool)args[1] : false;
 			return _operations.Delete(GetPathFromArgs(args), recursive);
@@ -267,7 +267,7 @@ namespace Fuse.FileSystem
 					});
 			```
 		*/
-		Future<bool> Exists(object[] args)
+		Future<bool> Exists(Context context, object[] args)
 		{
 			return _operations.Exists(GetPathFromArgs(args));
 		}
@@ -373,7 +373,7 @@ namespace Fuse.FileSystem
 					});
 			```
 		*/
-		Future<FileSystemInfo> GetDirectoryInfo(object[] args)
+		Future<FileSystemInfo> GetDirectoryInfo(Context context, object[] args)
 		{
 			return _operations.GetDirectoryInfo(GetPathFromArgs(args));
 		}
@@ -435,7 +435,7 @@ namespace Fuse.FileSystem
 					});
 			```
 		*/
-		Future<FileSystemInfo> GetFileInfo(object[] args)
+		Future<FileSystemInfo> GetFileInfo(Context context, object[] args)
 		{
 			return _operations.GetFileInfo(GetPathFromArgs(args));
 		}
@@ -511,7 +511,7 @@ namespace Fuse.FileSystem
 					});
 			```
 		*/
-		Future<string[]> ListDirectories(object[] args)
+		Future<string[]> ListDirectories(Context context, object[] args)
 		{
 			return _operations.ListDirectories(GetPathFromArgs(args));
 		}
@@ -557,7 +557,7 @@ namespace Fuse.FileSystem
 					});
 			```
 		*/
-		Future<string[]> ListEntries(object[] args)
+		Future<string[]> ListEntries(Context context, object[] args)
 		{
 			return _operations.ListEntries(GetPathFromArgs(args));
 		}
@@ -603,7 +603,7 @@ namespace Fuse.FileSystem
 					});
 			```
 		*/
-		Future<string[]> ListFiles(object[] args)
+		Future<string[]> ListFiles(Context context, object[] args)
 		{
 			return _operations.ListFiles(GetPathFromArgs(args));
 		}
@@ -651,7 +651,7 @@ namespace Fuse.FileSystem
 					});
 			```
 		*/
-		Future<Nothing> Move(object[] args)
+		Future<Nothing> Move(Context context, object[] args)
 		{
 			var source = GetArg<string>(args, 0, "First argument `source` has to be a valid path");
 			var destination = GetArg<string>(args, 1, "Second argument `destination` has to be a valid path");
@@ -703,7 +703,7 @@ namespace Fuse.FileSystem
 					});
 			```
 		*/
-		Future<Nothing> Copy(object[] args)
+		Future<Nothing> Copy(Context context, object[] args)
 		{
 			var source = GetArg<string>(args, 0, "First argument `source` has to be a valid path");
 			var destination = GetArg<string>(args, 1, "Second argument `destination` has to be a valid path");
@@ -753,7 +753,7 @@ namespace Fuse.FileSystem
 					});
 			```
 		*/
-		Future<byte[]> ReadBufferFromFile(object[] args)
+		Future<byte[]> ReadBufferFromFile(Context context, object[] args)
 		{
 			return _operations.ReadBufferFromFile(GetPathFromArgs(args));
 		}
@@ -798,7 +798,7 @@ namespace Fuse.FileSystem
 					});
 			```
 		*/
-		Future<string> ReadTextFromFile(object[] args)
+		Future<string> ReadTextFromFile(Context context, object[] args)
 		{
 			return _operations.ReadTextFromFile(GetPathFromArgs(args));
 		}
@@ -849,7 +849,7 @@ namespace Fuse.FileSystem
 					});
 			```
 		*/
-		Future<Nothing> WriteBufferToFile(object[] args)
+		Future<Nothing> WriteBufferToFile(Context context, object[] args)
 		{
 			var path = GetPathFromArgs(args);
 			var data = GetArg<byte[]>(args, 1, "Second argument \"data\" is required to be an ArrayBuffer");
@@ -904,7 +904,7 @@ namespace Fuse.FileSystem
 					});
 			```
 		*/
-		Future<Nothing> WriteTextToFile(object[] args)
+		Future<Nothing> WriteTextToFile(Context context, object[] args)
 		{
 			var path = GetPathFromArgs(args);
 			var text = GetArg<string>(args, 1, "Second argument \"text\" is required to be a string");

@@ -336,7 +336,7 @@ namespace Fuse.GeoLocation
 			```
 			See [the GeoLocation module](api:fuse/geolocation/geolocation) for an example.
 		*/
-		Future<Fuse.GeoLocation.Location> GetLocationAsync(object[] args)
+		Future<Fuse.GeoLocation.Location> GetLocationAsync(Context c, object[] args)
 		{
 			double timeout = (args.Length > 0) ? Marshal.ToDouble(args[0]) : 20000;
 			return _locationTracker.GetLocationAsync(timeout);

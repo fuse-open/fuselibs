@@ -40,13 +40,13 @@ namespace FuseJS
 			AddMember(new NativePromise<string, string>("readAsText", readAsText, null));
 		}
 
-		static Future<string> readAsDataURL(object[] args)
+		static Future<string> readAsDataURL(Context c, object[] args)
 		{
 			var path = (string)args[0];
 			return Promise<string>.Run(new FileReadCommand(path).ReadAsDataURL);
 		}
 
-		static Future<string> readAsText(object[] args)
+		static Future<string> readAsText(Context c, object[] args)
 		{
 			var path = (string)args[0];
 			return Promise<string>.Run(new FileReadCommand(path).ReadAsText);
