@@ -12,10 +12,10 @@ namespace FuseJS
 		{
 			if(_instance != null) return;
 			Resource.SetGlobalKey(_instance = this, "FuseJS/Globals");
-			AddMember(new NativePromise<string, string>("readAsText", (ResultFactory<string>)readAsText, null));
+			AddMember(new NativePromise<string, string>("readAsText", (ResultFactory2<string>)readAsText, null));
 		}
 
-		static string readAsText(object[] args)
+		static string readAsText(Context c, object[] args)
 		{
 			if (args.Length != 1) throw new Exception("Globals.readAsText(): Exactly one argument expected");
 
