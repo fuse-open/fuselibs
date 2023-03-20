@@ -26,8 +26,9 @@ $ npm install @fuse-open/fuselibs
 
 We are currently working on [`beta-3.0`](https://github.com/fuse-open/fuselibs/tree/beta-3.0). Releases made from this branch are tagged `@beta` on NPM.
 
-### TypeScript definitions
+### TypeScript support
 
+* [@fuse-open/tsconfig](https://www.npmjs.com/package/@fuse-open/tsconfig)
 * [@fuse-open/types](https://www.npmjs.com/package/@fuse-open/types)
 
 ### Related packages
