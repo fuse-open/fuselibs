@@ -48,7 +48,7 @@ namespace Fuse.Scripting
 
 		public NativePromise(string name, ResultFactory<T> func, ResultConverter<T, TJSResult> resultConverter = null): base(name)
 		{
-			_func = new ResultFactoryClosure<T>(func).Run;
+			_func = (context, args) => func(args);
 			_futureFactory = (FutureFactory2<T>)Factory;
 			_resultConverter = resultConverter;
 		}
@@ -69,7 +69,7 @@ namespace Fuse.Scripting
 
 		public NativePromise(string name, FutureFactory<T> futureFactory, ResultConverter<T, TJSResult> resultConverter = null): base(name)
 		{
-			_futureFactory = new FutureFactoryClosure<T>(futureFactory).Run;
+			_futureFactory = (context, args) => futureFactory(args);
 			_resultConverter = resultConverter;
 		}
 
@@ -158,36 +158,6 @@ namespace Fuse.Scripting
 			void InternalReject(Context context)
 			{
 				_reject.Call(context, _reason.Message);
-			}
-		}
-
-		class ResultFactoryClosure<T>
-		{
-			readonly ResultFactory<T> _func;
-
-			public ResultFactoryClosure(ResultFactory<T> func)
-			{
-				_func = func;
-			}
-
-			public T Run(Context context, object[] args)
-			{
-				return _func(args);
-			}
-		}
-
-		class FutureFactoryClosure<T>
-		{
-			readonly FutureFactory<T> _func;
-
-			public FutureFactoryClosure(FutureFactory<T> func)
-			{
-				_func = func;
-			}
-
-			public Future<T> Run(Context context, object[] args)
-			{
-				return _func(args);
 			}
 		}
 	}
