@@ -3,7 +3,7 @@
   "version": "3.0.0-beta.0",
   "description": "Fuselibs is a collection of Uno libraries that provide the UI framework used to build Fuse apps.",
   "devDependencies": {
-    "@fuse-open/uno": "^3.0.0-beta.1"
+    "@fuse-open/uno": "^3.0.0-beta.2"
   },
   "scripts": {
     "build": "uno doctor Source",
