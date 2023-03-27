@@ -2,7 +2,7 @@ version: '{build}'
 image: Visual Studio 2019
 
 environment:
-  nodejs_version: 14
+  nodejs_version: 16
   LOG_TRACE: 1
   GRADLE_OPTS: -Dorg.gradle.daemon=false
 
