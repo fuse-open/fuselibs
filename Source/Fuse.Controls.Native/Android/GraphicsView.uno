@@ -36,7 +36,7 @@ namespace Fuse.Controls.Native.Android
 		IntPtr _nativeWindow = IntPtr.Zero;
 
 		[TargetSpecificImplementation]
-		[Require("Source.Include", "Uno/Graphics/GLHelper.h")]
+		[Require("Source.Include", "uDroid/GLHelper.h")]
 		protected void SetSurface(Java.Object surfaceHandle)
 		{
 			if (_surfaceHandle != null)
@@ -51,7 +51,7 @@ namespace Fuse.Controls.Native.Android
 		}
 
 		[TargetSpecificImplementation]
-		[Require("Source.Include", "Uno/Graphics/GLHelper.h")]
+		[Require("Source.Include", "uDroid/GLHelper.h")]
 		protected void DestroySurface()
 		{
 			extern(_eglSurface) "GLHelper::SwapBackToBackgroundSurface( (EGLSurface)$0 )";
@@ -63,7 +63,7 @@ namespace Fuse.Controls.Native.Android
 		}
 
 		[TargetSpecificImplementation]
-		[Require("Source.Include", "Uno/Graphics/GLHelper.h")]
+		[Require("Source.Include", "uDroid/GLHelper.h")]
 		public bool BeginDraw(int2 size)
 		{
 			if (_eglSurface == IntPtr.Zero)
@@ -86,7 +86,7 @@ namespace Fuse.Controls.Native.Android
 		}
 
 		[TargetSpecificImplementation]
-		[Require("Source.Include", "Uno/Graphics/GLHelper.h")]
+		[Require("Source.Include", "uDroid/GLHelper.h")]
 		public void EndDraw()
 		{
 			double t;

@@ -145,7 +145,7 @@ namespace Fuse.Resources
 		public float Density { get { return _proxy.Density; } set { _proxy.Density = value; } }
 	}
 
-	[extern(ANDROID) Require("Source.Include", "Uno/Graphics/GLHelper.h")]
+	[extern(ANDROID) Require("Source.Include", "uDroid/GLHelper.h")]
 	class FileImageSourceImpl : LoadingImageSource
 	{
 		FileSource _file;

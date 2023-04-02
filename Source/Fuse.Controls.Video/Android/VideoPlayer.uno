@@ -272,7 +272,7 @@ namespace Fuse.Controls.VideoImpl.Android
 		@}
 
 		[Foreign(Language.Java)]
-		[Require("Source.Include", "Uno/Graphics/GLHelper.h")]
+		[Require("Source.Include", "uDroid/GLHelper.h")]
 		public static bool IsHardwareAccelerated()
 		@{
 			android.view.Window window = com.fuse.Activity.getRootActivity().getWindow();

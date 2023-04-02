@@ -544,14 +544,14 @@ namespace Fuse.Platform
 		@}
 
 
-		[Require("Source.Include", "Uno/Graphics/GLHelper.h")]
+		[Require("Source.Include", "uDroid/GLHelper.h")]
 		static void cppOnConfigChanged()
 		{
 			extern "GLHelper::SwapBackToBackgroundSurface()";
 			ResetGeometry();
 		}
 
-		[Require("Source.Include", "Uno/Graphics/GLHelper.h")]
+		[Require("Source.Include", "uDroid/GLHelper.h")]
 		static void ResetGeometry()
 		{
 			extern "GLHelper::SwapBackToBackgroundSurface()";

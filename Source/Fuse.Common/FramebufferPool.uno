@@ -56,7 +56,7 @@ namespace Fuse
 		}
 	}
 
-	[extern(ANDROID) Require("Source.Include", "Uno/Graphics/GLHelper.h")]
+	[extern(ANDROID) Require("Source.Include", "uDroid/GLHelper.h")]
 	internal class FramebufferPoolImpl : ISoftDisposable
 	{
 		public FramebufferPoolImpl()

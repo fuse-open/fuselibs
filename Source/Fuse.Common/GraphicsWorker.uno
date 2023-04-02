@@ -6,7 +6,7 @@ using Fuse;
 
 namespace Fuse
 {
-	[extern(ANDROID) Require("Source.Include", "Uno/Graphics/GLHelper.h")]
+	[extern(ANDROID) Require("Source.Include", "uDroid/GLHelper.h")]
 	[extern(IOS && METAL) Require("Source.Include", "MetalANGLE/MGLKit.h")]
 	/** Allows dispatching actions on a separate thread with access to a grpahics
 		context that shares data with the main graphics context of the @App.
