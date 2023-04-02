@@ -1,7 +1,6 @@
 # Fuselibs
 
 [![AppVeyor build status](https://img.shields.io/appveyor/ci/fusetools/fuselibs-public/master.svg?logo=appveyor&logoColor=silver&style=flat-square)](https://ci.appveyor.com/project/fusetools/fuselibs-public/branch/master)
-[![Travis CI build status](https://img.shields.io/travis/fuse-open/fuselibs/master.svg?style=flat-square)](https://travis-ci.org/fuse-open/fuselibs)
 [![NPM package](https://img.shields.io/npm/v/@fuse-open/fuselibs.svg?style=flat-square)](https://www.npmjs.com/package/@fuse-open/fuselibs)
 [![NPM beta](https://img.shields.io/npm/v/@fuse-open/fuselibs/beta.svg?style=flat-square)](https://www.npmjs.com/package/@fuse-open/fuselibs)
 [![License: MIT](https://img.shields.io/github/license/fuse-open/fuselibs.svg?style=flat-square)](LICENSE.txt)
