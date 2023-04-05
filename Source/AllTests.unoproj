@@ -1,5 +1,5 @@
 {
-  "BuildCondition": "UNO_TEST",
+  "BuildCondition": "TEST",
   "Projects": [
     "**Test.unoproj"
   ],

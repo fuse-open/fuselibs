@@ -88,7 +88,7 @@ namespace Fuse.Platform
 		}
 
 
-		extern(UNO_TEST) static internal void SetMargins( float4 device, float4 safe, float4 static_ )
+		extern(TEST) static internal void SetMargins( float4 device, float4 safe, float4 static_ )
 		{
 			_deviceMargins = device;
 			_safeMargins = safe;

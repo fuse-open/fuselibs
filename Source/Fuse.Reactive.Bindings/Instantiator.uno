@@ -192,7 +192,7 @@ namespace Fuse.Reactive
 			return GetLastNodeFromIndex(_watcher.WindowItemCount -1);
 		}
 
-		extern (UNO_TEST) static internal int InsertCount
+		extern (TEST) static internal int InsertCount
 		{
 			get { return ItemsWindowList<WindowItem>.InsertCount; }
 			set { ItemsWindowList<WindowItem>.InsertCount = value; }

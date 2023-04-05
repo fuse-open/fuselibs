@@ -1,4 +1,4 @@
-Packages.SourcePaths += Source
+SearchPaths.Sources += Source
 
 // Add default packages for 'uno create'.
 Packages.Default += [Fuse, FuseJS]

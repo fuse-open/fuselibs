@@ -340,7 +340,7 @@ namespace Fuse.Controls
 		}
 
 		//this is the simplest way to test things (like Pages) that should invoke `Goto`.
-		extern(UNO_TEST) internal Action<RouterPage, NavigationGotoMode, RoutingOperation,
+		extern(TEST) internal Action<RouterPage, NavigationGotoMode, RoutingOperation,
 			string,RoutingResult> _testInterceptGoto;
 
 		RoutingResult IRouterOutlet.Goto(RouterPage routerPage, NavigationGotoMode gotoMode,
@@ -348,7 +348,7 @@ namespace Fuse.Controls
 		{
 			var result = GotoImpl(routerPage, gotoMode, operation, operationStyle, out pageVisual);
 
-			if defined(UNO_TEST)
+			if defined(TEST)
 			{
 				if (_testInterceptGoto != null)
 					_testInterceptGoto(routerPage, gotoMode, operation, operationStyle, result);
