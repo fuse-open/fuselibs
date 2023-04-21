@@ -51,6 +51,49 @@ namespace Fuse.Controls
 		}
 	}
 
+	/**
+		A Panel that can be used to draw lines using your finger. As the DrawingPanel is native only, it must be contained in a @NativeViewHost.
+
+		To use this control, You need to add a reference to `Fuse.Controls.DrawingPanel` and `Fuse.ImageTools` on your .unoproj file
+
+		### Example:
+
+		```XML
+		<App Background="White">
+			<JavaScript>
+				var drawing = DrawingPanel
+
+				module.exports = {
+					undoClicked: function(args) {
+						drawing.undo();
+					},
+					redoClicked: function(args) {
+						drawing.redo();
+					},
+					clearClicked: function(args) {
+						drawing.clear();
+					},
+					clearHistoryClicked: function(args) {
+						drawing.clearHistory();
+					}
+				}
+			</JavaScript>
+			<ClientPanel>
+				<DockPanel>
+					<NativeViewHost>
+						<DrawingPanel ux:Name="DrawingPanel" />
+					</NativeViewHost>
+					<StackPanel Height="70" ItemSpacing="10" Alignment="Center" Padding="10" Dock="Bottom" Orientation="Horizontal">
+						<Button Text="Undo" Clicked="{undoClicked}" />
+						<Button Text="Redo" Clicked="{redoClicked}"/>
+						<Button Text="Clear Canvas" Clicked="{clearClicked}"/>
+						<Button Text="Clear History" Clicked="{clearHistoryClicked}"/>
+					</StackPanel>
+				</DockPanel>
+			</ClientPanel>
+		</App>
+		```
+	*/
 	public class DrawingPanelBase : Panel, ICanvasViewHost
 	{
 		static DrawingPanelBase()
