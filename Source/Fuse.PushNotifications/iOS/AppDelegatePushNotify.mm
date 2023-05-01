@@ -1,4 +1,4 @@
-#include <Uno/Uno.h>
+#include <uno.h>
 #include "AppDelegatePushNotify.h"
 @{Fuse.Platform.Lifecycle:IncludeDirective}
 @{Fuse.PushNotifications.iOSImpl:IncludeDirective}
