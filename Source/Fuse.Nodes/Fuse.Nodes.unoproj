@@ -8,6 +8,7 @@
     "Fuse.Views",
     "Fuse.Animations",
     "Fuse.Controls.Native",
+    "Fuse.Controls.DrawingPanel",
     "Fuse.Controls.Navigation",
     "Fuse.Controls.Navigation.Test",
     "Fuse.Controls.Panels",

@@ -1,0 +1,4 @@
+<Fuse.Controls.DrawingPanelBase ux:Class="Fuse.Controls.DrawingPanel" HitTestMode="LocalBoundsAndChildren">
+	<Fuse.Controls.Native.Android.AndroidDrawingPanel ux:Condition="Android" ux:Template="AndroidAppearance" Host="this" />
+	<Fuse.Controls.Native.iOS.iOSDrawingPanel ux:Condition="iOS" ux:Template="iOSAppearance" Host="this" />
+</Fuse.Controls.DrawingPanelBase>
