@@ -1,4 +1,4 @@
-#include <Uno/Uno.h>
+#include <uno.h>
 
 @{Fuse.Platform.SystemUI:IncludeDirective}
 @{ObjC.Object:IncludeDirective}

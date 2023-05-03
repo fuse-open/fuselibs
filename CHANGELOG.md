@@ -1,5 +1,24 @@
 # Unreleased
 
+## 2.8
+
+### Fuse.Controls.DrawingPanel
+- New library for drawing using your finger (#1470)
+
+### Fuse.Scripting.JavaScript
+- Support `async`/`await` in JavaScript via "regenerator-runtime" (#1465)
+
+### Fuse.Scripting
+- Add `Context` parameter to native promises (#1468)
+- Implemenentation clean-up using lambda functions (#1466)
+
+### Other changes
+- Update iOS include headers (#1471)
+- Add tsconfig module for FuseJS (0c3721d)
+- Upgrade nodejs -> 16 (77ca8e6)
+
+[`v2.7.0...v2.8.0`](https://github.com/fuse-open/fuselibs/compare/v2.7.0...v2.8.0)
+
 ## 2.7
 
 ### Fuse.Controls.Panels

@@ -8,7 +8,8 @@
     "Fuse.Launcher.Maps",
     "Fuse.Launcher.Phone",
     "Fuse.Launcher",
-    "Fuse.Audio"
+    "Fuse.Audio",
+    "Fuse.Controls.DrawingPanel"
   ],
   "Projects": [
     "../Fuse.Platform/Fuse.Platform.unoproj",
