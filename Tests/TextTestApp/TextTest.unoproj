@@ -1,15 +1,15 @@
 {
-	"Title": "TextTest",
-	"Description": "Text testing",
-	"Copyright": "Copyright (c) Fuse Open",
-	"Developer": "andrewq@redblueprint.com",
-	"Version": "1.0",
-	"VersionCode": 1000,
-	"Includes": [
-		"*"
-	],
-	"Packages": [
-		"Fuse",
-		"FuseJS"
-	],
+  "title": "TextTest",
+  "description": "Text testing",
+  "copyright": "Copyright (c) Fuse Open",
+  "developer": "andrewq@redblueprint.com",
+  "version": "1.0",
+  "versionCode": 1000,
+  "references": [
+    "Fuse",
+    "FuseJS"
+  ],
+  "includes": [
+    "*"
+  ]
 }

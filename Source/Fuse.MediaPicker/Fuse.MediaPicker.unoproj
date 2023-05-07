@@ -1,37 +1,37 @@
 {
-  "Copyright": "Copyright (c) Fuse Open",
-  "Description": "Native Camera Media Picker Support",
-  "Publisher": "Fuse Open",
-  "Title": "Fuse.MediaPIcker",
-  "Packages": [
+  "copyright": "Copyright (c) Fuse Open",
+  "description": "Native Camera Media Picker Support",
+  "publisher": "Fuse Open",
+  "title": "Fuse.MediaPIcker",
+  "isTransitive": true,
+  "references": [
     "Uno.Threading"
   ],
-  "IsTransitive": true,
-  "Projects": [
+  "projects": [
     "../Fuse.Common/Fuse.Common.unoproj",
     "../Fuse.Marshal/Fuse.Marshal.unoproj",
     "../Fuse.Scripting/Fuse.Scripting.unoproj"
   ],
-  "Includes": [
+  "includes": [
     "*",
     "Android/*",
     "iOS/*",
-    "Android/ExifDataCopier.java:Java:Android",
-    "Android/FileUtils.java:Java:Android",
-    "Android/ImageResizer.java:Java:Android",
-    "Android/MediaPicker.java:Java:Android",
-    "Android/MediaPickerImpl.java:Java:Android",
-    "Android/MediaPickerFileProvider.java:Java:Android",
-    "Android/MediaPickerUtils.java:Java:Android",
-    "iOS/FOMediaPickerImageUtil.h:CHeader:iOS",
-    "iOS/FOMediaPickerImageUtil.m:CSource:iOS",
-    "iOS/FOMediaPickerMetaDataUtil.h:CHeader:iOS",
-    "iOS/FOMediaPickerMetaDataUtil.m:CSource:iOS",
-    "iOS/FOMediaPickerPhotoAssetUtil.h:CHeader:iOS",
-    "iOS/FOMediaPickerPhotoAssetUtil.m:CSource:iOS",
-    "iOS/FOMediaPicker.h:CHeader:iOS",
-    "iOS/FOMediaPicker.m:CSource:iOS",
-    "iOS/FOPHPickerSaveImageOps.h:CHeader:iOS",
-    "iOS/FOPHPickerSaveImageOps.m:CSource:iOS",
+    "Android/ExifDataCopier.java:java:Android",
+    "Android/FileUtils.java:java:Android",
+    "Android/ImageResizer.java:java:Android",
+    "Android/MediaPicker.java:java:Android",
+    "Android/MediaPickerImpl.java:java:Android",
+    "Android/MediaPickerFileProvider.java:java:Android",
+    "Android/MediaPickerUtils.java:java:Android",
+    "iOS/FOMediaPickerImageUtil.h:cheader:iOS",
+    "iOS/FOMediaPickerImageUtil.m:csource:iOS",
+    "iOS/FOMediaPickerMetaDataUtil.h:cheader:iOS",
+    "iOS/FOMediaPickerMetaDataUtil.m:csource:iOS",
+    "iOS/FOMediaPickerPhotoAssetUtil.h:cheader:iOS",
+    "iOS/FOMediaPickerPhotoAssetUtil.m:csource:iOS",
+    "iOS/FOMediaPicker.h:cheader:iOS",
+    "iOS/FOMediaPicker.m:csource:iOS",
+    "iOS/FOPHPickerSaveImageOps.h:cheader:iOS",
+    "iOS/FOPHPickerSaveImageOps.m:csource:iOS"
   ]
 }

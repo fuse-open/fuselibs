@@ -1,14 +1,16 @@
 {
-  "Copyright": "Copyright (c) Fuse Open",
-  "Description": "Low-level Node and Visual framework",
-  "Publisher": "Fuse Open",
-  "InternalsVisibleTo": [
+  "copyright": "Copyright (c) Fuse Open",
+  "description": "Low-level Node and Visual framework",
+  "publisher": "Fuse Open",
+  "internalsVisibleTo": [
     "DrawRectsTest",
     "Fuse.Android",
-    "Fuse.Views",
     "Fuse.Animations",
-    "Fuse.Controls.Native",
+    "Fuse.Common.Pointer.Test",
+    "Fuse.Common.Test",
+    "Fuse.Controls",
     "Fuse.Controls.DrawingPanel",
+    "Fuse.Controls.Native",
     "Fuse.Controls.Navigation",
     "Fuse.Controls.Navigation.Test",
     "Fuse.Controls.Panels",
@@ -17,18 +19,19 @@
     "Fuse.Controls.ScrollView",
     "Fuse.Controls.Test",
     "Fuse.Controls.Video",
-    "Fuse.Controls",
     "Fuse.Desktop",
     "Fuse.Drawing.Primitives",
     "Fuse.Effects",
-    "Fuse.Elements.Test",
     "Fuse.Elements",
+    "Fuse.Elements.Test",
     "Fuse.Gestures",
     "Fuse.Input.Focus.Test",
-    "Fuse.iOS.Bindings",
     "Fuse.iOS",
+    "Fuse.iOS.Bindings",
+    "Fuse.Models",
     "Fuse.Motion",
     "Fuse.Navigation",
+    "Fuse.Nodes.Test",
     "Fuse.Reactive.Bindings",
     "Fuse.Reactive.Bindings.Test",
     "Fuse.Scripting.JavaScript",
@@ -36,27 +39,24 @@
     "Fuse.Selection",
     "Fuse.Testing",
     "Fuse.Text",
-    "Fuse.Triggers.Test",
     "Fuse.Triggers",
-    "Fuse.Common.Pointer.Test",
-    "FuseTest",
-    "Fuse.Common.Test",
-    "Fuse.Nodes.Test",
-    "Fuse.Models",
+    "Fuse.Triggers.Test",
+    "Fuse.Views",
+    "FuseTest"
   ],
-  "Packages": [
+  "references": [
     "Uno.Collections",
-    "Uno.Threading",
     "Uno.Net.Sockets",
+    "Uno.Threading",
     "UnoCore"
   ],
-  "Projects": [
+  "projects": [
     "../Fuse.Common/Fuse.Common.unoproj",
     "../Fuse.Marshal/Fuse.Marshal.unoproj",
-    "../Fuse.Scripting/Fuse.Scripting.unoproj",
-    "../Fuse.Platform/Fuse.Platform.unoproj"
+    "../Fuse.Platform/Fuse.Platform.unoproj",
+    "../Fuse.Scripting/Fuse.Scripting.unoproj"
   ],
-  "Includes": [
+  "includes": [
     "*"
   ]
 }

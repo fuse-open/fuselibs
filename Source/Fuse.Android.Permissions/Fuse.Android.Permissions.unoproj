@@ -1,14 +1,14 @@
 {
-  "Copyright": "Copyright (c) Fuse Open",
-  "Description": "Asynchronous feature permission requests",
-  "Publisher": "Fuse Open",
-  "Packages": [
+  "copyright": "Copyright (c) Fuse Open",
+  "description": "Asynchronous feature permission requests",
+  "publisher": "Fuse Open",
+  "references": [
     "Uno.Threading"
   ],
-  "Includes": [
-      "Permissions.uno:Source",
-      "AndroidPermissionsInternal.uno:Source",
-      "AndroidPermissionsInternal.uxl:Extensions",
-      "Permissions.java:File",
+  "includes": [
+    "Permissions.uno:source",
+    "AndroidPermissionsInternal.uno:source",
+    "AndroidPermissionsInternal.uxl:extensions",
+    "Permissions.java:file"
   ]
 }

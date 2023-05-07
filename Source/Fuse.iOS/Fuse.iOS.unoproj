@@ -1,38 +1,37 @@
 {
-  "Copyright": "Copyright (c) Fuse Open",
-  "Description": "Native UI and bootstrapping for iOS",
-  "Publisher": "Fuse Open",
-  "Packages": [
-  ],
-  "InternalsVisibleTo": [
+  "copyright": "Copyright (c) Fuse Open",
+  "description": "Native UI and bootstrapping for iOS",
+  "publisher": "Fuse Open",
+  "internalsVisibleTo": [
+    "Fuse.Launcher",
     "Fuse.Launcher.Email",
     "Fuse.Launcher.InterApp",
     "Fuse.Launcher.Maps",
-    "Fuse.Launcher.Phone",
-    "Fuse.Launcher"
+    "Fuse.Launcher.Phone"
   ],
-  "Projects": [
-    "../Fuse.Platform/Fuse.Platform.unoproj",
+  "references": [],
+  "projects": [
     "../Fuse.Animations/Fuse.Animations.unoproj",
-    "../Fuse.Controls/Fuse.Controls.unoproj",
-    "../Fuse.Controls.Primitives/Fuse.Controls.Primitives.unoproj",
-    "../Fuse.Controls.Panels/Fuse.Controls.Panels.unoproj",
+    "../Fuse.Common/Fuse.Common.unoproj",
     "../Fuse.Controls.Native/Fuse.Controls.Native.unoproj",
-    "../Fuse.Drawing/Fuse.Drawing.unoproj",
+    "../Fuse.Controls.Panels/Fuse.Controls.Panels.unoproj",
+    "../Fuse.Controls.Primitives/Fuse.Controls.Primitives.unoproj",
+    "../Fuse.Controls/Fuse.Controls.unoproj",
     "../Fuse.Drawing.Planar/Fuse.Drawing.Planar.unoproj",
+    "../Fuse.Drawing/Fuse.Drawing.unoproj",
     "../Fuse.Elements/Fuse.Elements.unoproj",
     "../Fuse.Gestures/Fuse.Gestures.unoproj",
-    "../Fuse.Navigation/Fuse.Navigation.unoproj",
-    "../Fuse.Triggers/Fuse.Triggers.unoproj",
-    "../Fuse.Nodes/Fuse.Nodes.unoproj",
-    "../Fuse.Common/Fuse.Common.unoproj",
     "../Fuse.iOS.TextRenderer/Fuse.iOS.TextRenderer.unoproj",
+    "../Fuse.Navigation/Fuse.Navigation.unoproj",
+    "../Fuse.Nodes/Fuse.Nodes.unoproj",
+    "../Fuse.Platform/Fuse.Platform.unoproj",
+    "../Fuse.Triggers/Fuse.Triggers.unoproj"
   ],
-  "Includes": [
-    "AppRoot.uno:SourceFile",
-    "iOSApp.uno:SourceFile",
-    "iOSInterop.uno:SourceFile",
-    "StatusBarConfig.uno:SourceFile",
-    "Support.uno:SourceFile"
+  "includes": [
+    "AppRoot.uno:source",
+    "iOSApp.uno:source",
+    "iOSInterop.uno:source",
+    "StatusBarConfig.uno:source",
+    "Support.uno:source"
   ]
 }

@@ -1,31 +1,31 @@
 {
-  "Description": "This package is part of Fuse",
-  "Publisher": "Fuse Open",
-  "Copyright": "Copyright (c) Fuse Open",
-  "Projects": [
+  "description": "This package is part of Fuse",
+  "publisher": "Fuse Open",
+  "copyright": "Copyright (c) Fuse Open",
+  "projects": [
     "../Fuse.Animations/Fuse.Animations.unoproj",
-    "../Fuse.Controls/Fuse.Controls.unoproj",
-    "../Fuse.Controls.Panels/Fuse.Controls.Panels.unoproj",
+    "../Fuse.Common/Fuse.Common.unoproj",
     "../Fuse.Controls.Native/Fuse.Controls.Native.unoproj",
+    "../Fuse.Controls.Panels/Fuse.Controls.Panels.unoproj",
     "../Fuse.Controls.Primitives/Fuse.Controls.Primitives.unoproj",
+    "../Fuse.Controls/Fuse.Controls.unoproj",
     "../Fuse.Drawing/Fuse.Drawing.unoproj",
     "../Fuse.Effects/Fuse.Effects.unoproj",
-    "../Fuse.Navigation/Fuse.Navigation.unoproj",
     "../Fuse.Elements/Fuse.Elements.unoproj",
     "../Fuse.Gestures/Fuse.Gestures.unoproj",
+    "../Fuse.Navigation/Fuse.Navigation.unoproj",
+    "../Fuse.Nodes/Fuse.Nodes.unoproj",
     "../Fuse.Physics/Fuse.Physics.unoproj",
-    "../Fuse.Triggers/Fuse.Triggers.unoproj",
-    "../Fuse.Common/Fuse.Common.unoproj",
-    "../Fuse.Scripting/Fuse.Scripting.unoproj",
     "../Fuse.Reactive.Bindings/Fuse.Reactive.Bindings.unoproj",
     "../Fuse.Reactive.Expressions/Fuse.Reactive.Expressions.unoproj",
-    "../Fuse.Nodes/Fuse.Nodes.unoproj"
+    "../Fuse.Scripting/Fuse.Scripting.unoproj",
+    "../Fuse.Triggers/Fuse.Triggers.unoproj"
   ],
-  "Includes": [
-    "Fonts/Roboto-Light.ttf:File",
-    "Fonts/Roboto-Medium.ttf:File",
-    "Fonts/Roboto-Regular.ttf:File",
-    "*.ux:UX",
-    "*.uno:Source"
+  "includes": [
+    "Fonts/Roboto-Light.ttf:file",
+    "Fonts/Roboto-Medium.ttf:file",
+    "Fonts/Roboto-Regular.ttf:file",
+    "*.ux:ux",
+    "*.uno:source"
   ]
 }

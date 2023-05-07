@@ -1,20 +1,20 @@
 {
-  "Copyright": "Copyright (c) Fuse Open",
-  "Description": "Fuse.Drawing",
-  "Publisher": "Fuse Open",
-  "Packages": [
+  "copyright": "Copyright (c) Fuse Open",
+  "description": "Fuse.Drawing",
+  "publisher": "Fuse Open",
+  "references": [
     "Uno.Collections"
   ],
-  "Projects": [
-    "../Fuse.Scripting/Fuse.Scripting.unoproj",
-    "../Fuse.Nodes/Fuse.Nodes.unoproj",
+  "projects": [
     "../Fuse.Common/Fuse.Common.unoproj",
-    "../Fuse.Marshal/Fuse.Marshal.unoproj"
+    "../Fuse.Marshal/Fuse.Marshal.unoproj",
+    "../Fuse.Nodes/Fuse.Nodes.unoproj",
+    "../Fuse.Scripting/Fuse.Scripting.unoproj"
   ],
-  "Includes": [
-    "*",
+  "includes": [
+    "*"
   ],
-  "Excludes": [
+  "excludes": [
     "Tests/*"
-  ],
+  ]
 }

@@ -1,34 +1,34 @@
 {
-  "Packages": [
+  "references": [
+    "Fuse.Animations",
+    "Fuse.Common",
     "Fuse.Controls",
-    "Fuse.Controls.ScrollView",
+    "Fuse.Controls.Navigation",
     "Fuse.Controls.Panels",
     "Fuse.Controls.Primitives",
-    "Fuse.Controls.Navigation",
-    "Fuse.Navigation",
+    "Fuse.Controls.ScrollView",
     "Fuse.Drawing",
-    "Fuse.Common",
-    "Fuse.Nodes",
-    "Fuse.Animations",
     "Fuse.Elements",
     "Fuse.Gestures",
     "Fuse.Motion",
+    "Fuse.Navigation",
+    "Fuse.Nodes",
     "Fuse.Reactive",
-    "Fuse.Reactive.Expressions",
     "Fuse.Reactive.Bindings",
-    "Fuse.Scripting.JavaScript",
+    "Fuse.Reactive.Expressions",
     "Fuse.Scripting",
+    "Fuse.Scripting.JavaScript",
     "Fuse.Triggers",
     "FuseJS",
     "Uno.Collections",
     "Uno.Testing",
     "Uno.Threading"
   ],
-  "Projects": [
+  "projects": [
     "../../Fuse.Common/Tests/FuseTest/FuseTest.unoproj"
   ],
-  "Includes": [
+  "includes": [
     "*",
-    "UX/*.js:FuseJS",
+    "UX/*.js:fusejs"
   ]
 }

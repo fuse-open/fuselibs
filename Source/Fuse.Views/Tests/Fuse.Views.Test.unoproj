@@ -1,15 +1,15 @@
 {
-  "Packages": [
+  "references": [
     "Fuse",
-    "FuseJS",
     "Fuse.Views",
+    "FuseJS",
     "Uno.Testing"
   ],
-  "Projects": [
+  "projects": [
     "../../Fuse.Common/Tests/FuseTest/FuseTest.unoproj"
   ],
-  "Includes": [
-    "DefineLibrary.cpp.uxl:Extensions",
-    "*",
+  "includes": [
+    "DefineLibrary.cpp.uxl:extensions",
+    "*"
   ]
 }

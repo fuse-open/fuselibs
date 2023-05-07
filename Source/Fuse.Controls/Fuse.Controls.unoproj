@@ -1,35 +1,35 @@
 {
-  "Copyright": "Copyright (c) Fuse Open",
-  "Description": "Library of user interface and layout controls",
-  "Publisher": "Fuse Open",
-  "InternalsVisibleTo": [
-    "Fuse.Controls.Primitives",
+  "copyright": "Copyright (c) Fuse Open",
+  "description": "Library of user interface and layout controls",
+  "publisher": "Fuse Open",
+  "internalsVisibleTo": [
     "Fuse.Android",
-    "Fuse.Controls.Test",
     "Fuse.Controls.Panels",
+    "Fuse.Controls.Primitives",
     "Fuse.Controls.ScrollView",
+    "Fuse.Controls.Test",
     "Fuse.Elements.Test",
     "Fuse.iOS",
-    "Fuse.iOS.Bindings",
+    "Fuse.iOS.Bindings"
   ],
-  "Projects": [
+  "projects": [
     "../Fuse.Animations/Fuse.Animations.unoproj",
     "../Fuse.Common/Fuse.Common.unoproj",
-    "../Fuse.Nodes/Fuse.Nodes.unoproj",
     "../Fuse.Controls.Native/Fuse.Controls.Native.unoproj",
-    "../Fuse.Drawing/Fuse.Drawing.unoproj",
     "../Fuse.Drawing.Planar/Fuse.Drawing.Planar.unoproj",
+    "../Fuse.Drawing/Fuse.Drawing.unoproj",
     "../Fuse.Elements/Fuse.Elements.unoproj",
     "../Fuse.Gestures/Fuse.Gestures.unoproj",
     "../Fuse.Motion/Fuse.Motion.unoproj",
     "../Fuse.Navigation/Fuse.Navigation.unoproj",
+    "../Fuse.Nodes/Fuse.Nodes.unoproj",
     "../Fuse.Reactive/Fuse.Reactive.unoproj",
     "../Fuse.Scripting/Fuse.Scripting.unoproj",
-    "../Fuse.Triggers/Fuse.Triggers.unoproj",
+    "../Fuse.Triggers/Fuse.Triggers.unoproj"
   ],
-  "Includes": [
-    "Control.Background.uno:Source",
-    "*.uno:Source",
-    "*.ux:UX"
+  "includes": [
+    "Control.Background.uno:source",
+    "*.uno:source",
+    "*.ux:ux"
   ]
 }

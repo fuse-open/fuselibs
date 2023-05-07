@@ -1,31 +1,31 @@
 {
-  "Copyright": "Copyright (c) Fuse Open",
-  "Description": "Library of user interface effects",
-  "Publisher": "Fuse Open",
-  "Packages": [
-    "Uno.Collections"
-  ],
-  "InternalsVisibleTo": [
+  "copyright": "Copyright (c) Fuse Open",
+  "description": "Library of user interface effects",
+  "publisher": "Fuse Open",
+  "internalsVisibleTo": [
     "Fuse.Controls.Primitives"
   ],
-  "Projects": [
+  "references": [
+    "Uno.Collections"
+  ],
+  "projects": [
     "../Fuse.Animations/Fuse.Animations.unoproj",
+    "../Fuse.Common/Fuse.Common.unoproj",
     "../Fuse.Drawing.Planar/Fuse.Drawing.Planar.unoproj",
     "../Fuse.Drawing.Primitives/Fuse.Drawing.Primitives.unoproj",
     "../Fuse.Drawing/Fuse.Drawing.unoproj",
     "../Fuse.Elements/Fuse.Elements.unoproj",
-    "../Fuse.Nodes/Fuse.Nodes.unoproj",
-    "../Fuse.Common/Fuse.Common.unoproj"
+    "../Fuse.Nodes/Fuse.Nodes.unoproj"
   ],
-  "Includes": [
-    "Docs/**:File",
-    "BasicEffect.uno:Source",
-    "Blur.uno:Source",
-    "Desaturate.uno:Source",
-    "Duotone.uno:Source",
-    "DropShadow.uno:Source",
-    "EffectHelpers.Blur.uno:Source",
-    "Halftone.uno:Source",
-    "Mask.uno:Source"
+  "includes": [
+    "Docs/**:file",
+    "BasicEffect.uno:source",
+    "Blur.uno:source",
+    "Desaturate.uno:source",
+    "Duotone.uno:source",
+    "DropShadow.uno:source",
+    "EffectHelpers.Blur.uno:source",
+    "Halftone.uno:source",
+    "Mask.uno:source"
   ]
 }

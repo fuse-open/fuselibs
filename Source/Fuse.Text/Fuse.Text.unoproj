@@ -1,21 +1,21 @@
 {
-  "Copyright": "Copyright (c) Fuse Open",
-  "Publisher": "Fuse Open",
-  "Packages": [
+  "copyright": "Copyright (c) Fuse Open",
+  "publisher": "Fuse Open",
+  "internalsVisibleTo": [
+    "Fuse.Controls.Primitives",
+    "Text.Test"
+  ],
+  "references": [
     "Uno.Collections",
     "Uno.Graphics.Utils",
-    "Uno.Threading",
+    "Uno.Threading"
   ],
-  "Projects": [
-    "../Fuse.Drawing.Planar/Fuse.Drawing.Planar.unoproj",
-    "../Fuse.Drawing/Fuse.Drawing.unoproj",
+  "projects": [
     "../Fuse.Common/Fuse.Common.unoproj",
+    "../Fuse.Drawing.Planar/Fuse.Drawing.Planar.unoproj",
+    "../Fuse.Drawing/Fuse.Drawing.unoproj"
   ],
-  "InternalsVisibleTo": [
-    "Text.Test",
-    "Fuse.Controls.Primitives",
-  ],
-  "Includes": [
+  "includes": [
     "Bidirectional.uno",
     "Edit.uno",
     "Fallback.uno",
@@ -42,8 +42,8 @@
     "Implementation/UBidi.uno",
     "Implementation/UBrk.uno",
     "Implementation/Util.uno",
-    "Implementation/hb-ft-cached.cc:File",
-    "Implementation/hb-ft-cached.h:File",
+    "Implementation/hb-ft-cached.cc:file",
+    "Implementation/hb-ft-cached.h:file",
     "LazyFontFace.uno",
     "LineBreaks.uno",
     "Measure.uno",
@@ -54,14 +54,14 @@
     "TextureAtlas.uno",
     "Truncate.uno",
     "Wrap.uno",
-    "harfbuzz/include/harfbuzz/*.h:File",
-    "harfbuzz/lib/Android.stuff:Stuff",
-    "harfbuzz/lib/OSX.stuff:Stuff",
-    "harfbuzz/lib/Windows.stuff:Stuff",
-    "harfbuzz/lib/iOS.stuff:Stuff",
-    "icu/Windows.stuff:Stuff",
-    "icu/common/unicode/*.h:File",
-    "icu/i18n/unicode/*.h:File",
-    "icu/iOS.stuff:Stuff",
+    "harfbuzz/include/harfbuzz/*.h:file",
+    "harfbuzz/lib/Android.stuff:stuff",
+    "harfbuzz/lib/OSX.stuff:stuff",
+    "harfbuzz/lib/Windows.stuff:stuff",
+    "harfbuzz/lib/iOS.stuff:stuff",
+    "icu/Windows.stuff:stuff",
+    "icu/common/unicode/*.h:file",
+    "icu/i18n/unicode/*.h:file",
+    "icu/iOS.stuff:stuff"
   ]
 }

@@ -1,27 +1,26 @@
 {
-  "Copyright": "Copyright (c) Fuse Open",
-  "Description": "Biometric authentication support",
-  "Publisher": "Fuse Open",
-  "Title": "Fuse.Auth",
-  "Packages": [
+  "copyright": "Copyright (c) Fuse Open",
+  "description": "Biometric authentication support",
+  "publisher": "Fuse Open",
+  "title": "Fuse.Auth",
+  "ios": {
+    "pList": {
+      "nSFaceIDUsageDescription": "Require access to FaceID for authenticating"
+    },
+    "systemCapabilities": {
+      "signInWithApple": true
+    }
+  },
+  "references": [
     "Uno.Threading"
   ],
-  "Projects": [
+  "projects": [
     "../Fuse.Android.Permissions/Fuse.Android.Permissions.unoproj",
     "../Fuse/Fuse.unoproj"
   ],
-  "Includes": [
+  "includes": [
     "*",
-    "iOS/SignInHelper.h:ObjCHeader:iOS",
-    "iOS/SignInHelper.mm:ObjCSource:iOS"
-  ],
-  "iOS": {
-    "PList": {
-      "NSFaceIDUsageDescription": "Require access to FaceID for authenticating"
-    },
-    "SystemCapabilities": {
-      "SignInWithApple": true
-    }
-  }
+    "iOS/SignInHelper.h:objcheader:iOS",
+    "iOS/SignInHelper.mm:objcsource:iOS"
+  ]
 }
-

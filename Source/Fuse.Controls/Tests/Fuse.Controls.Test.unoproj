@@ -1,26 +1,26 @@
 {
-  "Packages": [
+  "references": [
     "Fuse.Animations",
+    "Fuse.Common",
     "Fuse.Controls",
+    "Fuse.Controls.Native",
+    "Fuse.Controls.Navigation",
     "Fuse.Controls.Panels",
     "Fuse.Controls.Primitives",
     "Fuse.Controls.ScrollView",
-    "Fuse.Controls.Native",
-    "Fuse.Controls.Navigation",
     "Fuse.Drawing",
     "Fuse.Elements",
     "Fuse.Gestures",
     "Fuse.Navigation",
-    "Fuse.Triggers",
-    "Fuse.Common",
     "Fuse.Nodes",
+    "Fuse.Triggers",
     "Uno.Testing"
   ],
-  "Projects": [
-    "../../Fuse.Common/Tests/FuseTest/FuseTest.unoproj",
+  "projects": [
+    "../../Fuse.Common/Tests/FuseTest/FuseTest.unoproj"
   ],
-  "Includes": [
-    "*.uno:Source",
+  "includes": [
+    "*.uno:source",
     "UX/*.ux"
   ]
 }

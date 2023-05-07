@@ -1,32 +1,32 @@
 {
-  "Copyright": "Copyright (c) Fuse Open",
-  "Description": "Library of vector drawing and surface",
-  "Publisher": "Fuse Open",
-  "Title": "Fuse.Drawing.Surface",
-  "InternalsVisibleTo": [
+  "copyright": "Copyright (c) Fuse Open",
+  "description": "Library of vector drawing and surface",
+  "publisher": "Fuse Open",
+  "title": "Fuse.Drawing.Surface",
+  "internalsVisibleTo": [
+    "Fuse.Controls.Native",
     "Fuse.Controls.Panels",
     "Fuse.Controls.Primitives",
-    "Fuse.Drawing.Surface.Test",
-    "Fuse.Controls.Native",
+    "Fuse.Drawing.Surface.Test"
   ],
-  "Packages": [
-    "Uno.Collections",
+  "references": [
+    "Uno.Collections"
   ],
-  "Projects": [
+  "projects": [
     "../Fuse.Common/Fuse.Common.unoproj",
-    "../Fuse.Nodes/Fuse.Nodes.unoproj",
     "../Fuse.Drawing.Planar/Fuse.Drawing.Planar.unoproj",
     "../Fuse.Drawing.Primitives/Fuse.Drawing.Primitives.unoproj",
     "../Fuse.Drawing/Fuse.Drawing.unoproj",
     "../Fuse.Elements/Fuse.Elements.unoproj",
+    "../Fuse.Nodes/Fuse.Nodes.unoproj"
   ],
-  "Includes": [
+  "includes": [
     "*",
-    "CoreGraphics/CoreGraphicsLib.h:CHeader:iOS||OSX",
-    "Android/LinearGradientStore.java:Java:Android",
-    "Android/GraphicsSurfaceContext.java:Java:Android",
+    "CoreGraphics/CoreGraphicsLib.h:cheader:iOS||OSX",
+    "Android/LinearGradientStore.java:java:Android",
+    "Android/GraphicsSurfaceContext.java:java:Android"
   ],
-  "Excludes": [
-    "Tests/",
+  "excludes": [
+    "Tests/"
   ]
 }

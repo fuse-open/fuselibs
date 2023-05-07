@@ -1,21 +1,21 @@
 {
-  "Copyright": "Copyright (c) Fuse Open",
-  "Description": "Library for physics-based UI Effects",
-  "Publisher": "Fuse Open",
-  "InternalsVisibleTo": [
+  "copyright": "Copyright (c) Fuse Open",
+  "description": "Library for physics-based UI Effects",
+  "publisher": "Fuse Open",
+  "internalsVisibleTo": [
     "Fuse.Controls"
   ],
-  "Projects": [
+  "projects": [
     "../Fuse.Animations/Fuse.Animations.unoproj",
+    "../Fuse.Common/Fuse.Common.unoproj",
     "../Fuse.Elements/Fuse.Elements.unoproj",
     "../Fuse.Gestures/Fuse.Gestures.unoproj",
-    "../Fuse.Triggers/Fuse.Triggers.unoproj",
-    "../Fuse.Scripting/Fuse.Scripting.unoproj",
     "../Fuse.Nodes/Fuse.Nodes.unoproj",
-    "../Fuse.Common/Fuse.Common.unoproj"
+    "../Fuse.Scripting/Fuse.Scripting.unoproj",
+    "../Fuse.Triggers/Fuse.Triggers.unoproj"
   ],
-  "Includes": [
-    "Docs/**:File",
+  "includes": [
+    "Docs/**:file",
     "*.uno"
   ]
 }

@@ -1,12 +1,12 @@
 {
-  "Copyright": "Copyright (c) Fuse Open",
-  "Description": "Attributes and classes for building Fuse Designer-friendly components",
-  "Publisher": "Fuse Open",
-  "InternalsVisibleTo": [
+  "copyright": "Copyright (c) Fuse Open",
+  "description": "Attributes and classes for building Fuse Designer-friendly components",
+  "publisher": "Fuse Open",
+  "internalsVisibleTo": [
     "Fuse.Elements"
   ],
-  "Includes": [
-    "Attributes.uno:Source",
-    "UnoHostInterface.uno",
+  "includes": [
+    "Attributes.uno:source",
+    "UnoHostInterface.uno"
   ]
 }

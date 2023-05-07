@@ -1,9 +1,9 @@
 {
-  "RootNamespace": "",
-  "Packages": [
+  "rootNamespace": "",
+  "references": [
     "Fuse"
   ],
-  "Includes": [
+  "includes": [
     "*",
     "Singles/*"
   ]

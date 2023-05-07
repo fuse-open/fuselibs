@@ -1,12 +1,12 @@
 {
-  "Copyright": "Copyright (c) Fuse Open",
-  "Description": "Support for Push Notifications On Mobile",
-  "Publisher": "Fuse Open",
-  "Packages": [
+  "copyright": "Copyright (c) Fuse Open",
+  "description": "Support for Push Notifications On Mobile",
+  "publisher": "Fuse Open",
+  "references": [
     "Uno.Collections",
     "Uno.Threading"
   ],
-  "Projects": [
+  "projects": [
     "../Fuse.Common/Fuse.Common.unoproj",
     "../Fuse.Controls/Fuse.Controls.unoproj",
     "../Fuse.Elements/Fuse.Elements.unoproj",
@@ -14,21 +14,19 @@
     "../Fuse.Reactive/Fuse.Reactive.unoproj",
     "../Fuse.Scripting/Fuse.Scripting.unoproj"
   ],
-  "Includes": [
-    "Docs/**:File",
-    "Common.uno:Source",
-    "JS.uno:Source",
-
-    "iOS/Impl.uno:Source",
-    "iOS/Impl.uxl:Extensions",
-    "iOS/AppDelegatePushNotify.h:CHeader:iOS",
-    "iOS/AppDelegatePushNotify.mm:CSource:iOS",
-
-    "Android/Impl.uno:Source",
-    "Android/Impl.cpp.uxl:Extensions",
-    "Android/PushNotificationReceiver.java:File",
-    "Android/BigPictureStyleHttp.java:File",
-    "Android/BundleFiles.java:File",
-    "Android/Assets/DefaultIcon.png:File"
+  "includes": [
+    "Docs/**:file",
+    "Common.uno:source",
+    "JS.uno:source",
+    "iOS/Impl.uno:source",
+    "iOS/Impl.uxl:extensions",
+    "iOS/AppDelegatePushNotify.h:cheader:iOS",
+    "iOS/AppDelegatePushNotify.mm:csource:iOS",
+    "Android/Impl.uno:source",
+    "Android/Impl.cpp.uxl:extensions",
+    "Android/PushNotificationReceiver.java:file",
+    "Android/BigPictureStyleHttp.java:file",
+    "Android/BundleFiles.java:file",
+    "Android/Assets/DefaultIcon.png:file"
   ]
 }

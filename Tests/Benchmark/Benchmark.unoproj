@@ -1,9 +1,9 @@
 {
-  "Packages": [
+  "references": [
     "Fuse",
-    "FuseJS",
+    "FuseJS"
   ],
-  "Includes": [
+  "includes": [
     "Utils/FrameIndex.uno",
     "Utils/ProfilePanel.uno",
     "Utils/TestRunner.uno",

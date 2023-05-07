@@ -1,18 +1,18 @@
 {
-  "Copyright": "Copyright (c) Fuse Open",
-  "Description": "Fuse.Drawing",
-  "Publisher": "Fuse Open",
-  "Projects": [
+  "copyright": "Copyright (c) Fuse Open",
+  "description": "Fuse.Drawing",
+  "publisher": "Fuse Open",
+  "projects": [
+    "../Fuse.Common/Fuse.Common.unoproj",
     "../Fuse.Drawing.Planar/Fuse.Drawing.Planar.unoproj",
     "../Fuse.Drawing/Fuse.Drawing.unoproj",
     "../Fuse.Elements/Fuse.Elements.unoproj",
-    "../Fuse.Nodes/Fuse.Nodes.unoproj",
-    "../Fuse.Common/Fuse.Common.unoproj"
+    "../Fuse.Nodes/Fuse.Nodes.unoproj"
   ],
-  "Includes": [
-    "Circle.uno:Source",
-    "Quad.uno:Source",
-    "Rectangle.uno:Source",
-    "Wedge.uno:Source"
+  "includes": [
+    "Circle.uno:source",
+    "Quad.uno:source",
+    "Rectangle.uno:source",
+    "Wedge.uno:source"
   ]
 }

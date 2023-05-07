@@ -1,21 +1,21 @@
 {
-  "Copyright": "Copyright (c) Fuse Open",
-  "Description": "Native Storage",
-  "Publisher": "Fuse Open",
-  "Packages": [
-    "Uno.Threading",
+  "copyright": "Copyright (c) Fuse Open",
+  "description": "Native Storage",
+  "publisher": "Fuse Open",
+  "references": [
     "Uno.Collections",
-    "Uno.Data.Json"
+    "Uno.Data.Json",
+    "Uno.Threading"
   ],
-  "Projects": [
+  "projects": [
     "../Fuse.Common/Fuse.Common.unoproj",
-    "../Fuse.Scripting/Fuse.Scripting.unoproj",
-    "../Fuse.Marshal/Fuse.Marshal.unoproj"
+    "../Fuse.Marshal/Fuse.Marshal.unoproj",
+    "../Fuse.Scripting/Fuse.Scripting.unoproj"
   ],
-  "Includes": [
-    "ApplicationDir.uno:Source",
-    "StorageModule.uno:Source",
-    "UserSettingsModule.uno:Source",
-    "UserSettingsImpl.uno:Source"
+  "includes": [
+    "ApplicationDir.uno:source",
+    "StorageModule.uno:source",
+    "UserSettingsModule.uno:source",
+    "UserSettingsImpl.uno:source"
   ]
 }

@@ -1,61 +1,61 @@
 {
-  "Copyright": "Copyright (c) Fuse Open",
-  "Description": "User experience design and tooling platform (core package)",
-  "Publisher": "Fuse Open",
-  "InternalsVisibleTo": [
-    "Fuse.Views",
+  "copyright": "Copyright (c) Fuse Open",
+  "description": "User experience design and tooling platform (core package)",
+  "publisher": "Fuse Open",
+  "internalsVisibleTo": [
     "Fuse.Android",
     "Fuse.Android.TextRenderer",
     "Fuse.Animations",
     "Fuse.Common.Test",
+    "Fuse.Controls",
     "Fuse.Controls.Native",
     "Fuse.Controls.Navigation",
     "Fuse.Controls.Panels",
     "Fuse.Controls.Primitives",
     "Fuse.Controls.ScrollView",
     "Fuse.Controls.Test",
-    "Fuse.Controls",
     "Fuse.Desktop",
     "Fuse.Drawing.Surface",
     "Fuse.Drawing.Surface.Test",
     "Fuse.Effects",
-    "Fuse.Elements.Test",
     "Fuse.Elements",
-    "Fuse.Nodes",
+    "Fuse.Elements.Test",
     "Fuse.Gestures",
     "Fuse.Input.Focus.Test",
-    "Fuse.iOS.Bindings",
     "Fuse.iOS",
+    "Fuse.iOS.Bindings",
     "Fuse.iOS.TextRenderer",
     "Fuse.Motion",
+    "Fuse.Nodes",
     "Fuse.Reactive.Bindings",
-    "Fuse.Reactive.Test",
     "Fuse.Reactive.Expressions",
+    "Fuse.Reactive.Test",
     "Fuse.Scripting.JavaScript",
-    "Fuse.Selection",
     "Fuse.Scripting.Test",
+    "Fuse.Selection",
     "Fuse.Testing",
     "Fuse.Text",
-    "Fuse.Triggers.Test",
     "Fuse.Triggers",
+    "Fuse.Triggers.Test",
+    "Fuse.Views",
     "FuseCore.Pointer.Test",
     "FuseCore.Test",
     "FuseTest"
   ],
-  "Packages": [
+  "references": [
     "Uno.Collections",
-    "Uno.Threading",
-    "Uno.Net.Sockets",
     "Uno.Data.Json",
+    "Uno.Net.Sockets",
+    "Uno.Threading",
     "UnoCore"
   ],
-  "Projects": [
-    "../Fuse.Platform/Fuse.Platform.unoproj",
+  "projects": [
+    "../Fuse.Platform/Fuse.Platform.unoproj"
   ],
-  "Includes": [
-    "**.uno:Source",
-    "Internal/DesktopFonts.stuff:Stuff",
-    "Internal/FontListParser.java:Java:Android",
-    "Internal/ByteBufferInputStream.java:Java:Android"
+  "includes": [
+    "**.uno:source",
+    "Internal/DesktopFonts.stuff:stuff",
+    "Internal/FontListParser.java:java:Android",
+    "Internal/ByteBufferInputStream.java:java:Android"
   ]
 }

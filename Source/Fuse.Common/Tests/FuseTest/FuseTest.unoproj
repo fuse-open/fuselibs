@@ -1,10 +1,10 @@
 {
-  "Packages": [
+  "references": [
     "Fuse",
     "FuseJS",
-    "Uno.Testing",
+    "Uno.Testing"
   ],
-  "Includes": [
-    "*",
+  "includes": [
+    "*"
   ]
 }

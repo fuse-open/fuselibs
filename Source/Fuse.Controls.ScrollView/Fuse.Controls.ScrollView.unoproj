@@ -1,38 +1,38 @@
 {
-  "Copyright": "Copyright (c) Fuse Open",
-  "Description": "Fuse ScrollView implementation",
-  "Publisher": "Fuse Open",
-  "InternalsVisibleTo": [
+  "copyright": "Copyright (c) Fuse Open",
+  "description": "Fuse ScrollView implementation",
+  "publisher": "Fuse Open",
+  "internalsVisibleTo": [
     "Fuse.Android",
     "Fuse.Controls.ScrollView.Test",
     "Fuse.Elements.Test",
     "Fuse.iOS",
-    "Fuse.iOS.Bindings",
+    "Fuse.iOS.Bindings"
   ],
-  "Projects": [
+  "projects": [
     "../Fuse.Animations/Fuse.Animations.unoproj",
     "../Fuse.Common/Fuse.Common.unoproj",
-    "../Fuse.Nodes/Fuse.Nodes.unoproj",
-    "../Fuse.Motion/Fuse.Motion.unoproj",
-    "../Fuse.Drawing/Fuse.Drawing.unoproj",
-    "../Fuse.Drawing.Planar/Fuse.Drawing.Planar.unoproj",
-    "../Fuse.Elements/Fuse.Elements.unoproj",
-    "../Fuse.Controls/Fuse.Controls.unoproj",
     "../Fuse.Controls.Native/Fuse.Controls.Native.unoproj",
     "../Fuse.Controls.Panels/Fuse.Controls.Panels.unoproj",
+    "../Fuse.Controls/Fuse.Controls.unoproj",
+    "../Fuse.Drawing.Planar/Fuse.Drawing.Planar.unoproj",
+    "../Fuse.Drawing/Fuse.Drawing.unoproj",
+    "../Fuse.Elements/Fuse.Elements.unoproj",
     "../Fuse.Gestures/Fuse.Gestures.unoproj",
+    "../Fuse.Marshal/Fuse.Marshal.unoproj",
+    "../Fuse.Motion/Fuse.Motion.unoproj",
     "../Fuse.Motion/Fuse.Motion.unoproj",
     "../Fuse.Navigation/Fuse.Navigation.unoproj",
+    "../Fuse.Nodes/Fuse.Nodes.unoproj",
     "../Fuse.Reactive.Bindings/Fuse.Reactive.Bindings.unoproj",
     "../Fuse.Reactive.Expressions/Fuse.Reactive.Expressions.unoproj",
     "../Fuse.Scripting/Fuse.Scripting.unoproj",
-    "../Fuse.Marshal/Fuse.Marshal.unoproj",
-    "../Fuse.Triggers/Fuse.Triggers.unoproj",
+    "../Fuse.Triggers/Fuse.Triggers.unoproj"
   ],
-  "Includes": [
-    "*",
+  "includes": [
+    "*"
   ],
-  "Excludes": [
-    "Tests/",
-  ],
+  "excludes": [
+    "Tests/"
+  ]
 }

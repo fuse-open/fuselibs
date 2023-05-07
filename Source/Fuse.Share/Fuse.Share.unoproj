@@ -1,18 +1,18 @@
 {
-  "Copyright": "Copyright (c) Fuse Open",
-  "Description": "Content sharing API",
-  "Publisher": "Fuse Open",
-  "Packages": [
+  "copyright": "Copyright (c) Fuse Open",
+  "description": "Content sharing API",
+  "publisher": "Fuse Open",
+  "references": [
     "Uno.Threading"
   ],
-  "Projects": [
+  "projects": [
     "../Fuse.Android.Permissions/Fuse.Android.Permissions.unoproj",
-    "../Fuse.Scripting/Fuse.Scripting.unoproj",
-    "../Fuse.Nodes/Fuse.Nodes.unoproj",
     "../Fuse.Common/Fuse.Common.unoproj",
-    "../Fuse.Elements/Fuse.Elements.unoproj"
+    "../Fuse.Elements/Fuse.Elements.unoproj",
+    "../Fuse.Nodes/Fuse.Nodes.unoproj",
+    "../Fuse.Scripting/Fuse.Scripting.unoproj"
   ],
-  "Includes": [
+  "includes": [
     "*"
   ]
 }

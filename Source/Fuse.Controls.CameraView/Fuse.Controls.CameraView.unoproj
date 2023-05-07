@@ -1,28 +1,28 @@
 {
-  "Copyright": "Copyright (c) Fuse Open",
-  "Publisher": "Fuse Open",
-  "Title": "Fuse.Controls.CameraView",
-  "Packages": [
+  "copyright": "Copyright (c) Fuse Open",
+  "publisher": "Fuse Open",
+  "title": "Fuse.Controls.CameraView",
+  "references": [
     "Uno.Threading"
   ],
-  "Projects": [
+  "projects": [
     "../Fuse.Android.Permissions/Fuse.Android.Permissions.unoproj",
+    "../Fuse.ImageTools/Fuse.ImageTools.unoproj",
     "../Fuse/Fuse.unoproj",
-    "../FuseJS/FuseJS.unoproj",
-    "../Fuse.ImageTools/Fuse.ImageTools.unoproj"
+    "../FuseJS/FuseJS.unoproj"
   ],
-  "Includes": [
+  "includes": [
     "*",
-    "iOS/CameraPreview.h:ObjCHeader:iOS",
-    "iOS/CameraPreview.m:ObjCSource:iOS",
-    "iOS/CameraViewImpl.h:ObjCHeader:iOS",
-    "iOS/CameraViewImpl.mm:ObjCSource:iOS",
-    "iOS/RecordingSession.h:ObjCHeader:iOS",
-    "iOS/RecordingSession.mm:ObjCSource:iOS",
-    "Android/CameraImpl.java:Java:Android",
-    "Android/IPictureCallback.java:Java:Android",
-    "Android/RecordingSession.java:Java:Android",
-    "Android/IStartRecordingSession.java:Java:Android",
-    "Android/IStopRecordingSession.java:Java:Android"
+    "iOS/CameraPreview.h:objcheader:iOS",
+    "iOS/CameraPreview.m:objcsource:iOS",
+    "iOS/CameraViewImpl.h:objcheader:iOS",
+    "iOS/CameraViewImpl.mm:objcsource:iOS",
+    "iOS/RecordingSession.h:objcheader:iOS",
+    "iOS/RecordingSession.mm:objcsource:iOS",
+    "Android/CameraImpl.java:java:Android",
+    "Android/IPictureCallback.java:java:Android",
+    "Android/RecordingSession.java:java:Android",
+    "Android/IStartRecordingSession.java:java:Android",
+    "Android/IStopRecordingSession.java:java:Android"
   ]
 }

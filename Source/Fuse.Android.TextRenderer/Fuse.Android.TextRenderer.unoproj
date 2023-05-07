@@ -1,23 +1,23 @@
 {
-  "Copyright": "Copyright (c) Fuse Open",
-  "Description": "Android TextRenderer",
-  "Publisher": "Fuse Open",
-  "InternalsVisibleTo": [
+  "copyright": "Copyright (c) Fuse Open",
+  "description": "Android TextRenderer",
+  "publisher": "Fuse Open",
+  "internalsVisibleTo": [
     "Fuse.Android",
-    "Fuse.Views",
+    "Fuse.Views"
   ],
-  "Projects": [
+  "projects": [
+    "../Fuse.Common/Fuse.Common.unoproj",
     "../Fuse.Controls.Native/Fuse.Controls.Native.unoproj",
     "../Fuse.Controls.Primitives/Fuse.Controls.Primitives.unoproj",
     "../Fuse.Controls/Fuse.Controls.unoproj",
-    "../Fuse.Common/Fuse.Common.unoproj",
     "../Fuse.Drawing/Fuse.Drawing.unoproj",
     "../Fuse.Elements/Fuse.Elements.unoproj",
-    "../Fuse.Nodes/Fuse.Nodes.unoproj",
+    "../Fuse.Nodes/Fuse.Nodes.unoproj"
   ],
-  "Includes": [
+  "includes": [
     "*",
     "Internal/*",
-    "StaticLayoutBuilder.java:Java:Android"
+    "StaticLayoutBuilder.java:java:Android"
   ]
 }

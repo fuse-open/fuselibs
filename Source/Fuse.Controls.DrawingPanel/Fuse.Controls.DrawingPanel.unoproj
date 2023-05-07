@@ -1,25 +1,25 @@
 {
-  "Copyright": "Copyright (c) Fuse Open",
-  "Description": "DrawingPanel",
-  "Publisher": "Fuse Open",
-  "Packages":[
+  "copyright": "Copyright (c) Fuse Open",
+  "description": "DrawingPanel",
+  "publisher": "Fuse Open",
+  "references": [
     "Uno.Collections",
-    "Uno.Threading",
+    "Uno.Threading"
   ],
-  "Projects": [
-    "../Fuse.Common/Fuse.Common.unoproj",
+  "projects": [
     "../Fuse.Android/Fuse.Android.unoproj",
-    "../Fuse.Controls/Fuse.Controls.unoproj",
+    "../Fuse.Common/Fuse.Common.unoproj",
     "../Fuse.Controls.Native/Fuse.Controls.Native.unoproj",
     "../Fuse.Controls.Panels/Fuse.Controls.Panels.unoproj",
     "../Fuse.Controls.Primitives/Fuse.Controls.Primitives.unoproj",
+    "../Fuse.Controls/Fuse.Controls.unoproj",
     "../Fuse.Drawing/Fuse.Drawing.unoproj",
     "../Fuse.Elements/Fuse.Elements.unoproj",
     "../Fuse.ImageTools/Fuse.ImageTools.unoproj",
     "../Fuse.Nodes/Fuse.Nodes.unoproj",
     "../Fuse.Scripting/Fuse.Scripting.unoproj"
   ],
-  "Includes": [
+  "includes": [
     "*"
   ]
 }

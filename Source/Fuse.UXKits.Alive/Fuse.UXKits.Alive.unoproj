@@ -1,20 +1,20 @@
 {
-  "Copyright": "Copyright (c) Fuse Open",
-  "Publisher": "Fuse Open",
-  "Packages": [
+  "copyright": "Copyright (c) Fuse Open",
+  "publisher": "Fuse Open",
+  "references": [
     "Fuse",
     "FuseJS"
   ],
-  "Projects": [
+  "projects": [
     "../Fuse.Charting/Fuse.Charting.unoproj"
   ],
-  "Includes": [
+  "includes": [
     "Components/**.ux",
     "Docs/**.uno",
-    "Docs/**.md:File",
+    "Docs/**.md:file",
     "Theme/**.ux",
     "Icons/aliveicons.ttf",
     "Icons/*.ux",
-    "UXFunctions/**.uno:Source"
+    "UXFunctions/**.uno:source"
   ]
 }

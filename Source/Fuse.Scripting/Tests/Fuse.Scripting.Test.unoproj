@@ -1,26 +1,26 @@
 {
-  "Projects": [
-    "../../Fuse.Common/Tests/FuseTest/FuseTest.unoproj"
-  ],
-  "Packages": [
+  "references": [
     "Fuse.Common",
-    "Fuse.Nodes",
-    "Fuse.Reactive",
-    "Fuse.Scripting.JavaScript",
-    "Fuse.Reactive.Bindings",
-    "Fuse.Reactive.Expressions",
-    "Fuse.Marshal",
     "Fuse.Controls",
     "Fuse.Controls.Panels",
     "Fuse.Controls.Primitives",
+    "Fuse.Marshal",
+    "Fuse.Nodes",
+    "Fuse.Reactive",
+    "Fuse.Reactive.Bindings",
+    "Fuse.Reactive.Expressions",
     "Fuse.Scripting",
+    "Fuse.Scripting.JavaScript",
     "Uno.Collections",
     "Uno.Testing",
-    "Uno.Threading",
+    "Uno.Threading"
   ],
-  "Includes": [
+  "projects": [
+    "../../Fuse.Common/Tests/FuseTest/FuseTest.unoproj"
+  ],
+  "includes": [
     "*.ux",
-    "*.uno:Source",
-    "**.js:Bundle",
+    "*.uno:source",
+    "**.js:bundle"
   ]
 }

@@ -1,17 +1,17 @@
 {
-  "Copyright": "Copyright (c) Fuse Open 2021",
-  "Description": "Native Launcher",
-  "Publisher": "Fuse Open",
-  "Projects": [
-    "../Fuse.Triggers/Fuse.Triggers.unoproj",
+  "copyright": "Copyright (c) Fuse Open 2021",
+  "description": "Native Launcher",
+  "publisher": "Fuse Open",
+  "projects": [
+    "../Fuse.Android/Fuse.Android.unoproj",
+    "../Fuse.iOS/Fuse.iOS.unoproj",
     "../Fuse.Nodes/Fuse.Nodes.unoproj",
     "../Fuse.Scripting/Fuse.Scripting.unoproj",
-    "../Fuse.Android/Fuse.Android.unoproj",
-    "../Fuse.iOS/Fuse.iOS.unoproj"
+    "../Fuse.Triggers/Fuse.Triggers.unoproj"
   ],
-  "Includes": [
+  "includes": [
     "InAppBrowserLauncher.uno",
     "JS.uno",
-    "Trigger.uno",
+    "Trigger.uno"
   ]
 }

@@ -1,48 +1,48 @@
 {
-  "Copyright": "Copyright (c) Fuse Open",
-  "Description": "Abstraction over platform-specific native controls",
-  "Publisher": "Fuse Open",
-  "InternalsVisibleTo": [
+  "copyright": "Copyright (c) Fuse Open",
+  "description": "Abstraction over platform-specific native controls",
+  "publisher": "Fuse Open",
+  "internalsVisibleTo": [
     "Fuse.Android",
     "Fuse.Android.TextRenderer",
-    "Fuse.Views",
-    "Fuse.iOS",
-    "Fuse.iOS.TextRenderer",
     "Fuse.Controls.DatePicker",
     "Fuse.Controls.DrawingPanel",
     "Fuse.Controls.Panels",
     "Fuse.Controls.Primitives",
     "Fuse.Controls.TimePicker",
+    "Fuse.iOS",
+    "Fuse.iOS.TextRenderer",
+    "Fuse.Views"
   ],
-  "Packages": [
+  "references": [
     "Uno.Collections",
-    "Uno.Threading",
+    "Uno.Threading"
   ],
-  "Projects": [
+  "projects": [
+    "../Fuse.Common/Fuse.Common.unoproj",
+    "../Fuse.Drawing.Planar/Fuse.Drawing.Planar.unoproj",
     "../Fuse.Drawing.Surface/Fuse.Drawing.Surface.unoproj",
     "../Fuse.Drawing/Fuse.Drawing.unoproj",
-    "../Fuse.Drawing.Planar/Fuse.Drawing.Planar.unoproj",
-    "../Fuse.Triggers/Fuse.Triggers.unoproj",
     "../Fuse.Elements/Fuse.Elements.unoproj",
     "../Fuse.Nodes/Fuse.Nodes.unoproj",
-    "../Fuse.Common/Fuse.Common.unoproj",
     "../Fuse.Scripting/Fuse.Scripting.unoproj",
+    "../Fuse.Triggers/Fuse.Triggers.unoproj"
   ],
-  "Includes": [
+  "includes": [
     "*",
-    "iOS/UIViewInputDispatch.h:ObjCHeader:iOS",
-    "iOS/UIViewInputDispatch.mm:ObjCSource:iOS",
-    "iOS/Helpers.h:ObjCHeader:iOS",
-    "iOS/Helpers.mm:ObjCSource:iOS",
-    "iOS/CanvasViewGroup.h:ObjCHeader:iOS",
-    "iOS/CanvasViewGroup.mm:ObjCSource:iOS",
-    "iOS/ContainerView.h:ObjCHeader:iOS",
-    "iOS/ContainerView.mm:ObjCSource:iOS",
-    "Android/Java/ScrollEventHandler.java:Java:Android",
-    "Android/Java/FuseScrollView.java:Java:Android",
-    "Android/Java/HorizontalScrollView.java:Java:Android",
-    "Android/Java/VerticalScrollView.java:Java:Android",
-    "Android/Java/ViewGroup.java:Java:Android",
-    "Android/Java/CanvasViewGroup.java:Java:Android",
+    "iOS/UIViewInputDispatch.h:objcheader:iOS",
+    "iOS/UIViewInputDispatch.mm:objcsource:iOS",
+    "iOS/Helpers.h:objcheader:iOS",
+    "iOS/Helpers.mm:objcsource:iOS",
+    "iOS/CanvasViewGroup.h:objcheader:iOS",
+    "iOS/CanvasViewGroup.mm:objcsource:iOS",
+    "iOS/ContainerView.h:objcheader:iOS",
+    "iOS/ContainerView.mm:objcsource:iOS",
+    "Android/Java/ScrollEventHandler.java:java:Android",
+    "Android/Java/FuseScrollView.java:java:Android",
+    "Android/Java/HorizontalScrollView.java:java:Android",
+    "Android/Java/VerticalScrollView.java:java:Android",
+    "Android/Java/ViewGroup.java:java:Android",
+    "Android/Java/CanvasViewGroup.java:java:Android"
   ]
 }

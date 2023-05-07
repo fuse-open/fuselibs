@@ -1,48 +1,48 @@
 {
-  "Copyright": "Copyright (c) Fuse Open",
-  "Description": "Primitives",
-  "Publisher": "Fuse Open",
-  "InternalsVisibleTo": [
+  "copyright": "Copyright (c) Fuse Open",
+  "description": "Primitives",
+  "publisher": "Fuse Open",
+  "internalsVisibleTo": [
     "Fuse.Android",
-    "Fuse.Views",
     "Fuse.Android.TextRenderer",
-    "Fuse.iOS.TextRenderer",
-    "Fuse.Gestures",
     "Fuse.Controls.Primitives.Test",
     "Fuse.Controls.Test",
     "Fuse.Elements.Test",
+    "Fuse.Gestures",
     "Fuse.iOS",
     "Fuse.iOS.Bindings",
+    "Fuse.iOS.TextRenderer",
+    "Fuse.Views"
   ],
-  "Packages": [
+  "references": [
     "Uno.Graphics.Utils",
     "Uno.Threading"
   ],
-  "Projects": [
-    "../Fuse.Platform/Fuse.Platform.unoproj",
+  "projects": [
     "../Fuse.Animations/Fuse.Animations.unoproj",
+    "../Fuse.Common/Fuse.Common.unoproj",
     "../Fuse.Controls.Native/Fuse.Controls.Native.unoproj",
     "../Fuse.Controls.Panels/Fuse.Controls.Panels.unoproj",
     "../Fuse.Controls/Fuse.Controls.unoproj",
-    "../Fuse.Drawing.Surface/Fuse.Drawing.Surface.unoproj",
     "../Fuse.Drawing.Planar/Fuse.Drawing.Planar.unoproj",
     "../Fuse.Drawing.Primitives/Fuse.Drawing.Primitives.unoproj",
+    "../Fuse.Drawing.Surface/Fuse.Drawing.Surface.unoproj",
     "../Fuse.Drawing/Fuse.Drawing.unoproj",
     "../Fuse.Effects/Fuse.Effects.unoproj",
     "../Fuse.Elements/Fuse.Elements.unoproj",
     "../Fuse.Gestures/Fuse.Gestures.unoproj",
+    "../Fuse.Marshal/Fuse.Marshal.unoproj",
     "../Fuse.Motion/Fuse.Motion.unoproj",
     "../Fuse.Navigation/Fuse.Navigation.unoproj",
+    "../Fuse.Nodes/Fuse.Nodes.unoproj",
+    "../Fuse.Platform/Fuse.Platform.unoproj",
     "../Fuse.Reactive.Bindings/Fuse.Reactive.Bindings.unoproj",
     "../Fuse.Reactive.Expressions/Fuse.Reactive.Expressions.unoproj",
     "../Fuse.Scripting/Fuse.Scripting.unoproj",
     "../Fuse.Text/Fuse.Text.unoproj",
-    "../Fuse.Triggers/Fuse.Triggers.unoproj",
-    "../Fuse.Marshal/Fuse.Marshal.unoproj",
-    "../Fuse.Nodes/Fuse.Nodes.unoproj",
-    "../Fuse.Common/Fuse.Common.unoproj"
+    "../Fuse.Triggers/Fuse.Triggers.unoproj"
   ],
-  "Includes": [
+  "includes": [
     "*"
   ]
 }

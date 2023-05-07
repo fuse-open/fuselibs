@@ -1,46 +1,46 @@
 {
-  "Copyright": "Copyright (c) Fuse Open",
-  "Description": "Framework for general purpose animation",
-  "Publisher": "Fuse Open",
-  "InternalsVisibleTo": [
+  "copyright": "Copyright (c) Fuse Open",
+  "description": "Framework for general purpose animation",
+  "publisher": "Fuse Open",
+  "internalsVisibleTo": [
     "Fuse.Animations.Test",
     "Fuse.Triggers",
-    "Uno.Testing",
     "Fuse.Triggers.Test",
+    "Uno.Testing"
   ],
-  "Packages": [
+  "references": [
     "Uno.Collections"
   ],
-  "Projects": [
+  "projects": [
+    "../Fuse.Common/Fuse.Common.unoproj",
     "../Fuse.Motion/Fuse.Motion.unoproj",
     "../Fuse.Nodes/Fuse.Nodes.unoproj",
-    "../Fuse.Common/Fuse.Common.unoproj",
-    "../Fuse.Reactive/Fuse.Reactive.unoproj",
     "../Fuse.Reactive.Expressions/Fuse.Reactive.Expressions.unoproj",
+    "../Fuse.Reactive/Fuse.Reactive.unoproj"
   ],
-  "Includes": [
-    "Docs/**:File",
-    "Animator.uno:Source",
-    "Attract.uno:Source",
-    "Attractor.uno:Source",
-    "AverageMixer.uno:Source",
-    "Change.uno:Source",
-    "Cycle.uno:Source",
-    "DiscreteKeyframeTrack.uno:Source",
-    "DiscreteMixer.uno:Source",
-    "DiscreteSingleTrack.uno:Source",
-    "EasingTrack.uno:Source",
-    "Keyframe.uno:Source",
-    "Mixer.uno:Source",
-    "Nothing.uno:Source",
-    "OpenAnimator.uno:Source",
-    "Player.uno:Source",
-    "RangeAdapter.uno:Source",
-    "Resize.uno:Source",
-    "Spin.uno:Source",
-    "SplineTrack.uno:Source",
-    "TrackAnimator.uno:Source",
-    "TransformAnimator.uno:Source",
-    "TriggerAnimation.uno:Source"
+  "includes": [
+    "Docs/**:file",
+    "Animator.uno:source",
+    "Attract.uno:source",
+    "Attractor.uno:source",
+    "AverageMixer.uno:source",
+    "Change.uno:source",
+    "Cycle.uno:source",
+    "DiscreteKeyframeTrack.uno:source",
+    "DiscreteMixer.uno:source",
+    "DiscreteSingleTrack.uno:source",
+    "EasingTrack.uno:source",
+    "Keyframe.uno:source",
+    "Mixer.uno:source",
+    "Nothing.uno:source",
+    "OpenAnimator.uno:source",
+    "Player.uno:source",
+    "RangeAdapter.uno:source",
+    "Resize.uno:source",
+    "Spin.uno:source",
+    "SplineTrack.uno:source",
+    "TrackAnimator.uno:source",
+    "TransformAnimator.uno:source",
+    "TriggerAnimation.uno:source"
   ]
 }

@@ -1,15 +1,15 @@
 {
-  "Copyright": "Copyright (c) Fuse Open",
-  "Description": "Allows marshalling and arithmetic between boxed value types",
-  "Publisher": "Fuse Open",
-  "Packages": [
+  "copyright": "Copyright (c) Fuse Open",
+  "description": "Allows marshalling and arithmetic between boxed value types",
+  "publisher": "Fuse Open",
+  "references": [
     "Uno.Collections",
     "UnoCore"
   ],
-  "Projects": [
-  	"../Fuse.Common/Fuse.Common.unoproj"
+  "projects": [
+    "../Fuse.Common/Fuse.Common.unoproj"
   ],
-  "Includes": [
+  "includes": [
     "*"
   ]
 }

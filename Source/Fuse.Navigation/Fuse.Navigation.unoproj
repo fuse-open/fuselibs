@@ -1,37 +1,37 @@
 {
-  "Copyright": "Copyright (c) Fuse Open",
-  "Description": "Library of common trigger behaviors for UIs",
-  "Publisher": "Fuse Open",
-  "Title": "Fuse.Triggers",
-  "InternalsVisibleTo": [
+  "copyright": "Copyright (c) Fuse Open",
+  "description": "Library of common trigger behaviors for UIs",
+  "publisher": "Fuse Open",
+  "title": "Fuse.Triggers",
+  "internalsVisibleTo": [
     "Fuse.Controls",
-    "Fuse.Controls.Primitives",
     "Fuse.Controls.Navigation",
     "Fuse.Controls.Navigation.Test",
-    "Fuse.Navigation.Test",
+    "Fuse.Controls.Primitives",
+    "Fuse.Navigation.Test"
   ],
-  "Packages": [
+  "references": [
     "Uno.Collections",
-    "Uno.Data.Json",
+    "Uno.Data.Json"
   ],
-  "Projects": [
+  "projects": [
     "../Fuse.Animations/Fuse.Animations.unoproj",
-    "../Fuse.Marshal/Fuse.Marshal.unoproj",
-    "../Fuse.Reactive.Expressions/Fuse.Reactive.Expressions.unoproj",
-    "../Fuse.Reactive.Bindings/Fuse.Reactive.Bindings.unoproj",
-    "../Fuse.Reactive/Fuse.Reactive.unoproj",
     "../Fuse.Common/Fuse.Common.unoproj",
-    "../Fuse.Scripting/Fuse.Scripting.unoproj",
-    "../Fuse.Nodes/Fuse.Nodes.unoproj",
     "../Fuse.Elements/Fuse.Elements.unoproj",
     "../Fuse.Gestures/Fuse.Gestures.unoproj",
+    "../Fuse.Marshal/Fuse.Marshal.unoproj",
     "../Fuse.Motion/Fuse.Motion.unoproj",
-    "../Fuse.Triggers/Fuse.Triggers.unoproj",
+    "../Fuse.Nodes/Fuse.Nodes.unoproj",
+    "../Fuse.Reactive.Bindings/Fuse.Reactive.Bindings.unoproj",
+    "../Fuse.Reactive.Expressions/Fuse.Reactive.Expressions.unoproj",
+    "../Fuse.Reactive/Fuse.Reactive.unoproj",
+    "../Fuse.Scripting/Fuse.Scripting.unoproj",
+    "../Fuse.Triggers/Fuse.Triggers.unoproj"
   ],
-    "Includes": [
-    "*",
+  "includes": [
+    "*"
   ],
-  "Excludes": [
-    "Tests/",
+  "excludes": [
+    "Tests/"
   ]
 }

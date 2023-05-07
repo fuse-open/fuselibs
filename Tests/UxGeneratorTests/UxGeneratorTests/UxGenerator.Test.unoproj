@@ -1,24 +1,24 @@
 {
-  "Packages": [
+  "references": [
     "Fuse",
     "FuseJS",
     "Uno.Collections",
     "Uno.Testing"
   ],
-  "Includes": [
-    "Attributes.ux:UX",
-    "AppearanceAndFills.ux:UX",
-    "Children.ux:UX",
-    "ChildUxPanel.ux:UX",
-    "EventHandlers.ux:UX",
-    "Javascript.ux:UX",
-    "ParentPanel.ux:UX",
-    "TextFont.ux:UX",
-    "TriggerAndAnimations.ux:UX",
-    "Children.ux.uno:Source",
-    "CustomControls/ClickControl.uno:Source",
-    "EventHandlers.ux.uno:Source",
-    "TriggerAndAnimations.ux.uno:Source",
-    "UxTests.uno:Source"
+  "includes": [
+    "Attributes.ux:ux",
+    "AppearanceAndFills.ux:ux",
+    "Children.ux:ux",
+    "ChildUxPanel.ux:ux",
+    "EventHandlers.ux:ux",
+    "Javascript.ux:ux",
+    "ParentPanel.ux:ux",
+    "TextFont.ux:ux",
+    "TriggerAndAnimations.ux:ux",
+    "Children.ux.uno:source",
+    "CustomControls/ClickControl.uno:source",
+    "EventHandlers.ux.uno:source",
+    "TriggerAndAnimations.ux.uno:source",
+    "UxTests.uno:source"
   ]
 }

@@ -1,30 +1,30 @@
 {
-  "Copyright": "Copyright (c) Fuse Open",
-  "Description": "Support for Local Notifications On Mobile",
-  "Publisher": "Fuse Open",
-  "Packages": [
+  "copyright": "Copyright (c) Fuse Open",
+  "description": "Support for Local Notifications On Mobile",
+  "publisher": "Fuse Open",
+  "references": [
     "Uno.Collections",
-    "Uno.Threading",
+    "Uno.Threading"
   ],
-  "Projects": [
-    "../Fuse.Platform/Fuse.Platform.unoproj",
+  "projects": [
+    "../Fuse.Common/Fuse.Common.unoproj",
     "../Fuse.Controls/Fuse.Controls.unoproj",
     "../Fuse.Elements/Fuse.Elements.unoproj",
+    "../Fuse.Platform/Fuse.Platform.unoproj",
     "../Fuse.Reactive/Fuse.Reactive.unoproj",
-    "../Fuse.Scripting/Fuse.Scripting.unoproj",
-    "../Fuse.Common/Fuse.Common.unoproj"
+    "../Fuse.Scripting/Fuse.Scripting.unoproj"
   ],
-  "Includes": [
-    "Docs/**:File",
-    "iOS/Impl.uno:Source",
-    "iOS/Impl.uxl:Extensions",
-    "iOS/AppDelegateLocalNotify.h:CHeader:iOS",
-    "iOS/AppDelegateLocalNotify.mm:CSource:iOS",
-    "Android/Impl.uno:Source",
-    "Android/Impl.uxl:Extensions",
-    "Android/LocalNotificationReceiver.java:File",
-    "Common.uno:Source",
-    "JS.uno:Source",
-    "Android/Assets/DefaultIcon.png:File"
+  "includes": [
+    "Docs/**:file",
+    "iOS/Impl.uno:source",
+    "iOS/Impl.uxl:extensions",
+    "iOS/AppDelegateLocalNotify.h:cheader:iOS",
+    "iOS/AppDelegateLocalNotify.mm:csource:iOS",
+    "Android/Impl.uno:source",
+    "Android/Impl.uxl:extensions",
+    "Android/LocalNotificationReceiver.java:file",
+    "Common.uno:source",
+    "JS.uno:source",
+    "Android/Assets/DefaultIcon.png:file"
   ]
 }

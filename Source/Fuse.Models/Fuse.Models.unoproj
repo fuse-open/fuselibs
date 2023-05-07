@@ -1,21 +1,21 @@
 {
-  "Copyright": "Copyright (c) Fuse Open",
-  "Description": "Models",
-  "Publisher": "Fuse Open",
-  "Packages": [
-    "Uno.Collections",
+  "copyright": "Copyright (c) Fuse Open",
+  "description": "Models",
+  "publisher": "Fuse Open",
+  "references": [
+    "Uno.Collections"
   ],
-  "Projects": [
+  "projects": [
     "../Fuse.Marshal/Fuse.Marshal.unoproj",
-    "../Fuse.Scripting/Fuse.Scripting.unoproj",
-    "../Fuse.Scripting.JavaScript/Fuse.Scripting.JavaScript.unoproj",
-    "../Fuse.Reactive/Fuse.Reactive.unoproj",
     "../Fuse.Reactive.Expressions/Fuse.Reactive.Expressions.unoproj",
+    "../Fuse.Reactive/Fuse.Reactive.unoproj",
+    "../Fuse.Scripting.JavaScript/Fuse.Scripting.JavaScript.unoproj",
+    "../Fuse.Scripting/Fuse.Scripting.unoproj"
   ],
-  "Includes": [
+  "includes": [
     "*",
-    "FuseJS/Internal/ZonePatches.js:Bundle",
-    "FuseJS/Internal/Model.js:Bundle",
-    "FuseJS/Internal/ViewModelAdapter.js:Bundle",
+    "FuseJS/Internal/ZonePatches.js:bundle",
+    "FuseJS/Internal/Model.js:bundle",
+    "FuseJS/Internal/ViewModelAdapter.js:bundle"
   ]
 }

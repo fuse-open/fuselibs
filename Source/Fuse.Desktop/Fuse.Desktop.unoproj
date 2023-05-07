@@ -1,16 +1,16 @@
 {
-  "Copyright": "Copyright (c) Fuse Open",
-  "Description": "Default bootstrapping for desktop platforms",
-  "Publisher": "Fuse Open",
-  "Projects": [
-    "../Fuse.Elements/Fuse.Elements.unoproj",
-    "../Fuse.Controls/Fuse.Controls.unoproj",
+  "copyright": "Copyright (c) Fuse Open",
+  "description": "Default bootstrapping for desktop platforms",
+  "publisher": "Fuse Open",
+  "projects": [
+    "../Fuse.Common/Fuse.Common.unoproj",
     "../Fuse.Controls.Panels/Fuse.Controls.Panels.unoproj",
     "../Fuse.Controls.Primitives/Fuse.Controls.Primitives.unoproj",
-    "../Fuse.Common/Fuse.Common.unoproj",
-    "../Fuse.Nodes/Fuse.Nodes.unoproj",
+    "../Fuse.Controls/Fuse.Controls.unoproj",
+    "../Fuse.Elements/Fuse.Elements.unoproj",
+    "../Fuse.Nodes/Fuse.Nodes.unoproj"
   ],
-  "Includes": [
+  "includes": [
     "*"
   ]
 }

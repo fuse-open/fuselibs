@@ -1,21 +1,21 @@
 {
-  "Copyright": "Copyright (c) Fuse Open",
-  "Description": "Library for application messages",
-  "Publisher": "Fuse Open",
-  "InternalsVisibleTo": [
+  "copyright": "Copyright (c) Fuse Open",
+  "description": "Library for application messages",
+  "publisher": "Fuse Open",
+  "internalsVisibleTo": [
     "FuseJS"
   ],
-  "Packages": [
+  "references": [
     "Uno.Collections"
   ],
-  "Projects": [
+  "projects": [
     "../Fuse.Common/Fuse.Common.unoproj",
-    "../Fuse.Nodes/Fuse.Nodes.unoproj",
     "../Fuse.Elements/Fuse.Elements.unoproj",
+    "../Fuse.Nodes/Fuse.Nodes.unoproj",
     "../Fuse.Scripting/Fuse.Scripting.unoproj",
-    "../Fuse.Triggers/Fuse.Triggers.unoproj",
+    "../Fuse.Triggers/Fuse.Triggers.unoproj"
   ],
-  "Includes": [
+  "includes": [
     "*.uno"
   ]
 }

@@ -1,16 +1,16 @@
 {
-  "Packages": [
+  "references": [
+    "Fuse.Common",
     "Fuse.Controls.Panels",
     "Fuse.Designer",
-    "Fuse.Common",
-    "Fuse.Nodes",
     "Fuse.Elements",
+    "Fuse.Nodes",
     "Uno.Testing"
   ],
-  "Projects": [
+  "projects": [
     "../../Fuse.Common/Tests/FuseTest/FuseTest.unoproj"
   ],
-  "Includes": [
+  "includes": [
     "DefineDesigner.cil.uxl",
     "DefineDesigner.cpp.uxl",
     "UnoHostInterface.Test.uno"

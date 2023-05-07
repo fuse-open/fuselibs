@@ -1,35 +1,35 @@
 {
-  "Copyright": "Copyright (c) Fuse Open",
-  "Description": "Library for control motion and simulated physics for UI",
-  "Publisher": "Fuse Open",
-  "Projects": [
-    "../Fuse.Common/Fuse.Common.unoproj",
-    "../Fuse.Reactive.Expressions/Fuse.Reactive.Expressions.unoproj"
-  ],
-  "InternalsVisibleTo": [
+  "copyright": "Copyright (c) Fuse Open",
+  "description": "Library for control motion and simulated physics for UI",
+  "publisher": "Fuse Open",
+  "internalsVisibleTo": [
     "Fuse.Animations",
     "Fuse.Charting",
     "Fuse.Controls",
-    "Fuse.Controls.Primitives",
     "Fuse.Controls.Navigation",
+    "Fuse.Controls.Primitives",
     "Fuse.Controls.ScrollView",
     "Fuse.Gestures",
-    "Fuse.Navigation",
+    "Fuse.Navigation"
   ],
-  "Includes": [
-    "MotionConfig.uno:Source",
-    "DestinationBehavior.uno:Source",
-    "DestinationMotion.uno:Source",
-    "SpringFunction.uno:Source",
-    "DelayFunction.uno:Source",
-    "Enums.uno:Source",
-    "Simulation/AngularAdapter.uno:Source",
-    "Simulation/BoundedRegion2D.uno:Source",
-    "Simulation/EasingMotion.uno:Source",
-    "Simulation/ElasticForce.uno:Source",
-    "Simulation/Friction.uno:Source",
-    "Simulation/PointerVelocity.uno:Source",
-    "Simulation/Simulation.uno:Source",
-    "Simulation/SmoothSnap.uno:Source"
+  "projects": [
+    "../Fuse.Common/Fuse.Common.unoproj",
+    "../Fuse.Reactive.Expressions/Fuse.Reactive.Expressions.unoproj"
+  ],
+  "includes": [
+    "MotionConfig.uno:source",
+    "DestinationBehavior.uno:source",
+    "DestinationMotion.uno:source",
+    "SpringFunction.uno:source",
+    "DelayFunction.uno:source",
+    "Enums.uno:source",
+    "Simulation/AngularAdapter.uno:source",
+    "Simulation/BoundedRegion2D.uno:source",
+    "Simulation/EasingMotion.uno:source",
+    "Simulation/ElasticForce.uno:source",
+    "Simulation/Friction.uno:source",
+    "Simulation/PointerVelocity.uno:source",
+    "Simulation/Simulation.uno:source",
+    "Simulation/SmoothSnap.uno:source"
   ]
 }

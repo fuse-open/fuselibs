@@ -1,30 +1,30 @@
 {
-  "Copyright": "Copyright (c) Fuse Open",
-  "Description": "MapView",
-  "Publisher": "Fuse Open",
-  "IsTransitive": true,
-  "Packages": [
+  "copyright": "Copyright (c) Fuse Open",
+  "description": "MapView",
+  "publisher": "Fuse Open",
+  "isTransitive": true,
+  "references": [
     "Uno.Collections"
   ],
-  "Projects": [
+  "projects": [
     "../Fuse.Android.Permissions/Fuse.Android.Permissions.unoproj",
     "../Fuse.ImageTools/Fuse.ImageTools.unoproj",
     "../Fuse/Fuse.unoproj"
   ],
-  "Includes": [
-    "Docs/**:File",
-    "MapMarker.uno:Source",
-    "MapOverlay.uno:Source",
-    "MapView.uno:Source",
-    "MapView.Events.uno:Source",
-    "MapView.ScriptClass.uno:Source",
+  "includes": [
+    "Docs/**:file",
+    "MapMarker.uno:source",
+    "MapOverlay.uno:source",
+    "MapView.uno:source",
+    "MapView.Events.uno:source",
+    "MapView.ScriptClass.uno:source",
     "iOS/*",
-    "iOS/MapViewDelegate.h:CHeader:iOS",
-    "iOS/MapViewDelegate.m:CSource:iOS",
-    "iOS/MapViewController.h:CHeader:iOS",
-    "iOS/MapViewController.m:CSource:iOS",
+    "iOS/MapViewDelegate.h:cheader:iOS",
+    "iOS/MapViewDelegate.m:csource:iOS",
+    "iOS/MapViewController.h:cheader:iOS",
+    "iOS/MapViewController.m:csource:iOS",
     "Android/*",
-    "Android/FuseMap.java:Java:Android",
+    "Android/FuseMap.java:java:Android",
     "MarkerIconCache.uno"
   ]
 }

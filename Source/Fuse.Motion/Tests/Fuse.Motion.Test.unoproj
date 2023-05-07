@@ -1,16 +1,16 @@
 {
-  "Packages": [
-    "Uno.Testing",
+  "references": [
     "Fuse.Controls.Panels",
     "Fuse.Controls.Primitives",
+    "Fuse.Motion",
     "Fuse.Reactive.Bindings",
     "Fuse.Reactive.Expressions",
-    "Fuse.Motion"
+    "Uno.Testing"
   ],
-  "Projects": [
+  "projects": [
     "../../Fuse.Common/Tests/FuseTest/FuseTest.unoproj"
   ],
-  "Includes": [
+  "includes": [
     "*"
   ]
 }

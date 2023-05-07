@@ -1,30 +1,30 @@
 {
-  "Copyright": "Copyright (c) Fuse Open",
-  "Description": "Video",
-  "Publisher": "Fuse Open",
-  "Packages": [
+  "copyright": "Copyright (c) Fuse Open",
+  "description": "Video",
+  "publisher": "Fuse Open",
+  "references": [
     "Uno.Collections",
     "Uno.Threading"
   ],
-  "Projects": [
-    "../Fuse.Platform/Fuse.Platform.unoproj",
-    "../Fuse.Controls/Fuse.Controls.unoproj",
-    "../Fuse.Controls.Panels/Fuse.Controls.Panels.unoproj",
+  "projects": [
+    "../Fuse.Common/Fuse.Common.unoproj",
     "../Fuse.Controls.Native/Fuse.Controls.Native.unoproj",
+    "../Fuse.Controls.Panels/Fuse.Controls.Panels.unoproj",
     "../Fuse.Controls.Primitives/Fuse.Controls.Primitives.unoproj",
+    "../Fuse.Controls/Fuse.Controls.unoproj",
     "../Fuse.Drawing.Planar/Fuse.Drawing.Planar.unoproj",
     "../Fuse.Drawing/Fuse.Drawing.unoproj",
     "../Fuse.Elements/Fuse.Elements.unoproj",
-    "../Fuse.Triggers/Fuse.Triggers.unoproj",
-    "../Fuse.Scripting/Fuse.Scripting.unoproj",
-    "../Fuse.Nodes/Fuse.Nodes.unoproj",
     "../Fuse.Marshal/Fuse.Marshal.unoproj",
-    "../Fuse.Common/Fuse.Common.unoproj"
+    "../Fuse.Nodes/Fuse.Nodes.unoproj",
+    "../Fuse.Platform/Fuse.Platform.unoproj",
+    "../Fuse.Scripting/Fuse.Scripting.unoproj",
+    "../Fuse.Triggers/Fuse.Triggers.unoproj"
   ],
-  "Includes": [
-    "iOS/VideoImpl.mm:CSource:iOS",
-    "iOS/VideoImpl.h:CHeader:iOS",
-    "CIL/XamMac.stuff:Stuff",
+  "includes": [
+    "iOS/VideoImpl.mm:csource:iOS",
+    "iOS/VideoImpl.h:cheader:iOS",
+    "CIL/XamMac.stuff:stuff",
     "*"
   ]
 }

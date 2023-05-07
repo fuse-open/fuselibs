@@ -1,18 +1,18 @@
 {
-  "Copyright": "Copyright (c) Fuse Open",
-  "Description": "Native alerts and simple dialogs for mobile targets",
-  "Publisher": "Fuse Open",
-  "Packages": [
+  "copyright": "Copyright (c) Fuse Open",
+  "description": "Native alerts and simple dialogs for mobile targets",
+  "publisher": "Fuse Open",
+  "references": [
     "Uno.Collections",
     "Uno.Threading"
   ],
-  "Projects": [
+  "projects": [
     "../Fuse.Common/Fuse.Common.unoproj",
-    "../Fuse.Scripting/Fuse.Scripting.unoproj",
     "../Fuse.Nodes/Fuse.Nodes.unoproj",
+    "../Fuse.Scripting/Fuse.Scripting.unoproj",
     "../Fuse.Triggers/Fuse.Triggers.unoproj"
   ],
-  "Includes": [
+  "includes": [
     "*"
   ]
 }

@@ -1,20 +1,20 @@
 {
-  "Copyright": "Copyright (c) Fuse Open",
-  "Description": "Abstract scripting framework",
-  "Publisher": "Fuse Open",
-  "InternalsVisibleTo": [
-    "Fuse.Scripting.JavaScript",
-    "Fuse.Nodes"
+  "copyright": "Copyright (c) Fuse Open",
+  "description": "Abstract scripting framework",
+  "publisher": "Fuse Open",
+  "internalsVisibleTo": [
+    "Fuse.Nodes",
+    "Fuse.Scripting.JavaScript"
   ],
-  "Packages": [
+  "references": [
     "Uno.Collections",
     "Uno.Threading"
   ],
-  "Projects": [
+  "projects": [
     "../Fuse.Common/Fuse.Common.unoproj",
     "../Fuse.Marshal/Fuse.Marshal.unoproj"
   ],
-  "Includes": [
-    "**.uno:Source"
+  "includes": [
+    "**.uno:source"
   ]
 }

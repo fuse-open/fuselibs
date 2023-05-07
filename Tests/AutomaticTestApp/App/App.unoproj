@@ -1,10 +1,10 @@
 {
-  "Packages": [
+  "references": [
     "Fuse",
     "FuseJS"
   ],
-  "Includes": [
+  "includes": [
     "*",
-    "**.js:Bundle"
+    "**.js:bundle"
   ]
 }

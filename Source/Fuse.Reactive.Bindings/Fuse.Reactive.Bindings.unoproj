@@ -1,36 +1,36 @@
 {
-  "Copyright": "Copyright (c) Fuse Open",
-  "Description": "Framework for reactive data binding",
-  "Publisher": "Fuse Open",
-  "Packages": [
+  "copyright": "Copyright (c) Fuse Open",
+  "description": "Framework for reactive data binding",
+  "publisher": "Fuse Open",
+  "internalsVisibleTo": [
+    "Fuse.Common.Test.Helpers",
+    "Fuse.Controls.ScrollView",
+    "Fuse.Navigation",
+    "Fuse.Reactive.Bindings.Test",
+    "Fuse.Reactive.Test",
+    "Fuse.Scripting.JavaScript",
+    "Fuse.Scripting.JavaScript.Test",
+    "Fuse.Scripting.Test"
+  ],
+  "references": [
     "Uno.Collections",
     "Uno.Data.Json",
     "Uno.Net.Http",
     "Uno.Testing",
-    "Uno.Threading",
+    "Uno.Threading"
   ],
-  "Projects": [
+  "projects": [
     "../Fuse.Common/Fuse.Common.unoproj",
     "../Fuse.Nodes/Fuse.Nodes.unoproj",
-    "../Fuse.Scripting/Fuse.Scripting.unoproj",
-    "../Fuse.Reactive/Fuse.Reactive.unoproj",
     "../Fuse.Reactive.Expressions/Fuse.Reactive.Expressions.unoproj",
+    "../Fuse.Reactive/Fuse.Reactive.unoproj",
+    "../Fuse.Scripting/Fuse.Scripting.unoproj",
     "../Fuse.Triggers/Fuse.Triggers.unoproj"
   ],
-  "InternalsVisibleTo": [
-    "Fuse.Navigation",
-    "Fuse.Scripting.JavaScript.Test",
-    "Fuse.Reactive.Bindings.Test",
-    "Fuse.Reactive.Test",
-    "Fuse.Scripting.JavaScript",
-    "Fuse.Scripting.Test",
-    "Fuse.Common.Test.Helpers",
-    "Fuse.Controls.ScrollView",
-  ],
-  "Includes": [
+  "includes": [
     "*"
   ],
-  "Excludes": [
-    "Tests/*",
+  "excludes": [
+    "Tests/*"
   ]
 }

@@ -1,29 +1,29 @@
 {
-  "Copyright": "Copyright (c) Fuse Open",
-  "Description": "Testing API",
-  "Publisher": "Fuse Open",
-  "Packages": [
+  "copyright": "Copyright (c) Fuse Open",
+  "description": "Testing API",
+  "publisher": "Fuse Open",
+  "references": [
     "Uno.Testing",
     "Uno.Threading"
   ],
-  "Projects": [
+  "projects": [
     "../Fuse.Animations/Fuse.Animations.unoproj",
-    "../Fuse.Controls/Fuse.Controls.unoproj",
+    "../Fuse.Common/Fuse.Common.unoproj",
     "../Fuse.Controls.Panels/Fuse.Controls.Panels.unoproj",
-    "../Fuse.Drawing/Fuse.Drawing.unoproj",
+    "../Fuse.Controls/Fuse.Controls.unoproj",
     "../Fuse.Drawing.Primitives/Fuse.Drawing.Primitives.unoproj",
+    "../Fuse.Drawing/Fuse.Drawing.unoproj",
     "../Fuse.Elements/Fuse.Elements.unoproj",
-    "../Fuse.Reactive/Fuse.Reactive.unoproj",
-    "../Fuse.Scripting.JavaScript/Fuse.Scripting.JavaScript.unoproj",
+    "../Fuse.Marshal/Fuse.Marshal.unoproj",
+    "../Fuse.Nodes/Fuse.Nodes.unoproj",
     "../Fuse.Reactive.Bindings/Fuse.Reactive.Bindings.unoproj",
     "../Fuse.Reactive.Expressions/Fuse.Reactive.Expressions.unoproj",
-    "../Fuse.Marshal/Fuse.Marshal.unoproj",
+    "../Fuse.Reactive/Fuse.Reactive.unoproj",
+    "../Fuse.Scripting.JavaScript/Fuse.Scripting.JavaScript.unoproj",
     "../Fuse.Scripting/Fuse.Scripting.unoproj",
-    "../Fuse.Triggers/Fuse.Triggers.unoproj",
-    "../Fuse.Common/Fuse.Common.unoproj",
-    "../Fuse.Nodes/Fuse.Nodes.unoproj"
+    "../Fuse.Triggers/Fuse.Triggers.unoproj"
   ],
-  "Includes": [
+  "includes": [
     "*"
   ]
 }

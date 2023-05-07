@@ -1,25 +1,25 @@
 {
-  "Copyright": "Copyright (c) Fuse Open",
-  "Description": "Native Launcher",
-  "Publisher": "Fuse Open",
-  "Packages": [
+  "copyright": "Copyright (c) Fuse Open",
+  "description": "Native Launcher",
+  "publisher": "Fuse Open",
+  "internalsVisibleTo": [
+    "Fuse.Launcher.Test"
+  ],
+  "references": [
     "Uno.Net.Http"
   ],
-  "Projects": [
+  "projects": [
     "../Fuse.Android.Permissions/Fuse.Android.Permissions.unoproj",
-    "../Fuse.Platform/Fuse.Platform.unoproj",
-    "../Fuse.Triggers/Fuse.Triggers.unoproj",
-    "../Fuse.Nodes/Fuse.Nodes.unoproj",
-    "../Fuse.Scripting/Fuse.Scripting.unoproj",
     "../Fuse.Android/Fuse.Android.unoproj",
-    "../Fuse.iOS/Fuse.iOS.unoproj"
+    "../Fuse.iOS/Fuse.iOS.unoproj",
+    "../Fuse.Nodes/Fuse.Nodes.unoproj",
+    "../Fuse.Platform/Fuse.Platform.unoproj",
+    "../Fuse.Scripting/Fuse.Scripting.unoproj",
+    "../Fuse.Triggers/Fuse.Triggers.unoproj"
   ],
-  "Includes": [
+  "includes": [
     "InterApp/InterAppLauncher.uno",
     "InterApp/InterAppTrigger.uno",
     "InterApp/JS.uno"
-  ],
-  "InternalsVisibleTo": [
-    "Fuse.Launcher.Test"
   ]
 }

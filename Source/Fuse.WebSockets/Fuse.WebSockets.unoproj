@@ -1,26 +1,26 @@
 {
-  "Copyright": "Copyright (c) Fuse Open",
-  "Description": "A client for the WebSocket protocol",
-  "Publisher": "Fuse Open",
-  "Projects": [
+  "copyright": "Copyright (c) Fuse Open",
+  "description": "A client for the WebSocket protocol",
+  "publisher": "Fuse Open",
+  "projects": [
     "../Fuse.Common/Fuse.Common.unoproj",
-    "../Fuse.Scripting/Fuse.Scripting.unoproj",
-    "../Fuse.Reactive/Fuse.Reactive.unoproj"
+    "../Fuse.Reactive/Fuse.Reactive.unoproj",
+    "../Fuse.Scripting/Fuse.Scripting.unoproj"
   ],
-  "Includes": [
+  "includes": [
     "WebSocketClient.uno",
     "WebSocketModule.uno",
-    "DotNet/WebSocketSharp/WebSocketClient.uno:Source",
-    "DotNet/WebSocketSharp/WebSocket.uno:Source",
-    "DotNet/WebSocketSharp/Dotnet.uxl:Extensions",
-    "DotNet/WebSocketSharp/lib/websocket-sharp.dll:File",
-    "Android/Neovisionaries/WebSocketClient.uno:Source",
-    "Android/Neovisionaries/Android.uxl:Extensions",
-    "Android/Neovisionaries/nv-websocket-client.jar:File",
-    "iOS/SocketRocket/WebSocketClient.uno:Source",
-    "iOS/SocketRocket/WebSocketClientObjc.h:ObjCHeader:iOS",
-    "iOS/SocketRocket/WebSocketClientObjc.mm:ObjCSource:iOS",
+    "DotNet/WebSocketSharp/WebSocketClient.uno:source",
+    "DotNet/WebSocketSharp/WebSocket.uno:source",
+    "DotNet/WebSocketSharp/Dotnet.uxl:extensions",
+    "DotNet/WebSocketSharp/lib/websocket-sharp.dll:file",
+    "Android/Neovisionaries/WebSocketClient.uno:source",
+    "Android/Neovisionaries/Android.uxl:extensions",
+    "Android/Neovisionaries/nv-websocket-client.jar:file",
+    "iOS/SocketRocket/WebSocketClient.uno:source",
+    "iOS/SocketRocket/WebSocketClientObjc.h:objcheader:iOS",
+    "iOS/SocketRocket/WebSocketClientObjc.mm:objcsource:iOS",
     "iOS/SocketRocket/SocketRocket-iOS.stuff",
-    "iOS/SocketRocket/include/SRWebSocket.h:File"
+    "iOS/SocketRocket/include/SRWebSocket.h:file"
   ]
 }

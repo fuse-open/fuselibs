@@ -1,25 +1,25 @@
 {
-  "Copyright": "Copyright (c) Fuse Open",
-  "Description": "Nativ CameraRoll support",
-  "Publisher": "Fuse Open",
-  "Title": "Fuse.CameraRoll",
-  "Packages": [
+  "copyright": "Copyright (c) Fuse Open",
+  "description": "Nativ CameraRoll support",
+  "publisher": "Fuse Open",
+  "title": "Fuse.CameraRoll",
+  "isTransitive": true,
+  "references": [
     "Uno.Threading"
   ],
-  "IsTransitive": true,
-  "Projects": [
+  "projects": [
     "../Android.ActivityUtils/Android.ActivityUtils.unoproj",
     "../Fuse.Android.Permissions/Fuse.Android.Permissions.unoproj",
-    "../Fuse.ImageTools/Fuse.ImageTools.unoproj",
     "../Fuse.Common/Fuse.Common.unoproj",
+    "../Fuse.ImageTools/Fuse.ImageTools.unoproj",
     "../Fuse.Scripting/Fuse.Scripting.unoproj"
   ],
-  "Includes": [
+  "includes": [
     "*",
     "Android/*",
     "iOS/*",
     "Desktop/*",
-    "iOS/CameraRollHelper.h:CHeader:iOS",
-    "iOS/CameraRollHelper.m:CSource:iOS",
+    "iOS/CameraRollHelper.h:cheader:iOS",
+    "iOS/CameraRollHelper.m:csource:iOS"
   ]
 }

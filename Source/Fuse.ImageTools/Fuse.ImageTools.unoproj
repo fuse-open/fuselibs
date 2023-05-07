@@ -1,36 +1,36 @@
 {
-  "Copyright": "Copyright (c) Fuse Open",
-  "Description": "Native image utilities",
-  "Publisher": "Fuse Open",
-  "Title": "Fuse.ImageTools",
-  "InternalsVisibleTo":[
+  "copyright": "Copyright (c) Fuse Open",
+  "description": "Native image utilities",
+  "publisher": "Fuse Open",
+  "title": "Fuse.ImageTools",
+  "internalsVisibleTo": [
     "Fuse.Camera",
     "Fuse.CameraRoll",
     "Fuse.ImageTools.Test"
   ],
-  "Packages": [
+  "references": [
     "Uno.Threading"
   ],
-  "Projects": [
+  "projects": [
     "../Fuse.Android.Permissions/Fuse.Android.Permissions.unoproj",
     "../Fuse.Common/Fuse.Common.unoproj",
     "../Fuse.Scripting/Fuse.Scripting.unoproj"
   ],
-  "Includes": [
+  "includes": [
     "*",
     "Android/*",
     "iOS/*",
     "Desktop/*",
-    "Android/ImageStorageTools.java:Java:Android",
-    "Android/Image.java:Java:Android",
-    "Android/ImageUtils.java:Java:Android",
-    "iOS/Actions.h:CHeader:iOS",
-    "iOS/ImagePicker.h:CHeader:iOS",
-    "iOS/ImagePicker.m:CSource:iOS",
-    "iOS/ImageHelper.h:CHeader:iOS",
-    "iOS/ImageHelper.m:CSource:iOS"
+    "Android/ImageStorageTools.java:java:Android",
+    "Android/Image.java:java:Android",
+    "Android/ImageUtils.java:java:Android",
+    "iOS/Actions.h:cheader:iOS",
+    "iOS/ImagePicker.h:cheader:iOS",
+    "iOS/ImagePicker.m:csource:iOS",
+    "iOS/ImageHelper.h:cheader:iOS",
+    "iOS/ImageHelper.m:csource:iOS"
   ],
-  "Excludes": [
-    "Tests/",
+  "excludes": [
+    "Tests/"
   ]
 }

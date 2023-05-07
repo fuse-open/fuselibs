@@ -1,11 +1,11 @@
 {
-  "BuildDirectory": "nativeBuild",
-  "CacheDirectory": "nativeUno",
-  "RootNamespace": "",
-  "Packages": [
+  "buildDirectory": "nativeBuild",
+  "cacheDirectory": "nativeUno",
+  "rootNamespace": "",
+  "references": [
     "Fuse"
   ],
-  "Includes": [
+  "includes": [
     "NativeMainView.ux",
     "Components/*",
     "Singles/*"

@@ -1,24 +1,24 @@
 {
-  "Copyright": "Copyright (c) Fuse Open",
-  "Description": "Native Launcher",
-  "Publisher": "Fuse Open",
-  "Packages": [
+  "copyright": "Copyright (c) Fuse Open",
+  "description": "Native Launcher",
+  "publisher": "Fuse Open",
+  "internalsVisibleTo": [
+    "Fuse.Launcher.Test"
+  ],
+  "references": [
     "Uno.Net.Http"
   ],
-  "Projects": [
+  "projects": [
     "../Fuse.Android.Permissions/Fuse.Android.Permissions.unoproj",
-    "../Fuse.Triggers/Fuse.Triggers.unoproj",
+    "../Fuse.Android/Fuse.Android.unoproj",
+    "../Fuse.iOS/Fuse.iOS.unoproj",
     "../Fuse.Nodes/Fuse.Nodes.unoproj",
     "../Fuse.Scripting/Fuse.Scripting.unoproj",
-    "../Fuse.Android/Fuse.Android.unoproj",
-    "../Fuse.iOS/Fuse.iOS.unoproj"
+    "../Fuse.Triggers/Fuse.Triggers.unoproj"
   ],
-  "Includes": [
+  "includes": [
     "Email/EmailLauncher.uno",
     "Email/EmailTrigger.uno",
     "Email/JS.uno"
-  ],
-  "InternalsVisibleTo": [
-    "Fuse.Launcher.Test"
   ]
 }

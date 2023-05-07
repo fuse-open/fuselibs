@@ -1,7 +1,7 @@
 {
-  "BuildCondition": "TEST",
-  "Projects": [
+  "buildCondition": "TEST",
+  "projects": [
     "**Test.unoproj"
   ],
-  "Includes": []
+  "includes": []
 }

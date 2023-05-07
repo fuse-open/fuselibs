@@ -1,19 +1,19 @@
 {
-  "Copyright": "Copyright (c) Fuse Open",
-  "Description": "Native DatePicker",
-  "Publisher": "Fuse Open",
-  "Projects": [
+  "copyright": "Copyright (c) Fuse Open",
+  "description": "Native DatePicker",
+  "publisher": "Fuse Open",
+  "projects": [
     "../Fuse.Common/Fuse.Common.unoproj",
-    "../Fuse.Controls/Fuse.Controls.unoproj",
     "../Fuse.Controls.Native/Fuse.Controls.Native.unoproj",
     "../Fuse.Controls.Panels/Fuse.Controls.Panels.unoproj",
     "../Fuse.Controls.Primitives/Fuse.Controls.Primitives.unoproj",
+    "../Fuse.Controls/Fuse.Controls.unoproj",
     "../Fuse.Drawing/Fuse.Drawing.unoproj",
     "../Fuse.Elements/Fuse.Elements.unoproj",
     "../Fuse.Nodes/Fuse.Nodes.unoproj",
-    "../Fuse.Scripting/Fuse.Scripting.unoproj",
+    "../Fuse.Scripting/Fuse.Scripting.unoproj"
   ],
-  "Includes": [
+  "includes": [
     "*"
   ]
 }

@@ -1,42 +1,42 @@
 {
-  "Copyright": "Copyright (c) Fuse Open",
-  "Description": "Native bootstrapping for Android",
-  "Publisher": "Fuse Open",
-  "InternalsVisibleTo": [
+  "copyright": "Copyright (c) Fuse Open",
+  "description": "Native bootstrapping for Android",
+  "publisher": "Fuse Open",
+  "internalsVisibleTo": [
+    "Fuse.Audio",
+    "Fuse.Controls.DrawingPanel",
+    "Fuse.Launcher",
     "Fuse.Launcher.Email",
     "Fuse.Launcher.InterApp",
     "Fuse.Launcher.Maps",
-    "Fuse.Launcher.Phone",
-    "Fuse.Launcher",
-    "Fuse.Audio",
-    "Fuse.Controls.DrawingPanel"
+    "Fuse.Launcher.Phone"
   ],
-  "Projects": [
-    "../Fuse.Platform/Fuse.Platform.unoproj",
+  "projects": [
     "../Fuse.Android.TextRenderer/Fuse.Android.TextRenderer.unoproj",
     "../Fuse.Animations/Fuse.Animations.unoproj",
-    "../Fuse.Controls/Fuse.Controls.unoproj",
+    "../Fuse.Common/Fuse.Common.unoproj",
     "../Fuse.Controls.Native/Fuse.Controls.Native.unoproj",
-    "../Fuse.Controls.ScrollView/Fuse.Controls.ScrollView.unoproj",
-    "../Fuse.Controls.Primitives/Fuse.Controls.Primitives.unoproj",
     "../Fuse.Controls.Panels/Fuse.Controls.Panels.unoproj",
-    "../Fuse.Drawing/Fuse.Drawing.unoproj",
+    "../Fuse.Controls.Primitives/Fuse.Controls.Primitives.unoproj",
+    "../Fuse.Controls.ScrollView/Fuse.Controls.ScrollView.unoproj",
+    "../Fuse.Controls/Fuse.Controls.unoproj",
     "../Fuse.Drawing.Planar/Fuse.Drawing.Planar.unoproj",
+    "../Fuse.Drawing/Fuse.Drawing.unoproj",
     "../Fuse.Elements/Fuse.Elements.unoproj",
     "../Fuse.Gestures/Fuse.Gestures.unoproj",
-    "../Fuse.Triggers/Fuse.Triggers.unoproj",
     "../Fuse.Nodes/Fuse.Nodes.unoproj",
-    "../Fuse.Common/Fuse.Common.unoproj"
+    "../Fuse.Platform/Fuse.Platform.unoproj",
+    "../Fuse.Triggers/Fuse.Triggers.unoproj"
   ],
-  "Includes": [
-    "Theme.uxl:Extensions",
-    "StatusBarConfig.uno:SourceFile",
-    "AndroidApp.uno:SourceFile",
-    "RootGraphicsView.ux:UXFile",
-    "AndroidProperties.uno:SourceFile",
-    "AppRoot.uno:SourceFile",
-    "AndroidInterop.uno:SourceFile",
-    "AndroidInteropHelper.java:Java:Android",
-    "Internal/ByteBufferMediaDataSource.java:Java:Android",
+  "includes": [
+    "Theme.uxl:extensions",
+    "StatusBarConfig.uno:source",
+    "AndroidApp.uno:source",
+    "RootGraphicsView.ux:ux",
+    "AndroidProperties.uno:source",
+    "AppRoot.uno:source",
+    "AndroidInterop.uno:source",
+    "AndroidInteropHelper.java:java:Android",
+    "Internal/ByteBufferMediaDataSource.java:java:Android"
   ]
 }

@@ -1,24 +1,24 @@
 {
-  "Packages": [
-    "FuseJS",
+  "references": [
+    "Fuse.Common",
     "Fuse.Controls",
     "Fuse.Controls.Panels",
     "Fuse.Controls.Primitives",
-    "Fuse.Common",
-    "Fuse.Reactive",
-    "Fuse.Reactive.Expressions",
-    "Fuse.Reactive.Bindings",
-    "Fuse.Scripting.JavaScript",
+    "Fuse.FileSystem",
     "Fuse.Nodes",
-    "Uno.Testing",
-    "Fuse.FileSystem"
+    "Fuse.Reactive",
+    "Fuse.Reactive.Bindings",
+    "Fuse.Reactive.Expressions",
+    "Fuse.Scripting.JavaScript",
+    "FuseJS",
+    "Uno.Testing"
   ],
-  "Projects": [
+  "projects": [
     "../../Fuse.Common/Tests/FuseTest/FuseTest.unoproj"
   ],
-  "Includes": [
+  "includes": [
     "*",
-    "*.js:Bundle",
-    "assets/*:Bundle"
+    "*.js:bundle",
+    "assets/*:bundle"
   ]
 }

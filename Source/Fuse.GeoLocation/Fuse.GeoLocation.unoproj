@@ -1,26 +1,25 @@
 {
-  "Copyright": "Copyright (c) Fuse Open",
-  "Description": "Native Location",
-  "Publisher": "Fuse Open",
-  "Packages": [
+  "copyright": "Copyright (c) Fuse Open",
+  "description": "Native Location",
+  "publisher": "Fuse Open",
+  "references": [
     "Uno.Collections",
     "Uno.Threading"
   ],
-  "Projects": [
+  "projects": [
     "../Fuse.Android.Permissions/Fuse.Android.Permissions.unoproj",
     "../Fuse.Common/Fuse.Common.unoproj",
+    "../Fuse.iOS.LocationPermissions/Fuse.iOS.LocationPermissions.unoproj",
     "../Fuse.Marshal/Fuse.Marshal.unoproj",
-    "../Fuse.Scripting/Fuse.Scripting.unoproj",
-    "../Fuse.iOS.LocationPermissions/Fuse.iOS.LocationPermissions.unoproj"
+    "../Fuse.Scripting/Fuse.Scripting.unoproj"
   ],
-  "Includes": [
+  "includes": [
     "*",
-    "Android/Android.uxl:Extensions",
-    "Android/UpdateListener.java:Java:Android",
-    "Android/BackgroundService.java:Java:Android",
-    "Android/Assets/DefaultIcon.png:File",
-
-    "iOS/LocationManagerDelegate.h:ObjCHeader:iOS",
-    "iOS/LocationManagerDelegate.mm:ObjCSource:iOS",
+    "Android/Android.uxl:extensions",
+    "Android/UpdateListener.java:java:Android",
+    "Android/BackgroundService.java:java:Android",
+    "Android/Assets/DefaultIcon.png:file",
+    "iOS/LocationManagerDelegate.h:objcheader:iOS",
+    "iOS/LocationManagerDelegate.mm:objcsource:iOS"
   ]
 }

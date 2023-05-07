@@ -1,18 +1,18 @@
 {
-  "Copyright": "Copyright (c) Fuse Open",
-  "Description": "Audio playback support",
-  "Publisher": "Fuse Open",
-  "Title": "Fuse.Audio",
-  "Packages": [
+  "copyright": "Copyright (c) Fuse Open",
+  "description": "Audio playback support",
+  "publisher": "Fuse Open",
+  "title": "Fuse.Audio",
+  "references": [
     "Uno.Threading"
   ],
-  "Projects": [
+  "projects": [
     "../Fuse.Android.Permissions/Fuse.Android.Permissions.unoproj",
     "../Fuse/Fuse.unoproj"
   ],
-  "Includes": [
+  "includes": [
     "*",
-    "Apple/AudioHelper.h:CHeader:iOS",
-    "Apple/AudioHelper.m:CSource:iOS",
+    "Apple/AudioHelper.h:cheader:iOS",
+    "Apple/AudioHelper.m:csource:iOS"
   ]
 }

@@ -1,38 +1,38 @@
 {
-  "Copyright": "Copyright (c) Fuse Open",
-  "Description": "Framework for reactive programming",
-  "Publisher": "Fuse Open",
-  "Packages": [
+  "copyright": "Copyright (c) Fuse Open",
+  "description": "Framework for reactive programming",
+  "publisher": "Fuse Open",
+  "internalsVisibleTo": [
+    "Fabric",
+    "Fuse.Charting",
+    "Fuse.Charting.Test",
+    "Fuse.Common.Test.Helpers",
+    "Fuse.Common.Test.Helpers",
+    "Fuse.Controls.Navigation",
+    "Fuse.Controls.Navigation.Test",
+    "Fuse.Expressions.Test",
+    "Fuse.Navigation",
+    "Fuse.Reactive.Bindings",
+    "Fuse.Reactive.Expressions",
+    "Fuse.Reactive.Test",
+    "Fuse.Scripting.JavaScript",
+    "Fuse.Scripting.Test",
+    "Fuse.Selection",
+    "FuseTest"
+  ],
+  "references": [
     "Uno.Collections",
     "Uno.Data.Json",
     "Uno.Net.Http",
     "Uno.Testing",
-    "Uno.Threading",
+    "Uno.Threading"
   ],
-  "Projects": [
+  "projects": [
     "../Fuse.Common/Fuse.Common.unoproj",
     "../Fuse.Nodes/Fuse.Nodes.unoproj",
     "../Fuse.Scripting/Fuse.Scripting.unoproj"
   ],
-  "InternalsVisibleTo": [
-    "Fuse.Common.Test.Helpers",
-    "Fuse.Navigation",
-    "Fuse.Reactive.Bindings",
-    "Fuse.Reactive.Expressions",
-    "Fuse.Expressions.Test",
-    "Fuse.Scripting.JavaScript",
-    "Fuse.Reactive.Test",
-    "Fuse.Scripting.Test",
-    "Fuse.Selection",
-    "Fuse.Common.Test.Helpers",
-    "Fuse.Controls.Navigation",
-    "Fuse.Controls.Navigation.Test",
-    "Fuse.Charting",
-    "Fuse.Charting.Test",
-    "FuseTest",
-    "Fabric"
-  ],
-  "Includes": [
+  "includes": [
     "*"
   ]
 }

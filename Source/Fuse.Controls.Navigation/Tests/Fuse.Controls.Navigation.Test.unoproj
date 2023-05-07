@@ -1,14 +1,14 @@
 {
-  "Packages": [
+  "references": [
     "Fuse",
     "FuseJS",
     "Uno.Testing"
   ],
-  "Projects": [
+  "projects": [
     "../../Fuse.Common/Tests/FuseTest/FuseTest.unoproj"
   ],
-  "Includes": [
+  "includes": [
     "*",
-    "*.js:FuseJS",
+    "*.js:fusejs"
   ]
 }

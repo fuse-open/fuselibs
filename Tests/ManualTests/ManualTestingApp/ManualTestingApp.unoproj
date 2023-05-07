@@ -1,41 +1,41 @@
 {
-  "Android": {
-    "UsesCleartextTraffic": true
+  "android": {
+    "usesCleartextTraffic": true
   },
-  "iOS": {
-    "BundleIdentifier": "com.fuseopen.manualtestingapp"
+  "ios": {
+    "bundleIdentifier": "com.fuseopen.manualtestingapp"
   },
-  "Packages": [
+  "references": [
     "Fuse",
-    "FuseJS",
-    "Fuse.ImageTools",
+    "Fuse.Audio",
     "Fuse.Camera",
     "Fuse.CameraRoll",
     "Fuse.Controls.CameraView",
+    "Fuse.ImageTools",
+    "Fuse.Launcher",
     "Fuse.Maps",
-    "Fuse.Audio",
     "Fuse.Share",
-    "Fuse.Launcher"
+    "FuseJS"
   ],
-  "Projects": [
-    "UnoComponents.unoproj",
+  "projects": [
+    "UnoComponents.unoproj"
   ],
-  "Includes": [
-    "InfoPanel.ux:UX",
-    "MainView.ux:UX",
+  "includes": [
+    "InfoPanel.ux:ux",
+    "MainView.ux:ux",
     "Multitouch/*",
-    "MaskEffects/MaskEffects.ux:UX",
-    "DuotoneEffect/DuotoneEffectsPage.ux:UX",
-    "PixelAlignment/PixelAlignment.ux:UX",
+    "MaskEffects/MaskEffects.ux:ux",
+    "DuotoneEffect/DuotoneEffectsPage.ux:ux",
+    "PixelAlignment/PixelAlignment.ux:ux",
     "Singles/*.ux",
     "Surface/Components/TestPage.ux",
     "Surface/Singles/SurfaceMisc.ux",
-    "TestApp.ux:UX",
-    "TodoList/TodoListPage.ux:UX",
+    "TestApp.ux:ux",
+    "TodoList/TodoListPage.ux:ux",
     "UserEvents/Chat.ux",
     "UserEvents/Contacts.ux",
     "UserEvents/MessagesPage.ux",
     "UserEvents/PopupNotices.ux",
-    "Assets/video/*:Bundle",
+    "Assets/video/*:bundle"
   ]
 }

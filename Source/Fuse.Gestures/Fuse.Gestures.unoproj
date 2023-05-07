@@ -1,8 +1,8 @@
 {
-  "Copyright": "Copyright (c) Fuse Open",
-  "Description": "Library of common input gesture recognizers",
-  "Publisher": "Fuse Open",
-  "InternalsVisibleTo": [
+  "copyright": "Copyright (c) Fuse Open",
+  "description": "Library of common input gesture recognizers",
+  "publisher": "Fuse Open",
+  "internalsVisibleTo": [
     "Fuse.BasicTheme",
     "Fuse.Controls",
     "Fuse.Controls.Navigation",
@@ -11,22 +11,22 @@
     "Fuse.Controls.ScrollView",
     "Fuse.Controls.Test",
     "Fuse.Gestures.Test",
-    "Fuse.Navigation",
+    "Fuse.Navigation"
   ],
-  "Packages": [
+  "references": [
     "Uno.Collections"
   ],
-  "Projects": [
+  "projects": [
     "../Fuse.Animations/Fuse.Animations.unoproj",
-    "../Fuse.Nodes/Fuse.Nodes.unoproj",
     "../Fuse.Common/Fuse.Common.unoproj",
-    "../Fuse.Scripting/Fuse.Scripting.unoproj",
     "../Fuse.Elements/Fuse.Elements.unoproj",
     "../Fuse.Motion/Fuse.Motion.unoproj",
-    "../Fuse.Triggers/Fuse.Triggers.unoproj",
+    "../Fuse.Nodes/Fuse.Nodes.unoproj",
+    "../Fuse.Scripting/Fuse.Scripting.unoproj",
+    "../Fuse.Triggers/Fuse.Triggers.unoproj"
   ],
-  "Includes": [
-    "Docs/**:File",
-    "**.uno:Source"
+  "includes": [
+    "Docs/**:file",
+    "**.uno:source"
   ]
 }

@@ -1,12 +1,12 @@
 {
-  "Packages": [
+  "references": [
     "Fuse",
     "Uno.Testing"
   ],
-  "Projects": [
+  "projects": [
     "../../Fuse.Common/Tests/FuseTest/FuseTest.unoproj"
   ],
-  "Includes": [
-    "*",
+  "includes": [
+    "*"
   ]
 }

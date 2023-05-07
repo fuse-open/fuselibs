@@ -1,37 +1,37 @@
 {
-  "Copyright": "Copyright (c) Fuse Open",
-  "Publisher": "Fuse Open",
-  "Description": "References FuseJS standard features",
-  "IsTransitive": true,
-  "Packages": [
+  "copyright": "Copyright (c) Fuse Open",
+  "publisher": "Fuse Open",
+  "description": "References FuseJS standard features",
+  "isTransitive": true,
+  "internalsVisibleTo": [
+    "FuseJS.Test"
+  ],
+  "references": [
     "Uno.Collections",
     "Uno.Net.Http",
     "Uno.Threading"
   ],
-  "Projects": [
+  "projects": [
+    "../Fuse.Android/Fuse.Android.unoproj",
     "../Fuse.Common/Fuse.Common.unoproj",
+    "../Fuse.iOS/Fuse.iOS.unoproj",
+    "../Fuse.Models/Fuse.Models.unoproj",
     "../Fuse.Nodes/Fuse.Nodes.unoproj",
     "../Fuse.Platform/Fuse.Platform.unoproj",
     "../Fuse.Reactive/Fuse.Reactive.unoproj",
     "../Fuse.Scripting/Fuse.Scripting.unoproj",
     "../Fuse.Storage/Fuse.Storage.unoproj",
-    "../Fuse.Android/Fuse.Android.unoproj",
-    "../Fuse.iOS/Fuse.iOS.unoproj",
     "../Fuse.UserEvents/Fuse.UserEvents.unoproj",
-    "../Polyfills.Window/Polyfills.Window.unoproj",
-    "../Fuse.Models/Fuse.Models.unoproj",
+    "../Polyfills.Window/Polyfills.Window.unoproj"
   ],
-  "Includes": [
-    "Globals.uno:Source",
-    "Lifecycle.uno:Source",
-    "Environment.uno:Source",
-    "Base64.uno:Source",
-    "Latin1Helpers.uno:Source",
-    "Bundle.uno:Source",
-    "FileReader.uno:Source",
-    "UserEvents.uno:Source"
-  ],
-  "InternalsVisibleTo": [
-    "FuseJS.Test"
+  "includes": [
+    "Globals.uno:source",
+    "Lifecycle.uno:source",
+    "Environment.uno:source",
+    "Base64.uno:source",
+    "Latin1Helpers.uno:source",
+    "Bundle.uno:source",
+    "FileReader.uno:source",
+    "UserEvents.uno:source"
   ]
 }
