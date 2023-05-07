@@ -25,7 +25,7 @@ namespace Fuse.Controls
 			AddMember(new NativePromise<string, string>("composite", Composite));
 		}
 
-		public Future<string> Composite(object[] args)
+		Future<string> Composite(Context context, object[] args)
 		{
 			var p = new Promise<string>();
 
