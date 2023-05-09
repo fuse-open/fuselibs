@@ -17,6 +17,7 @@
         "Fuse.Share",
         "Fuse.Charting",
         "Fuse.Controls.CameraView",
+        "Fuse.Controls.DrawingPanel",
         "Fuse.UXKits.Alive",
         "Fuse.Models",
         "Fuse.Sensor",
