@@ -1,16 +1,16 @@
-//using Uno;
 using Uno.UX;
 using Uno.Collections;
 using Uno.Compiler;
 using Fuse.Scripting;
 using Uno.Testing;
 using Uno.Threading;
-using Fuse.Reactive;
 
 namespace Fuse.Reactive
 {
 	/**
 		The `JavaScript` tag is used to run JavaScript and assigns its `module.exports` as data context for the parent visual.
+
+		Use `Transpile="true"` to enable modern JavaScript features by transpiling user-provided code to ECMAScript 5.1.
 
 		**Note:** ECMAScript 5.1 is the only JavaScript version that is supported across all platforms.
 		While newer JavaScript features might work on some devices, this can't be guaranteed (particularly for earlier iOS versions).
@@ -154,6 +154,12 @@ namespace Fuse.Reactive
 					_scriptModule.Code = value;
 				}
 			}
+		}
+
+		/** Whether the UX compiler should transpile the code. This enables support for modern JavaScript features. */
+		public bool Transpile
+		{
+			get; set;
 		}
 
 		[UXLineNumber]
