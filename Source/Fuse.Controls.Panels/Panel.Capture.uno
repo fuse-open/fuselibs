@@ -16,7 +16,6 @@ namespace Fuse.Controls
 	[Require("Source.Include", "uImage/Bitmap.h")]
 	[Require("Source.Include", "uImage/Png.h")]
 	[Require("Source.Include", "uBase/Memory.h")]
-	[Require("Source.Include", "Uno/Support.h")]
 	public partial class Panel
 	{
 		string _imagePath;
