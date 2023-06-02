@@ -9,6 +9,7 @@
     "Fuse.CameraRoll",
     "Fuse.Charting",
     "Fuse.Controls.CameraView",
+    "Fuse.Controls.DrawingPanel",
     "Fuse.GeoLocation",
     "Fuse.ImageTools",
     "Fuse.Launcher",
