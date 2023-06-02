@@ -85,7 +85,9 @@ namespace Fuse.LocalNotifications
 		[Foreign(Language.ObjC)]
 		public extern(iOS) static void ClearBadgeNumber()
 		@{
-			[UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+			dispatch_async(dispatch_get_main_queue(), ^{
+				[UIApplication sharedApplication].applicationIconBadgeNumber = 0;
+			});
 		@}
 
 		public extern(!iOS) static void ClearBadgeNumber() { }
@@ -93,7 +95,9 @@ namespace Fuse.LocalNotifications
 		[Foreign(Language.ObjC)]
 		public extern(iOS) static void ClearAllNotifications()
 		@{
-			[[UIApplication sharedApplication] cancelAllLocalNotifications];
+			dispatch_async(dispatch_get_main_queue(), ^{
+				[[UIApplication sharedApplication] cancelAllLocalNotifications];
+			});
 		@}
 
 		[Foreign(Language.Java)]
