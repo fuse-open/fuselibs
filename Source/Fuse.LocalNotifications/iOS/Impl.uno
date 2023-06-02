@@ -15,8 +15,8 @@ namespace Fuse.LocalNotifications
 	[Require("Entity", "Uno.Platform.iOS.Application.LaunchOptions")]
 	[Require("uContext.SourceFile.DidFinishLaunching", "[self initializeLocalNotifications:[notification object]];")]
 	[Require("uContext.SourceFile.Declaration", "#include <iOS/AppDelegateLocalNotify.h>")]
-    internal extern(iOS) static class iOSImpl
-    {
+	internal extern(iOS) static class iOSImpl
+	{
 		public static void SendPendingFromLaunchOptions()
 		{
 			Fuse.LocalNotifications.iOSImpl.SendPendingFromLaunchOptions(Uno.Platform.iOS.Application.LaunchOptions);
@@ -51,23 +51,26 @@ namespace Fuse.LocalNotifications
 			}
 		@}
 
-        [Foreign(Language.ObjC)]
-        internal static void Later(string title, string body, bool sound, string strPayload,
-                                   int delaySeconds=0, int badgeNumber=0)
-        @{
-            UILocalNotification *notification = [[UILocalNotification alloc] init];
-            notification.fireDate = [NSDate dateWithTimeIntervalSinceNow:delaySeconds];
-            notification.alertAction = title;
-            notification.alertBody = body;
-            notification.timeZone = [NSTimeZone defaultTimeZone];
-            if (sound)
-                notification.soundName = UILocalNotificationDefaultSoundName;
-            notification.applicationIconBadgeNumber = badgeNumber;
-            notification.userInfo = [[NSDictionary alloc] initWithObjectsAndKeys:
-                                     strPayload, @"payload", nil];
+		[Foreign(Language.ObjC)]
+		internal static void Later(string title, string body, bool sound, string strPayload,
+									int delaySeconds=0, int badgeNumber=0)
+		@{
+			UILocalNotification *notification = [[UILocalNotification alloc] init];
+			notification.fireDate = [NSDate dateWithTimeIntervalSinceNow:delaySeconds];
+			notification.alertAction = title;
+			notification.alertBody = body;
+			notification.timeZone = [NSTimeZone defaultTimeZone];
+			if (sound)
+				notification.soundName = UILocalNotificationDefaultSoundName;
+			notification.applicationIconBadgeNumber = badgeNumber;
+			notification.userInfo = [[NSDictionary alloc] initWithObjectsAndKeys:
+									strPayload, @"payload", nil];
 
-            [[UIApplication sharedApplication] scheduleLocalNotification:notification];
-        @}
+			dispatch_async(dispatch_get_main_queue(), ^{
+				[[UIApplication sharedApplication] scheduleLocalNotification:notification];
+			});
+
+		@}
 
 		public static event EventHandler<string> ReceivedLocalNotification;
 		static List<string> DelayedLocalNotifications = new List<string>();

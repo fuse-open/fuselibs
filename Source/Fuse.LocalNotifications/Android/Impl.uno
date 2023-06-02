@@ -18,7 +18,10 @@ namespace Fuse.LocalNotifications
                     "android.app.Activity",
                     "android.app.AlarmManager",
                     "android.app.Notification",
+                    "android.app.NotificationChannel",
                     "android.app.NotificationManager",
+                    "androidx.core.app.NotificationCompat",
+                    "androidx.core.app.NotificationManagerCompat",
                     "android.app.PendingIntent",
                     "android.content.res.Resources",
                     "android.graphics.BitmapFactory",
@@ -44,14 +47,14 @@ namespace Fuse.LocalNotifications
         }
 
         static void OnEnteringInteractive(ApplicationState newState)
-		{
-			NoteInteractivity(true);
-		}
+        {
+            NoteInteractivity(true);
+        }
 
         static void OnExitedInteractive(ApplicationState newState)
-		{
+        {
             NoteInteractivity(false);
-		}
+        }
 
         [Foreign(Language.Java), ForeignFixedName]
         static void NoteInteractivity(bool isItInteractive)
@@ -62,6 +65,20 @@ namespace Fuse.LocalNotifications
         [Foreign(Language.Java), ForeignFixedName]
         static void JInit()
         @{
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                int importance = NotificationManager.IMPORTANCE_DEFAULT;
+                String channelId = "@(Project.Android.Notification.DefaultChannelId)";
+                channelId = (channelId != "") ? channelId : "default_channel";
+                String channelName = "@(Project.Android.Notification.DefaultChannelName)";
+                channelName = (channelName != "") ? channelName : "App";
+                String channelDescription = "@(Project.Android.Notification.DefaultChannelDescription)";
+                channelDescription = (channelDescription != "") ? channelDescription : "";
+                NotificationChannel channel = new NotificationChannel(channelId, channelName, importance);
+                channel.setDescription(channelDescription);
+                NotificationManagerCompat notificationManager = NotificationManagerCompat.from(com.fuse.Activity.getRootActivity());
+                notificationManager.createNotificationChannel(channel);
+            }
+
             com.fuse.Activity.subscribeToIntents(
                 new com.fuse.Activity.IntentListener() {
                     public void onIntent (Intent newIntent) {
@@ -95,8 +112,6 @@ namespace Fuse.LocalNotifications
             android.app.Activity currentActivity = com.fuse.Activity.getRootActivity();
             android.app.AlarmManager alarmManager =
                 (android.app.AlarmManager)currentActivity.getSystemService(android.content.Context.ALARM_SERVICE);
-            android.app.NotificationManager notificationManager =
-                (android.app.NotificationManager)currentActivity.getSystemService(android.content.Context.NOTIFICATION_SERVICE);
             android.content.Intent intent =
                 new android.content.Intent(currentActivity, com.fuse.LocalNotifications.LocalNotificationReceiver.class);
 
@@ -108,8 +123,15 @@ namespace Fuse.LocalNotifications
             intent.putExtra("sound", sound);
             intent.putExtra(@{ACTION}, strPayload.toString());
 
-            alarmManager.set(0, System.currentTimeMillis() + (delaySeconds * 1000),
-                             android.app.PendingIntent.getBroadcast(currentActivity, id, intent, 0));
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S)
+            {
+                alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + (delaySeconds * 1000),
+                                android.app.PendingIntent.getBroadcast(currentActivity, id, intent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT));
+            } else
+            {
+                alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + (delaySeconds * 1000),
+                                android.app.PendingIntent.getBroadcast(currentActivity, id, intent, PendingIntent.FLAG_UPDATE_CURRENT));
+            }
         @}
 
         [Foreign(Language.Java), ForeignFixedNameAttribute]
@@ -136,15 +158,28 @@ namespace Fuse.LocalNotifications
                 notificationIntent.setAction(ACTION);
                 notificationIntent.replaceExtras(intent.getExtras());
 
-                PendingIntent contentIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0);
-                Notification.Builder notificationBuilder = new Notification.Builder(context)
-                    .setSmallIcon(@(Activity.Package).R.mipmap.notif)
-                    .setContentTitle(title)
-                    .setContentText(body)
-                    .setWhen(System.currentTimeMillis())
-                    .setAutoCancel(true)
-                    .setVibrate(new long[] { 1000L, 1000L })
-                    .setContentIntent(contentIntent);
+                PendingIntent contentIntent = null;
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S)
+                {
+                    contentIntent = PendingIntent.getActivity
+                        (context, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
+                }
+                else
+                {
+                    contentIntent = PendingIntent.getActivity
+                            (context, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                }
+                String channelId = "@(Project.Android.Notification.DefaultChannelId)";
+                channelId = (channelId != "") ? channelId : "default_channel";
+                NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, channelId)
+                        .setSmallIcon(com.apps.test_app.R.mipmap.notif)
+                        .setContentTitle(title)
+                        .setContentText(body)
+                        .setWhen(System.currentTimeMillis())
+                        .setAutoCancel(true)
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                        .setVibrate(new long[] { 1000L, 1000L })
+                        .setContentIntent(contentIntent);
 
                 if(sound)
                 {
@@ -152,8 +187,7 @@ namespace Fuse.LocalNotifications
                     notificationBuilder.setSound(defaultSoundUri);
                 }
 
-                NotificationManager notificationManager =
-                    (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
+                NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
                 Notification n = notificationBuilder.build();
                 if (sound)
                     n.defaults |= Notification.DEFAULT_SOUND;
