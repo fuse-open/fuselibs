@@ -2,7 +2,7 @@
   "copyright": "Copyright (c) Fuse Open",
   "description": "Native image utilities",
   "publisher": "Fuse Open",
-  "title": "Fuse.ImageTools",
+  "outputType": "library",
   "internalsVisibleTo": [
     "Fuse.Camera",
     "Fuse.CameraRoll",

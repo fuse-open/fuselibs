@@ -2,6 +2,7 @@
   "copyright": "Copyright (c) Fuse Open",
   "description": "Default bootstrapping for desktop platforms",
   "publisher": "Fuse Open",
+  "outputType": "library",
   "projects": [
     "../Fuse.Common/Fuse.Common.unoproj",
     "../Fuse.Controls.Panels/Fuse.Controls.Panels.unoproj",

@@ -2,6 +2,7 @@
   "copyright": "Copyright (c) Fuse Open",
   "description": "Attributes and classes for building Fuse Designer-friendly components",
   "publisher": "Fuse Open",
+  "outputType": "library",
   "internalsVisibleTo": [
     "Fuse.Elements"
   ],

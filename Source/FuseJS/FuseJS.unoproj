@@ -2,6 +2,7 @@
   "copyright": "Copyright (c) Fuse Open",
   "publisher": "Fuse Open",
   "description": "References FuseJS standard features",
+  "outputType": "library",
   "isTransitive": true,
   "internalsVisibleTo": [
     "FuseJS.Test"

@@ -2,7 +2,7 @@
   "copyright": "Copyright (c) Fuse Open",
   "description": "Library of common trigger behaviors for UIs",
   "publisher": "Fuse Open",
-  "title": "Fuse.Triggers",
+  "outputType": "library",
   "internalsVisibleTo": [
     "Fuse.Controls",
     "Fuse.Controls.Navigation",

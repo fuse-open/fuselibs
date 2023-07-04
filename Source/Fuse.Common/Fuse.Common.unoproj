@@ -2,6 +2,7 @@
   "copyright": "Copyright (c) Fuse Open",
   "description": "User experience design and tooling platform (core package)",
   "publisher": "Fuse Open",
+  "outputType": "library",
   "internalsVisibleTo": [
     "Fuse.Android",
     "Fuse.Android.TextRenderer",

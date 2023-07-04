@@ -1,4 +1,5 @@
 {
+  "outputType": "app",
   "android": {
     "usesCleartextTraffic": true
   },

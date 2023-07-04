@@ -1,7 +1,7 @@
 {
   "copyright": "Copyright (c) Fuse Open",
   "publisher": "Fuse Open",
-  "title": "Fuse.Controls.CameraView",
+  "outputType": "library",
   "references": [
     "Uno.Threading"
   ],

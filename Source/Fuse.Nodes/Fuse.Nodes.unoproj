@@ -2,6 +2,7 @@
   "copyright": "Copyright (c) Fuse Open",
   "description": "Low-level Node and Visual framework",
   "publisher": "Fuse Open",
+  "outputType": "library",
   "internalsVisibleTo": [
     "DrawRectsTest",
     "Fuse.Android",

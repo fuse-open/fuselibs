@@ -2,6 +2,7 @@
   "copyright": "Copyright (c) Fuse Open",
   "description": "Library of user interface effects",
   "publisher": "Fuse Open",
+  "outputType": "library",
   "internalsVisibleTo": [
     "Fuse.Controls.Primitives"
   ],

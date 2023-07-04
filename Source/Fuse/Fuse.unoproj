@@ -2,6 +2,7 @@
   "copyright": "Copyright (c) Fuse Open",
   "publisher": "Fuse Open",
   "description": "References the complete set of canonical, non-optional Fuse libraries",
+  "outputType": "library",
   "isTransitive": true,
   "projects": [
     "../Fuse.Android/Fuse.Android.unoproj",

@@ -2,6 +2,7 @@
   "copyright": "Copyright (c) Fuse Open",
   "description": "Library for selection behavior",
   "publisher": "Fuse Open",
+  "outputType": "library",
   "internalsVisibleTo": [
     "Fuse.Selection.Test"
   ],

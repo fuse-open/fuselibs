@@ -2,6 +2,7 @@
   "copyright": "Copyright (c) Fuse Open",
   "description": "iOS TextRenderer",
   "publisher": "Fuse Open",
+  "outputType": "library",
   "internalsVisibleTo": [
     "Fuse.iOS",
     "Fuse.Views"

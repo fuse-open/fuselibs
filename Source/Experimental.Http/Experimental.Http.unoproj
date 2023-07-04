@@ -2,6 +2,7 @@
   "description": "Library for data caching",
   "publisher": "Fuse Open",
   "copyright": "Copyright (c) Fuse Open",
+  "outputType": "library",
   "references": [
     "Uno.Net.Http",
     "UnoCore"

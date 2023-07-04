@@ -1,5 +1,5 @@
 {
-  "unoCoreReference": true,
+  "outputType": "test",
   "references": [
     "Fuse.Text",
     "Uno.Collections",

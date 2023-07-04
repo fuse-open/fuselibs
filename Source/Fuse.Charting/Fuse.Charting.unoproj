@@ -2,7 +2,7 @@
   "copyright": "Copyright (c) Fuse Open",
   "description": "Charting controls and behaviors",
   "publisher": "Fuse Open",
-  "title": "Fuse.Charting",
+  "outputType": "library",
   "internalsVisibleTo": [
     "Fuse.Charting.Test"
   ],

@@ -2,6 +2,7 @@
   "copyright": "Copyright (c) Fuse Open",
   "description": "Asynchronous feature permission requests",
   "publisher": "Fuse Open",
+  "outputType": "library",
   "references": [
     "Uno.Threading"
   ],

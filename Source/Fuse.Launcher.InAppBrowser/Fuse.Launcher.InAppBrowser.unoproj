@@ -2,6 +2,7 @@
   "copyright": "Copyright (c) Fuse Open 2021",
   "description": "Native Launcher",
   "publisher": "Fuse Open",
+  "outputType": "library",
   "projects": [
     "../Fuse.Android/Fuse.Android.unoproj",
     "../Fuse.iOS/Fuse.iOS.unoproj",

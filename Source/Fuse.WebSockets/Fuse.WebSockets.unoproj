@@ -2,6 +2,7 @@
   "copyright": "Copyright (c) Fuse Open",
   "description": "A client for the WebSocket protocol",
   "publisher": "Fuse Open",
+  "outputType": "library",
   "projects": [
     "../Fuse.Common/Fuse.Common.unoproj",
     "../Fuse.Reactive/Fuse.Reactive.unoproj",

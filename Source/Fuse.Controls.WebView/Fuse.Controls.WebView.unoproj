@@ -2,6 +2,7 @@
   "copyright": "Copyright (c) Fuse Open",
   "description": "WebView",
   "publisher": "Fuse Open",
+  "outputType": "library",
   "projects": [
     "../Fuse.Android/Fuse.Android.unoproj",
     "../Fuse.Common/Fuse.Common.unoproj",

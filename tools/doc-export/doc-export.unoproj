@@ -1,4 +1,5 @@
 {
+  "outputType": "library",
   "references": [
     "Fuse",
     "Fuse.Alerts",

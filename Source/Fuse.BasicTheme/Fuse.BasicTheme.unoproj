@@ -2,6 +2,7 @@
   "description": "This package is part of Fuse",
   "publisher": "Fuse Open",
   "copyright": "Copyright (c) Fuse Open",
+  "outputType": "library",
   "projects": [
     "../Fuse.Animations/Fuse.Animations.unoproj",
     "../Fuse.Common/Fuse.Common.unoproj",

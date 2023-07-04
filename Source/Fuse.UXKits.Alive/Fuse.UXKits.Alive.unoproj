@@ -1,6 +1,7 @@
 {
   "copyright": "Copyright (c) Fuse Open",
   "publisher": "Fuse Open",
+  "outputType": "library",
   "references": [
     "Fuse",
     "FuseJS"

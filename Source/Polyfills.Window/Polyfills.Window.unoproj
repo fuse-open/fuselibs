@@ -2,6 +2,7 @@
   "copyright": "Copyright (c) Fuse Open",
   "description": "Browser window polyfill",
   "publisher": "Fuse Open",
+  "outputType": "library",
   "isTransitive": true,
   "projects": [
     "../Fuse.Common/Fuse.Common.unoproj",

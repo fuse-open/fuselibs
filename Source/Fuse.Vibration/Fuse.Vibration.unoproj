@@ -2,6 +2,7 @@
   "copyright": "Copyright (c) Fuse Open",
   "description": "Native Vibration",
   "publisher": "Fuse Open",
+  "outputType": "library",
   "projects": [
     "../Fuse.Android.Permissions/Fuse.Android.Permissions.unoproj",
     "../Fuse.Marshal/Fuse.Marshal.unoproj",

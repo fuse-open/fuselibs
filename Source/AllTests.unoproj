@@ -1,5 +1,5 @@
 {
-  "buildCondition": "TEST",
+  "outputType": "app",
   "projects": [
     "**Test.unoproj"
   ],

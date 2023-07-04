@@ -2,6 +2,7 @@
   "copyright": "Copyright (c) Fuse Open",
   "description": "MapView",
   "publisher": "Fuse Open",
+  "outputType": "library",
   "isTransitive": true,
   "references": [
     "Uno.Collections"

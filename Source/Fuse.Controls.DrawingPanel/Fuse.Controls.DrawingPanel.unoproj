@@ -2,6 +2,7 @@
   "copyright": "Copyright (c) Fuse Open",
   "description": "DrawingPanel",
   "publisher": "Fuse Open",
+  "outputType": "library",
   "references": [
     "Uno.Collections",
     "Uno.Threading"

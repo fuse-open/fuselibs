@@ -2,6 +2,7 @@
   "copyright": "Copyright (c) Fuse Open",
   "description": "Native Launcher",
   "publisher": "Fuse Open",
+  "outputType": "library",
   "isTransitive": true,
   "internalsVisibleTo": [
     "Fuse.Launcher.Test"

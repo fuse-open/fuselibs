@@ -1,4 +1,5 @@
 {
+  "outputType": "appTest",
   "references": [
     "Fuse",
     "FuseJS",

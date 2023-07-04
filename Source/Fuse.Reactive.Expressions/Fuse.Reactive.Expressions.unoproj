@@ -2,6 +2,7 @@
   "copyright": "Copyright (c) Fuse Open",
   "description": "Framework for reactive expressions",
   "publisher": "Fuse Open",
+  "outputType": "library",
   "isTransitive": true,
   "internalsVisibleTo": [
     "Fuse.Common.Test.Helpers",

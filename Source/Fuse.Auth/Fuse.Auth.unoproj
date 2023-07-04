@@ -2,7 +2,7 @@
   "copyright": "Copyright (c) Fuse Open",
   "description": "Biometric authentication support",
   "publisher": "Fuse Open",
-  "title": "Fuse.Auth",
+  "outputType": "library",
   "ios": {
     "pList": {
       "nSFaceIDUsageDescription": "Require access to FaceID for authenticating"

@@ -2,6 +2,7 @@
   "copyright": "Copyright (c) Fuse Open",
   "description": "Shows menu items when pressing App Icon on the device home screen",
   "publisher": "Fuse Open",
+  "outputType": "library",
   "references": [
     "Uno.Threading"
   ],

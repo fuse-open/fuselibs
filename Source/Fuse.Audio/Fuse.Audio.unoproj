@@ -2,7 +2,7 @@
   "copyright": "Copyright (c) Fuse Open",
   "description": "Audio playback support",
   "publisher": "Fuse Open",
-  "title": "Fuse.Audio",
+  "outputType": "library",
   "references": [
     "Uno.Threading"
   ],

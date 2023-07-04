@@ -2,6 +2,7 @@
   "copyright": "Copyright (c) Fuse Open",
   "description": "Native Sensor Access",
   "publisher": "Fuse Open",
+  "outputType": "library",
   "ios": {
     "pList": {
       "nSMotionUsageDescription": "Require access to Motion data to enhance user experience using app"

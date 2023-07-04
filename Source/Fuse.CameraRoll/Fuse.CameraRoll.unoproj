@@ -2,7 +2,7 @@
   "copyright": "Copyright (c) Fuse Open",
   "description": "Nativ CameraRoll support",
   "publisher": "Fuse Open",
-  "title": "Fuse.CameraRoll",
+  "outputType": "library",
   "isTransitive": true,
   "references": [
     "Uno.Threading"

@@ -1,4 +1,5 @@
 {
+  "outputType": "test",
   "references": [
     "Fuse.Common",
     "Fuse.Controls.Panels",

@@ -2,6 +2,7 @@
   "copyright": "Copyright (c) Fuse Open",
   "description": "Native TimePicker",
   "publisher": "Fuse Open",
+  "outputType": "library",
   "projects": [
     "../Fuse.Common/Fuse.Common.unoproj",
     "../Fuse.Controls.Native/Fuse.Controls.Native.unoproj",

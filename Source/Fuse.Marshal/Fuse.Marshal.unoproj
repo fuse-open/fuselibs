@@ -2,6 +2,7 @@
   "copyright": "Copyright (c) Fuse Open",
   "description": "Allows marshalling and arithmetic between boxed value types",
   "publisher": "Fuse Open",
+  "outputType": "library",
   "references": [
     "Uno.Collections",
     "UnoCore"

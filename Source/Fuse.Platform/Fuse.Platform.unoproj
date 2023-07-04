@@ -2,6 +2,7 @@
   "description": "This package is part of Fuse",
   "publisher": "Fuse Open",
   "copyright": "Copyright (c) Fuse Open",
+  "outputType": "library",
   "internalsVisibleTo": [
     "Fuse.Android",
     "Fuse.Common",

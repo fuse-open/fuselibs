@@ -2,6 +2,7 @@
   "copyright": "Copyright (c) Fuse Open",
   "description": "Native alerts and simple dialogs for mobile targets",
   "publisher": "Fuse Open",
+  "outputType": "library",
   "references": [
     "Uno.Collections",
     "Uno.Threading"

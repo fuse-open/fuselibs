@@ -2,6 +2,7 @@
   "copyright": "Copyright (c) Fuse Open",
   "description": "Fuse.Drawing",
   "publisher": "Fuse Open",
+  "outputType": "library",
   "projects": [
     "../Fuse.Common/Fuse.Common.unoproj",
     "../Fuse.Drawing/Fuse.Drawing.unoproj",
