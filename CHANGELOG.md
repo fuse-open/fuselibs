@@ -1,4 +1,25 @@
-# Unreleased
+# Changelog
+
+## Unreleased
+
+### Common
+- Add `outputType` in project files (acbcee3)
+- Update project and config files (85ff816)
+- Update `GLHelper.h` includes on Android (2b143eb)
+
+### Experimental.TextureLoader
+- Remove legacy `Experimental.TextureLoader` library (#1458)
+
+### Fuse.LocalNotifications
+- Fix compatibility with the latest Android OS and indentation (#1473)
+
+### Fuse.Scripting
+- Deprecate NativePromise without Context (#1467)
+
+### Fuse.Scripting.JavaScript
+- TypeScript and transpiler support in UX files (#1472)
+
+[`v2.8.0...beta-3.0`](https://github.com/fuse-open/fuselibs/compare/v2.8.0...beta-3.0)
 
 ## 2.8
 
