@@ -23,9 +23,6 @@ namespace Fuse.Profiling_WPF
 	/// </summary>
 	public partial class MainWindow : Window
 	{
-
-
-
 		public MainWindow()
 		{
 			InitializeComponent();
@@ -44,12 +41,12 @@ namespace Fuse.Profiling_WPF
 				});
 		}
 
-        private void Border_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            var frame = (Fuse.Profiling.Frame)(sender as FrameworkElement).Tag;
+		private void Border_MouseDown(object sender, MouseButtonEventArgs e)
+		{
+			var frame = (Profiling.Frame)(sender as FrameworkElement).Tag;
 
 			_treeView.DataContext = frame.Root;
-        }
+		}
 
 		private void MenuItem_Click(object sender, RoutedEventArgs e)
 		{
