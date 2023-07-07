@@ -13,6 +13,5 @@ namespace Fuse.Profiling_WPF
 	/// </summary>
 	public partial class App : Application
 	{
-		
 	}
 }

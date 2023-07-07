@@ -31,7 +31,6 @@ namespace Fuse.Profiling
 
 			_executeCommand(profiler, _paramCache);
 		}
-
 	}
 
 	public static class CommandTranslator

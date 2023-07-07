@@ -10,8 +10,6 @@
 
 namespace Fuse.Profiling_WPF.Properties
 {
-
-
 	/// <summary>
 	///   A strongly-typed resource class, for looking up localized strings, etc.
 	/// </summary>
@@ -24,7 +22,6 @@ namespace Fuse.Profiling_WPF.Properties
 	[global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
 	internal class Resources
 	{
-
 		private static global::System.Resources.ResourceManager resourceMan;
 
 		private static global::System.Globalization.CultureInfo resourceCulture;

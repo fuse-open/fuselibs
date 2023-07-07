@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Windows;
 using Fuse.Profiling;
 
 namespace TestApp
@@ -12,17 +8,12 @@ namespace TestApp
 		static void Main(string[] args)
 		{
 			var host = new Host();
-			var profiler = new Profiler();
+			var profiler = new Profiler(Application.Current.Dispatcher.Invoke);
 
 			while (true)
 			{
 				host.AcceptProfileClient(profiler);
 			}
-
-			Console.ReadKey(true);
 		}
-
-		
-
 	}
 }
