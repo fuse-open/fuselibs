@@ -336,7 +336,7 @@ namespace DrawRectsTest
 			}
 		}
 
-		extern(DOTNET) static class MessagePumper
+		extern(DOTNET && HOST_WINDOWS) static class MessagePumper
 		{
 			public static void PumpMessages()
 			{
@@ -344,7 +344,7 @@ namespace DrawRectsTest
 			}
 		}
 
-		extern(!DOTNET) static class MessagePumper
+		extern(!DOTNET || !HOST_WINDOWS) static class MessagePumper
 		{
 			public static void PumpMessages()
 			{
@@ -499,7 +499,7 @@ namespace DrawRectsTest
 	namespace DotNetNative
 	{
 		[DotNetType("System.Windows.Forms.Application")]
-		extern(DOTNET) public class Application
+		extern(DOTNET && HOST_WINDOWS) public class Application
 		{
 			public extern static void DoEvents();
 		}

@@ -43,7 +43,6 @@ namespace Fuse.ImageTools
 
 	namespace DotNetNative
 	{
-		[Require("Assembly", "System.Drawing")]
 		[DotNetType("System.Drawing.Image")]
 		extern(DOTNET) internal class DotNetImage
 		{
