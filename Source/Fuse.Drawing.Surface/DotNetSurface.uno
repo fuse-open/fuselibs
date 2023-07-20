@@ -121,8 +121,7 @@ namespace Fuse.Drawing
 		}
 	}
 
-	[Require("Assembly", "System.Drawing")]
-	[extern(DOTNET) Require("Source.Include","XliPlatform/GL.h")]
+	[extern(DOTNET) Require("Source.Include", "XliPlatform/GL.h")]
 	extern(DOTNET)
 	internal class DotNetSurface : Surface
 	{
@@ -996,7 +995,6 @@ namespace Fuse.Drawing
 
 	namespace DotNetNative
 	{
-
 		[DotNetType("System.Drawing.Imaging.ImageFormat")]
 		extern(DOTNET) internal class ImageFormat
 		{
@@ -1072,7 +1070,6 @@ namespace Fuse.Drawing
 			public override extern void Dispose();
 		}
 
-
 		[DotNetType("System.Drawing.Drawing2D.LinearGradientBrush")]
 		extern(DOTNET) internal class LinearGradientBrush : DotNetBrush
 		{
@@ -1097,7 +1094,6 @@ namespace Fuse.Drawing
 			public extern Color[] SurroundColors { get; set; }
 			public override extern void Dispose();
 		}
-
 
 		[DotNetType("System.Drawing.SolidBrush")]
 		extern(DOTNET) internal class SolidBrush : DotNetBrush
@@ -1137,7 +1133,6 @@ namespace Fuse.Drawing
 			// constructors
 			public extern BitmapData();
 
-
 			// properties
 			public extern int Height { get; set; }
 			public extern PixelFormat PixelFormat { get; set; }
@@ -1145,7 +1140,6 @@ namespace Fuse.Drawing
 			public extern int Stride { get; set; }
 			public extern int Width { get; set; }
 		}
-
 
 		[DotNetType("System.Drawing.Graphics")]
 		extern(DOTNET) internal class DotNetGraphics
@@ -1258,7 +1252,6 @@ namespace Fuse.Drawing
 			public extern byte G { get; }
 			public extern byte B { get; }
 
-
 			public static extern Color Blue { get; }
 			public static extern Color Black { get; }
 			public static extern Color Orange { get; }
@@ -1295,7 +1288,6 @@ namespace Fuse.Drawing
 		{
 			// constructors
 			public extern PointF(float x, float y);
-
 
 			// properties
 			public extern bool IsEmpty { get; }
@@ -1343,7 +1335,6 @@ namespace Fuse.Drawing
 			public extern Pen(DotNetBrush b, float width);
 			public extern Pen(Color c);
 			public extern Pen(Color c, float width);
-
 
 			// properties
 			public extern DotNetBrush Brush { get; set; }

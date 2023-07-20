@@ -1,0 +1,3 @@
+if CIL {
+    System.Drawing.Common: "https://www.nuget.org/api/v2/package/System.Drawing.Common/6.0.0"
+}
