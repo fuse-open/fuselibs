@@ -13,15 +13,13 @@ install:
 
 build_script:
   - npm pack --silent
+  - ps: Push-AppveyorArtifact "fuse-open-fuselibs-*.tgz"
   # Check that doc-export works
   - npm run doc-export
   # Build for Android
   - npx uno build android Tests/ManualTests/ManualTestingApp/ManualTestingApp.unoproj
   # Build for Windows
   - npx uno build native Tests/ManualTests/ManualTestingApp/ManualTestingApp.unoproj
-
-artifacts:
-  - path: '*.tgz'
 
 test_script:
   - npm test
