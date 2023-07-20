@@ -1,0 +1,50 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v6.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v6.0": {
+      "Fuse.Video.CIL/1.0.0": {
+        "dependencies": {
+          "Fuse.Video.CILInterface": "1.0.0",
+          "Fuse.Video.WPF": "1.0.0"
+        },
+        "runtime": {
+          "Fuse.Video.CIL.dll": {}
+        }
+      },
+      "Fuse.Video.CILInterface/1.0.0": {
+        "runtime": {
+          "Fuse.Video.CILInterface.dll": {}
+        }
+      },
+      "Fuse.Video.WPF/1.0.0": {
+        "dependencies": {
+          "Fuse.Video.CILInterface": "1.0.0"
+        },
+        "runtime": {
+          "Fuse.Video.WPF.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Fuse.Video.CIL/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Fuse.Video.CILInterface/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Fuse.Video.WPF/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

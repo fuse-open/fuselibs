@@ -25,48 +25,47 @@ namespace Fuse.Video.Graphics.CIL
 		public static void SetOpenGL(IGL gl)
 		{
 #if CONFIG_MAC
-			Mono.MonoImpl.SetOpenGL(gl);
+			if (OperatingSystem.IsMacOSVersionAtLeast(10, 14))
+				Mono.MonoImpl.SetOpenGL(gl);
 #else
 			WPF.VideoImpl.SetOpenGL(gl);
 #endif
 		}
 
-		/// Jeeezzz, clean up this mess
 		public static VideoHandle CreateFromBytes(string name, byte[] data, Action loaded, Action<string> error)
 		{
-			var dir = Path.GetTempPath ();
+			var dir = Path.GetTempPath();
 			var path = dir + Path.DirectorySeparatorChar + name;
 			File.WriteAllBytes(path, data);
 
-			#if CONFIG_MAC
-				return CreateFromUrl ("file://" + path, loaded, error);
-			#else
-				var handle = CreateFromFile(path, loaded, error);
-
-				return new VideoHandle(handle.Video, path);
-			#endif
-        }
+#if CONFIG_MAC
+			return CreateFromUrl("file://" + path, loaded, error);
+#else
+			var handle = CreateFromFile(path, loaded, error);
+			return new VideoHandle(handle.Video, path);
+#endif
+		}
 
 		public static VideoHandle CreateFromFile(string fileName, Action loaded, Action<string> error)
 		{
-			#if CONFIG_WIN
-				return new VideoHandle(WPF.VideoImpl.FromFile(fileName, loaded, error));
-			#elif CONFIG_MAC
+#if CONFIG_WIN
+			return new VideoHandle(WPF.VideoImpl.FromFile(fileName, loaded, error));
+#elif CONFIG_MAC
+			if (OperatingSystem.IsMacOSVersionAtLeast(10, 14))
 				return new VideoHandle(Mono.MonoImpl.FromFile(fileName, loaded, error));
-			#else
-				throw new NotSupportedException("Platform not supported");
-			#endif
+#endif
+			throw new PlatformNotSupportedException();
 		}
 
 		public static VideoHandle CreateFromUrl(string url, Action loaded, Action<string> error)
 		{
-			#if CONFIG_WIN
-				return new VideoHandle(WPF.VideoImpl.FromUrl(url, loaded, error));
-			#elif CONFIG_MAC
+#if CONFIG_WIN
+			return new VideoHandle(WPF.VideoImpl.FromUrl(url, loaded, error));
+#elif CONFIG_MAC
+			if (OperatingSystem.IsMacOSVersionAtLeast(10, 14))
 				return new VideoHandle(Mono.MonoImpl.FromUrl(url, loaded, error));
-			#else
-				throw new NotSupportedException("Platform not supported");
-			#endif
+#endif
+			throw new PlatformNotSupportedException();
 		}
 
 		public static double GetPosition(VideoHandle handle)
@@ -141,6 +140,5 @@ namespace Fuse.Video.Graphics.CIL
 		{
 			handle.Video.CopyPixels(destination);
 		}
-
 	}
 }

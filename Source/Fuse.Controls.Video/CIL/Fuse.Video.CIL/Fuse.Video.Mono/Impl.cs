@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Runtime.Versioning;
 using Fuse.Video.CILInterface;
 
 namespace Fuse.Video.Mono
 {
-	public class MonoImpl : CILInterface.IVideo
+	[SupportedOSPlatform("macos10.14")]
+	public class MonoImpl : IVideo
 	{
 		static IGL _gl;
 
@@ -86,14 +88,13 @@ namespace Fuse.Video.Mono
 			VideoImpl.Stop(_handle);
 		}
 
-		public void UpdateTexture(System.Int32 textureHandle)
+		public void UpdateTexture(int textureHandle)
 		{
 			VideoImpl.UpdateTexture(_handle, textureHandle);
 		}
 
 		public void CopyPixels(byte[] destination)
 		{
-
 		}
 	}
 }
