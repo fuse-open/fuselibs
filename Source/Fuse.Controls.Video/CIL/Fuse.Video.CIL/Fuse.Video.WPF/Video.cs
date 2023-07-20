@@ -8,7 +8,6 @@ using PixelFormat = Fuse.Video.CILInterface.PixelFormat;
 
 namespace Fuse.Video.WPF
 {
-
 	public static class VideoImpl
 	{
 		static IGL _gl;
@@ -33,7 +32,7 @@ namespace Fuse.Video.WPF
 		}
 	}
 
-	class Video : CILInterface.IVideo, IDisposable
+	class Video : IVideo, IDisposable
 	{
 		readonly IGL _gl;
 		readonly MediaPlayer _mediaPlayer;
@@ -50,12 +49,10 @@ namespace Fuse.Video.WPF
 
 		void OnMediaFailed(object sender, ExceptionEventArgs e)
 		{
-
 		}
 
 		void OnMediaOpened(object sender, EventArgs e)
 		{
-
 		}
 
 		public void LoadUrl(string url, Action loaded, Action<string> error)
@@ -183,7 +180,6 @@ namespace Fuse.Video.WPF
 					var pixelBufferPtr = pinnedBuffer.AddrOfPinnedObject();
 
 					_renderTargetBitmap.CopyPixels(Int32Rect.Empty, pixelBufferPtr, size, stride);
-
 
 					_gl.BindTexture((int)TextureTarget.Texture2D, (int)textureHandle);
 

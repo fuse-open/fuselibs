@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Runtime.Versioning;
 using Fuse.Video.CILInterface;
 
 namespace Fuse.Video.Mono
@@ -9,6 +10,7 @@ namespace Fuse.Video.Mono
 		kCVPixelBufferLock_ReadOnly = 0x00000001,
 	};
 
+	[SupportedOSPlatform("macos")]
 	public class PixelBuffer : IDisposable
 	{
 		public int Width
@@ -57,7 +59,6 @@ namespace Fuse.Video.Mono
 
 			PixelBufferImpl.CVPixelBufferUnlockBaseAddress(_handle, CVPixelBufferLockFlags.kCVPixelBufferLock_ReadOnly);
 		}
-
 
 		/*public void UpdateTexture(int textureName)
 		{
@@ -165,4 +166,3 @@ namespace Fuse.Video.Mono
 		public static extern void CVBufferRelease(IntPtr handle);
 	}
 }
-

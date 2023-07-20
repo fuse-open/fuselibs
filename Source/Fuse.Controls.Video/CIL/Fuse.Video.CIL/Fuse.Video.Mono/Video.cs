@@ -6,9 +6,11 @@ using CoreVideo;
 using CoreMedia;
 using CoreFoundation;
 using Fuse.Video.CILInterface;
+using System.Runtime.Versioning;
 
 namespace Fuse.Video.Mono
 {
+	[SupportedOSPlatform("macos")]
 	public class VideoHandle
 	{
 		public AVUrlAsset Asset;
@@ -20,6 +22,7 @@ namespace Fuse.Video.Mono
 		public int HeightCache = -1;
 	}
 
+	[SupportedOSPlatform("macos10.14")]
 	public static class VideoImpl
 	{
 		static IGL _gl;
@@ -47,8 +50,7 @@ namespace Fuse.Video.Mono
 				() => DispatchQueue.MainQueue.DispatchAsync(
 					() => {
 
-						NSError e;
-						var status = handle.Asset.StatusOfValue("tracks", out e);
+						var status = handle.Asset.StatusOfValue("tracks", out NSError e);
 						if (status == AVKeyValueStatus.Loaded)
 						{
 							handle.Output = new AVPlayerItemVideoOutput(
@@ -135,8 +137,8 @@ namespace Fuse.Video.Mono
 				handle.Pixels = new byte[pixelBufferSize];
 
 			var rt = new CMTime();
-			using (var buffer = CopyPixelBuffer (handle.Output, handle.PlayerItem.CurrentTime, ref rt))
-				buffer.UpdateTexture (textureHandle, handle);
+			using var buffer = CopyPixelBuffer(handle.Output, handle.PlayerItem.CurrentTime, ref rt);
+			buffer.UpdateTexture(textureHandle, handle);
 		}
 
 		public static float GetVolume(VideoHandle handle)
@@ -159,36 +161,27 @@ namespace Fuse.Video.Mono
 		{
 			var degrees = 0;
 			var tracks = handle.Asset.Tracks;
+
 			foreach (var track in tracks)
 			{
-				if (track.MediaType.Equals(AVMediaType.Video))
+				if (track.MediaType.Equals(AVMediaTypes.Video))
 				{
 					var transform = track.PreferredTransform;
-					var angle = Math.Atan2(transform.yx, transform.xx);
+					var angle = Math.Atan2(transform.B, transform.A);
 					degrees = (int)(angle * (180.0 / Math.PI));
 					break;
 				}
 			}
+
 			return degrees;
 		}
 
 		public static void Dispose(VideoHandle handle)
 		{
-			if (handle.Player != null)
-				handle.Player.Dispose();
-
-			if (handle.PlayerItem != null)
-				handle.PlayerItem.Dispose();
-
-			if (handle.Output != null)
-				handle.Output.Dispose();
-
-			if (handle.Asset != null)
-				handle.Asset.Dispose();
+			handle.Player?.Dispose();
+			handle.PlayerItem?.Dispose();
+			handle.Output?.Dispose();
+			handle.Asset?.Dispose();
 		}
-
 	}
-
-
 }
-
