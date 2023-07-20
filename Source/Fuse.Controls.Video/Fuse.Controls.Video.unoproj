@@ -25,7 +25,6 @@
   "includes": [
     "iOS/VideoImpl.mm:csource:iOS",
     "iOS/VideoImpl.h:cheader:iOS",
-    "CIL/XamMac.stuff:stuff",
     "*"
   ]
 }
