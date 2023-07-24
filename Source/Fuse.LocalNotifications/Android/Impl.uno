@@ -127,7 +127,8 @@ namespace Fuse.LocalNotifications
             {
                 alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + (delaySeconds * 1000),
                                 android.app.PendingIntent.getBroadcast(currentActivity, id, intent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT));
-            } else
+            }
+            else
             {
                 alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + (delaySeconds * 1000),
                                 android.app.PendingIntent.getBroadcast(currentActivity, id, intent, PendingIntent.FLAG_UPDATE_CURRENT));
@@ -152,7 +153,9 @@ namespace Fuse.LocalNotifications
             {
                 String result = "{ 'title': '" + title + "', 'body': '" + body + "', 'payload': '" + payload + "' }";
                 @{NotificationRecieved(string):Call(result)};
-            } else {
+            }
+            else
+            {
                 Intent notificationIntent = new Intent(context, @(Activity.Package).@(Activity.Name).class);
                 notificationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 notificationIntent.setAction(ACTION);
@@ -172,7 +175,7 @@ namespace Fuse.LocalNotifications
                 String channelId = "@(Project.Android.Notification.DefaultChannelId)";
                 channelId = (channelId != "") ? channelId : "default_channel";
                 NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, channelId)
-                        .setSmallIcon(com.apps.test_app.R.mipmap.notif)
+                        .setSmallIcon(@(Activity.Package).R.mipmap.notif)
                         .setContentTitle(title)
                         .setContentText(body)
                         .setWhen(System.currentTimeMillis())
@@ -181,7 +184,7 @@ namespace Fuse.LocalNotifications
                         .setVibrate(new long[] { 1000L, 1000L })
                         .setContentIntent(contentIntent);
 
-                if(sound)
+                if (sound)
                 {
                     Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
                     notificationBuilder.setSound(defaultSoundUri);
