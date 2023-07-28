@@ -271,6 +271,7 @@ namespace Fuse.Android.Permissions
             public static PlatformPermission WRITE_SYNC_SETTINGS { get { return Internal.Android._write_sync_settings(); } }
             public static PlatformPermission WRITE_USER_DICTIONARY { get { return Internal.Android._write_user_dictionary(); } }
             public static PlatformPermission WRITE_VOICEMAIL { get { return Internal.Android._write_voicemail(); } }
+            public static PlatformPermission POST_NOTIFICATIONS { get { return Internal.Android._post_notification(); } }
         }
     }
 

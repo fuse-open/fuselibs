@@ -12,7 +12,8 @@
     "../Fuse.Elements/Fuse.Elements.unoproj",
     "../Fuse.Platform/Fuse.Platform.unoproj",
     "../Fuse.Reactive/Fuse.Reactive.unoproj",
-    "../Fuse.Scripting/Fuse.Scripting.unoproj"
+    "../Fuse.Scripting/Fuse.Scripting.unoproj",
+    "../Fuse.Android.Permissions/Fuse.Android.Permissions.unoproj"
   ],
   "Includes": [
     "Docs/**:File",

@@ -5,6 +5,7 @@ using Fuse;
 using Fuse.Controls;
 using Fuse.Triggers;
 using Fuse.Resources;
+using Fuse.Android.Permissions;
 
 using Fuse.Platform;
 using Uno.Compiler.ExportTargetInterop;
@@ -16,6 +17,7 @@ namespace Fuse.PushNotifications
 					"android.app.Activity",
 					"android.os.AsyncTask",
 					"android.app.Notification",
+					"android.app.PendingIntent",
 					"android.content.Context",
 					"android.content.Intent",
 					"android.media.RingtoneManager",
@@ -33,7 +35,7 @@ namespace Fuse.PushNotifications
 					"com.google.android.gms.common.ConnectionResult",
 					"com.google.android.gms.common.GoogleApiAvailability"
 					)]
-	[Require("Gradle.Dependency.Implementation", "com.google.firebase:firebase-messaging:20.0.1")]
+	[Require("Gradle.Dependency.Implementation", "com.google.firebase:firebase-messaging:23.2.0")]
 	extern(Android)
 	internal class AndroidImpl
 	{
@@ -71,20 +73,30 @@ namespace Fuse.PushNotifications
 			// Set up FCM
 			final Activity activity = com.fuse.Activity.getRootActivity();
 			activity.runOnUiThread(new Runnable() {
-					@Override
-						public void run() {
-						// Check device for Play Services APK. If check succeeds, proceed with FCM registration.
-						if (@{CheckPlayServices():Call()}) {
-
-							String _regID = com.google.firebase.iid.FirebaseInstanceId.getInstance().getToken();
-							if (_regID != null) {
-								@{getRegistrationIdSuccess(string):Call(_regID)};
+				@Override
+				public void run() {
+					// Check device for Play Services APK. If check succeeds, proceed with FCM registration.
+					if (@{CheckPlayServices():Call()}) {
+						com.google.firebase.messaging.FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new com.google.android.gms.tasks.OnCompleteListener<String>() {
+							@Override
+							public void onComplete(com.google.android.gms.tasks.Task<String> task) {
+								if (!task.isSuccessful()) {
+									@{getRegistrationIdError(string):Call(task.getException().toString())};
+									return;
+								}
+								// Get new FCM registration token
+								String token = task.getResult();
+								@{getRegistrationIdSuccess(string):Call(token)};
 							}
-						} else {
-							@{getRegistrationIdError(string):Call("Google Play Services need to be updated")};
-						}
+						});
+					} else {
+						@{getRegistrationIdError(string):Call("Google Play Services need to be updated")};
 					}
-				});
+				}
+			});
+			#if (!@(Project.Android.PushNotifications.RegisterOnLaunch:IsSet)) || @(Project.Android.PushNotifications.RegisterOnLaunch:Or(0))
+				@{RegisterForPushNotifications():Call()};
+			#endif
 		@}
 
 
@@ -109,6 +121,38 @@ namespace Fuse.PushNotifications
 			}
 			return true;
 		@}
+
+		[Foreign(Language.Java)]
+		internal static void RegisterForPushNotifications()
+		@{
+			// This is only necessary for API level >= 33 (TIRAMISU)
+			if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+				@{RequestPermission():Call()};
+			}
+		@}
+
+		static void RequestPermission()
+		{
+			Permissions.Request(new PlatformPermission[] { Permissions.Android.POST_NOTIFICATIONS}).Then(OnPermissions, OnRejected);
+		}
+
+		static void OnPermissions(PlatformPermission[] grantedPermissions)
+		{
+			if(grantedPermissions.Length == 1)
+			{
+				// Success
+				return;
+			}
+			else
+			{
+				getRegistrationIdError("Push Notification is not granted");
+			}
+		}
+
+		static void OnRejected(Exception e)
+		{
+			getRegistrationIdError(e.Message);
+		}
 
 		[Foreign(Language.Java), ForeignFixedName]
 		static void RegistrationIDUpdated(string regid)
@@ -429,7 +473,17 @@ namespace Fuse.PushNotifications
 			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 			intent.setAction(PushNotificationReceiver.ACTION);
 			intent.replaceExtras(payload);
-			android.app.PendingIntent pendingIntent = android.app.PendingIntent.getActivity(context, id, intent, android.app.PendingIntent.FLAG_UPDATE_CURRENT);
+			PendingIntent pendingIntent = null;
+			if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S)
+			{
+				pendingIntent = android.app.PendingIntent.getActivity
+					(context, id, intent, android.app.PendingIntent.FLAG_IMMUTABLE | android.app.PendingIntent.FLAG_UPDATE_CURRENT);
+			}
+			else
+			{
+				pendingIntent = android.app.PendingIntent.getActivity
+						(context, id, intent, android.app.PendingIntent.FLAG_UPDATE_CURRENT);
+			}
 			android.app.NotificationManager notificationManager = (android.app.NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
 
 			/// Setup Default notification channel properties to fallback on
