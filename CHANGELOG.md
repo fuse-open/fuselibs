@@ -1,5 +1,49 @@
 # Unreleased
 
+## 2.8
+
+### Fuse.Controls.DrawingPanel
+- New library for drawing using your finger (#1470)
+
+### Fuse.Scripting.JavaScript
+- Support `async`/`await` in JavaScript via "regenerator-runtime" (#1465)
+
+### Fuse.Scripting
+- Add `Context` parameter to native promises (#1468)
+- Implemenentation clean-up using lambda functions (#1466)
+
+### Other changes
+- Update iOS include headers (#1471)
+- Add tsconfig module for FuseJS (0c3721d)
+- Upgrade nodejs -> 16 (77ca8e6)
+
+[`v2.7.0...v2.8.0`](https://github.com/fuse-open/fuselibs/compare/v2.7.0...v2.8.0)
+
+## 2.7
+
+### Fuse.Controls.Panels
+- Take screenshot of a Panel and save as a file (#1461)
+
+### Fuse.Controls.ScrollView
+- Add Snapping feature for ScrollView (#1459)
+
+### Fuse.Launcher.Phone
+- Add SMS launcher and scriptmethod (#1464)
+
+### Fuse.PushNotifications
+- Android 12 compatibility fix (#1463)
+
+### Fuse.Scripting
+- Add Context parameter to NativePromise delegates (#1460)
+
+## Fuse.Storage
+- Fix desktop implementation of UserSettings (#1462)
+
+### Other changes
+- Use Node.js v14 on AppVeyor (#1457)
+
+[`v2.6.0...v2.7.0`](https://github.com/fuse-open/fuselibs/compare/v2.6.0...v2.7.0)
+
 ## 2.6
 
 ### Fuse.Platform

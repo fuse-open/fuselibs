@@ -74,7 +74,7 @@ namespace Fuse
 			AddMember(new NativePromise<LoginInformation, Scripting.Object>("signIn", SignIn, Converter));
 		}
 
-		static Future<bool> HasSignedIn(object[] args)
+		static Future<bool> HasSignedIn(Context context, object[] args)
 		{
 			var p = new Promise<bool>();
 			if defined (iOS)
@@ -84,7 +84,7 @@ namespace Fuse
 			return p;
 		}
 
-		static Future<LoginInformation> SignIn(object[] args)
+		static Future<LoginInformation> SignIn(Context context, object[] args)
 		{
 			var p = new Promise<LoginInformation>();
 			if defined (iOS)

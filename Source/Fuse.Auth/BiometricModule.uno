@@ -72,7 +72,7 @@ namespace Fuse
 			return supported;
 		}
 
-		static Future<BiometricStatus> Authenticate(object[] args)
+		static Future<BiometricStatus> Authenticate(Context c, object[] args)
 		{
 			if (args.Length != 1)
 				throw new Exception("authenticate() requires exactly 1 parameter.");
