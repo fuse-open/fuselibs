@@ -611,5 +611,9 @@
         <Method Signature="_write_voicemail():Fuse.Android.Permissions.PlatformPermission">
             <Require AndroidManifest.Permission="android.permission.WRITE_VOICEMAIL" />
         </Method>
+
+        <Method Signature="_post_notification():Fuse.Android.Permissions.PlatformPermission">
+            <Require AndroidManifest.Permission="android.permission.POST_NOTIFICATIONS" />
+        </Method>
     </Type>
 </Extensions>

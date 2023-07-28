@@ -52,9 +52,9 @@ public class PushNotificationReceiver extends FirebaseMessagingService {
 
 				JSONObject jsonObj = new JSONObject(jsonStr);
 
-	            jsonStr = jsonObj.toString();
+				jsonStr = jsonObj.toString();
 
-	            bundle = jsonStrToBundle(jsonStr);
+				bundle = jsonStrToBundle(jsonStr);
 
 			} catch (JSONException je) {
 				Log.d("onMessageReceived", "BAD JSON");
@@ -69,87 +69,87 @@ public class PushNotificationReceiver extends FirebaseMessagingService {
 		}
 	}
 
-    public static Bundle jsonStrToBundle(String jsonStr) {
-        Bundle bundle = new Bundle();
+	public static Bundle jsonStrToBundle(String jsonStr) {
+		Bundle bundle = new Bundle();
 
-        try {
-            JSONObject jsonObject = new JSONObject(jsonStr.trim());
-            bundle = handleJSONObject(jsonObject);
-        } catch (JSONException notObject) {
-            try {
-                JSONArray jsonArr = new JSONArray(jsonStr.trim());
-                bundle = handleJSONArray(jsonArr);
-            } catch (JSONException badJSON) {
-                Log.d("jsonStrToBundle", "BAD JSON");
-            }
-        }
+		try {
+			JSONObject jsonObject = new JSONObject(jsonStr.trim());
+			bundle = handleJSONObject(jsonObject);
+		} catch (JSONException notObject) {
+			try {
+				JSONArray jsonArr = new JSONArray(jsonStr.trim());
+				bundle = handleJSONArray(jsonArr);
+			} catch (JSONException badJSON) {
+				Log.d("jsonStrToBundle", "BAD JSON");
+			}
+		}
 
-        return bundle;
-    }
+		return bundle;
+	}
 
 
-    public static Bundle handleJSONArray(JSONArray jsonArray) {
-        Bundle bundle = new Bundle();
+	public static Bundle handleJSONArray(JSONArray jsonArray) {
+		Bundle bundle = new Bundle();
 
-        for (int i = 0; i < jsonArray.length(); i++) {
+		for (int i = 0; i < jsonArray.length(); i++) {
 
-            try {
-                Object jsonArrayValue = jsonArray.get(i);
+			try {
+				Object jsonArrayValue = jsonArray.get(i);
 
-                if (jsonArrayValue instanceof JSONObject) {
-                    bundle.putBundle("" + i, handleJSONObject((JSONObject) jsonArrayValue));
-                } else if (jsonArrayValue instanceof JSONArray) {
-                    bundle.putBundle("" + i, handleJSONArray((JSONArray) jsonArrayValue));
-                } else if (jsonArrayValue instanceof String) {
-                    bundle.putString("" + i, "" + jsonArrayValue);
-                } else if (jsonArrayValue instanceof Boolean) {
-                    bundle.putBoolean("" + i, (boolean) jsonArrayValue);
-                } else if (jsonArrayValue instanceof Integer) {
-                    bundle.putInt("" + i, (int) jsonArrayValue);
-                } else if (jsonArrayValue instanceof Double) {
-                    bundle.putDouble("" + i, (double) jsonArrayValue);
-                } else if (jsonArrayValue instanceof Long) {
-                    bundle.putLong("" + i, (long) jsonArrayValue);
-                }
-            } catch (JSONException je) {
-                Log.d("handleJSONArray", "BAD JSON VALUE IN JSON ARRAY, AT POSITION: " + i);
-            }
-        }
+				if (jsonArrayValue instanceof JSONObject) {
+					bundle.putBundle("" + i, handleJSONObject((JSONObject) jsonArrayValue));
+				} else if (jsonArrayValue instanceof JSONArray) {
+					bundle.putBundle("" + i, handleJSONArray((JSONArray) jsonArrayValue));
+				} else if (jsonArrayValue instanceof String) {
+					bundle.putString("" + i, "" + jsonArrayValue);
+				} else if (jsonArrayValue instanceof Boolean) {
+					bundle.putBoolean("" + i, (boolean) jsonArrayValue);
+				} else if (jsonArrayValue instanceof Integer) {
+					bundle.putInt("" + i, (int) jsonArrayValue);
+				} else if (jsonArrayValue instanceof Double) {
+					bundle.putDouble("" + i, (double) jsonArrayValue);
+				} else if (jsonArrayValue instanceof Long) {
+					bundle.putLong("" + i, (long) jsonArrayValue);
+				}
+			} catch (JSONException je) {
+				Log.d("handleJSONArray", "BAD JSON VALUE IN JSON ARRAY, AT POSITION: " + i);
+			}
+		}
 
-        return bundle;
-    }
+		return bundle;
+	}
 
-    public static Bundle handleJSONObject(JSONObject jsonObject) {
-        Bundle bundle = new Bundle();
+	public static Bundle handleJSONObject(JSONObject jsonObject) {
+		Bundle bundle = new Bundle();
 
-        Iterator<String> keys = jsonObject.keys();
+		Iterator<String> keys = jsonObject.keys();
 
-        while(keys.hasNext()) {
-            String keyStr = keys.next();
+		while(keys.hasNext()) {
+			String keyStr = keys.next();
 
-            try {
-                Object keyValue = jsonObject.get(keyStr);
+			try {
+				Object keyValue = jsonObject.get(keyStr);
 
-                if (keyValue instanceof JSONObject) {
-                    bundle.putBundle(keyStr, handleJSONObject((JSONObject) keyValue));
-                } else if (keyValue instanceof JSONArray) {
-                    bundle.putBundle(keyStr, handleJSONArray((JSONArray) keyValue));
-                } else if (keyValue instanceof String) {
-                    bundle.putString(keyStr, "" + keyValue);
-                } else if (keyValue instanceof Boolean) {
-                    bundle.putBoolean(keyStr, (boolean) keyValue);
-                } else if (keyValue instanceof Integer) {
-                    bundle.putInt(keyStr, (int) keyValue);
-                } else if (keyValue instanceof Double) {
-                    bundle.putDouble(keyStr, (double) keyValue);
-                } else if (keyValue instanceof Long) {
-                    bundle.putLong(keyStr, (long) keyValue);
-                }
-            } catch (JSONException je) {
-                Log.d("handleJSONObject", "BAD JSON VALUE IN JSON OBJECT, AT KEY: " + keyStr);
-            }
-        }
+				if (keyValue instanceof JSONObject) {
+					bundle.putBundle(keyStr, handleJSONObject((JSONObject) keyValue));
+				} else if (keyValue instanceof JSONArray) {
+					bundle.putBundle(keyStr, handleJSONArray((JSONArray) keyValue));
+				} else if (keyValue instanceof String) {
+					bundle.putString(keyStr, "" + keyValue);
+				} else if (keyValue instanceof Boolean) {
+					bundle.putBoolean(keyStr, (boolean) keyValue);
+				} else if (keyValue instanceof Integer) {
+					bundle.putInt(keyStr, (int) keyValue);
+				} else if (keyValue instanceof Double) {
+					bundle.putDouble(keyStr, (double) keyValue);
+				} else if (keyValue instanceof Long) {
+					bundle.putLong(keyStr, (long) keyValue);
+				}
+			} catch (JSONException je) {
+				Log.d("handleJSONObject", "BAD JSON VALUE IN JSON OBJECT, AT KEY: " + keyStr);
+			}
+		}
 
-        return bundle;
-    }
+		return bundle;
+	}
 }
