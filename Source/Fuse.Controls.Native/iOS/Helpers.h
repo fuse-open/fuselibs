@@ -2,7 +2,7 @@
 
 #if !(@{Fuse.Controls.Native.iOS.GraphicsView:IsStripped} && @{Fuse.Controls.Native.iOS.FocusHelpers:IsStripped} && @{Fuse.Controls.Native.iOS.InputDispatch:IsStripped} && @{Fuse.Controls.Native.iOS.KeyboardView:IsStripped} && @{Fuse.Controls.Native.iOS.ScrollView:IsStripped} && @{Fuse.Controls.Native.iOS.SingleLineTextEdit:IsStripped} && @{Fuse.Controls.Native.iOS.MultiLineTextEdit:IsStripped} && @{Fuse.Controls.Native.iOS.UIControlEvent:IsStripped})
 
-#include <Uno/Uno.h>
+#include <uno.h>
 #include <UIKit/UIKit.h>
 #if @(METAL:Defined)
 #include <MetalANGLE/MGLKit.h>

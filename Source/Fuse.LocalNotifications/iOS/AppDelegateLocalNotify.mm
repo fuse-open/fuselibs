@@ -1,4 +1,4 @@
-#include <Uno/Uno.h>
+#include <uno.h>
 #include "AppDelegateLocalNotify.h"
 @{Fuse.Platform.Lifecycle:IncludeDirective}
 @{Fuse.LocalNotifications.iOSImpl:IncludeDirective}

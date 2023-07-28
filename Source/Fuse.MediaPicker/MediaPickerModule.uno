@@ -67,7 +67,7 @@ namespace Fuse.MediaPicker
 
 			@return (Promise) a Promise of images path array.
 		*/
-		static Future<string> PickImageInterface(object[] args)
+		static Future<string> PickImageInterface(Context context, object[] args)
 		{
 			var arguments = args[0] as Scripting.Object;
 			var p = new Promise<string>();
@@ -102,7 +102,7 @@ namespace Fuse.MediaPicker
 
 			@return (Promise) a Promise of a video path.
 		*/
-		static Future<string> PickVideoInterface(object[] args)
+		static Future<string> PickVideoInterface(Context context, object[] args)
 		{
 			var arguments = args[0] as Scripting.Object;
 
