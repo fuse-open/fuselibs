@@ -251,119 +251,83 @@ namespace Fuse.Vibration
 		[Foreign(Language.ObjC)]
 		static extern(iOS) void PerformSoft()
 		@{
-		#if defined(__IPHONE_10_0) && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_10_0
 			dispatch_async(dispatch_get_main_queue(), ^{
 				UIImpactFeedbackGenerator * feedback = [[UIImpactFeedbackGenerator alloc] initWithStyle:UIImpactFeedbackStyleSoft];
 				[feedback impactOccurred];
 			});
-		#else
-			AudioServicesPlayAlertSound(kSystemSoundID_Vibrate);
-		#endif
 		@}
 
 		[Foreign(Language.ObjC)]
 		static extern(iOS) void PerformRigid()
 		@{
-		#if defined(__IPHONE_10_0) && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_10_0
 			dispatch_async(dispatch_get_main_queue(), ^{
 				UIImpactFeedbackGenerator * feedback = [[UIImpactFeedbackGenerator alloc] initWithStyle:UIImpactFeedbackStyleRigid];
 				[feedback impactOccurred];
 			});
-		#else
-			AudioServicesPlayAlertSound(kSystemSoundID_Vibrate);
-		#endif
 		@}
 
 		[Foreign(Language.ObjC)]
 		static extern(iOS) void PerformLight()
 		@{
-		#if defined(__IPHONE_10_0) && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_10_0
 			dispatch_async(dispatch_get_main_queue(), ^{
 				UIImpactFeedbackGenerator * feedback = [[UIImpactFeedbackGenerator alloc] initWithStyle:UIImpactFeedbackStyleLight];
 				[feedback impactOccurred];
 			});
-		#else
-			AudioServicesPlayAlertSound(kSystemSoundID_Vibrate);
-		#endif
 		@}
 
 		[Foreign(Language.ObjC)]
 		static extern(iOS) void PerformMedium()
 		@{
-		#if defined(__IPHONE_10_0) && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_10_0
 			dispatch_async(dispatch_get_main_queue(), ^{
 				UIImpactFeedbackGenerator * feedback = [[UIImpactFeedbackGenerator alloc] initWithStyle:UIImpactFeedbackStyleMedium];
 				[feedback impactOccurred];
 			});
-		#else
-			AudioServicesPlayAlertSound(kSystemSoundID_Vibrate);
-		#endif
 		@}
 
 		[Foreign(Language.ObjC)]
 		static extern(iOS) void PerformHeavy()
 		@{
-		#if defined(__IPHONE_10_0) && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_10_0
 			dispatch_async(dispatch_get_main_queue(), ^{
 				UIImpactFeedbackGenerator * feedback = [[UIImpactFeedbackGenerator alloc] initWithStyle:UIImpactFeedbackStyleHeavy];
 				[feedback impactOccurred];
 			});
-		#else
-			AudioServicesPlayAlertSound(kSystemSoundID_Vibrate);
-		#endif
 		@}
 
 		[Foreign(Language.ObjC)]
 		static extern(iOS) void PerformSuccess()
 		@{
-		#if defined(__IPHONE_10_0) && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_10_0
 			dispatch_async(dispatch_get_main_queue(), ^{
 				UINotificationFeedbackGenerator * feedback = [[UINotificationFeedbackGenerator alloc] init];
 				[feedback notificationOccurred:UINotificationFeedbackTypeSuccess];
 			});
-		#else
-			AudioServicesPlayAlertSound(kSystemSoundID_Vibrate);
-		#endif
 		@}
 
 		[Foreign(Language.ObjC)]
 		static extern(iOS) void PerformWarning()
 		@{
-		#if defined(__IPHONE_10_0) && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_10_0
 			dispatch_async(dispatch_get_main_queue(), ^{
 				UINotificationFeedbackGenerator * feedback = [[UINotificationFeedbackGenerator alloc] init];
 				[feedback notificationOccurred:UINotificationFeedbackTypeWarning];
 			});
-		#else
-			AudioServicesPlayAlertSound(kSystemSoundID_Vibrate);
-		#endif
 		@}
 
 		[Foreign(Language.ObjC)]
 		static extern(iOS) void PerformError()
 		@{
-		#if defined(__IPHONE_10_0) && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_10_0
 			dispatch_async(dispatch_get_main_queue(), ^{
 				UINotificationFeedbackGenerator * feedback = [[UINotificationFeedbackGenerator alloc] init];
 				[feedback notificationOccurred:UINotificationFeedbackTypeError];
 			});
-		#else
-			AudioServicesPlayAlertSound(kSystemSoundID_Vibrate);
-		#endif
 		@}
 
 		[Foreign(Language.ObjC)]
 		static extern(iOS) void PerformSelection()
 		@{
-		#if defined(__IPHONE_10_0) && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_10_0
 			dispatch_async(dispatch_get_main_queue(), ^{
 				UISelectionFeedbackGenerator * feedback = [[UISelectionFeedbackGenerator alloc] init];
 				[feedback selectionChanged];
 				[feedback prepare];
 			});
-		#else
-			AudioServicesPlayAlertSound(kSystemSoundID_Vibrate);
-		#endif
 		@}
 	}
 

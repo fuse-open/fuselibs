@@ -148,9 +148,7 @@ namespace Fuse.Controls.Native.Android
 		[Foreign(Language.Java)]
 		static void SetTextAlignment(Java.Object handle, int alignment)
 		@{
-			if (android.os.Build.VERSION.SDK_INT >= 17)
-				((android.widget.TextView)handle).setTextAlignment(android.view.View.TEXT_ALIGNMENT_GRAVITY);
-
+			((android.widget.TextView)handle).setTextAlignment(android.view.View.TEXT_ALIGNMENT_GRAVITY);
 			((android.widget.TextView)handle).setGravity(alignment);
 		@}
 

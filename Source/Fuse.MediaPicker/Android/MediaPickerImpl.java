@@ -220,9 +220,7 @@ public class MediaPickerImpl {
 
 	public void launchMultiPickImageFromGalleryIntent() {
 		Intent pickImageIntent = new Intent(Intent.ACTION_GET_CONTENT);
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-			pickImageIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-		}
+		pickImageIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
 		pickImageIntent.setType("image/*");
 
 		com.fuse.Activity.getRootActivity().startActivityForResult(pickImageIntent, REQUEST_CODE_CHOOSE_MULTI_IMAGE_FROM_GALLERY);
