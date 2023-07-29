@@ -769,5 +769,10 @@ namespace Fuse.Android.Permissions.Internal
         {
             return new PlatformPermission("android.permission.WRITE_VOICEMAIL");
         }
+        [TargetSpecificImplementation]
+        internal static extern PlatformPermission _post_notification()
+        {
+            return new PlatformPermission("android.permission.POST_NOTIFICATIONS");
+        }
     }
 }
