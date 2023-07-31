@@ -111,9 +111,7 @@ public class FuseWebChromeClient extends WebChromeClient
 			intent.setType("*/*");
 
 			if (allowMultiple) {
-				if (Build.VERSION.SDK_INT >= 18) {
-					intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-				}
+				intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
 			}
 
 			com.fuse.Activity.ResultListener listener = new com.fuse.Activity.ResultListener() {
@@ -129,15 +127,13 @@ public class FuseWebChromeClient extends WebChromeClient
 										dataUris = new Uri[] { Uri.parse(intent.getDataString()) };
 									}
 									else {
-										if (Build.VERSION.SDK_INT >= 16) {
-											if (intent.getClipData() != null) {
-												final int numSelectedFiles = intent.getClipData().getItemCount();
+										if (intent.getClipData() != null) {
+											final int numSelectedFiles = intent.getClipData().getItemCount();
 
-												dataUris = new Uri[numSelectedFiles];
+											dataUris = new Uri[numSelectedFiles];
 
-												for (int i = 0; i < numSelectedFiles; i++) {
-													dataUris[i] = intent.getClipData().getItemAt(i).getUri();
-												}
+											for (int i = 0; i < numSelectedFiles; i++) {
+												dataUris[i] = intent.getClipData().getItemAt(i).getUri();
 											}
 										}
 									}
@@ -183,24 +179,22 @@ public class FuseWebChromeClient extends WebChromeClient
 
 	@Override
 	public void onShowCustomView(View view, CustomViewCallback callback) {
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-			if (_customView != null) {
-				callback.onCustomViewHidden();
-				return;
-			}
-
-			_originalOrientation = _activity.getRequestedOrientation();
-
-			FrameLayout decor = (FrameLayout) _activity.getWindow().getDecorView();
-
-			_fullscreenContainer = new FullscreenHolder(_activity);
-			_fullscreenContainer.addView(view, ViewGroup.LayoutParams.MATCH_PARENT);
-			decor.addView(_fullscreenContainer, ViewGroup.LayoutParams.MATCH_PARENT);
-			_customView = view;
-			setFullscreen(true);
-			_customViewCallback = callback;
-			_activity.setRequestedOrientation(_originalOrientation);
+		if (_customView != null) {
+			callback.onCustomViewHidden();
+			return;
 		}
+
+		_originalOrientation = _activity.getRequestedOrientation();
+
+		FrameLayout decor = (FrameLayout) _activity.getWindow().getDecorView();
+
+		_fullscreenContainer = new FullscreenHolder(_activity);
+		_fullscreenContainer.addView(view, ViewGroup.LayoutParams.MATCH_PARENT);
+		decor.addView(_fullscreenContainer, ViewGroup.LayoutParams.MATCH_PARENT);
+		_customView = view;
+		setFullscreen(true);
+		_customViewCallback = callback;
+		_activity.setRequestedOrientation(_originalOrientation);
 		super.onShowCustomView(view, callback);
 	}
 

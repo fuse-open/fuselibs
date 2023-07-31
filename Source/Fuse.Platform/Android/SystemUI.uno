@@ -277,17 +277,10 @@ namespace Fuse.Platform
 			com.fuse.Activity.getRootActivity().runOnUiThread(new Runnable() { public void run()
 			{
 				@{_systemUIState:Set(@{SysUIState.Normal})};
-				// If the Android version is lower than Jellybean, use this call to hide
-				// the status bar.
-				if (android.os.Build.VERSION.SDK_INT < 16)
-				{
-					com.fuse.Activity.getRootActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-				} else {
-					View decorView = com.fuse.Activity.getRootActivity().getWindow().getDecorView();
-					// Hide the status bar.
-					decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
-					@{HideActionBar():Call()};
-				}
+				View decorView = com.fuse.Activity.getRootActivity().getWindow().getDecorView();
+				// Hide the status bar.
+				decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
+				@{HideActionBar():Call()};
 				@{CompensateRootLayoutForSystemUI():Call()};
 				@{cppOnTopFrameChanged(int):Call((int)@{GetStatusBarHeight():Call()})};
 			}});
@@ -300,16 +293,10 @@ namespace Fuse.Platform
 			com.fuse.Activity.getRootActivity().runOnUiThread(new Runnable() { public void run()
 			{
 				@{_systemUIState:Set(@{SysUIState.StatusBarHidden})};
-				// If the Android version is lower than Jellybean, use this call to hide
-				// the status bar.
-				if (android.os.Build.VERSION.SDK_INT < 16) {
-					com.fuse.Activity.getRootActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-				} else {
-					View decorView = com.fuse.Activity.getRootActivity().getWindow().getDecorView();
-					// Hide the status bar.
-					decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
-					@{HideActionBar():Call()};
-				}
+				View decorView = com.fuse.Activity.getRootActivity().getWindow().getDecorView();
+				// Hide the status bar.
+				decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
+				@{HideActionBar():Call()};
 				@{CompensateRootLayoutForSystemUI():Call()};
 				@{cppOnTopFrameChanged(int):Call(0)};
 			}});
@@ -404,22 +391,16 @@ namespace Fuse.Platform
 		@{
 			com.fuse.Activity.getRootActivity().runOnUiThread(new Runnable() { public void run() {
 				@{_systemUIState:Set(@{SysUIState.Fullscreen})};
-				// If the Android version is lower than Jellybean, use this call to hide
-				// the status bar.
-				if (android.os.Build.VERSION.SDK_INT < 19) {
-					@{HideStatusBar():Call()};
-				} else {
-					View decorView = com.fuse.Activity.getRootActivity().getWindow().getDecorView();
-					// Hide the status bar.
-					decorView.setSystemUiVisibility(
-							View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-							| View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-							| View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-							| View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide nav bar
-							| View.SYSTEM_UI_FLAG_FULLSCREEN // hide status bar
-							| View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
-					@{HideActionBar():Call()};
-				}
+				View decorView = com.fuse.Activity.getRootActivity().getWindow().getDecorView();
+				// Hide the status bar.
+				decorView.setSystemUiVisibility(
+						View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+						| View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+						| View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+						| View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide nav bar
+						| View.SYSTEM_UI_FLAG_FULLSCREEN // hide status bar
+						| View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+				@{HideActionBar():Call()};
 				@{CompensateRootLayoutForSystemUI():Call()};
 				@{cppOnTopFrameChanged(int):Call(0)};
 			}});
@@ -454,30 +435,10 @@ namespace Fuse.Platform
 		@{
 			//cache initialSize so we have something sane
 			android.view.Display display = com.fuse.Activity.getRootActivity().getWindowManager().getDefaultDisplay();
-			if (android.os.Build.VERSION.SDK_INT >= 17) {
-				//new pleasant way to get real metrics
-				DisplayMetrics realMetrics = new DisplayMetrics();
-				display.getRealMetrics(realMetrics);
-				@{realWidth:Set(realMetrics.widthPixels)};
-				@{realHeight:Set(realMetrics.heightPixels)};
-			} else if (android.os.Build.VERSION.SDK_INT >= 14) {
-				//reflection for this weird in-between time
-				try {
-					Method mGetRawH = android.view.Display.class.getMethod("getRawHeight");
-					Method mGetRawW = android.view.Display.class.getMethod("getRawWidth");
-					@{realWidth:Set((Integer)mGetRawW.invoke(display))};
-					@{realHeight:Set((Integer)mGetRawH.invoke(display))};
-				} catch (Exception e) {
-					//this may not be 100% accurate, but it's all we've got
-					@{realWidth:Set(display.getWidth())};
-					@{realHeight:Set(display.getHeight())};
-				}
-			} else {
-				//This should be close, as lower API devices should not have window navigation bars
-				@{realWidth:Set(display.getWidth())};
-				@{realHeight:Set(display.getHeight())};
-			}
-
+			DisplayMetrics realMetrics = new DisplayMetrics();
+			display.getRealMetrics(realMetrics);
+			@{realWidth:Set(realMetrics.widthPixels)};
+			@{realHeight:Set(realMetrics.heightPixels)};
 			if (@{SuperLayout}!=null) {
 				int tmp = ((FrameLayout)@{SuperLayout}).getWidth();
 				if (tmp!=0 && tmp!= @{realHeight} && @{realWidth}!=tmp) {
@@ -490,13 +451,8 @@ namespace Fuse.Platform
 		static public Java.Object GetDisplayMetrics()
 		@{
 			DisplayMetrics metrics = new DisplayMetrics();
-			if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-				com.fuse.Activity.getRootActivity().getWindowManager().getDefaultDisplay().getRealMetrics(metrics);
-				return metrics;
-			} else {
-				com.fuse.Activity.getRootActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
-				return metrics;
-			}
+			com.fuse.Activity.getRootActivity().getWindowManager().getDefaultDisplay().getRealMetrics(metrics);
+			return metrics;
 		@}
 
 		static public int GetRealDisplayWidth()
@@ -609,9 +565,6 @@ namespace Fuse.Platform
 		int width = FrameLayout.LayoutParams.MATCH_PARENT;
 			View uview = (View)view;
 			FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(width,height);
-			if (android.os.Build.VERSION.SDK_INT < 14) {
-				lp.gravity = Gravity.TOP;
-			}
 			lp.leftMargin = originX;
 			lp.topMargin = originY;
 			uview.setLayoutParams(lp);
@@ -634,11 +587,7 @@ namespace Fuse.Platform
 		static public void Detach() // Also use this for DetachFromActivity()
 		@{
 			if (@{layoutAttachedTo}!=null) {
-				if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-					((FrameLayout)@{RootLayout}).getViewTreeObserver().removeOnGlobalLayoutListener(((ViewTreeObserver.OnGlobalLayoutListener)@{_keyboardListener}));
-				} else {
-					((FrameLayout)@{RootLayout}).getViewTreeObserver().removeGlobalOnLayoutListener(((ViewTreeObserver.OnGlobalLayoutListener)@{_keyboardListener}));
-				}
+				((FrameLayout)@{RootLayout}).getViewTreeObserver().removeOnGlobalLayoutListener(((ViewTreeObserver.OnGlobalLayoutListener)@{_keyboardListener}));
 			}
 			@{layoutAttachedTo:Set(null)};
 		@}

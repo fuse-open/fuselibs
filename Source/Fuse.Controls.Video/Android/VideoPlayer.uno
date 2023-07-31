@@ -248,9 +248,6 @@ namespace Fuse.Controls.VideoImpl.Android
 				catch (Exception e) { /* We do not care if this fails */ }
 			}
 
-			if (android.os.Build.VERSION.SDK_INT < 19) // we need API level 19 to call MediaPlayer.TrackInfo.getFormat()
-				return 0;
-
 			android.media.MediaPlayer player = (android.media.MediaPlayer)handle;
 			android.media.MediaPlayer.TrackInfo[] tracks = player.getTrackInfo();
 			for (int i = 0; i < tracks.length; i++)

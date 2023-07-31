@@ -18,8 +18,7 @@ namespace Fuse.Controls.Native.Android
 			t.setIncludeFontPadding(false);
 			t.setBackgroundResource(0);
 			t.setPadding(0, 0, 0, 0);
-			if (android.os.Build.VERSION.SDK_INT >= 17)
-				t.setPaddingRelative(0, 0, 0, 0);
+			t.setPaddingRelative(0, 0, 0, 0);
 		@}
 	}
 
