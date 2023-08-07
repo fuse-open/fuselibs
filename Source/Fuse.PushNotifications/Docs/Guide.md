@@ -61,6 +61,11 @@ If you wish to disable auto-registration you can place the following in your uno
             "RegisterOnLaunch": false
         }
     },
+    "Android": {
+        "PushNotifications": {
+            "RegisterOnLaunch": false
+        }
+    },
 ```
 You must then register for push notifications by calling `register()` from JS. This option is useful as when the notifications are registered the OS may ask the user for permission to use push notifications and this may be undesirable on launch.
 
