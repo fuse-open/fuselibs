@@ -1,5 +1,17 @@
 # Unreleased
 
+## 2.9
+
+### Fuse.LocalNotifications
+- Support latest Android and iOS version (#1473)
+- Fix package name on Android (#1477)
+
+### Fuse.PushNotifications
+- Upgrade `firebase-messaging` -> 23.2.0 (#1479)
+- Support latest Android version (#1479)
+
+[`v2.8.0...v2.9.0`](https://github.com/fuse-open/fuselibs/compare/v2.8.0...v2.9.0)
+
 ## 2.8
 
 ### Fuse.Controls.DrawingPanel
