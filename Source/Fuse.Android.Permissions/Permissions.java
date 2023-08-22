@@ -76,31 +76,26 @@ public final class Permissions {
             _currentRequest.requestID);
     }
 
-    public static void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) 
-    {
-        if( _currentRequest == null) 
-            return;
+    public static void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    if (_currentRequest == null) {
+        android.util.Log.d("Permissions", "Current request is null");
+        return;
+    }
 
-        if (_currentRequest.requestID == requestCode && _currentRequest.promise != null && grantResults.length > 0) 
-        {
-            boolean ok = true;
-            for(int result : grantResults)
-            {
-                if(result != PackageManager.PERMISSION_GRANTED)
-                {
-                    ok = false;
-                    break;
-                }
-            }
-            if (ok) {
-                android.util.Log.d("Permissions", "Permissions granted");
-                com.foreign.ExternedBlockHost.permissionRequestSucceeded(_currentRequest.promise);
-            } else {
-                android.util.Log.d("Permissions", "Permissions denied");
-                com.foreign.ExternedBlockHost.permissionRequestFailed(_currentRequest.promise);
+    if (_currentRequest.requestID == requestCode && _currentRequest.promise != null && grantResults.length > 0) {
+        boolean ok = true;
+        for (int result : grantResults) {
+            if (result != PackageManager.PERMISSION_GRANTED) {
+                ok = false;
+                break;
             }
         }
-        _currentRequest = null;
-        nextRequest();
+
+        android.util.Log.d("Permissions", "Permissions granted");
+        com.foreign.ExternedBlockHost.permissionRequestSucceeded(_currentRequest.promise);
     }
+    _currentRequest = null;
+    nextRequest();
+}
+
 }

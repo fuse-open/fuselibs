@@ -460,6 +460,21 @@ namespace Fuse.Android.Permissions.Internal
             return new PlatformPermission("android.permission.READ_EXTERNAL_STORAGE");
         }
         [TargetSpecificImplementation]
+        internal static extern PlatformPermission _read_media_images()
+        {
+            return new PlatformPermission("android.permission.READ_MEDIA_IMAGES");
+        }
+        [TargetSpecificImplementation]
+        internal static extern PlatformPermission _read_media_audio()
+        {
+            return new PlatformPermission("android.permission.READ_MEDIA_AUDIO");
+        }
+        [TargetSpecificImplementation]
+        internal static extern PlatformPermission _read_media_video()
+        {
+            return new PlatformPermission("android.permission.READ_MEDIA_VIDEO");
+        }
+        [TargetSpecificImplementation]
         internal static extern PlatformPermission _read_frame_buffer()
         {
             return new PlatformPermission("android.permission.READ_FRAME_BUFFER");

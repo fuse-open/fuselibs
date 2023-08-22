@@ -11,14 +11,27 @@ namespace Fuse.Camera
 	{
 		internal static void TakePicture(Promise<Image> p)
 		{
-			var permissions = new PlatformPermission[] 
-			{
-				Permissions.Android.CAMERA,
-				Permissions.Android.WRITE_EXTERNAL_STORAGE,
-				Permissions.Android.READ_EXTERNAL_STORAGE
-			};
+    		int whatSDK = new CheckSDK().CheckSDKVersion();
+			if (whatSDK >= 33) {
+				var permissions = new PlatformPermission[] 
+				{
+					Permissions.Android.CAMERA,
+					Permissions.Android.READ_MEDIA_IMAGES,
+					Permissions.Android.READ_MEDIA_VIDEO,
+					Permissions.Android.READ_MEDIA_AUDIO
+				};
 
-			Permissions.Request(permissions).Then(new TakePictureCommand(p).Execute, p.Reject);
+				Permissions.Request(permissions).Then(new TakePictureCommand(p).Execute, p.Reject);
+			}else {
+				var permissions = new PlatformPermission[] 
+				{
+					Permissions.Android.CAMERA,
+					Permissions.Android.WRITE_EXTERNAL_STORAGE,
+					Permissions.Android.READ_EXTERNAL_STORAGE
+				};
+
+				Permissions.Request(permissions).Then(new TakePictureCommand(p).Execute, p.Reject);
+			}
 		}
 
 		internal static void CheckPermissions(Promise<string> p)
@@ -31,6 +44,43 @@ namespace Fuse.Camera
 			new requestAndroidPermissions(p).Execute();
 		}
 	}
+
+	[ForeignInclude(Language.Java,
+    "android.provider.MediaStore",
+    "com.fuse.Activity",
+    "com.fuse.camera.Image",
+    "android.os.Build",
+    "androidx.core.content.FileProvider",
+    "java.io.File",
+    "android.net.Uri",
+    "android.util.Log",
+    "android.content.Intent")]
+	extern (Android) internal class CheckSDK
+	{
+	    Promise<int> _promise;
+
+	    public CheckSDK(Promise<int> promise)
+	    {
+	        _promise = promise;
+	        int sdkVersion = CheckSDKVersion();
+	        _promise.Resolve(sdkVersion);
+	    }
+
+	    // Default parameterless constructor
+	    public CheckSDK()
+	    {
+	        // You can add any default initialization here if needed
+	    }
+
+	    [Foreign(Language.Java)]
+		public int CheckSDKVersion()
+		@{
+		    return android.os.Build.VERSION.SDK_INT;
+		@}
+
+	}
+
+
 
 	[ForeignInclude(Language.Java, 
 		"android.provider.MediaStore", 
@@ -166,21 +216,44 @@ namespace Fuse.Camera
 		[Foreign(Language.Java)]
 		internal static void CheckPermissionsInternal(Action<string> onComplete, Action<string> onFail)
 		@{
-			if (ContextCompat.checkSelfPermission(com.fuse.Activity.getRootActivity(), android.Manifest.permission.READ_EXTERNAL_STORAGE) != com.fuse.Activity.getRootActivity().getPackageManager().PERMISSION_GRANTED)
-			{
-				onFail.run("User does not have permission to read");
-			}
-			else if (ContextCompat.checkSelfPermission(com.fuse.Activity.getRootActivity(), android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != com.fuse.Activity.getRootActivity().getPackageManager().PERMISSION_GRANTED)
-			{
-				onFail.run("User does not have permission to write");
-			}
-			else if (ContextCompat.checkSelfPermission(com.fuse.Activity.getRootActivity(), android.Manifest.permission.CAMERA) != com.fuse.Activity.getRootActivity().getPackageManager().PERMISSION_GRANTED)
-			{
-				onFail.run("User does not have permission access the camera");
-			}
-			else
-			{
-				onComplete.run("User has permission to read, write and access camera");
+			if (android.os.Build.VERSION.SDK_INT >= 33) {
+				if (ContextCompat.checkSelfPermission(com.fuse.Activity.getRootActivity(), android.Manifest.permission.READ_MEDIA_IMAGES) != com.fuse.Activity.getRootActivity().getPackageManager().PERMISSION_GRANTED)
+				{
+					onFail.run("User does not have permission to read images");
+				}
+				else if (ContextCompat.checkSelfPermission(com.fuse.Activity.getRootActivity(), android.Manifest.permission.READ_MEDIA_VIDEO) != com.fuse.Activity.getRootActivity().getPackageManager().PERMISSION_GRANTED)
+				{
+					onFail.run("User does not have permission to read videos");
+				}
+				else if (ContextCompat.checkSelfPermission(com.fuse.Activity.getRootActivity(), android.Manifest.permission.READ_MEDIA_AUDIO) != com.fuse.Activity.getRootActivity().getPackageManager().PERMISSION_GRANTED)
+				{
+					onFail.run("User does not have permission to read audio");
+				}
+				else if (ContextCompat.checkSelfPermission(com.fuse.Activity.getRootActivity(), android.Manifest.permission.CAMERA) != com.fuse.Activity.getRootActivity().getPackageManager().PERMISSION_GRANTED)
+				{
+					onFail.run("User does not have permission access the camera");
+				}
+				else
+				{
+					onComplete.run("User has permission to read, write and access camera");
+				}
+			}else {
+				if (ContextCompat.checkSelfPermission(com.fuse.Activity.getRootActivity(), android.Manifest.permission.READ_EXTERNAL_STORAGE) != com.fuse.Activity.getRootActivity().getPackageManager().PERMISSION_GRANTED)
+				{
+					onFail.run("User does not have permission to read");
+				}
+				else if (ContextCompat.checkSelfPermission(com.fuse.Activity.getRootActivity(), android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != com.fuse.Activity.getRootActivity().getPackageManager().PERMISSION_GRANTED)
+				{
+					onFail.run("User does not have permission to write");
+				}
+				else if (ContextCompat.checkSelfPermission(com.fuse.Activity.getRootActivity(), android.Manifest.permission.CAMERA) != com.fuse.Activity.getRootActivity().getPackageManager().PERMISSION_GRANTED)
+				{
+					onFail.run("User does not have permission access the camera");
+				}
+				else
+				{
+					onComplete.run("User has permission to read, write and access camera");
+				}
 			}
 		@}
 	}
@@ -196,18 +269,35 @@ namespace Fuse.Camera
 		
 		public void Execute()
 		{
-			Permissions.Request(new PlatformPermission[] { Permissions.Android.WRITE_EXTERNAL_STORAGE, Permissions.Android.READ_EXTERNAL_STORAGE, Permissions.Android.CAMERA }).Then(OnPermissions, OnRejected);
+    		int whatSDK = new CheckSDK().CheckSDKVersion();
+			if (whatSDK >= 33) {
+				Permissions.Request(new PlatformPermission[] { Permissions.Android.READ_MEDIA_IMAGES, Permissions.Android.READ_MEDIA_VIDEO, Permissions.Android.READ_MEDIA_AUDIO, Permissions.Android.CAMERA }).Then(OnPermissions, OnRejected);
+			}else {
+				Permissions.Request(new PlatformPermission[] { Permissions.Android.WRITE_EXTERNAL_STORAGE, Permissions.Android.READ_EXTERNAL_STORAGE, Permissions.Android.CAMERA }).Then(OnPermissions, OnRejected);
+			}
 		}
 
 		void OnPermissions(PlatformPermission[] grantedPermissions)
 		{
-			if(grantedPermissions.Length == 3)
-			{
-				_callback.Resolve("Success");
-			}
-			else
-			{
-				_callback.Reject("Required permission was not granted.");
+    		int whatSDK = new CheckSDK().CheckSDKVersion();
+			if (whatSDK >= 33) {
+				if(grantedPermissions.Length == 4)
+				{
+					_callback.Resolve("Success");
+				}
+				else
+				{
+					_callback.Reject("Required permission was not granted. " + grantedPermissions.Length);
+				}
+			}else {
+				if(grantedPermissions.Length == 3)
+				{
+					_callback.Resolve("Success");
+				}
+				else
+				{
+					_callback.Reject("Required permission was not granted.");
+				}
 			}
 		}
 
