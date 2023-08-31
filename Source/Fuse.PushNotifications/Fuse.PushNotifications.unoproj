@@ -26,6 +26,7 @@
     "iOS/AppDelegatePushNotify.mm:csource:iOS",
     "Android/Impl.uno:source",
     "Android/Impl.cpp.uxl:extensions",
+    "Android/RemoveAdvertisingId.uxl:extensions",
     "Android/PushNotificationReceiver.java:file",
     "Android/BigPictureStyleHttp.java:file",
     "Android/BundleFiles.java:file",
