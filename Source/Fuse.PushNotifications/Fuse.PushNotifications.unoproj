@@ -27,6 +27,7 @@
 
     "Android/Impl.uno:Source",
     "Android/Impl.cpp.uxl:Extensions",
+    "Android/RemoveAdvertisingId.uxl:Extensions",
     "Android/PushNotificationReceiver.java:File",
     "Android/BigPictureStyleHttp.java:File",
     "Android/BundleFiles.java:File",

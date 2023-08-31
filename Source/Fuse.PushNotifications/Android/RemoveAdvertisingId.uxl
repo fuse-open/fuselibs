@@ -1,0 +1,7 @@
+<Extensions Backend="CPlusPlus" Condition="ANDROID && !ANDROID_AD_ID_PERMISSION">
+	<Require AndroidManifest.RootElement>
+		<![CDATA[
+			<uses-permission android:name="com.google.android.gms.permission.AD_ID" tools:node="remove"/>
+		]]>
+	</Require>
+</Extensions>
