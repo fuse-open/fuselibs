@@ -1,5 +1,12 @@
 # Unreleased
 
+## 2.9.1
+
+### Fuse.PushNotifications
+- Remove AD_ID permission on Android (#1482)
+
+[`v2.9.0...v2.9.1`](https://github.com/fuse-open/fuselibs/compare/v2.9.0...v2.9.1)
+
 ## 2.9
 
 ### Fuse.LocalNotifications
