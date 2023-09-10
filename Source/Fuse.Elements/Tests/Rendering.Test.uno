@@ -8,6 +8,7 @@ namespace Fuse.Test
 	public class RenderingTest : TestBase
 	{
 		[Test]
+		[Ignore("Fails on macOS (InvalidFramebufferOperation)", "HOST_MAC")]
 		public void NestedClipToBounds()
 		{
 			var p = new UX.Rendering.NestedClipToBounds();

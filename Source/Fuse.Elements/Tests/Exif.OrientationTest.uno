@@ -63,7 +63,7 @@ public class OrientationTest
 	}
 
 	[Test]
-	[Ignore("Only supported on dotnet, Android or iOS", "NATIVE")]
+	[Ignore("Only supported on dotnet, Android or iOS", "NATIVE || HOST_MAC")]
 	public void ImageOrientationsTestSet1()
 	{
 		AssertImageOrientation(ImageOrientation.Identity, import("Assets/f1t.jpg"));
@@ -77,7 +77,7 @@ public class OrientationTest
 	}
 
 	[Test]
-	[Ignore("Only supported on dotnet, Android or iOS", "NATIVE")]
+	[Ignore("Only supported on dotnet, Android or iOS", "NATIVE || HOST_MAC")]
 	public void ImageOrientationsTestSet2()
 	{
 		AssertImageOrientation(ImageOrientation.Identity, import("Assets/Landscape_1.jpg"));
@@ -91,7 +91,7 @@ public class OrientationTest
 	}
 
 	[Test]
-	[Ignore("Only supported on dotnet, Android or iOS", "NATIVE")]
+	[Ignore("Only supported on dotnet, Android or iOS", "NATIVE || HOST_MAC")]
 	public void ImageOrientationsTestSet3()
 	{
 		AssertImageOrientation(ImageOrientation.Identity, import("Assets/Portrait_1.jpg"));

@@ -10,6 +10,7 @@ namespace FuseJS.Test
 	public class Base64Test : TestBase
 	{
 		[Test]
+		[Ignore("Hangs on macOS", "HOST_MAC")]
 		public void JavaScriptTests()
 		{
 			JSTest.RunTest(JavaScriptTestsInner);

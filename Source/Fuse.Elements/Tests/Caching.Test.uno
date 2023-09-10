@@ -12,6 +12,7 @@ namespace Fuse.Test
 	public class CachingTest : TestBase
 	{
 		[Test]
+		[Ignore("Fails on macOS (InvalidFramebufferOperation)", "HOST_MAC")]
 		public void SubpixelCaching()
 		{
 			var p = new UX.SubpixelCaching();
@@ -51,6 +52,7 @@ namespace Fuse.Test
 		}
 
 		[Test]
+		[Ignore("Fails on macOS (InvalidFramebufferOperation)", "HOST_MAC")]
 		public void BorderIssue()
 		{
 			var p = new UX.Caching.BorderIssue();

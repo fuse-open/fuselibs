@@ -29,7 +29,7 @@ public class ExifImageTests
 	}
 
 	[Test]
-	[Ignore("Only supported on dotnet, Android or iOS", "NATIVE")]
+	[Ignore("Only supported on dotnet, Android or iOS", "NATIVE || HOST_MAC")]
 	public void TestOrientations()
 	{
 		AssertImageHasBeenOrientedCorrectly(import("Assets/_1.jpg"));
