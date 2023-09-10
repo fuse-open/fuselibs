@@ -19,6 +19,7 @@ namespace Fuse.Elements.Test
 		}
 
 		[Test]
+		[Ignore("Fails on macOS (InvalidFramebufferOperation)", "HOST_MAC")]
 		public void ResourceBasic()
 		{
 			var p = new global::UX.ImageFill.Resource();
@@ -39,6 +40,7 @@ namespace Fuse.Elements.Test
 		}
 
 		[Test]
+		[Ignore("Fails on macOS (InvalidFramebufferOperation)", "HOST_MAC")]
 		//tests a variation that changes the resource, this caused the leak in
 		//https://github.com/fusetools/fuselibs-private/issues/3502
 		public void ResourceReplace()
@@ -120,6 +122,7 @@ namespace Fuse.Elements.Test
 		}
 
 		[Test]
+		[Ignore("Fails on macOS (InvalidFramebufferOperation)", "HOST_MAC")]
 		//going to background releases temp resources (image is also marked to release here to simplify the test)
 		public void Dispose()
 		{

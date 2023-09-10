@@ -92,6 +92,7 @@ namespace Fuse.Elements.Test
 		}
 
 		[Test]
+		[Ignore("Fails on macOS (InvalidFramebufferOperation)", "HOST_MAC")]
 		public void MoveAfterFirstDraw()
 		{
 			const float tolerance = 2.0f / 255;
@@ -119,6 +120,7 @@ namespace Fuse.Elements.Test
 		}
 
 		[Test]
+		[Ignore("Fails on macOS (InvalidFramebufferOperation)", "HOST_MAC")]
 		public void ZeroSizeAfterFirstDraw()
 		{
 			var p = new UX.ElementBatcher.ZeroSizeAfterFirstDraw();

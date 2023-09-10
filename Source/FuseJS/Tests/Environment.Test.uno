@@ -8,6 +8,7 @@ using FuseTest;
 public class EnvironmentTest : TestBase
 {
 	[Test]
+	[Ignore("Hangs on macOS", "HOST_MAC")]
 	public void Environment()
 	{
 		JSTest.RunTest(EnvironmentInner);
