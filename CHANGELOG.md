@@ -6,20 +6,32 @@
 - Add `outputType` in project files (acbcee3)
 - Update project and config files (85ff816)
 - Update `GLHelper.h` includes on Android (2b143eb)
+- Simplify Android runtime version check (#1480)
 
 ### Experimental.TextureLoader
 - Remove legacy `Experimental.TextureLoader` library (#1458)
+
+### Fuse.Controls.Video
+- Upgrade Fuse.Video.CIL to .NET 6.0 (#1475)
+
+### Fuse.Drawing.Surface
+- Update assembly references for .NET 6.0 (#1476)
 
 ### Fuse.LocalNotifications
 - Fix compatibility with the latest Android OS and indentation (#1473)
 
 ### Fuse.Scripting
-- Deprecate NativePromise without Context (#1467)
+- Deprecate `NativePromise` without `Context` (#1467)
 
 ### Fuse.Scripting.JavaScript
 - TypeScript and transpiler support in UX files (#1472)
+- Upgrade `V8Simple.net` for .NET 6.0 (#1483)
 
-[`v2.8.0...beta-3.0`](https://github.com/fuse-open/fuselibs/compare/v2.8.0...beta-3.0)
+### Other changes
+- Upgrade `Fuse.Profiling` tool to .NET 6.0 (#1474)
+- Ignore tests failing on macOS (#1484)
+
+[`v2.9.1...v3.0.0-beta.8`](https://github.com/fuse-open/fuselibs/compare/v2.9.1...v3.0.0-beta.8)
 
 ## 2.9.1
 
