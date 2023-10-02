@@ -209,6 +209,9 @@ namespace Fuse.Android.Permissions
             public static PlatformPermission READ_CALL_LOG { get { return Internal.Android._read_call_log(); } }
             public static PlatformPermission READ_CONTACTS { get { return Internal.Android._read_contacts(); } }
             public static PlatformPermission READ_EXTERNAL_STORAGE { get { return Internal.Android._read_external_storage(); } }
+            public static PlatformPermission READ_MEDIA_IMAGES { get { return Internal.Android._read_media_images(); } }
+            public static PlatformPermission READ_MEDIA_AUDIO { get { return Internal.Android._read_media_audio(); } }
+            public static PlatformPermission READ_MEDIA_VIDEO { get { return Internal.Android._read_media_video(); } }
             public static PlatformPermission READ_FRAME_BUFFER { get { return Internal.Android._read_frame_buffer(); } }
             public static PlatformPermission READ_HISTORY_BOOKMARKS { get { return Internal.Android._read_history_bookmarks(); } }
             public static PlatformPermission READ_INPUT_STATE { get { return Internal.Android._read_input_state(); } }

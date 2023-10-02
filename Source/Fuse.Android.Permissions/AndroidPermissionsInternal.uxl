@@ -364,6 +364,18 @@
             <Require AndroidManifest.Permission="android.permission.READ_EXTERNAL_STORAGE" />
         </Method>
 
+        <Method Signature="_read_media_images():Fuse.Android.Permissions.PlatformPermission">
+            <Require AndroidManifest.Permission="android.permission.READ_MEDIA_IMAGES" />
+        </Method>
+
+        <Method Signature="_read_media_audio():Fuse.Android.Permissions.PlatformPermission">
+            <Require AndroidManifest.Permission="android.permission.READ_MEDIA_AUDIO" />
+        </Method>
+
+        <Method Signature="_read_media_video():Fuse.Android.Permissions.PlatformPermission">
+            <Require AndroidManifest.Permission="android.permission.READ_MEDIA_VIDEO" />
+        </Method>
+
         <Method Signature="_read_frame_buffer():Fuse.Android.Permissions.PlatformPermission">
             <Require AndroidManifest.Permission="android.permission.READ_FRAME_BUFFER" />
         </Method>
