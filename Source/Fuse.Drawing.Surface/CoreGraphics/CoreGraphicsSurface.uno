@@ -15,10 +15,10 @@ namespace Fuse.Drawing
 		public FillRule FillRule;
 	}
 
-	[Require("Xcode.Framework","CoreGraphics")]
-	[Require("Source.Include", "CoreGraphics/CoreGraphicsLib.h")]
-	[extern(!METAL) Require("Xcode.Framework","GLKit")]
-	[extern(iOS) Require("Source.Include","OpenGLES/ES2/gl.h")]
+	[Require("xcode.framework", "CoreGraphics")]
+	[Require("source.include", "CoreGraphics/CoreGraphicsLib.h")]
+	[extern(!METAL) Require("xcode.framework", "GLKit")]
+	[extern(iOS) Require("source.include", "OpenGLES/ES2/gl.h")]
 	extern(iOS||OSX)
 	abstract class CoreGraphicsSurface : Surface
 	{
@@ -247,9 +247,9 @@ namespace Fuse.Drawing
 
 		}
 
-		[extern(iOS) Require("Xcode.Framework","UIKit")]
-		[extern(OSX) Require("Source.Include", "AppKit/AppKit.h")]
-		[Require("Source.Include", "TargetConditionals.h")]
+		[extern(iOS) Require("xcode.framework", "UIKit")]
+		[extern(OSX) Require("source.include", "AppKit/AppKit.h")]
+		[Require("source.include", "TargetConditionals.h")]
 		[Foreign(Language.ObjC)]
 		extern(iOS||OSX) IntPtr CreateNativeImage(byte[] bytes)
 		@{
@@ -539,7 +539,7 @@ namespace Fuse.Drawing
 			auto ctx = (CGLib::Context*)cp;
 			if (!ctx->RestoreState())
 			{
-				@{Fuse.Diagnostics.InternalError(string, object, string, int, string):Call(uString::Utf8("Failed to restore state"), NULL, uString::Utf8(__FILE__), __LINE__, uString::Utf8(""))};
+				@{Fuse.Diagnostics.InternalError(string, object, string, int, string):call(uString::Utf8("Failed to restore state"), NULL, uString::Utf8(__FILE__), __LINE__, uString::Utf8(""))};
 			}
 		@}
 	}

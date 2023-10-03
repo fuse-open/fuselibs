@@ -1,10 +1,10 @@
 #pragma once
 
-#if !(@{Fuse.Controls.Native.iOS.GraphicsView:IsStripped} && @{Fuse.Controls.Native.iOS.FocusHelpers:IsStripped} && @{Fuse.Controls.Native.iOS.InputDispatch:IsStripped} && @{Fuse.Controls.Native.iOS.KeyboardView:IsStripped} && @{Fuse.Controls.Native.iOS.ScrollView:IsStripped} && @{Fuse.Controls.Native.iOS.SingleLineTextEdit:IsStripped} && @{Fuse.Controls.Native.iOS.MultiLineTextEdit:IsStripped} && @{Fuse.Controls.Native.iOS.UIControlEvent:IsStripped})
+#if !(@{Fuse.Controls.Native.iOS.GraphicsView:isStripped} && @{Fuse.Controls.Native.iOS.FocusHelpers:isStripped} && @{Fuse.Controls.Native.iOS.InputDispatch:isStripped} && @{Fuse.Controls.Native.iOS.KeyboardView:isStripped} && @{Fuse.Controls.Native.iOS.ScrollView:isStripped} && @{Fuse.Controls.Native.iOS.SingleLineTextEdit:isStripped} && @{Fuse.Controls.Native.iOS.MultiLineTextEdit:isStripped} && @{Fuse.Controls.Native.iOS.UIControlEvent:isStripped})
 
 #include <uno.h>
 #include <UIKit/UIKit.h>
-#if @(METAL:Defined)
+#if @(METAL:defined)
 #include <MetalANGLE/MGLKit.h>
 #else
 #include <GLKit/GLKit.h>

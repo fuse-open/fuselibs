@@ -145,8 +145,8 @@ namespace Fuse.Controls.Native.Android
 					}
 				});
 				frameLayout.addView(textview);
-				@{TimePickerView:Of(_this)._timePicker:Set(pickerDialog.getTimePicker())};
-				@{TimePickerView:Of(_this)._timeLabel:Set(textview)};
+				@{TimePickerView:of(_this)._timePicker:set(pickerDialog.getTimePicker())};
+				@{TimePickerView:of(_this)._timeLabel:set(textview)};
 			}
 			else {
 				android.widget.TimePicker timePicker = new android.widget.TimePicker(com.fuse.Activity.getRootActivity());
@@ -157,7 +157,7 @@ namespace Fuse.Controls.Native.Android
 					timePicker.setCurrentHour(hour);
 					timePicker.setCurrentMinute(minute);
 				}
-				@{TimePickerView:Of(_this)._timePicker:Set(timePicker)};
+				@{TimePickerView:of(_this)._timePicker:set(timePicker)};
 				frameLayout.addView(timePicker);
 			}
 		@}

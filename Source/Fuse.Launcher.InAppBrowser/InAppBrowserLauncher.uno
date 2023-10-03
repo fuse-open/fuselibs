@@ -37,10 +37,10 @@ namespace Fuse.LauncherImpl
 
 	}
 
-	[Require("Xcode.Framework", "SafariServices")]
+	[Require("xcode.framework", "SafariServices")]
 	[ForeignInclude(Language.ObjC, "AVFoundation/AVFoundation.h")]
-	[Require("Source.Include", "UIKit/UIKit.h")]
-	[Require("Source.Include", "SafariServices/SafariServices.h")]
+	[Require("source.include", "UIKit/UIKit.h")]
+	[Require("source.include", "SafariServices/SafariServices.h")]
 	public extern(iOS) class Safari
 	{
 		[Foreign(Language.ObjC)]
@@ -55,7 +55,7 @@ namespace Fuse.LauncherImpl
 
 	}
 
-	[Require("Gradle.Dependency.Implementation", "androidx.browser:browser:1.0.0")]
+	[Require("gradle.dependency.implementation", "androidx.browser:browser:1.0.0")]
 	[ForeignInclude(Language.Java, "androidx.browser.customtabs.CustomTabsIntent", "android.net.Uri")]
 	public extern(Android) class Chrome
 	{

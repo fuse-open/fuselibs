@@ -5,7 +5,7 @@ using Fuse.Drawing;
 
 namespace Fuse.Controls.Native.iOS
 {
-	[Require("Source.Include","iOS/CanvasViewGroup.h")]
+	[Require("source.include", "iOS/CanvasViewGroup.h")]
 	extern(iOS) internal class CanvasViewGroup : ViewHandle, INativeSurfaceOwner
 	{
 		ISurfaceDrawable _surfaceDrawable;

@@ -29,9 +29,9 @@ namespace Fuse.Views
 		}
 	}
 
-	[Require("Source.Include", "UIKit/UIKit.h")]
-	[Require("Source.Include", "iOS/ViewHost.h")]
-	[Require("Source.Include", "@{float2:Include}")]
+	[Require("source.include", "UIKit/UIKit.h")]
+	[Require("source.include", "iOS/ViewHost.h")]
+	[Require("source.include", "@{float2:include}")]
 	extern(iOS)
 	internal class View : IFrame
 	{
@@ -123,7 +123,7 @@ namespace Fuse.Views
 			_dataContext.SetDataString(key, value);
 		}
 
-		[Require("Source.Include", "iOS/ArgumentsImpl.h")]
+		[Require("source.include", "iOS/ArgumentsImpl.h")]
 		class CallbackClosure : IEventHandler
 		{
 			Action<ObjC.Object> _callback;
@@ -143,10 +143,10 @@ namespace Fuse.Views
 			@{
 				ArgumentsImpl* args = [[ArgumentsImpl alloc] init];
 				[args setGetArgsHandler: ^id () {
-					return @{CallbackClosure.GetArgs(object):Call(e)};
+					return @{CallbackClosure.GetArgs(object):call(e)};
 				}];
 				[args setGetDataJsonHandler: ^id () {
-					return @{CallbackClosure.SerializeData(object):Call(e)};
+					return @{CallbackClosure.SerializeData(object):call(e)};
 				}];
 				return args;
 			@}
@@ -200,7 +200,7 @@ namespace Fuse.Views
 			[viewHost setSizeThatFitsHandler:^CGSize (CGSize size) {
 				float width = (float)size.width;
 				float height = (float)size.height;
-				auto result = sizeThatFitsCallback(@{float2(float,float):New(width,height)});
+				auto result = sizeThatFitsCallback(@{float2(float,float):new(width,height)});
 				return CGSizeMake(result.X, result.Y);
 			}];
 
@@ -209,8 +209,8 @@ namespace Fuse.Views
 				auto y = frame.origin.y;
 				auto width = frame.size.width;
 				auto height = frame.size.height;
-				auto pos = @{float2(float,float):New(x,y)};
-				auto size = @{float2(float,float):New(width,height)};
+				auto pos = @{float2(float,float):new(x,y)};
+				auto size = @{float2(float,float):new(width,height)};
 				setFrameCallback(pos, size);
 			}];
 

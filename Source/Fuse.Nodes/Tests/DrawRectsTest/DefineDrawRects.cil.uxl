@@ -1,4 +1,4 @@
-<Extensions Backend="CIL">
-    <Define FUSELIBS_DEBUG_DRAW_RECTS />
-    <Require Condition="HOST_WINDOWS" Assembly="System.Windows.Forms" />
-</Extensions>
+<extensions backend="cil">
+    <define FUSELIBS_DEBUG_DRAW_RECTS />
+    <require condition="HOST_WINDOWS" assembly="System.Windows.Forms" />
+</extensions>

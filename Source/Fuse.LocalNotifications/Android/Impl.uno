@@ -67,11 +67,11 @@ namespace Fuse.LocalNotifications
         @{
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 int importance = NotificationManager.IMPORTANCE_DEFAULT;
-                String channelId = "@(Project.Android.Notification.DefaultChannelId)";
+                String channelId = "@(project.android.notification.defaultChannelId)";
                 channelId = (channelId != "") ? channelId : "default_channel";
-                String channelName = "@(Project.Android.Notification.DefaultChannelName)";
+                String channelName = "@(project.android.notification.defaultChannelName)";
                 channelName = (channelName != "") ? channelName : "App";
-                String channelDescription = "@(Project.Android.Notification.DefaultChannelDescription)";
+                String channelDescription = "@(project.android.notification.defaultChannelDescription)";
                 channelDescription = (channelDescription != "") ? channelDescription : "";
                 NotificationChannel channel = new NotificationChannel(channelId, channelName, importance);
                 channel.setDescription(channelDescription);
@@ -86,7 +86,7 @@ namespace Fuse.LocalNotifications
                         String body = newIntent.getStringExtra("bbody");
                         String payload = newIntent.getStringExtra(@{ACTION});
                         String result = "{ 'title': '" + title + "', 'body': '" + body + "', 'payload': '" + payload + "' }";
-                        @{NotificationRecieved(string):Call(result)};
+                        @{NotificationRecieved(string):call(result)};
                     }
                 },
                 @{ACTION});
@@ -115,7 +115,7 @@ namespace Fuse.LocalNotifications
             android.content.Intent intent =
                 new android.content.Intent(currentActivity, com.fuse.LocalNotifications.LocalNotificationReceiver.class);
 
-            int id = @{NextID():Call()};
+            int id = @{NextID():call()};
 
             intent.putExtra("id", id);
             intent.putExtra("title", title);
@@ -152,11 +152,11 @@ namespace Fuse.LocalNotifications
             if (com.fuse.LocalNotifications.LocalNotificationReceiver.InForeground)
             {
                 String result = "{ 'title': '" + title + "', 'body': '" + body + "', 'payload': '" + payload + "' }";
-                @{NotificationRecieved(string):Call(result)};
+                @{NotificationRecieved(string):call(result)};
             }
             else
             {
-                Intent notificationIntent = new Intent(context, @(Activity.Package).@(Activity.Name).class);
+                Intent notificationIntent = new Intent(context, @(activity.package).@(activity.name).class);
                 notificationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 notificationIntent.setAction(ACTION);
                 notificationIntent.replaceExtras(intent.getExtras());
@@ -172,10 +172,10 @@ namespace Fuse.LocalNotifications
                     contentIntent = PendingIntent.getActivity
                             (context, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
                 }
-                String channelId = "@(Project.Android.Notification.DefaultChannelId)";
+                String channelId = "@(project.android.notification.defaultChannelId)";
                 channelId = (channelId != "") ? channelId : "default_channel";
                 NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, channelId)
-                        .setSmallIcon(@(Activity.Package).R.mipmap.notif)
+                        .setSmallIcon(@(activity.package).R.mipmap.notif)
                         .setContentTitle(title)
                         .setContentText(body)
                         .setWhen(System.currentTimeMillis())

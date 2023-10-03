@@ -191,7 +191,7 @@ namespace Fuse.Elements
 			ElementAtlasFramebufferPool.AtlasSizeChanged += OnAtlasSizeChanged;
 		}
 
-		[Require("Source.Include", "uDroid/GLHelper.h")]
+		[Require("source.include", "uDroid/GLHelper.h")]
 		extern(ANDROID)
 		void DiscardPool()
 		{

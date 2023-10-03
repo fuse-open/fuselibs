@@ -4,7 +4,7 @@ using Uno.Compiler.ExportTargetInterop;
 
 namespace Fuse.MediaPicker
 {
-	[Require("Source.Include", "iOS/FOMediaPicker.h")]
+	[Require("source.include", "iOS/FOMediaPicker.h")]
 	public extern(iOS) class iOSMediaPicker
 	{
 		internal static void PickImage(Promise<string> p, ObjC.Object args)

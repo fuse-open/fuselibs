@@ -6,8 +6,8 @@ using Fuse.Controls.Native;
 
 namespace Fuse
 {
-	[Require("Source.Include", "UIKit/UIKit.h")]
-	[Require("Source.Include", "@{Fuse.Platform.SystemUI:Include}")]
+	[Require("source.include", "UIKit/UIKit.h")]
+	[Require("source.include", "@{Fuse.Platform.SystemUI:include}")]
 	extern(iOS) internal static class AppRoot
 	{
 
@@ -29,7 +29,7 @@ namespace Fuse
 			[root setMultipleTouchEnabled: true];
 			[root setOpaque: false];
 			[[root layer] setAnchorPoint: { 0.0f, 0.0f }];
-			@{Fuse.Platform.SystemUI.RootView:Set(root)};
+			@{Fuse.Platform.SystemUI.RootView:set(root)};
 			[root sizeToFit];
 			root.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin;
 

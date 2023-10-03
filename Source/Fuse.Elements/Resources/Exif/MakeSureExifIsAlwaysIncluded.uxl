@@ -1,4 +1,4 @@
-<Extensions Backend="CPlusPlus" Condition="ANDROID">
-	<Require Entity="Fuse.Resources.Exif.ExifAndroidImpl" />
-	<Require Entity="Fuse.Resources.Exif.ExifAndroidImpl.GetOrientation(Java.Object)" />
-</Extensions>
+<extensions backend="cplusplus" condition="ANDROID">
+	<require entity="Fuse.Resources.Exif.ExifAndroidImpl" />
+	<require entity="Fuse.Resources.Exif.ExifAndroidImpl.GetOrientation(Java.Object)" />
+</extensions>

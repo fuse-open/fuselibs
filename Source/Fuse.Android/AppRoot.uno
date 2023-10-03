@@ -80,7 +80,7 @@ namespace Fuse.Android
 						if (_currentEvent != motionEvent)
 							return false;
 						boolean result = super.onTouchEvent(motionEvent);
-						@{global::Fuse.Android.AppRoot.OnTouchEvent__(Java.Object):Call(motionEvent)};
+						@{global::Fuse.Android.AppRoot.OnTouchEvent__(Java.Object):call(motionEvent)};
 						return _currentEvent == motionEvent;
 					}
 

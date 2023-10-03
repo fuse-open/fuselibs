@@ -215,7 +215,7 @@ namespace Fuse.Resources
 				dataImage = UIImagePNGRepresentation(newImage);
 			else
 				dataImage = UIImageJPEGRepresentation(newImage, 1.0);
-			return [::StrongUnoArray strongUnoArrayWithUnoArray: uArray::New(@{byte:TypeOf}->Array(), (int) dataImage.length, dataImage.bytes)
+			return [::StrongUnoArray strongUnoArrayWithUnoArray: uArray::New(@{byte:typeof}->Array(), (int) dataImage.length, dataImage.bytes)
 				getAt: ^ id (::uArray* arr, int i) { return ::uObjC::Box<uint8_t>(arr->Item<uint8_t>(i)); }
 				setAt: ^ (::uArray* arr, int i, id obj) { arr->Item<uint8_t>(i) = ::uObjC::Unbox<uint8_t>(obj); }
 			];

@@ -6,8 +6,8 @@ using Fuse;
 
 namespace Fuse
 {
-	[extern(ANDROID) Require("Source.Include", "uDroid/GLHelper.h")]
-	[extern(IOS && METAL) Require("Source.Include", "MetalANGLE/MGLKit.h")]
+	[extern(ANDROID) Require("source.include", "uDroid/GLHelper.h")]
+	[extern(IOS && METAL) Require("source.include", "MetalANGLE/MGLKit.h")]
 	/** Allows dispatching actions on a separate thread with access to a grpahics
 		context that shares data with the main graphics context of the @App.
 		This is for example used to do asynchronous loading of textures.
@@ -42,7 +42,7 @@ namespace Fuse
 		[Foreign(Language.ObjC)]
 		extern(iOS) static ObjC.Object CreateContext()
 		@{
-		#if @(METAL:Defined)
+		#if @(METAL:defined)
 			return [[MGLContext alloc] initWithAPI:kMGLRenderingAPIOpenGLES2 sharegroup:[MGLContext currentContext].sharegroup];
 		#else
 			return [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2 sharegroup:[EAGLContext currentContext].sharegroup];
@@ -52,7 +52,7 @@ namespace Fuse
 		[Foreign(Language.ObjC)]
 		extern(iOS) static void SetCurrentContext(ObjC.Object context)
 		@{
-		#if @(METAL:Defined)
+		#if @(METAL:defined)
 			[MGLContext setCurrentContext: context];
 		#else
 			[EAGLContext setCurrentContext: context];

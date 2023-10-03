@@ -5,7 +5,7 @@ namespace Fuse.Controls.Native.iOS
 {
 	extern(!iOS) public class TextView { }
 
-	[Require("Source.Include", "UIKit/UIKit.h")]
+	[Require("source.include", "UIKit/UIKit.h")]
 	extern(iOS) public class TextView : LeafView, ITextView
 	{
 

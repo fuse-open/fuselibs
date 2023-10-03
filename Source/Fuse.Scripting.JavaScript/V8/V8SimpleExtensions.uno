@@ -8,8 +8,8 @@ using Uno.Runtime.InteropServices;
 
 namespace Fuse.Scripting.V8
 {
-	[Require("Header.Include", "include/V8Simple.h")]
-	[Require("Source.Declaration", "#undef GetMessage")]
+	[Require("header.include", "include/V8Simple.h")]
+	[Require("source.declaration", "#undef GetMessage")]
 	static extern(USE_V8) class V8SimpleExtensions
 	{
 		// Context
@@ -222,13 +222,13 @@ namespace Fuse.Scripting.V8
 		@{
 			return ::CreateJSCallback(
 				$0,
-				@{Handle.Create(object):Call($1)},
+				@{Handle.Create(object):call($1)},
 				([] (::JSContext* context, void* data, ::JSValue* const* args, int numArgs, ::JSValue** outError) -> ::JSValue*
 				{
 					@{WrappedCallback} callback = (@{WrappedCallback})data;
 
-					@{JSValue[]} unoArgs = ::uArray::New(@{JSValue[]:TypeOf}, numArgs, args);
-					return @{WrappedCallback:Of(callback):Call(unoArgs, outError)};
+					@{JSValue[]} unoArgs = ::uArray::New(@{JSValue[]:typeof}, numArgs, args);
+					return @{WrappedCallback:of(callback):call(unoArgs, outError)};
 				}),
 				$2
 				);
@@ -268,16 +268,16 @@ namespace Fuse.Scripting.V8
 		@{
 			/*::SetJSDebugMessageHandler(
 				$0,
-				@{Handle.Create(object):Call($1)},
+				@{Handle.Create(object):call($1)},
 				([] (void* data, ::JSString* message) -> void
 				{
 					@{Action<JSString>} handler = (@{Action<JSString>})data;
-					@{Action<JSString>:Of(handler).Call(message)};
+					@{Action<JSString>:of(handler).Call(message)};
 				}));*/
 		@}
 	}
 
-	[Require("Header.Include", "include/V8Simple.h")]
+	[Require("header.include", "include/V8Simple.h")]
 	extern(USE_V8) struct AutoReleasePool : IDisposable
 	{
 		readonly JSContext _context;
@@ -332,7 +332,7 @@ namespace Fuse.Scripting.V8
 		}
 	}
 
-	[Require("Header.Include", "include/V8Simple.h")]
+	[Require("header.include", "include/V8Simple.h")]
 	extern(USE_V8) static class Error
 	{
 		public static void Check(JSRuntimeError err)

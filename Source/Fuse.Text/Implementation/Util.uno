@@ -5,7 +5,7 @@ using Uno.Text;
 
 namespace Fuse.Text.Implementation
 {
-	[Require("Source.Include", "string.h")]
+	[Require("source.include", "string.h")]
 	static extern(DOTNET || CPlusPlus || PInvoke) class Memory
 	{
 		[Foreign(Language.CPlusPlus)]
@@ -15,7 +15,7 @@ namespace Fuse.Text.Implementation
 		@}
 	}
 
-	[Require("Source.Include", "string.h")]
+	[Require("source.include", "string.h")]
 	static extern(DOTNET || CPlusPlus || PInvoke) class CString
 	{
 		public static string ToString(IntPtr cstr)

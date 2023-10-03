@@ -1,3 +1,3 @@
-<Extensions Backend="PInvoke">
-	<Define USE_ICU />
-</Extensions>
+<extensions backend="pinvoke">
+	<define USE_ICU />
+</extensions>

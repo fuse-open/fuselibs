@@ -4,8 +4,8 @@ using Uno.UX;
 using Uno.Compiler.ExportTargetInterop;
 namespace Fuse.Audio
 {
-	[Require("Source.Include", "Apple/AudioHelper.h")]
-	[Set("FileExtension", "mm")]
+	[Require("source.include", "Apple/AudioHelper.h")]
+	[Set("fileExtension", "mm")]
 	internal extern(iOS) class SoundPlayer
 	{
 		public static void PlaySoundFromBundle(BundleFileSource file)

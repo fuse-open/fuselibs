@@ -1,19 +1,19 @@
-<Extensions Backend="CPlusPlus" Condition="USE_V8">
-	<Require Condition="OSX" LinkDirectory="@('lib/OSX':Path)" />
-	<Require Condition="WIN32" LinkDirectory="@('lib/Windows':Path)" />
-	<Require Condition="WIN32" SharedLibrary="@('lib/Windows/V8Simple.dll':Path)" />
-	<Require IncludeDirectory="@('.':Path)" />
-	<Require Condition="!ANDROID" LinkLibrary="V8Simple" />
+<extensions backend="cplusplus" condition="USE_V8">
+	<require condition="OSX" linkDirectory="@('lib/OSX':path)" />
+	<require condition="WIN32" linkDirectory="@('lib/Windows':path)" />
+	<require condition="WIN32" sharedLibrary="@('lib/Windows/V8Simple.dll':path)" />
+	<require includeDirectory="@('.':path)" />
+	<require condition="!ANDROID" linkLibrary="V8Simple" />
 
 	<!-- Build V8Simple on Android, and link static V8 -->
-	<CopyFile Condition="ANDROID" SourceFile="include/V8Simple.cpp" />
-	<Require Condition="ANDROID" IncludeDirectory="@('android/include':Path)" />
-	<Require Condition="ANDROID" IncludeDirectory="@('android/lib/${ANDROID_ABI}/include':Path)" />
-	<Require Condition="ANDROID" StaticLibrary="@('android/lib/${ANDROID_ABI}/libv8.a':Path)" />
+	<copyFile condition="ANDROID" sourceFile="include/V8Simple.cpp" />
+	<require condition="ANDROID" includeDirectory="@('android/include':path)" />
+	<require condition="ANDROID" includeDirectory="@('android/lib/${ANDROID_ABI}/include':path)" />
+	<require condition="ANDROID" staticLibrary="@('android/lib/${ANDROID_ABI}/libv8.a':path)" />
 
 	<!-- V8 binary includes a custom-built version of STL; configure to link that version -->
-	<Require Condition="ANDROID" PreprocessorDefinition="_LIBCPP_ABI_VERSION=Cr" />
-	<Require Condition="ANDROID" PreprocessorDefinition="_LIBCPP_ABI_NAMESPACE=__Cr" />
-	<Require Condition="ANDROID" PreprocessorDefinition="_LIBCPP_ENABLE_NODISCARD" />
-	<Require Condition="ANDROID" PreprocessorDefinition="_LIBCPP_ABI_UNSTABLE" />
-</Extensions>
+	<require condition="ANDROID" preprocessorDefinition="_LIBCPP_ABI_VERSION=Cr" />
+	<require condition="ANDROID" preprocessorDefinition="_LIBCPP_ABI_NAMESPACE=__Cr" />
+	<require condition="ANDROID" preprocessorDefinition="_LIBCPP_ENABLE_NODISCARD" />
+	<require condition="ANDROID" preprocessorDefinition="_LIBCPP_ABI_UNSTABLE" />
+</extensions>

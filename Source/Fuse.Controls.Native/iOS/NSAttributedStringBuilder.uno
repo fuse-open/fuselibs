@@ -3,7 +3,7 @@ using Uno.Compiler.ExportTargetInterop;
 
 namespace Fuse.Controls.Native.iOS
 {
-	[Require("Source.Include", "Foundation/Foundation.h")]
+	[Require("source.include", "Foundation/Foundation.h")]
 	extern(iOS) internal class NSAttributedStringBuilder
 	{
 

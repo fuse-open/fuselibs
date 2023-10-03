@@ -6,7 +6,7 @@ using Android;
 using Fuse.ImageTools;
 namespace Fuse.CameraRoll
 {
-	[Require("Source.Include", "iOS/CameraRollHelper.h")]
+	[Require("source.include", "iOS/CameraRollHelper.h")]
 	public extern(iOS) class iOSCameraRoll
 	{
 		internal static void SelectPicture(Promise<Image> p)

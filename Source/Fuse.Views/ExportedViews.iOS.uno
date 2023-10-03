@@ -4,9 +4,9 @@ using Uno.Compiler.ExportTargetInterop;
 
 namespace Fuse.Views
 {
-	[Require("Source.Include", "iOS/ExportedViews.h")]
-	[Require("Source.Include", "iOS/ViewHandleImpl.h")]
-	[Require("Source.Include", "iOS/ViewHost.h")]
+	[Require("source.include", "iOS/ExportedViews.h")]
+	[Require("source.include", "iOS/ViewHandleImpl.h")]
+	[Require("source.include", "iOS/ViewHost.h")]
 	extern(LIBRARY && iOS)
 	internal class ExportedViews
 	{

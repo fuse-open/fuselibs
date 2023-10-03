@@ -78,7 +78,7 @@ namespace Fuse.Controls.Native.iOS
 		[Foreign(Language.Java)]
 		extern(Android) void SetupAndroidListener()
 		@{
-			@{checkForDarkThemeChange():Call()};
+			@{checkForDarkThemeChange():call()};
 
 			com.fuse.Activity.SubscribeToLifecycleChange(new com.fuse.Activity.ActivityListener()
 			{
@@ -91,7 +91,7 @@ namespace Fuse.Controls.Native.iOS
 
 				@Override public void onConfigurationChanged(android.content.res.Configuration config)
 				{
-					@{checkForDarkThemeChange():Call()};
+					@{checkForDarkThemeChange():call()};
 				}
 			});
 		@}
@@ -101,13 +101,13 @@ namespace Fuse.Controls.Native.iOS
 		@{
 			switch (com.fuse.Activity.getRootActivity().getResources().getConfiguration().uiMode & android.content.res.Configuration.UI_MODE_NIGHT_MASK) {
 				case android.content.res.Configuration.UI_MODE_NIGHT_YES:
-					@{changeDarkMode(string):Call("Dark")};
+					@{changeDarkMode(string):call("Dark")};
 					break;
 				case android.content.res.Configuration.UI_MODE_NIGHT_NO:
-					@{changeDarkMode(string):Call("Light")};
+					@{changeDarkMode(string):call("Light")};
 					break;
 				case android.content.res.Configuration.UI_MODE_NIGHT_UNDEFINED:
-					@{changeDarkMode(string):Call("Unspecified")};
+					@{changeDarkMode(string):call("Unspecified")};
 					break;
 			}
 

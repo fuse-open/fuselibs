@@ -86,7 +86,7 @@ namespace Fuse.Controls.iOS
 		}
 
 		[Foreign(Language.ObjC)]
-		[Require("Source.Include", "CoreMedia/CoreMedia.h")]
+		[Require("source.include", "CoreMedia/CoreMedia.h")]
 		void Load(IntPtr sampleBuffer, int orientation, Action<ObjC.Object> onResolve)
 		@{
 			dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
@@ -104,7 +104,7 @@ namespace Fuse.Controls.iOS
 		@}
 
 		[Foreign(Language.ObjC)]
-		[Require("Source.Include", "ImageIO/CGImageProperties.h")]
+		[Require("source.include", "ImageIO/CGImageProperties.h")]
 		static int CGImageOrientationToUIImageOrientation(int orientation)
 		@{
 			switch ((CGImagePropertyOrientation)orientation) {
@@ -226,9 +226,9 @@ namespace Fuse.Controls.iOS
 		}
 
 		[Foreign(Language.ObjC)]
-		[Require("Source.Include", "CoreVideo/CVOpenGLESTextureCache.h")]
-		[Require("Source.Include", "OpenGLES/ES2/glext.h")]
-		[Require("Source.Include", "CoreMedia/CoreMedia.h")]
+		[Require("source.include", "CoreVideo/CVOpenGLESTextureCache.h")]
+		[Require("source.include", "OpenGLES/ES2/glext.h")]
+		[Require("source.include", "CoreMedia/CoreMedia.h")]
 		static void UploadTexture(IntPtr sampleBuffer, Action<int,int,int,IntPtr,IntPtr> onResolve, Action<string> onReject)
 		@{
 			CMSampleBufferRef bufferRef = (CMSampleBufferRef)sampleBuffer;
@@ -238,7 +238,7 @@ namespace Fuse.Controls.iOS
 			CVOpenGLESTextureRef textureHandle;
 			CVOpenGLESTextureCacheRef textureCacheHandle;
 
-		#if @(METAL:Defined)
+		#if @(METAL:defined)
 			U_ERROR("NativePhoto: Not supported on Metal");
 		#else
 			#if COREVIDEO_USE_EAGLCONTEXT_CLASS_IN_API
@@ -292,10 +292,10 @@ namespace Fuse.Controls.iOS
 		}
 
 		[Foreign(Language.ObjC)]
-		[Require("Xcode.Framework", "MobileCoreServices")]
-		[Require("Source.Include", "MobileCoreServices/MobileCoreServices.h")]
-		[Require("Source.Include", "ImageIO/CGImageDestination.h")]
-		[Require("Source.Include", "CoreMedia/CoreMedia.h")]
+		[Require("xcode.framework", "MobileCoreServices")]
+		[Require("source.include", "MobileCoreServices/MobileCoreServices.h")]
+		[Require("source.include", "ImageIO/CGImageDestination.h")]
+		[Require("source.include", "CoreMedia/CoreMedia.h")]
 		static void Save(IntPtr sampleBuffer, Action<string> resolve, Action<string> reject)
 		@{
 			CFRetain(sampleBuffer);
@@ -380,12 +380,12 @@ namespace Fuse.Controls.iOS
 		void OnReject(string msg) { Reject(new Exception(msg)); }
 
 		[Foreign(Language.ObjC)]
-		[Require("Xcode.Framework", "Accelerate")]
-		[Require("Xcode.Framework", "MobileCoreServices")]
-		[Require("Source.Include", "CoreMedia/CoreMedia.h")]
-		[Require("Source.Include", "Accelerate/Accelerate.h")]
-		[Require("Source.Include", "MobileCoreServices/MobileCoreServices.h")]
-		[Require("Source.Include", "ImageIO/CGImageDestination.h")]
+		[Require("xcode.framework", "Accelerate")]
+		[Require("xcode.framework", "MobileCoreServices")]
+		[Require("source.include", "CoreMedia/CoreMedia.h")]
+		[Require("source.include", "Accelerate/Accelerate.h")]
+		[Require("source.include", "MobileCoreServices/MobileCoreServices.h")]
+		[Require("source.include", "ImageIO/CGImageDestination.h")]
 		static void SaveThumbnail(
 			IntPtr sampleBuffer,
 			Action<string> resolve,
@@ -518,7 +518,7 @@ namespace Fuse.Controls.iOS
 		@}
 	}
 
-	[Require("Source.Include", "Foundation/Foundation.h")]
+	[Require("source.include", "Foundation/Foundation.h")]
 	extern(iOS) static class CoreFoundationExtensions
 	{
 		[Foreign(Language.ObjC)]

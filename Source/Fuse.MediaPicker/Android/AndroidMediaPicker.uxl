@@ -1,11 +1,11 @@
-<Extensions Backend="CPlusPlus">
+<extensions backend="cplusplus">
 
-	<Require Condition="Android" Activity.OnPermissionsResult="com.fuse.mediapicker.MediaPickerImpl.onRequestPermissionsResult(requestCode, permissions, grantResults);" />
-	<Require Condition="Android" AndroidManifest.ApplicationElement>
+	<require condition="ANDROID" activity.onPermissionsResult="com.fuse.mediapicker.MediaPickerImpl.onRequestPermissionsResult(requestCode, permissions, grantResults);" />
+	<require condition="ANDROID" androidManifest.applicationElement>
 		<![CDATA[
 			<provider
 				android:name="com.fuse.mediapicker.MediaPickerFileProvider"
-				android:authorities="@(Activity.Package).media_picker_file_provider"
+				android:authorities="@(activity.package).media_picker_file_provider"
 				android:exported="false"
 				android:grantUriPermissions="true">
 				<meta-data
@@ -13,8 +13,8 @@
 					android:resource="@xml/android_media_paths" />
 			</provider>
 		]]>
-	</Require>
+	</require>
 
-	<CopyFile Condition="Android" Name="android_media_paths.xml" TargetName="app/src/main/res/xml/android_media_paths.xml" />
+	<copyFile condition="ANDROID" name="android_media_paths.xml" targetName="app/src/main/res/xml/android_media_paths.xml" />
 
-</Extensions>
+</extensions>

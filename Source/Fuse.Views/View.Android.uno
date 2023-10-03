@@ -93,30 +93,30 @@ namespace Fuse.Views
 		@{
 			return new com.fuse.views.internal.IFuseView() {
 				public void onMeasure(int widthMeasureSpec, int heightMeasureSpec, int[] result) {
-					com.uno.IntArray a = @{global::Fuse.Views.View:Of(_this).OnMeasure(int,int):Call(widthMeasureSpec, heightMeasureSpec)};
+					com.uno.IntArray a = @{global::Fuse.Views.View:of(_this).OnMeasure(int,int):call(widthMeasureSpec, heightMeasureSpec)};
 					result[0] = a.get(0);
 					result[1] = a.get(1);
 				}
 			    public void onSizeChanged(int w, int h, int oldw, int oldh) {
-			    	@{global::Fuse.Views.View:Of(_this).OnSizeChanged(int,int,int,int):Call(w, h, oldw, oldh)};
+			    	@{global::Fuse.Views.View:of(_this).OnSizeChanged(int,int,int,int):call(w, h, oldw, oldh)};
 			    }
 			    public void onLayout(boolean changed, int left, int top, int right, int bottom) {
-					@{global::Fuse.Views.View:Of(_this).OnLayout(bool,int,int,int,int):Call(changed, left, top, right, bottom)};
+					@{global::Fuse.Views.View:of(_this).OnLayout(bool,int,int,int,int):call(changed, left, top, right, bottom)};
 			    }
 			    public void onAttachedToWindow() {
-			    	@{global::Fuse.Views.View:Of(_this).OnAttachedToWindow():Call()};
+			    	@{global::Fuse.Views.View:of(_this).OnAttachedToWindow():call()};
 			    }
 			    public void onDetachedFromWindow() {
-			    	@{global::Fuse.Views.View:Of(_this).OnDetachedFromWindow():Call()};
+			    	@{global::Fuse.Views.View:of(_this).OnDetachedFromWindow():call()};
 			    }
 			    public void setDataJson(String json) {
-					@{global::Fuse.Views.View:Of(_this).SetDataJson(string):Call(json)};
+					@{global::Fuse.Views.View:of(_this).SetDataJson(string):call(json)};
 			    }
 			    public void setDataString(String key, String value) {
-					@{global::Fuse.Views.View:Of(_this).SetDataString(string,string):Call(key,value)};
+					@{global::Fuse.Views.View:of(_this).SetDataString(string,string):call(key,value)};
 			    }
 			    public void setCallback(String key, com.fuse.views.ICallback callback) {
-			    	@{global::Fuse.Views.View:Of(_this).SetCallback(string,Java.Object):Call(key,callback)};
+			    	@{global::Fuse.Views.View:of(_this).SetCallback(string,Java.Object):call(key,callback)};
 			    }
 			};
 		@}
@@ -136,7 +136,7 @@ namespace Fuse.Views
 						if (_currentEvent != motionEvent)
 							return false;
 						boolean result = super.onTouchEvent(motionEvent);
-						@{global::Fuse.Views.View:Of(_this).OnTouchEvent(Java.Object):Call(motionEvent)};
+						@{global::Fuse.Views.View:of(_this).OnTouchEvent(Java.Object):call(motionEvent)};
 						return _currentEvent == motionEvent;
 					}
 			};
@@ -234,10 +234,10 @@ namespace Fuse.Views
 				com.fuse.views.ICallback x = (com.fuse.views.ICallback)callback;
 				x.invoke(new com.fuse.views.IArguments() {
 					public java.util.HashMap<String,String> getArgs() {
-						return (java.util.HashMap<String,String>)@{CallbackClosure.MakeArgs(object):Call(eventRecord)};
+						return (java.util.HashMap<String,String>)@{CallbackClosure.MakeArgs(object):call(eventRecord)};
 					}
 					public String getDataJson() {
-						return @{CallbackClosure.SerializeData(object):Call(eventRecord)};
+						return @{CallbackClosure.SerializeData(object):call(eventRecord)};
 					}
 				});
 			@}

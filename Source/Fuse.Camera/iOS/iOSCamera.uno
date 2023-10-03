@@ -5,7 +5,7 @@ using Android;
 using Fuse.ImageTools;
 namespace Fuse.Camera
 {
-	[Require("Source.Include", "iOS/CameraHelper.h")]
+	[Require("source.include", "iOS/CameraHelper.h")]
 	public extern(iOS) class iOSCamera
 	{
 		internal static void TakePicture(Promise<Image> p)

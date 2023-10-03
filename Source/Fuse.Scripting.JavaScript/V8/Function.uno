@@ -3,7 +3,7 @@ using Uno;
 
 namespace Fuse.Scripting.V8
 {
-	[Require("Header.Include", "include/V8Simple.h")]
+	[Require("header.include", "include/V8Simple.h")]
 	internal extern(USE_V8) class Function: Scripting.Function
 	{
 		[WeakReference]

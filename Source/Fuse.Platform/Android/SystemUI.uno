@@ -129,10 +129,10 @@ namespace Fuse.Platform
 				@Override public void onStart() {}
 				@Override public void onWindowFocusChanged(boolean hasFocus) {}
 
-				@Override public void onPause() { @{OnPause():Call()}; }
-				@Override public void onResume() { @{OnResume():Call()}; }
-				@Override public void onDestroy() { @{OnDestroy():Call()}; }
-				@Override public void onConfigurationChanged(android.content.res.Configuration config) { @{OnConfigChanged():Call()}; }
+				@Override public void onPause() { @{OnPause():call()}; }
+				@Override public void onResume() { @{OnResume():call()}; }
+				@Override public void onDestroy() { @{OnDestroy():call()}; }
+				@Override public void onConfigurationChanged(android.content.res.Configuration config) { @{OnConfigChanged():call()}; }
 			});
 		@}
 
@@ -146,9 +146,9 @@ namespace Fuse.Platform
 		[Foreign(Language.Java)]
 		static void OnResume()
 		@{
-			@{UpdateStatusBar():Call()};
+			@{UpdateStatusBar():call()};
 			((FrameLayout)@{RootLayout}).setVisibility(View.VISIBLE);
-			@{ReadConfiguration():Call()};
+			@{ReadConfiguration():call()};
 		@}
 
 		static void OnDestroy()
@@ -167,7 +167,7 @@ namespace Fuse.Platform
 		static public void ReadConfiguration()
 		@{
 			float fontScale = com.fuse.Activity.getRootActivity().getResources().getConfiguration().fontScale;
-			@{UpdateTextScaleFactor(float):Call(fontScale)};
+			@{UpdateTextScaleFactor(float):call(fontScale)};
 
 		@}
 
@@ -183,17 +183,17 @@ namespace Fuse.Platform
 
 			// status bar
 			activity.getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
-			#if @(Project.Mobile.ShowStatusbar)
-				@{HideActionBar():Call()};
+			#if @(project.mobile.showStatusbar)
+				@{HideActionBar():call()};
 			#endif
 
 			// layouts
-			if (@{SuperLayout}==null) @{CreateLayouts():Call()};
+			if (@{SuperLayout}==null) @{CreateLayouts():call()};
 			activity.getWindow().setContentView(((FrameLayout)@{SuperLayout}));
-			ViewTreeObserver.OnGlobalLayoutListener kl = new ViewTreeObserver.OnGlobalLayoutListener() { public void onGlobalLayout() { @{unoOnGlobalLayout():Call()}; }};
-			@{_keyboardListener:Set(kl)};
-			@{Attach(Java.Object):Call(@{RootLayout})};
-			@{HookOntoRawActivityEvents():Call()};
+			ViewTreeObserver.OnGlobalLayoutListener kl = new ViewTreeObserver.OnGlobalLayoutListener() { public void onGlobalLayout() { @{unoOnGlobalLayout():call()}; }};
+			@{_keyboardListener:set(kl)};
+			@{Attach(Java.Object):call(@{RootLayout})};
+			@{HookOntoRawActivityEvents():call()};
 		@}
 
 		[Foreign(Language.Java)]
@@ -203,13 +203,13 @@ namespace Fuse.Platform
 
 			FrameLayout superLayout = new FrameLayout(activity);
 			FrameLayout rootLayout = new FrameLayout(activity);
-			@{SuperLayout:Set(superLayout)};
-			@{RootLayout:Set(rootLayout)};
-			superLayout.addOnLayoutChangeListener((OnLayoutChangeListener)@{MakePostV11LayoutChangeListener():Call()});
+			@{SuperLayout:set(superLayout)};
+			@{RootLayout:set(rootLayout)};
+			superLayout.addOnLayoutChangeListener((OnLayoutChangeListener)@{MakePostV11LayoutChangeListener():call()});
 
 			superLayout.addView(((FrameLayout)@{RootLayout}));
-			@{SetFrame(Java.Object,int,int,int):Call(@{RootLayout}, 0, 0, @{GetRealDisplayHeight():Call()})};
-			@{CompensateRootLayoutForSystemUI():Call()};
+			@{SetFrame(Java.Object,int,int,int):call(@{RootLayout}, 0, 0, @{GetRealDisplayHeight():call()})};
+			@{CompensateRootLayoutForSystemUI():call()};
 		@}
 
 		//------------------------------------------------------------
@@ -240,7 +240,7 @@ namespace Fuse.Platform
 			// ActionBar is ugly, hide it
 			// details: http://stackoverflow.com/a/14167949/574033
 			ActionBar actionBar = com.fuse.Activity.getRootActivity().getActionBar();
-			#if @(Project.Mobile.ShowStatusbar)
+			#if @(project.mobile.showStatusbar)
 			if (actionBar!=null)
 				actionBar.hide();
 			#endif
@@ -264,8 +264,8 @@ namespace Fuse.Platform
 					result = @{cachedOpenSize};
 					}
 				} else {
-					@{hasCachedStatusBarSize:Set(true)};
-					@{cachedOpenSize:Set(result)};
+					@{hasCachedStatusBarSize:set(true)};
+					@{cachedOpenSize:set(result)};
 				}
 			}
 			return (float)result;
@@ -276,13 +276,13 @@ namespace Fuse.Platform
 		@{
 			com.fuse.Activity.getRootActivity().runOnUiThread(new Runnable() { public void run()
 			{
-				@{_systemUIState:Set(@{SysUIState.Normal})};
+				@{_systemUIState:set(@{SysUIState.Normal})};
 				View decorView = com.fuse.Activity.getRootActivity().getWindow().getDecorView();
 				// Hide the status bar.
 				decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
-				@{HideActionBar():Call()};
-				@{CompensateRootLayoutForSystemUI():Call()};
-				@{cppOnTopFrameChanged(int):Call((int)@{GetStatusBarHeight():Call()})};
+				@{HideActionBar():call()};
+				@{CompensateRootLayoutForSystemUI():call()};
+				@{cppOnTopFrameChanged(int):call((int)@{GetStatusBarHeight():call()})};
 			}});
 		@}
 
@@ -292,13 +292,13 @@ namespace Fuse.Platform
 		@{
 			com.fuse.Activity.getRootActivity().runOnUiThread(new Runnable() { public void run()
 			{
-				@{_systemUIState:Set(@{SysUIState.StatusBarHidden})};
+				@{_systemUIState:set(@{SysUIState.StatusBarHidden})};
 				View decorView = com.fuse.Activity.getRootActivity().getWindow().getDecorView();
 				// Hide the status bar.
 				decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
-				@{HideActionBar():Call()};
-				@{CompensateRootLayoutForSystemUI():Call()};
-				@{cppOnTopFrameChanged(int):Call(0)};
+				@{HideActionBar():call()};
+				@{CompensateRootLayoutForSystemUI():call()};
+				@{cppOnTopFrameChanged(int):call(0)};
 			}});
 		@}
 
@@ -335,7 +335,7 @@ namespace Fuse.Platform
 				int flags = decorView.getSystemUiVisibility();
 				flags |= 0x2000;
 				decorView.setSystemUiVisibility(flags);
-				@{_statusbarStyle:Set(@{StatusBarStyle.Dark})};
+				@{_statusbarStyle:set(@{StatusBarStyle.Dark})};
 				return true;
 			}
 			return false;
@@ -350,7 +350,7 @@ namespace Fuse.Platform
 				int flags = decorView.getSystemUiVisibility();
 				flags &= ~0x2000;
 				decorView.setSystemUiVisibility(flags);
-				@{_statusbarStyle:Set(@{StatusBarStyle.Light})};
+				@{_statusbarStyle:set(@{StatusBarStyle.Light})};
 				return true;
 			}
 			return false;
@@ -390,7 +390,7 @@ namespace Fuse.Platform
 		static void EnterFullscreen()
 		@{
 			com.fuse.Activity.getRootActivity().runOnUiThread(new Runnable() { public void run() {
-				@{_systemUIState:Set(@{SysUIState.Fullscreen})};
+				@{_systemUIState:set(@{SysUIState.Fullscreen})};
 				View decorView = com.fuse.Activity.getRootActivity().getWindow().getDecorView();
 				// Hide the status bar.
 				decorView.setSystemUiVisibility(
@@ -400,9 +400,9 @@ namespace Fuse.Platform
 						| View.SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide nav bar
 						| View.SYSTEM_UI_FLAG_FULLSCREEN // hide status bar
 						| View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
-				@{HideActionBar():Call()};
-				@{CompensateRootLayoutForSystemUI():Call()};
-				@{cppOnTopFrameChanged(int):Call(0)};
+				@{HideActionBar():call()};
+				@{CompensateRootLayoutForSystemUI():call()};
+				@{cppOnTopFrameChanged(int):call(0)};
 			}});
 		@}
 
@@ -437,12 +437,12 @@ namespace Fuse.Platform
 			android.view.Display display = com.fuse.Activity.getRootActivity().getWindowManager().getDefaultDisplay();
 			DisplayMetrics realMetrics = new DisplayMetrics();
 			display.getRealMetrics(realMetrics);
-			@{realWidth:Set(realMetrics.widthPixels)};
-			@{realHeight:Set(realMetrics.heightPixels)};
+			@{realWidth:set(realMetrics.widthPixels)};
+			@{realHeight:set(realMetrics.heightPixels)};
 			if (@{SuperLayout}!=null) {
 				int tmp = ((FrameLayout)@{SuperLayout}).getWidth();
 				if (tmp!=0 && tmp!= @{realHeight} && @{realWidth}!=tmp) {
-					@{realWidth:Set(tmp)};
+					@{realWidth:set(tmp)};
 				}
 			}
 		@}
@@ -480,7 +480,7 @@ namespace Fuse.Platform
 		[Foreign(Language.Java)]
 		static void SetAsRootView(Java.Object view)
 		@{
-			@{Fuse.Platform.SystemUI.OnCreate():Call()};
+			@{Fuse.Platform.SystemUI.OnCreate():call()};
 
 			final View uview = (View)view;
 			com.fuse.Activity.getRootActivity().runOnUiThread(new Runnable() { public void run() {
@@ -500,14 +500,14 @@ namespace Fuse.Platform
 		@}
 
 
-		[Require("Source.Include", "uDroid/GLHelper.h")]
+		[Require("source.include", "uDroid/GLHelper.h")]
 		static void cppOnConfigChanged()
 		{
 			extern "GLHelper::SwapBackToBackgroundSurface()";
 			ResetGeometry();
 		}
 
-		[Require("Source.Include", "uDroid/GLHelper.h")]
+		[Require("source.include", "uDroid/GLHelper.h")]
 		static void ResetGeometry()
 		{
 			extern "GLHelper::SwapBackToBackgroundSurface()";
@@ -522,7 +522,7 @@ namespace Fuse.Platform
 		[Foreign(Language.Java)]
 		static float GetDensity()
 		@{
-				DisplayMetrics m = (DisplayMetrics)@{GetDisplayMetrics():Call()};
+				DisplayMetrics m = (DisplayMetrics)@{GetDisplayMetrics():call()};
 			return m.density;
 		@}
 
@@ -532,8 +532,8 @@ namespace Fuse.Platform
 		@{
 			return new OnLayoutChangeListener() {
 
-				int lastWidth = (int)@{GetRealDisplayWidth():Call()};
-				int lastHeight = @{GetRealDisplayHeight():Call()};
+				int lastWidth = (int)@{GetRealDisplayWidth():call()};
+				int lastHeight = @{GetRealDisplayHeight():call()};
 
 				@Override
 					public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
@@ -542,9 +542,9 @@ namespace Fuse.Platform
 					if (newWidth!=lastWidth || newHeight!=lastHeight) {
 						lastHeight = newHeight;
 						lastWidth = newWidth;
-						@{cppOnConfigChanged():Call()};
+						@{cppOnConfigChanged():call()};
 						ViewTreeObserver.OnGlobalLayoutListener kl = ((ViewTreeObserver.OnGlobalLayoutListener)@{_keyboardListener});
-						if (kl!=null) @{ResendFrameSizes():Call()};
+						if (kl!=null) @{ResendFrameSizes():call()};
 					}
 				}
 			};
@@ -579,7 +579,7 @@ namespace Fuse.Platform
 		@{
 			FrameLayout layout = (FrameLayout)_layout;
 			if (@{layoutAttachedTo}!=null) { return; }
-			@{layoutAttachedTo:Set(layout)};
+			@{layoutAttachedTo:set(layout)};
 			layout.getViewTreeObserver().addOnGlobalLayoutListener(((ViewTreeObserver.OnGlobalLayoutListener)@{_keyboardListener}));
 		@}
 
@@ -589,24 +589,24 @@ namespace Fuse.Platform
 			if (@{layoutAttachedTo}!=null) {
 				((FrameLayout)@{RootLayout}).getViewTreeObserver().removeOnGlobalLayoutListener(((ViewTreeObserver.OnGlobalLayoutListener)@{_keyboardListener}));
 			}
-			@{layoutAttachedTo:Set(null)};
+			@{layoutAttachedTo:set(null)};
 		@}
 
 		[Foreign(Language.Java)]
 		static void unoOnGlobalLayout()
 		@{
-			int heightDiff = @{GetRealDisplayHeight():Call()}-((FrameLayout)@{SuperLayout}).getHeight();
-			heightDiff -= @{GetStatusBarHeight():Call()};
+			int heightDiff = @{GetRealDisplayHeight():call()}-((FrameLayout)@{SuperLayout}).getHeight();
+			heightDiff -= @{GetStatusBarHeight():call()};
 			int contentViewTop = com.fuse.Activity.getRootActivity().getWindow().findViewById(Window.ID_ANDROID_CONTENT).getTop();
-			boolean keyboardClosed = (heightDiff-contentViewTop)<(@{GetRealDisplayHeight():Call()}/4);
+			boolean keyboardClosed = (heightDiff-contentViewTop)<(@{GetRealDisplayHeight():call()}/4);
 			if (heightDiff!=@{lastKeyboardHeight} || @{firstSizing}) {
 				if (keyboardClosed) {
-					@{onHideKeyboard(int,bool):Call(heightDiff, @{firstSizing})};
+					@{onHideKeyboard(int,bool):call(heightDiff, @{firstSizing})};
 				} else {
-					@{onShowKeyboard(int,bool):Call(heightDiff, @{firstSizing})};
+					@{onShowKeyboard(int,bool):call(heightDiff, @{firstSizing})};
 				}
 			}
-			@{firstSizing:Set(false)};
+			@{firstSizing:set(false)};
 		@}
 
 		static void onShowKeyboard(int keyboardHeight, bool force)

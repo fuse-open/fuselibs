@@ -4,7 +4,7 @@ using Uno;
 
 namespace Fuse.Scripting.JavaScriptCore
 {
-	[Require("Header.Include", "JavaScriptCore/JavaScript.h")]
+	[Require("header.include", "JavaScriptCore/JavaScript.h")]
 	extern(USE_JAVASCRIPTCORE) class Object: Scripting.Object
 	{
 		readonly Context _context;

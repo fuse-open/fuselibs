@@ -3,7 +3,7 @@ using Uno.Compiler.ExportTargetInterop;
 
 namespace Fuse.Scripting.JavaScriptCore
 {
-	[Require("Header.Include", "JavaScriptCore/JavaScript.h")]
+	[Require("header.include", "JavaScriptCore/JavaScript.h")]
 	extern(USE_JAVASCRIPTCORE) class Function: Scripting.Function
 	{
 		readonly Context _context;

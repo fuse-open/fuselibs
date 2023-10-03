@@ -3,9 +3,9 @@ using Uno.Compiler.ExportTargetInterop;
 
 namespace Fuse.Scripting.JavaScriptCore
 {
-	[Require("Source.Include", "JavaScriptCore/JSValueRef.h")]
-	[Set("TypeName", "::JSValueRef")]
-	[Set("DefaultValue", "NULL")]
+	[Require("source.include", "JavaScriptCore/JSValueRef.h")]
+	[Set("typeName", "::JSValueRef")]
+	[Set("defaultValue", "NULL")]
 	extern(USE_JAVASCRIPTCORE) struct JSValueRef
 	{
 		public static bool operator==(JSValueRef v1, JSValueRef v2) @{ return v1 == v2; @}
@@ -83,7 +83,7 @@ namespace Fuse.Scripting.JavaScriptCore
 			::JSValueRef exception = NULL;
 			bool result = ::JSValueIsInstanceOfConstructor($0, *$$, $1, &exception);
 			if (exception != NULL)
-				@{Action<JSValueRef>:Of($2):Call(exception)};
+				@{Action<JSValueRef>:of($2):call(exception)};
 			return result;
 		@}
 
@@ -126,7 +126,7 @@ namespace Fuse.Scripting.JavaScriptCore
 			::JSValueRef exception = NULL;
 			double result = ::JSValueToNumber($0, *$$, &exception);
 			if (exception != NULL)
-				@{Action<JSValueRef>:Of($1):Call(exception)};
+				@{Action<JSValueRef>:of($1):call(exception)};
 			return result;
 		@}
 	}
@@ -142,9 +142,9 @@ namespace Fuse.Scripting.JavaScriptCore
 		FlipTheTable,
 	}
 
-	[Set("Include", "JavaScriptCore/JSStringRef.h")]
-	[Set("TypeName", "::JSStringRef")]
-	[Set("DefaultValue", "NULL")]
+	[Set("include", "JavaScriptCore/JSStringRef.h")]
+	[Set("typeName", "::JSStringRef")]
+	[Set("defaultValue", "NULL")]
 	extern(USE_JAVASCRIPTCORE) struct JSStringRef : IDisposable
 	{
 		public static JSStringRef Create(string str)
@@ -166,9 +166,9 @@ namespace Fuse.Scripting.JavaScriptCore
 		@}
 	}
 
-	[Set("Include", "JavaScriptCore/JSObjectRef.h")]
-	[Set("TypeName", "::JSObjectRef")]
-	[Set("DefaultValue", "NULL")]
+	[Set("include", "JavaScriptCore/JSObjectRef.h")]
+	[Set("typeName", "::JSObjectRef")]
+	[Set("defaultValue", "NULL")]
 	extern(USE_JAVASCRIPTCORE) struct JSObjectRef
 	{
 		public static bool operator==(JSObjectRef o1, JSObjectRef o2) @{ return o1 == o2; @}
@@ -296,7 +296,7 @@ namespace Fuse.Scripting.JavaScriptCore
 				(::JSValueRef*)$2->Ptr(),
 				&exception);
 			if (exception != NULL)
-				@{Action<JSValueRef>:Of($3):Call(exception)};
+				@{Action<JSValueRef>:of($3):call(exception)};
 			return result;
 		@}
 
@@ -313,14 +313,14 @@ namespace Fuse.Scripting.JavaScriptCore
 				(::JSValueRef*)$1->Ptr(),
 				&exception);
 			if (exception != NULL)
-				@{Action<JSValueRef>:Of($2):Call(exception)};
+				@{Action<JSValueRef>:of($2):call(exception)};
 			return result;
 		@}
 	}
 
-	[Set("Include", "JavaScriptCore/JSObjectRef.h")]
-	[Set("TypeName", "::JSPropertyNameArrayRef")]
-	[Set("DefaultValue", "NULL")]
+	[Set("include", "JavaScriptCore/JSObjectRef.h")]
+	[Set("typeName", "::JSPropertyNameArrayRef")]
+	[Set("defaultValue", "NULL")]
 	extern(USE_JAVASCRIPTCORE) struct JSPropertyNameArray: IDisposable
 	{
 		public int GetCount()
@@ -342,10 +342,10 @@ namespace Fuse.Scripting.JavaScriptCore
 		@}
 	}
 
-	[Require("Source.Include", "JavaScriptCore/JSBase.h")]
-	[Set("Include", "JavaScriptCore/JSContextRef.h")]
-	[Set("TypeName", "::JSContextRef")]
-	[Set("DefaultValue", "NULL")]
+	[Require("source.include", "JavaScriptCore/JSBase.h")]
+	[Set("include", "JavaScriptCore/JSContextRef.h")]
+	[Set("typeName", "::JSContextRef")]
+	[Set("defaultValue", "NULL")]
 	extern(USE_JAVASCRIPTCORE) struct JSContextRef : IDisposable
 	{
 		public static JSContextRef Create()
@@ -403,9 +403,9 @@ namespace Fuse.Scripting.JavaScriptCore
 		}
 	}
 
-	[Set("Include", "JavaScriptCore/JSObjectRef.h")]
-	[Set("TypeName", "::JSClassRef")]
-	[Set("DefaultValue", "NULL")]
+	[Set("include", "JavaScriptCore/JSObjectRef.h")]
+	[Set("typeName", "::JSClassRef")]
+	[Set("defaultValue", "NULL")]
 	extern(USE_JAVASCRIPTCORE) struct JSClassRef : IDisposable
 	{
 		public static JSClassRef CreateUnoFinalizer()
@@ -440,13 +440,13 @@ namespace Fuse.Scripting.JavaScriptCore
 				::JSValueRef* exception) -> ::JSValueRef
 			{
 				@{RawCallback} unoDelegate = (@{RawCallback})JSObjectGetPrivate(function);
-				@{JSValueRef[]} unoArguments = @{JSValueRef[]:New((int)argumentCount)};
+				@{JSValueRef[]} unoArguments = @{JSValueRef[]:new((int)argumentCount)};
 				for (int i = 0; i < argumentCount; ++i)
 				{
-					@{JSValueRef[]:Of(unoArguments):Set(i, arguments[i])};
+					@{JSValueRef[]:of(unoArguments):set(i, arguments[i])};
 				}
 
-				return @{RawCallback:Of(unoDelegate):Call(unoArguments, exception)};
+				return @{RawCallback:of(unoDelegate):call(unoArguments, exception)};
 			};
 
 			classDef.callAsConstructor = (::JSObjectCallAsConstructorCallback) [] (
@@ -457,19 +457,19 @@ namespace Fuse.Scripting.JavaScriptCore
 				::JSValueRef* exception) -> ::JSObjectRef
 			{
 				@{RawCallback} unoDelegate = (@{RawCallback})JSObjectGetPrivate(constructor);
-				@{JSValueRef[]} unoArguments = @{JSValueRef[]:New((int)argumentCount)};
+				@{JSValueRef[]} unoArguments = @{JSValueRef[]:new((int)argumentCount)};
 				for (int i = 0; i < argumentCount; ++i)
 				{
-					@{JSValueRef[]:Of(unoArguments):Set(i, arguments[i])};
+					@{JSValueRef[]:of(unoArguments):set(i, arguments[i])};
 				}
 
-				::JSValueRef result = @{RawCallback:Of(unoDelegate):Call(unoArguments, exception)};
+				::JSValueRef result = @{RawCallback:of(unoDelegate):call(unoArguments, exception)};
 				if (!::JSValueIsObject(ctx, result))
 				{
 					const char* errorStr
 						= "Scripting.Callback called as a constructor returned a non-object.";
 					::uString* unoErrorStr = ::uString::Ansi(errorStr);
-					*exception = @{JSValueRef.MakeString(JSContextRef, string):Call(ctx, unoErrorStr)};
+					*exception = @{JSValueRef.MakeString(JSContextRef, string):call(ctx, unoErrorStr)};
 					return NULL;
 				}
 				return (::JSObjectRef)result;
@@ -484,7 +484,7 @@ namespace Fuse.Scripting.JavaScriptCore
 		@}
 	}
 
-	[Require("Source.Include", "JavaScriptCore/JSTypedArrayInclude.h")]
+	[Require("source.include", "JavaScriptCore/JSTypedArrayInclude.h")]
 	extern(USE_JAVASCRIPTCORE) static class JSTypedArray
 	{
 		public static JSObjectRef TryMakeArrayBufferWithBytes(JSContextRef ctx, byte[] bytes, Action<JSValueRef> onException)
@@ -507,7 +507,7 @@ namespace Fuse.Scripting.JavaScriptCore
 					$1, // deallocatorContext
 					&exception);
 				if (exception != NULL)
-					@{Action<JSValueRef>:Of($2):Call(exception)};
+					@{Action<JSValueRef>:of($2):call(exception)};
 				return result;
 			}
 			#endif
@@ -523,12 +523,12 @@ namespace Fuse.Scripting.JavaScriptCore
 				::JSValueRef exception = NULL;
 				size_t length = ::JSObjectGetArrayBufferByteLength($0, $1, &exception);
 				if (exception != NULL)
-					@{Action<JSValueRef>:Of($2):Call(exception)};
+					@{Action<JSValueRef>:of($2):call(exception)};
 				void* bytesPtr = ::JSObjectGetArrayBufferBytesPtr($0, $1, &exception);
 				if (exception != NULL)
-					@{Action<JSValueRef>:Of($2):Call(exception)};
+					@{Action<JSValueRef>:of($2):call(exception)};
 
-				@{byte[]} result = ::uArray::New(@{byte[]:TypeOf}, (int)length, bytesPtr);
+				@{byte[]} result = ::uArray::New(@{byte[]:typeof}, (int)length, bytesPtr);
 				return result;
 			}
 			#endif

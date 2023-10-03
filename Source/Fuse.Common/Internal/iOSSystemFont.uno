@@ -8,7 +8,7 @@ using Uno;
 namespace Fuse.Internal
 {
 	[ForeignInclude(Language.ObjC, "CoreText/CoreText.h")]
-	[Require("Xcode.Framework", "CoreText")]
+	[Require("xcode.framework", "CoreText")]
 	extern(iOS) static class iOSSystemFont
 	{
 		static HashSet<string> _families;
@@ -277,15 +277,15 @@ namespace Fuse.Internal
 				: nullptr;
 
 			int count = cascadeList ? (int)CFArrayGetCount(cascadeList) : 0;
-			id<UnoArray> result = @{ObjC.Object[]:New(count + 1)};
+			id<UnoArray> result = @{ObjC.Object[]:new(count + 1)};
 			// Includes the argument descriptor for convenience
-			@{ObjC.Object[]:Of(result).Set(0, descriptor)};
+			@{ObjC.Object[]:of(result).Set(0, descriptor)};
 			for (int i = 0; i < count; ++i)
 			{
 				CTFontDescriptorRef cascadeDescriptor
 					= (CTFontDescriptorRef)CFArrayGetValueAtIndex(cascadeList, (CFIndex)i);
 				UIFontDescriptor* uiCascadeDescriptor = (__bridge UIFontDescriptor*)cascadeDescriptor;
-				@{ObjC.Object[]:Of(result).Set(i + 1, uiCascadeDescriptor)};
+				@{ObjC.Object[]:of(result).Set(i + 1, uiCascadeDescriptor)};
 			}
 
 			CFRelease(cascadeList);
@@ -333,12 +333,12 @@ namespace Fuse.Internal
 					NSDictionary* plist = [NSDictionary dictionaryWithContentsOfFile:[prefix stringByAppendingPathComponent:file]];
 					[plist[@"Names"] enumerateKeysAndObjectsUsingBlock: ^ (id key, id obj, BOOL* stop)
 					{
-						@{AddFontPath(string, string):Call(key, obj)};
+						@{AddFontPath(string, string):call(key, obj)};
 						added = true;
 					}];
 					for (NSString* key in plist[@"TraitMappings"])
 					{
-						@{AddFamily(string):Call(key)};
+						@{AddFamily(string):call(key)};
 					}
 				}
 
@@ -384,9 +384,9 @@ namespace Fuse.Internal
 						{
 							NSString* name = [descriptor objectForKey:UIFontDescriptorNameAttribute];
 							NSString* path = [url path];
-							@{AddFontPath(string, string):Call(name, path)};
+							@{AddFontPath(string, string):call(name, path)};
 							NSString* family = [descriptor objectForKey:UIFontDescriptorFamilyAttribute];
-							@{AddFamily(string):Call(family)};
+							@{AddFamily(string):call(family)};
 						}
 					}
 				}
@@ -537,12 +537,12 @@ namespace Fuse.Internal
 			CFArrayRef arr = CTFontManagerCreateFontDescriptorsFromURL((__bridge CFURLRef)url);
 			NSArray* descriptors = (__bridge NSArray*)arr;
 
-			id<UnoArray> result = @{ObjC.Object[]:New((@{int})[descriptors count])};
+			id<UnoArray> result = @{ObjC.Object[]:new((@{int})[descriptors count])};
 			{
 				int i = 0;
 				for (UIFontDescriptor* descriptor in descriptors)
 				{
-					@{ObjC.Object[]:Of(result).Set(i, descriptor)};
+					@{ObjC.Object[]:of(result).Set(i, descriptor)};
 					++i;
 				}
 			}

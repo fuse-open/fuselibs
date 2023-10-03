@@ -44,7 +44,7 @@ namespace Fuse.Drawing
 		"java.nio.ByteOrder",
 		"java.nio.FloatBuffer"
 	)]
-	[extern(Android) Require("Source.Include","XliPlatform/GL.h")]
+	[extern(Android) Require("source.include", "XliPlatform/GL.h")]
 	extern(Android)
 	abstract class AndroidSurface : Surface
 	{

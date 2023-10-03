@@ -5,7 +5,7 @@ using Uno.Compiler.ExportTargetInterop;
 namespace Fuse.MediaPicker
 {
 	[ForeignInclude(Language.Java, "com.fuse.mediapicker.MediaPicker")]
-	[Require("Gradle.Dependency.Implementation", "androidx.exifinterface:exifinterface:1.3.2")]
+	[Require("gradle.dependency.implementation", "androidx.exifinterface:exifinterface:1.3.2")]
 	public extern(Android) class AndroidMediaPicker
 	{
 		internal static void PickImage(Promise<string> p, Java.Object args)

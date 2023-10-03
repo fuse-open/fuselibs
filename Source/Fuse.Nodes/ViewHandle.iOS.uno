@@ -6,11 +6,11 @@ namespace Fuse.Controls.Native
 {
 
 
-	[Require("Source.Include", "UIKit/UIKit.h")]
-	[Require("Source.Include", "iOS/Helpers.h")]
-	[Require("Source.Include", "iOS/CanvasViewGroup.h")]
-	[Require("Source.Include", "CoreGraphics/CoreGraphics.h")]
-	[Require("Source.Include", "QuartzCore/QuartzCore.h")]
+	[Require("source.include", "UIKit/UIKit.h")]
+	[Require("source.include", "iOS/Helpers.h")]
+	[Require("source.include", "iOS/CanvasViewGroup.h")]
+	[Require("source.include", "CoreGraphics/CoreGraphics.h")]
+	[Require("source.include", "QuartzCore/QuartzCore.h")]
 	extern(iOS) public class ViewHandle : IDisposable
 	{
 		public enum InputMode
@@ -88,7 +88,7 @@ namespace Fuse.Controls.Native
 		[Foreign(Language.ObjC)]
 		ObjC.Object GetHitTesthandle()
 		@{
-			UIView* view = (UIView*)@{Fuse.Controls.Native.ViewHandle:Of(_this).NativeHandle:Get()};
+			UIView* view = (UIView*)@{Fuse.Controls.Native.ViewHandle:of(_this).NativeHandle:get()};
 			if ([view isKindOfClass:[ShapeView class]])
 			{
 				auto sv = (ShapeView*)view;
@@ -106,28 +106,28 @@ namespace Fuse.Controls.Native
 		[Foreign(Language.ObjC)]
 		public void SetAccessibilityIdentifier(string name)
 		@{
-			UIView* view = (UIView*)@{Fuse.Controls.Native.ViewHandle:Of(_this).NativeHandle:Get()};
+			UIView* view = (UIView*)@{Fuse.Controls.Native.ViewHandle:of(_this).NativeHandle:get()};
 			[view setAccessibilityIdentifier:name];
 		@}
 
 		[Foreign(Language.ObjC)]
 		void InitAnchorPoint()
 		@{
-			UIView* view = (UIView*)@{Fuse.Controls.Native.ViewHandle:Of(_this).NativeHandle:Get()};
+			UIView* view = (UIView*)@{Fuse.Controls.Native.ViewHandle:of(_this).NativeHandle:get()};
 			[[view layer] setAnchorPoint: { 0.0f, 0.0f }];
 		@}
 
 		[Foreign(Language.ObjC)]
 		public void SetClipToBounds(bool clipToBounds)
 		@{
-			UIView* view = (UIView*)@{Fuse.Controls.Native.ViewHandle:Of(_this).NativeHandle:Get()};
+			UIView* view = (UIView*)@{Fuse.Controls.Native.ViewHandle:of(_this).NativeHandle:get()};
 			[view setClipsToBounds:clipToBounds];
 		@}
 
 		[Foreign(Language.ObjC)]
 		public void SetOpacity(float value)
 		@{
-			UIView* view = (UIView*)@{Fuse.Controls.Native.ViewHandle:Of(_this).NativeHandle:Get()};
+			UIView* view = (UIView*)@{Fuse.Controls.Native.ViewHandle:of(_this).NativeHandle:get()};
 			[view setAlpha: (CGFloat)value];
 		@}
 
@@ -146,58 +146,58 @@ namespace Fuse.Controls.Native
 		[Foreign(Language.ObjC)]
 		void SetEnabledImpl(bool value)
 		@{
-			UIView* view = (UIView*)@{Fuse.Controls.Native.ViewHandle:Of(_this).NativeHandle:Get()};
+			UIView* view = (UIView*)@{Fuse.Controls.Native.ViewHandle:of(_this).NativeHandle:get()};
 			[view setUserInteractionEnabled:value];
 		@}
 
 		[Foreign(Language.ObjC)]
 		public void SetIsVisible(bool isVisible)
 		@{
-			UIView* view = (UIView*)@{Fuse.Controls.Native.ViewHandle:Of(_this).NativeHandle:Get()};
+			UIView* view = (UIView*)@{Fuse.Controls.Native.ViewHandle:of(_this).NativeHandle:get()};
 			[view setHidden: !isVisible];
 		@}
 
 		[Foreign(Language.ObjC)]
 		public string Format()
 		@{
-			UIView* view = (UIView*)@{Fuse.Controls.Native.ViewHandle:Of(_this).NativeHandle:Get()};
+			UIView* view = (UIView*)@{Fuse.Controls.Native.ViewHandle:of(_this).NativeHandle:get()};
 			return [view description];
 		@}
 
 		[Foreign(Language.ObjC)]
 		public bool IsUIControl()
 		@{
-			UIView* view = (UIView*)@{Fuse.Controls.Native.ViewHandle:Of(_this).NativeHandle:Get()};
+			UIView* view = (UIView*)@{Fuse.Controls.Native.ViewHandle:of(_this).NativeHandle:get()};
 			return [view isKindOfClass:[UIControl class]];
 		@}
 
 		[Foreign(Language.ObjC)]
 		public void InsertChild(ViewHandle childHandle)
 		@{
-			UIView* parent = (UIView*)@{Fuse.Controls.Native.ViewHandle:Of(_this).NativeHandle:Get()};
-			UIView* child = (UIView*)@{Fuse.Controls.Native.ViewHandle:Of(childHandle).NativeHandle:Get()};
+			UIView* parent = (UIView*)@{Fuse.Controls.Native.ViewHandle:of(_this).NativeHandle:get()};
+			UIView* child = (UIView*)@{Fuse.Controls.Native.ViewHandle:of(childHandle).NativeHandle:get()};
 			[parent addSubview:child];
 		@}
 
 		[Foreign(Language.ObjC)]
 		public void InsertChild(ViewHandle childHandle, int index)
 		@{
-			UIView* parent = (UIView*)@{Fuse.Controls.Native.ViewHandle:Of(_this).NativeHandle:Get()};
-			UIView* child = (UIView*)@{Fuse.Controls.Native.ViewHandle:Of(childHandle).NativeHandle:Get()};
+			UIView* parent = (UIView*)@{Fuse.Controls.Native.ViewHandle:of(_this).NativeHandle:get()};
+			UIView* child = (UIView*)@{Fuse.Controls.Native.ViewHandle:of(childHandle).NativeHandle:get()};
 			[parent insertSubview:child atIndex:index];
 		@}
 
 		[Foreign(Language.ObjC)]
 		public void RemoveChild(ViewHandle childHandle)
 		@{
-			UIView* child = (UIView*)@{Fuse.Controls.Native.ViewHandle:Of(childHandle).NativeHandle:Get()};
+			UIView* child = (UIView*)@{Fuse.Controls.Native.ViewHandle:of(childHandle).NativeHandle:get()};
 			[child removeFromSuperview];
 		@}
 
 		[Foreign(Language.ObjC)]
 		public void BringToFront()
 		@{
-			UIView* view = (UIView*)@{Fuse.Controls.Native.ViewHandle:Of(_this).NativeHandle:Get()};
+			UIView* view = (UIView*)@{Fuse.Controls.Native.ViewHandle:of(_this).NativeHandle:get()};
 			auto parent = [view superview];
 			if (parent != NULL)
 				[parent bringSubviewToFront:view];
@@ -206,7 +206,7 @@ namespace Fuse.Controls.Native
 		[Foreign(Language.ObjC)]
 		public void SendToBack()
 		@{
-			UIView* view = (UIView*)@{Fuse.Controls.Native.ViewHandle:Of(_this).NativeHandle:Get()};
+			UIView* view = (UIView*)@{Fuse.Controls.Native.ViewHandle:of(_this).NativeHandle:get()};
 			auto parent = [view superview];
 			if (parent != NULL)
 				[parent sendSubviewToBack:view];
@@ -215,9 +215,9 @@ namespace Fuse.Controls.Native
 		[Foreign(Language.ObjC)]
 		public void Invalidate()
 		@{
-			if (@{Fuse.Controls.Native.ViewHandle:Of(_this).NeedsInvalidation})
+			if (@{Fuse.Controls.Native.ViewHandle:of(_this).NeedsInvalidation})
 			{
-				UIView* view = (UIView*)@{Fuse.Controls.Native.ViewHandle:Of(_this).NativeHandle:Get()};
+				UIView* view = (UIView*)@{Fuse.Controls.Native.ViewHandle:of(_this).NativeHandle:get()};
 				[view setNeedsDisplay];
 			}
 		@}
@@ -256,7 +256,7 @@ namespace Fuse.Controls.Native
 		[Foreign(Language.ObjC)]
 		void SetSizeAndBounds(float w, float h, float bx, float by, float bw, float bh)
 		@{
-			UIView* view = (UIView*)@{Fuse.Controls.Native.ViewHandle:Of(_this).NativeHandle:Get()};
+			UIView* view = (UIView*)@{Fuse.Controls.Native.ViewHandle:of(_this).NativeHandle:get()};
 			auto t = [[view layer] transform];
 			[[view layer] setTransform:CATransform3DIdentity];
 			[view setCenter: CGPointZero];
@@ -280,7 +280,7 @@ namespace Fuse.Controls.Native
 		[Foreign(Language.ObjC)]
 		void SetSize(float w, float h)
 		@{
-			UIView* view = (UIView*)@{Fuse.Controls.Native.ViewHandle:Of(_this).NativeHandle:Get()};
+			UIView* view = (UIView*)@{Fuse.Controls.Native.ViewHandle:of(_this).NativeHandle:get()};
 			auto t = [[view layer] transform];
 			[[view layer] setTransform:CATransform3DIdentity];
 			[view setCenter: CGPointZero];
@@ -318,7 +318,7 @@ namespace Fuse.Controls.Native
 				m31, m32, m33, m34,
 				m41, m42, m43, m44
 			};
-			UIView* view = (UIView*)@{Fuse.Controls.Native.ViewHandle:Of(_this).NativeHandle:Get()};
+			UIView* view = (UIView*)@{Fuse.Controls.Native.ViewHandle:of(_this).NativeHandle:get()};
 			[[view layer] setTransform:transform];
 		@}
 
@@ -343,7 +343,7 @@ namespace Fuse.Controls.Native
 		[Foreign(Language.ObjC)]
 		void SizeThatFits(float w, float h, out float resW, out float resH)
 		@{
-			UIView* view = (UIView*)@{Fuse.Controls.Native.ViewHandle:Of(_this).NativeHandle:Get()};
+			UIView* view = (UIView*)@{Fuse.Controls.Native.ViewHandle:of(_this).NativeHandle:get()};
 			CGSize size = { w, h };
 			CGSize result = [view sizeThatFits:size];
 			*resW = (float)result.width;

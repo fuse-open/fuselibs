@@ -1,15 +1,15 @@
-<Extensions Backend="CPlusPlus" Condition="IOS">
-	<ProcessFile HeaderFile="AppDelegateStatusBar.h" />
-	<ProcessFile SourceFile="AppDelegateStatusBar.mm" />
-	<ProcessFile HeaderFile="NotificationCenterContext.h" />
-	<ProcessFile SourceFile="NotificationCenterContext.mm" />
+<extensions backend="cplusplus" condition="IOS">
+	<processFile headerFile="AppDelegateStatusBar.h" />
+	<processFile sourceFile="AppDelegateStatusBar.mm" />
+	<processFile headerFile="NotificationCenterContext.h" />
+	<processFile sourceFile="NotificationCenterContext.mm" />
 
-	<Require Entity="Uno.Platform.TimerEventArgs" />
-	<Require Entity="Fuse.Platform.SystemUIResizeReason" />
-	<Require Entity="Fuse.Platform.SystemUI._statusBarWillChangeFrame(Uno.Platform.iOS.uCGRect, double)" />
-	<Require Entity="Fuse.Platform.SystemUI.uKeyboardWillChangeFrame (Uno.Platform.iOS.uCGRect, Uno.Platform.iOS.uCGRect, double, int, Fuse.Platform.SystemUIResizeReason)" />
-	<Require Entity="Fuse.Platform.SystemUI.uTextScaleFactorDidChange(float)" />
-	<Require Entity="Fuse.Platform.SystemUI.uStatusBarAnimation" />
-	<Require Entity="Fuse.Platform.SystemUI.uStatusBarStyle" />
-	<Require Entity="Fuse.Platform.SystemUI.IsTopFrameVisible" />
-</Extensions>
+	<require entity="Uno.Platform.TimerEventArgs" />
+	<require entity="Fuse.Platform.SystemUIResizeReason" />
+	<require entity="Fuse.Platform.SystemUI._statusBarWillChangeFrame(Uno.Platform.iOS.uCGRect, double)" />
+	<require entity="Fuse.Platform.SystemUI.uKeyboardWillChangeFrame (Uno.Platform.iOS.uCGRect, Uno.Platform.iOS.uCGRect, double, int, Fuse.Platform.SystemUIResizeReason)" />
+	<require entity="Fuse.Platform.SystemUI.uTextScaleFactorDidChange(float)" />
+	<require entity="Fuse.Platform.SystemUI.uStatusBarAnimation" />
+	<require entity="Fuse.Platform.SystemUI.uStatusBarStyle" />
+	<require entity="Fuse.Platform.SystemUI.IsTopFrameVisible" />
+</extensions>

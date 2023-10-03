@@ -8,7 +8,7 @@ using Fuse.Navigation;
 using Uno.Compiler.ExportTargetInterop;
 namespace Fuse.iOS.Controls
 {
-	[Require("Source.Include", "iOS/WVNavDelegate.h")]
+	[Require("source.include", "iOS/WVNavDelegate.h")]
 	static public extern(iOS) class NavDelegate
 	{
 		[Foreign(Language.ObjC)]

@@ -46,65 +46,65 @@ namespace Fuse.Scripting.V8.Simple
 	extern(USE_V8) delegate void JSDebugMessageHandler(IntPtr data, JSString message);
 
 	[DotNetType("Fuse.Scripting.V8.Simple.JSContext")]
-	[Set("TypeName", "::JSContext*")]
-	[Require("Header.Include", "include/V8Simple.h")]
+	[Set("typeName", "::JSContext*")]
+	[Require("header.include", "include/V8Simple.h")]
 	extern(USE_V8) struct JSContext
 	{
 		readonly IntPtr _handle;
 	}
 
 	[DotNetType("Fuse.Scripting.V8.Simple.JSValue")]
-	[Set("TypeName", "::JSValue*")]
-	[Require("Header.Include", "include/V8Simple.h")]
+	[Set("typeName", "::JSValue*")]
+	[Require("header.include", "include/V8Simple.h")]
 	extern(USE_V8) struct JSValue
 	{
 		readonly IntPtr _handle;
 	}
 
 	[DotNetType("Fuse.Scripting.V8.Simple.JSString")]
-	[Set("TypeName", "::JSString*")]
-	[Require("Header.Include", "include/V8Simple.h")]
+	[Set("typeName", "::JSString*")]
+	[Require("header.include", "include/V8Simple.h")]
 	extern(USE_V8) struct JSString
 	{
 		readonly IntPtr _handle;
 	}
 
 	[DotNetType("Fuse.Scripting.V8.Simple.JSObject")]
-	[Set("TypeName", "::JSObject*")]
-	[Require("Header.Include", "include/V8Simple.h")]
+	[Set("typeName", "::JSObject*")]
+	[Require("header.include", "include/V8Simple.h")]
 	extern(USE_V8) struct JSObject
 	{
 		readonly IntPtr _handle;
 	}
 
 	[DotNetType("Fuse.Scripting.V8.Simple.JSArray")]
-	[Set("TypeName", "::JSArray*")]
-	[Require("Header.Include", "include/V8Simple.h")]
+	[Set("typeName", "::JSArray*")]
+	[Require("header.include", "include/V8Simple.h")]
 	extern(USE_V8) struct JSArray
 	{
 		readonly IntPtr _handle;
 	}
 
 	[DotNetType("Fuse.Scripting.V8.Simple.JSFunction")]
-	[Set("TypeName", "::JSFunction*")]
-	[Require("Header.Include", "include/V8Simple.h")]
+	[Set("typeName", "::JSFunction*")]
+	[Require("header.include", "include/V8Simple.h")]
 	extern(USE_V8) struct JSFunction
 	{
 		readonly IntPtr _handle;
 	}
 
 	[DotNetType("Fuse.Scripting.V8.Simple.JSExternal")]
-	[Set("TypeName", "::JSExternal*")]
-	[Require("Header.Include", "include/V8Simple.h")]
+	[Set("typeName", "::JSExternal*")]
+	[Require("header.include", "include/V8Simple.h")]
 	extern(USE_V8) struct JSExternal
 	{
 		readonly IntPtr _handle;
 	}
 
 	[DotNetType("Fuse.Scripting.V8.Simple.JSScriptException")]
-	[Set("TypeName", "::JSScriptException*")]
-	[Require("Source.Declaration", "#undef GetMessage")]
-	[Require("Header.Include", "include/V8Simple.h")]
+	[Set("typeName", "::JSScriptException*")]
+	[Require("source.declaration", "#undef GetMessage")]
+	[Require("header.include", "include/V8Simple.h")]
 	extern(USE_V8) struct JSScriptException
 	{
 		readonly IntPtr _handle;
@@ -117,8 +117,8 @@ namespace Fuse.Scripting.V8.Simple
 	// -------------------------------------------------------------------------
 	// Context
 	[DotNetType("Fuse.Scripting.V8.Simple.Context")]
-	[Require("Header.Include", "include/V8Simple.h")]
-	[Require("Source.Include", "@{Handle:Include}")]
+	[Require("header.include", "include/V8Simple.h")]
+	[Require("source.include", "@{Handle:include}")]
 	[TargetSpecificImplementation]
 	extern(USE_V8) static class Context
 	{
@@ -130,11 +130,11 @@ namespace Fuse.Scripting.V8.Simple
 			return ::CreateJSContext(
 				([] (void* data) -> void
 				{
-					@{Handle.Free(IntPtr):Call(data)};
+					@{Handle.Free(IntPtr):call(data)};
 				}),
 				([] (void* external) -> void
 				{
-					@{Handle.Free(IntPtr):Call(external)};
+					@{Handle.Free(IntPtr):call(external)};
 				}));
 
 		@}
@@ -146,7 +146,7 @@ namespace Fuse.Scripting.V8.Simple
 	// -------------------------------------------------------------------------
 	// Debug
 	[DotNetType("Fuse.Scripting.V8.Simple.Debug")]
-	[Require("Header.Include", "include/V8Simple.h")]
+	[Require("header.include", "include/V8Simple.h")]
 	[TargetSpecificImplementation]
 	extern(USE_V8) static class Debug
 	{
@@ -162,7 +162,7 @@ namespace Fuse.Scripting.V8.Simple
 	// -------------------------------------------------------------------------
 	// Value
 	[DotNetType("Fuse.Scripting.V8.Simple.Value")]
-	[Require("Header.Include", "include/V8Simple.h")]
+	[Require("header.include", "include/V8Simple.h")]
 	[TargetSpecificImplementation]
 	extern(USE_V8) static class Value
 	{
@@ -230,8 +230,8 @@ namespace Fuse.Scripting.V8.Simple
 	// -------------------------------------------------------------------------
 	// Exceptions
 	[DotNetType("Fuse.Scripting.V8.Simple.ScriptException")]
-	[Require("Header.Include", "include/V8Simple.h")]
-	[Require("Source.Declaration", "#undef GetMessage")]
+	[Require("header.include", "include/V8Simple.h")]
+	[Require("source.declaration", "#undef GetMessage")]
 	[TargetSpecificImplementation]
 	extern(USE_V8) static class ScriptException
 	{

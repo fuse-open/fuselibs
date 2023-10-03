@@ -97,7 +97,7 @@ namespace Fuse.Camera
 					if (photoFile != null) {
 						Uri photoURI = FileProvider.getUriForFile(
 							com.fuse.Activity.getRootActivity(),
-							"@(Activity.Package).camera_file_provider",
+							"@(activity.package).camera_file_provider",
 							photoFile);
 						intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
 					} else {

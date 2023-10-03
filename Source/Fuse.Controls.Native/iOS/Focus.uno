@@ -46,8 +46,8 @@ namespace Fuse.Controls.Native.iOS
 		}
 	}
 
-	[Require("Source.Include", "UIKit/UIKit.h")]
-	[Require("Source.Include", "iOS/Helpers.h")]
+	[Require("source.include", "UIKit/UIKit.h")]
+	[Require("source.include", "iOS/Helpers.h")]
 	extern(iOS) internal static class FocusHelpers
 	{
 

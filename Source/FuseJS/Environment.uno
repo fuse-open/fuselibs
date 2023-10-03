@@ -64,15 +64,15 @@ namespace FuseJS
 	{
 		static readonly Environment _instance;
 
-		static string versionNumber = @(Project.Version);
-		static string title      = @(Project.Title);
-		static string publisher  = @(Project.Publisher);
-		static string copyright  = @(Project.Copyright);
-		static string androidTitle  = @(Project.Android.ApplicationLabel);
-		static string androidVersionNumber  = @(Project.Android.VersionName);
-		static string androidVersionCode  = @(Project.Android.VersionCode);
-		static string iosTitle  = @(Project.iOS.BundleName);
-		static string iosVersionNumber  = @(Project.iOS.BundleVersion);
+		static string versionNumber = @(project.version);
+		static string title      = @(project.title);
+		static string publisher  = @(project.publisher);
+		static string copyright  = @(project.copyright);
+		static string androidTitle  = @(project.android.applicationLabel);
+		static string androidVersionNumber  = @(project.android.versionName);
+		static string androidVersionCode  = @(project.android.versionCode);
+		static string iosTitle  = @(project.ios.bundleName);
+		static string iosVersionNumber  = @(project.ios.bundleVersion);
 
 
 		public Environment()

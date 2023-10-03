@@ -7,10 +7,10 @@ namespace Fuse.Shortcut
 {
 	[ForeignInclude(Language.Java, "android.annotation.TargetApi", "android.os.Build", "android.content.pm.ShortcutInfo","android.content.pm.ShortcutManager", "android.content.Intent", "android.content.Context", "android.app.Activity", "android.content.res.AssetManager", "android.graphics.drawable.Icon")]
 	[ForeignInclude(Language.ObjC, "iOS/FOShortcutHandler.h")]
-	[Require("AppDelegate.SourceFile.Declaration", "#include <iOS/FOShortcutHandler.h>")]
-	[Require("AppDelegate.SourceFile.DidFinishLaunchingWithOptions", "return [[FOShortcutHandler sharedInstance] application:application didFinishLaunchingWithOptions:launchOptions];")]
-	[Require("AppDelegate.SourceFile.ImplementationScope", "- (void)applicationDidBecomeActive:(UIApplication *)application { uAutoReleasePool pool; [[FOShortcutHandler sharedInstance] applicationDidBecomeActive:application]; }")]
-	[Require("AppDelegate.SourceFile.ImplementationScope", "- (void)application:(UIApplication *)application performActionForShortcutItem:(UIApplicationShortcutItem *)shortcutItem completionHandler:(void (^)(BOOL succeeded))completionHandler { uAutoReleasePool pool; [[FOShortcutHandler sharedInstance] application:application performActionForShortcutItem:shortcutItem completionHandler:completionHandler]; }")]
+	[Require("appDelegate.sourceFile.declaration", "#include <iOS/FOShortcutHandler.h>")]
+	[Require("appDelegate.sourceFile.didFinishLaunchingWithOptions", "return [[FOShortcutHandler sharedInstance] application:application didFinishLaunchingWithOptions:launchOptions];")]
+	[Require("appDelegate.sourceFile.implementationScope", "- (void)applicationDidBecomeActive:(UIApplication *)application { uAutoReleasePool pool; [[FOShortcutHandler sharedInstance] applicationDidBecomeActive:application]; }")]
+	[Require("appDelegate.sourceFile.implementationScope", "- (void)application:(UIApplication *)application performActionForShortcutItem:(UIApplicationShortcutItem *)shortcutItem completionHandler:(void (^)(BOOL succeeded))completionHandler { uAutoReleasePool pool; [[FOShortcutHandler sharedInstance] application:application performActionForShortcutItem:shortcutItem completionHandler:completionHandler]; }")]
 	public class ShortcutProvider
 	{
 
@@ -31,7 +31,7 @@ namespace Fuse.Shortcut
 			{
 				if (item[@"icon"] != nil)
 				{
-					NSString * path = @{GetBundlePath(string):Call(item[@"icon"])};
+					NSString * path = @{GetBundlePath(string):call(item[@"icon"])};
 					item[@"icon"] = [@"data/" stringByAppendingString:path];
 				}
 			}
@@ -110,7 +110,7 @@ namespace Fuse.Shortcut
 				final ShortcutInfo.Builder shortcutBuilder = new ShortcutInfo.Builder(context, type);
 				if (icon != null)
 				{
-					String path = @{GetBundlePath(string):Call(icon)};
+					String path = @{GetBundlePath(string):call(icon)};
 					if (path != "")
 					{
 						android.graphics.Bitmap bitmap = null;

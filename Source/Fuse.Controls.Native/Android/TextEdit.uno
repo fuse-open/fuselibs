@@ -400,7 +400,7 @@ namespace Fuse.Controls.Native.Android
 				}
 				public void onTextChanged(java.lang.CharSequence cs, int start, int before, int count) {
 					java.lang.String str = cs.toString();
-					@{global::Fuse.Controls.Native.Android.TextInput:Of(_this).OnTextChanged(string):Call(str)};
+					@{global::Fuse.Controls.Native.Android.TextInput:of(_this).OnTextChanged(string):call(str)};
 				}
 			});
 		@}
@@ -442,7 +442,7 @@ namespace Fuse.Controls.Native.Android
 		@{
 			((android.widget.TextView)handle).setOnFocusChangeListener(new android.view.View.OnFocusChangeListener() {
 				public void onFocusChange(android.view.View v, boolean hasFocus) {
-					@{global::Fuse.Controls.Native.Android.TextInput:Of(_this).OnFocusChanged(bool):Call(hasFocus)};
+					@{global::Fuse.Controls.Native.Android.TextInput:of(_this).OnFocusChanged(bool):call(hasFocus)};
 				}
 			});
 		@}
@@ -464,7 +464,7 @@ namespace Fuse.Controls.Native.Android
 		@{
 			((android.widget.TextView)handle).setOnEditorActionListener(new android.widget.TextView.OnEditorActionListener() {
 				public boolean onEditorAction(android.widget.TextView v, int actionId, android.view.KeyEvent ke) {
-					return @{global::Fuse.Controls.Native.Android.TextInput:Of(_this).OnEditorAction(int):Call(actionId)};
+					return @{global::Fuse.Controls.Native.Android.TextInput:of(_this).OnEditorAction(int):call(actionId)};
 				}
 			});
 		@}
@@ -603,7 +603,7 @@ namespace Fuse.Controls.Native.Android
 		@{
 			android.view.View.OnFocusChangeListener listener = new android.view.View.OnFocusChangeListener() {
 				public void onFocusChange(android.view.View view, boolean hasFocus) {
-					@{FocusChangedListener:Of(_this).OnFocusChange(bool):Call(hasFocus)};
+					@{FocusChangedListener:of(_this).OnFocusChange(bool):call(hasFocus)};
 				}
 			};
 			return listener;

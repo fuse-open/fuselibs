@@ -1,6 +1,6 @@
-<Extensions Backend="CIL" Condition="USE_V8">
-	<Require Condition="HOST_MAC" UnmanagedLibrary="lib/OSX/libV8Simple.dylib" />
-	<Require Condition="HOST_MAC" Assembly="lib/OSX/V8Simple.net.dll" />
-	<Require Condition="HOST_WIN32" Assembly="lib/DotNet/V8Simple.net.dll" />
-	<Require Condition="HOST_WIN32" UnmanagedLibrary="lib/Windows/V8Simple.dll" />
-</Extensions>
+<extensions backend="cil" condition="USE_V8">
+	<require condition="HOST_MAC" unmanagedLibrary="lib/OSX/libV8Simple.dylib" />
+	<require condition="HOST_MAC" assembly="lib/OSX/V8Simple.net.dll" />
+	<require condition="HOST_WIN32" assembly="lib/DotNet/V8Simple.net.dll" />
+	<require condition="HOST_WIN32" unmanagedLibrary="lib/Windows/V8Simple.dll" />
+</extensions>

@@ -104,13 +104,13 @@ namespace Fuse.Controls.Native
 		}
 
 		[Foreign(Language.ObjC)]
-		[extern(!METAL) Require("Xcode.Framework", "GLKit")]
-		[Require("Source.Include", "UIKit/UIKit.h")]
-		[Require("Source.Include", "CoreGraphics/CoreGraphics.h")]
-		[extern(!METAL) Require("Source.Include", "GLKit/GLKit.h")]
-		[extern(!METAL) Require("Source.Include", "OpenGLES/EAGL.h")]
-		[extern(METAL) Require("Source.Include","OpenGLES/ES2/gl.h")]
-		[Require("Source.Include", "QuartzCore/QuartzCore.h")]
+		[extern(!METAL) Require("xcode.framework", "GLKit")]
+		[Require("source.include", "UIKit/UIKit.h")]
+		[Require("source.include", "CoreGraphics/CoreGraphics.h")]
+		[extern(!METAL) Require("source.include", "GLKit/GLKit.h")]
+		[extern(!METAL) Require("source.include", "OpenGLES/EAGL.h")]
+		[extern(METAL) Require("source.include", "OpenGLES/ES2/gl.h")]
+		[Require("source.include", "QuartzCore/QuartzCore.h")]
 		extern(iOS)
 		static void Upload(
 			ObjC.Object viewHandle,

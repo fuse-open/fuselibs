@@ -10,9 +10,9 @@ namespace Fuse
 
 	using Fuse.Controls.Native.iOS;
 
-	[Require("Xcode.PublicHeader", "iOS/ExportedViews.h")]
-	[Require("Xcode.PublicHeader", "iOS/ViewHandle.h")]
-	[Require("Xcode.PublicHeader", "iOS/Arguments.h")]
+	[Require("xcode.publicHeader", "iOS/ExportedViews.h")]
+	[Require("xcode.publicHeader", "iOS/ViewHandle.h")]
+	[Require("xcode.publicHeader", "iOS/Arguments.h")]
 	extern (iOS && LIBRARY) public class App: AppBase
 	{
 		public App()
@@ -77,14 +77,14 @@ namespace Fuse
 		}
 
 		[Foreign(Language.ObjC)]
-		[Require("Source.Include", "UIKit/UIKit.h")]
+		[Require("source.include", "UIKit/UIKit.h")]
 		static bool Compare(ObjC.Object x, ObjC.Object y)
 		@{
 			return [x isEqual: y];
 		@}
 
 		[Foreign(Language.ObjC)]
-		[Require("Source.Include", "UIKit/UIKit.h")]
+		[Require("source.include", "UIKit/UIKit.h")]
 		static bool IsNull(ObjC.Object x)
 		@{
 			return x == nil;

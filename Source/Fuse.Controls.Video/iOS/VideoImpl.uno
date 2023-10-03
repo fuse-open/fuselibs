@@ -107,11 +107,11 @@ namespace Fuse.Controls.VideoImpl.iOS
 
 	}
 
-	[Require("Source.Include", "uObjC.Foreign.h")]
-	[Require("Source.Include", "iOS/VideoImpl.h")]
-	[Require("Xcode.Framework", "CoreVideo")]
-	[Require("Xcode.Framework", "CoreMedia")]
-	[Set("FileExtension", "mm")]
+	[Require("source.include", "uObjC.Foreign.h")]
+	[Require("source.include", "iOS/VideoImpl.h")]
+	[Require("xcode.framework", "CoreVideo")]
+	[Require("xcode.framework", "CoreMedia")]
+	[Set("fileExtension", "mm")]
 	extern(IOS) static class VideoPlayerImpl
 	{
 		public static Uno.IntPtr AllocateVideoState()

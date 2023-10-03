@@ -3,7 +3,7 @@ using Uno;
 
 namespace Fuse.Scripting.JavaScriptCore
 {
-	[Require("Header.Include", "JavaScriptCore/JavaScript.h")]
+	[Require("header.include", "JavaScriptCore/JavaScript.h")]
 	extern(USE_JAVASCRIPTCORE) class Array: Fuse.Scripting.Array
 	{
 		readonly Context _context;

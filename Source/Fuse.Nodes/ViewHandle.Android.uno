@@ -63,7 +63,7 @@ namespace Fuse.Controls.Native
 		[Foreign(Language.Java)]
 		public void SetClipToBounds(bool clipToBounds)
 		@{
-			android.view.View view = (android.view.View)@{Fuse.Controls.Native.ViewHandle:Of(_this).NativeHandle:Get()};
+			android.view.View view = (android.view.View)@{Fuse.Controls.Native.ViewHandle:of(_this).NativeHandle:get()};
 			if (view instanceof android.view.ViewGroup)
 			{
 				android.view.ViewGroup viewGroup = (android.view.ViewGroup)view;
@@ -85,8 +85,8 @@ namespace Fuse.Controls.Native
 		[Foreign(Language.Java)]
 		public static void CopyState(ViewHandle sourceHandle, ViewHandle destHandle)
 		@{
-			android.view.View source = (android.view.View)@{Fuse.Controls.Native.ViewHandle:Of(sourceHandle).NativeHandle:Get()};
-			android.view.View dest = (android.view.View)@{Fuse.Controls.Native.ViewHandle:Of(destHandle).NativeHandle:Get()};
+			android.view.View source = (android.view.View)@{Fuse.Controls.Native.ViewHandle:of(sourceHandle).NativeHandle:get()};
+			android.view.View dest = (android.view.View)@{Fuse.Controls.Native.ViewHandle:of(destHandle).NativeHandle:get()};
 			dest.setVisibility(source.getVisibility());
 			dest.setEnabled(source.isEnabled());
 			dest.setAlpha(source.getAlpha());
@@ -104,39 +104,39 @@ namespace Fuse.Controls.Native
 		[Foreign(Language.Java)]
 		public void ResetLayoutParams()
 		@{
-			((android.view.View)@{Fuse.Controls.Native.ViewHandle:Of(_this).NativeHandle:Get()}).setLayoutParams(new android.widget.FrameLayout.LayoutParams(android.view.ViewGroup.LayoutParams.MATCH_PARENT, android.view.ViewGroup.LayoutParams.MATCH_PARENT));
+			((android.view.View)@{Fuse.Controls.Native.ViewHandle:of(_this).NativeHandle:get()}).setLayoutParams(new android.widget.FrameLayout.LayoutParams(android.view.ViewGroup.LayoutParams.MATCH_PARENT, android.view.ViewGroup.LayoutParams.MATCH_PARENT));
 		@}
 
 		[Foreign(Language.Java)]
 		public void SetBackgroundColor(int color)
 		@{
-			android.view.View view = (android.view.View)@{Fuse.Controls.Native.ViewHandle:Of(_this).NativeHandle:Get()};
+			android.view.View view = (android.view.View)@{Fuse.Controls.Native.ViewHandle:of(_this).NativeHandle:get()};
 			view.setBackgroundColor(color);
 		@}
 
 		[Foreign(Language.Java)]
 		public void SetOpacity(float value)
 		@{
-			((android.view.View)@{Fuse.Controls.Native.ViewHandle:Of(_this).NativeHandle:Get()}).setAlpha(value);
+			((android.view.View)@{Fuse.Controls.Native.ViewHandle:of(_this).NativeHandle:get()}).setAlpha(value);
 		@}
 
 		[Foreign(Language.Java)]
 		public void SetEnabled(bool value)
 		@{
-			((android.view.View)@{Fuse.Controls.Native.ViewHandle:Of(_this).NativeHandle:Get()}).setEnabled(value);
+			((android.view.View)@{Fuse.Controls.Native.ViewHandle:of(_this).NativeHandle:get()}).setEnabled(value);
 		@}
 
 		[Foreign(Language.Java)]
 		public void SetIsVisible(bool isVisible)
 		@{
-			android.view.View handle = (android.view.View)@{Fuse.Controls.Native.ViewHandle:Of(_this).NativeHandle:Get()};
+			android.view.View handle = (android.view.View)@{Fuse.Controls.Native.ViewHandle:of(_this).NativeHandle:get()};
 			handle.setVisibility( (isVisible) ? android.view.View.VISIBLE : android.view.View.INVISIBLE );
 		@}
 
 		[Foreign(Language.Java)]
 		void InvalidateImpl()
 		@{
-			android.view.View handle = (android.view.View)@{Fuse.Controls.Native.ViewHandle:Of(_this).NativeHandle:Get()};
+			android.view.View handle = (android.view.View)@{Fuse.Controls.Native.ViewHandle:of(_this).NativeHandle:get()};
 			handle.invalidate();
 		@}
 
@@ -149,7 +149,7 @@ namespace Fuse.Controls.Native
 		[Foreign(Language.Java)]
 		public string Format()
 		@{
-			java.lang.Object handle = @{Fuse.Controls.Native.ViewHandle:Of(_this).NativeHandle:Get()};
+			java.lang.Object handle = @{Fuse.Controls.Native.ViewHandle:of(_this).NativeHandle:get()};
 			return handle.toString();
 		@}
 
@@ -173,7 +173,7 @@ namespace Fuse.Controls.Native
 		[Foreign(Language.Java)]
 		public bool IsViewGroup()
 		@{
-			java.lang.Object handle = @{Fuse.Controls.Native.ViewHandle:Of(_this).NativeHandle:Get()};
+			java.lang.Object handle = @{Fuse.Controls.Native.ViewHandle:of(_this).NativeHandle:get()};
 			return handle instanceof com.fuse.android.views.ViewGroup ||
 				handle instanceof com.fuse.android.views.FuseScrollView;
 		@}
@@ -181,7 +181,7 @@ namespace Fuse.Controls.Native
 		[Foreign(Language.Java)]
 		public void SetHitTestEnabled(bool enabled)
 		@{
-			android.view.View view = (android.view.View)@{Fuse.Controls.Native.ViewHandle:Of(_this).NativeHandle:Get()};
+			android.view.View view = (android.view.View)@{Fuse.Controls.Native.ViewHandle:of(_this).NativeHandle:get()};
 			if (view instanceof com.fuse.android.views.ViewGroup) {
 				com.fuse.android.views.ViewGroup viewgroup = (com.fuse.android.views.ViewGroup)view;
 				viewgroup.HitTestEnabled = enabled;
@@ -191,39 +191,39 @@ namespace Fuse.Controls.Native
 		[Foreign(Language.Java)]
 		public void InsertChild(ViewHandle childHandle)
 		@{
-			android.view.ViewGroup parent = (android.view.ViewGroup)@{Fuse.Controls.Native.ViewHandle:Of(_this).NativeHandle:Get()};
-			android.view.View child = (android.view.View)@{Fuse.Controls.Native.ViewHandle:Of(childHandle).NativeHandle:Get()};
+			android.view.ViewGroup parent = (android.view.ViewGroup)@{Fuse.Controls.Native.ViewHandle:of(_this).NativeHandle:get()};
+			android.view.View child = (android.view.View)@{Fuse.Controls.Native.ViewHandle:of(childHandle).NativeHandle:get()};
 			parent.addView(child);
 		@}
 
 		[Foreign(Language.Java)]
 		public void InsertChild(ViewHandle childHandle, int index)
 		@{
-			android.view.ViewGroup parent = (android.view.ViewGroup)@{Fuse.Controls.Native.ViewHandle:Of(_this).NativeHandle:Get()};
-			android.view.View child = (android.view.View)@{Fuse.Controls.Native.ViewHandle:Of(childHandle).NativeHandle:Get()};
+			android.view.ViewGroup parent = (android.view.ViewGroup)@{Fuse.Controls.Native.ViewHandle:of(_this).NativeHandle:get()};
+			android.view.View child = (android.view.View)@{Fuse.Controls.Native.ViewHandle:of(childHandle).NativeHandle:get()};
 			parent.addView(child, index);
 		@}
 
 		[Foreign(Language.Java)]
 		public void RemoveChild(ViewHandle childHandle)
 		@{
-			android.view.ViewGroup parent = (android.view.ViewGroup)@{Fuse.Controls.Native.ViewHandle:Of(_this).NativeHandle:Get()};
-			android.view.View child = (android.view.View)@{Fuse.Controls.Native.ViewHandle:Of(childHandle).NativeHandle:Get()};
+			android.view.ViewGroup parent = (android.view.ViewGroup)@{Fuse.Controls.Native.ViewHandle:of(_this).NativeHandle:get()};
+			android.view.View child = (android.view.View)@{Fuse.Controls.Native.ViewHandle:of(childHandle).NativeHandle:get()};
 			parent.removeView(child);
 		@}
 
 		[Foreign(Language.Java)]
 		public int IndexOfChild(ViewHandle childHandle)
 		@{
-			android.view.ViewGroup parent = (android.view.ViewGroup)@{Fuse.Controls.Native.ViewHandle:Of(_this).NativeHandle:Get()};
-			android.view.View child = (android.view.View)@{Fuse.Controls.Native.ViewHandle:Of(childHandle).NativeHandle:Get()};
+			android.view.ViewGroup parent = (android.view.ViewGroup)@{Fuse.Controls.Native.ViewHandle:of(_this).NativeHandle:get()};
+			android.view.View child = (android.view.View)@{Fuse.Controls.Native.ViewHandle:of(childHandle).NativeHandle:get()};
 			return parent.indexOfChild(child);
 		@}
 
 		[Foreign(Language.Java)]
 		public void BringToFront()
 		@{
-			android.view.View view = (android.view.View)@{Fuse.Controls.Native.ViewHandle:Of(_this).NativeHandle:Get()};
+			android.view.View view = (android.view.View)@{Fuse.Controls.Native.ViewHandle:of(_this).NativeHandle:get()};
 			view.bringToFront();
 		@}
 
@@ -236,7 +236,7 @@ namespace Fuse.Controls.Native
 		[Foreign(Language.Java)]
 		void UpdateViewRectImpl(int x, int y, int w, int h)
 		@{
-			android.view.View view = (android.view.View)@{Fuse.Controls.Native.ViewHandle:Of(_this).NativeHandle:Get()};
+			android.view.View view = (android.view.View)@{Fuse.Controls.Native.ViewHandle:of(_this).NativeHandle:get()};
 			com.fuse.android.views.ViewGroup.UpdateChildRect(view, x, y, w, h);
 		@}
 
@@ -248,7 +248,7 @@ namespace Fuse.Controls.Native
 			float rotationX,
 			float rotationY)
 		@{
-			android.view.View view = (android.view.View)@{Fuse.Controls.Native.ViewHandle:Of(_this).NativeHandle:Get()};
+			android.view.View view = (android.view.View)@{Fuse.Controls.Native.ViewHandle:of(_this).NativeHandle:get()};
 			view.setPivotX(0);
 			view.setPivotY(0);
 			view.setScaleX(scaleX);

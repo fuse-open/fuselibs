@@ -62,8 +62,8 @@ namespace Fuse.VideoTools
 
 		extern (iOS) internal class iOSVideoTools
 		{
-			[Require("Xcode.Framework", "AssetsLibrary")]
-			[Require("Source.Include", "AssetsLibrary/AssetsLibrary.h")]
+			[Require("xcode.framework", "AssetsLibrary")]
+			[Require("source.include", "AssetsLibrary/AssetsLibrary.h")]
 			[Foreign(Language.ObjC)]
 			extern (iOS) public static bool SaveVideo(string outputFileURL)
 			@{

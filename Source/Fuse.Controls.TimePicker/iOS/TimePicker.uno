@@ -15,7 +15,7 @@ namespace Fuse.Controls.Native.iOS
 		public TimePickerView([UXParameter("Host")]TimePicker host) { }
 	}
 
-	[Require("Source.Include", "UIKit/UIKit.h")]
+	[Require("source.include", "UIKit/UIKit.h")]
 	extern(iOS) class TimePickerView : LeafView, ITimePickerView
 	{
 		TimePicker _host;
