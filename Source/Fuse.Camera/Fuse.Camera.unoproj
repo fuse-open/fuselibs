@@ -9,6 +9,7 @@
   ],
   "projects": [
     "../Android.ActivityUtils/Android.ActivityUtils.unoproj",
+    "../Fuse.Android/Fuse.Android.unoproj",
     "../Fuse.Android.Permissions/Fuse.Android.Permissions.unoproj",
     "../Fuse.Common/Fuse.Common.unoproj",
     "../Fuse.ImageTools/Fuse.ImageTools.unoproj",
