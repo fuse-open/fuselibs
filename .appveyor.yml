@@ -9,7 +9,7 @@ environment:
 install:
   - ps: Install-Product node $env:nodejs_version
   - npm install
-  - npm install android-build-tools@1.x -g
+  - npm install android-build-tools@2.x -g
 
 build_script:
   - npm pack --silent
