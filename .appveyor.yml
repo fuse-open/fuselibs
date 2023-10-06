@@ -22,4 +22,4 @@ build_script:
   - npx uno build native Tests/ManualTests/ManualTestingApp/ManualTestingApp.unoproj
 
 test_script:
-  - npm test
+  - npm run test-with-timeout
