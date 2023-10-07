@@ -88,11 +88,6 @@ namespace Fuse.Scripting.V8
 			return (bool)_context._instanceOf.Call(_context, this, type);
 		}
 
-		public override bool InstanceOf(Scripting.Function type)
-		{
-			return InstanceOf(_context, type);
-		}
-
 		public override object CallMethod(Scripting.Context context, string name, params object[] args)
 		{
 			if (context != _context)
@@ -112,11 +107,6 @@ namespace Fuse.Scripting.V8
 			}
 			_context.ThrowPendingExceptions();
 			return result;
-		}
-
-		public override object CallMethod(string name, params object[] args)
-		{
-			return CallMethod(_context, name, args);
 		}
 
 		public override bool ContainsKey(string key)

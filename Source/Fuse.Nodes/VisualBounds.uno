@@ -149,12 +149,6 @@ namespace Fuse
 			return Box(add);
 		}
 
-		[Obsolete("Please use the other overload (for performance)")]
-		public VisualBounds Transform(float4x4 matrix)
-		{
-			return Transform(FastMatrix.FromFloat4x4(matrix));
-		}
-
 		public VisualBounds Transform(FastMatrix fastMatrix)
 		{
 			if (IsInfinite || IsEmpty)
@@ -162,12 +156,6 @@ namespace Fuse
 
 			var n = BoxTransform(_box, fastMatrix);
 			return Box(n);
-		}
-
-		[Obsolete("Please use the other overload (for performance)")]
-		public VisualBounds TransformFlatten(float4x4 matrix)
-		{
-			return TransformFlatten(FastMatrix.FromFloat4x4(matrix));
 		}
 
 		//OPT: This version could be optimized since it doesn't care about the Z results.
@@ -261,12 +249,6 @@ namespace Fuse
 				return "infinite";
 
 			return "" + _box.Minimum + " " + _box.Maximum;
-		}
-
-		[Obsolete("Please use the other overload (for performance)")]
-		public static Box BoxTransform(Box box, float4x4 transform)
-		{
-			return BoxTransform(box, FastMatrix.FromFloat4x4(transform));
 		}
 
 		static float Min8(float a, float b, float c, float d, float e, float f, float g, float h)

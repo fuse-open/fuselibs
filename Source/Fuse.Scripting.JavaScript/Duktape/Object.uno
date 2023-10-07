@@ -47,11 +47,6 @@ namespace Fuse.Scripting.Duktape
 			return result;
 		}
 
-		public override bool InstanceOf(Fuse.Scripting.Function type)
-		{
-			return InstanceOf(_ctx, type);
-		}
-
 		public override object this[string key]
 		{
 			get
@@ -120,11 +115,6 @@ namespace Fuse.Scripting.Duktape
 			return returnVal;
 		}
 
-		public override object CallMethod(string name, params object[] args)
-		{
-			return CallMethod(_ctx, name, args);
-		}
-
 		public override bool ContainsKey(string key)
 		{
 			if (key == null) throw new ArgumentNullException(nameof(key));
@@ -133,6 +123,5 @@ namespace Fuse.Scripting.Duktape
 			_ctx.DukContext.pop();
 			return result;
 		}
-
 	}
 }

@@ -103,41 +103,6 @@ namespace Fuse
 			else sb.Append("null");
 		}
 
-		[Obsolete("Use Uno.Data.Json.JsonWriter.QuoteString() instead")]
-		public static string Escape(string s)
-		{
-			var sb = new StringBuilder();
-			Escape(s, sb);
-			return sb.ToString();
-		}
-
-		[Obsolete("Use Uno.Data.Json.JsonWriter.QuoteString() instead")]
-		public static void Escape(string s, StringBuilder sb)
-		{
-			for (int i = 0; i < s.Length; i++)
-			{
-				if (s[i] == '\"')
-				{
-					if (sb == null) sb = new StringBuilder();
-					sb.Append("\\\"");
-				}
-				else if (s[i] == '\\')
-				{
-					if (sb == null) sb = new StringBuilder();
-					sb.Append("\\\\");
-				}
-				else if (s[i] == '\n')
-				{
-					if (sb == null) sb = new StringBuilder();
-					sb.Append("\\n");
-				}
-				else
-				{
-					sb.Append(s[i]);
-				}
-			}
-		}
-
 		/** Returns an escaped string encapsulated in Json quotes. */
 		public static string ToLiteral(string s)
 		{
