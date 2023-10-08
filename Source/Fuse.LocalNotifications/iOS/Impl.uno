@@ -10,11 +10,11 @@ using Uno.Compiler.ExportTargetInterop;
 
 namespace Fuse.LocalNotifications
 {
-	[Require("Entity", "Fuse.LocalNotifications.iOSImpl.OnReceivedLocalNotification(string)")]
-	[Require("Entity", "Fuse.LocalNotifications.iOSImpl.SendPendingFromLaunchOptions()")]
-	[Require("Entity", "Uno.Platform.iOS.Application.LaunchOptions")]
-	[Require("uContext.SourceFile.DidFinishLaunching", "[self initializeLocalNotifications:[notification object]];")]
-	[Require("uContext.SourceFile.Declaration", "#include <iOS/AppDelegateLocalNotify.h>")]
+	[Require("entity", "Fuse.LocalNotifications.iOSImpl.OnReceivedLocalNotification(string)")]
+	[Require("entity", "Fuse.LocalNotifications.iOSImpl.SendPendingFromLaunchOptions()")]
+	[Require("entity", "Uno.Platform.iOS.Application.LaunchOptions")]
+	[Require("uContext.sourceFile.didFinishLaunching", "[self initializeLocalNotifications:[notification object]];")]
+	[Require("uContext.sourceFile.declaration", "#include <iOS/AppDelegateLocalNotify.h>")]
 	internal extern(iOS) static class iOSImpl
 	{
 		public static void SendPendingFromLaunchOptions()
@@ -46,7 +46,7 @@ namespace Fuse.LocalNotifications
 				if (jsonData)
 				{
 					NSString* nsJsonPayload = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-					@{Fuse.LocalNotifications.iOSImpl.OnReceivedLocalNotification(string):Call(nsJsonPayload)};
+					@{Fuse.LocalNotifications.iOSImpl.OnReceivedLocalNotification(string):call(nsJsonPayload)};
 				}
 			}
 		@}

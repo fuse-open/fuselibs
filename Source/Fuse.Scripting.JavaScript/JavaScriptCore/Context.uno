@@ -5,13 +5,13 @@ using Uno;
 
 namespace Fuse.Scripting.JavaScriptCore
 {
-	[extern(Android) Require("Gradle.Dependency.NativeImplementation", "org.webkit:android-jsc:r174650")]
-	[extern(Android) Require("LinkLibrary", "jsc")]
-	[extern(Android) Require("IncludeDirectory", "@(PACKAGE_DIR:Path)/3rdparty/JavaScriptCore/Headers")]
-	[extern(iOS) Require("Xcode.Framework", "JavaScriptCore")]
-	[extern(LINUX) Require("LinkLibrary", "javascriptcoregtk-4.0")]
-	[extern(LINUX) Require("IncludeDirectory", "/usr/include/webkitgtk-4.0")]
-	[Require("Header.Include", "JavaScriptCore/JavaScript.h")]
+	[extern(Android) Require("gradle.dependency.nativeImplementation", "org.webkit:android-jsc:r174650")]
+	[extern(Android) Require("linkLibrary", "jsc")]
+	[extern(Android) Require("includeDirectory", "@(PACKAGE_DIR:path)/3rdparty/JavaScriptCore/Headers")]
+	[extern(iOS) Require("xcode.framework", "JavaScriptCore")]
+	[extern(LINUX) Require("linkLibrary", "javascriptcoregtk-4.0")]
+	[extern(LINUX) Require("includeDirectory", "/usr/include/webkitgtk-4.0")]
+	[Require("header.include", "JavaScriptCore/JavaScript.h")]
 	public extern(USE_JAVASCRIPTCORE) class Context : Fuse.Scripting.JavaScript.JSContext
 	{
 		internal bool _disposed;

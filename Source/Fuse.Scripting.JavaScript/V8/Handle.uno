@@ -53,7 +53,7 @@ namespace Fuse.Scripting.V8
 			}
 			else if defined(CPlusPlus)
 			{
-				return extern<byte[]> (length, ptr) "uArray::New(@{byte[]:TypeOf}, $0, $1)";
+				return extern<byte[]> (length, ptr) "uArray::New(@{byte[]:typeof}, $0, $1)";
 			}
 		}
 	}

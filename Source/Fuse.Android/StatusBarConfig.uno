@@ -21,7 +21,7 @@ namespace Fuse.Android
 					boolean _focusWasEditText;
 					public void onGlobalFocusChanged(View oldFocus, View newFocus) {
 						if (_focusWasEditText)
-							@{StatusBarConfig.UpdateStatusBar():Call()};
+							@{StatusBarConfig.UpdateStatusBar():call()};
 
 						_focusWasEditText = newFocus instanceof android.widget.EditText;
 					}

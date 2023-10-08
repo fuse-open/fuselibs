@@ -6,7 +6,7 @@
 #include <Uno-iOS/AppDelegate.h>
 #include <Uno-iOS/Uno-iOS.h>
 
-@{Uno.Rect:IncludeDirective}
+@{Uno.Rect:includeDirective}
 
 @interface uNotificationCenterContext : NSObject
 - (void)uKeyboardWillChangeFrame:(NSNotification *)notification;

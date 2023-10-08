@@ -33,7 +33,7 @@ namespace Android
         @{
             com.fuse.Activity.ResultListener l = new com.fuse.Activity.ResultListener() {
                 @Override public boolean onResult(int requestCode, int resultCode, android.content.Intent data) {
-                    return @{OnReceived(int,int,Java.Object):Call(requestCode, resultCode, data)};
+                    return @{OnReceived(int,int,Java.Object):call(requestCode, resultCode, data)};
                 }
             };
             com.fuse.Activity.subscribeToResults(l);

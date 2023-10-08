@@ -4,21 +4,21 @@ using Uno;
 
 namespace Fuse.Text.Implementation
 {
-	[Require("Source.Include", "harfbuzz/hb.h")]
-	[Require("Source.Include", "harfbuzz/hb-ft.h")]
-	[Require("Source.Include", "hb-ft-cached.h")]
-	[Require("Source.Include", "ft2build.h")]
-	[Require("Source.Declaration", "#include FT_ADVANCES_H")]
-	[extern(APPLE) Require("IncludeDirectory", "@('../harfbuzz/include':Path)")]
-	[extern(ANDROID) Require("IncludeDirectory", "@('../harfbuzz/lib/Android/include':Path)")] // Android use a newer version of Harfbuzz
-	[extern(WIN32) Require("IncludeDirectory", "@('../harfbuzz/lib/Windows/include':Path)")] // Windows use a newer version of Harfbuzz
-	[extern(iOS) Require("Source.Include", "harfbuzz/hb-coretext.h")]
-	[extern(iOS) Require("LinkDirectory", "@('../harfbuzz/lib/iOS':Path)")]
-	[extern((PInvoke || NATIVE) && HOST_MAC) Require("LinkDirectory", "@('../harfbuzz/lib/OSX':Path)")]
-	[extern((PInvoke || NATIVE) && HOST_MAC) Require("Xcode.Framework", "CoreText")]
-	[extern(Android) Require("StaticLibrary", "@('../harfbuzz/lib/Android/lib/${ANDROID_ABI}/libharfbuzz.a':Path)")]
-	[extern((PInvoke || NATIVE) && HOST_WINDOWS) Require("LinkDirectory", "@('../harfbuzz/lib/Windows':Path)")]
-	[extern(!Android) Require("LinkLibrary", "harfbuzz")]
+	[Require("source.include", "harfbuzz/hb.h")]
+	[Require("source.include", "harfbuzz/hb-ft.h")]
+	[Require("source.include", "hb-ft-cached.h")]
+	[Require("source.include", "ft2build.h")]
+	[Require("source.declaration", "#include FT_ADVANCES_H")]
+	[extern(APPLE) Require("includeDirectory", "@('../harfbuzz/include':path)")]
+	[extern(ANDROID) Require("includeDirectory", "@('../harfbuzz/lib/Android/include':path)")] // Android use a newer version of Harfbuzz
+	[extern(WIN32) Require("includeDirectory", "@('../harfbuzz/lib/Windows/include':path)")] // Windows use a newer version of Harfbuzz
+	[extern(iOS) Require("source.include", "harfbuzz/hb-coretext.h")]
+	[extern(iOS) Require("linkDirectory", "@('../harfbuzz/lib/iOS':path)")]
+	[extern((PInvoke || NATIVE) && HOST_MAC) Require("linkDirectory", "@('../harfbuzz/lib/OSX':path)")]
+	[extern((PInvoke || NATIVE) && HOST_MAC) Require("xcode.framework", "CoreText")]
+	[extern(Android) Require("staticLibrary", "@('../harfbuzz/lib/Android/lib/${ANDROID_ABI}/libharfbuzz.a':path)")]
+	[extern((PInvoke || NATIVE) && HOST_WINDOWS) Require("linkDirectory", "@('../harfbuzz/lib/Windows':path)")]
+	[extern(!Android) Require("linkLibrary", "harfbuzz")]
 	[TargetSpecificImplementation]
 	static extern(DOTNET || CPlusPlus || PInvoke) class Harfbuzz
 	{

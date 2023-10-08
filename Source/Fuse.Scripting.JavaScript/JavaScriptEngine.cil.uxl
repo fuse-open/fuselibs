@@ -1,3 +1,3 @@
-<Extensions Backend="CIL">
-	<Define USE_V8 />
-</Extensions>
+<extensions backend="cil">
+	<define USE_V8 />
+</extensions>

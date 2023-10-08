@@ -269,7 +269,7 @@ namespace Fuse.Controls.VideoImpl.Android
 		@}
 
 		[Foreign(Language.Java)]
-		[Require("Source.Include", "uDroid/GLHelper.h")]
+		[Require("source.include", "uDroid/GLHelper.h")]
 		public static bool IsHardwareAccelerated()
 		@{
 			android.view.Window window = com.fuse.Activity.getRootActivity().getWindow();
@@ -302,23 +302,23 @@ namespace Fuse.Controls.VideoImpl.Android
 			player.setAudioStreamType(android.media.AudioManager.STREAM_MUSIC);
 			player.setOnPreparedListener(new android.media.MediaPlayer.OnPreparedListener() {
 				public void onPrepared(android.media.MediaPlayer mp) {
-					@{Fuse.Controls.VideoImpl.Android.MediaPlayer:Of(_this).OnPrepared():Call()};
+					@{Fuse.Controls.VideoImpl.Android.MediaPlayer:of(_this).OnPrepared():call()};
 				}
 			});
 			player.setOnCompletionListener(new android.media.MediaPlayer.OnCompletionListener() {
 				public void onCompletion(android.media.MediaPlayer mp) {
-					@{Fuse.Controls.VideoImpl.Android.MediaPlayer:Of(_this).OnCompletion():Call()};
+					@{Fuse.Controls.VideoImpl.Android.MediaPlayer:of(_this).OnCompletion():call()};
 				}
 			});
 			player.setOnErrorListener(new android.media.MediaPlayer.OnErrorListener() {
 				public boolean onError(android.media.MediaPlayer mp, int what, int extra) {
-					@{Fuse.Controls.VideoImpl.Android.MediaPlayer:Of(_this).OnError(int,int):Call(what, extra)};
+					@{Fuse.Controls.VideoImpl.Android.MediaPlayer:of(_this).OnError(int,int):call(what, extra)};
 					return false;
 				}
 			});
 			player.setOnBufferingUpdateListener(new android.media.MediaPlayer.OnBufferingUpdateListener() {
 				public void onBufferingUpdate(android.media.MediaPlayer mp, int percent) {
-					@{Fuse.Controls.VideoImpl.Android.MediaPlayer:Of(_this).OnBuffer(int):Call(percent)};
+					@{Fuse.Controls.VideoImpl.Android.MediaPlayer:of(_this).OnBuffer(int):call(percent)};
 				}
 			});
 			player.setSurface(((android.view.Surface)surfaceHandle));
@@ -331,7 +331,7 @@ namespace Fuse.Controls.VideoImpl.Android
 			android.graphics.SurfaceTexture surfaceTexture = new android.graphics.SurfaceTexture(glHandle);
 			surfaceTexture.setOnFrameAvailableListener(new android.graphics.SurfaceTexture.OnFrameAvailableListener() {
 				public void onFrameAvailable(android.graphics.SurfaceTexture surfaceTexture) {
-					@{Fuse.Controls.VideoImpl.Android.MediaPlayer:Of(_this).OnFrameAvailable():Call()};
+					@{Fuse.Controls.VideoImpl.Android.MediaPlayer:of(_this).OnFrameAvailable():call()};
 				}
 			});
 			return surfaceTexture;
@@ -398,7 +398,7 @@ namespace Fuse.Controls.VideoImpl.Android
 			catch(Exception e)
 			{
 				android.util.Log.e("Fuse.Video", e.getMessage());
-				@{Fuse.Controls.VideoImpl.Android.MediaPlayer:Of(_this).OnErrorOccurred(string):Call(e.getMessage())};
+				@{Fuse.Controls.VideoImpl.Android.MediaPlayer:of(_this).OnErrorOccurred(string):call(e.getMessage())};
 			}
 			player.prepareAsync();
 		@}
@@ -419,7 +419,7 @@ namespace Fuse.Controls.VideoImpl.Android
 			{
 				// checked exceptions suck (ﾉಥДಥ)ﾉ︵┻━┻･/
 				android.util.Log.e("Fuse.Video", e.getMessage());
-				@{Fuse.Controls.VideoImpl.Android.MediaPlayer:Of(_this).OnErrorOccurred(string):Call(e.getMessage())};
+				@{Fuse.Controls.VideoImpl.Android.MediaPlayer:of(_this).OnErrorOccurred(string):call(e.getMessage())};
 			}
 
 			/// AAAAAAAAAA JAVA
@@ -440,7 +440,7 @@ namespace Fuse.Controls.VideoImpl.Android
 			{
 				// (ﾉಥДಥ)ﾉ︵┻━┻･/
 				android.util.Log.e("Fuse.Video", e.getMessage());
-				@{Fuse.Controls.VideoImpl.Android.MediaPlayer:Of(_this).OnErrorOccurred(string):Call(e.getMessage())};
+				@{Fuse.Controls.VideoImpl.Android.MediaPlayer:of(_this).OnErrorOccurred(string):call(e.getMessage())};
 			}
 
 			player.prepareAsync();

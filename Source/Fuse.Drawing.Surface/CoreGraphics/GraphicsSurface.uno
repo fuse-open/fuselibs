@@ -9,11 +9,11 @@ using Fuse.Drawing.Primitives;
 
 namespace Fuse.Drawing
 {
-	[Require("Xcode.Framework","CoreGraphics")]
-	[Require("Source.Include", "CoreGraphics/CoreGraphicsLib.h")]
-	[extern(!METAL) Require("Xcode.Framework","GLKit")]
-	[extern(OSX) Require("Source.Include","XliPlatform/GL.h")]
-	[extern(iOS) Require("Source.Include","OpenGLES/ES2/gl.h")]
+	[Require("xcode.framework", "CoreGraphics")]
+	[Require("source.include", "CoreGraphics/CoreGraphicsLib.h")]
+	[extern(!METAL) Require("xcode.framework", "GLKit")]
+	[extern(OSX) Require("source.include", "XliPlatform/GL.h")]
+	[extern(iOS) Require("source.include", "OpenGLES/ES2/gl.h")]
 	extern(iOS||OSX)
 	class GraphicsSurface : CoreGraphicsSurface
 	{
@@ -47,7 +47,7 @@ namespace Fuse.Drawing
 				memset(ctx->BitmapData, 0, byteCount);
 				if (!ctx->ResetState())
 				{
-					@{Fuse.Diagnostics.InternalError(string, object, string, int, string):Call(uString::Utf8("Failed to reset  state"), NULL, uString::Utf8(__FILE__), __LINE__, uString::Utf8(""))};
+					@{Fuse.Diagnostics.InternalError(string, object, string, int, string):call(uString::Utf8("Failed to reset  state"), NULL, uString::Utf8(__FILE__), __LINE__, uString::Utf8(""))};
 				}
 				ctx->SaveState();
 				return true;
@@ -63,7 +63,7 @@ namespace Fuse.Drawing
 			ctx->BitmapData = malloc(byteCount);
 			if (!ctx->BitmapData)
 			{
-				@{Fuse.Diagnostics.InternalError(string, object, string, int, string):Call(uString::Utf8("Failed to allocate bitmap data"), NULL, uString::Utf8(__FILE__), __LINE__, uString::Utf8(""))};
+				@{Fuse.Diagnostics.InternalError(string, object, string, int, string):call(uString::Utf8("Failed to allocate bitmap data"), NULL, uString::Utf8(__FILE__), __LINE__, uString::Utf8(""))};
 				return false;
 			}
 			memset(ctx->BitmapData, 0, byteCount);
@@ -72,7 +72,7 @@ namespace Fuse.Drawing
 				bytesPerRow, ctx->ColorSpace, kCGImageAlphaPremultipliedLast);
 			if (!ctx->Context)
 			{
-				@{Fuse.Diagnostics.InternalError(string, object, string, int, string):Call(uString::Utf8("Failed to create CGBitmapContext"), NULL, uString::Utf8(__FILE__), __LINE__, uString::Utf8(""))};
+				@{Fuse.Diagnostics.InternalError(string, object, string, int, string):call(uString::Utf8("Failed to create CGBitmapContext"), NULL, uString::Utf8(__FILE__), __LINE__, uString::Utf8(""))};
 				return false;
 			}
 			ctx->SaveState();

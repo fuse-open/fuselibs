@@ -1,6 +1,6 @@
 #import "ContainerView.h"
 #import "uObjC.Foreign.h"
-@{Fuse.Controls.Native.iOS.DarkMode:IncludeDirective}
+@{Fuse.Controls.Native.iOS.DarkMode:includeDirective}
 
 @implementation ContainerView
 
@@ -10,13 +10,13 @@
 
 		switch(self.traitCollection.userInterfaceStyle) {
 			case UIUserInterfaceStyleUnspecified:
-				@{Fuse.Controls.Native.iOS.DarkMode.changeDarkMode(string):Call(@"Unspecified")};
+				@{Fuse.Controls.Native.iOS.DarkMode.changeDarkMode(string):call(@"Unspecified")};
 				break;
 			case UIUserInterfaceStyleLight:
-				@{Fuse.Controls.Native.iOS.DarkMode.changeDarkMode(string):Call(@"Light")};
+				@{Fuse.Controls.Native.iOS.DarkMode.changeDarkMode(string):call(@"Light")};
 				break;
 			case UIUserInterfaceStyleDark:
-				@{Fuse.Controls.Native.iOS.DarkMode.changeDarkMode(string):Call(@"Dark")};
+				@{Fuse.Controls.Native.iOS.DarkMode.changeDarkMode(string):call(@"Dark")};
 				break;
 		}
 	}
@@ -33,13 +33,13 @@
 
 		switch(self.traitCollection.userInterfaceStyle) {
 			case UIUserInterfaceStyleUnspecified:
-				@{Fuse.Controls.Native.iOS.DarkMode.changeDarkMode(string):Call(@"Unspecified")};
+				@{Fuse.Controls.Native.iOS.DarkMode.changeDarkMode(string):call(@"Unspecified")};
 				break;
 			case UIUserInterfaceStyleLight:
-				@{Fuse.Controls.Native.iOS.DarkMode.changeDarkMode(string):Call(@"Light")};
+				@{Fuse.Controls.Native.iOS.DarkMode.changeDarkMode(string):call(@"Light")};
 				break;
 			case UIUserInterfaceStyleDark:
-				@{Fuse.Controls.Native.iOS.DarkMode.changeDarkMode(string):Call(@"Dark")};
+				@{Fuse.Controls.Native.iOS.DarkMode.changeDarkMode(string):call(@"Dark")};
 				break;
 		}
 	}

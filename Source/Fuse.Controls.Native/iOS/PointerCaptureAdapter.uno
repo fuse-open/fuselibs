@@ -83,7 +83,7 @@ namespace Fuse.Controls.Native.iOS
 	extern(iOS) internal static class UITouchExtensions
 	{
 		[Foreign(Language.ObjC)]
-		[Require("Source.Include", "UIKit/UIKit.h")]
+		[Require("source.include", "UIKit/UIKit.h")]
 		public static TouchPhase GetTouchPhase(this ObjC.Object handle)
 		@{
 			::UITouch* touch = (::UITouch*)handle;
@@ -128,7 +128,7 @@ namespace Fuse.Controls.Native.iOS
 		}
 
 		[Foreign(Language.ObjC)]
-		[Require("Source.Include", "UIKit/UIKit.h")]
+		[Require("source.include", "UIKit/UIKit.h")]
 		static long GetTouchesForViewCount(ObjC.Object handle, ObjC.Object viewHandle)
 		@{
 			::UIEvent* ev = (::UIEvent*)handle;
@@ -137,7 +137,7 @@ namespace Fuse.Controls.Native.iOS
 		@}
 
 		[Foreign(Language.ObjC)]
-		[Require("Source.Include", "UIKit/UIKit.h")]
+		[Require("source.include", "UIKit/UIKit.h")]
 		static ObjC.Object GetTouchForView(ObjC.Object handle, ObjC.Object viewHandle, int index)
 		@{
 			::UIEvent* ev = (::UIEvent*)handle;

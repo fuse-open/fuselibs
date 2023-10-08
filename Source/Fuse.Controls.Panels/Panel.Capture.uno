@@ -13,9 +13,9 @@ namespace Fuse.Controls
 {
 
 	[ForeignInclude(Language.ObjC, "OpenGLES/ES2/glext.h")]
-	[Require("Source.Include", "uImage/Bitmap.h")]
-	[Require("Source.Include", "uImage/Png.h")]
-	[Require("Source.Include", "uBase/Memory.h")]
+	[Require("source.include", "uImage/Bitmap.h")]
+	[Require("source.include", "uImage/Png.h")]
+	[Require("source.include", "uBase/Memory.h")]
 	public partial class Panel
 	{
 		string _imagePath;

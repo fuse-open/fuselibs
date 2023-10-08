@@ -6,8 +6,8 @@ using Uno;
 
 namespace Fuse.Controls.Native.iOS
 {
-	[Require("Source.Include", "UIKit/UIKit.h")]
-	[Require("Source.Include", "iOS/Helpers.h")]
+	[Require("source.include", "UIKit/UIKit.h")]
+	[Require("source.include", "iOS/Helpers.h")]
 	extern(iOS) public class SingleLineTextEdit :
 		LeafView,
 		ITextEdit,
@@ -391,8 +391,8 @@ namespace Fuse.Controls.Native.iOS
 		@}
 	}
 
-	[Require("Source.Include", "UIKit/UIKit.h")]
-	[Require("Source.Include", "iOS/Helpers.h")]
+	[Require("source.include", "UIKit/UIKit.h")]
+	[Require("source.include", "iOS/Helpers.h")]
 	extern(iOS) public class MultiLineTextEdit : LeafView, ITextEdit, INativeFocusListener
 	{
 
@@ -774,7 +774,7 @@ namespace Fuse.Controls.Native.iOS
 
 	}
 
-	[Require("Source.Include", "@{Uno.Platform.iOSDisplay:Include}")]
+	[Require("source.include", "@{Uno.Platform.iOSDisplay:include}")]
 	static extern(iOS) class TextEditSpeedHack
 	{
 		static bool _done;
@@ -785,7 +785,7 @@ namespace Fuse.Controls.Native.iOS
 				return;
 			_done = true;
 			var d = (Uno.Platform.iOSDisplay)Uno.Platform.Displays.MainDisplay;
-			var wobj = extern<ObjC.Object>(d)"@{Uno.Platform.iOSDisplay:Of($0)._handle}";
+			var wobj = extern<ObjC.Object>(d)"@{Uno.Platform.iOSDisplay:of($0)._handle}";
 			RunInner(wobj);
 		}
 

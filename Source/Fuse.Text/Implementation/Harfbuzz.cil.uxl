@@ -1,5 +1,5 @@
-<Extensions Backend="CIL">
-	<Require Condition="HOST_MAC" UnmanagedLibrary="../harfbuzz/lib/OSX/libFuse.Text-PInvoke.dylib" />
-	<Require Condition="HOST_WIN32" UnmanagedLibrary.x86="../harfbuzz/lib/Windows/x86/Fuse.Text-PInvoke.dll" />
-	<Require Condition="HOST_WIN32" UnmanagedLibrary.x64="../harfbuzz/lib/Windows/x64/Fuse.Text-PInvoke.dll" />
-</Extensions>
+<extensions backend="cil">
+	<require condition="HOST_MAC" unmanagedLibrary="../harfbuzz/lib/OSX/libFuse.Text-PInvoke.dylib" />
+	<require condition="HOST_WIN32" unmanagedLibrary.x86="../harfbuzz/lib/Windows/x86/Fuse.Text-PInvoke.dll" />
+	<require condition="HOST_WIN32" unmanagedLibrary.x64="../harfbuzz/lib/Windows/x64/Fuse.Text-PInvoke.dll" />
+</extensions>

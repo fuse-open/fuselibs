@@ -1,11 +1,11 @@
-<Extensions Backend="CPlusPlus" Condition="Android && USE_JAVASCRIPTCORE">
-	<CopyFile HeaderFile="JavaScriptCore/JavaScript.h" />
-	<CopyFile HeaderFile="JavaScriptCore/JavaScriptCore.h" />
-	<CopyFile HeaderFile="JavaScriptCore/JSBase.h" />
-	<CopyFile HeaderFile="JavaScriptCore/JSContextRef.h" />
-	<CopyFile HeaderFile="JavaScriptCore/JSObjectRef.h" />
-	<CopyFile HeaderFile="JavaScriptCore/JSStringRef.h" />
-	<CopyFile HeaderFile="JavaScriptCore/JSTypedArray.h" />
-	<CopyFile HeaderFile="JavaScriptCore/JSValueRef.h" />
-	<CopyFile HeaderFile="JavaScriptCore/WebKitAvailability.h" />
-</Extensions>
+<extensions backend="cplusplus" condition="ANDROID && USE_JAVASCRIPTCORE">
+	<copyFile headerFile="JavaScriptCore/JavaScript.h" />
+	<copyFile headerFile="JavaScriptCore/JavaScriptCore.h" />
+	<copyFile headerFile="JavaScriptCore/JSBase.h" />
+	<copyFile headerFile="JavaScriptCore/JSContextRef.h" />
+	<copyFile headerFile="JavaScriptCore/JSObjectRef.h" />
+	<copyFile headerFile="JavaScriptCore/JSStringRef.h" />
+	<copyFile headerFile="JavaScriptCore/JSTypedArray.h" />
+	<copyFile headerFile="JavaScriptCore/JSValueRef.h" />
+	<copyFile headerFile="JavaScriptCore/WebKitAvailability.h" />
+</extensions>

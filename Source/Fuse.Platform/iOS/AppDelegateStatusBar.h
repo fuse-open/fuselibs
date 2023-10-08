@@ -5,9 +5,9 @@
 #include <Uno-iOS/AppDelegate.h>
 #include <Uno-iOS/Uno-iOS.h>
 
-@(AppDelegate.HeaderFile.Declaration:Join())
+@(appDelegate.headerFile.declaration:join())
 
-@{Uno.Rect:IncludeDirective}
+@{Uno.Rect:includeDirective}
 
 @interface uAppDelegate (StatusBar)
 

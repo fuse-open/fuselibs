@@ -14,8 +14,8 @@ namespace Fuse.Controls.Native.iOS
 		public iOSDrawingPanel([UXParameter("Host")]ICanvasViewHost host) { }
 	}
 
-	[Require("Source.Include","iOS/CanvasViewGroup.h")]
-	[Require("Source.Include","UIKit/UIKit.h")]
+	[Require("source.include", "iOS/CanvasViewGroup.h")]
+	[Require("source.include", "UIKit/UIKit.h")]
 	extern(iOS) internal class iOSDrawingPanel : ViewHandle, ICanvasFactory
 	{
 		[UXConstructor]

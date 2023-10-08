@@ -1,3 +1,3 @@
-<Extensions Backend="CIL">
-	<Require Assembly="System.Drawing.Common/lib/net6.0/System.Drawing.Common.dll" />
-</Extensions>
+<extensions backend="cil">
+	<require assembly="System.Drawing.Common/lib/net6.0/System.Drawing.Common.dll" />
+</extensions>

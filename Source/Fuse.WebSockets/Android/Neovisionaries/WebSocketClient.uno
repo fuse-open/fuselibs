@@ -59,7 +59,7 @@ namespace Neovisionaries
 						receiveDataHandler.run(new com.uno.ByteArray(binary));
 					}
 				});
-				@{WebSocketClient:Of(_this)._webSocket:Set(webSocket)};
+				@{WebSocketClient:of(_this)._webSocket:set(webSocket)};
 			} catch(java.io.IOException e) {
 				error.run(e.getMessage());
 			}
@@ -68,35 +68,35 @@ namespace Neovisionaries
 		[Foreign(Language.Java)]
 		public void Connect()
 		@{
-			WebSocket webSocket = (WebSocket) @{WebSocketClient:Of(_this)._webSocket:Get()};
+			WebSocket webSocket = (WebSocket) @{WebSocketClient:of(_this)._webSocket:get()};
 			webSocket.connectAsynchronously();
 		@}
 
 		[Foreign(Language.Java)]
 		public void Close()
 		@{
-			WebSocket webSocket = (WebSocket) @{WebSocketClient:Of(_this)._webSocket:Get()};
+			WebSocket webSocket = (WebSocket) @{WebSocketClient:of(_this)._webSocket:get()};
 			webSocket.sendClose();
 		@}
 
 		[Foreign(Language.Java)]
 		public void Send(string data)
 		@{
-			WebSocket webSocket = (WebSocket) @{WebSocketClient:Of(_this)._webSocket:Get()};
+			WebSocket webSocket = (WebSocket) @{WebSocketClient:of(_this)._webSocket:get()};
 			webSocket.sendText(data);
 		@}
 
 		[Foreign(Language.Java)]
 		public void Send(byte[] data)
 		@{
-			WebSocket webSocket = (WebSocket) @{WebSocketClient:Of(_this)._webSocket:Get()};
+			WebSocket webSocket = (WebSocket) @{WebSocketClient:of(_this)._webSocket:get()};
 			webSocket.sendBinary(data.copyArray());
 		@}
 
 		[Foreign(Language.Java)]
 		public void SetHeader(string key, string value)
 		@{
-			//WebSocketJava webSocket = (WebSocketJava) @{WebSocketClient:Of(_this)._webSocket:Get()};
+			//WebSocketJava webSocket = (WebSocketJava) @{WebSocketClient:of(_this)._webSocket:get()};
 			// TODO: webSocket.SetHeader(key, value);
 		@}
 

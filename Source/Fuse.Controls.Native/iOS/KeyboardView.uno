@@ -24,7 +24,7 @@ namespace Fuse.Controls.Native.iOS
 		}
 
 		[Foreign(Language.ObjC)]
-		[Require("Source.Include", "iOS/Helpers.h")]
+		[Require("source.include", "iOS/Helpers.h")]
 		static ObjC.Object Create()
 		@{
 			return [[::KeyboardView alloc] init];
@@ -39,21 +39,21 @@ namespace Fuse.Controls.Native.iOS
 		}
 
 		[Foreign(Language.ObjC)]
-		[Require("Source.Include", "iOS/Helpers.h")]
+		[Require("source.include", "iOS/Helpers.h")]
 		static bool GetIsFocusable(ObjC.Object handle)
 		@{
 			return [handle isFocusable];
 		@}
 
 		[Foreign(Language.ObjC)]
-		[Require("Source.Include", "iOS/Helpers.h")]
+		[Require("source.include", "iOS/Helpers.h")]
 		static void SetIsFocusable(ObjC.Object handle, bool value)
 		@{
 			return [handle setIsFocusable:value];
 		@}
 
 		[Foreign(Language.ObjC)]
-		[Require("Source.Include", "iOS/Helpers.h")]
+		[Require("source.include", "iOS/Helpers.h")]
 		static void CopyKeyboardType(ObjC.Object handle, ObjC.Object source)
 		@{
 			::KeyboardView* kv = (::KeyboardView*)handle;

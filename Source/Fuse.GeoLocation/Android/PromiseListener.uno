@@ -79,7 +79,7 @@ namespace Fuse.GeoLocation
 					}
 					else
 					{
-						@{RequestPermissions():Call()};
+						@{RequestPermissions():call()};
 					}
 				}
 			});
@@ -89,7 +89,7 @@ namespace Fuse.GeoLocation
 		static int CheckPermissions()
 		@{
 			//check if background location is explicitly requested (not enabled by default since Android Q)
-			if ("@(Project.Android.GeoLocation.BackgroundLocation.Enabled:ToLower)" == "true"
+			if ("@(project.android.geoLocation.backgroundLocation.enabled:toLower)" == "true"
 				&& android.os.Build.VERSION.SDK_INT >= 29)
 			{
 				if (ContextCompat.checkSelfPermission(com.fuse.Activity.getRootActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED

@@ -7,8 +7,8 @@ using Uno;
 
 namespace Fuse.Text.Implementation
 {
-	[Require("Source.Include", "ft2build.h")]
-	[Require("Source.Declaration", "#include FT_FREETYPE_H")]
+	[Require("source.include", "ft2build.h")]
+	[Require("source.declaration", "#include FT_FREETYPE_H")]
 	static extern(DOTNET || CPlusPlus || PInvoke) class FT_Error
 	{
 		public static void Check(int err)
@@ -35,14 +35,14 @@ namespace Fuse.Text.Implementation
 		@}
 	}
 
-	[Require("Source.Include", "ft2build.h")]
-	[Require("Source.Include", "climits")]
-	[Require("Source.Declaration", "#include FT_FREETYPE_H")]
-	[Require("Source.Declaration", "#include FT_SIZES_H")]
-	[extern(PInvoke) Require("LinkLibrary", "freetype")]
-	[extern(PInvoke) Require("LinkLibrary", "z")]
-	[extern(PInvoke) Require("LinkLibrary", "png")]
-	[extern(PInvoke && OSX) Require("LinkLibrary", "bz2")]
+	[Require("source.include", "ft2build.h")]
+	[Require("source.include", "climits")]
+	[Require("source.declaration", "#include FT_FREETYPE_H")]
+	[Require("source.declaration", "#include FT_SIZES_H")]
+	[extern(PInvoke) Require("linkLibrary", "freetype")]
+	[extern(PInvoke) Require("linkLibrary", "z")]
+	[extern(PInvoke) Require("linkLibrary", "png")]
+	[extern(PInvoke && OSX) Require("linkLibrary", "bz2")]
 	static extern(DOTNET || CPlusPlus || PInvoke) class FreeType
 	{
 		static IntPtr _library;
@@ -64,7 +64,7 @@ namespace Fuse.Text.Implementation
 
 			// TODO
 			/* @{
-				atexit([](){ @{Done():Call()}; });
+				atexit([](){ @{Done():call()}; });
 			@} */
 			_initialized = true;
 		}

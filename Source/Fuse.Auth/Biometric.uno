@@ -9,8 +9,8 @@ using Fuse.Platform;
 
 namespace Fuse
 {
-	[Require("Xcode.Framework","LocalAuthentication")]
-	[Require("Source.Import","LocalAuthentication/LocalAuthentication.h")]
+	[Require("xcode.framework", "LocalAuthentication")]
+	[Require("source.import", "LocalAuthentication/LocalAuthentication.h")]
 	extern(iOS) class IOSBiometric
 	{
 		static Promise<BiometricStatus> _promise;
@@ -63,7 +63,7 @@ namespace Fuse
 	}
 
 
-	[Require("Gradle.Dependency.Implementation", "androidx.biometric:biometric:1.0.1")]
+	[Require("gradle.dependency.implementation", "androidx.biometric:biometric:1.0.1")]
 	[ForeignInclude(Language.Java,
 		"androidx.biometric.BiometricManager",
 		"androidx.biometric.BiometricPrompt",
@@ -96,7 +96,7 @@ namespace Fuse
 		[Foreign(Language.Java)]
 		public extern(Android) static void Authenticate(string reason, Action success, Action<string> fail)
 		@{
-			if (@{IsSupported():Call()}) {
+			if (@{IsSupported():call()}) {
 				Executor executor = ContextCompat.getMainExecutor(com.fuse.Activity.getRootActivity());
 				final BiometricPrompt biometricPrompt = new BiometricPrompt(com.fuse.Activity.getRootActivity(),
 						executor, new BiometricPrompt.AuthenticationCallback() {

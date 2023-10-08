@@ -4,7 +4,7 @@ using Uno.Compiler.ExportTargetInterop;
 
 namespace Fuse.Sensor
 {
-	[Require("Xcode.Framework", "CoreMotion")]
+	[Require("xcode.framework", "CoreMotion")]
 	[ForeignInclude(Language.ObjC, "iOS/sensors/FOAccelerometer.h")]
 	extern(iOS) class IOSAccelerometerProvider : ISensorTracker
 	{
@@ -43,12 +43,12 @@ namespace Fuse.Sensor
 				float x = accelerometerData.acceleration.x * -9.81f;
 				float y = accelerometerData.acceleration.y * -9.81f;
 				float z = accelerometerData.acceleration.z * -9.81f;
-				@{IOSAccelerometerProvider:Of(_this).OnDataChanged(float,float,float):Call(x,y,z)};
+				@{IOSAccelerometerProvider:of(_this).OnDataChanged(float,float,float):call(x,y,z)};
 			}
 			error:^void (NSError* err)
 			{
 				if (err != nil)
-					@{IOSAccelerometerProvider:Of(_this).OnError(string):Call(err.localizedDescription)};
+					@{IOSAccelerometerProvider:of(_this).OnError(string):call(err.localizedDescription)};
 			}
 			];
 			return accel;
@@ -60,7 +60,7 @@ namespace Fuse.Sensor
 			FOAccelerometer* accel = (FOAccelerometer*)handle;
 			bool started = [accel startSensing];
 			if (!started)
-				@{IOSAccelerometerProvider:Of(_this).OnError(string):Call(@"Accelerometer sensor is not available.")};
+				@{IOSAccelerometerProvider:of(_this).OnError(string):call(@"Accelerometer sensor is not available.")};
 		@}
 
 		[Foreign(Language.ObjC)]
@@ -69,7 +69,7 @@ namespace Fuse.Sensor
 			FOAccelerometer* accel = (FOAccelerometer*)handle;
 			bool stopped = [accel stopSensing];
 			if (!stopped)
-				@{IOSAccelerometerProvider:Of(_this).OnError(string):Call(@"Stopping Failed")};
+				@{IOSAccelerometerProvider:of(_this).OnError(string):call(@"Stopping Failed")};
 		@}
 
 		[Foreign(Language.ObjC)]
@@ -90,7 +90,7 @@ namespace Fuse.Sensor
 		}
 	}
 
-	[Require("Xcode.Framework", "CoreMotion")]
+	[Require("xcode.framework", "CoreMotion")]
 	[ForeignInclude(Language.ObjC, "iOS/sensors/FOGyroscope.h")]
 	extern(iOS) class IOSGyroscopeProvider : ISensorTracker
 	{
@@ -125,12 +125,12 @@ namespace Fuse.Sensor
 		@{
 			FOGyroscope* gyro = [[FOGyroscope alloc] initWithBlock:^void (CMGyroData* gyroData)
 			{
-				@{IOSGyroscopeProvider:Of(_this).OnDataChanged(float,float,float):Call(gyroData.rotationRate.x,gyroData.rotationRate.y,gyroData.rotationRate.z)};
+				@{IOSGyroscopeProvider:of(_this).OnDataChanged(float,float,float):call(gyroData.rotationRate.x,gyroData.rotationRate.y,gyroData.rotationRate.z)};
 			}
 			error:^void (NSError* err)
 			{
 				if (err != nil)
-					@{IOSGyroscopeProvider:Of(_this).OnError(string):Call(err.localizedDescription)};
+					@{IOSGyroscopeProvider:of(_this).OnError(string):call(err.localizedDescription)};
 			}
 			];
 			return gyro;
@@ -142,7 +142,7 @@ namespace Fuse.Sensor
 			FOGyroscope* gyro = (FOGyroscope*)handle;
 			bool started = [gyro startSensing];
 			if (!started)
-				@{IOSGyroscopeProvider:Of(_this).OnError(string):Call(@"Gyroscope sensor is not available.")};
+				@{IOSGyroscopeProvider:of(_this).OnError(string):call(@"Gyroscope sensor is not available.")};
 		@}
 
 		[Foreign(Language.ObjC)]
@@ -151,7 +151,7 @@ namespace Fuse.Sensor
 			FOGyroscope* gyro = (FOGyroscope*)handle;
 			bool stopped = [gyro stopSensing];
 			if (!stopped)
-				@{IOSGyroscopeProvider:Of(_this).OnError(string):Call(@"Stopping Failed")};
+				@{IOSGyroscopeProvider:of(_this).OnError(string):call(@"Stopping Failed")};
 		@}
 
 		[Foreign(Language.ObjC)]
@@ -172,7 +172,7 @@ namespace Fuse.Sensor
 		}
 	}
 
-	[Require("Xcode.Framework", "CoreMotion")]
+	[Require("xcode.framework", "CoreMotion")]
 	[ForeignInclude(Language.ObjC, "iOS/sensors/FOMagnetometer.h")]
 	extern(iOS) class IOSMagnetometerProvider : ISensorTracker
 	{
@@ -207,12 +207,12 @@ namespace Fuse.Sensor
 		@{
 			FOMagnetometer* magneto = [[FOMagnetometer alloc] initWithBlock:^void (CMMagnetometerData* magnetoData)
 			{
-				@{IOSMagnetometerProvider:Of(_this).OnDataChanged(float,float,float):Call(magnetoData.magneticField.x,magnetoData.magneticField.y,magnetoData.magneticField.z)};
+				@{IOSMagnetometerProvider:of(_this).OnDataChanged(float,float,float):call(magnetoData.magneticField.x,magnetoData.magneticField.y,magnetoData.magneticField.z)};
 			}
 			error:^void (NSError* err)
 			{
 				if (err != nil)
-					@{IOSMagnetometerProvider:Of(_this).OnError(string):Call(err.localizedDescription)};
+					@{IOSMagnetometerProvider:of(_this).OnError(string):call(err.localizedDescription)};
 			}
 			];
 			return magneto;
@@ -224,7 +224,7 @@ namespace Fuse.Sensor
 			FOMagnetometer* magneto = (FOMagnetometer*)handle;
 			bool started = [magneto startSensing];
 			if (!started)
-				@{IOSMagnetometerProvider:Of(_this).OnError(string):Call(@"Magnetometer sensor is not available.")};
+				@{IOSMagnetometerProvider:of(_this).OnError(string):call(@"Magnetometer sensor is not available.")};
 		@}
 
 		[Foreign(Language.ObjC)]
@@ -233,7 +233,7 @@ namespace Fuse.Sensor
 			FOMagnetometer* magneto = (FOMagnetometer*)handle;
 			bool stopped = [magneto stopSensing];
 			if (!stopped)
-				@{IOSMagnetometerProvider:Of(_this).OnError(string):Call(@"Stopping Failed")};
+				@{IOSMagnetometerProvider:of(_this).OnError(string):call(@"Stopping Failed")};
 		@}
 
 		[Foreign(Language.ObjC)]
@@ -254,7 +254,7 @@ namespace Fuse.Sensor
 		}
 	}
 
-	[Require("Xcode.Framework", "CoreMotion")]
+	[Require("xcode.framework", "CoreMotion")]
 	[ForeignInclude(Language.ObjC, "iOS/sensors/FODeviceMotion.h")]
 	extern(iOS) class IOSGravityProvider : ISensorTracker
 	{
@@ -289,12 +289,12 @@ namespace Fuse.Sensor
 		@{
 			FODeviceMotion* motion = [[FODeviceMotion alloc] initWithBlock:^void (CMDeviceMotion* deviceMotionData)
 			{
-				@{IOSGravityProvider:Of(_this).OnDataChanged(float,float,float):Call(deviceMotionData.gravity.x,deviceMotionData.gravity.y,deviceMotionData.gravity.z)};
+				@{IOSGravityProvider:of(_this).OnDataChanged(float,float,float):call(deviceMotionData.gravity.x,deviceMotionData.gravity.y,deviceMotionData.gravity.z)};
 			}
 			error:^void (NSError* err)
 			{
 				if (err != nil)
-					@{IOSGravityProvider:Of(_this).OnError(string):Call(err.localizedDescription)};
+					@{IOSGravityProvider:of(_this).OnError(string):call(err.localizedDescription)};
 			}
 			];
 			return motion;
@@ -306,7 +306,7 @@ namespace Fuse.Sensor
 			FODeviceMotion* motion = (FODeviceMotion*)handle;
 			bool started = [motion startSensing];
 			if (!started)
-				@{IOSGravityProvider:Of(_this).OnError(string):Call(@"Gravity sensor is not available.")};
+				@{IOSGravityProvider:of(_this).OnError(string):call(@"Gravity sensor is not available.")};
 		@}
 
 		[Foreign(Language.ObjC)]
@@ -315,7 +315,7 @@ namespace Fuse.Sensor
 			FODeviceMotion* motion = (FODeviceMotion*)handle;
 			bool stopped = [motion stopSensing];
 			if (!stopped)
-				@{IOSGravityProvider:Of(_this).OnError(string):Call(@"Stopping Failed")};
+				@{IOSGravityProvider:of(_this).OnError(string):call(@"Stopping Failed")};
 		@}
 
 		[Foreign(Language.ObjC)]
@@ -336,7 +336,7 @@ namespace Fuse.Sensor
 		}
 	}
 
-	[Require("Xcode.Framework", "CoreMotion")]
+	[Require("xcode.framework", "CoreMotion")]
 	[ForeignInclude(Language.ObjC, "iOS/sensors/FODeviceMotion.h")]
 	extern(iOS) class IOSUserAccelerationProvider : ISensorTracker
 	{
@@ -375,12 +375,12 @@ namespace Fuse.Sensor
 				float x = deviceMotionData.userAcceleration.x * -1.0f;
 				float y = deviceMotionData.userAcceleration.y * -1.0f;
 				float z = deviceMotionData.userAcceleration.z * -1.0f;
-				@{IOSUserAccelerationProvider:Of(_this).OnDataChanged(float,float,float):Call(x,y,z)};
+				@{IOSUserAccelerationProvider:of(_this).OnDataChanged(float,float,float):call(x,y,z)};
 			}
 			error:^void (NSError* err)
 			{
 				if (err != nil)
-					@{IOSUserAccelerationProvider:Of(_this).OnError(string):Call(err.localizedDescription)};
+					@{IOSUserAccelerationProvider:of(_this).OnError(string):call(err.localizedDescription)};
 			}
 			];
 			return motion;
@@ -392,7 +392,7 @@ namespace Fuse.Sensor
 			FODeviceMotion* motion = (FODeviceMotion*)handle;
 			bool started = [motion startSensing];
 			if (!started)
-				@{IOSUserAccelerationProvider:Of(_this).OnError(string):Call(@"User Accelerometer sensor is not available.")};
+				@{IOSUserAccelerationProvider:of(_this).OnError(string):call(@"User Accelerometer sensor is not available.")};
 		@}
 
 		[Foreign(Language.ObjC)]
@@ -401,7 +401,7 @@ namespace Fuse.Sensor
 			FODeviceMotion* motion = (FODeviceMotion*)handle;
 			bool stopped = [motion stopSensing];
 			if (!stopped)
-				@{IOSUserAccelerationProvider:Of(_this).OnError(string):Call(@"Stopping Failed")};
+				@{IOSUserAccelerationProvider:of(_this).OnError(string):call(@"Stopping Failed")};
 		@}
 
 		[Foreign(Language.ObjC)]
@@ -422,7 +422,7 @@ namespace Fuse.Sensor
 		}
 	}
 
-	[Require("Xcode.Framework", "CoreMotion")]
+	[Require("xcode.framework", "CoreMotion")]
 	[ForeignInclude(Language.ObjC, "iOS/sensors/FODeviceMotion.h")]
 	extern(iOS) class IOSRotationProvider : ISensorTracker
 	{
@@ -457,12 +457,12 @@ namespace Fuse.Sensor
 		@{
 			FODeviceMotion* motion = [[FODeviceMotion alloc] initWithBlock:^void (CMDeviceMotion* deviceMotionData)
 			{
-				@{IOSRotationProvider:Of(_this).OnDataChanged(float,float,float):Call(deviceMotionData.rotationRate.x,deviceMotionData.rotationRate.y,deviceMotionData.rotationRate.z)};
+				@{IOSRotationProvider:of(_this).OnDataChanged(float,float,float):call(deviceMotionData.rotationRate.x,deviceMotionData.rotationRate.y,deviceMotionData.rotationRate.z)};
 			}
 			error:^void (NSError* err)
 			{
 				if (err != nil)
-					@{IOSRotationProvider:Of(_this).OnError(string):Call(err.localizedDescription)};
+					@{IOSRotationProvider:of(_this).OnError(string):call(err.localizedDescription)};
 			}
 			];
 			return motion;
@@ -474,7 +474,7 @@ namespace Fuse.Sensor
 			FODeviceMotion* motion = (FODeviceMotion*)handle;
 			bool started = [motion startSensing];
 			if (!started)
-				@{IOSRotationProvider:Of(_this).OnError(string):Call(@"Rotation sensor is not available.")};
+				@{IOSRotationProvider:of(_this).OnError(string):call(@"Rotation sensor is not available.")};
 		@}
 
 		[Foreign(Language.ObjC)]
@@ -483,7 +483,7 @@ namespace Fuse.Sensor
 			FODeviceMotion* motion = (FODeviceMotion*)handle;
 			bool stopped = [motion stopSensing];
 			if (!stopped)
-				@{IOSRotationProvider:Of(_this).OnError(string):Call(@"Stopping Failed")};
+				@{IOSRotationProvider:of(_this).OnError(string):call(@"Stopping Failed")};
 		@}
 
 		[Foreign(Language.ObjC)]
@@ -504,7 +504,7 @@ namespace Fuse.Sensor
 		}
 	}
 
-	[Require("Xcode.Framework", "CoreMotion")]
+	[Require("xcode.framework", "CoreMotion")]
 	[ForeignInclude(Language.ObjC, "iOS/sensors/FOPedometer.h")]
 	extern(iOS) class IOSPedometerProvider : ISensorTracker
 	{
@@ -539,12 +539,12 @@ namespace Fuse.Sensor
 		@{
 			FOPedometer* pedometer = [[FOPedometer alloc] initWithBlock:^void (CMPedometerData* pedometerData)
 			{
-				@{IOSPedometerProvider:Of(_this).OnDataChanged(float,float,float):Call([pedometerData.numberOfSteps floatValue],0.0f,0.0f)};
+				@{IOSPedometerProvider:of(_this).OnDataChanged(float,float,float):call([pedometerData.numberOfSteps floatValue],0.0f,0.0f)};
 			}
 			error:^void (NSError* err)
 			{
 				if (err != nil)
-					@{IOSPedometerProvider:Of(_this).OnError(string):Call(err.localizedDescription)};
+					@{IOSPedometerProvider:of(_this).OnError(string):call(err.localizedDescription)};
 			}
 			];
 			return pedometer;
@@ -556,7 +556,7 @@ namespace Fuse.Sensor
 			FOPedometer* pedometer = (FOPedometer*)handle;
 			bool started = [pedometer startSensing];
 			if (!started)
-				@{IOSPedometerProvider:Of(_this).OnError(string):Call(@"Step counter sensor is not available.")};
+				@{IOSPedometerProvider:of(_this).OnError(string):call(@"Step counter sensor is not available.")};
 		@}
 
 		[Foreign(Language.ObjC)]
@@ -565,7 +565,7 @@ namespace Fuse.Sensor
 			FOPedometer* pedometer = (FOPedometer*)handle;
 			bool stopped = [pedometer stopSensing];
 			if (!stopped)
-				@{IOSPedometerProvider:Of(_this).OnError(string):Call(@"Stopping Failed")};
+				@{IOSPedometerProvider:of(_this).OnError(string):call(@"Stopping Failed")};
 		@}
 
 		[Foreign(Language.ObjC)]
@@ -586,7 +586,7 @@ namespace Fuse.Sensor
 		}
 	}
 
-	[Require("Xcode.Framework", "SystemConfiguration")]
+	[Require("xcode.framework", "SystemConfiguration")]
 	[ForeignInclude(Language.ObjC, "iOS/sensors/FOPressure.h")]
 	extern(iOS) class IOSPressureProvider : ISensorTracker
 	{
@@ -623,12 +623,12 @@ namespace Fuse.Sensor
 			{
 				// default ios pressure data in kPa, we normalize pressure data to match android value in hPa / mbar
 				float pressure = [altitudeData.pressure floatValue]*10;
-				@{IOSPressureProvider:Of(_this).OnDataChanged(float,float,float):Call(pressure,[altitudeData.relativeAltitude floatValue],0.0f)};
+				@{IOSPressureProvider:of(_this).OnDataChanged(float,float,float):call(pressure,[altitudeData.relativeAltitude floatValue],0.0f)};
 			}
 			error:^void (NSError* err)
 			{
 				if (err != nil)
-					@{IOSPressureProvider:Of(_this).OnError(string):Call(err.localizedDescription)};
+					@{IOSPressureProvider:of(_this).OnError(string):call(err.localizedDescription)};
 			}
 			];
 			return pressure;
@@ -640,7 +640,7 @@ namespace Fuse.Sensor
 			FOPressure* pressure = (FOPressure*)handle;
 			bool started = [pressure startSensing];
 			if (!started)
-				@{IOSPressureProvider:Of(_this).OnError(string):Call(@"Pressure sensor is not available.")};
+				@{IOSPressureProvider:of(_this).OnError(string):call(@"Pressure sensor is not available.")};
 		@}
 
 		[Foreign(Language.ObjC)]
@@ -649,7 +649,7 @@ namespace Fuse.Sensor
 			FOPressure* pressure = (FOPressure*)handle;
 			bool stopped = [pressure stopSensing];
 			if (!stopped)
-				@{IOSPressureProvider:Of(_this).OnError(string):Call(@"Stopping Failed")};
+				@{IOSPressureProvider:of(_this).OnError(string):call(@"Stopping Failed")};
 		@}
 
 		[Foreign(Language.ObjC)]
@@ -704,12 +704,12 @@ namespace Fuse.Sensor
 		@{
 			FOBattery* battery = [[FOBattery alloc] initWithBlock:^void (FOBatteryData* batteryData)
 			{
-				@{IOSBatteryProvider:Of(_this).OnDataChanged(ObjC.Object):Call(batteryData)};
+				@{IOSBatteryProvider:of(_this).OnDataChanged(ObjC.Object):call(batteryData)};
 			}
 			error:^void (NSError* err)
 			{
 				if (err != nil)
-					@{IOSBatteryProvider:Of(_this).OnError(string):Call(err.localizedDescription)};
+					@{IOSBatteryProvider:of(_this).OnError(string):call(err.localizedDescription)};
 			}
 			];
 			return battery;
@@ -721,7 +721,7 @@ namespace Fuse.Sensor
 			FOBattery* battery = (FOBattery*)handle;
 			bool started = [battery startSensing];
 			if (!started)
-				@{IOSBatteryProvider:Of(_this).OnError(string):Call(@"Battery monitoring could not be started.")};
+				@{IOSBatteryProvider:of(_this).OnError(string):call(@"Battery monitoring could not be started.")};
 		@}
 
 		[Foreign(Language.ObjC)]
@@ -730,7 +730,7 @@ namespace Fuse.Sensor
 			FOBattery* battery = (FOBattery*)handle;
 			bool stopped = [battery stopSensing];
 			if (!stopped)
-				@{IOSBatteryProvider:Of(_this).OnError(string):Call(@"Stopping Failed")};
+				@{IOSBatteryProvider:of(_this).OnError(string):call(@"Stopping Failed")};
 		@}
 
 		[Foreign(Language.ObjC)]
@@ -751,7 +751,7 @@ namespace Fuse.Sensor
 		}
 	}
 
-	[Require("Xcode.Framework", "SystemConfiguration")]
+	[Require("xcode.framework", "SystemConfiguration")]
 	[ForeignInclude(Language.ObjC, "iOS/sensors/FOConnection.h", "iOS/data/FOConnectionStateData.h")]
 	extern(iOS) class IOSConnectionStateProvider : ISensorTracker
 	{
@@ -786,12 +786,12 @@ namespace Fuse.Sensor
 		@{
 			FOConnection* connection = [[FOConnection alloc] initWithBlock:^void (FOConnectionStateData * status)
 			{
-				@{IOSConnectionStateProvider:Of(_this).OnDataChanged(ObjC.Object):Call(status)};
+				@{IOSConnectionStateProvider:of(_this).OnDataChanged(ObjC.Object):call(status)};
 			}
 			error:^void (NSError* err)
 			{
 				if (err != nil)
-					@{IOSConnectionStateProvider:Of(_this).OnError(string):Call(err.localizedDescription)};
+					@{IOSConnectionStateProvider:of(_this).OnError(string):call(err.localizedDescription)};
 			}
 			];
 			return connection;
@@ -803,7 +803,7 @@ namespace Fuse.Sensor
 			FOConnection* conn = (FOConnection*)handle;
 			bool started = [conn startSensing];
 			if (!started)
-				@{IOSConnectionStateProvider:Of(_this).OnError(string):Call(@"Connection State monitoring could not be started.")};
+				@{IOSConnectionStateProvider:of(_this).OnError(string):call(@"Connection State monitoring could not be started.")};
 		@}
 
 		[Foreign(Language.ObjC)]
@@ -812,7 +812,7 @@ namespace Fuse.Sensor
 			FOConnection* conn = (FOConnection*)handle;
 			bool stopped = [conn stopSensing];
 			if (!stopped)
-				@{IOSConnectionStateProvider:Of(_this).OnError(string):Call(@"Stopping Failed")};
+				@{IOSConnectionStateProvider:of(_this).OnError(string):call(@"Stopping Failed")};
 		@}
 
 		[Foreign(Language.ObjC)]

@@ -115,7 +115,7 @@ namespace Fuse.Text.Implementation
 			::CGFontRelease((CGFontRef)cgFont);
 		@}
 
-		[Require("Source.Include", "@{Math:Include}")]
+		[Require("source.include", "@{Math:include}")]
 		byte[] Render(IntPtr rawFont, uint index, out int2 size, out float2 offset)
 		@{
 			CTFontRef font = (CTFontRef)$0;
@@ -124,18 +124,18 @@ namespace Fuse.Text.Implementation
 
 			CTFontGetBoundingRectsForGlyphs(font, kCTFontDefaultOrientation, &glyph, &boundingRect, 1);
 
-			int width = (int)@{Math.Ceil(float):Call(boundingRect.size.width)} + 2;
-			int height = (int)@{Math.Ceil(float):Call(boundingRect.size.height)} + 2;
+			int width = (int)@{Math.Ceil(float):call(boundingRect.size.width)} + 2;
+			int height = (int)@{Math.Ceil(float):call(boundingRect.size.height)} + 2;
 			CGPoint originFloor = CGPointMake(
-				@{Math.Floor(float):Call(boundingRect.origin.x)} - 1.0f,
-				@{Math.Floor(float):Call(boundingRect.origin.y)} - 1.0f);
+				@{Math.Floor(float):call(boundingRect.origin.x)} - 1.0f,
+				@{Math.Floor(float):call(boundingRect.origin.y)} - 1.0f);
 
-			*$2 = @{int2(int, int):New(width, height)};
-			*$3 = @{float2(float, float):New(originFloor.x, originFloor.y)};
+			*$2 = @{int2(int, int):new(width, height)};
+			*$3 = @{float2(float, float):new(originFloor.x, originFloor.y)};
 
 			int bytesPerRow = width * 4;
 			int byteSize = bytesPerRow * height;
-			@{byte[]} data = @{byte[]:New(byteSize)};
+			@{byte[]} data = @{byte[]:new(byteSize)};
 
 			if (width * height > 4)
 			{

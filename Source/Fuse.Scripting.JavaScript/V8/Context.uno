@@ -7,8 +7,8 @@ using Uno.Threading;
 
 namespace Fuse.Scripting.V8
 {
-	[Require("Header.Include", "include/V8Simple.h")]
-	[Require("Source.Declaration", "#undef GetMessage")]
+	[Require("header.include", "include/V8Simple.h")]
+	[Require("source.declaration", "#undef GetMessage")]
 	public extern(USE_V8) class Context: Fuse.Scripting.JavaScript.JSContext
 	{
 		internal Simple.JSContext _context;

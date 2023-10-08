@@ -157,7 +157,7 @@ namespace Fuse.Scripting.Duktape
 				throw new Exception("Duktape: Unable to get data from ArrayBuffer");
 			}
 			DukContext.pop();
-			return extern<byte[]> (length, ptr) "uArray::New(@{byte[]:TypeOf}, $0, $1)";
+			return extern<byte[]> (length, ptr) "uArray::New(@{byte[]:typeof}, $0, $1)";
 		}
 
 		internal object IndexToObject(int index)

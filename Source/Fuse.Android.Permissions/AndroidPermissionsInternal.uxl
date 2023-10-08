@@ -1,631 +1,631 @@
-<Extensions Backend="CPlusPlus" Condition="Android">
-    <Using Namespace="Fuse.Android.Permissions.Internal" />
-    <ProcessFile Name="Permissions.java" TargetName="@(Java.SourceDirectory)/com/fuse/Permissions.java" />
-    <Require Activity.OnPermissionsResult="com.fuse.Permissions.onRequestPermissionsResult(requestCode, permissions, grantResults);" />
-    <Type Name="Android">
-        <Method Signature="_access_checkin_properties():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.ACCESS_CHECKIN_PROPERTIES" />
-        </Method>
+<extensions backend="cplusplus" condition="ANDROID">
+    <using namespace="Fuse.Android.Permissions.Internal" />
+    <processFile name="Permissions.java" targetName="@(java.sourceDirectory)/com/fuse/Permissions.java" />
+    <require activity.onPermissionsResult="com.fuse.Permissions.onRequestPermissionsResult(requestCode, permissions, grantResults);" />
+    <type name="Android">
+        <method signature="_access_checkin_properties():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.ACCESS_CHECKIN_PROPERTIES" />
+        </method>
 
-        <Method Signature="_access_background_location():Fuse.Android.Permissions.PlatformPermission">
+        <method signature="_access_background_location():Fuse.Android.Permissions.PlatformPermission">
             <!-- Disabled due to errors when publishing on Google Play. Please add this permission manually if really needed. -->
-            <!-- <Require AndroidManifest.Permission="android.permission.ACCESS_BACKGROUND_LOCATION" /> -->
-        </Method>
-
-        <Method Signature="_access_coarse_location():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.ACCESS_COARSE_LOCATION" />
-        </Method>
-
-        <Method Signature="_access_fine_location():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.ACCESS_FINE_LOCATION" />
-        </Method>
-
-        <Method Signature="_access_location_extra_commands():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
-        </Method>
-
-        <Method Signature="_access_mock_location():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.ACCESS_MOCK_LOCATION" />
-        </Method>
-
-        <Method Signature="_access_network_state():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.ACCESS_NETWORK_STATE" />
-        </Method>
-
-        <Method Signature="_access_surface_flinger():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.ACCESS_SURFACE_FLINGER" />
-        </Method>
-
-        <Method Signature="_access_wifi_state():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.ACCESS_WIFI_STATE" />
-        </Method>
-
-        <Method Signature="_account_manager():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.ACCOUNT_MANAGER" />
-        </Method>
-
-        <Method Signature="_add_voicemail():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.ADD_VOICEMAIL" />
-        </Method>
-
-        <Method Signature="_authenticate_accounts():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.AUTHENTICATE_ACCOUNTS" />
-        </Method>
-
-        <Method Signature="_battery_stats():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.BATTERY_STATS" />
-        </Method>
-
-        <Method Signature="_bind_accessibility_service():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.BIND_ACCESSIBILITY_SERVICE" />
-        </Method>
-
-        <Method Signature="_bind_appwidget():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.BIND_APPWIDGET" />
-        </Method>
-
-        <Method Signature="_bind_device_admin():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.BIND_DEVICE_ADMIN" />
-        </Method>
-
-        <Method Signature="_bind_dream_service():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.BIND_DREAM_SERVICE" />
-        </Method>
-
-        <Method Signature="_bind_input_method():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.BIND_INPUT_METHOD" />
-        </Method>
-
-        <Method Signature="_bind_nfc_service():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.BIND_NFC_SERVICE" />
-        </Method>
-
-        <Method Signature="_bind_notification_listener_service():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE" />
-        </Method>
-
-        <Method Signature="_bind_print_service():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.BIND_PRINT_SERVICE" />
-        </Method>
-
-        <Method Signature="_bind_remoteviews():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.BIND_REMOTEVIEWS" />
-        </Method>
-
-        <Method Signature="_bind_text_service():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.BIND_TEXT_SERVICE" />
-        </Method>
-
-        <Method Signature="_bind_tv_input():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.BIND_TV_INPUT" />
-        </Method>
-
-        <Method Signature="_bind_voice_interaction():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.BIND_VOICE_INTERACTION" />
-        </Method>
-
-        <Method Signature="_bind_vpn_service():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.BIND_VPN_SERVICE" />
-        </Method>
-
-        <Method Signature="_bind_wallpaper():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.BIND_WALLPAPER" />
-        </Method>
-
-        <Method Signature="_bluetooth():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.BLUETOOTH" />
-        </Method>
-
-        <Method Signature="_bluetooth_admin():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.BLUETOOTH_ADMIN" />
-        </Method>
-
-        <Method Signature="_bluetooth_privileged():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.BLUETOOTH_PRIVILEGED" />
-        </Method>
-
-        <Method Signature="_body_sensors():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.BODY_SENSORS" />
-        </Method>
-
-        <Method Signature="_brick():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.BRICK" />
-        </Method>
-
-        <Method Signature="_broadcast_package_removed():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.BROADCAST_PACKAGE_REMOVED" />
-        </Method>
-
-        <Method Signature="_broadcast_sms():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.BROADCAST_SMS" />
-        </Method>
-
-        <Method Signature="_broadcast_sticky():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.BROADCAST_STICKY" />
-        </Method>
-
-        <Method Signature="_broadcast_wap_push():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.BROADCAST_WAP_PUSH" />
-        </Method>
-
-        <Method Signature="_call_phone():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.CALL_PHONE" />
-        </Method>
-
-        <Method Signature="_call_privileged():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.CALL_PRIVILEGED" />
-        </Method>
-
-        <Method Signature="_camera():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.CAMERA" />
-        </Method>
-
-        <Method Signature="_capture_audio_output():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.CAPTURE_AUDIO_OUTPUT" />
-        </Method>
-
-        <Method Signature="_capture_secure_video_output():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.CAPTURE_SECURE_VIDEO_OUTPUT" />
-        </Method>
-
-        <Method Signature="_capture_video_output():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.CAPTURE_VIDEO_OUTPUT" />
-        </Method>
-
-        <Method Signature="_change_component_enabled_state():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.CHANGE_COMPONENT_ENABLED_STATE" />
-        </Method>
-
-        <Method Signature="_change_configuration():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.CHANGE_CONFIGURATION" />
-        </Method>
-
-        <Method Signature="_change_network_state():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.CHANGE_NETWORK_STATE" />
-        </Method>
-
-        <Method Signature="_change_wifi_multicast_state():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
-        </Method>
-
-        <Method Signature="_change_wifi_state():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.CHANGE_WIFI_STATE" />
-        </Method>
-
-        <Method Signature="_clear_app_cache():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.CLEAR_APP_CACHE" />
-        </Method>
-
-        <Method Signature="_clear_app_user_data():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.CLEAR_APP_USER_DATA" />
-        </Method>
-
-        <Method Signature="_control_location_updates():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.CONTROL_LOCATION_UPDATES" />
-        </Method>
-
-        <Method Signature="_delete_cache_files():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.DELETE_CACHE_FILES" />
-        </Method>
-
-        <Method Signature="_delete_packages():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.DELETE_PACKAGES" />
-        </Method>
-
-        <Method Signature="_device_power():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.DEVICE_POWER" />
-        </Method>
-
-        <Method Signature="_diagnostic():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.DIAGNOSTIC" />
-        </Method>
-
-        <Method Signature="_disable_keyguard():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.DISABLE_KEYGUARD" />
-        </Method>
-
-        <Method Signature="_dump():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.DUMP" />
-        </Method>
-
-        <Method Signature="_expand_status_bar():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.EXPAND_STATUS_BAR" />
-        </Method>
-
-        <Method Signature="_factory_test():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.FACTORY_TEST" />
-        </Method>
-
-        <Method Signature="_flashlight():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.FLASHLIGHT" />
-        </Method>
-
-        <Method Signature="_force_back():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.FORCE_BACK" />
-        </Method>
-
-        <Method Signature="_get_accounts():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.GET_ACCOUNTS" />
-        </Method>
-
-        <Method Signature="_get_package_size():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.GET_PACKAGE_SIZE" />
-        </Method>
-
-        <Method Signature="_get_tasks():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.GET_TASKS" />
-        </Method>
-
-        <Method Signature="_get_top_activity_info():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.GET_TOP_ACTIVITY_INFO" />
-        </Method>
-
-        <Method Signature="_global_search():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.GLOBAL_SEARCH" />
-        </Method>
-
-        <Method Signature="_hardware_test():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.HARDWARE_TEST" />
-        </Method>
-
-        <Method Signature="_inject_events():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.INJECT_EVENTS" />
-        </Method>
-
-        <Method Signature="_install_location_provider():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.INSTALL_LOCATION_PROVIDER" />
-        </Method>
-
-        <Method Signature="_install_packages():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.INSTALL_PACKAGES" />
-        </Method>
-
-        <Method Signature="_install_shortcut():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.INSTALL_SHORTCUT" />
-        </Method>
-
-        <Method Signature="_internal_system_window():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.INTERNAL_SYSTEM_WINDOW" />
-        </Method>
-
-        <Method Signature="_internet():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.INTERNET" />
-        </Method>
-
-        <Method Signature="_kill_background_processes():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.KILL_BACKGROUND_PROCESSES" />
-        </Method>
-
-        <Method Signature="_location_hardware():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.LOCATION_HARDWARE" />
-        </Method>
-
-        <Method Signature="_manage_accounts():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.MANAGE_ACCOUNTS" />
-        </Method>
-
-        <Method Signature="_manage_app_tokens():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.MANAGE_APP_TOKENS" />
-        </Method>
-
-        <Method Signature="_manage_documents():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.MANAGE_DOCUMENTS" />
-        </Method>
-
-        <Method Signature="_master_clear():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.MASTER_CLEAR" />
-        </Method>
-
-        <Method Signature="_media_content_control():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.MEDIA_CONTENT_CONTROL" />
-        </Method>
-
-        <Method Signature="_modify_audio_settings():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.MODIFY_AUDIO_SETTINGS" />
-        </Method>
-
-        <Method Signature="_modify_phone_state():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.MODIFY_PHONE_STATE" />
-        </Method>
-
-        <Method Signature="_mount_format_filesystems():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.MOUNT_FORMAT_FILESYSTEMS" />
-        </Method>
-
-        <Method Signature="_mount_unmount_filesystems():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
-        </Method>
-
-        <Method Signature="_nfc():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.NFC" />
-        </Method>
-
-        <Method Signature="_persistent_activity():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.PERSISTENT_ACTIVITY" />
-        </Method>
-
-        <Method Signature="_process_outgoing_calls():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.PROCESS_OUTGOING_CALLS" />
-        </Method>
-
-        <Method Signature="_read_calendar():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.READ_CALENDAR" />
-        </Method>
-
-        <Method Signature="_read_call_log():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.READ_CALL_LOG" />
-        </Method>
-
-        <Method Signature="_read_contacts():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.READ_CONTACTS" />
-        </Method>
-
-        <Method Signature="_read_external_storage():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.READ_EXTERNAL_STORAGE" />
-        </Method>
-
-        <Method Signature="_read_media_images():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.READ_MEDIA_IMAGES" />
-        </Method>
-
-        <Method Signature="_read_media_audio():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.READ_MEDIA_AUDIO" />
-        </Method>
-
-        <Method Signature="_read_media_video():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.READ_MEDIA_VIDEO" />
-        </Method>
-
-        <Method Signature="_read_frame_buffer():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.READ_FRAME_BUFFER" />
-        </Method>
-
-        <Method Signature="_read_history_bookmarks():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.READ_HISTORY_BOOKMARKS" />
-        </Method>
-
-        <Method Signature="_read_input_state():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.READ_INPUT_STATE" />
-        </Method>
-
-        <Method Signature="_read_logs():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.READ_LOGS" />
-        </Method>
-
-        <Method Signature="_read_phone_state():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.READ_PHONE_STATE" />
-        </Method>
-
-        <Method Signature="_read_profile():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.READ_PROFILE" />
-        </Method>
-
-        <Method Signature="_read_sms():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.READ_SMS" />
-        </Method>
-
-        <Method Signature="_read_social_stream():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.READ_SOCIAL_STREAM" />
-        </Method>
-
-        <Method Signature="_read_sync_settings():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.READ_SYNC_SETTINGS" />
-        </Method>
-
-        <Method Signature="_read_sync_stats():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.READ_SYNC_STATS" />
-        </Method>
-
-        <Method Signature="_read_user_dictionary():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.READ_USER_DICTIONARY" />
-        </Method>
-
-        <Method Signature="_read_voicemail():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.READ_VOICEMAIL" />
-        </Method>
-
-        <Method Signature="_reboot():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.REBOOT" />
-        </Method>
-
-        <Method Signature="_receive_boot_completed():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.RECEIVE_BOOT_COMPLETED" />
-        </Method>
-
-        <Method Signature="_receive_mms():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.RECEIVE_MMS" />
-        </Method>
-
-        <Method Signature="_receive_sms():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.RECEIVE_SMS" />
-        </Method>
-
-        <Method Signature="_receive_wap_push():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.RECEIVE_WAP_PUSH" />
-        </Method>
-
-        <Method Signature="_record_audio():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.RECORD_AUDIO" />
-        </Method>
-
-        <Method Signature="_reorder_tasks():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.REORDER_TASKS" />
-        </Method>
-
-        <Method Signature="_restart_packages():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.RESTART_PACKAGES" />
-        </Method>
-
-        <Method Signature="_send_respond_via_message():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.SEND_RESPOND_VIA_MESSAGE" />
-        </Method>
-
-        <Method Signature="_send_sms():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.SEND_SMS" />
-        </Method>
-
-        <Method Signature="_set_activity_watcher():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.SET_ACTIVITY_WATCHER" />
-        </Method>
-
-        <Method Signature="_set_alarm():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.SET_ALARM" />
-        </Method>
-
-        <Method Signature="_set_always_finish():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.SET_ALWAYS_FINISH" />
-        </Method>
-
-        <Method Signature="_set_animation_scale():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.SET_ANIMATION_SCALE" />
-        </Method>
-
-        <Method Signature="_set_debug_app():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.SET_DEBUG_APP" />
-        </Method>
-
-        <Method Signature="_set_orientation():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.SET_ORIENTATION" />
-        </Method>
-
-        <Method Signature="_set_pointer_speed():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.SET_POINTER_SPEED" />
-        </Method>
-
-        <Method Signature="_set_preferred_applications():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.SET_PREFERRED_APPLICATIONS" />
-        </Method>
-
-        <Method Signature="_set_process_limit():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.SET_PROCESS_LIMIT" />
-        </Method>
-
-        <Method Signature="_set_time():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.SET_TIME" />
-        </Method>
-
-        <Method Signature="_set_time_zone():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.SET_TIME_ZONE" />
-        </Method>
-
-        <Method Signature="_set_wallpaper():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.SET_WALLPAPER" />
-        </Method>
-
-        <Method Signature="_set_wallpaper_hints():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.SET_WALLPAPER_HINTS" />
-        </Method>
-
-        <Method Signature="_signal_persistent_processes():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.SIGNAL_PERSISTENT_PROCESSES" />
-        </Method>
-
-        <Method Signature="_status_bar():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.STATUS_BAR" />
-        </Method>
-
-        <Method Signature="_subscribed_feeds_read():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.SUBSCRIBED_FEEDS_READ" />
-        </Method>
-
-        <Method Signature="_subscribed_feeds_write():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.SUBSCRIBED_FEEDS_WRITE" />
-        </Method>
-
-        <Method Signature="_system_alert_window():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.SYSTEM_ALERT_WINDOW" />
-        </Method>
-
-        <Method Signature="_transmit_ir():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.TRANSMIT_IR" />
-        </Method>
-
-        <Method Signature="_uninstall_shortcut():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.UNINSTALL_SHORTCUT" />
-        </Method>
-
-        <Method Signature="_update_device_stats():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.UPDATE_DEVICE_STATS" />
-        </Method>
-
-        <Method Signature="_use_credentials():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.USE_CREDENTIALS" />
-        </Method>
-
-        <Method Signature="_use_sip():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.USE_SIP" />
-        </Method>
-
-        <Method Signature="_vibrate():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.VIBRATE" />
-        </Method>
-
-        <Method Signature="_wake_lock():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.WAKE_LOCK" />
-        </Method>
-
-        <Method Signature="_write_apn_settings():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.WRITE_APN_SETTINGS" />
-        </Method>
-
-        <Method Signature="_write_calendar():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.WRITE_CALENDAR" />
-        </Method>
-
-        <Method Signature="_write_call_log():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.WRITE_CALL_LOG" />
-        </Method>
-
-        <Method Signature="_write_contacts():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.WRITE_CONTACTS" />
-        </Method>
-
-        <Method Signature="_write_external_storage():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.WRITE_EXTERNAL_STORAGE" />
-        </Method>
-
-        <Method Signature="_write_gservices():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.WRITE_GSERVICES" />
-        </Method>
-
-        <Method Signature="_write_history_bookmarks():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.WRITE_HISTORY_BOOKMARKS" />
-        </Method>
-
-        <Method Signature="_write_profile():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.WRITE_PROFILE" />
-        </Method>
-
-        <Method Signature="_write_secure_settings():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.WRITE_SECURE_SETTINGS" />
-        </Method>
-
-        <Method Signature="_write_settings():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.WRITE_SETTINGS" />
-        </Method>
-
-        <Method Signature="_write_sms():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.WRITE_SMS" />
-        </Method>
-
-        <Method Signature="_write_social_stream():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.WRITE_SOCIAL_STREAM" />
-        </Method>
-
-        <Method Signature="_write_sync_settings():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.WRITE_SYNC_SETTINGS" />
-        </Method>
-
-        <Method Signature="_write_user_dictionary():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.WRITE_USER_DICTIONARY" />
-        </Method>
-
-        <Method Signature="_write_voicemail():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.WRITE_VOICEMAIL" />
-        </Method>
-
-        <Method Signature="_post_notification():Fuse.Android.Permissions.PlatformPermission">
-            <Require AndroidManifest.Permission="android.permission.POST_NOTIFICATIONS" />
-        </Method>
-    </Type>
-</Extensions>
+            <!-- <require androidManifest.permission="android.permission.ACCESS_BACKGROUND_LOCATION" /> -->
+        </method>
+
+        <method signature="_access_coarse_location():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.ACCESS_COARSE_LOCATION" />
+        </method>
+
+        <method signature="_access_fine_location():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.ACCESS_FINE_LOCATION" />
+        </method>
+
+        <method signature="_access_location_extra_commands():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+        </method>
+
+        <method signature="_access_mock_location():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.ACCESS_MOCK_LOCATION" />
+        </method>
+
+        <method signature="_access_network_state():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.ACCESS_NETWORK_STATE" />
+        </method>
+
+        <method signature="_access_surface_flinger():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.ACCESS_SURFACE_FLINGER" />
+        </method>
+
+        <method signature="_access_wifi_state():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.ACCESS_WIFI_STATE" />
+        </method>
+
+        <method signature="_account_manager():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.ACCOUNT_MANAGER" />
+        </method>
+
+        <method signature="_add_voicemail():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.ADD_VOICEMAIL" />
+        </method>
+
+        <method signature="_authenticate_accounts():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.AUTHENTICATE_ACCOUNTS" />
+        </method>
+
+        <method signature="_battery_stats():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.BATTERY_STATS" />
+        </method>
+
+        <method signature="_bind_accessibility_service():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.BIND_ACCESSIBILITY_SERVICE" />
+        </method>
+
+        <method signature="_bind_appwidget():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.BIND_APPWIDGET" />
+        </method>
+
+        <method signature="_bind_device_admin():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.BIND_DEVICE_ADMIN" />
+        </method>
+
+        <method signature="_bind_dream_service():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.BIND_DREAM_SERVICE" />
+        </method>
+
+        <method signature="_bind_input_method():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.BIND_INPUT_METHOD" />
+        </method>
+
+        <method signature="_bind_nfc_service():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.BIND_NFC_SERVICE" />
+        </method>
+
+        <method signature="_bind_notification_listener_service():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE" />
+        </method>
+
+        <method signature="_bind_print_service():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.BIND_PRINT_SERVICE" />
+        </method>
+
+        <method signature="_bind_remoteviews():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.BIND_REMOTEVIEWS" />
+        </method>
+
+        <method signature="_bind_text_service():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.BIND_TEXT_SERVICE" />
+        </method>
+
+        <method signature="_bind_tv_input():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.BIND_TV_INPUT" />
+        </method>
+
+        <method signature="_bind_voice_interaction():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.BIND_VOICE_INTERACTION" />
+        </method>
+
+        <method signature="_bind_vpn_service():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.BIND_VPN_SERVICE" />
+        </method>
+
+        <method signature="_bind_wallpaper():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.BIND_WALLPAPER" />
+        </method>
+
+        <method signature="_bluetooth():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.BLUETOOTH" />
+        </method>
+
+        <method signature="_bluetooth_admin():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.BLUETOOTH_ADMIN" />
+        </method>
+
+        <method signature="_bluetooth_privileged():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.BLUETOOTH_PRIVILEGED" />
+        </method>
+
+        <method signature="_body_sensors():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.BODY_SENSORS" />
+        </method>
+
+        <method signature="_brick():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.BRICK" />
+        </method>
+
+        <method signature="_broadcast_package_removed():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.BROADCAST_PACKAGE_REMOVED" />
+        </method>
+
+        <method signature="_broadcast_sms():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.BROADCAST_SMS" />
+        </method>
+
+        <method signature="_broadcast_sticky():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.BROADCAST_STICKY" />
+        </method>
+
+        <method signature="_broadcast_wap_push():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.BROADCAST_WAP_PUSH" />
+        </method>
+
+        <method signature="_call_phone():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.CALL_PHONE" />
+        </method>
+
+        <method signature="_call_privileged():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.CALL_PRIVILEGED" />
+        </method>
+
+        <method signature="_camera():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.CAMERA" />
+        </method>
+
+        <method signature="_capture_audio_output():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.CAPTURE_AUDIO_OUTPUT" />
+        </method>
+
+        <method signature="_capture_secure_video_output():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.CAPTURE_SECURE_VIDEO_OUTPUT" />
+        </method>
+
+        <method signature="_capture_video_output():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.CAPTURE_VIDEO_OUTPUT" />
+        </method>
+
+        <method signature="_change_component_enabled_state():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.CHANGE_COMPONENT_ENABLED_STATE" />
+        </method>
+
+        <method signature="_change_configuration():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.CHANGE_CONFIGURATION" />
+        </method>
+
+        <method signature="_change_network_state():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.CHANGE_NETWORK_STATE" />
+        </method>
+
+        <method signature="_change_wifi_multicast_state():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
+        </method>
+
+        <method signature="_change_wifi_state():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.CHANGE_WIFI_STATE" />
+        </method>
+
+        <method signature="_clear_app_cache():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.CLEAR_APP_CACHE" />
+        </method>
+
+        <method signature="_clear_app_user_data():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.CLEAR_APP_USER_DATA" />
+        </method>
+
+        <method signature="_control_location_updates():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.CONTROL_LOCATION_UPDATES" />
+        </method>
+
+        <method signature="_delete_cache_files():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.DELETE_CACHE_FILES" />
+        </method>
+
+        <method signature="_delete_packages():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.DELETE_PACKAGES" />
+        </method>
+
+        <method signature="_device_power():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.DEVICE_POWER" />
+        </method>
+
+        <method signature="_diagnostic():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.DIAGNOSTIC" />
+        </method>
+
+        <method signature="_disable_keyguard():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.DISABLE_KEYGUARD" />
+        </method>
+
+        <method signature="_dump():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.DUMP" />
+        </method>
+
+        <method signature="_expand_status_bar():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.EXPAND_STATUS_BAR" />
+        </method>
+
+        <method signature="_factory_test():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.FACTORY_TEST" />
+        </method>
+
+        <method signature="_flashlight():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.FLASHLIGHT" />
+        </method>
+
+        <method signature="_force_back():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.FORCE_BACK" />
+        </method>
+
+        <method signature="_get_accounts():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.GET_ACCOUNTS" />
+        </method>
+
+        <method signature="_get_package_size():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.GET_PACKAGE_SIZE" />
+        </method>
+
+        <method signature="_get_tasks():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.GET_TASKS" />
+        </method>
+
+        <method signature="_get_top_activity_info():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.GET_TOP_ACTIVITY_INFO" />
+        </method>
+
+        <method signature="_global_search():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.GLOBAL_SEARCH" />
+        </method>
+
+        <method signature="_hardware_test():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.HARDWARE_TEST" />
+        </method>
+
+        <method signature="_inject_events():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.INJECT_EVENTS" />
+        </method>
+
+        <method signature="_install_location_provider():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.INSTALL_LOCATION_PROVIDER" />
+        </method>
+
+        <method signature="_install_packages():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.INSTALL_PACKAGES" />
+        </method>
+
+        <method signature="_install_shortcut():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.INSTALL_SHORTCUT" />
+        </method>
+
+        <method signature="_internal_system_window():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.INTERNAL_SYSTEM_WINDOW" />
+        </method>
+
+        <method signature="_internet():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.INTERNET" />
+        </method>
+
+        <method signature="_kill_background_processes():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.KILL_BACKGROUND_PROCESSES" />
+        </method>
+
+        <method signature="_location_hardware():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.LOCATION_HARDWARE" />
+        </method>
+
+        <method signature="_manage_accounts():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.MANAGE_ACCOUNTS" />
+        </method>
+
+        <method signature="_manage_app_tokens():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.MANAGE_APP_TOKENS" />
+        </method>
+
+        <method signature="_manage_documents():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.MANAGE_DOCUMENTS" />
+        </method>
+
+        <method signature="_master_clear():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.MASTER_CLEAR" />
+        </method>
+
+        <method signature="_media_content_control():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.MEDIA_CONTENT_CONTROL" />
+        </method>
+
+        <method signature="_modify_audio_settings():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.MODIFY_AUDIO_SETTINGS" />
+        </method>
+
+        <method signature="_modify_phone_state():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.MODIFY_PHONE_STATE" />
+        </method>
+
+        <method signature="_mount_format_filesystems():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.MOUNT_FORMAT_FILESYSTEMS" />
+        </method>
+
+        <method signature="_mount_unmount_filesystems():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+        </method>
+
+        <method signature="_nfc():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.NFC" />
+        </method>
+
+        <method signature="_persistent_activity():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.PERSISTENT_ACTIVITY" />
+        </method>
+
+        <method signature="_process_outgoing_calls():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.PROCESS_OUTGOING_CALLS" />
+        </method>
+
+        <method signature="_read_calendar():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.READ_CALENDAR" />
+        </method>
+
+        <method signature="_read_call_log():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.READ_CALL_LOG" />
+        </method>
+
+        <method signature="_read_contacts():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.READ_CONTACTS" />
+        </method>
+
+        <method signature="_read_external_storage():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.READ_EXTERNAL_STORAGE" />
+        </method>
+
+        <method signature="_read_media_images():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.READ_MEDIA_IMAGES" />
+        </method>
+
+        <method signature="_read_media_audio():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.READ_MEDIA_AUDIO" />
+        </method>
+
+        <method signature="_read_media_video():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.READ_MEDIA_VIDEO" />
+        </method>
+
+        <method signature="_read_frame_buffer():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.READ_FRAME_BUFFER" />
+        </method>
+
+        <method signature="_read_history_bookmarks():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.READ_HISTORY_BOOKMARKS" />
+        </method>
+
+        <method signature="_read_input_state():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.READ_INPUT_STATE" />
+        </method>
+
+        <method signature="_read_logs():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.READ_LOGS" />
+        </method>
+
+        <method signature="_read_phone_state():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.READ_PHONE_STATE" />
+        </method>
+
+        <method signature="_read_profile():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.READ_PROFILE" />
+        </method>
+
+        <method signature="_read_sms():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.READ_SMS" />
+        </method>
+
+        <method signature="_read_social_stream():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.READ_SOCIAL_STREAM" />
+        </method>
+
+        <method signature="_read_sync_settings():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.READ_SYNC_SETTINGS" />
+        </method>
+
+        <method signature="_read_sync_stats():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.READ_SYNC_STATS" />
+        </method>
+
+        <method signature="_read_user_dictionary():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.READ_USER_DICTIONARY" />
+        </method>
+
+        <method signature="_read_voicemail():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.READ_VOICEMAIL" />
+        </method>
+
+        <method signature="_reboot():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.REBOOT" />
+        </method>
+
+        <method signature="_receive_boot_completed():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.RECEIVE_BOOT_COMPLETED" />
+        </method>
+
+        <method signature="_receive_mms():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.RECEIVE_MMS" />
+        </method>
+
+        <method signature="_receive_sms():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.RECEIVE_SMS" />
+        </method>
+
+        <method signature="_receive_wap_push():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.RECEIVE_WAP_PUSH" />
+        </method>
+
+        <method signature="_record_audio():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.RECORD_AUDIO" />
+        </method>
+
+        <method signature="_reorder_tasks():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.REORDER_TASKS" />
+        </method>
+
+        <method signature="_restart_packages():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.RESTART_PACKAGES" />
+        </method>
+
+        <method signature="_send_respond_via_message():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.SEND_RESPOND_VIA_MESSAGE" />
+        </method>
+
+        <method signature="_send_sms():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.SEND_SMS" />
+        </method>
+
+        <method signature="_set_activity_watcher():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.SET_ACTIVITY_WATCHER" />
+        </method>
+
+        <method signature="_set_alarm():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.SET_ALARM" />
+        </method>
+
+        <method signature="_set_always_finish():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.SET_ALWAYS_FINISH" />
+        </method>
+
+        <method signature="_set_animation_scale():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.SET_ANIMATION_SCALE" />
+        </method>
+
+        <method signature="_set_debug_app():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.SET_DEBUG_APP" />
+        </method>
+
+        <method signature="_set_orientation():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.SET_ORIENTATION" />
+        </method>
+
+        <method signature="_set_pointer_speed():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.SET_POINTER_SPEED" />
+        </method>
+
+        <method signature="_set_preferred_applications():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.SET_PREFERRED_APPLICATIONS" />
+        </method>
+
+        <method signature="_set_process_limit():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.SET_PROCESS_LIMIT" />
+        </method>
+
+        <method signature="_set_time():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.SET_TIME" />
+        </method>
+
+        <method signature="_set_time_zone():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.SET_TIME_ZONE" />
+        </method>
+
+        <method signature="_set_wallpaper():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.SET_WALLPAPER" />
+        </method>
+
+        <method signature="_set_wallpaper_hints():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.SET_WALLPAPER_HINTS" />
+        </method>
+
+        <method signature="_signal_persistent_processes():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.SIGNAL_PERSISTENT_PROCESSES" />
+        </method>
+
+        <method signature="_status_bar():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.STATUS_BAR" />
+        </method>
+
+        <method signature="_subscribed_feeds_read():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.SUBSCRIBED_FEEDS_READ" />
+        </method>
+
+        <method signature="_subscribed_feeds_write():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.SUBSCRIBED_FEEDS_WRITE" />
+        </method>
+
+        <method signature="_system_alert_window():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.SYSTEM_ALERT_WINDOW" />
+        </method>
+
+        <method signature="_transmit_ir():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.TRANSMIT_IR" />
+        </method>
+
+        <method signature="_uninstall_shortcut():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.UNINSTALL_SHORTCUT" />
+        </method>
+
+        <method signature="_update_device_stats():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.UPDATE_DEVICE_STATS" />
+        </method>
+
+        <method signature="_use_credentials():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.USE_CREDENTIALS" />
+        </method>
+
+        <method signature="_use_sip():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.USE_SIP" />
+        </method>
+
+        <method signature="_vibrate():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.VIBRATE" />
+        </method>
+
+        <method signature="_wake_lock():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.WAKE_LOCK" />
+        </method>
+
+        <method signature="_write_apn_settings():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.WRITE_APN_SETTINGS" />
+        </method>
+
+        <method signature="_write_calendar():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.WRITE_CALENDAR" />
+        </method>
+
+        <method signature="_write_call_log():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.WRITE_CALL_LOG" />
+        </method>
+
+        <method signature="_write_contacts():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.WRITE_CONTACTS" />
+        </method>
+
+        <method signature="_write_external_storage():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.WRITE_EXTERNAL_STORAGE" />
+        </method>
+
+        <method signature="_write_gservices():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.WRITE_GSERVICES" />
+        </method>
+
+        <method signature="_write_history_bookmarks():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.WRITE_HISTORY_BOOKMARKS" />
+        </method>
+
+        <method signature="_write_profile():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.WRITE_PROFILE" />
+        </method>
+
+        <method signature="_write_secure_settings():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.WRITE_SECURE_SETTINGS" />
+        </method>
+
+        <method signature="_write_settings():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.WRITE_SETTINGS" />
+        </method>
+
+        <method signature="_write_sms():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.WRITE_SMS" />
+        </method>
+
+        <method signature="_write_social_stream():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.WRITE_SOCIAL_STREAM" />
+        </method>
+
+        <method signature="_write_sync_settings():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.WRITE_SYNC_SETTINGS" />
+        </method>
+
+        <method signature="_write_user_dictionary():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.WRITE_USER_DICTIONARY" />
+        </method>
+
+        <method signature="_write_voicemail():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.WRITE_VOICEMAIL" />
+        </method>
+
+        <method signature="_post_notification():Fuse.Android.Permissions.PlatformPermission">
+            <require androidManifest.permission="android.permission.POST_NOTIFICATIONS" />
+        </method>
+    </type>
+</extensions>

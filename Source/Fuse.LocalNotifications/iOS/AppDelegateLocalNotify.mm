@@ -1,7 +1,7 @@
 #include <uno.h>
 #include "AppDelegateLocalNotify.h"
-@{Fuse.Platform.Lifecycle:IncludeDirective}
-@{Fuse.LocalNotifications.iOSImpl:IncludeDirective}
+@{Fuse.Platform.Lifecycle:includeDirective}
+@{Fuse.LocalNotifications.iOSImpl:includeDirective}
 
 @implementation uContext (LocalNotify)
 
@@ -12,7 +12,7 @@
 	  UIUserNotificationTypeBadge|
 	  UIUserNotificationTypeSound
 	  categories:nil]];
-	@{Fuse.LocalNotifications.iOSImpl.SendPendingFromLaunchOptions():Call()};
+	@{Fuse.LocalNotifications.iOSImpl.SendPendingFromLaunchOptions():call()};
 }
 
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
@@ -36,7 +36,7 @@
 	{
 		NSString* nsJsonPayload = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
 		@{Uno.String} jsonPayload = uPlatform::iOS::ToUno(nsJsonPayload);
-		@{Fuse.LocalNotifications.iOSImpl.OnReceivedLocalNotification(string):Call(jsonPayload)};
+		@{Fuse.LocalNotifications.iOSImpl.OnReceivedLocalNotification(string):call(jsonPayload)};
 	}
 }
 

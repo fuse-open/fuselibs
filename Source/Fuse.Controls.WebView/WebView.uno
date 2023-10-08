@@ -138,7 +138,7 @@ namespace Fuse.Controls
 		{
 			if defined(Android || iOS)
 			{
-				string scheme = @(Project.Mobile.UriScheme);
+				string scheme = @(project.mobile.uriScheme);
 				scheme = PreprocUriScheme(scheme);
 				string[] schemes = scheme!="" ? new string[]{scheme} :  new string[]{};
 

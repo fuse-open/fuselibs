@@ -8,7 +8,7 @@ namespace Fuse.Controls.Native.iOS
 	using Fuse.Input;
 
 	[TargetSpecificImplementation]
-	[Require("Source.Include", "iOS/UIViewInputDispatch.h")]
+	[Require("source.include", "iOS/UIViewInputDispatch.h")]
 	extern(iOS) internal static class InputDispatch
 	{
 		public static void OnTouchesBegan(Visual origin, ObjC.Object touches)
@@ -52,21 +52,21 @@ namespace Fuse.Controls.Native.iOS
 		[Foreign(Language.ObjC)]
 		public static void AddInputHandler(Visual owner, ViewHandle viewHandle)
 		@{
-			UIView* view = (UIView*)@{Fuse.Controls.Native.ViewHandle:Of(viewHandle).HitTestHandle:Get()};
+			UIView* view = (UIView*)@{Fuse.Controls.Native.ViewHandle:of(viewHandle).HitTestHandle:get()};
 			addInputHandler(view, ^void(int type, id<UnoObject> visual, id touches) {
 				switch(type)
 				{
 					case EVENTTYPE_PRESSED:
-						@{InputDispatch.OnTouchesBegan(Visual,ObjC.Object):Call(visual, touches)};
+						@{InputDispatch.OnTouchesBegan(Visual,ObjC.Object):call(visual, touches)};
 						break;
 					case EVENTTYPE_MOVED:
-						@{InputDispatch.OnTouchesMoved(Visual,ObjC.Object):Call(visual, touches)};
+						@{InputDispatch.OnTouchesMoved(Visual,ObjC.Object):call(visual, touches)};
 						break;
 					case EVENTTYPE_RELEASED:
-						@{InputDispatch.OnTouchesEnded(Visual,ObjC.Object):Call(visual, touches)};
+						@{InputDispatch.OnTouchesEnded(Visual,ObjC.Object):call(visual, touches)};
 						break;
 					case EVENTTYPE_CANCELLED:
-						@{InputDispatch.OnTouchesCancelled(Visual,ObjC.Object):Call(visual, touches)};
+						@{InputDispatch.OnTouchesCancelled(Visual,ObjC.Object):call(visual, touches)};
 						break;
 					default:
 						break;
@@ -77,7 +77,7 @@ namespace Fuse.Controls.Native.iOS
 		[Foreign(Language.ObjC)]
 		public static void RemoveInputHandler(ViewHandle viewHandle)
 		@{
-			UIView* view = (UIView*)@{Fuse.Controls.Native.ViewHandle:Of(viewHandle).HitTestHandle:Get()};
+			UIView* view = (UIView*)@{Fuse.Controls.Native.ViewHandle:of(viewHandle).HitTestHandle:get()};
 			removeInputHandler(view);
 		@}
 

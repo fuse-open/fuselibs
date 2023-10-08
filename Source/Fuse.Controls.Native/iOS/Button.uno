@@ -8,7 +8,7 @@ namespace Fuse.Controls.Native.iOS
 		public Button() {}
 	}
 
-	[Require("Source.Include", "UIKit/UIKit.h")]
+	[Require("source.include", "UIKit/UIKit.h")]
 	extern(iOS) public class Button : LeafView, ILabelView
 	{
 		public Button() : base(Create()) {}

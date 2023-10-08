@@ -37,7 +37,7 @@ namespace Fuse.Views
 		@{
 			com.fuse.views.ExportedViews.initialize(new com.fuse.views.internal.IExportedViews() {
 				public com.fuse.views.ViewHandle instantiate(String uxClassName) {
-					return (com.fuse.views.ViewHandle)@{global::Fuse.Views.ExportedViews:Of(_this).Instantiate(string):Call(uxClassName)};
+					return (com.fuse.views.ViewHandle)@{global::Fuse.Views.ExportedViews:of(_this).Instantiate(string):call(uxClassName)};
 				}
 			});
 		@}

@@ -119,14 +119,14 @@ namespace Fuse
 		}
 
 		[Foreign(Language.ObjC)]
-		[Require("Source.Include", "UIKit/UIKit.h")]
+		[Require("source.include", "UIKit/UIKit.h")]
 		static bool Compare(ObjC.Object x, ObjC.Object y)
 		@{
 			return [x isEqual: y];
 		@}
 
 		[Foreign(Language.ObjC)]
-		[Require("Source.Include", "UIKit/UIKit.h")]
+		[Require("source.include", "UIKit/UIKit.h")]
 		static bool IsNull(ObjC.Object x)
 		@{
 			return x == nil;
@@ -146,7 +146,7 @@ namespace Fuse
 
 	}
 
-	[Require("Source.Include", "UIKit/UIKit.h")]
+	[Require("source.include", "UIKit/UIKit.h")]
 	extern(iOS) internal static class Device
 	{
 		public static int Orientation

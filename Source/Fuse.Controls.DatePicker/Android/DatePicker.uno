@@ -191,13 +191,13 @@ namespace Fuse.Controls.Native.Android
 					}
 				});
 				frameLayout.addView(textview);
-				@{DatePickerView:Of(_this)._datePicker:Set(pickerDialog.getDatePicker())};
-				@{DatePickerView:Of(_this)._dateLabel:Set(textview)};
+				@{DatePickerView:of(_this)._datePicker:set(pickerDialog.getDatePicker())};
+				@{DatePickerView:of(_this)._dateLabel:set(textview)};
 			} else {
 				android.widget.DatePicker datePicker = new android.widget.DatePicker(com.fuse.Activity.getRootActivity());
 				datePicker.setLayoutParams(new android.widget.FrameLayout.LayoutParams(android.view.ViewGroup.LayoutParams.MATCH_PARENT, android.view.ViewGroup.LayoutParams.MATCH_PARENT));
 				datePicker.init(y, m, d, null);
-				@{DatePickerView:Of(_this)._datePicker:Set(datePicker)};
+				@{DatePickerView:of(_this)._datePicker:set(datePicker)};
 				frameLayout.addView(datePicker);
 			}
 		@}

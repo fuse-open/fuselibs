@@ -21,13 +21,13 @@ namespace Fuse.Platform
 		Slide
 	}
 
-	[Require("Source.Include", "CoreGraphics/CoreGraphics.h")]
-	[Require("Source.Include", "UIKit/UIKit.h")]
-	[Require("Source.Include", "@{Uno.Platform.iOSDisplay:Include}")]
-	[Require("Source.Include", "@{Uno.Platform.iOS.Application:Include}")]
-	[Require("Source.Include", "Uno-iOS/AppDelegate.h")]
-	[Require("Source.Include","objc/message.h")]
-	[Require("Source.Include", "NotificationCenterContext.h")]
+	[Require("source.include", "CoreGraphics/CoreGraphics.h")]
+	[Require("source.include", "UIKit/UIKit.h")]
+	[Require("source.include", "@{Uno.Platform.iOSDisplay:include}")]
+	[Require("source.include", "@{Uno.Platform.iOS.Application:include}")]
+	[Require("source.include", "Uno-iOS/AppDelegate.h")]
+	[Require("source.include", "objc/message.h")]
+	[Require("source.include", "NotificationCenterContext.h")]
 	static extern(iOS) class SystemUI
 	{
 		static Rect _bottomFrame;
@@ -120,7 +120,7 @@ namespace Fuse.Platform
 		@{
 			uNotificationCenterContext* ctx = (uNotificationCenterContext*)notificationContext;
 			CGFloat textScaleFactor = [ctx textScaleFactor];
-			@{uTextScaleFactorDidChange(float):Call(textScaleFactor)};
+			@{uTextScaleFactorDidChange(float):call(textScaleFactor)};
 		@}
 
 		static ObjC.Object _notificationContext = NewNotificationCenterContext();
@@ -206,8 +206,8 @@ namespace Fuse.Platform
 		public static extern uCGSize Pre_iOS8_HandleDeviceOrientation_Size(uCGSize cgsize, ObjC.Object view)
 		@{
 			if (NSFoundationVersionNumber <= NSFoundationVersionNumber_iOS_7_1
-				&& @{Uno.Platform.iOS.Application.IsLandscape():Call()}
-				&& (!$1 || @{Uno.Platform.iOS.Application.IsRootView(ObjC.Object):Call($1)}))
+				&& @{Uno.Platform.iOS.Application.IsLandscape():call()}
+				&& (!$1 || @{Uno.Platform.iOS.Application.IsRootView(ObjC.Object):call($1)}))
 			{
 				// Transpose dimensions
 				return CGSizeMake($0.height, $0.width);
@@ -369,15 +369,15 @@ namespace Fuse.Platform
 
 		private static int GetProjectSettingsOrientation()
 		{
-			if (@(Project.Mobile.Orientations:ToLower) == "portrait")
+			if (@(project.mobile.orientations:toLower) == "portrait")
 				return  extern<int>"UIInterfaceOrientationMaskPortrait | UIInterfaceOrientationMaskPortraitUpsideDown";
-			if (@(Project.Mobile.Orientations:ToLower) == "portraitupsidedown")
+			if (@(project.mobile.orientations:toLower) == "portraitupsidedown")
 				return  extern<int>"UIInterfaceOrientationMaskPortraitUpsideDown";
-			if (@(Project.Mobile.Orientations:ToLower) == "landscape")
+			if (@(project.mobile.orientations:toLower) == "landscape")
 				return  extern<int>"UIInterfaceOrientationMaskLandscapeLeft | UIInterfaceOrientationMaskLandscapeRight";
-			if (@(Project.Mobile.Orientations:ToLower) == "landscapeleft")
+			if (@(project.mobile.orientations:toLower) == "landscapeleft")
 				return  extern<int>"UIInterfaceOrientationMaskLandscapeLeft";
-			if (@(Project.Mobile.Orientations:ToLower) == "landscaperight")
+			if (@(project.mobile.orientations:toLower) == "landscaperight")
 				return  extern<int>"UIInterfaceOrientationMaskLandscapeRight";
 			return  extern<int>"UIInterfaceOrientationMaskAll";
 		}
@@ -458,32 +458,32 @@ namespace Fuse.Platform
 			{
 				case 0:
 				{
-					@{supportedOrientation:Set(UIInterfaceOrientationMaskPortrait)};
+					@{supportedOrientation:set(UIInterfaceOrientationMaskPortrait)};
 					value = [NSNumber numberWithInt:UIInterfaceOrientationPortrait];
 					break;
 				}
 				case 1:
 				{
-					@{supportedOrientation:Set(UIInterfaceOrientationMaskLandscapeLeft)};
+					@{supportedOrientation:set(UIInterfaceOrientationMaskLandscapeLeft)};
 					value = [NSNumber numberWithInt:UIInterfaceOrientationLandscapeLeft];
 					break;
 				}
 				case 2:
 				{
-					@{supportedOrientation:Set(UIInterfaceOrientationMaskLandscapeRight)};
+					@{supportedOrientation:set(UIInterfaceOrientationMaskLandscapeRight)};
 					value = [NSNumber numberWithInt:UIInterfaceOrientationLandscapeRight];
 					break;
 				}
 				case 3:
 				{
-					@{supportedOrientation:Set(UIInterfaceOrientationMaskPortraitUpsideDown)};
+					@{supportedOrientation:set(UIInterfaceOrientationMaskPortraitUpsideDown)};
 					value = [NSNumber numberWithInt:UIInterfaceOrientationPortraitUpsideDown];
 					break;
 				}
 				default:
 				{
 					int orientationMask = GetProjectSettingsOrientation();
-					@{supportedOrientation:Set(orientationMask)};
+					@{supportedOrientation:set(orientationMask)};
 					switch (orientationMask)
 					{
 						case UIInterfaceOrientationMaskPortrait | UIInterfaceOrientationMaskPortraitUpsideDown:
@@ -514,10 +514,10 @@ namespace Fuse.Platform
 					}
 					UIWindowScene* windowScene = (UIWindowScene*)scene;
 					UIInterfaceOrientationMask currentInterfaceOrientation = 1 << windowScene.interfaceOrientation;
-					if (!(@{supportedOrientation:Get()} & currentInterfaceOrientation)) {
+					if (!(@{supportedOrientation:get()} & currentInterfaceOrientation)) {
 						[[[windowScene keyWindow] rootViewController] setNeedsUpdateOfSupportedInterfaceOrientations];
 						UIWindowSceneGeometryPreferencesIOS* preference =
-						[[UIWindowSceneGeometryPreferencesIOS alloc] initWithInterfaceOrientations:@{supportedOrientation:Get()}];
+						[[UIWindowSceneGeometryPreferencesIOS alloc] initWithInterfaceOrientations:@{supportedOrientation:get()}];
 						[windowScene requestGeometryUpdateWithPreferences:preference
 										errorHandler:^(NSError* error) {
 											NSLog(@"Failed to change device orientation: %@",error);

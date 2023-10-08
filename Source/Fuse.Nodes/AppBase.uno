@@ -66,7 +66,7 @@ namespace Fuse
 			{
 				string hostname;
 				if defined (CPLUSPLUS)
-					hostname = extern<string>"uString::Ansi(\"@(Fuselibs.Profiler.HostName:Or('127.0.0.1'))\")";
+					hostname = extern<string>"uString::Ansi(\"@(fuselibs.profiler.hostName:or('127.0.0.1'))\")";
 				else
 					hostname = "127.0.0.1";
 

@@ -5,8 +5,8 @@ using Uno;
 
 namespace Fuse.Text.Bidirectional.Implementation
 {
-	[Require("Source.Include", "unicode/ubidi.h")]
-	[Require("Source.Include", "string.h")]
+	[Require("source.include", "unicode/ubidi.h")]
+	[Require("source.include", "string.h")]
 	static extern(USE_ICU) class UBidiRuns
 	{
 		public static List<Run> GetLogical(Substring text)

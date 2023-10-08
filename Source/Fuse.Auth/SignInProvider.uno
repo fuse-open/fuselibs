@@ -9,8 +9,8 @@ using Fuse.Storage;
 
 namespace Fuse
 {
-	[Require("Xcode.Framework","AuthenticationServices")]
-	[Require("Xcode.Framework","Security")]
+	[Require("xcode.framework", "AuthenticationServices")]
+	[Require("xcode.framework", "Security")]
 	[ForeignInclude(Language.ObjC, "SignInHelper.h")]
 	extern(iOS) class SignInWithApple
 	{
@@ -99,7 +99,7 @@ namespace Fuse
 		@}
 	}
 
-	[Require("Gradle.Dependency.Implementation", "com.google.android.gms:play-services-auth:17.0.0")]
+	[Require("gradle.dependency.implementation", "com.google.android.gms:play-services-auth:17.0.0")]
 	[ForeignInclude(Language.Java,
 		"com.google.android.gms.auth.api.signin.GoogleSignInOptions",
 		"com.google.android.gms.auth.api.signin.GoogleSignIn",
@@ -171,7 +171,7 @@ namespace Fuse
 		[Foreign(Language.Java)]
 		extern(android) static void SignIn(Java.Object intent)
 		@{
-			int requestCode = @{RequestCode:Get()};
+			int requestCode = @{RequestCode:get()};
 			com.fuse.Activity.getRootActivity().startActivityForResult((Intent)intent, requestCode);
 		@}
 
@@ -188,7 +188,7 @@ namespace Fuse
 			Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
 			try {
 				GoogleSignInAccount account = task.getResult(ApiException.class);
-				@{SaveAccount(Java.Object):Call(account)};
+				@{SaveAccount(Java.Object):call(account)};
 				if (success != null)
 					success.run();
 			} catch (ApiException e) {
@@ -211,13 +211,13 @@ namespace Fuse
 			GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(Activity.getRootActivity());
 			if (account != null)
 			{
-				@{SaveAccount(Java.Object):Call(account)};
+				@{SaveAccount(Java.Object):call(account)};
 				if (result != null)
 					result.run(true);
 			}
 			else
 			{
-				@{ClearAccount():Call()};
+				@{ClearAccount():call()};
 				if (result != null)
 					result.run(false);
 			}
@@ -228,7 +228,7 @@ namespace Fuse
 		@{
 			com.fuse.Activity.ResultListener l = new com.fuse.Activity.ResultListener() {
 				@Override public boolean onResult(int requestCode, int resultCode, android.content.Intent data) {
-					@{OnResult(int,Java.Object):Call(requestCode, data)};
+					@{OnResult(int,Java.Object):call(requestCode, data)};
 					return false;
 				}
 			};

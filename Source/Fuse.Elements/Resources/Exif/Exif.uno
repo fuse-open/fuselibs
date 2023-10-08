@@ -118,10 +118,10 @@ namespace Fuse.Resources.Exif
 		}
 	}
 
-	[Require("Source.Include", "ImageIO/ImageIO.h")]
-	[Require("Source.Include", "CoreFoundation/CoreFoundation.h")]
-	[Require("Xcode.Framework", "ImageIO.framework")]
-	[Require("Xcode.Framework", "CoreFoundation.framework")]
+	[Require("source.include", "ImageIO/ImageIO.h")]
+	[Require("source.include", "CoreFoundation/CoreFoundation.h")]
+	[Require("xcode.framework", "ImageIO.framework")]
+	[Require("xcode.framework", "CoreFoundation.framework")]
 	extern(iOS) static class ExifIOSImpl
 	{
 		internal static ExifData FromByteArray(byte[] bytes)
@@ -167,7 +167,7 @@ namespace Fuse.Resources.Exif
 		@}
 	}
 
-	[Require("Gradle.Dependency.Implementation", "com.drewnoakes:metadata-extractor:2.10.1")]
+	[Require("gradle.dependency.implementation", "com.drewnoakes:metadata-extractor:2.10.1")]
 	[ForeignInclude(Language.Java,
 		"java.io.ByteArrayInputStream",
 		"java.io.InputStream",

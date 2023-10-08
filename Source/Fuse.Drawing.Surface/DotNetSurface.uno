@@ -121,7 +121,7 @@ namespace Fuse.Drawing
 		}
 	}
 
-	[extern(DOTNET) Require("Source.Include", "XliPlatform/GL.h")]
+	[extern(DOTNET) Require("source.include", "XliPlatform/GL.h")]
 	extern(DOTNET)
 	internal class DotNetSurface : Surface
 	{

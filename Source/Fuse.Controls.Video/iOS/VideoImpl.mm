@@ -38,7 +38,7 @@ namespace FuseVideoImpl
 
 		if(vs->LoadedHandler != NULL)
 		{
-			@{Uno.Action:Of(vs->LoadedHandler):Call()};
+			@{Uno.Action:of(vs->LoadedHandler):call()};
 			uRelease(vs->LoadedHandler);
 			vs->LoadedHandler = NULL;
 		}
@@ -127,7 +127,7 @@ namespace FuseVideoImpl
 		if (errorCallback != NULL)
 			uRetain(errorCallback);
 
-	#if @(METAL:Defined)
+	#if @(METAL:defined)
 		U_ERROR("VideoImpl: Not supported on Metal");
 	#else
 		#if COREVIDEO_USE_EAGLCONTEXT_CLASS_IN_API
@@ -174,7 +174,7 @@ namespace FuseVideoImpl
 
 					if (errorCallback != NULL)
 					{
-						@{Uno.Action:Of(errorCallback):Call()};
+						@{Uno.Action:of(errorCallback):call()};
 						uRelease(errorCallback);
 					}
 					NSLog(@"Failed to load the tracks.");
@@ -273,7 +273,7 @@ namespace FuseVideoImpl
 			NSLog(@"Error at CVOpenGLESTextureCacheCreateTextureFromImage %d", err);
 			if (vs->ErrorHandler)
 			{
-				@{Uno.Action:Of(vs->ErrorHandler):Call()};
+				@{Uno.Action:of(vs->ErrorHandler):call()};
 			}
 		}
 

@@ -5,7 +5,7 @@ using Uno;
 
 namespace Fuse.GeoLocation
 {
-	[Require("Xcode.Framework", "CoreLocation")]
+	[Require("xcode.framework", "CoreLocation")]
 	[ForeignInclude(Language.ObjC, "CoreLocation/CoreLocation.h")]
 	[ForeignInclude(Language.ObjC, "iOS/LocationManagerDelegate.h")]
 	extern(iOS) class IOSLocationProvider : ILocationTracker
@@ -37,22 +37,22 @@ namespace Fuse.GeoLocation
 			lm.pausesLocationUpdatesAutomatically = false;
 			LocationManagerDelegate* lmDelegate = [[LocationManagerDelegate alloc] initWithBlock: ^void (CLLocation* location)
 			{
-				@{IOSLocationProvider:Of(_this).OnLocationChanged(ObjC.Object):Call(location)};
+				@{IOSLocationProvider:of(_this).OnLocationChanged(ObjC.Object):call(location)};
 			}
 			error: ^void (NSError* err)
 			{
-				@{IOSLocationProvider:Of(_this).OnError(string):Call(err.localizedDescription)};
+				@{IOSLocationProvider:of(_this).OnError(string):call(err.localizedDescription)};
 			}
 			changeAuthorizationStatus: ^void (int status)
 			{
-				@{IOSLocationProvider:Of(_this).OnChangeAuthorizationStatus(int):Call(status)};
+				@{IOSLocationProvider:of(_this).OnChangeAuthorizationStatus(int):call(status)};
 			}
 			];
 
 			lm.delegate = lmDelegate;
 
-			@{IOSLocationProvider:Of(_this)._lm:Set(lm)};
-			@{IOSLocationProvider:Of(_this)._lmDelegate:Set(lmDelegate)};
+			@{IOSLocationProvider:of(_this)._lm:set(lm)};
+			@{IOSLocationProvider:of(_this)._lmDelegate:set(lmDelegate)};
 		@}
 
 		void OnLocationChanged(ObjC.Object clLocation)

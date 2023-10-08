@@ -11,8 +11,8 @@ using Fuse.Controls;
 namespace Fuse.iOS.Controls
 {
 
-	[Require("Source.Include", "iOS/NoZoomDelegate.h")]
-	[Require("Source.Include", "WebKit/WebKit.h")]
+	[Require("source.include", "iOS/NoZoomDelegate.h")]
+	[Require("source.include", "WebKit/WebKit.h")]
 	static extern(iOS) class WKWebViewHelpers
 	{
 		[Foreign(Language.ObjC)]

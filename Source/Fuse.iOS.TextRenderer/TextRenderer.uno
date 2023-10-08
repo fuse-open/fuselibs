@@ -33,10 +33,10 @@ namespace Fuse.iOS.Bindings
 		public TextLayout()
 		@{
 			NSLayoutManager* lm = [[NSLayoutManager alloc] init];
-			@{TextLayout:Of(_this).LayoutManager:Set(lm)};
+			@{TextLayout:of(_this).LayoutManager:set(lm)};
 
 			NSMutableParagraphStyle* ps = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
-			@{ObjC.Object:Of(_this)._style:Set(ps)};
+			@{ObjC.Object:of(_this)._style:set(ps)};
 		@}
 
 		public bool UpdateLayout(Fuse.Controls.TextControl control, float2 size, bool useMin=false)
@@ -180,18 +180,18 @@ namespace Fuse.iOS.Bindings
 		@{
 			CGRect rect = [(NSLayoutManager*)layoutManager
 				usedRectForTextContainer:(NSTextContainer*)textContainer];
-			@{float2} pos = @{float2(float, float):New((float)rect.origin.x, (float)-rect.origin.y)}; // Apple's coordinate systems and/or APIs are crazy.
-			@{float2} size = @{float2(float, float):New((float)rect.size.width, (float)rect.size.height)};
-			return @{CreateRect(float2, float2):Call(pos, size)};
+			@{float2} pos = @{float2(float, float):new((float)rect.origin.x, (float)-rect.origin.y)}; // Apple's coordinate systems and/or APIs are crazy.
+			@{float2} size = @{float2(float, float):new((float)rect.size.width, (float)rect.size.height)};
+			return @{CreateRect(float2, float2):call(pos, size)};
 		@}
 	}
 
-	[Set("TypeName", "::CGColorSpaceRef")]
-	[Require("Source.Include", "CoreGraphics/CoreGraphics.h")]
+	[Set("typeName", "::CGColorSpaceRef")]
+	[Require("source.include", "CoreGraphics/CoreGraphics.h")]
 	extern(iOS) struct CGColorSpaceRef { IntPtr _dummy; }
 
-	[Require("Source.Include", "CoreGraphics/CoreGraphics.h")]
-	[Set("TypeName", "::CGContextRef")]
+	[Require("source.include", "CoreGraphics/CoreGraphics.h")]
+	[Set("typeName", "::CGContextRef")]
 	extern(iOS) struct CGContextRef { IntPtr _dummy; }
 
 	internal extern (iOS) class TextRenderer : ITextRenderer

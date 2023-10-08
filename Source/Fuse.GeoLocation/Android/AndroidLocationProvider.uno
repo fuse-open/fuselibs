@@ -43,7 +43,7 @@ namespace Fuse.GeoLocation
 		{
 			_onReady = onReady;
 
-			if (@(Project.Android.GeoLocation.RequestPermissionsOnLaunch:ToLower) == "false")
+			if (@(project.android.geoLocation.requestPermissionsOnLaunch:toLower) == "false")
 			{
 				_authorized = false;
 				_locationManager = GetLocationManager();
@@ -63,7 +63,7 @@ namespace Fuse.GeoLocation
 		static int checkPermissions()
 		@{
 			//check if background location is explicitly requested (not enabled by default since Android Q)
-			if ("@(Project.Android.GeoLocation.BackgroundLocation.Enabled:ToLower)" == "true"
+			if ("@(project.android.geoLocation.backgroundLocation.enabled:toLower)" == "true"
 				&& android.os.Build.VERSION.SDK_INT >= 29)
 			{
 				if (ContextCompat.checkSelfPermission(com.fuse.Activity.getRootActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
@@ -174,7 +174,7 @@ namespace Fuse.GeoLocation
 				if (android.os.Build.VERSION.SDK_INT >= 23)
 				{
 					//check if background location is explicitly requested (not enabled by default since Android Q)
-					if ("@(Project.Android.GeoLocation.BackgroundLocation.Enabled:ToLower)" == "true"
+					if ("@(project.android.geoLocation.backgroundLocation.enabled:toLower)" == "true"
 						&& android.os.Build.VERSION.SDK_INT >= 29)
 					{
 						//check if hardware enabled
@@ -249,7 +249,7 @@ namespace Fuse.GeoLocation
 				if (lm.isLocationEnabled()) {
 
 					//check if background location is explicitly requested (not enabled by default since Android Q)
-					if ("@(Project.Android.GeoLocation.BackgroundLocation.Enabled:ToLower)" == "true"
+					if ("@(project.android.geoLocation.backgroundLocation.enabled:toLower)" == "true"
 						&& android.os.Build.VERSION.SDK_INT >= 29)
 					{
 						if (ContextCompat.checkSelfPermission(com.fuse.Activity.getRootActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
@@ -510,7 +510,7 @@ namespace Fuse.GeoLocation
 				if(IsGPSEnabled(_locationManager))
 					RequestGPSLocationUpdates(_locationManager, startListening_minimumReportInterval, startListening_desiredAccuracyInMeters, _updateListener);
 
-				if (@(Project.Android.GeoLocation.BackgroundLocation.Enabled:ToLower) == "true")
+				if (@(project.android.geoLocation.backgroundLocation.enabled:toLower) == "true")
 				{
 					StartForegroundService();
 				}
@@ -538,7 +538,7 @@ namespace Fuse.GeoLocation
 		{
 			RemoveUpdates(_locationManager, _updateListener);
 
-			if (@(Project.Android.GeoLocation.BackgroundLocation.Enabled:ToLower) == "true")
+			if (@(project.android.geoLocation.backgroundLocation.enabled:toLower) == "true")
 			{
 				StopForegroundService();
 			}

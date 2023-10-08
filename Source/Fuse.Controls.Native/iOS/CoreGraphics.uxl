@@ -1,13 +1,13 @@
-<Extensions Backend="CPlusPlus" Condition="iOS">
-	<Type Name="Fuse.Controls.Native.iOS.CGContext"
+<extensions backend="cplusplus" condition="IOS">
+	<type name="Fuse.Controls.Native.iOS.CGContext"
 		TypeName="::CGContextRef"
 		Include="CoreGraphics/CoreGraphics.h" />
 
-	<Type Name="Fuse.Controls.Native.iOS.CGImage"
+	<type name="Fuse.Controls.Native.iOS.CGImage"
 		TypeName="::CGImageRef"
 		Include="CoreGraphics/CoreGraphics.h" />
 
-	<Type Name="Fuse.Controls.Native.iOS.CGColor"
+	<type name="Fuse.Controls.Native.iOS.CGColor"
 		TypeName="::CGColorRef"
 		Include="CoreGraphics/CoreGraphics.h" />
-</Extensions>
+</extensions>

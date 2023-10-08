@@ -1,11 +1,11 @@
-<Extensions Backend="CIL">
+<extensions backend="cil">
 
-	<Require Condition="HOST_WIN32" Assembly="Lib/Win/Fuse.Video.CILInterface.dll" />
-	<Require Condition="HOST_WIN32" Assembly="Lib/Win/Fuse.Video.WPF.dll" />
-	<Require Condition="HOST_WIN32" Assembly="Lib/Win/Fuse.Video.CIL.dll" />
+	<require condition="HOST_WIN32" assembly="Lib/Win/Fuse.Video.CILInterface.dll" />
+	<require condition="HOST_WIN32" assembly="Lib/Win/Fuse.Video.WPF.dll" />
+	<require condition="HOST_WIN32" assembly="Lib/Win/Fuse.Video.CIL.dll" />
 
-	<Require Condition="HOST_OSX" Assembly="Lib/Mac/Fuse.Video.CILInterface.dll" />
-	<Require Condition="HOST_OSX" Assembly="Lib/Mac/Fuse.Video.Mono.dll" />
-	<Require Condition="HOST_OSX" Assembly="Lib/Mac/Fuse.Video.CIL.dll" />
+	<require condition="HOST_OSX" assembly="Lib/Mac/Fuse.Video.CILInterface.dll" />
+	<require condition="HOST_OSX" assembly="Lib/Mac/Fuse.Video.Mono.dll" />
+	<require condition="HOST_OSX" assembly="Lib/Mac/Fuse.Video.CIL.dll" />
 
-</Extensions>
+</extensions>

@@ -44,7 +44,7 @@ namespace Fuse.Sensor
 			try {
 				((com.fuse.sensorkit.AccelerometerSensor)handle).start();
 			} catch (Exception e) {
-				@{AndroidAccelerometerProvider:Of(_this).OnError(string):Call(e.getMessage())};
+				@{AndroidAccelerometerProvider:of(_this).OnError(string):call(e.getMessage())};
 			}
 		@}
 
@@ -111,7 +111,7 @@ namespace Fuse.Sensor
 			try {
 				((com.fuse.sensorkit.GyroscopeSensor)handle).start();
 			} catch (Exception e) {
-				@{AndroidGyroscopeProvider:Of(_this).OnError(string):Call(e.getMessage())};
+				@{AndroidGyroscopeProvider:of(_this).OnError(string):call(e.getMessage())};
 			}
 		@}
 
@@ -178,7 +178,7 @@ namespace Fuse.Sensor
 			try {
 				((com.fuse.sensorkit.MagnetometerSensor)handle).start();
 			} catch (Exception e) {
-				@{AndroidMagnetometerProvider:Of(_this).OnError(string):Call(e.getMessage())};
+				@{AndroidMagnetometerProvider:of(_this).OnError(string):call(e.getMessage())};
 			}
 		@}
 
@@ -245,7 +245,7 @@ namespace Fuse.Sensor
 			try {
 				((com.fuse.sensorkit.UserAccelerationSensor)handle).start();
 			} catch (Exception e) {
-				@{AndroidUserAccelerationProvider:Of(_this).OnError(string):Call(e.getMessage())};
+				@{AndroidUserAccelerationProvider:of(_this).OnError(string):call(e.getMessage())};
 			}
 		@}
 
@@ -312,7 +312,7 @@ namespace Fuse.Sensor
 			try {
 				((com.fuse.sensorkit.GravitySensor)handle).start();
 			} catch (Exception e) {
-				@{AndroidGravityProvider:Of(_this).OnError(string):Call(e.getMessage())};
+				@{AndroidGravityProvider:of(_this).OnError(string):call(e.getMessage())};
 			}
 		@}
 
@@ -379,7 +379,7 @@ namespace Fuse.Sensor
 			try {
 				((com.fuse.sensorkit.RotationSensor)handle).start();
 			} catch (Exception e) {
-				@{AndroidRotationProvider:Of(_this).OnError(string):Call(e.getMessage())};
+				@{AndroidRotationProvider:of(_this).OnError(string):call(e.getMessage())};
 			}
 		@}
 
@@ -446,7 +446,7 @@ namespace Fuse.Sensor
 			try {
 				((com.fuse.sensorkit.PedometerSensor)handle).start();
 			} catch (Exception e) {
-				@{AndroidPedometerProvider:Of(_this).OnError(string):Call(e.getMessage())};
+				@{AndroidPedometerProvider:of(_this).OnError(string):call(e.getMessage())};
 			}
 		@}
 
@@ -513,7 +513,7 @@ namespace Fuse.Sensor
 			try {
 				((com.fuse.sensorkit.PressureSensor)handle).start();
 			} catch (Exception e) {
-				@{AndroidPressureProvider:Of(_this).OnError(string):Call(e.getMessage())};
+				@{AndroidPressureProvider:of(_this).OnError(string):call(e.getMessage())};
 			}
 		@}
 
@@ -580,7 +580,7 @@ namespace Fuse.Sensor
 			try {
 				((com.fuse.sensorkit.BatterySensor)handle).start();
 			} catch (Exception e) {
-				@{AndroidBatteryProvider:Of(_this).OnError(string):Call(e.getMessage())};
+				@{AndroidBatteryProvider:of(_this).OnError(string):call(e.getMessage())};
 			}
 		@}
 
@@ -647,7 +647,7 @@ namespace Fuse.Sensor
 			try {
 				((com.fuse.sensorkit.ConnectionStateSensor)handle).start();
 			} catch (Exception e) {
-				@{AndroidConnectionStateProvider:Of(_this).OnError(string):Call(e.getMessage())};
+				@{AndroidConnectionStateProvider:of(_this).OnError(string):call(e.getMessage())};
 			}
 		@}
 

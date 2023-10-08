@@ -13,7 +13,7 @@ namespace Fuse.Storage
 
 		static string GetFilename()
 		{
-			string folder = @(Project.Name);
+			string folder = @(project.name);
 			string filename = "UserSettings.json";
 			var settingFolder = Path.Combine(Directory.GetUserDirectory(UserDirectory.Data), folder);
 			var settingFile = Path.Combine(settingFolder, filename);

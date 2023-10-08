@@ -10,9 +10,9 @@ namespace Fuse.Controls.Native.iOS
 		public ScrollView([UXParameter("Host")]IScrollViewHost host) { }
 	}
 
-	[Require("Source.Include", "iOS/Helpers.h")]
-	[Require("Source.Include", "UIKit/UIKit.h")]
-	[Require("Source.Include", "CoreGraphics/CoreGraphics.h")]
+	[Require("source.include", "iOS/Helpers.h")]
+	[Require("source.include", "UIKit/UIKit.h")]
+	[Require("source.include", "CoreGraphics/CoreGraphics.h")]
 	extern(iOS) public class ScrollView : View, IScrollView
 	{
 		readonly ObjC.Object _delegateHandle;

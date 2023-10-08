@@ -4,7 +4,7 @@ using Uno.Compiler.ExportTargetInterop;
 using Android;
 namespace Fuse.ImageTools
 {
-	[Require("Source.Include", "iOS/ImageHelper.h")]
+	[Require("source.include", "iOS/ImageHelper.h")]
 	extern (iOS) static internal class iOSImageUtils
 	{
 		public static int2 GetSize(Image p)

@@ -26,10 +26,10 @@ namespace Fuse.Controls.Native.Android
 		@{
 			((android.view.TextureView)handle).setSurfaceTextureListener(new android.view.TextureView.SurfaceTextureListener() {
 				public void onSurfaceTextureAvailable(android.graphics.SurfaceTexture surface, int width, int height) {
-					@{global::Fuse.Controls.Native.Android.TextureView:Of(_this).OnSurfaceTextureAvailable(Java.Object):Call(new android.view.Surface(surface))};
+					@{global::Fuse.Controls.Native.Android.TextureView:of(_this).OnSurfaceTextureAvailable(Java.Object):call(new android.view.Surface(surface))};
 				}
 				public boolean onSurfaceTextureDestroyed(android.graphics.SurfaceTexture surface) {
-					@{global::Fuse.Controls.Native.Android.TextureView:Of(_this).OnSurfaceTextureDestroyed():Call()};
+					@{global::Fuse.Controls.Native.Android.TextureView:of(_this).OnSurfaceTextureDestroyed():call()};
 					return true;
 				}
 				public void onSurfaceTextureSizeChanged(android.graphics.SurfaceTexture surface, int width, int height) {

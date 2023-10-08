@@ -41,7 +41,7 @@ namespace Fuse.Controls.Native.Android
 		@{
 			((android.widget.Switch)handle).setOnCheckedChangeListener(new android.widget.CompoundButton.OnCheckedChangeListener() {
 				public void onCheckedChanged(android.widget.CompoundButton buttonView, boolean isChecked) {
-					@{global::Fuse.Controls.Native.Android.Switch:Of(_this).OnToggleChanged(bool):Call(isChecked)};
+					@{global::Fuse.Controls.Native.Android.Switch:of(_this).OnToggleChanged(bool):call(isChecked)};
 				}
 			});
 		@}

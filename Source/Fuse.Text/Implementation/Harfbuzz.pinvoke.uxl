@@ -1,6 +1,6 @@
-<Extensions Backend="PInvoke">
-	<Type Name="Fuse.Text.Implementation.Harfbuzz">
-		<CopyFile SourceFile="hb-ft-cached.cc" />
-		<CopyFile HeaderFile="hb-ft-cached.h" />
-	</Type>
-</Extensions>
+<extensions backend="pinvoke">
+	<type name="Fuse.Text.Implementation.Harfbuzz">
+		<copyFile sourceFile="hb-ft-cached.cc" />
+		<copyFile headerFile="hb-ft-cached.h" />
+	</type>
+</extensions>

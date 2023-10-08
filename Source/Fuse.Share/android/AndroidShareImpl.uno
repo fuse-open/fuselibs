@@ -50,7 +50,7 @@ namespace Fuse.Share
 					~ https://developer.android.com/reference/android/support/v4/content/FileProvider
 				*/
 				Uri contentUri = FileProvider.getUriForFile(context,
-												 "@(Activity.Package).share_file_provider",
+												 "@(activity.package).share_file_provider",
 												 newFile);
 				shareIntent.putExtra(Intent.EXTRA_STREAM, contentUri);
 			} else {

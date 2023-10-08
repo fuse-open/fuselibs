@@ -321,25 +321,25 @@ namespace Fuse.Controls.Android
 		[Foreign(Language.Java)]
 		void UpdatePreviewStretchMode(bool shouldFill)
 		@{
-			((CameraImpl)@{Fuse.Controls.Native.ViewHandle:Of(_this).NativeHandle:Get()}).updateStretchMode(shouldFill);
+			((CameraImpl)@{Fuse.Controls.Native.ViewHandle:of(_this).NativeHandle:get()}).updateStretchMode(shouldFill);
 		@}
 
 		[Foreign(Language.Java)]
 		void SetFlashMode(Java.Object handle, string flashMode)
 		@{
-			((CameraImpl)@{Fuse.Controls.Native.ViewHandle:Of(_this).NativeHandle:Get()}).setFlashMode(flashMode);
+			((CameraImpl)@{Fuse.Controls.Native.ViewHandle:of(_this).NativeHandle:get()}).setFlashMode(flashMode);
 		@}
 
 		[Foreign(Language.Java)]
 		void SetCameraFocusPointNow(double x, double y, int cameraWidth, int cameraHeight, int isFocusLocked)
 		@{
-			((CameraImpl)@{Fuse.Controls.Native.ViewHandle:Of(_this).NativeHandle:Get()}).setCameraFocusPoint(x,y,cameraWidth,cameraHeight, isFocusLocked);
+			((CameraImpl)@{Fuse.Controls.Native.ViewHandle:of(_this).NativeHandle:get()}).setCameraFocusPoint(x,y,cameraWidth,cameraHeight, isFocusLocked);
 		@}
 
 		[Foreign(Language.Java)]
 		void TakePicture(Action<Java.Object> resolve, Action<string> reject)
 		@{
-			((CameraImpl)@{Fuse.Controls.Native.ViewHandle:Of(_this).NativeHandle:Get()}).takePicture(new IPictureCallback() {
+			((CameraImpl)@{Fuse.Controls.Native.ViewHandle:of(_this).NativeHandle:get()}).takePicture(new IPictureCallback() {
 				public void onPictureTaken(byte[] data) {
 					resolve.run(data);
 				}
@@ -352,7 +352,7 @@ namespace Fuse.Controls.Android
 		[Foreign(Language.Java)]
 		void StartRecording(Action<Java.Object> resolve, Action<string> reject)
 		@{
-			((CameraImpl)@{Fuse.Controls.Native.ViewHandle:Of(_this).NativeHandle:Get()}).startRecording(new IStartRecordingSession() {
+			((CameraImpl)@{Fuse.Controls.Native.ViewHandle:of(_this).NativeHandle:get()}).startRecording(new IStartRecordingSession() {
 				public void onSuccess(RecordingSession recordingSession) {
 					resolve.run(recordingSession);
 				}
@@ -365,19 +365,19 @@ namespace Fuse.Controls.Android
 		[Foreign(Language.Java)]
 		string SaveParameters()
 		@{
-			return ((CameraImpl)@{Fuse.Controls.Native.ViewHandle:Of(_this).NativeHandle:Get()}).saveParameters();
+			return ((CameraImpl)@{Fuse.Controls.Native.ViewHandle:of(_this).NativeHandle:get()}).saveParameters();
 		@}
 
 		[Foreign(Language.Java)]
 		void RestoreParameters(string parameters)
 		@{
-			((CameraImpl)@{Fuse.Controls.Native.ViewHandle:Of(_this).NativeHandle:Get()}).restoreParameters(parameters);
+			((CameraImpl)@{Fuse.Controls.Native.ViewHandle:of(_this).NativeHandle:get()}).restoreParameters(parameters);
 		@}
 
 		[Foreign(Language.Java)]
 		void SetPictureSize(int width, int height)
 		@{
-			((CameraImpl)@{Fuse.Controls.Native.ViewHandle:Of(_this).NativeHandle:Get()}).setPictureSize(width, height);
+			((CameraImpl)@{Fuse.Controls.Native.ViewHandle:of(_this).NativeHandle:get()}).setPictureSize(width, height);
 		@}
 
 		[Foreign(Language.Java)]

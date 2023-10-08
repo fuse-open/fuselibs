@@ -34,16 +34,16 @@ namespace Fuse.Controls.Native.Android
 		@{
 			((android.view.SurfaceView)handle).getHolder().addCallback(new android.view.SurfaceHolder.Callback2() {
 				public void surfaceRedrawNeeded(android.view.SurfaceHolder holder) {
-					@{global::Fuse.Controls.Native.Android.SurfaceView:Of(_this).OnSurfaceRedrawNeeded(Java.Object):Call(holder)};
+					@{global::Fuse.Controls.Native.Android.SurfaceView:of(_this).OnSurfaceRedrawNeeded(Java.Object):call(holder)};
 				}
 				public void surfaceChanged(android.view.SurfaceHolder holder, int format, int width, int height) {
-					@{global::Fuse.Controls.Native.Android.SurfaceView:Of(_this).OnSurfaceChanged(Java.Object,int,int,int):Call(holder, format, width, height)};
+					@{global::Fuse.Controls.Native.Android.SurfaceView:of(_this).OnSurfaceChanged(Java.Object,int,int,int):call(holder, format, width, height)};
 				}
 				public void surfaceCreated(android.view.SurfaceHolder holder) {
-					@{global::Fuse.Controls.Native.Android.SurfaceView:Of(_this).OnSurfaceCreated(Java.Object):Call(holder)};
+					@{global::Fuse.Controls.Native.Android.SurfaceView:of(_this).OnSurfaceCreated(Java.Object):call(holder)};
 				}
 				public void surfaceDestroyed(android.view.SurfaceHolder holder) {
-					@{global::Fuse.Controls.Native.Android.SurfaceView:Of(_this).OnSurfaceDestroyed(Java.Object):Call(holder)};
+					@{global::Fuse.Controls.Native.Android.SurfaceView:of(_this).OnSurfaceDestroyed(Java.Object):call(holder)};
 				}
 			});
 		@}

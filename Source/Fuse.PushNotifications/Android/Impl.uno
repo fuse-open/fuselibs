@@ -35,7 +35,7 @@ namespace Fuse.PushNotifications
 					"com.google.android.gms.common.ConnectionResult",
 					"com.google.android.gms.common.GoogleApiAvailability"
 					)]
-	[Require("Gradle.Dependency.Implementation", "com.google.firebase:firebase-messaging:23.2.0")]
+	[Require("gradle.dependency.implementation", "com.google.firebase:firebase-messaging:23.2.0")]
 	extern(Android)
 	internal class AndroidImpl
 	{
@@ -65,7 +65,7 @@ namespace Fuse.PushNotifications
 			com.fuse.Activity.subscribeToIntents(
 				new com.fuse.Activity.IntentListener() {
 					public void onIntent (Intent newIntent) {
-						@{OnRecieve(Java.Object,bool):Call(newIntent.getExtras(), false)};
+						@{OnRecieve(Java.Object,bool):call(newIntent.getExtras(), false)};
 					}
 				},
 				PushNotificationReceiver.ACTION);
@@ -76,26 +76,26 @@ namespace Fuse.PushNotifications
 				@Override
 				public void run() {
 					// Check device for Play Services APK. If check succeeds, proceed with FCM registration.
-					if (@{CheckPlayServices():Call()}) {
+					if (@{CheckPlayServices():call()}) {
 						com.google.firebase.messaging.FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new com.google.android.gms.tasks.OnCompleteListener<String>() {
 							@Override
 							public void onComplete(com.google.android.gms.tasks.Task<String> task) {
 								if (!task.isSuccessful()) {
-									@{getRegistrationIdError(string):Call(task.getException().toString())};
+									@{getRegistrationIdError(string):call(task.getException().toString())};
 									return;
 								}
 								// Get new FCM registration token
 								String token = task.getResult();
-								@{getRegistrationIdSuccess(string):Call(token)};
+								@{getRegistrationIdSuccess(string):call(token)};
 							}
 						});
 					} else {
-						@{getRegistrationIdError(string):Call("Google Play Services need to be updated")};
+						@{getRegistrationIdError(string):call("Google Play Services need to be updated")};
 					}
 				}
 			});
-			#if (!@(Project.Android.PushNotifications.RegisterOnLaunch:IsSet)) || @(Project.Android.PushNotifications.RegisterOnLaunch:Or(0))
-				@{RegisterForPushNotifications():Call()};
+			#if (!@(project.android.pushNotifications.registerOnLaunch:isSet)) || @(project.android.pushNotifications.registerOnLaunch:or(0))
+				@{RegisterForPushNotifications():call()};
 			#endif
 		@}
 
@@ -127,7 +127,7 @@ namespace Fuse.PushNotifications
 		@{
 			// This is only necessary for API level >= 33 (TIRAMISU)
 			if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
-				@{RequestPermission():Call()};
+				@{RequestPermission():call()};
 			}
 		@}
 
@@ -157,7 +157,7 @@ namespace Fuse.PushNotifications
 		[Foreign(Language.Java), ForeignFixedName]
 		static void RegistrationIDUpdated(string regid)
 		@{
-			@{getRegistrationIdSuccess(string):Call(regid)};
+			@{getRegistrationIdSuccess(string):call(regid)};
 		@}
 
 		static void getRegistrationIdSuccess(string regid)
@@ -236,7 +236,7 @@ namespace Fuse.PushNotifications
 					Object bundleValue = bundle.get(bundleKey);
 
 					if (bundleValue instanceof Bundle) {
-						resultJson.put(bundleKey, @{BundleToJSONObject(Java.Object):Call((Bundle) bundleValue)} );
+						resultJson.put(bundleKey, @{BundleToJSONObject(Java.Object):call((Bundle) bundleValue)} );
 					} else if (bundleValue instanceof String) {
 						resultJson.put(bundleKey, "" + bundleValue);
 					} else if (bundleValue instanceof Boolean) {
@@ -273,7 +273,7 @@ namespace Fuse.PushNotifications
 					Object bundleValue = bundle.get(bundleKey);
 
 					if (bundleValue instanceof Bundle) {
-						resultJson.put(bundleKey, @{BundleToJSONObject(Java.Object):Call((Bundle) bundleValue)} );
+						resultJson.put(bundleKey, @{BundleToJSONObject(Java.Object):call((Bundle) bundleValue)} );
 					} else if (bundleValue instanceof String) {
 						resultJson.put(bundleKey, "" + bundleValue);
 					} else if (bundleValue instanceof Boolean) {
@@ -321,7 +321,7 @@ namespace Fuse.PushNotifications
 			ArrayList<Bundle> bundles = PushNotificationReceiver._cachedBundles;
 			if (isItInteractive && bundles!=null && bundles.size()>0) {
 				for (Bundle bundle : bundles)
-					@{OnRecieve(Java.Object,bool):Call(bundle, true)};
+					@{OnRecieve(Java.Object,bool):call(bundle, true)};
 				bundles.clear();
 			}
 		@}
@@ -334,20 +334,20 @@ namespace Fuse.PushNotifications
 
 			if (!PushNotificationReceiver.InForeground) {
 
-				String notification = @{BundleToJSONStr(Java.Object):Call((Bundle) bundle.get("notification"))};
-				String aps = @{BundleToJSONStr(Java.Object):Call((Bundle) bundle.get("aps"))};
+				String notification = @{BundleToJSONStr(Java.Object):call((Bundle) bundle.get("notification"))};
+				String aps = @{BundleToJSONStr(Java.Object):call((Bundle) bundle.get("aps"))};
 
 				if (notification != null) {
 					// using the google style 'notification' subtree
-					@{NotificationFromJson(Java.Object,string,Java.Object):Call(listener, notification, bundle)};
+					@{NotificationFromJson(Java.Object,string,Java.Object):call(listener, notification, bundle)};
 				} else if (aps != null) {
 					// using the apple style 'aps' subtree
-					@{NotificationFromJson(Java.Object,string,Java.Object):Call(listener, aps, bundle)};
+					@{NotificationFromJson(Java.Object,string,Java.Object):call(listener, aps, bundle)};
 				} else {
-					@{cacheBundle(Java.Object):Call(bundle)};
+					@{cacheBundle(Java.Object):call(bundle)};
 				}
 			} else {
-				@{OnRecieve(Java.Object,bool):Call(bundle, false)};
+				@{OnRecieve(Java.Object,bool):call(bundle, false)};
 			}
 		@}
 
@@ -362,7 +362,7 @@ namespace Fuse.PushNotifications
 			Object alertObj = json.opt("alert");
 
 			if (alertObj == null) {
-				@{cacheBundle(Java.Object):Call(bundle)};
+				@{cacheBundle(Java.Object):call(bundle)};
 				return;
 			}
 
@@ -469,7 +469,7 @@ namespace Fuse.PushNotifications
 			int id = PushNotificationReceiver.nextID();
 			Context context = (Context)_listener;
 			Bundle payload = (Bundle)_payload;
-			Intent intent = new Intent(context, @(Activity.Package).@(Activity.Name).class);
+			Intent intent = new Intent(context, @(activity.package).@(activity.name).class);
 			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 			intent.setAction(PushNotificationReceiver.ACTION);
 			intent.replaceExtras(payload);
@@ -489,16 +489,16 @@ namespace Fuse.PushNotifications
 			/// Setup Default notification channel properties to fallback on
 			/// NB: Once a channel is created, you can't change the importance, etc.
 			// Notification Channel id - unique identifier that you could use to get the channel properties
-			String channelId = "@(Project.Android.Notification.DefaultChannelId)";
+			String channelId = "@(project.android.notification.defaultChannelId)";
 			channelId = (channelId != "") ? channelId : "default_channel";
 			/* Notification Channel name - appears in the App notification settings, under "Categories" or a group name
 				- https://developer.android.com/training/notify-user/channels */
-			String channelName = "@(Project.Android.Notification.DefaultChannelName)";
+			String channelName = "@(project.android.notification.defaultChannelName)";
 			channelName = (channelName != "") ? channelName : "App";
 			// Notification Channel description - appears under channel name in the App settings
-			String channelDescription = "@(Project.Android.Notification.DefaultChannelDescription)";
+			String channelDescription = "@(project.android.notification.defaultChannelDescription)";
 			channelDescription = (channelDescription != "") ? channelDescription : "";
-			String channelImportanceIn = "@(Project.Android.Notification.DefaultChannelImportance)";
+			String channelImportanceIn = "@(project.android.notification.defaultChannelImportance)";
 			channelImportanceIn = (channelImportanceIn != "") ? channelImportanceIn : "";
 
 			/* Notification Channel overrides from notification payload
@@ -537,13 +537,13 @@ namespace Fuse.PushNotifications
 					NB: A device supports this feature if you can find the option here for all apps:
 					Settings > Apps & notifications > Notifications > Blink light
 				*/
-				#if @(Project.Android.Notification.DefaultChannelLightColor:IsSet)
+				#if @(project.android.notification.defaultChannelLightColor:isSet)
 					channel.enableLights(true);
 					try {
-						channel.setLightColor(Color.parseColor("@(Project.Android.Notification.DefaultChannelLightColor)"));
+						channel.setLightColor(Color.parseColor("@(project.android.notification.defaultChannelLightColor)"));
 					} catch (Exception e) { //try with #
 						try {
-							channel.setLightColor(Color.parseColor("#@(Project.Android.Notification.DefaultChannelLightColor)"));
+							channel.setLightColor(Color.parseColor("#@(project.android.notification.defaultChannelLightColor)"));
 						} catch (Exception e2) {}
 					}
 				#endif
@@ -564,8 +564,8 @@ namespace Fuse.PushNotifications
 					- https://android.googlesource.com/platform/frameworks/base/+/master/services/core/java/com/android/server/notification/NotificationManagerService.java
 				*/
 				long[] DEFAULT_VIBRATE_PATTERN = {0, 250, 250, 250};
-				#if @(Project.Android.Notification.NotificationChannelIsVibrationOn:IsSet)
-					if (Boolean.parseBoolean("@(Project.Android.Notification.NotificationChannelIsVibrationOn)")) {
+				#if @(project.android.notification.notificationChannelIsVibrationOn:isSet)
+					if (Boolean.parseBoolean("@(project.android.notification.notificationChannelIsVibrationOn)")) {
 						channel.enableVibration(true);
 						channel.setVibrationPattern(DEFAULT_VIBRATE_PATTERN);
 					}
@@ -578,8 +578,8 @@ namespace Fuse.PushNotifications
 				}
 
 				// Notification Channel Sound On
-				#if @(Project.Android.Notification.NotificationChannelIsSoundOn:IsSet)
-					if (Boolean.parseBoolean("@(Project.Android.Notification.NotificationChannelIsSoundOn)")) {
+				#if @(project.android.notification.notificationChannelIsSoundOn:isSet)
+					if (Boolean.parseBoolean("@(project.android.notification.notificationChannelIsSoundOn)")) {
 						Uri defaultSoundUri = android.media.RingtoneManager.getDefaultUri(android.media.RingtoneManager.TYPE_NOTIFICATION);
 						android.media.AudioAttributes att = new android.media.AudioAttributes.Builder()
 							.setUsage(android.media.AudioAttributes.USAGE_NOTIFICATION)
@@ -615,8 +615,8 @@ namespace Fuse.PushNotifications
 
 				// Notification Channel Lock Screen Visibility - same as notification lock screen visibility which is deprecated from Oreo+ (see below)
 				String notificationChannelLockscreenVisibilityIn = "";
-				#if @(Project.Android.Notification.NotificationChannelLockscreenVisibility:IsSet)
-					notificationChannelLockscreenVisibilityIn = "@(Project.Android.Notification.NotificationChannelLockscreenVisibility)";
+				#if @(project.android.notification.notificationChannelLockscreenVisibility:isSet)
+					notificationChannelLockscreenVisibilityIn = "@(project.android.notification.notificationChannelLockscreenVisibility)";
 				#endif
 				if (notificationChannelLockscreenVisibility!=null && !notificationChannelLockscreenVisibility.isEmpty())
 					notificationChannelLockscreenVisibilityIn = notificationChannelLockscreenVisibility;
@@ -630,8 +630,8 @@ namespace Fuse.PushNotifications
 					NB: A device supports this feature if you can find the option here for all apps:
 					Settings > Apps & notifications > Notifications > Allow notification dots
 				*/
-				#if @(Project.Android.Notification.NotificationChannelIsShowBadgeOn:IsSet)
-					channel.setShowBadge(Boolean.parseBoolean("@(Project.Android.Notification.NotificationChannelIsShowBadgeOn)"));
+				#if @(project.android.notification.notificationChannelIsShowBadgeOn:isSet)
+					channel.setShowBadge(Boolean.parseBoolean("@(project.android.notification.notificationChannelIsShowBadgeOn)"));
 				#endif
 				// Allow for notificationChannelIsShowBadgeOn to be overridden from notification payload
 				if (notificationChannelIsShowBadgeOn!=null && !notificationChannelIsShowBadgeOn.isEmpty()) {
@@ -640,12 +640,12 @@ namespace Fuse.PushNotifications
 
 				///Set up default notification channel group
 				// Notification Channel Group id - unique identifier that you could use to set/get the channel group
-				String channelGroupId = "@(Project.Android.Notification.DefaultChannelGroupId)";
+				String channelGroupId = "@(project.android.notification.defaultChannelGroupId)";
 				channelGroupId = (channelGroupId != "") ? channelGroupId : "default_group";
 				/* Notification Channel Group name - appears in the App notification settings, replaces "Categories"
 				e.g. Personal e.g. Business e.g. Social
 						- https://developer.android.com/training/notify-user/channels#CreateChannelGroup */
-				String channelGroupName = "@(Project.Android.Notification.DefaultChannelGroupName)";
+				String channelGroupName = "@(project.android.notification.defaultChannelGroupName)";
 				channelGroupName = (channelGroupName != "") ? channelGroupName : "Categories";
 				// Notification Channel Group overrides from notification payload
 				if (
@@ -662,7 +662,7 @@ namespace Fuse.PushNotifications
 			}
 
 			NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, channelId)
-				.setSmallIcon(@(Activity.Package).R.mipmap.notif) // required
+				.setSmallIcon(@(activity.package).R.mipmap.notif) // required
 				.setContentText(body) // required
 				.setAutoCancel(true)
 				.setContentIntent(pendingIntent);
@@ -701,8 +701,8 @@ namespace Fuse.PushNotifications
 				private: shows basic information, such as the notification's icon and the content title, but hides the notification's full content.
 			*/
 			String notificationLockscreenVisibilityIn = "";
-			#if @(Project.Android.Notification.NotificationLockscreenVisibility:IsSet)
-				notificationLockscreenVisibilityIn = "@(Project.Android.Notification.NotificationLockscreenVisibility)";
+			#if @(project.android.notification.notificationLockscreenVisibility:isSet)
+				notificationLockscreenVisibilityIn = "@(project.android.notification.notificationLockscreenVisibility)";
 			#endif
 			if (notificationLockscreenVisibility!=null && !notificationLockscreenVisibility.isEmpty())
 				notificationLockscreenVisibilityIn = notificationLockscreenVisibility;
@@ -752,7 +752,7 @@ namespace Fuse.PushNotifications
 				Example value: 24
 			*/
 			if (title!=null && !title.isEmpty()) {
-				String noTitleStyleMinAPIVersion = "@(Project.Android.Notification.NoTitleStyleMinAPIVersion)";
+				String noTitleStyleMinAPIVersion = "@(project.android.notification.noTitleStyleMinAPIVersion)";
 				if (noTitleStyleMinAPIVersion != "" && (android.os.Build.VERSION.SDK_INT >= Integer.parseInt(noTitleStyleMinAPIVersion)) ) {
 					// Don't set title - Oreo+ will remove it from the UI
 				} else {
@@ -767,12 +767,12 @@ namespace Fuse.PushNotifications
 				 - https://developer.android.com/reference/android/graphics/Color#parseColor(java.lang.String)
 				Example value: #8811ff
 			*/
-			#if @(Project.Android.NotificationIcon.Color:IsSet)
+			#if @(project.android.notificationIcon.color:isSet)
 				try {
-					notificationBuilder.setColor(Color.parseColor("@(Project.Android.NotificationIcon.Color)"));
+					notificationBuilder.setColor(Color.parseColor("@(project.android.notificationIcon.color)"));
 				} catch (Exception e) { //try with #
 					try {
-						notificationBuilder.setColor(Color.parseColor("#@(Project.Android.NotificationIcon.Color)"));
+						notificationBuilder.setColor(Color.parseColor("#@(project.android.notificationIcon.color)"));
 					} catch (Exception e2) {}
 				}
 			#endif
@@ -824,7 +824,7 @@ namespace Fuse.PushNotifications
 						}
 						else
 						{
-							String packageName = "@(Project.Name)";
+							String packageName = "@(project.name)";
 							java.io.InputStream afs = com.fuse.PushNotifications.BundleFiles.OpenBundledFile(context, packageName, featuredImage);
 
 							if (afs != null)

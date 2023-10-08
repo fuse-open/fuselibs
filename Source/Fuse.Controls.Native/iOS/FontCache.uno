@@ -7,7 +7,7 @@ using Uno;
 
 namespace Fuse.Controls.Native.iOS
 {
-	[Require("Xcode.Framework", "CoreText")]
+	[Require("xcode.framework", "CoreText")]
 	[ForeignInclude(Language.ObjC, "UIKit/UIKit.h")]
 	[ForeignInclude(Language.ObjC, "CoreText/CoreText.h")]
 	[ForeignInclude(Language.ObjC, "CoreFoundation/CoreFoundation.h")]

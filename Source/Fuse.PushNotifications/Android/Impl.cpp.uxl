@@ -1,32 +1,32 @@
-<Extensions Backend="CPlusPlus" Condition="Android">
-    <Require AndroidManifest.Permission="com.google.android.c2dm.permission.RECEIVE" />
+<extensions backend="cplusplus" condition="ANDROID">
+    <require androidManifest.permission="com.google.android.c2dm.permission.RECEIVE" />
 
-    <ProcessFile Name="PushNotificationReceiver.java" TargetName="@(Java.SourceDirectory)/com/fuse/PushNotifications/PushNotificationReceiver.java" />
-    <ProcessFile Name="BigPictureStyleHttp.java" TargetName="@(Java.SourceDirectory)/com/fuse/PushNotifications/BigPictureStyleHttp.java" />
-    <ProcessFile Name="BundleFiles.java" TargetName="@(Java.SourceDirectory)/com/fuse/PushNotifications/BundleFiles.java" />
+    <processFile name="PushNotificationReceiver.java" targetName="@(java.sourceDirectory)/com/fuse/PushNotifications/PushNotificationReceiver.java" />
+    <processFile name="BigPictureStyleHttp.java" targetName="@(java.sourceDirectory)/com/fuse/PushNotifications/BigPictureStyleHttp.java" />
+    <processFile name="BundleFiles.java" targetName="@(java.sourceDirectory)/com/fuse/PushNotifications/BundleFiles.java" />
 
-    <Require AndroidManifest.ApplicationElement><![CDATA[
+    <require androidManifest.applicationElement><![CDATA[
 
         <service android:name="com.fuse.PushNotifications.PushNotificationReceiver" android:exported="true">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
         </service>
-        ]]></Require>
+        ]]></require>
 
     <!-- http://iconhandbook.co.uk/reference/chart/android/ -->
     <!-- pixplicity.com/dp-px-converter/ -->
     <!-- https://material.google.com/style/icons.html -->
-    <ImageFile Name="@(Project.Android.NotificationIcon.LDPI:Path || Project.Android.Icons.LDPI:Path || '@//Android/Assets/DefaultIcon.png')"
-               TargetWidth="36" TargetName="app/src/main/res/mipmap-ldpi/notif.png" />
-    <ImageFile Name="@(Project.Android.NotificationIcon.MDPI:Path || Project.Android.Icons.MDPI:Path || '@//Android/Assets/DefaultIcon.png')"
-               TargetWidth="48" TargetName="app/src/main/res/mipmap-mdpi/notif.png" />
-    <ImageFile Name="@(Project.Android.NotificationIcon.HDPI:Path || Project.Android.Icons.HDPI:Path || '@//Android/Assets/DefaultIcon.png')"
-               TargetWidth="72" TargetName="app/src/main/res/mipmap-hdpi/notif.png" />
-    <ImageFile Name="@(Project.Android.NotificationIcon.XHDPI:Path || Project.Android.Icons.XHDPI:Path || '@//Android/Assets/DefaultIcon.png')"
-               TargetWidth="96" TargetName="app/src/main/res/mipmap-xhdpi/notif.png" />
-    <ImageFile Name="@(Project.Android.NotificationIcon.XXHDPI:Path || Project.Android.Icons.XXHDPI:Path || '@//Android/Assets/DefaultIcon.png')"
-               TargetWidth="144" TargetName="app/src/main/res/mipmap-xxhdpi/notif.png" />
-    <ImageFile Name="@(Project.Android.NotificationIcon.XXXHDPI:Path || Project.Android.Icons.XXXHDPI:Path || '@//Android/Assets/DefaultIcon.png')"
-               TargetWidth="192" TargetName="app/src/main/res/mipmap-xxxhdpi/notif.png" />
-</Extensions>
+    <imageFile name="@(project.android.notificationIcon.ldpi:path || project.android.icons.ldpi:path || '@//Android/Assets/DefaultIcon.png')"
+               targetWidth="36" targetName="app/src/main/res/mipmap-ldpi/notif.png" />
+    <imageFile name="@(project.android.notificationIcon.mdpi:path || project.android.icons.mdpi:path || '@//Android/Assets/DefaultIcon.png')"
+               targetWidth="48" targetName="app/src/main/res/mipmap-mdpi/notif.png" />
+    <imageFile name="@(project.android.notificationIcon.hdpi:path || project.android.icons.hdpi:path || '@//Android/Assets/DefaultIcon.png')"
+               targetWidth="72" targetName="app/src/main/res/mipmap-hdpi/notif.png" />
+    <imageFile name="@(project.android.notificationIcon.xhdpi:path || project.android.icons.xhdpi:path || '@//Android/Assets/DefaultIcon.png')"
+               targetWidth="96" targetName="app/src/main/res/mipmap-xhdpi/notif.png" />
+    <imageFile name="@(project.android.notificationIcon.xxhdpi:path || project.android.icons.xxhdpi:path || '@//Android/Assets/DefaultIcon.png')"
+               targetWidth="144" targetName="app/src/main/res/mipmap-xxhdpi/notif.png" />
+    <imageFile name="@(project.android.notificationIcon.xxxhdpi:path || project.android.icons.xxxhdpi:path || '@//Android/Assets/DefaultIcon.png')"
+               targetWidth="192" targetName="app/src/main/res/mipmap-xxxhdpi/notif.png" />
+</extensions>

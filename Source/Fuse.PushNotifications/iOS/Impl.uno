@@ -6,13 +6,13 @@ using Uno.Compiler.ExportTargetInterop;
 
 namespace Fuse.PushNotifications
 {
-	[Require("Entity", "Fuse.PushNotifications.iOSImpl.OnNotificationRegistrationSucceeded(string)")]
-	[Require("Entity", "Fuse.PushNotifications.iOSImpl.OnNotificationRegistrationFailed(string)")]
-	[Require("Entity", "Fuse.PushNotifications.iOSImpl.OnReceivedNotification(string,bool)")]
-	[Require("uContext.SourceFile.DidFinishLaunching", "[self application:[notification object] initializePushNotifications:[notification userInfo]];")]
-	[Require("uContext.SourceFile.Declaration", "#include <iOS/AppDelegatePushNotify.h>")]
-	[Require("Xcode.Framework", "UserNotifications.framework")]
-	[Require("Source.Include", "UserNotifications/UserNotifications.h")]
+	[Require("entity", "Fuse.PushNotifications.iOSImpl.OnNotificationRegistrationSucceeded(string)")]
+	[Require("entity", "Fuse.PushNotifications.iOSImpl.OnNotificationRegistrationFailed(string)")]
+	[Require("entity", "Fuse.PushNotifications.iOSImpl.OnReceivedNotification(string,bool)")]
+	[Require("uContext.sourceFile.didFinishLaunching", "[self application:[notification object] initializePushNotifications:[notification userInfo]];")]
+	[Require("uContext.sourceFile.declaration", "#include <iOS/AppDelegatePushNotify.h>")]
+	[Require("xcode.framework", "UserNotifications.framework")]
+	[Require("source.include", "UserNotifications/UserNotifications.h")]
 	extern(iOS)
 	internal class iOSImpl
 	{

@@ -25,7 +25,7 @@ namespace Fuse.Controls.iOS
 		}
 	}
 
-	[Require("Source.Include", "iOS/RecordingSession.h")]
+	[Require("source.include", "iOS/RecordingSession.h")]
 	extern(iOS) class NativeRecordingSession : RecordingSession, IDisposable
 	{
 
@@ -66,8 +66,8 @@ namespace Fuse.Controls.iOS
 		}
 	}
 
-	[Require("Source.Include", "iOS/CameraPreview.h")]
-	[Require("Source.Include", "iOS/CameraViewImpl.h")]
+	[Require("source.include", "iOS/CameraPreview.h")]
+	[Require("source.include", "iOS/CameraViewImpl.h")]
 	extern(iOS) class NativeCamera : ICamera
 	{
 		static readonly int CaptureModePhoto = extern<int>"fcv::CAPTURE_MODE_PHOTO";
@@ -246,7 +246,7 @@ namespace Fuse.Controls.iOS
 				return (int)((NSArray*)array).count;
 			@}
 
-			[Require("Source.Include", "iOS/CameraViewImpl.h")]
+			[Require("source.include", "iOS/CameraViewImpl.h")]
 			[Foreign(Language.ObjC)]
 			static int NSArrayGetElement(ObjC.Object array, int index)
 			@{
@@ -419,7 +419,7 @@ namespace Fuse.Controls.iOS
 		}
 	}
 
-	[Require("Source.Include", "iOS/CameraPreview.h")]
+	[Require("source.include", "iOS/CameraPreview.h")]
 	extern(iOS) class CameraView : Fuse.Controls.Native.iOS.View, ICameraView
 	{
 		ICameraViewHost _host;

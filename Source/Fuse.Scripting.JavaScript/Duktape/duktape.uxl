@@ -1,14 +1,14 @@
-<Extensions Backend="CPlusPlus" Condition="USE_DUKTAPE">
-   <Type Name="Fuse.Scripting.Duktape.duktape">
-      <CopyFile HeaderFile="duktape.h" />
-      <ProcessFile HeaderFile="duktape_helpers.h" />
-      <CopyFile HeaderFile="duk_config.h" />
-      <CopyFile SourceFile="duktape.c" />
-      <Require Source.Include="duktape_helpers.h" />
-      <Require Entity="Uno.Action<Uno.IntPtr>" />
-      <Require Condition="Android" PreprocessorDefinition="DUK_F_USE_REPL_ALL" />
-   </Type>
-   <Type Name="Fuse.Scripting.Duktape.duk_context"
-      TypeName="::duk_context*"
-      Include="duktape.h" />
-</Extensions>
+<extensions backend="cplusplus" condition="USE_DUKTAPE">
+   <type name="Fuse.Scripting.Duktape.duktape">
+      <copyFile headerFile="duktape.h" />
+      <processFile headerFile="duktape_helpers.h" />
+      <copyFile headerFile="duk_config.h" />
+      <copyFile sourceFile="duktape.c" />
+      <require source.include="duktape_helpers.h" />
+      <require entity="Uno.Action<uno.intPtr>" />
+      <require condition="ANDROID" preprocessorDefinition="DUK_F_USE_REPL_ALL" />
+   </type>
+   <type name="Fuse.Scripting.Duktape.duk_context"
+      typeName="::duk_context*"
+      include="duktape.h" />
+</extensions>

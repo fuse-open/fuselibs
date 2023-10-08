@@ -9,7 +9,7 @@ using Fuse.Drawing;
 
 namespace Fuse.iOS.Bindings
 {
-	[Require("Source.Include", "@{Uno.Platform.CoreApp:Include}")]
+	[Require("source.include", "@{Uno.Platform.CoreApp:include}")]
 	internal extern(iOS) static class iOSDeviceInterop
 	{
 		public static bool IsRootView(ObjC.Object uiView)

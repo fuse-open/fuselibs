@@ -13,7 +13,7 @@ namespace Fuse.Controls.Native.iOS
 		public Switch([UXParameter("Host")]IToggleViewHost host) { }
 	}
 
-	[Require("Source.Include", "UIKit/UIKit.h")]
+	[Require("source.include", "UIKit/UIKit.h")]
 	extern(iOS) public class Switch : LeafView, IToggleView
 	{
 

@@ -175,25 +175,25 @@ namespace Fuse.Internal
 				for (FontListParser.Family family : config.families)
 				{
 					String firstFamilyName = family.names.size() > 0 ? family.names.get(0) : null;
-					@{AddFamily(string, string, string):Call(firstFamilyName, family.lang, family.variant)};
+					@{AddFamily(string, string, string):call(firstFamilyName, family.lang, family.variant)};
 					for (FontListParser.Font font : family.fonts)
 					{
-						@{AddFont(string, int, int, bool):Call(font.fontName, font.ttcIndex, font.weight, font.isItalic)};
+						@{AddFont(string, int, int, bool):call(font.fontName, font.ttcIndex, font.weight, font.isItalic)};
 					}
 					for (int i = 1; i < family.names.size(); ++i)
 					{
 						String alias = family.names.get(i);
-						@{AddAlias(string, string, int):Call(alias, firstFamilyName, FontListParser.NormalWeight)};
+						@{AddAlias(string, string, int):call(alias, firstFamilyName, FontListParser.NormalWeight)};
 					}
 				}
 				for (FontListParser.Alias alias : config.aliases)
 				{
-					@{AddAlias(string, string, int):Call(alias.name, alias.toName, alias.weight)};
+					@{AddAlias(string, string, int):call(alias.name, alias.toName, alias.weight)};
 				}
 				}
 			catch (Exception e)
 			{
-				@{ThrowUno(string):Call(e.toString())};
+				@{ThrowUno(string):call(e.toString())};
 			}
 		@}
 

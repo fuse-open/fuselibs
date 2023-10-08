@@ -65,7 +65,7 @@ public class BackgroundService extends Service
 	{
 		// Log.d("BACKGROUND SERVICE", "startForeground");
 
-        Intent intent = new Intent(this, @(Activity.Package).@(Activity.Name).class);
+        Intent intent = new Intent(this, @(activity.package).@(activity.name).class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -81,9 +81,9 @@ public class BackgroundService extends Service
 
         //color icons in android 10 (Q)
         if (Build.VERSION.SDK_INT >= 29) {
-        	notificationBuilder.setSmallIcon(@(Activity.Package).R.mipmap.icon);
+        	notificationBuilder.setSmallIcon(@(activity.package).R.mipmap.icon);
         } else {
-        	notificationBuilder.setSmallIcon(@(Activity.Package).R.mipmap.bk_location);
+        	notificationBuilder.setSmallIcon(@(activity.package).R.mipmap.bk_location);
         }
 
         /*
@@ -93,12 +93,12 @@ public class BackgroundService extends Service
 			 - https://developer.android.com/reference/android/graphics/Color#parseColor(java.lang.String)
 			Example value: #8811ff
 		*/
-		#if @(Project.Android.NotificationIcon.Color:IsSet)
+		#if @(project.android.notificationIcon.color:isSet)
 			try {
-				notificationBuilder.setColor(Color.parseColor("@(Project.Android.NotificationIcon.Color)"));
+				notificationBuilder.setColor(Color.parseColor("@(project.android.notificationIcon.color)"));
 			} catch (Exception e) { //try with #
 				try {
-					notificationBuilder.setColor(Color.parseColor("#@(Project.Android.NotificationIcon.Color)"));
+					notificationBuilder.setColor(Color.parseColor("#@(project.android.notificationIcon.color)"));
 				} catch (Exception e2) {}
 			}
 		#endif

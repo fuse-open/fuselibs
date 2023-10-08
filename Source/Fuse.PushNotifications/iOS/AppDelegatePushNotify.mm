@@ -1,7 +1,7 @@
 #include <uno.h>
 #include "AppDelegatePushNotify.h"
-@{Fuse.Platform.Lifecycle:IncludeDirective}
-@{Fuse.PushNotifications.iOSImpl:IncludeDirective}
+@{Fuse.Platform.Lifecycle:includeDirective}
+@{Fuse.PushNotifications.iOSImpl:includeDirective}
 
 @implementation uContext (PushNotify)
 
@@ -9,8 +9,8 @@
 	if (launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey]) {
 		[self application:application dispatchPushNotification:launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey] fromBar:YES];
 	}
-#if (!@(Project.iOS.PushNotifications.RegisterOnLaunch:IsSet)) || @(Project.iOS.PushNotifications.RegisterOnLaunch:Or(0))
-	@{Fuse.PushNotifications.iOSImpl.RegisterForPushNotifications():Call()};
+#if (!@(project.ios.pushNotifications.registerOnLaunch:isSet)) || @(project.ios.pushNotifications.registerOnLaunch:or(0))
+	@{Fuse.PushNotifications.iOSImpl.RegisterForPushNotifications():call()};
 #endif
 }
 
@@ -22,18 +22,18 @@
 						  ntohl(tokenBytes[3]), ntohl(tokenBytes[4]), ntohl(tokenBytes[5]),
 						  ntohl(tokenBytes[6]), ntohl(tokenBytes[7])];
 	@{Uno.String} token = uPlatform::iOS::ToUno(hexToken);
-	@{Fuse.PushNotifications.iOSImpl.OnNotificationRegistrationSucceeded(string):Call(token)};
+	@{Fuse.PushNotifications.iOSImpl.OnNotificationRegistrationSucceeded(string):call(token)};
 }
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
 	uAutoReleasePool pool;
 	@{Uno.String} errorReason = uPlatform::iOS::ToUno(error.localizedDescription);
-	@{Fuse.PushNotifications.iOSImpl.OnNotificationRegistrationFailed(string):Call(errorReason)};
+	@{Fuse.PushNotifications.iOSImpl.OnNotificationRegistrationFailed(string):call(errorReason)};
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
 	uAutoReleasePool pool;
-	@{Fuse.Platform.ApplicationState} state = @{Fuse.Platform.Lifecycle.State:Get()};
+	@{Fuse.Platform.ApplicationState} state = @{Fuse.Platform.Lifecycle.State:get()};
 	bool fromNotifBar = application.applicationState != UIApplicationStateActive;
 	[self application:application dispatchPushNotification:userInfo fromBar:fromNotifBar];
 }
@@ -46,7 +46,7 @@
 	{
 		NSString* nsJsonPayload = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
 		@{Uno.String} jsonPayload = uPlatform::iOS::ToUno(nsJsonPayload);
-		@{Fuse.PushNotifications.iOSImpl.OnReceivedNotification(string, bool):Call(jsonPayload, fromBar)};
+		@{Fuse.PushNotifications.iOSImpl.OnReceivedNotification(string, bool):call(jsonPayload, fromBar)};
 	}
 }
 

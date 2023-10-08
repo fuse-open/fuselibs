@@ -1,4 +1,4 @@
-<Extensions Backend="CIL">
-	<Require Assembly="System.Drawing.Common/lib/net6.0/System.Drawing.Common.dll" />
-	<Require Condition="HOST_WINDOWS" Assembly="System.Windows.Forms" />
-</Extensions>
+<extensions backend="cil">
+	<require assembly="System.Drawing.Common/lib/net6.0/System.Drawing.Common.dll" />
+	<require condition="HOST_WINDOWS" assembly="System.Windows.Forms" />
+</extensions>

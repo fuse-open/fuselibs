@@ -11,7 +11,7 @@ using Fuse.Controls.Native.iOS;
 namespace Fuse.Maps.iOS
 {
 
-	[Require("Source.Include", "MapKit/MapKit.h")]
+	[Require("source.include", "MapKit/MapKit.h")]
 	extern (iOS) internal class FuseMapView
 	{
 		public readonly ObjC.Object Handle;
@@ -44,58 +44,58 @@ namespace Fuse.Maps.iOS
 		[Foreign(Language.ObjC)]
 		public bool GetBoolValue(string key)
 		@{
-			id result = [@{FuseMapView:Of(_this).Handle:Get()} valueForKey:key];
+			id result = [@{FuseMapView:of(_this).Handle:get()} valueForKey:key];
 			return [result boolValue];
 		@}
 
 		[Foreign(Language.ObjC)]
 		public string GetStringValue(string key)
 		@{
-			return [@{FuseMapView:Of(_this).Handle:Get()} valueForKey:key];
+			return [@{FuseMapView:of(_this).Handle:get()} valueForKey:key];
 		@}
 
 		[Foreign(Language.ObjC)]
 		public void SetBoolValue(string key, bool val)
 		@{
-			[@{FuseMapView:Of(_this).Handle:Get()} setValue:[NSNumber numberWithBool:val] forKey:key];
+			[@{FuseMapView:of(_this).Handle:get()} setValue:[NSNumber numberWithBool:val] forKey:key];
 		@}
 
 		[Foreign(Language.ObjC)]
 		public void SetIntValue(string key, int val)
 		@{
-			[@{FuseMapView:Of(_this).Handle:Get()} setValue:[NSNumber numberWithInt:val] forKey:key];
+			[@{FuseMapView:of(_this).Handle:get()} setValue:[NSNumber numberWithInt:val] forKey:key];
 		@}
 
 		[Foreign(Language.ObjC)]
 		public double GetHeading()
 		@{
-			MKMapView* mv = @{FuseMapView:Of(_this).Handle:Get()};
+			MKMapView* mv = @{FuseMapView:of(_this).Handle:get()};
 			return mv.camera.heading;
 		@}
 
 		[Foreign(Language.ObjC)]
 		public double GetPitch()
 		@{
-			MKMapView* mv = @{FuseMapView:Of(_this).Handle:Get()};
+			MKMapView* mv = @{FuseMapView:of(_this).Handle:get()};
 			return mv.camera.pitch;
 		@}
 
 		[Foreign(Language.ObjC)]
 		public double GetLatitude()
 		@{
-			MKMapView* mv = @{FuseMapView:Of(_this).Handle:Get()};
+			MKMapView* mv = @{FuseMapView:of(_this).Handle:get()};
 			return mv.centerCoordinate.latitude;
 		@}
 
 		[Foreign(Language.ObjC)]
 		public double GetLongitude()
 		@{
-			MKMapView* mv = @{FuseMapView:Of(_this).Handle:Get()};
+			MKMapView* mv = @{FuseMapView:of(_this).Handle:get()};
 			return mv.centerCoordinate.longitude;
 		@}
 	}
 
-	[Require("Source.Include", "iOS/MapViewController.h")]
+	[Require("source.include", "iOS/MapViewController.h")]
 	extern (iOS) internal class MapViewContainer
 	{
 
@@ -130,13 +130,13 @@ namespace Fuse.Maps.iOS
 		[Foreign(Language.ObjC)]
 		public ObjC.Object GetView()
 		@{
-			UIViewController* vc = @{MapViewContainer:Of(_this).Handle:Get()};
+			UIViewController* vc = @{MapViewContainer:of(_this).Handle:get()};
 			return vc.view;
 		@}
 	}
 
 
-	[Require("Source.Include", "iOS/MapViewDelegate.h")]
+	[Require("source.include", "iOS/MapViewDelegate.h")]
 	extern (iOS) public class MapView : LeafView, Fuse.Controls.IMapView
 	{
 
@@ -198,7 +198,7 @@ namespace Fuse.Maps.iOS
 			if (OnReady!=null) OnReady();
 		}
 
-		[Require("Source.Include", "iOS/MapViewDelegate.h")]
+		[Require("source.include", "iOS/MapViewDelegate.h")]
 		[Foreign(Language.ObjC)]
 		ObjC.Object Configure(ObjC.Object mapView, Action<bool> onMapMove, Action<int, double, double> onMapTouch, Action<int, string> onMarkerTouch, Action<int> onOverlayTouch)
 		@{
@@ -215,7 +215,7 @@ namespace Fuse.Maps.iOS
 		[Foreign(Language.ObjC)]
 		void DisposeDelegate()
 		@{
-			MapViewDelegate* dg = (MapViewDelegate*)@{MapView:Of(_this)._mapViewDelegate:Get()};
+			MapViewDelegate* dg = (MapViewDelegate*)@{MapView:of(_this)._mapViewDelegate:get()};
 			[dg clearMarkers];
 			[dg clearOverlays];
 			[dg setAsDelegate:nil];
@@ -226,7 +226,7 @@ namespace Fuse.Maps.iOS
 		[Foreign(Language.ObjC)]
 		double GetZoomLevel()
 		@{
-			MapViewDelegate* dg = (MapViewDelegate*)@{MapView:Of(_this)._mapViewDelegate:Get()};
+			MapViewDelegate* dg = (MapViewDelegate*)@{MapView:of(_this)._mapViewDelegate:get()};
 			return [dg getZoomLevel];
 		@}
 
@@ -270,21 +270,21 @@ namespace Fuse.Maps.iOS
 		[Foreign(Language.ObjC)]
 		int AddMarker(int uid, string label, double lat, double lng, String iconPath, float iconAnchorX, float iconAnchorY)
 		@{
-			MapViewDelegate* dg = (MapViewDelegate*)@{MapView:Of(_this)._mapViewDelegate:Get()};
+			MapViewDelegate* dg = (MapViewDelegate*)@{MapView:of(_this)._mapViewDelegate:get()};
 			return [dg addMarker:label latitude:lat longitude:lng icon:iconPath iconX:iconAnchorX iconY:iconAnchorY markerID:uid];
 		@}
 
 		[Foreign(Language.ObjC)]
 		void RemoveMarker(int identifier)
 		@{
-			MapViewDelegate* dg = (MapViewDelegate*)@{MapView:Of(_this)._mapViewDelegate:Get()};
+			MapViewDelegate* dg = (MapViewDelegate*)@{MapView:of(_this)._mapViewDelegate:get()};
 			[dg removeMarker:identifier];
 		@}
 
 		[Foreign(Language.ObjC)]
 		void ClearMarkers()
 		@{
-			MapViewDelegate* dg = (MapViewDelegate*)@{MapView:Of(_this)._mapViewDelegate:Get()};
+			MapViewDelegate* dg = (MapViewDelegate*)@{MapView:of(_this)._mapViewDelegate:get()};
 			[dg clearMarkers];
 		@}
 
@@ -318,14 +318,14 @@ namespace Fuse.Maps.iOS
 		[Foreign(Language.ObjC)]
 		void ClearOverlays()
 		@{
-			MapViewDelegate* dg = (MapViewDelegate*)@{MapView:Of(_this)._mapViewDelegate:Get()};
+			MapViewDelegate* dg = (MapViewDelegate*)@{MapView:of(_this)._mapViewDelegate:get()};
 			[dg clearOverlays];
 		@}
 
 		[Foreign(Language.ObjC)]
 		void AddOverlay(int uid, OverlayType type, double[] coordinates, float4 strokeColor, float4 fillColor, int lineWidth, bool geodesic, LineCap startCap, LineCap endCap, LineJoin joinType, int2 dashPattern, double centerLatitude, double centerLongitude, double radius)
 		@{
-			MapViewDelegate* dg = (MapViewDelegate*)@{MapView:Of(_this)._mapViewDelegate:Get()};
+			MapViewDelegate* dg = (MapViewDelegate*)@{MapView:of(_this)._mapViewDelegate:get()};
 			NSArray<NSNumber *> *pattern = @[[NSNumber numberWithInt:dashPattern.X], [NSNumber numberWithInt:dashPattern.Y]];
 			[dg addOverlay:coordinates
 				type:type
@@ -449,7 +449,7 @@ namespace Fuse.Maps.iOS
 		[Foreign(Language.ObjC)]
 		public void MoveTo(double latitude, double longitude, double zoomlevel, double tilt, double orientation)
 		@{
-			MapViewDelegate* dg = (MapViewDelegate*)@{MapView:Of(_this)._mapViewDelegate:Get()};
+			MapViewDelegate* dg = (MapViewDelegate*)@{MapView:of(_this)._mapViewDelegate:get()};
 			[dg moveTo:latitude longitude:longitude zoom:zoomlevel tilt:tilt orientation:orientation];
 		@}
 
@@ -477,7 +477,7 @@ namespace Fuse.Maps.iOS
 		[Foreign(Language.ObjC)]
 		public void RequestLocationAuth(Action<bool> onAuthorizationResult)
 		@{
-			MapViewDelegate* dg = (MapViewDelegate*)@{MapView:Of(_this)._mapViewDelegate:Get()};
+			MapViewDelegate* dg = (MapViewDelegate*)@{MapView:of(_this)._mapViewDelegate:get()};
 			[dg requestLocationAuthentication:onAuthorizationResult];
 		@}
 
@@ -525,7 +525,7 @@ namespace Fuse.Maps.iOS
 		[Foreign(Language.ObjC)]
 		public void ShowAllAnotations()
 		@{
-			MapViewDelegate* dg = (MapViewDelegate*)@{MapView:Of(_this)._mapViewDelegate:Get()};
+			MapViewDelegate* dg = (MapViewDelegate*)@{MapView:of(_this)._mapViewDelegate:get()};
 			[dg showAllAnotations];
 		@}
 
@@ -537,7 +537,7 @@ namespace Fuse.Maps.iOS
 		[Foreign(Language.ObjC)]
 		public void TakeSnapshot(Action<string> actionSucces, Action<string> actionError)
 		@{
-			MapViewDelegate* dg = (MapViewDelegate*)@{MapView:Of(_this)._mapViewDelegate:Get()};
+			MapViewDelegate* dg = (MapViewDelegate*)@{MapView:of(_this)._mapViewDelegate:get()};
 			[dg takeSnapshot:actionSucces error:actionError];
 		@}
 	}

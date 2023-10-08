@@ -46,7 +46,7 @@ namespace Fuse.Vibration
 		@{
 			Activity a = com.fuse.Activity.getRootActivity();
 			Vibrator v = (Vibrator)a.getSystemService(Context.VIBRATOR_SERVICE);
-			v.vibrate((long)(@{AndroidVibrator:Of(_this)._seconds} * 1000));
+			v.vibrate((long)(@{AndroidVibrator:of(_this)._seconds} * 1000));
 		@}
 
 		public extern(Android) void Perform(PlatformPermission permission)
@@ -206,8 +206,8 @@ namespace Fuse.Vibration
 		@}
 	}
 
-	[Require("Source.Include", "UIKit/UIKit.h")]
-	[Require("Xcode.Framework", "AudioToolbox")]
+	[Require("source.include", "UIKit/UIKit.h")]
+	[Require("xcode.framework", "AudioToolbox")]
 	[ForeignInclude(Language.ObjC, "AudioToolbox/AudioToolbox.h")]
 	extern(iOS) class IOSTapticFeedback
 	{
@@ -331,7 +331,7 @@ namespace Fuse.Vibration
 		@}
 	}
 
-	[Require("Xcode.Framework", "AudioToolbox")]
+	[Require("xcode.framework", "AudioToolbox")]
 	[ForeignInclude(Language.ObjC, "AudioToolbox/AudioToolbox.h")]
 	public static class Vibration
 	{

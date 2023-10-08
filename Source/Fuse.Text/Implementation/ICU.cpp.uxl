@@ -1,17 +1,17 @@
-<Extensions Backend="CPlusPlus">
-	<Define USE_ICU="!Android" />
-	<Require Condition="WIN32" SharedLibrary="@('../icu/x64/bin64/icudt55.dll':Path)" />
-	<Require Condition="WIN32" SharedLibrary="@('../icu/x64/bin64/icuin55.dll':Path)" />
-	<Require Condition="WIN32" SharedLibrary="@('../icu/x64/bin64/icuio55.dll':Path)" />
-	<Require Condition="WIN32" SharedLibrary="@('../icu/x64/bin64/icule55.dll':Path)" />
-	<Require Condition="WIN32" SharedLibrary="@('../icu/x64/bin64/iculx55.dll':Path)" />
-	<Require Condition="WIN32" SharedLibrary="@('../icu/x64/bin64/icutu55.dll':Path)" />
-	<Require Condition="WIN32" SharedLibrary="@('../icu/x64/bin64/icuuc55.dll':Path)" />
-	<Require Condition="WIN32" SharedLibrary="@('../icu/x64/bin64/icudt55.dll':Path)" />
-	<Require Condition="WIN32" SharedLibrary="@('../icu/x64/bin64/icuin55.dll':Path)" />
-	<Require Condition="WIN32" SharedLibrary="@('../icu/x64/bin64/icuio55.dll':Path)" />
-	<Require Condition="WIN32" SharedLibrary="@('../icu/x64/bin64/icule55.dll':Path)" />
-	<Require Condition="WIN32" SharedLibrary="@('../icu/x64/bin64/iculx55.dll':Path)" />
-	<Require Condition="WIN32" SharedLibrary="@('../icu/x64/bin64/icutu55.dll':Path)" />
-	<Require Condition="WIN32" SharedLibrary="@('../icu/x64/bin64/icuuc55.dll':Path)" />
-</Extensions>
+<extensions backend="cplusplus">
+	<define USE_ICU="!Android" />
+	<require condition="WIN32" sharedLibrary="@('../icu/x64/bin64/icudt55.dll':path)" />
+	<require condition="WIN32" sharedLibrary="@('../icu/x64/bin64/icuin55.dll':path)" />
+	<require condition="WIN32" sharedLibrary="@('../icu/x64/bin64/icuio55.dll':path)" />
+	<require condition="WIN32" sharedLibrary="@('../icu/x64/bin64/icule55.dll':path)" />
+	<require condition="WIN32" sharedLibrary="@('../icu/x64/bin64/iculx55.dll':path)" />
+	<require condition="WIN32" sharedLibrary="@('../icu/x64/bin64/icutu55.dll':path)" />
+	<require condition="WIN32" sharedLibrary="@('../icu/x64/bin64/icuuc55.dll':path)" />
+	<require condition="WIN32" sharedLibrary="@('../icu/x64/bin64/icudt55.dll':path)" />
+	<require condition="WIN32" sharedLibrary="@('../icu/x64/bin64/icuin55.dll':path)" />
+	<require condition="WIN32" sharedLibrary="@('../icu/x64/bin64/icuio55.dll':path)" />
+	<require condition="WIN32" sharedLibrary="@('../icu/x64/bin64/icule55.dll':path)" />
+	<require condition="WIN32" sharedLibrary="@('../icu/x64/bin64/iculx55.dll':path)" />
+	<require condition="WIN32" sharedLibrary="@('../icu/x64/bin64/icutu55.dll':path)" />
+	<require condition="WIN32" sharedLibrary="@('../icu/x64/bin64/icuuc55.dll':path)" />
+</extensions>

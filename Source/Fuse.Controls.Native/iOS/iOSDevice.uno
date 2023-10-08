@@ -65,7 +65,7 @@ namespace Fuse.Controls.Native.iOS
 		}
 
 		[Foreign(Language.ObjC)]
-		[Require("Source.Include", "UIKit/UIKit.h")]
+		[Require("source.include", "UIKit/UIKit.h")]
 		static bool IsLandscapeOrientation()
 		@{
 			UIInterfaceOrientation o = [[UIApplication sharedApplication] statusBarOrientation];

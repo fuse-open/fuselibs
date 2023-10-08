@@ -1,7 +1,7 @@
 #include <uno.h>
 
-@{Fuse.Platform.SystemUI:IncludeDirective}
-@{ObjC.Object:IncludeDirective}
+@{Fuse.Platform.SystemUI:includeDirective}
+@{ObjC.Object:includeDirective}
 
 #include <NotificationCenterContext.h>
 
@@ -27,7 +27,7 @@
 	else // UIKeyboardWillChangeFrameNotification
 		resizeReason = @{Fuse.Platform.SystemUIResizeReason.WillChangeFrame};
 
-	@{Fuse.Platform.SystemUI.uKeyboardWillChangeFrame(Uno.Platform.iOS.uCGRect, Uno.Platform.iOS.uCGRect, double, int, Fuse.Platform.SystemUIResizeReason):Call(frameBegin, frameEnd, animationDuration, static_cast<int32_t>(animationCurve), resizeReason)};
+	@{Fuse.Platform.SystemUI.uKeyboardWillChangeFrame(Uno.Platform.iOS.uCGRect, Uno.Platform.iOS.uCGRect, double, int, Fuse.Platform.SystemUIResizeReason):call(frameBegin, frameEnd, animationDuration, static_cast<int32_t>(animationCurve), resizeReason)};
 }
 
 - (void)onUserSettingsChanged:(NSNotification*)notification
@@ -35,7 +35,7 @@
 	uAutoReleasePool pool;
 
 	CGFloat textScaleFactor = [self textScaleFactor];
-	@{Fuse.Platform.SystemUI.uTextScaleFactorDidChange(float):Call(textScaleFactor)};
+	@{Fuse.Platform.SystemUI.uTextScaleFactorDidChange(float):call(textScaleFactor)};
 }
 
 - (CGFloat)textScaleFactor

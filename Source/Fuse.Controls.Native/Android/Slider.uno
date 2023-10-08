@@ -48,7 +48,7 @@ namespace Fuse.Controls.Native.Android
 		@{
 			((android.widget.SeekBar)handle).setOnSeekBarChangeListener(new android.widget.SeekBar.OnSeekBarChangeListener() {
 				public void onProgressChanged(android.widget.SeekBar seekBar, int progress, boolean fromUser) {
-					@{global::Fuse.Controls.Native.Android.Slider:Of(_this).OnSeekBarChanged(double,bool):Call(progress / 1000.0, fromUser)};
+					@{global::Fuse.Controls.Native.Android.Slider:of(_this).OnSeekBarChanged(double,bool):call(progress / 1000.0, fromUser)};
 				}
 				public void onStartTrackingTouch(android.widget.SeekBar seekBar) { }
 				public void onStopTrackingTouch(android.widget.SeekBar seekBar) { }

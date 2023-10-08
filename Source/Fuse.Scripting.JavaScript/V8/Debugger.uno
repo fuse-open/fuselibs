@@ -10,7 +10,7 @@ using Fuse;
 
 namespace Fuse.Scripting.V8
 {
-	[Require("Header.Include", "include/V8Simple.h")]
+	[Require("header.include", "include/V8Simple.h")]
 	extern(USE_V8) class Debugger: IDisposable
 	{
 		readonly int _port;

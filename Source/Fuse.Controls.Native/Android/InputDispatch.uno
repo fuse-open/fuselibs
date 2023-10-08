@@ -190,7 +190,7 @@ namespace Fuse.Controls.Native.Android
 		@{
 			return new android.view.View.OnTouchListener() {
 					public boolean onTouch(android.view.View view, android.view.MotionEvent e) {
-						return @{OnTouch(Java.Object,Java.Object):Call(view, e)};
+						return @{OnTouch(Java.Object,Java.Object):call(view, e)};
 					}
 				};
 		@}

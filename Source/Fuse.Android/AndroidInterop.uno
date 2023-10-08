@@ -12,7 +12,7 @@ namespace Fuse.Android.Bindings
 {
 	[ForeignInclude(Language.Java, "android.content.Intent", "android.net.Uri", "android.app.Activity",
 					"android.content.res.AssetFileDescriptor", "android.content.res.AssetManager")]
-	[Require("Source.Include", "@{Uno.Platform.CoreApp:Include}")]
+	[Require("source.include", "@{Uno.Platform.CoreApp:include}")]
 	internal extern(Android) static class AndroidDeviceInterop
 	{
 		[Foreign(Language.Java)]
@@ -59,7 +59,7 @@ namespace Fuse.Android.Bindings
 		@{
 			try
 			{
-				String uri = @{BundleFile:Of(bundle).BundlePath:Get()};
+				String uri = @{BundleFile:of(bundle).BundlePath:get()};
 				AssetManager am = com.fuse.Activity.getRootActivity().getAssets();
 				AssetFileDescriptor afd = am.openFd(uri);
 				return afd;
