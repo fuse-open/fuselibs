@@ -47,9 +47,6 @@ namespace Fuse
 			Bold,
 			Heavy,
 			Black,
-
-			[Obsolete]
-			SemiBold = Semibold
 		}
 
 		public enum Style

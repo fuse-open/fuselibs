@@ -54,11 +54,6 @@ namespace Fuse.Scripting.V8
 			return result;
 		}
 
-		public override object Call(params object[] args)
-		{
-			return Call(_context, args);
-		}
-
 		public override Scripting.Object Construct(Scripting.Context context, params object[] args)
 		{
 			if (context != _context)
@@ -79,11 +74,6 @@ namespace Fuse.Scripting.V8
 			}
 			_context.ThrowPendingExceptions();
 			return result;
-		}
-
-		public override Scripting.Object Construct(params object[] args)
-		{
-			return Construct(_context, args);
 		}
 
 		public override bool Equals(Scripting.Function f)

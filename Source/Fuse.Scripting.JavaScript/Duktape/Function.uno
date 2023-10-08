@@ -50,11 +50,6 @@ namespace Fuse.Scripting.Duktape
 			return (Object)returnValue;
 		}
 
-		public override Fuse.Scripting.Object Construct(params object[] args)
-		{
-			return Construct(_ctx, args);
-		}
-
 		public override object Call(Scripting.Context context, params object[] args)
 		{
 			if (context != _ctx)
@@ -73,11 +68,6 @@ namespace Fuse.Scripting.Duktape
 			var returnValue = _ctx.IndexToObject(-1);
 			_ctx.DukContext.pop();
 			return returnValue;
-		}
-
-		public override object Call(params object[] args)
-		{
-			return Call(_ctx, args);
 		}
 	}
 }

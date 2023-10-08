@@ -40,11 +40,6 @@ namespace Fuse.Scripting.JavaScriptCore
 			return result;
 		}
 
-		public override object Call(params object[] args)
-		{
-			return Call(_context, args);
-		}
-
 		public override Scripting.Object Construct(Scripting.Context context, params object[] args)
 		{
 			// Ensure this function is being called from the context/vm it belongs to
@@ -60,11 +55,6 @@ namespace Fuse.Scripting.JavaScriptCore
 						_context._onError).GetJSValueRef());
 			_context.ThrowPendingException();
 			return result;
-		}
-
-		public override Scripting.Object Construct(params object[] args)
-		{
-			return Construct(_context, args);
 		}
 
 		public override bool Equals(Scripting.Function f)

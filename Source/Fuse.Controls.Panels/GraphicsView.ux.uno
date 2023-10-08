@@ -284,6 +284,7 @@ namespace Fuse.Controls
 		{
 			get { return ActualPixelSize; }
 		}
+
 		public float2 ActualPixelSize
 		{
 			get { return ActualSize * PixelsPerPoint; }
