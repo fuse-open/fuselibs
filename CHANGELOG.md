@@ -7,12 +7,22 @@
 - Update project and config files (85ff816)
 - Update `GLHelper.h` includes on Android (2b143eb)
 - Simplify Android runtime version check (#1480)
+- Update macros and uxl files (#1491)
 
 ### Experimental.TextureLoader
 - Remove legacy `Experimental.TextureLoader` library (#1458)
 
+### Fuse.Camera
+- Update permissions for Android 13 (#1487)
+
+### Fuse.Common
+- Remove obsolete methods and enum value (#1492)
+  * `Fuse.Json.Escape(string s)`
+  * `Fuse.Json.Escape(string s, StringBuilder sb)`
+  * `Fuse.SystemFont.Weight.SemiBold`
+
 ### Fuse.Controls.Video
-- Upgrade Fuse.Video.CIL to .NET 6.0 (#1475)
+- Upgrade `Fuse.Video.CIL` to .NET 6.0 (#1475)
 
 ### Fuse.Drawing.Surface
 - Update assembly references for .NET 6.0 (#1476)
@@ -20,8 +30,24 @@
 ### Fuse.LocalNotifications
 - Fix compatibility with the latest Android OS and indentation (#1473)
 
+### Fuse.Nodes
+- Remove obsolete methods (#1492)
+  * `Fuse.VisualBounds.Transform(float4x4 matrix)`
+  * `Fuse.VisualBounds.TransformFlatten(float4x4 matrix)`
+  * `Fuse.VisualBounds.BoxTransform(Box box, float4x4 transform)`
+
 ### Fuse.Scripting
 - Deprecate `NativePromise` without `Context` (#1467)
+- Remove obsolete methods (#1492)
+  * `Fuse.Scripting.IThreadWorker.Invoke(Uno.Action action)`
+  * `Fuse.Scripting.Context.Invoke(Uno.Action action)`
+  * `Fuse.Scripting.ModuleResult.Object`
+  * `Fuse.Scripting.ModuleResult.Exports`
+  * `Fuse.Scripting.NativeEvent.RaiseAsync(params object[] args)`
+  * `Fuse.Scripting.Object.InstanceOf(Function type)`
+  * `Fuse.Scripting.Object.CallMethod(string name, params object[] args)`
+  * `Fuse.Scripting.Function.Call(params object[] args)`
+  * `Fuse.Scripting.Function.Construct(params object[] args)`
 
 ### Fuse.Scripting.JavaScript
 - TypeScript and transpiler support in UX files (#1472)
@@ -29,9 +55,11 @@
 
 ### Other changes
 - Upgrade `Fuse.Profiling` tool to .NET 6.0 (#1474)
+- Upgrade `android-build-tools` to v2.x (#1488)
 - Ignore tests failing on macOS (#1484)
+- Kill tests after 15 minutes (#1489)
 
-[`v2.9.1...v3.0.0-beta.8`](https://github.com/fuse-open/fuselibs/compare/v2.9.1...v3.0.0-beta.8)
+[`v2.9.1...v3.0.0-beta.9`](https://github.com/fuse-open/fuselibs/compare/v2.9.1...v3.0.0-beta.9)
 
 ## 2.9.1
 
