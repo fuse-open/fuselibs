@@ -11,7 +11,7 @@ namespace Fuse
 		For example:
 		```json
 			{
-				"Packages": [
+				"references": [
 					"Fuse",
 					"FuseJS",
 					"Fuse.Audio"

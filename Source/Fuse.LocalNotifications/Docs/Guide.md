@@ -6,7 +6,7 @@ As with many of our bindings over OS features we like to start with a light API 
 
 Include the Fuse local notification library by adding the following to your `.unoproj` file
 ```json
-    "Packages": [
+    "references": [
         ...
         "Fuse.LocalNotifications",
         ...

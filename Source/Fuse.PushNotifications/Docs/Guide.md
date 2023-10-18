@@ -10,7 +10,7 @@ We have opted for a lightweight consistent interface across iOS and Android whic
 
 Include the Fuse push notification library by adding the following to your `.unoproj` file
 ```json
-    "Packages": [
+    "references": [
         ...
         "Fuse.PushNotifications",
         ...

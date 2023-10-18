@@ -45,17 +45,17 @@ This is good for hiding implementation details from other calling JavaScript mod
 
 Each code file (or inline snippet) defines a module.
 
-You can import JavaScript modules by their file name. To do this, make sure your JavaScript files are included in your .unoproj file as "Bundle" files:
+You can import JavaScript modules by their file name. To do this, make sure your JavaScript files are included in your .unoproj file as "bundle" files:
 ```json
-	"Includes": [
-		"yourJavaScriptFile.js:Bundle"
+	"includes": [
+		"yourJavaScriptFile.js:bundle"
 		..other files ..
 	]
 ```
 or if you want to make all JavaScript files be includes as bundled files:
 ```json
-	"Includes": [
-		"**.js:Bundle"
+	"includes": [
+		"**.js:bundle"
 	]
 ```
 Then, you can require using the JavaScript file name:

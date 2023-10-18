@@ -9,7 +9,7 @@ namespace Fuse.Vibration
 		For example:
 		```json
 			{
-				"Packages": [
+				"references": [
 					"Fuse",
 					"FuseJS",
 					"Fuse.Vibration"
