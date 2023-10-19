@@ -55,15 +55,15 @@ namespace Fuse.Controls
 		## Displaying an image from a file specified from JavaScript
 		Uno cannot automatically bundle images when their path is defined in JavaScript. Because of this, you have to manually bundle those by manually importing them in your unproj file. You can either bundle one file like this:
 		```json
-			"Includes": [
+			"includes": [
 				"*",
-				"image.jpg:Bundle"
+				"image.jpg:bundle"
 			]
 		```
 		Or bundle an entire folder, or all files of a specific type, using wildcards:
 		```json
-			"Includes": [
-				"*.jpg:Bundle"
+			"includes": [
+				"*.jpg:bundle"
 			]
 		```
 		You can read more on bundling files with your project [here.](/docs/assets/bundle).

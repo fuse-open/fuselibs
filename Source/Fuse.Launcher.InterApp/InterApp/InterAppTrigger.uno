@@ -9,7 +9,7 @@ namespace Fuse.Triggers.Actions
 		For example:
 		```JSON
 			{
-				"Packages": [
+				"references": [
 					"Fuse",
 					"FuseJS",
 					"Fuse.Launcher"

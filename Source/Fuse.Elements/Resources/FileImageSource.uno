@@ -48,8 +48,8 @@ namespace Fuse.Resources
 		However, if the path comes from JavaScript or some other dynamic data source, it cannot automatically be inferred by the compiler.
 		Thus, we need to explicitly specify it as a [bundle file](articles:assets/bundle) in our `.unoproj`:
 		```json
-			"Includes": [
-				"assets/kitten.jpg:Bundle"
+			"includes": [
+				"assets/kitten.jpg:bundle"
 			]
 		```
 		We can now use JavaScript to specify the path to the image:

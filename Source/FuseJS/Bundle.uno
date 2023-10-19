@@ -11,7 +11,7 @@ namespace FuseJS
 	/**
 		@scriptmodule FuseJS/Bundle
 
-		The bundle API allows you to read files that is bundled with the application, defined in the project file (using `<filename>:Bundle`).
+		The bundle API allows you to read files that is bundled with the application, defined in the project file (using `<filename>:bundle`).
 
 		```js
 		var Bundle = require("FuseJS/Bundle");
