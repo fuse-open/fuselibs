@@ -56,7 +56,7 @@
 				<PlatformCheck Label="Android" Value="isAndroid()"/>
 				<PlatformCheck Label="Desktop" Value="isDesktop()"/>
 				<PlatformCheck Label="Windows" Value="isWindows()"/>
-				<PlatformCheck Label="macOS" Value="isOSX()"/>
+				<PlatformCheck Label="macOS" Value="isMac()"/>
 			</Grid>
 			
 			<WhileTrue Value="isDefined({=Device.osVersion})">
