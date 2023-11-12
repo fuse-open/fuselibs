@@ -22,7 +22,7 @@
   ],
   "includes": [
     "*",
-    "CoreGraphics/CoreGraphicsLib.h:cheader:iOS||OSX",
+    "CoreGraphics/CoreGraphicsLib.h:cheader:IOS || MAC",
     "Android/LinearGradientStore.java:java:Android",
     "Android/GraphicsSurfaceContext.java:java:Android"
   ],

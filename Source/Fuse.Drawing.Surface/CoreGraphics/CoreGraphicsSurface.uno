@@ -8,7 +8,7 @@ using Fuse.Drawing.Primitives;
 
 namespace Fuse.Drawing
 {
-	extern(iOS||OSX)
+	extern(IOS || MAC)
 	class CoreGraphicsSurfacePath : SurfacePath
 	{
 		public IntPtr Path;
@@ -19,7 +19,7 @@ namespace Fuse.Drawing
 	[Require("source.include", "CoreGraphics/CoreGraphicsLib.h")]
 	[extern(!METAL) Require("xcode.framework", "GLKit")]
 	[extern(iOS) Require("source.include", "OpenGLES/ES2/gl.h")]
-	extern(iOS||OSX)
+	extern(IOS || MAC)
 	abstract class CoreGraphicsSurface : Surface
 	{
 		protected float _pixelsPerPoint;
@@ -248,10 +248,10 @@ namespace Fuse.Drawing
 		}
 
 		[extern(iOS) Require("xcode.framework", "UIKit")]
-		[extern(OSX) Require("source.include", "AppKit/AppKit.h")]
+		[extern(MAC) Require("source.include", "AppKit/AppKit.h")]
 		[Require("source.include", "TargetConditionals.h")]
 		[Foreign(Language.ObjC)]
-		extern(iOS||OSX) IntPtr CreateNativeImage(byte[] bytes)
+		extern(IOS || MAC) IntPtr CreateNativeImage(byte[] bytes)
 		@{
 			uArray* arr = [bytes unoArray];
 			NSData* data = [NSData dataWithBytes:arr->Ptr() length:arr->Length()];

@@ -96,7 +96,7 @@ namespace Fuse.Reactive
 	{
 		[UXConstructor]
 		public IsOSXFunction() : base("OSX") { }
-		protected override bool GetResult() { return defined(OSX); }
+		protected override bool GetResult() { return defined(MAC); }
 	}
 
 	[UXFunction("isWindows")]

@@ -22,7 +22,7 @@ public partial class UpdatePage
 		bool noDraw = validFrame > 30;
 		
 		// `NeedsRedraw` is not used on the GraphicsView drivers
-		if defined(OSX||DotNet)
+		if defined(MAC || DOTNET)
 		{
 			var need = app.NeedsRedraw;
 		
@@ -74,7 +74,7 @@ public partial class UpdatePage
 		}
 		
 		bool waitAgain = AppBase.Current.RootViewport.ValidFrameCount < 2;
-		if defined(OSX||DotNet)
+		if defined(MAC || DOTNET)
 		{
 			waitAgain = waitAgain || AppBase.Current.NeedsRedraw;
 		}

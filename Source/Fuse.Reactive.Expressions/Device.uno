@@ -129,7 +129,7 @@ namespace Fuse.Reactive
 			Props[NameIsAndroid] = defined(Android);
 			Props[NameIsIOS] = defined(iOS);
 
-			Props[NameIsMac] = defined(OSX);
+			Props[NameIsMac] = defined(MAC);
 			Props[NameIsWindows] = defined(Win32);
 
 			Props[NameIsPreview] = defined(Preview);

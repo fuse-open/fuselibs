@@ -12,9 +12,9 @@ namespace Fuse.Drawing
 	[Require("xcode.framework", "CoreGraphics")]
 	[Require("source.include", "CoreGraphics/CoreGraphicsLib.h")]
 	[extern(!METAL) Require("xcode.framework", "GLKit")]
-	[extern(OSX) Require("source.include", "XliPlatform/GL.h")]
+	[extern(MAC) Require("source.include", "XliPlatform/GL.h")]
 	[extern(iOS) Require("source.include", "OpenGLES/ES2/gl.h")]
-	extern(iOS||OSX)
+	extern(IOS || MAC)
 	class GraphicsSurface : CoreGraphicsSurface
 	{
 		DrawContext _drawContext;
