@@ -91,7 +91,7 @@ namespace Fuse.Reactive
 	}
 
 	[UXFunction("isOSX")]
-	/** `true` if running on OSX */
+	/** `true` if running on macOS */
 	public class IsOSXFunction : PlatformFunction
 	{
 		[UXConstructor]

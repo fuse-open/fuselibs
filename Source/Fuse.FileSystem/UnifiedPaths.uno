@@ -32,7 +32,7 @@ namespace Fuse.FileSystem
 		{
 			// Right now the path of the executable is used.
 			// This is probably appropriate during testing, but if we ever
-			// rebrand Fuse as a OSX or Windows desktop this should
+			// rebrand Fuse as a macOS or Windows desktop this should
 			// probably be changed.
 
 			return GetOrCreateDirectory(ref _cacheDirectory, "fs_cache");

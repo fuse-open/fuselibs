@@ -227,7 +227,7 @@ namespace Fuse.Drawing
 				CGFloatSet(offsets, i, Math.Clamp(stop.Offset, 0.0f, 1.0f));
 
 				if (stop.Offset > 1.0f || stop.Offset < 0.0f)
-					Fuse.Diagnostics.UserWarning( "iOS/OSX does not support gradient stops outside of 0.0 to 1.0", stop.Offset );
+					Fuse.Diagnostics.UserWarning( "iOS/macOS does not support gradient stops outside of 0.0 to 1.0", stop.Offset );
 			}
 			_gradientBrushes[lg] = CreateLinearGradient(_context, colors, offsets, stops.Length );
 
@@ -374,7 +374,7 @@ namespace Fuse.Drawing
 				&& !_strokeWarning)
 			{
 				_strokeWarning = true;
-				Fuse.Diagnostics.UserWarning( "iOS/OSX does not support non-center alignment strokes", stroke );
+				Fuse.Diagnostics.UserWarning( "iOS/macOS does not support non-center alignment strokes", stroke );
 			}
 
 			var cgPath = path as CoreGraphicsSurfacePath;
@@ -504,7 +504,7 @@ namespace Fuse.Drawing
 			{
 				//skip M33 since Z scaling of flat objects is okay and common
 				Fuse.Diagnostics.UserWarning(
-					"iOS/OSX does not support 3d or shear transforms for vector graphics", this );
+					"iOS/macOS does not support 3d or shear transforms for vector graphics", this );
 				_transformWarn = true;
 			}
 
