@@ -9,7 +9,7 @@ that, with some care, can be used both on C++ backends and CIL backends.
 
 *Important:* After having made changes to or added any Foreign CPlusPlus
 methods, the PInvoke libraries need to be rebuilt for Windows (both X86 and
-X64) and OSX. This can be done using `uno build pinvoke -crelease`. The stuff files
+X64) and macOS. This can be done using `uno build pinvoke -crelease`. The stuff files
 containing these libs then need to be recreated and reuploaded.
 
 ## What the text goes through to be rendered

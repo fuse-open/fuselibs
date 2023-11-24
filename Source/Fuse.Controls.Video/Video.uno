@@ -82,10 +82,10 @@ namespace Fuse.Controls
 		```
 		## Supported formats
 
-		`Video` is implemented by using the videodecoder provided by the export target and therefore supports whatever the platform supports. Be aware that Windows, OS X, Android and iOS might not share support for some formats
+		`Video` is implemented by using the videodecoder provided by the export target and therefore supports whatever the platform supports. Be aware that Windows, macOS, Android and iOS might not share support for some formats
 
 		- [Android supported formats](https://developer.android.com/guide/appendix/media-formats.html)
-		- [iOS and OS X supported formats (found under 'public.movie')](https://developer.apple.com/library/mac/documentation/Miscellaneous/Reference/UTIRef/Articles/System-DeclaredUniformTypeIdentifiers.html)
+		- [iOS and macOS supported formats (found under 'public.movie')](https://developer.apple.com/library/mac/documentation/Miscellaneous/Reference/UTIRef/Articles/System-DeclaredUniformTypeIdentifiers.html)
 		- [Windows supported formats](https://msdn.microsoft.com/en-us/library/cc189080%28v=vs.95%29.aspx?f=255&MSPPError=-2147217396)
 
 		## Playing from the local file system

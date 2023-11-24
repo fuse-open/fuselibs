@@ -67,7 +67,7 @@ namespace Fuse.Reactive
 
 	/* `WindowItem` and `TemplateMatch` are meant to be private to `Instantiator`.  They've been
 		outside to solve a  build error on DotNet/Windows shown on AppVeyor
-		(not reproducible on DotNet/OSX)
+		(not reproducible on DotNet/macOS)
 		UNO: https://github.com/fusetools/uno/issues/1503
 	*/
 	class WindowItem : WindowListItem

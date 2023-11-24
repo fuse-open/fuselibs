@@ -5,7 +5,7 @@ using Fuse.Drawing.Primitives;
 
 namespace Fuse.Drawing
 {
-	extern(iOS||OSX)
+	extern(IOS || MAC)
 	class NativeSurface : CoreGraphicsSurface
 	{
 

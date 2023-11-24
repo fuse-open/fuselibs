@@ -1,5 +1,5 @@
 <extensions backend="cplusplus" condition="USE_V8">
-	<require condition="OSX" linkDirectory="@('lib/OSX':path)" />
+	<require condition="MAC" linkDirectory="@('lib/OSX':path)" />
 	<require condition="WIN32" linkDirectory="@('lib/Windows':path)" />
 	<require condition="WIN32" sharedLibrary="@('lib/Windows/V8Simple.dll':path)" />
 	<require includeDirectory="@('.':path)" />

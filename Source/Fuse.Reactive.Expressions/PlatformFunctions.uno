@@ -91,12 +91,22 @@ namespace Fuse.Reactive
 	}
 
 	[UXFunction("isOSX")]
-	/** `true` if running on OSX */
+	[Obsolete("Please use IsMacFunction instead")]
+	/** `true` if running on macOS */
 	public class IsOSXFunction : PlatformFunction
 	{
 		[UXConstructor]
 		public IsOSXFunction() : base("OSX") { }
-		protected override bool GetResult() { return defined(OSX); }
+		protected override bool GetResult() { return defined(MAC); }
+	}
+
+	[UXFunction("isMac")]
+	/** `true` if running on macOS */
+	public class IsMacFunction : PlatformFunction
+	{
+		[UXConstructor]
+		public IsMacFunction() : base("Mac") { }
+		protected override bool GetResult() { return defined(MAC); }
 	}
 
 	[UXFunction("isWindows")]

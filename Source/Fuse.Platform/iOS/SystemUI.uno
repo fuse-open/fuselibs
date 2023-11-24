@@ -293,7 +293,7 @@ namespace Fuse.Platform
 			UIView* view = [UIApplication sharedApplication].keyWindow.rootViewController.view;
 
 		#if defined(__IPHONE_11_0) && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_11_0
-			//Only on iOS11, taken care of in the GetSafeFrame code (we don't use @available in order to support older XCode version)
+			//Only on iOS11, taken care of in the GetSafeFrame code (we don't use @available in order to support older Xcode version)
 			UIEdgeInsets insets = view.safeAreaInsets;
 			*l = insets.left;
 			*t = insets.top;

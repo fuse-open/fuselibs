@@ -27,7 +27,7 @@ namespace Fuse.Drawing
 
 			if (c == null)
 			{
-				if defined(iOS||OSX)
+				if defined(IOS || MAC)
 					c = new GraphicsSurface();
 				else if defined(Android)
 					c = new GraphicsSurface();

@@ -8,7 +8,7 @@ using Fuse.Drawing.Primitives;
 
 namespace Fuse.Drawing
 {
-	extern(iOS||OSX)
+	extern(IOS || MAC)
 	class CoreGraphicsSurfacePath : SurfacePath
 	{
 		public IntPtr Path;
@@ -19,7 +19,7 @@ namespace Fuse.Drawing
 	[Require("source.include", "CoreGraphics/CoreGraphicsLib.h")]
 	[extern(!METAL) Require("xcode.framework", "GLKit")]
 	[extern(iOS) Require("source.include", "OpenGLES/ES2/gl.h")]
-	extern(iOS||OSX)
+	extern(IOS || MAC)
 	abstract class CoreGraphicsSurface : Surface
 	{
 		protected float _pixelsPerPoint;
@@ -227,7 +227,7 @@ namespace Fuse.Drawing
 				CGFloatSet(offsets, i, Math.Clamp(stop.Offset, 0.0f, 1.0f));
 
 				if (stop.Offset > 1.0f || stop.Offset < 0.0f)
-					Fuse.Diagnostics.UserWarning( "iOS/OSX does not support gradient stops outside of 0.0 to 1.0", stop.Offset );
+					Fuse.Diagnostics.UserWarning( "iOS/macOS does not support gradient stops outside of 0.0 to 1.0", stop.Offset );
 			}
 			_gradientBrushes[lg] = CreateLinearGradient(_context, colors, offsets, stops.Length );
 
@@ -248,10 +248,10 @@ namespace Fuse.Drawing
 		}
 
 		[extern(iOS) Require("xcode.framework", "UIKit")]
-		[extern(OSX) Require("source.include", "AppKit/AppKit.h")]
+		[extern(MAC) Require("source.include", "AppKit/AppKit.h")]
 		[Require("source.include", "TargetConditionals.h")]
 		[Foreign(Language.ObjC)]
-		extern(iOS||OSX) IntPtr CreateNativeImage(byte[] bytes)
+		extern(IOS || MAC) IntPtr CreateNativeImage(byte[] bytes)
 		@{
 			uArray* arr = [bytes unoArray];
 			NSData* data = [NSData dataWithBytes:arr->Ptr() length:arr->Length()];
@@ -374,7 +374,7 @@ namespace Fuse.Drawing
 				&& !_strokeWarning)
 			{
 				_strokeWarning = true;
-				Fuse.Diagnostics.UserWarning( "iOS/OSX does not support non-center alignment strokes", stroke );
+				Fuse.Diagnostics.UserWarning( "iOS/macOS does not support non-center alignment strokes", stroke );
 			}
 
 			var cgPath = path as CoreGraphicsSurfacePath;
@@ -504,7 +504,7 @@ namespace Fuse.Drawing
 			{
 				//skip M33 since Z scaling of flat objects is okay and common
 				Fuse.Diagnostics.UserWarning(
-					"iOS/OSX does not support 3d or shear transforms for vector graphics", this );
+					"iOS/macOS does not support 3d or shear transforms for vector graphics", this );
 				_transformWarn = true;
 			}
 
