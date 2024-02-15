@@ -14,7 +14,7 @@ namespace Fuse.Maps.Android
 		MOVE = 2
 	}
 
-	[Require("gradle.dependency.implementation", "com.google.android.gms:play-services-maps:16.1.0")]
+	[Require("gradle.dependency.implementation", "com.google.android.gms:play-services-maps:17.0.0")]
 	extern (Android) public class MapView : Fuse.Controls.Native.Android.LeafView, IMapView
 	{
 		public bool IsReady { get; private set; }

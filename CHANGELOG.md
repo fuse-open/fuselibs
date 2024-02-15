@@ -61,6 +61,15 @@
 
 [`v2.9.1...v3.0.0-beta.9`](https://github.com/fuse-open/fuselibs/compare/v2.9.1...v3.0.0-beta.9)
 
+## 2.9.2
+
+### Fuse.Maps
+- `com.google.android.gms:play-services-maps` -> 17.0.0 (#1494)
+
+This is the minimum version required to be published on Google Play.
+
+[`v2.9.1...v2.9.2`](https://github.com/fuse-open/fuselibs/compare/v2.9.1...v2.9.2)
+
 ## 2.9.1
 
 ### Fuse.PushNotifications
