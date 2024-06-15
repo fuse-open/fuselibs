@@ -244,6 +244,7 @@ namespace Fuse.Controls.VideoImpl.Android
 					if (rotation != null) {
 						return java.lang.Integer.parseInt(rotation);
 					}
+					afd.close();
 				}
 				catch (Exception e) { /* We do not care if this fails */ }
 			}
@@ -434,6 +435,7 @@ namespace Fuse.Controls.VideoImpl.Android
 			{
 				// (ﾉಥДಥ)ﾉ︵┻━┻･/
 				player.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
+				afd.close();
 			}
 			// (ﾉಥДಥ)ﾉ︵┻━┻･/
 			catch (Exception e)
