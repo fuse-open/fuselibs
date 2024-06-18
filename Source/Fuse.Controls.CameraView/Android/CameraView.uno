@@ -65,11 +65,27 @@ namespace Fuse.Controls.Android
 			public InitialLoadClosure(CameraFacing facing)
 			{
 				_facing = facing;
-				Permissions.Request(new PlatformPermission[] {
-					Permissions.Android.CAMERA,
-					Permissions.Android.RECORD_AUDIO,
-					Permissions.Android.WRITE_EXTERNAL_STORAGE
-				}).Then(OnPermissionsPerimtted, Reject);
+				if (AndroidProperties.BuildVersion >= 33)
+				{
+					var permissions = new PlatformPermission[]
+					{
+						Permissions.Android.CAMERA,
+						Permissions.Android.READ_MEDIA_IMAGES,
+						Permissions.Android.READ_MEDIA_VIDEO,
+						Permissions.Android.READ_MEDIA_AUDIO
+					};
+					Permissions.Request(permissions).Then(OnPermissionsPerimtted, Reject);
+				}
+				else
+				{
+					var permissions = new PlatformPermission[]
+					{
+						Permissions.Android.CAMERA,
+						Permissions.Android.WRITE_EXTERNAL_STORAGE,
+						Permissions.Android.READ_EXTERNAL_STORAGE
+					};
+					Permissions.Request(permissions).Then(OnPermissionsPerimtted, Reject);
+				}
 			}
 
 			void OnPermissionsPerimtted(PlatformPermission[] permission)
