@@ -300,7 +300,10 @@ namespace Fuse.Controls.VideoImpl.Android
 		Java.Object CreateMediaPlayer(Java.Object surfaceHandle)
 		@{
 			android.media.MediaPlayer player = new android.media.MediaPlayer();
-			player.setAudioStreamType(android.media.AudioManager.STREAM_MUSIC);
+			if (android.os.Build.VERSION.SDK_INT >= 21)
+				player.setAudioAttributes(new android.media.AudioAttributes.Builder().setContentType(android.media.AudioAttributes.CONTENT_TYPE_MUSIC).build());
+			else
+				player.setAudioStreamType(android.media.AudioManager.STREAM_MUSIC);
 			player.setOnPreparedListener(new android.media.MediaPlayer.OnPreparedListener() {
 				public void onPrepared(android.media.MediaPlayer mp) {
 					@{Fuse.Controls.VideoImpl.Android.MediaPlayer:of(_this).OnPrepared():call()};
@@ -463,7 +466,23 @@ namespace Fuse.Controls.VideoImpl.Android
 			if (!player.isPlaying())
 			{
 				android.media.AudioManager am = (android.media.AudioManager)com.fuse.Activity.getRootActivity().getSystemService(android.content.Context.AUDIO_SERVICE);
-				am.requestAudioFocus(null, android.media.AudioManager.STREAM_MUSIC, android.media.AudioManager.AUDIOFOCUS_GAIN);
+				if (android.os.Build.VERSION.SDK_INT >= 21)
+				{
+					// Initialize the audio attributes
+					android.media.AudioAttributes playbackAttributes = new android.media.AudioAttributes.Builder()
+						.setUsage(android.media.AudioAttributes.USAGE_MEDIA)
+						.setContentType(android.media.AudioAttributes.CONTENT_TYPE_MUSIC)
+						.build();
+
+					// Initialize the audio focus request
+					android.media.AudioFocusRequest focusRequest = new android.media.AudioFocusRequest.Builder(android.media.AudioManager.AUDIOFOCUS_GAIN)
+						.setAudioAttributes(playbackAttributes)
+						.build();
+					am.requestAudioFocus(focusRequest);
+
+				}
+				else
+					am.requestAudioFocus(null, android.media.AudioManager.STREAM_MUSIC, android.media.AudioManager.AUDIOFOCUS_GAIN);
 				player.start();
 			}
 		@}
