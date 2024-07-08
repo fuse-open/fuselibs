@@ -518,18 +518,18 @@ namespace Fuse
 			@advanced */
 		public event RequestBringIntoViewHandler RequestBringIntoView;
 
-        	internal protected virtual void OnBringIntoView(Visual elm)
-        	{
-	        	if (RequestBringIntoView != null)
-	        		RequestBringIntoView(this, new RequestBringIntoViewArgs(elm));
+		internal protected virtual void OnBringIntoView(Visual elm)
+		{
+			if (RequestBringIntoView != null)
+				RequestBringIntoView(this, new RequestBringIntoViewArgs(elm));
 
-        		if (Parent != null)
-        			Parent.OnBringIntoView(elm);
-        	}
+			if (Parent != null)
+				Parent.OnBringIntoView(elm);
+		}
 
-        	public void BringIntoView()
-        	{
-	        	OnBringIntoView(this);
-        	}
+		public void BringIntoView()
+		{
+			OnBringIntoView(this);
+		}
 	}
 }

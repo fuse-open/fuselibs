@@ -40,6 +40,7 @@
     "iOS/ContainerView.h:objcheader:iOS",
     "iOS/ContainerView.mm:objcsource:iOS",
     "Android/Java/ScrollEventHandler.java:java:Android",
+    "Android/Java/ScrollInteractionEventHandler.java:java:Android",
     "Android/Java/FuseScrollView.java:java:Android",
     "Android/Java/HorizontalScrollView.java:java:Android",
     "Android/Java/VerticalScrollView.java:java:Android",

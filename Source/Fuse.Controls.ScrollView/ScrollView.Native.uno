@@ -22,6 +22,19 @@ namespace Fuse.Controls
 			SetScrollPosition(newScrollPosition, null);
 		}
 
+		void IScrollViewHost.OnInteractionChanged(bool isInteracting)
+		{
+			if (isInteracting)
+				BeginInteraction(_interactionId, OnCancelInteraction);
+			else
+				EndInteraction(_interactionId);
+		}
+
+		void OnCancelInteraction()
+		{
+			EndInteraction(_interactionId);
+		}
+
 		float2 IScrollViewHost.ContentSize
 		{
 			get
@@ -44,6 +57,7 @@ namespace Fuse.Controls
 			if (nsv != null)
 			{
 				nsv.AllowedScrollDirections = AllowedScrollDirections;
+				nsv.UserScroll = UserScroll;
 			}
 		}
 	}

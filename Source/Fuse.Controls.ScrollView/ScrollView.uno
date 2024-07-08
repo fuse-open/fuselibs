@@ -159,11 +159,16 @@ namespace Fuse.Controls
 		{
 			base.OnRooted();
 			_hasPrevArrange = false;
+			_interactionId = new object();
+			this.RequestBringIntoView += OnRequestBringIntoView;
+
 		}
 
 		protected override void OnUnrooted()
 		{
 			base.OnUnrooted();
+			_interactionId = null;
+			this.RequestBringIntoView -= OnRequestBringIntoView;
 		}
 
 		public ScrollViewBase()
@@ -174,6 +179,7 @@ namespace Fuse.Controls
 
 		internal Scroller _scroller; //internal for Scroller to set
 		internal Scroller TestScroller { get { return _scroller; } }
+		private object _interactionId;
 
 		MotionConfig _motion;
 		[UXContent]
@@ -349,6 +355,25 @@ namespace Fuse.Controls
 			return MinScroll + local.XY + elm.ActualSize/2 - ActualSize/2;
 		}
 
+		Visual _pendingBringIntoView;
+		void OnRequestBringIntoView(object sender, RequestBringIntoViewArgs args)
+		{
+			//defer to post layout and post input
+			_pendingBringIntoView = args.Visual;
+			UpdateManager.AddDeferredAction( PerformBringIntoView, UpdateStage.Layout,
+				LayoutPriority.Post);
+		}
+
+		void PerformBringIntoView()
+		{
+			if (_pendingBringIntoView == null || !_pendingBringIntoView.IsRootingCompleted)
+				return;
+
+			var pos = GetVisualScrollPosition(_pendingBringIntoView);
+			Goto(pos);
+			_pendingBringIntoView = null;
+		}
+
 		/**
 			Scrolls to absolute target position in points.
 
@@ -357,7 +382,15 @@ namespace Fuse.Controls
 		public void Goto( float2 position )
 		{
 			if (_scroller == null)
-				ScrollPosition = Math.Min( MaxScroll, Math.Max( MinScroll, ScrollPosition ) );
+			{
+				var pos = Math.Min( MaxScroll, Math.Max( MinScroll, position ) );
+
+				var sv = NativeScrollView;
+				if (sv != null)
+					sv.Goto = pos;
+				else
+					ScrollPosition = pos;
+			}
 			else
 				_scroller.Goto(position);
 		}

@@ -119,7 +119,9 @@ namespace Fuse.Controls.Native
 	public interface IScrollView : IView
 	{
 		float2 ScrollPosition { set; }
+		float2 Goto { set; }
 		ScrollDirections AllowedScrollDirections { set; }
+		bool UserScroll { set; }
 	}
 
 	public interface IScrollViewHost
@@ -127,6 +129,7 @@ namespace Fuse.Controls.Native
 		float PixelsPerPoint { get; }
 		float2 ContentSize { get; }
 		void OnScrollPositionChanged(float2 newScrollPosition);
+		void OnInteractionChanged(bool isInteracting);
 	}
 
 	public interface INativeViewRenderer : IDisposable
