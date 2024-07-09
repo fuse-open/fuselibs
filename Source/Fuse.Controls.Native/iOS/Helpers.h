@@ -71,7 +71,10 @@
 @interface ScrollViewDelegate : NSObject<UIScrollViewDelegate>
 
 @property (copy) void (^didScrollCallback)(id);
+@property (copy) void (^didInteractinglCallback)(BOOL);
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView;
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView;
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate;
 
 @end
 

@@ -57,7 +57,6 @@ namespace Fuse.Gestures
 			//Set in ugly fashion, required by https://github.com/fusetools/fuselibs-private/issues/870
 			//previously the ScrollView would just listen for added children, but this appears safer
 			_scrollable._scroller = this;
-			_scrollable.RequestBringIntoView += OnRequestBringIntoView;
 			_scrollable.ScrollPositionChanged += OnScrollPositionChanged;
 			_region = _scrollable.Motion.AcquireSimulation();
 			UpdatePointerEvents();
@@ -68,7 +67,6 @@ namespace Fuse.Gestures
 			StopInvalidateVisual();
 
 			_scrollable.RemovePropertyListener(this);
-			_scrollable.RequestBringIntoView -= OnRequestBringIntoView;
 			_scrollable.ScrollPositionChanged -= OnScrollPositionChanged;
 			_scrollable._scroller = null;
 
@@ -315,25 +313,6 @@ namespace Fuse.Gestures
 			//any already active region will respond to the updated bounds on its own
 			if (_region != null && _region.IsStatic && !_region.IsUser)
 				Goto(_scrollable.ScrollPosition);
-		}
-
-		Visual _pendingBringIntoView;
-		void OnRequestBringIntoView(object sender, RequestBringIntoViewArgs args)
-		{
-			//defer to post layout and post input
-			_pendingBringIntoView = args.Visual;
-			UpdateManager.AddDeferredAction( PerformBringIntoView, UpdateStage.Layout,
-				LayoutPriority.Post);
-		}
-
-		void PerformBringIntoView()
-		{
-			if (_pendingBringIntoView == null || !_pendingBringIntoView.IsRootingCompleted)
-				return;
-
-			var pos = _scrollable.GetVisualScrollPosition(_pendingBringIntoView);
-			Goto(pos);
-        	_pendingBringIntoView = null;
 		}
 
 		public void Goto( float2 position )

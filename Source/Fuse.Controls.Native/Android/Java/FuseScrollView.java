@@ -14,6 +14,7 @@ public class FuseScrollView extends FrameLayout implements ScrollEventHandler {
 	private GestureDetector mGestureDectector;
 
 	private boolean _isHorizontal = false;
+	private boolean isScrolling = true;
 
 	public FuseScrollView(android.content.Context context) {
 		super(context);
@@ -63,6 +64,12 @@ public class FuseScrollView extends FrameLayout implements ScrollEventHandler {
 
 	public void setScrollEventHandler(ScrollEventHandler scrollEventHandler) {
 		_scrollEventHandler = scrollEventHandler;
+	}
+
+	ScrollInteractionEventHandler _scrollInteractionHandler;
+
+	public void setScrollInteractionEventHandler(ScrollInteractionEventHandler scrollInteractionHandler) {
+		_scrollInteractionHandler = scrollInteractionHandler;
 	}
 
 	public void setIsHorizontal(boolean isHorizontal) {
@@ -180,6 +187,27 @@ public class FuseScrollView extends FrameLayout implements ScrollEventHandler {
 
 	@Override
 	public boolean onTouchEvent(MotionEvent ev) {
-		return mGestureDectector.onTouchEvent(ev);
+		if (this.isScrolling) {
+			if (_scrollInteractionHandler != null) {
+				if (ev.getAction() == MotionEvent.ACTION_DOWN)
+					_scrollInteractionHandler.onInteractionChanged(true);
+				else if (ev.getAction() == MotionEvent.ACTION_UP || ev.getAction() == MotionEvent.ACTION_CANCEL)
+					_scrollInteractionHandler.onInteractionChanged(false);
+			}
+            return mGestureDectector.onTouchEvent(ev);
+        } else {
+            return false;
+        }
 	}
+
+	public void smoothScrollTo(int x, int y) {
+		if (_currentScrollView instanceof VerticalScrollView)
+			((VerticalScrollView)_currentScrollView).smoothScrollTo(x, y);
+		else
+			((HorizontalScrollView)_currentScrollView).smoothScrollTo(x, y);
+	}
+
+	public void setScrolling(boolean isScrolling) {
+        this.isScrolling = isScrolling;
+    }
 }

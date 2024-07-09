@@ -23,16 +23,33 @@ namespace Fuse.Controls.Native.iOS
 			set { }
 		}
 
+		public bool UserScroll
+		{
+			set { SetUserScroll(Handle, value); }
+		}
+
+		[Foreign(Language.ObjC)]
+		static void SetUserScroll(ObjC.Object handle, bool isScroll)
+		@{
+			::UIScrollView* scrollView = (::UIScrollView*)handle;
+			scrollView.scrollEnabled = isScroll;
+		@}
+
 		public float2 ScrollPosition
 		{
-			set { SetContentOffset(Handle, value.X, value.Y); }
+			set { SetContentOffset(Handle, value.X, value.Y, false); }
+		}
+
+		public float2 Goto
+		{
+			set { SetContentOffset(Handle, value.X, value.Y, true); }
 		}
 
 		[UXConstructor]
 		public ScrollView([UXParameter("Host")]IScrollViewHost host) : base(Create())
 		{
 			_host = host;
-			_delegateHandle = AddCallback(Handle, OnScrollViewDidScroll);
+			_delegateHandle = AddCallback(Handle, OnScrollViewDidScroll, OnInteractionChanged);
 		}
 
 		public override void Dispose()
@@ -47,14 +64,17 @@ namespace Fuse.Controls.Native.iOS
 			::UIScrollView* scrollView = [[::UIScrollView alloc] init];
 			[scrollView setMultipleTouchEnabled:true];
 			[scrollView setOpaque:true];
+			scrollView.showsHorizontalScrollIndicator = false;
+			scrollView.showsVerticalScrollIndicator = false;
 			return  scrollView;
 		@}
 
 		[Foreign(Language.ObjC)]
-		static ObjC.Object AddCallback(ObjC.Object handle, Action<ObjC.Object> callback)
+		static ObjC.Object AddCallback(ObjC.Object handle, Action<ObjC.Object> callback, Action<bool> interactingCallback)
 		@{
 			ScrollViewDelegate* del = [[ScrollViewDelegate alloc] init];
 			[del setDidScrollCallback: callback];
+			[del setDidInteractinglCallback: interactingCallback];
 			::UIScrollView* scrollView =  (::UIScrollView*)handle;
 			[scrollView setDelegate:del];
 			return del;
@@ -68,6 +88,11 @@ namespace Fuse.Controls.Native.iOS
 			_host.OnScrollPositionChanged(float2(x, y));
 		}
 
+		void OnInteractionChanged(bool isInteracting)
+		{
+			_host.OnInteractionChanged(isInteracting);
+		}
+
 		internal protected override void OnSizeChanged()
 		{
 			var contentSize = _host.ContentSize;
@@ -75,13 +100,13 @@ namespace Fuse.Controls.Native.iOS
 		}
 
 		[Foreign(Language.ObjC)]
-		static void SetContentOffset(ObjC.Object handle, float x, float y)
+		static void SetContentOffset(ObjC.Object handle, float x, float y, bool animated)
 		@{
 			::UIScrollView* scrollView = (::UIScrollView*)handle;
 			CGPoint p = { 0 };
 			p.x = (CGFloat)x;
 			p.y = (CGFloat)y;
-			[scrollView setContentOffset:p];
+			[scrollView setContentOffset:p animated:animated];
 		@}
 
 		[Foreign(Language.ObjC)]

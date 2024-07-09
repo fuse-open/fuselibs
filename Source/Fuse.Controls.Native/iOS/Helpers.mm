@@ -170,6 +170,16 @@ static id currentFirstResponder;
 	[self didScrollCallback](scrollView);
 }
 
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+	[self didInteractinglCallback](YES);
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+	[self didInteractinglCallback](NO);
+}
+
 @end
 
 @implementation UIControlEventHandler

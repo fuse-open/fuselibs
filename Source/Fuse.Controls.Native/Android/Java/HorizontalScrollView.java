@@ -4,6 +4,8 @@ public class HorizontalScrollView extends android.widget.HorizontalScrollView {
 
 	public HorizontalScrollView(android.content.Context context) {
 		super(context);
+		this.setVerticalScrollBarEnabled(false);
+		this.setHorizontalScrollBarEnabled(false);
 	}
 
 	ScrollEventHandler _scrollEventHandler;

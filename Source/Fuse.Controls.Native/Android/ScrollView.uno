@@ -18,7 +18,7 @@ namespace Fuse.Controls.Native.Android
 		public ScrollView([UXParameter("Host")]IScrollViewHost host) : base(Create())
 		{
 			_host = host;
-			InstallCallback(NativeHandle, OnScrollChanged);
+			InstallCallback(NativeHandle, OnScrollChanged, OnInteractionChanged);
 		}
 
 		public override void Dispose()
@@ -34,12 +34,19 @@ namespace Fuse.Controls.Native.Android
 		@}
 
 		[Foreign(Language.Java)]
-		void InstallCallback(Java.Object handle, Action<int, int, int, int> callback)
+		void InstallCallback(Java.Object handle, Action<int, int, int, int> callback, Action<bool> interactionCallback)
 		@{
 			((com.fuse.android.views.FuseScrollView)handle).setScrollEventHandler(
 				new com.fuse.android.views.ScrollEventHandler() {
 					public void onScrollChanged(int x, int y, int oldX, int oldY) {
 						callback.run(x, y, oldX, oldY);
+					}
+				});
+
+			((com.fuse.android.views.FuseScrollView)handle).setScrollInteractionEventHandler(
+				new com.fuse.android.views.ScrollInteractionEventHandler() {
+					public void onInteractionChanged(boolean isInteracting) {
+						interactionCallback.run(isInteracting);
 					}
 				});
 		@}
@@ -58,6 +65,20 @@ namespace Fuse.Controls.Native.Android
 			}
 		}
 
+		[Foreign(Language.Java)]
+		void SetUserScroll(Java.Object handle, bool isScroll)
+		@{
+			((com.fuse.android.views.FuseScrollView)handle).setScrolling(isScroll);
+		@}
+
+		public bool UserScroll
+		{
+			set
+			{
+				SetUserScroll(NativeHandle, value);
+			}
+		}
+
 		public float2 ScrollPosition
 		{
 			set
@@ -67,10 +88,24 @@ namespace Fuse.Controls.Native.Android
 			}
 		}
 
+		public float2 Goto
+		{
+			set
+			{
+				var x = (int2)(value * _host.PixelsPerPoint);
+				SetGoto(Handle, x.X, x.Y);
+			}
+		}
+
 		void OnScrollChanged(int x, int y, int oldx, int oldy)
 		{
 			var p = _host.PixelsPerPoint;
 			_host.OnScrollPositionChanged(float2(x / p, y / p));
+		}
+
+		void OnInteractionChanged(bool isInteracting)
+		{
+			_host.OnInteractionChanged(isInteracting);
 		}
 
 		[Foreign(Language.Java)]
@@ -87,6 +122,12 @@ namespace Fuse.Controls.Native.Android
 			android.view.View sv = (android.view.View)handle;
 			sv.setScrollX(x);
 			sv.setScrollY(y);
+		@}
+
+		[Foreign(Language.Java)]
+		static void SetGoto(Java.Object handle, int x, int y)
+		@{
+			((com.fuse.android.views.FuseScrollView)handle).smoothScrollTo(x, y);
 		@}
 	}
 }
