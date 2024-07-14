@@ -290,7 +290,10 @@ namespace Fuse.Controls
 		static extern(iOS) void RemoveDecorationInternal(ObjC.Object viewHandle)
 		@{
 			UIView * view = (UIView *)viewHandle;
-			view.layer.sublayers = nil;
+			view.layer.shadowColor = nil;
+			view.layer.shadowOpacity = 0;
+			view.layer.shadowRadius = 0;
+			view.layer.shadowOffset = CGSizeMake(0, 0);
 		@}
 
 		[Foreign(Language.Java)]
