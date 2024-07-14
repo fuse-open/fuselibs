@@ -62,32 +62,23 @@ namespace Fuse.VideoTools
 
 		extern (iOS) internal class iOSVideoTools
 		{
-			[Require("xcode.framework", "AssetsLibrary")]
-			[Require("source.include", "AssetsLibrary/AssetsLibrary.h")]
+			[Require("xcode.framework", "Photos")]
+			[Require("source.include", "Photos/PHPhotoLibrary.h")]
+			[Require("source.include", "Photos/PHAssetChangeRequest.h")]
 			[Foreign(Language.ObjC)]
 			extern (iOS) public static bool SaveVideo(string outputFileURL)
 			@{
 				NSURL *url = [NSURL URLWithString:outputFileURL];
-				ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
-				if ([library videoAtPathIsCompatibleWithSavedPhotosAlbum:url])
-				{
-					[library writeVideoAtPathToSavedPhotosAlbum:url
-											completionBlock:^(NSURL *assetURL, NSError *error)
-					{
-						[library writeVideoAtPathToSavedPhotosAlbum:url
-												completionBlock:^(NSURL *assetURL, NSError *error)
-						{
-							if (error)
-							{
-							}
-						}];
-					}];
-				}
-				else
-				{
-					return false;
-				}
-
+				[[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
+						PHAssetChangeRequest *changeRequest = [PHAssetChangeRequest creationRequestForAssetFromVideoAtFileURL:url];
+						NSLog(@"%@", changeRequest.description);
+				} completionHandler:^(BOOL success, NSError *error) {
+					if (success) {
+						NSLog(@"saved down");
+					} else {
+						NSLog(@"something wrong %@", error.localizedDescription);
+					}
+				}];
 				return true;
 			@}
 		}
