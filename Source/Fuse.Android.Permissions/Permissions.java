@@ -63,12 +63,12 @@ public final class Permissions {
                 nextRequest();
         }
     }
-    
+
     private static void nextRequest()
     {
-        if( _currentRequest != null || _requests.size() == 0) 
+        if( _currentRequest != null || _requests.size() == 0)
             return;
-            
+
         _currentRequest = _requests.remove(0);
         ActivityCompat.requestPermissions(
             Activity.getRootActivity(),
@@ -76,12 +76,12 @@ public final class Permissions {
             _currentRequest.requestID);
     }
 
-    public static void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) 
+    public static void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults)
     {
-        if( _currentRequest == null) 
+        if( _currentRequest == null)
             return;
 
-        if (_currentRequest.requestID == requestCode && _currentRequest.promise != null && grantResults.length > 0) 
+        if (_currentRequest.requestID == requestCode && _currentRequest.promise != null && grantResults.length > 0)
         {
             boolean ok = true;
             for(int result : grantResults)

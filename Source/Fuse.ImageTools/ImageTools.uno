@@ -1,5 +1,6 @@
 using Uno.Threading;
 using Uno;
+using Fuse;
 using Uno.UX;
 using Fuse.Scripting;
 using Fuse.Android.Permissions;
@@ -366,7 +367,16 @@ namespace Fuse.ImageTools
 			string _path;
 			Action<string> _resolve;
 			Action<string> _reject;
-			public GetBase64Command(string path, Action<string> Resolve, Action<string> Reject) : base(new PlatformPermission[] { Permissions.Android.READ_EXTERNAL_STORAGE })
+			public GetBase64Command(string path, Action<string> Resolve, Action<string> Reject) : base(
+				AndroidProperties.BuildVersion >= 33 ?
+				new PlatformPermission[]
+				{
+				Permissions.Android.READ_MEDIA_IMAGES, Permissions.Android.READ_MEDIA_VIDEO, Permissions.Android.READ_MEDIA_AUDIO
+				} : new PlatformPermission[]
+				{
+				Permissions.Android.READ_EXTERNAL_STORAGE, Permissions.Android.WRITE_EXTERNAL_STORAGE
+				}
+			)
 			{
 				_path = path;
 				_resolve = Resolve;
@@ -402,7 +412,16 @@ namespace Fuse.ImageTools
 			string _base64Image;
 			Action<string> _resolve;
 			Action<string> _reject;
-			public ImageFromBase64Command(string base64Image, Action<string> Resolve, Action<string> Reject) : base(new PlatformPermission[] { Permissions.Android.WRITE_EXTERNAL_STORAGE })
+			public ImageFromBase64Command(string base64Image, Action<string> Resolve, Action<string> Reject) : base(
+				AndroidProperties.BuildVersion >= 33 ?
+				new PlatformPermission[]
+				{
+				Permissions.Android.READ_MEDIA_IMAGES, Permissions.Android.READ_MEDIA_VIDEO, Permissions.Android.READ_MEDIA_AUDIO
+				} : new PlatformPermission[]
+				{
+				Permissions.Android.READ_EXTERNAL_STORAGE, Permissions.Android.WRITE_EXTERNAL_STORAGE
+				}
+			)
 			{
 				_base64Image = base64Image;
 				_resolve = Resolve;

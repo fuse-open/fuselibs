@@ -1,6 +1,8 @@
+using Uno;
+using Fuse;
 using Fuse.Android.Permissions;
 using Fuse.Scripting;
-using Uno;
+
 namespace Fuse.ImageTools
 {
   // I hate everything to do with this
@@ -49,7 +51,16 @@ namespace Fuse.ImageTools
     bool _inPlace;
     Action<string> _resolve;
     Action<string> _reject;
-    public ResizeCommand(string path, int desiredWidth, int desiredHeight, int mode, Action<string> Resolve, Action<string> Reject, bool inPlace) : base(new PlatformPermission[] { Permissions.Android.READ_EXTERNAL_STORAGE, Permissions.Android.WRITE_EXTERNAL_STORAGE })
+    public ResizeCommand(string path, int desiredWidth, int desiredHeight, int mode, Action<string> Resolve, Action<string> Reject, bool inPlace) : base(
+        AndroidProperties.BuildVersion >= 33 ?
+        new PlatformPermission[]
+        {
+          Permissions.Android.READ_MEDIA_IMAGES, Permissions.Android.READ_MEDIA_VIDEO, Permissions.Android.READ_MEDIA_AUDIO
+        } : new PlatformPermission[]
+        {
+          Permissions.Android.READ_EXTERNAL_STORAGE, Permissions.Android.WRITE_EXTERNAL_STORAGE
+        }
+      )
     {
       _path = path;
       _desiredWidth = desiredWidth;
@@ -79,7 +90,16 @@ namespace Fuse.ImageTools
     bool _inPlace;
     Action<string> _resolve;
     Action<string> _reject;
-    public CropCommand(string path, int x, int y, int desiredWidth, int desiredHeight, Action<string> Resolve, Action<string> Reject, bool inPlace) : base(new PlatformPermission[] { Permissions.Android.READ_EXTERNAL_STORAGE, Permissions.Android.WRITE_EXTERNAL_STORAGE })
+    public CropCommand(string path, int x, int y, int desiredWidth, int desiredHeight, Action<string> Resolve, Action<string> Reject, bool inPlace) : base(
+        AndroidProperties.BuildVersion >= 33 ?
+        new PlatformPermission[]
+        {
+          Permissions.Android.READ_MEDIA_IMAGES, Permissions.Android.READ_MEDIA_VIDEO, Permissions.Android.READ_MEDIA_AUDIO
+        } : new PlatformPermission[]
+        {
+          Permissions.Android.READ_EXTERNAL_STORAGE, Permissions.Android.WRITE_EXTERNAL_STORAGE
+        }
+      )
     {
       _path = path;
       _x = x;
