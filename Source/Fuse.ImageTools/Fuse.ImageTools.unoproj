@@ -12,6 +12,7 @@
     "Uno.Threading"
   ],
   "projects": [
+    "../Fuse.Android/Fuse.Android.unoproj",
     "../Fuse.Android.Permissions/Fuse.Android.Permissions.unoproj",
     "../Fuse.Common/Fuse.Common.unoproj",
     "../Fuse.Scripting/Fuse.Scripting.unoproj"
