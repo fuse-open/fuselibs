@@ -4,15 +4,12 @@ import android.widget.FrameLayout;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.MotionEvent;
-import android.view.GestureDetector;
 
 public class FuseScrollView extends FrameLayout implements ScrollEventHandler {
 
 	private VerticalScrollView _verticalScrollView = null;
 	private HorizontalScrollView _horizontalScrollView = null;
 	private ViewGroup _currentScrollView = null;
-	private GestureDetector mGestureDectector;
-
 	private boolean _isHorizontal = false;
 	private boolean isScrolling = true;
 
@@ -23,36 +20,6 @@ public class FuseScrollView extends FrameLayout implements ScrollEventHandler {
 		_currentScrollView.setClipToPadding(false);
 		_verticalScrollView.setScrollEventHandler(this);
 		addView(_currentScrollView);
-		mGestureDectector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
-
-			@Override
-			public boolean onDown(MotionEvent e) {
-				return true;
-			}
-
-			@Override
-			public boolean onScroll(MotionEvent event1, MotionEvent event2, float distanceX, float distanceY) {
-				if (_currentScrollView instanceof VerticalScrollView)
-					((VerticalScrollView)_currentScrollView).smoothScrollBy(0,(int)distanceY);
-				else
-					((HorizontalScrollView)_currentScrollView).smoothScrollBy((int)distanceX,0);
-				return true;
-			}
-
-			@Override
-			public boolean onSingleTapConfirmed(MotionEvent event) {
-				return true;
-			}
-
-			@Override
-			public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-				if (_currentScrollView instanceof VerticalScrollView)
-					((VerticalScrollView)_currentScrollView).fling((int)velocityY * -1); // had to multiply with -1 because direction is inverted, do know why
-				else
-					((HorizontalScrollView)_currentScrollView).fling((int)velocityX * -1); // had to multiply with -1 because direction is inverted, do know why
-				return true;
-			}
-		});
 	}
 
 	public void onScrollChanged(int x, int y, int oldX, int oldY) {
@@ -182,7 +149,14 @@ public class FuseScrollView extends FrameLayout implements ScrollEventHandler {
 
 	@Override
 	public boolean onInterceptTouchEvent(MotionEvent ev) {
+		_currentScrollView.onInterceptTouchEvent(ev);
 		return true;
+	}
+
+	@Override
+	public boolean dispatchTouchEvent(MotionEvent ev) {
+		_currentScrollView.dispatchTouchEvent(ev);
+		return super.dispatchTouchEvent(ev);
 	}
 
 	@Override
@@ -194,10 +168,10 @@ public class FuseScrollView extends FrameLayout implements ScrollEventHandler {
 				else if (ev.getAction() == MotionEvent.ACTION_UP || ev.getAction() == MotionEvent.ACTION_CANCEL)
 					_scrollInteractionHandler.onInteractionChanged(false);
 			}
-            return mGestureDectector.onTouchEvent(ev);
-        } else {
-            return false;
-        }
+			return _currentScrollView.onTouchEvent(ev);
+		} else {
+			return super.onTouchEvent(ev);
+		}
 	}
 
 	public void smoothScrollTo(int x, int y) {
