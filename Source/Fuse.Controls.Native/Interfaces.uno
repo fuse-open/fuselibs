@@ -1,8 +1,11 @@
 using Uno;
 using Uno.Compiler.ExportTargetInterop;
+using Fuse;
 using Fuse.Drawing;
 using Fuse.Resources;
+using Fuse.Triggers;
 using Fuse.Elements;
+using Uno.UX;
 
 namespace Fuse.Controls.Native
 {
@@ -96,6 +99,18 @@ namespace Fuse.Controls.Native
 		float4 TintColor { set; }
 		bool IsLoaded { set; }
 		void UpdateImageTransform(float density, float2 origin, float2 scale, float2 drawSize);
+	}
+
+	public interface IVideoView : IView, IMediaPlayback
+	{
+		FileSource File { set; }
+		string Url { set; }
+		bool IsLooping { set; }
+		bool AutoPlay { set; }
+		Fuse.Elements.Alignment ContentAlignment { set; }
+		StretchMode StretchMode { set; }
+		void OnUpdate();
+		void Release();
 	}
 
 	public interface IShapeView : IView
