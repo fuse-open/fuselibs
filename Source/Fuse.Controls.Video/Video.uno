@@ -4,6 +4,7 @@ using Fuse;
 using Fuse.Elements;
 using Fuse.Controls;
 using Fuse.Triggers;
+using Fuse.Controls.Native;
 
 namespace Fuse.Controls
 {
@@ -355,12 +356,23 @@ namespace Fuse.Controls
 		protected override void OnRooted()
 		{
 			base.OnRooted();
-			Children.Add(new Fuse.Controls.VideoImpl.VideoVisual());
+			if (VideoView == null)
+				Children.Add(new Fuse.Controls.VideoImpl.VideoVisual());
+			else
+			{
+				SetPlayback(VideoView);
+				UpdateManager.AddAction(VideoView.OnUpdate);
+			}
 		}
 
 		protected override void OnUnrooted()
 		{
-			RemoveAllChildren<Fuse.Controls.VideoImpl.VideoVisual>();
+			if (VideoView == null)
+				RemoveAllChildren<Fuse.Controls.VideoImpl.VideoVisual>();
+			else
+			{
+				UpdateManager.RemoveAction(VideoView.OnUpdate);
+			}
 			base.OnUnrooted();
 		}
 
@@ -375,18 +387,21 @@ namespace Fuse.Controls
 
 		void OnRenderParamChanged()
 		{
+			UpdateNativeVideoParam();
 			if (RenderParamChanged != null)
 				RenderParamChanged(this, EventArgs.Empty);
 		}
 
 		void OnParamChanged()
 		{
+			UpdateNativeVideoParam();
 			if (ParamChanged != null)
 				ParamChanged(this, EventArgs.Empty);
 		}
 
 		void OnSourceChanged()
 		{
+			UpdateNativeVideoSource();
 			if (SourceChanged != null)
 				SourceChanged(this, EventArgs.Empty);
 		}
@@ -482,6 +497,54 @@ namespace Fuse.Controls
 			if (origin != this)
 			{
 				Progress = value;
+			}
+		}
+
+		protected override void PushPropertiesToNativeView()
+		{
+			base.PushPropertiesToNativeView();
+			UpdateNativeVideoSource();
+			UpdateNativeVideoParam();
+		}
+
+		void UpdateNativeVideoParam()
+		{
+			if (VideoView != null)
+			{
+				VideoView.IsLooping = IsLooping;
+				VideoView.AutoPlay = AutoPlay;
+				VideoView.Volume = Volume;
+				VideoView.StretchMode = StretchMode;
+			}
+		}
+
+		void UpdateNativeVideoSource()
+		{
+			if (VideoView != null)
+			{
+				VideoView.File = File;
+				VideoView.Url = Url;
+			}
+		}
+
+		IVideoView VideoView
+		{
+			get { return NativeView as IVideoView; }
+		}
+
+		protected override IView CreateNativeView()
+		{
+			if defined(Android)
+			{
+				return new Fuse.Controls.Native.Android.VideoView(this);
+			}
+			else if defined(iOS)
+			{
+				return new Fuse.Controls.Native.iOS.VideoView(this);
+			}
+			else
+			{
+				return base.CreateNativeView();
 			}
 		}
 

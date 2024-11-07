@@ -9,6 +9,7 @@
     "Fuse.Controls.DatePicker",
     "Fuse.Controls.DrawingPanel",
     "Fuse.Controls.Panels",
+    "Fuse.Controls.Video",
     "Fuse.Controls.Primitives",
     "Fuse.Controls.TimePicker",
     "Fuse.iOS",
@@ -39,12 +40,16 @@
     "iOS/CanvasViewGroup.mm:objcsource:iOS",
     "iOS/ContainerView.h:objcheader:iOS",
     "iOS/ContainerView.mm:objcsource:iOS",
+    "iOS/VideoPlayerView.h:objcheader:iOS",
+    "iOS/VideoPlayerView.m:objcsource:iOS",
     "Android/Java/ScrollEventHandler.java:java:Android",
     "Android/Java/ScrollInteractionEventHandler.java:java:Android",
     "Android/Java/FuseScrollView.java:java:Android",
     "Android/Java/HorizontalScrollView.java:java:Android",
     "Android/Java/VerticalScrollView.java:java:Android",
     "Android/Java/ViewGroup.java:java:Android",
-    "Android/Java/CanvasViewGroup.java:java:Android"
+    "Android/Java/CanvasViewGroup.java:java:Android",
+    "Android/Java/VideoView.java:java:Android",
+    "Android/Java/ScalableType.java:java:Android"
   ]
 }
