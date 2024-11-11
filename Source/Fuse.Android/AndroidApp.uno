@@ -21,14 +21,14 @@ namespace Fuse
 
 		TreeRendererPanel _renderPanel;
 
-		extern(!DISABLE_IMPLICIT_GRAPHICSVIEW)
+		extern(ENABLE_IMPLICIT_GRAPHICSVIEW)
 		GraphicsView _graphicsView = new RootGraphicsView();
 
 		Visual RootVisual
 		{
 			get
 			{
-				if defined(!DISABLE_IMPLICIT_GRAPHICSVIEW)
+				if defined(ENABLE_IMPLICIT_GRAPHICSVIEW)
 					return _graphicsView;
 				else
 					return _renderPanel;
@@ -43,7 +43,7 @@ namespace Fuse
 
 			_renderPanel = new TreeRendererPanel(new RootViewHost());
 
-			if defined(!DISABLE_IMPLICIT_GRAPHICSVIEW)
+			if defined(ENABLE_IMPLICIT_GRAPHICSVIEW)
 				_renderPanel.Children.Add(_graphicsView);
 
 			MobileBootstrapping.Init();
@@ -90,7 +90,7 @@ namespace Fuse
 
 		void PropagateBackground()
 		{
-			if defined(!DISABLE_IMPLICIT_GRAPHICSVIEW)
+			if defined(ENABLE_IMPLICIT_GRAPHICSVIEW)
 				_graphicsView.Color = Background;
 			else
 				AppRoot.ViewHandle.SetBackgroundColor((int)Uno.Color.ToArgb(Background));

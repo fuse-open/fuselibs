@@ -20,14 +20,14 @@ namespace Fuse
 
 		TreeRendererPanel _renderPanel;
 
-		extern(!DISABLE_IMPLICIT_GRAPHICSVIEW)
+		extern(ENABLE_IMPLICIT_GRAPHICSVIEW)
 		Fuse.Controls.GraphicsView _graphicsView = new Fuse.Controls.GraphicsView();
 
 		Visual RootVisual
 		{
 			get
 			{
-				if defined(!DISABLE_IMPLICIT_GRAPHICSVIEW)
+				if defined(ENABLE_IMPLICIT_GRAPHICSVIEW)
 					return _graphicsView;
 				else
 					return _renderPanel;
@@ -50,7 +50,7 @@ namespace Fuse
 
 			_renderPanel = new TreeRendererPanel(new RootViewHost());
 
-			if defined(!DISABLE_IMPLICIT_GRAPHICSVIEW)
+			if defined(ENABLE_IMPLICIT_GRAPHICSVIEW)
 				_renderPanel.Children.Add(_graphicsView);
 
 			RootViewport.Children.Add(_renderPanel);
@@ -139,7 +139,7 @@ namespace Fuse
 			if (_prevOrientation != o)
 			{
 				_prevOrientation = o;
-				if defined(!DISABLE_IMPLICIT_GRAPHICSVIEW)
+				if defined(ENABLE_IMPLICIT_GRAPHICSVIEW)
 					UpdateManager.PerformNextFrame(_graphicsView.InvalidateVisual);
 			}
 		}
