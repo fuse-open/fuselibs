@@ -65,8 +65,8 @@ namespace Fuse.Controls.Native.Android
 					rel = Math.Round(rel/us) * us;
 					SetProgress(Handle, rel * 1000);
 				}
+				_host.OnProgressChanged(rel);
 			}
-			_host.OnProgressChanged(rel);
 		}
 
 		public override void Dispose()
