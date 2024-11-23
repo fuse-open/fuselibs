@@ -42,6 +42,16 @@ namespace Fuse.Maps.iOS
 		@}
 
 		[Foreign(Language.ObjC)]
+		public void Dispose()
+		@{
+			MKMapView* mv = @{FuseMapView:of(_this).Handle:get()};
+			mv.delegate = nil;
+			[mv removeFromSuperview];
+			[mv removeAnnotations:mv.annotations];
+			[mv removeOverlays:mv.overlays];
+		@}
+
+		[Foreign(Language.ObjC)]
 		public bool GetBoolValue(string key)
 		@{
 			id result = [@{FuseMapView:of(_this).Handle:get()} valueForKey:key];
@@ -101,8 +111,8 @@ namespace Fuse.Maps.iOS
 
 		public Action OnReady;
 		public Action OnResize;
-		public readonly FuseMapView Map;
-		public readonly ObjC.Object Handle;
+		public FuseMapView Map { get; private set; }
+		public ObjC.Object Handle { get; private set; }
 		public MapViewContainer(FuseMapView map)
 		{
 			Map = map;
@@ -127,6 +137,12 @@ namespace Fuse.Maps.iOS
 				OnResize();
 		}
 
+		public void Dispose()
+		{
+			Handle = null;
+			Map = null;
+		}
+
 		[Foreign(Language.ObjC)]
 		public ObjC.Object GetView()
 		@{
@@ -142,6 +158,11 @@ namespace Fuse.Maps.iOS
 
 		public override void Dispose()
 		{
+			DisposeDelegate();
+			_container.Dispose();
+			_mapView.Dispose();
+			_mapView = null;
+			_container = null;
 			_mapViewHost.MapViewClient = null;
 			_mapViewHost = null;
 			base.Dispose();
