@@ -71,7 +71,7 @@ namespace Fuse.Controls
 
 		protected override SurfacePath CreateSurfacePath(Surface surface)
 		{
-			return CreateEllipticalPath( surface, Center, float2(Radius) );
+			return CreateEllipticalPath( surface, Center, float2(Radius), true );
 		}
 	}
 }

@@ -270,10 +270,20 @@ namespace Fuse.Drawing
 			transform = CGAffineTransformRotate(transform, (CGFloat) M_PI);
 			transform = CGAffineTransformTranslate(transform, image.size.width, 0);
 			transform = CGAffineTransformScale(transform, -1, 1);
+			CGBitmapInfo bitmapInfo = CGImageGetBitmapInfo(cgImage);
+			CGBitmapInfo newBitmapInfo;
+			// Check if the image has an alpha channel
+			if ((bitmapInfo & kCGBitmapAlphaInfoMask) == kCGImageAlphaNone) {
+				// JPEG or image without alpha
+				newBitmapInfo = kCGBitmapByteOrder32Big | kCGImageAlphaNone;
+			} else {
+				// PNG or image with alpha
+				newBitmapInfo = kCGBitmapByteOrder32Big | kCGImageAlphaPremultipliedLast;
+			}
 			CGContextRef ctx = CGBitmapContextCreate(nil, (size_t) image.size.width, (size_t) image.size.height,
 					CGImageGetBitsPerComponent(cgImage), 0,
 					CGImageGetColorSpace(cgImage),
-					CGImageGetBitmapInfo(cgImage));
+					newBitmapInfo);
 			CGContextConcatCTM(ctx, transform);
 			CGContextDrawImage(ctx, CGRectMake(0,0,image.size.width,image.size.height), cgImage);
 			CGImageRef cgimg = CGBitmapContextCreateImage(ctx);

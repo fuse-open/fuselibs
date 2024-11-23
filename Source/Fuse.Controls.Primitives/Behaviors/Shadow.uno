@@ -256,22 +256,31 @@ namespace Fuse.Controls
 			view.layer.shadowOpacity = 1.0;
 			view.layer.shadowRadius = size;
 			view.layer.shadowOffset = CGSizeMake(offset.X, offset.Y);
+			view.layer.shouldRasterize = YES;
+			view.layer.rasterizationScale = [UIScreen mainScreen].scale;
 		@}
 
 		[Foreign(Language.Java)]
 		static extern (Android) void AddDecorationInternalAndroid(Java.Object viewHandle, int color, float size, float offsetX, float offsetY)
 		@{
-			android.view.View view = (android.view.View)viewHandle;
-			android.view.ViewGroup parentView = (android.view.ViewGroup)view.getParent();
-			if (parentView != null)
-				parentView.setClipToPadding(false);
-			float scale = com.fuse.Activity.getRootActivity().getResources().getDisplayMetrics().density;
-			float elevationSize = (size * scale + 0.5f);
-			view.setOutlineProvider(android.view.ViewOutlineProvider.PADDED_BOUNDS);
-			view.setElevation(elevationSize);
-			view.setTranslationX(offsetX);
-			view.setTranslationY(offsetY);
 			if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
+				android.view.View view = (android.view.View)viewHandle;
+				android.view.ViewGroup parentView = (android.view.ViewGroup)view.getParent();
+				if (parentView != null)
+					parentView.setClipToPadding(false);
+				float scale = com.fuse.Activity.getRootActivity().getResources().getDisplayMetrics().density;
+				float elevationSize = (size * scale + 0.5f);
+				view.setElevation(elevationSize);
+				view.setOutlineProvider(new android.view.ViewOutlineProvider() {
+					@Override
+					public void getOutline(android.view.View view, android.graphics.Outline outline) {
+						if (view.getBackground() != null) {
+							android.graphics.Rect rect = view.getBackground().copyBounds();
+							rect.offset((int) offsetX, (int) offsetY);
+							outline.setRect(rect);
+						}
+					}
+				});
 				view.setOutlineAmbientShadowColor(color);
 				view.setOutlineSpotShadowColor(color);
 			}
@@ -299,15 +308,13 @@ namespace Fuse.Controls
 		[Foreign(Language.Java)]
 		static extern(Android) void RemoveDecorationInternal(Java.Object viewHandle)
 		@{
-			android.view.View view = (android.view.View)viewHandle;
-			android.view.ViewGroup parentView = (android.view.ViewGroup)view.getParent();
-			if (parentView != null)
-				parentView.setClipToPadding(true);
-			view.setOutlineProvider(android.view.ViewOutlineProvider.BACKGROUND);
-			view.setElevation(0);
-			view.setTranslationX(0);
-			view.setTranslationY(0);
 			if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
+				android.view.View view = (android.view.View)viewHandle;
+				android.view.ViewGroup parentView = (android.view.ViewGroup)view.getParent();
+				if (parentView != null)
+					parentView.setClipToPadding(true);
+				view.setOutlineProvider(android.view.ViewOutlineProvider.BACKGROUND);
+				view.setElevation(0);
 				view.setOutlineAmbientShadowColor(android.graphics.Color.TRANSPARENT);
 				view.setOutlineSpotShadowColor(android.graphics.Color.TRANSPARENT);
 			}
