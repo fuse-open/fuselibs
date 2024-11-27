@@ -137,7 +137,7 @@ namespace Fuse.Controls
 			}
 
 			var rv = RangeView;
-			if (rv != null && origin != rv)
+			if (rv != null && origin != null && origin != rv )
 			{
 				rv.Progress = ValueToRelative(value);
 			}
