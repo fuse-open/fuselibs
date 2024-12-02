@@ -12,6 +12,7 @@ public class FuseScrollView extends FrameLayout implements ScrollEventHandler {
 	private ViewGroup _currentScrollView = null;
 	private boolean _isHorizontal = false;
 	private boolean isScrolling = true;
+	private android.widget.FrameLayout _container;
 
 	public FuseScrollView(android.content.Context context) {
 		super(context);
@@ -20,6 +21,7 @@ public class FuseScrollView extends FrameLayout implements ScrollEventHandler {
 		_currentScrollView.setClipToPadding(false);
 		_verticalScrollView.setScrollEventHandler(this);
 		addView(_currentScrollView);
+		setupContainer();
 	}
 
 	public void onScrollChanged(int x, int y, int oldX, int oldY) {
@@ -85,7 +87,7 @@ public class FuseScrollView extends FrameLayout implements ScrollEventHandler {
 		if (child == _currentScrollView) {
 			super.addView(child, params);
 		} else {
-			_currentScrollView.addView(child, params);
+			_container.addView(child, params);
 		}
 	}
 
@@ -94,7 +96,7 @@ public class FuseScrollView extends FrameLayout implements ScrollEventHandler {
 		if (_currentScrollView == child) {
 			super.addView(child, index);
 		} else {
-			_currentScrollView.addView(child, index);
+			_container.addView(child, index);
 		}
 
 	}
@@ -104,7 +106,7 @@ public class FuseScrollView extends FrameLayout implements ScrollEventHandler {
 		if (child == _currentScrollView) {
 			super.addView(child);
 		} else {
-			_currentScrollView.addView(child);
+			_container.addView(child);
 		}
 	}
 
@@ -113,7 +115,7 @@ public class FuseScrollView extends FrameLayout implements ScrollEventHandler {
 		if (_currentScrollView == child) {
 			super.addView(child, width, height);
 		} else {
-			_currentScrollView.addView(child, width, height);
+			_container.addView(child, width, height);
 		}
 	}
 
@@ -122,7 +124,7 @@ public class FuseScrollView extends FrameLayout implements ScrollEventHandler {
 		if (_currentScrollView == view) {
 			super.removeView(view);
 		} else {
-			_currentScrollView.removeView(view);
+			_container.removeView(view);
 		}
 	}
 
@@ -184,4 +186,12 @@ public class FuseScrollView extends FrameLayout implements ScrollEventHandler {
 	public void setScrolling(boolean isScrolling) {
         this.isScrolling = isScrolling;
     }
+
+	private void setupContainer() {
+		_container = new android.widget.FrameLayout(com.fuse.Activity.getRootActivity());
+		_container.setFocusable(true);
+		_container.setFocusableInTouchMode(true);
+		_container.setLayoutParams(new android.widget.LinearLayout.LayoutParams(android.view.ViewGroup.LayoutParams.MATCH_PARENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
+		_currentScrollView.addView(_container);
+	}
 }
