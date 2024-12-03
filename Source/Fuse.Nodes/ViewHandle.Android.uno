@@ -251,11 +251,16 @@ namespace Fuse.Controls.Native
 			android.view.View view = (android.view.View)@{Fuse.Controls.Native.ViewHandle:of(_this).NativeHandle:get()};
 			view.setPivotX(0);
 			view.setPivotY(0);
-			view.setScaleX(scaleX);
-			view.setScaleY(scaleY);
-			view.setRotation(rotation);
-			view.setRotationX(rotationX);
-			view.setRotationY(rotationY);
+			if (!Float.isNaN(scaleX))
+				view.setScaleX(scaleX);
+			if (!Float.isNaN(scaleY))
+				view.setScaleY(scaleY);
+			if (!Float.isNaN(rotation))
+				view.setRotation(rotation);
+			if (!Float.isNaN(rotationX))
+				view.setRotationX(rotationX);
+			if (!Float.isNaN(rotationY))
+				view.setRotationY(rotationY);
 		@}
 
 		public virtual float2 Measure(LayoutParams lp, float density)
