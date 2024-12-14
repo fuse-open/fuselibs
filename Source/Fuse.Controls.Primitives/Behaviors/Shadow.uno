@@ -25,7 +25,7 @@ namespace Fuse.Controls
 			</Rectangle>
 		```
 	*/
-	public class Shadow : Behavior
+	public class Shadow : Behavior, IPropertyListener
 	{
 		/** Controls how Shadow is drawn. */
 		public enum ShadowMode
@@ -239,12 +239,28 @@ namespace Fuse.Controls
 			DecorateNativeShadow(Color, Size, Offset);
 		}
 
+		Fuse.Controls.ShadowImpl androidShadow;
 		void DecorateNativeShadow(float4 color, float size, float2 offset)
 		{
 			if defined(iOS)
+			{
 				AddDecorationInternalIOS(_elementParent.ViewHandle.NativeHandle, color, size, offset);
+			}
 			if defined(Android)
-				AddDecorationInternalAndroid(_elementParent.ViewHandle.NativeHandle, (int)Uno.Color.ToArgb(color), size, offset.X, offset.Y);
+			{
+				if (androidShadow == null)
+					androidShadow = new Fuse.Controls.ShadowImpl(_elementParent.ViewHandle.NativeHandle, (int)Uno.Color.ToArgb(color), size, offset.X, offset.Y);
+				androidShadow.Color = (int)Uno.Color.ToArgb(color);
+				androidShadow.Size = (int)size;
+				androidShadow.OffsetX = (int)offset.X;
+				androidShadow.OffsetY = (int)offset.Y;
+				var rectangle = _elementParent as Rectangle;
+				if (rectangle != null)
+					androidShadow.SetCornerRadius(rectangle.CornerRadius);
+				var circle  = _elementParent as Circle;
+				if (circle != null)
+					androidShadow.IsCircle(true);
+			}
 		}
 
 		[Foreign(Language.ObjC)]
@@ -260,38 +276,16 @@ namespace Fuse.Controls
 			view.layer.rasterizationScale = [UIScreen mainScreen].scale;
 		@}
 
-		[Foreign(Language.Java)]
-		static extern (Android) void AddDecorationInternalAndroid(Java.Object viewHandle, int color, float size, float offsetX, float offsetY)
-		@{
-			if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
-				android.view.View view = (android.view.View)viewHandle;
-				android.view.ViewGroup parentView = (android.view.ViewGroup)view.getParent();
-				if (parentView != null)
-					parentView.setClipToPadding(false);
-				float scale = com.fuse.Activity.getRootActivity().getResources().getDisplayMetrics().density;
-				float elevationSize = (size * scale + 0.5f);
-				view.setElevation(elevationSize);
-				view.setOutlineProvider(new android.view.ViewOutlineProvider() {
-					@Override
-					public void getOutline(android.view.View view, android.graphics.Outline outline) {
-						if (view.getBackground() != null) {
-							android.graphics.Rect rect = view.getBackground().copyBounds();
-							rect.offset((int) offsetX, (int) offsetY);
-							outline.setRect(rect);
-						}
-					}
-				});
-				view.setOutlineAmbientShadowColor(color);
-				view.setOutlineSpotShadowColor(color);
-			}
-		@}
-
 		void RemoveNativeDecoration()
 		{
-			if defined(MOBILE)
+			if defined(iOS)
 			{
 				var viewhandle = _elementParent.ViewHandle;
 				RemoveDecorationInternal(viewhandle.NativeHandle);
+			}
+			if defined(Android)
+			{
+				androidShadow.ClearShadow();
 			}
 		}
 
@@ -305,21 +299,6 @@ namespace Fuse.Controls
 			view.layer.shadowOffset = CGSizeMake(0, 0);
 		@}
 
-		[Foreign(Language.Java)]
-		static extern(Android) void RemoveDecorationInternal(Java.Object viewHandle)
-		@{
-			if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
-				android.view.View view = (android.view.View)viewHandle;
-				android.view.ViewGroup parentView = (android.view.ViewGroup)view.getParent();
-				if (parentView != null)
-					parentView.setClipToPadding(true);
-				view.setOutlineProvider(android.view.ViewOutlineProvider.BACKGROUND);
-				view.setElevation(0);
-				view.setOutlineAmbientShadowColor(android.graphics.Color.TRANSPARENT);
-				view.setOutlineSpotShadowColor(android.graphics.Color.TRANSPARENT);
-			}
-		@}
-
 		protected override void OnRooted()
 		{
 			base.OnRooted();
@@ -329,7 +308,10 @@ namespace Fuse.Controls
 				throw new Exception("Invalid parent for Effect: " + Parent);
 
 			if (_elementParent.ViewHandle != null)
-				AddNativeDecoration();
+			{
+				UpdateManager.AddDeferredAction(AddNativeDecoration, UpdateStage.Layout, LayoutPriority.Post);
+				_elementParent.AddPropertyListener(this);
+			}
 			else
 				AddDecoration();
 		}
@@ -337,11 +319,203 @@ namespace Fuse.Controls
 		protected override void OnUnrooted()
 		{
 			if (_elementParent.ViewHandle != null)
+			{
 				RemoveNativeDecoration();
+				_elementParent.RemovePropertyListener(this);
+			}
 			else
 				RemoveDecoration();
 			_elementParent = null;
 			base.OnUnrooted();
 		}
+
+		void IPropertyListener.OnPropertyChanged(PropertyObject obj, Selector prop)
+		{
+			if defined(Android)
+			{
+				if (_elementParent != null)
+				{
+					if (prop == Panel.ColorPropertyName)
+						if (androidShadow != null)
+							androidShadow.SetupShadow();
+
+					if (prop == Rectangle.CornerRadiusPropertyName)
+						if (androidShadow != null)
+						{
+							var rectangle = _elementParent as Rectangle;
+							androidShadow.SetCornerRadius(rectangle.CornerRadius);
+						}
+				}
+			}
+		}
+	}
+
+	extern(!Android) class ShadowImpl
+	{
+		public ShadowImpl(int color, float size, float offsetX, float offsetY) { }
+	}
+
+	extern(Android) class ShadowImpl {
+
+		Java.Object viewHandle;
+		Java.Object shadowDrawable;
+		string pathData = "";
+
+		public ShadowImpl(Java.Object viewHandle, int color, float size, float offsetX, float offsetY)
+		{
+			this.viewHandle = viewHandle;
+			this.shadowDrawable = CreateShadowDrawable(color, size, offsetX, offsetY);
+			SetupShadow();
+		}
+
+		public int Color
+		{
+			get { return GetColor(); }
+			set { SetColor(value); }
+		}
+
+		public int Size
+		{
+			get { return GetSize(); }
+			set { SetSize(value); }
+		}
+
+		public int OffsetX
+		{
+			get { return GetOffsetX(); }
+			set { SetOffsetX(value); }
+		}
+
+		public int OffsetY
+		{
+			get { return GetOffsetY(); }
+			set { SetOffsetY(value); }
+		}
+
+		public void IsCircle(bool circle)
+		{
+			SetCircle(true);
+		}
+
+		public void SetPathData(string pathData)
+		{
+			this.pathData = pathData;
+		}
+
+		public void SetCornerRadius(float4 cornerRadius)
+		{
+			var numbers = new float[] { cornerRadius.X, cornerRadius.X, cornerRadius.Y, cornerRadius.Y, cornerRadius.Z, cornerRadius.Z, cornerRadius.W, cornerRadius.W };
+			ChangeCornerRadius(numbers);
+		}
+
+		[Foreign(Language.Java)]
+		public void SetupShadow()
+		@{
+			com.fuse.android.graphics.ShadowDrawable shadowDrawable = (com.fuse.android.graphics.ShadowDrawable)@{ShadowImpl:of(_this).shadowDrawable:get()};
+			android.view.View view = (android.view.View)@{ShadowImpl:of(_this).viewHandle:get()};
+			String pathdata = @{ShadowImpl:of(_this).pathData:get()};
+			android.graphics.drawable.Drawable background = view.getBackground();
+			if (background != null)
+			{
+				android.graphics.drawable.Drawable[] layers = new android.graphics.drawable.Drawable[2];
+				layers[0] = shadowDrawable;
+				layers[1] = background;
+				android.graphics.drawable.LayerDrawable layerDrawable = new android.graphics.drawable.LayerDrawable(layers);
+				view.setBackground(layerDrawable);
+			}
+			else
+				view.setBackground(shadowDrawable);
+		@}
+
+		[Foreign(Language.Java)]
+		public void ClearShadow()
+		@{
+			android.view.View view = (android.view.View)@{ShadowImpl:of(_this).viewHandle:get()};
+			android.graphics.drawable.Drawable background = view.getBackground();
+			if (background instanceof android.graphics.drawable.LayerDrawable)
+			{
+				android.graphics.drawable.Drawable origBackground = ((android.graphics.drawable.LayerDrawable) background).getDrawable(1);
+				view.setBackground(origBackground);
+			} else
+			{
+				view.setBackground(null);
+			}
+		@}
+
+		[Foreign(Language.Java)]
+		public void ChangeCornerRadius(float[] radius)
+		@{
+			com.fuse.android.graphics.ShadowDrawable shadowDrawable = (com.fuse.android.graphics.ShadowDrawable)@{ShadowImpl:of(_this).shadowDrawable:get()};
+			shadowDrawable.setCornerRadius(radius.copyArray());
+		@}
+
+		[Foreign(Language.Java)]
+		public void SetCircle(bool circle)
+		@{
+			com.fuse.android.graphics.ShadowDrawable shadowDrawable = (com.fuse.android.graphics.ShadowDrawable)@{ShadowImpl:of(_this).shadowDrawable:get()};
+			shadowDrawable.setCircle(circle);
+		@}
+
+		[Foreign(Language.Java)]
+		private Java.Object CreateShadowDrawable(int color, float size, float offsetX, float offsetY)
+		@{
+			return new com.fuse.android.graphics.ShadowDrawable(com.fuse.Activity.getRootActivity(), color, (int)offsetX, (int) offsetY, (int)size);
+		@}
+
+		[Foreign(Language.Java)]
+		public void SetColor(int color)
+		@{
+			com.fuse.android.graphics.ShadowDrawable shadowDrawable = (com.fuse.android.graphics.ShadowDrawable)@{ShadowImpl:of(_this).shadowDrawable:get()};
+			shadowDrawable.setColor(color);
+		@}
+
+		[Foreign(Language.Java)]
+		public int GetColor()
+		@{
+			com.fuse.android.graphics.ShadowDrawable shadowDrawable = (com.fuse.android.graphics.ShadowDrawable)@{ShadowImpl:of(_this).shadowDrawable:get()};
+			return shadowDrawable.getColor();
+		@}
+
+		[Foreign(Language.Java)]
+		public void SetSize(int size)
+		@{
+			com.fuse.android.graphics.ShadowDrawable shadowDrawable = (com.fuse.android.graphics.ShadowDrawable)@{ShadowImpl:of(_this).shadowDrawable:get()};
+			shadowDrawable.setSize(size);
+		@}
+
+		[Foreign(Language.Java)]
+		public int GetSize()
+		@{
+			com.fuse.android.graphics.ShadowDrawable shadowDrawable = (com.fuse.android.graphics.ShadowDrawable)@{ShadowImpl:of(_this).shadowDrawable:get()};
+			return shadowDrawable.getSize();
+		@}
+
+		[Foreign(Language.Java)]
+		public void SetOffsetX(int offsetX)
+		@{
+			com.fuse.android.graphics.ShadowDrawable shadowDrawable = (com.fuse.android.graphics.ShadowDrawable)@{ShadowImpl:of(_this).shadowDrawable:get()};
+			shadowDrawable.setOffsetX(offsetX);
+		@}
+
+		[Foreign(Language.Java)]
+		public int GetOffsetX()
+		@{
+			com.fuse.android.graphics.ShadowDrawable shadowDrawable = (com.fuse.android.graphics.ShadowDrawable)@{ShadowImpl:of(_this).shadowDrawable:get()};
+			return shadowDrawable.getOffsetX();
+		@}
+
+		[Foreign(Language.Java)]
+		public void SetOffsetY(int offsetY)
+		@{
+			com.fuse.android.graphics.ShadowDrawable shadowDrawable = (com.fuse.android.graphics.ShadowDrawable)@{ShadowImpl:of(_this).shadowDrawable:get()};
+			shadowDrawable.setOffsetY(offsetY);
+		@}
+
+		[Foreign(Language.Java)]
+		public int GetOffsetY()
+		@{
+			com.fuse.android.graphics.ShadowDrawable shadowDrawable = (com.fuse.android.graphics.ShadowDrawable)@{ShadowImpl:of(_this).shadowDrawable:get()};
+			return shadowDrawable.getOffsetY();
+		@}
 	}
 }
