@@ -211,7 +211,8 @@ function Model(initialState, stateInitializer)
 			isDirty = true;
 			rootZone.run(function() {
 				setTimeout(function() {
-					meta.diff(new Set())
+					if (meta)
+						meta.diff(new Set())
 				}, 0)
 			});
 		}
