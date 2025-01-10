@@ -165,49 +165,60 @@ self = this;
     body.bodyUsed = true
   }
 
-  function fileReaderReady(reader) {
-    return new Promise(function(resolve, reject) {
-      reader.onload = function() {
-        resolve(reader.result)
-      }
-      reader.onerror = function() {
-        reject(reader.error)
-      }
-    })
+  function readArrayBufferAsText(buf) {
+    var view = new Uint8Array(buf)
+    var chars = new Array(view.length)
+
+    for (var i = 0; i < view.length; i++) {
+      chars[i] = String.fromCharCode(view[i])
+    }
+    return chars.join('')
   }
 
-  function readBlobAsArrayBuffer(blob) {
-    var reader = new FileReader()
-    reader.readAsArrayBuffer(blob)
-    return fileReaderReady(reader)
+  function bufferClone(buf) {
+    if (buf.slice) {
+      return buf.slice(0)
+    } else {
+      var view = new Uint8Array(buf.byteLength)
+      view.set(new Uint8Array(buf))
+      return view.buffer
+    }
   }
 
-  function readBlobAsText(blob) {
-    var reader = new FileReader()
-    reader.readAsText(blob)
-    return fileReaderReady(reader)
-  }
+  const blobTypes = [
+    'audio/',
+    'image/',
+    'video/',
+    'application/pdf',
+    'application/zip',
+    'application/octet-stream',
+    'application/vnd',
+  ];
 
   function Body() {
     this.bodyUsed = false
 
     this._initBody = function(body) {
-      this._bodyInit = body
-      if (typeof body === 'string') {
-        this._bodyText = body
-      } else if (support.blob && Blob.prototype.isPrototypeOf(body)) {
-        this._bodyBlob = body
-      } else if (support.formData && FormData.prototype.isPrototypeOf(body)) {
-        this._bodyFormData = body
-      } else if (support.searchParams && URLSearchParams.prototype.isPrototypeOf(body)) {
-        this._bodyText = body.toString()
-      } else if (!body) {
-        this._bodyText = ''
-      } else if (support.arrayBuffer && ArrayBuffer.prototype.isPrototypeOf(body)) {
-        // Only support ArrayBuffers for POST method.
-        // Receiving ArrayBuffers happens via Blobs, instead.
+      this._bodyInit = body;
+      const contentType = this.headers.get('content-type')
+      if (typeof body === 'string' && blobTypes.some(type => contentType.startsWith(type))) {
+        this._bodyBlob = new Blob(body, { type: contentType});
       } else {
-        throw new Error('unsupported BodyInit type')
+        if (typeof body === 'string') {
+          this._bodyText = body
+        } else if (support.blob && Blob.prototype.isPrototypeOf(body)) {
+          this._bodyBlob = body
+        } else if (support.formData && FormData.prototype.isPrototypeOf(body)) {
+          this._bodyFormData = body
+        } else if (support.searchParams && URLSearchParams.prototype.isPrototypeOf(body)) {
+          this._bodyText = body.toString()
+        } else if (!body) {
+          this._bodyText = ''
+        } else if (support.arrayBuffer && ArrayBuffer.prototype.isPrototypeOf(body)) {
+          this._bodyArrayBuffer = bufferClone(body)
+        } else {
+          throw new Error('unsupported BodyInit type')
+        }
       }
 
       if (!this.headers.get('content-type')) {
@@ -233,32 +244,48 @@ self = this;
         } else if (this._bodyFormData) {
           throw new Error('could not read FormData body as blob')
         } else {
-          return Promise.resolve(new Blob([this._bodyText]))
+          return Promise.resolve(new Blob(this._bodyArrayBuffer), { type: this.headers.get('content-type') })
         }
       }
-
-      this.arrayBuffer = function() {
-        return this.blob().then(readBlobAsArrayBuffer)
-      }
-
-      this.text = function() {
-        var rejected = consumed(this)
-        if (rejected) {
-          return rejected
-        }
-
-        if (this._bodyBlob) {
-          return readBlobAsText(this._bodyBlob)
-        } else if (this._bodyFormData) {
-          throw new Error('could not read FormData body as text')
+    }
+    this.arrayBuffer = async function() {
+      if (this._bodyArrayBuffer) {
+        var isConsumed = consumed(this)
+        if (isConsumed) {
+          return isConsumed
+        } else if (ArrayBuffer.isView(this._bodyArrayBuffer)) {
+          return Promise.resolve(
+            this._bodyArrayBuffer.buffer.slice(
+              this._bodyArrayBuffer.byteOffset,
+              this._bodyArrayBuffer.byteOffset + this._bodyArrayBuffer.byteLength
+            )
+          )
         } else {
-          return Promise.resolve(this._bodyText)
+          return Promise.resolve(this._bodyArrayBuffer)
         }
+      } else if (support.blob) {
+        let blob = await this.blob()
+        return blob.arrayBuffer();
+      } else {
+        throw new Error('could not read as ArrayBuffer')
       }
-    } else {
-      this.text = function() {
-        var rejected = consumed(this)
-        return rejected ? rejected : Promise.resolve(this._bodyText)
+    }
+
+    this.text = async function() {
+      var rejected = consumed(this)
+      if (rejected) {
+        return rejected
+      }
+
+      if (this._bodyBlob) {
+        let blob = await this.blob()
+        return blob.text()
+      } else if (this._bodyArrayBuffer) {
+        return Promise.resolve(readArrayBufferAsText(this._bodyArrayBuffer))
+      } else if (this._bodyFormData) {
+        throw new Error('could not read FormData body as text')
+      } else {
+        return Promise.resolve(this._bodyText)
       }
     }
 
@@ -302,7 +329,7 @@ self = this;
         input.bodyUsed = true
       }
     } else {
-      this.url = input
+      this.url = String(input)
     }
 
     this.credentials = options.credentials || this.credentials || 'omit'
@@ -445,8 +472,10 @@ self = this;
         xhr.withCredentials = true
       }
 
-      if ('responseType' in xhr && support.blob) {
-        xhr.responseType = 'blob'
+      if ('responseType' in xhr) {
+        if (support.arrayBuffer) {
+          xhr.responseType = 'arraybuffer'
+        }
       }
 
       request.headers.forEach(function(value, name) {
