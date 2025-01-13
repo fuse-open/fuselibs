@@ -164,8 +164,11 @@ namespace Fuse.Controls.Native.iOS
 
 		public void UpdateImageTransform(float density, float2 origin, float2 scale, float2 drawSize)
 		{
-			// Set UIImageVIew size from drawSize param and avoid the use of Matrix Transformation
-			SetBounds(_uiImageView, 0.0f, 0.0f, drawSize.X, drawSize.Y);
+			SetTransform(_uiImageView, float4x4.Identity);
+			var imageSize = GetImageSize();
+			SetBounds(_uiImageView, 0.0f, 0.0f, imageSize.X, imageSize.Y);
+			var imageTransform = Matrix.Compose(float3(scale, 0.0f), float4.Identity, float3(origin, 0.0f));
+			SetTransform(_uiImageView, imageTransform);
 		}
 
 		static void SetTransform(ObjC.Object handle, float4x4 t)

@@ -50,6 +50,7 @@
     "Android/Java/ViewGroup.java:java:Android",
     "Android/Java/CanvasViewGroup.java:java:Android",
     "Android/Java/VideoView.java:java:Android",
-    "Android/Java/ScalableType.java:java:Android"
+    "Android/Java/ScalableType.java:java:Android",
+    "Android/Java/ShadowDrawable.java:java:Android"
   ]
 }

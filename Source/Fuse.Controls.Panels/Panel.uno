@@ -53,12 +53,12 @@ namespace Fuse.Controls
 
 		void OnColorChanged(float4 value, IPropertyListener origin)
 		{
-			OnPropertyChanged(ColorPropertyName, origin as IPropertyListener);
-
 			if (!(Background is SolidColor))
-	 			Background = new SolidColor(value);
-	 		else
-	 			((SolidColor)Background).Color = value;
+				Background = new SolidColor(value);
+			else
+				((SolidColor)Background).Color = value;
+
+			OnPropertyChanged(ColorPropertyName, origin as IPropertyListener);
 		}
 
 		void ISurfaceDrawable.Draw(Surface surface) { ISurfaceDrawableDraw(surface); }
