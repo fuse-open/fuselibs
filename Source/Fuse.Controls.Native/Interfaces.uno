@@ -137,6 +137,8 @@ namespace Fuse.Controls.Native
 		float2 Goto { set; }
 		ScrollDirections AllowedScrollDirections { set; }
 		bool UserScroll { set; }
+		bool SnapMinTransform { set; }
+		bool SnapMaxTransform { set; }
 	}
 
 	public interface IScrollViewHost

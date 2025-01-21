@@ -66,6 +66,28 @@ namespace Fuse.Controls.Native.Android
 		}
 
 		[Foreign(Language.Java)]
+		void SetSnapMinTransform(Java.Object handle, bool value)
+		@{
+			((com.fuse.android.views.FuseScrollView)handle).setDisableBounceStart(value);
+		@}
+
+		[Foreign(Language.Java)]
+		void SetSnapMaxTransform(Java.Object handle, bool value)
+		@{
+			((com.fuse.android.views.FuseScrollView)handle).setDisableBounceEnd(value);
+		@}
+
+		public bool SnapMinTransform
+		{
+			set { SetSnapMinTransform(NativeHandle, value); }
+		}
+
+		public bool SnapMaxTransform
+		{
+			set { SetSnapMaxTransform(NativeHandle, value); }
+		}
+
+		[Foreign(Language.Java)]
 		void SetUserScroll(Java.Object handle, bool isScroll)
 		@{
 			((com.fuse.android.views.FuseScrollView)handle).setScrolling(isScroll);
