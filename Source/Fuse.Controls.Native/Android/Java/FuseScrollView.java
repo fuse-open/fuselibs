@@ -1,5 +1,6 @@
 package com.fuse.android.views;
 
+import android.view.animation.Interpolator;
 import android.widget.FrameLayout;
 import android.view.View;
 import android.view.ViewGroup;
@@ -187,11 +188,40 @@ public class FuseScrollView extends FrameLayout implements ScrollEventHandler {
         this.isScrolling = isScrolling;
     }
 
+	public void setDisableBounceStart(boolean disableBounceStart) {
+		if (_currentScrollView instanceof VerticalScrollView)
+			((VerticalScrollView)_currentScrollView).setDisableBounceStart(!disableBounceStart);
+		else
+			((HorizontalScrollView)_currentScrollView).setDisableBounceStart(!disableBounceStart);
+	}
+
+	public void setDisableBounceEnd(boolean disableBounceEnd) {
+		if (_currentScrollView instanceof VerticalScrollView)
+			((VerticalScrollView)_currentScrollView).setDisableBounceEnd(!disableBounceEnd);
+		else
+			((HorizontalScrollView)_currentScrollView).setDisableBounceEnd(!disableBounceEnd);
+	}
+
 	private void setupContainer() {
 		_container = new android.widget.FrameLayout(com.fuse.Activity.getRootActivity());
 		_container.setFocusable(true);
 		_container.setFocusableInTouchMode(true);
 		_container.setLayoutParams(new android.widget.LinearLayout.LayoutParams(android.view.ViewGroup.LayoutParams.MATCH_PARENT, android.view.ViewGroup.LayoutParams.WRAP_CONTENT));
 		_currentScrollView.addView(_container);
+	}
+
+	public static class DefaultQuartOutInterpolator implements Interpolator {
+
+		@Override
+		public float getInterpolation(float input) {
+			return (float) (1.0f - Math.pow(1 - input, 4));
+		}
+	}
+
+	public interface OnOverScrollListener {
+		/**
+		 * @param fromStart LTR, the left is start; RTL, the right is start.
+		 */
+		void onOverScrolling(boolean fromStart, int overScrolledDistance);
 	}
 }

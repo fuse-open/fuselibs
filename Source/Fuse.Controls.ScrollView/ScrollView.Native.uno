@@ -58,6 +58,8 @@ namespace Fuse.Controls
 			{
 				nsv.AllowedScrollDirections = AllowedScrollDirections;
 				nsv.UserScroll = UserScroll;
+				nsv.SnapMinTransform = SnapMinTransform;
+				nsv.SnapMaxTransform = SnapMaxTransform;
 			}
 		}
 	}

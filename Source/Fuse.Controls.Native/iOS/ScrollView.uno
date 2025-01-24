@@ -18,14 +18,27 @@ namespace Fuse.Controls.Native.iOS
 		readonly ObjC.Object _delegateHandle;
 		IScrollViewHost _host;
 
+		ScrollDirections _scrollDirection;
 		public ScrollDirections AllowedScrollDirections
 		{
-			set { }
+			set { _scrollDirection = value; }
 		}
 
 		public bool UserScroll
 		{
 			set { SetUserScroll(Handle, value); }
+		}
+
+		bool _snapMinTransform;
+		public bool SnapMinTransform
+		{
+			set { _snapMinTransform = value; }
+		}
+
+		bool _snapMaxTransform;
+		public bool SnapMaxTransform
+		{
+			set { _snapMaxTransform = value; }
 		}
 
 		[Foreign(Language.ObjC)]
@@ -86,6 +99,10 @@ namespace Fuse.Controls.Native.iOS
 			float y = 0.0f;
 			GetContentOffset(Handle, out x, out y);
 			_host.OnScrollPositionChanged(float2(x, y));
+			if (!_snapMinTransform)
+				SetDisableBounceStart(Handle, _scrollDirection == ScrollDirections.Horizontal);
+			if (!_snapMaxTransform)
+				SetDisableBounceEnd(Handle, _scrollDirection == ScrollDirections.Horizontal);
 		}
 
 		void OnInteractionChanged(bool isInteracting)
@@ -98,6 +115,44 @@ namespace Fuse.Controls.Native.iOS
 			var contentSize = _host.ContentSize;
 			SetContentSize(Handle, contentSize.X, contentSize.Y);
 		}
+
+		[Foreign(Language.ObjC)]
+		static void SetDisableBounceStart(ObjC.Object handle, bool isHorizontal)
+		@{
+			::UIScrollView* scrollView = (::UIScrollView*)handle;
+			if (isHorizontal)
+			{
+				if (scrollView.contentOffset.x < 0) {
+					scrollView.contentOffset = CGPointMake(0, scrollView.contentOffset.y);
+				}
+			}
+			else
+			{
+				if (scrollView.contentOffset.y < 0) {
+					scrollView.contentOffset = CGPointMake(scrollView.contentOffset.x, 0);
+				}
+			}
+		@}
+
+		[Foreign(Language.ObjC)]
+		static void SetDisableBounceEnd(ObjC.Object handle, bool isHorizontal)
+		@{
+			::UIScrollView* scrollView = (::UIScrollView*)handle;
+			if (isHorizontal)
+			{
+				CGFloat rightOffset = scrollView.contentSize.width - scrollView.bounds.size.width;
+				if (rightOffset > 0 && scrollView.contentOffset.x > rightOffset) {
+					scrollView.contentOffset = CGPointMake(rightOffset, scrollView.contentOffset.y);
+				}
+			}
+			else
+			{
+				CGFloat bottomOffset = scrollView.contentSize.height - scrollView.bounds.size.height;
+				if (scrollView.contentOffset.y > bottomOffset) {
+					scrollView.contentOffset = CGPointMake(scrollView.contentOffset.x, bottomOffset);
+				}
+			}
+		@}
 
 		[Foreign(Language.ObjC)]
 		static void SetContentOffset(ObjC.Object handle, float x, float y, bool animated)

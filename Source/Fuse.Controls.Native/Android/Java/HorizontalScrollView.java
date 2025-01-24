@@ -1,11 +1,162 @@
 package com.fuse.android.views;
 
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
+import android.content.Context;
+import android.util.DisplayMetrics;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.animation.Interpolator;
+
+import androidx.annotation.NonNull;
+
 public class HorizontalScrollView extends android.widget.HorizontalScrollView {
+
+	private static final int MAX_X_OVERSCROLL_DISTANCE = 50;
+	private static final float DEFAULT_DAMPING_COEFFICIENT = 4.0f;
+	private static final long DEFAULT_BOUNCE_DELAY = 400;
+
+	private float mDamping;
+	private boolean mIncrementalDamping;
+	private long mBounceDelay;
+	private boolean mDisableBounceStart;
+	private boolean mDisableBounceEnd;
+
+	private final Interpolator mInterpolator;
+	private View mChildView;
+	private float mStart;
+    private int mOverScrolledDistance;
+	private ObjectAnimator mAnimator;
+	private FuseScrollView.OnOverScrollListener mOverScrollListener;
+	private int mMaxXOverscrollDistance;
 
 	public HorizontalScrollView(android.content.Context context) {
 		super(context);
+		this.mDamping = DEFAULT_DAMPING_COEFFICIENT;
+		this.mIncrementalDamping = true;
+		this.mBounceDelay = DEFAULT_BOUNCE_DELAY;
+
 		this.setVerticalScrollBarEnabled(false);
 		this.setHorizontalScrollBarEnabled(false);
+		this.setFillViewport(true);
+
+		this.mInterpolator = new FuseScrollView.DefaultQuartOutInterpolator();
+		initBounceScrollView(context);
+	}
+
+	private void initBounceScrollView(Context context) {
+		final DisplayMetrics metrics = context.getResources().getDisplayMetrics();
+		final float density = metrics.density;
+		this.mMaxXOverscrollDistance = (int) (density * MAX_X_OVERSCROLL_DISTANCE);
+	}
+
+	@Override
+	protected boolean overScrollBy(int deltaX, int deltaY, int scrollX, int scrollY,
+									int scrollRangeX, int scrollRangeY,
+									int maxOverScrollX, int maxOverScrollY,
+									boolean isTouchEvent) {
+		int offset = mChildView.getMeasuredWidth() - getWidth();
+		offset = Math.max(offset, 0);
+		int overScrollDistance = mMaxXOverscrollDistance;
+		if (deltaX < 0 && scrollX == 0 && mDisableBounceStart)
+			overScrollDistance = 0;
+		else if (deltaX > 0 && scrollX == offset && mDisableBounceEnd)
+			overScrollDistance = 0;
+		return super.overScrollBy(deltaX, deltaY, scrollX, scrollY,
+									scrollRangeX, scrollRangeY,
+									overScrollDistance, maxOverScrollY,
+									isTouchEvent);
+	}
+
+	@Override
+	public boolean onInterceptTouchEvent(MotionEvent ev) {
+		if (this.mChildView == null && getChildCount() > 0 || mChildView != getChildAt(0)) {
+			this.mChildView = getChildAt(0);
+		}
+		return super.onInterceptTouchEvent(ev);
+	}
+
+	@Override
+	public boolean onTouchEvent(MotionEvent ev) {
+		if (this.mChildView == null)
+			return super.onTouchEvent(ev);
+
+		switch (ev.getActionMasked()) {
+			case MotionEvent.ACTION_DOWN:
+				this.mStart = ev.getX();
+
+				break;
+			case MotionEvent.ACTION_MOVE:
+				float now, delta;
+				int dampingDelta;
+
+				now = ev.getX();
+				delta = mStart - now;
+				dampingDelta = (int) (delta / calculateDamping());
+				this.mStart = now;
+
+                if (canMove(dampingDelta)) {
+					this.mOverScrolledDistance += dampingDelta;
+					this.mChildView.setTranslationX(-this.mOverScrolledDistance);
+					if (this.mOverScrollListener != null) {
+						this.mOverScrollListener.onOverScrolling(this.mOverScrolledDistance <= 0, Math.abs(this.mOverScrolledDistance));
+					}
+				}
+
+				break;
+			case MotionEvent.ACTION_UP:
+			case MotionEvent.ACTION_CANCEL:
+                this.mOverScrolledDistance = 0;
+
+				cancelAnimator();
+				this.mAnimator = ObjectAnimator.ofFloat(mChildView, View.TRANSLATION_X, 0);
+				this.mAnimator.setDuration(mBounceDelay).setInterpolator(mInterpolator);
+				if (this.mOverScrollListener != null) {
+					this.mAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+						@Override
+						public void onAnimationUpdate(@NonNull ValueAnimator animation) {
+							float value = (float) animation.getAnimatedValue();
+							mOverScrollListener.onOverScrolling(value <= 0, Math.abs((int) value));
+						}
+					});
+				}
+				this.mAnimator.start();
+
+				break;
+		}
+
+		return super.onTouchEvent(ev);
+	}
+
+	private float calculateDamping() {
+		float ratio;
+		ratio = Math.abs(mChildView.getTranslationX()) / mChildView.getMeasuredHeight();
+		ratio += 0.2F;
+		if (this.mIncrementalDamping) {
+			return this.mDamping / (1.0f - (float) Math.pow(ratio, 2));
+		} else {
+			return this.mDamping;
+		}
+	}
+
+	private boolean canMove(int delta) {
+		return delta < 0 ? canMoveFromStart() : canMoveFromEnd();
+	}
+
+	private boolean canMoveFromStart() {
+		return getScrollX() == 0 && !isDisableBounceStart();
+	}
+
+	private boolean canMoveFromEnd() {
+		int offset = mChildView.getMeasuredWidth() - getWidth();
+		offset = Math.max(offset, 0);
+		return getScrollX() == offset && !isDisableBounceEnd();
+	}
+
+	private void cancelAnimator() {
+		if (this.mAnimator != null && this.mAnimator.isRunning()) {
+			this.mAnimator.cancel();
+		}
 	}
 
 	ScrollEventHandler _scrollEventHandler;
@@ -19,5 +170,21 @@ public class HorizontalScrollView extends android.widget.HorizontalScrollView {
 			_scrollEventHandler.onScrollChanged(l, t, oldl, oldt);
 		}
 		super.onScrollChanged(l, t, oldl, oldt);
+	}
+
+	public boolean isDisableBounceStart() {
+		return mDisableBounceStart;
+	}
+
+	public void setDisableBounceStart(boolean disableBounceStart) {
+		this.mDisableBounceStart = disableBounceStart;
+	}
+
+	public boolean isDisableBounceEnd() {
+		return mDisableBounceEnd;
+	}
+
+	public void setDisableBounceEnd(boolean disableBounceEnd) {
+		this.mDisableBounceEnd = disableBounceEnd;
 	}
 }
