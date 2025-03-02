@@ -53,6 +53,11 @@ namespace Fuse.Controls
 		protected override void PushPropertiesToNativeView()
 		{
 			base.PushPropertiesToNativeView();
+			UpdateNativeScrollViewParam();
+		}
+
+		private void UpdateNativeScrollViewParam()
+		{
 			var nsv = NativeScrollView;
 			if (nsv != null)
 			{
