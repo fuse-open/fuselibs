@@ -250,17 +250,13 @@ namespace Fuse.Controls
 				{
 					_allowedScrollDirections = value;
 					OnScrollPropertyChanged(_allowedScrollDirectionsName, this);
-					var s = NativeScrollView;
-					if (s != null)
-					{
-						s.AllowedScrollDirections = _allowedScrollDirections;
-					}
 				}
 			}
 		}
 
 		void OnScrollPropertyChanged(Selector name, IPropertyListener origin)
 		{
+			UpdateNativeScrollViewParam();
 			InvalidateLayout();
 			OnPropertyChanged(name, origin);
 		}
