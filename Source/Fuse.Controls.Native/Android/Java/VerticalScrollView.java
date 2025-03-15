@@ -74,7 +74,15 @@ public class VerticalScrollView extends android.widget.ScrollView {
 		if (this.mChildView == null && getChildCount() > 0 || mChildView != getChildAt(0)) {
 			this.mChildView = getChildAt(0);
 		}
-		return super.onInterceptTouchEvent(ev);
+		return super.onInterceptTouchEvent(ev) && isVerticalScroll(ev);
+	}
+
+	private boolean isVerticalScroll(MotionEvent ev) {
+		try {
+			return Math.abs(ev.getX() - ev.getHistoricalX(0)) < Math.abs(ev.getY() - ev.getHistoricalY(0));
+		} catch (IllegalArgumentException e) {
+			return true;
+		}
 	}
 
 	@Override
@@ -126,7 +134,7 @@ public class VerticalScrollView extends android.widget.ScrollView {
 				break;
 		}
 
-		return super.onTouchEvent(ev);
+		return isVerticalScroll(ev) && super.onTouchEvent(ev);
 	}
 
 	private float calculateDamping() {
