@@ -218,32 +218,39 @@ public class FuseMap extends FrameLayout {
 
 	void onPolygonPress(Polygon polygon)
 	{
-		_callback.onPolygonPress(polygon);
+		if (_callback != null)
+			_callback.onPolygonPress(polygon);
 	}
 
 	void onPolylinePress(Polyline polyline)
 	{
-		_callback.onPolylinePress(polyline);
+		if (_callback != null)
+			_callback.onPolylinePress(polyline);
 	}
 
 	void onCirclePress(Circle circle)
 	{
-		_callback.onCirclePress(circle);
+		if (_callback != null)
+			_callback.onCirclePress(circle);
 	}
 
 	private boolean onMarkerPress(Marker marker)
 	{
-		return _callback.onMarkerPress(marker);
+		if (_callback != null)
+			return _callback.onMarkerPress(marker);
+		return false;
 	}
 
 	void onMapLongPress(LatLng latLng)
 	{
-		_callback.onLongPress(latLng.latitude, latLng.longitude);
+		if (_callback != null)
+			_callback.onLongPress(latLng.latitude, latLng.longitude);
 	}
 
 	void onClick(LatLng latLng)
 	{
-		_callback.onPress(latLng.latitude, latLng.longitude);
+		if (_callback != null)
+			_callback.onPress(latLng.latitude, latLng.longitude);
 	}
 
 	private void onAnimationFinish()
@@ -493,7 +500,7 @@ public class FuseMap extends FrameLayout {
 	}
 
 	public void clear(){
-		 for (Marker marker : _markerIDs.keySet())
+		for (Marker marker : _markerIDs.keySet())
 			marker.remove();
 		_markerIDs.clear();
 	}
@@ -561,12 +568,14 @@ public class FuseMap extends FrameLayout {
 
 	private void startAnimation(){
 		_isAnimating = true;
-		_callback.onAnimationStart();
+		if (_callback != null)
+			_callback.onAnimationStart();
 	}
 
 	private void stopAnimation(){
 		_isAnimating = false;
-		_callback.onAnimationStop();
+		if (_callback != null)
+			_callback.onAnimationStop();
 	}
 
 	private GoogleMap.CancelableCallback _animationCallback = new GoogleMap.CancelableCallback() {
@@ -583,7 +592,8 @@ public class FuseMap extends FrameLayout {
 
 	private void onCameraChanged(CameraPosition pos)
 	{
-		_callback.onCameraChange(pos.target.latitude, pos.target.longitude, pos.zoom, pos.tilt, pos.bearing);
+		if (_callback != null)
+			_callback.onCameraChange(pos.target.latitude, pos.target.longitude, pos.zoom, pos.tilt, pos.bearing);
 	}
 
 	/* Visuals */
