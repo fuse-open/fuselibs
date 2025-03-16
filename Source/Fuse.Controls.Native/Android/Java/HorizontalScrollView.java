@@ -73,7 +73,15 @@ public class HorizontalScrollView extends android.widget.HorizontalScrollView {
 		if (this.mChildView == null && getChildCount() > 0 || mChildView != getChildAt(0)) {
 			this.mChildView = getChildAt(0);
 		}
-		return super.onInterceptTouchEvent(ev);
+		return super.onInterceptTouchEvent(ev) && isHorizontalScroll(ev);
+	}
+
+	private boolean isHorizontalScroll(MotionEvent ev) {
+		try {
+			return Math.abs(ev.getX() - ev.getHistoricalX(0)) > Math.abs(ev.getY() - ev.getHistoricalY(0));
+		} catch (IllegalArgumentException e) {
+			return true;
+		}
 	}
 
 	@Override
@@ -125,7 +133,7 @@ public class HorizontalScrollView extends android.widget.HorizontalScrollView {
 				break;
 		}
 
-		return super.onTouchEvent(ev);
+		return isHorizontalScroll(ev) && super.onTouchEvent(ev);
 	}
 
 	private float calculateDamping() {
