@@ -8,6 +8,8 @@
 - Update `GLHelper.h` includes on Android (2b143eb)
 - Simplify Android runtime version check (#1480)
 - Update macros and uxl files (#1491)
+- Update unoproj syntax in doc-comments (#1493)
+- Switch default UI rendering on iOS and Android (#1502)
 
 ### Experimental.TextureLoader
 - Remove legacy `Experimental.TextureLoader` library (#1458)
@@ -21,20 +23,47 @@
   * `Fuse.Json.Escape(string s, StringBuilder sb)`
   * `Fuse.SystemFont.Weight.SemiBold`
 
+### Fuse.Controls.CameraView
+- Android: Fix Android 13 permission (#1496)
+
+### Fuse.Controls.Native
+- Native ScrollView feature parity with the Graphics Mode (#1497)
+- Android: Fix native ScrollView where nested with horizontal ScrollView (#1500)
+- Native Video Component (#1501)
+- Native Slider Android: fix bug recursive setting value (#1504)
+- Android: Fix Scrollview with content padding (#1505)
+- Android: Native Scrollview snap min/max and bounce scroll (#1509)
+- Android: Scrolling detect Improvement (#1512)
+
+### Fuse.Controls.Primitives
+- iOS: Fix crash when removing Shadow (#1498)
+- Fix bugs and improve native rendering for Image, Circle and Shadow (#1507)
+
 ### Fuse.Controls.Video
 - Upgrade `Fuse.Video.CIL` to .NET 6.0 (#1475)
+
+### Fuse.Controls.ScrollView
+- ScrollView push to native for property changes (#1510)
 
 ### Fuse.Drawing.Surface
 - Update assembly references for .NET 6.0 (#1476)
 
+### Fuse.ImageTools
+- Android: Fix Android 13 permission (#1499)
+
 ### Fuse.LocalNotifications
-- Fix compatibility with the latest Android OS and indentation (#1473)
+- Android: Fix compatibility with the Android 13 and indentation (#1473)
+
+### Fuse.Maps
+- iOS: Fix memory leaks with MapView (#1503)
+- Android: MapView sanitary check (#1511)
 
 ### Fuse.Nodes
 - Remove obsolete methods (#1492)
   * `Fuse.VisualBounds.Transform(float4x4 matrix)`
   * `Fuse.VisualBounds.TransformFlatten(float4x4 matrix)`
   * `Fuse.VisualBounds.BoxTransform(Box box, float4x4 transform)`
+- Android: Fix crash on layout transformation (#1506)
 
 ### Fuse.Scripting
 - Deprecate `NativePromise` without `Context` (#1467)
@@ -53,13 +82,17 @@
 - TypeScript and transpiler support in UX files (#1472)
 - Upgrade `V8Simple.net` for .NET 6.0 (#1483)
 
+### Polyfills.Window
+- Blob and URL polyfill, enhance fetch, and sanitary check (#1508)
+
 ### Other changes
 - Upgrade `Fuse.Profiling` tool to .NET 6.0 (#1474)
 - Upgrade `android-build-tools` to v2.x (#1488)
 - Ignore tests failing on macOS (#1484)
 - Kill tests after 15 minutes (#1489)
+- OS X -> macOS clean up (#1495)
 
-[`v2.9.1...v3.0.0-beta.9`](https://github.com/fuse-open/fuselibs/compare/v2.9.1...v3.0.0-beta.9)
+[`v2.9.2...v3.0.0-beta.10`](https://github.com/fuse-open/fuselibs/compare/v2.9.2...v3.0.0-beta.10)
 
 ## 2.9.2
 
