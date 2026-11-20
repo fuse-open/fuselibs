@@ -8,7 +8,7 @@
   },
   "scripts": {
     "build": "uno doctor Source",
-    "prepack": "uno doctor Source --configuration=Release",
+    "prepack": "uno doctor Source --configuration=Release  && node Source/Fuse.Scripting.JavaScript/V8/patch-v8-abi.js Source/build/Fuse.Scripting.JavaScript/V8/android/lib",
     "test": "uno test Source",
     "test-with-timeout": "concurrently -k -r -s first -P \"node tools/timeout.js\" \"npm test -- {@}\" --",
     "android": "uno build android Tests/ManualTests/ManualTestingApp/ManualTestingApp.unoproj --run",
