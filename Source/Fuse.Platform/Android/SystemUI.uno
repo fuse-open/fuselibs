@@ -15,6 +15,7 @@ namespace Fuse.Platform
 		"android.view.WindowManager", "android.widget.FrameLayout",
 		"android.content.Context", "android.content.pm.ActivityInfo",
 		"android.view.Surface", "java.lang.reflect.Method",
+		"android.view.WindowInsets",
 		"android.graphics.Color", "android.view.WindowManager.LayoutParams")]
 
 	static extern(android) class SystemUI
@@ -252,11 +253,18 @@ namespace Fuse.Platform
 			int result = 0;
 			if (@{_systemUIState}==@{SysUIState.Normal})
 			{
-				int resourceId = com.fuse.Activity.getRootActivity().getResources().getIdentifier("status_bar_height", "dimen", "android");
-				if (resourceId > 0)
+				result = @{GetStatusBarInset():call()};
+
+				// Before the window has received its insets.
+				if (result == 0)
 				{
-					result = com.fuse.Activity.getRootActivity().getResources().getDimensionPixelSize(resourceId);
+					int resourceId = com.fuse.Activity.getRootActivity().getResources().getIdentifier("status_bar_height", "dimen", "android");
+					if (resourceId > 0)
+					{
+						result = com.fuse.Activity.getRootActivity().getResources().getDimensionPixelSize(resourceId);
+					}
 				}
+
 				if (result == 0)
 				{
 					if (@{hasCachedStatusBarSize})
@@ -269,6 +277,25 @@ namespace Fuse.Platform
 				}
 			}
 			return (float)result;
+		@}
+
+		// Size of the bar even while it is hidden, so layouts do not jump.
+		[Foreign(Language.Java)]
+		static int GetStatusBarInset()
+		@{
+			if (Build.VERSION.SDK_INT < 23)
+				return 0;
+
+			WindowInsets insets = com.fuse.Activity.getRootActivity()
+				.getWindow().getDecorView().getRootWindowInsets();
+
+			if (insets == null)
+				return 0;
+
+			if (Build.VERSION.SDK_INT >= 30)
+				return insets.getInsetsIgnoringVisibility(WindowInsets.Type.systemBars()).top;
+
+			return insets.getSystemWindowInsetTop();
 		@}
 
 		[Foreign(Language.Java)]
@@ -416,9 +443,32 @@ namespace Fuse.Platform
 		static extern(Android) Rect GetBottomBarFrame()
 		{
 			var dispSize = _GetRootDisplaySize();
-			var height = _bottomFrameSize;
+			int height = _bottomFrameSize;
+
+			// Edge-to-edge (API 35+): the bar no longer takes space from the window.
+			if (height < GetNavigationBarHeight())
+				height = GetNavigationBarHeight();
+
 			return new Rect(float2(0, 0), float2(dispSize.X, height));
 		}
+
+		[Foreign(Language.Java)]
+		static int GetNavigationBarHeight()
+		@{
+			if (Build.VERSION.SDK_INT < 23)
+				return 0;
+
+			WindowInsets insets = com.fuse.Activity.getRootActivity()
+				.getWindow().getDecorView().getRootWindowInsets();
+
+			if (insets == null)
+				return 0;
+
+			if (Build.VERSION.SDK_INT >= 30)
+				return insets.getInsets(WindowInsets.Type.systemBars()).bottom;
+
+			return insets.getSystemWindowInsetBottom();
+		@}
 
 		static void OnWillResize()
 		{
@@ -532,8 +582,9 @@ namespace Fuse.Platform
 		@{
 			return new OnLayoutChangeListener() {
 
-				int lastWidth = (int)@{GetRealDisplayWidth():call()};
-				int lastHeight = @{GetRealDisplayHeight():call()};
+				// A size no layout can have, so the first layout always sets the frame.
+				int lastWidth = -1;
+				int lastHeight = -1;
 
 				@Override
 					public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
@@ -542,6 +593,7 @@ namespace Fuse.Platform
 					if (newWidth!=lastWidth || newHeight!=lastHeight) {
 						lastHeight = newHeight;
 						lastWidth = newWidth;
+						@{CompensateRootLayoutForSystemUI():call()};
 						@{cppOnConfigChanged():call()};
 						ViewTreeObserver.OnGlobalLayoutListener kl = ((ViewTreeObserver.OnGlobalLayoutListener)@{_keyboardListener});
 						if (kl!=null) @{ResendFrameSizes():call()};
@@ -554,10 +606,29 @@ namespace Fuse.Platform
 		{
 			CalcRealSizes();
 			if (RootLayout != null) {
-				int compensation = -(int)GetStatusBarHeight();
-				SetFrame(RootLayout, 0, compensation, GetRealDisplayHeight());
+				SetFrame(RootLayout, 0, GetRootLayoutTopMargin(), GetRealDisplayHeight());
 			}
 		}
+
+		static int GetRootLayoutTopMargin()
+		{
+			// Pre-API 35 the window is inset; pull the root up to cover the display.
+			if (GetSuperLayoutWindowTop() <= 0)
+				return 0;
+
+			return -(int)GetStatusBarHeight();
+		}
+
+		// Window-relative, not View.getTop(): the insets land on an ancestor, so getTop() stays 0.
+		[Foreign(Language.Java)]
+		static int GetSuperLayoutWindowTop()
+		@{
+			if (@{SuperLayout} == null) return 0;
+
+			int[] location = new int[2];
+			((FrameLayout)@{SuperLayout}).getLocationInWindow(location);
+			return location[1];
+		@}
 
 		[Foreign(Language.Java)]
 		static void SetFrame(Java.Object view, int originX, int originY, int height)
@@ -597,6 +668,8 @@ namespace Fuse.Platform
 		@{
 			int heightDiff = @{GetRealDisplayHeight():call()}-((FrameLayout)@{SuperLayout}).getHeight();
 			heightDiff -= @{GetStatusBarHeight():call()};
+			// Negative when edge-to-edge, where no keyboard is shown.
+			if (heightDiff < 0) heightDiff = 0;
 			int contentViewTop = com.fuse.Activity.getRootActivity().getWindow().findViewById(Window.ID_ANDROID_CONTENT).getTop();
 			boolean keyboardClosed = (heightDiff-contentViewTop)<(@{GetRealDisplayHeight():call()}/4);
 			if (heightDiff!=@{lastKeyboardHeight} || @{firstSizing}) {
@@ -639,6 +712,7 @@ namespace Fuse.Platform
 		{
 			int heightDiff = GetRealDisplayHeight()-GetSuperLayoutHeight();
 			heightDiff -= (int)GetStatusBarHeight();
+			if (heightDiff < 0) heightDiff = 0;
 			lastKeyboardHeight = heightDiff;
 			cppOnBottomFrameChanged(heightDiff);
 		}
